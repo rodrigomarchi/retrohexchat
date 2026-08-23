@@ -26,7 +26,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.ConversationToolbarActions
   import RetroHexChatWeb.Components.UI.TopicBar
   import RetroHexChatWeb.Components.UI.ChatTaskbar
-  import RetroHexChatWeb.Components.UI.ChannelViewSwitcher
   import RetroHexChatWeb.Components.UI.ConnectionStatus
   import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.SpaceCharacterSelect
@@ -41,6 +40,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.P2P.SetupDialog
   import RetroHexChatWeb.Components.UI.P2P.SessionBadge
   import RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog
+  import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
 
   alias RetroHexChatWeb.ChatLive.Components.P2PSessionConsole
   alias RetroHexChatWeb.Components.UI.GroupCall.Panel, as: GroupCallPanelUI
@@ -331,6 +331,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       "status" -> dispatch_to_hooks("switch_to_status", %{}, socket)
       "channel" -> dispatch_to_hooks("switch_channel", %{"channel" => label}, socket)
       "pm" -> dispatch_to_hooks("switch_pm", %{"nickname" => label}, socket)
+      "space" -> handle_event("switch_channel_view", %{"view" => "space"}, socket)
       _ -> {:noreply, socket}
     end
   end
@@ -348,8 +349,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
       when view in ["chat", "space"] do
     channel_view = if view == "space", do: :space, else: :chat
     # Entering the space always shows the character picker first (space_avatar
-    # nil gates the canvas mount); leaving it drops back to chat.
-    {:noreply, assign(socket, channel_view: channel_view, space_avatar: nil)}
+    # nil gates the canvas mount); leaving it drops back to chat. A view is a
+    # tab now, so picking one also uncovers the conversation from Status.
+    {:noreply,
+     assign(socket, channel_view: channel_view, space_avatar: nil, show_status_tab: false)}
   end
 
   def handle_event("space_select_avatar", %{"avatar" => avatar}, socket) do

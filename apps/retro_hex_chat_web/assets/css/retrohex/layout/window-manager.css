@@ -74,34 +74,39 @@
   filter: brightness(0) invert(1);
 }
 
-/* Conversation toolbar controls keep one hit target and glyph scale across
-   desktop and stacked layouts. The HEEx components only describe semantics. */
-[data-testid="conversation-toolbar"] {
-  min-height: 40px;
-  scrollbar-width: thin;
-}
-
+/* Conversation controls ride at the end of the tab strip, so they are sized to
+   sit beside a tab rather than to fill a toolbar row of their own. The HEEx
+   components only describe semantics. */
 .conversation-toolbar-button {
-  width: 36px;
-  min-width: 36px;
-  height: 36px;
-  min-height: 36px;
+  min-width: 22px;
+  height: 22px;
+  min-height: 22px;
+  padding-inline: 4px;
+  gap: 3px;
   line-height: 1;
 }
 
 .conversation-toolbar-button > svg {
-  width: 30px;
-  height: 30px;
-  flex: 0 0 30px;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+}
+
+/* The label is what makes these read as controls beside three labelled tabs.
+   It matches the tab text, and the popover toggles that carry only a glyph
+   simply have none. */
+.conversation-toolbar-button__text {
+  font-size: 0.75rem;
+  white-space: nowrap;
 }
 
 .conversation-toolbar-entry {
-  height: 36px;
+  height: 22px;
 }
 
 .conversation-toolbar-separator {
   width: 1px;
-  height: 32px;
+  height: 18px;
   flex-shrink: 0;
   margin-inline: 2px;
   background: #808080;
@@ -305,15 +310,15 @@
 .desktop--stacked {
   --rhc-chat-window-chrome-height: 27px;
   --rhc-chat-tabbar-height: 38px;
-  --rhc-chat-toolbar-height: 40px;
   --rhc-chat-topicbar-height: 28px;
   /* The tab row is bottom-anchored, so it is not part of the top chrome the
-     sidebar overlays hang below. The menu strip is: it hangs under the window's
-     title bar, and the manager measures it rather than the constant a
-     screen-wide header used to supply. */
+     sidebar overlays hang below — and the conversation's controls now ride in
+     it, which is why no toolbar row is counted here. The menu strip is: it
+     hangs under the window's title bar, and the manager measures it rather than
+     the constant a screen-wide header used to supply. */
   --rhc-chat-sidebar-top: calc(
     var(--rhc-chat-window-chrome-height) + var(--rhc-menu-strip-height, 32px) +
-      var(--rhc-chat-toolbar-height) + var(--rhc-chat-topicbar-height)
+      var(--rhc-chat-topicbar-height)
   );
   overflow: clip;
 }
@@ -352,7 +357,6 @@
 }
 
 .desktop--stacked [data-testid="tab-bar"],
-.desktop--stacked [data-testid="conversation-toolbar"],
 .desktop--stacked [data-testid="topic-bar"],
 .desktop--stacked [data-testid="search-bar"] {
   position: relative;

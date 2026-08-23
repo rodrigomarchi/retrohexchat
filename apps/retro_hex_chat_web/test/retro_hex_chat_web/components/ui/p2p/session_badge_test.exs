@@ -25,7 +25,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadgeTest do
       |> Floki.parse_document!()
       |> Floki.find(~s([data-testid="p2p-peer-entry"]))
 
-    assert entry |> Floki.text() |> String.trim() == ""
+    # The entry sits beside the tabs and carries its label in the open, so a
+    # glyph alone would read as decoration next to three labelled tabs.
+    assert entry |> Floki.text() |> String.trim() == "P2P Session"
+    assert Floki.attribute(entry, "aria-label") == []
   end
 
   test "renders a received pending request with icon-only join and decline actions" do

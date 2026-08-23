@@ -211,7 +211,7 @@ msgstr "Menus contextuels"
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Conversations"
 msgstr "Conversations"
@@ -405,7 +405,7 @@ msgstr "Entrée & Autocomplete"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:123
-#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:219
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts"
@@ -610,7 +610,7 @@ msgstr "Sections"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:113
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:209
 #: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:13
@@ -2959,7 +2959,7 @@ msgstr "Au clavier, Ctrl+Maj+] et Ctrl+Maj+[ parcourent les canaux que vous avez
 msgid "Reading something else does not leave the channel. A conversation you switch away from keeps receiving messages, keeps counting unread, and keeps flashing and playing its sound in the sidebar — you simply are not looking at it."
 msgstr "Lire autre chose ne quitte pas le canal. Une conversation que vous quittez des yeux continue de recevoir des messages, de compter les non lus, de clignoter et de jouer son son dans la barre latérale — vous ne la regardez simplement plus."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Status Tab"
 msgstr "Onglet État"
@@ -2968,11 +2968,6 @@ msgstr "Onglet État"
 #, elixir-autogen, elixir-format
 msgid "Switching Conversations"
 msgstr "Changer de conversation"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The tab bar at the bottom of the chat area holds two tabs: Status, and the one conversation you are reading. It is a switch between those two, not a list of everything you have open."
-msgstr "La barre d'onglets sous la zone de discussion contient deux onglets : Statut et l'unique conversation que vous lisez. Elle bascule entre les deux, elle ne liste pas tout ce que vous avez ouvert."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:26
 #, elixir-autogen, elixir-format
@@ -2988,3 +2983,33 @@ msgstr "Utilisez la barre latérale des conversations à gauche pour passer d'un
 #, elixir-autogen, elixir-format
 msgid "Switching Away vs Leaving"
 msgstr "Changer de conversation n'est pas quitter"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Buttons Beside the Tabs"
+msgstr "Boutons à côté des onglets"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Find is not one of them — it lives in Edit > Find, in the Start menu, and on Ctrl+Shift+F."
+msgstr "Rechercher n'en fait pas partie : il se trouve dans Édition > Rechercher, dans le menu Démarrer et sur Ctrl+Maj+F."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Space"
+msgstr "Space"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Space is a second view of the conversation you are already in, not a place of its own: the map replaces the messages and the message box keeps working. Switching to another conversation always lands you on its chat, so you never arrive in a map you did not ask for."
+msgstr "Space est une seconde vue de la conversation où vous êtes déjà, pas un lieu à part : la carte remplace les messages et la zone de saisie continue de fonctionner. Changer de conversation vous dépose toujours sur son chat, vous n'arrivez donc jamais dans une carte que vous n'avez pas demandée."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The tab bar at the bottom of the chat area holds the things that can occupy the conversation region: Status, the one conversation you are reading, and — when that conversation has one — its Space. It is a switch between those, not a list of everything you have open."
+msgstr "La barre d'onglets sous la zone de discussion porte ce qui peut occuper la région de la conversation : Statut, l'unique conversation que vous lisez et — quand elle en a un — son Space. Elle bascule entre ceux-là, elle ne liste pas tout ce que vous avez ouvert."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "The controls next to the tabs open something beside the conversation rather than replacing it: channel settings, user lookup, the conference and the P2P session. Each carries its label, so you can read what it does. On a phone the first two also slide the conversations and user list open over the chat."
+msgstr "Les contrôles à côté des onglets ouvrent quelque chose à côté de la conversation au lieu de la remplacer : réglages du canal, recherche d'utilisateur, la conférence et la session P2P. Chacun porte son libellé, vous pouvez donc lire ce qu'il fait. Sur téléphone, les deux premiers font aussi glisser les conversations et la liste des utilisateurs par-dessus le chat."

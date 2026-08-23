@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_ui",
-    "The tab bar at the bottom of the chat area holds two tabs: Status, and the one conversation you are reading. It is a switch between those two, not a list of everything you have open."
+    "The tab bar at the bottom of the chat area holds the things that can occupy the conversation region: Status, the one conversation you are reading, and — when that conversation has one — its Space. It is a switch between those, not a list of everything you have open."
   )}
 </p>
 <.help_h4 icon={:icon_star}>{dgettext("help_ui", "Switching Conversations")}</.help_h4>
@@ -26,6 +26,24 @@
   {dgettext(
     "help_ui",
     "To actually leave, use the × on the tab, or right-click the channel in the sidebar and choose Leave Channel."
+  )}
+</p>
+<.help_h4 icon={:icon_toolbar_community}>{dgettext("help_ui", "Space")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Space is a second view of the conversation you are already in, not a place of its own: the map replaces the messages and the message box keeps working. Switching to another conversation always lands you on its chat, so you never arrive in a map you did not ask for."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_settings}>{dgettext("help_ui", "Buttons Beside the Tabs")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "The controls next to the tabs open something beside the conversation rather than replacing it: channel settings, user lookup, the conference and the P2P session. Each carries its label, so you can read what it does. On a phone the first two also slide the conversations and user list open over the chat."
+  )}
+  {dgettext(
+    "help_ui",
+    "Find is not one of them — it lives in Edit > Find, in the Start menu, and on Ctrl+Shift+F."
   )}
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>

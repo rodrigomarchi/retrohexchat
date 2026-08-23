@@ -4626,14 +4626,6 @@ msgstr "消息附件"
 msgid "Message Formats"
 msgstr "消息格式"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:104
-#, elixir-autogen, elixir-format
-msgid "On a phone the desktop stacks: one window fills the screen at a time and the taskbar switches between them — the same strip of window buttons as on a desktop, squeezed to fit and scrolled when crowded. The conversations and user list keep no column of their own there: the first two buttons of the conversation toolbar slide each one open over the chat, so every message and the message box run the full width of the screen. The Start menu opens one level at a time: tapping a group replaces the list with its entries, and the group's own row at the top takes you back."
-msgstr ""
-"在电话上,桌面堆栈:一个窗口一次填充屏幕,任务栏在它们之间开关——与桌面上相同的条形窗口按钮,挤压以适应拥挤时滚动. "
-"会话列表和用户列表不再占用自己的一栏：会话工具栏最左边的两个按钮会把它们叠加在聊天之上打开，因此每条消息和消息输入框都能占满整个屏幕宽度。 "
-"\"开始\"菜单一次打开一个关卡:点击一个组用其条目替换列表,该组自己在顶部的行将你带回."
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:183
 #, elixir-autogen, elixir-format
 msgid "attachments"
@@ -4841,11 +4833,6 @@ msgstr "在桌面视口下，壁纸上的应用文件夹图标展示主要应用
 msgid "The entries are grouped one level deep, and the menu carries everything the app can do: anything a menu bar offers is offered here too. View acts on the window in front of you; Tools holds the address book, lists, channel windows and the display settings; Automation holds Perform, Auto-Join, aliases, custom menus and timers; P2P comes alive with a peer session; Games holds Retro Games and the Arcade; Account holds identity and profile tools; Admin and System appear only inside the chat for admins; Windows reopens a window of the screen you are on; Navigate reaches the public pages, the documentation and the app; Language switches locale; Help holds the topics, the cheatsheet and About. Disconnect sits alone at the bottom."
 msgstr "条目只分组一层，菜单承载了应用能做的一切：菜单栏提供的任何功能这里也都提供。View 作用于你面前的窗口；Tools 包含通讯录、各类列表、频道窗口和显示设置；Automation 包含 Perform、Auto-Join、别名、自定义菜单和定时器；P2P 在有对等会话时才可用；Games 包含 Retro Games 和街机；Account 包含身份与资料工具；Admin 和 System 仅在聊天中且你是管理员时出现；Windows 重新打开你所在屏幕的窗口；Navigate 通往公开页面、文档和应用；Language 切换语言；Help 包含主题、速查表和关于。断开连接单独位于底部。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:216
-#, elixir-autogen, elixir-format
-msgid "Switch between Status and the one conversation on screen. Everything else is switched from the sidebar."
-msgstr "在状态和屏幕上的那一个会话之间切换。其余全部从侧边栏切换。"
-
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:197
 #, elixir-autogen, elixir-format
 msgid "Switch between every joined channel and private conversation, and watch unread pile up on the ones you are not reading."
@@ -4855,3 +4842,13 @@ msgstr "在所有已加入的频道和私人会话之间切换，并查看未读
 #, elixir-autogen, elixir-format
 msgid "one conversation at a time"
 msgstr "一次一个会话"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:104
+#, elixir-autogen, elixir-format
+msgid "On a phone the desktop stacks: one window fills the screen at a time and the taskbar switches between them — the same strip of window buttons as on a desktop, squeezed to fit and scrolled when crowded. The conversations and user list keep no column of their own there: the first two buttons beside the tabs slide each one open over the chat, so every message and the message box run the full width of the screen. The Start menu opens one level at a time: tapping a group replaces the list with its entries, and the group's own row at the top takes you back."
+msgstr "在手机上，桌面会堆叠：一次由一个窗口占满屏幕，任务栏在它们之间切换——与桌面上相同的那条窗口按钮带，压缩以适应，拥挤时可滚动。会话列表和用户列表在那里没有自己的栏位：标签旁的前两个按钮会把它们各自滑出覆盖在聊天之上，因此每条消息和消息输入框都能占满屏幕宽度。开始菜单一次展开一层：点按一个分组会用它的条目替换列表，顶部该分组自己的那一行则可返回。"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:216
+#, elixir-autogen, elixir-format
+msgid "Switch between Status, the conversation on screen and its Space. Everything else is switched from the sidebar."
+msgstr "在状态、屏幕上的会话及其空间之间切换。其余全部从侧边栏切换。"

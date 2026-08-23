@@ -40,9 +40,7 @@ test.describe("Virtual space character picker", () => {
 
       // Switch the channel view from Chat to Space.
       await page
-        .locator(
-          '[data-testid="conversation-toolbar"] [data-testid="channel-view-switcher"] button[phx-value-view="space"]',
-        )
+        .locator('[data-testid="tab-bar"] [role="tab"][phx-value-type="space"]')
         .click();
 
       // The character picker gates the canvas; it shows before the world mounts.

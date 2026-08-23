@@ -56,9 +56,10 @@ defmodule RetroHexChatWeb.ChatTabFocusTest do
     submit_command_sync(view, "/join #{channel_a}")
     html = submit_command_sync(view, "/join #{channel_b}")
 
-    # Three channels joined, one tab: joining activates the channel it joined.
+    # Three channels joined, one conversation tab: joining activates the channel
+    # it joined. Space rides along as that conversation's other view.
     assert assigns(view).session.channels == ["#lobby", channel_a, channel_b]
-    assert tab_labels(html) == ["Status", channel_b]
+    assert tab_labels(html) == ["Status", channel_b, "Space"]
   end
 
   test "switching replaces the focused tab instead of accumulating one", %{conn: conn} do
@@ -66,11 +67,11 @@ defmodule RetroHexChatWeb.ChatTabFocusTest do
     {:ok, view, _html} = live(chat_conn(conn, "Swap#{uid()}"), "/chat")
 
     submit_command_sync(view, "/join #{channel_a}")
-    assert tab_labels(render(view)) == ["Status", channel_a]
+    assert tab_labels(render(view)) == ["Status", channel_a, "Space"]
 
     html = render_click(view, "switch_channel", %{"channel" => "#lobby"})
 
-    assert tab_labels(html) == ["Status", "#lobby"]
+    assert tab_labels(html) == ["Status", "#lobby", "Space"]
     assert assigns(view).session.active_channel == "#lobby"
     # Still joined to both — leaving the screen is not leaving the channel.
     assert assigns(view).session.channels == ["#lobby", channel_a]
@@ -86,13 +87,13 @@ defmodule RetroHexChatWeb.ChatTabFocusTest do
     html = channel_activity(view, background, "Someone")
 
     # Out of sight: no tab of its own.
-    assert tab_labels(html) == ["Status", "#lobby"]
+    assert tab_labels(html) == ["Status", "#lobby", "Space"]
     # Still heard: the unread count the sidebar renders kept climbing.
     assert Map.get(assigns(view).unread_counts, background) == 1
 
     html = channel_activity(view, background, "Someone")
 
-    assert tab_labels(html) == ["Status", "#lobby"]
+    assert tab_labels(html) == ["Status", "#lobby", "Space"]
     assert Map.get(assigns(view).unread_counts, background) == 2
   end
 
@@ -101,12 +102,12 @@ defmodule RetroHexChatWeb.ChatTabFocusTest do
 
     html = pm_activity(view, "Bob")
 
-    assert tab_labels(html) == ["Status", "#lobby"]
+    assert tab_labels(html) == ["Status", "#lobby", "Space"]
     assert Map.get(assigns(view).unread_counts, "pm:Bob") == 1
 
     html = render_click(view, "switch_pm", %{"nickname" => "Bob"})
 
-    assert tab_labels(html) == ["Status", "Bob"]
+    assert tab_labels(html) == ["Status", "Bob", "Space"]
     # Focusing clears it: the tracker drops the key rather than zeroing it.
     assert Map.get(assigns(view).unread_counts, "pm:Bob", 0) == 0
   end
@@ -116,8 +117,9 @@ defmodule RetroHexChatWeb.ChatTabFocusTest do
 
     html = render_click(view, "switch_to_status", %{})
 
-    # Status takes the screen; the conversation keeps its tab so it can come back.
-    assert tab_labels(html) == ["Status", "#lobby"]
+    # Status takes the screen; the conversation and its space keep their tabs so
+    # they can come back. The tab set does not move under the pointer.
+    assert tab_labels(html) == ["Status", "#lobby", "Space"]
     assert assigns(view).show_status_tab
   end
 
@@ -131,6 +133,34 @@ defmodule RetroHexChatWeb.ChatTabFocusTest do
     html = render_click(view, "window_next")
 
     assert assigns(view).session.active_channel == "#lobby"
-    assert tab_labels(html) == ["Status", "#lobby"]
+    assert tab_labels(html) == ["Status", "#lobby", "Space"]
+  end
+
+  test "the space is a view of the conversation, and switching away leaves it", %{conn: conn} do
+    channel_a = "#sp#{uid()}a"
+    {:ok, view, _html} = live(chat_conn(conn, "Sp#{uid()}"), "/chat")
+
+    submit_command_sync(view, "/join #{channel_a}")
+    render_click(view, "switch_tab", %{"type" => "space", "label" => "Space"})
+    assert assigns(view).channel_view == :space
+
+    # Reading another conversation always lands on its chat: nobody wants to
+    # arrive in a map they did not ask for.
+    render_click(view, "switch_channel", %{"channel" => "#lobby"})
+
+    assert assigns(view).channel_view == :chat
+    assert assigns(view).session.active_channel == "#lobby"
+  end
+
+  test "picking a view uncovers the conversation from Status", %{conn: conn} do
+    {:ok, view, _html} = live(chat_conn(conn, "Unc#{uid()}"), "/chat")
+
+    render_click(view, "switch_to_status", %{})
+    assert assigns(view).show_status_tab
+
+    render_click(view, "switch_tab", %{"type" => "space", "label" => "Space"})
+
+    refute assigns(view).show_status_tab
+    assert assigns(view).channel_view == :space
   end
 end

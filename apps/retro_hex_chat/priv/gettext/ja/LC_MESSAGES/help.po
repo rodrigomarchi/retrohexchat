@@ -4653,16 +4653,6 @@ msgstr "メッセージの添付ファイル"
 msgid "Message Formats"
 msgstr "メッセージ形式"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:104
-#, elixir-autogen, elixir-format
-msgid "On a phone the desktop stacks: one window fills the screen at a time and the taskbar switches between them — the same strip of window buttons as on a desktop, squeezed to fit and scrolled when crowded. The conversations and user list keep no column of their own there: the first two buttons of the conversation toolbar slide each one open over the chat, so every message and the message box run the full width of the screen. The Start menu opens one level at a time: tapping a group replaces the list with its entries, and the group's own row at the top takes you back."
-msgstr ""
-"電話でデスクトップのスタック: 1つのウィンドウは、画面を時間とタスクバーのスイッチで埋めます - "
-"ウィンドウのボタンの同じストリップは、デスクトップにフィットし、混雑したときにスクロールするように絞られます。 "
-"会話とユーザー一覧はそこでは専用の列を持ちません。会話ツールバーの最初の 2 "
-"つのボタンがそれぞれをチャットの上に開くので、すべてのメッセージと入力欄が画面の幅いっぱいに広がります。 "
-"[スタート]メニューは、一度に1つのレベルを開きます。グループをタップすると、リストをエントリに置き換え、トップのグループ独自の行が戻ってきます。"
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:183
 #, elixir-autogen, elixir-format
 msgid "attachments"
@@ -4875,11 +4865,6 @@ msgstr "デスクトップのビューポートでは、壁紙のアプリフォ
 msgid "The entries are grouped one level deep, and the menu carries everything the app can do: anything a menu bar offers is offered here too. View acts on the window in front of you; Tools holds the address book, lists, channel windows and the display settings; Automation holds Perform, Auto-Join, aliases, custom menus and timers; P2P comes alive with a peer session; Games holds Retro Games and the Arcade; Account holds identity and profile tools; Admin and System appear only inside the chat for admins; Windows reopens a window of the screen you are on; Navigate reaches the public pages, the documentation and the app; Language switches locale; Help holds the topics, the cheatsheet and About. Disconnect sits alone at the bottom."
 msgstr "項目は 1 階層でグループ分けされ、メニューにはアプリにできることがすべて載っています。メニューバーにあるものはここにもあります。View は目の前のウィンドウに作用します。Tools にはアドレス帳、各種リスト、チャンネルウィンドウ、表示設定があります。Automation には Perform、Auto-Join、エイリアス、カスタムメニュー、タイマーがあります。P2P はピアセッションがあると使えるようになります。Games には Retro Games とアーケードがあります。Account には ID とプロフィールのツールがあります。Admin と System は、チャット内で管理者の場合にのみ表示されます。Windows は、いまいる画面のウィンドウを開き直します。Navigate は公開ページ、ドキュメント、アプリへ移動します。Language は言語を切り替えます。Help にはトピック、チートシート、バージョン情報があります。切断だけが最下部に単独で置かれています。"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:216
-#, elixir-autogen, elixir-format
-msgid "Switch between Status and the one conversation on screen. Everything else is switched from the sidebar."
-msgstr "ステータスと、画面にある 1 つの会話を切り替えます。それ以外はサイドバーから切り替えます。"
-
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:197
 #, elixir-autogen, elixir-format
 msgid "Switch between every joined channel and private conversation, and watch unread pile up on the ones you are not reading."
@@ -4889,3 +4874,13 @@ msgstr "参加中のすべてのチャンネルとプライベートな会話を
 #, elixir-autogen, elixir-format
 msgid "one conversation at a time"
 msgstr "一度に 1 つの会話"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:104
+#, elixir-autogen, elixir-format
+msgid "On a phone the desktop stacks: one window fills the screen at a time and the taskbar switches between them — the same strip of window buttons as on a desktop, squeezed to fit and scrolled when crowded. The conversations and user list keep no column of their own there: the first two buttons beside the tabs slide each one open over the chat, so every message and the message box run the full width of the screen. The Start menu opens one level at a time: tapping a group replaces the list with its entries, and the group's own row at the top takes you back."
+msgstr "スマートフォンではデスクトップが積み重なります。一度に 1 つのウィンドウが画面を占め、タスクバーがそれらを切り替えます。デスクトップと同じウィンドウボタンの帯が、収まるように詰められ、混み合えばスクロールします。会話一覧とユーザー一覧はそこでは自前の列を持ちません。タブの隣にある最初の 2 つのボタンが、それぞれをチャットの上にスライドして開くので、すべてのメッセージとメッセージ入力欄が画面の幅いっぱいを使えます。スタートメニューは 1 階層ずつ開きます。グループをタップすると一覧がその項目に置き換わり、上部にあるグループ自身の行で戻れます。"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:216
+#, elixir-autogen, elixir-format
+msgid "Switch between Status, the conversation on screen and its Space. Everything else is switched from the sidebar."
+msgstr "ステータス、画面にある会話、そしてその会話のスペースを切り替えます。それ以外はサイドバーから切り替えます。"

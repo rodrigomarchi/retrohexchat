@@ -168,7 +168,7 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
   test("reaches the sidebars from the toolbar and keeps composer touch-sized", async ({
     page,
   }) => {
-    await signedInUser(page, "mctrl");
+    const { chat } = await signedInUser(page, "mctrl");
 
     const conversationsToggle = page.getByTestId(
       "conversation-toolbar-conversations",
@@ -178,7 +178,6 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     );
     const nicklistToggle = page.getByTestId("conversation-toolbar-nicklist");
     const nicklistCollapseButton = page.getByTestId("nicklist-collapse-toggle");
-    const searchButton = page.getByTestId("conversation-toolbar-search");
     const conversationsRail = page.getByTestId("conversations-rail");
     const nicklistRail = page.getByTestId("nicklist-rail");
     const conversations = page.getByTestId("conversations");
@@ -188,7 +187,11 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
 
     await expect(conversationsToggle).toBeVisible();
     await expect(nicklistToggle).toBeVisible();
-    await expect(searchButton).toBeVisible();
+    // Find is reached from the menu bar on every viewport — the strip carries
+    // no button for it.
+    await expect(page.getByTestId("conversation-toolbar-search")).toHaveCount(
+      0,
+    );
     await expect(conversationsCollapseButton).toBeHidden();
     await expect(nicklistCollapseButton).toBeHidden();
     await expect(conversations).toBeHidden();
@@ -248,7 +251,7 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     await expect(nicklist).toBeVisible();
     await expect(nicklistCollapseButton).toBeVisible();
 
-    await searchButton.click();
+    await chat.openSearchFromEditMenu();
     await expect(searchBar).toBeVisible();
     await expect(nicklist).toBeHidden();
 

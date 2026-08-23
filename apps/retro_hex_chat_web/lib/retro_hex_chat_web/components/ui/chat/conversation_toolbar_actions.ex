@@ -1,11 +1,18 @@
 defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
   @moduledoc """
-  Primary chat-surface actions shared by desktop and stacked layouts.
+  Conversation actions that ride at the end of the tab strip.
 
-  These controls belong to the conversation toolbar, not to the IRC tab strip:
-  they toggle the conversations sidebar, the nicklist sidebar and the in-chat
-  search panel, then expose one context action for the active conversation. The
-  parent owns the visible state and passes it in so the buttons can expose a
+  What is left here opens something beside the conversation — a drawer, a
+  dialog — rather than switching what the conversation region shows. Anything
+  that switches that region is a tab. Find is not here at all: it lives in the
+  menu bar, the Start menu and Ctrl+Shift+F, and a fourth entry point cost a
+  button without buying reach.
+
+  Each one carries its label in the open. They sit in the same strip as the
+  tabs, at the same text size, so an icon alone would read as decoration next
+  to three labelled tabs.
+
+  The parent owns the visible state and passes it in so the buttons can expose a
   pressed state consistently on desktop and mobile.
 
   The two sidebar toggles sit in their own cluster so a layout can scope them to
@@ -19,7 +26,6 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
 
   attr :conversations_open, :boolean, default: false
   attr :nicklist_open, :boolean, default: false
-  attr :search_open, :boolean, default: false
   attr :show_sidebar_toggles, :boolean, default: true
   attr :sidebar_toggles_class, :any, default: nil
   attr :active_channel, :string, default: nil
@@ -51,6 +57,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
         <.action_button
           event="toggle_conversations"
           active={@conversations_open}
+          text={dgettext("chat", "Conversations")}
           label={dgettext("chat", "Show conversations")}
           testid="conversation-toolbar-conversations"
         >
@@ -59,23 +66,15 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
         <.action_button
           event="toggle_nicklist"
           active={@nicklist_open}
+          text={dgettext("chat", "Users")}
           label={dgettext("chat", "Show nicklist")}
           testid="conversation-toolbar-nicklist"
         >
           <Icons.icon_toolbar_toggle_nicklist class="h-4 w-4" />
         </.action_button>
       </div>
-      <.action_button
-        event="toggle_search"
-        active={@search_open}
-        label={dgettext("chat", "Find in chat")}
-        testid="conversation-toolbar-search"
-      >
-        <Icons.icon_toolbar_find class="h-4 w-4" />
-      </.action_button>
-
       <span
-        :if={@show_channel_context || @show_pm_context}
+        :if={@show_sidebar_toggles && (@show_channel_context || @show_pm_context)}
         class="conversation-toolbar-separator"
         aria-hidden="true"
         data-testid="conversation-toolbar-context-separator"
@@ -85,6 +84,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
         :if={@show_channel_context}
         event="open_channel_central"
         active={false}
+        text={dgettext("chat", "Channel Central")}
         label={dgettext("chat", "Channel settings")}
         testid="conversation-toolbar-channel-central"
       >
@@ -95,6 +95,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
         :if={@show_pm_context}
         event="open_user_lookup"
         active={false}
+        text={dgettext("chat", "User Lookup")}
         label={dgettext("chat", "User lookup")}
         testid="conversation-toolbar-user-lookup"
         phx-value-nickname={@active_pm}
@@ -107,7 +108,8 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
 
   attr :event, :string, required: true
   attr :active, :boolean, default: false
-  attr :label, :string, required: true
+  attr :text, :string, required: true, doc: "Visible label — also the accessible name"
+  attr :label, :string, required: true, doc: "Longer description for the tooltip"
   attr :testid, :string, required: true
   attr :rest, :global
   slot :inner_block, required: true
@@ -117,19 +119,19 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
     <button
       type="button"
       class={[
-        "conversation-toolbar-button bg-surface inline-flex shrink-0 items-center justify-center p-0",
+        "conversation-toolbar-button bg-surface inline-flex shrink-0 items-center justify-center",
         "focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-black",
         "active:shadow-retro-sunken",
         if(@active, do: "shadow-retro-sunken bg-hover-bg", else: "shadow-retro-raised")
       ]}
       phx-click={@event}
       title={@label}
-      aria-label={@label}
       aria-pressed={to_string(@active)}
       data-testid={@testid}
       {@rest}
     >
       {render_slot(@inner_block)}
+      <span class="conversation-toolbar-button__text">{@text}</span>
     </button>
     """
   end

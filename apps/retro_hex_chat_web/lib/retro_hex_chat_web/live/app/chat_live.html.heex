@@ -128,61 +128,6 @@
               p2p_pm_session_for_active_pm(@p2p_pm_sessions, @session.active_pm) ||
               p2p_idle_session_for_active_pm(@session) %>
 
-          <%!-- Conversation toolbar: sidebar/search actions + chat/space/call/P2P controls. --%>
-          <div
-            class="conversation-toolbar flex shrink-0 items-center gap-px overflow-x-auto border-b border-border bg-surface px-1 py-[2px]"
-            role="toolbar"
-            aria-label={dgettext("chat", "Conversation toolbar")}
-            data-testid="conversation-toolbar"
-          >
-            <%!-- The sidebar toggles are the stacked layout's rails: below md the
-                 collapsed shells give their 36px back to the conversation and the
-                 composer, so this is the only way back into them. --%>
-            <.conversation_toolbar_actions
-              sidebar_toggles_class="md:hidden"
-              conversations_open={@show_conversations}
-              nicklist_open={@show_nicklist && !@session.active_pm && !@show_status_tab}
-              search_open={@search_visible}
-              active_channel={@session.active_channel}
-              active_pm={@session.active_pm}
-              show_status_tab={@show_status_tab}
-            />
-
-            <div
-              :if={conversation_space}
-              class="conversation-toolbar-separator"
-              aria-hidden="true"
-              data-testid="conversation-toolbar-separator"
-            />
-
-            <.channel_view_switcher
-              :if={conversation_space}
-              channel_view={@channel_view}
-              active_channel={@session.active_channel}
-              show_status_tab={@show_status_tab}
-              call_active={
-                channel_group_call_active?(@group_call_channels, @session.active_channel)
-              }
-              call_current={
-                (@group_call && @group_call.channel_name == @session.active_channel) == true
-              }
-              call_summary={
-                channel_group_call_summary(
-                  @group_call_channel_summaries,
-                  @group_call,
-                  @session.active_channel
-                )
-              }
-              identified={@session.identified}
-            />
-            <.p2p_peer_entry
-              :if={p2p_pm_session}
-              peer={@session.active_pm}
-              session={p2p_pm_session}
-              current={true}
-            />
-          </div>
-
           <%!-- Topic bar --%>
           <.topic_bar
             topic={@current_topic || ""}
@@ -335,9 +280,10 @@
             timezone={@timezone}
           />
 
-          <%!-- Tab bar: Status and the conversation in focus, nothing else. It
-               closes the chat area from below, next to the composer it switches
-               against. Every other conversation lives in the sidebar. --%>
+          <%!-- Tab bar: Status, the conversation in focus and its space — the
+               three things that can occupy the conversation region — plus the
+               controls that open something beside it. Every other conversation
+               lives in the sidebar; Find lives in the menu bar. --%>
           <.chat_tabs
             class="shrink-0 min-w-0"
             unread_counts={@unread_counts}
@@ -345,6 +291,8 @@
             show_status_tab={@show_status_tab}
             active_channel={@session.active_channel}
             active_pm={@session.active_pm}
+            channel_view={@channel_view}
+            has_space={conversation_space(@session, false) != nil}
             nick_color_fn={@nick_color_fn}
             p2p_peer={if @p2p_session, do: @p2p_session.peer_nick}
             p2p_state={if @p2p_session, do: @p2p_session.state}
@@ -352,7 +300,43 @@
             p2p_pm_sessions={@p2p_pm_sessions}
             group_call_channels={@group_call_channels}
             group_call_summaries={@group_call_channel_summaries}
-          />
+          >
+            <:actions>
+              <%!-- The sidebar toggles are the stacked layout's rails: below md the
+                   collapsed shells give their 36px back to the conversation and the
+                   composer, so this is the only way back into them. --%>
+              <.conversation_toolbar_actions
+                sidebar_toggles_class="md:hidden"
+                conversations_open={@show_conversations}
+                nicklist_open={@show_nicklist && !@session.active_pm && !@show_status_tab}
+                active_channel={@session.active_channel}
+                active_pm={@session.active_pm}
+                show_status_tab={@show_status_tab}
+              />
+              <.group_call_channel_entry
+                :if={@session.active_channel && !@show_status_tab}
+                channel={@session.active_channel}
+                active={channel_group_call_active?(@group_call_channels, @session.active_channel)}
+                current={
+                  (@group_call && @group_call.channel_name == @session.active_channel) == true
+                }
+                identified={@session.identified}
+                summary={
+                  channel_group_call_summary(
+                    @group_call_channel_summaries,
+                    @group_call,
+                    @session.active_channel
+                  )
+                }
+              />
+              <.p2p_peer_entry
+                :if={p2p_pm_session}
+                peer={@session.active_pm}
+                session={p2p_pm_session}
+                current={true}
+              />
+            </:actions>
+          </.chat_tabs>
         </div>
       </div>
     </.desktop_window>

@@ -14,10 +14,16 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
   Bottom-anchored, like HexChat's "tabs location: bottom": the strip sits under
   the content it switches, so its border and the active tab's open edge both
   face up.
+
+  The `actions` slot takes the conversation's controls — the ones that open a
+  window, a dialog or a drawer rather than switching the view. They sit right
+  after the last tab, so the conversation owns one row of chrome instead of two
+  and its controls stay next to what they act on.
   """
   attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
+  slot :actions
 
   @spec irc_tab_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def irc_tab_bar(assigns) do
@@ -25,14 +31,24 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
     <div
       class={
         classes([
-          "flex gap-0 px-1 pb-[2px] bg-surface border-t border-border items-start overflow-x-auto",
+          "flex gap-0 px-1 pb-[2px] bg-surface border-t border-border items-start",
           @class
         ])
       }
-      role="tablist"
       {@rest}
     >
-      {render_slot(@inner_block)}
+      <div class="flex min-w-0 items-start gap-0 overflow-x-auto" role="tablist">
+        {render_slot(@inner_block)}
+      </div>
+      <div
+        :if={@actions != []}
+        class="flex shrink-0 items-center gap-1 self-center pl-2"
+        role="toolbar"
+        aria-label={dgettext("chat", "Conversation actions")}
+        data-testid="conversation-toolbar"
+      >
+        {render_slot(@actions)}
+      </div>
     </div>
     """
   end
@@ -40,7 +56,7 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
   @doc "Renders an individual IRC tab item."
   attr :active, :boolean, default: false
   attr :unread, :boolean, default: false
-  attr :type, :string, values: ~w(channel pm status), default: "channel"
+  attr :type, :string, values: ~w(channel pm status space), default: "channel"
   attr :label, :string, required: true
   attr :closeable, :boolean, default: true
   attr :nick_color, :string, default: nil, doc: "CSS class for nick coloring (PM tabs)"
@@ -151,5 +167,9 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
 
   defp type_icon(%{type: "status"} = assigns) do
     ~H'<Icons.icon_tab_status class="w-[16px] h-[16px]" />'
+  end
+
+  defp type_icon(%{type: "space"} = assigns) do
+    ~H'<Icons.icon_toolbar_community class="w-[16px] h-[16px]" />'
   end
 end

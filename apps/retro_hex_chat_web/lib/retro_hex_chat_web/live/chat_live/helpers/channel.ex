@@ -79,7 +79,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     |> assign(
       session: new_session,
       loading_channel: channel_name,
-      show_status_tab: false
+      show_status_tab: false,
+      channel_view: :chat,
+      space_avatar: nil
     )
     |> ConversationsReadModel.touch_channel_activity(channel_name)
     |> GroupCallEvents.refresh_channel_call_state(channel_name)

@@ -97,6 +97,8 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
        highlight_channels: highlight,
        flash_channels: flash,
        show_status_tab: false,
+       channel_view: :chat,
+       space_avatar: nil,
        pm_typing_from: nil,
        pm_typing_timer: nil
      )
@@ -119,7 +121,12 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
       {:halt,
        socket
-       |> assign(session: new_session, show_status_tab: false)
+       |> assign(
+         session: new_session,
+         show_status_tab: false,
+         channel_view: :chat,
+         space_avatar: nil
+       )
        |> load_channel_users(channel)
        |> load_channel_messages_with_pagination(channel)
        |> push_reconnect_state()}
@@ -154,6 +161,8 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
        current_topic: nil,
        current_modes: nil,
        show_status_tab: false,
+       channel_view: :chat,
+       space_avatar: nil,
        pm_typing_from: nil,
        pm_typing_timer: nil
      )

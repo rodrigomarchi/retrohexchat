@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
   use RetroHexChatWeb.ConnCase, async: true
 
+  import Phoenix.Component, only: [sigil_H: 2]
   import Phoenix.LiveViewTest
 
   alias RetroHexChatWeb.ChatLive.Components.ChatTabs
@@ -16,6 +17,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
           show_status_tab: false,
           active_channel: nil,
           active_pm: nil,
+          channel_view: :chat,
+          has_space: false,
           nick_color_fn: fn _nick -> "nick-color-1" end
         },
         overrides
@@ -73,6 +76,81 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
     assert tab_labels(covered) == ["Status", "#lobby"]
     assert selection(covered) == [{"Status", "true"}, {"#lobby", "false"}]
     assert selection(focused) == [{"Status", "false"}, {"#lobby", "true"}]
+  end
+
+  test "the space rides as a third tab when the conversation has one" do
+    html = tabs(%{active_channel: "#lobby", has_space: true})
+
+    assert tab_labels(html) == ["Status", "#lobby", "Space"]
+  end
+
+  test "no space tab when the conversation has no space" do
+    html = tabs(%{active_channel: "#lobby", has_space: false})
+
+    assert tab_labels(html) == ["Status", "#lobby"]
+  end
+
+  test "the space view takes selection from the conversation tab" do
+    chat = tabs(%{active_channel: "#lobby", has_space: true, channel_view: :chat})
+    space = tabs(%{active_channel: "#lobby", has_space: true, channel_view: :space})
+
+    assert selection(chat) == [{"Status", "false"}, {"#lobby", "true"}, {"Space", "false"}]
+    assert selection(space) == [{"Status", "false"}, {"#lobby", "false"}, {"Space", "true"}]
+  end
+
+  test "status covers the space view too, and the space tab is never closeable" do
+    html =
+      tabs(%{
+        active_channel: "#lobby",
+        has_space: true,
+        channel_view: :space,
+        show_status_tab: true
+      })
+
+    assert selection(html) == [{"Status", "true"}, {"#lobby", "false"}, {"Space", "false"}]
+
+    space =
+      html
+      |> Floki.parse_document!()
+      |> Floki.find(~s([role="tab"][phx-value-type="space"]))
+
+    assert Floki.find(space, ~s(button[phx-click="close_tab"])) == []
+  end
+
+  test "a PM carries a space tab as well" do
+    html = tabs(%{active_pm: "bob", has_space: true})
+
+    assert tab_labels(html) == ["Status", "bob", "Space"]
+  end
+
+  test "the actions slot renders beside the tabs, outside the tablist" do
+    assigns = %{
+      unread_counts: %{},
+      status_unread: false,
+      show_status_tab: false,
+      active_channel: "#lobby",
+      active_pm: nil,
+      channel_view: :chat,
+      has_space: false,
+      nick_color_fn: fn _nick -> "nick-color-1" end
+    }
+
+    html =
+      render_component(
+        fn assigns ->
+          ~H"""
+          <ChatTabs.chat_tabs {assigns}>
+            <:actions><button data-testid="probe-action">x</button></:actions>
+          </ChatTabs.chat_tabs>
+          """
+        end,
+        assigns
+      )
+
+    doc = Floki.parse_document!(html)
+
+    assert [_] = Floki.find(doc, ~s([data-testid="tab-bar"] [data-testid="probe-action"]))
+    assert Floki.find(doc, ~s([role="tablist"] [data-testid="probe-action"])) == []
   end
 
   test "marks the focused channel unread when its count is positive" do

@@ -6,19 +6,49 @@ defmodule RetroHexChatWeb.Components.UI.Chat.ConversationToolbarActionsTest do
 
   @moduletag :unit
 
-  test "renders the three chat controls wired to their toggle events" do
+  test "renders the sidebar toggles wired to their events" do
     html = render_component(&conversation_toolbar_actions/1, %{})
 
     doc = Floki.parse_document!(html)
 
     for {testid, event} <- [
           {"conversation-toolbar-conversations", "toggle_conversations"},
-          {"conversation-toolbar-nicklist", "toggle_nicklist"},
-          {"conversation-toolbar-search", "toggle_search"}
+          {"conversation-toolbar-nicklist", "toggle_nicklist"}
         ] do
       assert [button] = Floki.find(doc, ~s([data-testid="#{testid}"]))
       assert Floki.attribute(button, "phx-click") == [event]
     end
+  end
+
+  test "every control carries its label in the open, not just in a tooltip" do
+    html =
+      render_component(&conversation_toolbar_actions/1, %{active_channel: "#lobby"})
+
+    doc = Floki.parse_document!(html)
+
+    for {testid, text} <- [
+          {"conversation-toolbar-conversations", "Conversations"},
+          {"conversation-toolbar-nicklist", "Users"},
+          {"conversation-toolbar-channel-central", "Channel Central"}
+        ] do
+      assert [button] = Floki.find(doc, ~s([data-testid="#{testid}"]))
+      assert Floki.text(button) =~ text
+      # The visible text is the accessible name; the tooltip carries the longer
+      # description, so no aria-label competes with it.
+      assert Floki.attribute(button, "aria-label") == []
+      assert Floki.attribute(button, "title") != []
+    end
+  end
+
+  test "a PM shows the user-lookup label" do
+    html = render_component(&conversation_toolbar_actions/1, %{active_pm: "bob"})
+
+    assert [button] =
+             html
+             |> Floki.parse_document!()
+             |> Floki.find(~s([data-testid="conversation-toolbar-user-lookup"]))
+
+    assert Floki.text(button) =~ "User Lookup"
   end
 
   test "the action cluster is shared by desktop and stacked layouts" do
@@ -48,8 +78,8 @@ defmodule RetroHexChatWeb.Components.UI.Chat.ConversationToolbarActionsTest do
     end
 
     # Search stays outside the cluster — it is not a sidebar.
-    assert Floki.find(cluster, ~s([data-testid="conversation-toolbar-search"])) == []
-    assert [_search] = Floki.find(doc, ~s([data-testid="conversation-toolbar-search"]))
+    # Find lives in the menu bar, not here.
+    assert Floki.find(doc, ~s([data-testid="conversation-toolbar-search"])) == []
   end
 
   test "can omit sidebar toggles when the composed shell owns sidebar rails" do
@@ -58,23 +88,20 @@ defmodule RetroHexChatWeb.Components.UI.Chat.ConversationToolbarActionsTest do
 
     assert Floki.find(doc, ~s([data-testid="conversation-toolbar-conversations"])) == []
     assert Floki.find(doc, ~s([data-testid="conversation-toolbar-nicklist"])) == []
-    assert [_search] = Floki.find(doc, ~s([data-testid="conversation-toolbar-search"]))
   end
 
   test "visible state is reflected as pressed controls" do
     html =
       render_component(&conversation_toolbar_actions/1, %{
         conversations_open: true,
-        nicklist_open: true,
-        search_open: true
+        nicklist_open: true
       })
 
     doc = Floki.parse_document!(html)
 
     for testid <- [
           "conversation-toolbar-conversations",
-          "conversation-toolbar-nicklist",
-          "conversation-toolbar-search"
+          "conversation-toolbar-nicklist"
         ] do
       assert [button] = Floki.find(doc, ~s([data-testid="#{testid}"]))
       assert Floki.attribute(button, "aria-pressed") == ["true"]

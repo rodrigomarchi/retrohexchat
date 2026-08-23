@@ -312,9 +312,7 @@ async function runSpace(
   const page = user.page;
   try {
     await page
-      .locator(
-        '[data-testid="conversation-toolbar"] [data-testid="channel-view-switcher"] button[phx-value-view="space"]',
-      )
+      .locator('[data-testid="tab-bar"] [role="tab"][phx-value-type="space"]')
       .click();
     const picker = page.getByTestId("space-character-select");
     await expect(picker).toBeVisible();

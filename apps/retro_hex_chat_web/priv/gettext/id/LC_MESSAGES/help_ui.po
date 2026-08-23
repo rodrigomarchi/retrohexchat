@@ -210,7 +210,7 @@ msgstr "Menu Konteks"
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Conversations"
 msgstr "Percakapan"
@@ -388,7 +388,7 @@ msgstr "Input & Lengkapi Otomatis"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:123
-#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:219
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts"
@@ -592,7 +592,7 @@ msgstr "Seksi"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:113
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:209
 #: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:13
@@ -2864,7 +2864,7 @@ msgstr "Dari papan ketik, Ctrl+Shift+] dan Ctrl+Shift+[ berpindah di antara kana
 msgid "Reading something else does not leave the channel. A conversation you switch away from keeps receiving messages, keeps counting unread, and keeps flashing and playing its sound in the sidebar — you simply are not looking at it."
 msgstr "Membaca hal lain tidak membuat Anda keluar dari kanal. Percakapan yang Anda tinggalkan tetap menerima pesan, tetap menghitung yang belum dibaca, serta tetap berkedip dan membunyikan suaranya di bilah sisi — Anda hanya sedang tidak melihatnya."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Status Tab"
 msgstr "Tab Status"
@@ -2873,11 +2873,6 @@ msgstr "Tab Status"
 #, elixir-autogen, elixir-format
 msgid "Switching Conversations"
 msgstr "Berpindah percakapan"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The tab bar at the bottom of the chat area holds two tabs: Status, and the one conversation you are reading. It is a switch between those two, not a list of everything you have open."
-msgstr "Bilah tab di bawah area obrolan berisi dua tab: Status dan satu percakapan yang sedang Anda baca. Ia berpindah di antara keduanya, bukan mendaftar semua yang Anda buka."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:26
 #, elixir-autogen, elixir-format
@@ -2893,3 +2888,33 @@ msgstr "Gunakan bilah sisi percakapan di kiri untuk berpindah antara kanal dan p
 #, elixir-autogen, elixir-format
 msgid "Switching Away vs Leaving"
 msgstr "Berpindah bukan berarti keluar"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Buttons Beside the Tabs"
+msgstr "Tombol di samping tab"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Find is not one of them — it lives in Edit > Find, in the Start menu, and on Ctrl+Shift+F."
+msgstr "Cari bukan salah satunya — ia ada di Edit > Cari, di menu Mulai, dan pada Ctrl+Shift+F."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Space"
+msgstr "Space"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Space is a second view of the conversation you are already in, not a place of its own: the map replaces the messages and the message box keeps working. Switching to another conversation always lands you on its chat, so you never arrive in a map you did not ask for."
+msgstr "Space adalah tampilan kedua dari percakapan yang sedang Anda ikuti, bukan tempat tersendiri: peta menggantikan pesan dan kotak pesan tetap berfungsi. Berpindah ke percakapan lain selalu membawa Anda ke obrolannya, jadi Anda tidak pernah tiba di peta yang tidak Anda minta."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The tab bar at the bottom of the chat area holds the things that can occupy the conversation region: Status, the one conversation you are reading, and — when that conversation has one — its Space. It is a switch between those, not a list of everything you have open."
+msgstr "Bilah tab di bawah area obrolan memuat hal-hal yang dapat menempati area percakapan: Status, satu percakapan yang sedang Anda baca, dan — bila percakapan itu memilikinya — Space miliknya. Ia berpindah di antara itu, bukan mendaftar semua yang Anda buka."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "The controls next to the tabs open something beside the conversation rather than replacing it: channel settings, user lookup, the conference and the P2P session. Each carries its label, so you can read what it does. On a phone the first two also slide the conversations and user list open over the chat."
+msgstr "Kontrol di samping tab membuka sesuatu di sebelah percakapan alih-alih menggantikannya: pengaturan kanal, pencarian pengguna, konferensi, dan sesi P2P. Masing-masing membawa labelnya, jadi Anda bisa membaca apa fungsinya. Di ponsel, dua yang pertama juga menggeser daftar percakapan dan daftar pengguna di atas obrolan."

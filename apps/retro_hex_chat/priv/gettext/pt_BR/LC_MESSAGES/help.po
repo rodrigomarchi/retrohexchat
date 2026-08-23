@@ -5119,20 +5119,6 @@ msgstr "Anexos de mensagem"
 msgid "Message Formats"
 msgstr "Formatos de mensagem"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:104
-#, elixir-autogen, elixir-format
-msgid "On a phone the desktop stacks: one window fills the screen at a time and the taskbar switches between them — the same strip of window buttons as on a desktop, squeezed to fit and scrolled when crowded. The conversations and user list keep no column of their own there: the first two buttons of the conversation toolbar slide each one open over the chat, so every message and the message box run the full width of the screen. The Start menu opens one level at a time: tapping a group replaces the list with its entries, and the group's own row at the top takes you back."
-msgstr ""
-"Em um telefone as pilhas de desktop: uma janela preenche a tela de cada vez "
-"e a barra de tarefas muda entre eles — a mesma tira de botões de janela que "
-"em um desktop, espremido para caber e rolado quando lotado. As conversas e a"
-" lista de usuários não ficam com uma coluna própria ali: os dois primeiros "
-"botões da barra de ferramentas da conversa abrem cada uma delas sobre o "
-"chat, de modo que todas as mensagens e o campo de mensagem ocupam a largura "
-"inteira da tela. O menu Iniciar abre um nível de cada vez: tocar em um grupo"
-" substitui a lista por seus itens, e a própria linha do grupo no topo leva "
-"você de volta."
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:183
 #, elixir-autogen, elixir-format
 msgid "attachments"
@@ -5372,11 +5358,6 @@ msgstr "Em viewports de desktop, ícones de pasta no papel de parede expõem os 
 msgid "The entries are grouped one level deep, and the menu carries everything the app can do: anything a menu bar offers is offered here too. View acts on the window in front of you; Tools holds the address book, lists, channel windows and the display settings; Automation holds Perform, Auto-Join, aliases, custom menus and timers; P2P comes alive with a peer session; Games holds Retro Games and the Arcade; Account holds identity and profile tools; Admin and System appear only inside the chat for admins; Windows reopens a window of the screen you are on; Navigate reaches the public pages, the documentation and the app; Language switches locale; Help holds the topics, the cheatsheet and About. Disconnect sits alone at the bottom."
 msgstr "As entradas são agrupadas em um nível, e o menu carrega tudo o que o aplicativo faz: qualquer coisa que uma barra de menus ofereça também é oferecida aqui. View age sobre a janela à sua frente; Tools guarda o catálogo de endereços, as listas, as janelas de canal e as preferências de exibição; Automation guarda Perform, Auto-Join, aliases, menus personalizados e temporizadores; P2P ganha vida com uma sessão de par; Games guarda Retro Games e o Arcade; Account guarda ferramentas de identidade e perfil; Admin e System aparecem só dentro do chat, para administradores; Windows reabre uma janela da tela em que você está; Navigate alcança as páginas públicas, a documentação e o aplicativo; Language troca o idioma; Help guarda os tópicos, o guia rápido e o Sobre. Desconectar fica sozinho no rodapé."
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:216
-#, elixir-autogen, elixir-format
-msgid "Switch between Status and the one conversation on screen. Everything else is switched from the sidebar."
-msgstr "Alterne entre o Status e a única conversa na tela. Todo o resto se troca pela barra lateral."
-
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:197
 #, elixir-autogen, elixir-format
 msgid "Switch between every joined channel and private conversation, and watch unread pile up on the ones you are not reading."
@@ -5386,3 +5367,13 @@ msgstr "Alterne entre todos os canais em que você entrou e as conversas privada
 #, elixir-autogen, elixir-format
 msgid "one conversation at a time"
 msgstr "uma conversa por vez"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:104
+#, elixir-autogen, elixir-format
+msgid "On a phone the desktop stacks: one window fills the screen at a time and the taskbar switches between them — the same strip of window buttons as on a desktop, squeezed to fit and scrolled when crowded. The conversations and user list keep no column of their own there: the first two buttons beside the tabs slide each one open over the chat, so every message and the message box run the full width of the screen. The Start menu opens one level at a time: tapping a group replaces the list with its entries, and the group's own row at the top takes you back."
+msgstr "No telefone a área de trabalho se empilha: uma janela preenche a tela por vez e a barra de tarefas alterna entre elas — a mesma tira de botões de janela do desktop, espremida para caber e rolável quando lotada. As conversas e a lista de usuários não têm coluna própria ali: os dois primeiros botões ao lado das abas deslizam cada uma por cima do chat, de modo que toda mensagem e a caixa de mensagem ocupam a largura inteira da tela. O menu Iniciar abre um nível por vez: tocar num grupo substitui a lista pelas entradas dele, e a linha do próprio grupo no topo leva você de volta."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:216
+#, elixir-autogen, elixir-format
+msgid "Switch between Status, the conversation on screen and its Space. Everything else is switched from the sidebar."
+msgstr "Alterne entre o Status, a conversa na tela e o Space dela. Todo o resto se troca pela barra lateral."

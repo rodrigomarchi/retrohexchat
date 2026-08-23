@@ -89,6 +89,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     |> assign(
       session: new_session,
       show_status_tab: false,
+      channel_view: :chat,
+      space_avatar: nil,
       unread_counts: UnreadTracker.reset(socket.assigns.unread_counts, key),
       flash_channels: MapSet.delete(socket.assigns.flash_channels, key)
     )

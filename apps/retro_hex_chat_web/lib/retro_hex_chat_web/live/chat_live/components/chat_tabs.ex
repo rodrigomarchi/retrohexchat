@@ -14,6 +14,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
   bound to join/part, so a backgrounded conversation keeps arriving and keeps
   notifying in the sidebar.
 
+  Space rides here as a third tab because it is what it always was: a second
+  view of the focused conversation, rendered into the same region the messages
+  occupy. It used to be a pair of toolbar buttons, one of which — "Chat" — the
+  conversation tab already means.
+
   Function component (no local state). `switch_tab`/`close_tab` stay parent
   adapters (`navigation_events`), carried as attr defaults so the legacy event
   contract is preserved.
@@ -28,9 +33,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
   attr :show_status_tab, :boolean, default: false
   attr :active_channel, :string, default: nil
   attr :active_pm, :string, default: nil
+  attr :channel_view, :atom, default: :chat, doc: "Which view of the conversation is on screen"
+
+  attr :has_space, :boolean,
+    default: false,
+    doc: "Whether the focused conversation has a space to switch to"
+
   attr :nick_color_fn, :any, required: true, doc: "nick -> CSS color class (PM tab)"
   attr :on_switch, :any, default: "switch_tab"
   attr :on_close, :any, default: "close_tab"
+  slot :actions
 
   attr :p2p_peer, :string,
     default: nil,
@@ -78,16 +90,41 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
         on_click={@on_switch}
         on_close={@on_close}
       />
+      <:actions :if={@actions != []}>{render_slot(@actions)}</:actions>
     </.irc_tab_bar>
     """
   end
 
-  # Status plus at most one conversation. A session with nothing joined and no
-  # PM open renders the Status tab alone.
+  # Status, at most one conversation, and that conversation's space. A session
+  # with nothing joined and no PM open renders the Status tab alone.
   @spec build_tabs(map()) :: [map()]
   defp build_tabs(assigns) do
-    [status_tab(assigns) | focused_tab(assigns)]
+    [status_tab(assigns) | focused_tab(assigns)] ++ space_tab(assigns)
   end
+
+  # The space stays on the bar while Status is showing, exactly as the
+  # conversation tab does: which tabs exist follows what is in focus, not which
+  # of them you are currently looking at. A bar whose tabs come and go as you
+  # glance at Status would be a moving target.
+  defp space_tab(%{has_space: true} = assigns) do
+    [
+      %{
+        type: "space",
+        label: dgettext("chat", "Space"),
+        active: !assigns.show_status_tab && assigns.channel_view == :space,
+        unread: false,
+        closeable: false,
+        nick_color: nil,
+        p2p: false,
+        p2p_state: nil,
+        p2p_session: nil,
+        group_call: false,
+        group_call_summary: nil
+      }
+    ]
+  end
+
+  defp space_tab(_assigns), do: []
 
   defp status_tab(assigns) do
     %{
@@ -118,7 +155,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
     %{
       type: "channel",
       label: channel,
-      active: !assigns.show_status_tab,
+      active: chat_view_active?(assigns),
       unread: Map.get(assigns.unread_counts, channel, 0) > 0,
       closeable: true,
       nick_color: nil,
@@ -137,7 +174,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
     %{
       type: "pm",
       label: pm,
-      active: !assigns.show_status_tab,
+      active: chat_view_active?(assigns),
       unread: Map.get(assigns.unread_counts, "pm:#{pm}", 0) > 0,
       closeable: true,
       nick_color: assigns.nick_color_fn.(pm),
@@ -147,6 +184,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
       group_call: false,
       group_call_summary: nil
     }
+  end
+
+  defp chat_view_active?(assigns) do
+    !assigns.show_status_tab && assigns.channel_view != :space
   end
 
   # `focused_tab/1` only builds a tab for a binary name, so no nil clause here.

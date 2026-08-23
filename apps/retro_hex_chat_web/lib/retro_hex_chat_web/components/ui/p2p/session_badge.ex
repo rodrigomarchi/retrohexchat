@@ -37,12 +37,11 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         phx-value-peer={@primary_peer}
         phx-value-token={@primary_token}
         class={[
-          "conversation-toolbar-button relative flex shrink-0 items-center justify-center p-0 shadow-retro-raised bg-surface text-xs",
+          "conversation-toolbar-button relative flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs",
           "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
           @current && "bg-canvas font-bold shadow-retro-sunken",
           status_class(@status)
         ]}
-        aria-label={dgettext("p2p", "P2P Session")}
         title={@title}
         aria-pressed={to_string(@current)}
         data-testid="p2p-peer-entry"
@@ -52,6 +51,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         data-p2p-facets={facets_value(@facets)}
       >
         <Icons.icon_toolbar_p2p class="h-3.5 w-3.5 shrink-0" />
+        <span class="conversation-toolbar-button__text">
+          {dgettext("p2p", "P2P Session")}
+        </span>
         <span
           class={[
             "absolute bottom-0.5 right-0.5 h-1.5 w-1.5 border border-border",

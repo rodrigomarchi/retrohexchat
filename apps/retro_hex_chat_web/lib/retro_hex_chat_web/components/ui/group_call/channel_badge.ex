@@ -28,13 +28,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
         type="button"
         phx-click={@on_open}
         class={[
-          "conversation-toolbar-button flex shrink-0 items-center justify-center p-0 shadow-retro-raised bg-surface text-xs",
+          "conversation-toolbar-button flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs",
           "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
           @current && "bg-canvas font-bold shadow-retro-sunken",
           active_state_class(@active, @state),
           !@identified && "opacity-60"
         ]}
-        aria-label={dgettext("group_call", "Group Call")}
         title={open_title(@identified)}
         aria-pressed={to_string(@current)}
         disabled={!@identified}
@@ -46,6 +45,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
         data-started-at={active_value(@active, started_at_value(@started_at))}
       >
         <Icons.icon_toolbar_conference class="h-3.5 w-3.5 shrink-0" />
+        <span class="conversation-toolbar-button__text">
+          {dgettext("group_call", "Group Call")}
+        </span>
         <span
           :if={@active}
           class={[

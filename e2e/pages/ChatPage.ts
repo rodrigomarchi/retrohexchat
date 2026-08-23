@@ -765,6 +765,19 @@ export class ChatPage {
     return this.page.getByRole("tab", { name, exact: false });
   }
 
+  // Space is a tab, not a toolbar button: it is a second view of the focused
+  // conversation, rendered into the region the messages occupy.
+  get spaceTab(): Locator {
+    return this.page.locator(
+      '[data-testid="tab-bar"] [role="tab"][phx-value-type="space"]',
+    );
+  }
+
+  async switchToSpace() {
+    await this.spaceTab.click();
+    await expect(this.spaceTab).toHaveAttribute("aria-selected", "true");
+  }
+
   // The sidebar row for a conversation — the switcher that does carry every
   // joined channel and every PM, and where unread badges live.
   conversationRow(name: string): Locator {
