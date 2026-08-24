@@ -19,6 +19,11 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
   window, a dialog or a drawer rather than switching the view. They sit right
   after the last tab, so the conversation owns one row of chrome instead of two
   and its controls stay next to what they act on.
+
+  A phone cannot afford both halves of every control. Below the stacking
+  breakpoint the stylesheet drops the tabs' icons and the buttons' labels, which
+  keeps every one of them on screen: a tab is named by its label and a button is
+  named by its glyph, so each keeps the half that identifies it.
   """
   attr :class, :any, default: nil
   attr :rest, :global
@@ -102,7 +107,7 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
       }
       {@rest}
     >
-      <span class="w-4 h-4 flex-shrink-0 inline-flex items-center justify-center">
+      <span class="irc-tab__icon w-4 h-4 flex-shrink-0 inline-flex items-center justify-center">
         {type_icon(assigns)}
       </span>
       <%!-- A PM tab keeps its nick colour while selected. The bar holds one

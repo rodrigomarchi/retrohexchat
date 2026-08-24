@@ -2,6 +2,7 @@
  * @section MB - Mobile & Touch
  * @flow MB1 [done] The phone desktop shows one fullscreen window at a time, switched via the taskbar
  * @flow MB2 [done] Sidebars are reachable from the toolbar and the composer stays touch-sized
+ * @flow MB10 [done] Every tab and control fits the phone's tab strip without clipping
  * @flow MB3 [done] The Start menu drills one level at a time
  * @flow MB4 [done] The mobile taskbar collapses while the virtual keyboard is open
  *
@@ -242,6 +243,30 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     expect(hitsTabBar).toBe(true);
     await shot(page, "mobile-sidebar-over-tab-strip");
 
+    // The strip carries the tabs and the conversation's controls in one row on
+    // a screen that barely fits them. The tabs are the navigation and must
+    // never be the half that gets squeezed: when the row runs out of width the
+    // controls scroll, and the tablist collapsing to zero — which once made
+    // every tab vanish on a phone — is the failure this guards.
+    const strip = page.getByTestId("tab-bar");
+    const tablist = strip.locator('[role="tablist"]');
+    await expect(tablist).toBeVisible();
+    for (const label of ["Status", "#lobby", "Space"]) {
+      await expect(strip.getByRole("tab", { name: label })).toBeVisible();
+    }
+    const fit = await page.evaluate(() => {
+      const el = document.querySelector('[data-testid="tab-bar"]')!;
+      const list = el.querySelector('[role="tablist"]')!;
+      return {
+        stripOverflow: el.scrollWidth - el.clientWidth,
+        tablistOverflow: list.scrollWidth - list.clientWidth,
+        tablistWidth: list.clientWidth,
+      };
+    });
+    expect(fit.tablistWidth).toBeGreaterThan(0);
+    expect(fit.tablistOverflow).toBe(0);
+    expect(fit.stripOverflow).toBe(0);
+
     await conversationsCollapseButton.click();
     await expect(conversations).toBeHidden();
     await expect(conversationsCollapseButton).toBeHidden();
@@ -251,7 +276,7 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     await expect(nicklist).toBeVisible();
     await expect(nicklistCollapseButton).toBeVisible();
 
-    await chat.openSearchFromEditMenu();
+    await chat.openSearchFromMobileMenu();
     await expect(searchBar).toBeVisible();
     await expect(nicklist).toBeHidden();
 

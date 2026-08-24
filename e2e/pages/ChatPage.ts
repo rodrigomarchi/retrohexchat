@@ -810,6 +810,20 @@ export class ChatPage {
     await expect(this.searchBar).toBeVisible();
   }
 
+  // A phone folds the menu bar into a rail that opens a drawer already on the
+  // tapped category, so Edit > Find is two taps rather than a hover menu. The
+  // strip carries no Find button on any viewport.
+  async openSearchFromMobileMenu() {
+    await this.page.getByTestId("app-mobile-menu-rail-edit").click();
+    const item = this.page
+      .getByTestId("menu-bar")
+      .locator("[data-menubar-dropdown]:not(.u-hidden)")
+      .getByTestId("context-menu-item-toggle_search");
+    await expect(item).toBeVisible();
+    await item.click();
+    await expect(this.searchBar).toBeVisible();
+  }
+
   async openArcadeFromGamesMenu() {
     await this.gamesMenuTrigger.click();
     await expect(this.arcadeMenuItem).toBeVisible();

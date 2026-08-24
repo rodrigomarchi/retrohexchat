@@ -23,6 +23,40 @@
   .desktop__workspace {
     background-image: var(--rhc-wallpaper-mobile);
   }
+
+  /* One row, one phone's width: three labelled tabs alone eat most of it, so
+     each control keeps only the half that names it. A tab is named by its
+     label, a button by its glyph. Nothing is dropped from the strip — the tabs
+     are the conversation's navigation and must stay reachable without a swipe. */
+  .irc-tab__icon,
+  .conversation-toolbar-button__text {
+    display: none;
+  }
+
+  /* A PM adds a fifth control, which tips the row over on the narrowest
+     phones. The tabs are the conversation's navigation and never give: the
+     controls take the squeeze and scroll, because a half-visible glyph costs
+     less than a tab reading "Spa". */
+  [data-testid="tab-bar"] [data-testid="conversation-toolbar"] {
+    gap: 2px;
+    padding-left: 4px;
+  }
+}
+
+/* The tab strip's two halves, in priority order. The tablist is exactly as wide
+   as its tabs and never shrinks, so the controls stay next to the last tab
+   instead of being pushed to the far edge, and the controls absorb the squeeze
+   on a narrow screen. Letting the tablist lose that fight collapses it to zero
+   width and the tabs vanish outright. */
+[data-testid="tab-bar"] [role="tablist"] {
+  flex: 0 0 auto;
+}
+
+[data-testid="tab-bar"] [data-testid="conversation-toolbar"] {
+  min-width: 0;
+  flex-shrink: 1;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 /* Geometry is driven by CSS custom properties set on the element by the hook. */
 .desktop-window {
