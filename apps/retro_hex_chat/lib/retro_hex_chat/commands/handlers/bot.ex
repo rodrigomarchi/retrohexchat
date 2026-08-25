@@ -14,7 +14,8 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   # Portuguese entry offered "data *" for `dice_*`, the French "dés *".
   @setting_keys ~w(
     prefix cooldown description greeting farewell mention_response
-    greeting_delivery farewell_delivery greeter_repeat_window
+    public_greeting onboarding_1 onboarding_2 onboarding_3 onboarding_4
+    greeting_delivery onboarding_delivery farewell_delivery greeter_repeat_window
     dice_max_dice dice_max_sides dice_default
     mod_words mod_action mod_spam mod_flood mod_warn
     trivia_category trivia_time trivia_questions trivia_points
@@ -24,6 +25,12 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
   @delivery_modes ~w(public channel_notice private_notice silent)
   @rss_max_items_limit 10_000
+
+  # One key per line of the tour, rather than a subcommand that appends one.
+  # These scripts are pasted more than once — `docs/provisioning/` says so — and
+  # an `addcmd`-shaped `addtour` would grow the tour by a copy every time.
+  # Kept in step with the capability by `bot_test.exs`.
+  @onboarding_keys ~w(onboarding_1 onboarding_2 onboarding_3 onboarding_4)
 
   @doc """
   Every key `/bot set` accepts.
@@ -470,19 +477,31 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   end
 
   defp apply_setting(bot, "greeting", value) do
-    greeting = if value == "none", do: nil, else: IrcEscapes.decode(value)
-    caps = put_capability_field(bot.capabilities, "greeter", "greeting", greeting)
-    Queries.update_bot(bot, %{capabilities: caps})
-    reload_bot_capabilities(bot)
+    case update_greeter_text(bot, "greeting", value) do
+      {:ok, nil} -> {:ok, dgettext("commands", "Greeting disabled.")}
+      {:ok, text} -> {:ok, dgettext("commands", "Greeting set to '%{greeting}'.", greeting: text)}
+    end
+  end
 
-    message =
-      if greeting do
-        dgettext("commands", "Greeting set to '%{greeting}'.", greeting: greeting)
-      else
-        dgettext("commands", "Greeting disabled.")
-      end
+  defp apply_setting(bot, "public_greeting", value) do
+    case update_greeter_text(bot, "public_greeting", value) do
+      {:ok, nil} ->
+        {:ok, dgettext("commands", "Public greeting disabled.")}
 
-    {:ok, message}
+      {:ok, text} ->
+        {:ok, dgettext("commands", "Public greeting set to '%{greeting}'.", greeting: text)}
+    end
+  end
+
+  defp apply_setting(bot, key, value) when key in @onboarding_keys do
+    case update_greeter_text(bot, key, value) do
+      {:ok, nil} ->
+        {:ok, dgettext("commands", "Onboarding line %{key} cleared.", key: key)}
+
+      {:ok, text} ->
+        {:ok,
+         dgettext("commands", "Onboarding line %{key} set to '%{line}'.", key: key, line: text)}
+    end
   end
 
   defp apply_setting(bot, "farewell", value) do
@@ -503,6 +522,10 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
   defp apply_setting(bot, "greeting_delivery", value) do
     update_delivery_setting(bot, "greeting_delivery", value)
+  end
+
+  defp apply_setting(bot, "onboarding_delivery", value) do
+    update_delivery_setting(bot, "onboarding_delivery", value)
   end
 
   defp apply_setting(bot, "farewell_delivery", value) do
@@ -609,6 +632,18 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
        key: key,
        settings: Enum.join(@setting_keys, ", ")
      )}
+  end
+
+  # Every line a greeter can say is stored the same way: `none` clears it, and
+  # anything else carries IRC formatting escapes that have to be decoded before
+  # they reach the config, because the script that sets them is plain text.
+  @spec update_greeter_text(map(), String.t(), String.t()) :: {:ok, String.t() | nil}
+  defp update_greeter_text(bot, field, value) do
+    text = if value == "none", do: nil, else: IrcEscapes.decode(value)
+    caps = put_capability_field(bot.capabilities, "greeter", field, text)
+    Queries.update_bot(bot, %{capabilities: caps})
+    reload_bot_capabilities(bot)
+    {:ok, text}
   end
 
   @spec update_delivery_setting(map(), String.t(), String.t()) ::
@@ -862,7 +897,8 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
       /bot addcmd <bot> <trigger> <response> — Add custom command
       /bot delcmd <bot> <trigger> — Remove custom command
     Settings: prefix, cooldown, description, greeting, farewell, mention_response,
-      greeting_delivery, farewell_delivery, greeter_repeat_window,
+      public_greeting, onboarding_1, onboarding_2, onboarding_3, onboarding_4,
+      greeting_delivery, onboarding_delivery, farewell_delivery, greeter_repeat_window,
       dice_max_dice, dice_max_sides, dice_default,
       mod_words, mod_action, mod_spam, mod_flood, mod_warn,
       trivia_category, trivia_time, trivia_questions, trivia_points,

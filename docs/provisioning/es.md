@@ -129,6 +129,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Lucia greeting \c03\b[Lucia]\o ¡Hola, {nickname}! Soy Lucia. \c02Prueba !salas\o, !buenosdias o !ingles. Estás en tu casa.
 /bot set Lucia greeting_delivery private_notice
 /bot set Lucia greeter_repeat_window 43200
+/bot set Lucia public_greeting \c03\b[Lucia]\o \b{nickname}\o acaba de entrar. Ponte cómodo.
+/bot set Lucia onboarding_1 \c14\b[{botname}]\o \c10/join #hispano\o entra en una sala · \c10/msg nick\o habla en privado · \c10/nick nombre\o cambia el tuyo.
+/bot set Lucia onboarding_2 \c14\b[{botname}]\o Cada sala es una pestaña arriba. \c10/part\o sale de una, \c10/help\o lista los comandos, \c10F1\o abre el manual.
 /bot set Lucia farewell none
 /bot set Lucia mention_response \c03\b[Lucia]\o ¿Me llamabas? Aquí estoy. \c02Prueba !salas\o.
 
@@ -172,6 +175,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Elena greeting \c02\b[Elena]\o Bienvenido a #noticias, {nickname}. \c14Los titulares llegan solos\o — !fuentes dice de dónde.
 /bot set Elena greeting_delivery private_notice
 /bot set Elena greeter_repeat_window 43200
+/bot set Elena public_greeting \c02\b[Elena]\o \b{nickname}\o llega a la redacción.
+/bot set Elena onboarding_1 \c14\b[{botname}]\o \c10/join #hispano\o entra en una sala · \c10/msg nick\o habla en privado · \c10/nick nombre\o cambia el tuyo.
+/bot set Elena onboarding_2 \c14\b[{botname}]\o Cada sala es una pestaña arriba. \c10/part\o sale de una, \c10/help\o lista los comandos, \c10F1\o abre el manual.
 /bot set Elena farewell none
 /bot set Elena mention_response \c02\b[Elena]\o Publico lo que manda el feed. \c14!fuentes\o para la lista, !primera para lo demás.
 /bot addcmd Elena fuentes \c02\b[Elena]\o 20minutos, elDiario.es y El Mundo, revisados \c14cada veinte minutos\o.
@@ -189,6 +195,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Diego greeting \c07\b[Diego]\o Bienvenido, {nickname}. \c11Clarín, La Nación e Infobae\o caen acá solos. !fuentes para la lista.
 /bot set Diego greeting_delivery private_notice
 /bot set Diego greeter_repeat_window 43200
+/bot set Diego public_greeting \c07\b[Diego]\o \b{nickname}\o se suma. Bienvenido.
+/bot set Diego onboarding_1 \c14\b[{botname}]\o \c10/join #hispano\o entra en una sala · \c10/msg nick\o habla en privado · \c10/nick nombre\o cambia el tuyo.
+/bot set Diego onboarding_2 \c14\b[{botname}]\o Cada sala es una pestaña arriba. \c10/part\o sale de una, \c10/help\o lista los comandos, \c10F1\o abre el manual.
 /bot set Diego farewell none
 /bot set Diego mention_response \c07\b[Diego]\o Tres diarios del otro lado del charco. \c11!fuentes\o los lista.
 /bot addcmd Diego fuentes \c07\b[Diego]\o Clarín, La Nación e Infobae, revisados \c11cada veinte minutos\o.
@@ -205,6 +214,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Marisol greeting \c10\b[Marisol]\o Hola, {nickname}. \c06BBC Mundo, ABC, El Confidencial y La Vanguardia\o en el cable. !fuentes para la lista.
 /bot set Marisol greeting_delivery private_notice
 /bot set Marisol greeter_repeat_window 43200
+/bot set Marisol public_greeting \c10\b[Marisol]\o \b{nickname}\o entra al cable.
+/bot set Marisol onboarding_1 \c14\b[{botname}]\o \c10/join #hispano\o entra en una sala · \c10/msg nick\o habla en privado · \c10/nick nombre\o cambia el tuyo.
+/bot set Marisol onboarding_2 \c14\b[{botname}]\o Cada sala es una pestaña arriba. \c10/part\o sale de una, \c10/help\o lista los comandos, \c10F1\o abre el manual.
 /bot set Marisol farewell none
 /bot set Marisol mention_response \c10\b[Marisol]\o El mundo, en español. \c06!fuentes\o lista los cuatro feeds.
 /bot addcmd Marisol fuentes \c10\b[Marisol]\o BBC Mundo, ABC, El Confidencial y La Vanguardia, revisados \c06cada media hora\o.
@@ -224,6 +236,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Nacho greeting \c12\b[Nacho]\o ¡Hola, {nickname}! \c10Cinco feeds de tecnología\o caen aquí solos. !fuentes para la lista, !soporte antes de preguntar.
 /bot set Nacho greeting_delivery private_notice
 /bot set Nacho greeter_repeat_window 43200
+/bot set Nacho public_greeting \c12\b[Nacho]\o \b{nickname}\o apareció por aquí.
+/bot set Nacho onboarding_1 \c14\b[{botname}]\o \c10/join #hispano\o entra en una sala · \c10/msg nick\o habla en privado · \c10/nick nombre\o cambia el tuyo.
+/bot set Nacho onboarding_2 \c14\b[{botname}]\o Cada sala es una pestaña arriba. \c10/part\o sale de una, \c10/help\o lista los comandos, \c10F1\o abre el manual.
 /bot set Nacho farewell none
 /bot set Nacho mention_response \c12\b[Nacho]\o Xataka, Genbeta, Hipertextual, Microsiervos y Applesfera. \c10!fuentes\o los lista.
 /bot addcmd Nacho fuentes \c12\b[Nacho]\o Xataka, Genbeta, Hipertextual, Microsiervos y Applesfera, revisados \c10cada media hora\o.
@@ -243,6 +258,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Rocio greeting \c13\b[Rocio]\o ¡Dentro, {nickname}! \c06Vida Extra\o en el cable, y el menú Games abre 18 clásicos en el navegador. !fuentes, !jugar.
 /bot set Rocio greeting_delivery private_notice
 /bot set Rocio greeter_repeat_window 43200
+/bot set Rocio public_greeting \c13\b[Rocio]\o \b{nickname}\o entra a jugar.
+/bot set Rocio onboarding_1 \c14\b[{botname}]\o \c10/join #hispano\o entra en una sala · \c10/msg nick\o habla en privado · \c10/nick nombre\o cambia el tuyo.
+/bot set Rocio onboarding_2 \c14\b[{botname}]\o Cada sala es una pestaña arriba. \c10/part\o sale de una, \c10/help\o lista los comandos, \c10F1\o abre el manual.
 /bot set Rocio farewell none
 /bot set Rocio mention_response \c13\b[Rocio]\o Noticias de juegos las traigo yo. \c06!jugar\o explica cómo se juega aquí mismo.
 /bot addcmd Rocio fuentes \c13\b[Rocio]\o Vida Extra, revisado \c06cada 45 minutos\o.
@@ -258,6 +276,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ramon greeting \c09\b[Ramon]\o ¡Buenas, {nickname}! \c03Marca y Mundo Deportivo\o en el cable. !fuentes para la lista, !equipo si insistes.
 /bot set Ramon greeting_delivery private_notice
 /bot set Ramon greeter_repeat_window 43200
+/bot set Ramon public_greeting \c09\b[Ramon]\o \b{nickname}\o salta al campo.
+/bot set Ramon onboarding_1 \c14\b[{botname}]\o \c10/join #hispano\o entra en una sala · \c10/msg nick\o habla en privado · \c10/nick nombre\o cambia el tuyo.
+/bot set Ramon onboarding_2 \c14\b[{botname}]\o Cada sala es una pestaña arriba. \c10/part\o sale de una, \c10/help\o lista los comandos, \c10F1\o abre el manual.
 /bot set Ramon farewell none
 /bot set Ramon mention_response \c09\b[Ramon]\o Balón rodando. \c03!fuentes\o dice qué leo.
 /bot addcmd Ramon fuentes \c09\b[Ramon]\o Marca y Mundo Deportivo, revisados \c03cada veinte minutos\o.
@@ -274,6 +295,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Carmen greeting \c06\b[Carmen]\o Pasa, {nickname}. \c13Espinof\o en el cable — estrenos, series y temporadas. !fuentes para la lista.
 /bot set Carmen greeting_delivery private_notice
 /bot set Carmen greeter_repeat_window 43200
+/bot set Carmen public_greeting \c06\b[Carmen]\o \b{nickname}\o entra en sala.
+/bot set Carmen onboarding_1 \c14\b[{botname}]\o \c10/join #hispano\o entra en una sala · \c10/msg nick\o habla en privado · \c10/nick nombre\o cambia el tuyo.
+/bot set Carmen onboarding_2 \c14\b[{botname}]\o Cada sala es una pestaña arriba. \c10/part\o sale de una, \c10/help\o lista los comandos, \c10F1\o abre el manual.
 /bot set Carmen farewell none
 /bot set Carmen mention_response \c06\b[Carmen]\o Cine y series. \c13!fuentes\o dice de dónde.
 /bot addcmd Carmen fuentes \c06\b[Carmen]\o Espinof, revisado \c13cada hora\o.
@@ -288,6 +312,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Teresa greeting \c11\b[Teresa]\o Hola, {nickname}. \c02Muy Interesante\o llega cada hora. !fuentes para la lista.
 /bot set Teresa greeting_delivery private_notice
 /bot set Teresa greeter_repeat_window 43200
+/bot set Teresa public_greeting \c11\b[Teresa]\o \b{nickname}\o llega. Bienvenido.
+/bot set Teresa onboarding_1 \c14\b[{botname}]\o \c10/join #hispano\o entra en una sala · \c10/msg nick\o habla en privado · \c10/nick nombre\o cambia el tuyo.
+/bot set Teresa onboarding_2 \c14\b[{botname}]\o Cada sala es una pestaña arriba. \c10/part\o sale de una, \c10/help\o lista los comandos, \c10F1\o abre el manual.
 /bot set Teresa farewell none
 /bot set Teresa mention_response \c11\b[Teresa]\o Divulgación sin muro de pago. \c02!fuentes\o lista el cable.
 /bot addcmd Teresa fuentes \c11\b[Teresa]\o Muy Interesante, revisado \c02cada hora\o.
@@ -302,6 +329,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Pepa greeting \c05\b[Pepa]\o Adelante, {nickname}. \c08Directo al Paladar\o en el cable. !fuentes para la lista, !tortilla bajo tu responsabilidad.
 /bot set Pepa greeting_delivery private_notice
 /bot set Pepa greeter_repeat_window 43200
+/bot set Pepa public_greeting \c05\b[Pepa]\o \b{nickname}\o entra en la cocina.
+/bot set Pepa onboarding_1 \c14\b[{botname}]\o \c10/join #hispano\o entra en una sala · \c10/msg nick\o habla en privado · \c10/nick nombre\o cambia el tuyo.
+/bot set Pepa onboarding_2 \c14\b[{botname}]\o Cada sala es una pestaña arriba. \c10/part\o sale de una, \c10/help\o lista los comandos, \c10F1\o abre el manual.
 /bot set Pepa farewell none
 /bot set Pepa mention_response \c05\b[Pepa]\o Recetas y técnica. \c08!fuentes\o dice de dónde salen.
 /bot addcmd Pepa fuentes \c05\b[Pepa]\o Directo al Paladar, revisado \c08cada hora y media\o.
@@ -317,6 +347,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Manolo greeting \c14\b[Manolo]\o Buenas, {nickname}. \c04Motorpasión\o en el cable. !fuentes para la lista.
 /bot set Manolo greeting_delivery private_notice
 /bot set Manolo greeter_repeat_window 43200
+/bot set Manolo public_greeting \c14\b[Manolo]\o \b{nickname}\o arranca. Bienvenido.
+/bot set Manolo onboarding_1 \c14\b[{botname}]\o \c10/join #hispano\o entra en una sala · \c10/msg nick\o habla en privado · \c10/nick nombre\o cambia el tuyo.
+/bot set Manolo onboarding_2 \c14\b[{botname}]\o Cada sala es una pestaña arriba. \c10/part\o sale de una, \c10/help\o lista los comandos, \c10F1\o abre el manual.
 /bot set Manolo farewell none
 /bot set Manolo mention_response \c14\b[Manolo]\o Coches, motos y averías. \c04!fuentes\o lista el cable.
 /bot addcmd Manolo fuentes \c14\b[Manolo]\o Motorpasión, revisado \c04cada hora y media\o.
@@ -331,6 +364,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Alonso greeting \c07\b[Alonso]\o Hola, {nickname}. \c14Expansión\o en el cable — !fuentes para la lista, !aviso antes de creerte nada.
 /bot set Alonso greeting_delivery private_notice
 /bot set Alonso greeter_repeat_window 43200
+/bot set Alonso public_greeting \c07\b[Alonso]\o \b{nickname}\o llega al parqué.
+/bot set Alonso onboarding_1 \c14\b[{botname}]\o \c10/join #hispano\o entra en una sala · \c10/msg nick\o habla en privado · \c10/nick nombre\o cambia el tuyo.
+/bot set Alonso onboarding_2 \c14\b[{botname}]\o Cada sala es una pestaña arriba. \c10/part\o sale de una, \c10/help\o lista los comandos, \c10F1\o abre el manual.
 /bot set Alonso farewell none
 /bot set Alonso mention_response \c07\b[Alonso]\o Leo Expansión. \c14!fuentes\o para la lista.
 /bot addcmd Alonso fuentes \c07\b[Alonso]\o Expansión, revisado \c14cada media hora\o.

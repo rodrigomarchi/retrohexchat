@@ -178,4 +178,103 @@ defmodule RetroHexChat.Bots.QueriesTest do
       assert hd(events).event_type == "bot1_event"
     end
   end
+
+  describe "record_greeting/4" do
+    setup do
+      {:ok, bot} = Queries.create_bot(@valid_bot_attrs)
+      {:ok, bot: bot}
+    end
+
+    test "the first welcome anywhere is a first time", %{bot: bot} do
+      assert :first_time == Queries.record_greeting(bot.id, "#lobby", "alice", 3600)
+    end
+
+    test "a second welcome inside the window is a repeat", %{bot: bot} do
+      assert :first_time == Queries.record_greeting(bot.id, "#lobby", "alice", 3600)
+      assert :within_window == Queries.record_greeting(bot.id, "#lobby", "alice", 3600)
+    end
+
+    test "a welcome past the window is neither a first time nor a repeat", %{bot: bot} do
+      assert :first_time == Queries.record_greeting(bot.id, "#lobby", "alice", 3600)
+      assert :window_elapsed == Queries.record_greeting(bot.id, "#lobby", "alice", 0)
+    end
+
+    test "the window restarts from the last welcome, not the first", %{bot: bot} do
+      assert :first_time == Queries.record_greeting(bot.id, "#lobby", "alice", 3600)
+      assert :window_elapsed == Queries.record_greeting(bot.id, "#lobby", "alice", 0)
+      assert :within_window == Queries.record_greeting(bot.id, "#lobby", "alice", 3600)
+    end
+
+    test "case is folded, so one person is not two newcomers", %{bot: bot} do
+      assert :first_time == Queries.record_greeting(bot.id, "#lobby", "Alice", 3600)
+      assert :within_window == Queries.record_greeting(bot.id, "#LOBBY", "alice", 3600)
+    end
+
+    test "each room meets a person separately", %{bot: bot} do
+      assert :first_time == Queries.record_greeting(bot.id, "#lobby", "alice", 3600)
+      assert :first_time == Queries.record_greeting(bot.id, "#retro", "alice", 3600)
+    end
+
+    test "each bot meets a person separately", %{bot: bot} do
+      {:ok, other} =
+        Queries.create_bot(%{name: "OtherBot", nickname: "OtherBot", created_by: "admin"})
+
+      assert :first_time == Queries.record_greeting(bot.id, "#lobby", "alice", 3600)
+      assert :first_time == Queries.record_greeting(other.id, "#lobby", "alice", 3600)
+    end
+
+    test "a window of zero still announces only once", %{bot: bot} do
+      # No window means everyone is toured again on every join. The public half
+      # is not governed by the window at all — it is governed by the row.
+      assert :first_time == Queries.record_greeting(bot.id, "#lobby", "alice", 0)
+      assert :window_elapsed == Queries.record_greeting(bot.id, "#lobby", "alice", 0)
+      assert :window_elapsed == Queries.record_greeting(bot.id, "#lobby", "alice", 0)
+    end
+
+    test "destroying a bot forgets who it met", %{bot: bot} do
+      assert :first_time == Queries.record_greeting(bot.id, "#lobby", "alice", 3600)
+      {:ok, _} = Queries.delete_bot(bot)
+
+      {:ok, reborn} = Queries.create_bot(@valid_bot_attrs)
+      assert :first_time == Queries.record_greeting(reborn.id, "#lobby", "alice", 3600)
+    end
+  end
+
+  describe "delete_greetings_before/2" do
+    setup do
+      {:ok, bot} = Queries.create_bot(@valid_bot_attrs)
+      {:ok, bot: bot}
+    end
+
+    test "drops what is older than the cutoff and keeps the rest", %{bot: bot} do
+      :first_time = Queries.record_greeting(bot.id, "#lobby", "alice", 3600)
+      :first_time = Queries.record_greeting(bot.id, "#lobby", "bob", 3600)
+
+      future = DateTime.add(DateTime.utc_now(), 60, :second)
+      past = DateTime.add(DateTime.utc_now(), -60, :second)
+
+      assert 0 == Queries.count_greetings_before(past)
+      assert 2 == Queries.count_greetings_before(future)
+      assert 2 == Queries.delete_greetings_before(future)
+      assert 0 == Queries.count_greetings_before(future)
+    end
+
+    test "a forgotten person is a newcomer again", %{bot: bot} do
+      :first_time = Queries.record_greeting(bot.id, "#lobby", "alice", 3600)
+      Queries.delete_greetings_before(DateTime.add(DateTime.utc_now(), 60, :second))
+
+      assert :first_time == Queries.record_greeting(bot.id, "#lobby", "alice", 3600)
+    end
+
+    test "takes no more than the limit in one pass", %{bot: bot} do
+      for nick <- ~w(alice bob carol) do
+        :first_time = Queries.record_greeting(bot.id, "#lobby", nick, 3600)
+      end
+
+      future = DateTime.add(DateTime.utc_now(), 60, :second)
+
+      assert 2 == Queries.delete_greetings_before(future, limit: 2)
+      assert 1 == Queries.count_greetings_before(future)
+    end
+  end
 end

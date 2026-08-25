@@ -425,7 +425,7 @@ msgstr ""
 msgid "Greenland"
 msgstr ""
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:20
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:46
 #, elixir-autogen, elixir-format
 msgid "Greet users on join, say goodbye on part"
 msgstr ""
@@ -1210,7 +1210,7 @@ msgstr ""
 msgid "Web pages"
 msgstr ""
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:90
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:212
 #, elixir-autogen, elixir-format
 msgid "Welcome, {nickname}!"
 msgstr ""
@@ -1736,17 +1736,7 @@ msgstr ""
 msgid "Refusing %{url}: %{reason}"
 msgstr ""
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:72
-#, elixir-autogen, elixir-format
-msgid "Farewell delivery must be public, channel_notice, private_notice, or silent"
-msgstr ""
-
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:65
-#, elixir-autogen, elixir-format
-msgid "Greeting delivery must be public, channel_notice, private_notice, or silent"
-msgstr ""
-
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:78
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:106
 #, elixir-autogen, elixir-format
 msgid "Repeat window must be a non-negative number of seconds"
 msgstr ""
@@ -1799,4 +1789,9 @@ msgstr ""
 #: lib/retro_hex_chat/scraper/card.ex:299
 #, elixir-autogen, elixir-format
 msgid "Read full story"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:243
+#, elixir-autogen, elixir-format
+msgid "%{field} must be public, channel_notice, private_notice, or silent"
 msgstr ""

@@ -75,7 +75,11 @@ config :retro_hex_chat,
   # real means a NickServ registration and a bcrypt hash per case, which is not
   # what those tests are about — the stub says yes and the `admins` list above
   # stays the thing under test.
-  bot_identity: RetroHexChat.Bots.IdentityStub
+  bot_identity: RetroHexChat.Bots.IdentityStub,
+  # Whether the greeter has met somebody before decides which of three welcomes
+  # it composes. The stub answers that question directly so a composition test
+  # stays a composition test; `Queries.record_greeting/4` proves the ledger.
+  bot_greeting_ledger: RetroHexChat.Bots.GreetingLedgerStub
 
 # TURN server test overrides — disable listener, use random port, fixed secrets
 config :retro_hex_chat,

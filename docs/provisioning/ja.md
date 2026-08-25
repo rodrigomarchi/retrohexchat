@@ -121,6 +121,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Hana greeting \c03\b[Hana]\o こんにちは、{nickname}さん！ Hana と申します。\c02!rooms\o、!ohayo、!english をどうぞ。ごゆっくり。
 /bot set Hana greeting_delivery private_notice
 /bot set Hana greeter_repeat_window 43200
+/bot set Hana public_greeting \c03\b[Hana]\o \b{nickname}\o が入ってきました。どうぞごゆっくり。
+/bot set Hana onboarding_1 \c14\b[{botname}]\o \c10/join #nihon\o で部屋に入る · \c10/msg nick\o で個人宛て · \c10/nick 名前\o でニックを変更。
+/bot set Hana onboarding_2 \c14\b[{botname}]\o 部屋は上のタブに並びます。\c10/part\o で退出、\c10/help\o でコマンド一覧、\c10F1\o でマニュアル。
 /bot set Hana farewell none
 /bot set Hana mention_response \c03\b[Hana]\o 呼びましたか。ここにいます。\c02!rooms\o をどうぞ。
 
@@ -164,6 +167,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ken greeting \c12\b[Ken]\o {nickname}さん、ようこそ。\c10GIGAZINE、ITmedia、ASCII\o が自動で流れます。!sources で一覧、!support は質問の前に。
 /bot set Ken greeting_delivery private_notice
 /bot set Ken greeter_repeat_window 43200
+/bot set Ken public_greeting \c12\b[Ken]\o \b{nickname}\o が来ました。ようこそ。
+/bot set Ken onboarding_1 \c14\b[{botname}]\o \c10/join #nihon\o で部屋に入る · \c10/msg nick\o で個人宛て · \c10/nick 名前\o でニックを変更。
+/bot set Ken onboarding_2 \c14\b[{botname}]\o 部屋は上のタブに並びます。\c10/part\o で退出、\c10/help\o でコマンド一覧、\c10F1\o でマニュアル。
 /bot set Ken farewell none
 /bot set Ken mention_response \c12\b[Ken]\o 技術系のフィードが三本。\c10!sources\o で分かります。
 /bot addcmd Ken sources \c12\b[Ken]\o GIGAZINE、ITmedia、ASCII.jp、\c10三十分ごと\o に取得しています。
@@ -181,6 +187,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Mio greeting \c13\b[Mio]\o {nickname}さん、どうぞ。\c11ギズモード、ITmedia NEWS、Mogura VR\o が流れています。!sources で一覧。
 /bot set Mio greeting_delivery private_notice
 /bot set Mio greeter_repeat_window 43200
+/bot set Mio public_greeting \c13\b[Mio]\o \b{nickname}\o が到着。いらっしゃい。
+/bot set Mio onboarding_1 \c14\b[{botname}]\o \c10/join #nihon\o で部屋に入る · \c10/msg nick\o で個人宛て · \c10/nick 名前\o でニックを変更。
+/bot set Mio onboarding_2 \c14\b[{botname}]\o 部屋は上のタブに並びます。\c10/part\o で退出、\c10/help\o でコマンド一覧、\c10F1\o でマニュアル。
 /bot set Mio farewell none
 /bot set Mio mention_response \c13\b[Mio]\o 製品、レビュー、VR。\c11!sources\o で一覧が出ます。
 /bot addcmd Mio sources \c13\b[Mio]\o ギズモード・ジャパン、ITmedia NEWS、Mogura VR、\c11四十五分ごと\o に取得しています。
@@ -197,6 +206,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Sora greeting \c06\b[Sora]\o {nickname}さん、こんにちは。\c13Publickey、Zenn、Qiita\o が自動で流れます。!sources で一覧。
 /bot set Sora greeting_delivery private_notice
 /bot set Sora greeter_repeat_window 43200
+/bot set Sora public_greeting \c06\b[Sora]\o \b{nickname}\o が参加しました。
+/bot set Sora onboarding_1 \c14\b[{botname}]\o \c10/join #nihon\o で部屋に入る · \c10/msg nick\o で個人宛て · \c10/nick 名前\o でニックを変更。
+/bot set Sora onboarding_2 \c14\b[{botname}]\o 部屋は上のタブに並びます。\c10/part\o で退出、\c10/help\o でコマンド一覧、\c10F1\o でマニュアル。
 /bot set Sora farewell none
 /bot set Sora mention_response \c06\b[Sora]\o Publickey と Zenn と Qiita。\c13!sources\o で一覧が出ます。
 /bot addcmd Sora sources \c06\b[Sora]\o Publickey、Zenn、Qiita の人気記事、\c13三十分ごと\o に取得しています。
@@ -213,6 +225,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Hiro greeting \c12\b[Hiro]\o {nickname}さん、いらっしゃい！ \c10AUTOMATON と電ファミニコゲーマー\o が流れます。Games メニューからは18本の名作が動きます。!sources、!play。
 /bot set Hiro greeting_delivery private_notice
 /bot set Hiro greeter_repeat_window 43200
+/bot set Hiro public_greeting \c12\b[Hiro]\o \b{nickname}\o がゲームに入りました。
+/bot set Hiro onboarding_1 \c14\b[{botname}]\o \c10/join #nihon\o で部屋に入る · \c10/msg nick\o で個人宛て · \c10/nick 名前\o でニックを変更。
+/bot set Hiro onboarding_2 \c14\b[{botname}]\o 部屋は上のタブに並びます。\c10/part\o で退出、\c10/help\o でコマンド一覧、\c10F1\o でマニュアル。
 /bot set Hiro farewell none
 /bot set Hiro mention_response \c12\b[Hiro]\o ゲームのニュースは私が運びます。\c10!play\o でここでの遊び方を説明します。
 /bot addcmd Hiro sources \c12\b[Hiro]\o AUTOMATON と電ファミニコゲーマー、\c10四十五分ごと\o に取得しています。
@@ -229,6 +244,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Kenji greeting \c09\b[Kenji]\o {nickname}さん、どうも！ \c03サッカーキングとフットボールチャンネル\o が流れます。!sources で一覧、!team は聞かれたら。
 /bot set Kenji greeting_delivery private_notice
 /bot set Kenji greeter_repeat_window 43200
+/bot set Kenji public_greeting \c09\b[Kenji]\o \b{nickname}\o がピッチに立ちました。
+/bot set Kenji onboarding_1 \c14\b[{botname}]\o \c10/join #nihon\o で部屋に入る · \c10/msg nick\o で個人宛て · \c10/nick 名前\o でニックを変更。
+/bot set Kenji onboarding_2 \c14\b[{botname}]\o 部屋は上のタブに並びます。\c10/part\o で退出、\c10/help\o でコマンド一覧、\c10F1\o でマニュアル。
 /bot set Kenji farewell none
 /bot set Kenji mention_response \c09\b[Kenji]\o ボールは転がっています。\c03!sources\o で読んでいるものが分かります。
 /bot addcmd Kenji sources \c09\b[Kenji]\o サッカーキングとフットボールチャンネル、\c03二十分ごと\o に取得しています。
@@ -245,6 +263,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Daichi greeting \c11\b[Daichi]\o {nickname}さん、どうぞ。\c14ベースボールチャンネル\o が流れます。!sources で一覧。
 /bot set Daichi greeting_delivery private_notice
 /bot set Daichi greeter_repeat_window 43200
+/bot set Daichi public_greeting \c11\b[Daichi]\o \b{nickname}\o がグラウンドに来ました。
+/bot set Daichi onboarding_1 \c14\b[{botname}]\o \c10/join #nihon\o で部屋に入る · \c10/msg nick\o で個人宛て · \c10/nick 名前\o でニックを変更。
+/bot set Daichi onboarding_2 \c14\b[{botname}]\o 部屋は上のタブに並びます。\c10/part\o で退出、\c10/help\o でコマンド一覧、\c10F1\o でマニュアル。
 /bot set Daichi farewell none
 /bot set Daichi mention_response \c11\b[Daichi]\o 野球の話はこちらへ。\c14!sources\o で一覧が出ます。
 /bot addcmd Daichi sources \c11\b[Daichi]\o ベースボールチャンネル、\c14三十分ごと\o に取得しています。
@@ -259,6 +280,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Nozomi greeting \c10\b[Nozomi]\o {nickname}さん、ようこそ。\c02sorae とナゾロジー\o が一時間ごとに届きます。!sources で一覧。
 /bot set Nozomi greeting_delivery private_notice
 /bot set Nozomi greeter_repeat_window 43200
+/bot set Nozomi public_greeting \c10\b[Nozomi]\o \b{nickname}\o が来ました。ようこそ。
+/bot set Nozomi onboarding_1 \c14\b[{botname}]\o \c10/join #nihon\o で部屋に入る · \c10/msg nick\o で個人宛て · \c10/nick 名前\o でニックを変更。
+/bot set Nozomi onboarding_2 \c14\b[{botname}]\o 部屋は上のタブに並びます。\c10/part\o で退出、\c10/help\o でコマンド一覧、\c10F1\o でマニュアル。
 /bot set Nozomi farewell none
 /bot set Nozomi mention_response \c10\b[Nozomi]\o 宇宙開発と、答えの出ていない話。\c02!sources\o で一覧が出ます。
 /bot addcmd Nozomi sources \c10\b[Nozomi]\o sorae とナゾロジー、\c02一時間ごと\o に取得しています。
@@ -274,6 +298,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Akira greeting \c07\b[Akira]\o {nickname}さん、こんにちは。\c14東洋経済、ダイヤモンド、Business Insider Japan\o が流れます。!sources、!chuui。
 /bot set Akira greeting_delivery private_notice
 /bot set Akira greeter_repeat_window 43200
+/bot set Akira public_greeting \c07\b[Akira]\o \b{nickname}\o が相場に来ました。
+/bot set Akira onboarding_1 \c14\b[{botname}]\o \c10/join #nihon\o で部屋に入る · \c10/msg nick\o で個人宛て · \c10/nick 名前\o でニックを変更。
+/bot set Akira onboarding_2 \c14\b[{botname}]\o 部屋は上のタブに並びます。\c10/part\o で退出、\c10/help\o でコマンド一覧、\c10F1\o でマニュアル。
 /bot set Akira farewell none
 /bot set Akira mention_response \c07\b[Akira]\o 経済メディアが三本。\c14!sources\o で分かります。
 /bot addcmd Akira sources \c07\b[Akira]\o 東洋経済オンライン、ダイヤモンド・オンライン、Business Insider Japan、\c14三十分ごと\o に取得しています。
@@ -291,6 +318,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Yui greeting \c05\b[Yui]\o {nickname}さん、どうぞ。\c13ライフハッカー・ジャパン\o が一時間ごとに届きます。!sources で一覧。
 /bot set Yui greeting_delivery private_notice
 /bot set Yui greeter_repeat_window 43200
+/bot set Yui public_greeting \c05\b[Yui]\o \b{nickname}\o が来ました。ゆっくりどうぞ。
+/bot set Yui onboarding_1 \c14\b[{botname}]\o \c10/join #nihon\o で部屋に入る · \c10/msg nick\o で個人宛て · \c10/nick 名前\o でニックを変更。
+/bot set Yui onboarding_2 \c14\b[{botname}]\o 部屋は上のタブに並びます。\c10/part\o で退出、\c10/help\o でコマンド一覧、\c10F1\o でマニュアル。
 /bot set Yui farewell none
 /bot set Yui mention_response \c05\b[Yui]\o 道具と習慣の話。\c13!sources\o で一覧が出ます。
 /bot addcmd Yui sources \c05\b[Yui]\o ライフハッカー・ジャパン、\c13一時間ごと\o に取得しています。

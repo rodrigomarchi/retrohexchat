@@ -3,6 +3,7 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
 
   @moduletag :integration
 
+  alias RetroHexChat.Bots.Capabilities.Greeter
   alias RetroHexChat.Bots.{Queries, Registry, Supervisor}
   alias RetroHexChat.Commands.Handlers.Bot
   alias RetroHexChat.Jobs.RSSPollWorker
@@ -426,6 +427,102 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
       assert h.name == "bot"
       assert is_binary(h.syntax)
       assert is_list(h.examples)
+    end
+  end
+
+  describe "execute set — the welcome a script writes" do
+    setup do
+      Bot.execute(["create", "BotCmdTest"], @admin_ctx)
+      :ok
+    end
+
+    defp greeter do
+      Queries.get_bot_by_name("BotCmdTest").capabilities["greeter"]
+    end
+
+    test "every onboarding key the capability reads is a key /bot set accepts" do
+      # The handler needs its list at compile time, in a guard, so it cannot ask
+      # the capability for one. A line the capability reads and the handler
+      # cannot set is a line no script can ever fill in.
+      for key <- Greeter.onboarding_keys() do
+        assert key in Bot.settings(), "#{key} is read by the greeter but /bot set rejects it"
+      end
+    end
+
+    test "public_greeting is stored on the greeter" do
+      assert {:ok, :system, _} =
+               Bot.execute(
+                 ["set", "BotCmdTest", "public_greeting", "Yo", "{nickname}!"],
+                 @admin_ctx
+               )
+
+      assert greeter()["public_greeting"] == "Yo {nickname}!"
+    end
+
+    test "each onboarding line lands in its own slot" do
+      Bot.execute(["set", "BotCmdTest", "onboarding_1", "first", "line"], @admin_ctx)
+      Bot.execute(["set", "BotCmdTest", "onboarding_2", "second", "line"], @admin_ctx)
+
+      assert greeter()["onboarding_1"] == "first line"
+      assert greeter()["onboarding_2"] == "second line"
+    end
+
+    test "setting the same slot twice replaces rather than appends" do
+      # These scripts are pasted more than once. Numbered slots are what makes a
+      # second paste a no-op instead of a tour twice as long.
+      Bot.execute(["set", "BotCmdTest", "onboarding_1", "first", "line"], @admin_ctx)
+      Bot.execute(["set", "BotCmdTest", "onboarding_1", "first", "line"], @admin_ctx)
+
+      assert greeter()["onboarding_1"] == "first line"
+    end
+
+    test "none clears a line" do
+      Bot.execute(["set", "BotCmdTest", "onboarding_1", "first", "line"], @admin_ctx)
+      Bot.execute(["set", "BotCmdTest", "onboarding_1", "none"], @admin_ctx)
+
+      assert is_nil(greeter()["onboarding_1"])
+    end
+
+    test "public_greeting decodes IRC formatting escapes" do
+      Bot.execute(
+        ["set", "BotCmdTest", "public_greeting", "\\c03\\bHi\\o", "{nickname}"],
+        @admin_ctx
+      )
+
+      stored = greeter()["public_greeting"]
+      assert String.contains?(stored, @colour)
+      assert String.contains?(stored, @bold)
+      assert String.contains?(stored, @reset)
+    end
+
+    test "onboarding lines decode IRC formatting escapes" do
+      Bot.execute(["set", "BotCmdTest", "onboarding_1", "\\c10/join", "#room\\o"], @admin_ctx)
+
+      stored = greeter()["onboarding_1"]
+      assert String.contains?(stored, @colour)
+      assert String.contains?(stored, @reset)
+    end
+
+    test "onboarding_delivery accepts a delivery mode and refuses anything else" do
+      assert {:ok, :system, _} =
+               Bot.execute(
+                 ["set", "BotCmdTest", "onboarding_delivery", "private_notice"],
+                 @admin_ctx
+               )
+
+      assert greeter()["onboarding_delivery"] == "private_notice"
+
+      assert {:error, message} =
+               Bot.execute(["set", "BotCmdTest", "onboarding_delivery", "shout"], @admin_ctx)
+
+      assert message =~ "private_notice"
+    end
+
+    test "a fifth onboarding line is not a setting" do
+      assert {:error, message} =
+               Bot.execute(["set", "BotCmdTest", "onboarding_5", "too", "far"], @admin_ctx)
+
+      assert message =~ "Unknown setting"
     end
   end
 end

@@ -119,6 +119,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ayu greeting \c03\b[Ayu]\o Halo {nickname}! Saya Ayu. \c02Coba !kanal\o, !selamatpagi atau !inggris. Anggap rumah sendiri.
 /bot set Ayu greeting_delivery private_notice
 /bot set Ayu greeter_repeat_window 43200
+/bot set Ayu public_greeting \c03\b[Ayu]\o \b{nickname}\o baru masuk. Duduk dulu.
+/bot set Ayu onboarding_1 \c14\b[{botname}]\o \c10/join #indonesia\o masuk ruangan · \c10/msg nick\o bicara pribadi · \c10/nick nama\o ganti namamu.
+/bot set Ayu onboarding_2 \c14\b[{botname}]\o Tiap ruangan jadi satu tab di atas. \c10/part\o keluar, \c10/help\o daftar perintah, \c10F1\o buka panduan.
 /bot set Ayu farewell none
 /bot set Ayu mention_response \c03\b[Ayu]\o Dipanggil? Saya di sini. \c02Coba !kanal\o.
 
@@ -162,6 +165,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Rina greeting \c02\b[Rina]\o Selamat datang di #berita, {nickname}. \c14Judul datang sendiri\o — !sumber menyebut asalnya.
 /bot set Rina greeting_delivery private_notice
 /bot set Rina greeter_repeat_window 43200
+/bot set Rina public_greeting \c02\b[Rina]\o \b{nickname}\o masuk ke redaksi.
+/bot set Rina onboarding_1 \c14\b[{botname}]\o \c10/join #indonesia\o masuk ruangan · \c10/msg nick\o bicara pribadi · \c10/nick nama\o ganti namamu.
+/bot set Rina onboarding_2 \c14\b[{botname}]\o Tiap ruangan jadi satu tab di atas. \c10/part\o keluar, \c10/help\o daftar perintah, \c10F1\o buka panduan.
 /bot set Rina farewell none
 /bot set Rina mention_response \c02\b[Rina]\o Saya menerbitkan apa yang dikirim feed. \c14!sumber\o untuk daftarnya, !pertama untuk sisanya.
 /bot addcmd Rina sumber \c02\b[Rina]\o Tempo, CNN Indonesia dan Republika, diperiksa \c14tiap dua puluh menit\o.
@@ -179,6 +185,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Joko greeting \c07\b[Joko]\o Selamat datang, {nickname}. \c11Antara, Sindonews dan Okezone\o masuk sendiri ke sini. !sumber untuk daftarnya.
 /bot set Joko greeting_delivery private_notice
 /bot set Joko greeter_repeat_window 43200
+/bot set Joko public_greeting \c07\b[Joko]\o \b{nickname}\o bergabung. Selamat datang.
+/bot set Joko onboarding_1 \c14\b[{botname}]\o \c10/join #indonesia\o masuk ruangan · \c10/msg nick\o bicara pribadi · \c10/nick nama\o ganti namamu.
+/bot set Joko onboarding_2 \c14\b[{botname}]\o Tiap ruangan jadi satu tab di atas. \c10/part\o keluar, \c10/help\o daftar perintah, \c10F1\o buka panduan.
 /bot set Joko farewell none
 /bot set Joko mention_response \c07\b[Joko]\o Tiga ruang redaksi politik. \c11!sumber\o menyebut yang mana.
 /bot addcmd Joko sumber \c07\b[Joko]\o Antara Politik, Sindonews dan Okezone, diperiksa \c11tiap dua puluh menit\o.
@@ -195,6 +204,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Dewi greeting \c10\b[Dewi]\o Halo {nickname}. \c06BBC Indonesia dan CNN Indonesia Internasional\o di saluran. !sumber untuk daftarnya.
 /bot set Dewi greeting_delivery private_notice
 /bot set Dewi greeter_repeat_window 43200
+/bot set Dewi public_greeting \c10\b[Dewi]\o \b{nickname}\o sudah di sini.
+/bot set Dewi onboarding_1 \c14\b[{botname}]\o \c10/join #indonesia\o masuk ruangan · \c10/msg nick\o bicara pribadi · \c10/nick nama\o ganti namamu.
+/bot set Dewi onboarding_2 \c14\b[{botname}]\o Tiap ruangan jadi satu tab di atas. \c10/part\o keluar, \c10/help\o daftar perintah, \c10F1\o buka panduan.
 /bot set Dewi farewell none
 /bot set Dewi mention_response \c10\b[Dewi]\o Kabar dunia, bahasa sendiri. \c06!sumber\o menyebut keduanya.
 /bot addcmd Dewi sumber \c10\b[Dewi]\o BBC Indonesia dan CNN Indonesia Internasional, diperiksa \c06tiap setengah jam\o.
@@ -210,6 +222,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Adi greeting \c12\b[Adi]\o Halo {nickname}. \c10Empat sumber teknologi\o jatuh ke sini sendiri. !sumber untuk daftarnya, !dukungan sebelum bertanya.
 /bot set Adi greeting_delivery private_notice
 /bot set Adi greeter_repeat_window 43200
+/bot set Adi public_greeting \c12\b[Adi]\o \b{nickname}\o masuk. Selamat datang.
+/bot set Adi onboarding_1 \c14\b[{botname}]\o \c10/join #indonesia\o masuk ruangan · \c10/msg nick\o bicara pribadi · \c10/nick nama\o ganti namamu.
+/bot set Adi onboarding_2 \c14\b[{botname}]\o Tiap ruangan jadi satu tab di atas. \c10/part\o keluar, \c10/help\o daftar perintah, \c10F1\o buka panduan.
 /bot set Adi farewell none
 /bot set Adi mention_response \c12\b[Adi]\o detikInet, Antara Tekno, CNN Indonesia Teknologi dan Hybrid. \c10!sumber\o menyebut semuanya.
 /bot addcmd Adi sumber \c12\b[Adi]\o detikInet, Antara Tekno, CNN Indonesia Teknologi dan Hybrid, diperiksa \c10tiap setengah jam\o.
@@ -228,6 +243,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Yusuf greeting \c09\b[Yusuf]\o Halo {nickname}! \c03Empat meja olahraga\o di saluran. !sumber untuk daftarnya, !klub kalau memaksa.
 /bot set Yusuf greeting_delivery private_notice
 /bot set Yusuf greeter_repeat_window 43200
+/bot set Yusuf public_greeting \c09\b[Yusuf]\o \b{nickname}\o turun ke lapangan.
+/bot set Yusuf onboarding_1 \c14\b[{botname}]\o \c10/join #indonesia\o masuk ruangan · \c10/msg nick\o bicara pribadi · \c10/nick nama\o ganti namamu.
+/bot set Yusuf onboarding_2 \c14\b[{botname}]\o Tiap ruangan jadi satu tab di atas. \c10/part\o keluar, \c10/help\o daftar perintah, \c10F1\o buka panduan.
 /bot set Yusuf farewell none
 /bot set Yusuf mention_response \c09\b[Yusuf]\o Bola bergulir. \c03!sumber\o menyebut yang saya baca.
 /bot addcmd Yusuf sumber \c09\b[Yusuf]\o detikSport, Antara Olahraga, CNN Indonesia Olahraga dan Tempo Bola, diperiksa \c03tiap dua puluh menit\o.
@@ -248,6 +266,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Sari greeting \c07\b[Sari]\o Selamat datang, {nickname}. \c02Lima meja ekonomi\o di saluran — !sumber untuk daftarnya, !ingat sebelum percaya.
 /bot set Sari greeting_delivery private_notice
 /bot set Sari greeter_repeat_window 43200
+/bot set Sari public_greeting \c07\b[Sari]\o \b{nickname}\o masuk pasar.
+/bot set Sari onboarding_1 \c14\b[{botname}]\o \c10/join #indonesia\o masuk ruangan · \c10/msg nick\o bicara pribadi · \c10/nick nama\o ganti namamu.
+/bot set Sari onboarding_2 \c14\b[{botname}]\o Tiap ruangan jadi satu tab di atas. \c10/part\o keluar, \c10/help\o daftar perintah, \c10F1\o buka panduan.
 /bot set Sari farewell none
 /bot set Sari mention_response \c07\b[Sari]\o Lima sumber ekonomi sekaligus. \c02!sumber\o menyebut semuanya.
 /bot addcmd Sari sumber \c07\b[Sari]\o CNBC Indonesia, Katadata, Antara Ekonomi, Tempo Bisnis dan CNN Indonesia Ekonomi, diperiksa \c02tiap setengah jam\o.
@@ -267,6 +288,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Wayan greeting \c13\b[Wayan]\o Masuk, {nickname}. \c05Antara, CNN Indonesia dan Tempo Seleb\o di saluran. !sumber untuk daftarnya.
 /bot set Wayan greeting_delivery private_notice
 /bot set Wayan greeter_repeat_window 43200
+/bot set Wayan public_greeting \c13\b[Wayan]\o \b{nickname}\o bergabung. Selamat datang.
+/bot set Wayan onboarding_1 \c14\b[{botname}]\o \c10/join #indonesia\o masuk ruangan · \c10/msg nick\o bicara pribadi · \c10/nick nama\o ganti namamu.
+/bot set Wayan onboarding_2 \c14\b[{botname}]\o Tiap ruangan jadi satu tab di atas. \c10/part\o keluar, \c10/help\o daftar perintah, \c10F1\o buka panduan.
 /bot set Wayan farewell none
 /bot set Wayan mention_response \c13\b[Wayan]\o Film, musik dan kabar selebritas. \c05!sumber\o menyebut salurannya.
 /bot addcmd Wayan sumber \c13\b[Wayan]\o Antara Hiburan, CNN Indonesia Hiburan dan Tempo Seleb, diperiksa \c05tiap 45 menit\o.
@@ -283,6 +307,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Intan greeting \c06\b[Intan]\o Halo {nickname}. \c11CNN Indonesia Gaya Hidup dan Tempo Gaya\o datang tiap jam. !sumber untuk daftarnya.
 /bot set Intan greeting_delivery private_notice
 /bot set Intan greeter_repeat_window 43200
+/bot set Intan public_greeting \c06\b[Intan]\o \b{nickname}\o sudah di sini.
+/bot set Intan onboarding_1 \c14\b[{botname}]\o \c10/join #indonesia\o masuk ruangan · \c10/msg nick\o bicara pribadi · \c10/nick nama\o ganti namamu.
+/bot set Intan onboarding_2 \c14\b[{botname}]\o Tiap ruangan jadi satu tab di atas. \c10/part\o keluar, \c10/help\o daftar perintah, \c10F1\o buka panduan.
 /bot set Intan farewell none
 /bot set Intan mention_response \c06\b[Intan]\o Makan, jalan, kesehatan. \c11!sumber\o menyebut salurannya.
 /bot addcmd Intan sumber \c06\b[Intan]\o CNN Indonesia Gaya Hidup dan Tempo Gaya, diperiksa \c11tiap jam\o.
@@ -298,6 +325,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Rizky greeting \c12\b[Rizky]\o Masuk, {nickname}! \c10Gamebrott\o di saluran, dan menu Games membuka 18 klasik di peramban. !sumber, !main.
 /bot set Rizky greeting_delivery private_notice
 /bot set Rizky greeter_repeat_window 43200
+/bot set Rizky public_greeting \c12\b[Rizky]\o \b{nickname}\o masuk ke permainan.
+/bot set Rizky onboarding_1 \c14\b[{botname}]\o \c10/join #indonesia\o masuk ruangan · \c10/msg nick\o bicara pribadi · \c10/nick nama\o ganti namamu.
+/bot set Rizky onboarding_2 \c14\b[{botname}]\o Tiap ruangan jadi satu tab di atas. \c10/part\o keluar, \c10/help\o daftar perintah, \c10F1\o buka panduan.
 /bot set Rizky farewell none
 /bot set Rizky mention_response \c12\b[Rizky]\o Kabar gim saya yang bawa. \c10!main\o menjelaskan cara mainnya di sini.
 /bot addcmd Rizky sumber \c12\b[Rizky]\o Gamebrott, diperiksa \c10tiap jam\o.

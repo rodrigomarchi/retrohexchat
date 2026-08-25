@@ -1,0 +1,129 @@
+<p>
+  {dgettext(
+    "help_bots",
+    "The Greeter capability welcomes people into a channel. A welcome has two halves with different audiences: one short line the whole room reads, and the private lines that orient the newcomer without anyone else seeing them."
+  )}
+</p>
+
+<.help_h4 icon={:icon_btn_join}>{dgettext("help_bots", "The two halves")}</.help_h4>
+<table>
+  <thead>
+    <tr>
+      <th>{dgettext("help_bots", "Setting")}</th>
+      <th>{dgettext("help_bots", "Who reads it")}</th>
+      <th>{dgettext("help_bots", "When")}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>public_greeting</code></td>
+      <td>{dgettext("help_bots", "Everyone in the channel")}</td>
+      <td>{dgettext("help_bots", "Only the first time this bot meets this nickname here")}</td>
+    </tr>
+    <tr>
+      <td><code>greeting</code></td>
+      <td>{dgettext("help_bots", "The newcomer alone")}</td>
+      <td>{dgettext("help_bots", "Every join the repeat window allows")}</td>
+    </tr>
+    <tr>
+      <td>
+        <code>onboarding_1</code> … <code>onboarding_4</code>
+      </td>
+      <td>{dgettext("help_bots", "The newcomer alone")}</td>
+      <td>{dgettext("help_bots", "Every join the repeat window allows")}</td>
+    </tr>
+    <tr>
+      <td><code>farewell</code></td>
+      <td>{dgettext("help_bots", "Depends on farewell_delivery")}</td>
+      <td>{dgettext("help_bots", "On part")}</td>
+    </tr>
+  </tbody>
+</table>
+
+<.help_h4 icon={:icon_code}>{dgettext("help_bots", "Setting them")}</.help_h4>
+<pre>{dgettext("help_bots", "/bot set <name> public_greeting <text>
+/bot set <name> greeting <text>
+/bot set <name> onboarding_1 <text>
+/bot set <name> onboarding_2 <text>
+/bot set <name> greeting_delivery private_notice
+/bot set <name> onboarding_delivery private_notice
+/bot set <name> greeter_repeat_window 43200
+/bot set <name> farewell none")}</pre>
+
+<p>
+  {dgettext(
+    "help_bots",
+    "Any of them takes none to clear it. A cleared line is skipped, so a bot with only a greeting behaves exactly as it always did. Onboarding is numbered rather than appended: setting onboarding_2 twice replaces it, which is what lets a provisioning script be pasted more than once."
+  )}
+</p>
+
+<.help_h4 icon={:icon_chat}>{dgettext("help_bots", "Delivery")}</.help_h4>
+<table>
+  <thead>
+    <tr>
+      <th>{dgettext("help_bots", "Mode")}</th>
+      <th>{dgettext("help_bots", "Effect")}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>public</code></td>
+      <td>{dgettext("help_bots", "A message in the channel. It is kept in the history.")}</td>
+    </tr>
+    <tr>
+      <td><code>channel_notice</code></td>
+      <td>{dgettext("help_bots", "A notice in the channel. It is kept in the history.")}</td>
+    </tr>
+    <tr>
+      <td><code>private_notice</code></td>
+      <td>
+        {dgettext(
+          "help_bots",
+          "A notice only the newcomer sees, in that channel's view. It is not kept in the history."
+        )}
+      </td>
+    </tr>
+    <tr>
+      <td><code>silent</code></td>
+      <td>{dgettext("help_bots", "Nothing is sent.")}</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  {dgettext(
+    "help_bots",
+    "greeting_delivery covers the greeting; onboarding_delivery covers the numbered lines and falls back to greeting_delivery when it is not set. public_greeting is always public — that is what it is for."
+  )}
+</p>
+
+<.help_h4 icon={:icon_clock}>{dgettext("help_bots", "Who counts as new")}</.help_h4>
+<p>
+  {dgettext(
+    "help_bots",
+    "The bot records who it has welcomed into each channel, and that record survives a restart. Somebody it has never met gets the public line and the private ones. Somebody it met longer ago than greeter_repeat_window seconds gets the private ones again, but the room is not told twice. Somebody who was just here gets nothing."
+  )}
+</p>
+
+<p>
+  {dgettext(
+    "help_bots",
+    "A repeat window of 0 means there is no window: the private lines go out on every join. The public line still goes out once per person, ever."
+  )}
+</p>
+
+<.help_h4 icon={:icon_code}>{dgettext("help_bots", "Placeholders")}</.help_h4>
+<p>
+  {dgettext(
+    "help_bots",
+    "Every line accepts {nickname} for whoever joined, {channel} for the room, {botname} for the bot and {prefix} for its command prefix. Lines also accept the IRC formatting escapes: \\c04 red, \\b bold, \\o reset."
+  )}
+</p>
+
+<.help_h4 icon={:icon_community}>{dgettext("help_bots", "Keeping a room readable")}</.help_h4>
+<p>
+  {dgettext(
+    "help_bots",
+    "Only one bot per channel should greet. Two greeters welcome every newcomer twice, which is why a bot that stands in every room is set to greeting none. Keep the public line to one sentence: it is the only part of a welcome the whole room reads and the only part that persists. Everything a newcomer needs to learn belongs in the private half."
+  )}
+</p>

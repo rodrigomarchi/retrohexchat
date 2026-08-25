@@ -57,6 +57,7 @@ config :retro_hex_chat, Oban,
        {"@reboot", RetroHexChat.Jobs.RuntimeStaleCleanupWorker},
        {"@reboot", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker},
        {"@reboot", RetroHexChat.Jobs.ScrapedPagePruneWorker},
+       {"@reboot", RetroHexChat.Jobs.BotGreetingPruneWorker},
        {"@hourly", RetroHexChat.Jobs.ServerBanExpiryWorker},
        {"0 */6 * * *", RetroHexChat.Jobs.RegisteredChannelExpiryWorker},
        {"15 */6 * * *", RetroHexChat.Jobs.RegisteredNickExpiryWorker},
@@ -65,7 +66,8 @@ config :retro_hex_chat, Oban,
        {"*/15 * * * *", RetroHexChat.Jobs.ChatDeviceSessionCleanupWorker},
        {"45 * * * *", RetroHexChat.Jobs.RuntimeStaleCleanupWorker},
        {"50 * * * *", RetroHexChat.Jobs.ScrapedPagePruneWorker},
-       {"55 * * * *", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker}
+       {"55 * * * *", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker},
+       {"5 4 * * *", RetroHexChat.Jobs.BotGreetingPruneWorker}
      ]},
     {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(6)},
     Oban.Plugins.Pruner

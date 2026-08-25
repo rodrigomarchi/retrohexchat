@@ -3,7 +3,7 @@ defmodule RetroHexChat.Bots.ServerTest do
 
   @moduletag :integration
 
-  alias RetroHexChat.Bots.{Registry, Server, Supervisor}
+  alias RetroHexChat.Bots.{GreetingLedgerStub, Registry, Server, Supervisor}
   alias RetroHexChat.Jobs.BotEventLogWorker
   alias RetroHexChat.Jobs.BotScheduledMessageWorker
   alias RetroHexChat.Jobs.RSSPollWorker
@@ -640,25 +640,92 @@ defmodule RetroHexChat.Bots.ServerTest do
       refute_receive %{event: "new_message", payload: %{author: "PrivateGreetBot"}}, 100
     end
 
-    test "suppresses the same greeter output to the same nick inside the repeat window" do
-      {:ok, _pid} = Supervisor.start_bot(@private_greeter_bot)
+    @onboarding_bot %{
+      id: 992,
+      name: "TourBot",
+      nickname: "TourBot",
+      command_prefix: "!",
+      created_by: "admin",
+      enabled: true,
+      cooldown_ms: 3000,
+      capabilities: %{
+        "greeter" => %{
+          "public_greeting" => "{nickname} just walked in.",
+          "greeting" => "Welcome {nickname}!",
+          "onboarding_1" => "/join enters a room.",
+          "onboarding_2" => "Every room is a tab.",
+          "greeting_delivery" => "private_notice",
+          "repeat_window_sec" => 3600,
+          "enabled" => true
+        }
+      },
+      channel_configs: [
+        %{channel_name: "#privategreet", enabled: true, capability_overrides: %{}}
+      ],
+      custom_commands: []
+    }
+
+    test "announces a newcomer once and tours them privately" do
+      on_exit(fn -> Supervisor.stop_bot("TourBot") end)
+      {:ok, _pid} = Supervisor.start_bot(@onboarding_bot)
 
       {:ok, _} = RetroHexChat.Channels.Server.join("#privategreet", "newcomer")
 
+      # The room hears one line.
       assert_receive %{
-                       event: "new_notice",
-                       payload: %{author: "PrivateGreetBot", content: "Welcome newcomer!"}
+                       event: "new_message",
+                       payload: %{author: "TourBot", content: "newcomer just walked in."}
                      },
                      2000
 
-      :ok = RetroHexChat.Channels.Server.part("#privategreet", "newcomer")
+      # The newcomer hears the rest, and only the newcomer.
+      for content <- ["Welcome newcomer!", "/join enters a room.", "Every room is a tab."] do
+        assert_receive %{
+                         event: "new_notice",
+                         payload: %{author: "TourBot", content: ^content}
+                       },
+                       2000
+      end
+
+      refute_receive %{event: "new_message", payload: %{author: "TourBot"}}, 200
+    end
+
+    test "only the announcement is written down" do
+      # The tour is delivered by broadcast alone and never reaches
+      # `Channels.Server.send_message`, so nobody scrolling back into the room
+      # tomorrow reads somebody else's onboarding.
+      on_exit(fn -> Supervisor.stop_bot("TourBot") end)
+      {:ok, _pid} = Supervisor.start_bot(@onboarding_bot)
+
+      {:ok, _} = RetroHexChat.Channels.Server.join("#privategreet", "newcomer")
+
+      assert_receive %{event: "new_message", payload: %{author: "TourBot"}}, 2000
+      refute_receive %{event: "new_message", payload: %{author: "TourBot"}}, 200
+
+      persisted =
+        RetroHexChat.Chat.Message
+        |> Ecto.Query.where(author_nickname: "TourBot")
+        |> RetroHexChat.Repo.all()
+
+      assert [%{content: "newcomer just walked in."}] = persisted
+    end
+
+    test "says nothing when the ledger reports somebody already greeted" do
+      # Which rejoin is a repeat is `Queries.record_greeting/4`'s arithmetic, and
+      # `queries_test.exs` proves it against a real table. What belongs here is
+      # the wiring: a verdict of `:within_window` reaches the bot and silences it.
+      GreetingLedgerStub.set_answer(:within_window)
+      on_exit(&GreetingLedgerStub.reset/0)
+
+      {:ok, _pid} = Supervisor.start_bot(@private_greeter_bot)
+
       {:ok, _} = RetroHexChat.Channels.Server.join("#privategreet", "newcomer")
 
       refute_receive %{
                        event: "new_notice",
                        payload: %{author: "PrivateGreetBot", content: "Welcome newcomer!"}
                      },
-                     200
+                     300
     end
   end
 

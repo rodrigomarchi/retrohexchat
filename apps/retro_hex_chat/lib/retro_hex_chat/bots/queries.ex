@@ -5,7 +5,7 @@ defmodule RetroHexChat.Bots.Queries do
 
   import Ecto.Query
 
-  alias RetroHexChat.Bots.{Bot, BotChannelConfig, BotCustomCommand, BotEventLog}
+  alias RetroHexChat.Bots.{Bot, BotChannelConfig, BotCustomCommand, BotEventLog, BotGreeting}
   alias RetroHexChat.Page
   alias RetroHexChat.Repo
 
@@ -14,6 +14,10 @@ defmodule RetroHexChat.Bots.Queries do
   # plausible real configuration — it exists so the query cannot be unbounded,
   # not to stop anyone.
   @max_curated 500
+
+  # How long a bot remembers meeting somebody. Past this the room welcomes them
+  # again, which for an absence measured in months is the right answer anyway.
+  @greeting_retention_days 90
 
   # ── Bot CRUD ──────────────────────────────────────────────────
 
@@ -197,5 +201,133 @@ defmodule RetroHexChat.Bots.Queries do
       metadata: metadata
     })
     |> Repo.insert()
+  end
+
+  # ── Greeting ledger ───────────────────────────────────────────
+
+  @doc """
+  Records that `bot_id` is welcoming `nickname` into `channel`, and says what
+  kind of welcome it has earned.
+
+  Three answers, because a welcome has three cases and the caller has to tell
+  them apart: somebody nobody has met, somebody last seen longer ago than the
+  window, and somebody who was just here. They are decided by the write itself
+  rather than by a read followed by a write — two people joining the same room
+  in the same instant would both read "never greeted" and both be announced.
+
+  `window_sec` of zero means there is no window: everyone is greeted again on
+  every join, and only the announcement stays once per person.
+  """
+  @spec record_greeting(integer(), String.t(), String.t(), non_neg_integer()) ::
+          :first_time | :window_elapsed | :within_window
+  def record_greeting(bot_id, channel, nickname, window_sec) do
+    now = DateTime.utc_now()
+    channel_name = String.downcase(channel)
+    normalized_nickname = String.downcase(nickname)
+
+    inserted =
+      Repo.insert_all(
+        BotGreeting,
+        [
+          %{
+            bot_id: bot_id,
+            channel_name: channel_name,
+            nickname: normalized_nickname,
+            greeted_at: now,
+            inserted_at: now,
+            updated_at: now
+          }
+        ],
+        on_conflict: :nothing,
+        conflict_target: [:bot_id, :channel_name, :nickname]
+      )
+
+    case inserted do
+      {1, _returned} ->
+        :first_time
+
+      _already_known ->
+        refresh_greeting(bot_id, channel_name, normalized_nickname, now, window_sec)
+    end
+  end
+
+  @spec refresh_greeting(
+          integer(),
+          String.t(),
+          String.t(),
+          DateTime.t(),
+          non_neg_integer()
+        ) :: :window_elapsed | :within_window
+  defp refresh_greeting(bot_id, channel_name, nickname, now, window_sec) do
+    cutoff = DateTime.add(now, -window_sec, :second)
+
+    query =
+      from g in BotGreeting,
+        where: g.bot_id == ^bot_id,
+        where: g.channel_name == ^channel_name,
+        where: g.nickname == ^nickname,
+        where: g.greeted_at <= ^cutoff
+
+    case Repo.update_all(query, set: [greeted_at: now, updated_at: now]) do
+      {0, _} -> :within_window
+      {_updated, _} -> :window_elapsed
+    end
+  end
+
+  @doc """
+  Forgets greetings older than `before`, at most `limit` of them.
+
+  Guest nicknames are chosen freely and never come back, so the ledger grows with
+  names rather than with people. A row older than any repeat window has one job
+  left — keeping the public announcement from repeating — and letting that go for
+  somebody absent for months is the behaviour worth having anyway.
+  """
+  @spec delete_greetings_before(DateTime.t(), keyword()) :: non_neg_integer()
+  def delete_greetings_before(%DateTime{} = before, opts \\ []) do
+    limit = Keyword.get(opts, :limit, @max_curated)
+
+    ids =
+      from(g in BotGreeting,
+        where: g.greeted_at < ^before,
+        order_by: [asc: g.greeted_at],
+        limit: ^limit,
+        select: g.id
+      )
+      |> Repo.all()
+
+    {deleted, _} = Repo.delete_all(from g in BotGreeting, where: g.id in ^ids)
+    deleted
+  end
+
+  @doc """
+  Forgets the oldest greetings past `retention_days`, at most `:limit` of them.
+
+  A row's only job once the repeat window has passed is keeping the room from
+  announcing the same person twice. Somebody absent for months is somebody the
+  room may as well welcome again, so the record does not have to be kept for
+  ever — and guest nicknames are chosen freely, so if it were, the table would
+  grow with names nobody will use again.
+  """
+  @spec prune_greetings(keyword()) :: %{
+          candidates: non_neg_integer(),
+          deleted: non_neg_integer(),
+          cutoff: DateTime.t()
+        }
+  def prune_greetings(opts \\ []) do
+    retention_days = Keyword.get(opts, :retention_days, @greeting_retention_days)
+    limit = Keyword.get(opts, :limit, @max_curated)
+    cutoff = DateTime.add(DateTime.utc_now(), -retention_days * 24 * 60 * 60, :second)
+
+    %{
+      candidates: count_greetings_before(cutoff),
+      deleted: delete_greetings_before(cutoff, limit: limit),
+      cutoff: cutoff
+    }
+  end
+
+  @doc "How many greetings are older than `before`."
+  @spec count_greetings_before(DateTime.t()) :: non_neg_integer()
+  def count_greetings_before(%DateTime{} = before) do
+    Repo.aggregate(from(g in BotGreeting, where: g.greeted_at < ^before), :count, :id)
   end
 end

@@ -114,6 +114,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Meiling greeting \c03\b[Meiling]\o 你好，{nickname}！我是 Meiling。\c02試試 !rooms\o、!zaoan 或 !english。隨意坐。
 /bot set Meiling greeting_delivery private_notice
 /bot set Meiling greeter_repeat_window 43200
+/bot set Meiling public_greeting \c03\b[Meiling]\o \b{nickname}\o 剛進來。隨便坐。
+/bot set Meiling onboarding_1 \c14\b[{botname}]\o \c10/join #fanti\o 進入房間 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改暱稱。
+/bot set Meiling onboarding_2 \c14\b[{botname}]\o 每個房間是上方的一個分頁。\c10/part\o 離開，\c10/help\o 列出指令，\c10F1\o 開啟手冊。
 /bot set Meiling farewell none
 /bot set Meiling mention_response \c03\b[Meiling]\o 叫我？在的。\c02試試 !rooms\o。
 
@@ -155,6 +158,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Chunhua greeting \c02\b[Chunhua]\o 歡迎來到 #tw-news，{nickname}。\c14頭條會自己進來\o —— !sources 說明來源。
 /bot set Chunhua greeting_delivery private_notice
 /bot set Chunhua greeter_repeat_window 43200
+/bot set Chunhua public_greeting \c02\b[Chunhua]\o \b{nickname}\o 進了編輯室。
+/bot set Chunhua onboarding_1 \c14\b[{botname}]\o \c10/join #fanti\o 進入房間 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改暱稱。
+/bot set Chunhua onboarding_2 \c14\b[{botname}]\o 每個房間是上方的一個分頁。\c10/part\o 離開，\c10/help\o 列出指令，\c10F1\o 開啟手冊。
 /bot set Chunhua farewell none
 /bot set Chunhua mention_response \c02\b[Chunhua]\o 訂閱來源送什麼我貼什麼。\c14!sources\o 看清單，!diyici 看其餘。
 /bot addcmd Chunhua sources \c02\b[Chunhua]\o 聯合新聞網、Yahoo 奇摩新聞和中央廣播電臺，\c14每二十分鐘\o 抓一次。
@@ -172,6 +178,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ahfai greeting \c07\b[Ahfai]\o {nickname}，歡迎。\c11香港獨立媒體\o在線上。!sources 看清單。
 /bot set Ahfai greeting_delivery private_notice
 /bot set Ahfai greeter_repeat_window 43200
+/bot set Ahfai public_greeting \c07\b[Ahfai]\o \b{nickname}\o 到咗，歡迎。
+/bot set Ahfai onboarding_1 \c14\b[{botname}]\o \c10/join #fanti\o 進入房間 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改暱稱。
+/bot set Ahfai onboarding_2 \c14\b[{botname}]\o 每個房間是上方的一個分頁。\c10/part\o 離開，\c10/help\o 列出指令，\c10F1\o 開啟手冊。
 /bot set Ahfai farewell none
 /bot set Ahfai mention_response \c07\b[Ahfai]\o 另一座城市的頭條。\c11!sources\o 看清單。
 /bot addcmd Ahfai sources \c07\b[Ahfai]\o 香港獨立媒體網，\c11每半小時\o 抓一次。
@@ -186,6 +195,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Shijie greeting \c10\b[Shijie]\o 你好，{nickname}。\c06中央社國際新聞和 BBC 中文網\o在線上。!sources 看清單。
 /bot set Shijie greeting_delivery private_notice
 /bot set Shijie greeter_repeat_window 43200
+/bot set Shijie public_greeting \c10\b[Shijie]\o \b{nickname}\o 來了，歡迎。
+/bot set Shijie onboarding_1 \c14\b[{botname}]\o \c10/join #fanti\o 進入房間 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改暱稱。
+/bot set Shijie onboarding_2 \c14\b[{botname}]\o 每個房間是上方的一個分頁。\c10/part\o 離開，\c10/help\o 列出指令，\c10F1\o 開啟手冊。
 /bot set Shijie farewell none
 /bot set Shijie mention_response \c10\b[Shijie]\o 世界的事，用自己的字看。\c06!sources\o 列出兩個來源。
 /bot addcmd Shijie sources \c10\b[Shijie]\o 中央社國際新聞和 BBC 中文網，\c06每半小時\o 抓一次。
@@ -201,6 +213,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Keji greeting \c12\b[Keji]\o 歡迎，{nickname}。\c10TechNews、iThome、中央社科技、INSIDE\o 會自己落進來。!sources 看清單，!support 在提問之前看。
 /bot set Keji greeting_delivery private_notice
 /bot set Keji greeter_repeat_window 43200
+/bot set Keji public_greeting \c12\b[Keji]\o \b{nickname}\o 到了，歡迎。
+/bot set Keji onboarding_1 \c14\b[{botname}]\o \c10/join #fanti\o 進入房間 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改暱稱。
+/bot set Keji onboarding_2 \c14\b[{botname}]\o 每個房間是上方的一個分頁。\c10/part\o 離開，\c10/help\o 列出指令，\c10F1\o 開啟手冊。
 /bot set Keji farewell none
 /bot set Keji mention_response \c12\b[Keji]\o 四個科技來源在線上。\c10!sources\o 告訴你是哪幾個。
 /bot addcmd Keji sources \c12\b[Keji]\o 科技新報、iThome、中央社科技新聞和 INSIDE，\c10每半小時\o 抓一次。
@@ -219,6 +234,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Dianwan greeting \c12\b[Dianwan]\o 進來吧，{nickname}！\c10巴哈姆特 GNN 和 4Gamers\o在線上，Games 選單裡有 18 款經典可以直接玩。!sources、!play。
 /bot set Dianwan greeting_delivery private_notice
 /bot set Dianwan greeter_repeat_window 43200
+/bot set Dianwan public_greeting \c12\b[Dianwan]\o \b{nickname}\o 進入遊戲。
+/bot set Dianwan onboarding_1 \c14\b[{botname}]\o \c10/join #fanti\o 進入房間 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改暱稱。
+/bot set Dianwan onboarding_2 \c14\b[{botname}]\o 每個房間是上方的一個分頁。\c10/part\o 離開，\c10/help\o 列出指令，\c10F1\o 開啟手冊。
 /bot set Dianwan farewell none
 /bot set Dianwan mention_response \c12\b[Dianwan]\o 遊戲的消息我來搬。\c10!play\o 說明怎麼在這裡直接玩。
 /bot addcmd Dianwan sources \c12\b[Dianwan]\o 巴哈姆特 GNN 和 4Gamers，\c10每四十五分鐘\o 抓一次。
@@ -235,6 +253,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Yundong greeting \c09\b[Yundong]\o {nickname}，你好！\c03中央社體育和自由時報體育\o在線上。!sources 看清單，!qiudui 你真要問再說。
 /bot set Yundong greeting_delivery private_notice
 /bot set Yundong greeter_repeat_window 43200
+/bot set Yundong public_greeting \c09\b[Yundong]\o \b{nickname}\o 上場了。
+/bot set Yundong onboarding_1 \c14\b[{botname}]\o \c10/join #fanti\o 進入房間 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改暱稱。
+/bot set Yundong onboarding_2 \c14\b[{botname}]\o 每個房間是上方的一個分頁。\c10/part\o 離開，\c10/help\o 列出指令，\c10F1\o 開啟手冊。
 /bot set Yundong farewell none
 /bot set Yundong mention_response \c09\b[Yundong]\o 球在動。\c03!sources\o 說明我讀什麼。
 /bot addcmd Yundong sources \c09\b[Yundong]\o 中央社體育新聞和自由時報體育，\c03每二十分鐘\o 抓一次。
@@ -251,6 +272,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Caijing greeting \c07\b[Caijing]\o 你好，{nickname}。\c14中央社財經和自由時報財經\o在線上 —— !sources 看清單，!tixing 在相信之前看。
 /bot set Caijing greeting_delivery private_notice
 /bot set Caijing greeter_repeat_window 43200
+/bot set Caijing public_greeting \c07\b[Caijing]\o \b{nickname}\o 進場了。
+/bot set Caijing onboarding_1 \c14\b[{botname}]\o \c10/join #fanti\o 進入房間 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改暱稱。
+/bot set Caijing onboarding_2 \c14\b[{botname}]\o 每個房間是上方的一個分頁。\c10/part\o 離開，\c10/help\o 列出指令，\c10F1\o 開啟手冊。
 /bot set Caijing farewell none
 /bot set Caijing mention_response \c14\b[Caijing]\o 兩個財經來源。\c07!sources\o 告訴你是哪兩個。
 /bot addcmd Caijing sources \c14\b[Caijing]\o 中央社財經新聞和自由時報財經，\c07每半小時\o 抓一次。
@@ -267,6 +291,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Kexue greeting \c11\b[Kexue]\o 歡迎，{nickname}。\c02泛科學\o在線上 —— 更新不快，所以九十分鐘抓一次。!sources。
 /bot set Kexue greeting_delivery private_notice
 /bot set Kexue greeter_repeat_window 43200
+/bot set Kexue public_greeting \c11\b[Kexue]\o \b{nickname}\o 加入了，歡迎。
+/bot set Kexue onboarding_1 \c14\b[{botname}]\o \c10/join #fanti\o 進入房間 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改暱稱。
+/bot set Kexue onboarding_2 \c14\b[{botname}]\o 每個房間是上方的一個分頁。\c10/part\o 離開，\c10/help\o 列出指令，\c10F1\o 開啟手冊。
 /bot set Kexue farewell none
 /bot set Kexue mention_response \c11\b[Kexue]\o 泛科學，沒有付費牆。\c02!sources\o 看清單。
 /bot addcmd Kexue sources \c11\b[Kexue]\o 泛科學 PanSci，\c02每九十分鐘\o 抓一次。
@@ -281,6 +308,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Shenghuo greeting \c06\b[Shenghuo]\o 你好，{nickname}。\c13中央社生活和自由時報娛樂\o每小時送來一次。!sources 看清單。
 /bot set Shenghuo greeting_delivery private_notice
 /bot set Shenghuo greeter_repeat_window 43200
+/bot set Shenghuo public_greeting \c06\b[Shenghuo]\o \b{nickname}\o 來了，坐。
+/bot set Shenghuo onboarding_1 \c14\b[{botname}]\o \c10/join #fanti\o 進入房間 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改暱稱。
+/bot set Shenghuo onboarding_2 \c14\b[{botname}]\o 每個房間是上方的一個分頁。\c10/part\o 離開，\c10/help\o 列出指令，\c10F1\o 開啟手冊。
 /bot set Shenghuo farewell none
 /bot set Shenghuo mention_response \c06\b[Shenghuo]\o 吃飯、看戲、身體健康。\c13!sources\o 列出來源。
 /bot addcmd Shenghuo sources \c06\b[Shenghuo]\o 中央社生活與健康新聞和自由時報娛樂，\c13每小時\o 抓一次。

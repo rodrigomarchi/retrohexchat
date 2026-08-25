@@ -55,8 +55,16 @@ which lints all fourteen files against the handlers that have to run them.
   read is not a warning, which is why the English `Brutus` does not cover the
   other thirteen. A bot in every room that also greets would double every
   welcome.
-- **Exactly one greeter per room, by private notice.** The newcomer is oriented
-  inside the room without turning everyone else's scrollback into bot chatter.
+- **Exactly one greeter per room.** A welcome has two halves and both belong to
+  the same bot: `public_greeting` is one short line the room sees, and it is sent
+  **only the first time that bot meets that name there**; `greeting` and the
+  `onboarding_*` lines are private notices to the newcomer alone. Splitting the
+  halves across two bots would announce everybody twice.
+- **The IRC half of a welcome is the same in every room of a script.**
+  `onboarding_1` and `onboarding_2` teach `/join`, `/msg`, `/nick`, tabs and
+  `/help` — the same thing whichever door somebody comes through. They are
+  written once per language and repeated verbatim per room, which is a
+  duplication the lint checks rather than tolerates.
 - **No farewells.** They become noise on reconnect churn.
 - **A bot only advertises triggers it answers.** `!fontes` in a greeting from a
   bot with no `fontes` command promises silence, and the promise reads as a bug
@@ -105,6 +113,34 @@ Scripts therefore do not set `rss_max_items`; the default tracks the flood
 budget. [`cadence-migration.txt`](cadence-migration.txt) carries the one-time
 `/bot set` block for bots provisioned before this existed, which still hold the
 old ceiling of 10,000.
+
+## Applying a change to a server that is already running
+
+A script here opens a server that does not exist yet: it creates bots and puts
+them in rooms. A live server needs the same change with none of that — the
+`/bot set` lines alone, pasted once into the Admin Console.
+
+Derive that block from the scripts rather than keeping a copy of it. The scripts
+are the source of truth, a copy goes stale the moment one of them is edited, and
+the block is worth nothing the day after it is pasted:
+
+```bash
+for f in docs/provisioning/*.md; do
+  locale=$(basename "$f" .md); [ "$locale" = README ] && continue
+  echo "# ── $locale ──"
+  grep -E '^/bot set [A-Za-z]+ (public_greeting|onboarding_[1-4]) ' "$f"
+done
+```
+
+Swap the key names for whichever settings the change touches. Each bot's lines
+are adjacent in its script, so the output comes out grouped by bot already.
+
+**Deploy first.** A key that the running release does not know comes back as an
+unknown setting, and the paste is silently half-applied.
+
+[`cadence-migration.txt`](cadence-migration.txt) is the one block kept as a file:
+it lowers a ceiling that no script sets any more, so there is nothing left to
+derive it from.
 
 ## Adding a language
 

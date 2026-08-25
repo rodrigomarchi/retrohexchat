@@ -53,6 +53,23 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
   end
 
   defp args(line), do: line |> String.trim_leading("/") |> String.split(" ", trim: true)
+
+  # The bots that actually say something when somebody walks in. The moderator
+  # every script puts in every room is set to `greeting none` and is not one.
+  defp speaking_greeters(parsed) do
+    for ["bot", "set", bot, "greeting" | rest] <- parsed,
+        Enum.join(rest, " ") != "none",
+        uniq: true,
+        do: bot
+  end
+
+  defp setting(parsed, bot, key) do
+    Enum.find_value(parsed, fn
+      ["bot", "set", ^bot, ^key | rest] -> Enum.join(rest, " ")
+      _line -> nil
+    end)
+  end
+
   defp visible_line(line), do: line |> IrcEscapes.decode() |> Formatter.strip()
 
   defp triggers_advertised(text) do
@@ -458,13 +475,89 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
     end
   end
 
+  test "every room greeter announces newcomers and teaches IRC", %{scripts: scripts} do
+    # The greeting says what the room is. It cannot also say what IRC is, because
+    # it is one line and the room half is the half that has to differ per room.
+    for path <- scripts do
+      {_body, _lines, parsed} = read(path)
+
+      for bot <- speaking_greeters(parsed) do
+        assert setting(parsed, bot, "public_greeting"),
+               "#{bot} greets #{Path.basename(path)} but never announces a newcomer to the room"
+
+        assert setting(parsed, bot, "onboarding_1"),
+               "#{bot} greets #{Path.basename(path)} but teaches no IRC"
+      end
+    end
+  end
+
+  test "the IRC half of a welcome is the same in every room of a script", %{scripts: scripts} do
+    # Whichever door somebody comes through teaches the same thing, and a fix to
+    # the wording reaches every room or none. The repetition is the point: each
+    # script writes these lines in its own language, so they cannot live in one
+    # place, and without this they drift a room at a time.
+    for path <- scripts do
+      {_body, _lines, parsed} = read(path)
+      greeters = speaking_greeters(parsed)
+
+      for key <- ~w(onboarding_1 onboarding_2) do
+        variants =
+          greeters
+          |> Enum.map(&{&1, setting(parsed, &1, key)})
+          |> Enum.reject(fn {_bot, value} -> is_nil(value) end)
+          |> Enum.group_by(fn {_bot, value} -> value end, fn {bot, _value} -> bot end)
+
+        assert map_size(variants) <= 1,
+               "#{Path.basename(path)}: #{key} differs between rooms: " <>
+                 inspect(Enum.map(variants, fn {value, bots} -> {bots, value} end))
+      end
+    end
+  end
+
+  test "onboarding is delivered privately in the seed scripts", %{scripts: scripts} do
+    # Same reason `greeting_delivery` is pinned: the newcomer is oriented inside
+    # the room without turning everyone else's scrollback into bot chatter.
+    for path <- scripts do
+      {_body, _lines, parsed} = read(path)
+
+      for bot <- speaking_greeters(parsed),
+          delivery = setting(parsed, bot, "onboarding_delivery"),
+          delivery != nil do
+        assert delivery == "private_notice",
+               "#{bot} in #{Path.basename(path)} sets onboarding_delivery #{delivery}"
+      end
+    end
+  end
+
+  test "the one public line of a welcome stays short", %{scripts: scripts} do
+    # It is the only part of a welcome everyone in the room reads, and the only
+    # part that persists. The orientation goes in the private half, which is why
+    # there is a private half at all.
+    for path <- scripts do
+      {_body, _lines, parsed} = read(path)
+
+      too_long =
+        for bot <- speaking_greeters(parsed),
+            announcement = setting(parsed, bot, "public_greeting"),
+            announcement != nil,
+            visible = visible_line(announcement),
+            String.length(visible) > 90,
+            do: "#{bot} (#{String.length(visible)})"
+
+      assert too_long == [],
+             "#{Path.basename(path)}: public greetings the whole room reads are too long: " <>
+               inspect(too_long)
+    end
+  end
+
   test "seeded bot speech carries IRC colour escapes", %{scripts: scripts} do
     for path <- scripts do
       {_body, _lines, parsed} = read(path)
 
       speech =
         for ["bot", "set", bot, key | rest] <- parsed,
-            key in ~w(greeting mention_response mod_warn),
+            key in ~w(greeting public_greeting onboarding_1 onboarding_2 onboarding_3
+                      onboarding_4 mention_response mod_warn),
             Enum.join(rest, " ") != "none" do
           {bot, key, Enum.join(rest, " ")}
         end ++

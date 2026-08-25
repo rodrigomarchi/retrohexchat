@@ -75,6 +75,29 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
           )
       },
       %{
+        id: "bot-greeter",
+        title: dgettext("help", "Bot Greeter Capability"),
+        category: dgettext("help", "Bots"),
+        keywords: [
+          "greeter",
+          "greeting",
+          "welcome",
+          "onboarding",
+          "farewell",
+          dgettext("help", "bot greeting"),
+          dgettext("help", "public greeting"),
+          dgettext("help", "onboarding lines"),
+          dgettext("help", "greeting delivery"),
+          dgettext("help", "repeat window")
+        ],
+        icon: :icon_btn_join,
+        description:
+          dgettext(
+            "help",
+            "Welcome newcomers to a channel: one short line the room sees the first time, and private lines that orient the newcomer alone."
+          )
+      },
+      %{
         id: "bot-dice",
         title: dgettext("help", "Bot Dice Capability"),
         category: dgettext("help", "Bots"),

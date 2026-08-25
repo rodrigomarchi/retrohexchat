@@ -117,6 +117,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Fenna greeting \c03\b[Fenna]\o Hoi {nickname}! Ik ben Fenna. \c02Probeer !kanalen\o, !goedemorgen of !engels. Doe alsof je thuis bent.
 /bot set Fenna greeting_delivery private_notice
 /bot set Fenna greeter_repeat_window 43200
+/bot set Fenna public_greeting \c03\b[Fenna]\o \b{nickname}\o is net binnengekomen. Ga zitten.
+/bot set Fenna onboarding_1 \c14\b[{botname}]\o \c10/join #nederland\o gaat een kamer binnen · \c10/msg nick\o praat privé · \c10/nick naam\o verandert de jouwe.
+/bot set Fenna onboarding_2 \c14\b[{botname}]\o Elke kamer is een tabblad bovenaan. \c10/part\o verlaat er een, \c10/help\o toont alle opdrachten, \c10F1\o opent het handboek.
 /bot set Fenna farewell none
 /bot set Fenna mention_response \c03\b[Fenna]\o Geroepen? Ik ben er. \c02Probeer !kanalen\o.
 
@@ -160,6 +163,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Sanne greeting \c02\b[Sanne]\o Welkom in #nieuws, {nickname}. \c14De koppen komen vanzelf\o — !bronnen zegt waarvandaan.
 /bot set Sanne greeting_delivery private_notice
 /bot set Sanne greeter_repeat_window 43200
+/bot set Sanne public_greeting \c02\b[Sanne]\o \b{nickname}\o komt de redactie binnen.
+/bot set Sanne onboarding_1 \c14\b[{botname}]\o \c10/join #nederland\o gaat een kamer binnen · \c10/msg nick\o praat privé · \c10/nick naam\o verandert de jouwe.
+/bot set Sanne onboarding_2 \c14\b[{botname}]\o Elke kamer is een tabblad bovenaan. \c10/part\o verlaat er een, \c10/help\o toont alle opdrachten, \c10F1\o opent het handboek.
 /bot set Sanne farewell none
 /bot set Sanne mention_response \c02\b[Sanne]\o Ik plaats wat de feed stuurt. \c14!bronnen\o voor de lijst, !eerste voor de rest.
 /bot addcmd Sanne bronnen \c02\b[Sanne]\o AD, de Volkskrant en Trouw, \c14elke twintig minuten\o opgehaald.
@@ -177,6 +183,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Wout greeting \c07\b[Wout]\o Welkom, {nickname}. \c11VRT NWS, De Morgen en HLN\o landen hier vanzelf. !bronnen voor de lijst.
 /bot set Wout greeting_delivery private_notice
 /bot set Wout greeter_repeat_window 43200
+/bot set Wout public_greeting \c07\b[Wout]\o \b{nickname}\o is er. Welkom.
+/bot set Wout onboarding_1 \c14\b[{botname}]\o \c10/join #nederland\o gaat een kamer binnen · \c10/msg nick\o praat privé · \c10/nick naam\o verandert de jouwe.
+/bot set Wout onboarding_2 \c14\b[{botname}]\o Elke kamer is een tabblad bovenaan. \c10/part\o verlaat er een, \c10/help\o toont alle opdrachten, \c10F1\o opent het handboek.
 /bot set Wout farewell none
 /bot set Wout mention_response \c07\b[Wout]\o Vlaanderen, niet Nederland. \c11!bronnen\o toont de drie feeds.
 /bot addcmd Wout bronnen \c07\b[Wout]\o VRT NWS, De Morgen en Het Laatste Nieuws, \c11elke twintig minuten\o opgehaald.
@@ -193,6 +202,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Bram greeting \c10\b[Bram]\o Hallo {nickname}. \c06NRC, Het Parool en RTL Nieuws\o komen hier binnen. !bronnen voor de lijst.
 /bot set Bram greeting_delivery private_notice
 /bot set Bram greeter_repeat_window 43200
+/bot set Bram public_greeting \c10\b[Bram]\o \b{nickname}\o sluit aan.
+/bot set Bram onboarding_1 \c14\b[{botname}]\o \c10/join #nederland\o gaat een kamer binnen · \c10/msg nick\o praat privé · \c10/nick naam\o verandert de jouwe.
+/bot set Bram onboarding_2 \c14\b[{botname}]\o Elke kamer is een tabblad bovenaan. \c10/part\o verlaat er een, \c10/help\o toont alle opdrachten, \c10F1\o opent het handboek.
 /bot set Bram farewell none
 /bot set Bram mention_response \c10\b[Bram]\o Het verhaal achter de kop. \c06!bronnen\o toont de lijn.
 /bot addcmd Bram bronnen \c10\b[Bram]\o NRC, Het Parool en RTL Nieuws, \c06elk half uur\o opgehaald.
@@ -209,6 +221,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Tijs greeting \c12\b[Tijs]\o Hoi {nickname}. \c10Tweakers en Bright\o vallen hier binnen. !bronnen voor de lijst, !support voor je iets vraagt.
 /bot set Tijs greeting_delivery private_notice
 /bot set Tijs greeter_repeat_window 43200
+/bot set Tijs public_greeting \c12\b[Tijs]\o \b{nickname}\o is binnen. Welkom.
+/bot set Tijs onboarding_1 \c14\b[{botname}]\o \c10/join #nederland\o gaat een kamer binnen · \c10/msg nick\o praat privé · \c10/nick naam\o verandert de jouwe.
+/bot set Tijs onboarding_2 \c14\b[{botname}]\o Elke kamer is een tabblad bovenaan. \c10/part\o verlaat er een, \c10/help\o toont alle opdrachten, \c10F1\o opent het handboek.
 /bot set Tijs farewell none
 /bot set Tijs mention_response \c12\b[Tijs]\o Twee techniekfeeds aan de lijn. \c10!bronnen\o zegt welke.
 /bot addcmd Tijs bronnen \c12\b[Tijs]\o Tweakers en Bright, \c10elk half uur\o opgehaald.
@@ -225,6 +240,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Marijke greeting \c04\b[Marijke]\o {nickname}, welkom. \c05Security.NL\o aan de lijn. Je leest het later alsnog, dus lees het nu. !bronnen, !patch.
 /bot set Marijke greeting_delivery private_notice
 /bot set Marijke greeter_repeat_window 43200
+/bot set Marijke public_greeting \c04\b[Marijke]\o \b{nickname}\o is er. Lees de adviezen.
+/bot set Marijke onboarding_1 \c14\b[{botname}]\o \c10/join #nederland\o gaat een kamer binnen · \c10/msg nick\o praat privé · \c10/nick naam\o verandert de jouwe.
+/bot set Marijke onboarding_2 \c14\b[{botname}]\o Elke kamer is een tabblad bovenaan. \c10/part\o verlaat er een, \c10/help\o toont alle opdrachten, \c10F1\o opent het handboek.
 /bot set Marijke farewell none
 /bot set Marijke mention_response \c04\b[Marijke]\o Ik waarschuw; dat is het hele werk. \c05!bronnen\o zegt waarvandaan.
 /bot addcmd Marijke bronnen \c04\b[Marijke]\o Security.NL, \c05elk half uur\o opgehaald.
@@ -240,6 +258,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Johan greeting \c09\b[Johan]\o Hoi {nickname}! \c03VI, VoetbalPrimeur en HLN Sport\o aan de lijn. !bronnen voor de lijst, !club als je aandringt.
 /bot set Johan greeting_delivery private_notice
 /bot set Johan greeter_repeat_window 43200
+/bot set Johan public_greeting \c09\b[Johan]\o \b{nickname}\o komt het veld op.
+/bot set Johan onboarding_1 \c14\b[{botname}]\o \c10/join #nederland\o gaat een kamer binnen · \c10/msg nick\o praat privé · \c10/nick naam\o verandert de jouwe.
+/bot set Johan onboarding_2 \c14\b[{botname}]\o Elke kamer is een tabblad bovenaan. \c10/part\o verlaat er een, \c10/help\o toont alle opdrachten, \c10F1\o opent het handboek.
 /bot set Johan farewell none
 /bot set Johan mention_response \c09\b[Johan]\o De bal rolt. \c03!bronnen\o zegt wat ik lees.
 /bot addcmd Johan bronnen \c09\b[Johan]\o Voetbal International, VoetbalPrimeur en HLN Sport, \c03elke twintig minuten\o opgehaald.
@@ -257,6 +278,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Lieke greeting \c06\b[Lieke]\o Welkom, {nickname}. \c13Scientias en New Scientist\o komen elk uur langs. !bronnen voor de lijst.
 /bot set Lieke greeting_delivery private_notice
 /bot set Lieke greeter_repeat_window 43200
+/bot set Lieke public_greeting \c06\b[Lieke]\o \b{nickname}\o sluit aan. Welkom.
+/bot set Lieke onboarding_1 \c14\b[{botname}]\o \c10/join #nederland\o gaat een kamer binnen · \c10/msg nick\o praat privé · \c10/nick naam\o verandert de jouwe.
+/bot set Lieke onboarding_2 \c14\b[{botname}]\o Elke kamer is een tabblad bovenaan. \c10/part\o verlaat er een, \c10/help\o toont alle opdrachten, \c10F1\o opent het handboek.
 /bot set Lieke farewell none
 /bot set Lieke mention_response \c06\b[Lieke]\o Wetenschap zonder betaalmuur. \c13!bronnen\o toont de lijn.
 /bot addcmd Lieke bronnen \c06\b[Lieke]\o Scientias en New Scientist NL, \c13elk uur\o opgehaald.
@@ -272,6 +296,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Daan greeting \c07\b[Daan]\o Hallo {nickname}. \c14Emerce\o aan de lijn — !bronnen voor de lijst, !waarschuwing voor je iets gelooft.
 /bot set Daan greeting_delivery private_notice
 /bot set Daan greeter_repeat_window 43200
+/bot set Daan public_greeting \c07\b[Daan]\o \b{nickname}\o is er. Welkom.
+/bot set Daan onboarding_1 \c14\b[{botname}]\o \c10/join #nederland\o gaat een kamer binnen · \c10/msg nick\o praat privé · \c10/nick naam\o verandert de jouwe.
+/bot set Daan onboarding_2 \c14\b[{botname}]\o Elke kamer is een tabblad bovenaan. \c10/part\o verlaat er een, \c10/help\o toont alle opdrachten, \c10F1\o opent het handboek.
 /bot set Daan farewell none
 /bot set Daan mention_response \c07\b[Daan]\o Ik lees Emerce. \c14!bronnen\o voor de lijst.
 /bot addcmd Daan bronnen \c07\b[Daan]\o Emerce, \c14elke 45 minuten\o opgehaald.
@@ -287,6 +314,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Kees greeting \c11\b[Kees]\o Kom erin, {nickname}. \c04Autoblog\o aan de lijn. !bronnen voor de lijst.
 /bot set Kees greeting_delivery private_notice
 /bot set Kees greeter_repeat_window 43200
+/bot set Kees public_greeting \c11\b[Kees]\o \b{nickname}\o rijdt binnen.
+/bot set Kees onboarding_1 \c14\b[{botname}]\o \c10/join #nederland\o gaat een kamer binnen · \c10/msg nick\o praat privé · \c10/nick naam\o verandert de jouwe.
+/bot set Kees onboarding_2 \c14\b[{botname}]\o Elke kamer is een tabblad bovenaan. \c10/part\o verlaat er een, \c10/help\o toont alle opdrachten, \c10F1\o opent het handboek.
 /bot set Kees farewell none
 /bot set Kees mention_response \c11\b[Kees]\o Rijden en sleutelen. \c04!bronnen\o toont de lijn.
 /bot addcmd Kees bronnen \c11\b[Kees]\o Autoblog, \c04elk anderhalf uur\o opgehaald.

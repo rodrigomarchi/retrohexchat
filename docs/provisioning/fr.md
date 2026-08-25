@@ -123,6 +123,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Margot greeting \c03\b[Margot]\o Salut {nickname} ! Moi c'est Margot. \c02Essayez !salons\o, !bonjour ou !anglais. Faites comme chez vous.
 /bot set Margot greeting_delivery private_notice
 /bot set Margot greeter_repeat_window 43200
+/bot set Margot public_greeting \c03\b[Margot]\o \b{nickname}\o vient d'arriver. Installez-vous.
+/bot set Margot onboarding_1 \c14\b[{botname}]\o \c10/join #france\o entre dans un salon · \c10/msg pseudo\o parle en privé · \c10/nick nom\o change le vôtre.
+/bot set Margot onboarding_2 \c14\b[{botname}]\o Chaque salon est un onglet en haut. \c10/part\o en quitte un, \c10/help\o liste les commandes, \c10F1\o ouvre le manuel.
 /bot set Margot farewell none
 /bot set Margot mention_response \c03\b[Margot]\o On m'appelle ? Je suis là. \c02Essayez !salons\o.
 
@@ -166,6 +169,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Colette greeting \c02\b[Colette]\o Bienvenue dans #actualites, {nickname}. \c14Les titres arrivent seuls\o — !sources dit d'où.
 /bot set Colette greeting_delivery private_notice
 /bot set Colette greeter_repeat_window 43200
+/bot set Colette public_greeting \c02\b[Colette]\o \b{nickname}\o entre à la rédaction.
+/bot set Colette onboarding_1 \c14\b[{botname}]\o \c10/join #france\o entre dans un salon · \c10/msg pseudo\o parle en privé · \c10/nick nom\o change le vôtre.
+/bot set Colette onboarding_2 \c14\b[{botname}]\o Chaque salon est un onglet en haut. \c10/part\o en quitte un, \c10/help\o liste les commandes, \c10F1\o ouvre le manuel.
 /bot set Colette farewell none
 /bot set Colette mention_response \c02\b[Colette]\o Je publie ce que le flux envoie. \c14!sources\o pour la liste, !premiere pour le reste.
 /bot addcmd Colette sources \c02\b[Colette]\o Le Figaro, Libération et L'Obs, relevés \c14toutes les vingt minutes\o.
@@ -183,6 +189,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Renaud greeting \c10\b[Renaud]\o Bonjour {nickname}. \c06France 24 et RFI\o arrivent ici tout seuls. !sources pour la liste.
 /bot set Renaud greeting_delivery private_notice
 /bot set Renaud greeter_repeat_window 43200
+/bot set Renaud public_greeting \c10\b[Renaud]\o \b{nickname}\o nous rejoint.
+/bot set Renaud onboarding_1 \c14\b[{botname}]\o \c10/join #france\o entre dans un salon · \c10/msg pseudo\o parle en privé · \c10/nick nom\o change le vôtre.
+/bot set Renaud onboarding_2 \c14\b[{botname}]\o Chaque salon est un onglet en haut. \c10/part\o en quitte un, \c10/help\o liste les commandes, \c10F1\o ouvre le manuel.
 /bot set Renaud farewell none
 /bot set Renaud mention_response \c10\b[Renaud]\o L'international, en français. \c06!sources\o liste les deux flux.
 /bot addcmd Renaud sources \c10\b[Renaud]\o France 24 et RFI, relevés \c06toutes les demi-heures\o.
@@ -198,6 +207,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Blaise greeting \c12\b[Blaise]\o Salut {nickname}. \c10Next, Numerama, Les Numériques et 01net\o tombent ici. !sources pour la liste, !support avant de demander.
 /bot set Blaise greeting_delivery private_notice
 /bot set Blaise greeter_repeat_window 43200
+/bot set Blaise public_greeting \c12\b[Blaise]\o \b{nickname}\o est arrivé. Bienvenue.
+/bot set Blaise onboarding_1 \c14\b[{botname}]\o \c10/join #france\o entre dans un salon · \c10/msg pseudo\o parle en privé · \c10/nick nom\o change le vôtre.
+/bot set Blaise onboarding_2 \c14\b[{botname}]\o Chaque salon est un onglet en haut. \c10/part\o en quitte un, \c10/help\o liste les commandes, \c10F1\o ouvre le manuel.
 /bot set Blaise farewell none
 /bot set Blaise mention_response \c12\b[Blaise]\o Quatre flux informatiques sur le fil. \c10!sources\o dit lesquels.
 /bot addcmd Blaise sources \c12\b[Blaise]\o Next, Numerama, Les Numériques et 01net, relevés \c10toutes les demi-heures\o.
@@ -216,6 +228,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Amelie greeting \c13\b[Amelie]\o Entrez, {nickname}. \c11Frandroid et Journal du Geek\o sur le fil — !sources pour la liste.
 /bot set Amelie greeting_delivery private_notice
 /bot set Amelie greeter_repeat_window 43200
+/bot set Amelie public_greeting \c13\b[Amelie]\o \b{nickname}\o entre. Bienvenue.
+/bot set Amelie onboarding_1 \c14\b[{botname}]\o \c10/join #france\o entre dans un salon · \c10/msg pseudo\o parle en privé · \c10/nick nom\o change le vôtre.
+/bot set Amelie onboarding_2 \c14\b[{botname}]\o Chaque salon est un onglet en haut. \c10/part\o en quitte un, \c10/help\o liste les commandes, \c10F1\o ouvre le manuel.
 /bot set Amelie farewell none
 /bot set Amelie mention_response \c13\b[Amelie]\o Téléphones, montres et chargeurs qui ne rentrent nulle part. \c11!sources\o liste le fil.
 /bot addcmd Amelie sources \c13\b[Amelie]\o Frandroid et Journal du Geek, relevés \c11toutes les 45 minutes\o.
@@ -231,6 +246,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ambroise greeting \c03\b[Ambroise]\o Bienvenue dans #libre, {nickname}. \c09LinuxFr et Korben\o arrivent seuls. !sources pour la liste, !pourquoi pour le reste.
 /bot set Ambroise greeting_delivery private_notice
 /bot set Ambroise greeter_repeat_window 43200
+/bot set Ambroise public_greeting \c03\b[Ambroise]\o \b{nickname}\o rejoint le libre.
+/bot set Ambroise onboarding_1 \c14\b[{botname}]\o \c10/join #france\o entre dans un salon · \c10/msg pseudo\o parle en privé · \c10/nick nom\o change le vôtre.
+/bot set Ambroise onboarding_2 \c14\b[{botname}]\o Chaque salon est un onglet en haut. \c10/part\o en quitte un, \c10/help\o liste les commandes, \c10F1\o ouvre le manuel.
 /bot set Ambroise farewell none
 /bot set Ambroise mention_response \c03\b[Ambroise]\o Je porte les nouvelles du libre. \c09!sources\o pour la liste.
 /bot addcmd Ambroise sources \c03\b[Ambroise]\o LinuxFr et Korben, relevés \c09toutes les 45 minutes\o.
@@ -247,6 +265,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Denis greeting \c06\b[Denis]\o Salut {nickname}. \c13Developpez.com\o sur le fil. !sources pour la liste.
 /bot set Denis greeting_delivery private_notice
 /bot set Denis greeter_repeat_window 43200
+/bot set Denis public_greeting \c06\b[Denis]\o \b{nickname}\o arrive. Bienvenue.
+/bot set Denis onboarding_1 \c14\b[{botname}]\o \c10/join #france\o entre dans un salon · \c10/msg pseudo\o parle en privé · \c10/nick nom\o change le vôtre.
+/bot set Denis onboarding_2 \c14\b[{botname}]\o Chaque salon est un onglet en haut. \c10/part\o en quitte un, \c10/help\o liste les commandes, \c10F1\o ouvre le manuel.
 /bot set Denis farewell none
 /bot set Denis mention_response \c06\b[Denis]\o Je lis Developpez.com. \c13!sources\o pour la liste.
 /bot addcmd Denis sources \c06\b[Denis]\o Developpez.com, relevé \c13toutes les heures\o.
@@ -261,6 +282,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Lulu greeting \c12\b[Lulu]\o Entrez, {nickname} ! \c10JeuxVideo.com et Gamekult\o sur le fil, et le menu Games ouvre 18 classiques dans le navigateur. !sources, !jouer.
 /bot set Lulu greeting_delivery private_notice
 /bot set Lulu greeter_repeat_window 43200
+/bot set Lulu public_greeting \c12\b[Lulu]\o \b{nickname}\o entre dans la partie.
+/bot set Lulu onboarding_1 \c14\b[{botname}]\o \c10/join #france\o entre dans un salon · \c10/msg pseudo\o parle en privé · \c10/nick nom\o change le vôtre.
+/bot set Lulu onboarding_2 \c14\b[{botname}]\o Chaque salon est un onglet en haut. \c10/part\o en quitte un, \c10/help\o liste les commandes, \c10F1\o ouvre le manuel.
 /bot set Lulu farewell none
 /bot set Lulu mention_response \c12\b[Lulu]\o Les nouvelles du jeu, c'est moi. \c10!jouer\o explique comment jouer ici même.
 /bot addcmd Lulu sources \c12\b[Lulu]\o JeuxVideo.com et Gamekult, relevés \c10toutes les 45 minutes\o.
@@ -277,6 +301,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Jacques greeting \c05\b[Jacques]\o Bienvenue, {nickname}. \c13AlloCiné, Télérama et Les Inrocks\o arrivent chaque heure. !sources pour la liste.
 /bot set Jacques greeting_delivery private_notice
 /bot set Jacques greeter_repeat_window 43200
+/bot set Jacques public_greeting \c05\b[Jacques]\o \b{nickname}\o entre en salle.
+/bot set Jacques onboarding_1 \c14\b[{botname}]\o \c10/join #france\o entre dans un salon · \c10/msg pseudo\o parle en privé · \c10/nick nom\o change le vôtre.
+/bot set Jacques onboarding_2 \c14\b[{botname}]\o Chaque salon est un onglet en haut. \c10/part\o en quitte un, \c10/help\o liste les commandes, \c10F1\o ouvre le manuel.
 /bot set Jacques farewell none
 /bot set Jacques mention_response \c05\b[Jacques]\o Cinéma, séries, musique, expositions. \c13!sources\o liste le fil.
 /bot addcmd Jacques sources \c05\b[Jacques]\o AlloCiné, Télérama et Les Inrocks, relevés \c13toutes les heures\o.
@@ -293,6 +320,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Camille greeting \c11\b[Camille]\o Bonjour {nickname}. \c02Futura et Sciences et Avenir\o arrivent chaque heure. !sources pour la liste.
 /bot set Camille greeting_delivery private_notice
 /bot set Camille greeter_repeat_window 43200
+/bot set Camille public_greeting \c11\b[Camille]\o \b{nickname}\o nous rejoint.
+/bot set Camille onboarding_1 \c14\b[{botname}]\o \c10/join #france\o entre dans un salon · \c10/msg pseudo\o parle en privé · \c10/nick nom\o change le vôtre.
+/bot set Camille onboarding_2 \c14\b[{botname}]\o Chaque salon est un onglet en haut. \c10/part\o en quitte un, \c10/help\o liste les commandes, \c10F1\o ouvre le manuel.
 /bot set Camille farewell none
 /bot set Camille mention_response \c11\b[Camille]\o Vulgarisation, sans péage. \c02!sources\o liste le fil.
 /bot addcmd Camille sources \c11\b[Camille]\o Futura et Sciences et Avenir, relevés \c02toutes les heures\o.
@@ -308,6 +338,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Odile greeting \c07\b[Odile]\o Bonjour {nickname}. \c14La Tribune et L'Usine Digitale\o sur le fil — !sources pour la liste, !avertissement avant d'y croire.
 /bot set Odile greeting_delivery private_notice
 /bot set Odile greeter_repeat_window 43200
+/bot set Odile public_greeting \c07\b[Odile]\o \b{nickname}\o arrive sur les marchés.
+/bot set Odile onboarding_1 \c14\b[{botname}]\o \c10/join #france\o entre dans un salon · \c10/msg pseudo\o parle en privé · \c10/nick nom\o change le vôtre.
+/bot set Odile onboarding_2 \c14\b[{botname}]\o Chaque salon est un onglet en haut. \c10/part\o en quitte un, \c10/help\o liste les commandes, \c10F1\o ouvre le manuel.
 /bot set Odile farewell none
 /bot set Odile mention_response \c07\b[Odile]\o Je lis La Tribune et L'Usine Digitale. \c14!sources\o pour la liste.
 /bot addcmd Odile sources \c07\b[Odile]\o La Tribune et L'Usine Digitale, relevés \c14toutes les demi-heures\o.

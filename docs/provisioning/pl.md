@@ -116,6 +116,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Kasia greeting \c03\b[Kasia]\o Cześć {nickname}! Jestem Kasia. \c02Spróbuj !kanaly\o, !dziendobry albo !angielski. Czuj się jak u siebie.
 /bot set Kasia greeting_delivery private_notice
 /bot set Kasia greeter_repeat_window 43200
+/bot set Kasia public_greeting \c03\b[Kasia]\o \b{nickname}\o właśnie wszedł. Rozgość się.
+/bot set Kasia onboarding_1 \c14\b[{botname}]\o \c10/join #polska\o wchodzi do pokoju · \c10/msg nick\o pisze prywatnie · \c10/nick imie\o zmienia twoje.
+/bot set Kasia onboarding_2 \c14\b[{botname}]\o Każdy pokój to zakładka na górze. \c10/part\o wychodzi z niego, \c10/help\o wypisuje komendy, \c10F1\o otwiera podręcznik.
 /bot set Kasia farewell none
 /bot set Kasia mention_response \c03\b[Kasia]\o Wołałeś? Jestem. \c02Spróbuj !kanaly\o.
 
@@ -159,6 +162,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Zofia greeting \c02\b[Zofia]\o Witaj w #wiadomosci, {nickname}. \c14Nagłówki przychodzą same\o — !zrodla mówi skąd.
 /bot set Zofia greeting_delivery private_notice
 /bot set Zofia greeter_repeat_window 43200
+/bot set Zofia public_greeting \c02\b[Zofia]\o \b{nickname}\o wchodzi do redakcji.
+/bot set Zofia onboarding_1 \c14\b[{botname}]\o \c10/join #polska\o wchodzi do pokoju · \c10/msg nick\o pisze prywatnie · \c10/nick imie\o zmienia twoje.
+/bot set Zofia onboarding_2 \c14\b[{botname}]\o Każdy pokój to zakładka na górze. \c10/part\o wychodzi z niego, \c10/help\o wypisuje komendy, \c10F1\o otwiera podręcznik.
 /bot set Zofia farewell none
 /bot set Zofia mention_response \c02\b[Zofia]\o Publikuję to, co przyśle kanał RSS. \c14!zrodla\o po listę, !pierwsze po resztę.
 /bot addcmd Zofia zrodla \c02\b[Zofia]\o Interia, Polsat News i Wprost, sprawdzane \c14co dwadzieścia minut\o.
@@ -176,6 +182,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Jacek greeting \c12\b[Jacek]\o Cześć {nickname}. \c10Spider's Web i Antyweb\o wpadają tu same. !zrodla po listę, !wsparcie zanim zapytasz.
 /bot set Jacek greeting_delivery private_notice
 /bot set Jacek greeter_repeat_window 43200
+/bot set Jacek public_greeting \c12\b[Jacek]\o \b{nickname}\o jest z nami. Witaj.
+/bot set Jacek onboarding_1 \c14\b[{botname}]\o \c10/join #polska\o wchodzi do pokoju · \c10/msg nick\o pisze prywatnie · \c10/nick imie\o zmienia twoje.
+/bot set Jacek onboarding_2 \c14\b[{botname}]\o Każdy pokój to zakładka na górze. \c10/part\o wychodzi z niego, \c10/help\o wypisuje komendy, \c10F1\o otwiera podręcznik.
 /bot set Jacek farewell none
 /bot set Jacek mention_response \c12\b[Jacek]\o Dwa kanały technologiczne na łączach. \c10!zrodla\o mówi które.
 /bot addcmd Jacek zrodla \c12\b[Jacek]\o Spider's Web i Antyweb, sprawdzane \c10co pół godziny\o.
@@ -192,6 +201,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Bogdan greeting \c11\b[Bogdan]\o Witaj, {nickname}. \c14Benchmark, PurePC i Komputer Świat\o na łączach. !zrodla po listę, !upgrade przed zakupem.
 /bot set Bogdan greeting_delivery private_notice
 /bot set Bogdan greeter_repeat_window 43200
+/bot set Bogdan public_greeting \c11\b[Bogdan]\o \b{nickname}\o dołącza. Witaj.
+/bot set Bogdan onboarding_1 \c14\b[{botname}]\o \c10/join #polska\o wchodzi do pokoju · \c10/msg nick\o pisze prywatnie · \c10/nick imie\o zmienia twoje.
+/bot set Bogdan onboarding_2 \c14\b[{botname}]\o Każdy pokój to zakładka na górze. \c10/part\o wychodzi z niego, \c10/help\o wypisuje komendy, \c10F1\o otwiera podręcznik.
 /bot set Bogdan farewell none
 /bot set Bogdan mention_response \c11\b[Bogdan]\o Podzespoły i składanie. \c14!zrodla\o pokazuje łącza.
 /bot addcmd Bogdan zrodla \c11\b[Bogdan]\o Benchmark, PurePC i Komputer Świat, sprawdzane \c14co 45 minut\o.
@@ -209,6 +221,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Iwona greeting \c04\b[Iwona]\o {nickname}, witaj. \c05Niebezpiecznik i Sekurak\o na łączach. I tak przeczytasz później, więc przeczytaj teraz. !zrodla, !latka.
 /bot set Iwona greeting_delivery private_notice
 /bot set Iwona greeter_repeat_window 43200
+/bot set Iwona public_greeting \c04\b[Iwona]\o \b{nickname}\o jest tu. Czytaj ostrzeżenia.
+/bot set Iwona onboarding_1 \c14\b[{botname}]\o \c10/join #polska\o wchodzi do pokoju · \c10/msg nick\o pisze prywatnie · \c10/nick imie\o zmienia twoje.
+/bot set Iwona onboarding_2 \c14\b[{botname}]\o Każdy pokój to zakładka na górze. \c10/part\o wychodzi z niego, \c10/help\o wypisuje komendy, \c10F1\o otwiera podręcznik.
 /bot set Iwona farewell none
 /bot set Iwona mention_response \c04\b[Iwona]\o Ostrzegam; to cała moja praca. \c05!zrodla\o mówi skąd.
 /bot addcmd Iwona zrodla \c04\b[Iwona]\o Niebezpiecznik i Sekurak, sprawdzane \c05co pół godziny\o.
@@ -225,6 +240,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Rafal greeting \c12\b[Rafal]\o Wchodź, {nickname}! \c10CD-Action i Eurogamer Polska\o na łączach, a menu Games otwiera 18 klasyków w przeglądarce. !zrodla, !zagraj.
 /bot set Rafal greeting_delivery private_notice
 /bot set Rafal greeter_repeat_window 43200
+/bot set Rafal public_greeting \c12\b[Rafal]\o \b{nickname}\o wchodzi do gry.
+/bot set Rafal onboarding_1 \c14\b[{botname}]\o \c10/join #polska\o wchodzi do pokoju · \c10/msg nick\o pisze prywatnie · \c10/nick imie\o zmienia twoje.
+/bot set Rafal onboarding_2 \c14\b[{botname}]\o Każdy pokój to zakładka na górze. \c10/part\o wychodzi z niego, \c10/help\o wypisuje komendy, \c10F1\o otwiera podręcznik.
 /bot set Rafal farewell none
 /bot set Rafal mention_response \c12\b[Rafal]\o Newsy o grach przynoszę ja. \c10!zagraj\o mówi, jak zagrać tutaj.
 /bot addcmd Rafal zrodla \c12\b[Rafal]\o CD-Action i Eurogamer Polska, sprawdzane \c10co 45 minut\o.
@@ -241,6 +259,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Lech greeting \c09\b[Lech]\o Cześć {nickname}! \c03Przegląd Sportowy, Sportowe Fakty i TVP Sport\o na łączach. !zrodla po listę, !klub jeśli nalegasz.
 /bot set Lech greeting_delivery private_notice
 /bot set Lech greeter_repeat_window 43200
+/bot set Lech public_greeting \c09\b[Lech]\o \b{nickname}\o wchodzi na boisko.
+/bot set Lech onboarding_1 \c14\b[{botname}]\o \c10/join #polska\o wchodzi do pokoju · \c10/msg nick\o pisze prywatnie · \c10/nick imie\o zmienia twoje.
+/bot set Lech onboarding_2 \c14\b[{botname}]\o Każdy pokój to zakładka na górze. \c10/part\o wychodzi z niego, \c10/help\o wypisuje komendy, \c10F1\o otwiera podręcznik.
 /bot set Lech farewell none
 /bot set Lech mention_response \c09\b[Lech]\o Piłka w grze. \c03!zrodla\o mówi, co czytam.
 /bot addcmd Lech zrodla \c09\b[Lech]\o Przegląd Sportowy, Sportowe Fakty i TVP Sport, sprawdzane \c03co dwadzieścia minut\o.
@@ -258,6 +279,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Kopernik greeting \c06\b[Kopernik]\o Witaj, {nickname}. \c13Crazy Nauka i National Geographic Polska\o przychodzą co godzinę. !zrodla po listę.
 /bot set Kopernik greeting_delivery private_notice
 /bot set Kopernik greeter_repeat_window 43200
+/bot set Kopernik public_greeting \c06\b[Kopernik]\o \b{nickname}\o dołącza. Witaj.
+/bot set Kopernik onboarding_1 \c14\b[{botname}]\o \c10/join #polska\o wchodzi do pokoju · \c10/msg nick\o pisze prywatnie · \c10/nick imie\o zmienia twoje.
+/bot set Kopernik onboarding_2 \c14\b[{botname}]\o Każdy pokój to zakładka na górze. \c10/part\o wychodzi z niego, \c10/help\o wypisuje komendy, \c10F1\o otwiera podręcznik.
 /bot set Kopernik farewell none
 /bot set Kopernik mention_response \c06\b[Kopernik]\o Nauka bez płatnej bramki. \c13!zrodla\o pokazuje łącza.
 /bot addcmd Kopernik zrodla \c06\b[Kopernik]\o Crazy Nauka i National Geographic Polska, sprawdzane \c13co godzinę\o.
@@ -273,6 +297,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Halina greeting \c07\b[Halina]\o Witaj, {nickname}. \c02Bankier, Money.pl i Business Insider Polska\o na łączach — !zrodla po listę, !uwaga zanim uwierzysz.
 /bot set Halina greeting_delivery private_notice
 /bot set Halina greeter_repeat_window 43200
+/bot set Halina public_greeting \c07\b[Halina]\o \b{nickname}\o wchodzi na rynek.
+/bot set Halina onboarding_1 \c14\b[{botname}]\o \c10/join #polska\o wchodzi do pokoju · \c10/msg nick\o pisze prywatnie · \c10/nick imie\o zmienia twoje.
+/bot set Halina onboarding_2 \c14\b[{botname}]\o Każdy pokój to zakładka na górze. \c10/part\o wychodzi z niego, \c10/help\o wypisuje komendy, \c10F1\o otwiera podręcznik.
 /bot set Halina farewell none
 /bot set Halina mention_response \c07\b[Halina]\o Trzy kanały gospodarcze. \c02!zrodla\o mówi które.
 /bot addcmd Halina zrodla \c07\b[Halina]\o Bankier, Money.pl i Business Insider Polska, sprawdzane \c02co pół godziny\o.
@@ -290,6 +317,9 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ewa greeting \c05\b[Ewa]\o Wchodź, {nickname}. \c13Filmweb\o na łączach — premiery, seriale, sezony. !zrodla po listę.
 /bot set Ewa greeting_delivery private_notice
 /bot set Ewa greeter_repeat_window 43200
+/bot set Ewa public_greeting \c05\b[Ewa]\o \b{nickname}\o wchodzi na salę.
+/bot set Ewa onboarding_1 \c14\b[{botname}]\o \c10/join #polska\o wchodzi do pokoju · \c10/msg nick\o pisze prywatnie · \c10/nick imie\o zmienia twoje.
+/bot set Ewa onboarding_2 \c14\b[{botname}]\o Każdy pokój to zakładka na górze. \c10/part\o wychodzi z niego, \c10/help\o wypisuje komendy, \c10F1\o otwiera podręcznik.
 /bot set Ewa farewell none
 /bot set Ewa mention_response \c05\b[Ewa]\o Kino i seriale. \c13!zrodla\o mówi skąd.
 /bot addcmd Ewa zrodla \c05\b[Ewa]\o Filmweb, sprawdzany \c13co godzinę\o.
