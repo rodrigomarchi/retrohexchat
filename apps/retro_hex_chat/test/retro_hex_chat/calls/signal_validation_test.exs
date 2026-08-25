@@ -98,13 +98,29 @@ defmodule RetroHexChat.Calls.SignalValidationTest do
                })
     end
 
-    test "refuses empty candidate text and anything that is not a map" do
-      assert {:error, :invalid_signal} =
-               SignalValidation.validate_candidate(%{"candidate" => "", "sdpMid" => "0"})
-
+    test "refuses anything that is not a map" do
       for value <- [nil, "candidate:1 1 udp ...", 42, []] do
         assert {:error, :invalid_signal} = SignalValidation.validate_candidate(value)
       end
+    end
+
+    test "relays an empty candidate as the end-of-candidates signal" do
+      candidate = %{"candidate" => "", "sdpMid" => "0", "sdpMLineIndex" => 0}
+
+      assert {:ok, ^candidate} = SignalValidation.validate_candidate(candidate)
+    end
+
+    test "relays end-of-candidates naming neither a media section nor an index" do
+      assert {:ok, %{"candidate" => ""}} =
+               SignalValidation.validate_candidate(%{"candidate" => ""})
+    end
+
+    test "refuses end-of-candidates carrying a malformed media section" do
+      assert {:error, :invalid_signal} =
+               SignalValidation.validate_candidate(%{"candidate" => "", "sdpMid" => 0})
+
+      assert {:error, :invalid_signal} =
+               SignalValidation.validate_candidate(%{"candidate" => "", "sdpMLineIndex" => -1})
     end
   end
 

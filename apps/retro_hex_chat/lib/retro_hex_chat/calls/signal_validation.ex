@@ -44,8 +44,28 @@ defmodule RetroHexChat.Calls.SignalValidation do
   the receiving peer, so it is refused rather than relayed. Keys absent from the
   input stay absent from the output — a candidate carrying an explicit `null`
   is not the same as one carrying an index of zero.
+
+  An empty candidate string is not a malformed candidate: it is the
+  end-of-candidates signal, which Firefox emits once per media section and
+  Chrome does not emit at all. The receiving agent needs it to stop waiting for
+  more candidates and conclude its checklist, so it is relayed rather than
+  refused.
   """
   @spec validate_candidate(term()) :: result(map())
+  def validate_candidate(%{"candidate" => ""} = candidate) do
+    sdp_mid = Map.get(candidate, "sdpMid")
+    sdp_m_line_index = Map.get(candidate, "sdpMLineIndex")
+
+    if valid_mid?(sdp_mid) and valid_m_line_index?(sdp_m_line_index) do
+      {:ok,
+       %{"candidate" => ""}
+       |> maybe_put("sdpMid", sdp_mid)
+       |> maybe_put("sdpMLineIndex", sdp_m_line_index)}
+    else
+      {:error, :invalid_signal}
+    end
+  end
+
   def validate_candidate(%{} = candidate) do
     candidate_text = Map.get(candidate, "candidate")
     sdp_mid = Map.get(candidate, "sdpMid")

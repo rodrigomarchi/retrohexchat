@@ -137,3 +137,26 @@ Calls fail constantly in the field; the recovery protocol is part of the feature
 - **Don't chase real packet loss locally.** CDP `Network.emulateNetworkConditions` documents
   packet loss, but local Chromium will not transition ICE deterministically within a test budget.
   That scenario belongs in a netem / Network Link Conditioner lab, not the local suite.
+
+### 8.6 Browser-specific signaling
+
+- **An empty candidate string is a signal, not a malformed payload.** `candidate: ""` is
+  end-of-candidates. `ExWebRTC.PeerConnection.add_ice_candidate/2` matches it explicitly and
+  calls `end_of_candidates/1` on the ICE agent; `Calls.SignalValidation.validate_candidate/1`
+  relays it for exactly that reason. Refuse it and the receiving agent never learns remote
+  gathering ended, keeps its checklist running, and concludes only when an internal timer
+  expires.
+- **Only Firefox sends it.** Firefox fires `onicecandidate` once per media section with
+  `candidate: ""` before the final `null` event; Chrome signals end-of-candidates with the
+  `null` event alone, which the client drops before it reaches the wire. A rule that looks
+  browser-neutral can therefore be exercised by one engine only.
+- **On the SFU that gap is fatal, not slow.** Measured on loopback: Firefox reached
+  `iceConnectionState: connected` at 13.2s without the signal and 2.1s with it, against a
+  `GROUP_CALL_READY_TIMEOUT_MS` of 10s that kills the participant first — so the symptom is
+  "Firefox never connects" while Chrome↔Chrome is untouched and every server-side check
+  (firewall, `SFU_PUBLIC_IP`, ICE gathering, `/api/calls/healthz`) reads healthy.
+- **The Playwright suite is Chromium-only.** `playwright.config.ts` declares `chromium` and
+  `mobile-chrome`; nothing runs Firefox or WebKit. Any engine-specific signaling defect is
+  invisible to `make ci`. Reproduce one with a disposable spec that launches
+  `firefox.launch({ firefoxUserPrefs: { "media.navigator.streams.fake": true } })` directly
+  and reads `pc.getStats()` — a candidate pair stuck at `nominated: false` is the tell.
