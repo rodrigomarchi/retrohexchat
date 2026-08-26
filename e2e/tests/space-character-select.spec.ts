@@ -1,6 +1,7 @@
 /**
  * @section SP - Virtual Spaces
  * @flow SP1 [done] Choosing a class enters the channel space with that avatar rendered
+ * @flow SP5 [done] The space sheets are served as WebP the browser can actually decode
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -76,6 +77,76 @@ test.describe("Virtual space character picker", () => {
       await page.keyboard.press("Space");
       await page.screenshot({ path: "test-results/space-monk-attack.png" });
       await expect.poll(() => canvasSignature(page)).toBeGreaterThan(0);
+    } finally {
+      await closeUsers([user]);
+    }
+  });
+
+  // The sheets are WebP with nothing underneath them: a browser that cannot
+  // decode one draws a shadow and a floating nickname with nobody inside. A 200
+  // does not prove decoding, and a canvas signature only proves *something* was
+  // painted — so ask the browser to decode each sheet and report its size.
+  test("every space sheet is WebP the browser can decode", async ({
+    browser,
+  }) => {
+    const user: TestUser = await newSignedInUser(browser, "webp");
+    try {
+      const page = user.page;
+      const failed: string[] = [];
+      const served: string[] = [];
+      page.on("response", (r) => {
+        const url = r.url();
+        if (!url.includes("/images/space/")) return;
+        if (r.status() >= 400) failed.push(`${r.status()} ${url}`);
+        else served.push(url);
+      });
+
+      const channel = uniqueChannel("webp");
+      await user.chat.sendMessage(`/join ${channel}`);
+      await page
+        .locator('[data-testid="tab-bar"] [role="tab"][phx-value-type="space"]')
+        .click();
+
+      // The picker's preview strip, then the world's own sheets.
+      await expect(page.getByTestId("space-character-select")).toBeVisible();
+      await page.getByTestId("space-avatar-monk").click();
+      await expect(
+        page.locator('[data-testid="channel-space-shell"][data-avatar="monk"]'),
+      ).toBeVisible();
+      await expect
+        .poll(() => canvasSignature(page), { timeout: 15_000 })
+        .toBeGreaterThan(0);
+
+      expect(failed, "a space sheet 404'd").toEqual([]);
+
+      const sheets = [...new Set(served)].filter((u) => u.endsWith(".webp"));
+      // The picker strip, the map, the fx strip and the chosen class at minimum.
+      expect(
+        sheets.length,
+        `too few sheets served: ${sheets.join(", ")}`,
+      ).toBeGreaterThanOrEqual(4);
+      expect(sheets.some((u) => u.includes("charsel"))).toBe(true);
+      expect(sheets.some((u) => u.includes("iso_monk"))).toBe(true);
+
+      // Nobody's class but the ones on screen: picking the monk alone must not
+      // drag the rest of the roster down with it.
+      const classSheets = sheets.filter((u) => u.includes("/avatars/"));
+      expect(
+        classSheets.length,
+        `unexpected class sheets: ${classSheets.join(", ")}`,
+      ).toBeLessThanOrEqual(2);
+
+      for (const src of sheets) {
+        const size = await page.evaluate(async (url) => {
+          const img = new Image();
+          img.src = url;
+          await img.decode();
+          return { w: img.naturalWidth, h: img.naturalHeight };
+        }, src);
+
+        expect(size.w, `${src} decoded to nothing`).toBeGreaterThan(0);
+        expect(size.h, `${src} decoded to nothing`).toBeGreaterThan(0);
+      }
     } finally {
       await closeUsers([user]);
     }

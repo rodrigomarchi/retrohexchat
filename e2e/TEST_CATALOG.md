@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **219 spec files** under `e2e/tests/`.
-- **455 Playwright `test()` cases**.
-- **448 documented flows**, 447 done, 1 not done.
+- **456 Playwright `test()` cases**.
+- **449 documented flows**, 448 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -681,6 +681,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP2 | A PM space mounts the End of Time scene with the chosen avatar | `tests/space-end-of-time.spec.ts` | done |
 | SP3 | The toggle enters and exits fullscreen on the space shell | `tests/space-fullscreen.spec.ts` | done |
 | SP4 | Holding the virtual pad walks continuously and the sword button attacks | `tests/space-virtual-pad.spec.ts` | done |
+| SP5 | The space sheets are served as WebP the browser can actually decode | `tests/space-character-select.spec.ts` | done |
 
 ### LC - Localization
 
