@@ -15,13 +15,15 @@ defmodule RetroHexChatWeb.SpaceChannel do
   alias RetroHexChat.VirtualSpace
   alias RetroHexChat.VirtualSpace.ChannelJoinToken
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
+  alias RetroHexChatWeb.SpaceAssets
 
   @impl true
   def join("space:#" <> channel_tail, params, socket) do
     channel_name = "#" <> channel_tail
 
     with {:ok, data} <- verify_channel_join_token(params, channel_name),
-         {:ok, result} <- VirtualSpace.join_channel_space(channel_name, build_channel_actor(data)) do
+         {:ok, result} <-
+           VirtualSpace.join_channel_space(channel_name, build_channel_actor(data, params)) do
       socket =
         socket
         |> assign(:space_kind, :channel)
@@ -44,7 +46,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
          {:ok, result} <-
            VirtualSpace.join_direct_message_space(
              space_id,
-             build_channel_actor(data),
+             build_channel_actor(data, params),
              data.participants
            ) do
       socket =
@@ -202,23 +204,31 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   defp parse_select_avatar(_), do: :error
 
-  defp build_channel_actor(data) do
+  # The viewer picked their class on the entry screen; naming it at join means
+  # the snapshot already wears it, so the client downloads one class sheet
+  # instead of the default's and then the real one.
+  defp build_channel_actor(data, params) do
     %{
       user_id: data.user_id,
-      nickname: data.nickname
+      nickname: data.nickname,
+      avatar: parse_avatar(params)
     }
   end
+
+  defp parse_avatar(%{"avatar" => avatar}) when is_binary(avatar) and avatar != "", do: avatar
+  defp parse_avatar(_params), do: nil
 
   # `space_init` is the join reply (see `js/lib/space/protocol.js`): the full
   # canonical map inline, the viewer's own key, render config and the initial
   # snapshot. The map is serialized from the Elixir source of truth so the
-  # client never keeps its own copy.
+  # client never keeps its own copy. Its tileset sources are digested on the way
+  # out: the domain names the sheet, the web layer knows what URL that is.
   defp space_init(channel_name, result) do
     %{
       version: 1,
       channel_name: channel_name,
       self_key: result.participant.key,
-      map: result.map,
+      map: SpaceAssets.digest_map(result.map),
       config: %{
         tile_size: result.map.tile_size,
         # Isometric is the only projection and every tile/avatar is premium art

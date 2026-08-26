@@ -40,6 +40,7 @@ function mountContext() {
   el.dataset.spaceChannel = "#lobby";
   el.dataset.joinToken = "signed-join-token";
   el.dataset.nickname = "alice";
+  el.dataset.avatar = "monk";
   const canvas = document.createElement("canvas");
   el.appendChild(canvas);
   return { el, canvas };
@@ -112,8 +113,11 @@ describe("SpaceCanvasHook implementation", () => {
     hook.mounted();
 
     expect(socket.connect).toHaveBeenCalled();
+    // The chosen class rides the join, so the snapshot comes back wearing it
+    // and the atlas fetches one sheet instead of the default's and then this.
     expect(socket.channel).toHaveBeenCalledWith("space:#lobby", {
       join_token: "signed-join-token",
+      avatar: "monk",
     });
     expect(channel.join).toHaveBeenCalled();
   });

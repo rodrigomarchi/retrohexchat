@@ -167,6 +167,8 @@ export class SpaceEngine {
     this._selfInterp = new Interpolator({ duration: this._stepMs });
     this._actions.clear();
 
+    this._ensureAvatarSheets(Object.values(normalized.participants));
+
     for (const [key, participant] of Object.entries(normalized.participants)) {
       this.participants.set(key, participant);
       if (key === this.selfKey) {
@@ -187,6 +189,13 @@ export class SpaceEngine {
   applyDelta(delta) {
     const normalized = normalizeDelta(delta);
     const now = this._clock();
+
+    // A join brings a class that may not be in the room yet; an update can carry
+    // an avatar swap. Both are the moment to fetch that sheet, and only then.
+    this._ensureAvatarSheets([
+      ...Object.values(normalized.joined),
+      ...Object.values(normalized.updates),
+    ]);
 
     for (const key of normalized.left) {
       this.participants.delete(key);
@@ -443,6 +452,14 @@ export class SpaceEngine {
     if (x !== (self.x ?? x) || y !== (self.y ?? y)) {
       this._selfInterp.moveTo(this.selfKey, x, y, this._clock());
     }
+  }
+
+  // Ask the atlas for the class sheets these participants wear. The atlas skips
+  // whatever it already holds, so calling this on every snapshot and delta costs
+  // one fetch per class that actually shows up.
+  _ensureAvatarSheets(participants) {
+    const ids = participants.map((p) => p?.avatar).filter((id) => typeof id === "string");
+    if (ids.length) this.atlas?.ensureAvatars?.(ids);
   }
 
   _applyRemoteUpdate(key, update, now) {

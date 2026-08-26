@@ -68,7 +68,13 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
         ChannelJoinToken.sign(signed_channel, nil, signed_nick)
       end)
 
-    subscribe_and_join(socket, "space:#{channel}", %{"join_token" => join_token})
+    params =
+      case Keyword.get(opts, :avatar) do
+        nil -> %{"join_token" => join_token}
+        avatar -> %{"join_token" => join_token, "avatar" => avatar}
+      end
+
+    subscribe_and_join(socket, "space:#{channel}", params)
   end
 
   defp join_direct_message_space(space_id, nickname, participants, opts \\ []) do
@@ -375,6 +381,30 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
   end
 
   describe "avatar selection" do
+    # The client picks a class before the canvas mounts and names it in the join
+    # params. It matters that the snapshot already wears it: a client told "hero"
+    # first downloads the hero sheet, then learns it needed another class and
+    # downloads that too — the better part of a megabyte for nothing.
+    test "the class named at join is what the snapshot already wears" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+      {:ok, _} = Server.join(channel, "alice")
+
+      assert {:ok, init, _socket} = join_channel_space(channel, "alice", avatar: "monk")
+
+      assert init.snapshot.participants[init.self_key].avatar == "monk"
+    end
+
+    test "a class named at join that is not on the roster falls back to the default" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+      {:ok, _} = Server.join(channel, "alice")
+
+      assert {:ok, init, _socket} = join_channel_space(channel, "alice", avatar: "wizard")
+
+      assert init.snapshot.participants[init.self_key].avatar == "hero"
+    end
+
     test "a space_select_avatar push swaps the avatar and broadcasts a delta" do
       channel = unique_channel()
       {:ok, _pid} = start_channel(channel)

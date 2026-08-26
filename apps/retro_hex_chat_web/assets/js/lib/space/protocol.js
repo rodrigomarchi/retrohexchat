@@ -14,6 +14,9 @@ export const CLIENT_EVENTS = Object.freeze({
   INPUT: "space_input",
   INTERACT: "space_interact",
   ACTION: "space_action",
+  // The class picked on the entry screen travels in the channel join params, so
+  // the first snapshot already wears it. This event is the server's supported
+  // way to change class without rejoining; nothing in the client sends it today.
   SELECT_AVATAR: "space_select_avatar",
 });
 

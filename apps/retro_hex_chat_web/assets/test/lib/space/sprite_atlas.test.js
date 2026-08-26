@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import {
   createSpriteAtlas,
@@ -7,7 +7,9 @@ import {
   DIRECTIONS,
 } from "../../../js/lib/space/sprite_atlas.js";
 
-const TILESETS = [{ id: "demo_sheet", src: "/images/space/demo_sheet.png", tile: 16, columns: 40 }];
+const TILESETS = [
+  { id: "demo_sheet", src: "/images/space/demo_sheet.webp", tile: 16, columns: 40 },
+];
 
 const TILES = {
   grass: { ts: "demo_sheet", col: 5, row: 9 },
@@ -19,6 +21,7 @@ function loadedAtlas() {
   const atlas = createSpriteAtlas({ tileSize: 16, scale: 2 });
   atlas.loadTilesets(TILESETS);
   atlas.registerTiles(TILES);
+  atlas.ensureAvatars(AVATAR_IDS);
   return atlas;
 }
 
@@ -157,11 +160,73 @@ describe("sprite atlas contract", () => {
     expect(atlas.avatar("who", "south", 0)).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 146 });
   });
 
-  it("auto-loads the roster sheets so the default hero renders on any map", () => {
-    // Every iso avatar sheet loads on creation, independent of the active map — so
-    // bots and anyone on the default avatar always draw.
+  it("holds a class sheet back until the room asks for it", () => {
+    // Nothing is downloaded for a class nobody is wearing: opening a room costs
+    // its own avatar, not the whole roster.
     const atlas = createSpriteAtlas();
+    expect(atlas.avatar("hero", "south")).toBe(null);
+    atlas.ensureAvatars(["hero"]);
     expect(atlas.avatar("hero", "south")).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 146 });
+    // A class still absent stays absent.
+    expect(atlas.avatar("knight", "south")).toBe(null);
+  });
+
+  it("fetches a class sheet once, however often the room mentions it", () => {
+    const atlas = createSpriteAtlas();
+    atlas.ensureAvatars(["knight", "knight"]);
+    const first = atlas.avatar("knight", "south");
+    atlas.ensureAvatars(["knight"]);
+    // Same Image instance: the second ask did not start another download.
+    expect(atlas.avatar("knight", "south").img).toBe(first.img);
+  });
+
+  it("resolves an unknown avatar id to the default hero sheet", () => {
+    // The server hands out "default" before a player picks; it must not fetch a
+    // sheet that does not exist.
+    const atlas = createSpriteAtlas();
+    atlas.ensureAvatars(["default"]);
+    expect(atlas.avatar("default", "south")).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 146 });
+  });
+
+  it("prefers a server-supplied digested sheet url over the built-in path", () => {
+    const atlas = createSpriteAtlas({
+      sheetUrls: { av_iso_hero: "/images/space/avatars/iso_hero-abc123.webp?vsn=d" },
+    });
+    atlas.ensureAvatars(["hero"]);
+    expect(atlas.avatar("hero", "south").img.getAttribute("src")).toBe(
+      "/images/space/avatars/iso_hero-abc123.webp?vsn=d",
+    );
+  });
+
+  it("holds the ready gate until the map and every blocking sheet have landed", () => {
+    const ready = vi.fn();
+    const atlas = createSpriteAtlas({ onReady: ready });
+    atlas.ensureAvatars(["hero"], { blocking: true });
+    // A bystander's class must never hold up the first frame.
+    atlas.ensureAvatars(["knight"]);
+    atlas.loadTilesets(TILESETS);
+    atlas.registerTiles(TILES);
+
+    const land = (img) => img.dispatchEvent(new Event("load"));
+    land(atlas.fx("hit_spark", 0).img);
+    land(atlas.avatar("hero", "south").img);
+    expect(ready).not.toHaveBeenCalled();
+
+    land(atlas.tile("grass").img);
+    expect(ready).toHaveBeenCalledTimes(1);
+
+    // Late arrivals do not re-open the gate.
+    land(atlas.avatar("knight", "south").img);
+    expect(ready).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps the gate shut while the map is still unknown", () => {
+    const ready = vi.fn();
+    const atlas = createSpriteAtlas({ onReady: ready });
+    atlas.fx("hit_spark", 0).img.dispatchEvent(new Event("load"));
+    expect(ready).not.toHaveBeenCalled();
+    atlas.registerTiles(TILES);
+    expect(ready).toHaveBeenCalledTimes(1);
   });
 
   it("draws board modal art for a known asset id", () => {

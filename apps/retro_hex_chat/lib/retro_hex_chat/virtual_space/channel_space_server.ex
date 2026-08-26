@@ -87,13 +87,21 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     call_by_key({:direct_message_space, space_id}, :get_state)
   end
 
-  @spec join(String.t(), %{user_id: integer() | nil, nickname: String.t()}) ::
+  @spec join(String.t(), %{
+          :user_id => integer() | nil,
+          :nickname => String.t(),
+          optional(:avatar) => String.t() | nil
+        }) ::
           {:ok, %{participant: participant(), snapshot: map(), map: map()}} | {:error, atom()}
   def join(channel_name, participant_context) do
     call(channel_name, {:join, participant_context})
   end
 
-  @spec join_direct_message(String.t(), %{user_id: integer() | nil, nickname: String.t()}) ::
+  @spec join_direct_message(String.t(), %{
+          :user_id => integer() | nil,
+          :nickname => String.t(),
+          optional(:avatar) => String.t() | nil
+        }) ::
           {:ok, %{participant: participant(), snapshot: map(), map: map()}} | {:error, atom()}
   def join_direct_message(space_id, participant_context) do
     call_by_key({:direct_message_space, space_id}, {:join, participant_context})
@@ -341,6 +349,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
       _participant ->
         state = mark_participant_online(state, key, %{user_id: context.user_id})
+        state = apply_join_avatar(state, key, Map.get(context, :avatar))
         participant = Map.fetch!(state.participants, key)
         state = %{state | viewer_count: state.viewer_count + 1}
         state = increment_viewer_key(state, key)
@@ -1213,10 +1222,24 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     in_bounds?(state.map, x, y) and not MapSet.member?(state.blocked, {x, y})
   end
 
-  # Everyone spawns as the default hero; players then pick a character on the
-  # entry screen, which drives `select_avatar`. Kept as a function (not a bare
-  # constant) so a future map could vary the starting look.
+  # A seat is created as the default hero, before anyone is looking through it.
+  # Kept as a function (not a bare constant) so a future map could vary the
+  # starting look.
   defp avatar_for(_state, _key), do: hd(@avatars)
+
+  # A viewer picks their class on the entry screen and names it when they join,
+  # so the snapshot shows what they are wearing from the first frame. Asking
+  # afterwards was a second sheet to download: the client would fetch the
+  # default's art, then learn it needed a different class and fetch that too.
+  # An absent or rejected id leaves the seat on whatever it already wore.
+  defp apply_join_avatar(state, _key, nil), do: state
+
+  defp apply_join_avatar(state, key, avatar) do
+    case apply_select_avatar(state, key, avatar) do
+      {:ok, state} -> state
+      {:error, _reason, state} -> state
+    end
+  end
 
   defp online_count(state) do
     state.participants |> Map.values() |> Enum.count(& &1.online?)

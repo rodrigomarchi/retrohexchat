@@ -6,6 +6,10 @@
  * renderer draws that rectangle with `ctx.drawImage`, so the runtime art is the
  * original pixel art — no pixel data ships in the bundle or the map payload.
  *
+ * Sheets are fetched on demand: the room says which classes are in it, and only
+ * those are downloaded. The first frame waits on the map's tilesets, the fx strip
+ * and the local player's own class; every other sheet streams in behind that gate.
+ *
  * @module space/sprite_atlas
  */
 
@@ -692,13 +696,21 @@ const ROSTER = Object.freeze([
 ]);
 const DEFAULT_AVATAR_ID = "hero";
 
-const AVATAR_SHEETS = Object.freeze(
-  ROSTER.map((id) => ({ id: `av_iso_${id}`, src: `/images/space/avatars/iso_${id}.png` })),
+// Sheet ids are stable; their URLs are not. The server hands the atlas a map of
+// id -> digested URL (`sheetUrls`), because a hash that changes every build is
+// exactly what a cached bundle cannot spell. These literals are the fallback for
+// a caller that passes none.
+const avatarSheetId = (id) => `av_iso_${id}`;
+const AVATAR_SHEET_PATHS = Object.freeze(
+  Object.fromEntries(
+    ROSTER.map((id) => [avatarSheetId(id), `/images/space/avatars/iso_${id}.webp`]),
+  ),
 );
 
 // Combat impact effects: PixelLab burst animations packed as horizontal strips
-// stacked in /images/space/fx.png (frame i of an effect at x = i * w).
-const FX_SHEET = Object.freeze({ id: "fx_combat", src: "/images/space/fx.png" });
+// stacked in /images/space/fx.webp (frame i of an effect at x = i * w).
+const FX_SHEET_ID = "fx_combat";
+const FX_SHEET_PATH = "/images/space/fx.webp";
 const FX = Object.freeze({
   hit_spark: { y: 0, w: 64, h: 64, frames: 6 },
   ko_burst: { y: 64, w: 96, h: 96, frames: 6 },
@@ -749,41 +761,73 @@ export const AVATAR_ACTIONS = Object.freeze([
 ]);
 
 /**
- * @param {{tileSize?: number, scale?: number, onReady?: Function}} [opts]
+ * @param {{tileSize?: number, scale?: number, sheetUrls?: object, onReady?: Function}} [opts]
  * @returns {object} atlas facade
  */
 export function createSpriteAtlas(opts = {}) {
   const tileSize = opts.tileSize ?? 16;
   const onReady = typeof opts.onReady === "function" ? opts.onReady : null;
+  const sheetUrls = opts.sheetUrls && typeof opts.sheetUrls === "object" ? opts.sheetUrls : {};
   // tileset id -> { img, tile, columns }
   const sheets = new Map();
   // tile name -> { ts, col, row, w?, h?, flip_x? }
   let tiles = {};
   let boardCanvas = null;
-  let pending = 0;
+  // Only the sheets the first frame cannot be drawn without hold the ready gate:
+  // the map's own tilesets, the fx strip, and the local player's class. Every
+  // other class streams in behind the gate, so a room full of strangers costs
+  // nothing up front and their sheets pop in as they arrive.
+  let blockingPending = 0;
+  let mapReady = false;
+  let readyFired = false;
 
-  function loadTilesets(list) {
+  function maybeReady() {
+    if (readyFired || !mapReady || blockingPending > 0) return;
+    readyFired = true;
+    if (onReady) onReady();
+  }
+
+  function loadTilesets(list, { blocking = true } = {}) {
     if (!Array.isArray(list)) return;
     for (const ts of list) {
       if (!ts || sheets.has(ts.id)) continue;
       const img = makeImage();
       const entry = { img, tile: ts.tile ?? tileSize, columns: ts.columns ?? 0 };
+      // Registration is synchronous: a sheet resolves to source rects the moment
+      // it is known, and `drawImage` on a still-loading image is a harmless no-op.
       sheets.set(ts.id, entry);
-      if (img && ts.src) {
-        pending += 1;
+      const src = sheetUrls[ts.id] ?? ts.src;
+      if (img && src) {
+        if (blocking) blockingPending += 1;
         const done = () => {
-          pending = Math.max(0, pending - 1);
-          if (pending === 0 && onReady) onReady();
+          if (blocking) blockingPending = Math.max(0, blockingPending - 1);
+          maybeReady();
         };
         img.addEventListener?.("load", done);
         img.addEventListener?.("error", done);
-        img.src = ts.src;
+        img.src = src;
       }
     }
   }
 
+  // Pull in the sheets for the given avatar ids, skipping any already known. The
+  // engine calls this from every snapshot and delta, so a class that walks into
+  // the room fetches exactly one sheet, once.
+  function ensureAvatars(ids, { blocking = false } = {}) {
+    if (!Array.isArray(ids)) return;
+    const wanted = [];
+    for (const id of ids) {
+      const sheetId = avatarSheetId(AVATARS[id] ? id : DEFAULT_AVATAR_ID);
+      if (sheets.has(sheetId) || wanted.some((ts) => ts.id === sheetId)) continue;
+      wanted.push({ id: sheetId, src: AVATAR_SHEET_PATHS[sheetId] });
+    }
+    loadTilesets(wanted, { blocking });
+  }
+
   function registerTiles(dict) {
     if (dict && typeof dict === "object") tiles = dict;
+    mapReady = true;
+    maybeReady();
   }
 
   // Resolve a tile name to a source rect. Static tiles ignore `now`/`seed`.
@@ -844,20 +888,21 @@ export function createSpriteAtlas(opts = {}) {
   function fx(name, frame = 0) {
     const spec = FX[name];
     if (!spec) return null;
-    const sheet = sheets.get(FX_SHEET.id);
+    const sheet = sheets.get(FX_SHEET_ID);
     if (!sheet) return null;
     const idx = Math.min(Math.max(Math.trunc(frame), 0), spec.frames - 1);
     return { img: sheet.img, sx: idx * spec.w, sy: spec.y, sw: spec.w, sh: spec.h };
   }
 
-  // Class avatar sheets and the fx sheet are global (every map uses them), so
-  // the atlas loads them itself rather than depending on the map's tileset list.
-  loadTilesets(AVATAR_SHEETS);
-  loadTilesets([FX_SHEET]);
+  // The fx strip is global (every map uses it) and small enough to hold the gate.
+  // Avatar sheets are not loaded here — they arrive through `ensureAvatars` as the
+  // room tells the client which classes are actually present.
+  loadTilesets([{ id: FX_SHEET_ID, src: FX_SHEET_PATH }]);
 
   return {
     tileSize,
     loadTilesets,
+    ensureAvatars,
     registerTiles,
     hasTile(name) {
       return Boolean(tiles[name]);

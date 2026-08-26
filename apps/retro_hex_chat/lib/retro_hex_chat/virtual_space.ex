@@ -13,7 +13,11 @@ defmodule RetroHexChat.VirtualSpace do
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
   alias RetroHexChat.VirtualSpace.Supervisor
 
-  @spec join_channel_space(String.t(), %{user_id: integer() | nil, nickname: String.t()}) ::
+  @spec join_channel_space(String.t(), %{
+          :user_id => integer() | nil,
+          :nickname => String.t(),
+          optional(:avatar) => String.t() | nil
+        }) ::
           {:ok, %{participant: ChannelSpaceServer.participant(), snapshot: map(), map: map()}}
           | {:error, atom()}
   def join_channel_space(channel_name, actor) do
@@ -24,16 +28,23 @@ defmodule RetroHexChat.VirtualSpace do
         with :ok <- ensure_channel_space_process(channel_name) do
           ChannelSpaceServer.join(channel_name, %{
             user_id: actor.user_id,
-            nickname: actor.nickname
+            nickname: actor.nickname,
+            avatar: Map.get(actor, :avatar)
           })
         end
       end
     )
   end
 
-  @spec join_direct_message_space(String.t(), %{user_id: integer() | nil, nickname: String.t()}, [
-          String.t()
-        ]) ::
+  @spec join_direct_message_space(
+          String.t(),
+          %{
+            :user_id => integer() | nil,
+            :nickname => String.t(),
+            optional(:avatar) => String.t() | nil
+          },
+          [String.t()]
+        ) ::
           {:ok, %{participant: ChannelSpaceServer.participant(), snapshot: map(), map: map()}}
           | {:error, atom()}
   def join_direct_message_space(space_id, actor, participants) do
@@ -44,7 +55,8 @@ defmodule RetroHexChat.VirtualSpace do
         with :ok <- ensure_direct_message_space_process(space_id, participants) do
           ChannelSpaceServer.join_direct_message(space_id, %{
             user_id: actor.user_id,
-            nickname: actor.nickname
+            nickname: actor.nickname,
+            avatar: Map.get(actor, :avatar)
           })
         end
       end

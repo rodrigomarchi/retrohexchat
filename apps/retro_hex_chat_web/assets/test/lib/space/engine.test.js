@@ -206,6 +206,63 @@ describe("SpaceEngine", () => {
   });
 });
 
+describe("SpaceEngine avatar sheet demand", () => {
+  function atlasSpy() {
+    return { loadTilesets: vi.fn(), registerTiles: vi.fn(), ensureAvatars: vi.fn() };
+  }
+
+  it("asks for the classes the room is already wearing", () => {
+    const atlas = atlasSpy();
+    const { engine } = buildEngine({ atlas });
+    engine.start(
+      tavernInit({
+        snapshot: {
+          serverTime: 1,
+          participants: {
+            "registered:1": { nickname: "alice", x: 5, y: 5, avatar: "knight" },
+            "registered:2": { nickname: "bob", x: 8, y: 6, avatar: "monk" },
+          },
+        },
+      }),
+    );
+
+    expect(atlas.ensureAvatars).toHaveBeenCalledWith(expect.arrayContaining(["knight", "monk"]));
+  });
+
+  it("asks for a class that walks in later, and for one that is swapped mid-room", () => {
+    const atlas = atlasSpy();
+    const { engine } = buildEngine({ atlas });
+    engine.start(tavernInit());
+    atlas.ensureAvatars.mockClear();
+
+    engine.applyDelta({
+      joined: { "registered:9": { nickname: "carol", x: 2, y: 2, avatar: "rogue" } },
+      updates: {},
+      left: [],
+    });
+    expect(atlas.ensureAvatars).toHaveBeenCalledWith(expect.arrayContaining(["rogue"]));
+
+    atlas.ensureAvatars.mockClear();
+    engine.applyDelta({
+      joined: {},
+      updates: { "registered:9": { x: 3, y: 2, avatar: "cleric" } },
+      left: [],
+    });
+    expect(atlas.ensureAvatars).toHaveBeenCalledWith(expect.arrayContaining(["cleric"]));
+  });
+
+  it("says nothing to the atlas when a delta carries no avatar", () => {
+    const atlas = atlasSpy();
+    const { engine } = buildEngine({ atlas });
+    engine.start(tavernInit());
+    atlas.ensureAvatars.mockClear();
+
+    engine.applyDelta({ joined: {}, updates: {}, left: ["registered:2"] });
+
+    expect(atlas.ensureAvatars).not.toHaveBeenCalled();
+  });
+});
+
 describe("SpaceEngine local prediction and reconciliation", () => {
   function startedEngine(initOverrides = {}) {
     const { engine } = buildEngine();

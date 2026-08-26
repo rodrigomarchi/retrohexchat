@@ -37,6 +37,22 @@ const TILE_SIZE = 16;
 // Integer pixel scale shared by the sprite atlas and the camera step (they must
 // match so floor tiles and avatars align). Lower = more map visible per screen.
 const RENDER_SCALE = 2;
+// The class the server assigns before a player picks one.
+const DEFAULT_AVATAR = "hero";
+
+// Sheet id -> digested URL, rendered by the server because a content hash is
+// exactly what a cached bundle cannot spell. A malformed or absent attribute
+// leaves the atlas on its built-in paths rather than breaking the space.
+function parseSheetUrls(raw) {
+  if (!raw) return {};
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch (error) {
+    log.error("[space] could not parse sprite sheet urls", error);
+    return {};
+  }
+}
 
 /**
  * Build the hook implementation. Socket/engine/input construction is injectable
@@ -71,11 +87,16 @@ export function createSpaceCanvasHook(deps = {}) {
       this._atlas = createSpriteAtlas({
         tileSize: TILE_SIZE,
         scale: RENDER_SCALE,
+        sheetUrls: parseSheetUrls(this.el.dataset.spriteSheets),
         onReady: () => {
           this._assetsReady = true;
           this._overlays?.setLoadingText(t("Drawing room..."));
         },
       });
+      // The player's own class is the one sheet the room cannot open without, so
+      // it holds the loading gate and starts fetching before the socket connects.
+      // Everyone else's arrives with the snapshot, behind the gate.
+      this._atlas.ensureAvatars([this._avatar || DEFAULT_AVATAR], { blocking: true });
       this._engine = engineFactory({
         canvas,
         atlas: this._atlas,
@@ -128,8 +149,13 @@ export function createSpaceCanvasHook(deps = {}) {
       this._socket = socketFactory();
       this._socket.connect();
 
+      // The chosen class travels with the join, so the snapshot comes back
+      // already wearing it. Asking afterwards cost a whole extra sheet: the
+      // room answered with the default, the atlas fetched that art, and the
+      // swap then made it fetch the real one too.
       this._channel = this._socket.channel(`space:${this._spaceChannel}`, {
         join_token: this._joinToken,
+        avatar: this._avatar,
       });
 
       this._wireChannelEvents(this._channel);
@@ -142,9 +168,6 @@ export function createSpaceCanvasHook(deps = {}) {
           // ordinary thing for a user to do, not an edge case.
           this._overlays?.setLoadingText(t("Loading room..."));
           this._engine?.start(normalizeSpaceInit(reply));
-          if (this._avatar) {
-            this._channel?.push(CLIENT_EVENTS.SELECT_AVATAR, { avatar: this._avatar });
-          }
         })
         .receive("error", (reply) => {
           log.error("[space] channel join rejected", reply);
