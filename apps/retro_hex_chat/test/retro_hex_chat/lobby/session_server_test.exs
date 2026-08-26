@@ -140,7 +140,14 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
       assert Queries.get_session_by_token(ctx.token).status == "connected"
 
       # No rejoin within the grace window → the session closes for both peers.
-      assert_receive %{event: "lobby_session_closed", payload: %{reason: "peer_left"}}, 500
+      # The bound is set far past the 120ms grace on purpose. What is asserted is
+      # that the session closes once the window passes, never how quickly — and
+      # the close runs a database write before it broadcasts. Alone, or merely on
+      # a busy CPU, it lands in milliseconds; sharing the machine with the other
+      # six `make ci` partitions, all queueing on the same Postgres, it has
+      # overrun both 500ms and 2s. Timing it tightly measures the box, not the
+      # code.
+      assert_receive %{event: "lobby_session_closed", payload: %{reason: "peer_left"}}, 10_000
       assert Queries.get_session_by_token(ctx.token).status == "closed"
     end
 
