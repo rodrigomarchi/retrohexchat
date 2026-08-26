@@ -13,7 +13,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
 
   The client renders it via the diamond `Projection` seam (see `SCENES.md`).
   The whole scene is authored by `virtual.space/tools/author_scene.py`, which
-  packs the PixelLab art into `/images/space/endoftime.png` and emits the
+  packs the PixelLab art into `/images/space/endoftime.webp` and emits the
   layout (diamond floor matrix, edge railings, decor, collision, lights, slabs,
   vignette, iso params) as `priv/maps/end_of_time.json`. This module loads that
   JSON and shapes it into the shared map protocol — no pixel data, the client
@@ -42,7 +42,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
       tilesets: [
         %{
           id: @sheet,
-          src: "/images/space/#{@sheet}.png",
+          src: "/images/space/#{@sheet}.webp",
           tile: data["tile_size"],
           columns: data["columns"]
         }

@@ -181,7 +181,7 @@ What the PixelLab tools actually give (empirical):
 
 ## 5. Build & validate loop
 - **Regenerate** (deterministic, no PixelLab): `python3 tools/author_scene.py` →
-  `endoftime.png` + `end_of_time.json`.
+  `endoftime.webp` + `end_of_time.json`.
 - **See it** (the only way to judge iso): run the Playwright spec
   `e2e/tests/space-end-of-time.spec.ts` (kill `:4003` first; a stale `mix phx.server`
   holding the `_build` lock makes `make ci` "compile" hang — `pkill` it) → Read

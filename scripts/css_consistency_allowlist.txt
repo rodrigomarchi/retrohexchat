@@ -4,8 +4,8 @@
 # parser false-positive case. The linter fails stale entries and broad globs.
 
 [unused]
-# False positive: the selector scanner sees ".png" inside avatar image URLs.
-png
+# False positive: the selector scanner sees ".webp" inside the picker sheet URL.
+webp
 
 # IRC formatter classes are generated from numeric color codes at runtime.
 irc-fg-*

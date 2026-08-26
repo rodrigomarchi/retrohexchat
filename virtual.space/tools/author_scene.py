@@ -16,12 +16,14 @@ import os
 
 from PIL import Image, ImageDraw
 
+from sheet_io import save_sheet
+
 TOOLS = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(TOOLS, "..", ".."))
 SRC = os.path.join(REPO, "virtual.space", "scenes", "end_of_time")
 ISO = os.path.join(SRC, "iso")
 SHEET_OUT = os.path.join(
-    REPO, "apps", "retro_hex_chat_web", "priv", "static", "images", "space", "endoftime.png"
+    REPO, "apps", "retro_hex_chat_web", "priv", "static", "images", "space", "endoftime.webp"
 )
 MAP_OUT = os.path.join(REPO, "apps", "retro_hex_chat/priv/maps/end_of_time.json")
 
@@ -526,7 +528,7 @@ def build():
         "labels": [{"id": "dm_nameplate", "kind": "hologram",
                     "x": 48, "y": 36, "w": 6, "h": 1, "text": "", "lift": 150}],
     }
-    sheet.save(SHEET_OUT)
+    save_sheet(sheet, SHEET_OUT)
     json.dump(layout, open(MAP_OUT, "w"))
     print(f"OK iso scene: sheet={sheet.size} diamond={fw}x{fh} floors={nfloor} "
           f"platforms={len(PLATFORMS)} bridges={len(BRIDGES)} rails={len(rails)} "

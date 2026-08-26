@@ -34,6 +34,8 @@ import sys
 
 from PIL import Image
 
+from sheet_io import SHEET_SUFFIX, save_sheet
+
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DIRS8 = ["south", "south-east", "east", "north-east", "north", "north-west", "west", "south-west"]
 ANIM_ORDER = ["walk", "idle", "idle2", "attack", "sleep", "hit", "ko", "getup"]
@@ -53,7 +55,7 @@ def _load(raw, anim, direction):
 def build(name):
     raw = os.path.join(REPO, "virtual.space/characters", name, "pixellab/animations")
     out = os.path.join(
-        REPO, "apps/retro_hex_chat_web/priv/static/images/space/avatars", name + ".png"
+        REPO, "apps/retro_hex_chat_web/priv/static/images/space/avatars", name + SHEET_SUFFIX
     )
     geo_out = os.path.join(os.path.dirname(out), name + ".geo.json")
 
@@ -96,8 +98,7 @@ def build(name):
             row += 1
         geometry["anims"][anim] = rows
 
-    os.makedirs(os.path.dirname(out), exist_ok=True)
-    sheet.save(out)
+    save_sheet(sheet, out)
     json.dump(geometry, open(geo_out, "w"))
     print(f"OK {name}: sheet={sheet.size} frame={fw}x{fh} anims={present}")
     print("GEOMETRY " + json.dumps(geometry))

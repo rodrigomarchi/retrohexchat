@@ -19,7 +19,7 @@ A scene is a **map definition** consumed by the client renderer. A map module
 |---|---|
 | `id` | Registry key (must match). |
 | `width`,`height`,`tile_size` | In tiles; `tile_size` is always **32**. World `scale` is always **1** and `avatar_scale` is always **1** — one resolution, no derived scaling. |
-| `tilesets` | `[%{id, src: "/images/space/<id>.png", tile: tile_size, columns}]` — sheets the client loads. **`tile` must equal `tile_size`** (the atlas slices by it). |
+| `tilesets` | `[%{id, src: "/images/space/<id>.webp", tile: tile_size, columns}]` — sheets the client loads. **`tile` must equal `tile_size`** (the atlas slices by it). |
 | `tiles` | `name => %{ts, col, row, w, h, flip_x?, frames?, period_ms?}` — the vocabulary (rects on a sheet). Must contain `ground`. |
 | `ground` | Opaque base tile drawn under every floor cell (the void terrain tile, e.g. `f0000`). |
 | `layers` | `%{floor: HxW matrix of tile names, decor: [%{x,y,tile,sort}], above: []}`. `sort:"flat"` (starfield, under everyone) vs `"stand"` (props Y-sorted with avatars → walk-behind). |
@@ -117,7 +117,7 @@ a plain square H×W grid; solid cells get the floor diamond, the rest are void.
 ### The packed sheet
 
 `author_scene.py` packs everything into one 32px sheet
-(`priv/static/images/space/<name>.png`): the floor variations (packed at their
+(`priv/static/images/space/<name>.webp`): the floor variations (packed at their
 native size, recorded as `wpx/hpx`, **never cropped**) + the sheared railing
 tiles and post + the static props (each **bottom-center anchored** in its `w×h`
 tile block) + any **animated tiles** as horizontal frame strips (see
@@ -149,7 +149,7 @@ sheet), turns the JSON `vocab` into `tiles`, and passes the rest through:
 
 ```elixir
 %{id: "end_of_time", ..., tile_size: data["tile_size"],
-  tilesets: [%{id: @sheet, src: "/images/space/#{@sheet}.png", tile: 32, columns: data["columns"]}],
+  tilesets: [%{id: @sheet, src: "/images/space/#{@sheet}.webp", tile: 32, columns: data["columns"]}],
   tiles: Map.new(data["vocab"], fn {n,v} -> {n, %{ts: @sheet, col: v["col"], row: v["row"], w: v["w"], h: v["h"]}} end),
   ground: data["ground"], layers: %{floor: data["floor"], decor: ..., above: []}, ...}
 ```
@@ -247,7 +247,7 @@ all at the **same pixel density and palette register**. Map-agnostic rules:
   share one register.
 - **Judge cohesion against the AVATAR, not in isolation.** A prop can look great
   alone and still clash with the character. Calibrate 2-3 props, render them
-  **next to the actual avatar sprite** (crop a frame from an `iso_<name>.png`
+  **next to the actual avatar sprite** (crop a frame from an `iso_<name>.webp`
   sheet), confirm the style, THEN batch-regenerate everything. Cost of skipping
   this: regenerating everything twice.
 - **Curate, don't mirror-stamp.** Auto-mirroring the same lamp/bench N times to

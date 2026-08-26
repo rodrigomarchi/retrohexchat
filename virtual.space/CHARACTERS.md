@@ -19,21 +19,21 @@ The roster is **8 iso avatars**, all built by this pipeline:
 
 | id | role | sheet |
 |---|---|---|
-| `hero` | default (assigned before a pick) | `avatars/iso_hero.png` |
-| `knight` | armoured melee | `avatars/iso_knight.png` |
-| `sorceress` | mage | `avatars/iso_sorceress.png` |
-| `archer` | ranged | `avatars/iso_archer.png` |
-| `barbarian` | heavy melee | `avatars/iso_barbarian.png` |
-| `rogue` | daggers | `avatars/iso_rogue.png` |
-| `cleric` | support | `avatars/iso_cleric.png` |
-| `monk` | martial artist | `avatars/iso_monk.png` |
+| `hero` | default (assigned before a pick) | `avatars/iso_hero.webp` |
+| `knight` | armoured melee | `avatars/iso_knight.webp` |
+| `sorceress` | mage | `avatars/iso_sorceress.webp` |
+| `archer` | ranged | `avatars/iso_archer.webp` |
+| `barbarian` | heavy melee | `avatars/iso_barbarian.webp` |
+| `rogue` | daggers | `avatars/iso_rogue.webp` |
+| `cleric` | support | `avatars/iso_cleric.webp` |
+| `monk` | martial artist | `avatars/iso_monk.webp` |
 
 The clean id (`hero`) is what the server and picker use; the sheet/geometry are
-named `iso_<id>` (`iso_hero.png`, `iso_hero.geo.json`). `hero` is `hd(@avatars)`
+named `iso_<id>` (`iso_hero.webp`, `iso_hero.geo.json`). `hero` is `hd(@avatars)`
 — the **default** everyone spawns as until they pick.
 
 Runtime sheets + their geometry are served from
-`apps/retro_hex_chat_web/priv/static/images/space/avatars/iso_<id>.png` (+
+`apps/retro_hex_chat_web/priv/static/images/space/avatars/iso_<id>.webp` (+
 `iso_<id>.geo.json`). Raw generation exports (per-frame PNGs) are kept in
 `virtual.space/characters/iso_<id>/pixellab/` so a sheet can always be recomposed
 without re-spending generations.
@@ -204,7 +204,7 @@ python3 virtual.space/tools/compose_iso_avatar.py iso_hero  # one character
 
 `compose_iso_avatar.py` reads the raw frames, crops every frame to **one shared
 vertical window**, stacks them in direction-major blocks (`walk, idle, attack,
-sleep`, skipping absent ones), and writes `avatars/iso_<id>.png` plus the sibling
+sleep`, skipping absent ones), and writes `avatars/iso_<id>.webp` plus the sibling
 `iso_<id>.geo.json`. It is **deterministic** (same frames → identical bytes) and
 defensively handles the flakiness:
 
@@ -283,19 +283,25 @@ In-game, the attack fires on the **Space** key (`ACTION_MAP` in `input.js`).
 2. **Download & verify** coverage (§2e–2f), retrying flaky directions.
 3. **Compose** the sheet (§3); eyeball the blocks.
 4. **Regenerate the atlas data**: `python3 tools/gen_iso_atlas.py` and paste the
-   printed `AVATAR_SHEETS` entry + `ISO_GEO` block into `sprite_atlas.js`.
+   printed `ISO_GEO` block into `sprite_atlas.js`.
 5. **Sync the two source-of-truth roster lists** (they must match, order
-   included):
+   included — the picker sheet's row order is this order):
    - JS: add id to `ROSTER` in `sprite_atlas.js`.
    - Elixir: add id to `@avatars` in `channel_space_server.ex`.
-6. **CSS**: add `.rh-charsel-sprite--<id>` in `retrohex.css` (covered by the
-   `rh-charsel-sprite--*` allowlist entry).
+6. **Repack the picker sheet**: `python3 tools/gen_charsel_sheet.py`, then copy
+   its printed offsets into `.rh-charsel-sprite--<id>` in
+   `css/retrohex/features/space-character-picker.css` (covered by the
+   `rh-charsel-sprite--*` allowlist entry). Adding a class shifts every later
+   row, so paste all of them, not just the new one. If the new art is taller or
+   wider than the current 80×95 cell, the script grows the cell and the shared
+   `.rh-charsel-sprite` / `.rh-charsel-preview` sizes move with it.
 7. **Label**: add to `@labels` in `components/ui/space_character_select.ex`.
 8. **Help**: extend the roster wording in the `feature-choose-character` topic
    (`chat/help_topics/features.ex`) and its content
    (`help_content/feature_choose_character.html.heex`).
 9. **Tests**: update `AVATAR_IDS` in `sprite_atlas.test.js` and the `@avatars`
-   assertion in `avatar_test.exs`.
+   assertion in `avatar_test.exs`. `SpaceAssets.sheet_urls/0` follows the Elixir
+   roster on its own, and its test asserts the two agree.
 10. **Validate**: `make ci` (9/9), then verify in a browser — the picker grid,
    the avatar rendering in-world, and the attack (Space) — via the
    `e2e/tests/space-character-select.spec.ts` Playwright spec.
