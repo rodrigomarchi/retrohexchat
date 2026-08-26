@@ -25,6 +25,20 @@ defmodule RetroHexChatWeb.Layouts do
   and the window on top covers the desk entirely — the art behind it is never
   the largest paint and rarely seen at all, so it is left to load whenever CSS
   gets round to asking for it rather than competing on a phone's connection.
+
+  The sprite preload makes Chrome log "preloaded using link preload but not used
+  within a few seconds", on every page, and no `as` value silences it: an
+  external `<use>` reference does not consume link preloads at all, so the
+  browser never credits this one no matter which destination it declares
+  (`image`, `fetch`, with or without `crossorigin` — all measured, all warn).
+
+  The warning is bookkeeping, not waste. Measured against production, the sprite
+  crosses the wire exactly once: the preload transfers it and the `<use>` that
+  follows is a cache hit. Dropping the preload does silence the warning, and
+  costs the early start it was added for — on `/chat` especially, where the
+  disconnected render is only the boot overlay and the first `<use>` does not
+  exist until LiveView has connected. So it stays, and the console line is
+  expected.
   """
   @spec head_assets(map()) :: Phoenix.LiveView.Rendered.t()
   def head_assets(assigns) do
