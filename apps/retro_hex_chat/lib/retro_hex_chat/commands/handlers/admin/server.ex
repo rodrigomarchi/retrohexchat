@@ -8,6 +8,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.Queries
   alias RetroHexChat.Table
+  alias RetroHexChat.Topics
 
   @valid_settings ~w(server_name server_description welcome_message max_channels registration whowas_retention_seconds)
 
@@ -15,7 +16,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
   def execute(["info"], context) do
     server_name = Queries.get_setting("server_name") || "RetroHexChat"
     server_desc = Queries.get_setting("server_description")
-    online_count = length(Tracker.list_users("presence:global"))
+    online_count = length(Tracker.list_users(Topics.presence()))
 
     channel_count =
       case Registry.select(RetroHexChat.Channels.ChannelRegistry, [{{:_, :_, :_}, [], [true]}]) do

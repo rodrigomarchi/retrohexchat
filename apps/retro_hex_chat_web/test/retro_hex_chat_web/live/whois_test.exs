@@ -139,18 +139,32 @@ defmodule RetroHexChatWeb.WhoisTest do
       assert html =~ "OfflineUser12345 is not online"
     end
 
-    test "double-click on user in conversations triggers PM (nicklist_dblclick)", %{conn: conn} do
+    test "double-click on user in the user list triggers PM (nicklist_dblclick)", %{conn: conn} do
       nick = "DblClk#{uid()}"
+      peer = "DblPeer#{uid()}"
 
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Double-click opens PM query window via nicklist_dblclick event
-      render_click(view, "nicklist_dblclick", %{"nick" => nick})
+      render_click(view, "nicklist_dblclick", %{"nick" => peer})
 
       html = render(view)
 
       # Double-click on user list opens a PM — check for switch_pm link
       assert html =~ "switch_pm"
+      assert :sys.get_state(view.pid).socket.assigns.session.active_pm == peer
+    end
+
+    # Your own name is in every user list, and a private conversation's list is
+    # half you. There is no conversation to open with yourself.
+    test "double-click on your own name opens nothing", %{conn: conn} do
+      nick = "DblSelf#{uid()}"
+
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      render_click(view, "nicklist_dblclick", %{"nick" => nick})
+
+      assert :sys.get_state(view.pid).socket.assigns.session.active_pm == nil
     end
   end
 end

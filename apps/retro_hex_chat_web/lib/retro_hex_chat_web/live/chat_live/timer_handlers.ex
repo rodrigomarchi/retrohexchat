@@ -20,7 +20,6 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
       push_status_message: 3,
       maybe_persist_ignore_list: 2,
       join_channel_in_background: 4,
-      load_channel_users: 2,
       load_channel_messages_with_pagination: 2
     ]
 
@@ -37,6 +36,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Commands.Parser
   alias RetroHexChatWeb.ChatLive.CommandDispatch
+  alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Helpers.PM
 
   # ── Typing indicator timer ────────────────────────────────
@@ -400,6 +400,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
 
       socket
       |> assign(session: new_session, show_status_tab: false)
+      |> Conversation.load_roster()
       |> PM.load_pm_messages_with_pagination(target_pm)
     else
       socket
@@ -416,7 +417,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
 
     socket
     |> assign(session: new_session, show_status_tab: false)
-    |> load_channel_users(target_channel)
+    |> Conversation.load_roster()
     |> load_channel_messages_with_pagination(target_channel)
   end
 
@@ -453,6 +454,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
 
         socket
         |> assign(session: new_session, show_status_tab: false)
+        |> Conversation.load_roster()
         |> PM.load_pm_messages_with_pagination(target_pm)
 
       target_channel && target_channel in session.channels ->
@@ -460,7 +462,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
 
         socket
         |> assign(session: new_session, show_status_tab: false)
-        |> load_channel_users(target_channel)
+        |> Conversation.load_roster()
         |> load_channel_messages_with_pagination(target_channel)
 
       true ->

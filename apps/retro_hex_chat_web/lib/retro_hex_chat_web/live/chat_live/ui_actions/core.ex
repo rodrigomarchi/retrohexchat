@@ -15,8 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
       error_event: 2,
       inline_help_event: 3,
       open_pm_conversation: 2,
-      show_whois_result: 2,
-      safe_update_away: 4
+      show_whois_result: 2
     ]
 
   alias RetroHexChat.Accounts.Session
@@ -25,6 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
   alias RetroHexChatWeb.ChatLive.ChannelListEvents
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -64,11 +64,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
   def handle_ui_action(socket, :set_away, %{message: message}) do
     session = Session.set_away(socket.assigns.session, message)
 
-    Enum.each(session.channels, fn channel ->
-      safe_update_away("channel:#{channel}", session.nickname, true, message)
-    end)
-
-    broadcast_away_change(session, true, message)
+    PresenceHelpers.publish_away(session, true, message)
 
     socket
     |> system_event(dgettext("chat", "You are now away: %{message}", message: message))
@@ -79,11 +75,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     session = socket.assigns.session
     new_session = Session.set_away(session, nil)
 
-    Enum.each(session.channels, fn channel ->
-      safe_update_away("channel:#{channel}", session.nickname, false, nil)
-    end)
-
-    broadcast_away_change(new_session, false, nil)
+    PresenceHelpers.publish_away(new_session, false, nil)
 
     socket
     |> system_event(dgettext("chat", "You are no longer away"))
@@ -303,22 +295,6 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
 
   defp command_topic_id("bot"), do: "bot-command"
   defp command_topic_id(command_name), do: "cmd-#{String.replace(command_name, "_", "-")}"
-
-  defp broadcast_away_change(session, away, message) do
-    Enum.each(session.channels, fn channel ->
-      Phoenix.PubSub.broadcast(
-        RetroHexChat.PubSub,
-        "channel:#{channel}",
-        {:user_away_changed,
-         %{
-           channel: channel,
-           nickname: session.nickname,
-           away: away,
-           away_message: message
-         }}
-      )
-    end)
-  end
 
   defp throttled_knock?(knock_timestamps, channel, now) do
     case Map.fetch(knock_timestamps, channel) do

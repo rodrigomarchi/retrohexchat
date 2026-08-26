@@ -8,12 +8,8 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
   Attached as `attach_hook(:navigation_events, :handle_event, ...)` in ChatLive.mount/3.
   """
 
-  import Phoenix.Component, only: [assign: 2]
-
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.UnreadTracker
-  alias RetroHexChatWeb.ChatLive.Helpers
-  alias RetroHexChatWeb.ChatLive.Helpers.PM
+  alias RetroHexChatWeb.ChatLive.Helpers.Conversation
 
   def handle_event("window_next", _params, socket) do
     {:halt, navigate(socket, :next)}
@@ -25,20 +21,6 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
 
   def handle_event("window_select", %{"index" => index}, socket) do
     {:halt, navigate_to_index(socket, index)}
-  end
-
-  def handle_event("navigate_to_channel", %{"channel" => channel}, socket) do
-    session = socket.assigns.session
-
-    socket =
-      if channel in session.channels do
-        updated_session = Session.set_active_channel(session, channel)
-        assign(socket, session: updated_session)
-      else
-        socket
-      end
-
-    {:halt, socket}
   end
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
@@ -104,69 +86,14 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
   defp move(idx, :next, len), do: rem(idx + 1, len)
   defp move(idx, :prev, len), do: rem(idx - 1 + len, len)
 
+  # Cycling to a window is the same act as clicking its tab, and goes through the
+  # same door: a copy of the switch here is how this path came to skip the
+  # composer reset and the search close that the click path runs.
   defp switch_to(socket, windows, idx) do
     case Enum.at(windows, idx) do
-      {:channel, channel} -> switch_channel(socket, channel)
-      {:pm, nickname} -> switch_pm(socket, nickname)
+      {:channel, channel} -> Conversation.activate_channel(socket, channel)
+      {:pm, nickname} -> Conversation.activate_pm(socket, nickname)
       nil -> socket
     end
-  end
-
-  defp switch_channel(socket, channel) do
-    session = Session.set_active_channel(socket.assigns.session, channel)
-    unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, channel)
-    highlight = MapSet.delete(socket.assigns.highlight_channels, channel)
-    flash = MapSet.delete(socket.assigns.flash_channels, channel)
-
-    if socket.assigns.pm_typing_timer,
-      do: Process.cancel_timer(socket.assigns.pm_typing_timer)
-
-    socket
-    |> assign(
-      session: session,
-      unread_counts: unread_counts,
-      highlight_channels: highlight,
-      flash_channels: flash,
-      show_status_tab: false,
-      channel_view: :chat,
-      space_avatar: nil,
-      pm_typing_from: nil,
-      pm_typing_timer: nil
-    )
-    |> Helpers.Channel.load_channel_users(channel)
-    |> Helpers.Channel.load_channel_messages_with_pagination(channel)
-    |> Helpers.Session.push_reconnect_state()
-  end
-
-  defp switch_pm(socket, nickname) do
-    session =
-      socket.assigns.session
-      |> Session.add_pm_conversation(nickname)
-      |> Session.set_active_pm(nickname)
-
-    unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, "pm:#{nickname}")
-    highlight = MapSet.delete(socket.assigns.highlight_channels, "pm:#{nickname}")
-    flash = MapSet.delete(socket.assigns.flash_channels, "pm:#{nickname}")
-
-    if socket.assigns.pm_typing_timer,
-      do: Process.cancel_timer(socket.assigns.pm_typing_timer)
-
-    socket
-    |> PM.open_pm_tab(nickname)
-    |> assign(
-      session: session,
-      unread_counts: unread_counts,
-      highlight_channels: highlight,
-      flash_channels: flash,
-      current_topic: nil,
-      current_modes: nil,
-      show_status_tab: false,
-      channel_view: :chat,
-      space_avatar: nil,
-      pm_typing_from: nil,
-      pm_typing_timer: nil
-    )
-    |> PM.load_pm_messages_with_pagination(nickname)
-    |> Helpers.Session.push_reconnect_state()
   end
 end

@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     ]
 
   alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Chat.Roster
   alias RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog
   alias RetroHexChatWeb.ChatLive.Components.KickQueueDialog
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
@@ -30,11 +31,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
         socket
       ) do
     msg = dgettext("chat", "%{nickname} sets mode %{mode}", nickname: nick, mode: mode_string)
-    users = apply_mode_to_users(socket.assigns.channel_users, mode_string, params)
+    users = apply_mode_to_users(socket.assigns.conversation_members, mode_string, params)
 
     socket =
       socket
-      |> assign(channel_users: users)
+      |> assign(conversation_members: users)
       |> Nicklist.reset(users)
       |> maybe_update_current_modes(payload)
       |> system_event(msg)
@@ -69,7 +70,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
         reason
       )
 
-    users = Enum.reject(socket.assigns.channel_users, &(&1.nickname == target))
+    users = Enum.reject(socket.assigns.conversation_members, &(&1.nickname == target))
 
     if target == socket.assigns.session.nickname do
       kick_event = %{
@@ -82,7 +83,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
 
       socket =
         socket
-        |> assign(channel_users: users)
+        |> assign(conversation_members: users)
         |> play_event_sound(:kick, socket.assigns.session)
         |> part_channel_after_kick(channel)
         |> GroupCallEvents.leave_channel_call(kick_event.channel, "channel_kick")
@@ -92,7 +93,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     else
       {:halt,
        socket
-       |> assign(channel_users: users)
+       |> assign(conversation_members: users)
        |> Nicklist.remove(target)
        |> play_event_sound(:kick, socket.assigns.session)
        |> system_event(msg)}
@@ -273,11 +274,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   end
 
   def handle_info({:user_channel_muted, %{target: target, channel: channel}}, socket) do
-    users = update_channel_user_muted(socket.assigns.channel_users, target, true)
+    users = update_channel_user_muted(socket.assigns.conversation_members, target, true)
 
     {:halt,
      socket
-     |> assign(channel_users: users)
+     |> assign(conversation_members: users)
      |> Nicklist.reset(users)
      |> system_event(
        dgettext("chat", "%{target} has been muted in %{channel}.",
@@ -288,11 +289,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   end
 
   def handle_info({:user_channel_unmuted, %{target: target, channel: channel}}, socket) do
-    users = update_channel_user_muted(socket.assigns.channel_users, target, false)
+    users = update_channel_user_muted(socket.assigns.conversation_members, target, false)
 
     {:halt,
      socket
-     |> assign(channel_users: users)
+     |> assign(conversation_members: users)
      |> Nicklist.reset(users)
      |> system_event(
        dgettext("chat", "%{target} has been unmuted in %{channel}.",
@@ -309,7 +310,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     my_nick = socket.assigns.session.nickname
 
     is_privileged =
-      Enum.any?(socket.assigns.channel_users, fn user ->
+      Enum.any?(socket.assigns.conversation_members, fn user ->
         user.nickname == my_nick and user.role in [:owner, :operator]
       end)
 
@@ -566,49 +567,49 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
 
   defp apply_mode_to_users(users, "+q", params) do
     Enum.map(users, fn user ->
-      if user.nickname in params, do: %{user | role: :owner}, else: user
+      if user.nickname in params, do: Roster.put_role(user, :owner), else: user
     end)
   end
 
   defp apply_mode_to_users(users, "-q", params) do
     Enum.map(users, fn user ->
-      if user.nickname in params, do: %{user | role: :regular}, else: user
+      if user.nickname in params, do: Roster.put_role(user, :regular), else: user
     end)
   end
 
   defp apply_mode_to_users(users, "+o", params) do
     Enum.map(users, fn user ->
-      if user.nickname in params, do: %{user | role: :operator}, else: user
+      if user.nickname in params, do: Roster.put_role(user, :operator), else: user
     end)
   end
 
   defp apply_mode_to_users(users, "-o", params) do
     Enum.map(users, fn user ->
-      if user.nickname in params, do: %{user | role: :regular}, else: user
+      if user.nickname in params, do: Roster.put_role(user, :regular), else: user
     end)
   end
 
   defp apply_mode_to_users(users, "+h", params) do
     Enum.map(users, fn user ->
-      if user.nickname in params, do: %{user | role: :half_operator}, else: user
+      if user.nickname in params, do: Roster.put_role(user, :half_operator), else: user
     end)
   end
 
   defp apply_mode_to_users(users, "-h", params) do
     Enum.map(users, fn user ->
-      if user.nickname in params, do: %{user | role: :regular}, else: user
+      if user.nickname in params, do: Roster.put_role(user, :regular), else: user
     end)
   end
 
   defp apply_mode_to_users(users, "+v", params) do
     Enum.map(users, fn user ->
-      if user.nickname in params, do: %{user | role: :voiced}, else: user
+      if user.nickname in params, do: Roster.put_role(user, :voiced), else: user
     end)
   end
 
   defp apply_mode_to_users(users, "-v", params) do
     Enum.map(users, fn user ->
-      if user.nickname in params, do: %{user | role: :regular}, else: user
+      if user.nickname in params, do: Roster.put_role(user, :regular), else: user
     end)
   end
 

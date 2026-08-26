@@ -10,6 +10,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.{NickServ, Queries}
   alias RetroHexChat.Table
+  alias RetroHexChat.Topics
 
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(["list" | opts], context) do
@@ -278,7 +279,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   defp strip_at(nick), do: nick
 
   defp online_nicknames do
-    Tracker.list_users("presence:global")
+    Tracker.list_users(Topics.presence())
     |> Enum.map(& &1.nickname)
     |> MapSet.new()
   end

@@ -68,7 +68,7 @@
       data-testid="chat-window"
     >
       <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
-      <:meta>{ChatTitle.window_meta(@session, length(@channel_users))}</:meta>
+      <:meta>{ChatTitle.window_meta(@session, length(@conversation_members))}</:meta>
 
       <%!-- The application's menus, under its own title bar, as Win98 had them.
             Dragged narrower than the strip needs, the window collapses them to
@@ -251,13 +251,17 @@
               </div>
             </div>
 
-            <%!-- Nicklist sidebar --%>
+            <%!-- User list sidebar: the members of whichever conversation is on
+                 screen — a channel's roster, or the two people in a private
+                 conversation. Only the status tab, which is not a conversation,
+                 goes without one. --%>
             <.live_component
               module={RetroHexChatWeb.ChatLive.Components.Nicklist}
               id={RetroHexChatWeb.ChatLive.Components.Nicklist.id()}
-              available={!@session.active_pm && !@show_status_tab}
+              available={!@show_status_tab}
               visible={@show_nicklist}
-              active_channel={@session.active_channel}
+              conversation_kind={if @session.active_pm, do: :private, else: :channel}
+              conversation_label={@session.active_pm || @session.active_channel}
               current_modes={@current_modes}
               current_nick={@session.nickname}
               nick_color_fn={@nick_color_fn}
@@ -272,7 +276,7 @@
             id={RetroHexChatWeb.ChatLive.Components.Composer.id()}
             session={@session}
             show_status_tab={@show_status_tab}
-            channel_users={@channel_users}
+            conversation_members={@conversation_members}
             show_emoji_picker={@show_emoji_picker}
             pm_typing_from={@pm_typing_from}
             edit_mode_message_id={@edit_mode_message_id}
@@ -308,7 +312,7 @@
               <.conversation_toolbar_actions
                 sidebar_toggles_class="md:hidden"
                 conversations_open={@show_conversations}
-                nicklist_open={@show_nicklist && !@session.active_pm && !@show_status_tab}
+                nicklist_open={@show_nicklist && !@show_status_tab}
                 active_channel={@session.active_channel}
                 active_pm={@session.active_pm}
                 show_status_tab={@show_status_tab}
@@ -1126,7 +1130,7 @@
   module={RetroHexChatWeb.ChatLive.Components.UserContextMenus}
   id={RetroHexChatWeb.ChatLive.Components.UserContextMenus.id()}
   session={@session}
-  channel_users={@channel_users}
+  conversation_members={@conversation_members}
   nick_color_fn={@nick_color_fn}
 />
 

@@ -6,6 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChat.Topics
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
@@ -93,7 +94,7 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
   end
 
   defp validate_target_online(target) do
-    if Tracker.online?("presence:global", target) do
+    if Tracker.online?(Topics.presence(), target) do
       :ok
     else
       {:error, dgettext("commands", "User '%{nickname}' is offline.", nickname: target)}

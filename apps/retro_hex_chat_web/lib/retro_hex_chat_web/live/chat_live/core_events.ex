@@ -19,7 +19,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     only: [
       join_channel: 3,
       error_event: 2,
-      load_channel_users: 2,
       load_channel_messages_with_pagination: 2,
       push_reconnect_state: 1,
       part_channel: 2,
@@ -28,12 +27,13 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.{Policy, Queries, Service, UnreadTracker}
+  alias RetroHexChat.Chat.{Policy, Queries, Service}
   alias RetroHexChat.Commands.Parser
   alias RetroHexChat.Observability
   alias RetroHexChat.Page
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChat.Topics
   alias RetroHexChatWeb.ChatLive
 
   alias RetroHexChatWeb.ChatLive.Components.{
@@ -44,6 +44,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     PasteConfirmDialog
   }
 
+  alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.ChatLive.StreamItem
@@ -82,32 +83,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- switch_channel --
 
   def handle_event("switch_channel", %{"channel" => channel}, socket) do
-    session = Session.set_active_channel(socket.assigns.session, channel)
-    unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, channel)
-    highlight = MapSet.delete(socket.assigns.highlight_channels, channel)
-    flash = MapSet.delete(socket.assigns.flash_channels, channel)
-    if socket.assigns.pm_typing_timer, do: Process.cancel_timer(socket.assigns.pm_typing_timer)
-
-    {:halt,
-     socket
-     |> assign(
-       session: session,
-       notice_active: false,
-       unread_counts: unread_counts,
-       highlight_channels: highlight,
-       flash_channels: flash,
-       show_status_tab: false,
-       channel_view: :chat,
-       space_avatar: nil,
-       pm_typing_from: nil,
-       pm_typing_timer: nil
-     )
-     |> reset_composer_modes()
-     |> clear_search_on_switch()
-     |> close_mobile_navigation_panels()
-     |> load_channel_users(channel)
-     |> load_channel_messages_with_pagination(channel)
-     |> push_reconnect_state()}
+    {:halt, Conversation.activate_channel(socket, channel)}
   end
 
   # -- channel_dblclick --
@@ -116,22 +92,8 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     session = socket.assigns.session
 
     if channel in session.channels do
-      # Already joined — switch to it
-      new_session = Session.set_active_channel(session, channel)
-
-      {:halt,
-       socket
-       |> assign(
-         session: new_session,
-         show_status_tab: false,
-         channel_view: :chat,
-         space_avatar: nil
-       )
-       |> load_channel_users(channel)
-       |> load_channel_messages_with_pagination(channel)
-       |> push_reconnect_state()}
+      {:halt, Conversation.activate_channel(socket, channel)}
     else
-      # Not joined — join it
       {:halt, join_channel(socket, channel, session)}
     end
   end
@@ -139,38 +101,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- switch_pm --
 
   def handle_event("switch_pm", %{"nickname" => nickname}, socket) do
-    session =
-      socket.assigns.session
-      |> Session.add_pm_conversation(nickname)
-      |> Session.set_active_pm(nickname)
-
-    unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, "pm:#{nickname}")
-    highlight = MapSet.delete(socket.assigns.highlight_channels, "pm:#{nickname}")
-    flash = MapSet.delete(socket.assigns.flash_channels, "pm:#{nickname}")
-    if socket.assigns.pm_typing_timer, do: Process.cancel_timer(socket.assigns.pm_typing_timer)
-
-    {:halt,
-     socket
-     |> PM.open_pm_tab(nickname)
-     |> assign(
-       session: session,
-       notice_active: false,
-       unread_counts: unread_counts,
-       highlight_channels: highlight,
-       flash_channels: flash,
-       current_topic: nil,
-       current_modes: nil,
-       show_status_tab: false,
-       channel_view: :chat,
-       space_avatar: nil,
-       pm_typing_from: nil,
-       pm_typing_timer: nil
-     )
-     |> reset_composer_modes()
-     |> clear_search_on_switch()
-     |> close_mobile_navigation_panels()
-     |> PM.load_pm_messages_with_pagination(nickname)
-     |> push_reconnect_state()}
+    {:halt, Conversation.activate_pm(socket, nickname)}
   end
 
   # -- switch_to_status --
@@ -181,7 +112,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
      |> assign(show_status_tab: true, status_unread: false, notice_active: false)
      |> reset_composer_modes()
      |> clear_search_on_switch()
-     |> close_mobile_navigation_panels()}
+     |> Conversation.close_mobile_panels()}
   end
 
   # -- close_channel_tab --
@@ -215,16 +146,18 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     socket =
       cond do
         session.active_pm ->
-          PM.load_pm_messages_with_pagination(socket, session.active_pm)
+          socket
+          |> Conversation.load_roster()
+          |> PM.load_pm_messages_with_pagination(session.active_pm)
 
         session.active_channel ->
           socket
-          |> load_channel_users(session.active_channel)
+          |> Conversation.load_roster()
           |> load_channel_messages_with_pagination(session.active_channel)
 
         show_status_tab ->
           socket
-          |> assign(current_topic: nil, current_modes: nil)
+          |> Conversation.load_roster()
           |> MessageViewport.reset([])
       end
 
@@ -736,7 +669,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   defp nick_in_use?(nickname, current_nickname) do
     String.downcase(nickname) != String.downcase(current_nickname) and
-      Tracker.online?("presence:global", nickname)
+      Tracker.online?(Topics.presence(), nickname)
   end
 
   defp open_delete_confirm(socket, message_id) do
@@ -756,10 +689,4 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       socket
     end
   end
-
-  defp close_mobile_navigation_panels(%{assigns: %{mobile_viewport: true}} = socket) do
-    assign(socket, show_conversations: false, show_nicklist: false)
-  end
-
-  defp close_mobile_navigation_panels(socket), do: socket
 end

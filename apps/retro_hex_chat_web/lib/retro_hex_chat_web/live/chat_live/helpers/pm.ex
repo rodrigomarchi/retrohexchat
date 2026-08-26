@@ -13,13 +13,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.{Queries, Service, UnreadTracker}
+  alias RetroHexChat.Chat.{Queries, Service}
   alias RetroHexChat.Page
   alias RetroHexChat.Presence.NotifyList
   alias RetroHexChatWeb.ChatLive.Components.Composer
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
+  alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
-  alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
   alias RetroHexChatWeb.ChatLive.StreamItem
 
   @spec load_pm_messages_with_pagination(Phoenix.LiveView.Socket.t(), String.t()) ::
@@ -71,32 +71,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   @spec open_pm_conversation(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
   def open_pm_conversation(socket, target) do
-    session = socket.assigns.session
-
-    new_session =
-      session
-      |> Session.add_pm_conversation(target)
-      |> Session.set_active_pm(target)
-
-    # Bringing the conversation on screen reads it, exactly as switching to its
-    # tab does — every entry point here (/query, nick double-click, hover card,
-    # context menus, user lookup) would otherwise leave a stale unread badge on
-    # the conversation being read.
-    key = "pm:#{target}"
-
+    # Opening a conversation from somewhere else — /query, a nick double-click, a
+    # hover card, a context menu, the user lookup — is switching to it plus one
+    # thing: the composer starts empty, the way joining a channel does. Switching
+    # between conversations already on screen carries a half-typed line along.
     socket
-    |> open_pm_tab(target)
-    |> assign(
-      session: new_session,
-      show_status_tab: false,
-      channel_view: :chat,
-      space_avatar: nil,
-      unread_counts: UnreadTracker.reset(socket.assigns.unread_counts, key),
-      flash_channels: MapSet.delete(socket.assigns.flash_channels, key)
-    )
+    |> Conversation.activate_pm(target)
     |> tap(fn _ -> send_update(Composer, id: Composer.id(), reset_input: true) end)
-    |> load_pm_messages_with_pagination(target)
-    |> SessionHelpers.push_reconnect_state()
   end
 
   @spec open_pm_tab(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()

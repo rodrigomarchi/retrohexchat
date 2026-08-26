@@ -2,9 +2,16 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
   @moduledoc """
   PubSub handlers for presence events: user connect/disconnect notifications,
   notify debounce, link preview results, and channel invites.
+
+  These are the only events a private conversation's user list has to go on. A
+  channel publishes its own joins, parts and away changes on its topic, and its
+  roster keys on those; two people in a query share no topic of that kind, so
+  whether the other person is here, away or gone reaches this session on the
+  server-wide presence topic and nowhere else.
   """
 
   import Phoenix.Component, only: [assign: 2]
+  import Phoenix.LiveView, only: [send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -23,12 +30,15 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
   alias RetroHexChat.Chat.{CapturedURL, IgnoreList}
   alias RetroHexChat.Presence.NotifyList
   alias RetroHexChat.Scraper.Store
+  alias RetroHexChatWeb.ChatLive.Components.HoverCard
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
+  alias RetroHexChatWeb.ChatLive.Helpers.Conversation
 
   # ── Global presence events ────────────────────────────────
 
   def handle_info({:user_connected, %{nickname: nick}}, socket) do
     session = socket.assigns.session
+    socket = refresh_private_roster(socket, nick)
 
     if nick == session.nickname do
       {:halt, socket}
@@ -43,12 +53,23 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
 
   def handle_info({:user_disconnected, %{nickname: nick}}, socket) do
     session = socket.assigns.session
+    socket = refresh_private_roster(socket, nick)
 
     if NotifyList.tracking?(session.notify_list, nick) do
       {:halt, start_notify_debounce(socket, nick, :offline)}
     else
       {:halt, socket}
     end
+  end
+
+  def handle_info(
+        {:user_presence_changed, %{nickname: nick, away: away} = payload},
+        socket
+      ) do
+    {:halt,
+     socket
+     |> refresh_private_roster(nick)
+     |> maybe_update_hover_away(nick, away, Map.get(payload, :away_message))}
   end
 
   # ── Notify debounce timer ─────────────────────────────────
@@ -204,5 +225,29 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
       {:ok, url_hash} -> url_hash
       {:error, :invalid_url} -> nil
     end
+  end
+
+  # A presence event carries one fact about one person; the roster wants every
+  # fact about both. Two people is a keyed lookup each, so re-reading the
+  # conversation is cheaper than reconciling a partial row — and cannot drift.
+  @spec refresh_private_roster(Phoenix.LiveView.Socket.t(), String.t()) ::
+          Phoenix.LiveView.Socket.t()
+  defp refresh_private_roster(socket, nick) do
+    if Conversation.active_private_participant?(socket.assigns.session, nick) do
+      Conversation.load_roster(socket)
+    else
+      socket
+    end
+  end
+
+  @spec maybe_update_hover_away(
+          Phoenix.LiveView.Socket.t(),
+          String.t(),
+          boolean(),
+          String.t() | nil
+        ) :: Phoenix.LiveView.Socket.t()
+  defp maybe_update_hover_away(socket, nick, away, message) do
+    send_update(HoverCard, id: HoverCard.id(), action: {:update_away, nick, away, message})
+    socket
   end
 end

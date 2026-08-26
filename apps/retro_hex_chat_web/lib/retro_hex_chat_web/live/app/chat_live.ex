@@ -149,7 +149,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     if takeover_expected?, do: wait_for_takeover_cleanup(takeover_ref)
 
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(nickname))
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "presence:global")
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.presence())
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:announcements")
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:wallops")
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:settings")
@@ -158,7 +158,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
     Phoenix.PubSub.broadcast(
       RetroHexChat.PubSub,
-      "presence:global",
+      Topics.presence(),
       {:user_connected, %{nickname: nickname}}
     )
 
@@ -168,7 +168,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     reconnecting? = backend_reconnect_state != nil
     join_channel = params["join"]
 
-    ChatLive.Helpers.safe_track_user("presence:global", nickname)
+    ChatLive.Helpers.safe_track_user(Topics.presence(), nickname, client_info)
 
     socket =
       socket
@@ -207,7 +207,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
   end
 
   defp takeover_expected?(default_channel, nickname) do
-    Tracker.online?("presence:global", nickname) or channel_has_member?(default_channel, nickname)
+    Tracker.online?(Topics.presence(), nickname) or
+      channel_has_member?(default_channel, nickname)
   end
 
   # Presence and a channel's member list both answer "was a session here",
@@ -287,11 +288,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
       Phoenix.PubSub.broadcast(
         RetroHexChat.PubSub,
-        "presence:global",
+        Topics.presence(),
         {:user_disconnected, %{nickname: session.nickname}}
       )
 
-      ChatLive.Helpers.safe_untrack_user("presence:global", session.nickname)
+      ChatLive.Helpers.safe_untrack_user(Topics.presence(), session.nickname)
 
       unless socket.assigns[:skip_whowas_record] do
         WhowasCache.record(session.nickname, session.channels, quit_reason)
@@ -882,7 +883,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   defp assign_defaults(socket, session) do
     socket
     |> assign(
-      channel_users: [],
+      conversation_members: [],
       live_ready: connected?(socket),
       open_windows: MapSet.new(),
       nick_color_fn: ChatHelpers.build_nick_color_fn(session),

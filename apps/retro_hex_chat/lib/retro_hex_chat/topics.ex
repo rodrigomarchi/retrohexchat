@@ -20,4 +20,16 @@ defmodule RetroHexChat.Topics do
   @doc "Everything addressed to a channel."
   @spec channel(String.t()) :: String.t()
   def channel(name) when is_binary(name), do: "channel:" <> name
+
+  @doc """
+  Where a person is tracked for as long as they are connected, whatever they are
+  looking at.
+
+  A channel's presence topic only knows the people who joined it, which is the
+  wrong question for anything that has to answer "is this person here" about
+  someone you share no channel with — a private conversation, a whois, a hover
+  card.
+  """
+  @spec presence() :: String.t()
+  def presence, do: "presence:global"
 end

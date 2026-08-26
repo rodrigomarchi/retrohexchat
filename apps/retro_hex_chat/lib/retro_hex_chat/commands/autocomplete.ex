@@ -223,8 +223,8 @@ defmodule RetroHexChat.Commands.Autocomplete do
   Own nickname is deprioritized to the end of results.
   """
   @spec search_nicks(String.t(), [map()], String.t()) :: [nick_result()]
-  def search_nicks(partial, channel_users, own_nickname) do
-    channel_users
+  def search_nicks(partial, members, own_nickname) do
+    members
     |> Enum.map(&match_nick(&1, partial, own_nickname))
     |> Enum.reject(&is_nil/1)
     |> Enum.sort_by(&{&1.self?, status_order(&1.status), -&1.score, &1.nickname})
@@ -336,11 +336,11 @@ defmodule RetroHexChat.Commands.Autocomplete do
   Uses prefix matching (not fuzzy). Own nick moved to end.
   """
   @spec tab_complete_matches(String.t(), [map()], String.t()) :: [String.t()]
-  def tab_complete_matches(partial, channel_users, own_nickname) do
+  def tab_complete_matches(partial, members, own_nickname) do
     downcased = String.downcase(partial)
 
     matches =
-      channel_users
+      members
       |> Enum.filter(fn user ->
         String.downcase(user.nickname) |> String.starts_with?(downcased)
       end)

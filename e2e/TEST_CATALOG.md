@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **218 spec files** under `e2e/tests/`.
-- **453 Playwright `test()` cases**.
-- **446 documented flows**, 445 done, 1 not done.
+- **219 spec files** under `e2e/tests/`.
+- **455 Playwright `test()` cases**.
+- **448 documented flows**, 447 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -607,6 +607,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | W9 | Notify auto-WHOIS emits online notification plus WHOIS registration detail when a watched user connects (features P1) | `tests/chat-notify-settings.spec.ts` | done |
 | W10 | Notify auto-add-PM adds first PM partners and persists the entry across registered-user reconnect (features P1) | `tests/chat-notify-settings.spec.ts` | done |
 | W11 | Passive tab switching, dialog open/close, and nicklist hover do not reset the observed idle timer (features P2) | `tests/chat-idle-passive.spec.ts` | done |
+| W12 | A private conversation shows the same user list as a channel, listing both participants with the peer first (features P1) | `tests/chat-pm-user-list.spec.ts` | done |
+| W13 | The peer's away state reaches a private conversation's user list with no channel in common (features P1) | `tests/chat-pm-user-list.spec.ts` | done |
 
 ### X - Channel Modes, Services, Permissions, Persistence Edges
 

@@ -84,10 +84,16 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   end
 
   def handle_event("nicklist_dblclick", %{"nick" => nick}, socket) do
-    {:halt,
-     socket
-     |> close_context_menu()
-     |> open_pm_conversation(nick)}
+    # Your own row is in every roster, and a private conversation's is half you.
+    # There is no conversation to open with yourself.
+    if nick == socket.assigns.session.nickname do
+      {:halt, close_context_menu(socket)}
+    else
+      {:halt,
+       socket
+       |> close_context_menu()
+       |> open_pm_conversation(nick)}
+    end
   end
 
   def handle_event("close_context_menu", _params, socket) do

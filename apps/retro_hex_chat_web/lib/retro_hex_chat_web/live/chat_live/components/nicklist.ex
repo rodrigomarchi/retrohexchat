@@ -1,15 +1,21 @@
 defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   @moduledoc """
-  The channel nicklist sidebar. Owns the role-grouped member streams, so the
-  roster updates on membership/role/away/mute deltas, not on every chat re-render
-  of the parent LiveView.
+  The conversation's user list sidebar. Owns the role-grouped member streams, so
+  the roster updates on membership/role/away/mute deltas, not on every chat
+  re-render of the parent LiveView.
 
-  The parent stays the canonical owner of `channel_users`: the tab-complete
+  It describes whichever conversation is on screen. A channel is its members,
+  grouped by role; a private conversation is its two participants, the other
+  person first. `RetroHexChat.Chat.Roster` decides who those are and in what
+  order — this renders whatever it is handed, so the two kinds cannot drift into
+  two lists.
+
+  The parent stays the canonical owner of `conversation_members`: the tab-complete
   (`MenuToolbarEvents`), the nicklist context menu and several PubSub handlers read
   the materialized list. The parent keeps that list and feeds this component the
   matching delta via `send_update/2`:
 
-    * `{:reset, users}` — channel switch or bulk change (mode, away, rename)
+    * `{:reset, users}` — conversation switch or bulk change (mode, away, rename)
     * `{:upsert, user}` — a single user joined or changed
     * `{:remove, nick}` — a single user left or was kicked
 
@@ -17,7 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   the sidebar visibility gate); it arrives here as `visible`. The container is kept
   mounted while hidden (via a CSS class, not `:if`) so the stream is never torn
   down and rebuilt on toggle. The right-click/double-click `NicklistHook` pushes to
-  the parent, which owns the context menu and reads `channel_users` there.
+  the parent, which owns the context menu and reads `conversation_members` there.
   """
   use RetroHexChatWeb, :live_component
 
@@ -84,7 +90,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
         id: @id,
         available: true,
         visible: false,
-        active_channel: nil,
+        conversation_kind: :channel,
+        conversation_label: nil,
         current_modes: nil,
         current_nick: nil,
         users: [],
@@ -141,7 +148,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
-    assigns = assign(assigns, max_rendered: @max_rendered)
+    assigns =
+      assign(assigns,
+        max_rendered: @max_rendered,
+        variant: if(assigns.conversation_kind == :private, do: "pm", else: "channel")
+      )
 
     ~H"""
     <div id={"#{@id}-mount"} class="flex h-full shrink-0">
@@ -156,7 +167,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
         <:rail>
           <.nicklist_rail
             expanded={@visible}
-            channel_name={@active_channel}
+            variant={@variant}
+            label={@conversation_label}
             total={@total}
             online_count={@online_count}
             away_count={@away_count}
@@ -166,7 +178,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
           />
         </:rail>
         <.nicklist_header
-          channel_name={@active_channel}
+          variant={@variant}
+          label={@conversation_label}
           total={@total}
           modes={@current_modes}
           on_close="toggle_nicklist"
@@ -193,7 +206,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
                 id={dom_id}
                 nick={user.nickname}
                 role={Map.get(user, :role, :normal)}
-                status={if Map.get(user, :away), do: "away", else: "online"}
+                status={row_status(user)}
                 muted={Map.get(user, :muted, false)}
                 current={same_nick?(user.nickname, @current_nick)}
                 nick_color={@nick_color_fn.(user.nickname)}
@@ -216,7 +229,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
       id: Map.get(assigns, :id, socket.assigns.id),
       available: Map.get(assigns, :available, socket.assigns.available),
       visible: Map.get(assigns, :visible, socket.assigns.visible),
-      active_channel: Map.get(assigns, :active_channel, socket.assigns.active_channel),
+      conversation_kind: Map.get(assigns, :conversation_kind, socket.assigns.conversation_kind),
+      conversation_label:
+        Map.get(assigns, :conversation_label, socket.assigns.conversation_label),
       current_modes: Map.get(assigns, :current_modes, socket.assigns.current_modes),
       current_nick: Map.get(assigns, :current_nick, socket.assigns.current_nick),
       nick_color_fn: Map.get(assigns, :nick_color_fn, socket.assigns.nick_color_fn)
@@ -225,12 +240,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
 
   defp assign_roster(socket, users) do
     section_counts = section_counts(users)
+    kind = socket.assigns.conversation_kind
 
     sections =
       @role_sections
       |> Enum.map(fn section ->
         section
-        |> Map.put(:label, section_label(section.key))
+        |> Map.put(:label, section_label(section.key, kind))
         |> Map.put(:count, Map.get(section_counts, section.key, 0))
       end)
       |> Enum.filter(&(&1.count > 0))
@@ -239,10 +255,22 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
       users: users,
       sections: sections,
       total: length(users),
-      online_count: Enum.count(users, &(not Map.get(&1, :away, false))),
+      online_count: Enum.count(users, &online?/1),
       away_count: Enum.count(users, &Map.get(&1, :away, false)),
       muted_count: Enum.count(users, &Map.get(&1, :muted, false))
     )
+  end
+
+  # A channel member is present by virtue of being in the channel; the other
+  # person in a private conversation may simply not be connected.
+  defp online?(user), do: Map.get(user, :online, true) and not Map.get(user, :away, false)
+
+  defp row_status(user) do
+    cond do
+      not Map.get(user, :online, true) -> "offline"
+      Map.get(user, :away, false) -> "away"
+      true -> "online"
+    end
   end
 
   defp reset_role_streams(socket, users) do
@@ -274,9 +302,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
     |> then(&[user | &1])
   end
 
+  # The roster ranks its members — by role in a channel, by who the conversation
+  # is with in a private one — and a single-row upsert has to land in the same
+  # order the full load produced.
   defp sort_users(users) do
     Enum.sort_by(users, fn user ->
-      {role_rank(Map.get(user, :role, :regular)), String.downcase(user.nickname)}
+      {Map.get(user, :rank) || role_rank(Map.get(user, :role, :regular)),
+       String.downcase(user.nickname)}
     end)
   end
 
@@ -287,6 +319,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   defp role_rank(:regular), do: 4
   defp role_rank(:bot), do: 5
   defp role_rank(role), do: role |> Role.key() |> role_rank()
+
+  # A private conversation has no channel roles to group by: everyone in it is
+  # simply one of the two people talking.
+  defp section_label(:regular, :private), do: dgettext("chat", "Participants")
+  defp section_label(role, _kind), do: section_label(role)
 
   defp section_label(:owner), do: dgettext("chat", "Owner")
   defp section_label(:operator), do: dgettext("chat", "Operator")

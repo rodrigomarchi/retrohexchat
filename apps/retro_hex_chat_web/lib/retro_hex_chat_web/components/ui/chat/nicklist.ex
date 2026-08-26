@@ -9,9 +9,9 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   alias RetroHexChatWeb.Icons
 
   @doc """
-  Renders the nicklist sidebar chrome. `visible` means expanded; when false, the
-  mounted sidebar is replaced by the 36px rail. `available`
-  hides the entire sidebar in contexts that do not have a channel roster.
+  Renders the user list sidebar chrome. `visible` means expanded; when false, the
+  mounted sidebar is replaced by the 36px rail. `available` hides the sidebar
+  entirely where there is no conversation to describe — the status tab.
   """
   attr :available, :boolean, default: true
   attr :visible, :boolean, default: true
@@ -57,9 +57,10 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
     """
   end
 
-  @doc "Renders the compact channel roster rail used by the collapsed state."
+  @doc "Renders the compact roster rail used by the collapsed state."
   attr :expanded, :boolean, default: true
-  attr :channel_name, :string, default: nil
+  attr :variant, :string, values: ~w(channel pm), default: "channel"
+  attr :label, :string, default: nil
   attr :total, :integer, default: 0
   attr :online_count, :integer, default: 0
   attr :away_count, :integer, default: 0
@@ -71,7 +72,8 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   def nicklist_rail(assigns) do
     assigns =
       assigns
-      |> assign(:display_channel, assigns.channel_name || dgettext("chat", "Users"))
+      |> assign(:display_label, assigns.label || dgettext("chat", "Users"))
+      |> assign(:conversation_icon, if(assigns.variant == "pm", do: :pm, else: :channel))
       |> assign(:visible_sections, Enum.take(assigns.sections || [], 4))
 
     ~H"""
@@ -102,8 +104,8 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
       </button>
 
       <.nicklist_rail_item
-        icon={:channel}
-        label={@display_channel}
+        icon={@conversation_icon}
+        label={@display_label}
         count={@total}
         active
         expanded={@expanded}
@@ -204,6 +206,12 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
     """
   end
 
+  defp nicklist_rail_icon(%{icon: :pm} = assigns) do
+    ~H"""
+    <Icons.icon_tab_pm class="h-4 w-4" />
+    """
+  end
+
   defp nicklist_rail_icon(%{icon: :online} = assigns) do
     ~H"""
     <Icons.icon_status_user class="h-4 w-4" />
@@ -240,8 +248,15 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
     """
   end
 
-  @doc "Renders the channel identity and mode summary for the nicklist."
-  attr :channel_name, :string, default: nil
+  @doc """
+  Renders the conversation's identity and mode summary for the user list.
+
+  `variant` names which kind of conversation is being described — a channel is
+  addressed by its name, a private conversation by the person on the other side —
+  the same vocabulary the topic bar uses over the message area.
+  """
+  attr :variant, :string, values: ~w(channel pm), default: "channel"
+  attr :label, :string, default: nil
   attr :total, :integer, default: 0
   attr :modes, :any, default: nil
   attr :on_close, :any, default: nil
@@ -252,16 +267,17 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   def nicklist_header(assigns) do
     assigns =
       assigns
-      |> assign(:display_channel, assigns.channel_name || dgettext("chat", "Users"))
+      |> assign(:display_label, assigns.label || dgettext("chat", "Users"))
       |> assign(:mode_badges, mode_badges(assigns.modes))
 
     ~H"""
     <div class={classes(["chat-nicklist-header", @class])} data-testid="nicklist-header" {@rest}>
       <div class="chat-nicklist-header__main">
         <span class="chat-nicklist-header__icon" aria-hidden="true">
-          <Icons.icon_tab_nicklist class="h-4 w-4" />
+          <Icons.icon_tab_pm :if={@variant == "pm"} class="h-4 w-4" />
+          <Icons.icon_tab_nicklist :if={@variant != "pm"} class="h-4 w-4" />
         </span>
-        <span class="chat-nicklist-header__channel">{@display_channel}</span>
+        <span class="chat-nicklist-header__channel">{@display_label}</span>
         <span class="chat-nicklist-header__count">{@total}</span>
         <.button
           :if={@on_close}

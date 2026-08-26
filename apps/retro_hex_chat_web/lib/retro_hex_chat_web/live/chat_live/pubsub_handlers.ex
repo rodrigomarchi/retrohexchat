@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   - `ChannelState` — mode_changed, kicked/banned/unbanned, ban/invite exceptions, topic,
     group-call presence
   - `Membership` — user_joined/left, nick_changed, force_disconnect/rename, nickserv
-  - `Presence` — user_connected/disconnected, notify_debounce, link_preview, invite
+  - `Presence` — user_connected/disconnected/presence_changed, notify_debounce, link_preview, invite
 
   Attached as `attach_hook(:pubsub_handlers, :handle_info, ...)` in ChatLive.mount/3.
   """
@@ -153,6 +153,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     do: Presence.handle_info(msg, socket)
 
   def handle_info({:user_disconnected, _} = msg, socket),
+    do: Presence.handle_info(msg, socket)
+
+  def handle_info({:user_presence_changed, _} = msg, socket),
     do: Presence.handle_info(msg, socket)
 
   def handle_info({:notify_debounce, _, _} = msg, socket),

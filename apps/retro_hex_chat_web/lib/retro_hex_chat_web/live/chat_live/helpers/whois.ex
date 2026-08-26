@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   alias RetroHexChat.Chat.{TimeFormatter, UserBio}
   alias RetroHexChat.Presence.{Tracker, WhowasCache}
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChat.Topics
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Windows
 
@@ -67,10 +68,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
 
     case WhowasCache.lookup(normalized_target) do
       {:ok, entry} ->
-        {:ok, format_whowas_result(entry, Tracker.online?("presence:global", entry.nickname))}
+        {:ok, format_whowas_result(entry, Tracker.online?(Topics.presence(), entry.nickname))}
 
       {:error, :not_found} ->
-        if Tracker.online?("presence:global", normalized_target) do
+        if Tracker.online?(Topics.presence(), normalized_target) do
           {:error,
            dgettext("chat", "* %{target} is online. Use /whois %{target} for current info.",
              target: normalized_target

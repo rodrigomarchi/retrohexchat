@@ -113,6 +113,15 @@ no cron, no `:timer.send_interval`. Timer refs are process-level state and must 
 stored in domain structs (`Session`, `IgnoreList`); keep domain modules pure and hold refs
 in a parallel assigns map.
 
+**A read-model answers one question for every kind of thing that asks it.** A channel and
+a private conversation are the same idea addressed two ways, and each place that forgets it
+forks. `Chat.Roster.of/1` is the single answer to "who is in this conversation" — channel
+membership from the channel process, a query's two people from the server-wide presence
+topic — and one user-list island renders whatever it returns. `Helpers.Conversation` is the
+matching web-side door: one `activate_channel`/`activate_pm` and one `load_roster`, because
+a second copy of a conversation switch drifts from the first (the keyboard path had already
+stopped resetting the composer and closing the search bar that the click path did).
+
 **Cache + expiry pattern.** A GenServer-owned public ETS table seeded from the DB plus a
 periodic `Task` that expires/reconciles rows (BanCache/BanExpiry, RoleCache, WhowasCache,
 global mutes). Expired timed entries are filtered on load (`expires_at < now`); survivors

@@ -50,6 +50,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   alias RetroHexChat.Commands.{Dispatcher, Parser, Registry}
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChat.Topics
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.NickChangeDialog
   alias RetroHexChatWeb.ChatLive.Helpers.LobbyInvite
@@ -470,13 +471,12 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp nick_in_use?(nickname, current_nickname) do
     String.downcase(nickname) != String.downcase(current_nickname) and
-      Tracker.online?("presence:global", nickname)
+      Tracker.online?(Topics.presence(), nickname)
   end
 
-  # handle_set_away, handle_clear_away, handle_set_topic, handle_view_topic,
-  # show_help_message, show_command_help_message, validate_operator,
-  # validate_invite_only, validate_target_not_in_channel
-  # → UiActionHandlers (local copies)
+  # handle_set_topic, handle_view_topic, show_help_message,
+  # show_command_help_message, validate_operator, validate_invite_only,
+  # validate_target_not_in_channel → UiActionHandlers (local copies)
 
   # ── Private: auto-join management ──────────────────────────
 

@@ -172,6 +172,60 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       assert has_element?(view, ~s([data-testid="chat-input-form"] [data-testid="char-counter"]))
     end
 
+    test "a private conversation gets the same user list, naming its participants", %{
+      conn: conn
+    } do
+      viewer = "Desk#{uid()}"
+      peer = "Peer#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, viewer), "/chat")
+
+      render_click(view, "switch_pm", %{"nickname" => peer})
+
+      assert has_element?(view, ~s([data-testid="channel-content-row"] [data-testid="nicklist"]))
+
+      refute has_element?(
+               view,
+               ~s([data-testid="nicklist-sidebar-shell"][class*="hidden"])
+             )
+
+      # The roster is the conversation's own, not whatever the last channel left
+      # behind: the two people in it, the one you are talking to first.
+      assigns = :sys.get_state(view.pid).socket.assigns
+      assert Enum.map(assigns.conversation_members, & &1.nickname) == [peer, viewer]
+    end
+
+    test "switching back to a channel restores the channel roster", %{conn: conn} do
+      viewer = "Desk#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, viewer), "/chat")
+
+      channel = :sys.get_state(view.pid).socket.assigns.session.active_channel
+
+      assert Enum.any?(
+               :sys.get_state(view.pid).socket.assigns.conversation_members,
+               &(&1.nickname == viewer)
+             )
+
+      render_click(view, "switch_pm", %{"nickname" => "Peer#{uid()}"})
+      assert length(:sys.get_state(view.pid).socket.assigns.conversation_members) == 2
+
+      render_click(view, "switch_channel", %{"channel" => channel})
+      members = :sys.get_state(view.pid).socket.assigns.conversation_members
+
+      assert Enum.any?(members, &(&1.nickname == viewer))
+      assert :sys.get_state(view.pid).socket.assigns.session.active_channel == channel
+    end
+
+    test "the status tab is not a conversation and keeps no user list", %{conn: conn} do
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+
+      render_click(view, "switch_to_status", %{})
+
+      assert has_element?(
+               view,
+               ~s([data-testid="nicklist-sidebar-shell"][class*="hidden"])
+             )
+    end
+
     test "the tab bar closes the chat area from below, after the content row", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
 

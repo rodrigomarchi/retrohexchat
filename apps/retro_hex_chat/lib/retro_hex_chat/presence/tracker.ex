@@ -37,34 +37,49 @@ defmodule RetroHexChat.Presence.Tracker do
   end
 
   @doc """
-  Somebody's presence entry, from the first of `channels` they are found in.
+  Somebody's presence entry, wherever it can be found.
 
   A person's away state, client and idle time are the same wherever they are
-  standing, so any channel both people are in answers the question. The hover
-  card and `/whois` both ask it, and both were reaching for the channel's topic
-  name to do so.
+  standing, so the server-wide entry answers the question — including for
+  somebody you share no channel with, which is what the hover card and `/whois`
+  used to go blank on. `channels` stays as the fallback for an entry that
+  predates the current tracking.
   """
   @spec find_user(String.t(), [String.t()]) :: map() | nil
   def find_user(nickname, channels) do
-    target = String.downcase(nickname)
+    meta(Topics.presence(), nickname) || find_user_in_channels(nickname, channels)
+  end
 
+  @spec find_user_in_channels(String.t(), [String.t()]) :: map() | nil
+  defp find_user_in_channels(nickname, channels) do
     Enum.find_value(channels, fn channel ->
       channel
       |> Topics.channel()
-      |> list_users()
-      |> Enum.find(&(String.downcase(&1.nickname) == target))
+      |> meta(nickname)
     end)
   end
 
-  @spec online?(String.t(), String.t()) :: boolean()
-  def online?(topic, nickname) do
-    target = String.downcase(nickname)
+  @doc """
+  One person's presence entry on `topic`, or `nil` when they are not on it.
 
-    topic
-    |> list()
-    |> Map.keys()
-    |> Enum.any?(&(String.downcase(&1) == target))
+  Keyed straight off the presence table. `list_users/1` materializes every meta
+  on the topic, which is the wrong shape for a question about one nickname —
+  `presence:global` holds the whole server.
+
+  A nickname is tracked under the case it connected with, so a lookup that
+  misses falls back to a case-insensitive scan: a nick read back from a stored
+  conversation or typed into a command does not have to match that case.
+  """
+  @spec meta(String.t(), String.t()) :: map() | nil
+  def meta(topic, nickname) do
+    case get_by_key(topic, nickname) do
+      %{metas: [meta | _rest]} -> Map.put(meta, :nickname, nickname)
+      _missing -> scan_for_meta(topic, nickname)
+    end
   end
+
+  @spec online?(String.t(), String.t()) :: boolean()
+  def online?(topic, nickname), do: meta(topic, nickname) != nil
 
   @spec update_away(String.t(), String.t(), boolean(), String.t() | nil) ::
           {:ok, binary()} | {:error, any()}
@@ -87,5 +102,14 @@ defmodule RetroHexChat.Presence.Tracker do
     update(self(), topic, nickname, fn meta ->
       Map.put(meta, :bio, bio)
     end)
+  end
+
+  @spec scan_for_meta(String.t(), String.t()) :: map() | nil
+  defp scan_for_meta(topic, nickname) do
+    target = String.downcase(nickname)
+
+    topic
+    |> list_users()
+    |> Enum.find(&(String.downcase(&1.nickname) == target))
   end
 end

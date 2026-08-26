@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenusTest do
     base = %{
       id: UserContextMenus.id(),
       session: Session.new("alice"),
-      channel_users: [],
+      conversation_members: [],
       nick_color_fn: fn _nick -> "nick-color-0" end
     }
 

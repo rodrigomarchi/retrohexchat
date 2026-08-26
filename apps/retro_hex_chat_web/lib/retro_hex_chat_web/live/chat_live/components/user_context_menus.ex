@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenus do
   helpers); every other `context_*`/`ctx_chat_*` action reads its target from the
   menu item's `phx-value` params and does the privileged session/server work on the
   parent. The read-model the menus derive from — `session`, the canonical
-  `channel_users` list, and `nick_color_fn` — stays parent-owned and arrives here as
+  `conversation_members` list, and `nick_color_fn` — stays parent-owned and arrives here as
   passthrough; the menus derive viewer/target permissions, ignore state, and custom
   items in `render/1` (helpers moved here from the parent). Change-tracking isolates
   both menus from parent hot-path re-renders.
@@ -69,7 +69,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenus do
        context_menu: @nick_closed,
        show_context_color_picker: false
      )
-     |> assign(session: nil, channel_users: [], nick_color_fn: nil)}
+     |> assign(session: nil, conversation_members: [], nick_color_fn: nil)}
   end
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
@@ -97,7 +97,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenus do
     chat = assigns.chat_context_menu
     nick_menu = assigns.context_menu
     session = assigns.session
-    users = assigns.channel_users
+    users = assigns.conversation_members
     viewer_op = viewer_is_op?(session)
 
     assigns =

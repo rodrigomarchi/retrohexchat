@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.NotifyOps do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Presence.{NotifyList, Tracker}
+  alias RetroHexChat.Topics
 
   @type result :: {:ok, Session.t(), String.t()} | {:error, String.t()}
 
@@ -95,7 +96,7 @@ defmodule RetroHexChatWeb.ChatLive.NotifyOps do
 
   @spec sync_entry_online(map(), String.t()) :: map()
   defp sync_entry_online(notify_list, nickname) do
-    online_nicks = Tracker.list_users("presence:global") |> Enum.map(& &1.nickname)
+    online_nicks = Tracker.list_users(Topics.presence()) |> Enum.map(& &1.nickname)
 
     if Enum.any?(online_nicks, &(String.downcase(&1) == String.downcase(nickname))) do
       NotifyList.set_online(notify_list, nickname, true)

@@ -234,9 +234,11 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         description:
           dgettext(
             "help",
-            "View and interact with users in the current channel through the right-side user list."
+            "See and act on whoever is in the conversation on screen through the right-side " <>
+              "user list — a channel's members grouped by role, or the two people in a " <>
+              "private message."
           ),
-        see_also: ["ui-lists"]
+        see_also: ["ui-lists", "private-messages", "ui-conversations"]
       },
       %{
         id: "ui-topic-bar",

@@ -1,12 +1,15 @@
 <p>
   {dgettext(
     "help_ui",
-    "The user list appears in the conversations sidebar (left pane) under the active channel, showing all users sorted by role."
+    "The user list is the sidebar on the right of the conversation. It lists whoever is in the conversation on screen, and every conversation has one — a channel shows its members, a private message shows the two of you."
   )}
 </p>
 <.help_h4 icon={:icon_role_operator}>{dgettext("help_ui", "Roles")}</.help_h4>
 <p>
-  {dgettext("help_ui", "Users are sorted by role priority and distinguished by icon and color:")}<br />
+  {dgettext(
+    "help_ui",
+    "In a channel, users are grouped by role and sorted within each group:"
+  )}<br />
   <strong>
     {dgettext("help_ui", "Owners (~):")}
   </strong>
@@ -28,17 +31,32 @@
   </strong>
   {dgettext("help_ui", "Default color.")}
 </p>
-<.help_h4 icon={:icon_community}>{dgettext("help_ui", "User Count")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
-    "The active channel shows a user count in parentheses next to the channel name, e.g."
-  )} <strong>{dgettext("help_ui", "#lobby (12)")}</strong>.
+    "A private message has no channel roles, so both of you are listed together under Participants, the person you are talking to first. Bots keep their own group in either kind of conversation."
+  )}
+</p>
+<.help_h4 icon={:icon_status_user}>{dgettext("help_ui", "Who is here")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "The strip under the title counts who is online, away and muted. A dot beside each name says the same for that person: online, away, or — in a private message — not connected at all, since the other person can be offline while the conversation stays open."
+  )}
+</p>
+<.help_h4 icon={:icon_toolbar_toggle_nicklist}>
+  {dgettext("help_ui", "Showing and hiding it")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Collapse the list with the arrow in its title, and it becomes a narrow rail that still shows the counts; click the rail to bring it back. On a phone there is no rail: use the Users button at the end of the tab strip to open it as a drawer."
+  )}
 </p>
 <.help_h4 icon={:icon_dialog_custom_menus}>{dgettext("help_ui", "Context Menu")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
-    "Click a nickname to access Query, Whois, Kick, Ban, Mode, Add to Contacts, and Set Nick Color options. Double-click to open a private message."
+    "Right-click a nickname for Query, Whois, Add to Contacts, Ignore and Set Nick Color, plus Kick, Ban, Op and Voice when you are a channel operator. Double-click opens a private message."
   )}
 </p>

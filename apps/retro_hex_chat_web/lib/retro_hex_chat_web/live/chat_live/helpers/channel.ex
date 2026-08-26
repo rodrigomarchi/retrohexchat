@@ -14,15 +14,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{Queries, UnreadTracker}
   alias RetroHexChat.Page
-  alias RetroHexChat.Presence.Tracker
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.StreamItem
 
   alias RetroHexChatWeb.ChatLive.Components.Composer
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
-  alias RetroHexChatWeb.ChatLive.Components.Nicklist
   alias RetroHexChatWeb.ChatLive.ConversationsReadModel
   alias RetroHexChatWeb.ChatLive.GroupCallEvents
+  alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
 
@@ -87,7 +86,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     |> GroupCallEvents.refresh_channel_call_state(channel_name)
     |> GroupCallEvents.rehydrate()
     |> tap(fn _ -> send_update(Composer, id: Composer.id(), reset_input: true) end)
-    |> load_channel_users(channel_name)
+    |> Conversation.load_roster()
     |> load_channel_user_count(channel_name)
     |> load_channel_messages_with_pagination(channel_name)
     |> assign(loading_channel: nil)
@@ -150,19 +149,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     socket =
       if new_session.active_channel do
         socket
-        |> load_channel_users(new_session.active_channel)
+        |> Conversation.load_roster()
         |> load_channel_messages_with_pagination(new_session.active_channel)
       else
         socket
-        |> assign(
-          oldest_message_id: nil,
-          has_more: false,
-          channel_users: [],
-          current_topic: nil,
-          current_modes: nil
-        )
+        |> assign(oldest_message_id: nil, has_more: false)
+        |> Conversation.load_roster()
         |> MessageViewport.reset([])
-        |> Nicklist.reset([])
       end
 
     socket
@@ -185,62 +178,16 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
     if new_session.active_channel do
       socket
-      |> load_channel_users(new_session.active_channel)
+      |> Conversation.load_roster()
       |> load_channel_messages_with_pagination(new_session.active_channel)
       |> ConversationsReadModel.load_popular_channels()
     else
       socket
-      |> assign(oldest_message_id: nil, has_more: false, current_topic: nil, current_modes: nil)
+      |> assign(oldest_message_id: nil, has_more: false)
+      |> Conversation.load_roster()
       |> MessageViewport.reset([])
       |> ConversationsReadModel.load_popular_channels()
     end
-  end
-
-  @spec load_channel_users(Phoenix.LiveView.Socket.t(), String.t()) ::
-          Phoenix.LiveView.Socket.t()
-  def load_channel_users(socket, channel_name) do
-    case Server.get_state(channel_name) do
-      {:ok, state} ->
-        presence_by_nick = channel_presence_by_nick(channel_name)
-        muted_nicks = MapSet.new(Map.get(state, :channel_mutes, []))
-
-        users =
-          Enum.map(state.members, fn {nick, role} ->
-            presence = Map.get(presence_by_nick, String.downcase(nick), %{})
-
-            %{
-              nickname: nick,
-              role: role,
-              away: Map.get(presence, :away, false),
-              away_message: Map.get(presence, :away_message),
-              muted: MapSet.member?(muted_nicks, nick)
-            }
-          end)
-
-        socket
-        |> assign(
-          channel_users: users,
-          current_topic: state.topic,
-          current_modes: state.modes
-        )
-        |> Nicklist.reset(users)
-
-      {:error, reason} ->
-        # An empty nicklist and a channel that could not be found look identical
-        # on screen, and only one of them is normal. Say which, or the next
-        # person debugging an empty list has nothing to go on.
-        Logger.warning("Nicklist for #{channel_name} left empty: #{inspect(reason)}")
-
-        socket
-        |> assign(channel_users: [], current_topic: nil, current_modes: nil)
-        |> Nicklist.reset([])
-    end
-  end
-
-  defp channel_presence_by_nick(channel_name) do
-    "channel:#{channel_name}"
-    |> Tracker.list_users()
-    |> Map.new(fn user -> {String.downcase(user.nickname), user} end)
   end
 
   @spec load_channel_user_count(Phoenix.LiveView.Socket.t(), String.t()) ::

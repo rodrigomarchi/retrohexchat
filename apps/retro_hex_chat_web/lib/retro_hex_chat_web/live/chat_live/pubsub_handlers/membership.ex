@@ -28,12 +28,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.{IgnoreList, SoundSettings}
+  alias RetroHexChat.Chat.{IgnoreList, Roster, SoundSettings}
   alias RetroHexChat.Presence.{NotifyList, Tracker}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Topics
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Components.{ChannelCentralDialog, HoverCard, Nicklist}
+  alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
 
   # ── User joined/left/nick_changed ─────────────────────────
@@ -42,7 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     msg = dgettext("chat", "%{nickname} has joined the channel", nickname: nick)
     role = Map.get(payload, :role, :regular)
     channel = Map.get(payload, :channel)
-    user = %{nickname: nick, role: role, away: false, muted: false}
+    user = Roster.channel_member(nick, role)
 
     socket =
       socket
@@ -50,11 +51,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
       |> maybe_refresh_cc(channel)
 
     if active_channel?(socket, channel) do
-      users = upsert_channel_user(socket.assigns.channel_users, user)
+      users = upsert_channel_user(socket.assigns.conversation_members, user)
 
       {:halt,
        socket
-       |> assign(channel_users: users)
+       |> assign(conversation_members: users)
        |> Nicklist.upsert(user)
        |> play_event_sound(:join, socket.assigns.session)
        |> system_event(msg)
@@ -85,11 +86,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
       |> maybe_refresh_cc(channel)
 
     if active_channel?(socket, channel) do
-      users = Enum.reject(socket.assigns.channel_users, &same_nick?(&1.nickname, nick))
+      users = Enum.reject(socket.assigns.conversation_members, &same_nick?(&1.nickname, nick))
 
       socket =
         socket
-        |> assign(channel_users: users)
+        |> assign(conversation_members: users)
         |> Nicklist.remove(nick)
         |> play_event_sound(:part, socket.assigns.session)
         |> system_event(msg)
@@ -152,7 +153,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
         socket
       end
 
-    socket = rename_pm_state(socket, old_nick, new_nick)
+    socket =
+      socket
+      |> rename_pm_state(old_nick, new_nick)
+      |> maybe_reload_private_roster(new_nick)
 
     # Dismiss nick hover card if it's showing the old nick (T023). The component
     # owns the card and clears + pushes `dismiss_hover_card` itself when its nick matches.
@@ -160,13 +164,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
 
     if active_channel?(socket, channel) do
       users =
-        Enum.map(socket.assigns.channel_users, fn user ->
+        Enum.map(socket.assigns.conversation_members, fn user ->
           rename_channel_user(user, old_nick, new_nick)
         end)
 
       {:halt,
        socket
-       |> assign(channel_users: users)
+       |> assign(conversation_members: users)
        |> Nicklist.reset(users)
        |> system_event(msg)
        |> maybe_fire_autorespond(
@@ -188,13 +192,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
 
     if active_channel?(socket, channel) do
       users =
-        Enum.map(socket.assigns.channel_users, fn user ->
+        Enum.map(socket.assigns.conversation_members, fn user ->
           update_channel_user_away(user, nick, away, message)
         end)
 
       {:halt,
        socket
-       |> assign(channel_users: users)
+       |> assign(conversation_members: users)
        |> Nicklist.reset(users)
        |> maybe_update_hover_away(nick, away, message)}
     else
@@ -410,5 +414,18 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
           :ok
       end
     end)
+  end
+
+  # A rename reaches the private conversation's user list the same way it reaches
+  # its tab: the peer is now addressed by another name, so the roster is asked
+  # again rather than patched.
+  @spec maybe_reload_private_roster(Phoenix.LiveView.Socket.t(), String.t()) ::
+          Phoenix.LiveView.Socket.t()
+  defp maybe_reload_private_roster(socket, nick) do
+    if Conversation.active_private_participant?(socket.assigns.session, nick) do
+      Conversation.load_roster(socket)
+    else
+      socket
+    end
   end
 end

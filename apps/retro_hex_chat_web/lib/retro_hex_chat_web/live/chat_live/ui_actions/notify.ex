@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Notify do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Presence.{NotifyList, Tracker}
+  alias RetroHexChat.Topics
   alias RetroHexChatWeb.ChatLive.NotifyEvents
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
@@ -138,7 +139,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Notify do
   @spec sync_entry_online(map(), String.t()) :: map()
   defp sync_entry_online(notify_list, nickname) do
     online_nicks =
-      Tracker.list_users("presence:global")
+      Tracker.list_users(Topics.presence())
       |> Enum.map(& &1.nickname)
 
     if Enum.any?(online_nicks, &(String.downcase(&1) == String.downcase(nickname))) do

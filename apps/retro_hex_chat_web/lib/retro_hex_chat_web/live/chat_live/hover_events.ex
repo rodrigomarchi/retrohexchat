@@ -9,7 +9,6 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
   Attached as `attach_hook(:hover_events, :handle_event, ...)` in ChatLive.mount/3.
   """
 
-  import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
@@ -22,6 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Components.HoverCard
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelper
+  alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Helpers.PM
 
   # -- channel_hover --
@@ -41,14 +41,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
     session = socket.assigns.session
 
     if channel in session.channels do
-      # Already joined — switch to it
-      new_session = Session.set_active_channel(session, channel)
-
-      {:halt,
-       socket
-       |> assign(session: new_session, show_status_tab: false)
-       |> ChannelHelper.load_channel_users(channel)
-       |> ChannelHelper.load_channel_messages_with_pagination(channel)}
+      {:halt, Conversation.activate_channel(socket, channel)}
     else
       {:halt, ChannelHelper.join_channel(socket, channel, session)}
     end

@@ -21,6 +21,7 @@ defmodule RetroHexChat.Admin do
   alias RetroHexChat.RateLimit.Table, as: ChatRateLimitTable
   alias RetroHexChat.Scraper.Cache, as: ScraperCache
   alias RetroHexChat.Services.{ChanServ, NickServ, Queries}
+  alias RetroHexChat.Topics
 
   @pubsub RetroHexChat.PubSub
 
@@ -533,7 +534,7 @@ defmodule RetroHexChat.Admin do
   end
 
   defp connected_nicknames(admin) do
-    Tracker.list_users("presence:global")
+    Tracker.list_users(Topics.presence())
     |> Enum.map(& &1.nickname)
     |> then(&[admin | &1])
     |> Enum.reject(&is_nil/1)

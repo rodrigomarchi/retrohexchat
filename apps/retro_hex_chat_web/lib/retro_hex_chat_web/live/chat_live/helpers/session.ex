@@ -55,7 +55,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     # are not re-pushed by a plain re-render when only `nick_color_fn` changes.
     socket
     |> assign(nick_color_fn: build_nick_color_fn(session))
-    |> Nicklist.reset(Map.get(socket.assigns, :channel_users, []))
+    |> Nicklist.reset(Map.get(socket.assigns, :conversation_members, []))
   end
 
   @doc """
@@ -464,16 +464,20 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
     client_meta = Map.get(socket.assigns, :client_info, %{})
 
-    Enum.each(session.channels, fn channel ->
-      PresenceHelpers.safe_untrack_user(Topics.channel(channel), old_nick)
-      PresenceHelpers.safe_track_user(Topics.channel(channel), new_nick, client_meta)
+    # Every topic the session is present on, the server-wide one included: left
+    # out of this, the old nick stayed listed as online for good and the new one
+    # was never there at all — which is what a private conversation, a whois and
+    # a nick-in-use check all read.
+    Enum.each(PresenceHelpers.session_topics(session), fn topic ->
+      PresenceHelpers.safe_untrack_user(topic, old_nick)
+      PresenceHelpers.safe_track_user(topic, new_nick, client_meta)
     end)
 
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, Topics.inbox(old_nick))
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(new_nick))
 
     users =
-      Enum.map(socket.assigns.channel_users, fn user ->
+      Enum.map(socket.assigns.conversation_members, fn user ->
         if user.nickname == old_nick, do: %{user | nickname: new_nick}, else: user
       end)
 
@@ -481,7 +485,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     |> Messages.system_event(
       dgettext("chat", "You are now known as %{nickname}", nickname: new_nick)
     )
-    |> assign(session: session, channel_users: users)
+    |> assign(session: session, conversation_members: users)
     |> Nicklist.reset(users)
   end
 
@@ -496,19 +500,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     |> clear_reconnect_state()
     |> push_event("intentional_disconnect", %{})
     |> push_navigate(to: PathHelpers.connect_path(socket))
-  end
-
-  @spec handle_set_away(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
-  def handle_set_away(socket, message) do
-    session = Session.set_away(socket.assigns.session, message)
-
-    Enum.each(session.channels, fn channel ->
-      PresenceHelpers.safe_update_away(Topics.channel(channel), session.nickname, true, message)
-    end)
-
-    socket
-    |> Messages.system_event(dgettext("chat", "You are now away: %{message}", message: message))
-    |> assign(session: session)
   end
 
   @spec handle_action_message(Phoenix.LiveView.Socket.t(), Session.t(), String.t()) ::

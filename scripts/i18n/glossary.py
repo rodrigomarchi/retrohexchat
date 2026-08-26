@@ -254,6 +254,9 @@ _ROWS = {
     "Sending":      ("Enviando", "A enviar", "Enviando", "Envoi", "Senden", "Invio", "Verzenden", "Wysyłanie", "Отправка", "Mengirim", "送信", "发送", "傳送"),
     # The pronoun on your own messages, not a form of address.
     "You":          ("Você", "Você", "Tú", "Vous", "Du", "Tu", "Jij", "Ty", "Вы", "Anda", "あなた", "你", "你"),
+    # The user-list heading over the two people in a private conversation, where
+    # a channel would name a role. A group of people, not a share or a stake.
+    "Participants": ("Participantes", "Participantes", "Participantes", "Participants", "Teilnehmer", "Partecipanti", "Deelnemers", "Uczestnicy", "Участники", "Peserta", "参加者", "参与者", "參與者"),
 }
 # fmt: on
 

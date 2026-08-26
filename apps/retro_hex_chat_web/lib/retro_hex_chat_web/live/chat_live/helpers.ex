@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
   - `Messages` — message factory functions
   - `Persistence` — async save for identified users
   - `Channel` — join/part/load channel data
+  - `Conversation` — bringing a conversation on screen and loading its roster
   - `PM` — private message conversations and sending
   - `Presence` — presence tracker wrappers
   - `Whois` — whois/whowas text output
@@ -57,7 +58,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
   defdelegate part_channel(socket, channel_name), to: __MODULE__.Channel
   defdelegate part_channel(socket, channel_name, reason), to: __MODULE__.Channel
   defdelegate part_channel_after_kick(socket, channel_name), to: __MODULE__.Channel
-  defdelegate load_channel_users(socket, channel_name), to: __MODULE__.Channel
   defdelegate load_channel_messages_with_pagination(socket, channel_name), to: __MODULE__.Channel
   defdelegate ensure_channel_exists(channel_name), to: __MODULE__.Channel
   defdelegate handle_set_topic(socket, channel, topic), to: __MODULE__.Channel
@@ -145,7 +145,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
   defdelegate maybe_highlight(payload, session), to: __MODULE__.Session
   defdelegate handle_nick_change(socket, new_nick), to: __MODULE__.Session
   defdelegate handle_quit(socket, reason), to: __MODULE__.Session
-  defdelegate handle_set_away(socket, message), to: __MODULE__.Session
 
   defdelegate maybe_start_nickserv_timer(
                 socket,

@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
 
   `edit_mode_message_id` stays parent-owned (the MessageViewport reads it for the
   `--editing` row class) and arrives here as passthrough context. The composer
-  renders from a context-agnostic read-model: `nickname`, `channel_users`,
+  renders from a context-agnostic read-model: `nickname`, `conversation_members`,
   `channels`, `strip_formatting`, `placeholder`, `show_emoji_picker`,
   `pm_typing_from`, and a `capabilities` map (`nick_autocomplete`,
   `channel_autocomplete`, `command_autocomplete`, `formatting_toolbar`, `emoji`,
@@ -126,7 +126,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
      )
      |> assign(
        nickname: "",
-       channel_users: [],
+       conversation_members: [],
        channels: [],
        strip_formatting: false,
        placeholder: "",
@@ -702,7 +702,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   defp compute_autocomplete(socket, %{"type" => "nick", "partial" => partial}) do
     if socket.assigns.capabilities.nick_autocomplete do
       results =
-        Autocomplete.search_nicks(partial, socket.assigns.channel_users, socket.assigns.nickname)
+        Autocomplete.search_nicks(
+          partial,
+          socket.assigns.conversation_members,
+          socket.assigns.nickname
+        )
 
       open_autocomplete(socket, :nick, results)
     else
@@ -729,7 +733,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
         results =
           Autocomplete.search_nicks(
             partial,
-            socket.assigns.channel_users,
+            socket.assigns.conversation_members,
             socket.assigns.nickname
           )
 
@@ -966,7 +970,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   defp tab_complete(socket, params) do
     partial = params["partial"]
     is_start = Map.get(params, "is_start", true)
-    users = socket.assigns.channel_users
+    users = socket.assigns.conversation_members
     own_nick = socket.assigns.nickname
 
     case Autocomplete.tab_complete_matches(partial, users, own_nick) do

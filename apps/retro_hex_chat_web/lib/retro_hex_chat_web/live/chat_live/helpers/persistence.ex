@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
   }
 
   alias RetroHexChat.Presence.{NotifyList, Tracker}
+  alias RetroHexChat.Topics
 
   @spec maybe_persist_notify_list(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
@@ -140,7 +141,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
       session
     else
       online_nicks =
-        Tracker.list_users("presence:global")
+        Tracker.list_users(Topics.presence())
         |> Enum.map(& &1.nickname)
 
       updated_list = NotifyList.sync_online_status(session.notify_list, online_nicks)

@@ -8,10 +8,11 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.ChatLive.Helpers,
-    only: [system_event: 2, show_whowas_result: 2, safe_update_bio: 3]
+    only: [system_event: 2, show_whowas_result: 2]
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.UserBio
+  alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -31,9 +32,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
       UserBio.save(session.nickname, text)
     end
 
-    Enum.each(session.channels, fn channel ->
-      safe_update_bio("channel:#{channel}", session.nickname, text)
-    end)
+    PresenceHelpers.publish_bio(new_session, text)
 
     msg =
       if truncated,
@@ -65,9 +64,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
       UserBio.delete(session.nickname)
     end
 
-    Enum.each(session.channels, fn channel ->
-      safe_update_bio("channel:#{channel}", session.nickname, nil)
-    end)
+    PresenceHelpers.publish_bio(new_session, nil)
 
     socket
     |> assign(session: new_session)
