@@ -122,7 +122,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Xiaomei greeter_repeat_window 43200
 /bot set Xiaomei public_greeting \c03\b[Xiaomei]\o \b{nickname}\o 刚进来。随便坐。
 /bot set Xiaomei onboarding_1 \c14\b[{botname}]\o \c10/join #zhongwen\o 进入房间 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改昵称。
-/bot set Xiaomei onboarding_2 \c14\b[{botname}]\o 每个房间是上方的一个标签页。\c10/part\o 离开，\c10/help\o 列出命令，\c10F1\o 打开手册。
+/bot set Xiaomei onboarding_2 \c14\b[{botname}]\o \c10/part\o 离开房间 · \c10/help\o 列出所有命令。
 /bot set Xiaomei farewell none
 /bot set Xiaomei mention_response \c03\b[Xiaomei]\o 叫我？在的。\c02试试 !rooms\o。
 
@@ -167,7 +167,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Lifeng greeter_repeat_window 43200
 /bot set Lifeng public_greeting \c12\b[Lifeng]\o \b{nickname}\o 来了，欢迎。
 /bot set Lifeng onboarding_1 \c14\b[{botname}]\o \c10/join #zhongwen\o 进入房间 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改昵称。
-/bot set Lifeng onboarding_2 \c14\b[{botname}]\o 每个房间是上方的一个标签页。\c10/part\o 离开，\c10/help\o 列出命令，\c10F1\o 打开手册。
+/bot set Lifeng onboarding_2 \c14\b[{botname}]\o \c10/part\o 离开房间 · \c10/help\o 列出所有命令。
 /bot set Lifeng farewell none
 /bot set Lifeng mention_response \c12\b[Lifeng]\o 三个科技源在线上。\c10!sources\o 告诉你是哪几个。
 /bot addcmd Lifeng sources \c12\b[Lifeng]\o cnBeta、IT之家和 Solidot，\c10每半小时\o 抓一次。
@@ -187,7 +187,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Xiaolong greeter_repeat_window 43200
 /bot set Xiaolong public_greeting \c13\b[Xiaolong]\o \b{nickname}\o 到了，欢迎。
 /bot set Xiaolong onboarding_1 \c14\b[{botname}]\o \c10/join #zhongwen\o 进入房间 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改昵称。
-/bot set Xiaolong onboarding_2 \c14\b[{botname}]\o 每个房间是上方的一个标签页。\c10/part\o 离开，\c10/help\o 列出命令，\c10F1\o 打开手册。
+/bot set Xiaolong onboarding_2 \c14\b[{botname}]\o \c10/part\o 离开房间 · \c10/help\o 列出所有命令。
 /bot set Xiaolong farewell none
 /bot set Xiaolong mention_response \c13\b[Xiaolong]\o 产品、评测和它们背后的生意。\c11!sources\o 列出来源。
 /bot addcmd Xiaolong sources \c13\b[Xiaolong]\o 爱范儿和极客公园，\c11每四十五分钟\o 抓一次。
@@ -205,7 +205,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Meili greeter_repeat_window 43200
 /bot set Meili public_greeting \c06\b[Meili]\o \b{nickname}\o 进来了，欢迎。
 /bot set Meili onboarding_1 \c14\b[{botname}]\o \c10/join #zhongwen\o 进入房间 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改昵称。
-/bot set Meili onboarding_2 \c14\b[{botname}]\o 每个房间是上方的一个标签页。\c10/part\o 离开，\c10/help\o 列出命令，\c10F1\o 打开手册。
+/bot set Meili onboarding_2 \c14\b[{botname}]\o \c10/part\o 离开房间 · \c10/help\o 列出所有命令。
 /bot set Meili farewell none
 /bot set Meili mention_response \c06\b[Meili]\o 工具和玩法。\c13!sources\o 列出来源。
 /bot addcmd Meili sources \c06\b[Meili]\o 少数派和小众软件，\c13每小时\o 抓一次。
@@ -223,7 +223,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Laowang greeter_repeat_window 43200
 /bot set Laowang public_greeting \c11\b[Laowang]\o \b{nickname}\o 来了，坐。
 /bot set Laowang onboarding_1 \c14\b[{botname}]\o \c10/join #zhongwen\o 进入房间 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改昵称。
-/bot set Laowang onboarding_2 \c14\b[{botname}]\o 每个房间是上方的一个标签页。\c10/part\o 离开，\c10/help\o 列出命令，\c10F1\o 打开手册。
+/bot set Laowang onboarding_2 \c14\b[{botname}]\o \c10/part\o 离开房间 · \c10/help\o 列出所有命令。
 /bot set Laowang farewell none
 /bot set Laowang mention_response \c11\b[Laowang]\o 独立博客，写了十几年的那种。\c14!sources\o 列出来源。
 /bot addcmd Laowang sources \c11\b[Laowang]\o 月光博客、阮一峰的网络日志和酷壳，\c14每两小时\o 抓一次 —— 一周几篇的节奏，敲门再勤也没用。
@@ -242,7 +242,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Dabing greeter_repeat_window 43200
 /bot set Dabing public_greeting \c10\b[Dabing]\o \b{nickname}\o 加入了。
 /bot set Dabing onboarding_1 \c14\b[{botname}]\o \c10/join #zhongwen\o 进入房间 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改昵称。
-/bot set Dabing onboarding_2 \c14\b[{botname}]\o 每个房间是上方的一个标签页。\c10/part\o 离开，\c10/help\o 列出命令，\c10F1\o 打开手册。
+/bot set Dabing onboarding_2 \c14\b[{botname}]\o \c10/part\o 离开房间 · \c10/help\o 列出所有命令。
 /bot set Dabing farewell none
 /bot set Dabing mention_response \c10\b[Dabing]\o 我读 InfoQ 中文站。\c02!sources\o 看清单。
 /bot addcmd Dabing sources \c10\b[Dabing]\o InfoQ 中文站，\c02每四十五分钟\o 抓一次。
@@ -259,7 +259,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Kaiyuan greeter_repeat_window 43200
 /bot set Kaiyuan public_greeting \c03\b[Kaiyuan]\o \b{nickname}\o 来了，欢迎。
 /bot set Kaiyuan onboarding_1 \c14\b[{botname}]\o \c10/join #zhongwen\o 进入房间 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改昵称。
-/bot set Kaiyuan onboarding_2 \c14\b[{botname}]\o 每个房间是上方的一个标签页。\c10/part\o 离开，\c10/help\o 列出命令，\c10F1\o 打开手册。
+/bot set Kaiyuan onboarding_2 \c14\b[{botname}]\o \c10/part\o 离开房间 · \c10/help\o 列出所有命令。
 /bot set Kaiyuan farewell none
 /bot set Kaiyuan mention_response \c03\b[Kaiyuan]\o 开源的消息由我搬运。\c09!sources\o 看清单。
 /bot addcmd Kaiyuan sources \c03\b[Kaiyuan]\o 开源中国，\c09每四十五分钟\o 抓一次。
@@ -277,7 +277,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Zhineng greeter_repeat_window 43200
 /bot set Zhineng public_greeting \c10\b[Zhineng]\o \b{nickname}\o 到了，欢迎。
 /bot set Zhineng onboarding_1 \c14\b[{botname}]\o \c10/join #zhongwen\o 进入房间 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改昵称。
-/bot set Zhineng onboarding_2 \c14\b[{botname}]\o 每个房间是上方的一个标签页。\c10/part\o 离开，\c10/help\o 列出命令，\c10F1\o 打开手册。
+/bot set Zhineng onboarding_2 \c14\b[{botname}]\o \c10/part\o 离开房间 · \c10/help\o 列出所有命令。
 /bot set Zhineng farewell none
 /bot set Zhineng mention_response \c10\b[Zhineng]\o 模型、论文和落地。\c06!sources\o 列出来源。
 /bot addcmd Zhineng sources \c10\b[Zhineng]\o 雷锋网和量子位，\c06每小时\o 抓一次。
@@ -295,7 +295,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Youxi greeter_repeat_window 43200
 /bot set Youxi public_greeting \c12\b[Youxi]\o \b{nickname}\o 进入游戏。
 /bot set Youxi onboarding_1 \c14\b[{botname}]\o \c10/join #zhongwen\o 进入房间 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改昵称。
-/bot set Youxi onboarding_2 \c14\b[{botname}]\o 每个房间是上方的一个标签页。\c10/part\o 离开，\c10/help\o 列出命令，\c10F1\o 打开手册。
+/bot set Youxi onboarding_2 \c14\b[{botname}]\o \c10/part\o 离开房间 · \c10/help\o 列出所有命令。
 /bot set Youxi farewell none
 /bot set Youxi mention_response \c12\b[Youxi]\o 游戏的消息我来搬。\c10!play\o 说明怎么在这里直接玩。
 /bot addcmd Youxi sources \c12\b[Youxi]\o 机核和游研社，\c10每小时\o 抓一次。
@@ -314,7 +314,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Qianbao greeter_repeat_window 43200
 /bot set Qianbao public_greeting \c07\b[Qianbao]\o \b{nickname}\o 进场了。
 /bot set Qianbao onboarding_1 \c14\b[{botname}]\o \c10/join #zhongwen\o 进入房间 · \c10/msg nick\o 私聊 · \c10/nick 名字\o 改昵称。
-/bot set Qianbao onboarding_2 \c14\b[{botname}]\o 每个房间是上方的一个标签页。\c10/part\o 离开，\c10/help\o 列出命令，\c10F1\o 打开手册。
+/bot set Qianbao onboarding_2 \c14\b[{botname}]\o \c10/part\o 离开房间 · \c10/help\o 列出所有命令。
 /bot set Qianbao farewell none
 /bot set Qianbao mention_response \c07\b[Qianbao]\o 我读钛媒体。\c14!sources\o 看清单。
 /bot addcmd Qianbao sources \c07\b[Qianbao]\o 钛媒体，\c14每四十五分钟\o 抓一次。

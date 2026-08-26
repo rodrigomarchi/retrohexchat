@@ -124,7 +124,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Tiao greeter_repeat_window 43200
 /bot set Tiao public_greeting \c03\b[Tiao]\o \b{nickname}\o chegou. Senta aí.
 /bot set Tiao onboarding_1 \c14\b[{botname}]\o \c10/join #brasil\o entra numa sala · \c10/msg nick\o fala reservado · \c10/nick nome\o troca o seu.
-/bot set Tiao onboarding_2 \c14\b[{botname}]\o Cada sala é uma aba lá em cima. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Tiao onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Tiao farewell none
 /bot set Tiao mention_response \c03\b[Tiao]\o Chamou? Tô aqui. \c02Tenta !salas\o ou !causo.
 
@@ -171,7 +171,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Zeca greeter_repeat_window 43200
 /bot set Zeca public_greeting \c02\b[Zeca]\o \b{nickname}\o chegou na redação.
 /bot set Zeca onboarding_1 \c14\b[{botname}]\o \c10/join #brasil\o entra numa sala · \c10/msg nick\o fala reservado · \c10/nick nome\o troca o seu.
-/bot set Zeca onboarding_2 \c14\b[{botname}]\o Cada sala é uma aba lá em cima. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Zeca onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Zeca farewell none
 /bot set Zeca mention_response \c02\b[Zeca]\o Eu publico o que o feed manda. \c14!fontes\o para a lista, !primeira para entender o começo.
 /bot addcmd Zeca fontes \c02\b[Zeca]\o Folha, BBC Brasil e Poder360, checados \c14a cada vinte minutos\o.
@@ -191,7 +191,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Bento greeter_repeat_window 43200
 /bot set Bento public_greeting \c10\b[Bento]\o \b{nickname}\o apareceu por aqui.
 /bot set Bento onboarding_1 \c14\b[{botname}]\o \c10/join #brasil\o entra numa sala · \c10/msg nick\o fala reservado · \c10/nick nome\o troca o seu.
-/bot set Bento onboarding_2 \c14\b[{botname}]\o Cada sala é uma aba lá em cima. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Bento onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Bento farewell none
 /bot set Bento mention_response \c10\b[Bento]\o Quatro feeds de tecnologia no fio. \c06!fontes\o mostra quais.
 /bot addcmd Bento fontes \c10\b[Bento]\o Tecnoblog, Canaltech, Olhar Digital e Manual do Usuário, checados \c06a cada meia hora\o.
@@ -211,7 +211,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Juca greeter_repeat_window 43200
 /bot set Juca public_greeting \c12\b[Juca]\o \b{nickname}\o chegou junto.
 /bot set Juca onboarding_1 \c14\b[{botname}]\o \c10/join #brasil\o entra numa sala · \c10/msg nick\o fala reservado · \c10/nick nome\o troca o seu.
-/bot set Juca onboarding_2 \c14\b[{botname}]\o Cada sala é uma aba lá em cima. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Juca onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Juca farewell none
 /bot set Juca mention_response \c12\b[Juca]\o Placa, fonte, gabinete e gambiarra. \c10!fontes\o lista o fio.
 /bot addcmd Juca fontes \c12\b[Juca]\o Hardware.com.br e Mundo Conectado, checados \c10de hora em hora\o.
@@ -230,7 +230,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Dora greeter_repeat_window 43200
 /bot set Dora public_greeting \c06\b[Dora]\o \b{nickname}\o entrou. Bem-vindo.
 /bot set Dora onboarding_1 \c14\b[{botname}]\o \c10/join #brasil\o entra numa sala · \c10/msg nick\o fala reservado · \c10/nick nome\o troca o seu.
-/bot set Dora onboarding_2 \c14\b[{botname}]\o Cada sala é uma aba lá em cima. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Dora onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Dora farewell none
 /bot set Dora mention_response \c06\b[Dora]\o TabNews e Meio Bit no fio. \c13!fontes\o lista os dois.
 /bot addcmd Dora fontes \c06\b[Dora]\o TabNews e Meio Bit, checados \c13a cada 45 minutos\o.
@@ -249,7 +249,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Iara greeter_repeat_window 43200
 /bot set Iara public_greeting \c11\b[Iara]\o \b{nickname}\o chegou ao pregão.
 /bot set Iara onboarding_1 \c14\b[{botname}]\o \c10/join #brasil\o entra numa sala · \c10/msg nick\o fala reservado · \c10/nick nome\o troca o seu.
-/bot set Iara onboarding_2 \c14\b[{botname}]\o Cada sala é uma aba lá em cima. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Iara onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Iara farewell none
 /bot set Iara mention_response \c11\b[Iara]\o Três feeds de economia no ar. \c02!fontes\o mostra quais.
 /bot addcmd Iara fontes \c11\b[Iara]\o InfoMoney, Exame e Valor, checados \c02a cada meia hora\o.
@@ -269,7 +269,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Chico greeter_repeat_window 43200
 /bot set Chico public_greeting \c03\b[Chico]\o \b{nickname}\o entrou em campo.
 /bot set Chico onboarding_1 \c14\b[{botname}]\o \c10/join #brasil\o entra numa sala · \c10/msg nick\o fala reservado · \c10/nick nome\o troca o seu.
-/bot set Chico onboarding_2 \c14\b[{botname}]\o Cada sala é uma aba lá em cima. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Chico onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Chico farewell none
 /bot set Chico mention_response \c03\b[Chico]\o Bola rolando. \c09!fontes\o lista o que eu leio.
 /bot addcmd Chico fontes \c03\b[Chico]\o ge e Trivela, checados \c09a cada vinte minutos\o.
@@ -288,7 +288,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Lila greeter_repeat_window 43200
 /bot set Lila public_greeting \c13\b[Lila]\o \b{nickname}\o chegou. Fica à vontade.
 /bot set Lila onboarding_1 \c14\b[{botname}]\o \c10/join #brasil\o entra numa sala · \c10/msg nick\o fala reservado · \c10/nick nome\o troca o seu.
-/bot set Lila onboarding_2 \c14\b[{botname}]\o Cada sala é uma aba lá em cima. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Lila onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Lila farewell none
 /bot set Lila mention_response \c13\b[Lila]\o Ciência de divulgação, sem paywall. \c06!fontes\o lista os feeds.
 /bot addcmd Lila fontes \c13\b[Lila]\o Superinteressante e Galileu, checados \c06de hora em hora\o.
@@ -306,7 +306,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Tuca greeter_repeat_window 43200
 /bot set Tuca public_greeting \c13\b[Tuca]\o \b{nickname}\o chegou no som.
 /bot set Tuca onboarding_1 \c14\b[{botname}]\o \c10/join #brasil\o entra numa sala · \c10/msg nick\o fala reservado · \c10/nick nome\o troca o seu.
-/bot set Tuca onboarding_2 \c14\b[{botname}]\o Cada sala é uma aba lá em cima. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Tuca onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Tuca farewell none
 /bot set Tuca mention_response \c13\b[Tuca]\o Lançamento, show e briga de fandom. \c05!fontes\o lista o fio.
 /bot addcmd Tuca fontes \c13\b[Tuca]\o POPline e Tenho Mais Discos Que Amigos, checados \c05de hora em hora\o.
@@ -324,7 +324,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /bot set Vito greeter_repeat_window 43200
 /bot set Vito public_greeting \c12\b[Vito]\o \b{nickname}\o entrou no jogo.
 /bot set Vito onboarding_1 \c14\b[{botname}]\o \c10/join #brasil\o entra numa sala · \c10/msg nick\o fala reservado · \c10/nick nome\o troca o seu.
-/bot set Vito onboarding_2 \c14\b[{botname}]\o Cada sala é uma aba lá em cima. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Vito onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Vito farewell none
 /bot set Vito mention_response \c12\b[Vito]\o Notícia de jogo eu trago. \c10!jogar\o explica como rodar os clássicos aqui mesmo.
 /bot addcmd Vito fontes \c12\b[Vito]\o Adrenaline, checado \c10de hora em hora\o.

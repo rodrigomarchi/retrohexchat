@@ -27,7 +27,8 @@ they wanted to — get nothing. Help answers "how do I…", never "what am I loo
 at", and a topic that only says a thing exists makes the help longer without making
 it more useful.
 
-Accessible via F1, Help menu → Help Topics, and `/help`. Stale or inaccurate help
+Accessible via the Help menu → Help Topics and `/help`. Nothing binds F1 — it is
+in `@reserved_fkeys` because the browser owns it. Stale or inaccurate help
 is a defect. Full rule: [`docs/AGENT-GUIDE.md` §12](../../docs/AGENT-GUIDE.md).
 
 Each `/` command is a separate Handler module.

@@ -372,7 +372,8 @@ about it makes the help longer without making it more useful. Help answers "how 
 I…", never "what am I looking at". The wallpaper shipped with a topic explaining
 that it exists; nobody could do anything with that, and it was removed.
 
-Accessible via F1, Help menu → Help Topics, and `/help`. Stale/inaccurate help is a defect.
+Accessible via the Help menu → Help Topics and `/help`. Nothing binds F1 — it is in
+`@reserved_fkeys` because the browser owns it. Stale/inaccurate help is a defect.
 
 ---
 

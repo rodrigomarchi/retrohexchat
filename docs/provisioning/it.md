@@ -119,7 +119,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Rita greeter_repeat_window 43200
 /bot set Rita public_greeting \c03\b[Rita]\o \b{nickname}\o è appena entrato. Mettiti comodo.
 /bot set Rita onboarding_1 \c14\b[{botname}]\o \c10/join #italia\o entra in una stanza · \c10/msg nick\o parla in privato · \c10/nick nome\o cambia il tuo.
-/bot set Rita onboarding_2 \c14\b[{botname}]\o Ogni stanza è una scheda in alto. \c10/part\o ne esce, \c10/help\o elenca i comandi, \c10F1\o apre il manuale.
+/bot set Rita onboarding_2 \c14\b[{botname}]\o \c10/part\o esce da una stanza · \c10/help\o elenca tutti i comandi.
 /bot set Rita farewell none
 /bot set Rita mention_response \c03\b[Rita]\o Mi hai chiamata? Sono qui. \c02Prova !canali\o.
 
@@ -165,7 +165,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Vittorio greeter_repeat_window 43200
 /bot set Vittorio public_greeting \c02\b[Vittorio]\o \b{nickname}\o entra in redazione.
 /bot set Vittorio onboarding_1 \c14\b[{botname}]\o \c10/join #italia\o entra in una stanza · \c10/msg nick\o parla in privato · \c10/nick nome\o cambia il tuo.
-/bot set Vittorio onboarding_2 \c14\b[{botname}]\o Ogni stanza è una scheda in alto. \c10/part\o ne esce, \c10/help\o elenca i comandi, \c10F1\o apre il manuale.
+/bot set Vittorio onboarding_2 \c14\b[{botname}]\o \c10/part\o esce da una stanza · \c10/help\o elenca tutti i comandi.
 /bot set Vittorio farewell none
 /bot set Vittorio mention_response \c02\b[Vittorio]\o Pubblico quello che manda il feed. \c14!fonti\o per l'elenco, !primo per il resto.
 /bot addcmd Vittorio fonti \c02\b[Vittorio]\o Corriere della Sera e Adnkronos, controllati \c14ogni venti minuti\o.
@@ -184,7 +184,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Franca greeter_repeat_window 43200
 /bot set Franca public_greeting \c07\b[Franca]\o \b{nickname}\o è arrivato. Benvenuto.
 /bot set Franca onboarding_1 \c14\b[{botname}]\o \c10/join #italia\o entra in una stanza · \c10/msg nick\o parla in privato · \c10/nick nome\o cambia il tuo.
-/bot set Franca onboarding_2 \c14\b[{botname}]\o Ogni stanza è una scheda in alto. \c10/part\o ne esce, \c10/help\o elenca i comandi, \c10F1\o apre il manuale.
+/bot set Franca onboarding_2 \c14\b[{botname}]\o \c10/part\o esce da una stanza · \c10/help\o elenca tutti i comandi.
 /bot set Franca farewell none
 /bot set Franca mention_response \c07\b[Franca]\o Due testate, due tagli diversi. \c11!fonti\o le elenca.
 /bot addcmd Franca fonti \c07\b[Franca]\o Il Fatto Quotidiano e Open, controllati \c11ogni mezz'ora\o.
@@ -202,7 +202,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Gianni greeter_repeat_window 43200
 /bot set Gianni public_greeting \c12\b[Gianni]\o \b{nickname}\o è qui. Benvenuto.
 /bot set Gianni onboarding_1 \c14\b[{botname}]\o \c10/join #italia\o entra in una stanza · \c10/msg nick\o parla in privato · \c10/nick nome\o cambia il tuo.
-/bot set Gianni onboarding_2 \c14\b[{botname}]\o Ogni stanza è una scheda in alto. \c10/part\o ne esce, \c10/help\o elenca i comandi, \c10F1\o apre il manuale.
+/bot set Gianni onboarding_2 \c14\b[{botname}]\o \c10/part\o esce da una stanza · \c10/help\o elenca tutti i comandi.
 /bot set Gianni farewell none
 /bot set Gianni mention_response \c12\b[Gianni]\o Tre feed sul filo. \c10!fonti\o dice quali.
 /bot addcmd Gianni fonti \c12\b[Gianni]\o DDay, HDblog e Wired Italia, controllati \c10ogni mezz'ora\o.
@@ -221,7 +221,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Nilde greeter_repeat_window 43200
 /bot set Nilde public_greeting \c10\b[Nilde]\o \b{nickname}\o si aggiunge.
 /bot set Nilde onboarding_1 \c14\b[{botname}]\o \c10/join #italia\o entra in una stanza · \c10/msg nick\o parla in privato · \c10/nick nome\o cambia il tuo.
-/bot set Nilde onboarding_2 \c14\b[{botname}]\o Ogni stanza è una scheda in alto. \c10/part\o ne esce, \c10/help\o elenca i comandi, \c10F1\o apre il manuale.
+/bot set Nilde onboarding_2 \c14\b[{botname}]\o \c10/part\o esce da una stanza · \c10/help\o elenca tutti i comandi.
 /bot set Nilde farewell none
 /bot set Nilde mention_response \c10\b[Nilde]\o Stampa tecnica, non assistenza. \c06!fonti\o elenca il filo.
 /bot addcmd Nilde fonti \c10\b[Nilde]\o Punto Informatico, Il Software e Tom's Hardware Italia, controllati \c06ogni 45 minuti\o.
@@ -241,7 +241,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Bruno greeter_repeat_window 43200
 /bot set Bruno public_greeting \c13\b[Bruno]\o \b{nickname}\o entra. Benvenuto.
 /bot set Bruno onboarding_1 \c14\b[{botname}]\o \c10/join #italia\o entra in una stanza · \c10/msg nick\o parla in privato · \c10/nick nome\o cambia il tuo.
-/bot set Bruno onboarding_2 \c14\b[{botname}]\o Ogni stanza è una scheda in alto. \c10/part\o ne esce, \c10/help\o elenca i comandi, \c10F1\o apre il manuale.
+/bot set Bruno onboarding_2 \c14\b[{botname}]\o \c10/part\o esce da una stanza · \c10/help\o elenca tutti i comandi.
 /bot set Bruno farewell none
 /bot set Bruno mention_response \c13\b[Bruno]\o Telefoni, orologi e caricabatterie. \c11!fonti\o elenca il filo.
 /bot addcmd Bruno fonti \c13\b[Bruno]\o AndroidWorld e SmartWorld, controllati \c11ogni 45 minuti\o.
@@ -259,7 +259,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ciccio greeter_repeat_window 43200
 /bot set Ciccio public_greeting \c12\b[Ciccio]\o \b{nickname}\o entra in partita.
 /bot set Ciccio onboarding_1 \c14\b[{botname}]\o \c10/join #italia\o entra in una stanza · \c10/msg nick\o parla in privato · \c10/nick nome\o cambia il tuo.
-/bot set Ciccio onboarding_2 \c14\b[{botname}]\o Ogni stanza è una scheda in alto. \c10/part\o ne esce, \c10/help\o elenca i comandi, \c10F1\o apre il manuale.
+/bot set Ciccio onboarding_2 \c14\b[{botname}]\o \c10/part\o esce da una stanza · \c10/help\o elenca tutti i comandi.
 /bot set Ciccio farewell none
 /bot set Ciccio mention_response \c12\b[Ciccio]\o Le notizie sui giochi le porto io. \c10!giocare\o spiega come si gioca qui.
 /bot addcmd Ciccio fonti \c12\b[Ciccio]\o Everyeye e SpazioGames, controllati \c10ogni 45 minuti\o.
@@ -278,7 +278,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Toto greeter_repeat_window 43200
 /bot set Toto public_greeting \c09\b[Toto]\o \b{nickname}\o scende in campo.
 /bot set Toto onboarding_1 \c14\b[{botname}]\o \c10/join #italia\o entra in una stanza · \c10/msg nick\o parla in privato · \c10/nick nome\o cambia il tuo.
-/bot set Toto onboarding_2 \c14\b[{botname}]\o Ogni stanza è una scheda in alto. \c10/part\o ne esce, \c10/help\o elenca i comandi, \c10F1\o apre il manuale.
+/bot set Toto onboarding_2 \c14\b[{botname}]\o \c10/part\o esce da una stanza · \c10/help\o elenca tutti i comandi.
 /bot set Toto farewell none
 /bot set Toto mention_response \c09\b[Toto]\o Palla al centro. \c03!fonti\o dice cosa leggo.
 /bot addcmd Toto fonti \c09\b[Toto]\o La Gazzetta dello Sport, controllata \c03ogni venti minuti\o.
@@ -296,7 +296,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Galileo greeter_repeat_window 43200
 /bot set Galileo public_greeting \c11\b[Galileo]\o \b{nickname}\o è arrivato. Guarda in alto.
 /bot set Galileo onboarding_1 \c14\b[{botname}]\o \c10/join #italia\o entra in una stanza · \c10/msg nick\o parla in privato · \c10/nick nome\o cambia il tuo.
-/bot set Galileo onboarding_2 \c14\b[{botname}]\o Ogni stanza è una scheda in alto. \c10/part\o ne esce, \c10/help\o elenca i comandi, \c10F1\o apre il manuale.
+/bot set Galileo onboarding_2 \c14\b[{botname}]\o \c10/part\o esce da una stanza · \c10/help\o elenca tutti i comandi.
 /bot set Galileo farewell none
 /bot set Galileo mention_response \c11\b[Galileo]\o Pubblico Media INAF. \c02!fonti\o per l'elenco.
 /bot addcmd Galileo fonti \c11\b[Galileo]\o Media INAF, l'istituto nazionale di astrofisica, controllato \c02ogni ora\o.
@@ -313,7 +313,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Piero greeter_repeat_window 43200
 /bot set Piero public_greeting \c07\b[Piero]\o \b{nickname}\o arriva in borsa.
 /bot set Piero onboarding_1 \c14\b[{botname}]\o \c10/join #italia\o entra in una stanza · \c10/msg nick\o parla in privato · \c10/nick nome\o cambia il tuo.
-/bot set Piero onboarding_2 \c14\b[{botname}]\o Ogni stanza è una scheda in alto. \c10/part\o ne esce, \c10/help\o elenca i comandi, \c10F1\o apre il manuale.
+/bot set Piero onboarding_2 \c14\b[{botname}]\o \c10/part\o esce da una stanza · \c10/help\o elenca tutti i comandi.
 /bot set Piero farewell none
 /bot set Piero mention_response \c07\b[Piero]\o Leggo Il Sole 24 Ore. \c14!fonti\o per l'elenco.
 /bot addcmd Piero fonti \c07\b[Piero]\o Il Sole 24 Ore, sezione economia, controllato \c14ogni mezz'ora\o.

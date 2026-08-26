@@ -114,7 +114,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Fernao greeter_repeat_window 43200
 /bot set Fernao public_greeting \c03\b[Fernao]\o \b{nickname}\o chegou. Senta-te.
 /bot set Fernao onboarding_1 \c14\b[{botname}]\o \c10/join #portugal\o entra numa sala · \c10/msg nick\o fala em privado · \c10/nick nome\o muda o teu.
-/bot set Fernao onboarding_2 \c14\b[{botname}]\o Cada sala é um separador no topo. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Fernao onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Fernao farewell none
 /bot set Fernao mention_response \c03\b[Fernao]\o Chamaste? Estou cá. \c02Tenta !salas\o.
 
@@ -160,7 +160,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Duarte greeter_repeat_window 43200
 /bot set Duarte public_greeting \c02\b[Duarte]\o \b{nickname}\o entrou na redação.
 /bot set Duarte onboarding_1 \c14\b[{botname}]\o \c10/join #portugal\o entra numa sala · \c10/msg nick\o fala em privado · \c10/nick nome\o muda o teu.
-/bot set Duarte onboarding_2 \c14\b[{botname}]\o Cada sala é um separador no topo. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Duarte onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Duarte farewell none
 /bot set Duarte mention_response \c02\b[Duarte]\o Publico o que o feed manda. \c14!fontes\o para a lista, !primeira para o resto.
 /bot addcmd Duarte fontes \c02\b[Duarte]\o Observador e SAPO 24, verificados \c14de vinte em vinte minutos\o.
@@ -179,7 +179,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Leonor greeter_repeat_window 43200
 /bot set Leonor public_greeting \c04\b[Leonor]\o \b{nickname}\o chegou à última hora.
 /bot set Leonor onboarding_1 \c14\b[{botname}]\o \c10/join #portugal\o entra numa sala · \c10/msg nick\o fala em privado · \c10/nick nome\o muda o teu.
-/bot set Leonor onboarding_2 \c14\b[{botname}]\o Cada sala é um separador no topo. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Leonor onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Leonor farewell none
 /bot set Leonor mention_response \c04\b[Leonor]\o Última hora, sem contexto e sem desculpas. \c07!fontes\o lista o fio.
 /bot addcmd Leonor fontes \c04\b[Leonor]\o Notícias ao Minuto e TVI, verificados \c07de vinte em vinte minutos\o.
@@ -197,7 +197,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Gil greeter_repeat_window 43200
 /bot set Gil public_greeting \c10\b[Gil]\o \b{nickname}\o apareceu por cá.
 /bot set Gil onboarding_1 \c14\b[{botname}]\o \c10/join #portugal\o entra numa sala · \c10/msg nick\o fala em privado · \c10/nick nome\o muda o teu.
-/bot set Gil onboarding_2 \c14\b[{botname}]\o Cada sala é um separador no topo. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Gil onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Gil farewell none
 /bot set Gil mention_response \c10\b[Gil]\o Dois feeds de informática no ar. \c06!fontes\o mostra quais.
 /bot addcmd Gil fontes \c10\b[Gil]\o SAPO Tek e Pplware, verificados \c06de meia em meia hora\o.
@@ -216,7 +216,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Mafalda greeter_repeat_window 43200
 /bot set Mafalda public_greeting \c13\b[Mafalda]\o \b{nickname}\o chegou. Bem-vindo.
 /bot set Mafalda onboarding_1 \c14\b[{botname}]\o \c10/join #portugal\o entra numa sala · \c10/msg nick\o fala em privado · \c10/nick nome\o muda o teu.
-/bot set Mafalda onboarding_2 \c14\b[{botname}]\o Cada sala é um separador no topo. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Mafalda onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Mafalda farewell none
 /bot set Mafalda mention_response \c13\b[Mafalda]\o Telemóveis, relógios e carregadores que não servem em nada. \c11!fontes\o lista o fio.
 /bot addcmd Mafalda fontes \c13\b[Mafalda]\o 4gnews e Leak, verificados \c11de 45 em 45 minutos\o.
@@ -234,7 +234,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Afonso greeter_repeat_window 43200
 /bot set Afonso public_greeting \c11\b[Afonso]\o \b{nickname}\o entrou no negócio.
 /bot set Afonso onboarding_1 \c14\b[{botname}]\o \c10/join #portugal\o entra numa sala · \c10/msg nick\o fala em privado · \c10/nick nome\o muda o teu.
-/bot set Afonso onboarding_2 \c14\b[{botname}]\o Cada sala é um separador no topo. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Afonso onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Afonso farewell none
 /bot set Afonso mention_response \c11\b[Afonso]\o Dois feeds de economia no ar. \c02!fontes\o mostra quais.
 /bot addcmd Afonso fontes \c11\b[Afonso]\o ECO e Jornal de Negócios, verificados \c02de meia em meia hora\o.
@@ -252,7 +252,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Beatriz greeter_repeat_window 43200
 /bot set Beatriz public_greeting \c07\b[Beatriz]\o \b{nickname}\o chegou à bolsa.
 /bot set Beatriz onboarding_1 \c14\b[{botname}]\o \c10/join #portugal\o entra numa sala · \c10/msg nick\o fala em privado · \c10/nick nome\o muda o teu.
-/bot set Beatriz onboarding_2 \c14\b[{botname}]\o Cada sala é um separador no topo. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Beatriz onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Beatriz farewell none
 /bot set Beatriz mention_response \c07\b[Beatriz]\o Leio o Dinheiro Vivo. \c14!fontes\o para a lista.
 /bot addcmd Beatriz fontes \c07\b[Beatriz]\o Dinheiro Vivo, verificado \c14de meia em meia hora\o.
@@ -270,7 +270,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Eusebio greeter_repeat_window 43200
 /bot set Eusebio public_greeting \c03\b[Eusebio]\o \b{nickname}\o entrou em campo.
 /bot set Eusebio onboarding_1 \c14\b[{botname}]\o \c10/join #portugal\o entra numa sala · \c10/msg nick\o fala em privado · \c10/nick nome\o muda o teu.
-/bot set Eusebio onboarding_2 \c14\b[{botname}]\o Cada sala é um separador no topo. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Eusebio onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Eusebio farewell none
 /bot set Eusebio mention_response \c03\b[Eusebio]\o Bola a rolar. \c09!fontes\o lista o que leio.
 /bot addcmd Eusebio fontes \c03\b[Eusebio]\o Record e Mais Futebol, verificados \c09de vinte em vinte minutos\o.
@@ -289,7 +289,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Amalia greeter_repeat_window 43200
 /bot set Amalia public_greeting \c06\b[Amalia]\o \b{nickname}\o chegou. Fica à vontade.
 /bot set Amalia onboarding_1 \c14\b[{botname}]\o \c10/join #portugal\o entra numa sala · \c10/msg nick\o fala em privado · \c10/nick nome\o muda o teu.
-/bot set Amalia onboarding_2 \c14\b[{botname}]\o Cada sala é um separador no topo. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Amalia onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Amalia farewell none
 /bot set Amalia mention_response \c06\b[Amalia]\o Livros, cinema e exposições. \c13!fontes\o lista o fio.
 /bot addcmd Amalia fontes \c06\b[Amalia]\o Visão e Sábado, verificados \c13de hora a hora\o.
@@ -307,7 +307,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ines greeter_repeat_window 43200
 /bot set Ines public_greeting \c09\b[Ines]\o \b{nickname}\o chegou cá fora.
 /bot set Ines onboarding_1 \c14\b[{botname}]\o \c10/join #portugal\o entra numa sala · \c10/msg nick\o fala em privado · \c10/nick nome\o muda o teu.
-/bot set Ines onboarding_2 \c14\b[{botname}]\o Cada sala é um separador no topo. \c10/part\o sai de uma, \c10/help\o lista os comandos, \c10F1\o abre o manual.
+/bot set Ines onboarding_2 \c14\b[{botname}]\o \c10/part\o sai de uma sala · \c10/help\o lista todos os comandos.
 /bot set Ines farewell none
 /bot set Ines mention_response \c09\b[Ines]\o Publico o Wilder. \c03!fontes\o para a lista.
 /bot addcmd Ines fontes \c09\b[Ines]\o Wilder, verificado \c03de duas em duas horas\o — publica poucas peças por semana e não vale a pena bater à porta mais vezes.

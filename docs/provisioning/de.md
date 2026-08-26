@@ -119,7 +119,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Fritzi greeter_repeat_window 43200
 /bot set Fritzi public_greeting \c03\b[Fritzi]\o \b{nickname}\o ist gerade reingekommen. Setz dich.
 /bot set Fritzi onboarding_1 \c14\b[{botname}]\o \c10/join #deutschland\o betritt einen Raum · \c10/msg nick\o schreibt privat · \c10/nick name\o ändert deinen.
-/bot set Fritzi onboarding_2 \c14\b[{botname}]\o Jeder Raum ist oben ein Tab. \c10/part\o verlässt einen, \c10/help\o listet alle Befehle, \c10F1\o öffnet das Handbuch.
+/bot set Fritzi onboarding_2 \c14\b[{botname}]\o \c10/part\o verlässt einen Raum · \c10/help\o listet alle Befehle.
 /bot set Fritzi farewell none
 /bot set Fritzi mention_response \c03\b[Fritzi]\o Gerufen? Bin da. \c02Probier !raeume\o.
 
@@ -165,7 +165,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Greta greeter_repeat_window 43200
 /bot set Greta public_greeting \c02\b[Greta]\o \b{nickname}\o kommt in die Redaktion.
 /bot set Greta onboarding_1 \c14\b[{botname}]\o \c10/join #deutschland\o betritt einen Raum · \c10/msg nick\o schreibt privat · \c10/nick name\o ändert deinen.
-/bot set Greta onboarding_2 \c14\b[{botname}]\o Jeder Raum ist oben ein Tab. \c10/part\o verlässt einen, \c10/help\o listet alle Befehle, \c10F1\o öffnet das Handbuch.
+/bot set Greta onboarding_2 \c14\b[{botname}]\o \c10/part\o verlässt einen Raum · \c10/help\o listet alle Befehle.
 /bot set Greta farewell none
 /bot set Greta mention_response \c02\b[Greta]\o Ich poste, was der Feed schickt. \c14!quellen\o für die Liste, !erster für den Rest.
 /bot addcmd Greta quellen \c02\b[Greta]\o Spiegel, Süddeutsche, FAZ und Deutschlandfunk, \c14alle zwanzig Minuten\o abgerufen.
@@ -186,7 +186,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Heidi greeter_repeat_window 43200
 /bot set Heidi public_greeting \c10\b[Heidi]\o \b{nickname}\o ist da. Grüß dich.
 /bot set Heidi onboarding_1 \c14\b[{botname}]\o \c10/join #deutschland\o betritt einen Raum · \c10/msg nick\o schreibt privat · \c10/nick name\o ändert deinen.
-/bot set Heidi onboarding_2 \c14\b[{botname}]\o Jeder Raum ist oben ein Tab. \c10/part\o verlässt einen, \c10/help\o listet alle Befehle, \c10F1\o öffnet das Handbuch.
+/bot set Heidi onboarding_2 \c14\b[{botname}]\o \c10/part\o verlässt einen Raum · \c10/help\o listet alle Befehle.
 /bot set Heidi farewell none
 /bot set Heidi mention_response \c10\b[Heidi]\o Wien und Zürich, nicht Berlin. \c06!quellen\o zeigt die beiden Feeds.
 /bot addcmd Heidi quellen \c10\b[Heidi]\o Der Standard und NZZ, \c06jede halbe Stunde\o abgerufen.
@@ -204,7 +204,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Werner greeter_repeat_window 43200
 /bot set Werner public_greeting \c12\b[Werner]\o \b{nickname}\o ist da. Moin.
 /bot set Werner onboarding_1 \c14\b[{botname}]\o \c10/join #deutschland\o betritt einen Raum · \c10/msg nick\o schreibt privat · \c10/nick name\o ändert deinen.
-/bot set Werner onboarding_2 \c14\b[{botname}]\o Jeder Raum ist oben ein Tab. \c10/part\o verlässt einen, \c10/help\o listet alle Befehle, \c10F1\o öffnet das Handbuch.
+/bot set Werner onboarding_2 \c14\b[{botname}]\o \c10/part\o verlässt einen Raum · \c10/help\o listet alle Befehle.
 /bot set Werner farewell none
 /bot set Werner mention_response \c12\b[Werner]\o Zwei Technik-Feeds am Draht. \c10!quellen\o sagt welche.
 /bot addcmd Werner quellen \c12\b[Werner]\o heise und Golem, \c10jede halbe Stunde\o abgerufen.
@@ -223,7 +223,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Lotte greeter_repeat_window 43200
 /bot set Lotte public_greeting \c13\b[Lotte]\o \b{nickname}\o ist eingetroffen.
 /bot set Lotte onboarding_1 \c14\b[{botname}]\o \c10/join #deutschland\o betritt einen Raum · \c10/msg nick\o schreibt privat · \c10/nick name\o ändert deinen.
-/bot set Lotte onboarding_2 \c14\b[{botname}]\o Jeder Raum ist oben ein Tab. \c10/part\o verlässt einen, \c10/help\o listet alle Befehle, \c10F1\o öffnet das Handbuch.
+/bot set Lotte onboarding_2 \c14\b[{botname}]\o \c10/part\o verlässt einen Raum · \c10/help\o listet alle Befehle.
 /bot set Lotte farewell none
 /bot set Lotte mention_response \c13\b[Lotte]\o Digitalpolitik und Plattformen. \c11!quellen\o zeigt den Draht.
 /bot addcmd Lotte quellen \c13\b[Lotte]\o netzpolitik.org und t3n, \c11alle 45 Minuten\o abgerufen.
@@ -241,7 +241,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Konrad greeter_repeat_window 43200
 /bot set Konrad public_greeting \c11\b[Konrad]\o \b{nickname}\o ist da. Willkommen.
 /bot set Konrad onboarding_1 \c14\b[{botname}]\o \c10/join #deutschland\o betritt einen Raum · \c10/msg nick\o schreibt privat · \c10/nick name\o ändert deinen.
-/bot set Konrad onboarding_2 \c14\b[{botname}]\o Jeder Raum ist oben ein Tab. \c10/part\o verlässt einen, \c10/help\o listet alle Befehle, \c10F1\o öffnet das Handbuch.
+/bot set Konrad onboarding_2 \c14\b[{botname}]\o \c10/part\o verlässt einen Raum · \c10/help\o listet alle Befehle.
 /bot set Konrad farewell none
 /bot set Konrad mention_response \c11\b[Konrad]\o Hardware, Bauteile, Bastelei. \c14!quellen\o zeigt den Draht.
 /bot addcmd Konrad quellen \c11\b[Konrad]\o ComputerBase, \c14stündlich\o abgerufen.
@@ -259,7 +259,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Ilse greeter_repeat_window 43200
 /bot set Ilse public_greeting \c07\b[Ilse]\o \b{nickname}\o kommt dazu.
 /bot set Ilse onboarding_1 \c14\b[{botname}]\o \c10/join #deutschland\o betritt einen Raum · \c10/msg nick\o schreibt privat · \c10/nick name\o ändert deinen.
-/bot set Ilse onboarding_2 \c14\b[{botname}]\o Jeder Raum ist oben ein Tab. \c10/part\o verlässt einen, \c10/help\o listet alle Befehle, \c10F1\o öffnet das Handbuch.
+/bot set Ilse onboarding_2 \c14\b[{botname}]\o \c10/part\o verlässt einen Raum · \c10/help\o listet alle Befehle.
 /bot set Ilse farewell none
 /bot set Ilse mention_response \c07\b[Ilse]\o Zwei Wirtschafts-Feeds. \c02!quellen\o sagt welche.
 /bot addcmd Ilse quellen \c07\b[Ilse]\o Handelsblatt und WirtschaftsWoche, \c02jede halbe Stunde\o abgerufen.
@@ -278,7 +278,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Otto greeter_repeat_window 43200
 /bot set Otto public_greeting \c06\b[Otto]\o \b{nickname}\o ist da. Willkommen.
 /bot set Otto onboarding_1 \c14\b[{botname}]\o \c10/join #deutschland\o betritt einen Raum · \c10/msg nick\o schreibt privat · \c10/nick name\o ändert deinen.
-/bot set Otto onboarding_2 \c14\b[{botname}]\o Jeder Raum ist oben ein Tab. \c10/part\o verlässt einen, \c10/help\o listet alle Befehle, \c10F1\o öffnet das Handbuch.
+/bot set Otto onboarding_2 \c14\b[{botname}]\o \c10/part\o verlässt einen Raum · \c10/help\o listet alle Befehle.
 /bot set Otto farewell none
 /bot set Otto mention_response \c06\b[Otto]\o Wissenschaft ohne Bezahlschranke. \c13!quellen\o zeigt den Draht.
 /bot addcmd Otto quellen \c06\b[Otto]\o Spektrum und wissenschaft.de, \c13stündlich\o abgerufen.
@@ -296,7 +296,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Uwe greeter_repeat_window 43200
 /bot set Uwe public_greeting \c09\b[Uwe]\o \b{nickname}\o läuft ein.
 /bot set Uwe onboarding_1 \c14\b[{botname}]\o \c10/join #deutschland\o betritt einen Raum · \c10/msg nick\o schreibt privat · \c10/nick name\o ändert deinen.
-/bot set Uwe onboarding_2 \c14\b[{botname}]\o Jeder Raum ist oben ein Tab. \c10/part\o verlässt einen, \c10/help\o listet alle Befehle, \c10F1\o öffnet das Handbuch.
+/bot set Uwe onboarding_2 \c14\b[{botname}]\o \c10/part\o verlässt einen Raum · \c10/help\o listet alle Befehle.
 /bot set Uwe farewell none
 /bot set Uwe mention_response \c09\b[Uwe]\o Der Ball rollt. \c03!quellen\o sagt, was ich lese.
 /bot addcmd Uwe quellen \c09\b[Uwe]\o kicker und Sportschau, \c03alle zwanzig Minuten\o abgerufen.
@@ -315,7 +315,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Jonas greeter_repeat_window 43200
 /bot set Jonas public_greeting \c12\b[Jonas]\o \b{nickname}\o ist im Spiel.
 /bot set Jonas onboarding_1 \c14\b[{botname}]\o \c10/join #deutschland\o betritt einen Raum · \c10/msg nick\o schreibt privat · \c10/nick name\o ändert deinen.
-/bot set Jonas onboarding_2 \c14\b[{botname}]\o Jeder Raum ist oben ein Tab. \c10/part\o verlässt einen, \c10/help\o listet alle Befehle, \c10F1\o öffnet das Handbuch.
+/bot set Jonas onboarding_2 \c14\b[{botname}]\o \c10/part\o verlässt einen Raum · \c10/help\o listet alle Befehle.
 /bot set Jonas farewell none
 /bot set Jonas mention_response \c12\b[Jonas]\o Spielenachrichten bringe ich. \c10!spielen\o erklärt, wie hier gespielt wird.
 /bot addcmd Jonas quellen \c12\b[Jonas]\o Eurogamer.de, \c10alle 45 Minuten\o abgerufen.

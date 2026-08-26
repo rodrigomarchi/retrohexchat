@@ -122,7 +122,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Alyona greeter_repeat_window 43200
 /bot set Alyona public_greeting \c03\b[Alyona]\o \b{nickname}\o только что зашёл. Располагайся.
 /bot set Alyona onboarding_1 \c14\b[{botname}]\o \c10/join #russkiy\o — войти в комнату · \c10/msg ник\o — личное сообщение · \c10/nick имя\o — сменить ник.
-/bot set Alyona onboarding_2 \c14\b[{botname}]\o Каждая комната — вкладка сверху. \c10/part\o выйти, \c10/help\o список команд, \c10F1\o руководство.
+/bot set Alyona onboarding_2 \c14\b[{botname}]\o \c10/part\o — выйти из комнаты · \c10/help\o — список всех команд.
 /bot set Alyona farewell none
 /bot set Alyona mention_response \c03\b[Alyona]\o Звали? Я здесь. \c02Попробуй !kanaly\o.
 
@@ -168,7 +168,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Grisha greeter_repeat_window 43200
 /bot set Grisha public_greeting \c02\b[Grisha]\o \b{nickname}\o заходит в редакцию.
 /bot set Grisha onboarding_1 \c14\b[{botname}]\o \c10/join #russkiy\o — войти в комнату · \c10/msg ник\o — личное сообщение · \c10/nick имя\o — сменить ник.
-/bot set Grisha onboarding_2 \c14\b[{botname}]\o Каждая комната — вкладка сверху. \c10/part\o выйти, \c10/help\o список команд, \c10F1\o руководство.
+/bot set Grisha onboarding_2 \c14\b[{botname}]\o \c10/part\o — выйти из комнаты · \c10/help\o — список всех команд.
 /bot set Grisha farewell none
 /bot set Grisha mention_response \c02\b[Grisha]\o Публикую то, что присылает лента. \c14!istochniki\o — список, !pervyy — про остальное.
 /bot addcmd Grisha istochniki \c02\b[Grisha]\o ТАСС, «Интерфакс», «Коммерсантъ» и «Медуза», опрос \c14каждые двадцать минут\o.
@@ -189,7 +189,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Semyon greeter_repeat_window 43200
 /bot set Semyon public_greeting \c12\b[Semyon]\o \b{nickname}\o здесь. Добро пожаловать.
 /bot set Semyon onboarding_1 \c14\b[{botname}]\o \c10/join #russkiy\o — войти в комнату · \c10/msg ник\o — личное сообщение · \c10/nick имя\o — сменить ник.
-/bot set Semyon onboarding_2 \c14\b[{botname}]\o Каждая комната — вкладка сверху. \c10/part\o выйти, \c10/help\o список команд, \c10F1\o руководство.
+/bot set Semyon onboarding_2 \c14\b[{botname}]\o \c10/part\o — выйти из комнаты · \c10/help\o — список всех команд.
 /bot set Semyon farewell none
 /bot set Semyon mention_response \c12\b[Semyon]\o Две технологические ленты на проводе. \c10!istochniki\o скажет какие.
 /bot addcmd Semyon istochniki \c12\b[Semyon]\o 3DNews и CNews, опрос \c10каждые полчаса\o.
@@ -208,7 +208,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Zhora greeter_repeat_window 43200
 /bot set Zhora public_greeting \c11\b[Zhora]\o \b{nickname}\o на месте. Привет.
 /bot set Zhora onboarding_1 \c14\b[{botname}]\o \c10/join #russkiy\o — войти в комнату · \c10/msg ник\o — личное сообщение · \c10/nick имя\o — сменить ник.
-/bot set Zhora onboarding_2 \c14\b[{botname}]\o Каждая комната — вкладка сверху. \c10/part\o выйти, \c10/help\o список команд, \c10F1\o руководство.
+/bot set Zhora onboarding_2 \c14\b[{botname}]\o \c10/part\o — выйти из комнаты · \c10/help\o — список всех команд.
 /bot set Zhora farewell none
 /bot set Zhora mention_response \c11\b[Zhora]\o Платы, корпуса, разгон. \c14!istochniki\o покажет провод.
 /bot addcmd Zhora istochniki \c11\b[Zhora]\o iXBT и Overclockers, опрос \c14каждые 45 минут\o.
@@ -227,7 +227,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Kolya greeter_repeat_window 43200
 /bot set Kolya public_greeting \c06\b[Kolya]\o \b{nickname}\o присоединился.
 /bot set Kolya onboarding_1 \c14\b[{botname}]\o \c10/join #russkiy\o — войти в комнату · \c10/msg ник\o — личное сообщение · \c10/nick имя\o — сменить ник.
-/bot set Kolya onboarding_2 \c14\b[{botname}]\o Каждая комната — вкладка сверху. \c10/part\o выйти, \c10/help\o список команд, \c10F1\o руководство.
+/bot set Kolya onboarding_2 \c14\b[{botname}]\o \c10/part\o — выйти из комнаты · \c10/help\o — список всех команд.
 /bot set Kolya farewell none
 /bot set Kolya mention_response \c06\b[Kolya]\o Читаю «Хабр» и «Код». \c13!istochniki\o — список.
 /bot addcmd Kolya istochniki \c06\b[Kolya]\o «Хабр» и «Код», опрос \c13каждые полчаса\o.
@@ -245,7 +245,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Pingvin greeter_repeat_window 43200
 /bot set Pingvin public_greeting \c03\b[Pingvin]\o \b{nickname}\o здесь. Добро пожаловать.
 /bot set Pingvin onboarding_1 \c14\b[{botname}]\o \c10/join #russkiy\o — войти в комнату · \c10/msg ник\o — личное сообщение · \c10/nick имя\o — сменить ник.
-/bot set Pingvin onboarding_2 \c14\b[{botname}]\o Каждая комната — вкладка сверху. \c10/part\o выйти, \c10/help\o список команд, \c10F1\o руководство.
+/bot set Pingvin onboarding_2 \c14\b[{botname}]\o \c10/part\o — выйти из комнаты · \c10/help\o — список всех команд.
 /bot set Pingvin farewell none
 /bot set Pingvin mention_response \c03\b[Pingvin]\o Я ношу новости открытого кода. \c09!istochniki\o — список.
 /bot addcmd Pingvin istochniki \c03\b[Pingvin]\o OpenNET, опрос \c09каждые полчаса\o.
@@ -263,7 +263,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Vitya greeter_repeat_window 43200
 /bot set Vitya public_greeting \c12\b[Vitya]\o \b{nickname}\o вошёл в игру.
 /bot set Vitya onboarding_1 \c14\b[{botname}]\o \c10/join #russkiy\o — войти в комнату · \c10/msg ник\o — личное сообщение · \c10/nick имя\o — сменить ник.
-/bot set Vitya onboarding_2 \c14\b[{botname}]\o Каждая комната — вкладка сверху. \c10/part\o выйти, \c10/help\o список команд, \c10F1\o руководство.
+/bot set Vitya onboarding_2 \c14\b[{botname}]\o \c10/part\o — выйти из комнаты · \c10/help\o — список всех команд.
 /bot set Vitya farewell none
 /bot set Vitya mention_response \c12\b[Vitya]\o Новости про игры — это ко мне. \c10!igrat\o расскажет, как поиграть прямо здесь.
 /bot addcmd Vitya istochniki \c12\b[Vitya]\o DTF и StopGame, опрос \c10каждые 45 минут\o.
@@ -282,7 +282,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Sofya greeter_repeat_window 43200
 /bot set Sofya public_greeting \c13\b[Sofya]\o \b{nickname}\o с нами. Добро пожаловать.
 /bot set Sofya onboarding_1 \c14\b[{botname}]\o \c10/join #russkiy\o — войти в комнату · \c10/msg ник\o — личное сообщение · \c10/nick имя\o — сменить ник.
-/bot set Sofya onboarding_2 \c14\b[{botname}]\o Каждая комната — вкладка сверху. \c10/part\o выйти, \c10/help\o список команд, \c10F1\o руководство.
+/bot set Sofya onboarding_2 \c14\b[{botname}]\o \c10/part\o — выйти из комнаты · \c10/help\o — список всех команд.
 /bot set Sofya farewell none
 /bot set Sofya mention_response \c13\b[Sofya]\o Наука без платной стены. \c06!istochniki\o покажет провод.
 /bot addcmd Sofya istochniki \c13\b[Sofya]\o N+1, «Элементы» и Naked Science, опрос \c06каждый час\o.
@@ -301,7 +301,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Larisa greeter_repeat_window 43200
 /bot set Larisa public_greeting \c07\b[Larisa]\o \b{nickname}\o выходит на рынок.
 /bot set Larisa onboarding_1 \c14\b[{botname}]\o \c10/join #russkiy\o — войти в комнату · \c10/msg ник\o — личное сообщение · \c10/nick имя\o — сменить ник.
-/bot set Larisa onboarding_2 \c14\b[{botname}]\o Каждая комната — вкладка сверху. \c10/part\o выйти, \c10/help\o список команд, \c10F1\o руководство.
+/bot set Larisa onboarding_2 \c14\b[{botname}]\o \c10/part\o — выйти из комнаты · \c10/help\o — список всех команд.
 /bot set Larisa farewell none
 /bot set Larisa mention_response \c07\b[Larisa]\o Две экономические ленты. \c02!istochniki\o скажет какие.
 /bot addcmd Larisa istochniki \c07\b[Larisa]\o РБК и vc.ru, опрос \c02каждые полчаса\o.
@@ -320,7 +320,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /bot set Valera greeter_repeat_window 43200
 /bot set Valera public_greeting \c09\b[Valera]\o \b{nickname}\o выходит на поле.
 /bot set Valera onboarding_1 \c14\b[{botname}]\o \c10/join #russkiy\o — войти в комнату · \c10/msg ник\o — личное сообщение · \c10/nick имя\o — сменить ник.
-/bot set Valera onboarding_2 \c14\b[{botname}]\o Каждая комната — вкладка сверху. \c10/part\o выйти, \c10/help\o список команд, \c10F1\o руководство.
+/bot set Valera onboarding_2 \c14\b[{botname}]\o \c10/part\o — выйти из комнаты · \c10/help\o — список всех команд.
 /bot set Valera farewell none
 /bot set Valera mention_response \c09\b[Valera]\o Мяч в игре. \c03!istochniki\o скажет, что я читаю.
 /bot addcmd Valera istochniki \c09\b[Valera]\o «Чемпионат», опрос \c03каждые двадцать минут\o.

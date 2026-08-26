@@ -123,7 +123,7 @@ included, is joined explicitly.
 # that answered the census.
 /join #help
 /cs register
-/topic Lost? Ask here. !Harold faq for the basics, or /help and F1 for the manual.
+/topic Lost? Ask here. !Harold faq for the basics, or /help for the manual.
 /mode +tn
 
 # ══════════════════════════════════════════════════════════
@@ -226,7 +226,7 @@ included, is joined explicitly.
 /bot set Patches greeter_repeat_window 43200
 /bot set Patches public_greeting \c03\b[Patches]\o \b{nickname}\o just walked in. Pull up a chair.
 /bot set Patches onboarding_1 \c14\b[{botname}]\o \c10/join #lobby\o enters a room · \c10/msg nick\o speaks privately · \c10/nick name\o changes yours.
-/bot set Patches onboarding_2 \c14\b[{botname}]\o Every room is a tab up top. \c10/part\o leaves one, \c10/help\o lists every command, \c10F1\o opens the manual.
+/bot set Patches onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
 /bot set Patches farewell none
 /bot set Patches mention_response \c03\b[Patches]\o Patches here. \c10Need directions?\o !tour for the grand tour, or just ask.
 
@@ -252,7 +252,7 @@ included, is joined explicitly.
 /bot set Wanda greeter_repeat_window 43200
 /bot set Wanda public_greeting \c06\b[Wanda]\o \b{nickname}\o is here — another contestant.
 /bot set Wanda onboarding_1 \c14\b[{botname}]\o \c10/join #lobby\o enters a room · \c10/msg nick\o speaks privately · \c10/nick name\o changes yours.
-/bot set Wanda onboarding_2 \c14\b[{botname}]\o Every room is a tab up top. \c10/part\o leaves one, \c10/help\o lists every command, \c10F1\o opens the manual.
+/bot set Wanda onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
 /bot set Wanda farewell none
 /bot set Wanda mention_response \c06\b[Wanda]\o Ready when you are: !Wanda trivia start. \c13Categories\o: general, science, history, geography, technology, entertainment.
 
@@ -271,7 +271,7 @@ included, is joined explicitly.
 /bot set Pixel greeter_repeat_window 43200
 /bot set Pixel public_greeting \c12\b[Pixel]\o \b{nickname}\o just hit the arcade.
 /bot set Pixel onboarding_1 \c14\b[{botname}]\o \c10/join #lobby\o enters a room · \c10/msg nick\o speaks privately · \c10/nick name\o changes yours.
-/bot set Pixel onboarding_2 \c14\b[{botname}]\o Every room is a tab up top. \c10/part\o leaves one, \c10/help\o lists every command, \c10F1\o opens the manual.
+/bot set Pixel onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
 /bot set Pixel farewell none
 /bot set Pixel mention_response \c12\b[Pixel]\o Player {nickname} has entered the chat. \c10!games\o for the catalogue — open the Games menu to start a session.
 
@@ -296,7 +296,7 @@ included, is joined explicitly.
 /bot set Murphy greeter_repeat_window 43200
 /bot set Murphy public_greeting \c14\b[Murphy]\o \b{nickname}\o arrived. Nothing is on fire yet.
 /bot set Murphy onboarding_1 \c14\b[{botname}]\o \c10/join #lobby\o enters a room · \c10/msg nick\o speaks privately · \c10/nick name\o changes yours.
-/bot set Murphy onboarding_2 \c14\b[{botname}]\o Every room is a tab up top. \c10/part\o leaves one, \c10/help\o lists every command, \c10F1\o opens the manual.
+/bot set Murphy onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
 /bot set Murphy farewell none
 /bot set Murphy mention_response \c14\b[Murphy]\o You called Murphy? \c04Is it an outage?\o It's always an outage. ...just a question? Oh. Ask away.
 
@@ -326,7 +326,7 @@ included, is joined explicitly.
 /bot set Gazeta greeter_repeat_window 43200
 /bot set Gazeta public_greeting \c02\b[Gazeta]\o \b{nickname}\o joins the wire desk.
 /bot set Gazeta onboarding_1 \c14\b[{botname}]\o \c10/join #lobby\o enters a room · \c10/msg nick\o speaks privately · \c10/nick name\o changes yours.
-/bot set Gazeta onboarding_2 \c14\b[{botname}]\o Every room is a tab up top. \c10/part\o leaves one, \c10/help\o lists every command, \c10F1\o opens the manual.
+/bot set Gazeta onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
 /bot set Gazeta farewell none
 /bot set Gazeta mention_response \c02\b[Gazeta]\o I post what the feeds send. !Gazeta rss list for the sources, \c14!sources\o for how this works.
 
@@ -365,7 +365,7 @@ included, is joined explicitly.
 /bot set Freeman greeter_repeat_window 43200
 /bot set Freeman public_greeting \c03\b[Freeman]\o \b{nickname}\o is here. Welcome to the source.
 /bot set Freeman onboarding_1 \c14\b[{botname}]\o \c10/join #lobby\o enters a room · \c10/msg nick\o speaks privately · \c10/nick name\o changes yours.
-/bot set Freeman onboarding_2 \c14\b[{botname}]\o Every room is a tab up top. \c10/part\o leaves one, \c10/help\o lists every command, \c10F1\o opens the manual.
+/bot set Freeman onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
 /bot set Freeman mention_response \c03\b[Freeman]\o I carry the release notes. !sources for the list, \c02!why\o for what this room is.
 /bot addcmd Freeman sources \c03\b[Freeman]\o LWN, Phoronix and It's FOSS, checked every half hour. The first fetch posts the current page; \c02only new items\o are posted after that.
 /bot addcmd Freeman why \c03\b[Freeman]\o Support for a project belongs with that project — #linux on Libera holds 2,494 people because its regulars answer questions. \c02This room is the news\o, which nobody was carrying.
@@ -384,7 +384,7 @@ included, is joined explicitly.
 /bot set Cassandra greeter_repeat_window 43200
 /bot set Cassandra public_greeting \c04\b[Cassandra]\o \b{nickname}\o has arrived. Read the advisories.
 /bot set Cassandra onboarding_1 \c14\b[{botname}]\o \c10/join #lobby\o enters a room · \c10/msg nick\o speaks privately · \c10/nick name\o changes yours.
-/bot set Cassandra onboarding_2 \c14\b[{botname}]\o Every room is a tab up top. \c10/part\o leaves one, \c10/help\o lists every command, \c10F1\o opens the manual.
+/bot set Cassandra onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
 /bot set Cassandra mention_response \c04\b[Cassandra]\o I warn; that is the whole job. \c05!sources\o for where the warnings come from.
 /bot addcmd Cassandra sources \c04\b[Cassandra]\o BleepingComputer, Krebs on Security and The Hacker News, \c05checked every half hour\o.
 /bot addcmd Cassandra patch \c04\b[Cassandra]\o The advisory is not the fix. \c05Read it, find your version, then patch\o. In that order, {nickname}.
@@ -403,7 +403,7 @@ included, is joined explicitly.
 /bot set Ada greeter_repeat_window 43200
 /bot set Ada public_greeting \c10\b[Ada]\o \b{nickname}\o is here. Mind the preprints.
 /bot set Ada onboarding_1 \c14\b[{botname}]\o \c10/join #lobby\o enters a room · \c10/msg nick\o speaks privately · \c10/nick name\o changes yours.
-/bot set Ada onboarding_2 \c14\b[{botname}]\o Every room is a tab up top. \c10/part\o leaves one, \c10/help\o lists every command, \c10F1\o opens the manual.
+/bot set Ada onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
 /bot set Ada mention_response \c10\b[Ada]\o arXiv and Hugging Face, \c06hourly\o. !sources for the list.
 /bot addcmd Ada sources \c10\b[Ada]\o arXiv cs.LG, arXiv cs.AI and the Hugging Face blog, checked hourly — \c06the feed page is posted\o, then only new items after that.
 /bot addcmd Ada why \c10\b[Ada]\o The whole of IRC has seven live rooms on this subject, across three networks. \c06It is the emptiest subject we measured\o and the busiest one outside.
@@ -422,7 +422,7 @@ included, is joined explicitly.
 /bot set Curie greeter_repeat_window 43200
 /bot set Curie public_greeting \c12\b[Curie]\o \b{nickname}\o joins us. Look up.
 /bot set Curie onboarding_1 \c14\b[{botname}]\o \c10/join #lobby\o enters a room · \c10/msg nick\o speaks privately · \c10/nick name\o changes yours.
-/bot set Curie onboarding_2 \c14\b[{botname}]\o Every room is a tab up top. \c10/part\o leaves one, \c10/help\o lists every command, \c10F1\o opens the manual.
+/bot set Curie onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
 /bot set Curie mention_response \c12\b[Curie]\o !sources for where the \c02science\o comes from.
 /bot addcmd Curie sources \c12\b[Curie]\o arXiv astro-ph, NASA news releases and Live Science, \c02checked hourly\o.
 /bot join Curie #science
@@ -440,7 +440,7 @@ included, is joined explicitly.
 /bot set Yuki greeter_repeat_window 43200
 /bot set Yuki public_greeting \c13\b[Yuki]\o \b{nickname}\o is here. Welcome!
 /bot set Yuki onboarding_1 \c14\b[{botname}]\o \c10/join #lobby\o enters a room · \c10/msg nick\o speaks privately · \c10/nick name\o changes yours.
-/bot set Yuki onboarding_2 \c14\b[{botname}]\o Every room is a tab up top. \c10/part\o leaves one, \c10/help\o lists every command, \c10F1\o opens the manual.
+/bot set Yuki onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
 /bot set Yuki mention_response \c13\b[Yuki]\o Anime News Network and LiveChart, \c06every half hour\o. !sources for the list.
 /bot addcmd Yuki sources \c13\b[Yuki]\o Anime News Network for news, LiveChart for episode releases. \c06Checked every half hour\o.
 /bot join Yuki #anime
@@ -593,12 +593,12 @@ included, is joined explicitly.
 /bot set Harold greeter_repeat_window 43200
 /bot set Harold public_greeting \c02\b[Harold]\o \b{nickname}\o arrived. I live to assist.
 /bot set Harold onboarding_1 \c14\b[{botname}]\o \c10/join #lobby\o enters a room · \c10/msg nick\o speaks privately · \c10/nick name\o changes yours.
-/bot set Harold onboarding_2 \c14\b[{botname}]\o Every room is a tab up top. \c10/part\o leaves one, \c10/help\o lists every command, \c10F1\o opens the manual.
+/bot set Harold onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
 /bot set Harold farewell none
 /bot set Harold mention_response \c02\b[Harold]\o It looks like you're trying to get my attention! \c03Try !commands\o, !faq, or just ask.
 
 /bot addcmd Harold faq \c02\b[Harold]\o How do I register? \c03/identify\o. Join a room? /join #name. Private message? /msg nick. Look cool? Not in my manual, {nickname}.
-/bot addcmd Harold commands \c02\b[Harold]\o /help for topics · /nick to rename · /join to enter · /msg to whisper · /identify to register. \c03F1 opens the manual\o.
+/bot addcmd Harold commands \c02\b[Harold]\o /help for topics · /nick to rename · /join to enter · /msg to whisper · /identify to register. \c03The Help menu opens the manual\o.
 /bot addcmd Harold stuck \c02\b[Harold]\o Step 1: don't panic. Step 2: /help. Step 3: ask here. \c03Step 4: profit\o.
 /bot addcmd Harold rooms \c02\b[Harold]\o #lobby #trivia #arcade #retro #tech #news #foss #security #ai #science #anime #help — and \c03a set of rooms per language\o besides.
 
