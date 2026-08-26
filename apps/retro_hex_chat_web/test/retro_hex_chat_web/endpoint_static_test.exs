@@ -9,6 +9,8 @@ defmodule RetroHexChatWeb.EndpointStaticTest do
   """
   use RetroHexChatWeb.ConnCase, async: false
 
+  alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
+  alias RetroHexChatWeb.SpaceAssets
   alias RetroHexChatWeb.Wallpaper
 
   @moduletag :unit
@@ -93,6 +95,56 @@ defmodule RetroHexChatWeb.EndpointStaticTest do
 
         assert status == 1,
                "the wallpaper is gitignored and will be missing from the release: #{out}"
+      end
+    end
+  end
+
+  # The space sheets are the heaviest thing the app serves and the only art with
+  # no fallback underneath: a class whose sheet 404s draws a shadow and a floating
+  # nickname with nobody inside. Nothing else asserts they are reachable.
+  describe "virtual-space sprite sheets" do
+    test "every sheet the atlas can ask for is really served", %{conn: conn} do
+      for {id, url} <- SpaceAssets.sheet_urls() do
+        conn = get(conn, url)
+
+        assert response(conn, 200), "#{id} is not served at #{url}"
+        assert get_resp_header(conn, "content-type") == ["image/webp"]
+      end
+    end
+
+    test "every map's tileset is served, at the digested url the client is given" do
+      for map_id <- SpaceMap.ids() do
+        {:ok, definition} = SpaceMap.get(map_id)
+        %{tilesets: tilesets} = SpaceAssets.digest_map(definition)
+
+        for %{src: src} <- tilesets do
+          conn = get(build_conn(), src)
+
+          assert response(conn, 200), "#{map_id}'s tileset is not served at #{src}"
+          assert get_resp_header(conn, "content-type") == ["image/webp"]
+        end
+      end
+    end
+
+    test "the picker preview sheet is really served", %{conn: conn} do
+      conn = get(conn, ~p"/images/space/charsel.webp")
+
+      assert response(conn, 200)
+      assert get_resp_header(conn, "content-type") == ["image/webp"]
+    end
+
+    test "the sheets are tracked by git" do
+      urls = Map.values(SpaceAssets.sheet_urls()) ++ ["/images/space/charsel.webp"]
+
+      for url <- urls do
+        {out, status} =
+          System.cmd("git", ["check-ignore", "apps/retro_hex_chat_web/priv/static" <> url],
+            cd: repo_root(),
+            stderr_to_stdout: true
+          )
+
+        assert status == 1,
+               "the sheet is gitignored and will be missing from the release: #{out}"
       end
     end
   end

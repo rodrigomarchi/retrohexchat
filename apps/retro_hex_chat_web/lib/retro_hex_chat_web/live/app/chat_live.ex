@@ -86,6 +86,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.SpaceAssets
   alias RetroHexChatWeb.Timezone
 
   # ── Mount ─────────────────────────────────────────────────────
