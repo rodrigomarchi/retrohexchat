@@ -329,7 +329,6 @@
                 summary={
                   channel_group_call_summary(
                     @group_call_channel_summaries,
-                    @group_call,
                     @session.active_channel
                   )
                 }
@@ -592,11 +591,20 @@
     >
       <:icon><Icons.icon_protocol_conference_compact class="h-4 w-4" /></:icon>
       <:meta><GroupCallPanelUI.conference_title_meta call={@group_call} /></:meta>
-      <.live_component
-        module={RetroHexChatWeb.ChatLive.Components.GroupCallPanel}
-        id={RetroHexChatWeb.ChatLive.Components.GroupCallPanel.id()}
-        call={@group_call}
-      />
+      <%!-- The child's container needs a height of its own: a `live_render`
+            wraps the surface in a div of its own, and `h-full` inside it
+            resolves against that div rather than the window body. --%>
+      {live_render(@socket, RetroHexChatWeb.App.CallLive,
+        id: "group-call-live-#{@group_call.channel_name}",
+        container: {:div, class: "h-full min-h-0"},
+        session: %{
+          "embedded" => true,
+          "nickname" => @session.nickname,
+          "channel_name" => @group_call.channel_name,
+          "user_id" => @group_call.user_id,
+          "trusted_device_id" => @trusted_device_id
+        }
+      )}
     </.desktop_window>
 
     <%!-- Retro Games — the same LiveView that serves `/play/:game`, mounted
@@ -1185,16 +1193,10 @@
   on_cancel="p2p_setup_cancel"
 />
 
-<.group_call_pre_join_dialog
-  id="group-call-prejoin-dialog"
-  prejoin={@group_call_prejoin}
-  on_join="group_call_prejoin_join"
-  on_cancel="group_call_prejoin_cancel"
-/>
-
 <.live_component
-  module={RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog}
-  id={RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog.id()}
+  module={RetroHexChatWeb.Live.GroupCallConfirmDialog}
+  id={RetroHexChatWeb.ChatLive.GroupCallEvents.confirm_dialog_id()}
+  scope={:viewport}
 />
 
 <%!-- P2P WebRTC anchor: the wrapper is keyed by session token so switching

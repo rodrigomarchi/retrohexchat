@@ -97,9 +97,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
               :group_call_layout_next,
               :group_call_focus_next
             ] do
-    event = action |> Atom.to_string()
-    {:halt, socket} = GroupCallEvents.handle_event(event, %{}, socket)
-    socket
+    GroupCallEvents.forward(socket, Atom.to_string(action))
   end
 
   defp dispatch_action(:open_help, socket) do

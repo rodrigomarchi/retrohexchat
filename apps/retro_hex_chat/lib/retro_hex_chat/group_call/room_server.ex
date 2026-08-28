@@ -16,6 +16,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   alias RetroHexChat.GroupCall.{Audit, Config, PeerServer, PeerSupervisor, Policy, Queries}
   alias RetroHexChat.GroupCall.Registry, as: GroupRegistry
   alias RetroHexChat.GroupCall.Schema.{Participant, Room, Track}
+  alias RetroHexChat.Topics
 
   @pubsub RetroHexChat.PubSub
   @allowed_reactions ~w(heart thumbs_up clap laugh wow)
@@ -1708,7 +1709,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   defp track_metadata(_track_info), do: %{}
 
   defp broadcast_channel_call_ended(room, reason) do
-    Phoenix.PubSub.broadcast(@pubsub, "channel:#{room.channel_name}", {
+    Phoenix.PubSub.broadcast(@pubsub, Topics.channel_calls(room.channel_name), {
       :group_call_ended,
       %{
         channel: room.channel_name,
@@ -1720,7 +1721,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   end
 
   defp broadcast_channel_call_updated(state, reason) do
-    Phoenix.PubSub.broadcast(@pubsub, "channel:#{state.room.channel_name}", {
+    Phoenix.PubSub.broadcast(@pubsub, Topics.channel_calls(state.room.channel_name), {
       :group_call_updated,
       %{
         channel: state.room.channel_name,
@@ -1762,7 +1763,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   end
 
   defp broadcast_group_call_audit_event(room, action, event) do
-    Phoenix.PubSub.broadcast(@pubsub, "channel:#{room.channel_name}", {
+    Phoenix.PubSub.broadcast(@pubsub, Topics.channel_calls(room.channel_name), {
       :group_call_moderation,
       %{
         channel: room.channel_name,
@@ -1845,7 +1846,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   end
 
   defp broadcast_lock_summary(room, actor_nickname, true) do
-    Phoenix.PubSub.broadcast(@pubsub, "channel:#{room.channel_name}", {
+    Phoenix.PubSub.broadcast(@pubsub, Topics.channel_calls(room.channel_name), {
       :group_call_moderation,
       %{
         channel: room.channel_name,
@@ -1860,7 +1861,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   end
 
   defp broadcast_lock_summary(room, actor_nickname, false) do
-    Phoenix.PubSub.broadcast(@pubsub, "channel:#{room.channel_name}", {
+    Phoenix.PubSub.broadcast(@pubsub, Topics.channel_calls(room.channel_name), {
       :group_call_moderation,
       %{
         channel: room.channel_name,

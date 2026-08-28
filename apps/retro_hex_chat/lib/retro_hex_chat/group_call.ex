@@ -22,6 +22,7 @@ defmodule RetroHexChat.GroupCall do
   }
 
   alias RetroHexChat.GroupCall.Schema.{Participant, Room, Track}
+  alias RetroHexChat.Topics
 
   @pubsub RetroHexChat.PubSub
 
@@ -610,7 +611,7 @@ defmodule RetroHexChat.GroupCall do
       [:retro_hex_chat, :group_call, :broadcast],
       %{"chat.channel" => room.channel_name, event: "group_call_started"},
       fn ->
-        Phoenix.PubSub.broadcast(@pubsub, "channel:#{room.channel_name}", {
+        Phoenix.PubSub.broadcast(@pubsub, Topics.channel_calls(room.channel_name), {
           :group_call_started,
           %{
             channel: room.channel_name,

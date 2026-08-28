@@ -1073,9 +1073,57 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Join a channel-scoped audio/video conference with pre-join device preview, layout controls, participant moderation, and live statistics. Conference moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
+            "Join a channel-scoped audio/video conference. Call in the channel toolbar opens the antechamber: a camera preview, the microphone/camera/speaker pickers, and who is already in the room. Join call puts you in; Cancel closes it. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
           ),
-        see_also: ["feature-media-devices", "feature-call-quality", "ui-conversations"]
+        see_also: [
+          "feature-conference-tab",
+          "feature-conference-share",
+          "feature-media-devices",
+          "feature-call-quality",
+          "ui-conversations"
+        ]
+      },
+      %{
+        id: "feature-conference-tab",
+        title: dgettext("help", "Conference in Its Own Tab"),
+        category: dgettext("help", "P2P & Calls"),
+        keywords: [
+          "conference",
+          "tab",
+          "window",
+          "browser",
+          "close",
+          "reconnect",
+          "rejoin"
+        ],
+        icon: :icon_conference,
+        description:
+          dgettext(
+            "help",
+            "A conference can run in a browser tab of its own. Open the summary next to Call in the channel toolbar and choose Open in a tab; the call gets the whole window and stops competing with the chat for the browser. Closing that tab is not leaving: the room keeps you for the reconnection window, and reopening the address puts you straight back in. Only Leave, which asks first, actually ends your part in the call."
+          ),
+        see_also: ["feature-channel-conference", "feature-conference-share"]
+      },
+      %{
+        id: "feature-conference-share",
+        title: dgettext("help", "Sharing a Conference Link"),
+        category: dgettext("help", "P2P & Calls"),
+        keywords: [
+          "share",
+          "link",
+          "invite",
+          "url",
+          "conference",
+          "call",
+          "paste"
+        ],
+        icon: :icon_btn_link,
+        description:
+          dgettext(
+            "help",
+            "Share, above the conference, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
+          ),
+        see_also: ["feature-channel-conference", "feature-conference-tab"]
       },
       %{
         id: "feature-media-devices",

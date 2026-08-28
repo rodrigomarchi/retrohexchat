@@ -11,27 +11,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:139
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:146
 #, elixir-autogen, elixir-format
 msgid "%{nickname} shared this with you."
 msgstr "%{nickname} 與你分享了這個。"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:123
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:129
 #, elixir-autogen, elixir-format
 msgid "A game on RetroHexChat"
 msgstr "RetroHexChat 上的遊戲"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:124
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:131
 #, elixir-autogen, elixir-format
 msgid "An invitation to RetroHexChat"
 msgstr "RetroHexChat 的邀請"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:35
+#: lib/retro_hex_chat_web/live/join_live.ex:38
 #, elixir-autogen, elixir-format
 msgid "Join - RetroHexChat"
 msgstr "加入 - RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:122
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:128
 #, elixir-autogen, elixir-format
 msgid "Link expired"
 msgstr "連結已失效"
@@ -56,22 +56,22 @@ msgstr "分享"
 msgid "Share link"
 msgstr "分享連結"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:141
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:148
 #, elixir-autogen, elixir-format
 msgid "Someone shared this with you."
 msgstr "有人與你分享了這個。"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:131
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:138
 #, elixir-autogen, elixir-format, fuzzy
 msgid "%{nickname} shared this with you. Pick a nickname to join."
 msgstr "%{nickname} 與你分享了這個。選擇一個暱稱即可進入。"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:136
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:143
 #, elixir-autogen, elixir-format
 msgid "Pick a nickname to join."
 msgstr "選擇一個暱稱即可進入。"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:127
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:134
 #, elixir-autogen, elixir-format, fuzzy
 msgid "This link is no longer active. The chat is still there."
 msgstr "此連結已失效。聊天還在。"
@@ -101,13 +101,28 @@ msgstr "由 %{nickname} 分享"
 msgid "shared with this conversation"
 msgstr "分享到此對話"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:143
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:150
 #, elixir-autogen, elixir-format
 msgid "Connect and join"
 msgstr "連線並加入"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:144
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:38
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:151 lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:38
 #, elixir-autogen, elixir-format
 msgid "Join"
 msgstr "加入"
+
+#: lib/retro_hex_chat_web/live/join_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "%{count} person inside now"
+msgid_plural "%{count} people inside now"
+msgstr[0] "目前 %{count} 人在房間內"
+
+#: lib/retro_hex_chat_web/live/join_live.ex:112
+#, elixir-autogen, elixir-format
+msgid "A call in %{channel}"
+msgstr "%{channel} 中的通話"
+
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:130 lib/retro_hex_chat_web/live/join_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "A call on RetroHexChat"
+msgstr "RetroHexChat 上的通話"

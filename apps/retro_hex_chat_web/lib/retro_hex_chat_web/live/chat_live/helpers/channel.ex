@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{Queries, UnreadTracker}
   alias RetroHexChat.Page
+  alias RetroHexChat.Topics
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.StreamItem
 
@@ -67,6 +68,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
   defp setup_joined_channel(socket, channel_name, session, :activate) do
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.channel_calls(channel_name))
     client_meta = Map.get(socket.assigns, :client_info, %{})
     PresenceHelpers.safe_track_user("channel:#{channel_name}", session.nickname, client_meta)
 
@@ -100,6 +102,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
   defp setup_joined_channel(socket, channel_name, session, :background) do
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.channel_calls(channel_name))
     client_meta = Map.get(socket.assigns, :client_info, %{})
     PresenceHelpers.safe_track_user("channel:#{channel_name}", session.nickname, client_meta)
 
@@ -130,6 +133,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     end
 
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
+    Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, Topics.channel_calls(channel_name))
     PresenceHelpers.safe_untrack_user("channel:#{channel_name}", session.nickname)
     new_session = Session.remove_channel(session, channel_name)
 
@@ -168,6 +172,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
           Phoenix.LiveView.Socket.t()
   def part_channel_after_kick(socket, channel_name) do
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
+    Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, Topics.channel_calls(channel_name))
     PresenceHelpers.safe_untrack_user("channel:#{channel_name}", socket.assigns.session.nickname)
     new_session = Session.remove_channel(socket.assigns.session, channel_name)
 

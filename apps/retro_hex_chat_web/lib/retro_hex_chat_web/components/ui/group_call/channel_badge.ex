@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   """
   use RetroHexChatWeb.Component
 
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Icons
 
   attr :channel, :string, required: true
@@ -143,6 +144,22 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
               {if @current, do: dgettext("group_call", "Open"), else: dgettext("group_call", "Join")}
             </span>
           </button>
+
+          <%!-- The same conference at an address of its own. A plain anchor,
+                so the middle click and "open in new tab" the browser already
+                offers work; `noopener` because without it the new tab shares
+                this one's event loop and the isolation is worth nothing. --%>
+          <a
+            :if={@room_token}
+            href={Paths.call_path(@room_token)}
+            target="_blank"
+            rel="noopener"
+            class="mt-1 flex h-6 w-full items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+            data-testid="group-call-channel-popover-tab"
+          >
+            <Icons.icon_btn_link class="h-3.5 w-3.5" />
+            <span>{dgettext("group_call", "Open in a tab")}</span>
+          </a>
         </div>
       </details>
     </div>
@@ -191,6 +208,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
     speaker_name = speaker_name(summary)
 
     assigns
+    |> assign(:room_token, value(summary.room, :token))
     |> assign(:summary_data, summary)
     |> assign(:participants, participants)
     |> assign(:participant_count, participant_count)

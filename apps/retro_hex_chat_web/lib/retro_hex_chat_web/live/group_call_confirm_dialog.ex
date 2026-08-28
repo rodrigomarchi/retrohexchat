@@ -1,6 +1,15 @@
-defmodule RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog do
+defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
   @moduledoc """
-  Group-call leave/switch confirmation dialog.
+  The confirmation in front of every irreversible thing a conference can do.
+
+  It is rendered by two LiveViews, not one: the call surface asks before you
+  leave, end the room, remove someone or mute everybody, and the chat asks
+  before it swaps the call you are in for another channel's. Same component,
+  same dialog, two hosts — `send_update/2` reaches whichever process rendered
+  it, so neither host needs to know about the other.
+
+  It is scoped to the window it is rendered inside, so a confirmation blocks
+  the call and nothing else.
   """
   use RetroHexChatWeb, :live_component
 
@@ -8,7 +17,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog do
 
   @id "group-call-confirm-dialog"
 
-  @doc "Stable DOM/component id used by the parent for `send_update/2`."
+  @doc """
+  The id the call surface renders it under, and addresses `send_update/2` to.
+
+  A host that renders a second copy — the chat, which only ever asks about
+  swapping one channel's call for another — passes an id of its own: two
+  elements with the same id in one document is undefined behaviour, and both
+  hosts are on screen at the same time whenever the call is embedded.
+  """
   @spec id() :: String.t()
   def id, do: @id
 
@@ -17,7 +33,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog do
   def mount(socket) do
     {:ok,
      assign(socket,
-       id: @id,
+       scope: :viewport,
        show: false,
        mode: :leave,
        channel: nil,
@@ -109,6 +125,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog do
   end
 
   def update(%{action: :close}, socket), do: {:ok, assign(socket, show: false)}
+
+  # The host declares, on every render, whether the dialog blocks the whole
+  # viewport or just the window it lives in. `send_update/2` carries actions;
+  # this carries the shape of the host.
+  def update(%{scope: scope} = assigns, socket) when scope in [:viewport, :window] do
+    {:ok, assign(socket, id: assigns.id, scope: scope)}
+  end
+
   def update(_assigns, socket), do: {:ok, socket}
 
   @impl true
@@ -118,6 +142,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog do
     <div id={"#{@id}-mount"}>
       <.group_call_confirm_dialog
         id={@id}
+        scope={@scope}
         show={@show}
         mode={@mode}
         channel={@channel}

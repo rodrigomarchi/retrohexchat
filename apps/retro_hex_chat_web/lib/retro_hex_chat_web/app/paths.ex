@@ -24,6 +24,16 @@ defmodule RetroHexChatWeb.App.Paths do
     ~p"/connect?reason=#{reason}"
   end
 
+  @doc "Where every surface's way back points."
+  @spec chat_path(Phoenix.LiveView.Socket.t()) :: String.t()
+  def chat_path(_socket) do
+    ~p"/chat"
+  end
+
+  @doc "A conference at an address of its own, by its room token."
+  @spec call_path(String.t()) :: String.t()
+  def call_path(room_token), do: ~p"/call/#{room_token}"
+
   @spec session_clear_path(Phoenix.LiveView.Socket.t(), String.t()) :: String.t()
   def session_clear_path(socket, reason), do: session_clear_path(socket, reason, [])
 

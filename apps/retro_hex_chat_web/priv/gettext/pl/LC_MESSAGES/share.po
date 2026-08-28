@@ -11,27 +11,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:139
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:146
 #, elixir-autogen, elixir-format
 msgid "%{nickname} shared this with you."
 msgstr "%{nickname} udostępnił(a) ci to."
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:123
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:129
 #, elixir-autogen, elixir-format
 msgid "A game on RetroHexChat"
 msgstr "Gra na RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:124
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:131
 #, elixir-autogen, elixir-format
 msgid "An invitation to RetroHexChat"
 msgstr "Zaproszenie do RetroHexChat"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:35
+#: lib/retro_hex_chat_web/live/join_live.ex:38
 #, elixir-autogen, elixir-format
 msgid "Join - RetroHexChat"
 msgstr "Dołącz - RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:122
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:128
 #, elixir-autogen, elixir-format
 msgid "Link expired"
 msgstr "Link wygasł"
@@ -56,22 +56,22 @@ msgstr "Udostępnij"
 msgid "Share link"
 msgstr "Link do udostępnienia"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:141
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:148
 #, elixir-autogen, elixir-format
 msgid "Someone shared this with you."
 msgstr "Ktoś udostępnił ci to."
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:131
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:138
 #, elixir-autogen, elixir-format, fuzzy
 msgid "%{nickname} shared this with you. Pick a nickname to join."
 msgstr "%{nickname} udostępnił(a) ci to. Wybierz pseudonim, aby wejść."
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:136
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:143
 #, elixir-autogen, elixir-format
 msgid "Pick a nickname to join."
 msgstr "Wybierz pseudonim, aby wejść."
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:127
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:134
 #, elixir-autogen, elixir-format, fuzzy
 msgid "This link is no longer active. The chat is still there."
 msgstr "Ten link nie jest już aktywny. Czat wciąż tam jest."
@@ -101,13 +101,30 @@ msgstr "udostępnione przez %{nickname}"
 msgid "shared with this conversation"
 msgstr "udostępnione w tej rozmowie"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:143
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:150
 #, elixir-autogen, elixir-format
 msgid "Connect and join"
 msgstr "Połącz i dołącz"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:144
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:38
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:151 lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:38
 #, elixir-autogen, elixir-format
 msgid "Join"
 msgstr "Dołącz"
+
+#: lib/retro_hex_chat_web/live/join_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "%{count} person inside now"
+msgid_plural "%{count} people inside now"
+msgstr[0] "%{count} osoba w środku"
+msgstr[1] "%{count} osoby w środku"
+msgstr[2] "%{count} osób w środku"
+
+#: lib/retro_hex_chat_web/live/join_live.ex:112
+#, elixir-autogen, elixir-format
+msgid "A call in %{channel}"
+msgstr "Rozmowa w %{channel}"
+
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:130 lib/retro_hex_chat_web/live/join_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "A call on RetroHexChat"
+msgstr "Rozmowa w RetroHexChat"

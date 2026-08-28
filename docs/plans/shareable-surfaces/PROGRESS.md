@@ -12,7 +12,7 @@ de onda no mesmo commit e anotar aqui por quê.
 |---|---|
 | 0 — identidade multi-aba + `/play/:game` | ✅ `make ci` 17/17 |
 | 1 — `/join/:slug` + card na conversa | ✅ commitada (`f0898719`) + card |
-| 2 — conferência | 🔨 em andamento: normalizadores + read-model separados |
+| 2 — conferência | 🔨 quase: `CallLive` em dois hosts + `/call/:token`; falta a filiação com contagem de superfícies |
 | 3 — space | ⬜ |
 | 4 — P2P channel + superfície | ⬜ |
 | 5 — jogos / lobby aberto | ⬜ |
@@ -911,5 +911,153 @@ aqui foi a ordem das chaves.
 
 **Próximo:** `CallLive` montado aninhado na janela `group-call`, via
 `live_render/3`. Nada muda para o usuário; é o passo reversível.
+
+---
+
+## Iteração 13 — a conferência ganha endereço próprio
+
+**Objetivo:** `CallLive` — um módulo, dois hosts (aninhado na janela do chat e
+raiz em `/call/:token`) — e o pré-join promovido de diálogo a antessala.
+
+### O que decidiu o desenho: três coisas que não podem ser iguais nos dois hosts
+
+O plano dizia "um módulo, dois pontos de montagem". Ao escrever, só três coisas
+divergiam de verdade, e todas foram para `CallLive.Host`:
+
+* **um aviso.** Dentro do chat, "você não pode silenciar um operador" pertence à
+  conversa, que é onde toda recusa deste produto já aparece. Uma aba aberta por
+  link não tem conversa, então diz na própria barra de status.
+* **a janela.** Embutido, a janela é do gerenciador do chat e a superfície
+  *pede*; sozinha, a janela é a página e não há a quem pedir.
+* **o que o host desenha sobre a chamada.** O chat continua com botão de
+  taskbar e zona de status, então a superfície entrega o pouco que eles leem —
+  canal, estado, apelidos, ids de faixa — e guarda o resto.
+
+O canal entre os dois é o **processo pai**, não PubSub: um `live_render` filho
+tem exatamente um host, morre com ele, e um tópico levaria isso para todas as
+abas — que é o problema da onda 6.
+
+### A identificação: decidida com o código na frente, como o plano pedia
+
+O risco nº 1 da onda dizia que `session.identified` é um assign do `ChatLive` e
+que uma aba satélite não tem como lê-lo. Falso, e a evidência estava a três
+greps: `Services.NickServ.identified?/1` mantém o conjunto em runtime, e o
+assign do chat é **espelho dele** — `helpers/session.ex:520` e
+`account_events.ex:130` leem exatamente essa função para montar o assign. Há
+até um comentário no repositório dizendo que restaurar o conjunto importa
+porque "downstream checks (virtual spaces, P2P) wrongly deny access".
+
+Então a superfície pergunta ao domínio. Nenhum token novo, nenhum fato novo — o
+terceiro dos três caminhos listados no plano já era verdade.
+
+### `Topics.channel_calls/1`: a antessala precisa de um tópico que não seja a conversa
+
+O roster da antessala tem que se mexer sozinho, e as quatro transmissões de
+ciclo de vida da chamada saíam em `channel:#nome` — o tópico da conversa. Uma
+superfície de chamada assinando ali receberia toda mensagem de um canal
+movimentado para desenhar uma lista de nomes.
+
+As seis transmissões passaram para `channel:#nome:calls`. Um publicador, um
+tópico, dois assinantes: o chat (que já assina junto com o canal) e a chamada.
+
+### Cinco defeitos que só apareceram rodando
+
+1. **Id duplicado no DOM.** Os dois hosts renderizavam o mesmo
+   `GroupCallConfirmDialog` com o mesmo id, e os dois estão na tela ao mesmo
+   tempo quando a chamada está embutida. O LiveView levanta erro em teste — e
+   estava certo. O diálogo do chat (só a troca de canal) ganhou id próprio, e
+   os `data-testid` internos passaram a derivar do id em vez de serem literais.
+2. **`update/2` com cláusula nova engoliu o `id`.** Ao aceitar `scope` do host,
+   a cláusula `update(%{scope: scope}, socket)` casava o mapa inteiro e
+   atribuía só o `scope` — o `id` que o LiveComponent sempre recebe sumia. Todo
+   render do chat morria.
+3. **O protocolo de comando não casava.** O chat manda
+   `{:call_surface_command, {:event, nome}}`; o `CallLive` casava
+   `{:call_surface_command, evento}` e passava a tupla para `handle_event/3`,
+   que caía no catch-all. O botão de parar da barra de status e a troca de canal
+   ficavam mudos — e nenhum erro em lugar nenhum, que é o modo de falha que a
+   casa chama de "silent catch".
+4. **`live_render` embrulha o filho numa div sem altura.** A antessala tinha
+   `h-full` e ficava com 400px numa janela de 660: o `h-full` resolvia contra a
+   div que o `live_render` insere. Só o screenshot mostrou isso — nenhum teste
+   olha altura. `container: {:div, class: "h-full min-h-0"}`.
+5. **O summary do broadcast parou de entrar na chamada.** `mark_channel_call_active`
+   fazia duas coisas: o badge e a fusão do roster no `@group_call`. Ao mover o
+   read-model para o chat, a segunda metade ficou sem dono e os participantes só
+   mudavam pelo hook. Voltou como `Events.apply_summary/3`, no filho, que é onde
+   ela pertence.
+
+### O teste que se dividiu, e o `call_view` de duas voltas
+
+`group_call_flow_test.exs` (2.400 linhas, 36 testes) passou a mirar o filho:
+`call_view(view)` acha o `live_children` do módulo `CallLive`, e **drena as duas
+caixas de mensagem duas vezes** — a primeira volta faz a chamada processar o
+controle encaminhado, e o `send_update` que esse controle emite só está na
+caixa depois disso. Uma volta só deixava o diálogo de confirmação fechado.
+
+Os 36 testes ficaram verdes com a régua clara: o que a chrome do chat desenha
+(`group-call-window`, `-taskbar`, `status-bar-group-call`, `-open`, o popover do
+badge) continua no pai; tudo dentro do painel é do filho.
+
+### Três coisas que já estavam vermelhas antes de eu chegar
+
+Registro porque custaram tempo e porque a próxima pessoa vai topar com elas:
+
+* **`chat-group-call.spec.ts` tem dois testes que falham no `HEAD`** —
+  "pre-join can enter with microphone and camera disabled" (o helper procura uma
+  chave `rhc:group-call:prejoin:` no localStorage que **não existe em lugar
+  nenhum do repositório**) e "two identified channel users join…" (a janela
+  maximizada da chamada cobre a barra de status do chat, e o clique não alcança).
+  Verificado com `git stash`: falham iguais sem as minhas mudanças. Playwright
+  não está no `make ci`, então a suíte derivou.
+* **`assets/scripts/surface_snapshot.sh --check` já reprova no `HEAD`** — três
+  `dataset.*` de outra mudança. Não regenerei: seria assinar a deriva de outra
+  pessoa no meu commit.
+* **Os catálogos `.po` de `group_call` estavam parados** — 15 msgids existiam no
+  `.pot` e nunca tinham sido mesclados em 13 locales. O meu merge trouxe todos,
+  vazios. Traduzi os 15 junto com os meus: são rótulos de recuperação de mídia
+  (Attempt, Trigger, Rejoining…) e é a mesma feature.
+
+### A armadilha do glossário, quase pela segunda vez
+
+Ia adicionar `"Chat"` ao glossário curado para o link de volta. O glossário é
+**global entre domínios**: rodá-lo reescreveu `Gesprek` → `Chat` em nl e
+`Rozmowa` → `Czat` em pl em catálogos que já tinham escolhido a palavra. É
+exatamente o erro que a entrada `"Enter"` quase cometeu na iteração 10.
+
+Removido do glossário, com o porquê escrito ao lado da nota do `"Enter"`. O
+rótulo foi traduzido dentro do domínio `group_call`, onde ele vive.
+
+### Verificação
+
+- 36 testes de `group_call_flow_test.exs` verdes; 10 novos em `call_live_test.exs`
+  para a montagem raiz (token morto, não identificado, não membro, a antessala
+  no primeiro render, o roster, o `JoinToken` verificável, o reattach de quem
+  nunca saiu).
+- 1.479 testes web + 401 de feature verdes.
+- `PerfBudgets.html_bytes(:call)` = 26.118 B raw / 4.920 B gzip, 233 elementos,
+  medidos.
+- Screenshots (spec descartável, lida e apagada): a antessala dentro do chat, a
+  chamada com a barra Share, o card público em `/join/`, e `/call/:token`
+  sozinha. Os dois primeiros passes de screenshot pegaram a altura errada da
+  antessala e a barra Share solta no canto — nenhum teste veria.
+
+### O gate pegou o que eu não pensei em procurar
+
+`make ci` reprovou duas vezes antes de passar, e as duas foram consequência de
+mudanças que eu tinha julgado internas:
+
+* **`runtime_test.exs` assinava o tópico da conversa** para esperar
+  `{:group_call_started, …}`. Mover a transmissão para `channel_calls` deixou
+  três testes de domínio sem mensagem nenhuma — o preço honesto de mudar um
+  tópico, e a razão de o teste existir.
+* **Prettier** reprovou o `e2e/tests/chat-call-fault-injection.spec.ts`, onde eu
+  tinha trocado um seletor com `sed`. O e2e não está no `make ci`, mas o
+  formatador dele está.
+
+**Próximo:** onda 3 (space) reusa `Live.Surface`, `Host` e o mesmo tópico de
+canal. A filiação com contagem de superfícies (onda 2 §2.6) **continua aberta**:
+enquanto a chamada é filha do chat ela morre com ele, então o problema ainda não
+existe — ele nasce quando alguém fechar a aba do chat com `/call/:token` aberta.
 
 ---

@@ -110,6 +110,12 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
     """
   end
 
+  defp kind_icon(%{kind: "call"} = assigns) do
+    ~H"""
+    <Icons.icon_protocol_conference_compact class="h-4 w-4" />
+    """
+  end
+
   defp kind_icon(assigns) do
     ~H"""
     <Icons.icon_hex_stone class="h-4 w-4" />
@@ -121,6 +127,7 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
   # visitor could not have listed.
   defp title(:gone, _kind), do: dgettext("share", "Link expired")
   defp title(_state, "play"), do: dgettext("share", "A game on RetroHexChat")
+  defp title(_state, "call"), do: dgettext("share", "A call on RetroHexChat")
   defp title(_state, _kind), do: dgettext("share", "An invitation to RetroHexChat")
 
   defp body_text(:gone, _nick),

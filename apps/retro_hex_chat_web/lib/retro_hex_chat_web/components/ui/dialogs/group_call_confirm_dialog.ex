@@ -22,11 +22,16 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
   attr :on_confirm, :any, required: true
   attr :on_cancel, :any, required: true
 
+  attr :scope, :atom,
+    default: :viewport,
+    values: [:viewport, :window],
+    doc: "`:window` when the host renders it inside the call's own desktop window"
+
   @spec group_call_confirm_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def group_call_confirm_dialog(assigns) do
     ~H"""
-    <span data-testid="group-call-confirm-dialog">
-      <.dialog id={@id} show={@show}>
+    <span data-testid={@id}>
+      <.dialog id={@id} show={@show} scope={@scope}>
         <.dialog_header id={@id} title={title(@mode)}>
           <:icon><.inline_icon name={mode_icon(@mode)} class="h-[16px] w-[16px]" /></:icon>
         </.dialog_header>
@@ -55,7 +60,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
           <.button
             variant="destructive"
             phx-click={@on_confirm}
-            data-testid="group-call-confirm-dialog-confirm"
+            data-testid={"#{@id}-confirm"}
           >
             <:icon><.inline_icon name={confirm_icon(@mode)} class="h-4 w-4" /></:icon>
             {confirm_label(@mode)}
@@ -63,7 +68,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
           <.button
             variant="outline"
             phx-click={@on_cancel}
-            data-testid="group-call-confirm-dialog-cancel"
+            data-testid={"#{@id}-cancel"}
           >
             <:icon><Icons.icon_close class="h-4 w-4" /></:icon>
             {dgettext("group_call", "Cancel")}

@@ -49,6 +49,12 @@ defmodule RetroHexChatWeb.PerfBudgets do
   # single-purpose surface should is an open question, and this number is what
   # answering it costs against.
   def html_bytes(:play), do: 44_000
+  # The conference at an address of its own, measured at its antechamber — the
+  # state everyone arrives in, and the only one a dead render can show. 26_118 B
+  # raw / 4_920 B gzip and 233 elements measured on 2026-08-28. Smaller than
+  # `/play` because the antechamber is a form and a roster; the conference
+  # panel itself only exists after the connected render.
+  def html_bytes(:call), do: 29_000
 
   @doc """
   The most elements a surface's dead render may contain.
@@ -58,6 +64,7 @@ defmodule RetroHexChatWeb.PerfBudgets do
   def dom_nodes(:help), do: 3_090
   def dom_nodes(:chat), do: 600
   def dom_nodes(:play), do: 300
+  def dom_nodes(:call), do: 260
 
   @doc """
   The longest a connected mount may block before it renders.

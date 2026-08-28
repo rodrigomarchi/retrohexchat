@@ -20,8 +20,11 @@ defmodule RetroHexChatWeb.JoinLive do
   import RetroHexChatWeb.Components.UI.JoinCard
 
   alias Phoenix.LiveView.Socket
+  alias RetroHexChat.Channels.Server
   alias RetroHexChat.Games.Catalog
+  alias RetroHexChat.GroupCall
   alias RetroHexChat.ShareLinks
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.SEO
 
   @impl true
@@ -85,12 +88,67 @@ defmodule RetroHexChatWeb.JoinLive do
     end
   end
 
+  # A call names its channel only when the channel is one a stranger could have
+  # found anyway. "A call in #board" in a social-media preview leaks the
+  # existence of a channel the reader could not have listed.
+  defp subject(%{kind: "call", target: %{"room_token" => room_token}}) do
+    case GroupCall.get_room(room_token) do
+      {:ok, room} ->
+        %{
+          name: call_name(room.channel_name),
+          tagline: call_tagline(room_token),
+          icon: "protocol_conference"
+        }
+
+      {:error, :not_found} ->
+        nil
+    end
+  end
+
   defp subject(_resolution), do: nil
+
+  defp call_name(channel_name) do
+    if listed_channel?(channel_name) do
+      dgettext("share", "A call in %{channel}", channel: channel_name)
+    else
+      dgettext("share", "A call on RetroHexChat")
+    end
+  end
+
+  defp listed_channel?(channel_name) do
+    case Server.get_state(channel_name) do
+      {:ok, %{modes_detail: modes}} ->
+        not (Map.get(modes, :secret, false) or Map.get(modes, :private, false) or
+               Map.get(modes, :invite_only, false))
+
+      _unreachable ->
+        false
+    end
+  end
+
+  defp call_tagline(room_token) do
+    case GroupCall.get_summary(room_token) do
+      {:ok, %{participants: participants}} ->
+        dngettext(
+          "share",
+          "%{count} person inside now",
+          "%{count} people inside now",
+          length(participants)
+        )
+
+      {:error, _reason} ->
+        nil
+    end
+  end
 
   defp enter_path(_resolution, false, slug), do: ~p"/connect?return_to=/join/#{slug}"
   defp enter_path(resolution, true, _slug), do: surface_path(resolution)
 
   defp surface_path(%{kind: "play", target: %{"game_id" => game_id}}), do: ~p"/play/#{game_id}"
   defp surface_path(%{kind: "play"}), do: ~p"/play"
+
+  defp surface_path(%{kind: "call", target: %{"room_token" => room_token}}),
+    do: Paths.call_path(room_token)
+
   defp surface_path(_resolution), do: ~p"/chat"
 end

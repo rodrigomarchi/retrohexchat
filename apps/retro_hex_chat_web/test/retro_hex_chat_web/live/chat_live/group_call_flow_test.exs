@@ -47,8 +47,41 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
     %{nick: nick, device: device, view: view}
   end
 
-  defp group_call_assign(view), do: :sys.get_state(view.pid).socket.assigns.group_call
-  defp group_call_prejoin(view), do: :sys.get_state(view.pid).socket.assigns.group_call_prejoin
+  # The conference is a LiveView of its own now, rendered as a child of the
+  # chat's Group Call window. Its state and its events are the child's; what
+  # the chat keeps is the snapshot its own chrome draws.
+  # Parent and child are two processes, and a control on the chat's chrome
+  # reaches the call as a message. Syncing one is not syncing the pair, so both
+  # mailboxes are drained — and the parent again, because the call answers it.
+  defp call_view(view) do
+    flush(view)
+
+    case Enum.find(live_children(view), &(&1.module == RetroHexChatWeb.App.CallLive)) do
+      nil ->
+        nil
+
+      child ->
+        # Twice: the first round makes the call handle the forwarded control,
+        # and the `send_update` that control issues is only in its mailbox
+        # after that.
+        :sys.get_state(child.pid)
+        :sys.get_state(child.pid)
+        flush(view)
+        child
+    end
+  end
+
+  defp call_assigns(view) do
+    case call_view(view) do
+      nil -> %{}
+      child -> :sys.get_state(child.pid).socket.assigns
+    end
+  end
+
+  defp group_call_assign(view), do: Map.get(call_assigns(view), :group_call)
+  defp group_call_prejoin(view), do: Map.get(call_assigns(view), :group_call_prejoin)
+
+  defp chat_call_snapshot(view), do: :sys.get_state(view.pid).socket.assigns.group_call
   defp group_call_channels(view), do: :sys.get_state(view.pid).socket.assigns.group_call_channels
 
   defp group_call_channel_summaries(view),
@@ -142,8 +175,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
     flush(view)
 
-    assert has_element?(view, ~s|#group-call-prejoin-dialog:not(.hidden)|)
-    assert has_element?(view, ~s([data-testid="group-call-prejoin-form"]))
+    assert has_element?(call_view(view), ~s([data-testid="group-call-prejoin"]))
+    assert has_element?(call_view(view), ~s([data-testid="group-call-prejoin-form"]))
     refute group_call_assign(view)
 
     group_call_prejoin(view)
@@ -165,6 +198,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       )
 
     view
+    |> call_view()
     |> element(~s([data-testid="group-call-prejoin-form"]))
     |> render_submit(%{"group_call_prejoin" => params})
 
@@ -179,8 +213,16 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
   # The participant panel is bound to the People tab, so anything asserting on
   # participant rows has to open that section first.
   defp open_people_section(view) do
-    render_click(view, "group_call_console_select", %{"section" => "people"})
+    call_click(view, "group_call_console_select", %{"section" => "people"})
     view
+  end
+
+  # Every conference event is the child's; the chat only forwards the controls
+  # that live on its own chrome.
+  defp call_click(view, event, params) do
+    html = render_click(call_view(view), event, params)
+    flush(view)
+    html
   end
 
   defp join_runtime_group_call(call, nick) do
@@ -217,8 +259,10 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
       open_prejoin(view)
 
-      refute has_element?(view, ~s([data-testid="group-call-window"]))
-      refute has_element?(view, ~s([data-testid="group-call-webrtc"]))
+      # The antechamber *is* the window: you arrive at a room before you are in
+      # it, and the chat's chrome already says which call it is.
+      assert has_element?(view, ~s([data-testid="group-call-window"]))
+      refute has_element?(call_view(view), ~s([data-testid="group-call-webrtc"]))
 
       confirm_prejoin(view)
 
@@ -246,7 +290,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert has_element?(view, ~s([data-testid="status-bar-group-call"]), "Call:")
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-webrtc"][phx-hook="GroupCallWebRTCHook"][data-group-call-token="#{call.token}"])
              )
     end
@@ -346,7 +390,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert prejoin.media.audio
       assert prejoin.media.video
 
-      render_click(view, "group_call_prejoin_cancel", %{})
+      call_click(view, "group_call_prejoin_cancel", %{})
       flush(view)
 
       refute group_call_prejoin(view)
@@ -374,7 +418,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert call.layout.self_view == :hidden
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-webrtc"][data-audio="false"][data-video="false"])
              )
     end
@@ -414,8 +458,12 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
                audio_output_id: "out-trusted"
              }
 
-      refute has_element?(view, ~s([data-testid="group-call-prejoin-audio"][checked]))
-      refute has_element?(view, ~s([data-testid="group-call-prejoin-video-toggle"][checked]))
+      refute has_element?(call_view(view), ~s([data-testid="group-call-prejoin-audio"][checked]))
+
+      refute has_element?(
+               call_view(view),
+               ~s([data-testid="group-call-prejoin-video-toggle"][checked])
+             )
     end
 
     test "pre-join saves media and device preferences on a trusted terminal", %{conn: conn} do
@@ -514,9 +562,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
                ~s([data-testid="channel-group-call-glyph-#{channel}"])
              )
 
-      render_click(ctx_a.view, "group_call_close_room", %{})
-      flush(ctx_a.view)
-      render_click(ctx_a.view, "group_call_confirm_end_call", %{})
+      call_click(ctx_a.view, "group_call_close_room", %{})
+      call_click(ctx_a.view, "group_call_confirm_end_call", %{})
 
       assert group_call_assign(ctx_a.view) == nil
 
@@ -542,7 +589,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      render_click(view, "group_call_client_joined", %{
+      call_click(view, "group_call_client_joined", %{
         "room" => %{
           "id" => call.room.id,
           "token" => call.token,
@@ -561,9 +608,14 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       })
 
       assert group_call_assign(view).participant_id == 123
-      assert has_element?(view, ~s([data-testid="group-call-participant-123"]), nick.nickname)
 
-      render_click(view, "group_call_peer_joined", %{
+      assert has_element?(
+               call_view(view),
+               ~s([data-testid="group-call-participant-123"]),
+               nick.nickname
+             )
+
+      call_click(view, "group_call_peer_joined", %{
         "participant" => %{
           "id" => 123,
           "nickname" => nick.nickname,
@@ -574,22 +626,27 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       })
 
       assert group_call_assign(view).status == :connected
-      assert has_element?(view, ~s([data-testid="group-call-participant-123"]), "Connected")
 
       assert has_element?(
-               view,
+               call_view(view),
+               ~s([data-testid="group-call-participant-123"]),
+               "Connected"
+             )
+
+      assert has_element?(
+               call_view(view),
                ~s([data-testid="group-call-participant-123"][data-media-audio="false"][data-media-video="true"])
              )
 
-      render_click(view, "group_call_toggle_audio", %{})
+      call_click(view, "group_call_toggle_audio", %{})
       assert_push_event(view, "group_call_set_media_state", %{audio: false, video: true})
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-participant-123"][data-media-audio="false"][data-media-video="true"])
              )
 
-      render_click(view, "group_call_media_state_forced", %{
+      call_click(view, "group_call_media_state_forced", %{
         "audio" => false,
         "video" => false,
         "server_video_blocked" => true
@@ -600,27 +657,27 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert call.media.server_video_blocked == true
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-participant-123"][data-media-video="false"])
              )
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-participant-123"] [data-group-call-participant-video][data-media-moderated="true"])
              )
 
       assert render(view) =~ "Camera disabled by moderator"
 
-      render_click(view, "group_call_toggle_video", %{})
+      call_click(view, "group_call_toggle_video", %{})
       assert group_call_assign(view).media.video == false
 
-      render_click(view, "group_call_leave", %{})
+      call_click(view, "group_call_leave", %{})
       flush(view)
 
-      assert has_element?(view, ~s|#group-call-confirm-dialog:not(.hidden)|)
+      assert has_element?(call_view(view), ~s|#group-call-confirm-dialog:not(.hidden)|)
       assert group_call_assign(view)
 
-      render_click(view, "group_call_confirm_leave", %{})
+      call_click(view, "group_call_confirm_leave", %{})
       flush(view)
 
       assert_push_event(view, "window_command", %{action: "close", id: "group-call"})
@@ -646,9 +703,9 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       render_click(view, "group_call_statusbar_stop", %{})
       flush(view)
 
-      assert has_element?(view, ~s|#group-call-confirm-dialog:not(.hidden)|)
+      assert has_element?(call_view(view), ~s|#group-call-confirm-dialog:not(.hidden)|)
 
-      render_click(view, "group_call_confirm_cancel", %{})
+      call_click(view, "group_call_confirm_cancel", %{})
       flush(view)
 
       assert group_call_assign(view)
@@ -665,7 +722,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      render_click(view, "group_call_client_joined", %{
+      call_click(view, "group_call_client_joined", %{
         "room" => %{
           "id" => call.room.id,
           "token" => call.token,
@@ -683,7 +740,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         "participants" => []
       })
 
-      render_click(view, "group_call_peer_joined", %{
+      call_click(view, "group_call_peer_joined", %{
         "participant" => %{
           "id" => 456,
           "nickname" => "Ada",
@@ -694,14 +751,19 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       })
 
       assert group_call_assign(view).layout.mode == :auto
-      assert has_element?(view, ~s([data-testid="group-call-layout-auto"][aria-pressed="true"]))
-      assert has_element?(view, ~s([data-testid="group-call-participant-focus-456"]))
 
-      render_click(view, "group_call_layout_mode", %{"mode" => "grid"})
+      assert has_element?(
+               call_view(view),
+               ~s([data-testid="group-call-layout-auto"][aria-pressed="true"])
+             )
+
+      assert has_element?(call_view(view), ~s([data-testid="group-call-participant-focus-456"]))
+
+      call_click(view, "group_call_layout_mode", %{"mode" => "grid"})
       assert group_call_assign(view).layout.mode == :grid
       assert_push_event(view, "group_call_layout_state", %{mode: "grid"})
 
-      render_click(view, "group_call_focus_participant", %{"participant-id" => "456"})
+      call_click(view, "group_call_focus_participant", %{"participant-id" => "456"})
       call = group_call_assign(view)
       assert call.layout.mode == :focus
       assert call.layout.focused_participant_id == 456
@@ -712,22 +774,22 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       })
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-participant-focus-456"][aria-pressed="true"])
              )
 
-      render_click(view, "group_call_cycle_self_view", %{})
+      call_click(view, "group_call_cycle_self_view", %{})
       assert group_call_assign(view).layout.self_view == :pip
       assert_push_event(view, "group_call_layout_state", %{self_view: "pip"})
 
       # The participant panel follows the People tab, not a separate toggle.
-      render_click(view, "group_call_console_select", %{"section" => "call"})
+      call_click(view, "group_call_console_select", %{"section" => "call"})
       assert group_call_assign(view).layout.console_section == :call
-      refute has_element?(view, ~s([data-testid="group-call-participants"]))
+      refute has_element?(call_view(view), ~s([data-testid="group-call-participants"]))
 
-      render_click(view, "group_call_console_select", %{"section" => "people"})
+      call_click(view, "group_call_console_select", %{"section" => "people"})
       assert group_call_assign(view).layout.console_section == :people
-      assert has_element?(view, ~s([data-testid="group-call-participants"]))
+      assert has_element?(call_view(view), ~s([data-testid="group-call-participants"]))
     end
 
     test "advanced layouts follow speaker state and pin participants", %{conn: conn} do
@@ -739,7 +801,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      render_click(view, "group_call_client_joined", %{
+      call_click(view, "group_call_client_joined", %{
         "room" => %{
           "id" => call.room.id,
           "token" => call.token,
@@ -757,7 +819,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         "participants" => []
       })
 
-      render_click(view, "group_call_peer_joined", %{
+      call_click(view, "group_call_peer_joined", %{
         "participant" => %{
           "id" => 456,
           "nickname" => "Ada",
@@ -767,7 +829,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         }
       })
 
-      render_click(view, "group_call_participant_quality", %{
+      call_click(view, "group_call_participant_quality", %{
         "active_speaker_participant_id" => "456",
         "participants" => [
           %{
@@ -779,14 +841,14 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         ]
       })
 
-      render_click(view, "group_call_layout_mode", %{"mode" => "speaker"})
+      call_click(view, "group_call_layout_mode", %{"mode" => "speaker"})
 
       call = group_call_assign(view)
       assert call.layout.mode == :speaker
       assert call.layout.focused_participant_id == 456
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-layout-speaker"][aria-pressed="true"])
              )
 
@@ -795,12 +857,12 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         focused_participant_id: 456
       })
 
-      render_click(view, "group_call_toggle_pin_participant", %{"participant-id" => "456"})
+      call_click(view, "group_call_toggle_pin_participant", %{"participant-id" => "456"})
 
       assert group_call_assign(view).layout.pinned_participant_ids == [456]
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-participant-pin-456"][aria-pressed="true"])
              )
 
@@ -808,12 +870,12 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         pinned_participant_ids: [456]
       })
 
-      render_click(view, "group_call_toggle_pin_participant", %{"participant-id" => "456"})
+      call_click(view, "group_call_toggle_pin_participant", %{"participant-id" => "456"})
 
       assert group_call_assign(view).layout.pinned_participant_ids == []
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-participant-pin-456"][aria-pressed="false"])
              )
     end
@@ -828,7 +890,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      render_click(view, "group_call_client_joined", %{
+      call_click(view, "group_call_client_joined", %{
         "room" => %{
           "id" => call.room.id,
           "token" => call.token,
@@ -846,7 +908,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         "participants" => []
       })
 
-      render_click(view, "group_call_peer_joined", %{
+      call_click(view, "group_call_peer_joined", %{
         "participant" => %{
           "id" => 456,
           "nickname" => "Ada",
@@ -885,7 +947,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       })
 
       render_click(view, "shortcut_action", %{"action" => "group_call_leave"})
-      assert has_element?(view, ~s|#group-call-confirm-dialog:not(.hidden)|)
+      assert has_element?(call_view(view), ~s|#group-call-confirm-dialog:not(.hidden)|)
     end
 
     test "conference exposes keyboard and screen-reader semantics", %{conn: conn} do
@@ -898,31 +960,31 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       cleanup_room(call.token)
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-panel"][role="region"][aria-label="Channel conference"])
              )
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-webrtc"][role="region"][aria-label="Conference media"])
              )
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-layout-controls"][role="toolbar"][aria-label="Conference layout controls"])
              )
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-reactions"][role="toolbar"][aria-label="Conference reactions"])
              )
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-remote-placeholder"][role="status"][aria-live="polite"])
              )
 
-      render_click(view, "group_call_client_joined", %{
+      call_click(view, "group_call_client_joined", %{
         "room" => %{
           "id" => call.room.id,
           "token" => call.token,
@@ -941,25 +1003,28 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       })
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-participants"][role="list"][aria-label="Conference participant list"])
              )
 
-      assert has_element?(view, ~s([data-testid="group-call-participant-123"][role="listitem"]))
+      assert has_element?(
+               call_view(view),
+               ~s([data-testid="group-call-participant-123"][role="listitem"])
+             )
 
-      render_click(view, "group_call_client_warning", %{
+      call_click(view, "group_call_client_warning", %{
         "message" => "Network quality degraded."
       })
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-warning"][role="status"][aria-live="polite"]),
                "Network quality degraded."
              )
 
       attach_call_telemetry()
 
-      render_click(view, "group_call_client_error", %{
+      call_click(view, "group_call_client_error", %{
         "code" => "media_negotiation_failed",
         "message" => "Media connection failed."
       })
@@ -974,7 +1039,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert event == CallEvents.client_error_event()
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-error"][role="alert"][aria-live="assertive"]),
                "Media connection failed."
              )
@@ -990,38 +1055,38 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       cleanup_room(call.token)
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-remote-placeholder"]),
                "Waiting for participants"
              )
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-local-empty"]),
                "Receive-only mode"
              )
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-participants-loading"][role="listitem"]),
                "Joining conference"
              )
 
-      render_click(view, "group_call_client_warning", %{
+      call_click(view, "group_call_client_warning", %{
         "message" => "Could not access your microphone or camera. You joined receive-only."
       })
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-warning-title"]),
                "Media warning"
              )
 
-      assert has_element?(view, ~s([data-testid="group-call-warning"]), "receive-only")
+      assert has_element?(call_view(view), ~s([data-testid="group-call-warning"]), "receive-only")
 
       attach_call_telemetry()
 
-      render_click(view, "group_call_recovery_state", %{
+      call_click(view, "group_call_recovery_state", %{
         "state" => "failed",
         "reason" => "offer_not_received",
         "trigger" => "offer_watchdog",
@@ -1045,19 +1110,19 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert event == CallEvents.recovery_transition_event()
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-error-title"]),
                "Connection needs attention"
              )
 
-      assert has_element?(view, ~s([data-testid="group-call-retry"]))
-      assert has_element?(view, ~s([data-testid="group-call-leave-from-error"]))
+      assert has_element?(call_view(view), ~s([data-testid="group-call-retry"]))
+      assert has_element?(call_view(view), ~s([data-testid="group-call-leave-from-error"]))
 
-      view
+      call_view(view)
       |> element(~s([data-testid="group-call-leave-from-error"]))
       |> render_click()
 
-      assert has_element?(view, ~s|#group-call-confirm-dialog:not(.hidden)|)
+      assert has_element?(call_view(view), ~s|#group-call-confirm-dialog:not(.hidden)|)
     end
 
     test "mini mode keeps the WebRTC surface mounted with compact controls", %{conn: conn} do
@@ -1070,42 +1135,50 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       cleanup_room(call.token)
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-webrtc"][data-group-call-token="#{call.token}"])
              )
 
-      view
+      call_view(view)
       |> element(~s([data-testid="group-call-mini-toggle"]))
       |> render_click()
 
       assert_push_event(view, "group_call_layout_state", %{mini: true})
       assert group_call_assign(view).layout.mini == true
-      assert has_element?(view, ~s([data-testid="group-call-panel"][data-mini-mode="true"]))
 
       assert has_element?(
-               view,
+               call_view(view),
+               ~s([data-testid="group-call-panel"][data-mini-mode="true"])
+             )
+
+      assert has_element?(
+               call_view(view),
                ~s([data-testid="group-call-webrtc"][data-group-call-token="#{call.token}"])
              )
 
-      refute has_element?(view, ~s([data-testid="group-call-participants"]))
-      assert has_element?(view, ~s([data-testid="group-call-mini-audio-toggle"]))
-      assert has_element?(view, ~s([data-testid="group-call-mini-video-toggle"]))
-      assert has_element?(view, ~s([data-testid="group-call-mini-leave"]))
-      assert has_element?(view, ~s([data-testid="group-call-mini-expand"]))
+      refute has_element?(call_view(view), ~s([data-testid="group-call-participants"]))
+      assert has_element?(call_view(view), ~s([data-testid="group-call-mini-audio-toggle"]))
+      assert has_element?(call_view(view), ~s([data-testid="group-call-mini-video-toggle"]))
+      assert has_element?(call_view(view), ~s([data-testid="group-call-mini-leave"]))
+      assert has_element?(call_view(view), ~s([data-testid="group-call-mini-expand"]))
 
-      view
+      call_view(view)
       |> element(~s([data-testid="group-call-mini-audio-toggle"]))
       |> render_click()
 
       assert_push_event(view, "group_call_set_media_state", %{audio: false, video: true})
 
-      view
+      call_view(view)
       |> element(~s([data-testid="group-call-mini-expand"]))
       |> render_click()
 
       assert_push_event(view, "group_call_layout_state", %{mini: false})
       assert group_call_assign(view).layout.mini == false
-      assert has_element?(view, ~s([data-testid="group-call-panel"][data-mini-mode="false"]))
+
+      assert has_element?(
+               call_view(view),
+               ~s([data-testid="group-call-panel"][data-mini-mode="false"])
+             )
     end
 
     test "stats section renders inside the conference console", %{conn: conn} do
@@ -1116,15 +1189,15 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      view
+      call_view(view)
       |> element(~s([data-testid="group-call-section-stats"]))
       |> render_click()
 
       assert group_call_assign(view).layout.console_section == :stats
-      assert has_element?(view, ~s([data-testid="group-call-inline-stats"]))
+      assert has_element?(call_view(view), ~s([data-testid="group-call-inline-stats"]))
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-inline-stats"] [data-testid="group-call-stats-panel"])
              )
     end
@@ -1137,7 +1210,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      render_click(view, "group_call_stats", %{
+      call_click(view, "group_call_stats", %{
         "connection" => %{
           "level" => "good",
           "mos" => 4.1,
@@ -1181,27 +1254,46 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert call.status == :connected
       assert call.connection_state == "connected"
 
-      view
+      call_view(view)
       |> element(~s([data-testid="group-call-section-stats"]))
       |> render_click()
 
       assert group_call_assign(view).layout.console_section == :stats
-      assert has_element?(view, ~s([data-testid="group-call-inline-stats"]))
-      assert has_element?(view, ~s([data-testid="group-call-stats-summary"]))
-      assert has_element?(view, ~s([data-testid="group-call-stats-summary-health"]), "Good")
-      assert has_element?(view, ~s([data-testid="group-call-stats-summary-latency"]), "42 ms")
-      assert has_element?(view, ~s([data-testid="group-call-stats-details-browser-connection"]))
-      assert has_element?(view, ~s([data-testid="group-call-stats-details-audio"]))
-      assert has_element?(view, ~s([data-testid="group-call-stats-details-video"]))
-      assert has_element?(view, ~s([data-testid="group-call-stats-details-browser-summary"]))
+      assert has_element?(call_view(view), ~s([data-testid="group-call-inline-stats"]))
+      assert has_element?(call_view(view), ~s([data-testid="group-call-stats-summary"]))
 
       assert has_element?(
-               view,
+               call_view(view),
+               ~s([data-testid="group-call-stats-summary-health"]),
+               "Good"
+             )
+
+      assert has_element?(
+               call_view(view),
+               ~s([data-testid="group-call-stats-summary-latency"]),
+               "42 ms"
+             )
+
+      assert has_element?(
+               call_view(view),
+               ~s([data-testid="group-call-stats-details-browser-connection"])
+             )
+
+      assert has_element?(call_view(view), ~s([data-testid="group-call-stats-details-audio"]))
+      assert has_element?(call_view(view), ~s([data-testid="group-call-stats-details-video"]))
+
+      assert has_element?(
+               call_view(view),
+               ~s([data-testid="group-call-stats-details-browser-summary"])
+             )
+
+      assert has_element?(
+               call_view(view),
                ~s([data-testid="group-call-stats-summary-media"]),
                "Audio + Video"
              )
 
-      assert has_element?(view, ~s([data-testid="group-call-stats-health"]), "Good")
+      assert has_element?(call_view(view), ~s([data-testid="group-call-stats-health"]), "Good")
       assert render(view) =~ "1280x720"
     end
 
@@ -1213,12 +1305,12 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      render_click(view, "group_call_connection_state", %{"state" => "connected"})
+      call_click(view, "group_call_connection_state", %{"state" => "connected"})
 
       assert group_call_assign(view).status == :connected
       assert has_element?(view, ~s([data-testid="group-call-status-announcer"]), "Connected")
 
-      render_click(view, "group_call_offer_received", %{})
+      call_click(view, "group_call_offer_received", %{})
 
       assert group_call_assign(view).status == :connected
       assert has_element?(view, ~s([data-testid="group-call-status-announcer"]), "Connected")
@@ -1233,7 +1325,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      render_click(view, "group_call_client_joined", %{
+      call_click(view, "group_call_client_joined", %{
         "room" => %{
           "id" => call.room.id,
           "token" => call.token,
@@ -1251,7 +1343,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         "participants" => []
       })
 
-      render_click(view, "group_call_screen_share_state", %{
+      call_click(view, "group_call_screen_share_state", %{
         "active" => true,
         "participant_id" => 123,
         "participant" => %{
@@ -1279,23 +1371,23 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert Enum.any?(call.tracks, &(&1.source == "screen"))
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-screen-share-toggle"][aria-pressed="true"])
              )
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-participant-123"][data-media-screen="true"])
              )
 
-      view
+      call_view(view)
       |> element(~s([data-testid="group-call-section-stats"]))
       |> render_click()
 
-      assert has_element?(view, ~s([data-testid="group-call-inline-stats"]))
+      assert has_element?(call_view(view), ~s([data-testid="group-call-inline-stats"]))
       assert render(view) =~ "Screen tracks"
 
-      render_click(view, "group_call_screen_share_state", %{
+      call_click(view, "group_call_screen_share_state", %{
         "active" => false,
         "participant_id" => 123,
         "participant" => %{
@@ -1317,7 +1409,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       refute group_call_assign(view).media.screen
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-screen-share-toggle"][aria-pressed="false"])
              )
     end
@@ -1331,7 +1423,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      render_click(view, "group_call_client_joined", %{
+      call_click(view, "group_call_client_joined", %{
         "room" => %{
           "id" => call.room.id,
           "token" => call.token,
@@ -1358,11 +1450,11 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       })
 
       refute has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-participant-quality-456"])
              )
 
-      render_click(view, "group_call_participant_quality", %{
+      call_click(view, "group_call_participant_quality", %{
         "active_speaker_participant_id" => 456,
         "participants" => [
           %{
@@ -1384,17 +1476,17 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert call.participant_quality.by_participant[456].level == :poor
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-participant-456"][data-active-speaker="true"][data-quality-level="poor"])
              )
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-participant-quality-456"][data-quality-level="poor"])
              )
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-participant-active-speaker-456"])
              )
 
@@ -1410,7 +1502,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      render_click(view, "group_call_client_joined", %{
+      call_click(view, "group_call_client_joined", %{
         "room" => %{
           "id" => call.room.id,
           "token" => call.token,
@@ -1438,7 +1530,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
       for reaction <- ["heart", "thumbs_up", "clap", "laugh", "wow"] do
         assert has_element?(
-                 view,
+                 call_view(view),
                  ~s([data-testid="group-call-reaction-icon-#{reaction}"] svg)
                )
       end
@@ -1449,7 +1541,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       refute html =~ "😄"
       refute html =~ "✨"
 
-      render_click(view, "group_call_reaction", %{
+      call_click(view, "group_call_reaction", %{
         "id" => "reaction-1",
         "participant_id" => "456",
         "nickname" => "Ada",
@@ -1462,12 +1554,12 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert [%{participant_id: 456, reaction: "clap", emoji: "👏"}] = call.reactions
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-participant-reaction-456"][data-reaction="clap"])
              )
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-participant-reaction-icon-456"] svg)
              )
 
@@ -1483,7 +1575,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      render_click(view, "group_call_client_joined", %{
+      call_click(view, "group_call_client_joined", %{
         "room" => %{
           "id" => call.room.id,
           "token" => call.token,
@@ -1594,7 +1686,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert [%{candidate_pairs: %{valid: 2}, nickname: peer_nickname}] = call.server_stats.peers
       assert peer_nickname == nick.nickname
 
-      view
+      call_view(view)
       |> element(~s([data-testid="group-call-section-stats"]))
       |> render_click()
 
@@ -1628,7 +1720,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      render_click(view, "group_call_client_warning", %{
+      call_click(view, "group_call_client_warning", %{
         "code" => "media_capture_failed",
         "message" => "Could not access your microphone or camera. You joined receive-only."
       })
@@ -1642,12 +1734,12 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       refute call.error
 
       assert has_element?(
-               view,
+               call_view(view),
                ~s([data-testid="group-call-warning"]),
                "receive-only"
              )
 
-      render_click(view, "group_call_connection_state", %{"state" => "disconnected"})
+      call_click(view, "group_call_connection_state", %{"state" => "disconnected"})
 
       call = group_call_assign(view)
       assert call.connection_state == "disconnected"
@@ -1655,7 +1747,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert call.warning =~ "Trying to recover"
       refute call.error
 
-      render_click(view, "group_call_connection_state", %{"state" => "failed"})
+      call_click(view, "group_call_connection_state", %{"state" => "failed"})
 
       call = group_call_assign(view)
       assert call.status == :error
@@ -1663,10 +1755,10 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert call.error =~ "Retry the media connection"
       refute call.warning
 
-      assert has_element?(view, ~s([data-testid="group-call-error"]), "Retry")
-      refute has_element?(view, ~s([data-testid="group-call-warning"]))
+      assert has_element?(call_view(view), ~s([data-testid="group-call-error"]), "Retry")
+      refute has_element?(call_view(view), ~s([data-testid="group-call-warning"]))
 
-      render_click(view, "group_call_recovery_state", %{
+      call_click(view, "group_call_recovery_state", %{
         "state" => "failed",
         "manual_retry" => true,
         "attempt" => 3,
@@ -1678,9 +1770,9 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert call.recovery.state == :failed
       assert call.recovery.manual_retry
 
-      assert has_element?(view, ~s([data-testid="group-call-retry"]))
+      assert has_element?(call_view(view), ~s([data-testid="group-call-retry"]))
 
-      view
+      call_view(view)
       |> element(~s([data-testid="group-call-retry"]))
       |> render_click()
 
@@ -1698,7 +1790,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      render_click(view, "group_call_client_joined", %{
+      call_click(view, "group_call_client_joined", %{
         "room" => %{
           "id" => call.room.id,
           "token" => call.token,
@@ -1716,7 +1808,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         "participants" => []
       })
 
-      render_click(view, "group_call_peer_joined", %{
+      call_click(view, "group_call_peer_joined", %{
         "participant" => %{
           "id" => 456,
           "nickname" => "TargetUser",
@@ -1726,18 +1818,27 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         }
       })
 
-      assert has_element?(view, ~s([data-testid="group-call-close-room"]))
-      assert has_element?(view, ~s([data-testid="group-call-participant-audio-moderate-456"]))
-      assert has_element?(view, ~s([data-testid="group-call-participant-video-moderate-456"]))
-      assert has_element?(view, ~s([data-testid="group-call-participant-kick-456"]))
-      refute has_element?(view, ~s([data-testid="group-call-participant-kick-123"]))
+      assert has_element?(call_view(view), ~s([data-testid="group-call-close-room"]))
 
-      render_click(view, "group_call_close_room", %{})
+      assert has_element?(
+               call_view(view),
+               ~s([data-testid="group-call-participant-audio-moderate-456"])
+             )
+
+      assert has_element?(
+               call_view(view),
+               ~s([data-testid="group-call-participant-video-moderate-456"])
+             )
+
+      assert has_element?(call_view(view), ~s([data-testid="group-call-participant-kick-456"]))
+      refute has_element?(call_view(view), ~s([data-testid="group-call-participant-kick-123"]))
+
+      call_click(view, "group_call_close_room", %{})
       flush(view)
 
-      assert has_element?(view, ~s|#group-call-confirm-dialog:not(.hidden)|)
+      assert has_element?(call_view(view), ~s|#group-call-confirm-dialog:not(.hidden)|)
 
-      render_click(view, "group_call_confirm_cancel", %{})
+      call_click(view, "group_call_confirm_cancel", %{})
       flush(view)
 
       assert group_call_assign(view)
@@ -1755,7 +1856,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       roles = ["owner", "operator", "half_operator", "voiced", "regular"]
 
       for actor_role <- roles, target_role <- roles do
-        render_click(view, "group_call_client_joined", %{
+        call_click(view, "group_call_client_joined", %{
           "room" => %{
             "id" => call.room.id,
             "token" => call.token,
@@ -1773,7 +1874,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
           "participants" => []
         })
 
-        render_click(view, "group_call_peer_joined", %{
+        call_click(view, "group_call_peer_joined", %{
           "participant" => %{
             "id" => 456,
             "nickname" => "TargetUser",
@@ -1784,41 +1885,47 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         })
 
         if actor_role in ["owner", "operator", "half_operator"] do
-          assert has_element?(view, ~s([data-testid="group-call-close-room"]))
+          assert has_element?(call_view(view), ~s([data-testid="group-call-close-room"]))
         else
-          refute has_element?(view, ~s([data-testid="group-call-close-room"]))
+          refute has_element?(call_view(view), ~s([data-testid="group-call-close-room"]))
         end
 
         if ui_can_moderate?(actor_role, target_role) do
           assert has_element?(
-                   view,
+                   call_view(view),
                    ~s([data-testid="group-call-participant-audio-moderate-456"])
                  )
 
           assert has_element?(
-                   view,
+                   call_view(view),
                    ~s([data-testid="group-call-participant-video-moderate-456"])
                  )
         else
           refute has_element?(
-                   view,
+                   call_view(view),
                    ~s([data-testid="group-call-participant-audio-moderate-456"])
                  )
 
           refute has_element?(
-                   view,
+                   call_view(view),
                    ~s([data-testid="group-call-participant-video-moderate-456"])
                  )
         end
 
         if ui_can_remove?(actor_role, target_role) do
-          assert has_element?(view, ~s([data-testid="group-call-participant-kick-456"]))
+          assert has_element?(
+                   call_view(view),
+                   ~s([data-testid="group-call-participant-kick-456"])
+                 )
         else
-          refute has_element?(view, ~s([data-testid="group-call-participant-kick-456"]))
+          refute has_element?(
+                   call_view(view),
+                   ~s([data-testid="group-call-participant-kick-456"])
+                 )
         end
       end
 
-      render_click(view, "group_call_client_joined", %{
+      call_click(view, "group_call_client_joined", %{
         "room" => %{
           "id" => call.room.id,
           "token" => call.token,
@@ -1836,7 +1943,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         "participants" => []
       })
 
-      render_click(view, "group_call_peer_joined", %{
+      call_click(view, "group_call_peer_joined", %{
         "participant" => %{
           "id" => 456,
           "nickname" => "RoleMissing",
@@ -1846,9 +1953,17 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         }
       })
 
-      refute has_element?(view, ~s([data-testid="group-call-participant-audio-moderate-456"]))
-      refute has_element?(view, ~s([data-testid="group-call-participant-video-moderate-456"]))
-      refute has_element?(view, ~s([data-testid="group-call-participant-kick-456"]))
+      refute has_element?(
+               call_view(view),
+               ~s([data-testid="group-call-participant-audio-moderate-456"])
+             )
+
+      refute has_element?(
+               call_view(view),
+               ~s([data-testid="group-call-participant-video-moderate-456"])
+             )
+
+      refute has_element?(call_view(view), ~s([data-testid="group-call-participant-kick-456"]))
     end
 
     test "bulk moderation confirms and updates lower-ranked participants", %{conn: conn} do
@@ -1870,7 +1985,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       mark_runtime_ready(call, target_payload)
       flush(moderator.view)
 
-      render_click(moderator.view, "group_call_client_joined", %{
+      call_click(moderator.view, "group_call_client_joined", %{
         "room" => %{
           "id" => call.room.id,
           "token" => call.token,
@@ -1888,7 +2003,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         "participants" => []
       })
 
-      render_click(moderator.view, "group_call_peer_joined", %{
+      call_click(moderator.view, "group_call_peer_joined", %{
         "participant" => %{
           "id" => target_payload.participant.id,
           "nickname" => target.nickname,
@@ -1898,15 +2013,15 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         }
       })
 
-      moderator.view
+      call_view(moderator.view)
       |> element(~s([data-testid="group-call-mute-all"]))
       |> render_click()
 
       flush(moderator.view)
-      assert has_element?(moderator.view, ~s|#group-call-confirm-dialog:not(.hidden)|)
+      assert has_element?(call_view(moderator.view), ~s|#group-call-confirm-dialog:not(.hidden)|)
       assert render(moderator.view) =~ "Mute all lower-ranked participants"
 
-      render_click(moderator.view, "group_call_confirm_mute_all", %{})
+      call_click(moderator.view, "group_call_confirm_mute_all", %{})
       flush(moderator.view)
 
       muted_call = group_call_assign(moderator.view)
@@ -1916,15 +2031,15 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert muted_target.media_state.server_audio_muted == true
       assert render(moderator.view) =~ "muted 1 conference microphone"
 
-      moderator.view
+      call_view(moderator.view)
       |> element(~s([data-testid="group-call-camera-off-all"]))
       |> render_click()
 
       flush(moderator.view)
-      assert has_element?(moderator.view, ~s|#group-call-confirm-dialog:not(.hidden)|)
+      assert has_element?(call_view(moderator.view), ~s|#group-call-confirm-dialog:not(.hidden)|)
       assert render(moderator.view) =~ "Turn off cameras for all lower-ranked participants"
 
-      render_click(moderator.view, "group_call_confirm_camera_off_all", %{})
+      call_click(moderator.view, "group_call_confirm_camera_off_all", %{})
       flush(moderator.view)
 
       camera_call = group_call_assign(moderator.view)
@@ -1948,7 +2063,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      render_click(view, "group_call_client_joined", %{
+      call_click(view, "group_call_client_joined", %{
         "room" => %{
           "id" => call.room.id,
           "token" => call.token,
@@ -1966,14 +2081,14 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         "participants" => []
       })
 
-      render_click(view, "group_call_toggle_lock", %{})
+      call_click(view, "group_call_toggle_lock", %{})
 
       flush(view)
 
       assert group_call_assign(view).room.metadata["locked"] == true
       assert render(view) =~ "locked the conference"
 
-      render_click(view, "group_call_toggle_lock", %{})
+      call_click(view, "group_call_toggle_lock", %{})
 
       flush(view)
 
@@ -2059,7 +2174,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       moderator_payload = join_runtime_group_call(call, moderator.nick)
       target_payload = join_runtime_group_call(call, target)
 
-      render_click(moderator.view, "group_call_client_joined", %{
+      call_click(moderator.view, "group_call_client_joined", %{
         "room" => %{
           "id" => call.room.id,
           "token" => call.token,
@@ -2077,7 +2192,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         "participants" => []
       })
 
-      render_click(moderator.view, "group_call_peer_joined", %{
+      call_click(moderator.view, "group_call_peer_joined", %{
         "participant" => %{
           "id" => target_payload.participant.id,
           "nickname" => target.nickname,
@@ -2087,14 +2202,14 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         }
       })
 
-      moderator.view
+      call_view(moderator.view)
       |> element(~s([data-testid="group-call-hand-toggle"]))
       |> render_click()
 
       self_call = group_call_assign(moderator.view)
       assert self_call.media.hand_raised == true
 
-      render_click(moderator.view, "group_call_toggle_hand", %{})
+      call_click(moderator.view, "group_call_toggle_hand", %{})
       refute group_call_assign(moderator.view).media.hand_raised
 
       actor = %{user_id: moderator.nick.id, nickname: moderator.nick.nickname}
@@ -2111,7 +2226,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
                  true
                )
 
-      render_click(moderator.view, "group_call_media_state", %{
+      call_click(moderator.view, "group_call_media_state", %{
         "participant" => %{
           "id" => raised.id,
           "nickname" => raised.nickname,
@@ -2122,14 +2237,18 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       })
 
       assert muted.media_state["server_audio_muted"] == true
-      assert has_element?(moderator.view, ~s([data-testid="group-call-raised-hand-queue"]))
 
       assert has_element?(
-               moderator.view,
+               call_view(moderator.view),
+               ~s([data-testid="group-call-raised-hand-queue"])
+             )
+
+      assert has_element?(
+               call_view(moderator.view),
                ~s([data-testid="group-call-queue-allow-speak-#{target_payload.participant.id}"])
              )
 
-      moderator.view
+      call_view(moderator.view)
       |> element(
         ~s([data-testid="group-call-queue-allow-speak-#{target_payload.participant.id}"])
       )
@@ -2141,7 +2260,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert allowed.media_state["hand_raised"] == false
 
       refute has_element?(
-               moderator.view,
+               call_view(moderator.view),
                ~s([data-testid="group-call-queue-allow-speak-#{target_payload.participant.id}"])
              )
     end
@@ -2166,7 +2285,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       mark_runtime_ready(call, target_payload)
       flush(moderator.view)
 
-      render_click(moderator.view, "group_call_client_joined", %{
+      call_click(moderator.view, "group_call_client_joined", %{
         "room" => %{
           "id" => call.room.id,
           "token" => call.token,
@@ -2194,7 +2313,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
                  }
                )
 
-      render_click(moderator.view, "group_call_screen_share_state", %{
+      call_click(moderator.view, "group_call_screen_share_state", %{
         "active" => true,
         "participant_id" => target_payload.participant.id,
         "participant" => %{
@@ -2208,11 +2327,11 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       })
 
       assert has_element?(
-               moderator.view,
+               call_view(moderator.view),
                ~s([data-testid="group-call-participant-screen-moderate-#{target_payload.participant.id}"])
              )
 
-      moderator.view
+      call_view(moderator.view)
       |> element(
         ~s([data-testid="group-call-participant-screen-moderate-#{target_payload.participant.id}"])
       )
@@ -2229,7 +2348,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
       assert blocked_target.media_state.server_screen_blocked == true
 
-      moderator.view
+      call_view(moderator.view)
       |> element(
         ~s([data-testid="group-call-participant-screen-moderate-#{target_payload.participant.id}"])
       )
@@ -2260,7 +2379,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert group_call_assign(target.view).token == mod_call.token
 
       for {ctx, id, role} <- [{moderator, 123, "owner"}, {target, 456, "regular"}] do
-        render_click(ctx.view, "group_call_client_joined", %{
+        call_click(ctx.view, "group_call_client_joined", %{
           "room" => %{
             "id" => mod_call.room.id,
             "token" => mod_call.token,
@@ -2279,7 +2398,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         })
       end
 
-      render_click(moderator.view, "group_call_peer_joined", %{
+      call_click(moderator.view, "group_call_peer_joined", %{
         "participant" => %{
           "id" => 456,
           "nickname" => target.nick.nickname,
@@ -2289,20 +2408,25 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         }
       })
 
-      moderator.view
+      call_view(moderator.view)
       |> element(~s([data-testid="group-call-participant-kick-456"]))
       |> render_click()
 
       flush(moderator.view)
-      assert has_element?(moderator.view, ~s|#group-call-confirm-dialog:not(.hidden)|)
+      assert has_element?(call_view(moderator.view), ~s|#group-call-confirm-dialog:not(.hidden)|)
       assert render(moderator.view) =~ "prevent them from rejoining"
 
-      render_click(moderator.view, "group_call_confirm_kick_participant", %{})
+      call_click(moderator.view, "group_call_confirm_kick_participant", %{})
       flush(moderator.view)
       flush(target.view)
 
       assert render(moderator.view) =~ "banned from #{channel}"
-      refute has_element?(moderator.view, ~s([data-testid="group-call-participant-456"]))
+
+      refute has_element?(
+               call_view(moderator.view),
+               ~s([data-testid="group-call-participant-456"])
+             )
+
       assert group_call_assign(target.view) == nil
       refute channel in :sys.get_state(target.view.pid).socket.assigns.session.channels
 
@@ -2332,7 +2456,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert group_call_assign(target.view).token == half_call.token
 
       for {ctx, id, role} <- [{half, 123, "half_operator"}, {target, 456, "regular"}] do
-        render_click(ctx.view, "group_call_client_joined", %{
+        call_click(ctx.view, "group_call_client_joined", %{
           "room" => %{
             "id" => half_call.room.id,
             "token" => half_call.token,
@@ -2351,7 +2475,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         })
       end
 
-      render_click(half.view, "group_call_peer_joined", %{
+      call_click(half.view, "group_call_peer_joined", %{
         "participant" => %{
           "id" => 456,
           "nickname" => target.nick.nickname,
@@ -2361,12 +2485,15 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         }
       })
 
-      refute has_element?(half.view, ~s([data-testid="group-call-participant-kick-456"]))
+      refute has_element?(
+               call_view(half.view),
+               ~s([data-testid="group-call-participant-kick-456"])
+             )
 
-      render_click(half.view, "group_call_kick_participant", %{"participant-id" => "456"})
+      call_click(half.view, "group_call_kick_participant", %{"participant-id" => "456"})
       flush(half.view)
 
-      refute has_element?(half.view, ~s|#group-call-confirm-dialog:not(.hidden)|)
+      refute has_element?(call_view(half.view), ~s|#group-call-confirm-dialog:not(.hidden)|)
       assert render(half.view) =~ "Insufficient privileges"
       assert group_call_assign(target.view)
       assert channel in :sys.get_state(target.view.pid).socket.assigns.session.channels
@@ -2391,12 +2518,23 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
       flush(view)
 
-      assert has_element?(view, ~s|#group-call-confirm-dialog:not(.hidden)|)
+      # Swapping one channel's call for another is the one question about a
+      # conference only the chat can be asked, so the confirmation is the
+      # chat's own and carries an id of its own.
+      assert has_element?(view, ~s|#group-call-switch-dialog:not(.hidden)|)
       assert group_call_assign(view).token == first_call.token
 
       render_click(view, "group_call_confirm_switch", %{})
+      call_view(view)
+
       assert_push_event(view, "window_command", %{action: "close", id: "group-call"})
       assert_push_event(view, "window_command", %{action: "open", id: "group-call"})
+
+      # The new channel opens at its antechamber, the way every arrival does.
+      assert chat_call_snapshot(view).channel_name == channel
+      refute group_call_assign(view)
+
+      confirm_prejoin(view)
 
       switched_call = group_call_assign(view)
       cleanup_room(switched_call.token)

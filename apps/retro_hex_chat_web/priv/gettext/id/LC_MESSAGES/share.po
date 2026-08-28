@@ -11,27 +11,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:139
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:146
 #, elixir-autogen, elixir-format
 msgid "%{nickname} shared this with you."
 msgstr "%{nickname} membagikan ini kepada Anda."
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:123
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:129
 #, elixir-autogen, elixir-format
 msgid "A game on RetroHexChat"
 msgstr "Sebuah game di RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:124
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:131
 #, elixir-autogen, elixir-format
 msgid "An invitation to RetroHexChat"
 msgstr "Undangan ke RetroHexChat"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:35
+#: lib/retro_hex_chat_web/live/join_live.ex:38
 #, elixir-autogen, elixir-format
 msgid "Join - RetroHexChat"
 msgstr "Gabung - RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:122
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:128
 #, elixir-autogen, elixir-format
 msgid "Link expired"
 msgstr "Tautan kedaluwarsa"
@@ -56,22 +56,22 @@ msgstr "Bagikan"
 msgid "Share link"
 msgstr "Tautan berbagi"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:141
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:148
 #, elixir-autogen, elixir-format
 msgid "Someone shared this with you."
 msgstr "Seseorang membagikan ini kepada Anda."
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:131
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:138
 #, elixir-autogen, elixir-format, fuzzy
 msgid "%{nickname} shared this with you. Pick a nickname to join."
 msgstr "%{nickname} membagikan ini kepada Anda. Pilih nama panggilan untuk masuk."
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:136
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:143
 #, elixir-autogen, elixir-format
 msgid "Pick a nickname to join."
 msgstr "Pilih nama panggilan untuk masuk."
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:127
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:134
 #, elixir-autogen, elixir-format, fuzzy
 msgid "This link is no longer active. The chat is still there."
 msgstr "Tautan ini tidak aktif lagi. Obrolannya masih ada."
@@ -101,13 +101,28 @@ msgstr "dibagikan oleh %{nickname}"
 msgid "shared with this conversation"
 msgstr "dibagikan di percakapan ini"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:143
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:150
 #, elixir-autogen, elixir-format
 msgid "Connect and join"
 msgstr "Hubungkan dan gabung"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:144
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:38
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:151 lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:38
 #, elixir-autogen, elixir-format
 msgid "Join"
 msgstr "Gabung"
+
+#: lib/retro_hex_chat_web/live/join_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "%{count} person inside now"
+msgid_plural "%{count} people inside now"
+msgstr[0] "%{count} orang di dalam sekarang"
+
+#: lib/retro_hex_chat_web/live/join_live.ex:112
+#, elixir-autogen, elixir-format
+msgid "A call in %{channel}"
+msgstr "Panggilan di %{channel}"
+
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:130 lib/retro_hex_chat_web/live/join_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "A call on RetroHexChat"
+msgstr "Panggilan di RetroHexChat"

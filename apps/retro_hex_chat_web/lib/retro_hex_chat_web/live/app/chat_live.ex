@@ -39,7 +39,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── P2P session setup + console ──────────────────────────────
   import RetroHexChatWeb.Components.UI.P2P.SetupDialog
   import RetroHexChatWeb.Components.UI.P2P.SessionBadge
-  import RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog
   import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
 
   alias RetroHexChatWeb.ChatLive.Components.P2PSessionConsole
@@ -861,6 +860,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:settings_dialogs_info, &ChatLive.SettingsDialogsEvents.handle_info/2},
       {:timer_handlers, &ChatLive.TimerHandlers.handle_info/2},
       {:pubsub_handlers, &ChatLive.PubsubHandlers.handle_info/2},
+      # The call surface reports to its host: what the chat's chrome draws,
+      # the notices that belong in the conversation, and the window commands.
+      {:group_call_info, &ChatLive.GroupCallEvents.handle_info/2},
       # After PubsubHandlers: it consumes "lobby_invite" (user topic) first;
       # this one owns the session-topic "lobby_*" events.
       {:p2p_session_info, &ChatLive.P2PSessionEvents.handle_info/2},
@@ -968,8 +970,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       group_call_channels: MapSet.new(),
       group_call_channel_summaries: %{},
       group_call_pending: nil,
-      group_call_prejoin: nil,
-      group_call_prejoin_preferences: nil,
       p2p_session: nil,
       p2p_pm_sessions: %{},
       p2p_pending: nil,
@@ -1176,21 +1176,12 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   defp channel_group_call_active?(_channels, _channel_name), do: false
 
-  defp channel_group_call_summary(summaries, group_call, channel_name)
-       when is_binary(channel_name) do
-    cond do
-      is_map(group_call) and group_call.channel_name == channel_name ->
-        group_call
-
-      is_map(summaries) ->
-        Map.get(summaries, channel_name)
-
-      true ->
-        nil
-    end
+  defp channel_group_call_summary(summaries, channel_name)
+       when is_map(summaries) and is_binary(channel_name) do
+    Map.get(summaries, channel_name)
   end
 
-  defp channel_group_call_summary(_summaries, _group_call, _channel_name), do: nil
+  defp channel_group_call_summary(_summaries, _channel_name), do: nil
 
   defp p2p_session_for_active_pm(%{peer_nick: peer} = p2p, active_pm)
        when is_binary(peer) and is_binary(active_pm) do

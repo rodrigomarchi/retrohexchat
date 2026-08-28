@@ -6,6 +6,7 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
   alias RetroHexChat.GroupCall
   alias RetroHexChat.GroupCall.{PeerSupervisor, Queries, Registry, RoomServer}
   alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChat.Topics
 
   @moduletag :integration
 
@@ -207,7 +208,7 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
       nick = create_registered_nick(unique_nick("creator"))
       {:ok, _pid} = start_channel(channel)
       {:ok, _state} = Server.join(channel, nick.nickname, nil, identified: true)
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.channel_calls(channel))
 
       assert {:ok, %{room: room, token: token}} =
                GroupCall.create_channel_call(channel, %{user_id: nick.id, nickname: nick.nickname})
@@ -1010,7 +1011,7 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
       ctx = create_call_with_member("audit", "owner")
       regular = create_registered_nick(unique_nick("regular"))
       {:ok, _state} = Server.join(ctx.channel, regular.nickname, nil, identified: true)
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{ctx.channel}")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.channel_calls(ctx.channel))
 
       _owner_payload = join_call(ctx)
       regular_payload = join_call(ctx, regular)
@@ -1105,7 +1106,7 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
 
     test "frequent media and presence updates do not emit administrative messages" do
       ctx = create_call_with_member("auditquiet", "owner")
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{ctx.channel}")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.channel_calls(ctx.channel))
 
       payload = join_call(ctx)
       mark_ready(ctx, payload)

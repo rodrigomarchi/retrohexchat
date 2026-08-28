@@ -341,7 +341,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   def handle_info({:group_call_started, %{channel: channel} = payload}, socket) do
     socket =
       socket
-      |> GroupCallEvents.mark_channel_call_active(channel, Map.get(payload, :summary))
+      |> GroupCallReadModel.mark_active(channel, Map.get(payload, :summary))
       |> maybe_group_call_system_event(
         channel,
         dgettext("group_call", "Conference started in %{channel}.", channel: channel)
@@ -351,7 +351,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   end
 
   def handle_info({:group_call_updated, %{channel: channel} = payload}, socket) do
-    {:halt, GroupCallEvents.mark_channel_call_active(socket, channel, Map.get(payload, :summary))}
+    {:halt, GroupCallReadModel.mark_active(socket, channel, Map.get(payload, :summary))}
   end
 
   def handle_info({:group_call_moderation, %{channel: channel} = payload}, socket) do

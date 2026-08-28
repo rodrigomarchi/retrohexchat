@@ -239,9 +239,7 @@ async function joinChannel(
 
 async function joinGroupCall(page: Page) {
   await page.getByTestId("group-call-open").click();
-  await expect(
-    page.locator("#group-call-prejoin-dialog-surface"),
-  ).toBeVisible();
+  await expect(page.getByTestId("group-call-prejoin")).toBeVisible();
   await page.getByTestId("group-call-prejoin-join").click();
   await expect(page.getByTestId("group-call-window")).toBeVisible();
   await expect(page.getByTestId("status-bar-group-call")).toBeVisible();

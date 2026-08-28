@@ -1,6 +1,14 @@
 defmodule RetroHexChatWeb.PayloadBudgetTest do
-  use RetroHexChatWeb.ConnCase, async: true
+  # Not async: the call surface's budget needs a real channel process and a
+  # real room, and both are global to the node.
+  use RetroHexChatWeb.ConnCase, async: false
 
+  alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Channels.Supervisor
+  alias RetroHexChat.GroupCall
+  alias RetroHexChat.GroupCall.Registry
+  alias RetroHexChat.Services.NickServ
+  alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChatWeb.PerfBudgets
 
   @moduletag :integration
@@ -58,6 +66,25 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
     end
   end
 
+  describe "/call/:token" do
+    setup %{conn: conn} do
+      {nickname, path} = open_call()
+      %{html: html_for(session_conn(conn, nickname), path)}
+    end
+
+    test "stays inside its byte budget", %{html: html} do
+      assert byte_size(html) <= PerfBudgets.html_bytes(:call)
+    end
+
+    test "stays inside its DOM node budget", %{html: html} do
+      assert PerfBudgets.count_elements(html) <= PerfBudgets.dom_nodes(:call)
+    end
+
+    test "references the sprite instead of carrying the drawings", %{html: html} do
+      assert PerfBudgets.count(html, "<use href=") == PerfBudgets.count(html, "<svg")
+    end
+  end
+
   describe "every surface" do
     test "ships no icon art inline", %{conn: conn} do
       for path <- [~p"/connect", ~p"/chat/help"] do
@@ -75,9 +102,47 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
 
   defp html_for(conn, path), do: conn |> get(path) |> html_response(200)
 
+  # The call surface is the one budget that cannot be measured from nothing:
+  # a token with no room behind it renders a refusal, which is not the page.
+  defp open_call do
+    nickname = "Budget#{System.unique_integer([:positive])}" |> String.slice(0, 16)
+
+    {:ok, nick} =
+      %RegisteredNick{}
+      |> RegisteredNick.registration_changeset(%{nickname: nickname, password: "password123"})
+      |> RetroHexChat.Repo.insert()
+
+    channel = "#budget#{System.unique_integer([:positive])}"
+    {:ok, channel_pid} = Supervisor.start_child(channel)
+    NickServ.restore_identified(nickname)
+    {:ok, _state} = Server.join(channel, nickname, nil, identified: true)
+
+    {:ok, %{token: token}} =
+      GroupCall.create_channel_call(channel, %{user_id: nick.id, nickname: nickname})
+
+    on_exit(fn ->
+      NickServ.remove_identified(nickname)
+
+      case Registry.lookup_room({:room, token}) do
+        {:ok, pid} -> stop_quietly(pid)
+        {:error, :not_found} -> :ok
+      end
+
+      if Process.alive?(channel_pid), do: Supervisor.stop_child(Supervisor, channel_pid)
+    end)
+
+    {nickname, "/call/#{token}"}
+  end
+
+  defp stop_quietly(pid) do
+    GenServer.stop(pid, :normal)
+  catch
+    :exit, _reason -> :ok
+  end
+
   # A surface refuses a request with no nickname, so measuring one needs a
   # session the way a visitor would have one.
-  defp session_conn(conn) do
-    Plug.Test.init_test_session(conn, %{"chat_nickname" => "Budget"})
+  defp session_conn(conn, nickname \\ "Budget") do
+    Plug.Test.init_test_session(conn, %{"chat_nickname" => nickname})
   end
 end

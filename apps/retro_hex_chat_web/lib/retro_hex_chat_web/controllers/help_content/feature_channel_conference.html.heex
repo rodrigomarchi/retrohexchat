@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_p2p",
-    "Channel conferences are audio/video calls attached to the active channel. Use the Call button in the channel topic bar to open the pre-join dialog before entering."
+    "Channel conferences are audio/video calls attached to the active channel. The Call button in the channel topic bar opens the antechamber — the screen you arrive at before you are inside."
   )}
 </p>
 
@@ -17,7 +17,7 @@
 <p>
   {dgettext(
     "help_p2p",
-    "The pre-join dialog lets you preview your camera, choose microphone, camera and speaker devices, and decide whether to join with microphone or camera enabled. Permission and device failures show a Retry action, and you can still join receive-only. Layout and media defaults are remembered for your account; browser-specific device choices are remembered locally."
+    "The antechamber lists who is already in the room, previews your camera, and lets you choose microphone, camera and speaker and decide whether to join with either enabled. There is no host and no Start: any member of the channel opens a call and anyone joins whenever they like. Permission and device failures show a Retry action, and you can still join receive-only. Layout and media defaults are remembered for your account; browser-specific device choices are remembered locally."
   )}
 </p>
 
@@ -89,7 +89,7 @@
 <p>
   {dgettext(
     "help_p2p",
-    "The conference Stats section lives inside the same call window and shows both server-side SFU state and live browser connection metrics. Use the Stats tab in the conference header to inspect diagnostics without leaving the call surface. Closing the conference window leaves the conference, so minimize it to keep the session running."
+    "The conference Stats section lives inside the same call window and shows both server-side SFU state and live browser connection metrics. Use the Stats tab in the conference header to inspect diagnostics without leaving the call surface."
   )}
 </p>
 
@@ -98,4 +98,12 @@
   <.help_link topic="feature-media-devices">{dgettext("help_p2p", "Media Devices")}</.help_link>
   · <.help_link topic="feature-call-quality">{dgettext("help_p2p", "Call Quality")}</.help_link>
   · <.help_link topic="ui-conversations">{dgettext("help_p2p", "Conversations")}</.help_link>
+  ·
+  <.help_link topic="feature-conference-tab">
+    {dgettext("help_p2p", "Conference in Its Own Tab")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-conference-share">
+    {dgettext("help_p2p", "Sharing a Conference Link")}
+  </.help_link>
 </p>

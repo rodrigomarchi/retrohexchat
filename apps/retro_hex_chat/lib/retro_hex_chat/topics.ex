@@ -27,6 +27,19 @@ defmodule RetroHexChat.Topics do
   def channel(name) when is_binary(name), do: "channel:" <> name
 
   @doc """
+  A channel's call lifecycle, apart from its conversation.
+
+  Starting, ending, a roster change and a moderation act are the only things
+  published here, and two very different readers want exactly them: the chat,
+  which draws a badge for a call it is not in, and the call's own surface,
+  which draws the roster in its antechamber. Putting them on the channel's
+  conversation topic would hand every message in a busy channel to a process
+  that only ever wanted to know who is in the room.
+  """
+  @spec channel_calls(String.t()) :: String.t()
+  def channel_calls(name) when is_binary(name), do: channel(name) <> ":calls"
+
+  @doc """
   Where a person is tracked for as long as they are connected, whatever they are
   looking at.
 

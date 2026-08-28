@@ -167,10 +167,12 @@ defmodule RetroHexChatWeb.Router do
     live_session :app_surface,
       on_mount: [
         {RetroHexChatWeb.Live.PutLocale, :default},
+        {RetroHexChatWeb.Live.PutTrustedDevice, :default},
         {RetroHexChatWeb.Live.Surface, :default}
       ] do
       live "/play", PlayLive
       live "/play/:game", PlayLive
+      live "/call/:token", CallLive
     end
 
     # The standalone lobby page is gone — P2P sessions live inside the chat

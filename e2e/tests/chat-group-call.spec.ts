@@ -49,7 +49,7 @@ function groupCallPanel(page: Page) {
 }
 
 function groupCallPrejoinDialog(page: Page) {
-  return page.locator("#group-call-prejoin-dialog-surface");
+  return page.getByTestId("group-call-prejoin");
 }
 
 function groupCallPrejoinJoin(page: Page) {

@@ -204,6 +204,14 @@ _ROWS = {
     "Open the chat": ("Abrir o chat", "Abrir o chat", "Abrir el chat", "Ouvrir le chat", "Chat öffnen", "Apri la chat", "Chat openen", "Otwórz czat", "Открыть чат", "Buka obrolan", "チャットを開く", "打开聊天", "開啟聊天"),
     "Link expired": ("Link expirado", "Ligação expirada", "Enlace caducado", "Lien expiré", "Link abgelaufen", "Link scaduto", "Link verlopen", "Link wygasł", "Ссылка истекла", "Tautan kedaluwarsa", "リンクの有効期限切れ", "链接已失效", "連結已失效"),
 
+    # ── A surface in its own tab ──────────────────────────────
+    # "Chat" is deliberately absent: it already has a translation per domain,
+    # and a glossary entry is global — adding one here would rewrite the word
+    # in every catalog that already chose it, which is the mistake "Enter"
+    # nearly made above.
+    "Open in a tab": ("Abrir em uma aba", "Abrir num separador", "Abrir en una pestaña", "Ouvrir dans un onglet", "In einem Tab öffnen", "Apri in una scheda", "In een tabblad openen", "Otwórz w karcie", "Открыть во вкладке", "Buka di tab", "タブで開く", "在标签页中打开", "在分頁中開啟"),
+    "Already inside": ("Já estão dentro", "Já estão dentro", "Ya están dentro", "Déjà dans la salle", "Bereits im Raum", "Già dentro", "Al binnen", "Już w środku", "Уже внутри", "Sudah di dalam", "すでに参加中", "已在房间内", "已在房間內"),
+
     # ── Chat actions ──────────────────────────────────────────
     "Mute":         ("Silenciar", "Silenciar", "Silenciar", "Couper le son", "Stummschalten", "Disattiva audio", "Dempen", "Wycisz", "Отключить звук", "Bisukan", "ミュート", "静音", "靜音"),
     "Unmute":       ("Reativar som", "Reativar som", "Activar sonido", "Réactiver le son", "Stummschaltung aufheben", "Riattiva audio", "Dempen opheffen", "Wyłącz wyciszenie", "Включить звук", "Suarakan", "ミュート解除", "取消静音", "取消靜音"),
