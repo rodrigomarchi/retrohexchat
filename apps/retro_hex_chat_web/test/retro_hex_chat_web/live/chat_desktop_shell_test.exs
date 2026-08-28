@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
 
       assert has_element?(
                view,
-               ~s(#chat-desktop [data-testid="desktop-launcher-window-games"] [data-testid="desktop-launcher-item-retro-games"][phx-value-action="open_retro_games"])
+               ~s(#chat-desktop [data-testid="desktop-launcher-window-games"] [data-testid="desktop-launcher-item-retro-games"][data-window-open="retro-games"])
              )
     end
 

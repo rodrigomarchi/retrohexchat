@@ -599,8 +599,11 @@
       />
     </.desktop_window>
 
-    <%!-- Retro Games — always mounted so the LiveView island and canvas hook
-          keep their local state while the desktop window is hidden. --%>
+    <%!-- Retro Games — the same LiveView that serves `/play/:game`, mounted
+          here as a child. One module, two hosts: the tab has its own event
+          loop and a shareable URL, this one has the desktop around it. Always
+          rendered so the child and its canvas hook keep their state while the
+          window is hidden. --%>
     <.desktop_window
       {WindowRegistry.attrs("retro-games")}
       open={false}
@@ -608,10 +611,10 @@
       data-testid="retro-games-window"
     >
       <:icon><Icons.icon_game_pong class="h-4 w-4" /></:icon>
-      <.live_component
-        module={RetroGamesIsland}
-        id={RetroGamesIsland.id()}
-      />
+      {live_render(@socket, RetroHexChatWeb.App.PlayLive,
+        id: "retro-games-live",
+        session: %{"embedded" => true}
+      )}
     </.desktop_window>
 
     <%!-- Arcade — server-managed solo-game launcher, a pure read-model of the

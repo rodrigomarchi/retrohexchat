@@ -25,6 +25,7 @@ defmodule RetroHexChat.Services.NickServ do
   alias RetroHexChat.Observability
   alias RetroHexChat.Services.Queries
   alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChat.SessionControl
 
   @default_identify_timeout_ms 60_000
 
@@ -416,23 +417,9 @@ defmodule RetroHexChat.Services.NickServ do
   end
 
   defp broadcast_ghost_disconnect(target_nick, requester_nick) do
-    case Phoenix.PubSub.broadcast(
-           RetroHexChat.PubSub,
-           "user:#{target_nick}",
-           {:force_disconnect,
-            %{
-              reason:
-                dgettext("services", "Ghosted by %{requester_nick}",
-                  requester_nick: requester_nick
-                )
-            }}
-         ) do
-      :ok ->
-        :ok
-
-      {:error, reason} ->
-        Logger.warning("PubSub broadcast to user:#{target_nick} failed: #{inspect(reason)}")
-    end
+    SessionControl.disconnect(target_nick, %{
+      reason: dgettext("services", "Ghosted by %{requester_nick}", requester_nick: requester_nick)
+    })
   end
 
   defp format_changeset_error(changeset) do

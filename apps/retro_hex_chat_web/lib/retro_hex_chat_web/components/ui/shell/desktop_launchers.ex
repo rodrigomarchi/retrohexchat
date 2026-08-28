@@ -487,7 +487,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
   defp games_items(cap) do
     [
-      action(cap, "open_retro_games", dgettext("ui", "Retro Games"), :icon_game_pong,
+      window("retro-games", dgettext("ui", "Retro Games"), :icon_game_pong,
         disabled: !cap.chat?,
         testid: "desktop-launcher-item-retro-games"
       ),

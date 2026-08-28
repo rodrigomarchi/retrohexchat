@@ -11,6 +11,11 @@ defmodule RetroHexChat.Topics do
 
   These names were interpolated at each call site, which is how the same topic
   came to be built by three separate copies of the same sort-and-join.
+
+  `:` separates every part of every name here, and nothing escapes it. That is
+  safe only because `Accounts.NicknameValidator` forbids `:` in a nickname —
+  otherwise a person called `alice:surfaces` would share a topic with alice's
+  surfaces. Widening the nickname charset means revisiting this file.
   """
 
   @doc "Everything addressed to one person, whichever conversation it belongs to."
@@ -32,4 +37,18 @@ defmodule RetroHexChat.Topics do
   """
   @spec presence() :: String.t()
   def presence, do: "presence:global"
+
+  @doc """
+  Where a person's non-chat surfaces listen, and only for the end of their own
+  session.
+
+  A call, a space or a game can live in a browser tab of its own, beside the
+  chat. Those surfaces must survive the chat being taken over by another tab and
+  must not survive a ban, so they cannot listen on the inbox: the inbox carries
+  both meanings on the same message. This topic carries only the second, which
+  is why a surface subscribed here needs no clause that ignores a private
+  message.
+  """
+  @spec surfaces(String.t()) :: String.t()
+  def surfaces(nickname) when is_binary(nickname), do: inbox(nickname) <> ":surfaces"
 end

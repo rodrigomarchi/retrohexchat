@@ -399,9 +399,11 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           testid="start-menu-games-submenu"
         >
           <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
-          <.app_item
-            action="open_retro_games"
-            on_action={@on_action}
+          <%!-- Client-side: the Retro Games window carries its own LiveView,
+                which loads the catalogue in its own mount. Nothing to fetch
+                here, so nothing to ask the server for. --%>
+          <.window_item
+            window="retro-games"
             label={dgettext("ui", "Retro Games")}
             icon_fn={:icon_game_pong}
             disabled={!@chat?}

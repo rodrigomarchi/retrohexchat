@@ -51,10 +51,10 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Topics
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.NickChangeDialog
   alias RetroHexChatWeb.ChatLive.Helpers.LobbyInvite
-  alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.UiActionHandlers
 
   require Logger
@@ -443,7 +443,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     |> assign(quit_reason: quit_reason)
     |> clear_reconnect_state()
     |> Phoenix.LiveView.push_event("intentional_disconnect", %{})
-    |> push_navigate(to: PathHelpers.connect_path(socket))
+    |> push_navigate(to: Paths.connect_path(socket))
   end
 
   defp cleanup_channels(session, reason) do

@@ -43,6 +43,12 @@ defmodule RetroHexChatWeb.PerfBudgets do
   # 92_554 B raw measured, but 7_599 B gzipped — the dialog chrome repeats, so
   # the wire cost fell from 57_712 B to 7_599 B.
   def html_bytes(:chat), do: 105_000
+  # The first surface that is not the chat. 39_284 B raw / 3_566 B gzip and 267
+  # elements measured on 2026-08-28, with every icon a `<use>` reference. It is
+  # this small because it carries no taskbar and no Start menu — whether a
+  # single-purpose surface should is an open question, and this number is what
+  # answering it costs against.
+  def html_bytes(:play), do: 44_000
 
   @doc """
   The most elements a surface's dead render may contain.
@@ -51,6 +57,7 @@ defmodule RetroHexChatWeb.PerfBudgets do
   def dom_nodes(:connect), do: 1_260
   def dom_nodes(:help), do: 3_090
   def dom_nodes(:chat), do: 600
+  def dom_nodes(:play), do: 300
 
   @doc """
   The longest a connected mount may block before it renders.

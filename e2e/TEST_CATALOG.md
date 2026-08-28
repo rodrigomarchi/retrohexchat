@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **219 spec files** under `e2e/tests/`.
-- **456 Playwright `test()` cases**.
-- **449 documented flows**, 448 done, 1 not done.
+- **220 spec files** under `e2e/tests/`.
+- **458 Playwright `test()` cases**.
+- **451 documented flows**, 450 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -161,6 +161,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | I | `/connect?reason=expired` surfaces session expired message | `tests/disconnect-reason.spec.ts` | done |
 | J | `/connect?reason=disconnected` surfaces session ended message | `tests/disconnect-reason.spec.ts` | done |
 | K | Same nickname from second context force-disconnects first context | `tests/multi-tab-takeover.spec.ts` | done |
+| K2 | A game surface tab and the chat tab coexist in one browser context, and a chat takeover ends only the chat | `tests/surface-multi-tab.spec.ts` | done |
+| K3 | A game address with no session lands on connect and reaches the game once the nickname is registered | `tests/surface-multi-tab.spec.ts` | done |
 | L | Logged-in user disconnects via UI and lands on `/connect` | `tests/logout.spec.ts` | done |
 | M | Admin bans user with `/admin user ban` and victim is force-disconnected | `tests/admin-ban.spec.ts` | done |
 | N | Admin closes registration; new user sees registration closed; spec restores open | `tests/admin-registration-closed.spec.ts` | done |

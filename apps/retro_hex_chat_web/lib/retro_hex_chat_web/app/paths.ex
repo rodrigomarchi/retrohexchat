@@ -1,6 +1,12 @@
-defmodule RetroHexChatWeb.ChatLive.Helpers.PathHelpers do
+defmodule RetroHexChatWeb.App.Paths do
   @moduledoc """
-  Path helpers for chat navigation.
+  The app's own routes, built once.
+
+  These were chat helpers until a surface that is not the chat — a call, a
+  space, a game in its own tab — needed the same two paths: where a session
+  goes when it is cleared, and where someone goes when they have no session.
+  Both are properties of the app, not of the chat, and a second copy of
+  `/chat/session/clear` is a string nobody would think to keep in step.
   """
 
   use Phoenix.VerifiedRoutes,
@@ -11,6 +17,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PathHelpers do
   @spec connect_path(Phoenix.LiveView.Socket.t()) :: String.t()
   def connect_path(_socket) do
     ~p"/connect"
+  end
+
+  @spec connect_path(Phoenix.LiveView.Socket.t(), String.t()) :: String.t()
+  def connect_path(_socket, reason) do
+    ~p"/connect?reason=#{reason}"
   end
 
   @spec session_clear_path(Phoenix.LiveView.Socket.t(), String.t()) :: String.t()

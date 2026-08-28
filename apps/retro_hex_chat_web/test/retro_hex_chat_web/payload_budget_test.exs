@@ -42,6 +42,22 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
     end
   end
 
+  describe "/play" do
+    setup %{conn: conn}, do: %{html: html_for(session_conn(conn), ~p"/play")}
+
+    test "stays inside its byte budget", %{html: html} do
+      assert byte_size(html) <= PerfBudgets.html_bytes(:play)
+    end
+
+    test "stays inside its DOM node budget", %{html: html} do
+      assert PerfBudgets.count_elements(html) <= PerfBudgets.dom_nodes(:play)
+    end
+
+    test "references the sprite instead of carrying the drawings", %{html: html} do
+      assert PerfBudgets.count(html, "<use href=") == PerfBudgets.count(html, "<svg")
+    end
+  end
+
   describe "every surface" do
     test "ships no icon art inline", %{conn: conn} do
       for path <- [~p"/connect", ~p"/chat/help"] do
@@ -58,4 +74,10 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
   end
 
   defp html_for(conn, path), do: conn |> get(path) |> html_response(200)
+
+  # A surface refuses a request with no nickname, so measuring one needs a
+  # session the way a visitor would have one.
+  defp session_conn(conn) do
+    Plug.Test.init_test_session(conn, %{"chat_nickname" => "Budget"})
+  end
 end

@@ -21,6 +21,7 @@ defmodule RetroHexChat.Admin do
   alias RetroHexChat.RateLimit.Table, as: ChatRateLimitTable
   alias RetroHexChat.Scraper.Cache, as: ScraperCache
   alias RetroHexChat.Services.{ChanServ, NickServ, Queries}
+  alias RetroHexChat.SessionControl
   alias RetroHexChat.Topics
 
   @pubsub RetroHexChat.PubSub
@@ -44,11 +45,9 @@ defmodule RetroHexChat.Admin do
 
         ban_reason = reason || dgettext("admin", "No reason given")
 
-        broadcast_user(
-          nickname,
-          {:force_disconnect,
-           %{reason: dgettext("admin", "Server banned: %{reason}", reason: ban_reason)}}
-        )
+        SessionControl.disconnect(nickname, %{
+          reason: dgettext("admin", "Server banned: %{reason}", reason: ban_reason)
+        })
 
         duration_text =
           if duration_seconds,
@@ -87,10 +86,9 @@ defmodule RetroHexChat.Admin do
   def kick_user(nickname, admin, reason \\ nil) do
     AuditLogs.log(admin, "user.kick", {"user", nickname}, %{reason: reason})
 
-    broadcast_user(
-      nickname,
-      {:force_disconnect, %{reason: reason || dgettext("admin", "Kicked by administrator")}}
-    )
+    SessionControl.disconnect(nickname, %{
+      reason: reason || dgettext("admin", "Kicked by administrator")
+    })
 
     {:ok, dgettext("admin", "%{nickname} has been kicked from the server.", nickname: nickname)}
   end
@@ -195,11 +193,9 @@ defmodule RetroHexChat.Admin do
       {:ok, msg} ->
         AuditLogs.log(admin, "ns.drop", {"user", nickname})
 
-        broadcast_user(
-          nickname,
-          {:force_disconnect,
-           %{reason: dgettext("admin", "Your nick registration was dropped by an administrator")}}
-        )
+        SessionControl.disconnect(nickname, %{
+          reason: dgettext("admin", "Your nick registration was dropped by an administrator")
+        })
 
         {:ok, msg}
 
@@ -654,11 +650,7 @@ defmodule RetroHexChat.Admin do
     payload = nuke_disconnect_payload(admin)
 
     Enum.each(nicknames, fn nickname ->
-      Phoenix.PubSub.broadcast(
-        @pubsub,
-        "user:#{nickname}",
-        {:force_disconnect, Map.put(payload, :nickname, nickname)}
-      )
+      SessionControl.disconnect(nickname, Map.put(payload, :nickname, nickname))
     end)
 
     Enum.each(session_refs, fn session_ref ->

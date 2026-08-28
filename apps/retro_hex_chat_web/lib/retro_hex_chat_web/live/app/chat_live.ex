@@ -68,6 +68,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   alias RetroHexChat.Presence.{Tracker, WhowasCache}
   alias RetroHexChat.Scraper
+  alias RetroHexChat.SessionControl
   alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.App.ComposerEvents
@@ -78,12 +79,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   alias RetroHexChatWeb.ChatLive.Components.{
     ConversationsContextMenu,
-    RetroGamesIsland,
     SystemLogDialog,
     UserContextMenus
   }
 
-  alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.SpaceAssets
@@ -136,15 +136,17 @@ defmodule RetroHexChatWeb.App.ChatLive do
     chat_device_session = start_chat_device_session(nickname, trusted_device_id, client_info)
     chat_device_session_ref = trusted_device_session_ref(chat_device_session)
 
-    Phoenix.PubSub.broadcast(
-      RetroHexChat.PubSub,
-      Topics.inbox(nickname),
-      {:force_disconnect,
-       %{
-         reason: dgettext("chat", "Session ended — logged in from another window"),
-         disconnected_by_session_ref: chat_device_session_ref,
-         takeover_ack: {self(), takeover_ref}
-       }}
+    # `:chat` scope on purpose: this ends the previous CHAT session and nothing
+    # else. A call or a space the person has open in another tab keeps running —
+    # only a ban or a nuke (`:all`) reaches those.
+    SessionControl.disconnect(
+      nickname,
+      %{
+        reason: dgettext("chat", "Session ended — logged in from another window"),
+        disconnected_by_session_ref: chat_device_session_ref,
+        takeover_ack: {self(), takeover_ref}
+      },
+      :chat
     )
 
     if takeover_expected?, do: wait_for_takeover_cleanup(takeover_ref)
@@ -634,7 +636,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   def handle_info({:trusted_terminals_disconnect_current, reason}, socket) do
     path =
-      PathHelpers.session_clear_path(socket, reason, forget_device: true)
+      Paths.session_clear_path(socket, reason, forget_device: true)
 
     {:noreply,
      socket
@@ -780,7 +782,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
     &ChatLive.ConnectionEvents.handle_event/3,
     &ChatLive.GroupCallEvents.handle_event/3,
     &ChatLive.P2PSessionEvents.handle_event/3,
-    &ChatLive.RetroGamesEvents.handle_event/3,
     &ChatLive.ArcadeSessionEvents.handle_event/3,
     &ChatLive.CoreEvents.handle_event/3
   ]
@@ -852,7 +853,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:connection_events, &ChatLive.ConnectionEvents.handle_event/3},
       {:group_call_events, &ChatLive.GroupCallEvents.handle_event/3},
       {:p2p_session_events, &ChatLive.P2PSessionEvents.handle_event/3},
-      {:retro_games_events, &ChatLive.RetroGamesEvents.handle_event/3},
       {:arcade_session_events, &ChatLive.ArcadeSessionEvents.handle_event/3},
       {:core_events, &ChatLive.CoreEvents.handle_event/3}
     ]
@@ -860,7 +860,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
     info_hooks = [
       {:settings_dialogs_info, &ChatLive.SettingsDialogsEvents.handle_info/2},
       {:timer_handlers, &ChatLive.TimerHandlers.handle_info/2},
-      {:retro_games_info, &ChatLive.RetroGamesEvents.handle_info/2},
       {:pubsub_handlers, &ChatLive.PubsubHandlers.handle_info/2},
       # After PubsubHandlers: it consumes "lobby_invite" (user topic) first;
       # this one owns the session-topic "lobby_*" events.
@@ -975,7 +974,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       p2p_pm_sessions: %{},
       p2p_pending: nil,
       p2p_setup: nil,
-      retro_games: RetroGamesIsland.initial_summary(),
       arcade_session: nil,
       mobile_viewport: false,
       mobile_panel_restore: nil,

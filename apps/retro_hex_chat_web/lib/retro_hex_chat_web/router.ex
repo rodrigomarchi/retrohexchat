@@ -144,6 +144,19 @@ defmodule RetroHexChatWeb.Router do
       live "/chat", ChatLive
     end
 
+    # Surfaces that are not the chat. They carry `Live.Surface`, which the chat
+    # deliberately does not: it refuses a missing or banned session the same
+    # way, and it listens for the end of the session without announcing a
+    # takeover. A separate live_session is what lets that on_mount differ.
+    live_session :app_surface,
+      on_mount: [
+        {RetroHexChatWeb.Live.PutLocale, :default},
+        {RetroHexChatWeb.Live.Surface, :default}
+      ] do
+      live "/play", PlayLive
+      live "/play/:game", PlayLive
+    end
+
     # The standalone lobby page is gone — P2P sessions live inside the chat
     # (old invite links and bookmarks land there; the chat re-hydrates the
     # user's active session on mount).

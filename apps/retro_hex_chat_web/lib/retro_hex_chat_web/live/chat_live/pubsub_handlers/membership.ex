@@ -32,10 +32,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   alias RetroHexChat.Presence.{NotifyList, Tracker}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Topics
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Components.{ChannelCentralDialog, HoverCard, Nicklist}
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
-  alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
 
   # ── User joined/left/nick_changed ─────────────────────────
 
@@ -224,7 +224,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
      |> push_event("clear_client_state", %{})
      |> Phoenix.LiveView.redirect(
        to:
-         PathHelpers.session_clear_path(socket, reason,
+         Paths.session_clear_path(socket, reason,
            disconnected_by_session_ref: Map.get(payload, :disconnected_by_session_ref)
          )
      )}

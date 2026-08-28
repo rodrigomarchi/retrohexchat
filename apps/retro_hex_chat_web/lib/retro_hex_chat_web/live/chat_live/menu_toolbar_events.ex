@@ -25,9 +25,9 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
     ]
 
   alias RetroHexChat.Accounts.Session
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog
-  alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.SearchEvents
   alias RetroHexChatWeb.ChatLive.Windows
 
@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
      socket
      |> clear_reconnect_state()
      |> push_event("intentional_disconnect", %{})
-     |> push_navigate(to: PathHelpers.connect_path(socket))}
+     |> push_navigate(to: Paths.connect_path(socket))}
   end
 
   def handle_event("restore_session", params, socket) do
@@ -96,7 +96,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
      socket
      |> clear_reconnect_state()
      |> push_event("intentional_disconnect", %{})
-     |> push_navigate(to: PathHelpers.connect_path(socket))}
+     |> push_navigate(to: Paths.connect_path(socket))}
   end
 
   def handle_event("cancel_disconnect", _params, socket) do
