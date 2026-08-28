@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   alias RetroHexChatWeb.ChatLive.Components.KickQueueDialog
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
   alias RetroHexChatWeb.ChatLive.GroupCallEvents
+  alias RetroHexChatWeb.ChatLive.GroupCallReadModel
 
   # ── Mode changes ──────────────────────────────────────────
 
@@ -367,7 +368,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   def handle_info({:group_call_ended, %{channel: channel}}, socket) do
     socket =
       socket
-      |> GroupCallEvents.mark_channel_call_inactive(channel)
+      |> GroupCallReadModel.mark_inactive(channel)
       |> maybe_group_call_system_event(
         channel,
         dgettext("group_call", "Conference ended in %{channel}.", channel: channel)

@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.ConversationsReadModel
   alias RetroHexChatWeb.ChatLive.GroupCallEvents
+  alias RetroHexChatWeb.ChatLive.GroupCallReadModel
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
@@ -83,7 +84,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       space_avatar: nil
     )
     |> ConversationsReadModel.touch_channel_activity(channel_name)
-    |> GroupCallEvents.refresh_channel_call_state(channel_name)
+    |> GroupCallReadModel.refresh(channel_name)
     |> GroupCallEvents.rehydrate()
     |> tap(fn _ -> send_update(Composer, id: Composer.id(), reset_input: true) end)
     |> Conversation.load_roster()
@@ -107,7 +108,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     socket
     |> assign(session: new_session)
     |> ConversationsReadModel.touch_channel_activity(channel_name)
-    |> GroupCallEvents.refresh_channel_call_state(channel_name)
+    |> GroupCallReadModel.refresh(channel_name)
     |> GroupCallEvents.rehydrate()
     |> load_channel_user_count(channel_name)
     |> push_event("channel_joined_flash", %{channel: channel_name})
@@ -144,7 +145,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         flash_channels: flash
       )
       |> ConversationsReadModel.drop_channel_activity(channel_name)
-      |> GroupCallEvents.mark_channel_call_inactive(channel_name)
+      |> GroupCallReadModel.mark_inactive(channel_name)
 
     socket =
       if new_session.active_channel do
@@ -174,7 +175,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       socket
       |> assign(session: new_session)
       |> ConversationsReadModel.drop_channel_activity(channel_name)
-      |> GroupCallEvents.mark_channel_call_inactive(channel_name)
+      |> GroupCallReadModel.mark_inactive(channel_name)
 
     if new_session.active_channel do
       socket

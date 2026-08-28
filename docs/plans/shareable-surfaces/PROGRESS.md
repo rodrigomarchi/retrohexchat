@@ -12,7 +12,7 @@ de onda no mesmo commit e anotar aqui por quê.
 |---|---|
 | 0 — identidade multi-aba + `/play/:game` | ✅ `make ci` 17/17 |
 | 1 — `/join/:slug` + card na conversa | ✅ commitada (`f0898719`) + card |
-| 2 — conferência | 🔨 iniciada: normalizadores extraídos |
+| 2 — conferência | 🔨 em andamento: normalizadores + read-model separados |
 | 3 — space | ⬜ |
 | 4 — P2P channel + superfície | ⬜ |
 | 5 — jogos / lobby aberto | ⬜ |
@@ -843,5 +843,73 @@ com specs. 46 testes de group call verdes **sem edição**, 18 novos, credo limp
 
 **Próximo:** separar o read-model de canal (o que fica no `ChatLive`) do
 estar-dentro (o que vai para o `CallLive`).
+
+---
+
+## Iteração 12 — a régua aplicada: o que fica no chat sai do adaptador
+
+**Objetivo:** separar, dentro de `group_call_events.ex`, o read-model de canal
+(saber que existe uma chamada) do estar-dentro (mídia, layout, foco).
+
+### A régua, e o que ela decidiu
+
+"Se o dado só existe enquanto você está na chamada, ele vai; se existe para quem
+só está olhando o canal, ele fica." Aplicada função a função, ela dividiu o
+módulo em dois lugares e não em dois arquivos:
+
+- **`RetroHexChatWeb.App.GroupCallSummary`** — puro, sem socket: `fetch/1` lê o
+  domínio, `normalize/2` faz as três fontes (room server, broadcast com chaves
+  string, linha do banco sozinha) lerem igual. Fica em `app/`, ao lado do
+  `GroupCallShape`, porque a antessala da onda 2 vai ler exatamente isto.
+- **`RetroHexChatWeb.ChatLive.GroupCallReadModel`** — os dois assigns e nada
+  mais: `refresh_all/1`, `refresh/2`, `mark_active/3`, `mark_inactive/2` e os
+  acessores. Fica em `live/chat_live/`, ao lado do `ConversationsReadModel` que
+  já existia — o precedente de nome e de lugar já estava no repositório.
+
+`GroupCallEvents` ficou com o estar-dentro, e os chamadores que só queriam o
+read-model (`helpers/channel.ex`, `pubsub_handlers/channel_state.ex`) passaram a
+falar com ele direto.
+
+### O único ponto onde as duas metades ainda se tocam
+
+`mark_channel_call_active/3` faz duas coisas: registra o badge **e** funde o
+summary no `@group_call` quando é a chamada em que você está. Isso não é
+acidente de escrita — é o mesmo dado servindo dois leitores. Ficou no
+`GroupCallEvents`, com o porquê no `@doc`, e é ele que some quando o `CallLive`
+assinar o próprio tópico.
+
+Duas delegações nasceram mortas e foram apagadas no mesmo passo:
+`refresh_channel_call_state/2` e `mark_channel_call_inactive/2` não tinham mais
+nenhum chamador externo depois do rewire.
+
+### O teste que passou verde estando errado
+
+`live_summaries/1` devolve os canais com chamada **na ordem em que a sessão os
+lista** — a ordem decide qual sala o reconnect reata. Escrevi o teste com
+`["#a", "#b", "#c"]`, quebrei a implementação para `Map.to_list/1`, e o teste
+**continuou verde**: um mapa pequeno no Erlang guarda as chaves ordenadas, e a
+minha lista já estava em ordem alfabética.
+
+Trocado por `["#zulu", "#mike", "#alfa"]`, onde a ordem da sessão e a ordem do
+mapa discordam. Com a implementação quebrada, dois testes ficam vermelhos; com
+ela de volta, nove verdes.
+
+Vale a nota porque é a mesma classe da iteração 7: **um teste escrito dentro do
+espaço que a implementação já ocupa não testa nada**. Lá foi o caminho da URL,
+aqui foi a ordem das chaves.
+
+### Verificação
+
+- 36 testes de `group_call_flow_test.exs` verdes **sem uma edição** — é o que
+  prova que foi movimentação, não reescrita.
+- 9 testes novos no read-model, 6 no summary, e a idempotência de `normalize/2`
+  asserida (o caminho de reattach passa um summary já normalizado de volta).
+- `mix credo --strict` limpo, `mix format` e `make i18n.gettext.extract` antes do
+  commit — a sequência fixa, desta vez sem esquecer.
+
+`group_call_events.ex`: 2.346 → 2.221 linhas.
+
+**Próximo:** `CallLive` montado aninhado na janela `group-call`, via
+`live_render/3`. Nada muda para o usuário; é o passo reversível.
 
 ---

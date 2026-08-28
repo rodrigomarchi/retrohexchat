@@ -5,6 +5,10 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   ChatLive owns only the UI/session state. The raw Phoenix Channel remains the
   signaling path for SDP/ICE, while the browser hook mirrors lightweight call
   state back here so the desktop window can render participants and controls.
+
+  What is left here is being *in* a call. Knowing that a call exists at all is
+  `RetroHexChatWeb.ChatLive.GroupCallReadModel`, which the badge and the tab bar
+  read without any of this.
   """
 
   import Phoenix.Component, only: [assign: 2]
@@ -24,6 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   alias RetroHexChatWeb.App.GroupCallStats
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog
+  alias RetroHexChatWeb.ChatLive.GroupCallReadModel
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Windows
   alias RetroHexChatWeb.MediaDevices
@@ -35,62 +40,46 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
   @type event_result :: {:cont | :halt, Socket.t()}
 
+  @doc """
+  Rebuild the group-call state after a mount or a reconnect.
+
+  Two things happen, in this order and for two different readers: every channel
+  in the session gets its read-model back, and then — only if the person was
+  still an active participant somewhere — the call itself is reattached.
+  """
   @spec rehydrate(Socket.t()) :: Socket.t()
   def rehydrate(
         %{assigns: %{session: %{nickname: nickname, channels: channels, identified: true}}} =
           socket
       )
       when is_binary(nickname) and is_list(channels) do
-    {socket, summaries} =
-      channels
-      |> Enum.filter(&is_binary/1)
-      |> Enum.reduce({socket, []}, fn channel_name, {socket, summaries} ->
-        case active_channel_summary(channel_name) do
-          nil ->
-            {mark_channel_call_inactive(socket, channel_name), summaries}
+    socket = GroupCallReadModel.refresh_all(socket)
 
-          summary ->
-            {mark_channel_call_active(socket, channel_name, summary),
-             [{channel_name, summary} | summaries]}
-        end
-      end)
-
-    maybe_reattach_active_participant(socket, Enum.reverse(summaries), nickname)
+    maybe_reattach_active_participant(
+      socket,
+      GroupCallReadModel.live_summaries(socket),
+      nickname
+    )
   end
 
   def rehydrate(socket), do: socket
 
-  @spec refresh_channel_call_state(Socket.t(), String.t() | nil) :: Socket.t()
-  def refresh_channel_call_state(socket, channel_name) when is_binary(channel_name) do
-    case active_channel_summary(channel_name) do
-      nil -> mark_channel_call_inactive(socket, channel_name)
-      summary -> mark_channel_call_active(socket, channel_name, summary)
-    end
-  end
+  @doc """
+  Record a live call in `channel_name`, and fold its roster into the call you
+  are in when it is the same one.
 
-  def refresh_channel_call_state(socket, _channel_name), do: socket
-
+  The second half is the only place the two sides still touch: the summary that
+  tells the badge who is in the room is also the summary the open call renders
+  from.
+  """
   @spec mark_channel_call_active(Socket.t(), String.t() | nil, map() | nil) :: Socket.t()
   def mark_channel_call_active(socket, channel_name, summary \\ nil)
 
   def mark_channel_call_active(socket, channel_name, summary) when is_binary(channel_name) do
-    summary =
-      normalize_channel_summary(summary || active_channel_summary(channel_name), channel_name)
+    socket = GroupCallReadModel.mark_active(socket, channel_name, summary)
 
-    socket =
-      assign(socket,
-        group_call_channels:
-          socket
-          |> group_call_channels()
-          |> MapSet.put(channel_name),
-        group_call_channel_summaries:
-          socket
-          |> group_call_channel_summaries()
-          |> Map.put(channel_name, summary)
-      )
-
-    case {socket.assigns[:group_call], summary} do
-      {%{channel_name: ^channel_name} = call, %{}} ->
+    case {socket.assigns[:group_call], GroupCallReadModel.summary(socket, channel_name)} do
+      {%{channel_name: ^channel_name} = call, %{} = summary} ->
         assign(socket, group_call: merge_summary(call, summary))
 
       _other ->
@@ -99,22 +88,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   def mark_channel_call_active(socket, _channel_name, _summary), do: socket
-
-  @spec mark_channel_call_inactive(Socket.t(), String.t() | nil) :: Socket.t()
-  def mark_channel_call_inactive(socket, channel_name) when is_binary(channel_name) do
-    assign(socket,
-      group_call_channels:
-        socket
-        |> group_call_channels()
-        |> MapSet.delete(channel_name),
-      group_call_channel_summaries:
-        socket
-        |> group_call_channel_summaries()
-        |> Map.delete(channel_name)
-    )
-  end
-
-  def mark_channel_call_inactive(socket, _channel_name), do: socket
 
   @spec handle_event(String.t(), map(), Socket.t()) :: event_result()
   def handle_event("group_call_open", _params, socket) do
@@ -1001,38 +974,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     end
   end
 
-  defp active_channel_summary(channel_name) do
-    case GroupCall.active_room_for_channel(channel_name) do
-      nil ->
-        nil
-
-      room ->
-        case GroupCall.get_summary(room.token) do
-          {:ok, summary} ->
-            summary
-
-          {:error, _reason} ->
-            %{
-              room: %{
-                id: room.id,
-                token: room.token,
-                channel_name: room.channel_name,
-                status: room.status,
-                max_participants: room.max_participants,
-                metadata: room.metadata,
-                inserted_at: room.inserted_at,
-                opened_at: room.opened_at,
-                activated_at: room.activated_at
-              },
-              participants: [],
-              pending_participants: [],
-              tracks: [],
-              server_stats: GroupCallStats.empty_server()
-            }
-        end
-    end
-  end
-
   defp new_call(summary, token, channel_name, user_id, nickname, join_token, preferences) do
     %{
       token: token,
@@ -1639,7 +1580,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
          :ok <- GroupCall.close_call(socket.assigns.group_call.token, actor, "moderation") do
       socket
       |> assign(group_call: nil, group_call_pending: nil)
-      |> mark_channel_call_inactive(channel_name)
+      |> GroupCallReadModel.mark_inactive(channel_name)
       |> push_event("window_command", %{action: "close", id: @window_id})
     else
       {:error, message} when is_binary(message) -> Messages.error_event(socket, message)
@@ -1812,64 +1753,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
   defp maybe_put_track(call, %{id: nil}), do: call
   defp maybe_put_track(call, track), do: put_track(call, track)
-
-  defp normalize_channel_summary(nil, channel_name) do
-    %{
-      room: %{
-        id: nil,
-        token: nil,
-        channel_name: channel_name,
-        status: "open",
-        max_participants: nil,
-        metadata: %{},
-        inserted_at: nil,
-        opened_at: nil,
-        activated_at: nil
-      },
-      participants: [],
-      pending_participants: [],
-      tracks: [],
-      server_stats: GroupCallStats.empty_server(),
-      participant_quality: GroupCallShape.empty_participant_quality()
-    }
-  end
-
-  defp normalize_channel_summary(summary, channel_name) when is_map(summary) do
-    room =
-      case GroupCallShape.normalize_room(GroupCallShape.value(summary, :room)) do
-        nil ->
-          %{
-            id: nil,
-            token: GroupCallShape.value(summary, :token),
-            channel_name: channel_name,
-            status: GroupCallShape.value(summary, :status) || "open",
-            max_participants: GroupCallShape.value(summary, :max_participants),
-            metadata: GroupCallShape.value(summary, :metadata) || %{},
-            inserted_at: nil,
-            opened_at: nil,
-            activated_at: nil
-          }
-
-        room ->
-          room
-      end
-
-    %{
-      room: %{room | channel_name: room.channel_name || channel_name},
-      participants:
-        GroupCallShape.normalize_participants(GroupCallShape.value(summary, :participants)),
-      pending_participants:
-        GroupCallShape.normalize_participants(
-          GroupCallShape.value(summary, :pending_participants)
-        ),
-      tracks: GroupCallShape.normalize_tracks(GroupCallShape.value(summary, :tracks)),
-      server_stats:
-        GroupCallShape.normalize_server_stats(GroupCallShape.value(summary, :server_stats)),
-      participant_quality:
-        GroupCallShape.value(summary, :participant_quality) ||
-          GroupCallShape.empty_participant_quality()
-    }
-  end
 
   defp apply_recovery_state(call, payload) do
     recovery = GroupCallShape.normalize_recovery(payload)
@@ -2335,12 +2218,4 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   defp maybe_focus_screen_share(call, _participant_id, _active?), do: call
-
-  defp group_call_channels(socket) do
-    socket.assigns[:group_call_channels] || MapSet.new()
-  end
-
-  defp group_call_channel_summaries(socket) do
-    socket.assigns[:group_call_channel_summaries] || %{}
-  end
 end
