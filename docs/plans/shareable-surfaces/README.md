@@ -12,7 +12,9 @@ Apagar este diretório quando a última onda shippar; mover as regras duráveis 
 
 | | Arquivo | Entrega |
 |---|---|---|
-| **desenho** | [`ux.md`](ux.md) | **O modelo de produto e todas as telas. Leia primeiro.** |
+| **retomada** | [`HANDOVER.md`](HANDOVER.md) | **Estado atual, próximo passo e as armadilhas. Leia primeiro ao retomar.** |
+| **desenho** | [`ux.md`](ux.md) | O modelo de produto e todas as telas |
+| **diário** | [`PROGRESS.md`](PROGRESS.md) | O que aconteceu a cada iteração, com os erros |
 | 0 | [`wave-0-identity-and-surfaces.md`](wave-0-identity-and-surfaces.md) | Uma segunda aba deixa de matar a primeira |
 | 1 | [`wave-1-join-resolver.md`](wave-1-join-resolver.md) | `/join/:slug` — o link que dá pra postar, e o card ao vivo na conversa |
 | 2 | [`wave-2-conference-surface.md`](wave-2-conference-surface.md) | `/call/:token` — conferência em aba própria |
