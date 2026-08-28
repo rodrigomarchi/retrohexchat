@@ -11,8 +11,8 @@ quando a onda 6 fechar.
    D1–D6 arquitetura) e o mapa das ondas.
 2. [`ux.md`](ux.md) — **o desenho de todas as telas**. Quando uma onda e este
    arquivo discordarem, o arquivo está errado e é ele que muda primeiro.
-3. [`PROGRESS.md`](PROGRESS.md) — onze iterações registradas, com os erros. Leia
-   pelo menos as iterações 7, 8 e 10: são armadilhas que vão voltar.
+3. [`PROGRESS.md`](PROGRESS.md) — treze iterações registradas, com os erros. Leia
+   pelo menos as iterações 7, 8, 10 e 13: são armadilhas que vão voltar.
 4. O arquivo da onda em que você vai mexer.
 
 E antes de tocar código: `AGENTS.md`, `CLAUDE.md` e as regras em
@@ -22,7 +22,7 @@ E antes de tocar código: `AGENTS.md`, `CLAUDE.md` e as regras em
 
 ## 2. Estado em 2026-08-28
 
-Working tree limpo. `main` está **5 commits à frente de `origin/main`** — nada
+Working tree limpo. `main` está **8 commits à frente de `origin/main`** — nada
 foi empurrado, e empurrar é decisão do usuário.
 
 | Commit | O quê |
@@ -32,74 +32,60 @@ foi empurrado, e empurrar é decisão do usuário.
 | `ba197d38` | Onda 1 — o card na conversa |
 | `b33e0963` | Onda 1 — traduções do domínio `share` nos 13 locales |
 | `7dc8245a` | Onda 2 — passo 0: `App.GroupCallShape` extraído |
+| `0b665bb2` | Onda 2 — passo 1: read-model de canal separado do estar-dentro |
+| `5bb4091e` | Onda 2 — `CallLive` em dois hosts + `/call/:token` |
 
 | Onda | Estado |
 |---|---|
 | 0 — identidade + `/play` | ✅ fechada |
 | 1 — `/join/:slug` + card | ✅ fechada |
-| 2 — conferência | 🔨 **um terço**: normalizadores extraídos |
+| 2 — conferência | 🔨 **quase**: falta só a filiação com contagem de superfícies |
 | 3–6 | ⬜ |
 
-**O que já dá para testar à mão:** entrar no chat com nick registrado, abrir
-Retro Games, escolher um jogo, **Share**, colar a URL numa conversa (vira card),
-abrir o link noutro navegador sem sessão, **Conectar e entrar**, cair no jogo. E
-`/chat` numa aba convive com `/play/hex_pong` noutra.
+**O que já dá para testar à mão:** entrar no chat com nick registrado, entrar
+num canal, **Chamada** → a antessala abre *na janela* (não mais um diálogo) com
+quem já está dentro; entrar; **Share** acima do painel cria o link; colar numa
+conversa vira card; abrir o link noutro navegador sem sessão mostra o card
+público ("Uma chamada em #canal · N pessoas agora"); com sessão e filiação, ele
+leva a `/call/:token`, a conferência numa aba só dela. O resumo ao lado de
+Chamada também tem **Abrir em uma aba**.
 
 ---
 
 ## 3. O próximo passo, concreto
 
-**Onda 2, passo 1: separar o read-model de canal do estar-dentro.**
+**Onda 2, o que sobrou: a filiação a canal precisa sobreviver à aba do chat**
+([onda 2 §2.6](wave-2-conference-surface.md)).
 
-`live/chat_live/group_call_events.ex` tem 2.346 linhas e 87 `handle_event`. Duas
-metades convivem ali:
+Hoje o problema ainda **não existe**: a chamada embutida é filha do `ChatLive`,
+então ela morre junto. Ele nasce no momento em que alguém deixar `/call/:token`
+aberto e fechar a aba do chat — `ChatLive.terminate/2` chama `cleanup_channels/2`
+e a pessoa vira participante de uma sala de um canal do qual não é mais membro.
+O `rejoin` depois de um reload é negado e a moderação fica indefinida.
 
-* **fica no `ChatLive`** — saber que existe uma chamada: `rehydrate/1` (a parte
-  dos summaries), `refresh_channel_call_state/2`, `mark_channel_call_active/3`,
-  `mark_channel_call_inactive/2`, e os assigns `@group_call_channels` e
-  `@group_call_channel_summaries`.
-* **vai para o `CallLive`** — estar dentro: `@group_call`, mídia, layout, foco,
-  reações, screen share, stats, pré-join, os diálogos de confirmação.
+O desenho está escrito na §2.6 e não mudou: contagem de superfícies abertas por
+nickname (um `Registry` com `keys: :duplicate` remove a entrada quando o processo
+morre, que é exatamente a semântica necessária), `cleanup_channels/2` só efetiva
+a saída quando a última superfície fecha, e `/part` explícito continua imediato.
+`Live.Surface` é onde o registro entra, porque é por onde toda superfície passa.
 
-**A régua:** se o dado só existe enquanto você está na chamada, ele vai; se
-existe para quem só está olhando o canal, ele fica.
+O teste que prova a onda, e que deve ser escrito primeiro e falhar:
+**depois de fechar a aba do chat, o `rejoin` na chamada continua autorizado.**
 
-Chamadores externos que precisam continuar funcionando (mapeados):
-
-```
-live/app/chat_live.ex:194            GroupCallEvents.rehydrate/1
-live/app/chat_live.ex:783,854        dispatch de handle_event (2 registros)
-live/chat_live/keyboard_events.ex:101 delega um atalho
-live/chat_live/pubsub_handlers/channel_state.ex:89,343,353,370
-                                     leave_channel_call, mark_channel_call_*
-live/chat_live/helpers/channel.ex:86 refresh_channel_call_state
-```
-
-**Passo 2 (depois):** criar `RetroHexChatWeb.App.CallLive` e montá-lo **aninhado**
-na janela `group-call` do chat via `live_render/3`, exatamente como o `PlayLive`
-faz hoje (`live/app/chat_live.html.heex`, procurar `retro-games-live`). Nada
-muda para o usuário; é o passo reversível.
-
-**Passo 3:** a rota `/call/:token`. **Só aqui** aparece a necessidade da
-filiação a canal com contagem de superfícies (onda 2 §2.6) — no modo aninhado a
-chamada morre com o chat, então o problema não existe ainda.
+Depois disso a onda 2 fecha e a onda 3 (space) reusa `Live.Surface`,
+`CallLive.Host` e `Topics.channel_calls/1` inteiros.
 
 ---
 
-## 4. Três coisas que vão te morder na onda 2
+## 4. O que ainda morde na onda 2
 
-1. **Identificação é um assign do `ChatLive`, não fato do domínio.** O portão da
-   conferência é `session.identified` (`group_call_events.ex`, `require_identified`).
-   Uma aba de chamada não tem como lê-lo. Três caminhos possíveis estão nos
-   riscos da [onda 2](wave-2-conference-surface.md); **nenhum foi decidido**.
-   Decidir com o código na frente.
+1. ~~**Identificação é um assign do `ChatLive`.**~~ **Resolvido** (iteração 13):
+   `Services.NickServ.identified?/1` mantém o conjunto em runtime e o assign do
+   chat é espelho dele, então a superfície pergunta ao domínio. Não é preciso
+   token novo.
 
-2. **A filiação a canal some quando o chat fecha.** `ChatLive.terminate/2` chama
-   `cleanup_channels/2` (`chat_live.ex:303`), e a conferência exige ser membro
-   para entrar (`group_call/policy.ex:35`) e para moderar. Desenho proposto:
-   contagem de superfícies abertas por nickname, provavelmente um
-   `Registry` com `keys: :duplicate` (ele já remove a entrada quando o processo
-   morre, que é exatamente a semântica necessária).
+2. **A filiação a canal some quando o chat fecha.** Continua aberto — é o §3
+   acima, e é a única coisa que falta na onda 2.
 
 3. **A suíte Playwright é só Chromium.** Trocar o host de uma chamada é a classe
    de mudança que quebra só o Firefox e passa no `make ci` — o
@@ -139,6 +125,21 @@ motivo.
 **O exit code do `make ci` não é o do job em background.** Um `; grep` no fim da
 cadeia devolve o status do `grep`. Ler `CI_EXIT` do log, sempre.
 
+**Dois testes Playwright já estavam vermelhos antes desta sessão**, e o
+`surface_snapshot.sh --check` também. Verificado com `git stash`: falham iguais
+no `HEAD` anterior. Playwright não está no `make ci`, então a suíte derivou —
+não perca tempo achando que foi você.
+
+**`live_render` embrulha o filho numa div sem altura.** Um `h-full` dentro dela
+resolve contra ela, não contra o corpo da janela: passe
+`container: {:div, class: "h-full min-h-0"}`. Nenhum teste vê isso; só o
+screenshot.
+
+**Dois hosts renderizando o mesmo LiveComponent precisam de ids diferentes.**
+Ids são únicos no documento, não por LiveView, e a chamada embutida põe os dois
+na tela ao mesmo tempo. Derive os `data-testid` internos do `id` em vez de
+escrevê-los literais.
+
 **`clipboard_copy` só existe no chat.** É tratado pelo `chat_viewport_hook`; um
 `push_event` desses numa aba satélite não tem quem receba. Copiar de verdade
 precisa de um hook agnóstico de superfície — a lib de coordenação da onda 6 é o
@@ -157,8 +158,9 @@ Instruções dadas explicitamente nesta sessão, além do `AGENTS.md`:
   incluindo os erros e como foram recuperados.
 * **Tela nova ganha screenshot antes de dizer que fechou.** Regra criada depois
   de ele reclamar que o card estava "horrivelmente feio, sem ícones". Um spec
-  Playwright descartável, ler as imagens, apagar o spec. Isso pegou dois defeitos
-  que teste nenhum pegaria — a janela de altura zero e o card duplicado.
+  Playwright descartável, ler as imagens, apagar o spec. Já pegou quatro defeitos
+  que teste nenhum pegaria — a janela de altura zero, o card duplicado, a
+  antessala ocupando metade da janela e a barra Share solta no canto.
 * **Commit direto na `main`**, com `git fetch` + `pull --ff-only` antes e
   staging de caminhos exatos. Push só quando ele pedir.
 

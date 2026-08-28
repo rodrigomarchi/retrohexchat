@@ -317,6 +317,29 @@ reproduzir uma vez com um spec descartável em Firefox antes de fechar a onda.
   muda por baixo), depois a rota root. A primeira etapa é reversível; a segunda é
   aditiva.
 
+## 5.1 O que já shippou (2026-08-28)
+
+Tudo desta onda menos a §2.6. Commits `7dc8245a` (normalizadores), `0b665bb2`
+(read-model separado) e `5bb4091e` (`CallLive` nos dois hosts, `/call/:token`, a
+antessala com roster, o Share e o card público de chamada).
+
+Três coisas que o plano supôs e o código desmentiu, corrigidas aqui:
+
+* **A identificação já era fato de domínio.** `Services.NickServ.identified?/1`
+  mantém o conjunto em runtime e `session.identified` é espelho dele. Nenhum
+  token novo; o risco da §5 está resolvido.
+* **As duas etapas viraram uma.** O plano mandava montar aninhado primeiro e
+  depois a rota, para que a primeira etapa fosse reversível. O que tornou a
+  primeira etapa possível foi promover o pré-join a antessala, e isso já muda o
+  chat — separar as duas teria movido o pré-join duas vezes.
+* **O ciclo de vida das transmissões mudou de tópico.** A antessala precisa do
+  roster ao vivo, e as transmissões de chamada saíam no tópico da conversa.
+  Agora saem em `Topics.channel_calls/1`.
+
+**Falta:** §2.6, a filiação com contagem de superfícies. Ela ainda não é um bug
+porque a chamada embutida morre com o chat; passa a ser no momento em que alguém
+fechar a aba do chat com `/call/:token` aberta.
+
 ## 6. Pronto quando
 
 - `make ci` verde.
