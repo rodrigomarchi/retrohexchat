@@ -36,6 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
   attr :device_label, :string, default: ""
   attr :csrf_token, :string, required: true
   attr :chat_session_path, :string, required: true
+  attr :return_to, :string, default: nil
   attr :target, :any, default: nil
 
   @spec connect_form_panel(map()) :: Phoenix.LiveView.Rendered.t()
@@ -64,6 +65,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
       trusted_device_login={@trusted_device_login}
       remember_device={@remember_device}
       device_label={@device_label}
+      return_to={@return_to}
     />
     """
   end
@@ -690,6 +692,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
   attr :trusted_device_login, :boolean, default: false
   attr :remember_device, :boolean, default: false
   attr :device_label, :string, default: ""
+  attr :return_to, :string, default: nil
 
   defp connect_session_form(assigns) do
     ~H"""
@@ -702,6 +705,9 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
       <input type="hidden" name="device_label" id="connect-device-label-input" value={@device_label} />
       <input type="hidden" name="timezone" id="connect-timezone-input" value="Etc/UTC" />
       <input type="hidden" name="client_info" id="connect-client-info-input" value="{}" />
+      <%!-- Carries a shared link across the connect it forced. Sanitised
+            server-side by `App.ReturnTo` — this field is client-controlled. --%>
+      <input :if={@return_to} type="hidden" name="return_to" value={@return_to} />
     </form>
     """
   end

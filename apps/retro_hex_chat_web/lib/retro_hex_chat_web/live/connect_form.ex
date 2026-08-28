@@ -54,7 +54,8 @@ defmodule RetroHexChatWeb.ConnectForm do
        trusted_device_id: nil,
        takeover_session: nil,
        auto_login: false,
-       notify_step: false
+       notify_step: false,
+       return_to: nil
      )}
   end
 
@@ -73,6 +74,7 @@ defmodule RetroHexChatWeb.ConnectForm do
       takeover_session: Map.get(assigns, :takeover_session, socket.assigns.takeover_session),
       csrf_token: Map.get(assigns, :csrf_token, socket.assigns[:csrf_token]),
       chat_session_path: Map.get(assigns, :chat_session_path, socket.assigns[:chat_session_path]),
+      return_to: Map.get(assigns, :return_to, socket.assigns[:return_to]),
       auto_login: Map.get(assigns, :auto_login, socket.assigns.auto_login),
       notify_step: Map.get(assigns, :notify_step, socket.assigns.notify_step)
     )
@@ -410,6 +412,7 @@ defmodule RetroHexChatWeb.ConnectForm do
         device_label={@device_label}
         csrf_token={@csrf_token}
         chat_session_path={@chat_session_path}
+        return_to={@return_to}
         target={@myself}
       />
     </div>

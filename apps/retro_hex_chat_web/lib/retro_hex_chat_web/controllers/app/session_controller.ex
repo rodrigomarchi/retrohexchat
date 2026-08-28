@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.App.SessionController do
 
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Accounts.TrustedDevices
+  alias RetroHexChatWeb.App.ReturnTo
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.App.TrustedDeviceCookie
 
@@ -16,7 +17,7 @@ defmodule RetroHexChatWeb.App.SessionController do
          {:ok, conn, trusted_device_id} <- maybe_remember_device(conn, params, nickname, auth) do
       previous_nickname = get_session(conn, :chat_nickname)
       existing_trusted_device_id = get_session(conn, :trusted_device_id)
-      redirect_path = join_channel_redirect(params["join_channel"])
+      redirect_path = post_connect_path(params)
 
       conn
       |> maybe_put_nick_change_flash(previous_nickname, nickname)
@@ -113,6 +114,17 @@ defmodule RetroHexChatWeb.App.SessionController do
 
   defp maybe_put_trusted_device_session(conn, device_id),
     do: put_session(conn, :trusted_device_id, device_id)
+
+  # Where the browser lands after the session exists. `return_to` is how a
+  # shared link survives the connect it forced: the surface put it in the URL,
+  # the connect form carried it through, and `ReturnTo` is what keeps it from
+  # naming somewhere else entirely.
+  @spec post_connect_path(map()) :: String.t()
+  defp post_connect_path(%{"return_to" => return_to})
+       when is_binary(return_to) and return_to != "",
+       do: ReturnTo.sanitize(return_to)
+
+  defp post_connect_path(params), do: join_channel_redirect(params["join_channel"])
 
   @spec join_channel_redirect(String.t() | nil) :: String.t()
   defp join_channel_redirect(nil), do: ~p"/chat"

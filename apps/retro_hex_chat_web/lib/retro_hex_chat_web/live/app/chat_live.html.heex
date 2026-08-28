@@ -613,7 +613,7 @@
       <:icon><Icons.icon_game_pong class="h-4 w-4" /></:icon>
       {live_render(@socket, RetroHexChatWeb.App.PlayLive,
         id: "retro-games-live",
-        session: %{"embedded" => true}
+        session: %{"embedded" => true, "nickname" => @session.nickname}
       )}
     </.desktop_window>
 

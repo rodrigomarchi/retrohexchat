@@ -6,12 +6,12 @@ aconteceu quando fizemos — em especial **o que o plano errou**.
 Quando o plano e a realidade discordarem, a realidade ganha: corrigir o arquivo
 de onda no mesmo commit e anotar aqui por quê.
 
-**Estado atual:** onda 0 concluída (`make ci` 17/17), pendente só a tradução dos 7 `msgid` novos. Onda 1 não iniciada.
+**Estado atual:** onda 0 concluída e commitada (`3076e54e`, `make ci` 17/17). Onda 1 em andamento — o domínio `ShareLinks` existe.
 
 | Onda | Estado |
 |---|---|
 | 0 — identidade multi-aba + `/play/:game` | ✅ `make ci` 17/17 |
-| 1 — `/join/:slug` + card ao vivo | ⬜ |
+| 1 — `/join/:slug` + card ao vivo | 🔨 laço ponta a ponta verde; falta o card na conversa |
 | 2 — conferência | ⬜ |
 | 3 — space | ⬜ |
 | 4 — P2P channel + superfície | ⬜ |
@@ -384,5 +384,270 @@ nesta máquina.
 
 **Ainda falta na onda 0:** `make ci` completo (com dialyzer) e a tradução dos 7
 `msgid` (precisa do venv de Argos, ausente nesta máquina).
+
+---
+
+## Iteração 5 — o domínio `ShareLinks`
+
+**Objetivo:** o registro que transforma um slug opaco numa superfície, sem que o
+slug conceda nada.
+
+### O que foi feito
+
+- `ShareLinks.Slug` — alfabeto de 31 caracteres (sem `0`/`o`, `1`/`l`/`i`),
+  comprimento 10. Os dois números estão no `@moduledoc` **e** num teste, porque
+  encurtar o slug é uma decisão de segurança e não pode passar como ajuste
+  cosmético: 31^10 ≈ 8,2 × 10^14.
+- `Schema.Link` + migração `share_links` — slug único, `kind` de quatro valores,
+  `target` mapa, `revoked_at`/`revoked_by`, `resolve_count`.
+- `Queries`, `Liveness`, `Service`, e a fachada `RetroHexChat.ShareLinks`.
+
+### Aprendizado: o teste pegou o alfabeto escrito duas vezes
+
+`valid?/1` usava a classe `[a-z2-9]` escrita à mão, que **aceita** `i`, `l` e
+`o` — os três caracteres que `generate/0` existe para excluir. Um slug com `l`
+passaria na validação e nunca poderia ter sido gerado.
+
+O reflexo foi afrouxar o teste. A correção certa foi derivar a regex da
+constante `@alphabet`, para que as duas definições não possam divergir de novo.
+
+### Decisões tomadas com o código na frente
+
+**`live?` é derivado, nunca persistido.** Um campo `live` no banco seria uma
+segunda fonte de verdade sobre o estado de uma sala — a mesma razão pela qual o
+P2P checa sessão duplicada com query e não com lookup no Registry. Um space é
+sempre live: ele é um lugar, não um evento.
+
+**`record_resolution/1` é `update_all` com `inc:`**, não read-modify-write. Duas
+pessoas abrindo o mesmo link ao mesmo tempo escreveriam cada uma a contagem que
+leu, e uma das visitas sumiria.
+
+**O rate limit ficou de fora, de propósito.** Já existem **três** cópias da
+janela deslizante em ETS no repositório (`P2P.RateLimiter`,
+`P2P.SignalingRateLimit.ETS`, `GroupCall.RateLimiter`). Fazer a quarta é
+exatamente o fork que o Princípio XII proíbe, e extrair a comum agora seria
+construir mecanismo antes do consumidor. Entra na iteração que expõe a criação
+na UI, junto com a extração — mesma disciplina que cortou `timezone` e
+`client_info` do `Live.Surface`.
+
+### Verificação: revertido duas vezes
+
+| Quebra | Teste vermelho |
+|---|---|
+| `check_open` deixando de recusar revogado | "a revoked link says so" |
+| `resolve` sem a validação de shape do slug | "refuses a slug the generator could not have produced" |
+
+### Estado
+
+27 testes verdes (`:unit` do slug e do schema, `:integration` do serviço),
+`mix credo --strict` limpo, `mix format --check-formatted` limpo.
+
+**Falta na onda 1:** `/join/:slug` com os quatro estados, `return_to` no connect
+(com o teste negativo de open redirect), o card ao vivo na conversa, e o botão
+Compartilhar.
+
+---
+
+## Iteração 6 — o laço completo: mintar, compartilhar, entrar
+
+**Objetivo:** algo que dá para testar à mão de ponta a ponta.
+
+### O que foi feito
+
+- `RetroHexChatWeb.App.ReturnTo` — a única superfície de open redirect que o
+  plano cria, com tabela de 17 casos negativos (scheme-relative, absoluto,
+  barra invertida, traversal, `javascript:`, não-string, comprimento).
+  `return_to` atravessa connect → form escondido → `SessionController`.
+- `RetroHexChatWeb.JoinLive` em `/join/:slug`, no **pipeline landing**: quem
+  segue um link pode não ter sessão nenhuma, e não pode pagar o bundle do app
+  inteiro para descobrir o que lhe mandaram.
+- `Components.UI.JoinCard` — três estados (`:ready`, `:needs_session`, `:gone`).
+- `Components.UI.ShareBar` — o botão que minta o link, reusável pelas ondas 2–5.
+- Domínio gettext novo: `share`.
+
+### O laço, testável à mão
+
+1. `/play/hex_pong` com nick registrado → **Share**
+2. copiar a URL `…/join/xxxxxxxxxx`
+3. abrir em outro navegador sem sessão → card público
+4. **Conectar e entrar** → `/connect?return_to=…` → registrar
+5. volta no card, agora com **Entrar** → cai no jogo
+
+Coberto por `e2e/tests/share-link-join.spec.ts` (K4), verde em dois contextos de
+browser separados.
+
+### Decisões tomadas com o código na frente
+
+**Um card morto e um slug inexistente leem igual.** Distinguir os dois é um
+oráculo para saber se uma sala existe. O `JoinLive` cai no mesmo `:gone` para
+`:not_found`, `:revoked`, `:expired` e para um link vivo cujo alvo sumiu.
+
+**Sem botão de copiar.** `clipboard_copy` é tratado pelo `chat_viewport_hook`,
+que só existe no chat — um `push_event` desses numa aba `/play` não teria quem o
+recebesse, que é a forma de "no silent catch" do lado do cliente. A barra usa um
+input readonly, sem JS, e funciona igual nos dois hosts. Um copiar de verdade
+precisa de um hook agnóstico de superfície; a lib de coordenação da onda 6 é o
+lugar natural.
+
+**Mintar é ato deliberado.** Abrir um jogo não cria link — o botão cria. Um link
+por janela aberta encheria a tabela de endereços que ninguém mandou.
+
+**Só nick registrado minta.** `creator_id` é FK obrigatória: um link por quem
+ninguém pode responder é um link sobre o qual não dá para perguntar nada. Guest
+vê o botão desabilitado com o motivo.
+
+**`/join` é `noindex`.** O layout do landing tinha `robots` fixo em
+`index, follow`; virou `assigns[:robots] || "index, follow"`. Um convite no
+índice do Google é um convite que ninguém estendeu.
+
+### Armadilha: um domínio gettext novo precisa ser semeado
+
+`make i18n.gettext.merge DOMAINS=share` **pulou os 14 locales** —
+`scripts/i18n_merge_domain_catalogs.exs` casa `.po` existente com `.pot`, e um
+domínio inédito não tem `.po` nenhum. A saída óbvia
+(`mix gettext.merge priv/gettext`) é o rebuild global que o repo exige
+`CONFIRM_GLOBAL_REBUILD=1` para rodar.
+
+Resolvido semeando `share.po` em cada locale com o bloco de cabeçalho do `ui.po`
+daquele locale, e mesclando depois. Detalhe que quase passou: o cabeçalho
+copiado carrega um comentário dizendo de qual `.pot` os msgids vêm — os 14
+arquivos nasceram apontando para `ui.pot`. Corrigido.
+
+**Receita para a próxima onda que criar domínio:** semear cabeçalho → merge →
+corrigir a linha de comentário.
+
+### Estado
+
+- 13 testes em `play_live_test.exs` (inclui o laço mintar→resolver), 7 em
+  `join_live_test.exs`, 3 em `return_to_test.exs`, 27 em `share_links/`.
+- `share-link-join.spec.ts` (K4) e `surface-multi-tab.spec.ts` (K2, K3) verdes.
+- `mix credo --strict` limpo em 1536 arquivos, `mix format --check-formatted`
+  limpo, `i18n.gettext.check` e `i18n_quality_check` verdes.
+
+**Falta na onda 1:** o card ao vivo *dentro* da conversa (hoje o link vai como
+URL comum, que o chat já renderiza), e o rate limit de criação — que entra junto
+com a extração da janela deslizante, para não virar a quarta cópia.
+
+---
+
+## Iteração 7 — dois bugs que só o teste manual encontrou
+
+O usuário abriu `http://localhost:4000/pt-BR/join/9mjc3jvdcf` no Firefox e
+recebeu `Phoenix.Router.NoRouteError`. Dezesseis testes verdes e um E2E em dois
+contextos de browser não pegaram isso.
+
+### Bug 1 — a rota pública existia só sem prefixo
+
+Toda página pública deste repo existe **sob cada segmento de locale**: o router
+tem um `for locale_segment <- @localized_locale_segments` que repete landing e
+help em treze prefixos. Eu registrei `/join/:slug` só no escopo sem prefixo.
+
+Por que os testes não pegaram: eles todos usavam `~p"/join/#{slug}"`, que é o
+caminho que eu tinha registrado. Um teste que exercita exatamente o que o código
+faz não testa nada — foi preciso um navegador com locale pt-BR para revelar.
+
+E é o pior lugar possível para esse defeito: **o endereço é a única coisa de um
+link compartilhado que quem recebeu não pode consertar**.
+
+Corrigido com um `live_session` de join dentro do laço de locales. O teste de
+regressão itera `SEO.localized_locale_segments()` em vez de listar prefixos à
+mão, então um locale novo não pode nascer sem rota.
+
+### Bug 2 — o mesmo defeito, uma camada adiante
+
+`App.ReturnTo` recusava `/pt-BR/join/xxx`: a allowlist casava `/join/`, e o
+caminho localizado não começa assim. Um estranho num card em pt-BR conectaria e
+cairia em `/chat` em vez de voltar ao card.
+
+Não estava alcançável ainda (o `JoinLive` monta o `return_to` sem prefixo, e
+`/connect` também não é localizado), mas é a mesma classe do bug 1 e teria
+aparecido no momento em que alguém colasse a URL localizada.
+
+`ReturnTo` agora tira o prefixo antes de casar, lendo os segmentos do **mesmo**
+`SEO.localized_locale_segments()` que o router usa — um locale adicionado lá não
+pode virar caminho recusado aqui. Só os segmentos registrados contam: um
+primeiro segmento arbitrário não é passe livre, e isso é teste.
+
+Nota que sobreviveu à investigação: `Plugs.PutLocale` persiste o locale na
+sessão, então a ida ao `/connect` sem prefixo não perde a língua do visitante.
+
+### Verificação
+
+Removido cirurgicamente só o `live_session` localizado: os **dois** testes de
+locale ficam vermelhos e os outros sete continuam verdes.
+
+### A lição
+
+O E2E da onda 1 passava porque eu o escrevi derivando o caminho de
+`new URL(shareUrl).pathname` — a URL que o meu próprio código gerou. Todo o
+teste automatizado estava dentro do mesmo espaço de caminhos que a implementação
+assumia. `guide/testing.md` já diz isso de outro jeito ("green tests prove
+nothing on their own"); aqui a forma foi **testar só o caminho feliz que o
+código constrói**.
+
+Para as ondas 2–5, onde cada superfície ganha rota: verificar o escopo de locale
+é item de checklist, não de inspiração.
+
+---
+
+## Iteração 8 — o card estava feio, e eu não tinha planejado consertar
+
+O usuário abriu o card e disse: "horrivelmente feio, sem ícones, triste com cara
+de incompleto". Estava certo, e a resposta honesta era que **não havia passe de
+refino planejado** — construí um stub e segui.
+
+### Três defeitos, e um explica o resto
+
+1. **`shadow-retro-button` não existe no CSS.** O botão "Entrar" era um `<a>` com
+   uma classe inventada por mim; renderizava como texto cru. Nenhum teste olha
+   se uma classe existe.
+2. **Sem desktop.** Uma caixa centralizada no vazio, enquanto todas as outras
+   telas públicas rodam desktop com wallpaper e window manager.
+3. **Sem substância.** Ícone genérico, nada sobre o que estava sendo
+   compartilhado.
+
+### O que ficou
+
+O card roda o mesmo desktop das páginas públicas (`PublicWindowManagerHook`) e
+mostra o jogo de verdade — ícone 32×32 do catálogo, nome e tagline — com quem
+compartilhou no meta da barra de título.
+
+Duas melhorias em primitivas compartilhadas, ambas aditivas e ambas coisas que
+as ondas 2–5 vão querer:
+
+- **`button` aceita `navigate`/`href`.** Uma ação cujo resultado é outra página
+  tem que ser um link: clique do meio, abrir em nova aba e a barra de status vêm
+  da âncora, não do estilo. Compartilhar as classes de variante é o que impede
+  virar um segundo botão parecido.
+- **`desktop_window` aceita `controls`.** A tela não tem taskbar, então
+  minimizar seria beco sem saída — e um diálogo Win98 nunca teve esse botão.
+  `controls={[]}` é o correto, não uma exceção.
+
+### O gate pegou o que eu quebrei em seguida
+
+`make ci` reprovou em **i18n Quality**: `%{count} charts` e `%{count} cores`
+com a mesma tradução em 9 locales.
+
+Causa: mesclei `DOMAINS=share,ui` — e `ui` **não tinha msgid novo meu**. O merge
+com fuzzy matching ressuscitou um drift pré-existente (`%{count} object` existia
+no `.pot` e não nos `.po`) e o preencheu com a tradução de "cores".
+
+**Quebrei a regra que eu mesmo escrevi duas iterações antes**: mesclar apenas
+domínios que ganharam ou perderam msgid. Revertido com
+`git stash push -- <paths de ui.po>`; `findings` voltou a 0.
+
+O aprendizado real não é sobre gettext: é que uma regra escrita no `PROGRESS.md`
+não me impede de repeti-la. O que impediu foi o gate.
+
+### Mudança de processo
+
+Dois defeitos seguidos na mesma superfície — a rota localizada e a aparência —
+e os dois eram invisíveis para os testes, porque **os testes só exercitavam o
+que o código já fazia**. O E2E derivava a URL do próprio código; nenhum teste
+olha se uma tela está feia.
+
+**Toda tela nova ganha screenshot antes de eu dizer que a onda fechou.** Um spec
+descartável, ler as imagens, apagar. Foi assim que os controles de minimizar
+apareceram — não estavam em nenhum teste.
 
 ---

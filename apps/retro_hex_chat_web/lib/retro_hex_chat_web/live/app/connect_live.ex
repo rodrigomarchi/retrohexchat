@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.App.ConnectLive do
   import RetroHexChatWeb.Components.UI.ConnectScreen
 
   alias RetroHexChat.Accounts.TrustedDevices
+  alias RetroHexChatWeb.App.ReturnTo
   alias RetroHexChatWeb.ConnectForm
 
   @disconnect_context_ttl_seconds 600
@@ -31,16 +32,18 @@ defmodule RetroHexChatWeb.App.ConnectLive do
        last_disconnect_context: last_disconnect_context(session),
        takeover_session: nil,
        auto_login: false,
+       return_to: nil,
        page_title: dgettext("connect", "Connect - RetroHexChat")
      )}
   end
 
   @impl true
-  def handle_params(%{"reason" => reason}, _uri, socket) do
+  def handle_params(%{"reason" => reason} = params, _uri, socket) do
     message = reason_to_message(reason)
 
     {:noreply,
      socket
+     |> assign(return_to: ReturnTo.sanitize(params["return_to"]))
      |> assign(
        takeover_session: takeover_session(socket.assigns.last_disconnect_context),
        auto_login: false
@@ -48,8 +51,13 @@ defmodule RetroHexChatWeb.App.ConnectLive do
      |> put_flash(:error, message)}
   end
 
-  def handle_params(_params, _uri, socket) do
-    {:noreply, assign(socket, takeover_session: nil, auto_login: true)}
+  def handle_params(params, _uri, socket) do
+    {:noreply,
+     assign(socket,
+       takeover_session: nil,
+       auto_login: true,
+       return_to: ReturnTo.sanitize(params["return_to"])
+     )}
   end
 
   @spec reason_to_message(String.t()) :: String.t()

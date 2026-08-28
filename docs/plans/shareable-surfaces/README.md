@@ -325,6 +325,13 @@ Restrição do router que precisa ser respeitada: **não existe catch-all
 precisa não colidir com os segmentos de locale de `config/i18n_locales.exs`.
 Nenhum dos cinco colide.
 
+**E toda rota pública precisa ser registrada dentro do laço de locales**, não só
+no escopo sem prefixo. `/join/:slug` nasceu só sem prefixo e deu
+`NoRouteError` em `/pt-BR/join/...` — achado no navegador, invisível para
+dezesseis testes que só exercitavam o caminho que o próprio código constrói
+([`PROGRESS.md`](PROGRESS.md), iteração 7). Item de checklist para cada onda que
+adiciona rota.
+
 Indexação: só `/join/:slug` é público, e mesmo ele deve ser `noindex` quando o
 token não resolve para uma sala viva. As demais herdam `SEO.noindex_content/0`.
 

@@ -39,6 +39,13 @@ defmodule RetroHexChatWeb.Router do
   scope "/", RetroHexChatWeb do
     pipe_through :landing_live
 
+    # The public face of a shared link. On the landing pipeline on purpose:
+    # whoever follows one may have no session at all, and the card must not cost
+    # them the whole application bundle to find out what they were sent.
+    live_session :share_join, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
+      live "/join/:slug", JoinLive
+    end
+
     live_session :landing_locale,
       on_mount: [
         {RetroHexChatWeb.Live.PutLocale, :default},
@@ -56,9 +63,18 @@ defmodule RetroHexChatWeb.Router do
 
   for locale_segment <- @localized_locale_segments do
     live_session_name = :"landing_locale_#{String.replace(locale_segment, "-", "_")}"
+    join_session_name = :"share_join_#{String.replace(locale_segment, "-", "_")}"
 
     scope "/#{locale_segment}", RetroHexChatWeb do
       pipe_through :landing_live
+
+      # A share link is a public page, so it exists under every locale segment
+      # the public pages do. Registering it only unprefixed is how someone
+      # browsing in pt-BR gets a router error instead of the card they were
+      # sent — the URL is the one thing about a shared link nobody can fix.
+      live_session join_session_name, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
+        live "/join/:slug", JoinLive
+      end
 
       live_session live_session_name,
         on_mount: [

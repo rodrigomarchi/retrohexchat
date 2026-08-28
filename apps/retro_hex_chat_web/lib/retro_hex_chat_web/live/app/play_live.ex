@@ -15,11 +15,15 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.RetroGamesPanel
+  import RetroHexChatWeb.Components.UI.ShareBar
   import RetroHexChatWeb.Components.UI.Window
 
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.Games.Catalog
+  alias RetroHexChat.ShareLinks
+  alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.SEO
 
   @difficulties ~w(easy normal hard)
 
@@ -30,6 +34,8 @@ defmodule RetroHexChatWeb.App.PlayLive do
       socket
       |> assign(
         embedded?: session["embedded"] == true,
+        nickname: session["nickname"] || socket.assigns[:surface_nickname],
+        share_url: nil,
         games: Catalog.list_solo_games(),
         status: "library",
         selected_game: nil,
@@ -97,17 +103,26 @@ defmodule RetroHexChatWeb.App.PlayLive do
   # already belongs to the chat's desktop.
   defp games_body(assigns) do
     ~H"""
-    <.retro_games_panel
-      id="retro-games-panel"
-      games={@games}
-      status={@status}
-      selected_game={@selected_game}
-      difficulty={@difficulty}
-      canvas_ready={@canvas_ready}
-      result={@result}
-      error_message={@error_message}
-      target={nil}
-    />
+    <div class="flex h-full min-h-0 flex-col gap-2">
+      <.share_bar
+        :if={@selected_game}
+        url={@share_url}
+        available={sharable?(@nickname)}
+        on_share="share_game"
+      />
+      <.retro_games_panel
+        id="retro-games-panel"
+        games={@games}
+        status={@status}
+        selected_game={@selected_game}
+        difficulty={@difficulty}
+        canvas_ready={@canvas_ready}
+        result={@result}
+        error_message={@error_message}
+        target={nil}
+        class="min-h-0 flex-1"
+      />
+    </div>
     """
   end
 
@@ -133,6 +148,25 @@ defmodule RetroHexChatWeb.App.PlayLive do
   def handle_event("retro_games_back", _params, socket) do
     {:noreply, back_to_library(socket)}
   end
+
+  # Minting is a deliberate act, not a side effect of opening a game: a link per
+  # window opened would fill the table with addresses nobody ever sent.
+  def handle_event("share_game", _params, %{assigns: %{selected_game: %{id: game_id}}} = socket) do
+    with {:ok, user_id} <- SessionHelpers.resolve_user_id(socket.assigns.nickname || ""),
+         {:ok, link} <-
+           ShareLinks.create(%{
+             kind: "play",
+             target: %{"game_id" => game_id},
+             creator_id: user_id,
+             creator_nick: socket.assigns.nickname
+           }) do
+      {:noreply, assign(socket, share_url: SEO.site_url("/join/" <> link.slug))}
+    else
+      _unavailable -> {:noreply, socket}
+    end
+  end
+
+  def handle_event("share_game", _params, socket), do: {:noreply, socket}
 
   # The canvas hook reports to whichever LiveView owns its element, which is
   # this one in both mounts.
@@ -166,7 +200,8 @@ defmodule RetroHexChatWeb.App.PlayLive do
         selected_game: game,
         canvas_ready: false,
         result: nil,
-        error_message: nil
+        error_message: nil,
+        share_url: nil
       )
     else
       _ -> back_to_library(socket)
@@ -227,7 +262,8 @@ defmodule RetroHexChatWeb.App.PlayLive do
       selected_game: nil,
       canvas_ready: false,
       result: nil,
-      error_message: nil
+      error_message: nil,
+      share_url: nil
     )
   end
 
@@ -240,6 +276,14 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   defp normalize_difficulty(difficulty) when difficulty in @difficulties, do: difficulty
   defp normalize_difficulty(_difficulty), do: "normal"
+
+  # Only a registered nickname can mint a link: the record carries who made it,
+  # and a link nobody is accountable for is one nobody can be asked about.
+  defp sharable?(nickname) when is_binary(nickname) and nickname != "" do
+    match?({:ok, _id}, SessionHelpers.resolve_user_id(nickname))
+  end
+
+  defp sharable?(_nickname), do: false
 
   defp game_id(%{"game_id" => game_id}), do: game_id
   defp game_id(%{game_id: game_id}), do: game_id

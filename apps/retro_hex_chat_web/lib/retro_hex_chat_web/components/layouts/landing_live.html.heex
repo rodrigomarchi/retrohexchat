@@ -45,7 +45,9 @@
       {assigns[:page_title]}
     </.live_title>
     <meta name="description" content={page_description} />
-    <meta name="robots" content="index, follow" />
+    <%!-- An invite card is addressed to whoever was sent it, not to a crawler:
+          a share link in the index is an invitation nobody extended. --%>
+    <meta name="robots" content={assigns[:robots] || "index, follow"} />
     <link rel="canonical" href={canonical_url} />
     <link
       :for={alternate <- RetroHexChatWeb.SEO.alternate_links(canonical_path)}

@@ -250,6 +250,15 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   attr :min_height, :integer, default: 120
   attr :resizable, :boolean, default: true
 
+  attr :controls, :list,
+    default: nil,
+    doc: """
+    which title-bar controls the window offers; defaults to the full set for the
+    window's pinned state. Pass `[]` on a screen with no taskbar: a window that
+    can be minimised where nothing can restore it is a dead end, which is also
+    why a Win98 dialog never had the button.
+    """
+
   attr :persist_geometry, :boolean,
     default: true,
     doc:
@@ -308,7 +317,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       <.window class="h-full">
         <.window_title_bar
           title={@title}
-          controls={window_controls(@pinned)}
+          controls={@controls || window_controls(@pinned)}
           force_close={!@pinned}
           on_close={@on_close}
           data-window-titlebar

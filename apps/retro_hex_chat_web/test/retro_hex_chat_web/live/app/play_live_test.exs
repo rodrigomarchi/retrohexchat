@@ -104,6 +104,54 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
     end
   end
 
+  describe "sharing a game" do
+    test "a registered nickname mints a link that resolves back to the game", %{conn: conn} do
+      nick = "Share#{uid()}"
+      {:ok, _} = register(nick)
+
+      {:ok, view, _html} = conn |> chat_conn(nick) |> live(~p"/play/hex_pong")
+
+      refute render(view) =~ "share-url"
+      html = view |> element(~s([data-testid="share-create"])) |> render_click()
+
+      assert [url] =
+               html
+               |> Floki.parse_fragment!()
+               |> Floki.find(~s([data-testid="share-url"]))
+               |> Floki.attribute("value")
+
+      # The loop the whole wave exists for: what the surface minted is what the
+      # public card resolves, and it points back at the game it was minted from.
+      slug = url |> String.split("/join/") |> List.last()
+      assert {:ok, resolution} = RetroHexChat.ShareLinks.resolve(slug)
+      assert resolution.kind == "play"
+      assert resolution.target == %{"game_id" => "hex_pong"}
+      assert resolution.live?
+    end
+
+    test "a guest is told why they cannot", %{conn: conn} do
+      {:ok, view, _html} = conn |> chat_conn("Guest#{uid()}") |> live(~p"/play/hex_pong")
+
+      assert render(view) =~ "share-create"
+      assert view |> element(~s([data-testid="share-create"])) |> render() =~ "disabled"
+    end
+
+    test "there is nothing to share from the library", %{conn: conn} do
+      {:ok, _view, html} = conn |> chat_conn("Lib#{uid()}") |> live(~p"/play")
+
+      refute html =~ "share-bar"
+    end
+  end
+
+  defp register(nickname) do
+    RetroHexChat.Repo.insert(%RetroHexChat.Services.RegisteredNick{
+      nickname: nickname,
+      password_hash: "x",
+      registered_at: DateTime.utc_now(),
+      last_seen_at: DateTime.utc_now()
+    })
+  end
+
   defp redirected_to_connect({:error, {_kind, %{to: to}}}), do: to == "/connect"
   defp redirected_to_connect(_other), do: false
 end
