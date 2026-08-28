@@ -20,7 +20,9 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   import RetroHexChatWeb.Components.UI.InlineHelpCard
   import RetroHexChatWeb.Components.UI.MessageIndicators
   import RetroHexChatWeb.Components.UI.MessageReplyBlock
+  import RetroHexChatWeb.Components.UI.ShareMessageCard
 
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.App.ChatHelpers
 
   attr :msg, :map, required: true
@@ -160,6 +162,14 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
               card={Map.get(@msg, :link_preview)}
               strip_formatting={@strip_formatting}
             />
+            <%!-- A link into this app draws itself rather than being scraped:
+                  the useful thing is the room's state, not a page title. --%>
+            <.share_message_card
+              :if={not @strip_formatting}
+              card={Map.get(@msg, :share_card)}
+              subject={share_subject(Map.get(@msg, :share_card))}
+              enter_path={share_enter_path(Map.get(@msg, :share_card))}
+            />
             <.attachment_gallery attachments={Map.get(@msg, :attachments, [])} />
             <.edited_tag
               :if={Map.get(@msg, :edited_at)}
@@ -199,6 +209,20 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   end
 
   defp help_url(topic_id), do: "/chat/help/#{topic_id}"
+
+  # Resolved here rather than in the viewport because the catalogue read is
+  # cheap and pure, and the card is the only thing that wants it.
+  defp share_subject(%{kind: "play", target: %{"game_id" => game_id}}) do
+    case Catalog.get_game(game_id) do
+      {:ok, game} -> Map.take(game, [:name, :tagline, :icon])
+      {:error, :not_found} -> nil
+    end
+  end
+
+  defp share_subject(_card), do: nil
+
+  defp share_enter_path(%{slug: slug}) when is_binary(slug), do: "/join/#{slug}"
+  defp share_enter_path(_card), do: nil
 
   defp formatted_content(msg, strip_formatting) do
     content = Map.get(msg, :content, "")

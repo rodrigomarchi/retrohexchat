@@ -11,7 +11,7 @@ de onda no mesmo commit e anotar aqui por quê.
 | Onda | Estado |
 |---|---|
 | 0 — identidade multi-aba + `/play/:game` | ✅ `make ci` 17/17 |
-| 1 — `/join/:slug` + card ao vivo | 🔨 laço ponta a ponta verde; falta o card na conversa |
+| 1 — `/join/:slug` + card na conversa | ✅ commitada (`f0898719`) + card |
 | 2 — conferência | ⬜ |
 | 3 — space | ⬜ |
 | 4 — P2P channel + superfície | ⬜ |
@@ -649,5 +649,68 @@ olha se uma tela está feia.
 **Toda tela nova ganha screenshot antes de eu dizer que a onda fechou.** Um spec
 descartável, ler as imagens, apagar. Foi assim que os controles de minimizar
 apareceram — não estavam em nenhum teste.
+
+---
+
+## Iteração 9 — o card na conversa
+
+**Objetivo:** um link colado numa conversa vira card, sem caminho de postagem
+novo.
+
+### A decisão que evitou o acoplamento pai↔filho
+
+O desenho original era um botão "mandar pra conversa" na `ShareBar`. Isso exige
+que o `PlayLive` aninhado fale com o `ChatLive` (que sabe qual conversa está
+aberta), e numa aba `/play` não existe conversa nenhuma.
+
+A saída foi mais simples **e** mais geral: **qualquer** `/join/:slug` numa
+mensagem vira card, não importa como chegou lá. Sem caminho de postagem novo,
+sem acoplamento, e funciona para um link que a pessoa recebeu por fora e colou.
+
+### `describe/1` existe porque contar é diferente de resolver
+
+Desenhar um card num canal **não** é alguém seguindo o link. Se as duas coisas
+compartilhassem função, um canal movimentado inflaria o único número que
+responde se compartilhar link traz gente.
+
+`resolve/1` agora é `describe/1` + contar. `describe_many/1` faz uma query para
+a tela inteira — perguntar por mensagem é como o render de uma conversa vira uma
+dúzia de round trips.
+
+### `ShareLinkRef`: a forma da URL num lugar só
+
+Montar a URL e reconhecê-la estavam prestes a existir em dois lugares — a
+superfície que minta e a conversa que desenha. Duas grafias da mesma forma é
+como um link que o app produziu deixa de ser um link que o app reconhece.
+
+O reconhecimento é estreito de propósito: caminho sem host é nosso (alguém
+digitou aqui), URL absoluta só se o host for exatamente o nosso. E **exatamente**
+— `https://retrohexchat.app.evil.example` começa com o nosso nome e não é a
+gente; `https://retrohex` está contido no nosso e também não é. As duas
+confusões de host são teste.
+
+Segmentos de locale contam, lidos da mesma lista do router — terceira vez que
+essa lista evita um bug nesta onda.
+
+### O screenshot pegou o que 4 testes de componente não pegaram
+
+O card renderizava certo. Mas na tela apareciam **dois** cards sob a mesma
+mensagem: o meu, e um preview do scraper, que tinha ido buscar a nossa própria
+página `/join/` e montado um card com o título e a descrição do site.
+
+Nenhum teste veria: cada card estava correto isoladamente. `tag_link/1` agora
+tira os nossos links da lista de candidatos ao scraper — não há o que buscar, e
+a resposta útil é o estado de uma sala, não o título de uma página. Uma mensagem
+que também traga o link de outra pessoa continua ganhando aquele preview.
+
+**A regra de processo da iteração 8 pagou na iteração seguinte.**
+
+### O que ficou de fora, e por quê
+
+**O card não atualiza sozinho.** Para `kind: "play"` não existe estado ao vivo —
+um link de jogo está sempre válido. Participantes que mudam são coisa de chamada
+e de space, então a metade ao vivo nasce na onda 2, com o primeiro consumidor de
+verdade. Construir agora seria máquina sem quem a use, pela terceira vez nesta
+sessão que essa disciplina evita código.
 
 ---

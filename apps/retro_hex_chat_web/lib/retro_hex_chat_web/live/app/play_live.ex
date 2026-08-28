@@ -23,7 +23,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
   alias RetroHexChat.ShareLinks
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.Icons
-  alias RetroHexChatWeb.SEO
+  alias RetroHexChatWeb.ShareLinkRef
 
   @difficulties ~w(easy normal hard)
 
@@ -160,7 +160,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
              creator_id: user_id,
              creator_nick: socket.assigns.nickname
            }) do
-      {:noreply, assign(socket, share_url: SEO.site_url("/join/" <> link.slug))}
+      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug))}
     else
       _unavailable -> {:noreply, socket}
     end

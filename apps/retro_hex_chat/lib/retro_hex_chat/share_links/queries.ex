@@ -21,6 +21,21 @@ defmodule RetroHexChat.ShareLinks.Queries do
   @spec get_by_slug(String.t()) :: Link.t() | nil
   def get_by_slug(slug), do: Repo.get_by(Link, slug: slug)
 
+  @doc """
+  Every link named by `slugs`, in one query.
+
+  A screenful of chat can carry a dozen share links, and asking per message is
+  how a conversation's render turns into a dozen round trips.
+  """
+  @spec list_by_slugs([String.t()]) :: [Link.t()]
+  def list_by_slugs([]), do: []
+
+  def list_by_slugs(slugs) do
+    Link
+    |> where([l], l.slug in ^slugs)
+    |> Repo.all()
+  end
+
   @spec revoke(Link.t(), String.t()) :: {:ok, Link.t()} | {:error, Ecto.Changeset.t()}
   def revoke(link, revoked_by) do
     link

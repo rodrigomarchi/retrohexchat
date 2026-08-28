@@ -43,24 +43,52 @@ defmodule RetroHexChat.ShareLinks.Service do
   @spec resolve(term()) ::
           {:ok, resolution()} | {:error, :not_found | :revoked | :expired}
   def resolve(slug) do
+    case describe(slug) do
+      {:ok, resolution} ->
+        Queries.record_resolution(resolution.slug)
+        {:ok, resolution}
+
+      {:error, _reason} = error ->
+        error
+    end
+  end
+
+  @doc """
+  The same answer as `resolve/1`, without counting a visit.
+
+  Drawing a card for a link that appears in a conversation is not somebody
+  following it. If the two shared a function, a busy channel would inflate the
+  one number that says whether sharing links actually brings anyone.
+  """
+  @spec describe(term()) ::
+          {:ok, resolution()} | {:error, :not_found | :revoked | :expired}
+  def describe(slug) do
     with true <- Slug.valid?(slug),
          %Link{} = link <- Queries.get_by_slug(slug),
          :ok <- check_open(link) do
-      Queries.record_resolution(link.slug)
-
-      {:ok,
-       %{
-         slug: link.slug,
-         kind: link.kind,
-         target: link.target,
-         creator_nick: link.creator_nick,
-         live?: Liveness.live?(link.kind, link.target)
-       }}
+      {:ok, resolution(link)}
     else
       false -> {:error, :not_found}
       nil -> {:error, :not_found}
       {:error, reason} -> {:error, reason}
     end
+  end
+
+  @doc """
+  Describes every slug that still points somewhere, keyed by slug.
+
+  Slugs that are malformed, unknown, revoked or expired are simply absent: a
+  caller drawing a screenful of messages wants the ones it can draw, not a list
+  of reasons it cannot.
+  """
+  @spec describe_many([term()]) :: %{String.t() => resolution()}
+  def describe_many(slugs) do
+    slugs
+    |> Enum.filter(&Slug.valid?/1)
+    |> Enum.uniq()
+    |> Queries.list_by_slugs()
+    |> Enum.filter(&(check_open(&1) == :ok))
+    |> Map.new(&{&1.slug, resolution(&1)})
   end
 
   @doc """
@@ -80,6 +108,16 @@ defmodule RetroHexChat.ShareLinks.Service do
     else
       _other -> {:error, :not_found}
     end
+  end
+
+  defp resolution(%Link{} = link) do
+    %{
+      slug: link.slug,
+      kind: link.kind,
+      target: link.target,
+      creator_nick: link.creator_nick,
+      live?: Liveness.live?(link.kind, link.target)
+    }
   end
 
   defp check_open(%Link{revoked_at: %DateTime{}}), do: {:error, :revoked}

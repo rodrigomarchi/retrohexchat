@@ -23,6 +23,12 @@ defmodule RetroHexChat.ShareLinks do
   @spec resolve(term()) :: {:ok, resolution()} | {:error, :not_found | :revoked | :expired}
   defdelegate resolve(slug), to: Service
 
+  @spec describe(term()) :: {:ok, resolution()} | {:error, :not_found | :revoked | :expired}
+  defdelegate describe(slug), to: Service
+
+  @spec describe_many([term()]) :: %{String.t() => resolution()}
+  defdelegate describe_many(slugs), to: Service
+
   @spec revoke(term(), String.t()) :: {:ok, Schema.Link.t()} | {:error, :not_found}
   defdelegate revoke(slug, revoked_by), to: Service
 

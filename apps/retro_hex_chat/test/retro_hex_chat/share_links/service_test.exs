@@ -108,6 +108,64 @@ defmodule RetroHexChat.ShareLinks.ServiceTest do
     end
   end
 
+  describe "describe/1 and describe_many/1" do
+    # Rendering a card in a channel is not somebody following the link. If the
+    # two shared a function, a busy channel would inflate the one number that
+    # answers whether sharing links actually brings anyone.
+    test "reads without counting", %{nick: nick} do
+      {:ok, link} = create(nick, "play", %{"game_id" => "hex_pong"})
+
+      assert {:ok, described} = ShareLinks.describe(link.slug)
+      assert described.kind == "play"
+      assert described.live?
+
+      assert Repo.get!(Link, link.id).resolve_count == 0
+    end
+
+    test "says the same thing resolve/1 says", %{nick: nick} do
+      {:ok, link} = create(nick, "play", %{"game_id" => "hex_pong"})
+
+      assert {:ok, described} = ShareLinks.describe(link.slug)
+      assert {:ok, resolved} = ShareLinks.resolve(link.slug)
+
+      assert described == resolved
+    end
+
+    test "refuses what resolve/1 refuses", %{nick: nick} do
+      {:ok, link} = create(nick, "play", %{"game_id" => "hex_pong"})
+      {:ok, _} = ShareLinks.revoke(link.slug, nick.nickname)
+
+      assert {:error, :revoked} = ShareLinks.describe(link.slug)
+      assert {:error, :not_found} = ShareLinks.describe("abcdefghjk")
+      assert {:error, :not_found} = ShareLinks.describe("NOPE")
+    end
+
+    # One query for a screenful of messages, not one per message.
+    test "describes many at once, skipping the ones it cannot", %{nick: nick} do
+      {:ok, a} = create(nick, "play", %{"game_id" => "hex_pong"})
+      {:ok, b} = create(nick, "play", %{"game_id" => "light_trails"})
+      {:ok, gone} = create(nick, "play", %{"game_id" => "hex_pong"})
+      {:ok, _} = ShareLinks.revoke(gone.slug, nick.nickname)
+
+      described = ShareLinks.describe_many([a.slug, b.slug, gone.slug, "abcdefghjk", "NOPE"])
+
+      assert Map.keys(described) |> Enum.sort() == Enum.sort([a.slug, b.slug])
+      assert described[a.slug].target == %{"game_id" => "hex_pong"}
+    end
+
+    test "counts nothing at all", %{nick: nick} do
+      {:ok, link} = create(nick, "play", %{"game_id" => "hex_pong"})
+
+      ShareLinks.describe_many([link.slug])
+
+      assert Repo.get!(Link, link.id).resolve_count == 0
+    end
+
+    test "an empty list asks the database nothing" do
+      assert ShareLinks.describe_many([]) == %{}
+    end
+  end
+
   describe "revoke/2" do
     test "closes the link without touching what it points at", %{nick: nick} do
       {:ok, link} = create(nick, "play", %{"game_id" => "hex_pong"})

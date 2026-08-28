@@ -41,8 +41,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   import RetroHexChatWeb.Components.UI.ListStates
 
   alias RetroHexChat.Scraper
+  alias RetroHexChat.ShareLinks
   alias RetroHexChatWeb.ChatLive.Components.MessageRow
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
+  alias RetroHexChatWeb.ShareLinkRef
 
   @id "message-viewport"
 
@@ -396,7 +398,38 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
       |> Enum.reject(&is_nil/1)
       |> Scraper.cards()
 
-    Enum.map(items, &put_card(&1, cards))
+    items
+    |> Enum.map(&put_card(&1, cards))
+    |> put_share_cards()
+  end
+
+  # A link into this app resolves against the database rather than the scraper:
+  # there is nothing to fetch, and the answer is a room's state rather than a
+  # page's title. One query for the whole screenful, and reading it never counts
+  # as somebody following the link.
+  @spec put_share_cards([map()]) :: [map()]
+  defp put_share_cards(items) do
+    tagged = Enum.map(items, &tag_share_link/1)
+
+    described =
+      tagged
+      |> Enum.flat_map(&Map.get(&1, :share_slugs, []))
+      |> ShareLinks.describe_many()
+
+    Enum.map(tagged, fn item ->
+      case Enum.find_value(Map.get(item, :share_slugs, []), &Map.get(described, &1)) do
+        nil -> Map.delete(item, :share_slugs)
+        resolution -> item |> Map.delete(:share_slugs) |> Map.put(:share_card, resolution)
+      end
+    end)
+  end
+
+  defp tag_share_link(msg) do
+    if previewable?(msg) do
+      Map.put(msg, :share_slugs, ShareLinkRef.slugs_in(msg.content))
+    else
+      msg
+    end
   end
 
   # The fingerprint is recorded even when the archive has nothing yet: it is what
@@ -404,12 +437,24 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   @spec tag_link(map()) :: map()
   defp tag_link(msg) do
     with true <- previewable?(msg),
-         [url | _rest] <- SessionHelpers.extract_content_urls(msg.content, card_format(msg)),
+         [url | _rest] <- scrapable_urls(msg),
          url_hash when is_binary(url_hash) <- Scraper.fingerprint(url) do
       Map.put(msg, :link_preview_hash, url_hash)
     else
       _ -> msg
     end
+  end
+
+  # A link into this app is not scraped. It draws its own card from the
+  # database, and letting the scraper fetch our own page as well put two cards
+  # under one message — one of them describing the site rather than the room.
+  # A message that also carries somebody else's link still gets that preview.
+  defp scrapable_urls(msg) do
+    ours = ShareLinkRef.slugs_in(msg.content)
+
+    msg.content
+    |> SessionHelpers.extract_content_urls(card_format(msg))
+    |> Enum.reject(fn url -> Enum.any?(ours, &String.contains?(url, "/join/" <> &1)) end)
   end
 
   @spec put_card(map(), %{String.t() => String.t()}) :: map()
