@@ -190,6 +190,20 @@ _ROWS = {
     "Failed":       ("Falhou", "Falhou", "Falló", "Échec", "Fehlgeschlagen", "Non riuscito", "Mislukt", "Niepowodzenie", "Не удалось", "Gagal", "失敗", "失败", "失敗"),
     "Success":      ("Sucesso", "Sucesso", "Éxito", "Succès", "Erfolg", "Successo", "Gelukt", "Powodzenie", "Успешно", "Berhasil", "成功", "成功", "成功"),
 
+    # ── Sharing a surface ─────────────────────────────────────
+    # A share link is followed by people who may never have seen this product,
+    # so these are the labels an outsider reads first.
+    #
+    # There is deliberately no "Enter" here: every other catalog already reads
+    # that as the keyboard key — "Entrée", "Eingabe" — and a glossary is global
+    # across domains. Going into a room reuses the curated "Join" instead of
+    # inventing a synonym for it, which is what a glossary is for.
+    "Share":        ("Compartilhar", "Partilhar", "Compartir", "Partager", "Teilen", "Condividi", "Delen", "Udostępnij", "Поделиться", "Bagikan", "共有", "分享", "分享"),
+    "Share link":   ("Link de compartilhamento", "Ligação de partilha", "Enlace para compartir", "Lien de partage", "Freigabelink", "Link di condivisione", "Deellink", "Link do udostępnienia", "Ссылка для доступа", "Tautan berbagi", "共有リンク", "分享链接", "分享連結"),
+    "Connect and join": ("Conectar e entrar", "Ligar e entrar", "Conectar y entrar", "Se connecter et rejoindre", "Verbinden und beitreten", "Connetti ed entra", "Verbinden en deelnemen", "Połącz i dołącz", "Подключиться и войти", "Hubungkan dan gabung", "接続して参加", "连接并加入", "連線並加入"),
+    "Open the chat": ("Abrir o chat", "Abrir o chat", "Abrir el chat", "Ouvrir le chat", "Chat öffnen", "Apri la chat", "Chat openen", "Otwórz czat", "Открыть чат", "Buka obrolan", "チャットを開く", "打开聊天", "開啟聊天"),
+    "Link expired": ("Link expirado", "Ligação expirada", "Enlace caducado", "Lien expiré", "Link abgelaufen", "Link scaduto", "Link verlopen", "Link wygasł", "Ссылка истекла", "Tautan kedaluwarsa", "リンクの有効期限切れ", "链接已失效", "連結已失效"),
+
     # ── Chat actions ──────────────────────────────────────────
     "Mute":         ("Silenciar", "Silenciar", "Silenciar", "Couper le son", "Stummschalten", "Disattiva audio", "Dempen", "Wycisz", "Отключить звук", "Bisukan", "ミュート", "静音", "靜音"),
     "Unmute":       ("Reativar som", "Reativar som", "Activar sonido", "Réactiver le son", "Stummschaltung aufheben", "Riattiva audio", "Dempen opheffen", "Wyłącz wyciszenie", "Включить звук", "Suarakan", "ミュート解除", "取消静音", "取消靜音"),

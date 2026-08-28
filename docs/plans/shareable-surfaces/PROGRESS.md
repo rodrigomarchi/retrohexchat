@@ -714,3 +714,45 @@ verdade. Construir agora seria máquina sem quem a use, pela terceira vez nesta
 sessão que essa disciplina evita código.
 
 ---
+
+## Iteração 10 — as traduções do card, e um erro de glossário
+
+**Objetivo:** o card que um estranho vê deixa de estar em inglês para um
+visitante em pt-BR. Era a dívida mais visível do plano.
+
+### Onde cada string foi parar
+
+- **Rótulos que vão se repetir nas ondas 2–5** (`Share`, `Share link`,
+  `Open the chat`, `Link expired`, `Connect and join`) entraram no glossário
+  curado (`scripts/i18n/glossary.py`), que é a regra da casa para rótulo curto:
+  nunca máquina, sempre curadoria.
+- **As 14 frases específicas do domínio** foram escritas direto nos 13
+  `share.po`, porque não recorrem em outro lugar.
+
+### O gate pegou um erro de desenho meu
+
+Eu tinha posto `"Enter"` no glossário com o sentido "entrar na sala".
+`i18n_quality_check.py` reprovou: **todo outro catálogo já lê `Enter` como a
+tecla** — "Entrée" em francês, "Eingabe" em alemão. O glossário é global entre
+domínios, então a minha entrada teria reescrito o teclado do app inteiro.
+
+A correção não foi afrouxar o glossário: foi **usar o termo que já existe**.
+`Join` já é curado com exatamente o sentido de entrar numa sala, então o botão
+passou a ser `Join` e o outro virou `Connect and join`. Reusar o termo curado em
+vez de inventar um sinônimo é literalmente para o que serve um glossário.
+
+### Uma nota de memória minha estava errada
+
+Eu carregava que "en é expo-only" e que os catálogos em inglês ficam vazios.
+Falso: `en/ui.po` tem `msgstr "Help"`. O `i18n_placeholder_check` reprovou
+`en/share.po` porque as entradas vazias perdem os `%{...}`. Preenchido com o
+próprio msgid, como os outros domínios fazem.
+
+### Verificação
+
+Screenshot de `/pt-BR/join/<slug>` num contexto com locale pt-BR: título, corpo
+e botão todos em português, com o ícone e o nome do jogo.
+
+`i18n_quality_check` e `i18n_placeholder_check` com `findings=0`.
+
+---

@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
 
       <.button navigate={@enter_path} size="sm" class="shrink-0" data-testid="share-message-enter">
         <:icon><Icons.icon_btn_link class="h-4 w-4" /></:icon>
-        {dgettext("share", "Enter")}
+        {dgettext("share", "Join")}
       </.button>
     </div>
     """

@@ -140,6 +140,6 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
 
   defp body_text(_state, _nick), do: dgettext("share", "Someone shared this with you.")
 
-  defp enter_label(:needs_session), do: dgettext("share", "Connect and enter")
-  defp enter_label(_state), do: dgettext("share", "Enter")
+  defp enter_label(:needs_session), do: dgettext("share", "Connect and join")
+  defp enter_label(_state), do: dgettext("share", "Join")
 end
