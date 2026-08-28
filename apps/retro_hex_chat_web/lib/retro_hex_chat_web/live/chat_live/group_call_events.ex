@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.GroupCall
   alias RetroHexChat.GroupCall.JoinToken
+  alias RetroHexChatWeb.App.GroupCallShape
   alias RetroHexChatWeb.App.GroupCallStats
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog
@@ -132,7 +133,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       ) do
     preferences =
       params
-      |> value(:group_call_prejoin)
+      |> GroupCallShape.value(:group_call_prejoin)
       |> normalize_prejoin_preferences()
 
     {:halt,
@@ -152,7 +153,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       ) do
     {:halt,
      update_prejoin(socket, fn prejoin ->
-       Map.put(prejoin, :devices, normalize_devices(payload))
+       Map.put(prejoin, :devices, GroupCallShape.normalize_devices(payload))
      end)}
   end
 
@@ -188,7 +189,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   def handle_event("group_call_leave", _params, socket), do: {:halt, socket}
 
   def handle_event("group_call_window_close", params, %{assigns: %{group_call: %{}}} = socket) do
-    {:halt, open_confirm(socket, :close, value(params, :id) || @window_id)}
+    {:halt, open_confirm(socket, :close, GroupCallShape.value(params, :id) || @window_id)}
   end
 
   def handle_event("group_call_window_close", _params, socket), do: {:halt, socket}
@@ -228,7 +229,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         |> Map.put(:warning, dgettext("group_call", "Requesting a fresh media offer."))
         |> Map.put(:error, nil)
         |> Map.put(:recovery, %{
-          empty_recovery()
+          GroupCallShape.empty_recovery()
           | state: :negotiating,
             reason: "manual_retry",
             trigger: "manual",
@@ -509,7 +510,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   def handle_event("group_call_webrtc_ready", _params, socket), do: {:halt, socket}
 
   def handle_event("group_call_client_joined", payload, %{assigns: %{group_call: %{}}} = socket) do
-    participant = normalize_participant(value(payload, :participant))
+    participant =
+      GroupCallShape.normalize_participant(GroupCallShape.value(payload, :participant))
 
     call =
       socket.assigns.group_call
@@ -527,7 +529,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   def handle_event("group_call_peer_joined", payload, %{assigns: %{group_call: %{}}} = socket) do
-    participant = normalize_participant(value(payload, :participant))
+    participant =
+      GroupCallShape.normalize_participant(GroupCallShape.value(payload, :participant))
 
     call =
       socket.assigns.group_call
@@ -538,7 +541,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   def handle_event("group_call_peer_left", payload, %{assigns: %{group_call: %{}}} = socket) do
-    participant_id = value(payload, :participant_id)
+    participant_id = GroupCallShape.value(payload, :participant_id)
     call = socket.assigns.group_call
 
     if participant_id == call.participant_id do
@@ -553,7 +556,9 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   def handle_event("group_call_media_state", payload, %{assigns: %{group_call: %{}}} = socket) do
-    participant = normalize_participant(value(payload, :participant))
+    participant =
+      GroupCallShape.normalize_participant(GroupCallShape.value(payload, :participant))
+
     {:halt, socket |> update_call(&put_participant(&1, participant)) |> push_group_call_layout()}
   end
 
@@ -562,17 +567,20 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         payload,
         %{assigns: %{group_call: %{}}} = socket
       ) do
-    track = normalize_track(value(payload, :track))
-    active? = truthy?(value(payload, :active))
+    track = GroupCallShape.normalize_track(GroupCallShape.value(payload, :track))
+    active? = GroupCallShape.truthy?(GroupCallShape.value(payload, :active))
     call = socket.assigns.group_call
 
     participant =
       payload
-      |> value(:participant)
-      |> normalize_participant()
+      |> GroupCallShape.value(:participant)
+      |> GroupCallShape.normalize_participant()
       |> merge_existing_participant_media(call)
 
-    participant_id = normalize_id(value(payload, :participant_id) || participant.id)
+    participant_id =
+      GroupCallShape.normalize_id(
+        GroupCallShape.value(payload, :participant_id) || participant.id
+      )
 
     {:halt,
      socket
@@ -591,7 +599,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         payload,
         %{assigns: %{group_call: %{}}} = socket
       ) do
-    media = normalize_media(payload)
+    media = GroupCallShape.normalize_media(payload)
 
     {:halt,
      update_call(socket, fn call ->
@@ -603,23 +611,23 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   def handle_event("group_call_track_added", payload, %{assigns: %{group_call: %{}}} = socket) do
-    track = normalize_track(value(payload, :track))
+    track = GroupCallShape.normalize_track(GroupCallShape.value(payload, :track))
     {:halt, socket |> update_call(&put_track(&1, track)) |> push_group_call_layout()}
   end
 
   def handle_event("group_call_track_updated", payload, %{assigns: %{group_call: %{}}} = socket) do
-    track = normalize_track(value(payload, :track))
+    track = GroupCallShape.normalize_track(GroupCallShape.value(payload, :track))
     {:halt, socket |> update_call(&put_track(&1, track)) |> push_group_call_layout()}
   end
 
   def handle_event("group_call_track_removed", payload, %{assigns: %{group_call: %{}}} = socket) do
-    track_id = value(payload, :track_id)
+    track_id = GroupCallShape.value(payload, :track_id)
     {:halt, socket |> update_call(&remove_track(&1, track_id)) |> push_group_call_layout()}
   end
 
   def handle_event("group_call_closed", payload, %{assigns: %{group_call: %{}}} = socket) do
     message =
-      case value(payload, :reason) do
+      case GroupCallShape.value(payload, :reason) do
         nil -> dgettext("group_call", "Group call ended.")
         reason -> dgettext("group_call", "Group call ended: %{reason}", reason: reason)
       end
@@ -637,12 +645,12 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         payload,
         %{assigns: %{group_call: %{}}} = socket
       ) do
-    state = value(payload, :state)
+    state = GroupCallShape.value(payload, :state)
     {:halt, apply_connection_state(socket, state)}
   end
 
   def handle_event("group_call_recovery_state", payload, %{assigns: %{group_call: %{}}} = socket) do
-    recovery = normalize_recovery(payload)
+    recovery = GroupCallShape.normalize_recovery(payload)
     emit_group_call_recovery_transition(recovery)
 
     {:halt, update_call(socket, &apply_recovery_state(&1, payload))}
@@ -675,7 +683,9 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   def handle_event("group_call_client_warning", payload, %{assigns: %{group_call: %{}}} = socket) do
-    message = value(payload, :message) || dgettext("group_call", "Group call media is degraded.")
+    message =
+      GroupCallShape.value(payload, :message) ||
+        dgettext("group_call", "Group call media is degraded.")
 
     socket =
       update_call(socket, fn call ->
@@ -688,11 +698,17 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   def handle_event("group_call_client_error", payload, %{assigns: %{group_call: %{}}} = socket) do
-    CallEvents.emit_client_error(:group_call, value(payload, :code) || "connection_failed", %{
-      phase: "liveview_client_error"
-    })
+    CallEvents.emit_client_error(
+      :group_call,
+      GroupCallShape.value(payload, :code) || "connection_failed",
+      %{
+        phase: "liveview_client_error"
+      }
+    )
 
-    message = value(payload, :message) || dgettext("group_call", "Group call connection failed.")
+    message =
+      GroupCallShape.value(payload, :message) ||
+        dgettext("group_call", "Group call connection failed.")
 
     socket =
       update_call(socket, fn call ->
@@ -881,8 +897,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
   defp rehydratable_participant(summaries, nickname) do
     Enum.find_value(summaries, fn {channel_name, summary} ->
-      room = value(summary, :room)
-      room_id = normalize_id(value(room, :id))
+      room = GroupCallShape.value(summary, :room)
+      room_id = GroupCallShape.normalize_id(GroupCallShape.value(room, :id))
 
       with room_id when is_integer(room_id) <- room_id,
            participant when not is_nil(participant) <-
@@ -895,9 +911,9 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   defp reattach_active_participant(socket, channel_name, summary, participant) do
-    room = normalize_room(value(summary, :room))
-    token = value(room, :token)
-    user_id = value(participant, :registered_nick_id)
+    room = GroupCallShape.normalize_room(GroupCallShape.value(summary, :room))
+    token = GroupCallShape.value(room, :token)
+    user_id = GroupCallShape.value(participant, :registered_nick_id)
     nickname = socket.assigns.session.nickname
 
     if is_binary(token) and is_integer(user_id) do
@@ -910,7 +926,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       recovery_message = recovery_message(:rejoining)
 
       recovery = %{
-        empty_recovery()
+        GroupCallShape.empty_recovery()
         | state: :rejoining,
           reason: "liveview_mount",
           trigger: "rehydrate",
@@ -930,7 +946,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         |> Map.put(:status, :reconnecting)
         |> Map.put(:warning, recovery_message)
         |> Map.put(:recovery, recovery)
-        |> put_participant(normalize_participant(participant))
+        |> put_participant(GroupCallShape.normalize_participant(participant))
 
       socket
       |> assign(group_call: call, group_call_pending: nil, group_call_prejoin: nil)
@@ -1020,7 +1036,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   defp new_call(summary, token, channel_name, user_id, nickname, join_token, preferences) do
     %{
       token: token,
-      room: normalize_room(value(summary, :room)),
+      room: GroupCallShape.normalize_room(GroupCallShape.value(summary, :room)),
       channel_name: channel_name,
       user_id: user_id,
       nickname: nickname,
@@ -1029,14 +1045,19 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       self_role: nil,
       status: :joining,
       connection_state: nil,
-      participants: normalize_participants(value(summary, :participants)),
-      pending_participants: normalize_participants(value(summary, :pending_participants)),
-      tracks: normalize_tracks(value(summary, :tracks)),
+      participants:
+        GroupCallShape.normalize_participants(GroupCallShape.value(summary, :participants)),
+      pending_participants:
+        GroupCallShape.normalize_participants(
+          GroupCallShape.value(summary, :pending_participants)
+        ),
+      tracks: GroupCallShape.normalize_tracks(GroupCallShape.value(summary, :tracks)),
       stats: GroupCallStats.empty(),
-      server_stats: normalize_server_stats(value(summary, :server_stats)),
-      participant_quality: empty_participant_quality(),
+      server_stats:
+        GroupCallShape.normalize_server_stats(GroupCallShape.value(summary, :server_stats)),
+      participant_quality: GroupCallShape.empty_participant_quality(),
       reactions: [],
-      recovery: empty_recovery(),
+      recovery: GroupCallShape.empty_recovery(),
       media: preferences.media,
       layout: preferences.layout,
       device_preferences: preferences.device_preferences,
@@ -1107,7 +1128,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
             |> Map.put(:error, message)
             |> Map.put(:warning, nil)
             |> Map.put(:recovery, %{
-              empty_recovery()
+              GroupCallShape.empty_recovery()
               | state: :failed,
                 manual_retry: true,
                 message: message
@@ -1165,7 +1186,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
          {:ok, actor} <- actor(socket),
          {:ok, participant} <-
            GroupCall.set_hand_raised(call.token, actor, participant_id, !self_hand_raised?(call)) do
-      participant = normalize_participant(participant)
+      participant = GroupCallShape.normalize_participant(participant)
 
       socket
       |> update_call(&put_self_participant(&1, participant))
@@ -1362,7 +1383,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
          {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),
          {:ok, actor} <- actor(socket),
          {:ok, participant} <- set_target_audio(socket.assigns.group_call, actor, target) do
-      update_call(socket, &put_participant(&1, normalize_participant(participant)))
+      update_call(socket, &put_participant(&1, GroupCallShape.normalize_participant(participant)))
     else
       {:error, message} when is_binary(message) ->
         Messages.error_event(socket, message)
@@ -1380,7 +1401,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
          {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),
          {:ok, actor} <- actor(socket),
          {:ok, participant} <- set_target_video(socket.assigns.group_call, actor, target) do
-      update_call(socket, &put_participant(&1, normalize_participant(participant)))
+      update_call(socket, &put_participant(&1, GroupCallShape.normalize_participant(participant)))
     else
       {:error, message} when is_binary(message) ->
         Messages.error_event(socket, message)
@@ -1399,7 +1420,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
          {:ok, actor} <- actor(socket),
          {:ok, participant} <- set_target_screen_share(socket.assigns.group_call, actor, target) do
       socket
-      |> update_call(&put_participant(&1, normalize_participant(participant)))
+      |> update_call(&put_participant(&1, GroupCallShape.normalize_participant(participant)))
       |> push_group_call_layout()
     else
       {:error, message} when is_binary(message) ->
@@ -1424,7 +1445,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
              participant_id
            ) do
       socket
-      |> update_call(&put_participant(&1, normalize_participant(participant)))
+      |> update_call(&put_participant(&1, GroupCallShape.normalize_participant(participant)))
       |> push_group_call_layout()
     else
       {:error, message} when is_binary(message) ->
@@ -1478,7 +1499,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   defp put_bulk_media_participants(call, %{participants: participants})
        when is_list(participants) do
     Enum.reduce(participants, call, fn participant, call ->
-      put_participant(call, normalize_participant(participant))
+      put_participant(call, GroupCallShape.normalize_participant(participant))
     end)
   end
 
@@ -1500,9 +1521,12 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
          {:ok, result} <- apply_lock_action(call, actor) do
       socket
       |> update_call(fn call ->
-        %{call | room: normalize_room(value(result, :room) || call.room)}
+        %{
+          call
+          | room: GroupCallShape.normalize_room(GroupCallShape.value(result, :room) || call.room)
+        }
       end)
-      |> mark_channel_call_active(call.channel_name, value(result, :summary))
+      |> mark_channel_call_active(call.channel_name, GroupCallShape.value(result, :summary))
       |> push_group_call_layout()
     else
       {:error, message} when is_binary(message) ->
@@ -1522,7 +1546,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   defp locked?(%{room: %{metadata: metadata}}) when is_map(metadata) do
-    value(metadata, :locked) == true or value(metadata, :admission_locked) == true
+    GroupCallShape.value(metadata, :locked) == true or
+      GroupCallShape.value(metadata, :admission_locked) == true
   end
 
   defp locked?(_call), do: false
@@ -1682,23 +1707,38 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
   defp merge_summary(call, payload) do
     call
-    |> Map.put(:room, normalize_room(value(payload, :room) || call.room))
-    |> Map.put(:participants, normalize_participants(value(payload, :participants)))
+    |> Map.put(
+      :room,
+      GroupCallShape.normalize_room(GroupCallShape.value(payload, :room) || call.room)
+    )
+    |> Map.put(
+      :participants,
+      GroupCallShape.normalize_participants(GroupCallShape.value(payload, :participants))
+    )
     |> Map.put(
       :pending_participants,
-      normalize_participants(value(payload, :pending_participants))
+      GroupCallShape.normalize_participants(GroupCallShape.value(payload, :pending_participants))
     )
-    |> Map.put(:tracks, normalize_tracks(value(payload, :tracks) || call.tracks))
+    |> Map.put(
+      :tracks,
+      GroupCallShape.normalize_tracks(GroupCallShape.value(payload, :tracks) || call.tracks)
+    )
     |> Map.put(
       :server_stats,
-      normalize_server_stats(value(payload, :server_stats) || call.server_stats)
+      GroupCallShape.normalize_server_stats(
+        GroupCallShape.value(payload, :server_stats) || call.server_stats
+      )
     )
   end
 
   defp refresh_server_stats(call) do
     case GroupCall.get_summary(call.token) do
       {:ok, summary} ->
-        Map.put(call, :server_stats, normalize_server_stats(value(summary, :server_stats)))
+        Map.put(
+          call,
+          :server_stats,
+          GroupCallShape.normalize_server_stats(GroupCallShape.value(summary, :server_stats))
+        )
 
       {:error, _reason} ->
         call
@@ -1773,22 +1813,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   defp maybe_put_track(call, %{id: nil}), do: call
   defp maybe_put_track(call, track), do: put_track(call, track)
 
-  defp normalize_room(nil), do: nil
-
-  defp normalize_room(room) when is_map(room) do
-    %{
-      id: value(room, :id),
-      token: value(room, :token),
-      channel_name: value(room, :channel_name),
-      status: value(room, :status),
-      max_participants: value(room, :max_participants),
-      metadata: value(room, :metadata) || %{},
-      inserted_at: value(room, :inserted_at),
-      opened_at: value(room, :opened_at),
-      activated_at: value(room, :activated_at)
-    }
-  end
-
   defp normalize_channel_summary(nil, channel_name) do
     %{
       room: %{
@@ -1806,21 +1830,21 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       pending_participants: [],
       tracks: [],
       server_stats: GroupCallStats.empty_server(),
-      participant_quality: empty_participant_quality()
+      participant_quality: GroupCallShape.empty_participant_quality()
     }
   end
 
   defp normalize_channel_summary(summary, channel_name) when is_map(summary) do
     room =
-      case normalize_room(value(summary, :room)) do
+      case GroupCallShape.normalize_room(GroupCallShape.value(summary, :room)) do
         nil ->
           %{
             id: nil,
-            token: value(summary, :token),
+            token: GroupCallShape.value(summary, :token),
             channel_name: channel_name,
-            status: value(summary, :status) || "open",
-            max_participants: value(summary, :max_participants),
-            metadata: value(summary, :metadata) || %{},
+            status: GroupCallShape.value(summary, :status) || "open",
+            max_participants: GroupCallShape.value(summary, :max_participants),
+            metadata: GroupCallShape.value(summary, :metadata) || %{},
             inserted_at: nil,
             opened_at: nil,
             activated_at: nil
@@ -1832,72 +1856,23 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
     %{
       room: %{room | channel_name: room.channel_name || channel_name},
-      participants: normalize_participants(value(summary, :participants)),
-      pending_participants: normalize_participants(value(summary, :pending_participants)),
-      tracks: normalize_tracks(value(summary, :tracks)),
-      server_stats: normalize_server_stats(value(summary, :server_stats)),
-      participant_quality: value(summary, :participant_quality) || empty_participant_quality()
-    }
-  end
-
-  defp normalize_participants(nil), do: []
-  defp normalize_participants(participants), do: Enum.map(participants, &normalize_participant/1)
-
-  defp normalize_participant(nil) do
-    %{id: nil, nickname: nil, status: nil, media_state: %{}, channel_role_snapshot: nil}
-  end
-
-  defp normalize_participant(participant) when is_map(participant) do
-    %{
-      id: normalize_id(value(participant, :id)),
-      nickname: value(participant, :nickname),
-      status: value(participant, :status),
-      media_state: normalize_media(value(participant, :media_state)),
-      channel_role_snapshot: value(participant, :channel_role_snapshot)
-    }
-  end
-
-  defp normalize_tracks(nil), do: []
-  defp normalize_tracks(tracks), do: Enum.map(tracks, &normalize_track/1)
-
-  defp normalize_track(nil) do
-    %{id: nil, participant_id: nil, kind: nil, source: nil, status: nil}
-  end
-
-  defp normalize_track(track) when is_map(track) do
-    %{
-      id: normalize_id(value(track, :id)),
-      participant_id: normalize_id(value(track, :participant_id)),
-      kind: value(track, :kind),
-      source: value(track, :source),
-      status: value(track, :status),
-      webrtc_track_id: value(track, :webrtc_track_id),
-      stream_id: value(track, :stream_id)
-    }
-  end
-
-  defp normalize_server_stats(nil), do: GroupCallStats.empty_server()
-  defp normalize_server_stats(stats), do: GroupCallStats.normalize_server(stats)
-
-  defp empty_participant_quality do
-    %{active_speaker_participant_id: nil, by_participant: %{}}
-  end
-
-  defp empty_recovery do
-    %{
-      state: nil,
-      reason: nil,
-      trigger: nil,
-      attempt: 0,
-      max_attempts: 0,
-      next_retry_ms: 0,
-      manual_retry: false,
-      message: nil
+      participants:
+        GroupCallShape.normalize_participants(GroupCallShape.value(summary, :participants)),
+      pending_participants:
+        GroupCallShape.normalize_participants(
+          GroupCallShape.value(summary, :pending_participants)
+        ),
+      tracks: GroupCallShape.normalize_tracks(GroupCallShape.value(summary, :tracks)),
+      server_stats:
+        GroupCallShape.normalize_server_stats(GroupCallShape.value(summary, :server_stats)),
+      participant_quality:
+        GroupCallShape.value(summary, :participant_quality) ||
+          GroupCallShape.empty_participant_quality()
     }
   end
 
   defp apply_recovery_state(call, payload) do
-    recovery = normalize_recovery(payload)
+    recovery = GroupCallShape.normalize_recovery(payload)
     message = recovery.message || recovery_message(recovery.state)
 
     call = Map.put(call, :recovery, %{recovery | message: message})
@@ -1944,34 +1919,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     end
   end
 
-  defp normalize_recovery(payload) when is_map(payload) do
-    %{
-      state: normalize_recovery_state(value(payload, :state)),
-      reason: value(payload, :reason),
-      trigger: value(payload, :trigger),
-      attempt: integer_value(value(payload, :attempt)),
-      max_attempts: integer_value(value(payload, :max_attempts)),
-      next_retry_ms: integer_value(value(payload, :next_retry_ms)),
-      manual_retry: truthy?(value(payload, :manual_retry)),
-      message: value(payload, :message)
-    }
-  end
-
-  defp normalize_recovery(_payload), do: empty_recovery()
-
-  defp normalize_recovery_state(value) do
-    case to_string(value) do
-      "connected" -> :connected
-      "connecting" -> :connecting
-      "reconnecting" -> :reconnecting
-      "rejoining" -> :rejoining
-      "negotiating" -> :negotiating
-      "failed" -> :failed
-      "degraded" -> :degraded
-      _other -> nil
-    end
-  end
-
   defp recovery_message(:connecting),
     do: dgettext("group_call", "Group call media is connecting.")
 
@@ -2007,14 +1954,14 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
     incoming =
       payload
-      |> value(:participants)
+      |> GroupCallShape.value(:participants)
       |> List.wrap()
-      |> Enum.map(&normalize_participant_quality/1)
+      |> Enum.map(&GroupCallShape.normalize_participant_quality/1)
       |> Enum.reject(&is_nil(&1.participant_id))
       |> Enum.map(&{&1.participant_id, &1})
       |> Map.new()
 
-    existing = Map.get(call, :participant_quality) || empty_participant_quality()
+    existing = Map.get(call, :participant_quality) || GroupCallShape.empty_participant_quality()
 
     by_participant =
       existing.by_participant
@@ -2023,7 +1970,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         MapSet.member?(valid_ids, participant_id)
       end)
 
-    active_speaker_id = normalize_id(value(payload, :active_speaker_participant_id))
+    active_speaker_id =
+      GroupCallShape.normalize_id(GroupCallShape.value(payload, :active_speaker_participant_id))
 
     active_speaker_id =
       if MapSet.member?(valid_ids, active_speaker_id), do: active_speaker_id, else: nil
@@ -2038,7 +1986,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   defp remove_participant_quality(call, participant_id) do
-    quality = Map.get(call, :participant_quality) || empty_participant_quality()
+    quality = Map.get(call, :participant_quality) || GroupCallShape.empty_participant_quality()
     by_participant = Map.delete(quality.by_participant, participant_id)
 
     active_speaker_id =
@@ -2059,7 +2007,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   defp put_group_call_reaction(call, payload) do
-    reaction = normalize_group_call_reaction(call, payload)
+    reaction = GroupCallShape.normalize_group_call_reaction(call, payload)
 
     if is_nil(reaction.participant_id) do
       call
@@ -2070,130 +2018,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         |> Enum.reject(&(&1.participant_id == reaction.participant_id))
 
       Map.put(call, :reactions, Enum.take([reaction | reactions], 8))
-    end
-  end
-
-  defp normalize_group_call_reaction(call, payload) when is_map(payload) do
-    participant_id = normalize_id(value(payload, :participant_id))
-    participant = Enum.find(call.participants || [], &(&1.id == participant_id))
-
-    %{
-      id: value(payload, :id) || "reaction-#{System.unique_integer([:positive])}",
-      participant_id: if(participant, do: participant_id),
-      nickname: value(payload, :nickname) || participant_nickname(participant),
-      reaction: value(payload, :reaction) || "heart",
-      emoji: value(payload, :emoji) || reaction_emoji(value(payload, :reaction)),
-      occurred_at_ms: integer_value(value(payload, :occurred_at_ms))
-    }
-  end
-
-  defp normalize_group_call_reaction(_call, _payload) do
-    %{
-      id: nil,
-      participant_id: nil,
-      nickname: nil,
-      reaction: nil,
-      emoji: nil,
-      occurred_at_ms: 0
-    }
-  end
-
-  defp participant_nickname(%{nickname: nickname}), do: nickname
-  defp participant_nickname(_participant), do: nil
-
-  defp reaction_emoji("heart"), do: "❤️"
-  defp reaction_emoji("thumbs_up"), do: "👍"
-  defp reaction_emoji("clap"), do: "👏"
-  defp reaction_emoji("laugh"), do: "😄"
-  defp reaction_emoji("wow"), do: "✨"
-  defp reaction_emoji(_reaction), do: "❤️"
-
-  defp normalize_participant_quality(nil) do
-    %{
-      participant_id: nil,
-      level: :unknown,
-      speaking: false,
-      rtt_ms: 0,
-      jitter_ms: 0,
-      loss_pct: 0,
-      bitrate_kbps: 0,
-      fps: 0,
-      freeze_count: 0,
-      audio_level: 0
-    }
-  end
-
-  defp normalize_participant_quality(quality) when is_map(quality) do
-    %{
-      participant_id: normalize_id(value(quality, :participant_id)),
-      level: normalize_quality_level(value(quality, :level)),
-      speaking: truthy?(value(quality, :speaking)),
-      rtt_ms: integer_value(value(quality, :rtt_ms)),
-      jitter_ms: integer_value(value(quality, :jitter_ms)),
-      loss_pct: float_value(value(quality, :loss_pct)),
-      bitrate_kbps: integer_value(value(quality, :bitrate_kbps)),
-      fps: integer_value(value(quality, :fps)),
-      freeze_count: integer_value(value(quality, :freeze_count)),
-      audio_level: float_value(value(quality, :audio_level))
-    }
-  end
-
-  defp normalize_participant_quality(_quality), do: normalize_participant_quality(nil)
-
-  defp normalize_quality_level(value) do
-    case to_string(value) do
-      "excellent" -> :excellent
-      "good" -> :good
-      "fair" -> :fair
-      "poor" -> :poor
-      "reconnecting" -> :reconnecting
-      _other -> :unknown
-    end
-  end
-
-  defp normalize_id(id) when is_integer(id), do: id
-
-  defp normalize_id(id) when is_binary(id) do
-    case Integer.parse(id) do
-      {value, ""} -> value
-      _error -> nil
-    end
-  end
-
-  defp normalize_id(_id), do: nil
-
-  defp normalize_media(nil), do: %{}
-
-  defp normalize_media(media) when is_map(media) do
-    %{
-      audio: media_value(media, :audio),
-      video: media_value(media, :video),
-      screen: media_value(media, :screen),
-      hand_raised: media_value(media, :hand_raised)
-    }
-    |> maybe_put_media_extra(media, :server_audio_muted)
-    |> maybe_put_media_extra(media, :muted_by)
-    |> maybe_put_media_extra(media, :muted_at)
-    |> maybe_put_media_extra(media, :server_video_blocked)
-    |> maybe_put_media_extra(media, :video_blocked_by)
-    |> maybe_put_media_extra(media, :video_blocked_at)
-    |> maybe_put_media_extra(media, :server_screen_blocked)
-    |> maybe_put_media_extra(media, :screen_blocked_by)
-    |> maybe_put_media_extra(media, :screen_blocked_at)
-    |> maybe_put_media_extra(media, :hand_raised_at)
-    |> maybe_put_media_extra(media, :hand_raised_by)
-    |> Enum.reject(fn {_key, value} -> is_nil(value) end)
-    |> Map.new()
-  end
-
-  defp normalize_media(_media), do: %{}
-
-  defp maybe_put_media_extra(target, source, key) do
-    string_key = Atom.to_string(key)
-
-    case Map.get(source, key, Map.get(source, string_key)) do
-      nil -> target
-      value -> Map.put(target, key, value)
     end
   end
 
@@ -2229,26 +2053,42 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   defp normalize_prejoin_preferences(_preferences), do: default_prejoin_preferences()
 
   defp normalize_prejoin_media(preferences) do
-    media = value(preferences, :media)
+    media = GroupCallShape.value(preferences, :media)
 
     %{
       audio:
         boolean_preference(
-          preference_value(value(preferences, :audio), value(media, :audio)),
+          preference_value(
+            GroupCallShape.value(preferences, :audio),
+            GroupCallShape.value(media, :audio)
+          ),
           true
         ),
       video:
         boolean_preference(
-          preference_value(value(preferences, :video), value(media, :video)),
+          preference_value(
+            GroupCallShape.value(preferences, :video),
+            GroupCallShape.value(media, :video)
+          ),
           true
         )
     }
   end
 
   defp normalize_prejoin_layout(preferences) do
-    layout = value(preferences, :layout)
-    mode = preference_value(value(preferences, :layout_mode), value(layout, :mode))
-    self_view = preference_value(value(preferences, :self_view), value(layout, :self_view))
+    layout = GroupCallShape.value(preferences, :layout)
+
+    mode =
+      preference_value(
+        GroupCallShape.value(preferences, :layout_mode),
+        GroupCallShape.value(layout, :mode)
+      )
+
+    self_view =
+      preference_value(
+        GroupCallShape.value(preferences, :self_view),
+        GroupCallShape.value(layout, :self_view)
+      )
 
     %{
       mode: layout_mode(mode),
@@ -2331,10 +2171,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
   defp default_devices, do: MediaDevices.none()
 
-  defp normalize_devices(devices), do: MediaDevices.normalize(devices, unnamed_device())
-
-  defp unnamed_device, do: dgettext("group_call", "Default device")
-
   defp boolean_preference(value, _default) when value in [true, "true", "on", "1", 1], do: true
 
   defp boolean_preference(value, _default) when value in [false, "false", "off", "0", 0],
@@ -2370,26 +2206,11 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   defp layout(%{layout: layout}) when is_map(layout) do
     default_layout()
     |> Map.merge(layout)
-    |> Map.update!(:console_section, &normalize_console_section/1)
-    |> Map.update!(:pinned_participant_ids, &normalize_pinned_participant_ids/1)
+    |> Map.update!(:console_section, &GroupCallShape.normalize_console_section/1)
+    |> Map.update!(:pinned_participant_ids, &GroupCallShape.normalize_pinned_participant_ids/1)
   end
 
   defp layout(_call), do: default_layout()
-
-  defp normalize_console_section(section) when section in [:call, :people, :stats, :settings],
-    do: section
-
-  defp normalize_console_section(section) when is_binary(section) do
-    case section do
-      "call" -> :call
-      "people" -> :people
-      "stats" -> :stats
-      "settings" -> :settings
-      _other -> :call
-    end
-  end
-
-  defp normalize_console_section(_section), do: :call
 
   defp maybe_focus_for_mode(%{mode: :speaker} = layout, call) do
     %{
@@ -2435,7 +2256,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   defp maybe_sync_speaker_focus(call), do: call
 
   defp toggle_participant_id(participant_ids, participant_id) do
-    participant_ids = normalize_pinned_participant_ids(participant_ids)
+    participant_ids = GroupCallShape.normalize_pinned_participant_ids(participant_ids)
 
     if participant_id in participant_ids do
       Enum.reject(participant_ids, &(&1 == participant_id))
@@ -2452,20 +2273,10 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       :pinned_participant_ids,
       layout
       |> Map.get(:pinned_participant_ids, [])
-      |> normalize_pinned_participant_ids()
+      |> GroupCallShape.normalize_pinned_participant_ids()
       |> Enum.reject(&(&1 == participant_id))
     )
   end
-
-  defp normalize_pinned_participant_ids(participant_ids) when is_list(participant_ids) do
-    participant_ids
-    |> Enum.map(&normalize_id/1)
-    |> Enum.reject(&is_nil/1)
-    |> Enum.uniq()
-    |> Enum.take(4)
-  end
-
-  defp normalize_pinned_participant_ids(_participant_ids), do: []
 
   defp next_layout_mode(current) do
     current_index = Enum.find_index(@layout_modes, &(&1 == current)) || 0
@@ -2495,40 +2306,9 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       mini: Map.get(layout, :mini, false),
       pinned_participant_ids: layout.pinned_participant_ids,
       self_participant_id: call.participant_id,
-      participants: Enum.map(call.participants || [], &participant_payload/1),
-      tracks: Enum.map(call.tracks || [], &track_payload/1)
+      participants: Enum.map(call.participants || [], &GroupCallShape.participant_payload/1),
+      tracks: Enum.map(call.tracks || [], &GroupCallShape.track_payload/1)
     }
-  end
-
-  defp participant_payload(participant) do
-    %{
-      id: participant.id,
-      nickname: participant.nickname,
-      status: participant.status,
-      media_state: participant.media_state || %{},
-      channel_role_snapshot: participant.channel_role_snapshot
-    }
-  end
-
-  defp track_payload(track) do
-    %{
-      id: track.id,
-      participant_id: track.participant_id,
-      kind: track.kind,
-      source: track.source,
-      status: track.status,
-      webrtc_track_id: track[:webrtc_track_id],
-      stream_id: track[:stream_id]
-    }
-  end
-
-  defp media_value(media, key) do
-    case value(media, key) do
-      nil -> nil
-      "true" -> true
-      "false" -> false
-      value -> value
-    end
   end
 
   defp put_screen_share_media(call, participant_id, active?) do
@@ -2555,43 +2335,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   defp maybe_focus_screen_share(call, _participant_id, _active?), do: call
-
-  defp integer_value(value) when is_integer(value), do: value
-  defp integer_value(value) when is_float(value), do: round(value)
-
-  defp integer_value(value) when is_binary(value) do
-    case Integer.parse(value) do
-      {number, _rest} -> number
-      :error -> 0
-    end
-  end
-
-  defp integer_value(_value), do: 0
-
-  defp float_value(value) when is_float(value), do: value
-  defp float_value(value) when is_integer(value), do: value / 1
-
-  defp float_value(value) when is_binary(value) do
-    case Float.parse(value) do
-      {number, _rest} -> number
-      :error -> 0
-    end
-  end
-
-  defp float_value(_value), do: 0
-
-  defp truthy?(value) when value in [true, "true", "on", "1", 1], do: true
-  defp truthy?(_value), do: false
-
-  defp value(nil, _key), do: nil
-
-  defp value(map, key) when is_map(map) and is_atom(key) do
-    cond do
-      Map.has_key?(map, key) -> Map.get(map, key)
-      Map.has_key?(map, Atom.to_string(key)) -> Map.get(map, Atom.to_string(key))
-      true -> nil
-    end
-  end
 
   defp group_call_channels(socket) do
     socket.assigns[:group_call_channels] || MapSet.new()

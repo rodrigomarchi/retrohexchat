@@ -12,7 +12,7 @@ de onda no mesmo commit e anotar aqui por quê.
 |---|---|
 | 0 — identidade multi-aba + `/play/:game` | ✅ `make ci` 17/17 |
 | 1 — `/join/:slug` + card na conversa | ✅ commitada (`f0898719`) + card |
-| 2 — conferência | ⬜ |
+| 2 — conferência | 🔨 iniciada: normalizadores extraídos |
 | 3 — space | ⬜ |
 | 4 — P2P channel + superfície | ⬜ |
 | 5 — jogos / lobby aberto | ⬜ |
@@ -754,5 +754,94 @@ Screenshot de `/pt-BR/join/<slug>` num contexto com locale pt-BR: título, corpo
 e botão todos em português, com o ícone e o nome do jogo.
 
 `i18n_quality_check` e `i18n_placeholder_check` com `findings=0`.
+
+---
+
+## Iteração 11 — onda 2, passo zero: os normalizadores saem primeiro
+
+**Objetivo:** tornar possível mover a conferência para um LiveView próprio, sem
+ainda mover nada.
+
+### Por que este passo, e não o `CallLive` direto
+
+`group_call_events.ex` tem 2.604 linhas, 87 `handle_event` e ~150 helpers
+privados. O plano manda montar o `CallLive` aninhado primeiro, mas mesmo esse
+passo esbarra na forma do módulo: as duas metades que precisam se separar — o
+read-model de canal ("existe uma chamada em #retro") e o estar-dentro — **usam os
+mesmos normalizadores privados**.
+
+Então a ordem real é: normalizadores primeiro, read-model depois, `CallLive` por
+último. Medido, não estimado: 309 linhas em 27 funções puras.
+
+### `RetroHexChatWeb.App.GroupCallShape`
+
+Um `room`, um `participant`, um `track` e um bloco de stats chegam de três
+lugares — linha do banco, broadcast do PubSub, hook do browser — e cada um
+escreve os campos de um jeito: struct com chave atom, mapa com chave string,
+update parcial sem nenhum dos dois. É por isso que `value/2` tenta as duas
+grafias.
+
+Elas não decidem nada e não tocam socket. Sendo privadas do adaptador do chat,
+**a superfície que vai hospedar a chamada numa aba não poderia usá-las sem
+copiar** — e o código mais reusado da feature não tinha teste nenhum.
+
+Agora tem 18, e eles asseriram coisas que ninguém tinha verificado: que a chave
+atom ganha da string quando o payload traz as duas, que um participante vazio
+ainda tem a forma que um tile lê, que `truthy?` aceita as cinco grafias de "sim"
+que o browser manda.
+
+### O compilador reprovou um teste meu
+
+`assert Shape.reaction_emoji("nonsense") != nil` — o Elixir avisou que
+`reaction_emoji` sempre devolve binário, então a comparação é sempre verdadeira.
+Um teste que não pode falhar.
+
+Trocado por duas asserções reais: as cinco reações nomeadas desenham coisas
+**diferentes**, e uma desconhecida cai no coração em vez de ficar em branco —
+uma bolha vazia num tile de vídeo lê como bug, não como reação.
+
+### Armadilha do refactor mecânico
+
+O script que converteu `defp` em `def` capturava o nome com
+`^  defp ([a-z_0-9]+)`, que **para antes do `?`**. `truthy?/1` virou um `@spec
+truthy/1` para uma função que não existe, e `value/2` ficou sem spec. O
+compilador pegou os dois. Vale lembrar em qualquer extração futura: nomes de
+predicado terminam em `?` e `!`.
+
+### Terceira vez na mesma armadilha
+
+`make ci` reprovou de novo em **i18n Catalog Coverage**: mover
+`dgettext("group_call", "Default device")` de arquivo muda a referência `#:` do
+`.pot`. Nenhum msgid novo, nenhum merge necessário — só extract.
+
+Já é a terceira vez nesta sessão, e escrever a regra no `PROGRESS.md` não me fez
+segui-la. O que funciona é sequência fixa, não lembrança:
+
+    mix format  →  make i18n.gettext.extract  →  make ci
+
+`extract` vai antes do gate **sempre**, mesmo quando "só movi código". Mover
+código é justamente o que muda referência.
+
+### Dialyzer pegou dois specs que escrevi por suposição
+
+Ao tornar as 27 funções públicas, escrevi os `@spec` de cabeça. Dois estavam
+errados e o Dialyzer os reprovou:
+
+- `normalize_devices/1` devolve `%{String.t() => [map()]}` — um mapa por tipo de
+  dispositivo, não uma lista.
+- `normalize_console_section/1` devolve `atom()`, não `String.t()`.
+
+Vale registrar porque é o argumento a favor do custo: enquanto essas funções
+eram privadas, **ninguém tinha escrito o tipo delas**, e portanto ninguém tinha
+verificado. Tornar público forçou dizer o que elas fazem, e o Dialyzer conferiu.
+Os dois erros estavam na minha leitura do código, não no código.
+
+### Estado
+
+`group_call_events.ex` foi de 2.604 para 2.346 linhas; `GroupCallShape` tem 359
+com specs. 46 testes de group call verdes **sem edição**, 18 novos, credo limpo.
+
+**Próximo:** separar o read-model de canal (o que fica no `ChatLive`) do
+estar-dentro (o que vai para o `CallLive`).
 
 ---
