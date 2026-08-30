@@ -59,21 +59,52 @@ Chamada também tem **Abrir em uma aba**.
 
 **Onda 3 — o space em superfície própria** ([`wave-3-space-surface.md`](wave-3-space-surface.md)).
 
-A onda 2 fechou, e o que ela deixou pronto a onda 3 reusa inteiro em vez de
-reinventar:
+### A ordem, aprendida na onda 2
+
+A onda 2 mandava fazer em duas etapas (aninhado primeiro, rota depois) e isso
+**não funcionou**: promover o pré-join a antessala é o que tornou a montagem
+aninhada possível, e separar as etapas teria movido o pré-join duas vezes. Aqui
+o mesmo vale, e ainda mais barato, porque a antessala do space **já existe** — é
+o seletor de personagem (P5 / [`ux.md` §2.4](ux.md)), e ele só ganha o roster
+"lá dentro agora" de `VirtualSpace.snapshot/1`.
+
+Então a ordem é:
+
+1. **Separar o read-model.** O que fica no `ChatLive` é *saber que a conversa
+   tem um space* — a aba na barra (`has_space=…`, `chat_live.html.heex:300`). O
+   que vai são os quatro assigns (`channel_view`, `space_avatars`,
+   `space_avatar`, `space_last_avatar`), os dois handlers, e as três funções de
+   token. A régua é a mesma da onda 2: se o dado só existe enquanto você está
+   dentro, ele vai.
+2. **`SpaceLive` nos dois hosts de uma vez**, com o roster na antessala. O modo
+   aninhado substitui o bloco `chat_live.html.heex:192-250` e **mantém a aba de
+   conversa** — o space é a única feature que não é uma janela do desktop.
+3. **A rota `/space/:slug`**, e o `kind: "space"` do `ShareLinks` ligado no
+   `JoinLive` (o domínio já aceita o kind; falta `surface_path/1` e o subject).
+
+### O que já está pronto e não se reinventa
 
 * `RetroHexChatWeb.Live.Surface` — nickname, ban, tópico de superfícies, e o
-  registro em `RetroHexChat.Surfaces` que mantém a filiação a canal viva.
-* `RetroHexChatWeb.CallLive.Host` — o padrão dos três desvios entre hosts
-  (aviso, janela, o que o host desenha). O space precisa dos mesmos três; se um
-  quarto aparecer, ele é do `Host` também.
-* `RetroHexChat.Topics.channel_calls/1` — o precedente. O space transmite hoje
-  em `space:#canal`; conferir se o chat precisa assinar junto pelo card ao vivo
-  (ux §2.1 diz que sim, e é o único custo novo do card).
+  registro em `RetroHexChat.Surfaces` que mantém a filiação a canal viva
+  (onda 2 §2.6, a dependência que o `wave-3` §2.4 exige e que já está verde).
+* `RetroHexChatWeb.CallLive.Host` — o padrão dos três desvios entre hosts:
+  aviso, janela, e o que o host desenha. **Decisão a tomar com o código na
+  frente:** o space precisa dos mesmos três, então ou o `Host` sobe de namespace
+  (`Live.SurfaceHost`) ou ganha um irmão. Não copiar.
+* `RetroHexChat.Topics.channel_calls/1` — o precedente para separar o ciclo de
+  vida da feature do tópico da conversa. O space transmite hoje em
+  `space:#canal`; o card ao vivo do chat (ux §2.1) é o que decide se o chat
+  precisa assinar junto.
 * `RetroHexChat.Channels.Departure.part_all/3` — a saída, já no domínio.
 
-O desenho da antessala do space é o **seletor de personagem que já existe**
-(P5 / ux §2.4): ele só ganha o roster "lá dentro agora". Nenhuma tela nova.
+### As três coisas da onda 2 que vão se repetir
+
+* **`live_render/3` embrulha o filho numa div sem altura.** Um canvas com
+  `h-full` dentro dela mede zero. `container: {:div, class: "h-full min-h-0"}`.
+* **Dois hosts na tela ao mesmo tempo precisam de ids diferentes.** Ids são
+  únicos no documento, não por LiveView. Derive os `data-testid` do `id`.
+* **`space_dom_id/1` é contrato** com o hook e com os specs (wave-3 §5). O
+  `live_render` aninhado não pode mudar o id que o JS procura.
 
 ---
 
@@ -198,3 +229,40 @@ cd e2e && MIX_ENV=e2e PGPORT=5433 E2E_PORT=4003 \
 3. **Rate limit de criação de share link** — deixado de fora de propósito: já
    existem três cópias da janela deslizante em ETS no repositório, e a quarta
    seria o fork que o Princípio XII proíbe. Entra junto com a extração da comum.
+
+---
+
+## 9. O prompt para abrir a próxima sessão
+
+Cole isto numa sessão com o contexto limpo. Ele é curto de propósito: o que ele
+precisa dizer está neste arquivo, e o resto é a ordem de leitura.
+
+```
+Retomando a implementação do plano de superfícies compartilháveis no
+retro_hex_chat. A onda 2 fechou; começa a onda 3.
+
+Leia, nesta ordem:
+1. docs/plans/shareable-surfaces/HANDOVER.md  — estado, próximo passo, armadilhas
+2. docs/plans/shareable-surfaces/README.md    — decisões travadas (P1–P7, D1–D6)
+3. docs/plans/shareable-surfaces/ux.md        — o desenho de todas as telas
+4. docs/plans/shareable-surfaces/wave-3-space-surface.md
+5. docs/plans/shareable-surfaces/PROGRESS.md  — pelo menos as iterações 7, 8,
+   10, 13 e 14: são armadilhas que vão voltar
+
+O próximo passo está na seção 3 do HANDOVER, com a ordem já corrigida pelo que
+a onda 2 ensinou: separar o read-model de conversa, depois SpaceLive nos dois
+hosts de uma vez (a antessala é o seletor de personagem que já existe, e ele só
+ganha o roster), depois a rota /space/:slug.
+
+Como trabalhar, e isto não é negociável:
+- Não pare para pedir permissão entre passos. Implemente até haver algo
+  testável de ponta a ponta pelo usuário.
+- Registre cada iteração no PROGRESS.md, incluindo os erros e como foram
+  recuperados.
+- Toda tela nova ganha screenshot (spec Playwright descartável) antes de
+  você dizer que fechou.
+- Sequência fixa antes do gate: mix format → make i18n.gettext.extract →
+  make ci. Leia o "Results:" do log, não o exit code do shell.
+- Commit direto na main, com fetch + pull --ff-only antes e staging de
+  caminhos exatos. Não faça push.
+```
