@@ -42,10 +42,21 @@ desktop windows). Do not invent or search for a lobby LiveView/page.
   OTP app that collides with Phoenix — own Application, port 4000). Only new dep is `ex_stun`,
   pinned `~> 0.1` (0.2.x has breaking API changes). A Docker sidecar was rejected (violates
   "same BEAM VM"). TURN credentials are RFC 5766 HMAC-SHA1, generated in Phoenix.
-- **The server is a blind signaling relay.** Signaling is stateless server-side: JS `pushEvent`
-  → LiveView `handle_event` → `PubSub.broadcast("p2p:token")` → peer LiveView → `push_event` →
-  peer JS. The server never inspects SDP; the SessionServer only learns of `connecting → active`
-  transitions.
+- **The server is a blind signaling relay, and the relay is a channel of its own.** Signaling
+  is stateless server-side: JS pushes on `p2p:<session_token>` (`RetroHexChatWeb.P2PChannel`,
+  joined with `Lobby.JoinToken`) → `PubSub.broadcast("lobby:<token>")` → the peer's channel →
+  peer JS. The server never inspects SDP; the SessionServer only learns of
+  `connecting → active` transitions.
+- **What travels on the wire, and what does not.** The channel carries only what goes *between
+  the two peers*: offers, answers, candidates, the answerer's renegotiation request, and the
+  replay that fills a reconnect's gap. Starting signaling (`lobby_start_offer` /
+  `lobby_start_answer`), restarting it, and the session lifecycle stay with the host LiveView,
+  because they carry state the host owns — the transport policy and the reattach handshake.
+  Both listen on the same `"lobby:<token>"`, so who publishes what did not change.
+- **Why the wire left the LiveView socket.** A negotiation carried by the page hosting it is a
+  negotiation the page can take with it. On its own channel it survives a LiveView reconnect,
+  and the same wire can be shared by more than one host — which is what a P2P surface with an
+  address of its own needs.
 - **Blind is not unchecked, and the checks live in one module.** The server refuses payloads of
   the wrong shape or size — `RetroHexChat.Calls.SignalValidation` owns every bound (SDP, ICE
   candidate, media-section id, offer id) and both signaling paths validate through it: the 1:1

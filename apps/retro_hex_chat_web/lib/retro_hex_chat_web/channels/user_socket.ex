@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.UserSocket do
 
   channel "space:*", RetroHexChatWeb.SpaceChannel
   channel "group_call:*", RetroHexChatWeb.GroupCallChannel
+  channel "p2p:*", RetroHexChatWeb.P2PChannel
 
   @impl true
   @spec connect(map(), Phoenix.Socket.t(), map()) :: {:ok, Phoenix.Socket.t()}

@@ -97,9 +97,8 @@ lobby_renegotiate
 lobby_restart
 lobby_retry
 lobby_signal
-lobby_signal_rejected
-lobby_signal_replay
 lobby_signal_replay_request
+lobby_signaling_unavailable
 lobby_start_answer
 lobby_start_offer
 lobby_state_change
@@ -184,6 +183,10 @@ group_call_stop_screen_share
 group_call_track_added
 group_call_track_removed
 group_call_track_updated
+lobby_renegotiate
+lobby_signal
+lobby_signal_rejected
+lobby_signal_replay
 ## custom-events
 abort
 blur
@@ -257,6 +260,9 @@ dataset.colorCode
 dataset.column
 dataset.copyDisabled
 dataset.cycleMs
+dataset.desktopClickTarget
+dataset.desktopConnectDialog
+dataset.desktopStaticDialogOpen
 dataset.deviceLabelBound
 dataset.deviceLabelSuggestion
 dataset.deviceLabelUserEdited
@@ -336,10 +342,12 @@ dataset.retroTableColumn
 dataset.rhcKeyboardOpen
 dataset.rowId
 dataset.selfView
+dataset.sessionToken
 dataset.showTarget
 dataset.spaceChannel
 dataset.spacePadAction
 dataset.spacePadDir
+dataset.spriteSheets
 dataset.startLevel
 dataset.state
 dataset.streamId

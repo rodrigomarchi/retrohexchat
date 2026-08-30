@@ -55,9 +55,27 @@ aqui, com a suíte E2E de P2P existente apontando o dedo.
 2. `RetroHexChatWeb.P2PChannel`, tópico `p2p:<session_token>`, registrado no
    `UserSocket` ao lado de `space:*` e `group_call:*`.
 3. Migram do `p2p_session_events.ex` para o channel, **sem reescrever a lógica**:
-   `lobby_webrtc_ready`, `lobby_signal`, `lobby_signal_replay_request`,
-   `lobby_renegotiate`, `lobby_connected`, `lobby_restart`, `lobby_start_offer`,
-   `lobby_start_answer`.
+   `lobby_signal`, `lobby_signal_replay_request`, `lobby_renegotiate` na entrada;
+   `lobby_signal`, `lobby_renegotiate`, `lobby_signal_replay` e
+   `lobby_signal_rejected` na saída.
+
+   **Correção feita ao implementar (2026-08-30):** a lista original tinha mais
+   cinco, e eles ficam. A régua é *o que viaja entre os dois pares*:
+
+   * **`lobby_webrtc_ready` e `lobby_connected` ficam.** Não são fio: o primeiro
+     é o handshake de prontidão, e ele tem um ramo de `reattach_pending` que é
+     estado do host (o LiveView ainda não conseguiu entrar na sessão porque
+     outra janela segura a vaga); o segundo é ciclo de vida de sessão. Mover o
+     primeiro teria quebrado o reattach numa fase cuja promessa é "nada muda".
+   * **`lobby_start_offer`, `lobby_start_answer` e `lobby_restart` ficam.** São
+     comandos do host para o próprio cliente, não conversa entre pares, e o
+     payload deles carrega `ice_servers`, `role` e `turn_only` — política de
+     transporte, que é do host. Eles se mudam na 4B junto com o host, quando o
+     dono do `turn_only` passa a ser o `P2PLive`.
+
+   O que saiu é exatamente SDP, ICE, o pedido de renegociação e o replay — o
+   tráfego de alto volume, que é o que precisava sobreviver a um reconnect do
+   LiveView e ser compartilhável por dois hosts.
 4. Toda entrada continua passando por `Calls.SignalValidation`. **Não criar um
    segundo validador.** A regra está escrita: "Relaxing a bound is a one-file
    change on purpose; a third copy is how one path silently gets a wider attack
@@ -194,11 +212,54 @@ explica, e isso é melhor do que um link que não existe.
 
 ---
 
+---
+
+## Estado da fase 4A (2026-08-30) — fechada
+
+* `RetroHexChat.Lobby.JoinToken` (salt `p2p_join`, janela de 12 h — a política
+  da sessão é checada em todo join, e uma chamada precisa poder reentrar no
+  próprio canal depois de uma queda de socket).
+* `RetroHexChatWeb.P2PChannel` em `p2p:<session_token>`, registrado no
+  `UserSocket`. Valida por `Calls.SignalValidation`, limita por
+  `P2P.SignalingRateLimit`, registra para replay e transmite em
+  `"lobby:<token>"` — o mesmo tópico de sempre.
+* **O replay vem na resposta do join.** Entrar no canal é, por si só, dizer
+  "estou ouvindo e posso ter perdido alguma coisa"; isso economiza um round trip
+  e faz o rejoin automático do Phoenix recuperar sozinho.
+* `assets/js/lib/p2p/signaling_channel.js` + o roteamento no
+  `lobby_webrtc_hook.js`. **`lobby_connection.js` não mudou uma linha** — o
+  controller diz o que aconteceu e o hook decide qual fio carrega.
+* Testes: 14 no `p2p_channel_test.exs`, 5 no `join_token_test.exs`, 9 no vitest
+  do canal. Os testes de backpressure e de replay saíram do
+  `p2p_session_flow_test.exs` e foram para o canal, com o motivo escrito no
+  lugar em que estavam.
+* **Critério da fase cumprido:** `chat-p2p.spec.ts` e
+  `chat-p2p-negotiation.spec.ts` verdes **sem edição** (15 de 16; a 16ª falha
+  igual no `HEAD` anterior — a janela maximizada do P2P cobre a barra de status
+  do chat, mesma classe da falha pré-existente da onda 2).
+
+### Firefox: a suíte não roda, e o fio foi verificado assim mesmo
+
+`browser.newContext({ permissions: ["microphone"] })` responde
+**`Unknown permission: microphone`** no Firefox do Playwright. A suíte de P2P
+inteira é Chromium por construção, não por escolha — e isso é anterior a esta
+onda.
+
+O que dava para verificar foi verificado com um spec descartável que observa os
+frames do WebSocket em vez da mídia: os dois lados entram em `p2p:<token>`, a
+offer sai pelo canal, a answer volta por ele, e ninguém foi recusado. **Verde em
+Chromium e em Firefox.** É a metade da §6 que dá para checar sem permissão de
+mídia; a outra metade continua sem cobertura, e continua escrita aqui.
+
+---
+
 ## 5. Obrigações do repositório
 
 - [ ] `PerfBudgets` para `:p2p`.
-- [ ] `SURFACE.txt`: ~25 eventos `lobby_*` saem de "liveview-events" e entram em
-      "channel-events". O snapshot vai acusar, e deve.
+- [x] `SURFACE.txt`: os eventos de sinalização entraram em "channel-events". O
+      snapshot foi regenerado — e varreu junto quatro `dataset.*` de deriva
+      pré-existente que a onda 2 se recusou a assinar. Aqui a regeneração é
+      obrigatória, então eles vieram no pacote.
 - [ ] Help topics: o tópico "P2P Lobby" já existe e já foi reescrito uma vez para
       a realidade in-chat (commit `de1fe324`) — dezenas de páginas de jogo linkam
       pra ele. Reescrever de novo, não deletar.

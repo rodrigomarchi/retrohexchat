@@ -122,17 +122,20 @@ Frontend:
 - `apps/retro_hex_chat_web/assets/js/lib/p2p/webrtc.js`
 - `apps/retro_hex_chat_web/assets/js/lib/p2p/media.js`
 - `apps/retro_hex_chat_web/assets/js/lib/p2p/rtc_media_hook_factory.js`
+- `apps/retro_hex_chat_web/assets/js/lib/p2p/signaling_channel.js`
 - `apps/retro_hex_chat_web/assets/js/hooks/lobby/lobby_webrtc_hook.js`
 - `apps/retro_hex_chat_web/assets/js/hooks/lobby/lobby_media_hook.js`
 
-Backend e LiveView:
+Backend, channel e LiveView:
 
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/channels/p2p_channel.ex`
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex`
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex`
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex`
 - `apps/retro_hex_chat/lib/retro_hex_chat/lobby.ex`
 - `apps/retro_hex_chat/lib/retro_hex_chat/lobby/service.ex`
 - `apps/retro_hex_chat/lib/retro_hex_chat/lobby/session_server.ex`
+- `apps/retro_hex_chat/lib/retro_hex_chat/lobby/join_token.ex`
 - `apps/retro_hex_chat/lib/retro_hex_chat/lobby/policy.ex`
 - `apps/retro_hex_chat/lib/retro_hex_chat/lobby/queries.ex`
 - `apps/retro_hex_chat/lib/retro_hex_chat/lobby/schema/session.ex`
@@ -218,23 +221,30 @@ conexao WebRTC.
 4. Peer aceita convite pelo PM/header e tambem passa pelo setup.
 5. `Lobby.SessionServer` marca os dois lados como joined e transiciona para
    `lobby`.
-6. O anchor `#lobby-webrtc` monta nos dois LiveViews.
-7. Cada hook envia `lobby_webrtc_ready`.
+6. O anchor `#lobby-webrtc` monta nos dois LiveViews, carregando o
+   `session_token` e o `Lobby.JoinToken` que o hook usa para entrar no canal
+   `p2p:<session_token>`. A resposta do join ja traz o replay: entrar no canal
+   e, por si so, dizer "estou ouvindo e posso ter perdido alguma coisa".
+7. Cada hook envia `lobby_webrtc_ready` — este continua indo para o LiveView,
+   porque a prontidao faz parte do handshake de reattach, que e estado do host.
 8. `Lobby.SessionServer.maybe_start_signaling/1` so inicia sinalizacao quando:
    status e `lobby` ou `connected`, a sinalizacao ainda nao iniciou e os dois
    lados estao `webrtc_ready`.
 9. LiveView envia `lobby_start_offer` para o criador e `lobby_start_answer`
    para o peer.
 10. O iniciador cria PC, data channels e offer.
-11. Offer viaja pelo evento `lobby_signal`, e o backend valida tipo basico,
-    aplica rate limit e retransmite via PubSub para o outro usuario.
+11. Offer viaja pelo evento `lobby_signal` **no canal** `p2p:<session_token>`;
+    o `P2PChannel` valida (`Calls.SignalValidation`), aplica rate limit,
+    registra para replay e retransmite via PubSub `lobby:<token>` — o canal do
+    outro lado empurra para o browser dele.
 12. Answerer aplica remote offer, drena ICE pendente, cria answer e envia
-    `lobby_signal`.
+    `lobby_signal` pelo mesmo canal.
 13. Initiator aplica answer, drena ICE pendente e termina negociacao.
 14. ICE candidates sao trocados; candidates que chegam cedo ficam em
     `pendingIceCandidates` ate haver `remoteDescription`.
 15. Quando `connectionState` vira `connected`, cada hook envia
-    `lobby_connected`; LiveView transiciona sessao para `connected`, abre
+    `lobby_connected` (para o LiveView: e ciclo de vida de sessao, nao fio);
+    LiveView transiciona sessao para `connected`, abre
     console e dispara `lobby_media_pc_ready`.
 16. `LobbyMediaHook` drena comandos pendentes e auto-inicia midia conforme
     `media_mode` escolhido no setup.
@@ -313,8 +323,9 @@ iniciador para que ele gere nova oferta.
   epoch ou offer antigos sao descartados.
 - `SessionServer` guarda snapshot em memoria do ultimo SDP, dos ultimos ICE
   candidates por papel e do ultimo `lobby_renegotiate`; o hook pode pedir
-  `lobby_signal_replay` quando startup/reconnect nao recebeu uma mensagem
-  critica.
+  `lobby_signal_replay` no canal quando startup/reconnect nao recebeu uma
+  mensagem critica — e o proprio join do canal ja devolve o replay, entao um
+  rejoin automatico do Phoenix depois de queda de socket recupera sozinho.
 - Replay P2P e idempotente no browser: offers/answers/candidates ja aplicados
   sao ignorados por `offer_id`, SDP ou chave de ICE candidate.
 - Painel de stats P2P mostra diagnostico de recovery e handshake:
@@ -372,9 +383,10 @@ iniciador para que ele gere nova oferta.
   enquanto a sessao base segue conectada.
 - Falha repetida de ICE candidate ficando invisivel no console: resolvido com
   agregacao no hook e entrada no mesmo ciclo de retry/falha.
-- Perda transitoria de `offer`/`answer`/ICE/`lobby_renegotiate` em
-  LiveView/PubSub: resolvida com snapshot/replay em memoria no `SessionServer`
-  e dedupe no hook.
+- Perda transitoria de `offer`/`answer`/ICE/`lobby_renegotiate` no transporte:
+  resolvida com snapshot/replay em memoria no `SessionServer` e dedupe no hook.
+  O fio deixou de ser o socket do LiveView (canal `p2p:<session_token>`), entao
+  um reload da pagina nao leva mais a negociacao junto.
 
 ### Riscos P2P remanescentes
 

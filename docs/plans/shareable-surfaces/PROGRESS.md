@@ -14,6 +14,7 @@ de onda no mesmo commit e anotar aqui por quê.
 | 1 — `/join/:slug` + card na conversa | ✅ commitada (`f0898719`) + card |
 | 2 — conferência | ✅ fechada: `CallLive` em dois hosts, `/call/:token`, filiação com contagem de superfícies |
 | 3 — space | ✅ fechada: `SpaceLive` em dois hosts, `/space/:slug`, roster na antessala |
+| 4A — P2P: o fio vira channel | ✅ fechada: `P2PChannel`, sem mudar uma tela |
 | 4 — P2P channel + superfície | ⬜ |
 | 5 — jogos / lobby aberto | ⬜ |
 | 6 — coordenação entre abas + bundle | ⬜ |
@@ -1293,5 +1294,130 @@ de apelido recusou, e o erro apareceu três telas adiante.
 com quatro `dataset.*`. Esta onda **não tocou uma linha de JS**, então nenhum dos
 quatro é meu, e regenerar seria assinar a deriva de outra pessoa. Ele não está no
 `make ci`.
+
+---
+
+## Iteração 16 — o fio do P2P sai do socket do LiveView (fase 4A)
+
+**Objetivo:** a sinalização 1:1 passa a andar por um Phoenix Channel cru, com o
+`ChatLive` ainda como host, e **nada muda para o usuário**. O critério da fase
+é literal: os specs de P2P verdes sem edição.
+
+### A régua que decidiu o que se muda, e ela encolheu a lista do plano
+
+O plano listava oito eventos. Com o código na frente, a régua é **o que viaja
+entre os dois pares**, e por ela três dos oito não são fio:
+
+* **`lobby_webrtc_ready`** parece fio e não é. Ele tem um ramo de
+  `reattach_pending`: quando outra janela ainda segura a vaga da sessão, o
+  LiveView não consegue entrar, guarda `client_webrtc_ready` e só marca prontidão
+  quando finalmente entra. Isso é estado do host. Movê-lo numa fase cuja promessa
+  é "nada muda" teria quebrado exatamente a recuperação mais frágil do produto.
+* **`lobby_connected`** é ciclo de vida de sessão: ele transiciona o
+  `SessionServer`, que então transmite — e o host reage à transmissão, como
+  sempre.
+* **`lobby_start_offer` / `lobby_start_answer` / `lobby_restart`** são comandos
+  do host para o próprio cliente, e o payload deles carrega `ice_servers`, `role`
+  e `turn_only`. `turn_only` é política de transporte que o host guarda e
+  persiste; mandar o canal computá-la exigiria dar ao canal um estado que ele não
+  tem. Eles se mudam na 4B, junto com o host.
+
+Saiu, então, exatamente o tráfego de alto volume: SDP, ICE, o pedido de
+renegociação e o replay. Que é o que precisava sobreviver a um reconnect do
+LiveView.
+
+### O replay vem na resposta do join, e isso resolveu um problema de gatilho
+
+`push_signal_replay` era chamado pelo host em dois lugares — quando o hook
+reportava ready, e quando o reattach finalmente conseguia entrar. Com o replay no
+canal, quem dispara? O host teria que mandar um comando ao cliente para que ele
+pedisse ao canal: um round trip a mais para uma pergunta que o cliente pode fazer
+sozinho.
+
+A saída foi apagar a pergunta: **entrar no canal é, por si só, dizer "estou
+ouvindo e posso ter perdido alguma coisa"**, então o replay rides na resposta do
+join. Isso também é o que faz o rejoin automático do Phoenix — depois de uma
+queda de socket — recuperar sozinho, sem nenhuma linha de rehydrate.
+
+### `lobby_connection.js` não mudou uma linha
+
+O controller já era port-shaped: `createLobbyConnection(el, { pushEvent })`. O
+hook virou o roteador — se o nome está em `SIGNAL_EVENTS`, vai pelo canal; se
+não, vai para o LiveView. As 1.155 linhas de negociação, epoch, offer_id e
+recuperação não foram tocadas, que era a única forma de a fase poder prometer o
+que prometeu.
+
+### O que só apareceu rodando
+
+1. **`log` não é uma função.** `assets/js/lib/logger.js` exporta um objeto com
+   `.debug/.warn/.error`, e eu escrevi `log(...)` seis vezes. Verde no lint,
+   vermelho no primeiro vitest que exercitou um caminho de erro — que é
+   exatamente o caminho que ninguém exercita à mão.
+2. **O limite de SDP é 256 KB, não 128.** O teste que provava a recusa mandava
+   200 KB e o servidor aceitava, corretamente. Um teste que "passa" porque o
+   número estava errado teria pinado o limite errado.
+3. **Um guard meu era código morto com um comentário mentindo.**
+   `connected_socket?/1` dizia que "um socket de teste não é um transporte" e
+   pulava a inscrição no tópico. Removê-lo deixou os 14 testes verdes — provando
+   que o comentário estava errado e o guard nunca fez nada. Um comentário que
+   afirma um fato do runtime é uma afirmação, e essa era falsa.
+4. **Dialyzer provou que uma cláusula defensiva minha era inalcançável.**
+   `join_error/1` tinha um catch-all com `Logger.debug` para um motivo que os
+   tipos garantem que nunca chega: as quatro razões do token e do lookup, mais a
+   frase da política, cobrem tudo. Apagada. Uma cláusula que nunca roda é uma
+   afirmação falsa sobre o que pode acontecer.
+5. **Um teste meu da onda 15 era flaky, e o `make ci` cobrou.**
+   "somebody arriving appears at the door" assertava num `render/1` logo depois
+   de um `Server.join`, com três saltos assíncronos no meio (servidor de canal →
+   servidor de space → tópico → superfície). Corrigido esperando a **mensagem**
+   (`assert_receive` no tópico do roster) e depois drenando a superfície com
+   `:sys.get_state` — que é a regra da casa, e que eu tinha seguido em todo lugar
+   menos ali. Rodado cinco vezes seguidas verde.
+
+### Firefox: a suíte não roda, e o motivo não é meu
+
+`browser.newContext({ permissions: ["microphone"] })` responde **`Unknown
+permission: microphone`** no Firefox do Playwright. Os 9 testes de mídia de
+`chat-p2p.spec.ts` falham em 57 ms cada, antes de abrir uma página. A suíte de
+P2P é Chromium por construção, e isso é anterior a esta onda.
+
+O risco §6 da onda diz, com razão, que trocar o transporte de sinalização é a
+classe de mudança que quebra só o Firefox. Então verifiquei a metade que dá para
+verificar: um spec descartável que **observa os frames do WebSocket** em vez da
+mídia — os dois lados entram em `p2p:<token>`, a offer sai pelo canal, a answer
+volta por ele, ninguém foi recusado. Verde em Chromium **e** em Firefox.
+
+A outra metade (ICE/DTLS no Firefox) continua sem cobertura, e continua escrita.
+
+### O critério da fase, medido
+
+`chat-p2p.spec.ts` + `chat-p2p-negotiation.spec.ts`: **15 de 16 verdes, sem uma
+linha editada**. A décima sexta — "the inviter cancels a pending invite from the
+status bar" — falha porque a janela maximizada do P2P cobre a barra de status do
+chat e o clique não alcança. Verificado com `git stash`: falha idêntica no
+`HEAD` anterior. É a mesma classe da falha pré-existente que a onda 2 registrou
+para o group call.
+
+### O `SURFACE.txt` foi regenerado, e varreu deriva junto
+
+Os eventos de sinalização saíram de "liveview-events" e entraram em
+"channel-events" — a mudança que o plano previu, e que obriga a regenerar. Junto
+vieram quatro `dataset.*` de deriva pré-existente que a onda 2 se recusou a
+assinar. Aqui não dava para separar: o arquivo é um snapshot único, e deixá-lo
+stale seria pior.
+
+### Verificação
+
+- 14 testes novos em `p2p_channel_test.exs`, 5 em `join_token_test.exs`, 9 no
+  vitest de `signaling_channel.js`.
+- Os testes de backpressure e de replay saíram do `p2p_session_flow_test.exs`
+  (32 restantes, verdes) e foram para o canal, com o motivo escrito no lugar
+  de onde saíram.
+- `guide/webrtc-p2p.md` §8.2 e `reference/call-handshake-resilience-map.md`
+  atualizados no mesmo commit que muda o transporte, senão passam a mentir.
+
+**Próximo:** fase 4B — `P2PLive` nos dois hosts, a sala de partida (host,
+`[Pronto]`, `[Iniciar]`) e a rota `/p2p/:token`. É aí que os três comandos que
+ficaram para trás se mudam, junto com o dono do `turn_only`.
 
 ---

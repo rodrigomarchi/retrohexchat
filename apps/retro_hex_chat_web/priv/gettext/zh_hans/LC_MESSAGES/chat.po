@@ -2940,33 +2940,33 @@ msgstr "你必须和NickServ确认身份才能使用ChanServ."
 msgid "min 10s for repeating timers"
 msgstr "重复计时器的分钟 10"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1258
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1212
 #, elixir-autogen, elixir-format
 msgid "%{nick} cancelled the P2P invite."
 msgstr "%{nick}取消了P2P邀请."
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1520
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1474
 #, elixir-autogen, elixir-format
 msgid "%{nick} declined the P2P invite."
 msgstr "%{nick}拒绝了P2P邀请."
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:561
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1377
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:547
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1331
 #, elixir-autogen, elixir-format
 msgid "%{nick} ended the P2P session."
 msgstr "%{nick}结束P2P会话."
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1995
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1913
 #, elixir-autogen, elixir-format
 msgid "%{peer} declined the P2P invite."
 msgstr "%{peer}拒绝了P2P邀请."
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:2004
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1922
 #, elixir-autogen, elixir-format
 msgid "%{peer} left the P2P session."
 msgstr "%{peer}离开P2P会话."
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:845
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:799
 #, elixir-autogen, elixir-format
 msgid "%{peer} lost the P2P connection — waiting for them to return..."
 msgstr "%{peer}失去了P2P连接——等待他们返回......"
@@ -2997,7 +2997,7 @@ msgstr "聊天"
 msgid "Choose your character"
 msgstr "选择您的字符"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:421
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:407
 #, elixir-autogen, elixir-format
 msgid "Could not load the game. Please try again."
 msgstr "无法装入游戏 。 请再试一次"
@@ -3022,7 +3022,7 @@ msgstr "循环自动、 聚焦、 分割、 扬声器和压缩布局"
 msgid "Cycle P2P Self View"
 msgstr "循环 P2P 自视图"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:2108
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:2026
 #, elixir-autogen, elixir-format
 msgid "Default device"
 msgstr "默认设备"
@@ -3043,7 +3043,7 @@ msgstr "结束 P2P 会话"
 msgid "Entering channel space..."
 msgstr "正在进入频道空间..."
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:953
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:907
 #, elixir-autogen, elixir-format
 msgid "Game request declined."
 msgstr "游戏请求被拒绝 。"
@@ -3074,12 +3074,12 @@ msgstr "打开私人房间..."
 msgid "P2P"
 msgstr "P2P"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:500
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:486
 #, elixir-autogen, elixir-format
 msgid "P2P Sessions in Chat"
 msgstr "P2P 聊天会话"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:159
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:145
 #, elixir-autogen, elixir-format
 msgid "P2P connection failed."
 msgstr "P2P 连接失败 。"
@@ -3101,8 +3101,8 @@ msgstr "P2P 会话活动"
 msgid "P2P session connecting"
 msgstr "P2P 会话连接"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:2001
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:2010
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1919
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1928
 #, elixir-autogen, elixir-format
 msgid "P2P session with %{peer} ended."
 msgstr "P2P会话的%{peer}结束."
@@ -3133,12 +3133,12 @@ msgstr "P2P:连接到%{peer}."
 msgid "P2P: waiting for %{peer}..."
 msgstr "P2P:等待%{peer}."
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:261
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:247
 #, elixir-autogen, elixir-format
 msgid "Privacy mode disabled."
 msgstr "隐私模式已禁用 。"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:260
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:246
 #, elixir-autogen, elixir-format
 msgid "Privacy mode enabled — the P2P connection will use the relay."
 msgstr "启用隐私模式——P2P连接将使用中继器."
@@ -3154,7 +3154,7 @@ msgstr "私人空间"
 msgid "Space"
 msgstr "空间"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:493
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:479
 #, elixir-autogen, elixir-format
 msgid "Start a P2P session with /p2p <nick>, or right-click a user in the nicklist."
 msgstr "用 /p2p <nick> 启动一个 P2P 会话,或在昵称列表中右键单击一个用户."
@@ -3169,17 +3169,17 @@ msgstr "启动、 暂停或恢复您的 P2P 相机"
 msgid "Stop only the call media; the P2P session stays open"
 msgstr "只停止调用媒体; P2P 会话保持开放"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1998
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1916
 #, elixir-autogen, elixir-format
 msgid "The P2P invite was cancelled."
 msgstr "P2P邀请被取消."
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:2007
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1925
 #, elixir-autogen, elixir-format
 msgid "The P2P session expired."
 msgstr "P2P会话结束."
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1026
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:980
 #, elixir-autogen, elixir-format
 msgid "The P2P session will expire soon due to inactivity."
 msgstr "由于不开展活动,P2P会议将很快结束。"
@@ -3189,14 +3189,14 @@ msgstr "由于不开展活动,P2P会议将很快结束。"
 msgid "The game window was blocked. Allow pop-ups for this site and try again."
 msgstr "游戏窗口受阻. 允许弹出到这个站点再试一次 。"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:816
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:770
 #, elixir-autogen, elixir-format
 msgid "The other user"
 msgstr "另一个用户"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1948
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1970
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1973
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1866
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1888
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1891
 #, elixir-autogen, elixir-format
 msgid "This P2P invite is no longer active."
 msgstr "此P2P邀请已不活动 。"
@@ -3249,7 +3249,7 @@ msgstr "游戏活动"
 msgid "session ready"
 msgstr "会议准备就绪"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1991
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1909
 #, elixir-autogen, elixir-format
 msgid "the other user"
 msgstr "另一个用户"
@@ -3313,7 +3313,7 @@ msgstr "P2P 聊天会话"
 msgid "P2P Session Console"
 msgstr "P2P 聊天会话"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1548
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1502
 #, elixir-autogen, elixir-format
 msgid "P2P session connected - call, files, games and stats are available."
 msgstr "P2P会话连接——电话,文件和游戏均可使用."
@@ -3387,7 +3387,7 @@ msgstr "土耳其"
 msgid "Users"
 msgstr "用户"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:813
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:767
 #, elixir-autogen, elixir-format
 msgid "%{peer} accepted the P2P request - connecting..."
 msgstr "%{peer}接受了P2P请求 - 连接."
@@ -3402,7 +3402,7 @@ msgstr "自动加入"
 msgid "P2P request"
 msgstr "P2P请求"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1500
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1454
 #, elixir-autogen, elixir-format
 msgid "P2P request accepted - connecting..."
 msgstr "接受 P2P 请求 - 连接..."
@@ -3489,7 +3489,7 @@ msgstr "终端 ID 无效。"
 msgid "Session ended."
 msgstr "会话已结束。"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1722
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1675
 #, elixir-autogen, elixir-format
 msgid "This P2P session is still active in another window. Close that window or end this session here."
 msgstr "此 P2P 会话在另一个窗口中仍然有效。请关闭该窗口，或在此结束会话。"
@@ -3939,8 +3939,8 @@ msgstr "计量"
 msgid "OS Data"
 msgstr "OS 数据"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1957
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1961
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1875
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1879
 #, elixir-autogen, elixir-format
 msgid "P2P action failed: %{reason}"
 msgstr "P2P 动作失败: %{reason}"
@@ -3960,7 +3960,7 @@ msgstr "进程"
 msgid "Sockets"
 msgstr "袜子"
 
-#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1952
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:1870
 #, elixir-autogen, elixir-format
 msgid "This P2P session is already active in another window."
 msgstr "P2P 会话已经在另一个窗口中活动 。"
@@ -4048,3 +4048,8 @@ msgstr "该空间已不可用。"
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "你需要先加入 %{channel} 才能进入它的空间。"
+
+#: lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex:117
+#, elixir-autogen, elixir-format
+msgid "The P2P signaling channel refused this session."
+msgstr "P2P 信令通道拒绝了此会话。"

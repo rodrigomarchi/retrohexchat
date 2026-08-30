@@ -22,23 +22,6 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
   # busy.
   @event_timeout 5_000
 
-  defmodule AlwaysLimited do
-    @moduledoc false
-    @behaviour RetroHexChat.P2P.SignalingRateLimit
-
-    @retry_after_ms 4_200
-
-    @impl true
-    @spec check_signal_rate(String.t(), integer()) :: {:error, {:rate_limited, pos_integer()}}
-    def check_signal_rate(_token, _user_id), do: {:error, {:rate_limited, @retry_after_ms}}
-  end
-
-  defp limit_all_signals do
-    previous = Application.get_env(:retro_hex_chat, :signaling_rate_limiter)
-    Application.put_env(:retro_hex_chat, :signaling_rate_limiter, AlwaysLimited)
-    on_exit(fn -> Application.put_env(:retro_hex_chat, :signaling_rate_limiter, previous) end)
-  end
-
   defp register(nickname) do
     {:ok, nick} =
       %RegisteredNick{}
@@ -1027,67 +1010,6 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       assert event == CallEvents.recovery_transition_event()
     end
 
-    test "signal replay request returns stored remote SDP and ICE", %{conn: conn} do
-      ctx = mount_pair(conn, "p2phi#{uid()}", "p2phj#{uid()}")
-      session = invite(ctx)
-      accept_invite(ctx, session.token)
-      flush(ctx.view_a)
-
-      assert :ok =
-               Lobby.record_signaling_event(session.token, ctx.a.id, "lobby_signal", %{
-                 type: "offer",
-                 sdp: "offer-sdp",
-                 epoch: 2,
-                 offer_id: "p2p-2-1",
-                 from: ctx.a.id
-               })
-
-      assert :ok =
-               Lobby.record_signaling_event(session.token, ctx.a.id, "lobby_signal", %{
-                 type: "ice-candidate",
-                 candidate: %{
-                   "candidate" => "candidate:1 1 udp 1 127.0.0.1 9 typ host",
-                   "sdpMid" => "0"
-                 },
-                 epoch: 2,
-                 from: ctx.a.id
-               })
-
-      attach_call_telemetry()
-
-      render_click(ctx.view_b, "lobby_signal_replay_request", %{
-        "reason" => "test_replay",
-        "epoch" => "2",
-        "attempt" => "1"
-      })
-
-      assert_receive {:call_telemetry, event, %{count: 1},
-                      %{
-                        surface: "p2p",
-                        action: "served",
-                        reason: "test_replay",
-                        attempt: 1,
-                        event_count: 2
-                      }}
-
-      assert event == CallEvents.signaling_replay_event()
-
-      assert_push_event(
-        ctx.view_b,
-        "lobby_signal_replay",
-        %{
-          reason: "test_replay",
-          request_epoch: 2,
-          attempt: 1,
-          events: [
-            %{event: "lobby_signal", payload: %{type: "offer", replay: true}},
-            %{event: "lobby_signal", payload: %{type: "ice-candidate", replay: true}}
-          ]
-        },
-        @event_timeout
-      )
-    end
-
     test "rehydrate waits for a stale owner and reattaches when the slot is free",
          %{conn: conn} do
       ctx = mount_pair(conn, "p2pha#{uid()}", "p2phb#{uid()}")
@@ -1408,45 +1330,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     end
   end
 
-  describe "signaling backpressure" do
-    test "a rate-limited signal is reported back to the sender", %{conn: conn} do
-      ctx = mount_pair(conn, "p2prla#{uid()}", "p2prlb#{uid()}")
-      session = invite(ctx)
-      accept_invite(ctx, session.token)
-      flush(ctx.view_a)
-      limit_all_signals()
-      attach_call_telemetry()
-
-      render_click(ctx.view_a, "lobby_signal", %{"type" => "offer", "sdp" => "offer-sdp"})
-
-      assert_push_event(
-        ctx.view_a,
-        "lobby_signal_rejected",
-        %{code: "rate_limited", phase: "signal", retry_after_ms: 4_200},
-        @event_timeout
-      )
-
-      assert_receive {:call_telemetry, event, %{count: 1},
-                      %{surface: "p2p", code: "rate_limited", phase: "signal"}}
-
-      assert event == CallEvents.client_error_event()
-    end
-
-    test "a rate-limited renegotiation request is reported back to the sender", %{conn: conn} do
-      ctx = mount_pair(conn, "p2prlc#{uid()}", "p2prld#{uid()}")
-      session = invite(ctx)
-      accept_invite(ctx, session.token)
-      flush(ctx.view_b)
-      limit_all_signals()
-
-      render_click(ctx.view_b, "lobby_renegotiate", %{"kinds" => ["audio"]})
-
-      assert_push_event(
-        ctx.view_b,
-        "lobby_signal_rejected",
-        %{code: "rate_limited", phase: "renegotiate", retry_after_ms: 4_200},
-        @event_timeout
-      )
-    end
-  end
+  # The signaling backpressure tests moved to `channels/p2p_channel_test.exs`
+  # with the wire itself: rate limiting and validation happen where the signal
+  # arrives, and it no longer arrives here.
 end

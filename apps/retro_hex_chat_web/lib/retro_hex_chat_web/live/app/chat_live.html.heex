@@ -1172,7 +1172,22 @@
   id={"p2p-session-#{@p2p_session.token}"}
   class="hidden"
 >
-  <div id="lobby-webrtc" phx-hook="LobbyWebRTCHook" phx-update="ignore" data-testid="p2p-webrtc">
+  <%!-- The signaling wire is a channel of its own, joined with this token:
+        SDP and ICE stopped riding the LiveView's socket, so a reload of the
+        page no longer takes the negotiation with it. --%>
+  <div
+    id="lobby-webrtc"
+    phx-hook="LobbyWebRTCHook"
+    phx-update="ignore"
+    data-testid="p2p-webrtc"
+    data-session-token={@p2p_session.token}
+    data-join-token={
+      RetroHexChatWeb.ChatLive.P2PSessionEvents.signaling_join_token(
+        @p2p_session,
+        @session.nickname
+      )
+    }
+  >
   </div>
 </div>
 

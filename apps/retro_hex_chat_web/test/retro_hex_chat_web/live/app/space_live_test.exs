@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChat.ShareLinks
+  alias RetroHexChat.Topics
   alias RetroHexChat.VirtualSpace
   alias RetroHexChat.VirtualSpace.ChannelJoinToken
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
@@ -271,9 +272,21 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       {:ok, view, _html} = conn |> chat_conn(nickname) |> live(path(channel))
       assert VirtualSpace.roster(channel) == [nickname]
 
+      # Wait for the roster message itself rather than for a render: the arrival
+      # travels channel server → space server → topic → surface, and asserting
+      # on a render straight after the join is asserting that three hops already
+      # happened.
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.space_roster(channel))
+
       other = "Peer#{uid()}" |> String.slice(0, 16)
       {:ok, _state} = Server.join(channel, other)
 
+      assert_receive {:space_roster, %{participants: participants}}, 2_000
+      assert other in participants
+
+      # The surface has the same message queued behind the one just received, so
+      # a synchronous call to it is what makes the render current.
+      assert other in :sys.get_state(view.pid).socket.assigns.roster
       assert render(view) =~ other
     end
 
