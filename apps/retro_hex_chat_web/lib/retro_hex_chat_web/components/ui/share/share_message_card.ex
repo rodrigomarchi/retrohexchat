@@ -47,10 +47,17 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
   end
 
   defp icon_name(_subject, %{kind: "play"}), do: :icon_game_pong
+  defp icon_name(_subject, %{kind: "call"}), do: :icon_protocol_conference_compact
+  defp icon_name(_subject, %{kind: "space"}), do: :icon_community
   defp icon_name(_subject, _card), do: :icon_hex_stone
 
+  # The heading says what kind of room it is and never which one. A channel
+  # name here would appear in a conversation whose readers may not be in that
+  # channel, which is the same rule the subtitle follows.
   defp heading(%{name: name}, _card) when is_binary(name), do: name
   defp heading(_subject, %{kind: "play"}), do: dgettext("share", "A game")
+  defp heading(_subject, %{kind: "call"}), do: dgettext("share", "A conference")
+  defp heading(_subject, %{kind: "space"}), do: dgettext("share", "A virtual space")
   defp heading(_subject, _card), do: dgettext("share", "An invitation")
 
   # The subtitle says who, not where: a channel name here would show up in a

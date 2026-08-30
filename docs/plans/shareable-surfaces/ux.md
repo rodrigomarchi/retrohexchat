@@ -184,7 +184,6 @@ só ganha o roster.
 
 ```
 ┌─ Space · #retro ───────────────────────────── [_][□][X] ┐
-│ Sessão   Space   Exibir   Ajuda                         │
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
 │              Escolha seu personagem                     │
@@ -193,20 +192,32 @@ só ganha o roster.
 │     │ ▓ │ │   │ │   │ │   │ │   │ │   │ │   │           │
 │     └───┘ └───┘ └───┘ └───┘ └───┘ └───┘ └───┘           │
 │      herói                                              │
+│     ─────────────────────────────────────────           │
+│      Lá dentro agora                                    │
+│      ana · bob · carla                                  │
 │                                                         │
-│              Lá dentro agora                            │
-│              ana · bob · carla · +4                     │
+│      [ Compartilhar ]        [ Abrir em uma aba ]       │
 │                                                         │
 ├─────────────────────────────────────────────────────────┤
-│            [ ← ao chat ]            [ Entrar ]          │
+│ ← Chat                                    3 no space    │
 └─────────────────────────────────────────────────────────┘
 ```
 
 Um space não começa nem termina. Ele é um lugar, e a antessala dele é a porta.
 
-**O que é novo:** "lá dentro agora". O seletor é
-`components/ui/space_character_select.ex`, que já existe e já é o primeiro estado
-ao entrar no space (`chat_live.ex:353-357`).
+**Não existe `[Entrar]` separado: escolher o personagem É entrar.** O card do
+personagem é a porta, e um passo de confirmação depois dele seria exatamente a
+cerimônia que P5 recusa. (Corrigido em 2026-08-30, onda 3: o desenho original
+desta seção mostrava um `[Entrar]` no rodapé e contradizia o próprio P5.)
+
+**O que é novo:** "lá dentro agora", e o rodapé que o host preenche —
+**Compartilhar** em ambos, **Abrir em uma aba** só quando ainda se está no chat.
+A barra de compartilhar mora aqui e não sobre o mapa: uma barra sobre o mapa
+tiraria pixels da coisa que a pessoa veio ver, e o seletor é a única tela que os
+dois hosts mostram todas as vezes.
+
+O seletor é `components/ui/space_character_select.ex`, que já existe e já é o
+primeiro estado ao entrar no space.
 
 ### 2.5 Sala de partida — jogo multiplayer e sessão P2P
 
@@ -265,23 +276,31 @@ janela fixada e maximizada** — a mesma forma que `/chat` tem hoje.
 
 ```
 ┌─ Space · #retro ───────────────────────────── [_][□][X] ┐
-│ Sessão   Space   Exibir   Ajuda                         │
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
 │              ╱╲    ╱╲    ╱╲                             │
 │             ╱  ╲  ╱  ╲  ╱  ╲     ▓ ana                  │
 │            ╱ ▓  ╲╱    ╲╱    ╲                           │
 │            ╲ você ╲   ╱╲    ╱      ▓ bob                │
-│             ╲    ╱╲ ╱  ╲  ╱                             │
-│              ╲  ╱  ╲    ╲╱                              │
-│                                                         │
+│             ╲    ╱╲ ╱  ╲  ╱                  [↑]        │
+│              ╲  ╱  ╲    ╲╱                 [←][→]  (⚔)  │
+│                                              [↓]        │
 ├─────────────────────────────────────────────────────────┤
-│ [↖][↗][↙][↘]                        [ ← ao chat ] [Sair]│
-├─────────────────────────────────────────────────────────┤
-│ #retro · plataforma norte                    7 no space │
+│ ← Chat                                       7 no space │
 └─────────────────────────────────────────────────────────┘
- ▓ Iniciar │ [◱] Space #retro │                │ 14:32
 ```
+
+A superfície do space é o mapa e nada mais: o pad de direção fica **sobre** o
+canvas, onde sempre esteve, e o rodapé é a barra de status da janela. Duas
+diferenças em relação às outras duas superfícies, e ambas porque um space é um
+lugar e não um evento:
+
+* **não há `[Sair]`.** Não existe sessão para encerrar — sair de um lugar é
+  andar para fora dele, e `← Chat` já é essa porta. Um diálogo de confirmação
+  para fechar algo que não está sendo desmontado seria cerimônia.
+* **o botão de tela cheia não aparece.** Numa aba própria a página já é o space;
+  ele continua existindo no modo embutido, onde o mapa vive espremido dentro de
+  uma aba dentro de uma janela.
 
 Três coisas valem para as três superfícies:
 
@@ -291,7 +310,8 @@ Três coisas valem para as três superfícies:
    desktop: "a bandeja fala pela máquina; isto fala pela janela".
 3. **`[Sair]` pede confirmação e é o único caminho terminal.** Fechar a aba do
    navegador é saída inesperada: `disconnect_call`, janela de reconexão
-   preservada.
+   preservada. **Não vale para o space**, que não tem nada de terminal: ver
+   §2.6 acima.
 
 ### 2.7 O que muda no chat
 

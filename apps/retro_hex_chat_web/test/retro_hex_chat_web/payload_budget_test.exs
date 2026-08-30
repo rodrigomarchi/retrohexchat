@@ -85,6 +85,25 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
     end
   end
 
+  describe "/space/:slug" do
+    setup %{conn: conn} do
+      {nickname, path} = open_space()
+      %{html: html_for(session_conn(conn, nickname), path)}
+    end
+
+    test "stays inside its byte budget", %{html: html} do
+      assert byte_size(html) <= PerfBudgets.html_bytes(:space)
+    end
+
+    test "stays inside its DOM node budget", %{html: html} do
+      assert PerfBudgets.count_elements(html) <= PerfBudgets.dom_nodes(:space)
+    end
+
+    test "references the sprite instead of carrying the drawings", %{html: html} do
+      assert PerfBudgets.count(html, "<use href=") == PerfBudgets.count(html, "<svg")
+    end
+  end
+
   describe "every surface" do
     test "ships no icon art inline", %{conn: conn} do
       for path <- [~p"/connect", ~p"/chat/help"] do
@@ -132,6 +151,22 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
     end)
 
     {nickname, "/call/#{token}"}
+  end
+
+  # The space surface is measured at its antechamber, which is the state
+  # everyone arrives in and the only one a dead render can show: the canvas
+  # exists after a character is chosen, and choosing needs a connected socket.
+  defp open_space do
+    nickname = "Budget#{System.unique_integer([:positive])}" |> String.slice(0, 16)
+    channel = "#budget#{System.unique_integer([:positive])}"
+    {:ok, channel_pid} = Supervisor.start_child(channel)
+    {:ok, _state} = Server.join(channel, nickname)
+
+    on_exit(fn ->
+      if Process.alive?(channel_pid), do: Supervisor.stop_child(Supervisor, channel_pid)
+    end)
+
+    {nickname, "/space/" <> RetroHexChatWeb.SpaceRef.slug(channel)}
   end
 
   defp stop_quietly(pid) do

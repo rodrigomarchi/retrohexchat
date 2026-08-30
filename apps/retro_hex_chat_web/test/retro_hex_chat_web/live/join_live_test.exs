@@ -10,7 +10,11 @@ defmodule RetroHexChatWeb.JoinLiveTest do
 
   @moduletag :liveview
 
+  alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Channels.Supervisor
   alias RetroHexChat.ShareLinks
+  alias RetroHexChat.VirtualSpace
+  alias RetroHexChatWeb.App.Paths
 
   setup do
     nick = "Sharer#{uid()}"
@@ -49,6 +53,60 @@ defmodule RetroHexChatWeb.JoinLiveTest do
              |> render()
              |> Floki.parse_fragment!()
              |> Floki.attribute("href") == ["/play/hex_pong"]
+    end
+  end
+
+  # A space is the one kind that is never dead: it is a place rather than an
+  # event, so its address stays good even when nobody is standing in it.
+  describe "a link to a space" do
+    setup do
+      channel = "#join#{uid()}"
+      {:ok, channel_pid} = Supervisor.start_child(channel)
+
+      on_exit(fn ->
+        if Process.alive?(channel_pid) do
+          Supervisor.stop_child(Supervisor, channel_pid)
+        end
+      end)
+
+      %{channel: channel}
+    end
+
+    test "points a signed-in visitor at the space itself", ctx do
+      %{conn: conn, channel: channel} = ctx
+      slug = share(ctx, "space", %{"space_id" => channel, "mode" => "channel"})
+
+      {:ok, view, _html} = conn |> chat_conn(ctx.nick) |> live(~p"/join/#{slug}")
+
+      assert view
+             |> element(~s([data-testid="join-enter"]))
+             |> render()
+             |> Floki.parse_fragment!()
+             |> Floki.attribute("href") == [Paths.space_path(channel)]
+    end
+
+    test "names a channel a stranger could have found anyway", ctx do
+      %{conn: conn, channel: channel} = ctx
+      {:ok, _state} = Server.join(channel, ctx.nick)
+      slug = share(ctx, "space", %{"space_id" => channel, "mode" => "channel"})
+
+      {:ok, _view, html} = live(conn, ~p"/join/#{slug}")
+
+      assert html =~ channel
+    end
+
+    # The id of a private space is its two participants, so the card says
+    # nothing at all about which one it is.
+    test "a private space names nobody", ctx do
+      %{conn: conn} = ctx
+      space_id = VirtualSpace.direct_message_space_id("zoltar", "brunhilde")
+      slug = share(ctx, "space", %{"space_id" => space_id, "mode" => "direct_message"})
+
+      {:ok, _view, html} = live(conn, ~p"/join/#{slug}")
+
+      assert html =~ "A private space"
+      refute html =~ "zoltar"
+      refute html =~ "brunhilde"
     end
   end
 

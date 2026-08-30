@@ -6,14 +6,14 @@ aconteceu quando fizemos — em especial **o que o plano errou**.
 Quando o plano e a realidade discordarem, a realidade ganha: corrigir o arquivo
 de onda no mesmo commit e anotar aqui por quê.
 
-**Estado atual:** onda 0 concluída e commitada (`3076e54e`, `make ci` 17/17). Onda 1 em andamento — o domínio `ShareLinks` existe.
+**Estado atual:** ondas 0 a 3 fechadas.
 
 | Onda | Estado |
 |---|---|
 | 0 — identidade multi-aba + `/play/:game` | ✅ `make ci` 17/17 |
 | 1 — `/join/:slug` + card na conversa | ✅ commitada (`f0898719`) + card |
 | 2 — conferência | ✅ fechada: `CallLive` em dois hosts, `/call/:token`, filiação com contagem de superfícies |
-| 3 — space | ⬜ |
+| 3 — space | ✅ fechada: `SpaceLive` em dois hosts, `/space/:slug`, roster na antessala |
 | 4 — P2P channel + superfície | ⬜ |
 | 5 — jogos / lobby aberto | ⬜ |
 | 6 — coordenação entre abas + bundle | ⬜ |
@@ -1139,5 +1139,159 @@ justamente quando a saída tinha funcionado.
 
 Onda 2 **fechada**. `make ci` verde, 8 testes novos em `surfaces_test.exs`, 11
 em `call_live_test.exs`, 801 de LiveView sem edição.
+
+---
+
+## Iteração 15 — o space ganha endereço, e uma medição desmente o plano
+
+**Objetivo:** onda 3 inteira — separar o read-model de conversa, `SpaceLive` nos
+dois hosts, a rota `/space/:slug` e o `kind: "space"` no `JoinLive`.
+
+### A régua da onda 2, aplicada de novo — e o plano listava dois a mais
+
+A onda 3 mandava mover quatro assigns. Com o código na frente, dois ficam, e o
+motivo é a própria régua ("se o dado só existe enquanto você está dentro, ele
+vai"):
+
+* **`channel_view`** é qual aba da conversa está na tela. Existe para quem está
+  olhando a barra de abas, não para quem está dentro. Fica.
+* **`space_last_avatar`** é a memória do último personagem — e ela **sobrevive a
+  cada visita**. O `SpaceLive` é montado de novo toda vez que a aba abre, então
+  uma memória guardada dentro dele duraria uma visita só, e o help promete o
+  contrário há meses ("o seletor mostra de novo a cada entrada, com a sua última
+  escolha"). Quem sobrevive é o chat, então é o chat que lembra: o filho manda
+  `{:space_surface_avatar, avatar}` para cima e o pai devolve na `session` do
+  próximo `live_render`.
+
+### Nenhum `Host` novo, e o porquê está escrito
+
+A onda 2 deixou em aberto se o `CallLive.Host` sobe para `Live.SurfaceHost` ou
+ganha um irmão. A resposta, com o space na frente: **nenhum dos dois ainda**. O
+`Host` existe para os três desvios da chamada — um aviso, uma janela, e o que o
+host desenha sobre a chamada — e o space não tem nenhum: ele nunca foi janela,
+não emite aviso em runtime, e o chat não desenha nada sobre um space em que não
+está. Promover agora seria um módulo compartilhado com um usuário só. A onda 4
+decide com três pontos de dado.
+
+O que o space precisa é de duas mensagens para cima, e elas viraram
+`ChatLive.SpaceEvents`, um hook de `handle_info` como o do group call.
+
+### O tópico do space é um firehose, e a antessala não podia assinar
+
+O roster da antessala tem que se mexer sozinho. O tópico `space:#canal` carrega
+**um delta de movimento por passo de cada personagem** — assinar isso para
+desenhar uma lista de nomes é exatamente o erro que a onda 2 corrigiu criando
+`channel_calls`.
+
+Então: `Topics.space_roster/1`, publicado de `update_participant_counts/1` — o
+único ponto por onde toda mudança de presença do space já passava. Um publicador,
+um tópico pequeno, dois assinantes (a antessala agora; o card ao vivo do chat
+depois). O teste que prova que vale a pena é o que anda um passo e exige silêncio
+no tópico do roster.
+
+### Uma surpresa do domínio que mudou o desenho da antessala
+
+O primeiro teste do roster falhou dizendo que "ana" e "bob" já estavam dentro de
+um space que ninguém tinha aberto. Não era bug: **num space de canal, todo membro
+do canal é desenhado no mapa**, viewer ou não (`add_channel_member` entra com
+`online?: true`). O roster está certo — são exatamente os personagens que você
+veria ao entrar.
+
+Isso tem uma consequência boa: `VirtualSpace.roster/1` pode responder para um
+space **sem processo nenhum**, lendo os membros do canal. Ligar um mundo só para
+perguntar quem está nele seria pior que ler a resposta fria — e sem isso a
+antessala dizia "ninguém está aqui ainda" para um canal cheio, que é a primeira
+coisa que o teste pegou.
+
+### O endereço: `/space/:slug`, e o slug é o id codificado
+
+Um space não tem token porque não tem sessão: ele não começa nem termina, então o
+que um link nomeia é o **lugar**. O id é `#canal` ou `dm:a:b`, e nenhum dos dois
+cabe cru num segmento de caminho — `#` é delimitador de fragmento, e um nome de
+canal privado lido da barra de endereços vaza o que o `ux.md` §2.2 diz para não
+vazar.
+
+`RetroHexChatWeb.SpaceRef` codifica, decodifica, **e** monta o id do elemento —
+porque é a mesma codificação, e `space_dom_id/1` é contrato com o
+`SpaceCanvasHook` e com quatro specs. Escrevê-la duas vezes é como as duas
+divergem em silêncio. Teste próprio, incluindo o round-trip e as três formas de
+slug inválido.
+
+### Três defeitos que só apareceram rodando
+
+1. **`members` é lista de tuplas, não mapa.** `Map.has_key?(members, nickname)`
+   estourou `BadMapError` no primeiro teste de política. O `CallLive` já fazia
+   `Enum.reduce` sobre a mesma forma; eu escrevi a versão que parecia certa.
+   Corrigido comparando em minúsculas, que é a comparação que o próprio space faz
+   quando o canvas entra.
+2. **A barra Share sumia junto com a antessala.** O spec de screenshot tentou ler
+   a URL depois de entrar no space e não achou nada — porque a barra vive na
+   porta, e depois de entrar a porta não está mais lá. É o desenho certo (uma
+   barra sobre o mapa tira pixels da coisa que a pessoa veio ver); o spec é que
+   lia tarde.
+3. **`Share` e `Abrir em uma aba` com alturas diferentes.** Só o screenshot
+   mostrava: um era botão automático e o outro um bloco de largura total. Nenhum
+   teste olha isso.
+
+### A medição que desmente o plano
+
+A onda 3 dizia que "o ganho de event loop aqui é o maior de todos". Medido
+(Chromium, Apple Silicon, servidor local, 100 mensagens de canal em 8 s):
+
+| | aba própria | mesma aba |
+|---|---|---|
+| frames desenhados pelo space em 8 s | 2.466 | 2.098 |
+| p50 / p95 / máximo do intervalo entre frames | 8 / 9 / 14 ms | 8 / 10 / 16 ms |
+| intervalos acima de 50 ms | 0 | 0 |
+
+O isolamento existe — 17,5% mais frames — mas **ninguém sente**: nem um único
+intervalo acima de 50 ms nos dois modos, p50 idêntica. O stream do chat não
+chega perto de fazer o space engasgar nesta máquina. O ganho de event loop é um
+teto, não um alívio; o que justifica a aba própria é o que a onda 0 mediu
+(1.203 ms contra 12 ms quando a outra aba trava de verdade), mais o endereço e a
+sobrevivência.
+
+Escrito no arquivo da onda em vez de escondido. A intuição estava otimista, e a
+medição é quem decide.
+
+### Uma primeira tentativa de medir que não mediu nada
+
+`PerformanceObserver({entryTypes: ["longtask"]})` na aba do chat devolveu zero
+long tasks nas três configurações. Não é que não haja custo: é que nada passou de
+50 ms, que é o piso da API. Trocado por intervalos entre frames de `rAF`, que
+tem resolução para o que estava acontecendo.
+
+Armadilha adjacente: uma aba em segundo plano tem o `rAF` estrangulado pelo
+navegador, então medir "a aba do chat enquanto o space roda atrás" mede o
+estrangulamento e não o custo. A medição que sobrou põe **o space na frente** nos
+dois modos, que é a única comparação justa.
+
+### Um `а` cirílico num apelido de teste
+
+O spec de medição falhou com "element(s) not found" no `/connect`. O prefixo do
+apelido era `"ltа"` — com um `а` cirílico que entrou junto do texto. O validador
+de apelido recusou, e o erro apareceu três telas adiante.
+
+### Verificação
+
+- 18 testes em `space_live_test.exs` (montagem raiz), 6 em `space_surface_test.exs`
+  (a costura com o chat), 6 em `space_ref_test.exs`, 5 em `roster_test.exs`.
+- 1.529 testes web e 3.718 de domínio verdes.
+- `space_channel_test.exs` **inalterado** — o transporte não foi tocado, que era
+  a prova que a onda pedia.
+- Os cinco specs Playwright de space existentes, verdes sem edição; três novos
+  (`space-surface.spec.ts`, SP6–SP8) verdes em **Chromium e Firefox**.
+- `PerfBudgets.html_bytes(:space)` = 12.481 B raw / 2.991 B gzip, 107 elementos —
+  a menor superfície do app, porque o mundo que ela abre é um canvas que o
+  cliente preenche.
+- Screenshots (spec descartável, lida e apagada): a antessala nos dois hosts, o
+  space nos dois hosts, e o card público de um link de space.
+
+### O que continua vermelho e não é meu
+
+`assets/scripts/surface_snapshot.sh --check` segue reprovando no `HEAD`, agora
+com quatro `dataset.*`. Esta onda **não tocou uma linha de JS**, então nenhum dos
+quatro é meu, e regenerar seria assinar a deriva de outra pessoa. Ele não está no
+`make ci`.
 
 ---

@@ -55,6 +55,12 @@ defmodule RetroHexChatWeb.PerfBudgets do
   # `/play` because the antechamber is a form and a roster; the conference
   # panel itself only exists after the connected render.
   def html_bytes(:call), do: 29_000
+  # The space at an address of its own, measured at its antechamber — the state
+  # everyone arrives in, and the only one a dead render can show. 12_481 B raw /
+  # 2_991 B gzip and 107 elements measured on 2026-08-30, the smallest surface
+  # here: the world it opens onto is a canvas the client fills, so none of it is
+  # in the document.
+  def html_bytes(:space), do: 14_000
 
   @doc """
   The most elements a surface's dead render may contain.
@@ -65,6 +71,7 @@ defmodule RetroHexChatWeb.PerfBudgets do
   def dom_nodes(:chat), do: 600
   def dom_nodes(:play), do: 300
   def dom_nodes(:call), do: 260
+  def dom_nodes(:space), do: 120
 
   @doc """
   The longest a connected mount may block before it renders.

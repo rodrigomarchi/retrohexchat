@@ -7,6 +7,14 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
 
   @moduletag :liveview
 
+  # The space is its own LiveView, mounted into the conversation's region. The
+  # picker's buttons belong to that child, so a click has to be aimed at it —
+  # the parent's HTML carries the child's markup but not its event handlers.
+  defp space_view(view) do
+    _rendered = render(view)
+    Enum.find(live_children(view), &(&1.module == RetroHexChatWeb.App.SpaceLive))
+  end
+
   describe "desktop shell" do
     test "static render shows a boot loading state until LiveView connects", %{conn: conn} do
       html =
@@ -303,7 +311,10 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       assert has_element?(view, ~s([data-testid="space-character-select"]))
       refute has_element?(view, ~s([data-testid="channel-space-shell"]))
 
-      view
+      space = space_view(view)
+      assert space, "the Space tab renders the space surface as a child LiveView"
+
+      space
       |> element(~s([data-testid="space-avatar-knight"]))
       |> render_click()
 
@@ -347,7 +358,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       # Pick a character to dismiss the picker and mount the private-room canvas.
       assert has_element?(view, ~s([data-testid="space-character-select"]))
 
-      view
+      space_view(view)
       |> element(~s([data-testid="space-avatar-sorceress"]))
       |> render_click()
 

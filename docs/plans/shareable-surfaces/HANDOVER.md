@@ -1,7 +1,7 @@
 # Handover — superfícies compartilháveis
 
-Escrito em 2026-08-28 para retomar o trabalho com contexto zerado. Apagar
-quando a onda 6 fechar.
+Escrito em 2026-08-28, atualizado em 2026-08-30 para retomar o trabalho com
+contexto zerado. Apagar quando a onda 6 fechar.
 
 ---
 
@@ -11,8 +11,9 @@ quando a onda 6 fechar.
    D1–D6 arquitetura) e o mapa das ondas.
 2. [`ux.md`](ux.md) — **o desenho de todas as telas**. Quando uma onda e este
    arquivo discordarem, o arquivo está errado e é ele que muda primeiro.
-3. [`PROGRESS.md`](PROGRESS.md) — catorze iterações registradas, com os erros.
-   Leia pelo menos as iterações 7, 8, 10, 13 e 14: são armadilhas que vão voltar.
+3. [`PROGRESS.md`](PROGRESS.md) — quinze iterações registradas, com os erros.
+   Leia pelo menos as iterações 7, 8, 10, 13, 14 e 15: são armadilhas que vão
+   voltar.
 4. O arquivo da onda em que você vai mexer.
 
 E antes de tocar código: `AGENTS.md`, `CLAUDE.md` e as regras em
@@ -20,10 +21,10 @@ E antes de tocar código: `AGENTS.md`, `CLAUDE.md` e as regras em
 
 ---
 
-## 2. Estado em 2026-08-28
+## 2. Estado em 2026-08-30
 
-Working tree limpo. `main` está **8 commits à frente de `origin/main`** — nada
-foi empurrado, e empurrar é decisão do usuário.
+Working tree limpo. `main` está **à frente de `origin/main`** — nada foi
+empurrado, e empurrar é decisão do usuário.
 
 | Commit | O quê |
 |---|---|
@@ -34,77 +35,81 @@ foi empurrado, e empurrar é decisão do usuário.
 | `7dc8245a` | Onda 2 — passo 0: `App.GroupCallShape` extraído |
 | `0b665bb2` | Onda 2 — passo 1: read-model de canal separado do estar-dentro |
 | `5bb4091e` | Onda 2 — `CallLive` em dois hosts + `/call/:token` |
-| `7ebc554d` | docs — handover apontando para o que faltava |
-| (este) | Onda 2 — filiação com contagem de superfícies; **onda 2 fechada** |
+| `8bf8b202` | Onda 2 — filiação com contagem de superfícies; onda 2 fechada |
+| (este) | Onda 3 — `SpaceLive` em dois hosts, `/space/:slug`, roster na antessala |
 
 | Onda | Estado |
 |---|---|
 | 0 — identidade + `/play` | ✅ fechada |
 | 1 — `/join/:slug` + card | ✅ fechada |
 | 2 — conferência | ✅ fechada |
-| 3 — space | ⬜ **próxima** |
-| 4–6 | ⬜ |
+| 3 — space | ✅ fechada |
+| 4 — P2P channel + superfície | ⬜ **próxima** |
+| 5–6 | ⬜ |
 
-**O que já dá para testar à mão:** entrar no chat com nick registrado, entrar
-num canal, **Chamada** → a antessala abre *na janela* (não mais um diálogo) com
-quem já está dentro; entrar; **Share** acima do painel cria o link; colar numa
-conversa vira card; abrir o link noutro navegador sem sessão mostra o card
-público ("Uma chamada em #canal · N pessoas agora"); com sessão e filiação, ele
-leva a `/call/:token`, a conferência numa aba só dela. O resumo ao lado de
-Chamada também tem **Abrir em uma aba**.
+**O que já dá para testar à mão:** tudo o que a onda 2 entregava, mais — entrar
+num canal, abrir a aba **Space**, e no seletor de personagem ver **quem está lá
+dentro agora**, **Compartilhar** (que cria o link) e **Abrir em uma aba**. A aba
+própria é `/space/<slug>`: o mapa ocupa a janela inteira, sem botão de tela cheia
+(a página já é), com `← Chat` e a contagem na barra de status. O link colado numa
+conversa vira card, e aberto sem sessão mostra o card público ("O espaço de
+#canal · N pessoas agora").
 
 ---
 
 ## 3. O próximo passo, concreto
 
-**Onda 3 — o space em superfície própria** ([`wave-3-space-surface.md`](wave-3-space-surface.md)).
+**Onda 4 — P2P vira channel e ganha superfície**
+([`wave-4-p2p-channel-and-surface.md`](wave-4-p2p-channel-and-surface.md)).
 
-### A ordem, aprendida na onda 2
+Esta é a onda cara, e é por isso que ela ficou por último entre as features: a
+sinalização do P2P mora dentro do `ChatLive`, em
+`live/chat_live/p2p_session_events.ex` (2.258 linhas), e **tirar o P2P da aba
+exige antes mover a sinalização para um channel cru** (D3). Conferência e space
+já entravam assim; o P2P não.
 
-A onda 2 mandava fazer em duas etapas (aninhado primeiro, rota depois) e isso
-**não funcionou**: promover o pré-join a antessala é o que tornou a montagem
-aninhada possível, e separar as etapas teria movido o pré-join duas vezes. Aqui
-o mesmo vale, e ainda mais barato, porque a antessala do space **já existe** — é
-o seletor de personagem (P5 / [`ux.md` §2.4](ux.md)), e ele só ganha o roster
-"lá dentro agora" de `VirtualSpace.snapshot/1`.
+A ordem que as ondas 2 e 3 ensinaram, aplicada aqui:
 
-Então a ordem é:
-
-1. **Separar o read-model.** O que fica no `ChatLive` é *saber que a conversa
-   tem um space* — a aba na barra (`has_space=…`, `chat_live.html.heex:300`). O
-   que vai são os quatro assigns (`channel_view`, `space_avatars`,
-   `space_avatar`, `space_last_avatar`), os dois handlers, e as três funções de
-   token. A régua é a mesma da onda 2: se o dado só existe enquanto você está
-   dentro, ele vai.
-2. **`SpaceLive` nos dois hosts de uma vez**, com o roster na antessala. O modo
-   aninhado substitui o bloco `chat_live.html.heex:192-250` e **mantém a aba de
-   conversa** — o space é a única feature que não é uma janela do desktop.
-3. **A rota `/space/:slug`**, e o `kind: "space"` do `ShareLinks` ligado no
-   `JoinLive` (o domínio já aceita o kind; falta `surface_path/1` e o subject).
+1. **Primeiro o transporte, sozinho e verde.** `P2PChannel` com token assinado,
+   com o `ChatLive` ainda como único cliente. Nada de UI nesse passo.
+2. **Depois o read-model:** o que fica no chat é *saber que existe uma sessão*
+   (o glifo na aba de PM, o badge na sidebar); o que vai é tudo o que só existe
+   enquanto você está na chamada.
+3. **`P2PLive` nos dois hosts de uma vez.** A antessala aqui é uma **sala de
+   partida** (P1/P7): tem host, `[Pronto]` e `[Iniciar]`, e é a primeira do
+   plano que é uma entidade persistida — o `RetroHexChat.Lobby` que já existe.
+4. **A rota `/p2p/:token`** e o `kind: "p2p"` ligado no `JoinLive` (o domínio já
+   aceita o kind; falta `surface_path/1` e o subject).
 
 ### O que já está pronto e não se reinventa
 
 * `RetroHexChatWeb.Live.Surface` — nickname, ban, tópico de superfícies, e o
-  registro em `RetroHexChat.Surfaces` que mantém a filiação a canal viva
-  (onda 2 §2.6, a dependência que o `wave-3` §2.4 exige e que já está verde).
-* `RetroHexChatWeb.CallLive.Host` — o padrão dos três desvios entre hosts:
-  aviso, janela, e o que o host desenha. **Decisão a tomar com o código na
-  frente:** o space precisa dos mesmos três, então ou o `Host` sobe de namespace
-  (`Live.SurfaceHost`) ou ganha um irmão. Não copiar.
-* `RetroHexChat.Topics.channel_calls/1` — o precedente para separar o ciclo de
-  vida da feature do tópico da conversa. O space transmite hoje em
-  `space:#canal`; o card ao vivo do chat (ux §2.1) é o que decide se o chat
-  precisa assinar junto.
-* `RetroHexChat.Channels.Departure.part_all/3` — a saída, já no domínio.
+  registro em `RetroHexChat.Surfaces` que mantém a filiação a canal viva.
+* `RetroHexChatWeb.CallLive.Host` e o padrão dos três desvios entre hosts. **A
+  onda 3 decidiu não promovê-lo** (§7 da onda 3): o space não tinha nenhum dos
+  três desvios, então um módulo compartilhado teria um usuário. O P2P **tem** os
+  três (aviso, janela, e o que o chat desenha), então é aqui que a decisão se
+  paga — com três pontos de dado em vez de dois.
+* `RetroHexChatWeb.ChatLive.SpaceEvents` — o padrão menor, para uma superfície
+  que só precisa mandar duas mensagens para cima.
+* `RetroHexChatWeb.SpaceRef` — como um id vira segmento de caminho **e** id de
+  elemento, numa codificação só.
+* `Topics.channel_calls/1` e `Topics.space_roster/1` — o precedente, agora com
+  dois casos: um tópico pequeno para quem só desenha uma lista, publicado do
+  único ponto por onde a mudança já passava.
 
-### As três coisas da onda 2 que vão se repetir
+### As coisas que vão se repetir
 
-* **`live_render/3` embrulha o filho numa div sem altura.** Um canvas com
-  `h-full` dentro dela mede zero. `container: {:div, class: "h-full min-h-0"}`.
-* **Dois hosts na tela ao mesmo tempo precisam de ids diferentes.** Ids são
-  únicos no documento, não por LiveView. Derive os `data-testid` do `id`.
-* **`space_dom_id/1` é contrato** com o hook e com os specs (wave-3 §5). O
-  `live_render` aninhado não pode mudar o id que o JS procura.
+* **`live_render/3` embrulha o filho numa div sem altura.** Passe
+  `container: {:div, class: …}` com a cadeia de flex/altura que o pai espera.
+* **Dois hosts na tela ao mesmo tempo precisam de ids diferentes.**
+* **Um clique num filho tem que ser mirado no filho.** `has_element?(pai, …)`
+  enxerga o markup do filho, mas `render_click(pai, …)` não chega aos handlers
+  dele — pegue o `live_children/1` do módulo.
+* **Um merge de gettext inventa tradução por fuzzy mesmo dizendo "0 fuzzy".**
+  Na onda 3, `A space on RetroHexChat` veio traduzido como "Um jogo no
+  RetroHexChat" em 13 locales, com a flag `fuzzy`. Depois de todo merge:
+  `grep -c ', fuzzy'` nos arquivos tocados e conferir cada um.
 
 ---
 
@@ -239,20 +244,22 @@ precisa dizer está neste arquivo, e o resto é a ordem de leitura.
 
 ```
 Retomando a implementação do plano de superfícies compartilháveis no
-retro_hex_chat. A onda 2 fechou; começa a onda 3.
+retro_hex_chat. A onda 3 fechou; começa a onda 4.
 
 Leia, nesta ordem:
 1. docs/plans/shareable-surfaces/HANDOVER.md  — estado, próximo passo, armadilhas
 2. docs/plans/shareable-surfaces/README.md    — decisões travadas (P1–P7, D1–D6)
 3. docs/plans/shareable-surfaces/ux.md        — o desenho de todas as telas
-4. docs/plans/shareable-surfaces/wave-3-space-surface.md
+4. docs/plans/shareable-surfaces/wave-4-p2p-channel-and-surface.md
 5. docs/plans/shareable-surfaces/PROGRESS.md  — pelo menos as iterações 7, 8,
-   10, 13 e 14: são armadilhas que vão voltar
+   10, 13, 14 e 15: são armadilhas que vão voltar
 
-O próximo passo está na seção 3 do HANDOVER, com a ordem já corrigida pelo que
-a onda 2 ensinou: separar o read-model de conversa, depois SpaceLive nos dois
-hosts de uma vez (a antessala é o seletor de personagem que já existe, e ele só
-ganha o roster), depois a rota /space/:slug.
+O próximo passo está na seção 3 do HANDOVER. A onda 4 é a cara: a sinalização
+do P2P vive dentro do ChatLive e precisa virar um Phoenix Channel cru ANTES de
+qualquer superfície. Faça nesta ordem: transporte sozinho e verde, depois o
+read-model de conversa, depois P2PLive nos dois hosts de uma vez (a antessala
+é sala de partida: host, Pronto, Iniciar, sobre o Lobby que já existe), depois
+a rota /p2p/:token e o kind "p2p" no JoinLive.
 
 Como trabalhar, e isto não é negociável:
 - Não pare para pedir permissão entre passos. Implemente até haver algo

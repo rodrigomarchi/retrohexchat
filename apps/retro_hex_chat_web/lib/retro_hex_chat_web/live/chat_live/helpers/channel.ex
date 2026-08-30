@@ -83,8 +83,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       session: new_session,
       loading_channel: channel_name,
       show_status_tab: false,
-      channel_view: :chat,
-      space_avatar: nil
+      channel_view: :chat
     )
     |> ConversationsReadModel.touch_channel_activity(channel_name)
     |> GroupCallReadModel.refresh(channel_name)

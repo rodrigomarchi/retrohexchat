@@ -143,7 +143,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
       flash_channels: MapSet.delete(socket.assigns.flash_channels, unread_key),
       show_status_tab: false,
       channel_view: :chat,
-      space_avatar: nil,
       pm_typing_from: nil,
       pm_typing_timer: nil
     )

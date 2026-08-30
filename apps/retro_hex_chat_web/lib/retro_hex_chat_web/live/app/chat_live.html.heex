@@ -121,7 +121,7 @@
 
         <%!-- Chat area --%>
         <div class="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
-          <% conversation_space = conversation_space(@session, @show_status_tab) %>
+          <% conversation_space = SpaceReadModel.conversation_space(@session, @show_status_tab) %>
           <% space_view? = conversation_space && @channel_view == :space %>
           <% p2p_pm_session =
             p2p_session_for_active_pm(@p2p_session, @session.active_pm) ||
@@ -189,67 +189,29 @@
                 />
               </div>
 
-              <div :if={space_view?} class="relative flex flex-1 min-w-0 min-h-0">
-                <.space_character_select
-                  :if={is_nil(@space_avatar)}
-                  avatars={@space_avatars}
-                  selected={@space_last_avatar}
-                />
-                <div
-                  :if={@space_avatar}
-                  id={conversation_space.id}
-                  phx-hook="SpaceCanvasHook"
-                  phx-update="ignore"
-                  data-testid="channel-space-shell"
-                  data-space-channel={conversation_space.channel}
-                  data-join-token={conversation_space.join_token}
-                  data-nickname={@session.nickname}
-                  data-space-mode={conversation_space.mode}
-                  data-avatar={@space_avatar}
-                  data-sprite-sheets={SpaceAssets.sheet_urls_json()}
-                  class="relative flex-1 min-h-0 w-full bg-canvas"
-                >
-                  <canvas
-                    id={"#{conversation_space.id}-canvas"}
-                    class="absolute inset-0 block h-full w-full"
-                  >
-                  </canvas>
-                  <.space_virtual_pad />
-                  <.space_fullscreen_toggle />
-                  <div
-                    data-space-loading
-                    class="absolute inset-0 z-20 flex items-center justify-center bg-background/95"
-                    data-testid="space-loading"
-                  >
-                    <.boot_activity_panel
-                      title={
-                        if conversation_space.mode == "direct_message",
-                          do: dgettext("chat", "Private Space"),
-                          else: dgettext("chat", "Channel Space")
-                      }
-                      text={
-                        if conversation_space.mode == "direct_message",
-                          do: dgettext("chat", "Opening private room..."),
-                          else: dgettext("chat", "Entering channel space...")
-                      }
-                      icon={
-                        if conversation_space.mode == "direct_message",
-                          do: :p2p,
-                          else: :channels
-                      }
-                      class="w-full max-w-sm"
-                      data-space-loading-panel
-                      text_attrs={%{"data-space-loading-text" => ""}}
-                    />
-                  </div>
-                  <div
-                    data-space-modal
-                    hidden
-                    class="absolute inset-0 m-auto h-fit w-fit bg-canvas shadow-retro-field p-3 text-center"
-                  >
-                  </div>
-                </div>
-              </div>
+              <%!-- The space is the one feature that is not a window: it takes
+                    the conversation's region, behind a tab beside it. The child
+                    owns the canvas, so the isometric render loop belongs to a
+                    process of its own, and to a whole tab of its own when the
+                    address is opened directly. --%>
+              <%= if space_view? do %>
+                <%!-- The child's container needs a height of its own: a
+                      `live_render` wraps the surface in a div of its own, and
+                      the flex chain has to run through it or the canvas
+                      measures zero. --%>
+                {live_render(@socket, RetroHexChatWeb.App.SpaceLive,
+                  id: "space-live-#{conversation_space.space_id}",
+                  container: {:div, class: "relative flex flex-1 min-w-0 min-h-0"},
+                  session: %{
+                    "embedded" => true,
+                    "nickname" => @session.nickname,
+                    "space_id" => conversation_space.space_id,
+                    "mode" => conversation_space.mode,
+                    "participants" => conversation_space.participants,
+                    "last_avatar" => @space_last_avatar
+                  }
+                )}
+              <% end %>
             </div>
 
             <%!-- User list sidebar: the members of whichever conversation is on
@@ -297,7 +259,7 @@
             active_channel={@session.active_channel}
             active_pm={@session.active_pm}
             channel_view={@channel_view}
-            has_space={conversation_space(@session, false) != nil}
+            has_space={SpaceReadModel.has_space?(@session)}
             nick_color_fn={@nick_color_fn}
             p2p_peer={if @p2p_session, do: @p2p_session.peer_nick}
             p2p_state={if @p2p_session, do: @p2p_session.state}

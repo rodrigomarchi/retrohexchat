@@ -269,7 +269,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
         {:stop, :unknown_map}
 
       {:ok, map_definition} ->
-        Phoenix.PubSub.subscribe(@pubsub, "channel:#{channel_name}")
+        Phoenix.PubSub.subscribe(@pubsub, Topics.channel(channel_name))
 
         state = %{
           kind: :channel,
@@ -1245,6 +1245,26 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     state.participants |> Map.values() |> Enum.count(& &1.online?)
   end
 
+  defp online_nicknames(state) do
+    state.participants
+    |> Map.values()
+    |> Enum.filter(& &1.online?)
+    |> Enum.map(& &1.nickname)
+    |> Enum.sort()
+  end
+
+  # Who is inside, for the screens that draw the list and nothing else: the
+  # antechamber someone is standing in before they walk in, and the chat's card
+  # for a space its reader is not in. It rides its own topic because the space's
+  # own topic is a movement delta per step per character.
+  defp broadcast_roster(state) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      Topics.space_roster(state.channel_name),
+      {:space_roster, %{space_id: state.channel_name, participants: online_nicknames(state)}}
+    )
+  end
+
   # Wire-protocol snapshot (see `js/lib/space/protocol.js`): a server timestamp
   # plus participants keyed by participant key, each in the public view shape.
   defp build_snapshot(state) do
@@ -1281,6 +1301,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   defp update_participant_counts(state) do
     count = online_count(state)
     Events.emit_participant_count(state.channel_name, count)
+    broadcast_roster(state)
 
     participant_counts = %{
       current: count,
@@ -1300,6 +1321,9 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   end
 
   defp broadcast(channel_name, event, payload) do
-    Phoenix.PubSub.broadcast(@pubsub, "space:#{channel_name}", %{event: event, payload: payload})
+    Phoenix.PubSub.broadcast(@pubsub, Topics.space(channel_name), %{
+      event: event,
+      payload: payload
+    })
   end
 end

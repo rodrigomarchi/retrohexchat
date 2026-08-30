@@ -9,6 +9,8 @@ defmodule RetroHexChatWeb.App.Paths do
   `/chat/session/clear` is a string nobody would think to keep in step.
   """
 
+  alias RetroHexChatWeb.SpaceRef
+
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
     router: RetroHexChatWeb.Router,
@@ -33,6 +35,16 @@ defmodule RetroHexChatWeb.App.Paths do
   @doc "A conference at an address of its own, by its room token."
   @spec call_path(String.t()) :: String.t()
   def call_path(room_token), do: ~p"/call/#{room_token}"
+
+  @doc """
+  A space at an address of its own, by the id of the place itself.
+
+  A space has no token because it has no session: it does not begin and does not
+  end, so what a link to it names is the place. `SpaceRef` is what makes that id
+  fit in a path segment.
+  """
+  @spec space_path(String.t()) :: String.t()
+  def space_path(space_id), do: ~p"/space/#{SpaceRef.slug(space_id)}"
 
   @spec session_clear_path(Phoenix.LiveView.Socket.t(), String.t()) :: String.t()
   def session_clear_path(socket, reason), do: session_clear_path(socket, reason, [])

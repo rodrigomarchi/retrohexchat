@@ -28,9 +28,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.ChatTaskbar
   import RetroHexChatWeb.Components.UI.ConnectionStatus
   import RetroHexChatWeb.Components.UI.ActivityIndicator
-  import RetroHexChatWeb.Components.UI.SpaceCharacterSelect
-  import RetroHexChatWeb.Components.UI.SpaceFullscreenToggle
-  import RetroHexChatWeb.Components.UI.SpaceVirtualPad
 
   # ── Desktop window manager ───────────────────────────────────
   import RetroHexChatWeb.Components.UI.Desktop
@@ -55,7 +52,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChat.Admin.ServerBans
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Services.{Motd, Queries}
-  alias RetroHexChat.VirtualSpace.{ChannelJoinToken, DirectMessageSpace}
 
   alias RetroHexChat.Chat.{
     DuplicateTracker,
@@ -77,6 +73,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.ChatContext
   alias RetroHexChatWeb.ChatLive.ChatTitle
+  alias RetroHexChatWeb.ChatLive.SpaceReadModel
 
   alias RetroHexChatWeb.ChatLive.Components.{
     ConversationsContextMenu,
@@ -87,7 +84,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Icons
-  alias RetroHexChatWeb.SpaceAssets
   alias RetroHexChatWeb.Timezone
 
   # ── Mount ─────────────────────────────────────────────────────
@@ -377,19 +373,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
   def handle_event("switch_channel_view", %{"view" => view}, socket)
       when view in ["chat", "space"] do
     channel_view = if view == "space", do: :space, else: :chat
-    # Entering the space always shows the character picker first (space_avatar
-    # nil gates the canvas mount); leaving it drops back to chat. A view is a
-    # tab now, so picking one also uncovers the conversation from Status.
-    {:noreply,
-     assign(socket, channel_view: channel_view, space_avatar: nil, show_status_tab: false)}
-  end
-
-  def handle_event("space_select_avatar", %{"avatar" => avatar}, socket) do
-    if avatar in socket.assigns.space_avatars do
-      {:noreply, assign(socket, space_avatar: avatar, space_last_avatar: avatar)}
-    else
-      {:noreply, socket}
-    end
+    # Leaving the space takes its surface off the screen, and the surface is
+    # where the chosen character lives — so coming back always shows the picker
+    # again, without anything here having to say so. A view is a tab now, so
+    # picking one also uncovers the conversation from Status.
+    {:noreply, assign(socket, channel_view: channel_view, show_status_tab: false)}
   end
 
   def handle_event("close_all_context_menus", _params, socket) do
@@ -889,6 +877,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
       # The call surface reports to its host: what the chat's chrome draws,
       # the notices that belong in the conversation, and the window commands.
       {:group_call_info, &ChatLive.GroupCallEvents.handle_info/2},
+      # The space surface reports to its host: the character it remembers for
+      # next time, and what the canvas says about a nickname on the map.
+      {:space_info, &ChatLive.SpaceEvents.handle_info/2},
       # After PubsubHandlers: it consumes "lobby_invite" (user topic) first;
       # this one owns the session-topic "lobby_*" events.
       {:p2p_session_info, &ChatLive.P2PSessionEvents.handle_info/2},
@@ -989,8 +980,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
       channel_list_channels: [],
       channel_list_loading: false,
       channel_view: :chat,
-      space_avatars: RetroHexChat.VirtualSpace.avatars(),
-      space_avatar: nil,
+      # Which character you picked last, which outlives every visit to a space
+      # and therefore cannot live inside the surface that is mounted per visit.
       space_last_avatar: hd(RetroHexChat.VirtualSpace.avatars()),
       group_call: nil,
       group_call_channels: MapSet.new(),
@@ -1015,55 +1006,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # Static solo-arcade catalog for the in-chat Arcade window body.
   defp arcade_games, do: RetroHexChat.Arcade.list_games()
-
-  defp conversation_space(session, show_status_tab) do
-    cond do
-      show_status_tab ->
-        nil
-
-      is_binary(session.active_pm) ->
-        direct_message_space(session)
-
-      is_binary(session.active_channel) ->
-        channel_space(session)
-
-      true ->
-        nil
-    end
-  end
-
-  defp channel_space(session) do
-    %{
-      id: space_dom_id(session.active_channel),
-      channel: session.active_channel,
-      join_token: ChannelJoinToken.sign(session.active_channel, nil, session.nickname),
-      mode: "channel"
-    }
-  end
-
-  defp direct_message_space(session) do
-    participants = [session.nickname, session.active_pm]
-
-    with {:ok, [local_nick, peer_nick] = participants} <-
-           DirectMessageSpace.normalize_participants(participants) do
-      space_id = DirectMessageSpace.space_id(local_nick, peer_nick)
-
-      %{
-        id: space_dom_id(space_id),
-        channel: space_id,
-        join_token:
-          ChannelJoinToken.sign_direct_message(space_id, nil, session.nickname, participants),
-        mode: "direct_message"
-      }
-    else
-      {:error, :invalid_participants} -> nil
-    end
-  end
-
-  defp space_dom_id(space_id) when is_binary(space_id) do
-    encoded = Base.url_encode64(space_id, padding: false)
-    "conversation-space-#{encoded}"
-  end
 
   # The shared Statistics panel speaks the domain status vocabulary; the chat
   # state machine maps onto it (invite pending reads as "pending", both

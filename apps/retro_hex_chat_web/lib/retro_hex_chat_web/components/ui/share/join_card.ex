@@ -116,6 +116,12 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
     """
   end
 
+  defp kind_icon(%{kind: "space"} = assigns) do
+    ~H"""
+    <Icons.icon_community class="h-4 w-4" />
+    """
+  end
+
   defp kind_icon(assigns) do
     ~H"""
     <Icons.icon_hex_stone class="h-4 w-4" />

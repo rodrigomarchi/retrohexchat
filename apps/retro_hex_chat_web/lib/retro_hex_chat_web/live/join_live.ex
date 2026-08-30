@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.JoinLive do
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.GroupCall
   alias RetroHexChat.ShareLinks
+  alias RetroHexChat.VirtualSpace
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.SEO
 
@@ -105,7 +106,50 @@ defmodule RetroHexChatWeb.JoinLive do
     end
   end
 
+  # A space names its channel under the same rule a call does, and for the same
+  # reason: a preview that says "the space of #board" leaks the existence of a
+  # channel the reader could not have listed. A private space names nobody at
+  # all — its id *is* its two participants.
+  defp subject(%{kind: "space", target: %{"space_id" => space_id, "mode" => "channel"}}) do
+    %{
+      name: space_name(space_id),
+      tagline: space_tagline(space_id),
+      icon: "community"
+    }
+  end
+
+  defp subject(%{kind: "space"}) do
+    %{
+      name: dgettext("share", "A private space on RetroHexChat"),
+      tagline: nil,
+      icon: "community"
+    }
+  end
+
   defp subject(_resolution), do: nil
+
+  defp space_name(channel_name) do
+    if listed_channel?(channel_name) do
+      dgettext("share", "The space of %{channel}", channel: channel_name)
+    else
+      dgettext("share", "A space on RetroHexChat")
+    end
+  end
+
+  defp space_tagline(space_id) do
+    case VirtualSpace.roster(space_id) do
+      [] ->
+        nil
+
+      roster ->
+        dngettext(
+          "share",
+          "%{count} person inside now",
+          "%{count} people inside now",
+          length(roster)
+        )
+    end
+  end
 
   defp call_name(channel_name) do
     if listed_channel?(channel_name) do
@@ -149,6 +193,9 @@ defmodule RetroHexChatWeb.JoinLive do
 
   defp surface_path(%{kind: "call", target: %{"room_token" => room_token}}),
     do: Paths.call_path(room_token)
+
+  defp surface_path(%{kind: "space", target: %{"space_id" => space_id}}),
+    do: Paths.space_path(space_id)
 
   defp surface_path(_resolution), do: ~p"/chat"
 end

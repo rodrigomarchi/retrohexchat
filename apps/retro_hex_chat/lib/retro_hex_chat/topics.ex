@@ -39,6 +39,23 @@ defmodule RetroHexChat.Topics do
   @spec channel_calls(String.t()) :: String.t()
   def channel_calls(name) when is_binary(name), do: channel(name) <> ":calls"
 
+  @doc "Everything a virtual space pushes to the clients standing in it."
+  @spec space(String.t()) :: String.t()
+  def space(space_id) when is_binary(space_id), do: "space:" <> space_id
+
+  @doc """
+  Who is in a space, apart from everything else the space says.
+
+  The space topic carries a movement delta for every step every character
+  takes. Two readers want none of that and only the list of names: the
+  antechamber, which draws who is already inside before you walk in, and the
+  chat, which draws the same list on the card in the conversation. Subscribing
+  either of them to the space itself would hand a walking-simulator's worth of
+  messages to a process that renders a list of nicknames.
+  """
+  @spec space_roster(String.t()) :: String.t()
+  def space_roster(space_id) when is_binary(space_id), do: space(space_id) <> ":roster"
+
   @doc """
   Where a person is tracked for as long as they are connected, whatever they are
   looking at.

@@ -111,3 +111,65 @@ msgstr "接受打击和健康"
 #, elixir-autogen, elixir-format
 msgid "Open any channel and click the Space tab, next to the channel's own tab at the bottom of the chat area. Clicking the channel tab takes you back to the messages. There is no separate invite card or space command for the channel map."
 msgstr "打开任意频道，点击聊天区域下方、该频道自己标签旁边的「空间」标签。点击频道标签即可回到消息。频道地图没有单独的邀请卡片，也没有 space 命令。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "A Space in Its Own Tab"
+msgstr "在独立标签页中打开空间"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A space can run in a browser tab of its own, with the whole window to itself. On the character picker, choose Open in a tab. It is the same space either way — the Space tab beside the conversation keeps working for when you would rather not leave the page."
+msgstr "空间可以运行在自己的浏览器标签页里，独占整个窗口。在角色选择界面选择「在新标签页中打开」。两种方式打开的是同一个空间——会话旁边的 Space 标签依旧可用，适合你不想离开页面的时候。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "A space has no beginning and no end: it is a place, so bookmarking its address takes you back to it later. Opening it still asks the same questions as the Space tab does — a channel's space wants you in that channel, and a private space belongs to its two people. The tab always shows a way back to the chat along its bottom edge."
+msgstr "空间没有开始也没有结束：它是一个地方，所以收藏它的地址，以后还能回到那里。打开它依旧会问 Space 标签会问的同样问题——频道的空间要求你身在该频道，私人空间属于它的两个人。标签页底部始终显示一条回到聊天的路。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Inviting Someone to a Space"
+msgstr "邀请别人来空间"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "See also:"
+msgstr "另请参阅："
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Share, on the character picker, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address, and the card says what the link leads to."
+msgstr "角色选择界面上的「分享」会生成一个可以粘贴到任何地方的链接。粘贴到会话里时，它会显示为一张卡片而不是一串裸地址，卡片会说明链接通向哪里。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The address stays good"
+msgstr "地址一直有效"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The map is drawn continuously, and inside the chat it shares the browser with everything the chat is doing. In a tab of its own it does not, which is the difference you feel when several people are walking around at once."
+msgstr "地图是持续绘制的，在聊天里它要和聊天正在做的一切共用浏览器。在独立标签页里则不必——当好几个人同时走动时，你会感觉到这个差别。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Virtual Spaces"
+msgstr "虚拟空间"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "What the link carries"
+msgstr "链接携带什么"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Which space it is, and never permission to be in it. A channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people — so a link is an invitation to somewhere you can already reach, not a way around the door. Only a registered nickname can mint one, because the link records who made it."
+msgstr "只有「这是哪个空间」，而绝不是待在里面的权限。频道的空间依旧要求跟随链接的人身在该频道，私人空间依旧属于它的两个人——所以链接是通往你本来就能去的地方的邀请，而不是绕开门的办法。只有注册过的昵称才能生成链接，因为链接会记录是谁生成的。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Why a tab of its own"
+msgstr "为什么要用独立标签页"

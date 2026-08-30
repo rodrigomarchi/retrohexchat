@@ -7,6 +7,7 @@ defmodule RetroHexChat.VirtualSpace do
   `RetroHexChat.VirtualSpace.*`.
   """
 
+  alias RetroHexChat.Channels.Server, as: ChannelServer
   alias RetroHexChat.Observability
   alias RetroHexChat.VirtualSpace.ChannelSpaceServer
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
@@ -171,6 +172,59 @@ defmodule RetroHexChat.VirtualSpace do
 
   @spec direct_message_snapshot(String.t()) :: {:ok, map()} | {:error, :not_found}
   defdelegate direct_message_snapshot(space_id), to: ChannelSpaceServer
+
+  @doc """
+  Who is standing in a space right now, by nickname.
+
+  The one question the screens outside a space ask of it: the antechamber
+  someone is waiting in, and the card the chat draws for a space its reader is
+  not in. A space nobody has opened has no process, and "nobody is inside" is
+  the honest answer to give for it rather than an error to handle twice.
+  """
+  @spec roster(String.t()) :: [String.t()]
+  def roster(space_id) do
+    case space_kind(space_id) do
+      :direct_message ->
+        nicknames(direct_message_snapshot(space_id))
+
+      :channel ->
+        case snapshot(space_id) do
+          {:ok, snapshot} -> nicknames({:ok, snapshot})
+          {:error, :not_found} -> channel_members(space_id)
+        end
+    end
+  end
+
+  @doc """
+  Which of the two kinds of space an id names.
+
+  The id carries it: a private space is keyed by its two participants and says
+  so in its prefix, a channel space is the channel's own name. Reading it from
+  the id is what lets an address resolve to a space without a lookup, and it is
+  written once here so the prefix is not spelled out at each caller.
+  """
+  @spec space_kind(String.t()) :: :channel | :direct_message
+  def space_kind("dm:" <> _rest), do: :direct_message
+  def space_kind(_space_id), do: :channel
+
+  defp nicknames({:ok, %{participants: participants}}) do
+    participants |> Elixir.Map.values() |> Enum.map(& &1.nickname) |> Enum.sort()
+  end
+
+  defp nicknames(_absent), do: []
+
+  # A channel space holds everyone in the channel, so a channel space with no
+  # process yet holds exactly who it will hold the moment one starts. Reading
+  # the cold answer beats starting a world to ask it a question.
+  defp channel_members(channel_name) do
+    case ChannelServer.get_state(channel_name) do
+      {:ok, %{members: members}} ->
+        members |> Enum.map(fn {nick, _role} -> nick end) |> Enum.sort()
+
+      _absent ->
+        []
+    end
+  end
 
   @spec get_map(String.t()) :: {:ok, map()} | {:error, :unknown_map}
   defdelegate get_map(map_id), to: SpaceMap, as: :get

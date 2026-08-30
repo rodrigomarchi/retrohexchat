@@ -51,14 +51,30 @@ Dois pontos de montagem (D2):
   `chat_live.html.heex:192-250`, preservando a aba de conversa e o
   `data-testid="channel-space-shell"` que os specs já usam.
 
-Migram para o `SpaceLive`: os quatro assigns de space, os dois handlers, o
-seletor de personagem, o pad virtual, o toggle de fullscreen e as três funções
-de token (`channel_space/1`, `direct_message_space/1`, `space_dom_id/1`).
+Migram para o `SpaceLive`: `space_avatars` e `space_avatar`, o handler
+`space_select_avatar`, o seletor de personagem, o pad virtual, o toggle de
+fullscreen e as funções de token.
 
 Fica no `ChatLive`: a **aba** de space na barra
-(`has_space={conversation_space(@session, false) != nil}`,
-`chat_live.html.heex:300`) — saber que existe um space é read-model de
-conversa, e a régua da onda 2 §2.3 se aplica igual.
+(`has_space={SpaceReadModel.has_space?(@session)}`) — saber que existe um space
+é read-model de conversa, e a régua da onda 2 §2.3 se aplica igual.
+
+**Correção feita ao implementar (2026-08-30):** o plano listava *quatro* assigns
+que iam embora, e dois deles ficam:
+
+* **`channel_view` fica.** É qual aba da conversa está na tela — dado que existe
+  para quem está *olhando a barra de abas*, não para quem está dentro do space.
+  Pela própria régua da onda 2, ele é do chat.
+* **`space_last_avatar` fica.** É a memória do último personagem escolhido, e
+  ela **sobrevive a cada visita**: o `SpaceLive` é montado de novo toda vez que a
+  aba é aberta, então uma memória guardada dentro dele duraria uma visita só. O
+  chat é o que sobrevive, então é o chat que lembra — e a promessa do help
+  ("o seletor mostra de novo a cada entrada, com a sua última escolha") continua
+  verdadeira. O filho avisa o pai por `{:space_surface_avatar, avatar}`.
+
+`space_dom_id/1` não migrou: virou `RetroHexChatWeb.SpaceRef.dom_id/1`, ao lado
+da codificação que também vira o slug da rota — porque são a mesma codificação e
+escrevê-la duas vezes é como as duas divergem.
 
 ### 2.2 A antessala do space já existe: é o seletor de personagem
 
@@ -74,6 +90,22 @@ depois entra igual a quem chegou primeiro (P4) — não existe "já começou" aq
 
 Isso é a menor antessala do plano, e é de propósito: adicionar uma sala de espera
 antes do seletor seria cerimônia para entrar num lugar que já está aberto.
+
+**O roster não vem do `snapshot/1` direto, e o `ux.md` mudou junto:**
+
+* A leitura virou `VirtualSpace.roster/1`, que responde às duas formas de space
+  e responde **também para um space que ninguém abriu ainda** — um space de canal
+  guarda quem está no canal, então um space sem processo guarda exatamente quem
+  ele guardará quando um processo subir. Ligar um mundo só para perguntar quem
+  está nele seria pior que ler a resposta fria.
+* O ao vivo veio de um **tópico próprio**, `Topics.space_roster/1`, pelo mesmo
+  motivo que a onda 2 criou `channel_calls`: o tópico do space carrega um delta
+  de movimento por passo de cada personagem, e quem só desenha uma lista de
+  nomes não pode assinar isso. Um publicador (`update_participant_counts/1`,
+  o único ponto por onde toda mudança de presença passa), dois assinantes: a
+  antessala agora, e o card ao vivo do chat depois.
+* **Não existe `[Entrar]` separado.** Escolher o personagem é entrar; o `ux.md`
+  §2.4 desenhava um botão a mais e contradizia o próprio P5. O arquivo mudou.
 
 ### 2.3 O token muda de emissor, não de forma
 
@@ -105,10 +137,27 @@ contínuo: tiles isométricos, atlas de sprites, colisão, câmera, relógio de
 animação. Hoje ele disputa a main thread com o patch de DOM do stream de
 mensagens do LiveView.
 
-A medição da onda 0 §2.4 se repete aqui com o alvo real: long tasks na aba do
-chat enquanto alguém anda no space. Se o número da onda 0 for bom e este for
-bom, o argumento de event loop está provado com dado, não com intuição. Anotar
-os dois neste arquivo.
+A medição da onda 0 §2.4 se repete aqui com o alvo real. **Os dois números,
+medidos (Chromium, macOS/Apple Silicon, servidor local):**
+
+| medição | aba própria | mesma aba |
+|---|---|---|
+| **Onda 0** — maior intervalo entre frames na aba do chat, com a aba satélite bloqueando a thread por 1.200 ms | **12 ms** (`noopener`) | 1.203 ms (`_blank`) |
+| **Onda 3** — frames desenhados pelo space em 8 s, sob 100 mensagens de canal chegando | **2.466** | 2.098 |
+| **Onda 3** — p50 / p95 / máximo do intervalo entre frames do space | 8 / 9 / **14 ms** | 8 / 10 / **16 ms** |
+| **Onda 3** — intervalos acima de 50 ms | 0 | 0 |
+
+**E o segundo número não prova o que o plano supunha.** O isolamento é real —
+17,5% mais frames desenhados na aba própria — mas o stream de mensagens do chat,
+a ~25 mensagens por segundo, não chega perto de fazer o space engasgar nesta
+máquina: nenhum dos dois modos teve um único intervalo acima de 50 ms, e a p50
+é idêntica. O ganho de event loop é um **teto**, não um alívio que a pessoa
+sente hoje; ele aparece num chat mais pesado ou numa máquina mais lenta.
+
+O que justifica a aba própria, então, é o que a onda 0 mediu (uma aba travada
+não trava a outra, e sem `noopener` trava), mais o endereço e a sobrevivência ao
+chat reiniciar. Registrado aqui em vez de corrigido porque é a medição que
+decide, não a intuição — e a intuição estava otimista.
 
 ### 2.6 Fullscreen deixa de ser um truque
 
@@ -203,3 +252,29 @@ teste JS novo — se precisar, é sinal de que lógica desceu para o hook, o que
 - Os quatro specs de space existentes verdes em nested, com par em root.
 - `space_channel_test.exs` inalterado.
 - Os dois números de long task (onda 0 e esta) escritos aqui.
+
+## 7. O que ficou (2026-08-30)
+
+- `RetroHexChatWeb.App.SpaceLive`, montado nos dois hosts; `/space/:slug` no
+  `live_session :app_surface`, com `Live.Surface` cuidando de nickname, ban e fim
+  de sessão.
+- `RetroHexChatWeb.SpaceRef` — a codificação do id do space, usada tanto pelo
+  caminho quanto pelo id do elemento que o hook procura.
+- `RetroHexChatWeb.ChatLive.SpaceReadModel` — o que o chat guardou.
+- `RetroHexChatWeb.ChatLive.SpaceEvents` — as duas coisas que a superfície diz
+  para cima: o personagem lembrado, e o que o canvas diz sobre um apelido.
+- `VirtualSpace.roster/1`, `VirtualSpace.space_kind/1`, `Topics.space/1`,
+  `Topics.space_roster/1`.
+- `kind: "space"` ligado no `JoinLive`, com o mesmo cuidado do canal privado que
+  a chamada já tinha.
+- Help: `feature-space-tab` e `feature-space-share`.
+- `PerfBudgets.html_bytes(:space)` = 12.481 B raw / 2.991 B gzip, 107 elementos.
+- E2E: `space-surface.spec.ts` (SP6, SP7, SP8), verde em Chromium **e** Firefox.
+
+**Nenhum `Host` novo.** A onda 2 deixou aberto se o `CallLive.Host` sobe de
+namespace ou ganha um irmão; com o código na frente, a resposta é *nenhum dos
+dois ainda*. O `Host` existe para os três desvios da chamada — um aviso, uma
+janela, e o que o host desenha sobre a chamada — e o space **não tem nenhum
+deles**: ele nunca foi uma janela, não emite aviso em runtime, e o chat não
+desenha nada sobre um space em que não está. Promover agora seria um módulo
+compartilhado com um usuário. A onda 4 decide com três pontos de dado.

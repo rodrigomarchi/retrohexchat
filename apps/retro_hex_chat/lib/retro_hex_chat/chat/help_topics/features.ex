@@ -3514,7 +3514,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "help",
             "A multiplayer 8-bit virtual space built into every channel: people in the channel can switch from Chat to Space, walk around the shared map, and keep using the same channel conversation. Move with the Arrow keys, WASD or the on-screen pad in the bottom-right corner — tap for a single step or hold to walk continuously; Space or the pad's sword button swings your weapon. The translucent button in the top-right corner switches the space to fullscreen and back."
           ),
-        see_also: ["feature-choose-character", "feature-space-combat"]
+        see_also: [
+          "feature-choose-character",
+          "feature-space-combat",
+          "feature-space-tab",
+          "feature-space-share"
+        ]
       },
       %{
         id: "feature-choose-character",
@@ -3565,6 +3570,47 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Characters in a Space can spar with each other: press Space (or the pad's sword button) next to another standing character to land a hit. Each hit deals damage and shows a small health bar under their name; at zero HP the character is knocked down for a few seconds, then gets back up on their own with full health. Sitting characters are out of combat, and a knockout never has any lasting effect — it is all in good fun."
           ),
         see_also: ["feature-virtual-spaces", "feature-choose-character"]
+      },
+      %{
+        id: "feature-space-tab",
+        title: dgettext("help", "A Space in Its Own Tab"),
+        category: dgettext("help", "Virtual Spaces"),
+        keywords: [
+          "space",
+          "tab",
+          "window",
+          "browser",
+          "address",
+          "url",
+          dgettext("help", "open in a tab")
+        ],
+        icon: :icon_community,
+        description:
+          dgettext(
+            "help",
+            "A space can run in a browser tab of its own. On the character picker, choose Open in a tab: the map gets the whole window and stops competing with the chat for the browser, which is the difference you feel when several people are walking around at once. It is the same space either way — the Space tab beside the conversation keeps working for when you would rather not leave the page. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back."
+          ),
+        see_also: ["feature-virtual-spaces", "feature-space-share"]
+      },
+      %{
+        id: "feature-space-share",
+        title: dgettext("help", "Inviting Someone to a Space"),
+        category: dgettext("help", "Virtual Spaces"),
+        keywords: [
+          "share",
+          "link",
+          "invite",
+          "url",
+          "space",
+          "paste"
+        ],
+        icon: :icon_btn_link,
+        description:
+          dgettext(
+            "help",
+            "Share, on the character picker, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address. The link carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
+          ),
+        see_also: ["feature-virtual-spaces", "feature-space-tab"]
       }
     ]
   end
