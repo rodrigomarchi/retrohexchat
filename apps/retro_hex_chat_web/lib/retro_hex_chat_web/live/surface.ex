@@ -17,6 +17,11 @@ defmodule RetroHexChatWeb.Live.Surface do
   subscribed there would need a clause that ignores them, which is the shape of
   a catch-all that eats what you depend on.
 
+  It registers itself as one of the person's open surfaces
+  (`RetroHexChat.Surfaces`). That is what keeps the chat's tab closing from
+  taking the person out of the channels a call still stands on: the channels
+  are left when the last surface closes, not when the chat's does.
+
   What it must **not** do is the fourth thing, and each omission is a bug that
   would exist without it:
 
@@ -37,6 +42,7 @@ defmodule RetroHexChatWeb.Live.Surface do
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Admin.ServerBans
+  alias RetroHexChat.Surfaces
   alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.Paths
 
@@ -59,6 +65,9 @@ defmodule RetroHexChatWeb.Live.Surface do
   defp attach(socket, nickname) do
     if connected?(socket) do
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.surfaces(nickname))
+      # The view, not a label: which surface this is is a thing wave 6 has to
+      # answer to decide between opening a second tab and focusing the first.
+      Surfaces.open(nickname, socket.view)
     end
 
     # Only the nickname. Timezone and client info are the chat session's, and a

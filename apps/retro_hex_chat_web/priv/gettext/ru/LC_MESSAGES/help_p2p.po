@@ -726,12 +726,12 @@ msgstr "Тип /p2p <nick> (или используйте управление P
 msgid "Channel conferences are audio/video calls attached to the active channel. The Call button in the channel topic bar opens the antechamber — the screen you arrive at before you are inside."
 msgstr "Конференции канала — это аудио- и видеозвонки, привязанные к активному каналу. Кнопка «Звонок» на панели темы канала открывает прихожую — экран, куда вы попадаете до того, как окажетесь внутри."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Conference in Its Own Tab"
 msgstr "Конференция в отдельной вкладке"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Sharing a Conference Link"
 msgstr "Как поделиться ссылкой на конференцию"
@@ -778,5 +778,5 @@ msgstr "Кнопка «Поделиться» над конференцией с
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "The room decides who is in the call, not the tab. Closing the tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
-msgstr "Кто в звонке, решает комната, а не вкладка. Закрытие вкладки запускает окно переподключения, а не завершает ваше участие, и повторное открытие того же адреса возвращает вас туда, где вы были. Окончателен только выход, который сначала спрашивает. Внизу вкладки всегда есть путь обратно в чат: внутри звонка разговора нет."
+msgid "The room decides who is in the call, not the tab. Closing the call's tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Closing the chat's tab does not drop you out of the channel either, as long as the call is still open — you leave the channels when the last of your windows closes. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
+msgstr "Кто в звонке, решает комната, а не вкладка. Закрытие вкладки звонка запускает окно переподключения, а не завершает ваше участие, и повторное открытие того же адреса возвращает вас туда, где вы были. Закрытие вкладки чата тоже не выводит вас из канала, пока звонок открыт: каналы вы покидаете, когда закрывается последнее из ваших окон. Окончателен только выход, который сначала спрашивает. Внизу вкладки всегда есть путь обратно в чат: внутри звонка разговора нет."

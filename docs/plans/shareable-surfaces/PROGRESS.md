@@ -12,7 +12,7 @@ de onda no mesmo commit e anotar aqui por quê.
 |---|---|
 | 0 — identidade multi-aba + `/play/:game` | ✅ `make ci` 17/17 |
 | 1 — `/join/:slug` + card na conversa | ✅ commitada (`f0898719`) + card |
-| 2 — conferência | 🔨 quase: `CallLive` em dois hosts + `/call/:token`; falta a filiação com contagem de superfícies |
+| 2 — conferência | ✅ fechada: `CallLive` em dois hosts, `/call/:token`, filiação com contagem de superfícies |
 | 3 — space | ⬜ |
 | 4 — P2P channel + superfície | ⬜ |
 | 5 — jogos / lobby aberto | ⬜ |
@@ -1059,5 +1059,85 @@ mudanças que eu tinha julgado internas:
 canal. A filiação com contagem de superfícies (onda 2 §2.6) **continua aberta**:
 enquanto a chamada é filha do chat ela morre com ele, então o problema ainda não
 existe — ele nasce quando alguém fechar a aba do chat com `/call/:token` aberta.
+
+---
+
+## Iteração 14 — a filiação deixa de morrer com a aba do chat
+
+**Objetivo:** o item §2.6 da onda 2, o único que faltava: fechar a aba do chat
+com `/call/:token` aberta não pode tirar a pessoa dos canais em que a chamada se
+apoia.
+
+### Por que não dá para "quem for o último faz a limpeza"
+
+Foi a primeira ideia e ela não sobrevive a dois fatos:
+
+1. **`on_mount` não tem `terminate`.** `Live.Surface` é um hook de montagem;
+   `attach_hook/4` cobre `handle_info`, `handle_event` e `handle_params`, e não
+   o encerramento. Uma satélite só rodaria a saída se cada LiveView de
+   superfície implementasse o próprio `terminate/2` — a duplicação que a onda 3
+   herdaria em seguida.
+2. **A satélite não sabe de quais canais sair.** Quem sabe é a sessão do chat, e
+   quando a saída precisa acontecer esse processo já morreu.
+
+Então o chat **entrega** a saída antes de ir: `Surfaces.defer_part/3` guarda o
+nickname, a lista de canais e o motivo, e o `RetroHexChat.Surfaces` executa
+quando a última superfície daquela pessoa cai. Monitor, não `terminate` — um
+LiveView que morre de exceção conta igual.
+
+O caminho de sempre não mudou: quando o chat **é** a última superfície, ele faz
+a saída ali mesmo, síncrona, como sempre fez. O caminho assíncrono existe só
+para o caso novo, e por isso nenhum dos 801 testes de LiveView precisou mudar.
+
+### A janela aninhada não é uma superfície, e isso é de propósito
+
+O `CallLive` que o chat renderiza por `live_render/3` **não** passa pelo
+`Live.Surface`: um LiveView aninhado não passa pelo router, então o `on_mount`
+do `live_session` não roda nele. Ele não se registra, e está certo — ele é parte
+do chat e morre junto. Só a rota `/call/:token` é uma superfície de verdade.
+
+Vale escrever porque a intuição diz o contrário e o contador ficaria errado para
+mais, que é o modo de falha que o plano chama de "filiação fantasma".
+
+### O buraco que sobrou, dito em voz alta
+
+Um chat que **quebra** (exceção, não fechamento) nunca chega ao `terminate` e
+portanto nunca entrega nada. Se ele quebrar com uma chamada aberta, a filiação
+sobrevive às duas. É exatamente o que um chat quebrado já faz hoje sem chamada
+nenhuma, e fechar isso significaria manter a lista de canais aqui,
+continuamente, para um caso que termina em reload. Está no `@moduledoc`.
+
+### O que a saída virou
+
+`cleanup_channels/2` tinha o corpo da saída dentro de um helper chamado
+`ChatLive.Helpers` — nome que deixou de ser verdade no momento em que outra
+coisa além do chat passou a poder causá-la. O corpo virou
+`RetroHexChat.Channels.Departure.part_all/3`, no domínio, e o helper do chat
+delega. Os seis chamadores deliberados (`/quit`, Desconectar do menu, takeover,
+limpeza de sessão) continuam imediatos e terminais: §2.6 regra 3, e nenhum deles
+passa pelo `terminate`.
+
+### O teste que prova a onda, e as duas vezes que ele ficou vermelho
+
+`call_live_test.exs`, "the call keeps the channel membership it stands on":
+monta o chat, entra num canal, abre `/call/:token`, **mata o processo do chat**,
+e então exige três coisas — a filiação continua, a chamada não está negada, e um
+*reload* de `/call/:token` (o caminho exato que o bug negava) passa pela
+política. Só depois de fechar a última superfície é que a saída acontece.
+
+Vermelho verificado nos dois lados: sem o portão em `depart_channels/2` a
+primeira asserção cai; sem o `run_deferred` no `Surfaces` a última cai.
+
+### Uma armadilha pequena do teste
+
+Um canal vazio desliga o próprio servidor, então `Server.get_state/1` responde
+`{:error, :not_found}` — que é uma das formas que "não tem ninguém dentro"
+assume. O primeiro helper `members/1` casava só `{:ok, state}` e explodia
+justamente quando a saída tinha funcionado.
+
+### Estado
+
+Onda 2 **fechada**. `make ci` verde, 8 testes novos em `surfaces_test.exs`, 11
+em `call_live_test.exs`, 801 de LiveView sem edição.
 
 ---

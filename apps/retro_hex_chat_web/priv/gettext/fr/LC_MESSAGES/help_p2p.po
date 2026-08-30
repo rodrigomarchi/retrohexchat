@@ -726,12 +726,12 @@ msgstr "Tapez /p2p <nick> (ou utilisez le contrôle P2P dans le menu contextuel 
 msgid "Channel conferences are audio/video calls attached to the active channel. The Call button in the channel topic bar opens the antechamber — the screen you arrive at before you are inside."
 msgstr "Les conférences de canal sont des appels audio/vidéo rattachés au canal actif. Le bouton Appel de la barre de sujet du canal ouvre l'antichambre — l'écran où vous arrivez avant d'être à l'intérieur."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Conference in Its Own Tab"
 msgstr "La conférence dans son propre onglet"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Sharing a Conference Link"
 msgstr "Partager le lien de la conférence"
@@ -778,5 +778,5 @@ msgstr "Partager, au-dessus de la conférence, crée un lien vers l'appel où vo
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "The room decides who is in the call, not the tab. Closing the tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
-msgstr "C'est la salle qui décide qui est dans l'appel, pas l'onglet. Fermer l'onglet ouvre la fenêtre de reconnexion au lieu de mettre fin à votre participation, et rouvrir la même adresse vous remet là où vous étiez. Seul Quitter, qui demande d'abord, est définitif. L'onglet montre toujours le chemin du retour vers le chat le long de son bord inférieur : il n'y a pas de conversation dans un appel."
+msgid "The room decides who is in the call, not the tab. Closing the call's tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Closing the chat's tab does not drop you out of the channel either, as long as the call is still open — you leave the channels when the last of your windows closes. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
+msgstr "C'est la salle qui décide qui est dans l'appel, pas l'onglet. Fermer l'onglet de l'appel ouvre la fenêtre de reconnexion au lieu de mettre fin à votre participation, et rouvrir la même adresse vous remet là où vous étiez. Fermer l'onglet du chat ne vous sort pas non plus du canal tant que l'appel reste ouvert : vous quittez les canaux quand la dernière de vos fenêtres se ferme. Seul Quitter, qui demande d'abord, est définitif. L'onglet montre toujours le chemin du retour vers le chat le long de son bord inférieur : il n'y a pas de conversation dans un appel."

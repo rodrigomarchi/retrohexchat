@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   require Logger
 
   alias RetroHexChat.Accounts.Session
+  alias RetroHexChat.Channels.Departure
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{Queries, UnreadTracker}
   alias RetroHexChat.Page
@@ -312,16 +313,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     reason = reason || dgettext("chat", "Connection lost")
     truncated = String.slice(reason, 0, 200)
 
-    Enum.each(session.channels, fn channel ->
-      try do
-        PresenceHelpers.safe_untrack_user("channel:#{channel}", session.nickname)
-        Server.part(channel, session.nickname, truncated)
-      rescue
-        e ->
-          Logger.warning("Failed to part #{channel} during cleanup: #{inspect(e)}")
-          :ok
-      end
-    end)
+    Departure.part_all(session.nickname, session.channels, truncated)
   end
 
   @spec validate_target_online(String.t()) :: :ok | {:error, String.t()}

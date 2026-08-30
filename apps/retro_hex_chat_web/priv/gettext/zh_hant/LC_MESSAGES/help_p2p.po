@@ -726,12 +726,12 @@ msgstr "類型 /p2p <nick>(或使用PM頭/nicklist上下文菜單中的P2P控制
 msgid "Channel conferences are audio/video calls attached to the active channel. The Call button in the channel topic bar opens the antechamber — the screen you arrive at before you are inside."
 msgstr "頻道會議是附屬於目前頻道的音訊/視訊通話。頻道主題列中的「通話」按鈕會開啟前廳——你在進入房間之前抵達的畫面。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Conference in Its Own Tab"
 msgstr "在獨立分頁中的會議"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Sharing a Conference Link"
 msgstr "分享會議連結"
@@ -778,5 +778,5 @@ msgstr "會議上方的「分享」會為你所在的通話產生一個連結，
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "The room decides who is in the call, not the tab. Closing the tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
-msgstr "決定誰在通話中的是房間，而不是分頁。關閉分頁只會開啟重新連線的時段，並不會結束你的參與；再次開啟同一位址就會回到原處。只有會先詢問的「離開」才是最終的。分頁底部始終顯示回到聊天的入口：通話裡面沒有對話。"
+msgid "The room decides who is in the call, not the tab. Closing the call's tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Closing the chat's tab does not drop you out of the channel either, as long as the call is still open — you leave the channels when the last of your windows closes. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
+msgstr "決定誰在通話中的是房間，而不是分頁。關閉通話的分頁只會開啟重新連線的時段，並不會結束你的參與；再次開啟同一位址就會回到原處。只要通話還開著，關閉聊天的分頁同樣不會把你踢出頻道——你是在最後一個視窗關閉時才離開頻道的。只有會先詢問的「離開」才是最終的。分頁底部始終顯示回到聊天的入口：通話裡面沒有對話。"

@@ -67,7 +67,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   alias RetroHexChat.Presence.{Tracker, WhowasCache}
   alias RetroHexChat.Scraper
+  alias RetroHexChat.Services.NickServ
   alias RetroHexChat.SessionControl
+  alias RetroHexChat.Surfaces
   alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.App.ComposerEvents
@@ -171,6 +173,12 @@ defmodule RetroHexChatWeb.App.ChatLive do
     join_channel = params["join"]
 
     ChatLive.Helpers.safe_track_user(Topics.presence(), nickname, client_info)
+
+    # The chat is one of this person's surfaces, and a live one owns the
+    # lifetime of their channel membership again: whatever departure a previous
+    # chat handed over on its way out must not fire under this one.
+    Surfaces.open(nickname, __MODULE__)
+    Surfaces.cancel_deferred(nickname)
 
     socket =
       socket
@@ -301,13 +309,31 @@ defmodule RetroHexChatWeb.App.ChatLive do
       end
 
       unless socket.assigns[:skip_channel_cleanup] do
-        ChatLive.Helpers.cleanup_channels(session, quit_reason)
+        depart_channels(session, quit_reason)
       end
 
       ChatLive.ArcadeSessionEvents.close_on_terminate(socket)
     end
 
     :ok
+  end
+
+  # The tab closing is not the person leaving any more. A conference at
+  # `/call/:token` outlives this window, and the room asks on every rejoin
+  # whether they are still a member of the channel — so the channels are left
+  # when the LAST surface closes. When this is not it, the departure is handed
+  # over and runs when the one that outlived us goes down.
+  defp depart_channels(session, quit_reason) do
+    if Surfaces.count(session.nickname) > 1 do
+      # The one thing that is about this window rather than the membership: no
+      # chat is left to be nagged about identifying. (A surface only exists for
+      # an identified nickname, so in practice there is no timer to cancel — it
+      # is here so the two paths cannot drift.)
+      NickServ.cancel_identify_timer(session.nickname)
+      Surfaces.defer_part(session.nickname, session.channels, quit_reason)
+    else
+      ChatLive.Helpers.cleanup_channels(session, quit_reason)
+    end
   end
 
   # ── Event dispatchers ─────────────────────────────────────────

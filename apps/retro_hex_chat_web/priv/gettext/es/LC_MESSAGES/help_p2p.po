@@ -726,12 +726,12 @@ msgstr "Tipo нерениениенить /ph1⁄4 contacto неритиниен
 msgid "Channel conferences are audio/video calls attached to the active channel. The Call button in the channel topic bar opens the antechamber — the screen you arrive at before you are inside."
 msgstr "Las conferencias de canal son llamadas de audio/vídeo asociadas al canal activo. El botón Llamada de la barra de tema del canal abre la antesala: la pantalla a la que llegas antes de estar dentro."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Conference in Its Own Tab"
 msgstr "Conferencia en su propia pestaña"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Sharing a Conference Link"
 msgstr "Compartir el enlace de la conferencia"
@@ -778,5 +778,5 @@ msgstr "Compartir, encima de la conferencia, crea un enlace a la llamada en la q
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "The room decides who is in the call, not the tab. Closing the tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
-msgstr "Quien decide quién está en la llamada es la sala, no la pestaña. Cerrar la pestaña abre la ventana de reconexión en lugar de terminar tu participación, y volver a abrir la misma dirección te devuelve donde estabas. Solo Salir, que pregunta antes, es definitivo. La pestaña siempre muestra el camino de vuelta al chat en su borde inferior: dentro de una llamada no hay conversación."
+msgid "The room decides who is in the call, not the tab. Closing the call's tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Closing the chat's tab does not drop you out of the channel either, as long as the call is still open — you leave the channels when the last of your windows closes. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
+msgstr "Quien decide quién está en la llamada es la sala, no la pestaña. Cerrar la pestaña de la llamada abre la ventana de reconexión en lugar de terminar tu participación, y volver a abrir la misma dirección te devuelve donde estabas. Cerrar la pestaña del chat tampoco te saca del canal mientras la llamada siga abierta: sales de los canales cuando se cierra la última de tus ventanas. Solo Salir, que pregunta antes, es definitivo. La pestaña siempre muestra el camino de vuelta al chat en su borde inferior: dentro de una llamada no hay conversación."

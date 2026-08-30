@@ -726,12 +726,12 @@ msgstr "Typ /p2p <nick> (lub użyj sterowania P2P w menu kontekstowym PM header/
 msgid "Channel conferences are audio/video calls attached to the active channel. The Call button in the channel topic bar opens the antechamber — the screen you arrive at before you are inside."
 msgstr "Konferencje kanału to rozmowy audio/wideo powiązane z aktywnym kanałem. Przycisk Rozmowa na pasku tematu otwiera przedpokój — ekran, na który trafiasz, zanim znajdziesz się w środku."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Conference in Its Own Tab"
 msgstr "Konferencja we własnej karcie"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Sharing a Conference Link"
 msgstr "Udostępnianie linku do konferencji"
@@ -778,5 +778,5 @@ msgstr "Udostępnij, nad konferencją, tworzy link do rozmowy, w której jesteś
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "The room decides who is in the call, not the tab. Closing the tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
-msgstr "O tym, kto jest w rozmowie, decyduje pokój, a nie karta. Zamknięcie karty otwiera okno ponownego połączenia zamiast kończyć Twój udział, a ponowne otwarcie tego samego adresu przywraca Cię tam, gdzie byłeś. Tylko Opuść, które najpierw pyta, jest ostateczne. Karta zawsze pokazuje drogę powrotną do czatu przy dolnej krawędzi: wewnątrz rozmowy nie ma konwersacji."
+msgid "The room decides who is in the call, not the tab. Closing the call's tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Closing the chat's tab does not drop you out of the channel either, as long as the call is still open — you leave the channels when the last of your windows closes. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
+msgstr "O tym, kto jest w rozmowie, decyduje pokój, a nie karta. Zamknięcie karty rozmowy otwiera okno ponownego połączenia zamiast kończyć Twój udział, a ponowne otwarcie tego samego adresu przywraca Cię tam, gdzie byłeś. Zamknięcie karty czatu również nie wyrzuca Cię z kanału, dopóki rozmowa pozostaje otwarta — kanały opuszczasz, gdy zamknie się ostatnie z Twoich okien. Tylko Opuść, które najpierw pyta, jest ostateczne. Karta zawsze pokazuje drogę powrotną do czatu przy dolnej krawędzi: wewnątrz rozmowy nie ma konwersacji."

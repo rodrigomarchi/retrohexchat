@@ -63,6 +63,30 @@ defmodule RetroHexChatWeb.App.CallLiveTest do
     %{room: room, token: token, channel: channel}
   end
 
+  # An empty channel shuts its server down, so "gone" is one of the shapes
+  # "nobody is in it" takes.
+  defp channel_members(channel) do
+    case Server.get_state(channel) do
+      {:ok, state} -> Enum.map(state.members, fn {nick, _role} -> nick end)
+      {:error, _absent} -> []
+    end
+  end
+
+  defp stop_liveview(view) do
+    ref = Process.monitor(view.pid)
+    GenServer.stop(view.pid, :normal)
+    assert_receive {:DOWN, ^ref, :process, _pid, _reason}, 2_000
+    :ok
+  end
+
+  defp assert_eventually(fun, retries \\ 50) do
+    cond do
+      fun.() -> :ok
+      retries <= 0 -> flunk("condition was not met before timeout")
+      true -> Process.sleep(20) && assert_eventually(fun, retries - 1)
+    end
+  end
+
   defp redirected_to_connect({:error, {_kind, %{to: to}}}), do: to == "/connect"
   defp redirected_to_connect(_other), do: false
 
@@ -109,6 +133,57 @@ defmodule RetroHexChatWeb.App.CallLiveTest do
 
       assert html =~ ~s(data-testid="call-denied")
       refute html =~ ~s(data-testid="group-call-prejoin-form")
+    end
+  end
+
+  # The assertion the whole surface-counting mechanism exists for. Everything
+  # else about a call in its own tab is cosmetic next to this: the room asks
+  # `Policy.can_join?/4` on every rejoin, and it asks whether you are a member
+  # of the channel.
+  describe "when the chat's tab closes" do
+    test "the call keeps the channel membership it stands on", %{conn: conn} do
+      host = register("Outlive") |> identify()
+      channel = "#call#{uid()}"
+
+      {:ok, chat, _html} =
+        conn |> chat_conn(host.nickname, pre_identified: true) |> live(~p"/chat")
+
+      submit_command_sync(chat, "/join #{channel}")
+      assert host.nickname in channel_members(channel)
+
+      {:ok, %{token: token}} =
+        GroupCall.create_channel_call(channel, %{user_id: host.id, nickname: host.nickname})
+
+      on_exit(fn ->
+        case Registry.lookup_room({:room, token}) do
+          {:ok, pid} -> stop_room(pid)
+          {:error, :not_found} -> :ok
+        end
+      end)
+
+      {:ok, call, _html} =
+        build_conn() |> chat_conn(host.nickname) |> live(~p"/call/#{token}")
+
+      stop_liveview(chat)
+
+      # Closing the chat is not leaving: the call is still open, so the
+      # membership the room checks is still there.
+      assert host.nickname in channel_members(channel)
+      assert :sys.get_state(call.pid).socket.assigns.denied == nil
+
+      # And a reload of the call — the exact path the bug denied — still passes
+      # the policy it has to pass.
+      {:ok, reloaded, html} =
+        build_conn() |> chat_conn(host.nickname) |> live(~p"/call/#{token}")
+
+      refute html =~ ~s(data-testid="call-denied")
+
+      # The LAST surface going is what finally takes them out — not the first.
+      stop_liveview(call)
+      assert host.nickname in channel_members(channel)
+
+      stop_liveview(reloaded)
+      assert_eventually(fn -> host.nickname not in channel_members(channel) end)
     end
   end
 

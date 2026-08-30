@@ -336,9 +336,23 @@ Três coisas que o plano supôs e o código desmentiu, corrigidas aqui:
   roster ao vivo, e as transmissões de chamada saíam no tópico da conversa.
   Agora saem em `Topics.channel_calls/1`.
 
-**Falta:** §2.6, a filiação com contagem de superfícies. Ela ainda não é um bug
-porque a chamada embutida morre com o chat; passa a ser no momento em que alguém
-fechar a aba do chat com `/call/:token` aberta.
+A §2.6 fechou em seguida, com uma correção de desenho: a satélite **não** roda a
+saída dos canais. `on_mount` não tem `terminate` e a satélite não sabe de quais
+canais sair, então o chat **entrega** a saída (`Surfaces.defer_part/3`) e
+`RetroHexChat.Surfaces` a executa quando a última superfície cai — por monitor,
+não por `terminate`, para que uma exceção conte igual. Quando o chat é a última
+superfície, ele faz a saída ali mesmo, síncrona, como sempre fez.
+
+Duas coisas que o plano não previa e que valem para as ondas 3–5:
+
+* **A janela aninhada não é uma superfície.** Um `live_render/3` não passa pelo
+  router, então o `on_mount` do `live_session` não roda nele: o `CallLive`
+  dentro do chat não se registra, e está certo — ele morre com o chat.
+* **Um chat que quebra nunca entrega nada**, então a filiação sobrevive às duas.
+  É o que um chat quebrado já fazia sem chamada nenhuma; está escrito no
+  `@moduledoc` de `Surfaces` em vez de corrigido.
+
+**A onda 2 está fechada.**
 
 ## 6. Pronto quando
 

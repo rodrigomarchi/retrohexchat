@@ -30,6 +30,9 @@ defmodule RetroHexChat.Application do
       RetroHexChat.Admin.RoleCache,
       RetroHexChat.Admin.GlobalMuteTable,
       RetroHexChat.Presence.Tracker,
+      # Ahead of nothing in particular, but after the channel servers it parts
+      # people from: it decides when the last of someone's screens has closed.
+      RetroHexChat.Surfaces,
       RetroHexChat.RateLimit.Table,
       RetroHexChat.Scraper.Cache,
       RetroHexChat.Presence.WhowasCache,

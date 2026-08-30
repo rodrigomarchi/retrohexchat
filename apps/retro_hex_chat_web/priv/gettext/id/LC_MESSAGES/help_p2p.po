@@ -726,12 +726,12 @@ msgstr "Ketik /p2p <nick> (atau gunakan kontrol P2P dalam menu konteks PM header
 msgid "Channel conferences are audio/video calls attached to the active channel. The Call button in the channel topic bar opens the antechamber — the screen you arrive at before you are inside."
 msgstr "Konferensi kanal adalah panggilan audio/video yang terikat pada kanal aktif. Tombol Panggilan di bilah topik kanal membuka ruang depan — layar tempat Anda tiba sebelum berada di dalam."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Conference in Its Own Tab"
 msgstr "Konferensi di tab sendiri"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Sharing a Conference Link"
 msgstr "Membagikan tautan konferensi"
@@ -778,5 +778,5 @@ msgstr "Bagikan, di atas konferensi, membuat tautan ke panggilan yang sedang And
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "The room decides who is in the call, not the tab. Closing the tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
-msgstr "Yang menentukan siapa berada dalam panggilan adalah ruangnya, bukan tabnya. Menutup tab memulai jendela penyambungan ulang, bukan mengakhiri keikutsertaan Anda, dan membuka alamat yang sama lagi mengembalikan Anda ke tempat semula. Hanya Keluar, yang bertanya lebih dulu, bersifat final. Tab selalu menampilkan jalan kembali ke obrolan di tepi bawahnya: di dalam panggilan tidak ada percakapan."
+msgid "The room decides who is in the call, not the tab. Closing the call's tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Closing the chat's tab does not drop you out of the channel either, as long as the call is still open — you leave the channels when the last of your windows closes. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
+msgstr "Yang menentukan siapa berada dalam panggilan adalah ruangnya, bukan tabnya. Menutup tab panggilan memulai jendela penyambungan ulang, bukan mengakhiri keikutsertaan Anda, dan membuka alamat yang sama lagi mengembalikan Anda ke tempat semula. Menutup tab obrolan pun tidak mengeluarkan Anda dari kanal selama panggilan masih terbuka — Anda meninggalkan kanal ketika jendela terakhir Anda ditutup. Hanya Keluar, yang bertanya lebih dulu, bersifat final. Tab selalu menampilkan jalan kembali ke obrolan di tepi bawahnya: di dalam panggilan tidak ada percakapan."

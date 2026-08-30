@@ -11,8 +11,8 @@ quando a onda 6 fechar.
    D1–D6 arquitetura) e o mapa das ondas.
 2. [`ux.md`](ux.md) — **o desenho de todas as telas**. Quando uma onda e este
    arquivo discordarem, o arquivo está errado e é ele que muda primeiro.
-3. [`PROGRESS.md`](PROGRESS.md) — treze iterações registradas, com os erros. Leia
-   pelo menos as iterações 7, 8, 10 e 13: são armadilhas que vão voltar.
+3. [`PROGRESS.md`](PROGRESS.md) — catorze iterações registradas, com os erros.
+   Leia pelo menos as iterações 7, 8, 10, 13 e 14: são armadilhas que vão voltar.
 4. O arquivo da onda em que você vai mexer.
 
 E antes de tocar código: `AGENTS.md`, `CLAUDE.md` e as regras em
@@ -34,13 +34,16 @@ foi empurrado, e empurrar é decisão do usuário.
 | `7dc8245a` | Onda 2 — passo 0: `App.GroupCallShape` extraído |
 | `0b665bb2` | Onda 2 — passo 1: read-model de canal separado do estar-dentro |
 | `5bb4091e` | Onda 2 — `CallLive` em dois hosts + `/call/:token` |
+| `7ebc554d` | docs — handover apontando para o que faltava |
+| (este) | Onda 2 — filiação com contagem de superfícies; **onda 2 fechada** |
 
 | Onda | Estado |
 |---|---|
 | 0 — identidade + `/play` | ✅ fechada |
 | 1 — `/join/:slug` + card | ✅ fechada |
-| 2 — conferência | 🔨 **quase**: falta só a filiação com contagem de superfícies |
-| 3–6 | ⬜ |
+| 2 — conferência | ✅ fechada |
+| 3 — space | ⬜ **próxima** |
+| 4–6 | ⬜ |
 
 **O que já dá para testar à mão:** entrar no chat com nick registrado, entrar
 num canal, **Chamada** → a antessala abre *na janela* (não mais um diálogo) com
@@ -54,38 +57,40 @@ Chamada também tem **Abrir em uma aba**.
 
 ## 3. O próximo passo, concreto
 
-**Onda 2, o que sobrou: a filiação a canal precisa sobreviver à aba do chat**
-([onda 2 §2.6](wave-2-conference-surface.md)).
+**Onda 3 — o space em superfície própria** ([`wave-3-space-surface.md`](wave-3-space-surface.md)).
 
-Hoje o problema ainda **não existe**: a chamada embutida é filha do `ChatLive`,
-então ela morre junto. Ele nasce no momento em que alguém deixar `/call/:token`
-aberto e fechar a aba do chat — `ChatLive.terminate/2` chama `cleanup_channels/2`
-e a pessoa vira participante de uma sala de um canal do qual não é mais membro.
-O `rejoin` depois de um reload é negado e a moderação fica indefinida.
+A onda 2 fechou, e o que ela deixou pronto a onda 3 reusa inteiro em vez de
+reinventar:
 
-O desenho está escrito na §2.6 e não mudou: contagem de superfícies abertas por
-nickname (um `Registry` com `keys: :duplicate` remove a entrada quando o processo
-morre, que é exatamente a semântica necessária), `cleanup_channels/2` só efetiva
-a saída quando a última superfície fecha, e `/part` explícito continua imediato.
-`Live.Surface` é onde o registro entra, porque é por onde toda superfície passa.
+* `RetroHexChatWeb.Live.Surface` — nickname, ban, tópico de superfícies, e o
+  registro em `RetroHexChat.Surfaces` que mantém a filiação a canal viva.
+* `RetroHexChatWeb.CallLive.Host` — o padrão dos três desvios entre hosts
+  (aviso, janela, o que o host desenha). O space precisa dos mesmos três; se um
+  quarto aparecer, ele é do `Host` também.
+* `RetroHexChat.Topics.channel_calls/1` — o precedente. O space transmite hoje
+  em `space:#canal`; conferir se o chat precisa assinar junto pelo card ao vivo
+  (ux §2.1 diz que sim, e é o único custo novo do card).
+* `RetroHexChat.Channels.Departure.part_all/3` — a saída, já no domínio.
 
-O teste que prova a onda, e que deve ser escrito primeiro e falhar:
-**depois de fechar a aba do chat, o `rejoin` na chamada continua autorizado.**
-
-Depois disso a onda 2 fecha e a onda 3 (space) reusa `Live.Surface`,
-`CallLive.Host` e `Topics.channel_calls/1` inteiros.
+O desenho da antessala do space é o **seletor de personagem que já existe**
+(P5 / ux §2.4): ele só ganha o roster "lá dentro agora". Nenhuma tela nova.
 
 ---
 
-## 4. O que ainda morde na onda 2
+## 4. O que ainda morde
 
 1. ~~**Identificação é um assign do `ChatLive`.**~~ **Resolvido** (iteração 13):
    `Services.NickServ.identified?/1` mantém o conjunto em runtime e o assign do
    chat é espelho dele, então a superfície pergunta ao domínio. Não é preciso
    token novo.
 
-2. **A filiação a canal some quando o chat fecha.** Continua aberto — é o §3
-   acima, e é a única coisa que falta na onda 2.
+2. ~~**A filiação a canal some quando o chat fecha.**~~ **Resolvido**
+   (iteração 14): `RetroHexChat.Surfaces` conta as superfícies abertas por
+   nickname e o chat entrega a saída dos canais quando não é a última. Duas
+   coisas para não reaprender: um `live_render/3` aninhado **não** passa pelo
+   `on_mount` do `live_session`, então a janela do chat não é uma superfície; e
+   um chat que quebra nunca entrega nada, o que está escrito no `@moduledoc` em
+   vez de corrigido.
 
 3. **A suíte Playwright é só Chromium.** Trocar o host de uma chamada é a classe
    de mudança que quebra só o Firefox e passa no `make ci` — o

@@ -726,12 +726,12 @@ msgstr "Geben Sie /p2p <nick> (oder verwenden Sie die P2P-Steuerung im Kontextme
 msgid "Channel conferences are audio/video calls attached to the active channel. The Call button in the channel topic bar opens the antechamber — the screen you arrive at before you are inside."
 msgstr "Kanalkonferenzen sind Audio-/Videoanrufe, die an den aktiven Kanal gebunden sind. Die Schaltfläche „Anruf“ in der Themenleiste des Kanals öffnet den Vorraum — den Bildschirm, auf dem Sie ankommen, bevor Sie drin sind."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Conference in Its Own Tab"
 msgstr "Konferenz in einem eigenen Tab"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Sharing a Conference Link"
 msgstr "Einen Konferenzlink teilen"
@@ -778,5 +778,5 @@ msgstr "„Teilen“ über der Konferenz erzeugt einen Link zu dem Anruf, in dem
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "The room decides who is in the call, not the tab. Closing the tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
-msgstr "Wer im Anruf ist, entscheidet der Raum, nicht der Tab. Den Tab zu schließen startet das Wiederverbindungsfenster, statt Ihre Teilnahme zu beenden, und dieselbe Adresse erneut zu öffnen bringt Sie dorthin zurück, wo Sie waren. Nur „Verlassen“, das vorher fragt, ist endgültig. Der Tab zeigt am unteren Rand immer den Weg zurück zum Chat: In einem Anruf gibt es kein Gespräch."
+msgid "The room decides who is in the call, not the tab. Closing the call's tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Closing the chat's tab does not drop you out of the channel either, as long as the call is still open — you leave the channels when the last of your windows closes. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
+msgstr "Wer im Anruf ist, entscheidet der Raum, nicht der Tab. Den Tab des Anrufs zu schließen startet das Wiederverbindungsfenster, statt Ihre Teilnahme zu beenden, und dieselbe Adresse erneut zu öffnen bringt Sie dorthin zurück, wo Sie waren. Den Tab des Chats zu schließen wirft Sie ebenfalls nicht aus dem Kanal, solange der Anruf offen bleibt — Sie verlassen die Kanäle, wenn das letzte Ihrer Fenster schließt. Nur „Verlassen“, das vorher fragt, ist endgültig. Der Tab zeigt am unteren Rand immer den Weg zurück zum Chat: In einem Anruf gibt es kein Gespräch."

@@ -726,12 +726,12 @@ msgstr "/p2p <nick>(または、PMヘッダ/nicklistコンテクストメニュ�
 msgid "Channel conferences are audio/video calls attached to the active channel. The Call button in the channel topic bar opens the antechamber — the screen you arrive at before you are inside."
 msgstr "チャンネル会議は、アクティブなチャンネルに結び付いた音声・ビデオ通話です。チャンネルのトピックバーにある「通話」ボタンを押すと、中に入る前に到着する画面 — 控えの間が開きます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Conference in Its Own Tab"
 msgstr "専用タブでの会議"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Sharing a Conference Link"
 msgstr "会議リンクの共有"
@@ -778,5 +778,5 @@ msgstr "会議の上にある「共有」は、参加中の通話へのリンク
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "The room decides who is in the call, not the tab. Closing the tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
-msgstr "通話に誰がいるかを決めるのは部屋であり、タブではありません。タブを閉じても参加が終わるわけではなく、再接続の猶予が始まります。同じアドレスを開き直せば元の場所に戻ります。最終的なのは、先に確認する「退出」だけです。タブの下端には常にチャットへ戻る道が表示されます。通話の中に会話はありません。"
+msgid "The room decides who is in the call, not the tab. Closing the call's tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Closing the chat's tab does not drop you out of the channel either, as long as the call is still open — you leave the channels when the last of your windows closes. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
+msgstr "通話に誰がいるかを決めるのは部屋であり、タブではありません。通話のタブを閉じても参加が終わるわけではなく、再接続の猶予が始まります。同じアドレスを開き直せば元の場所に戻ります。チャットのタブを閉じても、通話が開いているかぎりチャンネルから外れることはありません。チャンネルから出るのは、あなたの最後のウィンドウが閉じたときです。最終的なのは、先に確認する「退出」だけです。タブの下端には常にチャットへ戻る道が表示されます。通話の中に会話はありません。"

@@ -726,12 +726,12 @@ msgstr "Type /p2p <nick> (of gebruik de P2P control in het PM header/nicklist co
 msgid "Channel conferences are audio/video calls attached to the active channel. The Call button in the channel topic bar opens the antechamber — the screen you arrive at before you are inside."
 msgstr "Kanaalconferenties zijn audio-/videogesprekken die aan het actieve kanaal hangen. De knop Gesprek in de onderwerpbalk opent de voorkamer — het scherm waar je aankomt voordat je binnen bent."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:103 lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Conference in Its Own Tab"
 msgstr "Conferentie in een eigen tabblad"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107 lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Sharing a Conference Link"
 msgstr "Een conferentielink delen"
@@ -778,5 +778,5 @@ msgstr "Delen, boven de conferentie, maakt een link naar het gesprek waarin je z
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "The room decides who is in the call, not the tab. Closing the tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
-msgstr "De ruimte bepaalt wie in het gesprek zit, niet het tabblad. Het tabblad sluiten start het herverbindingsvenster in plaats van je deelname te beëindigen, en hetzelfde adres opnieuw openen zet je terug waar je was. Alleen Verlaten, dat eerst vraagt, is definitief. Het tabblad toont onderaan altijd de weg terug naar de chat: in een gesprek zit geen conversatie."
+msgid "The room decides who is in the call, not the tab. Closing the call's tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Closing the chat's tab does not drop you out of the channel either, as long as the call is still open — you leave the channels when the last of your windows closes. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
+msgstr "De ruimte bepaalt wie in het gesprek zit, niet het tabblad. Het tabblad van het gesprek sluiten start het herverbindingsvenster in plaats van je deelname te beëindigen, en hetzelfde adres opnieuw openen zet je terug waar je was. Het tabblad van de chat sluiten haalt je evenmin uit het kanaal, zolang het gesprek open blijft — je verlaat de kanalen wanneer het laatste van je vensters sluit. Alleen Verlaten, dat eerst vraagt, is definitief. Het tabblad toont onderaan altijd de weg terug naar de chat: in een gesprek zit geen conversatie."
