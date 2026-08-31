@@ -76,10 +76,72 @@ foi empurrado, e empurrar é decisão do usuário.
 
 ---
 
+## 2.1 O mapa do que existe, para você não ter que grepar
+
+Quatro superfícies, todas o mesmo padrão: **um módulo, dois pontos de montagem**
+(raiz numa rota própria, filho via `live_render/3` numa janela do chat).
+
+| Superfície | Rota | Módulo | O que o chat guarda |
+|---|---|---|---|
+| jogo solo | `/play`, `/play/:game` | `App.PlayLive` | nada |
+| conferência | `/call/:token` | `App.CallLive` (+ `CallLive.Events`) | `ChatLive.GroupCallReadModel` |
+| space | `/space/:slug` | `App.SpaceLive` | `ChatLive.SpaceReadModel` + `SpaceEvents` |
+| sessão P2P | `/p2p/:token` | `App.P2PLive` (+ `P2PLive.Events`) | `ChatLive.P2PReadModel` |
+
+As rotas raiz vivem todas no `live_session :app_surface` do router, com
+`Live.Surface` no `on_mount` — nickname, ban, tópico de superfícies e o registro
+em `RetroHexChat.Surfaces` que mantém a filiação a canal viva quando o chat
+fecha. **Um `live_render/3` aninhado não passa pelo `on_mount`**, então a janela
+do chat não é uma superfície: só a rota é.
+
+A régua que separou cada read-model, aplicada quatro vezes e válida para a
+quinta: **se o dado existe para quem só está olhando a conversa, ele fica no
+chat; se só existe enquanto você está dentro, vai para a superfície.**
+
+O que diverge entre os dois hosts passa por `Live.SurfaceHost`, e é sempre a
+mesma lista curta: um aviso, a janela, a geometria, e o que o host desenha.
+
+**Sinalização:** conferência (`group_call:<token>`), space (`space:*`) e P2P
+(`p2p:<session_token>`) são Phoenix Channels crus, autenticados por token
+assinado com salt próprio. Nenhuma passa pelo socket do LiveView. O que fica no
+LiveView é o que carrega política de transporte — `ice_servers`, `role`,
+`turn_only` — e o ciclo de vida da sessão.
+
+**Links:** `RetroHexChat.ShareLinks` minta um slug opaco por superfície;
+`/join/:slug` é a única rota pública, roda no pipeline do landing e resolve o
+slug para "que sala é esta" — nunca para autorização (D1). Os kinds hoje são
+`call`, `space`, `p2p` e `play`.
+
+---
+
 ## 3. O próximo passo, concreto
 
 **Onda 5 — jogos: o lobby aberto**
 ([`wave-5-games-surfaces.md`](wave-5-games-surfaces.md)).
+
+### A ordem, se você não tiver motivo para outra
+
+1. **Levantamento antes do changeset.** `peer_id` nulo atravessa
+   `Queries.active_sessions_between/2`, `Service.close_sessions_between/2`,
+   `Policy.can_close?/2` e `can_decline?/2` — os quatro existem e foram
+   conferidos. Leia os quatro e anote o que assume dois participantes. Isto é
+   leitura, não código, e é o passo que a onda 5 §5 chama de "não fé".
+2. **O domínio primeiro, sem web nenhuma.** Migração (`peer_id` nulo, status
+   `open`, `expires_at`, índice parcial), `create_open_session/2`,
+   `claim_open_session/2` com a escrita condicional, `can_claim?/2`. Com o teste
+   de reivindicação concorrente junto — ele é o teste desta onda.
+3. **O job de expiração no Oban**, com a observabilidade que o `AGENT-GUIDE`
+   §17 exige. Um lobby aberto que ninguém reivindica tem que morrer sozinho, e
+   isso é a mitigação de abuso número um.
+4. **O card de `/join/:slug`** ganha o estado "vaga preenchida" — é o único kind
+   em que o link morre por sucesso.
+5. **A rota `/play/:game/:token`**, entrando direto na seção de jogo do
+   `App.P2PLive` em vez do console.
+6. **A sala de partida do jogo**, só depois de ver as duas variantes lado a lado
+   no `ux.md` §2.5. Não generalize antes.
+
+Os passos 1–3 não têm tela nenhuma, então a regra do screenshot só morde do 4
+em diante.
 
 **Ela não é "a mesma receita mais uma vez".** As ondas 2, 3 e 4 moveram código
 entre processos sem tocar no domínio. Esta muda o domínio: hoje **não existe
@@ -342,6 +404,7 @@ Instruções que ele deu explicitamente, além do `AGENTS.md`:
 ## 7. Comandos que você vai usar
 
 ```sh
+make server                  # Phoenix em :4000, para olhar a coisa funcionando
 make ci                      # gate final; ler CI_EXIT do log, não o do shell
 mix test <arquivo>           # iteração
 make e2e.catalog             # depois de criar spec Playwright com @flow
