@@ -139,6 +139,19 @@ on another monitor or another machine.
 should: a hand-written anchor gets the destructive one wrong, because opening a
 second tab of a P2P session **moves the session into it**.
 
+Two things this deliberately does not cover:
+
+- **The taskbar and the Start menu open the chat's own windows, not tabs.**
+  There is no second tab to avoid there, so those entries are unchanged. Only
+  the four affordances that really open a tab — the three "open in a tab" links
+  and every surface's `← Chat` — have two shapes.
+- **The arcade tab is reachable by neither half.** `/play/arcade/:game` redirects
+  to the static host the WASM bundle lives on, so there is no LiveView for the
+  registry to monitor and no shared origin for `BroadcastChannel`. That tab
+  cannot be counted or focused, and an arcade session therefore ends by **End
+  Session** or by the `SoloSessionServer` inactivity timeout — never because a
+  window vanished.
+
 ---
 
 ## 19.5 Links name a room; they never grant access to one

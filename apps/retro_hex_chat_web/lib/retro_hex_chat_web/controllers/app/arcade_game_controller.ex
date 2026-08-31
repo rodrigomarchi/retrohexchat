@@ -11,9 +11,14 @@ defmodule RetroHexChatWeb.App.ArcadeGameController do
   It is a redirect and not a page because there is nothing of ours to draw: the
   game *is* the other origin. Opening it goes through an anchor with
   `rel="noopener"` so the tab gets its own event loop — measured at 1203 ms
-  against 12 ms in wave 0 — which also means there is no window handle left to
-  poll. The end of an arcade session is the inactivity timeout the
-  `SoloSessionServer` already has, until the cross-tab coordination of wave 6.
+  against 12 ms — which also means there is no window handle left to poll.
+
+  That other origin is also why this tab is the one thing the cross-tab
+  coordination cannot reach: there is no LiveView here for
+  `RetroHexChat.Surfaces` to monitor, and `BroadcastChannel` is per origin. So
+  an arcade session ends the way a session ends — **End Session**, or the
+  inactivity timeout the `SoloSessionServer` already keeps — and never because a
+  window vanished.
   """
   use RetroHexChatWeb, :controller
 
