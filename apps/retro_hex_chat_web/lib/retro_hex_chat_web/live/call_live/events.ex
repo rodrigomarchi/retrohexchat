@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
 
   Nothing here knows which of the two hosts it is running under. Everything
   that would have to — a notice, the window, what the host draws about the call
-  — goes through `RetroHexChatWeb.CallLive.Host`.
+  — goes through `RetroHexChatWeb.Live.SurfaceHost`.
   """
 
   import Phoenix.Component, only: [assign: 2]
@@ -36,8 +36,8 @@ defmodule RetroHexChatWeb.CallLive.Events do
   alias RetroHexChatWeb.App.GroupCallStats
   alias RetroHexChatWeb.App.GroupCallSummary
   alias RetroHexChatWeb.App.SessionHelpers
-  alias RetroHexChatWeb.CallLive.Host
   alias RetroHexChatWeb.Live.GroupCallConfirmDialog
+  alias RetroHexChatWeb.Live.SurfaceHost, as: Host
   alias RetroHexChatWeb.MediaDevices
 
   @window_id "group-call"

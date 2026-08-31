@@ -52,9 +52,9 @@ defmodule RetroHexChat.Lobby.SessionServer do
     end
   end
 
-  @spec join(String.t(), integer()) :: :ok | {:error, String.t() | :already_joined}
-  def join(token, user_id) do
-    call(token, {:join, user_id})
+  @spec join(String.t(), integer(), keyword()) :: :ok | {:error, String.t() | :already_joined}
+  def join(token, user_id, opts \\ []) do
+    call(token, {:join, user_id, Keyword.get(opts, :takeover, false)})
   end
 
   @doc """
@@ -189,13 +189,13 @@ defmodule RetroHexChat.Lobby.SessionServer do
     {:reply, state, state}
   end
 
-  def handle_call({:join, user_id}, {caller_pid, _tag}, state) do
+  def handle_call({:join, user_id, takeover?}, {caller_pid, _tag}, state) do
     case role_of(state, user_id) do
       nil ->
         {:reply, {:error, dgettext("lobby", "Not a participant")}, state}
 
       role ->
-        case attach_connection(state, role, caller_pid) do
+        case attach_connection(state, role, caller_pid, takeover?) do
           {:ok, state} ->
             Logger.debug(
               "Lobby join: user=#{user_id}, role=#{role}, session_id=#{state.session.id}"
@@ -508,7 +508,15 @@ defmodule RetroHexChat.Lobby.SessionServer do
     end
   end
 
-  defp attach_connection(state, role, pid) do
+  # A second window asking for a seat this person already occupies is a
+  # takeover, never a second seat: the same nickname is one participant, and
+  # the WebRTC link belongs to whichever page is actually on screen. The old
+  # page is told, and the slot is released exactly the way a disconnect
+  # releases it — readiness reset, replay dropped, the peer notified — so the
+  # gate that rebuilds the media after a dropped socket rebuilds it here too.
+  # Without that reset the new page would join a session whose signalling had
+  # already started and sit there with no media at all.
+  defp attach_connection(state, role, pid, takeover?) do
     case state.connections[role] do
       nil ->
         {:ok, monitor_connection(state, role, pid)}
@@ -517,11 +525,17 @@ defmodule RetroHexChat.Lobby.SessionServer do
         {:ok, NamedTimers.cancel(state, {:rejoin_grace, role})}
 
       %{pid: old_pid, ref: old_ref} ->
-        if Process.alive?(old_pid) do
-          {:error, :already_joined}
-        else
-          Process.demonitor(old_ref, [:flush])
-          {:ok, monitor_connection(state, role, pid)}
+        cond do
+          not Process.alive?(old_pid) ->
+            Process.demonitor(old_ref, [:flush])
+            {:ok, monitor_connection(state, role, pid)}
+
+          takeover? ->
+            send(old_pid, {:lobby_slot_taken, state.token})
+            {:ok, monitor_connection(begin_disconnect(state, role), role, pid)}
+
+          true ->
+            {:error, :already_joined}
         end
     end
   end

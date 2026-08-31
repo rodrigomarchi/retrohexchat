@@ -1,14 +1,15 @@
 defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
   @moduledoc """
-  Shared P2P invite logic used by both command dispatch and the context
-  menu. Sends a PM request line, notifies the target, switches the sender to
-  the PM conversation, and tracks the session as its creator. The
-  `/lobby/<token>` path remains embedded only for legacy token resolution.
+  Sending a P2P invite, which is the same act as creating the session.
 
-  With a P2P session already active, the invite is NOT delivered yet: the
-  switch confirm opens first, and only confirming ends the current session and
-  opens outgoing setup. The lobby row and invite PM are still created only after
-  setup submit.
+  The invite is a real private message: it sends a request line into the PM,
+  notifies the target, switches the sender to that conversation and opens the
+  session's starting room as its creator. The `/lobby/<token>` path stays
+  embedded in the text for legacy token resolution.
+
+  With a session already active the invite is NOT delivered yet: the switch
+  confirm opens first, and only confirming ends the current session — the
+  invite goes out when that session actually closes, never before.
   """
 
   import Phoenix.Component, only: [assign: 2]
@@ -18,30 +19,25 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
 
   alias RetroHexChat.Chat.Service
   alias RetroHexChat.Lobby
-  alias RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog
   alias RetroHexChatWeb.ChatLive.Helpers.{Messages, PM}
   alias RetroHexChatWeb.ChatLive.P2PSessionEvents
 
   @spec handle_lobby_invite(Phoenix.LiveView.Socket.t(), map(), map()) ::
           Phoenix.LiveView.Socket.t()
-  def handle_lobby_invite(socket, _session, payload) do
-    case socket.assigns.p2p_session do
+  def handle_lobby_invite(socket, session, payload) do
+    case socket.assigns[:p2p_session] do
       nil ->
-        P2PSessionEvents.open_outgoing_setup(socket, payload)
+        deliver_invite(socket, session, payload)
 
       p2p ->
-        Phoenix.LiveView.send_update(P2PConfirmDialog,
-          id: P2PConfirmDialog.id(),
-          action: {:open_switch, p2p.peer_nick, payload.target}
-        )
-
+        P2PSessionEvents.open_switch_confirm(socket, p2p.peer_nick, payload.target)
         assign(socket, p2p_pending: %{kind: :outgoing, payload: payload})
     end
   end
 
   @doc """
-  Sends the invite PM, opens the conversation and joins the new session as
-  creator. Also the continuation after outgoing setup or a confirmed switch.
+  Sends the invite PM, opens the conversation and takes the session's starting
+  room as its creator. Also the continuation after a confirmed switch.
   """
   @spec deliver_invite(Phoenix.LiveView.Socket.t(), map(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -66,14 +62,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
   defp do_deliver_invite(socket, session, payload) do
     %{target: target, token: token} = payload
 
-    pm_content = lobby_invite_content(token)
-
-    case Service.send_private_message(session.nickname, target, pm_content, "p2p_invite") do
-      {:ok, _pm} ->
-        :ok
-
-      {:error, _} ->
-        :ok
+    case Service.send_private_message(
+           session.nickname,
+           target,
+           lobby_invite_content(token),
+           "p2p_invite"
+         ) do
+      {:ok, _pm} -> :ok
+      {:error, _reason} -> :ok
     end
 
     socket = PM.open_pm_conversation(socket, target)

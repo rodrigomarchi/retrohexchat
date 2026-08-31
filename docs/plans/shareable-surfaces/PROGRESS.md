@@ -1421,3 +1421,184 @@ stale seria pior.
 ficaram para trás se mudam, junto com o dono do `turn_only`.
 
 ---
+
+## Iteração 17 — o P2P ganha endereço, e a sala de partida dá nome à ordem
+
+**Objetivo:** fase 4B inteira — separar o read-model de conversa, `P2PLive` nos
+dois hosts, a sala de partida, a rota `/p2p/:token` e o `kind: "p2p"` no
+`JoinLive`.
+
+### O `Host` se decidiu, com o terceiro ponto de dado
+
+A onda 2 deixou aberto se `CallLive.Host` sobe ou ganha um irmão. Com o P2P na
+frente a resposta é **sobe**: ele tem os três desvios (um aviso, uma janela, e o
+que o host desenha), exatamente como a chamada, e o space continua sem nenhum.
+`RetroHexChatWeb.Live.SurfaceHost` é o mesmo módulo com uma diferença: cada
+mensagem carrega a **tag** da superfície (`{:surface_notice, :call, …}`), porque
+o chat agora hospeda duas ao mesmo tempo e ler o nome na mensagem é melhor do
+que adivinhar pela forma. Ganhou um quarto verbo, `geometry/2` — o mini da
+janela de chamada é um tamanho, e tamanho é do gerenciador de janelas, que a
+superfície não tem quando ela *é* a página.
+
+### A ordem do convite virou o desenho, e não o contrário
+
+O plano dizia que o `p2p_setup_dialog` vira o primeiro estado da página. Ao
+escrever, isso colidiu com "criar a sessão **é** convidar" (§4B.3): o setup de
+hoje acontece *antes* de existir token, então não havia o que montar.
+
+A saída foi inverter a ordem em vez de duplicar a tela: **`/p2p <nick>` manda o
+convite na hora** e o criador cai na sala de partida, onde escolhe dispositivos
+*enquanto espera a resposta*. É o que o `ux.md` §2.5 já desenhava — "carla:
+escolhendo controles" é um estado de roster — e é melhor de produto: o par
+recebe o convite antes, e os dois se preparam em paralelo. O diálogo de setup
+sumiu; os `data-testid` dos campos ficaram, porque nomeiam o campo e não o
+diálogo em que ele morava.
+
+### `[Pronto]` e `[Iniciar]`, e o que cada um significa de verdade
+
+| UI | O que é, no código |
+|---|---|
+| `[Pronto]` | `room_ready` (dispositivos submetidos) **e** `hook_ready` (o hook montou e reportou) |
+| `[Iniciar]` | só o criador; libera o primeiro offer, que é `lobby_start_offer` |
+| "aguardando bob" | `peer_ready`, que chega como `lobby_start_signaling` do domínio |
+
+A âncora WebRTC **só é renderizada a partir do `[Pronto]`**. Antes disso um hook
+ali reportaria prontidão para dispositivos que ninguém escolheu — e prontidão é
+metade do que torna o primeiro offer seguro de mandar.
+
+Uma sutileza que só apareceu no teste: o *answerer* prepara a conexão assim que
+o portão do domínio abre (`lobby_start_answer`), porque o primeiro offer é
+descartado se ele não estiver escutando — mas ele **continua na sala**, com
+`state: :joining`. Dizer `:connecting` ali seria mentir sobre uma negociação que
+ninguém liberou. Quem sai da sala é o broadcast `lobby_session_start` do host.
+
+### Duas abas: a segunda assume, e o `reattach_pending` inteiro morreu
+
+A recomendação escrita era "a segunda assume". Implementado no domínio:
+`Lobby.join_session/3` aceita `takeover: true`, e o `SessionServer` trata o
+takeover **exatamente como uma desconexão seguida de um join** — libera o
+assento, zera a prontidão daquele lado, apaga o replay e avisa o par. Sem esse
+reset a aba nova entraria numa sessão cuja sinalização já tinha rodado e ficaria
+sentada sem mídia nenhuma; com ele, o mesmo portão que reconstrói a mídia depois
+de uma queda de socket reconstrói aqui.
+
+Consequência que eu não tinha previsto: **`reattach_pending` virou código
+morto**. Ele existia porque `join_session` podia responder `:already_joined`, e
+com todo mount pedindo takeover isso não acontece mais para a mesma pessoa. Foram
+embora `begin_reattach_wait`, `retry_attach_session`, `maybe_continue_reattach`,
+`fail_reattach`, `schedule_reattach_retry`, `reattach_retry?`, os cinco delays de
+backoff e o `client_webrtc_ready`. O caminho mais frágil do produto deixou de
+existir em vez de ser reescrito.
+
+E a aba que perde o assento não vira erro: ela mostra `p2p-displaced` com
+**[Trazer de volta pra cá]**, que é o mesmo takeover pedido do outro lado. O que
+existia antes era cinco tentativas de backoff e depois "feche a outra janela" —
+um beco alcançado fazendo algo razoável, e impossível de resolver da janela em
+que você estava.
+
+**Uma armadilha do teste que valeu o registro:** a primeira versão do teste de
+takeover abria dois `/chat` para o mesmo nick. Não dá — o segundo chat mata o
+primeiro, que é o takeover *do chat*, e o processo morre antes de a asserção
+rodar. O cenário real é chat + `/p2p/:token`, e é justamente porque a superfície
+**não** anuncia takeover que duas delas podem disputar o mesmo assento.
+
+### O que ficou no chat, medido pela mesma régua das ondas 2 e 3
+
+`ChatLive.P2PReadModel`: o crachá por conversa (`@p2p_pm_sessions`), a sessão que
+este leitor está dentro reduzida ao que a chrome do chat desenha
+(`@p2p_session`), e o tópico `lobby:<token>` só para o fim da sessão. O
+`P2PSessionEvents` encolheu de **2.137 para ~430 linhas**, e o que sobrou é
+convite, janela, troca de sessão e "dizer o que aconteceu".
+
+Uma coisa que o plano não previa: a chrome do chat (menu bar, Start menu,
+lançadores do desktop, o crachá da PM) dispara oito eventos que só a sessão pode
+executar — `p2p_console_select`, `p2p_start_audio`, `p2p_toggle_privacy`… O
+clique cai no chat porque é onde o markup está; o que ele significa é
+encaminhado, como `GroupCallEvents.forward/2` já fazia.
+
+### O `P2PConfirmDialog` virou `Live.P2PConfirmDialog`
+
+Mesma promoção que o `GroupCallConfirmDialog` teve na onda 2, pelo mesmo motivo:
+dois LiveViews o renderizam (a superfície pergunta antes de encerrar; o chat
+pergunta antes de trocar de par), e os dois estão na tela ao mesmo tempo quando
+a sessão está embutida. Ids diferentes, `scope` declarado pelo host.
+
+### Um defeito que só o orçamento pegou
+
+O `p2p_title_meta` no slot `:meta` da janela desenha `icon_call_webrtc`, que é um
+SVG inline (`CallControls` não passa pelo sprite). Na sala de partida ele não
+tem o que dizer — ele fala de uma conexão que ainda não existe — então passou a
+ser `:if={inside?(...)}`. O teste que pegou foi
+`count("<use href=") == count("<svg")`, não um teste de UI.
+
+### Verificação
+
+- 33 testes em `p2p_session_flow_test.exs` (reescritos para mirar o filho),
+  14 novos em `p2p_live_test.exs` (montagem raiz), 5 no
+  `starting_room_test.exs`, 2 novos de takeover no `session_server_test.exs`.
+- **Vermelho verificado:** com o portão do `[Iniciar]` removido, "no offer is
+  emitted before Start" cai; restaurado, passa. O teste prova a regra do
+  moduledoc pela UI, que era o item da tabela de TDD da 4B.
+- `PerfBudgets.html_bytes(:p2p)` = 27.360 B raw, 248 elementos, medidos.
+- 1.544 testes web verdes.
+
+### O que os screenshots pegaram, e o que o e2e pegou
+
+Três defeitos que teste nenhum veria: a prévia de câmera esticada em 440 px de
+preto porque a coluna do grid a alongava, o rodapé flutuando no meio de uma
+janela maximizada quase vazia, e a barra de título dizendo "Joining… / Ready"
+sobre uma conexão que ainda não existe. A sala virou um bloco centrado e limitado
+em 920 px — um diálogo promovido a página, que é o que ela é — e o meta do título
+só aparece de `:connecting` em diante.
+
+E quatro que só a suíte Playwright pegou, todos da mesma família — **markup que
+mudou de dono e continuou falando o nome antigo**:
+
+1. `data-testid="p2p-confirm-dialog"` era literal, e agora os dois hosts
+   renderizam o diálogo ao mesmo tempo: dois elementos com o mesmo testid. Passou
+   a derivar do `id`, exatamente como os `data-testid` internos do
+   `GroupCallConfirmDialog` na iteração 13.
+2. O botão **End** do console empurrava `p2p_statusbar_stop` — nome de evento do
+   chat, num botão que agora vive dentro da superfície. Virou `p2p_end_session`.
+3. O `p2p_title_meta` saiu do template do chat junto com o corpo da janela, e com
+   ele o `p2p-call-kind` que quatro testes leem. Voltou para o `:meta` da janela
+   do chat, alimentado pelo read-model — é chrome do chat, como o do group call.
+4. O snapshot publicado para o host estava estreito demais: sem `turn_only`,
+   `recovery` e os três `*_summary`, a zona de status do chat perdia o indicador
+   de relay e as facetas. A régua não mudou — "o que a chrome do chat desenha" —
+   só a lista ficou completa.
+
+**E um buraco de produto que o e2e expôs:** uma aba que recarrega no meio da
+negociação volta com a sessão em `lobby`, não em `connected`, então ela caía na
+sala de partida e ficaria esperando um `[Iniciar]` que já foi apertado. A saída
+não foi ler estado novo: quem já está dentro **reanuncia** `lobby_session_start`
+ao ver `lobby_peer_joined`, e quem chega sai da sala com `room_ready` ligado. É a
+mesma regra do catch-up que o `lobby_start_signaling` já tinha, um evento antes.
+
+### E2E: 17 de 18, com a mesma falha pré-existente
+
+`chat-p2p.spec.ts`, `chat-p2p-negotiation.spec.ts`, `chat-rate-limit.spec.ts` e
+`chat-call-fault-injection.spec.ts` rodados. As duas que continuam vermelhas —
+"the inviter cancels a pending invite from the status bar" e "P2P answerer
+reloads while applying the initial offer" — foram verificadas com `git stash`:
+**falham idênticas no `HEAD` anterior**. A primeira é a janela maximizada
+cobrindo a barra de status do chat, que o HANDOVER já registrava; a segunda é
+recuperação de mídia depois de um reload no meio do primeiro offer, e é anterior
+a esta onda.
+
+Os helpers de `e2e/helpers/p2pFlows.ts` são a costura: `sendP2PInvite` agora
+manda o convite e aperta `[Pronto]`, `acceptP2PInvite` entra e aperta
+`[Pronto]`, e `startP2PSession` é novo — o host solta o primeiro offer. Os
+`data-testid` dos campos de dispositivo não mudaram, porque nomeiam o campo e
+não o diálogo em que ele morava.
+
+### Um vermelho que não era meu e virou meu
+
+`make ci` reprovou uma vez em `SystemInfo.SourcesTest`, "the page carries the OTP
+callback module": a tabela de processos lista e depois enriquece, e um processo
+que morre entre as duas leituras ficava publicado com o nome que o enriquecimento
+existe para remover (`proc_lib.init_p/5`). Era uma corrida latente; esta onda só
+aumentou a rotatividade de processos o bastante para revelá-la. O enrich passou a
+descartar a linha, do mesmo jeito que o scan já descarta um processo que morreu
+antes dele, com teste de regressão.
+

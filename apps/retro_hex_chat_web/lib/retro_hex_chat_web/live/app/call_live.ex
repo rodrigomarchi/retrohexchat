@@ -6,7 +6,7 @@ defmodule RetroHexChatWeb.App.CallLive do
   what the chat's Group Call window renders. Nothing about a conference is
   written twice — the difference between the two is where the process hangs,
   not what it does. Everything that genuinely differs goes through
-  `RetroHexChatWeb.CallLive.Host`.
+  `RetroHexChatWeb.Live.SurfaceHost`.
 
   Two states, and you always arrive at the first: the **antechamber**, where
   you see who is already in the room and choose how you walk in, and **inside**.
@@ -34,9 +34,9 @@ defmodule RetroHexChatWeb.App.CallLive do
   alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.CallLive.Events
-  alias RetroHexChatWeb.CallLive.Host
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.GroupCallConfirmDialog
+  alias RetroHexChatWeb.Live.SurfaceHost, as: Host
   alias RetroHexChatWeb.ShareLinkRef
 
   @impl true
@@ -45,6 +45,7 @@ defmodule RetroHexChatWeb.App.CallLive do
     socket =
       assign(socket,
         embedded?: session["embedded"] == true,
+        surface_tag: :call,
         nickname: session["nickname"] || socket.assigns[:surface_nickname],
         # The device preference is the person's, not the screen's: the same
         # terminal that remembered a camera for the chat's pre-join has to hand
@@ -69,7 +70,7 @@ defmodule RetroHexChatWeb.App.CallLive do
          |> assign(channel_name: channel_name)
          |> subscribe_to_room(channel_name)
          |> Events.mount_call(channel_name, user_id)
-         |> Host.publish()}
+         |> publish()}
 
       {:error, message} ->
         {:ok, assign(socket, denied: message)}
@@ -206,7 +207,7 @@ defmodule RetroHexChatWeb.App.CallLive do
 
   def handle_event(event, params, socket) do
     {_halted, socket} = Events.handle_event(event, params, socket)
-    {:noreply, Host.publish(socket)}
+    {:noreply, publish(socket)}
   end
 
   @impl true
@@ -215,13 +216,13 @@ defmodule RetroHexChatWeb.App.CallLive do
   # keystroke lands on the chat's window, the call is what it means.
   def handle_info({:call_surface_command, {:event, event}}, socket) do
     {_halted, socket} = Events.handle_event(event, %{}, socket)
-    {:noreply, Host.publish(socket)}
+    {:noreply, publish(socket)}
   end
 
   # Not a window being closed: the channel the call stood on is gone, or the
   # host is swapping it for another one's.
   def handle_info({:call_surface_command, {:leave, reason}}, socket) do
-    {:noreply, socket |> Events.leave(reason) |> Host.publish()}
+    {:noreply, socket |> Events.leave(reason) |> publish()}
   end
 
   # The room's own topic, and only it: the antechamber's roster is the reason
@@ -242,11 +243,36 @@ defmodule RetroHexChatWeb.App.CallLive do
     {:noreply, socket}
   end
 
+  defp publish(socket), do: Host.publish(socket, host_snapshot(socket))
+
+  @doc """
+  What the host is told about the call — public so its shape is testable.
+
+  Nicknames and track ids, not participants and tracks: the chat's title bar,
+  taskbar button and status zone count them and name the channel, and nothing
+  in the chat reads a media state it is not carrying.
+  """
+  @spec host_snapshot(Socket.t()) :: map() | nil
+  def host_snapshot(%{assigns: %{group_call: %{} = call}}) do
+    %{
+      channel_name: call.channel_name,
+      status: call.status,
+      participants: Enum.map(call.participants || [], &%{nickname: Map.get(&1, :nickname)}),
+      tracks: Enum.map(call.tracks || [], &%{id: Map.get(&1, :id)})
+    }
+  end
+
+  def host_snapshot(%{assigns: %{group_call_prejoin: %{channel_name: channel_name}}}) do
+    %{channel_name: channel_name, status: :prejoin, participants: [], tracks: []}
+  end
+
+  def host_snapshot(_socket), do: nil
+
   defp apply_room_broadcast(socket, payload) do
     socket
     |> Events.refresh_roster()
     |> Events.apply_summary(Map.get(payload, :channel), Map.get(payload, :summary))
-    |> Host.publish()
+    |> publish()
   end
 
   defp subscribe_to_room(socket, channel_name) do

@@ -9,9 +9,16 @@ Part of the [Agent Guide](../AGENT-GUIDE.md) (§8). Section numbers there are st
 **Naming policy — "lobby" is the DOMAIN, not a page.** `RetroHexChat.Lobby` is the
 P2P-session bounded context; the PubSub topic `"lobby:#{token}"`, the `lobby_*`
 events, the `lobby-*` DOM ids and the `Lobby*` module names all refer to that
-domain concept. There is NO standalone lobby page — `/lobby/:token` only
-redirects to `/chat`, where P2P sessions live (invite card in the PM, `p2p-*`
-desktop windows). Do not invent or search for a lobby LiveView/page.
+domain concept. `/lobby/:token` is still only a redirect and there is still no
+lobby LiveView — do not invent or search for one.
+
+**A session does have an address, and it is `/p2p/:token`.**
+`RetroHexChatWeb.App.P2PLive` is one module with two mounts: the page at that
+address, and the child the chat renders inside its `p2p-call` window. It is not
+the old lobby page coming back — that one had a chat of its own, which is the
+fork this repository refuses. This is the same implementation mounted somewhere
+else. What stayed in the chat is the invite, because creating a session *is*
+sending a private message, and conversation is the chat's.
 
 ### 8.1 Session model
 
@@ -50,9 +57,10 @@ desktop windows). Do not invent or search for a lobby LiveView/page.
 - **What travels on the wire, and what does not.** The channel carries only what goes *between
   the two peers*: offers, answers, candidates, the answerer's renegotiation request, and the
   replay that fills a reconnect's gap. Starting signaling (`lobby_start_offer` /
-  `lobby_start_answer`), restarting it, and the session lifecycle stay with the host LiveView,
-  because they carry state the host owns — the transport policy and the reattach handshake.
-  Both listen on the same `"lobby:<token>"`, so who publishes what did not change.
+  `lobby_start_answer`), restarting it, and the session lifecycle stay with the surface,
+  because they carry state it owns — `ice_servers`, `role` and `turn_only` are transport
+  policy, and the surface is what persists it. Both listen on the same `"lobby:<token>"`, so
+  who publishes what did not change.
 - **Why the wire left the LiveView socket.** A negotiation carried by the page hosting it is a
   negotiation the page can take with it. On its own channel it survives a LiveView reconnect,
   and the same wire can be shared by more than one host — which is what a P2P surface with an
@@ -65,6 +73,24 @@ desktop windows). Do not invent or search for a lobby LiveView/page.
   attack surface than the other.
 - **The session creator is always the offer initiator** — server sends `p2p_start_offer` only to
   the creator on `connecting`, preventing simultaneous-offer glare.
+- **Both hooks ready, then the host starts, and the starting room is that rule with a face.**
+  The domain gate has not moved: `lobby_start_signaling` is broadcast only once both sides have
+  reported `webrtc_ready` on a session in `lobby`/`connected`. What changed is that the wait is
+  now visible. `[Ready]` means devices chosen *and* the hook mounted — the WebRTC anchor is not
+  rendered before it, so a hook cannot report readiness for devices nobody picked. `[Start]`
+  belongs to the creator alone and is the only thing that releases the first offer. The answerer
+  still prepares itself the moment the gate opens (`lobby_start_answer` builds the peer
+  connection and waits), because the first offer is dropped if it is not listening yet — it just
+  stays on the room's screen until the host's `lobby_session_start` says otherwise.
+- **Two windows of the same person: the second takes the seat.** `Lobby.join_session/3` accepts
+  `takeover: true`, and every `P2PLive` mount asks for it. The `SessionServer` treats a takeover
+  exactly as a disconnect followed by a join — the seat is released, that side's readiness is
+  reset, the replay is dropped and the peer is told — so the gate that rebuilds media after a
+  dropped socket rebuilds it here too. Without that reset the new page would join a session
+  whose signalling had already run and sit there with no media at all. The displaced page is
+  sent `{:lobby_slot_taken, token}`, stops rendering the anchor (so its hook is destroyed) and
+  offers to take the session back. The old backoff-and-give-up path (`reattach_pending`) is
+  gone: it existed only because a second window was refused.
 - **TURN-only privacy mode** = pass `{iceTransportPolicy: "relay"}` to the browser
   `RTCPeerConnection`; server sends a `turn_only` flag alongside `ice_servers`.
 

@@ -39,8 +39,17 @@ defmodule RetroHexChat.Lobby do
   @spec can_create_session?(integer(), integer()) :: :ok | {:error, String.t()}
   defdelegate can_create_session?(creator_id, peer_id), to: Service
 
-  @spec join_session(String.t(), integer()) :: :ok | {:error, String.t() | :already_joined}
-  defdelegate join_session(token, user_id), to: Service
+  @doc """
+  Takes the caller's seat in the session, monitoring it as that side's live
+  connection.
+
+  `takeover: true` says the caller is replacing a page of this same person that
+  is still holding the seat — a second tab of the same session. Without it, a
+  seat that is still held answers `{:error, :already_joined}`.
+  """
+  @spec join_session(String.t(), integer(), keyword()) ::
+          :ok | {:error, String.t() | :already_joined}
+  defdelegate join_session(token, user_id, opts \\ []), to: Service
 
   @spec close_session(String.t(), integer(), String.t()) :: :ok | {:error, String.t()}
   defdelegate close_session(token, user_id, reason), to: Service

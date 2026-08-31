@@ -1,0 +1,43 @@
+<p>
+  {dgettext(
+    "help_p2p",
+    "Every P2P session opens in a starting room before anything is negotiated. Both of you are on it, with what each is still doing beside the name, and below that the camera preview and the microphone, camera and speaker the session will use."
+  )}
+</p>
+
+<.help_h4 icon={:icon_btn_join}>{dgettext("help_p2p", "Ready is two things at once")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "Pressing Ready saves the devices you picked and tells the other side you are listening. Both halves matter: a connection offered to a browser that has not finished setting up is a connection that never completes, which is why the room waits for both of you instead of starting the moment the invite is accepted."
+  )}
+</p>
+
+<.help_h4 icon={:icon_protocol_p2p}>
+  {dgettext("help_p2p", "Start belongs to whoever invited")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "The person who sent the invite is the host, and only they have Start. It stays disabled until both sides are ready, and the line under the roster says who is being waited for. If the host cancels before starting, the session ends and any link to it stops working."
+  )}
+</p>
+
+<.help_h4 icon={:icon_privacy}>{dgettext("help_p2p", "Route and privacy")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "Open Route and privacy to force the connection through the relay, which hides your IP address from the other side at the cost of some latency. It is only available when this server has a relay configured, and you can still change it later from the P2P menu."
+  )}
+</p>
+
+<p>
+  {dgettext("help_p2p", "See also:")}
+  <.help_link topic="feature-p2p-in-chat">
+    {dgettext("help_p2p", "P2P Sessions in Chat")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-p2p-tab">
+    {dgettext("help_p2p", "P2P Session in Its Own Tab")}
+  </.help_link>
+</p>

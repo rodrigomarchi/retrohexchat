@@ -82,7 +82,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
           <.media_session_icon_button
             label={dgettext("p2p", "End P2P session")}
             tone="danger"
-            phx-click="p2p_statusbar_stop"
+            phx-click="p2p_end_session"
             data-testid="p2p-console-end-session"
           >
             <Icons.icon_btn_disconnect class="h-4 w-4" />
@@ -303,7 +303,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
         <.media_session_action_button
           label={dgettext("p2p", "End P2P session")}
           tone="danger"
-          phx-click="p2p_statusbar_stop"
+          phx-click="p2p_end_session"
           data-testid="p2p-end-from-recovery"
         >
           <Icons.icon_btn_disconnect class="h-4 w-4" />

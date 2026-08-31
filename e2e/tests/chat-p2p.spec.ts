@@ -22,6 +22,7 @@ import {
   statusBarP2P,
   sendP2PInvite,
   acceptP2PInvite,
+  startP2PSession,
   remoteVideoLive,
   remoteVideoHasVisibleFrame,
   type P2PTestUser,
@@ -340,6 +341,7 @@ test.describe("In-chat P2P session", () => {
       await expect(bob.chat.tab(alice.nick)).toHaveCount(0);
       await bob.chat.switchToTab(alice.nick);
       await acceptP2PInvite(bob.page);
+      await startP2PSession(alice);
 
       // The WebRTC link comes up in place: the status bar flips to the
       // connected "P2P: <peer>" form on both sides.
@@ -440,6 +442,7 @@ test.describe("In-chat P2P session", () => {
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
       await acceptP2PInvite(bob.page);
+      await startP2PSession(alice);
 
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
         timeout: 20_000,
@@ -530,7 +533,7 @@ test.describe("In-chat P2P session", () => {
 
     try {
       await alice.chat.sendMessage(`/p2p ${bob.nick}`);
-      await expect(alice.page.getByTestId("p2p-setup-accept")).toBeVisible();
+      await expect(alice.page.getByTestId("p2p-starting-room")).toBeVisible();
       await alice.page
         .getByTestId("p2p-setup-advanced")
         .locator("summary")
@@ -540,11 +543,12 @@ test.describe("In-chat P2P session", () => {
         "TURN relay is not configured in this environment.",
       );
       await alice.page.getByTestId("p2p-setup-turn-only").setChecked(true);
-      await alice.page.getByTestId("p2p-setup-accept").click();
+      await alice.page.getByTestId("p2p-room-ready").click();
 
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
       await acceptP2PInvite(bob.page, { turnOnly: true });
+      await startP2PSession(alice);
 
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
         timeout: 30_000,
@@ -572,6 +576,7 @@ test.describe("In-chat P2P session", () => {
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
       await acceptP2PInvite(bob.page, { audio: false, video: false });
+      await startP2PSession(alice);
 
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
         timeout: 20_000,
@@ -621,6 +626,7 @@ test.describe("In-chat P2P session", () => {
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
       await acceptP2PInvite(bob.page, { audio: true, video: false });
+      await startP2PSession(alice);
 
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
         timeout: 20_000,
@@ -669,6 +675,7 @@ test.describe("In-chat P2P session", () => {
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
       await acceptP2PInvite(bob.page);
+      await startP2PSession(alice);
 
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
         timeout: 20_000,
@@ -731,6 +738,7 @@ test.describe("In-chat P2P session", () => {
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
       await acceptP2PInvite(bob.page);
+      await startP2PSession(alice);
 
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
         timeout: 20_000,
@@ -769,6 +777,7 @@ test.describe("In-chat P2P session", () => {
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
       await acceptP2PInvite(bob.page);
+      await startP2PSession(alice);
 
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
         timeout: 20_000,

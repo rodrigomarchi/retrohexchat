@@ -35,11 +35,12 @@ defmodule RetroHexChat.Lobby.Service do
   @spec can_create_session?(integer(), integer()) :: :ok | {:error, String.t()}
   def can_create_session?(creator_id, peer_id), do: Policy.can_create?(creator_id, peer_id)
 
-  @spec join_session(String.t(), integer()) :: :ok | {:error, String.t() | :already_joined}
-  def join_session(token, user_id) do
+  @spec join_session(String.t(), integer(), keyword()) ::
+          :ok | {:error, String.t() | :already_joined}
+  def join_session(token, user_id, opts \\ []) do
     with {:ok, session} <- fetch_session(token),
          :ok <- Policy.can_join?(user_id, session) do
-      SessionServer.join(token, user_id)
+      SessionServer.join(token, user_id, opts)
     end
   end
 

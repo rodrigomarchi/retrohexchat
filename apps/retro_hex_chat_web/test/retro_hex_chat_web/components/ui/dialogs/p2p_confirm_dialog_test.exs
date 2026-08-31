@@ -27,14 +27,14 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialogTest do
   test "end mode explains all active P2P surfaces that will stop" do
     html = render_dialog(mode: :end)
 
-    assert html =~ ~s(data-testid="p2p-confirm-dialog")
+    assert html =~ ~s(data-testid="p2p-confirm")
     assert html =~ "End P2P Session"
     assert html =~ "Any call, game or file transfer in progress will stop"
     assert html =~ "Audio/video tracks stop"
     assert html =~ "File transfers stop"
     assert html =~ "P2P games close"
-    assert html =~ ~s(data-testid="p2p-confirm-dialog-confirm")
-    assert html =~ ~s(data-testid="p2p-confirm-dialog-cancel")
+    assert html =~ ~s(data-testid="p2p-confirm-confirm")
+    assert html =~ ~s(data-testid="p2p-confirm-cancel")
   end
 
   test "close mode teaches that minimizing keeps the session running" do

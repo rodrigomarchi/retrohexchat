@@ -72,7 +72,7 @@ defmodule RetroHexChat.SystemInfo.Sources.Processes do
 
   @impl true
   @spec enrich([map()]) :: [map()]
-  def enrich(rows), do: Enum.map(rows, &resolve_name/1)
+  def enrich(rows), do: Enum.flat_map(rows, &resolve_name/1)
 
   # A process that exits between listing and inspection reports nil, and is
   # dropped rather than rendered as a row of blanks.
@@ -105,16 +105,23 @@ defmodule RetroHexChat.SystemInfo.Sources.Processes do
 
   # `proc_lib` rewrites :initial_call to its own entry point and stashes the
   # real one in the dictionary, so an OTP process only names itself here.
+  #
+  # A process that exits between the scan and this read is dropped, the same
+  # way the scan drops one that exits before it. Keeping it would publish the
+  # one name this module exists to remove: `proc_lib.init_p/5` is what every
+  # OTP process is called before enrichment, so a row that missed enrichment
+  # is not a row with a worse name — it is a row saying something false about
+  # a process that is no longer there.
   defp resolve_name(%{raw_pid: pid} = row) do
     case Process.info(pid, :dictionary) do
       {:dictionary, dictionary} ->
         case Keyword.get(dictionary, :"$initial_call") do
-          nil -> row
-          mfa -> %{row | name: format_mfa(mfa)}
+          nil -> [row]
+          mfa -> [%{row | name: format_mfa(mfa)}]
         end
 
       nil ->
-        row
+        []
     end
   end
 

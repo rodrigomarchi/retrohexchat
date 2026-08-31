@@ -73,12 +73,12 @@ test.describe("Rate-limit and send-error input state", () => {
     const afterError = `after-p2p-error-${Date.now()}`;
 
     try {
-      // /p2p opens a setup dialog and only sends the request once confirmed.
+      // Creating the session IS inviting, so /p2p sends the request straight
+      // away and lands the host in the session's starting room.
       await alice.chat.sendMessage(`/p2p ${bob.nick}`);
       await expect(
-        alice.chat.page.getByTestId("p2p-setup-accept"),
+        alice.chat.page.getByTestId("p2p-starting-room"),
       ).toBeVisible();
-      await alice.chat.page.getByTestId("p2p-setup-accept").click();
       await alice.chat.expectMessageVisible(
         `P2P request sent to ${bob.nick}. Waiting for response...`,
       );

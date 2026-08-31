@@ -166,6 +166,68 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
       stop_server(ctx.token)
     end
 
+    test "a takeover moves the seat, tells the old holder, and re-arms signalling" do
+      ctx = setup_connected_lobby("life5")
+      parent = self()
+
+      :ok = SessionServer.mark_webrtc_ready(ctx.token, ctx.creator.id)
+      :ok = SessionServer.mark_webrtc_ready(ctx.token, ctx.peer.id)
+      assert_receive %{event: "lobby_start_signaling"}
+
+      # The creator's seat is held by the test process. A second page of the
+      # same person asks for it with `takeover: true` and gets it.
+      taker =
+        spawn(fn ->
+          send(parent, {:joined, SessionServer.join(ctx.token, ctx.creator.id, takeover: true)})
+
+          receive do
+            :stop -> :ok
+          end
+        end)
+
+      assert_receive {:joined, :ok}
+
+      # The page that lost it is told, so it can stop pretending to be the
+      # connection instead of quietly holding a dead one.
+      assert_receive {:lobby_slot_taken, token}
+      assert token == ctx.token
+
+      # And the seat was released the way a disconnect releases it: readiness
+      # reset, signalling un-started. Without that, the new page would join a
+      # session whose negotiation had already run and sit there with no media.
+      {:ok, state} = SessionServer.get_state(ctx.token)
+      refute state.signaling_started
+      refute state.webrtc_ready.creator
+      assert state.webrtc_ready.peer
+
+      # The gate fires again as soon as the new page reports ready.
+      :ok = SessionServer.mark_webrtc_ready(ctx.token, ctx.creator.id)
+      assert_receive %{event: "lobby_start_signaling", payload: %{restart: true}}
+
+      send(taker, :stop)
+      stop_server(ctx.token)
+    end
+
+    test "without a takeover the seat is still refused" do
+      ctx = setup_connected_lobby("life6")
+      parent = self()
+
+      pid =
+        spawn(fn ->
+          send(parent, {:joined, SessionServer.join(ctx.token, ctx.creator.id)})
+
+          receive do
+            :stop -> :ok
+          end
+        end)
+
+      assert_receive {:joined, {:error, :already_joined}}
+      refute_received {:lobby_slot_taken, _token}
+
+      send(pid, :stop)
+      stop_server(ctx.token)
+    end
+
     test "the joined LiveView process dying starts the same grace window" do
       ctx = setup_connected_lobby("life4")
       parent = self()

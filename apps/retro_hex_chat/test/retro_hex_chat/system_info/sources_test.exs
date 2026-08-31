@@ -15,6 +15,7 @@ defmodule RetroHexChat.SystemInfo.SourcesTest do
 
   alias RetroHexChat.SystemInfo
   alias RetroHexChat.SystemInfo.Source
+  alias RetroHexChat.SystemInfo.Sources.Processes
   alias RetroHexChat.Table
 
   describe "every source" do
@@ -93,6 +94,23 @@ defmodule RetroHexChat.SystemInfo.SourcesTest do
 
       refute Enum.any?(table.rows, &(&1.name =~ "proc_lib.init_p")),
              "enrichment should have replaced proc_lib entry points with real initial calls"
+    end
+
+    # The scan and the enrichment are two separate reads of the same process,
+    # and a busy node is a node where things die between them. A row that
+    # missed enrichment carries `proc_lib.init_p/5`, which is exactly the name
+    # this source exists to remove — so it is dropped rather than published.
+    test "a process that dies between the scan and the enrichment is dropped" do
+      pid = spawn(fn -> Process.sleep(:infinity) end)
+      row = %{id: inspect(pid), raw_pid: pid, name: "proc_lib.init_p/5"}
+
+      assert [%{name: "proc_lib.init_p/5"}] = Processes.enrich([row])
+
+      ref = Process.monitor(pid)
+      Process.exit(pid, :kill)
+      assert_receive {:DOWN, ^ref, :process, _pid, _reason}
+
+      assert Processes.enrich([row]) == []
     end
 
     test "sorting by mailbox depth is available, which is the point of the window" do

@@ -147,7 +147,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   def forward(socket, event), do: command(socket, {:event, event})
 
   @spec handle_info(term(), Socket.t()) :: {:cont | :halt, Socket.t()}
-  def handle_info({:call_surface_state, pid, snapshot}, socket) when is_map(snapshot) do
+  def handle_info({:surface_state, :call, pid, snapshot}, socket) when is_map(snapshot) do
     call =
       (socket.assigns[:group_call] || %{})
       |> Map.merge(snapshot)
@@ -156,24 +156,24 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     {:halt, assign(socket, group_call: call)}
   end
 
-  def handle_info({:call_surface_state, _pid, nil}, socket), do: {:halt, socket}
+  def handle_info({:surface_state, :call, _pid, nil}, socket), do: {:halt, socket}
 
-  def handle_info({:call_surface_notice, :error, message}, socket) do
+  def handle_info({:surface_notice, :call, :error, message}, socket) do
     {:halt, Messages.error_event(socket, message)}
   end
 
-  def handle_info({:call_surface_notice, :system, message}, socket) do
+  def handle_info({:surface_notice, :call, :system, message}, socket) do
     {:halt, Messages.system_event(socket, message)}
   end
 
-  def handle_info(:call_surface_focus, socket) do
+  def handle_info({:surface_focus, :call}, socket) do
     {:halt, Windows.open(socket, @window_id)}
   end
 
   # The surface is gone. If the reason it went was a swap, the channel that was
   # waiting for it is opened now and not a moment earlier — opening before the
   # old call had actually left would race the two.
-  def handle_info(:call_surface_closed, socket) do
+  def handle_info({:surface_closed, :call}, socket) do
     socket =
       socket
       |> assign(group_call: nil)

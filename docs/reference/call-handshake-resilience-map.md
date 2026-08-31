@@ -215,23 +215,28 @@ conexao WebRTC.
 ### Handshake P2P feliz
 
 1. Criador inicia P2P pelo PM ou comando.
-2. LiveView abre setup P2P antes de criar/enviar convite.
-3. Criador confirma setup; `Lobby.Service` cria sessao `pending`; criador fica
-   em `:invite_sent`; o anchor WebRTC ainda nao monta.
-4. Peer aceita convite pelo PM/header e tambem passa pelo setup.
-5. `Lobby.SessionServer` marca os dois lados como joined e transiciona para
+2. `Lobby.Service` cria sessao `pending` e o convite (a PM) sai na hora — criar
+   a sessao E convidar. O criador cai na sala de partida do `App.P2PLive`, em
+   `:invite_sent`; o anchor WebRTC ainda nao monta.
+3. Peer aceita o convite pelo PM/header; isso e o consentimento, e abre a mesma
+   sala de partida — o `P2PLive` toma o assento no mount.
+4. `Lobby.SessionServer` marca os dois lados como joined e transiciona para
    `lobby`.
-6. O anchor `#lobby-webrtc` monta nos dois LiveViews, carregando o
-   `session_token` e o `Lobby.JoinToken` que o hook usa para entrar no canal
-   `p2p:<session_token>`. A resposta do join ja traz o replay: entrar no canal
-   e, por si so, dizer "estou ouvindo e posso ter perdido alguma coisa".
-7. Cada hook envia `lobby_webrtc_ready` — este continua indo para o LiveView,
-   porque a prontidao faz parte do handshake de reattach, que e estado do host.
-8. `Lobby.SessionServer.maybe_start_signaling/1` so inicia sinalizacao quando:
+5. Cada lado escolhe dispositivos e aperta `[Pronto]`. So entao o anchor
+   `#lobby-webrtc` monta, carregando o `session_token` e o `Lobby.JoinToken`
+   que o hook usa para entrar no canal `p2p:<session_token>`. A resposta do
+   join ja traz o replay: entrar no canal e, por si so, dizer "estou ouvindo e
+   posso ter perdido alguma coisa".
+6. Cada hook envia `lobby_webrtc_ready` — este continua indo para o LiveView,
+   porque e a metade "o hook montou" do que `[Pronto]` promete.
+7. `Lobby.SessionServer.maybe_start_signaling/1` so inicia sinalizacao quando:
    status e `lobby` ou `connected`, a sinalizacao ainda nao iniciou e os dois
    lados estao `webrtc_ready`.
-9. LiveView envia `lobby_start_offer` para o criador e `lobby_start_answer`
-   para o peer.
+8. `lobby_start_signaling` chega nos dois. O peer ja recebe `lobby_start_answer`
+   e monta o PC (o primeiro offer e descartado se ele nao estiver escutando),
+   mas continua na sala. O criador ganha `[Iniciar]` habilitado.
+9. O criador aperta `[Iniciar]`: sai `lobby_start_offer` para ele e o broadcast
+   `lobby_session_start` tira os dois da sala.
 10. O iniciador cria PC, data channels e offer.
 11. Offer viaja pelo evento `lobby_signal` **no canal** `p2p:<session_token>`;
     o `P2PChannel` valida (`Calls.SignalValidation`), aplica rate limit,
@@ -342,9 +347,13 @@ iniciador para que ele gere nova oferta.
   usando o evento `lobby_media_peer_media`.
 - `SessionServer` tem grace de rejoin de LiveView por 30s, para refresh ou
   reconnect curto.
-- Rehydrate que encontra `:already_joined` deixa de mostrar erro terminal
-  imediato; a UI entra em `reattach_pending`, tenta anexar com backoff e mantem
-  Retry/End funcionais.
+- Uma segunda janela da mesma pessoa **assume** a sessao:
+  `Lobby.join_session/3` com `takeover: true`, que o `SessionServer` trata como
+  desconexao seguida de join — assento liberado, prontidao daquele lado zerada,
+  replay apagado e par avisado. E o mesmo portao que reconstroi a midia depois
+  de uma queda de socket que reconstroi aqui. A janela deslocada recebe
+  `{:lobby_slot_taken, token}`, para de renderizar o anchor (o hook e destruido)
+  e oferece trazer a sessao de volta.
 - `SessionServer` fecha/falha por timeout de lobby/connecting, evitando sessao
   pendurada indefinidamente antes da conexao.
 - Rehydrate ao montar LiveView reconecta usuario a sessao ativa.
@@ -378,7 +387,9 @@ iniciador para que ele gere nova oferta.
 - Falhas repetidas lotando o transcript: resolvido com `_notifyFailed/2`
   idempotente no hook e deduplicacao de `lobby_failed` no LiveView.
 - Reconnect/deploy caindo em "already active in another window": resolvido com
-  `reattach_pending` + retry/backoff e saida manual funcional.
+  takeover — a janela mais recente assume o assento e a anterior mostra o
+  caminho de volta. O caminho antigo (`reattach_pending` + backoff) deixou de
+  existir junto com o motivo dele.
 - Recovery desmontando a propria midia: resolvido mantendo o hook montado
   enquanto a sessao base segue conectada.
 - Falha repetida de ICE candidate ficando invisivel no console: resolvido com

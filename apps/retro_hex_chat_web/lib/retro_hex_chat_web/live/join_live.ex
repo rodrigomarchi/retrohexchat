@@ -126,6 +126,26 @@ defmodule RetroHexChatWeb.JoinLive do
     }
   end
 
+  # A P2P session names the two people in it and nothing else — it has no
+  # channel to leak, and its whole subject *is* who is in it. Only the person
+  # who shared it is named: the other half is whoever is reading, or somebody
+  # who is not in it at all and will be refused anyway.
+  defp subject(%{kind: "p2p", creator_nick: creator_nick}) when is_binary(creator_nick) do
+    %{
+      name: dgettext("share", "A P2P session with %{nick}", nick: creator_nick),
+      tagline: dgettext("share", "One to one, browser to browser."),
+      icon: "protocol_p2p"
+    }
+  end
+
+  defp subject(%{kind: "p2p"}) do
+    %{
+      name: dgettext("share", "A P2P session on RetroHexChat"),
+      tagline: dgettext("share", "One to one, browser to browser."),
+      icon: "protocol_p2p"
+    }
+  end
+
   defp subject(_resolution), do: nil
 
   defp space_name(channel_name) do
@@ -196,6 +216,9 @@ defmodule RetroHexChatWeb.JoinLive do
 
   defp surface_path(%{kind: "space", target: %{"space_id" => space_id}}),
     do: Paths.space_path(space_id)
+
+  defp surface_path(%{kind: "p2p", target: %{"session_token" => session_token}}),
+    do: Paths.p2p_path(session_token)
 
   defp surface_path(_resolution), do: ~p"/chat"
 end

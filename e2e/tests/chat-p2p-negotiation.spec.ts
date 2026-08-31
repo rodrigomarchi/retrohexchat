@@ -16,6 +16,7 @@ import {
   closeP2PUsers,
   sendP2PInvite,
   acceptP2PInvite,
+  startP2PSession,
   statusBarP2P,
   remoteVideoHasVisibleFrame,
   recordLocalOffers,
@@ -103,6 +104,7 @@ async function connectPair(alice: P2PTestUser, bob: P2PTestUser, options = {}) {
   await bob.chat.expectTabVisible(alice.nick);
   await bob.chat.switchToTab(alice.nick);
   await acceptP2PInvite(bob.page, options);
+  await startP2PSession(alice);
 
   await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
     timeout: 20_000,

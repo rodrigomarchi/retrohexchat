@@ -46,6 +46,15 @@ defmodule RetroHexChatWeb.App.Paths do
   @spec space_path(String.t()) :: String.t()
   def space_path(space_id), do: ~p"/space/#{SpaceRef.slug(space_id)}"
 
+  @doc """
+  A P2P session at an address of its own, by its session token.
+
+  A session has a token because it *is* an event, with a beginning and an end —
+  unlike a space, whose address names a place that has neither.
+  """
+  @spec p2p_path(String.t()) :: String.t()
+  def p2p_path(session_token), do: ~p"/p2p/#{session_token}"
+
   @spec session_clear_path(Phoenix.LiveView.Socket.t(), String.t()) :: String.t()
   def session_clear_path(socket, reason), do: session_clear_path(socket, reason, [])
 

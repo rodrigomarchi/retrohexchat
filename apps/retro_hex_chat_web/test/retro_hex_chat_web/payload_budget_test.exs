@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
   alias RetroHexChat.Channels.Supervisor
   alias RetroHexChat.GroupCall
   alias RetroHexChat.GroupCall.Registry
+  alias RetroHexChat.Lobby
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChatWeb.PerfBudgets
@@ -104,6 +105,25 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
     end
   end
 
+  describe "/p2p/:token" do
+    setup %{conn: conn} do
+      {nickname, path} = open_p2p_session()
+      %{html: html_for(session_conn(conn, nickname), path)}
+    end
+
+    test "stays inside its byte budget", %{html: html} do
+      assert byte_size(html) <= PerfBudgets.html_bytes(:p2p)
+    end
+
+    test "stays inside its DOM node budget", %{html: html} do
+      assert PerfBudgets.count_elements(html) <= PerfBudgets.dom_nodes(:p2p)
+    end
+
+    test "references the sprite instead of carrying the drawings", %{html: html} do
+      assert PerfBudgets.count(html, "<use href=") == PerfBudgets.count(html, "<svg")
+    end
+  end
+
   describe "every surface" do
     test "ships no icon art inline", %{conn: conn} do
       for path <- [~p"/connect", ~p"/chat/help"] do
@@ -167,6 +187,38 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
     end)
 
     {nickname, "/space/" <> RetroHexChatWeb.SpaceRef.slug(channel)}
+  end
+
+  # Like the call, this one cannot be measured from nothing: a token with no
+  # session behind it renders a refusal, which is not the page.
+  defp open_p2p_session do
+    creator = register_for_budget()
+    peer = register_for_budget()
+    NickServ.restore_identified(creator.nickname)
+
+    {:ok, session} = Lobby.create_session(creator.id, peer.id)
+
+    on_exit(fn ->
+      NickServ.remove_identified(creator.nickname)
+
+      case Lobby.Registry.lookup(session.token) do
+        {:ok, pid} -> stop_quietly(pid)
+        {:error, :not_found} -> :ok
+      end
+    end)
+
+    {creator.nickname, "/p2p/" <> session.token}
+  end
+
+  defp register_for_budget do
+    nickname = "Budget#{System.unique_integer([:positive])}" |> String.slice(0, 16)
+
+    {:ok, nick} =
+      %RegisteredNick{}
+      |> RegisteredNick.registration_changeset(%{nickname: nickname, password: "password123"})
+      |> RetroHexChat.Repo.insert()
+
+    nick
   end
 
   defp stop_quietly(pid) do

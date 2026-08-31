@@ -33,8 +33,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.DesktopLaunchers
 
-  # ── P2P session setup + console ──────────────────────────────
-  import RetroHexChatWeb.Components.UI.P2P.SetupDialog
+  # ── P2P session badges ───────────────────────────────────────
   import RetroHexChatWeb.Components.UI.P2P.SessionBadge
   import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
 
@@ -990,7 +989,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       p2p_session: nil,
       p2p_pm_sessions: %{},
       p2p_pending: nil,
-      p2p_setup: nil,
       arcade_session: nil,
       mobile_viewport: false,
       mobile_panel_restore: nil,
@@ -1006,20 +1004,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # Static solo-arcade catalog for the in-chat Arcade window body.
   defp arcade_games, do: RetroHexChat.Arcade.list_games()
-
-  # The shared Statistics panel speaks the domain status vocabulary; the chat
-  # state machine maps onto it (invite pending reads as "pending", both
-  # joining phases as "lobby").
-  defp p2p_panel_status(%{state: :connected}), do: "connected"
-  defp p2p_panel_status(%{state: :invite_sent}), do: "pending"
-  defp p2p_panel_status(_p2p), do: "lobby"
-
-  defp p2p_connection_label(%{state: :connected}), do: dgettext("chat", "Connected")
-
-  defp p2p_connection_label(%{state: :invite_sent}),
-    do: dgettext("chat", "Waiting for peer...")
-
-  defp p2p_connection_label(_p2p), do: dgettext("chat", "Connecting...")
 
   # ── Startup messages ──────────────────────────────────────────
 

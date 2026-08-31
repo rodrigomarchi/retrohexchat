@@ -292,3 +292,60 @@ mídia; a outra metade continua sem cobertura, e continua escrita aqui.
 - 4B: bateria root e nested igual, mídia bidirecional real, arquivo e jogo no
   meio da chamada.
 - `guide/webrtc-p2p.md` e `call-handshake-resilience-map.md` atualizados.
+
+---
+
+## Estado da fase 4B (2026-08-30) — fechada
+
+* `RetroHexChatWeb.App.P2PLive` nos dois hosts: raiz em `/p2p/:token` e filho da
+  janela `p2p-call` do chat. `RetroHexChatWeb.P2PLive.Events` levou tudo o que é
+  estar dentro; `RetroHexChatWeb.ChatLive.P2PSessionEvents` encolheu de 2.137
+  para ~430 linhas e ficou com o convite, a janela, a troca de sessão e "dizer o
+  que aconteceu".
+* `RetroHexChatWeb.ChatLive.P2PReadModel` — o crachá por conversa e a sessão em
+  que este leitor está, reduzida ao que a chrome do chat desenha.
+* **A ordem do convite mudou, e isso foi decisão de desenho.** O plano dizia que
+  o `p2p_setup_dialog` viraria o primeiro estado da página; com o código na
+  frente isso colidia com "criar a sessão **é** convidar" (§4B.3), porque o setup
+  acontecia antes de existir token. `/p2p <nick>` passou a mandar o convite na
+  hora, e o criador cai na sala de partida — onde escolhe dispositivos
+  *enquanto espera*. É o que o `ux.md` §2.5 já desenhava.
+* **`CallLive.Host` subiu para `RetroHexChatWeb.Live.SurfaceHost`**, com a *tag*
+  da superfície em cada mensagem, porque o chat hospeda duas ao mesmo tempo. Um
+  quarto verbo, `geometry/2`: o mini da janela é um tamanho, e tamanho é do
+  gerenciador de janelas — que a superfície não tem quando ela é a página.
+* **Duas abas: a segunda assume.** `Lobby.join_session/3` aceita
+  `takeover: true`; o `SessionServer` trata o takeover como desconexão seguida de
+  join, então o portão que reconstrói a mídia depois de uma queda de socket
+  reconstrói aqui. A janela deslocada mostra `p2p-displaced` com **[Trazer de
+  volta pra cá]**. **`reattach_pending` deixou de existir** — ele só existia
+  porque uma segunda janela era recusada.
+* `p2p_confirm_dialog` virou `RetroHexChatWeb.Live.P2PConfirmDialog`, com
+  `scope`, ids distintos por host e `data-testid` derivado do id.
+* Rota, `Paths.p2p_path/1`, `kind: "p2p"` no `JoinLive` e no card, `share_bar` na
+  sala.
+
+### Obrigações
+
+- [x] `PerfBudgets` para `:p2p` — 27.360 B raw, 248 elementos, medidos.
+- [x] `SURFACE.txt` — nenhuma linha de JS mudou nesta fase; `--check` limpo.
+- [x] Help topics — `feature-p2p-in-chat` reescrito para o novo fluxo, mais
+      `feature-p2p-starting-room` e `feature-p2p-tab`, com as páginas HEEx e as
+      traduções nos 13 locales.
+- [x] `guide/webrtc-p2p.md` — a política de nomes mudou no mesmo commit que cria
+      a rota, e ganhou o portão do `[Iniciar]` e o contrato do takeover.
+- [x] `reference/call-handshake-resilience-map.md` — o handshake feliz e o
+      inventário de riscos reescritos.
+- [x] i18n dos domínios tocados, com os catálogos parados que o merge trouxe
+      junto traduzidos em vez de deixados vazios.
+
+### Pronto quando — medido
+
+* `make ci` 17/17, Dialyzer incluído.
+* 33 testes em `p2p_session_flow_test.exs`, 14 em `p2p_live_test.exs`, 5 no
+  `starting_room_test.exs`, 2 de takeover no `session_server_test.exs`.
+* Playwright 17 de 18 nas quatro suítes de P2P; as duas vermelhas verificadas
+  com `git stash` como idênticas no `HEAD` anterior.
+* Screenshots da sala de partida nos dois hosts, do estado deslocado e do
+  convidado esperando — três defeitos de layout corrigidos a partir delas.
+

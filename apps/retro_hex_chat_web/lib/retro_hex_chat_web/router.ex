@@ -174,6 +174,7 @@ defmodule RetroHexChatWeb.Router do
       live "/play/:game", PlayLive
       live "/call/:token", CallLive
       live "/space/:slug", SpaceLive
+      live "/p2p/:token", P2PLive
     end
 
     # The standalone lobby page is gone — P2P sessions live inside the chat

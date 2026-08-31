@@ -1,10 +1,15 @@
-defmodule RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog do
+defmodule RetroHexChatWeb.Live.P2PConfirmDialog do
   @moduledoc """
-  The P2P end/switch confirmation dialog. Owns its open state.
+  The confirmation in front of every irreversible thing a P2P session can do.
 
-  `P2PSessionEvents` drives it via `send_update/2` (`{:open_end, peer}`,
-  `{:open_switch, peer, new_peer}`, `:close`); the confirm/cancel events are
-  handled on the parent, which performs the actual session teardown/switch.
+  It is rendered by two LiveViews, not one: the session surface asks before you
+  end or close a session, and the chat asks before it swaps the session you are
+  in for another peer's. Same component, same dialog, two hosts —
+  `send_update/2` reaches whichever process rendered it, so neither host needs
+  to know about the other.
+
+  It is scoped to the window it is rendered inside, so a confirmation blocks
+  the session and nothing else.
   """
   use RetroHexChatWeb, :live_component
 
@@ -12,14 +17,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog do
 
   @id "p2p-confirm-dialog"
 
-  @doc "Stable DOM/component id used by the parent for `send_update/2`."
+  @doc """
+  The id the session surface renders it under, and addresses `send_update/2` to.
+
+  A host that renders a second copy — the chat, which only ever asks about
+  swapping one peer's session for another — passes an id of its own: two
+  elements with the same id in one document is undefined behaviour, and both
+  hosts are on screen at the same time whenever the session is embedded.
+  """
   @spec id() :: String.t()
   def id, do: @id
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do
-    {:ok, assign(socket, id: @id, show: false, mode: :end, peer: nil, new_peer: nil)}
+    {:ok, assign(socket, scope: :viewport, show: false, mode: :end, peer: nil, new_peer: nil)}
   end
 
   @impl true
@@ -37,6 +49,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog do
   end
 
   def update(%{action: :close}, socket), do: {:ok, assign(socket, show: false)}
+
+  # The host declares, on every render, whether the dialog blocks the whole
+  # viewport or just the window it lives in. `send_update/2` carries actions;
+  # this carries the shape of the host.
+  def update(%{scope: scope} = assigns, socket) when scope in [:viewport, :window] do
+    {:ok, assign(socket, id: assigns.id, scope: scope)}
+  end
+
   def update(_assigns, socket), do: {:ok, socket}
 
   @impl true
@@ -47,6 +67,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog do
       <.p2p_confirm_dialog
         id={@id}
         show={@show}
+        scope={@scope}
         mode={@mode}
         peer={@peer}
         new_peer={@new_peer}

@@ -493,6 +493,8 @@ msgstr ""
 msgid "One Session at a Time"
 msgstr ""
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "P2P Sessions in Chat"
@@ -547,6 +549,8 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:97
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "See also:"
 msgstr ""
@@ -815,4 +819,74 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "The room decides who is in the call, not the tab. Closing the call's tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Closing the chat's tab does not drop you out of the channel either, as long as the call is still open — you leave the channels when the last of your windows closes. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A P2P session can run in a browser tab of its own, with the whole window to itself. In the starting room, choose Open in a tab. It is the same session either way — the chat keeps its P2P window for when you would rather not leave the page."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "A session can only be live in one of your windows. Opening it somewhere else moves it there, and the window that lost it says so and offers Bring it back here. Closing the tab is not ending the session: the stop button and the window's X ask first, and only they are final."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Every P2P session opens in a starting room before anything is negotiated. Both of you are on it, with what each is still doing beside the name, and below that the camera preview and the microphone, camera and speaker the session will use."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "One window at a time"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Open Route and privacy to force the connection through the relay, which hides your IP address from the other side at the cost of some latency. It is only available when this server has a relay configured, and you can still change it later from the P2P menu."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "P2P Session in Its Own Tab"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "P2P Starting Room"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Pressing Ready saves the devices you picked and tells the other side you are listening. Both halves matter: a connection offered to a browser that has not finished setting up is a connection that never completes, which is why the room waits for both of you instead of starting the moment the invite is accepted."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Ready is two things at once"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Route and privacy"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Share mints a link you can paste anywhere. The link names the session and never grants access to it: only the two people already in it can enter, and anyone else who follows it gets a card explaining that."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Sharing the address"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Start belongs to whoever invited"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "The person who sent the invite is the host, and only they have Start. It stays disabled until both sides are ready, and the line under the roster says who is being waited for. If the host cancels before starting, the session ends and any link to it stops working."
 msgstr ""

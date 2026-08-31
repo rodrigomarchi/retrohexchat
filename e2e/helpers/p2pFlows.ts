@@ -404,19 +404,37 @@ export function statusBarP2P(page: Page) {
   return page.getByTestId("status-bar-p2p");
 }
 
+/**
+ * Creating the session IS inviting, so `/p2p <nick>` sends the request and
+ * drops the host in the starting room. The devices are chosen there, while
+ * waiting for an answer — which is why Ready is pressed here and Start is not:
+ * Start needs the other side to be ready too.
+ */
 export async function sendP2PInvite(user: P2PTestUser, targetNick: string) {
   await user.chat.sendMessage(`/p2p ${targetNick}`);
-  await expect(user.page.getByTestId("p2p-setup-accept")).toBeVisible();
-  await expect(user.page.getByTestId("p2p-setup-form")).toContainText(
-    "Send invite",
-  );
-  await user.page.getByTestId("p2p-setup-accept").click();
   await expect(user.page.getByTestId("p2p-call-window")).toBeVisible();
-  await expect(user.page.getByTestId("p2p-session-console")).toBeVisible();
-  await expect(user.page.getByTestId("p2p-call-disconnected")).toContainText(
-    "Waiting for peer",
+  await expect(user.page.getByTestId("p2p-starting-room")).toBeVisible();
+  await expect(user.page.getByTestId("p2p-room-waiting")).toContainText(
+    "Choose your devices",
   );
-  await expect(user.page.getByTestId("p2p-webrtc")).toBeHidden();
+  await user.page.getByTestId("p2p-room-ready").click();
+  await expect(user.page.getByTestId("p2p-room-waiting")).toContainText(
+    `Waiting for ${targetNick} to accept the invite.`,
+  );
+  await expect(user.page.getByTestId("p2p-room-start")).toBeDisabled();
+}
+
+/**
+ * The host releases the first offer. The button only enables once the domain
+ * has seen both hooks report ready, so waiting for it to become enabled is
+ * waiting for the gate the negotiation has always had.
+ */
+export async function startP2PSession(user: P2PTestUser) {
+  await expect(user.page.getByTestId("p2p-room-start")).toBeEnabled({
+    timeout: 20_000,
+  });
+  await user.page.getByTestId("p2p-room-start").click();
+  await expect(user.page.getByTestId("p2p-session-console")).toBeVisible();
 }
 
 export async function acceptP2PInvite(
@@ -430,7 +448,7 @@ export async function acceptP2PInvite(
   await expect(page.getByTestId("session-card-accept")).toHaveCount(0);
   await expect(page.getByTestId("session-card-decline")).toHaveCount(0);
   await page.getByTestId("p2p-peer-join").click();
-  await expect(page.getByTestId("p2p-setup-accept")).toBeVisible();
+  await expect(page.getByTestId("p2p-starting-room")).toBeVisible();
   await expect(page.getByTestId("p2p-setup-preview")).toBeVisible();
 
   if (options.audio !== undefined) {
@@ -459,7 +477,9 @@ export async function acceptP2PInvite(
     await page.getByTestId("p2p-setup-turn-only").setChecked(options.turnOnly);
   }
 
-  await page.getByTestId("p2p-setup-accept").click();
+  await page.getByTestId("p2p-room-ready").click();
+  // The guest never gets Start: the creator is always the offerer.
+  await expect(page.getByTestId("p2p-room-start")).toHaveCount(0);
 }
 
 // --- Remote media observation ---

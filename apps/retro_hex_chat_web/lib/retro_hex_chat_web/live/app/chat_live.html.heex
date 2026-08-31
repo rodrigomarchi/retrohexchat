@@ -500,9 +500,10 @@
       />
     </.desktop_window>
 
-    <%!-- P2P Session Console — the primary P2P product surface. It keeps call,
-          files, games and stats inside one reachable session window while the
-          underlying feature islands continue to own their lifecycles. --%>
+    <%!-- P2P — the same LiveView that serves `/p2p/:token`, mounted here as a
+          child. One module, two hosts: the tab has its own event loop and a
+          shareable URL, this one has the conversation beside it. The window is
+          the chat's, and its X still asks the session what closing means. --%>
     <.desktop_window
       :if={@p2p_session}
       {WindowRegistry.attrs("p2p-call")}
@@ -519,22 +520,29 @@
       data-testid="p2p-call-window"
     >
       <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
+      <%!-- The title bar is the chat's chrome, so its meta is drawn from the
+            read model the surface publishes rather than from inside the
+            surface — the window belongs to the manager out here. --%>
       <:meta>
         <P2PSessionConsole.p2p_title_meta
+          :if={@p2p_session.state in [:connecting, :connected]}
           p2p_session={@p2p_session}
-          connection_label={p2p_connection_label(@p2p_session)}
         />
       </:meta>
-      <.live_component
-        module={RetroHexChatWeb.ChatLive.Components.P2PSessionConsole}
-        id="p2p-session-console"
-        p2p_session={@p2p_session}
-        section={Map.get(@p2p_session, :console_section, "call")}
-        nickname={@session.nickname}
-        client_info={@client_info}
-        session_status={p2p_panel_status(@p2p_session)}
-        connection_label={p2p_connection_label(@p2p_session)}
-      />
+      <%!-- The child's container needs a height of its own: a `live_render`
+            wraps the surface in a div of its own, and `h-full` inside it
+            resolves against that div rather than the window body. --%>
+      {live_render(@socket, RetroHexChatWeb.App.P2PLive,
+        id: "p2p-live-#{@p2p_session.token}",
+        container: {:div, class: "h-full min-h-0"},
+        session: %{
+          "embedded" => true,
+          "nickname" => @session.nickname,
+          "token" => @p2p_session.token,
+          "client_info" => @client_info,
+          "trusted_device_id" => @trusted_device_id
+        }
+      )}
     </.desktop_window>
 
     <%!-- Group Call — always mounted while the user is in a channel call so
@@ -1143,16 +1151,13 @@
   id={RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog.id()}
 />
 
+<%!-- The only question the chat ever asks about a P2P session is the one the
+      session cannot: whether to swap it for another peer's. It carries an id of
+      its own because the session's own copy is on screen at the same time. --%>
 <.live_component
-  module={RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog}
-  id={RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog.id()}
-/>
-
-<.p2p_setup_dialog
-  id="p2p-setup-dialog"
-  setup={@p2p_setup}
-  on_accept="p2p_setup_accept"
-  on_cancel="p2p_setup_cancel"
+  module={RetroHexChatWeb.Live.P2PConfirmDialog}
+  id={RetroHexChatWeb.ChatLive.P2PSessionEvents.confirm_dialog_id()}
+  scope={:viewport}
 />
 
 <.live_component
@@ -1160,36 +1165,6 @@
   id={RetroHexChatWeb.ChatLive.GroupCallEvents.confirm_dialog_id()}
   scope={:viewport}
 />
-
-<%!-- P2P WebRTC anchor: the wrapper is keyed by session token so switching
-      sessions replaces it wholesale — the hook remounts with a fresh
-      RTCPeerConnection. The inner id MUST stay "lobby-webrtc": the media,
-      game and file-transfer hooks locate the shared PC through it.
-      NOT mounted during :invite_sent — the creator hasn't joined yet, and a
-      hook here would start signaling before the peer has accepted. --%>
-<div
-  :if={@p2p_session && @p2p_session.state != :invite_sent}
-  id={"p2p-session-#{@p2p_session.token}"}
-  class="hidden"
->
-  <%!-- The signaling wire is a channel of its own, joined with this token:
-        SDP and ICE stopped riding the LiveView's socket, so a reload of the
-        page no longer takes the negotiation with it. --%>
-  <div
-    id="lobby-webrtc"
-    phx-hook="LobbyWebRTCHook"
-    phx-update="ignore"
-    data-testid="p2p-webrtc"
-    data-session-token={@p2p_session.token}
-    data-join-token={
-      RetroHexChatWeb.ChatLive.P2PSessionEvents.signaling_join_token(
-        @p2p_session,
-        @session.nickname
-      )
-    }
-  >
-  </div>
-</div>
 
 <%!-- Solo arcade anchor: gated on @arcade_session (NOT the window) so the
       ArcadeSession hook keeps polling the launched game window even while the

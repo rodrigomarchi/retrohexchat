@@ -61,6 +61,13 @@ defmodule RetroHexChatWeb.PerfBudgets do
   # here: the world it opens onto is a canvas the client fills, so none of it is
   # in the document.
   def html_bytes(:space), do: 14_000
+  # The P2P session at an address of its own, measured at its starting room —
+  # the state everyone arrives in, and the only one a dead render can show.
+  # 27_360 B raw and 248 elements measured on 2026-08-30. The largest of the
+  # three antechambers, because it is the only one carrying a device form, a
+  # camera preview and a roster at once; the session console itself only exists
+  # after the host presses Start.
+  def html_bytes(:p2p), do: 30_000
 
   @doc """
   The most elements a surface's dead render may contain.
@@ -72,6 +79,7 @@ defmodule RetroHexChatWeb.PerfBudgets do
   def dom_nodes(:play), do: 300
   def dom_nodes(:call), do: 260
   def dom_nodes(:space), do: 120
+  def dom_nodes(:p2p), do: 270
 
   @doc """
   The longest a connected mount may block before it renders.

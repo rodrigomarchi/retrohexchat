@@ -38,11 +38,16 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
   attr :on_confirm, :any, required: true
   attr :on_cancel, :any, required: true
 
+  attr :scope, :atom,
+    default: :viewport,
+    values: [:viewport, :window],
+    doc: "`:window` when the host renders it inside the session's own desktop window"
+
   @spec p2p_confirm_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def p2p_confirm_dialog(assigns) do
     ~H"""
-    <span data-testid="p2p-confirm-dialog">
-      <.dialog id={@id} show={@show}>
+    <span data-testid={@id}>
+      <.dialog id={@id} show={@show} scope={@scope}>
         <.dialog_header id={@id} title={title(@mode)}>
           <:icon><.inline_icon name={mode_icon(@mode)} class="h-[16px] w-[16px]" /></:icon>
         </.dialog_header>
@@ -71,12 +76,12 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
           <.button
             variant="destructive"
             phx-click={@on_confirm}
-            data-testid="p2p-confirm-dialog-confirm"
+            data-testid={"#{@id}-confirm"}
           >
             <:icon><.inline_icon name={confirm_icon(@mode)} class="h-4 w-4" /></:icon>
             {confirm_label(@mode)}
           </.button>
-          <.button variant="outline" phx-click={@on_cancel} data-testid="p2p-confirm-dialog-cancel">
+          <.button variant="outline" phx-click={@on_cancel} data-testid={"#{@id}-cancel"}>
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
             {dgettext("dialogs", "Cancel")}
           </.button>

@@ -1208,22 +1208,91 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Run a P2P session without leaving the chat: /p2p <nick> opens setup, " <>
-              "shows the creator's P2P Session Console immediately, and sends a request " <>
-              "line into the private message. The invited person's PM tab opens in the " <>
-              "background with Join/Decline in the PM header. Once connected, the P2P menu (also mirrored in the Start menu) opens " <>
-              "the P2P Session Console on the chat desktop with Call, Files, Games and " <>
-              "Stats sections. The conversation IS the private message — session events " <>
-              "(connected, file received, game results, who ended it) are saved into the PM " <>
-              "history as P2P lines, and the PM tab shows a small P2P icon while the session " <>
-              "is live. The status bar always shows the active session: click it to bring the " <>
-              "P2P Session Console to the front, or use its stop button to cancel a pending invite / " <>
-              "end the session. You can hold ONE session at a time — accepting a new invite " <>
-              "(or inviting someone else) asks to end the current session first. When a TURN " <>
-              "relay is configured, Toggle Privacy Mode in the P2P menu forces the connection " <>
-              "through the relay so your IP address is never shared with the peer. " <>
-              "See also: P2P Session, Video Call, File Transfer, Private Messages."
+            "Run a P2P session without leaving the chat: /p2p <nick> sends the request " <>
+              "line into the private message straight away and puts you in the session's " <>
+              "starting room, where you pick your microphone, camera and speaker while you " <>
+              "wait for an answer. The invited person's PM tab opens in the background with " <>
+              "Join/Decline in the PM header; Join takes them to the same room. Nothing is " <>
+              "negotiated until both of you press Ready and the person who invited presses " <>
+              "Start. After Start you get the P2P Session Console — Call, Files, Games and " <>
+              "Stats — reachable again from the P2P menu and the Start menu. The " <>
+              "conversation IS the private message: session events (connected, file " <>
+              "received, game results, who ended it) are saved into the PM history as P2P " <>
+              "lines, and the PM tab shows a small P2P icon while the session is live. The " <>
+              "status bar always shows the active session: click it to bring the console to " <>
+              "the front, or use its stop button to cancel a pending invite or end the " <>
+              "session. You can hold ONE session at a time — accepting a new invite (or " <>
+              "inviting someone else) asks to end the current one first. When a TURN relay " <>
+              "is configured, Privacy relay in the starting room, and Toggle Privacy Mode in " <>
+              "the P2P menu afterwards, force the connection through the relay so your IP " <>
+              "address is never shared with the peer. " <>
+              "See also: P2P Starting Room, P2P Session in Its Own Tab, Video Call, File " <>
+              "Transfer, Private Messages."
           )
+      },
+      %{
+        id: "feature-p2p-starting-room",
+        title: dgettext("help", "P2P Starting Room"),
+        category: dgettext("help", "P2P & Calls"),
+        keywords: [
+          "p2p",
+          "starting room",
+          "ready",
+          "start",
+          "host",
+          "waiting",
+          "devices",
+          "microphone",
+          "camera",
+          "speaker",
+          "preview",
+          "privacy",
+          "relay"
+        ],
+        icon: :icon_p2p,
+        description:
+          dgettext(
+            "help",
+            "Every P2P session opens in a starting room before anything is negotiated. It " <>
+              "shows both of you and what each is still doing, a camera preview, and the " <>
+              "microphone, camera and speaker you will use — plus Route and privacy, where " <>
+              "you can force the connection through the relay. Press Ready when your " <>
+              "devices are chosen. The person who sent the invite is the host and is the " <>
+              "only one with Start, which stays disabled until both of you are ready: the " <>
+              "connection is always offered by whoever invited, and the line under the " <>
+              "roster says exactly who is being waited for. If the host cancels before " <>
+              "starting, the session ends and any link to it stops working."
+          ),
+        see_also: ["feature-p2p-in-chat", "feature-p2p-tab"]
+      },
+      %{
+        id: "feature-p2p-tab",
+        title: dgettext("help", "P2P Session in Its Own Tab"),
+        category: dgettext("help", "P2P & Calls"),
+        keywords: [
+          "p2p",
+          "tab",
+          "window",
+          "browser",
+          "share",
+          "link",
+          "another window",
+          "moved"
+        ],
+        icon: :icon_p2p,
+        description:
+          dgettext(
+            "help",
+            "A P2P session can run in a browser tab of its own. In the starting room, " <>
+              "choose Open in a tab: the session gets the whole window and stops competing " <>
+              "with the chat for the browser. Share there mints a link you can paste " <>
+              "anywhere; only the two people in the session can actually enter it. A " <>
+              "session can only be live in one window at a time — opening it somewhere " <>
+              "else moves it there, and the window that lost it says so and offers Bring it " <>
+              "back here. Closing the tab is not ending the session; the stop button and " <>
+              "the window's X ask first, and only they end it."
+          ),
+        see_also: ["feature-p2p-in-chat", "feature-p2p-starting-room"]
       },
       %{
         id: "feature-connection-diagram",

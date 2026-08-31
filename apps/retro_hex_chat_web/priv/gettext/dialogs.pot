@@ -312,7 +312,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:212
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:316
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:393
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:81
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:86
 #: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:105
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:86
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:313
@@ -517,7 +517,7 @@ msgid "Disabled"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:69
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:121
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:126
 #, elixir-autogen, elixir-format
 msgid "Disconnect"
 msgstr ""
@@ -1566,7 +1566,7 @@ msgstr ""
 msgid "Are you sure you want to drop %{channel}? This cannot be undone."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:149
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:154
 #, elixir-autogen, elixir-format
 msgid "Audio/video tracks stop"
 msgstr ""
@@ -1653,12 +1653,12 @@ msgstr ""
 msgid "Clear Welcome"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:90
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:95
 #, elixir-autogen, elixir-format
 msgid "Close P2P Session?"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:102
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:107
 #, elixir-autogen, elixir-format
 msgid "Closing this window disconnects the whole P2P session with %{peer} — any call, game or file transfer in progress will stop. To keep the session and just tidy up, minimize the window instead."
 msgstr ""
@@ -1713,7 +1713,7 @@ msgstr ""
 msgid "Current MOTD"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:168
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:173
 #, elixir-autogen, elixir-format
 msgid "Current P2P session closes first"
 msgstr ""
@@ -1784,22 +1784,22 @@ msgstr ""
 msgid "Edit Timer"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:89
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:94
 #, elixir-autogen, elixir-format
 msgid "End P2P Session"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:120
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:125
 #, elixir-autogen, elixir-format
 msgid "End session"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:94
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:99
 #, elixir-autogen, elixir-format
 msgid "End the P2P session with %{peer}? Any call, game or file transfer in progress will stop."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:112
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:117
 #, elixir-autogen, elixir-format
 msgid "End the current P2P session with %{peer} and start one with %{new_peer}? Any call, game or file transfer in progress will stop."
 msgstr ""
@@ -1814,7 +1814,7 @@ msgstr ""
 msgid "Every"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:150
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:155
 #, elixir-autogen, elixir-format
 msgid "File transfers stop"
 msgstr ""
@@ -1933,7 +1933,7 @@ msgstr ""
 msgid "Message (optional)"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:158
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:163
 #, elixir-autogen, elixir-format
 msgid "Minimize to keep it running"
 msgstr ""
@@ -1963,7 +1963,7 @@ msgstr ""
 msgid "New channel"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:169
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:174
 #, elixir-autogen, elixir-format
 msgid "New invite starts after confirmation"
 msgstr ""
@@ -2025,7 +2025,7 @@ msgstr ""
 msgid "Only channel operators can register this channel."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:161
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:166
 #, elixir-autogen, elixir-format
 msgid "Only one P2P session can be active"
 msgstr ""
@@ -2035,7 +2035,7 @@ msgstr ""
 msgid "Operator broadcast messages"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:151
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:156
 #, elixir-autogen, elixir-format
 msgid "P2P games close"
 msgstr ""
@@ -2052,7 +2052,7 @@ msgstr ""
 msgid "Preserved: admin_roles, audit_logs, server_bans, server_settings"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:170
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:175
 #, elixir-autogen, elixir-format
 msgid "Privacy and relay settings carry over"
 msgstr ""
@@ -2270,12 +2270,12 @@ msgstr ""
 msgid "Stop"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:122
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:127
 #, elixir-autogen, elixir-format
 msgid "Switch"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:91
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:96
 #, elixir-autogen, elixir-format
 msgid "Switch P2P Session"
 msgstr ""
@@ -2290,7 +2290,7 @@ msgstr ""
 msgid "TURN"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:157
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:162
 #, elixir-autogen, elixir-format
 msgid "The whole P2P session disconnects"
 msgstr ""

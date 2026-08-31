@@ -145,10 +145,8 @@ async function terminateGroupCallPeer(page: Page) {
 
 async function sendP2PInvite(user: P2PTestUser, targetNick: string) {
   await user.chat.sendMessage(`/p2p ${targetNick}`);
-  await expect(user.page.getByTestId("p2p-setup-accept")).toBeVisible();
-  await user.page.getByTestId("p2p-setup-accept").click();
-  await expect(user.page.getByTestId("p2p-call-window")).toBeVisible();
-  await expect(user.page.getByTestId("p2p-session-console")).toBeVisible();
+  await expect(user.page.getByTestId("p2p-starting-room")).toBeVisible();
+  await user.page.getByTestId("p2p-room-ready").click();
 }
 
 async function acceptP2PInvite(page: Page) {
@@ -157,8 +155,18 @@ async function acceptP2PInvite(page: Page) {
     "pending",
   );
   await page.getByTestId("p2p-peer-join").click();
-  await expect(page.getByTestId("p2p-setup-accept")).toBeVisible();
-  await page.getByTestId("p2p-setup-accept").click();
+  await expect(page.getByTestId("p2p-starting-room")).toBeVisible();
+  await page.getByTestId("p2p-room-ready").click();
+}
+
+// The host releases the first offer, which is the gate the negotiation has
+// always had — it just has a button now.
+async function startP2PSession(user: P2PTestUser) {
+  await expect(user.page.getByTestId("p2p-room-start")).toBeEnabled({
+    timeout: 20_000,
+  });
+  await user.page.getByTestId("p2p-room-start").click();
+  await expect(user.page.getByTestId("p2p-session-console")).toBeVisible();
 }
 
 async function establishP2P(browser: Browser) {
@@ -169,6 +177,7 @@ async function establishP2P(browser: Browser) {
   await bob.chat.expectTabVisible(alice.nick);
   await bob.chat.switchToTab(alice.nick);
   await acceptP2PInvite(bob.page);
+  await startP2PSession(alice);
 
   await expect(alice.page.getByTestId("status-bar-p2p")).toContainText(
     `P2P: ${bob.nick}`,
@@ -357,6 +366,7 @@ test.describe("Call fault injection", () => {
       await delayNextRemoteOffer(bob.page);
 
       await acceptP2PInvite(bob.page);
+      await startP2PSession(alice);
       await waitForDelayedRemoteOffer(bob.page);
 
       await bob.page.reload({ waitUntil: "load" });
