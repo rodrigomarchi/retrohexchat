@@ -97,6 +97,7 @@ Read these when the trigger applies — not before.
 | [`docs/guide/liveview-islands.md`](docs/guide/liveview-islands.md) | Extracting or debugging a LiveComponent island |
 | [`docs/guide/windowed-desktop.md`](docs/guide/windowed-desktop.md) | Adding or changing a window, dialog, taskbar or Start menu entry |
 | [`docs/guide/webrtc-p2p.md`](docs/guide/webrtc-p2p.md) | Calls, signaling, TURN, file transfer, call recovery |
+| [`docs/guide/surfaces.md`](docs/guide/surfaces.md) | A screen with an address of its own: the two mounts, the share link, cross-tab |
 | [`docs/guide/testing.md`](docs/guide/testing.md) | Writing or debugging tests |
 | [`docs/guide/background-jobs.md`](docs/guide/background-jobs.md) | Oban workers, queues, recurrence, observability |
 | [`docs/guide/mobile-touch.md`](docs/guide/mobile-touch.md) | Viewport, touch handling, mobile dialogs |

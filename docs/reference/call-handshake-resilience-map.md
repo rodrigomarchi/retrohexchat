@@ -1,6 +1,6 @@
 # P2P e conferencia - mapa de handshake e resiliencia
 
-Data: 2026-07-28
+Data: 2026-07-28, revisado em 2026-08-31 (superficies com endereco proprio)
 
 Este documento mapeia como chamadas P2P e chamadas de conferencia estao
 implementadas hoje, quais mecanismos de resiliencia ja existem e onde ainda ha
@@ -15,9 +15,11 @@ arquivos participam de cada caminho e o que os testes ja cobrem.
 
 ## Sumario executivo
 
-- P2P e uma sessao WebRTC browser-browser. O backend Phoenix/LiveView/PubSub
-  faz convite, autorizacao, estado de sessao e relay de sinalizacao; a midia,
-  arquivos e jogos trafegam no mesmo `RTCPeerConnection` do browser.
+- P2P e uma sessao WebRTC browser-browser. O convite, a autorizacao e o estado
+  de sessao sao do backend Phoenix/LiveView; **a sinalizacao nao passa mais pelo
+  socket do LiveView** — ela e um Phoenix Channel cru, `p2p:<session_token>`,
+  autenticado por `Lobby.JoinToken`. A midia, arquivos e jogos trafegam no mesmo
+  `RTCPeerConnection` do browser.
 - Conferencia e uma sala SFU embutida no servidor. O browser negocia via
   Phoenix Channel com um `PeerServer` ExWebRTC por participante; o `RoomServer`
   coordena participantes, tracks, renegociacao e fanout RTP.
@@ -50,6 +52,31 @@ arquivos participam de cada caminho e o que os testes ja cobrem.
   externos sobre as metricas e o healthcheck, helper visual unico em todos os
   pontos de midia e cenarios E2E destrutivos mais agressivos de rede
   `disconnected` em laboratorio de rede real.
+
+## O que mudou com as superficies com endereco proprio
+
+Revisao de 2026-08-31, depois das ondas 0 a 6. As regras duraveis disso vivem em
+[`guide/surfaces.md`](../guide/surfaces.md) (secao 19) e em
+[`guide/webrtc-p2p.md`](../guide/webrtc-p2p.md) 8.1 e 8.5; aqui fica so o que
+muda a leitura deste inventario:
+
+- **A sinalizacao P2P virou channel cru** (`p2p:<session_token>`), como a
+  conferencia e o space ja eram. Nenhuma das tres passa pelo socket do LiveView.
+  O que ficou no LiveView e o que carrega politica de transporte — `ice_servers`,
+  `role`, `turn_only` — e o ciclo de vida da sessao.
+- **A sessao tem endereco proprio** (`/p2p/:token`) e o chat renderiza o mesmo
+  modulo numa janela. Fechar a aba do chat nao encerra a chamada, e a filiacao a
+  canal em que a conferencia se apoia so e liberada quando a **ultima**
+  superficie da pessoa cai (`RetroHexChat.Surfaces`).
+- **Uma sessao so fica viva numa janela por vez.** Abrir a mesma sessao em outra
+  aba a **move** para la, com o mesmo reset que uma queda de socket provoca; a
+  janela deslocada avisa e oferece traze-la de volta. Isso apagou o caminho de
+  `reattach_pending` inteiro, que era o mais fragil do produto.
+- **A maquina de estados ganhou `open`**: uma sessao pode nascer sem par, como
+  link de partida, e a cadeira e tomada por uma escrita condicional.
+- **O epoch de sinalizacao e por pagina**, e uma aba nova comeca do um. Um
+  `offer` com `connection_reset: true` atravessa a guarda de staleness — sem
+  isso, toda oferta de uma pagina recem-aberta lia como obsoleta para sempre.
 
 ## Referencias externas usadas
 
@@ -129,7 +156,14 @@ Frontend:
 Backend, channel e LiveView:
 
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/channels/p2p_channel.ex`
-- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex`
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/p2p_live.ex` — a sessao,
+  montada em `/p2p/:token`, em `/play/:game/:token` e dentro da janela do chat
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/p2p_live/events.ex` — o
+  adaptador de eventos da sessao (era `chat_live/p2p_session_events.ex`)
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/p2p_read_model.ex` —
+  o que o chat sabe de uma sessao em que o leitor nao esta
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex` —
+  o que sobrou no chat: convite, janela e troca de sessao
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex`
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex`
 - `apps/retro_hex_chat/lib/retro_hex_chat/lobby.ex`

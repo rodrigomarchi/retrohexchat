@@ -535,6 +535,18 @@ in `docs/refactor/`.
   `/:locale`** — a catch-all would capture app routes (`/connect`, `/chat`, `/lobby/:token`,
   `/showcase`). `PutLocale` resolves
   the locale from route params/assigns before the session / Accept-Language fallback.
+- **Six reserved first segments, and none of them may collide with a locale tag**: `connect`,
+  `chat`, `join`, `call`, `space`, `p2p`, `play`. Adding a surface adds one, and the check is
+  against `config/i18n_locales.exs`, which is the only list of locale segments.
+- **Every *public* route goes inside the locale loop, not only in the unprefixed scope.**
+  `/join/:slug` shipped registered once and answered `NoRouteError` on `/pt-BR/join/…`. Sixteen
+  tests missed it because they all built the path the way the code did — a test that exercises
+  only the path its own code constructs tests nothing. Anything that reads a public path back
+  (`App.ReturnTo`, `ShareLinkRef`) strips the prefix using
+  `SEO.localized_locale_segments/0`, the same list the router loops over.
+- **`/join/:slug` is the only public surface address, and it is `noindex` whenever the slug does
+  not resolve to a live room.** The app addresses inherit `SEO.noindex_content/0`: they are one
+  person's screen, not a page.
 - **hreflang is reciprocal.** Sitemap and `<head>` alternates list every locale version of a
   page reciprocally; `x-default` points at the English unprefixed URL. Canonical URLs on
   localized pages are self-referencing clean paths.
@@ -553,5 +565,11 @@ in `docs/refactor/`.
 ## 18. Mobile & touch
 
 **→ [`guide/mobile-touch.md`](guide/mobile-touch.md)** — Read when changing viewport behaviour, touch handling, or a dialog on mobile.
+
+---
+
+## 19. Surfaces: one module, two hosts
+
+**→ [`guide/surfaces.md`](guide/surfaces.md)** — Read when adding a screen that can live in a browser tab of its own, changing how one is reached, or debugging why a surface behaves differently inside the chat than at its own address.
 
 

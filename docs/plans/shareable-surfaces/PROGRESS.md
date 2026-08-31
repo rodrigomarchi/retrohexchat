@@ -2103,3 +2103,55 @@ perguntou precisa saber que a aba existe de qualquer jeito.
 * Um teste de feature de P2P (`session_info` respondendo `:not_found`) falhou
   **uma vez** numa partição e não reproduziu em quatro execuções depois, nem
   antes com `git stash`. Registrado como flake raro, não perseguido.
+
+---
+
+## Iteração 24 — a convergência, e o plano apaga a si mesmo
+
+**Objetivo:** os passos 5 e 6 da onda 6 — o código que devia ter sumido, as
+regras duráveis nos guias, e então este diretório.
+
+### O que sumiu, conferido por símbolo e não por arquivo
+
+`grep` por **módulo e função**, porque "0 referências" já foi falso neste
+repositório exatamente por procurar nome de arquivo:
+
+| Símbolo | Onda | Estado |
+|---|---|---|
+| `RetroGamesIsland`, `RetroGamesEvents` | 0 | 0 ocorrências |
+| `ArcadeSessionHook`, `arcade_session_hook` | 5 | 0 ocorrências |
+| `group_call_events.ex` | 2 | **2.603 → 298 linhas** |
+| `p2p_session_events.ex` | 4 | **2.258 → 460 linhas** |
+| `chat_live.ex` / `.html.heex` | — | 1.217 → 1.163 / 1.250 → 1.194 |
+
+Os dois adaptadores que o README abriu citando — 4.861 linhas carregadas em todo
+processo `ChatLive`, inclusive o de quem nunca abriu uma chamada — são 758.
+Menos 84%. O que sobrou em cada um é o read-model de conversa e o convite, que é
+exatamente o lado da régua que devia ficar.
+
+### As regras duráveis, e onde cada uma foi parar
+
+| Para onde | O quê |
+|---|---|
+| **`guide/surfaces.md` (novo, §19)** | um módulo e dois hosts (D2), a régua do read-model, `Live.Surface` e as quatro coisas que ele não pode fazer, `SurfaceHost`, o registro de superfícies, a coordenação entre abas, os links e o portão de três perguntas, as seis decisões de produto (P1–P7) e as armadilhas |
+| `AGENT-GUIDE.md` §16 | os segmentos reservados de rota, toda rota pública dentro do laço de locales, e por que só `/join/:slug` é público |
+| `guide/windowed-desktop.md` §7.0 | o que uma satélite carrega — uma janela, sem taskbar e sem Start menu — com o número e o teste que a segura |
+| `guide/webrtc-p2p.md` §8.1 | o estado `open` e a escrita condicional (feito na onda 5) |
+| `guide/webrtc-p2p.md` §8.5 | fechar aba deixou de ser o caso de borda, e as três consequências que já sustentam código |
+| `reference/ci-pipeline.md` | a decisão de bundle, com a tabela que a produziu |
+| `reference/call-handshake-resilience-map.md` | passe de exatidão: o transporte P2P é channel cru, os módulos novos no inventário, e uma seção do que mudou |
+
+`guide/surfaces.md` existe porque a alternativa era enfiar sete assuntos no guia
+de janelas — e o assunto não é janela, é **onde um LiveView é montado**.
+
+### Por que o diretório vai embora agora
+
+Ele mesmo manda: "apagar quando a última onda shippar; mover as regras duráveis
+**antes** de apagar". As seis ondas fecharam, e o que sobrevive está nos guias
+acima — que é onde alguém procura sem saber que este plano existiu. O histórico
+do git continua tendo o diário inteiro para quem quiser a arqueologia.
+
+O que este arquivo não conseguiria transportar de qualquer jeito é o hábito, e
+ele está escrito nas armadilhas de §19.7: um teste que só exercita o caminho que
+o próprio código constrói não testa nada, e nada aqui percebe que uma tela está
+feia.

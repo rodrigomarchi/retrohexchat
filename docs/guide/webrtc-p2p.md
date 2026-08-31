@@ -186,6 +186,14 @@ Calls fail constantly in the field; the recovery protocol is part of the feature
   `group_call_leave` turned every reload/deploy into a terminal exit. Unexpected teardown must go
   through `disconnect_call/4` (status `disconnected`, reconnect window preserved); only the explicit
   LiveView/confirmation path is terminal. `terminate/2` marks unexpected closes accordingly.
+- **Closing a tab is now the ordinary case, not the edge one.** A call, a space and a P2P session
+  each have an address of their own, so people close one of them the way they close any tab —
+  and the *chat* is now something that can close while a call keeps running. Three consequences
+  that are already load-bearing: a surface's `terminate/2` never ends a session (asserted); the
+  channel membership a call stands on is released only when the person's **last** surface goes,
+  through `RetroHexChat.Surfaces`; and a second tab of the same P2P session is a **takeover**,
+  not a second seat — the seat moves, the displaced page says so and offers to take it back.
+  See [`surfaces.md` §19.4](surfaces.md).
 - **Reconnect needs an application-level rehydrate.** Phoenix rejoins channels automatically, but
   call state living outside the channel does not come back. `GroupCallEvents.rehydrate/1` rebuilds
   `@group_call` for a non-terminal participant in an already-rejoined channel; background/restore
