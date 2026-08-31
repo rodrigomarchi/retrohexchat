@@ -52,6 +52,21 @@ expiração só enxerga linhas `status = "open"` (`:87-93`,
 não ser o passe de 24 h de registros velhos: o link da partida fica morto com
 ninguém dentro.
 
+> **Correção, 2026-08-31, escrita ao implementar a onda 7.** O parágrafo acima
+> está errado na segunda metade, e o texto errado fica aqui de propósito. A
+> linha **é** recuperada: `claim_open_session/2` chama `ensure_session_server/1`,
+> e o `SessionServer` agenda `:pending_expiry` em cinco minutos no `init`
+> (`lobby/session_server.ex:184`), fechando a sessão que ainda estiver `pending`
+> (`:374`). Eu li a query da varredura e não o servidor, e a varredura era a
+> única coisa que eu tinha olhado — então foi a única que pôde me responder.
+>
+> O que sobra é pior escrito assim, e é o achado de verdade: um prefetch **mata
+> o link da partida**, porque `open` é o único estado em que ele é seguível e a
+> máquina só anda para frente (`open → pending → expired`). Não deixa lixo no
+> banco; deixa o link morto. A primeira metade — a escrita no render morto —
+> está confirmada, e ao implementar apareceu uma segunda escrita pior: ver a
+> Iteração 1 de [`shareable-surfaces-wave-7-progress.md`](shareable-surfaces-wave-7-progress.md).
+
 Reprodução (roda, imprime, e passa):
 
 ```sh

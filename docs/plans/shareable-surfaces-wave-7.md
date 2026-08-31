@@ -104,18 +104,24 @@ um instante depois, que é exatamente o que um dead render é para fazer.
 O mesmo vale para o `CallLive` e o `SpaceLive`: **auditar os três**, porque a
 questão não é "este módulo escreve", é "que superfície escreve no `mount/3`".
 
+*Implementado em 2026-08-31 com um desvio: o terceiro estado ficou sendo o
+`boot_activity_panel` que o chat já usa no próprio render morto, e não a
+antessala com os controles apagados. Motivo e auditoria das quatro superfícies na
+Iteração 1 de [`shareable-surfaces-wave-7-progress.md`](shareable-surfaces-wave-7-progress.md).*
+
 ### 2.3 E a vaga queimada que já existe
 
-`Queries.claim_open_session/3` zera `expires_at`, e a varredura só enxerga
-`status = "open"` (`lobby/queries.ex`). Uma vaga tomada por engano hoje **não
-volta por nada** a não ser o passe de 24 h. Duas escolhas, e as duas são baratas:
+~~`Queries.claim_open_session/3` zera `expires_at` e a varredura só enxerga
+`status = "open"`, então uma vaga tomada por engano não volta.~~ **Descartado ao
+implementar, 2026-08-31:** a premissa era falsa. `claim_open_session/2` chama
+`ensure_session_server/1`, e o `SessionServer` agenda `:pending_expiry` em cinco
+minutos no `init` (`lobby/session_server.ex:184`, `:374`) — a linha fecha
+sozinha. Pôr um `expires_at` aqui consertaria um problema que não existe e
+mexeria numa varredura que está certa.
 
-1. a reivindicação passa a gravar um `expires_at` curto novo em vez de `nil`, e
-   a partida que ninguém começou expira como o lobby expirava; **ou**
-2. o worker passa a varrer também `pending` sem `accepted_at` confirmado.
-
-*Recomendação: (1).* Um `expires_at` que some é o dado que faz a linha
-desaparecer da vista de todo mundo que varre.
+O que sobra é a consequência real, e ela já está coberta pela §2.1: um prefetch
+**mata o link da partida**, porque `open` é o único estado em que ele é seguível
+e a máquina só anda para frente. Não sobra linha pendurada; sobra link morto.
 
 ---
 
@@ -130,6 +136,10 @@ mount (`lobby.ex`, `chat_live/p2p_read_model.ex`).
 excluir `status = "open"` da query. A cláusula `{"open", _role} -> socket` do
 `P2PReadModel.refresh_all/1` fica **morta** e sai junto — deixar as duas é
 manter duas respostas para a mesma pergunta.
+
+*Implementado em 2026-08-31, e a cláusula **ficou**: o modo de falha que ela
+guarda é silencioso, e duas travas para um erro que não levanta nada são
+baratas. Ver a Iteração 2 do diário.*
 
 Teste que prova, e falha se a query voltar: sessão viva + link de partida →
 `active_session_for_user/1` devolve a sessão viva. Está escrito em R.6.

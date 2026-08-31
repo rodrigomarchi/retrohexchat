@@ -879,6 +879,7 @@ msgid "Live"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:55
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr ""
@@ -1328,7 +1329,7 @@ msgstr ""
 msgid "Accept P2P request"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:267
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:286
 #, elixir-autogen, elixir-format
 msgid "Bring it back here"
 msgstr ""
@@ -1353,12 +1354,12 @@ msgstr ""
 msgid "In the room"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:507
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:561
 #, elixir-autogen, elixir-format
 msgid "This P2P session is no longer available."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:260
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "This session is open in another window of yours."
 msgstr ""
@@ -1378,8 +1379,8 @@ msgstr ""
 msgid "Waiting for %{peer} to start."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:497
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:502
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:551
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to use P2P sessions."
 msgstr ""
@@ -1406,8 +1407,8 @@ msgstr ""
 msgid "ready"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:484
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:489
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:538
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:543
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use P2P sessions."
 msgstr ""
@@ -1422,7 +1423,7 @@ msgstr ""
 msgid "Share the link — the match starts when somebody takes the seat."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:512
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:566
 #, elixir-autogen, elixir-format
 msgid "This match is already full."
 msgstr ""
@@ -1441,4 +1442,9 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:461
 #, elixir-autogen, elixir-format
 msgid "whoever joins"
+msgstr ""
+
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:260
+#, elixir-autogen, elixir-format
+msgid "Taking your seat..."
 msgstr ""

@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   """
   use RetroHexChatWeb, :live_view
 
+  import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.P2P.StartingRoom
   import RetroHexChatWeb.Components.UI.ShareBar
@@ -162,6 +163,12 @@ defmodule RetroHexChatWeb.App.P2PLive do
     <div class="flex h-full min-h-0 flex-col">
       <.p2p_denied :if={@denied} message={@denied} />
 
+      <%!-- The first render of a match whose seat is still empty: the seat is
+            taken by the mount that can hold it, so until the socket joins there
+            is nothing here to draw yet. Same shape the chat's own dead render
+            uses — paint what is true, not what is about to be. --%>
+      <.p2p_arriving :if={arriving?(assigns)} />
+
       <.p2p_displaced :if={displaced?(@p2p_session)} />
 
       <.p2p_starting_room
@@ -241,6 +248,18 @@ defmodule RetroHexChatWeb.App.P2PLive do
         <Icons.icon_protocol_p2p_compact class="h-4 w-4" />
       </span>
       <p class="min-w-0">{@message}</p>
+    </div>
+    """
+  end
+
+  defp p2p_arriving(assigns) do
+    ~H"""
+    <div class="m-auto" data-testid="p2p-arriving">
+      <.boot_activity_panel
+        title={dgettext("p2p", "P2P Session")}
+        text={dgettext("p2p", "Taking your seat...")}
+        icon={:protocol_p2p}
+      />
     </div>
     """
   end
@@ -363,10 +382,20 @@ defmodule RetroHexChatWeb.App.P2PLive do
     |> resume_started(db_session)
   end
 
+  # Taking the seat is the sharper half of what a first render must not do.
+  # `attach_session/5` joins with `takeover: true` — the contract that moves a
+  # session into the window that just opened it — so on a bare fetch it handed
+  # the seat to the request process, which is already gone when the browser
+  # answers. Somebody's running call would be displaced by a prefetch, and the
+  # dead process's `:DOWN` would open the rejoin grace against nobody.
   defp enter(socket, db_session, user_id, role) do
-    socket
-    |> Events.attach_session(db_session.token, user_id, role, match_opts(db_session))
-    |> resume_started(db_session)
+    if connected?(socket) do
+      socket
+      |> Events.attach_session(db_session.token, user_id, role, match_opts(db_session))
+      |> resume_started(db_session)
+    else
+      socket
+    end
   end
 
   defp match_opts(db_session), do: [match_game_id: Lobby.match_game_id(db_session)]
@@ -408,13 +437,14 @@ defmodule RetroHexChatWeb.App.P2PLive do
     # the atom `:not_mounted_at_router` rather than a map — the token comes
     # from the host's session there, and from the address here.
     token = if is_map(params), do: params["token"], else: session["token"]
+    seating? = connected?(socket)
 
     with {:ok, token} <- require_token(token),
          {:ok, db_session} <- fetch_session(token),
          {:ok, user_id} <- require_registered(socket.assigns.nickname),
          :ok <- require_identified(socket.assigns.nickname),
-         {:ok, db_session} <- take_seat(db_session, user_id),
-         :ok <- Lobby.Policy.can_join?(user_id, db_session) do
+         {:ok, db_session} <- take_seat(db_session, user_id, seating?),
+         :ok <- allowed_in?(db_session, user_id, seating?) do
       {:ok, db_session, user_id, role_of(db_session, user_id)}
     end
   end
@@ -424,16 +454,26 @@ defmodule RetroHexChatWeb.App.P2PLive do
   # at, and it is why the claim happens here rather than on the public card:
   # the card runs before any of the three questions above, so a seat taken
   # there could be burned by somebody the surface then refuses.
-  defp take_seat(%LobbySession{creator_id: user_id} = db_session, user_id),
+  #
+  # `seating?` is what keeps that from being true of the first render as well.
+  # A page is fetched before it is connected, so an unguarded claim here belongs
+  # to anything that merely *retrieves* the address — a speculative prefetch, an
+  # extension, a scanner behind an authenticated proxy — and a claim cannot be
+  # undone: `open` is the only status the link is followable in, and the session
+  # it becomes runs forward and never back.
+  defp take_seat(%LobbySession{creator_id: user_id} = db_session, user_id, _seating?),
     do: {:ok, db_session}
 
-  defp take_seat(%LobbySession{peer_id: user_id} = db_session, user_id),
+  defp take_seat(%LobbySession{peer_id: user_id} = db_session, user_id, _seating?),
     do: {:ok, db_session}
 
-  defp take_seat(db_session, user_id) do
+  defp take_seat(db_session, user_id, seating?) do
     cond do
-      Lobby.open_session?(db_session) ->
+      Lobby.open_session?(db_session) and seating? ->
         claim_seat(db_session, user_id)
+
+      Lobby.open_session?(db_session) ->
+        {:ok, db_session}
 
       # A stranger at a match link is late, not lost: "you are not a
       # participant" would be true and useless, because being one was the
@@ -444,6 +484,20 @@ defmodule RetroHexChatWeb.App.P2PLive do
       true ->
         {:ok, db_session}
     end
+  end
+
+  # The policy is asked about a seat that exists. On the first render of a match
+  # whose seat is still empty there is nothing to ask about yet, and asking
+  # anyway would refuse the one person the address was written for. Every other
+  # refusal still reaches the first paint, because a page that only says "you
+  # may not" once the socket joins is a page that shows the room first.
+  defp allowed_in?(db_session, user_id, true),
+    do: Lobby.Policy.can_join?(user_id, db_session)
+
+  defp allowed_in?(db_session, user_id, false) do
+    if Lobby.open_session?(db_session),
+      do: :ok,
+      else: Lobby.Policy.can_join?(user_id, db_session)
   end
 
   defp claim_seat(db_session, user_id) do
@@ -530,6 +584,10 @@ defmodule RetroHexChatWeb.App.P2PLive do
   end
 
   defp sharable?(_nickname), do: false
+
+  # Nothing refused and nothing to draw: the seat is still being taken.
+  defp arriving?(%{denied: nil, p2p_session: nil}), do: true
+  defp arriving?(_assigns), do: false
 
   defp displaced?(%{displaced: true}), do: true
   defp displaced?(_p2p), do: false

@@ -899,6 +899,7 @@ msgid "Live"
 msgstr "Levend"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:55
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2P-sessies in chat"
@@ -1356,7 +1357,7 @@ msgstr "Aanleiding"
 msgid "Accept P2P request"
 msgstr "P2P-verzoek accepteren"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:267
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:286
 #, elixir-autogen, elixir-format
 msgid "Bring it back here"
 msgstr "Haal hem hierheen"
@@ -1381,12 +1382,12 @@ msgstr "Ik ben gereed"
 msgid "In the room"
 msgstr "In de kamer"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:507
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:561
 #, elixir-autogen, elixir-format
 msgid "This P2P session is no longer available."
 msgstr "Deze P2P-sessie is niet meer beschikbaar."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:260
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "This session is open in another window of yours."
 msgstr "Deze sessie staat open in een ander venster van jou."
@@ -1406,8 +1407,8 @@ msgstr "Wachten tot %{peer} gereed is."
 msgid "Waiting for %{peer} to start."
 msgstr "Wachten tot %{peer} start."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:497
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:502
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:551
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to use P2P sessions."
 msgstr "Je moet geregistreerd zijn bij NickServ om P2P-sessies te gebruiken."
@@ -1434,8 +1435,8 @@ msgstr "uitgenodigd"
 msgid "ready"
 msgstr "gereed"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:484
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:489
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:538
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:543
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use P2P sessions."
 msgstr "Je moet geïdentificeerd zijn bij NickServ om P2P-sessies te gebruiken."
@@ -1450,7 +1451,7 @@ msgstr "Druk op Klaar zodra het spel je aandacht heeft."
 msgid "Share the link — the match starts when somebody takes the seat."
 msgstr "Deel de link — de wedstrijd begint zodra iemand de plek inneemt."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:512
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:566
 #, elixir-autogen, elixir-format
 msgid "This match is already full."
 msgstr "Deze wedstrijd zit al vol."
@@ -1470,3 +1471,8 @@ msgstr "plek vrij"
 #, elixir-autogen, elixir-format
 msgid "whoever joins"
 msgstr "wie er meedoet"
+
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:260
+#, elixir-autogen, elixir-format
+msgid "Taking your seat..."
+msgstr "Je plek wordt ingenomen..."

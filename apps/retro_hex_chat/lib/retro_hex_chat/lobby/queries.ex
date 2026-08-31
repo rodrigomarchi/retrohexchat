@@ -156,11 +156,23 @@ defmodule RetroHexChat.Lobby.Queries do
     |> Repo.all()
   end
 
+  @doc """
+  The sessions `user_id` is *in*, most recently updated first.
+
+  An unclaimed match link is not one of them, and that is the whole reason this
+  says `status != "open"`. Such a row is non-terminal and has the creator's id
+  on it, so it matches every other condition here — and it is newer than the
+  call they are already on, because minting it is the last thing they did. The
+  caller asking this question is the chat, rebuilding what to draw after a
+  reload; answering with a link nobody has followed makes it stop drawing the
+  session that is actually running.
+  """
   @spec active_sessions_for_user(integer()) :: [Session.t()]
   def active_sessions_for_user(user_id) do
     Session
     |> where([s], s.creator_id == ^user_id or s.peer_id == ^user_id)
     |> where([s], s.status not in ^@terminal_statuses)
+    |> where([s], s.status != "open")
     |> order_by([s], desc: s.updated_at)
     |> Repo.all()
   end

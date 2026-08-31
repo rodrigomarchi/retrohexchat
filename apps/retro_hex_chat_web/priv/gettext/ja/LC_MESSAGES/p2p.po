@@ -879,6 +879,7 @@ msgid "Live"
 msgstr "ライブ"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:55
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "チャットでのP2Pセッション"
@@ -1330,7 +1331,7 @@ msgstr "トリガー"
 msgid "Accept P2P request"
 msgstr "P2P リクエストを承諾"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:267
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:286
 #, elixir-autogen, elixir-format
 msgid "Bring it back here"
 msgstr "ここに戻す"
@@ -1355,12 +1356,12 @@ msgstr "準備完了"
 msgid "In the room"
 msgstr "ルーム内"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:507
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:561
 #, elixir-autogen, elixir-format
 msgid "This P2P session is no longer available."
 msgstr "この P2P セッションはすでに利用できません。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:260
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "This session is open in another window of yours."
 msgstr "このセッションは別のウィンドウで開いています。"
@@ -1380,8 +1381,8 @@ msgstr "%{peer} の準備が整うのを待っています。"
 msgid "Waiting for %{peer} to start."
 msgstr "%{peer} が開始するのを待っています。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:497
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:502
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:551
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to use P2P sessions."
 msgstr "P2P セッションを使うには NickServ への登録が必要です。"
@@ -1408,8 +1409,8 @@ msgstr "招待済み"
 msgid "ready"
 msgstr "準備完了"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:484
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:489
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:538
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:543
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use P2P sessions."
 msgstr "P2P セッションを使うには NickServ で本人確認が必要です。"
@@ -1424,7 +1425,7 @@ msgstr "ゲームに集中できたら「準備完了」を押してください
 msgid "Share the link — the match starts when somebody takes the seat."
 msgstr "リンクを共有しましょう。誰かが席に着いたら対戦が始まります。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:512
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:566
 #, elixir-autogen, elixir-format
 msgid "This match is already full."
 msgstr "この対戦はすでに満員です。"
@@ -1444,3 +1445,8 @@ msgstr "空席あり"
 #, elixir-autogen, elixir-format
 msgid "whoever joins"
 msgstr "参加する人"
+
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:260
+#, elixir-autogen, elixir-format
+msgid "Taking your seat..."
+msgstr "席を確保しています..."

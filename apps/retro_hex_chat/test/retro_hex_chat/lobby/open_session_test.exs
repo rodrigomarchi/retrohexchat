@@ -302,6 +302,21 @@ defmodule RetroHexChat.Lobby.OpenSessionTest do
       assert Lobby.active_session_between_nicks(creator.nickname, other.nickname) == nil
     end
 
+    # The chat re-opens the session you are in by asking for your most recently
+    # updated one. A match link you just minted is more recent than the call you
+    # are already on, and it is not a session you are *in* — nobody is opposite
+    # you. Without this, minting a link is enough to make the chat stop drawing
+    # the call it was drawing a second ago.
+    test "an unclaimed match link is not the session the chat should re-open" do
+      creator = nick("open_n1c")
+      peer = nick("open_n1d")
+
+      {:ok, %{session: running}} = Service.create_session(creator.id, peer.id)
+      open_lobby(creator, metadata: %{"game_id" => "hex_pong"})
+
+      assert Lobby.active_session_for_user(creator.id).token == running.token
+    end
+
     test "nobody can decline a seat nobody has taken" do
       creator = nick("open_n2")
       other = nick("open_n2b")
