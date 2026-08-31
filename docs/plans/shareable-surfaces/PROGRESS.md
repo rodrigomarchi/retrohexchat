@@ -1681,3 +1681,114 @@ desenho não mostrava os dispositivos, e a sala de partida do P2P é metade
 roster, metade dispositivos. O mockup do jogo multiplayer ficou ao lado, sem a
 metade que um jogo não tem.
 
+
+---
+
+## Iteração 19 — o lobby aberto: o domínio ganha uma cadeira vazia
+
+**Objetivo:** os passos 1–3 da ordem da onda 5 — o levantamento, o domínio com a
+escrita condicional, e o job de expiração. Nenhuma tela.
+
+### O levantamento, antes do changeset
+
+Os quatro pontos que a onda mandava conferir, lidos com `peer_id` nulo na frente:
+
+| Onde | O que acontece com `peer_id` nulo | Veredito |
+|---|---|---|
+| `Queries.active_sessions_between/2` | `s.peer_id == ^id` contra NULL é NULL, nunca verdadeiro | um lobby aberto **não aparece** — e está certo, não há dois |
+| `Policy.can_close?/2` | `check_participant` casa o criador, e um `user_id` inteiro nunca iguala nil | criador fecha, estranho não |
+| `Policy.can_decline?/2` | `check_role(:peer)` compara com nil | ninguém recusa uma cadeira que ninguém ocupou |
+| `Service.close_sessions_between/2` | roda sobre `active_sessions_between/2` | não fecha lobby aberto — correto, o bloqueado ainda não entrou |
+
+E dois que a onda **não** listava e que o levantamento achou:
+
+1. **`Queries.active_sessions_for_user/1` casa pelo `creator_id`.** O lobby
+   aberto do criador aparece nele, e é ele que o `ChatLive.P2PReadModel` usa no
+   mount para reabrir a janela de P2P. Sem portão, abrir o chat com um link de
+   partida pendente abriria uma janela de sessão sem par. Fica para o commit da
+   web, que é onde o consumidor está.
+2. **`SessionServer.registered_nick/1` chama `Repo.get(_, nil)`**, que levanta.
+   Hoje inalcançável — um lobby aberto não tem processo — e é exatamente por isso
+   que a cláusula `nil` entrou: a distância entre "não acontece" e "não pode
+   acontecer" é uma linha.
+
+A consequência de desenho do primeiro item da tabela: como `active_session_exists?`
+não enxerga lobby aberto, o mesmo par pode ter um convite direto **e** um link
+aberto ao mesmo tempo. Quem fecha isso é `can_claim?`, que roda
+`check_no_active_session` no momento da reivindicação — a única hora em que
+existe um par para checar.
+
+### A decisão que o levantamento tornou óbvia: um lobby aberto não tem processo
+
+A primeira ideia era criar o `SessionServer` junto com a sessão e avisá-lo da
+reivindicação. Ela morre no `state.session` que o servidor carrega no `init`: a
+reivindicação escreve direto no banco, então o snapshot em memória ficaria com
+`peer_id` nulo e `role_of/2` recusaria justamente quem acabou de entrar.
+
+Então: **um lobby aberto é uma linha e um prazo.** O processo nasce na
+reivindicação, que já escreveu `pending` — a partir daí é um convite comum e o
+resto do lobby já sabe conduzir. Um link postado num canal passa a custar zero
+processos, e o `expires_at` + Oban é o que o enterra.
+
+### O teste desta onda, e o que ele pegou revertendo
+
+`claim_open_session/3` é um `update_all` com `WHERE token = ? AND peer_id IS
+NULL AND status = 'open'`, e zero linhas afetadas é `:already_claimed`.
+
+Três testes o cercam: duas tasks numa barreira, oito tasks na mesma barreira, e
+um terceiro que lê o SQL gerado pela query e exige `peer_id IS NULL` e
+`status = 'open'` — porque os dois primeiros só podem ser tão decisivos quanto o
+escalonador deixar.
+
+**Vermelho verificado**, trocando a escrita condicional por `read → check →
+write`: as oito reivindicações concorrentes ganham **todas as oito**, e a de duas
+ganha as duas. Sob a conexão compartilhada do sandbox a intercalação é total —
+toda leitura acontece antes de toda escrita — então o vermelho é determinístico,
+não sorte.
+
+**E a reversão achou um defeito meu de verdade.** Na primeira volta o teste caiu
+numa asserção diferente da esperada: o perdedor escrevia no banco e *depois*
+recebia erro, porque `Supervisor.start_child/1` respondia
+`{:error, {:already_started, pid}}` e o `with` do `claim_open_session/2` tratava
+isso como fracasso. Com a escrita condicional certa, o mesmo caminho faria o
+vencedor legítimo receber um erro sobre uma cadeira que é dele. Virou
+`ensure_session_server/1`: ganhar a escrita é o que dá a cadeira, o processo é
+consequência dela.
+
+### O índice que a onda pediu e o que entrou no lugar
+
+A onda pedia índice parcial em `(token) WHERE peer_id IS NULL`. `token` já tem
+índice **único**, e um segundo índice na mesma coluna nunca seria escolhido pelo
+planejador — a escrita condicional já é um lookup por chave única. O que não
+existia era o caminho do **sweep**: achar os lobbies abertos cujo prazo passou.
+Entrou `(expires_at) WHERE peer_id IS NULL AND status = 'open'`, com o porquê
+escrito na migração. Regra da casa: quando a especificação contradiz o código,
+vale o código e a divergência fica registrada.
+
+### O job
+
+`Jobs.OpenLobbyExpiryWorker`, fila `maintenance`, `@reboot` + `*/5 * * * *`. Ele
+não podia pegar carona no `RuntimeStaleCleanupWorker`: aquele existe para linhas
+que um **processo que morreu** deixou abertas, com corte deliberadamente
+conservador de 24 h. Aqui o prazo é propriedade de segurança — é por quanto tempo
+quem tem o link entra — então são cinco minutos, e a condição é reafirmada dentro
+do `UPDATE` para que um lobby reivindicado entre a listagem e a escrita seja
+`skipped` e não fechado.
+
+Observabilidade junto (§17): `Observability.span/4` com quatro medidas novas na
+lista branca (`open_lobby_candidates/expired/skipped/remaining`), e o teste do
+worker assere o evento `[:retro_hex_chat, :lobby, :open_expiry, :stop]` — não só
+o efeito.
+
+### Estado
+
+- Migração `20260831120000_open_lobby_sessions` (peer_id nulo, `expires_at`,
+  índice do sweep).
+- 22 testes em `open_session_test.exs`, 4 em `open_lobby_expiry_worker_test.exs`,
+  147 testes de lobby+jobs verdes.
+- `docs/guide/webrtc-p2p.md` §8.1 atualizado no mesmo commit da migração, como a
+  onda exige: a máquina tem oito estados, `peer_id` deixou de ser obrigatório, e
+  a escrita condicional está escrita lá com o SQL.
+
+**Próximo:** a web — a rota `/play/:game/:token`, a sala de partida do jogo, o
+card com "vaga preenchida" e de onde o link nasce.

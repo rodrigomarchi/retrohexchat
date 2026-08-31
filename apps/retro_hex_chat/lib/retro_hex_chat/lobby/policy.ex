@@ -25,6 +25,41 @@ defmodule RetroHexChat.Lobby.Policy do
     end
   end
 
+  @doc """
+  Whether `creator_id` may mint a match link.
+
+  Only registration, because there is nobody else in the room yet: the checks
+  that need two people — no block, no session already running — are asked of
+  whoever shows up, in `can_claim?/2`.
+  """
+  @spec can_create_open?(integer()) :: :ok | {:error, String.t()}
+  def can_create_open?(creator_id), do: check_registered(creator_id, :creator)
+
+  @doc """
+  Whether `user_id` may take the empty seat of the open lobby `session`.
+
+  Every gate the direct invite applies, asked of the person who showed up
+  instead of the person who was named: both registered, neither ignoring the
+  other, no session already running between them. Two more belong only here —
+  you cannot walk into your own match link, and a lobby whose window has closed
+  is not a seat any more.
+
+  It never decides the race. The seat is taken by one conditional write, and
+  this is the door in front of it: a policy that answered "yes" would still be
+  answering about a seat that may be gone by the next line.
+  """
+  @spec can_claim?(integer(), Session.t()) :: :ok | {:error, String.t()}
+  def can_claim?(user_id, session) do
+    with :ok <- check_open(session),
+         :ok <- check_not_expired(session),
+         :ok <- check_not_creator(user_id, session),
+         :ok <- check_registered(user_id, :peer),
+         :ok <- check_no_active_session(session.creator_id, user_id),
+         :ok <- check_no_block(session.creator_id, user_id) do
+      :ok
+    end
+  end
+
   @spec can_join?(integer(), Session.t()) :: :ok | {:error, String.t()}
   def can_join?(user_id, session) do
     with :ok <- check_participant(user_id, session),
@@ -227,6 +262,26 @@ defmodule RetroHexChat.Lobby.Policy do
       {:error, dgettext("lobby", "Only the inviter can cancel the invite")}
     end
   end
+
+  defp check_open(%{status: "open", peer_id: nil}), do: :ok
+
+  defp check_open(_session),
+    do: {:error, dgettext("lobby", "This match is already full")}
+
+  defp check_not_expired(%{expires_at: %DateTime{} = expires_at}) do
+    if DateTime.after?(DateTime.utc_now(), expires_at) do
+      {:error, dgettext("lobby", "This match link has expired")}
+    else
+      :ok
+    end
+  end
+
+  defp check_not_expired(_session), do: :ok
+
+  defp check_not_creator(user_id, %{creator_id: user_id}),
+    do: {:error, dgettext("lobby", "You cannot join your own match")}
+
+  defp check_not_creator(_user_id, _session), do: :ok
 
   defp check_pending(%{status: "pending"}), do: :ok
 

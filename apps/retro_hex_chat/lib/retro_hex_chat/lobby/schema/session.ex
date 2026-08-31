@@ -7,14 +7,21 @@ defmodule RetroHexChat.Lobby.Schema.Session do
   concurrently. The status
   reflects only the connection lifecycle, never which feature is active:
 
-      pending → lobby → connected → (closed | expired | failed)
+      open → pending → lobby → connected → (closed | expired | failed)
+
+  `open` is a session that has a creator and no peer yet — a match link posted
+  somewhere, waiting for whoever follows it. It is the one status in which
+  `peer_id` may be null, and taking that seat is a single conditional write
+  (`Lobby.Queries.claim_open_session/2`), never a read followed by a write.
+  Because an open lobby is an invitation rather than an address, it carries an
+  `expires_at` and dies on its own if nobody claims it.
   """
   use Ecto.Schema
   import Ecto.Changeset
 
   @type t :: %__MODULE__{}
 
-  @status_values ~w(pending lobby connected closed expired failed)
+  @status_values ~w(open pending lobby connected closed expired failed)
   @terminal_statuses ~w(closed expired failed)
 
   schema "lobby_sessions" do
@@ -28,6 +35,7 @@ defmodule RetroHexChat.Lobby.Schema.Session do
     field :closed_at, :utc_datetime_usec
     field :closed_reason, :string
     field :duration_seconds, :integer
+    field :expires_at, :utc_datetime_usec
 
     timestamps(type: :utc_datetime_usec)
   end
@@ -42,9 +50,11 @@ defmodule RetroHexChat.Lobby.Schema.Session do
       :status,
       :metadata,
       :closed_at,
-      :closed_reason
+      :closed_reason,
+      :expires_at
     ])
-    |> validate_required([:token, :creator_id, :peer_id, :status])
+    |> validate_required([:token, :creator_id, :status])
+    |> validate_peer_for_status()
     |> validate_length(:token, max: 64)
     |> validate_length(:closed_reason, max: 100)
     |> validate_inclusion(:status, @status_values)
@@ -67,11 +77,26 @@ defmodule RetroHexChat.Lobby.Schema.Session do
     |> validate_terminal_fields()
   end
 
+  @spec open?(String.t()) :: boolean()
+  def open?(status), do: status == "open"
+
   @spec terminal?(String.t()) :: boolean()
   def terminal?(status), do: status in @terminal_statuses
 
   @spec status_values() :: [String.t()]
   def status_values, do: @status_values
+
+  # The invariant that used to be "there are always two of you": a session
+  # names its peer from `pending` onwards, and only an `open` one may be
+  # missing it. Keeping it here rather than at the call site is what stops a
+  # second way of creating a peerless session from existing.
+  defp validate_peer_for_status(changeset) do
+    if get_field(changeset, :status) == "open" do
+      changeset
+    else
+      validate_required(changeset, [:peer_id])
+    end
+  end
 
   defp validate_terminal_fields(changeset) do
     status = get_field(changeset, :status)

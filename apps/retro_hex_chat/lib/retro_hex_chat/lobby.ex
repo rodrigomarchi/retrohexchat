@@ -8,7 +8,7 @@ defmodule RetroHexChat.Lobby do
   configuration are reused from `RetroHexChat.P2P`.
   """
 
-  alias RetroHexChat.Lobby.{Queries, Service, SessionServer}
+  alias RetroHexChat.Lobby.{Policy, Queries, Service, SessionServer}
   alias RetroHexChat.Lobby.Schema.Session
   alias RetroHexChat.Services.Queries, as: ServiceQueries
 
@@ -32,9 +32,48 @@ defmodule RetroHexChat.Lobby do
           duration_seconds: integer() | nil
         }
 
+  @typedoc "What one pass of the open-lobby sweep closed, and what it left."
+  @type expiry_summary :: %{
+          candidates: non_neg_integer(),
+          expired: non_neg_integer(),
+          skipped: non_neg_integer(),
+          remaining: non_neg_integer()
+        }
+
   @spec create_session(integer(), integer()) ::
           {:ok, %{session: Session.t(), token: String.t()}} | {:error, String.t()}
   defdelegate create_session(creator_id, peer_id), to: Service
+
+  @doc """
+  Creates a lobby with no peer named — the match link of wave 5.
+
+  A session used to be born pointing at one person, so a link to a match had
+  nowhere to point. This is the other half: a lobby with a creator, an empty
+  seat and a deadline.
+  """
+  @spec create_open_session(integer(), keyword()) ::
+          {:ok, %{session: Session.t(), token: String.t()}} | {:error, String.t()}
+  defdelegate create_open_session(creator_id, opts \\ []), to: Service
+
+  @doc """
+  Takes the empty seat of an open lobby — one conditional write, never a check.
+
+  `{:error, :already_claimed}` is the answer for a seat somebody else took, a
+  lobby that expired, and one that was never open: from the claimer's side they
+  are the same fact.
+  """
+  @spec claim_open_session(String.t(), integer()) ::
+          {:ok, Session.t()} | {:error, String.t() | :already_claimed}
+  defdelegate claim_open_session(token, claimer_id), to: Service
+
+  @doc "Whether `user_id` may take the empty seat of `session`."
+  @spec can_claim?(integer(), Session.t()) :: :ok | {:error, String.t()}
+  defdelegate can_claim?(user_id, session), to: Policy
+
+  @doc "Whether `session` is a match link with its seat still empty."
+  @spec open_session?(Session.t()) :: boolean()
+  def open_session?(%Session{status: "open", peer_id: nil}), do: true
+  def open_session?(_session), do: false
 
   @spec can_create_session?(integer(), integer()) :: :ok | {:error, String.t()}
   defdelegate can_create_session?(creator_id, peer_id), to: Service
@@ -148,6 +187,33 @@ defmodule RetroHexChat.Lobby do
   end
 
   def active_session_between_nicks(_nick_a, _nick_b), do: nil
+
+  @doc """
+  Closes every open lobby whose window has passed, and says what it did.
+
+  The sweep is the mitigation, not a tidy-up: an unclaimed match link is a seat
+  anybody holding the address can take, so the deadline is what bounds how long
+  that is true. Re-stating the condition inside the write is what keeps it from
+  closing a match two people just walked into.
+  """
+  @spec expire_open_sessions(keyword()) :: {:ok, expiry_summary()}
+  def expire_open_sessions(opts \\ []) do
+    now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
+    limit = Keyword.get(opts, :limit, 100)
+
+    candidates = Queries.list_expired_open_sessions(now, limit: limit)
+
+    summary =
+      Enum.reduce(candidates, %{candidates: length(candidates), expired: 0, skipped: 0}, fn
+        session, acc ->
+          case Queries.expire_open_session(session, now) do
+            {:ok, :expired} -> Map.update!(acc, :expired, &(&1 + 1))
+            _skipped -> Map.update!(acc, :skipped, &(&1 + 1))
+          end
+      end)
+
+    {:ok, Map.put(summary, :remaining, Queries.expired_open_session_count(now))}
+  end
 
   @spec mark_webrtc_ready(String.t(), integer()) :: :ok | {:error, atom()}
   defdelegate mark_webrtc_ready(token, user_id), to: SessionServer

@@ -22,10 +22,33 @@ sending a private message, and conversation is the chat's.
 
 ### 8.1 Session model
 
-- **Session status is a 7-state machine:** `pending → lobby → connecting → active` plus
+- **Session status is an 8-state machine:** `open → pending → lobby → connecting → active` plus
   terminal `closed / expired / failed`. Enforced as a DB `status` string column with changeset
   validation; `closed_at` and `closed_reason` are required whenever terminal. Any non-terminal
   state can jump to `closed`. Terminal sessions are retained indefinitely for audit (no purge).
+- **`open` is a session with no peer yet — the match link.** It is the one status in which
+  `peer_id` is null, so the changeset requires a peer from `pending` onwards and not before.
+  An open lobby has **no GenServer**: it is a row and an `expires_at`, and the process starts
+  on the claim. Everything downstream keeps assuming two participants and is right to —
+  `active_sessions_between/2` cannot match a null peer, so an unclaimed lobby is invisible to
+  the duplicate check, the PM badge and the block sweep, which is exactly what it should be.
+- **Taking the empty seat is one conditional write**, never a read that checks and a write that
+  trusts the check:
+
+  ```sql
+  UPDATE lobby_sessions SET peer_id = $claimer, status = 'pending', accepted_at = now()
+   WHERE token = $token AND peer_id IS NULL AND status = 'open'
+  ```
+
+  Zero rows affected is `:already_claimed`, and from the claimer's side "somebody was faster",
+  "it expired" and "it was never open" are the same fact. `Lobby.Policy.can_claim?/2` is the
+  door in front of that write and never decides the race: between its answer and the write the
+  seat may be gone. Two concurrent claimers is the test that holds this
+  (`lobby/open_session_test.exs`) — it goes red on `read → check → write`, verified.
+- **An unclaimed match link dies on its own.** `Jobs.OpenLobbyExpiryWorker` sweeps every five
+  minutes, re-stating the condition inside the write so a lobby claimed between the listing and
+  the update is skipped rather than closed. The deadline is a security property, not
+  housekeeping: it is how long anybody holding the address can walk in.
 - **Duplicate-session prevention is a DB query, not a Registry check**
   (`WHERE (creator=A AND peer=B) OR (creator=B AND peer=A)` filtered to non-terminal). The DB
   is authoritative because a crashed-but-not-yet-restarted GenServer would make a Registry
@@ -34,6 +57,9 @@ sending a private message, and conversation is the chat's.
   embedding `%{creator_id, peer_id, session_id}` so authorization needs no DB lookup. The domain
   app reads the signing secret from `Application.get_env(:retro_hex_chat, :p2p_token_secret)`
   populated at startup — it must NOT depend on the web endpoint module.
+- **`create_open_session` IS the match link.** It names nobody, so nothing is sent: the link is
+  the invitation and posting it is the delivery. The direct invite still exists unchanged — two
+  ways into one session, never two kinds of session.
 - **`create_session` IS the invite.** No separate invite action; creating a session broadcasts
   `p2p_invite`, delivered by reusing `send_private_message` (persisted, appears in PM history).
   A single session-creation rate limit (5/10min) subsumes the invite limit. P2P rate limiting is

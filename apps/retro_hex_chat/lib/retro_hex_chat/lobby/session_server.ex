@@ -3,11 +3,16 @@ defmodule RetroHexChat.Lobby.SessionServer do
   GenServer managing a single P2P lobby session.
 
   The connection is *persistent*: the state machine
-  `pending → lobby → connected → terminal` tracks only the
+  `open → pending → lobby → connected → terminal` tracks only the
   WebRTC link, never a single feature. Once `connected`, the session hosts
   audio, video, file transfer and games **concurrently**, and ending any one
   feature never closes the session — only an explicit leave/close or
   inactivity does.
+
+  There is no process while a session is `open`: that status is a match link
+  with an empty seat, and it costs a row and a deadline rather than a
+  GenServer. The process starts on the claim, which has already written
+  `pending`.
 
   Feature state lives client-side; the server keeps just enough to render the
   shared UI and arbitrate game consent:
@@ -884,6 +889,12 @@ defmodule RetroHexChat.Lobby.SessionServer do
     )
   end
 
+  # A session whose peer is still nobody has no second nick to notify. It never
+  # reaches here today — an open lobby has no process — and the clause is the
+  # difference between that staying true and a `Repo.get(_, nil)` crash the day
+  # it stops being.
+  defp registered_nick(nil), do: nil
+
   defp registered_nick(id) do
     case Repo.get(RegisteredNick, id) do
       nil -> nil
@@ -921,6 +932,10 @@ defmodule RetroHexChat.Lobby.SessionServer do
   end
 
   @valid_transitions %{
+    # An open lobby has no process — it is a row and a deadline until somebody
+    # claims it — so this line exists for the row's sake, not this server's:
+    # the claim writes `pending` and the sweep writes `expired`.
+    "open" => ~w(pending expired closed),
     "pending" => ~w(lobby expired closed),
     "lobby" => ~w(connected expired failed closed),
     "connected" => ~w(closed)
