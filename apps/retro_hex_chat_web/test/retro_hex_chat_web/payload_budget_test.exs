@@ -147,6 +147,38 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
     end
   end
 
+  # The Start menu is a superset of every menu bar, grey where a screen cannot
+  # reach: +177 nodes, +17 KB raw per screen. That is the right trade on the
+  # chat's desktop, where every one of those entries leads somewhere. On a
+  # single-purpose satellite it is 177 rows that do nothing, four times over —
+  # so the satellites carry the way back to the chat and nothing else, and this
+  # is the guard that keeps somebody from adding one by reflex.
+  #
+  # The other side of the contrast is not asserted here: `/chat`'s dead render
+  # is only the boot overlay, so its Start menu arrives with the connected
+  # render and `start_menu_superset_test.exs` is where it is held to being a
+  # superset.
+  describe "the satellites' chrome" do
+    test "no satellite ships a Start menu or a taskbar", %{conn: conn} do
+      {play_nick, play_path} = {register_for_budget().nickname, "/play/hex_pong"}
+      {call_nick, call_path} = open_call()
+      {space_nick, space_path} = open_space()
+      {p2p_nick, p2p_path} = open_p2p_session()
+
+      for {nickname, path} <- [
+            {play_nick, play_path},
+            {call_nick, call_path},
+            {space_nick, space_path},
+            {p2p_nick, p2p_path}
+          ] do
+        html = html_for(session_conn(conn, nickname), path)
+
+        refute html =~ "start-menu-item-", "#{path} ships Start menu entries"
+        refute html =~ ~s(data-testid="taskbar"), "#{path} ships a taskbar"
+      end
+    end
+  end
+
   describe "every surface" do
     test "ships no icon art inline", %{conn: conn} do
       for path <- [~p"/connect", ~p"/chat/help"] do

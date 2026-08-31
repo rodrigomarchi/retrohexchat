@@ -32,11 +32,13 @@ defmodule RetroHexChatWeb.Components.UI.ShareBar do
         {dgettext("share", "Register your nickname to share a link.")}
       </span>
 
-      <%!-- A readonly field rather than a copy button: the copy event is
-            handled by a chat-only hook, and this bar has to work the same in a
-            tab that has no chat in it. --%>
+      <%!-- The field stays, because an address you can see and select is the
+            thing that works when the clipboard is refused. The button beside it
+            copies without a round trip: the text is already here, so a surface
+            in a tab of its own needs nothing from the chat to do it. --%>
       <input
         :if={@url}
+        id={@url && "share-url-#{Base.url_encode64(@url, padding: false)}"}
         type="text"
         readonly
         value={@url}
@@ -44,6 +46,18 @@ defmodule RetroHexChatWeb.Components.UI.ShareBar do
         data-testid="share-url"
         aria-label={dgettext("share", "Share link")}
       />
+      <.button
+        :if={@url}
+        type="button"
+        id={@url && "share-copy-#{Base.url_encode64(@url, padding: false)}"}
+        phx-hook="CopyValueHook"
+        data-copy-from={"share-url-#{Base.url_encode64(@url || "", padding: false)}"}
+        data-copied-label={dgettext("share", "Copied!")}
+        data-testid="share-copy"
+      >
+        <:icon><Icons.icon_copy class="h-4 w-4" /></:icon>
+        {dgettext("share", "Copy")}
+      </.button>
     </div>
     """
   end

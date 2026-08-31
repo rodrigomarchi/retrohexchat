@@ -111,6 +111,31 @@ A budget raised without a rationale is a rubber stamp — it still goes green, a
 it stops telling you anything. If a chunk outgrows its override, the honest moves
 are to split it, lazy-load more of it, or write down why it legitimately grew.
 
+### There is one app entry, and the measurement says keep it that way
+
+The four surfaces that are not the chat — `/call/:token`, `/space/:slug`,
+`/p2p/:token`, `/play/:game` — all load `app.js`. Whether they should get an
+entry of their own was left open from the start of the shareable-surfaces work
+and answered by measuring it, on 2026-08-31, from esbuild's metafile:
+
+| Part of `app.js` | Raw bytes | Share |
+|---|---|---|
+| `phoenix_live_view` | 227_247 | 49.2% |
+| everything the satellites also use (window manager, ui, connection, i18n, hooks) | 162_257 | 35.1% |
+| **chat-only (`lib/chat` + `hooks/chat`)** | **65_852** | **14.3%** |
+| — total | 461_837 | (451.0 kb raw / 103.7 kb gzip as built) |
+
+So a `surface.js` entry would save a satellite **at most 14%** of the entry, and
+only for somebody who lands on a satellite address without ever having loaded
+the chat. For the common path it *costs*: these addresses are reached from the
+chat's own "open in a tab", where `app.js` is already in cache and a second entry
+is a fresh ~396 KB download.
+
+**Decision: do not split.** Half the entry is LiveSocket, which every screen needs
+and which is one cached URL for all of them. Revisit only if the chat-only share
+grows past roughly a third — and measure again rather than assuming, because that
+share is the whole argument.
+
 **Hosted CI:** GitHub Actions is still `workflow_dispatch` while credits are
 constrained. The workflow runs `Impact Plan` first, executes conditional jobs from
 the same impact matrix as `make ci.changed`, and reports through the single stable

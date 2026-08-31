@@ -30,6 +30,7 @@ import ViewportDetectHook from "./ui/viewport_detect_hook";
 import WindowManagerHook from "./ui/window_manager_hook";
 import FocusChatInputOnClickHook from "./ui/focus_chat_input_on_click_hook";
 import AutoFocusHook from "./ui/auto_focus_hook";
+import CopyValueHook from "./surfaces/copy_value_hook";
 import SurfacePresenceHook from "./surfaces/surface_presence_hook";
 import SurfaceTabLinkHook from "./surfaces/surface_tab_link_hook";
 
@@ -41,6 +42,7 @@ export const criticalHooks = {
   ConnectionStatusHook: ConnectionStatusHook,
   ContextMenuHook: ContextMenuHook,
   ContextualTipsHook: ContextualTipsHook,
+  CopyValueHook: CopyValueHook,
   AutocompleteHook: AutocompleteHook,
   EmojiPickerHook: EmojiPickerHook,
   FocusChatInputOnClickHook: FocusChatInputOnClickHook,

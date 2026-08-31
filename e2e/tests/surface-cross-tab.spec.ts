@@ -1,6 +1,7 @@
 /**
  * @section Auth And Lifecycle
  * @flow K5 [done] A surface open beside the chat offers to go back to the tab that exists instead of opening a second chat, and says so when no tab answers
+ * @flow K6 [done] Copy on a surface's share bar puts the address on the clipboard with no chat tab involved
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -61,6 +62,37 @@ test("a surface goes back to the chat tab instead of opening a second one (K5)",
       "/chat",
       { timeout: 15_000 },
     );
+  } finally {
+    await ctx.close();
+  }
+});
+
+test("a surface copies its own share link, with no chat behind it (K6)", async ({
+  browser,
+}) => {
+  const ctx = await browser.newContext();
+  await ctx.grantPermissions(["clipboard-read", "clipboard-write"]);
+  const page = await ctx.newPage();
+
+  try {
+    const connect = new ConnectPage(page);
+    await connect.open();
+    await connect.enterNickname(uniqueNickname());
+    await connect.registerWithPassword(PASSWORD);
+    await new ChatPage(page).waitUntilConnected();
+
+    // A surface in a tab of its own: nothing here has a chat viewport hook,
+    // which is exactly why this used to be a readonly field and nothing else.
+    await page.goto("/play/hex_pong");
+    await page.getByTestId("share-create").click();
+
+    const url = await page.getByTestId("share-url").inputValue();
+    expect(url).toContain("/join/");
+
+    await page.getByTestId("share-copy").click();
+
+    const clipboard = await page.evaluate(() => navigator.clipboard.readText());
+    expect(clipboard).toBe(url);
   } finally {
     await ctx.close();
   }

@@ -39,6 +39,34 @@ Part of the [Agent Guide](../AGENT-GUIDE.md) (§7). Section numbers there are st
   from the window's own width against the menus its bar carries, so a bar with three menus
   survives a narrower window than one with seven.
 
+### 7.0 Satellites: one window, and no chrome around it
+
+Five screens run this shell now, and the four that are not the chat run it with
+**no taskbar and no Start menu** — one pinned, maximised window and a status bar.
+That is a decision, not an omission:
+
+- The Start menu is a **superset of every menu bar**, grey where a screen cannot
+  reach — +177 nodes, +17 KB raw, +1 KB gzip per screen. On the chat's desktop
+  every one of those entries leads somewhere. On a single-purpose satellite they
+  are 177 rows that do nothing, and there are four satellites.
+- What a satellite owes instead is the way **back**: `← Chat` in the status bar,
+  always visible, which focuses the chat tab when there is one
+  (`Components.UI.SurfaceTabLink.back_to_chat/1`).
+
+`payload_budget_test.exs` holds the four satellites to it, so a Start menu added
+by reflex fails a test rather than costing 708 nodes nobody looks at.
+
+**A tab you already have is not opened again.** `RetroHexChat.Surfaces` monitors
+every surface process and knows the address of each, so "open in a tab" draws as
+"go to the tab" when that address is already open; the click asks the existing
+tab to come forward over a `BroadcastChannel` and falls back to the plain link
+when nothing answers within 300 ms. Focusing is the bonus and degrading is the
+requirement: `window.focus()` from a background tab is refused often, and
+silently. Use `Live.OpenSurfaces` to read the set and `surface_tab_link/1` to
+draw it — never a hand-written anchor, because the shape has two states now and
+the wrong one is destructive (a second tab of a P2P session *moves the session
+into it*).
+
 ### 7.1 Chat: managed windows (server-owned lifecycle)
 
 The chat's P2P session windows keep their islands **always mounted** (rule above) because their
