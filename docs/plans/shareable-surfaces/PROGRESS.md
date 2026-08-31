@@ -2001,3 +2001,105 @@ apertar **Jogar com alguém**, **Compartilhar** dentro da sala, colar o link num
 conversa, e ver outra pessoa ocupar a vaga e a partida começar sozinha. Um
 terceiro clique no mesmo link lê "vaga preenchida". O Arcade abre numa aba com
 endereço próprio e `noopener`.
+
+---
+
+## Iteração 22 — o chat passa a saber o que você tem aberto
+
+**Objetivo:** o passo 1 da onda 6 — a coordenação entre abas — e as duas dívidas
+que ela existia para pagar.
+
+### A verdade é do servidor; o navegador só entra para focar
+
+`RetroHexChat.Surfaces` monitora o processo de toda superfície desde a onda 2,
+então **se** uma aba existe nunca foi uma pergunta para o navegador. O que
+faltava era ele responder **qual**: o registro guardava o módulo (`socket.view`)
+e mais nada, e dois `/call/:token` de salas diferentes eram indistinguíveis.
+
+Entrou um endereço por superfície. Não o módulo, não um rótulo: **o caminho** —
+porque as duas metades da pergunta são sobre a mesma coisa, a aba que seria
+aberta e a aba que já existe. Quem o informa é um hook de `handle_params` no
+`Live.Surface`, que é o único lugar onde um LiveView descobre onde está *e* o
+único onde descobre que se moveu.
+
+E o conjunto é publicado, não consultado: `Topics.surfaces_open/1`, tópico novo
+e não um segundo significado no que já existia — aquele é lido por toda
+satélite e carrega só o fim da sessão, e um roster de abas chegando lá pediria,
+em cada superfície, uma cláusula que o ignora.
+
+### Uma armadilha de chave que teria sido silenciosa e parcial
+
+O registro indexa pessoas pelo apelido **em minúsculas**. Um assinante que
+montasse o tópico com a forma original escutaria um tópico onde ninguém publica
+— em silêncio, e **só para quem tem maiúscula no apelido**. Por isso o tópico
+não é montado pelo chamador: `Surfaces.topic/1` existe e faz o downcase, e o
+teste compara as duas grafias.
+
+### `@socket` num template não tem assigns — e o teste é que disse
+
+A primeira versão de `OpenSurfaces.open?/2` recebia o socket e casava
+`%{assigns: %{open_surface_paths: paths}}`. Dentro de um `~H`, `@socket` chega
+**sem assigns**, então a cláusula nunca casava e o catch-all respondia `false`
+para sempre. Nenhum erro, nenhum log: a tela simplesmente dizia que nada estava
+aberto.
+
+Agora a função recebe **o conjunto**, e o `@spec` diz `MapSet.t()`. Três testes
+de LiveView caíram na primeira execução por causa disso, que é exatamente o que
+eles existem para fazer.
+
+### O que a coordenação consertou, e não era só cosmético
+
+* **`← Chat` abria um segundo chat.** Toda superfície tem esse link desde a onda
+  0 e ele sempre navegava, então quem viera do chat ganhava outro — e o primeiro,
+  com os canais, as conversas e a posição de rolagem, era **derrubado pelo
+  takeover do próprio dono**. Agora ele tenta a aba que existe primeiro.
+* **"Abrir em uma aba" abria uma segunda aba de uma sessão que você já tinha.**
+  No P2P isso *move a sessão para ela* — o contrato de takeover disparando para
+  quem só queria olhar o que já tinha.
+
+Os três "Abrir em uma aba" escritos à mão (crachá da chamada, seletor do space,
+sala de partida) viraram **um** componente com duas formas, `surface_tab_link`.
+Ele continua sendo âncora nas duas: é o que mantém clique do meio e "abrir em
+nova aba" funcionando, e é o que torna o fallback de graça — quando ninguém
+responde, o próximo clique segue o link.
+
+### Focar é o bônus; degradar é o requisito
+
+`window.focus()` de uma aba em segundo plano é recusado na maioria dos casos, e
+recusado **em silêncio**. Então o pedido é uma pergunta com prazo (300 ms), a
+aba que tem o endereço responde **depois** de tentar, e um pedido sem resposta
+resolve `false` em vez de pendurar. A resposta significa "uma aba com este
+endereço está aqui e tentou", nunca "funcionou" — nenhum navegador conta isso.
+
+`lib/surfaces/tab_registry.js` tem essa lógica sozinha, com 13 testes de vitest
+que incluem o caso do `focus()` que levanta: ele ainda responde, porque quem
+perguntou precisa saber que a aba existe de qualquer jeito.
+
+### Verificação
+
+- 16 testes em `surfaces_test.exs` (5 novos grupos: endereço, duas do mesmo
+  tipo, anúncio em abrir/mover/fechar/crash, o tópico case-insensitive).
+- 8 em `open_surfaces_test.exs`, incluindo o chat aprendendo por assinatura
+  através de uma cadeia de hooks com uma dúzia de outros handlers — asserido em
+  `:sys.get_state`, não em render.
+- 8 no componente, 13 no vitest do `tab_registry`.
+- `surface-cross-tab.spec.ts`: duas abas no **mesmo perfil**, porque
+  `BroadcastChannel` é por origem por perfil e dois contextos do Playwright
+  seriam duas pessoas. O clique não abre terceira aba, a frase de "não
+  respondeu" não aparece, e fechar o chat devolve o link à forma comum.
+- `make ci` 17/17 com Dialyzer.
+
+### Duas coisas que o gate pegou e uma que não era minha
+
+* **`refute render_eventually(...)` não é a asserção negativa.** Ele devolve
+  `true` no instante em que o fragmento ainda está lá — que é exatamente o
+  estado que se quer ver ir embora. Passou local e caiu no `make ci`, que é a
+  armadilha que o HANDOVER já registrava com outro nome. Virou
+  `render_until_gone/3`.
+* **Dialyzer: `Paths.chat_path(nil)`.** O parâmetro sempre foi ignorado, mas o
+  `@spec` prometia um `Socket.t()`; um componente não tem socket para dar. Virou
+  `chat_path/0` nos nove chamadores — um parâmetro ignorado que também não pode
+  ser fornecido é uma assinatura que não descreve nada.
+* Um teste de feature de P2P (`session_info` respondendo `:not_found`) falhou
+  **uma vez** numa partição e não reproduziu em quatro execuções depois, nem
+  antes com `git stash`. Registrado como flake raro, não perseguido.

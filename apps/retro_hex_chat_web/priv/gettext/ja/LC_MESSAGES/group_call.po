@@ -21,7 +21,8 @@ msgstr "電話番号"
 msgid "Call: %{channel}"
 msgstr "通話: %{channel}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:125 lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:145
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:125
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:145
 #, elixir-autogen, elixir-format
 msgid "Call: %{channel} (%{count})"
 msgstr "通話: %{channel} (%{count})"
@@ -46,7 +47,8 @@ msgstr "コール:%{channel}..."
 msgid "Call: negotiating %{channel}..."
 msgstr "コール: %{channel} を交渉..."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1480 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:269
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1480
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:269
 #, elixir-autogen, elixir-format
 msgid "Camera off"
 msgstr "カメラオフ"
@@ -56,7 +58,8 @@ msgstr "カメラオフ"
 msgid "Camera on"
 msgstr "カメラ"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:74 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:229
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:74
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:230
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "キャンセル"
@@ -71,7 +74,9 @@ msgstr "グループコールを閉じる?"
 msgid "Closing this window leaves the group call in %{channel}. To keep the call running and just tidy up, minimize the window instead."
 msgstr "このウィンドウを閉じると、%{channel} でグループコールが残されます。 コールの実行を保ち、整頓するだけのために、代わりにウィンドウを最小限に抑えます。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1073 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1260 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:587
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1073
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1260
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:587
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr "接続済み"
@@ -91,7 +96,8 @@ msgstr "接続エラー"
 msgid "Could not end group call."
 msgstr "グループコールを終了できません。"
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1447 lib/retro_hex_chat_web/live/call_live/events.ex:1471
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1447
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1471
 #, elixir-autogen, elixir-format
 msgid "Could not remove participant."
 msgstr "参加者を削除できません。"
@@ -126,7 +132,15 @@ msgstr "エンドグループコール"
 msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
 msgstr "全員の%{channel}でグループコールを終了しますか? 参加者全員が切断されます。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:301 lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:50 lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:364 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1065 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1066 lib/retro_hex_chat_web/live/app/call_live.ex:97 lib/retro_hex_chat_web/live/app/chat_live.html.heex:584 lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:113 lib/retro_hex_chat_web/live/chat_live/window_registry.ex:312
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:301
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:57
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:375
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1065
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1066
+#: lib/retro_hex_chat_web/live/app/call_live.ex:103
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:555
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:113
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:312
 #, elixir-autogen, elixir-format
 msgid "Group Call"
 msgstr "グループコール"
@@ -156,7 +170,8 @@ msgstr "グループコール終了: %{reason}"
 msgid "Group call in %{channel} — click to focus"
 msgstr "%{channel} のグループ呼び出し — クリックしてフォーカス"
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:956 lib/retro_hex_chat_web/live/call_live/events.ex:1733
+#: lib/retro_hex_chat_web/live/call_live/events.ex:956
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1733
 #, elixir-autogen, elixir-format
 msgid "Group call media connection interrupted. Trying to recover."
 msgstr "グループコールメディア接続の中断。 回復しようとする。"
@@ -171,12 +186,17 @@ msgstr "グループコールメディアが劣化します。"
 msgid "Group calls are available in channels only."
 msgstr "チャネルのみでグループ通話が可能です。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:365
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:376
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ to use group calls"
 msgstr "グループコールを使用するNickServで識別する"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1068 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:432 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:548 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:565 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:598 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:871
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1068
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:432
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:548
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:565
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:598
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:871
 #, elixir-autogen, elixir-format
 msgid "Idle"
 msgstr "アイドル"
@@ -201,12 +221,14 @@ msgstr "通話に参加する"
 msgid "Leave Group Call"
 msgstr "グループコールを残す"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:148 lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:149
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:148
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:149
 #, elixir-autogen, elixir-format
 msgid "Leave call"
 msgstr "お電話でのご予約"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:337 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:405
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:337
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:405
 #, elixir-autogen, elixir-format
 msgid "Leave group call"
 msgstr "グループコールを残す"
@@ -241,7 +263,8 @@ msgstr "Mute参加者"
 msgid "Negotiating media"
 msgstr "ネゴティエートメディア"
 
-#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:281 lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:291
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:281
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:291
 #, elixir-autogen, elixir-format
 msgid "Open a channel before starting a group call."
 msgstr "グループコールを開始する前にチャンネルを開きます。"
@@ -251,7 +274,10 @@ msgstr "グループコールを開始する前にチャンネルを開きます
 msgid "Participant is no longer in the group call."
 msgstr "グループコールでは参加できません。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:103 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:642 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:111 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:337
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:110
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:642
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:111
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:337
 #, elixir-autogen, elixir-format
 msgid "Participants"
 msgstr "参加者"
@@ -266,12 +292,14 @@ msgstr "スイッチグループコール"
 msgid "Switch call"
 msgstr "スイッチコール"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:313 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:387
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:313
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:387
 #, elixir-autogen, elixir-format
 msgid "Toggle camera"
 msgstr "トグルカメラ"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:302 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:377
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:302
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:377
 #, elixir-autogen, elixir-format
 msgid "Toggle microphone"
 msgstr "マイクを切り替える"
@@ -286,7 +314,9 @@ msgstr "未参加者"
 msgid "You are already in a group call in %{channel}. Leave it and join the call in %{new_channel}?"
 msgstr "%{channel} のグループコールに既にあります。 %{new_channel} でコールを受け取りませんか?"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:302 lib/retro_hex_chat_web/live/app/call_live.ex:308 lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:297
+#: lib/retro_hex_chat_web/live/app/call_live.ex:336
+#: lib/retro_hex_chat_web/live/app/call_live.ex:342
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:297
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use group calls."
 msgstr "グループコールを使用するには、NickServ で識別する必要があります。"
@@ -296,12 +326,14 @@ msgstr "グループコールを使用するには、NickServ で識別する必
 msgid "You must be registered to moderate group calls."
 msgstr "適度なグループコールに登録する必要があります。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:317 lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:209
+#: lib/retro_hex_chat_web/live/app/call_live.ex:351
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:209
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to use group calls."
 msgstr "グループコールを使用するには、NickServに登録する必要があります。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:839 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:849
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:839
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:849
 #, elixir-autogen, elixir-format
 msgid "%{active}/%{total} active"
 msgstr "%{active}/%{total} アクティブ"
@@ -385,7 +417,8 @@ msgstr "%{actor} 会議を解除しました。"
 msgid "%{audio} audio / %{video} video / %{screen} screen"
 msgstr "%{audio} オーディオ/ %{video} ビデオ/ %{screen} スクリーン"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:669 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:823
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:669
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:823
 #, elixir-autogen, elixir-format
 msgid "%{connected}/%{total} connected"
 msgstr "%{connected}/%{total} 接続"
@@ -395,7 +428,7 @@ msgstr "%{connected}/%{total} 接続"
 msgid "%{connection} / ICE %{ice}"
 msgstr "%{connection} / アイス%{ice}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:320
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:331
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m"
 msgstr "%{hours}h %{minutes}m"
@@ -410,7 +443,7 @@ msgstr "%{inbound} in / %{fanout} ファンアウト"
 msgid "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps, freezes %{freezes}"
 msgstr "%{level} 質: RTT %{rtt} ms、損失 %{loss}%、%{bitrate} kbps、%{fps} fps、凍結 %{freezes}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:322
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:333
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m"
 msgstr "%{minutes}m"
@@ -435,12 +468,21 @@ msgstr "%{nominated}/%{total} ノミネート / %{valid} よくある質問"
 msgid "%{n} fps"
 msgstr "%{n} フレーム"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:243 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:263 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:268 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:303 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:308 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:550 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:551
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:243
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:263
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:268
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:303
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:308
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:550
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:551
 #, elixir-autogen, elixir-format
 msgid "%{n} kbps"
 msgstr "%{n}のkbps"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:69 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:228 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:233 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:618
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:69
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:228
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:233
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:618
 #, elixir-autogen, elixir-format
 msgid "%{n} ms"
 msgstr "%{n}のms"
@@ -450,22 +492,26 @@ msgstr "%{n}のms"
 msgid "%{n} subs"
 msgstr "%{n} サブ"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:238 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:273 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:313
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:238
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:273
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:313
 #, elixir-autogen, elixir-format
 msgid "%{n}%"
 msgstr "%{n}%"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:699 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:710
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:699
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:710
 #, elixir-autogen, elixir-format
 msgid "%{packets} pkt / %{bytes}"
 msgstr "%{packets} pkt/%{bytes}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:728 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:803
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:728
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:803
 #, elixir-autogen, elixir-format
 msgid "%{sent} up / %{received} down"
 msgstr "%{sent} アップ/%{received} ダウン"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:368
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:379
 #, elixir-autogen, elixir-format
 msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr "%{channel}の%{state}会議: %{count}/%{max}人、%{duration}"
@@ -500,7 +546,8 @@ msgstr "%{target} は会議から削除され、%{channel} から禁止されま
 msgid "%{tracks} trk / %{packets} pkt / %{bytes}"
 msgstr "%{tracks} trk/%{packets} pkt/%{bytes}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:842 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:852
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:842
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:852
 #, elixir-autogen, elixir-format
 msgid "0 active"
 msgstr "0 アクティブ"
@@ -510,12 +557,15 @@ msgstr "0 アクティブ"
 msgid "0 connected"
 msgstr "接続される 0"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:308 lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:329 lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:333
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:319
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:340
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:344
 #, elixir-autogen, elixir-format
 msgid "0m"
 msgstr "0m"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:431 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:547
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:431
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:547
 #, elixir-autogen, elixir-format
 msgid "Active"
 msgstr "アクティブ"
@@ -545,7 +595,8 @@ msgstr "参加者マイクを許可する"
 msgid "Allow participant screen sharing"
 msgstr "参加者画面共有を許可する"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:249 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:869
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:249
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:869
 #, elixir-autogen, elixir-format
 msgid "Audio"
 msgstr "音声"
@@ -555,7 +606,9 @@ msgstr "音声"
 msgid "Audio tracks"
 msgstr "オーディオトラック"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1167 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:177 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:359
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1167
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:178
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:360
 #, elixir-autogen, elixir-format
 msgid "Auto"
 msgstr "自動"
@@ -590,7 +643,7 @@ msgstr "ブラウザの概要"
 msgid "CPU"
 msgstr "CPU"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:134
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:135
 #, elixir-autogen, elixir-format
 msgid "Camera"
 msgstr "カメラ"
@@ -695,7 +748,10 @@ msgstr "会議参加者リスト"
 msgid "Conference participants"
 msgstr "会議参加者"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:449 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:457 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:458 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:465
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:449
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:457
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:458
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:465
 #, elixir-autogen, elixir-format
 msgid "Conference reactions"
 msgstr "会議の反応"
@@ -705,7 +761,8 @@ msgstr "会議の反応"
 msgid "Conference started in %{channel}."
 msgstr "%{channel} で始まる会議。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:69 lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:70
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:76
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:77
 #, elixir-autogen, elixir-format
 msgid "Conference summary"
 msgstr "会議概要"
@@ -760,22 +817,24 @@ msgstr "現在の会議は最初に閉まります"
 msgid "Default device"
 msgstr "デフォルトデバイス"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:382
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:393
 #, elixir-autogen, elixir-format
 msgid "Degraded"
 msgstr "分解された"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:262 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:302
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:262
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:302
 #, elixir-autogen, elixir-format
 msgid "Download"
 msgstr "ダウンロード"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:383
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:394
 #, elixir-autogen, elixir-format
 msgid "Ending"
 msgstr "エンドウイング"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:79 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:879
+#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:79
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:879
 #, elixir-autogen, elixir-format
 msgid "Excellent"
 msgstr "よくある質問"
@@ -785,7 +844,8 @@ msgstr "よくある質問"
 msgid "Expand conference"
 msgstr "会議の拡大"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:81 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:881
+#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:81
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:881
 #, elixir-autogen, elixir-format
 msgid "Fair"
 msgstr "フェア"
@@ -795,7 +855,9 @@ msgstr "フェア"
 msgid "Fanout"
 msgstr "ファンアウト"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1164 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:179 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:358
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1164
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:180
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:359
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "フォーカス"
@@ -810,7 +872,8 @@ msgstr "焦点レイアウト"
 msgid "Focus participant"
 msgstr "フォーカス参加者"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:83 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:84
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:83
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:84
 #, elixir-autogen, elixir-format
 msgid "Focus your video"
 msgstr "ビデオを集中"
@@ -830,17 +893,20 @@ msgstr "フレーム率"
 msgid "Freezes"
 msgstr "フリーズ"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:380
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:391
 #, elixir-autogen, elixir-format
 msgid "Full"
 msgstr "スタッフ"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:80 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:880
+#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:80
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:880
 #, elixir-autogen, elixir-format
 msgid "Good"
 msgstr "Good"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1163 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:178 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:357
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1163
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:179
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:358
 #, elixir-autogen, elixir-format
 msgid "Grid"
 msgstr "グリッド"
@@ -860,12 +926,16 @@ msgstr "グループコールメディア接続が失敗しました。 メデ�
 msgid "Group call media is connecting."
 msgstr "グループコールメディアを接続しています。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:791 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:792
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:791
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:792
 #, elixir-autogen, elixir-format
 msgid "Hand raised"
 msgstr "手を上げました"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:590 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1170 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:191 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:362
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:590
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1170
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:192
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:363
 #, elixir-autogen, elixir-format
 msgid "Hidden"
 msgstr "隠し"
@@ -880,22 +950,25 @@ msgstr "自分の視点を隠す"
 msgid "ICE"
 msgstr "ICE"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:176 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:495
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:176
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:495
 #, elixir-autogen, elixir-format
 msgid "ICE pairs"
 msgstr "アイスペア"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:181 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:500
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:181
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:500
 #, elixir-autogen, elixir-format
 msgid "ICE traffic"
 msgstr "ICEトラフィック"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:115
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:122
 #, elixir-autogen, elixir-format
 msgid "In conference"
 msgstr "カンファレンス"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:166 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:485
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:166
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:485
 #, elixir-autogen, elixir-format
 msgid "Inbound RTP"
 msgstr "インバウンド RTP"
@@ -905,42 +978,47 @@ msgstr "インバウンド RTP"
 msgid "Jitter"
 msgstr "ジッタ"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:144
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:151
 #, elixir-autogen, elixir-format
 msgid "Join"
 msgstr "参加"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:233
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:234
 #, elixir-autogen, elixir-format
 msgid "Join call"
 msgstr "お電話でのお問い合わせ"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:109
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:110
 #, elixir-autogen, elixir-format
 msgid "Join with camera"
 msgstr "カメラで参加"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:102
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:103
 #, elixir-autogen, elixir-format
 msgid "Join with microphone"
 msgstr "マイクと一緒に参加"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:68 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:227
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:68
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:227
 #, elixir-autogen, elixir-format
 msgid "Latency"
 msgstr "レイテンシー"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:562 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:581 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:175
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:562
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:581
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:176
 #, elixir-autogen, elixir-format
 msgid "Layout"
 msgstr "レイアウト"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1026 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1059
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1026
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1059
 #, elixir-autogen, elixir-format
 msgid "Leave"
 msgstr "退出"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1020 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1054
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1020
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1054
 #, elixir-autogen, elixir-format
 msgid "Leave conference"
 msgstr "会議を残す"
@@ -950,7 +1028,7 @@ msgstr "会議を残す"
 msgid "Limited by"
 msgstr "限定販売"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:379
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:390
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr "ライブ"
@@ -960,7 +1038,7 @@ msgstr "ライブ"
 msgid "Lock conference"
 msgstr "ロック会議"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:381
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:392
 #, elixir-autogen, elixir-format
 msgid "Locked"
 msgstr "ロック"
@@ -970,7 +1048,8 @@ msgstr "ロック"
 msgid "Lower hand"
 msgstr "低い手"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:61 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:221
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:61
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:221
 #, elixir-autogen, elixir-format
 msgid "MOS %{score}"
 msgstr "MOS %{score}の特長"
@@ -985,7 +1064,7 @@ msgstr "媒体の回復は失敗しました。 メディア接続を再試行�
 msgid "Media warning"
 msgstr "メディア警告"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:125
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:126
 #, elixir-autogen, elixir-format
 msgid "Microphone"
 msgstr "マイクロホン"
@@ -1010,7 +1089,8 @@ msgstr "マイクロホンはサーバー・ミュート"
 msgid "Minimize to keep it running"
 msgstr "ランニングを抑える"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:240 lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:251
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:240
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:251
 #, elixir-autogen, elixir-format
 msgid "Moderators can allow individuals later"
 msgstr "モデレーターは、後で個人を許可することができます"
@@ -1040,7 +1120,8 @@ msgstr "すべての下位参加者をミュート"
 msgid "Mute all lower-ranked participants in %{channel}? They cannot unmute until a moderator allows their microphone again."
 msgstr "%{channel} ですべての下位参加者をミュートしますか? モデレータがマイクを再び許すまでは、ミュートできません。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:737 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:813
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:737
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:813
 #, elixir-autogen, elixir-format
 msgid "NACK %{nack} / PLI %{pli}"
 msgstr "ナック %{nack} / PLI %{pli}"
@@ -1060,7 +1141,11 @@ msgstr "カンファレンス参加者が低位に影響を受けない"
 msgid "No video"
 msgstr "ビデオなし"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:612 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:619 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:627 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:637 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:900
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:612
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:619
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:627
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:637
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:900
 #, elixir-autogen, elixir-format
 msgid "None"
 msgstr "なし"
@@ -1070,17 +1155,19 @@ msgstr "なし"
 msgid "Not sharing screen"
 msgstr "画面を共有しない"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:179 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:180
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:179
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:180
 #, elixir-autogen, elixir-format
 msgid "Not speaking"
 msgstr "コメントはありません"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:236 lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:247
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:236
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:247
 #, elixir-autogen, elixir-format
 msgid "Only lower ranks are affected"
 msgstr "低いランクのみが影響を受ける"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:144
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:151
 #, elixir-autogen, elixir-format
 msgid "Open"
 msgstr "開く"
@@ -1095,12 +1182,15 @@ msgstr "オペレータは後で禁止することができます"
 msgid "Other"
 msgstr "その他"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:171 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:490
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:171
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:490
 #, elixir-autogen, elixir-format
 msgid "Outbound RTP"
 msgstr "アウトバウンド RTP"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:237 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:272 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:312
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:237
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:272
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:312
 #, elixir-autogen, elixir-format
 msgid "Packet loss"
 msgstr "パケットロス"
@@ -1120,7 +1210,9 @@ msgstr "ピア接続"
 msgid "Pending"
 msgstr "ペンディング"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1169 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:190 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:361
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1169
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:191
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:362
 #, elixir-autogen, elixir-format
 msgid "PiP"
 msgstr "ピップ"
@@ -1130,7 +1222,8 @@ msgstr "ピップ"
 msgid "Pin participant"
 msgstr "ピン参加者"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:82 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:882
+#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:82
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:882
 #, elixir-autogen, elixir-format
 msgid "Poor"
 msgstr "ポアー"
@@ -1140,12 +1233,15 @@ msgstr "ポアー"
 msgid "Preview"
 msgstr "プレビュー"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:64 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:189 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:190
+#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:64
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:189
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:190
 #, elixir-autogen, elixir-format
 msgid "Quality unknown"
 msgstr "品質 不明"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:186 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:505
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:186
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:505
 #, elixir-autogen, elixir-format
 msgid "RTCP feedback"
 msgstr "RTCPフィードバック"
@@ -1160,7 +1256,8 @@ msgstr "ライズハンド"
 msgid "Receive-only mode"
 msgstr "受信モード"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:83 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:589
+#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:83
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:589
 #, elixir-autogen, elixir-format
 msgid "Reconnecting"
 msgstr "再接続中"
@@ -1175,7 +1272,8 @@ msgstr "メディアの再接続"
 msgid "Remote"
 msgstr "リモート"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:163 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:164
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:163
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:164
 #, elixir-autogen, elixir-format
 msgid "Remote camera"
 msgstr "遠隔カメラ"
@@ -1185,12 +1283,14 @@ msgstr "遠隔カメラ"
 msgid "Remote cameras and shared screens appear here as people join."
 msgstr "リモートカメラと共有画面が、参加する人としてここに表示されます。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:155 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:156
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:155
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:156
 #, elixir-autogen, elixir-format
 msgid "Remote microphone"
 msgstr "リモートマイク"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:171 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:172
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:171
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:172
 #, elixir-autogen, elixir-format
 msgid "Remote screen share"
 msgstr "リモート画面共有"
@@ -1225,7 +1325,9 @@ msgstr "会議から削除し、チャネルから禁止"
 msgid "Removed from channel conference"
 msgstr "チャネル会議から削除"
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:154 lib/retro_hex_chat_web/live/call_live/events.ex:162 lib/retro_hex_chat_web/live/call_live/events.ex:1739
+#: lib/retro_hex_chat_web/live/call_live/events.ex:154
+#: lib/retro_hex_chat_web/live/call_live/events.ex:162
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1739
 #, elixir-autogen, elixir-format
 msgid "Requesting a fresh media offer."
 msgstr "新鮮な媒体の提供を要求して下さい。"
@@ -1240,7 +1342,8 @@ msgstr "講演依頼"
 msgid "Resolution"
 msgstr "ソリューション"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1017 lib/retro_hex_chat_web/components/ui/group_call/permission_notice.ex:29
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1017
+#: lib/retro_hex_chat_web/components/ui/group_call/permission_notice.ex:29
 #, elixir-autogen, elixir-format
 msgid "Retry"
 msgstr "再試行"
@@ -1250,12 +1353,14 @@ msgstr "再試行"
 msgid "Retry media connection"
 msgstr "メディア接続のリトライ"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:89 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:106
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:89
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:106
 #, elixir-autogen, elixir-format
 msgid "Room"
 msgstr "宿泊プラン"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1487 lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:43
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1487
+#: lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:43
 #, elixir-autogen, elixir-format
 msgid "Screen sharing disabled by moderator"
 msgstr "モデレーターによるスクリーン共有の禁止"
@@ -1265,7 +1370,8 @@ msgstr "モデレーターによるスクリーン共有の禁止"
 msgid "Screen tracks"
 msgstr "スクリーントラック"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:595 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:187
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:595
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:188
 #, elixir-autogen, elixir-format
 msgid "Self view"
 msgstr "セルフビュー"
@@ -1320,7 +1426,8 @@ msgstr "サーバートラック"
 msgid "Share screen"
 msgstr "共有画面"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1490 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:263
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1490
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:263
 #, elixir-autogen, elixir-format
 msgid "Sharing screen"
 msgstr "画面共有"
@@ -1335,7 +1442,9 @@ msgstr "グリッドでセルフビューを表示する"
 msgid "Signaling"
 msgstr "シグナル伝達"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:107 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1166 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:143
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:114
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1166
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:144
 #, elixir-autogen, elixir-format
 msgid "Speaker"
 msgstr "スピーカー"
@@ -1350,12 +1459,14 @@ msgstr "スピーカーレイアウト"
 msgid "Speaking"
 msgstr "スピーキング"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/active_speaker_ring.ex:18 lib/retro_hex_chat_web/components/ui/group_call/active_speaker_ring.ex:19
+#: lib/retro_hex_chat_web/components/ui/group_call/active_speaker_ring.ex:18
+#: lib/retro_hex_chat_web/components/ui/group_call/active_speaker_ring.ex:19
 #, elixir-autogen, elixir-format
 msgid "Speaking now"
 msgstr "今すぐ申し込む"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:257 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:287
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:257
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:287
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "ステータス"
@@ -1390,7 +1501,9 @@ msgstr "システムデフォルト"
 msgid "The room is stopped on the server"
 msgstr "サーバに部屋が止まっている"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1171 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:189 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:363
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1171
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:190
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:364
 #, elixir-autogen, elixir-format
 msgid "Tile"
 msgstr "タイル"
@@ -1400,7 +1513,8 @@ msgstr "タイル"
 msgid "Track total"
 msgstr "合計を追跡する"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:347 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:475
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:347
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:475
 #, elixir-autogen, elixir-format
 msgid "Tracks"
 msgstr "トラック"
@@ -1425,7 +1539,11 @@ msgstr "%{channel} ですべての下位参加者にカメラをオフにしま�
 msgid "Turn participant camera off"
 msgstr "参加者カメラをオフにする"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:84 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:655 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:864 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:883 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:904
+#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:84
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:655
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:864
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:883
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:904
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "未知の"
@@ -1445,12 +1563,14 @@ msgstr "アンロック会議"
 msgid "Unpin participant"
 msgstr "Unpin参加者"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:267 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:307
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:267
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:307
 #, elixir-autogen, elixir-format
 msgid "Upload"
 msgstr "アップロード"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:279 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:870
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:279
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:870
 #, elixir-autogen, elixir-format
 msgid "Video"
 msgstr "動画"
@@ -1460,7 +1580,8 @@ msgstr "動画"
 msgid "Video tracks"
 msgstr "ビデオトラック"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:131 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:58
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:138
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:58
 #, elixir-autogen, elixir-format
 msgid "Waiting for participants"
 msgstr "参加者のお待ち合わせ"
@@ -1510,12 +1631,14 @@ msgstr "会議の制御"
 msgid "Conference view controls"
 msgstr "会議の制御"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:206
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:207
 #, elixir-autogen, elixir-format
 msgid "Each browser sends media to the room server; the server routes streams to the other participants."
 msgstr "各ブラウザは、ルームサーバーにメディアを送信します。サーバーは、他の参加者にストリームをルーティングします。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:862 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:863 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:871
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:862
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:863
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:871
 #, elixir-autogen, elixir-format
 msgid "Participant actions"
 msgstr "参加人数"
@@ -1540,7 +1663,7 @@ msgstr "%{health} / %{latency} ミリ秒"
 msgid "%{jitter} ms jitter / %{loss}% loss"
 msgstr "%{jitter} msのジッター/ %{loss}% 損失"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:351
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:352
 #, elixir-autogen, elixir-format
 msgid "%{layout} / %{self}"
 msgstr "%{layout}/%{self}"
@@ -1582,7 +1705,7 @@ msgstr ""
 msgid "Audio + Video"
 msgstr "音声+ビデオ"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:82
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:83
 #, elixir-autogen, elixir-format
 msgid "Choose how you enter the room. You can change media and layout after joining."
 msgstr "お部屋に入る方法を選択します。 参加後にメディアやレイアウトを変更できます。"
@@ -1592,7 +1715,7 @@ msgstr "お部屋に入る方法を選択します。 参加後にメディア�
 msgid "Conference health summary"
 msgstr "会議概要"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:204
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:205
 #, elixir-autogen, elixir-format
 msgid "Conference route"
 msgstr "会議の反応"
@@ -1617,7 +1740,7 @@ msgstr "会議統計"
 msgid "Health"
 msgstr "健康保健"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:79
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:80
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
 msgstr "%{channel}を結合して下さい"
@@ -1627,12 +1750,12 @@ msgstr "%{channel}を結合して下さい"
 msgid "Joining conference"
 msgstr "会議に参加する"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:155
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:156
 #, elixir-autogen, elixir-format
 msgid "Layout and route"
 msgstr "レイアウトとルート"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:166
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:167
 #, elixir-autogen, elixir-format
 msgid "Layout defaults"
 msgstr "レイアウトのデフォルト"
@@ -1642,7 +1765,7 @@ msgstr "レイアウトのデフォルト"
 msgid "Media"
 msgstr "メディア"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:94
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:95
 #, elixir-autogen, elixir-format
 msgid "Media defaults"
 msgstr "メディアのデフォルト"
@@ -1657,12 +1780,14 @@ msgstr "メディア接続の準備ができたら、参加制御がここに表
 msgid "Peer connections %{peers} / %{tracks}"
 msgstr "ピア接続 %{peers} / %{tracks}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:159 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:586
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:159
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:586
 #, elixir-autogen, elixir-format
 msgid "People"
 msgstr "スタッフ"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:173 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:539
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:173
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:539
 #, elixir-autogen, elixir-format
 msgid "Settings"
 msgstr "設定"
@@ -1682,7 +1807,7 @@ msgstr "統計情報"
 msgid "Visible"
 msgstr "可視性"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:343
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:344
 #, elixir-autogen, elixir-format
 msgid "conference"
 msgstr "会議媒体"
@@ -1762,32 +1887,23 @@ msgstr "状態"
 msgid "Trigger"
 msgstr "トリガー"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:253
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:254
 #, elixir-autogen, elixir-format
 msgid "Already inside"
 msgstr "すでに参加中"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:112
-#, elixir-autogen, elixir-format
-msgid "Chat"
-msgstr "チャット"
-
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:257
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:258
 #, elixir-autogen, elixir-format
 msgid "Nobody yet — you would be the first."
 msgstr "まだ誰もいません — あなたが最初になります。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:161
-#, elixir-autogen, elixir-format
-msgid "Open in a tab"
-msgstr "タブで開く"
-
-#: lib/retro_hex_chat_web/live/app/call_live.ex:291
+#: lib/retro_hex_chat_web/live/app/call_live.ex:325
 #, elixir-autogen, elixir-format
 msgid "This conference has ended."
 msgstr "この会議は終了しました。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:268 lib/retro_hex_chat_web/live/app/call_live.ex:285
+#: lib/retro_hex_chat_web/live/app/call_live.ex:302
+#: lib/retro_hex_chat_web/live/app/call_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "This conference is no longer available."
 msgstr "この会議は利用できなくなりました。"

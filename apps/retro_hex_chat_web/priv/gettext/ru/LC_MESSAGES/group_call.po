@@ -21,7 +21,8 @@ msgstr "Звони."
 msgid "Call: %{channel}"
 msgstr "Звонок: %{channel}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:125 lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:145
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:125
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:145
 #, elixir-autogen, elixir-format
 msgid "Call: %{channel} (%{count})"
 msgstr "Звонок: %{channel} (%{count})"
@@ -46,7 +47,8 @@ msgstr "Звонок: присоединение %{channel}..."
 msgid "Call: negotiating %{channel}..."
 msgstr "Позвоните по телефону %{channel}..."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1480 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:269
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1480
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:269
 #, elixir-autogen, elixir-format
 msgid "Camera off"
 msgstr "Камера выключена"
@@ -56,7 +58,8 @@ msgstr "Камера выключена"
 msgid "Camera on"
 msgstr "Камера включена"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:74 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:229
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:74
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:230
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Отмена"
@@ -71,7 +74,9 @@ msgstr "Звонок в закрытую группу?"
 msgid "Closing this window leaves the group call in %{channel}. To keep the call running and just tidy up, minimize the window instead."
 msgstr "Закрытие этого окна оставляет групповой вызов в %{channel}. Чтобы звонок продолжался и просто убирался, сведите к минимуму окно."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1073 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1260 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:587
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1073
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1260
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:587
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr "Подключено"
@@ -91,7 +96,8 @@ msgstr "Ошибка подключения"
 msgid "Could not end group call."
 msgstr "Не смог закончить групповой звонок."
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1447 lib/retro_hex_chat_web/live/call_live/events.ex:1471
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1447
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1471
 #, elixir-autogen, elixir-format
 msgid "Could not remove participant."
 msgstr "Не удалось удалить участника."
@@ -126,7 +132,15 @@ msgstr "Конечный групповой звонок"
 msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
 msgstr "Завершить групповой вызов в %{channel} для всех? Все участники будут отключены."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:301 lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:50 lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:364 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1065 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1066 lib/retro_hex_chat_web/live/app/call_live.ex:97 lib/retro_hex_chat_web/live/app/chat_live.html.heex:584 lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:113 lib/retro_hex_chat_web/live/chat_live/window_registry.ex:312
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:301
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:57
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:375
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1065
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1066
+#: lib/retro_hex_chat_web/live/app/call_live.ex:103
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:555
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:113
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:312
 #, elixir-autogen, elixir-format
 msgid "Group Call"
 msgstr "Групповой звонок"
@@ -156,7 +170,8 @@ msgstr "Вызов группы закончился: %{reason}"
 msgid "Group call in %{channel} — click to focus"
 msgstr "Групповой вызов %{channel} — кликните по фокусу"
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:956 lib/retro_hex_chat_web/live/call_live/events.ex:1733
+#: lib/retro_hex_chat_web/live/call_live/events.ex:956
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1733
 #, elixir-autogen, elixir-format
 msgid "Group call media connection interrupted. Trying to recover."
 msgstr "Групповой вызов медиасвязи прерван. Пытаюсь восстановиться."
@@ -171,12 +186,17 @@ msgstr "Средства массовой информации деградир�
 msgid "Group calls are available in channels only."
 msgstr "Групповые звонки доступны только по каналам."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:365
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:376
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ to use group calls"
 msgstr "Идентификация с помощью NickServ для групповых вызовов"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1068 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:432 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:548 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:565 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:598 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:871
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1068
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:432
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:548
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:565
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:598
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:871
 #, elixir-autogen, elixir-format
 msgid "Idle"
 msgstr "Неактивен"
@@ -201,12 +221,14 @@ msgstr "Присоединяйтесь"
 msgid "Leave Group Call"
 msgstr "Выйти из группы Call"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:148 lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:149
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:148
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:149
 #, elixir-autogen, elixir-format
 msgid "Leave call"
 msgstr "Оставить отзыв"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:337 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:405
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:337
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:405
 #, elixir-autogen, elixir-format
 msgid "Leave group call"
 msgstr "Оставить групповой звонок"
@@ -241,7 +263,8 @@ msgstr "участник"
 msgid "Negotiating media"
 msgstr "Переговоры СМИ"
 
-#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:281 lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:291
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:281
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:291
 #, elixir-autogen, elixir-format
 msgid "Open a channel before starting a group call."
 msgstr "Откройте канал перед началом группового звонка."
@@ -251,7 +274,10 @@ msgstr "Откройте канал перед началом групповог
 msgid "Participant is no longer in the group call."
 msgstr "Участника больше нет в групповом вызове."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:103 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:642 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:111 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:337
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:110
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:642
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:111
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:337
 #, elixir-autogen, elixir-format
 msgid "Participants"
 msgstr "Участники"
@@ -266,12 +292,14 @@ msgstr "Обсуждение Switch Group Call"
 msgid "Switch call"
 msgstr "Коммутационный звонок"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:313 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:387
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:313
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:387
 #, elixir-autogen, elixir-format
 msgid "Toggle camera"
 msgstr "Камера Toggle"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:302 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:377
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:302
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:377
 #, elixir-autogen, elixir-format
 msgid "Toggle microphone"
 msgstr "Микрофон Toggle"
@@ -286,7 +314,9 @@ msgstr "Безымянный участник"
 msgid "You are already in a group call in %{channel}. Leave it and join the call in %{new_channel}?"
 msgstr "Вы уже находитесь в групповом вызове %{channel}. Оставить его и присоединиться к вызову в %{new_channel}?"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:302 lib/retro_hex_chat_web/live/app/call_live.ex:308 lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:297
+#: lib/retro_hex_chat_web/live/app/call_live.ex:336
+#: lib/retro_hex_chat_web/live/app/call_live.ex:342
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:297
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use group calls."
 msgstr "Вы должны быть идентифицированы с NickServ, чтобы использовать групповые звонки."
@@ -296,12 +326,14 @@ msgstr "Вы должны быть идентифицированы с NickServ,
 msgid "You must be registered to moderate group calls."
 msgstr "Вы должны быть зарегистрированы на умеренные групповые звонки."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:317 lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:209
+#: lib/retro_hex_chat_web/live/app/call_live.ex:351
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:209
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to use group calls."
 msgstr "Вы должны быть зарегистрированы в NickServ, чтобы использовать групповые звонки."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:839 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:849
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:839
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:849
 #, elixir-autogen, elixir-format
 msgid "%{active}/%{total} active"
 msgstr "%{active}/%{total}"
@@ -393,7 +425,8 @@ msgstr "%{actor} разблокировал конференцию."
 msgid "%{audio} audio / %{video} video / %{screen} screen"
 msgstr "%{audio} аудио / %{video} видео / %{screen} экран"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:669 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:823
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:669
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:823
 #, elixir-autogen, elixir-format
 msgid "%{connected}/%{total} connected"
 msgstr "%{connected}/%{total}"
@@ -403,7 +436,7 @@ msgstr "%{connected}/%{total}"
 msgid "%{connection} / ICE %{ice}"
 msgstr "%{connection} / Лед %{ice}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:320
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:331
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m"
 msgstr "%{hours}h %{minutes}m"
@@ -418,7 +451,7 @@ msgstr "%{inbound} в / %{fanout}"
 msgid "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps, freezes %{freezes}"
 msgstr "%{level} качество: RTT %{rtt} ms, потеря %{loss}%, %{bitrate} kbps, %{fps} fps, заморозка %{freezes}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:322
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:333
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m"
 msgstr "%{minutes}m"
@@ -443,12 +476,21 @@ msgstr "%{nominated}/%{total} номинирован / %{valid} действит
 msgid "%{n} fps"
 msgstr "%{n} fps"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:243 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:263 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:268 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:303 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:308 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:550 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:551
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:243
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:263
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:268
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:303
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:308
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:550
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:551
 #, elixir-autogen, elixir-format
 msgid "%{n} kbps"
 msgstr "%{n} Кбит/с"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:69 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:228 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:233 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:618
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:69
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:228
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:233
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:618
 #, elixir-autogen, elixir-format
 msgid "%{n} ms"
 msgstr "%{n} мс"
@@ -458,22 +500,26 @@ msgstr "%{n} мс"
 msgid "%{n} subs"
 msgstr "%{n} подкатегория"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:238 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:273 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:313
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:238
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:273
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:313
 #, elixir-autogen, elixir-format
 msgid "%{n}%"
 msgstr "%{n}%"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:699 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:710
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:699
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:710
 #, elixir-autogen, elixir-format
 msgid "%{packets} pkt / %{bytes}"
 msgstr "%{packets} pkt/ %{bytes}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:728 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:803
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:728
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:803
 #, elixir-autogen, elixir-format
 msgid "%{sent} up / %{received} down"
 msgstr "%{sent} вверх %{received} вниз"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:368
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:379
 #, elixir-autogen, elixir-format
 msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr "%{state} конференция в %{channel}: %{count}/%{max} участники %{duration}"
@@ -508,7 +554,8 @@ msgstr "%{target} был исключен из конференции и зап�
 msgid "%{tracks} trk / %{packets} pkt / %{bytes}"
 msgstr "%{tracks} ТРК/ %{packets} pkt/ %{bytes}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:842 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:852
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:842
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:852
 #, elixir-autogen, elixir-format
 msgid "0 active"
 msgstr "0 Активный"
@@ -518,12 +565,15 @@ msgstr "0 Активный"
 msgid "0 connected"
 msgstr "0 подключено"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:308 lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:329 lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:333
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:319
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:340
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:344
 #, elixir-autogen, elixir-format
 msgid "0m"
 msgstr "0m"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:431 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:547
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:431
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:547
 #, elixir-autogen, elixir-format
 msgid "Active"
 msgstr "Активный"
@@ -553,7 +603,8 @@ msgstr "Разрешить микрофон участника"
 msgid "Allow participant screen sharing"
 msgstr "Разрешить пользователям делиться экранами"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:249 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:869
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:249
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:869
 #, elixir-autogen, elixir-format
 msgid "Audio"
 msgstr "Аудио"
@@ -563,7 +614,9 @@ msgstr "Аудио"
 msgid "Audio tracks"
 msgstr "Аудио треки"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1167 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:177 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:359
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1167
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:178
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:360
 #, elixir-autogen, elixir-format
 msgid "Auto"
 msgstr "Авто"
@@ -598,7 +651,7 @@ msgstr "Резюме браузера"
 msgid "CPU"
 msgstr "ЦП"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:134
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:135
 #, elixir-autogen, elixir-format
 msgid "Camera"
 msgstr "Камера"
@@ -703,7 +756,10 @@ msgstr "Список участников конференции"
 msgid "Conference participants"
 msgstr "Участники конференции"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:449 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:457 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:458 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:465
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:449
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:457
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:458
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:465
 #, elixir-autogen, elixir-format
 msgid "Conference reactions"
 msgstr "Реакция конференции"
@@ -713,7 +769,8 @@ msgstr "Реакция конференции"
 msgid "Conference started in %{channel}."
 msgstr "Конференция началась в формате %{channel}."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:69 lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:70
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:76
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:77
 #, elixir-autogen, elixir-format
 msgid "Conference summary"
 msgstr "Резюме конференции"
@@ -768,22 +825,24 @@ msgstr "Нынешняя конференция закрывается перв�
 msgid "Default device"
 msgstr "Устройство по умолчанию"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:382
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:393
 #, elixir-autogen, elixir-format
 msgid "Degraded"
 msgstr "униженный"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:262 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:302
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:262
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:302
 #, elixir-autogen, elixir-format
 msgid "Download"
 msgstr "Скачать"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:383
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:394
 #, elixir-autogen, elixir-format
 msgid "Ending"
 msgstr "Конец"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:79 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:879
+#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:79
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:879
 #, elixir-autogen, elixir-format
 msgid "Excellent"
 msgstr "Отлично"
@@ -793,7 +852,8 @@ msgstr "Отлично"
 msgid "Expand conference"
 msgstr "Расширить конференцию"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:81 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:881
+#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:81
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:881
 #, elixir-autogen, elixir-format
 msgid "Fair"
 msgstr "Ярмарка"
@@ -803,7 +863,9 @@ msgstr "Ярмарка"
 msgid "Fanout"
 msgstr "Фанат"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1164 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:179 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:358
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1164
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:180
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:359
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "Фокус"
@@ -818,7 +880,8 @@ msgstr "Фокусировка"
 msgid "Focus participant"
 msgstr "Фокус-участник"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:83 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:84
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:83
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:84
 #, elixir-autogen, elixir-format
 msgid "Focus your video"
 msgstr "Сосредоточьте свое видео"
@@ -838,17 +901,20 @@ msgstr "Рамочная ставка"
 msgid "Freezes"
 msgstr "Заморозки"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:380
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:391
 #, elixir-autogen, elixir-format
 msgid "Full"
 msgstr "Полный"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:80 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:880
+#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:80
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:880
 #, elixir-autogen, elixir-format
 msgid "Good"
 msgstr "Хорошо."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1163 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:178 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:357
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1163
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:179
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:358
 #, elixir-autogen, elixir-format
 msgid "Grid"
 msgstr "Сетка"
@@ -868,12 +934,16 @@ msgstr "Групповой вызов медиасвязи не удался. П
 msgid "Group call media is connecting."
 msgstr "Связь между медиа групповыми вызовами."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:791 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:792
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:791
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:792
 #, elixir-autogen, elixir-format
 msgid "Hand raised"
 msgstr "Поднятая рука"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:590 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1170 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:191 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:362
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:590
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1170
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:192
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:363
 #, elixir-autogen, elixir-format
 msgid "Hidden"
 msgstr "скрытый"
@@ -888,22 +958,25 @@ msgstr "Скрыть свое мнение"
 msgid "ICE"
 msgstr "лед"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:176 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:495
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:176
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:495
 #, elixir-autogen, elixir-format
 msgid "ICE pairs"
 msgstr "Ледяные пары"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:181 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:500
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:181
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:500
 #, elixir-autogen, elixir-format
 msgid "ICE traffic"
 msgstr "Ледовый трафик"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:115
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:122
 #, elixir-autogen, elixir-format
 msgid "In conference"
 msgstr "На конференции"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:166 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:485
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:166
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:485
 #, elixir-autogen, elixir-format
 msgid "Inbound RTP"
 msgstr "Входящий RTP"
@@ -913,42 +986,47 @@ msgstr "Входящий RTP"
 msgid "Jitter"
 msgstr "Джиттер"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:144
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:151
 #, elixir-autogen, elixir-format
 msgid "Join"
 msgstr "Присоединиться"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:233
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:234
 #, elixir-autogen, elixir-format
 msgid "Join call"
 msgstr "Присоединяйтесь"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:109
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:110
 #, elixir-autogen, elixir-format
 msgid "Join with camera"
 msgstr "Присоединяйтесь к камере"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:102
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:103
 #, elixir-autogen, elixir-format
 msgid "Join with microphone"
 msgstr "Присоединяйтесь к микрофону"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:68 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:227
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:68
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:227
 #, elixir-autogen, elixir-format
 msgid "Latency"
 msgstr "задержка"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:562 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:581 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:175
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:562
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:581
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:176
 #, elixir-autogen, elixir-format
 msgid "Layout"
 msgstr "планировка"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1026 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1059
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1026
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1059
 #, elixir-autogen, elixir-format
 msgid "Leave"
 msgstr "Покинуть"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1020 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1054
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1020
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1054
 #, elixir-autogen, elixir-format
 msgid "Leave conference"
 msgstr "Оставить конференцию"
@@ -958,7 +1036,7 @@ msgstr "Оставить конференцию"
 msgid "Limited by"
 msgstr "Ограниченный"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:379
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:390
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr "Жить"
@@ -968,7 +1046,7 @@ msgstr "Жить"
 msgid "Lock conference"
 msgstr "Лок конференция"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:381
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:392
 #, elixir-autogen, elixir-format
 msgid "Locked"
 msgstr "Запертый"
@@ -978,7 +1056,8 @@ msgstr "Запертый"
 msgid "Lower hand"
 msgstr "Нижняя рука"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:61 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:221
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:61
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:221
 #, elixir-autogen, elixir-format
 msgid "MOS %{score}"
 msgstr "МОС %{score}"
@@ -993,7 +1072,7 @@ msgstr "Восстановление СМИ провалилось. Повтор
 msgid "Media warning"
 msgstr "СМИ предупреждают"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:125
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:126
 #, elixir-autogen, elixir-format
 msgid "Microphone"
 msgstr "микрофон"
@@ -1018,7 +1097,8 @@ msgstr "Микрофоны изменены на сервер"
 msgid "Minimize to keep it running"
 msgstr "Минимизируйте, чтобы он работал"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:240 lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:251
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:240
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:251
 #, elixir-autogen, elixir-format
 msgid "Moderators can allow individuals later"
 msgstr "Модераторы могут позволить людям"
@@ -1048,7 +1128,8 @@ msgstr "Мутировать всех участников с более низ�
 msgid "Mute all lower-ranked participants in %{channel}? They cannot unmute until a moderator allows their microphone again."
 msgstr "Смешайте всех участников с более низким рейтингом в %{channel}? Они не могут расстегнуть, пока модератор снова не разрешит их микрофон."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:737 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:813
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:737
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:813
 #, elixir-autogen, elixir-format
 msgid "NACK %{nack} / PLI %{pli}"
 msgstr "НАК %{nack} PLI %{pli}"
@@ -1068,7 +1149,11 @@ msgstr "Ни один из участников конференции не по
 msgid "No video"
 msgstr "Нет видео"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:612 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:619 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:627 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:637 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:900
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:612
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:619
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:627
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:637
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:900
 #, elixir-autogen, elixir-format
 msgid "None"
 msgstr "Никто"
@@ -1078,17 +1163,19 @@ msgstr "Никто"
 msgid "Not sharing screen"
 msgstr "Не делиться экраном"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:179 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:180
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:179
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:180
 #, elixir-autogen, elixir-format
 msgid "Not speaking"
 msgstr "Не говорить"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:236 lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:247
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:236
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:247
 #, elixir-autogen, elixir-format
 msgid "Only lower ranks are affected"
 msgstr "Пострадают только нижние чины"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:144
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:151
 #, elixir-autogen, elixir-format
 msgid "Open"
 msgstr "Открыть"
@@ -1103,12 +1190,15 @@ msgstr "Операторы могут отменить позже"
 msgid "Other"
 msgstr "другой"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:171 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:490
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:171
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:490
 #, elixir-autogen, elixir-format
 msgid "Outbound RTP"
 msgstr "Исходящий RTP"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:237 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:272 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:312
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:237
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:272
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:312
 #, elixir-autogen, elixir-format
 msgid "Packet loss"
 msgstr "Потеря пакета"
@@ -1128,7 +1218,9 @@ msgstr "Коллеги по связям"
 msgid "Pending"
 msgstr "В ожидании"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1169 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:190 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:361
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1169
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:191
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:362
 #, elixir-autogen, elixir-format
 msgid "PiP"
 msgstr "Пиппер"
@@ -1138,7 +1230,8 @@ msgstr "Пиппер"
 msgid "Pin participant"
 msgstr "Пин участник"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:82 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:882
+#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:82
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:882
 #, elixir-autogen, elixir-format
 msgid "Poor"
 msgstr "бедный"
@@ -1148,12 +1241,15 @@ msgstr "бедный"
 msgid "Preview"
 msgstr "Предпросмотр"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:64 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:189 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:190
+#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:64
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:189
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:190
 #, elixir-autogen, elixir-format
 msgid "Quality unknown"
 msgstr "Качество неизвестно"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:186 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:505
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:186
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:505
 #, elixir-autogen, elixir-format
 msgid "RTCP feedback"
 msgstr "RTCP отзывы"
@@ -1168,7 +1264,8 @@ msgstr "Поднять руку"
 msgid "Receive-only mode"
 msgstr "Режим только для приема"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:83 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:589
+#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:83
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:589
 #, elixir-autogen, elixir-format
 msgid "Reconnecting"
 msgstr "Переподключение"
@@ -1183,7 +1280,8 @@ msgstr "Воссоединение медиа"
 msgid "Remote"
 msgstr "удаленный"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:163 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:164
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:163
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:164
 #, elixir-autogen, elixir-format
 msgid "Remote camera"
 msgstr "Удаленная камера"
@@ -1193,12 +1291,14 @@ msgstr "Удаленная камера"
 msgid "Remote cameras and shared screens appear here as people join."
 msgstr "Удаленные камеры и общие экраны появляются здесь, когда люди присоединяются."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:155 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:156
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:155
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:156
 #, elixir-autogen, elixir-format
 msgid "Remote microphone"
 msgstr "Дистанционный микрофон"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:171 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:172
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:171
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:172
 #, elixir-autogen, elixir-format
 msgid "Remote screen share"
 msgstr "Дистанционный экран Share"
@@ -1233,7 +1333,9 @@ msgstr "Удалить с конференции и запретить кана�
 msgid "Removed from channel conference"
 msgstr "Удалены с конференции канала"
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:154 lib/retro_hex_chat_web/live/call_live/events.ex:162 lib/retro_hex_chat_web/live/call_live/events.ex:1739
+#: lib/retro_hex_chat_web/live/call_live/events.ex:154
+#: lib/retro_hex_chat_web/live/call_live/events.ex:162
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1739
 #, elixir-autogen, elixir-format
 msgid "Requesting a fresh media offer."
 msgstr "Запросить новое медиа-предложение."
@@ -1248,7 +1350,8 @@ msgstr "Просьбы выступить"
 msgid "Resolution"
 msgstr "Резолюция"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1017 lib/retro_hex_chat_web/components/ui/group_call/permission_notice.ex:29
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1017
+#: lib/retro_hex_chat_web/components/ui/group_call/permission_notice.ex:29
 #, elixir-autogen, elixir-format
 msgid "Retry"
 msgstr "Повторить"
@@ -1258,12 +1361,14 @@ msgstr "Повторить"
 msgid "Retry media connection"
 msgstr "Восстановление медиасвязи"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:89 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:106
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:89
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:106
 #, elixir-autogen, elixir-format
 msgid "Room"
 msgstr "Комната"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1487 lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:43
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1487
+#: lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:43
 #, elixir-autogen, elixir-format
 msgid "Screen sharing disabled by moderator"
 msgstr "Обмен экранами отключен модератором"
@@ -1273,7 +1378,8 @@ msgstr "Обмен экранами отключен модератором"
 msgid "Screen tracks"
 msgstr "Следы экрана"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:595 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:187
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:595
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:188
 #, elixir-autogen, elixir-format
 msgid "Self view"
 msgstr "Самооценка"
@@ -1328,7 +1434,8 @@ msgstr "Серверные треки"
 msgid "Share screen"
 msgstr "Общий экран"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1490 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:263
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1490
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:263
 #, elixir-autogen, elixir-format
 msgid "Sharing screen"
 msgstr "Обмен экраном"
@@ -1343,7 +1450,9 @@ msgstr "Показать свой взгляд в сетке"
 msgid "Signaling"
 msgstr "сигнал"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:107 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1166 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:143
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:114
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1166
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:144
 #, elixir-autogen, elixir-format
 msgid "Speaker"
 msgstr "спикер"
@@ -1358,12 +1467,14 @@ msgstr "Макет спикера"
 msgid "Speaking"
 msgstr "говорить"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/active_speaker_ring.ex:18 lib/retro_hex_chat_web/components/ui/group_call/active_speaker_ring.ex:19
+#: lib/retro_hex_chat_web/components/ui/group_call/active_speaker_ring.ex:18
+#: lib/retro_hex_chat_web/components/ui/group_call/active_speaker_ring.ex:19
 #, elixir-autogen, elixir-format
 msgid "Speaking now"
 msgstr "Говорить сейчас"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:257 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:287
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:257
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:287
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Статус"
@@ -1398,7 +1509,9 @@ msgstr "Система по умолчанию"
 msgid "The room is stopped on the server"
 msgstr "Комната остановлена на сервере"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1171 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:189 lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:363
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1171
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:190
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:364
 #, elixir-autogen, elixir-format
 msgid "Tile"
 msgstr "наклон"
@@ -1408,7 +1521,8 @@ msgstr "наклон"
 msgid "Track total"
 msgstr "Всего треков"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:347 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:475
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:347
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:475
 #, elixir-autogen, elixir-format
 msgid "Tracks"
 msgstr "Следы"
@@ -1433,7 +1547,11 @@ msgstr "Выключите камеры для всех участников с 
 msgid "Turn participant camera off"
 msgstr "Выключите камеру участника"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:84 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:655 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:864 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:883 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:904
+#: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:84
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:655
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:864
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:883
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:904
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "неизвестный"
@@ -1453,12 +1571,14 @@ msgstr "Конференция Unlock"
 msgid "Unpin participant"
 msgstr "Участник Unpin"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:267 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:307
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:267
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:307
 #, elixir-autogen, elixir-format
 msgid "Upload"
 msgstr "Загрузить"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:279 lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:870
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:279
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:870
 #, elixir-autogen, elixir-format
 msgid "Video"
 msgstr "Видео"
@@ -1468,7 +1588,8 @@ msgstr "Видео"
 msgid "Video tracks"
 msgstr "Видеотреки"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:131 lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:58
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:138
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:58
 #, elixir-autogen, elixir-format
 msgid "Waiting for participants"
 msgstr "В ожидании участников"
@@ -1518,12 +1639,14 @@ msgstr "Конференционный контроль"
 msgid "Conference view controls"
 msgstr "Конференционный контроль"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:206
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:207
 #, elixir-autogen, elixir-format
 msgid "Each browser sends media to the room server; the server routes streams to the other participants."
 msgstr "Каждый браузер отправляет медиа на сервер комнаты; сервер направляет потоки другим участникам."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:862 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:863 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:871
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:862
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:863
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:871
 #, elixir-autogen, elixir-format
 msgid "Participant actions"
 msgstr "Участники"
@@ -1548,7 +1671,7 @@ msgstr "%{health} / %{latency} мс"
 msgid "%{jitter} ms jitter / %{loss}% loss"
 msgstr "%{jitter} ms jitter/ %{loss}% потеря"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:351
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:352
 #, elixir-autogen, elixir-format
 msgid "%{layout} / %{self}"
 msgstr "%{layout} / %{self}"
@@ -1588,7 +1711,7 @@ msgstr "%{state} / %{resolution}"
 msgid "Audio + Video"
 msgstr "Аудио + видео"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:82
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:83
 #, elixir-autogen, elixir-format
 msgid "Choose how you enter the room. You can change media and layout after joining."
 msgstr "Выберите, как войти в комнату. Вы можете изменить медиа и макет после присоединения."
@@ -1598,7 +1721,7 @@ msgstr "Выберите, как войти в комнату. Вы можете
 msgid "Conference health summary"
 msgstr "Резюме конференции"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:204
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:205
 #, elixir-autogen, elixir-format
 msgid "Conference route"
 msgstr "Реакция конференции"
@@ -1623,7 +1746,7 @@ msgstr "Статистика конференций"
 msgid "Health"
 msgstr "Здоровье"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:79
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:80
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
 msgstr "Присоединяйтесь %{channel}"
@@ -1633,12 +1756,12 @@ msgstr "Присоединяйтесь %{channel}"
 msgid "Joining conference"
 msgstr "Присоединиться к конференции"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:155
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:156
 #, elixir-autogen, elixir-format
 msgid "Layout and route"
 msgstr "Планировка и маршрут"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:166
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:167
 #, elixir-autogen, elixir-format
 msgid "Layout defaults"
 msgstr "Планирование дефолтов"
@@ -1648,7 +1771,7 @@ msgstr "Планирование дефолтов"
 msgid "Media"
 msgstr "СМИ"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:94
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:95
 #, elixir-autogen, elixir-format
 msgid "Media defaults"
 msgstr "Дефолты СМИ"
@@ -1663,12 +1786,14 @@ msgstr "Контроль участников появляется здесь, �
 msgid "Peer connections %{peers} / %{tracks}"
 msgstr "Коллеги по связям %{peers} / %{tracks}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:159 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:586
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:159
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:586
 #, elixir-autogen, elixir-format
 msgid "People"
 msgstr "Люди"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:173 lib/retro_hex_chat_web/components/ui/group_call/panel.ex:539
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:173
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:539
 #, elixir-autogen, elixir-format
 msgid "Settings"
 msgstr "Настройки"
@@ -1688,7 +1813,7 @@ msgstr "Статистика"
 msgid "Visible"
 msgstr "видимый"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:343
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:344
 #, elixir-autogen, elixir-format
 msgid "conference"
 msgstr "Конференция СМИ"
@@ -1768,32 +1893,23 @@ msgstr "Состояние"
 msgid "Trigger"
 msgstr "Триггер"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:253
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:254
 #, elixir-autogen, elixir-format
 msgid "Already inside"
 msgstr "Уже внутри"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:112
-#, elixir-autogen, elixir-format
-msgid "Chat"
-msgstr "Чат"
-
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:257
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:258
 #, elixir-autogen, elixir-format
 msgid "Nobody yet — you would be the first."
 msgstr "Пока никого — вы будете первым."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:161
-#, elixir-autogen, elixir-format
-msgid "Open in a tab"
-msgstr "Открыть во вкладке"
-
-#: lib/retro_hex_chat_web/live/app/call_live.ex:291
+#: lib/retro_hex_chat_web/live/app/call_live.ex:325
 #, elixir-autogen, elixir-format
 msgid "This conference has ended."
 msgstr "Эта конференция завершена."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:268 lib/retro_hex_chat_web/live/app/call_live.ex:285
+#: lib/retro_hex_chat_web/live/app/call_live.ex:302
+#: lib/retro_hex_chat_web/live/app/call_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "This conference is no longer available."
 msgstr "Эта конференция больше недоступна."

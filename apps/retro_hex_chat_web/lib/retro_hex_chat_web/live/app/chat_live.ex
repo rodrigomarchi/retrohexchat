@@ -83,6 +83,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.Timezone
 
   # ── Mount ─────────────────────────────────────────────────────
@@ -173,11 +174,15 @@ defmodule RetroHexChatWeb.App.ChatLive do
     # lifetime of their channel membership again: whatever departure a previous
     # chat handed over on its way out must not fire under this one.
     Surfaces.open(nickname, __MODULE__)
+    # The chat has an address like everything else, and saying it is what lets a
+    # surface's `← Chat` go back to this tab instead of opening a second one.
+    Surfaces.address(nickname, Paths.chat_path())
     Surfaces.cancel_deferred(nickname)
 
     socket =
       socket
       |> attach_all_hooks()
+      |> OpenSurfaces.attach(nickname)
       |> assign_defaults(session)
       |> assign(
         timezone: timezone,

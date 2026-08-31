@@ -29,6 +29,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   import RetroHexChatWeb.Components.UI.SpaceCharacterSelect
   import RetroHexChatWeb.Components.UI.SpaceFullscreenToggle
   import RetroHexChatWeb.Components.UI.SpaceVirtualPad
+  import RetroHexChatWeb.Components.UI.SurfaceTabLink
   import RetroHexChatWeb.Components.UI.Window
 
   alias Phoenix.LiveView.Socket
@@ -41,6 +42,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.ShareLinkRef
   alias RetroHexChatWeb.SpaceAssets
   alias RetroHexChatWeb.SpaceRef
@@ -64,6 +66,8 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         space: nil,
         denied: nil
       )
+
+    socket = OpenSurfaces.attach(socket, socket.assigns.nickname)
 
     case resolve_space(socket, params, session) do
       {:ok, space} ->
@@ -110,9 +114,10 @@ defmodule RetroHexChatWeb.App.SpaceLive do
                 wave. --%>
           <:status>
             <.window_status_bar_field grow>
-              <.link navigate={~p"/chat"} data-testid="space-back-to-chat">
-                ← {dgettext("chat", "Chat")}
-              </.link>
+              <.back_to_chat
+                open?={OpenSurfaces.open?(@open_surface_paths, Paths.chat_path())}
+                testid="space-back-to-chat"
+              />
             </.window_status_bar_field>
             <.window_status_bar_field>
               <span data-testid="space-status-count">
@@ -156,21 +161,12 @@ defmodule RetroHexChatWeb.App.SpaceLive do
           on_share="share_space"
           class="min-w-0 flex-1 justify-start"
         />
-        <%!-- A plain anchor, so the middle click and "open in new tab" the
-              browser already offers work; `noopener` because without it the new
-              tab shares this one's event loop and the isolation is worth
-              nothing. --%>
-        <a
+        <.surface_tab_link
           :if={@embedded?}
-          href={Paths.space_path(@space.id)}
-          target="_blank"
-          rel="noopener"
-          class="shadow-retro-raised bg-surface flex h-[26px] shrink-0 items-center justify-center gap-1 px-3 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-          data-testid="space-open-in-tab"
-        >
-          <Icons.icon_btn_link class="h-3.5 w-3.5" />
-          <span>{dgettext("chat", "Open in a tab")}</span>
-        </a>
+          path={Paths.space_path(@space.id)}
+          open?={OpenSurfaces.open?(@open_surface_paths, Paths.space_path(@space.id))}
+          testid="space-open-in-tab"
+        />
       </:footer>
     </.space_character_select>
 

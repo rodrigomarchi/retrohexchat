@@ -65,8 +65,9 @@ defmodule RetroHexChatWeb.Live.Surface do
   defp attach(socket, nickname) do
     if connected?(socket) do
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.surfaces(nickname))
-      # The view, not a label: which surface this is is a thing wave 6 has to
-      # answer to decide between opening a second tab and focusing the first.
+      # The view, not a label. Which *instance* it is comes a moment later, from
+      # `handle_params`: the module says what kind of screen this is, the path
+      # says which one.
       Surfaces.open(nickname, socket.view)
     end
 
@@ -75,8 +76,33 @@ defmodule RetroHexChatWeb.Live.Surface do
     # maintains — the shape `@retro_games` had before it was deleted.
     socket
     |> assign(surface_nickname: nickname)
+    |> attach_hook(:surface_address, :handle_params, &address_changed/3)
     |> attach_hook(:surface_session_ended, :handle_info, &session_ended/2)
   end
+
+  # Where this surface is, told to the registry every time it changes. It has to
+  # be here and not in `attach/2`: at mount the address is not known yet — a
+  # LiveView learns it in `handle_params`, which is also the only place it
+  # learns that it moved.
+  defp address_changed(_params, uri, socket) do
+    if connected?(socket) do
+      Surfaces.address(socket.assigns.surface_nickname, path_of(uri))
+    end
+
+    {:cont, socket}
+  end
+
+  # The path and nothing else: the chat compares it against the address it would
+  # have opened, and a query string or a host would make two spellings of the
+  # same tab.
+  defp path_of(uri) when is_binary(uri) do
+    case URI.parse(uri) do
+      %URI{path: path} when is_binary(path) -> path
+      _hostless -> uri
+    end
+  end
+
+  defp path_of(_uri), do: "/"
 
   # The topic this arrives on carries nothing else, so there is no message here
   # to tell apart — anything else on it would be a bug in the publisher, and

@@ -81,4 +81,18 @@ defmodule RetroHexChat.Topics do
   """
   @spec surfaces(String.t()) :: String.t()
   def surfaces(nickname) when is_binary(nickname), do: inbox(nickname) <> ":surfaces"
+
+  @doc """
+  What this person currently has open, for the one screen that has to draw the
+  difference between opening a thing and going back to it.
+
+  A separate topic from `surfaces/1` and not a second meaning on it: that one is
+  read by every satellite and carries only the end of the session, and a roster
+  of open tabs arriving there would need a clause in each surface that ignores
+  it. One publisher (`RetroHexChat.Surfaces`); the subscribers are the screens
+  that draw a way in — the chat, and the two surfaces the chat also renders
+  inside itself, all through `Live.OpenSurfaces`.
+  """
+  @spec surfaces_open(String.t()) :: String.t()
+  def surfaces_open(nickname) when is_binary(nickname), do: surfaces(nickname) <> ":open"
 end

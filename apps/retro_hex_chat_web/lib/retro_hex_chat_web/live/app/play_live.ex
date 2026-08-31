@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.RetroGamesPanel
   import RetroHexChatWeb.Components.UI.ShareBar
+  import RetroHexChatWeb.Components.UI.SurfaceTabLink
   import RetroHexChatWeb.Components.UI.Window
 
   alias Phoenix.LiveView.Socket
@@ -26,6 +27,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.Components.UI.Button
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.ShareLinkRef
 
   @difficulties ~w(easy normal hard)
@@ -48,6 +50,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
         error_message: nil,
         match_error: nil
       )
+      |> OpenSurfaces.attach(session["nickname"] || socket.assigns[:surface_nickname])
       |> select_from_path(params)
 
     {:ok, socket}
@@ -90,9 +93,10 @@ defmodule RetroHexChatWeb.App.PlayLive do
               what else the person has open, which is a later wave. --%>
           <:status>
             <.window_status_bar_field grow>
-              <.link navigate={~p"/chat"} data-testid="play-back-to-chat">
-                ← {dgettext("games", "Chat")}
-              </.link>
+              <.back_to_chat
+                open?={OpenSurfaces.open?(@open_surface_paths, Paths.chat_path())}
+                testid="play-back-to-chat"
+              />
             </.window_status_bar_field>
           </:status>
           <.games_body {assigns} />

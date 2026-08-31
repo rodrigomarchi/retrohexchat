@@ -79,7 +79,7 @@ defmodule RetroHexChatWeb.Live.SurfaceHost do
     socket
   end
 
-  def close(socket), do: push_navigate(socket, to: Paths.chat_path(socket))
+  def close(socket), do: push_navigate(socket, to: Paths.chat_path())
 
   @doc """
   Ask the host to resize the window it keeps this surface in.

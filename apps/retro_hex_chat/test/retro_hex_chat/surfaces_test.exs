@@ -33,22 +33,41 @@ defmodule RetroHexChat.SurfacesTest do
 
   # A surface is a process, so a fake one is a process. It reports back when it
   # has registered, so the test never races the monitor.
-  defp start_surface(nickname, kind) do
+  defp start_surface(nickname, kind, path \\ nil) do
     test = self()
 
     pid =
       spawn(fn ->
         :ok = Surfaces.open(nickname, kind)
+        if path, do: :ok = Surfaces.address(nickname, path)
         send(test, {:registered, self()})
 
         receive do
-          :close -> :ok
-          :crash -> exit(:boom)
+          {:move, to} ->
+            :ok = Surfaces.address(nickname, to)
+            send(test, {:moved, self()})
+
+            receive do
+              :close -> :ok
+              :crash -> exit(:boom)
+            end
+
+          :close ->
+            :ok
+
+          :crash ->
+            exit(:boom)
         end
       end)
 
     assert_receive {:registered, ^pid}, 1_000
     pid
+  end
+
+  defp move(pid, path) do
+    send(pid, {:move, path})
+    assert_receive {:moved, ^pid}, 1_000
+    :ok
   end
 
   defp close(pid) do
@@ -71,6 +90,113 @@ defmodule RetroHexChat.SurfacesTest do
     case Server.get_state(channel) do
       {:ok, state} -> Enum.map(state.members, fn {nick, _role} -> nick end)
       {:error, _absent} -> []
+    end
+  end
+
+  # Counting answered "may the channels be left yet". This answers the other
+  # half: the chat has to draw the difference between opening a call and going
+  # back to the one that is already open, and that difference is an address.
+  describe "what is open, not just how many" do
+    test "a surface says where it is, and can say it again when it moves" do
+      nickname = unique_nick("addr")
+      play = start_surface(nickname, RetroHexChatWeb.App.PlayLive, "/play")
+
+      assert [%{kind: RetroHexChatWeb.App.PlayLive, path: "/play"}] = Surfaces.list(nickname)
+      assert Surfaces.open?(nickname, "/play")
+      refute Surfaces.open?(nickname, "/play/hex_pong")
+
+      move(play, "/play/hex_pong")
+
+      assert Surfaces.open?(nickname, "/play/hex_pong")
+      refute Surfaces.open?(nickname, "/play")
+
+      close(play)
+      assert Surfaces.list(nickname) == []
+    end
+
+    # Two calls are two rooms. Answering "is a call open" instead of "is *this*
+    # call open" is how a person would be sent back to somebody else's room.
+    test "two surfaces of the same kind are told apart by their address" do
+      nickname = unique_nick("addr")
+      one = start_surface(nickname, RetroHexChatWeb.App.CallLive, "/call/one")
+      _two = start_surface(nickname, RetroHexChatWeb.App.CallLive, "/call/two")
+
+      assert Surfaces.open?(nickname, "/call/one")
+      assert Surfaces.open?(nickname, "/call/two")
+      refute Surfaces.open?(nickname, "/call/three")
+
+      close(one)
+
+      refute Surfaces.open?(nickname, "/call/one")
+      assert Surfaces.open?(nickname, "/call/two")
+    end
+
+    test "a surface that never said where it is has no address to match" do
+      nickname = unique_nick("addr")
+      start_surface(nickname, RetroHexChatWeb.App.CallLive)
+
+      assert [%{path: nil}] = Surfaces.list(nickname)
+      refute Surfaces.open?(nickname, "/call/one")
+    end
+
+    test "the address of somebody else's surface is not this person's" do
+      mine = unique_nick("addra")
+      theirs = unique_nick("addrb")
+      start_surface(theirs, RetroHexChatWeb.App.CallLive, "/call/one")
+
+      refute Surfaces.open?(mine, "/call/one")
+    end
+  end
+
+  # The chat cannot poll: it has to be told, and it has to be told on a topic
+  # that carries nothing else.
+  describe "announcing the set" do
+    setup do
+      nickname = unique_nick("Announce")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Surfaces.topic(nickname))
+      %{nickname: nickname}
+    end
+
+    test "opening, moving and closing each announce the whole set", %{nickname: nickname} do
+      call = start_surface(nickname, RetroHexChatWeb.App.CallLive, "/call/one")
+
+      assert_receive {:surfaces_changed, [%{path: nil}]}, 1_000
+      assert_receive {:surfaces_changed, [%{path: "/call/one"}]}, 1_000
+
+      move(call, "/call/two")
+      assert_receive {:surfaces_changed, [%{path: "/call/two"}]}, 1_000
+
+      close(call)
+      assert_receive {:surfaces_changed, []}, 1_000
+    end
+
+    test "a crash announces exactly like a close", %{nickname: nickname} do
+      call = start_surface(nickname, RetroHexChatWeb.App.CallLive, "/call/one")
+      assert_receive {:surfaces_changed, [%{path: "/call/one"}]}, 1_000
+
+      crash(call)
+      assert_receive {:surfaces_changed, []}, 1_000
+    end
+
+    # The registry keys people by their downcased nickname. A subscriber that
+    # built the topic from the cased form would listen to silence, and only for
+    # the people whose nickname has a capital in it.
+    test "the topic is the same whichever case the nickname is written in", %{
+      nickname: nickname
+    } do
+      assert Surfaces.topic(nickname) == Surfaces.topic(String.downcase(nickname))
+
+      start_surface(String.downcase(nickname), RetroHexChatWeb.App.CallLive, "/call/one")
+      assert_receive {:surfaces_changed, [%{path: "/call/one"}]}, 1_000
+    end
+
+    test "saying the same address twice announces once", %{nickname: nickname} do
+      call = start_surface(nickname, RetroHexChatWeb.App.CallLive, "/call/one")
+      assert_receive {:surfaces_changed, [%{path: nil}]}, 1_000
+      assert_receive {:surfaces_changed, [%{path: "/call/one"}]}, 1_000
+
+      move(call, "/call/one")
+      refute_receive {:surfaces_changed, _set}, 200
     end
   end
 

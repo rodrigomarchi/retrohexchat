@@ -26,9 +26,16 @@ defmodule RetroHexChatWeb.App.Paths do
     ~p"/connect?reason=#{reason}"
   end
 
-  @doc "Where every surface's way back points."
-  @spec chat_path(Phoenix.LiveView.Socket.t()) :: String.t()
-  def chat_path(_socket) do
+  @doc """
+  Where every surface's way back points.
+
+  Takes no socket, unlike its neighbours here: they still do because they are
+  called from places that have one, and this one is now also called from a
+  component, which does not. A parameter that is ignored and then cannot be
+  supplied is a signature that describes nothing — and Dialyzer said so.
+  """
+  @spec chat_path() :: String.t()
+  def chat_path do
     ~p"/chat"
   end
 

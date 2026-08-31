@@ -8,6 +8,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.SurfaceTabLink
+
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Icons
 
@@ -17,6 +19,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   attr :identified, :boolean, default: true
   attr :summary, :map, default: nil
   attr :on_open, :any, default: "group_call_open"
+
+  attr :open_paths, :any,
+    default: nil,
+    doc: "the addresses this person already has open, from `Live.OpenSurfaces`"
+
   attr :class, :any, default: nil
 
   @spec group_call_channel_entry(map()) :: Phoenix.LiveView.Rendered.t()
@@ -145,26 +152,30 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
             </span>
           </button>
 
-          <%!-- The same conference at an address of its own. A plain anchor,
-                so the middle click and "open in new tab" the browser already
-                offers work; `noopener` because without it the new tab shares
-                this one's event loop and the isolation is worth nothing. --%>
-          <a
+          <%!-- The same conference at an address of its own — and it says
+                "go to the tab" instead when this person already has that
+                address open, because a second tab of a room you are in is a
+                second seat nobody asked for. --%>
+          <.surface_tab_link
             :if={@room_token}
-            href={Paths.call_path(@room_token)}
-            target="_blank"
-            rel="noopener"
-            class="mt-1 flex h-6 w-full items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-            data-testid="group-call-channel-popover-tab"
-          >
-            <Icons.icon_btn_link class="h-3.5 w-3.5" />
-            <span>{dgettext("group_call", "Open in a tab")}</span>
-          </a>
+            path={Paths.call_path(@room_token)}
+            open?={tab_open?(@open_paths, @room_token)}
+            class="mt-1 h-6 w-full text-xs"
+            testid="group-call-channel-popover-tab"
+          />
         </div>
       </details>
     </div>
     """
   end
+
+  # The room's own address, derived here and nowhere else: the badge is the one
+  # place that knows a channel's *current* room token, and a second spelling of
+  # that derivation is how the two would drift apart.
+  defp tab_open?(%MapSet{} = paths, room_token) when is_binary(room_token),
+    do: MapSet.member?(paths, Paths.call_path(room_token))
+
+  defp tab_open?(_paths, _room_token), do: false
 
   attr :channel, :string, required: true
   attr :summary, :map, default: nil

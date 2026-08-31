@@ -1,0 +1,11 @@
+/*
+ * The line under "Go to the tab" that only a failed focus request reveals.
+ *
+ * Hidden here rather than by the hook adding utility classes: the CSS lint
+ * scans `classList` strings, and a hook that reached for Tailwind would be
+ * writing styling into JavaScript. The hook flips one data attribute; this
+ * file owns what that means.
+ */
+.surface-tab-note[data-visible="false"] {
+  display: none;
+}

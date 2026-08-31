@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.App.CallLive do
   import RetroHexChatWeb.Components.UI.GroupCall.Panel
   import RetroHexChatWeb.Components.UI.GroupCall.PreJoin
   import RetroHexChatWeb.Components.UI.ShareBar
+  import RetroHexChatWeb.Components.UI.SurfaceTabLink
   import RetroHexChatWeb.Components.UI.Window
 
   alias Phoenix.LiveView.Socket
@@ -32,10 +33,12 @@ defmodule RetroHexChatWeb.App.CallLive do
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.ShareLinks
   alias RetroHexChat.Topics
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.CallLive.Events
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.GroupCallConfirmDialog
+  alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.Live.SurfaceHost, as: Host
   alias RetroHexChatWeb.ShareLinkRef
 
@@ -62,6 +65,8 @@ defmodule RetroHexChatWeb.App.CallLive do
         share_url: nil,
         denied: nil
       )
+
+    socket = OpenSurfaces.attach(socket, socket.assigns.nickname)
 
     case resolve_room(socket, params, session) do
       {:ok, channel_name, user_id} ->
@@ -110,9 +115,10 @@ defmodule RetroHexChatWeb.App.CallLive do
                 wave. --%>
           <:status>
             <.window_status_bar_field grow>
-              <.link navigate={~p"/chat"} data-testid="call-back-to-chat">
-                ← {dgettext("group_call", "Chat")}
-              </.link>
+              <.back_to_chat
+                open?={OpenSurfaces.open?(@open_surface_paths, Paths.chat_path())}
+                testid="call-back-to-chat"
+              />
             </.window_status_bar_field>
             <.window_status_bar_field :if={@notice}>
               <span data-testid="call-notice">{@notice.message}</span>

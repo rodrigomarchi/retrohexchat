@@ -30,6 +30,8 @@ import ViewportDetectHook from "./ui/viewport_detect_hook";
 import WindowManagerHook from "./ui/window_manager_hook";
 import FocusChatInputOnClickHook from "./ui/focus_chat_input_on_click_hook";
 import AutoFocusHook from "./ui/auto_focus_hook";
+import SurfacePresenceHook from "./surfaces/surface_presence_hook";
+import SurfaceTabLinkHook from "./surfaces/surface_tab_link_hook";
 
 export const criticalHooks = {
   AutoFocusHook: AutoFocusHook,
@@ -52,6 +54,8 @@ export const criticalHooks = {
   ChatPaginationHook: ChatPaginationHook,
   SearchHighlightHook: SearchHighlightHook,
   ShortcutDispatcherHook: ShortcutDispatcherHook,
+  SurfacePresenceHook: SurfacePresenceHook,
+  SurfaceTabLinkHook: SurfaceTabLinkHook,
   SoundHook: SoundHook,
   DocumentTitleHook: DocumentTitleHook,
   MenuBarHook: MenuBarHook,

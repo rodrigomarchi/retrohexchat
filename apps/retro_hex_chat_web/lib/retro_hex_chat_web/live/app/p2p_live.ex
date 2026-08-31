@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.P2P.StartingRoom
   import RetroHexChatWeb.Components.UI.ShareBar
+  import RetroHexChatWeb.Components.UI.SurfaceTabLink
   import RetroHexChatWeb.Components.UI.Window
 
   alias Phoenix.LiveView.Socket
@@ -42,6 +43,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.Components.P2PSessionConsole
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.Live.P2PConfirmDialog
   alias RetroHexChatWeb.Live.SurfaceHost, as: Host
   alias RetroHexChatWeb.P2PLive.Events
@@ -68,6 +70,8 @@ defmodule RetroHexChatWeb.App.P2PLive do
         match_game: nil,
         denied: nil
       )
+
+    socket = OpenSurfaces.attach(socket, socket.assigns.nickname)
 
     case resolve_session(socket, params, session) do
       {:ok, db_session, user_id, role} ->
@@ -135,9 +139,10 @@ defmodule RetroHexChatWeb.App.P2PLive do
                 wave. --%>
           <:status>
             <.window_status_bar_field grow>
-              <.link navigate={~p"/chat"} data-testid="p2p-back-to-chat">
-                ← {dgettext("chat", "Chat")}
-              </.link>
+              <.back_to_chat
+                open?={OpenSurfaces.open?(@open_surface_paths, Paths.chat_path())}
+                testid="p2p-back-to-chat"
+              />
             </.window_status_bar_field>
             <.window_status_bar_field :if={@notice}>
               <span data-testid="p2p-notice">{@notice.message}</span>
@@ -176,20 +181,12 @@ defmodule RetroHexChatWeb.App.P2PLive do
             on_share="share_p2p"
             class="min-w-0 flex-1 justify-start"
           />
-          <%!-- A plain anchor, so the middle click and "open in new tab" the
-                browser already offers work; `noopener` because without it the
-                new tab shares this one's event loop. --%>
-          <a
+          <.surface_tab_link
             :if={@embedded?}
-            href={Paths.p2p_path(@p2p_session.token)}
-            target="_blank"
-            rel="noopener"
-            class="shadow-retro-raised bg-surface flex h-[26px] shrink-0 items-center justify-center gap-1 px-3 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-            data-testid="p2p-open-in-tab"
-          >
-            <Icons.icon_btn_link class="h-3.5 w-3.5" />
-            <span>{dgettext("chat", "Open in a tab")}</span>
-          </a>
+            path={Paths.p2p_path(@p2p_session.token)}
+            open?={OpenSurfaces.open?(@open_surface_paths, Paths.p2p_path(@p2p_session.token))}
+            testid="p2p-open-in-tab"
+          />
         </:footer>
       </.p2p_starting_room>
 
