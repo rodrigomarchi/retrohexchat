@@ -38,7 +38,7 @@ foi empurrado, e empurrar é decisão do usuário.
 | `8bf8b202` | Onda 2 — filiação com contagem de superfícies; onda 2 fechada |
 | `6b66872f` | Onda 3 — `SpaceLive` em dois hosts, `/space/:slug`, roster na antessala |
 | `58c8fde5` | Onda 4A — `P2PChannel`: o fio de sinalização sai do socket do LiveView |
-| *(este)* | Onda 4B — `P2PLive` nos dois hosts, `/p2p/:token`, a sala de partida e o takeover; onda 4 fechada |
+| `725de14b` | Onda 4B — `P2PLive` nos dois hosts, `/p2p/:token`, a sala de partida e o takeover; onda 4 fechada |
 
 | Onda | Estado |
 |---|---|
