@@ -34,6 +34,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Channels.Visibility
   alias RetroHexChat.ShareLinks
   alias RetroHexChat.Topics
   alias RetroHexChat.VirtualSpace
@@ -97,6 +98,10 @@ defmodule RetroHexChatWeb.App.SpaceLive do
     <%!-- The same shell every other desktop screen uses: the workspace only
           has a height because something above it does. --%>
     <div class="bg-background text-text font-system flex h-screen flex-col">
+      <%!-- This tab answers when the chat asks for it by address. Only in the
+            standalone render: embedded, the address is the chat's own and the
+            chat already answers for it. --%>
+      <div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
       <.desktop id="space-desktop" persist_key="space" class="flex-1" data-testid="space-desktop">
         <.desktop_window
           id="virtual-space"
@@ -383,12 +388,24 @@ defmodule RetroHexChatWeb.App.SpaceLive do
     end
   end
 
+  # The refusal names the channel only when a stranger could have listed it
+  # anyway. The address already carries the id, but that is an encoding nobody
+  # reads by accident — a sentence on screen is the product saying it out loud,
+  # and a secret channel's name is the one thing this refusal must not be the
+  # place somebody learns. Same rule the shared card applies, same function.
   defp allowed?(%{mode: "channel", id: channel_name}, nickname) do
-    if channel_member?(channel_name, nickname) do
-      :ok
-    else
-      {:error,
-       dgettext("chat", "You have to be in %{channel} to enter its space.", channel: channel_name)}
+    cond do
+      channel_member?(channel_name, nickname) ->
+        :ok
+
+      Visibility.nameable?(channel_name) ->
+        {:error,
+         dgettext("chat", "You have to be in %{channel} to enter its space.",
+           channel: channel_name
+         )}
+
+      true ->
+        {:error, dgettext("chat", "This space belongs to a channel you are not in.")}
     end
   end
 

@@ -164,6 +164,11 @@ aba fecha antes do clique, e o spec espera a nota aparecer.
 Sem isso a onda 6 continua com a segunda bullet do "Pronto quando" em aberto:
 *"o caso de foco bloqueado degrada com mensagem em vez de silêncio"*.
 
+*Implementado em 2026-08-31, e a nota que faltava era só o primeiro dos quatro
+defeitos empilhados nesse clique — o `SurfacePresenceHook` não estava montado em
+lugar nenhum, `log.info` não existe, e a nota precisava de `phx-update="ignore"`.
+Iteração 3 do [diário](shareable-surfaces-wave-7-progress.md). K5 e K6 verdes.*
+
 ### 4.2 A barra de status coberta, e os cinco vermelhos
 
 Dois dos cinco specs vermelhos são o produto: a janela maximizada da chamada
@@ -182,11 +187,19 @@ janelas antes dele (`git show 3076e54e^:…/chat_live.html.heex`). O primeiro pa
   maximizada) vale para a **satélite**, não para a janela dentro do chat, e isso
   vira uma linha em `guide/windowed-desktop.md`.
 
-Os outros três, decididos aqui:
+*Diagnosticado e resolvido em 2026-08-31, e a §4.2 estava errada: não é
+geometria. Os atributos das duas janelas são idênticos antes e depois do plano, e
+a barra de status em questão é a do próprio chat, no rodapé da janela do chat —
+uma janela maximizada por cima dela é o gerenciador de janelas funcionando. O que
+mudou foi o fluxo: o diálogo virou antessala maximizada e abre mais cedo, então o
+controle mudou de casa. Os dois specs foram apontados para a casa nova e estão
+verdes. A correção está registrada em R.7 da auditoria.*
+
+Os outros três:
 
 | Spec | O que fazer |
 |---|---|
-| `chat-group-call.spec.ts:1275`, `:1341` | bug de teste, e antigo: `storedPrejoinPreference` procura `rhc:group-call:prejoin:` no `localStorage`, e a preferência foi para o servidor no `78ef0529`. O helper passa a ler `TrustedDevices` pelo caminho que o produto usa, ou o spec asserta a preferência pela tela |
+| `chat-group-call.spec.ts:1275`, `:1341` | ~~bug de teste~~ — a sondagem morta do `localStorage` saiu, e os dois continuam vermelhos **por produto**: a preferência de dispositivo não sobrevive a cancelar-e-reabrir, e a caixa de aviso de permissão aparece sem texto. Precedem o plano; diagnóstico até onde foi na Iteração 3 do diário |
 | `chat-call-fault-injection.spec.ts:355` | **decisão D7.2** — ver §8 |
 
 ---
@@ -211,6 +224,10 @@ certo e já respeita a regra de canal privado — ele passa a alimentar também
 
 O teste é o que a onda 1 §2.5 pediu e nunca existiu: abrir `/join/:slug` de uma
 sala num canal secreto e asserir que o nome do canal **não** aparece no `<head>`.
+
+*Implementado em 2026-08-31. `listed_channel?/1` virou
+`Channels.Visibility.nameable?/1` e os dois lados passaram a chamá-la, em vez de
+a regra existir duas vezes. Iteração 4 do diário.*
 
 ---
 

@@ -22,6 +22,12 @@
   <input type="hidden" name="join_channel" value={@session.active_channel || ""} />
 </form>
 <div id="viewport-detect" phx-hook="ViewportDetectHook" class="hidden"></div>
+<%!-- This tab answers when another one asks for it by address. The server
+      already knows the tab exists; the only thing the browser adds is pulling
+      it forward, and it can only be asked over `BroadcastChannel` because every
+      surface here is opened with `rel="noopener"`. Mounted on the screens that
+      have an address of their own, which is what the request is keyed by. --%>
+<div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
 <div id="shortcut-dispatcher-hook" phx-hook="ShortcutDispatcherHook" class="hidden"></div>
 
 <%!-- Toast container --%>

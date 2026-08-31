@@ -97,6 +97,10 @@ defmodule RetroHexChatWeb.App.CallLive do
     <%!-- The same shell every other desktop screen uses: the workspace only
           has a height because something above it does. --%>
     <div class="bg-background text-text font-system flex h-screen flex-col">
+      <%!-- This tab answers when the chat asks for it by address. Only in the
+            standalone render: embedded, the address is the chat's own and the
+            chat already answers for it. --%>
+      <div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
       <.desktop id="call-desktop" persist_key="call" class="flex-1" data-testid="call-desktop">
         <.desktop_window
           id="group-call"

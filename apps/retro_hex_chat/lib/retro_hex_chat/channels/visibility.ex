@@ -35,6 +35,34 @@ defmodule RetroHexChat.Channels.Visibility do
     |> Enum.sort()
   end
 
+  @doc """
+  Whether `channel_name` may be named to somebody who is not in it and may not
+  be in the product at all.
+
+  Stricter than the rule `channels_of/2` uses, and deliberately so. That one
+  answers for a viewer already inside, asking about a person, where the only
+  thing worth withholding is `+s`. This one answers for a card handed to a
+  stranger — a shared link, a social preview, the address bar — where naming the
+  channel *is* the leak, so `+p` and `+i` count too.
+
+  A channel whose process is not answering is not nameable. Silence is not
+  permission, and the one place this is asked from is the one place a wrong
+  answer is public.
+  """
+  @spec nameable?(term()) :: boolean()
+  def nameable?(channel_name) when is_binary(channel_name) do
+    case Server.get_state(channel_name) do
+      {:ok, %{modes_detail: modes}} ->
+        not (Map.get(modes, :secret, false) or Map.get(modes, :private, false) or
+               Map.get(modes, :invite_only, false))
+
+      _unreachable ->
+        false
+    end
+  end
+
+  def nameable?(_channel_name), do: false
+
   # Cheaper than asking the channel, so it runs first: a secret channel the
   # viewer is not in is dropped without a message being sent at all.
   defp tellable?(%{secret?: true, name: name}, viewer_channels), do: name in viewer_channels

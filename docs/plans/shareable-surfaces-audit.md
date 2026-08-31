@@ -354,6 +354,24 @@ exigiria dar checkout numa revisão pré-plano e rodar os specs, e eu não fiz.
 **Custo:** desconhecido até diagnosticar; a barra de status precisa ficar acima
 do workspace de janelas, ou a janela não pode maximizar sobre ela.
 
+> **Correção, 2026-08-31, escrita ao implementar a onda 7.** O enquadramento
+> acima está errado e o texto errado fica aqui. Não é geometria: os atributos das
+> duas janelas são idênticos antes e depois do plano, e a barra de status em
+> questão é a do **próprio chat**, no rodapé da janela do chat (`:status` slot,
+> `chat_live.html.heex:87`) — uma janela maximizada por cima dela é como um
+> gerenciador de janelas funciona, não um defeito.
+>
+> O que mudou foi o **fluxo**: `/p2p <nick>` abria um diálogo e o pré-join era um
+> diálogo; os dois viraram a antessala dentro de uma janela fixada e maximizada,
+> que abre mais cedo. Os specs clicavam num controle do chat num momento em que
+> ele deixou de estar alcançável, e a capacidade não sumiu — mudou de casa
+> (`p2p-room-cancel`, o `[Cancelar]` do P7). **Os dois specs foram apontados para
+> onde o controle está e estão verdes.** Custo real: uma linha em cada um.
+>
+> Eu chamei de "produto, não teste" com base no log do Playwright e não fui olhar
+> onde o elemento morava. Ver a Iteração 3 de
+> [`shareable-surfaces-wave-7-progress.md`](shareable-surfaces-wave-7-progress.md).
+
 ---
 
 ### R.8 A.3 confirmado, e a justificativa dele é falsa — MÉDIA
@@ -446,6 +464,17 @@ mensagem em vez de silêncio"*; `wave-6 §1.1`, passo 3 do contrato.
 **Custo:** mínimo — renderizar a nota também no `back_to_chat`, e trocar a
 asserção do K5 por uma que force o caminho sem resposta.
 
+> **Corrigido em 2026-08-31, e era três defeitos e não um.** Além da nota que
+> faltava: **`SurfacePresenceHook` não estava montado em template nenhum**, então
+> nada jamais respondeu a um pedido de foco — a metade de "focar a aba existente"
+> da onda 6 §1.1 nunca rodou; e **`log.info` não existe** (`lib/logger.js` é um
+> `Object.freeze({debug, error, warn})`), então a linha de log antes de
+> `_note("true")` lançava um `TypeError` dentro de um `.then` e comia o resto do
+> callback em silêncio. Mais um quarto achado ao consertar: a nota é estado de
+> servidor que o JS muta, e precisava de `phx-update="ignore"` para sobreviver ao
+> próximo patch. Os quatro estão consertados e o K5 agora prova o caminho sem
+> resposta. Ver a Iteração 3 do diário.
+
 ---
 
 ### R.11 O argumento de segurança do slug se apoia num rate limit que não existe — BAIXA
@@ -504,8 +533,8 @@ causas se dividem em três, e só uma delas é bug de teste:
 
 | Spec | Causa |
 |---|---|
-| `chat-group-call.spec.ts:1275` e `:1341` (pré-join) | **bug de teste**, e o autor acertou: o helper procura `rhc:group-call:prejoin:` no `localStorage`, e a preferência foi para o servidor no `78ef0529` "Move client persistence to backend" (2026-08-04) — **antes** do plano. `git log -S "rhc:group-call:prejoin" --all` |
-| `chat-group-call.spec.ts:967` e `chat-p2p.spec.ts:888` | **produto**: a janela maximizada cobre a barra de status — R.7 |
+| `chat-group-call.spec.ts:1275` e `:1341` (pré-join) | ~~**bug de teste**~~ — **corrigido 2026-08-31, e eu repeti o erro do autor.** A sondagem morta do `localStorage` era real e saiu; os dois continuam vermelhos por baixo dela, e por motivos de **produto**: a preferência de dispositivo não é lembrada entre cancelar e reabrir, e a caixa de aviso de permissão aparece sem texto. Ambos precedem o plano. Diagnóstico até onde foi na Iteração 3 do diário |
+| `chat-group-call.spec.ts:967` e `chat-p2p.spec.ts:888` | ~~**produto**: a janela maximizada cobre a barra de status — R.7~~ **Corrigido 2026-08-31:** specs desatualizados, apontando para um controle que mudou de casa. Verdes. Ver a correção em R.7 |
 | `chat-call-fault-injection.spec.ts:355` | **produto**: a mídia não se restabelece quando o answerer recarrega. É a "Limitação registrada" da onda 4B, registrada como limitação enquanto o spec a asserta como comportamento |
 
 **Não verifiquei** se os cinco já estavam vermelhos antes do plano: isso exige

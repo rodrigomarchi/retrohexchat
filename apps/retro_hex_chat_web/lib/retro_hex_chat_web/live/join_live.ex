@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.JoinLive do
   import RetroHexChatWeb.Components.UI.JoinCard
 
   alias Phoenix.LiveView.Socket
-  alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Channels.Visibility
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.GroupCall
   alias RetroHexChat.Lobby
@@ -42,8 +42,27 @@ defmodule RetroHexChatWeb.JoinLive do
        page_title: dgettext("share", "Join - RetroHexChat"),
        robots: SEO.noindex_content()
      )
-     |> assign_card(slug, nickname)}
+     |> assign_card(slug, nickname)
+     |> assign_preview()}
   end
+
+  # The card's own words, lifted into the tags a link preview reads.
+  #
+  # `subject/1` is where the privacy rule lives — a channel is named only when a
+  # stranger could have listed it anyway — and the rule was written *for* this
+  # surface: the social preview is the place a channel name reaches people who
+  # were never sent the link. Until now it fed the card body and stopped there,
+  # so every share unfurled as the site's generic blurb. It is the same sentence
+  # in both places on purpose; a second phrasing here would be a second rule.
+  defp assign_preview(%{assigns: %{subject: %{name: name} = subject}} = socket)
+       when is_binary(name) do
+    assign(socket,
+      page_title: name,
+      page_description: subject[:tagline] || dgettext("share", "Somebody shared this with you.")
+    )
+  end
+
+  defp assign_preview(socket), do: socket
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
@@ -232,7 +251,7 @@ defmodule RetroHexChatWeb.JoinLive do
   defp match_tagline(_target), do: nil
 
   defp space_name(channel_name) do
-    if listed_channel?(channel_name) do
+    if Visibility.nameable?(channel_name) do
       dgettext("share", "The space of %{channel}", channel: channel_name)
     else
       dgettext("share", "A space on RetroHexChat")
@@ -255,21 +274,10 @@ defmodule RetroHexChatWeb.JoinLive do
   end
 
   defp call_name(channel_name) do
-    if listed_channel?(channel_name) do
+    if Visibility.nameable?(channel_name) do
       dgettext("share", "A call in %{channel}", channel: channel_name)
     else
       dgettext("share", "A call on RetroHexChat")
-    end
-  end
-
-  defp listed_channel?(channel_name) do
-    case Server.get_state(channel_name) do
-      {:ok, %{modes_detail: modes}} ->
-        not (Map.get(modes, :secret, false) or Map.get(modes, :private, false) or
-               Map.get(modes, :invite_only, false))
-
-      _unreachable ->
-        false
     end
   end
 

@@ -40,7 +40,11 @@ const SurfaceTabLinkHook = {
       // Nobody came forward: the tab may be on another monitor, in another
       // window, or on another machine entirely. Say that, and let the next
       // click do what the link says.
-      log.info("[surfaces] no tab answered the focus request", { path });
+      // `debug`, not `info`: the logger exposes debug/warn/error and is frozen,
+      // so `log.info` threw a TypeError right here — inside a `.then`, where it
+      // became an unhandled rejection that swallowed the two lines below it.
+      // The note never appeared and nothing anywhere said why.
+      log.debug("[surfaces] no tab answered the focus request", { path });
       this._giveUp = true;
       this._note("true");
     });

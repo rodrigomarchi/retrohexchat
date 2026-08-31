@@ -112,20 +112,20 @@ msgstr "Hubungkan dan gabung"
 msgid "Join"
 msgstr "Gabung"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:248
-#: lib/retro_hex_chat_web/live/join_live.ex:279
+#: lib/retro_hex_chat_web/live/join_live.ex:267
+#: lib/retro_hex_chat_web/live/join_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "%{count} person inside now"
 msgid_plural "%{count} people inside now"
 msgstr[0] "%{count} orang di dalam sekarang"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:259
+#: lib/retro_hex_chat_web/live/join_live.ex:278
 #, elixir-autogen, elixir-format
 msgid "A call in %{channel}"
 msgstr "Panggilan di %{channel}"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:156
-#: lib/retro_hex_chat_web/live/join_live.ex:261
+#: lib/retro_hex_chat_web/live/join_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "A call on RetroHexChat"
 msgstr "Panggilan di RetroHexChat"
@@ -135,12 +135,12 @@ msgstr "Panggilan di RetroHexChat"
 msgid "A conference"
 msgstr "Sebuah konferensi"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:188
+#: lib/retro_hex_chat_web/live/join_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "A private space on RetroHexChat"
 msgstr "Sebuah ruang privat di RetroHexChat"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:238
+#: lib/retro_hex_chat_web/live/join_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "A space on RetroHexChat"
 msgstr "Sebuah ruang di RetroHexChat"
@@ -150,34 +150,34 @@ msgstr "Sebuah ruang di RetroHexChat"
 msgid "A virtual space"
 msgstr "Sebuah ruang virtual"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:236
+#: lib/retro_hex_chat_web/live/join_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "The space of %{channel}"
 msgstr "Ruang %{channel}"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:157
-#: lib/retro_hex_chat_web/live/join_live.ex:208
+#: lib/retro_hex_chat_web/live/join_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "A P2P session on RetroHexChat"
 msgstr "Sesi P2P di RetroHexChat"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:200
+#: lib/retro_hex_chat_web/live/join_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "A P2P session with %{nick}"
 msgstr "Sesi P2P dengan %{nick}"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:201
-#: lib/retro_hex_chat_web/live/join_live.ex:209
+#: lib/retro_hex_chat_web/live/join_live.ex:220
+#: lib/retro_hex_chat_web/live/join_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "One to one, browser to browser."
 msgstr "Satu lawan satu, dari peramban ke peramban."
 
-#: lib/retro_hex_chat_web/live/join_live.ex:222
+#: lib/retro_hex_chat_web/live/join_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "1 seat open"
 msgstr "1 kursi tersedia"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:225
+#: lib/retro_hex_chat_web/live/join_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "No seats left"
 msgstr "Tidak ada kursi tersisa"
@@ -197,23 +197,24 @@ msgstr "Kursi sudah terisi"
 msgid "Somebody already took the seat. This match is full."
 msgstr "Kursinya sudah diambil orang lain. Pertandingan ini penuh."
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:106
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:109
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:110
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:126
 #, elixir-autogen, elixir-format
 msgid "Chat"
 msgstr "Obrolan"
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:116
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:133
 #, elixir-autogen, elixir-format
 msgid "Go to the tab"
 msgstr "Buka tabnya"
 
 #: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:71
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:122
 #, elixir-autogen, elixir-format
 msgid "It is already open in another window of yours."
 msgstr "Sudah terbuka di jendela Anda yang lain."
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:114
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:131
 #, elixir-autogen, elixir-format
 msgid "Open in a tab"
 msgstr "Buka di tab"
@@ -227,3 +228,8 @@ msgstr "Tersalin!"
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr "Salin"
+
+#: lib/retro_hex_chat_web/live/join_live.ex:61
+#, elixir-autogen, elixir-format
+msgid "Somebody shared this with you."
+msgstr "Seseorang membagikan ini kepada Anda."

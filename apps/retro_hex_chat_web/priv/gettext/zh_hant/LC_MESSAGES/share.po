@@ -112,20 +112,20 @@ msgstr "連線並加入"
 msgid "Join"
 msgstr "加入"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:248
-#: lib/retro_hex_chat_web/live/join_live.ex:279
+#: lib/retro_hex_chat_web/live/join_live.ex:267
+#: lib/retro_hex_chat_web/live/join_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "%{count} person inside now"
 msgid_plural "%{count} people inside now"
 msgstr[0] "目前 %{count} 人在房間內"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:259
+#: lib/retro_hex_chat_web/live/join_live.ex:278
 #, elixir-autogen, elixir-format
 msgid "A call in %{channel}"
 msgstr "%{channel} 中的通話"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:156
-#: lib/retro_hex_chat_web/live/join_live.ex:261
+#: lib/retro_hex_chat_web/live/join_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "A call on RetroHexChat"
 msgstr "RetroHexChat 上的通話"
@@ -135,12 +135,12 @@ msgstr "RetroHexChat 上的通話"
 msgid "A conference"
 msgstr "一個群組通話"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:188
+#: lib/retro_hex_chat_web/live/join_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "A private space on RetroHexChat"
 msgstr "RetroHexChat 上的一個私人空間"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:238
+#: lib/retro_hex_chat_web/live/join_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "A space on RetroHexChat"
 msgstr "RetroHexChat 上的一個空間"
@@ -150,34 +150,34 @@ msgstr "RetroHexChat 上的一個空間"
 msgid "A virtual space"
 msgstr "一個虛擬空間"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:236
+#: lib/retro_hex_chat_web/live/join_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "The space of %{channel}"
 msgstr "%{channel} 的空間"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:157
-#: lib/retro_hex_chat_web/live/join_live.ex:208
+#: lib/retro_hex_chat_web/live/join_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "A P2P session on RetroHexChat"
 msgstr "RetroHexChat 上的 P2P 工作階段"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:200
+#: lib/retro_hex_chat_web/live/join_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "A P2P session with %{nick}"
 msgstr "與 %{nick} 的 P2P 工作階段"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:201
-#: lib/retro_hex_chat_web/live/join_live.ex:209
+#: lib/retro_hex_chat_web/live/join_live.ex:220
+#: lib/retro_hex_chat_web/live/join_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "One to one, browser to browser."
 msgstr "一對一，瀏覽器直連瀏覽器。"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:222
+#: lib/retro_hex_chat_web/live/join_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "1 seat open"
 msgstr "1 個空位"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:225
+#: lib/retro_hex_chat_web/live/join_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "No seats left"
 msgstr "沒有空位"
@@ -197,23 +197,24 @@ msgstr "位置已被佔用"
 msgid "Somebody already took the seat. This match is full."
 msgstr "已經有人佔了位置。這場對局滿員了。"
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:106
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:109
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:110
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:126
 #, elixir-autogen, elixir-format
 msgid "Chat"
 msgstr "聊天"
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:116
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:133
 #, elixir-autogen, elixir-format
 msgid "Go to the tab"
 msgstr "前往該分頁"
 
 #: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:71
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:122
 #, elixir-autogen, elixir-format
 msgid "It is already open in another window of yours."
 msgstr "它已經在你的另一個視窗中開啟。"
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:114
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:131
 #, elixir-autogen, elixir-format
 msgid "Open in a tab"
 msgstr "在分頁中開啟"
@@ -227,3 +228,8 @@ msgstr "已複製！"
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr "複製"
+
+#: lib/retro_hex_chat_web/live/join_live.ex:61
+#, elixir-autogen, elixir-format
+msgid "Somebody shared this with you."
+msgstr "有人與你分享了這個。"

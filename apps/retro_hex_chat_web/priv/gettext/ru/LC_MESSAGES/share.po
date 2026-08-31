@@ -112,8 +112,8 @@ msgstr "Подключиться и войти"
 msgid "Join"
 msgstr "Присоединиться"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:248
-#: lib/retro_hex_chat_web/live/join_live.ex:279
+#: lib/retro_hex_chat_web/live/join_live.ex:267
+#: lib/retro_hex_chat_web/live/join_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "%{count} person inside now"
 msgid_plural "%{count} people inside now"
@@ -121,13 +121,13 @@ msgstr[0] "%{count} человек сейчас внутри"
 msgstr[1] "%{count} человека сейчас внутри"
 msgstr[2] "%{count} человек сейчас внутри"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:259
+#: lib/retro_hex_chat_web/live/join_live.ex:278
 #, elixir-autogen, elixir-format
 msgid "A call in %{channel}"
 msgstr "Звонок в %{channel}"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:156
-#: lib/retro_hex_chat_web/live/join_live.ex:261
+#: lib/retro_hex_chat_web/live/join_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "A call on RetroHexChat"
 msgstr "Звонок в RetroHexChat"
@@ -137,12 +137,12 @@ msgstr "Звонок в RetroHexChat"
 msgid "A conference"
 msgstr "Конференция"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:188
+#: lib/retro_hex_chat_web/live/join_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "A private space on RetroHexChat"
 msgstr "Личное пространство в RetroHexChat"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:238
+#: lib/retro_hex_chat_web/live/join_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "A space on RetroHexChat"
 msgstr "Пространство в RetroHexChat"
@@ -152,34 +152,34 @@ msgstr "Пространство в RetroHexChat"
 msgid "A virtual space"
 msgstr "Виртуальное пространство"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:236
+#: lib/retro_hex_chat_web/live/join_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "The space of %{channel}"
 msgstr "Пространство канала %{channel}"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:157
-#: lib/retro_hex_chat_web/live/join_live.ex:208
+#: lib/retro_hex_chat_web/live/join_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "A P2P session on RetroHexChat"
 msgstr "P2P-сессия в RetroHexChat"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:200
+#: lib/retro_hex_chat_web/live/join_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "A P2P session with %{nick}"
 msgstr "P2P-сессия с %{nick}"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:201
-#: lib/retro_hex_chat_web/live/join_live.ex:209
+#: lib/retro_hex_chat_web/live/join_live.ex:220
+#: lib/retro_hex_chat_web/live/join_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "One to one, browser to browser."
 msgstr "Один на один, от браузера к браузеру."
 
-#: lib/retro_hex_chat_web/live/join_live.ex:222
+#: lib/retro_hex_chat_web/live/join_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "1 seat open"
 msgstr "1 свободное место"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:225
+#: lib/retro_hex_chat_web/live/join_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "No seats left"
 msgstr "Мест нет"
@@ -199,23 +199,24 @@ msgstr "Место занято"
 msgid "Somebody already took the seat. This match is full."
 msgstr "Место уже занято. Этот матч заполнен."
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:106
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:109
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:110
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:126
 #, elixir-autogen, elixir-format
 msgid "Chat"
 msgstr "Чат"
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:116
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:133
 #, elixir-autogen, elixir-format
 msgid "Go to the tab"
 msgstr "Перейти на вкладку"
 
 #: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:71
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:122
 #, elixir-autogen, elixir-format
 msgid "It is already open in another window of yours."
 msgstr "Оно уже открыто в другом вашем окне."
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:114
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:131
 #, elixir-autogen, elixir-format
 msgid "Open in a tab"
 msgstr "Открыть во вкладке"
@@ -229,3 +230,8 @@ msgstr "Скопировано!"
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr "Копировать"
+
+#: lib/retro_hex_chat_web/live/join_live.ex:61
+#, elixir-autogen, elixir-format
+msgid "Somebody shared this with you."
+msgstr "Кто-то поделился этим с вами."

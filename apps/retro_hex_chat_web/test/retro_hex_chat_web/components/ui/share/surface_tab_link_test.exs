@@ -97,6 +97,24 @@ defmodule RetroHexChatWeb.Components.UI.SurfaceTabLinkTest do
       refute html =~ ~s(data-phx-link="redirect")
     end
 
+    # The hook reaches the note through the link's own parent, so a link with no
+    # parent of its own is a link whose refusal has nowhere to be said: the first
+    # click does nothing and says nothing, and the second opens the second chat
+    # this whole component exists to avoid.
+    test "carries the note the hook shows when no tab answers" do
+      html = render_component(&back_to_chat/1, open?: true, testid: "play-back-to-chat")
+
+      assert html =~ ~s(data-surface-tab-note)
+      assert html =~ ~s(data-testid="play-back-to-chat-note")
+      assert html =~ ~s(data-visible="false")
+    end
+
+    test "has no note to show when there is no tab to fail to reach" do
+      html = render_component(&back_to_chat/1, open?: false, testid: "play-back-to-chat")
+
+      refute html =~ ~s(data-surface-tab-note)
+    end
+
     test "says the same thing in both shapes" do
       for open? <- [true, false] do
         assert render_component(&back_to_chat/1, open?: open?, testid: "t") =~ "Chat"

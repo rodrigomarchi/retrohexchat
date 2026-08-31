@@ -3006,7 +3006,7 @@ msgstr "Fine della sessione Arcade."
 msgid "Cancel the P2P invite"
 msgstr "Annullare l'invito P2P"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:439
+#: lib/retro_hex_chat_web/live/app/space_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "Spazio del canale"
@@ -3062,7 +3062,7 @@ msgstr "Fine P2P Call Media"
 msgid "End the P2P session"
 msgstr "Fine della sessione P2P"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:442
+#: lib/retro_hex_chat_web/live/app/space_live.ex:455
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "Entrando nello spazio del canale..."
@@ -3088,7 +3088,7 @@ msgstr "Mute, unmute, o abilitare il microfono P2P"
 msgid "Next P2P Layout"
 msgstr "Il prossimo layout P2P"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:441
+#: lib/retro_hex_chat_web/live/app/space_live.ex:454
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "Apertura camera privata..."
@@ -3168,12 +3168,12 @@ msgstr "Modalità privacy disattivata."
 msgid "Privacy mode enabled — the P2P connection will use the relay."
 msgstr "Modalità privacy abilitata — la connessione P2P utilizzerà il relè."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:438
+#: lib/retro_hex_chat_web/live/app/space_live.ex:451
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "Spazio privato"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:436
+#: lib/retro_hex_chat_web/live/app/space_live.ex:449
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_tabs.ex:113
 #, elixir-autogen, elixir-format
 msgid "Space"
@@ -3321,7 +3321,7 @@ msgstr "Entrando..."
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:295
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:143
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:515
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:570
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:628
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:304
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -4020,7 +4020,7 @@ msgstr "Azioni della conversazione"
 msgid "Participants"
 msgstr "Partecipanti"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:124
+#: lib/retro_hex_chat_web/live/app/space_live.ex:125
 #, elixir-autogen, elixir-format
 msgid "%{count} in the space"
 msgid_plural "%{count} in the space"
@@ -4037,30 +4037,30 @@ msgstr "Dentro in questo momento"
 msgid "Nobody is in here yet."
 msgstr "Qui non c'è ancora nessuno."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:432
-#: lib/retro_hex_chat_web/live/app/space_live.ex:434
+#: lib/retro_hex_chat_web/live/app/space_live.ex:445
+#: lib/retro_hex_chat_web/live/app/space_live.ex:447
 #, elixir-autogen, elixir-format
 msgid "Space · %{name}"
 msgstr "Spazio · %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:359
-#: lib/retro_hex_chat_web/live/app/space_live.ex:371
+#: lib/retro_hex_chat_web/live/app/space_live.ex:360
+#: lib/retro_hex_chat_web/live/app/space_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "That address does not name a space."
 msgstr "Questo indirizzo non corrisponde a nessuno spazio."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:382
+#: lib/retro_hex_chat_web/live/app/space_live.ex:383
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
 msgstr "Questo spazio privato appartiene ad altre due persone."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:341
-#: lib/retro_hex_chat_web/live/app/space_live.ex:354
+#: lib/retro_hex_chat_web/live/app/space_live.ex:342
+#: lib/retro_hex_chat_web/live/app/space_live.ex:355
 #, elixir-autogen, elixir-format
 msgid "This space is no longer available."
 msgstr "Questo spazio non è più disponibile."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:391
+#: lib/retro_hex_chat_web/live/app/space_live.ex:399
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "Devi essere in %{channel} per entrare nel suo spazio."
@@ -4070,7 +4070,7 @@ msgstr "Devi essere in %{channel} per entrare nel suo spazio."
 msgid "The P2P signaling channel refused this session."
 msgstr "Il canale di segnalazione P2P ha rifiutato questa sessione."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:568
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:626
 #, elixir-autogen, elixir-format
 msgid "P2P · %{peer}"
 msgstr "P2P · %{peer}"
@@ -4080,12 +4080,12 @@ msgstr "P2P · %{peer}"
 msgid "This P2P session moved to another window of yours."
 msgstr "Questa sessione P2P è passata a un'altra tua finestra."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:562
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:620
 #, elixir-autogen, elixir-format
 msgid "%{game} · %{peer}"
 msgstr "%{game} · %{peer}"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:565
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:623
 #, elixir-autogen, elixir-format
 msgid "%{game} · match"
 msgstr "%{game} · partita"
@@ -4094,3 +4094,8 @@ msgstr "%{game} · partita"
 #, elixir-autogen, elixir-format
 msgid "%{peer} is back."
 msgstr "%{peer} è tornato."
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:404
+#, elixir-autogen, elixir-format
+msgid "This space belongs to a channel you are not in."
+msgstr "Questo spazio appartiene a un canale di cui non fai parte."

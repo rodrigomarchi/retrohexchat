@@ -112,20 +112,20 @@ msgstr "接続して参加"
 msgid "Join"
 msgstr "参加"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:248
-#: lib/retro_hex_chat_web/live/join_live.ex:279
+#: lib/retro_hex_chat_web/live/join_live.ex:267
+#: lib/retro_hex_chat_web/live/join_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "%{count} person inside now"
 msgid_plural "%{count} people inside now"
 msgstr[0] "現在 %{count} 人が参加中"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:259
+#: lib/retro_hex_chat_web/live/join_live.ex:278
 #, elixir-autogen, elixir-format
 msgid "A call in %{channel}"
 msgstr "%{channel} の通話"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:156
-#: lib/retro_hex_chat_web/live/join_live.ex:261
+#: lib/retro_hex_chat_web/live/join_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "A call on RetroHexChat"
 msgstr "RetroHexChat の通話"
@@ -135,12 +135,12 @@ msgstr "RetroHexChat の通話"
 msgid "A conference"
 msgstr "グループ通話"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:188
+#: lib/retro_hex_chat_web/live/join_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "A private space on RetroHexChat"
 msgstr "RetroHexChat のプライベートスペース"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:238
+#: lib/retro_hex_chat_web/live/join_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "A space on RetroHexChat"
 msgstr "RetroHexChat のスペース"
@@ -150,34 +150,34 @@ msgstr "RetroHexChat のスペース"
 msgid "A virtual space"
 msgstr "バーチャルスペース"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:236
+#: lib/retro_hex_chat_web/live/join_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "The space of %{channel}"
 msgstr "%{channel} のスペース"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:157
-#: lib/retro_hex_chat_web/live/join_live.ex:208
+#: lib/retro_hex_chat_web/live/join_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "A P2P session on RetroHexChat"
 msgstr "RetroHexChat の P2P セッション"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:200
+#: lib/retro_hex_chat_web/live/join_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "A P2P session with %{nick}"
 msgstr "%{nick} との P2P セッション"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:201
-#: lib/retro_hex_chat_web/live/join_live.ex:209
+#: lib/retro_hex_chat_web/live/join_live.ex:220
+#: lib/retro_hex_chat_web/live/join_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "One to one, browser to browser."
 msgstr "1 対 1、ブラウザーからブラウザーへ。"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:222
+#: lib/retro_hex_chat_web/live/join_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "1 seat open"
 msgstr "空席 1"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:225
+#: lib/retro_hex_chat_web/live/join_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "No seats left"
 msgstr "空席なし"
@@ -197,23 +197,24 @@ msgstr "席は埋まりました"
 msgid "Somebody already took the seat. This match is full."
 msgstr "すでに誰かが席に着きました。この対戦は満員です。"
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:106
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:109
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:110
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:126
 #, elixir-autogen, elixir-format
 msgid "Chat"
 msgstr "チャット"
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:116
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:133
 #, elixir-autogen, elixir-format
 msgid "Go to the tab"
 msgstr "そのタブへ移動"
 
 #: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:71
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:122
 #, elixir-autogen, elixir-format
 msgid "It is already open in another window of yours."
 msgstr "すでにあなたの別のウィンドウで開いています。"
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:114
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:131
 #, elixir-autogen, elixir-format
 msgid "Open in a tab"
 msgstr "タブで開く"
@@ -227,3 +228,8 @@ msgstr "コピーしました！"
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr "コピー"
+
+#: lib/retro_hex_chat_web/live/join_live.ex:61
+#, elixir-autogen, elixir-format
+msgid "Somebody shared this with you."
+msgstr "誰かがこれをあなたに共有しました。"

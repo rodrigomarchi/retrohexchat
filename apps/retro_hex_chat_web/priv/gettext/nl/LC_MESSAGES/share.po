@@ -112,21 +112,21 @@ msgstr "Verbinden en deelnemen"
 msgid "Join"
 msgstr "Deelnemen"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:248
-#: lib/retro_hex_chat_web/live/join_live.ex:279
+#: lib/retro_hex_chat_web/live/join_live.ex:267
+#: lib/retro_hex_chat_web/live/join_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "%{count} person inside now"
 msgid_plural "%{count} people inside now"
 msgstr[0] "%{count} persoon nu binnen"
 msgstr[1] "%{count} personen nu binnen"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:259
+#: lib/retro_hex_chat_web/live/join_live.ex:278
 #, elixir-autogen, elixir-format
 msgid "A call in %{channel}"
 msgstr "Een gesprek in %{channel}"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:156
-#: lib/retro_hex_chat_web/live/join_live.ex:261
+#: lib/retro_hex_chat_web/live/join_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "A call on RetroHexChat"
 msgstr "Een gesprek op RetroHexChat"
@@ -136,12 +136,12 @@ msgstr "Een gesprek op RetroHexChat"
 msgid "A conference"
 msgstr "Een conferentie"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:188
+#: lib/retro_hex_chat_web/live/join_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "A private space on RetroHexChat"
 msgstr "Een privéruimte op RetroHexChat"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:238
+#: lib/retro_hex_chat_web/live/join_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "A space on RetroHexChat"
 msgstr "Een ruimte op RetroHexChat"
@@ -151,34 +151,34 @@ msgstr "Een ruimte op RetroHexChat"
 msgid "A virtual space"
 msgstr "Een virtuele ruimte"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:236
+#: lib/retro_hex_chat_web/live/join_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "The space of %{channel}"
 msgstr "De ruimte van %{channel}"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:157
-#: lib/retro_hex_chat_web/live/join_live.ex:208
+#: lib/retro_hex_chat_web/live/join_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "A P2P session on RetroHexChat"
 msgstr "Een P2P-sessie op RetroHexChat"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:200
+#: lib/retro_hex_chat_web/live/join_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "A P2P session with %{nick}"
 msgstr "Een P2P-sessie met %{nick}"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:201
-#: lib/retro_hex_chat_web/live/join_live.ex:209
+#: lib/retro_hex_chat_web/live/join_live.ex:220
+#: lib/retro_hex_chat_web/live/join_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "One to one, browser to browser."
 msgstr "Eén op één, van browser naar browser."
 
-#: lib/retro_hex_chat_web/live/join_live.ex:222
+#: lib/retro_hex_chat_web/live/join_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "1 seat open"
 msgstr "1 plek vrij"
 
-#: lib/retro_hex_chat_web/live/join_live.ex:225
+#: lib/retro_hex_chat_web/live/join_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "No seats left"
 msgstr "Geen plekken meer"
@@ -198,23 +198,24 @@ msgstr "Plek bezet"
 msgid "Somebody already took the seat. This match is full."
 msgstr "Iemand heeft de plek al ingenomen. Deze wedstrijd zit vol."
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:106
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:109
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:110
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:126
 #, elixir-autogen, elixir-format
 msgid "Chat"
 msgstr "Chat"
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:116
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:133
 #, elixir-autogen, elixir-format
 msgid "Go to the tab"
 msgstr "Naar het tabblad"
 
 #: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:71
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:122
 #, elixir-autogen, elixir-format
 msgid "It is already open in another window of yours."
 msgstr "Het staat al open in een ander venster van je."
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:114
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:131
 #, elixir-autogen, elixir-format
 msgid "Open in a tab"
 msgstr "In een tabblad openen"
@@ -228,3 +229,8 @@ msgstr "Gekopieerd!"
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr "Kopiëren"
+
+#: lib/retro_hex_chat_web/live/join_live.ex:61
+#, elixir-autogen, elixir-format
+msgid "Somebody shared this with you."
+msgstr "Iemand heeft dit met je gedeeld."

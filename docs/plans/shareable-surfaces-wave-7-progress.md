@@ -16,8 +16,8 @@ apagado.
 |---|---|---|
 | A | o render morto para de escrever (R.1) | **fechada** — commit desta iteração |
 | B | o read-model para de mentir (R.6) | **fechada** — commit desta iteração |
-| C | o silêncio do `← Chat` (R.10) e a barra coberta (R.7/R.13) | aberta |
-| D | o que vaza (R.3 metade barata, R.4) | aberta |
+| C | o silêncio do `← Chat` (R.10) e a barra coberta (R.7/R.13) | **fechada**, menos dois specs — ver Iteração 3 |
+| D | o que vaza (R.3 metade barata, R.4) | **fechada** |
 | E | o que apodrece (R.5, A.6, R.8) | aberta |
 | F | o resto (R.9, R.11, R.12, R.14, R.15) | aberta |
 
@@ -143,6 +143,135 @@ que ela é a segunda e por que a primeira não basta.
 
 ---
 
+## Iteração 3 — Fase C: três defeitos empilhados no mesmo clique
+
+A fase C começou como "acrescentar a nota que falta no `← Chat`" e terminou
+descobrindo que **a metade de focar a aba existente nunca rodou uma vez**. Três
+defeitos independentes estavam empilhados nesse clique, e cada um sozinho já
+matava o recurso:
+
+1. **`back_to_chat/1` não renderizava a nota.** O hook a procura por
+   `this.el.parentElement`, e o link não tinha pai próprio. Corrigido com um
+   `<div class="contents">` — transparente para o layout, real para o DOM.
+2. **`SurfacePresenceHook` não estava montado em lugar nenhum.** Ele está
+   registrado em `critical_hooks.js` desde a onda 6 e **nenhum template carrega
+   `phx-hook="SurfacePresenceHook"`**:
+
+   ```sh
+   grep -rn 'phx-hook="SurfacePresence' apps/retro_hex_chat_web/lib   # vazio, antes desta onda
+   ```
+
+   Ou seja: ninguém nunca respondeu a um pedido de foco. Todo clique em "ir para
+   a aba" esperava 300 ms, não recebia resposta e caía no fallback. O passo 2 do
+   contrato da onda 6 §1.1 (*"a aba satélite tenta `window.focus()`"*) não
+   existia. Montado agora no chat e nas quatro superfícies, só no render raiz —
+   embutida, a superfície está no endereço do chat, que já responde por ele.
+3. **`log.info` não existe.** O `log` de `lib/logger.js` é
+   `Object.freeze({debug, error, warn})`. O hook fazia:
+
+   ```js
+   requestFocus(...).then((answered) => {
+     if (answered) return;
+     log.info("[surfaces] no tab answered the focus request", { path });  // TypeError
+     this._giveUp = true;
+     this._note("true");
+   });
+   ```
+
+   O `TypeError` acontece **dentro de um `.then`**, então vira uma rejeição não
+   tratada: as duas linhas seguintes nunca rodam, a nota nunca aparece, e nada
+   em lugar nenhum diz por quê. É exatamente a regra "No silent catch" do
+   `AGENTS.md` sendo violada por uma promise em vez de um `try/catch`. O mesmo
+   `log.info` estava no `onError` do `SurfacePresenceHook`, onde um throw escapa
+   do handler e o `postMessage` da resposta abaixo dele nunca sai — então um
+   navegador que recusasse `focus()` também deixaria de responder.
+
+E um quarto, achado ao consertar os três: **a nota é estado de servidor que o JS
+muta.** `data-visible="false"` vem renderizado do servidor e o hook escreve
+`"true"` por cima; qualquer patch do LiveView naquela subárvore restaura o
+`false` — e o conjunto de abas abertas muda com frequência suficiente para
+causar um. Resolvido com `phx-update="ignore"` + `id` nas duas notas.
+
+### Como isso foi encontrado, porque o método importa
+
+Por eliminação, com o navegador, não por leitura. A sequência que resolveu:
+patch no `postMessage` da aba do chat para derrubar a resposta → a aba do chat
+logou que derrubou → sonda no DOM da aba da superfície mostrou o elemento certo,
+no pai certo, ainda `false` → espião no `BroadcastChannel` da superfície mostrou
+o pedido saindo e nenhuma resposta chegando. Nesse ponto só restava o
+`.then`, e aí o `log.info` salta aos olhos.
+
+Eu tinha teorizado quatro explicações antes disso e as quatro estavam erradas.
+**A sonda custou menos que a terceira teoria.**
+
+### O `default_maximized` não era o que eu escrevi na auditoria
+
+R.7 dizia "a janela maximizada cobre a barra de status" como se fosse um defeito
+de geometria. Os atributos das duas janelas são **idênticos** antes e depois do
+plano (`git show 3076e54e^:…/chat_live.html.heex | grep -n default_maximized`), e
+a barra de status em questão é a do **próprio chat**, no rodapé da janela do
+chat — uma janela maximizada por cima dela é como um gerenciador de janelas
+funciona.
+
+O que mudou foi o **fluxo**: antes, `/p2p <nick>` abria um diálogo e o pré-join
+era um diálogo; agora os dois são a antessala dentro de uma janela fixada e
+maximizada, que abre mais cedo. Os dois specs clicavam num controle do chat num
+momento em que ele não estava mais alcançável — e a capacidade não sumiu, mudou
+de casa (`p2p-room-cancel`, que é o `[Cancelar]` do P7). Os specs foram
+apontados para onde o controle está, e o de conferência agora minimiza a janela
+antes — que é o único estado em que aquele atalho é o que uma pessoa usaria.
+
+**Não verifiquei** se eles estavam verdes antes do plano: exigiria checkout de
+uma revisão pré-plano e rodar, com risco para o banco de e2e, e o conserto é o
+mesmo nos dois casos.
+
+### Os dois specs de pré-join que continuam vermelhos
+
+Eles **não** são o que o Apêndice A dizia, e eu repeti o erro dele na R.13:
+
+* `pre-join can enter with microphone and camera disabled` — tirei a sondagem
+  morta do `localStorage` (a preferência foi para o servidor no `78ef0529`), e
+  ele passou a falhar uma linha adiante: depois de cancelar e reabrir, a caixa
+  do microfone volta **marcada**. Ou seja, a preferência não está sendo
+  lembrada. Isso é produto, não teste, e é uma investigação própria.
+* `pre-join permission denial can retry and still enter receive-only` — a caixa
+  de aviso aparece com o botão `Retry` e **texto vazio**. Localizei até
+  `_showWarning(message)` receber uma mensagem vazia; não achei a origem e não
+  fui adiante.
+
+Os dois precedem o plano. Estão descritos aqui em vez de meio-consertados.
+
+---
+
+## Iteração 4 — Fase D: a regra de privacidade passa a ser uma coisa só
+
+`listed_channel?/1` vivia privado no `JoinLive` e era a segunda implementação de
+uma pergunta que o domínio já respondia em outro lugar. Virou
+`Channels.Visibility.nameable?/1`, ao lado do `channels_of/2` que responde a
+mesma família de pergunta para o `/whois` — com o `@doc` dizendo por que as duas
+regras diferem (`+s` basta para quem já está dentro; para um estranho `+p` e
+`+i` contam também).
+
+Dois consumidores agora:
+
+* **`SpaceLive.allowed?/2`** parou de nomear o canal na recusa. O `CallLive`
+  nunca nomeou, o que já provava que a regra era conhecida — o space era a
+  exceção, não o padrão.
+* **`JoinLive`** passou a alimentar `page_title` e `page_description` com o
+  `subject/1`, que é onde a regra mora. As meta tags eram a superfície para a
+  qual a regra foi escrita (`wave-1 §2.5`) e nunca a receberam: até agora todo
+  link compartilhado desdobrava como o texto genérico da landing.
+
+O teste é `get/2` e não `live/2`, porque o `<head>` só existe no render morto —
+que também é a única coisa que um crawler ou um desdobrador de link busca. Três
+casos: o head diz o que foi compartilhado; nunca nomeia canal `+s`; e um link
+morto não diz nada sobre o que ele apontava.
+
+**A metade cara de R.3 não foi feita** — o endereço `/space/<base64>` continua
+legível. É a decisão **D7.1**, ainda sem resposta.
+
+---
+
 ## Aprendizados que podem sair daqui
 
 Candidatos a virar regra durável quando a onda fechar. **Ainda não movidos.**
@@ -157,17 +286,32 @@ Candidatos a virar regra durável quando a onda fechar. **Ainda não movidos.**
 3. **Uma recusa tem que sobreviver ao render morto**, mas uma recusa que depende
    de um assento ainda não tomado não pode. As duas metades juntas são o desenho
    do portão. Destino provável: `guide/surfaces.md`.
+4. **Um hook registrado não é um hook montado.** `critical_hooks.js` aceita
+   qualquer nome; só um `phx-hook=` no template o coloca para rodar, e não há
+   nada que reclame de um hook registrado que ninguém monta. Candidato a virar
+   uma checagem em vez de um parágrafo — `lint.hooks` já lê os dois lados.
+   Destino provável: `AGENT-GUIDE §15`, ou melhor, o próprio linter.
+5. **"No silent catch" vale para promises.** Um throw dentro de um `.then` come o
+   resto do callback e não aparece em lugar nenhum. Destino provável:
+   `.claude/rules/assets-js.md`, que hoje só fala de `try/catch`.
+6. **Estado que o JS escreve por cima de markup do servidor precisa de
+   `phx-update="ignore"`**, ou o próximo patch o apaga. Destino provável:
+   `AGENT-GUIDE §15.1`.
 
 ---
 
 ## Armadilhas para a próxima sessão
 
-* **A fase C começa por diagnóstico, não por conserto.** Não sei se a barra de
-  status coberta é regressão do plano; `default_maximized` já estava nas duas
-  janelas antes dele. Rode os dois specs numa revisão pré-plano **antes** de
-  mexer em geometria.
-* **D7.2 bloqueia o fechamento da fase C.** O spec do answerer que recarrega
-  fica vermelho até alguém decidir entre consertar e `fixme` linkado.
+* **Três specs continuam vermelhos e cada um é uma coisa diferente**: os dois de
+  pré-join (produto, descritos na Iteração 3) e o do answerer que recarrega
+  (**D7.2**, esperando decisão). Nenhum deles é regressão desta onda.
+* **`RetroHexChat.GroupCall.RuntimeTest` "join_call/5 reconnects a briefly
+  disconnected participant" falhou uma vez em `make ci` e passou sozinho e na
+  execução seguinte** (`rejoined.participant.id == payload.participant.id`,
+  9690 contra 9689). Não é desta onda — nada aqui toca `GroupCall` — mas é um
+  teste sensível a ordem/semente e vale saber antes de culpar a sua mudança.
+* **A fase E mexe em `ShareLinks.create/1`**, que quatro superfícies chamam.
+  Reusar o link vivo muda o que "compartilhar" significa — ver o risco no plano.
 * **O `msgid` do convite (fase E) muda em 13 locales** — `extract` e `merge` no
   mesmo commit, senão o `make ci` de outra pessoa quebra.
 * **`make i18n.catalog.check` já reprova no `HEAD`** e não é culpa desta onda

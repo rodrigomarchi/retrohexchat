@@ -72,6 +72,10 @@ defmodule RetroHexChatWeb.App.PlayLive do
           height because something above it does. Without this the window
           manager runs, opens the window, and lays it out 1280x0. --%>
     <div class="bg-background text-text font-system flex h-screen flex-col">
+      <%!-- This tab answers when the chat asks for it by address. Only in the
+            standalone render: embedded, the address is the chat's own and the
+            chat already answers for it. --%>
+      <div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
       <.desktop
         id="play-desktop"
         persist_key="play"

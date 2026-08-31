@@ -60,9 +60,17 @@ defmodule RetroHexChatWeb.Components.UI.SurfaceTabLink do
       </.link>
       <%!-- Only ever shown by the hook, and only after a tab failed to come
             forward: the honest sentence for a window that exists somewhere the
-            browser will not let us reach. --%>
+            browser will not let us reach.
+
+            `phx-update="ignore"` because the hook writes `data-visible` and the
+            server does not know it did. Without it the next patch of this
+            subtree — and the open set changes often enough to cause one —
+            restores the server's `false` and the sentence disappears again,
+            which is the silence this element exists to end. --%>
       <p
         :if={@open?}
+        id={"surface-tab-note-#{Base.url_encode64(@path, padding: false)}"}
+        phx-update="ignore"
         class="surface-tab-note text-muted-foreground text-xs"
         data-surface-tab-note
         data-visible="false"
@@ -95,16 +103,39 @@ defmodule RetroHexChatWeb.Components.UI.SurfaceTabLink do
   @spec back_to_chat(map()) :: Phoenix.LiveView.Rendered.t()
   def back_to_chat(assigns) do
     ~H"""
-    <.link
-      :if={@open?}
-      href={Paths.chat_path()}
-      id="surface-back-to-chat"
-      phx-hook="SurfaceTabLinkHook"
-      data-surface-path={Paths.chat_path()}
-      data-testid={@testid}
-    >
-      ← {dgettext("share", "Chat")}
-    </.link>
+    <%!-- `contents` so the status bar lays this out as if the wrapper were not
+          here. The wrapper exists for the note: the hook finds it through the
+          link's own parent, so a link with no parent of its own is a link whose
+          refusal has nowhere to be said. --%>
+    <div :if={@open?} class="contents">
+      <.link
+        href={Paths.chat_path()}
+        id="surface-back-to-chat"
+        phx-hook="SurfaceTabLinkHook"
+        data-surface-path={Paths.chat_path()}
+        data-testid={@testid}
+      >
+        ← {dgettext("share", "Chat")}
+      </.link>
+      <%!-- Shown only by the hook, and only once a tab has failed to come
+            forward. Without it the first click is silent and the second one
+            opens a second chat — which is the takeover this link exists to
+            avoid, arriving one click later than it used to.
+
+            `phx-update="ignore"` for the same reason as its sibling above: the
+            hook writes `data-visible`, the server never learns it, and a patch
+            would put the sentence away again. --%>
+      <p
+        id="surface-back-to-chat-note"
+        phx-update="ignore"
+        class="surface-tab-note text-muted-foreground text-xs"
+        data-surface-tab-note
+        data-visible="false"
+        data-testid={@testid && "#{@testid}-note"}
+      >
+        {dgettext("share", "It is already open in another window of yours.")}
+      </p>
+    </div>
     <.link :if={!@open?} navigate={Paths.chat_path()} data-testid={@testid}>
       ← {dgettext("share", "Chat")}
     </.link>

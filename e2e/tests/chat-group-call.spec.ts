@@ -780,20 +780,6 @@ async function participantMediaEnabled(
   return participantRow(page, nickname).getAttribute(attr);
 }
 
-async function storedPrejoinPreference(page: Page, key: "audio" | "video") {
-  return page.evaluate((preferenceKey) => {
-    const storageKey = Object.keys(window.localStorage).find((candidate) =>
-      candidate.startsWith("rhc:group-call:prejoin:"),
-    );
-
-    if (!storageKey) return null;
-    const preferences = JSON.parse(
-      window.localStorage.getItem(storageKey) || "{}",
-    );
-    return preferences[preferenceKey] ?? null;
-  }, key);
-}
-
 async function denyUserMedia(page: Page) {
   await page.evaluate(() => {
     Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
@@ -1062,6 +1048,18 @@ test.describe("Channel group calls", () => {
       await alice.page.setViewportSize({ width: 1280, height: 720 });
       await expect(groupCallWindow(alice.page)).toBeVisible();
       await groupCallSection(alice.page, "call").click();
+
+      // The status bar entry is the way back to a call window that is out of
+      // the way, so it has to be reached with the window out of the way. The
+      // call window is pinned and maximized, and the chat's status bar runs
+      // along the chat window's own bottom edge — underneath it. Minimizing
+      // first is not the test being careful; it is the only state in which this
+      // control is the one a person would reach for.
+      await alice.page
+        .getByTestId("group-call-window")
+        .locator('[data-window-control="minimize"]')
+        .click();
+      await expect(groupCallWindow(alice.page)).toBeHidden();
       await groupCallStatusBar(alice.page).click();
       await expect(groupCallWindow(alice.page)).toBeVisible();
 
@@ -1288,15 +1286,16 @@ test.describe("Channel group calls", () => {
       await expect(groupCallPrejoinDialog(alice.page)).toBeVisible();
       await groupCallPrejoinAudio(alice.page).setChecked(false);
       await groupCallPrejoinVideo(alice.page).setChecked(false);
-      await expect
-        .poll(() => storedPrejoinPreference(alice.page, "audio"))
-        .toBe(false);
-      await expect
-        .poll(() => storedPrejoinPreference(alice.page, "video"))
-        .toBe(false);
       await groupCallPrejoinCancel(alice.page).click();
       await expect(groupCallPrejoinDialog(alice.page)).toBeHidden();
 
+      // The choice is remembered, and this is the only assertion that says so
+      // that is true of where it is remembered. It used to poll localStorage for
+      // an `rhc:group-call:prejoin:` key, which stopped existing when device
+      // preferences moved to the trusted-device record on the server — so the
+      // helper returned null forever and the test failed on a feature that
+      // works. Ask the screen: it is the same question, and it survives the
+      // answer moving.
       await groupCallButton(alice.page).click();
       await expect(groupCallPrejoinDialog(alice.page)).toBeVisible();
       await expect(groupCallPrejoinAudio(alice.page)).not.toBeChecked();

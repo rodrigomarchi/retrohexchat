@@ -53,7 +53,39 @@ test("a surface goes back to the chat tab instead of opening a second one (K5)",
     await back.click();
     await expect(playTab).toHaveURL(/\/play\/hex_pong$/);
     expect(ctx.pages().length).toBe(pagesBefore);
-    await expect(playTab.getByTestId("play-back-to-chat-note")).toHaveCount(0);
+    // The note stays hidden while a tab is answering. Asserted on the element
+    // rather than on its absence: this used to be `toHaveCount(0)`, which was
+    // true because nothing rendered a note at all, and so could never fail.
+    await expect(playTab.getByTestId("play-back-to-chat-note")).toHaveAttribute(
+      "data-visible",
+      "false",
+    );
+
+    // Now the half that only degrading covers: the tab exists — the server still
+    // says so, so the link keeps the "go back" shape — but its answer never
+    // arrives. That is the permanent state of a chat tab in another browser
+    // profile, on another monitor, or on the laptop in the other room, because
+    // `BroadcastChannel` crosses none of those. Reproduced by dropping the grant
+    // on its way out of the chat tab, which is the same silence from the
+    // surface's side.
+    await chatTab.evaluate(() => {
+      const original = BroadcastChannel.prototype.postMessage;
+      BroadcastChannel.prototype.postMessage = function (message) {
+        if (message && message.type === "surface:focused") return;
+        return original.call(this, message);
+      };
+    });
+    await back.click();
+    await expect(playTab.getByTestId("play-back-to-chat-note")).toHaveAttribute(
+      "data-visible",
+      "true",
+      { timeout: 15_000 },
+    );
+    // Still here, and still one tab: saying so is the whole point, and opening a
+    // second chat instead would be the takeover this link exists to avoid.
+    await expect(playTab).toHaveURL(/\/play\/hex_pong$/);
+    expect(ctx.pages().length).toBe(pagesBefore);
+    await shot(playTab, "surface-back-to-chat-no-answer");
 
     // And with no chat tab left, the same link is a plain way in again.
     await chatTab.close();

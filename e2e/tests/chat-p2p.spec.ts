@@ -895,7 +895,12 @@ test.describe("In-chat P2P session", () => {
       await sendP2PInvite(alice, bob.nick);
       await expect(statusBarP2P(alice.page)).toContainText("waiting for");
 
-      await statusBarStop(alice.page).click();
+      // Cancel from the room the invite drops the host into. It used to be the
+      // status bar's stop button, because `/p2p <nick>` opened a dialog and left
+      // the chat behind it; the starting room is a pinned maximized window over
+      // the chat's own status bar, so the host reaches P7's button where P7's
+      // button now is.
+      await alice.page.getByTestId("p2p-room-cancel").click();
       await expect(statusBarP2P(alice.page)).toBeHidden();
       await alice.chat.expectMessageVisible("cancelled the P2P invite");
     } finally {

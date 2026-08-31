@@ -16,7 +16,10 @@ const SurfacePresenceHook = {
     this._channel = openChannel();
     this._stop = answerFocusRequests(this._channel, window.location.pathname, {
       focus: () => window.focus(),
-      onError: (error) => log.info("[surfaces] the browser refused to focus this tab", error),
+      // `debug` rather than `info`, which the frozen logger does not have: a
+      // throw here escapes the request handler and the grant below it is never
+      // posted, so a browser that refuses focus would also stop answering.
+      onError: (error) => log.debug("[surfaces] the browser refused to focus this tab", error),
     });
   },
 

@@ -112,6 +112,56 @@ defmodule RetroHexChatWeb.JoinLiveTest do
     end
   end
 
+  # The preview tags are the surface the privacy rule was written for: a card
+  # body is read by somebody who already followed the link, and a preview is read
+  # by everybody the link was forwarded to. Asserted on `get/2` rather than
+  # `live/2` because the `<head>` only exists in the dead render — which is also
+  # the only thing a crawler or a chat unfurler ever fetches.
+  describe "the link preview" do
+    setup do
+      channel = "#prev#{uid()}"
+      {:ok, channel_pid} = Supervisor.start_child(channel)
+
+      on_exit(fn ->
+        if Process.alive?(channel_pid) do
+          Supervisor.stop_child(Supervisor, channel_pid)
+        end
+      end)
+
+      %{channel: channel}
+    end
+
+    test "says what was shared instead of the site's generic blurb", ctx do
+      %{conn: conn, channel: channel} = ctx
+      {:ok, _state} = Server.join(channel, ctx.nick)
+      slug = share(ctx, "space", %{"space_id" => channel, "mode" => "channel"})
+
+      head = conn |> get(~p"/join/#{slug}") |> html_response(200) |> head_of()
+
+      assert head =~ channel
+      refute head =~ "Run your own chat server"
+    end
+
+    test "never names a channel the reader could not have listed", ctx do
+      %{conn: conn, channel: channel} = ctx
+      {:ok, _state} = Server.join(channel, ctx.nick)
+      :ok = Server.set_mode(channel, ctx.nick, "+s")
+
+      slug = share(ctx, "space", %{"space_id" => channel, "mode" => "channel"})
+
+      head = conn |> get(~p"/join/#{slug}") |> html_response(200) |> head_of()
+
+      refute head =~ channel
+      assert head =~ "A space on RetroHexChat"
+    end
+
+    test "a dead link says nothing about what it used to point at", %{conn: conn} do
+      head = conn |> get(~p"/join/abcdefghjk") |> html_response(200) |> head_of()
+
+      assert head =~ "Join - RetroHexChat"
+    end
+  end
+
   describe "a link that no longer works" do
     test "an unknown slug says so without saying whether it ever existed", %{conn: conn} do
       {:ok, _view, html} = live(conn, ~p"/join/abcdefghjk")
@@ -266,6 +316,14 @@ defmodule RetroHexChatWeb.JoinLiveTest do
     end
   catch
     :exit, _reason -> :ok
+  end
+
+  # Only the head: the card body legitimately names things the tags must not.
+  defp head_of(html) do
+    case String.split(html, "</head>", parts: 2) do
+      [head, _body] -> head
+      [whole] -> whole
+    end
   end
 
   defp share(ctx, kind, target) do
