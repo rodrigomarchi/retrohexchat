@@ -35,6 +35,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
+  alias RetroHexChat.Services.NickServ
   alias RetroHexChat.ShareLinks
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
@@ -354,8 +355,19 @@ defmodule RetroHexChatWeb.App.P2PLive do
   defp resume_started(socket, %LobbySession{status: "connected"}) do
     case socket.assigns.p2p_session do
       %{} = p2p ->
+        # `:connected` is the domain's own answer, not an optimism: a page that
+        # arrives into a running session has to say so, because the media hook
+        # only auto-starts the call once the session reads as connected — and a
+        # page that never starts its own media is a page the other side sees as
+        # a black tile.
         assign(socket,
-          p2p_session: %{p2p | room_ready: true, peer_ready: true, session_started: true}
+          p2p_session: %{
+            p2p
+            | room_ready: true,
+              peer_ready: true,
+              session_started: true,
+              state: :connected
+          }
         )
 
       nil ->
@@ -378,6 +390,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
     with {:ok, token} <- require_token(token),
          {:ok, db_session} <- fetch_session(token),
          {:ok, user_id} <- require_registered(socket.assigns.nickname),
+         :ok <- require_identified(socket.assigns.nickname),
          :ok <- Lobby.Policy.can_join?(user_id, db_session) do
       {:ok, db_session, user_id, role_of(db_session, user_id)}
     end
@@ -397,6 +410,25 @@ defmodule RetroHexChatWeb.App.P2PLive do
         {:error, gone_message()}
     end
   end
+
+  # Asked after registration, because "you are not registered" is the concrete
+  # answer for a nickname that is not in the table, and this one is the answer
+  # for a nickname that is. Registration alone is not enough at this door:
+  # being a participant is recorded as a `registered_nicks` id, so whoever is
+  # merely holding the nickname would otherwise walk into a session that
+  # belongs to the person who owns it. Identification is not the chat's private
+  # fact — NickServ keeps the set, and this asks the same authority the
+  # conference does.
+  defp require_identified(nickname) when is_binary(nickname) do
+    if NickServ.identified?(nickname) do
+      :ok
+    else
+      {:error, dgettext("p2p", "You must be identified with NickServ to use P2P sessions.")}
+    end
+  end
+
+  defp require_identified(_nickname),
+    do: {:error, dgettext("p2p", "You must be identified with NickServ to use P2P sessions.")}
 
   defp require_registered(nickname) when is_binary(nickname) do
     case SessionHelpers.resolve_user_id(nickname) do

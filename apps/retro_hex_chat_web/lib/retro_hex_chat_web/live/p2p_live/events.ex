@@ -1310,20 +1310,23 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
   # ICE config + the role-specific start event, exactly once per
   # (re)signaling round.
-  defp start_webrtc(socket, p2p, next_state \\ :connecting)
+  defp start_webrtc(socket, p2p, next_state \\ :connecting, opts \\ [])
 
-  defp start_webrtc(socket, %{webrtc_started: true} = _p2p, _next_state), do: socket
+  defp start_webrtc(socket, %{webrtc_started: true} = _p2p, _next_state, _opts), do: socket
 
-  defp start_webrtc(socket, p2p, next_state) do
+  defp start_webrtc(socket, p2p, next_state, opts) do
     event =
       case p2p.role do
         :creator -> "lobby_start_offer"
         :peer -> "lobby_start_answer"
       end
 
+    payload =
+      Map.put(webrtc_payload(p2p), :connection_reset, Keyword.get(opts, :connection_reset, false))
+
     socket
     |> put_p2p(%{p2p | state: next_state, webrtc_started: true})
-    |> push_event(event, webrtc_payload(p2p))
+    |> push_event(event, payload)
   end
 
   defp restart_webrtc_from_signaling(socket, p2p, reason) do
@@ -1354,7 +1357,12 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     if p2p.webrtc_started do
       push_event(socket, "lobby_restart", Map.put(webrtc_payload(p2p), :reason, reason))
     else
-      start_webrtc(socket, p2p)
+      # A page that has no connection yet but is being told to restart is a page
+      # that opened into a session already running — a second tab that took the
+      # seat, or a reload mid-call. It has to start as a *rebuild*, because the
+      # peer kept its own signalling epoch and would read a fresh page's first
+      # offer as stale for the rest of the session.
+      start_webrtc(socket, p2p, :connecting, connection_reset: true)
     end
   end
 

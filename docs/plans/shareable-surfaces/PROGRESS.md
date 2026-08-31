@@ -1602,3 +1602,82 @@ aumentou a rotatividade de processos o bastante para revelá-la. O enrich passou
 descartar a linha, do mesmo jeito que o scan já descarta um processo que morreu
 antes dele, com teste de regressão.
 
+## Iteração 18 — o que faltava para a onda 4 fechar de verdade
+
+Perguntado se dava para declarar a onda concluída, conferi a tabela de TDD da
+4B em vez de responder de memória: **11 das 13 linhas estavam feitas.** As
+outras quatro valeram um dia a mais, e uma delas era um buraco de verdade.
+
+### A porta que não existia
+
+`/p2p/:token` exigia **registrado e participante**, não identificado. Ser
+participante é gravado como um id de `registered_nicks`, então quem estivesse
+apenas *segurando* o apelido — sem ter provado ao NickServ que é dono dele —
+entrava na sessão de quem é. A linha `não identificado → mensagem da política`
+da tabela previa exatamente isso, e eu tinha traduzido "registrado" como se
+fosse a mesma coisa.
+
+`NickServ.identified?/1`, depois de `require_registered`, e nessa ordem: "você
+não está registrado" é a resposta concreta para um apelido que não está na
+tabela, e esta é a resposta para um que está. Invertida, a segunda cláusula
+seria inalcançável — um apelido não registrado nunca pode estar identificado.
+
+### O epoch é por página, e uma segunda aba sempre começa do um
+
+O `p2p-surface.spec.ts` novo caiu com "Reconnecting (3/3)" e nenhuma mídia. A
+causa está em duas linhas de `lobby_connection.js`:
+
+* `isStaleEpoch(current, epoch) = epoch && current > 0 && epoch < current`;
+* a guarda de staleness roda **antes** da leitura de `connection_reset`, num
+  bloco cujo próprio comentário diz "o epoch não precisa avançar — a flag de
+  reset sozinha decide".
+
+Uma página recém-aberta começa em epoch 1. O par que ficou de pé está em 2 ou
+mais, porque `handleRestart` avança o dele. Então **toda** oferta da página nova
+lia como stale, para sempre. É por isso que "P2P answerer reloads while applying
+the initial offer" está vermelho desde antes desta sessão, e era por isso que o
+takeover não trazia a mídia de volta.
+
+Duas correções, cobertas por quatro testes de vitest:
+
+1. um `offer` com `connection_reset: true` passa pela guarda de staleness — que
+   é o que o comentário já prometia;
+2. quem começa dentro de uma sessão **que já está correndo** anuncia o rebuild:
+   o servidor manda `connection_reset` no `lobby_start_offer` /
+   `lobby_start_answer` quando o portão disse `restart`, e o answerer nessa
+   situação pede a renegociação em vez de esperar uma oferta que não vem.
+
+Isso não consertou o teste vermelho pré-existente — ele tem mais coisa dentro —
+mas consertou a classe, e nada regrediu: 24 de 26 nas quatro suítes, com os dois
+vermelhos de sempre.
+
+### O spec que eu escrevi provava o que a onda não pediu
+
+A primeira versão do `p2p-surface.spec.ts` conectava a sessão **no chat** e
+depois a migrava para `/p2p/:token` no meio da chamada. A tabela pedia "mídia
+bidirecional real, arquivo no meio da chamada, jogo no meio da chamada" **na
+superfície** — não migração a quente, que é o caminho de recuperação que já
+estava quebrado.
+
+Reescrito para o que a onda pede e para a forma que a pessoa realmente encontra:
+os dois na sala de partida, a anfitriã abre o endereço **antes** de iniciar, e a
+negociação inteira acontece lá. Verde, com RTP real nos dois sentidos, arquivo
+baixado de verdade e o Hex Pong rodando — tudo numa aba sem chat dentro.
+
+**A limitação que fica escrita:** assumir uma sessão **já conectada** numa
+segunda aba move o assento e a janela deslocada avisa, mas a mídia não volta
+sozinha — mesmo caminho do vermelho pré-existente. O `[Trazer de volta pra cá]`
+devolve o assento, então não é um beco; é uma renegociação que ainda não fecha.
+
+### As outras duas linhas
+
+`terminate/2` inesperado não encerra a sessão (dois testes: o servidor não fica
+terminal, e o endereço continua funcionando depois), e fechar a janela do chat
+pergunta sem derrubar a âncora — que é como os hooks de mídia, arquivo e jogo
+encontram a `RTCPeerConnection` compartilhada.
+
+E o `ux.md` §2.5 foi corrigido antes do código, como manda a regra do arquivo: o
+desenho não mostrava os dispositivos, e a sala de partida do P2P é metade
+roster, metade dispositivos. O mockup do jogo multiplayer ficou ao lado, sem a
+metade que um jogo não tem.
+

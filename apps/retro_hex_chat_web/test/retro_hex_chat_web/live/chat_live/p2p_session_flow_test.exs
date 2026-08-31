@@ -1088,6 +1088,30 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       assert %{displaced: true} = :sys.get_state(second.pid).socket.assigns.p2p_session
     end
 
+    # The X asks rather than acts, and asking must not take the connection down
+    # with the question: the anchor is what the media, file and game hooks find
+    # the shared peer connection through.
+    test "closing the window asks, and the session survives the question", %{conn: conn} do
+      ctx = mount_pair(conn, "p2pwc#{uid()}", "p2pwd#{uid()}")
+      session = invite(ctx)
+      accept_invite(ctx, session.token)
+      flush(ctx.view_a)
+      render_click(p2p_view(ctx.view_a), "lobby_connected", %{})
+
+      render_click(p2p_view(ctx.view_a), "p2p_window_close", %{})
+
+      assert has_element?(ctx.view_a, "#p2p-confirm-dialog-show-trigger")
+      assert has_element?(ctx.view_a, ~s([data-testid="p2p-webrtc"]))
+      assert %{state: :connected} = p2p_assigns(ctx.view_a)
+      assert {:ok, %{status: "connected"}} = Lobby.get_session(session.token)
+
+      render_click(p2p_view(ctx.view_a), "p2p_confirm_cancel", %{})
+
+      refute has_element?(ctx.view_a, "#p2p-confirm-dialog-show-trigger")
+      assert has_element?(ctx.view_a, ~s([data-testid="p2p-webrtc"]))
+      assert {:ok, %{status: "connected"}} = Lobby.get_session(session.token)
+    end
+
     test "ending from a window that holds the seat closes the session", %{conn: conn} do
       ctx = mount_pair(conn, "p2phe#{uid()}", "p2phf#{uid()}")
       session = invite(ctx)

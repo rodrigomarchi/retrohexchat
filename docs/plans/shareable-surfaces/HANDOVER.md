@@ -140,8 +140,12 @@ já funciona; o que a onda 5 acrescenta é o endereço.
      próprio.
    * *recuperação de mídia depois de um reload no meio do primeiro offer* —
      `chat-call-fault-injection.spec.ts` "P2P answerer reloads while applying
-     the initial offer". O reload chega com a sessão em `lobby`, o replay foi
-     zerado pela desconexão, e o answerer não pede a re-oferta.
+     the initial offer". Metade da causa foi corrigida na iteração 18 (o epoch
+     é por página, e uma página nova começa do um), mas o teste continua
+     vermelho: sobra mais coisa nesse caminho. **A mesma limitação vale para
+     assumir uma sessão já conectada numa segunda aba:** o assento se move e a
+     janela deslocada avisa, mas a mídia não volta sozinha — `[Trazer de volta
+     pra cá]` devolve o assento, então não é um beco.
 
    Playwright não está no `make ci`, então a suíte derivou. Não perca tempo
    achando que foi você.

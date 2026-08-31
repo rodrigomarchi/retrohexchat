@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.App.P2PLiveTest do
 
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.Registry
+  alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChat.ShareLinks
@@ -58,6 +59,13 @@ defmodule RetroHexChatWeb.App.P2PLiveTest do
 
   defp assigns(view), do: :sys.get_state(view.pid).socket.assigns
 
+  defp stop_liveview(view) do
+    ref = Process.monitor(view.pid)
+    GenServer.stop(view.pid, :normal)
+    assert_receive {:DOWN, ^ref, :process, _pid, _reason}, 2_000
+    :ok
+  end
+
   defp redirected_to_connect({:error, {_kind, %{to: to}}}), do: to == "/connect"
   defp redirected_to_connect(_other), do: false
 
@@ -90,6 +98,22 @@ defmodule RetroHexChatWeb.App.P2PLiveTest do
         conn |> chat_conn(creator.nickname) |> live(~p"/p2p/#{session.token}")
 
       assert html =~ ~s(data-testid="p2p-denied")
+    end
+
+    # Being a participant is recorded as a registered-nick id, so registration
+    # alone would let whoever is currently holding the nickname walk into a
+    # session that belongs to the person who owns it.
+    test "a registered nickname that has not identified is refused", %{conn: conn} do
+      creator = register("Cr")
+      peer = register("Pe") |> identify()
+      session = open_session(creator, peer)
+
+      {:ok, _view, html} =
+        conn |> chat_conn(creator.nickname) |> live(~p"/p2p/#{session.token}")
+
+      assert html =~ ~s(data-testid="p2p-denied")
+      assert html =~ "identified with NickServ"
+      refute html =~ ~s(data-testid="p2p-starting-room")
     end
 
     test "an unregistered nickname is told so, in the policy's words", %{conn: conn} do
@@ -218,6 +242,44 @@ defmodule RetroHexChatWeb.App.P2PLiveTest do
                Lobby.get_session(ctx.session.token)
 
       assert {:ok, %{live?: false}} = ShareLinks.describe(link.slug)
+    end
+  end
+
+  # The same rule the conference has: the room decides who is in the session,
+  # not the tab. A page going away starts the rejoin grace; only an explicit
+  # end is terminal.
+  describe "a page going away" do
+    setup %{conn: conn} do
+      creator = register("Host") |> identify()
+      peer = register("Guest") |> identify()
+      session = open_session(creator, peer)
+
+      {:ok, view, _html} =
+        conn |> chat_conn(creator.nickname) |> live(~p"/p2p/#{session.token}")
+
+      %{creator: creator, peer: peer, session: session, view: view}
+    end
+
+    test "an unexpected terminate does not end the session", ctx do
+      render_submit(ctx.view, "p2p_room_ready", %{"p2p_setup" => @setup_defaults})
+      render_click(ctx.view, "lobby_webrtc_ready", %{})
+
+      stop_liveview(ctx.view)
+
+      assert {:ok, %{status: status}} = Lobby.get_session(ctx.session.token)
+      refute LobbySession.terminal?(status)
+    end
+
+    test "and the address still works when it comes back", ctx do
+      stop_liveview(ctx.view)
+
+      {:ok, _view, html} =
+        build_conn()
+        |> chat_conn(ctx.creator.nickname, pre_identified: true)
+        |> live(~p"/p2p/#{ctx.session.token}")
+
+      assert html =~ ~s(data-testid="p2p-starting-room")
+      refute html =~ ~s(data-testid="p2p-denied")
     end
   end
 

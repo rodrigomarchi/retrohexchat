@@ -522,6 +522,79 @@ describe("createLobbyConnection", () => {
     expect(conn.pc.remoteDescription).toBeNull();
   });
 
+  // The epoch is per page: a page opened a moment ago starts at one while the
+  // peer that stayed up is further along. Without this, every offer a second
+  // tab or a reloaded page sends reads as stale for the rest of the session,
+  // and the media never comes back.
+  it("rebuilds for a connection-reset offer whose epoch is BEHIND the current one", async () => {
+    const { conn, pushed } = makeConn();
+    await conn.handleStartAnswer({ ice_servers: [], turn_only: false });
+    conn.signalingEpoch = 5;
+    const oldPc = conn.pc;
+
+    await conn.handleSignal({
+      type: "offer",
+      sdp: "fresh-page-offer",
+      epoch: 1,
+      offer_id: "p2p-1-1",
+      connection_reset: true,
+    });
+
+    expect(oldPc.connectionState).toBe("closed");
+    expect(conn.pc).not.toBe(oldPc);
+    expect(pushesOf(pushed, "lobby_signal").at(-1)).toEqual(
+      expect.objectContaining({ type: "answer" }),
+    );
+  });
+
+  it("still ignores a stale offer that does not claim a rebuild", async () => {
+    const { conn } = makeConn();
+    await conn.handleStartAnswer({ ice_servers: [], turn_only: false });
+    conn.signalingEpoch = 5;
+
+    await conn.handleSignal({
+      type: "offer",
+      sdp: "stale-offer",
+      epoch: 1,
+      offer_id: "p2p-1-1",
+    });
+
+    expect(conn.pc.remoteDescription).toBeNull();
+  });
+
+  // Starting into a session that is already running: the first offer has to
+  // announce itself as a rebuild, or the peer discards it by epoch.
+  it("marks the initiator's first offer as a rebuild when told to reset", async () => {
+    const { conn, pushed } = makeConn();
+
+    await conn.handleStartOffer({
+      ice_servers: [],
+      turn_only: false,
+      connection_reset: true,
+    });
+    conn.pc.onnegotiationneeded();
+    await macrotask();
+
+    expect(pushesOf(pushed, "lobby_signal").at(-1)).toEqual(
+      expect.objectContaining({ type: "offer", connection_reset: true }),
+    );
+  });
+
+  it("asks the initiator to rebuild when the answerer resumes into a running session", async () => {
+    const { conn, pushed } = makeConn();
+
+    await conn.handleStartAnswer({
+      ice_servers: [],
+      turn_only: false,
+      connection_reset: true,
+    });
+    await flush();
+
+    expect(pushesOf(pushed, "lobby_renegotiate").at(-1)).toEqual(
+      expect.objectContaining({ connection_reset: true }),
+    );
+  });
+
   it("rebuilds the answerer connection for a newer connection-reset offer", async () => {
     const { conn, pushed } = makeConn();
     await conn.handleStartAnswer({ ice_servers: [], turn_only: false });

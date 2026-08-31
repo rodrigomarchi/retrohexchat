@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **222 spec files** under `e2e/tests/`.
-- **462 Playwright `test()` cases**.
-- **455 documented flows**, 454 done, 1 not done.
+- **223 spec files** under `e2e/tests/`.
+- **465 Playwright `test()` cases**.
+- **458 documented flows**, 457 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -425,6 +425,9 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N39 | A conference participant reloads while applying the SFU offer and rejoins media | `tests/chat-call-fault-injection.spec.ts` | done |
 | N40 | Conference retry rejoins media when the participant PeerServer disappears | `tests/chat-call-fault-injection.spec.ts` | done |
 | N41 | The conference recovery-error Leave button opens confirm and exits cleanly | `tests/chat-call-fault-injection.spec.ts` | done |
+| N42 | The P2P session at /p2p/:token carries real video both ways, and file transfer and the game share the same connection | `tests/p2p-surface.spec.ts` | done |
+| N43 | Opening the session at its own address moves it out of the chat's window, and the displaced window takes it back | `tests/p2p-surface.spec.ts` | done |
+| N44 | Closing the P2P tab does not end the session for the other side | `tests/p2p-surface.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

@@ -219,35 +219,75 @@ dois hosts mostram todas as vezes.
 O seletor é `components/ui/space_character_select.ex`, que já existe e já é o
 primeiro estado ao entrar no space.
 
-### 2.5 Sala de partida — jogo multiplayer e sessão P2P
+### 2.5 Sala de partida — sessão P2P e jogo multiplayer
 
 A única antessala com estado persistido, e a única com host.
 
+A sessão P2P foi a primeira a ganhá-la (onda 4B), e ela mostra a forma inteira:
+o roster à esquerda do que cada um vai usar, porque uma sessão P2P é uma
+conversa com câmera e microfone e a escolha dos dispositivos é metade do que
+`[Pronto]` significa.
+
+```
+┌─ P2P · bob ────────────────────────────────── [_][□][X] ┐
+├─────────────────────────────────────────────────────────┤
+│  ┌───────────────┐  Na sala                             │
+│  │               │    ana  (anfitrião)          pronto  │
+│  │   prévia da   │    bob            escolhendo disp.   │
+│  │    câmera     │  Esperando bob ficar pronto.         │
+│  │               │                                      │
+│  └───────────────┘  Padrões de mídia                    │
+│                       [x] Começar com microfone         │
+│                       [x] Começar com câmera            │
+│                                                         │
+│                     Microfone  [ Padrão do sistema  ▾ ] │
+│                     Câmera     [ Padrão do sistema  ▾ ] │
+│                     Alto-fal.  [ Padrão do sistema  ▾ ] │
+│                                                         │
+│                     ▸ Rota e privacidade   Direto ▾     │
+│                                                         │
+│  [ Compartilhar ]      [ Abrir em uma aba ]             │
+│                        [ Pronto ]   ana: [ Iniciar ]    │
+├─────────────────────────────────────────────────────────┤
+│ ← Chat                                                  │
+└─────────────────────────────────────────────────────────┘
+```
+
+Um jogo multiplayer usa a mesma sala sem a metade de dispositivos — um jogo não
+tem câmera para escolher — e com o que for do jogo no lugar dela:
+
 ```
 ┌─ Hex Pong · partida de ana ────────────────── [_][□][X] ┐
-│ Sessão   Partida   Ajuda                                │
 ├─────────────────────────────────────────────────────────┤
-│                                                         │
 │   Na sala                                               │
-│     ana     (host)         pronto                       │
+│     ana     (anfitrião)    pronto                       │
 │     bob                    pronto                       │
 │     carla                  escolhendo controles         │
-│                                                         │
 │   Aguardando 1 pessoa                                   │
 │                                                         │
 │   Dificuldade da IA   [ normal   ▾ ]   (só host)        │
-│                                                         │
 ├─────────────────────────────────────────────────────────┤
-│  [ ← ao chat ]      [ Pronto ]     ana: [ Iniciar ]     │
+│  [ Compartilhar ]      [ Pronto ]   ana: [ Iniciar ]    │
 ├─────────────────────────────────────────────────────────┤
-│ 2 de 3 prontos                          link copiado ✓  │
+│ ← Chat                                  2 de 3 prontos  │
 └─────────────────────────────────────────────────────────┘
 ```
 
 * Host = quem criou. Host sai antes de iniciar → a sala fecha e o link morre.
-* `[Iniciar]` só habilita com as vagas mínimas preenchidas.
-* Quem chega depois do início: **entra direto se houver vaga**; se não houver, o
-  card do link diz "vaga preenchida". O link nunca vira um beco silencioso.
+* **`[Pronto]` são duas coisas ao mesmo tempo**: o que você escolheu, e o seu
+  cliente pronto para receber. A segunda metade não é opcional nem cosmética —
+  a primeira oferta é descartada se o outro lado ainda não estiver escutando, e
+  a sala existe para essa espera ter nome.
+* `[Iniciar]` só habilita quando os dois lados estão prontos, e só quem convidou
+  o tem: o criador é sempre o ofertante.
+* A linha abaixo do roster diz **por quem se está esperando**, sempre. Era o
+  estado em que a pessoa ficava sem saber por quê.
+* Quem chega depois do início **não volta para a sala**: uma sessão que já está
+  correndo entrega a superfície direto. Num jogo cheio, o card do link diz "vaga
+  preenchida". O link nunca vira um beco silencioso.
+* **Uma sessão só fica viva numa janela por vez.** Abrir a mesma sessão em outro
+  lugar a move para lá, e a janela que a perdeu diz isso e oferece trazê-la de
+  volta — mesmo contrato do takeover de chat.
 
 ### 2.6 As superfícies
 

@@ -349,3 +349,31 @@ mídia; a outra metade continua sem cobertura, e continua escrita aqui.
 * Screenshots da sala de partida nos dois hosts, do estado deslocado e do
   convidado esperando — três defeitos de layout corrigidos a partir delas.
 
+### As quatro linhas que faltavam, fechadas em 2026-08-31
+
+* **`não identificado → mensagem da política`** era um buraco de verdade, não um
+  teste faltando: a rota exigia registrado e participante, e ser participante é
+  um id de `registered_nicks` — quem apenas segurasse o apelido entrava. Agora
+  passa por `NickServ.identified?/1`, depois de `require_registered` para que as
+  duas recusas sejam alcançáveis.
+* **`terminate/2` inesperado não encerra a sessão** — dois testes: o servidor
+  não fica terminal, e o endereço continua funcionando depois.
+* **`fechar a janela não desmonta o hook`** — o X pergunta, e a âncora
+  `#lobby-webrtc` continua montada enquanto pergunta.
+* **`p2p-surface.spec.ts`** — três cenários verdes: mídia real nos dois
+  sentidos, arquivo e jogo sobre a mesma conexão em `/p2p/:token`, o endereço
+  movendo a sessão e a janela deslocada trazendo de volta, e fechar a aba não
+  encerrando o outro lado.
+
+E uma correção que veio junto, no caminho mais frágil do produto: o
+`signalingEpoch` é por página, então uma aba recém-aberta começa em 1 enquanto o
+par que ficou de pé já avançou — e toda oferta dela lia como stale. Um `offer`
+com `connection_reset: true` passa a atravessar a guarda de staleness (que é o
+que o comentário do próprio bloco já prometia), e quem começa dentro de uma
+sessão que já está correndo anuncia o rebuild. Coberto por vitest.
+
+**Limitação registrada:** assumir uma sessão **já conectada** numa segunda aba
+move o assento, mas a mídia não se restabelece sozinha — é o mesmo caminho do
+teste vermelho pré-existente do answerer que recarrega. `[Trazer de volta pra
+cá]` devolve o assento.
+

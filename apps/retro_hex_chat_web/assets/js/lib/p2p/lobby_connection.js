@@ -159,12 +159,16 @@ export function createLobbyConnection(el, ports) {
     // The initiator owns the two outgoing data channels; creating them triggers
     // onnegotiationneeded, which sends the first offer (no explicit createOffer
     // needed — that avoids a duplicate offer).
-    async handleStartOffer({ ice_servers, turn_only }) {
+    async handleStartOffer({ ice_servers, turn_only, connection_reset }) {
       if (this.role === "initiator" && this.pc) return;
 
       this.iceServers = ice_servers;
       this.turnOnly = !!turn_only;
       this.role = "initiator";
+      // Starting into a session that is already running: the peer kept its
+      // connection and its epoch, so the first offer has to say it is a rebuild
+      // rather than a continuation.
+      if (connection_reset) this.connectionResetPending = true;
       this._markRecovering();
       // NB: do NOT reset pendingIceCandidates here — the peer's ICE candidates can
       // arrive before this event and must survive until the PC has a remote desc.
@@ -179,12 +183,16 @@ export function createLobbyConnection(el, ports) {
 
     // The answerer never offers; it builds the connection up front so the inbound
     // offer and data channels have a target, then only ever answers.
-    async handleStartAnswer({ ice_servers, turn_only }) {
+    async handleStartAnswer({ ice_servers, turn_only, connection_reset }) {
       if (this.role === "answerer" && this.pc) return;
 
       this.iceServers = ice_servers;
       this.turnOnly = !!turn_only;
       this.role = "answerer";
+      // The answerer never offers, so it cannot announce the rebuild itself: it
+      // asks the initiator for one, which is the same path a recovering
+      // answerer already takes.
+      const rebuilding = connection_reset === true;
       this._markRecovering();
       // NB: do NOT reset pendingIceCandidates here — the initiator's ICE candidates
       // routinely arrive before this event and must survive until setRemoteDescription.
@@ -192,6 +200,14 @@ export function createLobbyConnection(el, ports) {
       try {
         await this._createConnection();
         this._scheduleSignalReplay("start_answer");
+
+        if (rebuilding) {
+          this._requestRenegotiation(true, {
+            reason: "session_resumed",
+            connectionReset: true,
+          });
+        }
+
         // The initiator's offer can arrive before this event; apply it now.
         if (this._pendingDescription) {
           const pending = this._pendingDescription;
@@ -310,7 +326,14 @@ export function createLobbyConnection(el, ports) {
     async _handleRemoteDescription(data) {
       const epoch = normalizeEpoch(data.epoch);
 
-      if (this._isStaleEpoch(epoch)) {
+      // A rebuild is exempt from the counter, because the counter is per page
+      // and a page that has just been opened starts its own at one. A peer that
+      // stayed up is further along, so its epoch is higher, and every offer the
+      // new page sends would read as stale forever — which is what a session
+      // taken over by a second tab, or reloaded mid-call, actually looked like.
+      // `connection_reset` is the peer saying "this connection is new"; the
+      // epoch has nothing to add to that.
+      if (!data.connection_reset && this._isStaleEpoch(epoch)) {
         log.warn("[Lobby] Ignoring stale remote description", {
           remoteEpoch: epoch,
           currentEpoch: this.signalingEpoch,
