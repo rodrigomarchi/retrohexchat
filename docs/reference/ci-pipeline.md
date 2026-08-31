@@ -115,8 +115,8 @@ are to split it, lazy-load more of it, or write down why it legitimately grew.
 
 The four surfaces that are not the chat — `/call/:token`, `/space/:slug`,
 `/p2p/:token`, `/play/:game` — all load `app.js`. Whether they should get an
-entry of their own was left open from the start of the shareable-surfaces work
-and answered by measuring it, on 2026-08-31, from esbuild's metafile:
+entry of their own was left open while they were being built, and answered by
+measuring it, on 2026-08-31, from esbuild's metafile:
 
 | Part of `app.js` | Raw bytes | Share |
 |---|---|---|
