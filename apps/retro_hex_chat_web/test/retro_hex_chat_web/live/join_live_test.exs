@@ -12,6 +12,8 @@ defmodule RetroHexChatWeb.JoinLiveTest do
 
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Channels.Supervisor
+  alias RetroHexChat.Lobby
+  alias RetroHexChat.Lobby.Registry
   alias RetroHexChat.ShareLinks
   alias RetroHexChat.VirtualSpace
   alias RetroHexChatWeb.App.Paths
@@ -176,6 +178,94 @@ defmodule RetroHexChatWeb.JoinLiveTest do
     html = conn |> get(~p"/join/#{slug}") |> html_response(200)
 
     assert html =~ "noindex"
+  end
+
+  # A match link is the one kind that dies by succeeding, so it gets its own
+  # block: "already full" is the answer most late clicks on a 1v1 link get, and
+  # it must not read like an expired link.
+  describe "a match link" do
+    setup ctx do
+      session = open_match(ctx.user_id)
+
+      slug =
+        share(ctx, "play", %{"game_id" => "hex_pong", "session_token" => session.token})
+
+      %{session: session, slug: slug}
+    end
+
+    test "an empty seat is offered, and the way in is the match", %{conn: conn} = ctx do
+      {:ok, view, html} = conn |> chat_conn(ctx.nick) |> live(~p"/join/#{ctx.slug}")
+
+      assert html =~ "1 seat open"
+
+      assert view
+             |> element(~s([data-testid="join-enter"]))
+             |> render()
+             |> Floki.parse_fragment!()
+             |> Floki.attribute("href") == ["/play/hex_pong/#{ctx.session.token}"]
+    end
+
+    test "a taken seat says the match is full, not that the link expired", %{conn: conn} = ctx do
+      {:ok, claimer} = register("Claimer#{uid()}")
+      {:ok, _claimed} = Lobby.claim_open_session(ctx.session.token, claimer.id)
+      stop_lobby(ctx.session.token)
+
+      {:ok, view, html} = conn |> chat_conn("Stranger#{uid()}") |> live(~p"/join/#{ctx.slug}")
+
+      assert html =~ ~s(data-testid="join-filled")
+      assert html =~ "Somebody already took the seat"
+      refute html =~ "Link expired"
+
+      # Never who took it: a link anybody may hold must not become a way of
+      # learning who answered it.
+      refute html =~ claimer.nickname
+
+      # And never a dead end.
+      assert has_element?(view, ~s([data-testid="join-play-instead"]))
+      assert has_element?(view, ~s([data-testid="join-elsewhere"]))
+    end
+
+    test "whoever is already in it still gets the way in", %{conn: conn} = ctx do
+      {:ok, claimer} = register("Claimer#{uid()}")
+      {:ok, _claimed} = Lobby.claim_open_session(ctx.session.token, claimer.id)
+      stop_lobby(ctx.session.token)
+
+      {:ok, view, html} = conn |> chat_conn(ctx.nick) |> live(~p"/join/#{ctx.slug}")
+
+      refute html =~ ~s(data-testid="join-filled")
+
+      assert view
+             |> element(~s([data-testid="join-enter"]))
+             |> render()
+             |> Floki.parse_fragment!()
+             |> Floki.attribute("href") == ["/play/hex_pong/#{ctx.session.token}"]
+    end
+
+    test "a match that is over reads as a dead link, like every other kind",
+         %{conn: conn} = ctx do
+      :ok = Lobby.close_session(ctx.session.token, ctx.user_id, "user_closed")
+
+      {:ok, _view, html} = conn |> chat_conn(ctx.nick) |> live(~p"/join/#{ctx.slug}")
+
+      assert html =~ ~s(data-testid="join-gone")
+    end
+  end
+
+  defp open_match(user_id) do
+    {:ok, %{session: session}} =
+      Lobby.create_open_session(user_id, metadata: %{"game_id" => "hex_pong"})
+
+    on_exit(fn -> stop_lobby(session.token) end)
+    session
+  end
+
+  defp stop_lobby(token) do
+    case Registry.lookup(token) do
+      {:ok, pid} -> GenServer.stop(pid, :normal)
+      {:error, :not_found} -> :ok
+    end
+  catch
+    :exit, _reason -> :ok
   end
 
   defp share(ctx, kind, target) do

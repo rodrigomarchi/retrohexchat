@@ -40,9 +40,7 @@ export class ChatPage {
   readonly viewMenuTrigger: Locator;
   readonly helpMenuTrigger: Locator;
   readonly toolsMenuTrigger: Locator;
-  readonly gamesMenuTrigger: Locator;
-  readonly retroGamesDesktopShortcut: Locator;
-  readonly arcadeDesktopShortcut: Locator;
+  readonly gamesFolderIcon: Locator;
   readonly retroGamesMenuItem: Locator;
   readonly retroGamesWindow: Locator;
   readonly retroGamesLibrary: Locator;
@@ -326,18 +324,19 @@ export class ChatPage {
     this.toolsMenuTrigger = page
       .locator("button[data-menubar-trigger]")
       .filter({ hasText: "Tools" });
-    this.gamesMenuTrigger = page.getByTestId("app-menu-games");
-    this.retroGamesDesktopShortcut = page.getByTestId(
-      "desktop-shortcut-retro-games",
-    );
-    this.arcadeDesktopShortcut = page.getByTestId("desktop-shortcut-arcade");
+    // Games left the menu bar for a desktop folder: the icon opens a window
+    // with Retro Games and Arcade inside it, so the way in is a double-click
+    // on the folder rather than a menu.
+    this.gamesFolderIcon = page.getByTestId("desktop-icon-games");
     this.retroGamesMenuItem = page
-      .getByTestId("menu-retro-games")
+      .getByTestId("desktop-launcher-item-retro-games")
       .filter({ visible: true });
     this.retroGamesWindow = page.getByTestId("retro-games-window");
     this.retroGamesLibrary = page.getByTestId("retro-games-library");
     this.retroGamesIconGrid = page.getByTestId("retro-games-icon-grid");
-    this.arcadeMenuItem = visibleContextMenuItem(page, "open_arcade");
+    this.arcadeMenuItem = page
+      .getByTestId("desktop-launcher-item-open_arcade")
+      .filter({ visible: true });
     this.arcadeWindow = page.getByTestId("arcade-games-window");
     this.arcadeLibrary = page.getByTestId("arcade-library");
     this.arcadeIconGrid = page.getByTestId("arcade-icon-grid");
@@ -787,6 +786,11 @@ export class ChatPage {
 
   // Switching goes through the sidebar: the target has no tab until it is the
   // conversation in focus, which is exactly what this then asserts.
+  /** Opens the Games desktop folder, which is where the games live now. */
+  async openGamesFolder() {
+    await this.gamesFolderIcon.dblclick();
+  }
+
   async switchToTab(name: string) {
     await this.conversationRow(name).click();
     await expect(this.tab(name)).toHaveAttribute("aria-selected", "true");
@@ -840,16 +844,20 @@ export class ChatPage {
     await expect(this.retroGamesIconGrid).toBeVisible();
   }
 
+  // Both games used to sit on the desktop directly; they are inside the Games
+  // folder now, which is the same journey with one door in front of it.
   async openRetroGamesFromDesktopShortcut() {
-    await expect(this.retroGamesDesktopShortcut).toBeVisible();
-    await this.retroGamesDesktopShortcut.dblclick();
+    await this.openGamesFolder();
+    await expect(this.retroGamesMenuItem).toBeVisible();
+    await this.retroGamesMenuItem.dblclick();
     await expect(this.retroGamesWindow).toBeVisible();
     await expect(this.retroGamesIconGrid).toBeVisible();
   }
 
   async openArcadeFromDesktopShortcut() {
-    await expect(this.arcadeDesktopShortcut).toBeVisible();
-    await this.arcadeDesktopShortcut.dblclick();
+    await this.openGamesFolder();
+    await expect(this.arcadeMenuItem).toBeVisible();
+    await this.arcadeMenuItem.dblclick();
     await expect(this.arcadeWindow).toBeVisible();
     await expect(this.arcadeIconGrid).toBeVisible();
   }

@@ -10,6 +10,11 @@ defmodule RetroHexChat.ShareLinks.Liveness do
 
   A space is always live because a space does not end — it is a place, and the
   link to it is an address rather than an invitation to an event.
+
+  A match link is the one kind that dies by **success**: a 1v1 game is full the
+  moment somebody takes the seat, so the answer here is "is the seat still
+  empty", and the card says "already full" rather than "expired". Every other
+  kind only ever stops working by failing.
   """
 
   alias RetroHexChat.Games.Catalog
@@ -19,6 +24,13 @@ defmodule RetroHexChat.ShareLinks.Liveness do
   alias RetroHexChat.Lobby.Schema.Session
 
   @spec live?(String.t(), map()) :: boolean()
+  # A solo game link is alive as long as the game exists — it names a thing to
+  # play, not a room. A match link names a room too, and a match dies by
+  # **success**: the second player takes the only seat there was.
+  def live?("play", %{"session_token" => session_token} = target) do
+    Catalog.valid_game_id?(target["game_id"] || "") and open_seat?(session_token)
+  end
+
   def live?("play", target), do: Catalog.valid_game_id?(target["game_id"] || "")
 
   def live?("space", _target), do: true
@@ -38,4 +50,10 @@ defmodule RetroHexChat.ShareLinks.Liveness do
   end
 
   def live?(_kind, _target), do: false
+
+  defp open_seat?(session_token) when is_binary(session_token) do
+    match?({:ok, %Session{status: "open", peer_id: nil}}, Lobby.get_session(session_token))
+  end
+
+  defp open_seat?(_session_token), do: false
 end

@@ -283,7 +283,11 @@ defmodule RetroHexChat.Lobby.Policy do
 
   defp check_not_creator(_user_id, _session), do: :ok
 
-  defp check_pending(%{status: "pending"}), do: :ok
+  # An unclaimed match link is an invite with nobody named on it, so cancelling
+  # it is the same act: the creator has stopped waiting, and the address dies
+  # with the room. P7 wants the room not to outlive its host, and this is the
+  # door that makes that immediate rather than a wait for the deadline.
+  defp check_pending(%{status: status}) when status in ["pending", "open"], do: :ok
 
   defp check_pending(_session),
     do: {:error, dgettext("lobby", "Invite is no longer pending")}

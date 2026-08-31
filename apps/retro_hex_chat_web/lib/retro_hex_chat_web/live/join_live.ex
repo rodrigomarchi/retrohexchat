@@ -23,15 +23,18 @@ defmodule RetroHexChatWeb.JoinLive do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.GroupCall
+  alias RetroHexChat.Lobby
+  alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.ShareLinks
   alias RetroHexChat.VirtualSpace
   alias RetroHexChatWeb.App.Paths
+  alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.SEO
 
   @impl true
   @spec mount(map(), map(), Socket.t()) :: {:ok, Socket.t()}
   def mount(%{"slug" => slug}, session, socket) do
-    signed_in? = is_binary(session["chat_nickname"])
+    nickname = session["chat_nickname"]
 
     {:ok,
      socket
@@ -39,7 +42,7 @@ defmodule RetroHexChatWeb.JoinLive do
        page_title: dgettext("share", "Join - RetroHexChat"),
        robots: SEO.noindex_content()
      )
-     |> assign_card(slug, signed_in?)}
+     |> assign_card(slug, nickname)}
   end
 
   @impl true
@@ -56,36 +59,98 @@ defmodule RetroHexChatWeb.JoinLive do
     """
   end
 
-  defp assign_card(socket, slug, signed_in?) do
+  defp assign_card(socket, slug, nickname) do
+    signed_in? = is_binary(nickname)
+
     case ShareLinks.resolve(slug) do
       {:ok, %{live?: true} = resolution} ->
-        assign(socket,
-          state: if(signed_in?, do: :ready, else: :needs_session),
-          kind: resolution.kind,
-          creator_nick: resolution.creator_nick,
-          subject: subject(resolution),
-          enter_path: enter_path(resolution, signed_in?, slug)
-        )
+        live_card(socket, resolution, signed_in?, slug)
+
+      # A match whose seat is taken is not a dead link and must not read like
+      # one: it stopped working because it *worked*, and "already full" is the
+      # answer most late clicks on a 1v1 link will get. Whoever is already in
+      # it still gets the way in — telling the host their own match is full
+      # would be the card contradicting the room.
+      {:ok, %{kind: "play", target: %{"session_token" => token}} = resolution} ->
+        match_card(socket, resolution, token, nickname, signed_in?, slug)
 
       # A resolved-but-dead link and a link that never existed read the same on
       # purpose: telling them apart is an oracle for whether a room exists.
       _gone ->
-        assign(socket,
-          state: :gone,
-          kind: nil,
-          creator_nick: nil,
-          subject: nil,
-          enter_path: nil
-        )
+        gone_card(socket)
     end
   end
 
+  defp live_card(socket, resolution, signed_in?, slug) do
+    assign(socket,
+      state: if(signed_in?, do: :ready, else: :needs_session),
+      kind: resolution.kind,
+      creator_nick: resolution.creator_nick,
+      subject: subject(resolution),
+      enter_path: enter_path(resolution, signed_in?, slug)
+    )
+  end
+
+  # Three answers, and the order is what keeps them honest: a match that is
+  # over is a dead link like any other — including for the person who made it —
+  # a match that is running is still the way in for the two people in it, and
+  # for everybody else it is full.
+  defp match_card(socket, resolution, token, nickname, signed_in?, slug) do
+    case Lobby.get_session(token) do
+      {:ok, %LobbySession{} = db_session} ->
+        cond do
+          LobbySession.terminal?(db_session.status) -> gone_card(socket)
+          participant?(db_session, nickname) -> live_card(socket, resolution, signed_in?, slug)
+          true -> full_card(socket, resolution)
+        end
+
+      {:error, :not_found} ->
+        gone_card(socket)
+    end
+  end
+
+  defp full_card(socket, resolution) do
+    assign(socket,
+      state: :filled,
+      kind: resolution.kind,
+      creator_nick: resolution.creator_nick,
+      subject: subject(resolution),
+      enter_path: nil
+    )
+  end
+
+  defp gone_card(socket) do
+    assign(socket,
+      state: :gone,
+      kind: nil,
+      creator_nick: nil,
+      subject: nil,
+      enter_path: nil
+    )
+  end
+
+  # Asked of the session and never of the link: a link says which room, and who
+  # is in the room is the room's own answer.
+  defp participant?(%LobbySession{} = db_session, nickname) when is_binary(nickname) do
+    case SessionHelpers.resolve_user_id(nickname) do
+      {:ok, user_id} -> user_id in [db_session.creator_id, db_session.peer_id]
+      _stranger -> false
+    end
+  end
+
+  defp participant?(_db_session, _nickname), do: false
+
   # What was shared, drawn rather than described. Resolved here because the card
   # is presentational and the catalogue is a domain read.
-  defp subject(%{kind: "play", target: %{"game_id" => game_id}}) do
+  defp subject(%{kind: "play", target: %{"game_id" => game_id} = target}) do
     case Catalog.get_game(game_id) do
-      {:ok, game} -> Map.take(game, [:name, :tagline, :icon])
-      {:error, :not_found} -> nil
+      {:ok, game} ->
+        game
+        |> Map.take([:name, :tagline, :icon])
+        |> Map.put(:tagline, match_tagline(target) || game.tagline)
+
+      {:error, :not_found} ->
+        nil
     end
   end
 
@@ -148,6 +213,24 @@ defmodule RetroHexChatWeb.JoinLive do
 
   defp subject(_resolution), do: nil
 
+  # A match says how many ways in are left, because that is the one fact that
+  # decides whether following it does anything. A solo link has no seats and
+  # keeps the game's own tagline.
+  defp match_tagline(%{"session_token" => token}) do
+    case Lobby.get_session(token) do
+      {:ok, %LobbySession{status: "open", peer_id: nil}} ->
+        dgettext("share", "1 seat open")
+
+      {:ok, %LobbySession{}} ->
+        dgettext("share", "No seats left")
+
+      _absent ->
+        nil
+    end
+  end
+
+  defp match_tagline(_target), do: nil
+
   defp space_name(channel_name) do
     if listed_channel?(channel_name) do
       dgettext("share", "The space of %{channel}", channel: channel_name)
@@ -207,6 +290,9 @@ defmodule RetroHexChatWeb.JoinLive do
 
   defp enter_path(_resolution, false, slug), do: ~p"/connect?return_to=/join/#{slug}"
   defp enter_path(resolution, true, _slug), do: surface_path(resolution)
+
+  defp surface_path(%{kind: "play", target: %{"game_id" => game_id, "session_token" => token}}),
+    do: Paths.play_match_path(game_id, token)
 
   defp surface_path(%{kind: "play", target: %{"game_id" => game_id}}), do: ~p"/play/#{game_id}"
   defp surface_path(%{kind: "play"}), do: ~p"/play"

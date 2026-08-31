@@ -20,7 +20,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoomTest do
         ready?: false,
         peer_present?: false,
         peer_ready?: false,
-        can_start?: false
+        can_start?: false,
+        started?: false,
+        match?: false
       },
       overrides
     )
@@ -32,6 +34,48 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoomTest do
       setup: setup,
       room: room(room_overrides)
     )
+  end
+
+  # The host may call the whole thing off until the match starts, and nobody
+  # else ever may: P7 with a button.
+  test "only the host gets Cancel, and only before the start" do
+    assert render_room(%{media_mode: "video"}) =~ ~s(data-testid="p2p-room-cancel")
+
+    refute render_room(%{media_mode: "video"}, %{host?: false}) =~
+             ~s(data-testid="p2p-room-cancel")
+
+    refute render_room(%{media_mode: "video"}, %{started?: true}) =~
+             ~s(data-testid="p2p-room-cancel")
+  end
+
+  # A game has no camera to choose, so the half of the room that chooses one is
+  # the half a match does not have.
+  test "a match replaces the device half with the game" do
+    html =
+      render_component(&p2p_starting_room/1,
+        id: "p2p-starting-room",
+        setup: %{media_mode: "video"},
+        game: %{
+          id: "hex_pong",
+          name: "Hex Pong",
+          tagline: "Cyberpunk Pong",
+          icon: "game_pong",
+          controls: "Arrow keys"
+        },
+        room: room(%{match?: true})
+      )
+
+    assert html =~ ~s(data-testid="p2p-room-game")
+    assert html =~ "Hex Pong"
+    assert html =~ "Arrow keys"
+    refute html =~ ~s(data-testid="p2p-setup-preview")
+    refute html =~ ~s(data-testid="p2p-setup-audio-input")
+    refute html =~ ~s(data-testid="p2p-setup-advanced")
+
+    # And the form still says what a game has to say about media: nothing to
+    # send. Without these `[Ready]` would submit no `p2p_setup` at all.
+    assert html =~ ~s(name="p2p_setup[audio]")
+    assert html =~ ~s(name="p2p_setup[video]")
   end
 
   test "renders media posture choices and the selected default" do

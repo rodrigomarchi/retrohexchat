@@ -147,7 +147,11 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       assert {:ok, %{status: "playing", game_id: "doom_shareware"}} = Arcade.get_session(token)
     end
 
-    test "returning to the launcher closes the current popup and starts a fresh lobby", %{
+    # The game tab is opened by an anchor with `rel="noopener"`, so there is no
+    # handle to close it with — which is the price of the tab having its own
+    # event loop. Returning to the launcher ends the *session*, and the tab the
+    # person opened stays theirs to close.
+    test "returning to the launcher starts a fresh lobby and touches no window", %{
       view: view,
       token: token
     } do
@@ -159,7 +163,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
 
       render_click(view, "arcade_back_to_launcher", %{})
 
-      assert_push_event(view, "close_game_window", %{})
+      refute_push_event(view, "close_game_window", %{})
       assert %{status: "lobby", token: new_token} = arcade_session(view)
       refute new_token == token
       assert "arcade-games" in open_windows(view)

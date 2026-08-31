@@ -33,6 +33,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   import RetroHexChatWeb.Components.UI.Window
 
   alias Phoenix.LiveView.Socket
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.Services.NickServ
@@ -64,6 +65,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
         host_snapshot: nil,
         notice: nil,
         share_url: nil,
+        match_game: nil,
         denied: nil
       )
 
@@ -71,12 +73,25 @@ defmodule RetroHexChatWeb.App.P2PLive do
       {:ok, db_session, user_id, role} ->
         {:ok,
          socket
-         |> assign(setup: Events.initial_setup(socket))
+         |> assign(setup: Events.initial_setup(socket), match_game: match_game(db_session))
          |> enter(db_session, user_id, role)
          |> publish()}
 
       {:error, message} ->
         {:ok, assign(socket, denied: message)}
+    end
+  end
+
+  # What the session was made for, drawn rather than named: somebody who
+  # followed a link posted in a channel has seen nothing of this match except
+  # its address, and "what did I just walk into" is the only question the
+  # starting room of a game has to answer.
+  defp match_game(db_session) do
+    with game_id when is_binary(game_id) <- Lobby.match_game_id(db_session),
+         {:ok, game} <- Catalog.get_game(game_id) do
+      game
+    else
+      _not_a_match -> nil
     end
   end
 
@@ -98,7 +113,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
       <.desktop id="p2p-desktop" persist_key="p2p" class="flex-1" data-testid="p2p-desktop">
         <.desktop_window
           id="p2p-call"
-          title={window_title(@p2p_session)}
+          title={window_title(@p2p_session, @match_game)}
           pinned
           default_maximized
           body_class="h-full min-h-0 overflow-hidden p-1"
@@ -148,6 +163,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
         :if={in_room?(@p2p_session)}
         id="p2p-starting-room"
         setup={@setup}
+        game={@match_game}
         room={Events.room(assigns)}
       >
         <:footer>
@@ -267,8 +283,8 @@ defmodule RetroHexChatWeb.App.P2PLive do
     with {:ok, user_id} <- SessionHelpers.resolve_user_id(nickname || ""),
          {:ok, link} <-
            ShareLinks.create(%{
-             kind: "p2p",
-             target: %{"session_token" => token},
+             kind: share_kind(socket.assigns.match_game),
+             target: share_target(token, socket.assigns.match_game),
              creator_id: user_id,
              creator_nick: nickname
            }) do
@@ -335,19 +351,28 @@ defmodule RetroHexChatWeb.App.P2PLive do
   # The creator of a pending invite is subscribed but has not taken a seat: a
   # pending invite is a card, not a connection, and joining before the peer
   # accepts would start the rejoin grace on a session nobody is in yet.
-  defp enter(socket, %LobbySession{status: "pending"} = db_session, user_id, :creator) do
+  # An open lobby's creator is in the same place: the seat opposite is empty,
+  # nobody has joined, and taking one here would start the rejoin grace on a
+  # match nobody has walked into yet.
+  defp enter(socket, %LobbySession{status: status} = db_session, user_id, :creator)
+       when status in ["pending", "open"] do
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "lobby:#{db_session.token}")
 
     socket
-    |> assign(p2p_session: Events.new_invite_sent(socket, db_session.token, user_id))
+    |> assign(
+      p2p_session:
+        Events.new_invite_sent(socket, db_session.token, user_id, match_opts(db_session))
+    )
     |> resume_started(db_session)
   end
 
   defp enter(socket, db_session, user_id, role) do
     socket
-    |> Events.attach_session(db_session.token, user_id, role)
+    |> Events.attach_session(db_session.token, user_id, role, match_opts(db_session))
     |> resume_started(db_session)
   end
+
+  defp match_opts(db_session), do: [match_game_id: Lobby.match_game_id(db_session)]
 
   # A session that is already connected does not send you back to the starting
   # room: the reload of a page mid-call is the one moment where being asked to
@@ -391,8 +416,44 @@ defmodule RetroHexChatWeb.App.P2PLive do
          {:ok, db_session} <- fetch_session(token),
          {:ok, user_id} <- require_registered(socket.assigns.nickname),
          :ok <- require_identified(socket.assigns.nickname),
+         {:ok, db_session} <- take_seat(db_session, user_id),
          :ok <- Lobby.Policy.can_join?(user_id, db_session) do
       {:ok, db_session, user_id, role_of(db_session, user_id)}
+    end
+  end
+
+  # A match link has an empty seat, and following it is how you take it. This
+  # is the only door in the plan where arriving *changes* what the link points
+  # at, and it is why the claim happens here rather than on the public card:
+  # the card runs before any of the three questions above, so a seat taken
+  # there could be burned by somebody the surface then refuses.
+  defp take_seat(%LobbySession{creator_id: user_id} = db_session, user_id),
+    do: {:ok, db_session}
+
+  defp take_seat(%LobbySession{peer_id: user_id} = db_session, user_id),
+    do: {:ok, db_session}
+
+  defp take_seat(db_session, user_id) do
+    cond do
+      Lobby.open_session?(db_session) ->
+        claim_seat(db_session, user_id)
+
+      # A stranger at a match link is late, not lost: "you are not a
+      # participant" would be true and useless, because being one was the
+      # thing this link was offering.
+      is_binary(Lobby.match_game_id(db_session)) ->
+        {:error, full_message()}
+
+      true ->
+        {:ok, db_session}
+    end
+  end
+
+  defp claim_seat(db_session, user_id) do
+    case Lobby.claim_open_session(db_session.token, user_id) do
+      {:ok, claimed} -> {:ok, claimed}
+      {:error, :already_claimed} -> {:error, full_message()}
+      {:error, message} -> {:error, message}
     end
   end
 
@@ -448,6 +509,23 @@ defmodule RetroHexChatWeb.App.P2PLive do
 
   defp gone_message, do: dgettext("p2p", "This P2P session is no longer available.")
 
+  # Said as a fact about the match and never about who filled it: naming the
+  # other player would turn a link anybody may hold into a way of learning who
+  # answered it.
+  defp full_message, do: dgettext("p2p", "This match is already full.")
+
+  # A match is shared as a game, because that is what the person receiving it
+  # is being offered — and the card then draws the game rather than "a P2P
+  # session with ana". Same session, same surface; the kind is what the link
+  # is *about*.
+  defp share_kind(%{id: _game_id}), do: "play"
+  defp share_kind(_no_game), do: "p2p"
+
+  defp share_target(token, %{id: game_id}),
+    do: %{"game_id" => game_id, "session_token" => token}
+
+  defp share_target(token, _no_game), do: %{"session_token" => token}
+
   # Only a registered nickname can mint a link: the record carries who made it,
   # and a link nobody is accountable for is one nobody can be asked about.
   defp sharable?(nickname) when is_binary(nickname) and nickname != "" do
@@ -480,8 +558,17 @@ defmodule RetroHexChatWeb.App.P2PLive do
   defp panel_status(%{state: :invite_sent}), do: "pending"
   defp panel_status(_p2p), do: "lobby"
 
-  defp window_title(%{peer_nick: peer}) when is_binary(peer) and peer != "",
+  # A match says which game it is, because that is what somebody who followed
+  # the link came for; a plain session says who is on the other end.
+  defp window_title(%{peer_nick: peer}, %{name: game})
+       when is_binary(peer) and peer != "",
+       do: dgettext("chat", "%{game} · %{peer}", game: game, peer: peer)
+
+  defp window_title(_p2p, %{name: game}),
+    do: dgettext("chat", "%{game} · match", game: game)
+
+  defp window_title(%{peer_nick: peer}, _game) when is_binary(peer) and peer != "",
     do: dgettext("chat", "P2P · %{peer}", peer: peer)
 
-  defp window_title(_p2p), do: dgettext("chat", "P2P Session")
+  defp window_title(_p2p, _game), do: dgettext("chat", "P2P Session")
 end

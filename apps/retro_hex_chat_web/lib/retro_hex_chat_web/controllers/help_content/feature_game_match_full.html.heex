@@ -1,0 +1,33 @@
+<p>
+  {dgettext(
+    "help_games",
+    "A match link has exactly one seat. The moment somebody takes it the link stops working, and the card it draws says the match is full rather than that the link expired — it stopped working because it worked."
+  )}
+</p>
+
+<.help_h4 icon={:icon_clock}>{dgettext("help_games", "It also expires on its own")}</.help_h4>
+<p>
+  {dgettext(
+    "help_games",
+    "A match nobody joins closes itself after about fifteen minutes. That is deliberate: an address pasted in a channel would otherwise stay a way into your session for the rest of the day, and a room waiting for nobody is worth less than a fresh one."
+  )}
+</p>
+
+<.help_h4 icon={:icon_ban}>{dgettext("help_games", "Ending it yourself")}</.help_h4>
+<p>
+  {dgettext(
+    "help_games",
+    "Cancel, in the match room, closes it and kills its link immediately — it is there for the host, and only until the match starts. To play again, open the game and press Play with someone for a new room and a new address."
+  )}
+</p>
+
+<p>
+  {dgettext("help_games", "See also:")}
+  <.help_link topic="feature-game-match-link">
+    {dgettext("help_games", "Playing a Game with Somebody")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-retro-games">
+    {dgettext("help_games", "Retro Games")}
+  </.help_link>
+</p>

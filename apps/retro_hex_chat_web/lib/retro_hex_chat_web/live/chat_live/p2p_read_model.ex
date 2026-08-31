@@ -46,6 +46,12 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
       role = role_of(db_session, user_id)
 
       case {db_session.status, role} do
+        # A match link this person minted is not a session they are in: nobody
+        # has taken the seat, there is no conversation it belongs to, and the
+        # room for it lives at its own address. `active_sessions_for_user/1`
+        # matches it on `creator_id` alone, so without this the chat would open
+        # a P2P window onto a session with no peer in it.
+        {"open", _role} -> socket
         {"pending", :peer} -> put_pm_session(socket, pm_session(db_session, user_id))
         _joined -> open(socket, db_session.token, user_id, role, db_session.status)
       end

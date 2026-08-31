@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
 
   alias RetroHexChatWeb.Icons
 
-  attr :state, :atom, required: true, values: [:ready, :needs_session, :gone]
+  attr :state, :atom, required: true, values: [:ready, :needs_session, :filled, :gone]
   attr :kind, :string, default: nil
   attr :creator_nick, :string, default: nil
   attr :subject, :map, default: nil, doc: "what was shared: %{name, tagline, icon}"
@@ -46,12 +46,12 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
 
           <.subject_row :if={@subject} subject={@subject} />
 
-          <p class="text-center" data-testid={@state == :gone && "join-gone"}>
+          <p class="text-center" data-testid={state_testid(@state)}>
             {body_text(@state, @creator_nick)}
           </p>
 
           <.button
-            :if={@state != :gone}
+            :if={@state in [:ready, :needs_session]}
             navigate={@enter_path}
             class="justify-center"
             data-testid="join-enter"
@@ -60,8 +60,21 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
             {enter_label(@state)}
           </.button>
 
+          <%!-- A card that stopped working still offers the next plausible
+                thing, and for a full match that is the game itself: the person
+                came to play, and the door they took happened to be taken. --%>
           <.button
-            :if={@state == :gone}
+            :if={@state == :filled && @subject}
+            navigate="/play"
+            class="justify-center"
+            data-testid="join-play-instead"
+          >
+            <:icon><Icons.icon_game_pong class="h-4 w-4" /></:icon>
+            {dgettext("share", "Play something else")}
+          </.button>
+
+          <.button
+            :if={@state in [:gone, :filled]}
             navigate="/chat"
             class="justify-center"
             data-testid="join-elsewhere"
@@ -138,6 +151,7 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
   # channel name in a public preview leaks the existence of a channel the
   # visitor could not have listed.
   defp title(:gone, _kind), do: dgettext("share", "Link expired")
+  defp title(:filled, _kind), do: dgettext("share", "Seat taken")
   defp title(_state, "play"), do: dgettext("share", "A game on RetroHexChat")
   defp title(_state, "call"), do: dgettext("share", "A call on RetroHexChat")
   defp title(_state, "p2p"), do: dgettext("share", "A P2P session on RetroHexChat")
@@ -145,6 +159,11 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
 
   defp body_text(:gone, _nick),
     do: dgettext("share", "This link is no longer active. The chat is still there.")
+
+  # It says what happened and never who: naming the player who got there first
+  # would turn a link anybody may hold into a way of learning who answered it.
+  defp body_text(:filled, _nick),
+    do: dgettext("share", "Somebody already took the seat. This match is full.")
 
   defp body_text(:needs_session, nick) when is_binary(nick),
     do:
@@ -162,4 +181,8 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
 
   defp enter_label(:needs_session), do: dgettext("share", "Connect and join")
   defp enter_label(_state), do: dgettext("share", "Join")
+
+  defp state_testid(:gone), do: "join-gone"
+  defp state_testid(:filled), do: "join-filled"
+  defp state_testid(_state), do: nil
 end

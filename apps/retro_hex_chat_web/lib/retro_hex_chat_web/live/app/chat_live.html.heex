@@ -1166,20 +1166,6 @@
   scope={:viewport}
 />
 
-<%!-- Solo arcade anchor: gated on @arcade_session (NOT the window) so the
-      ArcadeSession hook keeps polling the launched game window even while the
-      picker is minimized or closed. Receives `open_game_window` and reports
-      `game_window_closed`/`game_window_blocked`. --%>
-<div
-  :if={@arcade_session}
-  id="arcade-session"
-  phx-hook="ArcadeSession"
-  phx-update="ignore"
-  class="hidden"
-  data-testid="arcade-session"
->
-</div>
-
 <.live_component
   module={RetroHexChatWeb.ChatLive.Components.DeleteConfirmDialog}
   id={RetroHexChatWeb.ChatLive.Components.DeleteConfirmDialog.id()}

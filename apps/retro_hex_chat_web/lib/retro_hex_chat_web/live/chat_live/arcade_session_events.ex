@@ -10,21 +10,22 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   (`Arcade.create_session` + `join_session`), subscribes to `"arcade:\#{token}"`
   and opens the managed "arcade-games" window with the icon launcher. Choosing
   an icon opens that game's preview; starting from the preview drives the domain
-  (`Arcade.select_game`); the resulting "playing" broadcast makes the host push
-  `open_game_window` to the ArcadeSession JS hook, which `window.open`s the
-  external WASM game and polls it — its close bubbles back as
-  `game_window_closed` → `Arcade.finish_game`.
+  (`Arcade.select_game`) and, in the same click, follows an anchor to
+  `/play/arcade/:game` — the game's own address — in a tab of its own.
+
+  **The server no longer opens or closes that tab.** It is an anchor with
+  `rel="noopener"`, which is what buys the game its own event loop, and the
+  price of that is having no handle to poll: nothing here learns that the tab
+  was closed. So the session ends the way a session ends — End Session, or the
+  inactivity timeout the `SoloSessionServer` already keeps — and never because
+  a window vanished. Cross-tab coordination is wave 6's.
 
   Unlike the P2P console islands, the arcade content is a pure read-model of
   this assign, rendered inline (`solo_lobby`) with no island LiveComponent and no
-  `send_update`, so there is no mount-patch race to work around. The stable
-  `#arcade-session` hook anchor is gated on `@arcade_session` (not the window),
-  so the game-window poll survives minimizing or closing the picker while a game
-  is running.
+  `send_update`, so there is no mount-patch race to work around.
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -77,40 +78,6 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
 
   def handle_event("arcade_select_game", _params, socket), do: {:halt, socket}
 
-  # The ArcadeSession JS hook reports the game window closing/blocking.
-  def handle_event("game_window_closed", _params, %{assigns: %{arcade_session: %{} = s}} = socket) do
-    if s.status == "playing", do: Arcade.finish_game(s.token, s.user_id)
-    {:halt, socket}
-  end
-
-  def handle_event(
-        "game_window_blocked",
-        _params,
-        %{assigns: %{arcade_session: %{} = s}} = socket
-      ) do
-    if s.status == "playing", do: Arcade.finish_game(s.token, s.user_id)
-
-    socket =
-      Messages.system_event(
-        socket,
-        dgettext(
-          "chat",
-          "The game window was blocked. Allow pop-ups for this site and try again."
-        )
-      )
-
-    {:halt,
-     put_arcade(socket, %{
-       s
-       | status: "lobby",
-         game_id: nil,
-         game_name: nil,
-         game_started_at: nil,
-         game_duration: nil,
-         previewed_game: preview_for_game(s.game_id)
-     })}
-  end
-
   def handle_event("arcade_leave", _params, %{assigns: %{arcade_session: %{}}} = socket) do
     {:halt, close_arcade(socket, "user_closed")}
   end
@@ -122,7 +89,6 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
       ) do
     socket =
       socket
-      |> push_event("close_game_window", %{})
       |> close_current_arcade(s, "user_returned_to_launcher")
       |> start_session()
 
@@ -178,7 +144,6 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
           previewed_game: nil
       })
       |> Windows.open(@window)
-      |> push_event("open_game_window", %{url: Arcade.game_url(game)})
 
     {:halt, socket}
   end
@@ -345,7 +310,6 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
     s = socket.assigns.arcade_session
 
     socket
-    |> push_event("close_game_window", %{})
     |> close_current_arcade(s, reason)
     |> Windows.close_window(@window)
   end

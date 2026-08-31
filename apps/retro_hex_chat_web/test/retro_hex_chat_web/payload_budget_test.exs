@@ -124,6 +124,29 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
     end
   end
 
+  # The same surface, in the form a match arrives in: the device half is gone
+  # and the game is in its place, so a budget of its own would be a second
+  # ceiling on one page. What this asserts is that the match room is not
+  # *bigger* than the room it is a variant of.
+  describe "/play/:game/:token" do
+    setup %{conn: conn} do
+      {nickname, path} = open_match()
+      %{html: html_for(session_conn(conn, nickname), path)}
+    end
+
+    test "stays inside the P2P surface's byte budget", %{html: html} do
+      assert byte_size(html) <= PerfBudgets.html_bytes(:p2p)
+    end
+
+    test "stays inside the P2P surface's DOM node budget", %{html: html} do
+      assert PerfBudgets.count_elements(html) <= PerfBudgets.dom_nodes(:p2p)
+    end
+
+    test "references the sprite instead of carrying the drawings", %{html: html} do
+      assert PerfBudgets.count(html, "<use href=") == PerfBudgets.count(html, "<svg")
+    end
+  end
+
   describe "every surface" do
     test "ships no icon art inline", %{conn: conn} do
       for path <- [~p"/connect", ~p"/chat/help"] do
@@ -208,6 +231,25 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
     end)
 
     {creator.nickname, "/p2p/" <> session.token}
+  end
+
+  defp open_match do
+    creator = register_for_budget()
+    NickServ.restore_identified(creator.nickname)
+
+    {:ok, %{session: session}} =
+      Lobby.create_open_session(creator.id, metadata: %{"game_id" => "hex_pong"})
+
+    on_exit(fn ->
+      NickServ.remove_identified(creator.nickname)
+
+      case Lobby.Registry.lookup(session.token) do
+        {:ok, pid} -> stop_quietly(pid)
+        {:error, :not_found} -> :ok
+      end
+    end)
+
+    {creator.nickname, "/play/hex_pong/" <> session.token}
   end
 
   defp register_for_budget do

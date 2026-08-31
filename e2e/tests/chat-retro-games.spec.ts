@@ -23,7 +23,7 @@ test.describe("In-chat Retro Games", () => {
     await connect.registerWithPassword("pass12345");
     await chat.waitUntilConnected();
 
-    await chat.gamesMenuTrigger.click();
+    await chat.openGamesFolder();
     await expect(chat.retroGamesMenuItem).toBeVisible();
     await expect(page.getByTestId("menu-retro-game-pixel_tanks")).toHaveCount(
       0,

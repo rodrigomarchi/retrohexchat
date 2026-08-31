@@ -23,6 +23,11 @@ defmodule RetroHexChat.Lobby.Schema.Session do
 
   @status_values ~w(open pending lobby connected closed expired failed)
   @terminal_statuses ~w(closed expired failed)
+  # The statuses in which a session is a connection between two people. `open`
+  # has no peer yet and a terminal one never will: a match link nobody claimed
+  # still has to be closeable, and demanding a peer to write `expired` would
+  # make the sweep unable to bury exactly the rows it exists for.
+  @paired_statuses ~w(pending lobby connected)
 
   schema "lobby_sessions" do
     field :token, :string
@@ -74,6 +79,7 @@ defmodule RetroHexChat.Lobby.Schema.Session do
     ])
     |> validate_required([:status])
     |> validate_inclusion(:status, @status_values)
+    |> validate_peer_for_status()
     |> validate_terminal_fields()
   end
 
@@ -86,15 +92,15 @@ defmodule RetroHexChat.Lobby.Schema.Session do
   @spec status_values() :: [String.t()]
   def status_values, do: @status_values
 
-  # The invariant that used to be "there are always two of you": a session
-  # names its peer from `pending` onwards, and only an `open` one may be
-  # missing it. Keeping it here rather than at the call site is what stops a
-  # second way of creating a peerless session from existing.
+  # The invariant that used to be "there are always two of you". It guards the
+  # status changeset as well as creation, because otherwise a plain status
+  # write could walk a peerless session into `pending` without ever touching
+  # `peer_id` — the invariant belongs to the pair of fields, not to one write.
   defp validate_peer_for_status(changeset) do
-    if get_field(changeset, :status) == "open" do
-      changeset
-    else
+    if get_field(changeset, :status) in @paired_statuses do
       validate_required(changeset, [:peer_id])
+    else
+      changeset
     end
   end
 

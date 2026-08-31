@@ -26,7 +26,6 @@ import NicklistHook from "./ui/nicklist_hook";
 import ContextualTipsHook from "./ui/contextual_tips_hook";
 import NickChangeFormHook from "./chat/nick_change_form_hook";
 import URLCatcherHook from "./ui/url_catcher_hook";
-import ArcadeSessionHook from "./games/arcade_session_hook";
 import ViewportDetectHook from "./ui/viewport_detect_hook";
 import WindowManagerHook from "./ui/window_manager_hook";
 import FocusChatInputOnClickHook from "./ui/focus_chat_input_on_click_hook";
@@ -43,7 +42,6 @@ export const criticalHooks = {
   AutocompleteHook: AutocompleteHook,
   EmojiPickerHook: EmojiPickerHook,
   FocusChatInputOnClickHook: FocusChatInputOnClickHook,
-  ArcadeSession: ArcadeSessionHook,
   FormatToolbarHook: FormatToolbarHook,
   KeyboardHook: KeyboardHook,
   LagHook: LagHook,

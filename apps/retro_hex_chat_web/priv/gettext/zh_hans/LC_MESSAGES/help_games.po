@@ -3697,6 +3697,8 @@ msgid "In Retro Games solo mode, you control the left castle shield while the AI
 msgstr "在复古游戏单人模式中，你控制左侧城堡护盾，AI 控制右侧城堡护盾。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:65
@@ -3803,3 +3805,79 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "With a game selected, press Share. You get a short link you can paste anywhere — a channel, a private message, or outside RetroHexChat entirely."
 msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A match link has exactly one seat. The moment somebody takes it the link stops working, and the card it draws says the match is full rather than that the link expired — it stopped working because it worked."
+msgstr "对局链接只有一个座位。只要有人坐下，链接就不再有效，而它画出的卡片会说对局满员，而不是说链接过期了——它是因为奏效才失效的。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "A match nobody joins closes itself after about fifteen minutes. That is deliberate: an address pasted in a channel would otherwise stay a way into your session for the rest of the day, and a room waiting for nobody is worth less than a fresh one."
+msgstr "没人加入的对局会在大约十五分钟后自行关闭。这是有意为之：否则贴在频道里的地址会在这一整天里都是通往你会话的入口，而一个谁也不等的房间，价值还不如一个新的。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Creating a match link needs a registered nickname you have identified with NickServ, and so does taking the seat. Somebody either of you has blocked cannot join, and neither can you join your own match from a second window."
+msgstr "创建对局链接需要一个已注册、并在 NickServ 完成身份验证的昵称，占下座位的一方也一样。被你们任何一方屏蔽的人无法加入，你自己也不能从第二个窗口加入自己的对局。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Ending it yourself"
+msgstr "自己结束它"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Inside the room, Share mints the address and puts it in a field you can copy. Paste it into a channel or a private message and it draws a card with the game on it and the number of seats left. Opening the game does not create an address — pressing Share does, so you never leave links behind for rooms nobody used."
+msgstr "在房间里按「分享」会生成地址，并把它放进一个可复制的输入框。把它贴到频道或私聊里，就会画出一张带着游戏和剩余座位数的卡片。打开游戏并不会创建地址——按下分享才会，所以你不会留下一堆没人用过的房间链接。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "It also expires on its own"
+msgstr "它也会自己过期"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Open a game from Retro Games and press Play with someone. That creates a match room and drops you into it as its host, with one empty seat opposite you. Nothing has been sent anywhere yet."
+msgstr "从 Retro Games 打开一个游戏，按下「和别人一起玩」。这会创建一个对局房间，把你作为主持人放进去，对面留着一个空位。此时还没有向任何地方发出任何东西。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Playing a Game with Somebody"
+msgstr "和别人一起玩游戏"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Ready, then Start"
+msgstr "先准备完成，再开始"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "See also:"
+msgstr "另请参阅："
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "The link comes from Share"
+msgstr "链接来自分享"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Who can play"
+msgstr "谁可以玩"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Whoever follows the link takes the seat and lands in the same room. Both of you press Ready, and then the host's Start begins the match. There is no accept step for the game itself: the link named it, and following the link was the agreement."
+msgstr "跟着链接进来的人会占下座位，落在同一个房间里。你们两人都按下「准备完成」，然后主持人的「开始」就让对局开始。游戏本身没有接受这一步：链接已经指定了它，而跟着链接进来就是同意。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Why a Match Link Stopped Working"
+msgstr "对局链接为什么会失效"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Cancel, in the match room, closes it and kills its link immediately — it is there for the host, and only until the match starts. To play again, open the game and press Play with someone for a new room and a new address."
+msgstr "对局房间里的「取消」会关闭房间并立刻让链接失效——它属于主持人，而且只在对局开始之前存在。想再玩一局，就打开游戏并按下「和别人一起玩」，得到一个新房间和一个新地址。"

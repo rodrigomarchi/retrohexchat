@@ -4134,6 +4134,8 @@ msgstr ""
 "die KI den Schild der rechten Burg steuert."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:65
@@ -4255,3 +4257,79 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "With a game selected, press Share. You get a short link you can paste anywhere — a channel, a private message, or outside RetroHexChat entirely."
 msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A match link has exactly one seat. The moment somebody takes it the link stops working, and the card it draws says the match is full rather than that the link expired — it stopped working because it worked."
+msgstr "Ein Match-Link hat genau einen Platz. Sobald jemand ihn einnimmt, funktioniert der Link nicht mehr, und die Karte, die er zeichnet, sagt, dass das Match voll ist, und nicht, dass der Link abgelaufen sei — er hörte auf zu funktionieren, weil er funktioniert hat."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "A match nobody joins closes itself after about fifteen minutes. That is deliberate: an address pasted in a channel would otherwise stay a way into your session for the rest of the day, and a room waiting for nobody is worth less than a fresh one."
+msgstr "Ein Match, dem niemand beitritt, schließt sich nach etwa fünfzehn Minuten selbst. Das ist Absicht: Eine in einen Kanal eingefügte Adresse bliebe sonst für den Rest des Tages ein Weg in deine Sitzung, und ein Raum, der auf niemanden wartet, ist weniger wert als ein frischer."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Creating a match link needs a registered nickname you have identified with NickServ, and so does taking the seat. Somebody either of you has blocked cannot join, and neither can you join your own match from a second window."
+msgstr "Einen Match-Link zu erstellen erfordert einen registrierten, bei NickServ identifizierten Spitznamen, und den Platz einzunehmen ebenso. Wen einer von euch beiden blockiert hat, kann nicht beitreten, und deinem eigenen Match kannst du auch aus einem zweiten Fenster nicht beitreten."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Ending it yourself"
+msgstr "Selbst beenden"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Inside the room, Share mints the address and puts it in a field you can copy. Paste it into a channel or a private message and it draws a card with the game on it and the number of seats left. Opening the game does not create an address — pressing Share does, so you never leave links behind for rooms nobody used."
+msgstr "Im Raum erzeugt Teilen die Adresse und legt sie in ein Feld, das du kopieren kannst. Füge sie in einen Kanal oder eine private Nachricht ein, und sie zeichnet eine Karte mit dem Spiel und der Zahl der freien Plätze. Ein Spiel zu öffnen erzeugt keine Adresse — Teilen zu drücken tut es, sodass du nie Links zu Räumen zurücklässt, die niemand benutzt hat."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "It also expires on its own"
+msgstr "Er läuft auch von allein ab"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Open a game from Retro Games and press Play with someone. That creates a match room and drops you into it as its host, with one empty seat opposite you. Nothing has been sent anywhere yet."
+msgstr "Öffne ein Spiel in Retro Games und drücke Mit jemandem spielen. Das erstellt einen Match-Raum und setzt dich als Gastgeber hinein, mit einem freien Platz dir gegenüber. Bisher wurde nirgendwohin etwas gesendet."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Playing a Game with Somebody"
+msgstr "Mit jemandem spielen"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Ready, then Start"
+msgstr "Bereit, dann Start"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "See also:"
+msgstr "Siehe auch:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "The link comes from Share"
+msgstr "Der Link kommt von Teilen"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Who can play"
+msgstr "Wer mitspielen kann"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Whoever follows the link takes the seat and lands in the same room. Both of you press Ready, and then the host's Start begins the match. There is no accept step for the game itself: the link named it, and following the link was the agreement."
+msgstr "Wer dem Link folgt, nimmt den Platz ein und landet im selben Raum. Ihr drückt beide auf Bereit, und dann startet das Start des Gastgebers das Match. Für das Spiel selbst gibt es keinen Bestätigungsschritt: Der Link hat es benannt, und ihm zu folgen war die Zustimmung."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Why a Match Link Stopped Working"
+msgstr "Warum ein Match-Link nicht mehr funktioniert"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Cancel, in the match room, closes it and kills its link immediately — it is there for the host, and only until the match starts. To play again, open the game and press Play with someone for a new room and a new address."
+msgstr "Abbrechen schließt den Match-Raum und tötet seinen Link sofort — es gehört dem Gastgeber und gibt es nur, bis das Match startet. Zum Weiterspielen öffnest du das Spiel und drückst Mit jemandem spielen für einen neuen Raum und eine neue Adresse."

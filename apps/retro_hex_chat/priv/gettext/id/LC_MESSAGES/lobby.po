@@ -11,86 +11,103 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/lobby/policy.ex:81
+#: lib/retro_hex_chat/lobby/policy.ex:117
 #, elixir-autogen, elixir-format
 msgid "An active lobby already exists with this user"
 msgstr "Lobby aktif sudah ada dengan pengguna ini"
 
-#: lib/retro_hex_chat/lobby/policy.ex:60
+#: lib/retro_hex_chat/lobby/policy.ex:96
 #, elixir-autogen, elixir-format
 msgid "Cannot create a session with yourself"
 msgstr "Tidak dapat membuat sesi dengan diri sendiri"
 
-#: lib/retro_hex_chat/lobby/service.ex:134
+#: lib/retro_hex_chat/lobby/service.ex:193
+#: lib/retro_hex_chat/lobby/service.ex:210
+#: lib/retro_hex_chat/lobby/service.ex:232
 #, elixir-autogen, elixir-format
 msgid "Failed to create lobby"
 msgstr "Gagal membuat lobi"
 
-#: lib/retro_hex_chat/lobby/session_server.ex:223
+#: lib/retro_hex_chat/lobby/session_server.ex:260
 #, elixir-autogen, elixir-format
 msgid "Invalid transition from %{from} to %{to}"
 msgstr "Transisi tidak valid dari %{from} ke %{to}"
 
-#: lib/retro_hex_chat/lobby/policy.ex:135
+#: lib/retro_hex_chat/lobby/policy.ex:289
 #, elixir-autogen, elixir-format
 msgid "Invite is no longer pending"
 msgstr "Undang tidak lagi tertunda"
 
-#: lib/retro_hex_chat/lobby/policy.ex:139
+#: lib/retro_hex_chat/lobby/policy.ex:293
 #, elixir-autogen, elixir-format
 msgid "Lobby is no longer active"
 msgstr "Lobby tidak lagi aktif"
 
-#: lib/retro_hex_chat/lobby/service.ex:140
+#: lib/retro_hex_chat/lobby/service.ex:242
 #, elixir-autogen, elixir-format
 msgid "Lobby not found"
 msgstr "Lobby tidak ditemukan"
 
-#: lib/retro_hex_chat/lobby/session_server.ex:180
+#: lib/retro_hex_chat/lobby/session_server.ex:200
 #, elixir-autogen, elixir-format
 msgid "Not a participant"
 msgstr "Bukan peserta"
 
-#: lib/retro_hex_chat/lobby/policy.ex:120
+#: lib/retro_hex_chat/lobby/policy.ex:254
 #, elixir-autogen, elixir-format
 msgid "Only the invited user can decline"
 msgstr "Hanya pengguna yang diundang yang dapat menolak"
 
-#: lib/retro_hex_chat/lobby/policy.ex:128
+#: lib/retro_hex_chat/lobby/policy.ex:262
 #, elixir-autogen, elixir-format
 msgid "Only the inviter can cancel the invite"
 msgstr "Hanya pemilik undangan yang dapat membatalkan undangan"
 
-#: lib/retro_hex_chat/lobby/service.ex:117
-#: lib/retro_hex_chat/lobby/session_server.ex:94
-#: lib/retro_hex_chat/lobby/session_server.ex:704
-#: lib/retro_hex_chat/lobby/session_server.ex:705
-#: lib/retro_hex_chat/lobby/session_server.ex:706
+#: lib/retro_hex_chat/lobby/service.ex:176
+#: lib/retro_hex_chat/lobby/session_server.ex:112
+#: lib/retro_hex_chat/lobby/session_server.ex:912
+#: lib/retro_hex_chat/lobby/session_server.ex:913
+#: lib/retro_hex_chat/lobby/session_server.ex:914
 #, elixir-autogen, elixir-format
 msgid "Session process not running"
 msgstr "Proses sesi tak sedang berjalan"
 
-#: lib/retro_hex_chat/lobby/policy.ex:74
+#: lib/retro_hex_chat/lobby/policy.ex:110
 #, elixir-autogen, elixir-format
 msgid "Target user must be registered"
 msgstr "Pengguna target harus didaftarkan"
 
-#: lib/retro_hex_chat/lobby/service.ex:171
+#: lib/retro_hex_chat/lobby/service.ex:273
 #, elixir-autogen, elixir-format
 msgid "Too many lobbies created. Try again in %{minutes} minutes"
 msgstr "Terlalu banyak lobi yang dibuat. Coba lagi %{minutes} menit"
 
-#: lib/retro_hex_chat/lobby/policy.ex:102
+#: lib/retro_hex_chat/lobby/policy.ex:132
 #, elixir-autogen, elixir-format
 msgid "User not available"
 msgstr "Pengguna tak tersedia"
 
-#: lib/retro_hex_chat/lobby/policy.ex:112
+#: lib/retro_hex_chat/lobby/policy.ex:246
 #, elixir-autogen, elixir-format
 msgid "You are not a participant in this lobby"
 msgstr "Kau bukan peserta di lobi ini."
 
-#: lib/retro_hex_chat/lobby/policy.ex:73
+#: lib/retro_hex_chat/lobby/policy.ex:109
 #, elixir-autogen, elixir-format
 msgid "You must be registered to use the lobby"
 msgstr "Anda harus terdaftar untuk menggunakan lobi"
+
+#: lib/retro_hex_chat/lobby/policy.ex:269
+#, elixir-autogen, elixir-format
+msgid "This match is already full"
+msgstr "Pertandingan ini sudah penuh"
+
+#: lib/retro_hex_chat/lobby/policy.ex:273
+#, elixir-autogen, elixir-format
+msgid "This match link has expired"
+msgstr "Tautan pertandingan ini sudah kedaluwarsa"
+
+#: lib/retro_hex_chat/lobby/policy.ex:282
+#, elixir-autogen, elixir-format
+msgid "You cannot join your own match"
+msgstr "Anda tidak bisa bergabung ke pertandingan sendiri"

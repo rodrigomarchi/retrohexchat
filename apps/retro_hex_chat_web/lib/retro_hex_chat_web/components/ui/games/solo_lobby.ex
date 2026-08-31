@@ -2,6 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   @moduledoc false
   use RetroHexChatWeb.Component
 
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Icons
 
   import RetroHexChatWeb.Components.UI.Badge
@@ -181,9 +182,17 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
             {dgettext("games", "Back")}
           </.button>
+          <%!-- An anchor, not a scripted `window.open`: `rel="noopener"` is
+                what gives the game its own event loop, and without it the tab
+                shares this one — measured at 1203 ms against 12 ms. The click
+                still tells the server the session started; a real `href` is
+                left alone by the click binding. --%>
           <.button
             size="sm"
             class="font-bold"
+            href={Paths.arcade_path(@previewed_game.id)}
+            target="_blank"
+            rel="noopener"
             phx-click={@on_select_game}
             phx-value-game-id={@previewed_game.id}
             data-testid={"solo-game-start-#{@previewed_game.id}"}
@@ -298,12 +307,24 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
         <span>
           {dgettext(
             "games",
-            "The game runs in a separate window. Keep this window open to track your session — closing the game window ends it."
+            "The game runs in a tab of its own, with its own address. Closing that tab does not end the session — End Session does, and so does leaving it alone for a while."
           )}
         </span>
       </div>
 
       <div class="flex flex-wrap items-center justify-center gap-retro-8">
+        <%!-- The way back into a tab that was closed, and the address itself:
+              the game's tab has no handle here to reopen, by design. --%>
+        <.button
+          variant="outline"
+          href={Paths.arcade_path(@game_id)}
+          target="_blank"
+          rel="noopener"
+          data-testid="arcade-reopen"
+        >
+          <:icon><Icons.icon_btn_open class="w-4 h-4" /></:icon>
+          {dgettext("games", "Open the game tab")}
+        </.button>
         <.button variant="outline" phx-click={@on_back_to_launcher} data-testid="arcade-back">
           <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
           {dgettext("games", "Back")}

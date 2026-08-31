@@ -1693,6 +1693,50 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ]
       },
       %{
+        id: "feature-game-match-link",
+        title: dgettext("help", "Playing a Game with Somebody"),
+        category: dgettext("help", "Retro Games"),
+        keywords: [
+          dgettext("help", "match link"),
+          dgettext("help", "play with someone"),
+          "multiplayer",
+          "match",
+          "link",
+          "invite",
+          "share",
+          "seat",
+          "lobby"
+        ],
+        icon: :icon_protocol_p2p,
+        description:
+          dgettext(
+            "help",
+            "Open a game and choose Play with someone: it creates a match room and puts you in it as host. Share, inside the room, mints a link you can paste into any conversation. Whoever follows it takes the empty seat, and when you both press Ready the host's Start begins the game the link named — there is nothing to accept, because following the link was the agreement. You need a registered, identified nickname to create one, and so does whoever joins."
+          ),
+        see_also: ["feature-retro-games", "feature-game-match-full", "feature-p2p-starting-room"]
+      },
+      %{
+        id: "feature-game-match-full",
+        title: dgettext("help", "Why a Match Link Stopped Working"),
+        category: dgettext("help", "Retro Games"),
+        keywords: [
+          dgettext("help", "match full"),
+          dgettext("help", "seat taken"),
+          "full",
+          "expired",
+          "link",
+          "match",
+          "already"
+        ],
+        icon: :icon_ban,
+        description:
+          dgettext(
+            "help",
+            "A match link has exactly one seat, so it stops working the moment somebody takes it — the card then says the match is full rather than that the link expired. An unclaimed link also expires on its own after about fifteen minutes, which is what keeps an address you pasted somewhere from being a way in for the rest of the day. Cancel, in the room, kills it immediately, and either way you make a new one from the game."
+          ),
+        see_also: ["feature-game-match-link", "feature-retro-games"]
+      },
+      %{
         id: "feature-retro-games",
         title: dgettext("help", "Retro Games"),
         category: dgettext("help", "Retro Games"),

@@ -155,6 +155,10 @@ defmodule RetroHexChatWeb.Router do
     get "/chat/attachments/:id/preview", AttachmentController, :preview
     get "/chat/attachments/:id", AttachmentController, :show
 
+    # Declared before `/play/:game/:token`, which it would otherwise be read as:
+    # `arcade` is a reserved word inside the game namespace, not a game id.
+    get "/play/arcade/:game", ArcadeGameController, :show
+
     live_session :app_locale, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
       live "/connect", ConnectLive
       live "/chat", ChatLive
@@ -172,6 +176,12 @@ defmodule RetroHexChatWeb.Router do
       ] do
       live "/play", PlayLive
       live "/play/:game", PlayLive
+      # A match over a P2P session, entered at its game rather than at the
+      # console: the address already says which game, so opening on the call
+      # section would make the link's own subject a click away. `:game` here is
+      # a catalogue id, and `arcade` is not one — the arcade's own route is
+      # declared above this one so a game id can never be read as one.
+      live "/play/:game/:token", P2PLive
       live "/call/:token", CallLive
       live "/space/:slug", SpaceLive
       live "/p2p/:token", P2PLive

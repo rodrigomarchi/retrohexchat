@@ -70,6 +70,23 @@ defmodule RetroHexChat.Lobby do
   @spec can_claim?(integer(), Session.t()) :: :ok | {:error, String.t()}
   defdelegate can_claim?(user_id, session), to: Policy
 
+  @doc """
+  The game a session was created for, if it was created for one.
+
+  Read from the session rather than from the address that led here: a match is
+  a match because of what it was made for, not because of the path somebody
+  typed.
+  """
+  @spec match_game_id(Session.t()) :: String.t() | nil
+  def match_game_id(%Session{metadata: metadata}) when is_map(metadata) do
+    case Map.get(metadata, "game_id") do
+      game_id when is_binary(game_id) and game_id != "" -> game_id
+      _absent -> nil
+    end
+  end
+
+  def match_game_id(_session), do: nil
+
   @doc "Whether `session` is a match link with its seat still empty."
   @spec open_session?(Session.t()) :: boolean()
   def open_session?(%Session{status: "open", peer_id: nil}), do: true

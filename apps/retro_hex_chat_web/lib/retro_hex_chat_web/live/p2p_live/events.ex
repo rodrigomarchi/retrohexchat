@@ -436,13 +436,25 @@ defmodule RetroHexChatWeb.P2PLive.Events do
        socket
        |> put_p2p(%{p2p | session_started: true})
        |> start_webrtc(%{p2p | session_started: true})
-       |> open_p2p_console("call")}
+       |> open_p2p_console(started_section(p2p))}
     else
       {:halt, socket}
     end
   end
 
   def handle_event("p2p_room_start", _params, socket), do: {:halt, socket}
+
+  # The host stops waiting: the room closes and the address dies with it,
+  # rather than standing until the deadline sweeps it.
+  def handle_event(
+        "p2p_room_cancel",
+        _params,
+        %{assigns: %{p2p_session: %{role: :creator}}} = socket
+      ) do
+    request_stop(socket)
+  end
+
+  def handle_event("p2p_room_cancel", _params, socket), do: {:halt, socket}
 
   # Taking the session back into this page: the same seat grab a fresh mount
   # does, asked for by the window that lost it.
@@ -750,45 +762,14 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     end
   end
 
-  # The creator holds :invite_sent WITHOUT having joined — a pending invite
-  # is just a card, not a connection. The peer joining is the cue to join
-  # from here; :already_joined means another process of this user (an old
-  # LiveView finishing a takeover) still holds the slot — detach silently
-  # and let it drive.
+  # The creator holds :invite_sent WITHOUT having joined — a pending invite is
+  # just a card, not a connection. The peer joining is the cue to join from
+  # here.
   defp handle_session_event(%{event: "lobby_peer_joined", payload: %{user_id: uid}}, socket, p2p) do
     cond do
-      uid == p2p.user_id ->
-        {:halt, socket}
-
-      p2p.state == :invite_sent ->
-        case Lobby.join_session(p2p.token, p2p.user_id) do
-          :ok ->
-            {:halt,
-             socket
-             |> put_p2p(%{p2p | state: :joining, peer_online: true})
-             |> share_client_info(p2p)
-             |> Host.system(
-               dgettext(
-                 "chat",
-                 "%{peer} accepted the P2P request - connecting...",
-                 peer: p2p.peer_nick || dgettext("chat", "The other user")
-               )
-             )}
-
-          {:error, :already_joined} ->
-            {:halt, detach_session(socket, p2p)}
-
-          {:error, message} ->
-            {:halt, socket |> detach_session(p2p) |> Host.system(message)}
-        end
-
-      true ->
-        # Re-share our whois so a peer that joined after us still receives it,
-        # and — if this session is already running — say so, because the page
-        # that just arrived cannot know it and would otherwise sit in the
-        # starting room waiting for a `[Start]` that was pressed minutes ago.
-        if p2p.session_started, do: broadcast(p2p.token, "lobby_session_start", %{})
-        {:halt, socket |> put_p2p(%{p2p | peer_online: true}) |> share_client_info(p2p)}
+      uid == p2p.user_id -> {:halt, socket}
+      p2p.state == :invite_sent -> {:halt, seat_taken(socket, p2p)}
+      true -> {:halt, peer_rejoined(socket, p2p)}
     end
   end
 
@@ -797,17 +778,27 @@ defmodule RetroHexChatWeb.P2PLive.Events do
          socket,
          p2p
        ) do
-    if uid == p2p.user_id do
-      {:halt, socket}
-    else
-      {:halt,
-       socket
-       |> put_p2p(%{p2p | peer_online: false})
-       |> Host.system(
-         dgettext("chat", "%{peer} lost the P2P connection — waiting for them to return...",
-           peer: p2p.peer_nick
-         )
-       )}
+    cond do
+      uid == p2p.user_id ->
+        {:halt, socket}
+
+      # Nothing was connected yet, so nothing was lost. Someone arriving at a
+      # match link goes through the resolver and then the surface, and the
+      # page swap in between releases the seat for an instant: saying "lost the
+      # P2P connection" there names a connection that never existed, and the
+      # sentence then sits in the status bar through the whole session.
+      p2p.state != :connected ->
+        {:halt, put_p2p(socket, %{p2p | peer_online: false})}
+
+      true ->
+        {:halt,
+         socket
+         |> put_p2p(%{p2p | peer_online: false})
+         |> Host.system(
+           dgettext("chat", "%{peer} lost the P2P connection — waiting for them to return...",
+             peer: p2p.peer_nick
+           )
+         )}
     end
   end
 
@@ -889,6 +880,25 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     end
 
     {:halt, socket}
+  end
+
+  # The game a match link named needs no second yes: following the link was the
+  # consent, and an accept/decline dialog in front of it would be the product
+  # asking whether you meant the address you just opened. Any *other* game
+  # proposed inside the same session still asks, because that one nobody agreed
+  # to yet.
+  defp handle_session_event(
+         %{event: "lobby_game_request", payload: %{game_id: game_id} = request},
+         socket,
+         %{match_game_id: game_id} = p2p
+       )
+       when is_binary(game_id) do
+    if request.proposer_id == p2p.user_id do
+      {:halt, open_p2p_console(socket, "games")}
+    else
+      _ = Lobby.respond_game(p2p.token, p2p.user_id, true)
+      {:halt, open_p2p_console(socket, "games")}
+    end
   end
 
   defp handle_session_event(%{event: "lobby_game_request", payload: request}, socket, p2p) do
@@ -993,13 +1003,66 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   # windows consume their own relays through their islands/hooks.
   defp handle_session_event(_msg, socket, _p2p), do: {:halt, socket}
 
-  defp new_session(socket, token, user_id, role, state) do
+  # The other side has arrived, so this page takes its own seat. A match link
+  # had nobody to name when it mounted, so the peer's nickname is read now
+  # rather than remembered: for an open lobby this arrival *is* the moment
+  # there is one.
+  defp seat_taken(socket, p2p) do
+    case Lobby.join_session(p2p.token, p2p.user_id) do
+      :ok ->
+        p2p = %{p2p | peer_nick: p2p.peer_nick || peer_nick_for(p2p.token, p2p.user_id)}
+
+        socket
+        |> put_p2p(%{p2p | state: :joining, peer_online: true})
+        |> share_client_info(p2p)
+        |> Host.system(
+          dgettext("chat", "%{peer} accepted the P2P request - connecting...",
+            peer: p2p.peer_nick || dgettext("chat", "The other user")
+          )
+        )
+
+      {:error, :already_joined} ->
+        detach_session(socket, p2p)
+
+      {:error, message} ->
+        socket |> detach_session(p2p) |> Host.system(message)
+    end
+  end
+
+  # Somebody joined a session this page is already in. Re-share our whois so a
+  # peer that joined after us still receives it, and — if this session is
+  # already running — say so, because the page that just arrived cannot know it
+  # and would otherwise sit in the starting room waiting for a `[Start]` that
+  # was pressed minutes ago.
+  defp peer_rejoined(socket, p2p) do
+    if p2p.session_started, do: broadcast(p2p.token, "lobby_session_start", %{})
+
+    socket =
+      socket
+      |> put_p2p(%{p2p | peer_online: true})
+      |> share_client_info(p2p)
+
+    # A worry that turned out fine has to be taken back, or it stays on screen
+    # for the rest of the session saying the opposite of the truth.
+    if p2p.state == :connected and not p2p.peer_online do
+      Host.system(socket, dgettext("chat", "%{peer} is back.", peer: p2p.peer_nick))
+    else
+      socket
+    end
+  end
+
+  defp new_session(socket, token, user_id, role, state, opts) do
     setup_preferences = load_p2p_setup_preferences(socket)
 
     %{
       token: token,
       user_id: user_id,
       role: role,
+      # The game this session was created for, or nil for a plain session.
+      # It is the difference between a room with devices in it and a room with
+      # a game in it, and it is read from the session rather than the address.
+      match_game_id: Keyword.get(opts, :match_game_id),
+      match_proposed: false,
       peer_nick: peer_nick_for(token, user_id),
       state: state,
       webrtc_started: false,
@@ -1037,9 +1100,9 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   Subscribed and drawn, but not seated: a pending invite is a card, and taking
   a seat would start the rejoin grace on a session with nobody in it.
   """
-  @spec new_invite_sent(Socket.t(), String.t(), integer()) :: map()
-  def new_invite_sent(socket, token, user_id) do
-    new_session(socket, token, user_id, :creator, :invite_sent)
+  @spec new_invite_sent(Socket.t(), String.t(), integer(), keyword()) :: map()
+  def new_invite_sent(socket, token, user_id, opts \\ []) do
+    new_session(socket, token, user_id, :creator, :invite_sent, opts)
   end
 
   @doc """
@@ -1073,10 +1136,12 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   def room(%{p2p_session: %{} = p2p, nickname: nickname}) do
     %{
       nickname: nickname,
+      match?: is_binary(p2p.match_game_id),
       peer_nick: p2p.peer_nick,
       host?: p2p.role == :creator,
       host_nick: if(p2p.role == :creator, do: nickname, else: p2p.peer_nick),
       ready?: p2p.room_ready,
+      started?: p2p.session_started,
       peer_present?: p2p.state != :invite_sent,
       peer_ready?: p2p.peer_ready,
       can_start?: room_can_start?(p2p)
@@ -1094,6 +1159,11 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     do: p2p.room_ready and p2p.hook_ready and p2p.peer_ready and not p2p.session_started
 
   def room_can_start?(_p2p), do: false
+
+  # A match leaves its room straight into its game; a plain session leaves it
+  # into the call, which is what it is.
+  defp started_section(%{match_game_id: game_id}) when is_binary(game_id), do: "games"
+  defp started_section(_p2p), do: "call"
 
   defp share_client_info(socket, p2p) do
     broadcast(p2p.token, "lobby_client_info", %{
@@ -1195,9 +1265,28 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   # The session presents itself the moment the link comes up, on both sides:
   # the unified P2P console opens in front. Call, Files, Games and Statistics
   # live inside that surface so mobile and desktop share one mental model.
+  #
+  # A match opens on its game instead, and the host puts it on the table: the
+  # link already named the game and both sides agreed to it by being here, so a
+  # picker in front of a match would ask a question that was answered by the
+  # address.
+  defp burst_windows(%{assigns: %{p2p_session: %{match_game_id: game_id}}} = socket)
+       when is_binary(game_id) do
+    socket |> open_p2p_console("games") |> propose_match_game()
+  end
+
   defp burst_windows(socket) do
     open_p2p_console(socket, "call")
   end
+
+  defp propose_match_game(
+         %{assigns: %{p2p_session: %{role: :creator, match_proposed: false} = p2p}} = socket
+       ) do
+    _ = Lobby.propose_game(p2p.token, p2p.user_id, p2p.match_game_id)
+    put_p2p(socket, %{p2p | match_proposed: true})
+  end
+
+  defp propose_match_game(socket), do: socket
 
   defp open_p2p_console(socket, section) do
     section = normalize_console_section(section)
@@ -1265,12 +1354,13 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   # the window you were looking at. The most recently opened page is the one
   # the person is looking at, which is the same contract the chat's own
   # takeover has.
-  @spec attach_session(Socket.t(), String.t(), integer(), :creator | :peer) :: Socket.t()
-  def attach_session(socket, token, user_id, role) do
+  @spec attach_session(Socket.t(), String.t(), integer(), :creator | :peer, keyword()) ::
+          Socket.t()
+  def attach_session(socket, token, user_id, role, opts \\ []) do
     case Lobby.join_session(token, user_id, takeover: true) do
       :ok ->
         Phoenix.PubSub.subscribe(@pubsub, "lobby:#{token}")
-        p2p = new_session(socket, token, user_id, role, :joining)
+        p2p = new_session(socket, token, user_id, role, :joining, opts)
 
         socket
         |> put_p2p(p2p)

@@ -131,6 +131,12 @@ TECHNICAL_SOURCE_ALLOWLIST = [
     r"^Error: %\{message\}$",
     r"^Color %\{index\}: %\{name\}$",
     r"^Arcade — %\{nickname\}$",
+    # A window title that is a protocol or game name, a separator and a
+    # nickname: every word in it is a proper noun the reader supplied. The
+    # translated form is the same characters, which is the translation and not
+    # the absence of one.
+    r"^P2P · %\{peer\}$",
+    r"^%\{game\} · %\{peer\}$",
     r"^%\{count\} URLs?$",
     r"^%\{count\} items?$",
     r"^%\{count\} minutes?$",

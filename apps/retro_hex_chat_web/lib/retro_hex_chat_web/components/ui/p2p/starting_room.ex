@@ -21,6 +21,13 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
   Everything below `[Ready]` is the device half of what used to be the chat's
   `p2p_setup_dialog`, moved here whole. The test ids of those fields did not
   change with the move: they name the field, not the dialog it used to sit in.
+
+  **A match is the same room without that half**, because a game has no camera
+  to choose: `game` replaces the device column with what the link named, and
+  the roster, the line saying who is being waited on, `[Ready]` and `[Start]`
+  are the parts both forms share. That is the whole of what generalising was
+  worth here — a `variant` atom with two branches inside every section would
+  have been a second screen wearing this one's name.
   """
   use RetroHexChatWeb.Component
 
@@ -33,8 +40,14 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
   attr :id, :string, required: true
   attr :setup, :map, required: true, doc: "media posture, devices and route policy"
   attr :room, :map, required: true, doc: "who is here, who is ready, and who the host is"
+
+  attr :game, :map,
+    default: nil,
+    doc: "the game a match was created for; nil for a plain session"
+
   attr :on_ready, :any, default: "p2p_room_ready"
   attr :on_start, :any, default: "p2p_room_start"
+  attr :on_cancel, :any, default: "p2p_room_cancel"
 
   slot :footer, doc: "the way back and the share bar, which the host decides"
 
@@ -67,8 +80,23 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
         class="my-auto flex w-full max-w-[920px] flex-col gap-2"
         data-testid="p2p-setup-form"
       >
+        <%!-- A match still submits the same form, and it says what a game has
+              to say about media: nothing to send. Without these the submit
+              would carry no `p2p_setup` at all and `[Ready]` would quietly do
+              nothing — the fields are the answer, not decoration. --%>
+        <input :if={@game} type="hidden" name="p2p_setup[audio]" value="false" />
+        <input :if={@game} type="hidden" name="p2p_setup[video]" value="false" />
+        <input
+          :if={@game}
+          type="hidden"
+          name="p2p_setup[turn_only]"
+          value={to_string(@turn_only)}
+        />
+
         <div class="grid min-w-0 gap-2 md:grid-cols-[260px_minmax(0,1fr)]">
+          <.match_subject :if={@game} game={@game} />
           <.room_preview
+            :if={!@game}
             media={@media}
             setup={@setup}
             device_preferences={@device_preferences}
@@ -77,7 +105,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
           <section class="grid min-w-0 content-start gap-2">
             <.roster occupants={@occupants} room={@room} />
 
-            <section class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
+            <section
+              :if={!@game}
+              class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken"
+            >
               <div class="flex items-center gap-1 font-bold">
                 <Icons.icon_devices class="h-3.5 w-3.5" />
                 {dgettext("p2p", "Media defaults")}
@@ -108,7 +139,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
               </div>
             </section>
 
-            <section class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
+            <section
+              :if={!@game}
+              class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken"
+            >
               <DeviceSelect.device_select
                 name="p2p_setup[audio_input_id]"
                 value={@device_preferences.audio_input_id}
@@ -139,6 +173,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
             </section>
 
             <details
+              :if={!@game}
               class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken"
               data-testid="p2p-setup-advanced"
             >
@@ -194,6 +229,20 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
         <div class="flex shrink-0 flex-wrap items-center gap-2 border-t border-border pt-1">
           {render_slot(@footer)}
           <div class="ml-auto flex shrink-0 items-center gap-2">
+            <%!-- P7: a room does not outlive the person waiting in it. Without
+                  this the only way to stop waiting is to walk away and let the
+                  deadline do it, which leaves the address working for the rest
+                  of the quarter-hour. --%>
+            <.button
+              :if={@room.host? and not @room.started?}
+              type="button"
+              variant="outline"
+              phx-click={@on_cancel}
+              data-testid="p2p-room-cancel"
+            >
+              <:icon><Icons.icon_close class="h-4 w-4" /></:icon>
+              {dgettext("p2p", "Cancel")}
+            </.button>
             <.button
               type="submit"
               disabled={@room.ready?}
@@ -252,6 +301,40 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
         </li>
       </ul>
       <p class="text-muted-foreground" data-testid="p2p-room-waiting">{waiting(@room)}</p>
+    </section>
+    """
+  end
+
+  attr :game, :map, required: true
+
+  # A match puts the game where a session puts the camera, and for the same
+  # reason: it is the answer to "what did I just walk into". Somebody who
+  # followed a link pasted in a channel has seen nothing of this match but its
+  # address, and there is no picker here — the link named the game, and
+  # offering another one would be the room contradicting the way in.
+  defp match_subject(assigns) do
+    ~H"""
+    <section
+      class="grid min-w-0 content-start gap-2 self-start border border-border bg-canvas p-2 shadow-retro-sunken"
+      data-testid="p2p-room-game"
+    >
+      <div class="flex min-w-0 items-center gap-2">
+        <span class="shadow-retro-field bg-surface shrink-0 p-2">
+          {apply(Icons, game_icon(@game), [%{class: "h-8 w-8"}])}
+        </span>
+        <span class="min-w-0">
+          <span class="block truncate font-bold" data-testid="p2p-room-game-name">
+            {@game.name}
+          </span>
+          <span :if={@game[:tagline]} class="block truncate text-muted-foreground">
+            {@game.tagline}
+          </span>
+        </span>
+      </div>
+      <p :if={@game[:controls]} class="flex items-start gap-1 text-muted-foreground">
+        <Icons.icon_btn_keyboard class="mt-[1px] h-3.5 w-3.5 shrink-0" />
+        <span class="min-w-0">{@game.controls}</span>
+      </p>
     </section>
     """
   end
@@ -368,22 +451,38 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
       },
       %{
         slot: "peer",
-        nickname: room.peer_nick || dgettext("p2p", "peer"),
+        nickname: room.peer_nick || empty_seat_label(room),
         host?: not room.host?,
         status: peer_status(room)
       }
     ]
   end
 
+  defp empty_seat_label(%{match?: true}), do: dgettext("p2p", "whoever joins")
+  defp empty_seat_label(_room), do: dgettext("p2p", "peer")
+
   defp own_status(%{ready?: true}), do: dgettext("p2p", "ready")
+  defp own_status(%{match?: true}), do: dgettext("p2p", "getting ready")
   defp own_status(_room), do: dgettext("p2p", "choosing devices")
+
+  defp peer_status(%{peer_present?: false, match?: true}),
+    do: dgettext("p2p", "seat open")
 
   defp peer_status(%{peer_present?: false}), do: dgettext("p2p", "invited")
   defp peer_status(%{peer_ready?: true}), do: dgettext("p2p", "ready")
+  defp peer_status(%{match?: true}), do: dgettext("p2p", "getting ready")
   defp peer_status(_room), do: dgettext("p2p", "choosing devices")
 
   # The one sentence the old screen never said out loud.
+  defp waiting(%{ready?: false, match?: true}),
+    do: dgettext("p2p", "Press Ready when the game has your attention.")
+
   defp waiting(%{ready?: false}), do: dgettext("p2p", "Choose your devices, then press Ready.")
+
+  # A match has nobody to wait *for* yet: the seat is open to whoever follows
+  # the link, and naming a person there would be the screen inventing one.
+  defp waiting(%{peer_present?: false, match?: true}),
+    do: dgettext("p2p", "Share the link — the match starts when somebody takes the seat.")
 
   defp waiting(%{peer_present?: false, peer_nick: peer}),
     do: dgettext("p2p", "Waiting for %{peer} to accept the invite.", peer: peer_label(peer))
@@ -398,6 +497,13 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
 
   defp peer_label(peer) when is_binary(peer) and peer != "", do: peer
   defp peer_label(_peer), do: dgettext("p2p", "peer")
+
+  defp game_icon(%{icon: icon}) when is_binary(icon) do
+    name = :"icon_#{icon}"
+    if function_exported?(Icons, name, 1), do: name, else: :icon_game_generic
+  end
+
+  defp game_icon(_game), do: :icon_game_generic
 
   defp ready_label(true), do: dgettext("p2p", "Ready")
   defp ready_label(false), do: dgettext("p2p", "I am ready")

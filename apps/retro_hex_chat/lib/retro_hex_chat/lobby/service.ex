@@ -45,6 +45,10 @@ defmodule RetroHexChat.Lobby.Service do
   `expires_at` is short on purpose. An open lobby is an invitation, not an
   address: the longer it stands the longer anybody holding the link can walk
   in, so it dies on its own and `Jobs.OpenLobbyExpiryWorker` is what buries it.
+
+  `:metadata` is what the lobby is *for* — `%{"game_id" => id}` for a match. It
+  is the session's own answer, so the game a surface opens comes from here and
+  not from the address: an address is a label anybody can retype.
   """
   @spec create_open_session(integer(), keyword()) ::
           {:ok, %{session: Session.t(), token: String.t()}} | {:error, String.t()}
@@ -217,6 +221,7 @@ defmodule RetroHexChat.Lobby.Service do
            creator_id: creator_id,
            peer_id: nil,
            status: "open",
+           metadata: Keyword.get(opts, :metadata, %{}),
            expires_at: DateTime.add(now, ttl_ms, :millisecond)
          }) do
       {:ok, _session} = ok ->

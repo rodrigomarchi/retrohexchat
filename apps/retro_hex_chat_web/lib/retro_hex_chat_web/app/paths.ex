@@ -55,6 +55,26 @@ defmodule RetroHexChatWeb.App.Paths do
   @spec p2p_path(String.t()) :: String.t()
   def p2p_path(session_token), do: ~p"/p2p/#{session_token}"
 
+  @doc """
+  A multiplayer match at an address of its own — the game, and the session it
+  runs over.
+
+  It is the same surface as `p2p_path/1` and deliberately not a second one: a
+  match *is* a P2P session, and the game in the path is what the surface opens
+  on rather than a different thing to open.
+  """
+  @spec play_match_path(String.t(), String.t()) :: String.t()
+  def play_match_path(game_id, session_token), do: ~p"/play/#{game_id}/#{session_token}"
+
+  @doc """
+  An arcade game at an address of ours.
+
+  The bundle lives on a static host whose URL is a deployment detail; this is
+  the name that can be pasted, and it redirects.
+  """
+  @spec arcade_path(String.t()) :: String.t()
+  def arcade_path(game_id), do: ~p"/play/arcade/#{game_id}"
+
   @spec session_clear_path(Phoenix.LiveView.Socket.t(), String.t()) :: String.t()
   def session_clear_path(socket, reason), do: session_clear_path(socket, reason, [])
 

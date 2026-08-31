@@ -20,8 +20,11 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.Games.Catalog
+  alias RetroHexChat.Lobby
   alias RetroHexChat.ShareLinks
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
+  alias RetroHexChatWeb.Components.UI.Button
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.ShareLinkRef
 
@@ -42,7 +45,8 @@ defmodule RetroHexChatWeb.App.PlayLive do
         difficulty: "normal",
         canvas_ready: false,
         result: nil,
-        error_message: nil
+        error_message: nil,
+        match_error: nil
       )
       |> select_from_path(params)
 
@@ -104,12 +108,30 @@ defmodule RetroHexChatWeb.App.PlayLive do
   defp games_body(assigns) do
     ~H"""
     <div class="flex h-full min-h-0 flex-col gap-2">
-      <.share_bar
-        :if={@selected_game}
-        url={@share_url}
-        available={sharable?(@nickname)}
-        on_share="share_game"
-      />
+      <div :if={@selected_game} class="flex flex-wrap items-center gap-2">
+        <.share_bar
+          url={@share_url}
+          available={sharable?(@nickname)}
+          on_share="share_game"
+          class="min-w-0 flex-1"
+        />
+        <%!-- Where a match is born, and deliberately inside the game rather
+              than beside it: you decide to play with somebody while looking at
+              what you would play. The room comes first and the link second —
+              opening a game does not mint an address, pressing Share does. --%>
+        <Button.button
+          :if={sharable?(@nickname)}
+          type="button"
+          phx-click="create_match"
+          data-testid="play-create-match"
+        >
+          <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
+          {dgettext("games", "Play with someone")}
+        </Button.button>
+        <p :if={@match_error} class="text-warning text-sm" data-testid="play-match-error">
+          {@match_error}
+        </p>
+      </div>
       <.retro_games_panel
         id="retro-games-panel"
         games={@games}
@@ -168,6 +190,27 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   def handle_event("share_game", _params, socket), do: {:noreply, socket}
 
+  # A match link needs a room to point at, and a room with an empty seat is
+  # what the domain calls an open lobby. Creating it is not sharing it: the
+  # address is minted in the room, by Share, the way every other surface in
+  # this plan mints one.
+  def handle_event("create_match", _params, %{assigns: %{selected_game: %{id: game_id}}} = socket) do
+    with {:ok, user_id} <- SessionHelpers.resolve_user_id(socket.assigns.nickname || ""),
+         {:ok, %{token: token}} <-
+           Lobby.create_open_session(user_id, metadata: %{"game_id" => game_id}) do
+      {:noreply, push_navigate(socket, to: Paths.play_match_path(game_id, token))}
+    else
+      {:error, message} when is_binary(message) ->
+        {:noreply, assign(socket, match_error: message)}
+
+      _unavailable ->
+        {:noreply,
+         assign(socket, match_error: dgettext("games", "You cannot start a match right now."))}
+    end
+  end
+
+  def handle_event("create_match", _params, socket), do: {:noreply, socket}
+
   # The canvas hook reports to whichever LiveView owns its element, which is
   # this one in both mounts.
   def handle_event("retro_game_canvas_ready", params, socket) do
@@ -201,7 +244,8 @@ defmodule RetroHexChatWeb.App.PlayLive do
         canvas_ready: false,
         result: nil,
         error_message: nil,
-        share_url: nil
+        share_url: nil,
+        match_error: nil
       )
     else
       _ -> back_to_library(socket)
@@ -263,7 +307,8 @@ defmodule RetroHexChatWeb.App.PlayLive do
       canvas_ready: false,
       result: nil,
       error_message: nil,
-      share_url: nil
+      share_url: nil,
+      match_error: nil
     )
   end
 

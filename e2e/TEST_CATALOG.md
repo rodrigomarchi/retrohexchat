@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **223 spec files** under `e2e/tests/`.
-- **465 Playwright `test()` cases**.
-- **458 documented flows**, 457 done, 1 not done.
+- **224 spec files** under `e2e/tests/`.
+- **466 Playwright `test()` cases**.
+- **460 documented flows**, 459 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -361,7 +361,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M17 | Bot enable/disable/destroy changes response behavior and cleans up (features P2) | `tests/chat-bots.spec.ts` | done |
 | M18 | `/announce` broadcasts to connected users and bypasses ignore (features P1) | `tests/chat-announce.spec.ts` | done |
 | M19 | Regular user admin-only commands show permission errors (features P1) | `tests/chat-admin-permissions.spec.ts` | done |
-| M20 | Games menu -> Arcade opens an icon launcher, game details, then launches WASM sessions (features P2) | `tests/chat-arcade.spec.ts` | done |
+| M20 | Games folder -> Arcade opens an icon launcher, game details, then launches a WASM session through a noopener anchor at its own address | `tests/chat-arcade.spec.ts` | done |
 | M21 | The production provisioning script runs end to end with every line accepted by the Admin Console | `tests/chat-admin-server-provision.spec.ts` | done |
 | M22 | A newcomer joining a provisioned channel is greeted, and every advertised bot trigger answers | `tests/chat-admin-server-provision.spec.ts` | done |
 | M23 | The Bot Management roster describes each bot, and selecting one drills into it | `tests/chat-bot-management-window.spec.ts` | done |
@@ -428,6 +428,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N42 | The P2P session at /p2p/:token carries real video both ways, and file transfer and the game share the same connection | `tests/p2p-surface.spec.ts` | done |
 | N43 | Opening the session at its own address moves it out of the chat's window, and the displaced window takes it back | `tests/p2p-surface.spec.ts` | done |
 | N44 | Closing the P2P tab does not end the session for the other side | `tests/p2p-surface.spec.ts` | done |
+| N45 | A match link minted inside a game is followed from another browser, the seat is taken and the game runs over the P2P session | `tests/game-open-lobby.spec.ts` | done |
+| N46 | A third person following the same match link is told the seat is taken, and it stays taken after the match ends | `tests/game-open-lobby.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

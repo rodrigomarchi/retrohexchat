@@ -68,6 +68,28 @@ defmodule RetroHexChat.Lobby.OpenSessionTest do
       assert %{peer_id: ["can't be blank"]} = errors_on(changeset)
     end
 
+    # The only way into `pending` is the conditional claim, which writes the
+    # peer in the same statement. This is the other half of that: a plain
+    # status write cannot walk a peerless session into a status that means
+    # "there are two of you".
+    test "a peerless session cannot be walked into a paired status" do
+      creator = nick("open_cs4")
+      {:ok, %{session: session}} = Service.create_open_session(creator.id)
+
+      assert {:error, changeset} = Queries.update_status(session, "pending")
+      assert %{peer_id: ["can't be blank"]} = errors_on(changeset)
+
+      # But a terminal one still writes, because a match nobody claimed still
+      # has to be closeable.
+      assert {:ok, expired} =
+               Queries.update_status(session, "expired", %{
+                 closed_at: DateTime.utc_now(),
+                 closed_reason: "open_lobby_unclaimed"
+               })
+
+      assert expired.status == "expired"
+    end
+
     test "open is a status the machine knows, and a terminal one still needs its record" do
       assert "open" in Session.status_values()
       refute Session.terminal?("open")
@@ -280,14 +302,31 @@ defmodule RetroHexChat.Lobby.OpenSessionTest do
       assert Lobby.active_session_between_nicks(creator.nickname, other.nickname) == nil
     end
 
-    test "nobody can decline or cancel a seat nobody has taken" do
+    test "nobody can decline a seat nobody has taken" do
       creator = nick("open_n2")
       other = nick("open_n2b")
       session = open_lobby(creator)
 
       assert {:error, _message} = Policy.can_decline?(other.id, session)
       assert {:error, _message} = Policy.can_decline?(creator.id, session)
-      assert {:error, _message} = Policy.can_cancel_invite?(creator.id, session)
+    end
+
+    # P7 wants a room that does not outlive its host. Cancelling an unclaimed
+    # match link is the same act as cancelling an invite — the creator has
+    # stopped waiting — so the door is the same one.
+    test "the creator can cancel an unclaimed match link, and a stranger cannot" do
+      creator = nick("open_n2c")
+      other = nick("open_n2d")
+      session = open_lobby(creator)
+
+      assert {:error, _message} = Policy.can_cancel_invite?(other.id, session)
+      assert :ok = Policy.can_cancel_invite?(creator.id, session)
+      assert :ok = Lobby.cancel_invite(session.token, creator.id)
+
+      closed = Queries.get_session_by_token(session.token)
+      assert closed.status == "closed"
+      assert closed.closed_reason == "invite_cancelled"
+      assert {:error, _gone} = Lobby.claim_open_session(session.token, other.id)
     end
 
     test "the creator can close their own match link, and a stranger cannot" do
