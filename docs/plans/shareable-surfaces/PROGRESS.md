@@ -1792,3 +1792,212 @@ o efeito.
 
 **Próximo:** a web — a rota `/play/:game/:token`, a sala de partida do jogo, o
 card com "vaga preenchida" e de onde o link nasce.
+
+---
+
+## Iteração 20 — a partida ganha endereço, e o link morre por sucesso
+
+**Objetivo:** os passos 4–6 da ordem da onda 5 — a rota `/play/:game/:token`, a
+sala de partida do jogo, o card com "vaga preenchida", e o Arcade por âncora.
+
+### O desenho foi corrigido antes do código
+
+`ux.md` §2.5 mostrava "Dificuldade da IA (só host)" na sala de partida do jogo.
+Dificuldade é do jogo contra a máquina; numa partida entre duas pessoas não
+existe IA para regular — era o controle da tela solo copiado para uma tela que
+não o tem. O mockup passou a mostrar **o jogo** (ícone, nome, controles) no
+lugar dos dispositivos, que é a única resposta para "no que eu acabei de
+entrar" — quem chegou por um link colado num canal não viu mais nada antes
+dessa tela.
+
+### Não generalizei a sala antes de olhar, e o que sobrou foi pequeno
+
+Com as duas variantes lado a lado, o comum é: o roster, a linha que diz por
+quem se espera, o rodapé, `[Pronto]` e `[Iniciar]`. O que difere é **uma
+coluna**: prévia de câmera + dispositivos + rota, contra o cartão do jogo. Então
+não entrou `variant` atom nenhum: entrou um atributo `game`, e as quatro seções
+de dispositivo ganharam `:if={!@game}`. Um `variant` com dois ramos dentro de
+cada seção teria sido uma segunda tela usando o nome desta.
+
+### O claim mora na superfície, não no card
+
+A tabela de TDD lê "o card reivindica e navega". Com o código na frente, a
+reivindicação ficou no `mount` de `App.P2PLive`, e por um motivo que decide:
+**o card roda antes das três perguntas do portão**. Uma vaga ocupada ali seria
+queimada por alguém que a superfície recusaria em seguida — registrado, sim, mas
+não identificado, ou bloqueado pelo criador. D1 diz a mesma coisa por outro
+lado: o link resolve *que sala é esta*, e a política é da sala.
+
+O card ficou com o que é dele: "1 vaga aberta" contra "vaga preenchida", e o
+`Liveness` do kind `play` passou a perguntar se a cadeira está vazia quando o
+alvo carrega `session_token`.
+
+### Três defeitos que só apareceram rodando
+
+1. **`[Pronto]` não fazia nada na sala do jogo.** O handler casa
+   `%{"p2p_setup" => params}`; a variante do jogo não desenha campo nenhum, então
+   o submit chegava sem a chave e caía no catch-all — em silêncio, que é o modo
+   de falha que a casa chama de "silent catch". Entraram três `<input
+   type="hidden">` dizendo o que um jogo tem a dizer sobre mídia: nada a enviar.
+   O teste que pega isso **renderiza o formulário de verdade**
+   (`form(...) |> render_submit()`), porque um `render_submit` com params
+   escritos à mão passa por cima exatamente do que quebrou.
+2. **"vaga preenchida" dizia "você não é participante".** Verdadeiro e inútil:
+   ser participante era o que o link estava oferecendo. `take_seat/2` passou a
+   distinguir uma sessão que é partida de uma que não é, e a resposta virou "esta
+   partida já está cheia".
+3. **"perdeu a conexão P2P" aparecia quando ninguém tinha conexão.** O screenshot
+   pegou: o host via a frase na barra de status no exato momento em que o
+   convidado chegava, e ela ficava lá a sessão inteira. Causa: quem segue o link
+   passa pelo resolver e depois pela superfície, e a troca de página no meio
+   solta o assento por um instante. O aviso agora só sai de `:connected` em
+   diante, e um par que volta desfaz a preocupação em vez de deixá-la na tela.
+
+### O jogo que o link nomeou não pergunta de novo
+
+Seguir o link **é** o consentimento para aquele jogo, então a sala não tem
+seletor e a partida não tem aceitar/recusar: quando os dois conectam, o criador
+propõe o jogo do `metadata` da sessão e o par responde sozinho — só para aquele
+`game_id`, porque qualquer *outro* jogo proposto dentro da mesma sessão continua
+perguntando. O teste são dois LiveViews de verdade, porque o que se afirma é o
+que um faz quando o outro se mexe.
+
+E a fonte do `game_id` é a **sessão**, não o endereço: `/p2p/:token` de uma
+partida abre a sala do jogo, e `/play/:game/:token` de uma sessão comum abre a
+sala de dispositivos. Um endereço é um rótulo que qualquer um redigita.
+
+### O Arcade: uma âncora, e o poll que morreu com ela
+
+`/play/arcade/:game` é um redirect para onde o bundle WASM realmente mora — o
+endereço é nosso e estável, o host é detalhe de deploy. O botão **Start Game**
+virou `<a href target="_blank" rel="noopener">` mantendo o `phx-click`: o
+binding de clique do LiveView só faz `preventDefault` quando o `href` é `"#"`,
+então um clique faz as duas coisas. **Verificado no navegador**, que era a única
+parte que teste de servidor nenhum poderia responder: `window.opener === null`
+na aba nova.
+
+Com `noopener` não sobra referência para pollar, então sumiram o
+`arcade_session_hook.js` inteiro, `open_game_window`, `close_game_window`,
+`game_window_closed` e `game_window_blocked` — quatro eventos a menos no
+`SURFACE.txt`. O fim de uma sessão de arcade passa a ser o que sempre foi o fim
+de uma sessão: **End Session**, ou o timeout de inatividade. A cópia que dizia
+"fechar a janela do jogo encerra" deixou de ser verdade e mudou junto.
+
+### Dois specs vermelhos que não eram meus, e viraram meus
+
+`chat-arcade.spec.ts` e `chat-retro-games.spec.ts` falhavam no `HEAD` — medido
+com `git stash push -u`. Motivo: **Games saiu da barra de menus e virou uma
+pasta no desktop**, e os três seletores (`app-menu-games`,
+`desktop-shortcut-retro-games`, `desktop-shortcut-arcade`) apontavam para
+markup que não existe mais. O `ChatPage` ganhou `openGamesFolder()` e os
+localizadores passaram a ser os ícones dentro da pasta. Os três testes ficaram
+verdes, e a asserção da âncora do Arcade entrou no spec permanente em vez de
+morrer num descartável.
+
+### i18n: 44 msgids, e o preço de mesclar pago com a conta na mão
+
+Sete domínios ganharam msgid (`help`, `lobby`, `chat`, `games`, `help_games`,
+`p2p`, `share`), então os sete foram mesclados — com `NO_FUZZY=1`, e conferido
+que a contagem de `, fuzzy` não mudou em nenhum catálogo e que **nenhuma
+tradução pré-existente foi alterada** (script de comparação contra um snapshot
+pré-merge: 0 entradas mexidas).
+
+O merge trouxe junto ~22 entradas de deriva de outras features por locale, como
+a armadilha previa. Traduzi as 44 que são minhas mais as que carregam
+`%{...}` — porque `i18n_placeholder_check` reprova entrada vazia com
+placeholder — em 13 locales, 602 preenchimentos. As demais ficaram vazias: elas
+já caíam para o inglês antes do merge e continuam caindo, então não há
+regressão, e traduzir parágrafos de ajuda de outras pessoas é escopo alheio.
+
+Duas coisas de checker:
+
+* `%{game} · %{peer}` é só interpolação — um nome de jogo, um separador e um
+  apelido — e a "tradução" dele são os mesmos caracteres. Entrou na allowlist de
+  `i18n_source_fallback_check.py` junto com `P2P · %{peer}`, que estava
+  reprovando no `HEAD` pelo mesmo motivo.
+* `i18n.catalog.check` **já reprovava no `HEAD`** (88 arquivos com entradas
+  vazias; agora 74). Não está no `make ci` — o que está é
+  `i18n.gettext.check`, e esse pede `.pot` fresco.
+
+### Verificação
+
+- 17 testes em `play_match_test.exs`, 4 em `arcade_game_controller_test.exs`,
+  3 novos de orçamento para `/play/:game/:token`, 4 em `join_live_test.exs`.
+- 1.588 testes web verdes; 4.945 de vitest (menos o do hook que deixou de
+  existir).
+- `game-open-lobby.spec.ts` verde no Chromium: o link nasce no jogo, enche a
+  única vaga, o terceiro clique lê "vaga preenchida", e o Hex Pong roda de
+  verdade sobre a conexão P2P — sem permissão de mídia nenhuma, porque um jogo
+  não tem câmera.
+- Screenshots (dentro do spec permanente, via `shot()`): a sala de partida com a
+  cadeira vazia, o card com vaga, o card cheio, e a partida rodando.
+
+---
+
+## Iteração 21 — a conferência linha por linha, e os dois buracos que ela achou
+
+Antes de dizer que a onda fechou, li a tabela de TDD da onda 5 linha por linha,
+como a onda 4 ensinou a fazer. Onze das treze linhas estavam feitas. As duas que
+faltavam não eram testes.
+
+### `open → pending` só com `peer_id` presente
+
+A reivindicação escreve os dois campos na mesma instrução, então na prática a
+transição nunca acontece sem par. Mas `status_changeset/2` **não olhava o
+`peer_id` de jeito nenhum**: `Queries.update_status(sessao_aberta, "pending")`
+teria escrito `pending` com a cadeira vazia. Inalcançável hoje — um lobby aberto
+não tem processo, e ninguém chama `update_status` nele — e é exatamente a
+distância entre "não acontece" e "não pode acontecer".
+
+A validação subiu para os dois changesets, e uma sutileza apareceu na hora:
+`@paired_statuses` é `pending lobby connected`, **não** "tudo menos open".
+Exigir par para escrever `expired` deixaria o sweep incapaz de enterrar
+justamente as linhas para as quais ele existe — o teste do criador fechando o
+próprio link virou vermelho na primeira tentativa e disse isso.
+
+### P7: a sala não sobrevive a quem estava esperando nela
+
+O host tinha como fechar a sala pelo domínio, e nenhum caminho pela tela. Duas
+coisas faltavam:
+
+1. `can_cancel_invite?/2` exigia status `pending`, então o X do chat sobre um
+   lobby aberto era recusado em silêncio. Um link de partida sem ninguém **é**
+   um convite sem destinatário nomeado, e cancelá-lo é o mesmo ato: passou a
+   aceitar `open` também.
+2. A página de `/play/:game/:token` não tem X — a janela é a página. Entrou
+   `[Cancelar]` na sala de partida, só do host e só até a partida começar, e o
+   `ux.md` §2.5 ganhou o botão antes do código, como manda a regra do arquivo.
+
+Sem isso, "o host desistiu" significava esperar quinze minutos pelo prazo com o
+endereço funcionando o tempo todo — que é a mitigação de abuso número um da onda
+funcionando pela metade.
+
+### Uma linha da onda que implementei de outro jeito, de propósito
+
+A §2.2 pedia "pronto por pessoa" no `metadata`, mapa por `user_id`. Ficou onde a
+onda 4 já tinha posto: **em memória, no `SessionServer`**. Prontidão é do par de
+olhos que está na tela — `hook_ready` é literalmente "o hook desta página
+montou" — e persistir isso criaria um segundo dono de um fato que um reload
+invalida. O que é durável no `metadata` é o `game_id`, que é o que a sala **é**.
+
+### Obrigações do repositório, conferidas uma a uma
+
+| Item | Estado |
+|---|---|
+| Migração (`peer_id` nulo, `open`, `expires_at`, índice) | ✅ com o índice trocado pelo do sweep, e o porquê escrito |
+| Help topics ("como criar", "por que parou de funcionar") | ✅ dois tópicos + dois templates |
+| i18n | ✅ 7 domínios mesclados, 44 msgids meus traduzidos em 13 locales |
+| `SURFACE.txt` | ✅ regenerado — quatro eventos a **menos** |
+| `PerfBudgets` `:play` reconferido | ✅ e `/play/:game/:token` ganhou as três asserções de orçamento sob o teto de `:p2p` |
+| `docs/guide/webrtc-p2p.md` §8.1 | ✅ no mesmo commit da migração |
+| `bundle_budget.cjs` | ✅ sem entry nova (D4) |
+| `e2e/TEST_CATALOG.md` | ✅ regenerado, N45 e N46 |
+| `make ci` verde | ✅ **17/17, com Dialyzer rodando** |
+
+### Estado
+
+Onda 5 **fechada**. O que dá para testar à mão: abrir um jogo em Retro Games,
+apertar **Jogar com alguém**, **Compartilhar** dentro da sala, colar o link numa
+conversa, e ver outra pessoa ocupar a vaga e a partida começar sozinha. Um
+terceiro clique no mesmo link lê "vaga preenchida". O Arcade abre numa aba com
+endereço próprio e `noopener`.

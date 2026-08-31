@@ -20,7 +20,7 @@ Apagar este diretório quando a última onda shippar; mover as regras duráveis 
 | 2 | [`wave-2-conference-surface.md`](wave-2-conference-surface.md) | `/call/:token` — conferência em aba própria |
 | 3 | [`wave-3-space-surface.md`](wave-3-space-surface.md) | `/space/:token` — o renderer isométrico sai do event loop do chat |
 | 4 | [`wave-4-p2p-channel-and-surface.md`](wave-4-p2p-channel-and-surface.md) | `P2PChannel` + `/p2p/:token` |
-| 5 | [`wave-5-games-surfaces.md`](wave-5-games-surfaces.md) | `/play/:game` e jogos multiplayer sobre a onda 4 |
+| 5 | [`wave-5-games-surfaces.md`](wave-5-games-surfaces.md) | `/play/:game/:token` — o lobby aberto e a partida compartilhável |
 | 6 | [`wave-6-cross-tab-and-bundle.md`](wave-6-cross-tab-and-bundle.md) | Coordenação entre abas + split de bundle medido |
 
 ---
@@ -318,7 +318,8 @@ a regra que já vale hoje para hook `destroyed()`
 /space/:token         app, SpaceLive root
 /p2p/:token           app, P2PLive root
 /play/:game           app, PlayLive root (solo — link direto, sem token)
-/play/:game/:token    app, PlayLive root (multiplayer sobre a sessão P2P)
+/play/arcade/:game    app, redirect para onde o bundle WASM mora (o endereço é nosso)
+/play/:game/:token    app, P2PLive root — a mesma superfície, aberta no jogo
 /lobby/:token         mantém o redirect legado (agora → /join/:slug)
 ```
 

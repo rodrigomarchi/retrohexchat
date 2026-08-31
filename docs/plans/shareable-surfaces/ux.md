@@ -254,24 +254,47 @@ conversa com câmera e microfone e a escolha dos dispositivos é metade do que
 ```
 
 Um jogo multiplayer usa a mesma sala sem a metade de dispositivos — um jogo não
-tem câmera para escolher — e com o que for do jogo no lugar dela:
+tem câmera para escolher — e com o jogo no lugar dela:
 
 ```
 ┌─ Hex Pong · partida de ana ────────────────── [_][□][X] ┐
 ├─────────────────────────────────────────────────────────┤
-│   Na sala                                               │
-│     ana     (anfitrião)    pronto                       │
-│     bob                    pronto                       │
-│     carla                  escolhendo controles         │
-│   Aguardando 1 pessoa                                   │
+│   ┌────┐  Hex Pong                                      │
+│   │ ▓▓ │  Pong cyberpunk                                │
+│   └────┘  Setas ou W/S para mover a raquete             │
 │                                                         │
-│   Dificuldade da IA   [ normal   ▾ ]   (só host)        │
+│   Na sala                                               │
+│     ana     (anfitriã)     pronto                       │
+│     bob                    escolhendo controles         │
+│   Esperando bob ficar pronto.                           │
 ├─────────────────────────────────────────────────────────┤
-│  [ Compartilhar ]      [ Pronto ]   ana: [ Iniciar ]    │
+│  [ Compartilhar ]   ana: [ Cancelar ]  [ Pronto ]       │
+│                                    ana: [ Iniciar ]     │
 ├─────────────────────────────────────────────────────────┤
-│ ← Chat                                  2 de 3 prontos  │
+│ ← Chat                                                  │
 └─────────────────────────────────────────────────────────┘
 ```
+
+**`[Cancelar]` é P7 com um botão.** Uma sala não sobrevive a quem estava
+esperando nela: o host desiste, a sala fecha e o link morre junto, em vez de o
+endereço continuar valendo até o prazo passar. Só o host o tem, e ele some no
+instante em que a partida começa — depois disso o caminho terminal é o de
+sempre, com confirmação.
+
+**O que a sala do jogo mostra no lugar dos dispositivos é o jogo** — ícone, nome
+e controles, do catálogo. Não é decoração: é a única resposta para "no que eu
+acabei de entrar", e quem chegou por um link colado num canal não viu mais nada
+antes desta tela. Não há seletor: **o link nomeia a partida**, e escolher outro
+jogo aqui seria a sala contradizendo o endereço que trouxe a pessoa.
+
+Por isso também não há aceitar/recusar depois: seguir o link *é* o consentimento
+para aquele jogo. Quando os dois estão prontos e o host aperta `[Iniciar]`, a
+partida que começa é a do link, sem uma segunda pergunta.
+
+(Corrigido em 2026-08-31, onda 5: o desenho original mostrava "Dificuldade da IA
+(só host)". Dificuldade é do jogo contra a máquina; numa partida entre duas
+pessoas não existe IA para regular, e o controle era da tela solo copiado para
+uma tela que não o tem.)
 
 * Host = quem criou. Host sai antes de iniciar → a sala fecha e o link morre.
 * **`[Pronto]` são duas coisas ao mesmo tempo**: o que você escolheu, e o seu

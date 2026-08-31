@@ -1,6 +1,6 @@
 # Handover — superfícies compartilháveis
 
-Escrito em 2026-08-28, atualizado em 2026-08-31 (fim da onda 4) para retomar o
+Escrito em 2026-08-28, atualizado em 2026-08-31 (fim da onda 5) para retomar o
 trabalho com contexto zerado. Apagar quando a onda 6 fechar.
 
 ---
@@ -11,9 +11,9 @@ trabalho com contexto zerado. Apagar quando a onda 6 fechar.
    D1–D6 arquitetura) e o mapa das ondas.
 2. [`ux.md`](ux.md) — **o desenho de todas as telas**. Quando uma onda e este
    arquivo discordarem, o arquivo está errado e é ele que muda primeiro.
-3. [`PROGRESS.md`](PROGRESS.md) — dezoito iterações registradas, com os erros.
-   Leia pelo menos as iterações 7, 8, 10, 13, 14, 15, 17 e 18: são armadilhas que
-   vão voltar.
+3. [`PROGRESS.md`](PROGRESS.md) — vinte e uma iterações registradas, com os
+   erros. Leia pelo menos as iterações 7, 8, 10, 13, 14, 15, 17, 18 e 21: são
+   armadilhas que vão voltar.
 4. O arquivo da onda em que você vai mexer.
 
 E antes de tocar código: `AGENTS.md`, `CLAUDE.md` e as regras em
@@ -21,9 +21,9 @@ E antes de tocar código: `AGENTS.md`, `CLAUDE.md` e as regras em
 
 ---
 
-## 2. Estado em 2026-08-31
+## 2. Estado em 2026-08-31 (fim da onda 5)
 
-Working tree limpo. `main` está **17 commits à frente de `origin/main`** — nada
+Working tree limpo. `main` está **22 commits à frente de `origin/main`** — nada
 foi empurrado, e empurrar é decisão do usuário.
 
 | Commit | O quê |
@@ -41,6 +41,10 @@ foi empurrado, e empurrar é decisão do usuário.
 | `725de14b` | Onda 4B — `P2PLive` nos dois hosts, `/p2p/:token`, a sala de partida e o takeover |
 | `132affdf` | Onda 4B — o handover aponta para a onda 5 |
 | `04f8575f` | Onda 4B — o portão de identificação, o `p2p-surface.spec.ts` e o epoch por página; **onda 4 fechada** |
+| `20f1df60` | Onda 4 — o handover carrega o mapa e a ordem |
+| `ecf42368` | Onda 5 — o lobby aberto no domínio: `peer_id` nulo, escrita condicional, job de expiração |
+| `de125b99` | Onda 5 — a partida ganha endereço, o card ganha "vaga preenchida", o Arcade vira âncora |
+| _(este)_ | Onda 5 — o diário e o handover; **onda 5 fechada** |
 
 | Onda | Estado |
 |---|---|
@@ -49,9 +53,9 @@ foi empurrado, e empurrar é decisão do usuário.
 | 2 — conferência | ✅ fechada |
 | 3 — space | ✅ fechada |
 | 4A — P2P: o fio vira channel | ✅ fechada |
-| **4B — `/p2p/:token` + sala de partida** | ✅ **fechada** — as 13 linhas da tabela de TDD, `make ci` 17/17 |
-| **5 — jogos / lobby aberto** | ⬜ **próxima** |
-| 6 — coordenação entre abas + bundle | ⬜ |
+| 4B — `/p2p/:token` + sala de partida | ✅ fechada |
+| **5 — jogos / lobby aberto** | ✅ **fechada** — as 13 linhas da tabela de TDD, `make ci` 17/17 com Dialyzer |
+| **6 — coordenação entre abas + bundle** | ⬜ **próxima** |
 
 **O que dá para testar à mão hoje:**
 
@@ -71,7 +75,18 @@ foi empurrado, e empurrar é decisão do usuário.
   "esta sessão está aberta em outra janela sua" com **Trazer de volta pra cá**.
   O endereço exige registrado **e** identificado, e recusa quem não é
   participante — com a frase da política, não uma tela genérica.
-* **Links:** qualquer um dos três colado numa conversa vira card; aberto sem
+* **Partida:** Retro Games → escolha um jogo → **Jogar com alguém**. Você cai
+  na **sala de partida do jogo** — o jogo no lugar dos dispositivos, a cadeira
+  vazia dizendo "quem entrar / vaga aberta", e `[Compartilhar]`,
+  `[Cancelar]` (só do host), `[Pronto]` e `[Iniciar]`. Cole o link numa conversa:
+  quem seguir ocupa a vaga, os dois apertam Pronto, e o `[Iniciar]` do host
+  começa **o jogo que o link nomeou**, sem aceitar nada. Um terceiro clique no
+  mesmo link lê "vaga preenchida". Um link que ninguém segue morre sozinho em
+  quinze minutos; `[Cancelar]` mata na hora.
+* **Arcade:** Games (ícone do desktop) → **Arcade...** → um jogo → **Start
+  Game** abre `/play/arcade/<jogo>` numa aba com `noopener`. Fechar essa aba não
+  encerra mais a sessão.
+* **Links:** qualquer um dos quatro colado numa conversa vira card; aberto sem
   sessão mostra o card público.
 
 ---
@@ -87,6 +102,8 @@ Quatro superfícies, todas o mesmo padrão: **um módulo, dois pontos de montage
 | conferência | `/call/:token` | `App.CallLive` (+ `CallLive.Events`) | `ChatLive.GroupCallReadModel` |
 | space | `/space/:slug` | `App.SpaceLive` | `ChatLive.SpaceReadModel` + `SpaceEvents` |
 | sessão P2P | `/p2p/:token` | `App.P2PLive` (+ `P2PLive.Events`) | `ChatLive.P2PReadModel` |
+| partida | `/play/:game/:token` | `App.P2PLive` — a **mesma** superfície, aberta na seção de jogo | idem (e nada, enquanto a vaga está aberta) |
+| arcade | `/play/arcade/:game` | `App.ArcadeGameController` — redirect, não é LiveView | `@arcade_session` |
 
 As rotas raiz vivem todas no `live_session :app_surface` do router, com
 `Live.Surface` no `on_mount` — nickname, ban, tópico de superfícies e o registro
@@ -110,107 +127,62 @@ LiveView é o que carrega política de transporte — `ice_servers`, `role`,
 **Links:** `RetroHexChat.ShareLinks` minta um slug opaco por superfície;
 `/join/:slug` é a única rota pública, roda no pipeline do landing e resolve o
 slug para "que sala é esta" — nunca para autorização (D1). Os kinds hoje são
-`call`, `space`, `p2p` e `play`.
+`call`, `space`, `p2p` e `play`; um `play` com `session_token` no alvo é uma
+**partida**, e é o único kind que morre por sucesso (`Liveness` pergunta se a
+cadeira ainda está vazia).
+
+**Lobby aberto:** uma sessão `open` é uma linha e um prazo — **sem GenServer**.
+A cadeira é tomada por *uma escrita condicional* (`Queries.claim_open_session/3`),
+o processo nasce na reivindicação, e `Jobs.OpenLobbyExpiryWorker` varre a cada
+cinco minutos o que ninguém reivindicou. `docs/guide/webrtc-p2p.md` §8.1 é a
+descrição durável disso.
 
 ---
 
 ## 3. O próximo passo, concreto
 
-**Onda 5 — jogos: o lobby aberto**
-([`wave-5-games-surfaces.md`](wave-5-games-surfaces.md)).
+**Onda 6 — coordenação entre abas, bundle medido, e fechar o plano**
+([`wave-6-cross-tab-and-bundle.md`](wave-6-cross-tab-and-bundle.md)).
 
 ### A ordem, se você não tiver motivo para outra
 
-1. **Levantamento antes do changeset.** `peer_id` nulo atravessa
-   `Queries.active_sessions_between/2`, `Service.close_sessions_between/2`,
-   `Policy.can_close?/2` e `can_decline?/2` — os quatro existem e foram
-   conferidos. Leia os quatro e anote o que assume dois participantes. Isto é
-   leitura, não código, e é o passo que a onda 5 §5 chama de "não fé".
-2. **O domínio primeiro, sem web nenhuma.** Migração (`peer_id` nulo, status
-   `open`, `expires_at`, índice parcial), `create_open_session/2`,
-   `claim_open_session/2` com a escrita condicional, `can_claim?/2`. Com o teste
-   de reivindicação concorrente junto — ele é o teste desta onda.
-3. **O job de expiração no Oban**, com a observabilidade que o `AGENT-GUIDE`
-   §17 exige. Um lobby aberto que ninguém reivindica tem que morrer sozinho, e
-   isso é a mitigação de abuso número um.
-4. **O card de `/join/:slug`** ganha o estado "vaga preenchida" — é o único kind
-   em que o link morre por sucesso.
-5. **A rota `/play/:game/:token`**, entrando direto na seção de jogo do
-   `App.P2PLive` em vez do console.
-6. **A sala de partida do jogo**, só depois de ver as duas variantes lado a lado
-   no `ux.md` §2.5. Não generalize antes.
+1. **A coordenação entre abas**, que é a que desbloqueia tudo o que ficou meio
+   feito. `RetroHexChat.Surfaces` já conta superfícies abertas por nickname
+   desde a onda 2 §2.6 — ele **é** a fonte da verdade, e `BroadcastChannel`
+   entra só para *tentar* trazer a aba pra frente. Leia a §1.1 da onda antes de
+   escrever: o contrato já está escrito, incluindo o que fazer quando
+   `window.focus()` é bloqueado (é, com frequência).
+2. **O que isso conserta de verdade**, e que hoje é dívida em três lugares:
+   * o `← Chat` de toda superfície navega para `/chat` em vez de focar a aba que
+     já existe — está escrito assim, com o porquê, em três módulos;
+   * `clipboard_copy` só existe no chat, então a `share_bar` mostra um campo
+     readonly em vez de um botão Copiar (§4.5 abaixo);
+   * o fim de uma sessão de arcade deixou de ter aviso quando a aba do jogo
+     fecha (onda 5 trocou o poll por `noopener`).
+3. **O bundle, com o número na mão** (§2 da onda). "Não dividir" é resultado
+   legítimo e precisa ser aceitável **antes** de medir, senão a medição é
+   teatro.
+4. **O Start menu nas satélites** (§2.3): +177 nós por tela × quatro satélites.
+   A recomendação escrita é "satélite carrega só o que alcança"; decidir e
+   escrever a exceção.
+5. **A convergência** (§3.1): grep por **símbolo**, nunca por nome de arquivo —
+   "0 referências" já foi falso neste repositório exatamente por isso.
+6. **Mover as regras duráveis para os guias, e só então apagar este diretório.**
+   A tabela da §3.2 diz o que vai para onde. A linha de `guide/webrtc-p2p.md`
+   §8.1 sobre o estado `open` **já foi feita** na onda 5.
 
-Os passos 1–3 não têm tela nenhuma, então a regra do screenshot só morde do 4
-em diante.
+### O que a onda 5 deixou pronto e a 6 herda
 
-**Ela não é "a mesma receita mais uma vez".** As ondas 2, 3 e 4 moveram código
-entre processos sem tocar no domínio. Esta muda o domínio: hoje **não existe
-forma de criar uma partida e convidar "quem aparecer"**. Uma sessão P2P nasce
-apontando para uma pessoa (`Lobby.create_session(creator_id, peer_id)`, com
-`peer_id` obrigatório no changeset), então um link de jogo postado num canal não
-tem para onde apontar. Isso é modelo de dados, não roteamento.
-
-Leia a onda 5 inteira antes de escrever qualquer coisa — o resumo abaixo existe
-para você saber o que esperar, não para substituí-la.
-
-### O núcleo, e o teste que justifica a onda
-
-`peer_id` passa a ser nulo enquanto a sessão está `open` (status novo no início
-da máquina), e a reivindicação é **uma escrita condicional no banco**:
-
-```sql
-UPDATE lobby_sessions
-   SET peer_id = $claimer, status = 'pending', accepted_at = now()
- WHERE token = $token AND peer_id IS NULL AND status = 'open'
-```
-
-Zero linhas afetadas = alguém chegou primeiro. **O teste de duas reivindicações
-concorrentes é o teste desta onda** — com duas tasks e uma barreira, nunca com
-`sleep` — e ele tem que ficar vermelho se alguém trocar isso por
-`read → check → write`. Verifique revertendo uma vez.
-
-O risco que a própria onda escreve, e que eu confirmo lendo o código: `peer_id`
-nulo atravessa `Queries.active_sessions_between/2`, `Policy.can_close?/2`,
-`can_decline?/2` e `close_sessions_between/2`. Levantamento antes do changeset,
-não fé.
-
-### O que a onda 4 deixou pronto e a 5 herda
-
-* **`RetroHexChatWeb.Live.SurfaceHost`** — `error`, `system`, `focus`, `close`,
-  `geometry` e `publish/2`. Cada mensagem carrega a *tag* da superfície, porque
-  o chat já hospeda duas ao mesmo tempo. Uma superfície nova declara
-  `surface_tag:` no mount e não escreve mais nada disso.
-* **`App.P2PLive` já hospeda o jogo** — o `P2PGameIsland` é uma das quatro
-  seções do console. A onda 5 quer que `/play/:game/:token` **entre direto na
-  seção de jogo** em vez de abrir no console.
-* **A sala de partida** (`Components.UI.P2P.StartingRoom`) é o desenho de P1
-  para um evento: host, `[Pronto]`, `[Iniciar]`, e o roster que diz por quem se
-  espera. Ela hoje é **metade dispositivos** (prévia de câmera, microfone,
-  câmera, alto-falante) e metade roster. Um jogo não tem câmera para escolher:
-  antes de generalizar, ler [`ux.md` §2.5](ux.md), que já desenha as duas
-  variantes lado a lado. O comum é o roster, a linha "esperando por quem" e os
-  dois botões.
-* **`Lobby.join_session/3` com `takeover: true`** — o assento é de quem abriu
-  por último, e a janela deslocada oferece trazer de volta.
-* **`ChatLive.P2PReadModel`** — a terceira aplicação da régua ("o que existe
-  para quem só olha a conversa fica no chat"). A quarta é a sua.
-* **O portão de uma superfície são três perguntas, nesta ordem**: existe
-  (`fetch_session`), quem é você (`require_registered` → `require_identified`),
-  e a política do domínio. A ordem importa: um apelido não registrado nunca pode
-  estar identificado, então inverter torna uma das recusas inalcançável.
-
-### O que a onda 5 traz de novo e ninguém tem experiência aqui
-
-* **Migração de banco** — nenhuma das ondas 0–4 teve uma. `peer_id` nulo,
-  status `open`, `expires_at`, e um índice parcial em `(token) WHERE peer_id IS
-  NULL` para a escrita condicional.
-* **Job de expiração no Oban** — um lobby aberto que ninguém reivindica precisa
-  morrer sozinho. `AGENT-GUIDE` §17 exige observabilidade junto.
-* **Uma superfície de abuso nova** — qualquer um com o link ocupa a vaga. Expiry
-  curto, rate limit de criação, revogação (a onda 1 já dá) e bloqueio/ignore
-  respeitados na reivindicação, tudo desde o primeiro commit.
-* **Um card com um estado que os outros não têm**: "vaga disponível" vs "já
-  preenchido". É o único kind em que o link morre por **sucesso**.
+* **`Surfaces` já conta**, e o teste que prova é `surfaces_test.exs`. A onda 6
+  não constrói o registro: ela o **lê** para decidir abrir contra focar.
+* **`noopener` está em todo lugar agora**, incluindo o Arcade. Isso é o que
+  torna `BroadcastChannel` a única opção — e é também o que tirou o
+  `arcade_session_hook.js` do repositório, item da §3.1 já cumprido.
+* **Um lobby aberto não tem processo.** Se a onda 6 for contar "o que você tem
+  aberto", uma partida esperando por alguém é uma linha no banco e não uma
+  superfície — o `P2PReadModel` já pula `open` no mount por esse motivo.
+* **Os quatro `PerfBudgets` estão medidos** (`:play`, `:call`, `:space`,
+  `:p2p`), que é a mesa que a decisão do Start menu precisa.
 
 ## 4. O que ainda morde
 
@@ -268,6 +240,27 @@ não fé.
    verdade precisa de um hook agnóstico de superfície — a lib de coordenação da
    onda 6 é o lugar. Por isso a `share_bar` mostra um campo readonly em vez de
    um botão Copiar.
+
+6. **Dois specs de jogos estavam vermelhos por seletor velho, e foram
+   consertados na onda 5.** `Games` saiu da barra de menus e virou **pasta no
+   desktop**, então `app-menu-games`, `desktop-shortcut-retro-games` e
+   `desktop-shortcut-arcade` não existiam mais. O `ChatPage` ganhou
+   `openGamesFolder()`. Registro porque a lição é geral: **quando um spec falha
+   no primeiro clique, suspeite do seletor antes da feature** — e meça no `HEAD`
+   com `git stash push -u` antes de caçar.
+
+7. **`i18n.catalog.check` reprova no `HEAD` e não está no `make ci`.** 74
+   arquivos com entradas vazias em 2026-08-31 (eram 88 antes da onda 5). O que
+   o gate cobra é `i18n.gettext.check` — `.pot` fresco — mais `i18n Quality`.
+   Mesclar um domínio traz a deriva alheia dele para dentro do `.po` como
+   entradas vazias: **é o preço de mesclar**, e o mínimo a pagar são as que
+   carregam `%{...}`, porque `i18n_placeholder_check` reprova essas.
+
+8. **Fim de sessão de arcade não tem mais aviso quando a aba do jogo fecha.**
+   `noopener` não deixa referência para pollar; é o custo aceito, escrito na
+   onda 5 §2.5. A sessão termina por **End Session** ou pelo timeout de
+   inatividade do `SoloSessionServer`. A coordenação da onda 6 é onde isso
+   volta a ser possível, se valer a pena.
 
 ---
 
@@ -471,48 +464,44 @@ precisa dizer está neste arquivo, e o resto é a ordem de leitura.
 
 ```
 Retomando a implementação do plano de superfícies compartilháveis no
-retro_hex_chat. As ondas 0 a 4 fecharam; começa a onda 5.
+retro_hex_chat. As ondas 0 a 5 fecharam; começa a onda 6, que é a última.
 
 Leia, nesta ordem:
-1. docs/plans/shareable-surfaces/HANDOVER.md  — estado, próximo passo, armadilhas
+1. docs/plans/shareable-surfaces/HANDOVER.md  — estado, mapa, próximo passo, armadilhas
 2. docs/plans/shareable-surfaces/README.md    — decisões travadas (P1–P7, D1–D6)
 3. docs/plans/shareable-surfaces/ux.md        — o desenho de todas as telas
-4. docs/plans/shareable-surfaces/wave-5-games-surfaces.md — o alvo, inteiro
+4. docs/plans/shareable-surfaces/wave-6-cross-tab-and-bundle.md — o alvo, inteiro
 5. docs/plans/shareable-surfaces/PROGRESS.md  — pelo menos as iterações 7, 8,
-   10, 13, 14, 15, 17 e 18: são armadilhas que vão voltar
+   10, 13, 14, 15, 17, 18 e 21: são armadilhas que vão voltar
 
 E antes de tocar código: AGENTS.md, CLAUDE.md e as regras em .claude/rules/ que
 o caminho do arquivo disparar.
 
-O próximo passo está na seção 3 do HANDOVER. Atenção a uma diferença: as ondas
-2, 3 e 4 moveram código entre processos sem tocar no domínio; a onda 5 muda o
-domínio. Hoje não existe forma de criar uma partida e convidar "quem aparecer" —
-uma sessão P2P nasce com peer_id obrigatório — então um link de jogo postado num
-canal não tem para onde apontar. Isso é modelo de dados, não roteamento, e traz
-junto a primeira migração de banco deste plano e um job de expiração no Oban.
+A seção 2.1 do HANDOVER é o mapa do que já existe — use-o em vez de grepar. A
+seção 3 tem a ordem de ataque; siga-a se não tiver motivo para outra.
 
 Três coisas específicas desta onda:
-- a reivindicação do lobby aberto é UMA ESCRITA CONDICIONAL no banco (UPDATE ...
-  WHERE peer_id IS NULL AND status = 'open'), nunca read → check → write; o
-  teste de duas reivindicações concorrentes é o teste desta onda, com duas tasks
-  e uma barreira, e tem que ficar vermelho se alguém trocar a escrita — verifique
-  revertendo uma vez;
-- peer_id nulo atravessa Queries.active_sessions_between/2, Policy.can_close?/2,
-  can_decline?/2 e close_sessions_between/2: levantamento antes do changeset;
-- não generalize a sala de partida antes de ver o que é comum de verdade. Ela
-  hoje é metade dispositivos e metade roster, e um jogo não tem câmera para
-  escolher — ux.md §2.5 já desenha as duas variantes lado a lado.
+- a fonte da verdade de "o que você tem aberto" é RetroHexChat.Surfaces, que já
+  existe desde a onda 2 — BroadcastChannel entra só para TENTAR trazer a aba
+  pra frente, e window.focus() de uma aba em segundo plano é bloqueado com
+  frequência: degradar bem é o requisito, focar é o bônus;
+- "não dividir o bundle" é um resultado legítimo e precisa ser aceitável ANTES
+  de medir, senão a medição é teatro;
+- esta é a onda que apaga o diretório do plano, e as regras duráveis têm que
+  estar movidas para os guias ANTES disso — a tabela da §3.2 da onda diz o que
+  vai para onde.
 
 Como trabalhar, e isto não é negociável:
 - Não pare para pedir permissão entre passos. Implemente até haver algo
   testável de ponta a ponta pelo usuário.
 - Registre cada iteração no PROGRESS.md, incluindo os erros e como foram
   recuperados.
-- Toda tela nova ganha screenshot (spec Playwright descartável) antes de
-  você dizer que fechou.
+- Toda tela nova ganha screenshot (spec Playwright descartável, ou shot() num
+  spec permanente) antes de você dizer que fechou.
 - Antes de declarar a onda concluída, confira linha por linha a tabela de TDD
-  dela e a lista de obrigações do repositório. Na onda 4 eu declarei cedo e
-  faltavam quatro itens — um deles era um buraco de autorização.
+  dela e a lista de obrigações do repositório. Nas ondas 4 e 5 essa conferência
+  achou buracos que não eram testes — na 5, um invariante de changeset e uma
+  regra de produto (P7) sem caminho pela tela.
 - Sequência fixa antes do gate: mix format → make i18n.gettext.extract →
   make ci. Leia a linha "Results:" do log, não o exit code do shell.
 - Commit direto na main, com git fetch + pull --ff-only antes e staging de
