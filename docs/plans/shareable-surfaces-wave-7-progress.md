@@ -635,6 +635,61 @@ terceira forma for removida (revertido uma vez para ver).
 
 ---
 
+## Iteração 10 — Q7: traduzir, e fechar a porta por onde isso entrou
+
+### Não eram 9 msgid
+
+A auditoria contava `help.po`. Medido de verdade, eram **30 entradas × 13
+locales**, espalhadas por sete domínios — `help`, `chat`, `group_call`,
+`help_bots`, `help_features`, `help_games`, `share` — mais 81 no `en`.
+
+E metade eram **`fuzzy`, não vazias**, que é pior: elas *renderizam*. O
+`gettext` serve uma tradução `fuzzy` normalmente, então a tela mostra o texto
+antigo com a confiança do texto novo. Três exemplos do que estava no ar:
+
+| msgid | o que a tela dizia (pt_BR) |
+|---|---|
+| `repeat window` | "janela limpa" |
+| `Sharing a Game` | "Iniciando um jogo solo" |
+| `P2P session request… /p2p/%{token}` (zh) | `/p2p/ %{token}` — com espaço, link morto |
+
+As quatro do `share.po` eram o caso contrário: traduções **certas** marcadas
+`fuzzy` por uma mudança de redação do lado inglês. Reescrevê-las teria jogado
+trabalho bom fora; o que elas precisavam era da bandeira limpa.
+
+### O `en` não estava vazio por acaso, mas estava vazio errado
+
+`en` é a língua de origem e seu catálogo existe para o navegador ter um —
+cada entrada é o próprio msgid escrito por extenso. 81 entradas estavam vazias,
+e o `i18n_placeholder_check` lê um `msgstr` vazio como **placeholder
+descartado**: foi ele que reprovou primeiro, apontando para a única entrada
+nova com `%{channel}`. Preenchidas a partir do próprio msgid, que é a convenção
+que as outras 350 do mesmo arquivo já seguiam.
+
+### O gate
+
+`make i18n.catalog.check` entrou no `make ci` como **"i18n Catalog Ready"** —
+um estágio novo, ao lado do "i18n Catalog Coverage" e não no lugar dele. São
+duas perguntas diferentes e passar uma nunca implicou a outra:
+
+* *Coverage* (`gettext.extract --check-up-to-date`): o `.pot` corresponde ao código.
+* *Ready* (`i18n.catalog.check`): os catálogos construídos a partir dele estão
+  de fato traduzidos — sem vazio, sem `fuzzy`, sem placeholder perdido, sem
+  inglês usando o nome de outro locale.
+
+`make ci` agora é **18/18**. A regra que isso codifica: quem cria drift é quem
+paga por ele, no commit em que criou.
+
+### Método
+
+Tudo curado à mão, sem `argostranslate`. A regra da casa — "uma tradução ruim é
+pior que inglês" — e as três traduções erradas da tabela acima são o argumento
+inteiro. O aplicador (`msgstr` alvo por alvo, no texto cru do `.po`) foi
+escolhido por cima do `polib` porque este reescreve quebra de linha e linhas
+`#:` do arquivo todo, e uma mudança de três linhas vira um diff de três mil.
+
+---
+
 ## Aprendizados que podem sair daqui
 
 Candidatos a virar regra durável quando a onda fechar. **Ainda não movidos.**

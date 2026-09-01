@@ -45,6 +45,7 @@ Stage 2 (parallel, after compile):
   ├─ credo
   ├─ CSS lint
   ├─ i18n catalog coverage
+  ├─ i18n catalog ready
   ├─ tests (mix test, partitioned)
   └─ feature tests (mix test --only liveview_feature, partitioned)
 
@@ -66,6 +67,14 @@ The third, catalog coverage, is `mix gettext.extract --check-up-to-date` and so
 runs after compile: it fails when a translatable string exists in the code and
 in no template, which is how sixty of them once came to render in English in
 every locale.
+
+The fourth, **catalog ready** (`make i18n.catalog.check`), asks the other half
+of the question: not whether the `.pot` matches the code, but whether the
+catalogues built from it are actually translated — no empty entry, no fuzzy
+leftover, no dropped placeholder, no English wearing another locale's name. It
+sat red on `main` while coverage stayed green, which is how a wave leaves drift
+for the next person to trip over. It is in the gate now, so drift fails the
+commit that creates it.
 
 ## Options
 

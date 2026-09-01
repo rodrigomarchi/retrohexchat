@@ -40,6 +40,7 @@ defmodule CI do
     "credo",
     "lint_css",
     "i18n_coverage",
+    "i18n_catalog",
     "test",
     "test_feature",
     "test_domain",
@@ -97,6 +98,18 @@ defmodule CI do
       label: "i18n Catalog Coverage",
       cmd: "make",
       args: ["i18n.gettext.check"]
+    },
+    # Two different questions, and passing one has never implied the other: the
+    # coverage check says the `.pot` files match the source, this one says the
+    # catalogues built from them are actually translated — no empty entry, no
+    # fuzzy leftover, no dropped placeholder, no English wearing another
+    # locale's name. It ran red on `main` for months while the looser one was
+    # green, which is exactly how a wave leaves drift for somebody else to trip
+    # over.
+    "i18n_catalog" => %{
+      label: "i18n Catalog Ready",
+      cmd: "make",
+      args: ["i18n.catalog.check"]
     },
     "lint_hooks" => %{label: "LiveView Hook Contract", cmd: "make", args: ["lint.hooks"]},
     "e2e_catalog" => %{label: "E2E Catalog Sync", cmd: "make", args: ["e2e.catalog.check"]},

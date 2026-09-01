@@ -4747,12 +4747,12 @@ msgstr "和"
 #: lib/retro_hex_chat/chat/help_topics/features.ex:172
 #, elixir-autogen, elixir-format
 msgid "A link pasted in a conversation gets a card under the message — source, headline, byline, image and summary. RSS cards use the same renderer, enriched with feed metadata when the publisher page is thin."
-msgstr ""
+msgstr "在對話中貼上的連結會在訊息下方產生卡片 — 來源、標題、署名、圖片和摘要。RSS 卡片使用同一套算繪，當發佈方頁面資訊不足時會用訂閱源的中繼資料補充。"
 
 #: lib/retro_hex_chat/chat/help_topics/bots.ex:181
 #, elixir-autogen, elixir-format
 msgid "Monitor RSS/Atom feeds and post new items as rich Markdown cards, combining page metadata with feed summaries, authors, dates, media hints and cached thumbnails."
-msgstr ""
+msgstr "監控 RSS/Atom 訂閱源，並將新項目以豐富的 Markdown 卡片發佈，把頁面中繼資料與訂閱源的摘要、作者、日期、媒體線索和快取縮圖結合起來。"
 
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:116
 #, elixir-autogen, elixir-format
@@ -4802,42 +4802,42 @@ msgstr "在狀態、螢幕上的會話及其空間之間切換。其餘全部從
 #: lib/retro_hex_chat/chat/help_topics/bots.ex:79
 #, elixir-autogen, elixir-format
 msgid "Bot Greeter Capability"
-msgstr ""
+msgstr "機器人迎新能力"
 
 #: lib/retro_hex_chat/chat/help_topics/bots.ex:95
 #, elixir-autogen, elixir-format
 msgid "Welcome newcomers to a channel: one short line the room sees the first time, and private lines that orient the newcomer alone."
-msgstr ""
+msgstr "歡迎新來的人加入頻道：第一次時房間會看到的一行短句，以及只給新人的私訊引導。"
 
 #: lib/retro_hex_chat/chat/help_topics/bots.ex:87
 #, elixir-autogen, elixir-format
 msgid "bot greeting"
-msgstr ""
+msgstr "機器人問候"
 
 #: lib/retro_hex_chat/chat/help_topics/bots.ex:90
 #, elixir-autogen, elixir-format
 msgid "greeting delivery"
-msgstr ""
+msgstr "問候投遞"
 
 #: lib/retro_hex_chat/chat/help_topics/bots.ex:89
 #, elixir-autogen, elixir-format
 msgid "onboarding lines"
-msgstr ""
+msgstr "新人引導訊息"
 
 #: lib/retro_hex_chat/chat/help_topics/bots.ex:88
 #, elixir-autogen, elixir-format
 msgid "public greeting"
-msgstr ""
+msgstr "公開問候"
 
 #: lib/retro_hex_chat/chat/help_topics/bots.ex:91
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "repeat window"
-msgstr "清除窗口"
+msgstr "重複時間窗"
 
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:235
 #, elixir-autogen, elixir-format
 msgid "See and act on whoever is in the conversation on screen through the right-side user list — a channel's members grouped by role, or the two people in a private message."
-msgstr ""
+msgstr "透過右側使用者列表檢視並操作目前對話中的人 — 依角色分組的頻道成員，或私訊中的兩個人。"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1778
 #, elixir-autogen, elixir-format
@@ -4965,16 +4965,16 @@ msgid "Undoing a Link You Shared"
 msgstr "撤銷你分享過的連結"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1074
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Join a channel-scoped audio/video conference. Call in the channel toolbar opens the antechamber: a camera preview, the microphone/camera/speaker pickers, and who is already in the room. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for the next time you open it. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
-msgstr "加入頻道範圍內的音訊/視訊會議。頻道工具列中的「通話」會開啟前廳：攝影機預覽、麥克風/攝影機/喇叭選擇，以及已經在房間裡的人。「加入通話」讓你進入，「取消」則關閉。進入之後有版面控制、參與者管理與即時統計。管理遵循頻道權限：半管理員及以上可以管理層級較低的參與者。"
+msgstr "加入頻道範圍的音訊／視訊會議。頻道工具列上的「通話」會開啟前廳：攝影機預覽、麥克風／攝影機／喇叭選擇器，以及誰已經在房間裡。「加入通話」讓你進入；「取消」把它關掉，而無論你從哪一道門離開前廳，它都會記住你把麥克風和攝影機設成了什麼樣，留到下次開啟。裡面有版面控制、參與者管理和即時統計。管理遵循頻道權限：半管理員及以上可以管理層級較低的參與者。"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1170
-#, elixir-autogen, elixir-format, fuzzy
+#,elixir-autogen, elixir-format
 msgid "Select and switch between microphones, cameras, and speakers during calls."
 msgstr "在通話時選擇麥克風、攝像機和揚聲器並進行切換。"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1101
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "A conference can run in a browser tab of its own. Open the summary next to Call in the channel toolbar and choose Open in a tab; the call gets the whole window and stops competing with the chat for the browser. While it is over there the chat says so along the bottom of its window — click that to go to the tab, which is why there is no Leave beside it: you leave a call from the screen that is in it. Closing that tab is not leaving either: the room keeps you for the reconnection window, and reopening the address puts you straight back in. Only Leave, which asks first, actually ends your part in the call."
-msgstr "會議可以在獨立的瀏覽器分頁中執行。開啟頻道工具列中「通話」旁邊的摘要，選擇「在分頁中開啟」；通話將佔用整個視窗，不再與聊天爭搶瀏覽器資源。關閉那個分頁並不等於離開：房間會在重新連線的時段內為你保留位置，重新開啟位址即可直接回到裡面。只有會先詢問的「離開」才真正結束你的參與。"
+msgstr "會議可以在自己的瀏覽器分頁裡執行。開啟頻道工具列上「通話」旁邊的摘要，選擇「在分頁中開啟」；通話會佔用整個視窗，不再和聊天爭奪瀏覽器。它在那邊期間，聊天會在自己視窗的底部說明 — 點擊那裡就能前往該分頁，這也是旁邊沒有「離開」的原因：離開通話要在處於通話中的那個畫面上完成。關掉那個分頁同樣不是離開：房間會在重新連線的時間內保留你的位置，重新開啟位址就直接回到裡面。只有會先詢問的「離開」，才真正結束你在通話中的參與。"
