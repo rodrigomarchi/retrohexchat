@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
   use RetroHexChatWeb, :html
 
   alias RetroHexChat.Accounts.Session
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.ChatContext
 
   import RetroHexChatWeb.Components.UI.MenuBarApp
@@ -184,6 +185,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
   # the design-system component receives display text only.
   @spec p2p_display(map() | nil) :: map() | nil
   defp p2p_display(nil), do: nil
+
+  # The session is running in another page of this person's, so this zone is a
+  # way over to it and not a control over it. Same shape the conference zone
+  # takes, and for the same reason: you end a session from the screen that is
+  # holding it.
+  defp p2p_display(%{displaced: true, token: token} = p2p) when is_binary(token) do
+    peer = p2p[:peer_nick] || "?"
+
+    %{
+      label: dgettext("chat", "P2P: %{peer} — in another tab", peer: peer),
+      title:
+        dgettext("chat", "This P2P session is open in another tab of yours — click to go to it"),
+      path: Paths.p2p_path(token)
+    }
+  end
 
   defp p2p_display(%{state: state, peer_nick: peer_nick} = p2p) do
     peer = peer_nick || "?"

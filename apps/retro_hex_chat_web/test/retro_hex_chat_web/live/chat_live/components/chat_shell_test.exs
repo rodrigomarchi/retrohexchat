@@ -143,4 +143,36 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
       refute status(%{}) =~ ~s(data-testid="status-bar-group-call")
     end
   end
+
+  describe "the window's status bar, when the P2P session is somewhere else" do
+    test "says so, and is a way to the tab rather than a control" do
+      html =
+        status(%{
+          p2p_session: %{
+            displaced: true,
+            token: "tok12345",
+            peer_nick: "bob",
+            state: :connected
+          }
+        })
+
+      assert html =~ ~s(data-testid="status-bar-p2p")
+      assert html =~ ~s(data-surface-path="/p2p/tok12345")
+      assert html =~ ~s(phx-hook="SurfaceTabLinkHook")
+      assert html =~ "in another tab"
+
+      # A session is ended from the screen holding it, so no End here.
+      refute html =~ ~s(data-testid="status-bar-p2p-stop")
+    end
+
+    test "a session on this screen keeps the zone it always had" do
+      html =
+        status(%{
+          p2p_session: %{displaced: false, token: "tok12345", peer_nick: "bob", state: :connected}
+        })
+
+      assert html =~ ~s(data-testid="status-bar-p2p-stop")
+      refute html =~ ~s(data-surface-path="/p2p/tok12345")
+    end
+  end
 end

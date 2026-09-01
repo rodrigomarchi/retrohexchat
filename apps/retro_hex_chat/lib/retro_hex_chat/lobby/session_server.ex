@@ -447,6 +447,29 @@ defmodule RetroHexChat.Lobby.SessionServer do
     end
   end
 
+  # Why a session server went away, whenever the reason is not one this module
+  # chose. `:normal` and `:shutdown` are the ordinary exits — an expiry, a peer
+  # leaving, the supervisor taking a child down — and logging those would bury
+  # the one line that matters.
+  #
+  # It matters because of how the failure arrives: enough abnormal exits in one
+  # burst (`max_restarts: 50` in `max_seconds: 5`) take the DynamicSupervisor
+  # down and every live session with it, and what a test then sees is a
+  # `:noproc` from a session that did nothing wrong. That has been observed and
+  # never explained; the next time it happens, this says what died first.
+  @impl true
+  def terminate(reason, state) when reason not in [:normal, :shutdown] do
+    Logger.warning(
+      "Lobby SessionServer died: reason=#{inspect(reason)}, " <>
+        "session_id=#{inspect(state[:session] && state.session.id)}, " <>
+        "status=#{inspect(state[:session] && state.session.status)}"
+    )
+
+    :ok
+  end
+
+  def terminate(_reason, _state), do: :ok
+
   # --- Private helpers ---
 
   defp maybe_transition_to_lobby(state) do

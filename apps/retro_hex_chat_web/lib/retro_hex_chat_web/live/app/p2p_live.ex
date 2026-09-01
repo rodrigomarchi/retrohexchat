@@ -360,9 +360,10 @@ defmodule RetroHexChatWeb.App.P2PLive do
   @doc """
   What the host is told about the session — public so its shape is testable.
 
-  The nickname, the state, the transport policy, and the three summaries the
-  chat's status zone turns into facets. Nothing else: the chat draws a taskbar
-  button and a status zone, and reads no media state it is not carrying.
+  The nickname, the state, whether this page still holds the seat, the transport
+  policy, and the three summaries the chat's status zone turns into facets.
+  Nothing else: the chat draws a taskbar button and a status zone, and reads no
+  media state it is not carrying.
   """
   @spec host_snapshot(Socket.t()) :: map() | nil
   def host_snapshot(%{assigns: %{p2p_session: %{} = p2p}}) do
@@ -372,6 +373,12 @@ defmodule RetroHexChatWeb.App.P2PLive do
       peer_nick: p2p.peer_nick,
       role: p2p.role,
       state: p2p.state,
+      # The seat moved to another page of this person's. Without it the host's
+      # status zone keeps reporting the last state this page was in — a
+      # sentence that was true a moment ago, beside a surface already saying
+      # otherwise. `publish/1` compares snapshots, so a field the snapshot does
+      # not carry is a change the host is never told about at all.
+      displaced: Map.get(p2p, :displaced, false),
       turn_configured: p2p.turn_configured,
       turn_only: p2p.turn_only,
       recovery: p2p.recovery,

@@ -50,8 +50,12 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
 
   attr :p2p, :map,
     default: nil,
-    doc:
-      "Active P2P session display (%{label, title, stop_title}) — the zone stays visible on mobile"
+    doc: """
+    P2P session display. `%{label, title, stop_title}` for a session on this
+    screen; `%{label, title, path}` for one this person moved to another tab,
+    which is a link to that tab and carries no End. The zone stays visible on
+    mobile either way.
+    """
 
   attr :on_p2p_click, :any, default: nil
   attr :on_p2p_stop, :any, default: nil
@@ -200,7 +204,28 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
     </.window_status_bar_field>
 
     <.window_status_bar_field :if={@p2p} class="flex items-center gap-retro-2 min-w-0 px-[2px]">
+      <%!-- The session moved to another page of this person's: a way over to
+            it, and no End beside it, because a session is ended from the
+            screen that is holding it. --%>
+      <.link
+        :if={@p2p[:path]}
+        href={@p2p.path}
+        target="_blank"
+        rel="noopener"
+        id="status-bar-p2p-elsewhere"
+        phx-hook="SurfaceTabLinkHook"
+        data-surface-path={@p2p.path}
+        class="inline-flex items-center gap-retro-2 min-w-0 h-full min-h-0 bg-transparent"
+        title={@p2p.title}
+        aria-label={@p2p.title}
+        data-testid="status-bar-p2p"
+      >
+        <Icons.icon_protocol_p2p_compact class="w-3 h-3 shrink-0" />
+        <span class="truncate text-xs">{@p2p.label}</span>
+      </.link>
+
       <button
+        :if={!@p2p[:path]}
         type="button"
         class="inline-flex items-center gap-retro-2 min-w-0 h-full min-h-0 bg-transparent"
         phx-click={@on_p2p_click}
@@ -213,6 +238,7 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         <.p2p_badges p2p={@p2p} />
       </button>
       <button
+        :if={!@p2p[:path]}
         type="button"
         class="inline-flex items-center justify-center h-full min-h-0 bg-transparent shrink-0"
         phx-click={@on_p2p_stop}
