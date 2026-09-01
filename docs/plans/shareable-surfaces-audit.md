@@ -533,12 +533,18 @@ causas se dividem em três, e só uma delas é bug de teste:
 
 | Spec | Causa |
 |---|---|
-| `chat-group-call.spec.ts:1275` e `:1341` (pré-join) | ~~**bug de teste**~~ — **corrigido 2026-08-31, e eu repeti o erro do autor.** A sondagem morta do `localStorage` era real e saiu; os dois continuam vermelhos por baixo dela, e por motivos de **produto**: a preferência de dispositivo não é lembrada entre cancelar e reabrir, e a caixa de aviso de permissão aparece sem texto. Ambos precedem o plano. Diagnóstico até onde foi na Iteração 3 do diário |
+| `chat-group-call.spec.ts:1275` e `:1341` (pré-join) | ~~**bug de teste**~~ — **corrigido 2026-08-31, e eu repeti o erro do autor.** A sondagem morta do `localStorage` era real e saiu; os dois continuam vermelhos por baixo dela, e por motivos de **produto**: a preferência de dispositivo não é lembrada entre cancelar e reabrir, e a caixa de aviso de permissão aparece sem texto. Ambos precedem o plano. Diagnóstico até onde foi na Iteração 3 do diário. — **Verdes em 2026-09-01, e as duas frases acima estavam erradas sobre a causa.** O aviso não "aparece sem texto": o hook escreve classe e texto e o patch seguinte do LiveView repinta o template por cima, seis milissegundos depois — falta `phx-update="ignore"`. E a preferência não "vai para o registro de dispositivo confiável": esse registro exige um dispositivo lembrado, `remember_device` é `false` por padrão e `trusted_device_nicks` está **vazia**, então nem o caminho do `[Entrar]` jamais persistiu. Sondas e correções na Iteração 7 do diário |
 | `chat-group-call.spec.ts:967` e `chat-p2p.spec.ts:888` | ~~**produto**: a janela maximizada cobre a barra de status — R.7~~ **Corrigido 2026-08-31:** specs desatualizados, apontando para um controle que mudou de casa. Verdes. Ver a correção em R.7 |
-| `chat-call-fault-injection.spec.ts:355` | **produto**: a mídia não se restabelece quando o answerer recarrega. É a "Limitação registrada" da onda 4B, registrada como limitação enquanto o spec a asserta como comportamento |
+| `chat-call-fault-injection.spec.ts:355` | ~~**produto**: a mídia não se restabelece quando o answerer recarrega. É a "Limitação registrada" da onda 4B, registrada como limitação enquanto o spec a asserta como comportamento~~ — **verde em 2026-09-01.** Não era uma limitação: eram **três defeitos empilhados** (o resume olhando para o status errado, o pedido de restart olhando para o mesmo status errado, e a metade do servidor do protocolo de prontidão do `AGENT-GUIDE` §15 que nunca foi escrita para o `LobbyWebRTCHook`), mais um quarto criado ao consertar os três. Iteração 7 do diário |
 
 **Não verifiquei** se os cinco já estavam vermelhos antes do plano: isso exige
 dar checkout numa revisão pré-plano e rodar, e eu não fiz.
+
+**Fechado em 2026-09-01:** os cinco estão verdes. As cinco suítes de chamada
+juntas dão 44/44. O padrão que atravessa as três linhas desta tabela é o mesmo
+que a §4 do handover descreve: **cada causa que eu escrevi aqui a partir de
+leitura estava errada, e cada uma que veio de uma sonda no navegador estava
+certa.**
 
 ---
 

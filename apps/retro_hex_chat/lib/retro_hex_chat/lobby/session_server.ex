@@ -57,6 +57,23 @@ defmodule RetroHexChat.Lobby.SessionServer do
     end
   end
 
+  @doc """
+  Whether this session has already released its first offer.
+
+  A session sits at `lobby` from the moment both sides arrive until the media
+  is up, so the DB status cannot tell "waiting in the starting room" apart from
+  "negotiating". This can: it is set the first time the readiness gate opens
+  and never cleared, so a page that comes back mid-negotiation knows it is
+  returning to something already running.
+  """
+  @spec signaling_released?(String.t()) :: boolean()
+  def signaling_released?(token) do
+    case get_state(token) do
+      {:ok, %{signaling_ran: released?}} -> released?
+      _error -> false
+    end
+  end
+
   @spec join(String.t(), integer(), keyword()) :: :ok | {:error, String.t() | :already_joined}
   def join(token, user_id, opts \\ []) do
     call(token, {:join, user_id, Keyword.get(opts, :takeover, false)})
@@ -170,6 +187,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
             connections: %{creator: nil, peer: nil},
             webrtc_ready: %{creator: false, peer: false},
             signaling_started: false,
+            signaling_ran: false,
             signaling_seq: 0,
             signaling_replay: empty_signaling_replay(),
             media: %{
@@ -452,7 +470,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
     if not state.signaling_started and state.session.status in ~w(lobby connected) and
          state.webrtc_ready.creator and state.webrtc_ready.peer do
       broadcast(state.token, "lobby_start_signaling", start_signaling_payload(state))
-      %{state | signaling_started: true}
+      %{state | signaling_started: true, signaling_ran: true}
     else
       state
     end
@@ -469,22 +487,41 @@ defmodule RetroHexChat.Lobby.SessionServer do
     end
   end
 
-  defp signaling_restart_required?(%{session: %{status: "connected"}} = state) do
-    signaling_replay_empty?(state.signaling_replay)
+  # The gate opening a second time is a rebuild, not a continuation. Whoever
+  # stayed is holding a peer connection that is negotiating with a page that no
+  # longer exists, and an empty replay is the proof the snapshot went with it —
+  # so the payload has to say `restart`, or the side that stayed reads the
+  # second `start` as the first one and returns without offering anything.
+  #
+  # The DB status is not the test. A peer that reloads while the initial offer
+  # is still being applied leaves the session at `lobby`, and its peer is
+  # exactly as stale as one that reloads after `connected`.
+  defp signaling_restart_required?(state) do
+    negotiated_before?(state) and not signaling_replay_negotiable?(state.signaling_replay)
   end
 
-  defp signaling_restart_required?(_state), do: false
+  # "This is not the session's first negotiation." Either this process has
+  # opened the gate before, or the session reached `connected` — which it can
+  # only have done by negotiating, including under a server process that has
+  # since been restarted and remembers none of it.
+  defp negotiated_before?(%{session: %{status: "connected"}}), do: true
+  defp negotiated_before?(state), do: state.signaling_ran
 
-  defp signaling_replay_empty?(replay) when is_map(replay) do
+  # A replay can only rebuild a returning page if it still holds a negotiation:
+  # a description to apply, or a renegotiation request to answer. Loose ICE
+  # candidates are the debris of one, not one — and the side that stayed keeps
+  # trickling candidates into the snapshot after a disconnect wiped it, so
+  # "not empty" would read as "recoverable" for a replay that can rebuild
+  # nothing at all.
+  defp signaling_replay_negotiable?(replay) when is_map(replay) do
     replay
     |> Map.values()
-    |> Enum.all?(fn role_state ->
-      is_nil(role_state.description) and role_state.candidates == [] and
-        is_nil(role_state.renegotiate)
+    |> Enum.any?(fn role_state ->
+      not is_nil(role_state.description) or not is_nil(role_state.renegotiate)
     end)
   end
 
-  defp signaling_replay_empty?(_replay), do: true
+  defp signaling_replay_negotiable?(_replay), do: false
 
   # A user's LiveView going away (crash, refresh, tab close) or an explicit
   # `leave` both land here: drop the connection, reset that side's WebRTC

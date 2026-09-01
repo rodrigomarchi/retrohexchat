@@ -365,7 +365,12 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
           <Icons.icon_camera class="h-3.5 w-3.5 shrink-0" />
           <span class="truncate">{dgettext("p2p", "Preview")}</span>
         </span>
-        <span class="inline-flex items-center gap-1 text-muted-foreground" data-p2p-setup-device-state>
+        <span
+          id="p2p-setup-device-state"
+          phx-update="ignore"
+          class="inline-flex items-center gap-1 text-muted-foreground"
+          data-p2p-setup-device-state
+        >
           <Icons.icon_devices class="h-3 w-3" />
           <span data-p2p-setup-device-state-text>{dgettext("p2p", "Checking devices")}</span>
         </span>
@@ -382,6 +387,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
         >
         </video>
         <div
+          id="p2p-setup-empty"
+          phx-update="ignore"
           class="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-canvas text-center text-xs text-muted-foreground"
           data-p2p-setup-empty
           data-testid="p2p-setup-preview-empty"
@@ -392,6 +399,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
       </div>
 
       <div
+        id="p2p-setup-warning-notice"
+        phx-update="ignore"
         class="mt-1 hidden items-start gap-1 border border-warning bg-surface px-1 py-1 text-[10px] text-warning"
         data-p2p-setup-warning
         data-testid="p2p-setup-warning"

@@ -364,6 +364,47 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
       stop_server(ctx.token)
     end
 
+    # The peer reloads while the first offer is still being applied: the session
+    # never left `lobby`, but the page that stayed is negotiating against one
+    # that no longer exists. A `restart` is the only thing that makes it offer
+    # again — without it the second `start` reads as the first and it returns
+    # holding a connection nobody will answer.
+    test "a peer that rejoins mid-negotiation gets a clean WebRTC restart", ctx do
+      :ok = SessionServer.mark_webrtc_ready(ctx.token, ctx.creator.id)
+      :ok = SessionServer.mark_webrtc_ready(ctx.token, ctx.peer.id)
+      assert_receive %{event: "lobby_start_signaling", payload: %{}}
+
+      :ok =
+        SessionServer.record_signaling_event(ctx.token, ctx.creator.id, "lobby_signal", %{
+          type: "offer",
+          sdp: "offer-sdp",
+          epoch: 1,
+          offer_id: "p2p-1-1",
+          from: ctx.creator.id
+        })
+
+      :ok = SessionServer.leave(ctx.token, ctx.peer.id)
+      :ok = SessionServer.join(ctx.token, ctx.peer.id, takeover: true)
+
+      # The side that stayed keeps trickling candidates into the snapshot the
+      # disconnect wiped. Loose candidates are not a negotiation, and reading
+      # them as one is what left the returning page with no offer to answer.
+      :ok =
+        SessionServer.record_signaling_event(ctx.token, ctx.creator.id, "lobby_signal", %{
+          type: "ice-candidate",
+          candidate: %{candidate: "candidate:1 1 udp 1 127.0.0.1 1 typ host"},
+          epoch: 1,
+          from: ctx.creator.id
+        })
+
+      :ok = SessionServer.mark_webrtc_ready(ctx.token, ctx.peer.id)
+
+      assert_receive %{
+        event: "lobby_start_signaling",
+        payload: %{restart: true, reason: "signaling_snapshot_lost"}
+      }
+    end
+
     test "rejects readiness from a non-participant", ctx do
       stranger = create_registered_nick("rdys#{System.unique_integer([:positive])}")
       assert {:error, :not_participant} = SessionServer.mark_webrtc_ready(ctx.token, stranger.id)

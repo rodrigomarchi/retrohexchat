@@ -1,11 +1,18 @@
 defmodule RetroHexChatWeb.Components.UI.GroupCall.PermissionNotice do
   @moduledoc """
   Permission warning block for the channel conference pre-join media preview.
+
+  Everything inside is written by the pre-join browser controller — the message
+  text and whether the block is shown at all. The server renders the shell once
+  and then stays out of it: without `phx-update="ignore"` the next LiveView
+  patch of the preview restores this template and erases the warning that had
+  just been raised.
   """
   use RetroHexChatWeb.Component
 
   alias RetroHexChatWeb.Icons
 
+  attr :id, :string, default: "group-call-prejoin-warning-notice"
   attr :testid, :string, default: "group-call-prejoin-warning"
   attr :retry_testid, :string, default: "group-call-prejoin-retry"
 
@@ -13,6 +20,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PermissionNotice do
   def permission_notice(assigns) do
     ~H"""
     <div
+      id={@id}
+      phx-update="ignore"
       class="mt-1 hidden items-start gap-1 border border-warning bg-surface px-1 py-1 text-[10px] text-warning"
       data-group-call-prejoin-warning
       data-testid={@testid}

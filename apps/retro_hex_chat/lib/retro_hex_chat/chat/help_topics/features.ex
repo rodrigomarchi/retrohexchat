@@ -1073,7 +1073,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Join a channel-scoped audio/video conference. Call in the channel toolbar opens the antechamber: a camera preview, the microphone/camera/speaker pickers, and who is already in the room. Join call puts you in; Cancel closes it. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
+            "Join a channel-scoped audio/video conference. Call in the channel toolbar opens the antechamber: a camera preview, the microphone/camera/speaker pickers, and who is already in the room. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for the next time you open it. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
           ),
         see_also: [
           "feature-conference-tab",

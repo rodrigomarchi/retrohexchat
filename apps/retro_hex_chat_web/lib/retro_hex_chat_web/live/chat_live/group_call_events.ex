@@ -166,6 +166,14 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     {:halt, Messages.system_event(socket, message)}
   end
 
+  # The antechamber's media defaults outlive the antechamber. The surface is
+  # torn down every time someone backs out of it, so the choice is kept here,
+  # by the one process that is still standing, and handed back at the next open.
+  def handle_info({:surface_preferences, :call, preferences}, socket)
+      when is_map(preferences) do
+    {:halt, assign(socket, group_call_prejoin_preferences: preferences)}
+  end
+
   def handle_info({:surface_focus, :call}, socket) do
     {:halt, Windows.open(socket, @window_id)}
   end

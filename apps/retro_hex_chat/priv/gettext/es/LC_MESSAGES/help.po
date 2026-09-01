@@ -1936,11 +1936,6 @@ msgstr "Vea cuántos caracteres permanecen antes de alcanzar el límite de longi
 msgid "See when someone is typing a message in a private conversation."
 msgstr "Vea cuando alguien está escribiendo un mensaje en una conversación privada."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1170
-#, elixir-autogen, elixir-format
-msgid "Select and switch between microphones, cameras, and speakers during calls."
-msgstr "Seleccione y cambie entre micrófonos, cámaras y altavoces durante las llamadas."
-
 #: lib/retro_hex_chat/chat/help_topics/special_messages.ex:77
 #, elixir-autogen, elixir-format
 msgid "Send a broadcast message to all users who have wallops mode enabled."
@@ -4864,11 +4859,6 @@ msgstr "Una conferencia puede ejecutarse en su propia pestaña del navegador. Ab
 msgid "Conference in Its Own Tab"
 msgstr "Conferencia en su propia pestaña"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1074
-#, elixir-autogen, elixir-format
-msgid "Join a channel-scoped audio/video conference. Call in the channel toolbar opens the antechamber: a camera preview, the microphone/camera/speaker pickers, and who is already in the room. Join call puts you in; Cancel closes it. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
-msgstr "Únete a una conferencia de audio/vídeo del canal. Llamada, en la barra del canal, abre la antesala: previsualización de cámara, selectores de micrófono/cámara/altavoz y quién está ya en la sala. Entrar en la llamada te mete dentro; Cancelar la cierra. Dentro hay controles de diseño, moderación de participantes y estadísticas en vivo. La moderación sigue los permisos del canal: los semioperadores y superiores pueden moderar a participantes de rango inferior."
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1122
 #, elixir-autogen, elixir-format
 msgid "Share, above the conference, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
@@ -4978,3 +4968,13 @@ msgstr "Revocar, junto a la dirección en cualquier barra de Compartir, deja de 
 #, elixir-autogen, elixir-format
 msgid "Undoing a Link You Shared"
 msgstr "Deshacer un enlace que compartiste"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1074
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Join a channel-scoped audio/video conference. Call in the channel toolbar opens the antechamber: a camera preview, the microphone/camera/speaker pickers, and who is already in the room. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for the next time you open it. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
+msgstr "Únete a una conferencia de audio/vídeo del canal. Llamada, en la barra del canal, abre la antesala: previsualización de cámara, selectores de micrófono/cámara/altavoz y quién está ya en la sala. Entrar en la llamada te mete dentro; Cancelar la cierra. Dentro hay controles de diseño, moderación de participantes y estadísticas en vivo. La moderación sigue los permisos del canal: los semioperadores y superiores pueden moderar a participantes de rango inferior."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1170
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Select and switch between microphones, cameras, and speakers during calls."
+msgstr "Seleccione y cambie entre micrófonos, cámaras y altavoces durante las llamadas."

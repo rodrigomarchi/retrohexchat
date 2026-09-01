@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.Live.SurfaceHost do
 
   A surface is a single LiveView with two hosts: a child of the chat's desktop,
   and a page of its own. Everything about being inside it is identical across
-  the two. Three things cannot be, and each of them is a message to the parent
+  the two. Four things cannot be, and each of them is a message to the parent
   when there is one and something drawn here when there is not:
 
     * **a notice.** Inside the chat, "you cannot mute an operator" belongs in
@@ -19,6 +19,11 @@ defmodule RetroHexChatWeb.Live.SurfaceHost do
     * **what the host shows about it.** The chat draws a taskbar button and a
       status-bar zone for something it does not own any more, so the surface
       hands it the little it needs and keeps the rest.
+    * **what outlives it.** A choice made in a surface's antechamber belongs to
+      the person, and the surface holding it is torn down every time they back
+      out. Embedded, the host is what is still standing afterwards, so it keeps
+      that choice for the next open; standalone, backing out leaves the page
+      and there is no next open to keep it for.
 
   The channel between them is the parent process, not PubSub: a child
   `live_render` has exactly one host, it dies with it, and a topic would carry
@@ -114,6 +119,22 @@ defmodule RetroHexChatWeb.Live.SurfaceHost do
       assign(socket, host_snapshot: snapshot)
     end
   end
+
+  @doc """
+  Leave a choice with the host, to be handed back the next time the surface
+  opens.
+
+  The payload crosses a `live_render` session on the way back, so it must be
+  plain data — string keys and string values, never atoms the far side would
+  have to conjure.
+  """
+  @spec remember(Socket.t(), map()) :: Socket.t()
+  def remember(%{assigns: %{embedded?: true}} = socket, preferences) do
+    send(socket.parent_pid, {:surface_preferences, tag(socket), preferences})
+    socket
+  end
+
+  def remember(socket, _preferences), do: socket
 
   defp tag(socket), do: socket.assigns[:surface_tag]
 end

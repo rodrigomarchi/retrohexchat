@@ -53,6 +53,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   def handle_event("group_call_prejoin_cancel", _params, socket) do
     {:halt,
      socket
+     |> remember_prejoin_preferences()
      |> assign(group_call_prejoin: nil)
      |> Host.close()}
   end
@@ -101,6 +102,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
     {:halt,
      socket
      |> assign(group_call_prejoin_preferences: preferences)
+     |> Host.remember(persistable_prejoin_preferences(preferences))
      |> update_prejoin(fn prejoin ->
        prejoin
        |> Map.put(:media, preferences.media)
@@ -110,8 +112,12 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   def handle_event("group_call_prejoin_preferences_loaded", payload, socket) do
+    preferences = normalize_prejoin_preferences(payload)
+
     {:halt,
-     assign(socket, group_call_prejoin_preferences: normalize_prejoin_preferences(payload))}
+     socket
+     |> assign(group_call_prejoin_preferences: preferences)
+     |> Host.remember(persistable_prejoin_preferences(preferences))}
   end
 
   def handle_event("group_call_leave", _params, %{assigns: %{group_call: %{}}} = socket) do
@@ -127,6 +133,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   def handle_event("group_call_window_close", _params, socket) do
     {:halt,
      socket
+     |> remember_prejoin_preferences()
      |> assign(group_call_prejoin: nil)
      |> Host.close()}
   end
@@ -712,6 +719,18 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   def refresh_roster(socket), do: socket
+
+  @doc """
+  The antechamber choice the host was keeping, in the shape the surface uses.
+
+  The host stores what crossed the wire — string keys, string values — because
+  that is what a `live_render` session can carry back.
+  """
+  @spec restored_prejoin_preferences(map() | nil) :: map() | nil
+  def restored_prejoin_preferences(preferences) when is_map(preferences),
+    do: normalize_prejoin_preferences(preferences)
+
+  def restored_prejoin_preferences(_preferences), do: nil
 
   defp rejoinable_participant(channel_name, nickname) do
     summary = GroupCallSummary.fetch(channel_name)
@@ -1941,6 +1960,20 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   defp maybe_save_prejoin_preferences(socket, _preferences), do: socket
+
+  # The media defaults belong to the person, not to the door they leave by.
+  # Closing the antechamber unmounts this LiveView, so a choice that only lives
+  # in `group_call_prejoin_preferences` is gone by the time the antechamber
+  # opens again; only the trusted-device record survives that.
+  defp remember_prejoin_preferences(
+         %{assigns: %{group_call_prejoin: %{}, group_call_prejoin_preferences: preferences}} =
+           socket
+       )
+       when is_map(preferences) do
+    maybe_save_prejoin_preferences(socket, preferences)
+  end
+
+  defp remember_prejoin_preferences(socket), do: socket
 
   defp persistable_prejoin_preferences(preferences) do
     preferences = normalize_prejoin_preferences(preferences)

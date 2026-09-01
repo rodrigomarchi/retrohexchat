@@ -1936,11 +1936,6 @@ msgstr "查看在达到信件长度限制之前还剩下多少字符 。"
 msgid "See when someone is typing a message in a private conversation."
 msgstr "看看有人在私下谈话中打字"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1170
-#, elixir-autogen, elixir-format
-msgid "Select and switch between microphones, cameras, and speakers during calls."
-msgstr "在通话时选择麦克风、摄像机和扬声器并进行切换。"
-
 #: lib/retro_hex_chat/chat/help_topics/special_messages.ex:77
 #, elixir-autogen, elixir-format
 msgid "Send a broadcast message to all users who have wallops mode enabled."
@@ -4864,11 +4859,6 @@ msgstr "会议可以在独立的浏览器标签页中运行。打开频道工具
 msgid "Conference in Its Own Tab"
 msgstr "在独立标签页中的会议"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1074
-#, elixir-autogen, elixir-format
-msgid "Join a channel-scoped audio/video conference. Call in the channel toolbar opens the antechamber: a camera preview, the microphone/camera/speaker pickers, and who is already in the room. Join call puts you in; Cancel closes it. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
-msgstr "加入频道范围内的音视频会议。频道工具栏中的“通话”会打开前厅：摄像头预览、麦克风/摄像头/扬声器选择，以及已经在房间里的人。“加入通话”让你进入，“取消”则关闭。进入之后有布局控制、参与者管理和实时统计。管理遵循频道权限：半管理员及以上可以管理级别更低的参与者。"
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1122
 #, elixir-autogen, elixir-format
 msgid "Share, above the conference, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
@@ -4978,3 +4968,13 @@ msgstr "任何共享栏中地址旁边的「撤销」会让链接失效。房间
 #, elixir-autogen, elixir-format
 msgid "Undoing a Link You Shared"
 msgstr "撤销你分享过的链接"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1074
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Join a channel-scoped audio/video conference. Call in the channel toolbar opens the antechamber: a camera preview, the microphone/camera/speaker pickers, and who is already in the room. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for the next time you open it. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
+msgstr "加入频道范围内的音视频会议。频道工具栏中的“通话”会打开前厅：摄像头预览、麦克风/摄像头/扬声器选择，以及已经在房间里的人。“加入通话”让你进入，“取消”则关闭。进入之后有布局控制、参与者管理和实时统计。管理遵循频道权限：半管理员及以上可以管理级别更低的参与者。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1170
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Select and switch between microphones, cameras, and speakers during calls."
+msgstr "在通话时选择麦克风、摄像机和扬声器并进行切换。"

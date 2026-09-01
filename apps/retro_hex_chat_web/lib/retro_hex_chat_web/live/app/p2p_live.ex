@@ -423,20 +423,40 @@ defmodule RetroHexChatWeb.App.P2PLive do
   # room: the reload of a page mid-call is the one moment where being asked to
   # press `[Ready]` again would be the surface losing the call it is showing.
   defp resume_started(socket, %LobbySession{status: "connected"}) do
+    # `:connected` is the domain's own answer, not an optimism: a page that
+    # arrives into a running session has to say so, because the media hook
+    # only auto-starts the call once the session reads as connected — and a
+    # page that never starts its own media is a page the other side sees as
+    # a black tile.
+    resume_into(socket, :connected)
+  end
+
+  # Reloading while the first offer is still being applied comes back to a
+  # session that is running every bit as much as a connected one: the
+  # negotiation has been released and the peer is holding a connection against
+  # this seat. The status is `lobby` for the whole of that window, so it cannot
+  # be the test — sending the page to the starting room would ask it to press
+  # `[Ready]` again for something that already started, and the peer would wait
+  # for a readiness report that nobody is going to send.
+  defp resume_started(socket, %LobbySession{token: token}) do
+    if Lobby.signaling_released?(token) do
+      resume_into(socket, :connecting)
+    else
+      socket
+    end
+  end
+
+  defp resume_into(socket, state) do
     case socket.assigns.p2p_session do
       %{} = p2p ->
-        # `:connected` is the domain's own answer, not an optimism: a page that
-        # arrives into a running session has to say so, because the media hook
-        # only auto-starts the call once the session reads as connected — and a
-        # page that never starts its own media is a page the other side sees as
-        # a black tile.
         assign(socket,
           p2p_session: %{
             p2p
             | room_ready: true,
               peer_ready: true,
               session_started: true,
-              state: :connected
+              webrtc_connection_reset: true,
+              state: state
           }
         )
 
@@ -444,8 +464,6 @@ defmodule RetroHexChatWeb.App.P2PLive do
         socket
     end
   end
-
-  defp resume_started(socket, _db_session), do: socket
 
   # Embedded, the chat already decided which session and already applied the
   # gates it owns; the surface is handed the token. Standalone, the token in

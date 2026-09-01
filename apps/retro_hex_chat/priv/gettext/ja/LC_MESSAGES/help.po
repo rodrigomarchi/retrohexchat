@@ -1936,11 +1936,6 @@ msgstr "メッセージの長さ制限に達する前に、いくつの文字が
 msgid "See when someone is typing a message in a private conversation."
 msgstr "誰かがプライベートな会話でメッセージを入力しているときを参照してください。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1170
-#, elixir-autogen, elixir-format
-msgid "Select and switch between microphones, cameras, and speakers during calls."
-msgstr "通話中にマイク、カメラ、スピーカーを切り替えます。"
-
 #: lib/retro_hex_chat/chat/help_topics/special_messages.ex:77
 #, elixir-autogen, elixir-format
 msgid "Send a broadcast message to all users who have wallops mode enabled."
@@ -4864,11 +4859,6 @@ msgstr "会議はブラウザーの専用タブで実行できます。チャン
 msgid "Conference in Its Own Tab"
 msgstr "専用タブでの会議"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1074
-#, elixir-autogen, elixir-format
-msgid "Join a channel-scoped audio/video conference. Call in the channel toolbar opens the antechamber: a camera preview, the microphone/camera/speaker pickers, and who is already in the room. Join call puts you in; Cancel closes it. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
-msgstr "チャンネルの音声・ビデオ会議に参加します。チャンネルのツールバーの「通話」で控えの間が開き、カメラのプレビュー、マイク・カメラ・スピーカーの選択、すでに部屋にいる人が表示されます。「通話に参加」で中に入り、「キャンセル」で閉じます。中ではレイアウト操作、参加者のモデレーション、ライブ統計が使えます。モデレーションはチャンネルの権限に従い、ハーフオペレーター以上が下位の参加者をモデレートできます。"
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1122
 #, elixir-autogen, elixir-format
 msgid "Share, above the conference, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
@@ -4978,3 +4968,13 @@ msgstr "どの共有バーでも、アドレスの横にある「失効」でリ
 #, elixir-autogen, elixir-format
 msgid "Undoing a Link You Shared"
 msgstr "共有したリンクを取り消す"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1074
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Join a channel-scoped audio/video conference. Call in the channel toolbar opens the antechamber: a camera preview, the microphone/camera/speaker pickers, and who is already in the room. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for the next time you open it. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
+msgstr "チャンネルの音声・ビデオ会議に参加します。チャンネルのツールバーの「通話」で控えの間が開き、カメラのプレビュー、マイク・カメラ・スピーカーの選択、すでに部屋にいる人が表示されます。「通話に参加」で中に入り、「キャンセル」で閉じます。中ではレイアウト操作、参加者のモデレーション、ライブ統計が使えます。モデレーションはチャンネルの権限に従い、ハーフオペレーター以上が下位の参加者をモデレートできます。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1170
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Select and switch between microphones, cameras, and speakers during calls."
+msgstr "通話中にマイク、カメラ、スピーカーを切り替えます。"

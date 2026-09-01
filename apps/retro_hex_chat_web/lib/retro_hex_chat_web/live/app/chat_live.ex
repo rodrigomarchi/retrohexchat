@@ -991,6 +991,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       group_call_channels: MapSet.new(),
       group_call_channel_summaries: %{},
       group_call_pending: nil,
+      group_call_prejoin_preferences: nil,
       p2p_session: nil,
       p2p_pm_sessions: %{},
       p2p_pending: nil,

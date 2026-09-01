@@ -1,6 +1,11 @@
 defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
   @moduledoc """
   Camera preview and device permission status for the channel conference pre-join flow.
+
+  The device-state line, the empty-preview overlay and the permission notice
+  are written by the browser controller and carry `phx-update="ignore"`: the
+  section re-renders whenever the media defaults change, and a patch without
+  that flag restores the template over whatever the controller had just said.
   """
   use RetroHexChatWeb.Component
 
@@ -31,6 +36,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
           <span class="truncate">{dgettext("group_call", "Preview")}</span>
         </span>
         <span
+          id="group-call-prejoin-device-state"
+          phx-update="ignore"
           class="inline-flex items-center gap-1 text-muted-foreground"
           data-group-call-prejoin-device-state
         >
@@ -52,6 +59,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
         >
         </video>
         <div
+          id="group-call-prejoin-empty"
+          phx-update="ignore"
           class="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-canvas text-center text-xs text-muted-foreground"
           data-group-call-prejoin-empty
           data-testid="group-call-prejoin-empty"

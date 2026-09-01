@@ -16,7 +16,7 @@ apagado.
 |---|---|---|
 | A | o render morto para de escrever (R.1) | **fechada** — commit desta iteração |
 | B | o read-model para de mentir (R.6) | **fechada** — commit desta iteração |
-| C | o silêncio do `← Chat` (R.10) e a barra coberta (R.7/R.13) | **fechada**, menos dois specs — ver Iteração 3 |
+| C | o silêncio do `← Chat` (R.10) e a barra coberta (R.7/R.13) | **fechada** — os dois specs de pré-join na Iteração 7 |
 | D | o que vaza (R.3 metade barata, R.4) | **fechada** |
 | E | o que apodrece (R.5, A.6, R.8) | **fechada** |
 | F | o resto (R.9, R.11, R.12, R.14, R.15) | **fechada**, menos dois itens — ver Iteração 6 |
@@ -33,7 +33,7 @@ marcadas assim no questionário. Todas reversíveis; a que mais vale confirmar �
 | Antiga | Tomada como | Onde ela já vale |
 |---|---|---|
 | D7.1 | metade barata feita, endereço opaco adiado | fase D |
-| D7.2 | ainda em aberto — o spec do answerer segue vermelho | fase C |
+| D7.2 | **consertada na Iteração 7** — três defeitos empilhados | fase C |
 | D7.3 | **link não expira**; a revogação é a saída | fase E |
 | D7.4 | barra de abas e zona de status agora; nicklist junto com o card | fase F |
 
@@ -409,6 +409,129 @@ o plural. E o catch-all de `media_event/3` passou a logar em vez de engolir.
 bots, RSS, cards de link, lista de usuários, miniaturas. São de outras features,
 e a atribuição da auditoria (A.1/R.12) já dizia isso. `make i18n.catalog.check`
 continua reprovando por causa deles — não por causa do plano.
+
+---
+
+## Iteração 7 — Q2 + Q3: os três vermelhos, no navegador
+
+Método imposto pelo handover e ele estava certo: **nada aqui foi diagnosticado
+por leitura.** Cada um dos três tinha uma causa que a leitura do código não
+sugeria, e dois deles tinham causas empilhadas. As sondas custaram menos que a
+primeira teoria em todos os casos.
+
+### `chat-group-call.spec.ts:1340` — o aviso de permissão em branco
+
+A auditoria dizia "`_showWarning(message)` recebe string vazia, sem causa raiz".
+**Estava errado.** A sonda: espião em `DOMTokenList.prototype.add/remove/toggle`
+filtrado pelo elemento do aviso, mais um `MutationObserver` de `class` com
+`attributeOldValue` na subárvore inteira.
+
+```
+t=1334  remove("hidden") de _showWarning  → classe fica "… flex", texto = "Permission denied. Retry after allowing access or join receive-only."
+t=1340  class ← "mt-1 hidden items-start …"   (não passou por classList)   texto ← ""
+```
+
+Seis milissegundos depois de o hook escrever, o LiveView repinta a seção e o
+template volta por cima — por `setAttribute("class", …)`, que é morphdom, não
+`classList`. É o aprendizado 7 desta onda com nome e hora: **estado que o JS
+escreve por cima de markup do servidor precisa de `phx-update="ignore"`**. O
+"texto vazio" que a auditoria viu era a mesma corrida vista meio milissegundo
+antes.
+
+Consertado nas três regiões que o controlador do pré-join escreve — o aviso, a
+sobreposição de preview vazio e a linha de estado dos dispositivos — e nas três
+cópias equivalentes da antessala P2P (`starting_room.ex`), que têm o mesmo
+defeito e o mesmo dono.
+
+### `chat-group-call.spec.ts:1273` — a preferência que não é lembrada
+
+Três camadas, e as duas primeiras eu não teria achado lendo:
+
+1. A sonda mostrou que o servidor **recebe** a preferência (o atributo
+   `checked` renderizado some depois de desmarcar) e que o `Cancelar`
+   **desmonta o LiveView filho** — `data-phx-root-id` some da lista. O assign
+   `group_call_prejoin_preferences` morre com ele.
+2. Salvar no `cancel` não resolveu. A causa: `TrustedDevices.put_device_preference`
+   exige `active_device_nick`, e no banco de e2e `trusted_device_nicks` tem
+   **zero linhas** com 32 `trusted_devices`. Ou seja **nem o caminho do
+   `[Entrar]` jamais persistiu** — e não é um artefato do teste: o connect tem
+   `remember_device: false` por padrão, então a lembrança nunca existiu para o
+   usuário comum. A afirmação do spec ("a preferência foi para o registro de
+   dispositivo confiável") era a terceira teoria errada desta onda.
+
+   ```sh
+   PGPASSWORD=postgres psql -h localhost -p 5433 -U postgres -d retro_hex_chat_e2e \
+     -c "select count(*) from trusted_device_nicks;"   # 0
+   ```
+3. Conserto: a escolha passa a viver no **hospedeiro**, que é o que continua de
+   pé quando a antessala fecha. `SurfaceHost.remember/2` é a quarta coisa que
+   difere entre os dois mounts; o chat guarda e devolve pelo `session` do
+   `live_render`; o registro de dispositivo confiável continua sendo a camada
+   durável para quem tem um.
+
+### `chat-call-fault-injection.spec.ts:355` — o answerer que recarrega
+
+**Três defeitos independentes, um atrás do outro.** Cada um sozinho matava o
+recurso, e cada um só apareceu depois que o anterior foi consertado. A sonda foi
+um grampo de `WebSocket` (`send` + `addEventListener("message")`) instalado por
+`addInitScript` para sobreviver ao reload, um espião em `RTCPeerConnection` e um
+`Logger` temporário no portão de sinalização.
+
+1. **`resume_started/2` olhava para o status `"connected"` do banco.** Uma sessão
+   fica em `lobby` do momento em que os dois chegam até a mídia subir, então
+   quem recarrega no meio da primeira oferta voltava para a **antessala**, com
+   `room_ready: false` — a âncora do WebRTC nem era renderizada
+   (`PROBE state[bob]: anchorId: null`). O hook nunca montava, o
+   `lobby_webrtc_ready` nunca saía, o portão nunca reabria. Agora a pergunta é
+   do domínio: `Lobby.signaling_released?/1`, ligada na primeira vez que o
+   portão abre e nunca desligada.
+2. **`signaling_restart_required?/1` olhava para o mesmo status**, e o teste do
+   replay era "está vazio". Com o portão reabrindo, o log mostrou
+   `payload=%{}` — sem `restart`. Duas razões: o status era `lobby`, e o replay
+   **não estava vazio**, porque quem ficou continua gotejando candidatos ICE
+   dentro dele depois que o disconnect o zerou. Candidato solto não reconstrói
+   nada: o teste passou a ser "o replay tem uma negociação" (descrição ou
+   pedido de renegociação).
+3. **A metade do servidor do protocolo de prontidão não existia para o
+   `LobbyWebRTCHook`** (`AGENT-GUIDE` §15 manda o servidor reenviar o estado
+   inicial no `*_ready`). A página que volta empurra `lobby_start_answer`
+   durante o mount, enquanto o hook preguiçoso ainda está sendo importado — e o
+   evento se perde. Como o servidor já registrou `webrtc_started: true`, ele
+   nunca reenvia; o `lobby_restart` que vem depois chega a uma conexão sem
+   `role` nem `iceServers` e sai por `restart_unavailable`, sem criar
+   `RTCPeerConnection` nenhuma (`PCLOG` vazio a corrida inteira).
+
+E um quarto, que só apareceu depois dos três: com o start reenviado, a página
+recém-montada passou a receber **também** o `lobby_restart`, e derrubava a
+conexão que acabara de construir — três `RTCPeerConnection` em sequência e uma
+resposta para uma oferta que já não existia. Uma página que começou como
+reconstrução é o **motivo** do restart, não o alvo dele; e uma que ainda não
+começou precisa do start, não do restart. As duas metades dessa frase são a
+guarda.
+
+`webrtc_connection_reset` carrega "esta página começa como reconstrução" desde o
+`resume_into/2`, e o `enter_connected` a aposenta — a partir daí esta é a página
+que fica, e o próximo restart é sobre ela.
+
+### O que ficou medido
+
+* Isolado: 3/3 verde. Arquivo inteiro: 5/5 verde. As cinco suítes de chamada
+  juntas (`chat-p2p`, `chat-p2p-negotiation`, `game-open-lobby`,
+  `chat-group-call`, `chat-call-fault-injection`): **44 passam, 0 falham**.
+* A progressão serviu de "reverter para ver ficar vermelho", ao contrário: cada
+  conserto moveu a falha um passo adiante, e o passo estava na sonda antes de
+  estar no código.
+
+### Armadilha nova, cara
+
+**O spec passava isolado e falhava no arquivo.** Rodar só `:355` deu verde três
+vezes seguidas enquanto o arquivo inteiro falhava — porque a corrida entre o
+mount da página e o import do hook preguiçoso depende do que o navegador já tem
+em cache. Um spec de recuperação só vale rodado no arquivo dele.
+
+**E a instrumentação move a corrida.** Ligar `LOG_LEVEL=debug` fez a falha
+sumir. O que resolveu foi grampear o navegador (que não muda o tempo do
+servidor) e subir o log do portão para `warning`, que o nível padrão já mostra.
 
 ---
 

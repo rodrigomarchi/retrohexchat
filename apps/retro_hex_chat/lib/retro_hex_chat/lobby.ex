@@ -168,6 +168,9 @@ defmodule RetroHexChat.Lobby do
   @spec session_info(String.t()) :: {:ok, map()} | {:error, :not_found}
   defdelegate session_info(token), to: SessionServer, as: :get_state
 
+  @spec signaling_released?(String.t()) :: boolean()
+  defdelegate signaling_released?(token), to: SessionServer
+
   @spec leave(String.t(), integer()) :: :ok
   defdelegate leave(token, user_id), to: SessionServer
 

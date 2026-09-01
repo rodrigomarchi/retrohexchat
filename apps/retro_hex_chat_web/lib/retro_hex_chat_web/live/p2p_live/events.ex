@@ -89,7 +89,11 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   def handle_event("lobby_webrtc_ready", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     p2p = socket.assigns.p2p_session
     _ = Lobby.mark_webrtc_ready(p2p.token, p2p.user_id)
-    {:halt, put_p2p(socket, %{p2p | hook_ready: true})}
+
+    {:halt,
+     socket
+     |> put_p2p(%{p2p | hook_ready: true})
+     |> resend_webrtc_start(p2p)}
   end
 
   def handle_event("lobby_connected", _params, %{assigns: %{p2p_session: %{}}} = socket) do
@@ -693,6 +697,16 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     socket = put_p2p(socket, p2p)
 
     cond do
+      # This page is the rebuild the restart is announcing, not a target of it:
+      # its connection was built moments ago by its own start, and tearing that
+      # down restarts the round that is already in flight — the peer then holds
+      # an offer whose answer belongs to a connection that no longer exists.
+      # A page that has not started yet is not that page: it still needs the
+      # start the branch below gives it.
+      truthy?(value(payload, :restart)) and p2p.webrtc_started and
+          p2p.webrtc_connection_reset ->
+        {:halt, socket}
+
       truthy?(value(payload, :restart)) ->
         {:halt, restart_webrtc_from_signaling(socket, p2p, value(payload, :reason))}
 
@@ -1066,6 +1080,12 @@ defmodule RetroHexChatWeb.P2PLive.Events do
       peer_nick: peer_nick_for(token, user_id),
       state: state,
       webrtc_started: false,
+      # Whether this page's start announces a rebuild. A page that opens into a
+      # session already negotiating is one — whatever releases its start, the
+      # peer has to be told the connection is new, or it reads this page's first
+      # offer as stale for the rest of the session. It is also what makes the
+      # resend to a hook that was still loading say the same thing twice.
+      webrtc_connection_reset: false,
       # The starting room, in three facts. `room_ready` is the devices chosen,
       # `hook_ready` is the WebRTC hook mounted — `[Ready]` needs both, and the
       # domain's gate is what turns the pair on the other side into
@@ -1248,9 +1268,17 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
   # Already connected (duplicate hook event / PubSub echo): keep the console in
   # place, but clear any transient recovery banner from a completed retry.
+  # Being connected retires the rebuild flag: from here on this page is the one
+  # that stays, and the next restart is about it.
   defp enter_connected(socket, %{state: :connected} = p2p) do
     emit_p2p_connected(p2p)
-    put_p2p(socket, %{p2p | webrtc_started: true, recovery: empty_p2p_recovery()})
+
+    put_p2p(socket, %{
+      p2p
+      | webrtc_started: true,
+        webrtc_connection_reset: false,
+        recovery: empty_p2p_recovery()
+    })
   end
 
   defp enter_connected(socket, p2p) do
@@ -1258,7 +1286,13 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
     socket
     |> maybe_persist_connected(p2p)
-    |> put_p2p(%{p2p | state: :connected, webrtc_started: true, recovery: empty_p2p_recovery()})
+    |> put_p2p(%{
+      p2p
+      | state: :connected,
+        webrtc_started: true,
+        webrtc_connection_reset: false,
+        recovery: empty_p2p_recovery()
+    })
     |> burst_windows()
   end
 
@@ -1405,19 +1439,40 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   defp start_webrtc(socket, %{webrtc_started: true} = _p2p, _next_state, _opts), do: socket
 
   defp start_webrtc(socket, p2p, next_state, opts) do
-    event =
-      case p2p.role do
-        :creator -> "lobby_start_offer"
-        :peer -> "lobby_start_answer"
-      end
+    connection_reset = Keyword.get(opts, :connection_reset, p2p.webrtc_connection_reset)
 
-    payload =
-      Map.put(webrtc_payload(p2p), :connection_reset, Keyword.get(opts, :connection_reset, false))
+    payload = Map.put(webrtc_payload(p2p), :connection_reset, connection_reset)
 
     socket
-    |> put_p2p(%{p2p | state: next_state, webrtc_started: true})
-    |> push_event(event, payload)
+    |> put_p2p(%{
+      p2p
+      | state: next_state,
+        webrtc_started: true,
+        webrtc_connection_reset: connection_reset
+    })
+    |> push_event(start_webrtc_event(p2p), payload)
   end
+
+  defp start_webrtc_event(%{role: :creator}), do: "lobby_start_offer"
+  defp start_webrtc_event(%{role: :peer}), do: "lobby_start_answer"
+
+  # The readiness protocol's second half (`AGENT-GUIDE` §15). The WebRTC hook is
+  # lazy, so a page that resumes into a running session pushes its start while
+  # the implementation is still being imported — at nobody. The hook says when
+  # it is listening, and the start is said again then; `handleStartOffer` and
+  # `handleStartAnswer` both return early once they hold a connection, so a page
+  # that did hear the first one does nothing with the second.
+  #
+  # Without this the loss is silent and permanent: the surface has recorded the
+  # start, so it never pushes it again, and the restart that follows arrives at
+  # a connection with no role and no ICE servers to rebuild from.
+  defp resend_webrtc_start(socket, %{webrtc_started: true} = p2p) do
+    payload = Map.put(webrtc_payload(p2p), :connection_reset, p2p.webrtc_connection_reset)
+
+    push_event(socket, start_webrtc_event(p2p), payload)
+  end
+
+  defp resend_webrtc_start(socket, _p2p), do: socket
 
   defp restart_webrtc_from_signaling(socket, p2p, reason) do
     reason = reason || "signaling_restart"

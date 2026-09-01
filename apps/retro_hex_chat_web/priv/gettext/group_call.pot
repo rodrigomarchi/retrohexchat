@@ -91,18 +91,18 @@ msgstr ""
 msgid "Connection error"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1511
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1530
 #, elixir-autogen, elixir-format
 msgid "Could not end group call."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1447
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1471
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1466
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1490
 #, elixir-autogen, elixir-format
 msgid "Could not remove participant."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1263
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1282
 #, elixir-autogen, elixir-format
 msgid "Could not update participant media."
 msgstr ""
@@ -137,7 +137,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:404
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1065
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1066
-#: lib/retro_hex_chat_web/live/app/call_live.ex:108
+#: lib/retro_hex_chat_web/live/app/call_live.ex:109
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:561
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:113
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:312
@@ -150,17 +150,17 @@ msgstr ""
 msgid "Group call"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:614
+#: lib/retro_hex_chat_web/live/call_live/events.ex:621
 #, elixir-autogen, elixir-format
 msgid "Group call connection failed."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:534
+#: lib/retro_hex_chat_web/live/call_live/events.ex:541
 #, elixir-autogen, elixir-format
 msgid "Group call ended."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:535
+#: lib/retro_hex_chat_web/live/call_live/events.ex:542
 #, elixir-autogen, elixir-format
 msgid "Group call ended: %{reason}"
 msgstr ""
@@ -170,18 +170,18 @@ msgstr ""
 msgid "Group call in %{channel} — click to focus"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:956
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1733
+#: lib/retro_hex_chat_web/live/call_live/events.ex:975
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1752
 #, elixir-autogen, elixir-format
 msgid "Group call media connection interrupted. Trying to recover."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:591
+#: lib/retro_hex_chat_web/live/call_live/events.ex:598
 #, elixir-autogen, elixir-format
 msgid "Group call media is degraded."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:284
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:292
 #, elixir-autogen, elixir-format
 msgid "Group calls are available in channels only."
 msgstr ""
@@ -263,13 +263,13 @@ msgstr ""
 msgid "Negotiating media"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:281
-#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:291
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:289
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:299
 #, elixir-autogen, elixir-format
 msgid "Open a channel before starting a group call."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1541
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1560
 #, elixir-autogen, elixir-format
 msgid "Participant is no longer in the group call."
 msgstr ""
@@ -314,20 +314,20 @@ msgstr ""
 msgid "You are already in a group call in %{channel}. Leave it and join the call in %{new_channel}?"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:355
-#: lib/retro_hex_chat_web/live/app/call_live.ex:361
-#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:297
+#: lib/retro_hex_chat_web/live/app/call_live.ex:356
+#: lib/retro_hex_chat_web/live/app/call_live.ex:362
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:305
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use group calls."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1569
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1588
 #, elixir-autogen, elixir-format
 msgid "You must be registered to moderate group calls."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:370
-#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:209
+#: lib/retro_hex_chat_web/live/app/call_live.ex:371
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:217
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to use group calls."
 msgstr ""
@@ -540,7 +540,7 @@ msgstr ""
 msgid "%{target} stopped sharing a screen."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1459
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1478
 #, elixir-autogen, elixir-format
 msgid "%{target} was removed from the conference and banned from %{channel}."
 msgstr ""
@@ -657,7 +657,7 @@ msgstr ""
 msgid "Camera disabled by moderator"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/group_call/media_preview.ex:61
+#: lib/retro_hex_chat_web/components/ui/group_call/media_preview.ex:70
 #, elixir-autogen, elixir-format
 msgid "Camera preview is off"
 msgstr ""
@@ -702,7 +702,7 @@ msgstr ""
 msgid "Channel conference"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/group_call/media_preview.ex:39
+#: lib/retro_hex_chat_web/components/ui/group_call/media_preview.ex:46
 #, elixir-autogen, elixir-format
 msgid "Checking devices"
 msgstr ""
@@ -781,32 +781,32 @@ msgstr ""
 msgid "Connection needs attention"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1326
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1345
 #, elixir-autogen, elixir-format
 msgid "Could not allow participant to speak."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1404
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1423
 #, elixir-autogen, elixir-format
 msgid "Could not update conference lock."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1281
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1300
 #, elixir-autogen, elixir-format
 msgid "Could not update participant camera."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1301
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1320
 #, elixir-autogen, elixir-format
 msgid "Could not update participant screen sharing."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1358
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1377
 #, elixir-autogen, elixir-format
 msgid "Could not update participants."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1068
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1087
 #, elixir-autogen, elixir-format
 msgid "Could not update raised hand."
 msgstr ""
@@ -920,12 +920,12 @@ msgstr ""
 msgid "Grid layout"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:978
+#: lib/retro_hex_chat_web/live/call_live/events.ex:997
 #, elixir-autogen, elixir-format
 msgid "Group call media connection failed. Retry the media connection."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1730
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1749
 #, elixir-autogen, elixir-format
 msgid "Group call media is connecting."
 msgstr ""
@@ -1058,7 +1058,7 @@ msgstr ""
 msgid "MOS %{score}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1742
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1761
 #, elixir-autogen, elixir-format
 msgid "Media recovery failed. Retry the media connection."
 msgstr ""
@@ -1135,7 +1135,7 @@ msgstr ""
 msgid "New channel conference opens"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1382
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1401
 #, elixir-autogen, elixir-format
 msgid "No lower-ranked conference participants were affected."
 msgstr ""
@@ -1232,7 +1232,7 @@ msgstr ""
 msgid "Poor"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/group_call/media_preview.ex:31
+#: lib/retro_hex_chat_web/components/ui/group_call/media_preview.ex:36
 #, elixir-autogen, elixir-format
 msgid "Preview"
 msgstr ""
@@ -1324,14 +1324,14 @@ msgstr ""
 msgid "Remove from conference and ban from channel"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1476
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1495
 #, elixir-autogen, elixir-format
 msgid "Removed from channel conference"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:154
-#: lib/retro_hex_chat_web/live/call_live/events.ex:162
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1739
+#: lib/retro_hex_chat_web/live/call_live/events.ex:161
+#: lib/retro_hex_chat_web/live/call_live/events.ex:169
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1758
 #, elixir-autogen, elixir-format
 msgid "Requesting a fresh media offer."
 msgstr ""
@@ -1347,7 +1347,7 @@ msgid "Resolution"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1017
-#: lib/retro_hex_chat_web/components/ui/group_call/permission_notice.ex:29
+#: lib/retro_hex_chat_web/components/ui/group_call/permission_notice.ex:38
 #, elixir-autogen, elixir-format
 msgid "Retry"
 msgstr ""
@@ -1600,7 +1600,7 @@ msgstr ""
 msgid "Your camera is not being sent."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1080
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1099
 #, elixir-autogen, elixir-format
 msgid "Your camera was disabled by a moderator."
 msgstr ""
@@ -1615,7 +1615,7 @@ msgstr ""
 msgid "Your microphone and camera are off."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1077
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1096
 #, elixir-autogen, elixir-format
 msgid "Your microphone was muted by a moderator."
 msgstr ""
@@ -1874,7 +1874,7 @@ msgstr ""
 msgid "Rejoining"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1736
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1755
 #, elixir-autogen, elixir-format
 msgid "Rejoining the media session."
 msgstr ""
@@ -1899,13 +1899,13 @@ msgstr ""
 msgid "Nobody yet — you would be the first."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:344
+#: lib/retro_hex_chat_web/live/app/call_live.ex:345
 #, elixir-autogen, elixir-format
 msgid "This conference has ended."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:321
-#: lib/retro_hex_chat_web/live/app/call_live.ex:338
+#: lib/retro_hex_chat_web/live/app/call_live.ex:322
+#: lib/retro_hex_chat_web/live/app/call_live.ex:339
 #, elixir-autogen, elixir-format
 msgid "This conference is no longer available."
 msgstr ""

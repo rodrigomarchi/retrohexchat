@@ -58,7 +58,8 @@ defmodule RetroHexChatWeb.App.CallLive do
         group_call: nil,
         group_call_prejoin: nil,
         group_call_pending: nil,
-        group_call_prejoin_preferences: nil,
+        group_call_prejoin_preferences:
+          Events.restored_prejoin_preferences(session["prejoin_preferences"]),
         prejoin_roster: [],
         host_snapshot: nil,
         notice: nil,
