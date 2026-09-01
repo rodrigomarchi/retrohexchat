@@ -128,15 +128,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
       refute html =~ ~s(data-testid="status-bar-group-call-stop")
     end
 
-    test "a call on this screen keeps the zone it always had" do
-      html =
-        status(%{
-          group_call: %{channel_name: "#retro", status: :connected, participants: ["ana"]},
-          group_call_elsewhere: %{channel_name: "#retro", path: "/call/tok"}
-        })
+    # There is no second shape left. A conference is never on this screen, so a
+    # zone that offered to leave one would be offering to act on a session this
+    # window is not holding — which is why the Leave is gone entirely.
+    test "there is no shape of this zone that controls a call" do
+      html = status(%{group_call_elsewhere: %{channel_name: "#retro", path: "/call/tok"}})
 
-      assert html =~ ~s(data-testid="status-bar-group-call-stop")
-      refute html =~ ~s(phx-hook="SurfaceTabLinkHook")
+      refute html =~ ~s(data-testid="status-bar-group-call-stop")
+      refute html =~ ~s(phx-click="group_call_statusbar_stop")
+      refute html =~ ~s(phx-click="group_call_statusbar_click")
     end
 
     test "no call anywhere draws no zone at all" do

@@ -39,14 +39,10 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   attr :group_call, :map,
     default: nil,
     doc: """
-    Group-call display. `%{label, title, stop_title}` for a call on this screen;
-    `%{label, title, path}` for one this person has open at its own address, in
-    a tab that is not this one — that shape is a link to that tab and carries no
-    Leave, because leaving a call is done from the screen that is in it.
+    A live conference this reader is in, as `%{label, title, path}`. A call is
+    never on the screen showing this bar, so the zone is a link to the tab
+    holding it and carries no Leave — leaving is done from the screen in it.
     """
-
-  attr :on_group_call_click, :any, default: nil
-  attr :on_group_call_stop, :any, default: nil
 
   attr :p2p, :map,
     default: nil,
@@ -88,8 +84,6 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         muted={@muted}
         timezone={@timezone}
         group_call={@group_call}
-        on_group_call_click={@on_group_call_click}
-        on_group_call_stop={@on_group_call_stop}
         p2p={@p2p}
         on_p2p_click={@on_p2p_click}
         on_p2p_stop={@on_p2p_stop}
@@ -118,10 +112,11 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
 
   attr :group_call, :map,
     default: nil,
-    doc: "Active group-call display (%{label, title, stop_title})"
-
-  attr :on_group_call_click, :any, default: nil
-  attr :on_group_call_stop, :any, default: nil
+    doc: """
+    A live conference this reader is in, as `%{label, title, path}`. A call is
+    never on this screen, so the zone is always a way over to the tab holding
+    it — there is no control here to stop one with.
+    """
 
   attr :p2p, :map,
     default: nil,
@@ -150,9 +145,9 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   @spec status_bar_zones(map()) :: Phoenix.LiveView.Rendered.t()
   def status_bar_zones(assigns) do
     ~H"""
-    <%!-- Zone group call: active channel conference — click focuses the
-            conference windows, the trailing button leaves the session.
-            Never hidden on mobile: an active session must stay visible. --%>
+    <%!-- Zone group call: a conference this reader is in, always on a screen
+            that is not this one. Never hidden on mobile: an active session must
+            stay visible. --%>
     <.window_status_bar_field
       :if={@group_call}
       class="flex items-center gap-retro-2 min-w-0 px-[2px]"
@@ -162,7 +157,6 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
             anchor with the real address: the hook asks the tab to come
             forward, and the click after a silent refusal follows the link. --%>
       <.link
-        :if={@group_call[:path]}
         href={@group_call.path}
         target="_blank"
         rel="noopener"
@@ -177,30 +171,6 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         <Icons.icon_protocol_conference_compact class="w-3 h-3 shrink-0" />
         <span class="truncate text-xs">{@group_call.label}</span>
       </.link>
-
-      <button
-        :if={!@group_call[:path]}
-        type="button"
-        class="inline-flex items-center gap-retro-2 min-w-0 h-full min-h-0 bg-transparent"
-        phx-click={@on_group_call_click}
-        title={@group_call.title}
-        aria-label={@group_call.title}
-        data-testid="status-bar-group-call"
-      >
-        <Icons.icon_protocol_conference_compact class="w-3 h-3 shrink-0" />
-        <span class="truncate text-xs">{@group_call.label}</span>
-      </button>
-      <button
-        :if={!@group_call[:path]}
-        type="button"
-        class="inline-flex items-center justify-center h-full min-h-0 bg-transparent shrink-0"
-        phx-click={@on_group_call_stop}
-        title={@group_call.stop_title}
-        aria-label={@group_call.stop_title}
-        data-testid="status-bar-group-call-stop"
-      >
-        <Icons.icon_phone_end class="w-3 h-3" />
-      </button>
     </.window_status_bar_field>
 
     <.window_status_bar_field :if={@p2p} class="flex items-center gap-retro-2 min-w-0 px-[2px]">

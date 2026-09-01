@@ -1073,7 +1073,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Join a channel-scoped audio/video conference. Call in the channel toolbar opens the antechamber: a camera preview, the microphone/camera/speaker pickers, and who is already in the room. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for the next time you open it. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
+            "Join a channel-scoped audio/video conference. Group Call in the channel toolbar opens the room and posts a card in the channel carrying its address; everyone goes in through that card, including whoever opened it. If a conference is already running, Group Call is a link into it rather than a second one — one room, one card. Following the address opens the antechamber in a browser tab of its own: a camera preview, the microphone/camera/speaker pickers, and who is already inside. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for next time. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
           ),
         see_also: [
           "feature-conference-tab",
@@ -1100,7 +1100,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "A conference can run in a browser tab of its own. Open the summary next to Call in the channel toolbar and choose Open in a tab; the call gets the whole window and stops competing with the chat for the browser. While it is over there the chat says so along the bottom of its window — click that to go to the tab, which is why there is no Leave beside it: you leave a call from the screen that is in it. Closing that tab is not leaving either: the room keeps you for the reconnection window, and reopening the address puts you straight back in. Only Leave, which asks first, actually ends your part in the call."
+            "A conference always runs in a browser tab of its own, so the call gets the whole window and the chat stays the chat. While it is over there the chat says so along the bottom of its window — click that to go to the tab, which is why there is no Leave beside it: you leave a call from the screen that is in it. Ctrl+Shift with the arrow keys works inside that tab: Up for the microphone, Left for the camera, Right for the layout, Down to move the focus; Ctrl+Shift+Q leaves. Closing the tab is not leaving either: the room keeps you for the reconnection window, and reopening the address puts you straight back in. Only Leave, which asks first, actually ends your part in the call — and being removed from the channel ends it for you."
           ),
         see_also: ["feature-channel-conference", "feature-conference-share"]
       },
@@ -1123,7 +1123,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Share, above the conference, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address, and that card is the room as it is now: it counts who is inside and changes on its own as people come and go, with Join to go in and Copy link to pass it on. When the room finishes — or you revoke the link — the card stays and says so, offering the next thing you can still do instead of a button that no longer works. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
+            "Opening a conference already posts its card in the channel, and Share, above the conference, hands you that same address to paste anywhere else — pressing it again gives you the link you already have rather than a second one. Pasted into a conversation it draws a card instead of a bare address, and that card is the room as it is now: it counts who is inside and changes on its own as people come and go, with Join to go in and Copy link to pass it on. When the room finishes — or you revoke the link — the card stays and says so, offering the next thing you can still do instead of a button that no longer works. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
           ),
         see_also: [
           "feature-channel-conference",

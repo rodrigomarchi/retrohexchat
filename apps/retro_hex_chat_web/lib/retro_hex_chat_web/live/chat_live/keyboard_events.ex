@@ -22,7 +22,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   }
 
   alias RetroHexChatWeb.ChatLive.AddressBookEvents
-  alias RetroHexChatWeb.ChatLive.GroupCallEvents
   alias RetroHexChatWeb.ChatLive.NavigationEvents
   alias RetroHexChatWeb.ChatLive.PerformEvents
   alias RetroHexChatWeb.ChatLive.SearchEvents
@@ -87,17 +86,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
 
   defp dispatch_action(:toggle_cheatsheet, socket) do
     Windows.open(socket, "cheatsheet")
-  end
-
-  defp dispatch_action(action, socket)
-       when action in [
-              :group_call_toggle_audio,
-              :group_call_toggle_video,
-              :group_call_leave,
-              :group_call_layout_next,
-              :group_call_focus_next
-            ] do
-    GroupCallEvents.forward(socket, Atom.to_string(action))
   end
 
   defp dispatch_action(:open_help, socket) do

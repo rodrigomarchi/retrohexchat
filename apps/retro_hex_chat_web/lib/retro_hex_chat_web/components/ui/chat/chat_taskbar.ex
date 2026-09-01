@@ -39,7 +39,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
     doc: "Enables Start ▸ Games ▸ Arcade (needs a registered + identified nick)"
 
   attr :p2p_session, :map, default: nil
-  attr :group_call, :map, default: nil
   attr :arcade_session, :map, default: nil
   attr :cc_window_channel, :string, default: nil
 
@@ -258,7 +257,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
       admin?: assigns.is_admin,
       open_windows: assigns.open_windows || MapSet.new(),
       p2p_session: assigns.p2p_session,
-      group_call: assigns.group_call,
       arcade_session: assigns.arcade_session,
       cc_window_channel: assigns.cc_window_channel
     }
@@ -275,17 +273,15 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
     end
   end
 
-  # Three buttons name what they are showing rather than what they are: the
-  # chat button mirrors the active conversation, and a call names its peer or
-  # channel. Everything else is its registered title.
+  # Two buttons name what they are showing rather than what they are: the chat
+  # button mirrors the active conversation, and a session names its peer.
+  # Everything else is its registered title.
   defp label(%{id: "chat"}, assigns), do: assigns.chat_label
   defp label(%{id: "p2p-call"}, assigns), do: p2p_call_label(assigns.p2p_session)
-  defp label(%{id: "group-call"}, assigns), do: group_call_label(assigns.group_call)
   defp label(window, _assigns), do: window.taskbar_label
 
-  # Two buttons are addressed by the call suites and keep their own hooks.
+  # One button is addressed by the call suite and keeps its own hook.
   defp testid("p2p-call"), do: "p2p-call-taskbar"
-  defp testid("group-call"), do: "group-call-taskbar"
   defp testid(_id), do: nil
 
   defp p2p_call_label(%{peer_nick: peer_nick}) when peer_nick not in [nil, ""] do
@@ -293,10 +289,4 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   end
 
   defp p2p_call_label(_p2p_session), do: dgettext("chat", "P2P Session")
-
-  defp group_call_label(%{channel_name: channel_name}) when channel_name not in [nil, ""] do
-    channel_name
-  end
-
-  defp group_call_label(_group_call), do: dgettext("group_call", "Group Call")
 end

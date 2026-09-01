@@ -591,8 +591,8 @@ in `docs/refactor/`.
 
 ---
 
-## 19. Surfaces: one module, two hosts
+## 19. Surfaces: an address of their own
 
-**→ [`guide/surfaces.md`](guide/surfaces.md)** — Read when adding a screen that can live in a browser tab of its own, changing how one is reached, or debugging why a surface behaves differently inside the chat than at its own address.
+**→ [`guide/surfaces.md`](guide/surfaces.md)** — Read when adding a screen that can live in a browser tab of its own, changing how one is reached, or debugging why a surface behaves differently inside the chat than at its own address. The conference is the first with **no** mount inside the chat: its only door is the card the chat writes into the channel when the room is opened.
 
 

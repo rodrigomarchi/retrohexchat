@@ -19,7 +19,7 @@ with two mount points:
 
 | Surface | Own address | Module |
 |---|---|---|
-| conference | `/call/:token` | `App.CallLive` |
+| conference | `/call/:token` | `App.CallLive` — **one mount only** |
 | space | `/space/:slug` | `App.SpaceLive` |
 | P2P session | `/p2p/:token` | `App.P2PLive` |
 | match | `/play/:game/:token` | `App.P2PLive`, opened at its game |
@@ -27,13 +27,38 @@ with two mount points:
 | arcade | `/play/arcade/:game` | a redirect, not a LiveView |
 
 Root mount goes through the router; the nested mount is `live_render/3` in a
-`desktop_window` slot of the chat. A nested `live_render` runs in its own
+`desktop_window` slot of the chat. **The conference has no nested mount any
+more** — it is reached only at its address, through the card the chat writes
+into the channel when the room is opened. Everything below still describes the
+other three. A nested `live_render` runs in its own
 process on the same socket, so the embedded mode gets no event loop and no
 bundle of its own — which is exactly the trade the embedded mode is accepting.
 
 **A nested `live_render` never passes through the `live_session`'s `on_mount`.**
 The chat's window is therefore not a surface: it is part of the chat and dies
 with it. Only the route is.
+
+### One door, and the chat writes it
+
+Opening a conference is two acts that must not come apart: the room, and the
+room's address written into the channel as a **persisted system message**
+(`Chat.Service.send_system_message/2`, never the web helper
+`ChatLive.Helpers.Messages.system_event/2` — that one is per-socket, is never
+broadcast and dies on reload, so a card posted that way would be a door only
+its author could see, and only until they refreshed). The card that message
+draws is the way in for everybody, including whoever opened it: nothing here
+opens a tab from a click that creates something, so the pop-up blocker never
+enters the story.
+
+Two things this needs and would fail silently without:
+
+- `MessageViewport`'s `@card_types` allowlist must contain `:system`, or the
+  address renders as plain text and no card appears — with no error anywhere.
+- The chat cannot reach a call it does not host, so a membership the call stood
+  on going away (`/part`, a kick, a ban) is published on
+  `Topics.channel_calls/1` as `{:channel_membership_lost, …}` and the surface
+  ends itself. Before that, being banned from a channel left the person sitting
+  in a conference they were no longer in.
 
 ### The ruler that decides what stays in the chat
 
@@ -224,6 +249,17 @@ is not, so changing one means arguing with the reason rather than the line.
 - **The link is born from a button, never from opening the feature.** Opening
   creates the room; **Share** creates the address. If every game window minted a
   `share_link`, the table would be landfill in a week.
+
+  **Reversed for the conference, 2026-09-01, and the premise is what changed.**
+  A conference has no window in the chat any more, so its address is not an
+  extra — it is the only door. Opening one now mints the link *and* writes it
+  into the channel as a system message, because a room created without its card
+  would be a conference nobody has a way into. The landfill argument still
+  holds and is still the reason this is safe: the ratio is **one link per room**,
+  not one per click. `ShareLinks.create/1` is idempotent per
+  `{kind, target, creator}`, rooms are already rows, and a second click on a
+  channel that has a live room mints nothing and posts nothing. The other three
+  kinds keep the original rule until their own wave.
 
 - **After it starts, the link still works.** A link spends most of its life
   after minute zero. Call and space let a late click in; a full match says

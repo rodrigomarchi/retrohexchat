@@ -307,15 +307,6 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
         taskbar_when: {:present, :p2p_session},
         geometry: geometry(448, 72, 640, 430, 500, 320)
       ),
-      window(
-        "group-call",
-        dgettext("group_call", "Group Call"),
-        :icon_protocol_conference_compact,
-        managed?: false,
-        render_when: {:present, :group_call},
-        taskbar_when: {:present, :group_call},
-        geometry: geometry(448, 72, 640, 430, 500, 320)
-      ),
       window("retro-games", dgettext("chat", "Retro Games"), :icon_game_pong,
         managed?: false,
         render_when: :always,

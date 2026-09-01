@@ -14,7 +14,10 @@ import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { uniqueChannel } from "../helpers/chatUsers";
 import {
   closeGroupCallUsers,
+  conferenceAddress,
+  GroupCallUser,
   newGroupCallUser,
+  openConference,
 } from "../helpers/groupCallUsers";
 import { shot } from "../helpers/screenshots";
 
@@ -160,42 +163,23 @@ test("opening the conference you are in at its own address does not add a second
       await expect(user.page.getByTestId("group-call-open")).toBeEnabled();
     }
 
-    await joinConference(alice.page);
-    await joinConference(bob.page);
-    await expect(bob.page.getByTestId("group-call-window")).toBeVisible();
+    const aliceCall = await joinConference(alice);
+    const bobCall = await joinConference(bob);
 
-    await openPeople(bob.page);
-    await expect(participantRows(bob.page, alice.nick)).toHaveCount(1);
-    await expect(participantRows(bob.page)).toHaveCount(2);
-
-    // The badge lives on the channel toolbar, under a maximized conference
-    // window. Getting the window out of the way first is not the test being
-    // careful — the badge is only reachable in that state, which is also the
-    // only state in which somebody would be looking for it.
-    await bob.page
-      .getByTestId("group-call-window")
-      .locator('[data-window-control="minimize"]')
-      .click();
-    await expect(bob.page.getByTestId("group-call-window")).toBeHidden();
+    await openPeople(bobCall);
+    await expect(participantRows(bobCall, alice.nick)).toHaveCount(1);
+    await expect(participantRows(bobCall)).toHaveCount(2);
 
     // The room's own address, taken from the control that offers it rather
-    // than assembled here: the badge is the only place that knows the current
+    // than assembled here: the chat is the only place that knows the current
     // room token, and a second spelling of that would drift.
-    await bob.page.getByTestId("group-call-channel-popover-toggle").click();
-    const tabLink = bob.page.getByTestId("group-call-channel-popover-tab");
-    await expect(tabLink).toBeVisible();
-    const callPath = await tabLink.getAttribute("href");
+    const callPath = await conferenceAddress(bob);
     expect(callPath).toMatch(/^\/call\//);
 
-    // Being in the room is not having its address open: nobody has a `/call`
-    // tab yet, so the link is still the plain "open" shape. The shape tracks
-    // the open set, not the seat.
-    await expect(tabLink).toHaveAttribute("data-surface-open", "false");
-
-    // Follow it anyway — middle-click, a bookmark, or the fallback after no
-    // tab answers all land here, and that path must not cost a seat.
+    // Follow it a second time — middle-click, a bookmark, or the fallback
+    // after no tab answers all land here, and that path must not cost a seat.
     const aliceSecondTab = await alice.ctx.newPage();
-    await aliceSecondTab.goto(callPath as string);
+    await aliceSecondTab.goto(callPath);
     await expect(aliceSecondTab.getByTestId("group-call-window")).toBeVisible({
       timeout: 20_000,
     });
@@ -213,26 +197,36 @@ test("opening the conference you are in at its own address does not add a second
     // Bob is the witness: one Alice, two people in the room. Polled, because
     // the seat moving is a round trip and a duplicate row would appear before
     // it settled rather than after.
-    await bob.page.getByTestId("status-bar-group-call").click();
-    await expect(bob.page.getByTestId("group-call-window")).toBeVisible();
-    await openPeople(bob.page);
     await expect
-      .poll(() => participantRows(bob.page, alice.nick).count(), {
+      .poll(() => participantRows(bobCall, alice.nick).count(), {
         timeout: 15_000,
       })
       .toBe(1);
-    await expect(participantRows(bob.page)).toHaveCount(2);
-    await shot(bob.page, "surface-second-tab-keeps-one-seat");
+    await expect(participantRows(bobCall)).toHaveCount(2);
+    await shot(bobCall, "surface-second-tab-keeps-one-seat");
+
+    // And the chat that is not holding the call says where it is, with no way
+    // to leave from there.
+    await expect(bob.page.getByTestId("status-bar-group-call")).toHaveAttribute(
+      "href",
+      callPath,
+    );
+    await expect(
+      bob.page.getByTestId("status-bar-group-call-stop"),
+    ).toHaveCount(0);
   } finally {
     await closeGroupCallUsers([alice, bob]);
   }
 });
 
-async function joinConference(page: Page) {
-  await page.getByTestId("group-call-open").click();
-  await expect(page.getByTestId("group-call-prejoin")).toBeVisible();
-  await page.getByTestId("group-call-prejoin-join").click();
-  await expect(page.getByTestId("group-call-window")).toBeVisible();
+// Opening the conference and walking through its antechamber, which is a page
+// of its own now — the returned page is where the call actually is.
+async function joinConference(user: GroupCallUser): Promise<Page> {
+  const call = await openConference(user);
+  await expect(call.getByTestId("group-call-prejoin")).toBeVisible();
+  await call.getByTestId("group-call-prejoin-join").click();
+  await expect(call.getByTestId("group-call-panel")).toBeVisible();
+  return call;
 }
 
 async function openPeople(page: Page) {
@@ -246,10 +240,9 @@ function participantRows(page: Page, nickname?: string) {
 }
 
 /**
- * The status zone's third shape (wave 6 §1.2). Everything the chat draws about
- * a call comes from the embedded surface's assign, so with the call in a tab of
- * its own the chat used to say nothing at all — the one case where "there is a
- * call and you are in it" was invisible on the screen you were looking at.
+ * The status zone, which now has exactly one shape. A conference is never on
+ * the screen showing this bar, so the zone is always a way over to the tab
+ * holding it — and never a control over a call this window is not holding.
  */
 test("the chat's status bar says the call is in another tab (K8)", async ({
   browser,
@@ -267,22 +260,19 @@ test("the chat's status bar says the call is in another tab (K8)", async ({
       await expect(user.page.getByTestId("group-call-open")).toBeEnabled();
     }
 
-    // Bob opens the call; Alice never opens the window, so her chat has no
-    // conference assign to draw from — only the read-model and the open set.
-    await joinConference(bob.page);
-    await expect(bob.page.getByTestId("group-call-window")).toBeVisible();
+    // Bob opens the call. Alice has no tab of it, so her chat draws nothing:
+    // the zone is about what *she* has open, not about what is running.
+    await joinConference(bob);
 
     await expect(alice.page.getByTestId("status-bar-group-call")).toHaveCount(
       0,
     );
 
-    await alice.page.getByTestId("group-call-channel-popover-toggle").click();
-    const tabLink = alice.page.getByTestId("group-call-channel-popover-tab");
-    const callPath = await tabLink.getAttribute("href");
+    const callPath = await conferenceAddress(alice);
     expect(callPath).toMatch(/^\/call\//);
 
     const callTab = await alice.ctx.newPage();
-    await callTab.goto(callPath as string);
+    await callTab.goto(callPath);
     await expect(callTab.getByTestId("group-call-prejoin")).toBeVisible({
       timeout: 20_000,
     });
@@ -293,7 +283,7 @@ test("the chat's status bar says the call is in another tab (K8)", async ({
     await expect(zone).toBeVisible({ timeout: 15_000 });
     await expect(zone).toContainText(channel);
     await expect(zone).toContainText("another tab");
-    await expect(zone).toHaveAttribute("data-surface-path", callPath as string);
+    await expect(zone).toHaveAttribute("data-surface-path", callPath);
 
     // A way over, not a control: there is no Leave for a call this window is
     // not holding.

@@ -168,7 +168,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | K6 | Copy on a surface's share bar puts the address on the clipboard with no chat tab involved | `tests/surface-cross-tab.spec.ts` | done |
 | K7 | Opening the conference you are already in at its own address takes the seat rather than adding one: the other participant still sees a single row for you, and the room still counts two | `tests/surface-cross-tab.spec.ts` | done |
 | K8 | With the conference open at its own address and not in the chat's window, the chat's status bar says the call is in another tab and is a way over to it | `tests/surface-cross-tab.spec.ts` | done |
-| K9 | A conference link pasted into a channel draws a live card that counts up on its own when somebody joins the call, with no reload | `tests/share-link-join.spec.ts` | done |
+| K9 | Opening a conference writes its card into the channel by itself, and that card counts up on its own when somebody joins the call, with no reload | `tests/share-link-join.spec.ts` | done |
 | L | Logged-in user disconnects via UI and lands on `/connect` | `tests/logout.spec.ts` | done |
 | M | Admin bans user with `/admin user ban` and victim is force-disconnected | `tests/admin-ban.spec.ts` | done |
 | N | Admin closes registration; new user sees registration closed; spec restores open | `tests/admin-registration-closed.spec.ts` | done |

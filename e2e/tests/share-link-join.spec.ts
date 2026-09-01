@@ -1,7 +1,7 @@
 /**
  * @section Auth And Lifecycle
  * @flow K4 [done] A shared game link minted in one browser is followed from another with no session: the public card asks for a connect, and the connect lands back on the link
- * @flow K9 [done] A conference link pasted into a channel draws a live card that counts up on its own when somebody joins the call, with no reload
+ * @flow K9 [done] Opening a conference writes its card into the channel by itself, and that card counts up on its own when somebody joins the call, with no reload
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -13,6 +13,7 @@ import { uniqueChannel } from "../helpers/chatUsers";
 import {
   closeGroupCallUsers,
   newGroupCallUser,
+  openConference,
 } from "../helpers/groupCallUsers";
 
 const PASSWORD = "testpass123";
@@ -66,11 +67,14 @@ test("a shared link brings a stranger all the way in (K4)", async ({
 
 /**
  * The promise the card exists for: it is the room *now*, not a screenshot of
- * the moment it was pasted. Only a browser can tell the difference — the count
+ * the moment it was written. Only a browser can tell the difference — the count
  * has to change with nobody touching the page, which is the one thing a
  * component test cannot say.
+ *
+ * And the card is not pasted here by anyone. Opening the conference is what
+ * writes it, because that card is the only door into the room.
  */
-test("the card in the conversation counts up on its own (K9)", async ({
+test("opening a conference writes the card, and the card counts up on its own (K9)", async ({
   browser,
 }) => {
   test.setTimeout(90_000);
@@ -86,39 +90,31 @@ test("the card in the conversation counts up on its own (K9)", async ({
       await expect(user.page.getByTestId("group-call-open")).toBeEnabled();
     }
 
-    // Ana opens the call and mints its link from the conference's own share bar.
-    await joinConference(ana.page);
-    await ana.page.getByTestId("share-create").click();
-    const shareUrl = await ana.page.getByTestId("share-url").inputValue();
-    expect(shareUrl).toContain("/join/");
+    // Nobody pastes anything: Ana opens the room and the card is written for
+    // her, into the channel, where Bob is already reading.
+    const anaCall = await openConference(ana);
 
-    // Out of the way, so the channel and its composer are reachable again.
-    await ana.page
-      .getByTestId("group-call-window")
-      .locator('[data-window-control="minimize"]')
-      .click();
-    await expect(ana.page.getByTestId("group-call-window")).toBeHidden();
-
-    await ana.chat.sendMessage(shareUrl);
-
-    // Bob reads the message and gets the room, not the address.
     const card = bob.page.getByTestId("share-message-card").last();
     await expect(card).toBeVisible({ timeout: 15_000 });
     await expect(card).toHaveAttribute("data-share-kind", "call");
     await expect(card).toHaveAttribute("data-share-state", "live");
-    await expect(card).toHaveAttribute("data-share-count", "1");
 
-    // Nobody touches Bob's page: the count moves because the room did.
-    await joinConference(bob.page);
+    // Ana is in the antechamber, not in the room, so the count is nobody yet.
+    await expect(card).toHaveAttribute("data-share-count", "0");
+
+    await joinFromAntechamber(anaCall);
+    await expect(card).toHaveAttribute("data-share-count", "1", {
+      timeout: 20_000,
+    });
+
+    // Nobody touches Bob's chat: the count moves because the room did.
+    const bobCall = await openConference(bob);
+    await joinFromAntechamber(bobCall);
     await expect(card).toHaveAttribute("data-share-count", "2", {
       timeout: 20_000,
     });
 
     // And the user list says who is in there, from the same summary.
-    await bob.page
-      .getByTestId("group-call-window")
-      .locator('[data-window-control="minimize"]')
-      .click();
     await expect(
       bob.page.getByTestId(`nicklist-in-call-${ana.nick}`),
     ).toBeVisible({ timeout: 15_000 });
@@ -127,9 +123,8 @@ test("the card in the conversation counts up on its own (K9)", async ({
   }
 });
 
-async function joinConference(page: Page) {
-  await page.getByTestId("group-call-open").click();
-  await expect(page.getByTestId("group-call-prejoin")).toBeVisible();
-  await page.getByTestId("group-call-prejoin-join").click();
-  await expect(page.getByTestId("group-call-window")).toBeVisible();
+async function joinFromAntechamber(call: Page) {
+  await expect(call.getByTestId("group-call-prejoin")).toBeVisible();
+  await call.getByTestId("group-call-prejoin-join").click();
+  await expect(call.getByTestId("group-call-panel")).toBeVisible();
 }

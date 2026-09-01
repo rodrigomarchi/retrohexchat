@@ -754,7 +754,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
     actor = %{user_id: user_id, nickname: socket.assigns.nickname}
     preferences = normalize_prejoin_preferences(preferences)
 
-    with {:ok, %{room: _room, token: token}} <- get_or_create_room(channel_name, actor),
+    with {:ok, %{token: token}} <- GroupCall.get_or_create_channel_call(channel_name, actor),
          {:ok, _pid} <- GroupCall.ensure_room_server(token),
          {:ok, summary} <- GroupCall.get_summary(token) do
       join_token = JoinToken.sign(token, channel_name, user_id, actor.nickname)
@@ -912,13 +912,6 @@ defmodule RetroHexChatWeb.CallLive.Events do
     socket
     |> assign(group_call: nil, group_call_pending: nil, group_call_prejoin: nil)
     |> Host.close()
-  end
-
-  defp get_or_create_room(channel_name, actor) do
-    case GroupCall.active_room_for_channel(channel_name) do
-      nil -> GroupCall.create_channel_call(channel_name, actor)
-      room -> {:ok, %{room: room, token: room.token}}
-    end
   end
 
   defp new_call(summary, token, channel_name, user_id, nickname, join_token, preferences) do

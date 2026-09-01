@@ -70,15 +70,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
   end
 
   attr :p2p_session, :map, default: nil, doc: "The host's @p2p_session assign"
-  attr :group_call, :map, default: nil, doc: "The host's @group_call assign"
 
   attr :group_call_elsewhere, :map,
     default: nil,
     doc: """
     `%{channel_name, path}` when the reader has a live call open at its own
-    address instead of here — from `GroupCallReadModel.elsewhere/2`. Only read
-    when there is no call on this screen: a conference in the window beside the
-    status bar is not somewhere else.
+    address — from `GroupCallReadModel.elsewhere/3`. It is the only shape this
+    zone has: a conference is never on this screen.
     """
 
   @doc """
@@ -93,17 +91,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
   def chat_shell_status(assigns) do
     assigns =
       assign(assigns,
-        group_call_display:
-          group_call_display(assigns.group_call) ||
-            group_call_elsewhere_display(assigns.group_call_elsewhere),
+        group_call_display: group_call_elsewhere_display(assigns.group_call_elsewhere),
         p2p: p2p_display(assigns.p2p_session)
       )
 
     ~H"""
     <.status_bar_zones
       group_call={@group_call_display}
-      on_group_call_click="group_call_statusbar_click"
-      on_group_call_stop="group_call_statusbar_stop"
       p2p={@p2p}
       on_p2p_click="p2p_statusbar_click"
       on_p2p_stop="p2p_statusbar_stop"
@@ -114,9 +108,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
     """
   end
 
-  # The third shape of the zone: the call is running and this reader is in it,
-  # but the screen showing it is a tab that is not this one. There is nothing to
-  # focus here and nothing to leave from here — only a way over to it.
+  # The only shape the zone has: the call is running and this reader is in it,
+  # on a screen that is not this one. There is nothing to focus here and nothing
+  # to leave from here — only a way over to it.
   @spec group_call_elsewhere_display(map() | nil) :: map() | nil
   defp group_call_elsewhere_display(%{channel_name: channel_name, path: path})
        when is_binary(channel_name) and is_binary(path) do
@@ -133,53 +127,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
   end
 
   defp group_call_elsewhere_display(_elsewhere), do: nil
-
-  @spec group_call_display(map() | nil) :: map() | nil
-  defp group_call_display(nil), do: nil
-
-  defp group_call_display(%{
-         channel_name: channel_name,
-         status: status,
-         participants: participants
-       }) do
-    channel = channel_name || dgettext("group_call", "Group Call")
-    count = length(participants || [])
-
-    %{
-      label: group_call_label(status, channel, count),
-      title:
-        dgettext("group_call", "Group call in %{channel} — click to focus", channel: channel),
-      stop_title: dgettext("group_call", "Leave the group call")
-    }
-  end
-
-  defp group_call_label(:connected, channel, count) when count > 0 do
-    dgettext("group_call", "Call: %{channel} (%{count})", channel: channel, count: count)
-  end
-
-  defp group_call_label(:joining, channel, _count) do
-    dgettext("group_call", "Call: joining %{channel}...", channel: channel)
-  end
-
-  defp group_call_label(:connecting, channel, _count) do
-    dgettext("group_call", "Call: connecting %{channel}...", channel: channel)
-  end
-
-  defp group_call_label(:negotiating, channel, _count) do
-    dgettext("group_call", "Call: negotiating %{channel}...", channel: channel)
-  end
-
-  defp group_call_label(:error, channel, _count) do
-    dgettext("group_call", "Call: error in %{channel}", channel: channel)
-  end
-
-  defp group_call_label(_status, channel, count) when count > 0 do
-    dgettext("group_call", "Call: %{channel} (%{count})", channel: channel, count: count)
-  end
-
-  defp group_call_label(_status, channel, _count) do
-    dgettext("group_call", "Call: %{channel}", channel: channel)
-  end
 
   # Derives the status-bar P2P zone strings from the host state machine —
   # the design-system component receives display text only.

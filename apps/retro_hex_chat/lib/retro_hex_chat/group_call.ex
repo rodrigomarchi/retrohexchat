@@ -88,6 +88,29 @@ defmodule RetroHexChat.GroupCall do
     end
   end
 
+  @doc """
+  The channel's live room, or a new one, and which of the two it was.
+
+  Opening a conference is the act that creates it, because the address has to
+  exist before the card carrying it can be written. `created?` is what the
+  caller needs and cannot ask afterwards: a second person opening a channel
+  that already has a room lands in the same room, and must not mint a second
+  address for it.
+  """
+  @spec get_or_create_channel_call(String.t(), actor()) ::
+          {:ok, %{room: Room.t(), token: String.t(), created?: boolean()}} | {:error, String.t()}
+  def get_or_create_channel_call(channel_name, actor) do
+    case active_room_for_channel(channel_name) do
+      nil ->
+        with {:ok, %{room: room, token: token}} <- create_channel_call(channel_name, actor) do
+          {:ok, %{room: room, token: token, created?: true}}
+        end
+
+      room ->
+        {:ok, %{room: room, token: room.token, created?: false}}
+    end
+  end
+
   @spec ensure_room_server(Room.t()) :: {:ok, pid()} | {:error, term()}
   def ensure_room_server(%Room{} = room) do
     case Registry.lookup_room({:room, room.token}) do

@@ -16,37 +16,6 @@ msgstr ""
 msgid "Call"
 msgstr "Oproep"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:180
-#, elixir-autogen, elixir-format
-msgid "Call: %{channel}"
-msgstr "Oproep: %{channel}"
-
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:156
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:176
-#, elixir-autogen, elixir-format
-msgid "Call: %{channel} (%{count})"
-msgstr "Oproep: %{channel} (%{count})"
-
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:164
-#, elixir-autogen, elixir-format
-msgid "Call: connecting %{channel}..."
-msgstr "Aanroep: %{channel} verbinden..."
-
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:172
-#, elixir-autogen, elixir-format
-msgid "Call: error in %{channel}"
-msgstr "Oproepfout in %{channel}"
-
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:160
-#, elixir-autogen, elixir-format
-msgid "Call: joining %{channel}..."
-msgstr "Oproep: toetreding %{channel}..."
-
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:168
-#, elixir-autogen, elixir-format
-msgid "Call: negotiating %{channel}..."
-msgstr "Oproep: onderhandelen %{channel}..."
-
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1480
 #: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:269
 #, elixir-autogen, elixir-format
@@ -91,18 +60,18 @@ msgstr "Media verbinden"
 msgid "Connection error"
 msgstr "Verbindingsfout"
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1530
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1523
 #, elixir-autogen, elixir-format
 msgid "Could not end group call."
 msgstr "Kon groepsoproep niet beëindigen."
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1466
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1490
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1459
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1483
 #, elixir-autogen, elixir-format
 msgid "Could not remove participant."
 msgstr "Kon deelnemer niet verwijderen."
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1282
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1275
 #, elixir-autogen, elixir-format
 msgid "Could not update participant media."
 msgstr "Kon deelnemersmedia niet bijwerken."
@@ -132,15 +101,12 @@ msgstr "Aanroep eindgroep"
 msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
 msgstr "De groepsoproep beëindigen in %{channel} voor iedereen? Alle deelnemers worden afgesloten."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:301
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:86
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:404
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:120
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:442
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1065
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1066
-#: lib/retro_hex_chat_web/live/app/call_live.ex:109
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:571
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:144
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:312
+#: lib/retro_hex_chat_web/live/app/call_live.ex:115
 #, elixir-autogen, elixir-format
 msgid "Group Call"
 msgstr "Groepsoproep"
@@ -165,13 +131,8 @@ msgstr "Groepsoproep beëindigd."
 msgid "Group call ended: %{reason}"
 msgstr "Groepsoproep beëindigd: %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:150
-#, elixir-autogen, elixir-format
-msgid "Group call in %{channel} — click to focus"
-msgstr "Groepsoproep in %{channel} Klik om te focussen"
-
-#: lib/retro_hex_chat_web/live/call_live/events.ex:975
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1752
+#: lib/retro_hex_chat_web/live/call_live/events.ex:968
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1745
 #, elixir-autogen, elixir-format
 msgid "Group call media connection interrupted. Trying to recover."
 msgstr "Groepsgesprek media verbinding onderbroken. Ik probeer te herstellen."
@@ -181,12 +142,12 @@ msgstr "Groepsgesprek media verbinding onderbroken. Ik probeer te herstellen."
 msgid "Group call media is degraded."
 msgstr "Groepsgespreksmedia zijn gedegradeerd."
 
-#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:292
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:176
 #, elixir-autogen, elixir-format
 msgid "Group calls are available in channels only."
 msgstr "Groep oproepen zijn alleen beschikbaar in kanalen."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:405
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:443
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ to use group calls"
 msgstr "Identificeer met NickServ om groepsgesprekken te gebruiken"
@@ -233,11 +194,6 @@ msgstr "Verlaat de oproep"
 msgid "Leave group call"
 msgstr "Groepsaanroep verlaten"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:151
-#, elixir-autogen, elixir-format
-msgid "Leave the group call"
-msgstr "De groepsoproep verlaten"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:91
 #, elixir-autogen, elixir-format
 msgid "Leave the group call in %{channel}? Your microphone and camera will disconnect."
@@ -263,18 +219,18 @@ msgstr "deelnemer dempen"
 msgid "Negotiating media"
 msgstr "Onderhandelende media"
 
-#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:289
-#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:299
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:173
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:183
 #, elixir-autogen, elixir-format
 msgid "Open a channel before starting a group call."
 msgstr "Open een kanaal voordat u een groepsoproep start."
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1560
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1553
 #, elixir-autogen, elixir-format
 msgid "Participant is no longer in the group call."
 msgstr "Deelnemer is niet langer in de groepsoproep."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:139
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:173
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:642
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:111
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:337
@@ -314,20 +270,20 @@ msgstr "Onopvallende deelnemer"
 msgid "You are already in a group call in %{channel}. Leave it and join the call in %{new_channel}?"
 msgstr "U bevindt zich al in een groepsoproep in %{channel}. Laat het en voeg de oproep in %{new_channel}?"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:356
-#: lib/retro_hex_chat_web/live/app/call_live.ex:362
-#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:305
+#: lib/retro_hex_chat_web/live/app/call_live.ex:401
+#: lib/retro_hex_chat_web/live/app/call_live.ex:407
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:189
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use group calls."
 msgstr "U moet geïdentificeerd worden met NickServ om groepsgesprekken te gebruiken."
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1588
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1581
 #, elixir-autogen, elixir-format
 msgid "You must be registered to moderate group calls."
 msgstr "Je moet geregistreerd zijn bij gematigde groepsgesprekken."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:371
-#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:217
+#: lib/retro_hex_chat_web/live/app/call_live.ex:416
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:111
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to use group calls."
 msgstr "Je moet geregistreerd zijn bij NickServ om groepsgesprekken te gebruiken."
@@ -338,80 +294,80 @@ msgstr "Je moet geregistreerd zijn bij NickServ om groepsgesprekken te gebruiken
 msgid "%{active}/%{total} active"
 msgstr "%{active}/%{total} actief"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:447
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:455
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{count} conference camera."
 msgid_plural "%{actor} allowed %{count} conference cameras."
 msgstr[0] "%{actor} heeft %{count} conferentiecamera toegestaan."
 msgstr[1] "%{actor} heeft %{count} conferentiecamera's toegestaan."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:433
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:441
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{count} conference microphone."
 msgid_plural "%{actor} allowed %{count} conference microphones."
 msgstr[0] "%{actor} heeft %{count} conferentiemicrofoon toegestaan."
 msgstr[1] "%{actor} heeft %{count} conferentiemicrofoons toegestaan."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:530
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:538
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target} to share a screen again."
 msgstr "%{actor} toegestaan %{target} om opnieuw een scherm te delen."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:541
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:549
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target} to speak."
 msgstr "%{actor} heeft %{target} toestemming gegeven om te spreken."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:494
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:502
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target}'s conference camera."
 msgstr "%{actor} heeft de conferentiecamera van %{target} toegestaan."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:472
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:480
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target}'s conference microphone."
 msgstr "%{actor} heeft de conferentiemicrofoon van %{target} toegestaan."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:559
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:567
 #, elixir-autogen, elixir-format
 msgid "%{actor} locked the conference."
 msgstr "%{actor} de conferentie vergrendeld."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:405
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:413
 #, elixir-autogen, elixir-format
 msgid "%{actor} muted %{count} conference microphone."
 msgid_plural "%{actor} muted %{count} conference microphones."
 msgstr[0] "%{actor} gedempt %{count} conferentiemicrofoon."
 msgstr[1] "%{actor} gedempt %{count} conferentiemicrofoons."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:461
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:469
 #, elixir-autogen, elixir-format
 msgid "%{actor} muted %{target}'s conference microphone."
 msgstr "%{actor} gedempt %{target}'s conferentiemicrofoon."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:552
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:560
 #, elixir-autogen, elixir-format
 msgid "%{actor} removed %{target} from the conference."
 msgstr "%{actor} verwijderd %{target} van de conferentie."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:519
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:527
 #, elixir-autogen, elixir-format
 msgid "%{actor} stopped %{target}'s screen share."
 msgstr "%{actor} stopte %{target}'s schermdeel."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:419
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:427
 #, elixir-autogen, elixir-format
 msgid "%{actor} turned off %{count} conference camera."
 msgid_plural "%{actor} turned off %{count} conference cameras."
 msgstr[0] "%{actor} uitgeschakeld %{count} conferentiecamera."
 msgstr[1] "%{actor} heeft %{count} conferentiecamera's uitgeschakeld."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:483
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:491
 #, elixir-autogen, elixir-format
 msgid "%{actor} turned off %{target}'s conference camera."
 msgstr "%{actor} heeft de conferentiecamera van %{target} uitgeschakeld."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:563
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:571
 #, elixir-autogen, elixir-format
 msgid "%{actor} unlocked the conference."
 msgstr "%{actor} ontgrendelde de conferentie."
@@ -432,7 +388,7 @@ msgstr "%{connected}/%{total} verbonden"
 msgid "%{connection} / ICE %{ice}"
 msgstr "%{connection} / ICE %{ice}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:360
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:398
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m"
 msgstr "%{hours}h %{minutes}m"
@@ -447,7 +403,7 @@ msgstr "%{inbound} in / %{fanout} fanout"
 msgid "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps, freezes %{freezes}"
 msgstr "%{level} kwaliteit: RTT %{rtt} ms, verlies %{loss}%, %{bitrate} kbps, %{fps} fps, bevriest %{freezes}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:362
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:400
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m"
 msgstr "%{minutes}m"
@@ -515,7 +471,7 @@ msgstr "%{packets} pkt / %{bytes}"
 msgid "%{sent} up / %{received} down"
 msgstr "%{sent} omhoog / %{received} omlaag"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:408
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:446
 #, elixir-autogen, elixir-format
 msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr "%{state} conferentie in %{channel}: %{count}/%{max} deelnemers, %{duration}"
@@ -530,17 +486,17 @@ msgstr "%{status} / max %{max}"
 msgid "%{subs} subs / %{routes} routes"
 msgstr "%{subs} subs / %{routes} routes"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:504
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:512
 #, elixir-autogen, elixir-format
 msgid "%{target} started sharing a screen."
 msgstr "%{target} begon een scherm te delen."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:511
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:519
 #, elixir-autogen, elixir-format
 msgid "%{target} stopped sharing a screen."
 msgstr "%{target} is gestopt met het delen van een scherm."
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1478
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1471
 #, elixir-autogen, elixir-format
 msgid "%{target} was removed from the conference and banned from %{channel}."
 msgstr "%{target} werd uit de conferentie verwijderd en verboden van %{channel}."
@@ -561,9 +517,9 @@ msgstr "0 actief"
 msgid "0 connected"
 msgstr "0 verbonden"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:348
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:369
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:373
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:386
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:407
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:411
 #, elixir-autogen, elixir-format
 msgid "0m"
 msgstr "0m"
@@ -722,7 +678,7 @@ msgstr "Compacte conferencecontroles"
 msgid "Conference connection closes"
 msgstr "Conferentieverbinding sluit"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:374
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:382
 #, elixir-autogen, elixir-format
 msgid "Conference ended in %{channel}."
 msgstr "De conferentie eindigde in %{channel}."
@@ -737,7 +693,7 @@ msgstr "Controles op de opstelling van conferenties"
 msgid "Conference media"
 msgstr "Conferentiemedia"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:567
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:575
 #, elixir-autogen, elixir-format
 msgid "Conference moderation updated."
 msgstr "Bemiddeling van de conferentie bijgewerkt."
@@ -760,13 +716,13 @@ msgstr "Conferentiedeelnemers"
 msgid "Conference reactions"
 msgstr "Reacties van de conferentie"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:347
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:349
 #, elixir-autogen, elixir-format
 msgid "Conference started in %{channel}."
 msgstr "Conferentie gestart in %{channel}."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:105
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:106
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:139
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:140
 #, elixir-autogen, elixir-format
 msgid "Conference summary"
 msgstr "Samenvatting van de conferenties"
@@ -781,32 +737,32 @@ msgstr "Videotegels voor conferenties"
 msgid "Connection needs attention"
 msgstr "Verbinding heeft aandacht nodig"
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1345
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1338
 #, elixir-autogen, elixir-format
 msgid "Could not allow participant to speak."
 msgstr "Kon deelnemer niet toestaan om te spreken."
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1423
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1416
 #, elixir-autogen, elixir-format
 msgid "Could not update conference lock."
 msgstr "Kon conferentieslot niet bijwerken."
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1300
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1293
 #, elixir-autogen, elixir-format
 msgid "Could not update participant camera."
 msgstr "Kon de deelnemerscamera niet bijwerken."
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1320
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1313
 #, elixir-autogen, elixir-format
 msgid "Could not update participant screen sharing."
 msgstr "Kon deelnemersscherm delen niet bijwerken."
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1377
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1370
 #, elixir-autogen, elixir-format
 msgid "Could not update participants."
 msgstr "Kon deelnemers niet bijwerken."
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1087
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1080
 #, elixir-autogen, elixir-format
 msgid "Could not update raised hand."
 msgstr "Kon de verhoogde hand niet bijwerken."
@@ -821,7 +777,7 @@ msgstr "De huidige conferentie sluit eerst"
 msgid "Default device"
 msgstr "Standaard apparaat"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:422
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:460
 #, elixir-autogen, elixir-format
 msgid "Degraded"
 msgstr "Gedegradeerd"
@@ -832,7 +788,7 @@ msgstr "Gedegradeerd"
 msgid "Download"
 msgstr "Downloaden"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:423
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:461
 #, elixir-autogen, elixir-format
 msgid "Ending"
 msgstr "Einde"
@@ -897,7 +853,7 @@ msgstr "Framesnelheid"
 msgid "Freezes"
 msgstr "Halt"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:420
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:458
 #, elixir-autogen, elixir-format
 msgid "Full"
 msgstr "Vol"
@@ -920,12 +876,12 @@ msgstr "Raster"
 msgid "Grid layout"
 msgstr "Rasterindeling"
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:997
+#: lib/retro_hex_chat_web/live/call_live/events.ex:990
 #, elixir-autogen, elixir-format
 msgid "Group call media connection failed. Retry the media connection."
 msgstr "Groepsgespreksmediaverbinding mislukt. Probeer de mediaverbinding opnieuw."
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1749
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1742
 #, elixir-autogen, elixir-format
 msgid "Group call media is connecting."
 msgstr "Groepsgespreksmedia verbinden zich."
@@ -966,7 +922,7 @@ msgstr "ICE-paren"
 msgid "ICE traffic"
 msgstr "ICE-verkeer"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:151
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:185
 #, elixir-autogen, elixir-format
 msgid "In conference"
 msgstr "In conferentie"
@@ -981,11 +937,6 @@ msgstr "Inkomende RTP"
 #, elixir-autogen, elixir-format
 msgid "Jitter"
 msgstr "Jitter"
-
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:180
-#, elixir-autogen, elixir-format
-msgid "Join"
-msgstr "Deelnemen"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:234
 #, elixir-autogen, elixir-format
@@ -1032,7 +983,7 @@ msgstr "Conferentie verlaten"
 msgid "Limited by"
 msgstr "Beperkt door"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:419
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:457
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr "Levend"
@@ -1042,7 +993,7 @@ msgstr "Levend"
 msgid "Lock conference"
 msgstr "Conferentie vergrendelen"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:421
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:459
 #, elixir-autogen, elixir-format
 msgid "Locked"
 msgstr "Vergrendeld"
@@ -1058,7 +1009,7 @@ msgstr "Onderste hand"
 msgid "MOS %{score}"
 msgstr "MOS %{score}"
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1761
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1754
 #, elixir-autogen, elixir-format
 msgid "Media recovery failed. Retry the media connection."
 msgstr "Media herstel mislukt. Probeer de mediaverbinding opnieuw."
@@ -1135,7 +1086,7 @@ msgstr "NACK %{nack} PLI %{pli}"
 msgid "New channel conference opens"
 msgstr "Nieuwe kanaalconferentie opent"
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1401
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1394
 #, elixir-autogen, elixir-format
 msgid "No lower-ranked conference participants were affected."
 msgstr "Er werden geen lagere conferencedeelnemers getroffen."
@@ -1170,11 +1121,6 @@ msgstr "Niet spreken"
 #, elixir-autogen, elixir-format
 msgid "Only lower ranks are affected"
 msgstr "Alleen lagere rangen worden beïnvloed"
-
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:180
-#, elixir-autogen, elixir-format
-msgid "Open"
-msgstr "Openen"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:230
 #, elixir-autogen, elixir-format
@@ -1324,14 +1270,14 @@ msgstr "Verwijderen en verbieden"
 msgid "Remove from conference and ban from channel"
 msgstr "Verwijderen van conferentie en verbod van kanaal"
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1495
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1488
 #, elixir-autogen, elixir-format
 msgid "Removed from channel conference"
 msgstr "Verwijderd uit kanaalconferentie"
 
 #: lib/retro_hex_chat_web/live/call_live/events.ex:161
 #: lib/retro_hex_chat_web/live/call_live/events.ex:169
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1758
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1751
 #, elixir-autogen, elixir-format
 msgid "Requesting a fresh media offer."
 msgstr "Verzoek om een nieuw mediaaanbod."
@@ -1446,7 +1392,7 @@ msgstr "Zelfweergave in raster tonen"
 msgid "Signaling"
 msgstr "Signalering"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:143
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:177
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1166
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:144
 #, elixir-autogen, elixir-format
@@ -1584,7 +1530,7 @@ msgstr "Video"
 msgid "Video tracks"
 msgstr "Videotracks"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:167
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:201
 #: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:58
 #, elixir-autogen, elixir-format
 msgid "Waiting for participants"
@@ -1600,7 +1546,7 @@ msgstr "Je verlaat de conferentie."
 msgid "Your camera is not being sent."
 msgstr "Je camera wordt niet verstuurd."
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1099
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1092
 #, elixir-autogen, elixir-format
 msgid "Your camera was disabled by a moderator."
 msgstr "Je camera is uitgeschakeld door een moderator."
@@ -1615,7 +1561,7 @@ msgstr "Uw lokale voorbeeld verschijnt hier als de camera klaar is."
 msgid "Your microphone and camera are off."
 msgstr "Je microfoon en camera staan uit."
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1096
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1089
 #, elixir-autogen, elixir-format
 msgid "Your microphone was muted by a moderator."
 msgstr "Je microfoon werd gedempt door een moderator."
@@ -1874,7 +1820,7 @@ msgstr "Opnieuw deelnemen"
 msgid "Rejoining"
 msgstr "Opnieuw deelnemen"
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1755
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1748
 #, elixir-autogen, elixir-format
 msgid "Rejoining the media session."
 msgstr "Opnieuw deelnemen aan de mediasessie."
@@ -1899,33 +1845,56 @@ msgstr "Al binnen"
 msgid "Nobody yet — you would be the first."
 msgstr "Nog niemand — jij zou de eerste zijn."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:345
+#: lib/retro_hex_chat_web/live/app/call_live.ex:390
 #, elixir-autogen, elixir-format
 msgid "This conference has ended."
 msgstr "Deze conferentie is afgelopen."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:322
-#: lib/retro_hex_chat_web/live/app/call_live.ex:339
+#: lib/retro_hex_chat_web/live/app/call_live.ex:384
 #, elixir-autogen, elixir-format
 msgid "This conference is no longer available."
 msgstr "Deze conferentie is niet meer beschikbaar."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:59
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:57
 #, elixir-autogen, elixir-format
 msgid "In another tab"
 msgstr "In een ander tabblad"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:51
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:49
 #, elixir-autogen, elixir-format
 msgid "This call is open in another tab — click to go to it"
 msgstr "Deze oproep staat open in een ander tabblad — klik om ernaartoe te gaan"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:123
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:118
 #, elixir-autogen, elixir-format
 msgid "Call: %{channel} — in another tab"
 msgstr "Oproep: %{channel} — in een ander tabblad"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:125
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:120
 #, elixir-autogen, elixir-format
 msgid "The call in %{channel} is open in another tab of yours — click to go to it"
 msgstr "De oproep in %{channel} staat open in een ander tabblad van je — klik om ernaartoe te gaan"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:144
+#, elixir-autogen, elixir-format
+msgid "%{nickname} opened a conference — %{url}"
+msgstr ""
+"%{nickname} heeft een vergadering geopend — %{url}"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:125
+#, elixir-autogen, elixir-format
+msgid "A conference is already open in %{channel}. Its card is in this conversation."
+msgstr ""
+"Er is al een vergadering open in %{channel}. De kaart ervan staat in dit gesprek."
+
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:76
+#, elixir-autogen, elixir-format
+msgid "Join the conference in a tab of its own"
+msgstr ""
+"Deelnemen aan de vergadering in een eigen tabblad"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:155
+#, elixir-autogen, elixir-format
+msgid "The conference opened, but its link could not be created."
+msgstr ""
+"De vergadering is geopend, maar de link kon niet worden aangemaakt."

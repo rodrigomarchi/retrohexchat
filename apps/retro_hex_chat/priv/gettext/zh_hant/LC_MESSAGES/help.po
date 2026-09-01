@@ -4959,11 +4959,6 @@ msgstr "任何分享列中位址旁邊的「撤銷」會讓連結失效。房間
 msgid "Undoing a Link You Shared"
 msgstr "撤銷你分享過的連結"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1074
-#, elixir-autogen, elixir-format
-msgid "Join a channel-scoped audio/video conference. Call in the channel toolbar opens the antechamber: a camera preview, the microphone/camera/speaker pickers, and who is already in the room. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for the next time you open it. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
-msgstr "加入頻道範圍的音訊／視訊會議。頻道工具列上的「通話」會開啟前廳：攝影機預覽、麥克風／攝影機／喇叭選擇器，以及誰已經在房間裡。「加入通話」讓你進入；「取消」把它關掉，而無論你從哪一道門離開前廳，它都會記住你把麥克風和攝影機設成了什麼樣，留到下次開啟。裡面有版面控制、參與者管理和即時統計。管理遵循頻道權限：半管理員及以上可以管理層級較低的參與者。"
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1172
 #, elixir-autogen, elixir-format
 msgid "Select and switch between microphones, cameras, and speakers during calls."
@@ -4971,10 +4966,18 @@ msgstr "在通話時選擇麥克風、攝像機和揚聲器並進行切換。"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1101
 #, elixir-autogen, elixir-format
-msgid "A conference can run in a browser tab of its own. Open the summary next to Call in the channel toolbar and choose Open in a tab; the call gets the whole window and stops competing with the chat for the browser. While it is over there the chat says so along the bottom of its window — click that to go to the tab, which is why there is no Leave beside it: you leave a call from the screen that is in it. Closing that tab is not leaving either: the room keeps you for the reconnection window, and reopening the address puts you straight back in. Only Leave, which asks first, actually ends your part in the call."
-msgstr "會議可以在自己的瀏覽器分頁裡執行。開啟頻道工具列上「通話」旁邊的摘要，選擇「在分頁中開啟」；通話會佔用整個視窗，不再和聊天爭奪瀏覽器。它在那邊期間，聊天會在自己視窗的底部說明 — 點擊那裡就能前往該分頁，這也是旁邊沒有「離開」的原因：離開通話要在處於通話中的那個畫面上完成。關掉那個分頁同樣不是離開：房間會在重新連線的時間內保留你的位置，重新開啟位址就直接回到裡面。只有會先詢問的「離開」，才真正結束你在通話中的參與。"
+msgid "A conference always runs in a browser tab of its own, so the call gets the whole window and the chat stays the chat. While it is over there the chat says so along the bottom of its window — click that to go to the tab, which is why there is no Leave beside it: you leave a call from the screen that is in it. Ctrl+Shift with the arrow keys works inside that tab: Up for the microphone, Left for the camera, Right for the layout, Down to move the focus; Ctrl+Shift+Q leaves. Closing the tab is not leaving either: the room keeps you for the reconnection window, and reopening the address puts you straight back in. Only Leave, which asks first, actually ends your part in the call — and being removed from the channel ends it for you."
+msgstr ""
+"會議始終在獨立的瀏覽器分頁中執行，通話因此佔據整個視窗，而聊天仍然只是聊天。當它在那邊執行時，聊天會在自己視窗的底部說明這一點——點擊那裡即可前往該分頁，這也是旁邊沒有 Leave 的原因：離開通話要從正在通話的那塊螢幕上做。Ctrl+Shift 加方向鍵在那個分頁裡有效：上鍵控制麥克風，左鍵控制攝影機，右鍵切換版面，下鍵移動焦點；Ctrl+Shift+Q 退出。關閉分頁同樣不等於離開：房間會在重連視窗內為你保留座位，重新開啟位址就能回到裡面。只有會先詢問的 Leave 才真正結束你的參與——而被移出頻道會替你結束它。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1074
+#, elixir-autogen, elixir-format
+msgid "Join a channel-scoped audio/video conference. Group Call in the channel toolbar opens the room and posts a card in the channel carrying its address; everyone goes in through that card, including whoever opened it. If a conference is already running, Group Call is a link into it rather than a second one — one room, one card. Following the address opens the antechamber in a browser tab of its own: a camera preview, the microphone/camera/speaker pickers, and who is already inside. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for next time. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
+msgstr ""
+"加入以頻道為範圍的音訊／視訊會議。頻道工具列上的 Group Call 會開啟房間，並在頻道裡張貼一張帶有其位址的卡片；所有人都透過這張卡片進入，包括開啟它的人。如果會議已在進行，Group Call 就是通往它的連結，而不是第二個會議——一個房間，一張卡片。跟隨位址會在獨立的瀏覽器分頁中開啟前廳：攝影機預覽，麥克風、攝影機與喇叭的選擇器，以及已經在裡面的人。Join call 讓你進入；Cancel 關閉它，而無論你以何種方式離開前廳，它都會記住你留下的麥克風與攝影機設定，供下次使用。裡面有版面配置控制、參與者管理和即時統計。管理遵循頻道權限：半操作員及以上可以管理層級較低的參與者。"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1124
 #, elixir-autogen, elixir-format
-msgid "Share, above the conference, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address, and that card is the room as it is now: it counts who is inside and changes on its own as people come and go, with Join to go in and Copy link to pass it on. When the room finishes — or you revoke the link — the card stays and says so, offering the next thing you can still do instead of a button that no longer works. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
-msgstr "會議上方的「分享」會產生一個可以貼到任何地方的連結。貼進對話時，它會畫出一張卡片而不是一串裸位址，而這張卡片就是此刻的房間：它統計裡面有誰，並隨著人們進出自行變化，用「加入」進去，用「複製連結」傳給別人。房間結束時——或者你撤銷了連結——卡片仍會留下並說明這一點，給出你還能做的下一件事，而不是一個已經失效的按鈕。連結攜帶的是哪個房間，而絕不是待在裡面的權限：跟隨它的人仍然必須已註冊並且是頻道成員，所以連結是通往你本來就能到達的房間的邀請，而不是繞過頻道大門的捷徑。只有已註冊的暱稱才能產生。"
+msgid "Opening a conference already posts its card in the channel, and Share, above the conference, hands you that same address to paste anywhere else — pressing it again gives you the link you already have rather than a second one. Pasted into a conversation it draws a card instead of a bare address, and that card is the room as it is now: it counts who is inside and changes on its own as people come and go, with Join to go in and Copy link to pass it on. When the room finishes — or you revoke the link — the card stays and says so, offering the next thing you can still do instead of a button that no longer works. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
+msgstr ""
+"開啟一個會議時，它的卡片已經張貼在頻道裡；而會議上方的 Share 把同一個位址交給你，方便貼到別處——再按一次給回的是你已經有的連結，而不是第二個。貼進對話裡，它畫出的是一張卡片而不是一個光禿禿的位址，這張卡片就是此刻的房間：它統計裡面有誰，並隨著人們進出自行變化，帶著進入用的 Join 和轉發用的 Copy link。當房間結束——或者你撤銷了連結——卡片會留下並說明這一點，提供你仍然能做的下一件事，而不是一個已經失效的按鈕。連結攜帶的是這是哪個房間，從不攜帶待在裡面的權限：跟隨它的人依然必須已註冊並且是頻道成員，所以連結是通往你本來就能到達的房間的邀請，而不是繞過頻道之門的捷徑。只有已註冊的暱稱才能建立一個。"

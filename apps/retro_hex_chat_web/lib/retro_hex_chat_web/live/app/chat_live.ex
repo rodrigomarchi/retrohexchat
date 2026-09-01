@@ -38,7 +38,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
 
   alias RetroHexChatWeb.ChatLive.Components.P2PSessionConsole
-  alias RetroHexChatWeb.Components.UI.GroupCall.Panel, as: GroupCallPanelUI
 
   # ── Solo arcade window body ──────────────────────────────────
   import RetroHexChatWeb.Components.UI.SoloLobby
@@ -407,15 +406,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # client-side close of one ("window_closed"). Non-managed ids are no-ops.
   def handle_event("window_open", %{"id" => id}, socket) do
     {:noreply, ChatLive.Windows.open_window(socket, id)}
-  end
-
-  def handle_event(
-        "window_closed",
-        %{"id" => id} = params,
-        %{assigns: %{group_call: %{}}} = socket
-      )
-      when id == "group-call" do
-    dispatch_to_hooks("group_call_window_close", params, socket)
   end
 
   def handle_event("window_closed", %{"id" => id}, socket) do
@@ -881,7 +871,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:pubsub_handlers, &ChatLive.PubsubHandlers.handle_info/2},
       # The call surface reports to its host: what the chat's chrome draws,
       # the notices that belong in the conversation, and the window commands.
-      {:group_call_info, &ChatLive.GroupCallEvents.handle_info/2},
       # The space surface reports to its host: the character it remembers for
       # next time, and what the canvas says about a nickname on the map.
       {:space_info, &ChatLive.SpaceEvents.handle_info/2},
@@ -991,11 +980,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
       # Which character you picked last, which outlives every visit to a space
       # and therefore cannot live inside the surface that is mounted per visit.
       space_last_avatar: hd(RetroHexChat.VirtualSpace.avatars()),
-      group_call: nil,
       group_call_channels: MapSet.new(),
       group_call_channel_summaries: %{},
-      group_call_pending: nil,
-      group_call_prejoin_preferences: nil,
       p2p_session: nil,
       p2p_pm_sessions: %{},
       p2p_pending: nil,

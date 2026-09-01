@@ -438,7 +438,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   # the same page twice. The rule reads off the message rather than off its
   # author on purpose: a bot whose process is not running still published a card,
   # and a nickname is not evidence of anything once history is being replayed.
-  @card_types [:message, :action]
+  # `:system` is on the list because a session's door is a system message: the
+  # room's address is written into the channel by the server, not by a person,
+  # and a card is the whole reason that line exists.
+  @card_types [:message, :action, :system]
   @card_formats ["irc", "plain"]
 
   @spec decorate(map()) :: map()

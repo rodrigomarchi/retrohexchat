@@ -15,7 +15,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
 
   attr :channel, :string, required: true
   attr :active, :boolean, default: false
-  attr :current, :boolean, default: false
   attr :identified, :boolean, default: true
   attr :summary, :map, default: nil
   attr :on_open, :any, default: "group_call_open"
@@ -32,11 +31,10 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
 
     ~H"""
     <div class={classes(["conversation-toolbar-entry flex items-center gap-px", @class])}>
-      <%!-- Two shapes, and which one is drawn is the server's answer. With this
-            call open in a tab of this person's, the entry is a way *to that tab*
-            rather than a way to open the window again: opening the embedded one
-            beside it would leave the same conference on screen twice, and the
-            person asked for neither. --%>
+      <%!-- Three shapes, and which one is drawn is the server's answer. With
+            this call open in a tab of this person's, the entry is a way *to
+            that tab*: a second tab of a room you are in is a second seat
+            nobody asked for. --%>
       <.link
         :if={tab_open?(@open_paths, @room_token)}
         href={Paths.call_path(@room_token)}
@@ -60,19 +58,55 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
         </span>
       </.link>
 
+      <%!-- A room that exists is entered, never opened again: the button is an
+            anchor to the room's own address, because that address is the only
+            way into a conference. The `phx-click` shape below it is the other
+            half — a channel with no room yet, where the click is what creates
+            the room and writes the card that carries this same address. --%>
+      <.link
+        :if={enterable?(assigns)}
+        href={Paths.call_path(@room_token)}
+        target="_blank"
+        rel="noopener"
+        class={[
+          "conversation-toolbar-button flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs",
+          "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
+          active_state_class(@active, @state)
+        ]}
+        title={dgettext("group_call", "Join the conference in a tab of its own")}
+        data-testid="group-call-open"
+        data-channel={@channel}
+        data-state={active_value(@active, Atom.to_string(@state))}
+        data-participant-count={active_value(@active, @participant_count)}
+        data-max-participants={active_value(@active, @max_participants)}
+        data-started-at={active_value(@active, started_at_value(@started_at))}
+      >
+        <Icons.icon_toolbar_conference class="h-3.5 w-3.5 shrink-0" />
+        <span class="conversation-toolbar-button__text">
+          {dgettext("group_call", "Group Call")}
+        </span>
+        <span
+          :if={@active}
+          class={[
+            "absolute bottom-0.5 right-0.5 h-1.5 w-1.5 border border-border",
+            @state in [:active, :full] && "animate-pulse",
+            state_dot_class(@state)
+          ]}
+          aria-hidden="true"
+        />
+      </.link>
+
       <button
-        :if={!tab_open?(@open_paths, @room_token)}
+        :if={!tab_open?(@open_paths, @room_token) and not enterable?(assigns)}
         type="button"
         phx-click={@on_open}
         class={[
           "conversation-toolbar-button flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs",
           "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-          @current && "bg-canvas font-bold shadow-retro-sunken",
           active_state_class(@active, @state),
           !@identified && "opacity-60"
         ]}
         title={open_title(@identified)}
-        aria-pressed={to_string(@current)}
         disabled={!@identified}
         data-testid="group-call-open"
         data-channel={@channel}
@@ -169,27 +203,20 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
             </div>
           </div>
 
-          <button
-            type="button"
-            phx-click={@on_open}
-            class="mt-2 flex h-6 w-full items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-            data-testid="group-call-channel-popover-action"
-          >
-            <Icons.icon_btn_play class="h-3.5 w-3.5" />
-            <span>
-              {if @current, do: dgettext("group_call", "Open"), else: dgettext("group_call", "Join")}
-            </span>
-          </button>
+          <%!-- The conference at its own address, which is the only way into
+                one. It says "go to the tab" instead when this person already
+                has that address open, because a second tab of a room you are
+                in is a second seat nobody asked for.
 
-          <%!-- The same conference at an address of its own — and it says
-                "go to the tab" instead when this person already has that
-                address open, because a second tab of a room you are in is a
-                second seat nobody asked for. --%>
+                Gated on `identified` like the entry beside it: the address
+                refuses an unidentified reader at the door, and offering a way
+                in to somebody the button has just refused is a contradiction
+                one click deep. --%>
           <.surface_tab_link
-            :if={@room_token}
+            :if={@room_token && @identified}
             path={Paths.call_path(@room_token)}
             open?={tab_open?(@open_paths, @room_token)}
-            class="mt-1 h-6 w-full text-xs"
+            class="mt-2 h-6 w-full text-xs"
             testid="group-call-channel-popover-tab"
           />
         </div>
@@ -197,6 +224,17 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
     </div>
     """
   end
+
+  # Whether this entry is a way *in* rather than a way to start one. Both halves
+  # of the question are here: there has to be a room, and this reader has to be
+  # someone the room would let in — an anchor cannot be disabled, so a reader who
+  # would be refused keeps the button and its refusal.
+  defp enterable?(%{room_token: room_token, identified: identified, open_paths: paths})
+       when is_binary(room_token) do
+    identified and not tab_open?(paths, room_token)
+  end
+
+  defp enterable?(_assigns), do: false
 
   # The room's own address, derived here and nowhere else: the badge is the one
   # place that knows a channel's *current* room token, and a second spelling of

@@ -2,11 +2,10 @@ defmodule RetroHexChatWeb.App.CallLive do
   @moduledoc """
   A channel conference, as a surface of its own.
 
-  One module, two mounts: this is the page at `/call/:token` and it is also
-  what the chat's Group Call window renders. Nothing about a conference is
-  written twice — the difference between the two is where the process hangs,
-  not what it does. Everything that genuinely differs goes through
-  `RetroHexChatWeb.Live.SurfaceHost`.
+  One mount and one door: this is the page at `/call/:token`, and the only way
+  to it is the card the chat wrote into the conversation when the room was
+  opened. The chat draws a badge and a status zone about a call it does not
+  host and cannot reach — everything else about a conference is here.
 
   Two states, and you always arrive at the first: the **antechamber**, where
   you see who is already in the room and choose how you walk in, and **inside**.
@@ -29,6 +28,7 @@ defmodule RetroHexChatWeb.App.CallLive do
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.Channels.Membership
   alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Chat.KeyBindings
   alias RetroHexChat.GroupCall
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.ShareLinks
@@ -42,12 +42,21 @@ defmodule RetroHexChatWeb.App.CallLive do
   alias RetroHexChatWeb.Live.SurfaceHost, as: Host
   alias RetroHexChatWeb.ShareLinkRef
 
+  # The shortcuts this page answers. Everything else the binding table knows is
+  # the chat's, and reaches nothing here.
+  @call_actions [
+    :group_call_toggle_audio,
+    :group_call_toggle_video,
+    :group_call_leave,
+    :group_call_layout_next,
+    :group_call_focus_next
+  ]
+
   @impl true
   @spec mount(map(), map(), Socket.t()) :: {:ok, Socket.t()}
   def mount(params, session, socket) do
     socket =
       assign(socket,
-        embedded?: session["embedded"] == true,
         surface_tag: :call,
         nickname: session["nickname"] || socket.assigns[:surface_nickname],
         # The device preference is the person's, not the screen's: the same
@@ -86,22 +95,19 @@ defmodule RetroHexChatWeb.App.CallLive do
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
-  def render(%{embedded?: true} = assigns) do
-    ~H"""
-    <div class="h-full min-h-0">
-      <.call_body {assigns} />
-    </div>
-    """
-  end
-
   def render(assigns) do
     ~H"""
     <%!-- The same shell every other desktop screen uses: the workspace only
-          has a height because something above it does. --%>
-    <div class="bg-background text-text font-system flex h-screen flex-col">
-      <%!-- This tab answers when the chat asks for it by address. Only in the
-            standalone render: embedded, the address is the chat's own and the
-            chat already answers for it. --%>
+          has a height because something above it does. The conference
+          shortcuts are bound here because this is where the keystroke lands
+          now that the call has a page instead of a window in the chat. --%>
+    <div
+      class="bg-background text-text font-system flex h-screen flex-col"
+      phx-window-keydown="call_keydown"
+    >
+      <%!-- This tab answers when another tab of this person's asks for it by
+            address, which is what lets a second click go to the call they
+            already have open instead of opening a second one. --%>
       <div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
       <.desktop id="call-desktop" persist_key="call" class="flex-1" data-testid="call-desktop">
         <.desktop_window
@@ -137,8 +143,8 @@ defmodule RetroHexChatWeb.App.CallLive do
     """
   end
 
-  # The chat renders this same LiveView inside its own Group Call window, so
-  # the body is shared and the chrome is not.
+  # Split from the chrome around it so the two states — antechamber and inside —
+  # read as one thing, and the window that frames them as another.
   defp call_body(assigns) do
     ~H"""
     <div class="flex h-full min-h-0 flex-col">
@@ -231,6 +237,21 @@ defmodule RetroHexChatWeb.App.CallLive do
 
   def handle_event("revoke_call", _params, socket), do: {:noreply, socket}
 
+  # The conference shortcuts were bound on the chat's window while the call was
+  # rendered inside it, and the chat forwarded them here. The call has its own
+  # page now, so the keystroke lands here and is resolved against the same
+  # binding table — the one in the domain, never a second copy of it.
+  def handle_event("call_keydown", params, socket) do
+    case KeyBindings.find_action(KeyBindings.defaults(), params) do
+      action when action in @call_actions ->
+        {_halted, socket} = Events.handle_event(Atom.to_string(action), %{}, socket)
+        {:noreply, publish(socket)}
+
+      _other ->
+        {:noreply, socket}
+    end
+  end
+
   def handle_event(event, params, socket) do
     {_halted, socket} = Events.handle_event(event, params, socket)
     {:noreply, publish(socket)}
@@ -265,9 +286,44 @@ defmodule RetroHexChatWeb.App.CallLive do
     {:noreply, Events.refresh_roster(socket)}
   end
 
+  # Being removed from a conference has to end the page you are removed from,
+  # and the room's broadcast is the only thing that says so: the chat used to
+  # forward this as a command into an embedded window, and there is no window
+  # and no parent to forward it any more. Without this the person sits in a
+  # conference they are no longer in, and nothing anywhere says otherwise.
+  def handle_info(
+        {:group_call_moderation, %{action: :participant_kicked, target: target}},
+        %{assigns: %{nickname: nickname}} = socket
+      )
+      when is_binary(target) and is_binary(nickname) do
+    if String.downcase(target) == String.downcase(nickname) do
+      {:noreply, socket |> Events.leave("kicked") |> publish()}
+    else
+      {:noreply, socket}
+    end
+  end
+
   def handle_info({:group_call_moderation, _payload}, socket) do
     {:noreply, socket}
   end
+
+  # The membership the call stands on is gone — a `/part`, a kick, a ban. The
+  # room may still hold a seat and the chat has already given it up; what is
+  # left is this screen, which cannot stay in a conference for a channel this
+  # person is no longer in.
+  def handle_info(
+        {:channel_membership_lost, %{nickname: target, reason: reason}},
+        %{assigns: %{nickname: nickname}} = socket
+      )
+      when is_binary(target) and is_binary(nickname) do
+    if String.downcase(target) == String.downcase(nickname) do
+      {:noreply, socket |> Events.leave(reason) |> publish()}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info({:channel_membership_lost, _payload}, socket), do: {:noreply, socket}
 
   defp publish(socket), do: Host.publish(socket, host_snapshot(socket))
 
@@ -309,20 +365,9 @@ defmodule RetroHexChatWeb.App.CallLive do
     socket
   end
 
-  # Embedded, the chat already decided which channel and already applied the
-  # gates it owns; the surface is handed the answer. Standalone, the token in
-  # the address is all there is, so every gate runs here — and the refusal is
-  # the policy's own sentence, because that is the part the reader can act on.
-  defp resolve_room(%{assigns: %{embedded?: true}}, _params, session) do
-    case {session["channel_name"], session["user_id"]} do
-      {channel_name, user_id} when is_binary(channel_name) and is_integer(user_id) ->
-        {:ok, channel_name, user_id}
-
-      _incomplete ->
-        {:error, dgettext("group_call", "This conference is no longer available.")}
-    end
-  end
-
+  # The token in the address is all there is, so every gate runs here — and the
+  # refusal is the policy's own sentence, because that is the part the reader
+  # can act on.
   defp resolve_room(socket, %{"token" => token}, _session) when is_binary(token) do
     nickname = socket.assigns.nickname
 
