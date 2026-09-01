@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **225 spec files** under `e2e/tests/`.
-- **468 Playwright `test()` cases**.
-- **462 documented flows**, 461 done, 1 not done.
+- **469 Playwright `test()` cases**.
+- **463 documented flows**, 462 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -166,6 +166,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | K4 | A shared game link minted in one browser is followed from another with no session: the public card asks for a connect, and the connect lands back on the link | `tests/share-link-join.spec.ts` | done |
 | K5 | A surface open beside the chat offers to go back to the tab that exists instead of opening a second chat, and says so when no tab answers | `tests/surface-cross-tab.spec.ts` | done |
 | K6 | Copy on a surface's share bar puts the address on the clipboard with no chat tab involved | `tests/surface-cross-tab.spec.ts` | done |
+| K7 | Opening the conference you are already in at its own address takes the seat rather than adding one: the other participant still sees a single row for you, and the room still counts two | `tests/surface-cross-tab.spec.ts` | done |
 | L | Logged-in user disconnects via UI and lands on `/connect` | `tests/logout.spec.ts` | done |
 | M | Admin bans user with `/admin user ban` and victim is force-disconnected | `tests/admin-ban.spec.ts` | done |
 | N | Admin closes registration; new user sees registration closed; spec restores open | `tests/admin-registration-closed.spec.ts` | done |

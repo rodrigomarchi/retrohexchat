@@ -535,6 +535,60 @@ servidor) e subir o log do portão para `warning`, que o nível padrão já most
 
 ---
 
+## Iteração 8 — Q9 + Q10: o spec que faltava e os laços de sleep
+
+### K7, e a coisa que ele prova não é a que o nome diz
+
+O spec pedido pela onda 6 §1.3 é "abrir a mesma chamada duas vezes não gera
+dois participantes". Escrito, ele mostrou onde o defeito **realmente** ficaria:
+a segunda aba não entra pela porta — ela reidrata no assento que a pessoa já
+tem, por `GroupCall.active_participant/2`. O `join` do `RoomServer` só reusa um
+participante **desconectado**, então quebrá-lo não muda nada nesse caminho:
+
+```sh
+# quebrar join_authorized_participant  → K7 continua verde   (caminho errado)
+# quebrar GroupCall.active_participant → K7 vermelho          (caminho certo)
+```
+
+O vermelho não é "dois participantes": é a segunda aba caindo **na antessala**,
+que é o estado a um clique de `Entrar na chamada` do segundo assento. O spec
+afirma nessa altura, que é mais cedo e mais honesta.
+
+Duas coisas que a escrita corrigiu:
+
+* **A barra do badge fica debaixo da janela maximizada** — a mesma R.7 da
+  Iteração 3. Minimizar antes não é o teste sendo cuidadoso; é o único estado em
+  que aquele controle é alcançável.
+* **`data-surface-open` não significa "estou na sala"**, significa "já tenho
+  *esse endereço* aberto". Eu afirmei `true` para quem está na conferência pelo
+  chat e o atributo era `false` — corretamente. A forma do link acompanha o
+  conjunto de abas abertas, não o assento.
+
+### Os laços de `Process.sleep` viraram espera por mensagem
+
+Os três (`render_eventually`, `render_until_gone`, `assert_eventually`) saíram.
+O que os substitui não é um `sleep` menor: o teste **assina o mesmo tópico** que
+a tela sob teste e espera a mensagem que interessa.
+
+O que torna isso síncrono e não outra corrida: o registro publica para os dois
+assinantes na mesma passagem, antes de qualquer coisa que o teste possa enviar
+depois. Quando o `assert_receive` do teste volta, a cópia da tela já está na
+caixa dela — e o `render/1` seguinte é um `call`, que processa a caixa antes de
+responder.
+
+**Erro no caminho:** a primeira versão contava anúncios (`await_change()` duas
+vezes). Registrar uma superfície publica **duas** vezes — uma pelo processo,
+outra pelo endereço — e o chat da própria página também publica as suas, então
+a contagem ficou defasada em um e o `refute` final passou a ver o caminho ainda
+presente. Esperar pelo **conteúdo** (`await_open/1`, `await_gone/1`) é imune a
+quantas publicações existem.
+
+E quatro assertivas nem precisavam esperar: `live/2` só volta depois do
+`handle_params`, e registrar é um `call` síncrono para o registro a partir de
+lá. Elas viraram assertivas diretas.
+
+---
+
 ## Aprendizados que podem sair daqui
 
 Candidatos a virar regra durável quando a onda fechar. **Ainda não movidos.**
