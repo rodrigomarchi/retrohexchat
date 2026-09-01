@@ -68,6 +68,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
         host_snapshot: nil,
         notice: nil,
         share_url: nil,
+        share_slug: nil,
         match_game: nil,
         denied: nil
       )
@@ -190,6 +191,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
             url={@share_url}
             available={sharable?(@nickname)}
             on_share="share_p2p"
+            on_revoke="revoke_p2p"
             class="min-w-0 flex-1 justify-start"
           />
           <.surface_tab_link
@@ -308,13 +310,26 @@ defmodule RetroHexChatWeb.App.P2PLive do
              creator_id: user_id,
              creator_nick: nickname
            }) do
-      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug))}
+      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug), share_slug: link.slug)}
     else
       _unavailable -> {:noreply, socket}
     end
   end
 
   def handle_event("share_p2p", _params, socket), do: {:noreply, socket}
+
+  # Closing the address without closing the room. `ShareLinks` asks its own
+  # policy who may — the creator, or an operator of the channel the link leads
+  # into — so a screen that offers the button is not the thing deciding.
+  def handle_event("revoke_p2p", _params, %{assigns: %{share_slug: slug}} = socket)
+      when is_binary(slug) do
+    case ShareLinks.revoke(slug, socket.assigns.nickname || "") do
+      {:ok, _link} -> {:noreply, assign(socket, share_url: nil, share_slug: nil)}
+      _refused -> {:noreply, socket}
+    end
+  end
+
+  def handle_event("revoke_p2p", _params, socket), do: {:noreply, socket}
 
   def handle_event(event, params, socket) do
     {_halted, socket} = Events.handle_event(event, params, socket)

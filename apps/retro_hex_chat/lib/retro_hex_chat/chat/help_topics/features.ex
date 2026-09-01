@@ -1123,7 +1123,36 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "help",
             "Share, above the conference, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
           ),
-        see_also: ["feature-channel-conference", "feature-conference-tab"]
+        see_also: [
+          "feature-channel-conference",
+          "feature-conference-tab",
+          "feature-share-revoke"
+        ]
+      },
+      %{
+        id: "feature-share-revoke",
+        title: dgettext("help", "Undoing a Link You Shared"),
+        category: dgettext("help", "P2P & Calls"),
+        keywords: [
+          "revoke",
+          "undo",
+          "unshare",
+          "stop",
+          "link",
+          "share",
+          "cancel"
+        ],
+        icon: :icon_close,
+        description:
+          dgettext(
+            "help",
+            "Revoke, beside the address on any Share bar, stops the link working. The room is untouched: whoever is already inside stays inside, and anyone who can reach it another way still can. Only the address dies. Asking to share the same room again hands you a new one, so a link you pasted in the wrong place is fixable rather than permanent. Share gives you one address per room rather than a fresh one per press, which is what makes revoking it a whole answer instead of closing one of several. Your own links are yours to revoke, and a channel operator can also revoke a link that leads into their channel."
+          ),
+        see_also: [
+          "feature-conference-share",
+          "feature-space-share",
+          "feature-p2p-starting-room"
+        ]
       },
       %{
         id: "feature-media-devices",

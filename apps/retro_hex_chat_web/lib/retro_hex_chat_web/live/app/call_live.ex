@@ -63,6 +63,7 @@ defmodule RetroHexChatWeb.App.CallLive do
         host_snapshot: nil,
         notice: nil,
         share_url: nil,
+        share_slug: nil,
         denied: nil
       )
 
@@ -159,6 +160,7 @@ defmodule RetroHexChatWeb.App.CallLive do
           url={@share_url}
           available={sharable?(@nickname)}
           on_share="share_call"
+          on_revoke="revoke_call"
           class="shrink-0 justify-end border border-border bg-surface p-1 shadow-retro-raised"
         />
         <div class="min-h-0 flex-1">
@@ -207,13 +209,26 @@ defmodule RetroHexChatWeb.App.CallLive do
              creator_id: user_id,
              creator_nick: nickname
            }) do
-      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug))}
+      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug), share_slug: link.slug)}
     else
       _unavailable -> {:noreply, socket}
     end
   end
 
   def handle_event("share_call", _params, socket), do: {:noreply, socket}
+
+  # Closing the address without closing the room. `ShareLinks` asks its own
+  # policy who may — the creator, or an operator of the channel the link leads
+  # into — so a screen that offers the button is not the thing deciding.
+  def handle_event("revoke_call", _params, %{assigns: %{share_slug: slug}} = socket)
+      when is_binary(slug) do
+    case ShareLinks.revoke(slug, socket.assigns.nickname || "") do
+      {:ok, _link} -> {:noreply, assign(socket, share_url: nil, share_slug: nil)}
+      _refused -> {:noreply, socket}
+    end
+  end
+
+  def handle_event("revoke_call", _params, socket), do: {:noreply, socket}
 
   def handle_event(event, params, socket) do
     {_halted, socket} = Events.handle_event(event, params, socket)

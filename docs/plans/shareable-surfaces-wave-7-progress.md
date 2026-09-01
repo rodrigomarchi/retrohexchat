@@ -18,11 +18,19 @@ apagado.
 | B | o read-model para de mentir (R.6) | **fechada** — commit desta iteração |
 | C | o silêncio do `← Chat` (R.10) e a barra coberta (R.7/R.13) | **fechada**, menos dois specs — ver Iteração 3 |
 | D | o que vaza (R.3 metade barata, R.4) | **fechada** |
-| E | o que apodrece (R.5, A.6, R.8) | aberta |
+| E | o que apodrece (R.5, A.6, R.8) | **fechada** |
 | F | o resto (R.9, R.11, R.12, R.14, R.15) | aberta |
 
-Decisões da §8 do plano ainda **sem resposta do dono**: D7.1, D7.2, D7.3, D7.4.
-Nenhuma delas bloqueia A–B. D7.2 bloqueia o fechamento da fase C.
+Decisões da §8: pedidas, não respondidas, e **tomadas pela recomendação escrita
+no plano** para não parar o trabalho. Todas reversíveis; a que mais vale rever é
+a D7.3.
+
+| | Tomada como | Onde ela já vale |
+|---|---|---|
+| D7.1 | metade barata feita, endereço opaco adiado | fase D |
+| D7.2 | ainda em aberto — o spec do answerer segue vermelho | fase C |
+| D7.3 | **link não expira**; a revogação é a saída | fase E |
+| D7.4 | barra de abas e zona de status agora; nicklist junto com o card | fase F |
 
 ---
 
@@ -269,6 +277,80 @@ morto não diz nada sobre o que ele apontava.
 
 **A metade cara de R.3 não foi feita** — o endereço `/space/<base64>` continua
 legível. É a decisão **D7.1**, ainda sem resposta.
+
+---
+
+## Iteração 5 — Fase E: um endereço por sala, e uma porta para fechá-lo
+
+Três coisas que se sustentavam mutuamente, e por isso foram juntas.
+
+### `create/1` devolve o link que já existe
+
+Antes, cada clique em Compartilhar mintava um slug novo, todos vivos, nenhum
+contável. Isso não era só lixo de tabela: era o que impedia "revogar o link" de
+ser uma frase inteira, porque fechar um deixava os irmãos funcionando e ninguém
+sabia quantos eram.
+
+A chave é `{kind, target, creator_id}` e a comparação de `target` é igualdade de
+jsonb — "a mesma sala" vira pergunta de banco em vez de esperança. Por criador e
+não por sala: a linha registra quem fez, e a revogação é perguntada a essa
+pessoa.
+
+Efeito colateral que vale mais do que parece: `resolve_count` passa a significar
+alguma coisa. Um endereço por pessoa por sala, e o número embaixo dele é quanta
+gente seguiu **aquele**.
+
+### `ShareLinks.Policy`, que a onda 1 pediu na §3.1 e nunca existiu
+
+`revoke/2` aceitava qualquer `revoked_by` e fechava o link — o campo de auditoria
+estava fazendo o trabalho que uma checagem de autorização devia fazer. Agora:
+
+* **criar** exige apelido registrado, conferido no domínio em vez de confiado ao
+  chamador (quatro superfícies chamam; a quinta é que esquece);
+* **revogar** é do criador, **e de um operador do canal para onde o link leva**.
+  Um operador que pode fechar a conferência mas não o endereço por onde as
+  pessoas continuam chegando tem meia ferramenta de moderação.
+
+A regra do operador alcança só os kinds que nomeiam um canal — `call` e `space`
+de canal. Uma sessão P2P e um space privado não têm canal de que ser operador.
+
+Uma armadilha no teste, e ela é do repositório inteiro: **a primeira pessoa a
+entrar num canal é a fundadora**. O teste de "um membro comum não pode" passava
+por engano porque o membro comum era o dono. Todo teste desse describe agora
+estaciona um fundador antes.
+
+### O botão que faltava
+
+`ShareLinks.revoke/2` tinha zero chamadores fora de teste desde a onda 1 (A.6).
+Agora tem: `Revoke` na `share_bar`, com confirmação, nas quatro superfícies. Mais
+o tópico de ajuda `feature-share-revoke` — é controle acionável, logo é
+obrigatório.
+
+### E o convite parou de escrever um caminho morto
+
+`/lobby/%{token}` → `/p2p/%{token}`, e o `LobbyRedirectController` passou a
+redirecionar para lá em vez de para `/chat`. A justificativa que estava no
+`@moduledoc` ("legacy token resolution") era falsa: ninguém lia aquele token.
+
+**As traduções do `msgid` do convite foram portadas, não refeitas** — é a mesma
+frase com outro caminho, então as 14 traduções curadas foram trazidas do `HEAD`
+anterior com um `replace` de `/lobby/` por `/p2p/`. Refazê-las teria trocado
+texto revisado por texto novo sem motivo.
+
+### O que não deu para usar
+
+Nem `argostranslate` nem `polib` existem nesta máquina, então
+`make i18n.repair` e `make i18n.glossary` não rodam — é a mesma ausência que
+gerou a dívida da A.1 na onda 0. As 13 strings novas foram traduzidas à mão nos
+14 locales, e o rótulo `Revoke` veio do `scripts/i18n/glossary.py`, que já o
+tinha curado.
+
+**Erro cometido e corrigido no mesmo passo:** ao ler o glossário eu supus que
+`GLOSSARY["Revoke"]` fosse uma tupla na ordem de `LOCALE_ORDER` e escrevi os
+*códigos de locale* como tradução em 13 arquivos. É um dicionário por locale. Um
+`grep` por `msgstr "pt_BR"` mostrou o estrago na hora; o mesmo grep confirmou que
+os dois `msgstr "ja"` restantes são holandês legítimo ("yes"). **Ler a estrutura
+antes de iterar sobre ela** — o mesmo tipo de suposição que já custou a Iteração 1.
 
 ---
 

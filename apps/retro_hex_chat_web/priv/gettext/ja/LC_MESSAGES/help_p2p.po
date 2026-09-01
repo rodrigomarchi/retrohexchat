@@ -551,6 +551,7 @@ msgstr "スクリーン共有"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "See also:"
 msgstr "参照:"
@@ -771,6 +772,7 @@ msgstr "専用タブでの会議"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Sharing a Conference Link"
 msgstr "会議リンクの共有"
@@ -890,3 +892,43 @@ msgstr "「開始」は招待した側のものです"
 #, elixir-autogen, elixir-format
 msgid "The person who sent the invite is the host, and only they have Start. It stays disabled until both sides are ready, and the line under the roster says who is being waited for. If the host cancels before starting, the session ends and any link to it stops working."
 msgstr "招待を送った人がホストで、「開始」を持つのはその人だけです。両者が準備完了になるまでボタンは無効のままで、リストの下の行が誰を待っているかを示します。ホストが開始前に取り消すと、セッションは終了し、そこへのリンクはすべて機能しなくなります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "One address per room"
+msgstr "ルームごとに一つのアドレス"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Pressing Share again for the same room hands you back the address you already have, rather than a second one. That is what makes revoking it a whole answer: there is one link to close, not an unknown number of them. After revoking, Share mints a fresh address — so a link pasted in the wrong place is fixable rather than permanent."
+msgstr "同じルームでもう一度「共有」を押すと、二つ目ではなく、すでに持っているアドレスが返ってきます。だからこそ失効が完全な答えになります。閉じるべきリンクは一つで、いくつあるかわからないものではありません。失効のあとに「共有」を押すと新しいアドレスが発行されるので、貼る場所を間違えたリンクは取り返しがつきます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Revoke sits beside the address on any Share bar — a conference, a space, a P2P session, a game. It stops the link working, and it stops nothing else."
+msgstr "「失効」は、どの共有バーでもアドレスの横にあります — 会議、スペース、P2P セッション、ゲーム。リンクを止めるだけで、ほかには何も止めません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Sharing a Space"
+msgstr "スペースを共有する"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The room is untouched"
+msgstr "ルームはそのまま"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Who can revoke"
+msgstr "誰が失効させられるか"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Whoever is already inside stays inside, and anybody who can reach the room another way still can. Only the address dies. A card already sitting in a conversation stops offering a way in, and following the old link from anywhere else says the link is no longer active."
+msgstr "すでに中にいる人はそのまま残り、別の経路でルームに入れる人も引き続き入れます。消えるのはアドレスだけです。会話にすでにあるカードは入口を示さなくなり、ほかの場所から古いリンクをたどると、そのリンクはもう有効ではないと表示されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Your own links are yours. A channel operator can also revoke a link that leads into their channel — a conference in it, or its space — because an address people keep arriving through is the channel's business as much as the room itself is."
+msgstr "自分のリンクは自分のものです。チャンネルのオペレーターも、自分のチャンネルに通じるリンク — その中の会議や、そのスペース — を失効させられます。人が入り続けてくるアドレスは、ルームそのものと同じくらいチャンネルの問題だからです。"

@@ -41,6 +41,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
         embedded?: session["embedded"] == true,
         nickname: session["nickname"] || socket.assigns[:surface_nickname],
         share_url: nil,
+        share_slug: nil,
         games: Catalog.list_solo_games(),
         status: "library",
         selected_game: nil,
@@ -121,6 +122,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
           url={@share_url}
           available={sharable?(@nickname)}
           on_share="share_game"
+          on_revoke="revoke_game"
           class="min-w-0 flex-1"
         />
         <%!-- Where a match is born, and deliberately inside the game rather
@@ -190,13 +192,26 @@ defmodule RetroHexChatWeb.App.PlayLive do
              creator_id: user_id,
              creator_nick: socket.assigns.nickname
            }) do
-      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug))}
+      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug), share_slug: link.slug)}
     else
       _unavailable -> {:noreply, socket}
     end
   end
 
   def handle_event("share_game", _params, socket), do: {:noreply, socket}
+
+  # Closing the address without closing the room. `ShareLinks` asks its own
+  # policy who may — the creator, or an operator of the channel the link leads
+  # into — so a screen that offers the button is not the thing deciding.
+  def handle_event("revoke_game", _params, %{assigns: %{share_slug: slug}} = socket)
+      when is_binary(slug) do
+    case ShareLinks.revoke(slug, socket.assigns.nickname || "") do
+      {:ok, _link} -> {:noreply, assign(socket, share_url: nil, share_slug: nil)}
+      _refused -> {:noreply, socket}
+    end
+  end
+
+  def handle_event("revoke_game", _params, socket), do: {:noreply, socket}
 
   # A match link needs a room to point at, and a room with an empty seat is
   # what the domain calls an open lobby. Creating it is not sharing it: the
@@ -253,6 +268,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
         result: nil,
         error_message: nil,
         share_url: nil,
+        share_slug: nil,
         match_error: nil
       )
     else
@@ -316,6 +332,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
       result: nil,
       error_message: nil,
       share_url: nil,
+      share_slug: nil,
       match_error: nil
     )
   end

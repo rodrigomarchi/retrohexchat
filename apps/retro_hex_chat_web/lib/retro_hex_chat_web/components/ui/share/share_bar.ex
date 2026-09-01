@@ -9,6 +9,11 @@ defmodule RetroHexChatWeb.Components.UI.ShareBar do
   attr :url, :string, default: nil, doc: "the minted share URL, once there is one"
   attr :available, :boolean, default: true, doc: "false when the viewer may not mint one"
   attr :on_share, :string, required: true
+
+  attr :on_revoke, :string,
+    default: nil,
+    doc: "event that closes the link; omitted where the viewer may not close it"
+
   attr :target, :any, default: nil
   attr :class, :any, default: nil
 
@@ -57,6 +62,23 @@ defmodule RetroHexChatWeb.Components.UI.ShareBar do
       >
         <:icon><Icons.icon_copy class="h-4 w-4" /></:icon>
         {dgettext("share", "Copy")}
+      </.button>
+
+      <%!-- Undoing the share, which until now had no way in at all: the domain
+            could close a link and nothing on any screen ever asked it to. It
+            closes the address and leaves the room alone — the people already
+            inside stay inside, and the next Share hands out a new one. --%>
+      <.button
+        :if={@url && @on_revoke}
+        type="button"
+        variant="outline"
+        phx-click={@on_revoke}
+        phx-target={@target}
+        data-confirm={dgettext("share", "Stop this link from working? The room stays open.")}
+        data-testid="share-revoke"
+      >
+        <:icon><Icons.icon_close class="h-4 w-4" /></:icon>
+        {dgettext("share", "Revoke")}
       </.button>
     </div>
     """

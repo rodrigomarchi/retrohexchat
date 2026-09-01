@@ -17,7 +17,8 @@ defmodule RetroHexChat.ShareLinks do
 
   @type resolution :: Service.resolution()
 
-  @spec create(map()) :: {:ok, Schema.Link.t()} | {:error, Ecto.Changeset.t()}
+  @spec create(map()) ::
+          {:ok, Schema.Link.t()} | {:error, :unauthorized | Ecto.Changeset.t()}
   defdelegate create(attrs), to: Service
 
   @spec resolve(term()) :: {:ok, resolution()} | {:error, :not_found | :revoked | :expired}
@@ -29,7 +30,8 @@ defmodule RetroHexChat.ShareLinks do
   @spec describe_many([term()]) :: %{String.t() => resolution()}
   defdelegate describe_many(slugs), to: Service
 
-  @spec revoke(term(), String.t()) :: {:ok, Schema.Link.t()} | {:error, :not_found}
+  @spec revoke(term(), String.t()) ::
+          {:ok, Schema.Link.t()} | {:error, :not_found | :unauthorized}
   defdelegate revoke(slug, revoked_by), to: Service
 
   @spec kinds() :: [String.t()]

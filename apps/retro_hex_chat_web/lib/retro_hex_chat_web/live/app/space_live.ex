@@ -64,6 +64,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         join_token: nil,
         roster: [],
         share_url: nil,
+        share_slug: nil,
         space: nil,
         denied: nil
       )
@@ -164,6 +165,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
           url={@share_url}
           available={sharable?(@nickname)}
           on_share="share_space"
+          on_revoke="revoke_space"
           class="min-w-0 flex-1 justify-start"
         />
         <.surface_tab_link
@@ -265,13 +267,26 @@ defmodule RetroHexChatWeb.App.SpaceLive do
              creator_id: user_id,
              creator_nick: nickname
            }) do
-      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug))}
+      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug), share_slug: link.slug)}
     else
       _unavailable -> {:noreply, socket}
     end
   end
 
   def handle_event("share_space", _params, socket), do: {:noreply, socket}
+
+  # Closing the address without closing the room. `ShareLinks` asks its own
+  # policy who may — the creator, or an operator of the channel the link leads
+  # into — so a screen that offers the button is not the thing deciding.
+  def handle_event("revoke_space", _params, %{assigns: %{share_slug: slug}} = socket)
+      when is_binary(slug) do
+    case ShareLinks.revoke(slug, socket.assigns.nickname || "") do
+      {:ok, _link} -> {:noreply, assign(socket, share_url: nil, share_slug: nil)}
+      _refused -> {:noreply, socket}
+    end
+  end
+
+  def handle_event("revoke_space", _params, socket), do: {:noreply, socket}
 
   # The canvas reports a hovered or right-clicked character to whichever
   # LiveView owns its element, which is this one in both mounts. What it means

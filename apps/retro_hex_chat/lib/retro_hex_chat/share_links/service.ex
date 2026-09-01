@@ -9,7 +9,7 @@ defmodule RetroHexChat.ShareLinks.Service do
   what stops a link from becoming a way in.
   """
 
-  alias RetroHexChat.ShareLinks.{Liveness, Queries, Slug}
+  alias RetroHexChat.ShareLinks.{Liveness, Policy, Queries, Slug}
   alias RetroHexChat.ShareLinks.Schema.Link
 
   @type resolution :: %{
@@ -21,16 +21,40 @@ defmodule RetroHexChat.ShareLinks.Service do
         }
 
   @doc """
-  Mints a link for `attrs`, which must carry a `kind`, a `target` and a creator.
+  The person's link to this thing — the one they already have, or a new one.
+
+  Minting is idempotent per `{kind, target, creator}` on purpose. Sharing is a
+  button, and a button gets pressed twice: once because the first press was not
+  obviously acknowledged, once after a reload put the screen back without the
+  address on it. Each press used to mint another slug, all of them live, none of
+  them countable — so "revoke the link" was never a whole sentence, because
+  revoking one left the siblings working and nobody knew how many there were.
+
+  Returning the existing link makes revocation mean something and makes
+  `resolve_count` mean something too: one address per person per room, and the
+  number under it is how many people followed *it*.
 
   The slug is generated here rather than supplied: a caller that chose its own
   would eventually choose a guessable one.
   """
-  @spec create(map()) :: {:ok, Link.t()} | {:error, Ecto.Changeset.t()}
+  @spec create(map()) ::
+          {:ok, Link.t()} | {:error, :unauthorized | Ecto.Changeset.t()}
   def create(attrs) do
-    attrs
-    |> Map.put(:slug, Slug.generate())
-    |> Queries.insert_link()
+    kind = Map.get(attrs, :kind) || Map.get(attrs, "kind")
+    target = Map.get(attrs, :target) || Map.get(attrs, "target") || %{}
+    creator_id = Map.get(attrs, :creator_id) || Map.get(attrs, "creator_id")
+
+    with :ok <- Policy.can_create?(to_string(kind), creator_id) do
+      case Queries.find_open(to_string(kind), target, creator_id) do
+        %Link{} = existing ->
+          {:ok, existing}
+
+        nil ->
+          attrs
+          |> Map.put(:slug, Slug.generate())
+          |> Queries.insert_link()
+      end
+    end
   end
 
   @doc """
@@ -94,18 +118,25 @@ defmodule RetroHexChat.ShareLinks.Service do
   @doc """
   Closes the link, leaving the room it names untouched.
 
+  Asked of the person doing it, not merely stamped with their name: the creator
+  may close their own, and so may an operator of the channel the link leads
+  into, because an address people keep arriving through is that channel's
+  business. `RetroHexChat.ShareLinks.Policy` holds both halves.
+
   Revoking an already-revoked link succeeds: the caller asked for it to be
   closed, and it is.
   """
-  @spec revoke(term(), String.t()) :: {:ok, Link.t()} | {:error, :not_found}
+  @spec revoke(term(), String.t()) :: {:ok, Link.t()} | {:error, :not_found | :unauthorized}
   def revoke(slug, revoked_by) do
     with true <- Slug.valid?(slug),
-         %Link{} = link <- Queries.get_by_slug(slug) do
+         %Link{} = link <- Queries.get_by_slug(slug),
+         :ok <- Policy.can_revoke?(link, revoked_by) do
       case link.revoked_at do
         nil -> Queries.revoke(link, revoked_by)
         _already -> {:ok, link}
       end
     else
+      {:error, :unauthorized} -> {:error, :unauthorized}
       _other -> {:error, :not_found}
     end
   end

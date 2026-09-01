@@ -41,17 +41,17 @@ msgstr "Ссылка истекла"
 msgid "Open the chat"
 msgstr "Открыть чат"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:32
+#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:37
 #, elixir-autogen, elixir-format
 msgid "Register your nickname to share a link."
 msgstr "Зарегистрируйте ник, чтобы поделиться ссылкой."
 
-#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:28
+#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:33
 #, elixir-autogen, elixir-format
 msgid "Share"
 msgstr "Поделиться"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:47
+#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:52
 #, elixir-autogen, elixir-format
 msgid "Share link"
 msgstr "Ссылка для доступа"
@@ -199,34 +199,34 @@ msgstr "Место занято"
 msgid "Somebody already took the seat. This match is full."
 msgstr "Место уже занято. Этот матч заполнен."
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:110
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:126
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:118
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:140
 #, elixir-autogen, elixir-format
 msgid "Chat"
 msgstr "Чат"
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:133
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:147
 #, elixir-autogen, elixir-format
 msgid "Go to the tab"
 msgstr "Перейти на вкладку"
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:71
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:122
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:79
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:136
 #, elixir-autogen, elixir-format
 msgid "It is already open in another window of yours."
 msgstr "Оно уже открыто в другом вашем окне."
 
-#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:131
+#: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:145
 #, elixir-autogen, elixir-format
 msgid "Open in a tab"
 msgstr "Открыть во вкладке"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:55
+#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:60
 #, elixir-autogen, elixir-format
 msgid "Copied!"
 msgstr "Скопировано!"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:59
+#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:64
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr "Копировать"
@@ -235,3 +235,13 @@ msgstr "Копировать"
 #, elixir-autogen, elixir-format
 msgid "Somebody shared this with you."
 msgstr "Кто-то поделился этим с вами."
+
+#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:81
+#, elixir-autogen, elixir-format
+msgid "Revoke"
+msgstr "Отозвать"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:77
+#, elixir-autogen, elixir-format
+msgid "Stop this link from working? The room stays open."
+msgstr "Отключить эту ссылку? Комната останется открытой."

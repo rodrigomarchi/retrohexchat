@@ -4,8 +4,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
 
   The invite is a real private message: it sends a request line into the PM,
   notifies the target, switches the sender to that conversation and opens the
-  session's starting room as its creator. The `/lobby/<token>` path stays
-  embedded in the text for legacy token resolution.
+  session's starting room as its creator, and the message carries the session's
+  own address so the line is followable by whoever reads it later.
 
   With a session already active the invite is NOT delivered yet: the switch
   confirm opens first, and only confirming ends the current session — the
@@ -86,7 +86,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
   @spec lobby_invite_content(String.t()) :: String.t()
   def lobby_invite_content(token),
     do:
-      dgettext("chat", "P2P session request. Use the P2P control in this PM. /lobby/%{token}",
+      dgettext("chat", "P2P session request. Use the P2P control in this PM. /p2p/%{token}",
         token: token
       )
 end

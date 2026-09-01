@@ -35,14 +35,57 @@ defmodule RetroHexChat.ShareLinks.ServiceTest do
       assert {:error, %Ecto.Changeset{}} = create(nick, "chat", %{})
     end
 
-    test "two links never collide", %{nick: nick} do
+    # Sharing is a button, and a button gets pressed twice. Every press used to
+    # mint another live slug, so "revoke the link" was never a whole sentence —
+    # it closed one of an unknown number of siblings.
+    test "the same room gets the same address, however many times it is asked for",
+         %{nick: nick} do
       slugs =
         for _ <- 1..30, into: MapSet.new() do
           {:ok, link} = create(nick, "play", %{"game_id" => "hex_pong"})
           link.slug
         end
 
-      assert MapSet.size(slugs) == 30
+      assert MapSet.size(slugs) == 1
+    end
+
+    test "a different room is a different address", %{nick: nick} do
+      {:ok, pong} = create(nick, "play", %{"game_id" => "hex_pong"})
+      {:ok, trails} = create(nick, "play", %{"game_id" => "light_trails"})
+
+      refute pong.slug == trails.slug
+    end
+
+    # Reuse is per person, because the row names who made it and revocation is
+    # asked of them. Two people sharing one room are two accountable addresses.
+    test "two people sharing the same room get their own address each", %{nick: nick} do
+      other = insert(:registered_nick)
+
+      {:ok, mine} = create(nick, "play", %{"game_id" => "hex_pong"})
+      {:ok, theirs} = create(other, "play", %{"game_id" => "hex_pong"})
+
+      refute mine.slug == theirs.slug
+    end
+
+    # A closed link is not reused: asking again after revoking is asking for a
+    # new address, which is the only way back from having shared the wrong one.
+    test "a revoked link is not handed back", %{nick: nick} do
+      {:ok, first} = create(nick, "play", %{"game_id" => "hex_pong"})
+      {:ok, _} = ShareLinks.revoke(first.slug, nick.nickname)
+
+      {:ok, second} = create(nick, "play", %{"game_id" => "hex_pong"})
+
+      refute second.slug == first.slug
+    end
+
+    test "an unregistered creator mints nothing" do
+      assert {:error, :unauthorized} =
+               ShareLinks.create(%{
+                 kind: "play",
+                 target: %{"game_id" => "hex_pong"},
+                 creator_id: -1,
+                 creator_nick: "ghost"
+               })
     end
   end
 
@@ -144,7 +187,7 @@ defmodule RetroHexChat.ShareLinks.ServiceTest do
     test "describes many at once, skipping the ones it cannot", %{nick: nick} do
       {:ok, a} = create(nick, "play", %{"game_id" => "hex_pong"})
       {:ok, b} = create(nick, "play", %{"game_id" => "light_trails"})
-      {:ok, gone} = create(nick, "play", %{"game_id" => "hex_pong"})
+      {:ok, gone} = create(nick, "play", %{"game_id" => "pixel_tanks"})
       {:ok, _} = ShareLinks.revoke(gone.slug, nick.nickname)
 
       described = ShareLinks.describe_many([a.slug, b.slug, gone.slug, "abcdefghjk", "NOPE"])
@@ -184,6 +227,17 @@ defmodule RetroHexChat.ShareLinks.ServiceTest do
 
     test "an unknown slug is not found", %{nick: nick} do
       assert {:error, :not_found} = ShareLinks.revoke("abcdefghjk", nick.nickname)
+    end
+
+    # The name on the row is not a permission. Before this, `revoke/2` took
+    # whatever `revoked_by` it was handed and closed the link — the audit field
+    # was doing the work an authorization check was supposed to.
+    test "a stranger cannot close somebody else's link", %{nick: nick} do
+      other = insert(:registered_nick)
+      {:ok, link} = create(nick, "play", %{"game_id" => "hex_pong"})
+
+      assert {:error, :unauthorized} = ShareLinks.revoke(link.slug, other.nickname)
+      assert {:ok, %{live?: true}} = ShareLinks.describe(link.slug)
     end
   end
 

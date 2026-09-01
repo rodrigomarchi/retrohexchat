@@ -551,6 +551,7 @@ msgstr "Berbagi Layar"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "See also:"
 msgstr "Lihat juga:"
@@ -771,6 +772,7 @@ msgstr "Konferensi di tab sendiri"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Sharing a Conference Link"
 msgstr "Membagikan tautan konferensi"
@@ -890,3 +892,43 @@ msgstr "Mulai adalah milik yang mengundang"
 #, elixir-autogen, elixir-format
 msgid "The person who sent the invite is the host, and only they have Start. It stays disabled until both sides are ready, and the line under the roster says who is being waited for. If the host cancels before starting, the session ends and any link to it stops working."
 msgstr "Pengirim undangan adalah tuan rumah, dan hanya dia yang punya Mulai. Tombolnya tetap nonaktif sampai kedua sisi siap, dan baris di bawah daftar menyebut siapa yang ditunggu. Jika tuan rumah membatalkan sebelum memulai, sesi berakhir dan tautan apa pun ke sana berhenti bekerja."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "One address per room"
+msgstr "Satu alamat per ruang"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Pressing Share again for the same room hands you back the address you already have, rather than a second one. That is what makes revoking it a whole answer: there is one link to close, not an unknown number of them. After revoking, Share mints a fresh address — so a link pasted in the wrong place is fixable rather than permanent."
+msgstr "Menekan Bagikan lagi untuk ruang yang sama mengembalikan alamat yang sudah Anda miliki, bukan alamat kedua. Itulah yang membuat pencabutan menjadi jawaban utuh: ada satu tautan untuk ditutup, bukan sejumlah yang tak diketahui. Setelah dicabut, Bagikan membuat alamat baru — jadi tautan yang tertempel di tempat yang salah bisa diperbaiki, bukan permanen."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Revoke sits beside the address on any Share bar — a conference, a space, a P2P session, a game. It stops the link working, and it stops nothing else."
+msgstr "Cabut ada di samping alamat pada bilah Bagikan mana pun — konferensi, ruang, sesi P2P, permainan. Ia menghentikan tautan itu, dan tidak menghentikan apa pun yang lain."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Sharing a Space"
+msgstr "Membagikan ruang"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The room is untouched"
+msgstr "Ruangnya tidak tersentuh"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Who can revoke"
+msgstr "Siapa yang bisa mencabut"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Whoever is already inside stays inside, and anybody who can reach the room another way still can. Only the address dies. A card already sitting in a conversation stops offering a way in, and following the old link from anywhere else says the link is no longer active."
+msgstr "Yang sudah di dalam tetap di dalam, dan siapa pun yang bisa mencapai ruang itu lewat jalan lain tetap bisa. Hanya alamatnya yang mati. Kartu yang sudah ada di percakapan berhenti menawarkan jalan masuk, dan mengikuti tautan lama dari tempat lain akan mengatakan bahwa tautan itu tidak lagi aktif."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Your own links are yours. A channel operator can also revoke a link that leads into their channel — a conference in it, or its space — because an address people keep arriving through is the channel's business as much as the room itself is."
+msgstr "Tautan Anda sendiri milik Anda. Operator kanal juga dapat mencabut tautan yang menuju kanalnya — konferensi di dalamnya, atau ruangnya — karena alamat yang terus-menerus dilalui orang adalah urusan kanal sebagaimana ruangnya sendiri."

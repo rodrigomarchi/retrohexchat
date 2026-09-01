@@ -129,6 +129,42 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
       assert resolution.live?
     end
 
+    # Pressing Share twice used to mint two live addresses, which is what made
+    # revoking one of them a half-answer.
+    test "pressing it again hands back the address you already have", %{conn: conn} do
+      nick = "Twice#{uid()}"
+      {:ok, _} = register(nick)
+
+      {:ok, view, _html} = conn |> chat_conn(nick) |> live(~p"/play/hex_pong")
+
+      first = share_url(view)
+      # Revoking is the only way to a different one, so a second press with the
+      # link still open has to be the same link.
+      assert share_url_after_reopen(conn, nick) == first
+    end
+
+    test "revoking closes the address and leaves the game alone", %{conn: conn} do
+      nick = "Revoke#{uid()}"
+      {:ok, _} = register(nick)
+
+      {:ok, view, _html} = conn |> chat_conn(nick) |> live(~p"/play/hex_pong")
+
+      url = share_url(view)
+      slug = url |> String.split("/join/") |> List.last()
+      assert {:ok, %{live?: true}} = RetroHexChat.ShareLinks.describe(slug)
+
+      html = view |> element(~s([data-testid="share-revoke"])) |> render_click()
+
+      # The bar goes back to offering a fresh one, and the old address is closed
+      # rather than merely hidden.
+      assert html =~ "share-create"
+      refute html =~ "share-url"
+      assert {:error, :revoked} = RetroHexChat.ShareLinks.describe(slug)
+
+      # The game is untouched: it is still there to be shared again.
+      assert render(view) =~ "hex_pong"
+    end
+
     test "a guest is told why they cannot", %{conn: conn} do
       {:ok, view, _html} = conn |> chat_conn("Guest#{uid()}") |> live(~p"/play/hex_pong")
 
@@ -154,4 +190,23 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
 
   defp redirected_to_connect({:error, {_kind, %{to: to}}}), do: to == "/connect"
   defp redirected_to_connect(_other), do: false
+
+  defp share_url(view) do
+    [url] =
+      view
+      |> element(~s([data-testid="share-create"]))
+      |> render_click()
+      |> Floki.parse_fragment!()
+      |> Floki.find(~s([data-testid="share-url"]))
+      |> Floki.attribute("value")
+
+    url
+  end
+
+  # A second press from a page that has forgotten the address: the assign is
+  # gone, so only the database can hand the same link back.
+  defp share_url_after_reopen(conn, nick) do
+    {:ok, view, _html} = conn |> chat_conn(nick) |> live(~p"/play/hex_pong")
+    share_url(view)
+  end
 end

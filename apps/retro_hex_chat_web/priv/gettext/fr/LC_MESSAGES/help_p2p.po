@@ -551,6 +551,7 @@ msgstr "Partage d'écran"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "See also:"
 msgstr "Voir aussi:"
@@ -771,6 +772,7 @@ msgstr "La conférence dans son propre onglet"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Sharing a Conference Link"
 msgstr "Partager le lien de la conférence"
@@ -890,3 +892,43 @@ msgstr "Démarrer appartient à celui qui a invité"
 #, elixir-autogen, elixir-format
 msgid "The person who sent the invite is the host, and only they have Start. It stays disabled until both sides are ready, and the line under the roster says who is being waited for. If the host cancels before starting, the session ends and any link to it stops working."
 msgstr "La personne qui a envoyé l'invitation est l'hôte, et elle seule dispose de Démarrer. Le bouton reste désactivé tant que les deux côtés ne sont pas prêts, et la ligne sous la liste indique qui l'on attend. Si l'hôte annule avant de démarrer, la session prend fin et tout lien vers elle cesse de fonctionner."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "One address per room"
+msgstr "Une adresse par salle"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Pressing Share again for the same room hands you back the address you already have, rather than a second one. That is what makes revoking it a whole answer: there is one link to close, not an unknown number of them. After revoking, Share mints a fresh address — so a link pasted in the wrong place is fixable rather than permanent."
+msgstr "Appuyer de nouveau sur Partager pour la même salle vous rend l'adresse que vous avez déjà, pas une seconde. C'est ce qui fait de la révocation une réponse entière : il y a un lien à fermer, pas un nombre inconnu. Après révocation, Partager crée une nouvelle adresse — un lien collé au mauvais endroit se répare, il n'est pas définitif."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Revoke sits beside the address on any Share bar — a conference, a space, a P2P session, a game. It stops the link working, and it stops nothing else."
+msgstr "Révoquer se trouve à côté de l'adresse dans toute barre de partage — une conférence, un espace, une session P2P, un jeu. Cela désactive le lien, et rien d'autre."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Sharing a Space"
+msgstr "Partager un espace"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The room is untouched"
+msgstr "La salle n'est pas touchée"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Who can revoke"
+msgstr "Qui peut révoquer"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Whoever is already inside stays inside, and anybody who can reach the room another way still can. Only the address dies. A card already sitting in a conversation stops offering a way in, and following the old link from anywhere else says the link is no longer active."
+msgstr "Qui est déjà à l'intérieur y reste, et qui peut atteindre la salle autrement le peut toujours. Seule l'adresse meurt. Une carte déjà posée dans une conversation cesse d'offrir une entrée, et suivre l'ancien lien depuis ailleurs indique qu'il n'est plus actif."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Your own links are yours. A channel operator can also revoke a link that leads into their channel — a conference in it, or its space — because an address people keep arriving through is the channel's business as much as the room itself is."
+msgstr "Vos propres liens sont les vôtres. Un opérateur de salon peut aussi révoquer un lien qui mène dans son salon — une conférence dedans, ou son espace — car une adresse par laquelle les gens arrivent sans cesse relève du salon autant que la salle elle-même."
