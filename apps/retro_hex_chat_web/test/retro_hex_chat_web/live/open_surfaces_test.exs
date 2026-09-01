@@ -16,14 +16,23 @@ defmodule RetroHexChatWeb.Live.OpenSurfacesTest do
   defp nick, do: "surf#{System.unique_integer([:positive])}" |> String.slice(0, 16)
 
   # The set arriving is a message, so the test waits for the message and never
-  # for the clock. Both this process and the screen under test subscribe to the
-  # same topic, and the registry publishes to both in one pass before anything
-  # the test can send afterwards — so once this receive returns, the screen's
-  # copy is already in its mailbox, and the next `render/1` (a call) processes
-  # it before answering. That is what makes every assertion below synchronous.
+  # for the clock — but a message is only half of it, and the half that is not
+  # enough on its own. A broadcast sends to each subscriber in turn, and this
+  # process can be reached before the screen is: `assert_receive` returning
+  # proves the registry announced, and proves nothing at all about whether the
+  # screen has been sent to yet. Waiting on the announcement and then reading
+  # the screen is a race that loses roughly once in a full suite, which is how
+  # it was found.
+  #
+  # `settle/1` is the other half. It is a `GenServer.call` to the registry, so
+  # it is answered only after the handler that announced has finished — and
+  # that handler did the sending. Once it returns, the screen's copy is in the
+  # screen's mailbox, ahead of anything this process sends next.
   defp watch(nickname) do
     :ok = Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Surfaces.topic(nickname))
   end
+
+  defp settle(nickname), do: Surfaces.count(nickname)
 
   # Waits for the announcement that says what the test is about, not for a
   # number of announcements: registering a surface publishes twice — once for
@@ -36,8 +45,15 @@ defmodule RetroHexChatWeb.Live.OpenSurfacesTest do
     if predicate.(paths), do: paths, else: await_paths(predicate)
   end
 
-  defp await_open(path), do: await_paths(&MapSet.member?(&1, path))
-  defp await_gone(path), do: await_paths(&(not MapSet.member?(&1, path)))
+  defp await_open(nickname, path) do
+    await_paths(&MapSet.member?(&1, path))
+    settle(nickname)
+  end
+
+  defp await_gone(nickname, path) do
+    await_paths(&(not MapSet.member?(&1, path)))
+    settle(nickname)
+  end
 
   # A surface is a process, so a stand-in for one is a process. It reports back
   # when the registry has it, so the test never races the monitor.
@@ -97,11 +113,11 @@ defmodule RetroHexChatWeb.Live.OpenSurfacesTest do
       refute html =~ ~s(data-surface-path="/chat")
 
       chat = fake_surface(nickname, "/chat")
-      await_open("/chat")
+      await_open(nickname, "/chat")
       assert render(view) =~ ~s(data-surface-path="/chat")
 
       close(chat)
-      await_gone("/chat")
+      await_gone(nickname, "/chat")
       refute render(view) =~ ~s(data-surface-path="/chat")
     end
 
@@ -139,11 +155,11 @@ defmodule RetroHexChatWeb.Live.OpenSurfacesTest do
       refute MapSet.member?(open_paths(view), "/call/abc")
 
       surface = fake_surface(nickname, "/call/abc")
-      await_open("/call/abc")
+      await_open(nickname, "/call/abc")
       assert MapSet.member?(open_paths(view), "/call/abc")
 
       close(surface)
-      await_gone("/call/abc")
+      await_gone(nickname, "/call/abc")
       refute MapSet.member?(open_paths(view), "/call/abc")
     end
   end

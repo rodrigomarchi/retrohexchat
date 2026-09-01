@@ -89,14 +89,18 @@ Part of the [Agent Guide](../AGENT-GUIDE.md) (§13). Section numbers there are s
   so the assertion could never fail. Revert the fix once and watch the test go
   red — for a negative assertion that is not diligence, it is the only evidence
   the test works.
-- **Replace a `Process.sleep` loop with a message, not a shorter sleep.**
+- **Replace a `Process.sleep` loop with a message, and then with a call.**
   Subscribe the test to the same topic the screen under test is on and
-  `assert_receive` the announcement that says what the test is about. The
-  publisher reaches both subscribers in one pass before anything the test can
-  send afterwards, so once the receive returns the screen's copy is already in
-  its mailbox and the next `render/1` — a call — processes it before answering.
-  Wait for the **content**, never for a count of announcements: registering one
-  thing can publish twice, and counting is wrong the day either half moves.
+  `assert_receive` the announcement that says what the test is about — waiting
+  for the **content**, never for a count of announcements, because registering
+  one thing can publish twice and counting is wrong the day either half moves.
+  That receive proves the publisher announced and **proves nothing about the
+  screen**: a broadcast sends to each subscriber in turn, and the test process
+  can be reached first. Finish with a `GenServer.call` to the publisher; it is
+  answered only after the handler that did the sending has returned, so the
+  screen's copy is then in its mailbox ahead of anything the test sends next.
+  Getting this wrong loses about once per full suite run — often enough to
+  reach CI, rarely enough to look like somebody else's flake.
 - **`grep | head` is not an answer to "is this used?".** Test files sort before
   source files, so the first five hits were all tests and read as "no
   production callers". Deleting the helper turned seven specs red immediately;
