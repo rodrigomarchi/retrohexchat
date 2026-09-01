@@ -91,7 +91,17 @@
             way a Win98 application reported on itself. The tray speaks for the
             machine; this speaks for the window. --%>
       <:status>
-        <.chat_shell_status p2p_session={@p2p_session} group_call={@group_call} />
+        <.chat_shell_status
+          p2p_session={@p2p_session}
+          group_call={@group_call}
+          group_call_elsewhere={
+            GroupCallReadModel.elsewhere(
+              @session.channels,
+              @group_call_channel_summaries,
+              @open_surface_paths
+            )
+          }
+        />
       </:status>
 
       <%!-- MDI layout: conversations | chat | nicklist --%>

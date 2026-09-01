@@ -16,33 +16,33 @@ msgstr ""
 msgid "Call"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:149
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:180
 #, elixir-autogen, elixir-format
 msgid "Call: %{channel}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:125
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:145
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:156
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:176
 #, elixir-autogen, elixir-format
 msgid "Call: %{channel} (%{count})"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:133
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:164
 #, elixir-autogen, elixir-format
 msgid "Call: connecting %{channel}..."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:141
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:172
 #, elixir-autogen, elixir-format
 msgid "Call: error in %{channel}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:129
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:160
 #, elixir-autogen, elixir-format
 msgid "Call: joining %{channel}..."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:137
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:168
 #, elixir-autogen, elixir-format
 msgid "Call: negotiating %{channel}..."
 msgstr ""
@@ -138,8 +138,8 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1065
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1066
 #: lib/retro_hex_chat_web/live/app/call_live.ex:109
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:561
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:113
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:571
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:144
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:312
 #, elixir-autogen, elixir-format
 msgid "Group Call"
@@ -165,7 +165,7 @@ msgstr ""
 msgid "Group call ended: %{reason}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:119
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:150
 #, elixir-autogen, elixir-format
 msgid "Group call in %{channel} — click to focus"
 msgstr ""
@@ -233,7 +233,7 @@ msgstr ""
 msgid "Leave group call"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:120
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:151
 #, elixir-autogen, elixir-format
 msgid "Leave the group call"
 msgstr ""
@@ -1918,4 +1918,14 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:51
 #, elixir-autogen, elixir-format
 msgid "This call is open in another tab — click to go to it"
+msgstr ""
+
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:123
+#, elixir-autogen, elixir-format
+msgid "Call: %{channel} — in another tab"
+msgstr ""
+
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:125
+#, elixir-autogen, elixir-format
+msgid "The call in %{channel} is open in another tab of yours — click to go to it"
 msgstr ""

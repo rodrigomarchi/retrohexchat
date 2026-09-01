@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallReadModel do
 
   alias Phoenix.LiveView.Socket
   alias RetroHexChatWeb.App.GroupCallSummary
+  alias RetroHexChatWeb.App.Paths
 
   @doc """
   Rebuild the read-model for every channel in the session.
@@ -102,8 +103,48 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallReadModel do
   @spec live_summaries(Socket.t()) :: [{String.t(), map()}]
   def live_summaries(%{assigns: %{session: %{channels: channels}}} = socket)
       when is_list(channels) do
-    summaries = summaries(socket)
+    ordered(channels, summaries(socket))
+  end
 
+  def live_summaries(_socket), do: []
+
+  @doc """
+  The call this person is watching from somewhere else, if there is one.
+
+  The status zone's third shape. A conference can be live, this reader can be
+  in it, and the screen showing it can be a tab that is not this one — and
+  until now the chat drew nothing at all in that case, because everything it
+  draws about a call comes from the embedded surface's assign, which does not
+  exist when the surface is elsewhere.
+
+  Derived rather than assigned: both halves are already here. The summaries
+  know the room's address and `Live.OpenSurfaces` knows which addresses are
+  open, so a third assign would only be a third thing to keep in step. Ordered
+  by the session's channel list for the same reason `live_summaries/1` is —
+  with two calls open in two tabs, which one the one-line zone names must not
+  depend on hashing.
+  """
+  @spec elsewhere([String.t()], %{String.t() => map()}, MapSet.t(String.t())) ::
+          %{channel_name: String.t(), path: String.t()} | nil
+  def elsewhere(channels, summaries, %MapSet{} = open_paths)
+      when is_list(channels) and is_map(summaries) do
+    channels
+    |> ordered(summaries)
+    |> Enum.find_value(fn {channel_name, summary} ->
+      path = call_path(summary)
+
+      if path && MapSet.member?(open_paths, path) do
+        %{channel_name: channel_name, path: path}
+      end
+    end)
+  end
+
+  def elsewhere(_channels, _summaries, _open_paths), do: nil
+
+  # Takes the pieces rather than the socket because the caller is a template,
+  # and inside one `@socket` carries no assigns at all — a version that read
+  # them there would answer "nothing is open" forever, in silence.
+  defp ordered(channels, summaries) do
     channels
     |> Enum.filter(&is_binary/1)
     |> Enum.flat_map(fn channel_name ->
@@ -114,5 +155,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallReadModel do
     end)
   end
 
-  def live_summaries(_socket), do: []
+  defp call_path(%{room: %{token: token}}) when is_binary(token) and token != "",
+    do: Paths.call_path(token)
+
+  defp call_path(_summary), do: nil
 end

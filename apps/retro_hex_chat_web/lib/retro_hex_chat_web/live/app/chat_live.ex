@@ -72,6 +72,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.ChatContext
   alias RetroHexChatWeb.ChatLive.ChatTitle
+  alias RetroHexChatWeb.ChatLive.GroupCallReadModel
   alias RetroHexChatWeb.ChatLive.SpaceReadModel
 
   alias RetroHexChatWeb.ChatLive.Components.{

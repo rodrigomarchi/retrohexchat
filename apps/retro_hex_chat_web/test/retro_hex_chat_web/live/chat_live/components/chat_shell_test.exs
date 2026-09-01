@@ -108,4 +108,39 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
       assert ChatShell.online_buddy_count(nil) == 0
     end
   end
+
+  describe "the window's status bar, when the call is somewhere else" do
+    defp status(overrides) do
+      render_component(&ChatShell.chat_shell_status/1, overrides)
+    end
+
+    test "says which channel, and is a way to the tab rather than a control" do
+      html = status(%{group_call_elsewhere: %{channel_name: "#retro", path: "/call/tok"}})
+
+      assert html =~ ~s(data-testid="status-bar-group-call")
+      assert html =~ ~s(data-surface-path="/call/tok")
+      assert html =~ ~s(phx-hook="SurfaceTabLinkHook")
+      assert html =~ "#retro"
+      assert html =~ "in another tab"
+
+      # Leaving a call is done from the screen that is in it. A Leave here would
+      # act on a session this window is not holding.
+      refute html =~ ~s(data-testid="status-bar-group-call-stop")
+    end
+
+    test "a call on this screen keeps the zone it always had" do
+      html =
+        status(%{
+          group_call: %{channel_name: "#retro", status: :connected, participants: ["ana"]},
+          group_call_elsewhere: %{channel_name: "#retro", path: "/call/tok"}
+        })
+
+      assert html =~ ~s(data-testid="status-bar-group-call-stop")
+      refute html =~ ~s(phx-hook="SurfaceTabLinkHook")
+    end
+
+    test "no call anywhere draws no zone at all" do
+      refute status(%{}) =~ ~s(data-testid="status-bar-group-call")
+    end
+  end
 end

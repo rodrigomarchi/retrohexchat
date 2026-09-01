@@ -589,6 +589,52 @@ lá. Elas viraram assertivas diretas.
 
 ---
 
+## Iteração 9 — Q6: a zona de status dizendo onde
+
+A Iteração 6 deixou isto de fora com a razão certa: tudo o que o chat desenha
+sobre uma chamada vem do assign da superfície embutida, e com a chamada em
+outra aba esse assign não existe. O conserto é **derivar**, não assinar mais um
+estado: as duas metades já estavam na tela.
+
+`GroupCallReadModel.elsewhere/3` cruza os summaries (que sabem o token da sala)
+com `@open_surface_paths` (que sabe quais endereços estão abertos) e devolve o
+canal cuja chamada está numa aba desta pessoa. A zona ganha uma terceira forma:
+âncora com o `SurfaceTabLinkHook` para o endereço, **sem o botão de sair** —
+sair de uma chamada se faz na tela que está nela.
+
+### Duas coisas que quase deram errado
+
+* **`@socket` dentro de um template não carrega assigns.** A primeira versão era
+  `elsewhere(@socket, @open_surface_paths)` e teria respondido "nada aberto"
+  para sempre, em silêncio. É a mesma armadilha que o `@moduledoc` do
+  `Live.OpenSurfaces` já documenta — e eu caí nela mesmo assim. A função passou
+  a receber as peças (`canais, summaries, abertos`), o que também a deixou pura
+  e testável sem socket.
+* **Duas chamadas em duas abas são uma zona de uma linha.** Qual das duas ela
+  nomeia não pode depender da ordem de um mapa; segue a ordem dos canais da
+  sessão, como o `live_summaries/1` ao lado, e há um teste que troca a ordem
+  para provar.
+
+### O que ficou de fora, dito
+
+**A zona de P2P não ganhou a terceira forma.** Quando a sessão vai para outra
+aba, a página embutida não some — ela fica `displaced: true` e desenha o próprio
+aviso com a oferta de retomar. O snapshot que o chat recebe (`host_snapshot/1`)
+não carrega `displaced`, então a zona mostra o último estado conhecido. É um
+defeito de mesma família e **não foi consertado aqui**: o caso da conferência
+era o silêncio total, este é uma frase desatualizada ao lado de uma tela que já
+diz a verdade.
+
+### Verificado no navegador
+
+`K8` em `surface-cross-tab.spec.ts`: Bob abre a chamada, Alice **nunca** abre a
+janela embutida, segue o link da aba, e a barra de status do chat dela passa a
+dizer o canal e "in another tab" — sem ela tocar no chat, porque a informação
+vem do registro. Fecha a aba, a zona some. E o componente vai vermelho se a
+terceira forma for removida (revertido uma vez para ver).
+
+---
+
 ## Aprendizados que podem sair daqui
 
 Candidatos a virar regra durável quando a onda fechar. **Ainda não movidos.**

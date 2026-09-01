@@ -3,6 +3,7 @@
  * @flow K5 [done] A surface open beside the chat offers to go back to the tab that exists instead of opening a second chat, and says so when no tab answers
  * @flow K6 [done] Copy on a surface's share bar puts the address on the clipboard with no chat tab involved
  * @flow K7 [done] Opening the conference you are already in at its own address takes the seat rather than adding one: the other participant still sees a single row for you, and the room still counts two
+ * @flow K8 [done] With the conference open at its own address and not in the chat's window, the chat's status bar says the call is in another tab and is a way over to it
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -243,3 +244,68 @@ function participantRows(page: Page, nickname?: string) {
   const rows = page.locator("[data-group-call-participant]");
   return nickname ? rows.filter({ hasText: nickname }) : rows;
 }
+
+/**
+ * The status zone's third shape (wave 6 §1.2). Everything the chat draws about
+ * a call comes from the embedded surface's assign, so with the call in a tab of
+ * its own the chat used to say nothing at all — the one case where "there is a
+ * call and you are in it" was invisible on the screen you were looking at.
+ */
+test("the chat's status bar says the call is in another tab (K8)", async ({
+  browser,
+}) => {
+  test.setTimeout(90_000);
+  const alice = await newGroupCallUser(browser, "xtsa");
+  const bob = await newGroupCallUser(browser, "xtsb");
+  const channel = uniqueChannel("xtabstatus");
+
+  try {
+    for (const user of [alice, bob]) {
+      await user.chat.sendMessage(`/join ${channel}`);
+      await user.chat.expectTabVisible(channel);
+      await user.chat.switchToTab(channel);
+      await expect(user.page.getByTestId("group-call-open")).toBeEnabled();
+    }
+
+    // Bob opens the call; Alice never opens the window, so her chat has no
+    // conference assign to draw from — only the read-model and the open set.
+    await joinConference(bob.page);
+    await expect(bob.page.getByTestId("group-call-window")).toBeVisible();
+
+    await expect(alice.page.getByTestId("status-bar-group-call")).toHaveCount(
+      0,
+    );
+
+    await alice.page.getByTestId("group-call-channel-popover-toggle").click();
+    const tabLink = alice.page.getByTestId("group-call-channel-popover-tab");
+    const callPath = await tabLink.getAttribute("href");
+    expect(callPath).toMatch(/^\/call\//);
+
+    const callTab = await alice.ctx.newPage();
+    await callTab.goto(callPath as string);
+    await expect(callTab.getByTestId("group-call-prejoin")).toBeVisible({
+      timeout: 20_000,
+    });
+
+    // The chat learns from the registry, not from the tab, so the zone appears
+    // without Alice touching her chat again.
+    const zone = alice.page.getByTestId("status-bar-group-call");
+    await expect(zone).toBeVisible({ timeout: 15_000 });
+    await expect(zone).toContainText(channel);
+    await expect(zone).toContainText("another tab");
+    await expect(zone).toHaveAttribute("data-surface-path", callPath as string);
+
+    // A way over, not a control: there is no Leave for a call this window is
+    // not holding.
+    await expect(
+      alice.page.getByTestId("status-bar-group-call-stop"),
+    ).toHaveCount(0);
+    await shot(alice.page, "surface-status-bar-call-elsewhere");
+
+    // And it goes when the tab does.
+    await callTab.close();
+    await expect(zone).toHaveCount(0, { timeout: 15_000 });
+  } finally {
+    await closeGroupCallUsers([alice, bob]);
+  }
+});

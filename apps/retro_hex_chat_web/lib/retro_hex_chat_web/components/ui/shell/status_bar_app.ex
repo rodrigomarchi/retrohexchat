@@ -38,7 +38,12 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
 
   attr :group_call, :map,
     default: nil,
-    doc: "Active group-call display (%{label, title, stop_title})"
+    doc: """
+    Group-call display. `%{label, title, stop_title}` for a call on this screen;
+    `%{label, title, path}` for one this person has open at its own address, in
+    a tab that is not this one — that shape is a link to that tab and carries no
+    Leave, because leaving a call is done from the screen that is in it.
+    """
 
   attr :on_group_call_click, :any, default: nil
   attr :on_group_call_stop, :any, default: nil
@@ -148,7 +153,29 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
       :if={@group_call}
       class="flex items-center gap-retro-2 min-w-0 px-[2px]"
     >
+      <%!-- The call is on another screen of this person's, so this zone is a
+            way to that screen and not a control over the call. It stays an
+            anchor with the real address: the hook asks the tab to come
+            forward, and the click after a silent refusal follows the link. --%>
+      <.link
+        :if={@group_call[:path]}
+        href={@group_call.path}
+        target="_blank"
+        rel="noopener"
+        id="status-bar-group-call-elsewhere"
+        phx-hook="SurfaceTabLinkHook"
+        data-surface-path={@group_call.path}
+        class="inline-flex items-center gap-retro-2 min-w-0 h-full min-h-0 bg-transparent"
+        title={@group_call.title}
+        aria-label={@group_call.title}
+        data-testid="status-bar-group-call"
+      >
+        <Icons.icon_protocol_conference_compact class="w-3 h-3 shrink-0" />
+        <span class="truncate text-xs">{@group_call.label}</span>
+      </.link>
+
       <button
+        :if={!@group_call[:path]}
         type="button"
         class="inline-flex items-center gap-retro-2 min-w-0 h-full min-h-0 bg-transparent"
         phx-click={@on_group_call_click}
@@ -160,6 +187,7 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         <span class="truncate text-xs">{@group_call.label}</span>
       </button>
       <button
+        :if={!@group_call[:path]}
         type="button"
         class="inline-flex items-center justify-center h-full min-h-0 bg-transparent shrink-0"
         phx-click={@on_group_call_stop}

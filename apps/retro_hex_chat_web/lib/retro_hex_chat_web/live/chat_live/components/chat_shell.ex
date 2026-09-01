@@ -71,6 +71,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
   attr :p2p_session, :map, default: nil, doc: "The host's @p2p_session assign"
   attr :group_call, :map, default: nil, doc: "The host's @group_call assign"
 
+  attr :group_call_elsewhere, :map,
+    default: nil,
+    doc: """
+    `%{channel_name, path}` when the reader has a live call open at its own
+    address instead of here — from `GroupCallReadModel.elsewhere/2`. Only read
+    when there is no call on this screen: a conference in the window beside the
+    status bar is not somewhere else.
+    """
+
   @doc """
   The chat window's own status bar: what this session is doing right now.
 
@@ -83,7 +92,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
   def chat_shell_status(assigns) do
     assigns =
       assign(assigns,
-        group_call_display: group_call_display(assigns.group_call),
+        group_call_display:
+          group_call_display(assigns.group_call) ||
+            group_call_elsewhere_display(assigns.group_call_elsewhere),
         p2p: p2p_display(assigns.p2p_session)
       )
 
@@ -101,6 +112,26 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
     />
     """
   end
+
+  # The third shape of the zone: the call is running and this reader is in it,
+  # but the screen showing it is a tab that is not this one. There is nothing to
+  # focus here and nothing to leave from here — only a way over to it.
+  @spec group_call_elsewhere_display(map() | nil) :: map() | nil
+  defp group_call_elsewhere_display(%{channel_name: channel_name, path: path})
+       when is_binary(channel_name) and is_binary(path) do
+    %{
+      label: dgettext("group_call", "Call: %{channel} — in another tab", channel: channel_name),
+      title:
+        dgettext(
+          "group_call",
+          "The call in %{channel} is open in another tab of yours — click to go to it",
+          channel: channel_name
+        ),
+      path: path
+    }
+  end
+
+  defp group_call_elsewhere_display(_elsewhere), do: nil
 
   @spec group_call_display(map() | nil) :: map() | nil
   defp group_call_display(nil), do: nil

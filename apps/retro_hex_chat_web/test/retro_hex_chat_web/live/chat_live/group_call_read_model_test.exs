@@ -105,4 +105,52 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallReadModelTest do
       assert ReadModel.refresh_all(socket()) |> ReadModel.channels() == MapSet.new()
     end
   end
+
+  describe "elsewhere/3" do
+    defp summaries(pairs) do
+      Map.new(pairs, fn {channel, token} ->
+        {channel, %{room: %{token: token, channel_name: channel}}}
+      end)
+    end
+
+    test "names the channel whose call this person has open at its own address" do
+      assert ReadModel.elsewhere(
+               ["#retro"],
+               summaries([{"#retro", "tok"}]),
+               MapSet.new(["/call/tok"])
+             ) == %{channel_name: "#retro", path: "/call/tok"}
+    end
+
+    test "a live call with no tab of its own is not somewhere else" do
+      assert ReadModel.elsewhere(
+               ["#retro"],
+               summaries([{"#retro", "tok"}]),
+               MapSet.new(["/chat"])
+             ) ==
+               nil
+    end
+
+    test "a tab for a call this person's channels do not carry is not theirs to name" do
+      assert ReadModel.elsewhere(["#retro"], %{}, MapSet.new(["/call/tok"])) == nil
+    end
+
+    # Two calls in two tabs is one zone and one line, so which one it names has
+    # to be the same answer every render — the session's channel order, never a
+    # map's.
+    test "picks by the session's channel order and not by hashing" do
+      summaries = summaries([{"#retro", "one"}, {"#lobby", "two"}])
+      open = MapSet.new(["/call/one", "/call/two"])
+
+      assert ReadModel.elsewhere(["#lobby", "#retro"], summaries, open).channel_name == "#lobby"
+      assert ReadModel.elsewhere(["#retro", "#lobby"], summaries, open).channel_name == "#retro"
+    end
+
+    test "a summary with no room token has no address to go to" do
+      assert ReadModel.elsewhere(
+               ["#retro"],
+               %{"#retro" => %{room: %{token: nil}}},
+               MapSet.new(["/call/tok"])
+             ) == nil
+    end
+  end
 end

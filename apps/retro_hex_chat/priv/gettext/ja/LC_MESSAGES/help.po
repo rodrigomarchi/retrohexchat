@@ -4849,11 +4849,6 @@ msgstr "専用タブ"
 msgid "share a game"
 msgstr "ゲームを共有"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1101
-#, elixir-autogen, elixir-format
-msgid "A conference can run in a browser tab of its own. Open the summary next to Call in the channel toolbar and choose Open in a tab; the call gets the whole window and stops competing with the chat for the browser. Closing that tab is not leaving: the room keeps you for the reconnection window, and reopening the address puts you straight back in. Only Leave, which asks first, actually ends your part in the call."
-msgstr "会議はブラウザーの専用タブで実行できます。チャンネルのツールバーの「通話」の隣にある概要を開き、「タブで開く」を選ぶと、通話がウィンドウ全体を使い、チャットとブラウザーを取り合わなくなります。そのタブを閉じても退出にはなりません。部屋は再接続の猶予のあいだ席を保持し、アドレスを開き直せばそのまま中に戻ります。参加を実際に終えるのは、先に確認する「退出」だけです。"
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1088
 #, elixir-autogen, elixir-format
 msgid "Conference in Its Own Tab"
@@ -4978,3 +4973,8 @@ msgstr "チャンネルの音声・ビデオ会議に参加します。チャン
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Select and switch between microphones, cameras, and speakers during calls."
 msgstr "通話中にマイク、カメラ、スピーカーを切り替えます。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1101
+#, elixir-autogen, elixir-format, fuzzy
+msgid "A conference can run in a browser tab of its own. Open the summary next to Call in the channel toolbar and choose Open in a tab; the call gets the whole window and stops competing with the chat for the browser. While it is over there the chat says so along the bottom of its window — click that to go to the tab, which is why there is no Leave beside it: you leave a call from the screen that is in it. Closing that tab is not leaving either: the room keeps you for the reconnection window, and reopening the address puts you straight back in. Only Leave, which asks first, actually ends your part in the call."
+msgstr "会議はブラウザーの専用タブで実行できます。チャンネルのツールバーの「通話」の隣にある概要を開き、「タブで開く」を選ぶと、通話がウィンドウ全体を使い、チャットとブラウザーを取り合わなくなります。そのタブを閉じても退出にはなりません。部屋は再接続の猶予のあいだ席を保持し、アドレスを開き直せばそのまま中に戻ります。参加を実際に終えるのは、先に確認する「退出」だけです。"
