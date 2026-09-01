@@ -260,6 +260,32 @@ is not, so changing one means arguing with the reason rather than the line.
   tests missed the `NoRouteError` on `/pt-BR/join/…` because every one of them
   built the path the way the code did. Iterate `SEO.localized_locale_segments/0`
   instead of listing prefixes by hand.
+- **A surface's `mount/3` must not write to the domain.** It runs twice and the
+  first run is a plain HTTP request, so every write there belongs to anything
+  that merely fetches the address — a prefetch, a link check, a crawler. It is
+  the pair of the reading rule above: a surface loads its initial data in its
+  own mount, and it takes nothing while doing so. The gate goes around the
+  **write**, never around the whole mount, or the dead render stops painting
+  and the first paint the surfaces were built for is gone.
+- **A refusal has to survive the dead render, and a refusal that depends on a
+  seat nobody has taken yet cannot.** The two halves together are the shape of
+  the gate: decide what to *say* on both renders, decide what to *do* only on
+  the connected one.
+- **State the browser writes over server markup needs `phx-update="ignore"`.**
+  The pre-join permission warning was written by its hook and erased six
+  milliseconds later by the next LiveView patch — through `setAttribute`, so no
+  `classList` spy saw it. Give the region an id and the flag, or let the server
+  own the state outright; there is no third option that survives a patch.
+- **A live card re-streams only the rows that changed.** Re-resolving is cheap,
+  a `reset` is not: it throws a reader in the middle of a scrollback down to
+  the newest line. The pattern is the link preview's — re-insert the rows whose
+  content actually moved, and nothing else.
+- **A subscription that outlives its reason turns a conversation into a
+  firehose.** The chat follows a space's roster only while a card for it is on
+  screen. The component that renders announces the set; the process that
+  subscribes does the arithmetic on the difference — and it must be a
+  difference, because `Phoenix.PubSub.subscribe` is not idempotent and three
+  subscribes are three deliveries.
 - **Nothing here notices that a screen is ugly.** Every one of the ten defects
   worth remembering from this work — a window laid out at zero height, a
   duplicated card, a camera preview stretched over 440 px of black, a footer

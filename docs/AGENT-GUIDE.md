@@ -456,7 +456,13 @@ There is exactly ONE hook registration pattern; do not reintroduce local choice 
   active, and all startup pushes must be idempotent (a duplicate start must not create a second
   `RTCPeerConnection`, media/file session, game engine, or timer). Client registers `handleEvent`
   **before** `pushEvent("*_ready")`, guards duplicate starts, queues out-of-order signals, and
-  cleans up timers/listeners on `destroyed`.
+  cleans up timers/listeners on `destroyed`. **The server half is not optional and
+  its absence is silent:** `LobbyWebRTCHook` had none, so a page resuming into a
+  running session pushed its start while the implementation was still being
+  imported, the event went nowhere, and the surface — having recorded that it
+  started — never pushed it again. The restart that followed reached a
+  connection with no role and no ICE servers and gave up without building
+  anything. Nothing logged, and the answerer simply sat there.
 - **A registered hook is not a mounted hook, and nothing used to say so.**
   `critical_hooks.js` accepts any name; only a `phx-hook=` in a template puts it
   to work. `SurfacePresenceHook` was registered, imported and bundled for a
@@ -506,6 +512,14 @@ is a signal the logic is trapped in the wrong layer.
 **The operational test:** if a test needs `Object.create(Hook)` or reaches for a `hook._private`
 method, the logic is in the wrong place. Move it to the `lib/` module it belongs to and test it
 there.
+
+**State a hook writes over server markup needs `phx-update="ignore"` and an id.**
+The server renders a region, the hook writes a class and a text into it, and the
+next LiveView patch of that subtree restores the template over both — through
+`setAttribute("class", …)`, so a `classList` spy sees nothing and the write
+looks like it worked for the six milliseconds before the patch. Either give the
+region the flag and let the browser own it, or push the state to the server and
+let it render; there is no third arrangement that survives a patch.
 
 **Enforcement** (`enforce_hooks_contract.cjs`, via `make lint.hooks`), each a ratchet that only
 falls: a 200-line hook budget; a forbidden-primitive list in `js/hooks/`

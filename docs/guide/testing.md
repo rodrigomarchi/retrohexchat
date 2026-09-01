@@ -79,3 +79,32 @@ Part of the [Agent Guide](../AGENT-GUIDE.md) (§13). Section numbers there are s
   `waitForTimeout`s.
 - Playwright E2E requires **`mix assets.build` first**, or it serves a stale bundle without the
   new hook.
+- **`live/2` always connects, so a whole class of defect is invisible to it.** A
+  surface's `mount/3` runs twice and the first is an ordinary GET; anything it
+  writes belongs to whatever merely *fetches* the address. A prefetch once took
+  a game's seat and fired a live session's takeover, and every LiveView test in
+  the suite was green. `get/2` is the only test that sees it.
+- **A test that asserts an absence is the easiest one to write green by
+  accident.** `toHaveCount(0)` passed for a note that nothing rendered at all,
+  so the assertion could never fail. Revert the fix once and watch the test go
+  red — for a negative assertion that is not diligence, it is the only evidence
+  the test works.
+- **Replace a `Process.sleep` loop with a message, not a shorter sleep.**
+  Subscribe the test to the same topic the screen under test is on and
+  `assert_receive` the announcement that says what the test is about. The
+  publisher reaches both subscribers in one pass before anything the test can
+  send afterwards, so once the receive returns the screen's copy is already in
+  its mailbox and the next `render/1` — a call — processes it before answering.
+  Wait for the **content**, never for a count of announcements: registering one
+  thing can publish twice, and counting is wrong the day either half moves.
+- **`grep | head` is not an answer to "is this used?".** Test files sort before
+  source files, so the first five hits were all tests and read as "no
+  production callers". Deleting the helper turned seven specs red immediately;
+  count the hits, or grep the source tree alone.
+- **A recovery spec only means something run inside its own file.** A reload
+  race depends on what the browser already has cached, so the same spec passed
+  three times alone while failing every time in the file it lives in.
+- **Instrumentation moves the race.** Turning on debug logging made a
+  reproducible failure disappear. Instrument the browser — a `WebSocket` tap
+  through `addInitScript` survives a reload and costs the server nothing — and
+  raise server logging to a level the default already prints.

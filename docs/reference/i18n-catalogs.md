@@ -72,6 +72,34 @@ que reexporta esses arquivos para o runtime e para os testes.
   `scripts/i18n_source_fallback_check.py`.
 - Traducao automatica e aceita como rascunho funcional, mas revisao humana ainda
   e necessaria para terminologia, tom e nomes de recursos.
+- `fuzzy` **renderiza**. O Gettext serve uma traducao marcada `fuzzy` como
+  qualquer outra, entao ela nao e "quase pronta", e o texto antigo saindo na
+  tela com a confianca do texto novo. Medido em 2026-09-01: `repeat window`
+  aparecia como "janela limpa", `Sharing a Game` como "Iniciando um jogo solo",
+  e o convite P2P em chines carregava `/p2p/ %{token}` — com espaco, link
+  morto. Limpar a bandeira e uma decisao por entrada, nunca em lote.
+
+### O buraco que os dois checkers nao veem
+
+`i18n.catalog.check` conta entradas **presentes** no `.po`; `i18n.gettext.check`
+afirma que o `.pot` esta fresco. Nenhum dos dois pergunta se todo `msgid` do
+`.pot` existe em todo `.po` — e uma entrada que nunca foi mergeada nao esta
+vazia, ela nao existe. Medido em 2026-09-01, com os dois checkers verdes:
+
+| Dominio | `msgid` no `.pot` e ausentes do `pt_BR` |
+| --- | --- |
+| `retro_hex_chat_web/help_bots` | 29 |
+| `retro_hex_chat_web/dialogs` | 6 |
+| `retro_hex_chat/commands` | 5 |
+| `retro_hex_chat_web/help` | 3 |
+| `retro_hex_chat/bots`, `channels`, `lobby`, `help_arcade`, `ui` | 1 cada |
+| **total** | **48** |
+
+Sao 48 × 13 traducoes e uma checagem nova — "todo `msgid` do `.pot` existe em
+todo `.po`" — e o trabalho ainda nao foi feito. Rodar
+`make i18n.gettext.merge` num desses dominios traz as entradas para dentro dos
+catalogos e, a partir dai, o gate cobra: merge um dominio so quando estiver
+disposto a traduzir o que ele trouxer.
 
 ## Fluxo
 

@@ -65,17 +65,18 @@ migration, context, schema and hook counts — never write them into prose.
 
 - [plans/retro-games-ai.md](plans/retro-games-ai.md) — nova superfície `Retro Games`
   para jogos nativos do chat em modo single player contra AI, começando pelo Hex Pong.
-- [plans/shareable-surfaces-handover.md](plans/shareable-surfaces-handover.md) —
-  **comece por aqui**: o estado das superfícies compartilháveis, o que falta e em
-  que ordem. Os outros três são o detalhe —
-  [wave-7](plans/shareable-surfaces-wave-7.md) (os consertos da auditoria, com as
-  doze decisões travadas na §8), [o diário](plans/shareable-surfaces-wave-7-progress.md),
-  [a auditoria](plans/shareable-surfaces-audit.md) e
-  [wave-8](plans/shareable-surfaces-wave-8.md) (o card ao vivo). Os quatro saem
-  juntos quando a onda 8 fechar.
-
 The channel/PM unification shipped and its plan was deleted; the rule it produced
 is Principle 12 in `AGENT-GUIDE.md`.
+
+Shareable surfaces shipped through wave 8 and its five documents were deleted, as
+they instructed. What they produced lives where the code is: the surface rules in
+[`guide/surfaces.md`](guide/surfaces.md) §19, the readiness protocol and the
+`phx-update="ignore"` rule in `AGENT-GUIDE.md` §15, the testing gotchas in
+[`guide/testing.md`](guide/testing.md), and the two decisions that were argued and
+refused — a readable space address, and a rate limit that belongs at the edge — in
+the `@moduledoc` of the modules they govern. The i18n debt one of those waves
+measured but did not clear is in
+[`reference/i18n-catalogs.md`](reference/i18n-catalogs.md).
 
 `plans/agent-docs-audit.md` and its `agent-docs-removals.txt` are the record of a
 completed audit rather than work in flight. The audit says it may be deleted once

@@ -33,5 +33,10 @@ written rationale stops telling you anything. Overrides live in `CHUNK_OVERRIDES
 in `assets/scripts/bundle_budget.cjs` and each carries a reason. See
 [`docs/reference/ci-pipeline.md`](../../docs/reference/ci-pipeline.md).
 
-**No silent catch.** Every `try/catch` in connection/media/game JS must log or
-surface — no silent swallow (best-effort audio is the sole exception).
+**No silent catch, and a promise counts.** Every `try/catch` in
+connection/media/game JS must log or surface — no silent swallow (best-effort
+audio is the sole exception). A throw inside a `.then` is the same bug wearing
+a different shape: it becomes an unhandled rejection, eats the rest of the
+callback, and says nothing anywhere. `log.info` does not exist — the logger is
+`Object.freeze({debug, error, warn})` — and calling it inside a `.then` is
+exactly how the cross-tab note came to never appear.
