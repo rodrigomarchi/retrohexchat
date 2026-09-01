@@ -21,11 +21,16 @@ apagado.
 | E | o que apodrece (R.5, A.6, R.8) | **fechada** |
 | F | o resto (R.9, R.11, R.12, R.14, R.15) | **fechada**, menos dois itens — ver Iteração 6 |
 
-Decisões da §8: pedidas, não respondidas, e **tomadas pela recomendação escrita
-no plano** para não parar o trabalho. Todas reversíveis; a que mais vale rever é
-a D7.3.
+A §8 do plano deixou de ser quatro decisões e virou o **questionário de
+fechamento**: doze perguntas, `Q1`–`Q12`, cada uma com opções, custo e
+recomendação. As antigas `D7.1`–`D7.4` estão lá renumeradas (`Q4`, `Q2`, `Q5`,
+`Q6`).
 
-| | Tomada como | Onde ela já vale |
+Três delas foram tomadas pela recomendação para não parar o trabalho, e estão
+marcadas assim no questionário. Todas reversíveis; a que mais vale confirmar é a
+`Q5`, porque a fase E já construiu em cima dela.
+
+| Antiga | Tomada como | Onde ela já vale |
 |---|---|---|
 | D7.1 | metade barata feita, endereço opaco adiado | fase D |
 | D7.2 | ainda em aberto — o spec do answerer segue vermelho | fase C |

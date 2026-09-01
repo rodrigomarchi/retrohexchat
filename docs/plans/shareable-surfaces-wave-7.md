@@ -278,51 +278,224 @@ O que **não** entra aqui: `:p2p_invite` virar variante do `:share_card`
 
 ---
 
-## 8. Decisões que esta onda precisa de você
+## 8. Questionário de fechamento
 
-As quatro mudam o tamanho do trabalho, e nenhuma é minha para tomar sozinho.
+As doze perguntas que faltam para esta onda acabar e o plano poder ser apagado.
+Cada uma é uma bifurcação de verdade — muda o tamanho do trabalho, ou muda o
+produto — e nenhuma é minha para tomar sozinho. As quatro primeiras (§8 na versão
+anterior deste arquivo, `D7.1`–`D7.4`) estão aqui renumeradas, e as três que já
+foram tomadas por recomendação estão marcadas assim.
 
-### D7.1 — O endereço do space continua legível?
+**Como responder:** o número e a letra bastam (`Q1: b`). Onde a recomendação já
+serve, `ok` também. O que for respondido eu escrevo aqui como decisão travada,
+com o porquê, e sigo.
 
-`/space/<base64(#canal)>` é decodificável com um comando. Quem vê o card que
-esconde o nome do canal lê o nome no `href` do botão. Um id opaco resolve, e
-custa: tabela nova, migração, links existentes quebrados, e `SpaceRef` é
-contrato com o `SpaceCanvasHook` e com quatro specs de Playwright.
+---
 
-*Recomendação: fazer a metade barata agora (§5.1) e abrir a decisão do endereço
-separado, com o número de spaces de canal privado em produção na mão.* Um space
-de canal público não vaza nada, e se quase todos forem públicos o custo não se
-justifica.
+### Q1 — O card ao vivo na conversa (R.2) — **a maior que sobrou**
 
-### D7.2 — O answerer que recarrega: conserto ou limitação?
+`P3` é decisão de produto travada e o `ux.md §2.1` desenha três kinds × dois
+estados, contagem de participantes, `[Copiar link]` e cards terminais com a
+próxima ação. O que existe são 69 linhas com um `[Join]` que continua apontando
+para salas mortas, calculado uma vez, sem assinatura nenhuma.
 
-`chat-call-fault-injection.spec.ts:355` asserta que a mídia se restabelece
-quando o answerer recarrega. A onda 4B registrou isso como **limitação
-conhecida**. Um spec vermelho permanente é pior que qualquer das duas saídas.
+| | Opção | Custo | Consequência |
+|---|---|---|---|
+| **a** | plano próprio (onda 8), com o `ux.md` recuperado do git | alto | é a entrega inteira, feita como as ondas 1–6 foram |
+| **b** | metade barata agora: estado terminal + contagem + `[Copiar link]`, **sem** a assinatura de space | médio | mata o beco (um card morto para de oferecer `[Join]`); o card ainda não é ao vivo |
+| **c** | redesenhar: `P3` pode não valer o tráfego que custa | médio | reabre uma decisão travada, com número na mão |
+| **d** | não fazer, e apagar a promessa do `ux.md` | nenhum | honesto, e perde a razão de o card existir |
 
-*Recomendação: consertar.* É o caminho mais frágil do produto e o único vermelho
-dos cinco que é comportamento que a pessoa percebe. Se não for consertar agora,
-o spec vira `test.fixme` **com o link para a limitação escrita**, nunca um
-`skip` mudo.
+*Recomendação: **a**.* Misturar uma entrega numa onda de conserto a entregaria
+como o menor denominador de uma lista de bugs. Se a pressa for grande, **b**
+resolve a parte que é defeito (o beco) e deixa a parte que é feature.
 
-### D7.3 — Um link compartilhado expira?
+---
 
-Hoje nenhum expira. Um link de chamada vale enquanto a sala viver; um de space
-vale para sempre, porque um space não acaba.
+### Q2 — O answerer que recarrega (D7.2, R.13) — **bloqueia o fechamento**
 
-*Recomendação: não expirar, e deixar a revogação ser a saída.* `P4` diz que
-depois de começar o link continua valendo, e um link que morre sozinho contradiz
-o motivo do plano existir. Mas isto precisa ser dito de propósito, porque hoje é
-um esquecimento e não uma decisão.
+`chat-call-fault-injection.spec.ts:355`: a mídia não se restabelece quando o
+answerer recarrega. A onda 4B registrou como limitação conhecida; o spec asserta
+como comportamento. É o único dos cinco vermelhos que uma pessoa percebe.
 
-### D7.4 — R.9 inteiro, ou só a barra de abas?
+| | Opção | Custo |
+|---|---|---|
+| **a** | consertar | desconhecido — é recuperação de mídia WebRTC, pode ser fundo |
+| **b** | `test.fixme` com link para a limitação escrita, e uma issue | minutos |
+| **c** | investigar com prazo (2 h), e então **a** ou **b** com o número na mão | 2 h + o que vier |
 
-O `ux.md §2.7` pede três coisas: o estado "em outra aba" na barra, a nicklist
-marcando quem está na chamada, e a zona de status dizendo onde.
+*Recomendação: **c**.* Recomendei **a** antes e recomendo **c** agora: eu não sei
+o tamanho, e nesta onda eu já errei três vezes estimando um defeito antes de
+olhar. Um `skip` mudo não é opção em nenhum cenário.
 
-*Recomendação: a barra de abas e a zona de status nesta onda; a nicklist junto
-com o card ao vivo (§13), porque as duas leem o mesmo summary e fazer duas vezes
-a mesma leitura é como as duas divergem.*
+---
+
+### Q3 — Os dois specs de pré-join (R.13) — **produto, não teste**
+
+Diagnóstico até onde foi: (1) a preferência de dispositivo não sobrevive a
+cancelar-e-reabrir o pré-join; (2) a caixa de aviso de permissão aparece com o
+botão `Retry` e **texto vazio** — localizado até `_showWarning` receber string
+vazia, sem causa raiz. Os dois precedem o plano.
+
+| | Opção |
+|---|---|
+| **a** | consertar os dois nesta onda |
+| **b** | só o aviso vazio — é o que a pessoa vê e não entende |
+| **c** | dívida escrita, com issue, e seguir |
+
+*Recomendação: **a**.* "Todo erro encontrado é meu" é regra da casa, e um aviso
+de permissão sem texto é a tela dizendo que algo deu errado sem dizer o quê.
+
+---
+
+### Q4 — O endereço do space (D7.1, R.3)
+
+`/space/<base64(#canal)>` decodifica com um comando, então o card que esconde o
+nome do canal o publica no `href` do próprio botão. A metade barata (a recusa
+parou de nomear) já foi feita.
+
+| | Opção | Custo |
+|---|---|---|
+| **a** | manter legível — o `SpaceRef` já documenta que é encoding e não segredo | nenhum |
+| **b** | id opaco: tabela nova, migração, links existentes quebrados, e `SpaceRef` é contrato com o hook do canvas e quatro specs | alto |
+| **c** | medir primeiro quantos spaces de canal privado existem em produção | baixo, e depois decide |
+
+*Recomendação: **c**, e provavelmente **a** depois.* Um space de canal público não
+vaza nada; se quase todos forem públicos, **b** é caro para um caso que não
+ocorre.
+
+---
+
+### Q5 — Um link compartilhado expira? (D7.3) — **tomada como "não expira"**
+
+Hoje nenhum expira, e a fase E construiu a revogação como a saída. `P4` diz que
+depois de começar o link continua valendo.
+
+| | Opção |
+|---|---|
+| **a** | confirmar: não expira; a revogação é a saída *(o estado atual)* |
+| **b** | expirar com TTL longo e configurável |
+| **c** | expirar só alguns kinds — `p2p` e `play` morrem, `call` e `space` não |
+
+*Recomendação: **a**.* Já está construído assim; confirmar só transforma um
+esquecimento numa decisão. **b** e **c** ainda são baratos agora e caros depois.
+
+---
+
+### Q6 — O resto de R.9: zona de status e nicklist (D7.4)
+
+A tira de abas já diz "em outra aba". Faltam as outras duas coisas do
+`ux.md §2.7`. A zona de status é derivada de assigns que só existem enquanto a
+superfície está embutida — com a chamada em outra aba, o chat não tem o que
+desenhar, então é trabalho de verdade e não uma linha.
+
+| | Opção |
+|---|---|
+| **a** | as duas agora |
+| **b** | a zona de status agora; a nicklist com o card (Q1), porque leem o mesmo summary |
+| **c** | as duas com o card |
+
+*Recomendação: **b**.* Fazer a nicklist duas vezes a partir da mesma leitura é
+como as duas versões divergem.
+
+---
+
+### Q7 — Os 9 `msgid` vazios de outras features (R.12)
+
+Os 10 do plano estão traduzidos. Sobram 9 em `help.po` e 3 em `chat.po`, de
+bots/greeter, RSS, cards de link, lista de usuários e miniaturas. São o único
+motivo de `make i18n.catalog.check` continuar reprovando.
+
+| | Opção | Custo |
+|---|---|---|
+| **a** | traduzir tudo — fecha o check | ~12 strings × 13 locales, à mão |
+| **b** | deixar: não é desta onda, e a auditoria já atribui | nenhum |
+| **c** | traduzir e **pôr o check no `make ci`**, para parar de acumular | **a** + uma linha no gate |
+
+*Recomendação: **c**.* O `make ci` tem um estágio de catálogo mais frouxo que
+passa; foi por isso que ninguém viu. Traduzir sem fechar a porta só adia.
+
+---
+
+### Q8 — Rate limit de HTTP (R.11)
+
+**Não existe rate limit em rota nenhuma deste app.** A entropia do slug carrega o
+argumento sozinha e isso agora está escrito, mas a ausência vale para `/join`,
+`/connect`, `/chat/session` e tudo mais.
+
+| | Opção |
+|---|---|
+| **a** | plano próprio — é infraestrutura, não um item de onda |
+| **b** | nunca: a entropia basta e o resto é problema de borda/CDN |
+| **c** | mínimo agora, só em `/join/:slug` |
+
+*Recomendação: **a**.* Não é escopo desta onda, e **c** dá a falsa sensação de que
+o assunto foi tratado.
+
+---
+
+### Q9 — O spec "abrir a mesma chamada duas vezes" (R.14, onda 6 §1.3)
+
+A tira de abas agora **impede** o segundo clique. A garantia de domínio — que dois
+mounts não produzem dois participantes — continua sem spec.
+
+| | Opção |
+|---|---|
+| **a** | escrever o spec |
+| **b** | dispensar: a UI impede, e o `rejoin` por `previous_participant_id` já é testado em ExUnit |
+
+*Recomendação: **a**.* A UI impedir não é a mesma coisa que o domínio garantir, e
+foi essa distinção que produziu metade dos achados desta auditoria.
+
+---
+
+### Q10 — Os laços de `Process.sleep` no `open_surfaces_test.exs`
+
+`render_eventually/3` e `render_until_gone/3` são laços de sleep num teste de
+LiveView — a regra da casa manda asserir estado síncrono. A auditoria não pegou.
+
+| | Opção |
+|---|---|
+| **a** | reescrever para `render_component` / `:sys.get_state` |
+| **b** | deixar: passam, e o custo é tempo de suíte |
+
+*Recomendação: **a**.* É um teste sobre coordenação entre processos; um sleep ali
+é exatamente onde a suíte fica intermitente sob carga.
+
+---
+
+### Q11 — A regra "hook registrado ≠ hook montado"
+
+`SurfacePresenceHook` esteve registrado e montado em nada por uma onda inteira,
+e nada reclamou. A casa tem uma convenção para isto: *"Add a rule that a tool can
+check → make the tool check it."*
+
+| | Opção | Custo |
+|---|---|---|
+| **a** | checagem no `lint.hooks`: todo hook registrado tem ao menos um `phx-hook=` | médio — precisa lidar com hooks montados dinamicamente |
+| **b** | parágrafo no `AGENT-GUIDE §15` | minutos |
+| **c** | os dois |
+
+*Recomendação: **a**.* Um parágrafo não teria pegado este, porque ninguém suspeita
+de um hook que existe.
+
+---
+
+### Q12 — Empurrar, e o que apagar
+
+São 35 commits à frente de `origin/main`. Os dois documentos dizem que devem ser
+apagados ao fechar: a auditoria ("apagar quando a auditoria fechar") e o plano
+("apagar quando a última fase shippar", movendo as regras duráveis para os guias
+**antes**).
+
+| | Opção |
+|---|---|
+| **a** | empurrar agora; apagar os docs quando Q1 fechar |
+| **b** | empurrar agora **e** apagar auditoria + plano + diário já, movendo os 7 aprendizados para os guias |
+| **c** | não empurrar ainda |
+
+*Recomendação: **a**.* Os aprendizados vão para os guias de qualquer jeito, mas o
+diário ainda tem armadilhas úteis enquanto Q1–Q3 estiverem abertas.
 
 ---
 
