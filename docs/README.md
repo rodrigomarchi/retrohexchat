@@ -65,11 +65,14 @@ migration, context, schema and hook counts — never write them into prose.
 
 - [plans/retro-games-ai.md](plans/retro-games-ai.md) — nova superfície `Retro Games`
   para jogos nativos do chat em modo single player contra AI, começando pelo Hex Pong.
-- [plans/shareable-surfaces-wave-7.md](plans/shareable-surfaces-wave-7.md) — os
-  consertos que a auditoria das superfícies compartilháveis achou, em ordem de
-  consequência. As evidências ficam em
-  [plans/shareable-surfaces-audit.md](plans/shareable-surfaces-audit.md), que é o
-  registro da auditoria e sai junto quando a onda fechar.
+- [plans/shareable-surfaces-handover.md](plans/shareable-surfaces-handover.md) —
+  **comece por aqui**: o estado das superfícies compartilháveis, o que falta e em
+  que ordem. Os outros três são o detalhe —
+  [wave-7](plans/shareable-surfaces-wave-7.md) (os consertos da auditoria, com as
+  doze decisões travadas na §8), [o diário](plans/shareable-surfaces-wave-7-progress.md),
+  [a auditoria](plans/shareable-surfaces-audit.md) e
+  [wave-8](plans/shareable-surfaces-wave-8.md) (o card ao vivo). Os quatro saem
+  juntos quando a onda 8 fechar.
 
 The channel/PM unification shipped and its plan was deleted; the rule it produced
 is Principle 12 in `AGENT-GUIDE.md`.
