@@ -70,11 +70,16 @@ every locale.
 
 The fourth, **catalog ready** (`make i18n.catalog.check`), asks the other half
 of the question: not whether the `.pot` matches the code, but whether the
-catalogues built from it are actually translated — no empty entry, no fuzzy
-leftover, no dropped placeholder, no English wearing another locale's name. It
-sat red on `main` while coverage stayed green, which is how a wave leaves drift
-for the next person to trip over. It is in the gate now, so drift fails the
-commit that creates it.
+catalogues built from it are actually translated — no missing entry, no empty
+one, no fuzzy leftover, no dropped placeholder, no English wearing another
+locale's name. It sat red on `main` while coverage stayed green, which is how a
+wave leaves drift for the next person to trip over. It is in the gate now, so
+drift fails the commit that creates it.
+
+Its first step is the one the other two could not do: every `msgid` in a `.pot`
+exists in every `.po`. An entry that was never merged into a catalogue is not
+empty — it does not exist — so both older checks passed while 65 strings
+rendered in English in all thirteen locales.
 
 ## Options
 

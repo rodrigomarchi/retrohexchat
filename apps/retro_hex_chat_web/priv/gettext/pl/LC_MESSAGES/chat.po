@@ -2410,7 +2410,7 @@ msgid "is typing..."
 msgstr "Wpisuje..."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:157
-#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:277
+#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:278
 #, elixir-autogen, elixir-format
 msgid "messages"
 msgstr "wiadomości"
@@ -2560,7 +2560,7 @@ msgstr "Nota kontaktowa"
 msgid "Custom Menus"
 msgstr "Menu użytkownika"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:150
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:159
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "Usunięty"
@@ -2681,7 +2681,7 @@ msgstr "Ostatnio widziany: %{target}"
 msgid "Last seen"
 msgstr "Ostatnio widziana"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:276
+#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:277
 #, elixir-autogen, elixir-format
 msgid "Loading %{channel}..."
 msgstr "Wczytywanie %{channel}..."
@@ -3006,7 +3006,7 @@ msgstr "%{peer} stracił połączenie P2P - czekając na ich powrót..."
 msgid "Arcade session ended."
 msgstr "Sesja Arcade zakończona."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:196
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:212
 #, elixir-autogen, elixir-format
 msgid "Cancel the P2P invite"
 msgstr "Anuluj zaproszenie P2P"
@@ -3061,8 +3061,8 @@ msgstr "Urządzenie domyślne"
 msgid "End P2P Call Media"
 msgstr "Koniec P2P Call Media"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:203
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:214
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:219
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:230
 #, elixir-autogen, elixir-format
 msgid "End the P2P session"
 msgstr "Zakończ sesję P2P"
@@ -3114,7 +3114,7 @@ msgid "P2P connection failed."
 msgstr "Połączenie P2P nie powiodło się."
 
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:438
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:195
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:211
 #, elixir-autogen, elixir-format
 msgid "P2P invite pending"
 msgstr "P2P zapraszamy oczekujące"
@@ -3125,7 +3125,7 @@ msgid "P2P session active"
 msgstr "Aktywna sesja P2P"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:439
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:213
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:229
 #, elixir-autogen, elixir-format
 msgid "P2P session connecting"
 msgstr "Połączenie sesji P2P"
@@ -3136,28 +3136,28 @@ msgstr "Połączenie sesji P2P"
 msgid "P2P session with %{peer} ended."
 msgstr "Sesja P2P z %{peer} Koniec."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:236
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:252
 #, elixir-autogen, elixir-format
 msgid "P2P session with %{peer} — %{facets}. Click to focus"
 msgstr "Sesja P2P z %{peer} — %{facets}Kliknij, aby się skupić"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:292
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:224
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:240
 #, elixir-autogen, elixir-format
 msgid "P2P: %{peer}"
 msgstr "P2P: %{peer}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:220
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:236
 #, elixir-autogen, elixir-format
 msgid "P2P: %{peer} %{duration}"
 msgstr "P2P: %{peer} %{duration}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:212
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:228
 #, elixir-autogen, elixir-format
 msgid "P2P: connecting to %{peer}..."
 msgstr "P2P: połączenie %{peer}..."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:194
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:210
 #, elixir-autogen, elixir-format
 msgid "P2P: waiting for %{peer}..."
 msgstr "P2P: czeka na %{peer}..."
@@ -3250,24 +3250,24 @@ msgstr ""
 "/ns i identyfikacji /ns."
 
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:460
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:252
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:268
 #, elixir-autogen, elixir-format
 msgid "call active"
 msgstr "wywołanie aktywne"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:461
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:253
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:269
 #, elixir-autogen, elixir-format
 msgid "file transfer active"
 msgstr "aktywny transfer pliku"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:462
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:254
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:270
 #, elixir-autogen, elixir-format
 msgid "game active"
 msgstr "gra aktywna"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:232
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:248
 #, elixir-autogen, elixir-format
 msgid "session ready"
 msgstr "sesja gotowa"
@@ -3326,7 +3326,7 @@ msgstr "Przyłączam się..."
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:295
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:143
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:531
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:665
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:672
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:304
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -4065,7 +4065,7 @@ msgstr "Musisz być na %{channel}, aby wejść do jego przestrzeni."
 msgid "The P2P signaling channel refused this session."
 msgstr "Kanał sygnalizacyjny P2P odrzucił tę sesję."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:663
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:670
 #, elixir-autogen, elixir-format
 msgid "P2P · %{peer}"
 msgstr "P2P · %{peer}"
@@ -4075,12 +4075,12 @@ msgstr "P2P · %{peer}"
 msgid "This P2P session moved to another window of yours."
 msgstr "Ta sesja P2P przeniosła się do innego Twojego okna."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:657
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "%{game} · %{peer}"
 msgstr "%{game} · %{peer}"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:660
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "%{game} · match"
 msgstr "%{game} · rozgrywka"
@@ -4104,3 +4104,13 @@ msgstr "Prośba o sesję P2P. Użyj kontrolki P2P w tej wiadomości prywatnej. /
 #, elixir-autogen, elixir-format
 msgid "In the channel call"
 msgstr "W połączeniu kanału"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:197
+#, elixir-autogen, elixir-format
+msgid "P2P: %{peer} — in another tab"
+msgstr "P2P: %{peer} — w innej karcie"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:199
+#, elixir-autogen, elixir-format
+msgid "This P2P session is open in another tab of yours — click to go to it"
+msgstr "Ta sesja P2P jest otwarta w innej twojej karcie — kliknij, aby do niej przejść"

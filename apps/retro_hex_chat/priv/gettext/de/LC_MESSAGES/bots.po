@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:231
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:241
 #, elixir-autogen, elixir-format
 msgid "  %{id} | %{title} | %{channel} | %{url}"
 msgstr "  %{id} | %{title} | %{channel} | %{url}"
@@ -53,9 +53,7 @@ msgstr "%{message} (%{reason})"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:280
 #, elixir-autogen, elixir-format
-msgid ""
-"%{prefix}\n"
-"Round over! %{scores}"
+msgid "%{prefix}\nRound over! %{scores}"
 msgstr ""
 "%{prefix}\n"
 "Runde beendet! %{scores}"
@@ -66,14 +64,14 @@ msgstr ""
 msgid "%{rank}. %{name}: %{points}pts"
 msgstr "%{rank}. %{name}: %{points}pt"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:570
-#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:95
-#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:114
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:682
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:120
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:148
 #, elixir-autogen, elixir-format
 msgid "(no title)"
 msgstr "(kein Titel)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:229
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:239
 #, elixir-autogen, elixir-format
 msgid "(untitled)"
 msgstr "(unbetitelt)"
@@ -125,7 +123,7 @@ msgstr "Aktive Termine:"
 msgid "Add a scheduled message"
 msgstr "Eine geplante Nachricht hinzufügen"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:192
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:202
 #, elixir-autogen, elixir-format
 msgid "Add an RSS feed"
 msgstr "Hinzufügen eines RSS-Feeds"
@@ -366,18 +364,18 @@ msgstr "Fehler: Maximale %{max} Seiten erlaubt."
 msgid "Famous for rings"
 msgstr "Berühmt für Ringe"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:293
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:303
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' added: %{url} → %{channel}"
 msgstr "Feed '%{id}' hinzugefügt: %{url} → %{channel}"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:308
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:321
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:318
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:331
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' not found."
 msgstr "Feed '%{id}' nicht gefunden."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:306
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:316
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' removed."
 msgstr "Feed '%{id}' entfernt."
@@ -392,7 +390,7 @@ msgstr "Endpunkte: %{ranked}"
 msgid "Finnish"
 msgstr "Finnisch"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:195
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:205
 #, elixir-autogen, elixir-format
 msgid "Force check a feed now"
 msgstr "Macht die Kontrolle über den Feed"
@@ -432,7 +430,7 @@ msgstr "Deutscher Philosoph"
 msgid "Greenland"
 msgstr "Grünland"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:20
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:46
 #, elixir-autogen, elixir-format
 msgid "Greet users on join, say goodbye on part"
 msgstr "Greet-Nutzer auf Join, sagen Abschied auf Teil"
@@ -447,7 +445,7 @@ msgstr "Guten Tag."
 msgid "HBO"
 msgstr "HBO"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:495
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:542
 #, elixir-autogen, elixir-format
 msgid "HTTP %{status}"
 msgstr "Windows %{status}"
@@ -641,7 +639,7 @@ msgstr "Leuchtturm"
 msgid "Linus Torvalds"
 msgstr "Linus Torvalds"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:203
 #, elixir-autogen, elixir-format
 msgid "List RSS feeds"
 msgstr "Liste RSS-Feeds"
@@ -671,7 +669,7 @@ msgstr "Mariana Trench"
 msgid "Mars"
 msgstr "Mars"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:248
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:258
 #, elixir-autogen, elixir-format
 msgid "Maximum %{max} feeds reached."
 msgstr "Maximale %{max}-Feeds erreicht."
@@ -711,7 +709,7 @@ msgstr "Minecraft"
 msgid "Minimum interval is %{minutes} minutes."
 msgstr "Mindestintervall ist %{minutes} Minuten."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:255
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:265
 #, elixir-autogen, elixir-format
 msgid "Missing channel. Usage: rss add <url> <#channel>"
 msgstr "Fehlender Kanal. Verwendung: rss add <url> <#channel>"
@@ -771,7 +769,7 @@ msgstr "Nil"
 msgid "Nintendo"
 msgstr "Nintendo"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:225
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:235
 #, elixir-autogen, elixir-format
 msgid "No RSS feeds configured."
 msgstr "Keine RSS-Feeds konfiguriert."
@@ -908,7 +906,7 @@ msgstr "RDJ"
 msgid "ROY G BIV"
 msgstr "ROY G BIV"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:239
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:249
 #, elixir-autogen, elixir-format
 msgid "RSS Feeds:"
 msgstr "RSS Feeds:"
@@ -933,7 +931,7 @@ msgstr "Rote Pille"
 msgid "Remove a schedule"
 msgstr "Entfernen Sie den Zeitplan"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:194
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:204
 #, elixir-autogen, elixir-format
 msgid "Remove an RSS feed"
 msgstr "RSS-Feed entfernen"
@@ -1151,9 +1149,7 @@ msgstr "Tokio"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:212
 #, elixir-autogen, elixir-format
-msgid ""
-"Trivia started! (%{category}, %{count} questions)\n"
-"%{question}"
+msgid "Trivia started! (%{category}, %{count} questions)\n%{question}"
 msgstr ""
 "Trivia gestartet! (%{category}, %{count} Fragen)\n"
 "%{question}"
@@ -1178,21 +1174,19 @@ msgstr "Universal Serial Bus"
 msgid "Unknown category '%{category}'. Available: %{categories}"
 msgstr "Unbekannte Kategorie '%{category}'. Verfügbar: %{categories}"
 
-#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:32
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:52
 #, elixir-autogen, elixir-format
 msgid "Unknown feed format (expected RSS 2.0 or Atom)"
 msgstr "Unbekanntes Futterformat (erwartet RSS 2.0 oder Atom)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:258
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:268
 #, elixir-autogen, elixir-format
 msgid "Usage: rss add <url> <#channel>"
 msgstr "Verwendung: rss add <url> <#channel>"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:197
 #, elixir-autogen, elixir-format
-msgid ""
-"Usage: schedule add interval <min> <#channel> <message> OR schedule add "
-"daily <HH:MM> <#channel> <message>"
+msgid "Usage: schedule add interval <min> <#channel> <message> OR schedule add daily <HH:MM> <#channel> <message>"
 msgstr ""
 "Verwendung: Programm hinzufügen Intervall <min> <#channel> <message> OR "
 "Zeitplan täglich hinzufügen <HH:MM> <#channel> <message>"
@@ -1227,7 +1221,7 @@ msgstr "Weblink"
 msgid "Web pages"
 msgstr "Webseiten"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:90
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:212
 #, elixir-autogen, elixir-format
 msgid "Welcome, {nickname}!"
 msgstr "Willkommen, {nickname}!"
@@ -1652,7 +1646,7 @@ msgstr "Wer hat Harry Potter geschrieben?"
 msgid "Who wrote the Communist Manifesto?"
 msgstr "Wer hat das Kommunistische Manifest geschrieben?"
 
-#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:36
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:56
 #, elixir-autogen, elixir-format
 msgid "XML parse error: %{reason}"
 msgstr "XML Parse-Fehler: %{reason}"
@@ -1733,49 +1727,33 @@ msgstr "{nickname}"
 msgid "~3 x 10^5 km/s"
 msgstr "~3 x 10^5 km/s"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:339
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:349
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' checked. Nothing new."
 msgstr "Feed '%{id}' geprüft. Nichts Neues."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:327
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:337
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' posts to %{channel}. Ask there to check it."
 msgstr "Feed '%{id}' Beiträge zu %{channel}. Fragen Sie es."
 
-#: lib/retro_hex_chat/scraper/card.ex:84
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:803
 #, elixir-autogen, elixir-format
 msgid "RSS"
 msgstr "RSS"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:271
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:281
 #, elixir-autogen, elixir-format
 msgid "Refusing %{url}: %{reason}"
 msgstr "Verweigere %{url}: %{reason}"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:72
-#, elixir-autogen, elixir-format
-msgid ""
-"Farewell delivery must be public, channel_notice, private_notice, or silent"
-msgstr ""
-"Die Zustellung der Verabschiedung muss public, channel_notice, "
-"private_notice oder silent sein"
-
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:65
-#, elixir-autogen, elixir-format
-msgid ""
-"Greeting delivery must be public, channel_notice, private_notice, or silent"
-msgstr ""
-"Die Zustellung der Begrüßung muss public, channel_notice, private_notice "
-"oder silent sein"
-
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:78
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:106
 #, elixir-autogen, elixir-format
 msgid "Repeat window must be a non-negative number of seconds"
 msgstr ""
 "Das Wiederholungsfenster muss eine nicht negative Anzahl von Sekunden sein"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:150
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:160
 #, elixir-autogen, elixir-format
 msgid "Only server administrators can manage feeds."
 msgstr "Nur Serveradministratoren können Feeds verwalten."
@@ -1800,27 +1778,32 @@ msgstr "Umleitung ohne Standort"
 msgid "too many redirects"
 msgstr "zu viele Umleitungen"
 
-#: lib/retro_hex_chat/scraper/card.ex:202
+#: lib/retro_hex_chat/scraper/card.ex:235
 #, elixir-autogen, elixir-format
 msgid "%{count} min read"
 msgstr "%{count} Min. Lesezeit"
 
-#: lib/retro_hex_chat/scraper/card.ex:187
+#: lib/retro_hex_chat/scraper/card.ex:220
 #, elixir-autogen, elixir-format
 msgid "%{count}d ago"
 msgstr "vor %{count}T"
 
-#: lib/retro_hex_chat/scraper/card.ex:186
+#: lib/retro_hex_chat/scraper/card.ex:219
 #, elixir-autogen, elixir-format
 msgid "%{count}h ago"
 msgstr "vor %{count}h"
 
-#: lib/retro_hex_chat/scraper/card.ex:185
+#: lib/retro_hex_chat/scraper/card.ex:218
 #, elixir-autogen, elixir-format
 msgid "%{count}m ago"
 msgstr "vor %{count}min"
 
-#: lib/retro_hex_chat/scraper/card.ex:251
+#: lib/retro_hex_chat/scraper/card.ex:299
 #, elixir-autogen, elixir-format
 msgid "Read full story"
 msgstr "Ganzen Artikel lesen"
+
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:243
+#, elixir-autogen, elixir-format
+msgid "%{field} must be public, channel_notice, private_notice, or silent"
+msgstr "%{field} muss public, channel_notice, private_notice oder silent sein"

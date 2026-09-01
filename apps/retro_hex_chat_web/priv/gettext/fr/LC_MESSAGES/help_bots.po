@@ -1717,3 +1717,150 @@ msgstr "Les éléments sont publiés sous forme d'aperçus de lien en Markdown e
 #, elixir-autogen, elixir-format
 msgid "The shared page archive stores extracted descriptions, image alt text, local thumbnail metadata, thumbnail failure details, article sections, tags, dates, and article text so later previews can reuse them"
 msgstr "L'archive partagée des pages conserve les descriptions extraites, le texte alternatif des images, les métadonnées de la miniature locale, les détails d'échec de miniature, les sections de l'article, les étiquettes, les dates et le texte de l'article, afin que les aperçus suivants puissent les réutiliser"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "/bot set <name> public_greeting <text>\n/bot set <name> greeting <text>\n/bot set <name> onboarding_1 <text>\n/bot set <name> onboarding_2 <text>\n/bot set <name> greeting_delivery private_notice\n/bot set <name> onboarding_delivery private_notice\n/bot set <name> greeter_repeat_window 43200\n/bot set <name> farewell none"
+msgstr "/bot set <name> public_greeting <text>\\n/bot set <name> greeting <text>\\n/bot set <name> onboarding_1 <text>\\n/bot set <name> onboarding_2 <text>\\n/bot set <name> greeting_delivery private_notice\\n/bot set <name> onboarding_delivery private_notice\\n/bot set <name> greeter_repeat_window 43200\\n/bot set <name> farewell none"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "A message in the channel. It is kept in the history."
+msgstr "Un message dans le salon. Il est conservé dans l'historique."
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:75
+#, elixir-autogen, elixir-format
+msgid "A notice in the channel. It is kept in the history."
+msgstr "Un avis dans le salon. Il est conservé dans l'historique."
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:80
+#, elixir-autogen, elixir-format
+msgid "A notice only the newcomer sees, in that channel's view. It is not kept in the history."
+msgstr "Un avis que seul le nouveau venu voit, dans la vue de ce salon. Il n'est pas conservé dans l'historique."
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:109
+#, elixir-autogen, elixir-format
+msgid "A repeat window of 0 means there is no window: the private lines go out on every join. The public line still goes out once per person, ever."
+msgstr "Une fenêtre de répétition de 0 signifie qu'il n'y a pas de fenêtre : les lignes privées partent à chaque arrivée. La ligne publique part toujours une seule fois par personne, à jamais."
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Any of them takes none to clear it. A cleared line is skipped, so a bot with only a greeting behaves exactly as it always did. Onboarding is numbered rather than appended: setting onboarding_2 twice replaces it, which is what lets a provisioning script be pasted more than once."
+msgstr "Chacune accepte none pour l'effacer. Une ligne effacée est ignorée, donc un bot avec seulement un accueil se comporte exactement comme avant. Les lignes d'accueil sont numérotées plutôt qu'ajoutées : définir onboarding_2 deux fois la remplace, et c'est ce qui permet de coller un script de provisionnement plus d'une fois."
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "Delivery"
+msgstr "Envoi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Depends on farewell_delivery"
+msgstr "Dépend de farewell_delivery"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "Effect"
+msgstr "Effet"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Every join the repeat window allows"
+msgstr "À chaque arrivée que la fenêtre de répétition autorise"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Everyone in the channel"
+msgstr "Tout le monde dans le salon"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:123
+#, elixir-autogen, elixir-format
+msgid "Keeping a room readable"
+msgstr "Garder la salle lisible"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "Mode"
+msgstr "Mode"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:88
+#, elixir-autogen, elixir-format
+msgid "Nothing is sent."
+msgstr "Rien n'est envoyé."
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "On part"
+msgstr "Au départ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:125
+#, elixir-autogen, elixir-format
+msgid "Only one bot per channel should greet. Two greeters welcome every newcomer twice, which is why a bot that stands in every room is set to greeting none. Keep the public line to one sentence: it is the only part of a welcome the whole room reads and the only part that persists. Everything a newcomer needs to learn belongs in the private half."
+msgstr "Un seul bot par salon devrait accueillir. Deux accueillants souhaitent la bienvenue deux fois à chaque nouveau venu, et c'est pourquoi un bot présent dans toutes les salles a greeting none. Gardez la ligne publique à une phrase : c'est la seule partie d'un accueil que toute la salle lit et la seule qui persiste. Tout ce qu'un nouveau venu doit apprendre appartient à la moitié privée."
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Only the first time this bot meets this nickname here"
+msgstr "Seulement la première fois que ce bot rencontre ce pseudo ici"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:115
+#, elixir-autogen, elixir-format
+msgid "Placeholders"
+msgstr "Espaces réservés"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Setting"
+msgstr "Réglage"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Setting them"
+msgstr "Comment les définir"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The Greeter capability welcomes people into a channel. A welcome has two halves with different audiences: one short line the whole room reads, and the private lines that orient the newcomer without anyone else seeing them."
+msgstr "La capacité d'accueil accueille les gens dans un salon. Un accueil a deux moitiés avec des publics différents : une courte ligne que toute la salle lit, et les lignes privées qui orientent le nouveau venu sans que personne d'autre les voie."
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:102
+#, elixir-autogen, elixir-format
+msgid "The bot records who it has welcomed into each channel, and that record survives a restart. Somebody it has never met gets the public line and the private ones. Somebody it met longer ago than greeter_repeat_window seconds gets the private ones again, but the room is not told twice. Somebody who was just here gets nothing."
+msgstr "Le bot note qui il a accueilli dans chaque salon, et cette note survit à un redémarrage. Quelqu'un qu'il n'a jamais rencontré reçoit la ligne publique et les privées. Quelqu'un rencontré il y a plus de greeter_repeat_window secondes reçoit à nouveau les privées, mais la salle n'est pas prévenue deux fois. Quelqu'un qui vient de partir ne reçoit rien."
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "The newcomer alone"
+msgstr "Le nouveau venu seul"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "The two halves"
+msgstr "Les deux moitiés"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "Quand"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:100
+#, elixir-autogen, elixir-format
+msgid "Who counts as new"
+msgstr "Qui compte comme nouveau"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Who reads it"
+msgstr "Qui le lit"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:94
+#, elixir-autogen, elixir-format
+msgid "greeting_delivery covers the greeting; onboarding_delivery covers the numbered lines and falls back to greeting_delivery when it is not set. public_greeting is always public — that is what it is for."
+msgstr "greeting_delivery couvre l'accueil ; onboarding_delivery couvre les lignes numérotées et retombe sur greeting_delivery quand il n'est pas défini. public_greeting est toujours public — c'est à cela qu'il sert."
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_greeter.html.heex:117
+#, elixir-autogen, elixir-format
+msgid "Every line accepts {nickname} for whoever joined, {channel} for the room, {botname} for the bot and {prefix} for its command prefix. Lines also accept the IRC formatting escapes: \\c04 red, \\b bold, \\o reset."
+msgstr "Chaque ligne accepte {nickname} pour la personne arrivée, {channel} pour la salle, {botname} pour le bot et {prefix} pour son préfixe de commande. Les lignes acceptent aussi les échappements de formatage IRC : \\c04 rouge, \\b gras, \\o reset."

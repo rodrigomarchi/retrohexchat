@@ -11,11 +11,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:36
-#, elixir-autogen, elixir-format
-msgid "#lobby (12)"
-msgstr "#lobby (12) (中文(简体) )."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
 #, elixir-autogen, elixir-format
 msgid ". User counts appear next to all channels."
@@ -101,7 +96,7 @@ msgstr "贝尔"
 msgid "Block messages from the user."
 msgstr "用户的屏蔽消息 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Blue. Can speak in moderated channels."
 msgstr "蓝. 可以在主持频道发言。"
@@ -135,12 +130,6 @@ msgstr "频道消息"
 #, elixir-autogen, elixir-format
 msgid "Chat Area:"
 msgstr "聊天区域 :"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:40
-#, elixir-autogen, elixir-format
-msgid "Click a nickname to access Query, Whois, Kick, Ban, Mode, Add to Contacts, and Set Nick Color options. Double-click to open a private message."
-msgstr ""
-"点击昵称访问 Query, Whois, Kick, Ban, Mode, 添加到联系人, 并设置 Nick Color 选项 。 双击打开私有信件 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:37
@@ -189,7 +178,7 @@ msgstr "连接/ 断开连接"
 msgid "Connection"
 msgstr "连接"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Context Menu"
 msgstr "上下文菜单"
@@ -254,7 +243,7 @@ msgstr "自定义菜单"
 msgid "DND (Do Not Disturb)"
 msgstr "DND (不干扰)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Default color."
 msgstr "默认颜色 。"
@@ -324,12 +313,12 @@ msgstr "对于首相来说,它展示了\"私人与<nickname>的对话\". 对于�
 msgid "Formatting Toolbar:"
 msgstr "格式工具栏 :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Green, bold. Limited moderation."
 msgstr "绿色,大胆。 节制有限."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Half-Ops (%):"
 msgstr "半字位(%) :"
@@ -464,7 +453,7 @@ msgstr "与用户打开 PM 。"
 msgid "Operator Actions"
 msgstr "运算符动作"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Operators (@):"
 msgstr "运算符 (@) :"
@@ -479,7 +468,7 @@ msgstr "选项"
 msgid "Override the display color for this nick."
 msgstr "覆盖此昵称的显示颜色 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Owners (~):"
 msgstr "拥有者(~):"
@@ -504,7 +493,7 @@ msgstr "执行"
 msgid "Press"
 msgstr "新闻"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Purple, bold. Channel founders."
 msgstr "紫色,胆大。 海峡创始人."
@@ -519,12 +508,12 @@ msgstr "查询 :"
 msgid "Quick-access buttons for common actions."
 msgstr "用于共同行动的快速存取按钮."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Red, bold. Can manage the channel."
 msgstr "红色,大胆. 可以管理频道"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Regular:"
 msgstr "经常 :"
@@ -698,11 +687,6 @@ msgstr "文本格式"
 msgid "The Status tab is the central observability point for your session."
 msgstr "状态标签是您会话的中心可观察点 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:33
-#, elixir-autogen, elixir-format
-msgid "The active channel shows a user count in parentheses next to the channel name, e.g."
-msgstr "活动频道在频道名称旁边的括号中显示一个用户数,例如."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The toolbar provides quick access to all RetroHexChat features through icon buttons, organized in six groups separated by dividers."
@@ -712,11 +696,6 @@ msgstr "工具栏通过图标按钮提供快速访问所有 RetroHexChat 特性,
 #, elixir-autogen, elixir-format
 msgid "The topic bar appears below the tab bar and shows the current channel name, active modes, and topic text."
 msgstr "主题栏出现在标签栏下方,并显示当前频道名称,活动模式,以及主题文本."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The user list appears in the conversations sidebar (left pane) under the active channel, showing all users sorted by role."
-msgstr "用户列表出现在活动频道下方的对讲边栏(左面框)中,显示所有用户按角色排序."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:43
 #, elixir-autogen, elixir-format
@@ -761,11 +740,6 @@ msgstr "UI 概览"
 msgid "URL Catcher"
 msgstr "URL 捕捉器"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:31
-#, elixir-autogen, elixir-format
-msgid "User Count"
-msgstr "用户数"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "User Interactions"
@@ -783,11 +757,6 @@ msgstr "用户界面概览"
 msgid "User List"
 msgstr "用户列表"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Users are sorted by role priority and distinguished by icon and color:"
-msgstr "用户按角色优先排序,按图标和颜色区分:"
-
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Using Colors"
@@ -804,7 +773,7 @@ msgstr "视频呼叫 :"
 msgid "View"
 msgstr "视图"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Voiced (+):"
 msgstr "语音 (+):"
@@ -2570,3 +2539,43 @@ msgstr "聊天区域下方的标签栏承载可以占据会话区域的东西：
 #, elixir-autogen, elixir-format
 msgid "The controls next to the tabs open something beside the conversation rather than replacing it: channel settings, user lookup, the conference and the P2P session. Each carries its label, so you can read what it does. On a phone the first two also slide the conversations and user list open over the chat."
 msgstr "标签旁的控件会在会话旁边打开内容，而不是取代会话：频道设置、用户查询、会议和 P2P 会话。每个都带有文字标签，你可以直接看出它的用途。在手机上，前两个还会把会话列表和用户列表滑出覆盖在聊天之上。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "A private message has no channel roles, so both of you are listed together under Participants, the person you are talking to first. Bots keep their own group in either kind of conversation."
+msgstr "私聊没有频道角色，所以你们两人一起列在“参与者”下，你正在交谈的人排在前面。机器人在两种会话里都保有自己的分组。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Collapse the list with the arrow in its title, and it becomes a narrow rail that still shows the counts; click the rail to bring it back. On a phone there is no rail: use the Users button at the end of the tab strip to open it as a drawer."
+msgstr "用标题里的箭头折叠列表，它会变成一条仍显示计数的窄栏；点击窄栏就能把它带回来。手机上没有窄栏：使用标签条末尾的“用户”按钮把它作为抽屉打开。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "In a channel, users are grouped by role and sorted within each group:"
+msgstr "在频道里，用户按角色分组，并在每个分组内排序："
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Right-click a nickname for Query, Whois, Add to Contacts, Ignore and Set Nick Color, plus Kick, Ban, Op and Voice when you are a channel operator. Double-click opens a private message."
+msgstr "右键点击昵称可以使用 Query、Whois、加入联系人、忽略和设置昵称颜色；当你是频道管理员时还有 Kick、Ban、Op 和 Voice。双击会打开私聊。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Showing and hiding it"
+msgstr "显示与隐藏"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "The strip under the title counts who is online, away and muted. A dot beside each name says the same for that person: online, away, or — in a private message — not connected at all, since the other person can be offline while the conversation stays open."
+msgstr "标题下方的条带统计在线、离开和被静音的人数。每个名字旁边的圆点表示同一件事：在线、离开，或者在私聊中——完全未连接，因为对方可以在会话保持打开时处于离线状态。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The user list is the sidebar on the right of the conversation. It lists whoever is in the conversation on screen, and every conversation has one — a channel shows its members, a private message shows the two of you."
+msgstr "用户列表是会话右侧的侧边栏。它列出当前会话中的人，每个会话都有一个——频道显示它的成员，私聊显示你们两人。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Who is here"
+msgstr "谁在这里"

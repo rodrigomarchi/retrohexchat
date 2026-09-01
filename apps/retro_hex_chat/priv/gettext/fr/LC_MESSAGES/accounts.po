@@ -11,47 +11,47 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:19
+#: lib/retro_hex_chat/accounts/nick_colors.ex:20
 #, elixir-autogen, elixir-format
 msgid "Black"
 msgstr "Noir"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:30
+#: lib/retro_hex_chat/accounts/nick_colors.ex:31
 #, elixir-autogen, elixir-format
 msgid "Blue"
 msgstr "Bleu"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:29
+#: lib/retro_hex_chat/accounts/nick_colors.ex:30
 #, elixir-autogen, elixir-format
 msgid "Cyan"
 msgstr "Cyan"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:21
+#: lib/retro_hex_chat/accounts/nick_colors.ex:22
 #, elixir-autogen, elixir-format
 msgid "Green"
 msgstr "Vert"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:32
+#: lib/retro_hex_chat/accounts/nick_colors.ex:33
 #, elixir-autogen, elixir-format
 msgid "Grey"
 msgstr "Gris"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:27
+#: lib/retro_hex_chat/accounts/nick_colors.ex:28
 #, elixir-autogen, elixir-format
 msgid "Lime"
 msgstr "Chaux"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:31
+#: lib/retro_hex_chat/accounts/nick_colors.ex:32
 #, elixir-autogen, elixir-format
 msgid "Magenta"
 msgstr "Magenta"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:23
+#: lib/retro_hex_chat/accounts/nick_colors.ex:24
 #, elixir-autogen, elixir-format
 msgid "Maroon"
 msgstr "Maroune"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:20
+#: lib/retro_hex_chat/accounts/nick_colors.ex:21
 #, elixir-autogen, elixir-format
 msgid "Navy"
 msgstr "Marine"
@@ -76,37 +76,37 @@ msgstr "Le pseudo doit être une chaîne"
 msgid "Nickname must start with a letter or special character"
 msgstr "Le Pseudo doit commencer par une lettre ou un caractère spécial"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:25
+#: lib/retro_hex_chat/accounts/nick_colors.ex:26
 #, elixir-autogen, elixir-format
 msgid "Orange"
 msgstr "Orange"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:24
+#: lib/retro_hex_chat/accounts/nick_colors.ex:25
 #, elixir-autogen, elixir-format
 msgid "Purple"
 msgstr "Pourpre"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:22
+#: lib/retro_hex_chat/accounts/nick_colors.ex:23
 #, elixir-autogen, elixir-format
 msgid "Red"
 msgstr "Rouge"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:33
+#: lib/retro_hex_chat/accounts/nick_colors.ex:34
 #, elixir-autogen, elixir-format
 msgid "Silver"
 msgstr "Argent"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:28
+#: lib/retro_hex_chat/accounts/nick_colors.ex:29
 #, elixir-autogen, elixir-format
 msgid "Teal"
 msgstr "FEUILLES"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:18
+#: lib/retro_hex_chat/accounts/nick_colors.ex:19
 #, elixir-autogen, elixir-format
 msgid "White"
 msgstr "Blanc"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:26
+#: lib/retro_hex_chat/accounts/nick_colors.ex:27
 #, elixir-autogen, elixir-format
 msgid "Yellow"
 msgstr "Jaune"
@@ -115,3 +115,55 @@ msgstr "Jaune"
 #, elixir-autogen, elixir-format
 msgid "Nickname contains invalid characters"
 msgstr "Le Pseudo contient des caractères invalides"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:796
+#, elixir-autogen, elixir-format
+msgid "Active session not found for this nick."
+msgstr "Aucune session active trouvée pour ce pseudo."
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1311
+#, elixir-autogen, elixir-format
+msgid "Browser"
+msgstr "Navigateur"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:677
+#, elixir-autogen, elixir-format
+msgid "Could not rename the terminal."
+msgstr "Impossible de renommer le terminal."
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:778
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:812
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1228
+#, elixir-autogen, elixir-format
+msgid "Session ended from Trusted Terminals by %{actor}"
+msgstr "Session terminée depuis Terminaux de confiance par %{actor}"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:207
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:737
+#, elixir-autogen, elixir-format
+msgid "This terminal is not remembered."
+msgstr "Ce terminal n'est pas mémorisé."
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:219
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:222
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:681
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:695
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:709
+#, elixir-autogen, elixir-format
+msgid "Trusted terminal not found for this nick."
+msgstr "Terminal de confiance introuvable pour ce pseudo."
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:732
+#, elixir-autogen, elixir-format
+msgid "Trusted terminal not found."
+msgstr "Terminal de confiance introuvable."
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1312
+#, elixir-autogen, elixir-format
+msgid "Unknown OS"
+msgstr "Système inconnu"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:255
+#, elixir-autogen, elixir-format
+msgid "Could not update auto-login."
+msgstr "Impossible de mettre à jour la connexion automatique."

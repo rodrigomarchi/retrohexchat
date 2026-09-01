@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:231
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:241
 #, elixir-autogen, elixir-format
 msgid "  %{id} | %{title} | %{channel} | %{url}"
 msgstr "%{id} %{title} %{channel} %{url} (英语)."
@@ -53,9 +53,7 @@ msgstr "%{message} (%{reason}) (英语)."
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:280
 #, elixir-autogen, elixir-format
-msgid ""
-"%{prefix}\n"
-"Round over! %{scores}"
+msgid "%{prefix}\nRound over! %{scores}"
 msgstr ""
 "%{prefix}\n"
 "回合结束！%{scores}"
@@ -66,14 +64,14 @@ msgstr ""
 msgid "%{rank}. %{name}: %{points}pts"
 msgstr "%{rank}. %{name}: %{points}pts (英语)."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:570
-#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:95
-#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:114
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:682
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:120
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:148
 #, elixir-autogen, elixir-format
 msgid "(no title)"
 msgstr "(无标题)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:229
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:239
 #, elixir-autogen, elixir-format
 msgid "(untitled)"
 msgstr "(无标题)"
@@ -123,7 +121,7 @@ msgstr "活动时间表 :"
 msgid "Add a scheduled message"
 msgstr "添加预定的消息"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:192
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:202
 #, elixir-autogen, elixir-format
 msgid "Add an RSS feed"
 msgstr "添加 RSS 种子"
@@ -363,18 +361,18 @@ msgstr "错误: 允许最大 %{max} 边 。"
 msgid "Famous for rings"
 msgstr "为戒指而闻名"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:293
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:303
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' added: %{url} → %{channel}"
 msgstr "种子“ %{id}” 添加: %{url} → %{channel}"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:308
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:321
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:318
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:331
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' not found."
 msgstr "找不到“ %{id}” 种子 。"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:306
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:316
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' removed."
 msgstr "Feed '%{id}' 已删除 。"
@@ -389,7 +387,7 @@ msgstr "最后得分:%{ranked}"
 msgid "Finnish"
 msgstr "芬兰语"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:195
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:205
 #, elixir-autogen, elixir-format
 msgid "Force check a feed now"
 msgstr "强制检查一个消息"
@@ -429,7 +427,7 @@ msgstr "德国哲学家"
 msgid "Greenland"
 msgstr "格陵兰"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:20
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:46
 #, elixir-autogen, elixir-format
 msgid "Greet users on join, say goodbye on part"
 msgstr "欢呼用户加入, 说再见"
@@ -444,7 +442,7 @@ msgstr "古腾堡"
 msgid "HBO"
 msgstr "卫生局"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:495
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:542
 #, elixir-autogen, elixir-format
 msgid "HTTP %{status}"
 msgstr "HTTP %{status} 数据"
@@ -636,7 +634,7 @@ msgstr "灯塔"
 msgid "Linus Torvalds"
 msgstr "莱纳斯·托瓦尔兹"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:203
 #, elixir-autogen, elixir-format
 msgid "List RSS feeds"
 msgstr "列出 RSS 种子"
@@ -666,7 +664,7 @@ msgstr "马里亚纳海沟"
 msgid "Mars"
 msgstr "火星"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:248
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:258
 #, elixir-autogen, elixir-format
 msgid "Maximum %{max} feeds reached."
 msgstr "达到最大%{max}种子."
@@ -706,7 +704,7 @@ msgstr "矿产品"
 msgid "Minimum interval is %{minutes} minutes."
 msgstr "最小间隔为%{minutes}分钟."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:255
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:265
 #, elixir-autogen, elixir-format
 msgid "Missing channel. Usage: rss add <url> <#channel>"
 msgstr "频道不见了 用法:rs 添加 <url> <#channel>"
@@ -766,7 +764,7 @@ msgstr "尼罗河"
 msgid "Nintendo"
 msgstr "任天堂"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:225
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:235
 #, elixir-autogen, elixir-format
 msgid "No RSS feeds configured."
 msgstr "没有配置 RSS 种子 。"
@@ -903,7 +901,7 @@ msgstr "区域司"
 msgid "ROY G BIV"
 msgstr "Roy G BIV (英语)."
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:239
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:249
 #, elixir-autogen, elixir-format
 msgid "RSS Feeds:"
 msgstr "RSS 种子 :"
@@ -928,7 +926,7 @@ msgstr "红药丸"
 msgid "Remove a schedule"
 msgstr "删除时间表"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:194
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:204
 #, elixir-autogen, elixir-format
 msgid "Remove an RSS feed"
 msgstr "删除 RSS 种子"
@@ -1146,9 +1144,7 @@ msgstr "东京"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:212
 #, elixir-autogen, elixir-format
-msgid ""
-"Trivia started! (%{category}, %{count} questions)\n"
-"%{question}"
+msgid "Trivia started! (%{category}, %{count} questions)\n%{question}"
 msgstr ""
 "问答开始！（%{category}，%{count} 个问题）\n"
 "%{question}"
@@ -1173,21 +1169,19 @@ msgstr "通用串行总线"
 msgid "Unknown category '%{category}'. Available: %{categories}"
 msgstr "未知类别 '%{category}' 。 可用时间: %{categories}"
 
-#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:32
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:52
 #, elixir-autogen, elixir-format
 msgid "Unknown feed format (expected RSS 2.0 or Atom)"
 msgstr "未知的种子格式( 预期 RSS 2. 0 或 Atom)"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:258
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:268
 #, elixir-autogen, elixir-format
 msgid "Usage: rss add <url> <#channel>"
 msgstr "用法:rs 添加 <url> <#channel>"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:197
 #, elixir-autogen, elixir-format
-msgid ""
-"Usage: schedule add interval <min> <#channel> <message> OR schedule add "
-"daily <HH:MM> <#channel> <message>"
+msgid "Usage: schedule add interval <min> <#channel> <message> OR schedule add daily <HH:MM> <#channel> <message>"
 msgstr ""
 "用法:计划增加间隔<min> <#channel> <message> OR计划增加每日<HH:MM> <#channel> <message>"
 
@@ -1221,7 +1215,7 @@ msgstr "网页"
 msgid "Web pages"
 msgstr "网页"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:90
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:212
 #, elixir-autogen, elixir-format
 msgid "Welcome, {nickname}!"
 msgstr "欢迎,{昵称}!"
@@ -1646,7 +1640,7 @@ msgstr "谁写的哈利波特?"
 msgid "Who wrote the Communist Manifesto?"
 msgstr "谁写的共产党宣言?"
 
-#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:36
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:56
 #, elixir-autogen, elixir-format
 msgid "XML parse error: %{reason}"
 msgstr "XML 解析错误: %{reason}"
@@ -1727,44 +1721,32 @@ msgstr "[昵称]"
 msgid "~3 x 10^5 km/s"
 msgstr "~3 x 10^5公里/s"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:339
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:349
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' checked. Nothing new."
 msgstr "输入 '%{id}' 已检查 。 没什么新鲜事"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:327
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:337
 #, elixir-autogen, elixir-format
 msgid "Feed '%{id}' posts to %{channel}. Ask there to check it."
 msgstr "将 '%{id}' 文章输入 %{channel}. 问那里看."
 
-#: lib/retro_hex_chat/scraper/card.ex:84
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:803
 #, elixir-autogen, elixir-format
 msgid "RSS"
 msgstr "RSS"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:271
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:281
 #, elixir-autogen, elixir-format
 msgid "Refusing %{url}: %{reason}"
 msgstr "拒绝 %{url}：%{reason}"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:72
-#, elixir-autogen, elixir-format
-msgid ""
-"Farewell delivery must be public, channel_notice, private_notice, or silent"
-msgstr "告别消息的投递方式必须是 public、channel_notice、private_notice 或 silent"
-
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:65
-#, elixir-autogen, elixir-format
-msgid ""
-"Greeting delivery must be public, channel_notice, private_notice, or silent"
-msgstr "欢迎消息的投递方式必须是 public、channel_notice、private_notice 或 silent"
-
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:78
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:106
 #, elixir-autogen, elixir-format
 msgid "Repeat window must be a non-negative number of seconds"
 msgstr "重复窗口必须是非负的秒数"
 
-#: lib/retro_hex_chat/bots/capabilities/rss.ex:150
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:160
 #, elixir-autogen, elixir-format
 msgid "Only server administrators can manage feeds."
 msgstr "只有服务器管理员可以管理订阅源。"
@@ -1789,27 +1771,32 @@ msgstr "无位置重定向"
 msgid "too many redirects"
 msgstr "改变方向太多"
 
-#: lib/retro_hex_chat/scraper/card.ex:202
+#: lib/retro_hex_chat/scraper/card.ex:235
 #, elixir-autogen, elixir-format
 msgid "%{count} min read"
 msgstr "阅读 %{count} 分钟"
 
-#: lib/retro_hex_chat/scraper/card.ex:187
+#: lib/retro_hex_chat/scraper/card.ex:220
 #, elixir-autogen, elixir-format
 msgid "%{count}d ago"
 msgstr "%{count}天前"
 
-#: lib/retro_hex_chat/scraper/card.ex:186
+#: lib/retro_hex_chat/scraper/card.ex:219
 #, elixir-autogen, elixir-format
 msgid "%{count}h ago"
 msgstr "%{count}小时前"
 
-#: lib/retro_hex_chat/scraper/card.ex:185
+#: lib/retro_hex_chat/scraper/card.ex:218
 #, elixir-autogen, elixir-format
 msgid "%{count}m ago"
 msgstr "%{count}分钟前"
 
-#: lib/retro_hex_chat/scraper/card.ex:251
+#: lib/retro_hex_chat/scraper/card.ex:299
 #, elixir-autogen, elixir-format
 msgid "Read full story"
 msgstr "阅读全文"
+
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:243
+#, elixir-autogen, elixir-format
+msgid "%{field} must be public, channel_notice, private_notice, or silent"
+msgstr "%{field} 必须是 public、channel_notice、private_notice 或 silent"

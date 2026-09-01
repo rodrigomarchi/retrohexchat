@@ -11,47 +11,47 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:19
+#: lib/retro_hex_chat/accounts/nick_colors.ex:20
 #, elixir-autogen, elixir-format
 msgid "Black"
 msgstr "ブラック"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:30
+#: lib/retro_hex_chat/accounts/nick_colors.ex:31
 #, elixir-autogen, elixir-format
 msgid "Blue"
 msgstr "ブルージュ"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:29
+#: lib/retro_hex_chat/accounts/nick_colors.ex:30
 #, elixir-autogen, elixir-format
 msgid "Cyan"
 msgstr "シアン"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:21
+#: lib/retro_hex_chat/accounts/nick_colors.ex:22
 #, elixir-autogen, elixir-format
 msgid "Green"
 msgstr "グリーングリーン"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:32
+#: lib/retro_hex_chat/accounts/nick_colors.ex:33
 #, elixir-autogen, elixir-format
 msgid "Grey"
 msgstr "グレー"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:27
+#: lib/retro_hex_chat/accounts/nick_colors.ex:28
 #, elixir-autogen, elixir-format
 msgid "Lime"
 msgstr "Lime"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:31
+#: lib/retro_hex_chat/accounts/nick_colors.ex:32
 #, elixir-autogen, elixir-format
 msgid "Magenta"
 msgstr "マゼンタ"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:23
+#: lib/retro_hex_chat/accounts/nick_colors.ex:24
 #, elixir-autogen, elixir-format
 msgid "Maroon"
 msgstr "マルーン"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:20
+#: lib/retro_hex_chat/accounts/nick_colors.ex:21
 #, elixir-autogen, elixir-format
 msgid "Navy"
 msgstr "ネイビー"
@@ -76,37 +76,37 @@ msgstr "ニックネームは文字列でなければなりません"
 msgid "Nickname must start with a letter or special character"
 msgstr "ニックネームは、文字や特殊文字から始める必要があります"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:25
+#: lib/retro_hex_chat/accounts/nick_colors.ex:26
 #, elixir-autogen, elixir-format
 msgid "Orange"
 msgstr "オレンジ"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:24
+#: lib/retro_hex_chat/accounts/nick_colors.ex:25
 #, elixir-autogen, elixir-format
 msgid "Purple"
 msgstr "パープル"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:22
+#: lib/retro_hex_chat/accounts/nick_colors.ex:23
 #, elixir-autogen, elixir-format
 msgid "Red"
 msgstr "レッド"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:33
+#: lib/retro_hex_chat/accounts/nick_colors.ex:34
 #, elixir-autogen, elixir-format
 msgid "Silver"
 msgstr "シルバー"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:28
+#: lib/retro_hex_chat/accounts/nick_colors.ex:29
 #, elixir-autogen, elixir-format
 msgid "Teal"
 msgstr "テラル"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:18
+#: lib/retro_hex_chat/accounts/nick_colors.ex:19
 #, elixir-autogen, elixir-format
 msgid "White"
 msgstr "ホワイト"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:26
+#: lib/retro_hex_chat/accounts/nick_colors.ex:27
 #, elixir-autogen, elixir-format
 msgid "Yellow"
 msgstr "イエロー"
@@ -115,3 +115,55 @@ msgstr "イエロー"
 #, elixir-autogen, elixir-format
 msgid "Nickname contains invalid characters"
 msgstr "ニックネームは無効な文字を含む"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:796
+#, elixir-autogen, elixir-format
+msgid "Active session not found for this nick."
+msgstr "このニックネームのアクティブなセッションが見つかりません。"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1311
+#, elixir-autogen, elixir-format
+msgid "Browser"
+msgstr "ブラウザー"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:677
+#, elixir-autogen, elixir-format
+msgid "Could not rename the terminal."
+msgstr "端末の名前を変更できませんでした。"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:778
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:812
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1228
+#, elixir-autogen, elixir-format
+msgid "Session ended from Trusted Terminals by %{actor}"
+msgstr "%{actor} が「信頼済み端末」からセッションを終了しました"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:207
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:737
+#, elixir-autogen, elixir-format
+msgid "This terminal is not remembered."
+msgstr "この端末は記憶されていません。"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:219
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:222
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:681
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:695
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:709
+#, elixir-autogen, elixir-format
+msgid "Trusted terminal not found for this nick."
+msgstr "このニックネームの信頼済み端末が見つかりません。"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:732
+#, elixir-autogen, elixir-format
+msgid "Trusted terminal not found."
+msgstr "信頼済み端末が見つかりません。"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1312
+#, elixir-autogen, elixir-format
+msgid "Unknown OS"
+msgstr "不明な OS"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:255
+#, elixir-autogen, elixir-format
+msgid "Could not update auto-login."
+msgstr "自動ログインを更新できませんでした。"

@@ -108,9 +108,7 @@ msgstr "3. Choose a password (minimum 5 characters) and click"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:16
 #, elixir-autogen, elixir-format
-msgid ""
-"3. On success, you join the chat already identified — the 60-second identify"
-" timer is skipped."
+msgid "3. On success, you join the chat already identified — the 60-second identify timer is skipped."
 msgstr ""
 "3. On success, you join the chat already identified — the 60-second identify"
 " timer is skipped."
@@ -132,8 +130,7 @@ msgstr "4. Use"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:35
 #, elixir-autogen, elixir-format
-msgid ""
-"4. Your nickname is registered and you join the chat already identified."
+msgid "4. Your nickname is registered and you join the chat already identified."
 msgstr ""
 "4. Your nickname is registered and you join the chat already identified."
 
@@ -142,12 +139,12 @@ msgstr ""
 msgid "7 days"
 msgstr "7 days"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:334
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:348
 #, elixir-autogen, elixir-format
 msgid "Breadcrumb"
 msgstr "Breadcrumb"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:124
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:138
 #, elixir-autogen, elixir-format
 msgid "Browse by category or open Help Topics from the chat menu."
 msgstr "Browse by category or open Help Topics from the chat menu."
@@ -171,11 +168,6 @@ msgstr "Changing Nickname"
 #, elixir-autogen, elixir-format
 msgid "Channels"
 msgstr "Channels"
-
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "Click a nickname in the conversations sidebar user list and select"
-msgstr "Click a nickname in the conversations sidebar user list and select"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:28
 #, elixir-autogen, elixir-format
@@ -218,10 +210,7 @@ msgstr "Enter"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:24
 #, elixir-autogen, elixir-format
-msgid ""
-"Every nickname must be registered before entering the chat. When you connect"
-" with a new nickname, you'll be asked to choose a password to register it. "
-"On future visits, you'll enter your password to log in."
+msgid "Every nickname must be registered before entering the chat. When you connect with a new nickname, you'll be asked to choose a password to register it. On future visits, you'll enter your password to log in."
 msgstr ""
 "Every nickname must be registered before entering the chat. When you connect"
 " with a new nickname, you'll be asked to choose a password to register it. "
@@ -229,21 +218,21 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:69
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:82
+#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:55
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:57
-#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:59
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:336
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:352
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:356
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:350
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:369
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:374
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "Help"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:219
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:233
 #, elixir-autogen, elixir-format
 msgid "Help navigation"
 msgstr "Help navigation"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:56
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:45
 #, elixir-autogen, elixir-format
 msgid "Help — RetroHexChat"
 msgstr "Help — RetroHexChat"
@@ -258,7 +247,7 @@ msgstr "Keyboard Shortcuts"
 msgid "Minimum 5 characters, maximum 100 characters"
 msgstr "Minimum 5 characters, maximum 100 characters"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Msg Command"
 msgstr "Msg Command"
@@ -302,7 +291,7 @@ msgstr "Nickname Rules"
 msgid "Nicknames not used for"
 msgstr "Nicknames not used for"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Notices"
 msgstr "Notices"
@@ -322,7 +311,7 @@ msgstr "Password Rules"
 msgid "Query"
 msgstr "Query"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Query Command"
 msgstr "Query Command"
@@ -353,42 +342,37 @@ msgstr "Registered nickname"
 msgid "Registration Required"
 msgstr "Registration Required"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:119
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:133
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat Help"
 msgstr "RetroHexChat Help"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"RetroHexChat handles all authentication directly on the connection screen — "
-"no need to run"
+msgid "RetroHexChat handles all authentication directly on the connection screen — no need to run"
 msgstr ""
 "RetroHexChat handles all authentication directly on the connection screen — "
 "no need to run"
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"RetroHexChat is a web-based IRC client with an authentic retro look and "
-"feel. It supports channels, private messages, text formatting, nick "
-"services, and much more."
+msgid "RetroHexChat is a web-based IRC client with an authentic retro look and feel. It supports channels, private messages, text formatting, nick services, and much more."
 msgstr ""
 "RetroHexChat is a web-based IRC client with an authentic retro look and "
 "feel. It supports channels, private messages, text formatting, nick "
 "services, and much more."
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:143
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:157
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "See Also"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:121
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:135
 #, elixir-autogen, elixir-format
 msgid "Select a topic from the navigation pane to get started."
 msgstr "Select a topic from the navigation pane to get started."
@@ -410,8 +394,7 @@ msgstr "This opens a PM tab. Alternatively, send a single message:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"To connect to RetroHexChat, enter a nickname on the connect screen and click"
+msgid "To connect to RetroHexChat, enter a nickname on the connect screen and click"
 msgstr ""
 "To connect to RetroHexChat, enter a nickname on the connect screen and click"
 
@@ -422,17 +405,14 @@ msgstr "Using the User List"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"You can send private messages to other users that only the two of you can "
-"see."
+msgid "You can send private messages to other users that only the two of you can see."
 msgstr ""
 "You can send private messages to other users that only the two of you can "
 "see."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:50
 #, elixir-autogen, elixir-format
-msgid ""
-"are automatically freed. Connect regularly to keep your registration. See"
+msgid "are automatically freed. Connect regularly to keep your registration. See"
 msgstr ""
 "are automatically freed. Connect regularly to keep your registration. See"
 
@@ -458,9 +438,7 @@ msgstr "manually."
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:15
 #, elixir-autogen, elixir-format
-msgid ""
-"to open a PM tab. You can also double-click a nickname to open a PM "
-"directly."
+msgid "to open a PM tab. You can also double-click a nickname to open a PM directly."
 msgstr ""
 "to open a PM tab. You can also double-click a nickname to open a PM "
 "directly."
@@ -487,20 +465,18 @@ msgstr "— A password prompt appears. Enter your password and click"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:35
 #, elixir-autogen, elixir-format
-msgid ""
-"— A registration form appears. Choose a password (minimum 5 characters) and "
-"confirm it. Click"
+msgid "— A registration form appears. Choose a password (minimum 5 characters) and confirm it. Click"
 msgstr ""
 "— A registration form appears. Choose a password (minimum 5 characters) and "
 "confirm it. Click"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:43
-#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:47
+#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:41
+#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:46
 #, elixir-autogen, elixir-format
 msgid "%{count} topics"
 msgstr "%{count} topics"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "/notice"
 msgstr "/notice"
@@ -511,46 +487,50 @@ msgid "About RetroHexChat"
 msgstr "About RetroHexChat"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:95
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:173
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:187
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:568
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "Back"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:441
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:448
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:622
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:629
 #, elixir-autogen, elixir-format
 msgid "Back to chat"
 msgstr "Back to chat"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:112
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:222
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:236
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:369
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:167
 #, elixir-autogen, elixir-format
 msgid "Contents"
 msgstr "Contents"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:27
 #, elixir-autogen, elixir-format
-msgid ""
-"For a lightweight message that does not open a PM tab on the recipient's "
-"side, choose Send Notice from a nickname context menu or use"
+msgid "For a lightweight message that does not open a PM tab on the recipient's side, choose Send Notice from a nickname context menu or use"
 msgstr ""
 "For a lightweight message that does not open a PM tab on the recipient's "
 "side, choose Send Notice from a nickname context menu or use"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:99
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:181
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:195
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:574
 #, elixir-autogen, elixir-format
 msgid "Forward"
 msgstr "Forward"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:90
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:185
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:199
 #, elixir-autogen, elixir-format
 msgid "Home"
 msgstr "Home"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:116
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:223
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:237
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:375
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:176
 #, elixir-autogen, elixir-format
 msgid "Index"
 msgstr "Index"
@@ -561,29 +541,30 @@ msgstr "Index"
 msgid "Navigate"
 msgstr "Navigate"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:265
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:279
 #, elixir-autogen, elixir-format
 msgid "No topics match \"%{query}\"."
 msgstr "No topics match \"%{query}\"."
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Notice Command"
 msgstr "Notice Command"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:124
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:224
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:463
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:238
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:381
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:185
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "Search"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:198
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:212
 #, elixir-autogen, elixir-format
 msgid "Search topics..."
 msgstr "Search topics..."
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:258
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:272
 #, elixir-autogen, elixir-format
 msgid "Type in the search box to find topics."
 msgstr "Type in the search box to find topics."
@@ -596,9 +577,7 @@ msgstr "View"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:34
 #, elixir-autogen, elixir-format
-msgid ""
-"A remembered terminal can go one step further: turn on auto-login for it and"
-" opening any page signs you straight into the chat, with nothing to click."
+msgid "A remembered terminal can go one step further: turn on auto-login for it and opening any page signs you straight into the chat, with nothing to click."
 msgstr ""
 "A remembered terminal can go one step further: turn on auto-login for it and"
 " opening any page signs you straight into the chat, with nothing to click."
@@ -615,10 +594,7 @@ msgstr "Desktop & Windows"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:47
 #, elixir-autogen, elixir-format
-msgid ""
-"It behaves like every other window: move it, minimize it, or bring it back "
-"from the taskbar button or Start ▸ Windows. On the public pages it opens "
-"with the page; on the connect screen it is pinned in the middle."
+msgid "It behaves like every other window: move it, minimize it, or bring it back from the taskbar button or Start ▸ Windows. On the public pages it opens with the page; on the connect screen it is pinned in the middle."
 msgstr ""
 "It behaves like every other window: move it, minimize it, or bring it back "
 "from the taskbar button or Start ▸ Windows. On the public pages it opens "
@@ -631,10 +607,7 @@ msgstr "Signing In"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"The Connect window is where you sign in. It appears on its own screen at "
-"/connect, and on every public page — so you can enter the chat without "
-"leaving the page you arrived on."
+msgid "The Connect window is where you sign in. It appears on its own screen at /connect, and on every public page — so you can enter the chat without leaving the page you arrived on."
 msgstr ""
 "The Connect window is where you sign in. It appears on its own screen at "
 "/connect, and on every public page — so you can enter the chat without "
@@ -652,10 +625,7 @@ msgstr "The nickname rules are the same everywhere — see"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:40
 #, elixir-autogen, elixir-format
-msgid ""
-"This is per terminal and per nickname, so a shared machine can stay manual "
-"while your own signs you in. Disconnecting from the chat always returns you "
-"here rather than looping straight back in."
+msgid "This is per terminal and per nickname, so a shared machine can stay manual while your own signs you in. Disconnecting from the chat always returns you here rather than looping straight back in."
 msgstr ""
 "This is per terminal and per nickname, so a shared machine can stay manual "
 "while your own signs you in. Disconnecting from the chat always returns you "
@@ -663,10 +633,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:21
 #, elixir-autogen, elixir-format
-msgid ""
-"Tick Remember this terminal while signing in and this browser is remembered "
-"for that nickname. On your next visit the window lists it as a card instead "
-"of an empty field, and one click signs you back in — no password."
+msgid "Tick Remember this terminal while signing in and this browser is remembered for that nickname. On your next visit the window lists it as a card instead of an empty field, and one click signs you back in — no password."
 msgstr ""
 "Tick Remember this terminal while signing in and this browser is remembered "
 "for that nickname. On your next visit the window lists it as a card instead "
@@ -679,10 +646,7 @@ msgstr "Trusted Terminals"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:9
 #, elixir-autogen, elixir-format
-msgid ""
-"Type a nickname and click Connect. A nickname nobody has registered opens a "
-"short registration form; a registered one asks for its password. Either way "
-"you land in the chat already identified."
+msgid "Type a nickname and click Connect. A nickname nobody has registered opens a short registration form; a registered one asks for its password. Either way you land in the chat already identified."
 msgstr ""
 "Type a nickname and click Connect. A nickname nobody has registered opens a "
 "short registration form; a registered one asks for its password. Either way "
@@ -690,9 +654,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:27
 #, elixir-autogen, elixir-format
-msgid ""
-"Use another nick/password switches back to the plain nickname field, and "
-"Back to trusted terminals returns to the list."
+msgid "Use another nick/password switches back to the plain nickname field, and Back to trusted terminals returns to the list."
 msgstr ""
 "Use another nick/password switches back to the plain nickname field, and "
 "Back to trusted terminals returns to the list."
@@ -701,3 +663,18 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "for the full list."
 msgstr "for the full list."
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "A private message keeps that user list too: it shows the two of you under Participants, with a dot saying whether the other person is online, away or not connected. Right-click them there for Whois, Ignore, Add to Contacts and a P2P session."
+msgstr "A private message keeps that user list too: it shows the two of you under Participants, with a dot saying whether the other person is online, away or not connected. Right-click them there for Whois, Ignore, Add to Contacts and a P2P session."
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Right-click a nickname in the user list on the right and select"
+msgstr "Right-click a nickname in the user list on the right and select"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "User List"
+msgstr "User List"

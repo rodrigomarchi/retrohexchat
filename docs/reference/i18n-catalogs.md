@@ -79,27 +79,27 @@ que reexporta esses arquivos para o runtime e para os testes.
   e o convite P2P em chines carregava `/p2p/ %{token}` — com espaco, link
   morto. Limpar a bandeira e uma decisao por entrada, nunca em lote.
 
-### O buraco que os dois checkers nao veem
+### O terceiro checker, e o buraco que ele fechou
 
-`i18n.catalog.check` conta entradas **presentes** no `.po`; `i18n.gettext.check`
+`i18n_po_status` conta entradas **presentes** no `.po`; `i18n.gettext.check`
 afirma que o `.pot` esta fresco. Nenhum dos dois pergunta se todo `msgid` do
 `.pot` existe em todo `.po` — e uma entrada que nunca foi mergeada nao esta
-vazia, ela nao existe. Medido em 2026-09-01, com os dois checkers verdes:
+vazia, ela nao existe. Medido em 2026-09-01 com os dois verdes: **65 `msgid`**
+viviam num `.pot` e em nenhum catalogo, e os 13 locales renderizavam tudo em
+ingles (`help_bots` 29, `accounts` 9, `help_ui` 8, `dialogs` 6, `commands` 5,
+`help` 3, `connect` 3, e mais cinco dominios com 1 cada).
 
-| Dominio | `msgid` no `.pot` e ausentes do `pt_BR` |
-| --- | --- |
-| `retro_hex_chat_web/help_bots` | 29 |
-| `retro_hex_chat_web/dialogs` | 6 |
-| `retro_hex_chat/commands` | 5 |
-| `retro_hex_chat_web/help` | 3 |
-| `retro_hex_chat/bots`, `channels`, `lobby`, `help_arcade`, `ui` | 1 cada |
-| **total** | **48** |
+Fechado no mesmo dia: os 65 estao traduzidos a mao e
+`scripts/i18n_catalog_completeness_check.exs` entrou no
+`make i18n.catalog.check`, que ja esta no `make ci`. A pergunta dele e
+presenca, nao conteudo — se a entrada diz algo util e o que os outros dois
+checam.
 
-Sao 48 × 13 traducoes e uma checagem nova — "todo `msgid` do `.pot` existe em
-todo `.po`" — e o trabalho ainda nao foi feito. Rodar
-`make i18n.gettext.merge` num desses dominios traz as entradas para dentro dos
-catalogos e, a partir dai, o gate cobra: merge um dominio so quando estiver
-disposto a traduzir o que ele trouxer.
+**Armadilha de medicao, cara:** a primeira contagem usou `pt_BR` como sonda e
+achou 48. Nove `msgid` de `accounts` existiam em `pt_BR` e faltavam nos outros
+doze locales, e tres de `connect` faltavam so no `en` — invisiveis para uma
+sonda de um locale so. Conte contra **todos** os locales, que e o que o checker
+faz.
 
 ## Fluxo
 

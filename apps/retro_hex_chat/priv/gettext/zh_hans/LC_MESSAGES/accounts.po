@@ -11,47 +11,47 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:19
+#: lib/retro_hex_chat/accounts/nick_colors.ex:20
 #, elixir-autogen, elixir-format
 msgid "Black"
 msgstr "黑色"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:30
+#: lib/retro_hex_chat/accounts/nick_colors.ex:31
 #, elixir-autogen, elixir-format
 msgid "Blue"
 msgstr "蓝色"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:29
+#: lib/retro_hex_chat/accounts/nick_colors.ex:30
 #, elixir-autogen, elixir-format
 msgid "Cyan"
 msgstr "青色"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:21
+#: lib/retro_hex_chat/accounts/nick_colors.ex:22
 #, elixir-autogen, elixir-format
 msgid "Green"
 msgstr "绿色"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:32
+#: lib/retro_hex_chat/accounts/nick_colors.ex:33
 #, elixir-autogen, elixir-format
 msgid "Grey"
 msgstr "灰色"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:27
+#: lib/retro_hex_chat/accounts/nick_colors.ex:28
 #, elixir-autogen, elixir-format
 msgid "Lime"
 msgstr "莱姆"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:31
+#: lib/retro_hex_chat/accounts/nick_colors.ex:32
 #, elixir-autogen, elixir-format
 msgid "Magenta"
 msgstr "紫红色"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:23
+#: lib/retro_hex_chat/accounts/nick_colors.ex:24
 #, elixir-autogen, elixir-format
 msgid "Maroon"
 msgstr "马龙"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:20
+#: lib/retro_hex_chat/accounts/nick_colors.ex:21
 #, elixir-autogen, elixir-format
 msgid "Navy"
 msgstr "海军"
@@ -76,37 +76,37 @@ msgstr "昵称必须是字符串"
 msgid "Nickname must start with a letter or special character"
 msgstr "昵称必须从字母或特殊字符开始"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:25
+#: lib/retro_hex_chat/accounts/nick_colors.ex:26
 #, elixir-autogen, elixir-format
 msgid "Orange"
 msgstr "橙红色"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:24
+#: lib/retro_hex_chat/accounts/nick_colors.ex:25
 #, elixir-autogen, elixir-format
 msgid "Purple"
 msgstr "紫色"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:22
+#: lib/retro_hex_chat/accounts/nick_colors.ex:23
 #, elixir-autogen, elixir-format
 msgid "Red"
 msgstr "红色"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:33
+#: lib/retro_hex_chat/accounts/nick_colors.ex:34
 #, elixir-autogen, elixir-format
 msgid "Silver"
 msgstr "银"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:28
+#: lib/retro_hex_chat/accounts/nick_colors.ex:29
 #, elixir-autogen, elixir-format
 msgid "Teal"
 msgstr "提尔"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:18
+#: lib/retro_hex_chat/accounts/nick_colors.ex:19
 #, elixir-autogen, elixir-format
 msgid "White"
 msgstr "白色"
 
-#: lib/retro_hex_chat/accounts/nick_colors.ex:26
+#: lib/retro_hex_chat/accounts/nick_colors.ex:27
 #, elixir-autogen, elixir-format
 msgid "Yellow"
 msgstr "黄色"
@@ -115,3 +115,55 @@ msgstr "黄色"
 #, elixir-autogen, elixir-format
 msgid "Nickname contains invalid characters"
 msgstr "昵称包含无效字符"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:796
+#, elixir-autogen, elixir-format
+msgid "Active session not found for this nick."
+msgstr "未找到该昵称的活动会话。"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1311
+#, elixir-autogen, elixir-format
+msgid "Browser"
+msgstr "浏览器"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:677
+#, elixir-autogen, elixir-format
+msgid "Could not rename the terminal."
+msgstr "无法重命名终端。"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:778
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:812
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1228
+#, elixir-autogen, elixir-format
+msgid "Session ended from Trusted Terminals by %{actor}"
+msgstr "%{actor} 从“受信任终端”结束了会话"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:207
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:737
+#, elixir-autogen, elixir-format
+msgid "This terminal is not remembered."
+msgstr "这台终端未被记住。"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:219
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:222
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:681
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:695
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:709
+#, elixir-autogen, elixir-format
+msgid "Trusted terminal not found for this nick."
+msgstr "未找到该昵称的受信任终端。"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:732
+#, elixir-autogen, elixir-format
+msgid "Trusted terminal not found."
+msgstr "未找到受信任的终端。"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1312
+#, elixir-autogen, elixir-format
+msgid "Unknown OS"
+msgstr "未知的操作系统"
+
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:255
+#, elixir-autogen, elixir-format
+msgid "Could not update auto-login."
+msgstr "无法更新自动登录。"

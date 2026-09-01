@@ -142,8 +142,9 @@ TECHNICAL_SOURCE_ALLOWLIST = [
     r"^%\{count\} minutes?$",
     # Dutch borrows the word outright: "component" singular, "componenten"
     # plural. The singular matching English is the translation, not the absence
-    # of one.
+    # of one. The same is true of "object" / "objecten".
     r"^%\{count\} components?$",
+    r"^%\{count\} objects?$",
 ]
 
 ALLOWLIST = [re.compile(pattern) for pattern in TECHNICAL_SOURCE_ALLOWLIST]

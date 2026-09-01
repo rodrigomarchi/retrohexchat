@@ -11,11 +11,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:36
-#, elixir-autogen, elixir-format
-msgid "#lobby (12)"
-msgstr "#lobby (12)"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
 #, elixir-autogen, elixir-format
 msgid ". User counts appear next to all channels."
@@ -106,7 +101,7 @@ msgstr "колокол"
 msgid "Block messages from the user."
 msgstr "Блокировать сообщения от пользователя."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Blue. Can speak in moderated channels."
 msgstr "Синий. Можно говорить по умеренным каналам."
@@ -140,13 +135,6 @@ msgstr "Сообщения канала"
 #, elixir-autogen, elixir-format
 msgid "Chat Area:"
 msgstr "Чат-зона:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:40
-#, elixir-autogen, elixir-format
-msgid "Click a nickname to access Query, Whois, Kick, Ban, Mode, Add to Contacts, and Set Nick Color options. Double-click to open a private message."
-msgstr ""
-"Нажмите ник, чтобы получить доступ к Query, Whois, Kick, Ban, Mode, Add to "
-"Contacts и Set Nick Color. Дважды щелкните, чтобы открыть личное сообщение."
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:37
@@ -195,7 +183,7 @@ msgstr "Отключение / Connect"
 msgid "Connection"
 msgstr "Подключение"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Context Menu"
 msgstr "Меню контекста"
@@ -263,7 +251,7 @@ msgstr "Пользовательское меню"
 msgid "DND (Do Not Disturb)"
 msgstr "DND (не беспокоить)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Default color."
 msgstr "Цвет по умолчанию."
@@ -344,12 +332,12 @@ msgstr ""
 msgid "Formatting Toolbar:"
 msgstr "Форматирование Toolbar:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Green, bold. Limited moderation."
 msgstr "Зеленый, смелый. Ограниченная умеренность."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Half-Ops (%):"
 msgstr "Полуопс (%):"
@@ -486,7 +474,7 @@ msgstr "Откройте PM с пользователем."
 msgid "Operator Actions"
 msgstr "Действия оператора"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Operators (@):"
 msgstr "Операторы (@):"
@@ -501,7 +489,7 @@ msgstr "Варианты"
 msgid "Override the display color for this nick."
 msgstr "Переопределите цвет дисплея для этого ника."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Owners (~):"
 msgstr "Владельцы (~):"
@@ -526,7 +514,7 @@ msgstr "выступать"
 msgid "Press"
 msgstr "Пресса"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Purple, bold. Channel founders."
 msgstr "Фиолетовый, смелый. Основатели канала."
@@ -541,12 +529,12 @@ msgstr "Вопрос:"
 msgid "Quick-access buttons for common actions."
 msgstr "Кнопки быстрого доступа для общих действий."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Red, bold. Can manage the channel."
 msgstr "Красный, смелый. Может управлять каналом."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Regular:"
 msgstr "Регулярно:"
@@ -728,13 +716,6 @@ msgid "The Status tab is the central observability point for your session."
 msgstr ""
 "Закладка «Статус» является центральной точкой наблюдения для вашего сеанса."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:33
-#, elixir-autogen, elixir-format
-msgid "The active channel shows a user count in parentheses next to the channel name, e.g."
-msgstr ""
-"Активный канал показывает количество пользователей в скобках рядом с "
-"названием канала, например."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The toolbar provides quick access to all RetroHexChat features through icon buttons, organized in six groups separated by dividers."
@@ -749,13 +730,6 @@ msgid "The topic bar appears below the tab bar and shows the current channel nam
 msgstr ""
 "Тематическая панель появляется ниже панели вкладок и показывает текущее "
 "название канала, активные режимы и текст темы."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The user list appears in the conversations sidebar (left pane) under the active channel, showing all users sorted by role."
-msgstr ""
-"Список пользователей появляется на боковой панели разговоров (слева) под "
-"активным каналом, показывая всех пользователей, отсортированных по ролям."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:43
 #, elixir-autogen, elixir-format
@@ -800,11 +774,6 @@ msgstr "Обзор UI"
 msgid "URL Catcher"
 msgstr "Перехватчик URL"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:31
-#, elixir-autogen, elixir-format
-msgid "User Count"
-msgstr "Подсчет пользователей"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "User Interactions"
@@ -822,12 +791,6 @@ msgstr "Обзор пользовательского интерфейса"
 msgid "User List"
 msgstr "Список пользователей"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Users are sorted by role priority and distinguished by icon and color:"
-msgstr ""
-"Пользователи отсортированы по приоритету роли и отличаются значком и цветом:"
-
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Using Colors"
@@ -844,7 +807,7 @@ msgstr "Видеозвонок:"
 msgid "View"
 msgstr "Вид"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Voiced (+):"
 msgstr "Голос (+):"
@@ -2959,3 +2922,43 @@ msgstr "Панель вкладок под областью чата несёт 
 #, elixir-autogen, elixir-format
 msgid "The controls next to the tabs open something beside the conversation rather than replacing it: channel settings, user lookup, the conference and the P2P session. Each carries its label, so you can read what it does. On a phone the first two also slide the conversations and user list open over the chat."
 msgstr "Элементы рядом со вкладками открывают что-то возле беседы, а не вместо неё: настройки канала, поиск пользователя, конференцию и сеанс P2P. У каждого есть подпись, так что видно, что он делает. На телефоне первые два ещё и выдвигают беседы и список пользователей поверх чата."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "A private message has no channel roles, so both of you are listed together under Participants, the person you are talking to first. Bots keep their own group in either kind of conversation."
+msgstr "В личной переписке нет ролей канала, поэтому вы оба перечислены вместе в Участниках, первым — тот, с кем вы говорите. Боты сохраняют свою группу в обоих видах разговора."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Collapse the list with the arrow in its title, and it becomes a narrow rail that still shows the counts; click the rail to bring it back. On a phone there is no rail: use the Users button at the end of the tab strip to open it as a drawer."
+msgstr "Сверните список стрелкой в его заголовке, и он станет узкой полосой, которая по-прежнему показывает счётчики; щёлкните полосу, чтобы вернуть его. На телефоне полосы нет: используйте кнопку Пользователи в конце полосы вкладок, чтобы открыть его выдвижной панелью."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "In a channel, users are grouped by role and sorted within each group:"
+msgstr "В канале пользователи сгруппированы по роли и отсортированы внутри каждой группы:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Right-click a nickname for Query, Whois, Add to Contacts, Ignore and Set Nick Color, plus Kick, Ban, Op and Voice when you are a channel operator. Double-click opens a private message."
+msgstr "Щёлкните ник правой кнопкой для Query, Whois, Добавить в контакты, Игнорировать и Задать цвет ника, а также Kick, Ban, Op и Voice, когда вы оператор канала. Двойной щелчок открывает личную переписку."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Showing and hiding it"
+msgstr "Показать и скрыть"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "The strip under the title counts who is online, away and muted. A dot beside each name says the same for that person: online, away, or — in a private message — not connected at all, since the other person can be offline while the conversation stays open."
+msgstr "Полоса под заголовком считает, кто в сети, отошёл и заглушён. Точка рядом с каждым именем говорит то же о человеке: в сети, отошёл или — в личной переписке — вовсе не подключён, ведь собеседник может быть офлайн, пока разговор остаётся открытым."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The user list is the sidebar on the right of the conversation. It lists whoever is in the conversation on screen, and every conversation has one — a channel shows its members, a private message shows the two of you."
+msgstr "Список пользователей — это боковая панель справа от разговора. В нём перечислены те, кто в открытом разговоре, и он есть у каждого разговора: канал показывает своих участников, личная переписка показывает вас двоих."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Who is here"
+msgstr "Кто здесь"

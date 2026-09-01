@@ -399,7 +399,8 @@ i18n.audit.check: ## Fail when hardcoded user-visible strings are found
 i18n.status: ## Report translated, empty, and fuzzy Gettext catalog entries
 	elixir scripts/i18n_po_status.exs
 
-i18n.catalog.check: ## Fail while required catalogs have empty/fuzzy entries, unsafe placeholders, English fallbacks, oversized files, or unusable translations
+i18n.catalog.check: ## Fail while required catalogs have missing/empty/fuzzy entries, unsafe placeholders, English fallbacks, oversized files, or unusable translations
+	elixir scripts/i18n_catalog_completeness_check.exs --fail-on-missing
 	elixir scripts/i18n_po_status.exs --fail-on-untranslated --fail-locale $(I18N_REQUIRED_LOCALES)
 	elixir scripts/i18n_catalog_size_check.exs --fail-on-exceed --max-lines 12000
 	mix run --no-start scripts/i18n_placeholder_check.exs --fail-on-findings

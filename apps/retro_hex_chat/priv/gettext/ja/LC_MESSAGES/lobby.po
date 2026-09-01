@@ -28,17 +28,17 @@ msgstr "自分でセッションを作成できない"
 msgid "Failed to create lobby"
 msgstr "ロビーを作ることができない"
 
-#: lib/retro_hex_chat/lobby/session_server.ex:260
+#: lib/retro_hex_chat/lobby/session_server.ex:278
 #, elixir-autogen, elixir-format
 msgid "Invalid transition from %{from} to %{to}"
 msgstr "%{from} から %{to} への無効な移行"
 
-#: lib/retro_hex_chat/lobby/policy.ex:289
+#: lib/retro_hex_chat/lobby/policy.ex:293
 #, elixir-autogen, elixir-format
 msgid "Invite is no longer pending"
 msgstr "招待状がなくなり次第終了"
 
-#: lib/retro_hex_chat/lobby/policy.ex:293
+#: lib/retro_hex_chat/lobby/policy.ex:297
 #, elixir-autogen, elixir-format
 msgid "Lobby is no longer active"
 msgstr "ロビーは活動しません"
@@ -48,7 +48,7 @@ msgstr "ロビーは活動しません"
 msgid "Lobby not found"
 msgstr "ロビーが見つかりませんでした"
 
-#: lib/retro_hex_chat/lobby/session_server.ex:200
+#: lib/retro_hex_chat/lobby/session_server.ex:218
 #, elixir-autogen, elixir-format
 msgid "Not a participant"
 msgstr "参加者でない"
@@ -64,10 +64,10 @@ msgid "Only the inviter can cancel the invite"
 msgstr "招待者だけが招待者をキャンセルすることができます"
 
 #: lib/retro_hex_chat/lobby/service.ex:176
-#: lib/retro_hex_chat/lobby/session_server.ex:112
-#: lib/retro_hex_chat/lobby/session_server.ex:912
-#: lib/retro_hex_chat/lobby/session_server.ex:913
-#: lib/retro_hex_chat/lobby/session_server.ex:914
+#: lib/retro_hex_chat/lobby/session_server.ex:129
+#: lib/retro_hex_chat/lobby/session_server.ex:949
+#: lib/retro_hex_chat/lobby/session_server.ex:950
+#: lib/retro_hex_chat/lobby/session_server.ex:951
 #, elixir-autogen, elixir-format
 msgid "Session process not running"
 msgstr "セッションプロセスが実行されていない"
@@ -76,11 +76,6 @@ msgstr "セッションプロセスが実行されていない"
 #, elixir-autogen, elixir-format
 msgid "Target user must be registered"
 msgstr "ターゲットユーザは登録する必要があります"
-
-#: lib/retro_hex_chat/lobby/service.ex:273
-#, elixir-autogen, elixir-format
-msgid "Too many lobbies created. Try again in %{minutes} minutes"
-msgstr "たくさんのロビが誕生しました。 %{minutes} でもう一度お試しください"
 
 #: lib/retro_hex_chat/lobby/policy.ex:132
 #, elixir-autogen, elixir-format
@@ -111,3 +106,9 @@ msgstr "この対戦リンクは期限切れです"
 #, elixir-autogen, elixir-format
 msgid "You cannot join your own match"
 msgstr "自分の対戦には参加できません"
+
+#: lib/retro_hex_chat/lobby/service.ex:273
+#, elixir-autogen, elixir-format
+msgid "Too many lobbies created. Try again in %{count} second"
+msgid_plural "Too many lobbies created. Try again in %{count} seconds"
+msgstr[0] "ロビーの作成が多すぎます。%{count} 秒後にもう一度お試しください"
