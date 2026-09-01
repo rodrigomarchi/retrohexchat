@@ -732,6 +732,48 @@ ocorrências em `js/`, contadas sem `head`) e saíram junto.
 
 ---
 
+## Iteração 12 — Q4 + Q8: as duas decisões escritas onde a auditoria vai olhar
+
+Duas frases, nos dois `@moduledoc` que a auditoria acusou, escritas como
+**decisão com preço** e não como descrição:
+
+* `SpaceRef` — o endereço legível é a decisão. O id opaco custa tabela,
+  migração, todos os links já compartilhados, e um contrato novo para manter em
+  passo com o `SpaceCanvasHook` e quatro specs. A frase diz o custo, para que
+  reabrir isso exija dizer o que mudou nele.
+* `ShareLinks.Slug` — o rate limit não está faltando, está em outro lugar.
+  Limitar requisição anônima a endereço público é trabalho de borda: um CDN vê
+  toda rota e não custa nada à aplicação, enquanto um limitador aqui moraria no
+  plug de uma rota e teria que ser lembrado pela próxima página pública.
+
+E a tabela `R.n → commit` entrou no topo da auditoria, que era o último item
+aberto da §12 do plano.
+
+### Um vermelho intermitente que eu não consegui reproduzir
+
+`RetroHexChat.Lobby.SessionServerTest` "record_activity reschedules the
+pre-connection inactivity timers" falhou **uma vez** num `make ci` e **uma vez**
+numa rodada do diretório, com `:noproc` no `start_and_join!`. O que a saída
+prova, e vale mais que a teoria:
+
+```
+the supervisor was:    #PID<0.471.0>
+the supervisor is now: #PID<0.4098.0>
+```
+
+O `DynamicSupervisor` **foi trocado** — ou seja, bateu `max_restarts` (três
+falhas de filho em cinco segundos) e levou todas as sessões junto. O comentário
+do próprio helper já dizia que isto "sobreviveu a vários `make ci` sem
+explicação", então precede esta sessão.
+
+Tentei atribuir ao meu teste novo e **não consegui**: 8 rodadas do diretório sem
+ele, verdes; 8 com ele, verdes; mais 6 antes disso, verdes; e as duas falhas
+apareceram fora dessas séries. Não está consertado e não sei a causa. O que a
+próxima sessão ganha daqui é o ponteiro certo: procure quem derruba **três**
+`SessionServer` em cinco segundos, não quem derruba este.
+
+---
+
 ## Aprendizados que podem sair daqui
 
 Candidatos a virar regra durável quando a onda fechar. **Ainda não movidos.**

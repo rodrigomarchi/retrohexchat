@@ -17,6 +17,15 @@ defmodule RetroHexChat.ShareLinks.Slug do
   why the number itself is asserted in the tests, and why a shorter slug would
   need the rate limit this sentence used to assume.
 
+  **And the rate limit is not coming.** An audit read the missing limit as a
+  gap; it is a placement. Throttling anonymous requests to a public address is
+  edge work — a CDN or a reverse proxy sees every request to every route and
+  costs the application nothing, while a limiter here would live in one route's
+  plug, guard one address, and have to be remembered by the next public page
+  somebody adds. The entropy above is what makes the door safe; the edge is
+  what makes it cheap. Reopening this means changing where the traffic is
+  shaped, not adding a counter to this module.
+
   It is deliberately not a signed token. A token expires and a share link is
   meant to outlive the room it names — the card it resolves to has to be useful
   after the call ended, which is most of the time a shared link is alive.

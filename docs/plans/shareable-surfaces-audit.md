@@ -15,6 +15,35 @@ auditoria diagnostica e para, e a ordem de conserto proposta está no fim.
 O que está abaixo desta seção é o handover e **não foi editado** — a diferença
 entre o que o autor achou e o que esta passada achou é ela mesma um dado.
 
+### R.n → o commit que fechou
+
+Fechado em 2026-09-01. Cada linha aponta para o commit onde o achado deixou de
+existir; os dois marcados como decisão fecharam sem código, com o porquê escrito
+no `@moduledoc` do módulo que a auditoria acusou.
+
+| | Achado | Fechado por |
+|---|---|---|
+| R.1 | um `GET` queima a vaga | `a266b7be` (a vaga), `2704d8db` (a varredura) |
+| R.2 | o card não é ao vivo | **onda 8** — é entrega, não conserto (Q1) |
+| R.3 | o space publica o canal privado | `b2868f2e` (a recusa), `2704d8db` (as metas) |
+| R.4 | nenhuma meta tag é do link | `b2868f2e` |
+| R.5 | cada Share cria um link novo | `aa58a947` |
+| R.6 | o link mascara a sessão viva | `a266b7be` |
+| R.7 | a janela cobre a barra de status | `b2868f2e` — e o diagnóstico estava errado; ver a correção na própria seção |
+| R.8 | a justificativa do `default_maximized` | `b2868f2e` |
+| R.9 | só o popover soube das abas | `2704d8db` (tira de abas), `11fc201e` (zona de status) |
+| R.10 | o `← Chat` degrada em silêncio | `b2868f2e` |
+| R.11 | o argumento do slug e o rate limit | `2704d8db` (o texto), decisão Q8 no `@moduledoc` do `Slug` |
+| R.12 | os `msgid` vazios | `2704d8db` (os 10 do plano), `05785b47` (os 30 que sobravam, e o gate) |
+| R.13 | os cinco specs vermelhos | `2704d8db` (dois), `cbab23f9` (os três, com três causas erradas corrigidas) |
+| R.14 | `PerfBudgets` e o spec que faltava | `2704d8db` (orçamento), `7836824b` (o spec K7) |
+| R.15 | os dois defeitos pequenos | `2704d8db` |
+
+E o achado que a auditoria não fez: **`SurfacePresenceHook` estava registrado e
+montado em lugar nenhum**, junto com outros cinco. Virou checagem em `973004a0`.
+
+---
+
 ### R.0 O veredito curto
 
 O Apêndice A estava certo em oito de oito, e é um piso baixo. Fora dele há

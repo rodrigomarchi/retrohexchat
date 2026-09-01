@@ -16,6 +16,15 @@ defmodule RetroHexChatWeb.SpaceRef do
   to be. What keeps someone out of a space is the policy the surface applies to
   whoever followed the address, which is decision D1 of the plan and is
   unchanged by how the address is spelled.
+
+  **Readable is the decision, not the leftover.** An audit asked for an opaque
+  id instead, because `/space/<base64(#channel)>` names the channel to anyone
+  who runs one command, and that is true. The price of an opaque one is a table,
+  a migration, every link already shared going dead, and a new contract to keep
+  in step with `SpaceCanvasHook` and four Playwright specs — for a leak that
+  exists only for a private channel and that the refusal already stopped putting
+  on screen. The trade was weighed and refused; if it is ever reopened, it is
+  that cost that has to have changed, not this sentence.
   """
 
   alias RetroHexChat.VirtualSpace
