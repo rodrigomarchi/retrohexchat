@@ -1,4 +1,4 @@
-import { repositionMenu, createMenuNavigator } from "../../../js/lib/ui/menu.js";
+import { repositionMenu } from "../../../js/lib/ui/menu.js";
 import "../../helpers/hook_helper.js"; // scrollIntoView stub
 import { cleanupDOM } from "../../helpers/hook_helper.js";
 
@@ -77,81 +77,6 @@ describe("lib/menu", () => {
       repositionMenu(el);
       expect(el.style.left).toBe("100px");
       expect(el.style.top).toBe("100px");
-    });
-  });
-
-  // ── createMenuNavigator ────────────────────────────────
-
-  describe("createMenuNavigator", () => {
-    function makeItems(count) {
-      const items = [];
-      for (let i = 0; i < count; i++) {
-        const li = document.createElement("li");
-        li.textContent = `Item ${i}`;
-        document.body.appendChild(li);
-        items.push(li);
-      }
-      return items;
-    }
-
-    it("moveFocus(1) focuses first item from -1", () => {
-      const items = makeItems(3);
-      const nav = createMenuNavigator(() => items);
-      nav.moveFocus(1);
-      expect(nav.focusedIndex).toBe(0);
-      expect(items[0].classList.contains("focused")).toBe(true);
-    });
-
-    it("moveFocus(-1) focuses last item from -1", () => {
-      const items = makeItems(3);
-      const nav = createMenuNavigator(() => items);
-      nav.moveFocus(-1);
-      expect(nav.focusedIndex).toBe(2);
-    });
-
-    it("wraps from last to first", () => {
-      const items = makeItems(3);
-      const nav = createMenuNavigator(() => items);
-      nav.moveFocus(-1); // → 2
-      nav.moveFocus(1); // → 0
-      expect(nav.focusedIndex).toBe(0);
-    });
-
-    it("wraps from first to last", () => {
-      const items = makeItems(3);
-      const nav = createMenuNavigator(() => items);
-      nav.moveFocus(1); // → 0
-      nav.moveFocus(-1); // → 2
-      expect(nav.focusedIndex).toBe(2);
-    });
-
-    it("clearFocus removes focused class", () => {
-      const items = makeItems(3);
-      const nav = createMenuNavigator(() => items);
-      nav.moveFocus(1);
-      nav.clearFocus();
-      expect(items[0].classList.contains("focused")).toBe(false);
-    });
-
-    it("selectFocused clicks the item", () => {
-      const items = makeItems(3);
-      let clicked = false;
-      items[0].addEventListener("click", () => {
-        clicked = true;
-      });
-      const nav = createMenuNavigator(() => items);
-      nav.moveFocus(1);
-      nav.selectFocused();
-      expect(clicked).toBe(true);
-    });
-
-    it("reset clears focus and index", () => {
-      const items = makeItems(3);
-      const nav = createMenuNavigator(() => items);
-      nav.moveFocus(1);
-      nav.reset();
-      expect(nav.focusedIndex).toBe(-1);
-      expect(items[0].classList.contains("focused")).toBe(false);
     });
   });
 });

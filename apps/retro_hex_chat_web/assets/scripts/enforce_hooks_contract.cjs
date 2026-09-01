@@ -59,6 +59,12 @@ const NON_IMPLEMENTATION_HOOK_FILES = new Set([
 // package lands is part of that package, not a follow-up.
 
 // A hook longer than this is carrying something that is not one of the four.
+// A registered hook that no template names, kept on purpose. Empty, and the
+// bar for adding an entry is a written reason: a hook nobody mounts is dead
+// weight in the bundle at best and a feature that silently does not exist at
+// worst.
+const UNMOUNTED_HOOK_OVERRIDES = new Set([]);
+
 const HOOK_LINE_LIMIT = 200;
 
 // Every entry is a hook still above the limit, with the package that resolves
@@ -187,10 +193,15 @@ function main() {
   );
   const lazyHooks = parseLazyFeatureHooks(lazyJs, failures);
   checkHookSets(criticalHooks, lazyHooks, failures);
-  checkPhxHookUsage(
-    new Set([...criticalHooks, ...helpHooks, ...showcaseHooks, ...connectHooks, ...lazyHooks]),
-    failures,
-  );
+  const registryHooks = new Set([
+    ...criticalHooks,
+    ...helpHooks,
+    ...showcaseHooks,
+    ...connectHooks,
+    ...lazyHooks,
+  ]);
+  checkPhxHookUsage(registryHooks, failures);
+  checkRegisteredHooksAreMounted(registryHooks, failures);
 
   if (failures.length > 0) {
     process.stderr.write(`LiveView hooks contract failed. See ${CONTRACT_DOC}.\n`);
@@ -587,6 +598,42 @@ function checkPhxHookUsage(registryHooks, failures) {
         `${repoRel(file)}:${lineNumber(source, match.index)} uses phx-hook="${hookName}" without a main registry entry or entrypoint exception.`,
       );
     }
+  }
+}
+
+// The other direction, and the one that failed silently for a whole wave:
+// `SurfacePresenceHook` was registered, imported, bundled and shipped, and no
+// template ever carried `phx-hook="SurfacePresenceHook"`. Nothing complained.
+// Every click that asked another tab to come forward waited 300 ms for an
+// answer from a hook that had never run.
+//
+// A name is "mounted" if it appears anywhere in the web lib as a quoted
+// string — `phx-hook="Name"`, `phx-hook={@open? && "Name"}`, or handed to a
+// component as `hook="Name"`, which is how four of them legitimately arrive.
+// Looser than reading the attribute, and deliberately: the failure this
+// catches is a name that appears nowhere at all, and a check that guessed at
+// indirection would fail honest code instead.
+function checkRegisteredHooksAreMounted(registryHooks, failures) {
+  const files = listFiles(
+    WEB_LIB_ROOT,
+    (filename) => filename.endsWith(".heex") || filename.endsWith(".ex"),
+  );
+  const named = new Set();
+  const pattern = new RegExp(`"(${[...registryHooks].map(escapeRegExp).join("|")})"`, "g");
+
+  for (const file of files) {
+    const source = fs.readFileSync(file, "utf8");
+    for (const match of source.matchAll(pattern)) {
+      named.add(match[1]);
+    }
+  }
+
+  for (const hookName of registryHooks) {
+    if (named.has(hookName) || UNMOUNTED_HOOK_OVERRIDES.has(hookName)) continue;
+
+    failures.push(
+      `${hookName} is registered but no template names it; mount it with phx-hook or drop it.`,
+    );
   }
 }
 

@@ -690,6 +690,48 @@ escolhido por cima do `polib` porque este reescreve quebra de linha e linhas
 
 ---
 
+## Iteração 11 — Q11: um hook registrado não é um hook montado
+
+A checagem inversa entrou no `enforce_hooks_contract.cjs`: até agora ele exigia
+que todo `phx-hook=` tivesse registro; agora exige também que todo registro
+tenha alguém que o nomeie. Ela achou **cinco**, e o `SurfacePresenceHook` da
+Iteração 3 era o sexto.
+
+| Hook | O que era | O que fiz |
+|---|---|---|
+| `ToolbarGroupHook` | a `toolbar_app` **renderiza** o contrato (`data-toolbar-group-toggle`, `.toolbar-group-dropdown`) e nada estava ligado a ele — os dropdowns Options e Help não abriam | montado |
+| `KeyboardHook` | substituído por `lib/chat/composer.js`, que empurra os mesmos `history_navigate`/`tab_complete` | apagado |
+| `ContextMenuHook` | substituído pelo `MenuRepositionHook`, que está montado | apagado |
+| `NotifyListHook` | empurra `notify_dblclick`, e **não existe handler** para esse evento no servidor | apagado |
+| `AutoFocusHook` | nenhuma referência em lugar nenhum | apagado |
+
+Os quatro apagados estavam no `critical_hooks.js`, que é o bundle **eager** —
+peso morto no primeiro carregamento de todo mundo.
+
+### O casamento por nome, e por que não é pelo atributo
+
+Quatro hooks legítimos chegam por indireção: `hook="AutocompleteHook"` num
+atributo de componente, `values: ["WindowManagerHook", …]` numa declaração. Ler
+só `phx-hook=` reprovaria os quatro. A regra é mais frouxa de propósito — o
+nome tem que aparecer **como string** em algum `.ex`/`.heex` — porque a falha
+que isto pega é um nome que não aparece em lugar nenhum, e uma checagem que
+tentasse adivinhar indireção reprovaria código honesto.
+
+### Erro meu, e ele quase apagou código vivo
+
+Conferi os "órfãos" de `lib/` com `grep … | head -5`. Os arquivos de teste vêm
+antes na ordem alfabética, então os cinco resultados eram todos testes e eu li
+"nenhum consumidor de produção". Apaguei `findClosestWithData` — que
+`nicklist_hook`, `conversations_hook` e `url_catcher_hook` usam. **Sete testes
+Vitest ficaram vermelhos na hora**, o que é o único motivo de isto ser um
+parágrafo e não um bug. `head` numa busca de "isto é usado?" é o mesmo erro que
+afirmar a partir da única coisa que se olhou.
+
+`createMenuNavigator` e `lib/input/keyboard.js` eram órfãos de verdade (zero
+ocorrências em `js/`, contadas sem `head`) e saíram junto.
+
+---
+
 ## Aprendizados que podem sair daqui
 
 Candidatos a virar regra durável quando a onda fechar. **Ainda não movidos.**

@@ -2,13 +2,10 @@ import CharCounterHook from "./ui/char_counter_hook";
 import ClockHook from "./connection/clock_hook";
 import ConnectFormHook from "./connection/connect_form_hook";
 import ConnectionStatusHook from "./connection/connection_status_hook";
-import ContextMenuHook from "./ui/context_menu_hook";
 import AutocompleteHook from "./chat/autocomplete_hook";
 import EmojiPickerHook from "./chat/emoji_picker_hook";
 import FormatToolbarHook from "./chat/format_toolbar_hook";
-import KeyboardHook from "./input/keyboard_hook";
 import LagHook from "./connection/lag_hook";
-import NotifyListHook from "./notifications/notify_list_hook";
 import PasteHook from "./chat/paste_hook";
 import ChatViewportHook from "./chat/chat_viewport_hook";
 import ChatPaginationHook from "./chat/chat_pagination_hook";
@@ -29,28 +26,23 @@ import URLCatcherHook from "./ui/url_catcher_hook";
 import ViewportDetectHook from "./ui/viewport_detect_hook";
 import WindowManagerHook from "./ui/window_manager_hook";
 import FocusChatInputOnClickHook from "./ui/focus_chat_input_on_click_hook";
-import AutoFocusHook from "./ui/auto_focus_hook";
 import CopyValueHook from "./surfaces/copy_value_hook";
 import SurfacePresenceHook from "./surfaces/surface_presence_hook";
 import SurfaceTabLinkHook from "./surfaces/surface_tab_link_hook";
 
 export const criticalHooks = {
-  AutoFocusHook: AutoFocusHook,
   CharCounterHook: CharCounterHook,
   ClockHook: ClockHook,
   ConnectFormHook: ConnectFormHook,
   ConnectionStatusHook: ConnectionStatusHook,
-  ContextMenuHook: ContextMenuHook,
   ContextualTipsHook: ContextualTipsHook,
   CopyValueHook: CopyValueHook,
   AutocompleteHook: AutocompleteHook,
   EmojiPickerHook: EmojiPickerHook,
   FocusChatInputOnClickHook: FocusChatInputOnClickHook,
   FormatToolbarHook: FormatToolbarHook,
-  KeyboardHook: KeyboardHook,
   LagHook: LagHook,
   NickChangeFormHook: NickChangeFormHook,
-  NotifyListHook: NotifyListHook,
   PasteHook: PasteHook,
   ChatViewportHook: ChatViewportHook,
   ChatPaginationHook: ChatPaginationHook,

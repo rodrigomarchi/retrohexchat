@@ -457,6 +457,15 @@ There is exactly ONE hook registration pattern; do not reintroduce local choice 
   `RTCPeerConnection`, media/file session, game engine, or timer). Client registers `handleEvent`
   **before** `pushEvent("*_ready")`, guards duplicate starts, queues out-of-order signals, and
   cleans up timers/listeners on `destroyed`.
+- **A registered hook is not a mounted hook, and nothing used to say so.**
+  `critical_hooks.js` accepts any name; only a `phx-hook=` in a template puts it
+  to work. `SurfacePresenceHook` was registered, imported and bundled for a
+  whole wave while no template carried its name — every click asking another tab
+  to come forward waited 300 ms for an answer from a hook that had never run.
+  The guard now fails on a registered name that appears in no template, which
+  found four more dead hooks in the eager bundle and one, `ToolbarGroupHook`,
+  whose markup was rendered with nothing bound to it. The override set in the
+  guard is empty and an entry costs a written reason.
 - **CI guard** (`enforce_hooks_contract.cjs`, run via `make lint.hooks`) fails on: direct hook
   imports or inline hook maps in an entrypoint; `lazyFeatureHook(`/`import(` outside the approved
   registry/facade/i18n/game-engine locations; a `phx-hook="Name"` with no registry entry; a

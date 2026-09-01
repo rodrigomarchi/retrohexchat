@@ -23,7 +23,16 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
   @spec toolbar_app(map()) :: Phoenix.LiveView.Rendered.t()
   def toolbar_app(assigns) do
     ~H"""
-    <.toolbar class={classes(["hidden md:flex", @class])} {@rest}>
+    <%!-- The dropdown groups below carry the `data-toolbar-group-toggle` /
+          `.toolbar-group-dropdown` contract, and nothing was bound to it: the
+          hook existed, was registered, and no template ever mounted it, so the
+          Options and Help groups opened for nobody. --%>
+    <.toolbar
+      id="toolbar-app"
+      phx-hook="ToolbarGroupHook"
+      class={classes(["hidden md:flex", @class])}
+      {@rest}
+    >
       <%!-- Group 1: Connection --%>
       <.toolbar_button
         :if={!@connected}
