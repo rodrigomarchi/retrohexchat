@@ -44,6 +44,8 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
       data-share-kind={@card.kind}
       data-share-state={state(@card)}
       data-share-count={@card[:count]}
+      data-share-duration={metric(@card, :duration_seconds)}
+      data-share-visitors={metric(@card, :visitors)}
     >
       <span class="shrink-0">
         {apply(Icons, icon_name(@subject, @card), [%{class: "h-8 w-8"}])}
@@ -153,9 +155,31 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
   defp badge(%{kind: "play"}), do: dgettext("share", "Waiting")
   defp badge(_card), do: dgettext("share", "Live")
 
-  # A live card counts, and names up to three; an ended one says who shared it,
-  # which is the only fact about it that has not changed.
-  defp detail(_subject, %{state: :ended} = card), do: shared_by(card)
+  # A live card counts, and names up to three. An ended one is the record of
+  # what happened: how long it ran and how many people were in it, which is the
+  # question somebody scrolling past an old card is actually asking. Only the
+  # kinds that end have that; the rest fall back to who shared it, which is the
+  # one fact about them that has not changed.
+  defp detail(_subject, %{state: :ended} = card) do
+    case card[:metrics] do
+      %{duration_seconds: seconds, visitors: visitors}
+      when is_integer(seconds) and is_integer(visitors) and visitors > 0 ->
+        dngettext(
+          "share",
+          "lasted %{duration} · %{count} person took part",
+          "lasted %{duration} · %{count} people took part",
+          visitors,
+          duration: humanize_duration(seconds),
+          count: visitors
+        )
+
+      %{duration_seconds: seconds} when is_integer(seconds) ->
+        dgettext("share", "lasted %{duration}", duration: humanize_duration(seconds))
+
+      _none ->
+        shared_by(card)
+    end
+  end
 
   defp detail(_subject, %{kind: kind, participants: [_ | _] = nicks, count: count})
        when kind in ["call", "space"] do
@@ -183,6 +207,31 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
   defp detail(%{tagline: tagline}, %{kind: "play"}) when is_binary(tagline), do: tagline
   defp detail(_subject, %{kind: "play"}), do: dgettext("share", "One seat open")
   defp detail(_subject, card), do: shared_by(card)
+
+  defp metric(card, key) do
+    case card[:metrics] do
+      %{^key => value} when is_integer(value) -> to_string(value)
+      _absent -> nil
+    end
+  end
+
+  # Rounded to the unit a person would use out loud. A conference that ran for
+  # forty seconds "lasted less than a minute" — the exact number is a fact about
+  # the clock, not about the meeting.
+  defp humanize_duration(seconds) when seconds < 60,
+    do: dgettext("share", "less than a minute")
+
+  defp humanize_duration(seconds) when seconds < 3600 do
+    minutes = div(seconds, 60)
+
+    dngettext("share", "%{count} minute", "%{count} minutes", minutes, count: minutes)
+  end
+
+  defp humanize_duration(seconds) do
+    hours = div(seconds, 3600)
+
+    dngettext("share", "%{count} hour", "%{count} hours", hours, count: hours)
+  end
 
   defp shared_by(%{creator_nick: nick}) when is_binary(nick),
     do: dgettext("share", "shared by %{nickname}", nickname: nick)

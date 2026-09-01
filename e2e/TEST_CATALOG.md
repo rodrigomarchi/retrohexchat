@@ -136,7 +136,7 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 - **225 spec files** under `e2e/tests/`.
 - **471 Playwright `test()` cases**.
-- **465 documented flows**, 464 done, 1 not done.
+- **466 documented flows**, 465 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -169,6 +169,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | K7 | Opening the conference you are already in at its own address takes the seat rather than adding one: the other participant still sees a single row for you, and the room still counts two | `tests/surface-cross-tab.spec.ts` | done |
 | K8 | With the conference open at its own address and not in the chat's window, the chat's status bar says the call is in another tab and is a way over to it | `tests/surface-cross-tab.spec.ts` | done |
 | K9 | Opening a conference writes its card into the channel by itself, and that card counts up on its own when somebody joins the call, with no reload | `tests/share-link-join.spec.ts` | done |
+| K10 | When the conference ends, the card in the channel becomes the record of it — how long it ran and how many people were in it — with no reload | `tests/share-link-join.spec.ts` | done |
 | L | Logged-in user disconnects via UI and lands on `/connect` | `tests/logout.spec.ts` | done |
 | M | Admin bans user with `/admin user ban` and victim is force-disconnected | `tests/admin-ban.spec.ts` | done |
 | N | Admin closes registration; new user sees registration closed; spec restores open | `tests/admin-registration-closed.spec.ts` | done |

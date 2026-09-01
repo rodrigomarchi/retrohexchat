@@ -93,6 +93,103 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
     end
   end
 
+  # What a card is for once the room is gone: not a blank space and not a bare
+  # "Over", but the record of what happened. The numbers are derived on read in
+  # `ShareLinks.Card`, so what is asserted here is only that the component says
+  # them — and says nothing when the kind has none.
+  describe "the record an ended card keeps" do
+    test "a conference says how long it ran and how many were in it" do
+      html =
+        render_row(
+          Map.put(
+            @base,
+            :share_card,
+            ended(
+              kind: "call",
+              channel_name: "#retro",
+              metrics: %{duration_seconds: 1_500, visitors: 5}
+            )
+          )
+        )
+
+      assert html =~ "25 minutes"
+      assert html =~ "5 people took part"
+      assert html =~ ~s(data-share-duration="1500")
+      assert html =~ ~s(data-share-visitors="5")
+    end
+
+    test "one person is one person" do
+      html =
+        render_row(
+          Map.put(
+            @base,
+            :share_card,
+            ended(kind: "call", metrics: %{duration_seconds: 90, visitors: 1})
+          )
+        )
+
+      assert html =~ "1 minute"
+      assert html =~ "1 person took part"
+    end
+
+    # A conference that ran for forty seconds lasted less than a minute. The
+    # exact number is a fact about the clock, not about the meeting.
+    test "a short one is not reported to the second" do
+      html =
+        render_row(
+          Map.put(
+            @base,
+            :share_card,
+            ended(kind: "call", metrics: %{duration_seconds: 42, visitors: 2})
+          )
+        )
+
+      assert html =~ "less than a minute"
+      # The raw number is still on the element for anything that wants to do
+      # arithmetic; what must not happen is a card reading "42 seconds".
+      assert html =~ ~s(data-share-duration="42")
+      refute html =~ "42 second"
+    end
+
+    test "a long one is reported in hours" do
+      html =
+        render_row(
+          Map.put(
+            @base,
+            :share_card,
+            ended(kind: "call", metrics: %{duration_seconds: 7_500, visitors: 3})
+          )
+        )
+
+      assert html =~ "2 hours"
+    end
+
+    # Two people by definition, so the only number worth saying is the time.
+    test "a session says the time and does not count to two" do
+      html =
+        render_row(
+          Map.put(
+            @base,
+            :share_card,
+            ended(kind: "p2p", metrics: %{duration_seconds: 600, visitors: nil})
+          )
+        )
+
+      assert html =~ "lasted 10 minutes"
+      refute html =~ "took part"
+      refute html =~ ~s(data-share-visitors=")
+    end
+
+    # A place has no beginning to measure from. Falling back to who shared it is
+    # the honest sentence, not a duration invented from a catalogue entry.
+    test "a kind with no session falls back to who shared it" do
+      html = render_row(Map.put(@base, :share_card, ended(kind: "space")))
+
+      assert html =~ "shared by ana"
+      refute html =~ "lasted"
+    end
+  end
+
   describe "an ended card" do
     test "loses the way in and keeps a way forward" do
       html = render_row(Map.put(@base, :share_card, ended(kind: "call", channel_name: "#retro")))
@@ -205,7 +302,8 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
       count: nil,
       participants: [],
       channel_name: nil,
-      game_id: "hex_pong"
+      game_id: "hex_pong",
+      metrics: nil
     }
   end
 

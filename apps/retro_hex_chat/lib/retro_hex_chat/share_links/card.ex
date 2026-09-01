@@ -36,6 +36,18 @@ defmodule RetroHexChat.ShareLinks.Card do
   """
   @type reason :: :revoked | :expired | :over | :full | nil
 
+  @typedoc """
+  What a room turned out to be, once it is over.
+
+  Only the kinds that **end** have one. A space and a solo game are places: they
+  have no beginning to measure from and no end to measure to, and a duration on
+  them would be the age of the catalogue entry dressed up as a session.
+  """
+  @type metrics :: %{
+          duration_seconds: non_neg_integer() | nil,
+          visitors: non_neg_integer() | nil
+        }
+
   @type t :: %{
           slug: String.t(),
           kind: String.t(),
@@ -46,7 +58,8 @@ defmodule RetroHexChat.ShareLinks.Card do
           count: non_neg_integer() | nil,
           participants: [String.t()],
           channel_name: String.t() | nil,
-          game_id: String.t() | nil
+          game_id: String.t() | nil,
+          metrics: metrics() | nil
         }
 
   @doc "The card for one link, as of now."
@@ -64,12 +77,14 @@ defmodule RetroHexChat.ShareLinks.Card do
       count: nil,
       participants: [],
       channel_name: nil,
-      game_id: nil
+      game_id: nil,
+      metrics: nil
     }
 
     base
     |> Map.merge(room_state(link.kind, link.target || %{}))
     |> close_when(closed)
+    |> put_metrics(link.kind, link.target || %{})
   end
 
   @doc """
@@ -93,12 +108,74 @@ defmodule RetroHexChat.ShareLinks.Card do
       count: nil,
       participants: [],
       channel_name: nil,
-      game_id: nil
+      game_id: nil,
+      metrics: nil
     }
     |> Map.merge(room_state("p2p", %{"session_token" => token}))
+    |> put_metrics("p2p", %{"session_token" => token})
   end
 
   def for_session(_token), do: nil
+
+  # Measured only once the room is over, and only for the kinds that end. A
+  # duration on a live room is a number that is wrong the moment it is read, and
+  # the two extra queries here are paid exactly once per ended card on screen.
+  defp put_metrics(%{state: :ended} = card, kind, target) do
+    %{card | metrics: metrics(kind, target)}
+  end
+
+  defp put_metrics(card, _kind, _target), do: card
+
+  defp metrics("call", target) do
+    case GroupCall.get_room(target["room_token"] || "") do
+      {:ok, room} ->
+        %{
+          duration_seconds: elapsed(started_at(room), room.closed_at),
+          visitors: GroupCall.count_visitors(room.id)
+        }
+
+      _absent ->
+        nil
+    end
+  end
+
+  defp metrics(kind, target) when kind in ["p2p", "play"] do
+    case Lobby.get_session(target["session_token"] || "") do
+      {:ok, %Session{} = session} ->
+        # Two people by definition, so the only number worth saying is how long
+        # they were on it. The domain already computes that when a session
+        # closes; the fallback is for one that ended without being written.
+        %{
+          duration_seconds:
+            session.duration_seconds || elapsed(connected_at(session), session.closed_at),
+          visitors: nil
+        }
+
+      _absent ->
+        nil
+    end
+  end
+
+  defp metrics(_kind, _target), do: nil
+
+  # A conference that nobody ever joined has no `activated_at`, and the honest
+  # measure of it is how long the room stood open.
+  defp started_at(%Room{activated_at: %DateTime{} = at}), do: at
+  defp started_at(%Room{opened_at: %DateTime{} = at}), do: at
+  defp started_at(%Room{inserted_at: at}), do: at
+
+  defp connected_at(%Session{connected_at: %DateTime{} = at}), do: at
+  defp connected_at(%Session{accepted_at: at}), do: at
+
+  defp elapsed(%DateTime{} = from, %DateTime{} = to) do
+    to |> DateTime.diff(from, :second) |> max(0)
+  end
+
+  defp elapsed(%NaiveDateTime{} = from, %DateTime{} = to) do
+    elapsed(DateTime.from_naive!(from, "Etc/UTC"), to)
+  end
+
+  defp elapsed(_from, _to), do: nil
 
   # A link closed by hand outranks whatever the room is doing: the person who
   # revoked it said this address is finished, and a room that happens to still

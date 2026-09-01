@@ -13,8 +13,11 @@ defmodule RetroHexChat.ShareLinks.CardTest do
 
   @moduletag :integration
 
+  alias RetroHexChat.GroupCall.Schema.Participant
+  alias RetroHexChat.GroupCall.Schema.Room
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.Queries
+  alias RetroHexChat.Repo
   alias RetroHexChat.ShareLinks.Card
   alias RetroHexChat.ShareLinks.Schema.Link
 
@@ -99,6 +102,124 @@ defmodule RetroHexChat.ShareLinks.CardTest do
 
       assert card.channel_name == nil
     end
+  end
+
+  # What a card is for once the room is gone. The numbers are derived on read
+  # rather than stored, because a stored count is a second source of truth about
+  # a room and is wrong the moment somebody joins.
+  describe "of/1 and the record a finished room keeps" do
+    test "a conference says how long it ran and how many different people were in it" do
+      room =
+        closed_room(
+          activated_at: minutes_ago(30),
+          closed_at: minutes_ago(5)
+        )
+
+      # Four rows, three people: one of them dropped and came back, and a
+      # conference is not busier for somebody's bad connection.
+      for nick <- ~w(ana bob cleo ana), do: participant(room, nick)
+
+      card = Card.of(link("call", %{"room_token" => room.token}))
+
+      assert card.state == :ended
+      assert card.metrics.duration_seconds == 25 * 60
+      assert card.metrics.visitors == 3
+    end
+
+    # A room nobody ever joined has no `activated_at`, and the honest measure of
+    # it is how long it stood open waiting.
+    test "a conference nobody entered is measured from when it opened" do
+      room =
+        closed_room(
+          opened_at: minutes_ago(10),
+          activated_at: nil,
+          closed_at: minutes_ago(4)
+        )
+
+      card = Card.of(link("call", %{"room_token" => room.token}))
+
+      assert card.metrics.duration_seconds == 6 * 60
+      assert card.metrics.visitors == 0
+    end
+
+    # A number about a room that is still running is wrong the moment it is
+    # read, and the two queries behind it are not worth paying for a card that
+    # is about to change anyway.
+    test "a running conference keeps no record yet" do
+      room = closed_room(status: "open", closed_at: nil)
+      participant(room, "ana")
+
+      card = Card.of(link("call", %{"room_token" => room.token}))
+
+      assert card.state == :live
+      assert card.metrics == nil
+    end
+
+    test "a session says the time and does not count to two" do
+      creator = insert(:registered_nick)
+      {:ok, %{session: session}} = Lobby.create_open_session(creator.id)
+
+      {:ok, _closed} =
+        session
+        |> Ecto.Changeset.change(%{
+          status: "closed",
+          closed_at: DateTime.utc_now(),
+          duration_seconds: 615
+        })
+        |> Repo.update()
+
+      card = Card.of(link("p2p", %{"session_token" => session.token}))
+
+      assert card.state == :ended
+      assert card.metrics.duration_seconds == 615
+      assert card.metrics.visitors == nil
+    end
+
+    # A place has no beginning to measure from. A duration here would be the age
+    # of a catalogue entry wearing a session's clothes.
+    test "a kind that never ends keeps no record" do
+      card = Card.of(%{link("space", %{"space_id" => "#nope"}) | revoked_at: DateTime.utc_now()})
+
+      assert card.state == :ended
+      assert card.metrics == nil
+    end
+  end
+
+  defp closed_room(overrides) do
+    creator = insert(:registered_nick)
+
+    attrs =
+      Enum.into(overrides, %{
+        token: "room#{System.unique_integer([:positive])}",
+        channel_name: "#metrics#{System.unique_integer([:positive])}",
+        creator_id: creator.id,
+        creator_nick: "ana",
+        status: "closed",
+        opened_at: minutes_ago(40),
+        closed_at: minutes_ago(1)
+      })
+
+    Repo.insert!(struct(Room, attrs))
+  end
+
+  defp participant(room, nickname) do
+    nick = insert(:registered_nick)
+
+    Repo.insert!(%Participant{
+      room_id: room.id,
+      registered_nick_id: nick.id,
+      nickname: nickname,
+      normalized_nickname: String.downcase(nickname),
+      status: "left",
+      joined_at: minutes_ago(20),
+      left_at: minutes_ago(6)
+    })
+  end
+
+  defp minutes_ago(minutes) do
+    DateTime.utc_now()
+    |> DateTime.add(-minutes * 60, :second)
+    |> DateTime.truncate(:microsecond)
   end
 
   defp link(kind, target) do

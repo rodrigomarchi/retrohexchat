@@ -81,22 +81,22 @@ msgstr "此連結已失效。聊天還在。"
 msgid "from %{nickname}"
 msgstr "來自 %{nickname}"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:146
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:148
 #, elixir-autogen, elixir-format
 msgid "A game"
 msgstr "一個遊戲"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:143
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:145
 #, elixir-autogen, elixir-format
 msgid "An invitation"
 msgstr "一個邀請"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:188
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:237
 #, elixir-autogen, elixir-format
 msgid "shared by %{nickname}"
 msgstr "由 %{nickname} 分享"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:190
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:239
 #, elixir-autogen, elixir-format
 msgid "shared with this conversation"
 msgstr "分享到此對話"
@@ -107,12 +107,12 @@ msgid "Connect and join"
 msgstr "連線並加入"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:183
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:78
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:80
 #, elixir-autogen, elixir-format
 msgid "Join"
 msgstr "加入"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:174
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:198
 #: lib/retro_hex_chat_web/live/join_live.ex:267
 #: lib/retro_hex_chat_web/live/join_live.ex:287
 #, elixir-autogen, elixir-format
@@ -131,7 +131,7 @@ msgstr "%{channel} 中的通話"
 msgid "A call on RetroHexChat"
 msgstr "RetroHexChat 上的通話"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:141
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:143
 #, elixir-autogen, elixir-format
 msgid "A conference"
 msgstr "一個群組通話"
@@ -146,7 +146,7 @@ msgstr "RetroHexChat 上的一個私人空間"
 msgid "A space on RetroHexChat"
 msgstr "RetroHexChat 上的一個空間"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:142
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:144
 #, elixir-autogen, elixir-format
 msgid "A virtual space"
 msgstr "一個虛擬空間"
@@ -221,7 +221,7 @@ msgid "Open in a tab"
 msgstr "在分頁中開啟"
 
 #: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:60
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:90
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:92
 #, elixir-autogen, elixir-format
 msgid "Copied!"
 msgstr "已複製！"
@@ -246,78 +246,107 @@ msgstr "撤銷"
 msgid "Stop this link from working? The room stays open."
 msgstr "停用這個連結？房間仍然開著。"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:162
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:186
 #, elixir-autogen, elixir-format
 msgid "%{names} · %{count} person inside now"
 msgid_plural "%{names} · %{count} people inside now"
 msgstr[0] "%{names} · 目前 %{count} 人在房間內"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:199
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:248
 #, elixir-autogen, elixir-format
 msgid "Back to the chat"
 msgstr "返回聊天"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:135
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:137
 #, elixir-autogen, elixir-format
 msgid "Call in %{channel}"
 msgstr "%{channel} 的通話"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:150
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:152
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "已關閉"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:94
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:96
 #, elixir-autogen, elixir-format
 msgid "Copy link"
 msgstr "複製連結"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:151
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:153
 #, elixir-autogen, elixir-format
 msgid "Expired"
 msgstr "已過期"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:154
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:156
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr "進行中"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:184
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:208
 #, elixir-autogen, elixir-format
 msgid "One seat open"
 msgstr "一個空位"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:193
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:242
 #, elixir-autogen, elixir-format
 msgid "Open %{channel}"
 msgstr "開啟 %{channel}"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:152
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:154
 #, elixir-autogen, elixir-format
 msgid "Over"
 msgstr "已結束"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:198
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:247
 #, elixir-autogen, elixir-format
 msgid "Play"
 msgstr "開始遊戲"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:196
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:245
 #, elixir-autogen, elixir-format
 msgid "Play %{game}"
 msgstr "開始遊戲 %{game}"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:138
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:140
 #, elixir-autogen, elixir-format
 msgid "Space of %{channel}"
 msgstr "%{channel} 的空間"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:149
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:151
 #, elixir-autogen, elixir-format
 msgid "Taken"
 msgstr "已被佔"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:153
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:155
 #, elixir-autogen, elixir-format
 msgid "Waiting"
 msgstr "等待中"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:233
+#, elixir-autogen, elixir-format
+msgid "%{count} hour"
+msgid_plural "%{count} hours"
+msgstr[0] "%{count} 小時"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:227
+#, elixir-autogen, elixir-format
+msgid "%{count} minute"
+msgid_plural "%{count} minutes"
+msgstr[0] "%{count} 分鐘"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:177
+#, elixir-autogen, elixir-format
+msgid "lasted %{duration}"
+msgstr "持續了 %{duration}"
+
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:167
+#, elixir-autogen, elixir-format
+msgid "lasted %{duration} · %{count} person took part"
+msgid_plural "lasted %{duration} · %{count} people took part"
+msgstr[0] "持續了 %{duration} · %{count} 人參與"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:222
+#, elixir-autogen, elixir-format
+msgid "less than a minute"
+msgstr "不到一分鐘"

@@ -72,6 +72,15 @@ que reexporta esses arquivos para o runtime e para os testes.
   `scripts/i18n_source_fallback_check.py`.
 - Traducao automatica e aceita como rascunho funcional, mas revisao humana ainda
   e necessaria para terminologia, tom e nomes de recursos.
+- Escrita em lote **casa por msgid E dominio**, nunca so por msgid. Um script
+  que varreu todos os `.po` procurando `%{count} minute` sobrescreveu doze
+  entradas de `chat.po` que ja tinham traducao propria: as mesmas palavras em
+  ingles, outro catalogo, resposta de outra pessoa. O `tar` previo mais o diff
+  de cada `msgstr` foi o que achou — duas vezes ja (uma em `accounts`, uma
+  nestas). Limite a escrita aos dominios que o extract realmente tocou.
+- Procurar `fuzzy` num `.po` com `grep` acha tambem os `msgid` que falam de
+  busca fuzzy. A flag e uma linha `#,` — case por `^#,.*\bfuzzy\b`, ou voce
+  vai investigar traducoes que estao corretas.
 - `fuzzy` **renderiza**. O Gettext serve uma traducao marcada `fuzzy` como
   qualquer outra, entao ela nao e "quase pronta", e o texto antigo saindo na
   tela com a confianca do texto novo. Medido em 2026-09-01: `repeat window`

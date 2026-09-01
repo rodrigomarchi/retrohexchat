@@ -116,6 +116,22 @@ defmodule RetroHexChat.GroupCall.Queries do
     |> Repo.all()
   end
 
+  @doc """
+  How many different people were ever in this room.
+
+  Counted by normalized nickname and not by row: one person who dropped and
+  came back is one participant of the conference, and counting the rows would
+  turn a bad connection into a busier room than it was.
+  """
+  @spec count_visitors(integer()) :: non_neg_integer()
+  def count_visitors(room_id) do
+    Participant
+    |> where([p], p.room_id == ^room_id)
+    |> select([p], count(p.normalized_nickname, :distinct))
+    |> Repo.one()
+    |> Kernel.||(0)
+  end
+
   @spec update_participant_status(Participant.t(), String.t(), map()) ::
           {:ok, Participant.t()} | {:error, Ecto.Changeset.t()}
   def update_participant_status(participant, new_status, extra_attrs \\ %{}) do

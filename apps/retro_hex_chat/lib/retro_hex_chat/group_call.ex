@@ -469,6 +469,9 @@ defmodule RetroHexChat.GroupCall do
   @spec list_active_participants(integer()) :: [Participant.t()]
   defdelegate list_active_participants(room_id), to: Queries
 
+  @spec count_visitors(integer()) :: non_neg_integer()
+  defdelegate count_visitors(room_id), to: Queries
+
   @spec update_participant_status(Participant.t(), String.t(), map()) ::
           {:ok, Participant.t()} | {:error, Ecto.Changeset.t()}
   defdelegate update_participant_status(participant, new_status, extra_attrs \\ %{}), to: Queries

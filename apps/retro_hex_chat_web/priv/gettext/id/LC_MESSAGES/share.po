@@ -81,22 +81,22 @@ msgstr "Tautan ini tidak aktif lagi. Obrolannya masih ada."
 msgid "from %{nickname}"
 msgstr "dari %{nickname}"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:146
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:148
 #, elixir-autogen, elixir-format
 msgid "A game"
 msgstr "Sebuah game"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:143
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:145
 #, elixir-autogen, elixir-format
 msgid "An invitation"
 msgstr "Sebuah undangan"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:188
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:237
 #, elixir-autogen, elixir-format
 msgid "shared by %{nickname}"
 msgstr "dibagikan oleh %{nickname}"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:190
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:239
 #, elixir-autogen, elixir-format
 msgid "shared with this conversation"
 msgstr "dibagikan di percakapan ini"
@@ -107,12 +107,12 @@ msgid "Connect and join"
 msgstr "Hubungkan dan gabung"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:183
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:78
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:80
 #, elixir-autogen, elixir-format
 msgid "Join"
 msgstr "Gabung"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:174
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:198
 #: lib/retro_hex_chat_web/live/join_live.ex:267
 #: lib/retro_hex_chat_web/live/join_live.ex:287
 #, elixir-autogen, elixir-format
@@ -131,7 +131,7 @@ msgstr "Panggilan di %{channel}"
 msgid "A call on RetroHexChat"
 msgstr "Panggilan di RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:141
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:143
 #, elixir-autogen, elixir-format
 msgid "A conference"
 msgstr "Sebuah konferensi"
@@ -146,7 +146,7 @@ msgstr "Sebuah ruang privat di RetroHexChat"
 msgid "A space on RetroHexChat"
 msgstr "Sebuah ruang di RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:142
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:144
 #, elixir-autogen, elixir-format
 msgid "A virtual space"
 msgstr "Sebuah ruang virtual"
@@ -221,7 +221,7 @@ msgid "Open in a tab"
 msgstr "Buka di tab"
 
 #: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:60
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:90
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:92
 #, elixir-autogen, elixir-format
 msgid "Copied!"
 msgstr "Tersalin!"
@@ -246,78 +246,107 @@ msgstr "Cabut"
 msgid "Stop this link from working? The room stays open."
 msgstr "Hentikan tautan ini? Ruangnya tetap terbuka."
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:162
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:186
 #, elixir-autogen, elixir-format
 msgid "%{names} · %{count} person inside now"
 msgid_plural "%{names} · %{count} people inside now"
 msgstr[0] "%{names} · %{count} orang di dalam sekarang"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:199
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:248
 #, elixir-autogen, elixir-format
 msgid "Back to the chat"
 msgstr "Kembali ke obrolan"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:135
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:137
 #, elixir-autogen, elixir-format
 msgid "Call in %{channel}"
 msgstr "Panggilan di %{channel}"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:150
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:152
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "Ditutup"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:94
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:96
 #, elixir-autogen, elixir-format
 msgid "Copy link"
 msgstr "Salin tautan"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:151
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:153
 #, elixir-autogen, elixir-format
 msgid "Expired"
 msgstr "Kedaluwarsa"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:154
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:156
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr "Langsung"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:184
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:208
 #, elixir-autogen, elixir-format
 msgid "One seat open"
 msgstr "Satu kursi tersedia"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:193
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:242
 #, elixir-autogen, elixir-format
 msgid "Open %{channel}"
 msgstr "Buka %{channel}"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:152
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:154
 #, elixir-autogen, elixir-format
 msgid "Over"
 msgstr "Selesai"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:198
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:247
 #, elixir-autogen, elixir-format
 msgid "Play"
 msgstr "Main"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:196
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:245
 #, elixir-autogen, elixir-format
 msgid "Play %{game}"
 msgstr "Main %{game}"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:138
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:140
 #, elixir-autogen, elixir-format
 msgid "Space of %{channel}"
 msgstr "Ruang %{channel}"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:149
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:151
 #, elixir-autogen, elixir-format
 msgid "Taken"
 msgstr "Terisi"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:153
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:155
 #, elixir-autogen, elixir-format
 msgid "Waiting"
 msgstr "Menunggu"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:233
+#, elixir-autogen, elixir-format
+msgid "%{count} hour"
+msgid_plural "%{count} hours"
+msgstr[0] "%{count} jam"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:227
+#, elixir-autogen, elixir-format
+msgid "%{count} minute"
+msgid_plural "%{count} minutes"
+msgstr[0] "%{count} menit"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:177
+#, elixir-autogen, elixir-format
+msgid "lasted %{duration}"
+msgstr "berlangsung %{duration}"
+
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:167
+#, elixir-autogen, elixir-format
+msgid "lasted %{duration} · %{count} person took part"
+msgid_plural "lasted %{duration} · %{count} people took part"
+msgstr[0] "berlangsung %{duration} · %{count} orang ikut serta"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:222
+#, elixir-autogen, elixir-format
+msgid "less than a minute"
+msgstr "kurang dari satu menit"

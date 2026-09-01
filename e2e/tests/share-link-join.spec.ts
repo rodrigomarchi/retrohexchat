@@ -2,6 +2,7 @@
  * @section Auth And Lifecycle
  * @flow K4 [done] A shared game link minted in one browser is followed from another with no session: the public card asks for a connect, and the connect lands back on the link
  * @flow K9 [done] Opening a conference writes its card into the channel by itself, and that card counts up on its own when somebody joins the call, with no reload
+ * @flow K10 [done] When the conference ends, the card in the channel becomes the record of it — how long it ran and how many people were in it — with no reload
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -118,6 +119,21 @@ test("opening a conference writes the card, and the card counts up on its own (K
     await expect(
       bob.page.getByTestId(`nicklist-in-call-${ana.nick}`),
     ).toBeVisible({ timeout: 15_000 });
+
+    // (K10) The room ends. The card is the only thing left of it, so it stops
+    // being a door and becomes the record — and it does that on Bob's screen,
+    // which nobody touches, because the room changed and not the page.
+    await anaCall.getByTestId("group-call-close-room").click();
+    await anaCall.getByTestId("group-call-confirm-dialog-confirm").click();
+
+    await expect(card).toHaveAttribute("data-share-state", "ended", {
+      timeout: 20_000,
+    });
+    await expect(card.getByTestId("share-message-enter")).toHaveCount(0);
+    await expect(card).toHaveAttribute("data-share-visitors", "2");
+    await expect(card.getByTestId("share-message-detail")).toContainText(
+      "took part",
+    );
   } finally {
     await closeGroupCallUsers([ana, bob]);
   }
