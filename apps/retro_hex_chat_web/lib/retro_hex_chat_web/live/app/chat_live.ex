@@ -889,7 +889,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
       # this one owns the session-topic "lobby_*" events.
       {:p2p_session_info, &ChatLive.P2PSessionEvents.handle_info/2},
       # Owns the "arcade:#{token}" topic events for the in-chat solo arcade.
-      {:arcade_session_info, &ChatLive.ArcadeSessionEvents.handle_info/2}
+      {:arcade_session_info, &ChatLive.ArcadeSessionEvents.handle_info/2},
+      # Owns the space-roster topics the conversation's cards subscribe to, and
+      # the viewport saying which of them it is still rendering.
+      {:share_cards_info, &ChatLive.ShareCards.handle_info/2}
     ]
 
     socket =

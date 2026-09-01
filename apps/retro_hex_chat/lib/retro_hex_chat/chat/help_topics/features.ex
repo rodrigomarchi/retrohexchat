@@ -1115,13 +1115,15 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "url",
           "conference",
           "call",
-          "paste"
+          "paste",
+          "card",
+          "copy link"
         ],
         icon: :icon_btn_link,
         description:
           dgettext(
             "help",
-            "Share, above the conference, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
+            "Share, above the conference, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address, and that card is the room as it is now: it counts who is inside and changes on its own as people come and go, with Join to go in and Copy link to pass it on. When the room finishes — or you revoke the link — the card stays and says so, offering the next thing you can still do instead of a button that no longer works. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
           ),
         see_also: [
           "feature-channel-conference",

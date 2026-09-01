@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
+  alias RetroHexChatWeb.ChatLive.ShareCards
 
   @doc """
   Switches to a channel this session has already joined.
@@ -118,6 +119,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
     socket
     |> assign(conversation_members: members)
     |> Nicklist.reset(members)
+    # A reset rebuilds every row, so the conference marker has to be said
+    # again: the rows that carried it are gone.
+    |> ShareCards.refresh()
   end
 
   @doc "Drops the mobile drawers, which overlay the conversation rather than sitting beside it."

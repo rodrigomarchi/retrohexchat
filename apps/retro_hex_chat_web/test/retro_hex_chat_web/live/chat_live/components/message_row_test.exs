@@ -233,7 +233,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     refute html =~ "06"
   end
 
-  test "renders P2P invite messages as a plain request line without card actions" do
+  # Ported, not rewritten. What this covered — a request line, and none of the
+  # accept/decline apparatus of the session card that used to live here — is
+  # still covered; the invite has become a variant of the share card, so the
+  # sentence about where the control is gives way to the card that *is* the
+  # control.
+  test "renders a P2P invite as a request line with no session-card apparatus" do
     html =
       row(
         %{
@@ -241,20 +246,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
           author: "alice",
           content: "P2P session invite - accept it on this card. /lobby/tok123",
           type: :p2p_invite,
-          timestamp: @ts,
-          session_card: %{
-            kind: :lobby,
-            token: "tok123",
-            status: "pending",
-            terminal?: false,
-            created_by: "alice",
-            peer: "bob",
-            created_at: @ts,
-            connected_at: nil,
-            closed_at: nil,
-            closed_reason: nil,
-            duration_seconds: nil
-          }
+          timestamp: @ts
         },
         %{viewer: "bob"}
       )
@@ -266,6 +258,42 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     refute html =~ "session-card-accept"
     refute html =~ "session-card-decline"
     refute html =~ "/lobby/tok123"
+  end
+
+  test "an invite carrying its session draws the card, and drops the sentence for it" do
+    html =
+      row(
+        %{
+          id: "p2p2",
+          author: "alice",
+          content: "P2P session request. Use the P2P control in this PM. /p2p/tok12345",
+          type: :p2p_invite,
+          timestamp: @ts,
+          share_card: %{
+            slug: nil,
+            kind: "p2p",
+            target: %{"session_token" => "tok12345"},
+            creator_nick: nil,
+            state: :live,
+            reason: nil,
+            count: 1,
+            participants: [],
+            channel_name: nil,
+            game_id: nil
+          }
+        },
+        %{viewer: "bob"}
+      )
+
+    assert html =~ "P2P request"
+    assert html =~ ~s(data-testid="share-message-card")
+    assert html =~ ~s(data-share-kind="p2p")
+    assert html =~ "/p2p/tok12345"
+    # The card is the control, so the sentence pointing at one is gone.
+    refute html =~ "Use the P2P control in this private message."
+    # And no address that belongs to nobody but the two of them is offered for
+    # copying.
+    refute html =~ ~s(data-testid="share-message-copy")
   end
 
   test "renders a deleted placeholder instead of content" do

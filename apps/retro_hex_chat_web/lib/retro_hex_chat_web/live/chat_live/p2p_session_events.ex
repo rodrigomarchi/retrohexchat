@@ -40,6 +40,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Helpers.PM, as: PMHelper
   alias RetroHexChatWeb.ChatLive.P2PReadModel
+  alias RetroHexChatWeb.ChatLive.ShareCards
   alias RetroHexChatWeb.ChatLive.Windows
   alias RetroHexChatWeb.Live.P2PConfirmDialog
 
@@ -268,6 +269,9 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     socket
     |> P2PReadModel.drop_pm_by_token(token)
     |> PMHelper.refresh_p2p_invite_row(peer_nick, token)
+    # A session that ended is a card that has to say so. The link outlives the
+    # room by design — the card it draws is the record that the room happened.
+    |> ShareCards.refresh()
   end
 
   defp peer_nick_of(%{assigns: %{p2p_session: %{token: token, peer_nick: peer_nick}}}, token),

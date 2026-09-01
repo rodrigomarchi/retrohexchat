@@ -184,16 +184,29 @@ defmodule RetroHexChat.ShareLinks.ServiceTest do
     end
 
     # One query for a screenful of messages, not one per message.
-    test "describes many at once, skipping the ones it cannot", %{nick: nick} do
+    test "describes many at once, skipping only what it never minted", %{nick: nick} do
       {:ok, a} = create(nick, "play", %{"game_id" => "hex_pong"})
       {:ok, b} = create(nick, "play", %{"game_id" => "light_trails"})
-      {:ok, gone} = create(nick, "play", %{"game_id" => "pixel_tanks"})
-      {:ok, _} = ShareLinks.revoke(gone.slug, nick.nickname)
 
-      described = ShareLinks.describe_many([a.slug, b.slug, gone.slug, "abcdefghjk", "NOPE"])
+      described = ShareLinks.describe_many([a.slug, b.slug, "abcdefghjk", "NOPE"])
 
       assert Map.keys(described) |> Enum.sort() == Enum.sort([a.slug, b.slug])
       assert described[a.slug].target == %{"game_id" => "hex_pong"}
+    end
+
+    # `describe/1` refuses a closed link because somebody is trying to follow
+    # it. A card is not somebody following it: it is the history of a message,
+    # and filtering the closed ones out here did not grey the card out, it made
+    # the card disappear and left a bare address under a message that had
+    # explained itself the day before.
+    test "a closed link is a card that says so, not an absence", %{nick: nick} do
+      {:ok, gone} = create(nick, "play", %{"game_id" => "pixel_tanks"})
+      {:ok, _} = ShareLinks.revoke(gone.slug, nick.nickname)
+
+      described = ShareLinks.describe_many([gone.slug])
+
+      assert %{state: :ended, reason: :revoked} = described[gone.slug]
+      assert {:error, :revoked} = ShareLinks.describe(gone.slug)
     end
 
     test "counts nothing at all", %{nick: nick} do

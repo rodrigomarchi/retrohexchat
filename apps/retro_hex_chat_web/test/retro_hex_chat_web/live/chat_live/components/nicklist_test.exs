@@ -196,4 +196,53 @@ defmodule RetroHexChatWeb.ChatLive.Components.NicklistTest do
       assert html =~ ~s(data-testid="nicklist-section-regular")
     end
   end
+
+  # The conference marker reads the summary the chat already holds for the tab
+  # badge and the card. It is on the row rather than around it because these
+  # are stream items: a stream item is drawn when it is inserted, not when an
+  # assign around it changes.
+  describe "who is in the channel's call" do
+    test "marks exactly the people the summary named" do
+      html =
+        render_component(Nicklist,
+          id: Nicklist.id(),
+          visible: true,
+          nick_color_fn: fn _nick -> nil end,
+          action: {:reset, @users},
+          call_nicks: MapSet.new(["alice"])
+        )
+
+      assert html =~ ~s(data-testid="nicklist-in-call-alice")
+      refute html =~ ~s(data-testid="nicklist-in-call-Bob")
+    end
+
+    test "nobody in the call means no marker anywhere" do
+      html =
+        render_component(Nicklist,
+          id: Nicklist.id(),
+          visible: true,
+          nick_color_fn: fn _nick -> nil end,
+          action: {:reset, @users}
+        )
+
+      refute html =~ "nicklist-in-call-"
+      assert html =~ ~s(data-in-call="false")
+    end
+
+    # The summary spells a nickname however its owner typed it; the row is keyed
+    # by the normalised form, and matching them by hand is how the marker comes
+    # to be right for `bob` and wrong for `Bob`.
+    test "matches however the summary spelled the nickname" do
+      html =
+        render_component(Nicklist,
+          id: Nicklist.id(),
+          visible: true,
+          nick_color_fn: fn _nick -> nil end,
+          action: {:reset, @users},
+          call_nicks: MapSet.new(["bob"])
+        )
+
+      assert html =~ ~s(data-testid="nicklist-in-call-Bob")
+    end
+  end
 end

@@ -42,6 +42,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
 
   alias RetroHexChat.Scraper
   alias RetroHexChat.ShareLinks
+  alias RetroHexChat.ShareLinks.Card
   alias RetroHexChatWeb.ChatLive.Components.MessageRow
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
   alias RetroHexChatWeb.ShareLinkRef
@@ -145,6 +146,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
        has_more: false,
        viewer: nil,
        rendered: [],
+       share_card_spaces: MapSet.new(),
        scrollback?: false
      )
      |> stream(:chat_messages, [], limit: -@dom_limit)}
@@ -213,6 +215,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
       [] -> {:ok, socket}
       waiting -> {:ok, attach_card(socket, url, waiting)}
     end
+  end
+
+  # A room changed, so the cards for it did. Only the rows carrying a link are
+  # re-resolved, and only the ones whose card actually moved are re-streamed:
+  # a conference nobody joined must not repaint a screenful of messages, and a
+  # reset would throw a reader in the middle of a scrollback down to the newest
+  # line to say that somebody entered a call.
+  def update(%{action: :refresh_share_cards}, socket) do
+    {:ok, refresh_share_cards(socket)}
   end
 
   # Re-streaming what is already held is what makes a presentation change cost
@@ -346,7 +357,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   defp track(socket, fun) do
     rendered = fun.(socket.assigns.rendered)
     rendered = if socket.assigns.scrollback?, do: rendered, else: Enum.take(rendered, -@dom_limit)
-    assign(socket, rendered: rendered)
+
+    socket
+    |> assign(rendered: rendered)
+    |> announce_share_card_spaces()
   end
 
   # An arriving message drops the oldest row once the tail is full, and drops
@@ -354,6 +368,50 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   @spec tail_opts(Phoenix.LiveView.Socket.t()) :: keyword()
   defp tail_opts(%{assigns: %{scrollback?: true}}), do: []
   defp tail_opts(_socket), do: [limit: -@dom_limit]
+
+  # ── Live share cards ───────────────────────────────────────
+
+  @spec refresh_share_cards(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  defp refresh_share_cards(socket) do
+    carrying = Enum.filter(socket.assigns.rendered, &is_map(Map.get(&1, :share_card)))
+
+    described =
+      carrying
+      |> Enum.map(& &1.share_card.slug)
+      |> ShareLinks.describe_many()
+
+    changed =
+      carrying
+      |> Enum.map(&{&1, Map.get(described, &1.share_card.slug)})
+      |> Enum.filter(fn {msg, card} -> is_map(card) and card != msg.share_card end)
+      |> Enum.map(fn {msg, card} -> Map.put(msg, :share_card, card) end)
+
+    socket
+    |> track(fn rendered -> Enum.reduce(changed, rendered, &upsert(&2, &1)) end)
+    |> then(&Enum.reduce(changed, &1, fn msg, acc -> stream_insert(acc, :chat_messages, msg) end))
+  end
+
+  # The chat owns the subscriptions, because a subscription outlives a render.
+  # It is told which spaces are on screen and does the arithmetic; saying it
+  # from here is what makes "only while a card is visible" true rather than a
+  # sentence in a plan.
+  @spec announce_share_card_spaces(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  defp announce_share_card_spaces(socket) do
+    spaces =
+      socket.assigns.rendered
+      |> Enum.map(&Map.get(&1, :share_card))
+      |> Enum.filter(&match?(%{kind: "space"}, &1))
+      |> Enum.map(&Map.get(&1.target, "space_id"))
+      |> Enum.filter(&is_binary/1)
+      |> MapSet.new()
+
+    if spaces == socket.assigns[:share_card_spaces] do
+      socket
+    else
+      send(self(), {:share_card_spaces, spaces})
+      assign(socket, share_card_spaces: spaces)
+    end
+  end
 
   @spec upsert([map()], map()) :: [map()]
   defp upsert(rendered, msg) do
@@ -422,6 +480,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
         resolution -> item |> Map.delete(:share_slugs) |> Map.put(:share_card, resolution)
       end
     end)
+  end
+
+  defp tag_share_link(%{type: :p2p_invite} = msg) do
+    # The invite is the one card whose address was never minted: the session's
+    # own token is the invitation. It resolves here rather than through the
+    # slug query, and draws the same card.
+    case ShareLinkRef.p2p_token_in(Map.get(msg, :content, "")) do
+      nil -> msg
+      token -> Map.put(msg, :share_card, Card.for_session(token))
+    end
   end
 
   defp tag_share_link(msg) do

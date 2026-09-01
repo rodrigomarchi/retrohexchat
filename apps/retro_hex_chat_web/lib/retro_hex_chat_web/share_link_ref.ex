@@ -31,6 +31,13 @@ defmodule RetroHexChatWeb.ShareLinkRef do
                "/join/(?<slug>[a-z2-9]{#{Slug.length()}})(?![a-z2-9])"
            )
 
+  # A P2P invite carries the session's own address rather than a minted slug:
+  # the token *is* the invitation, there is nothing to revoke separately, and
+  # a link nobody but the two of them can use has no business in a database of
+  # shareable addresses. It still draws the same card, which is what the plan
+  # asked for — a variant, not a second component.
+  @p2p_pattern Regex.compile!("(?<prefix>https?://[^\\s/]+)?/p2p/(?<token>[A-Za-z0-9_-]{8,})")
+
   @doc "The absolute URL a slug is shared as."
   @spec url(String.t()) :: String.t()
   def url(slug), do: SEO.site_url("/join/" <> slug)
@@ -48,6 +55,22 @@ defmodule RetroHexChatWeb.ShareLinkRef do
   end
 
   def slugs_in(_text), do: []
+
+  @doc """
+  The P2P session an invite line points at, or `nil`.
+
+  One, not a list: an invite is one session, and a message that mentioned two
+  would be somebody quoting rather than being invited.
+  """
+  @spec p2p_token_in(term()) :: String.t() | nil
+  def p2p_token_in(text) when is_binary(text) do
+    case Regex.named_captures(@p2p_pattern, text) do
+      %{"prefix" => prefix, "token" => token} -> if ours?(prefix), do: token
+      nil -> nil
+    end
+  end
+
+  def p2p_token_in(_text), do: nil
 
   # Exact, never a prefix match: `https://retrohexchat.app.evil.example` starts
   # with our name and is not us, and neither is `https://retrohex`.

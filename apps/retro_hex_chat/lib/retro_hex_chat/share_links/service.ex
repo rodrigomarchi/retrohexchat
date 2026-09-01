@@ -9,7 +9,7 @@ defmodule RetroHexChat.ShareLinks.Service do
   what stops a link from becoming a way in.
   """
 
-  alias RetroHexChat.ShareLinks.{Liveness, Policy, Queries, Slug}
+  alias RetroHexChat.ShareLinks.{Card, Liveness, Policy, Queries, Slug}
   alias RetroHexChat.ShareLinks.Schema.Link
 
   @type resolution :: %{
@@ -99,20 +99,22 @@ defmodule RetroHexChat.ShareLinks.Service do
   end
 
   @doc """
-  Describes every slug that still points somewhere, keyed by slug.
+  A card for every slug that names a link at all, keyed by slug.
 
-  Slugs that are malformed, unknown, revoked or expired are simply absent: a
-  caller drawing a screenful of messages wants the ones it can draw, not a list
-  of reasons it cannot.
+  Malformed and unknown slugs are absent — there is nothing to draw for an
+  address this app never minted. A **closed** one is present, and that is the
+  correction: filtering revoked and expired links out here did not grey the card
+  out, it made the card vanish and left a bare address under a message that once
+  explained itself. A link that was closed is a thing that happened, and the
+  card is the only place the history says so.
   """
-  @spec describe_many([term()]) :: %{String.t() => resolution()}
+  @spec describe_many([term()]) :: %{String.t() => Card.t()}
   def describe_many(slugs) do
     slugs
     |> Enum.filter(&Slug.valid?/1)
     |> Enum.uniq()
     |> Queries.list_by_slugs()
-    |> Enum.filter(&(check_open(&1) == :ok))
-    |> Map.new(&{&1.slug, resolution(&1)})
+    |> Map.new(&{&1.slug, Card.of(&1)})
   end
 
   @doc """

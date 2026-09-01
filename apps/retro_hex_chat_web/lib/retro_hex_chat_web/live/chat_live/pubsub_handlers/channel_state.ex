@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
   alias RetroHexChatWeb.ChatLive.GroupCallEvents
   alias RetroHexChatWeb.ChatLive.GroupCallReadModel
+  alias RetroHexChatWeb.ChatLive.ShareCards
 
   # ── Mode changes ──────────────────────────────────────────
 
@@ -342,6 +343,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     socket =
       socket
       |> GroupCallReadModel.mark_active(channel, Map.get(payload, :summary))
+      |> ShareCards.refresh()
       |> maybe_group_call_system_event(
         channel,
         dgettext("group_call", "Conference started in %{channel}.", channel: channel)
@@ -350,8 +352,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     {:halt, socket}
   end
 
+  # Every join and every leave lands here, which is what makes the card in the
+  # conversation count out loud without a subscription of its own.
   def handle_info({:group_call_updated, %{channel: channel} = payload}, socket) do
-    {:halt, GroupCallReadModel.mark_active(socket, channel, Map.get(payload, :summary))}
+    {:halt,
+     socket
+     |> GroupCallReadModel.mark_active(channel, Map.get(payload, :summary))
+     |> ShareCards.refresh()}
   end
 
   def handle_info({:group_call_moderation, %{channel: channel} = payload}, socket) do
@@ -369,6 +376,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     socket =
       socket
       |> GroupCallReadModel.mark_inactive(channel)
+      |> ShareCards.refresh()
       |> maybe_group_call_system_event(
         channel,
         dgettext("group_call", "Conference ended in %{channel}.", channel: channel)

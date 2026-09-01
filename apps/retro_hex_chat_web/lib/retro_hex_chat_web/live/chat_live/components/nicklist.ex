@@ -74,6 +74,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
     socket
   end
 
+  @doc """
+  Marks who is in the channel's conference. Returns the socket.
+
+  Takes the nicknames rather than reading the summary here: the chat already
+  holds it for the tab badge and the card in the conversation, and a second
+  reader of the same room is how two parts of one screen come to disagree
+  about it.
+  """
+  @spec mark_in_call(Phoenix.LiveView.Socket.t(), [String.t()]) :: Phoenix.LiveView.Socket.t()
+  def mark_in_call(socket, nicks) when is_list(nicks) do
+    send_update(__MODULE__, id: @id, action: {:in_call, nicks})
+    socket
+  end
+
   @doc "Removes a single user row by nick. Returns the socket."
   @spec remove(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
   def remove(socket, nick) do
@@ -100,6 +114,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
         online_count: 0,
         away_count: 0,
         muted_count: 0,
+        call_nicks: MapSet.new(),
         nick_color_fn: fn _nick -> nil end
       )
 
@@ -139,6 +154,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
      |> assign_context(assigns)
      |> assign_roster(users)
      |> reset_role_streams(users)}
+  end
+
+  # Who is in the channel's conference, from the summary the chat already keeps
+  # for the badge and the card. Re-streaming rather than reading it per row on
+  # render: these are stream items, and a stream item is drawn when it is
+  # inserted, not when an assign around it changes.
+  def update(%{action: {:in_call, nicks}} = assigns, socket) do
+    wanted = MapSet.new(nicks, &String.downcase/1)
+
+    if wanted == socket.assigns.call_nicks do
+      {:ok, assign_context(socket, assigns)}
+    else
+      socket = assign_context(socket, Map.put(assigns, :call_nicks, wanted))
+      {:ok, reset_role_streams(socket, socket.assigns.users)}
+    end
   end
 
   def update(assigns, socket) do
@@ -209,6 +239,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
                 status={row_status(user)}
                 muted={Map.get(user, :muted, false)}
                 current={same_nick?(user.nickname, @current_nick)}
+                in_call={MapSet.member?(@call_nicks, String.downcase(user.nickname))}
                 nick_color={@nick_color_fn.(user.nickname)}
                 data-nick={user.nickname}
               />
@@ -234,8 +265,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
         Map.get(assigns, :conversation_label, socket.assigns.conversation_label),
       current_modes: Map.get(assigns, :current_modes, socket.assigns.current_modes),
       current_nick: Map.get(assigns, :current_nick, socket.assigns.current_nick),
-      nick_color_fn: Map.get(assigns, :nick_color_fn, socket.assigns.nick_color_fn)
+      nick_color_fn: Map.get(assigns, :nick_color_fn, socket.assigns.nick_color_fn),
+      call_nicks: normalize_call_nicks(assigns, socket)
     )
+  end
+
+  # Normalised on the way in, once. The summary spells a nickname the way its
+  # owner typed it and the rows are keyed by the downcased form; matching them
+  # at render time is how the marker comes to be right for `bob` and wrong for
+  # `Bob`.
+  defp normalize_call_nicks(assigns, socket) do
+    case Map.get(assigns, :call_nicks) do
+      nil -> socket.assigns.call_nicks
+      nicks -> MapSet.new(nicks, &String.downcase/1)
+    end
   end
 
   defp assign_roster(socket, users) do

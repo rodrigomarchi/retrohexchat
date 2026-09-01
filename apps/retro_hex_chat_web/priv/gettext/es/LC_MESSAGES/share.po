@@ -62,7 +62,7 @@ msgid "Someone shared this with you."
 msgstr "Alguien compartió esto contigo."
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:170
-#,elixir-autogen, elixir-format
+#, elixir-autogen, elixir-format
 msgid "%{nickname} shared this with you. Pick a nickname to join."
 msgstr "%{nickname} compartió esto contigo. Elige un apodo para entrar."
 
@@ -72,7 +72,7 @@ msgid "Pick a nickname to join."
 msgstr "Elige un apodo para entrar."
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:161
-#,elixir-autogen, elixir-format
+#, elixir-autogen, elixir-format
 msgid "This link is no longer active. The chat is still there."
 msgstr "Este enlace ya no está activo. El chat sigue ahí."
 
@@ -81,22 +81,22 @@ msgstr "Este enlace ya no está activo. El chat sigue ahí."
 msgid "from %{nickname}"
 msgstr "de %{nickname}"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:58
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:146
 #, elixir-autogen, elixir-format
 msgid "A game"
 msgstr "Un juego"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:61
-#,elixir-autogen, elixir-format
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:143
+#, elixir-autogen, elixir-format
 msgid "An invitation"
 msgstr "Una invitación"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:66
-#,elixir-autogen, elixir-format
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:188
+#, elixir-autogen, elixir-format
 msgid "shared by %{nickname}"
 msgstr "compartido por %{nickname}"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:68
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:190
 #, elixir-autogen, elixir-format
 msgid "shared with this conversation"
 msgstr "compartido en esta conversación"
@@ -107,11 +107,12 @@ msgid "Connect and join"
 msgstr "Conectar y entrar"
 
 #: lib/retro_hex_chat_web/components/ui/share/join_card.ex:183
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:38
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:78
 #, elixir-autogen, elixir-format
 msgid "Join"
 msgstr "Unirse"
 
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:174
 #: lib/retro_hex_chat_web/live/join_live.ex:267
 #: lib/retro_hex_chat_web/live/join_live.ex:287
 #, elixir-autogen, elixir-format
@@ -131,7 +132,7 @@ msgstr "Una llamada en %{channel}"
 msgid "A call on RetroHexChat"
 msgstr "Una llamada en RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:59
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:141
 #, elixir-autogen, elixir-format
 msgid "A conference"
 msgstr "Una conferencia"
@@ -146,7 +147,7 @@ msgstr "Un espacio privado en RetroHexChat"
 msgid "A space on RetroHexChat"
 msgstr "Un espacio en RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:60
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:142
 #, elixir-autogen, elixir-format
 msgid "A virtual space"
 msgstr "Un espacio virtual"
@@ -221,6 +222,7 @@ msgid "Open in a tab"
 msgstr "Abrir en una pestaña"
 
 #: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:60
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:90
 #, elixir-autogen, elixir-format
 msgid "Copied!"
 msgstr "¡Copiado!"
@@ -244,3 +246,80 @@ msgstr "Revocar"
 #, elixir-autogen, elixir-format
 msgid "Stop this link from working? The room stays open."
 msgstr "¿Dejar de aceptar este enlace? La sala sigue abierta."
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:162
+#, elixir-autogen, elixir-format
+msgid "%{names} · %{count} person inside now"
+msgid_plural "%{names} · %{count} people inside now"
+msgstr[0] "%{names} · %{count} persona dentro ahora"
+msgstr[1] "%{names} · %{count} personas dentro ahora"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:199
+#, elixir-autogen, elixir-format
+msgid "Back to the chat"
+msgstr "Volver al chat"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:135
+#, elixir-autogen, elixir-format
+msgid "Call in %{channel}"
+msgstr "Llamada en %{channel}"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:150
+#, elixir-autogen, elixir-format
+msgid "Closed"
+msgstr "Cerrado"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:94
+#, elixir-autogen, elixir-format
+msgid "Copy link"
+msgstr "Copiar enlace"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:151
+#, elixir-autogen, elixir-format
+msgid "Expired"
+msgstr "Caducado"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:154
+#, elixir-autogen, elixir-format
+msgid "Live"
+msgstr "En directo"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:184
+#, elixir-autogen, elixir-format
+msgid "One seat open"
+msgstr "Una plaza libre"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:193
+#, elixir-autogen, elixir-format
+msgid "Open %{channel}"
+msgstr "Abrir %{channel}"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:152
+#, elixir-autogen, elixir-format
+msgid "Over"
+msgstr "Terminada"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:198
+#, elixir-autogen, elixir-format
+msgid "Play"
+msgstr "Jugar"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:196
+#, elixir-autogen, elixir-format
+msgid "Play %{game}"
+msgstr "Jugar a %{game}"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:138
+#, elixir-autogen, elixir-format
+msgid "Space of %{channel}"
+msgstr "Espacio de %{channel}"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:149
+#, elixir-autogen, elixir-format
+msgid "Taken"
+msgstr "Ocupado"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:153
+#, elixir-autogen, elixir-format
+msgid "Waiting"
+msgstr "Esperando"

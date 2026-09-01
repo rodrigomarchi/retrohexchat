@@ -13,7 +13,7 @@ defmodule RetroHexChat.ShareLinks do
   which belongs in an address bar.
   """
 
-  alias RetroHexChat.ShareLinks.{Schema, Service, Slug}
+  alias RetroHexChat.ShareLinks.{Card, Schema, Service, Slug}
 
   @type resolution :: Service.resolution()
 
@@ -27,7 +27,7 @@ defmodule RetroHexChat.ShareLinks do
   @spec describe(term()) :: {:ok, resolution()} | {:error, :not_found | :revoked | :expired}
   defdelegate describe(slug), to: Service
 
-  @spec describe_many([term()]) :: %{String.t() => resolution()}
+  @spec describe_many([term()]) :: %{String.t() => Card.t()}
   defdelegate describe_many(slugs), to: Service
 
   @spec revoke(term(), String.t()) ::

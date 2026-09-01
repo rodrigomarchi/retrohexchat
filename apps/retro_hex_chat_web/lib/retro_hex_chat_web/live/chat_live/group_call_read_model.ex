@@ -109,6 +109,30 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallReadModel do
   def live_summaries(_socket), do: []
 
   @doc """
+  The nicknames in `channel_name`'s conference, or `[]` when it has none.
+
+  The nicklist's marker reads this rather than the room, for the same reason
+  the card does: one summary, one answer, and no second reader to drift from
+  it.
+  """
+  @spec participants(Socket.t(), String.t() | nil) :: [String.t()]
+  def participants(socket, channel_name) do
+    case summary(socket, channel_name) do
+      %{participants: participants} when is_list(participants) ->
+        participants
+        |> Enum.map(&participant_nick/1)
+        |> Enum.filter(&is_binary/1)
+
+      _none ->
+        []
+    end
+  end
+
+  defp participant_nick(%{nickname: nickname}), do: nickname
+  defp participant_nick(%{"nickname" => nickname}), do: nickname
+  defp participant_nick(_participant), do: nil
+
+  @doc """
   The call this person is watching from somewhere else, if there is one.
 
   The status zone's third shape. A conference can be live, this reader can be

@@ -4,7 +4,9 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
 
   The card draws itself from the database rather than from a scrape: the useful
   thing about a link into this app is the state of the room it names, not the
-  title of a page.
+  title of a page. Two states, and the ended one is the half that was missing —
+  a link that stopped working used to make the card disappear, leaving a bare
+  address under a message that had explained itself the day before.
   """
   use RetroHexChatWeb.ConnCase, async: true
 
@@ -22,33 +24,137 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
     type: :message
   }
 
-  test "a message carrying one of our links draws a card" do
-    html = render_row(Map.put(@base, :share_card, card()))
+  describe "a live card" do
+    test "a message carrying one of our links draws a card" do
+      html = render_row(Map.put(@base, :share_card, card()))
 
-    assert html =~ "share-message-card"
-    assert html =~ "Hex Pong"
-    assert html =~ "ana"
-    assert html =~ "/join/abcdefghjk"
+      assert html =~ "share-message-card"
+      assert html =~ ~s(data-share-state="live")
+      assert html =~ "Hex Pong"
+      assert html =~ "/join/abcdefghjk"
+    end
+
+    test "a message with no link of ours draws none" do
+      refute render_row(@base) =~ "share-message-card"
+    end
+
+    # Stripping formatting is a reader saying they want the text and nothing else.
+    test "stripped formatting means no card" do
+      html = render_row(Map.put(@base, :share_card, card()), strip_formatting: true)
+
+      refute html =~ "share-message-card"
+    end
+
+    test "a kind with no art still draws, with a name and a way in" do
+      html = render_row(Map.put(@base, :share_card, %{card() | kind: "call", target: %{}}))
+
+      assert html =~ "share-message-card"
+      assert html =~ "/join/abcdefghjk"
+    end
+
+    test "the way in comes with the way to pass it on" do
+      html = render_row(Map.put(@base, :share_card, card()))
+
+      assert html =~ ~s(data-testid="share-message-enter")
+      assert html =~ ~s(data-testid="share-message-copy")
+      assert html =~ ~s(phx-hook="CopyValueHook")
+      assert html =~ ~s(data-copy-text=)
+    end
+
+    test "a conference names the channel and counts who is inside" do
+      html =
+        render_row(
+          Map.put(@base, :share_card, %{
+            card()
+            | kind: "call",
+              channel_name: "#retro",
+              participants: ["ana", "bob"],
+              count: 2
+          })
+        )
+
+      assert html =~ "Call in #retro"
+      assert html =~ "ana, bob"
+      assert html =~ "2 people inside now"
+      assert html =~ ~s(data-share-count="2")
+    end
+
+    # The one number the card is for: it comes from the summary it was handed,
+    # so a screen that redraws with a new summary redraws with a new number.
+    test "the count is whatever the summary said, not a stored figure" do
+      inside = fn count ->
+        render_row(
+          Map.put(@base, :share_card, %{card() | kind: "call", count: count, participants: []})
+        )
+      end
+
+      assert inside.(1) =~ "1 person inside now"
+      assert inside.(7) =~ "7 people inside now"
+    end
   end
 
-  test "a message with no link of ours draws none" do
-    html = render_row(@base)
+  describe "an ended card" do
+    test "loses the way in and keeps a way forward" do
+      html = render_row(Map.put(@base, :share_card, ended(kind: "call", channel_name: "#retro")))
 
-    refute html =~ "share-message-card"
+      assert html =~ ~s(data-share-state="ended")
+      refute html =~ ~s(data-testid="share-message-enter")
+      refute html =~ ~s(data-testid="share-message-copy")
+      assert html =~ ~s(data-testid="share-message-next")
+      assert html =~ "Open #retro"
+      assert html =~ "/chat?join="
+    end
+
+    test "a match somebody already took says so, and offers the game" do
+      html =
+        render_row(
+          Map.put(@base, :share_card, ended(reason: :full, target: %{"game_id" => "hex_pong"}))
+        )
+
+      assert html =~ "Taken"
+      assert html =~ "Play Hex Pong"
+      assert html =~ "/play/hex_pong"
+    end
+
+    test "a revoked link is a card that says so, not a card that vanished" do
+      html = render_row(Map.put(@base, :share_card, ended(reason: :revoked)))
+
+      assert html =~ "share-message-card"
+      assert html =~ "Closed"
+    end
+
+    test "an expired one says that instead" do
+      assert render_row(Map.put(@base, :share_card, ended(reason: :expired))) =~ "Expired"
+    end
   end
 
-  # Stripping formatting is a reader saying they want the text and nothing else.
-  test "stripped formatting means no card" do
-    html = render_row(Map.put(@base, :share_card, card()), strip_formatting: true)
+  # The card sits in a conversation whose readers may not be in that channel.
+  # The domain decides; what is asserted here is that the component has no
+  # second opinion — a card with no name shows none, anywhere it might have.
+  describe "a channel the reader may not be told about" do
+    test "is never named, in either state, even though the card is carrying it" do
+      # `target` holds the channel because the room is in it; `channel_name` is
+      # the domain's answer to "may this reader be told". A component that read
+      # the first would be a second copy of the rule, and this is where that
+      # would show.
+      for state <- [:live, :ended] do
+        html =
+          render_row(
+            Map.put(@base, :share_card, %{
+              card()
+              | kind: "call",
+                state: state,
+                target: %{"room_token" => "tok", "channel_name" => "#secret"},
+                channel_name: nil,
+                count: 3
+            })
+          )
 
-    refute html =~ "share-message-card"
-  end
-
-  test "a kind with no art still draws, with a name and a way in" do
-    html = render_row(Map.put(@base, :share_card, %{card() | kind: "call", target: %{}}))
-
-    assert html =~ "share-message-card"
-    assert html =~ "/join/abcdefghjk"
+        assert html =~ "share-message-card"
+        refute html =~ "#secret"
+        assert html =~ "A conference"
+      end
+    end
   end
 
   defp card do
@@ -57,8 +163,19 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
       kind: "play",
       target: %{"game_id" => "hex_pong"},
       creator_nick: "ana",
-      live?: true
+      state: :live,
+      reason: nil,
+      count: nil,
+      participants: [],
+      channel_name: nil,
+      game_id: "hex_pong"
     }
+  end
+
+  defp ended(overrides) do
+    card()
+    |> Map.merge(%{state: :ended, reason: Keyword.get(overrides, :reason, :over)})
+    |> Map.merge(Map.new(Keyword.delete(overrides, :reason)))
   end
 
   defp render_row(msg, opts \\ []) do

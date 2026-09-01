@@ -24,6 +24,8 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
 
   alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.App.ChatHelpers
+  alias RetroHexChatWeb.App.Paths
+  alias RetroHexChatWeb.ShareLinkRef
 
   attr :msg, :map, required: true
   attr :nick_color_fn, :any, required: true
@@ -128,9 +130,18 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           type="system"
         >
           * {dgettext("chat", "P2P request")}
-          <span class="text-muted-foreground">
+          <span :if={is_nil(Map.get(@msg, :share_card))} class="text-muted-foreground">
             {dgettext("chat", "Use the P2P control in this private message.")}
           </span>
+          <%!-- The invite is a variant of the same card, not a second
+                component: a session is a room like any other, and the line
+                above it is the sentence a card cannot carry — who is asking. --%>
+          <.share_message_card
+            :if={not @strip_formatting}
+            card={Map.get(@msg, :share_card)}
+            enter_path={p2p_enter_path(Map.get(@msg, :share_card))}
+            next_path={share_next_path(Map.get(@msg, :share_card))}
+          />
         </.chat_message>
       <% _ -> %>
         <.message_reply_block
@@ -169,6 +180,8 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
               card={Map.get(@msg, :share_card)}
               subject={share_subject(Map.get(@msg, :share_card))}
               enter_path={share_enter_path(Map.get(@msg, :share_card))}
+              share_url={share_url(Map.get(@msg, :share_card))}
+              next_path={share_next_path(Map.get(@msg, :share_card))}
             />
             <.attachment_gallery attachments={Map.get(@msg, :attachments, [])} />
             <.edited_tag
@@ -223,6 +236,30 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
 
   defp share_enter_path(%{slug: slug}) when is_binary(slug), do: "/join/#{slug}"
   defp share_enter_path(_card), do: nil
+
+  defp share_url(%{slug: slug}) when is_binary(slug), do: ShareLinkRef.url(slug)
+  defp share_url(_card), do: nil
+
+  # The session's own address, which is what the invite was carrying all along.
+  defp p2p_enter_path(%{kind: "p2p", target: %{"session_token" => token}})
+       when is_binary(token),
+       do: Paths.p2p_path(token)
+
+  defp p2p_enter_path(_card), do: nil
+
+  # Never a dead end: a card whose room has ended points at the nearest thing
+  # the reader can still do. The chat is the fallback because every surface's
+  # way out already points there.
+  defp share_next_path(%{state: :ended, kind: "call", channel_name: channel})
+       when is_binary(channel),
+       do: Paths.chat_path(channel)
+
+  defp share_next_path(%{state: :ended, kind: "play", target: %{"game_id" => game_id}})
+       when is_binary(game_id),
+       do: Paths.play_path(game_id)
+
+  defp share_next_path(%{state: :ended}), do: Paths.chat_path()
+  defp share_next_path(_card), do: nil
 
   defp formatted_content(msg, strip_formatting) do
     content = Map.get(msg, :content, "")

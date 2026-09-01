@@ -39,6 +39,22 @@ defmodule RetroHexChatWeb.App.Paths do
     ~p"/chat"
   end
 
+  @doc """
+  The chat, opened on a named channel.
+
+  `/chat?join=#retro` is how the connect flow already lands somebody in a
+  channel, and it is the only address a channel has: the chat opens one as a
+  tab, not as a page. An ended call's card uses it, which is what keeps that
+  card from being a dead end.
+  """
+  @spec chat_path(String.t()) :: String.t()
+  def chat_path(channel) when is_binary(channel) and channel != "", do: ~p"/chat?join=#{channel}"
+  def chat_path(_channel), do: chat_path()
+
+  @doc "A game at its own address, by its catalogue id."
+  @spec play_path(String.t()) :: String.t()
+  def play_path(game_id), do: ~p"/play/#{game_id}"
+
   @doc "A conference at an address of its own, by its room token."
   @spec call_path(String.t()) :: String.t()
   def call_path(room_token), do: ~p"/call/#{room_token}"

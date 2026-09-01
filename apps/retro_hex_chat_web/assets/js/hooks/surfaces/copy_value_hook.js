@@ -26,8 +26,12 @@ const CopyValueHook = {
   },
 
   _copy() {
+    // Two ways to say what to copy, because two screens have different halves
+    // of it. The share bar has a field the reader can also select by hand, so
+    // it points at that; a card in the conversation has no field to spare, so
+    // it carries the address itself.
     const source = document.getElementById(this.el.dataset.copyFrom || "");
-    const text = source && (source.value || source.textContent);
+    const text = this.el.dataset.copyText || (source && (source.value || source.textContent));
     if (!text) return;
 
     copyText(text)

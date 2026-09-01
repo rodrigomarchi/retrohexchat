@@ -774,6 +774,84 @@ próxima sessão ganha daqui é o ponteiro certo: procure quem derruba **três**
 
 ---
 
+## Iteração 13 — Onda 8: o card ao vivo
+
+R.2, o maior achado da auditoria e o único que não era bug. Construído.
+
+### O que passou a existir
+
+* **`ShareLinks.Card`** — o domínio responde "o que é essa sala agora", com
+  `state`, `reason`, contagem, quem está dentro e o nome do canal **só quando
+  `Visibility.nameable?/1` deixa**. O componente não tem segunda opinião sobre
+  privacidade: recebe `channel_name` ou `nil`.
+* **`describe_many/1` parou de filtrar link fechado.** Esse era o defeito pior
+  que um card cinza: revogar um link fazia o **card sumir** e deixava um
+  endereço nu embaixo de uma mensagem que no dia anterior se explicava. Agora
+  ele fica e diz `Fechado`, `Expirado`, `Encerrada` ou `Ocupada` — e essa
+  última é a única que nomeia um **sucesso**: a vaga foi tomada.
+* **Nunca um beco.** Card encerrado perde `[Entrar]` e ganha a próxima ação
+  plausível: `Abrir #canal` (que é `/chat?join=#canal`, o único endereço que um
+  canal tem) ou `Jogar X`.
+* **`[Copiar link]`** no card, pelo `CopyValueHook`, que ganhou `data-copy-text`
+  — a barra de compartilhar aponta para um campo que a pessoa também pode
+  selecionar, o card não tem campo sobrando e carrega o endereço.
+* **O convite P2P virou variante**, como o `ux.md §2.1` pedia. Ele não tem
+  slug: o token da sessão **é** o convite, não há o que revogar à parte e um
+  endereço que só serve para duas pessoas não entra numa tabela de endereços
+  compartilháveis. Card igual, sem `[Copiar link]`. O teste foi **portado**.
+* **A nicklist marca quem está na chamada**, lendo o mesmo summary que o card.
+
+### A parte cara, e o limite dela no código
+
+A assinatura de space é o único custo novo, e ela existe **só enquanto há card
+de space na tela**. Quem sabe o que está renderizado é o viewport; quem tem
+assinatura é o chat; então o viewport anuncia o conjunto e o chat faz a
+aritmética da diferença. `Phoenix.PubSub.subscribe` não é idempotente — três
+subscribes são três entregas — então "seguir exatamente este conjunto" tem que
+ser diferença e nunca re-subscribe, e há um teste que assina duas vezes e conta
+uma mensagem só.
+
+O padrão para atualizar sem repintar a tela já existia e foi copiado do vizinho
+certo: `attach_preview` re-transmite **apenas as linhas que esperavam** aquela
+página. O refresh do card faz o mesmo — re-resolve os slugs que estão em
+`rendered` e re-insere só as linhas cujo card **mudou de fato**. Um `reset`
+jogaria quem está lendo scrollback lá para baixo para dizer que alguém entrou
+numa chamada.
+
+### Verificado no navegador, e revertido para ver ficar vermelho
+
+`K9`: Ana abre a chamada, cria o link, cola no canal; Bob vê o card com
+`data-share-count="1"`; Bob entra na chamada e **o card do Bob vira 2 sozinho**.
+Tirando o `ShareCards.refresh()` do `group_call_updated`, ele fica em 1 —
+verificado.
+
+### Uma coisa que eu não consertei, medida
+
+Rodei `make i18n.gettext.merge DOMAINS=help_ui` por reflexo e ele **trouxe 8
+`msgid` novos** para os 13 locales: strings que estão no `.pot` e nunca foram
+mergeadas. Medindo o repositório inteiro:
+
+```
+retro_hex_chat/bots: 1        retro_hex_chat_web/dialogs: 6
+retro_hex_chat/channels: 1    retro_hex_chat_web/help: 3
+retro_hex_chat/commands: 5    retro_hex_chat_web/help_arcade: 1
+retro_hex_chat/lobby: 1       retro_hex_chat_web/help_bots: 29
+                              retro_hex_chat_web/ui: 1
+TOTAL: 48 msgid no .pot e ausentes do pt_BR
+```
+
+**O gate novo não vê isso**, e vale escrever por quê: `i18n.catalog.check`
+conta entradas *presentes* no `.po`. Uma entrada que nunca foi mergeada não é
+vazia — ela não existe. E o `i18n.gettext.check` só afirma que o `.pot` está
+fresco. Os dois passam com 48 strings que nenhum locale tem.
+
+Desfiz o merge do `help_ui` (não era meu e eu não ia traduzir 8 parágrafos ×
+13), traduzi só o `msgid` que **eu** criei, e deixo isto medido: são 48 × 13, e
+a checagem que fecharia o buraco é "todo `msgid` do `.pot` existe em todo
+`.po`".
+
+---
+
 ## Aprendizados que podem sair daqui
 
 Candidatos a virar regra durável quando a onda fechar. **Ainda não movidos.**

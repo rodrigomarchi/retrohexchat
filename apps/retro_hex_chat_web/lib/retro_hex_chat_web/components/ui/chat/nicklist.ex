@@ -436,6 +436,11 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   attr :nick_color, :string, default: nil
   attr :muted, :boolean, default: false
   attr :current, :boolean, default: false
+
+  attr :in_call, :boolean,
+    default: false,
+    doc: "whether this person is in the channel's conference, from the summary the chat holds"
+
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -461,6 +466,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
       data-status={@status}
       data-muted={to_string(@muted)}
       data-current={to_string(@current)}
+      data-in-call={to_string(@in_call)}
       {@rest}
     >
       <span
@@ -477,6 +483,18 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
       </span>
       <span class={["chat-nicklist-row__nick", @nick_color || "text-text"]}>
         {@nick}
+      </span>
+      <%!-- Who is in the call, from the summary the chat already keeps for the
+            badge and the card. Reading it a second time is how the two come to
+            disagree about the same room. --%>
+      <span
+        :if={@in_call}
+        class="chat-nicklist-row__badge chat-nicklist-row__badge--in-call"
+        title={dgettext("chat", "In the channel call")}
+        data-testid={"nicklist-in-call-#{@nick}"}
+        aria-hidden="true"
+      >
+        <Icons.icon_protocol_conference_compact class="h-3 w-3" />
       </span>
       <span
         :if={@status == "away"}
