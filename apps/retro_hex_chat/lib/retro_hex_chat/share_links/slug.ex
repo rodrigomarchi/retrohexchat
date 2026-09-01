@@ -9,10 +9,13 @@ defmodule RetroHexChat.ShareLinks.Slug do
 
   Length is a security parameter, not a style choice. A slug is the only thing
   between a stranger and the knowledge that a room exists, so guessing one has
-  to be impractical: 31^10 is about 8.2 x 10^14, which at a thousand guesses a
-  second against a rate-limited public route is not a strategy. Shortening it is
-  a decision about that number, which is why the number itself is asserted in
-  the tests.
+  to be impractical, and the length is the only thing making it so: **there is
+  no rate limit on `/join/:slug`, or on any other route in this app.** The
+  number has to carry the argument alone, and it does — 31^10 is about
+  8.2 x 10^14, so finding any one of ten thousand live links costs some 10^11
+  attempts on average. Shortening it is a decision about that number, which is
+  why the number itself is asserted in the tests, and why a shorter slug would
+  need the rate limit this sentence used to assume.
 
   It is deliberately not a signed token. A token expires and a share link is
   meant to outlive the room it names — the card it resolves to has to be useful

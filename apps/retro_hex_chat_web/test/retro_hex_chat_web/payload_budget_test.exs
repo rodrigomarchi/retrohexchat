@@ -67,6 +67,26 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
     end
   end
 
+  # The only page in the plan a stranger can reach with no session at all, and
+  # the only one that had no budget: it rides the landing pipeline, so it pays
+  # the small public bundle and its cost is the one a link's first impression is
+  # made of.
+  describe "/join/:slug" do
+    setup %{conn: conn}, do: %{html: html_for(conn, open_join())}
+
+    test "stays inside its byte budget", %{html: html} do
+      assert byte_size(html) <= PerfBudgets.html_bytes(:join)
+    end
+
+    test "stays inside its DOM node budget", %{html: html} do
+      assert PerfBudgets.count_elements(html) <= PerfBudgets.dom_nodes(:join)
+    end
+
+    test "references the sprite instead of carrying the drawings", %{html: html} do
+      assert PerfBudgets.count(html, "<use href=") == PerfBudgets.count(html, "<svg")
+    end
+  end
+
   describe "/call/:token" do
     setup %{conn: conn} do
       {nickname, path} = open_call()
@@ -303,6 +323,27 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
 
   # A surface refuses a request with no nickname, so measuring one needs a
   # session the way a visitor would have one.
+  # A live link, because a dead one draws the "this is gone" card and that is a
+  # smaller page than the one people are actually sent.
+  defp open_join do
+    nickname = "Join#{System.unique_integer([:positive])}" |> String.slice(0, 16)
+
+    {:ok, nick} =
+      %RegisteredNick{}
+      |> RegisteredNick.registration_changeset(%{nickname: nickname, password: "password123"})
+      |> RetroHexChat.Repo.insert()
+
+    {:ok, link} =
+      RetroHexChat.ShareLinks.create(%{
+        kind: "play",
+        target: %{"game_id" => "hex_pong"},
+        creator_id: nick.id,
+        creator_nick: nick.nickname
+      })
+
+    "/join/" <> link.slug
+  end
+
   defp session_conn(conn, nickname \\ "Budget") do
     Plug.Test.init_test_session(conn, %{"chat_nickname" => nickname})
   end

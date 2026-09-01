@@ -32,7 +32,36 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
 
     ~H"""
     <div class={classes(["conversation-toolbar-entry flex items-center gap-px", @class])}>
+      <%!-- Two shapes, and which one is drawn is the server's answer. With this
+            call open in a tab of this person's, the entry is a way *to that tab*
+            rather than a way to open the window again: opening the embedded one
+            beside it would leave the same conference on screen twice, and the
+            person asked for neither. --%>
+      <.link
+        :if={tab_open?(@open_paths, @room_token)}
+        href={Paths.call_path(@room_token)}
+        id={"group-call-tab-#{@room_token}"}
+        phx-hook="SurfaceTabLinkHook"
+        data-surface-path={Paths.call_path(@room_token)}
+        class={[
+          "conversation-toolbar-button flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs",
+          "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
+          active_state_class(@active, @state)
+        ]}
+        title={dgettext("group_call", "This call is open in another tab — click to go to it")}
+        data-testid="group-call-elsewhere"
+        data-channel={@channel}
+        data-state={active_value(@active, Atom.to_string(@state))}
+        data-participant-count={active_value(@active, @participant_count)}
+      >
+        <Icons.icon_toolbar_conference class="h-3.5 w-3.5 shrink-0" />
+        <span class="conversation-toolbar-button__text">
+          {dgettext("group_call", "In another tab")}
+        </span>
+      </.link>
+
       <button
+        :if={!tab_open?(@open_paths, @room_token)}
         type="button"
         phx-click={@on_open}
         class={[

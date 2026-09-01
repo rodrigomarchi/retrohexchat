@@ -19,7 +19,7 @@ apagado.
 | C | o silêncio do `← Chat` (R.10) e a barra coberta (R.7/R.13) | **fechada**, menos dois specs — ver Iteração 3 |
 | D | o que vaza (R.3 metade barata, R.4) | **fechada** |
 | E | o que apodrece (R.5, A.6, R.8) | **fechada** |
-| F | o resto (R.9, R.11, R.12, R.14, R.15) | aberta |
+| F | o resto (R.9, R.11, R.12, R.14, R.15) | **fechada**, menos dois itens — ver Iteração 6 |
 
 Decisões da §8: pedidas, não respondidas, e **tomadas pela recomendação escrita
 no plano** para não parar o trabalho. Todas reversíveis; a que mais vale rever é
@@ -354,6 +354,59 @@ antes de iterar sobre ela** — o mesmo tipo de suposição que já custou a Ite
 
 ---
 
+## Iteração 6 — Fase F: o resto, e um número que faltava
+
+**R.9 (D7.4, metade de agora).** A entrada `[Group Call]` na tira de abas ganhou
+a segunda forma que o `ux.md §2.7` desenhava: com a chamada aberta numa aba desta
+pessoa, ela deixa de ser um botão que abre a janela embutida e vira uma âncora
+com o `SurfaceTabLinkHook` que vai para a aba que existe. Abrir a janela ao lado
+poria a mesma conferência na tela duas vezes, e a pessoa não pediu nenhuma das
+duas.
+
+O teste é de componente e não de LiveView, de propósito: é síncrono, e o
+`open_surfaces_test.exs` existente resolve a mesma pergunta com
+`Process.sleep` em laço (`render_eventually/3`, `render_until_gone/3`) — o que a
+regra da casa proíbe e a auditoria não pegou. Não reescrevi aqueles; anotei.
+
+**R.14 (metade).** `PerfBudgets` para `:join`, com o número medido em
+2026-09-01: **9.291 B cru / 2.936 B gzip, 99 elementos** — o menor da lista, e o
+comentário diz por quê (pipeline da landing, uma janela, um card, nada de
+`app.js`). Era a única página pública do plano sem orçamento.
+
+**R.11.** O `@moduledoc` do `Slug` parou de creditar um rate limit que não existe
+em rota nenhuma deste app. Agora diz isso em negrito e mostra que a entropia
+sozinha carrega o argumento — e que encurtar o slug passaria a exigir o limite
+que a frase antiga supunha.
+
+**R.12.** Os 10 `msgid` do plano traduzidos à mão nos 14 locales:
+`help_games.po` foi de `empty=8` para **`empty=0`**, e `help.po` de 11 para 9.
+
+**R.15.** A mensagem de rate limit do lobby dizia "minutes" e recebia segundos —
+errava por 60×. Virou `dngettext` com `%{count}` em segundos, que também resolve
+o plural. E o catch-all de `media_event/3` passou a logar em vez de engolir.
+
+### O que ficou de fora, e por quê
+
+* **A zona de status ainda não diz *onde*** (`ux.md §2.7`, `wave-6 §1.2`). Ela é
+  derivada de `@group_call`/`@p2p_session`, que só existem quando a superfície
+  está embutida — com a chamada em outra aba o chat não tem nada para desenhar.
+  Fazer isso direito é sintetizar um estado "em outra aba" a partir do
+  read-model mais `@open_surface_paths`, e é trabalho de verdade, não uma linha.
+* **A nicklist** marcando quem está na chamada: é a **D7.4**, adiada de propósito
+  para ir junto com o card ao vivo, que lê o mesmo summary.
+* **O spec "abrir a mesma chamada duas vezes não gera dois participantes"**
+  (R.14, onda 6 §1.3). A tira de abas agora *impede* o segundo clique, mas a
+  garantia de domínio continua sem spec.
+
+### Os 9 `msgid` que continuam vazios não são desta onda
+
+`help.po` mantém 9 vazios por locale, e `chat.po` 3: capacidade de saudação dos
+bots, RSS, cards de link, lista de usuários, miniaturas. São de outras features,
+e a atribuição da auditoria (A.1/R.12) já dizia isso. `make i18n.catalog.check`
+continua reprovando por causa deles — não por causa do plano.
+
+---
+
 ## Aprendizados que podem sair daqui
 
 Candidatos a virar regra durável quando a onda fechar. **Ainda não movidos.**
@@ -368,15 +421,19 @@ Candidatos a virar regra durável quando a onda fechar. **Ainda não movidos.**
 3. **Uma recusa tem que sobreviver ao render morto**, mas uma recusa que depende
    de um assento ainda não tomado não pode. As duas metades juntas são o desenho
    do portão. Destino provável: `guide/surfaces.md`.
-4. **Um hook registrado não é um hook montado.** `critical_hooks.js` aceita
+4. **Um teste de componente bate um teste de LiveView com `sleep`.** O
+   `open_surfaces_test.exs` prova a mesma coisa com dois laços de
+   `Process.sleep` — a regra da casa diz para asserir estado síncrono, e um
+   `render_component` é exatamente isso. Candidato a reescrita, não feito aqui.
+5. **Um hook registrado não é um hook montado.** `critical_hooks.js` aceita
    qualquer nome; só um `phx-hook=` no template o coloca para rodar, e não há
    nada que reclame de um hook registrado que ninguém monta. Candidato a virar
    uma checagem em vez de um parágrafo — `lint.hooks` já lê os dois lados.
    Destino provável: `AGENT-GUIDE §15`, ou melhor, o próprio linter.
-5. **"No silent catch" vale para promises.** Um throw dentro de um `.then` come o
+6. **"No silent catch" vale para promises.** Um throw dentro de um `.then` come o
    resto do callback e não aparece em lugar nenhum. Destino provável:
    `.claude/rules/assets-js.md`, que hoje só fala de `try/catch`.
-6. **Estado que o JS escreve por cima de markup do servidor precisa de
+7. **Estado que o JS escreve por cima de markup do servidor precisa de
    `phx-update="ignore"`**, ou o próximo patch o apaga. Destino provável:
    `AGENT-GUIDE §15.1`.
 

@@ -22,6 +22,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
   """
   use RetroHexChatWeb, :live_component
 
+  require Logger
+
   alias RetroHexChat.Lobby
   alias RetroHexChatWeb.Components.UI.P2P.CallPanel
 
@@ -321,7 +323,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
     socket |> assign(call: nil) |> summarize()
   end
 
-  defp media_event(socket, _name, _params), do: socket
+  # Not a silent swallow: an event with no clause here is a hook and a server
+  # that have drifted apart, and the only way that ever surfaces is somebody
+  # noticing a control doing nothing. Logging it is the difference between a
+  # bug with a breadcrumb and a bug with none.
+  defp media_event(socket, name, _params) do
+    Logger.debug("P2PMediaIsland ignored media event #{inspect(name)}")
+    socket
+  end
 
   # --- surface_peer_media (auto-join) ---
 

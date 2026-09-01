@@ -68,6 +68,13 @@ defmodule RetroHexChatWeb.PerfBudgets do
   # camera preview and a roster at once; the session console itself only exists
   # after the host presses Start.
   def html_bytes(:p2p), do: 30_000
+  # The public card a shared link resolves to, and the only page here a stranger
+  # reaches with no session. 9_291 B raw / 2_936 B gzip and 99 elements measured
+  # on 2026-09-01 — the smallest of the lot, because it rides the landing
+  # pipeline rather than the app one: one window, one card, no taskbar, no Start
+  # menu, and none of `app.js`. That is the number to defend if this page ever
+  # starts wanting more, since it is the whole first impression a link makes.
+  def html_bytes(:join), do: 11_000
 
   @doc """
   The most elements a surface's dead render may contain.
@@ -80,6 +87,7 @@ defmodule RetroHexChatWeb.PerfBudgets do
   def dom_nodes(:call), do: 260
   def dom_nodes(:space), do: 120
   def dom_nodes(:p2p), do: 270
+  def dom_nodes(:join), do: 110
 
   @doc """
   The longest a connected mount may block before it renders.

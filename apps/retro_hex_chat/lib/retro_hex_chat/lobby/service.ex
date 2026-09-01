@@ -270,8 +270,11 @@ defmodule RetroHexChat.Lobby.Service do
 
       {:error, {:rate_limited, remaining_seconds}} ->
         {:error,
-         dgettext("lobby", "Too many lobbies created. Try again in %{minutes} minutes",
-           minutes: remaining_seconds
+         dngettext(
+           "lobby",
+           "Too many lobbies created. Try again in %{count} second",
+           "Too many lobbies created. Try again in %{count} seconds",
+           remaining_seconds
          )}
     end
   end

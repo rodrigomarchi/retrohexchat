@@ -77,11 +77,6 @@ msgstr ""
 msgid "Target user must be registered"
 msgstr ""
 
-#: lib/retro_hex_chat/lobby/service.ex:273
-#, elixir-autogen, elixir-format
-msgid "Too many lobbies created. Try again in %{minutes} minutes"
-msgstr ""
-
 #: lib/retro_hex_chat/lobby/policy.ex:132
 #, elixir-autogen, elixir-format
 msgid "User not available"
@@ -111,3 +106,10 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "You cannot join your own match"
 msgstr ""
+
+#: lib/retro_hex_chat/lobby/service.ex:273
+#, elixir-autogen, elixir-format
+msgid "Too many lobbies created. Try again in %{count} second"
+msgid_plural "Too many lobbies created. Try again in %{count} seconds"
+msgstr[0] ""
+msgstr[1] ""
