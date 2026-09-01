@@ -74,7 +74,8 @@ defmodule RetroHexChatWeb.App.CallLive do
         notice: nil,
         share_url: nil,
         share_slug: nil,
-        denied: nil
+        denied: nil,
+        surface_left: false
       )
 
     socket = OpenSurfaces.attach(socket, socket.assigns.nickname)
@@ -83,6 +84,9 @@ defmodule RetroHexChatWeb.App.CallLive do
       {:ok, channel_name, user_id} ->
         {:ok,
          socket
+         |> push_event("update_bindings", %{
+           bindings: KeyBindings.to_persistable(KeyBindings.defaults())
+         })
          |> assign(channel_name: channel_name)
          |> subscribe_to_room(channel_name)
          |> Events.mount_call(channel_name, user_id)
@@ -101,10 +105,11 @@ defmodule RetroHexChatWeb.App.CallLive do
           has a height because something above it does. The conference
           shortcuts are bound here because this is where the keystroke lands
           now that the call has a page instead of a window in the chat. --%>
-    <div
-      class="bg-background text-text font-system flex h-screen flex-col"
-      phx-window-keydown="call_keydown"
-    >
+    <div class="bg-background text-text font-system flex h-screen flex-col">
+      <%!-- The same dispatcher the chat mounts, for the same reason: it reads
+            the real keyboard event and pushes the action, which is the only way
+            a Ctrl+Shift binding can be matched at all. --%>
+      <div id="shortcut-dispatcher-hook" phx-hook="ShortcutDispatcherHook" class="hidden"></div>
       <%!-- This tab answers when another tab of this person's asks for it by
             address, which is what lets a second click go to the call they
             already have open instead of opening a second one. --%>
@@ -149,9 +154,10 @@ defmodule RetroHexChatWeb.App.CallLive do
     ~H"""
     <div class="flex h-full min-h-0 flex-col">
       <.call_denied :if={@denied} message={@denied} />
+      <.call_left :if={@surface_left} channel={@channel_name} />
 
       <.group_call_pre_join_panel
-        :if={@group_call_prejoin}
+        :if={@group_call_prejoin && !@surface_left}
         id="group-call-prejoin"
         class="min-h-0 flex-1"
         prejoin={@group_call_prejoin}
@@ -159,7 +165,7 @@ defmodule RetroHexChatWeb.App.CallLive do
         on_cancel="group_call_prejoin_cancel"
       />
 
-      <div :if={@group_call} class="flex h-full min-h-0 flex-col gap-1">
+      <div :if={@group_call && !@surface_left} class="flex h-full min-h-0 flex-col gap-1">
         <%!-- Minting is a deliberate act, not a side effect of opening a call:
               a link per window opened would fill the table with addresses
               nobody ever sent. --%>
@@ -180,6 +186,38 @@ defmodule RetroHexChatWeb.App.CallLive do
         id={GroupCallConfirmDialog.id()}
         scope={:window}
       />
+    </div>
+    """
+  end
+
+  attr :channel, :string, default: nil
+
+  # Leaving a conference leaves its page and stops there. Navigating to the chat
+  # from here would mount a second chat session, and a second chat session ends
+  # the first — so somebody who backed out of the antechamber lost the chat they
+  # had open in another tab and never asked to leave.
+  defp call_left(assigns) do
+    ~H"""
+    <div
+      class="m-2 flex items-start gap-2 border border-border bg-canvas p-2 text-xs shadow-retro-sunken"
+      data-testid="call-left"
+    >
+      <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
+        <Icons.icon_protocol_conference_compact class="h-4 w-4" />
+      </span>
+      <div class="min-w-0 space-y-1">
+        <p>
+          {if @channel,
+            do: dgettext("group_call", "You left the conference in %{channel}.", channel: @channel),
+            else: dgettext("group_call", "You left the conference.")}
+        </p>
+        <%!-- No second way back: `← Chat` is already along the bottom of this
+              window, in both states, and it is the one that knows how to reach
+              a chat tab that is already open instead of opening another. --%>
+        <p class="text-muted-foreground">
+          {dgettext("group_call", "This tab is finished. The room is still at this address.")}
+        </p>
+      </div>
     </div>
     """
   end
@@ -239,16 +277,15 @@ defmodule RetroHexChatWeb.App.CallLive do
 
   # The conference shortcuts were bound on the chat's window while the call was
   # rendered inside it, and the chat forwarded them here. The call has its own
-  # page now, so the keystroke lands here and is resolved against the same
-  # binding table — the one in the domain, never a second copy of it.
-  def handle_event("call_keydown", params, socket) do
-    case KeyBindings.find_action(KeyBindings.defaults(), params) do
-      action when action in @call_actions ->
-        {_halted, socket} = Events.handle_event(Atom.to_string(action), %{}, socket)
-        {:noreply, publish(socket)}
-
-      _other ->
-        {:noreply, socket}
+  # page now, so the keystroke lands here — through the same dispatcher the chat
+  # uses, and for the reason that dispatcher exists at all: LiveView's own
+  # `phx-window-keydown` payload carries the key and **not the modifiers**, so a
+  # binding table keyed on Ctrl+Shift can never match it. Measured in the
+  # browser: `%{"key" => "ArrowUp"}` arrived, and nothing else.
+  def handle_event("shortcut_action", %{"action" => action}, socket) do
+    case safe_action(action) do
+      nil -> {:noreply, socket}
+      resolved -> apply_shortcut(socket, resolved)
     end
   end
 
@@ -256,6 +293,23 @@ defmodule RetroHexChatWeb.App.CallLive do
     {_halted, socket} = Events.handle_event(event, params, socket)
     {:noreply, publish(socket)}
   end
+
+  # Only the conference's own shortcuts act here. Everything else the binding
+  # table knows belongs to the chat and reaches nothing on this page.
+  defp apply_shortcut(socket, action) when action in @call_actions do
+    {_halted, socket} = Events.handle_event(Atom.to_string(action), %{}, socket)
+    {:noreply, publish(socket)}
+  end
+
+  defp apply_shortcut(socket, _action), do: {:noreply, socket}
+
+  defp safe_action(action) when is_binary(action) do
+    String.to_existing_atom(action)
+  rescue
+    ArgumentError -> nil
+  end
+
+  defp safe_action(_action), do: nil
 
   @impl true
   @spec handle_info(term(), Socket.t()) :: {:noreply, Socket.t()}

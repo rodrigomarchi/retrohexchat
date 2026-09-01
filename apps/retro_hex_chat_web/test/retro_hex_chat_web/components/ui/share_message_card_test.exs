@@ -157,6 +157,43 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
     end
   end
 
+  # The door a conference writes is a system line, and a system line takes its
+  # own branch of the row. The card was attached to it and never drawn: every
+  # test here built a `:message` row, so the one shape that actually carries a
+  # card in production was the one shape nothing rendered.
+  describe "the row a session's door actually arrives on" do
+    test "a system message carrying one of our links draws the card" do
+      html =
+        render_row(
+          @base
+          |> Map.put(:type, :system)
+          |> Map.put(:author, "System")
+          |> Map.put(:share_card, %{card() | kind: "call", channel_name: "#retro", count: 2})
+        )
+
+      assert html =~ "share-message-card"
+      assert html =~ ~s(data-share-state="live")
+      assert html =~ "Call in #retro"
+      assert html =~ ~s(data-testid="share-message-enter")
+    end
+
+    test "an ended one keeps the record on the same row" do
+      html =
+        render_row(
+          @base
+          |> Map.put(:type, :system)
+          |> Map.put(:share_card, ended(reason: :over, kind: "call"))
+        )
+
+      assert html =~ ~s(data-share-state="ended")
+      assert html =~ ~s(data-testid="share-message-next")
+    end
+
+    test "a system message with no link of ours draws none" do
+      refute render_row(Map.put(@base, :type, :system)) =~ "share-message-card"
+    end
+  end
+
   defp card do
     %{
       slug: "abcdefghjk",

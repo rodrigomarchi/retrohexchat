@@ -39,6 +39,7 @@ export function createGroupCallPreJoin(el, { pushEvent }) {
       this.form?.addEventListener("submit", this._onSubmit);
       this.retry?.addEventListener("click", this._onRetry);
 
+      this._restore();
       this._pushPreferences();
       this._listDevices();
       this._startPreview();
@@ -190,7 +191,90 @@ export function createGroupCallPreJoin(el, { pushEvent }) {
     },
 
     _pushPreferences() {
-      this.pushEvent(this.config.preferencesEvent, this._preferencesFromForm());
+      const preferences = this._preferencesFromForm();
+      this._remember(preferences);
+      this.pushEvent(this.config.preferencesEvent, preferences);
+    },
+
+    /**
+     * Put the antechamber back the way this person left it.
+     *
+     * Only when the server had nothing to render: a trusted terminal keeps this
+     * choice in its device record and that copy wins. Everyone else has no
+     * record on the server at all, and the choice is per *terminal* anyway —
+     * a camera id only means something on the machine that enumerated it — so
+     * the browser is the honest place for it. It used to survive because the
+     * chat process was still standing when the antechamber closed; the chat
+     * does not host a conference any more, and nothing was left holding it.
+     */
+    _restore() {
+      if (this.el.dataset.prejoinRemembered === "true") return;
+
+      const stored = this._stored();
+      if (!stored) return;
+
+      this._setCheckbox("audio", stored.audio);
+      this._setCheckbox("video", stored.video);
+
+      for (const name of [
+        "layout_mode",
+        "self_view",
+        "audio_input_id",
+        "video_input_id",
+        "audio_output_id",
+      ]) {
+        this._setField(name, stored[name]);
+      }
+    },
+
+    _remember(preferences) {
+      const key = this._storageKey();
+      if (!key) return;
+
+      try {
+        window.localStorage.setItem(key, JSON.stringify(preferences));
+      } catch (error) {
+        // A private window, or site data blocked. The antechamber still works;
+        // it just will not remember, which is the state it was already in.
+        log.debug("[group-call-prejoin] could not remember the choice", error);
+      }
+    },
+
+    _stored() {
+      const key = this._storageKey();
+      if (!key) return null;
+
+      try {
+        const raw = window.localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : null;
+      } catch (error) {
+        log.debug("[group-call-prejoin] could not read the remembered choice", error);
+        return null;
+      }
+    },
+
+    // Keyed by who is at the antechamber: one browser is one terminal, and two
+    // people sharing it must not inherit each other's microphone.
+    _storageKey() {
+      const scope = this.el.dataset.prejoinScope;
+      return scope ? `rhc:group-call:prejoin:${scope}` : null;
+    },
+
+    _setCheckbox(name, value) {
+      if (typeof value !== "boolean") return;
+
+      const checkbox = this.form?.querySelector(
+        `[name="${this.config.formName}[${name}]"][type="checkbox"]`,
+      );
+
+      if (checkbox) checkbox.checked = value;
+    },
+
+    _setField(name, value) {
+      if (typeof value !== "string") return;
+
+      const field = this.form?.querySelector(`[name="${this.config.formName}[${name}]"]`);
+      if (field) field.value = value;
     },
 
     _preferencesFromForm() {

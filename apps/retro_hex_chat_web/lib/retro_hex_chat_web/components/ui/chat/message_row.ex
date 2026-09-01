@@ -58,8 +58,22 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
           source={dgettext("chat", "System")}
           type="system"
+          layout={if Map.get(@msg, :share_card), do: "stacked", else: "auto"}
         >
           * {raw(formatted_content(@msg, @strip_formatting))}
+          <%!-- A session's door is a system line: the server writes the room's
+                address into the channel, and the card under it is the whole
+                reason that line exists. Attaching the card without drawing it
+                here is how the door came to be invisible while every test that
+                built its own `:message` row stayed green. --%>
+          <.share_message_card
+            :if={not @strip_formatting}
+            card={Map.get(@msg, :share_card)}
+            subject={share_subject(Map.get(@msg, :share_card))}
+            enter_path={share_enter_path(Map.get(@msg, :share_card))}
+            share_url={share_url(Map.get(@msg, :share_card))}
+            next_path={share_next_path(Map.get(@msg, :share_card))}
+          />
         </.chat_message>
       <% :p2p_system -> %>
         <.chat_message

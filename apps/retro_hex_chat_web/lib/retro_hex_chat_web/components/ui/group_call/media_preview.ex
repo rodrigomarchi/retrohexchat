@@ -16,6 +16,19 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
   attr :prejoin, :map, default: nil
   attr :device_preferences, :map, required: true
 
+  attr :scope, :string,
+    default: nil,
+    doc: "Whose antechamber this is, so a shared browser does not inherit somebody else's devices"
+
+  attr :remembered, :boolean,
+    default: false,
+    doc: """
+    Whether the server had a stored choice to render. When it did not, the
+    browser's own copy is the only memory there is: the choice is per terminal —
+    device ids only mean anything on the machine that enumerated them — and a
+    terminal that was never trusted has no record on the server.
+    """
+
   @spec media_preview(map()) :: Phoenix.LiveView.Rendered.t()
   def media_preview(assigns) do
     ~H"""
@@ -27,6 +40,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
       data-audio-input-id={device_preference(@device_preferences, :audio_input_id)}
       data-video-input-id={device_preference(@device_preferences, :video_input_id)}
       data-audio-output-id={device_preference(@device_preferences, :audio_output_id)}
+      data-prejoin-scope={@scope}
+      data-prejoin-remembered={to_string(@remembered)}
       class="flex min-h-[170px] flex-col border border-border bg-canvas p-1 shadow-retro-sunken"
       data-testid="group-call-prejoin-preview"
     >

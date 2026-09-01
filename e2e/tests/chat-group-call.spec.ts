@@ -21,12 +21,15 @@
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
  */
-import { test, expect, Page } from "@playwright/test";
+import { test, expect, BrowserContext, Page } from "@playwright/test";
 import { mkdirSync } from "node:fs";
 import { uniqueChannel } from "../helpers/chatUsers";
 import {
   closeGroupCallUsers,
+  conferenceAddress,
+  GroupCallUser,
   newGroupCallUser,
+  openConference,
 } from "../helpers/groupCallUsers";
 
 const groupCallScreenshotDir = "test-results/group-call-visual-polish";
@@ -140,10 +143,6 @@ function groupCallConfirmCancel(page: Page) {
   return page.getByTestId("group-call-confirm-dialog-cancel");
 }
 
-function groupCallTaskbarButton(page: Page) {
-  return page.getByTestId("group-call-taskbar");
-}
-
 function groupCallStatusBar(page: Page) {
   return page.getByTestId("status-bar-group-call");
 }
@@ -152,8 +151,14 @@ function groupCallStatusAnnouncer(page: Page) {
   return page.getByTestId("group-call-status-announcer");
 }
 
+// The channel entry has two shapes and both carry the same summary: a way in
+// while this person has no tab of the call, and a way to that tab once they do.
+// An indicator that only knew the first stopped existing the moment the person
+// did what the test was about.
 function groupCallChannelIndicator(page: Page) {
-  return page.getByTestId("group-call-open");
+  return page
+    .getByTestId("group-call-open")
+    .or(page.getByTestId("group-call-elsewhere"));
 }
 
 function groupCallChannelPopover(page: Page) {
@@ -627,22 +632,31 @@ async function joinChannel(
   await expect(groupCallButton(user.page)).toBeEnabled();
 }
 
+// A conference is a page of its own, reached through the card the chat writes
+// when the room is opened. Everything about being in the call happens on the
+// returned page; the chat keeps only the zone that points at it.
+async function openPrejoin(user: GroupCallUser): Promise<Page> {
+  const call = await openConference(user);
+  await expect(groupCallPrejoinDialog(call)).toBeVisible();
+  return call;
+}
+
 async function joinGroupCall(
-  page: Page,
+  user: GroupCallUser,
   options: { audio?: boolean; video?: boolean } = {},
-) {
-  await groupCallButton(page).click();
-  await expect(groupCallPrejoinDialog(page)).toBeVisible();
+): Promise<Page> {
+  const call = await openPrejoin(user);
 
   if (options.audio !== undefined) {
-    await groupCallPrejoinAudio(page).setChecked(options.audio);
+    await groupCallPrejoinAudio(call).setChecked(options.audio);
   }
 
   if (options.video !== undefined) {
-    await groupCallPrejoinVideo(page).setChecked(options.video);
+    await groupCallPrejoinVideo(call).setChecked(options.video);
   }
 
-  await groupCallPrejoinJoin(page).click();
+  await groupCallPrejoinJoin(call).click();
+  return call;
 }
 
 async function expectGroupCallLayoutStable(page: Page) {
@@ -780,8 +794,10 @@ async function participantMediaEnabled(
   return participantRow(page, nickname).getAttribute(attr);
 }
 
-async function denyUserMedia(page: Page) {
-  await page.evaluate(() => {
+// On the context and not on a page: the antechamber asks for media the moment
+// its page loads, and that page does not exist until the address is opened.
+async function denyUserMedia(ctx: BrowserContext) {
+  await ctx.addInitScript(() => {
     Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
       configurable: true,
       value: async () => {
@@ -827,18 +843,20 @@ test.describe("Channel group calls", () => {
     const channel = uniqueChannel("gcalllayout");
 
     try {
-      await alice.page.setViewportSize({ width: 1280, height: 720 });
       await joinChannel(alice, channel);
 
-      await groupCallButton(alice.page).click();
-      await expect(groupCallPrejoinDialog(alice.page)).toBeVisible();
-      await expectPrejoinCameraPreviewLive(alice.page);
-      await expectPrejoinDialogLayoutStable(alice.page);
+      const aliceCall = await openPrejoin(alice);
+      // Sizing the call's own page, not the chat's: the antechamber is over
+      // there, and a viewport set on the wrong tab measures nothing.
+      await aliceCall.setViewportSize({ width: 1280, height: 720 });
+      await expect(groupCallPrejoinDialog(aliceCall)).toBeVisible();
+      await expectPrejoinCameraPreviewLive(aliceCall);
+      await expectPrejoinDialogLayoutStable(aliceCall);
 
-      await alice.page.setViewportSize({ width: 390, height: 844 });
-      await expect(groupCallPrejoinDialog(alice.page)).toBeVisible();
-      await expectPrejoinCameraPreviewLive(alice.page);
-      await expectPrejoinDialogLayoutStable(alice.page);
+      await aliceCall.setViewportSize({ width: 390, height: 844 });
+      await expect(groupCallPrejoinDialog(aliceCall)).toBeVisible();
+      await expectPrejoinCameraPreviewLive(aliceCall);
+      await expectPrejoinDialogLayoutStable(aliceCall);
     } finally {
       await closeGroupCallUsers([alice]);
     }
@@ -851,100 +869,104 @@ test.describe("Channel group calls", () => {
     const channel = uniqueChannel("gcallvisual-long-room-name");
 
     try {
-      await alice.page.setViewportSize({ width: 1280, height: 720 });
       await joinChannel(alice, channel);
 
-      await joinGroupCall(alice.page, { audio: false, video: false });
-      await expect(groupCallWindow(alice.page)).toBeVisible();
-      await openPeopleSection(alice.page);
-      await expect(groupCallPanel(alice.page)).toContainText(
+      const aliceCall = await joinGroupCall(alice, {
+        audio: false,
+        video: false,
+      });
+      // The size that matters is the call's own page: it is a separate tab, so
+      // resizing the chat would leave every layout assertion below measuring a
+      // window nobody looked at.
+      await aliceCall.setViewportSize({ width: 1280, height: 720 });
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      await openPeopleSection(aliceCall);
+      await expect(groupCallPanel(aliceCall)).toContainText(
         "Waiting for participants",
       );
-      await expect(groupCallPanel(alice.page)).toContainText(
+      await expect(groupCallPanel(aliceCall)).toContainText(
         "Receive-only mode",
       );
 
       for (const reaction of ["heart", "thumbs_up", "clap", "laugh", "wow"]) {
-        await expect(groupCallReactionIcon(alice.page, reaction)).toHaveCount(
-          1,
-        );
-        await expect(groupCallReaction(alice.page, reaction)).not.toContainText(
+        await expect(groupCallReactionIcon(aliceCall, reaction)).toHaveCount(1);
+        await expect(groupCallReaction(aliceCall, reaction)).not.toContainText(
           /👍|👏|😄|✨/,
         );
       }
 
-      const desktopImage = await groupCallWindow(alice.page).screenshot({
+      const desktopImage = await groupCallWindow(aliceCall).screenshot({
         path: groupCallScreenshot("conference-desktop"),
       });
       expect(desktopImage.byteLength).toBeGreaterThan(8_000);
-      await expectGroupCallLayoutStable(alice.page);
-      await expectMediaSessionHeadersStable(alice.page, "group-call-panel");
+      await expectGroupCallLayoutStable(aliceCall);
+      await expectMediaSessionHeadersStable(aliceCall, "group-call-panel");
 
-      await alice.page.setViewportSize({ width: 768, height: 1024 });
-      await expect(groupCallWindow(alice.page)).toBeVisible();
-      await expect(groupCallPanel(alice.page)).toBeVisible();
-      await expectGroupCallLayoutStable(alice.page);
-      await expectMediaSessionHeadersStable(alice.page, "group-call-panel");
+      await aliceCall.setViewportSize({ width: 768, height: 1024 });
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      await expect(groupCallPanel(aliceCall)).toBeVisible();
+      await expectGroupCallLayoutStable(aliceCall);
+      await expectMediaSessionHeadersStable(aliceCall, "group-call-panel");
 
-      await groupCallSection(alice.page, "settings").click();
-      await expect(groupCallSettingsPanel(alice.page)).toBeVisible();
+      await groupCallSection(aliceCall, "settings").click();
+      await expect(groupCallSettingsPanel(aliceCall)).toBeVisible();
       await expect(
-        alice.page.getByTestId("group-call-settings-scroll"),
+        aliceCall.getByTestId("group-call-settings-scroll"),
       ).toHaveAttribute("phx-hook", "PreserveScrollHook");
-      await expect(groupCallSection(alice.page, "settings")).toHaveAttribute(
+      await expect(groupCallSection(aliceCall, "settings")).toHaveAttribute(
         "aria-pressed",
         "true",
       );
 
-      await groupCallSection(alice.page, "people").click();
+      await groupCallSection(aliceCall, "people").click();
       await expect(
-        alice.page.getByTestId("group-call-participants"),
+        aliceCall.getByTestId("group-call-participants"),
       ).toBeVisible();
       await expect(
-        alice.page.getByTestId("group-call-participants"),
+        aliceCall.getByTestId("group-call-participants"),
       ).toHaveAttribute("phx-hook", "PreserveScrollHook");
-      await expect(groupCallSection(alice.page, "people")).toHaveAttribute(
+      await expect(groupCallSection(aliceCall, "people")).toHaveAttribute(
         "aria-pressed",
         "true",
       );
 
-      await groupCallSection(alice.page, "call").click();
-      await expect(groupCallVideoGrid(alice.page)).toBeVisible();
-      await expect(groupCallSection(alice.page, "call")).toHaveAttribute(
+      await groupCallSection(aliceCall, "call").click();
+      await expect(groupCallVideoGrid(aliceCall)).toBeVisible();
+      await expect(groupCallSection(aliceCall, "call")).toHaveAttribute(
         "aria-pressed",
         "true",
       );
 
-      await groupCallSection(alice.page, "stats").click();
-      await expect(groupCallInlineStats(alice.page)).toBeVisible();
-      await expect(groupCallInlineStats(alice.page)).toContainText(
+      await groupCallSection(aliceCall, "stats").click();
+      await expect(groupCallInlineStats(aliceCall)).toBeVisible();
+      await expect(groupCallInlineStats(aliceCall)).toContainText(
         "Browser connection",
       );
-      await expect(groupCallInlineStats(alice.page)).toHaveAttribute(
+      await expect(groupCallInlineStats(aliceCall)).toHaveAttribute(
         "phx-hook",
         "PreserveScrollHook",
       );
-      await expect(groupCallSection(alice.page, "stats")).toHaveAttribute(
+      await expect(groupCallSection(aliceCall, "stats")).toHaveAttribute(
         "aria-pressed",
         "true",
       );
-      await expect(groupCallWindow(alice.page)).toBeVisible();
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
 
-      await alice.page.setViewportSize({ width: 390, height: 844 });
-      await expect(groupCallWindow(alice.page)).toBeVisible();
-      await expect(groupCallPanel(alice.page)).toBeVisible();
-      await expect(groupCallInlineStats(alice.page)).toBeVisible();
-      await expect(groupCallVideoGrid(alice.page)).toBeHidden();
-      await expect(groupCallViewRail(alice.page)).toBeHidden();
-      await expect(groupCallMediaControls(alice.page)).toBeHidden();
-      await expectMobileSectionNavCue(alice.page, "group-call-section-nav");
-      await expectMediaSessionHeadersStable(alice.page, "group-call-panel");
+      await aliceCall.setViewportSize({ width: 390, height: 844 });
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      await expect(groupCallPanel(aliceCall)).toBeVisible();
+      await expect(groupCallInlineStats(aliceCall)).toBeVisible();
+      await expect(groupCallVideoGrid(aliceCall)).toBeHidden();
+      await expect(groupCallViewRail(aliceCall)).toBeHidden();
+      await expect(groupCallMediaControls(aliceCall)).toBeHidden();
+      await expectMobileSectionNavCue(aliceCall, "group-call-section-nav");
+      await expectMediaSessionHeadersStable(aliceCall, "group-call-panel");
 
-      const mobileImage = await groupCallWindow(alice.page).screenshot({
+      const mobileImage = await groupCallWindow(aliceCall).screenshot({
         path: groupCallScreenshot("conference-mobile"),
       });
       expect(mobileImage.byteLength).toBeGreaterThan(8_000);
-      await expectGroupCallLayoutStable(alice.page);
+      await expectGroupCallLayoutStable(aliceCall);
     } finally {
       await closeGroupCallUsers([alice]);
     }
@@ -965,12 +987,11 @@ test.describe("Channel group calls", () => {
         await expect(groupCallButton(user.page)).toBeEnabled();
       }
 
-      await joinGroupCall(alice.page);
-      await expect(groupCallWindow(alice.page)).toBeVisible();
-      await expect(groupCallTaskbarButton(alice.page)).toBeVisible();
-      await expect(groupCallTaskbarButton(alice.page)).toContainText(channel);
-      await expect(groupCallStatusBar(alice.page)).toContainText("Call:");
-      await expect(alice.page.getByTestId("group-call-webrtc")).toBeVisible();
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      await expect(groupCallStatusBar(alice.page)).toContainText(channel);
+      await expect(groupCallStatusBar(alice.page)).toContainText("another tab");
+      await expect(aliceCall.getByTestId("group-call-webrtc")).toBeVisible();
 
       await expect(groupCallChannelIndicator(bob.page)).toBeVisible();
       await expect(groupCallChannelIndicator(bob.page)).toHaveAttribute(
@@ -988,158 +1009,154 @@ test.describe("Channel group calls", () => {
       await groupCallChannelPopoverToggle(bob.page).click();
       await expect(groupCallChannelPopover(bob.page)).toBeVisible();
       await expect(groupCallChannelPopover(bob.page)).toContainText(alice.nick);
-      await expect(groupCallChannelPopover(bob.page)).toContainText("Join");
+      await expect(groupCallChannelPopover(bob.page)).toContainText(
+        "Open in a tab",
+      );
 
-      await joinGroupCall(bob.page);
-      await expect(groupCallWindow(bob.page)).toBeVisible();
-      await expect(groupCallTaskbarButton(bob.page)).toBeVisible();
-      await openPeopleSection(alice.page);
-      await openPeopleSection(bob.page);
-      await expect(groupCallTaskbarButton(bob.page)).toContainText(channel);
-      await expect(groupCallStatusBar(bob.page)).toContainText("Call:");
-      await expect(bob.page.getByTestId("group-call-webrtc")).toBeVisible();
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+
+      await openPeopleSection(aliceCall);
+      await openPeopleSection(bobCall);
+      await expect(groupCallStatusBar(bob.page)).toContainText(channel);
+      await expect(groupCallStatusBar(bob.page)).toContainText("another tab");
+      await expect(bobCall.getByTestId("group-call-webrtc")).toBeVisible();
       await expect(groupCallChannelIndicator(alice.page)).toHaveAttribute(
         "data-participant-count",
         "2",
       );
 
       await expect
-        .poll(() => remoteVideoLive(alice.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(aliceCall), { timeout: 30_000 })
         .toBe(true);
       await expect
-        .poll(() => remoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(bobCall), { timeout: 30_000 })
         .toBe(true);
-      await expectRemoteVideoFramesToAdvance(alice.page, "Alice");
-      await expectRemoteVideoFramesToAdvance(bob.page, "Bob");
-      await expect(groupCallStatusAnnouncer(alice.page)).toContainText(
+      await expectRemoteVideoFramesToAdvance(aliceCall, "Alice");
+      await expectRemoteVideoFramesToAdvance(bobCall, "Bob");
+      await expect(groupCallStatusAnnouncer(aliceCall)).toContainText(
         "Connected",
         { timeout: 20_000 },
       );
-      await expect(groupCallStatusAnnouncer(bob.page)).toContainText(
+      await expect(groupCallStatusAnnouncer(bobCall)).toContainText(
         "Connected",
         { timeout: 20_000 },
       );
 
       await expect(
-        alice.page.getByTestId("group-call-participants"),
+        aliceCall.getByTestId("group-call-participants"),
       ).toContainText(bob.nick);
       await expect(
-        bob.page.getByTestId("group-call-participants"),
+        bobCall.getByTestId("group-call-participants"),
       ).toContainText(alice.nick);
 
-      await groupCallSection(alice.page, "stats").click();
-      await expect(groupCallInlineStats(alice.page)).toBeVisible();
-      await expect(groupCallInlineStats(alice.page)).toContainText(
+      await groupCallSection(aliceCall, "stats").click();
+      await expect(groupCallInlineStats(aliceCall)).toBeVisible();
+      await expect(groupCallInlineStats(aliceCall)).toContainText(
         "Server runtime",
       );
-      await expect(groupCallInlineStats(alice.page)).toContainText(
+      await expect(groupCallInlineStats(aliceCall)).toContainText(
         "Browser connection",
       );
-      await expect(groupCallInlineStats(alice.page)).toContainText(
+      await expect(groupCallInlineStats(aliceCall)).toContainText(
         "Peer connections",
       );
-      await alice.page.setViewportSize({ width: 390, height: 640 });
-      await expect(groupCallInlineStats(alice.page)).toBeVisible();
-      await openGroupCallStatsDetails(alice.page);
+      await aliceCall.setViewportSize({ width: 390, height: 640 });
+      await expect(groupCallInlineStats(aliceCall)).toBeVisible();
+      await openGroupCallStatsDetails(aliceCall);
       await expectScrollStableAcrossStatsTick(
-        alice.page,
+        aliceCall,
         "group-call-inline-stats",
       );
-      await alice.page.setViewportSize({ width: 1280, height: 720 });
-      await expect(groupCallWindow(alice.page)).toBeVisible();
-      await groupCallSection(alice.page, "call").click();
+      await aliceCall.setViewportSize({ width: 1280, height: 720 });
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      await groupCallSection(aliceCall, "call").click();
 
-      // The status bar entry is the way back to a call window that is out of
-      // the way, so it has to be reached with the window out of the way. The
-      // call window is pinned and maximized, and the chat's status bar runs
-      // along the chat window's own bottom edge — underneath it. Minimizing
-      // first is not the test being careful; it is the only state in which this
-      // control is the one a person would reach for.
-      await alice.page
-        .getByTestId("group-call-window")
-        .locator('[data-window-control="minimize"]')
-        .click();
-      await expect(groupCallWindow(alice.page)).toBeHidden();
-      await groupCallStatusBar(alice.page).click();
-      await expect(groupCallWindow(alice.page)).toBeVisible();
+      // The chat's zone is a way *to* the tab holding the call and nothing
+      // else: it carries the room's real address, so a middle-click, a
+      // bookmark and the fallback after no tab answers all land in the same
+      // place.
+      const callPath = await conferenceAddress(alice);
+      await expect(groupCallStatusBar(alice.page)).toHaveAttribute(
+        "href",
+        callPath,
+      );
 
+      await expect.poll(() => localTrackEnabled(aliceCall, "audio")).toBe(true);
+      await expect.poll(() => localTrackEnabled(aliceCall, "video")).toBe(true);
       await expect
-        .poll(() => localTrackEnabled(alice.page, "audio"))
-        .toBe(true);
-      await expect
-        .poll(() => localTrackEnabled(alice.page, "video"))
-        .toBe(true);
-      await expect
-        .poll(() => participantMediaEnabled(bob.page, alice.nick, "audio"))
+        .poll(() => participantMediaEnabled(bobCall, alice.nick, "audio"))
         .toBe("true");
       await expect
-        .poll(() => participantMediaEnabled(bob.page, alice.nick, "video"))
+        .poll(() => participantMediaEnabled(bobCall, alice.nick, "video"))
         .toBe("true");
 
-      await groupCallAudioToggle(alice.page).click();
-      await expect(groupCallAudioToggle(alice.page)).toHaveAttribute(
+      await groupCallAudioToggle(aliceCall).click();
+      await expect(groupCallAudioToggle(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "false",
       );
       await expect
-        .poll(() => localTrackEnabled(alice.page, "audio"))
+        .poll(() => localTrackEnabled(aliceCall, "audio"))
         .toBe(false);
       await expect
-        .poll(() => participantMediaEnabled(bob.page, alice.nick, "audio"), {
+        .poll(() => participantMediaEnabled(bobCall, alice.nick, "audio"), {
           timeout: 10_000,
         })
         .toBe("false");
 
-      await groupCallAudioToggle(alice.page).click();
-      await expect(groupCallAudioToggle(alice.page)).toHaveAttribute(
+      await groupCallAudioToggle(aliceCall).click();
+      await expect(groupCallAudioToggle(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "true",
       );
+      await expect.poll(() => localTrackEnabled(aliceCall, "audio")).toBe(true);
       await expect
-        .poll(() => localTrackEnabled(alice.page, "audio"))
-        .toBe(true);
-      await expect
-        .poll(() => participantMediaEnabled(bob.page, alice.nick, "audio"), {
+        .poll(() => participantMediaEnabled(bobCall, alice.nick, "audio"), {
           timeout: 10_000,
         })
         .toBe("true");
 
-      await groupCallVideoToggle(alice.page).click();
-      await expect(groupCallVideoToggle(alice.page)).toHaveAttribute(
+      await groupCallVideoToggle(aliceCall).click();
+      await expect(groupCallVideoToggle(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "false",
       );
       await expect
-        .poll(() => localTrackEnabled(alice.page, "video"))
+        .poll(() => localTrackEnabled(aliceCall, "video"))
         .toBe(false);
       await expect
-        .poll(() => participantMediaEnabled(bob.page, alice.nick, "video"), {
+        .poll(() => participantMediaEnabled(bobCall, alice.nick, "video"), {
           timeout: 10_000,
         })
         .toBe("false");
 
-      await groupCallVideoToggle(alice.page).click();
-      await expect(groupCallVideoToggle(alice.page)).toHaveAttribute(
+      await groupCallVideoToggle(aliceCall).click();
+      await expect(groupCallVideoToggle(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "true",
       );
+      await expect.poll(() => localTrackEnabled(aliceCall, "video")).toBe(true);
       await expect
-        .poll(() => localTrackEnabled(alice.page, "video"))
-        .toBe(true);
-      await expect
-        .poll(() => participantMediaEnabled(bob.page, alice.nick, "video"), {
+        .poll(() => participantMediaEnabled(bobCall, alice.nick, "video"), {
           timeout: 10_000,
         })
         .toBe("true");
 
-      await groupCallLeave(alice.page).click();
-      await expect(groupCallConfirmLeave(alice.page)).toBeVisible();
-      await groupCallConfirmLeave(alice.page).click();
-      await expect(groupCallWindow(alice.page)).toBeHidden();
-      await expect(groupCallTaskbarButton(alice.page)).toBeHidden();
-      await expect(groupCallStatusBar(alice.page)).toBeHidden();
+      await groupCallLeave(aliceCall).click();
+      await expect(groupCallConfirmLeave(aliceCall)).toBeVisible();
+      await groupCallConfirmLeave(aliceCall).click();
+      // The page says it is finished rather than navigating: mounting the chat
+      // from here would announce a second chat session and end the first. And
+      // the chat drops the zone, because the tab gave up the address with it.
+      await expect(aliceCall.getByTestId("call-left")).toBeVisible({
+        timeout: 15_000,
+      });
+      await expect(groupCallStatusBar(alice.page)).toBeHidden({
+        timeout: 15_000,
+      });
       await expect(
-        bob.page.getByTestId("group-call-participants"),
+        bobCall.getByTestId("group-call-participants"),
       ).not.toContainText(alice.nick, { timeout: 10_000 });
     } finally {
       await closeGroupCallUsers([alice, bob]);
@@ -1158,113 +1175,105 @@ test.describe("Channel group calls", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await joinGroupCall(bob.page);
-      await expect(groupCallWindow(alice.page)).toBeVisible();
-      await expect(groupCallWindow(bob.page)).toBeVisible();
-      await openPeopleSection(bob.page);
+      const aliceCall = await joinGroupCall(alice);
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+      await openPeopleSection(bobCall);
 
       await expect
-        .poll(() => remoteVideoLive(alice.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(aliceCall), { timeout: 30_000 })
         .toBe(true);
       await expect
-        .poll(() => remoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(bobCall), { timeout: 30_000 })
         .toBe(true);
 
-      await expect
-        .poll(() => localTrackEnabled(alice.page, "audio"))
-        .toBe(true);
-      await expect
-        .poll(() => localTrackEnabled(alice.page, "video"))
-        .toBe(true);
+      await expect.poll(() => localTrackEnabled(aliceCall, "audio")).toBe(true);
+      await expect.poll(() => localTrackEnabled(aliceCall, "video")).toBe(true);
 
-      await groupCallLocalTile(alice.page).focus();
-      await expect(groupCallLocalTile(alice.page)).toBeFocused();
-      await pressConferenceShortcut(alice.page, "ArrowUp");
-      await expect(groupCallAudioToggle(alice.page)).toHaveAttribute(
+      await groupCallLocalTile(aliceCall).focus();
+      await expect(groupCallLocalTile(aliceCall)).toBeFocused();
+      await pressConferenceShortcut(aliceCall, "ArrowUp");
+      await expect(groupCallAudioToggle(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "false",
       );
       await expect
-        .poll(() => localTrackEnabled(alice.page, "audio"))
+        .poll(() => localTrackEnabled(aliceCall, "audio"))
         .toBe(false);
       await expect
-        .poll(() => participantMediaEnabled(bob.page, alice.nick, "audio"), {
+        .poll(() => participantMediaEnabled(bobCall, alice.nick, "audio"), {
           timeout: 10_000,
         })
         .toBe("false");
 
-      await withConferenceShortcutHeld(alice.page, "KeyZ", async () => {
+      await withConferenceShortcutHeld(aliceCall, "KeyZ", async () => {
         await expect
-          .poll(() => localTrackEnabled(alice.page, "audio"))
+          .poll(() => localTrackEnabled(aliceCall, "audio"))
           .toBe(true);
         await expect
-          .poll(() => participantMediaEnabled(bob.page, alice.nick, "audio"), {
+          .poll(() => participantMediaEnabled(bobCall, alice.nick, "audio"), {
             timeout: 10_000,
           })
           .toBe("true");
       });
       await expect
-        .poll(() => localTrackEnabled(alice.page, "audio"))
+        .poll(() => localTrackEnabled(aliceCall, "audio"))
         .toBe(false);
       await expect
-        .poll(() => participantMediaEnabled(bob.page, alice.nick, "audio"), {
+        .poll(() => participantMediaEnabled(bobCall, alice.nick, "audio"), {
           timeout: 10_000,
         })
         .toBe("false");
 
-      await pressConferenceShortcut(alice.page, "ArrowUp");
-      await expect(groupCallAudioToggle(alice.page)).toHaveAttribute(
+      await pressConferenceShortcut(aliceCall, "ArrowUp");
+      await expect(groupCallAudioToggle(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "true",
       );
-      await expect
-        .poll(() => localTrackEnabled(alice.page, "audio"))
-        .toBe(true);
+      await expect.poll(() => localTrackEnabled(aliceCall, "audio")).toBe(true);
 
-      await pressConferenceShortcut(alice.page, "ArrowLeft");
-      await expect(groupCallVideoToggle(alice.page)).toHaveAttribute(
+      await pressConferenceShortcut(aliceCall, "ArrowLeft");
+      await expect(groupCallVideoToggle(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "false",
       );
       await expect
-        .poll(() => localTrackEnabled(alice.page, "video"))
+        .poll(() => localTrackEnabled(aliceCall, "video"))
         .toBe(false);
       await expect
-        .poll(() => participantMediaEnabled(bob.page, alice.nick, "video"), {
+        .poll(() => participantMediaEnabled(bobCall, alice.nick, "video"), {
           timeout: 10_000,
         })
         .toBe("false");
 
-      await pressConferenceShortcut(alice.page, "ArrowLeft");
-      await expect(groupCallVideoToggle(alice.page)).toHaveAttribute(
+      await pressConferenceShortcut(aliceCall, "ArrowLeft");
+      await expect(groupCallVideoToggle(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "true",
       );
-      await expect
-        .poll(() => localTrackEnabled(alice.page, "video"))
-        .toBe(true);
+      await expect.poll(() => localTrackEnabled(aliceCall, "video")).toBe(true);
 
-      await pressConferenceShortcut(alice.page, "ArrowRight");
-      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+      await pressConferenceShortcut(aliceCall, "ArrowRight");
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
         "data-layout-mode",
         "grid",
       );
 
-      await pressConferenceShortcut(alice.page, "ArrowDown");
-      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+      await pressConferenceShortcut(aliceCall, "ArrowDown");
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
         "data-layout-mode",
         "focus",
       );
-      await expect(remoteVideoTile(alice.page)).toHaveAttribute(
+      await expect(remoteVideoTile(aliceCall)).toHaveAttribute(
         "data-focused",
         "true",
       );
 
-      await pressConferenceShortcut(alice.page, "KeyQ");
-      await expect(groupCallConfirmLeave(alice.page)).toBeVisible();
-      await groupCallConfirmCancel(alice.page).click();
-      await expect(groupCallWindow(alice.page)).toBeVisible();
+      await pressConferenceShortcut(aliceCall, "KeyQ");
+      await expect(groupCallConfirmLeave(aliceCall)).toBeVisible();
+      await groupCallConfirmCancel(aliceCall).click();
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
     } finally {
       await closeGroupCallUsers([alice, bob]);
     }
@@ -1282,12 +1291,16 @@ test.describe("Channel group calls", () => {
         await joinChannel(user, channel);
       }
 
-      await groupCallButton(alice.page).click();
-      await expect(groupCallPrejoinDialog(alice.page)).toBeVisible();
-      await groupCallPrejoinAudio(alice.page).setChecked(false);
-      await groupCallPrejoinVideo(alice.page).setChecked(false);
-      await groupCallPrejoinCancel(alice.page).click();
-      await expect(groupCallPrejoinDialog(alice.page)).toBeHidden();
+      const cancelled = await openPrejoin(alice);
+      await groupCallPrejoinAudio(cancelled).setChecked(false);
+      await groupCallPrejoinVideo(cancelled).setChecked(false);
+      await groupCallPrejoinCancel(cancelled).click();
+      // Backing out of the antechamber finishes its page, because the
+      // antechamber *is* the page now — and it does not navigate to the chat,
+      // which would end the chat this person already has open.
+      await expect(cancelled.getByTestId("call-left")).toBeVisible({
+        timeout: 15_000,
+      });
 
       // The choice is remembered, and this is the only assertion that says so
       // that is true of where it is remembered. It used to poll localStorage for
@@ -1295,40 +1308,35 @@ test.describe("Channel group calls", () => {
       // preferences moved to the trusted-device record on the server — so the
       // helper returned null forever and the test failed on a feature that
       // works. Ask the screen: it is the same question, and it survives the
-      // answer moving.
-      await groupCallButton(alice.page).click();
-      await expect(groupCallPrejoinDialog(alice.page)).toBeVisible();
-      await expect(groupCallPrejoinAudio(alice.page)).not.toBeChecked();
-      await expect(groupCallPrejoinVideo(alice.page)).not.toBeChecked();
-      await groupCallPrejoinJoin(alice.page).click();
+      // answer moving — including the answer moving to a different page.
+      const aliceCall = await openPrejoin(alice);
+      await expect(groupCallPrejoinAudio(aliceCall)).not.toBeChecked();
+      await expect(groupCallPrejoinVideo(aliceCall)).not.toBeChecked();
+      await groupCallPrejoinJoin(aliceCall).click();
 
-      await expect(groupCallWindow(alice.page)).toBeVisible();
-      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
         "data-audio",
         "false",
       );
-      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
         "data-video",
         "false",
       );
-      await expect
-        .poll(() => localTrackEnabled(alice.page, "audio"))
-        .toBe(null);
-      await expect
-        .poll(() => localTrackEnabled(alice.page, "video"))
-        .toBe(null);
+      await expect.poll(() => localTrackEnabled(aliceCall, "audio")).toBe(null);
+      await expect.poll(() => localTrackEnabled(aliceCall, "video")).toBe(null);
 
-      await joinGroupCall(bob.page);
-      await expect(groupCallWindow(bob.page)).toBeVisible();
-      await openPeopleSection(bob.page);
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+      await openPeopleSection(bobCall);
 
       await expect
-        .poll(() => participantMediaEnabled(bob.page, alice.nick, "audio"), {
+        .poll(() => participantMediaEnabled(bobCall, alice.nick, "audio"), {
           timeout: 10_000,
         })
         .toBe("false");
       await expect
-        .poll(() => participantMediaEnabled(bob.page, alice.nick, "video"), {
+        .poll(() => participantMediaEnabled(bobCall, alice.nick, "video"), {
           timeout: 10_000,
         })
         .toBe("false");
@@ -1345,40 +1353,36 @@ test.describe("Channel group calls", () => {
 
     try {
       await joinChannel(alice, channel);
-      await denyUserMedia(alice.page);
+      await denyUserMedia(alice.ctx);
 
-      await groupCallButton(alice.page).click();
-      await expect(groupCallPrejoinDialog(alice.page)).toBeVisible();
-      await expect(groupCallPrejoinWarning(alice.page)).toBeVisible();
-      await expect(groupCallPrejoinWarning(alice.page)).toContainText(
+      const aliceCall = await openPrejoin(alice);
+      await expect(groupCallPrejoinDialog(aliceCall)).toBeVisible();
+      await expect(groupCallPrejoinWarning(aliceCall)).toBeVisible();
+      await expect(groupCallPrejoinWarning(aliceCall)).toContainText(
         /permission|microphone|camera/i,
       );
 
-      await groupCallPrejoinRetry(alice.page).click();
-      await expect(groupCallPrejoinWarning(alice.page)).toBeVisible();
+      await groupCallPrejoinRetry(aliceCall).click();
+      await expect(groupCallPrejoinWarning(aliceCall)).toBeVisible();
 
-      await groupCallPrejoinAudio(alice.page).setChecked(false);
-      await groupCallPrejoinVideo(alice.page).setChecked(false);
-      await groupCallPrejoinJoin(alice.page).click();
+      await groupCallPrejoinAudio(aliceCall).setChecked(false);
+      await groupCallPrejoinVideo(aliceCall).setChecked(false);
+      await groupCallPrejoinJoin(aliceCall).click();
 
-      await expect(groupCallWindow(alice.page)).toBeVisible();
-      await expect(groupCallPanel(alice.page)).toContainText(
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      await expect(groupCallPanel(aliceCall)).toContainText(
         "Receive-only mode",
       );
-      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
         "data-audio",
         "false",
       );
-      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
         "data-video",
         "false",
       );
-      await expect
-        .poll(() => localTrackEnabled(alice.page, "audio"))
-        .toBe(null);
-      await expect
-        .poll(() => localTrackEnabled(alice.page, "video"))
-        .toBe(null);
+      await expect.poll(() => localTrackEnabled(aliceCall, "audio")).toBe(null);
+      await expect.poll(() => localTrackEnabled(aliceCall, "video")).toBe(null);
     } finally {
       await closeGroupCallUsers([alice]);
     }
@@ -1396,60 +1400,60 @@ test.describe("Channel group calls", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await expect(groupCallWindow(alice.page)).toBeVisible();
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
 
-      await joinGroupCall(bob.page);
-      await expect(groupCallWindow(bob.page)).toBeVisible();
-      await openPeopleSection(alice.page);
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+      await openPeopleSection(aliceCall);
 
       await expect
-        .poll(() => remoteVideoLive(alice.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(aliceCall), { timeout: 30_000 })
         .toBe(true);
-      await expect.poll(() => localTrackEnabled(bob.page, "video")).toBe(true);
+      await expect.poll(() => localTrackEnabled(bobCall, "video")).toBe(true);
       await expect
-        .poll(() => participantMediaEnabled(alice.page, bob.nick, "video"), {
+        .poll(() => participantMediaEnabled(aliceCall, bob.nick, "video"), {
           timeout: 10_000,
         })
         .toBe("true");
 
-      await openParticipantActions(alice.page, bob.nick);
-      await participantCameraModerationButton(alice.page, bob.nick).click();
+      await openParticipantActions(aliceCall, bob.nick);
+      await participantCameraModerationButton(aliceCall, bob.nick).click();
 
       await expect
-        .poll(() => localTrackEnabled(bob.page, "video"), { timeout: 10_000 })
+        .poll(() => localTrackEnabled(bobCall, "video"), { timeout: 10_000 })
         .toBe(false);
       await expect
-        .poll(() => participantMediaEnabled(alice.page, bob.nick, "video"), {
+        .poll(() => participantMediaEnabled(aliceCall, bob.nick, "video"), {
           timeout: 10_000,
         })
         .toBe("false");
       await expect(
-        participantVideoModeratedIndicator(alice.page, bob.nick),
+        participantVideoModeratedIndicator(aliceCall, bob.nick),
       ).toBeVisible();
 
-      await groupCallVideoToggle(bob.page).click();
+      await groupCallVideoToggle(bobCall).click();
       await expect
-        .poll(() => localTrackEnabled(bob.page, "video"), { timeout: 10_000 })
+        .poll(() => localTrackEnabled(bobCall, "video"), { timeout: 10_000 })
         .toBe(false);
-      await expect(groupCallVideoToggle(bob.page)).toHaveAttribute(
+      await expect(groupCallVideoToggle(bobCall)).toHaveAttribute(
         "aria-pressed",
         "false",
       );
 
-      await openParticipantActions(alice.page, bob.nick);
-      await participantCameraModerationButton(alice.page, bob.nick).click();
+      await openParticipantActions(aliceCall, bob.nick);
+      await participantCameraModerationButton(aliceCall, bob.nick).click();
 
       await expect
-        .poll(() => localTrackEnabled(bob.page, "video"), { timeout: 10_000 })
+        .poll(() => localTrackEnabled(bobCall, "video"), { timeout: 10_000 })
         .toBe(true);
       await expect
-        .poll(() => participantMediaEnabled(alice.page, bob.nick, "video"), {
+        .poll(() => participantMediaEnabled(aliceCall, bob.nick, "video"), {
           timeout: 10_000,
         })
         .toBe("true");
       await expect(
-        participantVideoModeratedIndicator(alice.page, bob.nick),
+        participantVideoModeratedIndicator(aliceCall, bob.nick),
       ).toBeHidden();
     } finally {
       await closeGroupCallUsers([alice, bob]);
@@ -1469,76 +1473,72 @@ test.describe("Channel group calls", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await expect(groupCallWindow(alice.page)).toBeVisible();
-      await joinGroupCall(bob.page);
-      await expect(groupCallWindow(bob.page)).toBeVisible();
-      await joinGroupCall(carol.page);
-      await expect(groupCallWindow(carol.page)).toBeVisible();
-      await openPeopleSection(alice.page);
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+      const carolCall = await joinGroupCall(carol);
+      await expect(groupCallWindow(carolCall)).toBeVisible();
+      await openPeopleSection(aliceCall);
 
       await expect
-        .poll(() => remoteLiveVideoCount(alice.page), { timeout: 30_000 })
+        .poll(() => remoteLiveVideoCount(aliceCall), { timeout: 30_000 })
         .toBe(2);
-      await expect
-        .poll(() => localTrackEnabled(alice.page, "audio"))
-        .toBe(true);
-      await expect.poll(() => localTrackEnabled(bob.page, "audio")).toBe(true);
-      await expect
-        .poll(() => localTrackEnabled(carol.page, "audio"))
-        .toBe(true);
+      await expect.poll(() => localTrackEnabled(aliceCall, "audio")).toBe(true);
+      await expect.poll(() => localTrackEnabled(bobCall, "audio")).toBe(true);
+      await expect.poll(() => localTrackEnabled(carolCall, "audio")).toBe(true);
 
-      await groupCallMuteAll(alice.page).click();
+      await groupCallMuteAll(aliceCall).click();
       await expect(
-        alice.page.getByTestId("group-call-confirm-dialog"),
+        aliceCall.getByTestId("group-call-confirm-dialog"),
       ).toContainText("Mute all lower-ranked participants");
-      await groupCallConfirmLeave(alice.page).click();
+      await groupCallConfirmLeave(aliceCall).click();
 
       await expect
-        .poll(() => localTrackEnabled(alice.page, "audio"), { timeout: 10_000 })
+        .poll(() => localTrackEnabled(aliceCall, "audio"), { timeout: 10_000 })
         .toBe(true);
       await expect
-        .poll(() => localTrackEnabled(bob.page, "audio"), { timeout: 10_000 })
+        .poll(() => localTrackEnabled(bobCall, "audio"), { timeout: 10_000 })
         .toBe(false);
       await expect
-        .poll(() => localTrackEnabled(carol.page, "audio"), { timeout: 10_000 })
+        .poll(() => localTrackEnabled(carolCall, "audio"), { timeout: 10_000 })
         .toBe(false);
       await expect
-        .poll(() => participantMediaEnabled(alice.page, bob.nick, "audio"), {
+        .poll(() => participantMediaEnabled(aliceCall, bob.nick, "audio"), {
           timeout: 10_000,
         })
         .toBe("false");
       await expect
-        .poll(() => participantMediaEnabled(alice.page, carol.nick, "audio"), {
+        .poll(() => participantMediaEnabled(aliceCall, carol.nick, "audio"), {
           timeout: 10_000,
         })
         .toBe("false");
 
-      await groupCallAudioToggle(bob.page).click();
+      await groupCallAudioToggle(bobCall).click();
       await expect
-        .poll(() => localTrackEnabled(bob.page, "audio"), { timeout: 10_000 })
+        .poll(() => localTrackEnabled(bobCall, "audio"), { timeout: 10_000 })
         .toBe(false);
 
-      await groupCallCameraOffAll(alice.page).click();
+      await groupCallCameraOffAll(aliceCall).click();
       await expect(
-        alice.page.getByTestId("group-call-confirm-dialog"),
+        aliceCall.getByTestId("group-call-confirm-dialog"),
       ).toContainText("Turn off cameras for all lower-ranked participants");
-      await groupCallConfirmLeave(alice.page).click();
+      await groupCallConfirmLeave(aliceCall).click();
 
       await expect
-        .poll(() => localTrackEnabled(alice.page, "video"), { timeout: 10_000 })
+        .poll(() => localTrackEnabled(aliceCall, "video"), { timeout: 10_000 })
         .toBe(true);
       await expect
-        .poll(() => localTrackEnabled(bob.page, "video"), { timeout: 10_000 })
+        .poll(() => localTrackEnabled(bobCall, "video"), { timeout: 10_000 })
         .toBe(false);
       await expect
-        .poll(() => localTrackEnabled(carol.page, "video"), { timeout: 10_000 })
+        .poll(() => localTrackEnabled(carolCall, "video"), { timeout: 10_000 })
         .toBe(false);
       await expect(
-        participantVideoModeratedIndicator(alice.page, bob.nick),
+        participantVideoModeratedIndicator(aliceCall, bob.nick),
       ).toBeVisible();
       await expect(
-        participantVideoModeratedIndicator(alice.page, carol.nick),
+        participantVideoModeratedIndicator(aliceCall, carol.nick),
       ).toBeVisible();
     } finally {
       await closeGroupCallUsers([alice, bob, carol]);
@@ -1557,54 +1557,54 @@ test.describe("Channel group calls", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await expect(groupCallWindow(alice.page)).toBeVisible();
-      await joinGroupCall(bob.page);
-      await expect(groupCallWindow(bob.page)).toBeVisible();
-      await openPeopleSection(alice.page);
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+      await openPeopleSection(aliceCall);
 
       await expect
-        .poll(() => remoteVideoLive(alice.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(aliceCall), { timeout: 30_000 })
         .toBe(true);
-      await expect.poll(() => localTrackEnabled(bob.page, "audio")).toBe(true);
+      await expect.poll(() => localTrackEnabled(bobCall, "audio")).toBe(true);
 
-      await groupCallMuteAll(alice.page).click();
+      await groupCallMuteAll(aliceCall).click();
       await expect(
-        alice.page.getByTestId("group-call-confirm-dialog"),
+        aliceCall.getByTestId("group-call-confirm-dialog"),
       ).toContainText("Mute all lower-ranked participants");
-      await groupCallConfirmLeave(alice.page).click();
+      await groupCallConfirmLeave(aliceCall).click();
 
       await expect
-        .poll(() => localTrackEnabled(bob.page, "audio"), { timeout: 10_000 })
+        .poll(() => localTrackEnabled(bobCall, "audio"), { timeout: 10_000 })
         .toBe(false);
 
-      await groupCallHandToggle(bob.page).click();
-      await expect(groupCallHandToggle(bob.page)).toHaveAttribute(
+      await groupCallHandToggle(bobCall).click();
+      await expect(groupCallHandToggle(bobCall)).toHaveAttribute(
         "aria-pressed",
         "true",
       );
-      await expect(groupCallRaisedHandQueue(alice.page)).toContainText(
+      await expect(groupCallRaisedHandQueue(aliceCall)).toContainText(
         bob.nick,
         {
           timeout: 10_000,
         },
       );
 
-      await participantAllowSpeakButton(alice.page, bob.nick).first().click();
+      await participantAllowSpeakButton(aliceCall, bob.nick).first().click();
 
       await expect
-        .poll(() => localTrackEnabled(bob.page, "audio"), { timeout: 10_000 })
+        .poll(() => localTrackEnabled(bobCall, "audio"), { timeout: 10_000 })
         .toBe(true);
-      await expect(groupCallHandToggle(bob.page)).toHaveAttribute(
+      await expect(groupCallHandToggle(bobCall)).toHaveAttribute(
         "aria-pressed",
         "false",
       );
       await expect
-        .poll(() => participantMediaEnabled(alice.page, bob.nick, "audio"), {
+        .poll(() => participantMediaEnabled(aliceCall, bob.nick, "audio"), {
           timeout: 10_000,
         })
         .toBe("true");
-      await expect(groupCallRaisedHandQueue(alice.page)).toBeHidden();
+      await expect(groupCallRaisedHandQueue(aliceCall)).toBeHidden();
     } finally {
       await closeGroupCallUsers([alice, bob]);
     }
@@ -1622,13 +1622,13 @@ test.describe("Channel group calls", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await expect(groupCallWindow(alice.page)).toBeVisible();
-      await expect(groupCallLockToggle(alice.page)).toBeVisible();
-      await openPeopleSection(alice.page);
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      await expect(groupCallLockToggle(aliceCall)).toBeVisible();
+      await openPeopleSection(aliceCall);
 
-      await groupCallLockToggle(alice.page).click();
-      await expect(groupCallLockToggle(alice.page)).toHaveAttribute(
+      await groupCallLockToggle(aliceCall).click();
+      await expect(groupCallLockToggle(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "true",
       );
@@ -1639,15 +1639,20 @@ test.describe("Channel group calls", () => {
         { timeout: 10_000 },
       );
 
-      await groupCallButton(bob.page).click();
-      await expect(groupCallPrejoinDialog(bob.page)).toBeVisible();
-      await groupCallPrejoinJoin(bob.page).click();
+      // The refusal moved to the door. A locked room is one of the gates
+      // `/call/:token` applies in `resolve_room`, so Bob is turned away on
+      // arrival — with the policy's own sentence — instead of choosing a
+      // camera first and being refused after.
+      const callPath = await conferenceAddress(bob);
+      const bobCall = await bob.ctx.newPage();
+      await bobCall.goto(callPath);
 
-      await expect(groupCallError(bob.page)).toContainText("locked", {
+      await expect(bobCall.getByTestId("call-denied")).toContainText("locked", {
         timeout: 15_000,
       });
+      await expect(bobCall.getByTestId("group-call-prejoin")).toHaveCount(0);
       await expect(
-        alice.page.getByTestId("group-call-participants"),
+        aliceCall.getByTestId("group-call-participants"),
       ).not.toContainText(bob.nick);
     } finally {
       await closeGroupCallUsers([alice, bob]);
@@ -1666,45 +1671,45 @@ test.describe("Channel group calls", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await expect(groupCallWindow(alice.page)).toBeVisible();
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
 
-      await joinGroupCall(bob.page);
-      await expect(groupCallWindow(bob.page)).toBeVisible();
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
 
       await expect
-        .poll(() => remoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(bobCall), { timeout: 30_000 })
         .toBe(true);
 
-      await groupCallScreenShareToggle(alice.page).click();
-      await expect(groupCallScreenShareToggle(alice.page)).toHaveAttribute(
+      await groupCallScreenShareToggle(aliceCall).click();
+      await expect(groupCallScreenShareToggle(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "true",
       );
-      await expect(groupCallLocalTile(alice.page)).toHaveAttribute(
+      await expect(groupCallLocalTile(aliceCall)).toHaveAttribute(
         "data-track-source",
         "screen",
       );
 
       await expect
         .poll(
-          () => remoteVideoTile(bob.page).getAttribute("data-track-source"),
+          () => remoteVideoTile(bobCall).getAttribute("data-track-source"),
           { timeout: 15_000 },
         )
         .toBe("screen");
-      await expect(remoteVideoTile(bob.page)).toContainText("screen");
+      await expect(remoteVideoTile(bobCall)).toContainText("screen");
       await expect
-        .poll(() => remoteVideoLive(bob.page), { timeout: 10_000 })
+        .poll(() => remoteVideoLive(bobCall), { timeout: 10_000 })
         .toBe(true);
 
-      await groupCallScreenShareToggle(alice.page).click();
-      await expect(groupCallScreenShareToggle(alice.page)).toHaveAttribute(
+      await groupCallScreenShareToggle(aliceCall).click();
+      await expect(groupCallScreenShareToggle(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "false",
       );
       await expect
         .poll(
-          () => remoteVideoTile(bob.page).getAttribute("data-track-source"),
+          () => remoteVideoTile(bobCall).getAttribute("data-track-source"),
           { timeout: 15_000 },
         )
         .toBe("camera");
@@ -1725,64 +1730,64 @@ test.describe("Channel group calls", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await expect(groupCallWindow(alice.page)).toBeVisible();
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
 
-      await joinGroupCall(bob.page);
-      await expect(groupCallWindow(bob.page)).toBeVisible();
-      await openPeopleSection(alice.page);
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+      await openPeopleSection(aliceCall);
 
       await expect
-        .poll(() => remoteVideoLive(alice.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(aliceCall), { timeout: 30_000 })
         .toBe(true);
 
-      await expect(remoteVideoTile(alice.page)).toBeVisible();
+      await expect(remoteVideoTile(aliceCall)).toBeVisible();
       await expect
-        .poll(() => remoteVideoIdentity(alice.page), { timeout: 10_000 })
+        .poll(() => remoteVideoIdentity(aliceCall), { timeout: 10_000 })
         .toMatchObject({ trackReadyState: "live" });
 
-      const initialRemote = await remoteVideoIdentity(alice.page);
+      const initialRemote = await remoteVideoIdentity(aliceCall);
       expect(initialRemote?.videoIdentity).toBeTruthy();
       expect(initialRemote?.streamId).toBeTruthy();
 
-      await groupCallLayoutGrid(alice.page).click();
-      await expect(groupCallLayoutGrid(alice.page)).toHaveAttribute(
+      await groupCallLayoutGrid(aliceCall).click();
+      await expect(groupCallLayoutGrid(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "true",
       );
-      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
         "data-layout-mode",
         "grid",
       );
-      await expect(groupCallVideoGrid(alice.page)).toHaveAttribute(
+      await expect(groupCallVideoGrid(aliceCall)).toHaveAttribute(
         "data-tile-count",
         "2",
       );
       await expect
-        .poll(() => remoteVideoIdentity(alice.page))
+        .poll(() => remoteVideoIdentity(aliceCall))
         .toEqual(initialRemote);
 
-      await groupCallLayoutFocus(alice.page).click();
-      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+      await groupCallLayoutFocus(aliceCall).click();
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
         "data-layout-mode",
         "focus",
       );
-      await expect(groupCallClearFocus(alice.page)).toBeVisible();
-      await expect(remoteVideoTile(alice.page)).toHaveAttribute(
+      await expect(groupCallClearFocus(aliceCall)).toBeVisible();
+      await expect(remoteVideoTile(aliceCall)).toHaveAttribute(
         "data-focused",
         "true",
       );
       await expect
-        .poll(() => remoteVideoIdentity(alice.page))
+        .poll(() => remoteVideoIdentity(aliceCall))
         .toEqual(initialRemote);
 
       const remoteParticipantId = await participantIdForNickname(
-        alice.page,
+        aliceCall,
         bob.nick,
       );
       expect(remoteParticipantId).toBeTruthy();
 
-      await groupCallWebRTC(alice.page).evaluate((el, participantId) => {
+      await groupCallWebRTC(aliceCall).evaluate((el, participantId) => {
         el.dispatchEvent(
           new CustomEvent("group-call:participant-quality", {
             detail: {
@@ -1804,86 +1809,86 @@ test.describe("Channel group calls", () => {
         );
       }, remoteParticipantId);
 
-      await groupCallLayoutSpeaker(alice.page).click();
-      await expect(groupCallLayoutSpeaker(alice.page)).toHaveAttribute(
+      await groupCallLayoutSpeaker(aliceCall).click();
+      await expect(groupCallLayoutSpeaker(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "true",
       );
-      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
         "data-layout-mode",
         "speaker",
       );
-      await expect(remoteVideoTile(alice.page)).toHaveAttribute(
+      await expect(remoteVideoTile(aliceCall)).toHaveAttribute(
         "data-focused",
         "true",
       );
       await expect
-        .poll(() => remoteVideoIdentity(alice.page))
+        .poll(() => remoteVideoIdentity(aliceCall))
         .toEqual(initialRemote);
 
-      await openParticipantActions(alice.page, bob.nick);
-      await participantPinButton(alice.page, bob.nick).click();
-      await openParticipantActions(alice.page, bob.nick);
-      await expect(participantPinButton(alice.page, bob.nick)).toHaveAttribute(
+      await openParticipantActions(aliceCall, bob.nick);
+      await participantPinButton(aliceCall, bob.nick).click();
+      await openParticipantActions(aliceCall, bob.nick);
+      await expect(participantPinButton(aliceCall, bob.nick)).toHaveAttribute(
         "aria-pressed",
         "true",
       );
-      await expect(remoteVideoTile(alice.page)).toHaveAttribute(
+      await expect(remoteVideoTile(aliceCall)).toHaveAttribute(
         "data-pinned",
         "true",
       );
       await expect
-        .poll(() => remoteVideoIdentity(alice.page))
+        .poll(() => remoteVideoIdentity(aliceCall))
         .toEqual(initialRemote);
 
-      await groupCallSelfViewToggle(alice.page).click();
-      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+      await groupCallSelfViewToggle(aliceCall).click();
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
         "data-self-view",
         "pip",
       );
-      await expect(groupCallLocalTile(alice.page)).toBeVisible();
+      await expect(groupCallLocalTile(aliceCall)).toBeVisible();
 
-      await groupCallSelfViewToggle(alice.page).click();
-      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+      await groupCallSelfViewToggle(aliceCall).click();
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
         "data-self-view",
         "hidden",
       );
-      await expect(groupCallLocalTile(alice.page)).toBeHidden();
-      await expect(groupCallVideoGrid(alice.page)).toHaveAttribute(
+      await expect(groupCallLocalTile(aliceCall)).toBeHidden();
+      await expect(groupCallVideoGrid(aliceCall)).toHaveAttribute(
         "data-tile-count",
         "1",
       );
 
-      await groupCallSelfViewToggle(alice.page).click();
-      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+      await groupCallSelfViewToggle(aliceCall).click();
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
         "data-self-view",
         "tile",
       );
-      await expect(groupCallLocalTile(alice.page)).toBeVisible();
+      await expect(groupCallLocalTile(aliceCall)).toBeVisible();
 
       // The participant panel follows the People tab; there is no separate
       // sidebar toggle competing with it.
-      await groupCallSection(alice.page, "call").click();
+      await groupCallSection(aliceCall, "call").click();
       await expect(
-        alice.page.getByTestId("group-call-participants"),
+        aliceCall.getByTestId("group-call-participants"),
       ).toBeHidden();
 
-      await groupCallSection(alice.page, "people").click();
+      await groupCallSection(aliceCall, "people").click();
       await expect(
-        alice.page.getByTestId("group-call-participants"),
+        aliceCall.getByTestId("group-call-participants"),
       ).toBeVisible();
 
-      await groupCallClearFocus(alice.page).click();
-      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+      await groupCallClearFocus(aliceCall).click();
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
         "data-layout-mode",
         "auto",
       );
-      await expect(remoteVideoTile(alice.page)).toHaveAttribute(
+      await expect(remoteVideoTile(aliceCall)).toHaveAttribute(
         "data-focused",
         "false",
       );
       await expect
-        .poll(() => remoteVideoIdentity(alice.page))
+        .poll(() => remoteVideoIdentity(aliceCall))
         .toEqual(initialRemote);
     } finally {
       await closeGroupCallUsers([alice, bob]);
@@ -1902,60 +1907,60 @@ test.describe("Channel group calls", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await expect(groupCallWindow(alice.page)).toBeVisible();
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
 
-      await joinGroupCall(bob.page);
-      await expect(groupCallWindow(bob.page)).toBeVisible();
-      await openPeopleSection(bob.page);
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+      await openPeopleSection(bobCall);
 
       await expect
-        .poll(() => remoteVideoLive(alice.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(aliceCall), { timeout: 30_000 })
         .toBe(true);
 
-      const initialRemote = await remoteVideoIdentity(alice.page);
+      const initialRemote = await remoteVideoIdentity(aliceCall);
       expect(initialRemote?.videoIdentity).toBeTruthy();
       expect(initialRemote?.streamId).toBeTruthy();
 
-      await groupCallMiniToggle(alice.page).click();
-      await expect(groupCallPanel(alice.page)).toHaveAttribute(
+      await groupCallMiniToggle(aliceCall).click();
+      await expect(groupCallPanel(aliceCall)).toHaveAttribute(
         "data-mini-mode",
         "true",
       );
-      await expect(groupCallWebRTC(alice.page)).toBeVisible();
-      await expect(groupCallMiniAudioToggle(alice.page)).toBeVisible();
-      await expect(groupCallMiniVideoToggle(alice.page)).toBeVisible();
-      await expect(groupCallMiniLeave(alice.page)).toBeVisible();
-      await expect(groupCallMiniExpand(alice.page)).toBeVisible();
+      await expect(groupCallWebRTC(aliceCall)).toBeVisible();
+      await expect(groupCallMiniAudioToggle(aliceCall)).toBeVisible();
+      await expect(groupCallMiniVideoToggle(aliceCall)).toBeVisible();
+      await expect(groupCallMiniLeave(aliceCall)).toBeVisible();
+      await expect(groupCallMiniExpand(aliceCall)).toBeVisible();
       await expect
-        .poll(() => remoteVideoIdentity(alice.page))
+        .poll(() => remoteVideoIdentity(aliceCall))
         .toEqual(initialRemote);
 
-      await groupCallMiniAudioToggle(alice.page).click();
-      await expect(groupCallMiniAudioToggle(alice.page)).toHaveAttribute(
+      await groupCallMiniAudioToggle(aliceCall).click();
+      await expect(groupCallMiniAudioToggle(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "false",
       );
       await expect
-        .poll(() => localTrackEnabled(alice.page, "audio"), { timeout: 10_000 })
+        .poll(() => localTrackEnabled(aliceCall, "audio"), { timeout: 10_000 })
         .toBe(false);
       await expect
-        .poll(() => participantMediaEnabled(bob.page, alice.nick, "audio"), {
+        .poll(() => participantMediaEnabled(bobCall, alice.nick, "audio"), {
           timeout: 10_000,
         })
         .toBe("false");
 
-      await groupCallMiniExpand(alice.page).click();
-      await expect(groupCallPanel(alice.page)).toHaveAttribute(
+      await groupCallMiniExpand(aliceCall).click();
+      await expect(groupCallPanel(aliceCall)).toHaveAttribute(
         "data-mini-mode",
         "false",
       );
-      await expect(groupCallAudioToggle(alice.page)).toHaveAttribute(
+      await expect(groupCallAudioToggle(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "false",
       );
       await expect
-        .poll(() => remoteVideoIdentity(alice.page))
+        .poll(() => remoteVideoIdentity(aliceCall))
         .toEqual(initialRemote);
     } finally {
       await closeGroupCallUsers([alice, bob]);
@@ -1970,30 +1975,30 @@ test.describe("Channel group calls", () => {
 
     try {
       await joinChannel(alice, channel);
-      await joinGroupCall(alice.page);
-      await expect(groupCallWindow(alice.page)).toBeVisible();
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
 
-      await groupCallSection(alice.page, "stats").click();
-      await expect(groupCallInlineStats(alice.page)).toBeVisible();
-      await expect(groupCallInlineStats(alice.page)).toContainText(
+      await groupCallSection(aliceCall, "stats").click();
+      await expect(groupCallInlineStats(aliceCall)).toBeVisible();
+      await expect(groupCallInlineStats(aliceCall)).toContainText(
         "Browser connection",
       );
 
-      await groupCallWindow(alice.page)
+      await groupCallWindow(aliceCall)
         .locator('[data-window-control="restore"]')
         .click();
-      await expect(groupCallWindow(alice.page)).not.toHaveClass(
+      await expect(groupCallWindow(aliceCall)).not.toHaveClass(
         /desktop-window--maximized/,
       );
-      await expect(groupCallInlineStats(alice.page)).toBeVisible();
+      await expect(groupCallInlineStats(aliceCall)).toBeVisible();
 
-      await groupCallWindow(alice.page)
+      await groupCallWindow(aliceCall)
         .locator('[data-window-control="maximize"]')
         .click();
-      await expect(groupCallWindow(alice.page)).toHaveClass(
+      await expect(groupCallWindow(aliceCall)).toHaveClass(
         /desktop-window--maximized/,
       );
-      await expect(groupCallInlineStats(alice.page)).toBeVisible();
+      await expect(groupCallInlineStats(aliceCall)).toBeVisible();
     } finally {
       await closeGroupCallUsers([alice]);
     }
@@ -2011,20 +2016,20 @@ test.describe("Channel group calls", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await expect(groupCallWindow(alice.page)).toBeVisible();
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
 
-      await joinGroupCall(bob.page);
-      await expect(groupCallWindow(bob.page)).toBeVisible();
-      await openPeopleSection(bob.page);
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+      await openPeopleSection(bobCall);
 
       await expect
-        .poll(() => remoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(bobCall), { timeout: 30_000 })
         .toBe(true);
-      await expect(participantRow(bob.page, alice.nick)).toBeVisible();
+      await expect(participantRow(bobCall, alice.nick)).toBeVisible();
 
       const participantRowTestId = await participantRow(
-        bob.page,
+        bobCall,
         alice.nick,
       ).getAttribute("data-testid");
       const participantId = participantRowTestId?.replace(
@@ -2033,7 +2038,7 @@ test.describe("Channel group calls", () => {
       );
       if (!participantId) throw new Error("remote participant id missing");
 
-      await groupCallWebRTC(bob.page).evaluate(
+      await groupCallWebRTC(bobCall).evaluate(
         (el, detail) => {
           el.dispatchEvent(
             new CustomEvent("group-call:participant-quality", { detail }),
@@ -2057,27 +2062,27 @@ test.describe("Channel group calls", () => {
         },
       );
 
-      await expect(remoteVideoTile(bob.page)).toHaveAttribute(
+      await expect(remoteVideoTile(bobCall)).toHaveAttribute(
         "data-active-speaker",
         "true",
       );
-      await expect(remoteVideoTile(bob.page)).toHaveAttribute(
+      await expect(remoteVideoTile(bobCall)).toHaveAttribute(
         "data-quality-level",
         "poor",
       );
-      await expect(participantRow(bob.page, alice.nick)).toHaveAttribute(
+      await expect(participantRow(bobCall, alice.nick)).toHaveAttribute(
         "data-active-speaker",
         "true",
       );
-      await expect(participantRow(bob.page, alice.nick)).toHaveAttribute(
+      await expect(participantRow(bobCall, alice.nick)).toHaveAttribute(
         "data-quality-level",
         "poor",
       );
       await expect(
-        bob.page.getByTestId(`group-call-participant-quality-${participantId}`),
+        bobCall.getByTestId(`group-call-participant-quality-${participantId}`),
       ).toHaveAttribute("data-quality-level", "poor");
       await expect(
-        bob.page.getByTestId(
+        bobCall.getByTestId(
           `group-call-participant-active-speaker-${participantId}`,
         ),
       ).toBeVisible();
@@ -2098,27 +2103,27 @@ test.describe("Channel group calls", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await expect(groupCallWindow(alice.page)).toBeVisible();
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
 
-      await joinGroupCall(bob.page);
-      await expect(groupCallWindow(bob.page)).toBeVisible();
-      await openPeopleSection(bob.page);
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+      await openPeopleSection(bobCall);
 
       await expect
-        .poll(() => remoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(bobCall), { timeout: 30_000 })
         .toBe(true);
-      await expect(groupCallLocalTile(alice.page)).toHaveAttribute(
+      await expect(groupCallLocalTile(aliceCall)).toHaveAttribute(
         "data-participant-id",
         /\d+/,
       );
-      await expect(participantRow(bob.page, alice.nick)).toBeVisible();
+      await expect(participantRow(bobCall, alice.nick)).toBeVisible();
       const aliceParticipantId = await participantIdForNickname(
-        bob.page,
+        bobCall,
         alice.nick,
       );
       expect(aliceParticipantId).toBeTruthy();
-      await groupCallWebRTC(bob.page).evaluate((el, participantId) => {
+      await groupCallWebRTC(bobCall).evaluate((el, participantId) => {
         el.dispatchEvent(
           new CustomEvent("group-call:participant-quality", {
             detail: {
@@ -2134,21 +2139,21 @@ test.describe("Channel group calls", () => {
           }),
         );
       }, aliceParticipantId);
-      await expect(remoteVideoTile(bob.page)).toHaveAttribute(
+      await expect(remoteVideoTile(bobCall)).toHaveAttribute(
         "data-participant-id",
         aliceParticipantId || "",
       );
 
-      await groupCallReactionsToggle(alice.page).click();
-      await groupCallReaction(alice.page, "clap").click();
+      await groupCallReactionsToggle(aliceCall).click();
+      await groupCallReaction(aliceCall, "clap").click();
 
-      const remoteReaction = bob.page.locator(
+      const remoteReaction = bobCall.locator(
         '[data-group-call-reaction-bubble][data-reaction="clap"]',
       );
 
       await expect(remoteReaction).toBeVisible();
       await expect(
-        participantReactionBadge(bob.page, alice.nick),
+        participantReactionBadge(bobCall, alice.nick),
       ).toHaveAttribute("data-reaction", "clap");
       await expect(remoteReaction).toHaveCount(0, { timeout: 5_000 });
     } finally {
@@ -2168,18 +2173,18 @@ test.describe("Channel group calls", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await expect(groupCallWindow(alice.page)).toBeVisible();
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
 
-      await joinGroupCall(bob.page);
-      await expect(groupCallWindow(bob.page)).toBeVisible();
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
 
       await expect
-        .poll(() => remoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(bobCall), { timeout: 30_000 })
         .toBe(true);
 
       await expect(async () => {
-        await groupCallWebRTC(bob.page).evaluate((el) => {
+        await groupCallWebRTC(bobCall).evaluate((el) => {
           el.dispatchEvent(
             new CustomEvent("group-call:recovery-state", {
               detail: {
@@ -2193,18 +2198,18 @@ test.describe("Channel group calls", () => {
           );
         });
 
-        await expect(groupCallError(bob.page)).toContainText("Retry", {
+        await expect(groupCallError(bobCall)).toContainText("Retry", {
           timeout: 1_000,
         });
-        await groupCallRetry(bob.page).click({ timeout: 1_000 });
+        await groupCallRetry(bobCall).click({ timeout: 1_000 });
       }).toPass({ timeout: 10_000 });
 
-      await expect(groupCallWarning(bob.page)).toContainText(
+      await expect(groupCallWarning(bobCall)).toContainText(
         "Requesting a fresh media offer",
       );
-      await expect(groupCallWindow(bob.page)).toBeVisible();
+      await expect(groupCallWindow(bobCall)).toBeVisible();
       await expect
-        .poll(() => remoteVideoLive(bob.page), { timeout: 10_000 })
+        .poll(() => remoteVideoLive(bobCall), { timeout: 10_000 })
         .toBe(true);
     } finally {
       await closeGroupCallUsers([alice, bob]);
@@ -2224,148 +2229,140 @@ test.describe("Channel group calls", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await expect(groupCallWindow(alice.page)).toBeVisible();
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
 
-      await joinGroupCall(bob.page);
-      await expect(groupCallWindow(bob.page)).toBeVisible();
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
 
       await expect
-        .poll(() => remoteVideoLive(alice.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(aliceCall), { timeout: 30_000 })
         .toBe(true);
       await expect
-        .poll(() => remoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(bobCall), { timeout: 30_000 })
         .toBe(true);
 
-      await joinGroupCall(carol.page);
-      await expect(groupCallWindow(carol.page)).toBeVisible();
-      await openPeopleSection(bob.page);
-      await openPeopleSection(carol.page);
-      await openPeopleSection(alice.page);
+      const carolCall = await joinGroupCall(carol);
+      await expect(groupCallWindow(carolCall)).toBeVisible();
+      await openPeopleSection(bobCall);
+      await openPeopleSection(carolCall);
+      await openPeopleSection(aliceCall);
 
-      for (const user of [alice, bob, carol]) {
+      for (const call of [aliceCall, bobCall, carolCall]) {
         await expect
-          .poll(() => remoteLiveVideoCount(user.page), { timeout: 30_000 })
+          .poll(() => remoteLiveVideoCount(call), { timeout: 30_000 })
           .toBeGreaterThanOrEqual(2);
       }
 
       await expect(
-        alice.page.getByTestId("group-call-participants"),
+        aliceCall.getByTestId("group-call-participants"),
       ).toContainText(bob.nick);
       await expect(
-        alice.page.getByTestId("group-call-participants"),
+        aliceCall.getByTestId("group-call-participants"),
       ).toContainText(carol.nick);
       await expect(
-        carol.page.getByTestId("group-call-participants"),
+        carolCall.getByTestId("group-call-participants"),
       ).toContainText(alice.nick);
       await expect(
-        carol.page.getByTestId("group-call-participants"),
+        carolCall.getByTestId("group-call-participants"),
       ).toContainText(bob.nick);
 
-      for (const observer of [alice, carol]) {
+      for (const observer of [aliceCall, carolCall]) {
         await expect
-          .poll(() => participantMediaEnabled(observer.page, bob.nick, "audio"))
+          .poll(() => participantMediaEnabled(observer, bob.nick, "audio"))
           .toBe("true");
         await expect
-          .poll(() => participantMediaEnabled(observer.page, bob.nick, "video"))
+          .poll(() => participantMediaEnabled(observer, bob.nick, "video"))
           .toBe("true");
       }
 
-      await groupCallVideoToggle(bob.page).click();
-      await expect(groupCallVideoToggle(bob.page)).toHaveAttribute(
+      await groupCallVideoToggle(bobCall).click();
+      await expect(groupCallVideoToggle(bobCall)).toHaveAttribute(
         "aria-pressed",
         "false",
       );
-      await expect.poll(() => localTrackEnabled(bob.page, "video")).toBe(false);
+      await expect.poll(() => localTrackEnabled(bobCall, "video")).toBe(false);
 
-      for (const observer of [alice, carol]) {
+      for (const observer of [aliceCall, carolCall]) {
         await expect
-          .poll(
-            () => participantMediaEnabled(observer.page, bob.nick, "video"),
-            {
-              timeout: 10_000,
-            },
-          )
+          .poll(() => participantMediaEnabled(observer, bob.nick, "video"), {
+            timeout: 10_000,
+          })
           .toBe("false");
       }
 
-      await groupCallVideoToggle(bob.page).click();
-      await expect(groupCallVideoToggle(bob.page)).toHaveAttribute(
+      await groupCallVideoToggle(bobCall).click();
+      await expect(groupCallVideoToggle(bobCall)).toHaveAttribute(
         "aria-pressed",
         "true",
       );
-      await expect.poll(() => localTrackEnabled(bob.page, "video")).toBe(true);
+      await expect.poll(() => localTrackEnabled(bobCall, "video")).toBe(true);
 
-      for (const observer of [alice, carol]) {
+      for (const observer of [aliceCall, carolCall]) {
         await expect
-          .poll(
-            () => participantMediaEnabled(observer.page, bob.nick, "video"),
-            {
-              timeout: 10_000,
-            },
-          )
+          .poll(() => participantMediaEnabled(observer, bob.nick, "video"), {
+            timeout: 10_000,
+          })
           .toBe("true");
       }
 
-      await groupCallAudioToggle(bob.page).click();
-      await expect(groupCallAudioToggle(bob.page)).toHaveAttribute(
+      await groupCallAudioToggle(bobCall).click();
+      await expect(groupCallAudioToggle(bobCall)).toHaveAttribute(
         "aria-pressed",
         "false",
       );
-      await expect.poll(() => localTrackEnabled(bob.page, "audio")).toBe(false);
+      await expect.poll(() => localTrackEnabled(bobCall, "audio")).toBe(false);
 
-      for (const observer of [alice, carol]) {
+      for (const observer of [aliceCall, carolCall]) {
         await expect
-          .poll(
-            () => participantMediaEnabled(observer.page, bob.nick, "audio"),
-            {
-              timeout: 10_000,
-            },
-          )
+          .poll(() => participantMediaEnabled(observer, bob.nick, "audio"), {
+            timeout: 10_000,
+          })
           .toBe("false");
       }
 
-      await groupCallAudioToggle(bob.page).click();
-      await expect(groupCallAudioToggle(bob.page)).toHaveAttribute(
+      await groupCallAudioToggle(bobCall).click();
+      await expect(groupCallAudioToggle(bobCall)).toHaveAttribute(
         "aria-pressed",
         "true",
       );
-      await expect.poll(() => localTrackEnabled(bob.page, "audio")).toBe(true);
+      await expect.poll(() => localTrackEnabled(bobCall, "audio")).toBe(true);
 
-      for (const observer of [alice, carol]) {
+      for (const observer of [aliceCall, carolCall]) {
         await expect
-          .poll(
-            () => participantMediaEnabled(observer.page, bob.nick, "audio"),
-            {
-              timeout: 10_000,
-            },
-          )
+          .poll(() => participantMediaEnabled(observer, bob.nick, "audio"), {
+            timeout: 10_000,
+          })
           .toBe("true");
       }
 
-      for (const user of [alice, bob, carol]) {
+      for (const call of [aliceCall, bobCall, carolCall]) {
         await expect
-          .poll(() => remoteLiveVideoCount(user.page), { timeout: 30_000 })
+          .poll(() => remoteLiveVideoCount(call), { timeout: 30_000 })
           .toBeGreaterThanOrEqual(2);
       }
 
-      await groupCallLeave(carol.page).click();
-      await expect(groupCallConfirmLeave(carol.page)).toBeVisible();
-      await groupCallConfirmLeave(carol.page).click();
-      await expect(groupCallWindow(carol.page)).toBeHidden();
+      await groupCallLeave(carolCall).click();
+      await expect(groupCallConfirmLeave(carolCall)).toBeVisible();
+      await groupCallConfirmLeave(carolCall).click();
+      // The page says it is finished rather than navigating: going to the chat
+      // from here would announce a second chat session and end the first.
+      await expect(carolCall.getByTestId("call-left")).toBeVisible({
+        timeout: 15_000,
+      });
 
       await expect(
-        alice.page.getByTestId("group-call-participants"),
+        aliceCall.getByTestId("group-call-participants"),
       ).not.toContainText(carol.nick, { timeout: 10_000 });
       await expect(
-        bob.page.getByTestId("group-call-participants"),
+        bobCall.getByTestId("group-call-participants"),
       ).not.toContainText(carol.nick, { timeout: 10_000 });
 
       await expect
-        .poll(() => remoteVideoLive(alice.page), { timeout: 10_000 })
+        .poll(() => remoteVideoLive(aliceCall), { timeout: 10_000 })
         .toBe(true);
       await expect
-        .poll(() => remoteVideoLive(bob.page), { timeout: 10_000 })
+        .poll(() => remoteVideoLive(bobCall), { timeout: 10_000 })
         .toBe(true);
     } finally {
       await closeGroupCallUsers([alice, bob, carol]);
@@ -2384,53 +2381,53 @@ test.describe("Channel group calls", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await expect(groupCallWindow(alice.page)).toBeVisible();
-      await joinGroupCall(bob.page);
-      await expect(groupCallWindow(bob.page)).toBeVisible();
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
 
       await expect
-        .poll(() => remoteVideoLive(alice.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(aliceCall), { timeout: 30_000 })
         .toBe(true);
 
-      await groupCallScreenShareToggle(bob.page).click();
-      await expect(groupCallScreenShareToggle(bob.page)).toHaveAttribute(
+      await groupCallScreenShareToggle(bobCall).click();
+      await expect(groupCallScreenShareToggle(bobCall)).toHaveAttribute(
         "aria-pressed",
         "true",
       );
       await expect
         .poll(
-          () => remoteVideoTile(alice.page).getAttribute("data-track-source"),
+          () => remoteVideoTile(aliceCall).getAttribute("data-track-source"),
           { timeout: 15_000 },
         )
         .toBe("screen");
 
-      await openParticipantActions(alice.page, bob.nick);
-      await participantScreenModerationButton(alice.page, bob.nick).click();
+      await openParticipantActions(aliceCall, bob.nick);
+      await participantScreenModerationButton(aliceCall, bob.nick).click();
 
-      await expect(groupCallScreenShareToggle(bob.page)).toHaveAttribute(
+      await expect(groupCallScreenShareToggle(bobCall)).toHaveAttribute(
         "aria-pressed",
         "false",
         { timeout: 10_000 },
       );
-      await expect(groupCallScreenShareToggle(bob.page)).toBeDisabled();
+      await expect(groupCallScreenShareToggle(bobCall)).toBeDisabled();
       await expect(
-        participantScreenModeratedIndicator(alice.page, bob.nick),
+        participantScreenModeratedIndicator(aliceCall, bob.nick),
       ).toBeVisible();
       await expect
         .poll(
-          () => remoteVideoTile(alice.page).getAttribute("data-track-source"),
+          () => remoteVideoTile(aliceCall).getAttribute("data-track-source"),
           { timeout: 15_000 },
         )
         .not.toBe("screen");
 
-      await openParticipantActions(alice.page, bob.nick);
-      await participantScreenModerationButton(alice.page, bob.nick).click();
-      await expect(groupCallScreenShareToggle(bob.page)).toBeEnabled({
+      await openParticipantActions(aliceCall, bob.nick);
+      await participantScreenModerationButton(aliceCall, bob.nick).click();
+      await expect(groupCallScreenShareToggle(bobCall)).toBeEnabled({
         timeout: 10_000,
       });
       await expect(
-        participantScreenModeratedIndicator(alice.page, bob.nick),
+        participantScreenModeratedIndicator(aliceCall, bob.nick),
       ).toBeHidden();
     } finally {
       await closeGroupCallUsers([alice, bob]);

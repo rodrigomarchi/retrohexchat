@@ -102,18 +102,13 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     :exit, _gone -> :ok
   end
 
-  # The conference shortcuts are bound on the call's own page, so a test presses
-  # the key there and lets the domain's binding table resolve it — the same
-  # table the cheatsheet reads.
-  defp press(view, key) do
-    html =
-      render_keydown(call_view(view), "call_keydown", %{
-        "key" => key,
-        "ctrlKey" => true,
-        "shiftKey" => true,
-        "altKey" => false
-      })
-
+  # The conference shortcuts reach the call's own page through the same global
+  # dispatcher the chat uses: it reads the real keyboard event, resolves it
+  # against the domain's binding table and pushes the action. Only the push is
+  # reproducible here — the resolution is the browser's half, and
+  # `chat-group-call.spec.ts` is where it is actually pressed.
+  defp shortcut(view, action) do
+    html = render_click(call_view(view), "shortcut_action", %{"action" => action})
     flush(view)
     html
   end
@@ -540,7 +535,9 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
       flush(view)
 
       assert group_call_assign(view) == nil
-      assert_redirect(call_view(view), "/chat")
+      # The page says it is finished rather than navigating: mounting the chat
+      # from here would announce a second chat session and end the first.
+      assert has_element?(call_view(view), ~s([data-testid="call-left"]))
     end
 
     test "conference layout controls update focus, self view, and participant rail", %{conn: conn} do
@@ -748,7 +745,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
         }
       })
 
-      press(view, "ArrowUp")
+      shortcut(view, "group_call_toggle_audio")
 
       assert_push_event(call_view(view), "group_call_set_media_state", %{
         audio: false,
@@ -757,7 +754,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
 
       refute group_call_assign(view).media.audio
 
-      press(view, "ArrowLeft")
+      shortcut(view, "group_call_toggle_video")
 
       assert_push_event(call_view(view), "group_call_set_media_state", %{
         audio: false,
@@ -766,11 +763,11 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
 
       refute group_call_assign(view).media.video
 
-      press(view, "ArrowRight")
+      shortcut(view, "group_call_layout_next")
       assert group_call_assign(view).layout.mode == :grid
       assert_push_event(call_view(view), "group_call_layout_state", %{mode: "grid"})
 
-      press(view, "ArrowDown")
+      shortcut(view, "group_call_focus_next")
       call = group_call_assign(view)
       assert call.layout.mode == :focus
       assert call.layout.focused_participant_id == 456
@@ -780,7 +777,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
         focused_participant_id: 456
       })
 
-      press(view, "q")
+      shortcut(view, "group_call_leave")
       assert has_element?(call_view(view), ~s|#group-call-confirm-dialog:not(.hidden)|)
     end
 
@@ -2273,7 +2270,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
              )
 
       assert group_call_assign(target.view) == nil
-      assert_redirect(call_view(target.view), "/chat")
+      assert has_element?(call_view(target.view), ~s([data-testid="call-left"]))
       refute channel in :sys.get_state(target.view.pid).socket.assigns.session.channels
 
       assert {:error, _message} =

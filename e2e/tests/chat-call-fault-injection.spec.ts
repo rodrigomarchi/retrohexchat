@@ -17,7 +17,9 @@ import { uniqueChannel } from "../helpers/chatUsers";
 import { e2eURL, isLocalTarget, localOnlyReason } from "../helpers/env";
 import {
   closeGroupCallUsers,
+  GroupCallUser,
   newGroupCallUser,
+  openConference,
 } from "../helpers/groupCallUsers";
 import {
   closeP2PUsers,
@@ -246,12 +248,16 @@ async function joinChannel(
   await expect(user.page.getByTestId("group-call-open")).toBeEnabled();
 }
 
-async function joinGroupCall(page: Page) {
-  await page.getByTestId("group-call-open").click();
-  await expect(page.getByTestId("group-call-prejoin")).toBeVisible();
-  await page.getByTestId("group-call-prejoin-join").click();
-  await expect(page.getByTestId("group-call-window")).toBeVisible();
-  await expect(page.getByTestId("status-bar-group-call")).toBeVisible();
+// The conference is a page of its own, reached through the card the chat writes
+// when the room is opened. The returned page is where the call actually is; the
+// chat keeps only the zone that points at it.
+async function joinGroupCall(user: GroupCallUser): Promise<Page> {
+  const call = await openConference(user);
+  await expect(call.getByTestId("group-call-prejoin")).toBeVisible();
+  await call.getByTestId("group-call-prejoin-join").click();
+  await expect(call.getByTestId("group-call-panel")).toBeVisible();
+  await expect(user.page.getByTestId("status-bar-group-call")).toBeVisible();
+  return call;
 }
 
 async function reportGroupCallRecoveryFailure(page: Page, reason: string) {
@@ -478,28 +484,34 @@ test.describe("Call fault injection", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await joinGroupCall(bob.page);
+      await joinGroupCall(alice);
+      const bobCall = await joinGroupCall(bob);
 
+      // The whole context goes offline, so the chat and the call lose the
+      // socket together — the chat's banner is the cheapest witness that they
+      // did, and the call is what has to stay actionable through it.
       await bob.ctx.setOffline(true);
       await expect(bob.chat.connectionBanner).toHaveClass(
         /connection-banner--visible/,
         { timeout: 12_000 },
       );
-      await expect(bob.page.getByTestId("group-call-window")).toBeVisible();
-      await expect(bob.page.getByTestId("group-call-leave")).toBeVisible();
+      await expect(bobCall.getByTestId("group-call-window")).toBeVisible();
+      await expect(bobCall.getByTestId("group-call-leave")).toBeVisible();
 
       await bob.ctx.setOffline(false);
       await bob.chat.waitUntilConnected();
 
-      await bob.page.getByTestId("group-call-leave").click();
-      await confirmGroupCallLeave(bob.page);
+      await bobCall.getByTestId("group-call-leave").click();
+      await confirmGroupCallLeave(bobCall);
 
-      await expect(bob.page.getByTestId("status-bar-group-call")).toBeHidden({
-        timeout: 10_000,
+      // The page says it is finished rather than navigating: going to the chat
+      // from here would announce a second chat session and end the first. The
+      // chat drops the zone, because the tab gave up the address with it.
+      await expect(bobCall.getByTestId("call-left")).toBeVisible({
+        timeout: 15_000,
       });
-      await expect(bob.page.getByTestId("group-call-window")).toBeHidden({
-        timeout: 10_000,
+      await expect(bob.page.getByTestId("status-bar-group-call")).toBeHidden({
+        timeout: 15_000,
       });
     } finally {
       await bob.ctx.setOffline(false).catch(() => {});
@@ -520,30 +532,35 @@ test.describe("Call fault injection", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await delayNextRemoteOffer(bob.page);
-      await joinGroupCall(bob.page);
-      await waitForDelayedRemoteOffer(bob.page);
+      const aliceCall = await joinGroupCall(alice);
 
-      await bob.page.reload({ waitUntil: "load" });
-      await bob.chat.waitUntilConnected();
+      // The fault has to be installed on the page that will do the negotiating,
+      // which does not exist until the address is open — so the antechamber is
+      // where it goes, one step before the offer it delays.
+      const bobCall = await openConference(bob);
+      await expect(bobCall.getByTestId("group-call-prejoin")).toBeVisible();
+      await delayNextRemoteOffer(bobCall);
+      await bobCall.getByTestId("group-call-prejoin-join").click();
+      await expect(bobCall.getByTestId("group-call-panel")).toBeVisible();
+      await waitForDelayedRemoteOffer(bobCall);
 
-      await expect(bob.page.getByTestId("status-bar-group-call")).toContainText(
-        "Call:",
-        { timeout: 20_000 },
-      );
-      await expect(bob.page.getByTestId("group-call-window")).toBeVisible({
+      await bobCall.reload({ waitUntil: "load" });
+
+      await expect(bobCall.getByTestId("group-call-window")).toBeVisible({
         timeout: 20_000,
       });
-      await expect(bob.page.getByTestId("group-call-webrtc")).toBeVisible({
+      await expect(bobCall.getByTestId("group-call-webrtc")).toBeVisible({
         timeout: 20_000,
       });
+      // Reopening the address is recovery: the seat is still Bob's, so this is
+      // the room and not the antechamber.
+      await expect(bobCall.getByTestId("group-call-prejoin")).toHaveCount(0);
 
       await expect
-        .poll(() => groupCallRemoteVideoLive(alice.page), { timeout: 30_000 })
+        .poll(() => groupCallRemoteVideoLive(aliceCall), { timeout: 30_000 })
         .toBe(true);
       await expect
-        .poll(() => groupCallRemoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => groupCallRemoteVideoLive(bobCall), { timeout: 30_000 })
         .toBe(true);
     } finally {
       await closeGroupCallUsers([alice, bob]);
@@ -570,43 +587,41 @@ test.describe("Call fault injection", () => {
         await joinChannel(user, channel);
       }
 
-      await joinGroupCall(alice.page);
-      await joinGroupCall(bob.page);
+      const aliceCall = await joinGroupCall(alice);
+      const bobCall = await joinGroupCall(bob);
 
       await expect
-        .poll(() => groupCallRemoteVideoLive(alice.page), { timeout: 30_000 })
+        .poll(() => groupCallRemoteVideoLive(aliceCall), { timeout: 30_000 })
         .toBe(true);
       await expect
-        .poll(() => groupCallRemoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => groupCallRemoteVideoLive(bobCall), { timeout: 30_000 })
         .toBe(true);
 
-      const before = await terminateGroupCallPeer(bob.page);
+      const before = await terminateGroupCallPeer(bobCall);
 
-      await reportGroupCallRecoveryFailure(bob.page, "peer_server_crashed");
-      await expect(bob.page.getByTestId("group-call-error")).toContainText(
+      await reportGroupCallRecoveryFailure(bobCall, "peer_server_crashed");
+      await expect(bobCall.getByTestId("group-call-error")).toContainText(
         "Retry",
         { timeout: 10_000 },
       );
-      await expect(bob.page.getByTestId("group-call-retry")).toBeEnabled();
-      await bob.page.getByTestId("group-call-retry").click();
+      await expect(bobCall.getByTestId("group-call-retry")).toBeEnabled();
+      await bobCall.getByTestId("group-call-retry").click();
 
-      await expect(bob.page.getByTestId("group-call-error")).toBeHidden({
+      await expect(bobCall.getByTestId("group-call-error")).toBeHidden({
         timeout: 20_000,
       });
-      await expect(bob.page.getByTestId("status-bar-group-call")).toContainText(
-        "Call:",
-        { timeout: 20_000 },
-      );
-      await expect(bob.page.getByTestId("group-call-webrtc")).toHaveAttribute(
+      await expect(bobCall.getByTestId("group-call-webrtc")).toHaveAttribute(
         "data-participant-id",
         before.participantId,
         { timeout: 20_000 },
       );
+      // The seat never moved, so the chat still points at the same address.
+      await expect(bob.page.getByTestId("status-bar-group-call")).toBeVisible();
       await expect
-        .poll(() => groupCallRemoteVideoLive(alice.page), { timeout: 30_000 })
+        .poll(() => groupCallRemoteVideoLive(aliceCall), { timeout: 30_000 })
         .toBe(true);
       await expect
-        .poll(() => groupCallRemoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => groupCallRemoteVideoLive(bobCall), { timeout: 30_000 })
         .toBe(true);
     } finally {
       await closeGroupCallUsers([alice, bob]);
@@ -622,16 +637,16 @@ test.describe("Call fault injection", () => {
 
     try {
       await joinChannel(alice, channel);
-      await joinGroupCall(alice.page);
+      const aliceCall = await joinGroupCall(alice);
 
-      await openGroupCallLeaveFromError(alice.page, "ice_failed");
-      await confirmGroupCallLeave(alice.page);
+      await openGroupCallLeaveFromError(aliceCall, "ice_failed");
+      await confirmGroupCallLeave(aliceCall);
 
-      await expect(alice.page.getByTestId("status-bar-group-call")).toBeHidden({
-        timeout: 10_000,
+      await expect(aliceCall.getByTestId("call-left")).toBeVisible({
+        timeout: 15_000,
       });
-      await expect(alice.page.getByTestId("group-call-window")).toBeHidden({
-        timeout: 10_000,
+      await expect(alice.page.getByTestId("status-bar-group-call")).toBeHidden({
+        timeout: 15_000,
       });
     } finally {
       await closeGroupCallUsers([alice]);

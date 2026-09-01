@@ -150,4 +150,183 @@ describe("createGroupCallPreJoin (direct)", () => {
     prejoin.destroy();
     stops.forEach((stop) => expect(stop).toHaveBeenCalled());
   });
+
+  // The choice used to survive because the chat process was still standing when
+  // the antechamber closed. The chat does not host a conference any more, so a
+  // terminal the server has no record of — one that was never trusted — has the
+  // browser as the only memory of it, and device ids only mean anything on the
+  // machine that enumerated them.
+  describe("remembering the choice for this terminal", () => {
+    // jsdom here has no storage of its own, and the controller has to keep
+    // working where a browser refuses it — so the stub is the seam and the
+    // throwing case is tested through it.
+    beforeEach(() => {
+      const store = new Map();
+      Object.defineProperty(window, "localStorage", {
+        configurable: true,
+        value: {
+          getItem: (key) => (store.has(key) ? store.get(key) : null),
+          setItem: (key, value) => store.set(key, String(value)),
+          removeItem: (key) => store.delete(key),
+          clear: () => store.clear(),
+        },
+      });
+    });
+
+    it("writes the choice under the person at the antechamber", async () => {
+      Object.defineProperty(navigator, "mediaDevices", {
+        configurable: true,
+        value: {
+          enumerateDevices: vi.fn(async () => []),
+          getUserMedia: vi.fn(async () => streamFixture()),
+        },
+      });
+
+      const el = formFixture();
+      el.dataset.prejoinScope = "ana";
+      el.dataset.prejoinRemembered = "false";
+
+      const prejoin = createGroupCallPreJoin(el, { pushEvent });
+      prejoin.mount();
+      await flushPromises();
+
+      document.querySelector('[name="group_call_prejoin[audio]"]').checked = false;
+      document.getElementById("group-call-prejoin-form").dispatchEvent(new Event("change"));
+      await flushPromises();
+
+      const stored = JSON.parse(window.localStorage.getItem("rhc:group-call:prejoin:ana"));
+      expect(stored.audio).toBe(false);
+      expect(stored.video).toBe(true);
+
+      prejoin.destroy();
+    });
+
+    it("puts the antechamber back the way it was left", async () => {
+      window.localStorage.setItem(
+        "rhc:group-call:prejoin:ana",
+        JSON.stringify({ audio: false, video: false, audio_input_id: "mic-1" }),
+      );
+
+      Object.defineProperty(navigator, "mediaDevices", {
+        configurable: true,
+        value: {
+          enumerateDevices: vi.fn(async () => []),
+          getUserMedia: vi.fn(async () => streamFixture()),
+        },
+      });
+
+      const el = formFixture();
+      el.dataset.prejoinScope = "ana";
+      el.dataset.prejoinRemembered = "false";
+
+      const prejoin = createGroupCallPreJoin(el, { pushEvent });
+      prejoin.mount();
+      await flushPromises();
+
+      expect(document.querySelector('[name="group_call_prejoin[audio]"]').checked).toBe(false);
+      expect(document.querySelector('[name="group_call_prejoin[video]"]').checked).toBe(false);
+      expect(document.querySelector('[name="group_call_prejoin[audio_input_id]"]').value).toBe(
+        "mic-1",
+      );
+
+      prejoin.destroy();
+    });
+
+    // A trusted terminal keeps this in its device record, and that copy is the
+    // one the server rendered. Overriding it here would let a stale browser
+    // copy beat the record the person actually chose to keep.
+    it("leaves the server's own answer alone", async () => {
+      window.localStorage.setItem(
+        "rhc:group-call:prejoin:ana",
+        JSON.stringify({ audio: false, video: false }),
+      );
+
+      Object.defineProperty(navigator, "mediaDevices", {
+        configurable: true,
+        value: {
+          enumerateDevices: vi.fn(async () => []),
+          getUserMedia: vi.fn(async () => streamFixture()),
+        },
+      });
+
+      const el = formFixture();
+      el.dataset.prejoinScope = "ana";
+      el.dataset.prejoinRemembered = "true";
+
+      const prejoin = createGroupCallPreJoin(el, { pushEvent });
+      prejoin.mount();
+      await flushPromises();
+
+      expect(document.querySelector('[name="group_call_prejoin[audio]"]').checked).toBe(true);
+
+      prejoin.destroy();
+    });
+
+    // Two people sharing one browser must not inherit each other's microphone.
+    it("keeps one person's choice out of another's antechamber", async () => {
+      window.localStorage.setItem(
+        "rhc:group-call:prejoin:ana",
+        JSON.stringify({ audio: false, video: false }),
+      );
+
+      Object.defineProperty(navigator, "mediaDevices", {
+        configurable: true,
+        value: {
+          enumerateDevices: vi.fn(async () => []),
+          getUserMedia: vi.fn(async () => streamFixture()),
+        },
+      });
+
+      const el = formFixture();
+      el.dataset.prejoinScope = "bob";
+      el.dataset.prejoinRemembered = "false";
+
+      const prejoin = createGroupCallPreJoin(el, { pushEvent });
+      prejoin.mount();
+      await flushPromises();
+
+      expect(document.querySelector('[name="group_call_prejoin[audio]"]').checked).toBe(true);
+
+      prejoin.destroy();
+    });
+
+    // A private window throws on read and on write. The antechamber still has
+    // to open — it just does not remember, which is the state it was in before.
+    it("survives a browser that refuses storage", async () => {
+      Object.defineProperty(window, "localStorage", {
+        configurable: true,
+        value: {
+          getItem: () => {
+            throw new Error("denied");
+          },
+          setItem: () => {
+            throw new Error("denied");
+          },
+        },
+      });
+
+      Object.defineProperty(navigator, "mediaDevices", {
+        configurable: true,
+        value: {
+          enumerateDevices: vi.fn(async () => []),
+          getUserMedia: vi.fn(async () => streamFixture()),
+        },
+      });
+
+      const el = formFixture();
+      el.dataset.prejoinScope = "ana";
+      el.dataset.prejoinRemembered = "false";
+
+      const prejoin = createGroupCallPreJoin(el, { pushEvent });
+      prejoin.mount();
+      await flushPromises();
+
+      expect(pushEvent).toHaveBeenCalledWith(
+        "group_call_prejoin_preferences_loaded",
+        expect.objectContaining({ audio: true }),
+      );
+
+      prejoin.destroy();
+    });
+  });
 });

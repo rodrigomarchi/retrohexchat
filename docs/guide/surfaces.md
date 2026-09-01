@@ -52,8 +52,15 @@ enters the story.
 
 Two things this needs and would fail silently without:
 
-- `MessageViewport`'s `@card_types` allowlist must contain `:system`, or the
-  address renders as plain text and no card appears — with no error anywhere.
+- **Two gates, not one, and they live in different modules.**
+  `MessageViewport`'s `@card_types` allowlist decides whether a card is
+  *attached* to the row; the `case` on message type in
+  `Components.UI.MessageRow` decides whether it is *drawn*. `:system` had to be
+  added to both. With only the first, the card was resolved from the database,
+  attached to the row, and thrown away by a branch that renders a bare line —
+  and every ExUnit test built a `:message` row, so the one shape that actually
+  carries a card in production was the one shape nothing rendered. A browser
+  found it in one run; nothing else would have.
 - The chat cannot reach a call it does not host, so a membership the call stood
   on going away (`/part`, a kick, a ban) is published on
   `Topics.channel_calls/1` as `{:channel_membership_lost, …}` and the surface
@@ -273,6 +280,36 @@ is not, so changing one means arguing with the reason rather than the line.
 
 ## 19.7 Traps that cost a day each
 
+- **A surface must never "go back" by navigating to `/chat`.** Mounting the
+  chat announces a chat session, and a chat session announces a takeover — so
+  leaving a surface by navigation ended the chat the person already had open in
+  another tab and never asked to leave. Measured: cancelling the antechamber
+  left the original chat sitting on
+  `/connect?reason=Session ended — logged in from another window`. A surface
+  that is finished says so and gives up its address
+  (`Surfaces.release/2`, so nothing offers "go to the tab you already have" and
+  lands the reader on a dead end); the way back is the `back_to_chat` link,
+  which asks the existing tab to come forward and only navigates when there is
+  none. And there is exactly one of those on screen — it carries a fixed id, so
+  a second copy is a duplicate-id crash in LiveViewTest.
+- **A choice the antechamber remembers had a host, and the host is gone.** The
+  media and device pickers were kept by the chat process while the antechamber
+  was torn down and reopened. With no chat hosting the conference there is
+  nowhere on the server to put them for a terminal that was never trusted — and
+  the choice is per *terminal* anyway, because a camera id only means something
+  on the machine that enumerated it. So the browser keeps it, keyed by who is at
+  the antechamber, and the server's trusted-device record wins whenever it has
+  one (`data-prejoin-remembered`). Every read and write is wrapped: a private
+  window throws, and the antechamber still has to open.
+- **`phx-window-keydown` carries the key and not the modifiers.** Measured in
+  the browser: pressing Ctrl+Shift+ArrowUp delivered `%{"key" => "ArrowUp"}` and
+  nothing else, so any binding table keyed on modifiers matches nothing. That is
+  why this app has `ShortcutDispatcherHook` — it reads the real event, resolves
+  it against the bindings the server pushed as `update_bindings`, and pushes
+  `shortcut_action`. A screen that wants the shortcuts mounts that hook and
+  pushes the bindings; a second `phx-window-keydown` binding looks right in
+  ExUnit, where the test supplies the modifiers by hand, and does nothing at
+  all in a browser.
 - **`live_render` wraps the child in a `div` with no height.** An `h-full`
   inside resolves against *that*, not against the window body. Pass
   `container: {:div, class: "h-full min-h-0"}`. No test sees this; only a

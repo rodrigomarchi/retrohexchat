@@ -774,15 +774,18 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   defp open_prejoin(socket, channel_name, user_id) do
-    preferences =
-      socket.assigns[:group_call_prejoin_preferences] ||
-        load_prejoin_preferences(socket) ||
-        default_prejoin_preferences()
+    stored = socket.assigns[:group_call_prejoin_preferences] || load_prejoin_preferences(socket)
+    preferences = stored || default_prejoin_preferences()
 
     assign(socket,
       group_call_prejoin: %{
         channel_name: channel_name,
         user_id: user_id,
+        # Whose antechamber this is, and whether the server had anything to
+        # render. A terminal that was never trusted has no record here, and the
+        # browser's own copy is then the only memory of the choice there is.
+        scope: socket.assigns[:nickname],
+        remembered: stored != nil,
         media: preferences.media,
         layout: preferences.layout,
         devices: default_devices(),

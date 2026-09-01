@@ -45,7 +45,11 @@ export async function closeGroupCallUsers(users: GroupCallUser[]) {
  * call actually is, and the chat stays the chat.
  */
 export async function openConference(user: GroupCallUser): Promise<Page> {
+  // The way *in*, specifically: a tab of this call that is on its way out
+  // still colours the entry as "in another tab" until the registry catches up,
+  // and clicking that shape would navigate the chat instead of opening a tab.
   const control = user.page.getByTestId("group-call-open");
+  await expect(control).toBeVisible({ timeout: 20_000 });
   await expect(control).toBeEnabled();
 
   if ((await control.getAttribute("href")) === null) {
@@ -64,15 +68,21 @@ export async function openConference(user: GroupCallUser): Promise<Page> {
   return call;
 }
 
-/** The address the chat wrote into the channel, as the card carries it. */
+/**
+ * The room's own address, read from whichever shape the chat is drawing.
+ *
+ * The entry has two of them and the difference is the point: a way *in* while
+ * this person has no tab of the call, and a way *to that tab* once they do.
+ * Both carry the same href, so asking for the address must not care which one
+ * is on screen — a helper that only knew the first shape timed out the moment
+ * the test did the very thing it was testing.
+ */
 export async function conferenceAddress(user: GroupCallUser): Promise<string> {
-  const href = await user.page
+  const entry = user.page
     .getByTestId("group-call-open")
-    .getAttribute("href");
+    .or(user.page.getByTestId("group-call-elsewhere"));
 
-  if (!href) {
-    throw new Error("no conference is open in this channel");
-  }
+  await expect(entry).toHaveAttribute("href", /\/call\//);
 
-  return href;
+  return (await entry.getAttribute("href")) as string;
 }

@@ -64,6 +64,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
                 media={@media}
                 prejoin={@prejoin}
                 device_preferences={@device_preferences}
+                scope={scope(@prejoin)}
+                remembered={remembered?(@prejoin)}
               />
 
               <.inside_now participants={@participants} />
@@ -362,4 +364,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
   defp conference_self_view_label(:pip), do: dgettext("group_call", "PiP")
   defp conference_self_view_label(:hidden), do: dgettext("group_call", "Hidden")
   defp conference_self_view_label(_self_view), do: dgettext("group_call", "Tile")
+  defp scope(%{scope: scope}) when is_binary(scope), do: scope
+  defp scope(_prejoin), do: nil
+
+  defp remembered?(%{remembered: remembered}), do: remembered == true
+  defp remembered?(_prejoin), do: false
 end

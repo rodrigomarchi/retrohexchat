@@ -52,6 +52,15 @@ defmodule RetroHexChat.SurfacesTest do
               :crash -> exit(:boom)
             end
 
+          :release ->
+            :ok = Surfaces.release(nickname)
+            send(test, {:released, self()})
+
+            receive do
+              :close -> :ok
+              :crash -> exit(:boom)
+            end
+
           :close ->
             :ok
 
@@ -62,6 +71,12 @@ defmodule RetroHexChat.SurfacesTest do
 
     assert_receive {:registered, ^pid}, 1_000
     pid
+  end
+
+  defp release(pid) do
+    send(pid, :release)
+    assert_receive {:released, ^pid}, 1_000
+    :ok
   end
 
   defp move(pid, path) do
@@ -137,6 +152,23 @@ defmodule RetroHexChat.SurfacesTest do
 
       assert [%{path: nil}] = Surfaces.list(nickname)
       refute Surfaces.open?(nickname, "/call/one")
+    end
+
+    # A conference somebody has left still has a tab and still counts for the
+    # membership rule, but sending anyone to it would land them on a page that
+    # says only that it is finished.
+    test "a finished surface gives up its address without giving up its tab" do
+      nickname = unique_nick("addr")
+      call = start_surface(nickname, RetroHexChatWeb.App.CallLive, "/call/one")
+
+      assert Surfaces.open?(nickname, "/call/one")
+      assert Surfaces.count(nickname) == 1
+
+      release(call)
+
+      refute Surfaces.open?(nickname, "/call/one")
+      assert Surfaces.count(nickname) == 1
+      assert [%{path: nil}] = Surfaces.list(nickname)
     end
 
     test "the address of somebody else's surface is not this person's" do

@@ -82,6 +82,20 @@ defmodule RetroHexChat.Surfaces do
     GenServer.call(server, {:address, key(nickname), self(), path})
   end
 
+  @doc """
+  Give up the address without giving up the tab.
+
+  A surface that is finished — a conference left, its page still sitting there
+  saying so — is still a process and still counts for the membership rule, but
+  it is no longer the tab anyone should be sent to. Leaving it registered under
+  its old address makes every other screen offer "go to the tab you already
+  have" and land the reader on a dead end.
+  """
+  @spec release(String.t(), GenServer.server()) :: :ok
+  def release(nickname, server \\ __MODULE__) when is_binary(nickname) do
+    GenServer.call(server, {:address, key(nickname), self(), nil})
+  end
+
   @doc "How many surfaces `nickname` has open right now."
   @spec count(String.t(), GenServer.server()) :: non_neg_integer()
   def count(nickname, server \\ __MODULE__) when is_binary(nickname) do
