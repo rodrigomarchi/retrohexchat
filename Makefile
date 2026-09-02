@@ -1,7 +1,7 @@
 .PHONY: help setup deps db.setup db.create db.migrate db.rollback db.reset db.seed \
        db.gen.migration server iex routes \
        test test.stale test.unit test.integration test.liveview test.feature test.all test.cover \
-       e2e e2e.headless e2e.changed e2e.shard e2e.smoke e2e.smoke.connect e2e.smoke.chat e2e.smoke.dialogs e2e.smoke.i18n e2e.smoke.calls e2e.smoke.mobile e2e.smoke.perf e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
+       e2e e2e.headless e2e.full e2e.changed e2e.shard e2e.smoke e2e.smoke.connect e2e.smoke.chat e2e.smoke.dialogs e2e.smoke.i18n e2e.smoke.calls e2e.smoke.mobile e2e.smoke.perf e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
        test.cover.all test.domain test.domain.stale test.web test.web.stale test.failed test.seed test.file test.line \
        test.js test.js.changed test.js.related test.js.watch \
        ci ci.quick ci.changed ci.serial ci.quick.serial ci.partition-profile ci.partition-profile.plan \
@@ -229,6 +229,12 @@ e2e: ## Run Playwright with VISIBLE browser + slow-mo (default; watch the flow)
 e2e.headless: ## Run Playwright headless (faster, no browser window)
 	$(E2E_MIX) assets.build
 	cd e2e && $(E2E_ENV) npm test
+
+e2e.full: ## Run the whole Playwright suite (~36 min) — the release gate `make ci` cannot be
+	@echo "The whole suite, one worker, roughly 36 minutes."
+	@echo "Run it before a deploy: make ci proves the server, this proves the browser."
+	$(E2E_MIX) assets.build
+	cd e2e && $(E2E_ENV) npx playwright test
 
 e2e.changed: ## Run Playwright specs changed since SINCE (default: uncommitted changes)
 	$(E2E_MIX) assets.build

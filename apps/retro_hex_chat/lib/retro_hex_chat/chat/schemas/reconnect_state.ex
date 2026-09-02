@@ -36,5 +36,13 @@ defmodule RetroHexChat.Chat.Schemas.ReconnectState do
       :welcomed_channels
     ])
     |> validate_length(:owner_nickname, max: 16)
+    # A snapshot belongs to a registered nickname, and the owner can stop being
+    # one between deciding to save and saving — a drop, an expiry, a nickname
+    # that was never registered at all. Without this the write raises and takes
+    # the mount with it, which is a much worse outcome than a session that has
+    # to greet somebody twice.
+    |> foreign_key_constraint(:owner_nickname,
+      name: :reconnect_states_owner_nickname_fkey
+    )
   end
 end

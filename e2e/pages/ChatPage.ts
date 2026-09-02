@@ -1007,8 +1007,16 @@ export class ChatPage {
     return this.messageRowByText(text).locator(`[data-nick="${nick}"]`).first();
   }
 
+  // Near the left edge, not the middle. A right-click lands on whatever is
+  // under it, and `detectContextTarget` reads a link or a code span as its own
+  // kind of target — so the centre of a rich message opens the link menu and
+  // the message items are legitimately absent. The row starts with its
+  // timestamp, which belongs to no other menu.
   async openMessageContextMenu(text: string) {
-    await this.messageRowByText(text).click({ button: "right" });
+    await this.messageRowByText(text).click({
+      button: "right",
+      position: { x: 6, y: 6 },
+    });
     await expect(this.chatContextMenu).toBeVisible();
   }
 

@@ -96,12 +96,16 @@ test.describe("Tab unread close/reopen edges", () => {
 
       await bob.chat.closeTab(alice.nick);
       await bob.chat.expectPmTabClosed(alice.nick);
-      // A PM tab is a view, not the conversation: closing it drops only the
-      // tab, leaving the conversation in the sidebar still carrying its unread
-      // — the messages went unread, and reopening below is what clears them.
+      // A PM tab is a view, not the conversation: closing it drops the tab and
+      // leaves the conversation in the sidebar, which is how it comes back.
       // Channels differ because closing their tab parts the channel.
       await expect(bob.chat.pmConversationItem(alice.nick)).toHaveCount(1);
-      await bob.chat.expectPmConversationUnread(alice.nick, true);
+      // Read, and not because it was closed. `close_pm_tab` clears no unread —
+      // entering the conversation does, and the ✕ only exists on the tab that
+      // is on screen, so reaching it means having read what it held. There is
+      // no close that skips the reading: the strip shows one conversation, and
+      // a PM has no dismiss of its own in the sidebar.
+      await bob.chat.expectPmConversationUnread(alice.nick, false);
 
       await bob.chat.sendMessage(`/query ${alice.nick}`);
       await bob.chat.expectTabVisible(alice.nick);

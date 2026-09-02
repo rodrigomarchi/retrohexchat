@@ -17,7 +17,13 @@
  */
 export const PERF_BUDGETS = {
   connect: { navBytes: 115_000, domNodes: 1_060 },
-  help: { navBytes: 300_000, domNodes: 2_900 },
+  // The help index draws a row per topic, so the node count moves when topics
+  // are added — and adding one is mandatory for anything with a control
+  // surface. 2_900 was the count when the number was set; the session-card and
+  // space-card topics took it to 2_917. Raised deliberately, with the room a
+  // few more topics need. A jump this gate should catch is a page that grew
+  // without anyone deciding to grow it, not nine nodes per documented feature.
+  help: { navBytes: 300_000, domNodes: 3_100 },
   // /chat only exists after a connected mount, so its node count is measured
   // once the desktop has rendered rather than off the dead render.
   chat: { domNodes: 4_200 },

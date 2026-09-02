@@ -25,7 +25,11 @@ function harness({ scrollHeight = 1000, clientHeight = 200 } = {}) {
     observe() {}
     disconnect() {}
   };
+  let roCb;
   const ResizeObserver = class {
+    constructor(cb) {
+      roCb = cb;
+    }
     observe() {}
     disconnect() {}
   };
@@ -44,7 +48,12 @@ function harness({ scrollHeight = 1000, clientHeight = 200 } = {}) {
     stream,
     controller: scroller_,
     setPinned: (v) => ioCb([{ isIntersecting: v }]),
+    // No records: the shape the ResizeObserver has, and the one a caller uses
+    // when it is not saying where the content landed.
     fireContentChange: () => moCb(),
+    // The prepended rows finishing their layout, which is a resize and never a
+    // mutation: no new content, the same rows growing.
+    fireResize: () => roCb(),
   };
 }
 
@@ -82,7 +91,55 @@ describe("createViewportScroller", () => {
     h.fireContentChange();
     // still 300px from the bottom
     expect(h.scroller.scrollHeight - h.scroller.scrollTop).toBe(300);
+
     expect(h.controller.pendingPrepend).toBeNull();
+  });
+
+  it("a message arriving after the prepend does not move the reader", () => {
+    const h = harness();
+    h.setPinned(false);
+    h.scroller.scrollTop = 700;
+    h.controller.prepareForPrepend();
+    h.scroller.scrollHeight = 1600;
+    h.fireContentChange();
+    expect(h.scroller.scrollTop).toBe(1300);
+
+    h.scroller.scrollHeight = 1750; // somebody said something
+    h.fireContentChange();
+    expect(h.scroller.scrollTop).toBe(1300);
+  });
+
+  it("keeps the reader's place while the prepended rows are still growing", () => {
+    const h = harness();
+    h.setPinned(false);
+    h.scroller.scrollTop = 700; // 300px from the bottom of 1000
+    h.controller.prepareForPrepend();
+
+    h.scroller.scrollHeight = 1600; // the page of history lands
+    h.fireContentChange();
+
+    // Then it grows into itself: an image decodes, a preview arrives, a long
+    // line rewraps. Each of those is a resize, and the reader stays put.
+    for (const height of [1750, 1944]) {
+      h.scroller.scrollHeight = height;
+      h.fireResize();
+      expect(h.scroller.scrollHeight - h.scroller.scrollTop).toBe(300);
+    }
+  });
+
+  it("reaching the newest message ends a held prepend", () => {
+    const h = harness();
+    h.setPinned(false);
+    h.scroller.scrollTop = 700;
+    h.controller.prepareForPrepend();
+    expect(h.controller.pendingPrepend).toBe(300);
+
+    h.setPinned(true);
+    expect(h.controller.pendingPrepend).toBeNull();
+
+    h.scroller.scrollHeight = 2000;
+    h.fireResize();
+    expect(h.scroller.scrollTop).toBe(2000);
   });
 
   it("reset pins and jumps to the bottom", () => {

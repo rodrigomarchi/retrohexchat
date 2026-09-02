@@ -50,6 +50,12 @@ Mechanics, options, partitions, browser E2E and deploy: [`docs/reference/ci-pipe
 (production). **Never `make deploy-sun` directly: it skips CI validation.**
 Use `make deploy.skip-ci` only when `make ci` just passed on this exact revision.
 
+**`make e2e.full` before a release.** `make ci` proves the server; it never
+opens a browser. The first whole-suite run — 486 specs, ~36 minutes — found
+fourteen real failures behind a green 18/18, among them a dialog that drew a
+channel mode it no longer had and a window that never handed the keyboard over.
+Too slow for the commit gate, cheap once per release.
+
 ## Git
 
 This repository commits straight to `main`, and more than one person pushes in

@@ -167,6 +167,13 @@ TECHNICAL_SOURCE_ALLOWLIST = [
     r"^SUDDEN DEATH$",
     r"^TIEBREAK!$",
     r"^TURBO!$",
+    # ── Not prose: things the help pages print verbatim ──────────
+    # A command example is the thing you type. Translating `/join #lobby`
+    # documents a command the server does not have.
+    r"^/[a-z]",
+    # The same for a bot trigger and a file name.
+    r"^!\S",
+    r"^[\w./#-]+\.(md|json|txt|exs?|js|po|pot|html|heex)$",
 ]
 
 ALLOWLIST = [re.compile(pattern) for pattern in TECHNICAL_SOURCE_ALLOWLIST]

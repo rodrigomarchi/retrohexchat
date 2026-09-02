@@ -14,15 +14,23 @@
  * @module chat/viewport_scroll
  */
 
+// How long the rows that just arrived are allowed to keep growing before the
+// hold is let go. Long enough for an image to decode, short enough that it is
+// over before a reader does anything with the page.
+const PREPEND_SETTLE_MS = 1500;
+
 export function createViewportScroller(scroller, deps = {}) {
   const stream = deps.stream || null;
   const anchor = deps.anchor || null;
   const IO = deps.IntersectionObserver || globalThis.IntersectionObserver;
   const MO = deps.MutationObserver || globalThis.MutationObserver;
   const RO = deps.ResizeObserver || globalThis.ResizeObserver;
+  const now = deps.now || (() => Date.now());
 
   let pinned = true;
   let pendingPrepend = null;
+  let settlingPrepend = null;
+  let settlingUntil = 0;
   let pinnedObserver = null;
   let contentObserver = null;
   let sizeObserver = null;
@@ -34,13 +42,43 @@ export function createViewportScroller(scroller, deps = {}) {
   const distanceFromBottom = () => scroller.scrollHeight - scroller.scrollTop;
 
   // The single place the scroll position is written in response to content.
+  //
+  // A mutation is new content and gets the restore once: that is what tells a
+  // page of history apart from the next thing that lands, and treating a later
+  // batch as more of the same prepend would drag the reader down every time
+  // somebody spoke.
+  //
+  // A resize is not new content — it is the rows that just arrived finishing
+  // their layout: an image decodes, a preview lands, a long line rewraps. Those
+  // land after the restore and used to shove the reader down with them,
+  // measured at 344px on a page of seeded history. So the target survives the
+  // restore for a moment, and only the resize path may re-apply it.
   const settle = () => {
     if (pendingPrepend !== null) {
       scroller.scrollTop = scroller.scrollHeight - pendingPrepend;
+      settlingPrepend = pendingPrepend;
+      settlingUntil = now() + PREPEND_SETTLE_MS;
       pendingPrepend = null;
       return;
     }
     if (pinned) scrollToBottom();
+  };
+
+  // The prepended rows growing into their final height. Never a new message:
+  // those arrive as mutations.
+  const resettle = () => {
+    if (settlingPrepend !== null && now() < settlingUntil) {
+      scroller.scrollTop = scroller.scrollHeight - settlingPrepend;
+      return;
+    }
+
+    settlingPrepend = null;
+    if (pinned) scrollToBottom();
+  };
+
+  const releasePrepend = () => {
+    pendingPrepend = null;
+    settlingPrepend = null;
   };
 
   const controller = {
@@ -49,7 +87,11 @@ export function createViewportScroller(scroller, deps = {}) {
 
       if (typeof IO === "function" && anchor) {
         pinnedObserver = new IO(
-          (entries) => entries.forEach((entry) => (pinned = entry.isIntersecting)),
+          (entries) =>
+            entries.forEach((entry) => {
+              pinned = entry.isIntersecting;
+              if (pinned) releasePrepend();
+            }),
           { root: scroller, threshold: 0 },
         );
         pinnedObserver.observe(anchor);
@@ -61,7 +103,7 @@ export function createViewportScroller(scroller, deps = {}) {
         contentObserver.observe(target, { childList: true });
       }
       if (typeof RO === "function") {
-        sizeObserver = new RO(() => settle());
+        sizeObserver = new RO(() => resettle());
         sizeObserver.observe(target);
       }
     },
@@ -73,11 +115,12 @@ export function createViewportScroller(scroller, deps = {}) {
     /** prepend_start: hold the distance from the bottom across the prepend. */
     prepareForPrepend() {
       pendingPrepend = distanceFromBottom();
+      settlingPrepend = null;
     },
 
     /** chat_scroll_reset: a rebuilt list looks like a prepend to an observer. */
     reset() {
-      pendingPrepend = null;
+      releasePrepend();
       pinned = true;
       scrollToBottom();
     },
@@ -91,7 +134,7 @@ export function createViewportScroller(scroller, deps = {}) {
     /** clear_chat_messages: empty the stream and pin. */
     clearMessages() {
       if (stream) stream.replaceChildren();
-      pendingPrepend = null;
+      releasePrepend();
       pinned = true;
     },
 

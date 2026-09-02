@@ -70,6 +70,13 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
+// The bot goes, and so does the channel it lived in. These tests all sign in as
+// the one admin account, and joining a channel while identified puts it on that
+// account's auto-join list — so a channel left behind is re-joined by every
+// later login, in this run and in every run after it. The admin was carrying
+// nine of them by the time this was written, and a mount that re-joins nine
+// channels is how a `/bot` reply ends up in a conversation the test is not
+// looking at.
 async function cleanupBot(admin: TestUser, botName: string, channel?: string) {
   if (channel) {
     await admin.chat
@@ -78,6 +85,11 @@ async function cleanupBot(admin: TestUser, botName: string, channel?: string) {
   }
 
   await admin.chat.sendMessage(`/bot destroy ${botName}`).catch(() => {});
+
+  if (channel) {
+    await admin.chat.sendMessage(`/autojoin remove ${channel}`).catch(() => {});
+    await admin.chat.sendMessage(`/part ${channel}`).catch(() => {});
+  }
 }
 
 async function createBot(admin: TestUser, botName: string) {

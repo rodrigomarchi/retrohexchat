@@ -164,7 +164,16 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
     previous_nickname = Map.get(socket.assigns.flash, "nick_changed_from")
     pre_identified = http_session["chat_pre_identified"] == true
-    backend_reconnect_state = load_reconnect_state(nickname, pre_identified)
+    # The cookie is not the only proof of identity, and it was the only one this
+    # asked. `chat_pre_identified` is set by a short-token or trusted-device
+    # login; somebody who registered, or typed `/ns identify` inside the chat,
+    # never gets it — so every reload replayed their whole login sequence, sound
+    # and MOTD and greeting included. NickServ knows who is identified right
+    # now, which is the same predicate `maybe_start_nickserv_timer/4` trusts a
+    # few lines below. It is still a guard: a guest who has not identified
+    # cannot pick up the snapshot a registered owner left behind.
+    identified? = pre_identified or NickServ.identified?(nickname)
+    backend_reconnect_state = load_reconnect_state(nickname, identified?)
     reconnecting? = backend_reconnect_state != nil
     join_channel = params["join"]
 
@@ -196,6 +205,15 @@ defmodule RetroHexChatWeb.App.ChatLive do
       |> maybe_broadcast_nick_changed(previous_nickname, nickname)
       |> ChatLive.Helpers.maybe_start_nickserv_timer(nickname, pre_identified, reconnecting?)
       |> maybe_restore_reconnect_state(backend_reconnect_state)
+      # After the restore, never before it. The snapshot is what tells the
+      # *next* mount this session already happened, and until here there was
+      # nothing to write it: the channel join runs before identity is
+      # established, so the save inside it saw `identified: false` and skipped —
+      # somebody who joined, read and reloaded had no snapshot at all, and got
+      # the whole login sequence again for their trouble. Writing it before the
+      # restore would be worse than not writing it: it would overwrite the
+      # conversation they were in with the one the mount happened to open.
+      |> ChatLive.Helpers.push_reconnect_state()
       |> ChatLive.Helpers.maybe_trigger_perform()
       |> ChatLive.P2PSessionEvents.rehydrate()
       |> ChatLive.GroupCallEvents.rehydrate()

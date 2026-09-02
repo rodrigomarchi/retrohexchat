@@ -153,7 +153,9 @@ test.describe("RSS link preview visual rendering", () => {
 
     try {
       await user.chat.sendMessage(`/join ${channel}`);
-      await user.chat.expectTabVisible(channel);
+      // The tab, not the sidebar row: at phone width the conversations panel
+      // starts collapsed, so the row is in the document and hidden. Being in
+      // the channel is what this needs, and the tab says so at every width.
       await user.chat.expectTabSelected(channel);
       await user.page.route(BBC_RSS_PREVIEW.imageUrl, async (route) => {
         await delay(IMAGE_RESPONSE_DELAY_MS);
