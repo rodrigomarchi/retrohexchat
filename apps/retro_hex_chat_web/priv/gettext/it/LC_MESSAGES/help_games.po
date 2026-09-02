@@ -4154,18 +4154,6 @@ msgstr ""
 msgid "Retro Games"
 msgstr "Giochi retro"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Retro Games are browser-native RetroHexChat games that can run inside the chat desktop without a peer session. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants use the same game engine foundation as P2P play with an AI controller on the remote side."
-msgstr ""
-"I Giochi retro sono giochi RetroHexChat nativi del browser che girano nel "
-"desktop della chat senza una sessione peer. Hex Pong, Light Trails, le "
-"varianti di Star Duel, Block Breakers, Hex Warlords, le varianti di Hex "
-"Raid, le varianti di Hex Outlaw, le varianti di Hex Tennis, le varianti di "
-"Hex Invaders, le varianti di Hex Enduro, le varianti di Hex Skiing, le "
-"varianti di Hex Frost e le varianti di Hex Hockey usano la stessa base "
-"engine del gioco P2P con un controller IA sul lato remoto."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:113
 #, elixir-autogen, elixir-format
 msgid "Hex Boxing"
@@ -4216,30 +4204,10 @@ msgstr "Pixel Tanks"
 msgid "Pixel Tanks also runs there with an AI tank on the remote side."
 msgstr "Pixel Tanks funziona anche lì con un carro IA sul lato remoto."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:25
-#, elixir-autogen, elixir-format
-msgid "Choose a game icon in the Retro Games window."
-msgstr "Scegli un'icona di gioco nella finestra Giochi retro."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
-#, elixir-autogen, elixir-format
-msgid "Double-click the Games desktop folder and choose Retro Games, or open Start ▸ Games and choose Retro Games."
-msgstr "Fai doppio clic sulla cartella Giochi del desktop e scegli Retro Games, oppure apri Start ▸ Giochi e scegli Retro Games."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "A game tab and the chat run side by side. Opening one does not close the other, and closing the game tab leaves the chat untouched."
 msgstr "Una scheda di gioco e la chat funzionano affiancate. Aprire una non chiude l'altra, e chiudere la scheda del gioco lascia la chat intatta."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
-#, elixir-autogen, elixir-format
-msgid "Every game also has an address of its own: /play opens the library in a browser tab, and /play/hex_pong opens that game directly. Send someone the address and they land on the same screen."
-msgstr "Ogni gioco ha anche un indirizzo proprio: /play apre la libreria in una scheda del browser e /play/hex_pong apre direttamente quel gioco. Manda l'indirizzo a qualcuno e arriverà sulla stessa schermata."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "Playing in Its Own Tab"
-msgstr "Giocare in una scheda propria"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:53
 #, elixir-autogen, elixir-format
@@ -4341,3 +4309,32 @@ msgstr "Perché un link della partita ha smesso di funzionare"
 #, elixir-autogen, elixir-format
 msgid "Cancel, in the match room, closes it and kills its link immediately — it is there for the host, and only until the match starts. To play again, open the game and press Play with someone for a new room and a new address."
 msgstr "Annulla, dentro la stanza della partita, la chiude e uccide il suo link all'istante: è dell'host, ed è lì solo finché la partita non inizia. Per giocare di nuovo, apri il gioco e premi Gioca con qualcuno per una stanza nuova e un indirizzo nuovo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Choose a game icon in the library."
+msgstr "Scegli un'icona di gioco nella libreria."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Double-click the Games desktop folder and choose Retro Games, or open Start ▸ Games and choose Retro Games. Either one opens the library in a browser tab of its own, and the chat stays exactly where it was."
+msgstr "Fai doppio clic sulla cartella Giochi del desktop e scegli Retro Games, oppure apri Start ▸ Giochi e scegli Retro Games. In entrambi i casi la libreria si apre in una scheda del browser tutta sua, e la chat resta esattamente dov'era."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Every game has an address of its own: /play opens the library and /play/hex_pong opens that game directly. Send someone the address and they land on the same screen."
+msgstr "Ogni gioco ha un indirizzo proprio: /play apre la libreria e /play/hex_pong apre direttamente quel gioco. Manda l'indirizzo a qualcuno e arriverà sulla stessa schermata."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Retro Games are browser-native RetroHexChat games you play without a peer session. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants use the same game engine foundation as P2P play with an AI controller on the remote side."
+msgstr "I Giochi retro sono giochi RetroHexChat nativi del browser a cui giochi senza una sessione peer. Hex Pong, Light Trails, le varianti di Star Duel, Block Breakers, Hex Warlords, le varianti di Hex Raid, le varianti di Hex Outlaw, le varianti di Hex Tennis, le varianti di Hex Invaders, le varianti di Hex Enduro, le varianti di Hex Skiing, le varianti di Hex Frost e le varianti di Hex Hockey usano la stessa base engine del gioco P2P con un controller IA sul lato remoto."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "The address is the door"
+msgstr "L'indirizzo è la porta"

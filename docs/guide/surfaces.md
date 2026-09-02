@@ -12,28 +12,26 @@ stable — `§19` still means this file.
 ## 19.1 What a surface is
 
 Everything used to fit in one tab: `/chat` mounted one LiveView, a Win98 desktop
-and N windows. Four things now have an address of their own instead — a
-conference, a space, a P2P session and a match:
+and N windows. Five things have an address of their own instead, and **none of
+them has a mount inside the chat**:
 
 | Surface | Own address | Module |
 |---|---|---|
-| conference | `/call/:token` | `App.CallLive` — **one mount only** |
-| P2P session | `/p2p/:token` | `App.P2PLive` — **one mount only** |
+| conference | `/call/:token` | `App.CallLive` |
+| P2P session | `/p2p/:token` | `App.P2PLive` |
 | match | `/play/:game/:token` | `App.P2PLive`, opened at its game |
-| space | `/space/:slug` | `App.SpaceLive` — **one mount only** |
+| space | `/space/:slug` | `App.SpaceLive` |
 | solo games | `/play`, `/play/:game` | `App.PlayLive` |
 | arcade | `/play/arcade/:game` | a redirect, not a LiveView |
 
-Root mount goes through the router. **The conference, the P2P session and the
-space have no nested mount any more** — each is reached only at its address.
-What is left of the nested mode is the games, whose window is a catalogue rather
-than a room. A nested `live_render` runs in its own process on the same socket,
-so the embedded mode gets no event loop and no bundle of its own — which is
-exactly the trade the embedded mode is accepting.
+One module, one mount, one route each. There is no `"embedded" => true` and no
+`embedded?` branch left anywhere: what used to be "one module, two hosts" is
+now one module and one host, and everything that existed only to tell the two
+apart is deleted.
 
 **A nested `live_render` never passes through the `live_session`'s `on_mount`.**
-The chat's window is therefore not a surface: it is part of the chat and dies
-with it. Only the route is.
+That is why the chat's windows were never surfaces — they were part of the chat
+and died with it — and it is one of the reasons none of them survived.
 
 ### One door, and the chat writes it
 
@@ -123,9 +121,10 @@ carries. Two things that cost time when forgotten:
 
 ---
 
-## 19.2 The three things `Live.Surface` does, and the four it must not
+## 19.2 The three things the `on_mount` does, and the four it must not
 
-`RetroHexChatWeb.Live.Surface` is the `on_mount` every non-chat address carries.
+`RetroHexChatWeb.Live.Surface` is also the `on_mount` every non-chat address
+carries.
 It resolves the nickname from the same Plug session the chat reads, applies the
 two refusals that go with it (no session → `/connect`, banned → `/connect` with
 the reason), subscribes to `Topics.surfaces/1` for the end of the session, and
@@ -143,29 +142,41 @@ It must **not**:
 Where a surface *is* comes a moment later, from a `handle_params` hook: the
 module says what kind of screen it is, the path says which one.
 
-## 19.3 What differs between the two hosts
+## 19.3 What a surface does to itself
 
-`RetroHexChatWeb.Live.SurfaceHost` carries all of it, and the list is short:
-a notice, the window, and what the host draws about the surface. Each message
-carries the surface's **tag**, because the chat hosts more than one at a time
-and reading the name beats guessing from the shape.
+`RetroHexChatWeb.Live.Surface` is the whole of it now, and it is short: a
+notice (`error/2`, `system/2` — a sentence on the page's own status bar), and
+`close/1`, which marks the surface finished.
 
-**Geometry left it in wave 3.** It was a no-op standalone, which is how mini
-mode came to be a checkbox that changed nothing whenever the session was at its
-own address — the session's page is a Win98 desktop with a window manager of its
-own, so the command goes straight to it.
+This module used to be `SurfaceHost`, and every one of those functions chose
+between sending to a parent process and doing something here. The plumbing went
+out one wave at a time, and the order is worth knowing because each removal was
+a fix rather than a tidy-up:
 
-**The space left it in wave 4**, and took `{:space_surface_avatar, …}` and
-`{:space_surface_event, …}` with it. The character you picked last is now
-`localStorage` on the browser that picked it, read by a hook on the picker and
-pushed up as `space_remember_avatar`: nothing on the server outlives a visit any
-more, so the chat could not be the memory even if it wanted to be.
+- **Geometry, wave 3.** It was a no-op standalone, which is how mini mode came
+  to be a checkbox that changed nothing at the session's own address — the
+  page is a Win98 desktop with a window manager of its own, so the command goes
+  straight to it.
+- **The space's two messages, wave 4.** `{:space_surface_avatar, …}` and
+  `{:space_surface_event, …}`. The character you picked last is now
+  `localStorage` on the browser that picked it, pushed up as
+  `space_remember_avatar`: nothing on the server outlives a visit any more, so
+  the chat could not be the memory even if it wanted to be.
+- **`focus`, `publish` and `remember`, wave 5**, along with `surface_tag` and
+  both `host_snapshot/1` functions. Every one of them had been dead since its
+  own wave: nothing in the chat has handled `:surface_notice`, `:surface_focus`,
+  `:surface_closed`, `:surface_state` or `:surface_preferences` for some time,
+  and `host_snapshot` was being computed on every event so it could be compared
+  against itself and dropped.
 
-The channel between the two is the **parent process**, not PubSub: a nested
-`live_render` has exactly one host and dies with it, and a topic would deliver
-to every tab.
-
----
+**`remember` needed no new home, which is the answer to the question the plan
+asked.** The pre-join choice already had two: `localStorage` in the browser
+that made it — a camera id only means anything on the machine that enumerated
+it — and `TrustedDevices.put_device_preference/4` for a terminal that is
+trusted. `SurfaceHost.remember/2` was a third copy handed to a process that
+stopped existing in wave 1. Checking the table proves nothing either way, by
+the way: an empty `trusted_device_preferences` is what a database nobody has
+used the antechamber on looks like.---
 
 ## 19.4 Which tabs a person has open
 
@@ -316,8 +327,13 @@ is not, so changing one means arguing with the reason rather than the line.
   needs no minting to work, so `Share` at the picker is untouched and still the
   only way to get a link *to the place*. What walking into an empty one mints is
   a link to that **gathering**, once per gathering, and that ratio is the same
-  one-per-room the landfill argument allows. The solo games keep the original
-  rule: a catalogue has nothing to open.
+  one-per-room the landfill argument allows.
+
+  **The solo games keep the original rule, and are the reason it is still
+  written down.** `/play` is a catalogue, not a room: there is nothing to
+  create, nothing to announce and no card. It is the one screen with an address
+  that posts nothing, and it is what the rule looks like when the premise has
+  not changed.
 
 - **After it starts, the link still works.** A link spends most of its life
   after minute zero. Call and space let a late click in; a full match says

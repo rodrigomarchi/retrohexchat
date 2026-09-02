@@ -226,7 +226,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
   end
 
-  defp confirm_prejoin(view, overrides \\ %{}) do
+  defp confirm_prejoin(view, overrides) do
     params =
       Map.merge(
         %{

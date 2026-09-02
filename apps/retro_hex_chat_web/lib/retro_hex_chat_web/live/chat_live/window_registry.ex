@@ -301,12 +301,6 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
 
   defp calls do
     [
-      window("retro-games", dgettext("chat", "Retro Games"), :icon_game_pong,
-        managed?: false,
-        render_when: :always,
-        taskbar_when: :always,
-        geometry: geometry(180, 90, 940, 600, 640, 420)
-      ),
       window("arcade-games", dgettext("chat", "Arcade"), :icon_game_arcade,
         render_when: {:present_and_open, :arcade_session},
         taskbar_when: {:present_and_open, :arcade_session},

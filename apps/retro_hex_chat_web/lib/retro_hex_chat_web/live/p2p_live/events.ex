@@ -31,9 +31,10 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   creator's `[Start]` is what releases the first offer. Never re-order this —
   the first offer is dropped if the answerer's hook is not listening yet.
 
-  Nothing here knows which of the two hosts it is running under. Everything
-  that would have to — a notice, the window, what the host draws about the
-  session — goes through `RetroHexChatWeb.Live.SurfaceHost`.
+  A refusal is a sentence on this page's own status bar, and leaving is this
+  page saying it is finished — both through `RetroHexChatWeb.Live.Surface`,
+  which is what a screen with an address does to itself. There is no host to
+  tell any more.
   """
 
   import Phoenix.Component, only: [assign: 2, update: 3]
@@ -52,7 +53,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   alias RetroHexChat.P2P
   alias RetroHexChatWeb.App.P2PStats
   alias RetroHexChatWeb.Live.P2PConfirmDialog
-  alias RetroHexChatWeb.Live.SurfaceHost, as: Host
+  alias RetroHexChatWeb.Live.Surface
   alias RetroHexChatWeb.MediaDevices
   alias RetroHexChatWeb.P2PLive.Components.P2PFileIsland
   alias RetroHexChatWeb.P2PLive.Components.P2PGameIsland
@@ -117,7 +118,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
      socket
      |> mark_p2p_failed("signaling_" <> reason)
      |> open_p2p_console("call")
-     |> Host.system(dgettext("chat", "The P2P signaling channel refused this session."))}
+     |> Surface.system(dgettext("chat", "The P2P signaling channel refused this session."))}
   end
 
   def handle_event(
@@ -145,7 +146,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
       if duplicate? do
         socket
       else
-        Host.system(socket, dgettext("chat", "P2P connection failed."))
+        Surface.system(socket, dgettext("chat", "P2P connection failed."))
       end
 
     {:halt, socket}
@@ -228,7 +229,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     socket =
       socket
       |> put_p2p(p2p)
-      |> Host.system(label)
+      |> Surface.system(label)
 
     if p2p_webrtc_active?(p2p) do
       broadcast(p2p.token, "lobby_manual_retry", %{from: p2p.user_id, reason: "privacy_changed"})
@@ -381,7 +382,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     _ = Lobby.end_game(p2p.token, p2p.user_id)
 
     {:halt,
-     Host.system(
+     Surface.system(
        socket,
        dgettext("chat", "Could not load the game. Please try again.")
      )}
@@ -507,7 +508,6 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     {:halt,
      socket
      |> put_p2p(Map.put(p2p, :call_mini, mini))
-     |> Host.focus()
      |> push_p2p_call_geometry(mini)}
   end
 
@@ -570,7 +570,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         {:halt,
          socket
          |> put_p2p(%{p2p | displaced: true, webrtc_started: false, hook_ready: false})
-         |> Host.system(dgettext("chat", "This P2P session moved to another window of yours."))}
+         |> Surface.system(dgettext("chat", "This P2P session moved to another window of yours."))}
 
       _other_session ->
         {:halt, socket}
@@ -789,7 +789,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         {:halt,
          socket
          |> put_p2p(%{p2p | peer_online: false})
-         |> Host.system(
+         |> Surface.system(
            dgettext("chat", "%{peer} lost the P2P connection — waiting for them to return...",
              peer: p2p.peer_nick
            )
@@ -917,7 +917,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
       action: :request_declined
     )
 
-    {:halt, Host.system(socket, dgettext("chat", "Game request declined."))}
+    {:halt, Surface.system(socket, dgettext("chat", "Game request declined."))}
   end
 
   defp handle_session_event(
@@ -988,7 +988,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
   defp handle_session_event(%{event: "lobby_inactivity_warning"}, socket, _p2p) do
     {:halt,
-     Host.system(
+     Surface.system(
        socket,
        dgettext("chat", "The P2P session will expire soon due to inactivity.")
      )}
@@ -1010,7 +1010,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         socket
         |> put_p2p(%{p2p | state: :joining, peer_online: true})
         |> share_client_info(p2p)
-        |> Host.system(
+        |> Surface.system(
           dgettext("chat", "%{peer} accepted the P2P request - connecting...",
             peer: p2p.peer_nick || dgettext("chat", "The other user")
           )
@@ -1020,7 +1020,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         detach_session(socket, p2p)
 
       {:error, message} ->
-        socket |> detach_session(p2p) |> Host.system(message)
+        socket |> detach_session(p2p) |> Surface.system(message)
     end
   end
 
@@ -1040,7 +1040,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     # A worry that turned out fine has to be taken back, or it stays on screen
     # for the rest of the session saying the opposite of the truth.
     if p2p.state == :connected and not p2p.peer_online do
-      Host.system(socket, dgettext("chat", "%{peer} is back.", peer: p2p.peer_nick))
+      Surface.system(socket, dgettext("chat", "%{peer} is back.", peer: p2p.peer_nick))
     else
       socket
     end
@@ -1322,7 +1322,6 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
         socket
         |> put_p2p(Map.put(p2p, :console_section, section))
-        |> Host.focus()
         |> maybe_expand_p2p_console(section, was_mini?)
     end
   end
@@ -1414,10 +1413,10 @@ defmodule RetroHexChatWeb.P2PLive.Events do
       else
         socket
         |> detach_session(p2p)
-        |> Host.system(ended_message(p2p.peer_nick, reason))
+        |> Surface.system(ended_message(p2p.peer_nick, reason))
       end
 
-    Host.close(socket)
+    Surface.close(socket)
   end
 
   # ICE config + the role-specific start event, exactly once per
@@ -1577,7 +1576,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
   @spec p2p_system_event(Socket.t(), term()) :: Socket.t()
   defp p2p_system_event(socket, message) do
-    Host.system(socket, p2p_notice_text(message))
+    Surface.system(socket, p2p_notice_text(message))
   end
 
   @spec p2p_notice_text(term()) :: String.t()

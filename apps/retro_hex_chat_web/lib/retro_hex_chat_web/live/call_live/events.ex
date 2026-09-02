@@ -14,9 +14,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
   any of this. The rule that split the two: if the datum only exists while you
   are in the call, it is in this module.
 
-  Nothing here knows which of the two hosts it is running under. Everything
-  that would have to — a notice, the window, what the host draws about the call
-  — goes through `RetroHexChatWeb.Live.SurfaceHost`.
+  A refusal is a sentence on this page's own status bar, and leaving is this
+  page saying it is finished — both through `RetroHexChatWeb.Live.Surface`,
+  which is what a screen with an address does to itself. There is no host to
+  tell any more.
   """
 
   import Phoenix.Component, only: [assign: 2]
@@ -37,7 +38,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   alias RetroHexChatWeb.App.GroupCallSummary
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.Live.GroupCallConfirmDialog
-  alias RetroHexChatWeb.Live.SurfaceHost, as: Host
+  alias RetroHexChatWeb.Live.Surface
   alias RetroHexChatWeb.MediaDevices
 
   @window_id "group-call"
@@ -55,7 +56,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
      socket
      |> remember_prejoin_preferences()
      |> assign(group_call_prejoin: nil)
-     |> Host.close()}
+     |> Surface.close()}
   end
 
   def handle_event(
@@ -102,7 +103,6 @@ defmodule RetroHexChatWeb.CallLive.Events do
     {:halt,
      socket
      |> assign(group_call_prejoin_preferences: preferences)
-     |> Host.remember(persistable_prejoin_preferences(preferences))
      |> update_prejoin(fn prejoin ->
        prejoin
        |> Map.put(:media, preferences.media)
@@ -114,10 +114,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   def handle_event("group_call_prejoin_preferences_loaded", payload, socket) do
     preferences = normalize_prejoin_preferences(payload)
 
-    {:halt,
-     socket
-     |> assign(group_call_prejoin_preferences: preferences)
-     |> Host.remember(persistable_prejoin_preferences(preferences))}
+    {:halt, assign(socket, group_call_prejoin_preferences: preferences)}
   end
 
   def handle_event("group_call_leave", _params, %{assigns: %{group_call: %{}}} = socket) do
@@ -135,7 +132,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
      socket
      |> remember_prejoin_preferences()
      |> assign(group_call_prejoin: nil)
-     |> Host.close()}
+     |> Surface.close()}
   end
 
   def handle_event(
@@ -458,7 +455,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
       {:halt,
        socket
        |> assign(group_call: nil, group_call_pending: nil)
-       |> Host.close()}
+       |> Surface.close()}
     else
       {:halt,
        socket |> update_call(&remove_participant(&1, participant_id)) |> push_group_call_layout()}
@@ -545,9 +542,9 @@ defmodule RetroHexChatWeb.CallLive.Events do
     socket =
       socket
       |> assign(group_call: nil, group_call_pending: nil)
-      |> Host.close()
+      |> Surface.close()
 
-    {:halt, Host.system(socket, message)}
+    {:halt, Surface.system(socket, message)}
   end
 
   def handle_event(
@@ -604,7 +601,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
         |> Map.put(:error, nil)
       end)
 
-    {:halt, Host.system(socket, message)}
+    {:halt, Surface.system(socket, message)}
   end
 
   def handle_event("group_call_client_error", payload, %{assigns: %{group_call: %{}}} = socket) do
@@ -628,7 +625,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
         |> Map.put(:warning, nil)
       end)
 
-    {:halt, Host.error(socket, message)}
+    {:halt, Surface.error(socket, message)}
   end
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
@@ -672,7 +669,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   def leave(socket, _reason) do
     socket
     |> assign(group_call_prejoin: nil)
-    |> Host.close()
+    |> Surface.close()
   end
 
   @doc """
@@ -764,12 +761,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
         |> new_call(token, channel_name, user_id, actor.nickname, join_token, preferences)
         |> Map.put(:status, :joining)
 
-      socket
-      |> assign(group_call: call)
-      |> open_call_windows()
+      assign(socket, group_call: call)
     else
-      {:error, message} when is_binary(message) -> Host.error(socket, message)
-      {:error, reason} -> Host.error(socket, inspect(reason))
+      {:error, message} when is_binary(message) -> Surface.error(socket, message)
+      {:error, reason} -> Surface.error(socket, inspect(reason))
     end
   end
 
@@ -815,14 +810,9 @@ defmodule RetroHexChatWeb.CallLive.Events do
     end
   end
 
-  defp reopen_cancelled_close(
-         %{assigns: %{group_call_pending: %{action: :close_window, window_id: window_id}}} =
-           socket
-       )
-       when is_binary(window_id) do
-    Host.focus(socket)
-  end
-
+  # Cancelling a "close the window" confirm used to ask the host to bring the
+  # window back. The conference is the page now: nothing was taken away, so
+  # there is nothing to put back.
   defp reopen_cancelled_close(socket), do: socket
 
   defp close_confirm do
@@ -831,8 +821,6 @@ defmodule RetroHexChatWeb.CallLive.Events do
       action: :close
     )
   end
-
-  defp open_call_windows(socket), do: Host.focus(socket)
 
   defp reattach_active_participant(socket, channel_name, summary, participant, fallback_user_id) do
     room = GroupCallShape.normalize_room(GroupCallShape.value(summary, :room))
@@ -872,9 +860,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
         |> Map.put(:recovery, recovery)
         |> put_participant(GroupCallShape.normalize_participant(participant))
 
-      socket
-      |> assign(group_call: call, group_call_pending: nil, group_call_prejoin: nil)
-      |> open_call_windows()
+      assign(socket, group_call: call, group_call_pending: nil, group_call_prejoin: nil)
     else
       open_prejoin(socket, channel_name, fallback_user_id)
     end
@@ -914,7 +900,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
 
     socket
     |> assign(group_call: nil, group_call_pending: nil, group_call_prejoin: nil)
-    |> Host.close()
+    |> Surface.close()
   end
 
   defp new_call(summary, token, channel_name, user_id, nickname, join_token, preferences) do
@@ -1019,7 +1005,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
             })
           end)
 
-        Host.error(socket, message)
+        Surface.error(socket, message)
 
       _other ->
         update_call(socket, &Map.put(&1, :connection_state, state))
@@ -1044,7 +1030,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
 
     if local_media_blocked?(call, kind) do
       socket
-      |> Host.error(local_media_blocked_message(kind))
+      |> Surface.error(local_media_blocked_message(kind))
       |> push_event("group_call_set_media_state", call.media)
       |> push_group_call_layout()
     else
@@ -1077,10 +1063,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
       |> push_group_call_layout()
     else
       {:error, message} when is_binary(message) ->
-        Host.error(socket, message)
+        Surface.error(socket, message)
 
       _error ->
-        Host.error(socket, dgettext("group_call", "Could not update raised hand."))
+        Surface.error(socket, dgettext("group_call", "Could not update raised hand."))
     end
   end
 
@@ -1270,10 +1256,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
       update_call(socket, &put_participant(&1, GroupCallShape.normalize_participant(participant)))
     else
       {:error, message} when is_binary(message) ->
-        Host.error(socket, message)
+        Surface.error(socket, message)
 
       _error ->
-        Host.error(
+        Surface.error(
           socket,
           dgettext("group_call", "Could not update participant media.")
         )
@@ -1288,10 +1274,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
       update_call(socket, &put_participant(&1, GroupCallShape.normalize_participant(participant)))
     else
       {:error, message} when is_binary(message) ->
-        Host.error(socket, message)
+        Surface.error(socket, message)
 
       _error ->
-        Host.error(
+        Surface.error(
           socket,
           dgettext("group_call", "Could not update participant camera.")
         )
@@ -1308,10 +1294,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
       |> push_group_call_layout()
     else
       {:error, message} when is_binary(message) ->
-        Host.error(socket, message)
+        Surface.error(socket, message)
 
       _error ->
-        Host.error(
+        Surface.error(
           socket,
           dgettext("group_call", "Could not update participant screen sharing.")
         )
@@ -1333,10 +1319,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
       |> push_group_call_layout()
     else
       {:error, message} when is_binary(message) ->
-        Host.error(socket, message)
+        Surface.error(socket, message)
 
       _error ->
-        Host.error(
+        Surface.error(
           socket,
           dgettext("group_call", "Could not allow participant to speak.")
         )
@@ -1367,10 +1353,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
       |> push_group_call_layout()
     else
       {:error, message} when is_binary(message) ->
-        Host.error(socket, message)
+        Surface.error(socket, message)
 
       _error ->
-        Host.error(socket, dgettext("group_call", "Could not update participants."))
+        Surface.error(socket, dgettext("group_call", "Could not update participants."))
     end
   end
 
@@ -1392,7 +1378,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   defp maybe_empty_bulk_media_message(socket, %{changed_count: count}) when count > 0, do: socket
 
   defp maybe_empty_bulk_media_message(socket, _summary) do
-    Host.system(
+    Surface.system(
       socket,
       dgettext("group_call", "No lower-ranked conference participants were affected.")
     )
@@ -1413,10 +1399,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
       |> push_group_call_layout()
     else
       {:error, message} when is_binary(message) ->
-        Host.error(socket, message)
+        Surface.error(socket, message)
 
       _error ->
-        Host.error(socket, dgettext("group_call", "Could not update conference lock."))
+        Surface.error(socket, dgettext("group_call", "Could not update conference lock."))
     end
   end
 
@@ -1456,10 +1442,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
       )
     else
       {:error, message} when is_binary(message) ->
-        Host.error(socket, message)
+        Surface.error(socket, message)
 
       _error ->
-        Host.error(socket, dgettext("group_call", "Could not remove participant."))
+        Surface.error(socket, dgettext("group_call", "Could not remove participant."))
     end
   end
 
@@ -1470,7 +1456,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
          :ok <- remove_participant_from_channel_call(socket.assigns.group_call, actor, target) do
       socket
       |> update_call(&remove_participant(&1, participant_id))
-      |> Host.system(
+      |> Surface.system(
         dgettext(
           "group_call",
           "%{target} was removed from the conference and banned from %{channel}.",
@@ -1480,10 +1466,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
       )
     else
       {:error, message} when is_binary(message) ->
-        Host.error(socket, message)
+        Surface.error(socket, message)
 
       _error ->
-        Host.error(socket, dgettext("group_call", "Could not remove participant."))
+        Surface.error(socket, dgettext("group_call", "Could not remove participant."))
     end
   end
 
@@ -1520,10 +1506,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
          :ok <- GroupCall.close_call(socket.assigns.group_call.token, actor, "moderation") do
       socket
       |> assign(group_call: nil, group_call_pending: nil)
-      |> Host.close()
+      |> Surface.close()
     else
-      {:error, message} when is_binary(message) -> Host.error(socket, message)
-      _error -> Host.error(socket, dgettext("group_call", "Could not end group call."))
+      {:error, message} when is_binary(message) -> Surface.error(socket, message)
+      _error -> Surface.error(socket, dgettext("group_call", "Could not end group call."))
     end
   end
 

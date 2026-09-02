@@ -4692,11 +4692,6 @@ msgstr "復古遊戲"
 msgid "retro games"
 msgstr "復古遊戲"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1829
-#, elixir-autogen, elixir-format
-msgid "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants are available."
-msgstr "在聊天桌面中單人對戰 AI，遊玩瀏覽器原生的 RetroHexChat 遊戲。Hex Pong、Light Trails、Star Duel 變體、Block Breakers、Hex Warlords、Hex Raid 變體、Hex Outlaw 變體、Hex Tennis 變體、Hex Invaders 變體、Hex Enduro 變體、Hex Skiing 變體、Hex Frost 變體和 Hex Hockey 變體已可用。"
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1834
 #, elixir-autogen, elixir-format
 msgid "Hex Boxing is also available."
@@ -4963,44 +4958,42 @@ msgstr "項目只分組一層，選單承載了應用程式能做的一切：選
 msgid "A P2P session always runs in a browser tab of its own — the chat has no window for one. The card in the private message is the door; following it gives the session the whole window and leaves the chat where it was. Share there mints a link you can paste anywhere; only the two people in the session can actually enter it. A session can only be live in one window at a time — opening it somewhere else moves it there, and the window that lost it says so and offers Bring it back here, which is why the chat offers a way to the tab you already have instead of a second one. Closing the tab is not ending the session; only End session, which asks first, is final."
 msgstr "P2P 工作階段始終在獨立的瀏覽器分頁中執行 —— 聊天裡沒有為它準備的視窗。私訊中的卡片就是那道門；點開它，工作階段就擁有整個視窗，而對話留在原處。那裡的「分享」會產生一個可以貼到任何地方的連結；真正能進去的只有工作階段中的兩個人。一個工作階段同一時間只能在一個視窗裡活著 —— 在別處開啟它會把它帶走，失去它的視窗會這樣說，並提供「帶回這裡」；這正是聊天為什麼給你一條通往已有分頁的路，而不是再開一個。關閉分頁並不會結束工作階段；只有會先詢問的「結束工作階段」才是最終操作。"
 
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3654
 #, elixir-autogen, elixir-format
 msgid "A multiplayer 8-bit virtual space built into every channel and every private conversation. Space, beside the tabs, opens it in a browser tab of its own — the conversation stays where it is, and the map gets a whole window instead of competing with the chat for the browser. Move with the Arrow keys, WASD or the on-screen pad in the bottom-right corner — tap for a single step or hold to walk continuously; Space or the pad's sword button swings your weapon. The translucent button in the top-right corner switches to fullscreen and back. Back to Chat, along the bottom edge, returns to the conversation."
 msgstr "每個頻道和每段私訊都內建的 8 位元多人虛擬空間。分頁旁邊的 Space 會在獨立的瀏覽器分頁中開啟它 —— 對話留在原處，地圖拿到一整個視窗，而不必和聊天搶瀏覽器。用方向鍵、WASD 或右下角的螢幕方向鍵移動 —— 輕點走一步，長按持續行走；空白鍵或方向鍵上的劍按鈕揮動武器。右上角的半透明按鈕在全螢幕和一般版面之間切換。底緣的「返回聊天」帶你回到對話。"
-
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3731
 #, elixir-autogen, elixir-format
 msgid "A space always runs in a browser tab of its own, opened with Space beside the conversation's tabs. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back. If you already have that tab open, the entry says In another tab and takes you to the one you have rather than opening a second."
 msgstr "空間始終在獨立的瀏覽器分頁中執行，由對話分頁旁邊的 Space 開啟。空間沒有開始也沒有結束，所以它的位址一直有效：加入書籤，它就能把你帶回來。如果你已經開著那個分頁，入口會顯示「在其他分頁」，並把你帶到已有的那個，而不是再開一個。"
 
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3771
 #, elixir-autogen, elixir-format
 msgid "Share, on the character picker, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
 msgstr "角色選擇畫面上的「分享」會產生一個可以貼到任何地方的連結。貼到對話裡時，它會畫成一張卡片，而不是一串裸位址。這個連結指的是地方，而不是其中的某一晚，所以在所有人散去之後依然有效。它帶著這是哪個空間，卻從不帶著進入的許可：頻道的空間仍然要求跟隨連結的人在那個頻道裡，私密空間仍然屬於它的兩個人。只有註冊過的暱稱才能產生一個。"
-
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3751
 #, elixir-autogen, elixir-format
 msgid "Walking into an empty space posts a card in the conversation it belongs to, so everybody reading can see that something is happening and follow it in. The card counts who is inside while it lasts, and once the last person leaves it becomes the record of what happened: how long the gathering ran, and how many people came. Walking into a space somebody is already in posts nothing — one gathering, one card. Only a registered nickname posts one; a guest still walks in as usual."
 msgstr "走進一個空空間會在它所屬的對話裡發布一張卡片，讓每一個在讀的人都看到那裡正在發生什麼，並且可以跟進去。在聚會持續期間，卡片會數著誰在裡面；最後一個人離開後，它就成了這件事的紀錄：聚會持續了多久，來過多少不同的人。走進已經有人的空間不會發布任何東西 —— 一次聚會，一張卡片。只有註冊過的暱稱會發布；訪客照樣可以正常走進去。"
 
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3686
 #, elixir-autogen, elixir-format
 msgid "When you enter a Space, a character picker appears first: choose from the classic Hero or one of seven classes — Sorceress, Knight, Archer, Barbarian, Rogue, Cleric or Monk. Each shows an animated preview and has its own walking and attack animations; click one to enter the map wearing it, and everyone in the space sees your choice. It also says who is inside right now, before you commit to walking in. The picker shows again each time you enter, defaulting to whoever you chose last time on this browser."
 msgstr "進入空間時，會先出現一個角色選擇畫面：可以選經典的英雄，或七個職業之一 —— 女巫、騎士、弓箭手、蠻族、盜賊、牧師或武僧。每一個都有動畫預覽，也都有自己的行走和攻擊動畫；點擊其中一個就以它的樣子進入地圖，空間裡的所有人都會看到你的選擇。它還會告訴你此刻誰在裡面，然後你再決定是否走進去。每次進入都會再次出現，並預設選中你上次在這個瀏覽器裡選過的角色。"
-
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3739
 #, elixir-autogen, elixir-format
 msgid "Who Is in the Space Right Now"
 msgstr "現在誰在空間裡"
 
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3747
 #, elixir-autogen, elixir-format
 msgid "someone is in the space"
 msgstr "有人在空間裡"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1829
+#, elixir-autogen, elixir-format
+msgid "Play browser-native RetroHexChat games solo against AI. Retro Games, in the Games folder or under Start ▸ Games, opens the library in a browser tab of its own, and the chat stays where it was. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants are available."
+msgstr "單人對戰 AI，遊玩瀏覽器原生的 RetroHexChat 遊戲。Games 資料夾或「開始」▸ Games 中的 Retro Games 會在獨立的瀏覽器分頁中開啟遊戲庫，而聊天留在原處。Hex Pong、Light Trails、Star Duel 變體、Block Breakers、Hex Warlords、Hex Raid 變體、Hex Outlaw 變體、Hex Tennis 變體、Hex Invaders 變體、Hex Enduro 變體、Hex Skiing 變體、Hex Frost 變體和 Hex Hockey 變體已可用。"

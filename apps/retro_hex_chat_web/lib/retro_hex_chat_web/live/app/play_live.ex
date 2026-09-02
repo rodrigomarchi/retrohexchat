@@ -1,15 +1,17 @@
 defmodule RetroHexChatWeb.App.PlayLive do
   @moduledoc """
-  Retro Games, as a surface of its own.
+  Retro Games, at an address of its own.
 
-  One module, two mounts: this is the page at `/play/:game` and it is also what
-  the chat's Retro Games window renders. Nothing about a game is written twice —
-  the difference between the two is where the process hangs, not what it does.
+  The page at `/play` and `/play/:game`, and the only place the catalogue is
+  rendered. The chat used to draw this same module into a window of its own;
+  it does not any more, and the chat's Games menu is a plain link here.
 
-  The state is the same shape the chat window always had: which game is chosen,
-  how hard the opponent plays, whether the canvas has reported for duty, and how
-  the last match ended. All of it is per-person and per-tab, so none of it is
-  persisted.
+  A catalogue is not a room — there is nothing to create and nothing to
+  announce — so this is the one screen with an address that posts no card.
+
+  The state is the same shape it always had: which game is chosen, how hard the
+  opponent plays, whether the canvas has reported for duty, and how the last
+  match ended. All of it is per-person and per-tab, so none of it is persisted.
   """
   use RetroHexChatWeb, :live_view
 
@@ -38,7 +40,6 @@ defmodule RetroHexChatWeb.App.PlayLive do
     socket =
       socket
       |> assign(
-        embedded?: session["embedded"] == true,
         nickname: session["nickname"] || socket.assigns[:surface_nickname],
         share_url: nil,
         share_slug: nil,
@@ -59,23 +60,13 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
-  def render(%{embedded?: true} = assigns) do
-    ~H"""
-    <div class="h-full">
-      <.games_body {assigns} />
-    </div>
-    """
-  end
-
   def render(assigns) do
     ~H"""
     <%!-- Same shell every other desktop screen uses: the workspace only has a
           height because something above it does. Without this the window
           manager runs, opens the window, and lays it out 1280x0. --%>
     <div class="bg-background text-text font-system flex h-screen flex-col">
-      <%!-- This tab answers when the chat asks for it by address. Only in the
-            standalone render: embedded, the address is the chat's own and the
-            chat already answers for it. --%>
+      <%!-- This tab answers when the chat asks for it by address. --%>
       <div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
       <.desktop
         id="play-desktop"
@@ -92,10 +83,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
           data-testid="retro-games-window"
         >
           <:icon><Icons.icon_game_pong class="h-4 w-4" /></:icon>
-          <%!-- The way back is always on screen. Someone who arrived from a
-              shared link has no chat tab to return to, so this is a link and
-              not a focus request — the full open/focus decision needs to know
-              what else the person has open, which is a later wave. --%>
+          <%!-- The way back is always on screen. --%>
           <:status>
             <.window_status_bar_field grow>
               <.back_to_chat
@@ -111,9 +99,6 @@ defmodule RetroHexChatWeb.App.PlayLive do
     """
   end
 
-  # The chat renders this same LiveView inside its own Retro Games window, so
-  # the body is shared and the chrome is not: embedded, the window around it
-  # already belongs to the chat's desktop.
   defp games_body(assigns) do
     ~H"""
     <div class="flex h-full min-h-0 flex-col gap-2">

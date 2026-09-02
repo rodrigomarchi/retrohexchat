@@ -838,14 +838,20 @@ export class ChatPage {
     await expect(this.searchBar).toBeVisible();
   }
 
-  // Both games used to sit on the desktop directly; they are inside the Games
-  // folder now, which is the same journey with one door in front of it.
-  async openRetroGamesFromDesktopShortcut() {
+  // Retro Games is a catalogue with an address, so the Games folder's entry is
+  // a link and opening it is a new tab rather than a window on this desktop.
+  async openRetroGames(): Promise<Page> {
     await this.openGamesFolder();
     await expect(this.retroGamesMenuItem).toBeVisible();
-    await this.retroGamesMenuItem.dblclick();
-    await expect(this.retroGamesWindow).toBeVisible();
-    await expect(this.retroGamesIconGrid).toBeVisible();
+
+    const [games] = await Promise.all([
+      this.page.context().waitForEvent("page"),
+      this.retroGamesMenuItem.click(),
+    ]);
+
+    await games.waitForLoadState("domcontentloaded");
+    await expect(games.getByTestId("retro-games-library")).toBeVisible();
+    return games;
   }
 
   async openArcadeFromDesktopShortcut() {

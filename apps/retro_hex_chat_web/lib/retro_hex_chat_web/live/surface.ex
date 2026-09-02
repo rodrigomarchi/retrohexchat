@@ -34,6 +34,12 @@ defmodule RetroHexChatWeb.Live.Surface do
       still open.
     * it never writes reconnect state, whowas, or a device session. Those record
       what a chat session did, and a surface did not do them.
+
+  It also carries what a surface does *to itself*: `error/2`, `system/2` and
+  `close/1`. These used to choose between a parent process and a page, because
+  every surface had a mount inside the chat as well. None of them does now, so
+  the choice is gone and what is left is a screen saying something on its own
+  status bar and a screen saying it is finished.
   """
 
   import Phoenix.Component, only: [assign: 2]
@@ -112,4 +118,45 @@ defmodule RetroHexChatWeb.Live.Surface do
   end
 
   defp session_ended(_message, socket), do: {:cont, socket}
+
+  @doc "A refusal or a failure, in the words the policy used."
+  @spec error(Socket.t(), String.t()) :: Socket.t()
+  def error(socket, message), do: notice(socket, :error, message)
+
+  @doc "Something that happened, worth recording where the person is reading."
+  @spec system(Socket.t(), String.t()) :: Socket.t()
+  def system(socket, message), do: notice(socket, :system, message)
+
+  defp notice(socket, kind, message) do
+    assign(socket, notice: %{kind: kind, message: message})
+  end
+
+  @doc """
+  The surface is finished and should leave the screen.
+
+  Leaving is **not** navigating to `/chat`. Mounting the chat is announcing a
+  chat session, and a chat session announces a takeover — so going "back" by
+  navigation ended the chat this person already had open, in another tab, that
+  they never asked to leave. Measured: cancelling an antechamber left the
+  original chat sitting on
+  `/connect?reason=Session ended — logged in from another window`.
+
+  The surface says it is finished instead, and the way back is the same
+  `back_to_chat` every surface already draws — a request for the tab that
+  exists, and a plain link only when there is none.
+  """
+  @spec close(Socket.t()) :: Socket.t()
+  def close(socket) do
+    _ = release_address(socket)
+    assign(socket, surface_left: true)
+  end
+
+  # The tab is still open and still counts for the membership rule; it is just
+  # not somewhere to send anybody any more.
+  defp release_address(socket) do
+    case socket.assigns[:surface_nickname] || socket.assigns[:nickname] do
+      nickname when is_binary(nickname) and nickname != "" -> Surfaces.release(nickname)
+      _anonymous -> :ok
+    end
+  end
 end

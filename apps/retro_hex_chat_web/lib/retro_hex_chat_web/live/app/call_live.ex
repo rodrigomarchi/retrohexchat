@@ -39,7 +39,6 @@ defmodule RetroHexChatWeb.App.CallLive do
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.GroupCallConfirmDialog
   alias RetroHexChatWeb.Live.OpenSurfaces
-  alias RetroHexChatWeb.Live.SurfaceHost, as: Host
   alias RetroHexChatWeb.ShareLinkRef
 
   # The shortcuts this page answers. Everything else the binding table knows is
@@ -57,7 +56,6 @@ defmodule RetroHexChatWeb.App.CallLive do
   def mount(params, session, socket) do
     socket =
       assign(socket,
-        surface_tag: :call,
         nickname: session["nickname"] || socket.assigns[:surface_nickname],
         # The device preference is the person's, not the screen's: the same
         # terminal that remembered a camera for the chat's pre-join has to hand
@@ -70,7 +68,6 @@ defmodule RetroHexChatWeb.App.CallLive do
         group_call_prejoin_preferences:
           Events.restored_prejoin_preferences(session["prejoin_preferences"]),
         prejoin_roster: [],
-        host_snapshot: nil,
         notice: nil,
         share_url: nil,
         share_slug: nil,
@@ -89,8 +86,7 @@ defmodule RetroHexChatWeb.App.CallLive do
          })
          |> assign(channel_name: channel_name)
          |> subscribe_to_room(channel_name)
-         |> Events.mount_call(channel_name, user_id)
-         |> publish()}
+         |> Events.mount_call(channel_name, user_id)}
 
       {:error, message} ->
         {:ok, assign(socket, denied: message)}
@@ -291,14 +287,14 @@ defmodule RetroHexChatWeb.App.CallLive do
 
   def handle_event(event, params, socket) do
     {_halted, socket} = Events.handle_event(event, params, socket)
-    {:noreply, publish(socket)}
+    {:noreply, socket}
   end
 
   # Only the conference's own shortcuts act here. Everything else the binding
   # table knows belongs to the chat and reaches nothing on this page.
   defp apply_shortcut(socket, action) when action in @call_actions do
     {_halted, socket} = Events.handle_event(Atom.to_string(action), %{}, socket)
-    {:noreply, publish(socket)}
+    {:noreply, socket}
   end
 
   defp apply_shortcut(socket, _action), do: {:noreply, socket}
@@ -313,19 +309,6 @@ defmodule RetroHexChatWeb.App.CallLive do
 
   @impl true
   @spec handle_info(term(), Socket.t()) :: {:noreply, Socket.t()}
-  # The chat forwards the shortcuts and the window chrome it still owns: the
-  # keystroke lands on the chat's window, the call is what it means.
-  def handle_info({:call_surface_command, {:event, event}}, socket) do
-    {_halted, socket} = Events.handle_event(event, %{}, socket)
-    {:noreply, publish(socket)}
-  end
-
-  # Not a window being closed: the channel the call stood on is gone, or the
-  # host is swapping it for another one's.
-  def handle_info({:call_surface_command, {:leave, reason}}, socket) do
-    {:noreply, socket |> Events.leave(reason) |> publish()}
-  end
-
   # The room's own topic, and only it: the antechamber's roster is the reason
   # this surface subscribes to anything at all.
   def handle_info({:group_call_started, payload}, socket) do
@@ -341,17 +324,16 @@ defmodule RetroHexChatWeb.App.CallLive do
   end
 
   # Being removed from a conference has to end the page you are removed from,
-  # and the room's broadcast is the only thing that says so: the chat used to
-  # forward this as a command into an embedded window, and there is no window
-  # and no parent to forward it any more. Without this the person sits in a
-  # conference they are no longer in, and nothing anywhere says otherwise.
+  # and the room's broadcast is the only thing that says so. Without this the
+  # person sits in a conference they are no longer in, and nothing anywhere
+  # says otherwise.
   def handle_info(
         {:group_call_moderation, %{action: :participant_kicked, target: target}},
         %{assigns: %{nickname: nickname}} = socket
       )
       when is_binary(target) and is_binary(nickname) do
     if String.downcase(target) == String.downcase(nickname) do
-      {:noreply, socket |> Events.leave("kicked") |> publish()}
+      {:noreply, Events.leave(socket, "kicked")}
     else
       {:noreply, socket}
     end
@@ -371,7 +353,7 @@ defmodule RetroHexChatWeb.App.CallLive do
       )
       when is_binary(target) and is_binary(nickname) do
     if String.downcase(target) == String.downcase(nickname) do
-      {:noreply, socket |> Events.leave(reason) |> publish()}
+      {:noreply, Events.leave(socket, reason)}
     else
       {:noreply, socket}
     end
@@ -379,36 +361,10 @@ defmodule RetroHexChatWeb.App.CallLive do
 
   def handle_info({:channel_membership_lost, _payload}, socket), do: {:noreply, socket}
 
-  defp publish(socket), do: Host.publish(socket, host_snapshot(socket))
-
-  @doc """
-  What the host is told about the call — public so its shape is testable.
-
-  Nicknames and track ids, not participants and tracks: the chat's title bar,
-  taskbar button and status zone count them and name the channel, and nothing
-  in the chat reads a media state it is not carrying.
-  """
-  @spec host_snapshot(Socket.t()) :: map() | nil
-  def host_snapshot(%{assigns: %{group_call: %{} = call}}) do
-    %{
-      channel_name: call.channel_name,
-      status: call.status,
-      participants: Enum.map(call.participants || [], &%{nickname: Map.get(&1, :nickname)}),
-      tracks: Enum.map(call.tracks || [], &%{id: Map.get(&1, :id)})
-    }
-  end
-
-  def host_snapshot(%{assigns: %{group_call_prejoin: %{channel_name: channel_name}}}) do
-    %{channel_name: channel_name, status: :prejoin, participants: [], tracks: []}
-  end
-
-  def host_snapshot(_socket), do: nil
-
   defp apply_room_broadcast(socket, payload) do
     socket
     |> Events.refresh_roster()
     |> Events.apply_summary(Map.get(payload, :channel), Map.get(payload, :summary))
-    |> publish()
   end
 
   defp subscribe_to_room(socket, channel_name) do

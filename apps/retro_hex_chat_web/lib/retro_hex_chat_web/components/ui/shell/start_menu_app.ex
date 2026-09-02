@@ -45,6 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
 
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Components.UI.LanguageMenu
   alias RetroHexChatWeb.Icons
@@ -312,14 +313,15 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           testid="start-menu-games-submenu"
         >
           <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
-          <%!-- Client-side: the Retro Games window carries its own LiveView,
-                which loads the catalogue in its own mount. Nothing to fetch
-                here, so nothing to ask the server for. --%>
-          <.window_item
-            window="retro-games"
+          <%!-- A catalogue, not a room: nothing to create and nothing to
+                announce, so it is a plain address in a tab of its own. --%>
+          <.link_item
+            href={Paths.play_path()}
             label={dgettext("ui", "Retro Games")}
             icon_fn={:icon_game_pong}
             disabled={!@chat?}
+            target="_blank"
+            rel="noopener"
             testid="start-menu-item-retro-games"
           />
           <%!-- The arcade keeps scores against a nick, so it needs one that is

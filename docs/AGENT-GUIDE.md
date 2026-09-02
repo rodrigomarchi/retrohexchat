@@ -593,6 +593,6 @@ in `docs/refactor/`.
 
 ## 19. Surfaces: an address of their own
 
-**→ [`guide/surfaces.md`](guide/surfaces.md)** — Read when adding a screen that can live in a browser tab of its own, changing how one is reached, or debugging why a surface behaves differently inside the chat than at its own address. The conference, the P2P session and the space have **no** mount inside the chat. A conference and a P2P session are reached only through the card the chat writes into the conversation when the room is created; a space is a place whose address always works, entered from the conversation's toolbar, and its card is the record of one gathering in it.
+**→ [`guide/surfaces.md`](guide/surfaces.md)** — Read when adding a screen that can live in a browser tab of its own, or changing how one is reached. **No surface has a mount inside the chat**: there is no `"embedded" => true` and no `embedded?` branch anywhere, and a screen with an address is reached only at that address. A conference and a P2P session are reached through the card the chat writes into the conversation when the room is created; a space is a place whose address always works, entered from the conversation's toolbar, and its card is the record of one gathering in it; the games catalogue is a plain link, because a catalogue has nothing to create and nothing to announce.
 
 

@@ -4070,17 +4070,6 @@ msgstr ""
 msgid "Retro Games"
 msgstr "Gry retro"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Retro Games are browser-native RetroHexChat games that can run inside the chat desktop without a peer session. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants use the same game engine foundation as P2P play with an AI controller on the remote side."
-msgstr ""
-"Gry retro to natywne dla przeglądarki gry RetroHexChat działające na "
-"pulpicie czatu bez sesji peer. Hex Pong, Light Trails, warianty Star Duel, "
-"Block Breakers, Hex Warlords, warianty Hex Raid, warianty Hex Outlaw, "
-"warianty Hex Tennis, warianty Hex Invaders, warianty Hex Enduro, warianty "
-"Hex Skiing, warianty Hex Frost i warianty Hex Hockey używają tej samej "
-"podstawy silnika co gra P2P, z kontrolerem SI po stronie zdalnej."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:113
 #, elixir-autogen, elixir-format
 msgid "Hex Boxing"
@@ -4132,30 +4121,10 @@ msgstr "Pixel Tanks"
 msgid "Pixel Tanks also runs there with an AI tank on the remote side."
 msgstr "Pixel Tanks działa tam także z czołgiem SI po stronie zdalnej."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:25
-#, elixir-autogen, elixir-format
-msgid "Choose a game icon in the Retro Games window."
-msgstr "Wybierz ikonę gry w oknie Gry retro."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
-#, elixir-autogen, elixir-format
-msgid "Double-click the Games desktop folder and choose Retro Games, or open Start ▸ Games and choose Retro Games."
-msgstr "Kliknij dwukrotnie folder Games na pulpicie i wybierz Retro Games albo otwórz Start ▸ Games i wybierz Retro Games."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "A game tab and the chat run side by side. Opening one does not close the other, and closing the game tab leaves the chat untouched."
 msgstr "Karta gry i czat działają obok siebie. Otwarcie jednego nie zamyka drugiego, a zamknięcie karty gry nie rusza czatu."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
-#, elixir-autogen, elixir-format
-msgid "Every game also has an address of its own: /play opens the library in a browser tab, and /play/hex_pong opens that game directly. Send someone the address and they land on the same screen."
-msgstr "Każda gra ma też własny adres: /play otwiera bibliotekę w karcie przeglądarki, a /play/hex_pong otwiera od razu tę grę. Wyślij komuś adres, a trafi na ten sam ekran."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "Playing in Its Own Tab"
-msgstr "Granie we własnej karcie"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:53
 #, elixir-autogen, elixir-format
@@ -4257,3 +4226,32 @@ msgstr "Dlaczego link do rozgrywki przestał działać"
 #, elixir-autogen, elixir-format
 msgid "Cancel, in the match room, closes it and kills its link immediately — it is there for the host, and only until the match starts. To play again, open the game and press Play with someone for a new room and a new address."
 msgstr "Anuluj, w pokoju rozgrywki, zamyka go i natychmiast zabija jego link — należy do gospodarza i istnieje tylko do startu rozgrywki. Żeby zagrać ponownie, otwórz grę i naciśnij Zagraj z kimś, aby dostać nowy pokój i nowy adres."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Choose a game icon in the library."
+msgstr "Wybierz ikonę gry w bibliotece."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Double-click the Games desktop folder and choose Retro Games, or open Start ▸ Games and choose Retro Games. Either one opens the library in a browser tab of its own, and the chat stays exactly where it was."
+msgstr "Kliknij dwukrotnie folder Games na pulpicie i wybierz Retro Games albo otwórz Start ▸ Games i wybierz Retro Games. Jedno i drugie otwiera bibliotekę we własnej karcie przeglądarki, a czat zostaje dokładnie tam, gdzie był."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Every game has an address of its own: /play opens the library and /play/hex_pong opens that game directly. Send someone the address and they land on the same screen."
+msgstr "Każda gra ma własny adres: /play otwiera bibliotekę, a /play/hex_pong otwiera od razu tę grę. Wyślij komuś adres, a trafi na ten sam ekran."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Retro Games are browser-native RetroHexChat games you play without a peer session. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants use the same game engine foundation as P2P play with an AI controller on the remote side."
+msgstr "Gry retro to natywne dla przeglądarki gry RetroHexChat, w które grasz bez sesji peer. Hex Pong, Light Trails, warianty Star Duel, Block Breakers, Hex Warlords, warianty Hex Raid, warianty Hex Outlaw, warianty Hex Tennis, warianty Hex Invaders, warianty Hex Enduro, warianty Hex Skiing, warianty Hex Frost i warianty Hex Hockey używają tej samej podstawy silnika co gra P2P, z kontrolerem SI po stronie zdalnej."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "The address is the door"
+msgstr "Adres jest drzwiami"

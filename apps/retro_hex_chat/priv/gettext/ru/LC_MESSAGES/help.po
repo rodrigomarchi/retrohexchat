@@ -4692,11 +4692,6 @@ msgstr "Ретро-игры"
 msgid "retro games"
 msgstr "ретро-игры"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1829
-#, elixir-autogen, elixir-format
-msgid "Play browser-native RetroHexChat games solo against AI inside the chat desktop. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants are available."
-msgstr "Играйте в браузерные игры RetroHexChat против ИИ внутри рабочего стола чата. Доступны Hex Pong, Light Trails, варианты Star Duel, Block Breakers, Hex Warlords, варианты Hex Raid, варианты Hex Outlaw, варианты Hex Tennis, варианты Hex Invaders, варианты Hex Enduro, варианты Hex Skiing, варианты Hex Frost и варианты Hex Hockey."
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1834
 #, elixir-autogen, elixir-format
 msgid "Hex Boxing is also available."
@@ -4963,44 +4958,42 @@ msgstr "Пункты сгруппированы на один уровень, и
 msgid "A P2P session always runs in a browser tab of its own — the chat has no window for one. The card in the private message is the door; following it gives the session the whole window and leaves the chat where it was. Share there mints a link you can paste anywhere; only the two people in the session can actually enter it. A session can only be live in one window at a time — opening it somewhere else moves it there, and the window that lost it says so and offers Bring it back here, which is why the chat offers a way to the tab you already have instead of a second one. Closing the tab is not ending the session; only End session, which asks first, is final."
 msgstr "Сессия P2P всегда работает в отдельной вкладке браузера — в чате для неё нет окна. Карточка в личном сообщении и есть дверь; перейдя по ней, сессия получает всё окно, а разговор остаётся на месте. «Поделиться» там создаёт ссылку, которую можно вставить куда угодно; войти на самом деле могут только двое участников сессии. Сессия может быть активна только в одном окне одновременно — открытие её в другом месте переносит её туда, а окно, которое её потеряло, говорит об этом и предлагает «Вернуть сюда»; именно поэтому чат предлагает путь к уже открытой вкладке, а не вторую. Закрытие вкладки не завершает сессию; завершает только «Завершить сессию», которое сначала спрашивает."
 
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3654
 #, elixir-autogen, elixir-format
 msgid "A multiplayer 8-bit virtual space built into every channel and every private conversation. Space, beside the tabs, opens it in a browser tab of its own — the conversation stays where it is, and the map gets a whole window instead of competing with the chat for the browser. Move with the Arrow keys, WASD or the on-screen pad in the bottom-right corner — tap for a single step or hold to walk continuously; Space or the pad's sword button swings your weapon. The translucent button in the top-right corner switches to fullscreen and back. Back to Chat, along the bottom edge, returns to the conversation."
 msgstr "Многопользовательское восьмибитное виртуальное пространство в каждом канале и в каждом личном разговоре. Space рядом с вкладками открывает его в отдельной вкладке браузера — разговор остаётся на месте, а карта получает целое окно вместо того, чтобы делить браузер с чатом. Двигайтесь стрелками, WASD или экранным падом в правом нижнем углу — нажмите для одного шага или удерживайте, чтобы идти непрерывно; Пробел или кнопка меча на паде наносит удар оружием. Полупрозрачная кнопка в правом верхнем углу переключает полноэкранный режим и обратно. «Назад в чат» по нижнему краю возвращает к разговору."
-
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3731
 #, elixir-autogen, elixir-format
 msgid "A space always runs in a browser tab of its own, opened with Space beside the conversation's tabs. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back. If you already have that tab open, the entry says In another tab and takes you to the one you have rather than opening a second."
 msgstr "Пространство всегда работает в отдельной вкладке браузера, открываемой кнопкой Space рядом с вкладками разговора. Пространство не начинается и не заканчивается, поэтому его адрес остаётся действительным: добавьте его в закладки, и он вернёт вас обратно. Если эта вкладка уже открыта, пункт говорит «В другой вкладке» и ведёт к той, что у вас есть, вместо того чтобы открывать вторую."
 
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3771
 #, elixir-autogen, elixir-format
 msgid "Share, on the character picker, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
 msgstr "«Поделиться» в выборе персонажа создаёт ссылку, которую можно вставить куда угодно. Вставленная в разговор, она рисует карточку вместо голого адреса. Эта ссылка называет место, а не один вечер в нём, поэтому она продолжает работать после того, как все разошлись. Она несёт в себе, о каком пространстве речь, и никогда — разрешение в нём находиться: пространство канала по-прежнему требует, чтобы перешедший по ссылке был в этом канале, а личное пространство по-прежнему принадлежит двоим. Создать её может только зарегистрированный ник."
-
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3751
 #, elixir-autogen, elixir-format
 msgid "Walking into an empty space posts a card in the conversation it belongs to, so everybody reading can see that something is happening and follow it in. The card counts who is inside while it lasts, and once the last person leaves it becomes the record of what happened: how long the gathering ran, and how many people came. Walking into a space somebody is already in posts nothing — one gathering, one card. Only a registered nickname posts one; a guest still walks in as usual."
 msgstr "Вход в пустое пространство публикует карточку в разговоре, которому оно принадлежит, чтобы все читающие видели, что там что-то происходит, и могли зайти следом. Пока встреча идёт, карточка считает, кто внутри; когда уходит последний человек, она становится записью о том, что было: сколько длилась встреча и сколько разных людей пришло. Вход в пространство, где кто-то уже есть, не публикует ничего — одна встреча, одна карточка. Публикует её только зарегистрированный ник; гость всё равно заходит как обычно."
 
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3686
 #, elixir-autogen, elixir-format
 msgid "When you enter a Space, a character picker appears first: choose from the classic Hero or one of seven classes — Sorceress, Knight, Archer, Barbarian, Rogue, Cleric or Monk. Each shows an animated preview and has its own walking and attack animations; click one to enter the map wearing it, and everyone in the space sees your choice. It also says who is inside right now, before you commit to walking in. The picker shows again each time you enter, defaulting to whoever you chose last time on this browser."
 msgstr "Когда вы входите в Пространство, сначала появляется выбор персонажа: классический Герой или один из семи классов — Чародейка, Рыцарь, Лучница, Варвар, Разбойница, Жрица или Монах. У каждого есть анимированное превью и собственные анимации ходьбы и атаки; нажмите на одного, чтобы войти на карту в его облике, и все в пространстве увидят ваш выбор. Он также говорит, кто внутри прямо сейчас, до того как вы решитесь войти. Выбор появляется при каждом входе и по умолчанию отмечает того, кого вы выбрали в прошлый раз в этом браузере."
-
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3739
 #, elixir-autogen, elixir-format
 msgid "Who Is in the Space Right Now"
 msgstr "Кто сейчас в пространстве"
 
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3747
 #, elixir-autogen, elixir-format
 msgid "someone is in the space"
 msgstr "кто-то в пространстве"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1829
+#, elixir-autogen, elixir-format
+msgid "Play browser-native RetroHexChat games solo against AI. Retro Games, in the Games folder or under Start ▸ Games, opens the library in a browser tab of its own, and the chat stays where it was. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants are available."
+msgstr "Играйте в браузерные игры RetroHexChat против ИИ. Retro Games — в папке Games или в меню Пуск ▸ Games — открывает библиотеку в отдельной вкладке браузера, а чат остаётся на месте. Hex Pong, Light Trails, варианты Star Duel, Block Breakers, Hex Warlords, варианты Hex Raid, варианты Hex Outlaw, варианты Hex Tennis, варианты Hex Invaders, варианты Hex Enduro, варианты Hex Skiing, варианты Hex Frost и варианты Hex Hockey доступны."

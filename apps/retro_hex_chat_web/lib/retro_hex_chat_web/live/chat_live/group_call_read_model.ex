@@ -136,10 +136,9 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallReadModel do
   The call this person is watching from somewhere else, if there is one.
 
   The status zone's third shape. A conference can be live, this reader can be
-  in it, and the screen showing it can be a tab that is not this one — and
-  until now the chat drew nothing at all in that case, because everything it
-  draws about a call comes from the embedded surface's assign, which does not
-  exist when the surface is elsewhere.
+  in it, and the screen showing it is always a tab that is not this one — the
+  chat has no window for a call any more, so without this it would draw
+  nothing at all about a call its reader is sitting in.
 
   Derived rather than assigned: both halves are already here. The summaries
   know the room's address and `Live.OpenSurfaces` knows which addresses are

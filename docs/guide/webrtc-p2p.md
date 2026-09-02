@@ -13,12 +13,12 @@ domain concept. `/lobby/:token` is still only a redirect and there is still no
 lobby LiveView — do not invent or search for one.
 
 **A session does have an address, and it is `/p2p/:token`.**
-`RetroHexChatWeb.App.P2PLive` is one module with two mounts: the page at that
-address, and the child the chat renders inside its `p2p-call` window. It is not
-the old lobby page coming back — that one had a chat of its own, which is the
-fork this repository refuses. This is the same implementation mounted somewhere
-else. What stayed in the chat is the invite, because creating a session *is*
-sending a private message, and conversation is the chat's.
+`RetroHexChatWeb.App.P2PLive` serves it and nothing else — the chat has no
+window for a session any more. It is not the old lobby page coming back: that
+one had a chat of its own, which is the fork this repository refuses. What
+stayed in the chat is the **invite**, because creating a session *is* sending a
+private message, and conversation is the chat's. The card that invite draws is
+the door, for both people.
 
 ### 8.1 Session model
 

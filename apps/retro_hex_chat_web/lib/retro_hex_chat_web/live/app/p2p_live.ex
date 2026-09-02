@@ -1,12 +1,10 @@
 defmodule RetroHexChatWeb.App.P2PLive do
   @moduledoc """
-  A one-to-one P2P session, as a surface of its own.
+  A one-to-one P2P session, at an address of its own.
 
-  One module, two mounts: this is the page at `/p2p/:token` and it is also what
-  the chat's P2P window renders. Nothing about a session is written twice — the
-  difference between the two is where the process hangs, not what it does.
-  Everything that genuinely differs goes through
-  `RetroHexChatWeb.Live.SurfaceHost`.
+  The page at `/p2p/:token`, and the only place a session is rendered. The chat
+  has no window for one: the card in the private message is the door, and
+  following it gives the session the whole window.
 
   Two states, and you always arrive at the first: the **starting room**, where
   you see who is here, pick your devices and press `[Ready]`, and **inside**.
@@ -45,7 +43,6 @@ defmodule RetroHexChatWeb.App.P2PLive do
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.Live.P2PConfirmDialog
-  alias RetroHexChatWeb.Live.SurfaceHost, as: Host
   alias RetroHexChatWeb.P2PLive.Components.P2PSessionConsole
   alias RetroHexChatWeb.P2PLive.Events
   alias RetroHexChatWeb.ShareLinkRef
@@ -55,8 +52,6 @@ defmodule RetroHexChatWeb.App.P2PLive do
   def mount(params, session, socket) do
     socket =
       assign(socket,
-        embedded?: session["embedded"] == true,
-        surface_tag: :p2p,
         nickname: session["nickname"] || socket.assigns[:surface_nickname],
         # The device preference is the person's, not the screen's: the same
         # terminal that remembered a camera for the chat's setup dialog has to
@@ -65,7 +60,6 @@ defmodule RetroHexChatWeb.App.P2PLive do
         client_info: session["client_info"] || %{},
         p2p_session: nil,
         setup: nil,
-        host_snapshot: nil,
         notice: nil,
         share_url: nil,
         share_slug: nil,
@@ -80,8 +74,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
         {:ok,
          socket
          |> assign(setup: Events.initial_setup(socket), match_game: match_game(db_session))
-         |> enter(db_session, user_id, role)
-         |> publish()}
+         |> enter(db_session, user_id, role)}
 
       {:error, message} ->
         {:ok, assign(socket, denied: message)}
@@ -103,22 +96,12 @@ defmodule RetroHexChatWeb.App.P2PLive do
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
-  def render(%{embedded?: true} = assigns) do
-    ~H"""
-    <div class="h-full min-h-0">
-      <.p2p_body {assigns} />
-    </div>
-    """
-  end
-
   def render(assigns) do
     ~H"""
     <%!-- The same shell every other desktop screen uses: the workspace only
           has a height because something above it does. --%>
     <div class="bg-background text-text font-system flex h-screen flex-col">
-      <%!-- This tab answers when the chat asks for it by address. Only in the
-            standalone render: embedded, the address is the chat's own and the
-            chat already answers for it. --%>
+      <%!-- This tab answers when the chat asks for it by address. --%>
       <div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
       <.desktop id="p2p-desktop" persist_key="p2p" class="flex-1" data-testid="p2p-desktop">
         <.desktop_window
@@ -193,12 +176,6 @@ defmodule RetroHexChatWeb.App.P2PLive do
             on_share="share_p2p"
             on_revoke="revoke_p2p"
             class="min-w-0 flex-1 justify-start"
-          />
-          <.surface_tab_link
-            :if={@embedded?}
-            path={Paths.p2p_path(@p2p_session.token)}
-            open?={OpenSurfaces.open?(@open_surface_paths, Paths.p2p_path(@p2p_session.token))}
-            testid="p2p-open-in-tab"
           />
         </:footer>
       </.p2p_starting_room>
@@ -333,62 +310,15 @@ defmodule RetroHexChatWeb.App.P2PLive do
 
   def handle_event(event, params, socket) do
     {_halted, socket} = Events.handle_event(event, params, socket)
-    {:noreply, publish(socket)}
+    {:noreply, socket}
   end
 
   @impl true
   @spec handle_info(term(), Socket.t()) :: {:noreply, Socket.t()}
-  # The chat forwards the window chrome it still owns: the X lands on the
-  # chat's window, this session is what it means.
-  def handle_info({:p2p_surface_command, {:event, event}}, socket) do
-    {_halted, socket} = Events.handle_event(event, %{}, socket)
-    {:noreply, publish(socket)}
-  end
-
-  def handle_info({:p2p_surface_command, {:event, event, params}}, socket) do
-    {_halted, socket} = Events.handle_event(event, params, socket)
-    {:noreply, publish(socket)}
-  end
-
   def handle_info(message, socket) do
     {_halted, socket} = Events.handle_info(message, socket)
-    {:noreply, publish(socket)}
+    {:noreply, socket}
   end
-
-  defp publish(socket), do: Host.publish(socket, host_snapshot(socket))
-
-  @doc """
-  What the host is told about the session — public so its shape is testable.
-
-  The nickname, the state, whether this page still holds the seat, the transport
-  policy, and the three summaries the chat's status zone turns into facets.
-  Nothing else: the chat draws a taskbar button and a status zone, and reads no
-  media state it is not carrying.
-  """
-  @spec host_snapshot(Socket.t()) :: map() | nil
-  def host_snapshot(%{assigns: %{p2p_session: %{} = p2p}}) do
-    %{
-      token: p2p.token,
-      user_id: p2p.user_id,
-      peer_nick: p2p.peer_nick,
-      role: p2p.role,
-      state: p2p.state,
-      # The seat moved to another page of this person's. Without it the host's
-      # status zone keeps reporting the last state this page was in — a
-      # sentence that was true a moment ago, beside a surface already saying
-      # otherwise. `publish/1` compares snapshots, so a field the snapshot does
-      # not carry is a change the host is never told about at all.
-      displaced: Map.get(p2p, :displaced, false),
-      turn_configured: p2p.turn_configured,
-      turn_only: p2p.turn_only,
-      recovery: p2p.recovery,
-      call_summary: p2p.call_summary,
-      file_summary: p2p.file_summary,
-      game_summary: p2p.game_summary
-    }
-  end
-
-  def host_snapshot(_socket), do: nil
 
   # The creator of a pending invite is subscribed but has not taken a seat: a
   # pending invite is a card, not a connection, and joining before the peer

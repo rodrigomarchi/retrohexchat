@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Window
 
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Components.UI.LanguageMenu
   alias RetroHexChatWeb.Icons
@@ -436,7 +437,12 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
   defp games_items(cap) do
     [
-      window("retro-games", dgettext("ui", "Retro Games"), :icon_game_pong,
+      # A catalogue, not a room: nothing to create and nothing to announce, so
+      # it is a plain address opened in a tab of its own like every other
+      # screen that is not the chat.
+      link(Paths.play_path(), dgettext("ui", "Retro Games"), :icon_game_pong,
+        target: "_blank",
+        rel: "noopener",
         disabled: !cap.chat?,
         testid: "desktop-launcher-item-retro-games"
       ),

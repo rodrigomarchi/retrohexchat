@@ -3706,15 +3706,6 @@ msgstr "在复古游戏单人模式中，你控制左侧城堡护盾，AI 控制
 msgid "Retro Games"
 msgstr "复古游戏"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Retro Games are browser-native RetroHexChat games that can run inside the chat desktop without a peer session. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants use the same game engine foundation as P2P play with an AI controller on the remote side."
-msgstr ""
-"复古游戏是浏览器原生的 RetroHexChat 游戏，无需对等会话即可在聊天桌面中运行。Hex Pong、Light Trails、Star Duel"
-" 变体、Block Breakers、Hex Warlords、Hex Raid 变体、Hex Outlaw 变体、Hex Tennis 变体、Hex "
-"Invaders 变体、Hex Enduro 变体、Hex Skiing 变体、Hex Frost 变体和 Hex Hockey 变体使用与 P2P "
-"对战相同的游戏引擎基础，并由 AI 控制远端一侧。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:113
 #, elixir-autogen, elixir-format
 msgid "Hex Boxing"
@@ -3756,30 +3747,10 @@ msgstr "Pixel Tanks"
 msgid "Pixel Tanks also runs there with an AI tank on the remote side."
 msgstr "Pixel Tanks 也在那里运行，远端一侧由 AI 坦克控制。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:25
-#, elixir-autogen, elixir-format
-msgid "Choose a game icon in the Retro Games window."
-msgstr "在复古游戏窗口中选择一个游戏图标。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
-#, elixir-autogen, elixir-format
-msgid "Double-click the Games desktop folder and choose Retro Games, or open Start ▸ Games and choose Retro Games."
-msgstr "双击桌面上的 Games 文件夹并选择 Retro Games，或者打开「开始」▸ Games 并选择 Retro Games。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "A game tab and the chat run side by side. Opening one does not close the other, and closing the game tab leaves the chat untouched."
 msgstr "游戏标签页和聊天并行运行。打开一个不会关闭另一个，关闭游戏标签页也不会影响聊天。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
-#, elixir-autogen, elixir-format
-msgid "Every game also has an address of its own: /play opens the library in a browser tab, and /play/hex_pong opens that game directly. Send someone the address and they land on the same screen."
-msgstr "每个游戏也都有自己的地址：/play 在浏览器标签页中打开游戏库，/play/hex_pong 直接打开那个游戏。把地址发给别人，他们会看到同一个画面。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "Playing in Its Own Tab"
-msgstr "在独立标签页中游玩"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:53
 #, elixir-autogen, elixir-format
@@ -3881,3 +3852,32 @@ msgstr "对局链接为什么会失效"
 #, elixir-autogen, elixir-format
 msgid "Cancel, in the match room, closes it and kills its link immediately — it is there for the host, and only until the match starts. To play again, open the game and press Play with someone for a new room and a new address."
 msgstr "对局房间里的「取消」会关闭房间并立刻让链接失效——它属于主持人，而且只在对局开始之前存在。想再玩一局，就打开游戏并按下「和别人一起玩」，得到一个新房间和一个新地址。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Choose a game icon in the library."
+msgstr "在游戏库中选择一个游戏图标。"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Double-click the Games desktop folder and choose Retro Games, or open Start ▸ Games and choose Retro Games. Either one opens the library in a browser tab of its own, and the chat stays exactly where it was."
+msgstr "双击桌面上的 Games 文件夹并选择 Retro Games，或者打开「开始」▸ Games 并选择 Retro Games。两者都会在独立的浏览器标签页中打开游戏库，而聊天完全留在原处。"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Every game has an address of its own: /play opens the library and /play/hex_pong opens that game directly. Send someone the address and they land on the same screen."
+msgstr "每个游戏都有自己的地址：/play 打开游戏库，/play/hex_pong 直接打开那个游戏。把地址发给别人，他们会看到同一个画面。"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Retro Games are browser-native RetroHexChat games you play without a peer session. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants use the same game engine foundation as P2P play with an AI controller on the remote side."
+msgstr "复古游戏是浏览器原生的 RetroHexChat 游戏，无需对等会话即可游玩。Hex Pong、Light Trails、Star Duel 变体、Block Breakers、Hex Warlords、Hex Raid 变体、Hex Outlaw 变体、Hex Tennis 变体、Hex Invaders 变体、Hex Enduro 变体、Hex Skiing 变体、Hex Frost 变体和 Hex Hockey 变体使用与 P2P 对战相同的游戏引擎基础，并由 AI 控制远端一侧。"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "The address is the door"
+msgstr "地址就是那道门"

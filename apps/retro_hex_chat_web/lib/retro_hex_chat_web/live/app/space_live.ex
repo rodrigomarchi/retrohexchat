@@ -146,9 +146,9 @@ defmodule RetroHexChatWeb.App.SpaceLive do
       remember_key={@space && "space:last-avatar"}
     >
       <:footer>
-        <%!-- The invitation is made at the door: a bar over the map would
-              take pixels from the thing the person came for, and the picker is
-              the one screen both hosts show every single time. --%>
+        <%!-- The invitation is made at the door: a bar over the map would take
+              pixels from the thing the person came for, and the picker is the
+              one screen every visit goes through. --%>
         <.share_bar
           url={@share_url}
           available={sharable?(@user_id)}
