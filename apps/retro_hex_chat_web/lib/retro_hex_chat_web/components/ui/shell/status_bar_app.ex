@@ -47,14 +47,11 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   attr :p2p, :map,
     default: nil,
     doc: """
-    P2P session display. `%{label, title, stop_title}` for a session on this
-    screen; `%{label, title, path}` for one this person moved to another tab,
-    which is a link to that tab and carries no End. The zone stays visible on
-    mobile either way.
+    A live P2P session this reader is in, as `%{label, title, path}`. A session
+    is never on the screen showing this bar, so the zone is a link to the tab
+    holding it and carries no End — ending is done from the screen in it. The
+    zone stays visible on mobile.
     """
-
-  attr :on_p2p_click, :any, default: nil
-  attr :on_p2p_stop, :any, default: nil
 
   attr :show_clock, :boolean,
     default: true,
@@ -85,8 +82,6 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         timezone={@timezone}
         group_call={@group_call}
         p2p={@p2p}
-        on_p2p_click={@on_p2p_click}
-        on_p2p_stop={@on_p2p_stop}
         show_clock={@show_clock}
         show_lag={@show_lag}
         show_mute={@show_mute}
@@ -120,11 +115,11 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
 
   attr :p2p, :map,
     default: nil,
-    doc:
-      "Active P2P session display (%{label, title, stop_title}) — the zone stays visible on mobile"
-
-  attr :on_p2p_click, :any, default: nil
-  attr :on_p2p_stop, :any, default: nil
+    doc: """
+    A live P2P session this reader is in, as `%{label, title, path}`. A session
+    is never on this screen, so the zone is always a way over to the tab holding
+    it — there is no control here to end one with.
+    """
 
   attr :show_clock, :boolean,
     default: true,
@@ -174,11 +169,10 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
     </.window_status_bar_field>
 
     <.window_status_bar_field :if={@p2p} class="flex items-center gap-retro-2 min-w-0 px-[2px]">
-      <%!-- The session moved to another page of this person's: a way over to
-            it, and no End beside it, because a session is ended from the
-            screen that is holding it. --%>
+      <%!-- The session is in another page of this person's: a way over to it,
+            and no End beside it, because a session is ended from the screen
+            that is holding it. --%>
       <.link
-        :if={@p2p[:path]}
         href={@p2p.path}
         target="_blank"
         rel="noopener"
@@ -193,31 +187,6 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         <Icons.icon_protocol_p2p_compact class="w-3 h-3 shrink-0" />
         <span class="truncate text-xs">{@p2p.label}</span>
       </.link>
-
-      <button
-        :if={!@p2p[:path]}
-        type="button"
-        class="inline-flex items-center gap-retro-2 min-w-0 h-full min-h-0 bg-transparent"
-        phx-click={@on_p2p_click}
-        title={@p2p.title}
-        aria-label={@p2p.title}
-        data-testid="status-bar-p2p"
-      >
-        <Icons.icon_protocol_p2p_compact class="w-3 h-3 shrink-0" />
-        <span class="truncate text-xs">{@p2p.label}</span>
-        <.p2p_badges p2p={@p2p} />
-      </button>
-      <button
-        :if={!@p2p[:path]}
-        type="button"
-        class="inline-flex items-center justify-center h-full min-h-0 bg-transparent shrink-0"
-        phx-click={@on_p2p_stop}
-        title={@p2p.stop_title}
-        aria-label={@p2p.stop_title}
-        data-testid="status-bar-p2p-stop"
-      >
-        <Icons.icon_btn_disconnect class="w-3 h-3" />
-      </button>
     </.window_status_bar_field>
 
     <%!-- Zone 3: Online buddy count (hidden on mobile) --%>
@@ -291,58 +260,6 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   end
 
   # ── Private helpers ───────────────────────────────────
-
-  attr :p2p, :map, required: true
-
-  defp p2p_badges(assigns) do
-    ~H"""
-    <span
-      class="inline-flex min-w-0 shrink-0 items-center gap-[2px]"
-      data-testid="status-bar-p2p-badges"
-    >
-      <span
-        :for={facet <- @p2p[:facets] || []}
-        class="inline-flex h-4 w-4 items-center justify-center bg-canvas shadow-retro-sunken"
-        title={p2p_facet_title(facet)}
-        data-testid={"status-bar-p2p-facet-#{facet}"}
-      >
-        <.p2p_facet_icon facet={facet} />
-      </span>
-      <span
-        :if={@p2p[:quality]}
-        class="hidden h-4 items-center gap-[1px] bg-canvas px-1 text-[10px] shadow-retro-sunken sm:inline-flex"
-        title={dgettext("ui", "P2P call quality")}
-        data-testid="status-bar-p2p-quality"
-      >
-        <Icons.icon_status_signal class="h-3 w-3" />
-        {@p2p[:quality]}
-      </span>
-      <span
-        :if={@p2p[:turn_only]}
-        class="inline-flex h-4 w-4 items-center justify-center bg-canvas shadow-retro-sunken"
-        title={dgettext("ui", "P2P privacy relay active")}
-        data-testid="status-bar-p2p-relay"
-      >
-        <Icons.icon_privacy class="h-3 w-3" />
-      </span>
-    </span>
-    """
-  end
-
-  attr :facet, :atom, required: true
-
-  defp p2p_facet_icon(assigns) do
-    ~H"""
-    <Icons.icon_camera :if={@facet == :call} class="h-3 w-3" />
-    <Icons.icon_file_send :if={@facet == :file} class="h-3 w-3" />
-    <Icons.icon_joystick :if={@facet == :game} class="h-3 w-3" />
-    """
-  end
-
-  defp p2p_facet_title(:call), do: dgettext("ui", "P2P call active")
-  defp p2p_facet_title(:file), do: dgettext("ui", "P2P file transfer active")
-  defp p2p_facet_title(:game), do: dgettext("ui", "P2P game active")
-  defp p2p_facet_title(_facet), do: dgettext("ui", "P2P feature active")
 
   @spec buddy_count_label(non_neg_integer()) :: String.t()
   defp buddy_count_label(count),

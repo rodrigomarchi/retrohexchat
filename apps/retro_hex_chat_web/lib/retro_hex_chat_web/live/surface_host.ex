@@ -111,21 +111,6 @@ defmodule RetroHexChatWeb.Live.SurfaceHost do
   end
 
   @doc """
-  Ask the host to resize the window it keeps this surface in.
-
-  A size belongs to the window manager, and a surface that is the page has no
-  window manager: standalone this is nothing, and that is not a missing
-  feature — a page resizing itself would be a tab fighting the browser.
-  """
-  @spec geometry(Socket.t(), map()) :: Socket.t()
-  def geometry(%{assigns: %{embedded?: true}} = socket, geometry) do
-    send(socket.parent_pid, {:surface_geometry, tag(socket), geometry})
-    socket
-  end
-
-  def geometry(socket, _geometry), do: socket
-
-  @doc """
   Hand the host the little it draws about this surface.
 
   Sent only when it changes — the chat repaints a taskbar button and a status

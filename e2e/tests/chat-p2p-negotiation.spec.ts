@@ -99,16 +99,41 @@ async function addLatency(page: Page, latencyMs: number) {
   });
 }
 
-async function connectPair(alice: P2PTestUser, bob: P2PTestUser, options = {}) {
-  await sendP2PInvite(alice, bob.nick);
+type Pair = { aliceSession: Page; bobSession: Page };
+
+/**
+ * Both sides in the starting room, in the tab each of them entered by.
+ *
+ * Nothing is negotiated yet, which is the point: everything this file shapes —
+ * latency, console watchers — has to be in place on the pages that will carry
+ * the signalling before the host releases the first offer.
+ */
+async function readyPair(
+  alice: P2PTestUser,
+  bob: P2PTestUser,
+  options = {},
+): Promise<Pair> {
+  const aliceSession = await sendP2PInvite(alice, bob.nick);
   await bob.chat.expectTabVisible(alice.nick);
   await bob.chat.switchToTab(alice.nick);
-  await acceptP2PInvite(bob.page, options);
-  await startP2PSession(alice);
+  const bobSession = await acceptP2PInvite(bob, options);
+
+  return { aliceSession, bobSession };
+}
+
+async function connectPair(
+  alice: P2PTestUser,
+  bob: P2PTestUser,
+  options = {},
+): Promise<Pair> {
+  const pair = await readyPair(alice, bob, options);
+  await startP2PSession(pair.aliceSession);
 
   await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
     timeout: 20_000,
   });
+
+  return pair;
 }
 
 test.describe("P2P negotiation health", () => {
@@ -119,20 +144,22 @@ test.describe("P2P negotiation health", () => {
 
     const alice = await newP2PUser(browser, "png", { media: true });
     const bob = await newP2PUser(browser, "pnh", { media: true });
-    const aliceFaults = watchSignalling(alice.page);
-    const bobFaults = watchSignalling(bob.page);
 
     try {
-      await connectPair(alice, bob);
+      const { aliceSession, bobSession } = await readyPair(alice, bob);
+      const aliceFaults = watchSignalling(aliceSession);
+      const bobFaults = watchSignalling(bobSession);
 
-      for (const page of [alice.page, bob.page]) {
+      await startP2PSession(aliceSession);
+
+      for (const page of [aliceSession, bobSession]) {
         await expect
           .poll(() => remoteVideoHasVisibleFrame(page), { timeout: 30_000 })
           .toBe(true);
       }
 
       // Once negotiated the picture must stay, not flicker through recovery.
-      for (const page of [alice.page, bob.page]) {
+      for (const page of [aliceSession, bobSession]) {
         const { samples, longestBlankRun } = await holdsVisibleFrames(
           page,
           5_000,
@@ -160,10 +187,12 @@ test.describe("P2P negotiation health", () => {
     const bob = await newP2PUser(browser, "pnr", { media: true });
 
     try {
-      await connectPair(alice, bob);
+      const { aliceSession } = await connectPair(alice, bob);
 
       await expect
-        .poll(() => remoteVideoHasVisibleFrame(alice.page), { timeout: 30_000 })
+        .poll(() => remoteVideoHasVisibleFrame(aliceSession), {
+          timeout: 30_000,
+        })
         .toBe(true);
 
       // Local media is acquired after the data channels have already triggered
@@ -171,7 +200,7 @@ test.describe("P2P negotiation health", () => {
       // means the stalled-media watchdog is asking for restarts while that
       // round is still in flight — which is what makes the picture take
       // seconds to appear instead of arriving with the connection.
-      const offers = await localOffers(alice.page);
+      const offers = await localOffers(aliceSession);
       expect(offers.length).toBeGreaterThan(0);
       expect(offers.length).toBeLessThanOrEqual(3);
     } finally {
@@ -186,26 +215,33 @@ test.describe("P2P negotiation health", () => {
 
     const alice = await newP2PUser(browser, "pni", { media: true });
     const bob = await newP2PUser(browser, "pnj", { media: true });
-    const aliceFaults = watchSignalling(alice.page);
-    const bobFaults = watchSignalling(bob.page);
 
     try {
       // Bob joins without a camera, so his video m-line only appears on the
       // renegotiation his own toggle triggers — media added after the
       // connection settled, which is where the desync used to land.
-      await connectPair(alice, bob, { audio: true, video: false });
+      const { aliceSession, bobSession } = await readyPair(alice, bob, {
+        audio: true,
+        video: false,
+      });
+      const aliceFaults = watchSignalling(aliceSession);
+      const bobFaults = watchSignalling(bobSession);
+
+      await startP2PSession(aliceSession);
 
       await expect
-        .poll(() => remoteVideoHasVisibleFrame(bob.page), { timeout: 30_000 })
+        .poll(() => remoteVideoHasVisibleFrame(bobSession), { timeout: 30_000 })
         .toBe(true);
 
-      await bob.page.getByTestId("p2p-call-enable-video").click();
+      await bobSession.getByTestId("p2p-call-enable-video").click();
 
       await expect
-        .poll(() => remoteVideoHasVisibleFrame(alice.page), { timeout: 30_000 })
+        .poll(() => remoteVideoHasVisibleFrame(aliceSession), {
+          timeout: 30_000,
+        })
         .toBe(true);
 
-      const { longestBlankRun } = await holdsVisibleFrames(alice.page, 4_000);
+      const { longestBlankRun } = await holdsVisibleFrames(aliceSession, 4_000);
       expect(longestBlankRun).toBeLessThanOrEqual(1);
 
       expect(aliceFaults).toEqual([]);
@@ -222,31 +258,39 @@ test.describe("P2P negotiation health", () => {
 
     const alice = await newP2PUser(browser, "pnm", { media: true });
     const bob = await newP2PUser(browser, "pnn", { media: true });
-    const aliceFaults = watchSignalling(alice.page);
 
     try {
-      await connectPair(alice, bob);
+      const { aliceSession, bobSession } = await readyPair(alice, bob);
+      const aliceFaults = watchSignalling(aliceSession);
+
+      await startP2PSession(aliceSession);
 
       await expect
-        .poll(() => remoteVideoHasVisibleFrame(alice.page), { timeout: 30_000 })
+        .poll(() => remoteVideoHasVisibleFrame(aliceSession), {
+          timeout: 30_000,
+        })
         .toBe(true);
 
       // Cycling the camera republishes the track, so `ontrack` fires again with
       // a fresh stream. Swapping the element's srcObject for it cancels the
       // pending play() — the picture can stay black with RTP still arriving.
-      const cameraToggle = bob.page.getByTestId("p2p-call-toggle-camera");
+      const cameraToggle = bobSession.getByTestId("p2p-call-toggle-camera");
       await cameraToggle.click();
       await expect
-        .poll(() => remoteVideoHasVisibleFrame(alice.page), { timeout: 15_000 })
+        .poll(() => remoteVideoHasVisibleFrame(aliceSession), {
+          timeout: 15_000,
+        })
         .toBe(false);
 
       await cameraToggle.click();
 
       await expect
-        .poll(() => remoteVideoHasVisibleFrame(alice.page), { timeout: 30_000 })
+        .poll(() => remoteVideoHasVisibleFrame(aliceSession), {
+          timeout: 30_000,
+        })
         .toBe(true);
 
-      const { longestBlankRun } = await holdsVisibleFrames(alice.page, 4_000);
+      const { longestBlankRun } = await holdsVisibleFrames(aliceSession, 4_000);
       expect(longestBlankRun).toBeLessThanOrEqual(1);
       expect(aliceFaults).toEqual([]);
     } finally {
@@ -270,19 +314,23 @@ test.describe("P2P negotiation health", () => {
 
     const alice = await newP2PUser(browser, "pno", { media: true });
     const bob = await newP2PUser(browser, "pnp", { media: true });
-    const aliceFaults = watchSignalling(alice.page);
-    const bobFaults = watchSignalling(bob.page);
 
     try {
-      await connectPair(alice, bob, { turnOnly: true });
+      const { aliceSession, bobSession } = await readyPair(alice, bob, {
+        turnOnly: true,
+      });
+      const aliceFaults = watchSignalling(aliceSession);
+      const bobFaults = watchSignalling(bobSession);
 
-      for (const page of [alice.page, bob.page]) {
+      await startP2PSession(aliceSession);
+
+      for (const page of [aliceSession, bobSession]) {
         await expect
           .poll(() => remoteVideoHasVisibleFrame(page), { timeout: 60_000 })
           .toBe(true);
       }
 
-      const { longestBlankRun } = await holdsVisibleFrames(alice.page, 5_000);
+      const { longestBlankRun } = await holdsVisibleFrames(aliceSession, 5_000);
       expect(longestBlankRun).toBeLessThanOrEqual(1);
       expect(aliceFaults).toEqual([]);
       expect(bobFaults).toEqual([]);
@@ -298,24 +346,28 @@ test.describe("P2P negotiation health", () => {
 
     const alice = await newP2PUser(browser, "pnk", { media: true });
     const bob = await newP2PUser(browser, "pnl", { media: true });
-    const aliceFaults = watchSignalling(alice.page);
-    const bobFaults = watchSignalling(bob.page);
 
     try {
-      // Signalling rides the LiveView socket, so a slow socket batches
-      // descriptions and candidates that arrive one at a time on a fast one.
-      await addLatency(alice.page, 200);
-      await addLatency(bob.page, 200);
+      const { aliceSession, bobSession } = await readyPair(alice, bob);
+      const aliceFaults = watchSignalling(aliceSession);
+      const bobFaults = watchSignalling(bobSession);
 
-      await connectPair(alice, bob);
+      // Signalling rides the session page's own socket, so the latency goes on
+      // the pages that will carry it — and before the host releases the offer,
+      // because a slow socket batches descriptions and candidates that arrive
+      // one at a time on a fast one.
+      await addLatency(aliceSession, 200);
+      await addLatency(bobSession, 200);
 
-      for (const page of [alice.page, bob.page]) {
+      await startP2PSession(aliceSession);
+
+      for (const page of [aliceSession, bobSession]) {
         await expect
           .poll(() => remoteVideoHasVisibleFrame(page), { timeout: 45_000 })
           .toBe(true);
       }
 
-      const { longestBlankRun } = await holdsVisibleFrames(alice.page, 5_000);
+      const { longestBlankRun } = await holdsVisibleFrames(aliceSession, 5_000);
       expect(longestBlankRun).toBeLessThanOrEqual(1);
 
       expect(aliceFaults).toEqual([]);

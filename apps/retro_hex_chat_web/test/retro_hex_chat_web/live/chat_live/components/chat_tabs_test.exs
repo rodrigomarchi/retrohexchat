@@ -182,11 +182,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
     cases = [
       {:invite_sent, "pending", "P2P invite pending"},
       {:joining, "connecting", "P2P session connecting"},
-      {:connected, "connected", "P2P session active"}
+      {:connected, "connected", "bob"}
     ]
 
     for {state, visual_state, title} <- cases do
-      html = tabs(%{active_pm: "bob", p2p_peer: "BOB", p2p_state: state})
+      html =
+        tabs(%{
+          active_pm: "bob",
+          p2p_pm_sessions: %{"bob" => %{peer_nick: "BOB", state: state, token: "tok"}}
+        })
 
       assert html =~ ~s(data-testid="tab-p2p-glyph")
       assert html =~ ~s(data-p2p-state="#{visual_state}")
@@ -194,28 +198,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
     end
   end
 
-  test "passes P2P activity facets into the peer PM tab glyph" do
+  test "does not glyph a P2P session belonging to someone other than the focused PM" do
     html =
       tabs(%{
-        active_pm: "bob",
-        p2p_session: %{
-          peer_nick: "BOB",
-          state: :connected,
-          call_summary: %{duration: "00:01:00"},
-          file_summary: %{status: "sending"},
-          game_summary: %{active?: true},
-          turn_only: true,
-          turn_configured: true
-        }
+        active_pm: "eve",
+        p2p_pm_sessions: %{"bob" => %{peer_nick: "BOB", state: :connected, token: "tok"}}
       })
-
-    assert html =~ ~s(data-testid="tab-p2p-glyph")
-    assert html =~ ~s(data-p2p-status="live")
-    assert html =~ ~s(data-p2p-facets="call,file,game,relay")
-  end
-
-  test "does not glyph a P2P session belonging to someone other than the focused PM" do
-    html = tabs(%{active_pm: "eve", p2p_peer: "BOB", p2p_state: :connected})
 
     assert tab_labels(html) == ["Status", "eve"]
     refute html =~ ~s(data-testid="tab-p2p-glyph")

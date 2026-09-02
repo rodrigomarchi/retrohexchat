@@ -184,8 +184,21 @@ defmodule RetroHexChat.Lobby do
   """
   @spec active_session_for_user(integer()) :: Session.t() | nil
   def active_session_for_user(user_id) do
-    user_id |> Queries.active_sessions_for_user() |> List.first()
+    user_id |> active_sessions_for_user() |> List.first()
   end
+
+  @doc """
+  Every non-terminal session this user is part of, newest first.
+
+  One person can be in several at once — each with a different peer, each at
+  its own address — so a reader that draws a badge per conversation asks for
+  all of them rather than for the latest.
+
+  Match links this person has minted are excluded: nobody has taken the seat,
+  so there is no conversation for it to belong to.
+  """
+  @spec active_sessions_for_user(integer()) :: [Session.t()]
+  defdelegate active_sessions_for_user(user_id), to: Queries
 
   @doc """
   Returns the most recent non-terminal P2P session between two registered nicks.

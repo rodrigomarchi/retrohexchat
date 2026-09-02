@@ -828,22 +828,6 @@ export class ChatPage {
     await expect(this.searchBar).toBeVisible();
   }
 
-  async openArcadeFromGamesMenu() {
-    await this.gamesMenuTrigger.click();
-    await expect(this.arcadeMenuItem).toBeVisible();
-    await this.arcadeMenuItem.click();
-    await expect(this.arcadeWindow).toBeVisible();
-    await expect(this.arcadeIconGrid).toBeVisible();
-  }
-
-  async openRetroGamesFromGamesMenu() {
-    await this.gamesMenuTrigger.click();
-    await expect(this.retroGamesMenuItem).toBeVisible();
-    await this.retroGamesMenuItem.click();
-    await expect(this.retroGamesWindow).toBeVisible();
-    await expect(this.retroGamesIconGrid).toBeVisible();
-  }
-
   // Both games used to sit on the desktop directly; they are inside the Games
   // folder now, which is the same journey with one door in front of it.
   async openRetroGamesFromDesktopShortcut() {

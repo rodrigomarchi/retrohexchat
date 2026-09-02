@@ -62,7 +62,7 @@ msgstr "Verbinden Sie ein Spiel zu spielen."
 msgid "Connect to send a file."
 msgstr "Verbinden Sie eine Datei zu senden."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex:311
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_media_island.ex:320
 #, elixir-autogen, elixir-format
 msgid "Could not access your microphone or camera."
 msgstr "Kann nicht auf Ihr Mikrofon oder Kamera zugreifen."
@@ -95,7 +95,7 @@ msgstr "Endanruf"
 msgid "End game"
 msgstr "Ende Spiel"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_file_island.ex:148
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_file_island.ex:148
 #, elixir-autogen, elixir-format
 msgid "File transfer completed: %{name}"
 msgstr "Dateiübertragung abgeschlossen: %{name}"
@@ -115,7 +115,7 @@ msgstr "Schwerpunkt"
 msgid "Game in progress"
 msgstr "Spiel im Fortschritt"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/p2p_game_island.ex:159
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_game_island.ex:159
 #, elixir-autogen, elixir-format
 msgid "Game over — %{game}: %{p1} × %{p2}"
 msgstr "Spiel over — %{game}: %{p1} × %{p2}"
@@ -142,9 +142,7 @@ msgstr "Audio starten"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:327
 #, elixir-autogen, elixir-format
-msgid ""
-"Start audio or video — or the peer can, independently. You'll join "
-"automatically."
+msgid "Start audio or video — or the peer can, independently. You'll join automatically."
 msgstr ""
 "Audio oder Video starten – oder der Peer kann unabhängig voneinander. Du "
 "kommst automatisch mit."

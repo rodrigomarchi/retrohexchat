@@ -405,23 +405,56 @@ export function statusBarP2P(page: Page) {
 }
 
 /**
- * Creating the session IS inviting, so `/p2p <nick>` sends the request and
- * drops the host in the starting room. The devices are chosen there, while
- * waiting for an answer — which is why Ready is pressed here and Start is not:
- * Start needs the other side to be ready too.
+ * The card in the conversation is the door, and it opens a tab of its own.
+ *
+ * The chat has no window for a session any more: `/p2p <nick>` writes the
+ * request into the private message with the session's own address on it, and
+ * both people — the one who asked as much as the one who was asked — enter by
+ * following that. The page is returned so a spec drives the session where the
+ * session actually is, and the chat stays the chat.
  */
-export async function sendP2PInvite(user: P2PTestUser, targetNick: string) {
+export async function enterP2PSession(user: P2PTestUser): Promise<Page> {
+  const entry = user.page.getByTestId("p2p-peer-entry");
+
+  await expect(entry).toBeVisible({ timeout: 20_000 });
+  await expect(entry).toHaveAttribute("href", /\/p2p\//);
+
+  const [session] = await Promise.all([
+    user.ctx.waitForEvent("page"),
+    entry.click(),
+  ]);
+
+  await session.waitForLoadState("domcontentloaded");
+  await expect(session.getByTestId("p2p-call-window")).toBeVisible();
+
+  return session;
+}
+
+/**
+ * Creating the session IS inviting, so `/p2p <nick>` sends the request and
+ * writes its card. The host then follows that card into the starting room,
+ * where the devices are chosen while waiting for an answer — which is why
+ * Ready is pressed here and Start is not: Start needs the other side too.
+ */
+export async function sendP2PInvite(
+  user: P2PTestUser,
+  targetNick: string,
+): Promise<Page> {
   await user.chat.sendMessage(`/p2p ${targetNick}`);
-  await expect(user.page.getByTestId("p2p-call-window")).toBeVisible();
-  await expect(user.page.getByTestId("p2p-starting-room")).toBeVisible();
-  await expect(user.page.getByTestId("p2p-room-waiting")).toContainText(
+
+  const session = await enterP2PSession(user);
+
+  await expect(session.getByTestId("p2p-starting-room")).toBeVisible();
+  await expect(session.getByTestId("p2p-room-waiting")).toContainText(
     "Choose your devices",
   );
-  await user.page.getByTestId("p2p-room-ready").click();
-  await expect(user.page.getByTestId("p2p-room-waiting")).toContainText(
+  await session.getByTestId("p2p-room-ready").click();
+  await expect(session.getByTestId("p2p-room-waiting")).toContainText(
     `Waiting for ${targetNick} to accept the invite.`,
   );
-  await expect(user.page.getByTestId("p2p-room-start")).toBeDisabled();
+  await expect(session.getByTestId("p2p-room-start")).toBeDisabled();
+
+  return session;
 }
 
 /**
@@ -429,30 +462,37 @@ export async function sendP2PInvite(user: P2PTestUser, targetNick: string) {
  * has seen both hooks report ready, so waiting for it to become enabled is
  * waiting for the gate the negotiation has always had.
  */
-export async function startP2PSession(user: P2PTestUser) {
-  await expect(user.page.getByTestId("p2p-room-start")).toBeEnabled({
+export async function startP2PSession(session: Page) {
+  await expect(session.getByTestId("p2p-room-start")).toBeEnabled({
     timeout: 20_000,
   });
-  await user.page.getByTestId("p2p-room-start").click();
-  await expect(user.page.getByTestId("p2p-session-console")).toBeVisible();
+  await session.getByTestId("p2p-room-start").click();
+  await expect(session.getByTestId("p2p-session-console")).toBeVisible();
 }
 
+/**
+ * The invited side follows the same card. There is nothing to accept: entering
+ * is the consent, and the only thing the chat still offers about the invite is
+ * refusing it.
+ */
 export async function acceptP2PInvite(
-  page: Page,
+  user: P2PTestUser,
   options: { audio?: boolean; video?: boolean; turnOnly?: boolean } = {},
-) {
-  await expect(page.getByTestId("p2p-peer-entry")).toHaveAttribute(
+): Promise<Page> {
+  await expect(user.page.getByTestId("p2p-peer-entry")).toHaveAttribute(
     "data-p2p-state",
     "pending",
   );
-  await expect(page.getByTestId("session-card-accept")).toHaveCount(0);
-  await expect(page.getByTestId("session-card-decline")).toHaveCount(0);
-  await page.getByTestId("p2p-peer-join").click();
-  await expect(page.getByTestId("p2p-starting-room")).toBeVisible();
-  await expect(page.getByTestId("p2p-setup-preview")).toBeVisible();
+  await expect(user.page.getByTestId("session-card-accept")).toHaveCount(0);
+  await expect(user.page.getByTestId("session-card-decline")).toHaveCount(0);
+
+  const session = await enterP2PSession(user);
+
+  await expect(session.getByTestId("p2p-starting-room")).toBeVisible();
+  await expect(session.getByTestId("p2p-setup-preview")).toBeVisible();
 
   if (options.audio !== undefined) {
-    const audioToggle = page.getByTestId("p2p-setup-audio");
+    const audioToggle = session.getByTestId("p2p-setup-audio");
     await audioToggle.setChecked(options.audio);
     if (options.audio) {
       await expect(audioToggle).toBeChecked();
@@ -462,7 +502,7 @@ export async function acceptP2PInvite(
   }
 
   if (options.video !== undefined) {
-    const videoToggle = page.getByTestId("p2p-setup-video");
+    const videoToggle = session.getByTestId("p2p-setup-video");
     await videoToggle.setChecked(options.video);
     if (options.video) {
       await expect(videoToggle).toBeChecked();
@@ -472,14 +512,18 @@ export async function acceptP2PInvite(
   }
 
   if (options.turnOnly !== undefined) {
-    await page.getByTestId("p2p-setup-advanced").locator("summary").click();
-    await expect(page.getByTestId("p2p-setup-turn-only")).toBeEnabled();
-    await page.getByTestId("p2p-setup-turn-only").setChecked(options.turnOnly);
+    await session.getByTestId("p2p-setup-advanced").locator("summary").click();
+    await expect(session.getByTestId("p2p-setup-turn-only")).toBeEnabled();
+    await session
+      .getByTestId("p2p-setup-turn-only")
+      .setChecked(options.turnOnly);
   }
 
-  await page.getByTestId("p2p-room-ready").click();
+  await session.getByTestId("p2p-room-ready").click();
   // The guest never gets Start: the creator is always the offerer.
-  await expect(page.getByTestId("p2p-room-start")).toHaveCount(0);
+  await expect(session.getByTestId("p2p-room-start")).toHaveCount(0);
+
+  return session;
 }
 
 // --- Remote media observation ---

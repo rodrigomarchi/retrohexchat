@@ -407,7 +407,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N15 | Channel group call reactions send through the conference signaling channel, appear on the remote video tile and participant row, then expire from the tile overlay (features P1) | `tests/chat-group-call.spec.ts` | done |
 | N16 | Channel group call pre-join handles denied microphone/camera permission with a visible warning, retry action, and a receive-only join path that mounts without local tracks (features P0) | `tests/chat-group-call.spec.ts` | done |
 | N17 | Channel group call visual polish renders SVG reaction controls, captures desktop/mobile windows, and asserts the conference panel has no horizontal layout overflow (features P1) | `tests/chat-group-call.spec.ts` | done |
-| N18 | Accepting from the PM header connects both peers inside the chat | `tests/chat-p2p.spec.ts` | done |
+| N18 | Both peers enter the session by the card the invite writes into the private message | `tests/chat-p2p.spec.ts` | done |
 | N19 | The auto-started call carries real video both ways; file transfer and the game share the same connection | `tests/chat-p2p.spec.ts` | done |
 | N20 | pt-BR privacy relay setup connects both peers when TURN is available | `tests/chat-p2p.spec.ts` | done |
 | N21 | Receive-only setup joins without local tracks and keeps remote media reachable | `tests/chat-p2p.spec.ts` | done |
@@ -416,7 +416,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N24 | Failed recovery offers a retry without closing the P2P console | `tests/chat-p2p.spec.ts` | done |
 | N25 | Mini mode, the stats section, and maximize keep the P2P video alive | `tests/chat-p2p.spec.ts` | done |
 | N26 | Declining the invite tells the inviter and clears the pending state | `tests/chat-p2p.spec.ts` | done |
-| N27 | The inviter cancels a pending invite from the status bar | `tests/chat-p2p.spec.ts` | done |
+| N27 | The inviter cancels a pending invite from the room the card led to | `tests/chat-p2p.spec.ts` | done |
 | N28 | A settled call keeps its picture and logs no signalling failure | `tests/chat-p2p-negotiation.spec.ts` | done |
 | N29 | The picture arrives without renegotiating repeatedly | `tests/chat-p2p-negotiation.spec.ts` | done |
 | N30 | Publishing a camera mid-call renegotiates without desync | `tests/chat-p2p-negotiation.spec.ts` | done |
@@ -432,7 +432,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N40 | Conference retry rejoins media when the participant PeerServer disappears | `tests/chat-call-fault-injection.spec.ts` | done |
 | N41 | The conference recovery-error Leave button opens confirm and exits cleanly | `tests/chat-call-fault-injection.spec.ts` | done |
 | N42 | The P2P session at /p2p/:token carries real video both ways, and file transfer and the game share the same connection | `tests/p2p-surface.spec.ts` | done |
-| N43 | Opening the session at its own address moves it out of the chat's window, and the displaced window takes it back | `tests/p2p-surface.spec.ts` | done |
+| N43 | A second tab of the same session moves it, and the displaced tab takes it back | `tests/p2p-surface.spec.ts` | done |
 | N44 | Closing the P2P tab does not end the session for the other side | `tests/p2p-surface.spec.ts` | done |
 | N45 | A match link minted inside a game is followed from another browser, the seat is taken and the game runs over the P2P session | `tests/game-open-lobby.spec.ts` | done |
 | N46 | A third person following the same match link is told the seat is taken, and it stays taken after the match ends | `tests/game-open-lobby.spec.ts` | done |

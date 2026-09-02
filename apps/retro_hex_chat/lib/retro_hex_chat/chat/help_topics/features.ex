@@ -1225,38 +1225,34 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "session",
           "private message",
           "invite",
-          "accept",
+          "card",
           "decline",
+          "tab",
           "call",
           "file",
           "game",
           "statistics",
           "status bar",
-          "privacy",
-          "switch"
+          "privacy"
         ],
         icon: :icon_p2p,
         description:
           dgettext(
             "help",
-            "Run a P2P session without leaving the chat: /p2p <nick> sends the request " <>
-              "line into the private message straight away and puts you in the session's " <>
-              "starting room, where you pick your microphone, camera and speaker while you " <>
-              "wait for an answer. The invited person's PM tab opens in the background with " <>
-              "Join/Decline in the PM header; Join takes them to the same room. Nothing is " <>
-              "negotiated until both of you press Ready and the person who invited presses " <>
-              "Start. After Start you get the P2P Session Console — Call, Files, Games and " <>
-              "Stats — reachable again from the P2P menu and the Start menu. The " <>
-              "conversation IS the private message: session events (connected, file " <>
-              "received, game results, who ended it) are saved into the PM history as P2P " <>
-              "lines, and the PM tab shows a small P2P icon while the session is live. The " <>
-              "status bar always shows the active session: click it to bring the console to " <>
-              "the front, or use its stop button to cancel a pending invite or end the " <>
-              "session. You can hold ONE session at a time — accepting a new invite (or " <>
-              "inviting someone else) asks to end the current one first. When a TURN relay " <>
-              "is configured, Privacy relay in the starting room, and Toggle Privacy Mode in " <>
-              "the P2P menu afterwards, force the connection through the relay so your IP " <>
-              "address is never shared with the peer. " <>
+            "/p2p <nick>, or the P2P Session button in a private message, sends the " <>
+              "request line into that conversation straight away. The line carries a card " <>
+              "with the session's own address, and that card is the way in for both of " <>
+              "you — the person who asked uses the same door as the person who was asked. " <>
+              "Following it opens the session in a browser tab of its own, so the chat you " <>
+              "were reading stays exactly where it is. The invited person can refuse " <>
+              "instead: Decline sits beside the card and ends the invitation without " <>
+              "entering anything. You can have a session with more than one person at " <>
+              "once, each in a tab of its own. The conversation IS the private message: " <>
+              "session events (connected, file received, game results, who ended it) are " <>
+              "saved into the PM history as P2P lines, and the PM tab shows a small P2P " <>
+              "icon while the session is live. Once you have the session open somewhere, " <>
+              "the chat's status bar says so and takes you back to that tab rather than " <>
+              "opening a second one. " <>
               "See also: P2P Starting Room, P2P Session in Its Own Tab, Video Call, File " <>
               "Transfer, Private Messages."
           )
@@ -1314,14 +1310,16 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "A P2P session can run in a browser tab of its own. In the starting room, " <>
-              "choose Open in a tab: the session gets the whole window and stops competing " <>
-              "with the chat for the browser. Share there mints a link you can paste " <>
-              "anywhere; only the two people in the session can actually enter it. A " <>
-              "session can only be live in one window at a time — opening it somewhere " <>
-              "else moves it there, and the window that lost it says so and offers Bring it " <>
-              "back here. Closing the tab is not ending the session; the stop button and " <>
-              "the window's X ask first, and only they end it."
+            "A P2P session always runs in a browser tab of its own — the chat has no " <>
+              "window for one. The card in the private message is the door; following it " <>
+              "gives the session the whole window and leaves the chat where it was. Share " <>
+              "there mints a link you can paste anywhere; only the two people in the " <>
+              "session can actually enter it. A session can only be live in one window at " <>
+              "a time — opening it somewhere else moves it there, and the window that lost " <>
+              "it says so and offers Bring it back here, which is why the chat offers a " <>
+              "way to the tab you already have instead of a second one. Closing the tab is " <>
+              "not ending the session; the stop button and the window's X ask first, and " <>
+              "only they end it."
           ),
         see_also: ["feature-p2p-in-chat", "feature-p2p-starting-room"]
       },

@@ -63,8 +63,8 @@ test.describe("Rate-limit and send-error input state", () => {
   // How many sessions a person may create in a window is enforced by
   // `RateLimiter.check_session_rate/3` and covered in its own test. It cannot be
   // reached from the composer any more — a duplicate request is refused before
-  // it counts, and one person holds one session at a time — so what is driven
-  // here is the refusal a user can actually provoke.
+  // it counts — so what is driven here is the refusal a user can actually
+  // provoke.
   test("P2P command errors leave no pending messages and keep input usable (R9)", async ({
     browser,
   }) => {
@@ -74,13 +74,17 @@ test.describe("Rate-limit and send-error input state", () => {
 
     try {
       // Creating the session IS inviting, so /p2p sends the request straight
-      // away and lands the host in the session's starting room.
+      // away and writes its card into the conversation. Nobody is put inside
+      // anything: the card is the door, in a tab of its own.
       await alice.chat.sendMessage(`/p2p ${bob.nick}`);
       await expect(
         alice.chat.page.getByTestId("p2p-starting-room"),
-      ).toBeVisible();
+      ).toHaveCount(0);
+      await expect(
+        alice.chat.page.getByTestId("p2p-peer-entry"),
+      ).toHaveAttribute("href", /\/p2p\//);
       await alice.chat.expectMessageVisible(
-        `P2P request sent to ${bob.nick}. Waiting for response...`,
+        `P2P request sent to ${bob.nick}. Open it from the card below.`,
       );
 
       // Asking again is refused, and the refusal is what this spec is about:

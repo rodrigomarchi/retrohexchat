@@ -52,8 +52,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
        disconnected_channels: MapSet.new(),
        group_call_channels: MapSet.new(),
        group_call_summaries: %{},
-       p2p_peer: nil,
-       p2p_session: nil,
        p2p_pm_sessions: %{},
        conversations_sections: %{},
        channel_user_counts: %{},
@@ -82,8 +80,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
       :disconnected_channels,
       :group_call_channels,
       :group_call_summaries,
-      :p2p_peer,
-      :p2p_session,
       :p2p_pm_sessions,
       :conversations_sections,
       :channel_user_counts,
@@ -156,8 +152,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
           disconnected_channels={MapSet.to_list(@disconnected_channels)}
           group_call_channels={MapSet.to_list(@group_call_channels)}
           group_call_summaries={@group_call_summaries}
-          p2p_peer={@p2p_peer}
-          p2p_session={@p2p_session}
           p2p_pm_sessions={@p2p_pm_sessions}
           open_pm_tabs={@open_pm_tabs}
           pm_conversations={@pm_conversations}

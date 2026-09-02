@@ -22,21 +22,25 @@ resiliencia, use `docs/reference/call-handshake-resilience-map.md`.
 - Estatisticas da conferencia sao uma secao da janela da conferencia, nao uma
   janela/dock separado.
 - P2P usa a mesma logica conceitual da conferencia: a acao vive no contexto da
-  conversa/sessao, nao em um card solto no transcript.
+  conversa/sessao.
+- **Nem P2P nem conferencia tem janela dentro do chat.** Cada sessao vive no seu
+  proprio endereco (`/p2p/:token`, `/call/:token`) e a unica porta e o card
+  escrito na conversa. O chat abre a porta e nao entra por ela.
 - O PM mostra uma entrada `P2P` no topic/header quando pode iniciar, quando ha
-  request pendente, e quando a sessao esta conectada.
-- Convites P2P modernos sao request lines no PM. Start/Join/Decline ficam no
-  header do PM; cards acionaveis de P2P nao fazem parte do fluxo atual.
-- O criador ve o `P2P Session Console` imediatamente apos enviar a request
-  (`invite_sent`). O anchor WebRTC (`p2p-webrtc`) continua desmontado ate o
-  aceite, para nao iniciar signaling antes do consentimento do peer.
+  request pendente, e quando a sessao esta viva — como link para o endereco, ou
+  para a aba que ja esta aberta.
+- Convites P2P sao request lines persistidas no PM, com o card que carrega o
+  endereco da sessao. Quem convidou entra pelo mesmo card; ao lado dele so fica
+  Decline, que e conversa.
+- O anchor WebRTC (`p2p-webrtc`) continua desmontado ate `[Ready]`, para nao
+  iniciar signaling antes das escolhas de dispositivo.
 
 ## Superficies vivas
 
-| Area | Container vivo | Secoes vivas |
-|---|---|---|
-| P2P | `p2p-call` / `p2p-call-window` | Call, Files, Games, Stats |
-| Conferencia | `group-call` / `group-call-window` | Call, People, Stats, Settings |
+| Area | Endereco | Container vivo | Secoes vivas |
+|---|---|---|---|
+| P2P | `/p2p/:token` | `p2p-call` / `p2p-call-window` | Call, Files, Games, Stats |
+| Conferencia | `/call/:token` | `group-call` / `group-call-window` | Call, People, Stats, Settings |
 
 ## Rotas e eventos vivos
 
@@ -44,10 +48,10 @@ P2P:
 
 - `p2p_start_pm_session` inicia P2P a partir do PM header usando as mesmas
   validacoes do `/p2p`.
-- `p2p_console_select` seleciona a secao da sessao.
+- `p2p_console_select` seleciona a secao da sessao, na propria pagina da sessao.
 - `open_p2p_console/2` abre/foca `p2p-call` e grava a secao ativa.
-- Entradas de menu/Start para Files, Games e Stats devem apontar para
-  `p2p_console_select` com `section`, nao para janelas antigas.
+- Nao ha entradas de menu/Start para P2P: tudo que agia sobre a sessao vive na
+  pagina que a segura.
 
 Conferencia:
 
@@ -68,6 +72,7 @@ Nao reintroduzir estes caminhos sem uma decisao explicita de produto:
 - `p2p-games-window`
 - `p2p-stats-window`
 - `group-call-stats`
+- a janela `p2p-call` dentro do chat (e o submenu P2P do Start/menu bar)
 - `group-call-stats-window`
 - `group-call-dock-stats`
 - card acionavel de convite P2P no transcript

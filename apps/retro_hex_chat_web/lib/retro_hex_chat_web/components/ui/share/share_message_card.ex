@@ -3,7 +3,9 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
   A shared link, drawn in the conversation as the room it names.
 
   Three kinds — a conference, a space, a game — and two states each. Live, it
-  says who is in there and offers the way in beside the way to pass it on.
+  says who is in there and offers the way in beside the way to pass it on. The
+  way in opens a tab of its own, because this card is the only door those rooms
+  have and following a door must not close the conversation behind you.
   Ended, it says what happened and offers **the next plausible thing**, never a
   dead end: a call that finished offers the channel it happened in, a match
   somebody already took offers the game itself.
@@ -68,10 +70,19 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
 
       <%!-- A card that has ended keeps a way forward and loses the way in: the
             room is not there to be entered, and a button that says Join and
-            cannot is worse than no button. --%>
+            cannot is worse than no button.
+
+            The way in is a real anchor into a tab of its own. The card is the
+            only door a session has, and following it must not cost the reader
+            the conversation the card is sitting in — the chat stays where it
+            is and the room opens beside it. `rel="noopener"` is not decoration:
+            without it the new tab shares this one's event loop, and a session
+            renegotiating media would be doing it inside the chat's. --%>
       <.button
         :if={not @ended? and @enter_path}
-        navigate={@enter_path}
+        href={@enter_path}
+        target="_blank"
+        rel="noopener"
         size="sm"
         class="shrink-0"
         data-testid="share-message-enter"

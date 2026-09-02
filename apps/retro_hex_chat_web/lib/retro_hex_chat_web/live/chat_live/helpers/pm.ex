@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  alias RetroHexChatWeb.ChatLive.P2PReadModel
   alias RetroHexChatWeb.ChatLive.StreamItem
 
   @spec load_pm_messages_with_pagination(Phoenix.LiveView.Socket.t(), String.t()) ::
@@ -134,16 +135,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   # A PM to the P2P peer counts as session activity: it resets the
   # pre-connection inactivity timers (no-op once connected).
   defp touch_p2p_session(socket, target) do
-    case socket.assigns[:p2p_session] do
-      %{token: token, peer_nick: peer} when is_binary(peer) ->
-        if String.downcase(peer) == String.downcase(target),
-          do: RetroHexChat.Lobby.record_activity(token)
-
-        socket
-
-      _ ->
-        socket
+    case Map.get(P2PReadModel.pm_sessions(socket), String.downcase(target)) do
+      %{token: token} when is_binary(token) -> RetroHexChat.Lobby.record_activity(token)
+      _none -> :ok
     end
+
+    socket
   end
 
   @spec send_plain_message(Phoenix.LiveView.Socket.t(), Session.t(), String.t()) ::

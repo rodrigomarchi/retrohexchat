@@ -61,6 +61,18 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
       assert html =~ ~s(data-copy-text=)
     end
 
+    # The card is the only door these rooms have, so following it must leave
+    # the conversation standing: a tab of its own, and its own event loop.
+    test "the way in opens a tab of its own" do
+      html = render_row(Map.put(@base, :share_card, card()))
+
+      [enter] = Regex.run(~r|<a[^>]*data-testid="share-message-enter"[^>]*>|, html)
+
+      assert enter =~ ~s(target="_blank")
+      assert enter =~ ~s(rel="noopener")
+      refute enter =~ "data-phx-link"
+    end
+
     test "a conference names the channel and counts who is inside" do
       html =
         render_row(

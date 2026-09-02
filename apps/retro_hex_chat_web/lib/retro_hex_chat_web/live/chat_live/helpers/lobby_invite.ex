@@ -3,16 +3,16 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
   Sending a P2P invite, which is the same act as creating the session.
 
   The invite is a real private message: it sends a request line into the PM,
-  notifies the target, switches the sender to that conversation and opens the
-  session's starting room as its creator, and the message carries the session's
-  own address so the line is followable by whoever reads it later.
+  notifies the target, switches the sender to that conversation, and the
+  message carries the session's own address so the line is followable by
+  whoever reads it later.
 
-  With a session already active the invite is NOT delivered yet: the switch
-  confirm opens first, and only confirming ends the current session — the
-  invite goes out when that session actually closes, never before.
+  Nobody is put inside anything by sending it. The card in the conversation is
+  the door, for the person who asked exactly as much as for the person who was
+  asked — which is what makes a session something you *go to*, in a tab of its
+  own, instead of something that opens on top of the chat you were reading.
   """
 
-  import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
@@ -20,24 +20,15 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
   alias RetroHexChat.Chat.Service
   alias RetroHexChat.Lobby
   alias RetroHexChatWeb.ChatLive.Helpers.{Messages, PM}
-  alias RetroHexChatWeb.ChatLive.P2PSessionEvents
+  alias RetroHexChatWeb.ChatLive.P2PReadModel
 
   @spec handle_lobby_invite(Phoenix.LiveView.Socket.t(), map(), map()) ::
           Phoenix.LiveView.Socket.t()
-  def handle_lobby_invite(socket, session, payload) do
-    case socket.assigns[:p2p_session] do
-      nil ->
-        deliver_invite(socket, session, payload)
-
-      p2p ->
-        P2PSessionEvents.open_switch_confirm(socket, p2p.peer_nick, payload.target)
-        assign(socket, p2p_pending: %{kind: :outgoing, payload: payload})
-    end
-  end
+  def handle_lobby_invite(socket, session, payload),
+    do: deliver_invite(socket, session, payload)
 
   @doc """
-  Sends the invite PM, opens the conversation and takes the session's starting
-  room as its creator. Also the continuation after a confirmed switch.
+  Sends the invite PM and opens the conversation the card lands in.
   """
   @spec deliver_invite(Phoenix.LiveView.Socket.t(), map(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -75,18 +66,20 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
     socket = PM.open_pm_conversation(socket, target)
 
     confirm_msg =
-      dgettext("chat", "P2P request sent to %{target}. Waiting for response...", target: target)
+      dgettext("chat", "P2P request sent to %{target}. Open it from the card below.",
+        target: target
+      )
 
     socket
+    |> P2PReadModel.refresh_pm(target)
     |> Messages.system_event(confirm_msg)
     |> push_event("scroll_to_bottom", %{})
-    |> P2PSessionEvents.start_as_creator(token, payload.creator_id)
   end
 
   @spec lobby_invite_content(String.t()) :: String.t()
   def lobby_invite_content(token),
     do:
-      dgettext("chat", "P2P session request. Use the P2P control in this PM. /p2p/%{token}",
+      dgettext("chat", "P2P session request. Open it from the card below. /p2p/%{token}",
         token: token
       )
 end

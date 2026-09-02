@@ -27,8 +27,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     doc: "which desktop the icons are rendered on"
 
   attr :is_admin, :boolean, default: false
-  attr :p2p_active, :boolean, default: false
-  attr :p2p_turn_available, :boolean, default: false
   attr :arcade_available, :boolean, default: false
   attr :windows, :list, default: []
   attr :current_path, :string, default: nil
@@ -85,8 +83,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
   attr :screen, :atom, required: true, values: @screens
   attr :is_admin, :boolean, default: false
-  attr :p2p_active, :boolean, default: false
-  attr :p2p_turn_available, :boolean, default: false
   attr :arcade_available, :boolean, default: false
   attr :windows, :list, default: []
   attr :current_path, :string, default: nil
@@ -140,8 +136,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
   attr :screen, :atom, required: true, values: @screens
   attr :is_admin, :boolean, default: false
-  attr :p2p_active, :boolean, default: false
-  attr :p2p_turn_available, :boolean, default: false
   attr :arcade_available, :boolean, default: false
   attr :windows, :list, default: []
   attr :current_path, :string, default: nil
@@ -265,7 +259,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
         :icon_dialog_perform,
         automation_items(cap)
       ),
-      group(:p2p, dgettext("ui", "P2P"), :icon_p2p, p2p_items(cap)),
       group(:games, dgettext("ui", "Games"), :icon_game_arcade, games_items(cap)),
       group(:account, dgettext("ui", "Account"), :icon_status_user, account_items(cap)),
       group(:admin, dgettext("ui", "Admin"), :icon_shield, admin_items(cap)),
@@ -315,15 +308,11 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   defp capabilities(assigns) do
     screen = assigns.screen
     chat? = screen == :chat
-    p2p_active? = chat? and assigns.p2p_active
 
     %{
       screen: screen,
       chat?: chat?,
       help?: screen == :help,
-      p2p?: p2p_active?,
-      p2p_idle?: chat? and not p2p_active?,
-      p2p_turn_available?: assigns.p2p_turn_available,
       arcade_available?: chat? and assigns.arcade_available,
       admin?: chat? and assigns.is_admin,
       current_path: assigns.current_path,
@@ -442,46 +431,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
         disabled: !cap.chat?
       ),
       window("timers", dgettext("ui", "Timers"), :icon_btn_timers, disabled: !cap.chat?)
-    ]
-  end
-
-  defp p2p_items(cap) do
-    [
-      action(
-        cap,
-        "p2p_how_to_start",
-        dgettext("ui", "Start a P2P Session..."),
-        :icon_protocol_p2p_compact,
-        disabled: !cap.p2p_idle?
-      ),
-      action(cap, "p2p_start_audio", dgettext("ui", "Start Audio Call"), :icon_microphone,
-        disabled: !cap.p2p?
-      ),
-      action(cap, "p2p_start_video", dgettext("ui", "Start Video Call"), :icon_camera,
-        disabled: !cap.p2p?
-      ),
-      action(cap, "p2p_console_select", dgettext("ui", "Send a File..."), :icon_file_send,
-        disabled: !cap.p2p?,
-        value_section: "files",
-        testid: "desktop-launcher-item-p2p-files"
-      ),
-      action(cap, "p2p_console_select", dgettext("ui", "Play a Game..."), :icon_game_arcade,
-        disabled: !cap.p2p?,
-        value_section: "games",
-        testid: "desktop-launcher-item-p2p-games"
-      ),
-      action(cap, "p2p_console_select", dgettext("ui", "P2P Stats"), :icon_status_signal,
-        disabled: !cap.p2p?,
-        value_section: "stats",
-        testid: "desktop-launcher-item-p2p-stats"
-      ),
-      action(cap, "p2p_toggle_privacy", dgettext("ui", "Toggle Privacy Mode"), :icon_lock,
-        disabled: !cap.p2p? or !cap.p2p_turn_available?
-      ),
-      separator(),
-      action(cap, "p2p_end_session", dgettext("ui", "End P2P Session"), :icon_btn_disconnect,
-        disabled: !cap.p2p?
-      )
     ]
   end
 

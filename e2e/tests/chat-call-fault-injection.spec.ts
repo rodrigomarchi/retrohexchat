@@ -145,41 +145,62 @@ async function terminateGroupCallPeer(page: Page) {
   return ids;
 }
 
-async function sendP2PInvite(user: P2PTestUser, targetNick: string) {
-  await user.chat.sendMessage(`/p2p ${targetNick}`);
-  await expect(user.page.getByTestId("p2p-starting-room")).toBeVisible();
-  await user.page.getByTestId("p2p-room-ready").click();
+// The card in the conversation is the door, and it opens a tab of its own.
+async function enterP2PSession(user: P2PTestUser): Promise<Page> {
+  const entry = user.page.getByTestId("p2p-peer-entry");
+  await expect(entry).toHaveAttribute("href", /\/p2p\//, { timeout: 20_000 });
+
+  const [session] = await Promise.all([
+    user.ctx.waitForEvent("page"),
+    entry.click(),
+  ]);
+
+  await session.waitForLoadState("domcontentloaded");
+  return session;
 }
 
-async function acceptP2PInvite(page: Page) {
-  await expect(page.getByTestId("p2p-peer-entry")).toHaveAttribute(
+async function sendP2PInvite(
+  user: P2PTestUser,
+  targetNick: string,
+): Promise<Page> {
+  await user.chat.sendMessage(`/p2p ${targetNick}`);
+  const session = await enterP2PSession(user);
+  await expect(session.getByTestId("p2p-starting-room")).toBeVisible();
+  await session.getByTestId("p2p-room-ready").click();
+  return session;
+}
+
+async function acceptP2PInvite(user: P2PTestUser): Promise<Page> {
+  await expect(user.page.getByTestId("p2p-peer-entry")).toHaveAttribute(
     "data-p2p-state",
     "pending",
   );
-  await page.getByTestId("p2p-peer-join").click();
-  await expect(page.getByTestId("p2p-starting-room")).toBeVisible();
-  await page.getByTestId("p2p-room-ready").click();
+
+  const session = await enterP2PSession(user);
+  await expect(session.getByTestId("p2p-starting-room")).toBeVisible();
+  await session.getByTestId("p2p-room-ready").click();
+  return session;
 }
 
 // The host releases the first offer, which is the gate the negotiation has
 // always had — it just has a button now.
-async function startP2PSession(user: P2PTestUser) {
-  await expect(user.page.getByTestId("p2p-room-start")).toBeEnabled({
+async function startP2PSession(session: Page) {
+  await expect(session.getByTestId("p2p-room-start")).toBeEnabled({
     timeout: 20_000,
   });
-  await user.page.getByTestId("p2p-room-start").click();
-  await expect(user.page.getByTestId("p2p-session-console")).toBeVisible();
+  await session.getByTestId("p2p-room-start").click();
+  await expect(session.getByTestId("p2p-session-console")).toBeVisible();
 }
 
 async function establishP2P(browser: Browser) {
   const alice = await newP2PUser(browser, "fiap", { media: true });
   const bob = await newP2PUser(browser, "fibp", { media: true });
 
-  await sendP2PInvite(alice, bob.nick);
+  const aliceSession = await sendP2PInvite(alice, bob.nick);
   await bob.chat.expectTabVisible(alice.nick);
   await bob.chat.switchToTab(alice.nick);
-  await acceptP2PInvite(bob.page);
-  await startP2PSession(alice);
+  const bobSession = await acceptP2PInvite(bob);
+  await startP2PSession(aliceSession);
 
   await expect(alice.page.getByTestId("status-bar-p2p")).toContainText(
     `P2P: ${bob.nick}`,
@@ -190,7 +211,7 @@ async function establishP2P(browser: Browser) {
     { timeout: 20_000 },
   );
 
-  return { alice, bob };
+  return { alice, bob, aliceSession, bobSession };
 }
 
 async function reportP2PRecoveryFailure(page: Page, reason: string) {
@@ -305,7 +326,7 @@ test.describe("Call fault injection", () => {
     browser,
   }) => {
     test.setTimeout(75_000);
-    const { alice, bob } = await establishP2P(browser);
+    const { alice, bob, bobSession } = await establishP2P(browser);
 
     try {
       await bob.ctx.setOffline(true);
@@ -313,17 +334,17 @@ test.describe("Call fault injection", () => {
         /connection-banner--visible/,
         { timeout: 12_000 },
       );
-      await expect(bob.page.getByTestId("p2p-call-window")).toBeVisible();
-      await expect(bob.page.getByTestId("p2p-session-console")).toBeVisible();
+      await expect(bobSession.getByTestId("p2p-call-window")).toBeVisible();
+      await expect(bobSession.getByTestId("p2p-session-console")).toBeVisible();
       await expect(
-        bob.page.getByTestId("p2p-console-end-session"),
+        bobSession.getByTestId("p2p-console-end-session"),
       ).toBeVisible();
 
       await bob.ctx.setOffline(false);
       await bob.chat.waitUntilConnected();
 
-      await bob.page.getByTestId("p2p-console-end-session").click();
-      await confirmP2PEnd(bob.page);
+      await bobSession.getByTestId("p2p-console-end-session").click();
+      await confirmP2PEnd(bobSession);
 
       await expect(bob.page.getByTestId("status-bar-p2p")).toBeHidden({
         timeout: 10_000,
@@ -341,11 +362,11 @@ test.describe("Call fault injection", () => {
     browser,
   }) => {
     test.setTimeout(75_000);
-    const { alice, bob } = await establishP2P(browser);
+    const { alice, bob, bobSession } = await establishP2P(browser);
 
     try {
-      await openP2PEndFromRecovery(bob.page, "max_retries_exhausted");
-      await confirmP2PEnd(bob.page);
+      await openP2PEndFromRecovery(bobSession, "max_retries_exhausted");
+      await confirmP2PEnd(bobSession);
 
       await expect(bob.page.getByTestId("status-bar-p2p")).toBeHidden({
         timeout: 10_000,
@@ -366,17 +387,18 @@ test.describe("Call fault injection", () => {
     const bob = await newP2PUser(browser, "firb", { media: true });
 
     try {
-      await sendP2PInvite(alice, bob.nick);
+      const aliceSession = await sendP2PInvite(alice, bob.nick);
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
-      await delayNextRemoteOffer(bob.page);
 
-      await acceptP2PInvite(bob.page);
-      await startP2PSession(alice);
-      await waitForDelayedRemoteOffer(bob.page);
+      // The offer is delayed on the page that will apply it, which is the
+      // session's own — the chat carries no signalling any more.
+      const bobSession = await acceptP2PInvite(bob);
+      await delayNextRemoteOffer(bobSession);
+      await startP2PSession(aliceSession);
+      await waitForDelayedRemoteOffer(bobSession);
 
-      await bob.page.reload({ waitUntil: "load" });
-      await bob.chat.waitUntilConnected();
+      await bobSession.reload({ waitUntil: "load" });
 
       await expect(bob.page.getByTestId("status-bar-p2p")).toContainText(
         `P2P: ${alice.nick}`,
@@ -386,15 +408,15 @@ test.describe("Call fault injection", () => {
         `P2P: ${bob.nick}`,
         { timeout: 20_000 },
       );
-      await expect(bob.page.getByTestId("p2p-call-window")).toBeVisible({
+      await expect(bobSession.getByTestId("p2p-call-window")).toBeVisible({
         timeout: 20_000,
       });
 
       await expect
-        .poll(() => p2pRemoteVideoLive(alice.page), { timeout: 30_000 })
+        .poll(() => p2pRemoteVideoLive(aliceSession), { timeout: 30_000 })
         .toBe(true);
       await expect
-        .poll(() => p2pRemoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => p2pRemoteVideoLive(bobSession), { timeout: 30_000 })
         .toBe(true);
     } finally {
       await closeP2PUsers([alice, bob]);
@@ -405,23 +427,24 @@ test.describe("Call fault injection", () => {
     browser,
   }) => {
     test.setTimeout(90_000);
-    const { alice, bob } = await establishP2P(browser);
+    const { alice, bob, aliceSession, bobSession } =
+      await establishP2P(browser);
 
     try {
       await expect
-        .poll(() => p2pRemoteVideoLive(alice.page), { timeout: 30_000 })
+        .poll(() => p2pRemoteVideoLive(aliceSession), { timeout: 30_000 })
         .toBe(true);
       await expect
-        .poll(() => p2pRemoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => p2pRemoteVideoLive(bobSession), { timeout: 30_000 })
         .toBe(true);
 
       await Promise.all([
-        reportP2PRecoveryFailure(alice.page, "simultaneous_recovery"),
-        reportP2PRecoveryFailure(bob.page, "simultaneous_recovery"),
+        reportP2PRecoveryFailure(aliceSession, "simultaneous_recovery"),
+        reportP2PRecoveryFailure(bobSession, "simultaneous_recovery"),
       ]);
 
-      for (const user of [alice, bob]) {
-        const banner = user.page.getByTestId("p2p-recovery-banner");
+      for (const session of [aliceSession, bobSession]) {
+        const banner = session.getByTestId("p2p-recovery-banner");
         await expect(banner).toHaveAttribute(
           "data-p2p-recovery-state",
           "failed",
@@ -430,16 +453,16 @@ test.describe("Call fault injection", () => {
           },
         );
         await expect(banner).toContainText("Retry");
-        await expect(
-          user.page.getByTestId("p2p-retry-connection"),
-        ).toBeEnabled();
+        await expect(session.getByTestId("p2p-retry-connection")).toBeEnabled();
       }
 
       const retryClicks = await Promise.allSettled([
-        alice.page
+        aliceSession
           .getByTestId("p2p-retry-connection")
           .click({ timeout: 2_000 }),
-        bob.page.getByTestId("p2p-retry-connection").click({ timeout: 2_000 }),
+        bobSession
+          .getByTestId("p2p-retry-connection")
+          .click({ timeout: 2_000 }),
       ]);
 
       expect(retryClicks.some((result) => result.status === "fulfilled")).toBe(
@@ -454,17 +477,17 @@ test.describe("Call fault injection", () => {
         `P2P: ${alice.nick}`,
         { timeout: 20_000 },
       );
-      await expect(alice.page.getByTestId("p2p-recovery-banner")).toBeHidden({
+      await expect(aliceSession.getByTestId("p2p-recovery-banner")).toBeHidden({
         timeout: 30_000,
       });
-      await expect(bob.page.getByTestId("p2p-recovery-banner")).toBeHidden({
+      await expect(bobSession.getByTestId("p2p-recovery-banner")).toBeHidden({
         timeout: 30_000,
       });
       await expect
-        .poll(() => p2pRemoteVideoLive(alice.page), { timeout: 30_000 })
+        .poll(() => p2pRemoteVideoLive(aliceSession), { timeout: 30_000 })
         .toBe(true);
       await expect
-        .poll(() => p2pRemoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => p2pRemoteVideoLive(bobSession), { timeout: 30_000 })
         .toBe(true);
     } finally {
       await closeP2PUsers([alice, bob]);

@@ -64,11 +64,6 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
     doc: "which desktop this menu sits on — decides what is reachable"
 
   attr :is_admin, :boolean, default: false
-  attr :p2p_active, :boolean, default: false, doc: "Enables the P2P group while a session exists"
-
-  attr :p2p_turn_available, :boolean,
-    default: false,
-    doc: "Enables privacy mode (needs a configured TURN relay)"
 
   attr :arcade_available, :boolean,
     default: false,
@@ -93,15 +88,10 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
     assigns =
       assigns
       |> assign(:chat?, assigns.screen == :chat)
-      |> assign(:p2p?, assigns.screen == :chat and assigns.p2p_active)
       |> assign(:admin?, assigns.screen == :chat and assigns.is_admin)
       |> assign(:help?, assigns.screen == :help)
       |> assign(:nav_pages, nav_pages())
       |> assign(:locales, locales(assigns))
-
-    # Offering a session to someone who already has one is the one P2P entry
-    # that reads the gate the other way round.
-    assigns = assign(assigns, :p2p_idle?, assigns.chat? and not assigns.p2p_active)
 
     ~H"""
     <div class="relative">
@@ -313,83 +303,6 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             label={dgettext("ui", "Timers")}
             icon_fn={:icon_btn_timers}
             disabled={!@chat?}
-          />
-        </.start_menu_submenu>
-
-        <%!-- Gated twice over: the whole group needs a chat, and every entry
-              needs a live peer session on top of it. The exception is the entry
-              that explains how to get one, which is live precisely while there
-              is none. --%>
-        <.start_menu_submenu
-          label={dgettext("ui", "P2P")}
-          muted={!@p2p? and !@p2p_idle?}
-          testid="start-menu-p2p-submenu"
-        >
-          <:icon><Icons.icon_p2p class="h-4 w-4" /></:icon>
-          <.app_item
-            action="p2p_how_to_start"
-            on_action={@on_action}
-            label={dgettext("ui", "Start a P2P Session...")}
-            icon_fn={:icon_protocol_p2p_compact}
-            disabled={!@p2p_idle?}
-          />
-          <.app_item
-            action="p2p_start_audio"
-            on_action={@on_action}
-            label={dgettext("ui", "Start Audio Call")}
-            icon_fn={:icon_microphone}
-            disabled={!@p2p?}
-          />
-          <.app_item
-            action="p2p_start_video"
-            on_action={@on_action}
-            label={dgettext("ui", "Start Video Call")}
-            icon_fn={:icon_camera}
-            disabled={!@p2p?}
-          />
-          <.app_item
-            action="p2p_console_select"
-            on_action={@on_action}
-            label={dgettext("ui", "Send a File...")}
-            icon_fn={:icon_file_send}
-            disabled={!@p2p?}
-            phx-value-section="files"
-            testid="start-menu-item-p2p-files"
-          />
-          <.app_item
-            action="p2p_console_select"
-            on_action={@on_action}
-            label={dgettext("ui", "Play a Game...")}
-            icon_fn={:icon_game_arcade}
-            disabled={!@p2p?}
-            phx-value-section="games"
-            testid="start-menu-item-p2p-games"
-          />
-          <.app_item
-            action="p2p_console_select"
-            on_action={@on_action}
-            label={dgettext("ui", "P2P Stats")}
-            icon_fn={:icon_status_signal}
-            disabled={!@p2p?}
-            phx-value-section="stats"
-            testid="start-menu-item-p2p-stats"
-          />
-          <%!-- Routing a call through the relay hides both peers' addresses,
-                so it needs a relay to be configured before it can be offered. --%>
-          <.app_item
-            action="p2p_toggle_privacy"
-            on_action={@on_action}
-            label={dgettext("ui", "Toggle Privacy Mode")}
-            icon_fn={:icon_lock}
-            disabled={!@p2p? or !@p2p_turn_available}
-          />
-          <.start_menu_separator />
-          <.app_item
-            action="p2p_end_session"
-            on_action={@on_action}
-            label={dgettext("ui", "End P2P Session")}
-            icon_fn={:icon_btn_disconnect}
-            disabled={!@p2p?}
           />
         </.start_menu_submenu>
 

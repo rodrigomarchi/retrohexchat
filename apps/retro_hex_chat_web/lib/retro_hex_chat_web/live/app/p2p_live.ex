@@ -42,11 +42,11 @@ defmodule RetroHexChatWeb.App.P2PLive do
   alias RetroHexChat.ShareLinks
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
-  alias RetroHexChatWeb.ChatLive.Components.P2PSessionConsole
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.Live.P2PConfirmDialog
   alias RetroHexChatWeb.Live.SurfaceHost, as: Host
+  alias RetroHexChatWeb.P2PLive.Components.P2PSessionConsole
   alias RetroHexChatWeb.P2PLive.Events
   alias RetroHexChatWeb.ShareLinkRef
 

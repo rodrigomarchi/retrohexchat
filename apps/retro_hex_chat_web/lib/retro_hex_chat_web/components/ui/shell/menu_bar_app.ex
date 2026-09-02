@@ -27,12 +27,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
     default: false,
     doc: "Reveals Tools ▸ Bot Management — the one admin window that acts on this chat"
 
-  attr :p2p_active, :boolean, default: false, doc: "Enables the P2P menu while a session exists"
-
-  attr :p2p_turn_available, :boolean,
-    default: false,
-    doc: "Shows the privacy-mode item (needs a configured TURN relay)"
-
   attr :language_return_to, :string, default: "/connect"
   attr :on_action, :any, default: nil
   attr :class, :string, default: nil
@@ -57,8 +51,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         connected={@connected}
         mobile_viewport={@mobile_viewport}
         is_admin={@is_admin}
-        p2p_active={@p2p_active}
-        p2p_turn_available={@p2p_turn_available}
         language_return_to={@language_return_to}
         on_action={@on_action}
       />
@@ -100,15 +92,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         <.tools_menu_items is_admin={@is_admin} on_action={@on_action} />
       </.menu>
 
-      <.menu class="app-menu-bar__desktop-menu" label={dgettext("ui", "P2P")} disabled={!@connected}>
-        <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
-        <.p2p_menu_items
-          p2p_active={@p2p_active}
-          p2p_turn_available={@p2p_turn_available}
-          on_action={@on_action}
-        />
-      </.menu>
-
       <.language_menu
         mode={:app}
         return_to={@language_return_to}
@@ -133,8 +116,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   attr :menu_id, :string, required: true
   attr :connected, :boolean, default: false
   attr :is_admin, :boolean, default: false
-  attr :p2p_active, :boolean, default: false
-  attr :p2p_turn_available, :boolean, default: false
   attr :language_return_to, :string, default: "/connect"
   attr :on_action, :any, default: nil
   attr :mobile_viewport, :any, default: nil
@@ -170,13 +151,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       <:section :if={@reachable and @connected} id="tools">
         <.tools_menu_items is_admin={@is_admin} on_action={@on_action} />
       </:section>
-      <:section :if={@reachable and @connected} id="p2p">
-        <.p2p_menu_items
-          p2p_active={@p2p_active}
-          p2p_turn_available={@p2p_turn_available}
-          on_action={@on_action}
-        />
-      </:section>
       <:section :if={@reachable} id="language">
         <.language_menu_items mode={:app} return_to={@language_return_to} />
       </:section>
@@ -205,12 +179,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         id: "tools",
         label: dgettext("ui", "Tools"),
         icon_fn: :icon_dialog_options,
-        needs_connection: true
-      },
-      %{
-        id: "p2p",
-        label: dgettext("ui", "P2P"),
-        icon_fn: :icon_protocol_p2p_compact,
         needs_connection: true
       },
       %{
@@ -475,75 +443,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       icon_fn={:icon_btn_bot_management}
       label={dgettext("ui", "Bot Management")}
       action="open_bot_dialog"
-      on_action={@on_action}
-    />
-    """
-  end
-
-  attr :p2p_active, :boolean, default: false
-  attr :p2p_turn_available, :boolean, default: false
-  attr :on_action, :any, default: nil
-
-  defp p2p_menu_items(assigns) do
-    ~H"""
-    <.menu_item
-      :if={!@p2p_active}
-      icon_fn={:icon_protocol_p2p_compact}
-      label={dgettext("ui", "Start a P2P Session...")}
-      action="p2p_how_to_start"
-      on_action={@on_action}
-    />
-    <.menu_item
-      :if={@p2p_active}
-      icon_fn={:icon_microphone}
-      label={dgettext("ui", "Start Audio Call")}
-      action="p2p_start_audio"
-      on_action={@on_action}
-    />
-    <.menu_item
-      :if={@p2p_active}
-      icon_fn={:icon_camera}
-      label={dgettext("ui", "Start Video Call")}
-      action="p2p_start_video"
-      on_action={@on_action}
-    />
-    <.menu_item
-      :if={@p2p_active}
-      icon_fn={:icon_file_send}
-      label={dgettext("ui", "Send a File...")}
-      action="p2p_console_select"
-      on_action={@on_action}
-      phx-value-section="files"
-    />
-    <.menu_item
-      :if={@p2p_active}
-      icon_fn={:icon_game_arcade}
-      label={dgettext("ui", "Play a Game...")}
-      action="p2p_console_select"
-      on_action={@on_action}
-      phx-value-section="games"
-    />
-    <.menu_item
-      :if={@p2p_active}
-      icon_fn={:icon_status_signal}
-      label={dgettext("ui", "Statistics")}
-      action="p2p_console_select"
-      on_action={@on_action}
-      phx-value-section="stats"
-    />
-    <.menu_item
-      :if={@p2p_active && @p2p_turn_available}
-      icon_fn={:icon_lock}
-      label={dgettext("ui", "Toggle Privacy Mode")}
-      action="p2p_toggle_privacy"
-      on_action={@on_action}
-    />
-    <.context_menu_separator :if={@p2p_active} />
-    <.menu_item
-      :if={@p2p_active}
-      icon_fn={:icon_btn_disconnect}
-      label={dgettext("ui", "End Session")}
-      action="p2p_end_session"
       on_action={@on_action}
     />
     """

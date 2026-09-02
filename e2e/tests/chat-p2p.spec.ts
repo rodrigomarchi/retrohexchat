@@ -1,6 +1,6 @@
 /**
  * @section N - P2P, File, Call, Game
- * @flow N18 [done] Accepting from the PM header connects both peers inside the chat
+ * @flow N18 [done] Both peers enter the session by the card the invite writes into the private message
  * @flow N19 [done] The auto-started call carries real video both ways; file transfer and the game share the same connection
  * @flow N20 [done] pt-BR privacy relay setup connects both peers when TURN is available
  * @flow N21 [done] Receive-only setup joins without local tracks and keeps remote media reachable
@@ -9,7 +9,7 @@
  * @flow N24 [done] Failed recovery offers a retry without closing the P2P console
  * @flow N25 [done] Mini mode, the stats section, and maximize keep the P2P video alive
  * @flow N26 [done] Declining the invite tells the inviter and clears the pending state
- * @flow N27 [done] The inviter cancels a pending invite from the status bar
+ * @flow N27 [done] The inviter cancels a pending invite from the room the card led to
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -23,15 +23,20 @@ import {
   sendP2PInvite,
   acceptP2PInvite,
   startP2PSession,
+  enterP2PSession,
   remoteVideoLive,
   remoteVideoHasVisibleFrame,
   type P2PTestUser,
 } from "../helpers/p2pFlows";
 
 /**
- * In-chat P2P sessions (docs/plans/p2p-fluxo-como-conferencia.md): PM header
- * entry, accept/decline in place, the status-bar session area, and the real
- * WebRTC link established WITHOUT ever leaving /chat.
+ * P2P sessions, from the conversation that starts one to the tab that holds it.
+ *
+ * The chat has no window for a session any more. `/p2p <nick>` writes a card
+ * carrying the session's own address into the private message, and both people
+ * enter through it — so every test here drives two pages per person: the chat,
+ * which keeps the badge and the way back, and the session, which is everything
+ * else.
  */
 
 function statusBarStop(page: Page) {
@@ -318,33 +323,38 @@ async function remoteVideoIdentity(page: Page) {
 }
 
 test.describe("In-chat P2P session", () => {
-  test("accepting from the PM header connects both peers inside the chat", async ({
+  test("both peers enter the session by the card the invite wrote", async ({
     browser,
   }) => {
     const alice = await newP2PUser(browser, "callermax", { media: true });
     const bob = await newP2PUser(browser, "peermaxxxx", { media: true });
 
     try {
-      await sendP2PInvite(alice, bob.nick);
-      await expect(statusBarP2P(alice.page)).toContainText("waiting for");
+      const aliceSession = await sendP2PInvite(alice, bob.nick);
 
-      const pendingImage = await alice.page
+      // The chat is still the chat: what it says about the session is a way
+      // back to the tab holding it, and nothing that acts on it.
+      await expect(statusBarP2P(alice.page)).toContainText("in another tab");
+      await expect(statusBarStop(alice.page)).toHaveCount(0);
+      await expect(alice.page.getByTestId("chat-window")).toBeVisible();
+
+      const pendingImage = await aliceSession
         .getByTestId("p2p-call-window")
         .screenshot({ path: p2pFlowScreenshot("p2p-pending-console") });
       expect(pendingImage.byteLength).toBeGreaterThan(8_000);
 
-      // Bob receives the PM tab in the background, then accepts from the PM
-      // header — no page navigation and no actionable transcript card.
+      // Bob receives the PM tab in the background, then follows the same card
+      // — no page navigation of the chat, and no actionable transcript card.
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.expectTabUnread(alice.nick, true);
       // Background means no tab of its own — the bar still belongs to #lobby.
       await expect(bob.chat.tab(alice.nick)).toHaveCount(0);
       await bob.chat.switchToTab(alice.nick);
-      await acceptP2PInvite(bob.page);
-      await startP2PSession(alice);
+      const bobSession = await acceptP2PInvite(bob);
+      await startP2PSession(aliceSession);
 
-      // The WebRTC link comes up in place: the status bar flips to the
-      // connected "P2P: <peer>" form on both sides.
+      // The WebRTC link comes up in the two tabs that hold the session, and
+      // each chat says which peer it is with.
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
         timeout: 20_000,
       });
@@ -354,7 +364,7 @@ test.describe("In-chat P2P session", () => {
 
       // The session presents itself as one P2P console and the call
       // auto-starts (mic+camera) on BOTH sides.
-      for (const page of [alice.page, bob.page]) {
+      for (const page of [aliceSession, bobSession]) {
         await expect(page.getByTestId("p2p-call-window")).toBeVisible();
         await expect(page.getByTestId("p2p-session-console")).toBeVisible();
         await expect(page.getByTestId("p2p-console-nav-call")).toBeVisible();
@@ -367,30 +377,43 @@ test.describe("In-chat P2P session", () => {
       }
 
       await expect
-        .poll(() => remoteVideoHasVisibleFrame(alice.page), { timeout: 20_000 })
+        .poll(() => remoteVideoHasVisibleFrame(aliceSession), {
+          timeout: 20_000,
+        })
         .toBe(true);
-      const connectedImage = await alice.page
+      const connectedImage = await aliceSession
         .getByTestId("p2p-call-window")
         .screenshot({ path: p2pFlowScreenshot("p2p-connected-desktop") });
       expect(connectedImage.byteLength).toBeGreaterThan(8_000);
 
-      await alice.page.setViewportSize({ width: 768, height: 1024 });
-      await expectP2PConsoleLayoutStable(alice.page);
-      await expectMediaSessionHeadersStable(alice.page, "p2p-session-console");
-      await alice.page.setViewportSize({ width: 390, height: 844 });
-      await expectMobileSectionNavCue(alice.page, "p2p-console-nav");
-      await expectP2PConsoleLayoutStable(alice.page);
-      await expectMediaSessionHeadersStable(alice.page, "p2p-session-console");
+      await aliceSession.setViewportSize({ width: 768, height: 1024 });
+      await expectP2PConsoleLayoutStable(aliceSession);
+      await expectMediaSessionHeadersStable(
+        aliceSession,
+        "p2p-session-console",
+      );
+      await aliceSession.setViewportSize({ width: 390, height: 844 });
+      await expectMobileSectionNavCue(aliceSession, "p2p-console-nav");
+      await expectP2PConsoleLayoutStable(aliceSession);
+      await expectMediaSessionHeadersStable(
+        aliceSession,
+        "p2p-session-console",
+      );
       await expect
-        .poll(() => remoteVideoHasVisibleFrame(alice.page), { timeout: 10_000 })
+        .poll(() => remoteVideoHasVisibleFrame(aliceSession), {
+          timeout: 10_000,
+        })
         .toBe(true);
-      const mobileImage = await alice.page
+      const mobileImage = await aliceSession
         .getByTestId("p2p-call-window")
         .screenshot({ path: p2pFlowScreenshot("p2p-connected-mobile") });
       expect(mobileImage.byteLength).toBeGreaterThan(8_000);
-      await alice.page.setViewportSize({ width: 1280, height: 720 });
-      await expectP2PConsoleLayoutStable(alice.page);
-      await expectMediaSessionHeadersStable(alice.page, "p2p-session-console");
+      await aliceSession.setViewportSize({ width: 1280, height: 720 });
+      await expectP2PConsoleLayoutStable(aliceSession);
+      await expectMediaSessionHeadersStable(
+        aliceSession,
+        "p2p-session-console",
+      );
 
       // Both PM tabs carry the session glyph, and the persisted P2P line
       // landed in the conversation.
@@ -399,23 +422,22 @@ test.describe("In-chat P2P session", () => {
       ).toBeVisible();
       await alice.chat.expectMessageVisible("P2P session connected");
 
-      // Closing ANY session window means disconnecting: the X on the Call
-      // window opens the warning dialog, and confirming ends the session.
-      await alice.page
-        .getByTestId("p2p-call-window")
-        .locator('[data-window-control="close"]')
-        .click();
-      await expect(alice.page.getByTestId("p2p-confirm-dialog")).toContainText(
-        "disconnects the whole P2P session",
-      );
-      await alice.page.getByTestId("p2p-confirm-dialog-confirm").click();
-      await expect(statusBarP2P(alice.page)).toBeHidden();
+      // Ending is one control and it asks first. The session's window is
+      // pinned — the page IS the session — so there is no X to close, which is
+      // why End Session lives in the console.
+      await aliceSession.getByTestId("p2p-console-end-session").click();
+      await expect(
+        aliceSession.getByTestId("p2p-confirm-dialog"),
+      ).toContainText("Any call, game or file transfer in progress will stop");
+      await aliceSession.getByTestId("p2p-confirm-dialog-confirm").click();
+
+      // The session is over, so both conversations stop advertising it.
+      await expect(statusBarP2P(alice.page)).toBeHidden({ timeout: 10_000 });
       await expect(statusBarP2P(bob.page)).toBeHidden({ timeout: 10_000 });
       await alice.chat.expectMessageVisible("ended the P2P session");
 
       // Ending closes the session console, on both sides.
-      for (const page of [alice.page, bob.page]) {
-        await expect(page.getByTestId("p2p-call-window")).toBeHidden();
+      for (const page of [aliceSession, bobSession]) {
         await expect(page.getByTestId("p2p-session-console")).toBeHidden();
       }
     } finally {
@@ -438,11 +460,11 @@ test.describe("In-chat P2P session", () => {
     });
 
     try {
-      await sendP2PInvite(alice, bob.nick);
+      const aliceSession = await sendP2PInvite(alice, bob.nick);
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
-      await acceptP2PInvite(bob.page);
-      await startP2PSession(alice);
+      const bobSession = await acceptP2PInvite(bob);
+      await startP2PSession(aliceSession);
 
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
         timeout: 20_000,
@@ -450,7 +472,7 @@ test.describe("In-chat P2P session", () => {
 
       // The auto-started call must carry REAL RTP in both directions —
       // live, unmuted remote video tracks, not just visible elements.
-      for (const page of [alice.page, bob.page]) {
+      for (const page of [aliceSession, bobSession]) {
         await expect
           .poll(() => remoteVideoLive(page), { timeout: 30_000 })
           .toBe(true);
@@ -458,11 +480,11 @@ test.describe("In-chat P2P session", () => {
 
       // File transfer over the SAME connection, mid-call: switch to Files
       // inside the session console and send.
-      await openP2PConsoleSection(alice.page, "files");
-      await expect(alice.page.getByTestId("lobby-file-panel")).toBeVisible();
-      await expectP2PConsoleLayoutStable(alice.page);
+      await openP2PConsoleSection(aliceSession, "files");
+      await expect(aliceSession.getByTestId("lobby-file-panel")).toBeVisible();
+      await expectP2PConsoleLayoutStable(aliceSession);
       const fileName = "chat-p2p-during-call.txt";
-      await alice.page.locator("#lobby-file-input").setInputFiles({
+      await aliceSession.locator("#lobby-file-input").setInputFiles({
         name: fileName,
         mimeType: "text/plain",
         buffer: Buffer.from("concurrent call + file payload"),
@@ -470,13 +492,13 @@ test.describe("In-chat P2P session", () => {
 
       // The receiver's Files window surfaces on the offer; accepting
       // downloads the file for real.
-      const bobFilePanel = bob.page.getByTestId("lobby-file-panel");
+      const bobFilePanel = bobSession.getByTestId("lobby-file-panel");
       await expect(bobFilePanel).toBeVisible({ timeout: 15_000 });
       await expect(bobFilePanel.getByTestId("file-transfer")).toContainText(
         fileName,
         { timeout: 15_000 },
       );
-      const downloadPromise = bob.page.waitForEvent("download", {
+      const downloadPromise = bobSession.waitForEvent("download", {
         timeout: 20_000,
       });
       await bobFilePanel.getByTestId("file-transfer-accept").click();
@@ -488,19 +510,19 @@ test.describe("In-chat P2P session", () => {
 
       // A game joins the party on the same connection: switch to Games,
       // propose, accept, play.
-      await openP2PConsoleSection(alice.page, "games");
-      await expect(alice.page.getByTestId("lobby-game-panel")).toBeVisible();
-      await expectP2PConsoleLayoutStable(alice.page);
-      await alice.page
+      await openP2PConsoleSection(aliceSession, "games");
+      await expect(aliceSession.getByTestId("lobby-game-panel")).toBeVisible();
+      await expectP2PConsoleLayoutStable(aliceSession);
+      await aliceSession
         .getByTestId("lobby-game-panel")
         .getByRole("button", { name: "Hex Pong" })
         .click();
 
-      const consent = bob.page.getByTestId("lobby-game-consent");
+      const consent = bobSession.getByTestId("lobby-game-consent");
       await expect(consent).toBeVisible({ timeout: 15_000 });
       await consent.getByRole("button", { name: "Accept" }).click();
 
-      for (const page of [alice.page, bob.page]) {
+      for (const page of [aliceSession, bobSession]) {
         await expect(page.locator("#lobby-game-canvas canvas")).toBeVisible({
           timeout: 20_000,
         });
@@ -509,7 +531,7 @@ test.describe("In-chat P2P session", () => {
       // The thesis carries over from the lobby: call + file + game coexist —
       // the video is STILL flowing after everything else ran.
       await expect
-        .poll(() => remoteVideoLive(alice.page), { timeout: 15_000 })
+        .poll(() => remoteVideoLive(aliceSession), { timeout: 15_000 })
         .toBe(true);
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`);
     } finally {
@@ -533,22 +555,23 @@ test.describe("In-chat P2P session", () => {
 
     try {
       await alice.chat.sendMessage(`/p2p ${bob.nick}`);
-      await expect(alice.page.getByTestId("p2p-starting-room")).toBeVisible();
-      await alice.page
+      const aliceSession = await enterP2PSession(alice);
+      await expect(aliceSession.getByTestId("p2p-starting-room")).toBeVisible();
+      await aliceSession
         .getByTestId("p2p-setup-advanced")
         .locator("summary")
         .click();
       test.skip(
-        await alice.page.getByTestId("p2p-setup-turn-only").isDisabled(),
+        await aliceSession.getByTestId("p2p-setup-turn-only").isDisabled(),
         "TURN relay is not configured in this environment.",
       );
-      await alice.page.getByTestId("p2p-setup-turn-only").setChecked(true);
-      await alice.page.getByTestId("p2p-room-ready").click();
+      await aliceSession.getByTestId("p2p-setup-turn-only").setChecked(true);
+      await aliceSession.getByTestId("p2p-room-ready").click();
 
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
-      await acceptP2PInvite(bob.page, { turnOnly: true });
-      await startP2PSession(alice);
+      const bobSession = await acceptP2PInvite(bob, { turnOnly: true });
+      await startP2PSession(aliceSession);
 
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
         timeout: 30_000,
@@ -556,10 +579,14 @@ test.describe("In-chat P2P session", () => {
       await expect(statusBarP2P(bob.page)).toContainText(`P2P: ${alice.nick}`, {
         timeout: 30_000,
       });
-      await expect(
-        alice.page.getByTestId("status-bar-p2p-relay"),
-      ).toBeVisible();
-      await expect(bob.page.getByTestId("status-bar-p2p-relay")).toBeVisible();
+      // The relay is a fact about the connection, so it is reported where the
+      // connection is: the session's own stats, not the chat's status bar.
+      for (const page of [aliceSession, bobSession]) {
+        await page.getByTestId("p2p-console-nav-stats").click();
+        await expect(page.getByTestId("p2p-stats-relay")).toBeVisible({
+          timeout: 20_000,
+        });
+      }
     } finally {
       await closeP2PUsers([alice, bob]);
     }
@@ -572,11 +599,14 @@ test.describe("In-chat P2P session", () => {
     const bob = await newP2PUser(browser, "cprob", { media: true });
 
     try {
-      await sendP2PInvite(alice, bob.nick);
+      const aliceSession = await sendP2PInvite(alice, bob.nick);
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
-      await acceptP2PInvite(bob.page, { audio: false, video: false });
-      await startP2PSession(alice);
+      const bobSession = await acceptP2PInvite(bob, {
+        audio: false,
+        video: false,
+      });
+      await startP2PSession(aliceSession);
 
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
         timeout: 20_000,
@@ -586,28 +616,32 @@ test.describe("In-chat P2P session", () => {
       });
 
       await expect
-        .poll(() => remoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(bobSession), { timeout: 30_000 })
         .toBe(true);
       await expect
-        .poll(() => localP2PTrackEnabled(bob.page, "audio"))
+        .poll(() => localP2PTrackEnabled(bobSession, "audio"))
         .toBe(null);
       await expect
-        .poll(() => localP2PTrackEnabled(bob.page, "video"))
+        .poll(() => localP2PTrackEnabled(bobSession, "video"))
         .toBe(null);
 
-      await expect(bob.page.getByTestId("p2p-call-kind")).toContainText(
+      await expect(bobSession.getByTestId("p2p-call-kind")).toContainText(
         "Receiving",
       );
-      await expect(bob.page.getByTestId("p2p-call-enable-audio")).toBeVisible();
-      await expect(bob.page.getByTestId("p2p-call-enable-video")).toBeVisible();
-      await expect(bob.page.getByTestId("p2p-call-panel")).toContainText(
+      await expect(
+        bobSession.getByTestId("p2p-call-enable-audio"),
+      ).toBeVisible();
+      await expect(
+        bobSession.getByTestId("p2p-call-enable-video"),
+      ).toBeVisible();
+      await expect(bobSession.getByTestId("p2p-call-panel")).toContainText(
         "Recv-only session",
       );
 
-      await bob.page.setViewportSize({ width: 390, height: 844 });
-      await expectMobileSectionNavCue(bob.page, "p2p-console-nav");
-      await expectP2PConsoleLayoutStable(bob.page);
-      await expectMediaSessionHeadersStable(bob.page, "p2p-session-console");
+      await bobSession.setViewportSize({ width: 390, height: 844 });
+      await expectMobileSectionNavCue(bobSession, "p2p-console-nav");
+      await expectP2PConsoleLayoutStable(bobSession);
+      await expectMediaSessionHeadersStable(bobSession, "p2p-session-console");
     } finally {
       await closeP2PUsers([alice, bob]);
     }
@@ -622,11 +656,14 @@ test.describe("In-chat P2P session", () => {
     const bob = await newP2PUser(browser, "cpaob", { media: true });
 
     try {
-      await sendP2PInvite(alice, bob.nick);
+      const aliceSession = await sendP2PInvite(alice, bob.nick);
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
-      await acceptP2PInvite(bob.page, { audio: true, video: false });
-      await startP2PSession(alice);
+      const bobSession = await acceptP2PInvite(bob, {
+        audio: true,
+        video: false,
+      });
+      await startP2PSession(aliceSession);
 
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
         timeout: 20_000,
@@ -634,29 +671,36 @@ test.describe("In-chat P2P session", () => {
       await expect(statusBarP2P(bob.page)).toContainText(`P2P: ${alice.nick}`, {
         timeout: 20_000,
       });
-      await expect(bob.page.getByTestId("p2p-session-console")).toHaveAttribute(
-        "data-p2p-media-mode",
-        "audio",
-      );
+      await expect(
+        bobSession.getByTestId("p2p-session-console"),
+      ).toHaveAttribute("data-p2p-media-mode", "audio");
 
       await expect
-        .poll(() => remoteVideoLive(bob.page), { timeout: 45_000 })
+        .poll(() => remoteVideoLive(bobSession), { timeout: 45_000 })
         .toBe(true);
       await expect
-        .poll(() => localP2PTrackEnabled(bob.page, "audio"), {
+        .poll(() => localP2PTrackEnabled(bobSession, "audio"), {
           timeout: 20_000,
         })
         .toBe(true);
       await expect
-        .poll(() => localP2PTrackEnabled(bob.page, "video"))
+        .poll(() => localP2PTrackEnabled(bobSession, "video"))
         .toBe(null);
-      await expect(bob.page.getByTestId("p2p-call-kind")).toContainText(
+      await expect(bobSession.getByTestId("p2p-call-kind")).toContainText(
         "Audio",
       );
-      await expect(bob.page.getByTestId("p2p-call-toggle-mute")).toBeVisible();
-      await expect(bob.page.getByTestId("p2p-call-enable-audio")).toBeHidden();
-      await expect(bob.page.getByTestId("p2p-call-enable-video")).toBeVisible();
-      await expect(bob.page.getByTestId("p2p-call-toggle-camera")).toBeHidden();
+      await expect(
+        bobSession.getByTestId("p2p-call-toggle-mute"),
+      ).toBeVisible();
+      await expect(
+        bobSession.getByTestId("p2p-call-enable-audio"),
+      ).toBeHidden();
+      await expect(
+        bobSession.getByTestId("p2p-call-enable-video"),
+      ).toBeVisible();
+      await expect(
+        bobSession.getByTestId("p2p-call-toggle-camera"),
+      ).toBeHidden();
     } finally {
       await closeP2PUsers([alice, bob]);
     }
@@ -671,36 +715,38 @@ test.describe("In-chat P2P session", () => {
     const bob = await newP2PUser(browser, "cpj", { media: true });
 
     try {
-      await sendP2PInvite(alice, bob.nick);
+      const aliceSession = await sendP2PInvite(alice, bob.nick);
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
-      await acceptP2PInvite(bob.page);
-      await startP2PSession(alice);
+      const bobSession = await acceptP2PInvite(bob);
+      await startP2PSession(aliceSession);
 
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
         timeout: 20_000,
       });
       await expect
-        .poll(() => remoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(bobSession), { timeout: 30_000 })
         .toBe(true);
 
-      await alice.page.getByTestId("p2p-call-screen-share").click();
+      await aliceSession.getByTestId("p2p-call-screen-share").click();
       await expect(
-        alice.page.getByTestId("p2p-call-local-tile"),
+        aliceSession.getByTestId("p2p-call-local-tile"),
       ).toHaveAttribute("data-screen-share", "true");
       await expect(
-        bob.page.getByTestId("p2p-call-remote-tile"),
+        bobSession.getByTestId("p2p-call-remote-tile"),
       ).toHaveAttribute("data-peer-screen-share", "true", { timeout: 10_000 });
 
       // "Open stats" is a shortcut the call panel offers when it is mini or
       // carries its own header; the console's own nav is how the section is
       // reached with the full console on screen.
-      await alice.page.getByTestId("p2p-console-nav-stats").click();
-      const statsSection = alice.page.getByTestId("p2p-console-section-stats");
+      await aliceSession.getByTestId("p2p-console-nav-stats").click();
+      const statsSection = aliceSession.getByTestId(
+        "p2p-console-section-stats",
+      );
       await expect(statsSection).toBeVisible();
-      await p2pStatsTab(alice.page, "video").click();
+      await p2pStatsTab(aliceSession, "video").click();
 
-      const videoStats = p2pStatsDetails(alice.page, "video");
+      const videoStats = p2pStatsDetails(aliceSession, "video");
       await expect(videoStats).toBeVisible();
       await expect(videoStats.locator("summary")).toContainText("Screen", {
         timeout: 10_000,
@@ -709,16 +755,16 @@ test.describe("In-chat P2P session", () => {
       await expect(videoStats).toContainText("Source");
       await expect(videoStats).toContainText("Screen");
 
-      await openP2PConsoleSection(alice.page, "call");
-      await alice.page.getByTestId("p2p-call-screen-share").click();
+      await openP2PConsoleSection(aliceSession, "call");
+      await aliceSession.getByTestId("p2p-call-screen-share").click();
       await expect(
-        alice.page.getByTestId("p2p-call-local-tile"),
+        aliceSession.getByTestId("p2p-call-local-tile"),
       ).toHaveAttribute("data-screen-share", "false");
       await expect(
-        bob.page.getByTestId("p2p-call-remote-tile"),
+        bobSession.getByTestId("p2p-call-remote-tile"),
       ).toHaveAttribute("data-peer-screen-share", "false", { timeout: 10_000 });
-      await openP2PConsoleSection(alice.page, "stats");
-      await p2pStatsTab(alice.page, "video").click();
+      await openP2PConsoleSection(aliceSession, "stats");
+      await p2pStatsTab(aliceSession, "video").click();
       await expect(videoStats.locator("summary")).toContainText("Camera", {
         timeout: 10_000,
       });
@@ -734,33 +780,33 @@ test.describe("In-chat P2P session", () => {
     const bob = await newP2PUser(browser, "cpry", { media: true });
 
     try {
-      await sendP2PInvite(alice, bob.nick);
+      const aliceSession = await sendP2PInvite(alice, bob.nick);
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
-      await acceptP2PInvite(bob.page);
-      await startP2PSession(alice);
+      const bobSession = await acceptP2PInvite(bob);
+      await startP2PSession(aliceSession);
 
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
         timeout: 20_000,
       });
       await expect
-        .poll(() => remoteVideoLive(bob.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(bobSession), { timeout: 30_000 })
         .toBe(true);
 
-      await reportP2PRecoveryState(bob.page, {
+      await reportP2PRecoveryState(bobSession, {
         state: "failed",
         reason: "max_retries_exhausted",
         manual_retry: true,
       });
 
-      const banner = bob.page.getByTestId("p2p-recovery-banner");
+      const banner = bobSession.getByTestId("p2p-recovery-banner");
       await expect(banner).toBeVisible();
       await expect(banner).toHaveAttribute("data-p2p-recovery-state", "failed");
       await expect(banner).toContainText("Retry");
 
-      await bob.page.getByTestId("p2p-retry-connection").click();
-      await expect(bob.page.getByTestId("p2p-call-window")).toBeVisible();
-      await expect(bob.page.getByTestId("p2p-session-console")).toBeVisible();
+      await bobSession.getByTestId("p2p-retry-connection").click();
+      await expect(bobSession.getByTestId("p2p-call-window")).toBeVisible();
+      await expect(bobSession.getByTestId("p2p-session-console")).toBeVisible();
     } finally {
       await closeP2PUsers([alice, bob]);
     }
@@ -773,33 +819,33 @@ test.describe("In-chat P2P session", () => {
     const bob = await newP2PUser(browser, "cpl", { media: true });
 
     try {
-      await sendP2PInvite(alice, bob.nick);
+      const aliceSession = await sendP2PInvite(alice, bob.nick);
       await bob.chat.expectTabVisible(alice.nick);
       await bob.chat.switchToTab(alice.nick);
-      await acceptP2PInvite(bob.page);
-      await startP2PSession(alice);
+      const bobSession = await acceptP2PInvite(bob);
+      await startP2PSession(aliceSession);
 
       await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
         timeout: 20_000,
       });
       await expect
-        .poll(() => remoteVideoLive(alice.page), { timeout: 30_000 })
+        .poll(() => remoteVideoLive(aliceSession), { timeout: 30_000 })
         .toBe(true);
-      await expectP2PCallHasNoInnerHeader(alice.page);
-      await expectP2PSectionScrollHooks(alice.page);
+      await expectP2PCallHasNoInnerHeader(aliceSession);
+      await expectP2PSectionScrollHooks(aliceSession);
 
-      const initialRemote = await remoteVideoIdentity(alice.page);
+      const initialRemote = await remoteVideoIdentity(aliceSession);
       expect(initialRemote?.videoIdentity).toBeTruthy();
       expect(initialRemote?.streamId).toBeTruthy();
 
-      const callWindow = alice.page.getByTestId("p2p-call-window");
-      const callPanel = alice.page.getByTestId("p2p-call-panel");
+      const callWindow = aliceSession.getByTestId("p2p-call-window");
+      const callPanel = aliceSession.getByTestId("p2p-call-panel");
 
       // The same control is offered in more than one place — the console header
       // carries it while the call is full size, the panel grows its own once
       // mini — so both are on screen at once in mini. Either does the job.
       const miniToggle = () =>
-        alice.page
+        aliceSession
           .getByTestId("p2p-call-mini-toggle")
           .filter({ visible: true })
           .first();
@@ -816,47 +862,53 @@ test.describe("In-chat P2P session", () => {
       expect(windowBox).toBeTruthy();
       expect(fullBox!.width).toBeLessThan(windowBox!.width);
       await expect
-        .poll(() => remoteVideoIdentity(alice.page))
+        .poll(() => remoteVideoIdentity(aliceSession))
         .toEqual(initialRemote);
 
       await miniToggle().click();
       await expect(callPanel).toHaveAttribute("data-call-mini", "false");
-      await expectP2PCallHasNoInnerHeader(alice.page);
+      await expectP2PCallHasNoInnerHeader(aliceSession);
       await expect
-        .poll(() => remoteVideoIdentity(alice.page))
+        .poll(() => remoteVideoIdentity(aliceSession))
         .toEqual(initialRemote);
 
       // "Open stats" is a shortcut the call panel offers when it is mini or
       // carries its own header; the console's own nav is how the section is
       // reached with the full console on screen.
-      await alice.page.getByTestId("p2p-console-nav-stats").click();
-      const statsSection = alice.page.getByTestId("p2p-console-section-stats");
+      await aliceSession.getByTestId("p2p-console-nav-stats").click();
+      const statsSection = aliceSession.getByTestId(
+        "p2p-console-section-stats",
+      );
       await expect(statsSection).toBeVisible();
 
       const callBox = await callWindow.boundingBox();
       expect(callBox).toBeTruthy();
       expect(callBox!.width).toBeGreaterThanOrEqual(400);
       await expect
-        .poll(() => remoteVideoLive(alice.page), { timeout: 10_000 })
+        .poll(() => remoteVideoLive(aliceSession), { timeout: 10_000 })
         .toBe(true);
 
       await callWindow.locator('[data-window-control="maximize"]').click();
       await expect(callWindow).toHaveClass(/desktop-window--maximized/);
       await expect(statsSection).toBeVisible();
       await expect
-        .poll(() => remoteVideoIdentity(alice.page))
+        .poll(() => remoteVideoIdentity(aliceSession))
         .toEqual(initialRemote);
 
       await callWindow.locator('[data-window-control="restore"]').click();
       await expect(callWindow).not.toHaveClass(/desktop-window--maximized/);
       await expect
-        .poll(() => remoteVideoIdentity(alice.page))
+        .poll(() => remoteVideoIdentity(aliceSession))
         .toEqual(initialRemote);
 
-      await alice.page.setViewportSize({ width: 390, height: 844 });
-      await openP2PConsoleSection(alice.page, "stats");
+      // A phone short enough that the stats section really overflows. The
+      // session has the whole window now — no chat chrome above it — so a
+      // taller viewport leaves the section fitting, and a scroll test on a box
+      // that does not scroll proves nothing.
+      await aliceSession.setViewportSize({ width: 390, height: 568 });
+      await openP2PConsoleSection(aliceSession, "stats");
       await expectScrollStableAcrossStatsTick(
-        alice.page,
+        aliceSession,
         "p2p-console-section-stats",
       );
     } finally {
@@ -885,22 +937,19 @@ test.describe("In-chat P2P session", () => {
     }
   });
 
-  test("the inviter cancels a pending invite from the status bar", async ({
+  test("the inviter cancels a pending invite from the room they entered", async ({
     browser,
   }) => {
     const alice = await newP2PUser(browser, "cpe");
     const bob = await newP2PUser(browser, "cpf");
 
     try {
-      await sendP2PInvite(alice, bob.nick);
-      await expect(statusBarP2P(alice.page)).toContainText("waiting for");
+      const aliceSession = await sendP2PInvite(alice, bob.nick);
+      await expect(statusBarP2P(alice.page)).toContainText("in another tab");
 
-      // Cancel from the room the invite drops the host into. It used to be the
-      // status bar's stop button, because `/p2p <nick>` opened a dialog and left
-      // the chat behind it; the starting room is a pinned maximized window over
-      // the chat's own status bar, so the host reaches P7's button where P7's
-      // button now is.
-      await alice.page.getByTestId("p2p-room-cancel").click();
+      // Cancel from the room the card led to. The chat has no control over a
+      // session it is not holding, so P7's button lives where the session is.
+      await aliceSession.getByTestId("p2p-room-cancel").click();
       await expect(statusBarP2P(alice.page)).toBeHidden();
       await alice.chat.expectMessageVisible("cancelled the P2P invite");
     } finally {

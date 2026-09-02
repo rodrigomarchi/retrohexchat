@@ -301,12 +301,6 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
 
   defp calls do
     [
-      window("p2p-call", dgettext("chat", "P2P Session"), :icon_protocol_p2p_compact,
-        managed?: false,
-        render_when: {:present, :p2p_session},
-        taskbar_when: {:present, :p2p_session},
-        geometry: geometry(448, 72, 640, 430, 500, 320)
-      ),
       window("retro-games", dgettext("chat", "Retro Games"), :icon_game_pong,
         managed?: false,
         render_when: :always,

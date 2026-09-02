@@ -51,14 +51,15 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.P2P
   alias RetroHexChatWeb.App.P2PStats
-  alias RetroHexChatWeb.ChatLive.Components.P2PFileIsland
-  alias RetroHexChatWeb.ChatLive.Components.P2PGameIsland
-  alias RetroHexChatWeb.ChatLive.Components.P2PMediaIsland
   alias RetroHexChatWeb.Live.P2PConfirmDialog
   alias RetroHexChatWeb.Live.SurfaceHost, as: Host
   alias RetroHexChatWeb.MediaDevices
+  alias RetroHexChatWeb.P2PLive.Components.P2PFileIsland
+  alias RetroHexChatWeb.P2PLive.Components.P2PGameIsland
+  alias RetroHexChatWeb.P2PLive.Components.P2PMediaIsland
 
   @pubsub RetroHexChat.PubSub
+  @call_window_id "p2p-call"
   @p2p_console_width 640
   @p2p_console_height 430
   @p2p_console_x 448
@@ -511,26 +512,6 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   end
 
   def handle_event("p2p_toggle_call_mini", _params, socket), do: {:halt, socket}
-
-  # The X on ANY session window means disconnecting the whole session, never
-  # a silent hide — users were closing the camera and not realizing the
-  # connection stayed up. Every close path (X, taskbar menu, Escape) routes
-  # here via on_close; the window only goes away if the disconnect is
-  # confirmed. Minimize remains the "keep it running" gesture.
-  def handle_event("p2p_window_close", _params, socket) do
-    case socket.assigns.p2p_session do
-      %{} = p2p ->
-        Phoenix.LiveView.send_update(P2PConfirmDialog,
-          id: P2PConfirmDialog.id(),
-          action: {:open_close, p2p.peer_nick}
-        )
-
-        {:halt, socket}
-
-      nil ->
-        {:halt, socket}
-    end
-  end
 
   def handle_event("p2p_confirm_end", _params, socket) do
     close_dialog()
@@ -1357,13 +1338,13 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   defp maybe_expand_p2p_console(socket, _section, true), do: push_p2p_call_geometry(socket, false)
   defp maybe_expand_p2p_console(socket, _section, false), do: socket
 
-  # The mini call is a size, and a size is the window manager's — which the
-  # surface does not have when it *is* the page. Embedded, the host is asked;
-  # standalone there is nothing to ask, and a page that resized itself would be
-  # a browser window fighting its own tab.
+  # The mini call is a size, and a size is the window manager's. This page has
+  # one of its own — the session is a Win98 desktop with the call window on it —
+  # so the command goes straight to it. It used to be handed to the chat, which
+  # is how mini mode came to be a checkbox that changed nothing whenever the
+  # session was at its own address.
   defp push_p2p_call_geometry(socket, true) do
-    Host.geometry(socket, %{
-      action: "set_geometry",
+    push_window_geometry(socket, %{
       width: 300,
       height: 236,
       anchor: "bottom_right",
@@ -1372,13 +1353,20 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   end
 
   defp push_p2p_call_geometry(socket, false) do
-    Host.geometry(socket, %{
-      action: "set_geometry",
+    push_window_geometry(socket, %{
       width: @p2p_console_width,
       height: @p2p_console_height,
       x: @p2p_console_x,
       y: @p2p_console_y
     })
+  end
+
+  defp push_window_geometry(socket, geometry) do
+    Phoenix.LiveView.push_event(
+      socket,
+      "window_command",
+      geometry |> Map.put(:action, "set_geometry") |> Map.put(:id, @call_window_id)
+    )
   end
 
   # A page that is asked to be in this session takes the seat, and the page

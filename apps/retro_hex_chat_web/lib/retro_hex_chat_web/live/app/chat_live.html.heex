@@ -80,11 +80,7 @@
             Dragged narrower than the strip needs, the window collapses them to
             the icon rail the phone already uses. --%>
       <:menu>
-        <.chat_shell_menu
-          session={@session}
-          p2p_session={@p2p_session}
-          mobile_viewport={@mobile_viewport}
-        />
+        <.chat_shell_menu session={@session} mobile_viewport={@mobile_viewport} />
       </:menu>
 
       <%!-- What this session is doing, along the window's own bottom edge, the
@@ -92,7 +88,7 @@
             machine; this speaks for the window. --%>
       <:status>
         <.chat_shell_status
-          p2p_session={@p2p_session}
+          p2p_elsewhere={P2PReadModel.elsewhere(@p2p_pm_sessions, @open_surface_paths)}
           group_call_elsewhere={
             GroupCallReadModel.elsewhere(
               @session.channels,
@@ -125,9 +121,8 @@
           disconnected_channels={Map.get(assigns, :disconnected_channels, MapSet.new())}
           group_call_channels={@group_call_channels}
           group_call_summaries={@group_call_channel_summaries}
-          p2p_peer={if @p2p_session, do: @p2p_session.peer_nick}
-          p2p_session={@p2p_session}
           p2p_pm_sessions={@p2p_pm_sessions}
+          open_paths={@open_surface_paths}
           conversations_sections={@conversations_sections}
           channel_user_counts={@channel_user_counts}
           popular_channels={@popular_channels}
@@ -139,8 +134,7 @@
           <% conversation_space = SpaceReadModel.conversation_space(@session, @show_status_tab) %>
           <% space_view? = conversation_space && @channel_view == :space %>
           <% p2p_pm_session =
-            p2p_session_for_active_pm(@p2p_session, @session.active_pm) ||
-              p2p_pm_session_for_active_pm(@p2p_pm_sessions, @session.active_pm) ||
+            p2p_pm_session_for_active_pm(@p2p_pm_sessions, @session.active_pm) ||
               p2p_idle_session_for_active_pm(@session) %>
 
           <%!-- Topic bar --%>
@@ -276,9 +270,6 @@
             channel_view={@channel_view}
             has_space={SpaceReadModel.has_space?(@session)}
             nick_color_fn={@nick_color_fn}
-            p2p_peer={if @p2p_session, do: @p2p_session.peer_nick}
-            p2p_state={if @p2p_session, do: @p2p_session.state}
-            p2p_session={@p2p_session}
             p2p_pm_sessions={@p2p_pm_sessions}
             group_call_channels={@group_call_channels}
             group_call_summaries={@group_call_channel_summaries}
@@ -312,6 +303,7 @@
                 :if={p2p_pm_session}
                 peer={@session.active_pm}
                 session={p2p_pm_session}
+                open_paths={@open_surface_paths}
                 current={true}
               />
             </:actions>
@@ -511,51 +503,6 @@
         id={RetroHexChatWeb.ChatLive.Components.FloodProtectionDialog.id()}
         settings={@session.flood_protection}
       />
-    </.desktop_window>
-
-    <%!-- P2P — the same LiveView that serves `/p2p/:token`, mounted here as a
-          child. One module, two hosts: the tab has its own event loop and a
-          shareable URL, this one has the conversation beside it. The window is
-          the chat's, and its X still asks the session what closing means. --%>
-    <.desktop_window
-      :if={@p2p_session}
-      {WindowRegistry.attrs("p2p-call")}
-      persist_geometry={false}
-      default_maximized
-      title={
-        if @p2p_session.peer_nick in [nil, ""],
-          do: dgettext("chat", "P2P Session"),
-          else: @p2p_session.peer_nick
-      }
-      open
-      on_close="p2p_window_close"
-      body_class="h-full min-h-0 overflow-hidden p-1"
-      data-testid="p2p-call-window"
-    >
-      <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
-      <%!-- The title bar is the chat's chrome, so its meta is drawn from the
-            read model the surface publishes rather than from inside the
-            surface — the window belongs to the manager out here. --%>
-      <:meta>
-        <P2PSessionConsole.p2p_title_meta
-          :if={@p2p_session.state in [:connecting, :connected]}
-          p2p_session={@p2p_session}
-        />
-      </:meta>
-      <%!-- The child's container needs a height of its own: a `live_render`
-            wraps the surface in a div of its own, and `h-full` inside it
-            resolves against that div rather than the window body. --%>
-      {live_render(@socket, RetroHexChatWeb.App.P2PLive,
-        id: "p2p-live-#{@p2p_session.token}",
-        container: {:div, class: "h-full min-h-0"},
-        session: %{
-          "embedded" => true,
-          "nickname" => @session.nickname,
-          "token" => @p2p_session.token,
-          "client_info" => @client_info,
-          "trusted_device_id" => @trusted_device_id
-        }
-      )}
     </.desktop_window>
 
     <%!-- Retro Games — the same LiveView that serves `/play/:game`, mounted
@@ -1036,8 +983,6 @@
       screen={:chat}
       is_admin={admin?(@session)}
       arcade_available={@session.identified == true}
-      p2p_active={@p2p_session != nil}
-      p2p_turn_available={(@p2p_session || %{})[:turn_configured] == true}
       windows={[
         %{
           id: "chat",
@@ -1061,7 +1006,6 @@
         lag_ms={@lag_ms}
         lag_status={@lag_status}
         muted={@muted}
-        p2p_session={@p2p_session}
         arcade_session={@arcade_session}
         cc_window_channel={@cc_window_channel}
       />
@@ -1129,15 +1073,6 @@
 <.live_component
   module={RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog}
   id={RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog.id()}
-/>
-
-<%!-- The only question the chat ever asks about a P2P session is the one the
-      session cannot: whether to swap it for another peer's. It carries an id of
-      its own because the session's own copy is on screen at the same time. --%>
-<.live_component
-  module={RetroHexChatWeb.Live.P2PConfirmDialog}
-  id={RetroHexChatWeb.ChatLive.P2PSessionEvents.confirm_dialog_id()}
-  scope={:viewport}
 />
 
 <.live_component

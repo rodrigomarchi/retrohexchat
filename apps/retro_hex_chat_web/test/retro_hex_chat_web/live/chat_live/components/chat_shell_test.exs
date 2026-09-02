@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
     test "the mobile rail carries every menu, each opening its own section" do
       html = menu(Session.new("alice"))
 
-      for section <- ~w(file edit view tools p2p language help) do
+      for section <- ~w(file edit view tools language help) do
         assert html =~ ~s(data-testid="app-mobile-menu-rail-#{section}")
         assert html =~ ~s(data-mobile-menu-open="#{section}")
         assert html =~ ~s(data-testid="app-mobile-menu-category-#{section}")
@@ -55,17 +55,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
       refute html =~ "#lobby"
     end
 
-    test "a peer session opens the P2P menu, and a relay opens privacy mode" do
-      idle = menu(Session.new("alice"))
-      assert idle =~ ~s(data-testid="context-menu-item-p2p_how_to_start")
+    # Every control that used to hang here acted on a session this window is not
+    # holding. A session lives at its own address, so the menu that reached
+    # inside it is gone, and the door is the card in the conversation.
+    test "no menu here reaches inside a P2P session" do
+      html = menu(Session.new("alice"))
 
-      live =
-        menu(Session.new("alice"), %{
-          p2p_session: %{state: :connected, peer_nick: "trinity", turn_configured: true}
-        })
-
-      assert live =~ ~s(data-testid="context-menu-item-p2p_start_audio")
-      assert live =~ ~s(data-testid="context-menu-item-p2p_toggle_privacy")
+      refute html =~ ~s(data-testid="app-menu-p2p)
+      refute html =~ "p2p_how_to_start"
+      refute html =~ "p2p_start_audio"
+      refute html =~ "p2p_console_select"
+      refute html =~ "p2p_toggle_privacy"
+      refute html =~ "p2p_end_session"
     end
 
     test "launching another program is not this window's menu's job" do
@@ -146,15 +147,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
 
   describe "the window's status bar, when the P2P session is somewhere else" do
     test "says so, and is a way to the tab rather than a control" do
-      html =
-        status(%{
-          p2p_session: %{
-            displaced: true,
-            token: "tok12345",
-            peer_nick: "bob",
-            state: :connected
-          }
-        })
+      html = status(%{p2p_elsewhere: %{peer_nick: "bob", path: "/p2p/tok12345"}})
 
       assert html =~ ~s(data-testid="status-bar-p2p")
       assert html =~ ~s(data-surface-path="/p2p/tok12345")
@@ -165,14 +158,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
       refute html =~ ~s(data-testid="status-bar-p2p-stop")
     end
 
-    test "a session on this screen keeps the zone it always had" do
-      html =
-        status(%{
-          p2p_session: %{displaced: false, token: "tok12345", peer_nick: "bob", state: :connected}
-        })
+    # There is no second shape left, for the same reason the conference has
+    # none: a session is never on this screen.
+    test "there is no shape of this zone that controls a session" do
+      html = status(%{p2p_elsewhere: %{peer_nick: "bob", path: "/p2p/tok12345"}})
 
-      assert html =~ ~s(data-testid="status-bar-p2p-stop")
-      refute html =~ ~s(data-surface-path="/p2p/tok12345")
+      refute html =~ ~s(phx-click="p2p_statusbar_stop")
+      refute html =~ ~s(phx-click="p2p_statusbar_click")
+    end
+
+    test "no session anywhere draws no zone at all" do
+      refute status(%{}) =~ ~s(data-testid="status-bar-p2p")
     end
   end
 end

@@ -145,11 +145,18 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistryTest do
       assert Registry.on_taskbar?(users, %{admin?: true, open_windows: open})
     end
 
-    test "a call window is listed on the session alone, with no open flag" do
-      p2p = Registry.fetch("p2p-call")
+    test "a session window is listed on the session alone, with no open flag" do
+      arcade = Registry.fetch("arcade-games")
 
-      refute Registry.on_taskbar?(p2p, %{p2p_session: nil, open_windows: MapSet.new()})
-      assert Registry.on_taskbar?(p2p, %{p2p_session: %{}, open_windows: MapSet.new()})
+      refute Registry.on_taskbar?(arcade, %{
+               arcade_session: nil,
+               open_windows: MapSet.new(["arcade-games"])
+             })
+
+      assert Registry.on_taskbar?(arcade, %{
+               arcade_session: %{},
+               open_windows: MapSet.new(["arcade-games"])
+             })
     end
   end
 

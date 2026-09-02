@@ -13,9 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialogTest do
         [
           id: "p2p-confirm",
           show: true,
-          mode: :end,
           peer: "trinity",
-          new_peer: "morpheus",
           on_confirm: "p2p_confirm",
           on_cancel: "p2p_cancel"
         ],
@@ -24,8 +22,8 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialogTest do
     )
   end
 
-  test "end mode explains all active P2P surfaces that will stop" do
-    html = render_dialog(mode: :end)
+  test "the dialog explains all active P2P surfaces that will stop" do
+    html = render_dialog([])
 
     assert html =~ ~s(data-testid="p2p-confirm")
     assert html =~ "End P2P Session"
@@ -37,22 +35,16 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialogTest do
     assert html =~ ~s(data-testid="p2p-confirm-cancel")
   end
 
-  test "close mode teaches that minimizing keeps the session running" do
-    html = render_dialog(mode: :close)
+  # Two modes left with the chat's single P2P window: `:close` warned that the
+  # window's X disconnected the session, and `:switch` asked whether to end one
+  # session to accept another. The window is pinned and has no X, and a person
+  # can hold several sessions at once, so neither question exists.
+  test "there is no mode that asks about closing a window or swapping a session" do
+    html = render_dialog([])
 
-    assert html =~ "Close P2P Session?"
-    assert html =~ "Closing this window disconnects the whole P2P session"
-    assert html =~ "Minimize to keep it running"
-    assert html =~ "Only one P2P session can be active"
-  end
-
-  test "switch mode describes the one-session replacement flow" do
-    html = render_dialog(mode: :switch)
-
-    assert html =~ "Switch P2P Session"
-    assert html =~ "End the current P2P session with trinity and start one with morpheus"
-    assert html =~ "Current P2P session closes first"
-    assert html =~ "New invite starts after confirmation"
-    assert html =~ "Privacy and relay settings carry over"
+    refute html =~ "Close P2P Session?"
+    refute html =~ "Switch P2P Session"
+    refute html =~ "Minimize to keep it running"
+    refute html =~ "Only one P2P session can be active"
   end
 end

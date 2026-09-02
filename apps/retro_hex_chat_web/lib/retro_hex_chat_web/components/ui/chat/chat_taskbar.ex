@@ -38,7 +38,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
     default: false,
     doc: "Enables Start ▸ Games ▸ Arcade (needs a registered + identified nick)"
 
-  attr :p2p_session, :map, default: nil
   attr :arcade_session, :map, default: nil
   attr :cc_window_channel, :string, default: nil
 
@@ -57,8 +56,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
           screen={:chat}
           is_admin={@is_admin}
           arcade_available={@arcade_available}
-          p2p_active={@p2p_session != nil}
-          p2p_turn_available={(@p2p_session || %{})[:turn_configured] == true}
           windows={[%{id: "chat", label: @chat_label, icon_fn: :icon_chat}]}
         />
       </:start>
@@ -67,8 +64,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
         screen={:chat}
         is_admin={@is_admin}
         arcade_available={@arcade_available}
-        p2p_active={@p2p_session != nil}
-        p2p_turn_available={(@p2p_session || %{})[:turn_configured] == true}
         windows={[%{id: "chat", label: @chat_label, icon_fn: :icon_chat}]}
       />
 
@@ -85,7 +80,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
             window={window.id}
             label={window.label}
             class="desktop-taskbar__group-item w-full"
-            data-testid={Map.get(window, :testid)}
           >
             <:icon>{apply(Icons, window.icon_fn, [%{class: "h-4 w-4"}])}</:icon>
           </.taskbar_button>
@@ -96,7 +90,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
           window={slot.window.id}
           label={slot.window.label}
           class="desktop-taskbar__window-button"
-          data-testid={Map.get(slot.window, :testid)}
         >
           <:icon>{apply(Icons, slot.window.icon_fn, [%{class: "h-4 w-4"}])}</:icon>
         </.taskbar_button>
@@ -256,7 +249,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
     capabilities = %{
       admin?: assigns.is_admin,
       open_windows: assigns.open_windows || MapSet.new(),
-      p2p_session: assigns.p2p_session,
       arcade_session: assigns.arcade_session,
       cc_window_channel: assigns.cc_window_channel
     }
@@ -267,26 +259,13 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
         id: window.id,
         label: label(window, assigns),
         icon_fn: window.icon,
-        family: window.family,
-        testid: testid(window.id)
+        family: window.family
       }
     end
   end
 
-  # Two buttons name what they are showing rather than what they are: the chat
-  # button mirrors the active conversation, and a session names its peer.
-  # Everything else is its registered title.
+  # One button names what it is showing rather than what it is: the chat button
+  # mirrors the active conversation. Everything else is its registered title.
   defp label(%{id: "chat"}, assigns), do: assigns.chat_label
-  defp label(%{id: "p2p-call"}, assigns), do: p2p_call_label(assigns.p2p_session)
   defp label(window, _assigns), do: window.taskbar_label
-
-  # One button is addressed by the call suite and keeps its own hook.
-  defp testid("p2p-call"), do: "p2p-call-taskbar"
-  defp testid(_id), do: nil
-
-  defp p2p_call_label(%{peer_nick: peer_nick}) when peer_nick not in [nil, ""] do
-    dgettext("chat", "P2P: %{peer}", peer: peer_nick)
-  end
-
-  defp p2p_call_label(_p2p_session), do: dgettext("chat", "P2P Session")
 end

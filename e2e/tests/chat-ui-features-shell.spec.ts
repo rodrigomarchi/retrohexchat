@@ -140,13 +140,14 @@ test.describe.serial("UI feature shell journeys", () => {
       const triggers = await user.chat.menuBar
         .locator(".app-menu-bar__desktop-menu [data-menubar-label]")
         .allTextContents();
+      // What a window's menu bar carries is what acts on that window. Games
+      // left with the other launchers; P2P left with the session, which lives
+      // at its own address and is not this window's to reach into.
       expect(triggers.map((label) => label.trim())).toEqual([
         "File",
         "Edit",
         "View",
         "Tools",
-        "P2P",
-        "Games",
         "Language",
         "Help",
       ]);

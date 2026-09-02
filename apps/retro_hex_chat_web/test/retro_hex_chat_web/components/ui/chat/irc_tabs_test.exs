@@ -17,6 +17,6 @@ defmodule RetroHexChatWeb.Components.UI.Chat.IrcTabsTest do
 
     assert html =~ ~s(data-testid="tab-p2p-glyph")
     assert html =~ ~s(data-p2p-state="connected")
-    assert html =~ ~s(data-p2p-status="ready")
+    assert html =~ ~s(data-p2p-status="live")
   end
 end

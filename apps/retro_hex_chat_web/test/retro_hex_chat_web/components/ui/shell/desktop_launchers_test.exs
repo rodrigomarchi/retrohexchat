@@ -11,7 +11,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     desktop-icon-view
     desktop-icon-tools
     desktop-icon-automation
-    desktop-icon-p2p
     desktop-icon-games
     desktop-icon-account
     desktop-icon-language
@@ -22,7 +21,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     desktop-icon-view
     desktop-icon-tools
     desktop-icon-automation
-    desktop-icon-p2p
     desktop-icon-games
     desktop-icon-account
     desktop-icon-admin
@@ -189,24 +187,17 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
 
     refute has_testid?(guest_html, "desktop-launcher-item-open_admin_users")
     refute has_testid?(guest_html, "desktop-launcher-item-open_system_home")
-    refute enabled?(guest_html, "desktop-launcher-item-p2p_start_audio")
-    assert enabled?(guest_html, "desktop-launcher-item-p2p_how_to_start")
 
     admin_html =
       render_component(&DesktopLaunchers.desktop_launcher_windows/1,
         screen: :chat,
         is_admin: true,
-        p2p_active: true,
-        p2p_turn_available: true,
         arcade_available: true
       )
 
     assert enabled?(admin_html, "desktop-launcher-item-open_admin_users")
     assert enabled?(admin_html, "desktop-launcher-item-open_system_home")
-    assert enabled?(admin_html, "desktop-launcher-item-p2p_start_audio")
-    assert enabled?(admin_html, "desktop-launcher-item-p2p_toggle_privacy")
     assert enabled?(admin_html, "desktop-launcher-item-open_arcade")
-    refute enabled?(admin_html, "desktop-launcher-item-p2p_how_to_start")
   end
 
   test "launcher taskbar buttons target the app-folder windows" do

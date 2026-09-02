@@ -29,7 +29,6 @@ defmodule RetroHexChatWeb.WindowDisplayEditMenuFeatureTest do
                "Edit",
                "View",
                "Tools",
-               "P2P",
                "Language",
                "Help"
              ]

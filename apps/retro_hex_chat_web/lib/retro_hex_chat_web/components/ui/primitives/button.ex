@@ -34,7 +34,7 @@ defmodule RetroHexChatWeb.Components.UI.Button do
     doc: "renders a link that looks like a button — for an action that is a destination"
 
   attr :href, :string, default: nil, doc: "same, for a plain browser navigation"
-  attr :rest, :global, include: ~w(disabled form name value)
+  attr :rest, :global, include: ~w(disabled form name value target rel)
 
   slot :icon, required: true, doc: "16×16 icon SVG — mandatory for all buttons"
   slot :inner_block, required: true

@@ -131,10 +131,12 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       refute has_entry?(:landing, "start-menu-item-open_system_home", is_admin: true)
     end
 
-    test "P2P entries need a session on top of the chat" do
-      refute enabled?(:chat, "start-menu-item-p2p_start_audio")
-      assert enabled?(:chat, "start-menu-item-p2p_start_audio", p2p_active: true)
-      refute enabled?(:connect, "start-menu-item-p2p_start_audio", p2p_active: true)
+    # A P2P session lives at its own address, and everything that used to hang
+    # under this group acted on one from a screen that was not holding it.
+    test "no menu entry anywhere reaches inside a P2P session" do
+      for screen <- @screens, entry <- ~w(p2p_how_to_start p2p_start_audio p2p_toggle_privacy) do
+        refute has_entry?(screen, "start-menu-item-#{entry}")
+      end
     end
 
     test "Retro Games needs the chat desktop" do
@@ -183,22 +185,6 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
 
       # The capability without the screen is still nothing to act on.
       refute enabled?(:landing, "start-menu-item-open_arcade", arcade_available: true)
-    end
-
-    test "privacy mode needs a relay on top of the session" do
-      refute enabled?(:chat, "start-menu-item-p2p_toggle_privacy", p2p_active: true)
-
-      assert enabled?(:chat, "start-menu-item-p2p_toggle_privacy",
-               p2p_active: true,
-               p2p_turn_available: true
-             )
-    end
-
-    test "offering a session reads the P2P gate the other way round" do
-      # The one entry that goes dead when the rest of its group comes alive.
-      assert enabled?(:chat, "start-menu-item-p2p_how_to_start")
-      refute enabled?(:chat, "start-menu-item-p2p_how_to_start", p2p_active: true)
-      refute enabled?(:connect, "start-menu-item-p2p_how_to_start")
     end
 
     test "the chat window's own menu needs the chat window" do

@@ -1,4 +1,4 @@
-# Surfaces: one module, two hosts
+# Surfaces: a screen with an address of its own
 
 Read when adding a screen that can live in a browser tab of its own, changing
 how one is reached, or debugging why a surface behaves differently inside the
@@ -20,17 +20,17 @@ with two mount points:
 | Surface | Own address | Module |
 |---|---|---|
 | conference | `/call/:token` | `App.CallLive` — **one mount only** |
-| space | `/space/:slug` | `App.SpaceLive` |
-| P2P session | `/p2p/:token` | `App.P2PLive` |
+| P2P session | `/p2p/:token` | `App.P2PLive` — **one mount only** |
 | match | `/play/:game/:token` | `App.P2PLive`, opened at its game |
+| space | `/space/:slug` | `App.SpaceLive` |
 | solo games | `/play`, `/play/:game` | `App.PlayLive` |
 | arcade | `/play/arcade/:game` | a redirect, not a LiveView |
 
 Root mount goes through the router; the nested mount is `live_render/3` in a
-`desktop_window` slot of the chat. **The conference has no nested mount any
-more** — it is reached only at its address, through the card the chat writes
-into the channel when the room is opened. Everything below still describes the
-other three. A nested `live_render` runs in its own
+`desktop_window` slot of the chat. **The conference and the P2P session have no
+nested mount any more** — each is reached only at its address, through the card
+the chat writes into the conversation when the room is created. Everything below
+still describes the space and the games. A nested `live_render` runs in its own
 process on the same socket, so the embedded mode gets no event loop and no
 bundle of its own — which is exactly the trade the embedded mode is accepting.
 
@@ -40,8 +40,9 @@ with it. Only the route is.
 
 ### One door, and the chat writes it
 
-Opening a conference is two acts that must not come apart: the room, and the
-room's address written into the channel as a **persisted system message**
+Opening a session is two acts that must not come apart: the room, and the room's
+address written into the conversation as a **persisted message** — a system
+message in a channel for the conference
 (`Chat.Service.send_system_message/2`, never the web helper
 `ChatLive.Helpers.Messages.system_event/2` — that one is per-socket, is never
 broadcast and dies on reload, so a card posted that way would be a door only
@@ -50,7 +51,13 @@ draws is the way in for everybody, including whoever opened it: nothing here
 opens a tab from a click that creates something, so the pop-up blocker never
 enters the story.
 
-Two things this needs and would fail silently without:
+The P2P session takes the same shape and needed nothing new to carry it: its
+invite already **is** a persisted private message with the session's own address
+in it, so wave 3 only had to stop putting the creator inside the session and let
+the card be the door for both of them. What it did have to answer is where the
+chat hears about a session it is not in — see below.
+
+Three things this needs and would fail silently without:
 
 - **Two gates, not one, and they live in different modules.**
   `MessageViewport`'s `@card_types` allowlist decides whether a card is
@@ -66,6 +73,16 @@ Two things this needs and would fail silently without:
   `Topics.channel_calls/1` as `{:channel_membership_lost, …}` and the surface
   ends itself. Before that, being banned from a channel left the person sitting
   in a conference they were no longer in.
+- **A session tells the people in it, never the room's own topic.** The badge in
+  a conversation used to be fed by `{:surface_state, :p2p, …}` — a message that
+  only exists while the chat is hosting the surface — so removing the window
+  would have frozen it in silence. The obvious replacement is wrong in a way
+  that does not show up in a test: `lobby:<token>` is where the **WebRTC
+  negotiation** crosses, every ICE candidate and every SDP, so a chat subscribed
+  there to learn that a dot changed colour would carry a whole call's traffic
+  per badge. `Lobby.SessionServer` therefore speaks on each participant's own
+  `user:` topic — `lobby_invite`, `lobby_session_progress`,
+  `lobby_session_ended` — and the chat re-reads the row.
 
 ### The ruler that decides what stays in the chat
 
@@ -80,18 +97,22 @@ all on the chat's side of that line, and none of them needs media, devices,
 stats or a signalling token. That is what `ChatLive.GroupCallReadModel`,
 `ChatLive.SpaceReadModel` and `ChatLive.P2PReadModel` are.
 
-### Testing both mounts
+### Testing a surface that has one mount
 
-Both, always, and they are different tests. The embedded one drives the chat and
-reaches the child through `live_children`; the root one drives the address and
-is where the door is asserted. Two things that cost time when forgotten:
+The pair of tests collapses into two files that do not overlap: one drives the
+chat and asserts what it draws *about* a session it cannot reach, and one drives
+the address and asserts everything about being inside. Both halves live in the
+second file's setup, because a test opens the session the way a person does —
+the chat's control creates it, and the test follows the address the card
+carries. Two things that cost time when forgotten:
 
-- **Drain the mailbox twice** when a control the chat forwards produces a
-  `send_update` in the child: the first pass makes the child process the
-  forwarded control, and the update is only in the box after that.
-- **Ids are unique per document, not per LiveView.** With the surface embedded,
-  both hosts render the same components at the same time. Derive internal
-  `data-testid`s from the `id` rather than writing them literally.
+- **Two independent LiveViews settle independently.** A control on the session
+  does not reach the chat and a chat control does not reach the session, so
+  `:sys.get_state` on one settles nothing on the other. Remember which session
+  page belongs to which chat instead of looking for a child that is not there.
+- **A page that left holds nothing.** Reading assigns off a departed surface
+  exits; catching that and answering "no session" is the same answer as never
+  having opened one, and it is the honest one.
 
 ---
 
@@ -118,9 +139,14 @@ module says what kind of screen it is, the path says which one.
 ## 19.3 What differs between the two hosts
 
 `RetroHexChatWeb.Live.SurfaceHost` carries all of it, and the list is short:
-a notice, the window, the geometry, and what the host draws about the surface.
-Each message carries the surface's **tag**, because the chat hosts more than one
-at a time and reading the name beats guessing from the shape.
+a notice, the window, and what the host draws about the surface. Each message
+carries the surface's **tag**, because the chat hosts more than one at a time
+and reading the name beats guessing from the shape.
+
+**Geometry left it in wave 3.** It was a no-op standalone, which is how mini
+mode came to be a checkbox that changed nothing whenever the session was at its
+own address — the session's page is a Win98 desktop with a window manager of its
+own, so the command goes straight to it.
 
 The channel between the two is the **parent process**, not PubSub: a nested
 `live_render` has exactly one host and dies with it, and a topic would deliver
@@ -257,7 +283,8 @@ is not, so changing one means arguing with the reason rather than the line.
   creates the room; **Share** creates the address. If every game window minted a
   `share_link`, the table would be landfill in a week.
 
-  **Reversed for the conference, 2026-09-01, and the premise is what changed.**
+  **Reversed for the conference and the P2P session, 2026-09-01, and the premise
+  is what changed.**
   A conference has no window in the chat any more, so its address is not an
   extra — it is the only door. Opening one now mints the link *and* writes it
   into the channel as a system message, because a room created without its card
@@ -265,8 +292,11 @@ is not, so changing one means arguing with the reason rather than the line.
   holds and is still the reason this is safe: the ratio is **one link per room**,
   not one per click. `ShareLinks.create/1` is idempotent per
   `{kind, target, creator}`, rooms are already rows, and a second click on a
-  channel that has a live room mints nothing and posts nothing. The other three
-  kinds keep the original rule until their own wave.
+  channel that has a live room mints nothing and posts nothing. The P2P session
+  needs no link at all: the invite carries the session's own token, so the card
+  is drawn by `ShareLinks.Card.for_session/1` with no slug and nothing to revoke
+  apart from the session. The space and the solo games keep the original rule
+  until their own wave.
 
 - **After it starts, the link still works.** A link spends most of its life
   after minute zero. Call and space let a late click in; a full match says
@@ -277,6 +307,13 @@ is not, so changing one means arguing with the reason rather than the line.
   No host migration: it is a room that lasts minutes, and the right recovery is
   to make another. `[Cancel]` is that rule with a button, and it is gone the
   moment the match starts.
+
+- **One session at a time was a property of the window, not of the domain.**
+  `Lobby.Policy.can_create?/2` only ever refused a second session *with the same
+  peer*; the switch confirm existed because the chat had one P2P window and two
+  sessions could not share it. With each session at its own address there is
+  nothing to swap, so the confirm, the staged invite and `p2p_pending` are gone
+  and a person can hold a session with several peers, one tab each.
 
 ## 19.7 Traps that cost a day each
 
@@ -328,6 +365,17 @@ is not, so changing one means arguing with the reason rather than the line.
 - **A `refute` in front of a wait-for-it helper is not the negative assertion.**
   It passes the instant the thing is still there. Write the helper that waits
   for it to *go*.
+- **A room's topic is not a feed for a badge.** `lobby:<token>` carries the
+  WebRTC signalling; subscribing a chat to it to keep a dot current is paying a
+  whole negotiation per conversation, and nothing in the test suite would ever
+  say so. When a screen needs to know that something changed *about* a session
+  it is not in, the session tells the people in it on their own topic.
+- **`navigate` on a card is not a door.** A `<.link navigate>` follows in the
+  same tab, so the card that was supposed to open a session beside the
+  conversation would have taken the conversation away instead. The way in is an
+  anchor with `target="_blank"` and `rel="noopener"`; the way *forward* on an
+  ended card stays a plain navigation, because there the reader is going back to
+  the chat on purpose.
 - **A test that exercises only the path its own code builds tests nothing.**
   `/join/:slug` was registered once, outside the locale loop, and sixteen green
   tests missed the `NoRouteError` on `/pt-BR/join/…` because every one of them

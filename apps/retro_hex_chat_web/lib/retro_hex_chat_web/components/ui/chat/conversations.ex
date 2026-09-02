@@ -248,12 +248,10 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :disconnected_channels, :list, default: [], doc: "Channels marked disconnected"
   attr :group_call_channels, :list, default: [], doc: "Channels with an active conference"
   attr :group_call_summaries, :map, default: %{}, doc: "Conference summaries keyed by channel"
-  attr :p2p_peer, :string, default: nil, doc: "Peer nick for the active P2P session"
-  attr :p2p_session, :map, default: nil, doc: "Active P2P session read model"
 
   attr :p2p_pm_sessions, :map,
     default: %{},
-    doc: "Pending P2P session read models keyed by downcased PM nick"
+    doc: "P2P session read models keyed by downcased PM nick"
 
   attr :open_pm_tabs, :list, default: [], doc: "PM tabs currently open in the MDI tab bar"
   attr :pm_conversations, :list, default: []
@@ -916,25 +914,9 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   defp present?(value) when is_binary(value), do: String.trim(value) != ""
   defp present?(_value), do: false
 
-  defp p2p_peer_key(assigns) do
-    peer = assigns.p2p_peer || value(assigns.p2p_session, :peer_nick)
-    if is_binary(peer), do: String.downcase(peer)
-  end
-
-  defp p2p_session_for_pm(assigns, nick) when is_binary(nick) do
-    key = String.downcase(nick)
-
-    cond do
-      p2p_peer_key(assigns) == key and is_map(assigns.p2p_session) ->
-        assigns.p2p_session
-
-      is_map(assigns.p2p_pm_sessions) ->
-        Map.get(assigns.p2p_pm_sessions, key)
-
-      true ->
-        nil
-    end
-  end
+  defp p2p_session_for_pm(%{p2p_pm_sessions: sessions}, nick)
+       when is_map(sessions) and is_binary(nick),
+       do: Map.get(sessions, String.downcase(nick))
 
   defp p2p_session_for_pm(_assigns, _nick), do: nil
 

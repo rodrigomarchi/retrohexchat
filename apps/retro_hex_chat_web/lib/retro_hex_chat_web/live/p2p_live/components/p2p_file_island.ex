@@ -1,4 +1,4 @@
-defmodule RetroHexChatWeb.ChatLive.Components.P2PFileIsland do
+defmodule RetroHexChatWeb.P2PLive.Components.P2PFileIsland do
   @moduledoc """
   File-transfer island — owner of `file_transfer`/`file_transfer_ready` and the
   body of the P2P console's Files section.

@@ -1,4 +1,4 @@
-defmodule RetroHexChatWeb.ChatLive.Components.P2PGameIsland do
+defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
   @moduledoc """
   Game island — owner of the lobby's game state (the catalog, the active game and
   the incoming/outgoing proposal) and the P2P console's Games section.

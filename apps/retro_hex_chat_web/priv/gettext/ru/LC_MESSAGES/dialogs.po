@@ -525,7 +525,6 @@ msgid "Disabled"
 msgstr "инвалид"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:69
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:126
 #, elixir-autogen, elixir-format
 msgid "Disconnect"
 msgstr "Отключиться"
@@ -1077,7 +1076,7 @@ msgstr "Уведомить список"
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:372
 #: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:201
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:260
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:247
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:241
 #, elixir-autogen, elixir-format
 msgid "OK"
 msgstr "OK"
@@ -1580,7 +1579,7 @@ msgstr "Скачать Throttle"
 msgid "Are you sure you want to drop %{channel}? This cannot be undone."
 msgstr "Вы уверены, что хотите скачать %{channel}? Это нельзя отменить."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:154
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:124
 #, elixir-autogen, elixir-format
 msgid "Audio/video tracks stop"
 msgstr "Audio/video треки останавливаются"
@@ -1667,19 +1666,6 @@ msgstr "Прозрачный MOTD"
 msgid "Clear Welcome"
 msgstr "Добро пожаловать!"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:95
-#, elixir-autogen, elixir-format
-msgid "Close P2P Session?"
-msgstr "Закрыть P2P-сессию?"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:107
-#, elixir-autogen, elixir-format
-msgid "Closing this window disconnects the whole P2P session with %{peer} — any call, game or file transfer in progress will stop. To keep the session and just tidy up, minimize the window instead."
-msgstr ""
-"Закрытие этого окна отключает весь сеанс P2P с помощью %{peer} — любой "
-"вызов, игра или передача файлов в процессе остановятся. Чтобы сохранить "
-"сеанс и просто привести в порядок, сведите к минимуму окно."
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:388
 #, elixir-autogen, elixir-format
 msgid "Confirm Drop"
@@ -1729,11 +1715,6 @@ msgstr "Подтвердите:"
 #, elixir-autogen, elixir-format
 msgid "Current MOTD"
 msgstr "Текущий MOTD"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:173
-#, elixir-autogen, elixir-format
-msgid "Current P2P session closes first"
-msgstr "Нынешняя сессия P2P завершается первой"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:247
 #, elixir-autogen, elixir-format
@@ -1807,24 +1788,17 @@ msgstr "Редактировать Timer"
 msgid "End P2P Session"
 msgstr "Завершение P2P-сессии"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:125
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:104
 #, elixir-autogen, elixir-format
 msgid "End session"
 msgstr "Заключительная сессия"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:99
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:97
 #, elixir-autogen, elixir-format
 msgid "End the P2P session with %{peer}? Any call, game or file transfer in progress will stop."
 msgstr ""
 "Завершить P2P-сессию с помощью %{peer}? Любой звонок, игра или передача "
 "файлов в процессе остановятся."
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:117
-#, elixir-autogen, elixir-format
-msgid "End the current P2P session with %{peer} and start one with %{new_peer}? Any call, game or file transfer in progress will stop."
-msgstr ""
-"Завершите текущую P2P-сессию %{peer} и начните с %{new_peer}. Любой звонок, "
-"игра или передача файлов в процессе остановятся."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:62
 #, elixir-autogen, elixir-format
@@ -1836,7 +1810,7 @@ msgstr "Введите псевдоним..."
 msgid "Every"
 msgstr "Каждый"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:155
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:125
 #, elixir-autogen, elixir-format
 msgid "File transfers stop"
 msgstr "Передача файлов прекращается"
@@ -1955,11 +1929,6 @@ msgstr "Послание"
 msgid "Message (optional)"
 msgstr "Сообщение (необязательно)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:163
-#, elixir-autogen, elixir-format
-msgid "Minimize to keep it running"
-msgstr "Минимизируйте, чтобы он работал"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Mute user"
@@ -1984,11 +1953,6 @@ msgstr "Новый MOTD"
 #, elixir-autogen, elixir-format
 msgid "New channel"
 msgstr "Новый канал"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:174
-#, elixir-autogen, elixir-format
-msgid "New invite starts after confirmation"
-msgstr "Новое приглашение начинается после подтверждения"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:255
 #, elixir-autogen, elixir-format
@@ -2047,17 +2011,12 @@ msgstr "Только онлайн"
 msgid "Only channel operators can register this channel."
 msgstr "Зарегистрировать этот канал могут только операторы каналов."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:166
-#, elixir-autogen, elixir-format
-msgid "Only one P2P session can be active"
-msgstr "Только один сеанс P2P может быть активным."
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_modes_dialog.ex:37
 #, elixir-autogen, elixir-format
 msgid "Operator broadcast messages"
 msgstr "Оператор транслирует сообщения"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:156
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:126
 #, elixir-autogen, elixir-format
 msgid "P2P games close"
 msgstr "P2P игры закрываются"
@@ -2073,11 +2032,6 @@ msgstr "Пароль:"
 #, elixir-autogen, elixir-format
 msgid "Preserved: admin_roles, audit_logs, server_bans, server_settings"
 msgstr "Сохранены: admin roles, audit logs, server bans, server settings"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:175
-#, elixir-autogen, elixir-format
-msgid "Privacy and relay settings carry over"
-msgstr "Конфиденциальность и настройки ретрансляции переносятся"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:213
 #, elixir-autogen, elixir-format
@@ -2292,16 +2246,6 @@ msgstr "Статус:"
 msgid "Stop"
 msgstr "Остановить"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:127
-#, elixir-autogen, elixir-format
-msgid "Switch"
-msgstr "переключатель"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:96
-#, elixir-autogen, elixir-format
-msgid "Switch P2P Session"
-msgstr "Переключение P2P сессии"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_danger_zone_dialog.ex:75
 #, elixir-autogen, elixir-format
 msgid "THIS CANNOT BE UNDONE"
@@ -2311,11 +2255,6 @@ msgstr "Этого нельзя избежать."
 #, elixir-autogen, elixir-format
 msgid "TURN"
 msgstr "поворот"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:162
-#, elixir-autogen, elixir-format
-msgid "The whole P2P session disconnects"
-msgstr "Вся P2P-сессия отключена"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:655
 #, elixir-autogen, elixir-format
@@ -3973,17 +3912,17 @@ msgstr "Откуда взято каждое поле"
 msgid "Why pages failed"
 msgstr "Почему страницы не загрузились"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:208
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:202
 #, elixir-autogen, elixir-format
 msgid "Connect required"
 msgstr "Требуется подключение"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:225
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:219
 #, elixir-autogen, elixir-format
 msgid "This app group needs a chat session."
 msgstr "Этой группе приложений нужна сессия чата."
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:228
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:222
 #, elixir-autogen, elixir-format
 msgid "Connect first to use this desktop app folder. Help and Language remain available without a chat session."
 msgstr "Сначала подключитесь, чтобы открыть эту папку приложений. Справка и Язык остаются доступны без сессии чата."

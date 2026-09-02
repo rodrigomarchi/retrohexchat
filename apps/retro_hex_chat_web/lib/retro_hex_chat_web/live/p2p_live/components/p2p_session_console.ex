@@ -1,4 +1,4 @@
-defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
+defmodule RetroHexChatWeb.P2PLive.Components.P2PSessionConsole do
   @moduledoc """
   Unified P2P media-session surface.
 
@@ -14,9 +14,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PSessionConsole do
   import RetroHexChatWeb.Components.UI.MediaSession.IconButton
   import RetroHexChatWeb.Components.UI.MediaSession.SectionNav
 
-  alias RetroHexChatWeb.ChatLive.Components.{P2PFileIsland, P2PGameIsland, P2PMediaIsland}
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Icons.CallControls
+  alias RetroHexChatWeb.P2PLive.Components.{P2PFileIsland, P2PGameIsland, P2PMediaIsland}
 
   @sections ~w(call files games stats)
 

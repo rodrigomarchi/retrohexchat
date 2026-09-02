@@ -514,7 +514,6 @@ msgid "Disabled"
 msgstr "已禁用"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:69
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:126
 #, elixir-autogen, elixir-format
 msgid "Disconnect"
 msgstr "斷線"
@@ -1064,7 +1063,7 @@ msgstr "通知名單"
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:372
 #: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:201
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:260
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:247
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:241
 #, elixir-autogen, elixir-format
 msgid "OK"
 msgstr "確定"
@@ -1563,7 +1562,7 @@ msgstr "應用旋律"
 msgid "Are you sure you want to drop %{channel}? This cannot be undone."
 msgstr "確定要放棄 %{channel} 嗎？此操作無法復原。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:154
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:124
 #, elixir-autogen, elixir-format
 msgid "Audio/video tracks stop"
 msgstr "Audio/video 軌道停止"
@@ -1650,17 +1649,6 @@ msgstr "清除 MOTD"
 msgid "Clear Welcome"
 msgstr "清除歡迎"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:95
-#, elixir-autogen, elixir-format
-msgid "Close P2P Session?"
-msgstr "關閉 P2P 會話 ?"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:107
-#, elixir-autogen, elixir-format
-msgid "Closing this window disconnects the whole P2P session with %{peer} — any call, game or file transfer in progress will stop. To keep the session and just tidy up, minimize the window instead."
-msgstr ""
-"關閉此窗口將整個 P2P 會話連接到 %{peer} —— 任何正在發送的呼叫、 遊戲或文件傳輸都會停止 。 爲了保持會話和清理, 將窗口最小化。"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:388
 #, elixir-autogen, elixir-format
 msgid "Confirm Drop"
@@ -1710,11 +1698,6 @@ msgstr "確認:"
 #, elixir-autogen, elixir-format
 msgid "Current MOTD"
 msgstr "當前MOTD"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:173
-#, elixir-autogen, elixir-format
-msgid "Current P2P session closes first"
-msgstr "當前P2P會話首先結束"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:247
 #, elixir-autogen, elixir-format
@@ -1787,20 +1770,15 @@ msgstr "編輯計時器"
 msgid "End P2P Session"
 msgstr "結束 P2P 會話"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:125
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:104
 #, elixir-autogen, elixir-format
 msgid "End session"
 msgstr "結束會話"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:99
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:97
 #, elixir-autogen, elixir-format
 msgid "End the P2P session with %{peer}? Any call, game or file transfer in progress will stop."
 msgstr "P2P會話用%{peer}結束? 任何正在通話、遊戲或文件傳輸都將停止。"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:117
-#, elixir-autogen, elixir-format
-msgid "End the current P2P session with %{peer} and start one with %{new_peer}? Any call, game or file transfer in progress will stop."
-msgstr "以 %{peer}結束當前 P2P會話, 以 %{new_peer}開始一個會話? 任何正在通話、遊戲或文件傳輸都將停止。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:62
 #, elixir-autogen, elixir-format
@@ -1812,7 +1790,7 @@ msgstr "輸入暱稱..."
 msgid "Every"
 msgstr "每"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:155
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:125
 #, elixir-autogen, elixir-format
 msgid "File transfers stop"
 msgstr "文件傳輸停止"
@@ -1931,11 +1909,6 @@ msgstr "消息"
 msgid "Message (optional)"
 msgstr "信件( 可選)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:163
-#, elixir-autogen, elixir-format
-msgid "Minimize to keep it running"
-msgstr "最小化以保持運行"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Mute user"
@@ -1960,11 +1933,6 @@ msgstr "新建模式"
 #, elixir-autogen, elixir-format
 msgid "New channel"
 msgstr "新頻道"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:174
-#, elixir-autogen, elixir-format
-msgid "New invite starts after confirmation"
-msgstr "新邀請在確認後開始"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:255
 #, elixir-autogen, elixir-format
@@ -2023,17 +1991,12 @@ msgstr "僅在線"
 msgid "Only channel operators can register this channel."
 msgstr "只有頻道運營商可以註冊此頻道."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:166
-#, elixir-autogen, elixir-format
-msgid "Only one P2P session can be active"
-msgstr "只有一個 P2P 會話可以活動"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_modes_dialog.ex:37
 #, elixir-autogen, elixir-format
 msgid "Operator broadcast messages"
 msgstr "操作員廣播消息"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:156
+#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:126
 #, elixir-autogen, elixir-format
 msgid "P2P games close"
 msgstr "P2P 遊戲關閉"
@@ -2049,11 +2012,6 @@ msgstr "密碼 :"
 #, elixir-autogen, elixir-format
 msgid "Preserved: admin_roles, audit_logs, server_bans, server_settings"
 msgstr "保留:admin roles, 審計 logs, 服務器  bans, 服務器  設置"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:175
-#, elixir-autogen, elixir-format
-msgid "Privacy and relay settings carry over"
-msgstr "隱私和中繼設置結轉"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:213
 #, elixir-autogen, elixir-format
@@ -2268,16 +2226,6 @@ msgstr "狀態 :"
 msgid "Stop"
 msgstr "停止"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:127
-#, elixir-autogen, elixir-format
-msgid "Switch"
-msgstr "切換"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:96
-#, elixir-autogen, elixir-format
-msgid "Switch P2P Session"
-msgstr "切換 P2P 會話"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_danger_zone_dialog.ex:75
 #, elixir-autogen, elixir-format
 msgid "THIS CANNOT BE UNDONE"
@@ -2287,11 +2235,6 @@ msgstr "這不可能是孤獨的"
 #, elixir-autogen, elixir-format
 msgid "TURN"
 msgstr "土耳其"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:162
-#, elixir-autogen, elixir-format
-msgid "The whole P2P session disconnects"
-msgstr "整個P2P會話斷開"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:655
 #, elixir-autogen, elixir-format
@@ -3931,17 +3874,17 @@ msgstr "每個欄位的來源"
 msgid "Why pages failed"
 msgstr "頁面失敗的原因"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:208
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:202
 #, elixir-autogen, elixir-format
 msgid "Connect required"
 msgstr "需要連線"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:225
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:219
 #, elixir-autogen, elixir-format
 msgid "This app group needs a chat session."
 msgstr "此應用程式分組需要一個聊天工作階段。"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:228
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:222
 #, elixir-autogen, elixir-format
 msgid "Connect first to use this desktop app folder. Help and Language remain available without a chat session."
 msgstr "請先連線才能使用這個應用程式資料夾。說明和語言在沒有聊天工作階段時依然可用。"

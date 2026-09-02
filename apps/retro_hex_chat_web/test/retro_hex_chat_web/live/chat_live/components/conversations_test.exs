@@ -231,10 +231,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     html =
       render_conv(
         pm_conversations: ["alice", "bob"],
-        p2p_session: %{
-          peer_nick: "Alice",
-          state: :connected,
-          call_summary: %{duration: "00:00:30"}
+        p2p_pm_sessions: %{
+          "alice" => %{peer_nick: "Alice", state: :connected, token: "tok"}
         }
       )
 

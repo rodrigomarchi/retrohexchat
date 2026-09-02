@@ -44,21 +44,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
   attr :on_close, :any, default: "close_tab"
   slot :actions
 
-  attr :p2p_peer, :string,
-    default: nil,
-    doc: "Peer of the active P2P session — the PM tab gets the session glyph when it matches"
-
-  attr :p2p_state, :atom,
-    default: nil,
-    doc: "Current P2P state used by the PM tab glyph: pending, connecting or connected"
-
-  attr :p2p_session, :map,
-    default: nil,
-    doc: "Full P2P session read model used for PM tab facets"
-
   attr :p2p_pm_sessions, :map,
     default: %{},
-    doc: "Pending P2P session read models keyed by downcased PM nick"
+    doc: "P2P session read models keyed by downcased PM nick"
 
   attr :group_call_channels, :any,
     default: MapSet.new(),
@@ -169,7 +157,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
 
   defp pm_tab(pm, assigns) do
     pm_p2p_session = p2p_session_for_pm(assigns, pm)
-    pm_p2p_state = p2p_tab_state(value(pm_p2p_session, :state) || assigns.p2p_state)
+    pm_p2p_state = p2p_tab_state(value(pm_p2p_session, :state))
 
     %{
       type: "pm",
@@ -195,28 +183,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
     MapSet.member?(MapSet.new(channels || []), channel)
   end
 
-  defp p2p_peer_key(assigns) do
-    peer = assigns.p2p_peer || value(assigns.p2p_session, :peer_nick)
-    if is_binary(peer), do: String.downcase(peer)
-  end
+  defp p2p_session_for_pm(%{p2p_pm_sessions: sessions}, pm) when is_map(sessions),
+    do: Map.get(sessions, String.downcase(pm))
 
-  defp p2p_session_for_pm(assigns, pm) do
-    key = String.downcase(pm)
-
-    cond do
-      p2p_peer_key(assigns) == key and is_map(assigns.p2p_session) ->
-        assigns.p2p_session
-
-      p2p_peer_key(assigns) == key and assigns.p2p_state != nil ->
-        %{state: assigns.p2p_state, peer_nick: pm}
-
-      is_map(assigns.p2p_pm_sessions) ->
-        Map.get(assigns.p2p_pm_sessions, key)
-
-      true ->
-        nil
-    end
-  end
+  defp p2p_session_for_pm(_assigns, _pm), do: nil
 
   defp p2p_tab_state(:idle), do: "idle"
   defp p2p_tab_state(:pending_received), do: "pending"

@@ -1,9 +1,9 @@
-defmodule RetroHexChatWeb.ChatLive.Components.P2PFileIslandTest do
+defmodule RetroHexChatWeb.P2PLive.Components.P2PFileIslandTest do
   use RetroHexChatWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
 
-  alias RetroHexChatWeb.ChatLive.Components.P2PFileIsland
+  alias RetroHexChatWeb.P2PLive.Components.P2PFileIsland
 
   @moduletag :unit
 

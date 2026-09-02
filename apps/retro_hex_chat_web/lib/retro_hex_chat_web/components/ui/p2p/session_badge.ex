@@ -2,23 +2,41 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   @moduledoc """
   PM-level P2P session indicators.
 
-  This mirrors the visual contract of `GroupCall.ChannelBadge`, but keeps the
-  P2P semantics explicit: the indicator belongs to the peer conversation, not
-  to a public channel.
+  This mirrors the visual contract of `GroupCall.ChannelBadge`, and for the same
+  reason: the two are the same question asked of a conversation instead of a
+  channel. A session is never on this screen — it lives at `/p2p/:token`, in a
+  tab of its own — so the entry has exactly three shapes, and which one is drawn
+  is the server's answer:
+
+    * no session, and this reader may start one: a button that sends the invite.
+    * a session, and this reader has its tab open: a way *to that tab*. A second
+      tab of a session you are in moves the session into it, which is the
+      takeover contract firing for somebody who only wanted to look.
+    * a session, and no tab of it: the way in, which is a real anchor to the
+      session's own address.
+
+  Declining is the fourth control and the only one that is not a door. It stays
+  here because refusing an invitation is conversation, and conversation is the
+  chat's.
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.SurfaceTabLink
+
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Live.OpenSurfaces
 
   attr :peer, :string, required: true
   attr :session, :map, default: nil
   attr :state, :any, default: nil
   attr :current, :boolean, default: false
-  attr :on_open, :any, default: "p2p_statusbar_click"
-  attr :on_open_call, :any, default: "p2p_console_select"
-  attr :on_open_stats, :any, default: "p2p_console_select"
-  attr :on_stop, :any, default: "p2p_statusbar_stop"
   attr :on_start, :any, default: "p2p_start_pm_session"
+
+  attr :open_paths, :any,
+    default: nil,
+    doc: "the addresses this person already has open, from `Live.OpenSurfaces`"
+
   attr :class, :any, default: nil
 
   @spec p2p_peer_entry(map()) :: Phoenix.LiveView.Rendered.t()
@@ -31,11 +49,13 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
       class={classes(["conversation-toolbar-entry flex items-center gap-px", @class])}
       data-testid="p2p-peer-entry-wrap"
     >
+      <%!-- Nothing to enter yet: this conversation has no session, and the
+            click is what creates one and writes its card into the PM. --%>
       <button
+        :if={@idle?}
         type="button"
-        phx-click={@primary_event}
-        phx-value-peer={@primary_peer}
-        phx-value-token={@primary_token}
+        phx-click={@on_start}
+        phx-value-peer={@peer}
         class={[
           "conversation-toolbar-button relative flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs",
           "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
@@ -48,7 +68,57 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         data-peer={@peer}
         data-p2p-state={@visual_state}
         data-p2p-status={Atom.to_string(@status)}
-        data-p2p-facets={facets_value(@facets)}
+      >
+        <Icons.icon_toolbar_p2p class="h-3.5 w-3.5 shrink-0" />
+        <span class="conversation-toolbar-button__text">
+          {dgettext("p2p", "P2P Session")}
+        </span>
+      </button>
+
+      <%!-- The tab is already open, so this is a way *to it*: opening a second
+            one would move the session out of the window holding it. --%>
+      <.link
+        :if={not @idle? and @tab_open?}
+        href={@path}
+        id={"p2p-peer-tab-#{@token}"}
+        phx-hook="SurfaceTabLinkHook"
+        data-surface-path={@path}
+        class={[
+          "conversation-toolbar-button flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs",
+          "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
+          status_class(@status)
+        ]}
+        title={dgettext("p2p", "This P2P session is open in another tab — click to go to it")}
+        data-testid="p2p-peer-elsewhere"
+        data-peer={@peer}
+        data-p2p-state={@visual_state}
+        data-p2p-status={Atom.to_string(@status)}
+      >
+        <Icons.icon_toolbar_p2p class="h-3.5 w-3.5 shrink-0" />
+        <span class="conversation-toolbar-button__text">
+          {dgettext("p2p", "In another tab")}
+        </span>
+      </.link>
+
+      <%!-- The way in, and the only one: an anchor to the session's own
+            address, so middle-click and open-in-new-tab work and the chat this
+            conversation is in stays exactly where it is. --%>
+      <.link
+        :if={not @idle? and not @tab_open?}
+        href={@path}
+        target="_blank"
+        rel="noopener"
+        class={[
+          "conversation-toolbar-button relative flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs",
+          "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
+          @current && "bg-canvas font-bold shadow-retro-sunken",
+          status_class(@status)
+        ]}
+        title={@title}
+        data-testid="p2p-peer-entry"
+        data-peer={@peer}
+        data-p2p-state={@visual_state}
+        data-p2p-status={Atom.to_string(@status)}
       >
         <Icons.icon_toolbar_p2p class="h-3.5 w-3.5 shrink-0" />
         <span class="conversation-toolbar-button__text">
@@ -62,22 +132,11 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
           ]}
           aria-hidden="true"
         />
-      </button>
+      </.link>
 
-      <button
-        :if={@pending_received?}
-        type="button"
-        phx-click="p2p_accept_invite"
-        phx-value-token={@token}
-        disabled={is_nil(@token)}
-        class="conversation-toolbar-button flex shrink-0 items-center justify-center p-0 shadow-retro-raised bg-surface text-primary focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground disabled:opacity-50"
-        title={dgettext("p2p", "Accept P2P request")}
-        aria-label={dgettext("p2p", "Accept P2P request")}
-        data-testid="p2p-peer-join"
-      >
-        <Icons.icon_btn_join class="h-3.5 w-3.5" />
-      </button>
-
+      <%!-- Refusing is not a door, which is why it is the one control here
+            that is still a button: it ends the invitation from the
+            conversation, without anybody entering anything. --%>
       <button
         :if={@pending_received?}
         type="button"
@@ -117,10 +176,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
                 <Icons.icon_protocol_p2p_compact class="h-3.5 w-3.5 shrink-0" />
                 <span class="truncate">{@peer}</span>
               </div>
-              <div class="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
-                <Icons.icon_p2p_route class="h-3 w-3 shrink-0" />
-                <span>{transport_label(@turn_only)}</span>
-              </div>
             </div>
             <span class={[
               "shadow-retro-sunken bg-white px-1 py-px text-[10px] font-bold",
@@ -128,37 +183,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
             ]}>
               {status_label(@status)}
             </span>
-          </div>
-
-          <div class="mt-2 grid grid-cols-2 gap-1 text-[11px]">
-            <div class="shadow-retro-status bg-white px-1 py-px">
-              <span class="font-bold">{dgettext("p2p", "Session")}</span>
-              <span class="float-right">{status_label(@status)}</span>
-            </div>
-            <div class="shadow-retro-status bg-white px-1 py-px">
-              <span class="font-bold">{dgettext("p2p", "Quality")}</span>
-              <span class="float-right truncate max-w-[9ch]">{@quality_label || "-"}</span>
-            </div>
-          </div>
-
-          <div class="mt-2 shadow-retro-sunken bg-white p-1">
-            <div class="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase">
-              <Icons.icon_protocol_p2p_compact class="h-3 w-3" />
-              <span>{dgettext("p2p", "P2P activity")}</span>
-            </div>
-            <div class="flex flex-wrap gap-1">
-              <span
-                :for={facet <- @facets}
-                class="inline-flex items-center gap-px border border-border bg-surface px-1 py-px text-[10px]"
-                data-testid={"p2p-peer-facet-#{facet}"}
-              >
-                <.facet_icon facet={facet} class="h-3 w-3" />
-                <span>{facet_label(facet)}</span>
-              </span>
-              <span :if={@facets == []} class="text-muted-foreground">
-                {dgettext("p2p", "Session ready")}
-              </span>
-            </div>
           </div>
 
           <div class="mt-2 grid grid-cols-2 gap-1">
@@ -173,18 +197,19 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
               <Icons.icon_btn_join class="h-3.5 w-3.5" />
               <span>{dgettext("p2p", "Start")}</span>
             </button>
-            <button
-              :if={@pending_received?}
-              type="button"
-              phx-click="p2p_accept_invite"
-              phx-value-token={@token}
-              disabled={is_nil(@token)}
-              class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground disabled:opacity-50"
-              data-testid="p2p-peer-popover-join"
-            >
-              <Icons.icon_btn_join class="h-3.5 w-3.5" />
-              <span>{dgettext("p2p", "Join")}</span>
-            </button>
+            <%!-- The same door in the popover, in the two shapes it has out
+                  in the strip. --%>
+            <.surface_tab_link
+              :if={not @idle?}
+              path={@path}
+              open?={@tab_open?}
+              class={
+                if @pending_received?,
+                  do: "h-6 text-xs font-bold",
+                  else: "col-span-2 h-6 text-xs font-bold"
+              }
+              testid="p2p-peer-popover-join"
+            />
             <button
               :if={@pending_received?}
               type="button"
@@ -196,48 +221,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
             >
               <Icons.icon_reject class="h-3.5 w-3.5" />
               <span>{dgettext("p2p", "Decline")}</span>
-            </button>
-            <button
-              :if={!@idle? && !@pending_received?}
-              type="button"
-              phx-click={@on_open_call}
-              phx-value-section="call"
-              class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-              data-testid="p2p-peer-open-call"
-            >
-              <Icons.icon_camera class="h-3.5 w-3.5" />
-              <span>{dgettext("p2p", "Call")}</span>
-            </button>
-            <button
-              :if={!@idle? && !@pending_received?}
-              type="button"
-              phx-click={@on_open_stats}
-              phx-value-section="stats"
-              class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-              data-testid="p2p-peer-open-stats"
-            >
-              <Icons.icon_quality_high class="h-3.5 w-3.5" />
-              <span>{dgettext("p2p", "Stats")}</span>
-            </button>
-            <button
-              :if={!@idle? && !@pending_received?}
-              type="button"
-              phx-click={@on_open}
-              class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-              data-testid="p2p-peer-focus"
-            >
-              <Icons.icon_btn_open class="h-3.5 w-3.5" />
-              <span>{dgettext("p2p", "Focus")}</span>
-            </button>
-            <button
-              :if={!@idle? && !@pending_received?}
-              type="button"
-              phx-click={@on_stop}
-              class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold text-destructive focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-              data-testid="p2p-peer-end"
-            >
-              <Icons.icon_phone_end class="h-3.5 w-3.5" />
-              <span>{dgettext("p2p", "End")}</span>
             </button>
           </div>
         </div>
@@ -271,7 +254,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
       data-peer={@peer}
       data-p2p-state={@visual_state}
       data-p2p-status={Atom.to_string(@status)}
-      data-p2p-facets={facets_value(@facets)}
     >
       <Icons.icon_protocol_p2p_compact class="h-3 w-3" />
       <span
@@ -287,73 +269,31 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
     """
   end
 
-  attr :facet, :atom, required: true
-  attr :class, :any, default: nil
-  attr :testid, :string, default: nil
-
-  defp facet_icon(%{facet: :call} = assigns) do
-    ~H"""
-    <span class="inline-flex" data-testid={@testid}>
-      <Icons.icon_camera class={@class} />
-    </span>
-    """
-  end
-
-  defp facet_icon(%{facet: :file} = assigns) do
-    ~H"""
-    <span class="inline-flex" data-testid={@testid}>
-      <Icons.icon_file_send class={@class} />
-    </span>
-    """
-  end
-
-  defp facet_icon(%{facet: :game} = assigns) do
-    ~H"""
-    <span class="inline-flex" data-testid={@testid}>
-      <Icons.icon_game_arcade class={@class} />
-    </span>
-    """
-  end
-
-  defp facet_icon(%{facet: :relay} = assigns) do
-    ~H"""
-    <span class="inline-flex" data-testid={@testid}>
-      <Icons.icon_p2p_route class={@class} />
-    </span>
-    """
-  end
-
   defp assign_session(assigns) do
     session = normalize_session(assigns[:session], assigns[:state])
     state = value(session, :state)
     role = value(session, :role)
     token = value(session, :token)
-    facets = facets(session)
-    activity_facets = Enum.reject(facets, &(&1 == :relay))
-    status = status(state, activity_facets)
-    visual_state = visual_state(state)
-    quality_label = value(value(session, :call_summary), :quality_label)
-    duration = value(value(session, :call_summary), :duration)
-    turn_only = value(session, :turn_only) == true and value(session, :turn_configured) == true
-    idle? = state in [:idle, "idle"]
-    pending_received? = pending_received?(state, role)
+    path = value(session, :path) || (token && Paths.p2p_path(token))
+    status = status(state)
 
     assigns
-    |> assign(:session_data, session)
     |> assign(:active, session != nil)
-    |> assign(:idle?, idle?)
-    |> assign(:pending_received?, pending_received?)
+    |> assign(:idle?, state in [:idle, "idle"])
+    |> assign(:pending_received?, pending_received?(state, role))
     |> assign(:token, token)
-    |> assign(:facets, facets)
+    |> assign(:path, path)
+    |> assign(:tab_open?, OpenSurfaces.open?(open_paths(assigns), path))
     |> assign(:status, status)
-    |> assign(:visual_state, visual_state)
-    |> assign(:quality_label, quality_label)
-    |> assign(:duration, duration)
-    |> assign(:turn_only, turn_only)
-    |> assign(:title, title(assigns.peer, status, facets))
-    |> assign(:primary_event, primary_event(assigns, idle?, pending_received?))
-    |> assign(:primary_peer, if(idle?, do: assigns.peer))
-    |> assign(:primary_token, if(pending_received?, do: token))
+    |> assign(:visual_state, visual_state(state))
+    |> assign(:title, title(assigns.peer, status))
+  end
+
+  defp open_paths(assigns) do
+    case assigns[:open_paths] do
+      %MapSet{} = paths -> paths
+      _absent -> MapSet.new()
+    end
   end
 
   defp normalize_session(nil, nil), do: nil
@@ -365,25 +305,15 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
       (state in [:pending, "pending"] and role in [:peer, "peer"])
   end
 
-  defp primary_event(assigns, true = _idle?, _pending_received?),
-    do: Map.get(assigns, :on_start, "p2p_start_pm_session")
-
-  defp primary_event(_assigns, _idle?, true = _pending_received?), do: "p2p_accept_invite"
-
-  defp primary_event(assigns, _idle?, _pending_received?),
-    do: Map.get(assigns, :on_open, "p2p_statusbar_click")
-
-  defp status(:idle, _activity_facets), do: :idle
-  defp status("idle", _activity_facets), do: :idle
-  defp status(:pending_received, _activity_facets), do: :invite
-  defp status("pending_received", _activity_facets), do: :invite
-  defp status(:invite_sent, _activity_facets), do: :invite
-  defp status("pending", _activity_facets), do: :invite
-  defp status(:connected, []), do: :ready
-  defp status("connected", []), do: :ready
-  defp status(:connected, _activity_facets), do: :live
-  defp status("connected", _activity_facets), do: :live
-  defp status(_state, _activity_facets), do: :link
+  defp status(:idle), do: :idle
+  defp status("idle"), do: :idle
+  defp status(:pending_received), do: :invite
+  defp status("pending_received"), do: :invite
+  defp status(:invite_sent), do: :invite
+  defp status("pending"), do: :invite
+  defp status(:connected), do: :live
+  defp status("connected"), do: :live
+  defp status(_state), do: :link
 
   defp visual_state(:idle), do: "idle"
   defp visual_state("idle"), do: "idle"
@@ -396,88 +326,29 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   defp visual_state(nil), do: nil
   defp visual_state(_state), do: "connecting"
 
-  defp facets(session) when is_map(session) do
-    []
-    |> maybe_add_facet(:call, call_active?(value(session, :call_summary)))
-    |> maybe_add_facet(:file, file_active?(value(session, :file_summary)))
-    |> maybe_add_facet(:game, game_active?(value(session, :game_summary)))
-    |> maybe_add_facet(
-      :relay,
-      value(session, :turn_only) == true and value(session, :turn_configured) == true
-    )
-  end
-
-  defp facets(_session), do: []
-
-  defp call_active?(summary), do: is_map(summary)
-  defp file_active?(summary), do: is_map(summary)
-
-  defp game_active?(summary) when is_map(summary) do
-    value(summary, :active?) == true or value(summary, :status) in ["active", "playing"]
-  end
-
-  defp game_active?(_summary), do: false
-
-  defp maybe_add_facet(facets, facet, true), do: facets ++ [facet]
-  defp maybe_add_facet(facets, _facet, _false), do: facets
-
   defp status_label(:idle), do: dgettext("p2p", "Ready")
   defp status_label(:invite), do: dgettext("p2p", "Invite")
   defp status_label(:link), do: dgettext("p2p", "Link")
   defp status_label(:live), do: dgettext("p2p", "Live")
-  defp status_label(:ready), do: dgettext("p2p", "Ready")
 
-  defp facet_label(:call), do: dgettext("p2p", "Call")
-  defp facet_label(:file), do: dgettext("p2p", "Files")
-  defp facet_label(:game), do: dgettext("p2p", "Game")
-  defp facet_label(:relay), do: dgettext("p2p", "Relay")
-
-  defp title(peer, :idle, _facets),
+  defp title(peer, :idle),
     do: dgettext("p2p", "Start P2P session with %{peer}", peer: peer)
 
-  defp title(_peer, :invite, _facets), do: dgettext("chat", "P2P invite pending")
-  defp title(_peer, :link, _facets), do: dgettext("chat", "P2P session connecting")
+  defp title(_peer, :invite), do: dgettext("chat", "P2P invite pending")
+  defp title(_peer, :link), do: dgettext("chat", "P2P session connecting")
 
-  defp title(peer, _status, []) do
-    dgettext("chat", "P2P session active")
-    |> title_with_peer(peer)
-  end
-
-  defp title(peer, _status, facets) do
-    suffix = facets |> Enum.map_join(", ", &facet_title/1)
-
-    dgettext("p2p", "P2P session with %{peer} - %{facets}",
-      peer: peer,
-      facets: suffix
-    )
-  end
-
-  defp title_with_peer(title, peer) when is_binary(peer) and peer != "",
-    do: "#{title}: #{peer}"
-
-  defp title_with_peer(title, _peer), do: title
-
-  defp facet_title(:call), do: dgettext("chat", "call active")
-  defp facet_title(:file), do: dgettext("chat", "file transfer active")
-  defp facet_title(:game), do: dgettext("chat", "game active")
-  defp facet_title(:relay), do: dgettext("p2p", "privacy relay active")
-
-  defp transport_label(true), do: dgettext("p2p", "Privacy relay")
-  defp transport_label(_false), do: dgettext("p2p", "Direct or relay")
+  defp title(peer, _status),
+    do: dgettext("p2p", "Open the P2P session with %{peer} in a tab of its own", peer: peer)
 
   defp status_class(:idle), do: "border border-primary text-primary"
   defp status_class(:invite), do: "border border-warning text-warning"
   defp status_class(:link), do: "border border-warning-alt text-warning-alt"
   defp status_class(:live), do: "border border-success text-success"
-  defp status_class(:ready), do: "border border-primary text-primary"
 
   defp dot_class(:idle), do: "bg-primary"
   defp dot_class(:invite), do: "bg-warning"
   defp dot_class(:link), do: "bg-warning-alt"
   defp dot_class(:live), do: "bg-success"
-  defp dot_class(:ready), do: "bg-primary"
-
-  defp facets_value(facets), do: Enum.map_join(facets, ",", &Atom.to_string/1)
 
   # Nil-safe because the session it reads is absent more often than present.
   defp value(nil, _key), do: nil

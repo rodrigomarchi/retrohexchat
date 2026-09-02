@@ -1,4 +1,4 @@
-defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
+defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
   @moduledoc """
   Audio/video call island — owner of the whole media state (`call`, `call_layout`,
   the local/peer mute and camera flags, `peer_media`, `devices`) and the body of the

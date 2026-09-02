@@ -182,6 +182,14 @@ defmodule RetroHexChat.Lobby.SessionServer do
           state = %{
             token: token,
             session: session,
+            # Read once, here, and never again: the two people in a session do
+            # not change, and every notification below would otherwise put a
+            # query inside the server on a path that runs while the caller who
+            # owns the connection may already be gone.
+            nicks: %{
+              creator: registered_nick(session.creator_id),
+              peer: registered_nick(session.peer_id)
+            },
             creator_joined: false,
             peer_joined: false,
             connections: %{creator: nil, peer: nil},
@@ -764,6 +772,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
     state = NamedTimers.schedule(state, :connecting_timeout, connecting_timeout())
 
     broadcast(state.token, "lobby_status_changed", %{status: "lobby", reason: nil})
+    notify_chat_progress(state)
     maybe_start_signaling(state)
   end
 
@@ -781,6 +790,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
     state = %{state | session: session}
     broadcast(state.token, "lobby_status_changed", %{status: "connected", reason: nil})
+    notify_chat_progress(state)
     state
   end
 
@@ -797,7 +807,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
       })
 
     broadcast(state.token, "lobby_session_closed", %{reason: reason, closed_by: closed_by})
-    notify_chat_participants(session, reason)
+    notify_chat_participants(state.nicks, session, reason)
     %{state | session: session}
   end
 
@@ -814,7 +824,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
       })
 
     broadcast(state.token, "lobby_status_changed", %{status: "expired", reason: reason})
-    notify_chat_participants(session, reason)
+    notify_chat_participants(state.nicks, session, reason)
     %{state | session: session}
   end
 
@@ -831,7 +841,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
       })
 
     broadcast(state.token, "lobby_status_changed", %{status: "failed", reason: reason})
-    notify_chat_participants(session, reason)
+    notify_chat_participants(state.nicks, session, reason)
     %{state | session: session}
   end
 
@@ -924,10 +934,29 @@ defmodule RetroHexChat.Lobby.SessionServer do
     end
   end
 
-  defp notify_chat_participants(session, reason) do
-    creator_nick = registered_nick(session.creator_id)
-    peer_nick = registered_nick(session.peer_id)
+  # A conversation hears about the session from the session, never from the
+  # room. The room's topic is where the negotiation lives — every ICE candidate
+  # and every SDP crosses it — so a chat that subscribed there to learn that a
+  # badge had changed colour would be paying for a whole call to draw a dot.
+  defp notify_chat_progress(%{nicks: %{creator: creator_nick, peer: peer_nick}, session: session}) do
+    if creator_nick && peer_nick do
+      notify_chat_progress(creator_nick, peer_nick, session)
+      notify_chat_progress(peer_nick, creator_nick, session)
+    end
+  end
 
+  defp notify_chat_progress(nickname, peer_nick, session) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      "user:#{nickname}",
+      %{
+        event: "lobby_session_progress",
+        payload: %{peer_nick: peer_nick, token: session.token, status: session.status}
+      }
+    )
+  end
+
+  defp notify_chat_participants(%{creator: creator_nick, peer: peer_nick}, session, reason) do
     if creator_nick && peer_nick do
       notify_chat_user(creator_nick, peer_nick, session, reason)
       notify_chat_user(peer_nick, creator_nick, session, reason)
@@ -942,6 +971,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
         event: "lobby_session_ended",
         payload: %{
           peer_nick: peer_nick,
+          token: session.token,
           reason: reason,
           duration_seconds: session.duration_seconds
         }

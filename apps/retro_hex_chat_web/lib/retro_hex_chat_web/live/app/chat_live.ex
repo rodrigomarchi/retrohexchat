@@ -37,8 +37,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.P2P.SessionBadge
   import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
 
-  alias RetroHexChatWeb.ChatLive.Components.P2PSessionConsole
-
   # ── Solo arcade window body ──────────────────────────────────
   import RetroHexChatWeb.Components.UI.SoloLobby
 
@@ -72,6 +70,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChatWeb.ChatLive.ChatContext
   alias RetroHexChatWeb.ChatLive.ChatTitle
   alias RetroHexChatWeb.ChatLive.GroupCallReadModel
+  alias RetroHexChatWeb.ChatLive.P2PReadModel
   alias RetroHexChatWeb.ChatLive.SpaceReadModel
 
   alias RetroHexChatWeb.ChatLive.Components.{
@@ -874,8 +873,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
       # The space surface reports to its host: the character it remembers for
       # next time, and what the canvas says about a nickname on the map.
       {:space_info, &ChatLive.SpaceEvents.handle_info/2},
-      # After PubsubHandlers: it consumes "lobby_invite" (user topic) first;
-      # this one owns the session-topic "lobby_*" events.
+      # After PubsubHandlers: it consumes "lobby_invite" first; this one owns
+      # the other two sentences a session says on the reader's own topic.
       {:p2p_session_info, &ChatLive.P2PSessionEvents.handle_info/2},
       # Owns the "arcade:#{token}" topic events for the in-chat solo arcade.
       {:arcade_session_info, &ChatLive.ArcadeSessionEvents.handle_info/2},
@@ -982,9 +981,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       space_last_avatar: hd(RetroHexChat.VirtualSpace.avatars()),
       group_call_channels: MapSet.new(),
       group_call_channel_summaries: %{},
-      p2p_session: nil,
       p2p_pm_sessions: %{},
-      p2p_pending: nil,
       arcade_session: nil,
       mobile_viewport: false,
       mobile_panel_restore: nil,
@@ -1130,13 +1127,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   end
 
   defp channel_group_call_summary(_summaries, _channel_name), do: nil
-
-  defp p2p_session_for_active_pm(%{peer_nick: peer} = p2p, active_pm)
-       when is_binary(peer) and is_binary(active_pm) do
-    if String.downcase(peer) == String.downcase(active_pm), do: p2p
-  end
-
-  defp p2p_session_for_active_pm(_p2p, _active_pm), do: nil
 
   defp p2p_pm_session_for_active_pm(pm_sessions, active_pm)
        when is_map(pm_sessions) and is_binary(active_pm) do

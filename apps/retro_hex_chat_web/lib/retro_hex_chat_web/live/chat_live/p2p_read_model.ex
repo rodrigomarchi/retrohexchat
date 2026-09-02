@@ -1,24 +1,33 @@
 defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
   @moduledoc """
-  What the chat knows about a P2P session its reader is not inside.
+  What the chat knows about the P2P sessions its reader is not inside.
 
   The rule that decides what belongs here: if the datum exists for someone who
   is only looking at the conversation, it lives in the chat; if it exists only
-  while you are inside the session, it belongs to the session's own surface.
-  The tab-bar entry, the sidebar badge, the taskbar button and the status zone
-  are all this side of that line, and none of them needs media, devices, stats
-  or a signalling token.
+  while you are inside the session, it belongs to the session's own page. The
+  tab-bar entry, the sidebar badge and the status zone are all this side of that
+  line, and none of them needs media, devices, stats or a signalling token.
 
-  Two assigns hold it. `@p2p_pm_sessions` answers "does this private
-  conversation have a session" for a render that only needs a badge — including
-  an invite the reader has not accepted, which is a card and not a connection.
-  `@p2p_session` is the one session this reader is actually in, narrowed to
-  what the chat's own chrome draws, and the surface hands it over as it
-  changes.
+  One assign holds it. `@p2p_pm_sessions` answers "does this private
+  conversation have a session, and how far along is it" — keyed by the peer's
+  downcased nickname, because that is the question every one of those readers
+  asks. An invite the reader has not answered is in there too: it is a card in
+  the conversation, not a connection.
 
-  It is also what decides whether the chat's P2P window exists at all: the
-  window renders the surface, and the surface is what joins the session, so
-  something the chat can know without joining has to come first.
+  **Everything here is read from the database, and what asks for the re-read is
+  the session speaking on the reader's own topic.** It used to be fed by the
+  surface the chat rendered inside itself, which meant the chat could only know
+  about a session it was hosting. A session lives at its own address now, in a
+  tab of its own, and it tells the two people in it — `lobby_invite`,
+  `lobby_session_progress`, `lobby_session_ended` on `user:` — rather than the
+  chat listening to the room. That is not a detail: the room's topic is where
+  the WebRTC negotiation crosses, so a chat subscribed to it would carry every
+  ICE candidate of every session its reader has a badge for.
+
+  A person can be in more than one at once — a different peer in each — so this
+  is a map and not a single session. What the chat draws about the one whose
+  tab this reader already has open is `elsewhere/2`, and that is the only shape
+  the status bar has: you end a session from the page that is holding it.
   """
 
   import Phoenix.Component, only: [assign: 2]
@@ -26,94 +35,43 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
-  alias RetroHexChat.P2P
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
-
-  @pubsub RetroHexChat.PubSub
+  alias RetroHexChatWeb.Live.OpenSurfaces
 
   @doc """
-  Rebuild what the chat knows about P2P, after a mount or a reconnect.
+  Rebuild every badge from the database, after a mount or a reconnect.
 
-  A pending invite this person received stays a card: it is drawn, and nothing
-  is joined. Anything further along reopens the surface, because the session
-  server owns that fact and a reload must not look like an ending.
+  Nothing is joined and nothing is opened: a reload is not consent, and the
+  session's page is where consent is given.
   """
   @spec refresh_all(Socket.t()) :: Socket.t()
   def refresh_all(%{assigns: %{session: %{nickname: nickname}}} = socket)
       when is_binary(nickname) do
-    with {:ok, user_id} <- SessionHelpers.resolve_user_id(nickname),
-         %LobbySession{} = db_session <- Lobby.active_session_for_user(user_id) do
-      role = role_of(db_session, user_id)
+    case SessionHelpers.resolve_user_id(nickname) do
+      {:ok, user_id} ->
+        sessions =
+          user_id
+          |> Lobby.active_sessions_for_user()
+          |> Enum.map(&pm_session(&1, user_id))
+          |> Enum.filter(&is_binary(&1.peer_nick))
+          |> Map.new(&{String.downcase(&1.peer_nick), &1})
 
-      case {db_session.status, role} do
-        # A match link this person minted is not a session they are in: nobody
-        # has taken the seat, there is no conversation it belongs to, and the
-        # room for it lives at its own address.
-        #
-        # `active_sessions_for_user/1` filters these out now, so this clause is
-        # the second of two locks and it stays that way on purpose: the failure
-        # it guards is silent. An open row is newer than the call the person is
-        # already on, so if the query ever stops excluding it the chat quietly
-        # stops re-opening a running session — nothing raises, nothing logs, and
-        # the fallthrough below would draw a P2P window with nobody opposite.
-        {"open", _role} -> socket
-        {"pending", :peer} -> put_pm_session(socket, pm_session(db_session, user_id))
-        _joined -> open(socket, db_session.token, user_id, role, db_session.status)
-      end
-    else
-      _none -> socket
+        assign(socket, p2p_pm_sessions: sessions)
+
+      _unregistered ->
+        socket
     end
   end
 
   def refresh_all(socket), do: socket
 
   @doc """
-  Record that this reader has a session at `token`, and start listening to it.
-
-  The chat listens for the end of it and nothing else: everything that happens
-  *inside* is the surface's, and the surface says what needs saying. What the
-  chat needs is to stop drawing a window for a session that is over.
-  """
-  @spec open(Socket.t(), String.t(), integer(), :creator | :peer, String.t()) :: Socket.t()
-  def open(socket, token, user_id, role, status) do
-    Phoenix.PubSub.subscribe(@pubsub, topic(token))
-
-    assign(socket,
-      p2p_session: %{
-        token: token,
-        user_id: user_id,
-        role: role,
-        peer_nick: peer_nick_for(token, user_id),
-        state: state_for(status, role),
-        turn_configured: P2P.turn_configured?(),
-        pid: nil
-      }
-    )
-  end
-
-  @doc "Stop drawing the session, and stop listening to it."
-  @spec close(Socket.t()) :: Socket.t()
-  def close(%{assigns: %{p2p_session: %{token: token}}} = socket) do
-    Phoenix.PubSub.unsubscribe(@pubsub, topic(token))
-    assign(socket, p2p_session: nil)
-  end
-
-  def close(socket), do: socket
-
-  @doc "Merge what the surface says about the session it is holding."
-  @spec merge(Socket.t(), pid(), map()) :: Socket.t()
-  def merge(%{assigns: %{p2p_session: %{} = current}} = socket, pid, snapshot) do
-    assign(socket, p2p_session: current |> Map.merge(snapshot) |> Map.put(:pid, pid))
-  end
-
-  def merge(socket, _pid, _snapshot), do: socket
-
-  @doc """
   Refresh the badge for one private conversation, without joining anything.
 
   This backs the PM header, tab and sidebar pending state. It deliberately
-  never joins: a received invite stays consent-free until the reader accepts
-  it, and accepting it is what mounts the surface.
+  never joins: a received invite stays consent-free until the reader follows
+  its card, and following the card is what mounts the session.
   """
   @spec refresh_pm(Socket.t(), String.t() | nil) :: Socket.t()
   def refresh_pm(%{assigns: %{session: %{nickname: nickname}}} = socket, peer_nick)
@@ -139,8 +97,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
   @doc "Forget the badge that carries `token`, whoever the peer was."
   @spec drop_pm_by_token(Socket.t(), String.t()) :: Socket.t()
   def drop_pm_by_token(socket, token) when is_binary(token) do
-    assign(
-      socket,
+    assign(socket,
       p2p_pm_sessions:
         socket |> pm_sessions() |> Enum.reject(&match?({_key, %{token: ^token}}, &1)) |> Map.new()
     )
@@ -151,6 +108,48 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
   @doc "Every private conversation with a session, keyed by downcased nickname."
   @spec pm_sessions(Socket.t()) :: %{String.t() => map()}
   def pm_sessions(socket), do: socket.assigns[:p2p_pm_sessions] || %{}
+
+  @doc """
+  The peer nick whose session token `token` belongs to, as this reader sees it.
+
+  Read out of the badges rather than the database: the chat is answering about
+  a conversation it is already drawing.
+  """
+  @spec peer_nick_of(Socket.t(), String.t()) :: String.t() | nil
+  def peer_nick_of(socket, token) do
+    socket
+    |> pm_sessions()
+    |> Enum.find_value(fn
+      {_key, %{token: ^token, peer_nick: peer_nick}} -> peer_nick
+      _other -> nil
+    end)
+  end
+
+  @doc """
+  The session this reader already has open at its own address, if any.
+
+  The only shape the chat's status zone has. There is nothing to focus here and
+  nothing to end from here — a session is ended on the page that holds it — so
+  what is left is a way over to the tab that does.
+
+  Takes the two values rather than the socket: inside a template `@socket`
+  carries no assigns at all, so a version that read them there would answer
+  "nothing is open" forever, in silence, and only where it is actually used.
+  """
+  @spec elsewhere(%{String.t() => map()}, MapSet.t(String.t())) ::
+          %{peer_nick: String.t(), path: String.t()} | nil
+  def elsewhere(pm_sessions, open_paths) when is_map(pm_sessions) do
+    pm_sessions
+    |> Map.values()
+    |> Enum.sort_by(& &1.peer_nick)
+    |> Enum.find_value(fn %{path: path, peer_nick: peer_nick} ->
+      if is_binary(peer_nick) and OpenSurfaces.open?(open_paths, path) do
+        %{peer_nick: peer_nick, path: path}
+      end
+    end)
+  end
+
+  def elsewhere(_pm_sessions, _open_paths), do: nil
 
   @doc "Which role `user_id` plays in `db_session`."
   @spec role_of(LobbySession.t(), integer()) :: :creator | :peer
@@ -174,8 +173,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
   end
 
   defp put_pm_session(socket, %{peer_nick: peer_nick} = read_model) when is_binary(peer_nick) do
-    assign(
-      socket,
+    assign(socket,
       p2p_pm_sessions: Map.put(pm_sessions(socket), String.downcase(peer_nick), read_model)
     )
   end
@@ -193,7 +191,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
       role: role,
       peer_nick: peer_nick_for(db_session.token, user_id),
       state: state_for(db_session.status, role),
-      turn_configured: P2P.turn_configured?()
+      path: Paths.p2p_path(db_session.token)
     }
   end
 
@@ -202,6 +200,4 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
   defp state_for("connected", _role), do: :connected
   defp state_for("lobby", _role), do: :joining
   defp state_for(_status, _role), do: :connecting
-
-  defp topic(token), do: "lobby:#{token}"
 end
