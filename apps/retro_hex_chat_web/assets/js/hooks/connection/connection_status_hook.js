@@ -86,6 +86,7 @@ const ConnectionStatusHook = {
   },
 
   _handleConnectionLost() {
+    this._wasDisconnected = true;
     const state = this._sm.getState();
     if (state === "disconnected" || state === "reconnecting" || state === "cancelled") return;
 
@@ -97,11 +98,19 @@ const ConnectionStatusHook = {
     this._maybePushRestoreSession();
   },
 
+  // Only after something was actually lost. `online` fires for reasons that
+  // are not a dropped socket — a VPN settling, a laptop waking, a headless
+  // browser starting — and each of those used to replay the snapshot the
+  // server handed over at mount. Measured: about a second after opening a
+  // channel the view jumped to the conversation of an earlier session, with
+  // the socket never having closed.
   _maybePushRestoreSession() {
+    if (!this._wasDisconnected) return;
     if (!this._reconnectState) return;
 
     const state = this._reconnectState;
     this._reconnectState = null;
+    this._wasDisconnected = false;
     this.pushEvent("restore_session", state);
   },
 };

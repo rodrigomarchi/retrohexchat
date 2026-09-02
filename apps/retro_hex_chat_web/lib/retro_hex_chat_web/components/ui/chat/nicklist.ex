@@ -406,8 +406,13 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
       |> assign(:role_name, role_name(assigns.role))
 
     ~H"""
+    <%!-- Hidden, never absent. The rows inside are a LiveView stream, and a
+          stream's items live in the DOM it was rendered into: take the
+          container away while a channel is empty and the items go with it, so
+          the section comes back with its count and no rows under it. Measured
+          on a founder rejoining an empty channel — OWNER 1, and nobody. --%>
     <section
-      :if={@count > 0}
+      hidden={@count == 0}
       class={classes(["chat-nicklist-section", "chat-nicklist-section--#{@role_class}", @class])}
       data-testid={"nicklist-section-#{@role_class}"}
       data-role={@role_name}

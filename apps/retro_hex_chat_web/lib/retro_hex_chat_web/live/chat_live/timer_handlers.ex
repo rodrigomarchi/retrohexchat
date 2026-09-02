@@ -38,6 +38,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Helpers.PM
+  alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
 
   # ── Typing indicator timer ────────────────────────────────
 
@@ -428,7 +429,26 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
     )
   end
 
-  defp maybe_restore_active_tab(socket) do
+  # The person moved while the rejoin was still running. Their choice wins: the
+  # restore exists to put them back where they were, not to take them away from
+  # where they went.
+  defp maybe_restore_active_tab(%{assigns: %{reconnect_from: from}} = socket)
+       when not is_nil(from) do
+    if SessionHelpers.conversation_key(socket.assigns.session) == from do
+      restore_active_tab(socket)
+    else
+      assign(socket,
+        reconnect_active_channel: nil,
+        reconnect_active_pm: nil,
+        reconnect_open_pm_tabs: [],
+        reconnect_from: nil
+      )
+    end
+  end
+
+  defp maybe_restore_active_tab(socket), do: restore_active_tab(socket)
+
+  defp restore_active_tab(socket) do
     target_channel = socket.assigns[:reconnect_active_channel]
     target_pm = socket.assigns[:reconnect_active_pm]
     open_pm_tabs = socket.assigns[:reconnect_open_pm_tabs] || []
@@ -445,7 +465,8 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
         open_pm_tabs: open_pm_tabs,
         reconnect_active_channel: nil,
         reconnect_active_pm: nil,
-        reconnect_open_pm_tabs: []
+        reconnect_open_pm_tabs: [],
+        reconnect_from: nil
       )
 
     cond do

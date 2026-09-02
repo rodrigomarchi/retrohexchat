@@ -289,14 +289,23 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
   # ── Session / Reconnect ────────────────────────────────────
 
-  @spec push_reconnect_state(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
-  def push_reconnect_state(socket) do
+  @doc """
+  Write the snapshot where the next mount will look for it.
+
+  Two stores, and only one of them is safe to fill at mount. The row is the
+  server's own memory of the session. The client copy is handed to
+  `ConnectionStatusHook`, which pushes it straight back as `restore_session`
+  the moment the connection reports itself restored — so a copy handed over at
+  mount is applied a second later and overwrites the conversation the person
+  has since opened. Measured: the view jumped to a channel from an earlier
+  session about a second after entering a new one.
+  """
+  @spec persist_reconnect_state(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  def persist_reconnect_state(socket) do
     session = socket.assigns.session
 
-    snapshot = reconnect_snapshot(socket)
-
     if session.identified do
-      case ReconnectState.save(session.nickname, snapshot) do
+      case ReconnectState.save(session.nickname, reconnect_snapshot(socket)) do
         :ok ->
           :ok
 
@@ -307,7 +316,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       end
     end
 
-    push_event(socket, "save_reconnect_state", snapshot)
+    socket
+  end
+
+  @spec push_reconnect_state(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  def push_reconnect_state(socket) do
+    socket = persist_reconnect_state(socket)
+
+    push_event(socket, "save_reconnect_state", reconnect_snapshot(socket))
   end
 
   @spec clear_reconnect_state(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
@@ -375,7 +391,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       |> assign(
         reconnect_active_channel: active_channel,
         reconnect_active_pm: active_pm,
-        reconnect_open_pm_tabs: open_pm_tabs
+        reconnect_open_pm_tabs: open_pm_tabs,
+        # Where the person is *now*, so the restore can tell whether they have
+        # moved by the time it lands. The rejoin runs 200 ms after the mount and
+        # a channel at a time after that; anything they open in between is a
+        # deliberate choice, and a restore that overwrites it throws them out of
+        # the conversation they just opened.
+        reconnect_from: conversation_key(socket.assigns.session)
       )
 
     if channels != [] do
@@ -384,6 +406,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
     socket
   end
+
+  @doc false
+  @spec conversation_key(Session.t()) :: {String.t() | nil, String.t() | nil}
+  def conversation_key(session), do: {session.active_channel, session.active_pm}
 
   defp sanitize_open_pm_tabs(tabs, own_nick) do
     tabs

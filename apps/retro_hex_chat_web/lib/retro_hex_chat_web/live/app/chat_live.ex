@@ -213,7 +213,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       # the whole login sequence again for their trouble. Writing it before the
       # restore would be worse than not writing it: it would overwrite the
       # conversation they were in with the one the mount happened to open.
-      |> ChatLive.Helpers.push_reconnect_state()
+      |> ChatLive.Helpers.persist_reconnect_state()
       |> ChatLive.Helpers.maybe_trigger_perform()
       |> ChatLive.P2PSessionEvents.rehydrate()
       |> ChatLive.GroupCallEvents.rehydrate()
@@ -950,6 +950,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       ignore_timers: %{},
       pending_invites: [],
       reconnect_active_channel: nil,
+      reconnect_from: nil,
       reconnect_active_pm: nil,
       reconnect_open_pm_tabs: [],
       knock_timestamps: %{},

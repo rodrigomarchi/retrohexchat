@@ -292,7 +292,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
         |> Map.put(:label, section_label(section.key, kind))
         |> Map.put(:count, Map.get(section_counts, section.key, 0))
       end)
-      |> Enum.filter(&(&1.count > 0))
+
+    # Every section, every time. The empty ones hide themselves; dropping
+    # them here would take their stream containers out of the DOM.
 
     assign(socket,
       users: users,
