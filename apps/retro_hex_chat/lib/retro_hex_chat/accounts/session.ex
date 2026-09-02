@@ -164,6 +164,26 @@ defmodule RetroHexChat.Accounts.Session do
     end
   end
 
+  @doc """
+  Take a private conversation off the sidebar.
+
+  The list is of conversations, not of unread things: dropping one says the
+  person is done with it, and it says nothing about whether they read it. The
+  messages stay in the database and the next line from that nickname puts the
+  conversation back — this is a dismissal, not a delete.
+  """
+  @spec remove_pm_conversation(t(), String.t()) :: t()
+  def remove_pm_conversation(
+        %__MODULE__{pm_conversations: pms, active_pm: active} = session,
+        nick
+      ) do
+    %{
+      session
+      | pm_conversations: List.delete(pms, nick),
+        active_pm: if(active == nick, do: nil, else: active)
+    }
+  end
+
   @spec rename_pm_conversation(t(), String.t(), String.t()) :: t()
   def rename_pm_conversation(
         %__MODULE__{pm_conversations: pms, active_pm: active} = session,

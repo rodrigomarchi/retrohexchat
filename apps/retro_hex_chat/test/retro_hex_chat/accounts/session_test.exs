@@ -179,6 +179,46 @@ defmodule RetroHexChat.Accounts.SessionTest do
     end
   end
 
+  describe "remove_pm_conversation/2" do
+    test "takes the conversation off the list" do
+      session =
+        Session.new("Alice")
+        |> Session.add_pm_conversation("Bob")
+        |> Session.add_pm_conversation("Carol")
+        |> Session.remove_pm_conversation("Bob")
+
+      assert session.pm_conversations == ["Carol"]
+    end
+
+    test "clears the active PM when it is the one being put away" do
+      session =
+        Session.new("Alice")
+        |> Session.add_pm_conversation("Bob")
+        |> Session.set_active_pm("Bob")
+        |> Session.remove_pm_conversation("Bob")
+
+      assert session.active_pm == nil
+    end
+
+    test "leaves another active PM alone" do
+      session =
+        Session.new("Alice")
+        |> Session.add_pm_conversation("Bob")
+        |> Session.add_pm_conversation("Carol")
+        |> Session.set_active_pm("Carol")
+        |> Session.remove_pm_conversation("Bob")
+
+      assert session.active_pm == "Carol"
+      assert session.pm_conversations == ["Carol"]
+    end
+
+    test "a conversation that is not there changes nothing" do
+      session = Session.new("Alice") |> Session.add_pm_conversation("Bob")
+
+      assert Session.remove_pm_conversation(session, "Nobody") == session
+    end
+  end
+
   describe "add_pm_conversation/2" do
     test "adds a PM conversation at the head" do
       session = Session.new("Alice") |> Session.add_pm_conversation("Alice")

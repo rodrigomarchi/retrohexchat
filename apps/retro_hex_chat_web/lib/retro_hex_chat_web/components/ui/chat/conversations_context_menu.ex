@@ -117,6 +117,21 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
 
       <.context_menu_separator :if={!@is_pm} />
 
+      <%!-- Close Conversation — the private half of Leave Channel. A channel is
+            left; a private conversation is only put away, and the next line
+            from that nickname brings it back. --%>
+      <.context_menu_separator :if={@is_pm} />
+      <.context_menu_item
+        :if={@is_pm}
+        on_click={@on_action}
+        action="ctx_conversations_close_pm"
+        phx-value-nick={@nick}
+        data-testid="ctx-close-pm"
+      >
+        <:icon><Icons.icon_close class="w-[14px] h-[14px]" /></:icon>
+        {dgettext("chat", "Close Conversation")}
+      </.context_menu_item>
+
       <%!-- Leave Channel --%>
       <.context_menu_item
         :if={!@is_pm}

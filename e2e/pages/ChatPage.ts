@@ -171,6 +171,7 @@ export class ChatPage {
   readonly nicklistContextVoiceMenuItem: Locator;
   readonly nicklistContextOpMenuItem: Locator;
   readonly conversationsContextMenu: Locator;
+  readonly conversationsClosePmMenuItem: Locator;
   readonly conversationsMarkReadMenuItem: Locator;
   readonly conversationsMuteMenuItem: Locator;
   readonly conversationsCopyNameMenuItem: Locator;
@@ -580,6 +581,11 @@ export class ChatPage {
     this.conversationsLeaveMenuItem = page
       .locator(
         '[data-testid="ctx-leave"], [data-testid="context-menu-item-ctx_conversations_leave"]',
+      )
+      .first();
+    this.conversationsClosePmMenuItem = page
+      .locator(
+        '[data-testid="ctx-close-pm"], [data-testid="context-menu-item-ctx_conversations_close_pm"]',
       )
       .first();
     this.conversationsSidebar = page.getByTestId("conversations");
@@ -1337,6 +1343,12 @@ export class ChatPage {
   async openPmConversationContextMenu(nick: string) {
     await this.pmConversationItem(nick).click({ button: "right" });
     await expect(this.conversationsContextMenu).toBeVisible();
+  }
+
+  async closePmConversationFromMenu(nick: string) {
+    await this.openPmConversationContextMenu(nick);
+    await this.conversationsClosePmMenuItem.click();
+    await expect(this.conversationsContextMenu).toBeHidden();
   }
 
   async toggleConversationSection(section: "channels" | "pms" | "popular") {

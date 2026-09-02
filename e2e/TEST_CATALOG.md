@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **225 spec files** under `e2e/tests/`.
-- **473 Playwright `test()` cases**.
-- **468 documented flows**, 467 done, 1 not done.
+- **474 Playwright `test()` cases**.
+- **469 documented flows**, 468 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -197,6 +197,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | D2 | Recipient sees PM in tab labeled with sender nick | `tests/chat-pm.spec.ts` | done |
 | D3 | PM reply updates other user's PM tab | `tests/chat-pm.spec.ts` | done |
 | D4 | Closing PM tab removes it from tablist | `tests/chat-pm.spec.ts` | done |
+| D5 | Close Conversation puts a private message away without marking it read (features P2) | `tests/chat-pm.spec.ts` | done |
 | E1 | `/nick newname` confirms dialog and updates own nicklist entry | `tests/chat-identity.spec.ts` | done |
 | E2 | `/away At lunch` and `/away` emit set/clear status messages | `tests/chat-identity.spec.ts` | done |
 | F1 | `/help` lists available commands in active message list | `tests/chat-help.spec.ts` | done |

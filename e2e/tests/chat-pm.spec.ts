@@ -3,6 +3,7 @@
  * @flow D1 [done] `/msg <bob> hi` opens sender PM tab without focus steal
  * @flow D2 [done] Recipient sees PM in tab labeled with sender nick
  * @flow D3 [done] PM reply updates other user's PM tab
+ * @flow D5 [done] Close Conversation puts a private message away without marking it read (features P2)
  * @flow D4 [done] Closing PM tab removes it from tablist
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -101,6 +102,40 @@ test.describe("Private messages", () => {
       // and makes the spec robust).
       await chatA.switchToTab(nickB);
       await chatA.expectMessageVisible(reply);
+    } finally {
+      await ctxA.close();
+      await ctxB.close();
+    }
+  });
+
+  test("Close Conversation puts a PM away without reading it (D5)", async ({
+    browser,
+  }) => {
+    const { ctxA, ctxB, chatA, chatB, nickA, nickB } =
+      await setupTwoUsers(browser);
+    try {
+      const unread = `pm-unread-${Date.now()}`;
+
+      // Bob writes while alice is looking elsewhere, so the conversation is
+      // on her sidebar and unread.
+      await chatB.sendMessage(`/msg ${nickA} ${unread}`);
+      await chatA.expectTabVisible(nickB);
+      await chatA.expectPmConversationUnread(nickB, true);
+
+      await chatA.closePmConversationFromMenu(nickB);
+      await expect(chatA.pmConversationItem(nickB)).toHaveCount(0);
+
+      // Nothing was deleted and nothing was read: the next line brings the
+      // conversation back, still carrying what went unread.
+      await chatB.sendMessage(`/msg ${nickA} ${unread}-again`);
+      await chatA.expectTabVisible(nickB);
+      await chatA.expectPmConversationUnread(nickB, true);
+
+      // And nothing was lost: what was said before the conversation was put
+      // away is still there when it is opened again.
+      await chatA.sendMessage(`/query ${nickB}`);
+      await chatA.expectTabSelected(nickB);
+      await chatA.expectMessageVisible(unread);
     } finally {
       await ctxA.close();
       await ctxB.close();

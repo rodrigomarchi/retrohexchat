@@ -2662,3 +2662,18 @@ msgstr "ユーザー一覧は会話の右側のサイドバーです。画面に
 #, elixir-autogen, elixir-format
 msgid "Who is here"
 msgstr "ここにいる人"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:89
+#, elixir-autogen, elixir-format
+msgid "Channels work the other way: Leave Channel actually leaves, so you stop receiving what is said there until you join again."
+msgstr "チャンネルは逆です。「チャンネルを離れる」は本当に離れるので、再び参加するまでそこでの発言は届きません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:81
+#, elixir-autogen, elixir-format
+msgid "Putting a conversation away"
+msgstr "会話をしまう"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:83
+#, elixir-autogen, elixir-format
+msgid "Right-click a private message row and choose Close Conversation to take it off the list. Nothing is deleted: the messages stay, and the next line from that person puts the conversation back. It is not marked read either — if it was in bold when you closed it, it comes back in bold."
+msgstr "プライベートメッセージの行を右クリックして「会話を閉じる」を選ぶと、一覧から外れます。何も削除されません。メッセージは残り、その相手からの次の発言で会話が戻ります。既読にもなりません — 閉じたときに太字だったなら、太字のまま戻ります。"

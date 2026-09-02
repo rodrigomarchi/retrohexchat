@@ -5719,6 +5719,62 @@ PO_CURRENT_RESIDUAL_OVERRIDES = {
 for source, translations in PO_CURRENT_RESIDUAL_OVERRIDES.items():
     PO_OVERRIDES.setdefault(source, {}).update(translations)
 
+
+# The private conversation you put away. Curated rather than machine
+# translated: "Close Conversation" is a menu label with no sentence around it,
+# and the paragraphs beside it turn on the difference between leaving a channel
+# and dismissing a conversation, which a translator has to be told.
+PO_CLOSE_CONVERSATION_OVERRIDES = {
+    "Close Conversation": t(
+        "Unterhaltung schließen", "Cerrar conversación", "Fermer la conversation",
+        "Tutup percakapan", "会話を閉じる", "关闭会话",
+        pt_BR="Fechar conversa", pt_PT="Fechar conversa",
+        it="Chiudi conversazione", pl="Zamknij rozmowę",
+        nl="Gesprek sluiten", ru="Закрыть разговор", zh_hant="關閉對話",
+    ),
+    "Putting a conversation away": t(
+        "Eine Unterhaltung weglegen", "Guardar una conversación",
+        "Ranger une conversation",
+        "Menyimpan percakapan", "会話をしまう", "收起会话",
+        pt_BR="Guardar uma conversa", pt_PT="Arrumar uma conversa",
+        it="Mettere via una conversazione", pl="Odkładanie rozmowy",
+        nl="Een gesprek opbergen", ru="Убрать разговор", zh_hant="收起對話",
+    ),
+    "Right-click a private message row and choose Close Conversation to take it off the list. Nothing is deleted: the messages stay, and the next line from that person puts the conversation back. It is not marked read either — if it was in bold when you closed it, it comes back in bold.": t(
+        "Klicken Sie mit der rechten Maustaste auf eine private Unterhaltung und wählen Sie Unterhaltung schließen, um sie von der Liste zu nehmen. Es wird nichts gelöscht: die Nachrichten bleiben, und die nächste Zeile dieser Person bringt die Unterhaltung zurück. Sie wird auch nicht als gelesen markiert — war sie beim Schließen fett, kommt sie fett zurück.",
+        "Haz clic derecho en una fila de mensaje privado y elige Cerrar conversación para quitarla de la lista. No se borra nada: los mensajes quedan, y la siguiente línea de esa persona devuelve la conversación. Tampoco se marca como leída: si estaba en negrita al cerrarla, vuelve en negrita.",
+        "Faites un clic droit sur une ligne de message privé et choisissez Fermer la conversation pour la retirer de la liste. Rien n'est supprimé : les messages restent, et la prochaine ligne de cette personne ramène la conversation. Elle n'est pas non plus marquée comme lue — si elle était en gras à la fermeture, elle revient en gras.",
+        "Klik kanan baris pesan pribadi dan pilih Tutup percakapan untuk mengeluarkannya dari daftar. Tidak ada yang dihapus: pesan tetap ada, dan baris berikutnya dari orang itu mengembalikan percakapan. Percakapan juga tidak ditandai sudah dibaca — jika tebal saat ditutup, ia kembali tebal.",
+        "プライベートメッセージの行を右クリックして「会話を閉じる」を選ぶと、一覧から外れます。何も削除されません。メッセージは残り、その相手からの次の発言で会話が戻ります。既読にもなりません — 閉じたときに太字だったなら、太字のまま戻ります。",
+        "右键点击私聊行并选择“关闭会话”即可将其移出列表。不会删除任何内容：消息仍在，对方的下一条消息会让会话回来。也不会标记为已读——关闭时是粗体，回来时仍是粗体。",
+        pt_BR="Clique com o botão direito numa linha de mensagem privada e escolha Fechar conversa para tirá-la da lista. Nada é apagado: as mensagens ficam, e a próxima linha dessa pessoa traz a conversa de volta. Também não é marcada como lida — se estava em negrito quando você fechou, volta em negrito.",
+        pt_PT="Clique com o botão direito numa linha de mensagem privada e escolha Fechar conversa para a tirar da lista. Nada é apagado: as mensagens ficam, e a próxima linha dessa pessoa traz a conversa de volta. Também não fica marcada como lida — se estava a negrito quando a fechou, volta a negrito.",
+        it="Fai clic destro su una riga di messaggio privato e scegli Chiudi conversazione per toglierla dall'elenco. Non viene eliminato nulla: i messaggi restano, e la riga successiva di quella persona riporta la conversazione. Non viene nemmeno segnata come letta — se era in grassetto alla chiusura, torna in grassetto.",
+        pl="Kliknij prawym przyciskiem wiersz wiadomości prywatnej i wybierz Zamknij rozmowę, aby zdjąć ją z listy. Nic nie jest usuwane: wiadomości zostają, a następna linia od tej osoby przywraca rozmowę. Nie zostaje też oznaczona jako przeczytana — jeśli przy zamknięciu była pogrubiona, wróci pogrubiona.",
+        nl="Klik met de rechtermuisknop op een privéberichtrij en kies Gesprek sluiten om het van de lijst te halen. Er wordt niets verwijderd: de berichten blijven, en de volgende regel van die persoon brengt het gesprek terug. Het wordt ook niet als gelezen gemarkeerd — stond het vet bij het sluiten, dan komt het vet terug.",
+        ru="Щёлкните правой кнопкой по строке личного сообщения и выберите «Закрыть разговор», чтобы убрать её из списка. Ничего не удаляется: сообщения остаются, а следующая строка от этого человека вернёт разговор. Он также не помечается прочитанным — если при закрытии был жирным, вернётся жирным.",
+        zh_hant="在私訊列上按右鍵並選擇「關閉對話」即可將它移出清單。不會刪除任何內容：訊息仍在，對方的下一則訊息會讓對話回來。也不會標記為已讀——關閉時是粗體，回來時仍是粗體。",
+    ),
+    "Channels work the other way: Leave Channel actually leaves, so you stop receiving what is said there until you join again.": t(
+        "Kanäle funktionieren andersherum: Kanal verlassen verlässt ihn wirklich, Sie erhalten dort Gesagtes erst wieder, wenn Sie erneut beitreten.",
+        "Los canales funcionan al revés: Salir del canal sale de verdad, así que dejas de recibir lo que se dice allí hasta que vuelvas a entrar.",
+        "Les canaux fonctionnent à l'inverse : Quitter le canal le quitte vraiment, vous ne recevez plus ce qui s'y dit jusqu'à ce que vous le rejoigniez.",
+        "Kanal bekerja sebaliknya: Tinggalkan kanal benar-benar keluar, jadi Anda berhenti menerima apa yang dikatakan di sana sampai bergabung lagi.",
+        "チャンネルは逆です。「チャンネルを離れる」は本当に離れるので、再び参加するまでそこでの発言は届きません。",
+        "频道则相反：离开频道是真的离开，在你再次加入之前不会收到那里的消息。",
+        pt_BR="Canais funcionam ao contrário: Sair do canal sai de verdade, então você para de receber o que é dito lá até entrar de novo.",
+        pt_PT="Os canais funcionam ao contrário: Sair do canal sai mesmo, por isso deixa de receber o que é dito lá até voltar a entrar.",
+        it="I canali funzionano al contrario: Esci dal canale esce davvero, quindi smetti di ricevere ciò che si dice lì finché non rientri.",
+        pl="Kanały działają odwrotnie: Opuść kanał naprawdę go opuszcza, więc przestajesz otrzymywać to, co się tam mówi, dopóki nie dołączysz ponownie.",
+        nl="Kanalen werken andersom: Kanaal verlaten verlaat het echt, dus je ontvangt niet meer wat daar gezegd wordt tot je opnieuw deelneemt.",
+        ru="С каналами наоборот: «Покинуть канал» действительно выходит, и вы перестаёте получать сказанное там, пока не зайдёте снова.",
+        zh_hant="頻道則相反：離開頻道是真的離開，在你再次加入之前不會收到那裡的訊息。",
+    ),
+}
+
+for source, translations in PO_CLOSE_CONVERSATION_OVERRIDES.items():
+    PO_OVERRIDES.setdefault(source, {}).update(translations)
+
 JS_OVERRIDES = {
     "%{0}  Wv:%{1}": {
     },

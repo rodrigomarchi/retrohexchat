@@ -38,6 +38,32 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsContextMenuTest do
     assert html =~ ~s(phx-window-keydown="close_conversations_context_menu")
   end
 
+  test "a private conversation offers Close Conversation, a channel does not" do
+    pm =
+      menu(%{
+        visible: true,
+        type: :pm,
+        nick: "bob",
+        session: Session.new("alice")
+      })
+
+    assert pm =~ ~s(data-testid="ctx-close-pm")
+    assert pm =~ ~s(phx-value-nick="bob")
+    # Leaving is for channels: a private conversation has nobody to leave.
+    refute pm =~ ~s(data-testid="ctx-leave")
+
+    channel =
+      menu(%{
+        visible: true,
+        type: :channel,
+        channel: "#lobby",
+        session: Session.new("alice")
+      })
+
+    assert channel =~ ~s(data-testid="ctx-leave")
+    refute channel =~ ~s(data-testid="ctx-close-pm")
+  end
+
   test "derives is_muted from the muted_channels read-model" do
     html =
       menu(%{
