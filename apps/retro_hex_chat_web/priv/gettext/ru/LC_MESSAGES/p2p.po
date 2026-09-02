@@ -247,7 +247,7 @@ msgstr "Активный"
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:256
 #, elixir-autogen, elixir-format
 msgid "Audio"
-msgstr "Аудио"
+msgstr "Звук"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:157
 #, elixir-autogen, elixir-format
@@ -369,7 +369,9 @@ msgstr "Скачать"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:828
 #, elixir-autogen, elixir-format
-msgid "Estimated bandwidth available for sending to the peer, in kilobits per second."
+msgid ""
+"Estimated bandwidth available for sending to the peer, in kilobits per "
+"second."
 msgstr ""
 "Предполагаемая пропускная способность, доступная для отправки в одноранговое"
 " устройство, в килобитах в секунду."
@@ -492,7 +494,9 @@ msgstr "МОС %{score}"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:800
 #, elixir-autogen, elixir-format
-msgid "Mean Opinion Score (1-5): an overall call-quality estimate from latency, jitter and loss. 5 is excellent; below 3.5 feels poor."
+msgid ""
+"Mean Opinion Score (1-5): an overall call-quality estimate from latency, "
+"jitter and loss. 5 is excellent; below 3.5 feels poor."
 msgstr ""
 "Средний балл (1-5): общая оценка качества вызова от задержки, джиттера и "
 "потери. 5 — это хорошо, ниже 3,5 — плохо."
@@ -557,7 +561,9 @@ msgstr "выход"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:793
 #, elixir-autogen, elixir-format
-msgid "Overall connection health, rated from Excellent to Poor based on the MOS score."
+msgid ""
+"Overall connection health, rated from Excellent to Poor based on the MOS "
+"score."
 msgstr ""
 "Общее здоровье соединения, оцененное от Отлично до Плохо на основе оценки "
 "MOS."
@@ -601,7 +607,9 @@ msgstr "В ожидании"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:821
 #, elixir-autogen, elixir-format
-msgid "Percentage of packets that never arrived. Above ~3% noticeably degrades quality."
+msgid ""
+"Percentage of packets that never arrived. Above ~3% noticeably degrades "
+"quality."
 msgstr ""
 "Доля пакетов, которые так и не поступили. Выше ~3% заметно ухудшает "
 "качество."
@@ -671,7 +679,9 @@ msgstr "Вернуться в раздельный макет"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:807
 #, elixir-autogen, elixir-format
-msgid "Round-trip time for data to reach the peer and return. Lower is better; under ~150 ms feels instant."
+msgid ""
+"Round-trip time for data to reach the peer and return. Lower is better; "
+"under ~150 ms feels instant."
 msgstr ""
 "Время в оба конца для данных, чтобы добраться до сверстника и вернуться. "
 "Нижний лучше; менее ~ 150 мс чувствует себя мгновенно."
@@ -773,7 +783,7 @@ msgstr "Начните с микрофона"
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:582
 #, elixir-autogen, elixir-format
 msgid "Status"
-msgstr "Статус"
+msgstr "Состояние"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:422
 #, elixir-autogen, elixir-format
@@ -799,7 +809,9 @@ msgstr "Загрузить"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:814
 #, elixir-autogen, elixir-format
-msgid "Variation in packet arrival timing. High jitter causes choppy audio and video."
+msgid ""
+"Variation in packet arrival timing. High jitter causes choppy audio and "
+"video."
 msgstr ""
 "Изменение времени прибытия пакетов. Высокий джиттер вызывает дрожь аудио и "
 "видео."
@@ -830,7 +842,9 @@ msgstr "Является ли активное видео RTP камерой и�
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:874
 #, elixir-autogen, elixir-format
-msgid "Why quality was capped: CPU means your device is too busy; Bandwidth means the network is too slow."
+msgid ""
+"Why quality was capped: CPU means your device is too busy; Bandwidth means "
+"the network is too slow."
 msgstr ""
 "Почему качество было ограничено: процессор означает, что ваше устройство "
 "слишком занято; пропускная способность означает, что сеть слишком медленная."
@@ -929,14 +943,18 @@ msgstr "Статистика"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:529
 #, elixir-autogen, elixir-format
-msgid "When the network allows it, packets travel browser-to-browser instead of through the conference server."
+msgid ""
+"When the network allows it, packets travel browser-to-browser instead of "
+"through the conference server."
 msgstr ""
 "Когда сеть позволяет это, пакеты перемещаются от браузера к браузеру, а не "
 "через конференц-сервер."
 
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:522
 #, elixir-autogen, elixir-format
-msgid "Your browser uses the relay path for this session, while the session still stays one-to-one."
+msgid ""
+"Your browser uses the relay path for this session, while the session still "
+"stays one-to-one."
 msgstr ""
 "Ваш браузер использует путь ретрансляции для этой сессии, в то время как "
 "сессия остается один на один."
@@ -1212,12 +1230,15 @@ msgstr "Попытка"
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:352
 #, elixir-autogen, elixir-format
 msgid "Could not restore this P2P session. Retry or end the session."
-msgstr "Не удалось восстановить эту P2P-сессию. Повторите попытку или завершите её."
+msgstr ""
+"Не удалось восстановить эту P2P-сессию. Повторите попытку или завершите её."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:846
 #, elixir-autogen, elixir-format
 msgid "Current P2P signaling generation used to ignore stale SDP and ICE."
-msgstr "Текущее поколение P2P-сигнализации, по которому отбрасываются устаревшие SDP и ICE."
+msgstr ""
+"Текущее поколение P2P-сигнализации, по которому отбрасываются устаревшие SDP"
+" и ICE."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:843
 #, elixir-autogen, elixir-format
@@ -1227,12 +1248,15 @@ msgstr "Текущая автоматическая попытка в этом �
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:849
 #, elixir-autogen, elixir-format
 msgid "Current offer identifier used to ignore stale answers and candidates."
-msgstr "Идентификатор текущего оффера, по которому отбрасываются устаревшие ответы и кандидаты."
+msgstr ""
+"Идентификатор текущего оффера, по которому отбрасываются устаревшие ответы и"
+" кандидаты."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:834
 #, elixir-autogen, elixir-format
 msgid "Current recovery state reported by the call connection."
-msgstr "Текущее состояние восстановления, о котором сообщает соединение звонка."
+msgstr ""
+"Текущее состояние восстановления, о котором сообщает соединение звонка."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:750
 #, elixir-autogen, elixir-format
@@ -1262,7 +1286,8 @@ msgstr "Оффер"
 
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:365
 #, elixir-autogen, elixir-format
-msgid "Peer media connection was interrupted. Recovery is monitoring the link."
+msgid ""
+"Peer media connection was interrupted. Recovery is monitoring the link."
 msgstr "Медиасоединение с узлом прервано. Восстановление следит за каналом."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:215
@@ -1297,8 +1322,12 @@ msgstr "Состояние"
 
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:345
 #, elixir-autogen, elixir-format
-msgid "This session is still active in another window. Close that window, retry, or end this session."
-msgstr "Эта сессия ещё активна в другом окне. Закройте его, повторите попытку или завершите эту сессию."
+msgid ""
+"This session is still active in another window. Close that window, retry, or"
+" end this session."
+msgstr ""
+"Эта сессия ещё активна в другом окне. Закройте его, повторите попытку или "
+"завершите эту сессию."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:222
 #, elixir-autogen, elixir-format
@@ -1438,4 +1467,5 @@ msgstr "Открыть сессию P2P с %{peer} в отдельной вкл�
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:91
 #, elixir-autogen, elixir-format
 msgid "This P2P session is open in another tab — click to go to it"
-msgstr "Эта сессия P2P открыта в другой вкладке — нажмите, чтобы перейти к ней"
+msgstr ""
+"Эта сессия P2P открыта в другой вкладке — нажмите, чтобы перейти к ней"

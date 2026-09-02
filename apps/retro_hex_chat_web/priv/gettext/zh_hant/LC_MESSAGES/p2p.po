@@ -365,7 +365,9 @@ msgstr "下載"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:828
 #, elixir-autogen, elixir-format
-msgid "Estimated bandwidth available for sending to the peer, in kilobits per second."
+msgid ""
+"Estimated bandwidth available for sending to the peer, in kilobits per "
+"second."
 msgstr "發送到端點的估計帶寬, 單位爲千位/ 每秒 。"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:681
@@ -484,7 +486,9 @@ msgstr "衛生部 %{score}"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:800
 #, elixir-autogen, elixir-format
-msgid "Mean Opinion Score (1-5): an overall call-quality estimate from latency, jitter and loss. 5 is excellent; below 3.5 feels poor."
+msgid ""
+"Mean Opinion Score (1-5): an overall call-quality estimate from latency, "
+"jitter and loss. 5 is excellent; below 3.5 feels poor."
 msgstr "平均評分(1-5):從延遲、緊張和損失中得出的總的呼叫質量估計數。 5是優秀的;3.5以下感覺貧窮."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:441
@@ -547,7 +551,9 @@ msgstr "產出"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:793
 #, elixir-autogen, elixir-format
-msgid "Overall connection health, rated from Excellent to Poor based on the MOS score."
+msgid ""
+"Overall connection health, rated from Excellent to Poor based on the MOS "
+"score."
 msgstr "整體連線健康,根據MOS得分排名從優秀到貧窮."
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:51
@@ -589,7 +595,9 @@ msgstr "待決"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:821
 #, elixir-autogen, elixir-format
-msgid "Percentage of packets that never arrived. Above ~3% noticeably degrades quality."
+msgid ""
+"Percentage of packets that never arrived. Above ~3% noticeably degrades "
+"quality."
 msgstr "從未到貨包的百分比 。 高於~3%會明顯地降低質量."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:684
@@ -655,7 +663,9 @@ msgstr "返回拆分佈局"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:807
 #, elixir-autogen, elixir-format
-msgid "Round-trip time for data to reach the peer and return. Lower is better; under ~150 ms feels instant."
+msgid ""
+"Round-trip time for data to reach the peer and return. Lower is better; "
+"under ~150 ms feels instant."
 msgstr "數據到達對等點並返回的往返時間。 低點更好;低於~150 ms 感覺瞬間。"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:670
@@ -780,7 +790,9 @@ msgstr "上傳"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:814
 #, elixir-autogen, elixir-format
-msgid "Variation in packet arrival timing. High jitter causes choppy audio and video."
+msgid ""
+"Variation in packet arrival timing. High jitter causes choppy audio and "
+"video."
 msgstr "包裹到達時間變化 高熱度導致音頻和視頻不暢。"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:90
@@ -790,7 +802,7 @@ msgstr "包裹到達時間變化 高熱度導致音頻和視頻不暢。"
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:255
 #, elixir-autogen, elixir-format
 msgid "Video"
-msgstr "影片"
+msgstr "視訊"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:893
 #, elixir-autogen, elixir-format
@@ -809,7 +821,9 @@ msgstr "活動視頻 RTP 是相機還是共享屏幕 。"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:874
 #, elixir-autogen, elixir-format
-msgid "Why quality was capped: CPU means your device is too busy; Bandwidth means the network is too slow."
+msgid ""
+"Why quality was capped: CPU means your device is too busy; Bandwidth means "
+"the network is too slow."
 msgstr "爲什麼質量被封蓋:CPU表示你的設備太忙;Bandwidth表示網絡太慢."
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:208
@@ -906,12 +920,16 @@ msgstr "狀態"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:529
 #, elixir-autogen, elixir-format
-msgid "When the network allows it, packets travel browser-to-browser instead of through the conference server."
+msgid ""
+"When the network allows it, packets travel browser-to-browser instead of "
+"through the conference server."
 msgstr "當網絡允許時,包會通過會議服務器通過瀏覽器進行瀏覽。"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:522
 #, elixir-autogen, elixir-format
-msgid "Your browser uses the relay path for this session, while the session still stays one-to-one."
+msgid ""
+"Your browser uses the relay path for this session, while the session still "
+"stays one-to-one."
 msgstr "您的瀏覽器使用此會話的中繼路徑, 而會話仍然保持一對一."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:489
@@ -1231,7 +1249,8 @@ msgstr "提議"
 
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:365
 #, elixir-autogen, elixir-format
-msgid "Peer media connection was interrupted. Recovery is monitoring the link."
+msgid ""
+"Peer media connection was interrupted. Recovery is monitoring the link."
 msgstr "與對端的媒體連線已中斷，復原正在監控連線。"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:215
@@ -1266,7 +1285,9 @@ msgstr "狀態"
 
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:345
 #, elixir-autogen, elixir-format
-msgid "This session is still active in another window. Close that window, retry, or end this session."
+msgid ""
+"This session is still active in another window. Close that window, retry, or"
+" end this session."
 msgstr "此工作階段仍在另一個視窗中運作。請關閉該視窗、重試，或結束此工作階段。"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:222

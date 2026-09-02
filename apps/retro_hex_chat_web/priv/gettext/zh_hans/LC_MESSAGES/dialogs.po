@@ -63,7 +63,10 @@ msgstr "一个有用的机器人"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:64
 #, elixir-autogen, elixir-format
-msgid "A retro-styled IRC chat platform inspired by the classic desktop chat clients of the late '90s. Real-time messaging, channels, peer-to-peer sessions, and arcade games — all in the browser."
+msgid ""
+"A retro-styled IRC chat platform inspired by the classic desktop chat "
+"clients of the late '90s. Real-time messaging, channels, peer-to-peer "
+"sessions, and arcade games — all in the browser."
 msgstr "一个由90年代后期经典桌面聊天客户端启发的复古风格的IRC聊天平台. 实时消息,频道,对等会话,以及街机游戏——都在浏览器中."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:35
@@ -430,7 +433,9 @@ msgstr "命令"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:96
 #, elixir-autogen, elixir-format
-msgid "Configure limits to prevent message flooding in channels and private messages."
+msgid ""
+"Configure limits to prevent message flooding in channels and private "
+"messages."
 msgstr "配置限制以防止频道和私人消息中的信息淹没."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/confirm_dialog.ex:46
@@ -882,7 +887,7 @@ msgstr "新设"
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:252
 #, elixir-autogen, elixir-format
 msgid "Nick"
-msgstr "尼克"
+msgstr "昵称"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:140
 #, elixir-autogen, elixir-format
@@ -1286,7 +1291,8 @@ msgstr "触发此响应的命令( 如 ! hello)"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:71
 #, elixir-autogen, elixir-format
-msgid "This nickname is registered. Please enter the NickServ password to identify."
+msgid ""
+"This nickname is registered. Please enter the NickServ password to identify."
 msgstr "此昵称已注册 。 请输入 NickServ 密码以识别 。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:202
@@ -1398,7 +1404,8 @@ msgstr "版本 %{version}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:74
 #, elixir-autogen, elixir-format
-msgid "Warning: This exceeds the flood protection limit. Messages may be throttled."
+msgid ""
+"Warning: This exceeds the flood protection limit. Messages may be throttled."
 msgstr "警告: 这超过了防洪限度. 信件可能会被节制."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:86
@@ -1716,7 +1723,8 @@ msgstr "删除频道"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
 #, elixir-autogen, elixir-format
-msgid "Deletes this nickname registration after you confirm with its password."
+msgid ""
+"Deletes this nickname registration after you confirm with its password."
 msgstr "在用密码确认后删除此昵称注册 。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:193
@@ -1777,7 +1785,9 @@ msgstr "结束会话"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:96
 #, elixir-autogen, elixir-format
-msgid "End the P2P session with %{peer}? Any call, game or file transfer in progress will stop."
+msgid ""
+"End the P2P session with %{peer}? Any call, game or file transfer in "
+"progress will stop."
 msgstr "P2P会话用%{peer}结束? 任何正在通话、游戏或文件传输都将停止。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:62
@@ -3382,12 +3392,16 @@ msgstr "此服务器无法获取此报告 。"
 
 #: lib/retro_hex_chat_web/components/ui/system/os_panel.ex:60
 #, elixir-autogen, elixir-format
-msgid "The :os_mon application is not running on this node, so the host cannot be read."
+msgid ""
+"The :os_mon application is not running on this node, so the host cannot be "
+"read."
 msgstr ":os mon应用程序没有在这个节点上运行,所以主机无法读取."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/system_database_dialog.ex:95
 #, elixir-autogen, elixir-format
-msgid "The report could not be run — the database refused the query or an extension it needs is missing."
+msgid ""
+"The report could not be run — the database refused the query or an extension"
+" it needs is missing."
 msgstr "报告无法运行——数据库拒绝查询或缺少所需的扩展."
 
 #: lib/retro_hex_chat_web/components/ui/system/database_panel.ex:90
@@ -3402,7 +3416,9 @@ msgstr "该组宣布无衡量标准。"
 
 #: lib/retro_hex_chat_web/components/ui/system/log_panel.ex:112
 #, elixir-autogen, elixir-format
-msgid "This node logs at %{primary} and drops anything below it before a window can see it, so nothing at %{selected} will ever appear here."
+msgid ""
+"This node logs at %{primary} and drops anything below it before a window can"
+" see it, so nothing at %{selected} will ever appear here."
 msgstr "这个在%{primary}的节点日志,在窗口能看到它之前将任何东西放下到它下面,所以%{selected}的任何内容都不会在这里出现."
 
 #: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:99
@@ -3886,7 +3902,9 @@ msgstr "该应用分组需要一个聊天会话。"
 
 #: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:223
 #, elixir-autogen, elixir-format
-msgid "Connect first to use this desktop app folder. Help and Language remain available without a chat session."
+msgid ""
+"Connect first to use this desktop app folder. Help and Language remain "
+"available without a chat session."
 msgstr "请先连接才能使用这个应用文件夹。帮助和语言在没有聊天会话时依然可用。"
 
 #: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:472

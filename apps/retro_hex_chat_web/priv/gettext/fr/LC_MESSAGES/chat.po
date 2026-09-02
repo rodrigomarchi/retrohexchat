@@ -731,7 +731,8 @@ msgstr "Tentative %{attempt} de %{max_attempts}"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:498
 #, elixir-autogen, elixir-format
-msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
+msgid ""
+"Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr ""
 "La liste d'accès automatique est complète (20 canaux). %{channel} n'a pas "
 "été ajouté à l'auto-join."
@@ -758,7 +759,9 @@ msgstr "Règles de réponse automatique:"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:114
 #, elixir-autogen, elixir-format
-msgid "Available commands: %{commands}\nType /help <command> for details, or open Help Topics from the menu for the full help system."
+msgid ""
+"Available commands: %{commands}\n"
+"Type /help <command> for details, or open Help Topics from the menu for the full help system."
 msgstr ""
 "Commandes disponibles : %{commands}\n"
 "Tapez /help <command> pour plus de détails, ou ouvrez Sujets d'aide dans le menu pour le système d'aide complet."
@@ -1132,7 +1135,7 @@ msgstr "Modifié à %{timestamp}"
 #: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:73
 #, elixir-autogen, elixir-format
 msgid "Emoji"
-msgstr "Emoji"
+msgstr "Émoji"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:335
 #, elixir-autogen, elixir-format
@@ -1480,7 +1483,7 @@ msgstr "Marquer comme lu"
 #: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
 #, elixir-autogen, elixir-format
 msgid "Maroon"
-msgstr "Maroune"
+msgstr "Bordeaux"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:109
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:222
@@ -1563,7 +1566,8 @@ msgstr "La liste des couleurs de Nick est complète (max 50)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:1088
 #, elixir-autogen
-msgid "NickServ protects your nickname with a password so nobody else can use it."
+msgid ""
+"NickServ protects your nickname with a password so nobody else can use it."
 msgstr ""
 "NickServ protège votre pseudonyme avec un mot de passe pour que personne ne "
 "puisse l'utiliser."
@@ -1796,7 +1800,9 @@ msgstr "Réponse"
 
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:252
 #, elixir-autogen, elixir-format
-msgid "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
+msgid ""
+"Reply parent message is not currently loaded. Scroll up to load older "
+"history, then try again."
 msgstr ""
 "Répondre au message parent n'est pas chargé actuellement. Faites défiler "
 "pour charger l'historique plus ancien, puis essayez à nouveau."
@@ -1975,7 +1981,7 @@ msgstr "TZ"
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:379
 #, elixir-autogen, elixir-format
 msgid "Teal"
-msgstr "FEUILLES"
+msgstr "Sarcelle"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:56
 #, elixir-autogen, elixir-format
@@ -2341,7 +2347,9 @@ msgstr "[NickServ] Services de Pseudo en ligne"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:578
 #, elixir-autogen, elixir-format
-msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
+msgid ""
+"[NickServ] This nickname is registered. You have 60 seconds to identify via "
+"/ns identify <password> or you will be renamed."
 msgstr ""
 "[NickServ] Ce surnom est enregistré. Vous avez 60 secondes pour identifier "
 "via /ns identifier <password> ou vous serez renommé."
@@ -2877,7 +2885,7 @@ msgstr "Minuterie non trouvée"
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:238
 #, elixir-autogen, elixir-format
 msgid "Timers"
-msgstr "Chronomètres"
+msgstr "Minuteries"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:171
 #, elixir-autogen, elixir-format
@@ -3018,7 +3026,7 @@ msgstr "Espace canal"
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:183
 #, elixir-autogen, elixir-format
 msgid "Chat"
-msgstr "Chat"
+msgstr "Discussion"
 
 #: lib/retro_hex_chat_web/components/ui/space_character_select.ex:70
 #, elixir-autogen, elixir-format
@@ -3191,7 +3199,9 @@ msgstr "Partager l'écran P2P"
 
 #: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:210
 #, elixir-autogen, elixir-format
-msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
+msgid ""
+"You must be registered and identified to play. Use /ns register and /ns "
+"identify first."
 msgstr ""
 "Vous devez être inscrit et identifié pour jouer. Utiliser /ns registre et "
 "/ns identifier d'abord."
@@ -3381,7 +3391,7 @@ msgstr "Couleurs de Nick"
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:188
 #, elixir-autogen, elixir-format
 msgid "Admin"
-msgstr "Administrateur"
+msgstr "Admin"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:191
 #, elixir-autogen, elixir-format
@@ -4013,17 +4023,21 @@ msgstr "P2P : %{peer} — dans un autre onglet"
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:133
 #, elixir-autogen, elixir-format
 msgid "This P2P session is open in another tab of yours — click to go to it"
-msgstr "Cette session P2P est ouverte dans un autre de vos onglets — cliquez pour y aller"
+msgstr ""
+"Cette session P2P est ouverte dans un autre de vos onglets — cliquez pour y "
+"aller"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:69
 #, elixir-autogen, elixir-format
 msgid "P2P request sent to %{target}. Open it from the card below."
-msgstr "Demande P2P envoyée à %{target}. Ouvrez-la depuis la carte ci-dessous."
+msgstr ""
+"Demande P2P envoyée à %{target}. Ouvrez-la depuis la carte ci-dessous."
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:82
 #, elixir-autogen, elixir-format
 msgid "P2P session request. Open it from the card below. /p2p/%{token}"
-msgstr "Demande de session P2P. Ouvrez-la depuis la carte ci-dessous. /p2p/%{token}"
+msgstr ""
+"Demande de session P2P. Ouvrez-la depuis la carte ci-dessous. /p2p/%{token}"
 
 #: lib/retro_hex_chat_web/channels/space_session_announcement.ex:90
 #, elixir-autogen, elixir-format

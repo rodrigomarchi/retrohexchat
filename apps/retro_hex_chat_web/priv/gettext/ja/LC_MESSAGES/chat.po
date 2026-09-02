@@ -722,7 +722,8 @@ msgstr "%{max_attempts}の%{attempt}を試みる"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:498
 #, elixir-autogen, elixir-format
-msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
+msgid ""
+"Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr "Auto-join リストは 20 チャンネル です。 %{channel} は自動ジョイントに追加されませんでした。"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:47
@@ -747,7 +748,9 @@ msgstr "自動応答ルール:"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:114
 #, elixir-autogen, elixir-format
-msgid "Available commands: %{commands}\nType /help <command> for details, or open Help Topics from the menu for the full help system."
+msgid ""
+"Available commands: %{commands}\n"
+"Type /help <command> for details, or open Help Topics from the menu for the full help system."
 msgstr ""
 "利用可能なコマンド: %{commands}\n"
 "/help <command>を詳細に入力するか、フルヘルプシステム用のメニューからヘルプトピックを開きます。"
@@ -834,7 +837,7 @@ msgstr "チャンネルを閲覧"
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:134
 #, elixir-autogen, elixir-format
 msgid "Browser"
-msgstr "ブラウザ"
+msgstr "ブラウザー"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:78
 #, elixir-autogen, elixir-format
@@ -1120,7 +1123,7 @@ msgstr "%{timestamp} に編集"
 #: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:73
 #, elixir-autogen, elixir-format
 msgid "Emoji"
-msgstr "エモジ"
+msgstr "絵文字"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:335
 #, elixir-autogen, elixir-format
@@ -1393,7 +1396,7 @@ msgstr "%{channel} に参加"
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:164
 #, elixir-autogen, elixir-format
 msgid "Kick"
-msgstr "Kick"
+msgstr "キック"
 
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:837
 #, elixir-autogen, elixir-format
@@ -1462,7 +1465,7 @@ msgstr "読まれた印"
 #: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
 #, elixir-autogen, elixir-format
 msgid "Maroon"
-msgstr "マルーン"
+msgstr "栗色"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:109
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:222
@@ -1545,7 +1548,8 @@ msgstr "ニックカラーリストがいっぱい(最大50)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:1088
 #, elixir-autogen
-msgid "NickServ protects your nickname with a password so nobody else can use it."
+msgid ""
+"NickServ protects your nickname with a password so nobody else can use it."
 msgstr "NickServはパスワードであなたのニックネームを保護しますので、他の人はそれを使用することはできません。"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:363
@@ -1775,7 +1779,9 @@ msgstr "スタッフ"
 
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:252
 #, elixir-autogen, elixir-format
-msgid "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
+msgid ""
+"Reply parent message is not currently loaded. Scroll up to load older "
+"history, then try again."
 msgstr "親メッセージが現在読み込まれているわけではありません。 古い歴史を読み込むまでスクロールして、もう一度お試しください。"
 
 #: lib/retro_hex_chat_web/components/ui/chat/reply_bar.ex:42
@@ -1952,7 +1958,7 @@ msgstr "TZ"
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:379
 #, elixir-autogen, elixir-format
 msgid "Teal"
-msgstr "テラル"
+msgstr "青緑"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:56
 #, elixir-autogen, elixir-format
@@ -2316,7 +2322,9 @@ msgstr "[NickServ] ニックネームサービスオンライン"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:578
 #, elixir-autogen, elixir-format
-msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
+msgid ""
+"[NickServ] This nickname is registered. You have 60 seconds to identify via "
+"/ns identify <password> or you will be renamed."
 msgstr "[NickServ] このニックネームが登録されています。 /ns が <password> を識別する 60 秒または名前を変更します。"
 
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:38
@@ -3161,7 +3169,9 @@ msgstr "P2P画面共有を切り替える"
 
 #: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:210
 #, elixir-autogen, elixir-format
-msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
+msgid ""
+"You must be registered and identified to play. Use /ns register and /ns "
+"identify first."
 msgstr "プレイに登録して確認する必要があります。 /ns レジスタおよび /ns を最初に特定して下さい。"
 
 #: lib/retro_hex_chat_web/live/p2p_live/events.ex:1616
@@ -3348,7 +3358,7 @@ msgstr "ニックカラー"
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:188
 #, elixir-autogen, elixir-format
 msgid "Admin"
-msgstr "アドミン"
+msgstr "管理"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:191
 #, elixir-autogen, elixir-format
@@ -3625,7 +3635,7 @@ msgstr "添付ファイルのみメッセージで送信できます"
 #: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:279
 #, elixir-autogen, elixir-format
 msgid "Audio"
-msgstr "音声"
+msgstr "オーディオ"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:174
 #, elixir-autogen, elixir-format
@@ -3775,7 +3785,7 @@ msgstr "添付ファイルが多すぎます"
 #: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:278
 #, elixir-autogen, elixir-format
 msgid "Video"
-msgstr "動画"
+msgstr "ビデオ"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:149
 #, elixir-autogen, elixir-format

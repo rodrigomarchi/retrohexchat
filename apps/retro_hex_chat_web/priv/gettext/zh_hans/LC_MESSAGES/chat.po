@@ -714,7 +714,8 @@ msgstr "%{max_attempts}的尝试%{attempt}"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:498
 #, elixir-autogen, elixir-format
-msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
+msgid ""
+"Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr "自动联赛名单满载(20频道). %{channel}没有加入自动连接."
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:47
@@ -739,7 +740,9 @@ msgstr "自动对应规则 :"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:114
 #, elixir-autogen, elixir-format
-msgid "Available commands: %{commands}\nType /help <command> for details, or open Help Topics from the menu for the full help system."
+msgid ""
+"Available commands: %{commands}\n"
+"Type /help <command> for details, or open Help Topics from the menu for the full help system."
 msgstr ""
 "可用命令: %{commands}\n"
 "详情请输入 /help <command>,或从菜单中打开全帮助系统的帮助主题."
@@ -1112,7 +1115,7 @@ msgstr "编辑时间：%{timestamp}"
 #: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:73
 #, elixir-autogen, elixir-format
 msgid "Emoji"
-msgstr "爱莫吉"
+msgstr "表情符号"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:335
 #, elixir-autogen, elixir-format
@@ -1444,7 +1447,7 @@ msgstr "寻找%{nick}..."
 #: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:141
 #, elixir-autogen, elixir-format
 msgid "Magenta"
-msgstr "紫红色"
+msgstr "洋红"
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:72
 #, elixir-autogen, elixir-format
@@ -1454,7 +1457,7 @@ msgstr "标记为已读"
 #: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
 #, elixir-autogen, elixir-format
 msgid "Maroon"
-msgstr "马龙"
+msgstr "栗色"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:109
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:222
@@ -1537,7 +1540,8 @@ msgstr "昵称颜色列表是满的( 最大 50)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:1088
 #, elixir-autogen
-msgid "NickServ protects your nickname with a password so nobody else can use it."
+msgid ""
+"NickServ protects your nickname with a password so nobody else can use it."
 msgstr "NickServ用密码保护你的昵称 这样别人就不用了"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:363
@@ -1646,7 +1650,7 @@ msgstr "运算符"
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:376
 #, elixir-autogen, elixir-format
 msgid "Orange"
-msgstr "橙红色"
+msgstr "橙色"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:212
 #: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:373
@@ -1767,7 +1771,9 @@ msgstr "答复"
 
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:252
 #, elixir-autogen, elixir-format
-msgid "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
+msgid ""
+"Reply parent message is not currently loaded. Scroll up to load older "
+"history, then try again."
 msgstr "回复母信件目前尚未装入 。 卷起来加载旧历史,然后再试一次."
 
 #: lib/retro_hex_chat_web/components/ui/chat/reply_bar.ex:42
@@ -1944,7 +1950,7 @@ msgstr "特兹"
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:379
 #, elixir-autogen, elixir-format
 msgid "Teal"
-msgstr "提尔"
+msgstr "蓝绿"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:56
 #, elixir-autogen, elixir-format
@@ -2308,7 +2314,9 @@ msgstr "[NickServ] 昵称服务在线"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:578
 #, elixir-autogen, elixir-format
-msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
+msgid ""
+"[NickServ] This nickname is registered. You have 60 seconds to identify via "
+"/ns identify <password> or you will be renamed."
 msgstr "[尼克塞 此昵称已注册 。 你有60秒的时间通过/ns识别<password>,否则你将被重新命名."
 
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:38
@@ -3153,7 +3161,9 @@ msgstr "切换 P2P 屏幕共享"
 
 #: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:210
 #, elixir-autogen, elixir-format
-msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
+msgid ""
+"You must be registered and identified to play. Use /ns register and /ns "
+"identify first."
 msgstr "您必须注册和识别 玩。 使用/ns登记和/ns先识别。"
 
 #: lib/retro_hex_chat_web/live/p2p_live/events.ex:1616
@@ -3340,7 +3350,7 @@ msgstr "昵称颜色"
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:188
 #, elixir-autogen, elixir-format
 msgid "Admin"
-msgstr "管理员"
+msgstr "管理"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:191
 #, elixir-autogen, elixir-format

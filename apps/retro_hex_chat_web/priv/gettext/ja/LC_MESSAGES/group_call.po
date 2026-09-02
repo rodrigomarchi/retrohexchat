@@ -40,8 +40,12 @@ msgstr "グループコールを閉じる?"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:97
 #, elixir-autogen, elixir-format
-msgid "Closing this window leaves the group call in %{channel}. To keep the call running and just tidy up, minimize the window instead."
-msgstr "このウィンドウを閉じると、%{channel} でグループコールが残されます。 コールの実行を保ち、整頓するだけのために、代わりにウィンドウを最小限に抑えます。"
+msgid ""
+"Closing this window leaves the group call in %{channel}. To keep the call "
+"running and just tidy up, minimize the window instead."
+msgstr ""
+"このウィンドウを閉じると、%{channel} でグループコールが残されます。 "
+"コールの実行を保ち、整頓するだけのために、代わりにウィンドウを最小限に抑えます。"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1073
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1260
@@ -98,7 +102,9 @@ msgstr "エンドグループコール"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:105
 #, elixir-autogen, elixir-format
-msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
+msgid ""
+"End the group call in %{channel} for everyone? All participants will be "
+"disconnected."
 msgstr "全員の%{channel}でグループコールを終了しますか? 参加者全員が切断されます。"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:86
@@ -196,7 +202,9 @@ msgstr "グループコールを残す"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:89
 #, elixir-autogen, elixir-format
-msgid "Leave the group call in %{channel}? Your microphone and camera will disconnect."
+msgid ""
+"Leave the group call in %{channel}? Your microphone and camera will "
+"disconnect."
 msgstr "%{channel} でグループコールを残す? マイクとカメラが切断されます。"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1467
@@ -381,8 +389,12 @@ msgstr "%{inbound} in / %{fanout} ファンアウト"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:67
 #, elixir-autogen, elixir-format
-msgid "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps, freezes %{freezes}"
-msgstr "%{level} 質: RTT %{rtt} ms、損失 %{loss}%、%{bitrate} kbps、%{fps} fps、凍結 %{freezes}"
+msgid ""
+"%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps,"
+" freezes %{freezes}"
+msgstr ""
+"%{level} 質: RTT %{rtt} ms、損失 %{loss}%、%{bitrate} kbps、%{fps} fps、凍結 "
+"%{freezes}"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:400
 #, elixir-autogen, elixir-format
@@ -454,7 +466,8 @@ msgstr "%{sent} アップ/%{received} ダウン"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:446
 #, elixir-autogen, elixir-format
-msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
+msgid ""
+"%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr "%{channel}の%{state}会議: %{count}/%{max}人、%{duration}"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:652
@@ -540,7 +553,7 @@ msgstr "参加者画面共有を許可する"
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:869
 #, elixir-autogen, elixir-format
 msgid "Audio"
-msgstr "音声"
+msgstr "オーディオ"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:116
 #, elixir-autogen, elixir-format
@@ -912,7 +925,7 @@ msgstr "インバウンド RTP"
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:232
 #, elixir-autogen, elixir-format
 msgid "Jitter"
-msgstr "ジッタ"
+msgstr "ジッター"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:236
 #, elixir-autogen, elixir-format
@@ -1048,7 +1061,9 @@ msgstr "すべての下位参加者をミュート"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:122
 #, elixir-autogen, elixir-format
-msgid "Mute all lower-ranked participants in %{channel}? They cannot unmute until a moderator allows their microphone again."
+msgid ""
+"Mute all lower-ranked participants in %{channel}? They cannot unmute until a"
+" moderator allows their microphone again."
 msgstr "%{channel} ですべての下位参加者をミュートしますか? モデレータがマイクを再び許すまでは、ミュートできません。"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:737
@@ -1223,8 +1238,13 @@ msgstr "リモートストリーム"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:113
 #, elixir-autogen, elixir-format
-msgid "Remove %{target} from %{channel}? This will ban them from the channel, disconnect them from the conference, and prevent them from rejoining until a channel operator unbans them."
-msgstr "%{target} を %{channel} から削除しますか? これは、チャネルからそれらを禁止し、会議からそれらを切断し、チャネルオペレータがそれらを禁止するまで、それらを再結合することを防ぐ。"
+msgid ""
+"Remove %{target} from %{channel}? This will ban them from the channel, "
+"disconnect them from the conference, and prevent them from rejoining until a"
+" channel operator unbans them."
+msgstr ""
+"%{target} を %{channel} から削除しますか? "
+"これは、チャネルからそれらを禁止し、会議からそれらを切断し、チャネルオペレータがそれらを禁止するまで、それらを再結合することを防ぐ。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:84
 #, elixir-autogen, elixir-format
@@ -1452,7 +1472,9 @@ msgstr "すべての下位カメラをオフにする"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:130
 #, elixir-autogen, elixir-format
-msgid "Turn off cameras for all lower-ranked participants in %{channel}? They cannot turn camera back on until a moderator allows it again."
+msgid ""
+"Turn off cameras for all lower-ranked participants in %{channel}? They "
+"cannot turn camera back on until a moderator allows it again."
 msgstr "%{channel} ですべての下位参加者にカメラをオフにしますか? モデレータが再びカメラをオンにすることはできません。"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1397
@@ -1494,7 +1516,7 @@ msgstr "アップロード"
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:870
 #, elixir-autogen, elixir-format
 msgid "Video"
-msgstr "動画"
+msgstr "ビデオ"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:121
 #, elixir-autogen, elixir-format
@@ -1554,7 +1576,9 @@ msgstr "会議の制御"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:209
 #, elixir-autogen, elixir-format
-msgid "Each browser sends media to the room server; the server routes streams to the other participants."
+msgid ""
+"Each browser sends media to the room server; the server routes streams to "
+"the other participants."
 msgstr "各ブラウザは、ルームサーバーにメディアを送信します。サーバーは、他の参加者にストリームをルーティングします。"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:862
@@ -1628,7 +1652,9 @@ msgstr "音声+ビデオ"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:85
 #, elixir-autogen, elixir-format
-msgid "Choose how you enter the room. You can change media and layout after joining."
+msgid ""
+"Choose how you enter the room. You can change media and layout after "
+"joining."
 msgstr "お部屋に入る方法を選択します。 参加後にメディアやレイアウトを変更できます。"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:54
@@ -1845,32 +1871,31 @@ msgstr "通話: %{channel} — 別のタブ"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:112
 #, elixir-autogen, elixir-format
-msgid "The call in %{channel} is open in another tab of yours — click to go to it"
+msgid ""
+"The call in %{channel} is open in another tab of yours — click to go to it"
 msgstr "%{channel} の通話は別のタブで開いています — クリックすると移動します"
 
 #: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:144
 #, elixir-autogen, elixir-format
 msgid "%{nickname} opened a conference — %{url}"
-msgstr ""
-"%{nickname} が会議を開きました — %{url}"
+msgstr "%{nickname} が会議を開きました — %{url}"
 
 #: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:125
 #, elixir-autogen, elixir-format
-msgid "A conference is already open in %{channel}. Its card is in this conversation."
-msgstr ""
-"%{channel} ではすでに会議が開かれています。そのカードはこの会話にあります。"
+msgid ""
+"A conference is already open in %{channel}. Its card is in this "
+"conversation."
+msgstr "%{channel} ではすでに会議が開かれています。そのカードはこの会話にあります。"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:76
 #, elixir-autogen, elixir-format
 msgid "Join the conference in a tab of its own"
-msgstr ""
-"会議を専用のタブで開く"
+msgstr "会議を専用のタブで開く"
 
 #: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:155
 #, elixir-autogen, elixir-format
 msgid "The conference opened, but its link could not be created."
-msgstr ""
-"会議は開きましたが、リンクを作成できませんでした。"
+msgstr "会議は開きましたが、リンクを作成できませんでした。"
 
 #: lib/retro_hex_chat_web/live/app/call_live.ex:214
 #, elixir-autogen, elixir-format

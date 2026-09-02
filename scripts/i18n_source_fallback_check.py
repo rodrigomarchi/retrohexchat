@@ -22,6 +22,15 @@ DEFAULT_LOCALES = enabled_locale_codes()
 PLACEHOLDER_RE = re.compile(r"%\{[A-Za-z0-9_]+\}")
 WORD_RE = re.compile(r"[A-Za-z]{2,}")
 
+# Domains nobody reads in their own language.
+#
+# `showcase` is the design-system gallery behind Start ▸ Navigate ▸ Design
+# System: a catalogue of every component, icon and token, addressed to whoever
+# is building the thing. Holding it to the same bar as the chat would put 350
+# strings of developer vocabulary in front of thirteen translators, and the one
+# reader who wants them wants them in the words the code uses.
+UNTRANSLATED_DOMAINS = frozenset(["showcase"])
+
 TECHNICAL_SOURCE_ALLOWLIST = [
     r"^\s*/%\{name\} → %\{expansion\}$",
     r"^\s*%\{channel\}%\{key\}$",
@@ -174,6 +183,31 @@ TECHNICAL_SOURCE_ALLOWLIST = [
     # The same for a bot trigger and a file name.
     r"^!\S",
     r"^[\w./#-]+\.(md|json|txt|exs?|js|po|pot|html|heex)$",
+    # ── Names, not words ─────────────────────────────────────────
+    # Games are titles. "Hex Pong" is what the icon says in every locale, and
+    # the emulated ones are somebody else's trademark.
+    r"^Hex [A-Z][A-Za-z]*(: [A-Z][A-Za-z-]*)?$",
+    r"^(Pixel Tanks|Star Duel|Block Breakers|Wolf3D|DOOM|Quake|Quake II|Drascula|Trivia)$",
+    # The app and its services answer to one name each.
+    r"^(RetroHexChat|NickServ|ChanServ|BotServ|MemoServ|OperServ)$",
+    # An IRC term of art and the names of technologies and formats.
+    r"^(Wallops|WebAssembly|Markdown|WebRTC|WebSocket|IRC)$",
+    # Other people's names: platforms, companies, languages, forges.
+    r"^(Minecraft|Nintendo|GitHub|Elixir|Phoenix|Blizzard|Office|Postgres|PostgreSQL)$",
+    # A protocol pair or a stack, written the way the wire writes it.
+    r"^[A-Z][A-Za-z0-9]*( / [A-Z][A-Za-z0-9]*| [A-Z0-9]{2,})$",
+    # A bracketed marker the client prints verbatim.
+    r"^\[[A-Z]{2,}\]$",
+    # An acronym is the same acronym: CPU, RSS, TURN, MOTD, ETS, IO, PDF, PiP.
+    # Hyphenated shouts like AUTO-JOIN are words and do not match.
+    r"^[A-Z][A-Za-z0-9]{0,3}[A-Z0-9]$",
+    # Keys are engraved on the keyboard, not translated onto it.
+    r"^(Ctrl|Alt|Shift|Esc|Enter|Tab|Backspace|Delete|Space|Home|End|F\d{1,2})$",
+    r"^(Ctrl|Alt|Shift)\s*\+\s*\S.*$",
+    # What a custom menu or alias substitutes at run time.
+    r"^\$[a-z_]+$",
+    # A command example that opens with the bot prefix and a space.
+    r"^! ",
 ]
 
 ALLOWLIST = [re.compile(pattern) for pattern in TECHNICAL_SOURCE_ALLOWLIST]
@@ -225,6 +259,9 @@ def po_findings(locales: tuple[str, ...], paths: list[str]) -> list[Finding]:
         locale = locale_from_path(path)
 
         if locale not in locales or locale == "en":
+            continue
+
+        if path.stem in UNTRANSLATED_DOMAINS:
             continue
 
         for entry in parse_po(path):

@@ -65,7 +65,10 @@ msgstr ")およびスイッチへの"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:16
 #, elixir-autogen, elixir-format
-msgid ") are clickable. Hover to see a tooltip with the channel name, user count, and action hint. Click to join the channel (or switch to it if already joined)."
+msgid ""
+") are clickable. Hover to see a tooltip with the channel name, user count, "
+"and action hint. Click to join the channel (or switch to it if already "
+"joined)."
 msgstr ""
 ") をクリックします。 チャネル名、ユーザー数、アクションヒントでツールチップを表示するにはHover。 クリックしてチャンネルに参加 "
 "(または既に参加している場合に切り替える)。"
@@ -82,7 +85,9 @@ msgstr ") そのチャンネルでのみトリガーする。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "), a tooltip appears above the input showing the command syntax with the current parameter highlighted in bold."
+msgid ""
+"), a tooltip appears above the input showing the command syntax with the "
+"current parameter highlighted in bold."
 msgstr ")、大胆に強調された現在のパラメータでコマンドの構文を示す入力の上にツールチップが現れます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:39
@@ -153,12 +158,16 @@ msgstr "、または使用して下さい"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:27
 #, elixir-autogen, elixir-format
-msgid ", the cheatsheet shows your custom bindings. Unbound actions show an em dash (—)."
+msgid ""
+", the cheatsheet shows your custom bindings. Unbound actions show an em dash"
+" (—)."
 msgstr ", あなたのカスタムバインディングを示しています。 unbound アクションは em ダッシュ (—) を表示します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:48
 #, elixir-autogen, elixir-format
-msgid ", the system suggests appropriate arguments — nicknames for user commands, channels for channel commands."
+msgid ""
+", the system suggests appropriate arguments — nicknames for user commands, "
+"channels for channel commands."
 msgstr ", システムは、ユーザコマンドのニックネーム、チャンネルコマンドのチャンネルなど、適切な引数を提案します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:28
@@ -223,7 +232,9 @@ msgstr "- ミュートはタイピングインジケータに影響を与えま�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "- Muting does not affect visual notifications (conversations sidebar flash, title flash)"
+msgid ""
+"- Muting does not affect visual notifications (conversations sidebar flash, "
+"title flash)"
 msgstr "- ミュートは視覚通知に影響を与えません(会話サイドバーフラッシュ、タイトルフラッシュ)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:55
@@ -253,7 +264,9 @@ msgstr "- システムメッセージ(ジョイント、部品、キック)は�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:19
 #, elixir-autogen, elixir-format
-msgid "- The system must NEVER send automatic replies to notices (prevents bot loops)"
+msgid ""
+"- The system must NEVER send automatic replies to notices (prevents bot "
+"loops)"
 msgstr "- システムが通知に自動返信を送らなければならない(ボット ループを防ぐ)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_flood_protection.html.heex:44
@@ -273,12 +286,15 @@ msgstr ". それは予期しない接続損失でのみアクティブにしま�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:40
 #, elixir-autogen, elixir-format
-msgid ". Rules can be enabled/disabled individually via the checkbox in the dialog."
+msgid ""
+". Rules can be enabled/disabled individually via the checkbox in the dialog."
 msgstr ". ルールは、ダイアログのチェックボックスを介して個別に/disabledを有効にすることができます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:35
 #, elixir-autogen, elixir-format
-msgid ". Switch between Nicklist, Channel, and Chat tabs. Each item has a label (display text) and a command (what runs on click)."
+msgid ""
+". Switch between Nicklist, Channel, and Chat tabs. Each item has a label "
+"(display text) and a command (what runs on click)."
 msgstr ". ニックネームリスト、チャネル、チャットタブ間の切り替え 各項目にはラベル(表示テキスト)とコマンド(クリック時に実行する)があります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:33
@@ -288,7 +304,9 @@ msgstr ". ステータスタブにWallopsが表示されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:25
 #, elixir-autogen, elixir-format
-msgid ". When enabled, incoming invitations are accepted automatically without showing a dialog. This is disabled by default for security."
+msgid ""
+". When enabled, incoming invitations are accepted automatically without "
+"showing a dialog. This is disabled by default for security."
 msgstr ". 有効な場合、招待状はダイアログを表示しないで自動的に受け入れられます。 セキュリティのデフォルトでは無効になっています。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:16
@@ -676,7 +694,8 @@ msgstr "2. 右クリックして選択"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "2. The invited user sees a popup dialog with the inviter's name and channel."
+msgid ""
+"2. The invited user sees a popup dialog with the inviter's name and channel."
 msgstr "2。 招待されたユーザーは、招待者の名前とチャンネルでポップアップダイアログが表示されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:9
@@ -751,22 +770,29 @@ msgstr ": オートジョイントリスト内の全てのチャンネルが自�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:32
 #, elixir-autogen, elixir-format
-msgid ": Auto-respond commands are dispatched normally but cannot trigger other auto-respond rules recursively."
+msgid ""
+": Auto-respond commands are dispatched normally but cannot trigger other "
+"auto-respond rules recursively."
 msgstr ": 自動応答コマンドは正常にディスパッチされますが、他の自動応答ルールが再帰的にトリガーすることはできません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:34
 #, elixir-autogen, elixir-format
-msgid ": Closing a PM tab closes only that view. The conversation stays in the sidebar, keeping any unread badge until you open it again."
+msgid ""
+": Closing a PM tab closes only that view. The conversation stays in the "
+"sidebar, keeping any unread badge until you open it again."
 msgstr ": プライベートメッセージのタブを閉じても、その表示が閉じるだけです。会話はサイドバーに残り、再び開くまで未読の表示を保ちます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:43
 #, elixir-autogen, elixir-format
-msgid ": Creating an alias that matches a built-in command shows a warning but is allowed."
+msgid ""
+": Creating an alias that matches a built-in command shows a warning but is "
+"allowed."
 msgstr ": 組み込みコマンドと一致するエイリアスを作成すると警告が表示されますが、許可されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:28
 #, elixir-autogen, elixir-format
-msgid ": Every sent or received PM moves that conversation to the top of the list."
+msgid ""
+": Every sent or received PM moves that conversation to the top of the list."
 msgstr ": 送信または受信したPMは、リストの一番上にその会話を移動します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:34
@@ -776,7 +802,9 @@ msgstr ": 拡張は含まれません"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:34
 #, elixir-autogen, elixir-format
-msgid ": If the channel requires a key (+k mode), the key is stored with the auto-join entry."
+msgid ""
+": If the channel requires a key (+k mode), the key is stored with the auto-"
+"join entry."
 msgstr ": チャネルがキー(+kモード)を要求する場合、キーは、キーがオートジョイントエントリーで保存されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:9
@@ -786,7 +814,9 @@ msgstr ": ユーザリストのニックネームをクリックするとアイ�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:17
 #, elixir-autogen, elixir-format
-msgid ": Items appear when right-clicking a channel in the conversations sidebar. Use"
+msgid ""
+": Items appear when right-clicking a channel in the conversations sidebar. "
+"Use"
 msgstr ": 会話サイドバーのチャンネルを右クリックするとアイテムが表示されます。 使用条件"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:25
@@ -806,12 +836,17 @@ msgstr ": 指定した遅延後に実行します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:10
 #, elixir-autogen, elixir-format
-msgid ": The Private section in the conversations sidebar is populated with everyone you've exchanged PMs with, ordered by most recent conversation first."
+msgid ""
+": The Private section in the conversations sidebar is populated with "
+"everyone you've exchanged PMs with, ordered by most recent conversation "
+"first."
 msgstr ": 会話サイドバーのプライベートセクションは、最初に最も最近の会話で注文したPMと交換したすべての人とポップアップ表示されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:16
 #, elixir-autogen, elixir-format
-msgid ": The channel is automatically added to your auto-join list (up to 20 channels)."
+msgid ""
+": The channel is automatically added to your auto-join list (up to 20 "
+"channels)."
 msgstr ": チャンネルは自動ジョイントリストに自動的に追加されます(最大20チャンネル)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:22
@@ -831,17 +866,23 @@ msgstr ": 最近の PM パートナーは最大 50 件を復元します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:22
 #, elixir-autogen, elixir-format
-msgid ": When someone sends you a PM and the conversation isn't already in your list, it automatically appears at the top of the Private section with an unread badge."
+msgid ""
+": When someone sends you a PM and the conversation isn't already in your "
+"list, it automatically appears at the top of the Private section with an "
+"unread badge."
 msgstr ": 誰かが PM を送ると、会話が既にリストに表示されていない場合、未読のバッジでプライベートセクションの上部に自動的に表示されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:26
 #, elixir-autogen, elixir-format
-msgid ": Your own joins/parts/nick changes never trigger your auto-respond rules."
+msgid ""
+": Your own joins/parts/nick changes never trigger your auto-respond rules."
 msgstr ":独自のjoins/parts/nickは、自動応答ルールをトリガーしません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "A bar appears above the input showing the original author and a preview of their message. Click ✕ to cancel the reply."
+msgid ""
+"A bar appears above the input showing the original author and a preview of "
+"their message. Click ✕ to cancel the reply."
 msgstr "元の作者と自分のメッセージのプレビューを示す入力の上にバーが表示されます。 返信をキャンセルするには ✕ をクリックしてください。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:16
@@ -873,7 +914,9 @@ msgstr "アクセス"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Access a popup emoji picker with 300+ Unicode emojis organized in 8 categories."
+msgid ""
+"Access a popup emoji picker with 300+ Unicode emojis organized in 8 "
+"categories."
 msgstr "ポップアップ emoji picker に 300+ Unicode emojis が 8 つのカテゴリで編成されています。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:8
@@ -888,7 +931,9 @@ msgstr "追加"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Add custom items to the user list and channel right-click context menus. Each item executes a command with variable expansion when clicked."
+msgid ""
+"Add custom items to the user list and channel right-click context menus. "
+"Each item executes a command with variable expansion when clicked."
 msgstr ""
 "ユーザーリストにカスタムアイテムを追加し、コンテキストメニューを右クリックします。 各項目はクリック時に可変的な拡張でコマンドを実行します。"
 
@@ -923,13 +968,18 @@ msgstr "エイリアス"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Aliases let you create custom command shortcuts. Type a short name and it expands into a longer command or message, with optional variable substitution."
+msgid ""
+"Aliases let you create custom command shortcuts. Type a short name and it "
+"expands into a longer command or message, with optional variable "
+"substitution."
 msgstr ""
 "Aliasesではカスタムコマンドショートカットを作成できます。 短い名前を入力し、オプションの変数置換で長いコマンドやメッセージに展開します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:30
 #, elixir-autogen, elixir-format
-msgid "All associated data is removed: preferences, notify list, contacts, highlight words, nick colors, auto-join list"
+msgid ""
+"All associated data is removed: preferences, notify list, contacts, "
+"highlight words, nick colors, auto-join list"
 msgstr "関連するすべてのデータが削除されます: 好み、リスト、連絡先、ハイライト単語、ニックネームの色、自動結合リストを通知します"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:68
@@ -960,14 +1010,19 @@ msgstr "矢Up/Down"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:17
 #, elixir-autogen, elixir-format
-msgid "As you type, all matching occurrences in the chat are highlighted with a yellow background. The active match is highlighted in orange. The counter shows your position (e.g., \"3 of 17\")."
+msgid ""
+"As you type, all matching occurrences in the chat are highlighted with a "
+"yellow background. The active match is highlighted in orange. The counter "
+"shows your position (e.g., \"3 of 17\")."
 msgstr ""
 "チャット内のすべてのマッチングが黄色の背景で強調表示されます。 オレンジ色のアクティブマッチがハイライトされます。 "
 "カウンターは、あなたの位置を示します(例えば、「17の3」)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:14
 #, elixir-autogen, elixir-format
-msgid "Attempt 1: 1 second Attempt 2: 2 seconds Attempt 3: 4 seconds Attempt 4: 8 seconds Attempt 5: 16 seconds Attempt 6+: 30 seconds (cap)"
+msgid ""
+"Attempt 1: 1 second Attempt 2: 2 seconds Attempt 3: 4 seconds Attempt 4: 8 "
+"seconds Attempt 5: 16 seconds Attempt 6+: 30 seconds (cap)"
 msgstr ""
 "1回目: 1秒 2秒 2秒 3秒 4秒 Attempt 4: 8秒 Attempt 5: 16秒 Attempt 6+:30秒 (キャップ)"
 
@@ -1025,12 +1080,16 @@ msgstr "自動再接続は行いません"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:22
 #, elixir-autogen, elixir-format
-msgid "Auto-replies are NOT sent for notices (per IRC convention). The replied-to set resets when you clear your away status."
+msgid ""
+"Auto-replies are NOT sent for notices (per IRC convention). The replied-to "
+"set resets when you clear your away status."
 msgstr "自動返信は、通知(IRC 規約)のために送信されません。 ステータスをクリアするときに、--to がリセットされます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Auto-respond rules automatically execute commands when specific events occur, such as when a user joins or leaves a channel."
+msgid ""
+"Auto-respond rules automatically execute commands when specific events "
+"occur, such as when a user joins or leaves a channel."
 msgstr "ユーザーがチャンネルに参加したり、チャンネルを離れるなど、特定のイベントが発生したときに自動応答ルールが自動的にコマンドを実行します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:50
@@ -1055,7 +1114,10 @@ msgstr "例外の禁止"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Ban exceptions allow specific users to bypass channel bans. If a user is both banned and has a ban exception, they can still join and participate in the channel."
+msgid ""
+"Ban exceptions allow specific users to bypass channel bans. If a user is "
+"both banned and has a ban exception, they can still join and participate in "
+"the channel."
 msgstr ""
 "禁止例外により、特定のユーザーはチャネル禁止を迂回することができます。 "
 "ユーザーが禁止されており、禁止されている例外がある場合、彼らはまだチャンネルに参加して参加することができます。"
@@ -1088,7 +1150,9 @@ msgstr "短いトースト通知はコピーを確認し、設定は操作を保
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:26
 #, elixir-autogen, elixir-format
-msgid "Browse all captured URLs, sorted by time. Filter by channel and search by URL text. Double-click to open."
+msgid ""
+"Browse all captured URLs, sorted by time. Filter by channel and search by "
+"URL text. Double-click to open."
 msgstr ""
 "キャプチャしたURLをすべて閲覧し、タイムごとにソートします。 チャンネルでフィルタリングし、URLテキストで検索します。 ダブルクリックして開きます。"
 
@@ -1143,7 +1207,9 @@ msgstr "フォーマットの変更"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:38
 #, elixir-autogen, elixir-format
-msgid "Changing the format resets the chat stream. Previous messages are cleared from view."
+msgid ""
+"Changing the format resets the chat stream. Previous messages are cleared "
+"from view."
 msgstr "フォーマットの変更はチャットストリームをリセットします。 前のメッセージはビューから削除されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:17
@@ -1167,7 +1233,9 @@ msgstr "チャネルの中央"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Channel Central provides a comprehensive tabbed dialog for viewing and managing all channel settings in one place."
+msgid ""
+"Channel Central provides a comprehensive tabbed dialog for viewing and "
+"managing all channel settings in one place."
 msgstr "チャンネル セントラルは、すべてのチャネルの設定を表示および管理するための包括的なタブベッド ダイアログを提供します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:17
@@ -1212,20 +1280,27 @@ msgstr "チャンネル名(例、"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:23
 #, elixir-autogen, elixir-format
-msgid "Channel operators can set a welcome message shown once to users when they first join. The message is not shown to the user who set it, and not repeated on rejoin within the same session."
+msgid ""
+"Channel operators can set a welcome message shown once to users when they "
+"first join. The message is not shown to the user who set it, and not "
+"repeated on rejoin within the same session."
 msgstr ""
 "チャネル演算子は、最初に参加するときに、ユーザーに一度表示されるウェルカムメッセージを設定できます。 "
 "このメッセージは、設定したユーザに表示されず、同じセッション内で再結合しない。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:36
 #, elixir-autogen, elixir-format
-msgid "Channel operators see editable controls and can modify settings directly. Non-operators see read-only views of the channel configuration."
+msgid ""
+"Channel operators see editable controls and can modify settings directly. "
+"Non-operators see read-only views of the channel configuration."
 msgstr ""
 "チャネル演算子は編集可能な制御を参照し、設定を直接変更することができます。 非演算子は、チャンネル構成の読み取り専用ビューを参照してください。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Channels are automatically remembered for registered users. When you join a channel with"
+msgid ""
+"Channels are automatically remembered for registered users. When you join a "
+"channel with"
 msgstr "チャンネルは登録済みユーザーに自動的に記憶されます。 チャンネルに参加するとき"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:48
@@ -1240,17 +1315,22 @@ msgstr "チャット"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Chat messages contain interactive elements that respond to hover and click actions. URLs, channel names, and nicknames are all clickable."
+msgid ""
+"Chat messages contain interactive elements that respond to hover and click "
+"actions. URLs, channel names, and nicknames are all clickable."
 msgstr "チャットメッセージには、ホバーに応答し、アクションをクリックします。 URL、チャンネル名、ニックネームはすべてクリック可能です。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_contextual_tips.html.heex:30
 #, elixir-autogen, elixir-format
-msgid "Check \"Don't show more tips\" on any tip toast to suppress all future tips. You can re-enable tips in"
+msgid ""
+"Check \"Don't show more tips\" on any tip toast to suppress all future tips."
+" You can re-enable tips in"
 msgstr "すべての将来のヒントを抑制するために、任意の先端トーストに「より多くのヒントを表示しない」をチェックしてください。 再利用可能なヒントは、"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:52
 #, elixir-autogen, elixir-format
-msgid "Choose from 14 built-in sounds (ding, alert, chime, click, etc.) or select"
+msgid ""
+"Choose from 14 built-in sounds (ding, alert, chime, click, etc.) or select"
 msgstr "14個の内蔵音(ディング、アラート、chime、クリックなど)から選択するか、または選択します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:4
@@ -1260,7 +1340,9 @@ msgstr "クリック"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:25
 #, elixir-autogen, elixir-format
-msgid "Click an emoji to insert it at the cursor position in the chat input. The picker closes automatically after selection."
+msgid ""
+"Click an emoji to insert it at the cursor position in the chat input. The "
+"picker closes automatically after selection."
 msgstr "emoji をクリックして、チャット入力のカーソル位置で入力します。 ピッカーは選択の後で自動的に閉まります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:32
@@ -1319,7 +1401,8 @@ msgstr "作曲バー"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Configure how timestamps appear in chat messages via the Options dialog."
+msgid ""
+"Configure how timestamps appear in chat messages via the Options dialog."
 msgstr "Options ダイアログでチャットメッセージにタイムスタンプが表示されるかを設定します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:25
@@ -1395,7 +1478,9 @@ msgstr "コンテキストのヒント"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_contextual_tips.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Contextual tips show helpful hints at the right moment — when you first encounter a feature. Each tip appears at most once."
+msgid ""
+"Contextual tips show helpful hints at the right moment — when you first "
+"encounter a feature. Each tip appears at most once."
 msgstr "コンテキストのヒントは、最初に機能に遭遇したときに、適切な瞬間に役立ちます。 各チップが一度に現れます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:21
@@ -1556,7 +1641,9 @@ msgstr "詳細レベル"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_flood_protection.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "Detects repeated identical messages from the same sender. Default: 3 identical messages in 10 seconds triggers blocking."
+msgid ""
+"Detects repeated identical messages from the same sender. Default: 3 "
+"identical messages in 10 seconds triggers blocking."
 msgstr "同一の送信者から繰り返された同一メッセージを検出します。 デフォルト: 10秒の3つの同一メッセージはブロックをトリガーします。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:7
@@ -1626,12 +1713,18 @@ msgstr "重複検出:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:56
 #, elixir-autogen, elixir-format
-msgid "During a file transfer, data dots flow along the line from sender to receiver. The center badge shows the file name, transfer speed, and a mini progress bar."
+msgid ""
+"During a file transfer, data dots flow along the line from sender to "
+"receiver. The center badge shows the file name, transfer speed, and a mini "
+"progress bar."
 msgstr "ファイルの転送中に、送信者から受信者に行に沿ってデータドットが流れます。 センターバッジはファイル名、転送速度、ミニ進捗バーを表示します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:63
 #, elixir-autogen, elixir-format
-msgid "During audio/video calls, the line shows bidirectional data flow dots. The center badge displays the call type, duration, and quality level. Video calls show a thicker line to indicate higher bandwidth."
+msgid ""
+"During audio/video calls, the line shows bidirectional data flow dots. The "
+"center badge displays the call type, duration, and quality level. Video "
+"calls show a thicker line to indicate higher bandwidth."
 msgstr ""
 "Audio/video 呼び出し時、行は双方向データフロードットを表示します。 センターバッジはコールタイプ、期間、品質レベルを表示します。 "
 "ビデオコールは、より厚いラインを示しています。"
@@ -1648,13 +1741,19 @@ msgstr "各ログインは有効期限をリセットします"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:19
 #, elixir-autogen, elixir-format
-msgid "Each rule can optionally filter by channel. Leave the channel field empty to match all channels, or specify a channel (e.g.,"
+msgid ""
+"Each rule can optionally filter by channel. Leave the channel field empty to"
+" match all channels, or specify a channel (e.g.,"
 msgstr ""
 "各規則は任意にチャネルによってろ過できます。 すべてのチャンネルにマッチするチャンネルフィールドを空にします。またはチャンネルを指定してください(例:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:70
 #, elixir-autogen, elixir-format
-msgid "Each side of the diagram shows detailed information about the peer's browser environment: browser name and version, operating system, screen resolution, language, timezone, CPU cores, and color depth. Touch-enabled devices show a touch indicator."
+msgid ""
+"Each side of the diagram shows detailed information about the peer's browser"
+" environment: browser name and version, operating system, screen resolution,"
+" language, timezone, CPU cores, and color depth. Touch-enabled devices show "
+"a touch indicator."
 msgstr ""
 "図の各側面は、ブラウザの名前とバージョン、オペレーティングシステム、画面解像度、言語、タイムゾーン、CPUコア、色深度に関する詳細な情報を示しています。"
 " タッチ対応デバイスはタッチインジケーターを表示します。"
@@ -1667,7 +1766,9 @@ msgstr "エッジケース"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Edit your own messages within 5 minutes of sending to fix typos or correct content."
+msgid ""
+"Edit your own messages within 5 minutes of sending to fix typos or correct "
+"content."
 msgstr "自分のメッセージを5分以内に編集して、typosや正しいコンテンツを修正します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:31
@@ -1677,7 +1778,9 @@ msgstr "編集インジケータ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:33
 #, elixir-autogen, elixir-format
-msgid "Edited messages show a small \"(editado)\" tag. Hover over it to see the edit timestamp."
+msgid ""
+"Edited messages show a small \"(editado)\" tag. Hover over it to see the "
+"edit timestamp."
 msgstr "編集されたメッセージは小さな \"(editado)\" タグを表示します。 編集タイムスタンプを見るためにそれを上回る."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:27
@@ -1692,7 +1795,8 @@ msgstr "有効/無効"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:38
 #, elixir-autogen, elixir-format
-msgid "Enable auto-whois to automatically look up user info when they come online."
+msgid ""
+"Enable auto-whois to automatically look up user info when they come online."
 msgstr "auto-whois を有効にすると、オンライン時にユーザーの情報を自動的に検索できます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:40
@@ -1808,14 +1912,19 @@ msgstr "洪水の保護"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_flood_protection.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Flood Protection automatically detects and handles various types of abuse, including message flooding and duplicate spam. All detection runs on your side — other users are not affected."
+msgid ""
+"Flood Protection automatically detects and handles various types of abuse, "
+"including message flooding and duplicate spam. All detection runs on your "
+"side — other users are not affected."
 msgstr ""
 "フラッドプロテクションは、メッセージの洪水やスパムの重複など、さまざまな種類の虐待を自動的に検出し、処理します。 "
 "すべての検出は、あなたの側に実行されます — 他のユーザーは影響を受けません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_flood_protection.html.heex:30
 #, elixir-autogen, elixir-format
-msgid "Flood Threshold: 10 messages in 15 seconds Spam Threshold: 3 duplicates in 10 seconds Auto-Ignore Duration: 5 minutes"
+msgid ""
+"Flood Threshold: 10 messages in 15 seconds Spam Threshold: 3 duplicates in "
+"10 seconds Auto-Ignore Duration: 5 minutes"
 msgstr "洪水の境界: 15秒のスパムの境界の10メッセージ: 10秒の3つの重複自動無視期間: 5分"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_paste_dialog.html.heex:16
@@ -1825,14 +1934,20 @@ msgstr "洪水警告"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_states.html.heex:26
 #, elixir-autogen, elixir-format
-msgid "For brief disconnections (over 1 second), a red banner appears at the top of the chat area. When reconnected, a green banner shows briefly and fades after 3 seconds. Very brief disconnections (under 1 second) are suppressed to avoid flicker."
+msgid ""
+"For brief disconnections (over 1 second), a red banner appears at the top of"
+" the chat area. When reconnected, a green banner shows briefly and fades "
+"after 3 seconds. Very brief disconnections (under 1 second) are suppressed "
+"to avoid flicker."
 msgstr ""
 "短い接続(1秒以上)の場合、チャットエリアの上部に赤いバナーが表示されます。 再接続すると、3秒後に緑色のバナーが簡単に表示されます。 "
 "非常に短い切断(1秒未満)は、フリッカーを避けるために抑制されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_states.html.heex:33
 #, elixir-autogen, elixir-format
-msgid "For extended disconnections, a full-screen overlay with countdown and retry appears. The banner hides when the overlay is active to avoid duplication."
+msgid ""
+"For extended disconnections, a full-screen overlay with countdown and retry "
+"appears. The banner hides when the overlay is active to avoid duplication."
 msgstr ""
 "拡張接続の場合、カウントダウンとリトライのフルスクリーンオーバーレイが表示されます。 "
 "重複を避けるためにオーバーレイがアクティブであるとき、バナーは隠します。"
@@ -1876,12 +1991,15 @@ msgstr "グリーングリーン"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:65
 #, elixir-autogen, elixir-format
-msgid "Guest users can join channels but they are not remembered across sessions."
+msgid ""
+"Guest users can join channels but they are not remembered across sessions."
 msgstr "ゲストユーザーはチャンネルに参加できますが、セッション中には記憶されません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:49
 #, elixir-autogen, elixir-format
-msgid "Guest users get in-session PM tracking only (conversations are lost on disconnect)."
+msgid ""
+"Guest users get in-session PM tracking only (conversations are lost on "
+"disconnect)."
 msgstr "ゲストユーザーは、追跡するセッションPMのみを取得します(会話は切断時に失われます)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:18
@@ -1916,7 +2034,10 @@ msgstr "メッセージの上にカーソルを合わせ、 ↩ ボタンが表�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:23
 #, elixir-autogen, elixir-format
-msgid "Hover over a nickname in a chat message for 500ms to see a hover card with user info: online duration, channels, away status, client details (browser, OS, screen, language, timezone), and contact/ignore badges."
+msgid ""
+"Hover over a nickname in a chat message for 500ms to see a hover card with "
+"user info: online duration, channels, away status, client details (browser, "
+"OS, screen, language, timezone), and contact/ignore badges."
 msgstr ""
 "チャットメッセージで500ms以上のニックネームで、ユーザ情報付きのホバーカードが表示されます。オンラインの期間、チャンネル、ステータス、クライアントの詳細(ブラウザ、OS、画面、言語、タイムゾーン)、連絡先/ignoreバッジ。"
 
@@ -1970,36 +2091,49 @@ msgstr "カスタムメッセージが設定されていない場合、デフォ
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:19
 #, elixir-autogen, elixir-format
-msgid "If no text is selected, the Copy option appears disabled. Rich formatting is stripped — only plain text is copied."
+msgid ""
+"If no text is selected, the Copy option appears disabled. Rich formatting is"
+" stripped — only plain text is copied."
 msgstr ""
 "テキストが選択されていない場合、コピーオプションが無効になっています。 豊富な書式設定は剥がれているため、プレーンテキストのみがコピーされます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:25
 #, elixir-autogen, elixir-format
-msgid "If someone replied to a message that is later deleted, the reply quote shows \"[mensagem removida]\" instead of the original content."
+msgid ""
+"If someone replied to a message that is later deleted, the reply quote shows"
+" \"[mensagem removida]\" instead of the original content."
 msgstr ""
 "誰かが後で削除されたメッセージに答えた場合、元のコンテンツの代わりに、返信の引用符「[mensagem removida]」が表示されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:44
 #, elixir-autogen, elixir-format
-msgid "If the list is full, joining a new channel still works but a system message explains it was not added to auto-join."
+msgid ""
+"If the list is full, joining a new channel still works but a system message "
+"explains it was not added to auto-join."
 msgstr "リストがいっぱいになったら、新しいチャンネルはまだ機能しますが、システムメッセージは自動joinに追加されませんでした。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:32
 #, elixir-autogen, elixir-format
-msgid "If the original message was deleted, the quote shows \"[mensagem removida]\". Long messages are truncated in the reply preview. Editing the original message updates the quote in all replies."
+msgid ""
+"If the original message was deleted, the quote shows \"[mensagem "
+"removida]\". Long messages are truncated in the reply preview. Editing the "
+"original message updates the quote in all replies."
 msgstr ""
 "元のメッセージが削除された場合、引用は「[mensagem removida]」を示しています。 長いメッセージは、返信プレビューで中断されます。 "
 "元のメッセージの編集は、すべての返信で引用を更新します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "If you are kicked from multiple channels simultaneously, the dialogs queue and display one at a time. Click OK to dismiss each dialog."
+msgid ""
+"If you are kicked from multiple channels simultaneously, the dialogs queue "
+"and display one at a time. Click OK to dismiss each dialog."
 msgstr "複数のチャネルから同時に蹴る場合は、ダイアログのキューを列挙し、一度に表示します。 [OK]をクリックして各ダイアログを解除します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_flood_protection.html.heex:24
 #, elixir-autogen, elixir-format
-msgid "If you manually un-ignore an auto-ignored user, a 60-second cooldown prevents the auto-ignore from re-triggering immediately."
+msgid ""
+"If you manually un-ignore an auto-ignored user, a 60-second cooldown "
+"prevents the auto-ignore from re-triggering immediately."
 msgstr "手動で自動無視されたユーザーを無視すると、60秒のクールダウンにより、自動無視がすぐに再トリガーを防ぐことができます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:17
@@ -2021,7 +2155,8 @@ msgstr "無視リスト"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:27
 #, elixir-autogen, elixir-format
-msgid "Ignore all content, or just messages, PMs, actions, notices, or invites."
+msgid ""
+"Ignore all content, or just messages, PMs, actions, notices, or invites."
 msgstr "すべてのコンテンツを無視するか、メッセージ、PM、アクション、通知、または招待するだけです。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:48
@@ -2077,7 +2212,10 @@ msgstr "インタラクティブチャット要素"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:43
 #, elixir-autogen, elixir-format
-msgid "Interactive elements do not trigger during text selection. The nick hover card does not appear for your own nickname. Hover tooltips dismiss when the mouse leaves the viewport."
+msgid ""
+"Interactive elements do not trigger during text selection. The nick hover "
+"card does not appear for your own nickname. Hover tooltips dismiss when the "
+"mouse leaves the viewport."
 msgstr ""
 "テキスト選択中にインタラクティブな要素はトリガーしません。 ニックネームのホバーカードは自分のニックネームには表示されません。 "
 "マウスがビューポートを離れると、フーバーツールチップは却下します。"
@@ -2090,7 +2228,10 @@ msgstr "例外を招待する"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Invite exceptions allow specific users to bypass invite-only (+i) mode. When a channel has +i mode set, users in the invite exceptions list can still join without an explicit invite from an operator."
+msgid ""
+"Invite exceptions allow specific users to bypass invite-only (+i) mode. When"
+" a channel has +i mode set, users in the invite exceptions list can still "
+"join without an explicit invite from an operator."
 msgstr ""
 "例外を招待すると、特定のユーザーは招待のみ(+i)モードをバイパスできます。 "
 "チャンネルに+iモードが設定されている場合、招待例外リストのユーザーは、オペレータから明示的な招待なしに参加できます。"
@@ -2153,7 +2294,7 @@ msgstr "キーボードショートカット"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Kick"
-msgstr "Kick"
+msgstr "キック"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:56
 #, elixir-autogen, elixir-format
@@ -2233,12 +2374,17 @@ msgstr "マニュアル管理"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:47
 #, elixir-autogen, elixir-format
-msgid "Maximum 10 auto-respond rules per user. Commands: up to 500 characters. Persisted for registered users."
+msgid ""
+"Maximum 10 auto-respond rules per user. Commands: up to 500 characters. "
+"Persisted for registered users."
 msgstr "最大10個の自動応答ルール。コマンド:最大500文字。 登録されたユーザーを対象としています。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:55
 #, elixir-autogen, elixir-format
-msgid "Maximum 10 custom items per menu type. Labels: up to 50 characters. Commands: up to 500 characters. Custom items append to (not replace) built-in menu items. Persisted for registered users."
+msgid ""
+"Maximum 10 custom items per menu type. Labels: up to 50 characters. "
+"Commands: up to 500 characters. Custom items append to (not replace) built-"
+"in menu items. Persisted for registered users."
 msgstr ""
 "メニュータイプごとの最大10個のカスタムアイテム。 ラベル:最大50文字。 コマンド:最大500文字。 "
 "カスタムアイテムは(置換しない)組み込みメニュー項目に追加されます。 登録されたユーザーを対象としています。"
@@ -2250,7 +2396,10 @@ msgstr "オートジョイントリストで最大20チャンネル。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "Maximum 50 aliases per user. Names: 1–30 characters (alphanumeric, hyphens, underscores). Expansions: up to 500 characters. Persisted for registered users."
+msgid ""
+"Maximum 50 aliases per user. Names: 1–30 characters (alphanumeric, hyphens, "
+"underscores). Expansions: up to 500 characters. Persisted for registered "
+"users."
 msgstr ""
 "ユーザごとの最大50個のエイリアス。 名前:1〜30文字(英数字、ハイフン、アンダースコア)。 拡張:最大500文字。 "
 "登録されたユーザーを対象としています。"
@@ -2272,7 +2421,10 @@ msgstr "メニュータイプ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:68
 #, elixir-autogen, elixir-format
-msgid "Menus automatically reposition if they would go off-screen. The browser's default right-click menu is preserved in the input field. Self-targeting actions (Kick, Ban, Ignore, P2P actions on yourself) appear disabled."
+msgid ""
+"Menus automatically reposition if they would go off-screen. The browser's "
+"default right-click menu is preserved in the input field. Self-targeting "
+"actions (Kick, Ban, Ignore, P2P actions on yourself) appear disabled."
 msgstr ""
 "メニューは、画面をオフにすると自動的に再配置されます。 ブラウザのデフォルト右クリックメニューは入力欄に保存されます。 "
 "セルフターゲティングアクション(キック、バン、イグノー、P2Pアクション)が無効になっています。"
@@ -2337,7 +2489,9 @@ msgstr "私のニックネーム:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Navigate your command and message history with draft preservation and reverse search. History persists across page reloads."
+msgid ""
+"Navigate your command and message history with draft preservation and "
+"reverse search. History persists across page reloads."
 msgstr "コマンドとメッセージの履歴をコピー保存と逆検索でナビゲートします。 ページのリロードを横断して歴史を主張します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:22
@@ -2399,7 +2553,9 @@ msgstr "ニックネーム"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:52
 #, elixir-autogen, elixir-format
-msgid "Nicknames that are currently connected are never purged, even if their last-seen date is old"
+msgid ""
+"Nicknames that are currently connected are never purged, even if their last-"
+"seen date is old"
 msgstr "現在接続されているニックネームは、過去の日付が古い場合でも、決して消去されません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:32
@@ -2445,7 +2601,9 @@ msgstr "インフォメーション"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Notices are a lightweight message type inspired by IRC's NOTICE command. They are used for announcements, service messages, and bot responses."
+msgid ""
+"Notices are a lightweight message type inspired by IRC's NOTICE command. "
+"They are used for announcements, service messages, and bot responses."
 msgstr "IRC の NOTICE コマンドに触発された軽量メッセージタイプです。 通知、サービスメッセージ、およびボット応答に使用されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:44
@@ -2495,7 +2653,9 @@ msgstr "接続する"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:44
 #, elixir-autogen, elixir-format
-msgid "On successful reconnection, your previous session is restored: channels are rejoined and the active tab is restored to its previous state."
+msgid ""
+"On successful reconnection, your previous session is restored: channels are "
+"rejoined and the active tab is restored to its previous state."
 msgstr "成功した再接続では、以前のセッションが復元されます。チャンネルは再結合され、アクティブなタブは以前の状態に復元されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:9
@@ -2505,7 +2665,10 @@ msgstr "ワンショット"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:32
 #, elixir-autogen, elixir-format
-msgid "Only channel operators can send invites. The channel must have +i (invite-only) mode set. The target user must be online and not already in the channel."
+msgid ""
+"Only channel operators can send invites. The channel must have +i (invite-"
+"only) mode set. The target user must be online and not already in the "
+"channel."
 msgstr ""
 "チャネル演算子のみが招待を送信できます。 チャンネルには +i (invite-only) モードが設定されている必要があります。 "
 "対象となるユーザは、オンラインではなく、既にチャネルでなければいけません。"
@@ -2602,7 +2765,9 @@ msgstr "パーツ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_paste_dialog.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "Pasting more than 50 lines shows an additional flood warning. This prevents accidentally flooding a channel."
+msgid ""
+"Pasting more than 50 lines shows an additional flood warning. This prevents "
+"accidentally flooding a channel."
 msgstr "50以上のラインを貼り付けると、追加の洪水警告が表示されます。 これは、誤ってチャネルを浸すことを防ぐ."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:68
@@ -2658,7 +2823,10 @@ msgstr "ニュース"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "Press the up arrow in an empty input to edit your last message. The input fills with the message text, and the message gets a dashed border indicating edit mode."
+msgid ""
+"Press the up arrow in an empty input to edit your last message. The input "
+"fills with the message text, and the message gets a dashed border indicating"
+" edit mode."
 msgstr ""
 "最後のメッセージを編集するために空の入力で矢印を押します。 入力はメッセージのテキストを記入し、メッセージは編集モードを示す遅延した境界を取得します。"
 
@@ -2690,20 +2858,27 @@ msgstr "プライベートモード(TURNのみ)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Private message conversations are automatically restored when registered users connect. Your PM conversation list is rebuilt from your message history, ordered by most recent activity."
+msgid ""
+"Private message conversations are automatically restored when registered "
+"users connect. Your PM conversation list is rebuilt from your message "
+"history, ordered by most recent activity."
 msgstr ""
 "登録ユーザーが接続したときに、プライベートメッセージの会話は自動的に復元されます。 "
 "PMの会話リストは、最新のアクティビティで注文したメッセージ履歴から再構築されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:24
 #, elixir-autogen, elixir-format
-msgid "Private mode adds latency because traffic passes through the server. Direct connections (default) are faster but expose your IP to the peer."
+msgid ""
+"Private mode adds latency because traffic passes through the server. Direct "
+"connections (default) are faster but expose your IP to the peer."
 msgstr ""
 "トラフィックがサーバーを通過するので、プライベートモードはレイテンシを追加します。 直接接続(デフォルト)は高速ですが、IPをピアに公開します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:31
 #, elixir-autogen, elixir-format
-msgid "Private mode requires the TURN server to be configured. If it is not available, you will see a warning and the connection will be direct."
+msgid ""
+"Private mode requires the TURN server to be configured. If it is not "
+"available, you will see a warning and the connection will be direct."
 msgstr "プライベートモードには、TURN サーバの設定が必要です。 利用できない場合は警告が表示され、接続が直接表示されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:9
@@ -2758,7 +2933,9 @@ msgstr "Regex:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:45
 #, elixir-autogen, elixir-format
-msgid "Register and identify with NickServ to save your notify list across sessions."
+msgid ""
+"Register and identify with NickServ to save your notify list across "
+"sessions."
 msgstr "NickServに登録して、セッション間で通知リストを保存します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:2
@@ -2793,7 +2970,10 @@ msgstr "リピート"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:25
 #, elixir-autogen, elixir-format
-msgid "Replies appear with a quoted block showing the original message, with your response below. Click the quoted block to scroll to and highlight the original message."
+msgid ""
+"Replies appear with a quoted block showing the original message, with your "
+"response below. Click the quoted block to scroll to and highlight the "
+"original message."
 msgstr ""
 "返信は、元のメッセージを表示する引用されたブロックで表示されます。 引用されたブロックをクリックして、元のメッセージをスクロールしてハイライトします。"
 
@@ -2804,7 +2984,9 @@ msgstr "削除されたメッセージへの返信"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Reply to any message to create a visual quote linking your response to the original."
+msgid ""
+"Reply to any message to create a visual quote linking your response to the "
+"original."
 msgstr "元の応答をリンクする視覚引用を作成するために、任意のメッセージに返信します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:56
@@ -2817,27 +2999,36 @@ msgstr "要件"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat automatically attempts to reconnect when an unexpected disconnection occurs."
+msgid ""
+"RetroHexChat automatically attempts to reconnect when an unexpected "
+"disconnection occurs."
 msgstr "RetroHexChatは、予期しない接続が発生したときに自動的に再接続しようとします。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat plays configurable sounds for various events. Access the Sounds dialog from"
+msgid ""
+"RetroHexChat plays configurable sounds for various events. Access the Sounds"
+" dialog from"
 msgstr "RetroHexChat は様々なイベントの構成可能なサウンドを再生します。 音声ダイアログからアクセス"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat provides context-aware autocomplete for commands, nicknames, and channels."
+msgid ""
+"RetroHexChat provides context-aware autocomplete for commands, nicknames, "
+"and channels."
 msgstr "RetroHexChat は、コマンド、ニックネーム、チャンネルのコンテクスト・アウェア・オートコンプリートを提供します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat supports several types of special server and channel messages:"
+msgid ""
+"RetroHexChat supports several types of special server and channel messages:"
 msgstr "RetroHexChat は、特別なサーバーとチャンネルメッセージの複数の種類をサポートしています。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat uses fixed keyboard shortcuts for all actions. All shortcuts use"
+msgid ""
+"RetroHexChat uses fixed keyboard shortcuts for all actions. All shortcuts "
+"use"
 msgstr "RetroHexChat は、すべてのアクションの固定キーボードショートカットを使用します。 すべてのショートカットの使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:27
@@ -2847,13 +3038,17 @@ msgstr "逆検索(Ctrl+R)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:34
 #, elixir-autogen, elixir-format
-msgid "Right-click a #channel reference in a chat message to see: Join Channel (disabled if already joined), Copy Channel Name, Channel Info."
+msgid ""
+"Right-click a #channel reference in a chat message to see: Join Channel "
+"(disabled if already joined), Copy Channel Name, Channel Info."
 msgstr ""
 "チャットメッセージで#channel参照を右クリックして、チャンネル(既に参加している場合無効)、コピーチャンネル名、チャンネル情報を参照してください。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:27
 #, elixir-autogen, elixir-format
-msgid "Right-click a URL in a chat message to see: Open Link, Copy URL, Save to URL List."
+msgid ""
+"Right-click a URL in a chat message to see: Open Link, Copy URL, Save to URL"
+" List."
 msgstr "チャットメッセージのURLを右クリックし、URLをコピーし、URLリストに保存します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:10
@@ -2868,19 +3063,27 @@ msgstr "ニックネームを右クリックしてすぐに無視するか、無
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Right-click on elements in the chat area and conversations sidebar to access context-specific actions."
+msgid ""
+"Right-click on elements in the chat area and conversations sidebar to access"
+" context-specific actions."
 msgstr "チャットエリアの要素を右クリックし、会話サイドバーでコンテキスト固有のアクションにアクセスします。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:41
 #, elixir-autogen, elixir-format
-msgid "Right-click the general chat area to see: Copy Message, Copy Selected Text, Quote/Reply (disabled), Ignore Sender. If the message contains URLs, Open Link and Copy URL also appear."
+msgid ""
+"Right-click the general chat area to see: Copy Message, Copy Selected Text, "
+"Quote/Reply (disabled), Ignore Sender. If the message contains URLs, Open "
+"Link and Copy URL also appear."
 msgstr ""
 "一般的なチャットエリアを右クリックして、メッセージのコピー、選択されたテキストのコピー、引用/Reply(無効)、イグノーア送信者を参照してください。 "
 "メッセージにURLが含まれている場合、リンクとコピーURLも表示されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:4
 #, elixir-autogen, elixir-format
-msgid "Right-click your message and select \"Apagar mensagem\". A confirmation dialog appears with Confirmar/Cancelar buttons. Press Escape or click Cancelar to dismiss."
+msgid ""
+"Right-click your message and select \"Apagar mensagem\". A confirmation "
+"dialog appears with Confirmar/Cancelar buttons. Press Escape or click "
+"Cancelar to dismiss."
 msgstr ""
 "メッセージを右クリックし、「アパガーメンセージム」を選択します。 確認画面が Confirmar/Cancelar ボタンで表示されます。 "
 "エスケープを押すか、または「キャンセル」をクリックして退会します。"
@@ -2913,7 +3116,9 @@ msgstr "フィルターを検索"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Search through messages in the current channel or PM with real-time highlighting."
+msgid ""
+"Search through messages in the current channel or PM with real-time "
+"highlighting."
 msgstr "現在のチャンネルまたはPMでリアルタイムのハイライトでメッセージを検索します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:33
@@ -2986,7 +3191,9 @@ msgstr "関連項目"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Select text in the chat area by clicking and dragging. Right-click to see a context menu with"
+msgid ""
+"Select text in the chat area by clicking and dragging. Right-click to see a "
+"context menu with"
 msgstr "クリックしてドラッグすることで、チャットエリア内のテキストを選択します。 右クリックしてコンテキストメニューを表示"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:28
@@ -3016,14 +3223,19 @@ msgstr "敏感なコマンド("
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:40
 #, elixir-autogen, elixir-format
-msgid "Server administrators can send announcements that appear in every user's active window. Announcements bypass ignore lists and have distinctive bold styling."
+msgid ""
+"Server administrators can send announcements that appear in every user's "
+"active window. Announcements bypass ignore lists and have distinctive bold "
+"styling."
 msgstr ""
 "サーバー管理者は、すべてのユーザーのアクティブなウィンドウに表示される通知を送信できます。 "
 "無視リストを迂回し、独特の大胆なスタイリングがあることを発表。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "Server administrators can set a MOTD that all users see when they connect. Use"
+msgid ""
+"Server administrators can set a MOTD that all users see when they connect. "
+"Use"
 msgstr "サーバー管理者は、接続時にすべてのユーザーが参照するMOTDを設定できます。 使用条件"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:30
@@ -3114,7 +3326,9 @@ msgstr "スマート入力"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "Smileys & Emotion, People & Body, Animals & Nature, Food & Drink, Travel & Places, Activities, Objects, Symbols."
+msgid ""
+"Smileys & Emotion, People & Body, Animals & Nature, Food & Drink, Travel & "
+"Places, Activities, Objects, Symbols."
 msgstr "スマイリーと感情、人体、動物と自然、食べ物と飲み物、旅行&場所、活動、オブジェクト、シンボル。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:50
@@ -3146,7 +3360,9 @@ msgstr "ステータスバー"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "Submit the edit. The message updates for all viewers with an \"(editado)\" tag."
+msgid ""
+"Submit the edit. The message updates for all viewers with an \"(editado)\" "
+"tag."
 msgstr "編集を提出してください。 \"(editado)\" タグを持つすべてのビューアのメッセージ更新。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:15
@@ -3161,7 +3377,11 @@ msgstr "空のテキストで送信すると、削除確認ダイアログが開
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:48
 #, elixir-autogen, elixir-format
-msgid "Switching to a channel resets its unread count and badges. System messages (joins, parts, quits) do not increment the count — only user messages and mentions do. Counts above 99 display as \"99+\". Muted channels still track unread counts internally — unmuting reveals accumulated indicators."
+msgid ""
+"Switching to a channel resets its unread count and badges. System messages "
+"(joins, parts, quits) do not increment the count — only user messages and "
+"mentions do. Counts above 99 display as \"99+\". Muted channels still track "
+"unread counts internally — unmuting reveals accumulated indicators."
 msgstr ""
 "チャネルへの切り替えは、未読カウントとバッジをリセットします。 "
 "システムメッセージ(joins、parts、quits)はカウントを増加させません。ユーザーメッセージと言及のみを行います。 "
@@ -3194,26 +3414,35 @@ msgstr "テキストフォーマット"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The Ignore List lets you hide messages from specific users without moderator intervention. Ignored users are not notified — filtering happens entirely on your side."
+msgid ""
+"The Ignore List lets you hide messages from specific users without moderator"
+" intervention. Ignored users are not notified — filtering happens entirely "
+"on your side."
 msgstr ""
 "無視リストでは、モデレータの介入なしに特定のユーザーからメッセージを隠すことができます。 "
 "無視されたユーザーは通知されます。フィルタリングは完全にあなたの側に行われます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The Notify List tracks when specific users come online or go offline. You receive notifications in the Status tab."
+msgid ""
+"The Notify List tracks when specific users come online or go offline. You "
+"receive notifications in the Status tab."
 msgstr "特定のユーザーがオンラインで来るか、オフラインで行くとき、通知リストは追跡します。 ステータスタブで通知を受け取ります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The Shortcut Cheatsheet displays all available keyboard shortcuts organized by category in a read-only retro-styled dialog."
+msgid ""
+"The Shortcut Cheatsheet displays all available keyboard shortcuts organized "
+"by category in a read-only retro-styled dialog."
 msgstr ""
 "Shortcut Cheatsheet "
 "は、既読のレトロスタイルのダイアログでカテゴリ別に整理されたすべての利用可能なキーボードショートカットを表示します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The URL Catcher captures all URLs shared in channels and PMs. URLs in messages are automatically made clickable with link previews."
+msgid ""
+"The URL Catcher captures all URLs shared in channels and PMs. URLs in "
+"messages are automatically made clickable with link previews."
 msgstr ""
 "URL Catcherは、チャンネルとPMで共有されるすべてのURLをキャプチャします。 "
 "メッセージ内のURLはリンクプレビューで自動的にクリック可能になります。"
@@ -3225,25 +3454,34 @@ msgstr "チャット入力はコンテキストヒントを提供し、コンテ
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:24
 #, elixir-autogen, elixir-format
-msgid "The cheatsheet reflects your current key bindings. If you have customized shortcuts in"
+msgid ""
+"The cheatsheet reflects your current key bindings. If you have customized "
+"shortcuts in"
 msgstr "cheatsheet は、現在のキーバインディングを反映しています。 あなたがカスタマイズされたショートカットを持っている場合"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:26
 #, elixir-autogen, elixir-format
-msgid "The client sends a ping to the server every 30 seconds. The server echoes the timestamp back, and the client calculates the round-trip time. If no response arrives within 10 seconds, a timeout is shown."
+msgid ""
+"The client sends a ping to the server every 30 seconds. The server echoes "
+"the timestamp back, and the client calculates the round-trip time. If no "
+"response arrives within 10 seconds, a timeout is shown."
 msgstr ""
 "クライアントは30秒ごとにサーバーにpingを送信します。 サーバはタイムスタンプを取り戻し、クライアントは往復時間を計算します。 "
 "10秒以内に応答が届かない場合は、タイムアウトが表示されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The connection diagram is an animated visual indicator at the top of every P2P session, showing the real-time bilateral link between you and the other peer."
+msgid ""
+"The connection diagram is an animated visual indicator at the top of every "
+"P2P session, showing the real-time bilateral link between you and the other "
+"peer."
 msgstr ""
 "接続図は、すべてのP2Pセッションの上部にあるアニメーションビジュアルインジケータで、あなたと他のピア間のリアルタイムのバイラルリンクを表示します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The conversations sidebar shows visual indicators for channel activity."
+msgid ""
+"The conversations sidebar shows visual indicators for channel activity."
 msgstr "会話サイドバーは、チャンネルアクティビティのビジュアルインジケータを示しています。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_char_counter.html.heex:8
@@ -3253,19 +3491,26 @@ msgstr "カウンターは限界に近づくように色を変えます:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "The diagram shows both peers as browser icons connected by a line that animates based on the current state:"
+msgid ""
+"The diagram shows both peers as browser icons connected by a line that "
+"animates based on the current state:"
 msgstr "図は、現在の状態に基づいてアニメーションする行によって接続されているブラウザのアイコンとして、両方のピアを示しています。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "The dialog shows: the channel name, who kicked you, and the reason (if provided). Example: \"You have been kicked from #general by AdminNick: spam\""
+msgid ""
+"The dialog shows: the channel name, who kicked you, and the reason (if "
+"provided). Example: \"You have been kicked from #general by AdminNick: "
+"spam\""
 msgstr ""
 "ダイアログが表示されます。チャンネル名、キックしたチャンネル名、および理由(提供された場合)。 "
 "例:「AdminNick:スパムで#generalからキックした」"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:43
 #, elixir-autogen, elixir-format
-msgid "The dialog updates in real time when other users change channel settings, so you always see the current state."
+msgid ""
+"The dialog updates in real time when other users change channel settings, so"
+" you always see the current state."
 msgstr "他のユーザーがチャンネル設定を変更したときにダイアログがリアルタイムで更新されるので、常に現在の状態を確認します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:1
@@ -3275,19 +3520,27 @@ msgstr "グローバルミュートがサイレンスをワンクリックで切
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:21
 #, elixir-autogen, elixir-format
-msgid "The input grows vertically as you type or paste multi-line text, up to 5 visible lines. Beyond that, a scrollbar appears. The chat messages area compresses above to make room."
+msgid ""
+"The input grows vertically as you type or paste multi-line text, up to 5 "
+"visible lines. Beyond that, a scrollbar appears. The chat messages area "
+"compresses above to make room."
 msgstr ""
 "入力は、複数の行のテキストを入力または貼り付けると同時に垂直に成長します。最大5つの行目を表示できます。 それを超えて、スクロールバーが現れます。 "
 "チャットメッセージエリアは、部屋を作るために上記を圧縮します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The lag indicator in the status bar shows the round-trip latency between your browser and the server, measured every 30 seconds."
+msgid ""
+"The lag indicator in the status bar shows the round-trip latency between "
+"your browser and the server, measured every 30 seconds."
 msgstr "ステータスバーのラグインジケータは、30秒ごとに測定されたブラウザとサーバーの間の往復レイテンシを表示します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "The message is replaced with \"[mensagem removida]\" in italic text for all viewers. The original content is preserved in the database (soft-delete) for audit purposes."
+msgid ""
+"The message is replaced with \"[mensagem removida]\" in italic text for all "
+"viewers. The original content is preserved in the database (soft-delete) for"
+" audit purposes."
 msgstr ""
 "メッセージは、すべてのビューアのテキストに「[mensagem removida]」に置き換えられます。 "
 "元のコンテンツは、監査目的のためにデータベース(ソフトウェア削除)に保存されます。"
@@ -3304,7 +3557,9 @@ msgstr "実行リストにはコマンド(例:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:36
 #, elixir-autogen, elixir-format
-msgid "The perform system can be toggled on or off. When disabled, no commands execute and no channels are auto-joined on connect."
+msgid ""
+"The perform system can be toggled on or off. When disabled, no commands "
+"execute and no channels are auto-joined on connect."
 msgstr ""
 "実行システムは、オンまたはオフに切り替えることができます。 無効にすると、コマンドが実行されず、接続時にチャンネルが自動結合されなくなります。"
 
@@ -3325,17 +3580,21 @@ msgstr "登録は永久に削除されます"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:54
 #, elixir-autogen, elixir-format
-msgid "The search bar remembers your last search term. When you reopen it, the previous query is restored and matches are re-highlighted."
+msgid ""
+"The search bar remembers your last search term. When you reopen it, the "
+"previous query is restored and matches are re-highlighted."
 msgstr "検索バーが最後の検索語を記憶します。 再オープンすると、以前のクエリが復元され、マッチが再ハイライトされます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_states.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The status bar shows four possible connection states with visual indicators."
+msgid ""
+"The status bar shows four possible connection states with visual indicators."
 msgstr "ステータスバーには、ビジュアルインジケーターで4つの接続状態が表示されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:58
 #, elixir-autogen, elixir-format
-msgid "There is no warning before expiration — connect regularly to keep your nick"
+msgid ""
+"There is no warning before expiration — connect regularly to keep your nick"
 msgstr "満了前に警告はありません - 定期的に接続して、ニックネームを維持します"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:32
@@ -3355,7 +3614,10 @@ msgstr "タイマーのタイプ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:48
 #, elixir-autogen, elixir-format
-msgid "Timer commands run in the window that was active when the timer was created. If you switch tabs before a timer fires, the scheduled command still targets the original window and your current window stays selected."
+msgid ""
+"Timer commands run in the window that was active when the timer was created."
+" If you switch tabs before a timer fires, the scheduled command still "
+"targets the original window and your current window stays selected."
 msgstr ""
 "timer コマンドは、タイマーが作成されたときにアクティブだったウィンドウで実行されます。 "
 "タイマーの火の前にタブを切り替えると、スケジュールされたコマンドは元のウィンドウと現在のウィンドウが選択されている状態をターゲットにします。"
@@ -3368,7 +3630,10 @@ msgstr "タイマー"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Timers let you schedule commands to run after a delay or on a repeating interval. Useful for periodic reminders, heartbeat messages, or delayed actions."
+msgid ""
+"Timers let you schedule commands to run after a delay or on a repeating "
+"interval. Useful for periodic reminders, heartbeat messages, or delayed "
+"actions."
 msgstr ""
 "タイマーは、遅延や繰り返し間隔でコマンドを実行できるようにします。 定期的なリマインダー、ハートビートメッセージ、またはアクションの遅延に役立ちます。"
 
@@ -3379,7 +3644,10 @@ msgstr "チップトリガー"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_contextual_tips.html.heex:37
 #, elixir-autogen, elixir-format
-msgid "Tips queue if multiple triggers fire at once (2-second gap between toasts). Tips do not appear while a dialog is open. Tips auto-dismiss after 8 seconds."
+msgid ""
+"Tips queue if multiple triggers fire at once (2-second gap between toasts). "
+"Tips do not appear while a dialog is open. Tips auto-dismiss after 8 "
+"seconds."
 msgstr ""
 "複数のトリガーが一度に火災をトリガーする場合、ヒントキュー(2秒間)。 ダイアログが開いている間、ヒントは現れません。 8秒後に自動却下するヒント。"
 
@@ -3472,7 +3740,9 @@ msgstr "タイプ:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "Type in the search box to filter emojis by name or keyword (minimum 2 characters)."
+msgid ""
+"Type in the search box to filter emojis by name or keyword (minimum 2 "
+"characters)."
 msgstr "名前またはキーワード(最小2文字)で emoji をフィルタリングするために検索ボックスに入力します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:54
@@ -3499,7 +3769,9 @@ msgstr "サイトマップ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "URLs in messages are underlined on hover with a pointer cursor. Hover to see the page title (fetched automatically). Click to open in a new browser tab."
+msgid ""
+"URLs in messages are underlined on hover with a pointer cursor. Hover to see"
+" the page title (fetched automatically). Click to open in a new browser tab."
 msgstr ""
 "メッセージ内の URL は、ポインタカーソルでホバー上に下線します。 ページのタイトル(自動的に取得される)を見るためにフーバー。 "
 "クリックして新しいブラウザタブで開きます。"
@@ -3544,7 +3816,10 @@ msgstr "使用条件"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:53
 #, elixir-autogen, elixir-format
-msgid "User-authored content (messages, PMs, /me actions, notices, and invites) is hidden. System messages (joins, parts, kicks) from ignored users remain visible to maintain channel context."
+msgid ""
+"User-authored content (messages, PMs, /me actions, notices, and invites) is "
+"hidden. System messages (joins, parts, kicks) from ignored users remain "
+"visible to maintain channel context."
 msgstr ""
 "ユーザー権限のあるコンテンツ(メッセージ、PM、/meアクション、通知、招待)が隠されています。 "
 "無視されたユーザーからのシステムメッセージ(joins、parts、キック)は、チャネルのコンテキストを維持するために表示されません。"
@@ -3556,7 +3831,10 @@ msgstr "ユーザは、自動ジョイントを有効にすることができま
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_flood_protection.html.heex:17
 #, elixir-autogen, elixir-format
-msgid "Users who exceed the message flood threshold are automatically added to your ignore list for a configurable duration (default: 5 minutes). The ignore is automatically removed when the timer expires."
+msgid ""
+"Users who exceed the message flood threshold are automatically added to your"
+" ignore list for a configurable duration (default: 5 minutes). The ignore is"
+" automatically removed when the timer expires."
 msgstr ""
 "メッセージの洪水のしきい値を超えるユーザーは、設定可能な期間(デフォルト:5分)の無視リストに自動的に追加されます。 "
 "タイマーが終了したときに無視は自動的に削除されます。"
@@ -3636,39 +3914,55 @@ msgstr "Happensとは ニック・エクスプレアーズのとき"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:20
 #, elixir-autogen, elixir-format
-msgid "When a user attempts to join a channel where they are banned, the server checks the ban exception list. If the user matches a ban exception entry, the ban is overridden and they are allowed to join."
+msgid ""
+"When a user attempts to join a channel where they are banned, the server "
+"checks the ban exception list. If the user matches a ban exception entry, "
+"the ban is overridden and they are allowed to join."
 msgstr ""
 "ユーザーが禁止されているチャネルに参加しようとすると、サーバーは禁止例外リストをチェックします。 "
 "ユーザーが禁止の例外エントリに一致する場合、禁止はオーバーライドされ、それらは参加することができます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:20
 #, elixir-autogen, elixir-format
-msgid "When a user attempts to join an invite-only channel, the server checks the invite exception list. If the user matches an invite exception entry, they are allowed to join without needing an invite."
+msgid ""
+"When a user attempts to join an invite-only channel, the server checks the "
+"invite exception list. If the user matches an invite exception entry, they "
+"are allowed to join without needing an invite."
 msgstr ""
 "ユーザーが招待のみのチャンネルに参加しようとすると、サーバーは招待例外リストをチェックします。 "
 "ユーザが招待例外エントリにマッチすると、招待不要で参加できます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:31
 #, elixir-autogen, elixir-format
-msgid "When enabled (default), anyone you exchange private messages with is automatically added to the notify list. If the list is full (50 entries), the oldest entry is removed to make room. Toggle this in the Notify List dialog settings."
+msgid ""
+"When enabled (default), anyone you exchange private messages with is "
+"automatically added to the notify list. If the list is full (50 entries), "
+"the oldest entry is removed to make room. Toggle this in the Notify List "
+"dialog settings."
 msgstr ""
 "有効化(デフォルト)の場合、通知リストにプライベートメッセージを交換する人は自動的に追加されます。 "
 "リストがいっぱいの場合(50エントリ)、最も古いエントリは部屋を作るために削除されます。 Notify List ダイアログの設定でこれを切り替えます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:6
 #, elixir-autogen, elixir-format
-msgid "When enabled, all P2P traffic is routed through the TURN server (relay), preventing the other user from seeing your real IP address."
+msgid ""
+"When enabled, all P2P traffic is routed through the TURN server (relay), "
+"preventing the other user from seeing your real IP address."
 msgstr ""
 "有効にすると、すべてのP2Pトラフィックは、TURNサーバー(リレー)を介してルーティングされ、他のユーザーが実際のIPアドレスを見るのを防ぐことができます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_typing_indicator.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "When someone is typing a message in a PM conversation, a subtle indicator appears showing \""
+msgid ""
+"When someone is typing a message in a PM conversation, a subtle indicator "
+"appears showing \""
 msgstr "誰かが PM の会話でメッセージを入力しているとき、微妙なインジケータは \""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "When the connection drops unexpectedly, the client retries with exponential backoff:"
+msgid ""
+"When the connection drops unexpectedly, the client retries with exponential "
+"backoff:"
 msgstr "接続が予期しないと、クライアントは指数関数的なバックオフでリトリートします。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:2
@@ -3688,23 +3982,32 @@ msgstr "チャンネルからキックされると、詳細が表示されます
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy_feedback.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "When you copy text from the chat (via context menu or keyboard shortcut), a \"Copied!\" toast appears briefly at the bottom-right and fades after 2 seconds."
+msgid ""
+"When you copy text from the chat (via context menu or keyboard shortcut), a "
+"\"Copied!\" toast appears briefly at the bottom-right and fades after 2 "
+"seconds."
 msgstr ""
 "チャット(コンテキストメニューまたはキーボードショートカット)からテキストをコピーすると、2秒後に右下とフェードで簡単に「コピッド!」トーストが表示されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "When you disconnect, a quit message is shown to other users. You can customize this message."
+msgid ""
+"When you disconnect, a quit message is shown to other users. You can "
+"customize this message."
 msgstr "接続を解除すると、他のユーザにquitメッセージが表示されます。 このメッセージをカスタマイズできます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_paste_dialog.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "When you paste text containing multiple lines into the chat input, a confirmation dialog appears before sending."
+msgid ""
+"When you paste text containing multiple lines into the chat input, a "
+"confirmation dialog appears before sending."
 msgstr "複数の行を含むテキストをチャット入力に貼り付けると、送信前に確認ダイアログが表示されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy_feedback.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "When you save settings (OK or Apply in Options), a \"Settings saved\" toast confirms the save."
+msgid ""
+"When you save settings (OK or Apply in Options), a \"Settings saved\" toast "
+"confirms the save."
 msgstr "設定を保存(オプションでOKまたは適用)すると、保存した設定が保存されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:73
@@ -3714,28 +4017,38 @@ msgstr "auto-joinリストを手動で管理することもできます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "You can only delete your own messages. The 5-minute time limit is enforced server-side. Channel operators cannot delete other users' messages."
+msgid ""
+"You can only delete your own messages. The 5-minute time limit is enforced "
+"server-side. Channel operators cannot delete other users' messages."
 msgstr "自分のメッセージだけを削除できます。 サーバ側で5分の制限が強制されます。 チャネル演算子は、他のユーザーのメッセージを削除できません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:40
 #, elixir-autogen, elixir-format
-msgid "You can only edit your own messages. The 5-minute time limit is enforced server-side. Editing preserves any reply context (if the message was a reply)."
+msgid ""
+"You can only edit your own messages. The 5-minute time limit is enforced "
+"server-side. Editing preserves any reply context (if the message was a "
+"reply)."
 msgstr ""
 "自分のメッセージだけを編集できます。 サーバ側で5分の制限が強制されます。 編集は、任意の応答コンテキストを保存します(メッセージが応答していた場合)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:59
 #, elixir-autogen, elixir-format
-msgid "You must be registered and identified with NickServ for auto-join persistence."
+msgid ""
+"You must be registered and identified with NickServ for auto-join "
+"persistence."
 msgstr "NickServに登録して、自動ジョイントの永続性を確認する必要があります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:43
 #, elixir-autogen, elixir-format
-msgid "You must be registered and identified with NickServ to get PM persistence."
+msgid ""
+"You must be registered and identified with NickServ to get PM persistence."
 msgstr "NickServに登録してPM永続を取得する必要があります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "Your own nickname is always highlighted (case-insensitive, whole-word match)."
+msgid ""
+"Your own nickname is always highlighted (case-insensitive, whole-word "
+"match)."
 msgstr "自分のニックネームは、常に強調されます(大文字、全単語マッチ)。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:16
@@ -3765,7 +4078,9 @@ msgstr "[SND]"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:3
 #, elixir-autogen, elixir-format
-msgid "and someone sends you a private message, the system automatically replies with your away message."
+msgid ""
+"and someone sends you a private message, the system automatically replies "
+"with your away message."
 msgstr "そして、誰かがあなたにプライベートメッセージを送って、システムは自動的にあなたのメッセージに返信します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:4
@@ -3775,12 +4090,15 @@ msgstr "新規登録時に自動購入し、新規登録が可能です。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "are made. If all attempts fail, you are automatically redirected to the Connect screen with a"
+msgid ""
+"are made. If all attempts fail, you are automatically redirected to the "
+"Connect screen with a"
 msgstr "作ります。 すべての試みが失敗した場合は、Connect画面に自動的にリダイレクトされます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:29
 #, elixir-autogen, elixir-format
-msgid "at the start of input to cycle through matching nicknames IRC-style (with"
+msgid ""
+"at the start of input to cycle through matching nicknames IRC-style (with"
 msgstr "マッチングニックネーム IRC-style (with) で入力開始"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:24
@@ -3790,7 +4108,9 @@ msgstr "通知リストウィンドウのボタン。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:29
 #, elixir-autogen, elixir-format
-msgid "button is available to stop retrying. You can also refresh the page to start a fresh connection."
+msgid ""
+"button is available to stop retrying. You can also refresh the page to start"
+" a fresh connection."
 msgstr "再試行を停止するためにボタンが利用できます。 ページをリフレッシュして、新しい接続を開始することもできます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:24
@@ -3825,12 +4145,16 @@ msgstr "エラー|警告"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:39
 #, elixir-autogen, elixir-format
-msgid "followed by characters to search channels. Joined channels appear first, marked with a checkmark. Secret channels are hidden from non-members."
+msgid ""
+"followed by characters to search channels. Joined channels appear first, "
+"marked with a checkmark. Secret channels are hidden from non-members."
 msgstr "チャンネルを検索する文字が続きます。 チャンネル登録は、最初に表示されます。 秘密のチャンネルは非会員から隠されています。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:24
 #, elixir-autogen, elixir-format
-msgid "followed by characters to search nicknames in the current channel. Online users appear before away users. You can also press"
+msgid ""
+"followed by characters to search nicknames in the current channel. Online "
+"users appear before away users. You can also press"
 msgstr "続いて、現在のチャンネルでニックネームを検索する文字。 ユーザがユーザを離れる前にオンラインユーザが現れます。 プレスも可能です"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:22
@@ -3851,7 +4175,9 @@ msgstr "空の入力は、サーバー側の履歴として動作します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:27
 #, elixir-autogen, elixir-format
-msgid "in the search input to jump between matches. The chat scrolls to each match automatically."
+msgid ""
+"in the search input to jump between matches. The chat scrolls to each match "
+"automatically."
 msgstr "マッチ間でジャンプする検索入力 チャットは各マッチに自動的にスクロールします。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:5
@@ -3918,7 +4244,8 @@ msgstr "または開く"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:31
 #, elixir-autogen, elixir-format
-msgid "panel, and select your preferred format from the Timestamps dropdown. Click"
+msgid ""
+"panel, and select your preferred format from the Timestamps dropdown. Click"
 msgstr "パネル、Timestampsのドロップダウンからお好みのフォーマットを選択します。 クリック"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:10
@@ -3959,7 +4286,9 @@ msgstr "閉じる."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_flood_protection.html.heex:37
 #, elixir-autogen, elixir-format
-msgid "to customize all thresholds. Settings persist for registered (identified) users."
+msgid ""
+"to customize all thresholds. Settings persist for registered (identified) "
+"users."
 msgstr "すべてのしきい値をカスタマイズする。 登録済み(特定)ユーザのパーシストの設定。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:7
@@ -3974,12 +4303,16 @@ msgstr "イベントのサウンドを無効にします。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "to disconnect with a custom message, or configure a default quit message in the Options dialog."
+msgid ""
+"to disconnect with a custom message, or configure a default quit message in "
+"the Options dialog."
 msgstr "カスタムメッセージとの接続を解除したり、Options ダイアログでデフォルト quit メッセージを設定したりします。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:42
 #, elixir-autogen, elixir-format
-msgid "to dismiss the tooltip. The tooltip automatically hides when the autocomplete dropdown is open."
+msgid ""
+"to dismiss the tooltip. The tooltip automatically hides when the "
+"autocomplete dropdown is open."
 msgstr "ツールチップを解除します。 オートコンプリートのドロップダウンが開くと、ツールチップは自動的に非表示になります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:48
@@ -3999,17 +4332,23 @@ msgstr "メニュー項目をナビゲートするには、"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:31
 #, elixir-autogen, elixir-format
-msgid "to open an inline search bar. Type to filter history entries by substring match. Press"
+msgid ""
+"to open an inline search bar. Type to filter history entries by substring "
+"match. Press"
 msgstr "インライン検索バーを開く サブストリングマッチで履歴エントリをフィルタリングするタイプ。 ニュース"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:13
 #, elixir-autogen, elixir-format
-msgid "to open the Shortcut Cheatsheet at any time for a complete list of all available shortcuts."
+msgid ""
+"to open the Shortcut Cheatsheet at any time for a complete list of all "
+"available shortcuts."
 msgstr "すべての利用可能なショートカットの完全なリストのために、いつでもショートカットシートを開く。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "to open the command palette. Commands are grouped by category (Basics, Channel, User, Settings, Advanced) with fuzzy search — typing"
+msgid ""
+"to open the command palette. Commands are grouped by category (Basics, "
+"Channel, User, Settings, Advanced) with fuzzy search — typing"
 msgstr "コマンドパレットを開きます。 コマンドは、fuzzy検索でカテゴリ(基本、チャンネル、ユーザー、設定、上級)によってグループ化されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:62
@@ -4359,7 +4698,9 @@ msgstr "●切断:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:25
 #, elixir-autogen, elixir-format
-msgid "# Inspect server state /admin server info /admin channel list /admin cs info #general /setmotd Welcome to RetroHexChat!"
+msgid ""
+"# Inspect server state /admin server info /admin channel list /admin cs info"
+" #general /setmotd Welcome to RetroHexChat!"
 msgstr ""
 "# サーバーの状態を点検して下さい /admin サーバー情報 /admin チャネルのリスト /admin cs 情報 #general "
 "/setmotd RetroHexChatへようこそ!"
@@ -4465,7 +4806,9 @@ msgstr "お知らせ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:26
 #, elixir-autogen, elixir-format
-msgid "Announcements go to every connected user and bypass ignore filters. Only server administrators can send them."
+msgid ""
+"Announcements go to every connected user and bypass ignore filters. Only "
+"server administrators can send them."
 msgstr "接続されたすべてのユーザに通知し、無視フィルタをバイパスします。 サーバ管理者のみが送信できます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:69
@@ -4507,7 +4850,9 @@ msgstr "デスクトップとWindows"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Each chat message is laid out in two columns: a compact metadata column and the message text."
+msgid ""
+"Each chat message is laid out in two columns: a compact metadata column and "
+"the message text."
 msgstr "各チャットメッセージは、コンパクトなメタデータ列とメッセージテキストの2つの列に配置されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:13
@@ -4522,7 +4867,9 @@ msgstr "編集メニュー"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:27
 #, elixir-autogen, elixir-format
-msgid "From the UI, right-click a nickname in the nicklist or chat and choose Send Notice. The main input becomes a notice composer for that target."
+msgid ""
+"From the UI, right-click a nickname in the nicklist or chat and choose Send "
+"Notice. The main input becomes a notice composer for that target."
 msgstr ""
 "UI から、ニックネームリストやチャットでニックネームを右クリックし、通知を送信するを選択します。 主な入力は、そのターゲットの通知作曲家になります。"
 
@@ -4533,14 +4880,18 @@ msgstr "アイデンティティとプレゼンス"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Identity and presence cover how you appear to other users: your nickname, NickServ login state, profile bio, away status, and personal user modes."
+msgid ""
+"Identity and presence cover how you appear to other users: your nickname, "
+"NickServ login state, profile bio, away status, and personal user modes."
 msgstr ""
 "あなたのニックネーム、NickServのログイン状態、プロフィールのバイオ、離れた状態および個人的なユーザー "
 "モードに表示される方法のアイデンティティおよび存在カバー。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "In Admin Console > Broadcast, choose Wallops or Announce, enter a message, and send it through the same command handlers as /wallops and /announce."
+msgid ""
+"In Admin Console > Broadcast, choose Wallops or Announce, enter a message, "
+"and send it through the same command handlers as /wallops and /announce."
 msgstr ""
 "管理者コンソール>ブロードキャストで、Wallopsを選択するか、メッセージを入力して、同じコマンドハンドラを/wallopsと/announceとして送信します。"
 
@@ -4551,7 +4902,10 @@ msgstr "最終参照"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "Last Seen runs the Whowas lookup for recently disconnected users and shows when they left, which channels they were in, and their quit message when one was recorded."
+msgid ""
+"Last Seen runs the Whowas lookup for recently disconnected users and shows "
+"when they left, which channels they were in, and their quit message when one"
+" was recorded."
 msgstr ""
 "最後に、Whowasが最近接続されていないユーザーを探し、左に表示し、どのチャンネルが入ったか、記録されたときにそのquitメッセージを実行します。"
 
@@ -4577,7 +4931,10 @@ msgstr "ニックネーム 所有権"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:25
 #, elixir-autogen, elixir-format
-msgid "Nickname context menus include Whois and Last Seen (Whowas). Whois cards include buttons for Whowas and Query (PM). Last Seen cards include a Whois button when the user is currently online."
+msgid ""
+"Nickname context menus include Whois and Last Seen (Whowas). Whois cards "
+"include buttons for Whowas and Query (PM). Last Seen cards include a Whois "
+"button when the user is currently online."
 msgstr ""
 "WhoisとLast Seen(Whowas)を含むニックネームのコンテキストメニュー。 "
 "Whoisカードには、WhowasとQuery(PM)用のボタンがあります。 Last Seen カードには、現在オンライン中のユーザーがいるときに "
@@ -4600,7 +4957,12 @@ msgstr "タイマーダイアログを開く"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:20
 #, elixir-autogen, elixir-format
-msgid "Operator and voice entries toggle based on the target's current role: Give Op (+o) becomes Remove Op (-o), and Give Voice (+v) becomes Remove Voice (-v). Mute (channel) opens a duration prompt; leave it blank for a permanent mute, or enter 30s, 5m, 1h, or 1d. Unmute (channel) removes the channel-level mute immediately."
+msgid ""
+"Operator and voice entries toggle based on the target's current role: Give "
+"Op (+o) becomes Remove Op (-o), and Give Voice (+v) becomes Remove Voice "
+"(-v). Mute (channel) opens a duration prompt; leave it blank for a permanent"
+" mute, or enter 30s, 5m, 1h, or 1d. Unmute (channel) removes the channel-"
+"level mute immediately."
 msgstr ""
 "ターゲットの現在のロールに基づいて、オペレータとボイスエントリーをトグル:Op(+o)がOp(-o)を削除し、Voice(+v)がVoice(-v)を削除します。"
 " ミュート(チャンネル)は、期間プロンプトを開きます。 永久的なミュートのために空白にしておくか、30秒、5m、1h、1dを入力します。 unmute "
@@ -4618,7 +4980,9 @@ msgstr "プロフィール バイオ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:25
 #, elixir-autogen, elixir-format
-msgid "Register the channel with ChanServ, drop registration as founder, and manage SOP, AOP, and VOP lists."
+msgid ""
+"Register the channel with ChanServ, drop registration as founder, and manage"
+" SOP, AOP, and VOP lists."
 msgstr "チャンネル登録、登録解除、SOP、AOP、VOPリストの管理"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:23
@@ -4628,7 +4992,11 @@ msgstr "登録:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "Right-click a channel in the conversations sidebar to see: Mark as Read, Mute/Unmute Channel, Copy Name, Leave Channel, Channel Settings. This mute controls notifications for the conversation; it is different from the channel-level user mute in nickname menus."
+msgid ""
+"Right-click a channel in the conversations sidebar to see: Mark as Read, "
+"Mute/Unmute Channel, Copy Name, Leave Channel, Channel Settings. This mute "
+"controls notifications for the conversation; it is different from the "
+"channel-level user mute in nickname menus."
 msgstr ""
 "会話サイドバーのチャンネルを右クリックして、参照してください: マーク として 読み込み、ミュート/Unmute チャンネル, コピー名, "
 "チャンネルを残す, チャンネル設定. "
@@ -4636,7 +5004,13 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "Right-click a nickname in a chat message to see: Private Message, Whois, Last Seen (Whowas), Copy Nick, Ignore/Unignore, Add to Address Book, Set Nick Color. Registered users also see P2P actions: P2P Session, Audio Call, Video Call, Send File (disabled if target is not registered or is yourself). Channel operators also see: Invite to Channel..., Kick, Ban, status-aware Give/Remove Voice, status-aware Give/Remove Op, and Mute/Unmute (channel)."
+msgid ""
+"Right-click a nickname in a chat message to see: Private Message, Whois, "
+"Last Seen (Whowas), Copy Nick, Ignore/Unignore, Add to Address Book, Set "
+"Nick Color. Registered users also see P2P actions: P2P Session, Audio Call, "
+"Video Call, Send File (disabled if target is not registered or is yourself)."
+" Channel operators also see: Invite to Channel..., Kick, Ban, status-aware "
+"Give/Remove Voice, status-aware Give/Remove Op, and Mute/Unmute (channel)."
 msgstr ""
 "チャットメッセージのニックネームを右クリックして、プライベートメッセージ、Whois、Last Seen(Whowas)、Copy "
 "Nick、Ignore/Unignore、アドレス帳に追加、Nick Colorを設定します。 登録されたユーザーは、P2P "
@@ -4656,13 +5030,18 @@ msgstr "入札アイコン"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Server Broadcasts covers operator wallops and administrator announcements sent from the Admin Console Broadcast tab or slash commands."
+msgid ""
+"Server Broadcasts covers operator wallops and administrator announcements "
+"sent from the Admin Console Broadcast tab or slash commands."
 msgstr ""
 "サーバーブロードキャストは、管理者コンソールブロードキャストタブまたはスラッシュコマンドから送信されたオペレータのwallopと管理者の通知をカバーします。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "The Account dialog profile tab can start a nickname change. Registered target nicknames still require the NickServ password in the confirmation flow."
+msgid ""
+"The Account dialog profile tab can start a nickname change. Registered "
+"target nicknames still require the NickServ password in the confirmation "
+"flow."
 msgstr ""
 "アカウント ダイアログ プロファイル タブは、ニックネームの変更を開始できます。 "
 "登録されたターゲットニックネームは、確認フローにNickServパスワードが必要です。"
@@ -4674,14 +5053,22 @@ msgstr "メタデータ列"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:31
 #, elixir-autogen, elixir-format
-msgid "The URL Catcher is a desktop window — drag, resize, minimize to its taskbar button, or press Escape to close it. URLs keep being captured while it is closed. Also available from the Start menu."
+msgid ""
+"The URL Catcher is a desktop window — drag, resize, minimize to its taskbar "
+"button, or press Escape to close it. URLs keep being captured while it is "
+"closed. Also available from the Start menu."
 msgstr ""
 "URL Catcherはデスクトップウィンドウで、タスクバーボタンにドラッグ、サイズ変更、最小化、またはEscapeを押して閉じます。 "
 "閉じたままURLをキャプチャします。 スタートメニューからもご利用いただけます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The channel invite system allows operators of invite-only (+i) channels to invite specific users to join. Operators can type /invite or right-click a nick in the nicklist and choose Invite to Channel... to select one of their joined channels. Invited users receive a retro-style dialog with Join and Ignore options."
+msgid ""
+"The channel invite system allows operators of invite-only (+i) channels to "
+"invite specific users to join. Operators can type /invite or right-click a "
+"nick in the nicklist and choose Invite to Channel... to select one of their "
+"joined channels. Invited users receive a retro-style dialog with Join and "
+"Ignore options."
 msgstr ""
 "チャネルの招待システムは、招待状(+i)チャネルのオペレータが特定のユーザーを参加できるようにします。 演算子は、/invite "
 "を入力するか、ニックネームリストのニックネームを右クリックして、チャンネルに招待状を選択することができます。 "
@@ -4689,12 +5076,19 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:42
 #, elixir-autogen, elixir-format
-msgid "The current user mode is wallops (+w), which controls whether operator broadcast messages are delivered to your Status tab."
+msgid ""
+"The current user mode is wallops (+w), which controls whether operator "
+"broadcast messages are delivered to your Status tab."
 msgstr "現在のユーザモードはwallops(+w)で、オペレータの放送メッセージがステータスタブに配信されるかどうかを制御します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:25
 #, elixir-autogen, elixir-format
-msgid "The message text gets the wider column and a slightly larger font, so it reads well on phones as well as desktop — without dropping the retro monospace identity. Nicknames are shown plainly, with no surrounding angle brackets, and the timestamp carries the full date and time in its hover tooltip."
+msgid ""
+"The message text gets the wider column and a slightly larger font, so it "
+"reads well on phones as well as desktop — without dropping the retro "
+"monospace identity. Nicknames are shown plainly, with no surrounding angle "
+"brackets, and the timestamp carries the full date and time in its hover "
+"tooltip."
 msgstr ""
 "メッセージテキストは、より広い列と少し大きいフォントを取得するので、それは電話だけでなく、デスクトップでよく読みます - "
 "レトロなモノスペースのアイデンティティをドロップすることなく。 "
@@ -4702,14 +5096,20 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "The narrow left column shows the author's nickname — or, for system lines, an origin label such as System, Error, Service or MOTD — on the first line, with a smaller, muted timestamp beneath it. The nickname stays clickable for the hover card, private messages and the context menu."
+msgid ""
+"The narrow left column shows the author's nickname — or, for system lines, "
+"an origin label such as System, Error, Service or MOTD — on the first line, "
+"with a smaller, muted timestamp beneath it. The nickname stays clickable for"
+" the hover card, private messages and the context menu."
 msgstr ""
 "左の狭い列は、システムライン、システム、エラー、サービス、またはMOTDなどの原点ラベルを、最初の行で、より小さく、ミュートされたタイムスタンプが下にあります。"
 " ニックネームは、ホバーカード、プライベートメッセージ、コンテクストメニューにクリック可能にとどまります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:34
 #, elixir-autogen, elixir-format
-msgid "There is no dedicated keyboard shortcut for User Lookup. Use the Tools menu, a nickname context menu, /whois, or /whowas."
+msgid ""
+"There is no dedicated keyboard shortcut for User Lookup. Use the Tools menu,"
+" a nickname context menu, /whois, or /whowas."
 msgstr ""
 "ユーザールックアップ専用のキーボードショートカットはありません。 "
 "ツールメニュー、ニックネームのコンテキストメニュー、/whois、または/whowasを使用してください。"
@@ -4726,7 +5126,13 @@ msgstr "ツール > タイマー"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "Use NickServ to register your current nickname and identify when you reconnect. Registration protects the name and lets identified users keep saved preferences. If you no longer want the nickname registered, the Account dialog can drop the registration after you confirm with its password. If an old session is still holding a registered nickname, use the advanced Ghost session action."
+msgid ""
+"Use NickServ to register your current nickname and identify when you "
+"reconnect. Registration protects the name and lets identified users keep "
+"saved preferences. If you no longer want the nickname registered, the "
+"Account dialog can drop the registration after you confirm with its "
+"password. If an old session is still holding a registered nickname, use the "
+"advanced Ghost session action."
 msgstr ""
 "現在のニックネームを登録し、再接続時に識別するために、NickServを使用します。 "
 "登録は名前を保護し、識別されたユーザーは保存された好みを維持させます。 "
@@ -4740,21 +5146,28 @@ msgstr "ユーザー検索"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "User Lookup collects Whois and Last Seen lookups in one place. Open it from Tools > User Lookup, or right-click a nickname in the nick list or chat area."
+msgid ""
+"User Lookup collects Whois and Last Seen lookups in one place. Open it from "
+"Tools > User Lookup, or right-click a nickname in the nick list or chat "
+"area."
 msgstr ""
 "ユーザーのルックアップは、WhoisとLast Seenのルックアップを1か所で収集します。 [ツール] > [ユーザー検索] "
 "から開くか、ニックネームリストまたはチャットエリアのニックネームを右クリックします。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "Wallops messages go only to users who enabled +w with /umode +w. Server operators and administrators can send them."
+msgid ""
+"Wallops messages go only to users who enabled +w with /umode +w. Server "
+"operators and administrators can send them."
 msgstr ""
 "Wallops メッセージは、/umode +w で +w を有効にしたユーザーのみに行きます。 サーバー "
 "オペレータと管理者はそれらを送信することができます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:15
 #, elixir-autogen, elixir-format
-msgid "When one or more tracked buddies are online, a bell badge appears in the status bar; click it to open the same window."
+msgid ""
+"When one or more tracked buddies are online, a bell badge appears in the "
+"status bar; click it to open the same window."
 msgstr "1つ以上の追跡されたバディーがオンラインの場合、ベルバッジがステータスバーに表示されます。同じウィンドウを開くにはクリックします。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:7
@@ -4764,7 +5177,10 @@ msgstr "Whois"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "Whois shows current information for an online user in a result card, including shared channels, online time, idle time, registration, away status, bio, and client details when available."
+msgid ""
+"Whois shows current information for an online user in a result card, "
+"including shared channels, online time, idle time, registration, away "
+"status, bio, and client details when available."
 msgstr ""
 "Whoisは、共有チャンネル、オンライン時間、アイドル時間、登録、ステータス、バイオ、クライアントの詳細など、オンラインユーザーのための現在の情報を表示します。"
 
@@ -4775,7 +5191,10 @@ msgstr "なぜそれが見えるのか この方法"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:26
 #, elixir-autogen, elixir-format
-msgid "Your bio is a short profile line shown in whois output. Registered users keep it across sessions; guests keep it for the current session. The Account dialog shows the 200-character limit while you type."
+msgid ""
+"Your bio is a short profile line shown in whois output. Registered users "
+"keep it across sessions; guests keep it for the current session. The Account"
+" dialog shows the 200-character limit while you type."
 msgstr ""
 "あなたのバイオは whois の出力に示す短いプロフィール ラインです。 "
 "登録したユーザーは、セッション全体に保持し、ゲストは現在のセッションのために保持します。 [アカウント] ダイアログは、入力中に 200 "
@@ -4793,20 +5212,28 @@ msgstr "またはチャネルへの招待...ニックネームリストメニュ
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:17
 #, elixir-autogen, elixir-format
-msgid "or the Start menu) to add custom trigger words with optional background colors. It is a desktop window — drag, resize, minimize to its taskbar button, or press Escape to close it; the Add/Edit forms open as small modals centered over the window."
+msgid ""
+"or the Start menu) to add custom trigger words with optional background "
+"colors. It is a desktop window — drag, resize, minimize to its taskbar "
+"button, or press Escape to close it; the Add/Edit forms open as small modals"
+" centered over the window."
 msgstr ""
 "または [スタート] メニューは、オプションの背景色でカスタムトリガー単語を追加します。 デスクトップウィンドウ — タスクバー "
 "ボタンにドラッグ、サイズ変更、最小化、または Escape を押して閉じます。 Add/Edit は、ウィンドウを中心とする小さなモジュとして開きます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:37
 #, elixir-autogen, elixir-format
-msgid "to display the current routing policy. User notices are routed to the active window, and channel notices appear in the channel window."
+msgid ""
+"to display the current routing policy. User notices are routed to the active"
+" window, and channel notices appear in the channel window."
 msgstr ""
 "現在のルーティングポリシーを表示する。 ユーザーの通知はアクティブなウィンドウにルーティングされ、チャンネル通知はチャンネルウィンドウに表示されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:34
 #, elixir-autogen, elixir-format
-msgid "with no arguments. The dialog lists active timers and provides Add, Edit, and Stop buttons without requiring raw command syntax."
+msgid ""
+"with no arguments. The dialog lists active timers and provides Add, Edit, "
+"and Stop buttons without requiring raw command syntax."
 msgstr "引数なし。 ダイアログはアクティブなタイマーをリストし、未加工コマンドの構文を要求しないでボタンを追加、編集、および停止を提供します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:15
@@ -4816,7 +5243,12 @@ msgstr "またはアクティブな P2P セッションでは、"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "A small pixel-art icon sits in front of each name to signal where the line came from at a glance: a user glyph for anything a person typed, and distinct glyphs for System, Service, Error, Server, Help and deleted lines. The nickname itself is shown a little larger and bolder, while the timestamp is smaller, so your eye lands on who spoke first."
+msgid ""
+"A small pixel-art icon sits in front of each name to signal where the line "
+"came from at a glance: a user glyph for anything a person typed, and "
+"distinct glyphs for System, Service, Error, Server, Help and deleted lines. "
+"The nickname itself is shown a little larger and bolder, while the timestamp"
+" is smaller, so your eye lands on who spoke first."
 msgstr ""
 "小さなピクセルアートのアイコンは、各名前の正面に座って、ラインが一目で現れた信号に座っています。ユーザーが入力した人、システム、サービス、エラー、サーバー、ヘルプ、削除された行の異なるグリフ。"
 " ニックネーム自体は少し大きく、大胆に見えますが、タイムスタンプは小さくなりますので、最初に話したあなたの目の土地。"
@@ -4833,7 +5265,10 @@ msgstr "プライバシーのリレー"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:17
 #, elixir-autogen, elixir-format
-msgid "Shortcuts are grouped into categories such as Navigation, Conference, Formatting and System. Each category shows a table with Action and Binding columns."
+msgid ""
+"Shortcuts are grouped into categories such as Navigation, Conference, "
+"Formatting and System. Each category shows a table with Action and Binding "
+"columns."
 msgstr ""
 "ナビゲーション、会議、フォーマット、システムなどのカテゴリにショートカットをグループ化します。 "
 "各カテゴリはアクションとビンディングの列を持つテーブルを示しています。"
@@ -4845,7 +5280,10 @@ msgstr "プライバシーモードを切り替える"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:17
 #, elixir-autogen, elixir-format
-msgid "item in the P2P menu. The preference is saved and remembered for future sessions. When enabled, the status bar and Stats section show relay/privacy indicators."
+msgid ""
+"item in the P2P menu. The preference is saved and remembered for future "
+"sessions. When enabled, the status bar and Stats section show relay/privacy "
+"indicators."
 msgstr ""
 "P2Pメニューの項目。 今後のセッションでは、好みが保存され、記憶されます。 "
 "有効にすると、ステータスバーと統計ウィンドウは、リレー/privacyインジケータを表示します。"
@@ -4887,7 +5325,10 @@ msgstr "管理者の監査ログ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Admin Audit Log is one of the server administration windows. Open it from File > Admin; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgid ""
+"Admin Audit Log is one of the server administration windows. Open it from "
+"File > Admin; it opens as a desktop window you can drag, resize, minimize to"
+" the taskbar, and close with its title-bar X."
 msgstr ""
 "管理者監査ログは、サーバー管理ウィンドウの1つです。 ファイル > 管理者から開きます。 "
 "ドラッグ、サイズ変更、タスクバーへの最小化、タイトルバーXで閉じるデスクトップウィンドウとして開きます。"
@@ -4899,7 +5340,10 @@ msgstr "管理者放送"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Admin Broadcast is one of the server administration windows. Open it from File > Admin; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgid ""
+"Admin Broadcast is one of the server administration windows. Open it from "
+"File > Admin; it opens as a desktop window you can drag, resize, minimize to"
+" the taskbar, and close with its title-bar X."
 msgstr ""
 "管理者放送は、サーバー管理ウィンドウの1つです。 ファイル > 管理者から開きます。 "
 "ドラッグ、サイズ変更、タスクバーへの最小化、タイトルバーXで閉じるデスクトップウィンドウとして開きます。"
@@ -4911,7 +5355,10 @@ msgstr "管理者チャネル"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Admin Channels is the server-wide channel administration window. Open it from File > Admin > Channels; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgid ""
+"Admin Channels is the server-wide channel administration window. Open it "
+"from File > Admin > Channels; it opens as a desktop window you can drag, "
+"resize, minimize to the taskbar, and close with its title-bar X."
 msgstr ""
 "管理者チャネルは、サーバー全体のチャネル管理ウィンドウです。 ファイルから開く > 管理者 > チャンネル; "
 "ドラッグ、サイズ変更、タスクバーへの最小化、タイトルバーXで閉じることができるデスクトップウィンドウとして開きます。"
@@ -4923,7 +5370,10 @@ msgstr "アドミン危険ゾーン"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Admin Danger Zone is one of the server administration windows. Open it from File > Admin; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgid ""
+"Admin Danger Zone is one of the server administration windows. Open it from "
+"File > Admin; it opens as a desktop window you can drag, resize, minimize to"
+" the taskbar, and close with its title-bar X."
 msgstr ""
 "Admin Danger Zoneはサーバー管理ウィンドウの1つです。 ファイル > 管理者から開きます。 "
 "ドラッグ、サイズ変更、タスクバーへの最小化、タイトルバーXで閉じるデスクトップウィンドウとして開きます。"
@@ -4935,7 +5385,10 @@ msgstr "管理者 MOTD"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Admin MOTD is one of the server administration windows. Open it from File > Admin; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgid ""
+"Admin MOTD is one of the server administration windows. Open it from File > "
+"Admin; it opens as a desktop window you can drag, resize, minimize to the "
+"taskbar, and close with its title-bar X."
 msgstr ""
 "管理者 MOTD は、サーバー管理ウィンドウの 1 つです。 ファイル > 管理者から開きます。 "
 "ドラッグ、サイズ変更、タスクバーへの最小化、タイトルバーXで閉じるデスクトップウィンドウとして開きます。"
@@ -4947,7 +5400,10 @@ msgstr "管理者サーバー設定"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Admin Server Settings is one of the server administration windows. Open it from File > Admin; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgid ""
+"Admin Server Settings is one of the server administration windows. Open it "
+"from File > Admin; it opens as a desktop window you can drag, resize, "
+"minimize to the taskbar, and close with its title-bar X."
 msgstr ""
 "管理者サーバー設定は、サーバー管理ウィンドウの1つです。 ファイル > 管理者から開きます。 "
 "ドラッグ、サイズ変更、タスクバーへの最小化、タイトルバーXで閉じるデスクトップウィンドウとして開きます。"
@@ -4959,7 +5415,10 @@ msgstr "管理者 TURN"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Admin TURN is one of the server administration windows. Open it from File > Admin; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgid ""
+"Admin TURN is one of the server administration windows. Open it from File > "
+"Admin; it opens as a desktop window you can drag, resize, minimize to the "
+"taskbar, and close with its title-bar X."
 msgstr ""
 "Admin TURN はサーバー管理ウィンドウの 1 つです。 ファイル > 管理者から開きます。 "
 "ドラッグ、サイズ変更、タスクバーへの最小化、タイトルバーXで閉じるデスクトップウィンドウとして開きます。"
@@ -4972,7 +5431,12 @@ msgstr "管理者ユーザー"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Admin Users is the server-wide user administration window. Open it from File > Admin > Users; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X. It gathers everything you can do about a person: moderating them, changing their account, and administering their NickServ registration."
+msgid ""
+"Admin Users is the server-wide user administration window. Open it from File"
+" > Admin > Users; it opens as a desktop window you can drag, resize, "
+"minimize to the taskbar, and close with its title-bar X. It gathers "
+"everything you can do about a person: moderating them, changing their "
+"account, and administering their NickServ registration."
 msgstr ""
 "管理者ユーザーは、サーバー全体のユーザー管理画面です。 ファイル > 管理者 > ユーザから開きます。 "
 "ドラッグ、サイズ変更、タスクバーへの最小化、タイトルバーXで閉じるデスクトップウィンドウとして開きます。 "
@@ -4980,7 +5444,11 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:22
 #, elixir-autogen, elixir-format
-msgid "Ban, Unban, Kick, Mute and Unmute each take their own nick, so acting on several people in a row never applies an action to a stale selection. Ban accepts an optional reason and duration; Kick accepts a reason; Mute accepts a duration. Leaving a duration blank makes the action permanent."
+msgid ""
+"Ban, Unban, Kick, Mute and Unmute each take their own nick, so acting on "
+"several people in a row never applies an action to a stale selection. Ban "
+"accepts an optional reason and duration; Kick accepts a reason; Mute accepts"
+" a duration. Leaving a duration blank makes the action permanent."
 msgstr ""
 "バン、アンバン、キック、ミュート、アンミュートそれぞれが自分のニックネームを取るので、列で複数の人に対して行動することは決して屋台選択に行動しません。 "
 "禁止はオプションの理由と期間を受け入れます。キックは理由を受け入れます。ミュートは期間を受け入れます。 時間の空白を残すと、アクションを永久にします。"
@@ -4992,7 +5460,11 @@ msgstr "チャンサーブ管理者"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:36
 #, elixir-autogen, elixir-format
-msgid "ChanServ info reads a registration and Access list reads its SOP/AOP/VOP entries. Add access and Remove access take a nick and a level. Transfer founder hands the channel to another nick. Drop registration deletes the registration and is not reversible."
+msgid ""
+"ChanServ info reads a registration and Access list reads its SOP/AOP/VOP "
+"entries. Add access and Remove access take a nick and a level. Transfer "
+"founder hands the channel to another nick. Drop registration deletes the "
+"registration and is not reversible."
 msgstr ""
 "ChanServ情報は、登録とアクセスリストを読み、そのSOP/AOP/VOPエントリを読みます。 アクセスを追加し、アクセスを削除 "
 "ニックネームとレベルを取る. 創設者を別のニックネームにチャネルを移して下さい。 ドロップ登録は登録を削除し、リバーシブルではありません。"
@@ -5004,7 +5476,9 @@ msgstr "チャネルの許可"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "Clear MOTD removes it entirely — users connecting afterwards see no message of the day until one is set again."
+msgid ""
+"Clear MOTD removes it entirely — users connecting afterwards see no message "
+"of the day until one is set again."
 msgstr "クリア MOTD は完全に削除されます。後続の接続は、1 つが再び設定されるまでの日のメッセージが表示されません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:14
@@ -5019,7 +5493,11 @@ msgstr "作成する"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:29
 #, elixir-autogen, elixir-format
-msgid "Delete removes the channel entirely; Purge deletes its messages and optionally only those from one nick. Both require the channel name typed a second time into the confirm field, and so does Drop registration. The server checks that too — it is not a client-side formality."
+msgid ""
+"Delete removes the channel entirely; Purge deletes its messages and "
+"optionally only those from one nick. Both require the channel name typed a "
+"second time into the confirm field, and so does Drop registration. The "
+"server checks that too — it is not a client-side formality."
 msgstr ""
 "削除は、チャンネルを完全に削除します。 パージは、そのメッセージを削除し、必要に応じて1つのニックネームからのみ削除します。 "
 "どちらのチャンネル名が確認フィールドに2度入力され、ドロップ登録を行います。 サーバはそれもチェックします。クライアント側の形式ではありません。"
@@ -5036,19 +5514,27 @@ msgstr "各行はスラッシュコマンドです。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:15
 #, elixir-autogen, elixir-format
-msgid "Enter a nick in the Nick field and choose Info to run /admin user info for a single account."
+msgid ""
+"Enter a nick in the Nick field and choose Info to run /admin user info for a"
+" single account."
 msgstr "Nick フィールドにニックネームを入力し、単一のアカウントで /admin ユーザー情報を実行する情報を選択します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:15
 #, elixir-autogen, elixir-format
-msgid "Entering a channel in the Channel field and choosing Info runs /admin channel info and also loads that channel's ban list at the bottom of the window. The ban list follows whatever channel you last inspected."
+msgid ""
+"Entering a channel in the Channel field and choosing Info runs /admin "
+"channel info and also loads that channel's ban list at the bottom of the "
+"window. The ban list follows whatever channel you last inspected."
 msgstr ""
 "チャンネルフィールドにチャンネルを入力し、情報を選択すると、/adminチャンネル情報を実行し、チャネルの禁止リストをウィンドウの下部にロードします。 "
 "バンリストは、最終検査のどのチャネルにも続きます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:19
 #, elixir-autogen, elixir-format
-msgid "Everything the other admin windows do with forms can be done here as a script. That makes it the tool for provisioning a server in one pass, or for anything the focused windows do not expose."
+msgid ""
+"Everything the other admin windows do with forms can be done here as a "
+"script. That makes it the tool for provisioning a server in one pass, or for"
+" anything the focused windows do not expose."
 msgstr ""
 "他の管理者ウィンドウがフォームで実行できるのはスクリプトです。 "
 "つまり、サーバーを1つのパスにプロビジョニングするためのツールや、フォーカスしたウィンドウが露出しないものを作る。"
@@ -5080,7 +5566,9 @@ msgstr "モデレーション"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:22
 #, elixir-autogen, elixir-format
-msgid "New channel plus Create runs /admin channel create, which both creates and registers the channel."
+msgid ""
+"New channel plus Create runs /admin channel create, which both creates and "
+"registers the channel."
 msgstr "新しいチャンネルプラス Create を実行します。 /admin チャネルが作成され、チャネルを登録します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:34
@@ -5090,14 +5578,21 @@ msgstr "NickServ管理者"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:36
 #, elixir-autogen, elixir-format
-msgid "NickServ info reads a registration, Reset password sets a new one without knowing the old, and Drop registration deletes it. Dropping is not reversible."
+msgid ""
+"NickServ info reads a registration, Reset password sets a new one without "
+"knowing the old, and Drop registration deletes it. Dropping is not "
+"reversible."
 msgstr ""
 "NickServ info は登録を読み込み、パスワードを再設定すると、古いことを知らずに新しいパスワードを設定し、登録をドロップすると削除されます。 "
 "ドロップはリバーシブルではありません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:28
 #, elixir-autogen, elixir-format
-msgid "Only server administrators and server operators can open it. The console runs under a privileged context that forces admin rights and lifts the per-user channel limit, so that gate is the only thing between a caller and privileged execution."
+msgid ""
+"Only server administrators and server operators can open it. The console "
+"runs under a privileged context that forces admin rights and lifts the per-"
+"user channel limit, so that gate is the only thing between a caller and "
+"privileged execution."
 msgstr ""
 "サーバ管理者とサーバー管理者のみが開くことができます。 "
 "コンソールは、管理者の権利を強制し、ユーザーチャネルの制限を解除する特権的なコンテキストの下で実行されます。これにより、ゲートは、発信者と特権実行の間の唯一のものです。"
@@ -5105,25 +5600,35 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:43
 #, elixir-autogen, elixir-format
-msgid "Only server administrators and server operators can open this window. Server operators see it read-only: the controls are disabled, and the server refuses the action even if the control is bypassed."
+msgid ""
+"Only server administrators and server operators can open this window. Server"
+" operators see it read-only: the controls are disabled, and the server "
+"refuses the action even if the control is bypassed."
 msgstr ""
 "サーバ管理者とサーバー管理者のみがこのウィンドウを開くことができます。 サーバ演算子は読み取り専用である: "
 "制御は無効であり、制御がバイパスされている場合でも、サーバーはアクションを拒否します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:23
 #, elixir-autogen, elixir-format
-msgid "Only server administrators may edit. Server operators can open the window and read the panes, but every control is disabled and the server refuses the change regardless."
+msgid ""
+"Only server administrators may edit. Server operators can open the window "
+"and read the panes, but every control is disabled and the server refuses the"
+" change regardless."
 msgstr ""
 "サーバ管理者のみ編集できます。 サーバ演算子はウィンドウを開き、ペインを読み取ることができますが、すべての制御は無効であり、サーバーは変更を拒否します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:23
 #, elixir-autogen, elixir-format
-msgid "Only server administrators may edit. Server operators can read the current message but the editor and both write buttons are disabled."
+msgid ""
+"Only server administrators may edit. Server operators can read the current "
+"message but the editor and both write buttons are disabled."
 msgstr "サーバ管理者のみ編集できます。 サーバー演算子は現在のメッセージを読むことができますが、エディタと書き込みボタンの両方が無効です。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "Only server administrators may refresh. The window is read-only for everyone: there is nothing here to change."
+msgid ""
+"Only server administrators may refresh. The window is read-only for "
+"everyone: there is nothing here to change."
 msgstr "サーバ管理者のみが更新される場合があります。 窓はみんな読まれています:ここで変更するのは何もありません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:14
@@ -5138,14 +5643,20 @@ msgstr "ログを読む"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:29
 #, elixir-autogen, elixir-format
-msgid "Rename changes a registered nickname. Set role assigns server_operator or removes admin roles by setting user. Only a root administrator can grant the admin role — the option is disabled for everyone else."
+msgid ""
+"Rename changes a registered nickname. Set role assigns server_operator or "
+"removes admin roles by setting user. Only a root administrator can grant the"
+" admin role — the option is disabled for everyone else."
 msgstr ""
 "登録されたニックネームを変更します。 ユーザを設定することで、server operator を割り当てたり、管理者権限を削除したりします。 "
 "ルート管理者だけが管理者の役割を付与することができます。このオプションは、他のすべての人に無効です。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "Server operators may send wallops. Announce is administrators only, and the radio is disabled for anyone else. If neither is available the Send button is disabled entirely."
+msgid ""
+"Server operators may send wallops. Announce is administrators only, and the "
+"radio is disabled for anyone else. If neither is available the Send button "
+"is disabled entirely."
 msgstr ""
 "サーバ演算子はwallopsを送ることができます。 管理者のみが発表され、ラジオは誰にも無効になっています。 送信ボタンが完全に無効にされている場合。"
 
@@ -5161,14 +5672,21 @@ msgstr "スナップショット、フィードではなく"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The Admin Console is a batch command runner. Open it from File > Admin > Console; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgid ""
+"The Admin Console is a batch command runner. Open it from File > Admin > "
+"Console; it opens as a desktop window you can drag, resize, minimize to the "
+"taskbar, and close with its title-bar X."
 msgstr ""
 "管理者コンソールは、バッチコマンドランナーです。 ファイルから開く > 管理者 > コンソール; "
 "ドラッグ、サイズ変更、タスクバーへの最小化、およびタイトルバーXで閉じるデスクトップウィンドウとして開きます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "The button stays disabled until you type the server's current name. The server checks the same thing when the form is submitted, so a stale button is never what authorizes a wipe — if the server was renamed after the preview loaded, the submission is refused."
+msgid ""
+"The button stays disabled until you type the server's current name. The "
+"server checks the same thing when the form is submitted, so a stale button "
+"is never what authorizes a wipe — if the server was renamed after the "
+"preview loaded, the submission is refused."
 msgstr ""
 "ボタンは、サーバーの現在の名前を入力するまで無効になっています。 "
 "フォームが送信されるとサーバーが同じことをチェックします。そのため、サーバーがプレビューが読み込まれた後に名前が変更された場合、投稿は拒否されます。"
@@ -5180,21 +5698,31 @@ msgstr "確認書"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "The form writes the server's configuration record: name, description, welcome message, channel limit, registration policy and how long whowas entries are kept. Saving dispatches one change per field you actually altered, so the result strip can report several lines at once."
+msgid ""
+"The form writes the server's configuration record: name, description, "
+"welcome message, channel limit, registration policy and how long whowas "
+"entries are kept. Saving dispatches one change per field you actually "
+"altered, so the result strip can report several lines at once."
 msgstr ""
 "フォームは、サーバーの構成レコード:名前、説明、歓迎メッセージ、チャンネルの制限、登録ポリシー、およびエントリが保持される期間を書きます。 "
 "実際に変更したフィールドごとに1つの変更を保存することで、結果のストリップは複数の行を一度に報告できます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_channels.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "The list reads /admin channel list as a point-in-time snapshot — it does not update on its own. Type into Search before choosing Refresh to narrow it."
+msgid ""
+"The list reads /admin channel list as a point-in-time snapshot — it does not"
+" update on its own. Type into Search before choosing Refresh to narrow it."
 msgstr ""
 "リストは /admin チャンネルリストをポイント・イン・タイム・スナップショットとして読み込みます。 自分で更新しません。 選択する前に検索を入力する"
 " リフレッシュ それを絞ります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_users.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "The list reads /admin user list as a point-in-time snapshot — it does not update on its own. Type into Search and tick Online only before choosing Refresh to narrow it. The ban list below reads /admin user banlist under the same search term, so filtering the list filters both."
+msgid ""
+"The list reads /admin user list as a point-in-time snapshot — it does not "
+"update on its own. Type into Search and tick Online only before choosing "
+"Refresh to narrow it. The ban list below reads /admin user banlist under the"
+" same search term, so filtering the list filters both."
 msgstr ""
 "リストは /admin のユーザリストをポイントインタイムスナップショットとして読み込みます。それ自体は更新されません。 "
 "選択する前にオンラインで検索とチェックを入力し、それを絞ります。 下の禁止リストは、同じ検索語で /admin ユーザ banlist "
@@ -5202,26 +5730,38 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "The numbers are from the last time Refresh ran. Nothing here updates on its own."
+msgid ""
+"The numbers are from the last time Refresh ran. Nothing here updates on its "
+"own."
 msgstr "番号は、最後の時刻から削除されます。 更新履歴はありません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_motd.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "The pane at the top shows the message that is set right now, so you can see what you are about to replace. Set MOTD writes the editor's contents; submitting an empty editor is the same as clearing."
+msgid ""
+"The pane at the top shows the message that is set right now, so you can see "
+"what you are about to replace. Set MOTD writes the editor's contents; "
+"submitting an empty editor is the same as clearing."
 msgstr ""
 "一番上のペインは、現在設定されているメッセージが表示されますので、交換する内容を見ることができます。 MOTD "
 "は編集者の内容を記述し、空のエディタをクリアするのと同じです。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_server_settings.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "The two panes below the form show what the server reports right now, from /admin server info and /admin server settings. Refresh re-reads both without leaving the window."
+msgid ""
+"The two panes below the form show what the server reports right now, from "
+"/admin server info and /admin server settings. Refresh re-reads both without"
+" leaving the window."
 msgstr ""
 "フォームの下の2つのペインは、/adminサーバー情報と/adminサーバー設定から、サーバーが現在報告しているものを示しています。 "
 "ウィンドウを離れずに再読み込みを解除します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_audit_log.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "The window reads /admin log as a point-in-time snapshot — it does not follow new entries. Last bounds how many rows come back, and User narrows it to one admin. Leaving Last blank falls back to 20 rather than asking for everything."
+msgid ""
+"The window reads /admin log as a point-in-time snapshot — it does not follow"
+" new entries. Last bounds how many rows come back, and User narrows it to "
+"one admin. Leaving Last blank falls back to 20 rather than asking for "
+"everything."
 msgstr ""
 "ウィンドウは /admin ログをポイント・イン・タイム・スナップショットとして読み込みます。新しいエントリは続いていません。 "
 "最後の境界は、数行が戻ってくると、ユーザはそれを1つの管理者に絞ります。 最後の空白は、すべてを求めるのではなく、20に戻って落ちます。"
@@ -5233,14 +5773,20 @@ msgstr "2つのリーチ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "Two read-only panes: relay statistics and the allocations currently held. If no TURN relay is configured the stats pane says so rather than showing zeros."
+msgid ""
+"Two read-only panes: relay statistics and the allocations currently held. If"
+" no TURN relay is configured the stats pane says so rather than showing "
+"zeros."
 msgstr ""
 "2つの読み取り専用ペイン: リレー統計と現在保持されている割り当て。 TURN のリレーが stats の pane "
 "を構成されていない場合、ゼロを示すのではなく、 と言う。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_broadcast.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "Wallops goes only to users who opted in with mode +w. Announce goes to everyone connected, whether they asked for it or not — reserve it for things people genuinely need to see."
+msgid ""
+"Wallops goes only to users who opted in with mode +w. Announce goes to "
+"everyone connected, whether they asked for it or not — reserve it for things"
+" people genuinely need to see."
 msgstr "Wallopsは、モード+wでオプトインしたユーザーのみに行きます。 誰が繋がるのか、尋ねたか否かについて、真摯に向き合ってほしい。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:7
@@ -5285,12 +5831,16 @@ msgstr "サーバー放送"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:13
 #, elixir-autogen, elixir-format
-msgid ", with the list selector set to Ban Exc. Only channel operators can add or remove ban exceptions."
+msgid ""
+", with the list selector set to Ban Exc. Only channel operators can add or "
+"remove ban exceptions."
 msgstr ", リストセレクターでBan Excに設定します。 チャネル演算子のみ、禁止例外を追加または削除できます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
 #, elixir-autogen, elixir-format
-msgid ", with the list selector set to Invite Exc. Only channel operators can add or remove invite exceptions."
+msgid ""
+", with the list selector set to Invite Exc. Only channel operators can add "
+"or remove invite exceptions."
 msgstr ", リストセレクターは、エキサイティングにセット. チャネル演算子のみ、招待例外を追加または削除できます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:12
@@ -5306,27 +5856,37 @@ msgstr "アクセスリスト:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "One list at a time, picked with the selector at the top of the tab: bans, ban exceptions (+e) that let specific users bypass bans, and invite exceptions (+I) that let specific users bypass invite-only mode."
+msgid ""
+"One list at a time, picked with the selector at the top of the tab: bans, "
+"ban exceptions (+e) that let specific users bypass bans, and invite "
+"exceptions (+I) that let specific users bypass invite-only mode."
 msgstr ""
 "1つのリストは、特定のユーザーが禁止を迂回し、特定のユーザーが招待専用モードをバイパスすることを可能にするタブの上部にあるセレクターで選択します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Arcade sessions can appear as rich cards, while P2P requests use the PM header controls and leave a plain P2P line in the transcript."
+msgid ""
+"Arcade sessions can appear as rich cards, while P2P requests use the PM "
+"header controls and leave a plain P2P line in the transcript."
 msgstr ""
 "P2P リクエストは PM ヘッダ制御を使用し、トランスクリプトで P2P "
 "ラインをプレーンに残すと、アーケードセッションはリッチカードとして表示できます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:20
 #, elixir-autogen, elixir-format
-msgid "Auto-join channels live in their own window and are joined after all perform commands complete, ensuring that NickServ identification and other setup happens first."
+msgid ""
+"Auto-join channels live in their own window and are joined after all perform"
+" commands complete, ensuring that NickServ identification and other setup "
+"happens first."
 msgstr ""
 "Auto-join チャネルは、独自のウィンドウに住んでおり、すべてのコマンドが完了した後に結合され、NickServ "
 "の識別やその他のセットアップが最初に行われることを保証します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:23
 #, elixir-autogen, elixir-format
-msgid "If a legacy P2P invite line can no longer find its session, it stays as inert history instead of showing stale action buttons."
+msgid ""
+"If a legacy P2P invite line can no longer find its session, it stays as "
+"inert history instead of showing stale action buttons."
 msgstr ""
 "レガシーP2Pの招待状がセッションが見つからなくなった場合、Staleアクションボタンを表示する代わりに、インサート履歴として保持されます。"
 
@@ -5349,13 +5909,18 @@ msgstr "ウィンドウを実行する"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "Session summaries name who created the session and walk through its lifecycle on a small timeline: when it was created, when it connected, and — once it is over — when it ended, how long it ran, and why it closed."
+msgid ""
+"Session summaries name who created the session and walk through its "
+"lifecycle on a small timeline: when it was created, when it connected, and —"
+" once it is over — when it ended, how long it ran, and why it closed."
 msgstr ""
 "セッションの要約名は、セッションを作ったり、小さなタイムラインでライフサイクルを歩いたりする:それが作成されたとき、それが接続されたとき、そしてそれが終わると、それが終わると、それが実行された期間、そしてなぜそれが閉鎖したのか。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The Perform system lets you define commands that execute automatically every time you connect. Channels are handled separately, in Auto-Join."
+msgid ""
+"The Perform system lets you define commands that execute automatically every"
+" time you connect. Channels are handled separately, in Auto-Join."
 msgstr "実行システムでは、接続時に自動的に実行するコマンドを定義できます。 チャネルは、Auto-Join で、別々に処理されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:7
@@ -5365,14 +5930,19 @@ msgstr "セッション概要ショー"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "While an Arcade session is still live the card can offer Join or Open. P2P Start, Join and Decline actions live in the PM header instead; finished P2P history shows final state only."
+msgid ""
+"While an Arcade session is still live the card can offer Join or Open. P2P "
+"Start, Join and Decline actions live in the PM header instead; finished P2P "
+"history shows final state only."
 msgstr ""
 "アーケードセッションはまだカードが参加またはオープンを提供することができますライブ中。 P2P Start, Join, Decline アクションは "
 "PM ヘッダに住んでいます。P2P 履歴は最終状態のみを示しています。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:75
 #, elixir-autogen, elixir-format
-msgid "command, or visually in the Auto-Join window — open it from Tools > Auto-Join, or by typing"
+msgid ""
+"command, or visually in the Auto-Join window — open it from Tools > Auto-"
+"Join, or by typing"
 msgstr "コマンド、またはAuto-Joinウィンドウで視覚的に - ツール > Auto-Join、またはタイピングで開く"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:14
@@ -5382,7 +5952,9 @@ msgstr "コマンドを追加したり、実行ウィンドウで視覚的に管
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:29
 #, elixir-autogen, elixir-format
-msgid "to open the Perform window, which provides a visual interface for managing the perform list."
+msgid ""
+"to open the Perform window, which provides a visual interface for managing "
+"the perform list."
 msgstr "実行ウィンドウを開くには、実行リストを管理するためのビジュアルインターフェイスを提供します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:79
@@ -5397,7 +5969,10 @@ msgstr "ニックネームを右クリックし、セットニックカラーを
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "Add a contact with an optional note, edit the note later, or remove the entry. The list shows when you first talked to each person, in your timezone."
+msgid ""
+"Add a contact with an optional note, edit the note later, or remove the "
+"entry. The list shows when you first talked to each person, in your "
+"timezone."
 msgstr ""
 "オプションのノートで連絡先を追加し、後でメモを編集したり、エントリを削除したりします。 リストは、最初に各人に話したときに、タイムゾーンで表示されます。"
 
@@ -5408,7 +5983,10 @@ msgstr "色を割り当てる"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "Choose Add, type the nickname, and pick a swatch from the 16-color IRC palette. Select an existing row and choose Edit to change its color, or Remove to fall back to the automatic color."
+msgid ""
+"Choose Add, type the nickname, and pick a swatch from the 16-color IRC "
+"palette. Select an existing row and choose Edit to change its color, or "
+"Remove to fall back to the automatic color."
 msgstr ""
 "16色のIRCパレットから「Add」と「ニックネーム」をタイプし、「swatch」を選択します。 既存の行を選択し、Edit "
 "を選択して、色を変更したり、自動色に戻したりします。"
@@ -5425,7 +6003,11 @@ msgstr "無視リスト:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Nick Colors lets you pin a specific color to a nickname. Without an override, RetroHexChat derives a color from the nickname itself, so the same person always looks the same — an override wins whenever you want a particular person to stand out."
+msgid ""
+"Nick Colors lets you pin a specific color to a nickname. Without an "
+"override, RetroHexChat derives a color from the nickname itself, so the same"
+" person always looks the same — an override wins whenever you want a "
+"particular person to stand out."
 msgstr ""
 "Nick Colorsは、特定の色をニックネームにピン留めできます。 "
 "オーバーライドなしで、RetroHexChatはニックネーム自体から色を導きます。そのため、同じ人はいつも同じように見えます。特定の人が目立つようにしたいときは、オーバーライドが勝ちます。"
@@ -5442,7 +6024,10 @@ msgstr "関連Windows"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The Address Book (Ctrl+Shift+A) is your saved-contacts list: store notes about people you talk to. Nick colors, the ignore list and notify tracking each have their own window."
+msgid ""
+"The Address Book (Ctrl+Shift+A) is your saved-contacts list: store notes "
+"about people you talk to. Nick colors, the ignore list and notify tracking "
+"each have their own window."
 msgstr ""
 "アドレス帳(Ctrl+Shift+A)は、保存された連絡先リストです。 "
 "ニックカラー、無視リスト、各々の追跡に自分のウィンドウを持っていることを通知します。"
@@ -5459,7 +6044,8 @@ msgstr "UIを横断する特定のニックス用のオーバーライド表示�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:19
 #, elixir-autogen, elixir-format
-msgid "per-type ignore entries for messages, PMs, actions, notices, and invites."
+msgid ""
+"per-type ignore entries for messages, PMs, actions, notices, and invites."
 msgstr "メッセージ、PM、アクション、通知、招待のエントリーを無視します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:24
@@ -5469,7 +6055,11 @@ msgstr "特定のニックネームがオンラインで来るとき追跡して
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_danger_zone.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "The preview lists what /admin nuke would delete. Admin roles, audit logs, server bans and server settings survive it, with registration reopened so an admin nick can be recreated; everything else does not. This cannot be undone."
+msgid ""
+"The preview lists what /admin nuke would delete. Admin roles, audit logs, "
+"server bans and server settings survive it, with registration reopened so an"
+" admin nick can be recreated; everything else does not. This cannot be "
+"undone."
 msgstr ""
 "/admin の nuke が削除されるかどうかをプレビューします。 "
 "管理者権限、監査ログ、サーバー禁止、サーバー設定が有効になり、登録が再開されると管理者のニックネームが再作成できるため、他のすべてが再作成できません。 "
@@ -5502,7 +6092,9 @@ msgstr "— チャンネルまたはPMはミュートされています"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:22
 #, elixir-autogen, elixir-format
-msgid "— marks unread activity, highlights, the active row, and saved auto-join state"
+msgid ""
+"— marks unread activity, highlights, the active row, and saved auto-join "
+"state"
 msgstr "— 未読アクティビティ、ハイライト、アクティブ行、保存済みauto-join状態を示します"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:16
@@ -5512,7 +6104,10 @@ msgstr "進行中のグループ通話や P2P セッションと、オンライ�
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:34
 #, elixir-autogen, elixir-format
-msgid "Set away when you are unavailable from File > Account > Set Away, where the Presence tab also lets you set a custom message. The window title bar then shows you as Away."
+msgid ""
+"Set away when you are unavailable from File > Account > Set Away, where the "
+"Presence tab also lets you set a custom message. The window title bar then "
+"shows you as Away."
 msgstr ""
 "離席にするには、ファイル > アカウント > 離席にする "
 "を使います。プレゼンスタブでは独自のメッセージも設定できます。ウィンドウのタイトルバーには「離席中」と表示されます。"
@@ -5524,7 +6119,9 @@ msgstr "2 つのセクション"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:8
 #, elixir-autogen, elixir-format
-msgid "Your nickname, your identity state and the conversation you are reading are not repeated here — the chat window's title bar names them."
+msgid ""
+"Your nickname, your identity state and the conversation you are reading are "
+"not repeated here — the chat window's title bar names them."
 msgstr "ニックネーム、本人確認の状態、読んでいる会話はここには重ねて表示されません。チャットウィンドウのタイトルバーがすでに示しています。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:49
@@ -5534,12 +6131,16 @@ msgstr ") 歴史が主張される前にろ過されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:42
 #, elixir-autogen, elixir-format
-msgid "For identified registered users, the last 100 entries are stored with the account. Guests keep history only in browser memory for the current page."
+msgid ""
+"For identified registered users, the last 100 entries are stored with the "
+"account. Guests keep history only in browser memory for the current page."
 msgstr "特定登録ユーザーの場合、最後の100件がアカウントに保存されます。 現在のページでは、ブラウザメモリのみで履歴を保持しています。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:36
 #, elixir-autogen, elixir-format
-msgid "Downloads are authorized by the chat server first. If access is allowed, the server redirects to a short-lived signed storage URL."
+msgid ""
+"Downloads are authorized by the chat server first. If access is allowed, the"
+" server redirects to a short-lived signed storage URL."
 msgstr ""
 "ダウンロードはチャットサーバが最初に許可されます。 アクセスが許可されている場合、サーバーは短命の署名されたストレージURLにリダイレクトします。"
 
@@ -5550,14 +6151,19 @@ msgstr "ファイルパス"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "Image attachments render as inline thumbnails. Audio and video attachments use native players, PDF files expose a preview action, and other files render as safe file cards with type, size and path metadata."
+msgid ""
+"Image attachments render as inline thumbnails. Audio and video attachments "
+"use native players, PDF files expose a preview action, and other files "
+"render as safe file cards with type, size and path metadata."
 msgstr ""
 "インラインサムネイルとしてイメージアタッチメントをレンダリングします。 "
 "オーディオとビデオの添付ファイルには、ネイティブプレーヤー、PDFファイルを使用して、プレビューアクションを公開し、タイプ、サイズ、パスメタデータを安全なファイルカードとしてレンダリングします。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Message attachments let you send files in channel messages and private messages. A message can contain text, one or more files, or both."
+msgid ""
+"Message attachments let you send files in channel messages and private "
+"messages. A message can contain text, one or more files, or both."
 msgstr ""
 "メッセージの添付ファイルを使用すると、チャンネルメッセージとプライベートメッセージにファイルを送信できます。 "
 "メッセージにはテキスト、複数のファイル、または両方を含むことができます。"
@@ -5574,20 +6180,27 @@ msgstr "送信"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:22
 #, elixir-autogen, elixir-format
-msgid "Unsafe browser-rendered formats, including SVG and HTML, are kept as downloadable files instead of inline previews."
+msgid ""
+"Unsafe browser-rendered formats, including SVG and HTML, are kept as "
+"downloadable files instead of inline previews."
 msgstr ""
 "SVG や HTML "
 "を含む非安全なブラウザーレンダリングされたフォーマットは、インラインプレビューではなくダウンロード可能なファイルとして保存されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:29
 #, elixir-autogen, elixir-format
-msgid "Uploaded files are stored with a logical directory path so administrators can browse them later without depending on the storage bucket's internal object keys."
+msgid ""
+"Uploaded files are stored with a logical directory path so administrators "
+"can browse them later without depending on the storage bucket's internal "
+"object keys."
 msgstr ""
 "アップロードされたファイルは論理ディレクトリパスで保存されますので、管理者はストレージバケットの内部オブジェクトキーに依存せずに後で閲覧できます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "Use the attachment button in the chat input, choose a file, wait for the upload to finish, then send the message."
+msgid ""
+"Use the attachment button in the chat input, choose a file, wait for the "
+"upload to finish, then send the message."
 msgstr "チャット入力の添付ボタンを使用して、ファイルを選択し、アップロードが終了するのを待ち、メッセージを送信する。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:93
@@ -5602,12 +6215,16 @@ msgstr "HTMLタイトル、説明、およびcanonical URLフォールバック"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Link Previews turn shared web addresses into rich Markdown cards using metadata the page already publishes."
+msgid ""
+"Link Previews turn shared web addresses into rich Markdown cards using "
+"metadata the page already publishes."
 msgstr "リンクプレビューは、すでに公開されたページをメタデータを使用して、共有Webアドレスをリッチマークダウンカードに変換します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:83
 #, elixir-autogen, elixir-format
-msgid "Markdown images are sanitized, lazy-loaded, and rendered without referrer leakage"
+msgid ""
+"Markdown images are sanitized, lazy-loaded, and rendered without referrer "
+"leakage"
 msgstr "マークダウン画像は、リファレンス、レイジーロード、レファレンス漏れなくレンダリングされます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:8
@@ -5627,7 +6244,9 @@ msgstr "グラフのタイトル、説明、画像、URL、およびサイト名
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:71
 #, elixir-autogen, elixir-format
-msgid "Private, local, documentation, benchmark, multicast, and reserved address ranges are blocked"
+msgid ""
+"Private, local, documentation, benchmark, multicast, and reserved address "
+"ranges are blocked"
 msgstr "プライベート、ローカル、ドキュメント、ベンチマーク、マルチキャスト、および予約されたアドレス範囲はブロックされます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:77
@@ -5642,7 +6261,9 @@ msgstr "安全管理"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:15
 #, elixir-autogen, elixir-format
-msgid "Schema.org JSON-LD headline, description, image, publisher, and provider fallbacks"
+msgid ""
+"Schema.org JSON-LD headline, description, image, publisher, and provider "
+"fallbacks"
 msgstr "Schema.org JSON-LDの見出し、説明、画像、パブリッシャー、プロバイダのフォールバック"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:12
@@ -5667,13 +6288,20 @@ msgstr "oEmbed JSON は、ページリンクや HTTP リンクヘッダーから
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:60
 #, elixir-autogen, elixir-format
-msgid "When a stored page ages out it is refreshed with a conditional request, which most sites answer with \"unchanged\" — no page is downloaded twice unless it actually changed."
+msgid ""
+"When a stored page ages out it is refreshed with a conditional request, "
+"which most sites answer with \"unchanged\" — no page is downloaded twice "
+"unless it actually changed."
 msgstr ""
 "保存されたページが消去されると、条件付きリクエストで更新され、ほとんどのサイトは「変更されていない」と答えます。実際に変更されない限り、ページは2回ダウンロードされません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:54
 #, elixir-autogen, elixir-format
-msgid "Every consumer reads from one shared archive. A page is fetched the first time anyone links to it and kept for 120 days, so the same link posted in another channel, or published later by a feed bot, is answered without contacting the site again."
+msgid ""
+"Every consumer reads from one shared archive. A page is fetched the first "
+"time anyone links to it and kept for 120 days, so the same link posted in "
+"another channel, or published later by a feed bot, is answered without "
+"contacting the site again."
 msgstr ""
 "シリーズ\n"
 "1つの共有アーカイブからすべての消費者が読み込まれます。 ページは、誰がリンクして120日間保存したかを初めて取得しています。そのため、別のチャネルに投稿されたリンクも、フィードボットによって公開され、再びサイトに連絡することなく回答されます。"
@@ -5685,19 +6313,28 @@ msgstr "会話で"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:28
 #, elixir-autogen, elixir-format
-msgid "Paste a link into a channel or a private message and its card appears under the message, with the source, the headline, the byline and reading time, the page's own image, and its summary."
+msgid ""
+"Paste a link into a channel or a private message and its card appears under "
+"the message, with the source, the headline, the byline and reading time, the"
+" page's own image, and its summary."
 msgstr ""
 "リンクをチャンネルまたはプライベートメッセージに貼り付け、そのカードはメッセージの下に表示されます。 "
 "ソース、見出し、インライン、読み込み時間、ページ自身のイメージ、およびその要約。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:48
 #, elixir-autogen, elixir-format
-msgid "RSS bots post new feed items as the same card, so a feed item and a link somebody pasted read identically."
+msgid ""
+"RSS bots post new feed items as the same card, so a feed item and a link "
+"somebody pasted read identically."
 msgstr "RSSボットは、新しいフィードアイテムを同じカードに投稿するので、フィードアイテムとリンクを誰かが同じように貼り付けました。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:34
 #, elixir-autogen, elixir-format
-msgid "The card is read from the archive when the conversation is drawn, so it survives a reload and is there again when you scroll back. A page nobody has read yet leaves the message untouched until the fetch lands, and then fills in on its own. Turning off text formatting hides cards along with the rest."
+msgid ""
+"The card is read from the archive when the conversation is drawn, so it "
+"survives a reload and is there again when you scroll back. A page nobody has"
+" read yet leaves the message untouched until the fetch lands, and then fills"
+" in on its own. Turning off text formatting hides cards along with the rest."
 msgstr ""
 "会話が描画されると、カードはアーカイブから読み込まれるので、リロードを存続し、スクロールバックしたときに再びそこにあります。 "
 "誰も読んでいないページは、フェッチの土地まで、メッセージが無接触のままに残っており、それ自体に記入します。 "
@@ -5705,14 +6342,22 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:40
 #, elixir-autogen, elixir-format
-msgid "Only plain messages get a card, and only for their first link. A message you write in Markdown is left exactly as you wrote it — you have already chosen how the link should look, which is also why a feed bot's own card is never given a second one."
+msgid ""
+"Only plain messages get a card, and only for their first link. A message you"
+" write in Markdown is left exactly as you wrote it — you have already chosen"
+" how the link should look, which is also why a feed bot's own card is never "
+"given a second one."
 msgstr ""
 "プレーンメッセージのみがカードを受け取り、最初のリンクのみです。 "
 "マークダウンで書いたメッセージは、あなたが書いたように正確に残されます。リンクがどのように見えるかを既に選択しています。これは、フィードボットのカードが2番目のカードを与えない理由です。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat highlights messages that mention your nickname or custom words, in channels and in private conversations alike. Highlighted messages have a colored background and the conversation flashes in the conversations sidebar and tab bar."
+msgid ""
+"RetroHexChat highlights messages that mention your nickname or custom words,"
+" in channels and in private conversations alike. Highlighted messages have a"
+" colored background and the conversation flashes in the conversations "
+"sidebar and tab bar."
 msgstr ""
 "RetroHexChat "
 "は、チャンネルでもプライベート会話でも、あなたのニックネームやカスタム語句に触れたメッセージを強調表示します。強調されたメッセージには色付きの背景が付き、会話サイドバーとタブバーでその会話が点滅します。"
@@ -5724,12 +6369,22 @@ msgstr "匿名のパフォーマンス計測"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:40
 #, elixir-autogen, elixir-format
-msgid "To keep the app fast and catch errors, your browser sends anonymous performance measurements (page load and responsiveness) and uncaught error reports to our own servers. No message content is collected, and the data is never shared with third parties."
-msgstr "アプリを速く保ち、エラーに気づくために、ブラウザーは匿名のパフォーマンス計測（ページの読み込みと応答性）と未処理エラーの報告を当方のサーバーへ送信します。メッセージの内容は収集されず、データが第三者に共有されることはありません。"
+msgid ""
+"To keep the app fast and catch errors, your browser sends anonymous "
+"performance measurements (page load and responsiveness) and uncaught error "
+"reports to our own servers. No message content is collected, and the data is"
+" never shared with third parties."
+msgstr ""
+"アプリを速く保ち、エラーに気づくために、ブラウザーは匿名のパフォーマンス計測（ページの読み込みと応答性）と未処理エラーの報告を当方のサーバーへ送信します。メッセージの内容は収集されず、データが第三者に共有されることはありません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Your live session is reported in two places. The chat window's own status bar, along its bottom edge, shows what this conversation is doing: an active call or P2P session. The system tray, beside the clock, shows what the machine is doing: who is online from your notify list, how fast the server is answering, and whether sounds are muted."
+msgid ""
+"Your live session is reported in two places. The chat window's own status "
+"bar, along its bottom edge, shows what this conversation is doing: an active"
+" call or P2P session. The system tray, beside the clock, shows what the "
+"machine is doing: who is online from your notify list, how fast the server "
+"is answering, and whether sounds are muted."
 msgstr ""
 "現在のセッションは二か所に表示されます。チャットウィンドウ自身のステータスバー（下端）は、この会話が何をしているか——通話中か P2P "
 "セッション中か——を示します。時計の隣のシステムトレイは、マシンが何をしているか——通知リストの誰がオンラインか、サーバーの応答の速さ、サウンドがミュートかどうか——を示します。"

@@ -66,7 +66,10 @@ msgstr "Un bot útil"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:64
 #, elixir-autogen, elixir-format
-msgid "A retro-styled IRC chat platform inspired by the classic desktop chat clients of the late '90s. Real-time messaging, channels, peer-to-peer sessions, and arcade games — all in the browser."
+msgid ""
+"A retro-styled IRC chat platform inspired by the classic desktop chat "
+"clients of the late '90s. Real-time messaging, channels, peer-to-peer "
+"sessions, and arcade games — all in the browser."
 msgstr ""
 "Una plataforma de chat IRC de estilo retro, inspirada en los clientes "
 "clásicos del chat de escritorio de finales de los 90. Mensajería en tiempo "
@@ -437,7 +440,9 @@ msgstr "Comandos"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:96
 #, elixir-autogen, elixir-format
-msgid "Configure limits to prevent message flooding in channels and private messages."
+msgid ""
+"Configure limits to prevent message flooding in channels and private "
+"messages."
 msgstr ""
 "Configurar límites para evitar las inundaciones de mensajes en canales y "
 "mensajes privados."
@@ -891,7 +896,7 @@ msgstr "Nuevo"
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:252
 #, elixir-autogen, elixir-format
 msgid "Nick"
-msgstr "Nick"
+msgstr "Apodo"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:140
 #, elixir-autogen, elixir-format
@@ -1081,7 +1086,7 @@ msgstr "OK"
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:417
 #, elixir-autogen, elixir-format
 msgid "Offline"
-msgstr "Sin conexión"
+msgstr "Desconectado"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:319
 #, elixir-autogen, elixir-format
@@ -1296,7 +1301,8 @@ msgstr "El comando que activa esta respuesta (por ejemplo !hello)"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:71
 #, elixir-autogen, elixir-format
-msgid "This nickname is registered. Please enter the NickServ password to identify."
+msgid ""
+"This nickname is registered. Please enter the NickServ password to identify."
 msgstr ""
 "Este apodo está registrado. Introduzca la contraseña de NickServ para "
 "identificar."
@@ -1412,7 +1418,8 @@ msgstr "Versión %{version}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:74
 #, elixir-autogen, elixir-format
-msgid "Warning: This exceeds the flood protection limit. Messages may be throttled."
+msgid ""
+"Warning: This exceeds the flood protection limit. Messages may be throttled."
 msgstr ""
 "Advertencia: Esto excede el límite de protección de inundaciones. Los "
 "mensajes pueden ser acelerados."
@@ -1733,7 +1740,8 @@ msgstr "Eliminar el canal"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
 #, elixir-autogen, elixir-format
-msgid "Deletes this nickname registration after you confirm with its password."
+msgid ""
+"Deletes this nickname registration after you confirm with its password."
 msgstr ""
 "Elimina este registro de apodo después de confirmar con su contraseña."
 
@@ -1795,7 +1803,9 @@ msgstr "Período de sesiones final"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:96
 #, elixir-autogen, elixir-format
-msgid "End the P2P session with %{peer}? Any call, game or file transfer in progress will stop."
+msgid ""
+"End the P2P session with %{peer}? Any call, game or file transfer in "
+"progress will stop."
 msgstr ""
 "Fin de la sesión P2P con %{peer}Cualquier llamada, juego o transferencia de "
 "archivos en progreso se detendrá."
@@ -3409,14 +3419,18 @@ msgstr "Ese informe no está disponible en este servidor."
 
 #: lib/retro_hex_chat_web/components/ui/system/os_panel.ex:60
 #, elixir-autogen, elixir-format
-msgid "The :os_mon application is not running on this node, so the host cannot be read."
+msgid ""
+"The :os_mon application is not running on this node, so the host cannot be "
+"read."
 msgstr ""
 "La aplicación :os mon no se ejecuta en este nodo, por lo que el anfitrión no"
 " puede ser leído."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/system_database_dialog.ex:95
 #, elixir-autogen, elixir-format
-msgid "The report could not be run — the database refused the query or an extension it needs is missing."
+msgid ""
+"The report could not be run — the database refused the query or an extension"
+" it needs is missing."
 msgstr ""
 "El informe no puede ejecutarse; la base de datos rechazó la consulta o una "
 "extensión que necesita falta."
@@ -3433,7 +3447,9 @@ msgstr "Este grupo no declara métricas."
 
 #: lib/retro_hex_chat_web/components/ui/system/log_panel.ex:112
 #, elixir-autogen, elixir-format
-msgid "This node logs at %{primary} and drops anything below it before a window can see it, so nothing at %{selected} will ever appear here."
+msgid ""
+"This node logs at %{primary} and drops anything below it before a window can"
+" see it, so nothing at %{selected} will ever appear here."
 msgstr ""
 "Este nodo se registra en %{primary} y deja caer cualquier cosa debajo de él "
 "antes de que una ventana pueda verla, así que nada en %{selected} aparecerá "
@@ -3923,8 +3939,12 @@ msgstr "Este grupo de aplicaciones necesita una sesión de chat."
 
 #: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:223
 #, elixir-autogen, elixir-format
-msgid "Connect first to use this desktop app folder. Help and Language remain available without a chat session."
-msgstr "Conéctate antes para usar esta carpeta de aplicaciones. Ayuda e Idioma siguen disponibles sin una sesión de chat."
+msgid ""
+"Connect first to use this desktop app folder. Help and Language remain "
+"available without a chat session."
+msgstr ""
+"Conéctate antes para usar esta carpeta de aplicaciones. Ayuda e Idioma "
+"siguen disponibles sin una sesión de chat."
 
 #: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:472
 #, elixir-autogen, elixir-format

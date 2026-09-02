@@ -247,7 +247,7 @@ msgstr "アクティブ"
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:256
 #, elixir-autogen, elixir-format
 msgid "Audio"
-msgstr "音声"
+msgstr "オーディオ"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:157
 #, elixir-autogen, elixir-format
@@ -365,7 +365,9 @@ msgstr "ダウンロード"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:828
 #, elixir-autogen, elixir-format
-msgid "Estimated bandwidth available for sending to the peer, in kilobits per second."
+msgid ""
+"Estimated bandwidth available for sending to the peer, in kilobits per "
+"second."
 msgstr "1秒あたりのキロビットで、ピアに送信できる推定帯域幅。"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:681
@@ -458,7 +460,7 @@ msgstr "アイドル"
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:289
 #, elixir-autogen, elixir-format
 msgid "Jitter"
-msgstr "ジッタ"
+msgstr "ジッター"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:657
 #, elixir-autogen, elixir-format
@@ -484,7 +486,9 @@ msgstr "MOS %{score}の特長"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:800
 #, elixir-autogen, elixir-format
-msgid "Mean Opinion Score (1-5): an overall call-quality estimate from latency, jitter and loss. 5 is excellent; below 3.5 feels poor."
+msgid ""
+"Mean Opinion Score (1-5): an overall call-quality estimate from latency, "
+"jitter and loss. 5 is excellent; below 3.5 feels poor."
 msgstr "平均オピニオンスコア(1-5): レイテンシー、ジッタ、損失からの全体的なコール品質推定。 5は優れている。3.5以下の感じが悪い。"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:441
@@ -547,7 +551,9 @@ msgstr "出力"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:793
 #, elixir-autogen, elixir-format
-msgid "Overall connection health, rated from Excellent to Poor based on the MOS score."
+msgid ""
+"Overall connection health, rated from Excellent to Poor based on the MOS "
+"score."
 msgstr "MOSのスコアに基づいて優秀なからPoorに評価される全面的な関係の健康。"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:51
@@ -589,7 +595,9 @@ msgstr "ペンディング"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:821
 #, elixir-autogen, elixir-format
-msgid "Percentage of packets that never arrived. Above ~3% noticeably degrades quality."
+msgid ""
+"Percentage of packets that never arrived. Above ~3% noticeably degrades "
+"quality."
 msgstr "決して到着しないパケットの割合。 上記の~3%は顕著に質を劣化させます。"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:684
@@ -655,7 +663,9 @@ msgstr "分割レイアウトに戻る"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:807
 #, elixir-autogen, elixir-format
-msgid "Round-trip time for data to reach the peer and return. Lower is better; under ~150 ms feels instant."
+msgid ""
+"Round-trip time for data to reach the peer and return. Lower is better; "
+"under ~150 ms feels instant."
 msgstr "データを往復して、ピアとリターンに到達します。 より低い方が良いです。~150 ms 以下は即座に感じます。"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:670
@@ -780,7 +790,9 @@ msgstr "アップロード"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:814
 #, elixir-autogen, elixir-format
-msgid "Variation in packet arrival timing. High jitter causes choppy audio and video."
+msgid ""
+"Variation in packet arrival timing. High jitter causes choppy audio and "
+"video."
 msgstr "パケット到着タイミングの変化。 ハイジッタは、雑音とビデオを引き起こします。"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:90
@@ -790,7 +802,7 @@ msgstr "パケット到着タイミングの変化。 ハイジッタは、雑�
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:255
 #, elixir-autogen, elixir-format
 msgid "Video"
-msgstr "動画"
+msgstr "ビデオ"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:893
 #, elixir-autogen, elixir-format
@@ -809,7 +821,9 @@ msgstr "アクティブなビデオ RTP がカメラまたは共有画面であ�
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:874
 #, elixir-autogen, elixir-format
-msgid "Why quality was capped: CPU means your device is too busy; Bandwidth means the network is too slow."
+msgid ""
+"Why quality was capped: CPU means your device is too busy; Bandwidth means "
+"the network is too slow."
 msgstr "なぜ品質が捕捉されたのか: CPU はデバイスが忙しくないことを意味します。帯域幅はネットワークが遅いことを意味します。"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:208
@@ -906,12 +920,16 @@ msgstr "統計情報"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:529
 #, elixir-autogen, elixir-format
-msgid "When the network allows it, packets travel browser-to-browser instead of through the conference server."
+msgid ""
+"When the network allows it, packets travel browser-to-browser instead of "
+"through the conference server."
 msgstr "ネットワークが許可されると、会議サーバーの代わりに、パケットはブラウザからブラウザへ転送します。"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:522
 #, elixir-autogen, elixir-format
-msgid "Your browser uses the relay path for this session, while the session still stays one-to-one."
+msgid ""
+"Your browser uses the relay path for this session, while the session still "
+"stays one-to-one."
 msgstr "お使いのブラウザは、セッションが1対1にとどまりながら、このセッションのリレーパスを使用します。"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:489
@@ -1233,7 +1251,8 @@ msgstr "オファー"
 
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:365
 #, elixir-autogen, elixir-format
-msgid "Peer media connection was interrupted. Recovery is monitoring the link."
+msgid ""
+"Peer media connection was interrupted. Recovery is monitoring the link."
 msgstr "相手とのメディア接続が切断されました。復旧が接続を監視しています。"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:215
@@ -1268,7 +1287,9 @@ msgstr "状態"
 
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:345
 #, elixir-autogen, elixir-format
-msgid "This session is still active in another window. Close that window, retry, or end this session."
+msgid ""
+"This session is still active in another window. Close that window, retry, or"
+" end this session."
 msgstr "このセッションは別のウィンドウでまだ有効です。そのウィンドウを閉じるか、再試行するか、このセッションを終了してください。"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:222

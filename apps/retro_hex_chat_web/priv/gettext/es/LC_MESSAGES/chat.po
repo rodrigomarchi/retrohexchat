@@ -731,7 +731,8 @@ msgstr "Intento %{attempt} de %{max_attempts}"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:498
 #, elixir-autogen, elixir-format
-msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
+msgid ""
+"Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr ""
 "La lista de contactos automáticos está completa (20 canales). %{channel} no "
 "fue añadido a la unión automática."
@@ -758,7 +759,9 @@ msgstr "Reglas de respuesta automática:"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:114
 #, elixir-autogen, elixir-format
-msgid "Available commands: %{commands}\nType /help <command> for details, or open Help Topics from the menu for the full help system."
+msgid ""
+"Available commands: %{commands}\n"
+"Type /help <command> for details, or open Help Topics from the menu for the full help system."
 msgstr ""
 "Comandos disponibles: %{commands}\n"
 "Tipo /help <command> para detalles, o abre Ayuda Temas del menú para el sistema de ayuda completa."
@@ -1099,7 +1102,7 @@ msgstr "No se puede configurar el color para %{nickname}"
 #: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:139
 #, elixir-autogen, elixir-format
 msgid "Cyan"
-msgstr "Cyan"
+msgstr "Cian"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:315
 #, elixir-autogen, elixir-format
@@ -1478,7 +1481,7 @@ msgstr "Marcar como Leer"
 #: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
 #, elixir-autogen, elixir-format
 msgid "Maroon"
-msgstr "Maroon"
+msgstr "Granate"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:109
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:222
@@ -1561,7 +1564,8 @@ msgstr "Lista de color Nick está llena (max 50)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:1088
 #, elixir-autogen
-msgid "NickServ protects your nickname with a password so nobody else can use it."
+msgid ""
+"NickServ protects your nickname with a password so nobody else can use it."
 msgstr ""
 "NickServ protege tu apodo con una contraseña para que nadie más pueda "
 "usarla."
@@ -1672,7 +1676,7 @@ msgstr "Operador"
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:376
 #, elixir-autogen, elixir-format
 msgid "Orange"
-msgstr "Orange"
+msgstr "Naranja"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:212
 #: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:373
@@ -1793,7 +1797,9 @@ msgstr "Respuesta"
 
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:252
 #, elixir-autogen, elixir-format
-msgid "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
+msgid ""
+"Reply parent message is not currently loaded. Scroll up to load older "
+"history, then try again."
 msgstr ""
 "Responder el mensaje padre no está cargado actualmente. Desplazarse para "
 "cargar la historia más antigua, luego intentarlo de nuevo."
@@ -1972,7 +1978,7 @@ msgstr "TZ"
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:379
 #, elixir-autogen, elixir-format
 msgid "Teal"
-msgstr "Teal"
+msgstr "Verde azulado"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:56
 #, elixir-autogen, elixir-format
@@ -2337,7 +2343,9 @@ msgstr "Apodo Servicios en línea"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:578
 #, elixir-autogen, elixir-format
-msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
+msgid ""
+"[NickServ] This nickname is registered. You have 60 seconds to identify via "
+"/ns identify <password> or you will be renamed."
 msgstr ""
 "[NickServ] Este apodo está registrado. Usted tiene 60 segundos para "
 "identificar a través de /ns identificar <password> o será renombrado."
@@ -2749,7 +2757,7 @@ msgstr "Notificar la lista"
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:109
 #, elixir-autogen, elixir-format
 msgid "Offline"
-msgstr "Sin conexión"
+msgstr "Desconectado"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:140
 #, elixir-autogen, elixir-format
@@ -2871,7 +2879,7 @@ msgstr "Timer no encontrado"
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:238
 #, elixir-autogen, elixir-format
 msgid "Timers"
-msgstr "Timers"
+msgstr "Temporizadores"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:171
 #, elixir-autogen, elixir-format
@@ -3185,7 +3193,9 @@ msgstr "Toggle P2P Screen Share"
 
 #: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:210
 #, elixir-autogen, elixir-format
-msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
+msgid ""
+"You must be registered and identified to play. Use /ns register and /ns "
+"identify first."
 msgstr ""
 "Debes estar registrado e identificado para jugar. Utilizar el registro de "
 "registro de entrada/ph0 títulos y identificador primero."
@@ -4008,7 +4018,8 @@ msgstr "P2P: %{peer} — en otra pestaña"
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:133
 #, elixir-autogen, elixir-format
 msgid "This P2P session is open in another tab of yours — click to go to it"
-msgstr "Esta sesión P2P está abierta en otra pestaña tuya: haz clic para ir a ella"
+msgstr ""
+"Esta sesión P2P está abierta en otra pestaña tuya: haz clic para ir a ella"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:69
 #, elixir-autogen, elixir-format
@@ -4018,7 +4029,8 @@ msgstr "Solicitud P2P enviada a %{target}. Ábrela desde la tarjeta de abajo."
 #: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:82
 #, elixir-autogen, elixir-format
 msgid "P2P session request. Open it from the card below. /p2p/%{token}"
-msgstr "Solicitud de sesión P2P. Ábrela desde la tarjeta de abajo. /p2p/%{token}"
+msgstr ""
+"Solicitud de sesión P2P. Ábrela desde la tarjeta de abajo. /p2p/%{token}"
 
 #: lib/retro_hex_chat_web/channels/space_session_announcement.ex:90
 #, elixir-autogen, elixir-format

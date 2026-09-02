@@ -732,7 +732,8 @@ msgstr "Попытка %{attempt} из %{max_attempts}"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:498
 #, elixir-autogen, elixir-format
-msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
+msgid ""
+"Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr ""
 "Список автоматических соединений заполнен (20 каналов). %{channel} Не "
 "добавляли к автоприсоединению."
@@ -759,7 +760,9 @@ msgstr "Правила автоответа:"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:114
 #, elixir-autogen, elixir-format
-msgid "Available commands: %{commands}\nType /help <command> for details, or open Help Topics from the menu for the full help system."
+msgid ""
+"Available commands: %{commands}\n"
+"Type /help <command> for details, or open Help Topics from the menu for the full help system."
 msgstr ""
 "Доступные команды: %{commands}\n"
 "Тип /help <command> для получения подробной информации или откройте Темы Справки из меню для полной системы справки."
@@ -846,7 +849,7 @@ msgstr "Просмотр каналов"
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:134
 #, elixir-autogen, elixir-format
 msgid "Browser"
-msgstr "браузер"
+msgstr "Браузер"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:78
 #, elixir-autogen, elixir-format
@@ -1099,7 +1102,7 @@ msgstr "Невозможно установить цвет для %{nickname}"
 #: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:139
 #, elixir-autogen, elixir-format
 msgid "Cyan"
-msgstr "Циан"
+msgstr "Голубой"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:315
 #, elixir-autogen, elixir-format
@@ -1409,7 +1412,7 @@ msgstr "присоединяться %{channel}"
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:164
 #, elixir-autogen, elixir-format
 msgid "Kick"
-msgstr "Kick"
+msgstr "Выгнать"
 
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:837
 #, elixir-autogen, elixir-format
@@ -1468,7 +1471,7 @@ msgstr "Взгляд вверх %{nick}..."
 #: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:141
 #, elixir-autogen, elixir-format
 msgid "Magenta"
-msgstr "Магента"
+msgstr "Пурпурный"
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:72
 #, elixir-autogen, elixir-format
@@ -1478,7 +1481,7 @@ msgstr "Марк как читать"
 #: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
 #, elixir-autogen, elixir-format
 msgid "Maroon"
-msgstr "Марун"
+msgstr "Бордовый"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:109
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:222
@@ -1561,7 +1564,8 @@ msgstr "Список цветов Ника полный (максимум 50)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:1088
 #, elixir-autogen
-msgid "NickServ protects your nickname with a password so nobody else can use it."
+msgid ""
+"NickServ protects your nickname with a password so nobody else can use it."
 msgstr ""
 "NickServ защищает ваш никнейм паролем, чтобы никто другой не мог его "
 "использовать."
@@ -1794,7 +1798,9 @@ msgstr "Ответить"
 
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:252
 #, elixir-autogen, elixir-format
-msgid "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
+msgid ""
+"Reply parent message is not currently loaded. Scroll up to load older "
+"history, then try again."
 msgstr ""
 "Ответ на родительское сообщение в настоящее время не загружается. Прокрутите"
 " вверх, чтобы загрузить старую историю, а затем попробуйте снова."
@@ -1942,7 +1948,7 @@ msgstr "Источник и место назначения одинаковы"
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_tabs.ex:89
 #, elixir-autogen, elixir-format
 msgid "Status"
-msgstr "Статус"
+msgstr "Состояние"
 
 #: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:174
 #, elixir-autogen, elixir-format
@@ -1973,7 +1979,7 @@ msgstr "TZ"
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:379
 #, elixir-autogen, elixir-format
 msgid "Teal"
-msgstr "Тил"
+msgstr "Бирюзовый"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:56
 #, elixir-autogen, elixir-format
@@ -2339,7 +2345,9 @@ msgstr "[NickServ] Прозвище онлайн"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:578
 #, elixir-autogen, elixir-format
-msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
+msgid ""
+"[NickServ] This nickname is registered. You have 60 seconds to identify via "
+"/ns identify <password> or you will be renamed."
 msgstr ""
 "[НикСерв] Это прозвище зарегистрировано. У вас есть 60 секунд, чтобы "
 "идентифицировать /ns определять <password> Или вы будете переименованы."
@@ -2873,7 +2881,7 @@ msgstr "Таймер не найден"
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:238
 #, elixir-autogen, elixir-format
 msgid "Timers"
-msgstr "Тимерс"
+msgstr "Таймеры"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:171
 #, elixir-autogen, elixir-format
@@ -3190,7 +3198,9 @@ msgstr "Скачать P2P Screen Share"
 
 #: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:210
 #, elixir-autogen, elixir-format
-msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
+msgid ""
+"You must be registered and identified to play. Use /ns register and /ns "
+"identify first."
 msgstr ""
 "Вы должны быть зарегистрированы и идентифицированы, чтобы играть. Сначала "
 "используйте регистр /ns и идентифицируйте /ns."
@@ -3381,7 +3391,7 @@ msgstr "Ник Колорс"
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:188
 #, elixir-autogen, elixir-format
 msgid "Admin"
-msgstr "администратор"
+msgstr "Админ"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:191
 #, elixir-autogen, elixir-format
@@ -3658,7 +3668,7 @@ msgstr "Прикрепления могут быть отправлены тол
 #: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:279
 #, elixir-autogen, elixir-format
 msgid "Audio"
-msgstr "Аудио"
+msgstr "Звук"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:174
 #, elixir-autogen, elixir-format
@@ -4014,12 +4024,14 @@ msgstr "P2P: %{peer} — в другой вкладке"
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:133
 #, elixir-autogen, elixir-format
 msgid "This P2P session is open in another tab of yours — click to go to it"
-msgstr "Эта сессия P2P открыта в другой вашей вкладке — нажмите, чтобы перейти к ней"
+msgstr ""
+"Эта сессия P2P открыта в другой вашей вкладке — нажмите, чтобы перейти к ней"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:69
 #, elixir-autogen, elixir-format
 msgid "P2P request sent to %{target}. Open it from the card below."
-msgstr "Запрос P2P отправлен пользователю %{target}. Откройте его из карточки ниже."
+msgstr ""
+"Запрос P2P отправлен пользователю %{target}. Откройте его из карточки ниже."
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:82
 #, elixir-autogen, elixir-format
@@ -4044,7 +4056,8 @@ msgstr "В другой вкладке"
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:42
 #, elixir-autogen, elixir-format
 msgid "This space is open in another tab — click to go to it"
-msgstr "Это пространство открыто в другой вкладке — нажмите, чтобы перейти к ней"
+msgstr ""
+"Это пространство открыто в другой вкладке — нажмите, чтобы перейти к ней"
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:132
 #, elixir-autogen, elixir-format

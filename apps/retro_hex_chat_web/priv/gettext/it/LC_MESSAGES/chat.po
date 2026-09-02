@@ -728,7 +728,8 @@ msgstr "Tentativo %{attempt} di %{max_attempts}"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:498
 #, elixir-autogen, elixir-format
-msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
+msgid ""
+"Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr ""
 "L'elenco di accesso automatico è completo (20 canali). %{channel} non è "
 "stato aggiunto all'accesso automatico."
@@ -755,7 +756,9 @@ msgstr "Regole di risposta automatica:"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:114
 #, elixir-autogen, elixir-format
-msgid "Available commands: %{commands}\nType /help <command> for details, or open Help Topics from the menu for the full help system."
+msgid ""
+"Available commands: %{commands}\n"
+"Type /help <command> for details, or open Help Topics from the menu for the full help system."
 msgstr ""
 "Comandi disponibili: %{commands}\n"
 "Tipo /help Traduzione:/ph0> per i dettagli, o aprire Help Topics dal menu per il sistema di aiuto completo."
@@ -1096,7 +1099,7 @@ msgstr "Non poteva impostare il colore per %{nickname}"
 #: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:139
 #, elixir-autogen, elixir-format
 msgid "Cyan"
-msgstr "Cyan"
+msgstr "Ciano"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:315
 #, elixir-autogen, elixir-format
@@ -1473,7 +1476,7 @@ msgstr "Mark come Leggi"
 #: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
 #, elixir-autogen, elixir-format
 msgid "Maroon"
-msgstr "Maroon"
+msgstr "Bordeaux"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:109
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:222
@@ -1556,7 +1559,8 @@ msgstr "Nick elenco di colori è pieno (max 50)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:1088
 #, elixir-autogen
-msgid "NickServ protects your nickname with a password so nobody else can use it."
+msgid ""
+"NickServ protects your nickname with a password so nobody else can use it."
 msgstr ""
 "NickServ protegge il tuo soprannome con una password in modo che nessun "
 "altro possa usarlo."
@@ -1789,7 +1793,9 @@ msgstr "Rispondi"
 
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:252
 #, elixir-autogen, elixir-format
-msgid "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
+msgid ""
+"Reply parent message is not currently loaded. Scroll up to load older "
+"history, then try again."
 msgstr ""
 "Il messaggio del genitore di risposta non è attualmente caricato. Scorrere "
 "fino a caricare la storia più vecchia, poi riprovare."
@@ -1968,7 +1974,7 @@ msgstr "TZ"
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:379
 #, elixir-autogen, elixir-format
 msgid "Teal"
-msgstr "Teal"
+msgstr "Verde acqua"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:56
 #, elixir-autogen, elixir-format
@@ -2334,7 +2340,9 @@ msgstr "[NickServ] Nickname Servizi Online"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:578
 #, elixir-autogen, elixir-format
-msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
+msgid ""
+"[NickServ] This nickname is registered. You have 60 seconds to identify via "
+"/ns identify <password> or you will be renamed."
 msgstr ""
 "[NickServ] Questo soprannome è registrato. Hai 60 secondi per identificare "
 "tramite /ns identificare <password> o sarai rinominato."
@@ -3182,7 +3190,9 @@ msgstr "Toggle Schermo P2P Condividi"
 
 #: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:210
 #, elixir-autogen, elixir-format
-msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
+msgid ""
+"You must be registered and identified to play. Use /ns register and /ns "
+"identify first."
 msgstr ""
 "Devi essere registrato e identificato per giocare. Utilizzare /ns registro e"
 " /ns identificare prima."
@@ -3375,7 +3385,7 @@ msgstr "Nick Colori"
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:188
 #, elixir-autogen, elixir-format
 msgid "Admin"
-msgstr "Amministrazioni"
+msgstr "Admin"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:191
 #, elixir-autogen, elixir-format
@@ -4007,7 +4017,8 @@ msgstr "P2P: %{peer} — in un'altra scheda"
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:133
 #, elixir-autogen, elixir-format
 msgid "This P2P session is open in another tab of yours — click to go to it"
-msgstr "Questa sessione P2P è aperta in un'altra tua scheda — fai clic per andarci"
+msgstr ""
+"Questa sessione P2P è aperta in un'altra tua scheda — fai clic per andarci"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:69
 #, elixir-autogen, elixir-format
@@ -4017,7 +4028,8 @@ msgstr "Richiesta P2P inviata a %{target}. Aprila dalla scheda qui sotto."
 #: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:82
 #, elixir-autogen, elixir-format
 msgid "P2P session request. Open it from the card below. /p2p/%{token}"
-msgstr "Richiesta di sessione P2P. Aprila dalla scheda qui sotto. /p2p/%{token}"
+msgstr ""
+"Richiesta di sessione P2P. Aprila dalla scheda qui sotto. /p2p/%{token}"
 
 #: lib/retro_hex_chat_web/channels/space_session_announcement.ex:90
 #, elixir-autogen, elixir-format

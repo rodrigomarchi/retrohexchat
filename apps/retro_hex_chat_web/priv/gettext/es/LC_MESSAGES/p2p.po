@@ -365,7 +365,9 @@ msgstr "Descargar"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:828
 #, elixir-autogen, elixir-format
-msgid "Estimated bandwidth available for sending to the peer, in kilobits per second."
+msgid ""
+"Estimated bandwidth available for sending to the peer, in kilobits per "
+"second."
 msgstr ""
 "Ancho de banda estimado disponible para el envío al par, en kilobits por "
 "segundo."
@@ -461,7 +463,7 @@ msgstr "Inactivo"
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:289
 #, elixir-autogen, elixir-format
 msgid "Jitter"
-msgstr "Jitter"
+msgstr "Fluctuación"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:657
 #, elixir-autogen, elixir-format
@@ -487,7 +489,9 @@ msgstr "MOS %{score}"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:800
 #, elixir-autogen, elixir-format
-msgid "Mean Opinion Score (1-5): an overall call-quality estimate from latency, jitter and loss. 5 is excellent; below 3.5 feels poor."
+msgid ""
+"Mean Opinion Score (1-5): an overall call-quality estimate from latency, "
+"jitter and loss. 5 is excellent; below 3.5 feels poor."
 msgstr ""
 "Mean Opinion Score (1-5): una estimación global de la calidad de llamada de "
 "la latencia, el desorden y la pérdida. 5 es excelente; debajo de 3,5 se "
@@ -553,7 +557,9 @@ msgstr "Producto"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:793
 #, elixir-autogen, elixir-format
-msgid "Overall connection health, rated from Excellent to Poor based on the MOS score."
+msgid ""
+"Overall connection health, rated from Excellent to Poor based on the MOS "
+"score."
 msgstr ""
 "Salud de conexión global, valorada de Excelente a Pobre basado en la "
 "puntuación MOS."
@@ -597,7 +603,9 @@ msgstr "Pendiente"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:821
 #, elixir-autogen, elixir-format
-msgid "Percentage of packets that never arrived. Above ~3% noticeably degrades quality."
+msgid ""
+"Percentage of packets that never arrived. Above ~3% noticeably degrades "
+"quality."
 msgstr ""
 "Porcentaje de paquetes que nunca llegaron. Por encima de ~3% notablemente "
 "degrada la calidad."
@@ -667,7 +675,9 @@ msgstr "Volver a la distribución dividida"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:807
 #, elixir-autogen, elixir-format
-msgid "Round-trip time for data to reach the peer and return. Lower is better; under ~150 ms feels instant."
+msgid ""
+"Round-trip time for data to reach the peer and return. Lower is better; "
+"under ~150 ms feels instant."
 msgstr ""
 "Tiempo de ida y vuelta para que los datos lleguen al par y regresen. Más "
 "bajo es mejor; debajo de ~150 ms se siente instantánea."
@@ -797,7 +807,9 @@ msgstr "Subir"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:814
 #, elixir-autogen, elixir-format
-msgid "Variation in packet arrival timing. High jitter causes choppy audio and video."
+msgid ""
+"Variation in packet arrival timing. High jitter causes choppy audio and "
+"video."
 msgstr ""
 "Variación en el tiempo de llegada del paquete. El alto nivel causa el audio "
 "y el vídeo del aficionado."
@@ -828,7 +840,9 @@ msgstr "Si el vídeo activo RTP es cámara o pantalla compartida."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:874
 #, elixir-autogen, elixir-format
-msgid "Why quality was capped: CPU means your device is too busy; Bandwidth means the network is too slow."
+msgid ""
+"Why quality was capped: CPU means your device is too busy; Bandwidth means "
+"the network is too slow."
 msgstr ""
 "Por qué la calidad estaba tapada: CPU significa que tu dispositivo está "
 "demasiado ocupado; Bandwidth significa que la red es demasiado lenta."
@@ -927,14 +941,18 @@ msgstr "Stats"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:529
 #, elixir-autogen, elixir-format
-msgid "When the network allows it, packets travel browser-to-browser instead of through the conference server."
+msgid ""
+"When the network allows it, packets travel browser-to-browser instead of "
+"through the conference server."
 msgstr ""
 "Cuando la red lo permite, los paquetes viajan navegador a navegador en lugar"
 " de a través del servidor de conferencias."
 
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:522
 #, elixir-autogen, elixir-format
-msgid "Your browser uses the relay path for this session, while the session still stays one-to-one."
+msgid ""
+"Your browser uses the relay path for this session, while the session still "
+"stays one-to-one."
 msgstr ""
 "Su navegador utiliza la ruta de relé para esta sesión, mientras que la "
 "sesión sigue siendo de uno a uno."
@@ -1212,12 +1230,15 @@ msgstr "Intento"
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:352
 #, elixir-autogen, elixir-format
 msgid "Could not restore this P2P session. Retry or end the session."
-msgstr "No se pudo restaurar esta sesión P2P. Reinténtalo o finaliza la sesión."
+msgstr ""
+"No se pudo restaurar esta sesión P2P. Reinténtalo o finaliza la sesión."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:846
 #, elixir-autogen, elixir-format
 msgid "Current P2P signaling generation used to ignore stale SDP and ICE."
-msgstr "Generación actual de la señalización P2P, usada para descartar SDP e ICE obsoletos."
+msgstr ""
+"Generación actual de la señalización P2P, usada para descartar SDP e ICE "
+"obsoletos."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:843
 #, elixir-autogen, elixir-format
@@ -1227,12 +1248,15 @@ msgstr "Intento automático actual de este ciclo de recuperación."
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:849
 #, elixir-autogen, elixir-format
 msgid "Current offer identifier used to ignore stale answers and candidates."
-msgstr "Identificador de la oferta actual, usado para descartar respuestas y candidatos obsoletos."
+msgstr ""
+"Identificador de la oferta actual, usado para descartar respuestas y "
+"candidatos obsoletos."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:834
 #, elixir-autogen, elixir-format
 msgid "Current recovery state reported by the call connection."
-msgstr "Estado de recuperación actual informado por la conexión de la llamada."
+msgstr ""
+"Estado de recuperación actual informado por la conexión de la llamada."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:750
 #, elixir-autogen, elixir-format
@@ -1262,8 +1286,11 @@ msgstr "Oferta"
 
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:365
 #, elixir-autogen, elixir-format
-msgid "Peer media connection was interrupted. Recovery is monitoring the link."
-msgstr "La conexión multimedia con el par se interrumpió. La recuperación está vigilando el enlace."
+msgid ""
+"Peer media connection was interrupted. Recovery is monitoring the link."
+msgstr ""
+"La conexión multimedia con el par se interrumpió. La recuperación está "
+"vigilando el enlace."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:215
 #, elixir-autogen, elixir-format
@@ -1297,8 +1324,12 @@ msgstr "Estado"
 
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:345
 #, elixir-autogen, elixir-format
-msgid "This session is still active in another window. Close that window, retry, or end this session."
-msgstr "Esta sesión sigue activa en otra ventana. Cierra esa ventana, reinténtalo o finaliza esta sesión."
+msgid ""
+"This session is still active in another window. Close that window, retry, or"
+" end this session."
+msgstr ""
+"Esta sesión sigue activa en otra ventana. Cierra esa ventana, reinténtalo o "
+"finaliza esta sesión."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:222
 #, elixir-autogen, elixir-format

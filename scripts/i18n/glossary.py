@@ -279,6 +279,34 @@ _ROWS = {
     # The user-list heading over the two people in a private conversation, where
     # a channel would name a role. A group of people, not a share or a stake.
     "Participants": ("Participantes", "Participantes", "Participantes", "Participants", "Teilnehmer", "Partecipanti", "Deelnemers", "Uczestnicy", "Участники", "Peserta", "参加者", "参与者", "參與者"),
+
+    # ── mIRC colour names ─────────────────────────────────────
+    # The palette a nickname or a line of text can be painted with. Named
+    # colours, not hex — a person picks "Teal" from a list, so the list has to
+    # be in their language.
+    "Cyan":         ("Ciano", "Ciano", "Cian", "Cyan", "Cyan", "Ciano", "Cyaan", "Cyjan", "Голубой", "Sian", "シアン", "青色", "青色"),
+    "Magenta":      ("Magenta", "Magenta", "Magenta", "Magenta", "Magenta", "Magenta", "Magenta", "Magenta", "Пурпурный", "Magenta", "マゼンタ", "洋红", "洋紅"),
+    "Teal":         ("Verde-azulado", "Verde-azulado", "Verde azulado", "Sarcelle", "Blaugrün", "Verde acqua", "Blauwgroen", "Morski", "Бирюзовый", "Biru kehijauan", "青緑", "蓝绿", "藍綠"),
+    "Orange":       ("Laranja", "Laranja", "Naranja", "Orange", "Orange", "Arancione", "Oranje", "Pomarańczowy", "Оранжевый", "Oranye", "オレンジ", "橙色", "橙色"),
+    "Maroon":       ("Bordô", "Bordô", "Granate", "Bordeaux", "Kastanienbraun", "Bordeaux", "Kastanjebruin", "Bordowy", "Бордовый", "Merah marun", "栗色", "栗色", "栗色"),
+
+    # ── The chat's own furniture ──────────────────────────────
+    "Status":       ("Status", "Estado", "Estado", "Statut", "Status", "Stato", "Status", "Status", "Состояние", "Status", "ステータス", "状态", "狀態"),
+    "Chat":         ("Chat", "Conversa", "Chat", "Discussion", "Chat", "Chat", "Chat", "Czat", "Чат", "Obrolan", "チャット", "聊天", "聊天"),
+    "Online":       ("Online", "Online", "En línea", "En ligne", "Online", "Online", "Online", "Dostępny", "В сети", "Daring", "オンライン", "在线", "線上"),
+    "Offline":      ("Offline", "Offline", "Desconectado", "Hors ligne", "Offline", "Offline", "Offline", "Offline", "Не в сети", "Luring", "オフライン", "离线", "離線"),
+    "Server":       ("Servidor", "Servidor", "Servidor", "Serveur", "Server", "Server", "Server", "Serwer", "Сервер", "Server", "サーバー", "服务器", "伺服器"),
+    "Browser":      ("Navegador", "Navegador", "Navegador", "Navigateur", "Browser", "Browser", "Browser", "Przeglądarka", "Браузер", "Peramban", "ブラウザー", "浏览器", "瀏覽器"),
+    "Audio":        ("Áudio", "Áudio", "Audio", "Audio", "Audio", "Audio", "Audio", "Dźwięk", "Звук", "Audio", "オーディオ", "音频", "音訊"),
+    "Video":        ("Vídeo", "Vídeo", "Vídeo", "Vidéo", "Video", "Video", "Video", "Wideo", "Видео", "Video", "ビデオ", "视频", "視訊"),
+    "Emoji":        ("Emoji", "Emoji", "Emoji", "Émoji", "Emoji", "Emoji", "Emoji", "Emoji", "Эмодзи", "Emoji", "絵文字", "表情符号", "表情符號"),
+    "Bots":         ("Bots", "Bots", "Bots", "Bots", "Bots", "Bot", "Bots", "Boty", "Боты", "Bot", "ボット", "机器人", "機器人"),
+    "Admin":        ("Admin", "Admin", "Admin", "Admin", "Admin", "Admin", "Beheer", "Admin", "Админ", "Admin", "管理", "管理", "管理"),
+    "Timers":       ("Timers", "Temporizadores", "Temporizadores", "Minuteries", "Timer", "Timer", "Timers", "Liczniki", "Таймеры", "Pengatur waktu", "タイマー", "计时器", "計時器"),
+    "Kick":         ("Expulsar", "Expulsar", "Expulsar", "Expulser", "Kicken", "Espelli", "Kicken", "Wyrzuć", "Выгнать", "Keluarkan", "キック", "踢出", "踢出"),
+    "Nick":         ("Apelido", "Alcunha", "Apodo", "Pseudo", "Nick", "Nick", "Nick", "Nick", "Ник", "Nama panggilan", "ニック", "昵称", "暱稱"),
+    "Auto":         ("Auto", "Auto", "Auto", "Auto", "Auto", "Auto", "Auto", "Auto", "Авто", "Otomatis", "自動", "自动", "自動"),
+    "Jitter":       ("Jitter", "Jitter", "Fluctuación", "Gigue", "Jitter", "Jitter", "Jitter", "Jitter", "Джиттер", "Jitter", "ジッター", "抖动", "抖動"),
 }
 # fmt: on
 
