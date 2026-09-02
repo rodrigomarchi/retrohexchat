@@ -817,6 +817,7 @@ export class ChatPage {
   }
 
   async switchToTab(name: string) {
+    await this.ensureConversationsVisible();
     await this.conversationRow(name).click();
     await expect(this.tab(name)).toHaveAttribute("aria-selected", "true");
     await expect(this.chatInput).toHaveAttribute(
@@ -898,8 +899,25 @@ export class ChatPage {
 
   // "The conversation exists and is reachable" — the sidebar answers this for
   // every conversation, focused or not.
+  // On a narrow viewport the conversations panel starts collapsed and its rows
+  // are in the document but hidden. A person opens the drawer to reach one;
+  // so does this, rather than every mobile spec asserting on a row nobody can
+  // see. On a wide viewport the panel is already open and this does nothing.
+  async ensureConversationsVisible() {
+    const toggle = this.page.getByTestId("conversation-toolbar-conversations");
+    if ((await toggle.count()) === 0) return;
+    if (await toggle.isVisible()) {
+      const expanded = await toggle.getAttribute("aria-pressed");
+      if (expanded === "false") await toggle.click();
+    }
+  }
+
   async expectTabVisible(name: string) {
-    await expect(this.conversationRow(name)).toBeVisible();
+    const row = this.conversationRow(name);
+    if ((await row.count()) > 0 && !(await row.first().isVisible())) {
+      await this.ensureConversationsVisible();
+    }
+    await expect(row).toBeVisible();
   }
 
   async expectTabSelected(name: string) {
