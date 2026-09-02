@@ -37,14 +37,7 @@ test.describe("Space fullscreen toggle", () => {
       const channel = uniqueChannel("fsc");
       await user.chat.sendMessage(`/join ${channel}`);
 
-      const page = user.page;
-      const spaceTab = page.locator(
-        '[data-testid="tab-bar"] [role="tab"][phx-value-type="space"]',
-      );
-      await expect(spaceTab).toBeVisible();
-      await spaceTab.click();
-
-      await expect(page.getByTestId("space-character-select")).toBeVisible();
+      const page = await user.chat.openSpace();
       await page.getByTestId("space-avatar-knight").click();
 
       const canvas = page.locator('[data-testid="channel-space-shell"] canvas');

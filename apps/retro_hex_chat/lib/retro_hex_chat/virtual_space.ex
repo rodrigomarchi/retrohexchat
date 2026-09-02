@@ -7,31 +7,48 @@ defmodule RetroHexChat.VirtualSpace do
   `RetroHexChat.VirtualSpace.*`.
   """
 
-  alias RetroHexChat.Channels.Server, as: ChannelServer
   alias RetroHexChat.Observability
   alias RetroHexChat.VirtualSpace.ChannelSpaceServer
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
+  alias RetroHexChat.VirtualSpace.Schema.Session
+  alias RetroHexChat.VirtualSpace.SessionRecorder
   alias RetroHexChat.VirtualSpace.Supervisor
+
+  @typedoc """
+  What one join produced, beyond a seat in the world.
+
+  `session` is filled in for the person who walked into an empty space and for
+  nobody else: it is the gathering they just started, and the caller that gets
+  it is the one that owes the conversation a card.
+  """
+  @type join_result :: %{
+          participant: ChannelSpaceServer.participant(),
+          snapshot: map(),
+          map: map(),
+          session: SessionRecorder.opened() | nil
+        }
 
   @spec join_channel_space(String.t(), %{
           :user_id => integer() | nil,
           :nickname => String.t(),
           optional(:avatar) => String.t() | nil
-        }) ::
-          {:ok, %{participant: ChannelSpaceServer.participant(), snapshot: map(), map: map()}}
-          | {:error, atom()}
+        }) :: {:ok, join_result()} | {:error, atom()}
   def join_channel_space(channel_name, actor) do
     Observability.span(
       [:retro_hex_chat, :virtual_space, :join],
       %{"chat.channel" => channel_name, space_kind: "channel"},
       fn ->
-        with :ok <- ensure_channel_space_process(channel_name) do
-          ChannelSpaceServer.join(channel_name, %{
+        with {:ok, started} <- ensure_channel_space_process(channel_name) do
+          session = record_opening(started, channel_name, :channel, actor)
+
+          channel_name
+          |> ChannelSpaceServer.join(%{
             user_id: actor.user_id,
             nickname: actor.nickname,
             avatar: Map.get(actor, :avatar)
           })
+          |> with_session(session)
         end
       end
     )
@@ -45,24 +62,45 @@ defmodule RetroHexChat.VirtualSpace do
             optional(:avatar) => String.t() | nil
           },
           [String.t()]
-        ) ::
-          {:ok, %{participant: ChannelSpaceServer.participant(), snapshot: map(), map: map()}}
-          | {:error, atom()}
+        ) :: {:ok, join_result()} | {:error, atom()}
   def join_direct_message_space(space_id, actor, participants) do
     Observability.span(
       [:retro_hex_chat, :virtual_space, :join],
       %{space_kind: "direct_message"},
       fn ->
-        with :ok <- ensure_direct_message_space_process(space_id, participants) do
-          ChannelSpaceServer.join_direct_message(space_id, %{
+        with {:ok, started} <- ensure_direct_message_space_process(space_id, participants) do
+          session = record_opening(started, space_id, :direct_message, actor)
+
+          space_id
+          |> ChannelSpaceServer.join_direct_message(%{
             user_id: actor.user_id,
             nickname: actor.nickname,
             avatar: Map.get(actor, :avatar)
           })
+          |> with_session(session)
         end
       end
     )
   end
+
+  # A gathering begins when somebody walks into an empty world, which is the
+  # same moment the world itself begins. Exactly one caller sees the process
+  # start — the losers of the race get `:already_started` — so exactly one
+  # gathering is opened, and exactly one card is written for it.
+  #
+  # Everybody else is an arrival, told to the recorder rather than read off the
+  # roster: a channel space draws the whole channel on its map, so the roster
+  # answers who belongs here and the card asks who actually came.
+  defp record_opening({:started, pid}, space_id, kind, actor),
+    do: SessionRecorder.opened(space_id, kind, pid, actor)
+
+  defp record_opening(:running, space_id, _kind, actor) do
+    SessionRecorder.arrived(space_id, actor.nickname)
+    nil
+  end
+
+  defp with_session({:ok, result}, session), do: {:ok, Map.put(result, :session, session)}
+  defp with_session(other, _session), do: other
 
   @spec input(String.t(), String.t(), ChannelSpaceServer.input_payload()) ::
           :ok | {:error, ChannelSpaceServer.input_error()}
@@ -178,20 +216,16 @@ defmodule RetroHexChat.VirtualSpace do
 
   The one question the screens outside a space ask of it: the antechamber
   someone is waiting in, and the card the chat draws for a space its reader is
-  not in. A space nobody has opened has no process, and "nobody is inside" is
-  the honest answer to give for it rather than an error to handle twice.
+  not in. A space nobody has opened has no process, and **nobody is inside** is
+  the answer for it — the members of the channel a space hangs off are not
+  people in the space, and a card that counted them would announce a crowd
+  standing in an empty room.
   """
   @spec roster(String.t()) :: [String.t()]
   def roster(space_id) do
     case space_kind(space_id) do
-      :direct_message ->
-        nicknames(direct_message_snapshot(space_id))
-
-      :channel ->
-        case snapshot(space_id) do
-          {:ok, snapshot} -> nicknames({:ok, snapshot})
-          {:error, :not_found} -> channel_members(space_id)
-        end
+      :direct_message -> nicknames(direct_message_snapshot(space_id))
+      :channel -> nicknames(snapshot(space_id))
     end
   end
 
@@ -207,24 +241,37 @@ defmodule RetroHexChat.VirtualSpace do
   def space_kind("dm:" <> _rest), do: :direct_message
   def space_kind(_space_id), do: :channel
 
+  @doc """
+  One gathering by its token, whether it is still going or long over.
+
+  The card in a conversation is about a gathering rather than about the place:
+  the address of a space stays good forever, and a card that read the place
+  would say the same thing about a party that ended last month as about the one
+  happening now.
+  """
+  @spec get_session(String.t()) :: {:ok, Session.t()} | {:error, :not_found}
+  def get_session(token) when is_binary(token) do
+    case SessionRecorder.get_session(token) do
+      %Session{} = session -> {:ok, session}
+      nil -> {:error, :not_found}
+    end
+  end
+
+  def get_session(_token), do: {:error, :not_found}
+
+  @doc "The gathering going on in a space right now, or `nil`."
+  @spec open_session(String.t()) :: Session.t() | nil
+  defdelegate open_session(space_id), to: SessionRecorder
+
+  @doc "How many distinct people passed through one gathering."
+  @spec session_visitors(Session.t()) :: non_neg_integer()
+  def session_visitors(%Session{id: id}), do: SessionRecorder.count_visitors(id)
+
   defp nicknames({:ok, %{participants: participants}}) do
     participants |> Elixir.Map.values() |> Enum.map(& &1.nickname) |> Enum.sort()
   end
 
   defp nicknames(_absent), do: []
-
-  # A channel space holds everyone in the channel, so a channel space with no
-  # process yet holds exactly who it will hold the moment one starts. Reading
-  # the cold answer beats starting a world to ask it a question.
-  defp channel_members(channel_name) do
-    case ChannelServer.get_state(channel_name) do
-      {:ok, %{members: members}} ->
-        members |> Enum.map(fn {nick, _role} -> nick end) |> Enum.sort()
-
-      _absent ->
-        []
-    end
-  end
 
   @spec get_map(String.t()) :: {:ok, map()} | {:error, :unknown_map}
   defdelegate get_map(map_id), to: SpaceMap, as: :get
@@ -237,17 +284,14 @@ defmodule RetroHexChat.VirtualSpace do
 
   defp ensure_channel_space_process(channel_name) do
     case RetroHexChat.VirtualSpace.Registry.lookup({:channel_space, channel_name}) do
-      {:ok, _pid} ->
-        :ok
-
-      {:error, :not_found} ->
-        case Supervisor.start_channel_child(channel_name) do
-          {:ok, _pid} -> :ok
-          {:error, {:already_started, _pid}} -> :ok
-          {:error, reason} -> {:error, reason}
-        end
+      {:ok, _pid} -> {:ok, :running}
+      {:error, :not_found} -> started(Supervisor.start_channel_child(channel_name))
     end
   end
+
+  defp started({:ok, pid}), do: {:ok, {:started, pid}}
+  defp started({:error, {:already_started, _pid}}), do: {:ok, :running}
+  defp started({:error, reason}), do: {:error, reason}
 
   defp ensure_direct_message_space_process(space_id, participants) do
     case validate_direct_message_space(space_id, participants) do
@@ -268,16 +312,11 @@ defmodule RetroHexChat.VirtualSpace do
 
   defp ensure_direct_message_child(space_id, participants) do
     case RetroHexChat.VirtualSpace.Registry.lookup({:direct_message_space, space_id}) do
-      {:ok, _pid} -> :ok
-      {:error, :not_found} -> start_direct_message_child(space_id, participants)
-    end
-  end
+      {:ok, _pid} ->
+        {:ok, :running}
 
-  defp start_direct_message_child(space_id, participants) do
-    case Supervisor.start_direct_message_child(space_id, participants) do
-      {:ok, _pid} -> :ok
-      {:error, {:already_started, _pid}} -> :ok
-      {:error, reason} -> {:error, reason}
+      {:error, :not_found} ->
+        started(Supervisor.start_direct_message_child(space_id, participants))
     end
   end
 end

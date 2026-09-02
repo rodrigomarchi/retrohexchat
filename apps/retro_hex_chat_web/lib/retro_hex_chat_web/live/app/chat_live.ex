@@ -36,6 +36,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── P2P session badges ───────────────────────────────────────
   import RetroHexChatWeb.Components.UI.P2P.SessionBadge
   import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
+  import RetroHexChatWeb.Components.UI.Space.ConversationEntry
 
   # ── Solo arcade window body ──────────────────────────────────
   import RetroHexChatWeb.Components.UI.SoloLobby
@@ -359,7 +360,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       "status" -> dispatch_to_hooks("switch_to_status", %{}, socket)
       "channel" -> dispatch_to_hooks("switch_channel", %{"channel" => label}, socket)
       "pm" -> dispatch_to_hooks("switch_pm", %{"nickname" => label}, socket)
-      "space" -> handle_event("switch_channel_view", %{"view" => "space"}, socket)
       _ -> {:noreply, socket}
     end
   end
@@ -371,16 +371,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       "pm" -> dispatch_to_hooks("close_pm_tab", %{"nickname" => label}, socket)
       _ -> {:noreply, socket}
     end
-  end
-
-  def handle_event("switch_channel_view", %{"view" => view}, socket)
-      when view in ["chat", "space"] do
-    channel_view = if view == "space", do: :space, else: :chat
-    # Leaving the space takes its surface off the screen, and the surface is
-    # where the chosen character lives — so coming back always shows the picker
-    # again, without anything here having to say so. A view is a tab now, so
-    # picking one also uncovers the conversation from Status.
-    {:noreply, assign(socket, channel_view: channel_view, show_status_tab: false)}
   end
 
   def handle_event("close_all_context_menus", _params, socket) do
@@ -870,9 +860,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:pubsub_handlers, &ChatLive.PubsubHandlers.handle_info/2},
       # The call surface reports to its host: what the chat's chrome draws,
       # the notices that belong in the conversation, and the window commands.
-      # The space surface reports to its host: the character it remembers for
-      # next time, and what the canvas says about a nickname on the map.
-      {:space_info, &ChatLive.SpaceEvents.handle_info/2},
       # After PubsubHandlers: it consumes "lobby_invite" first; this one owns
       # the other two sentences a session says on the reader's own topic.
       {:p2p_session_info, &ChatLive.P2PSessionEvents.handle_info/2},
@@ -975,10 +962,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       show_knock_request_dialog: false,
       channel_list_channels: [],
       channel_list_loading: false,
-      channel_view: :chat,
-      # Which character you picked last, which outlives every visit to a space
-      # and therefore cannot live inside the surface that is mounted per visit.
-      space_last_avatar: hd(RetroHexChat.VirtualSpace.avatars()),
       group_call_channels: MapSet.new(),
       group_call_channel_summaries: %{},
       p2p_pm_sessions: %{},

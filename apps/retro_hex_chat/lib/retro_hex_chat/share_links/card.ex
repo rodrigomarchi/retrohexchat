@@ -29,6 +29,7 @@ defmodule RetroHexChat.ShareLinks.Card do
   alias RetroHexChat.Lobby.Schema.Session
   alias RetroHexChat.ShareLinks.Schema.Link
   alias RetroHexChat.VirtualSpace
+  alias RetroHexChat.VirtualSpace.Schema.Session, as: SpaceSession
 
   @typedoc """
   Why a card is no longer live. `:revoked` and `:expired` are things done to
@@ -39,9 +40,11 @@ defmodule RetroHexChat.ShareLinks.Card do
   @typedoc """
   What a room turned out to be, once it is over.
 
-  Only the kinds that **end** have one. A space and a solo game are places: they
-  have no beginning to measure from and no end to measure to, and a duration on
-  them would be the age of the catalogue entry dressed up as a session.
+  Only the kinds that **end** have one, and a solo game is not one of them: it
+  is a place in a catalogue, with no beginning to measure from and no end to
+  measure to. A space is a place too — its address stays good forever — but
+  what a card in a conversation is about is the *gathering* in it, and a
+  gathering both begins and ends.
   """
   @type metrics :: %{
           duration_seconds: non_neg_integer() | nil,
@@ -156,6 +159,19 @@ defmodule RetroHexChat.ShareLinks.Card do
     end
   end
 
+  defp metrics("space", %{"session_token" => token}) when is_binary(token) do
+    case VirtualSpace.get_session(token) do
+      {:ok, %SpaceSession{} = session} ->
+        %{
+          duration_seconds: elapsed(session.opened_at, session.closed_at),
+          visitors: VirtualSpace.session_visitors(session)
+        }
+
+      _absent ->
+        nil
+    end
+  end
+
   defp metrics(_kind, _target), do: nil
 
   # A conference that nobody ever joined has no `activated_at`, and the honest
@@ -213,16 +229,28 @@ defmodule RetroHexChat.ShareLinks.Card do
     end
   end
 
-  defp room_state("space", target) do
+  # The card a space posts for itself names the gathering, not the place. Two
+  # parties at the same address are two cards, and the older one has to keep
+  # saying that its own evening is over rather than borrowing tonight's.
+  defp room_state("space", %{"session_token" => token} = target) when is_binary(token) do
     space_id = target["space_id"] || ""
-    roster = VirtualSpace.roster(space_id)
 
-    %{
-      count: length(roster),
-      participants: Enum.take(roster, 3),
-      channel_name: space_channel_name(space_id)
-    }
+    case VirtualSpace.get_session(token) do
+      {:ok, %SpaceSession{status: "open"}} ->
+        occupied(space_id)
+
+      {:ok, %SpaceSession{}} ->
+        %{state: :ended, reason: :over, channel_name: space_channel_name(space_id)}
+
+      {:error, :not_found} ->
+        %{state: :ended, reason: :over}
+    end
   end
+
+  # A link somebody minted at the door of a space is about the place itself, and
+  # a place does not end. It says who is standing there, which is nobody at all
+  # when the world is not even running.
+  defp room_state("space", target), do: occupied(target["space_id"] || "")
 
   # A match link dies by success: the seat it offered is taken, and "already
   # full" is a different sentence from "expired" because it names something
@@ -265,6 +293,16 @@ defmodule RetroHexChat.ShareLinks.Card do
   end
 
   defp room_state(_kind, _target), do: %{state: :ended, reason: :over}
+
+  defp occupied(space_id) do
+    roster = VirtualSpace.roster(space_id)
+
+    %{
+      count: length(roster),
+      participants: Enum.take(roster, 3),
+      channel_name: space_channel_name(space_id)
+    }
+  end
 
   defp seats("open"), do: 1
   defp seats(_status), do: 2

@@ -251,7 +251,7 @@ test.describe("chat desktop on a phone (stacked single-window)", () => {
     const strip = page.getByTestId("tab-bar");
     const tablist = strip.locator('[role="tablist"]');
     await expect(tablist).toBeVisible();
-    for (const label of ["Status", "#lobby", "Space"]) {
+    for (const label of ["Status", "#lobby"]) {
       await expect(strip.getByRole("tab", { name: label })).toBeVisible();
     }
     const fit = await page.evaluate(() => {

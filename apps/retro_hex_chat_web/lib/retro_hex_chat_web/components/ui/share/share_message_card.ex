@@ -63,7 +63,15 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
             {badge(@card)}
           </span>
         </span>
-        <span class="text-muted-foreground block truncate text-sm" data-testid="share-message-detail">
+        <%!-- The heading truncates because a channel name has no length limit
+              worth designing around. The detail must not: it is a short fixed
+              sentence, and the half of it that got cut was the headcount the
+              ended card exists to carry — "lasted less than a minute…" with the
+              people silently gone. Two lines, and it always fits. --%>
+        <span
+          class="text-muted-foreground block line-clamp-2 text-sm"
+          data-testid="share-message-detail"
+        >
           {detail(@subject, @card)}
         </span>
       </span>

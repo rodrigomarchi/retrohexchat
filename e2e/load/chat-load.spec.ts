@@ -309,17 +309,24 @@ async function runSpace(
   deadline: number,
   sentAt: Map<string, number>,
 ) {
-  const page = user.page;
+  // The space has an address of its own, so this persona drives two pages: the
+  // world in its own tab, and the chat it was opened from for the composer.
+  let space: Page;
+
   try {
-    await page
-      .locator('[data-testid="tab-bar"] [role="tab"][phx-value-type="space"]')
-      .click();
-    const picker = page.getByTestId("space-character-select");
+    const opened = await Promise.all([
+      user.page.context().waitForEvent("page"),
+      user.page.getByTestId("space-open").click(),
+    ]);
+    space = opened[0];
+    await space.waitForLoadState("domcontentloaded");
+
+    const picker = space.getByTestId("space-character-select");
     await expect(picker).toBeVisible();
     const avatars = picker.locator('[data-testid^="space-avatar-"]');
     const avatarCount = await avatars.count();
     await avatars.nth(Math.floor(Math.random() * avatarCount)).click();
-    const canvas = page.locator('[data-testid="channel-space-shell"] canvas');
+    const canvas = space.locator('[data-testid="channel-space-shell"] canvas');
     await expect(canvas).toBeVisible();
     // Over a WAN the sprite atlases load slowly and a loading overlay can
     // cover the canvas for a while. The click only grants keyboard focus,
@@ -334,17 +341,17 @@ async function runSpace(
     return;
   }
 
-  const canvas = page.locator('[data-testid="channel-space-shell"] canvas');
+  const canvas = space.locator('[data-testid="channel-space-shell"] canvas');
   while (Date.now() < deadline && user.errors.length < 8) {
     try {
       const key = pick(ARROWS);
-      await user.page.keyboard.down(key);
+      await space.keyboard.down(key);
       await sleep(rand(250, 900));
-      await user.page.keyboard.up(key);
-      if (Math.random() < 0.2) await user.page.keyboard.press("Space");
-      // In hotspot mode the space user also types channel messages via the
-      // composer (visible in the space view) — same Channels.Server as chat.
-      // Refocus the canvas afterward so movement keeps working.
+      await space.keyboard.up(key);
+      if (Math.random() < 0.2) await space.keyboard.press("Space");
+      // In hotspot mode the space user also types channel messages, which now
+      // happen in the chat tab behind this one — same Channels.Server either
+      // way. Refocus the canvas afterward so movement keeps working.
       if (HOTSPOT && Math.random() < 0.35) {
         await sendTimed(user, pick(CORPUS), sentAt);
         await canvas.click({ force: true }).catch(() => {});

@@ -37,13 +37,11 @@ test.describe("Space virtual pad", () => {
       const channel = uniqueChannel("vpad");
       await user.chat.sendMessage(`/join ${channel}`);
 
-      const page = user.page;
       const sentFrames: string[] = [];
 
-      // `page.on("websocket")` only reports sockets opened after it is
-      // attached, and the LiveView's socket has been up since sign-in. CDP
-      // reports frames on the socket that is already there, which is the one
-      // the pad talks over.
+      // The pad talks over the space page's own socket, so the frames are read
+      // from that page and not from the chat that opened it.
+      const page = await user.chat.openSpace();
       const cdp = await page.context().newCDPSession(page);
       await cdp.send("Network.enable");
       cdp.on("Network.webSocketFrameSent", ({ response }) => {
@@ -56,13 +54,6 @@ test.describe("Space virtual pad", () => {
         }
       });
 
-      const spaceTab = page.locator(
-        '[data-testid="tab-bar"] [role="tab"][phx-value-type="space"]',
-      );
-      await expect(spaceTab).toBeVisible();
-      await spaceTab.click();
-
-      await expect(page.getByTestId("space-character-select")).toBeVisible();
       await page.getByTestId("space-avatar-knight").click();
 
       const canvas = page.locator('[data-testid="channel-space-shell"] canvas');

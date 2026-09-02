@@ -803,11 +803,6 @@ msgstr "關閉分頁不等於離開"
 msgid "What a link does not do"
 msgstr "連結不能做什麼"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A conference can run in a browser tab of its own, with the whole window to itself. Open the summary next to Call in the channel toolbar and choose Open in a tab. It is the same conference either way — the chat keeps its Group Call window for when you would rather not leave the page."
-msgstr "會議可以在獨立的瀏覽器分頁中執行，獨佔整個視窗。開啟頻道工具列中「通話」旁邊的摘要，選擇「在分頁中開啟」。兩種方式是同一個會議——聊天仍保留群組通話視窗，供你不想離開頁面時使用。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "A link says which room it is; it never says you may be in it. Whoever follows it still has to be registered with NickServ and a member of the channel, and a locked conference still refuses everyone but its moderators. Only a registered nickname can mint one, because the link records who made it."
@@ -822,16 +817,6 @@ msgstr "會議上方的「分享」會為你所在的通話產生一個連結，
 #, elixir-autogen, elixir-format
 msgid "The room decides who is in the call, not the tab. Closing the call's tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Closing the chat's tab does not drop you out of the channel either, as long as the call is still open — you leave the channels when the last of your windows closes. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
 msgstr "決定誰在通話中的是房間，而不是分頁。關閉通話的分頁只會開啟重新連線的時段，並不會結束你的參與；再次開啟同一位址就會回到原處。只要通話還開著，關閉聊天的分頁同樣不會把你踢出頻道——你是在最後一個視窗關閉時才離開頻道的。只有會先詢問的「離開」才是最終的。分頁底部始終顯示回到聊天的入口：通話裡面沒有對話。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A P2P session can run in a browser tab of its own, with the whole window to itself. In the starting room, choose Open in a tab. It is the same session either way — the chat keeps its P2P window for when you would rather not leave the page."
-msgstr "P2P 工作階段可以在獨立的瀏覽器分頁中執行，獨占整個視窗。在起始房間選擇「在分頁中開啟」。兩種方式都是同一個工作階段——聊天仍保留它的 P2P 視窗，供你不想離開頁面時使用。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "A session can only be live in one of your windows. Opening it somewhere else moves it there, and the window that lost it says so and offers Bring it back here. Closing the tab is not ending the session: the stop button and the window's X ask first, and only they are final."
-msgstr "一個工作階段只能在你的一個視窗中運作。在別處開啟會把它移過去，失去它的視窗會說明情況並提供「移回此處」。關閉分頁並不會結束工作階段：停止按鈕與視窗的 X 會先詢問，只有它們才是最終操作。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:2
 #, elixir-autogen, elixir-format
@@ -932,3 +917,20 @@ msgstr "已經在裡面的人繼續在裡面，能透過其他方式進入房間
 #, elixir-autogen, elixir-format
 msgid "Your own links are yours. A channel operator can also revoke a link that leads into their channel — a conference in it, or its space — because an address people keep arriving through is the channel's business as much as the room itself is."
 msgstr "你自己的連結歸你。頻道管理員也可以撤銷通往自己頻道的連結——頻道裡的會議，或頻道的空間——因為一個人們不斷由此進入的位址，和房間本身一樣是頻道的事。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A P2P session always runs in a browser tab of its own — the chat has no window for one. The card in the private message is the door; following it gives the session the whole window and leaves the conversation where it was."
+msgstr "P2P 工作階段始終在獨立的瀏覽器分頁中執行 —— 聊天裡沒有為它準備的視窗。私訊中的卡片就是那道門；點開它，工作階段就擁有整個視窗，而對話留在原處。"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and Group Call in the conversation's toolbar leads to the same address; either way the call gets the whole window and the conversation stays where it was."
+msgstr "會議始終在獨立的瀏覽器分頁中執行 —— 聊天裡沒有為它準備的視窗。發布在頻道裡的卡片就是那道門，對話工具列上的 Group Call 也通往同一個位址；無論走哪條路，通話都會擁有整個視窗，而對話留在原處。"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "A session can only be live in one of your windows. Opening it somewhere else moves it there, and the window that lost it says so and offers Bring it back here — which is why the conversation offers a way to the tab you already have instead of a second one. Closing the tab is not ending the session: only End session, which asks first, is final."
+msgstr "一個工作階段只能在你的一個視窗中運作。在別處開啟會把它移過去，失去它的視窗會說明情況並提供「移回此處」—— 這正是對話為什麼給你一條通往已有分頁的路，而不是再開一個。關閉分頁並不會結束工作階段：只有會先詢問的「結束工作階段」才是最終操作。"

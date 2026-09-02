@@ -1,22 +1,18 @@
 defmodule RetroHexChatWeb.App.SpaceLive do
   @moduledoc """
-  A virtual space, as a surface of its own.
+  A virtual space, at an address of its own.
 
-  One module, two mounts: this is the page at `/space/:slug` and it is also the
-  Space view of a conversation in the chat. Nothing about a space is written
-  twice — the difference between the two is where the process hangs, not what
-  it does.
-
-  The space is the one feature here that was never a window: inside the chat it
-  takes the conversation's own region, behind a tab beside it, and that does not
-  change. What changes is which process owns the canvas: the isometric renderer
-  is the largest chunk in the app and runs a continuous render loop, and in a
-  tab of its own it stops sharing a main thread with the chat's message stream.
+  The page at `/space/:slug`, and the only place a space is rendered. The chat
+  used to draw this same module into the conversation's own region behind a tab;
+  it does not any more, and the isometric renderer — the largest chunk in the
+  app, running a continuous render loop — no longer shares a main thread with
+  the chat's message stream.
 
   Two states, and you always arrive at the first: the **antechamber**, which is
-  the character picker that was always there, and **inside**. There is no host
-  and no `[Start]`, because a space does not begin or end — it is a place, and
-  the address of a place stays good.
+  the character picker, and **inside**. There is no `[Start]`, because a space
+  does not begin or end — it is a place, and the address of a place stays good.
+  What begins and ends is the gathering in it, which the conversation hears
+  about as a card.
 
   Both states are decided in `mount/3`. Initial data delivered after the first
   render is invisible to ExUnit and only ever caught in a browser.
@@ -53,14 +49,13 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   def mount(params, session, socket) do
     socket =
       assign(socket,
-        embedded?: session["embedded"] == true,
         nickname: session["nickname"] || socket.assigns[:surface_nickname],
         avatars: VirtualSpace.avatars(),
         avatar: nil,
-        # The character you picked last time. In the chat the host holds it,
-        # because this LiveView is mounted fresh every time the tab is opened
-        # and a memory kept in here would not survive its own screen.
-        last_avatar: last_avatar(session),
+        # The character you picked last time, until the browser that picked it
+        # says otherwise. This LiveView is mounted fresh for every visit, so the
+        # memory cannot live in here — it lives where the person does.
+        last_avatar: hd(VirtualSpace.avatars()),
         join_token: nil,
         roster: [],
         share_url: nil,
@@ -69,6 +64,10 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         denied: nil
       )
 
+    # Resolved once, at the door: the join token carries it into the space's
+    # own channel, which is what decides whether the gathering it opens has
+    # somebody accountable enough to be announced in the conversation.
+    socket = assign(socket, user_id: user_id(socket.assigns.nickname))
     socket = OpenSurfaces.attach(socket, socket.assigns.nickname)
 
     case resolve_space(socket, params, session) do
@@ -86,22 +85,12 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
-  def render(%{embedded?: true} = assigns) do
-    ~H"""
-    <div class="relative flex min-h-0 w-full flex-1">
-      <.space_body {assigns} />
-    </div>
-    """
-  end
-
   def render(assigns) do
     ~H"""
     <%!-- The same shell every other desktop screen uses: the workspace only
           has a height because something above it does. --%>
     <div class="bg-background text-text font-system flex h-screen flex-col">
-      <%!-- This tab answers when the chat asks for it by address. Only in the
-            standalone render: embedded, the address is the chat's own and the
-            chat already answers for it. --%>
+      <%!-- This tab answers when the chat asks for it by address. --%>
       <div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
       <.desktop id="space-desktop" persist_key="space" class="flex-1" data-testid="space-desktop">
         <.desktop_window
@@ -113,11 +102,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
           data-testid="virtual-space-window"
         >
           <:icon><Icons.icon_community class="h-4 w-4" /></:icon>
-          <%!-- The way back is always on screen, in both states. Someone who
-                arrived from a shared link has no chat tab behind this one, so
-                it is a link and not a focus request — deciding between the two
-                needs to know what else the person has open, which is a later
-                wave. --%>
+          <%!-- The way back is always on screen, in both states. --%>
           <:status>
             <.window_status_bar_field grow>
               <.back_to_chat
@@ -145,17 +130,20 @@ defmodule RetroHexChatWeb.App.SpaceLive do
     """
   end
 
-  # The chat renders this same LiveView into its conversation region, so the
-  # body is shared and the chrome is not.
   defp space_body(assigns) do
     ~H"""
     <.space_denied :if={@denied} message={@denied} />
 
+    <%!-- The picker remembers the character across visits by asking the browser,
+          because nothing on the server outlives a visit any more: the LiveView
+          is mounted per visit and the chat that used to hold this no longer has
+          the space in it at all. --%>
     <.space_character_select
       :if={@space && is_nil(@avatar)}
       avatars={@avatars}
       selected={@last_avatar}
       roster={@roster}
+      remember_key={@space && "space:last-avatar"}
     >
       <:footer>
         <%!-- The invitation is made at the door: a bar over the map would
@@ -163,16 +151,10 @@ defmodule RetroHexChatWeb.App.SpaceLive do
               the one screen both hosts show every single time. --%>
         <.share_bar
           url={@share_url}
-          available={sharable?(@nickname)}
+          available={sharable?(@user_id)}
           on_share="share_space"
           on_revoke="revoke_space"
           class="min-w-0 flex-1 justify-start"
-        />
-        <.surface_tab_link
-          :if={@embedded?}
-          path={Paths.space_path(@space.id)}
-          open?={OpenSurfaces.open?(@open_surface_paths, Paths.space_path(@space.id))}
-          testid="space-open-in-tab"
         />
       </:footer>
     </.space_character_select>
@@ -193,9 +175,10 @@ defmodule RetroHexChatWeb.App.SpaceLive do
     >
       <canvas id={"#{@space.dom_id}-canvas"} class="absolute inset-0 block h-full w-full"></canvas>
       <.space_virtual_pad />
-      <%!-- In a tab of its own the page is already the space, so a second way
-            to fill the screen is one control too many. --%>
-      <.space_fullscreen_toggle :if={@embedded?} />
+      <%!-- A maximized window is still a window inside browser chrome. This is
+            the only control that gets the tab bar and the address bar off an
+            isometric map, so it stays on the one screen a space now has. --%>
+      <.space_fullscreen_toggle />
       <div
         data-space-loading
         class="absolute inset-0 z-20 flex items-center justify-center bg-background/95"
@@ -246,9 +229,22 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   def handle_event("space_select_avatar", %{"avatar" => avatar}, socket) do
     if avatar in socket.assigns.avatars and socket.assigns.space do
       {:noreply,
-       socket
-       |> assign(avatar: avatar, last_avatar: avatar, join_token: join_token(socket, avatar))
-       |> remember_avatar(avatar)}
+       assign(socket,
+         avatar: avatar,
+         last_avatar: avatar,
+         join_token: join_token(socket, avatar)
+       )}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  # What the browser remembered from a previous visit, offered before anything
+  # is chosen. Only a character this build still has: a saved name that has
+  # since been removed would highlight nothing and select nothing.
+  def handle_event("space_remember_avatar", %{"avatar" => avatar}, socket) do
+    if avatar in socket.assigns.avatars and is_nil(socket.assigns.avatar) do
+      {:noreply, assign(socket, last_avatar: avatar)}
     else
       {:noreply, socket}
     end
@@ -259,7 +255,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   def handle_event("share_space", _params, %{assigns: %{space: %{} = space}} = socket) do
     nickname = socket.assigns.nickname
 
-    with {:ok, user_id} <- SessionHelpers.resolve_user_id(nickname || ""),
+    with user_id when is_integer(user_id) <- socket.assigns.user_id,
          {:ok, link} <-
            ShareLinks.create(%{
              kind: "space",
@@ -288,18 +284,14 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   def handle_event("revoke_space", _params, socket), do: {:noreply, socket}
 
-  # The canvas reports a hovered or right-clicked character to whichever
-  # LiveView owns its element, which is this one in both mounts. What it means
-  # is a hover card and a nick menu, and both are the chat's: they read a chat
-  # session and they draw over the conversation. Embedded, the chat is the
-  # parent and gets them; standalone there is no conversation to draw them in,
-  # and the person is one click from the chat that has them.
-  def handle_event(event, params, socket)
+  # The canvas reports a hovered or right-clicked character to the LiveView that
+  # owns its element, which is this one. What it means is a hover card and a
+  # nick menu, and both of those read a chat session and draw over a
+  # conversation — neither of which is here. Named rather than left to a
+  # catch-all, so the day the canvas grows a fourth report it is a crash and not
+  # a silence.
+  def handle_event(event, _params, socket)
       when event in ~w(nick_hover nick_hover_dismiss nick_right_click) do
-    if socket.assigns.embedded? do
-      send(socket.parent_pid, {:space_surface_event, event, params})
-    end
-
     {:noreply, socket}
   end
 
@@ -311,13 +303,6 @@ defmodule RetroHexChatWeb.App.SpaceLive do
     {:noreply, assign(socket, roster: participants)}
   end
 
-  defp remember_avatar(%{assigns: %{embedded?: true}} = socket, avatar) do
-    send(socket.parent_pid, {:space_surface_avatar, avatar})
-    socket
-  end
-
-  defp remember_avatar(socket, _avatar), do: socket
-
   defp subscribe_to_roster(socket, space) do
     if connected?(socket) do
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.space_roster(space.id))
@@ -326,42 +311,33 @@ defmodule RetroHexChatWeb.App.SpaceLive do
     socket
   end
 
-  defp last_avatar(session) do
-    case session["last_avatar"] do
-      avatar when is_binary(avatar) -> avatar
-      _absent -> hd(VirtualSpace.avatars())
-    end
-  end
-
   # The token binds this nickname to this space, and the channel verifies it
   # before touching the runtime. Which process signs it moved here; the token
   # itself did not change, and `SpaceChannel` did not either.
   defp join_token(%{assigns: %{space: %{mode: "direct_message"} = space}} = socket, _avatar) do
     ChannelJoinToken.sign_direct_message(
       space.id,
-      nil,
+      socket.assigns.user_id,
       socket.assigns.nickname,
       space.participants
     )
   end
 
   defp join_token(%{assigns: %{space: space}} = socket, _avatar) do
-    ChannelJoinToken.sign(space.id, nil, socket.assigns.nickname)
+    ChannelJoinToken.sign(space.id, socket.assigns.user_id, socket.assigns.nickname)
   end
 
-  # Embedded, the chat already decided which conversation is in focus and the
-  # surface is handed the answer. Standalone, the address is all there is, so
-  # every gate runs here — and the refusal says which door was shut.
-  defp resolve_space(%{assigns: %{embedded?: true}}, _params, session) do
-    case {session["space_id"], session["mode"]} do
-      {space_id, mode} when is_binary(space_id) and mode in ["channel", "direct_message"] ->
-        {:ok, space(space_id, mode, session["participants"])}
-
-      _incomplete ->
-        {:error, dgettext("chat", "This space is no longer available.")}
+  defp user_id(nickname) when is_binary(nickname) and nickname != "" do
+    case SessionHelpers.resolve_user_id(nickname) do
+      {:ok, user_id} -> user_id
+      _unregistered -> nil
     end
   end
 
+  defp user_id(_nickname), do: nil
+
+  # The address is all there is, so every gate runs here — and the refusal says
+  # which door was shut.
   defp resolve_space(socket, %{"slug" => slug}, _session) do
     with {:ok, space_id} <- decode_slug(slug),
          {:ok, space} <- build_space(space_id),
@@ -475,9 +451,5 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   # Only a registered nickname can mint a link: the record carries who made it,
   # and a link nobody is accountable for is one nobody can be asked about.
-  defp sharable?(nickname) when is_binary(nickname) and nickname != "" do
-    match?({:ok, _id}, SessionHelpers.resolve_user_id(nickname))
-  end
-
-  defp sharable?(_nickname), do: false
+  defp sharable?(user_id), do: is_integer(user_id)
 end

@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **225 spec files** under `e2e/tests/`.
-- **471 Playwright `test()` cases**.
-- **466 documented flows**, 465 done, 1 not done.
+- **473 Playwright `test()` cases**.
+- **468 documented flows**, 467 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -696,9 +696,11 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP3 | The toggle enters and exits fullscreen on the space shell | `tests/space-fullscreen.spec.ts` | done |
 | SP4 | Holding the virtual pad walks continuously and the sword button attacks | `tests/space-virtual-pad.spec.ts` | done |
 | SP5 | The space sheets are served as WebP the browser can actually decode | `tests/space-character-select.spec.ts` | done |
-| SP6 | A space opened at its own address runs without the chat around it | `tests/space-surface.spec.ts` | done |
+| SP6 | A space is entered from the conversation and runs in a tab of its own | `tests/space-surface.spec.ts` | done |
 | SP7 | A shared space link resolves to a card and then to the space itself | `tests/space-surface.spec.ts` | done |
-| SP8 | Two people in the same space, one in a tab of its own, see each other | `tests/space-surface.spec.ts` | done |
+| SP8 | Two people in the same space see each other | `tests/space-surface.spec.ts` | done |
+| SP9 | Walking into an empty space writes its card into the conversation | `tests/space-surface.spec.ts` | done |
+| SP10 | The picker remembers the character this browser chose last | `tests/space-surface.spec.ts` | done |
 
 ### LC - Localization
 

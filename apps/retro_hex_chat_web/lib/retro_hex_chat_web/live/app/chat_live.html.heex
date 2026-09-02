@@ -132,7 +132,6 @@
         <%!-- Chat area --%>
         <div class="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
           <% conversation_space = SpaceReadModel.conversation_space(@session, @show_status_tab) %>
-          <% space_view? = conversation_space && @channel_view == :space %>
           <% p2p_pm_session =
             p2p_pm_session_for_active_pm(@p2p_pm_sessions, @session.active_pm) ||
               p2p_idle_session_for_active_pm(@session) %>
@@ -167,10 +166,7 @@
           <div class="flex flex-1 min-h-0" data-testid="channel-content-row">
             <div class="flex flex-col flex-1 min-w-0 min-h-0" data-testid="channel-main-column">
               <%!-- Messages column --%>
-              <div class={[
-                "flex flex-col flex-1 min-w-0 min-h-0 relative",
-                space_view? && "hidden"
-              ]}>
+              <div class="flex flex-col flex-1 min-w-0 min-h-0 relative">
                 <%!-- Chat messages stream (stateful island — owns the :chat_messages stream
                + the channel-load spinner and load-older indicator) --%>
                 <.live_component
@@ -197,30 +193,6 @@
                   show_status_tab={@show_status_tab}
                 />
               </div>
-
-              <%!-- The space is the one feature that is not a window: it takes
-                    the conversation's region, behind a tab beside it. The child
-                    owns the canvas, so the isometric render loop belongs to a
-                    process of its own, and to a whole tab of its own when the
-                    address is opened directly. --%>
-              <%= if space_view? do %>
-                <%!-- The child's container needs a height of its own: a
-                      `live_render` wraps the surface in a div of its own, and
-                      the flex chain has to run through it or the canvas
-                      measures zero. --%>
-                {live_render(@socket, RetroHexChatWeb.App.SpaceLive,
-                  id: "space-live-#{conversation_space.space_id}",
-                  container: {:div, class: "relative flex flex-1 min-w-0 min-h-0"},
-                  session: %{
-                    "embedded" => true,
-                    "nickname" => @session.nickname,
-                    "space_id" => conversation_space.space_id,
-                    "mode" => conversation_space.mode,
-                    "participants" => conversation_space.participants,
-                    "last_avatar" => @space_last_avatar
-                  }
-                )}
-              <% end %>
             </div>
 
             <%!-- User list sidebar: the members of whichever conversation is on
@@ -256,10 +228,10 @@
             timezone={@timezone}
           />
 
-          <%!-- Tab bar: Status, the conversation in focus and its space — the
-               three things that can occupy the conversation region — plus the
-               controls that open something beside it. Every other conversation
-               lives in the sidebar; Find lives in the menu bar. --%>
+          <%!-- Tab bar: Status and the conversation in focus — the two things
+               that can occupy the conversation region — plus the entries that
+               open a session beside it, each in a tab of its own. Every other
+               conversation lives in the sidebar; Find lives in the menu bar. --%>
           <.chat_tabs
             class="shrink-0 min-w-0"
             unread_counts={@unread_counts}
@@ -267,8 +239,6 @@
             show_status_tab={@show_status_tab}
             active_channel={@session.active_channel}
             active_pm={@session.active_pm}
-            channel_view={@channel_view}
-            has_space={SpaceReadModel.has_space?(@session)}
             nick_color_fn={@nick_color_fn}
             p2p_pm_sessions={@p2p_pm_sessions}
             group_call_channels={@group_call_channels}
@@ -297,6 +267,11 @@
                     @session.active_channel
                   )
                 }
+                open_paths={@open_surface_paths}
+              />
+              <.space_conversation_entry
+                :if={conversation_space}
+                space_id={conversation_space.space_id}
                 open_paths={@open_surface_paths}
               />
               <.p2p_peer_entry

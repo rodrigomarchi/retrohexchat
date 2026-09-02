@@ -1,6 +1,7 @@
 defmodule RetroHexChat.RuntimeStaleCleanup do
   @moduledoc """
-  Reconciles stale durable records left open by runtime lobby, arcade and calls.
+  Reconciles stale durable records left open by runtime lobby, arcade, calls
+  and virtual spaces.
 
   The live OTP processes still own real-time UX timeouts. This module only
   materializes records that stayed non-terminal long after any healthy runtime
@@ -10,6 +11,7 @@ defmodule RetroHexChat.RuntimeStaleCleanup do
   alias RetroHexChat.Arcade.Queries, as: ArcadeQueries
   alias RetroHexChat.GroupCall.Queries, as: GroupCallQueries
   alias RetroHexChat.Lobby.Queries, as: LobbyQueries
+  alias RetroHexChat.VirtualSpace.Queries, as: SpaceQueries
 
   @default_limit 100
   @default_stale_after_seconds 24 * 60 * 60
@@ -25,7 +27,8 @@ defmodule RetroHexChat.RuntimeStaleCleanup do
           limit: pos_integer(),
           lobby: domain_summary(),
           arcade: domain_summary(),
-          group_call: domain_summary()
+          group_call: domain_summary(),
+          space: domain_summary()
         }
 
   @type count_summary :: %{
@@ -33,6 +36,7 @@ defmodule RetroHexChat.RuntimeStaleCleanup do
           lobby: non_neg_integer(),
           arcade: non_neg_integer(),
           group_call: non_neg_integer(),
+          space: non_neg_integer(),
           total: non_neg_integer()
         }
 
@@ -40,7 +44,7 @@ defmodule RetroHexChat.RuntimeStaleCleanup do
   @spec default_stale_after_seconds() :: pos_integer()
   def default_stale_after_seconds, do: @default_stale_after_seconds
 
-  @doc "Expires stale non-terminal lobby, arcade and group-call records."
+  @doc "Expires stale non-terminal lobby, arcade, group-call and space records."
   @spec cleanup(keyword()) :: {:ok, summary()} | {:error, term()}
   def cleanup(opts \\ []) do
     limit = positive_opt(opts, :limit, @default_limit)
@@ -48,14 +52,16 @@ defmodule RetroHexChat.RuntimeStaleCleanup do
 
     with {:ok, lobby} <- cleanup_lobby(cutoff, limit),
          {:ok, arcade} <- cleanup_arcade(cutoff, limit),
-         {:ok, group_call} <- cleanup_group_call(cutoff, limit) do
+         {:ok, group_call} <- cleanup_group_call(cutoff, limit),
+         {:ok, space} <- cleanup_space(cutoff, limit) do
       {:ok,
        %{
          cutoff: cutoff,
          limit: limit,
          lobby: lobby,
          arcade: arcade,
-         group_call: group_call
+         group_call: group_call,
+         space: space
        }}
     end
   end
@@ -67,13 +73,15 @@ defmodule RetroHexChat.RuntimeStaleCleanup do
     lobby = LobbyQueries.stale_session_count(cutoff)
     arcade = ArcadeQueries.stale_session_count(cutoff)
     group_call = GroupCallQueries.stale_room_count(cutoff)
+    space = SpaceQueries.stale_session_count(cutoff)
 
     %{
       cutoff: cutoff,
       lobby: lobby,
       arcade: arcade,
       group_call: group_call,
-      total: lobby + arcade + group_call
+      space: space,
+      total: lobby + arcade + group_call + space
     }
   end
 
@@ -93,6 +101,12 @@ defmodule RetroHexChat.RuntimeStaleCleanup do
     cutoff
     |> GroupCallQueries.list_stale_rooms(limit: limit)
     |> cleanup_candidates(&GroupCallQueries.expire_stale_room(&1, cutoff))
+  end
+
+  defp cleanup_space(cutoff, limit) do
+    cutoff
+    |> SpaceQueries.list_stale_sessions(limit: limit)
+    |> cleanup_candidates(&SpaceQueries.expire_stale_session(&1, cutoff))
   end
 
   defp cleanup_candidates(candidates, expire_fun) do

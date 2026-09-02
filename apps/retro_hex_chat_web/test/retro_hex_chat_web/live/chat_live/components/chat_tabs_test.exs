@@ -17,8 +17,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
           show_status_tab: false,
           active_channel: nil,
           active_pm: nil,
-          channel_view: :chat,
-          has_space: false,
           nick_color_fn: fn _nick -> "nick-color-1" end
         },
         overrides
@@ -78,49 +76,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
     assert selection(focused) == [{"Status", "false"}, {"#lobby", "true"}]
   end
 
-  test "the space rides as a third tab when the conversation has one" do
-    html = tabs(%{active_channel: "#lobby", has_space: true})
-
-    assert tab_labels(html) == ["Status", "#lobby", "Space"]
-  end
-
-  test "no space tab when the conversation has no space" do
-    html = tabs(%{active_channel: "#lobby", has_space: false})
+  # The space is a screen with an address, reached from the entry beside the
+  # tabs. It was a tab back when it was a second view of the conversation.
+  test "the space is not a tab" do
+    html = tabs(%{active_channel: "#lobby"})
 
     assert tab_labels(html) == ["Status", "#lobby"]
   end
 
-  test "the space view takes selection from the conversation tab" do
-    chat = tabs(%{active_channel: "#lobby", has_space: true, channel_view: :chat})
-    space = tabs(%{active_channel: "#lobby", has_space: true, channel_view: :space})
+  test "a PM is the whole of the bar beside Status" do
+    html = tabs(%{active_pm: "bob"})
 
-    assert selection(chat) == [{"Status", "false"}, {"#lobby", "true"}, {"Space", "false"}]
-    assert selection(space) == [{"Status", "false"}, {"#lobby", "false"}, {"Space", "true"}]
-  end
-
-  test "status covers the space view too, and the space tab is never closeable" do
-    html =
-      tabs(%{
-        active_channel: "#lobby",
-        has_space: true,
-        channel_view: :space,
-        show_status_tab: true
-      })
-
-    assert selection(html) == [{"Status", "true"}, {"#lobby", "false"}, {"Space", "false"}]
-
-    space =
-      html
-      |> Floki.parse_document!()
-      |> Floki.find(~s([role="tab"][phx-value-type="space"]))
-
-    assert Floki.find(space, ~s(button[phx-click="close_tab"])) == []
-  end
-
-  test "a PM carries a space tab as well" do
-    html = tabs(%{active_pm: "bob", has_space: true})
-
-    assert tab_labels(html) == ["Status", "bob", "Space"]
+    assert tab_labels(html) == ["Status", "bob"]
   end
 
   test "the actions slot renders beside the tabs, outside the tablist" do
@@ -130,8 +97,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
       show_status_tab: false,
       active_channel: "#lobby",
       active_pm: nil,
-      channel_view: :chat,
-      has_space: false,
       nick_color_fn: fn _nick -> "nick-color-1" end
     }
 

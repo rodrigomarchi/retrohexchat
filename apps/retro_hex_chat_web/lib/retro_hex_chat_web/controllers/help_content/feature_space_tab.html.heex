@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_space",
-    "A space can run in a browser tab of its own, with the whole window to itself. On the character picker, choose Open in a tab. It is the same space either way — the Space tab beside the conversation keeps working for when you would rather not leave the page."
+    "A space always runs in a browser tab of its own, opened with Space beside the conversation's tabs. The map gets the whole window, and the conversation stays exactly where it was."
   )}
 </p>
 
@@ -9,7 +9,7 @@
 <p>
   {dgettext(
     "help_space",
-    "The map is drawn continuously, and inside the chat it shares the browser with everything the chat is doing. In a tab of its own it does not, which is the difference you feel when several people are walking around at once."
+    "The map is drawn continuously, and inside the chat it shared the browser with everything the chat was doing. In a tab of its own it does not, which is the difference you feel when several people are walking around at once."
   )}
 </p>
 
@@ -17,7 +17,15 @@
 <p>
   {dgettext(
     "help_space",
-    "A space has no beginning and no end: it is a place, so bookmarking its address takes you back to it later. Opening it still asks the same questions as the Space tab does — a channel's space wants you in that channel, and a private space belongs to its two people. The tab always shows a way back to the chat along its bottom edge."
+    "A space has no beginning and no end: it is a place, so bookmarking its address takes you back to it later. Opening it asks the same questions either way — a channel's space wants you in that channel, and a private space belongs to its two people. The tab always shows a way back to the chat along its bottom edge."
+  )}
+</p>
+
+<.help_h4 icon={:icon_community}>{dgettext("help_space", "One tab, not two")}</.help_h4>
+<p>
+  {dgettext(
+    "help_space",
+    "With that address already open somewhere, the entry says In another tab and takes you to the tab you have. A second tab of a world you are standing in would be a second character nobody asked for."
   )}
 </p>
 
@@ -25,6 +33,10 @@
   {dgettext("help_space", "See also:")}
   <.help_link topic="feature-virtual-spaces">
     {dgettext("help_space", "Virtual Spaces")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-space-card">
+    {dgettext("help_space", "Who Is in the Space Right Now")}
   </.help_link>
   ·
   <.help_link topic="feature-space-share">

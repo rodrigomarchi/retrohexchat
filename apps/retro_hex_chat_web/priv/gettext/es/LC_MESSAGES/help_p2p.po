@@ -803,11 +803,6 @@ msgstr "Cerrar la pestaña no es salir"
 msgid "What a link does not do"
 msgstr "Lo que un enlace no hace"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A conference can run in a browser tab of its own, with the whole window to itself. Open the summary next to Call in the channel toolbar and choose Open in a tab. It is the same conference either way — the chat keeps its Group Call window for when you would rather not leave the page."
-msgstr "Una conferencia puede ejecutarse en su propia pestaña del navegador, con toda la ventana para ella. Abre el resumen junto a Llamada en la barra del canal y elige Abrir en una pestaña. Es la misma conferencia en ambos casos: el chat conserva su ventana de Llamada de Grupo para cuando prefieras no salir de la página."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "A link says which room it is; it never says you may be in it. Whoever follows it still has to be registered with NickServ and a member of the channel, and a locked conference still refuses everyone but its moderators. Only a registered nickname can mint one, because the link records who made it."
@@ -822,16 +817,6 @@ msgstr "Compartir, encima de la conferencia, crea un enlace a la llamada en la q
 #, elixir-autogen, elixir-format
 msgid "The room decides who is in the call, not the tab. Closing the call's tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Closing the chat's tab does not drop you out of the channel either, as long as the call is still open — you leave the channels when the last of your windows closes. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
 msgstr "Quien decide quién está en la llamada es la sala, no la pestaña. Cerrar la pestaña de la llamada abre la ventana de reconexión en lugar de terminar tu participación, y volver a abrir la misma dirección te devuelve donde estabas. Cerrar la pestaña del chat tampoco te saca del canal mientras la llamada siga abierta: sales de los canales cuando se cierra la última de tus ventanas. Solo Salir, que pregunta antes, es definitivo. La pestaña siempre muestra el camino de vuelta al chat en su borde inferior: dentro de una llamada no hay conversación."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A P2P session can run in a browser tab of its own, with the whole window to itself. In the starting room, choose Open in a tab. It is the same session either way — the chat keeps its P2P window for when you would rather not leave the page."
-msgstr "Una sesión P2P puede ejecutarse en su propia pestaña del navegador, con toda la ventana para ella. En la sala de inicio, elige Abrir en una pestaña. Es la misma sesión de cualquier modo: el chat conserva su ventana P2P para cuando prefieras no salir de la página."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "A session can only be live in one of your windows. Opening it somewhere else moves it there, and the window that lost it says so and offers Bring it back here. Closing the tab is not ending the session: the stop button and the window's X ask first, and only they are final."
-msgstr "Una sesión solo puede estar activa en una de tus ventanas. Abrirla en otro sitio la mueve allí, y la ventana que la perdió lo dice y ofrece Traerla aquí. Cerrar la pestaña no finaliza la sesión: el botón de detener y la X de la ventana preguntan antes, y solo ellos son definitivos."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:2
 #, elixir-autogen, elixir-format
@@ -932,3 +917,20 @@ msgstr "Quien ya está dentro sigue dentro, y quien pueda llegar a la sala por o
 #, elixir-autogen, elixir-format
 msgid "Your own links are yours. A channel operator can also revoke a link that leads into their channel — a conference in it, or its space — because an address people keep arriving through is the channel's business as much as the room itself is."
 msgstr "Tus propios enlaces son tuyos. Un operador del canal también puede revocar un enlace que lleve a su canal — una conferencia en él, o su espacio — porque una dirección por la que la gente no deja de llegar es asunto del canal tanto como la sala misma."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A P2P session always runs in a browser tab of its own — the chat has no window for one. The card in the private message is the door; following it gives the session the whole window and leaves the conversation where it was."
+msgstr "Una sesión P2P siempre corre en su propia pestaña del navegador: el chat no tiene ventana para una. La tarjeta del mensaje privado es la puerta; seguirla le da a la sesión la ventana entera y deja la conversación donde estaba."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and Group Call in the conversation's toolbar leads to the same address; either way the call gets the whole window and the conversation stays where it was."
+msgstr "Una conferencia siempre corre en su propia pestaña del navegador: el chat no tiene ventana para una. La tarjeta publicada en el canal es la puerta, y Group Call, en la barra de la conversación, lleva a la misma dirección; de cualquier modo la llamada se queda con la ventana entera y la conversación sigue donde estaba."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "A session can only be live in one of your windows. Opening it somewhere else moves it there, and the window that lost it says so and offers Bring it back here — which is why the conversation offers a way to the tab you already have instead of a second one. Closing the tab is not ending the session: only End session, which asks first, is final."
+msgstr "Una sesión solo puede estar activa en una de tus ventanas. Abrirla en otro sitio la mueve allí, y la ventana que la perdió lo dice y ofrece Traerla aquí, que es justo por lo que la conversación ofrece un camino a la pestaña que ya tienes en lugar de una segunda. Cerrar la pestaña no finaliza la sesión: solo Terminar sesión, que pregunta antes, es definitivo."

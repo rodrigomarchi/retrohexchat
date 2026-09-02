@@ -1318,8 +1318,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "a time — opening it somewhere else moves it there, and the window that lost " <>
               "it says so and offers Bring it back here, which is why the chat offers a " <>
               "way to the tab you already have instead of a second one. Closing the tab is " <>
-              "not ending the session; the stop button and the window's X ask first, and " <>
-              "only they end it."
+              "not ending the session; only End session, which asks first, is final."
           ),
         see_also: ["feature-p2p-in-chat", "feature-p2p-starting-room"]
       },
@@ -3654,12 +3653,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "A multiplayer 8-bit virtual space built into every channel: people in the channel can switch from Chat to Space, walk around the shared map, and keep using the same channel conversation. Move with the Arrow keys, WASD or the on-screen pad in the bottom-right corner — tap for a single step or hold to walk continuously; Space or the pad's sword button swings your weapon. The translucent button in the top-right corner switches the space to fullscreen and back."
+            "A multiplayer 8-bit virtual space built into every channel and every private conversation. Space, beside the tabs, opens it in a browser tab of its own — the conversation stays where it is, and the map gets a whole window instead of competing with the chat for the browser. Move with the Arrow keys, WASD or the on-screen pad in the bottom-right corner — tap for a single step or hold to walk continuously; Space or the pad's sword button swings your weapon. The translucent button in the top-right corner switches to fullscreen and back. Back to Chat, along the bottom edge, returns to the conversation."
           ),
         see_also: [
           "feature-choose-character",
           "feature-space-combat",
           "feature-space-tab",
+          "feature-space-card",
           "feature-space-share"
         ]
       },
@@ -3685,7 +3685,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "When you enter a Space, a character picker appears first: choose from the classic Hero or one of seven classes — Sorceress, Knight, Archer, Barbarian, Rogue, Cleric or Monk. Each shows an animated preview and has its own walking and attack animations; click one to enter the map wearing it, and everyone in the space sees your choice. The picker shows again each time you re-enter, defaulting to your last pick."
+            "When you enter a Space, a character picker appears first: choose from the classic Hero or one of seven classes — Sorceress, Knight, Archer, Barbarian, Rogue, Cleric or Monk. Each shows an animated preview and has its own walking and attack animations; click one to enter the map wearing it, and everyone in the space sees your choice. It also says who is inside right now, before you commit to walking in. The picker shows again each time you enter, defaulting to whoever you chose last time on this browser."
           ),
         see_also: ["feature-virtual-spaces", "feature-space-combat"]
       },
@@ -3730,9 +3730,29 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "A space can run in a browser tab of its own. On the character picker, choose Open in a tab: the map gets the whole window and stops competing with the chat for the browser, which is the difference you feel when several people are walking around at once. It is the same space either way — the Space tab beside the conversation keeps working for when you would rather not leave the page. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back."
+            "A space always runs in a browser tab of its own, opened with Space beside the conversation's tabs. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back. If you already have that tab open, the entry says In another tab and takes you to the one you have rather than opening a second."
           ),
-        see_also: ["feature-virtual-spaces", "feature-space-share"]
+        see_also: ["feature-virtual-spaces", "feature-space-card", "feature-space-share"]
+      },
+      %{
+        id: "feature-space-card",
+        title: dgettext("help", "Who Is in the Space Right Now"),
+        category: dgettext("help", "Virtual Spaces"),
+        keywords: [
+          "space",
+          "card",
+          "who",
+          "inside",
+          "gathering",
+          dgettext("help", "someone is in the space")
+        ],
+        icon: :icon_community,
+        description:
+          dgettext(
+            "help",
+            "Walking into an empty space posts a card in the conversation it belongs to, so everybody reading can see that something is happening and follow it in. The card counts who is inside while it lasts, and once the last person leaves it becomes the record of what happened: how long the gathering ran, and how many people came. Walking into a space somebody is already in posts nothing — one gathering, one card. Only a registered nickname posts one; a guest still walks in as usual."
+          ),
+        see_also: ["feature-virtual-spaces", "feature-space-tab", "feature-space-share"]
       },
       %{
         id: "feature-space-share",
@@ -3750,7 +3770,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Share, on the character picker, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address. The link carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
+            "Share, on the character picker, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
           ),
         see_also: ["feature-virtual-spaces", "feature-space-tab"]
       }

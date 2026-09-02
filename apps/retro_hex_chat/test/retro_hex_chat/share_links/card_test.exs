@@ -20,6 +20,7 @@ defmodule RetroHexChat.ShareLinks.CardTest do
   alias RetroHexChat.Repo
   alias RetroHexChat.ShareLinks.Card
   alias RetroHexChat.ShareLinks.Schema.Link
+  alias RetroHexChat.VirtualSpace.Queries, as: SpaceQueries
 
   describe "of/1 for a game" do
     test "a solo game is live as long as the catalogue has it" do
@@ -178,11 +179,84 @@ defmodule RetroHexChat.ShareLinks.CardTest do
     # A place has no beginning to measure from. A duration here would be the age
     # of a catalogue entry wearing a session's clothes.
     test "a kind that never ends keeps no record" do
-      card = Card.of(%{link("space", %{"space_id" => "#nope"}) | revoked_at: DateTime.utc_now()})
+      card = Card.of(%{link("play", %{"game_id" => "hex_pong"}) | revoked_at: DateTime.utc_now()})
 
       assert card.state == :ended
       assert card.metrics == nil
     end
+
+    test "a gathering says how long it lasted and how many people came" do
+      session = closed_gathering(opened_at: minutes_ago(20), closed_at: minutes_ago(5))
+      :ok = SpaceQueries.record_arrival(session.id, "ana")
+      :ok = SpaceQueries.record_arrival(session.id, "bob")
+      :ok = SpaceQueries.record_arrival(session.id, "ana")
+
+      card = Card.of(space_link(session))
+
+      assert card.state == :ended
+      assert card.metrics.duration_seconds == 900
+      assert card.metrics.visitors == 2
+    end
+  end
+
+  # The address of a space is good forever; the gathering in it is not. A card
+  # posted for one evening keeps describing that evening rather than borrowing
+  # whatever is happening at the same address tonight.
+  describe "of/1 for a space" do
+    test "a link to the place says who is standing there, and never ends" do
+      card = Card.of(link("space", %{"space_id" => "#nobody-here"}))
+
+      assert card.state == :live
+      assert card.count == 0
+      assert card.participants == []
+    end
+
+    test "a gathering that is over stays over" do
+      session = closed_gathering([])
+
+      assert %{state: :ended, reason: :over} = Card.of(space_link(session))
+    end
+
+    test "a gathering still going is live" do
+      {:ok, session} = SpaceQueries.insert_session(open_gathering_attrs([]))
+
+      assert %{state: :live} = Card.of(space_link(session))
+    end
+
+    test "a session token naming nothing is over rather than an error" do
+      card = Card.of(link("space", %{"space_id" => "#gone", "session_token" => "nope"}))
+
+      assert %{state: :ended, reason: :over} = card
+    end
+  end
+
+  defp open_gathering_attrs(overrides) do
+    Enum.into(overrides, %{
+      token: "space#{System.unique_integer([:positive])}",
+      space_id: "#gather#{System.unique_integer([:positive])}",
+      kind: "channel",
+      status: "open",
+      opened_by_nick: "ana",
+      opened_at: minutes_ago(20)
+    })
+  end
+
+  defp closed_gathering(overrides) do
+    attrs =
+      overrides
+      |> open_gathering_attrs()
+      |> Map.merge(%{
+        status: "closed",
+        closed_at: Enum.into(overrides, %{})[:closed_at] || minutes_ago(1),
+        closed_reason: "emptied"
+      })
+
+    {:ok, session} = SpaceQueries.insert_session(attrs)
+    session
+  end
+
+  defp space_link(session) do
+    link("space", %{"space_id" => session.space_id, "session_token" => session.token})
   end
 
   defp closed_room(overrides) do

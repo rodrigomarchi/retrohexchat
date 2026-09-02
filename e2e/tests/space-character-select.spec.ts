@@ -35,18 +35,12 @@ test.describe("Virtual space character picker", () => {
   }) => {
     const user: TestUser = await newSignedInUser(browser, "char");
     try {
-      const page = user.page;
       const channel = uniqueChannel("char");
       await user.chat.sendMessage(`/join ${channel}`);
 
-      // Switch the channel view from Chat to Space.
-      await page
-        .locator('[data-testid="tab-bar"] [role="tab"][phx-value-type="space"]')
-        .click();
-
-      // The character picker gates the canvas; it shows before the world mounts.
-      const picker = page.getByTestId("space-character-select");
-      await expect(picker).toBeVisible();
+      // The space is entered from the conversation, in a tab of its own. The
+      // character picker gates the canvas; it shows before the world mounts.
+      const page = await user.chat.openSpace();
       await expect(page.getByTestId("channel-space-shell")).toHaveCount(0);
       await expect(page.getByTestId("space-avatar-knight")).toBeVisible();
       await expect(page.getByTestId("space-avatar-monk")).toBeVisible();
@@ -91,24 +85,28 @@ test.describe("Virtual space character picker", () => {
   }) => {
     const user: TestUser = await newSignedInUser(browser, "webp");
     try {
-      const page = user.page;
       const failed: string[] = [];
       const served: string[] = [];
-      page.on("response", (r) => {
-        const url = r.url();
-        if (!url.includes("/images/space/")) return;
-        if (r.status() >= 400) failed.push(`${r.status()} ${url}`);
-        else served.push(url);
-      });
+      const watch = (target: Page) =>
+        target.on("response", (r) => {
+          const url = r.url();
+          if (!url.includes("/images/space/")) return;
+          if (r.status() >= 400) failed.push(`${r.status()} ${url}`);
+          else served.push(url);
+        });
+
+      // Every sheet is fetched by the space's own tab now, and the picker's
+      // preview strip is requested the moment that page paints — so the
+      // listener has to be on the tab before it exists, not after it is open.
+      watch(user.page);
+      user.ctx.on("page", watch);
 
       const channel = uniqueChannel("webp");
       await user.chat.sendMessage(`/join ${channel}`);
-      await page
-        .locator('[data-testid="tab-bar"] [role="tab"][phx-value-type="space"]')
-        .click();
+
+      const page = await user.chat.openSpace();
 
       // The picker's preview strip, then the world's own sheets.
-      await expect(page.getByTestId("space-character-select")).toBeVisible();
       await page.getByTestId("space-avatar-monk").click();
       await expect(
         page.locator('[data-testid="channel-space-shell"][data-avatar="monk"]'),

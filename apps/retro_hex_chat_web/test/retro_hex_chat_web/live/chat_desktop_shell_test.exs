@@ -7,14 +7,6 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
 
   @moduletag :liveview
 
-  # The space is its own LiveView, mounted into the conversation's region. The
-  # picker's buttons belong to that child, so a click has to be aimed at it —
-  # the parent's HTML carries the child's markup but not its event handlers.
-  defp space_view(view) do
-    _rendered = render(view)
-    Enum.find(live_children(view), &(&1.module == RetroHexChatWeb.App.SpaceLive))
-  end
-
   describe "desktop shell" do
     test "static render shows a boot loading state until LiveView connects", %{conn: conn} do
       html =
@@ -137,13 +129,11 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       # Find is menu-only now — no fourth entry point in the strip.
       refute has_element?(view, ~s([data-testid="conversation-toolbar-search"]))
 
-      # Space is a tab, not a toolbar button.
-      assert has_element?(
-               view,
-               ~s([data-testid="tab-bar"] [role="tab"][phx-value-type="space"])
-             )
-
+      # The space is a screen with an address, entered from the toolbar beside
+      # the tabs — never a tab, and never a view of the conversation.
+      refute has_element?(view, ~s([data-testid="tab-bar"] [role="tab"][phx-value-type="space"]))
       refute has_element?(view, ~s([data-testid="channel-view-switcher"]))
+      assert has_element?(view, ~s([data-testid="space-open"]))
 
       assert has_element?(view, ~s([data-window-id="chat"] #conversations-mount.h-full))
       assert has_element?(view, ~s([data-window-id="chat"] #conversations.h-full))
@@ -290,52 +280,22 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       assert assigns.show_nicklist
     end
 
-    test "a channel can switch from Chat to Space without replacing the composer", %{conn: conn} do
+    test "the conversation keeps its composer and offers the space beside it", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
 
       chat_tab = ~s([data-testid="tab-bar"] [role="tab"][phx-value-type="channel"])
-      space_button = ~s([data-testid="tab-bar"] [role="tab"][phx-value-type="space"])
 
-      # The conversation tab is the chat view, so it carries the selection until
-      # the space takes it.
+      # The conversation tab is the only thing that can take the region now, so
+      # it keeps the selection and the space never competes for it.
       assert has_element?(view, ~s(#{chat_tab}[aria-selected="true"]))
-      assert has_element?(view, "#{space_button} svg")
-      assert has_element?(view, ~s(#{space_button}[aria-selected="false"]))
 
-      view
-      |> element(space_button)
-      |> render_click()
+      entry = ~s([data-testid="space-open"])
+      assert has_element?(view, "#{entry} svg")
+      assert has_element?(view, ~s(#{entry}[target="_blank"]))
 
-      # Entering the space shows the character picker first; the canvas only
-      # mounts after a character is chosen.
-      assert has_element?(view, ~s([data-testid="space-character-select"]))
-      refute has_element?(view, ~s([data-testid="channel-space-shell"]))
-
-      space = space_view(view)
-      assert space, "the Space tab renders the space surface as a child LiveView"
-
-      space
-      |> element(~s([data-testid="space-avatar-knight"]))
-      |> render_click()
-
-      assert has_element?(
-               view,
-               ~s([data-testid="channel-content-row"] [data-testid="channel-space-shell"][phx-hook="SpaceCanvasHook"][data-space-mode="channel"][data-avatar="knight"])
-             )
-
-      assert has_element?(
-               view,
-               ~s([data-testid="channel-space-shell"] [data-testid="space-loading"]),
-               "Channel Space"
-             )
-
-      assert has_element?(
-               view,
-               ~s([data-testid="channel-space-shell"] [data-testid="space-loading"]),
-               "Entering channel space..."
-             )
-
+      # Nothing about the conversation changes: the space is somewhere else.
       assert has_element?(view, ~s([data-testid="channel-content-row"] [data-testid="nicklist"]))
+      refute has_element?(view, ~s([data-testid="channel-space-shell"]))
 
       assert has_element?(
                view,
@@ -343,41 +303,14 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
              )
     end
 
-    test "a private conversation can switch from Chat to Space with its loading panel", %{
-      conn: conn
-    } do
+    test "a private conversation offers the space the two of them share", %{conn: conn} do
       other = "Peer#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
 
       render_click(view, "nicklist_dblclick", %{"nick" => other})
 
-      view
-      |> element(~s([data-testid="tab-bar"] [role="tab"][phx-value-type="space"]))
-      |> render_click()
-
-      # Pick a character to dismiss the picker and mount the private-room canvas.
-      assert has_element?(view, ~s([data-testid="space-character-select"]))
-
-      space_view(view)
-      |> element(~s([data-testid="space-avatar-sorceress"]))
-      |> render_click()
-
-      assert has_element?(
-               view,
-               ~s([data-testid="channel-content-row"] [data-testid="channel-space-shell"][phx-hook="SpaceCanvasHook"][data-space-mode="direct_message"])
-             )
-
-      assert has_element?(
-               view,
-               ~s([data-testid="channel-space-shell"] [data-testid="space-loading"]),
-               "Private Space"
-             )
-
-      assert has_element?(
-               view,
-               ~s([data-testid="channel-space-shell"] [data-testid="space-loading"]),
-               "Opening private room..."
-             )
+      assert has_element?(view, ~s([data-testid="space-open"]))
+      refute has_element?(view, ~s([data-testid="channel-space-shell"]))
     end
   end
 

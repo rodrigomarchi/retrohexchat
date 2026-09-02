@@ -21,31 +21,6 @@ msgstr "Entrando e Movendo-se"
 msgid "Lifecycle"
 msgstr "Ciclo de Vida"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A virtual space is the map view built into every channel. People who are present in the channel can switch from Chat to Space, walk around the shared 8-bit village, and keep using the same public channel conversation."
-msgstr ""
-"Um espaço virtual é a visão do mapa incorporada em cada canal. As pessoas "
-"que estão presentes no canal podem mudar de Chat para Space, passear pela "
-"aldeia compartilhada de 8 bits e continuar usando a mesma conversa de canal "
-"público."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "Channel spaces are runtime state. They wake when someone views Space, mirror the current channel presence, and can be rebuilt from that presence when the view is opened again."
-msgstr ""
-"Os espaços de canal estão em estado de execução. Eles acordam quando alguém "
-"vê o espaço, espelham a presença do canal atual, e podem ser reconstruídos "
-"dessa presença quando a visão é aberta novamente."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Entering the channel makes your avatar available in Space. Move with the arrow keys or WASD while the canvas is focused; the server validates every step, so walls and furniture block movement for everyone equally."
-msgstr ""
-"Entrar no canal torna o seu avatar disponível no Espaço. Mova-se com as "
-"teclas de seta ou WASD enquanto a tela está focada; o servidor valida cada "
-"passo, então paredes e movimento de bloco de móveis para todos igualmente."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Opening Space"
@@ -136,33 +111,21 @@ msgstr ""
 msgid "Taking hits and health"
 msgstr "Tomar golpes e saúde"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Open any channel and click the Space tab, next to the channel's own tab at the bottom of the chat area. Clicking the channel tab takes you back to the messages. There is no separate invite card or space command for the channel map."
-msgstr "Abra qualquer canal e clique na aba Space, ao lado da aba do próprio canal, embaixo da área de chat. Clicar na aba do canal leva você de volta às mensagens. Não há cartão de convite separado nem comando de space para o mapa do canal."
-
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "A Space in Its Own Tab"
 msgstr "Um Espaço em Aba Própria"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A space can run in a browser tab of its own, with the whole window to itself. On the character picker, choose Open in a tab. It is the same space either way — the Space tab beside the conversation keeps working for when you would rather not leave the page."
-msgstr "Um espaço pode rodar numa aba só dele, com a janela inteira para ele. No seletor de personagem, escolha Abrir em uma aba. É o mesmo espaço dos dois jeitos — a aba Space ao lado da conversa continua funcionando para quando você preferir não sair da página."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "A space has no beginning and no end: it is a place, so bookmarking its address takes you back to it later. Opening it still asks the same questions as the Space tab does — a channel's space wants you in that channel, and a private space belongs to its two people. The tab always shows a way back to the chat along its bottom edge."
-msgstr "Um espaço não começa nem termina: ele é um lugar, então guardar o endereço nos favoritos te leva de volta depois. Abrir ele continua fazendo as mesmas perguntas que a aba Space faz — o espaço de um canal quer você naquele canal, e um espaço privado é das suas duas pessoas. A aba sempre mostra um caminho de volta ao chat na borda de baixo."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Inviting Someone to a Space"
 msgstr "Convidando Alguém para um Espaço"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:17
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "See also:"
 msgstr "Veja também:"
@@ -177,13 +140,9 @@ msgstr "Compartilhar, no seletor de personagem, cria um link que você pode cola
 msgid "The address stays good"
 msgstr "O endereço continua valendo"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "The map is drawn continuously, and inside the chat it shares the browser with everything the chat is doing. In a tab of its own it does not, which is the difference you feel when several people are walking around at once."
-msgstr "O mapa é desenhado continuamente, e dentro do chat ele divide o navegador com tudo o que o chat está fazendo. Numa aba só dele, não divide — é a diferença que você sente quando várias pessoas estão andando ao mesmo tempo."
-
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:19
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Virtual Spaces"
 msgstr "Espaços Virtuais"
@@ -202,3 +161,94 @@ msgstr "Qual espaço é, e nunca permissão para estar nele. O espaço de um can
 #, elixir-autogen, elixir-format
 msgid "Why a tab of its own"
 msgstr "Por que uma aba própria"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A space always runs in a browser tab of its own, opened with Space beside the conversation's tabs. The map gets the whole window, and the conversation stays exactly where it was."
+msgstr "Um espaço sempre roda numa aba de navegador só dele, aberta por Space, ao lado das abas da conversa. O mapa fica com a janela inteira, e a conversa continua exatamente onde estava."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "A space has no beginning and no end: it is a place, so bookmarking its address takes you back to it later. Opening it asks the same questions either way — a channel's space wants you in that channel, and a private space belongs to its two people. The tab always shows a way back to the chat along its bottom edge."
+msgstr "Um espaço não começa nem termina: ele é um lugar, então guardar o endereço nos favoritos te leva de volta depois. Abri-lo faz as mesmas perguntas de sempre — o espaço de um canal quer você naquele canal, e um espaço privado é das suas duas pessoas. A aba sempre mostra um caminho de volta ao chat na borda de baixo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A virtual space is the map that belongs to a conversation: every channel has one, and so does every private conversation. Walk around the shared 8-bit world while the conversation carries on beside it."
+msgstr "Um espaço virtual é o mapa que pertence a uma conversa: todo canal tem um, e toda conversa privada também. Passeie pelo mundo compartilhado de 8 bits enquanto a conversa segue ao lado."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Choose a character and you are in. Move with the arrow keys, WASD or the on-screen pad; the server validates every step, so walls and furniture block movement for everyone equally."
+msgstr "Escolha um personagem e você está dentro. Mova-se com as setas, WASD ou o direcional na tela; o servidor valida cada passo, então paredes e móveis bloqueiam o movimento igualmente para todo mundo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "One tab, not two"
+msgstr "Uma aba, não duas"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Space, beside the conversation's tabs, opens it in a browser tab of its own. The conversation stays exactly where it was, and Back to Chat along the space's bottom edge returns to it. There is no command for the map: the entry is the door."
+msgstr "Space, ao lado das abas da conversa, abre o espaço numa aba de navegador só dele. A conversa fica exatamente onde estava, e Voltar ao chat, na borda de baixo do espaço, leva de volta a ela. Não existe comando para o mapa: a entrada é a porta."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The map is drawn continuously, and inside the chat it shared the browser with everything the chat was doing. In a tab of its own it does not, which is the difference you feel when several people are walking around at once."
+msgstr "O mapa é desenhado continuamente, e dentro do chat ele dividia o navegador com tudo o que o chat estava fazendo. Numa aba só dele, não divide — é a diferença que você sente quando várias pessoas estão andando ao mesmo tempo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "The world itself is runtime state: it wakes when the first person walks in and stops when the last one leaves. What outlives it is the card that walking into an empty one posts in the conversation, which becomes the record of how long the gathering ran and how many people came. The address is a place and never expires."
+msgstr "O mundo em si é estado de runtime: ele acorda quando a primeira pessoa entra e para quando a última sai. O que sobrevive a ele é o card que entrar num espaço vazio posta na conversa, e que vira o registro de quanto tempo o encontro durou e quantas pessoas passaram. O endereço é um lugar e nunca expira."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Who Is in the Space Right Now"
+msgstr "Quem está no espaço agora"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "With that address already open somewhere, the entry says In another tab and takes you to the tab you have. A second tab of a world you are standing in would be a second character nobody asked for."
+msgstr "Com esse endereço já aberto em algum lugar, a entrada diz Em outra aba e te leva para a aba que você tem. Uma segunda aba de um mundo em que você está de pé seria um segundo personagem que ninguém pediu."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Once everybody has gone"
+msgstr "Depois que todo mundo foi embora"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Only a registered nickname. A shared address carries somebody accountable for it, which is the same rule every other link in this chat follows. A guest walks into the space exactly as usual; there is simply no card, because there is nobody to put on it."
+msgstr "Só um apelido registrado. Um endereço compartilhado carrega alguém que responde por ele, que é a mesma regra que todo outro link deste chat segue. Um visitante entra no espaço exatamente como sempre; simplesmente não há card, porque não há ninguém para pôr nele."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The card counts who is inside and names a few of them, and it keeps up on its own as people come and go. Walking into a space somebody is already in posts nothing: one gathering, one card."
+msgstr "O card conta quem está dentro e nomeia alguns, e se mantém sozinho conforme as pessoas entram e saem. Entrar num espaço onde alguém já está não posta nada: um encontro, um card."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "The same card becomes the record of what happened: how long the gathering ran, and how many different people came. The address itself does not expire — a space is a place — so the entry beside the tabs still opens it, and the next person in starts a new gathering with a card of its own."
+msgstr "O mesmo card vira o registro do que aconteceu: quanto tempo o encontro durou e quantas pessoas diferentes passaram. O endereço em si não expira — um espaço é um lugar —, então a entrada ao lado das abas continua abrindo, e a próxima pessoa a entrar começa um novo encontro com um card só dele."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Walking into an empty space posts a card in the conversation it belongs to. It is how everybody reading finds out that something is happening in there, and it is a message like any other: it stays in the scrollback, and somebody scrolling past tomorrow still sees it."
+msgstr "Entrar num espaço vazio posta um card na conversa a que ele pertence. É assim que todo mundo que está lendo descobre que algo está acontecendo lá dentro, e é uma mensagem como qualquer outra: fica no histórico, e quem passar por ela amanhã ainda vai vê-la."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "While it lasts"
+msgstr "Enquanto dura"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_card.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Who posts one"
+msgstr "Quem posta um"

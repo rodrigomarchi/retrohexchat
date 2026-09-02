@@ -61,7 +61,10 @@ defmodule RetroHexChat.Jobs.RuntimeStaleCleanupWorker do
       arcade_skipped: summary.arcade.skipped,
       group_call_candidates: summary.group_call.candidates,
       group_call_expired: summary.group_call.expired,
-      group_call_skipped: summary.group_call.skipped
+      group_call_skipped: summary.group_call.skipped,
+      space_candidates: summary.space.candidates,
+      space_expired: summary.space.expired,
+      space_skipped: summary.space.skipped
     }
   end
 

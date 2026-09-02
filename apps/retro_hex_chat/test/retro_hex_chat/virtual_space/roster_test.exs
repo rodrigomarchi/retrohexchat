@@ -12,6 +12,10 @@ defmodule RetroHexChat.VirtualSpace.RosterTest do
   channel is drawn on the map whether or not they ever opened it, so the roster
   is the channel's membership; in a private space nobody is drawn until they
   walk in.
+
+  Both answers are the running world's. A space with no world has nobody in it,
+  and reading the channel's membership for one would put a crowd in a room that
+  is not even switched on.
   """
   use RetroHexChat.DataCase, async: false
 
@@ -90,6 +94,20 @@ defmodule RetroHexChat.VirtualSpace.RosterTest do
     test "a space nobody has opened answers with nobody, not with an error" do
       assert VirtualSpace.roster("#never-opened-#{System.unique_integer([:positive])}") == []
       assert VirtualSpace.roster("dm:nobody:nowhere") == []
+    end
+
+    # A busy channel whose space nobody has walked into. The members are the
+    # answer to "who would be drawn here", never to "who is in here now".
+    test "a channel full of people whose space is not running holds nobody" do
+      channel = "#cold-#{System.unique_integer([:positive])}"
+      {:ok, channel_pid} = ChannelSupervisor.start_child(channel)
+      on_exit(fn -> ChannelSupervisor.stop_child(channel_pid) end)
+
+      {:ok, _state} = Server.join(channel, "ana")
+      {:ok, _state} = Server.join(channel, "bob")
+
+      assert Registry.lookup({:channel_space, channel}) == {:error, :not_found}
+      assert VirtualSpace.roster(channel) == []
     end
   end
 

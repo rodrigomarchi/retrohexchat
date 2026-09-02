@@ -24,6 +24,9 @@ defmodule RetroHexChat.Application do
       RetroHexChat.GroupCall.Supervisor,
       {Registry, keys: :unique, name: RetroHexChat.VirtualSpace.SessionRegistry},
       RetroHexChat.VirtualSpace.Supervisor,
+      # After the spaces it watches: it re-adopts the worlds that outlived a
+      # restart of its own, and there is nothing to adopt before they exist.
+      RetroHexChat.VirtualSpace.SessionRecorder,
       {Registry, keys: :unique, name: RetroHexChat.Arcade.SessionRegistry},
       RetroHexChat.Arcade.Supervisor,
       RetroHexChat.Admin.BanCache,

@@ -1,8 +1,10 @@
 /**
  * @section SP - Virtual Spaces
- * @flow SP6 [done] A space opened at its own address runs without the chat around it
+ * @flow SP6 [done] A space is entered from the conversation and runs in a tab of its own
  * @flow SP7 [done] A shared space link resolves to a card and then to the space itself
- * @flow SP8 [done] Two people in the same space, one in a tab of its own, see each other
+ * @flow SP8 [done] Two people in the same space see each other
+ * @flow SP9 [done] Walking into an empty space writes its card into the conversation
+ * @flow SP10 [done] The picker remembers the character this browser chose last
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -30,18 +32,29 @@ function canvasSignature(page: Page): Promise<number> {
     });
 }
 
-async function openSpaceTab(user: TestUser, channel: string): Promise<string> {
+// The door is an anchor in the conversation's toolbar, so entering is a new tab
+// rather than a navigation — exactly as a conference and a P2P session are.
+async function enterSpace(user: TestUser, channel: string): Promise<Page> {
   await user.chat.sendMessage(`/join ${channel}`);
-  await user.page
-    .locator('[data-testid="tab-bar"] [role="tab"][phx-value-type="space"]')
-    .click();
-  await expect(user.page.getByTestId("space-character-select")).toBeVisible();
 
-  const href = await user.page
-    .getByTestId("space-open-in-tab")
-    .getAttribute("href");
-  expect(href).toBeTruthy();
-  return href as string;
+  const entry = user.page.getByTestId("space-open");
+  await expect(entry).toBeVisible();
+
+  const [space] = await Promise.all([
+    user.ctx.waitForEvent("page"),
+    entry.click(),
+  ]);
+
+  await space.waitForLoadState("domcontentloaded");
+  await expect(space.getByTestId("space-character-select")).toBeVisible();
+  return space;
+}
+
+async function walkIn(space: Page, avatar: string) {
+  await space.getByTestId(`space-avatar-${avatar}`).click();
+  await expect(space.getByTestId("space-loading")).toBeHidden({
+    timeout: 15_000,
+  });
 }
 
 test.describe("A space at an address of its own", () => {
@@ -49,45 +62,98 @@ test.describe("A space at an address of its own", () => {
     const user = await newSignedInUser(browser, "spa");
     try {
       const channel = uniqueChannel("spa");
-      const address = await openSpaceTab(user, channel);
+      const space = await enterSpace(user, channel);
 
-      // A tab of its own: opened cold, with no chat page behind it.
-      const solo = await user.ctx.newPage();
-      await solo.goto(address);
+      // The antechamber is the first thing the address renders, and it is the
+      // way back to the chat that opened it.
+      await expect(space.getByTestId("space-back-to-chat")).toBeVisible();
 
-      // The antechamber is the first thing the address renders, and it names
-      // who is already inside.
-      await expect(solo.getByTestId("space-character-select")).toBeVisible();
-      await expect(solo.getByTestId("space-roster-names")).toContainText(
-        user.nick,
+      // Nobody has walked in yet, so nobody is inside — the members of the
+      // channel are not people standing in a room.
+      await expect(space.getByTestId("space-roster")).toContainText(
+        "Nobody is in here yet",
       );
-      await expect(solo.getByTestId("space-back-to-chat")).toBeVisible();
 
-      // The page already is the space, so it offers neither a tab of its own
-      // nor a second way to fill the screen.
-      await expect(solo.getByTestId("space-open-in-tab")).toHaveCount(0);
-      await expect(solo.getByTestId("space-fullscreen-toggle")).toHaveCount(0);
+      // The page already is the space, so it offers no tab of its own.
+      await expect(space.getByTestId("space-open-in-tab")).toHaveCount(0);
 
       // Choosing a character is entering.
-      await solo.getByTestId("space-avatar-monk").click();
+      await space.getByTestId("space-avatar-monk").click();
       await expect(
-        solo.locator('[data-testid="channel-space-shell"][data-avatar="monk"]'),
-      ).toBeVisible();
-      await expect(
-        solo.locator('[data-testid="channel-space-shell"] canvas'),
+        space.locator(
+          '[data-testid="channel-space-shell"][data-avatar="monk"]',
+        ),
       ).toBeVisible();
 
       // The world boots and keeps drawing: the loading panel goes away and the
       // canvas has pixels in it.
-      await expect(solo.getByTestId("space-loading")).toBeHidden({
+      await expect(space.getByTestId("space-loading")).toBeHidden({
         timeout: 15_000,
       });
-      await expect.poll(() => canvasSignature(solo)).not.toBe(0);
+      await expect.poll(() => canvasSignature(space)).not.toBe(0);
+
+      // Filling the screen is a question the map raises, not the antechamber:
+      // a maximized window is still inside browser chrome.
+      await expect(space.getByTestId("space-fullscreen-toggle")).toBeVisible();
 
       // Walking works with nothing but this tab: the frame changes after a step.
-      const before = await canvasSignature(solo);
-      await solo.locator('[data-space-pad-dir="right"]').click();
-      await expect.poll(() => canvasSignature(solo)).not.toBe(before);
+      const before = await canvasSignature(space);
+      await space.locator('[data-space-pad-dir="right"]').click();
+      await expect.poll(() => canvasSignature(space)).not.toBe(before);
+    } finally {
+      await closeUsers([user]);
+    }
+  });
+
+  // The card is the record of a gathering rather than a way in — the entry in
+  // the toolbar is always a door — but it is what tells the conversation that
+  // something is happening, and it is the only half a reader ever sees.
+  test("walking into an empty space writes its card into the conversation", async ({
+    browser,
+  }) => {
+    const user = await newSignedInUser(browser, "spc");
+    try {
+      const channel = uniqueChannel("spc");
+      const space = await enterSpace(user, channel);
+      await walkIn(space, "hero");
+
+      const card = user.page.getByTestId("share-message-card").first();
+      await expect(card).toBeVisible({ timeout: 15_000 });
+      await expect(card).toContainText(user.nick);
+
+      // A second walk-in is the same gathering, so it is still one card.
+      const second = await user.ctx.newPage();
+      await second.goto(space.url());
+      await expect(second.getByTestId("space-character-select")).toBeVisible();
+      await second.getByTestId("space-avatar-knight").click();
+
+      await expect(user.page.getByTestId("share-message-card")).toHaveCount(1, {
+        timeout: 15_000,
+      });
+    } finally {
+      await closeUsers([user]);
+    }
+  });
+
+  test("the picker remembers the character this browser chose last", async ({
+    browser,
+  }) => {
+    const user = await newSignedInUser(browser, "spm");
+    try {
+      const channel = uniqueChannel("spm");
+      const space = await enterSpace(user, channel);
+      await space.getByTestId("space-avatar-cleric").click();
+
+      // A new visit to the same address, in the same browser: nothing on the
+      // server outlives the first one, so the memory has to be the browser's.
+      const again = await user.ctx.newPage();
+      await again.goto(space.url());
+
+      await expect(
+        again.locator(
+          '[data-testid="space-avatar-cleric"][aria-pressed="true"]',
+        ),
+      ).toBeVisible({ timeout: 15_000 });
     } finally {
       await closeUsers([user]);
     }
@@ -99,10 +165,10 @@ test.describe("A space at an address of its own", () => {
     const user = await newSignedInUser(browser, "spl");
     try {
       const channel = uniqueChannel("spl");
-      await openSpaceTab(user, channel);
+      const space = await enterSpace(user, channel);
 
-      await user.page.getByTestId("share-create").click();
-      const shareUrl = await user.page.getByTestId("share-url").inputValue();
+      await space.getByTestId("share-create").click();
+      const shareUrl = await space.getByTestId("share-url").inputValue();
       expect(shareUrl).toContain("/join/");
 
       // The public card: it names the space and offers the way in.
@@ -124,34 +190,21 @@ test.describe("A space at an address of its own", () => {
     const guest = await newSignedInUser(browser, "spy");
     try {
       const channel = uniqueChannel("spx");
-      const address = await openSpaceTab(host, channel);
+      const hostSpace = await enterSpace(host, channel);
+      await walkIn(hostSpace, "knight");
 
-      // The host walks in from the chat.
-      await host.page.getByTestId("space-avatar-knight").click();
-      await expect(host.page.getByTestId("space-loading")).toBeHidden({
-        timeout: 15_000,
-      });
-
-      // The guest joins the channel and opens the same address in a tab of
-      // its own — the two hosts of the same surface, side by side.
-      await guest.chat.sendMessage(`/join ${channel}`);
-      const solo = await guest.ctx.newPage();
-      await solo.goto(address);
-      await expect(solo.getByTestId("space-roster-names")).toContainText(
+      const guestSpace = await enterSpace(guest, channel);
+      await expect(guestSpace.getByTestId("space-roster-names")).toContainText(
         host.nick,
       );
-
-      await solo.getByTestId("space-avatar-sorceress").click();
-      await expect(solo.getByTestId("space-loading")).toBeHidden({
-        timeout: 15_000,
-      });
+      await walkIn(guestSpace, "sorceress");
 
       // Each one's arrival redraws the other's world.
       await expect
-        .poll(() => canvasSignature(host.page), { timeout: 15_000 })
+        .poll(() => canvasSignature(hostSpace), { timeout: 15_000 })
         .not.toBe(0);
       await expect
-        .poll(() => canvasSignature(solo), { timeout: 15_000 })
+        .poll(() => canvasSignature(guestSpace), { timeout: 15_000 })
         .not.toBe(0);
     } finally {
       await closeUsers([host, guest]);

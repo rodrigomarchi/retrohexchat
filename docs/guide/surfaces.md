@@ -12,27 +12,24 @@ stable — `§19` still means this file.
 ## 19.1 What a surface is
 
 Everything used to fit in one tab: `/chat` mounted one LiveView, a Win98 desktop
-and N windows. Four things now also have an address of their own — a conference,
-a space, a P2P session and a match — and the chat still renders every one of
-them inside a window. **They are not two implementations.** They are one module
-with two mount points:
+and N windows. Four things now have an address of their own instead — a
+conference, a space, a P2P session and a match:
 
 | Surface | Own address | Module |
 |---|---|---|
 | conference | `/call/:token` | `App.CallLive` — **one mount only** |
 | P2P session | `/p2p/:token` | `App.P2PLive` — **one mount only** |
 | match | `/play/:game/:token` | `App.P2PLive`, opened at its game |
-| space | `/space/:slug` | `App.SpaceLive` |
+| space | `/space/:slug` | `App.SpaceLive` — **one mount only** |
 | solo games | `/play`, `/play/:game` | `App.PlayLive` |
 | arcade | `/play/arcade/:game` | a redirect, not a LiveView |
 
-Root mount goes through the router; the nested mount is `live_render/3` in a
-`desktop_window` slot of the chat. **The conference and the P2P session have no
-nested mount any more** — each is reached only at its address, through the card
-the chat writes into the conversation when the room is created. Everything below
-still describes the space and the games. A nested `live_render` runs in its own
-process on the same socket, so the embedded mode gets no event loop and no
-bundle of its own — which is exactly the trade the embedded mode is accepting.
+Root mount goes through the router. **The conference, the P2P session and the
+space have no nested mount any more** — each is reached only at its address.
+What is left of the nested mode is the games, whose window is a catalogue rather
+than a room. A nested `live_render` runs in its own process on the same socket,
+so the embedded mode gets no event loop and no bundle of its own — which is
+exactly the trade the embedded mode is accepting.
 
 **A nested `live_render` never passes through the `live_session`'s `on_mount`.**
 The chat's window is therefore not a surface: it is part of the chat and dies
@@ -56,6 +53,16 @@ invite already **is** a persisted private message with the session's own address
 in it, so wave 3 only had to stop putting the creator inside the session and let
 the card be the door for both of them. What it did have to answer is where the
 chat hears about a session it is not in — see below.
+
+**A space is the one that is not a room, and the difference matters.** Its
+address is a *place* and stays good forever, so the entry in the conversation's
+toolbar is always a working door and the card is not the only way in. What the
+card is about is the **gathering**: `VirtualSpace.Schema.Session`, opened when
+somebody walks into an empty world and closed when the last of them leaves, with
+`{"space_id", "mode", "session_token"}` in the link's target. Two evenings at
+one address are two cards, and the older one keeps describing its own evening
+instead of borrowing tonight's. A link minted by hand at the picker carries no
+session token and is about the place — it never ends.
 
 Three things this needs and would fail silently without:
 
@@ -148,6 +155,12 @@ mode came to be a checkbox that changed nothing whenever the session was at its
 own address — the session's page is a Win98 desktop with a window manager of its
 own, so the command goes straight to it.
 
+**The space left it in wave 4**, and took `{:space_surface_avatar, …}` and
+`{:space_surface_event, …}` with it. The character you picked last is now
+`localStorage` on the browser that picked it, read by a hook on the picker and
+pushed up as `space_remember_avatar`: nothing on the server outlives a visit any
+more, so the chat could not be the memory even if it wanted to be.
+
 The channel between the two is the **parent process**, not PubSub: a nested
 `live_render` has exactly one host and dies with it, and a topic would deliver
 to every tab.
@@ -219,10 +232,12 @@ only public route, runs on the landing pipeline, and resolves the slug to *which
 room this is* — never to authorization. Whoever follows it then meets the
 surface's own policy. That is what lets the card be public: it carries no secret.
 
-The kinds are `call`, `space`, `p2p` and `play`. A `play` link whose target
-carries a `session_token` is a **match**, and it is the only kind that dies by
-**success**: a 1v1 game is full the moment somebody takes the seat, so the card
-says "already full" rather than "expired".
+The kinds are `call`, `space`, `p2p` and `play`, and two of them read their
+target twice. A `play` link whose target carries a `session_token` is a
+**match**, and it is the only kind that dies by **success**: a 1v1 game is full
+the moment somebody takes the seat, so the card says "already full" rather than
+"expired". A `space` link with one names a **gathering** and ends when that
+gathering does; without one it names the place, which never ends.
 
 `ShareLinkRef` is the one place that builds a share URL *and* recognises one.
 Two spellings of the same shape is how a link the app produced stops being a
@@ -295,8 +310,14 @@ is not, so changing one means arguing with the reason rather than the line.
   channel that has a live room mints nothing and posts nothing. The P2P session
   needs no link at all: the invite carries the session's own token, so the card
   is drawn by `ShareLinks.Card.for_session/1` with no slug and nothing to revoke
-  apart from the session. The space and the solo games keep the original rule
-  until their own wave.
+  apart from the session.
+
+  **The space, 2026-09-02, and it lands in the middle.** The address of a place
+  needs no minting to work, so `Share` at the picker is untouched and still the
+  only way to get a link *to the place*. What walking into an empty one mints is
+  a link to that **gathering**, once per gathering, and that ratio is the same
+  one-per-room the landfill argument allows. The solo games keep the original
+  rule: a catalogue has nothing to open.
 
 - **After it starts, the link still works.** A link spends most of its life
   after minute zero. Call and space let a late click in; a full match says
@@ -314,6 +335,13 @@ is not, so changing one means arguing with the reason rather than the line.
   sessions could not share it. With each session at its own address there is
   nothing to swap, so the confirm, the staged invite and `p2p_pending` are gone
   and a person can hold a session with several peers, one tab each.
+
+- **A space is a place; a gathering in it is an event.** Both sentences are
+  true and the code needs both. The place is the route, the slug, the entry in
+  the toolbar and the hand-minted share link, and none of them expire. The
+  gathering is a row that opens, counts who came, and closes — and it is the
+  only thing a card can be the record of. Collapsing the two is how a card comes
+  to say a party is still going a week later.
 
 ## 19.7 Traps that cost a day each
 
@@ -407,6 +435,21 @@ is not, so changing one means arguing with the reason rather than the line.
   subscribes does the arithmetic on the difference — and it must be a
   difference, because `Phoenix.PubSub.subscribe` is not idempotent and three
   subscribes are three deliveries.
+- **A roster is not a headcount, and in a channel space it is not even a guest
+  list.** `VirtualSpace.roster/1` answers *who is drawn on this map*, and a
+  channel space draws every member of the channel whether or not they ever
+  opened it. So the ended card counts arrivals told to the recorder by
+  `VirtualSpace.join_*`, one nickname at a time, and never a roster diff. It
+  records no departure either, for the same reason there is none to observe: a
+  channel viewer leaving is a `viewer_count` going down with no nickname
+  attached to it.
+- **`rescue` is half of not crashing.** `VirtualSpace.SessionRecorder` holds the
+  monitor for every space in the system, and the message it exists for is a
+  `:DOWN` — which arrives exactly when a node, or a test's sandbox owner, is
+  going away with the database pool. That closing `UPDATE` **exits** rather than
+  raising, a `rescue` lets it through, and one dying space then takes every
+  other space's monitor with it. This is the same shape as the crash wave 3 hit
+  with a `Repo.one` inside `Lobby.SessionServer`.
 - **Nothing here notices that a screen is ugly.** Every one of the ten defects
   worth remembering from this work — a window laid out at zero height, a
   duplicated card, a camera preview stretched over 440 px of black, a footer

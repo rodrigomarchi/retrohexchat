@@ -5,15 +5,13 @@ defmodule RetroHexChatWeb.ChatLive.SpaceReadModel do
   The same rule that sorted the conference sorts this: if the datum exists for
   someone who is only looking at the conversation, it belongs to the chat; if it
   only exists while you are standing in the space, it belongs to the space's own
-  surface. What the chat is left with is one fact — this conversation has a
-  space — and it draws a tab from it.
+  surface. What the chat is left with is one fact — which space this
+  conversation has — and it draws the entry beside the tabs from it.
 
   Everything else went: the avatar roster, the chosen character, the join token
-  and the element id are all things that exist only after you walk in.
-
-  The one exception is the character you picked last time, which the chat keeps
-  because it outlives every visit: the space surface is mounted fresh each time
-  the tab is opened, so a memory held inside it would be no memory at all.
+  and the element id are all things that exist only after you walk in, and the
+  character you picked last time is now remembered by the browser that picked
+  it, which outlives the chat as well as the space.
   """
 
   alias RetroHexChat.Accounts.Session
@@ -53,8 +51,4 @@ defmodule RetroHexChatWeb.ChatLive.SpaceReadModel do
   end
 
   def conversation_space(_session, _status), do: nil
-
-  @doc "Whether the conversation in focus has a space, for the tab bar."
-  @spec has_space?(Session.t()) :: boolean()
-  def has_space?(session), do: conversation_space(session, false) != nil
 end

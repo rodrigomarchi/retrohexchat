@@ -2,11 +2,9 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
   @moduledoc """
   A space at an address of its own.
 
-  What is asserted here is the half of the surface the chat cannot supply: an
-  address instead of a conversation the chat already chose, every gate applied
-  here instead of upstream, and a refusal that names the door that was shut.
-  The other half — being in a space — is the same module the chat renders, and
-  `chat_desktop_shell_test.exs` exercises it there.
+  The only place a space is rendered, so everything about one is asserted here:
+  the address it resolves from, every gate applied at it, a refusal that names
+  the door that was shut, and walking in.
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
@@ -131,13 +129,12 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
     end
 
     test "says who is inside right now", %{conn: conn, channel: channel, nickname: nickname} do
-      other = "Peer#{uid()}" |> String.slice(0, 16)
-      {:ok, _state} = Server.join(channel, other)
+      {:ok, _joined} =
+        VirtualSpace.join_channel_space(channel, %{user_id: nil, nickname: nickname})
 
       {:ok, view, _html} = live(conn, path(channel))
 
       assert has_element?(view, ~s([data-testid="space-roster-names"]), nickname)
-      assert has_element?(view, ~s([data-testid="space-roster-names"]), other)
     end
 
     test "an empty space says so rather than breaking", %{conn: _conn} do
@@ -151,12 +148,37 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
     end
 
     # The address is the place, so a tab that already is the space has nothing
-    # to open in a tab of its own.
+    # to open in a tab of its own. Filling the screen is a different question:
+    # a maximized window is still inside browser chrome.
     test "offers no tab of its own when it already is one", %{conn: conn, channel: channel} do
       {:ok, view, _html} = live(conn, path(channel))
 
       refute has_element?(view, ~s([data-testid="space-open-in-tab"]))
-      refute has_element?(view, ~s([data-testid="space-fullscreen-toggle"]))
+    end
+
+    test "remembers the character this browser picked last time", %{
+      conn: conn,
+      channel: channel
+    } do
+      {:ok, view, _html} = live(conn, path(channel))
+
+      # The browser is what remembers, so the browser is what says so — the
+      # server renders its default first and moves the highlight when told.
+      render_hook(view, "space_remember_avatar", %{"avatar" => "monk"})
+
+      assert has_element?(view, ~s([data-testid="space-avatar-monk"][aria-pressed="true"]))
+      assert :sys.get_state(view.pid).socket.assigns.avatar == nil
+    end
+
+    test "a remembered character this build no longer has is ignored", %{
+      conn: conn,
+      channel: channel
+    } do
+      {:ok, view, _html} = live(conn, path(channel))
+
+      render_hook(view, "space_remember_avatar", %{"avatar" => "dragon_lord"})
+
+      assert :sys.get_state(view.pid).socket.assigns.last_avatar == "hero"
     end
   end
 
@@ -203,6 +225,22 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       assert data.space_kind == "direct_message"
       assert data.space_id == space_id
       assert Enum.sort(data.participants) == Enum.sort([ana, bob])
+    end
+
+    # The token is what tells the space's channel who walked in, and a nil id
+    # there is a registered person entering as a guest: no card in the
+    # conversation, and nothing anywhere saying why.
+    test "the token carries the registered nickname's own id", %{conn: conn} do
+      nickname = register_nick("Ident")
+      channel = start_channel(nickname)
+      stop_space(channel)
+
+      {:ok, view, _html} = conn |> chat_conn(nickname) |> live(path(channel))
+      view |> element(~s([data-testid="space-avatar-hero"])) |> render_click()
+
+      token = :sys.get_state(view.pid).socket.assigns.join_token
+      assert {:ok, data} = ChannelJoinToken.verify(token)
+      assert is_integer(data.user_id)
     end
 
     test "an avatar outside the roster changes nothing", %{conn: conn, channel: channel} do
@@ -290,15 +328,17 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       assert render(view) =~ other
     end
 
-    # Nobody has opened the space, so there is no process to ask — and the
-    # answer is still right, because a channel space holds the channel.
-    test "a space nobody has opened still names who would be in it", %{conn: conn} do
+    # Nobody has opened the space, so there is nobody in it. The members of the
+    # channel it hangs off are not people standing in a room, and saying they
+    # were would put a crowd at the door of an empty world.
+    test "a space nobody has opened says nobody is in it", %{conn: conn} do
       nickname = "Cold#{uid()}" |> String.slice(0, 16)
       channel = start_channel(nickname)
 
       {:ok, view, _html} = conn |> chat_conn(nickname) |> live(path(channel))
 
-      assert has_element?(view, ~s([data-testid="space-roster-names"]), nickname)
+      assert VirtualSpace.roster(channel) == []
+      assert has_element?(view, ~s([data-testid="space-roster"]), "Nobody is in here yet")
     end
   end
 

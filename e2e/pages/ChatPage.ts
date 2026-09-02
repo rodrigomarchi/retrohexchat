@@ -767,17 +767,24 @@ export class ChatPage {
     return this.page.getByRole("tab", { name, exact: false });
   }
 
-  // Space is a tab, not a toolbar button: it is a second view of the focused
-  // conversation, rendered into the region the messages occupy.
-  get spaceTab(): Locator {
-    return this.page.locator(
-      '[data-testid="tab-bar"] [role="tab"][phx-value-type="space"]',
-    );
+  // The space is a screen with an address, entered from the conversation's
+  // toolbar in a tab of its own — never a view of the conversation.
+  get spaceEntry(): Locator {
+    return this.page.getByTestId("space-open");
   }
 
-  async switchToSpace() {
-    await this.spaceTab.click();
-    await expect(this.spaceTab).toHaveAttribute("aria-selected", "true");
+  /** Opens the focused conversation's space in a tab of its own. */
+  async openSpace(): Promise<Page> {
+    await expect(this.spaceEntry).toBeVisible();
+
+    const [space] = await Promise.all([
+      this.page.context().waitForEvent("page"),
+      this.spaceEntry.click(),
+    ]);
+
+    await space.waitForLoadState("domcontentloaded");
+    await expect(space.getByTestId("space-character-select")).toBeVisible();
+    return space;
   }
 
   // The sidebar row for a conversation — the switcher that does carry every

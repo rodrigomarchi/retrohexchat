@@ -16,10 +16,14 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterSelect do
   door.
 
   Above the grid it says who is inside right now, which is the one thing an
-  antechamber owes a person standing in it. Below it, the host puts whatever it
-  offers there — sharing the address, opening the space in a tab of its own —
-  because those differ between the chat and a tab of its own and the picker
-  does not.
+  antechamber owes a person standing in it. Below it goes whatever the screen
+  offers at the door — sharing the address, most of all.
+
+  `remember_key` makes the picker default to the character this browser chose
+  last time. It is the browser's memory rather than the server's because
+  nothing on the server outlives a visit: the surface is mounted afresh every
+  time somebody walks in, and the chat that used to hold this no longer has a
+  space in it.
 
   The animated previews are CSS sprites (`.rh-charsel-sprite`, defined in
   `retrohex.css`); the avatar id list is the server's `VirtualSpace.avatars/0`,
@@ -45,7 +49,11 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterSelect do
     default: [],
     doc: "Nicknames standing in the space right now (VirtualSpace.roster/1)"
 
-  slot :footer, doc: "What the host offers at the door: a share link, a tab of its own"
+  attr :remember_key, :string,
+    default: nil,
+    doc: "localStorage key the last chosen character is kept under; nil to not remember"
+
+  slot :footer, doc: "What the screen offers at the door: a share link, most of all"
 
   @spec space_character_select(map()) :: Phoenix.LiveView.Rendered.t()
   def space_character_select(assigns) do
@@ -53,6 +61,9 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterSelect do
     <div
       class="absolute inset-0 z-20 flex items-center justify-center bg-background/95 p-4"
       data-testid="space-character-select"
+      id={@remember_key && "space-character-select"}
+      phx-hook={@remember_key && "SpaceCharacterMemoryHook"}
+      data-remember-key={@remember_key}
     >
       <div class="bg-canvas shadow-retro-field p-4 w-full max-w-lg">
         <h2 class="mb-3 text-center text-sm font-bold">

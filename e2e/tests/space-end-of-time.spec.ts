@@ -41,20 +41,13 @@ test.describe("End of Time private space", () => {
       // Alice opens a private conversation with Bob and switches to it.
       await alice.chat.sendMessage(`/msg ${bob.nick} hey`);
 
-      const page = alice.page;
-      await page.getByTestId(`pm-${bob.nick}`).click();
+      await alice.page.getByTestId(`pm-${bob.nick}`).click();
       await expect(
-        page.getByPlaceholder(new RegExp(`Message to ${bob.nick}`)),
+        alice.page.getByPlaceholder(new RegExp(`Message to ${bob.nick}`)),
       ).toBeVisible();
 
-      const spaceTab = page.locator(
-        '[data-testid="tab-bar"] [role="tab"][phx-value-type="space"]',
-      );
-      await expect(spaceTab).toBeVisible();
-      await spaceTab.click();
-
       // Character picker gates the DM canvas.
-      await expect(page.getByTestId("space-character-select")).toBeVisible();
+      const page = await alice.chat.openSpace();
       await page.getByTestId("space-avatar-knight").click();
 
       const shell = page.locator(

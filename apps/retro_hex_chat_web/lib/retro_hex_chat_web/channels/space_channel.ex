@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
   alias RetroHexChat.VirtualSpace.ChannelJoinToken
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChatWeb.SpaceAssets
+  alias RetroHexChatWeb.SpaceSessionAnnouncement
 
   @impl true
   def join("space:#" <> channel_tail, params, socket) do
@@ -32,6 +33,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
         |> assign(:user_id, data.user_id)
         |> assign(:nickname, data.nickname)
 
+      announce(result, channel_name, "channel", data, [])
       {:ok, space_init(channel_name, result), socket}
     else
       {:error, reason} ->
@@ -57,6 +59,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
         |> assign(:user_id, data.user_id)
         |> assign(:nickname, data.nickname)
 
+      announce(result, space_id, "direct_message", data, data.participants)
       {:ok, space_init(space_id, result), socket}
     else
       {:error, reason} ->
@@ -66,6 +69,22 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   def join("space:" <> _not_channel_topic, _params, _socket),
     do: {:error, %{reason: "not_found"}}
+
+  # Walking into an empty space is what starts a gathering, and the join that
+  # started one is the only one handed a session back. Every later arrival gets
+  # `nil` here, which is what keeps one gathering to one card.
+  defp announce(%{session: %{token: token}}, space_id, mode, data, participants) do
+    SpaceSessionAnnouncement.announce(%{
+      space_id: space_id,
+      mode: mode,
+      token: token,
+      nickname: data.nickname,
+      user_id: data.user_id,
+      participants: participants
+    })
+  end
+
+  defp announce(_result, _space_id, _mode, _data, _participants), do: :ok
 
   @impl true
   def handle_in("space_input", payload, socket) do
