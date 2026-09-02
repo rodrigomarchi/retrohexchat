@@ -33,7 +33,6 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
        show: false,
        mode: :leave,
        channel: nil,
-       new_channel: nil,
        target_nickname: nil
      )}
   end
@@ -46,7 +45,6 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
        show: true,
        mode: :leave,
        channel: channel,
-       new_channel: nil,
        target_nickname: nil
      )}
   end
@@ -57,18 +55,6 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
        show: true,
        mode: :close,
        channel: channel,
-       new_channel: nil,
-       target_nickname: nil
-     )}
-  end
-
-  def update(%{action: {:open_switch, channel, new_channel}}, socket) do
-    {:ok,
-     assign(socket,
-       show: true,
-       mode: :switch,
-       channel: channel,
-       new_channel: new_channel,
        target_nickname: nil
      )}
   end
@@ -79,7 +65,6 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
        show: true,
        mode: :end_call,
        channel: channel,
-       new_channel: nil,
        target_nickname: nil
      )}
   end
@@ -93,7 +78,6 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
        show: true,
        mode: :kick_participant,
        channel: channel,
-       new_channel: nil,
        target_nickname: target_nickname
      )}
   end
@@ -104,7 +88,6 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
        show: true,
        mode: :mute_all,
        channel: channel,
-       new_channel: nil,
        target_nickname: nil
      )}
   end
@@ -115,7 +98,6 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
        show: true,
        mode: :camera_off_all,
        channel: channel,
-       new_channel: nil,
        target_nickname: nil
      )}
   end
@@ -142,11 +124,9 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
         show={@show}
         mode={@mode}
         channel={@channel}
-        new_channel={@new_channel}
         target_nickname={@target_nickname}
         on_confirm={
           case @mode do
-            :switch -> "group_call_confirm_switch"
             :end_call -> "group_call_confirm_end_call"
             :kick_participant -> "group_call_confirm_kick_participant"
             :mute_all -> "group_call_confirm_mute_all"

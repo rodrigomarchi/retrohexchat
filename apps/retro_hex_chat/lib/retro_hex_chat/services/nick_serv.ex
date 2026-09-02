@@ -26,6 +26,7 @@ defmodule RetroHexChat.Services.NickServ do
   alias RetroHexChat.Services.Queries
   alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChat.SessionControl
+  alias RetroHexChat.Topics
 
   @default_identify_timeout_ms 60_000
 
@@ -367,7 +368,7 @@ defmodule RetroHexChat.Services.NickServ do
       {_ref, new_timers} ->
         case Phoenix.PubSub.broadcast(
                RetroHexChat.PubSub,
-               "user:#{nickname}",
+               Topics.inbox(nickname),
                {:force_rename, %{reason: dgettext("services", "Identify timeout (60s)")}}
              ) do
           :ok ->
@@ -408,7 +409,7 @@ defmodule RetroHexChat.Services.NickServ do
   defp broadcast_identified(nickname) do
     case Phoenix.PubSub.broadcast(
            RetroHexChat.PubSub,
-           "user:#{nickname}",
+           Topics.inbox(nickname),
            {:nickserv_identified, %{nickname: nickname}}
          ) do
       :ok -> :ok

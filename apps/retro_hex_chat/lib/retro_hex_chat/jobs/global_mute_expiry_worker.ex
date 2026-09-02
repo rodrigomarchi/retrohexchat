@@ -23,6 +23,7 @@ defmodule RetroHexChat.Jobs.GlobalMuteExpiryWorker do
   alias RetroHexChat.Jobs.ResultMetadata
   alias RetroHexChat.Jobs.WorkerArgs
   alias RetroHexChat.Observability
+  alias RetroHexChat.Topics
 
   @pubsub RetroHexChat.PubSub
 
@@ -67,6 +68,10 @@ defmodule RetroHexChat.Jobs.GlobalMuteExpiryWorker do
   defp expire(:error), do: {:cancel, "invalid global mute id"}
 
   defp broadcast_unmuted(nickname) do
-    Phoenix.PubSub.broadcast(@pubsub, "user:#{nickname}", {:user_unmuted, %{nickname: nickname}})
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      Topics.inbox(nickname),
+      {:user_unmuted, %{nickname: nickname}}
+    )
   end
 end

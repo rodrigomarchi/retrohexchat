@@ -219,10 +219,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   def handle_event("group_call_confirm_cancel", _params, socket) do
     close_confirm()
 
-    {:halt,
-     socket
-     |> reopen_cancelled_close()
-     |> assign(group_call_pending: nil)}
+    {:halt, assign(socket, group_call_pending: nil)}
   end
 
   def handle_event(
@@ -809,11 +806,6 @@ defmodule RetroHexChatWeb.CallLive.Events do
       socket
     end
   end
-
-  # Cancelling a "close the window" confirm used to ask the host to bring the
-  # window back. The conference is the page now: nothing was taken away, so
-  # there is nothing to put back.
-  defp reopen_cancelled_close(socket), do: socket
 
   defp close_confirm do
     Phoenix.LiveView.send_update(GroupCallConfirmDialog,

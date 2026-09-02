@@ -14,10 +14,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
 
   attr :mode, :atom,
     default: :leave,
-    values: [:leave, :close, :switch, :end_call, :kick_participant, :mute_all, :camera_off_all]
+    values: [:leave, :close, :end_call, :kick_participant, :mute_all, :camera_off_all]
 
   attr :channel, :string, default: nil
-  attr :new_channel, :string, default: nil
   attr :target_nickname, :string, default: nil
   attr :on_confirm, :any, required: true
   attr :on_cancel, :any, required: true
@@ -42,7 +41,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
               <.inline_icon name={mode_icon(@mode)} class="h-5 w-5" />
             </span>
             <div class="min-w-0">
-              <p>{body(@mode, @channel, @new_channel, @target_nickname)}</p>
+              <p>{body(@mode, @channel, @target_nickname)}</p>
               <div class="mt-2 grid gap-1">
                 <div
                   :for={impact <- impact_items(@mode)}
@@ -81,13 +80,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
 
   defp title(:leave), do: dgettext("group_call", "Leave Group Call")
   defp title(:close), do: dgettext("group_call", "Close Group Call?")
-  defp title(:switch), do: dgettext("group_call", "Switch Group Call")
   defp title(:end_call), do: dgettext("group_call", "End Group Call")
   defp title(:kick_participant), do: dgettext("group_call", "Remove From Channel?")
   defp title(:mute_all), do: dgettext("group_call", "Mute Everyone?")
   defp title(:camera_off_all), do: dgettext("group_call", "Turn Cameras Off?")
 
-  defp body(:leave, channel, _new_channel, _target_nickname) do
+  defp body(:leave, channel, _target_nickname) do
     dgettext(
       "group_call",
       "Leave the group call in %{channel}? Your microphone and camera will disconnect.",
@@ -95,7 +93,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
     )
   end
 
-  defp body(:close, channel, _new_channel, _target_nickname) do
+  defp body(:close, channel, _target_nickname) do
     dgettext(
       "group_call",
       "Closing this window leaves the group call in %{channel}. To keep the call running and just tidy up, minimize the window instead.",
@@ -103,16 +101,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
     )
   end
 
-  defp body(:switch, channel, new_channel, _target_nickname) do
-    dgettext(
-      "group_call",
-      "You are already in a group call in %{channel}. Leave it and join the call in %{new_channel}?",
-      channel: channel || "?",
-      new_channel: new_channel || "?"
-    )
-  end
-
-  defp body(:end_call, channel, _new_channel, _target_nickname) do
+  defp body(:end_call, channel, _target_nickname) do
     dgettext(
       "group_call",
       "End the group call in %{channel} for everyone? All participants will be disconnected.",
@@ -120,7 +109,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
     )
   end
 
-  defp body(:kick_participant, channel, _new_channel, target_nickname) do
+  defp body(:kick_participant, channel, target_nickname) do
     dgettext(
       "group_call",
       "Remove %{target} from %{channel}? This will ban them from the channel, disconnect them from the conference, and prevent them from rejoining until a channel operator unbans them.",
@@ -129,7 +118,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
     )
   end
 
-  defp body(:mute_all, channel, _new_channel, _target_nickname) do
+  defp body(:mute_all, channel, _target_nickname) do
     dgettext(
       "group_call",
       "Mute all lower-ranked participants in %{channel}? They cannot unmute until a moderator allows their microphone again.",
@@ -137,7 +126,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
     )
   end
 
-  defp body(:camera_off_all, channel, _new_channel, _target_nickname) do
+  defp body(:camera_off_all, channel, _target_nickname) do
     dgettext(
       "group_call",
       "Turn off cameras for all lower-ranked participants in %{channel}? They cannot turn camera back on until a moderator allows it again.",
@@ -147,7 +136,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
 
   defp confirm_label(:leave), do: dgettext("group_call", "Leave call")
   defp confirm_label(:close), do: dgettext("group_call", "Leave call")
-  defp confirm_label(:switch), do: dgettext("group_call", "Switch call")
   defp confirm_label(:end_call), do: dgettext("group_call", "End call")
   defp confirm_label(:kick_participant), do: dgettext("group_call", "Remove and ban")
   defp confirm_label(:mute_all), do: dgettext("group_call", "Mute all")
@@ -164,13 +152,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
 
   defp mode_icon(:leave), do: :icon_phone_end
   defp mode_icon(:close), do: :icon_protocol_conference_compact
-  defp mode_icon(:switch), do: :icon_btn_join
   defp mode_icon(:end_call), do: :icon_phone_end
   defp mode_icon(:kick_participant), do: :icon_ban
   defp mode_icon(:mute_all), do: :icon_mute
   defp mode_icon(:camera_off_all), do: :icon_camera_off
 
-  defp confirm_icon(:switch), do: :icon_btn_join
   defp confirm_icon(:kick_participant), do: :icon_ban
   defp confirm_icon(:mute_all), do: :icon_mute
   defp confirm_icon(:camera_off_all), do: :icon_camera_off
@@ -206,13 +192,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
     [
       %{icon: :icon_phone_end, label: dgettext("group_call", "You leave the conference")},
       %{icon: :icon_win_minimize, label: dgettext("group_call", "Minimize to keep it running")}
-    ]
-  end
-
-  defp impact_items(:switch) do
-    [
-      %{icon: :icon_phone_end, label: dgettext("group_call", "Current conference closes first")},
-      %{icon: :icon_btn_join, label: dgettext("group_call", "New channel conference opens")}
     ]
   end
 

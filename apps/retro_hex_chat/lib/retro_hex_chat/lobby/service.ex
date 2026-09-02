@@ -9,6 +9,7 @@ defmodule RetroHexChat.Lobby.Service do
   alias RetroHexChat.Lobby.{Policy, Queries, SessionServer, Supervisor}
   alias RetroHexChat.Lobby.Schema.Session
   alias RetroHexChat.P2P.RateLimiter
+  alias RetroHexChat.Topics
 
   @pubsub RetroHexChat.PubSub
   @open_lobby_ttl_ms :timer.minutes(15)
@@ -249,7 +250,7 @@ defmodule RetroHexChat.Lobby.Service do
     creator_nick = get_nickname(creator_id)
 
     if peer_nick do
-      Phoenix.PubSub.broadcast(@pubsub, "user:#{peer_nick}", %{
+      Phoenix.PubSub.broadcast(@pubsub, Topics.inbox(peer_nick), %{
         event: "lobby_invite",
         payload: %{token: token, from: creator_nick}
       })

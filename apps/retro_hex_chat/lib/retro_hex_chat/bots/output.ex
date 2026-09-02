@@ -10,6 +10,7 @@ defmodule RetroHexChat.Bots.Output do
   alias RetroHexChat.Bots.Pace
   alias RetroHexChat.Channels
   alias RetroHexChat.Observability
+  alias RetroHexChat.Topics
 
   require Logger
 
@@ -162,7 +163,7 @@ defmodule RetroHexChat.Bots.Output do
   defp send_private_notice(_channel, _nickname, nil, _content), do: :ok
 
   defp send_private_notice(channel, nickname, target, content) do
-    case Phoenix.PubSub.broadcast(@pubsub, "user:#{target}", %{
+    case Phoenix.PubSub.broadcast(@pubsub, Topics.inbox(target), %{
            event: "new_notice",
            payload: %{author: nickname, content: content, channel: channel}
          }) do

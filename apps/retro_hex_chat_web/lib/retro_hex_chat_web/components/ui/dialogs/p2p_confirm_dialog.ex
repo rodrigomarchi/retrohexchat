@@ -34,7 +34,6 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
   attr :show, :boolean, default: false
   attr :mode, :atom, default: :end, values: [:end]
   attr :peer, :string, default: nil
-  attr :new_peer, :string, default: nil
   attr :on_confirm, :any, required: true
   attr :on_cancel, :any, required: true
 
@@ -58,7 +57,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
               <.inline_icon name={mode_icon(@mode)} class="h-5 w-5" />
             </span>
             <div class="min-w-0">
-              <p>{body(@mode, @peer, @new_peer)}</p>
+              <p>{body(@mode, @peer)}</p>
               <div class="mt-2 grid gap-1">
                 <div
                   :for={impact <- impact_items(@mode)}
@@ -93,7 +92,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
 
   defp title(:end), do: dgettext("dialogs", "End P2P Session")
 
-  defp body(:end, peer, _new_peer) do
+  defp body(:end, peer) do
     dgettext(
       "dialogs",
       "End the P2P session with %{peer}? Any call, game or file transfer in progress will stop.",

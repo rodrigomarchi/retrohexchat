@@ -712,7 +712,7 @@ defmodule RetroHexChat.Admin do
   end
 
   defp broadcast_user(nickname, message) do
-    Phoenix.PubSub.broadcast(@pubsub, "user:#{nickname}", message)
+    Phoenix.PubSub.broadcast(@pubsub, Topics.inbox(nickname), message)
   rescue
     e -> Logger.warning("Admin broadcast to user:#{nickname} failed: #{inspect(e)}")
   end

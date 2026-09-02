@@ -31,6 +31,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
   alias RetroHexChat.NamedTimers
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChat.Topics
 
   @pending_timeout :timer.minutes(5)
   @lobby_warning_timeout :timer.minutes(10)
@@ -948,7 +949,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
   defp notify_chat_progress(nickname, peer_nick, session) do
     Phoenix.PubSub.broadcast(
       @pubsub,
-      "user:#{nickname}",
+      Topics.inbox(nickname),
       %{
         event: "lobby_session_progress",
         payload: %{peer_nick: peer_nick, token: session.token, status: session.status}
@@ -966,7 +967,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
   defp notify_chat_user(nickname, peer_nick, session, reason) do
     Phoenix.PubSub.broadcast(
       @pubsub,
-      "user:#{nickname}",
+      Topics.inbox(nickname),
       %{
         event: "lobby_session_ended",
         payload: %{
