@@ -56,12 +56,10 @@ test.describe("Window, taskbar and tab titles", () => {
     const titleBar = chat.chatWindowTitleBar;
     const taskbarButton = chat.taskbarButton("chat");
 
-    // The window's title bar names the application, not the conversation: it
-    // is one pinned window that every conversation shares, so a title that
-    // followed the active tab would be the only window on the desktop whose
-    // name changed under you. The taskbar button and the browser tab are the
-    // two surfaces that track the conversation.
-    await expect(titleBar).toContainText("Chat");
+    // All three name the conversation, and the same one: the title bar, the
+    // taskbar button and the browser tab read identically, which is what makes
+    // the taskbar button findable when the desktop is full of windows.
+    await expect(titleBar).toContainText(`#lobby[${nick}]`);
     await expect(taskbarButton).toContainText(`#lobby[${nick}]`);
     await expect(page).toHaveTitle(`#lobby[${nick}]`);
 
@@ -69,6 +67,7 @@ test.describe("Window, taskbar and tab titles", () => {
     await expect(chat.tab(channel)).toHaveAttribute("aria-selected", "true");
 
     const channelTitle = `${channel}[${nick}]`;
+    await expect(titleBar).toContainText(channelTitle);
     await expect(taskbarButton).toContainText(channelTitle);
     await expect(page).toHaveTitle(channelTitle);
     await shot(page, "channel-title");
@@ -76,8 +75,9 @@ test.describe("Window, taskbar and tab titles", () => {
     // The identity state rides along in the title bar's meta zone.
     await expect(titleBar).toContainText("Identified");
 
-    // Back to Status: both conversation-tracking surfaces follow.
+    // Back to Status: all three follow.
     await chat.switchToStatusTab();
+    await expect(titleBar).toContainText(`Status[${nick}]`);
     await expect(taskbarButton).toContainText(`Status[${nick}]`);
     await expect(page).toHaveTitle(`Status[${nick}]`);
   });

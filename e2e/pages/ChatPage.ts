@@ -50,6 +50,8 @@ export class ChatPage {
   readonly arcadeLibrary: Locator;
   readonly arcadeIconGrid: Locator;
   readonly disconnectMenuItem: Locator;
+  readonly startButton: Locator;
+  readonly startMenu: Locator;
   readonly adminSubmenuTrigger: Locator;
   readonly systemSubmenuTrigger: Locator;
   readonly adminConsoleMenuItem: Locator;
@@ -342,20 +344,21 @@ export class ChatPage {
     this.arcadeIconGrid = page.getByTestId("arcade-icon-grid");
     // context_menu_item exposes data-testid="context-menu-item-<action>".
     this.disconnectMenuItem = visibleContextMenuItem(page, "disconnect");
-    this.adminSubmenuTrigger = page
-      .getByTestId("app-menu-admin-submenu")
-      .locator("visible=true");
-    this.systemSubmenuTrigger = page
-      .getByTestId("app-menu-system-submenu")
-      .locator("visible=true");
-    this.adminConsoleMenuItem = visibleContextMenuItem(
-      page,
-      "open_admin_console",
+    // Admin and System are Start-menu groups, not menu-bar ones: what a
+    // window's menu bar carries is what acts on that window, and these open
+    // programs of their own.
+    this.startButton = page.locator("[data-window-start]");
+    this.startMenu = page.locator("[data-window-start-menu]");
+    this.adminSubmenuTrigger = page.getByTestId("start-menu-admin-submenu");
+    this.systemSubmenuTrigger = page.getByTestId("start-menu-system-submenu");
+    this.adminConsoleMenuItem = page.getByTestId(
+      "start-menu-item-open_admin_console",
     );
-    this.adminUsersMenuItem = visibleContextMenuItem(page, "open_admin_users");
-    this.adminChannelsMenuItem = visibleContextMenuItem(
-      page,
-      "open_admin_channels",
+    this.adminUsersMenuItem = page.getByTestId(
+      "start-menu-item-open_admin_users",
+    );
+    this.adminChannelsMenuItem = page.getByTestId(
+      "start-menu-item-open_admin_channels",
     );
     this.accountRegisterMenuItem = visibleContextMenuItem(
       page,
@@ -1349,31 +1352,60 @@ export class ChatPage {
     await expect(this.disconnectMenuItem).toBeVisible();
   }
 
-  // The admin windows live behind File > Admin, so every opener expands the
-  // submenu first.
+  // The admin windows live behind Start > Admin, so every opener expands the
+  // group first. Opening Start twice toggles it shut, so the button is only
+  // pressed when the menu is not already up.
+  async openStartMenu() {
+    if (!(await this.startMenu.isVisible())) {
+      await this.startButton.click();
+      await expect(this.startMenu).toBeVisible();
+    }
+  }
+
   async openAdminSubmenu() {
-    await this.openFileMenu();
-    await expect(this.adminSubmenuTrigger).toBeVisible();
-    await this.adminSubmenuTrigger.click();
+    await this.openStartGroup(this.adminSubmenuTrigger);
+  }
+
+  /**
+   * Expand one Start-menu group and leave it expanded.
+   *
+   * Retried as a whole: a LiveView re-render arriving between the menu opening
+   * and the group being reached closes both, and the walk has to start again —
+   * the first-menu-open flake. Locally the re-render usually lands first;
+   * against a deployment it lands in the middle.
+   */
+  async openStartGroup(trigger: Locator, item?: Locator) {
+    await expect(async () => {
+      await this.openStartMenu();
+      await expect(trigger).toBeVisible({ timeout: 1_000 });
+      await trigger.click();
+      if (item) await expect(item).toBeVisible({ timeout: 1_000 });
+    }).toPass({ timeout: 15_000 });
   }
 
   async openAdminConsoleFromMenu() {
-    await this.openAdminSubmenu();
-    await expect(this.adminConsoleMenuItem).toBeVisible();
+    await this.openStartGroup(
+      this.adminSubmenuTrigger,
+      this.adminConsoleMenuItem,
+    );
     await this.adminConsoleMenuItem.click();
     await expect(this.adminConsoleDialog).toBeVisible();
   }
 
   async openAdminUsersFromMenu() {
-    await this.openAdminSubmenu();
-    await expect(this.adminUsersMenuItem).toBeVisible();
+    await this.openStartGroup(
+      this.adminSubmenuTrigger,
+      this.adminUsersMenuItem,
+    );
     await this.adminUsersMenuItem.click();
     await expect(this.adminUsersWindow).toBeVisible();
   }
 
   async openAdminChannelsFromMenu() {
-    await this.openAdminSubmenu();
-    await expect(this.adminChannelsMenuItem).toBeVisible();
+    await this.openStartGroup(
+      this.adminSubmenuTrigger,
+      this.adminChannelsMenuItem,
+    );
     await this.adminChannelsMenuItem.click();
     await expect(this.adminChannelsWindow).toBeVisible();
   }
@@ -1384,9 +1416,8 @@ export class ChatPage {
    */
   async openAdminWindow(action: string) {
     const windowId = action.replace(/^open_/, "").replaceAll("_", "-");
-    await this.openAdminSubmenu();
-    const item = visibleContextMenuItem(this.page, action);
-    await expect(item).toBeVisible();
+    const item = this.page.getByTestId(`start-menu-item-${action}`);
+    await this.openStartGroup(this.adminSubmenuTrigger, item);
     await item.click();
     await expect(this.page.getByTestId(`${windowId}-window`)).toBeVisible();
     return this.page.getByTestId(`${windowId}-panel`);
@@ -1394,26 +1425,16 @@ export class ChatPage {
 
   /**
    * Open a runtime inspection window by its opener action, e.g.
-   * "open_system_processes". These sit under File > System, beside Admin.
+   * "open_system_processes". These sit under Start > System, beside Admin.
    *
    * Returns the window locator, which is what evidence should be framed on —
    * a full-page shot of a desktop is mostly wallpaper.
    */
   async openSystemWindow(action: string) {
     const windowId = action.replace(/^open_/, "").replaceAll("_", "-");
-    const item = visibleContextMenuItem(this.page, action);
+    const item = this.page.getByTestId(`start-menu-item-${action}`);
 
-    // A LiveView re-render arriving between the menu opening and the submenu
-    // being reached closes both, and the whole walk has to start again — the
-    // first-menu-open flake. Locally the re-render usually lands first; against
-    // a deployment it lands in the middle.
-    await expect(async () => {
-      await this.openFileMenu();
-      await expect(this.systemSubmenuTrigger).toBeVisible({ timeout: 1_000 });
-      await this.systemSubmenuTrigger.click();
-      await expect(item).toBeVisible({ timeout: 1_000 });
-    }).toPass({ timeout: 15_000 });
-
+    await this.openStartGroup(this.systemSubmenuTrigger, item);
     await item.click();
     const window = this.page.getByTestId(`${windowId}-window`);
     await expect(window).toBeVisible();
