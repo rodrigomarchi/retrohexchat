@@ -53,6 +53,10 @@ export class ChatPage {
   readonly startButton: Locator;
   readonly startMenu: Locator;
   readonly adminSubmenuTrigger: Locator;
+  readonly toolsSubmenuTrigger: Locator;
+  readonly startNickColorsItem: Locator;
+  readonly startIgnoreListItem: Locator;
+  readonly startNotifyListItem: Locator;
   readonly systemSubmenuTrigger: Locator;
   readonly adminConsoleMenuItem: Locator;
   readonly adminUsersMenuItem: Locator;
@@ -96,11 +100,12 @@ export class ChatPage {
   readonly chatInput: Locator;
   readonly chatSendButton: Locator;
   readonly charCounter: Locator;
-  readonly appLogo: Locator;
+  readonly helpSubmenuTrigger: Locator;
+  readonly startAboutItem: Locator;
   readonly statusBarApp: Locator;
   readonly desktopTray: Locator;
   readonly trayMuteToggle: Locator;
-  readonly statusBarNotifyBadge: Locator;
+  readonly trayNotifyBadge: Locator;
   readonly connectionStatusHook: Locator;
   readonly connectionBanner: Locator;
   readonly reconnectOverlay: Locator;
@@ -273,11 +278,17 @@ export class ChatPage {
     this.chatInput = page.getByTestId("chat-input-field");
     this.chatSendButton = page.getByTestId("chat-input-send");
     this.charCounter = page.getByTestId("char-counter");
-    this.appLogo = page.getByTestId("app-logo");
+    // The chat has no app header: the Mac-style bar came down into the window
+    // and the logo went with it. About is reached from Start ▸ Help, which is
+    // the second door the Help menu in the strip is the first of.
+    this.helpSubmenuTrigger = page.getByTestId("start-menu-help-submenu");
+    this.startAboutItem = page.getByTestId("start-menu-item-show_about");
     this.statusBarApp = page.getByTestId("status-bar-app");
     this.desktopTray = page.getByTestId("chat-tray");
     this.trayMuteToggle = page.getByTestId("tray-mute-toggle");
-    this.statusBarNotifyBadge = page.getByTestId("status-bar-notify-badge");
+    // The buddy count is a desktop tray item, the way Win98 reported
+    // anything with something to say; the chat has no app status bar.
+    this.trayNotifyBadge = page.getByTestId("tray-notify-badge");
     this.connectionStatusHook = page.getByTestId("connection-status-hook");
     this.connectionBanner = this.connectionStatusHook.locator(
       '[data-role="banner"]',
@@ -350,6 +361,10 @@ export class ChatPage {
     this.startButton = page.locator("[data-window-start]");
     this.startMenu = page.locator("[data-window-start-menu]");
     this.adminSubmenuTrigger = page.getByTestId("start-menu-admin-submenu");
+    this.toolsSubmenuTrigger = page.getByTestId("start-menu-tools-submenu");
+    this.startNickColorsItem = page.getByTestId("start-menu-item-nick-colors");
+    this.startIgnoreListItem = page.getByTestId("start-menu-item-ignore-list");
+    this.startNotifyListItem = page.getByTestId("start-menu-item-notify-list");
     this.systemSubmenuTrigger = page.getByTestId("start-menu-system-submenu");
     this.adminConsoleMenuItem = page.getByTestId(
       "start-menu-item-open_admin_console",
@@ -862,10 +877,16 @@ export class ChatPage {
     await expect(this.arcadeIconGrid).toBeVisible();
   }
 
-  async openNotifyListFromViewMenu() {
-    await this.viewMenuTrigger.click();
-    await expect(this.notifyListMenuItem).toBeVisible();
-    await this.notifyListMenuItem.click();
+  // Start, not the menu strip. These three are opened while the Address Book
+  // is already on screen, and a floating window sits over the strip inside the
+  // chat window it belongs to. Start is on the taskbar, which nothing covers,
+  // and it carries every entry the strip does.
+  async openNotifyListFromMenu() {
+    await this.openStartGroup(
+      this.toolsSubmenuTrigger,
+      this.startNotifyListItem,
+    );
+    await this.startNotifyListItem.click();
     await expect(this.notifyListDialog).toBeVisible();
   }
 
@@ -887,6 +908,16 @@ export class ChatPage {
 
   async expectTabHidden(name: string) {
     await expect(this.conversationRow(name)).toHaveCount(0);
+  }
+
+  // A PM tab is a view of a conversation, not the conversation. Closing it
+  // takes the tab and the "open" badge off the sidebar row; the row itself
+  // stays, because the sidebar lists recent private messages and that is how
+  // the conversation is reopened. Asserting the row is gone is asserting the
+  // product forgot somebody wrote to you.
+  async expectPmTabClosed(nick: string) {
+    await expect(this.tab(nick)).toHaveCount(0);
+    await expect(this.page.getByTestId(`pm-open-state-${nick}`)).toHaveCount(0);
   }
 
   // Unread is a sidebar signal: the bar only shows it for the focused
@@ -1787,14 +1818,20 @@ export class ChatPage {
   }
 
   async openNickColorsFromMenu() {
-    await this.openToolsMenuItem(this.nickColorsMenuItem);
-    await this.nickColorsMenuItem.click();
+    await this.openStartGroup(
+      this.toolsSubmenuTrigger,
+      this.startNickColorsItem,
+    );
+    await this.startNickColorsItem.click();
     await expect(this.nickColorsDialog).toBeVisible();
   }
 
   async openIgnoreListFromMenu() {
-    await this.openToolsMenuItem(this.ignoreListMenuItem);
-    await this.ignoreListMenuItem.click();
+    await this.openStartGroup(
+      this.toolsSubmenuTrigger,
+      this.startIgnoreListItem,
+    );
+    await this.startIgnoreListItem.click();
     await expect(this.ignoreListDialog).toBeVisible();
   }
 
@@ -1869,6 +1906,7 @@ export class ChatPage {
     await form.locator("#control-add-duration").fill(duration);
     await form.getByRole("button", { name: "OK" }).click();
     await expect(this.addressBookControlRow(nick)).toContainText(type);
+    await this.closeIgnoreList();
   }
 
   async removeAddressBookControlEntry(nick: string) {
@@ -1876,6 +1914,17 @@ export class ChatPage {
     await this.addressBookControlRow(nick).click();
     await this.ignoreListDialog.getByTestId("control-remove").click();
     await expect(this.addressBookControlRow(nick)).toHaveCount(0);
+    await this.closeIgnoreList();
+  }
+
+  // The window this helper opened is the helper's to close. A window left on
+  // the desktop covers the conversation sidebar, and the next click in the
+  // test lands on glass.
+  async closeIgnoreList() {
+    await this.ignoreListDialog
+      .locator('[data-window-control="close"]')
+      .click();
+    await expect(this.ignoreListDialog).toBeHidden();
   }
 
   async closeAddressBook() {

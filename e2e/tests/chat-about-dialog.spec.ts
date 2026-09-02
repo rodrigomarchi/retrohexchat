@@ -1,6 +1,6 @@
 /**
  * @section T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
- * @flow T3 [done] About dialog opens from Help menu and app logo, closes cleanly, and restores chat input focus (features P2)
+ * @flow T3 [done] About dialog opens from the Help menu and from Start, closes cleanly, and restores chat input focus (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -28,7 +28,7 @@ async function openMenuItem(trigger: Locator, item: Locator) {
 }
 
 test.describe("About dialog", () => {
-  test("opens from Help menu and app logo, closes cleanly, and restores chat focus (T3)", async ({
+  test("opens from Help menu and Start, closes cleanly, and restores chat focus (T3)", async ({
     page,
   }) => {
     const chat = await signedInUser(page);
@@ -41,7 +41,8 @@ test.describe("About dialog", () => {
     await expect(chat.aboutDialog).toBeHidden();
     await expect(chat.chatInput).toBeFocused();
 
-    await chat.appLogo.click();
+    await chat.openStartGroup(chat.helpSubmenuTrigger, chat.startAboutItem);
+    await chat.startAboutItem.click();
     await expect(chat.aboutDialog).toBeVisible();
     await expect(chat.aboutDialog).toContainText("Public Chat Platform");
     await chat.aboutOkButton.click();

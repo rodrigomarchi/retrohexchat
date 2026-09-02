@@ -53,9 +53,9 @@ test.describe("Notify list commands", () => {
     const bob = await newSignedInUser(browser, "ntfuib");
 
     try {
-      await expect(alice.chat.statusBarNotifyBadge).toHaveCount(0);
+      await expect(alice.chat.trayNotifyBadge).toHaveCount(0);
 
-      await alice.chat.openNotifyListFromViewMenu();
+      await alice.chat.openNotifyListFromMenu();
       await expect(alice.chat.notifyListDialog).toBeVisible();
       await alice.chat.closeNotifyList();
 
@@ -65,14 +65,14 @@ test.describe("Notify list commands", () => {
         `Added ${bob.nick} to notify list`,
       );
 
-      await expect(alice.chat.statusBarNotifyBadge).toBeVisible();
-      await expect(alice.chat.statusBarNotifyBadge).toHaveAttribute(
+      await expect(alice.chat.trayNotifyBadge).toBeVisible();
+      await expect(alice.chat.trayNotifyBadge).toHaveAttribute(
         "title",
         "1 buddy online",
       );
-      await expect(alice.chat.statusBarNotifyBadge).toContainText("1");
+      await expect(alice.chat.trayNotifyBadge).toContainText("1");
 
-      await alice.chat.statusBarNotifyBadge.click();
+      await alice.chat.trayNotifyBadge.click();
       await expect(alice.chat.notifyListDialog).toBeVisible();
       await expect(alice.chat.notifyListRow(bob.nick)).toContainText("Online");
     } finally {
@@ -168,7 +168,7 @@ test.describe("Notify list commands", () => {
       );
       await alice.chat.closeNotifyList();
 
-      await alice.chat.openNotifyListFromViewMenu();
+      await alice.chat.openNotifyListFromMenu();
       await expect(alice.chat.notifyListRow(targetNick)).toContainText(
         editedNote,
       );
@@ -186,7 +186,7 @@ test.describe("Notify list commands", () => {
       await alice.chat.sendMessage("/notify list");
       await alice.chat.expectStatusMessageVisible("Your notify list is empty");
 
-      await alice.chat.openNotifyListFromViewMenu();
+      await alice.chat.openNotifyListFromMenu();
       await expect(alice.chat.notifyListRow(targetNick)).toHaveCount(0);
       await alice.chat.closeNotifyList();
     } finally {

@@ -902,6 +902,12 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
   attr :target, :any, default: nil
 
+  # The mode boxes carry no `phx-update="ignore"`, and that is the whole reason
+  # they tell the truth. Frozen against the server, a box kept whatever the last
+  # click left in it: `/mode -m` turned moderation off and this panel still drew
+  # it on. LiveView already protects a toggle in progress — an unrelated
+  # re-render sends no diff for a value that did not change — so ignoring the
+  # element bought nothing and cost the one update that matters.
   defp modes_tab(assigns) do
     ~H"""
     <div class="space-y-2">
@@ -917,7 +923,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                 name="moderated"
                 value="true"
                 checked={@modes[:moderated] || false}
-                phx-update="ignore"
               /> {dgettext("dialogs", "Moderated (+m)")}
             </label>
             <label class="cc-mode-row inline-flex items-center gap-2 text-xs cursor-pointer">
@@ -927,7 +932,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                 name="invite_only"
                 value="true"
                 checked={@modes[:invite_only] || false}
-                phx-update="ignore"
               /> {dgettext("dialogs", "Invite Only (+i)")}
             </label>
             <label class="cc-mode-row inline-flex items-center gap-2 text-xs cursor-pointer">
@@ -937,7 +941,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                 name="topic_lock"
                 value="true"
                 checked={@modes[:topic_lock] || false}
-                phx-update="ignore"
               /> {dgettext("dialogs", "Topic Lock (+t)")}
             </label>
           </div>
@@ -950,7 +953,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                 name="has_key"
                 value="true"
                 checked={@modes[:key] != nil}
-                phx-update="ignore"
               /> {dgettext("dialogs", "Key (+k)")}:
             </label>
             <.input
@@ -969,7 +971,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                 name="has_limit"
                 value="true"
                 checked={@modes[:limit] != nil}
-                phx-update="ignore"
               /> {dgettext("dialogs", "Limit (+l)")}:
             </label>
             <.input

@@ -145,6 +145,28 @@ TECHNICAL_SOURCE_ALLOWLIST = [
     # of one. The same is true of "object" / "objecten".
     r"^%\{count\} components?$",
     r"^%\{count\} objects?$",
+    # ── Deliberately literal ─────────────────────────────────────
+    # Game titles are names. "Hex Pong" is what the icon says in every locale,
+    # the way a product name is not translated on its own box.
+    r"^HEX [A-Z0-9' ]+$",
+    # Scoreboards. The players are P1 and P2 on every screen, "pts" and "ovt"
+    # are the abbreviations the HUD has room for, and a translated abbreviation
+    # is a longer one.
+    r"^%\{\d+\}: %\{\d+\}pts$",
+    r"^P[12]: %\{\d+\}pts$",
+    r"^P[12]: %\{\d+\}pts \(%\{\d+\} ovt\)$",
+    r"^OVT: %\{\d+\}$",
+    # Borrowed whole. Each of these is the word the sport or the arcade uses in
+    # the locales that keep it; the ones that have a native term have it in
+    # `i18n_apply_translation_overrides.py`.
+    r"^ACE!$",
+    r"^GAME!$",
+    r"^GO!$",
+    r"^KO!$",
+    r"^NET!$",
+    r"^SUDDEN DEATH$",
+    r"^TIEBREAK!$",
+    r"^TURBO!$",
 ]
 
 ALLOWLIST = [re.compile(pattern) for pattern in TECHNICAL_SOURCE_ALLOWLIST]
@@ -315,7 +337,7 @@ def js_findings(locales: tuple[str, ...]) -> list[Finding]:
         path_label = str(path if path.exists() else CATALOG_BARREL)
 
         for source, translated in catalogs[export_name].items():
-            if source_fallback(source, translated):
+            if js_source_fallback(source, translated):
                 findings.append(Finding("js", path_label, locale, source))
 
     return findings
@@ -338,6 +360,31 @@ def source_fallback(source: str, translated: str) -> bool:
 
 def likely_translatable(source: str) -> bool:
     return PLACEHOLDER_RE.search(source) is not None and WORD_RE.search(source) is not None
+
+
+# The JS catalogs are held to the wider rule: a string does not need an
+# interpolation to be words somebody reads. Requiring one is why every
+# scoreboard shout in the arcade went unchecked — "SUDDEN DEATH", "ALL BLOCKS
+# CLEARED", "NO LIVES REMAINING" shipped in English, or half in English, under
+# a green gate. What is genuinely borrowed is in the allowlist above, on
+# purpose, so the intent is visible instead of looking like a hole.
+#
+# The Gettext catalogs stay on the narrower rule for now. They carry the
+# command examples the help pages print verbatim — `/join #lobby` is not a
+# sentence and must not become one — and separating those from the plain labels
+# that really are missing is its own pass.
+def js_likely_translatable(source: str) -> bool:
+    return WORD_RE.search(source) is not None
+
+
+def js_source_fallback(source: str, translated: str) -> bool:
+    if translated != source:
+        return False
+
+    if not js_likely_translatable(source):
+        return False
+
+    return not allowlisted(source)
 
 
 def allowlisted(source: str) -> bool:

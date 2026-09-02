@@ -19,7 +19,11 @@ defmodule RetroHexChat.Commands.Handlers.SetMotdTest do
   }
 
   setup do
+    # The MOTD is cached in the application environment, which outlives the
+    # file: a value left behind is read by every later test that asks the
+    # server for its message of the day.
     Application.delete_env(:retro_hex_chat, :motd_cache)
+    on_exit(fn -> Application.delete_env(:retro_hex_chat, :motd_cache) end)
     :ok
   end
 

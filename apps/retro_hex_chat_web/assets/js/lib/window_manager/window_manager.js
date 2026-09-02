@@ -59,6 +59,18 @@
 import { handleCopySelectionClick, refreshCopySelectionItems } from "../ui/copy_selection";
 
 const rememberedLayouts = new Map();
+// What Phoenix's own focus_wrap considers reachable, minus the sentinel spans
+// it puts at each end of the trap: those carry tabindex="0" and focusing one
+// lands the caret on the boundary rather than on the first control.
+const FOCUSABLE_SELECTOR = [
+  "a[href]",
+  "button:not([disabled])",
+  "input:not([disabled]):not([type=hidden])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  '[tabindex]:not([tabindex="-1"]):not([id$="-start"]):not([id$="-end"])',
+].join(",");
+
 const Z_BASE = 10;
 const STACK_BREAKPOINT = 768;
 // Below this, a window's own menu strip is swapped for the icon rail. Measured,
@@ -158,9 +170,15 @@ const WindowManagerCore = {
   reconcileWindows() {
     const present = new Set();
     const added = [];
+    // A server-managed window is not in the DOM when it is asked for: the click
+    // pushes `window_open` and the island arrives a patch later. That is why
+    // `openWindow` cannot be the only place the keyboard is handed over — for
+    // these the open finishes here, when the thing we asked for shows up.
+    const requested = [];
     for (const el of this.ownedElements("[data-window-id]")) {
       const id = el.dataset.windowId;
       present.add(id);
+      if (this.pendingWindows[id]) requested.push(id);
       this.clearPendingWindow(id);
       if (!this.windows[id]) {
         this.registerWindow(el);
@@ -186,6 +204,10 @@ const WindowManagerCore = {
         // window minimized — hand focus back to a visible window.
         this.focusTopmost();
       }
+    }
+    for (const id of requested) {
+      const win = this.windows[id];
+      if (win && win.state.open && !win.state.minimized) this.focusDialogInside(win.el);
     }
   },
 
@@ -1096,10 +1118,25 @@ const WindowManagerCore = {
     st.minimized = false;
     this.clearFlash(id);
     this.focusWindow(id);
+    this.focusDialogInside(win.el);
     if (wasMinimized) {
       const btn = this.taskbarButton(id);
       if (btn) this.animateZoom(btn.getBoundingClientRect(), win.el.getBoundingClientRect());
     }
+  },
+
+  // Raising a window is a z-index change; it is not where the keyboard goes.
+  // A dialog opened from its own menu item runs `JS.focus_first` on the server
+  // and lands the caret inside; the same dialog opened from Start went through
+  // here instead, and a keyboard user was left on <body> with nothing but Tab
+  // from the top of the page. Only windows that trap focus are touched — they
+  // are the ones that asked to own the keyboard.
+  focusDialogInside(el) {
+    const wrap = el?.querySelector?.('[id$="-focus-wrap"]');
+    if (!wrap) return;
+    if (wrap.contains(document.activeElement)) return;
+    const target = wrap.querySelector(FOCUSABLE_SELECTOR);
+    if (target) requestAnimationFrame(() => target.focus?.());
   },
 
   closeWindow(id) {

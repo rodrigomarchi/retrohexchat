@@ -95,7 +95,7 @@ test.describe("Tab unread close/reopen edges", () => {
       await shot(bob.chat.tabBar, "unread-pm-tab-strip");
 
       await bob.chat.closeTab(alice.nick);
-      await bob.chat.expectTabHidden(alice.nick);
+      await bob.chat.expectPmTabClosed(alice.nick);
       // A PM tab is a view, not the conversation: closing it drops only the
       // tab, leaving the conversation in the sidebar still carrying its unread
       // — the messages went unread, and reopening below is what clears them.

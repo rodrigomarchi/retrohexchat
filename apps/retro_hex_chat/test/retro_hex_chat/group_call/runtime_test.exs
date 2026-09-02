@@ -598,6 +598,13 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
     end
 
     test "reconnects a briefly disconnected participant using the same product record" do
+      # This case needs the reconnect window still *open* when it rejoins, and
+      # the suite's 30 ms is not a window three parallel partitions can be
+      # relied on to land inside: polling for "disconnected" alone may spend
+      # more than that. The room captures its config at start, so the wider
+      # timeout has to be in place before the call is created.
+      Application.put_env(:retro_hex_chat, :group_call_reconnect_timeout_ms, 5_000)
+
       ctx = create_call_with_member("reconnect", "member")
       payload = join_call(ctx)
 

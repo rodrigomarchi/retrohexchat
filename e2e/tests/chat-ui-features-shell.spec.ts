@@ -108,7 +108,7 @@ test.describe.serial("UI feature shell journeys", () => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
 
     try {
-      await user.chat.openNotifyListFromViewMenu();
+      await user.chat.openNotifyListFromMenu();
       await expect(user.chat.notifyListDialog).toContainText("Notify List");
       await user.chat.closeNotifyList();
 

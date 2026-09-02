@@ -116,7 +116,7 @@ test.describe("Private messages", () => {
       await chatA.expectTabVisible(nickB);
 
       await chatA.closeTab(nickB);
-      await chatA.expectTabHidden(nickB);
+      await chatA.expectPmTabClosed(nickB);
     } finally {
       await ctxA.close();
       await ctxB.close();

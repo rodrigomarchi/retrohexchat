@@ -65,7 +65,7 @@ test.describe("Address Book", () => {
     await chat.addressBookDialog.getByTestId("contact-remove").click();
     await expect(chat.addressBookContactRow(contactNick)).toHaveCount(0);
 
-    await chat.openNotifyListFromViewMenu();
+    await chat.openNotifyListFromMenu();
     await chat.notifyListDialog.getByTestId("notify-list-add").click();
     form = page.getByTestId("notify-add-form");
     await form.locator("#notify-add-nickname").fill(notifyNick);
