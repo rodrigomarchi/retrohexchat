@@ -56,7 +56,8 @@ defmodule RetroHexChatWeb.App.CallLive do
   def mount(params, session, socket) do
     socket =
       assign(socket,
-        nickname: session["nickname"] || socket.assigns[:surface_nickname],
+        nickname: socket.assigns.surface_nickname,
+        page_title: dgettext("group_call", "Group Call"),
         # The device preference is the person's, not the screen's: the same
         # terminal that remembered a camera for the chat's pre-join has to hand
         # it to the surface that replaced it.
@@ -65,8 +66,7 @@ defmodule RetroHexChatWeb.App.CallLive do
         group_call: nil,
         group_call_prejoin: nil,
         group_call_pending: nil,
-        group_call_prejoin_preferences:
-          Events.restored_prejoin_preferences(session["prejoin_preferences"]),
+        group_call_prejoin_preferences: nil,
         prejoin_roster: [],
         notice: nil,
         share_url: nil,
@@ -84,7 +84,7 @@ defmodule RetroHexChatWeb.App.CallLive do
          |> push_event("update_bindings", %{
            bindings: KeyBindings.to_persistable(KeyBindings.defaults())
          })
-         |> assign(channel_name: channel_name)
+         |> assign(channel_name: channel_name, page_title: channel_name)
          |> subscribe_to_room(channel_name)
          |> Events.mount_call(channel_name, user_id)}
 
@@ -110,6 +110,9 @@ defmodule RetroHexChatWeb.App.CallLive do
             address, which is what lets a second click go to the call they
             already have open instead of opening a second one. --%>
       <div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
+      <%!-- Where "Copied!" lands: a page of its own has no chat to borrow a
+            toast container from. --%>
+      <RetroHexChatWeb.Components.Toast.toast_container />
       <.desktop id="call-desktop" persist_key="call" class="flex-1" data-testid="call-desktop">
         <.desktop_window
           id="group-call"
@@ -382,8 +385,8 @@ defmodule RetroHexChatWeb.App.CallLive do
     nickname = socket.assigns.nickname
 
     with {:ok, room} <- fetch_room(token),
-         :ok <- require_identified(nickname),
          {:ok, user_id} <- require_registered(nickname),
+         :ok <- require_identified(nickname),
          membership <- channel_membership(room.channel_name),
          :ok <- GroupCall.Policy.can_join?(user_id, nickname, room, membership) do
       {:ok, room.channel_name, user_id}
@@ -416,7 +419,10 @@ defmodule RetroHexChatWeb.App.CallLive do
     do:
       {:error, dgettext("group_call", "You must be identified with NickServ to use group calls.")}
 
-  defp require_registered(nickname) do
+  # Asked before identification, because a nickname that is not registered can
+  # never be identified — inverting the two makes this refusal unreachable and
+  # answers the wrong question.
+  defp require_registered(nickname) when is_binary(nickname) do
     case SessionHelpers.resolve_user_id(nickname) do
       {:ok, user_id} ->
         {:ok, user_id}
@@ -426,6 +432,10 @@ defmodule RetroHexChatWeb.App.CallLive do
          dgettext("group_call", "You must be registered with NickServ to use group calls.")}
     end
   end
+
+  defp require_registered(_nickname),
+    do:
+      {:error, dgettext("group_call", "You must be registered with NickServ to use group calls.")}
 
   # Only a registered nickname can mint a link: the record carries who made it,
   # and a link nobody is accountable for is one nobody can be asked about.

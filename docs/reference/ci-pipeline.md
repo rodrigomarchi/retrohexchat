@@ -127,8 +127,8 @@ are to split it, lazy-load more of it, or write down why it legitimately grew.
 
 ### There is one app entry, and the measurement says keep it that way
 
-The four surfaces that are not the chat — `/call/:token`, `/space/:slug`,
-`/p2p/:token`, `/play/:game` — all load `app.js`. Whether they should get an
+Every surface that is not the chat — `/call/:token`, `/space/:slug`,
+`/p2p/:token`, `/play/:game` — loads `app.js`. Whether they should get an
 entry of their own was left open while they were being built, and answered by
 measuring it, on 2026-08-31, from esbuild's metafile:
 
@@ -193,7 +193,7 @@ make e2e.catalog.check    # what CI runs
 ```
 
 Add or change a flow in the spec, never in the catalog. A spec with no `@flow`
-header is listed in the catalog as a gap — that list exists because 23 specs were
+header is listed in the catalog as a gap — that list exists because specs were
 running with no documentation at all while the catalog called itself the single
 source of truth.
 

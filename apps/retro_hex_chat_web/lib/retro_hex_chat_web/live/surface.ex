@@ -11,11 +11,12 @@ defmodule RetroHexChatWeb.Live.Surface do
   `ChatLive.mount/3`; a second copy in each surface is how one of them would end
   up missing the ban check.
 
-  It needs to hear that the person's session ended. It subscribes to
-  `Topics.surfaces/1` and nowhere else, because that topic carries only that
-  message — the inbox carries private conversations too, and a surface
-  subscribed there would need a clause that ignores them, which is the shape of
-  a catch-all that eats what you depend on.
+  It needs to hear the two things that happen *to* the person rather than in
+  this tab: their session ending, and their nickname changing. Both arrive on
+  `Topics.surfaces/1`, and it subscribes there and nowhere else — the inbox
+  carries private conversations too, and a surface subscribed there would need
+  a clause that ignores them, which is the shape of a catch-all that eats what
+  you depend on.
 
   It registers itself as one of the person's open surfaces
   (`RetroHexChat.Surfaces`). That is what keeps the chat's tab closing from
@@ -51,6 +52,7 @@ defmodule RetroHexChatWeb.Live.Surface do
   alias RetroHexChat.Surfaces
   alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.Paths
+  alias RetroHexChatWeb.Live.OpenSurfaces
 
   @spec on_mount(atom(), map(), map(), Socket.t()) :: {:cont, Socket.t()} | {:halt, Socket.t()}
   def on_mount(:default, _params, session, socket) do
@@ -83,7 +85,7 @@ defmodule RetroHexChatWeb.Live.Surface do
     socket
     |> assign(surface_nickname: nickname)
     |> attach_hook(:surface_address, :handle_params, &address_changed/3)
-    |> attach_hook(:surface_session_ended, :handle_info, &session_ended/2)
+    |> attach_hook(:surface_session_ended, :handle_info, &session_message/2)
   end
 
   # Where this surface is, told to the registry every time it changes. It has to
@@ -113,11 +115,28 @@ defmodule RetroHexChatWeb.Live.Surface do
   # The topic this arrives on carries nothing else, so there is no message here
   # to tell apart — anything else on it would be a bug in the publisher, and
   # letting it through to the surface's own `handle_info/2` is what surfaces it.
-  defp session_ended({:force_disconnect, payload}, socket) do
+  defp session_message({:force_disconnect, payload}, socket) do
     {:halt, redirect(socket, to: Paths.session_clear_path(socket, Map.get(payload, :reason, "")))}
   end
 
-  defp session_ended(_message, socket), do: {:cont, socket}
+  # The person renamed themselves in the chat, and this tab is registered under
+  # the name they had. Answering to the old one would leave this surface
+  # uncounted — the tab closing would part channels the room still needs — and
+  # would put its next address under a key nothing reads.
+  defp session_message({:nick_changed, %{new_nick: new_nickname}}, socket)
+       when is_binary(new_nickname) and new_nickname != "" do
+    old_nickname = socket.assigns.surface_nickname
+
+    Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, Topics.surfaces(old_nickname))
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.surfaces(new_nickname))
+
+    {:halt,
+     socket
+     |> assign(surface_nickname: new_nickname)
+     |> OpenSurfaces.follow_rename(old_nickname, new_nickname)}
+  end
+
+  defp session_message(_message, socket), do: {:cont, socket}
 
   @doc "A refusal or a failure, in the words the policy used."
   @spec error(Socket.t(), String.t()) :: Socket.t()

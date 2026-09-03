@@ -39,6 +39,14 @@ defmodule RetroHexChat.Topics do
   @spec channel_calls(String.t()) :: String.t()
   def channel_calls(name) when is_binary(name), do: channel(name) <> ":calls"
 
+  @doc """
+  One P2P session's wire: every ICE candidate and every SDP crosses here, so a
+  screen that only wants to know that a session changed state must not listen
+  to it — the session tells its participants on their own `inbox/1` instead.
+  """
+  @spec lobby(String.t()) :: String.t()
+  def lobby(session_token) when is_binary(session_token), do: "lobby:" <> session_token
+
   @doc "Everything a virtual space pushes to the clients standing in it."
   @spec space(String.t()) :: String.t()
   def space(space_id) when is_binary(space_id), do: "space:" <> space_id

@@ -15,9 +15,12 @@ const PREFIX = "rhc:";
 
 /**
  * @param {HTMLElement} el the picker element carrying `data-remember-key`
- * @param {Storage} [storage] injected for tests
+ * @param {() => Storage} [storage] resolves the store; injected for tests.
+ *   Resolved inside the guard on every use, because a browser that blocks
+ *   site data throws on reading `window.localStorage` itself, not only on
+ *   using it — and the picker still has to open.
  */
-export function createCharacterMemory(el, storage = window.localStorage) {
+export function createCharacterMemory(el, storage = () => window.localStorage) {
   return {
     /** @returns {string|null} the remembered character id, if there is one */
     read() {
@@ -25,7 +28,7 @@ export function createCharacterMemory(el, storage = window.localStorage) {
       if (!key) return null;
 
       try {
-        return storage.getItem(key);
+        return storage().getItem(key);
       } catch (error) {
         log.debug("[space-character] could not read the remembered character", error);
         return null;
@@ -38,7 +41,7 @@ export function createCharacterMemory(el, storage = window.localStorage) {
       if (!key || !avatar) return;
 
       try {
-        storage.setItem(key, avatar);
+        storage().setItem(key, avatar);
       } catch (error) {
         log.debug("[space-character] could not remember the character", error);
       }

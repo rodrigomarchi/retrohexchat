@@ -8,8 +8,9 @@ defmodule RetroHexChat.ShareLinks.Liveness do
   a Registry lookup: a crashed-but-not-restarted process makes the cheap answer
   a wrong one.
 
-  A space is always live because a space does not end — it is a place, and the
-  link to it is an address rather than an invitation to an event.
+  A link to a space is live for as long as what it names: the place itself does
+  not end, so a link minted at its door is always live; a link posted for a
+  gathering in it ends when the gathering does.
 
   A match link is the one kind that dies by **success**: a 1v1 game is full the
   moment somebody takes the seat, so the answer here is "is the seat still
@@ -22,6 +23,8 @@ defmodule RetroHexChat.ShareLinks.Liveness do
   alias RetroHexChat.GroupCall.Schema.Room
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.Schema.Session
+  alias RetroHexChat.VirtualSpace
+  alias RetroHexChat.VirtualSpace.Schema.Session, as: SpaceSession
 
   @spec live?(String.t(), map()) :: boolean()
   # A solo game link is alive as long as the game exists — it names a thing to
@@ -32,6 +35,12 @@ defmodule RetroHexChat.ShareLinks.Liveness do
   end
 
   def live?("play", target), do: Catalog.valid_game_id?(target["game_id"] || "")
+
+  # A link to a gathering ends when the gathering does; a link to the place
+  # itself never does.
+  def live?("space", %{"session_token" => token}) when is_binary(token) do
+    match?({:ok, %SpaceSession{status: "open"}}, VirtualSpace.get_session(token))
+  end
 
   def live?("space", _target), do: true
 

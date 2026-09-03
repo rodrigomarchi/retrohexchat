@@ -21,6 +21,8 @@
  * monitor, in another window, or on the laptop in the other room.
  */
 
+import { log } from "../logger.js";
+
 /** The one channel name, so a typo cannot make two half-working registries. */
 export const CHANNEL_NAME = "retrohex:surfaces";
 
@@ -109,7 +111,10 @@ export function requestFocus(channel, path, options = {}) {
  * @returns {() => void} Stop answering.
  */
 export function answerFocusRequests(channel, path, options = {}) {
-  const { focus = () => globalThis.focus(), onError = () => {} } = options;
+  const {
+    focus = () => globalThis.focus(),
+    onError = (error) => log.debug("[surfaces] focus() was refused", error),
+  } = options;
 
   if (!channel || !path) return () => {};
 

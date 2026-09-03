@@ -58,6 +58,15 @@ defmodule RetroHexChat.GroupCall do
       broadcast_channel_call_started(room)
       {:ok, %{room: room, token: room.token}}
     else
+      # Two members opening the same channel's call at once both pass the
+      # "no active room" check; the unique index lets one insert through, and
+      # the other belongs in that room, not in front of an error.
+      {:error, %Ecto.Changeset{errors: [channel_name: _taken]}} ->
+        case active_room_for_channel(channel_name) do
+          nil -> {:error, dgettext("group_call", "Could not create group call")}
+          room -> {:ok, %{room: room, token: room.token}}
+        end
+
       {:error, %Ecto.Changeset{} = changeset} ->
         Logger.warning("Group call room insert failed: #{inspect(changeset.errors)}")
         {:error, dgettext("group_call", "Could not create group call")}

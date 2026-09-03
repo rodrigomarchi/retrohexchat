@@ -133,6 +133,25 @@ defmodule RetroHexChat.Surfaces do
   end
 
   @doc """
+  Follow a nickname change: everything registered under `old` becomes `new`.
+
+  A nick change moves presence, the inbox subscription and the channel
+  memberships, and this is the fourth thing it has to move. Left behind, the
+  entry stays under a name nothing asks about again: the chat's own tab closing
+  would count *no* other surfaces and part the channels a call is standing on,
+  and a ban on the new name would never reach the tab holding the call.
+
+  The change is announced on the old `Topics.surfaces/1` as well, because the
+  processes registered here are the only ones that can update the name they
+  will register under next.
+  """
+  @spec rename(String.t(), String.t(), GenServer.server()) :: :ok
+  def rename(old_nickname, new_nickname, server \\ __MODULE__)
+      when is_binary(old_nickname) and is_binary(new_nickname) do
+    GenServer.call(server, {:rename, key(old_nickname), key(new_nickname), new_nickname})
+  end
+
+  @doc """
   Hand the channel departure over: run it when `nickname`'s last surface goes.
 
   Called by a chat that is closing while something else of this person's is
@@ -221,6 +240,36 @@ defmodule RetroHexChat.Surfaces do
     end
   end
 
+  def handle_call({:rename, same, same, _new_nickname}, _from, state) do
+    {:reply, :ok, state}
+  end
+
+  def handle_call({:rename, old_key, new_key, new_nickname}, _from, state) do
+    case Map.pop(state.by_nick, old_key) do
+      {nil, _by_nick} ->
+        {:reply, :ok, state}
+
+      {entry, by_nick} ->
+        entry = %{entry | deferred: renamed_departure(entry.deferred, new_nickname)}
+
+        state = %{
+          state
+          | by_nick: Map.put(by_nick, new_key, merge_entries(Map.get(by_nick, new_key), entry)),
+            by_ref: rekey_refs(state.by_ref, old_key, new_key)
+        }
+
+        # The old topic so the registered processes learn the name they answer
+        # to, the new one so a screen already reading it sees the set arrive.
+        Phoenix.PubSub.broadcast(
+          @pubsub,
+          Topics.surfaces(old_key),
+          {:nick_changed, %{old_nick: old_key, new_nick: new_nickname}}
+        )
+
+        {:reply, :ok, announce(state, new_key)}
+    end
+  end
+
   def handle_call({:cancel, key}, _from, state) do
     case Map.get(state.by_nick, key) do
       nil ->
@@ -246,6 +295,28 @@ defmodule RetroHexChat.Surfaces do
   def handle_info(message, state) do
     Logger.debug("RetroHexChat.Surfaces ignored #{inspect(message)}")
     {:noreply, state}
+  end
+
+  # A departure handed over before the rename still has to part the channels of
+  # the person who handed it over, and the channels know them by the new name.
+  defp renamed_departure(nil, _new_nickname), do: nil
+
+  defp renamed_departure(deferred, new_nickname), do: %{deferred | nickname: new_nickname}
+
+  defp merge_entries(nil, entry), do: entry
+
+  defp merge_entries(existing, entry) do
+    %{
+      pids: Map.merge(existing.pids, entry.pids),
+      deferred: existing.deferred || entry.deferred
+    }
+  end
+
+  defp rekey_refs(by_ref, old_key, new_key) do
+    Map.new(by_ref, fn
+      {ref, {^old_key, pid}} -> {ref, {new_key, pid}}
+      other -> other
+    end)
   end
 
   defp entry(state, key), do: Map.get(state.by_nick, key, %{pids: %{}, deferred: nil})

@@ -229,23 +229,32 @@ defmodule RetroHexChat.Lobby do
   that is true. Re-stating the condition inside the write is what keeps it from
   closing a match two people just walked into.
   """
-  @spec expire_open_sessions(keyword()) :: {:ok, expiry_summary()}
+  @spec expire_open_sessions(keyword()) :: {:ok, expiry_summary()} | {:error, term()}
   def expire_open_sessions(opts \\ []) do
     now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
     limit = Keyword.get(opts, :limit, 100)
 
     candidates = Queries.list_expired_open_sessions(now, limit: limit)
+    initial = %{candidates: length(candidates), expired: 0, skipped: 0}
 
-    summary =
-      Enum.reduce(candidates, %{candidates: length(candidates), expired: 0, skipped: 0}, fn
-        session, acc ->
-          case Queries.expire_open_session(session, now) do
-            {:ok, :expired} -> Map.update!(acc, :expired, &(&1 + 1))
-            _skipped -> Map.update!(acc, :skipped, &(&1 + 1))
-          end
-      end)
+    # A row somebody claimed between the listing and the write is skipped; a
+    # write that failed is not, because a sweep that reports "ok" over a broken
+    # database is one nothing will ever retry.
+    candidates
+    |> Enum.reduce_while({:ok, initial}, fn session, {:ok, acc} ->
+      case Queries.expire_open_session(session, now) do
+        {:ok, :expired} -> {:cont, {:ok, Map.update!(acc, :expired, &(&1 + 1))}}
+        {:ok, :skipped} -> {:cont, {:ok, Map.update!(acc, :skipped, &(&1 + 1))}}
+        {:error, reason} -> {:halt, {:error, reason}}
+      end
+    end)
+    |> case do
+      {:ok, summary} ->
+        {:ok, Map.put(summary, :remaining, Queries.expired_open_session_count(now))}
 
-    {:ok, Map.put(summary, :remaining, Queries.expired_open_session_count(now))}
+      {:error, _reason} = error ->
+        error
+    end
   end
 
   @spec mark_webrtc_ready(String.t(), integer()) :: :ok | {:error, atom()}

@@ -323,6 +323,70 @@ defmodule RetroHexChat.SurfacesTest do
 
       assert nickname in members(channel)
     end
+
+    # A rename moves the person, and the departure handed over before it has to
+    # part the channels of the name the channels now know.
+    test "follows a rename", %{nickname: nickname, channel: channel} do
+      renamed = unique_nick("dep")
+      call = start_surface(nickname, RetroHexChatWeb.App.CallLive)
+
+      Surfaces.defer_part(nickname, [channel], "Connection lost")
+      :ok = Server.rename_user(channel, nickname, renamed)
+      :ok = Surfaces.rename(nickname, renamed)
+
+      close(call)
+
+      assert_eventually(fn -> renamed not in members(channel) end)
+    end
+  end
+
+  # A nick change moves presence, the inbox and the channel memberships. This
+  # is the fourth thing it moves, and the one whose absence is silent: a tab
+  # left registered under the old name is a tab nothing counts.
+  describe "following a rename" do
+    test "the tabs answer to the new name and the old one has none" do
+      old = unique_nick("ren")
+      new = unique_nick("ren")
+      call = start_surface(old, RetroHexChatWeb.App.CallLive, "/call/tok")
+
+      :ok = Surfaces.rename(old, new)
+
+      assert Surfaces.count(new) == 1
+      assert Surfaces.count(old) == 0
+      assert Surfaces.open?(new, "/call/tok")
+
+      close(call)
+    end
+
+    test "the change is announced on the name the tabs are still listening to" do
+      old = unique_nick("ren")
+      new = unique_nick("ren")
+      call = start_surface(old, RetroHexChatWeb.App.CallLive, "/call/tok")
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.surfaces(old))
+      :ok = Surfaces.rename(old, new)
+
+      assert_receive {:nick_changed, %{new_nick: ^new}}
+
+      close(call)
+    end
+
+    test "renaming somebody with nothing open is not an error" do
+      assert :ok = Surfaces.rename(unique_nick("ren"), unique_nick("ren"))
+    end
+
+    # Only the case changed, so the key is the same key: re-keying it would
+    # delete the entry and put it back empty.
+    test "a change of case alone keeps the tabs" do
+      nickname = unique_nick("Ren")
+      call = start_surface(nickname, RetroHexChatWeb.App.CallLive, "/call/tok")
+
+      :ok = Surfaces.rename(nickname, String.upcase(nickname))
+
+      assert Surfaces.count(nickname) == 1
+
+      close(call)
+    end
   end
 
   defp assert_eventually(fun, retries \\ 50) do

@@ -303,6 +303,23 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
     end
   end
 
+  # Two gates decide whether a card reaches the screen, and they live in two
+  # modules: the viewport's allowlist decides whether one is *attached* to the
+  # row, and the branch per message type decides whether it is *drawn*. Every
+  # type on the allowlist has to be on both sides, or the card is resolved from
+  # the database, carried into the render, and thrown away by a branch that
+  # draws a bare address instead.
+  describe "every type the viewport attaches a card to" do
+    test "draws it" do
+      for type <- [:message, :action, :system] do
+        html = render_row(@base |> Map.put(:type, type) |> Map.put(:share_card, card()))
+
+        assert html =~ ~s(data-testid="share-message-card"),
+               "a #{type} row carries a card and does not draw it"
+      end
+    end
+  end
+
   defp card do
     %{
       slug: "abcdefghjk",

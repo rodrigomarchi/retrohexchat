@@ -38,6 +38,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.ShareLinks
+  alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.Icons
@@ -52,28 +53,38 @@ defmodule RetroHexChatWeb.App.P2PLive do
   def mount(params, session, socket) do
     socket =
       assign(socket,
-        nickname: session["nickname"] || socket.assigns[:surface_nickname],
+        nickname: socket.assigns.surface_nickname,
+        page_title: window_title(nil, nil),
         # The device preference is the person's, not the screen's: the same
         # terminal that remembered a camera for the chat's setup dialog has to
         # hand it to the room that replaced it.
         trusted_device_id: session["trusted_device_id"] || socket.assigns[:trusted_device_id],
-        client_info: session["client_info"] || %{},
+        # What the browser said about itself when the socket joined; it is
+        # shared with the peer, so a page with no socket yet has nothing to say.
+        client_info: client_info(socket),
         p2p_session: nil,
         setup: nil,
         notice: nil,
         share_url: nil,
         share_slug: nil,
         match_game: nil,
-        denied: nil
+        denied: nil,
+        surface_left: false
       )
 
     socket = OpenSurfaces.attach(socket, socket.assigns.nickname)
 
-    case resolve_session(socket, params, session) do
+    case resolve_session(socket, params) do
       {:ok, db_session, user_id, role} ->
+        match_game = match_game(db_session)
+
         {:ok,
          socket
-         |> assign(setup: Events.initial_setup(socket), match_game: match_game(db_session))
+         |> assign(
+           setup: Events.initial_setup(socket),
+           match_game: match_game,
+           page_title: window_title(nil, match_game)
+         )
          |> enter(db_session, user_id, role)}
 
       {:error, message} ->
@@ -103,6 +114,9 @@ defmodule RetroHexChatWeb.App.P2PLive do
     <div class="bg-background text-text font-system flex h-screen flex-col">
       <%!-- This tab answers when the chat asks for it by address. --%>
       <div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
+      <%!-- Where "Copied!" lands: a page of its own has no chat to borrow a
+            toast container from. --%>
+      <RetroHexChatWeb.Components.Toast.toast_container />
       <.desktop id="p2p-desktop" persist_key="p2p" class="flex-1" data-testid="p2p-desktop">
         <.desktop_window
           id="p2p-call"
@@ -144,12 +158,14 @@ defmodule RetroHexChatWeb.App.P2PLive do
     """
   end
 
-  # The chat renders this same LiveView inside its own P2P window, so the body
-  # is shared and the chrome is not.
+  # Split from the chrome around it so the states — refused, arriving, starting
+  # room, inside, finished — read as one thing, and the window that frames
+  # them as another.
   defp p2p_body(assigns) do
     ~H"""
     <div class="flex h-full min-h-0 flex-col">
       <.p2p_denied :if={@denied} message={@denied} />
+      <.p2p_left :if={@surface_left} />
 
       <%!-- The first render of a match whose seat is still empty: the seat is
             taken by the mount that can hold it, so until the socket joins there
@@ -231,6 +247,23 @@ defmodule RetroHexChatWeb.App.P2PLive do
         <Icons.icon_protocol_p2p_compact class="h-4 w-4" />
       </span>
       <p class="min-w-0">{@message}</p>
+    </div>
+    """
+  end
+
+  # The session is over and this page said so on its status bar. No second way
+  # back: `← Chat` is along the bottom of the window in every state, and it is
+  # the one that knows how to reach a chat tab that is already open.
+  defp p2p_left(assigns) do
+    ~H"""
+    <div
+      class="m-auto flex h-fit w-full max-w-[520px] items-start gap-2 border border-border bg-canvas p-2 text-xs shadow-retro-sunken"
+      data-testid="p2p-left"
+    >
+      <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
+        <Icons.icon_protocol_p2p_compact class="h-4 w-4" />
+      </span>
+      <p class="min-w-0">{dgettext("chat", "Session ended.")}</p>
     </div>
     """
   end
@@ -328,7 +361,9 @@ defmodule RetroHexChatWeb.App.P2PLive do
   # match nobody has walked into yet.
   defp enter(socket, %LobbySession{status: status} = db_session, user_id, :creator)
        when status in ["pending", "open"] do
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "lobby:#{db_session.token}")
+    if connected?(socket) do
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.lobby(db_session.token))
+    end
 
     socket
     |> assign(
@@ -402,15 +437,11 @@ defmodule RetroHexChatWeb.App.P2PLive do
     end
   end
 
-  # Embedded, the chat already decided which session and already applied the
-  # gates it owns; the surface is handed the token. Standalone, the token in
-  # the address is all there is, so every gate runs here — and the refusal is
-  # the policy's own sentence, because that is the part the reader can act on.
-  defp resolve_session(socket, params, session) do
-    # A nested `live_render` never went through the router, so its params are
-    # the atom `:not_mounted_at_router` rather than a map — the token comes
-    # from the host's session there, and from the address here.
-    token = if is_map(params), do: params["token"], else: session["token"]
+  # The token in the address is all there is, so every gate runs here — and the
+  # refusal is the policy's own sentence, because that is the part the reader
+  # can act on.
+  defp resolve_session(socket, params) do
+    token = params["token"]
     seating? = connected?(socket)
 
     with {:ok, token} <- require_token(token),
@@ -559,9 +590,16 @@ defmodule RetroHexChatWeb.App.P2PLive do
 
   defp sharable?(_nickname), do: false
 
-  # Nothing refused and nothing to draw: the seat is still being taken.
-  defp arriving?(%{denied: nil, p2p_session: nil}), do: true
+  # Nothing refused, nothing finished and nothing to draw: the seat is still
+  # being taken.
+  defp arriving?(%{denied: nil, surface_left: false, p2p_session: nil}), do: true
   defp arriving?(_assigns), do: false
+
+  defp client_info(socket) do
+    if connected?(socket),
+      do: SessionHelpers.parse_client_info(get_connect_params(socket)),
+      else: %{}
+  end
 
   defp displaced?(%{displaced: true}), do: true
   defp displaced?(_p2p), do: false

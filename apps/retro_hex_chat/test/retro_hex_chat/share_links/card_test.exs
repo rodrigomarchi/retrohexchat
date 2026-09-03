@@ -61,6 +61,19 @@ defmodule RetroHexChat.ShareLinks.CardTest do
       assert card.state == :ended
       assert card.reason == :full
     end
+
+    # "Full" names something that worked. A seat nobody took before the window
+    # closed is a room that ended like any other, and must not claim otherwise.
+    test "a seat nobody took before the window closed is over, not full", %{session: session} do
+      row = session.session
+      after_window = DateTime.add(row.expires_at, 1, :second)
+      {:ok, :expired} = Queries.expire_open_session(row, after_window)
+
+      card = Card.of(link("play", %{"game_id" => "hex_pong", "session_token" => session.token}))
+
+      assert card.state == :ended
+      assert card.reason == :over
+    end
   end
 
   describe "of/1 and a link closed by hand" do

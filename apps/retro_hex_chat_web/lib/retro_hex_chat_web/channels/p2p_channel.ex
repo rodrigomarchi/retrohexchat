@@ -33,6 +33,7 @@ defmodule RetroHexChatWeb.P2PChannel do
   alias RetroHexChat.Lobby.Policy
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.SignalingRateLimit
+  alias RetroHexChat.Topics
 
   @pubsub RetroHexChat.PubSub
 
@@ -217,7 +218,7 @@ defmodule RetroHexChatWeb.P2PChannel do
 
   defp verify_join_token(_params, _session_token), do: {:error, :invalid_token}
 
-  defp topic(session_token), do: "lobby:#{session_token}"
+  defp topic(session_token), do: Topics.lobby(session_token)
 
   defp safe_track_kinds(kinds) when is_list(kinds) do
     kinds

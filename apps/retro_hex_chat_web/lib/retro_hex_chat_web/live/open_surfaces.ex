@@ -45,6 +45,26 @@ defmodule RetroHexChatWeb.Live.OpenSurfaces do
   def attach(socket, _nickname), do: assign(socket, open_surface_paths: MapSet.new())
 
   @doc """
+  Follow a nickname change onto the topic the answers now arrive on.
+
+  The set is keyed by who is asking, so a screen that changed its name and kept
+  its subscription would read a set nothing publishes to again — silently, and
+  only for the person who renamed.
+  """
+  @spec follow_rename(Socket.t(), String.t(), String.t()) :: Socket.t()
+  def follow_rename(socket, old_nickname, new_nickname)
+      when is_binary(old_nickname) and is_binary(new_nickname) do
+    if connected?(socket) do
+      Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, Surfaces.topic(old_nickname))
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Surfaces.topic(new_nickname))
+    end
+
+    assign(socket, open_surface_paths: paths(socket, new_nickname))
+  end
+
+  def follow_rename(socket, _old_nickname, _new_nickname), do: socket
+
+  @doc """
   Whether `path` is one of the addresses this person has open.
 
   Takes the set and not the socket on purpose: inside a template `@socket`

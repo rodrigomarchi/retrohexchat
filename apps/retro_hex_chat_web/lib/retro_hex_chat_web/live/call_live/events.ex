@@ -714,18 +714,6 @@ defmodule RetroHexChatWeb.CallLive.Events do
 
   def refresh_roster(socket), do: socket
 
-  @doc """
-  The antechamber choice the host was keeping, in the shape the surface uses.
-
-  The host stores what crossed the wire — string keys, string values — because
-  that is what a `live_render` session can carry back.
-  """
-  @spec restored_prejoin_preferences(map() | nil) :: map() | nil
-  def restored_prejoin_preferences(preferences) when is_map(preferences),
-    do: normalize_prejoin_preferences(preferences)
-
-  def restored_prejoin_preferences(_preferences), do: nil
-
   defp rejoinable_participant(channel_name, nickname) do
     summary = GroupCallSummary.fetch(channel_name)
 
@@ -837,10 +825,14 @@ defmodule RetroHexChatWeb.CallLive.Events do
           message: recovery_message
       }
 
-      CallEvents.emit_recovery_transition(:group_call, :rejoining, "liveview_mount", %{
-        manual_retry: false,
-        trigger: "rehydrate"
-      })
+      # Counted once per reattach: the dead render runs this too, and a
+      # prefetch is not a rejoin.
+      if Phoenix.LiveView.connected?(socket) do
+        CallEvents.emit_recovery_transition(:group_call, :rejoining, "liveview_mount", %{
+          manual_retry: false,
+          trigger: "rehydrate"
+        })
+      end
 
       call =
         summary

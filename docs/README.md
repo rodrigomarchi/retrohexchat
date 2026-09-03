@@ -68,14 +68,14 @@ migration, context, schema and hook counts — never write them into prose.
 The channel/PM unification shipped and its plan was deleted; the rule it produced
 is Principle 12 in `AGENT-GUIDE.md`.
 
-Shareable surfaces shipped through wave 8 and its five documents were deleted, as
-they instructed. What they produced lives where the code is: the surface rules in
+The shareable-surfaces plans are deleted, as they instructed. What they produced
+lives where the code is: the surface rules in
 [`guide/surfaces.md`](guide/surfaces.md) §19, the readiness protocol and the
 `phx-update="ignore"` rule in `AGENT-GUIDE.md` §15, the testing gotchas in
 [`guide/testing.md`](guide/testing.md), and the two decisions that were argued and
 refused — a readable space address, and a rate limit that belongs at the edge — in
-the `@moduledoc` of the modules they govern. The i18n debt one of those waves
-measured but did not clear is in
+the `@moduledoc` of the modules they govern. The i18n debt they measured but did
+not clear is in
 [`reference/i18n-catalogs.md`](reference/i18n-catalogs.md).
 
 `plans/agent-docs-audit.md` and its `agent-docs-removals.txt` are the record of a

@@ -558,7 +558,7 @@ in `docs/refactor/`.
   `/:locale`** — a catch-all would capture app routes (`/connect`, `/chat`, `/lobby/:token`,
   `/showcase`). `PutLocale` resolves
   the locale from route params/assigns before the session / Accept-Language fallback.
-- **Six reserved first segments, and none of them may collide with a locale tag**: `connect`,
+- **The reserved first segments may not collide with a locale tag**: `connect`,
   `chat`, `join`, `call`, `space`, `p2p`, `play`. Adding a surface adds one, and the check is
   against `config/i18n_locales.exs`, which is the only list of locale segments.
 - **Every *public* route goes inside the locale loop, not only in the unprefixed scope.**

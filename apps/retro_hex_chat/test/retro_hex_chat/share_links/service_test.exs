@@ -14,6 +14,7 @@ defmodule RetroHexChat.ShareLinks.ServiceTest do
 
   alias RetroHexChat.ShareLinks
   alias RetroHexChat.ShareLinks.Schema.Link
+  alias RetroHexChat.VirtualSpace.Queries, as: SpaceQueries
 
   setup do
     nick = insert(:registered_nick)
@@ -105,6 +106,33 @@ defmodule RetroHexChat.ShareLinks.ServiceTest do
 
       assert {:ok, resolution} = ShareLinks.resolve(link.slug)
       refute resolution.live?
+    end
+
+    # A link to the place never ends; a link to a gathering in it ends with the
+    # gathering, and the two must not be confused at the door.
+    test "a link to a gathering that ended is not live, and the place still is", %{nick: nick} do
+      {:ok, gathering} =
+        SpaceQueries.insert_session(%{
+          token: "space#{System.unique_integer([:positive])}",
+          space_id: "#gather#{System.unique_integer([:positive])}",
+          kind: "channel",
+          status: "closed",
+          opened_by_nick: nick.nickname,
+          opened_at: DateTime.add(DateTime.utc_now(), -1200, :second),
+          closed_at: DateTime.add(DateTime.utc_now(), -60, :second),
+          closed_reason: "emptied"
+        })
+
+      {:ok, ended} =
+        create(nick, "space", %{
+          "space_id" => gathering.space_id,
+          "session_token" => gathering.token
+        })
+
+      {:ok, place} = create(nick, "space", %{"space_id" => gathering.space_id})
+
+      assert {:ok, %{live?: false}} = ShareLinks.resolve(ended.slug)
+      assert {:ok, %{live?: true}} = ShareLinks.resolve(place.slug)
     end
 
     test "counts a resolution, once", %{nick: nick} do

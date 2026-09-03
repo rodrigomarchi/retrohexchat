@@ -51,6 +51,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   alias RetroHexChat.Lobby.JoinToken
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.P2P
+  alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.P2PStats
   alias RetroHexChatWeb.Live.P2PConfirmDialog
   alias RetroHexChatWeb.Live.Surface
@@ -539,7 +540,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
-  # ── PubSub events (topic "lobby:#{token}") ────────────────────
+  # ── PubSub events (`Topics.lobby/1`) ──────────────────────────
 
   # Session-topic envelopes carry the token: events from a session that is no
   # longer the current one (a switch already unsubscribed, but its last
@@ -567,6 +568,11 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   def handle_info({:lobby_slot_taken, token}, socket) do
     case socket.assigns.p2p_session do
       %{token: ^token} = p2p ->
+        # The page that took the seat is the one listening now. Reclaiming
+        # subscribes again, so leaving this subscription in place would make a
+        # page that lost and retook its seat hear every event twice.
+        Phoenix.PubSub.unsubscribe(@pubsub, Topics.lobby(token))
+
         {:halt,
          socket
          |> put_p2p(%{p2p | displaced: true, webrtc_started: false, hook_ready: false})
@@ -1380,7 +1386,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   def attach_session(socket, token, user_id, role, opts \\ []) do
     case Lobby.join_session(token, user_id, takeover: true) do
       :ok ->
-        Phoenix.PubSub.subscribe(@pubsub, "lobby:#{token}")
+        Phoenix.PubSub.subscribe(@pubsub, Topics.lobby(token))
         p2p = new_session(socket, token, user_id, role, :joining, opts)
 
         socket
@@ -1393,7 +1399,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   end
 
   defp detach_session(socket, p2p) do
-    Phoenix.PubSub.unsubscribe(@pubsub, "lobby:#{p2p.token}")
+    Phoenix.PubSub.unsubscribe(@pubsub, Topics.lobby(p2p.token))
 
     put_p2p(socket, nil)
   end
@@ -1827,7 +1833,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   defp persist_p2p_system(_socket, _peer_nick, _text), do: :ok
 
   defp broadcast(token, event, payload) do
-    Phoenix.PubSub.broadcast(@pubsub, "lobby:#{token}", %{
+    Phoenix.PubSub.broadcast(@pubsub, Topics.lobby(token), %{
       event: event,
       payload: payload,
       token: token

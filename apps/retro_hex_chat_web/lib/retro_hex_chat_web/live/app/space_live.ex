@@ -49,7 +49,8 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   def mount(params, session, socket) do
     socket =
       assign(socket,
-        nickname: session["nickname"] || socket.assigns[:surface_nickname],
+        nickname: socket.assigns.surface_nickname,
+        page_title: loading_title(nil),
         avatars: VirtualSpace.avatars(),
         avatar: nil,
         # The character you picked last time, until the browser that picked it
@@ -92,6 +93,9 @@ defmodule RetroHexChatWeb.App.SpaceLive do
     <div class="bg-background text-text font-system flex h-screen flex-col">
       <%!-- This tab answers when the chat asks for it by address. --%>
       <div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
+      <%!-- Where "Copied!" lands: a page of its own has no chat to borrow a
+            toast container from. --%>
+      <RetroHexChatWeb.Components.Toast.toast_container />
       <.desktop id="space-desktop" persist_key="space" class="flex-1" data-testid="space-desktop">
         <.desktop_window
           id="virtual-space"

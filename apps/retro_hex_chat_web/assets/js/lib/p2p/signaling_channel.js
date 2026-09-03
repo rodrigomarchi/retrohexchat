@@ -39,12 +39,41 @@ export function createSignalingChannel({ sessionToken, joinToken, onError }) {
     if (handler) handler(payload || {});
   };
 
+  // A refusal is final: the server answers `not_allowed`, `invalid_token` or
+  // `not_found` once and would answer it again forever. Phoenix treats a join
+  // error as something to retry with backoff for the life of the page, so the
+  // wire is torn down here, and the host is told exactly once.
+  const refused = (reply) => {
+    const wasOpen = channel !== null;
+    teardown();
+    if (wasOpen && onError) onError(reply);
+  };
+
+  const teardown = () => {
+    try {
+      channel?.leave();
+    } catch (error) {
+      log.warn(`p2p: leaving the signaling channel failed (${error?.message || error})`);
+    }
+
+    try {
+      socket?.disconnect();
+    } catch (error) {
+      log.warn(`p2p: disconnecting the signaling socket failed (${error?.message || error})`);
+    }
+
+    channel = null;
+    socket = null;
+  };
+
   return {
     connect() {
       if (!sessionToken || !joinToken) {
         log.warn("p2p: signaling channel not connected — no session on the anchor");
         return;
       }
+
+      if (socket) return;
 
       socket = new Socket("/socket");
       socket.connect();
@@ -65,10 +94,11 @@ export function createSignalingChannel({ sessionToken, joinToken, onError }) {
         })
         .receive("error", (reply) => {
           log.warn(`p2p: signaling channel refused (${reply?.reason || "unknown"})`);
-          if (onError) onError(reply || {});
+          refused(reply || {});
         })
         .receive("timeout", () => {
           log.warn("p2p: signaling channel join timed out");
+          refused({ reason: "timeout" });
         });
     },
 
@@ -93,20 +123,7 @@ export function createSignalingChannel({ sessionToken, joinToken, onError }) {
     },
 
     disconnect() {
-      try {
-        channel?.leave();
-      } catch (error) {
-        log.warn(`p2p: leaving the signaling channel failed (${error?.message || error})`);
-      }
-
-      try {
-        socket?.disconnect();
-      } catch (error) {
-        log.warn(`p2p: disconnecting the signaling socket failed (${error?.message || error})`);
-      }
-
-      channel = null;
-      socket = null;
+      teardown();
       handlers.clear();
     },
   };

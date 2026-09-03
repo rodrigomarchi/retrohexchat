@@ -453,7 +453,6 @@ defmodule CIImpact do
       if path_contains_any?(file, [
            "/hooks/ui/window_manager_hook",
            "/hooks/ui/menu_bar_hook",
-           "/hooks/ui/context_menu_hook",
            "/hooks/ui/menu_reposition_hook",
            "/hooks/ui/toolbar_group_hook",
            "/hooks/ui/url_catcher_hook"

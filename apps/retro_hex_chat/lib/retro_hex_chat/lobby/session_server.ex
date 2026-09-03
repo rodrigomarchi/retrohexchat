@@ -1015,7 +1015,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
   # drop stale events from a previous session (extra keys don't break the
   # existing %{event:, payload:} matches).
   defp broadcast(token, event, payload) do
-    Phoenix.PubSub.broadcast(@pubsub, "lobby:#{token}", %{
+    Phoenix.PubSub.broadcast(@pubsub, Topics.lobby(token), %{
       event: event,
       payload: payload,
       token: token

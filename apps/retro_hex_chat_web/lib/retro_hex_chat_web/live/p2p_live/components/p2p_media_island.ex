@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
   require Logger
 
   alias RetroHexChat.Lobby
+  alias RetroHexChat.Topics
   alias RetroHexChatWeb.Components.UI.P2P.CallPanel
 
   @pubsub RetroHexChat.PubSub
@@ -388,13 +389,22 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
     assign(socket, Keyword.put(flags, :call, call))
   end
 
+  # An island with no session has no room to tell, and saying so out loud is the
+  # point: interpolating a nil token produced a topic nobody subscribes to, so
+  # the event went nowhere and nothing anywhere said it had.
   @spec broadcast(Phoenix.LiveView.Socket.t(), String.t(), map()) :: :ok
-  defp broadcast(socket, event, payload) do
-    Phoenix.PubSub.broadcast(@pubsub, "lobby:#{socket.assigns.token}", %{
+  defp broadcast(%{assigns: %{token: token}} = socket, event, payload)
+       when is_binary(token) and token != "" do
+    Phoenix.PubSub.broadcast(@pubsub, Topics.lobby(token), %{
       event: event,
       payload: payload,
       token: socket.assigns.token
     })
+  end
+
+  defp broadcast(_socket, event, _payload) do
+    Logger.warning("P2P media island dropped #{event} — the island holds no session")
+    :ok
   end
 
   @spec media_start_payload(Phoenix.LiveView.Socket.t()) :: map()

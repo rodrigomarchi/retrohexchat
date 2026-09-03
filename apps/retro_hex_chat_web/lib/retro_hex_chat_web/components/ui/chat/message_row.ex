@@ -51,6 +51,17 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             card={Map.get(@msg, :link_preview)}
             strip_formatting={@strip_formatting}
           />
+          <%!-- A `/me` line can carry a share link like any other line, and the
+                viewport attaches the card to it; a row that then draws the bare
+                address is the door made invisible. --%>
+          <.share_message_card
+            :if={not @strip_formatting}
+            card={Map.get(@msg, :share_card)}
+            subject={share_subject(Map.get(@msg, :share_card))}
+            enter_path={share_enter_path(Map.get(@msg, :share_card))}
+            share_url={share_url(Map.get(@msg, :share_card))}
+            next_path={share_next_path(Map.get(@msg, :share_card))}
+          />
         </.chat_message>
       <% :system -> %>
         <.chat_message

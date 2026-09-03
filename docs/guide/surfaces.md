@@ -12,7 +12,7 @@ stable — `§19` still means this file.
 ## 19.1 What a surface is
 
 Everything used to fit in one tab: `/chat` mounted one LiveView, a Win98 desktop
-and N windows. Five things have an address of their own instead, and **none of
+and N windows. These have an address of their own instead, and **none of
 them has a mount inside the chat**:
 
 | Surface | Own address | Module |
@@ -176,7 +176,9 @@ it — and `TrustedDevices.put_device_preference/4` for a terminal that is
 trusted. `SurfaceHost.remember/2` was a third copy handed to a process that
 stopped existing in wave 1. Checking the table proves nothing either way, by
 the way: an empty `trusted_device_preferences` is what a database nobody has
-used the antechamber on looks like.---
+used the antechamber on looks like.
+
+---
 
 ## 19.4 Which tabs a person has open
 
@@ -202,6 +204,14 @@ Two consequences worth not rediscovering:
   `Surfaces.topic/1`, never by hand: a subscriber using the cased form listens
   to a topic nobody publishes to, silently, and only for people whose nickname
   has a capital in it.
+- **A nick change is the fourth thing a rename moves**, after presence, the
+  inbox subscription and the channel memberships. `Surfaces.rename/2` re-keys
+  every tab and the handed-over departure with it, and announces on the *old*
+  `Topics.surfaces/1` so each registered process can update the name it will
+  register under next — the processes are the only ones that can. Skipped, the
+  failure is silent and exactly the one this module exists to prevent: the
+  chat's tab closing counts no other surface and parts the channels the call in
+  the other tab is standing on, and a ban on the new name never reaches it.
 
 ### Cross-tab: the server is the truth, the browser only focuses
 

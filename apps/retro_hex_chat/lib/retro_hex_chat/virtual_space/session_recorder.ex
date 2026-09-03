@@ -130,7 +130,10 @@ defmodule RetroHexChat.VirtualSpace.SessionRecorder do
     {:noreply, guard(state, fn -> close(state, ref, down_reason(reason)) end)}
   end
 
-  def handle_info(_message, state), do: {:noreply, state}
+  def handle_info(message, state) do
+    Logger.debug("VirtualSpace.SessionRecorder ignored #{inspect(message)}")
+    {:noreply, state}
+  end
 
   defp open(state, space_id, kind, pid, actor) do
     attrs = %{

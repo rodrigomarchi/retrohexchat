@@ -5775,6 +5775,22 @@ PO_CLOSE_CONVERSATION_OVERRIDES = {
 for source, translations in PO_CLOSE_CONVERSATION_OVERRIDES.items():
     PO_OVERRIDES.setdefault(source, {}).update(translations)
 
+# The heading of a P2P session's card in a conversation. A short label with no
+# sentence around it, curated for the same reason every other menu-sized label
+# here is.
+PO_P2P_CARD_OVERRIDES = {
+    "P2P session": t(
+        "P2P-Sitzung", "Sesión P2P", "Session P2P",
+        "Sesi P2P", "P2Pセッション", "P2P 会话",
+        pt_BR="Sessão P2P", pt_PT="Sessão P2P",
+        it="Sessione P2P", pl="Sesja P2P",
+        nl="P2P-sessie", ru="P2P-сессия", zh_hant="P2P 工作階段",
+    ),
+}
+
+for source, translations in PO_P2P_CARD_OVERRIDES.items():
+    PO_OVERRIDES.setdefault(source, {}).update(translations)
+
 JS_OVERRIDES = {
     "%{0}  Wv:%{1}": {
     },

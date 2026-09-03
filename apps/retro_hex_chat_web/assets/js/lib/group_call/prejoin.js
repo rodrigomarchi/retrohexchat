@@ -49,6 +49,7 @@ export function createGroupCallPreJoin(el, { pushEvent }) {
       this.config = this._config();
       this.form = this.el.closest("form");
       this._refreshElements();
+      this._restorePending();
       this._startPreview();
     },
 
@@ -208,6 +209,7 @@ export function createGroupCallPreJoin(el, { pushEvent }) {
      * does not host a conference any more, and nothing was left holding it.
      */
     _restore() {
+      this._pending = {};
       if (this.el.dataset.prejoinRemembered === "true") return;
 
       const stored = this._stored();
@@ -223,16 +225,44 @@ export function createGroupCallPreJoin(el, { pushEvent }) {
         "video_input_id",
         "audio_output_id",
       ]) {
-        this._setField(name, stored[name]);
+        // A device id names an option the browser has not listed yet on the
+        // first render: the select only knows "System default" until the
+        // enumeration lands. Kept aside and applied when the list arrives,
+        // rather than written into a field that cannot hold it.
+        if (!this._setField(name, stored[name])) this._pending[name] = stored[name];
       }
+    },
+
+    // The device list landed, or changed: whatever choice was waiting for it
+    // goes in now, and the server hears about it once.
+    _restorePending() {
+      const pending = this._pending || {};
+      let applied = false;
+
+      for (const name of Object.keys(pending)) {
+        if (this._setField(name, pending[name])) {
+          delete pending[name];
+          applied = true;
+        }
+      }
+
+      if (applied) this._pushPreferences();
     },
 
     _remember(preferences) {
       const key = this._storageKey();
       if (!key) return;
 
+      // A choice still waiting for its option is not a choice unmade: the
+      // form reads "" for it, and remembering that would erase the id.
+      const pending = this._pending || {};
+      const merged = { ...preferences };
+      for (const name of Object.keys(pending)) {
+        if (!merged[name]) merged[name] = pending[name];
+      }
+
       try {
-        window.localStorage.setItem(key, JSON.stringify(preferences));
+        window.localStorage.setItem(key, JSON.stringify(merged));
       } catch (error) {
         // A private window, or site data blocked. The antechamber still works;
         // it just will not remember, which is the state it was already in.
@@ -270,11 +300,16 @@ export function createGroupCallPreJoin(el, { pushEvent }) {
       if (checkbox) checkbox.checked = value;
     },
 
+    // Returns whether the field could take the value: a select without a
+    // matching option reads "" after the assignment, which is not the value.
     _setField(name, value) {
-      if (typeof value !== "string") return;
+      if (typeof value !== "string" || value === "") return true;
 
       const field = this.form?.querySelector(`[name="${this.config.formName}[${name}]"]`);
-      if (field) field.value = value;
+      if (!field) return false;
+
+      field.value = value;
+      return field.value === value;
     },
 
     _preferencesFromForm() {

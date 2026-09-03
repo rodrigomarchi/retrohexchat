@@ -29,7 +29,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   alias RetroHexChat.Chat.Service, as: ChatService
   alias RetroHexChat.GroupCall
   alias RetroHexChat.ShareLinks
-  alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.GroupCallReadModel
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
@@ -54,36 +53,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   def rehydrate(socket), do: socket
-
-  @doc """
-  Leave a channel's call when the channel itself leaves the session.
-
-  A kick or a `/part` is not a tab being closed: the call has lost the
-  membership it stood on, so the seat goes even though the screen holding it is
-  somewhere this process cannot reach. The domain is asked directly, which is
-  the only way left now that the call is not a child of the chat.
-  """
-  @spec leave_channel_call(Socket.t(), String.t(), String.t()) :: Socket.t()
-  def leave_channel_call(%{assigns: %{session: %{nickname: nickname}}} = socket, channel, reason)
-      when is_binary(nickname) do
-    case seat_in(socket, channel, nickname) do
-      {token, participant_id} -> _ = GroupCall.leave_call(token, participant_id, reason)
-      nil -> :ok
-    end
-
-    # The seat is the domain's and the screen is somewhere this process cannot
-    # reach, so the screen is told on the room's own topic — the one the call
-    # is already listening to, and the only one carrying nothing else.
-    Phoenix.PubSub.broadcast(
-      RetroHexChat.PubSub,
-      Topics.channel_calls(channel),
-      {:channel_membership_lost, %{channel: channel, nickname: nickname, reason: reason}}
-    )
-
-    socket
-  end
-
-  def leave_channel_call(socket, _channel_name, _reason), do: socket
 
   @spec handle_event(String.t(), map(), Socket.t()) :: event_result()
   def handle_event("group_call_open", _params, socket) do
@@ -159,16 +128,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
   # The room and the seat in it, for a channel this person may not be sitting
   # in at all. Both halves are the domain's; the chat only supplies the name.
-  defp seat_in(socket, channel, nickname) do
-    with %{room: %{id: room_id, token: token}} when is_integer(room_id) <-
-           GroupCallReadModel.summary(socket, channel),
-         %{id: participant_id} <- GroupCall.active_participant(room_id, nickname) do
-      {token, participant_id}
-    else
-      _absent -> nil
-    end
-  end
-
   defp active_channel(%{assigns: %{show_status_tab: true}}),
     do: {:error, dgettext("group_call", "Open a channel before starting a group call.")}
 

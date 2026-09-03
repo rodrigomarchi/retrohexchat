@@ -2,7 +2,8 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
   @moduledoc """
   A shared link, drawn in the conversation as the room it names.
 
-  Three kinds — a conference, a space, a game — and two states each. Live, it
+  Four kinds — a conference, a space, a game, a P2P session — and two states
+  each. Live, it
   says who is in there and offers the way in beside the way to pass it on. The
   way in opens a tab of its own, because this card is the only door those rooms
   have and following a door must not close the conversation behind you.
@@ -146,6 +147,7 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
   defp icon_name(_subject, %{kind: "play"}), do: :icon_game_pong
   defp icon_name(_subject, %{kind: "call"}), do: :icon_protocol_conference_compact
   defp icon_name(_subject, %{kind: "space"}), do: :icon_community
+  defp icon_name(_subject, %{kind: "p2p"}), do: :icon_protocol_p2p_compact
   defp icon_name(_subject, _card), do: :icon_hex_stone
 
   # The heading names the channel only when the domain said it may be named;
@@ -161,6 +163,7 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
   defp heading(%{name: name}, _card) when is_binary(name), do: name
   defp heading(_subject, %{kind: "call"}), do: dgettext("share", "A conference")
   defp heading(_subject, %{kind: "space"}), do: dgettext("share", "A virtual space")
+  defp heading(_subject, %{kind: "p2p"}), do: dgettext("share", "P2P session")
   defp heading(_subject, _card), do: dgettext("share", "An invitation")
 
   defp game_heading(%{name: name}, _card) when is_binary(name), do: name

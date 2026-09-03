@@ -36,11 +36,12 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   @impl true
   @spec mount(map(), map(), Socket.t()) :: {:ok, Socket.t()}
-  def mount(params, session, socket) do
+  def mount(params, _session, socket) do
     socket =
       socket
       |> assign(
-        nickname: session["nickname"] || socket.assigns[:surface_nickname],
+        nickname: socket.assigns.surface_nickname,
+        page_title: dgettext("games", "Retro Games"),
         share_url: nil,
         share_slug: nil,
         games: Catalog.list_solo_games(),
@@ -52,7 +53,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
         error_message: nil,
         match_error: nil
       )
-      |> OpenSurfaces.attach(session["nickname"] || socket.assigns[:surface_nickname])
+      |> OpenSurfaces.attach(socket.assigns.surface_nickname)
       |> select_from_path(params)
 
     {:ok, socket}

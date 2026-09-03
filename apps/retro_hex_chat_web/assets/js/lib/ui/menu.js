@@ -1,7 +1,5 @@
 /**
  * Menu navigation and repositioning logic.
- *
- * Extracted from: context_menu_hook.js
  */
 
 /**

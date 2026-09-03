@@ -85,9 +85,29 @@ defmodule RetroHexChat.Lobby.Service do
     with {:ok, session} <- fetch_session(token),
          :ok <- Policy.can_claim?(claimer_id, session),
          {:ok, claimed} <- Queries.claim_open_session(token, claimer_id),
-         :ok <- ensure_session_server(claimed.token) do
+         :ok <- start_claimed_session(claimed) do
       Logger.debug("Open lobby claimed: session_id=#{claimed.id}, claimer=#{claimer_id}")
       {:ok, claimed}
+    end
+  end
+
+  # The seat was won by the write above; if the process that runs the match
+  # cannot start, the row must not stay `pending` with nobody serving it — that
+  # is a link nobody can follow and nothing sweeps. It is closed as failed, so
+  # the card says the match is over rather than "already full".
+  defp start_claimed_session(claimed) do
+    case ensure_session_server(claimed.token) do
+      :ok ->
+        :ok
+
+      {:error, _message} = error ->
+        _ =
+          Queries.update_status(claimed, "failed", %{
+            closed_at: DateTime.utc_now(),
+            closed_reason: "session_server_unavailable"
+          })
+
+        error
     end
   end
 

@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   alias RetroHexChat.Scraper
 
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChat.Surfaces
   alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
@@ -33,6 +34,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Helpers.Persistence
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
+  alias RetroHexChatWeb.Live.OpenSurfaces
 
   # ── Nick color functions ───────────────────────────────────
 
@@ -502,6 +504,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, Topics.inbox(old_nick))
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(new_nick))
 
+    # The fourth thing a rename moves. Every tab of this person is registered
+    # under the name they had; left there, this window closing would count no
+    # other surface and part the channels a call in another tab stands on.
+    Surfaces.rename(old_nick, new_nick)
+
     users =
       Enum.map(socket.assigns.conversation_members, fn user ->
         if user.nickname == old_nick, do: %{user | nickname: new_nick}, else: user
@@ -512,6 +519,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       dgettext("chat", "You are now known as %{nickname}", nickname: new_nick)
     )
     |> assign(session: session, conversation_members: users)
+    |> OpenSurfaces.follow_rename(old_nick, new_nick)
     |> Nicklist.reset(users)
   end
 

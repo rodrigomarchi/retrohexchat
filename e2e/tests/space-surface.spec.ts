@@ -74,8 +74,10 @@ test.describe("A space at an address of its own", () => {
         "Nobody is in here yet",
       );
 
-      // The page already is the space, so it offers no tab of its own.
-      await expect(space.getByTestId("space-open-in-tab")).toHaveCount(0);
+      // The page already is the space: the only surface link on it is the way
+      // back to the chat, never a tab of its own.
+      await expect(space.getByTestId("space-back-to-chat")).toBeVisible();
+      await expect(space.locator("[data-surface-path]")).toHaveCount(1);
 
       // Choosing a character is entering.
       await space.getByTestId("space-avatar-monk").click();

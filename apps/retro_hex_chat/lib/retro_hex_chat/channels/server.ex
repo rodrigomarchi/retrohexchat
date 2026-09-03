@@ -30,6 +30,7 @@ defmodule RetroHexChat.Channels.Server do
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.ChanServ
   alias RetroHexChat.Services.Queries, as: ServiceQueries
+  alias RetroHexChat.Topics
 
   @type state :: %{
           name: String.t(),
@@ -387,6 +388,8 @@ defmodule RetroHexChat.Channels.Server do
         {:user_left, %{channel: state.name, nickname: nickname, reason: reason}}
       )
 
+      membership_lost(state.name, nickname, "channel_part")
+
       if Membership.count(new_membership) == 0 and not state.registered do
         {:stop, :normal, :ok, new_state}
       else
@@ -456,6 +459,8 @@ defmodule RetroHexChat.Channels.Server do
              reason: reason
            }}
         )
+
+        membership_lost(state.name, target_nick, "channel_kick")
 
         if Membership.count(new_membership) == 0 and not state.registered do
           {:stop, :normal, :ok, new_state}
@@ -995,8 +1000,23 @@ defmodule RetroHexChat.Channels.Server do
         {:user_kicked, %{channel: acc.name, operator: operator, target: target, reason: reason}}
       )
 
+      membership_lost(acc.name, target, "channel_ban")
+
       %{acc | membership: Membership.remove(acc.membership, target)}
     end)
+  end
+
+  # A channel's call stands on membership of the channel. When that goes — a
+  # part, a kick, a ban — the screen holding the seat is told on the call
+  # topic, which is the one it listens to and the one that carries nothing
+  # else. It is said here, by the process that owns the membership, so that it
+  # is said whether or not a chat window is open to relay it.
+  defp membership_lost(channel_name, nickname, reason) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      Topics.channel_calls(channel_name),
+      {:channel_membership_lost, %{channel: channel_name, nickname: nickname, reason: reason}}
+    )
   end
 
   defp check_mode_permissions(membership, nickname, mode_string, params) do

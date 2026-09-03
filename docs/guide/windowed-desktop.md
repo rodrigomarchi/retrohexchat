@@ -41,20 +41,20 @@ Part of the [Agent Guide](../AGENT-GUIDE.md) (§7). Section numbers there are st
 
 ### 7.0 Satellites: one window, and no chrome around it
 
-Five screens run this shell now, and the four that are not the chat run it with
+Every screen in this app runs this shell, and each one that is not the chat runs it with
 **no taskbar and no Start menu** — one pinned, maximised window and a status bar.
 That is a decision, not an omission:
 
 - The Start menu is a **superset of every menu bar**, grey where a screen cannot
   reach — +177 nodes, +17 KB raw, +1 KB gzip per screen. On the chat's desktop
   every one of those entries leads somewhere. On a single-purpose satellite they
-  are 177 rows that do nothing, and there are four satellites.
+  are 177 rows that do nothing, on every satellite there is.
 - What a satellite owes instead is the way **back**: `← Chat` in the status bar,
   always visible, which focuses the chat tab when there is one
   (`Components.UI.SurfaceTabLink.back_to_chat/1`).
 
-`payload_budget_test.exs` holds the four satellites to it, so a Start menu added
-by reflex fails a test rather than costing 708 nodes nobody looks at.
+`payload_budget_test.exs` holds every satellite to it, so a Start menu added by
+reflex fails a test rather than costing nodes nobody looks at.
 
 **A tab you already have is not opened again.** `RetroHexChat.Surfaces` monitors
 every surface process and knows the address of each, so "open in a tab" draws as
@@ -69,9 +69,9 @@ into it*).
 
 ### 7.1 Chat: managed windows (server-owned lifecycle)
 
-The chat's P2P session windows keep their islands **always mounted** (rule above) because their
-hooks/data channels must outlive a close. A second kind — **`managed` windows** — coexists.
-The chat is one `pinned default_maximized` window (never closable); ~18 former modals are windows;
+An island whose hooks or data channels must outlive a close is kept **always mounted** (rule
+above) — the P2P session's islands, at the session's own address, are the case that named it. A second kind — **`managed` windows** — coexists.
+The chat is one `pinned default_maximized` window (never closable); the former modals are windows;
 confirmations/transient prompts stay modal `UI.Dialog`; persistence is ON (`persist_key="chat"`,
 unique per LiveView).
 

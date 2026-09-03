@@ -254,7 +254,9 @@ defmodule RetroHexChat.ShareLinks.Card do
 
   # A match link dies by success: the seat it offered is taken, and "already
   # full" is a different sentence from "expired" because it names something
-  # that worked.
+  # that worked. A match that expired unclaimed, or that its creator cancelled,
+  # is over like any other room — nothing worked there, so "full" would be a
+  # lie about it.
   defp room_state("play", %{"session_token" => token} = target) when is_binary(token) do
     game_id = target["game_id"]
 
@@ -262,8 +264,10 @@ defmodule RetroHexChat.ShareLinks.Card do
       {:ok, %Session{status: "open", peer_id: nil}} ->
         %{count: 1, game_id: game_id}
 
-      {:ok, %Session{}} ->
-        %{state: :ended, reason: :full, game_id: game_id}
+      {:ok, %Session{status: status}} ->
+        if Session.terminal?(status),
+          do: %{state: :ended, reason: :over, game_id: game_id},
+          else: %{state: :ended, reason: :full, game_id: game_id}
 
       _other ->
         %{state: :ended, reason: :over, game_id: game_id}

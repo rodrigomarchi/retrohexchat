@@ -19,8 +19,21 @@ import { openChannel, requestFocus } from "../../lib/surfaces/tab_registry.js";
 const SurfaceTabLinkHook = {
   mounted() {
     this._channel = openChannel();
+    this._path = this.el.dataset.surfacePath;
     this._onClick = (event) => this._handleClick(event);
     this.el.addEventListener("click", this._onClick);
+  },
+
+  // The same element can be pointed at a different tab by a patch — the status
+  // bar keeps one fixed id for whichever call is elsewhere — and giving up on
+  // one address must not carry over to the next.
+  updated() {
+    const path = this.el.dataset.surfacePath;
+    if (path === this._path) return;
+
+    this._path = path;
+    this._giveUp = false;
+    this._note("false");
   },
 
   destroyed() {
@@ -34,20 +47,19 @@ const SurfaceTabLinkHook = {
 
     event.preventDefault();
 
-    requestFocus(this._channel, path).then((answered) => {
-      if (answered) return;
+    requestFocus(this._channel, path)
+      .then((answered) => {
+        if (answered) return;
 
-      // Nobody came forward: the tab may be on another monitor, in another
-      // window, or on another machine entirely. Say that, and let the next
-      // click do what the link says.
-      // `debug`, not `info`: the logger exposes debug/warn/error and is frozen,
-      // so `log.info` threw a TypeError right here — inside a `.then`, where it
-      // became an unhandled rejection that swallowed the two lines below it.
-      // The note never appeared and nothing anywhere said why.
-      log.debug("[surfaces] no tab answered the focus request", { path });
-      this._giveUp = true;
-      this._note("true");
-    });
+        // Nobody came forward: the tab may be on another monitor, in another
+        // window, or on another machine entirely. Say that, and let the next
+        // click do what the link says. (The logger exposes debug/warn/error
+        // only, and a missing level here throws inside a `.then`.)
+        log.debug("[surfaces] no tab answered the focus request", { path });
+        this._giveUp = true;
+        this._note("true");
+      })
+      .catch((error) => log.warn("[surfaces] the focus request failed", error));
   },
 
   _note(visible) {

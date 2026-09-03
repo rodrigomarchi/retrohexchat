@@ -282,6 +282,27 @@ defmodule RetroHexChat.Channels.ServerTest do
       :ok = Server.kick(channel, "op", "target", "bye")
       assert_receive {:user_kicked, %{operator: "op", target: "target", reason: "bye"}}
     end
+
+    # A call stands on membership of the channel, and the screen holding the
+    # seat may be a tab of its own with no chat open to relay anything. So the
+    # loss is said here, on the call topic, by the process that owns the
+    # membership — for a part and for a kick alike.
+    test "losing the membership is said on the channel's call topic" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.channel_calls(channel))
+
+      {:ok, _} = Server.join(channel, "op")
+      {:ok, _} = Server.join(channel, "kicked")
+      {:ok, _} = Server.join(channel, "leaver")
+
+      :ok = Server.part(channel, "leaver")
+      assert_receive {:channel_membership_lost, %{nickname: "leaver", reason: "channel_part"}}
+
+      :ok = Server.kick(channel, "op", "kicked", "bye")
+      assert_receive {:channel_membership_lost, %{nickname: "kicked", reason: "channel_kick"}}
+    end
   end
 
   describe "set_topic/3" do

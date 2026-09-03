@@ -38,8 +38,8 @@ Baseline: main @ a1c9376e, 18/08/2026.
 | `ui/viewport_detect_hook.js` | 115→ | sim | não | sim | W3 | **W3 feito** | — | ui/viewport |
 | `lobby/lobby_game_canvas_hook.js` | 115 | não | sim | sim | W8 | pendente | — | — |
 | `lazy_feature_hook.js` | 99 | sim | não | — | infra | pendente | — | — |
-| `games/arcade_session_hook.js` | 93 | sim | não | sim | W8 | pendente | — | — |
-| `ui/context_menu_hook.js` | 80 | sim | sim | sim | — | pendente | — | — |
+| `games/arcade_session_hook.js` | — | — | — | — | — | removido | — | — |
+| `ui/context_menu_hook.js` | — | — | — | — | — | removido | — | — |
 | `chat/chat_pagination_hook.js` | 69 | sim | não | sim | W8 | pendente | — | — |
 | `ui/char_counter_hook.js` | 62 | sim | sim | — | — | pendente | — | — |
 | `input/shortcut_dispatcher_hook.js` | 61 | sim | sim | sim | W2 | **W2 feito** | — | ui/dom.isEditableTarget |
@@ -54,13 +54,13 @@ Baseline: main @ a1c9376e, 18/08/2026.
 | `chat/emoji_picker_hook.js` | 35 | sim | não | sim | — | pendente | — | — |
 | `showcase/highlight_hook.js` | 34 | não | não | — | W8 | pendente | — | — |
 | `help/help_nav_hook.js` | 33 | não | não | — | W8 | pendente | — | — |
-| `input/keyboard_hook.js` | 29 | sim | sim | sim | — | pendente | — | — |
+| `input/keyboard_hook.js` | — | — | — | — | — | removido | — | — |
 | `connection/clock_hook.js` | 26 | sim | sim | — | — | pendente | — | — |
 | `ui/menu_bar_hook.js` | 24 | sim | sim | — | referência | pendente | — | — |
 | `ui/menu_reposition_hook.js` | 21 | não | sim | — | W8 | pendente | — | — |
 | `ui/focus_chat_input_on_click_hook.js` | 21 | não | não | — | W8 | pendente | — | — |
 | `ui/url_catcher_hook.js` | 18 | sim | sim | — | — | pendente | — | — |
-| `notifications/notify_list_hook.js` | 18 | sim | sim | sim | — | pendente | — | — |
+| `notifications/notify_list_hook.js` | — | — | — | — | — | removido | — | — |
 | `chat/nick_change_form_hook.js` | 14 | sim | não | — | — | pendente | — | — |
 
 ## Fora de escopo (commits próprios, nunca dentro de um pacote)

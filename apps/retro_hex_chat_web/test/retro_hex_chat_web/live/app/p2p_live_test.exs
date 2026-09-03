@@ -191,6 +191,10 @@ defmodule RetroHexChatWeb.App.P2PLiveTest do
     end
 
     test "no offer is emitted before Start, and Start emits exactly one", ctx do
+      # The session's own wire, listened to on purpose: the page subscribes only
+      # once its socket is up, so nothing here rides on the dead render.
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.lobby(ctx.session.token))
+
       render_submit(ctx.view, "p2p_room_ready", %{"p2p_setup" => @setup_defaults})
       render_click(ctx.view, "lobby_webrtc_ready", %{})
 
