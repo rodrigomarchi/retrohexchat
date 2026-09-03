@@ -22,7 +22,7 @@ the door, for both people.
 
 ### 8.1 Session model
 
-- **Session status is an 8-state machine:** `open → pending → lobby → connecting → active` plus
+- **Session status is a state machine:** `open → pending → lobby → connecting → active` plus
   terminal `closed / expired / failed`. Enforced as a DB `status` string column with changeset
   validation; `closed_at` and `closed_reason` are required whenever terminal. Any non-terminal
   state can jump to `closed`. Terminal sessions are retained indefinitely for audit (no purge).
@@ -139,6 +139,13 @@ This separation is Principle IV and is enforced.
   island only *requests* media via push_events to its hook. Do not move this into an island.
 - **Bidirectional video** (both enable at once, real RTP `track.muted === false`) is the scenario
   that most regresses — always run it after touching media.
+- **There are two keyboard-shortcut systems and they look like one.** The conference's five live in
+  `Chat.KeyBindings` as `group_call_*`, travel through `ShortcutDispatcherHook`, and are answered by
+  `CallLive`'s `@call_actions` — nowhere else. The P2P session's six are not in that table at all:
+  they are handled inside `rtc_media_hook_factory.js`, gated on the call window being the active
+  one, which is why they reach only the page whose window id is `p2p-call`. So the absence of the
+  dispatcher on a page proves nothing about whether that page has shortcuts, and a binding table
+  that lists no P2P action is not evidence that P2P lost its own.
 
 ### 8.4 File transfer protocol
 

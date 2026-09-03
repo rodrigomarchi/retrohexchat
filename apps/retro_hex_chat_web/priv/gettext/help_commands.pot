@@ -1880,7 +1880,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:22
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:25
@@ -1904,7 +1904,7 @@ msgstr ""
 msgid "Examples"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "File Transfer"
 msgstr ""
@@ -2564,7 +2564,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:27
@@ -4384,7 +4384,7 @@ msgstr ""
 msgid "User Lookup"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Video Call"
 msgstr ""
@@ -4469,7 +4469,7 @@ msgstr ""
 msgid "Open a P2P Session with another user: a single persistent peer-to-peer connection that hosts every feature at once — an audio or video call, file transfers, and games — all running at the same time."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr ""
@@ -4477,11 +4477,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "You cannot start a P2P session with yourself."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "opens a setup dialog first, so you can preview camera, choose microphone/camera/speaker, pick receive-only, and enable privacy relay before the request is sent. After you confirm, the other user receives a P2P request in your private message, the PM tab opens in the background, and Join/Decline appear in the PM header. When they accept, the connection is established right there in the chat: the call starts with each side's chosen defaults and the P2P Session Console opens with Call, Files, Games and Stats sections. Several activities run together over the one connection; ending one keeps the others alive. Closing the console disconnects the session (after a confirmation) — minimize to keep it running."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
@@ -4564,7 +4559,27 @@ msgstr ""
 msgid "— Server configuration; registration is reset to open"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "/p2p Alice /p2p Bob"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "P2P Sessions in Chat"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "P2P Starting Room"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "You can hold sessions with several people at once. Only a second session with the same person is refused."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "creates the session and writes the request straight into your private message with that person. Nothing is asked of you first. The line carries the session's own address and draws a card, and that card is the door for both of you — the other side opens the same one, or presses Decline beside it. Following it opens the session in a browser tab of its own, starting in the room where you both pick devices and press Ready. Once the host presses Start, Call, Files, Games and Stats all run over the one connection; ending one keeps the others alive."
 msgstr ""

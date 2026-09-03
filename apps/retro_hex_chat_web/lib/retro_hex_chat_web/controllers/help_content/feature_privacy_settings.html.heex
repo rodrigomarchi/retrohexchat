@@ -10,13 +10,11 @@
 </p>
 <.help_h4 icon={:icon_checkmark}>{dgettext("help_features", "How to Enable")}</.help_h4>
 <p>
-  {dgettext("help_features", "In the P2P setup dialog, check")}
-  <strong>{dgettext("help_features", "Privacy relay")}</strong>
-  {dgettext("help_features", ", or in an active P2P session use the")}
-  <strong>{dgettext("help_features", "Toggle Privacy Mode")}</strong>
+  {dgettext("help_features", "In the starting room, open")}
+  <strong>{dgettext("help_features", "Route and privacy")}</strong>
   {dgettext(
     "help_features",
-    "item in the P2P menu. The preference is saved and remembered for future sessions. When enabled, the status bar and Stats section show relay/privacy indicators."
+    "and turn the relay on before you press Ready. That is where the route is decided: once the session begins it is fixed for that session, so a connection that has already been negotiated is never quietly re-routed under you. The choice is remembered for your next session, and the Stats section shows whether the relay is carrying the one you are in."
   )}
 </p>
 <.help_h4 icon={:icon_question}>{dgettext("help_features", "Tradeoff")}</.help_h4>
@@ -44,6 +42,10 @@
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
+  <.help_link topic="feature-p2p-starting-room">
+    {dgettext("help_features", "P2P Starting Room")}
+  </.help_link>
+  ·
   <.help_link topic="feature-universal-lobby">
     {dgettext("help_features", "P2P Session")}
   </.help_link>

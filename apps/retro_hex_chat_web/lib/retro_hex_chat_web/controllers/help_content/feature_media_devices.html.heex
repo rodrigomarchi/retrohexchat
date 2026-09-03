@@ -1,14 +1,14 @@
 <p>
   {dgettext(
     "help_p2p",
-    "Select audio and video devices before a P2P session starts, then switch devices during a call."
+    "Choose your microphone, camera and speaker in the starting room before a session begins, then switch them during a call without interrupting it."
   )}
 </p>
 <.help_h4 icon={:icon_devices}>{dgettext("help_p2p", "Selecting Devices")}</.help_h4>
 <p>
   {dgettext(
     "help_p2p",
-    "The P2P setup dialog lists microphone, camera, and speaker choices before sending or accepting an invite. During an active call, open Devices from the Call toolbar to choose a different microphone, camera, or audio output."
+    "The starting room lists Microphone, Camera and Speaker beside the camera preview, and Ready saves what you picked. A channel conference asks the same question in its arrival room, before Join. During a call, open Devices from the Call toolbar to change any of the three."
   )}
 </p>
 <.help_h4 icon={:icon_devices}>{dgettext("help_p2p", "Live Switching")}</.help_h4>
@@ -22,6 +22,9 @@
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_p2p", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-audio-call">{dgettext("help_p2p", "Audio Call")}</.help_link>
+  <.help_link topic="feature-p2p-starting-room">
+    {dgettext("help_p2p", "P2P Starting Room")}
+  </.help_link>
+  · <.help_link topic="feature-audio-call">{dgettext("help_p2p", "Audio Call")}</.help_link>
   · <.help_link topic="feature-video-call">{dgettext("help_p2p", "Video Call")}</.help_link>
 </p>

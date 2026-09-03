@@ -1,73 +1,67 @@
 <p>
   {dgettext(
     "help_p2p",
-    "P2P sessions run right inside the chat: the invite, the conversation and the P2P Session Console live on the chat desktop, anchored to the private message with your peer."
+    "A P2P session is a direct connection between two people that carries a call, file transfers and games at once. It begins in a private message and runs in a browser tab of its own — the chat has no window for one."
   )}
 </p>
-<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "Inviting and Accepting")}</.help_h4>
+
+<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "The card is the door")}</.help_h4>
 <p>
   {dgettext(
     "help_p2p",
-    "Type /p2p <nick> (or use the P2P control in the PM header/nicklist context menu) to open setup before sending a request. Confirming setup opens your P2P Session Console immediately and sends a P2P request line in the private message. The invited person's PM tab opens in the background with Join and Decline in the PM header, so they can respond in place without a separate lobby link."
-  )}
-</p>
-<p>
-  {dgettext(
-    "help_p2p",
-    "Both sides use the same setup dialog. It previews your camera, lists microphone/camera/speaker devices, lets you start with microphone, camera, both or receive-only, and applies those choices when the call auto-starts. If a TURN relay is configured, the same setup lets you enable privacy relay for the session."
-  )}
-</p>
-<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "The Session Console")}</.help_h4>
-<p>
-  {dgettext(
-    "help_p2p",
-    "Once connected, the P2P menu in the menu bar (mirrored in the Start menu) opens the P2P Session Console. Its sections cover Call for audio/video, Files for transfers, Games for the two-player arcade, and Stats for live telemetry. The console opens on activity: an incoming file offer selects Files, a game proposal selects Games, and when your peer turns their camera or microphone on the Call section surfaces and you join automatically."
-  )}
-</p>
-<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "The PM Is the Conversation")}</.help_h4>
-<p>
-  {dgettext(
-    "help_p2p",
-    "Messages during the session are regular private messages, saved like any other. Session events — request sent, connected, file received, game score, who ended it — are written into the PM history as P2P lines, so the story of the session survives it without turning the transcript into a control surface. While a session exists, the peer's PM tab, PM sidebar row and PM topic bar show the same P2P indicator family used by channel conferences, with state and active call/file/game/relay facets."
-  )}
-</p>
-<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "The Status Bar Area")}</.help_h4>
-<p>
-  {dgettext(
-    "help_p2p",
-    "The status bar always shows your active session, wherever you are in the chat. It also shows compact badges for active call, file transfer, game, call quality and relay privacy. Click it to bring the P2P Session Console to the front; the stop button next to it cancels a pending invite or ends the session, after a confirmation."
-  )}
-</p>
-<.help_h4 icon={:icon_camera}>{dgettext("help_p2p", "Media Controls")}</.help_h4>
-<p>
-  {dgettext(
-    "help_p2p",
-    "The Call section uses the same media language as channel conferences: mic, camera, screen share, devices, PiP, layout, self-view, mini mode, statistics and reaction controls are icon buttons with tooltips. End Call stops only the media; closing the P2P Session Console asks before ending the whole P2P session."
+    "Type /p2p <nick>, or press P2P Session in a private message, and the request goes into that conversation straight away. Nothing is asked of you first. The line it writes carries the session's own address and draws a card, and that card is the way in for both of you: the person who asked opens the same door as the person who was asked."
   )}
 </p>
 <p>
   {dgettext(
     "help_p2p",
-    "When the P2P Session Console is focused, Ctrl+Shift media shortcuts control microphone, camera, layout, self-view, screen share and end-call media."
+    "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar — the one control here that is a button rather than a door — and ends the invitation without entering anything."
   )}
 </p>
-<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "One Session at a Time")}</.help_h4>
+
+<.help_h4 icon={:icon_btn_link}>{dgettext("help_p2p", "Following it opens a tab")}</.help_h4>
 <p>
   {dgettext(
     "help_p2p",
-    "You can hold one P2P session at a time. Accepting a new invite — or inviting someone else — while a session is active asks whether to end the current one first; any call, transfer or game in progress stops when you switch."
+    "The card opens the session beside the conversation, never on top of it, so the chat you were reading stays exactly where it is. You arrive in the starting room, where both of you pick devices and press Ready before anything is negotiated."
   )}
 </p>
-<.help_h4 icon={:icon_lock}>{dgettext("help_p2p", "Privacy Mode")}</.help_h4>
+
+<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "More than one, one tab each")}</.help_h4>
 <p>
   {dgettext(
     "help_p2p",
-    "When the server has a TURN relay configured, the setup dialog or Toggle Privacy Mode in the P2P menu can force the whole connection through the relay, so your IP address is never shared with your peer. The preference is remembered for future sessions."
+    "You can hold a session with several people at the same time, each in a tab of its own. The only session refused is a second one with somebody you already have one with. Nothing has to be ended to start another."
   )}
 </p>
+
+<.help_h4 icon={:icon_p2p}>
+  {dgettext("help_p2p", "The conversation is the private message")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "What you type during a session is an ordinary private message, saved like any other. What the session does — request sent, connected, file received, game score, who ended it — is written into the conversation as P2P lines, so the story of it survives the session without turning the transcript into a control surface."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_p2p",
+    "While a session exists, the conversation shows a badge for it: how far along it is, and whether you already have its tab open. If you do, the badge takes you to that tab rather than opening a second one, because a second tab of a session moves the session into it."
+  )}
+</p>
+
 <.help_h4 icon={:icon_link}>{dgettext("help_p2p", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-p2p">{dgettext("help_p2p", "/p2p")}</.help_link>
+  ·
+  <.help_link topic="feature-p2p-starting-room">
+    {dgettext("help_p2p", "P2P Starting Room")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-p2p-tab">
+    {dgettext("help_p2p", "P2P Session in Its Own Tab")}
+  </.help_link>
   · <.help_link topic="feature-universal-lobby">{dgettext("help_p2p", "P2P Session")}</.help_link>
   · <.help_link topic="feature-video-call">{dgettext("help_p2p", "Video Call")}</.help_link>
   · <.help_link topic="feature-file-transfer">{dgettext("help_p2p", "File Transfer")}</.help_link>

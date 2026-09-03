@@ -3515,16 +3515,6 @@ msgstr "Игры"
 msgid "menu and choose"
 msgstr "меню и выбрать"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "While a game is running, Back closes the current game window and returns to the icon launcher."
-msgstr "Пока игра запущена, кнопка «Назад» закрывает текущее окно игры и возвращает к запуску по значкам."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "A window opens right on the chat desktop with game icons. Choose an icon to review the game details, then press Start Game to open it in a new browser window. You must be registered and identified ("
-msgstr "На рабочем столе чата открывается окно со значками игр. Выберите значок, чтобы просмотреть сведения об игре, затем нажмите «Начать игру», чтобы открыть ее в новом окне браузера. Вы должны быть зарегистрированы и идентифицированы ("
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:139
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:142
 #, elixir-autogen, elixir-format
@@ -3568,3 +3558,13 @@ msgstr "ScummVM (Script Creation Utility for Maniac Mansion Virtual Machine) н�
 #, elixir-autogen, elixir-format
 msgid "Double-click the Games desktop folder and choose Arcade, or open the "
 msgstr "Дважды щёлкните папку Games на рабочем столе и выберите Arcade или откройте "
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "A window opens right on the chat desktop with game icons. Choose an icon to review the game details, then press Start Game, which opens the game in a browser tab of its own. You must be registered and identified ("
+msgstr "Прямо на рабочем столе чата открывается окно со значками игр. Выберите значок, чтобы посмотреть подробности игры, затем нажмите «Начать игру» — она откроется в отдельной вкладке браузера. Нужно быть зарегистрированным и идентифицированным ("
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "The game's tab is yours, not the chat's: closing it does not end the session, and the chat cannot close it for you. While a game is running, Open the game tab brings the address back if you closed it, Back returns to the icon launcher, and End Session finishes the session — as does leaving it alone for a while."
+msgstr "Вкладка игры ваша, а не чата: закрыть её — не значит завершить сессию, и чат не может закрыть её за вас. Пока игра идёт, «Открыть вкладку игры» возвращает адрес, если вы её закрыли, «Назад» ведёт обратно к списку значков, а «Завершить сессию» завершает сессию — как и то, что вы надолго оставите её в покое."

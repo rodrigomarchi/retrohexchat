@@ -1673,7 +1673,7 @@ msgstr "Scoring: Love → 15 → 30 → 40 → Game (deuce at 40-40, advantage, 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:102
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -2978,11 +2978,6 @@ msgstr "— puck is freed at opponent's position"
 msgid "— you are stunned for 300ms (can't move or act)"
 msgstr "— you are stunned for 300ms (can't move or act)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ". Only one browser window or tab can be connected with the same nickname at a time."
-msgstr ". Only one browser window or tab can be connected with the same nickname at a time."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "2 seconds of invulnerability after each respawn"
@@ -3041,7 +3036,7 @@ msgstr "Arrow keys"
 msgid "Asteroids are static — same layout for both players, randomly generated per match"
 msgstr "Asteroids are static — same layout for both players, randomly generated per match"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Auto-Reconnect"
 msgstr "Auto-Reconnect"
@@ -3118,11 +3113,6 @@ msgstr "Destroy all 50 blocks to win (max 1500 points), or lose all 3 lives for 
 msgid "Duplicate presence in channels"
 msgstr "Duplicate presence in channels"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "Enforcing one session per nickname prevents:"
-msgstr "Enforcing one session per nickname prevents:"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Every cell you cross becomes part of your trail permanently"
@@ -3143,7 +3133,7 @@ msgstr "First to 7 kills wins the match"
 msgid "Flying into the star's danger zone is instant death (scores a point for your opponent)"
 msgstr "Flying into the star's danger zone is instant death (scores a point for your opponent)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "GHOST Command"
 msgstr "GHOST Command"
@@ -3286,11 +3276,6 @@ msgstr "RetroHexChat enforces a"
 msgid "Session Expiry"
 msgstr "Session Expiry"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Session ended — login started in another window"
-msgstr "Session ended — login started in another window"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Session expired"
@@ -3403,11 +3388,6 @@ msgstr "Warp is extra risky — you might teleport onto an asteroid"
 msgid "Warp is suicide"
 msgstr "Warp is suicide"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "When you connect with a nickname that is already in use by another session (even your own in another tab or browser), the"
-msgstr "When you connect with a nickname that is already in use by another session (even your own in another tab or browser), the"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Why Single Session?"
@@ -3432,16 +3412,6 @@ msgstr "and redirected to the Connect screen with the message:"
 #, elixir-autogen, elixir-format
 msgid "and you are redirected to the Connect screen with the message:"
 msgstr "and you are redirected to the Connect screen with the message:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "previous session is immediately disconnected"
-msgstr "previous session is immediately disconnected"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "single active session per nickname"
-msgstr "single active session per nickname"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:80
 #, elixir-autogen, elixir-format
@@ -3738,11 +3708,6 @@ msgstr "Creating a match link needs a registered nickname you have identified wi
 msgid "Ending it yourself"
 msgstr "Ending it yourself"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Inside the room, Share mints the address and puts it in a field you can copy. Paste it into a channel or a private message and it draws a card with the game on it and the number of seats left. Opening the game does not create an address — pressing Share does, so you never leave links behind for rooms nobody used."
-msgstr "Inside the room, Share mints the address and puts it in a field you can copy. Paste it into a channel or a private message and it draws a card with the game on it and the number of seats left. Opening the game does not create an address — pressing Share does, so you never leave links behind for rooms nobody used."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "It also expires on its own"
@@ -3799,26 +3764,62 @@ msgstr "Cancel, in the match room, closes it and kills its link immediately — 
 msgid "Choose a game icon in the library."
 msgstr "Choose a game icon in the library."
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Double-click the Games desktop folder and choose Retro Games, or open Start ▸ Games and choose Retro Games. Either one opens the library in a browser tab of its own, and the chat stays exactly where it was."
 msgstr "Double-click the Games desktop folder and choose Retro Games, or open Start ▸ Games and choose Retro Games. Either one opens the library in a browser tab of its own, and the chat stays exactly where it was."
-
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Every game has an address of its own: /play opens the library and /play/hex_pong opens that game directly. Send someone the address and they land on the same screen."
 msgstr "Every game has an address of its own: /play opens the library and /play/hex_pong opens that game directly. Send someone the address and they land on the same screen."
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Retro Games are browser-native RetroHexChat games you play without a peer session. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants use the same game engine foundation as P2P play with an AI controller on the remote side."
 msgstr "Retro Games are browser-native RetroHexChat games you play without a peer session. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants use the same game engine foundation as P2P play with an AI controller on the remote side."
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "The address is the door"
 msgstr "The address is the door"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ". One chat can be connected with the same nickname at a time — but a conference, a space, a P2P session and a game each have an address of their own, and those tabs are yours to open beside the chat as many as you like."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:30
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Enforcing one chat per nickname prevents:"
+msgstr "Enforcing one session per nickname prevents:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:10
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Inside the room, Share mints the address, shows it, and puts a Copy button beside it. Paste it into a channel or a private message and it draws a card with the game on it and the number of seats left. Opening the game does not create an address — pressing Share does, so you never leave links behind for rooms nobody used."
+msgstr "Inside the room, Share mints the address and puts it in a field you can copy. Paste it into a channel or a private message and it draws a card with the game on it and the number of seats left. Opening the game does not create an address — pressing Share does, so you never leave links behind for rooms nobody used."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:16
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Session ended — logged in from another window"
+msgstr "Session ended — login started in another window"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "The rule is about the conversation, not about tabs. A conference, a space, a P2P session and a game are not chats: they carry no channel list and no presence of their own, which is why you can hold several at once. Your channels are left when the last of your tabs closes, not when the chat's does."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "When you open the chat with a nickname that already has a chat somewhere (even your own, in another tab or browser), the"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:13
+#, elixir-autogen, elixir-format, fuzzy
+msgid "previous chat is immediately disconnected"
+msgstr "previous session is immediately disconnected"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
+#, elixir-autogen, elixir-format, fuzzy
+msgid "single chat session per nickname"
+msgstr "single active session per nickname"

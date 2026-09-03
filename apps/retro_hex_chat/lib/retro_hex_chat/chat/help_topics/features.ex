@@ -582,7 +582,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-session-cards",
-        title: dgettext("help", "Session Cards and P2P History"),
+        title: dgettext("help", "Cards in the Conversation"),
         category: dgettext("help", "Chat Display"),
         keywords: [
           "p2p",
@@ -590,6 +590,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "arcade",
           "invite",
           "session",
+          "card",
+          "revoked",
           dgettext("help", "session card"),
           dgettext("help", "game link"),
           dgettext("help", "p2p request")
@@ -598,9 +600,20 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Arcade links can render as rich cards with Join/Open actions while they are live. P2P requests use the PM header for Start/Join/Decline and keep transcript rows as inert history showing request, connected and ended states."
+            "A room somebody opened — a conference, a space, a P2P session, a match — " <>
+              "appears in the conversation as a card that reads the room as you scroll " <>
+              "past it. Live, it says who is inside and offers Join, which opens a tab of " <>
+              "its own, and Copy link. Ended, it goes grey, loses the way in, and becomes " <>
+              "the record: how long it ran and how many were in it, with the next " <>
+              "plausible thing in place of Join. A match somebody already took says so " <>
+              "rather than reading as broken, and a revoked link stays as a card that " <>
+              "explains itself instead of leaving a bare address behind."
           ),
-        see_also: ["feature-interactive-elements", "feature-message-layout"]
+        see_also: [
+          "feature-interactive-elements",
+          "feature-message-layout",
+          "feature-share-revoke"
+        ]
       },
       %{
         id: "feature-message-layout",
@@ -1203,16 +1216,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "call",
           "file",
           "game",
-          "window"
+          "console",
+          "tab"
         ],
         icon: :icon_p2p,
         description:
           dgettext(
             "help",
-            "The P2P Session is the persistent peer-to-peer connection behind /p2p — one link " <>
-              "that hosts a call, file transfers and games all at the same time. It lives " <>
-              "inside the chat: accepting an invite opens the P2P Session Console right on " <>
-              "the chat desktop, and ending any one activity never drops the others. " <>
+            "The P2P Session is the connection behind /p2p — one direct link between two " <>
+              "people that hosts a call, file transfers and games all at the same time. " <>
+              "It lives at an address of its own, and the console on that page operates " <>
+              "every part of it: Call, Files, Games and Stats, all over the one " <>
+              "connection. Ending any one activity never drops the others — End Call " <>
+              "stops the media and leaves the session standing, End P2P session ends " <>
+              "the whole thing and asks first, and closing the tab gives you about " <>
+              "half a minute to come back before the session closes itself. " <>
               "See also: P2P Sessions in Chat."
           )
       },

@@ -1,16 +1,18 @@
 <p>
   {dgettext(
     "help_p2p",
-    "The P2P Session is the persistent peer-to-peer connection behind /p2p: one link between two users that hosts a call, file transfers and games all at the same time. It lives inside the chat — setup happens before sending or accepting the invite, and accepting opens the P2P Session Console right on the chat desktop, next to your conversations."
+    "The P2P Session is the connection behind /p2p: one direct link between two people that hosts a call, file transfers and games all at the same time. It lives at an address of its own, and the console on that page is where every part of it is operated."
   )}
 </p>
+
 <.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "One Connection, Every Feature")}</.help_h4>
 <p>
   {dgettext(
     "help_p2p",
-    "Once connected, the call starts automatically with each side's setup choices and the console keeps Files, Games and Stats one tap away. Everything runs concurrently over the same connection: share your screen, send a file during the call, start a game without hanging up. Ending any one activity never drops the others — only ending the session does."
+    "The console has four sections — Call, Files, Games and Stats — and everything runs concurrently over the same connection: share your screen, send a file during the call, start a game without hanging up. Ending any one activity never drops the others. The console opens on activity too: an incoming file offer selects Files, and a game proposal selects Games."
   )}
 </p>
+
 <.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "Self-Controlled Media")}</.help_h4>
 <p>
   {dgettext(
@@ -18,17 +20,25 @@
     "Audio and video are self-controlled: each peer turns their own microphone and camera on or off independently, like a modern video call. File transfers and games still ask the other side to accept."
   )}
 </p>
-<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "Closing vs. Minimizing")}</.help_h4>
+
+<.help_h4 icon={:icon_phone_end}>
+  {dgettext("help_p2p", "Ending it, and merely leaving")}
+</.help_h4>
 <p>
   {dgettext(
     "help_p2p",
-    "Closing the P2P Session Console disconnects the whole session (after a confirmation); minimizing keeps everything running in the taskbar. The status bar always shows the active session — click it to bring the console back to the front."
+    "End Call stops the media and leaves the session standing for files, games and statistics. End P2P session, at the top of the console, ends the whole thing and asks first. Closing the browser tab is neither: the other side is told you dropped, and you have about half a minute to come back to the address before the session closes itself."
   )}
 </p>
+
 <.help_h4 icon={:icon_link}>{dgettext("help_p2p", "See Also")}</.help_h4>
 <p>
   <.help_link topic="feature-p2p-in-chat">
     {dgettext("help_p2p", "P2P Sessions in Chat")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-p2p-tab">
+    {dgettext("help_p2p", "P2P Session in Its Own Tab")}
   </.help_link>
   · <.help_link topic="cmd-p2p">{dgettext("help_p2p", "/p2p")}</.help_link>
   · <.help_link topic="feature-video-call">{dgettext("help_p2p", "Video Call")}</.help_link>

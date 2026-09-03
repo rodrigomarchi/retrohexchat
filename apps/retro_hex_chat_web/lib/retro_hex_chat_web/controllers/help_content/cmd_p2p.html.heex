@@ -15,7 +15,7 @@
   {dgettext("help_commands", "Running")} <code>{dgettext("help_commands", "/p2p")}</code>
   {dgettext(
     "help_commands",
-    "opens a setup dialog first, so you can preview camera, choose microphone/camera/speaker, pick receive-only, and enable privacy relay before the request is sent. After you confirm, the other user receives a P2P request in your private message, the PM tab opens in the background, and Join/Decline appear in the PM header. When they accept, the connection is established right there in the chat: the call starts with each side's chosen defaults and the P2P Session Console opens with Call, Files, Games and Stats sections. Several activities run together over the one connection; ending one keeps the others alive. Closing the console disconnects the session (after a confirmation) — minimize to keep it running."
+    "creates the session and writes the request straight into your private message with that person. Nothing is asked of you first. The line carries the session's own address and draws a card, and that card is the door for both of you — the other side opens the same one, or presses Decline beside it. Following it opens the session in a browser tab of its own, starting in the room where you both pick devices and press Ready. Once the host presses Start, Call, Files, Games and Stats all run over the one connection; ending one keeps the others alive."
   )}
 </p>
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
@@ -25,11 +25,25 @@
   </li>
   <li>{dgettext("help_commands", "The target must be online.")}</li>
   <li>{dgettext("help_commands", "You cannot start a P2P session with yourself.")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "You can hold sessions with several people at once. Only a second session with the same person is refused."
+    )}
+  </li>
 </ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
 <pre>{dgettext("help_commands", "/p2p Alice /p2p Bob")}</pre>
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
+  <.help_link topic="feature-p2p-in-chat">
+    {dgettext("help_commands", "P2P Sessions in Chat")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-p2p-starting-room">
+    {dgettext("help_commands", "P2P Starting Room")}
+  </.help_link>
+  ·
   <.help_link topic="feature-universal-lobby">
     {dgettext("help_commands", "P2P Session")}
   </.help_link>

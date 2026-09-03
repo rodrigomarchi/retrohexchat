@@ -62,14 +62,14 @@ msgid "An empty channel shows a welcome message and tips for getting started."
 msgstr ""
 "Ein leerer Kanal zeigt eine Willkommensnachricht und Tipps für den Start."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Arrow Down — Next menu item Arrow Up — Previous menu item Enter — Select focused menu item Escape — Close context menu"
 msgstr ""
 "Pfeil nach unten — Nächster Menüpunkt Pfeil nach oben — Vorheriger Menüpunkt"
 " Geben — Wählen Sie fokussierten Menüpunkt Escape — Kontextmenü schließen"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Arrow Down — Next search result (in search bar) Arrow Up — Previous search result (in search bar)"
 msgstr ""
@@ -86,7 +86,7 @@ msgstr "Audio Call:"
 msgid "Auto-Respond"
 msgstr "Auto-Beantwortung"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Autocomplete"
 msgstr "Autocomplet"
@@ -142,7 +142,7 @@ msgstr "Chat-Bereich:"
 msgid "Click the"
 msgstr "Klicken Sie auf"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Clipboard"
 msgstr "Clips"
@@ -163,7 +163,7 @@ msgstr "Farbpalette"
 msgid "Colors"
 msgstr "Farben"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Command Syntax Tooltip"
 msgstr "Befehl Syntax Tooltip"
@@ -188,7 +188,7 @@ msgstr "Verbindung"
 msgid "Context Menu"
 msgstr "Inhaltsverzeichnis"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Context Menus"
@@ -206,7 +206,7 @@ msgstr "Konversationen"
 msgid "Conversations:"
 msgstr "Konversationen:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Ctrl+C — Copy selected text"
 msgstr "Ctrl+C — Gewählter Text kopieren"
@@ -227,7 +227,7 @@ msgstr ""
 "Ctrl+Shift+D — Farbe (opens color picker) Ctrl+Shift+V — Reverse "
 "Ctrl+Shift+X — Alle Formatierungen zurücksetzen"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color Ctrl+Shift+V — Reverse (also in formatting toolbar) Ctrl+Shift+X — Reset formatting (also in formatting toolbar)"
 msgstr ""
@@ -256,12 +256,12 @@ msgstr "DND (nicht stören)"
 msgid "Default color."
 msgstr "Standardfarbe."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Emoji"
 msgstr "Emoji"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Emoji Picker — Click smiley button in formatting toolbar"
 msgstr ""
@@ -275,12 +275,12 @@ msgstr ""
 "Leere Staatsnachrichten verschwinden automatisch, wenn der Inhalt ankommt. "
 "Der Text ist nicht wählbar."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Enhanced History"
 msgstr "Verbesserte Geschichte"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Enter — Send message / select autocomplete item Shift+Enter — Insert newline in input Up — Edit last message (when input is empty) / command history Up / Down — Command history / navigate autocomplete dropdown Ctrl+Up — Browse history (saves draft) Ctrl+Down — Browse history forward (restores draft) Ctrl+R — Reverse search history Tab — Select autocomplete item / cycle nick completion Escape — Cancel edit mode / dismiss autocomplete / tooltip / — Open command autocomplete (at start of input) @ — Open nick autocomplete (at word boundary) # — Open channel autocomplete (at word boundary)"
 msgstr ""
@@ -376,7 +376,7 @@ msgstr "Ignorieren / Unignore:"
 msgid "Ignore List"
 msgstr "Ignorieren der Liste"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Input & Autocomplete"
 msgstr "Input & Autocomplete"
@@ -558,13 +558,13 @@ msgstr "Roggen"
 msgid "Save to your address book."
 msgstr "Speichern Sie Ihr Adressbuch."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "Suchen"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Search Navigation"
 msgstr "Suche Navigation"
@@ -577,7 +577,7 @@ msgstr "Abschnitte"
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:65
@@ -616,7 +616,7 @@ msgstr "Dienstleistungen:"
 msgid "Set Nick Color:"
 msgstr "Setzen Sie Nick Farbe:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
 msgstr "Shortcut Cheatsheet"
@@ -699,7 +699,7 @@ msgstr "Tab-Leiste"
 msgid "Tab Bar:"
 msgstr "Tab Bar:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Text Formatting"
 msgstr "Textformatierung"
@@ -1261,7 +1261,7 @@ msgstr "Desktop:"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:224
 #, elixir-autogen, elixir-format
@@ -1514,7 +1514,7 @@ msgstr ""
 msgid "The tray at the right end of the taskbar shows a clock."
 msgstr "Das Tablett am rechten Ende der Taskleiste zeigt eine Uhr."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "There is no dedicated keyboard shortcut for User Lookup. Open it from Tools > User Lookup, a nickname context menu, /whois, or /whowas."
 msgstr ""
@@ -1558,7 +1558,7 @@ msgstr "Timer verloren beim Abschalten oder beim Seitenumladen"
 msgid "Toolbar"
 msgstr "In den Warenkorb"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
 msgstr "Benutzersuche"
@@ -1681,20 +1681,6 @@ msgstr ""
 "— Das Chat-Fenster kann nicht geschlossen werden; es minimiert oder "
 "wiederherstellt."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "P2P Session Console"
-msgstr "P2P Sessions im Chat"
-
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "When the P2P Session Console is focused: Ctrl+Shift+ArrowUp — Toggle microphone Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next layout Ctrl+Shift+ArrowDown — Cycle self-view Ctrl+Shift+. — Toggle screen share Ctrl+Shift+Q — End call media"
-msgstr ""
-"Wenn die P2P Session Console fokussiert ist: Ctrl+Shift+ArrowUp — Toggle "
-"Mikrofon Ctrl+Shift+ArrowLeft — Toggle Kamera Ctrl+Shift+ArrowRight — Next "
-"layout Ctrl+Shift+ArrowDown — Cycle selfview Ctrl+Shift+Shift+ — Toggle "
-"Bildschirm teilen Ctrl+Shift+Q — End call media"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:105
 #, elixir-autogen, elixir-format
@@ -1815,12 +1801,12 @@ msgstr ""
 msgid "Load More"
 msgstr "Mehr laden"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Long Lists"
 msgstr "Lange Listen"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Long lists load the next page as you scroll toward the edge. There is no shortcut for that gesture, so every paginated list also carries a Load More button beneath it — that button is the keyboard path through a long list."
 msgstr ""
@@ -1939,7 +1925,7 @@ msgstr ""
 " Kontextaktionen. Doppelklicken Sie auf eine PM-Reihe, um diese private "
 "Nachricht Tab zu öffnen oder zu fokussieren."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "There is no dedicated keyboard shortcut for /me actions. Type /me directly in a channel input."
 msgstr ""
@@ -2479,7 +2465,7 @@ msgstr ""
 "Fall: es ist eine Aufzeichnung dessen, was passiert ist, also liest es "
 "neuste zuerst und nichts anderes."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Arrow Up / Arrow Down — Move the selection one row Home / End — First / last row PageUp / PageDown — Move a screen of rows Shift+Arrow — Extend the selection Ctrl+Click — Add or remove one row Ctrl+A — Select every row on screen Ctrl+C — Copy the selection as tab-separated text Shift+F10 or Menu — Choose which columns show"
 msgstr ""
@@ -2510,7 +2496,7 @@ msgstr ""
 msgid "Column Width"
 msgstr "Spaltenbreite"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Column widths are set with the pointer: drag the right edge of a heading to resize it, double-click that edge to fit the column to its contents."
 msgstr ""
@@ -2542,8 +2528,8 @@ msgstr ""
 msgid "Empty States"
 msgstr "Leere Staaten"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:40
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/ui_system_windows.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Listings & Tables"
@@ -3002,3 +2988,18 @@ msgstr "Eine Unterhaltung weglegen"
 #, elixir-autogen, elixir-format
 msgid "Right-click a private message row and choose Close Conversation to take it off the list. Nothing is deleted: the messages stay, and the next line from that person puts the conversation back. It is not marked read either — if it was in bold when you closed it, it comes back in bold."
 msgstr "Klicken Sie mit der rechten Maustaste auf eine private Unterhaltung und wählen Sie Unterhaltung schließen, um sie von der Liste zu nehmen. Es wird nichts gelöscht: die Nachrichten bleiben, und die nächste Zeile dieser Person bringt die Unterhaltung zurück. Sie wird auch nicht als gelesen markiert — war sie beim Schließen fett, kommt sie fett zurück."
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "P2P Session Console"
+msgstr "P2P-Sitzungskonsole"
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Those five belong to the conference and act on its page. The P2P session has its own set, below, and the two never collide: each acts only where its own call is on screen."
+msgstr "Diese fünf gehören zur Konferenz und wirken auf ihrer Seite. Die P2P-Sitzung hat ihren eigenen Satz, unten, und die beiden kollidieren nie: Jeder wirkt nur dort, wo sein eigener Anruf auf dem Bildschirm ist."
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "When the P2P Session Console is focused: Ctrl+Shift+ArrowUp — Toggle microphone Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next layout Ctrl+Shift+ArrowDown — Cycle self-view Ctrl+Shift+. — Toggle screen share Ctrl+Shift+Q — End call media"
+msgstr "Wenn die P2P Session Console fokussiert ist: Ctrl+Shift+ArrowUp — Toggle Mikrofon Ctrl+Shift+ArrowLeft — Toggle Kamera Ctrl+Shift+ArrowRight — Next layout Ctrl+Shift+ArrowDown — Cycle selfview Ctrl+Shift+Shift+ — Toggle Bildschirm teilen Ctrl+Shift+Q — End call media"

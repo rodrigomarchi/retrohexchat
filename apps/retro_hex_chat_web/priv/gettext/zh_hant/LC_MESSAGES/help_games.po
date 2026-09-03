@@ -1702,7 +1702,7 @@ msgstr "賽制:愛~15~30~40~比賽(成績40~40,優勢,2勝)."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:102
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -3016,11 +3016,6 @@ msgstr "——撲克在對手位置解脫."
 msgid "— you are stunned for 300ms (can't move or act)"
 msgstr "——你被驚呆了300ms(不能移動或行動)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ". Only one browser window or tab can be connected with the same nickname at a time."
-msgstr "。每次只有一個瀏覽器窗口或標籤可以使用相同的暱稱連接。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "2 seconds of invulnerability after each respawn"
@@ -3079,7 +3074,7 @@ msgstr "箭頭鍵"
 msgid "Asteroids are static — same layout for both players, randomly generated per match"
 msgstr "小行星是靜態的——兩個玩家的佈局相同,每個匹配隨機生成"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Auto-Reconnect"
 msgstr "自動重聯"
@@ -3157,11 +3152,6 @@ msgstr "摧毀所有50個塊以獲得勝利(最多1500分), 或失去所有3條�
 msgid "Duplicate presence in channels"
 msgstr "頻道重複存在"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "Enforcing one session per nickname prevents:"
-msgstr "每個暱稱執行一個會話可以防止:"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Every cell you cross becomes part of your trail permanently"
@@ -3182,7 +3172,7 @@ msgstr "先以7比0獲勝"
 msgid "Flying into the star's danger zone is instant death (scores a point for your opponent)"
 msgstr "飛入恆星危險區即刻死亡(對手得分)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "GHOST Command"
 msgstr "GHOST 命令"
@@ -3327,11 +3317,6 @@ msgstr "反轉HexChat 執行 a"
 msgid "Session Expiry"
 msgstr "會話過期"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Session ended — login started in another window"
-msgstr "會話結束——在另一個窗口開始登錄"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Session expired"
@@ -3450,11 +3435,6 @@ msgstr "曲速非常危險,你可以傳送到小行星上"
 msgid "Warp is suicide"
 msgstr "搖擺是自殺"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "When you connect with a nickname that is already in use by another session (even your own in another tab or browser), the"
-msgstr "當您連接到另一個會話已經使用的暱稱( 甚至您自己在另一個標籤或瀏覽器中) 時, 該"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Why Single Session?"
@@ -3479,16 +3459,6 @@ msgstr "並重定向到帶消息的連接屏幕:"
 #, elixir-autogen, elixir-format
 msgid "and you are redirected to the Connect screen with the message:"
 msgstr "並重定向到帶消息的連接屏幕:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "previous session is immediately disconnected"
-msgstr "前一個會話立即斷開"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "single active session per nickname"
-msgstr "每個暱稱的單活動會話"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:80
 #, elixir-autogen, elixir-format
@@ -3797,11 +3767,6 @@ msgstr "建立對局連結需要一個已註冊、並在 NickServ 完成身分�
 msgid "Ending it yourself"
 msgstr "自己結束它"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Inside the room, Share mints the address and puts it in a field you can copy. Paste it into a channel or a private message and it draws a card with the game on it and the number of seats left. Opening the game does not create an address — pressing Share does, so you never leave links behind for rooms nobody used."
-msgstr "在房間裡按「分享」會產生位址，並把它放進一個可複製的輸入框。把它貼到頻道或私訊裡，就會畫出一張帶著遊戲和剩餘座位數的卡片。開啟遊戲並不會建立位址——按下分享才會，所以你不會留下一堆沒人用過的房間連結。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "It also expires on its own"
@@ -3858,26 +3823,62 @@ msgstr "對局房間裡的「取消」會關閉房間並立刻讓連結失效—
 msgid "Choose a game icon in the library."
 msgstr "在遊戲庫中選擇一個遊戲圖示。"
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Double-click the Games desktop folder and choose Retro Games, or open Start ▸ Games and choose Retro Games. Either one opens the library in a browser tab of its own, and the chat stays exactly where it was."
 msgstr "連按兩下桌面上的 Games 資料夾並選擇 Retro Games，或者開啟「開始」▸ Games 並選擇 Retro Games。兩者都會在獨立的瀏覽器分頁中開啟遊戲庫，而聊天完全留在原處。"
-
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Every game has an address of its own: /play opens the library and /play/hex_pong opens that game directly. Send someone the address and they land on the same screen."
 msgstr "每個遊戲都有自己的位址：/play 開啟遊戲庫，/play/hex_pong 直接開啟那個遊戲。把位址傳給別人，他們會看到同一個畫面。"
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Retro Games are browser-native RetroHexChat games you play without a peer session. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants use the same game engine foundation as P2P play with an AI controller on the remote side."
 msgstr "復古遊戲是瀏覽器原生的 RetroHexChat 遊戲，無需對等工作階段即可遊玩。Hex Pong、Light Trails、Star Duel 變體、Block Breakers、Hex Warlords、Hex Raid 變體、Hex Outlaw 變體、Hex Tennis 變體、Hex Invaders 變體、Hex Enduro 變體、Hex Skiing 變體、Hex Frost 變體和 Hex Hockey 變體使用與 P2P 對戰相同的遊戲引擎基礎，並由 AI 控制遠端一側。"
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "The address is the door"
 msgstr "位址就是那道門"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ". One chat can be connected with the same nickname at a time — but a conference, a space, a P2P session and a game each have an address of their own, and those tabs are yours to open beside the chat as many as you like."
+msgstr "。同一個暱稱同時只能連接一個聊天——但會議、空間、P2P 工作階段和遊戲各自都有自己的位址，那些分頁是你的，想在聊天旁邊開多少就開多少。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Enforcing one chat per nickname prevents:"
+msgstr "每個暱稱只保留一個聊天，可以避免："
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Inside the room, Share mints the address, shows it, and puts a Copy button beside it. Paste it into a channel or a private message and it draws a card with the game on it and the number of seats left. Opening the game does not create an address — pressing Share does, so you never leave links behind for rooms nobody used."
+msgstr "在房間裡，「分享」會鑄出位址、把它顯示出來，並在旁邊放一個「複製」按鈕。把它貼進頻道或私訊，就會畫出一張帶著遊戲和剩餘座位數的卡片。開啟遊戲並不會建立位址——按下「分享」才會，所以你永遠不會為沒人用過的房間留下連結。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Session ended — logged in from another window"
+msgstr "會話結束——從另一個窗口登錄"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "The rule is about the conversation, not about tabs. A conference, a space, a P2P session and a game are not chats: they carry no channel list and no presence of their own, which is why you can hold several at once. Your channels are left when the last of your tabs closes, not when the chat's does."
+msgstr "這條規則說的是對話，不是分頁。會議、空間、P2P 工作階段和遊戲都不是聊天：它們不帶頻道清單，也沒有自己的上線狀態，所以你可以同時擁有好幾個。你離開頻道，是在你最後一個分頁關閉時，而不是聊天那個分頁關閉時。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "When you open the chat with a nickname that already has a chat somewhere (even your own, in another tab or browser), the"
+msgstr "當你用一個已經在別處有聊天的暱稱開啟聊天時（包括你自己在另一個分頁或瀏覽器裡的），"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "previous chat is immediately disconnected"
+msgstr "之前的聊天會立即斷線"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "single chat session per nickname"
+msgstr "每個暱稱只有一個聊天工作階段"

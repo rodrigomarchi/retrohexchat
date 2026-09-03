@@ -1,27 +1,53 @@
 <p>
   {dgettext(
     "help_features",
-    "Arcade sessions can appear as rich cards, while P2P requests use the PM header controls and leave a plain P2P line in the transcript."
+    "A room that somebody opened — a conference, a space, a P2P session, a match — appears in the conversation as a card. The card is not a screenshot of the room: it reads the room as you scroll past it, and it is the way in."
   )}
 </p>
-<.help_h4 icon={:icon_p2p}>{dgettext("help_features", "What Session Summaries Show")}</.help_h4>
+
+<.help_h4 icon={:icon_p2p}>{dgettext("help_features", "What a live card shows")}</.help_h4>
 <p>
   {dgettext(
     "help_features",
-    "Session summaries name who created the session and walk through its lifecycle on a small timeline: when it was created, when it connected, and — once it is over — when it ended, how long it ran, and why it closed."
+    "The name of the room, who is in it and how many, and a badge saying it is happening now. Join opens it in a tab of its own so the conversation stays where it is, and Copy link hands the address to somebody else. A card never names a channel you could not have found on your own."
   )}
 </p>
-<.help_h4 icon={:icon_btn_join}>{dgettext("help_features", "Live vs. Finished")}</.help_h4>
+
+<.help_h4 icon={:icon_btn_join}>{dgettext("help_features", "What an ended card shows")}</.help_h4>
 <p>
   {dgettext(
     "help_features",
-    "While an Arcade session is still live the card can offer Join or Open. P2P Start, Join and Decline actions live in the PM header instead; finished P2P history shows final state only."
+    "It goes grey, loses the way in, and becomes the record of what happened: how long the room ran and how many people were in it. In its place is the next plausible thing — the channel a conference happened in, or the game a match was played on. A match that somebody already took says so, because a full match is not a broken link: it stopped working by working."
   )}
 </p>
-<.help_h4 icon={:icon_document_alert}>{dgettext("help_features", "Notes")}</.help_h4>
+
+<.help_h4 icon={:icon_document_alert}>
+  {dgettext("help_features", "A link that was closed")}
+</.help_h4>
 <p>
   {dgettext(
     "help_features",
-    "If a legacy P2P invite line can no longer find its session, it stays as inert history instead of showing stale action buttons."
+    "Revoking a link does not delete the card. It goes grey and says the address was closed, so a conversation that explained itself yesterday still explains itself today instead of leaving a bare address behind."
   )}
+</p>
+
+<.help_h4 icon={:icon_p2p}>
+  {dgettext("help_features", "The P2P invite is one of these")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "A P2P request draws the same card, with the session's own address on it and Decline beside it. It has no link to copy: the token is the invitation, and it belongs to the two of you."
+  )}
+</p>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-p2p-in-chat">
+    {dgettext("help_features", "P2P Sessions in Chat")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-share-revoke">
+    {dgettext("help_features", "Closing a Shared Link")}
+  </.help_link>
 </p>

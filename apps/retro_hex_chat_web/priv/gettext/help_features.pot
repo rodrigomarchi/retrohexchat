@@ -970,7 +970,7 @@ msgid "Attempting to reconnect automatically."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:84
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Audio Call"
 msgstr ""
@@ -2398,7 +2398,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Notes"
@@ -2651,12 +2650,12 @@ msgstr ""
 msgid "Private message conversations are automatically restored when registered users connect. Your PM conversation list is rebuilt from your message history, ordered by most recent activity."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Private mode adds latency because traffic passes through the server. Direct connections (default) are faster but expose your IP to the peer."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Private mode requires the TURN server to be configured. If it is not available, you will see a warning and the connection will be direct."
 msgstr ""
@@ -2764,7 +2763,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:40
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Requirements"
 msgstr ""
@@ -2916,10 +2915,11 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:78
@@ -3376,7 +3376,7 @@ msgstr ""
 msgid "Tools > URL Catcher"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Tradeoff"
 msgstr ""
@@ -3489,7 +3489,7 @@ msgid "Variables"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:85
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Video Call"
 msgstr ""
@@ -4456,11 +4456,6 @@ msgstr ""
 msgid "Last Seen runs the Whowas lookup for recently disconnected users and shows when they left, which channels they were in, and their quit message when one was recorded."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Live vs. Finished"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Message of the Day Menu"
@@ -4666,39 +4661,14 @@ msgstr ""
 msgid "with no arguments. The dialog lists active timers and provides Add, Edit, and Stop buttons without requiring raw command syntax."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:15
-#, elixir-autogen, elixir-format
-msgid ", or in an active P2P session use the"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "A small pixel-art icon sits in front of each name to signal where the line came from at a glance: a user glyph for anything a person typed, and distinct glyphs for System, Service, Error, Server, Help and deleted lines. The nickname itself is shown a little larger and bolder, while the timestamp is smaller, so your eye lands on who spoke first."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "In the P2P setup dialog, check"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Privacy relay"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Shortcuts are grouped into categories such as Navigation, Conference, Formatting and System. Each category shows a table with Action and Binding columns."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Toggle Privacy Mode"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "item in the P2P menu. The preference is saved and remembered for future sessions. When enabled, the status bar and Stats section show relay/privacy indicators."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:10
@@ -5104,24 +5074,14 @@ msgstr ""
 msgid "One list at a time, picked with the selector at the top of the tab: bans, ban exceptions (+e) that let specific users bypass bans, and invite exceptions (+I) that let specific users bypass invite-only mode."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Arcade sessions can appear as rich cards, while P2P requests use the PM header controls and leave a plain P2P line in the transcript."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Auto-join channels live in their own window and are joined after all perform commands complete, ensuring that NickServ identification and other setup happens first."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "If a legacy P2P invite line can no longer find its session, it stays as inert history instead of showing stale action buttons."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:94
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr ""
@@ -5136,24 +5096,9 @@ msgstr ""
 msgid "Perform Window"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Session summaries name who created the session and walk through its lifecycle on a small timeline: when it was created, when it connected, and — once it is over — when it ended, how long it ran, and why it closed."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The Perform system lets you define commands that execute automatically every time you connect. Channels are handled separately, in Auto-Join."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "What Session Summaries Show"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "While an Arcade session is still live the card can offer Join or Open. P2P Start, Join and Decline actions live in the PM header instead; finished P2P history shows final state only."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:75
@@ -5471,12 +5416,12 @@ msgstr ""
 msgid "RetroHexChat highlights messages that mention your nickname or custom words, in channels and in private conversations alike. Highlighted messages have a colored background and the conversation flashes in the conversations sidebar and tab bar."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Anonymous Performance Monitoring"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "To keep the app fast and catch errors, your browser sends anonymous performance measurements (page load and responsiveness) and uncaught error reports to our own servers. No message content is collected, and the data is never shared with third parties."
 msgstr ""
@@ -5484,4 +5429,79 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Your live session is reported in two places. The chat window's own status bar, along its bottom edge, shows what this conversation is doing: an active call or P2P session. The system tray, beside the clock, shows what the machine is doing: who is online from your notify list, how fast the server is answering, and whether sounds are muted."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "A P2P request draws the same card, with the session's own address on it and Decline beside it. It has no link to copy: the token is the invitation, and it belongs to the two of you."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "A link that was closed"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A room that somebody opened — a conference, a space, a P2P session, a match — appears in the conversation as a card. The card is not a screenshot of the room: it reads the room as you scroll past it, and it is the way in."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Closing a Shared Link"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "In the starting room, open"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "It goes grey, loses the way in, and becomes the record of what happened: how long the room ran and how many people were in it. In its place is the next plausible thing — the channel a conference happened in, or the game a match was played on. A match that somebody already took says so, because a full match is not a broken link: it stopped working by working."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "P2P Sessions in Chat"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "P2P Starting Room"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Revoking a link does not delete the card. It goes grey and says the address was closed, so a conversation that explained itself yesterday still explains itself today instead of leaving a bare address behind."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Route and privacy"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "The P2P invite is one of these"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The name of the room, who is in it and how many, and a badge saying it is happening now. Join opens it in a tab of its own so the conversation stays where it is, and Copy link hands the address to somebody else. A card never names a channel you could not have found on your own."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "What a live card shows"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "What an ended card shows"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "and turn the relay on before you press Ready. That is where the route is decided: once the session begins it is fixed for that session, so a connection that has already been negotiated is never quietly re-routed under you. The choice is remembered for your next session, and the Stats section shows whether the relay is carrying the one you are in."
 msgstr ""

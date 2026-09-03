@@ -48,7 +48,7 @@ msgstr "Setelah transfer, hash SHA-256 diverifikasi secara otomatis. Jika gagal,
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:6
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:26
-#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "Audio Call"
@@ -100,8 +100,8 @@ msgstr "Pergantian perangkat terjadi tanpa mengganggu panggilan."
 msgid "End Call"
 msgstr "Panggilan Akhir"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:73
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "File Transfer"
 msgstr "Transfer Berkas"
@@ -215,8 +215,8 @@ msgstr "Pembatasan"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:63
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:68
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -279,9 +279,9 @@ msgstr "Turn Camera Off/On"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:26
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:72
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Video Call"
@@ -317,8 +317,8 @@ msgstr "untuk jeda video. Peer akan melihat placeholder."
 msgid "to pop the remote video into a floating window that stays visible while navigating other tabs."
 msgstr "untuk pop video remote ke jendela mengambang yang tetap terlihat ketika menavigasi tab lain."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:70
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "/p2p"
 msgstr "/p2p"
@@ -363,7 +363,7 @@ msgstr "Metrik"
 msgid "Packet loss"
 msgstr "Kehilangan paket"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Self-Controlled Media"
 msgstr "Media-Terkendali"
@@ -408,15 +408,10 @@ msgstr "- Mengapa kualitas ditutup: CPU berarti perangkat Anda terlalu sibuk; Ba
 msgid ". P2P media is self-controlled: either peer can start camera or microphone independently, and the other side joins the media surface automatically."
 msgstr "P2P media dikendalikan sendiri: baik peer dapat memulai kamera atau mikrofon secara independen, dan sisi lain bergabung dengan permukaan media secara otomatis."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Audio and video are self-controlled: each peer turns their own microphone and camera on or off independently, like a modern video call. File transfers and games still ask the other side to accept."
 msgstr "Audio dan video dikendalikan sendiri: masing-masing rekan menyalakan mikrofon dan kamera sendiri secara mandiri, seperti panggilan video modern. Transfer berkas dan permainan masih meminta pihak lain untuk menerima."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:15
-#, elixir-autogen, elixir-format
-msgid "Both sides use the same setup dialog. It previews your camera, lists microphone/camera/speaker devices, lets you start with microphone, camera, both or receive-only, and applies those choices when the call auto-starts. If a TURN relay is configured, the same setup lets you enable privacy relay for the session."
-msgstr "Both sides use the same setup dialog. It previews your camera, lists microphone/camera/speaker devices, lets you start with microphone, camera, both or receive-only, and applies those choices when the call auto-starts. If a TURN relay is configured, the same setup lets you enable privacy relay for the session."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:8
 #, elixir-autogen, elixir-format
@@ -433,11 +428,6 @@ msgstr "Moderator saluran dapat mengakhiri konferensi, mengunci atau membuka pen
 msgid "Click Share Screen to replace your camera feed with a browser display-capture track. Stopping from the browser or from the button restores the previous camera when possible; the peer sees a screen badge."
 msgstr "Klik Share Screen untuk menggantikan feed kamera Anda dengan trek penangkap peramban. Menghentikan peramban atau tombol menyimpan ulang kamera sebelumnya bila memungkinkan; peer melihat lencana layar."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "Closing vs. Minimizing"
-msgstr "Penutupan vs Minimizing"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:100
 #, elixir-autogen, elixir-format
 msgid "Conversations"
@@ -447,21 +437,6 @@ msgstr "Percakapan"
 #, elixir-autogen, elixir-format
 msgid "Empty and Failure States"
 msgstr "Kosong dan Kegagalan Negara"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:74
-#, elixir-autogen, elixir-format
-msgid "If the media connection is interrupted, the conference tries a short automatic recovery sequence. When automatic recovery is exhausted, use Retry to request a fresh media offer without closing the conference window."
-msgstr "Jika koneksi media terganggu, konferensi mencoba urutan pemulihan otomatis pendek. Ketika pemulihan otomatis habis, coba lagi untuk meminta penawaran media baru tanpa menutup jendela konferensi."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:26
-#, elixir-autogen, elixir-format
-msgid "Inside the conference window, use the layout buttons to switch between automatic, grid, focus and speaker layouts, show or hide the participant panel, pin important participants, cycle your self-view between tile, picture-in-picture and hidden, or switch to compact mode when you want the call to stay visible while you keep working in chat. Larger calls automatically use a denser grid while focus and speaker layouts keep a filmstrip for the remaining participants."
-msgstr "Di dalam jendela konferensi, gunakan tombol tata letak untuk berpindah antara otomatis, kisi, fokus dan speaker layout, tampilkan atau sembunyikan panel peserta, peserta pin penting, putar tampilan diri Anda di antara tile, gambar-dalam-gambar dan tersembunyi, atau beralih ke mode kompak ketika Anda ingin panggilan untuk tetap terlihat saat Anda tetap bekerja dalam percakapan. Panggilan yang lebih besar secara otomatis menggunakan kisi yang lebih padat saat fokus dan speaker menampilkan film untuk peserta yang tersisa."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "Inviting and Accepting"
-msgstr "Mengundang dan Menerima"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:32
 #, elixir-autogen, elixir-format
@@ -473,29 +448,19 @@ msgstr "Papan Ketik"
 msgid "Layouts"
 msgstr "Tanggal"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:41
-#, elixir-autogen, elixir-format
-msgid "Media Controls"
-msgstr "Kontrol Media"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "Modiasi"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "One Connection, Every Feature"
 msgstr "Satu Koneksi, Setiap Fitur"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:54
-#, elixir-autogen, elixir-format
-msgid "One Session at a Time"
-msgstr "Satu Sesi pada suatu Waktu"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "P2P Sessions in Chat"
 msgstr "Sesi P2P dalam Percakapan"
@@ -514,11 +479,6 @@ msgstr "Peer-to-peer video panggilan dengan kaya 1: 1 layout, kontrol diri-view,
 #, elixir-autogen, elixir-format
 msgid "Pre-join and Devices"
 msgstr "Gabung dan Perangkat"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:61
-#, elixir-autogen, elixir-format
-msgid "Privacy Mode"
-msgstr "Moda Privasi"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:42
 #, elixir-autogen, elixir-format
@@ -556,11 +516,6 @@ msgstr "Berbagi Layar"
 msgid "See also:"
 msgstr "Lihat juga:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Select audio and video devices before a P2P session starts, then switch devices during a call."
-msgstr "Pilih divais audio dan video sebelum sesi P2P dimulai, kemudian switch perangkat selama panggilan."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Session Header"
@@ -575,26 +530,6 @@ msgstr "Speaker dan Kualitas"
 #, elixir-autogen, elixir-format
 msgid "Statistics"
 msgstr "Statistik"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "The P2P setup dialog lists microphone, camera, and speaker choices before sending or accepting an invite. During an active call, open Devices from the Call toolbar to choose a different microphone, camera, or audio output."
-msgstr "Dialog pengaturan P2P daftar mikrofon, kamera, dan pilihan speaker sebelum mengirim atau menerima undangan. Selama panggilan aktif, buka Perangkat dari bilah alat Call untuk memilih mikrofon, kamera, atau keluaran audio yang berbeda."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "The PM Is the Conversation"
-msgstr "PM Apakah Percakapan"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "The Status Bar Area"
-msgstr "Area Batang Status"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:66
-#, elixir-autogen, elixir-format
-msgid "The conference window shows explicit states while waiting for participants, joining receive-only, recovering media, or handling a failed connection. Recoverable failures keep the call open and expose Retry; leaving from a warning or error still uses the confirmation dialog so microphone, camera and SFU cleanup stay predictable."
-msgstr "Jendela konferensi menunjukkan kondisi eksplisit ketika menunggu peserta, bergabung dengan penerima - hanya, memulihkan media, atau menangani koneksi gagal. Kegagalan recoverable menjaga panggilan terbuka dan mengekspos Coba; meninggalkan peringatan atau error masih menggunakan dialog konfirmasi begitu mikrofon, kamera dan pembersihan SFU tetap dapat diprediksi."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:41
 #, elixir-autogen, elixir-format
@@ -631,16 +566,6 @@ msgstr "Ketika saluran memiliki konferensi aktif, Call control menunjukkan lenca
 msgid "When a conference is active, use Ctrl+Shift+ArrowUp to mute or unmute your microphone, Ctrl+Shift+ArrowLeft to start or stop your camera, Ctrl+Shift+ArrowRight to cycle layouts, Ctrl+Shift+ArrowDown to focus the next participant, and Ctrl+Shift+Q to open the leave confirmation. Hold Ctrl+Shift+Z for push-to-talk while muted. Conference shortcuts do not fire from editable text fields."
 msgstr "Ketika konferensi sedang aktif, gunakan Ctrl + Shift + ArrowUp to mute or unmute your microphone, Ctrl + Shift + Kiri untuk memulai atau menghentikan kamera Anda, Ctrl + Shift + ArrowRight to cycle layout, Ctrl + Shift + ArrowDown untuk memfokuskan peserta berikutnya, dan Ctrl + Shift + Q untuk membuka konfirmasi cuti. Tahan Ctrl + Shift + Z untuk push-to- talk ketika digumam. Jalan pintas konferensi tidak aktif dari ruas teks yang dapat disunting."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:63
-#, elixir-autogen, elixir-format
-msgid "When the server has a TURN relay configured, the setup dialog or Toggle Privacy Mode in the P2P menu can force the whole connection through the relay, so your IP address is never shared with your peer. The preference is remembered for future sessions."
-msgstr "Ketika server memiliki relay TURN dikonfigurasi, dialog setup atau Jungkitkan Mode Privasi dalam menu P2P dapat memaksa seluruh koneksi melalui relay, sehingga alamat IP Anda tidak pernah dibagikan dengan rekan kerja Anda. Pilihan diingat untuk sesi mendatang."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:56
-#, elixir-autogen, elixir-format
-msgid "You can hold one P2P session at a time. Accepting a new invite — or inviting someone else — while a session is active asks whether to end the current one first; any call, transfer or game in progress stops when you switch."
-msgstr "Anda dapat mengadakan satu sesi P2P pada satu waktu. Menerima undangan baru - atau mengundang orang lain - sementara sesi aktif meminta apakah akan mengakhiri yang sekarang pertama; panggilan apapun, transfer atau permainan dalam proses berhenti ketika Anda beralih."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "to stop your media call. The P2P session remains available for private messages, files, games and statistics until you end the session itself."
@@ -671,93 +596,13 @@ msgstr "Standar Stabil"
 msgid ". Either peer can start or stop their own microphone independently; if your peer starts media first, your Call section opens and you join automatically."
 msgstr "Baik peer dapat mulai atau menghentikan mikrofon mereka sendiri secara independen; jika peer Anda mulai media pertama, bagian Panggilan Anda terbuka dan Anda bergabung secara otomatis."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "Closing the P2P Session Console disconnects the whole session (after a confirmation); minimizing keeps everything running in the taskbar. The status bar always shows the active session — click it to bring the console back to the front."
-msgstr "Menutup Konsol Sesi P2P memutuskan koneksi seluruh sesi (setelah konfirmasi); meminimalkan membuat semuanya berjalan di taskbar. Batang status selalu menampilkan sesi aktif - klik itu untuk membawa konsol kembali ke depan."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "Ctrl+Shift+. toggles screen sharing when the P2P Session Console is focused. A shared screen automatically favors the focus layout."
-msgstr "Ctrl + Shift +. Menjungkit berbagi layar ketika Konsol Sesi P2P terfokus. Layar bersama secara otomatis mendukung tata letak fokus."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "Ctrl+Shift+Q in the focused P2P Session Console ends only the call media. Use the status bar stop button or close confirmation to end the whole P2P session."
-msgstr "Ctrl + Shift + Q dalam fokus P2P Sesi Konsol berakhir hanya media panggilan. Gunakan tombol stop status bar atau konfirmasi dekat untuk mengakhiri seluruh sesi P2P."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Once connected, the P2P menu in the menu bar (mirrored in the Start menu) opens the P2P Session Console. Its sections cover Call for audio/video, Files for transfers, Games for the two-player arcade, and Stats for live telemetry. The console opens on activity: an incoming file offer selects Files, a game proposal selects Games, and when your peer turns their camera or microphone on the Call section surfaces and you join automatically."
-msgstr "Setelah tersambung, menu P2P di bilah menu (mirror di menu awal) membuka Konsol Sesi P2P. Daerah cover Call untuk audio/video, File untuk transfer, Games untuk dua pemain arcade, dan Stats untuk telemetri hidup. Konsol terbuka pada aktivitas: sebuah berkas masuk menawarkan memilih Berkas, sebuah proposal permainan memilih Permainan, dan ketika rekan Anda memutar kamera atau mikrofon pada permukaan Bagian Call dan Anda bergabung secara otomatis."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Once connected, the call starts automatically with each side's setup choices and the console keeps Files, Games and Stats one tap away. Everything runs concurrently over the same connection: share your screen, send a file during the call, start a game without hanging up. Ending any one activity never drops the others — only ending the session does."
-msgstr "Setelah terhubung, panggilan dimulai secara otomatis dengan pilihan setup masing-masing pihak dan konsol terus File, Games dan Stats satu tekan pergi. Semuanya berjalan secara bersamaan di atas koneksi yang sama: berbagi layar Anda, mengirim file selama panggilan, memulai permainan tanpa menutup telepon. Mengakhiri satu aktivitas tidak pernah menjatuhkan yang lain - hanya mengakhiri sesi tidak."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "P2P sessions run right inside the chat: the invite, the conversation and the P2P Session Console live on the chat desktop, anchored to the private message with your peer."
-msgstr "Sesi P2P dijalankan tepat di dalam percakapan: undangan, percakapan dan Konsol Sesi P2P hidup di desktop obrolan, berlabuh ke pesan pribadi dengan rekan kerja Anda."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:43
-#, elixir-autogen, elixir-format
-msgid "The Call section uses the same media language as channel conferences: mic, camera, screen share, devices, PiP, layout, self-view, mini mode, statistics and reaction controls are icon buttons with tooltips. End Call stops only the media; closing the P2P Session Console asks before ending the whole P2P session."
-msgstr "Daerah Call menggunakan bahasa media yang sama seperti konferensi saluran: mic, kamera, berbagi layar, perangkat, PPP, tata letak, diri sendiri, mode mini, statistik dan reaksi kontrol adalah tombol ikon dengan tooltip. Akhir Panggilan hanya berhenti media; menutup Konsol Sesi P2P meminta sebelum mengakhiri seluruh sesi P2P."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "The Session Console"
-msgstr "Konsol Sesi"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The Stats section of the P2P Session Console shows live telemetry for the whole P2P session: WebRTC connection, audio, video or screen source, file transfer and game data channels. Click the ? button in the panel to see a short explanation of each metric inline, or hover any row for a tooltip."
-msgstr "Bagian Stats dari Konsol Sesi P2P menampilkan telemetri langsung untuk seluruh sesi P2P: Koneksi WebRTC, audio, video atau sumber layar, transfer file dan saluran data game. Klik tombol? di panel untuk melihat penjelasan singkat dari setiap inline metrik, atau hover baris apapun untuk tooltip."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:36
-#, elixir-autogen, elixir-format
-msgid "The status bar always shows your active session, wherever you are in the chat. It also shows compact badges for active call, file transfer, game, call quality and relay privacy. Click it to bring the P2P Session Console to the front; the stop button next to it cancels a pending invite or ends the session, after a confirmation."
-msgstr "Baris status selalu menampilkan sesi aktif Anda, dimanapun Anda berada dalam percakapan. Ini juga menunjukkan lencana kompak untuk panggilan aktif, transfer file, permainan, kualitas panggilan dan relay privasi. Klik untuk membawa Konsol Sesi P2P ke depan; tombol berhenti di sebelahnya membatalkan undangan yang tertunda atau mengakhiri sesi, setelah konfirmasi."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:49
-#, elixir-autogen, elixir-format
-msgid "When the P2P Session Console is focused, Ctrl+Shift media shortcuts control microphone, camera, layout, self-view, screen share and end-call media."
-msgstr "Ketika Konsol Sesi P2P difokuskan, Ctrl + Shift media shortcut control microphone, camera, layout, self-view, screen share and end-call media."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowRight cycles layouts and Ctrl+Shift+ArrowDown cycles self-view."
-msgstr "Dengan adanya sesi P2P yang berfokus, Ctrl + Shift + ArrowRight memutar dan Ctrl + Shift + ArrowDown memutar sendiri."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowUp toggles microphone state and Ctrl+Shift+ArrowLeft toggles camera state."
-msgstr "Dengan adanya sesi P2P yang berfokus, Ctrl + Shift + ArrowUp mengubah keadaan mikrofon dan Ctrl + Shift + ArrowLeft mengubah keadaan kamera."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:29
-#, elixir-autogen, elixir-format
-msgid "Messages during the session are regular private messages, saved like any other. Session events — request sent, connected, file received, game score, who ended it — are written into the PM history as P2P lines, so the story of the session survives it without turning the transcript into a control surface. While a session exists, the peer's PM tab, PM sidebar row and PM topic bar show the same P2P indicator family used by channel conferences, with state and active call/file/game/relay facets."
-msgstr "Messages during the session are regular private messages, saved like any other. Session events — request sent, connected, file received, game score, who ended it — are written into the PM history as P2P lines, so the story of the session survives it without turning the transcript into a control surface. While a session exists, the peer's PM tab, PM sidebar row and PM topic bar show the same P2P indicator family used by channel conferences, with state and active call/file/game/relay facets."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "Sesi P2P"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The P2P Session is the persistent peer-to-peer connection behind /p2p: one link between two users that hosts a call, file transfers and games all at the same time. It lives inside the chat — setup happens before sending or accepting the invite, and accepting opens the P2P Session Console right on the chat desktop, next to your conversations."
-msgstr "Sesi P2P adalah koneksi peer- to-peer di belakang /p2p: satu link antara dua pengguna yang host panggilan, transfer file dan permainan semua pada saat yang sama. Ini tinggal di dalam percakapan - setup terjadi sebelum mengirim atau menerima undangan, dan menerima membuka Konsol Sesi P2P tepat di desktop obrolan, di sebelah percakapan Anda."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Type /p2p <nick> (or use the P2P control in the PM header/nicklist context menu) to open setup before sending a request. Confirming setup opens your P2P Session Console immediately and sends a P2P request line in the private message. The invited person's PM tab opens in the background with Join and Decline in the PM header, so they can respond in place without a separate lobby link."
-msgstr "Ketik /p2p <nick> (atau gunakan kontrol P2P dalam menu konteks PM header/nicklist) untuk membuka setup sebelum mengirim permintaan. Konfirmasi setup membuka Konsol Sesi P2P Anda segera dan mengirim baris permintaan P2P dalam pesan pribadi. tab PM orang yang diundang dibuka di latar belakang dengan Gabung dan Tolak dalam kepala PM, sehingga mereka dapat menanggapi di tempat tanpa sambungan lobi terpisah."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:2
 #, elixir-autogen, elixir-format
@@ -828,16 +673,15 @@ msgstr "Setiap sesi P2P dibuka di ruang mulai sebelum apa pun dinegosiasikan. Ka
 msgid "One window at a time"
 msgstr "Satu jendela dalam satu waktu"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:28
-#, elixir-autogen, elixir-format
-msgid "Open Route and privacy to force the connection through the relay, which hides your IP address from the other side at the cost of some latency. It is only available when this server has a relay configured, and you can still change it later from the P2P menu."
-msgstr "Buka Rute dan privasi untuk memaksa koneksi lewat relay, yang menyembunyikan alamat IP Anda dari pihak lain dengan konsekuensi sedikit latensi. Ini hanya tersedia bila server ini punya relay yang dikonfigurasi, dan Anda masih bisa mengubahnya nanti dari menu P2P."
-
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "P2P Session in Its Own Tab"
 msgstr "Sesi P2P di tab tersendiri"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "P2P Starting Room"
@@ -923,14 +767,142 @@ msgstr "Tautan Anda sendiri milik Anda. Operator kanal juga dapat mencabut tauta
 msgid "A P2P session always runs in a browser tab of its own — the chat has no window for one. The card in the private message is the door; following it gives the session the whole window and leaves the conversation where it was."
 msgstr "Sesi P2P selalu berjalan di tab peramban tersendiri — obrolan tidak punya jendela untuk itu. Kartu di pesan pribadi adalah pintunya; mengikutinya memberi sesi seluruh jendela dan meninggalkan percakapan di tempatnya."
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and Group Call in the conversation's toolbar leads to the same address; either way the call gets the whole window and the conversation stays where it was."
 msgstr "Konferensi selalu berjalan di tab peramban tersendiri — obrolan tidak punya jendela untuk itu. Kartu yang diposting di kanal adalah pintunya, dan Group Call di bilah percakapan menuju alamat yang sama; bagaimanapun juga panggilan mendapat seluruh jendela dan percakapan tetap di tempatnya."
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A P2P session is a direct connection between two people that carries a call, file transfers and games at once. It begins in a private message and runs in a browser tab of its own — the chat has no window for one."
+msgstr "Sesi P2P adalah koneksi langsung antara dua orang yang sekaligus membawa panggilan, transfer berkas, dan permainan. Ia dimulai di pesan pribadi dan berjalan di tab peramban sendiri — chat tidak punya jendela untuknya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Choose your microphone, camera and speaker in the starting room before a session begins, then switch them during a call without interrupting it."
+msgstr "Pilih mikrofon, kamera, dan speaker di ruang awal sebelum sesi dimulai, lalu ganti semuanya saat panggilan berlangsung tanpa memutusnya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Ending it, and merely leaving"
+msgstr "Mengakhirinya, atau sekadar pergi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Following it opens a tab"
+msgstr "Mengikutinya membuka satu tab"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "If the media connection is interrupted, the conference tries a short automatic recovery sequence. When automatic recovery is exhausted, use Retry to request a fresh media offer without leaving the conference."
+msgstr "Jika koneksi media terputus, konferensi mencoba rangkaian pemulihan otomatis yang singkat. Ketika pemulihan otomatis habis, gunakan Coba lagi untuk meminta tawaran media yang baru tanpa meninggalkan konferensi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Inside the conference, use the layout buttons to switch between automatic, grid, focus and speaker layouts, show or hide the participant panel, pin important participants, cycle your self-view between tile, picture-in-picture and hidden, or switch to compact mode when you want the call to take less of the page. Larger calls automatically use a denser grid while focus and speaker layouts keep a filmstrip for the remaining participants."
+msgstr "Di dalam konferensi, gunakan tombol tata letak untuk berganti antara tata letak otomatis, kisi, fokus, dan pembicara, menampilkan atau menyembunyikan panel peserta, menyematkan peserta penting, memutar tampilan dirimu antara ubin, gambar-dalam-gambar, dan tersembunyi, atau beralih ke mode ringkas ketika kamu ingin panggilan itu memakan lebih sedikit halaman. Panggilan yang lebih besar otomatis memakai kisi yang lebih rapat, sementara tata letak fokus dan pembicara menyisakan satu bilah film untuk peserta selebihnya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "More than one, one tab each"
+msgstr "Lebih dari satu, masing-masing satu tab"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Open Route and privacy to force the connection through the relay, which hides your IP address from the other side at the cost of some latency. It is only available when this server has a relay configured, and the starting room is where it is decided: once the session begins, the route is fixed for it. The choice is remembered for the next one."
+msgstr "Buka Rute dan privasi untuk memaksa koneksi lewat relai, yang menyembunyikan alamat IP-mu dari pihak lain dengan sedikit tambahan latensi. Ini hanya tersedia bila server ini punya relai yang dikonfigurasi, dan ruang awal adalah tempat hal itu diputuskan: begitu sesi dimulai, rutenya terkunci untuk sesi itu. Pilihannya diingat untuk sesi berikutnya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The P2P Session is the connection behind /p2p: one direct link between two people that hosts a call, file transfers and games all at the same time. It lives at an address of its own, and the console on that page is where every part of it is operated."
+msgstr "Sesi P2P adalah koneksi di balik /p2p: satu tautan langsung antara dua orang yang sekaligus menampung panggilan, transfer berkas, dan permainan. Ia tinggal di alamatnya sendiri, dan konsol di halaman itulah tempat setiap bagiannya dioperasikan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The Stats section of a P2P session shows live telemetry for the whole session: WebRTC connection, audio, video or screen source, file transfer and game data channels. Click the ? button in the panel to see a short explanation of each metric inline, or hover any row for a tooltip."
+msgstr "Bagian Statistik pada sebuah sesi P2P menampilkan telemetri langsung untuk seluruh sesi: koneksi WebRTC, sumber audio, video atau layar, transfer berkas, dan kanal data permainan. Klik tombol ? di panel untuk melihat penjelasan singkat tiap metrik di tempat, atau arahkan kursor ke baris mana pun untuk melihat tooltip."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "The card is the door"
+msgstr "Kartu itulah pintunya"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "The card opens the session beside the conversation, never on top of it, so the chat you were reading stays exactly where it is. You arrive in the starting room, where both of you pick devices and press Ready before anything is negotiated."
+msgstr "Kartu membuka sesi di samping percakapan, tidak pernah di atasnya, sehingga chat yang sedang kamu baca tetap persis di tempatnya. Kamu tiba di ruang awal, tempat kalian berdua memilih perangkat dan menekan Siap sebelum apa pun dinegosiasikan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "The conference shows explicit states while waiting for participants, joining receive-only, recovering media, or handling a failed connection. Recoverable failures keep the call open and expose Retry; leaving from a warning or error still uses the confirmation dialog so microphone, camera and SFU cleanup stay predictable."
+msgstr "Konferensi menampilkan keadaan yang jelas saat menunggu peserta, bergabung hanya untuk menerima, memulihkan media, atau menangani koneksi yang gagal. Kegagalan yang bisa dipulihkan membiarkan panggilan tetap terbuka dan memunculkan Coba lagi; keluar dari sebuah peringatan atau galat tetap melewati dialog konfirmasi, sehingga pembersihan mikrofon, kamera, dan SFU tetap dapat diperkirakan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The console has four sections — Call, Files, Games and Stats — and everything runs concurrently over the same connection: share your screen, send a file during the call, start a game without hanging up. Ending any one activity never drops the others. The console opens on activity too: an incoming file offer selects Files, and a game proposal selects Games."
+msgstr "Konsol punya empat bagian — Panggilan, Berkas, Permainan, dan Statistik — dan semuanya berjalan bersamaan di atas koneksi yang sama: bagikan layarmu, kirim berkas saat panggilan berlangsung, mulai permainan tanpa menutup telepon. Mengakhiri satu kegiatan tidak pernah menjatuhkan yang lain. Konsol juga terbuka mengikuti kegiatan: tawaran berkas yang masuk memilih Berkas, dan usulan permainan memilih Permainan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "The conversation is the private message"
+msgstr "Percakapannya adalah pesan pribadi itu"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The starting room lists Microphone, Camera and Speaker beside the camera preview, and Ready saves what you picked. A channel conference asks the same question in its arrival room, before Join. During a call, open Devices from the Call toolbar to change any of the three."
+msgstr "Ruang awal menampilkan Mikrofon, Kamera, dan Speaker di samping pratinjau kamera, dan Siap menyimpan pilihanmu. Konferensi kanal menanyakan hal yang sama di ruang kedatangannya, sebelum Gabung. Saat panggilan berlangsung, buka Perangkat dari bilah Panggilan untuk mengubah salah satu dari ketiganya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Type /p2p <nick>, or press P2P Session in a private message, and the request goes into that conversation straight away. Nothing is asked of you first. The line it writes carries the session's own address and draws a card, and that card is the way in for both of you: the person who asked opens the same door as the person who was asked."
+msgstr "Ketik /p2p <nick>, atau tekan Sesi P2P di sebuah pesan pribadi, dan permintaannya langsung masuk ke percakapan itu. Tidak ada yang ditanyakan kepadamu lebih dulu. Baris yang ditulisnya membawa alamat sesi itu sendiri dan menggambar sebuah kartu, dan kartu itulah jalan masuk bagi kalian berdua: yang mengajak membuka pintu yang sama dengan yang diajak."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "What you type during a session is an ordinary private message, saved like any other. What the session does — request sent, connected, file received, game score, who ended it — is written into the conversation as P2P lines, so the story of it survives the session without turning the transcript into a control surface."
+msgstr "Apa yang kamu ketik selama sesi adalah pesan pribadi biasa, tersimpan seperti pesan lainnya. Apa yang dilakukan sesi itu — permintaan terkirim, terhubung, berkas diterima, skor permainan, siapa yang mengakhirinya — ditulis ke dalam percakapan sebagai baris P2P, sehingga kisahnya bertahan lebih lama daripada sesinya tanpa mengubah transkrip menjadi panel kendali."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "While a session exists, the conversation shows a badge for it: how far along it is, and whether you already have its tab open. If you do, the badge takes you to that tab rather than opening a second one, because a second tab of a session moves the session into it."
+msgstr "Selama sebuah sesi ada, percakapan menampilkan lencana untuknya: sudah sampai mana, dan apakah kamu sudah membuka tabnya. Kalau sudah, lencana itu membawamu ke tab tersebut alih-alih membuka yang kedua, sebab tab kedua dari sebuah sesi justru memindahkan sesi itu ke sana."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "You can hold a session with several people at the same time, each in a tab of its own. The only session refused is a second one with somebody you already have one with. Nothing has to be ended to start another."
+msgstr "Kamu bisa memegang sesi dengan beberapa orang sekaligus, masing-masing di tab sendiri. Satu-satunya sesi yang ditolak adalah sesi kedua dengan orang yang sudah punya sesi denganmu. Tidak ada yang perlu diakhiri untuk memulai yang lain."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "A session can only be live in one of your windows. Opening it somewhere else moves it there, and the window that lost it says so and offers Bring it back here — which is why the conversation offers a way to the tab you already have instead of a second one. Closing the tab is not ending the session: only End session, which asks first, is final."
-msgstr "Sesi hanya bisa aktif di salah satu jendela kamu. Membukanya di tempat lain memindahkannya ke sana, dan jendela yang kehilangannya memberi tahu serta menawarkan Bawa kembali ke sini — justru karena itu percakapan menawarkan jalan ke tab yang sudah kamu punya, bukan tab kedua. Menutup tab bukan berarti mengakhiri sesi: hanya Akhiri sesi, yang bertanya lebih dulu, yang final."
+msgid "A session can only be live in one of your windows. Opening it somewhere else moves it there, and the window that lost it says so and offers Bring it back here — which is why the conversation offers a way to the tab you already have instead of a second one. Closing the tab is not the same as ending the session: you have about half a minute to come back to the address before it closes itself. Only End session, which asks first, is final straight away."
+msgstr "Sebuah sesi hanya bisa hidup di salah satu jendelamu. Membukanya di tempat lain memindahkannya ke sana, dan jendela yang kehilangannya mengatakan begitu serta menawarkan Bawa kembali ke sini — itulah sebabnya percakapan menawarkan jalan ke tab yang sudah kamu punya, bukan ke tab kedua. Menutup tab tidak sama dengan mengakhiri sesi: kamu punya sekitar setengah menit untuk kembali ke alamat itu sebelum ia menutup diri. Hanya Akhiri sesi, yang bertanya lebih dulu, yang langsung bersifat final."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Ctrl+Shift+. toggles screen sharing when the P2P Session Console is focused. A shared screen automatically favors the focus layout."
+msgstr "Ctrl + Shift +. Menjungkit berbagi layar ketika Konsol Sesi P2P terfokus. Layar bersama secara otomatis mendukung tata letak fokus."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Ctrl+Shift+Q in the focused P2P Session Console ends only the call media. End P2P session, at the top of the console, ends the whole session and asks before it does."
+msgstr "Ctrl+Shift+Q saat Konsol Sesi P2P sedang fokus hanya mengakhiri media panggilannya. Akhiri sesi P2P, di bagian atas konsol, mengakhiri seluruh sesi dan bertanya lebih dulu."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "End Call stops the media and leaves the session standing for files, games and statistics. End P2P session, at the top of the console, ends the whole thing and asks first. Closing the browser tab is neither: the other side is told you dropped, and you have about half a minute to come back to the address before the session closes itself."
+msgstr "Akhiri Panggilan menghentikan medianya dan membiarkan sesi tetap berdiri untuk berkas, permainan, dan statistik. Akhiri sesi P2P, di bagian atas konsol, mengakhiri seluruhnya dan bertanya lebih dulu. Menutup tab peramban bukan keduanya: pihak lain diberi tahu bahwa kamu terputus, dan kamu punya sekitar setengah menit untuk kembali ke alamat itu sebelum sesinya menutup diri."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar — the one control here that is a button rather than a door — and ends the invitation without entering anything."
+msgstr "Orang yang diundang boleh menolak. Tolak berada pada entri sesi di bilah alat percakapan — satu-satunya kendali di sini yang berupa tombol dan bukan pintu — dan mengakhiri undangan tanpa memasuki apa pun."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowRight cycles layouts and Ctrl+Shift+ArrowDown cycles self-view."
+msgstr "Dengan adanya sesi P2P yang berfokus, Ctrl + Shift + ArrowRight memutar dan Ctrl + Shift + ArrowDown memutar sendiri."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowUp toggles microphone state and Ctrl+Shift+ArrowLeft toggles camera state."
+msgstr "Dengan adanya sesi P2P yang berfokus, Ctrl + Shift + ArrowUp mengubah keadaan mikrofon dan Ctrl + Shift + ArrowLeft mengubah keadaan kamera."

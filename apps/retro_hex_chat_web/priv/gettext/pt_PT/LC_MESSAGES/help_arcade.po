@@ -3530,16 +3530,6 @@ msgstr "Jogos"
 msgid "menu and choose"
 msgstr "menu e escolher"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "While a game is running, Back closes the current game window and returns to the icon launcher."
-msgstr "Enquanto um jogo está a correr, Voltar fecha a janela do jogo atual e regressa ao lançador de ícones."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "A window opens right on the chat desktop with game icons. Choose an icon to review the game details, then press Start Game to open it in a new browser window. You must be registered and identified ("
-msgstr "Uma janela com ícones de jogos abre no ambiente de chat. Escolha um ícone para rever os detalhes do jogo e depois prima Iniciar jogo para o abrir numa nova janela do navegador. Tem de estar registado e identificado ("
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:139
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:142
 #, elixir-autogen, elixir-format
@@ -3583,3 +3573,13 @@ msgstr "ScummVM (Script Creation Utility for Maniac Mansion Virtual Machine) com
 #, elixir-autogen, elixir-format
 msgid "Double-click the Games desktop folder and choose Arcade, or open the "
 msgstr "Clique duas vezes na pasta Games do ambiente de trabalho e escolha Arcade, ou abra o "
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "A window opens right on the chat desktop with game icons. Choose an icon to review the game details, then press Start Game, which opens the game in a browser tab of its own. You must be registered and identified ("
+msgstr "Uma janela abre mesmo no ambiente de trabalho do chat com ícones de jogos. Escolha um ícone para rever os detalhes do jogo, depois carregue em Iniciar Jogo, que abre o jogo num separador próprio do navegador. Precisa de estar registado e identificado ("
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "The game's tab is yours, not the chat's: closing it does not end the session, and the chat cannot close it for you. While a game is running, Open the game tab brings the address back if you closed it, Back returns to the icon launcher, and End Session finishes the session — as does leaving it alone for a while."
+msgstr "O separador do jogo é seu, não do chat: fechá-lo não termina a sessão, e o chat não o pode fechar por si. Enquanto um jogo está a correr, Abrir o separador do jogo traz o endereço de volta se o fechou, Voltar regressa ao lançador de ícones, e Terminar Sessão acaba a sessão — tal como deixá-la parada durante algum tempo."

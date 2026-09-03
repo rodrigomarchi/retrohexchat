@@ -3100,16 +3100,6 @@ msgstr "ゲーム"
 msgid "menu and choose"
 msgstr "メニューと選択"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "While a game is running, Back closes the current game window and returns to the icon launcher."
-msgstr "ゲームの実行中に Back を押すと、現在のゲームウィンドウを閉じてアイコンランチャーに戻ります。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "A window opens right on the chat desktop with game icons. Choose an icon to review the game details, then press Start Game to open it in a new browser window. You must be registered and identified ("
-msgstr "チャットデスクトップにゲームアイコン付きのウィンドウが開きます。アイコンを選んでゲーム詳細を確認し、ゲーム開始を押すと新しいブラウザーウィンドウで開きます。プレイするには登録と本人確認が必要です（"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:139
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:142
 #, elixir-autogen, elixir-format
@@ -3153,3 +3143,13 @@ msgstr "ScummVM (Script Creation Utility for Maniac Mansion Virtual Machine) は
 #, elixir-autogen, elixir-format
 msgid "Double-click the Games desktop folder and choose Arcade, or open the "
 msgstr "デスクトップの Games フォルダーをダブルクリックして Arcade を選ぶか、次を開きます: "
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "A window opens right on the chat desktop with game icons. Choose an icon to review the game details, then press Start Game, which opens the game in a browser tab of its own. You must be registered and identified ("
+msgstr "チャットのデスクトップに、ゲームのアイコンが並ぶ窓が開きます。アイコンを選んでゲームの詳細を見てから「ゲームを開始」を押すと、ゲームは専用のブラウザタブで開きます。登録して本人確認を済ませている必要があります ("
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "The game's tab is yours, not the chat's: closing it does not end the session, and the chat cannot close it for you. While a game is running, Open the game tab brings the address back if you closed it, Back returns to the icon launcher, and End Session finishes the session — as does leaving it alone for a while."
+msgstr "ゲームのタブはあなたのものであって、チャットのものではありません。閉じてもセッションは終わらず、チャットが代わりに閉じることもできません。ゲームが動いているあいだ、「ゲームのタブを開く」は閉じてしまったアドレスを呼び戻し、「戻る」はアイコンのランチャーに戻り、「セッションを終了」がセッションを終わらせます——しばらく放っておいた場合も同じです。"
