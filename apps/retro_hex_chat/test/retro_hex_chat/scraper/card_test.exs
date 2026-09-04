@@ -73,9 +73,9 @@ defmodule RetroHexChat.Scraper.CardTest do
       refute card =~ "**"
     end
 
-    # A publisher that ships `<title></title>` used to suppress the whole card,
-    # because `"" || fallback` is `""` — the feed item's perfectly good headline
-    # never got a look in.
+    # A publisher that ships `<title></title>` must not suppress the whole card:
+    # `"" || fallback` is `""`, which would leave the feed item's perfectly good
+    # headline without a look in.
     test "a blank field is treated as no field, not as an answer" do
       card = Card.markdown(%{title: "  ", site_name: ""}, fallback_title: "From the feed")
 

@@ -641,9 +641,9 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   defp default_return_to(:chat), do: "/chat"
   defp default_return_to(:connect), do: "/connect"
 
-  # Both privileged groups are derived from `WindowRegistry`, so a window
-  # cannot be openable from a menu that no longer knows its title, nor carry a
-  # different icon here than it does on its own title bar.
+  # Both privileged groups are derived from `WindowRegistry`, so a window cannot
+  # be openable from a menu that does not know its title, nor carry a different
+  # icon here than it does on its own title bar.
   defp admin_entries, do: menu_entries(&(&1.family == :admin or &1.id == "bot-management-dialog"))
 
   defp system_entries, do: menu_entries(&(&1.family == :system))

@@ -39,7 +39,6 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
       |> assign(:auto_login, entry_field(assigns.entry, :auto_login) == true)
       |> assign(:auto_login_id, auto_login_id(assigns.entry, assigns.nickname))
       |> assign(:auto_login_testid, auto_login_testid(assigns))
-      |> assign(:display_timezone, display_timezone(assigns))
       |> assign(:primary_specs, primary_specs(assigns.entry))
       |> assign(:trust_specs, trust_specs(assigns.entry, display_timezone(assigns)))
       |> assign(:audit_specs, audit_specs(assigns.entry, display_timezone(assigns)))

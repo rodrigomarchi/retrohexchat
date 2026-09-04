@@ -93,9 +93,6 @@ defmodule RetroHexChat.GroupCall.Schema.Track do
   @spec terminal?(String.t()) :: boolean()
   def terminal?(status), do: status in @terminal_statuses
 
-  @spec kind_values() :: [String.t()]
-  def kind_values, do: @kind_values
-
   @spec status_values() :: [String.t()]
   def status_values, do: @status_values
 

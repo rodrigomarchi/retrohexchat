@@ -270,9 +270,9 @@ defmodule RetroHexChat.ShareLinks.ServiceTest do
       assert {:error, :not_found} = ShareLinks.revoke("abcdefghjk", nick.nickname)
     end
 
-    # The name on the row is not a permission. Before this, `revoke/2` took
-    # whatever `revoked_by` it was handed and closed the link — the audit field
-    # was doing the work an authorization check was supposed to.
+    # The name on the row is not a permission. A `revoke/2` that took whatever
+    # `revoked_by` it was handed and closed the link would leave the audit field
+    # doing the work an authorization check is supposed to.
     test "a stranger cannot close somebody else's link", %{nick: nick} do
       other = insert(:registered_nick)
       {:ok, link} = create(nick, "play", %{"game_id" => "hex_pong"})

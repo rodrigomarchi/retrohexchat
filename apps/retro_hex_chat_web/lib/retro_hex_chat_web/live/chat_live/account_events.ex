@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
+  import Phoenix.LiveView, only: [send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -29,10 +29,6 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
   def handle_event("open_account_dialog", _params, socket), do: {:halt, open(socket)}
   def handle_event("open_account_register", _params, socket), do: {:halt, open(socket)}
   def handle_event("open_account_identify", _params, socket), do: {:halt, open(socket)}
-
-  def handle_event("close_account_dialog", _params, socket) do
-    {:halt, push_event(socket, "window_command", %{action: "close", id: "account"})}
-  end
 
   def handle_event("account_info", _params, socket) do
     {:halt, CommandDispatch.dispatch_command(socket, socket.assigns.session, "ns", ["info"])}

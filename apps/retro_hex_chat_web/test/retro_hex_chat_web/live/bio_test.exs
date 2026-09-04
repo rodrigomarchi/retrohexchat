@@ -27,7 +27,8 @@ defmodule RetroHexChatWeb.BioTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio Elixir enthusiast"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "Bio set: Elixir enthusiast"
@@ -43,14 +44,16 @@ defmodule RetroHexChatWeb.BioTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio Hello world"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
 
       # View bio
       view
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "Your bio: Hello world"
@@ -65,7 +68,8 @@ defmodule RetroHexChatWeb.BioTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "No bio set"
@@ -81,14 +85,16 @@ defmodule RetroHexChatWeb.BioTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio Something"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
 
       # Clear bio
       view
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio clear"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "Bio cleared"
@@ -105,7 +111,8 @@ defmodule RetroHexChatWeb.BioTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio I love retro computing"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(target_view.pid)
 
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -114,7 +121,8 @@ defmodule RetroHexChatWeb.BioTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "Bio:"
@@ -132,7 +140,8 @@ defmodule RetroHexChatWeb.BioTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       # Should show whois but NOT a Bio: line
@@ -150,7 +159,8 @@ defmodule RetroHexChatWeb.BioTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio #{long_bio}"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "truncated to 200 characters"

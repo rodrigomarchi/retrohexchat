@@ -28,6 +28,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AdminChannelsDialogPage do
     {:noreply, assign(socket, show_channels: !socket.assigns.show_channels)}
   end
 
+  # A showcase page renders the component and nothing behind it, so the
+  # controls it draws have nowhere to go. Answering them is what keeps a
+  # click from taking the page down with an unmatched event.
+  @impl true
+  def handle_event(_event, _params, socket), do: {:noreply, socket}
+
   @impl true
   def render(assigns) do
     ~H"""

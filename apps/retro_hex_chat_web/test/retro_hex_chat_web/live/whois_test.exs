@@ -29,7 +29,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "Whois: #{target}"
@@ -48,7 +49,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "Online for:"
@@ -65,7 +67,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "Idle for:"
@@ -82,7 +85,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "Registered"
@@ -100,7 +104,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       # Both are in #lobby
@@ -117,7 +122,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{nick}"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "Whois: #{nick}"
@@ -133,7 +139,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois OfflineUser12345"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "OfflineUser12345 is not online"

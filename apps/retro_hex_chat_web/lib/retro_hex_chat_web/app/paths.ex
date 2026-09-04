@@ -119,11 +119,6 @@ defmodule RetroHexChatWeb.App.Paths do
     ~p"/chat/session/clear?#{query}"
   end
 
-  @spec activity_path(Phoenix.LiveView.Socket.t(), String.t()) :: String.t()
-  def activity_path(_socket, path) do
-    path
-  end
-
   defp maybe_put_query(query, key, value, true) when is_binary(value) and value != "" do
     Keyword.put(query, key, value)
   end

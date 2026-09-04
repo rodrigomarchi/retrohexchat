@@ -13,7 +13,7 @@ defmodule RetroHexChat.ShareLinks do
   which belongs in an address bar.
   """
 
-  alias RetroHexChat.ShareLinks.{Card, Schema, Service, Slug}
+  alias RetroHexChat.ShareLinks.{Card, Schema, Service}
 
   @type resolution :: Service.resolution()
 
@@ -36,8 +36,4 @@ defmodule RetroHexChat.ShareLinks do
 
   @spec kinds() :: [String.t()]
   defdelegate kinds(), to: Schema.Link
-
-  @doc "The slug generator, exposed for callers that validate before looking up."
-  @spec slug_module() :: module()
-  def slug_module, do: Slug
 end

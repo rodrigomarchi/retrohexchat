@@ -573,10 +573,10 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     end)
   end
 
-  # The bot no longer reads these pages itself. A feed that republishes a link, a
-  # second feed carrying the same article, and a link somebody already pasted in a
-  # channel now all resolve from the same archive — going to the publisher only
-  # for the ones nobody has read yet.
+  # The bot does not read these pages itself: it asks the archive. A feed that
+  # republishes a link, a second feed carrying the same article, and a link
+  # somebody already pasted in a channel all resolve from the same store, so the
+  # publisher is visited only for the ones nobody has read yet.
   @spec fetch_preview_metadata([FeedParser.feed_item()]) :: [Scraper.Client.metadata()]
   defp fetch_preview_metadata(items) do
     items

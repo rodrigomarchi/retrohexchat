@@ -55,9 +55,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
       refute html =~ "#lobby"
     end
 
-    # Every control that used to hang here acted on a session this window is not
-    # holding. A session lives at its own address, so the menu that reached
-    # inside it is gone, and the door is the card in the conversation.
+    # Any control hanging here would act on a session this window is not
+    # holding. A session lives at its own address, so no menu reaches inside
+    # it, and the door is the card in the conversation.
     test "no menu here reaches inside a P2P session" do
       html = menu(Session.new("alice"))
 
@@ -72,8 +72,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
     test "launching another program is not this window's menu's job" do
       # The arcade and the retro games open windows of their own that have
       # nothing to do with this conversation, so they are reached from the
-      # Start menu. Same for the admin and runtime windows, which used to hang
-      # off File and made it a thirty-row menu.
+      # Start menu. Same for the admin and runtime windows: hanging them off
+      # File makes it a thirty-row menu.
       html = menu(Session.new("alice"))
 
       refute html =~ ~s(data-testid="app-menu-games")

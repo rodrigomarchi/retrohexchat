@@ -193,6 +193,21 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PFileIsland do
     push_event(socket, "ft_retry", %{})
   end
 
+  # A second file picked mid-transfer waits its turn in the browser's queue.
+  # Nothing about the transfer on screen changes, so without a line of its own
+  # the pick reads as a click that did nothing.
+  defp handle_ft(socket, "ft_queued", params) do
+    send(
+      self(),
+      {:p2p_feature_notice, :file,
+       dgettext("lobby", "Queued for after the current transfer: %{name}",
+         name: params["file_name"]
+       ), scope: :local}
+    )
+
+    socket
+  end
+
   defp handle_ft(socket, "ft_paused", _params) do
     socket |> merge_ft(%{status: "paused"}) |> summarize()
   end

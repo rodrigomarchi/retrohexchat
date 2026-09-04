@@ -212,6 +212,18 @@ _ROWS = {
     "Open in a tab": ("Abrir em uma aba", "Abrir num separador", "Abrir en una pestaña", "Ouvrir dans un onglet", "In einem Tab öffnen", "Apri in una scheda", "In een tabblad openen", "Otwórz w karcie", "Открыть во вкладке", "Buka di tab", "タブで開く", "在标签页中打开", "在分頁中開啟"),
     "Already inside": ("Já estão dentro", "Já estão dentro", "Ya están dentro", "Déjà dans la salle", "Bereits im Raum", "Già dentro", "Al binnen", "Już w środku", "Уже внутри", "Sudah di dalam", "すでに参加中", "已在房间内", "已在房間內"),
 
+    # ── The P2P session, named the same way everywhere ─────────
+    # These three are here because they had drifted apart: one msgid carried
+    # two different translations depending on the domain it was extracted
+    # into, and `gettext.merge` then fuzzy-matched a fourth string onto one of
+    # them. A glossary entry is global, so it is the only thing that keeps the
+    # name of a feature identical across every catalog that mentions it.
+    # German said "Sitzungsperiode" (a period of time) and Chinese said
+    # "conference" for the session itself; both are corrected here.
+    "P2P Session":  ("Sessão P2P", "Sessão P2P", "Sesión P2P", "Session P2P", "P2P-Sitzung", "Sessione P2P", "P2P-sessie", "Sesja P2P", "P2P-сессия", "Sesi P2P", "P2Pセッション", "P2P 会话", "P2P 工作階段"),
+    "P2P Session Console": ("Console de Sessão P2P", "Consola de Sessão P2P", "Consola de Sesión P2P", "Console de session P2P", "P2P-Sitzungskonsole", "Console di sessione P2P", "P2P-sessieconsole", "Konsola sesji P2P", "Консоль P2P-сессии", "Konsol Sesi P2P", "P2Pセッションコンソール", "P2P 会话控制台", "P2P 工作階段主控台"),
+    "P2P Sessions in Chat": ("Sessões P2P no chat", "Sessões P2P no chat", "Sesiones P2P en el chat", "Sessions P2P dans le chat", "P2P-Sitzungen im Chat", "Sessioni P2P nella chat", "P2P-sessies in de chat", "Sesje P2P w czacie", "P2P-сессии в чате", "Sesi P2P dalam Percakapan", "チャットでのP2Pセッション", "P2P 聊天会话", "P2P 聊天對話"),
+
     # ── Chat actions ──────────────────────────────────────────
     "Mute":         ("Silenciar", "Silenciar", "Silenciar", "Couper le son", "Stummschalten", "Disattiva audio", "Dempen", "Wycisz", "Отключить звук", "Bisukan", "ミュート", "静音", "靜音"),
     "Unmute":       ("Reativar som", "Reativar som", "Activar sonido", "Réactiver le son", "Stummschaltung aufheben", "Riattiva audio", "Dempen opheffen", "Wyłącz wyciszenie", "Включить звук", "Suarakan", "ミュート解除", "取消静音", "取消靜音"),

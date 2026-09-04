@@ -200,8 +200,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
           )
 
         # Built before it is decorated, and built by the same thing that builds
-        # every other row — a channel message arriving live used to be the one
-        # row assembled by hand, in the shape the broadcast happened to have.
+        # every other row. Assembling a live channel message by hand would give
+        # it the shape the broadcast happened to have, not the shape a row has.
         decorated =
           payload
           |> StreamItem.from_message()
@@ -226,11 +226,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   # A private message is delivered once to each of the two people in it, and
   # everything that message causes — the row, the tab, the unread badge, the
-  # sound — happens here. It used to arrive twice, on two topics, in two shapes:
-  # one carried the message and could not reach a conversation the reader had
-  # not opened yet, the other reached everybody and carried half the fields. The
-  # seam between them is where the first message of a conversation, its link
-  # previews and its highlight kept falling through.
+  # sound — happens here. One delivery on one topic in one shape is the whole
+  # point: split it across two and the seam is where the first message of a
+  # conversation, its link previews and its highlight fall through, because one
+  # half cannot reach a conversation the reader has not opened yet and the other
+  # carries half the fields.
   defp do_handle_new_pm(payload, socket) do
     session = socket.assigns.session
 
@@ -497,9 +497,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   end
 
   # Spam protection is about people, so the system is exempt from both halves:
-  # its lines are neither counted towards a repeat nor dropped as one. The
-  # channel path always said so; the private one did not, which is why three
-  # identical `p2p_system` lines inside the spam window used to lose the third.
+  # its lines are neither counted towards a repeat nor dropped as one, on the
+  # private path exactly as on the channel one. Without the exemption here,
+  # three identical `p2p_system` lines inside the spam window lose the third.
   defp remember_for_duplicates(socket, payload, sender, target_key) do
     if MessageHelpers.from_system?(payload) do
       socket

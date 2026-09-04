@@ -34,10 +34,10 @@ defmodule RetroHexChatWeb.ChatLive.StreamItemTest do
   end
 
   describe "either kind can arrive from the database or from a broadcast" do
-    # A channel message used to be readable only in its database spelling, so a
-    # message arriving live was assembled by hand in the shape the broadcast
-    # happened to have. Reading both spellings is what lets one builder serve
-    # both arrivals, as it already did for private messages.
+    # A channel message readable only in its database spelling forces a message
+    # arriving live to be assembled by hand in the shape the broadcast happens to
+    # have. Reading both spellings is what lets one builder serve both arrivals,
+    # as it does for private messages.
     test "a channel message reads the same from either spelling" do
       from_database = channel_message()
 

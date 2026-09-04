@@ -58,9 +58,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
 
   defp connect_window(assigns) do
     ~H"""
-    <%!-- Wide enough for the strip it now carries: the app menus run seven
-          across, and the 560px this window used to be could only ever have
-          shown them as the icon rail a phone gets. --%>
+    <%!-- Wide enough for the menu strip it carries: a narrower window could
+          only ever show that strip as the icon rail a phone gets. --%>
     <.desktop_window
       id="connect"
       title={dgettext("connect", "Connect to RetroHexChat")}

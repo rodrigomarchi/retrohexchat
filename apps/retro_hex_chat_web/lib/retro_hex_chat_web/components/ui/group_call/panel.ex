@@ -1123,10 +1123,10 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   defp mobile_inspector_open?(call),
     do: !mini_mode?(call) && console_section(call) in [:people, :settings, :stats]
 
-  # The People tab is the only switch for the participant panel. It used to be
-  # gated by a separate sidebar toggle that defaulted to open, so on desktop the
-  # panel was always there and the labelled tab did nothing — the working control
-  # was an unlabelled icon in the view rail.
+  # The People tab is the only switch for the participant panel. A second gate —
+  # a sidebar toggle defaulting to open — would leave the panel permanently on
+  # for desktop and the labelled tab doing nothing, with the real control an
+  # unlabelled icon in the view rail.
   defp show_participants?(call),
     do: console_section(call) == :people && !mini_mode?(call)
 

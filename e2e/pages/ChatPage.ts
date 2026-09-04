@@ -918,12 +918,15 @@ export class ChatPage {
     }
   }
 
+  // Opening the drawer must not be decided on whether the row is there *yet*.
+  // A row that has not arrived counts zero, the drawer then stays shut, and the
+  // assertion below waits for a row a shut drawer can never show — which is a
+  // timeout that reads exactly like the join having failed. So the drawer is
+  // opened first, unconditionally: it is a no-op on a wide viewport and a no-op
+  // when it is already open.
   async expectTabVisible(name: string) {
-    const row = this.conversationRow(name);
-    if ((await row.count()) > 0 && !(await row.first().isVisible())) {
-      await this.ensureConversationsVisible();
-    }
-    await expect(row).toBeVisible();
+    await this.ensureConversationsVisible();
+    await expect(this.conversationRow(name)).toBeVisible();
   }
 
   async expectTabSelected(name: string) {

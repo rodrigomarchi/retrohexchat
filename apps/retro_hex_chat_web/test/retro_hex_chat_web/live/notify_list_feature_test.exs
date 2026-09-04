@@ -44,7 +44,8 @@ defmodule RetroHexChatWeb.NotifyListFeatureTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/notify add SyncBud"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
 
       # Open address book and switch to notify tab
       render_click(view, "toggle_notify_list")

@@ -56,10 +56,6 @@ defmodule RetroHexChatWeb.SystemLog.Handler do
     :ok
   end
 
-  @doc "Whether the handler is currently installed."
-  @spec installed?() :: boolean()
-  def installed?, do: @handler_id in :logger.get_handler_ids()
-
   @doc """
   The level the node filters at before any handler is consulted.
 

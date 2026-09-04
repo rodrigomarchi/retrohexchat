@@ -106,16 +106,15 @@ msgstr "Ding Alto"
 msgid "Ding Low"
 msgstr "Ding Baixo"
 
-#: lib/retro_hex_chat/chat/policy.ex:51 lib/retro_hex_chat/chat/policy.ex:80
+#: lib/retro_hex_chat/chat/policy.ex:51
+#: lib/retro_hex_chat/chat/policy.ex:80
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
 msgstr "A janela de edição expirou."
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
-msgid ""
-"Expansion must not contain command chaining characters (|, &&, ;, or "
-"newlines)"
+msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
 msgstr ""
 "Expansão não deve conter caracteres de encadeamento de comandos (!, & &, ;, "
 "ou novas linhas)"
@@ -127,20 +126,20 @@ msgstr "Formatação"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:111
 #, elixir-autogen, elixir-format
-msgid ""
-"Invalid timer name. Use only letters, numbers, hyphens, underscores (max "
-"%{max_name_length} chars)."
+msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
 msgstr ""
 "Nome do cronômetro inválido. Use apenas letras, números, hífens, sublinha "
 "(máx. %{max_name_length} chars)."
 
-#: lib/retro_hex_chat/chat/content.ex:135 lib/retro_hex_chat/chat/policy.ex:19
+#: lib/retro_hex_chat/chat/content.ex:135
+#: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
 msgid "Message cannot be empty"
 msgstr "A mensagem não pode estar vazia"
 
-#: lib/retro_hex_chat/chat/policy.ex:48 lib/retro_hex_chat/chat/policy.ex:70
+#: lib/retro_hex_chat/chat/policy.ex:48
+#: lib/retro_hex_chat/chat/policy.ex:70
 #: lib/retro_hex_chat/chat/policy.ex:91
 #, elixir-autogen, elixir-format
 msgid "Message has already been deleted."
@@ -252,7 +251,8 @@ msgstr "Abrir/close a folha de atalho do teclado"
 msgid "Original message not found."
 msgstr "A mensagem original não foi encontrada."
 
-#: lib/retro_hex_chat/chat/policy.ex:54 lib/retro_hex_chat/chat/policy.ex:119
+#: lib/retro_hex_chat/chat/policy.ex:54
+#: lib/retro_hex_chat/chat/policy.ex:119
 #, elixir-autogen, elixir-format
 msgid "Please wait a few seconds before editing again."
 msgstr "Por favor, aguarde alguns segundos antes de editar novamente."
@@ -427,7 +427,8 @@ msgstr "Janela 9"
 msgid "You cannot delete other users' messages."
 msgstr "Você não pode excluir as mensagens de outros usuários."
 
-#: lib/retro_hex_chat/chat/policy.ex:45 lib/retro_hex_chat/chat/policy.ex:67
+#: lib/retro_hex_chat/chat/policy.ex:45
+#: lib/retro_hex_chat/chat/policy.ex:67
 #, elixir-autogen, elixir-format
 msgid "You cannot edit other users' messages."
 msgstr "Você não pode editar as mensagens de outros usuários."
@@ -503,18 +504,18 @@ msgstr "Alternar câmera de conferência"
 msgid "Toggle Conference Microphone"
 msgstr "Alternar o Microfone da Conferência"
 
-#: lib/retro_hex_chat/channels/server.ex:1280
+#: lib/retro_hex_chat/channels/server.ex:1300
 #: lib/retro_hex_chat/chat/service.ex:307
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
 msgstr "Não foi possível anexar o anexo à mensagem"
 
-#: lib/retro_hex_chat/chat/attachments.ex:292
+#: lib/retro_hex_chat/chat/attachments.ex:263
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "O anexo excede o limite de MB %{mb}"
 
-#: lib/retro_hex_chat/chat/attachments.ex:287
+#: lib/retro_hex_chat/chat/attachments.ex:258
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "O anexo está em branco"
@@ -524,9 +525,9 @@ msgstr "O anexo está em branco"
 msgid "Unsupported message format"
 msgstr "Formato de mensagem não suportado"
 
-#: lib/retro_hex_chat/chat/attachments.ex:299
-#: lib/retro_hex_chat/chat/attachments.ex:395
-#: lib/retro_hex_chat/chat/attachments.ex:400
+#: lib/retro_hex_chat/chat/attachments.ex:270
+#: lib/retro_hex_chat/chat/attachments.ex:351
+#: lib/retro_hex_chat/chat/attachments.ex:356
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "arquivo"

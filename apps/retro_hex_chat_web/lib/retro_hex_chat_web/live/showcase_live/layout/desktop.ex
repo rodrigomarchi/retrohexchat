@@ -16,4 +16,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Desktop do
   def mount(_params, _session, socket) do
     {:ok, assign(socket, page_title: dgettext("showcase", "Desktop"), active_page: "desktop")}
   end
+
+  # A showcase page renders the component and nothing behind it, so the
+  # controls it draws have nowhere to go. Answering them is what keeps a
+  # click from taking the page down with an unmatched event.
+  @impl true
+  def handle_event(_event, _params, socket), do: {:noreply, socket}
 end

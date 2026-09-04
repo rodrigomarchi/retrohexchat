@@ -25,8 +25,10 @@ defmodule RetroHexChatWeb.WhowasTest do
 
       # Connect target, then disconnect
       {:ok, target_view, _html} = live(chat_conn(conn, target), "/chat")
+      # `GenServer.stop/1` returns only once `terminate/2` has run, and that is
+      # what writes the whowas entry — straight into a public ETS table, with
+      # no round trip left to wait for.
       GenServer.stop(target_view.pid)
-      Process.sleep(100)
 
       # Now query whowas
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
@@ -35,7 +37,8 @@ defmodule RetroHexChatWeb.WhowasTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whowas #{target}"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "Last Seen: #{target}"
@@ -53,7 +56,8 @@ defmodule RetroHexChatWeb.WhowasTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whowas NeverOnline99999"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "No whowas information available for NeverOnline99999"
@@ -72,7 +76,8 @@ defmodule RetroHexChatWeb.WhowasTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whowas #{target}"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "#lobby"
@@ -91,7 +96,8 @@ defmodule RetroHexChatWeb.WhowasTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whowas #{target}"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "Quit message"
@@ -104,8 +110,10 @@ defmodule RetroHexChatWeb.WhowasTest do
 
       # Connect and disconnect target
       {:ok, target_view, _html} = live(chat_conn(conn, target), "/chat")
+      # `GenServer.stop/1` returns only once `terminate/2` has run, and that is
+      # what writes the whowas entry — straight into a public ETS table, with
+      # no round trip left to wait for.
       GenServer.stop(target_view.pid)
-      Process.sleep(100)
 
       # Verify entry was recorded in cache
       assert {:ok, entry} = WhowasCache.lookup(target)

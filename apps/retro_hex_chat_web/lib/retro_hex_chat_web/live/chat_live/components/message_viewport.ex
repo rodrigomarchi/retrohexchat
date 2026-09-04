@@ -193,8 +193,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   #
   # The client is told, rather than left to infer it from the shape of the DOM
   # patch. A rebuilt list and a prepended page reach a MutationObserver as the
-  # same thing (rows removed, rows added), and guessing between them is what
-  # used to throw a reader paging through history down to the newest message.
+  # same thing (rows removed, rows added), and guessing between them throws a
+  # reader paging through history down to the newest message.
   def update(%{action: {:reset, items}}, socket) do
     items = decorate_all(items)
 

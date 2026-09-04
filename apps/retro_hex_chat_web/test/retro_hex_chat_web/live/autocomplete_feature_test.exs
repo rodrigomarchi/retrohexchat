@@ -65,7 +65,8 @@ defmodule RetroHexChatWeb.AutocompleteFeatureTest do
       {:ok, view1, _} = live(chat_conn(conn, "E2ENick1"), "/chat")
       {:ok, _view2, _} = live(chat_conn(conn, "E2ENick2"), "/chat")
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view1.pid)
 
       # Switch from status tab to #lobby channel for nick context
       render_click(view1, "switch_channel", %{"channel" => "#lobby"})

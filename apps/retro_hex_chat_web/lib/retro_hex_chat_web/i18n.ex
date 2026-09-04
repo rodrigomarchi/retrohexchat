@@ -16,9 +16,6 @@ defmodule RetroHexChatWeb.I18n do
     Enum.map(Locales.enabled(), &{&1.code, &1.label})
   end
 
-  @spec supported_locale_codes() :: [String.t()]
-  def supported_locale_codes, do: Locales.codes()
-
   @spec normalize_locale(String.t() | nil) :: String.t() | nil
   def normalize_locale(nil), do: nil
   def normalize_locale(""), do: nil

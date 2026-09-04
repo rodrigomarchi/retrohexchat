@@ -67,8 +67,8 @@ defmodule RetroHexChatWeb.NickColorsTest do
 
     # The colour field is a hidden input a palette click fills in, and the form
     # does not require it — so submitting before picking a colour sends an empty
-    # string. Parsing it used to raise inside `handle_event`, which does not fail
-    # the dialog: it takes the whole chat session down with it.
+    # string. Raising while parsing it inside `handle_event` does not fail the
+    # dialog: it takes the whole chat session down with it.
     test "adding without picking a colour is refused, not fatal", %{conn: conn} do
       view = connect_user(conn, "NoColor")
       view |> render_click("open_nick_colors_dialog")

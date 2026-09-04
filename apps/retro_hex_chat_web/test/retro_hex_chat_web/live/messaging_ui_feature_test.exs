@@ -85,7 +85,10 @@ defmodule RetroHexChatWeb.MessagingUIFeatureTest do
       refute html =~ "Notice to #{target}:"
       refute html =~ "Send Notice"
 
-      assert_receive {:new_notice, %{sender: ^sender, content: "Check out #project"}}
+      # The broadcast is issued inside the submit, but it reaches this process
+      # as a message, and under a loaded partitioned run the 100ms default is
+      # not enough for that hop. The wait ends the moment it arrives.
+      assert_receive {:new_notice, %{sender: ^sender, content: "Check out #project"}}, 2_000
     end
 
     test "empty notice message shows inline error and can be cancelled", %{conn: conn} do

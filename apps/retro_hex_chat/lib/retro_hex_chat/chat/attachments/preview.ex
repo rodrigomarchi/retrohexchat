@@ -96,9 +96,6 @@ defmodule RetroHexChat.Chat.Attachments.Preview do
 
   def inline?(_file), do: false
 
-  @spec inline_kind?(String.t()) :: boolean()
-  def inline_kind?(kind), do: kind in @inline_kinds
-
   defp classify_safe(ext, type) do
     Enum.find_value(classifiers(), fn classifier -> classifier.(ext, type) end) || "download"
   end

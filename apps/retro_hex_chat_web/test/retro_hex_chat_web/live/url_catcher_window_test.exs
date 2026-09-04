@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.UrlCatcherWindowTest do
     test "Escape is no longer a server-side dismissal for the URL Catcher", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "UrlW#{uid()}"), "/chat")
 
-      # The parent no longer tracks url-catcher visibility at all.
+      # The parent does not track url-catcher visibility at all.
       refute Map.has_key?(:sys.get_state(view.pid).socket.assigns, :show_url_catcher)
       # And a stray Escape reaching the server does not crash.
       render_click(view, "window_keydown", %{"key" => "Escape"})

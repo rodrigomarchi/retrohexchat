@@ -710,29 +710,6 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
     end
   end
 
-  @spec revoke_current_device(integer(), String.t()) :: :ok | {:error, String.t()}
-  def revoke_current_device(device_id, actor) when is_integer(device_id) do
-    case Repo.get(TrustedDevice, device_id) do
-      %TrustedDevice{} = device ->
-        now = DateTime.utc_now()
-
-        from(g in TrustedDeviceNick,
-          where: g.trusted_device_id == ^device.id and is_nil(g.revoked_at)
-        )
-        |> Repo.update_all(set: [revoked_at: now, revoked_by_nickname: actor])
-
-        device
-        |> TrustedDevice.changeset(%{revoked_at: now, revoked_by_nickname: actor})
-        |> Repo.update()
-
-        log_event("device.revoked", device, nil, actor)
-        :ok
-
-      nil ->
-        {:error, dgettext("accounts", "Trusted terminal not found.")}
-    end
-  end
-
   def revoke_current_device(_device_id, _actor),
     do: {:error, dgettext("accounts", "This terminal is not remembered.")}
 

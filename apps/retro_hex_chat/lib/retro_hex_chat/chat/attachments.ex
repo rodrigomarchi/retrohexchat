@@ -96,26 +96,6 @@ defmodule RetroHexChat.Chat.Attachments do
     Queries.mark_uploaded_files(ids, owner_nickname)
   end
 
-  @spec store_upload(String.t(), Path.t(), upload_metadata()) ::
-          {:ok, UploadedFile.t()} | {:error, term()}
-  def store_upload(owner_nickname, path, metadata) do
-    byte_size = upload_size(path, Map.get(metadata, :byte_size))
-    attrs = file_attrs(owner_nickname, Map.put(metadata, :byte_size, byte_size), nil, "uploaded")
-
-    with :ok <- validate_size(byte_size),
-         {:ok, checksum_sha256} <- checksum_sha256(path),
-         {:ok, _stored} <-
-           storage().put_file(path, attrs.storage_key,
-             bucket: attrs.storage_bucket,
-             content_type: attrs.content_type,
-             byte_size: attrs.byte_size
-           ) do
-      attrs
-      |> Map.put(:checksum_sha256, checksum_sha256)
-      |> Queries.insert_uploaded_file()
-    end
-  end
-
   @spec get_attachment(integer() | String.t()) :: Attachment.t() | nil
   def get_attachment(id), do: Queries.get_attachment(id)
 
@@ -271,15 +251,6 @@ defmodule RetroHexChat.Chat.Attachments do
     Keyword.get(config(), :max_size_mb, @default_max_size_mb)
   end
 
-  defp upload_size(_path, byte_size) when is_integer(byte_size) and byte_size > 0, do: byte_size
-
-  defp upload_size(path, _byte_size) do
-    case File.stat(path) do
-      {:ok, %{size: size}} -> size
-      _ -> 0
-    end
-  end
-
   defp validate_size(byte_size) when byte_size > 0 do
     if byte_size <= max_size_bytes(), do: :ok, else: max_size_error()
   end
@@ -318,21 +289,6 @@ defmodule RetroHexChat.Chat.Attachments do
       preview_metadata: %{},
       status: status
     }
-  end
-
-  defp checksum_sha256(path) do
-    case File.read(path) do
-      {:ok, body} ->
-        checksum =
-          body
-          |> then(&:crypto.hash(:sha256, &1))
-          |> Base.encode16(case: :lower)
-
-        {:ok, checksum}
-
-      {:error, reason} ->
-        {:error, reason}
-    end
   end
 
   defp object_key(owner_nickname, uuid) do

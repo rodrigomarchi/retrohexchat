@@ -10,7 +10,6 @@ import {
   toggleTrack,
   stopAllTracks,
   formatDuration,
-  mapQualityLevel,
   getStatsSnapshot,
   collectConnectionActivityFromReports,
   hasConnectionActivity,
@@ -356,24 +355,6 @@ describe("Track Management", () => {
 // --- Quality Monitoring (T030) ---
 
 describe("Quality Monitoring", () => {
-  describe("mapQualityLevel", () => {
-    it("returns excellent for low loss and rtt", () => {
-      expect(mapQualityLevel({ packetLoss: 0.5, roundTripTime: 0.05 })).toBe("excellent");
-    });
-
-    it("returns good for moderate loss and rtt", () => {
-      expect(mapQualityLevel({ packetLoss: 2, roundTripTime: 0.15 })).toBe("good");
-    });
-
-    it("returns fair for higher loss and rtt", () => {
-      expect(mapQualityLevel({ packetLoss: 5, roundTripTime: 0.3 })).toBe("fair");
-    });
-
-    it("returns poor for worst conditions", () => {
-      expect(mapQualityLevel({ packetLoss: 15, roundTripTime: 0.5 })).toBe("poor");
-    });
-  });
-
   describe("getStatsSnapshot", () => {
     function mockPc(reports) {
       return { getStats: async () => ({ forEach: (cb) => reports.forEach(cb) }) };

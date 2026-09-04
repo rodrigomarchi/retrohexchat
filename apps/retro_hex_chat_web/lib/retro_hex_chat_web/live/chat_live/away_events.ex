@@ -23,24 +23,6 @@ defmodule RetroHexChatWeb.ChatLive.AwayEvents do
     {:halt, open(socket)}
   end
 
-  def handle_event("toggle_account_away", _params, socket) do
-    session = socket.assigns.session
-
-    if session.away do
-      {:halt,
-       socket
-       |> remember_away_message()
-       |> dispatch("away", [])}
-    else
-      message = socket.assigns.account_last_away_message || dgettext("chat", "Away")
-
-      {:halt,
-       socket
-       |> dispatch("away", [message])
-       |> assign(account_last_away_message: message)}
-    end
-  end
-
   def handle_event("away_submit", params, socket) do
     message =
       params

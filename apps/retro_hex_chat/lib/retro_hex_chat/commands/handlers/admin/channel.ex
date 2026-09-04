@@ -15,8 +15,9 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
     search = find_opt(opts, "--search")
     AuditLogs.log(context.nickname, "channel.list")
 
-    # The directory snapshot each channel publishes carries the member count, so
-    # listing no longer costs one synchronous call per channel.
+    # The directory snapshot each channel publishes already carries the member
+    # count, so the whole listing is one read rather than a synchronous call per
+    # channel.
     snapshots = if search, do: Directory.search(search), else: Directory.all()
 
     text =

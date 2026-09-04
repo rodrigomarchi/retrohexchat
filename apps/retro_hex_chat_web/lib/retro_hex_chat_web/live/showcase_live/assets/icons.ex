@@ -195,4 +195,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Icons do
   defp size_label(:small), do: "16×16"
   defp size_label(:small_dark), do: "16×16"
   defp size_label(:tiny), do: "14×14"
+  # A showcase page renders the component and nothing behind it, so the
+  # controls it draws have nowhere to go. Answering them is what keeps a
+  # click from taking the page down with an unmatched event.
+  @impl true
+  def handle_event(_event, _params, socket), do: {:noreply, socket}
 end

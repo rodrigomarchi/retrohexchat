@@ -32,10 +32,6 @@ defmodule RetroHexChat.Scraper.ScrapedPage do
   @spec statuses() :: [String.t()]
   def statuses, do: @statuses
 
-  @doc "Every image thumbnail status a row may carry."
-  @spec image_thumbnail_statuses() :: [String.t()]
-  def image_thumbnail_statuses, do: @image_thumbnail_statuses
-
   schema "scraped_pages" do
     field :url, :string
     field :url_hash, :string

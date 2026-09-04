@@ -634,7 +634,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "help",
             "Each message uses a compact metadata column — the author's nick (or the origin, like System or Error) above a smaller timestamp — beside the message text, which gets the wider column. This reads well on phones while keeping the retro monospace look."
           ),
-        see_also: ["feature-timestamp-format", "feature-session-cards"]
+        see_also: ["feature-session-cards"]
       },
       %{
         id: "feature-copy",
@@ -708,14 +708,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         icon: :icon_heart,
         description:
           dgettext("help", "Browse and insert emoji into your messages using the emoji picker.")
-      },
-      %{
-        id: "feature-timestamp-format",
-        title: dgettext("help", "Timestamp Configuration"),
-        category: dgettext("help", "Chat Display"),
-        keywords: ["timestamp", "time", "format", "clock", "date"],
-        icon: :icon_clock,
-        description: dgettext("help", "Customize how timestamps are displayed next to messages.")
       },
       %{
         id: "feature-autocomplete",
@@ -1402,6 +1394,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "drag",
           "drop",
           "hash",
+          "queue",
           "p2p"
         ],
         icon: :icon_file_send,
@@ -1409,6 +1402,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "Send files directly to other users via peer-to-peer with drag-and-drop support. " <>
+              "Picking a second file while one is still going queues it: the panel says so, " <>
+              "and it starts on its own when the current transfer finishes. " <>
               "See also: P2P Session."
           )
       },

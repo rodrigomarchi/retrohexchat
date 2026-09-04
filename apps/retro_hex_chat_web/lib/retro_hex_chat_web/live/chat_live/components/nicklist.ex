@@ -63,10 +63,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
     socket
   end
 
-  @doc "How many member rows the list renders at most."
-  @spec max_rendered() :: pos_integer()
-  def max_rendered, do: @max_rendered
-
   @doc "Inserts or updates a single user row. Returns the socket."
   @spec upsert(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
   def upsert(socket, user) do

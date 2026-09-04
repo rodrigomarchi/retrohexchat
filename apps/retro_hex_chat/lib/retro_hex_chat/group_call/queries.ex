@@ -63,14 +63,6 @@ defmodule RetroHexChat.GroupCall.Queries do
   @spec stale_room_count(DateTime.t()) :: non_neg_integer()
   def stale_room_count(before_datetime), do: StaleRecords.count(@stale_rooms, before_datetime)
 
-  @spec expire_room(Room.t()) :: {:ok, Room.t()} | {:error, Ecto.Changeset.t()}
-  def expire_room(room) do
-    update_room_status(room, "expired", %{
-      closed_at: DateTime.utc_now(),
-      closed_reason: "stale_cleanup"
-    })
-  end
-
   @spec expire_stale_room(Room.t(), DateTime.t()) ::
           {:ok, :expired | :skipped} | {:error, term()}
   def expire_stale_room(%Room{id: id}, before_datetime),
@@ -97,14 +89,6 @@ defmodule RetroHexChat.GroupCall.Queries do
     |> order_by([p], desc: p.inserted_at)
     |> limit(1)
     |> Repo.one()
-  end
-
-  @spec list_participants(integer()) :: [Participant.t()]
-  def list_participants(room_id) do
-    Participant
-    |> where([p], p.room_id == ^room_id)
-    |> order_by([p], asc: p.inserted_at)
-    |> Repo.all()
   end
 
   @spec list_active_participants(integer()) :: [Participant.t()]

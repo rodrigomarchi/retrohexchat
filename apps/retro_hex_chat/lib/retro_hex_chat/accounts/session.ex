@@ -237,19 +237,9 @@ defmodule RetroHexChat.Accounts.Session do
     %{session | contacts: contacts}
   end
 
-  @spec get_contacts(t()) :: map()
-  def get_contacts(%__MODULE__{contacts: contacts}) do
-    contacts
-  end
-
   @spec set_nick_colors(t(), map()) :: t()
   def set_nick_colors(%__MODULE__{} = session, nick_colors) do
     %{session | nick_colors: nick_colors}
-  end
-
-  @spec get_nick_colors(t()) :: map()
-  def get_nick_colors(%__MODULE__{nick_colors: nick_colors}) do
-    nick_colors
   end
 
   @spec set_highlight_words(t(), map()) :: t()
@@ -267,29 +257,14 @@ defmodule RetroHexChat.Accounts.Session do
     %{session | ignore_list: ignore_list}
   end
 
-  @spec get_ignore_list(t()) :: map()
-  def get_ignore_list(%__MODULE__{ignore_list: ignore_list}) do
-    ignore_list
-  end
-
   @spec set_perform_list(t(), map()) :: t()
   def set_perform_list(%__MODULE__{} = session, perform_list) do
     %{session | perform_list: perform_list}
   end
 
-  @spec get_perform_list(t()) :: map()
-  def get_perform_list(%__MODULE__{perform_list: perform_list}) do
-    perform_list
-  end
-
   @spec set_autojoin_list(t(), map()) :: t()
   def set_autojoin_list(%__MODULE__{} = session, autojoin_list) do
     %{session | autojoin_list: autojoin_list}
-  end
-
-  @spec get_autojoin_list(t()) :: map()
-  def get_autojoin_list(%__MODULE__{autojoin_list: autojoin_list}) do
-    autojoin_list
   end
 
   @spec get_auto_join_on_invite(t()) :: boolean()
@@ -314,56 +289,35 @@ defmodule RetroHexChat.Accounts.Session do
     %{session | notice_routing: routing}
   end
 
-  @spec get_flood_protection(t()) :: map()
-  def get_flood_protection(%__MODULE__{flood_protection: settings}), do: settings
-
   @spec set_flood_protection(t(), map()) :: t()
   def set_flood_protection(%__MODULE__{} = session, settings) do
     %{session | flood_protection: settings}
   end
-
-  @spec get_input_history(t()) :: map()
-  def get_input_history(%__MODULE__{input_history: history}), do: history
 
   @spec set_input_history(t(), map()) :: t()
   def set_input_history(%__MODULE__{} = session, history) do
     %{session | input_history: history}
   end
 
-  @spec get_contextual_tips(t()) :: map()
-  def get_contextual_tips(%__MODULE__{contextual_tips: tips}), do: tips
-
   @spec set_contextual_tips(t(), map()) :: t()
   def set_contextual_tips(%__MODULE__{} = session, tips) do
     %{session | contextual_tips: tips}
   end
-
-  @spec get_sound_settings(t()) :: map()
-  def get_sound_settings(%__MODULE__{sound_settings: settings}), do: settings
 
   @spec set_sound_settings(t(), map()) :: t()
   def set_sound_settings(%__MODULE__{} = session, settings) do
     %{session | sound_settings: settings}
   end
 
-  @spec get_aliases(t()) :: map()
-  def get_aliases(%__MODULE__{aliases: aliases}), do: aliases
-
   @spec set_aliases(t(), map()) :: t()
   def set_aliases(%__MODULE__{} = session, aliases) do
     %{session | aliases: aliases}
   end
 
-  @spec get_custom_menus(t()) :: map()
-  def get_custom_menus(%__MODULE__{custom_menus: custom_menus}), do: custom_menus
-
   @spec set_custom_menus(t(), map()) :: t()
   def set_custom_menus(%__MODULE__{} = session, custom_menus) do
     %{session | custom_menus: custom_menus}
   end
-
-  @spec get_autorespond_rules(t()) :: map()
-  def get_autorespond_rules(%__MODULE__{autorespond_rules: rules}), do: rules
 
   @spec set_autorespond_rules(t(), map()) :: t()
   def set_autorespond_rules(%__MODULE__{} = session, rules) do
@@ -377,9 +331,6 @@ defmodule RetroHexChat.Accounts.Session do
   def set_bio(%__MODULE__{} = session, bio) do
     %{session | bio: bio}
   end
-
-  @spec get_last_message_at(t()) :: DateTime.t()
-  def get_last_message_at(%__MODULE__{last_message_at: value}), do: value
 
   @spec set_last_message_at(t(), DateTime.t()) :: t()
   def set_last_message_at(%__MODULE__{} = session, %DateTime{} = timestamp) do

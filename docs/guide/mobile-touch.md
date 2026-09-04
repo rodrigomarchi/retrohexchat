@@ -30,7 +30,7 @@ must stay the same. Never build two visual systems inside one surface.
 - `overflow-hidden` on the root can still accumulate programmatic `scrollLeft` in stacked mode:
   when a window looks offset, inspect ancestor `scrollLeft` and rects, not just the window's own CSS.
 
-### 18.2 Dialog patterns (established across all 24 dialogs)
+### 18.2 Dialog patterns (established across every dialog in `components/ui/dialogs/`)
 
 - **Tabs:** a horizontal `overflow-x` strip with a fade + chevron affordance on whichever side has
   more content — never wrap to multiple rows. Don't change `Tabs`' global roles without running the

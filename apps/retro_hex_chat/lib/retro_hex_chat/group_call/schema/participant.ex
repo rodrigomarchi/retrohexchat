@@ -105,9 +105,6 @@ defmodule RetroHexChat.GroupCall.Schema.Participant do
   @spec terminal_statuses() :: [String.t()]
   def terminal_statuses, do: @terminal_statuses
 
-  @spec role_values() :: [String.t()]
-  def role_values, do: @role_values
-
   defp put_normalized_nickname(changeset) do
     case get_field(changeset, :normalized_nickname) || get_field(changeset, :nickname) do
       nil -> changeset

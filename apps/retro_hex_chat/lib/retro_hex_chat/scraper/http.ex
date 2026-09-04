@@ -125,11 +125,10 @@ defmodule RetroHexChat.Scraper.HTTP do
     end
   rescue
     exception ->
-      # A page that breaks the extractor and a host that will not answer are two
-      # different problems, and both used to arrive as a bare `:fetch_failed`.
-      # That opacity hid a real bug for a whole afternoon: publishers nest objects
-      # where the schema says string, `to_string/1` raised on them, and the result
-      # was reported as an unreachable site.
+      # A page that breaks the extractor and a host that will not answer both
+      # leave as `:fetch_failed`, so the log line is the only place the two stay
+      # apart. Publishers nest objects where the schema says string, `to_string/1`
+      # raises on them, and without this line that reads as an unreachable site.
       Logger.warning("scrape_raise url=#{url} error=#{Exception.message(exception)}")
       {:error, :fetch_failed}
   end
@@ -238,21 +237,13 @@ defmodule RetroHexChat.Scraper.HTTP do
     .article-text .article-copy .article .post #content #main section div
   )
 
-  @doc """
-  The page's own words, with the furniture removed.
-
-  Prefers whatever the document itself calls its main content — `<article>`, then
-  `<main>` — and falls back to the body, because a page that names nothing still
-  has an article in it somewhere and a partly-noisy answer beats none. Which of
-  the three was used is recorded under `raw_metadata["sources"]["content_text"]`,
-  so a later reader can weigh it.
-  """
-  @spec extract_content(Floki.html_tree()) :: {String.t() | nil, boolean(), String.t()}
-  def extract_content(document) do
-    content = extract_content_info(document)
-    {content.text, content.truncated?, content.strategy}
-  end
-
+  # The page's own words, with the furniture removed.
+  #
+  # Prefers whatever the document itself calls its main content — `<article>`, then
+  # `<main>` — and falls back to the body, because a page that names nothing still
+  # has an article in it somewhere and a partly-noisy answer beats none. Which of
+  # the three was used is recorded under `raw_metadata["sources"]["content_text"]`,
+  # so a later reader can weigh it.
   @spec extract_content_info(Floki.html_tree()) :: content_info()
   defp extract_content_info(document) do
     document
@@ -817,9 +808,7 @@ defmodule RetroHexChat.Scraper.HTTP do
     WebSite
   ))
 
-  @doc """
-  Fetches rich preview metadata while preserving retry-relevant error detail.
-  """
+  # Fetches rich preview metadata while preserving retry-relevant error detail.
   @spec fetch_metadata_result(String.t()) :: {:ok, metadata()} | {:error, fetch_error()}
   def fetch_metadata_result(url) do
     case scrape(url, []) do

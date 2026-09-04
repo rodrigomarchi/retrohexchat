@@ -106,10 +106,10 @@ defmodule RetroHexChatWeb.ShowcaseSEOTest do
       end
     end
 
-    # The catalog used to hang off the Start menu. It moved to the Components
-    # window when the Start menu became the same menu on every screen, so what
-    # matters is that a crawler still finds every component from any component
-    # page — not which piece of chrome the links happen to sit in.
+    # The catalog hangs off the Components window, not the Start menu, which is
+    # the same menu on every screen. What matters is that a crawler finds every
+    # component from any component page — not which piece of chrome the links
+    # happen to sit in.
     test "every component page links to every other component", %{conn: conn} do
       hrefs =
         conn

@@ -26,7 +26,7 @@ Full channel modes, persistent bans, role hierarchy (Owner / Op / Half-op / Voic
 You can open a game window inside the chat and play DOOM: Knee-Deep in the Dead, Quake, Quake II, Wolfenstein 3D, Half-Life: Uplink, or ScummVM adventures via WebAssembly engines without leaving the app. Two users can also invite each other to one of 34 multiplayer game sessions via P2P WebRTC.
 
 **The architecture is production-grade.**
-Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are unaffected. Message history uses cursor-based pagination with GIN trigram indexes for full-text search. 706 JavaScript tests. A partitioned local CI guard. Zero ignored Credo warnings. All public functions spec'd with Dialyzer.
+Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are unaffected. Message history uses cursor-based pagination with GIN trigram indexes for full-text search. A Vitest suite over the framework-free JavaScript. A partitioned local CI guard. Credo `--strict` and Dialyzer over every public function.
 
 ---
 
@@ -49,7 +49,7 @@ Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are u
 
 - **Channel modes** — `+i` (invite-only), `+m` (moderated), `+t` (topic lock), `+k` (key), `+l` (user limit), `+e` (ban exceptions), `+I` (invite exceptions)
 - **Roles** — Owner (`~`), Operators (`@`), Half-ops (`%`), Voiced (`+`)
-- **Channel Central** — 5-tab management dialog: General | Modes | Bans | Ban Exceptions | Invite Exceptions
+- **Channel Central** — management dialog: General | Modes | Access lists | Registration
 - **Channel list** — Browse active channels with filtering and search
 - **Advanced** — Join throttle, `/knock` for invite-only channels, 7 additional modes
 
@@ -61,7 +61,7 @@ Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are u
 ### Buddy List & Contacts
 
 - **Notify list** — Track friends online/away with 10-second debounce, auto-rotate when list is full
-- **Address Book** — 4-tab dialog: Contacts | Notify | Nick Colors | Control
+- **Address Book** — the contacts list; Notify List, Nick Colors and Ignore are windows of their own
 - **Per-user nick colors** — Override colors in chat, nicklist, and notify list
 - **Ignore system** — Per-type (messages/PMs/invites/actions), timed expiry, persistent storage
 
@@ -98,10 +98,7 @@ Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are u
 - **Nick completion** — `Tab` autocomplete in message input
 - **Message history** — `↑`/`↓` to navigate previous messages
 - **Context menu** — Right-click users: Query, Whois, Kick, Ban, Op, Voice, Ignore, Nick Color, Contacts
-- **Help system** — CHM-style dialog with Contents / Index / Search tabs, `F1` shortcut
-- **Options dialog** — 6-panel preferences: Display | Chat | Sound | Log | Privacy | Advanced
-- **Favorites** — Bookmark channels/PMs with encrypted passwords
-- **Log viewer** — Search, filter, and export history as TXT or HTML
+- **Help system** — CHM-style dialog with Contents / Index / Search tabs, reached from the Help menu, Start, or `/help`
 - **Multi-line paste** — Safe dialog for bulk text input
 
 ### Private P2P (WebRTC + Embedded TURN Server)
@@ -410,14 +407,14 @@ retro_hex_chat/
 │
 ├── config/                          # dev / test / prod / runtime configs
 ├── scripts/                         # ci.exs, deploy_all.exs
-└── docs/AGENT-GUIDE.md              # 11 governing principles + durable guidance
+└── docs/AGENT-GUIDE.md              # the governing principles + durable guidance
 ```
 
 ---
 
 ## Design Principles
 
-This project follows 11 governing principles documented in `docs/AGENT-GUIDE.md`. The non-negotiables:
+This project follows the governing principles documented in `docs/AGENT-GUIDE.md` §1. The non-negotiables:
 
 1. **TDD** — Tests come first or alongside; no retrofitting
 2. **Umbrella boundaries** — Domain never imports from web layer

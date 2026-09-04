@@ -286,7 +286,7 @@ the one thing the reader can act on.
 
 ## 19.6 The product rules the code does not explain
 
-Six decisions taken deliberately. Each of them looks arbitrary in the code and
+The decisions below were taken deliberately. Each of them looks arbitrary in the code and
 is not, so changing one means arguing with the reason rather than the line.
 
 - **Every surface has an antechamber, in one of two forms.** You do not fall

@@ -49,10 +49,6 @@ defmodule RetroHexChat.Scraper.Store do
   @spec scraper_version() :: pos_integer()
   def scraper_version, do: @scraper_version
 
-  @doc "How long a successful scrape stays fresh, in seconds."
-  @spec success_ttl_seconds() :: pos_integer()
-  def success_ttl_seconds, do: @success_ttl_seconds
-
   # ── URL identity ───────────────────────────────────────────
 
   @spec prepare_url(String.t()) :: {:ok, prepared_url()} | {:error, :invalid_url}

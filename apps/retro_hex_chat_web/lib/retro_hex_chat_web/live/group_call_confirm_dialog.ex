@@ -49,16 +49,6 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
      )}
   end
 
-  def update(%{action: {:open_close, channel}}, socket) do
-    {:ok,
-     assign(socket,
-       show: true,
-       mode: :close,
-       channel: channel,
-       target_nickname: nil
-     )}
-  end
-
   def update(%{action: {:open_end_call, channel}}, socket) do
     {:ok,
      assign(socket,

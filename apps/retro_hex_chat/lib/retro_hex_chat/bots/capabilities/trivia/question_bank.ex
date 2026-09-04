@@ -486,10 +486,4 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia.QuestionBank do
     pool = Map.get(@questions, category, Map.get(@questions, "general", []))
     pool |> Enum.shuffle() |> Enum.take(count)
   end
-
-  @spec question_count(String.t()) :: non_neg_integer()
-  def question_count(category) do
-    pool = Map.get(@questions, category, [])
-    length(pool)
-  end
 end

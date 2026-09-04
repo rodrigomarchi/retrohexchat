@@ -40,8 +40,7 @@ defmodule RetroHexChat.Lobby.JoinToken do
   def max_age, do: @max_age
 
   defp secret_key_base do
-    Application.get_env(:retro_hex_chat, :group_call_join_secret) ||
-      Application.get_env(:retro_hex_chat, :channel_space_join_secret) ||
-      raise "Missing :group_call_join_secret or :channel_space_join_secret configuration"
+    Application.get_env(:retro_hex_chat, :channel_space_join_secret) ||
+      raise "Missing :channel_space_join_secret configuration"
   end
 end

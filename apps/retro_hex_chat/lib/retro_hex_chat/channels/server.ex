@@ -429,6 +429,8 @@ defmodule RetroHexChat.Channels.Server do
            Modes.apply_changes(new_state.modes, clean_mode_string, clean_params) do
       new_state = %{new_state | modes: new_modes, membership: new_membership}
 
+      maybe_persist_channel_settings(new_state)
+
       Events.emit_mode_changed(state.name, mode_string, nickname)
 
       broadcast(
@@ -518,6 +520,8 @@ defmodule RetroHexChat.Channels.Server do
             topic_set_by: nickname,
             topic_set_at: now
         }
+
+        maybe_persist_channel_settings(new_state)
 
         Events.emit_topic_changed(state.name, topic, nickname)
 
@@ -697,7 +701,9 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   def handle_call(:mark_registered, _from, state) do
-    reply(:ok, %{state | registered: true})
+    new_state = %{state | registered: true}
+    maybe_persist_channel_settings(new_state)
+    reply(:ok, new_state)
   end
 
   def handle_call({:knock, nickname, message}, _from, state) do
@@ -1409,6 +1415,28 @@ defmodule RetroHexChat.Channels.Server do
     e ->
       Logger.warning("Failed to persist ban #{action} for #{channel_name}: #{inspect(e)}")
   end
+
+  # The columns `load_persisted_state/1` reads back. `Modes.to_string/1` names
+  # `k`, `l` and `j` without their values, and reapplying it supplies no
+  # params — so the flags survive and the three parameterised modes come back
+  # from the columns of their own beside it.
+  defp maybe_persist_channel_settings(state) do
+    if state.registered do
+      ServiceQueries.update_registered_channel_settings(state.name,
+        topic: state.topic,
+        modes: Modes.to_string(state.modes),
+        mode_key: state.modes.key,
+        mode_limit: state.modes.limit,
+        mode_join_throttle: join_throttle_string(state.modes.join_throttle)
+      )
+    end
+  rescue
+    e ->
+      Logger.warning("Failed to persist settings for #{state.name}: #{inspect(e)}")
+  end
+
+  defp join_throttle_string(nil), do: nil
+  defp join_throttle_string({count, seconds}), do: "#{count}:#{seconds}"
 
   defp load_persisted_state(state) do
     case Queries.load_persisted_state(state.name) do

@@ -18,9 +18,6 @@ defmodule RetroHexChat.Services.ChanExpiry do
           welcome_messages_removed: non_neg_integer()
         }
 
-  @spec default_expiration_days() :: pos_integer()
-  def default_expiration_days, do: @default_expiration_days
-
   @spec expired_count() :: non_neg_integer()
   @spec expired_count(keyword()) :: non_neg_integer()
   def expired_count(opts \\ []) do

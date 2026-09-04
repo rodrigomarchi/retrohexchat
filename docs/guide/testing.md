@@ -41,6 +41,18 @@ Part of the [Agent Guide](../AGENT-GUIDE.md) (§13). Section numbers there are s
 - **Never assert on async `send_update` / stream messages.** Assert on synchronous state
   (`:sys.get_state`), domain/component unit tests, or persisted data. No `sleep` / render-retry.
   (See [`liveview-islands.md` §6.3](liveview-islands.md) for the flush rule when a synchronous read is genuinely needed.)
+  The settle is `_ = :sys.get_state(view.pid)`: a call sits behind everything already in that
+  process's mailbox, so it returns only once the dispatch has been handled. `Process.sleep(50)`
+  says the same thing to a reader and guarantees none of it — it passes on an idle machine and
+  fails in a loaded CI partition, which is how a suite comes to fail once in 487 and pass on
+  every rerun. Where the wait is for another process to *finish*, use the call that already
+  waits: `GenServer.stop/1` returns after `terminate/2`, so anything that ran there is done.
+- **A page object must not decide on state that has not arrived.** Reading a Playwright
+  `count()` and branching on it is a decision made once, with no waiting, against a DOM the
+  server may not have patched yet. `expectTabVisible` opened the mobile conversations drawer
+  only when the row was already present, so a join that had not landed left the drawer shut and
+  the assertion then waited for a row a shut drawer could never show. Do the setup
+  unconditionally when it is idempotent, or wait for the element before branching on it.
 - **Feature tests run concurrently — never mutate shared global state destructively.** Set caches
   to `:unset`/neutral values instead of deleting them (deleting `:motd_cache` forced unrelated
   mounts to query outside their Ecto sandbox owner). Accept BOTH valid values when another test

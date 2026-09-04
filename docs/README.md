@@ -12,7 +12,7 @@ trigger has not fired.
 
 ## Guide
 
-- [AGENT-GUIDE.md](AGENT-GUIDE.md) — the durable engineering guide: the 11 governing
+- [AGENT-GUIDE.md](AGENT-GUIDE.md) — the durable engineering guide: the governing
   principles plus hard-won rules (state tiers, command/dispatch, PubSub & permissions,
   persistence, UI composition, CSS/SVG, mIRC parity, help, process discipline, JS hook
   loading standard, i18n/public URLs). **Start here for any non-trivial change.**
@@ -78,10 +78,10 @@ the `@moduledoc` of the modules they govern. The i18n debt they measured but did
 not clear is in
 [`reference/i18n-catalogs.md`](reference/i18n-catalogs.md).
 
-`plans/agent-docs-audit.md` and its `agent-docs-removals.txt` are the record of a
-completed audit rather than work in flight. The audit says it may be deleted once
-somebody has reviewed the removals; until then it stays, unlisted, because nothing
-triggers reading it.
+`plans/` holds work in flight and nothing else. A finished plan's durable rules
+move into `AGENT-GUIDE.md` or a `guide/` playbook and the plan is deleted — a
+record of how something came to be is not a thing anybody needs to read to
+change it.
 
 ## Conventions
 

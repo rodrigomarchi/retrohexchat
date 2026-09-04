@@ -530,8 +530,7 @@ falls: a 200-line hook budget; a forbidden-primitive list in `js/hooks/`
 or — for the WebRTC hooks, whose residual is irreducible live-`RTCPeerConnection` and tile-DOM
 plumbing — a standing override with a written reason. `assets/js/SURFACE.txt` +
 `scripts/surface_snapshot.sh --check` pins the observable surface (event names, `data-*` keys) so
-a move that renames one is caught before commit. The refactor that introduced all this is logged
-in `docs/refactor/`.
+a move that renames one is caught before commit.
 
 ---
 

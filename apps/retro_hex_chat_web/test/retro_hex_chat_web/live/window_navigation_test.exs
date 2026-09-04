@@ -32,7 +32,8 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/join #wn_test1"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
 
       # Should be on #wn_test1 now; switch back to #lobby
       html = render_click(view, "window_next")
@@ -47,7 +48,8 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/join #wp_test1"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
 
       html = render_click(view, "window_prev")
       assert html =~ "chat-messages"
@@ -84,7 +86,8 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/join #ws_test1"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
 
       # Select window 1 (first in sorted list)
       html = render_click(view, "window_select", %{"index" => 1})

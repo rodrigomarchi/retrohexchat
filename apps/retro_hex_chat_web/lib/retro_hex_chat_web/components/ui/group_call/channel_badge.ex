@@ -287,7 +287,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
 
     assigns
     |> assign(:room_token, value(summary.room, :token))
-    |> assign(:summary_data, summary)
     |> assign(:participants, participants)
     |> assign(:participant_count, participant_count)
     |> assign(:max_participants, max_participants)

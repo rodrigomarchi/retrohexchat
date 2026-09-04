@@ -14,11 +14,6 @@ config :retro_hex_chat,
   ecto_repos: [RetroHexChat.Repo],
   admins: [],
   server_operators: [],
-  p2p_token_secret:
-    System.get_env(
-      "P2P_TOKEN_SECRET",
-      "p2p-dev-secret-change-me-in-production-at-least-64-bytes-long-padding"
-    ),
   channel_space_join_secret:
     System.get_env(
       "CHANNEL_SPACE_JOIN_SECRET",

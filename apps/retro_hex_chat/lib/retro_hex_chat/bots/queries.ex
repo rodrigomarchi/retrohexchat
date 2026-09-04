@@ -126,14 +126,6 @@ defmodule RetroHexChat.Bots.Queries do
     |> Repo.all()
   end
 
-  @spec update_channel_config(BotChannelConfig.t(), map()) ::
-          {:ok, BotChannelConfig.t()} | {:error, Ecto.Changeset.t()}
-  def update_channel_config(%BotChannelConfig{} = config, attrs) do
-    config
-    |> BotChannelConfig.changeset(attrs)
-    |> Repo.update()
-  end
-
   # ── Custom Commands ───────────────────────────────────────────
 
   @spec add_custom_command(integer(), map()) ::

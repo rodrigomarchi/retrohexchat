@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.HoverOfflineNickTest do
 
     # An offline/stale nick from message history has nil presence meta; the
     # hover card must render with unknown client fields instead of raising
-    # (a missing :browser key used to crash the whole session).
+    # (a missing :browser key crashes the whole session).
     render_hook(view, "nick_hover", %{"nick" => "GhostNick#{uid()}", "x" => 100, "y" => 100})
 
     assert Process.alive?(view.pid)

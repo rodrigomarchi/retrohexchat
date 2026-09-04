@@ -157,6 +157,23 @@ defmodule RetroHexChat.Services.Queries do
     Repo.delete(channel)
   end
 
+  @doc """
+  Writes back the settings a registered channel is expected to keep.
+
+  Registration stores who founded the room; what the room *is* — its topic and
+  its modes — changes afterwards, and `Channels.Queries.load_persisted_state/1`
+  reads all of it back when the channel's process starts again. Without this
+  write that read finds the columns as the insert left them, and a registered
+  channel comes back with no topic and no modes.
+  """
+  @spec update_registered_channel_settings(String.t(), keyword()) :: :ok
+  def update_registered_channel_settings(channel_name, settings) do
+    from(c in RegisteredChannel, where: c.name == ^channel_name)
+    |> Repo.update_all(set: settings)
+
+    :ok
+  end
+
   @spec touch_channel_activity(String.t()) :: :ok
   def touch_channel_activity(channel_name) do
     from(c in RegisteredChannel, where: c.name == ^channel_name)

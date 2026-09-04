@@ -135,4 +135,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.BotManagementDialogPage do
   end
 
   defp minutes_ago(minutes), do: DateTime.add(DateTime.utc_now(), -minutes * 60, :second)
+  # A showcase page renders the component and nothing behind it, so the
+  # controls it draws have nowhere to go. Answering them is what keeps a
+  # click from taking the page down with an unmatched event.
+  @impl true
+  def handle_event(_event, _params, socket), do: {:noreply, socket}
 end

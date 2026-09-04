@@ -20,9 +20,6 @@ defmodule RetroHexChat.Chat.ContextualTips do
   @spec new() :: t()
   def new, do: %{seen_tips: [], suppressed: false}
 
-  @spec known_tip_ids() :: [String.t()]
-  def known_tip_ids, do: @known_tip_ids
-
   @spec seen_tips(map()) :: [String.t()]
   def seen_tips(%{seen_tips: seen_tips}), do: normalize_seen_tips(seen_tips)
   def seen_tips(_tips), do: []

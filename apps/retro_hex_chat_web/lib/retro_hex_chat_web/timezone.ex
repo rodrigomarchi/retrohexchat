@@ -36,12 +36,6 @@ defmodule RetroHexChatWeb.Timezone do
 
   def validate(_), do: "Etc/UTC"
 
-  @doc """
-  Formats a timezone's UTC offset as a human-readable string like "UTC-3" or "UTC+5:30".
-  """
-  @spec format_utc_offset(String.t()) :: String.t()
-  def format_utc_offset("Etc/UTC"), do: "UTC"
-
   def format_utc_offset(timezone) when is_binary(timezone) do
     case DateTime.shift_zone(DateTime.utc_now(), timezone) do
       {:ok, dt} -> format_offset(dt.utc_offset + dt.std_offset)

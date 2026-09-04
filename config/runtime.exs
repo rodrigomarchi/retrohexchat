@@ -132,9 +132,7 @@ config :retro_hex_chat,
     (System.get_env("FILE_TRANSFER_BLOCKED_EXTENSIONS") ||
        ".exe,.bat,.cmd,.com,.msi,.scr,.pif,.vbs,.vbe,.js,.jse,.wsf,.wsh,.ps1,.reg")
     |> String.split(",", trim: true)
-    |> Enum.map(&String.trim/1),
-  file_transfer_chunk_size_kb:
-    String.to_integer(System.get_env("FILE_TRANSFER_CHUNK_SIZE_KB") || "64")
+    |> Enum.map(&String.trim/1)
 
 chat_upload_s3_endpoint =
   System.get_env("CHAT_UPLOAD_S3_ENDPOINT", "http://localhost:3900")

@@ -131,8 +131,8 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       refute has_entry?(:landing, "start-menu-item-open_system_home", is_admin: true)
     end
 
-    # A P2P session lives at its own address, and everything that used to hang
-    # under this group acted on one from a screen that was not holding it.
+    # A P2P session lives at its own address, and anything hanging under this
+    # group would act on one from a screen that is not holding it.
     test "no menu entry anywhere reaches inside a P2P session" do
       for screen <- @screens, entry <- ~w(p2p_how_to_start p2p_start_audio p2p_toggle_privacy) do
         refute has_entry?(screen, "start-menu-item-#{entry}")

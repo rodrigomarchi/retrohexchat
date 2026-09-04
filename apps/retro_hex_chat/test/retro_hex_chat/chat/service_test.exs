@@ -140,9 +140,9 @@ defmodule RetroHexChat.Chat.ServiceTest do
       assert {:error, _} = Service.send_private_message("Alice", "Bob", long_content)
     end
 
-    # One delivery each, carrying the whole message. It used to take two
-    # broadcasts in two shapes to say this, and the one that reached everybody
-    # carried half the fields.
+    # One delivery each, carrying the whole message. Two broadcasts in two shapes
+    # would say this twice, with the one that reaches everybody carrying half the
+    # fields.
     test "delivers the whole message to both people, once each" do
       sender = unique_nick("A")
       recipient = unique_nick("B")

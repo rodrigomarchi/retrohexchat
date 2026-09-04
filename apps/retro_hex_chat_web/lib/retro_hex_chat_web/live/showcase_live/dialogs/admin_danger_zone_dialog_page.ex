@@ -28,6 +28,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AdminDangerZoneDialogPage do
     {:noreply, assign(socket, open?: !socket.assigns.open?)}
   end
 
+  # Anything else this page draws has nowhere to go; answering it keeps a
+  # click from taking the page down with an unmatched event.
+  def handle_event(_event, _params, socket), do: {:noreply, socket}
+
   @impl true
   def render(assigns) do
     ~H"""

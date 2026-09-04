@@ -193,17 +193,17 @@ defmodule RetroHexChatWeb.ChatLive.MessagePaginationTest do
     end
   end
 
-  # The DOM cap used to apply to both ends of the list. LiveView prunes a
-  # negative limit from the front, which is where a prepended page lands, so
-  # from the third page back every page was deleted by the patch that inserted
-  # it — and the cursor had already moved past it, so it could not be asked for
-  # again. Measured in the browser: 700 messages fetched and dropped while the
-  # reader stayed on the same 150 rows (`e2e/tests/chat-scrollback-audit.spec.ts`).
+  # The DOM cap applies to one end of the list only. LiveView prunes a negative
+  # limit from the front, which is where a prepended page lands, so a cap on
+  # both ends deletes every page from the third back with the very patch that
+  # inserts it — and the cursor has already moved past it, so it cannot be asked
+  # for again. Measured in the browser: 700 messages fetched and dropped while
+  # the reader stays on the same 150 rows (`e2e/tests/chat-scrollback-audit.spec.ts`).
   #
   # The viewport's `rendered` is its mirror of what the browser holds, so it is
   # where that rule can be asserted without a browser: the test client applies
   # no stream limit at all, which is exactly why the markup assertion above
-  # passed throughout.
+  # passes either way.
   describe "paging back past the DOM cap" do
     test "keeps every page the reader loaded", %{conn: conn} do
       channel = "#pagcap#{uid()}"

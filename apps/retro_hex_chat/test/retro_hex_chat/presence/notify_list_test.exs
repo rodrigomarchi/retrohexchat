@@ -86,8 +86,8 @@ defmodule RetroHexChat.Presence.NotifyListTest do
       assert length(list.entries) == 50
     end
 
-    # A note longer than the column allows used to reach `save/2` untruncated
-    # and raise inside its `Repo.insert!`, because only `update_note/3` cut it.
+    # A note longer than the column allows must not reach `save/2` untruncated:
+    # it raises inside `Repo.insert!` if only `update_note/3` cuts it.
     test "cuts a note to what the entry can hold, as updating one does" do
       long = String.duplicate("a", 500)
 

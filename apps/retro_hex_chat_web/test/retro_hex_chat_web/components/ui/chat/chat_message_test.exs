@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessageTest do
   describe "chat_message/1 type styling" do
     test "renders a notify_rename system message without crashing" do
       # Regression: a nick change broadcasts a :notify_rename message. A missing
-      # type_class/1 clause used to raise FunctionClauseError, crashing the chat
+      # type_class/1 clause raises FunctionClauseError, crashing the chat
       # LiveView and reloading every connected client.
       html = render_message("notify_rename")
       assert html =~ "text-notice"

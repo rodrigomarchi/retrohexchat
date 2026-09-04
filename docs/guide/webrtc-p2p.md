@@ -53,10 +53,13 @@ the door, for both people.
   (`WHERE (creator=A AND peer=B) OR (creator=B AND peer=A)` filtered to non-terminal). The DB
   is authoritative because a crashed-but-not-yet-restarted GenServer would make a Registry
   check lie.
-- **Session tokens are `Phoenix.Token.sign/verify`** (salt `"p2p_session"`, 24h max_age)
-  embedding `%{creator_id, peer_id, session_id}` so authorization needs no DB lookup. The domain
-  app reads the signing secret from `Application.get_env(:retro_hex_chat, :p2p_token_secret)`
-  populated at startup — it must NOT depend on the web endpoint module.
+- **A session token is a stored identifier, not a signed claim.** It names the row and
+  nothing else, so every question about it is a DB question. What *is* signed is the
+  channel join: `RetroHexChat.Lobby.JoinToken` binds one browser to one session token and
+  one user, under its own salt so a token minted for a conference or a space cannot be
+  spent on a P2P door. It is an identity binding and never an authorization — whether this
+  user may signal here is `Lobby.Policy.can_join?/2`, asked on every join, which is why the
+  token is allowed to outlive an hour.
 - **`create_open_session` IS the match link.** It names nobody, so nothing is sent: the link is
   the invitation and posting it is the delivery. The direct invite still exists unchanged — two
   ways into one session, never two kinds of session.

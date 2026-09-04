@@ -209,21 +209,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     assign(socket, channel_user_counts: Map.put(counts, channel_name, count))
   end
 
-  @spec load_all_channel_user_counts(Phoenix.LiveView.Socket.t()) ::
-          Phoenix.LiveView.Socket.t()
-  def load_all_channel_user_counts(socket) do
-    counts =
-      socket.assigns.session.channels
-      |> Enum.reduce(%{}, fn channel, acc ->
-        case Server.get_state(channel) do
-          {:ok, state} -> Map.put(acc, channel, state.member_count)
-          _ -> acc
-        end
-      end)
-
-    assign(socket, channel_user_counts: counts)
-  end
-
   @spec load_channel_messages_with_pagination(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
   @spec load_channel_messages_with_pagination(

@@ -567,48 +567,6 @@ export function attachMediaStream(element, stream, options = {}) {
   return { attached: true, changed };
 }
 
-// --- Quality Monitoring ---
-
-/**
- * Poll connection statistics and return a quality snapshot.
- * @param {RTCPeerConnection} pc
- * @returns {Promise<{roundTripTime: number, packetLoss: number, jitter: number, timestamp: number}>}
- */
-export async function getQualitySnapshot(pc) {
-  const stats = await pc.getStats();
-  let roundTripTime = 0;
-  let packetLoss = 0;
-  let jitter = 0;
-
-  stats.forEach((report) => {
-    if (report.type === "candidate-pair" && report.state === "succeeded") {
-      roundTripTime = report.currentRoundTripTime || 0;
-    }
-    if (report.type === "inbound-rtp" && report.kind === "audio") {
-      const lost = report.packetsLost || 0;
-      const received = report.packetsReceived || 0;
-      const total = lost + received;
-      packetLoss = total > 0 ? (lost / total) * 100 : 0;
-      jitter = report.jitter || 0;
-    }
-  });
-
-  return { roundTripTime, packetLoss, jitter, timestamp: Date.now() };
-}
-
-/**
- * Map a quality snapshot to a quality level.
- * @param {{roundTripTime: number, packetLoss: number}} snapshot
- * @returns {"excellent"|"good"|"fair"|"poor"}
- */
-export function mapQualityLevel(snapshot) {
-  const { packetLoss, roundTripTime } = snapshot;
-  if (packetLoss < 1 && roundTripTime < 0.1) return "excellent";
-  if (packetLoss < 3 && roundTripTime < 0.2) return "good";
-  if (packetLoss < 8 && roundTripTime < 0.4) return "fair";
-  return "poor";
-}
-
 /**
  * Collect a detailed connection stats snapshot from getStats().
  *

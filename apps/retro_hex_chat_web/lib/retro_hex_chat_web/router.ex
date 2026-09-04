@@ -251,6 +251,9 @@ defmodule RetroHexChatWeb.Router do
       ]
   end
 
+  # The fallback pair is a development convenience and cannot reach production:
+  # `config/runtime.exs` raises at boot there unless both env vars are set, so a
+  # release either carries real credentials or does not start.
   defp admin_basic_auth(conn, _opts) do
     config = Application.get_env(:retro_hex_chat_web, :basic_auth, [])
 

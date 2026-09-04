@@ -129,7 +129,7 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
       assert resolution.live?
     end
 
-    # Pressing Share twice used to mint two live addresses, which is what made
+    # Pressing Share twice must not mint two live addresses, which would make
     # revoking one of them a half-answer.
     test "pressing it again hands back the address you already have", %{conn: conn} do
       nick = "Twice#{uid()}"

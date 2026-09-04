@@ -150,7 +150,7 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
   describe "execute set — capabilities absent at creation" do
     # A bot is born with greeter, custom_commands and help. Every other
     # capability is created by the first `/bot set` that names one of its keys,
-    # and that first write is the one that used to be dropped.
+    # and that first write is the one at risk of being dropped.
     setup do
       Bot.execute(["create", "BotCmdTest"], @admin_ctx)
       :ok

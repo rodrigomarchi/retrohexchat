@@ -64,14 +64,6 @@ defmodule RetroHexChat.Arcade.Queries do
   @spec stale_session_count(DateTime.t()) :: non_neg_integer()
   def stale_session_count(before_datetime), do: StaleRecords.count(@stale, before_datetime)
 
-  @spec expire_session(SoloSession.t()) :: {:ok, SoloSession.t()} | {:error, Ecto.Changeset.t()}
-  def expire_session(session) do
-    update_status(session, "expired", %{
-      closed_at: DateTime.utc_now(),
-      closed_reason: "stale_cleanup"
-    })
-  end
-
   @spec expire_stale_session(SoloSession.t(), DateTime.t()) ::
           {:ok, :expired | :skipped} | {:error, term()}
   def expire_stale_session(%SoloSession{id: id}, before_datetime),

@@ -11,16 +11,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
   alias RetroHexChat.Page
   alias RetroHexChatWeb.ChatLive.Components.{MessageViewport, StatusViewport}
 
-  @spec visible_channel_messages([map()], map()) :: [map()]
-  def visible_channel_messages(messages, ignore_list) do
-    Enum.filter(messages, &visible_channel_message?(&1, ignore_list))
-  end
-
-  @spec visible_private_messages([map()], map()) :: [map()]
-  def visible_private_messages(messages, ignore_list) do
-    Enum.filter(messages, &visible_private_message?(&1, ignore_list))
-  end
-
   @doc """
   Hides ignored authors from a page **without touching its pagination state**.
 

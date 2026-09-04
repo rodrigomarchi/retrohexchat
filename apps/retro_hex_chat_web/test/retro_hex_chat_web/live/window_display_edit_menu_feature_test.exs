@@ -89,8 +89,8 @@ defmodule RetroHexChatWeb.WindowDisplayEditMenuFeatureTest do
     end
 
     # With a private conversation on screen `active_channel` is nil, so clearing
-    # used to fall to the branch that recorded nothing: the window emptied and
-    # the whole history came back the next time the conversation was opened.
+    # must not fall to the branch that records nothing: the window would empty and
+    # the whole history come back the next time the conversation was opened.
     test "clear_window stamps a cutoff for a private conversation too", %{conn: conn} do
       view = connect_user(conn, "PmClearW#{uid()}")
       peer = "Peer#{uid()}"

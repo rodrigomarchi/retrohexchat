@@ -132,22 +132,6 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
 
   defp pad2(n), do: String.pad_leading(Integer.to_string(n), 2, "0")
 
-  @spec extract_p2p_label(String.t()) :: String.t()
-  def extract_p2p_label(content) when is_binary(content) do
-    case Regex.run(~r{^(.+?)[.!?]?\s*Join the lobby:}, content) do
-      [_, label] -> label
-      _ -> content
-    end
-  end
-
-  @spec extract_p2p_link(String.t()) :: String.t()
-  def extract_p2p_link(content) when is_binary(content) do
-    case Regex.run(~r{(/(?:p2p|game|lobby)/[^\s]+)}, content) do
-      [_, path] -> path
-      _ -> "#"
-    end
-  end
-
   @spec highlight_bg_class(map()) :: String.t()
   def highlight_bg_class(%{highlighted: true, highlight_color: nil}), do: " highlight-bg-default"
   def highlight_bg_class(%{highlighted: true, highlight_color: idx}), do: " irc-bg-#{idx}"

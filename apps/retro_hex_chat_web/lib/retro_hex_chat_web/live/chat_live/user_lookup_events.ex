@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.ChatLive.UserLookupEvents do
   @moduledoc """
   Handle User Lookup window and result card events.
 
-  Covers: open_user_lookup, close_user_lookup, user_lookup_submit,
+  Covers: open_user_lookup, user_lookup_submit,
   close_lookup_result, lookup_result_whois,
   lookup_result_whowas, lookup_result_query.
   """
@@ -48,10 +48,6 @@ defmodule RetroHexChatWeb.ChatLive.UserLookupEvents do
 
   def handle_event("open_user_lookup", _params, socket) do
     {:halt, open(socket)}
-  end
-
-  def handle_event("close_user_lookup", _params, socket) do
-    {:halt, push_event(socket, "window_command", %{action: "close", id: "user-lookup"})}
   end
 
   # Both buttons submit the form, so the nickname comes from the field rather

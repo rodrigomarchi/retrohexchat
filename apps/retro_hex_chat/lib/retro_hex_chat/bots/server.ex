@@ -452,10 +452,10 @@ defmodule RetroHexChat.Bots.Server do
     end
   end
 
-  # A command can change what there is to poll — `rss add` is the whole point of
-  # the capability and used to leave the feed sitting there, never fetched,
-  # because timers were only ever created at boot. Rebuilding this capability's
-  # timers from its new state is idempotent and cheap at these sizes.
+  # A command can change what there is to poll: `rss add` names a feed that no
+  # boot-time timer knows about, and a feed nothing polls is never fetched. So a
+  # command that changes the capability's state rebuilds that capability's
+  # timers from it, which is idempotent and cheap at these sizes.
   @spec reconcile_timers(state(), atom()) :: state()
   defp reconcile_timers(state, cap_name) do
     with {^cap_name, module, config} <- find_capability(state, cap_name),

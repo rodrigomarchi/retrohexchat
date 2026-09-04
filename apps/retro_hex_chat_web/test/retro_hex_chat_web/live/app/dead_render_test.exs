@@ -124,8 +124,8 @@ defmodule RetroHexChatWeb.App.DeadRenderTest do
     end
 
     # The sharpest of the two: `attach_session/5` joins with `takeover: true`, so
-    # a fetch used to move the seat out of whichever window was holding it — and
-    # into a process that was already gone.
+    # a fetch that reached it would move the seat out of whichever window is
+    # holding it — and into a process that is already gone.
     test "fetching it does not attach a connection or displace the holder", ctx do
       %{conn: conn, peer: peer, session: session} = ctx
 

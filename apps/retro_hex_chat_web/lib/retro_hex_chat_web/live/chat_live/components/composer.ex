@@ -69,10 +69,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     paste: true
   }
 
-  @doc "Default capability set (full-chat leaning, safe for first paint)."
-  @spec default_capabilities() :: map()
-  def default_capabilities, do: @default_capabilities
-
   @doc """
   Derives the composer capability map from a chat `%Session{}` and the
   status-tab flag, preserving the exact gating the composer used to read inline.
@@ -785,7 +781,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
       autocomplete_results: [],
       autocomplete_selected: 0
     )
-    |> push_event("autocomplete_closed", %{})
   end
 
   defp navigate_autocomplete(socket, direction) do

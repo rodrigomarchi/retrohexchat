@@ -94,36 +94,9 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
 
   def drop_pm(socket, _peer_nick), do: socket
 
-  @doc "Forget the badge that carries `token`, whoever the peer was."
-  @spec drop_pm_by_token(Socket.t(), String.t()) :: Socket.t()
-  def drop_pm_by_token(socket, token) when is_binary(token) do
-    assign(socket,
-      p2p_pm_sessions:
-        socket |> pm_sessions() |> Enum.reject(&match?({_key, %{token: ^token}}, &1)) |> Map.new()
-    )
-  end
-
-  def drop_pm_by_token(socket, _token), do: socket
-
   @doc "Every private conversation with a session, keyed by downcased nickname."
   @spec pm_sessions(Socket.t()) :: %{String.t() => map()}
   def pm_sessions(socket), do: socket.assigns[:p2p_pm_sessions] || %{}
-
-  @doc """
-  The peer nick whose session token `token` belongs to, as this reader sees it.
-
-  Read out of the badges rather than the database: the chat is answering about
-  a conversation it is already drawing.
-  """
-  @spec peer_nick_of(Socket.t(), String.t()) :: String.t() | nil
-  def peer_nick_of(socket, token) do
-    socket
-    |> pm_sessions()
-    |> Enum.find_value(fn
-      {_key, %{token: ^token, peer_nick: peer_nick}} -> peer_nick
-      _other -> nil
-    end)
-  end
 
   @doc """
   The session this reader already has open at its own address, if any.

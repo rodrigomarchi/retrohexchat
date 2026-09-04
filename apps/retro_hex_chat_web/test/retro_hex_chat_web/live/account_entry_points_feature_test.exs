@@ -77,9 +77,9 @@ defmodule RetroHexChatWeb.AccountEntryPointsFeatureTest do
       end
     end
 
-    # The status bar used to carry an account widget and a one-click away
-    # toggle. Both left when the window title bar took over naming who you are;
-    # the three navigation surfaces above are the account entry points now.
+    # The status bar carries neither an account widget nor a one-click away
+    # toggle: the window title bar names who you are, and the three navigation
+    # surfaces above are the account entry points.
     test "the status bar no longer duplicates the account state" do
       html = render_component(&StatusBarApp.status_bar_app/1, lag_ms: 42)
 

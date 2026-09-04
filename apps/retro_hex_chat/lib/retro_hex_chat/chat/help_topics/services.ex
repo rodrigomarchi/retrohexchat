@@ -68,13 +68,16 @@ defmodule RetroHexChat.Chat.HelpTopics.Services do
           "cs info",
           "channel registration",
           "founder",
+          "keeps topic",
           "registration tab"
         ],
         icon: :icon_tab_registration,
         description:
           dgettext(
             "help",
-            "Register, inspect, and drop the current channel through ChanServ commands or Channel Central."
+            "Register, inspect, and drop the current channel through ChanServ commands or Channel Central. " <>
+              "A registered channel keeps its topic and its modes when the last person leaves, " <>
+              "so both are there again the next time somebody joins."
           ),
         see_also: ["chanserv", "chanserv-access", "chanserv-ui", "cmd-cs"]
       },

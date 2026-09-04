@@ -359,7 +359,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
 
   # One nick plus optional extras — the shape every moderation and NickServ
   # action in this window takes. `show_*`/`include_password` add the fields a
-  # given action needs, so eleven forms stay one component.
+  # given action needs, so every nick-only action stays one component.
   attr :id, :string, required: true
   attr :event, :any, default: nil
   attr :title, :string, required: true

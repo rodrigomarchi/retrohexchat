@@ -154,8 +154,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
     """
   end
 
-  # The same readout the status bar used to show, kept here rather than shared
-  # with it: what a tray shows is a property of the tray.
+  # The tray owns its own readout rather than sharing one: what a tray shows is
+  # a property of the tray.
   @spec lag_text(integer() | nil, atom()) :: String.t()
   defp lag_text(nil, :timeout), do: "?"
   defp lag_text(nil, _lag_status), do: "—"
@@ -168,7 +168,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   defp lag_class(_lag_status), do: nil
 
   # Window families that collapse into one taskbar entry. The taskbar is a
-  # single `overflow-x-auto` strip of 12ch-truncated buttons, so 49 windows
+  # single `overflow-x-auto` strip of 12ch-truncated buttons, so a full registry
   # would be thousands of pixels of horizontal scroll if every open one claimed
   # its own button.
   #
@@ -241,10 +241,9 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   end
 
   # Every button on the strip, derived from the one place a window is declared.
-  # This used to be a pipeline of twenty-nine hand-written `add_window` calls,
-  # each repeating an id, a label and an icon that were also written in the
-  # markup and in the menus — which is how twelve windows came to render, focus
-  # and cascade correctly while having no button here at all.
+  # Listing them by hand means repeating an id, a label and an icon that are
+  # also written in the markup and in the menus, and a window left off the list
+  # renders, focuses and cascades correctly while having no button here at all.
   defp taskbar_windows(assigns) do
     capabilities = %{
       admin?: assigns.is_admin,

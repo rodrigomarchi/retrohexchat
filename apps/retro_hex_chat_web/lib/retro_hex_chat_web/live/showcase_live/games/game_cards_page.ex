@@ -28,6 +28,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameCardsPage do
     {:noreply, assign(socket, selected: game)}
   end
 
+  # Anything else this page draws has nowhere to go; answering it keeps a
+  # click from taking the page down with an unmatched event.
+  def handle_event(_event, _params, socket), do: {:noreply, socket}
+
   attr :name, :atom, required: true
 
   defp game_icon(assigns) do

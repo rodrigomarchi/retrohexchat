@@ -32,11 +32,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickChangeDialogTest do
     refute html =~ ~s(data-testid="nick-change-password")
   end
 
-  # The password used to travel as `phx-value-password`, read from an assign the
-  # keyup filled in. Retype after a wrong attempt and confirm without pausing,
-  # and the server was handed the previous attempt again — "Incorrect password"
-  # for a password that was correct. Carrying it as a form field is what makes
-  # the value the one on screen.
+  # A password travelling as `phx-value-password`, read from an assign the keyup
+  # fills in, lags the field: retype after a wrong attempt and confirm without
+  # pausing, and the server is handed the previous attempt again — "Incorrect
+  # password" for a password that was correct. Carrying it as a form field is
+  # what makes the value the one on screen.
   test "confirm submits the field rather than an assign" do
     html =
       render_component(NickChangeDialog,

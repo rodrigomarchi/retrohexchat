@@ -51,10 +51,10 @@ Mechanics, options, partitions, browser E2E and deploy: [`docs/reference/ci-pipe
 Use `make deploy.skip-ci` only when `make ci` just passed on this exact revision.
 
 **`make e2e.full` before a release.** `make ci` proves the server; it never
-opens a browser. The first whole-suite run — 486 specs, ~36 minutes — found
-fourteen real failures behind a green 18/18, among them a dialog that drew a
-channel mode it no longer had and a window that never handed the keyboard over.
-Too slow for the commit gate, cheap once per release.
+opens a browser. The first whole-suite run found real failures behind a green
+`make ci` — among them a dialog that drew a channel mode it did not have, and a
+window that never handed the keyboard over. Too slow for the commit gate, cheap
+once per release. The spec inventory is `e2e/TEST_CATALOG.md`.
 
 ## Git
 
@@ -99,7 +99,7 @@ Read these when the trigger applies — not before.
 
 | Read | When |
 |---|---|
-| [`docs/AGENT-GUIDE.md`](docs/AGENT-GUIDE.md) | **Start here for any non-trivial change.** The 11 governing principles, state tiers, command/dispatch spine, PubSub & permissions, persistence, UI composition, CSS/SVG, mIRC parity, help, process discipline, JS bundle standard, i18n & public URLs |
+| [`docs/AGENT-GUIDE.md`](docs/AGENT-GUIDE.md) | **Start here for any non-trivial change.** The governing principles, state tiers, command/dispatch spine, PubSub & permissions, persistence, UI composition, CSS/SVG, mIRC parity, help, process discipline, JS bundle standard, i18n & public URLs |
 | [`docs/guide/liveview-islands.md`](docs/guide/liveview-islands.md) | Extracting or debugging a LiveComponent island |
 | [`docs/guide/windowed-desktop.md`](docs/guide/windowed-desktop.md) | Adding or changing a window, dialog, taskbar or Start menu entry |
 | [`docs/guide/webrtc-p2p.md`](docs/guide/webrtc-p2p.md) | Calls, signaling, TURN, file transfer, call recovery |

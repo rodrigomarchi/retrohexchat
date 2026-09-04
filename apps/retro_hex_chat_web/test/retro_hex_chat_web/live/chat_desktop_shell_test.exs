@@ -97,7 +97,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
 
       assert has_element?(view, ~s(#chat-desktop [data-window-taskbar="chat"]))
       assert has_element?(view, ~s(#chat-tray-clock[phx-hook="ClockHook"]))
-      # The tray owns the clock — the header status bar no longer shows one.
+      # The tray owns the clock — the header status bar shows none.
       refute has_element?(view, "#clock-display")
     end
 

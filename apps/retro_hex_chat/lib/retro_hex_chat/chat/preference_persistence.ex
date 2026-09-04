@@ -68,9 +68,6 @@ defmodule RetroHexChat.Chat.PreferencePersistence do
   @spec types() :: [preference_type()]
   def types, do: @types
 
-  @spec type_names() :: [String.t()]
-  def type_names, do: Enum.map(@types, &Atom.to_string/1)
-
   @spec enqueue(String.t(), preference_type() | String.t(), term()) :: enqueue_result()
   def enqueue(owner_nickname, preference_type, snapshot)
       when is_binary(owner_nickname) and owner_nickname != "" do

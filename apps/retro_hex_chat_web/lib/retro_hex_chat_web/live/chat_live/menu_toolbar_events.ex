@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   @moduledoc """
   Handle toolbar events.
 
-  Covers: quit_chat, restore_session, open_search,
+  Covers: restore_session,
   toggle_conversations, toggle_strip_formatting,
   autocomplete_query, autocomplete_close,
   autocomplete_select, autocomplete_navigate, autocomplete_select_current,
@@ -28,30 +28,14 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog
-  alias RetroHexChatWeb.ChatLive.SearchEvents
   alias RetroHexChatWeb.ChatLive.Windows
 
   use Phoenix.VerifiedRoutes, endpoint: RetroHexChatWeb.Endpoint, router: RetroHexChatWeb.Router
 
   @mobile_breakpoint 768
 
-  def handle_event("quit_chat", _params, socket) do
-    session = socket.assigns.session
-    cleanup_channels(session, dgettext("chat", "Leaving"))
-
-    {:halt,
-     socket
-     |> clear_reconnect_state()
-     |> push_event("intentional_disconnect", %{})
-     |> push_navigate(to: Paths.connect_path(socket))}
-  end
-
   def handle_event("restore_session", params, socket) do
     {:halt, restore_session(socket, params)}
-  end
-
-  def handle_event("open_search", _params, socket) do
-    {:halt, SearchEvents.open(socket)}
   end
 
   def handle_event("clear_window", _params, socket) do

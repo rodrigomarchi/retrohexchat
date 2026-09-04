@@ -24,11 +24,6 @@ defmodule RetroHexChatWeb.ChatLive.TipEvents do
     {:halt, commit_tips(socket, tips)}
   end
 
-  def handle_event("tip_seen", %{"tip" => tip_id}, socket) do
-    {:halt,
-     commit_tips(socket, ContextualTips.mark_seen(socket.assigns.session.contextual_tips, tip_id))}
-  end
-
   def handle_event("tips_suppressed_changed", %{"suppressed" => suppressed}, socket)
       when is_boolean(suppressed) do
     tips = ContextualTips.set_suppressed(socket.assigns.session.contextual_tips, suppressed)
@@ -37,8 +32,6 @@ defmodule RetroHexChatWeb.ChatLive.TipEvents do
   end
 
   def handle_event("tips_suppressed_changed", _params, socket), do: {:halt, socket}
-  def handle_event("tips_state_sync", _params, socket), do: {:halt, socket}
-
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
   defp commit_tips(socket, tips) do

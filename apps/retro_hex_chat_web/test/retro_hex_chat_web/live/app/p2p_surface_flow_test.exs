@@ -226,8 +226,8 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
   # the handler for it, synchronously, with no island hop in between; draining
   # its mailbox is therefore the whole synchronisation.
   #
-  # Polling with a sleep budget used to stand in for this, and a budget is a
-  # guess about how loaded the machine is: at 500ms it failed under `make ci`
+  # Polling with a sleep budget stands in for this badly: a budget is a guess
+  # about how loaded the machine is, and at 500ms it fails under `make ci`
   # while passing everywhere else. What is asserted here cannot be a matter of
   # timing, so the failure prints what the session actually says instead of
   # reporting that it ran out of patience.
@@ -625,8 +625,10 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
 
       assert p2p_html(ctx.view_a) =~ "p2p-call-window"
 
-      # Menu action → island → domain records this peer's media presence.
-      render_click(p2p_view(ctx.view_a), "p2p_start_audio", %{})
+      # The button in the call panel → island → domain records this peer's
+      # media presence. Driven by the event the panel really pushes, so a
+      # control that stops reaching this path takes the test down with it.
+      render_click(p2p_view(ctx.view_a), "start_call", %{"type" => "audio"})
       {:ok, state} = Lobby.session_info(session.token)
       assert state.media.creator == %{audio: true, video: false}
 
@@ -957,42 +959,6 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
       assert %{recovery: %{state: :idle}} = p2p_assigns(ctx.view_a)
     end
 
-    test "privacy relay toggle restarts active WebRTC with the current policy", %{conn: conn} do
-      ctx = mount_pair(conn, "p2phe#{uid()}", "p2phf#{uid()}")
-      session = invite(ctx)
-      accept_invite(ctx, session.token)
-      flush(ctx.view_a)
-
-      render_click(p2p_view(ctx.view_a), "lobby_connected", %{})
-      render_click(p2p_view(ctx.view_b), "lobby_connected", %{})
-
-      render_click(p2p_view(ctx.view_a), "p2p_toggle_privacy", %{})
-
-      assert %{
-               turn_only: true,
-               recovery: %{state: :reconnecting, reason: "privacy_changed"}
-             } = p2p_assigns(ctx.view_a)
-
-      assert_push_event(
-        p2p_view(ctx.view_a),
-        "lobby_restart",
-        %{role: "creator", turn_only: true},
-        @event_timeout
-      )
-
-      flush(ctx.view_b)
-
-      assert_push_event(
-        p2p_view(ctx.view_b),
-        "lobby_restart",
-        %{role: "peer", turn_only: false},
-        @event_timeout
-      )
-
-      assert %{recovery: %{state: :reconnecting, reason: "privacy_changed"}} =
-               p2p_assigns(ctx.view_b)
-    end
-
     test "server-side signaling reset restarts active peer hooks", %{conn: conn} do
       ctx = mount_pair(conn, "p2phk#{uid()}", "p2phl#{uid()}")
       session = invite(ctx)
@@ -1064,9 +1030,8 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
 
       # Opening the session somewhere else is a takeover, not a refusal: one
       # person is one participant, and the media belongs to the page they are
-      # looking at. What used to happen here was five backoff attempts and then
-      # "close that other window" — a dead end reached by doing something
-      # reasonable.
+      # looking at. Refusing means five backoff attempts and then "close that
+      # other window" — a dead end reached by doing something reasonable.
       assert %{token: token, displaced: false} =
                :sys.get_state(second.pid).socket.assigns.p2p_session
 
@@ -1310,10 +1275,10 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
     end
   end
 
-  # A person can be in more than one session at once now, each with a different
-  # peer and each in a tab of its own, so there is no switch left to confirm.
-  # What used to be "one session at a time" was a property of the single window
-  # the chat rendered, not of the domain.
+  # A person can be in more than one session at once, each with a different
+  # peer and each in a tab of its own, so there is no switch to confirm.
+  # "One session at a time" is a property of the single window a chat renders
+  # them in, not of the domain.
   describe "more than one session" do
     test "a second peer's invite creates a second session, and neither ends the other",
          %{conn: conn} do

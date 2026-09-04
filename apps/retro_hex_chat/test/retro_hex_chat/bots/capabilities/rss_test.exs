@@ -89,7 +89,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
     end
 
     test "a channel operator is not standing enough" do
-      # The room's ops used to be the gate. A bot is server configuration, so
+      # The room's ops are not the gate. A bot is server configuration, so
       # holding ops where it happens to sit buys nothing — not even to read the
       # list of addresses the server has been told to fetch.
       ctx = %{@ctx | author: "roomop"}

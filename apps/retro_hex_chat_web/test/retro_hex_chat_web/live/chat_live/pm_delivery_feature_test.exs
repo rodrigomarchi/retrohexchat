@@ -57,10 +57,10 @@ defmodule RetroHexChatWeb.ChatLive.PmDeliveryFeatureTest do
     refute Map.has_key?(assigns(view).unread_counts, "pm:#{peer}")
   end
 
-  # Closing a tab used to drop the conversation's subscription without telling
-  # the set that remembered which subscriptions the connection held, so
-  # reopening the tab believed it was already subscribed and never rejoined:
-  # the window was open and the conversation was mute.
+  # Closing a tab drops the conversation's subscription, and the set that
+  # remembers which subscriptions the connection holds has to hear about it —
+  # otherwise reopening the tab believes it is already subscribed and never
+  # rejoins: the window is open and the conversation is mute.
   test "a conversation reopened after being closed still receives", %{conn: conn} do
     nick = "PmDelB#{uid()}"
     peer = "Peer#{uid()}"
@@ -108,8 +108,8 @@ defmodule RetroHexChatWeb.ChatLive.PmDeliveryFeatureTest do
   end
 
   # The writer's own copy: everything a broadcast drives — the URL catcher, the
-  # link card — used to happen for the other person only, because the writer was
-  # never on the conversation's topic at all.
+  # link card — happens for the other person only if the writer is not on the
+  # conversation's topic at all.
   test "a link the reader wrote is captured too", %{conn: conn} do
     nick = "PmDelE#{uid()}"
     peer = "Peer#{uid()}"

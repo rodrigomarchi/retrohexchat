@@ -182,7 +182,8 @@ defmodule RetroHexChatWeb.AutocompleteTest do
       {:ok, view1, _} = live(chat_conn(conn, "NickAuto1"), "/chat")
       {:ok, _view2, _} = live(chat_conn(conn, "NickAuto2"), "/chat")
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view1.pid)
 
       # Switch from status tab to #lobby channel for nick context
       render_click(view1, "switch_channel", %{"channel" => "#lobby"})
@@ -201,7 +202,8 @@ defmodule RetroHexChatWeb.AutocompleteTest do
       {:ok, view, _} = live(chat_conn(conn, "NickOwn1"), "/chat")
       {:ok, _view2, _} = live(chat_conn(conn, "NickOwn2"), "/chat")
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
 
       render_click(view, "autocomplete_query", %{
         "type" => "nick",
@@ -257,7 +259,8 @@ defmodule RetroHexChatWeb.AutocompleteTest do
       {:ok, view, _} = live(chat_conn(conn, "ArgNick1"), "/chat")
       {:ok, _view2, _} = live(chat_conn(conn, "ArgNick2"), "/chat")
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
 
       render_click(view, "autocomplete_query", %{
         "type" => "arg_nick",
@@ -289,7 +292,8 @@ defmodule RetroHexChatWeb.AutocompleteTest do
       {:ok, view, _} = live(chat_conn(conn, "KickArg1"), "/chat")
       {:ok, _view2, _} = live(chat_conn(conn, "KickArg2"), "/chat")
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
 
       render_click(view, "autocomplete_query", %{
         "type" => "arg_nick",

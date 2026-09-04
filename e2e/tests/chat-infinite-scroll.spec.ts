@@ -20,7 +20,7 @@ import { shot } from "../helpers/screenshots";
  * Scrollback pagination, through the real gesture.
  *
  * The server hands the chat one page of 50 messages and a cursor; the rest
- * arrives as the reader scrolls back. Three properties matter enough to hold a
+ * arrives as the reader scrolls back. The properties that matter enough to hold a
  * browser open for:
  *
  *  1. Older messages arrive, and the reader's place does not move when they do.

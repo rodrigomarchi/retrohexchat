@@ -10,11 +10,11 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
 
   Covers chat area: chat_context_menu, close_chat_context_menu, ctx_chat_pm, ctx_chat_notice,
   ctx_chat_whois, ctx_chat_whowas, ctx_chat_copy_nick, ctx_chat_ignore, ctx_chat_add_contact,
-  ctx_chat_set_color, ctx_chat_kick, ctx_chat_ban, ctx_chat_voice, ctx_chat_devoice,
+  ctx_chat_kick, ctx_chat_ban, ctx_chat_voice, ctx_chat_devoice,
   ctx_chat_op, ctx_chat_deop, ctx_chat_mute, ctx_chat_unmute, ctx_chat_open_url,
   ctx_chat_copy_url, ctx_chat_save_url, ctx_chat_join, ctx_chat_copy_channel,
   ctx_chat_channel_info, edit_message,
-  ctx_chat_copy_message, ctx_chat_copy_selection, ctx_chat_ignore_sender,
+  ctx_chat_copy_message, ctx_chat_ignore_sender,
   ctx_chat_lobby.
 
   Attached as `attach_hook(:context_menu_events, :handle_event, ...)` in ChatLive.mount/3.
@@ -507,13 +507,6 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     end
   end
 
-  def handle_event("ctx_chat_set_color", %{"nick" => nick}, socket) do
-    # Reuse the nicklist color picker by opening it with the target nick. The
-    # chat menu's x/y now live in the component, so it copies them internally.
-    send_update(UserContextMenus, id: UserContextMenus.id(), set_color_from_chat: nick)
-    {:halt, socket}
-  end
-
   def handle_event("ctx_chat_kick", %{"nick" => nick}, socket) do
     channel = socket.assigns.session.active_channel
 
@@ -653,13 +646,6 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
      socket
      |> close_chat_context_menu()
      |> push_event("clipboard_copy", %{text: source})}
-  end
-
-  def handle_event("ctx_chat_copy_selection", _params, socket) do
-    {:halt,
-     socket
-     |> close_chat_context_menu()
-     |> push_event("clipboard_copy_selection", %{})}
   end
 
   def handle_event("ctx_chat_ignore_sender", %{"nick" => nick}, socket) do

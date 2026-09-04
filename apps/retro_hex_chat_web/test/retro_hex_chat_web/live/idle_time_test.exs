@@ -29,7 +29,8 @@ defmodule RetroHexChatWeb.IdleTimeTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "Idle for:"
@@ -45,14 +46,16 @@ defmodule RetroHexChatWeb.IdleTimeTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "hello there"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
 
       # Self-whois to check idle time — should be very low
       view
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{nick}"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       # After just sending a message, idle should be minimal
@@ -70,14 +73,16 @@ defmodule RetroHexChatWeb.IdleTimeTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/help"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
 
       # Now self-whois — idle should be very low
       view
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{nick}"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
       html = render(view)
 
       assert html =~ "Idle for:"

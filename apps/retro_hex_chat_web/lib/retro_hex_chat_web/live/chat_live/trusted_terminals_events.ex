@@ -7,10 +7,6 @@ defmodule RetroHexChatWeb.ChatLive.TrustedTerminalsEvents do
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:halt, Phoenix.LiveView.Socket.t()} | {:cont, Phoenix.LiveView.Socket.t()}
-  def handle_event("open_trusted_terminals", _params, socket) do
-    {:halt, Windows.open(socket, "trusted-terminals")}
-  end
-
   def handle_event("open_trusted_terminals_dialog", _params, socket) do
     {:halt, Windows.open(socket, "trusted-terminals")}
   end

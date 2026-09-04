@@ -37,9 +37,6 @@ defmodule RetroHexChat.Scraper do
 
   @topic "scraped_pages"
 
-  @default_fetch_timeout_ms 2_000
-  @default_max_concurrency 8
-
   @type preview :: {:ok, ScrapedPage.t()} | :pending | :unknown
   @type fetch_result :: {:ok, ScrapedPage.t()} | {:error, term()}
 
@@ -214,30 +211,6 @@ defmodule RetroHexChat.Scraper do
       true ->
         scrape_now(prepared, page, opts, now)
     end
-  end
-
-  @doc """
-  `fetch/2` over many URLs at once, bounded.
-
-  Results come back in the order the URLs were given, so a caller can zip them
-  against whatever it is building.
-  """
-  @spec fetch_many([String.t()], keyword()) :: [fetch_result()]
-  def fetch_many(urls, opts \\ []) do
-    timeout = Keyword.get(opts, :timeout, @default_fetch_timeout_ms)
-    max_concurrency = Keyword.get(opts, :max_concurrency, @default_max_concurrency)
-
-    urls
-    |> Task.async_stream(&fetch(&1, opts),
-      max_concurrency: max_concurrency,
-      ordered: true,
-      on_timeout: :kill_task,
-      timeout: timeout
-    )
-    |> Enum.map(fn
-      {:ok, result} -> result
-      {:exit, reason} -> {:error, reason}
-    end)
   end
 
   @spec scrape_now(Store.prepared_url(), ScrapedPage.t() | nil, keyword(), DateTime.t()) ::

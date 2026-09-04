@@ -41,7 +41,6 @@ defmodule RetroHexChatWeb.CallLive.Events do
   alias RetroHexChatWeb.Live.Surface
   alias RetroHexChatWeb.MediaDevices
 
-  @window_id "group-call"
   @prejoin_preference_namespace "group_call_prejoin"
   @layout_modes ~w(auto grid focus sidebar speaker)
   @self_view_cycle [:tile, :pip, :hidden]
@@ -118,22 +117,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   def handle_event("group_call_leave", _params, %{assigns: %{group_call: %{}}} = socket) do
-    {:halt, open_confirm(socket, :leave)}
+    {:halt, open_confirm(socket)}
   end
 
   def handle_event("group_call_leave", _params, socket), do: {:halt, socket}
-
-  def handle_event("group_call_window_close", params, %{assigns: %{group_call: %{}}} = socket) do
-    {:halt, open_confirm(socket, :close, GroupCallShape.value(params, :id) || @window_id)}
-  end
-
-  def handle_event("group_call_window_close", _params, socket) do
-    {:halt,
-     socket
-     |> remember_prejoin_preferences()
-     |> assign(group_call_prejoin: nil)
-     |> Surface.close()}
-  end
 
   def handle_event(
         "group_call_console_select",
@@ -776,23 +763,13 @@ defmodule RetroHexChatWeb.CallLive.Events do
     )
   end
 
-  defp open_confirm(socket, mode, window_id \\ nil) when mode in [:leave, :close] do
-    action =
-      case mode do
-        :leave -> :open_leave
-        :close -> :open_close
-      end
-
+  defp open_confirm(socket) do
     Phoenix.LiveView.send_update(GroupCallConfirmDialog,
       id: GroupCallConfirmDialog.id(),
-      action: {action, socket.assigns.group_call.channel_name}
+      action: {:open_leave, socket.assigns.group_call.channel_name}
     )
 
-    if mode == :close and is_binary(window_id) do
-      assign(socket, group_call_pending: %{action: :close_window, window_id: window_id})
-    else
-      socket
-    end
+    socket
   end
 
   defp close_confirm do

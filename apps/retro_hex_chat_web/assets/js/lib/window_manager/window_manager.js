@@ -82,12 +82,11 @@ const STACK_BREAKPOINT = 768;
 // the two server groups left with the other launchers, and the number came
 // down with them — the bar now holds out to a narrower window before folding.
 const WINDOW_MENU_BREAKPOINT = 700;
-// Not every bar is the chat's. The help viewer hangs four menus under its title
-// bar and the landing pages three, and folding those into icons at the width
-// the chat's seven need would collapse a strip with room to spare. So the
-// measurement above is spent per menu — 700 across the seven it was taken on —
-// and each window asks for what its own bar holds. The chat lands back on 700,
-// exactly where it was.
+// Not every bar is the chat's: the help viewer and the landing pages hang
+// fewer menus under their title bars, and folding those into icons at the width
+// the chat's own strip needs would collapse a strip with room to spare. So the
+// measurement above is spent per menu, and each window asks for what its own bar
+// holds.
 const MENU_ENTRY_WIDTH = 100;
 const MENU_ENTRY_SELECTOR = "[data-window-menu] .app-menu-bar__desktop-menu";
 const EDGE_MARGIN = 40;

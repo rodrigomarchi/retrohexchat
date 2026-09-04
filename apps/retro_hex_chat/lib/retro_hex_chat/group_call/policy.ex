@@ -39,14 +39,6 @@ defmodule RetroHexChat.GroupCall.Policy do
     end
   end
 
-  @spec can_leave?(String.t(), Room.t(), Membership.t()) :: :ok | {:error, String.t()}
-  def can_leave?(nickname, room, membership) do
-    with :ok <- check_member(membership, nickname),
-         :ok <- check_not_terminal(room) do
-      :ok
-    end
-  end
-
   @spec can_close?(String.t(), Room.t(), Membership.t()) :: :ok | {:error, String.t()}
   def can_close?(nickname, room, membership) do
     with :ok <- check_not_terminal(room),

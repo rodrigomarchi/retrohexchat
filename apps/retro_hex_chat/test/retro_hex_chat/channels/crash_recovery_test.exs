@@ -4,6 +4,7 @@ defmodule RetroHexChat.Channels.CrashRecoveryTest do
   @moduletag :integration
 
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
+  alias RetroHexChat.Services.Queries, as: ServiceQueries
 
   defp unique_channel, do: "#crash-#{System.unique_integer([:positive])}"
 
@@ -107,6 +108,57 @@ defmodule RetroHexChat.Channels.CrashRecoveryTest do
       # Verify recovered state from DB
       {:ok, new_state} = Server.get_state(channel)
       assert new_state.topic == "Recovered topic"
+    end
+
+    # The sibling test above seeds the row with the factory, so it only ever
+    # proved the read. This one sets the topic and the modes the way a person
+    # does and then makes the process die, which is the only way to catch a
+    # restore that reads columns nothing writes.
+    test "a registered channel keeps the topic and modes it was actually given" do
+      channel = unique_channel()
+      {:ok, pid} = Supervisor.start_child(channel)
+
+      on_exit(fn ->
+        case Registry.lookup(channel) do
+          {:ok, p} -> Supervisor.stop_child(p)
+          _ -> :ok
+        end
+      end)
+
+      {:ok, _} = Server.join(channel, "founder1")
+
+      {:ok, _} = ServiceQueries.insert_registered_channel(channel, "founder1")
+
+      :ok = Server.mark_registered(channel)
+
+      :ok = Server.set_topic(channel, "founder1", "The topic somebody typed")
+      :ok = Server.set_mode(channel, "founder1", "+nt")
+      :ok = Server.set_mode(channel, "founder1", "+k", ["sekrit"])
+      :ok = Server.set_mode(channel, "founder1", "+l", ["42"])
+
+      ref = Process.monitor(pid)
+      Process.exit(pid, :kill)
+      assert_receive {:DOWN, ^ref, :process, ^pid, :killed}, 1000
+
+      wait_until(
+        fn ->
+          case Registry.lookup(channel) do
+            {:ok, new_pid} -> new_pid != pid
+            _ -> false
+          end
+        end,
+        100,
+        30
+      )
+
+      {:ok, state} = Server.get_state(channel)
+
+      assert state.topic == "The topic somebody typed"
+      assert state.modes =~ "n"
+      assert state.modes =~ "t"
+      assert state.modes_detail.topic_lock
+      assert state.modes_detail.key == "sekrit"
+      assert state.modes_detail.limit == 42
     end
 
     test "unregistered channel stops cleanly when last user parts" do

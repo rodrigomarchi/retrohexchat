@@ -164,7 +164,8 @@ defmodule RetroHexChatWeb.NotifyListTest do
     test "adding a buddy who is already online shows them as Online", %{conn: conn} do
       # Connect the buddy first so they're tracked in presence:global
       buddy_view = connect_user(conn, "OnlineBud")
-      Process.sleep(100)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(buddy_view.pid)
 
       # Connect the observer
       view = connect_user(conn, "SyncObs")
@@ -205,7 +206,8 @@ defmodule RetroHexChatWeb.NotifyListTest do
     test "buddy online via /notify add command shows Online status", %{conn: conn} do
       # Connect the buddy first
       buddy_view = connect_user(conn, "CmdBud")
-      Process.sleep(100)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(buddy_view.pid)
 
       # Observer adds via command
       view = connect_user(conn, "CmdObs")
@@ -243,7 +245,8 @@ defmodule RetroHexChatWeb.NotifyListTest do
 
       # Connect the tracked buddy so they're in the Tracker
       buddy_view = connect_user(conn, "TrkBud")
-      Process.sleep(100)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(buddy_view.pid)
 
       # Connect the identified user (pre_identified loads persisted data including notify list)
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
@@ -273,7 +276,8 @@ defmodule RetroHexChatWeb.NotifyListTest do
 
       # Simulate the debounce timer firing with :online status
       send(view.pid, {:notify_debounce, "RenderBud1", :online})
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
 
       # The view should still be alive (not crashed) and render successfully
       html = render(view)
@@ -289,7 +293,8 @@ defmodule RetroHexChatWeb.NotifyListTest do
 
       # Simulate the debounce timer firing with :offline status
       send(view.pid, {:notify_debounce, "RenderBud2", :offline})
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(view.pid)
 
       # The view should still be alive and render successfully
       html = render(view)
@@ -302,8 +307,9 @@ defmodule RetroHexChatWeb.NotifyListTest do
   describe "auto-add PM to notify list" do
     test "sending a PM auto-adds target to notify list", %{conn: conn} do
       # Connect both users
-      _target = connect_user(conn, "PmTarget1")
-      Process.sleep(100)
+      target = connect_user(conn, "PmTarget1")
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(target.pid)
       sender = connect_user(conn, "PmSender1")
 
       # Sender sends PM to target via /msg command
@@ -311,7 +317,8 @@ defmodule RetroHexChatWeb.NotifyListTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/msg PmTarget1 hello there"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(sender.pid)
 
       # Check that PmTarget1 was auto-added to sender's notify list
       sender |> render_click("toggle_notify_list")
@@ -321,7 +328,8 @@ defmodule RetroHexChatWeb.NotifyListTest do
 
     test "receiving a PM auto-adds sender to notify list", %{conn: conn} do
       receiver = connect_user(conn, "PmRecv1")
-      Process.sleep(100)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(receiver.pid)
       sender = connect_user(conn, "PmSend2")
 
       # Sender sends PM — receiver gets it via PubSub
@@ -329,7 +337,9 @@ defmodule RetroHexChatWeb.NotifyListTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/msg PmRecv1 hey"})
 
-      Process.sleep(100)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(sender.pid)
+      _ = :sys.get_state(receiver.pid)
 
       # Check that PmSend2 was auto-added to receiver's notify list
       receiver |> render_click("toggle_notify_list")
@@ -338,8 +348,9 @@ defmodule RetroHexChatWeb.NotifyListTest do
     end
 
     test "duplicate PM does not create duplicate notify entry", %{conn: conn} do
-      _target = connect_user(conn, "PmDupTgt")
-      Process.sleep(100)
+      target = connect_user(conn, "PmDupTgt")
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(target.pid)
       sender = connect_user(conn, "PmDupSnd")
 
       # Send two PMs
@@ -347,13 +358,15 @@ defmodule RetroHexChatWeb.NotifyListTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/msg PmDupTgt first"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(sender.pid)
 
       sender
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/msg PmDupTgt second"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(sender.pid)
 
       # Should have exactly one entry
       sender |> render_click("toggle_notify_list")
@@ -364,8 +377,9 @@ defmodule RetroHexChatWeb.NotifyListTest do
     end
 
     test "auto-add disabled when toggle is off", %{conn: conn} do
-      _target = connect_user(conn, "PmNoAdd")
-      Process.sleep(100)
+      target = connect_user(conn, "PmNoAdd")
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(target.pid)
       sender = connect_user(conn, "PmTogOff")
 
       # Disable auto-add via the standalone Notify List window (managed: the
@@ -379,7 +393,8 @@ defmodule RetroHexChatWeb.NotifyListTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/msg PmNoAdd hi"})
 
-      Process.sleep(50)
+      # Drain the async dispatch (FIFO behind this call) before reading the view.
+      _ = :sys.get_state(sender.pid)
 
       # Should NOT have an entry
       sender |> render_click("toggle_notify_list")

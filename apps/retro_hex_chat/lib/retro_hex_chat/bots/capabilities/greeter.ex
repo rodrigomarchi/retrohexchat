@@ -174,8 +174,8 @@ defmodule RetroHexChat.Bots.Capabilities.Greeter do
       Enum.map(onboarding, &output(&1, onboarding_delivery, nickname))
   end
 
-  # A bot carrying only a greeting produces exactly what it produced before this
-  # capability learned to say more than one thing.
+  # One line goes out as a single output, several as a batch: a bot carrying
+  # only a greeting stays as cheap to deliver as a bot that says nothing else.
   @spec emit([map()]) :: RetroHexChat.Bots.Capability.capability_result()
   defp emit([]), do: :ignore
   defp emit([output]), do: {:bot_output, output}

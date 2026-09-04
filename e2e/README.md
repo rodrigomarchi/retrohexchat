@@ -123,7 +123,7 @@ Playwright HTML report. The directory is gitignored — evidence is regenerated 
 demand, never committed.
 
 Why this and not `screenshot: "on"` in the config: that captures everything on
-every run, which is noise plus wall clock on a 368-case serial suite. Why not a
+every run, which is noise plus wall clock on a serial suite this size. Why not a
 disposable spec: it is a tool thrown away after one use, and the next person
 needing the same picture writes it again.
 

@@ -295,8 +295,8 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
   end
 
   describe "inside a conference, at its own address" do
-    # Recovery is reopening the address. The chat used to reopen a conference
-    # for you on reconnect; it has no conference to reopen, and the room server
+    # Recovery is reopening the address. The chat does not reopen a conference
+    # for you on reconnect: it has no conference to reopen, and the room server
     # is the authority on the seat either way — so coming back is arriving at
     # the same address and finding the seat still yours.
     test "reopening the address rejoins the seat the room still holds", %{conn: conn} do

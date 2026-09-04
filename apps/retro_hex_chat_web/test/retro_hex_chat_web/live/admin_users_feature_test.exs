@@ -240,7 +240,7 @@ defmodule RetroHexChatWeb.AdminUsersFeatureTest do
   describe "Admin Users entry points and gating" do
     test "the Start menu's Admin group offers the window" do
       # Server administration opens programs of its own; it is reached from the
-      # Start menu, not from the chat window's File menu where it used to hang.
+      # Start menu, not from the chat window's File menu.
       html =
         render_component(&StartMenuApp.start_menu_app/1,
           screen: :chat,

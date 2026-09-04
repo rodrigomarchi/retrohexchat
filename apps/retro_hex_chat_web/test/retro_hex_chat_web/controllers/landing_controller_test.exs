@@ -52,8 +52,8 @@ defmodule RetroHexChatWeb.LandingLiveTest do
     end
   end
 
-  # /connect is no longer somewhere a reader is sent. Every public page carries
-  # the sign-in window, so the screen exists only as the place the app puts a
+  # /connect is not somewhere a reader is sent. Every public page carries the
+  # sign-in window, so the screen exists only as the place the app puts a
   # session that ended — banned, expired, kicked, unauthenticated. A link back
   # into it from public chrome would put a second front door beside the window.
   describe "the way into the app" do

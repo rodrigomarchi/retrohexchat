@@ -106,16 +106,15 @@ msgstr "Ding High"
 msgid "Ding Low"
 msgstr "Ding Faible"
 
-#: lib/retro_hex_chat/chat/policy.ex:51 lib/retro_hex_chat/chat/policy.ex:80
+#: lib/retro_hex_chat/chat/policy.ex:51
+#: lib/retro_hex_chat/chat/policy.ex:80
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
 msgstr "Éditer la fenêtre a expiré."
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
-msgid ""
-"Expansion must not contain command chaining characters (|, &&, ;, or "
-"newlines)"
+msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
 msgstr ""
 "L'expansion ne doit pas contenir de caractères enchaînés de commande (= , & "
 "& ;, ou de nouvelles lignes)"
@@ -127,20 +126,20 @@ msgstr "Formatage"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:111
 #, elixir-autogen, elixir-format
-msgid ""
-"Invalid timer name. Use only letters, numbers, hyphens, underscores (max "
-"%{max_name_length} chars)."
+msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
 msgstr ""
 "Nom du minuteur non valide. Utilisez seulement des lettres, des nombres, des"
 " tirets, des accents (maximum %{max_name_length} chars)."
 
-#: lib/retro_hex_chat/chat/content.ex:135 lib/retro_hex_chat/chat/policy.ex:19
+#: lib/retro_hex_chat/chat/content.ex:135
+#: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
 msgid "Message cannot be empty"
 msgstr "Le message ne peut pas être vide"
 
-#: lib/retro_hex_chat/chat/policy.ex:48 lib/retro_hex_chat/chat/policy.ex:70
+#: lib/retro_hex_chat/chat/policy.ex:48
+#: lib/retro_hex_chat/chat/policy.ex:70
 #: lib/retro_hex_chat/chat/policy.ex:91
 #, elixir-autogen, elixir-format
 msgid "Message has already been deleted."
@@ -252,7 +251,8 @@ msgstr "Ouvrez/close la feuille de triche raccourci clavier"
 msgid "Original message not found."
 msgstr "Message original introuvable."
 
-#: lib/retro_hex_chat/chat/policy.ex:54 lib/retro_hex_chat/chat/policy.ex:119
+#: lib/retro_hex_chat/chat/policy.ex:54
+#: lib/retro_hex_chat/chat/policy.ex:119
 #, elixir-autogen, elixir-format
 msgid "Please wait a few seconds before editing again."
 msgstr "Veuillez attendre quelques secondes avant d'éditer à nouveau."
@@ -427,7 +427,8 @@ msgstr "Fenêtre 9"
 msgid "You cannot delete other users' messages."
 msgstr "Vous ne pouvez pas supprimer les messages des autres utilisateurs."
 
-#: lib/retro_hex_chat/chat/policy.ex:45 lib/retro_hex_chat/chat/policy.ex:67
+#: lib/retro_hex_chat/chat/policy.ex:45
+#: lib/retro_hex_chat/chat/policy.ex:67
 #, elixir-autogen, elixir-format
 msgid "You cannot edit other users' messages."
 msgstr "Vous ne pouvez pas modifier les messages des autres utilisateurs."
@@ -503,18 +504,18 @@ msgstr "Basculer la caméra de conférence"
 msgid "Toggle Conference Microphone"
 msgstr "Toggle Microphone de Conférence"
 
-#: lib/retro_hex_chat/channels/server.ex:1280
+#: lib/retro_hex_chat/channels/server.ex:1300
 #: lib/retro_hex_chat/chat/service.ex:307
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
 msgstr "Aucune pièce jointe n'a pu être jointe au message"
 
-#: lib/retro_hex_chat/chat/attachments.ex:292
+#: lib/retro_hex_chat/chat/attachments.ex:263
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "Pièce jointe supérieure à la limite %{mb} MB"
 
-#: lib/retro_hex_chat/chat/attachments.ex:287
+#: lib/retro_hex_chat/chat/attachments.ex:258
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "La pièce jointe est vide"
@@ -524,9 +525,9 @@ msgstr "La pièce jointe est vide"
 msgid "Unsupported message format"
 msgstr "Format de message non pris en charge"
 
-#: lib/retro_hex_chat/chat/attachments.ex:299
-#: lib/retro_hex_chat/chat/attachments.ex:395
-#: lib/retro_hex_chat/chat/attachments.ex:400
+#: lib/retro_hex_chat/chat/attachments.ex:270
+#: lib/retro_hex_chat/chat/attachments.ex:351
+#: lib/retro_hex_chat/chat/attachments.ex:356
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "fichier"

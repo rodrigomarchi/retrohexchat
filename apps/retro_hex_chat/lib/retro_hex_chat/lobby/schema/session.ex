@@ -92,9 +92,9 @@ defmodule RetroHexChat.Lobby.Schema.Session do
   @spec status_values() :: [String.t()]
   def status_values, do: @status_values
 
-  # The invariant that used to be "there are always two of you". It guards the
-  # status changeset as well as creation, because otherwise a plain status
-  # write could walk a peerless session into `pending` without ever touching
+  # A session in a paired status has two people in it. The rule guards the
+  # status changeset as well as creation, because a plain status write would
+  # otherwise walk a peerless session into `pending` without ever touching
   # `peer_id` — the invariant belongs to the pair of fields, not to one write.
   defp validate_peer_for_status(changeset) do
     if get_field(changeset, :status) in @paired_statuses do

@@ -206,52 +206,6 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
   def handle_event("p2p_console_select", _params, socket), do: {:halt, socket}
 
-  # Privacy mode: force every P2P connection through the TURN relay (hides
-  # the direct peer IP). Persisted per trusted terminal; if WebRTC is already
-  # active, the connection is restarted immediately so the transport policy is
-  # real now.
-  def handle_event("p2p_toggle_privacy", _params, %{assigns: %{p2p_session: %{}}} = socket) do
-    p2p = socket.assigns.p2p_session
-    new_value = not p2p.turn_only
-
-    save_p2p_setup_preferences(socket, %{
-      media: media_from_media_mode(p2p.media_mode),
-      device_preferences: Map.get(p2p, :device_preferences, MediaDevices.no_preference()),
-      turn_only: new_value
-    })
-
-    p2p = %{p2p | turn_only: new_value}
-
-    label =
-      if new_value,
-        do: dgettext("chat", "Privacy mode enabled — the P2P connection will use the relay."),
-        else: dgettext("chat", "Privacy mode disabled.")
-
-    socket =
-      socket
-      |> put_p2p(p2p)
-      |> Surface.system(label)
-
-    if p2p_webrtc_active?(p2p) do
-      broadcast(p2p.token, "lobby_manual_retry", %{from: p2p.user_id, reason: "privacy_changed"})
-
-      {:halt,
-       socket
-       |> mark_p2p_reconnecting(nil, "privacy_changed", %{trigger: "privacy"})
-       |> push_event("lobby_restart", webrtc_payload(p2p))}
-    else
-      {:halt, socket}
-    end
-  end
-
-  def handle_event("p2p_start_audio", _params, %{assigns: %{p2p_session: %{}}} = socket) do
-    forward_media(socket, "start_call", %{"type" => "audio"})
-  end
-
-  def handle_event("p2p_start_video", _params, %{assigns: %{p2p_session: %{}}} = socket) do
-    forward_media(socket, "start_call", %{"type" => "video"})
-  end
-
   # Media is self-controlled: the LobbyMediaHook and the Call window's controls
   # push to this root LV; the whole family forwards to the P2PMediaIsland, which
   # owns the call state and drives its window. Ending a call clears the
@@ -670,11 +624,11 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     end
   end
 
-  # Both hooks have reported ready. That used to mean "go", and going was
-  # invisible; now it means the room can say so. The answerer still prepares
-  # itself the moment it is told — its `lobby_start_answer` only builds the
-  # peer connection and waits — because the first offer is dropped if it is
-  # not listening yet. What waits is the *offer*, and it waits for the host.
+  # Both hooks have reported ready, which is the room saying so rather than a
+  # silent go. The answerer prepares itself the moment it is told — its
+  # `lobby_start_answer` only builds the peer connection and waits — because the
+  # first offer is dropped if it is not listening yet. What waits is the
+  # *offer*, and it waits for the host.
   defp handle_session_event(
          %{event: "lobby_start_signaling", payload: payload},
          socket,
@@ -1345,9 +1299,9 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
   # The mini call is a size, and a size is the window manager's. This page has
   # one of its own — the session is a Win98 desktop with the call window on it —
-  # so the command goes straight to it. It used to be handed to the chat, which
-  # is how mini mode came to be a checkbox that changed nothing whenever the
-  # session was at its own address.
+  # so the command goes straight to it. Handing it to the chat instead is what
+  # makes mini mode a checkbox that changes nothing: the chat's window manager
+  # does not hold this call.
   defp push_p2p_call_geometry(socket, true) do
     push_window_geometry(socket, %{
       width: 300,
@@ -1374,13 +1328,12 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     )
   end
 
-  # A page that is asked to be in this session takes the seat, and the page
-  # that held it is told. Two windows on one session used to mean the second
-  # spent five backoff attempts and then gave up with "close that window" — a
-  # dead end reached by doing something reasonable, and unreachable to fix from
-  # the window you were looking at. The most recently opened page is the one
-  # the person is looking at, which is the same contract the chat's own
-  # takeover has.
+  # A page that is asked to be in this session takes the seat, and the page that
+  # held it is told. The alternative is refusing the second window, which spends
+  # five backoff attempts and then says "close that window" — a dead end reached
+  # by doing something reasonable, and unreachable to fix from the window you are
+  # looking at. The most recently opened page is the one the person is looking
+  # at, which is the same contract the chat's own takeover has.
   @spec attach_session(Socket.t(), String.t(), integer(), :creator | :peer, keyword()) ::
           Socket.t()
   def attach_session(socket, token, user_id, role, opts \\ []) do
@@ -1510,10 +1463,6 @@ defmodule RetroHexChatWeb.P2PLive.Events do
       role: to_string(p2p.role),
       turn_only: p2p.turn_only && p2p.turn_configured
     }
-  end
-
-  defp p2p_webrtc_active?(p2p) do
-    Map.get(p2p, :webrtc_started, false) || p2p.state in [:connecting, :connected]
   end
 
   defp put_p2p(socket, p2p), do: assign(socket, p2p_session: p2p)
@@ -1769,10 +1718,6 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     do: false
 
   defp boolean_preference(_value, default), do: default
-
-  defp media_from_media_mode("audio"), do: %{audio: true, video: false}
-  defp media_from_media_mode("receive"), do: %{audio: false, video: false}
-  defp media_from_media_mode(_mode), do: %{audio: true, video: true}
 
   defp value(map, key) when is_map(map) do
     cond do

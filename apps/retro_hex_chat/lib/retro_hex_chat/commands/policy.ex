@@ -35,9 +35,6 @@ defmodule RetroHexChat.Commands.Policy do
     end
   end
 
-  @spec require_admin(Handler.context()) :: :ok | {:error, String.t()}
-  def require_admin(%{is_admin: true}), do: :ok
-
   def require_admin(_),
     do: {:error, dgettext("commands", "You must be a server administrator to use this command")}
 

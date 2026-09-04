@@ -34,7 +34,7 @@ defmodule RetroHexChatWeb.ChannelCentralListsTest do
 
     test "a pathological list is capped, and the total still tells the truth" do
       # The counter must come from what the channel holds, never from the rows
-      # that survived the cap — that is the mistake this refactor exists to undo.
+      # that survived the cap — counting the survivors is the mistake to avoid.
       %{entries: entries, total: total} =
         ChannelCentralDialog.channel_central_list_entries(state_with(:bans, 250), "bans")
 

@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
 
   attr :mode, :atom,
     default: :leave,
-    values: [:leave, :close, :end_call, :kick_participant, :mute_all, :camera_off_all]
+    values: [:leave, :end_call, :kick_participant, :mute_all, :camera_off_all]
 
   attr :channel, :string, default: nil
   attr :target_nickname, :string, default: nil
@@ -79,7 +79,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
   end
 
   defp title(:leave), do: dgettext("group_call", "Leave Group Call")
-  defp title(:close), do: dgettext("group_call", "Close Group Call?")
   defp title(:end_call), do: dgettext("group_call", "End Group Call")
   defp title(:kick_participant), do: dgettext("group_call", "Remove From Channel?")
   defp title(:mute_all), do: dgettext("group_call", "Mute Everyone?")
@@ -89,14 +88,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
     dgettext(
       "group_call",
       "Leave the group call in %{channel}? Your microphone and camera will disconnect.",
-      channel: channel || "?"
-    )
-  end
-
-  defp body(:close, channel, _target_nickname) do
-    dgettext(
-      "group_call",
-      "Closing this window leaves the group call in %{channel}. To keep the call running and just tidy up, minimize the window instead.",
       channel: channel || "?"
     )
   end
@@ -135,7 +126,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
   end
 
   defp confirm_label(:leave), do: dgettext("group_call", "Leave call")
-  defp confirm_label(:close), do: dgettext("group_call", "Leave call")
   defp confirm_label(:end_call), do: dgettext("group_call", "End call")
   defp confirm_label(:kick_participant), do: dgettext("group_call", "Remove and ban")
   defp confirm_label(:mute_all), do: dgettext("group_call", "Mute all")
@@ -151,7 +141,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
   end
 
   defp mode_icon(:leave), do: :icon_phone_end
-  defp mode_icon(:close), do: :icon_protocol_conference_compact
   defp mode_icon(:end_call), do: :icon_phone_end
   defp mode_icon(:kick_participant), do: :icon_ban
   defp mode_icon(:mute_all), do: :icon_mute
@@ -185,13 +174,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
     [
       %{icon: :icon_microphone, label: dgettext("group_call", "Microphone disconnects")},
       %{icon: :icon_camera_off, label: dgettext("group_call", "Camera stream stops")}
-    ]
-  end
-
-  defp impact_items(:close) do
-    [
-      %{icon: :icon_phone_end, label: dgettext("group_call", "You leave the conference")},
-      %{icon: :icon_win_minimize, label: dgettext("group_call", "Minimize to keep it running")}
     ]
   end
 

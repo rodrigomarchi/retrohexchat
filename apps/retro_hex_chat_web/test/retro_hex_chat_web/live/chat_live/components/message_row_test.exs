@@ -233,11 +233,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     refute html =~ "06"
   end
 
-  # Ported, not rewritten. What this covered — a request line, and none of the
-  # accept/decline apparatus of the session card that used to live here — is
-  # still covered; the invite has become a variant of the share card, so the
-  # sentence about where the control is gives way to the card that *is* the
-  # control.
+  # A P2P invite renders as a request line, carrying none of the accept/decline
+  # apparatus a session card would bring with it. The invite is a variant of the
+  # share card, so there is no sentence pointing at where the control is: the
+  # card *is* the control.
   test "renders a P2P invite as a request line with no session-card apparatus" do
     html =
       row(
