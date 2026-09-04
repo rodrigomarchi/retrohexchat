@@ -233,6 +233,19 @@ Phase 2: Deploy
 - `make deploy.skip-ci` — deploy Sun without CI (use only if CI was just run on this revision)
 - `make deploy REF=some-tag` — deploy a specific git ref (default: main)
 
+### A schema drop ships one deploy behind the code that stops using it
+
+`scripts/deploy.sh` writes `"pre_commands": ["eval RetroHexChat.Release.migrate"]`,
+so migrations run **before the new release starts** — while the *previous* release
+is still serving. Ecto selects every field a schema declares, so a migration that
+drops a column shipped alongside the edit removing that field runs against a
+release that still asks for it, and every read of that table fails for the length
+of the restart.
+
+Split it in two: deploy the code that no longer declares the field, then deploy
+the migration. Adding a column has no such constraint — the old release simply
+ignores it.
+
 ---
 
 ## Umbrella boundaries
