@@ -21,12 +21,12 @@ msgstr "%{nickname} [%{level}] (%{added_by}で追加)"
 msgid "  %{client} -> relay port %{alloc_port}"
 msgstr "%{client} -> リレーポート%{alloc_port}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:100
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:101
 #, elixir-autogen, elixir-format
 msgid "  %{key} = '%{value}' (by %{updated_by})"
 msgstr "%{key} = '%{value}' (%{updated_by}による)"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:141
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:142
 #, elixir-autogen, elixir-format
 msgid "  %{name} (%{member_count} members)%{reg}"
 msgstr "%{name}(%{member_count}会員)%{reg}"
@@ -41,12 +41,12 @@ msgstr "%{name} (%{pid})"
 msgid "  %{nickname} [%{level}] (added by %{added_by})"
 msgstr "%{nickname} [%{level}] (%{added_by}で追加)"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:255
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:256
 #, elixir-autogen, elixir-format
 msgid "  %{nickname} [registered] [%{online}]"
 msgstr "  %{nickname} [登録済み] [%{online}]"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:269
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:270
 #, elixir-autogen, elixir-format
 msgid "  %{nickname} — %{reason} (by %{banned_by}, %{expires})"
 msgstr "%{nickname} — %{reason} (%{banned_by}、%{expires})"
@@ -71,7 +71,7 @@ msgstr "アクセス一覧:(空)"
 msgid "  Active allocations: %{active}\n"
 msgstr "アクティブ割り当て: %{active}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:70
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:71
 #, elixir-autogen, elixir-format
 msgid "  Admin: %{is_admin}\n"
 msgstr "管理者: %{is_admin}"
@@ -81,7 +81,7 @@ msgstr "管理者: %{is_admin}"
 msgid "  Atoms: %{atom}\n"
 msgstr "原子: %{atom}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:72
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:73
 #, elixir-autogen, elixir-format
 msgid "  Bans: %{state_bans_count}\n"
 msgstr "銀行: %{state_bans_count}"
@@ -111,13 +111,13 @@ msgstr "創設者: %{founder}"
 msgid "  Identified: %{identified}"
 msgstr "識別される: %{identified}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:69
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:70
 #, elixir-autogen, elixir-format
 msgid "  Identified: %{identified}\n"
 msgstr "識別される: %{identified}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:31
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:67
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:68
 #, elixir-autogen, elixir-format
 msgid "  Last seen: %{last_seen_at}\n"
 msgstr "最後に見ました: %{last_seen_at}"
@@ -132,23 +132,23 @@ msgstr "ポートを聴く: %{listen_port}"
 msgid "  Listeners: %{listener_count}\n"
 msgstr "リスナー: %{listener_count}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:67
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:68
 #, elixir-autogen, elixir-format
 msgid "  Members (%{member_count}): %{members}\n"
 msgstr "会員(%{member_count}): %{members}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:40
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:71
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Modes: %{modes}\n"
 msgstr "モード: %{modes}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:52
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:53
 #, elixir-autogen, elixir-format
 msgid "  Online: %{online}"
 msgstr "オンライン: %{online}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:68
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:69
 #, elixir-autogen, elixir-format
 msgid "  Online: %{online}\n"
 msgstr "オンライン: %{online}"
@@ -165,22 +165,22 @@ msgstr "プロセス: %{processes}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:36
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:28
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:64
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:65
 #, elixir-autogen, elixir-format
 msgid "  Registered: %{registered_at}\n"
 msgstr "登録: %{registered_at}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:59
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:60
 #, elixir-autogen, elixir-format
 msgid "  Registered: no"
 msgstr "登録:なし"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:51
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:52
 #, elixir-autogen, elixir-format
 msgid "  Registered: no\n"
 msgstr "登録:なし"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:55
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:56
 #, elixir-autogen, elixir-format
 msgid "  Registered: yes (founder: %{founder_nickname})"
 msgstr "登録: はい (設立者: %{founder_nickname})"
@@ -195,7 +195,7 @@ msgstr "リレーIP:%{relay_ip}"
 msgid "  Relay ports: %{used_ports}/%{total_ports} in use\n"
 msgstr "  リレー ポート使用中: %{used_ports}/%{total_ports}\n"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:71
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Server operator: %{is_oper}"
 msgstr "サーバー オペレータ: %{is_oper}"
@@ -206,7 +206,7 @@ msgid "  Status: running\n"
 msgstr "ステータス: 実行"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:39
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:66
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:67
 #, elixir-autogen, elixir-format
 msgid "  Topic: %{topic}\n"
 msgstr "トピック: %{topic}"
@@ -241,12 +241,12 @@ msgstr "恒久的に"
 msgid " → %{target_type}:%{target_id}"
 msgstr "→ %{target_type}:%{target_id}"
 
-#: lib/retro_hex_chat/admin.ex:94
+#: lib/retro_hex_chat/admin.ex:93
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been kicked from the server."
 msgstr "サーバから%{nickname}が起動しました。"
 
-#: lib/retro_hex_chat/admin.ex:118
+#: lib/retro_hex_chat/admin.ex:117
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been muted %{duration_text}."
 msgstr "%{nickname}は%{duration_text}をミュートしました。"
@@ -256,7 +256,7 @@ msgstr "%{nickname}は%{duration_text}をミュートしました。"
 msgid "%{nickname} has been server-banned%{duration_text}."
 msgstr "%{nickname}はサーバー禁止%{duration_text}です。"
 
-#: lib/retro_hex_chat/admin.ex:699
+#: lib/retro_hex_chat/admin.ex:691
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been set as %{role}."
 msgstr "%{nickname}は%{role}として設定されています。"
@@ -271,32 +271,32 @@ msgstr "%{nickname}は禁止されています"
 msgid "%{nickname} has been unbanned from the server."
 msgstr "%{nickname}はサーバーから禁止されています。"
 
-#: lib/retro_hex_chat/admin.ex:135
+#: lib/retro_hex_chat/admin.ex:134
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been unmuted."
 msgstr "%{nickname} は未処理です。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:49
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:50
 #, elixir-autogen, elixir-format
 msgid "%{nick} (%{role})"
 msgstr "%{nick} (%{role})"
 
-#: lib/retro_hex_chat/admin.ex:158
+#: lib/retro_hex_chat/admin.ex:157
 #, elixir-autogen, elixir-format
 msgid "%{old_nick} has been renamed to %{new_nick}."
 msgstr "%{old_nick} は %{new_nick} に名前を変更しました。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:62
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:63
 #, elixir-autogen, elixir-format
 msgid "(none)"
 msgstr "(なし)"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:83
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:84
 #, elixir-autogen, elixir-format
 msgid "*** %{key} = '%{value}'"
 msgstr "*** %{key} = '%{value}'"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:84
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:85
 #, elixir-autogen, elixir-format
 msgid "*** %{key} is not set"
 msgstr "*** %{key}はセットされていません"
@@ -305,24 +305,24 @@ msgstr "*** %{key}はセットされていません"
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:54
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:88
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:97
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:86
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:93
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:101
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:87
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:94
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:102
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:15
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:45
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:58
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:82
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:91
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:101
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:110
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:118
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:126
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:141
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:59
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:83
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:92
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:102
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:111
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:119
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:127
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:142
 #, elixir-autogen, elixir-format
 msgid "*** %{message}"
 msgstr "%{message}の特長"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:37
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:38
 #, elixir-autogen, elixir-format
 msgid "*** %{server_name} ***%{desc_line}\n"
 msgstr "%{server_name} ***%{desc_line}の特長"
@@ -357,17 +357,17 @@ msgstr "*** 監査ログ (%{entries_count}エントリー) ***"
 msgid "*** BEAM Memory ***\n"
 msgstr "*** ビーム メモリ ***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:114
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:115
 #, elixir-autogen, elixir-format
 msgid "*** Ban List for %{channel} (%{bans_count}) ***"
 msgstr "*** %{channel} の BAN リスト (%{bans_count}) ***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:27
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:28
 #, elixir-autogen, elixir-format
 msgid "*** Channel List (%{filtered_count}) ***"
 msgstr "*** チャンネルリスト (%{filtered_count}) ***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:65
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:66
 #, elixir-autogen, elixir-format
 msgid "*** Channel: %{channel}\n"
 msgstr "*** チャネル: %{channel}"
@@ -397,12 +397,12 @@ msgstr "*** アクティブなTURNの割り当て無し。"
 msgid "*** No active channel processes."
 msgstr "*** アクティブなチャネルのプロセス無し。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:24
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:25
 #, elixir-autogen, elixir-format
 msgid "*** No active channels."
 msgstr "*** アクティブなチャンネルはありません。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:163
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:164
 #, elixir-autogen, elixir-format
 msgid "*** No active server bans."
 msgstr "*** アクティブサーバー禁止."
@@ -412,17 +412,17 @@ msgstr "*** アクティブサーバー禁止."
 msgid "*** No audit log entries found."
 msgstr "*** 監査ログエントリが見つかりません。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:111
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:112
 #, elixir-autogen, elixir-format
 msgid "*** No bans in %{channel}."
 msgstr "%{channel}の禁止事項"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:94
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:95
 #, elixir-autogen, elixir-format
 msgid "*** No server settings configured."
 msgstr "*** サーバの設定は行いません。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:32
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:33
 #, elixir-autogen, elixir-format
 msgid "*** No users found."
 msgstr "*** 利用者が見つかりません。"
@@ -442,12 +442,12 @@ msgstr "*** システムを NUKE しました — %{total} 件のレコードを
 msgid "*** SYSTEM NUKED — No records to delete."
 msgstr "*** 削除するレコードがないシステム"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:166
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:167
 #, elixir-autogen, elixir-format
 msgid "*** Server Ban List (%{filtered_count}) ***"
 msgstr "*** サーバー BAN リスト (%{filtered_count}) ***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:96
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:97
 #, elixir-autogen, elixir-format
 msgid "*** Server Settings ***"
 msgstr "*** サーバ設定 ***"
@@ -462,13 +462,13 @@ msgstr "*** TURN Server Stats ***"
 msgid "*** TURN server is not configured (listener_count = 0)"
 msgstr "*** TURN サーバは設定されていません (listener count = 0)"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:248
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:249
 #, elixir-autogen, elixir-format
 msgid "*** User List (%{entries_count} results) ***"
 msgstr "*** ユーザーリスト (%{entries_count} 結果) ***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:50
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:63
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:51
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:64
 #, elixir-autogen, elixir-format
 msgid "*** User: %{nick}\n"
 msgstr "*** ユーザ: %{nick}"
@@ -483,77 +483,77 @@ msgstr "*** [シャンサーブ] %{name}"
 msgid "*** [NickServ] %{nick}\n"
 msgstr "*** [NickServ] %{nick}の特長"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:42
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:43
 #, elixir-autogen, elixir-format
 msgid "Active channels: %{channel_count}\n"
 msgstr "アクティブなチャンネル: %{channel_count}"
 
-#: lib/retro_hex_chat/admin.ex:718
+#: lib/retro_hex_chat/admin.ex:710
 #, elixir-autogen, elixir-format
 msgid "Admin roles removed from %{nickname}."
 msgstr "%{nickname}から削除された管理者の役割。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:45
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:46
 #, elixir-autogen, elixir-format
 msgid "BEAM uptime: %{uptime_days}d %{remaining_hours}h"
 msgstr "BEAM 稼働時間: %{uptime_days}日 %{remaining_hours}時間"
 
-#: lib/retro_hex_chat/admin.ex:175
+#: lib/retro_hex_chat/admin.ex:174
 #, elixir-autogen, elixir-format
 msgid "Cannot modify role of a root admin"
 msgstr "ルート管理者の役割を変更することはできません"
 
-#: lib/retro_hex_chat/admin.ex:285
+#: lib/retro_hex_chat/admin.ex:282
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} created and registered."
 msgstr "チャンネル%{channel_name}を作成し、登録."
 
-#: lib/retro_hex_chat/admin.ex:311
+#: lib/retro_hex_chat/admin.ex:308
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} has been deleted."
 msgstr "チャネル%{channel_name}は削除されました。"
 
-#: lib/retro_hex_chat/admin.ex:91
+#: lib/retro_hex_chat/admin.ex:90
 #, elixir-autogen, elixir-format
 msgid "Kicked by administrator"
 msgstr "管理者によるキック"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:267
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:268
 #, elixir-autogen, elixir-format
 msgid "No reason"
 msgstr "理由なし"
 
-#: lib/retro_hex_chat/admin.ex:44
+#: lib/retro_hex_chat/admin.ex:46
 #, elixir-autogen, elixir-format
 msgid "No reason given"
 msgstr "理由なし"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:137
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:138
 #, elixir-autogen, elixir-format
 msgid "Only root admins can promote users to admin"
 msgstr "ルート管理者だけが管理者にユーザーを宣伝することができます"
 
-#: lib/retro_hex_chat/admin.ex:216
+#: lib/retro_hex_chat/admin.ex:213
 #, elixir-autogen, elixir-format
 msgid "Password was reset"
 msgstr "パスワードがリセットされました"
 
-#: lib/retro_hex_chat/admin.ex:345
+#: lib/retro_hex_chat/admin.ex:342
 #, elixir-autogen, elixir-format
 msgid "Purged %{count} messages from %{channel_name}."
 msgstr "%{channel_name} から %{count} メッセージを送信"
 
-#: lib/retro_hex_chat/admin.ex:339
+#: lib/retro_hex_chat/admin.ex:336
 #, elixir-autogen, elixir-format
 msgid "Purged %{count} messages from %{from_nick} in %{channel_name}."
 msgstr "%{channel_name} で %{from_nick} から %{count} メッセージを送信"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:43
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:44
 #, elixir-autogen, elixir-format
 msgid "Registered nicks: %{nick_count}\n"
 msgstr "登録番号: %{nick_count}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:44
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:45
 #, elixir-autogen, elixir-format
 msgid "Registration: %{registration}\n"
 msgstr "登録: %{registration}"
@@ -563,7 +563,7 @@ msgstr "登録: %{registration}"
 msgid "Server banned: %{reason}"
 msgstr "サーバー禁止:%{reason}"
 
-#: lib/retro_hex_chat/admin.ex:399
+#: lib/retro_hex_chat/admin.ex:396
 #, elixir-autogen, elixir-format
 msgid "Server setting '%{key}' set to '%{value}'."
 msgstr "サーバー設定 '%{key}' を '%{value}' に設定します。"
@@ -573,7 +573,7 @@ msgstr "サーバー設定 '%{key}' を '%{value}' に設定します。"
 msgid "Unknown turn subcommand: %{subcmd}. Try: stats, allocations"
 msgstr "未知ターンサブコマンド: %{subcmd}. 試してみる: 統計, 割り当て"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:131
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:132
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin channel <list|info|create|delete|purge|banlist>"
 msgstr "使用法: /adminチャネル<list|info|create|delete|purge|banlist>"
@@ -598,7 +598,7 @@ msgstr "使用法: /admin ns <drop|info|resetpass> [args]"
 msgid "Usage: /admin nuke [--confirm]"
 msgstr "使用法: /admin nuke [--confirm]"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:114
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:115
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin server <info|set|get|settings>"
 msgstr "使用法: /adminサーバー<info|set|get|settings>"
@@ -608,18 +608,18 @@ msgstr "使用法: /adminサーバー<info|set|get|settings>"
 msgid "Usage: /admin turn <stats|allocations>"
 msgstr "使用法: /adminは<stats|allocations>を回します"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:180
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:181
 #, elixir-autogen, elixir-format
 msgid "Usage: /admin user <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
 msgstr ""
 "使用法: /admin のユーザー <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:41
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:42
 #, elixir-autogen, elixir-format
 msgid "Users online: %{online_count}\n"
 msgstr "オンラインユーザー: %{online_count}"
 
-#: lib/retro_hex_chat/admin.ex:200
+#: lib/retro_hex_chat/admin.ex:197
 #, elixir-autogen, elixir-format
 msgid "Your nick registration was dropped by an administrator"
 msgstr "管理者がニックネーム登録を解除しました"
@@ -640,37 +640,37 @@ msgstr "[ChanServ] %{message}の特長"
 msgid "[NickServ] %{message}"
 msgstr "[NickServ] %{message} の使い方"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:264
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:265
 #, elixir-autogen, elixir-format
 msgid "expires %{expires_at}"
 msgstr "有効期限 %{expires_at}"
 
-#: lib/retro_hex_chat/admin.ex:115
+#: lib/retro_hex_chat/admin.ex:114
 #, elixir-autogen, elixir-format
 msgid "for %{duration}"
 msgstr "%{duration}用"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:144
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:145
 #, elixir-autogen, elixir-format
 msgid "max_channels must be a positive integer"
 msgstr "max channels は正の整数でなければなりません"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:151
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:152
 #, elixir-autogen, elixir-format
 msgid "registration must be 'open' or 'closed'"
 msgstr "登録は「オープン」または「クローズド」でなければなりません。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:160
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:161
 #, elixir-autogen, elixir-format
 msgid "whowas_retention_seconds must be an integer from 1 to 86400"
 msgstr "whowas retention seconds は 1 から 86400 までの整数でなければなりません"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:239
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:240
 #, elixir-autogen, elixir-format
 msgid "*** User List (%{shown} online) ***"
 msgstr "*** ユーザー一覧 (オンライン %{shown} 人) ***"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:242
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:243
 #, elixir-autogen, elixir-format
 msgid "*** User List (showing %{shown} of %{total}) ***"
 msgstr "*** ユーザー一覧 (%{total} 件中 %{shown} 件を表示) ***"
@@ -685,48 +685,48 @@ msgstr "操作"
 msgid "Actor"
 msgstr "実行者"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:196
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:197
 #, elixir-autogen, elixir-format
 msgid "By"
 msgstr "実行者"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:153
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:154
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "チャンネル"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:197
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:198
 #, elixir-autogen, elixir-format
 msgid "Expires"
 msgstr "有効期限"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:125
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:126
 #, elixir-autogen, elixir-format
 msgid "Key"
 msgstr "キー"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:154
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:155
 #, elixir-autogen, elixir-format
 msgid "Members"
 msgstr "メンバー"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:194
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:215
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:195
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:216
 #, elixir-autogen, elixir-format
 msgid "Nick"
 msgstr "ニック"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:216
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:217
 #, elixir-autogen, elixir-format
 msgid "Online"
 msgstr "オンライン"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:195
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:196
 #, elixir-autogen, elixir-format
 msgid "Reason"
 msgstr "理由"
 
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:155
+#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:156
 #, elixir-autogen, elixir-format
 msgid "Registered"
 msgstr "登録済み"
@@ -736,12 +736,12 @@ msgstr "登録済み"
 msgid "Target"
 msgstr "対象"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:127
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:128
 #, elixir-autogen, elixir-format
 msgid "Updated by"
 msgstr "更新者"
 
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:126
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:127
 #, elixir-autogen, elixir-format
 msgid "Value"
 msgstr "値"
@@ -758,7 +758,7 @@ msgstr ""
 "*** 保存: admin roles, 監査 logs, server bans, server settings (registration "
 "reopens)"
 
-#: lib/retro_hex_chat/admin.ex:677
+#: lib/retro_hex_chat/admin.ex:669
 #, elixir-autogen, elixir-format
 msgid "System reset by administrator %{admin}"
 msgstr ""
@@ -919,12 +919,12 @@ msgstr "タイプ:"
 msgid "Version"
 msgstr "バージョン"
 
-#: lib/retro_hex_chat/admin.ex:125
+#: lib/retro_hex_chat/admin.ex:124
 #, elixir-autogen, elixir-format
 msgid "Failed to mute %{nickname}."
 msgstr "%{nickname} をミュートできませんでした。"
 
-#: lib/retro_hex_chat/admin.ex:139
+#: lib/retro_hex_chat/admin.ex:138
 #, elixir-autogen, elixir-format
 msgid "Failed to unmute %{nickname}."
 msgstr "%{nickname} のミュートを解除できませんでした。"

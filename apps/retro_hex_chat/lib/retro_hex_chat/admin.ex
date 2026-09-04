@@ -429,7 +429,6 @@ defmodule RetroHexChat.Admin do
     {"contextual_tip_settings", RetroHexChat.Chat.Schemas.ContextualTipSetting},
     {"reconnect_states", RetroHexChat.Chat.Schemas.ReconnectState},
     {"notice_routing_settings", RetroHexChat.Chat.Schemas.NoticeRoutingSetting},
-    {"user_preferences", RetroHexChat.Chat.Schemas.UserPreference},
     {"group_call_tracks", RetroHexChat.GroupCall.Schema.Track},
     {"group_call_participants", RetroHexChat.GroupCall.Schema.Participant},
     {"group_call_rooms", RetroHexChat.GroupCall.Schema.Room},

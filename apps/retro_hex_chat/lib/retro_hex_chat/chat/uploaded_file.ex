@@ -25,7 +25,6 @@ defmodule RetroHexChat.Chat.UploadedFile do
     field :logical_path, :string
     field :preview_kind, :string, default: "download"
     field :preview_status, :string, default: "none"
-    field :preview_storage_key, :string
     field :preview_metadata, :map, default: %{}
     field :status, :string, default: "uploaded"
 
@@ -50,7 +49,6 @@ defmodule RetroHexChat.Chat.UploadedFile do
       :logical_path,
       :preview_kind,
       :preview_status,
-      :preview_storage_key,
       :preview_metadata,
       :status
     ])

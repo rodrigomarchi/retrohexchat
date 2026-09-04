@@ -18,8 +18,6 @@ defmodule RetroHexChat.GroupCall.Schema.Track do
     field :source, :string
     field :webrtc_track_id, :string
     field :stream_id, :string
-    field :mid, :string
-    field :rid, :string
     field :status, :string, default: "announced"
     field :codec, :string
     field :metadata, :map, default: %{}
@@ -42,8 +40,6 @@ defmodule RetroHexChat.GroupCall.Schema.Track do
       :source,
       :webrtc_track_id,
       :stream_id,
-      :mid,
-      :rid,
       :status,
       :codec,
       :metadata,
@@ -57,8 +53,6 @@ defmodule RetroHexChat.GroupCall.Schema.Track do
     |> validate_length(:source, max: 30)
     |> validate_length(:webrtc_track_id, max: 128)
     |> validate_length(:stream_id, max: 128)
-    |> validate_length(:mid, max: 32)
-    |> validate_length(:rid, max: 32)
     |> validate_length(:codec, max: 50)
     |> validate_length(:ended_reason, max: 100)
     |> validate_inclusion(:kind, @kind_values)

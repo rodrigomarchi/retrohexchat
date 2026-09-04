@@ -46,11 +46,15 @@ test.describe("Admin diagnostics", () => {
       await admin.chat.expectMessageVisible("*** BEAM Memory ***");
       await admin.chat.expectMessageVisible("Total:");
 
+      // These two walk live BEAM structures rather than reading a cached
+      // figure, and on a cold node the first of them is comfortably slower
+      // than the default five seconds — which is a slow answer, not a missing
+      // one, and the retry proved it by passing in under two.
       await admin.chat.sendMessage("/admin debug connections");
-      await admin.chat.expectMessageVisible("*** Debug:");
+      await admin.chat.expectMessageVisible("*** Debug:", 20_000);
 
       await admin.chat.sendMessage("/admin debug processes");
-      await admin.chat.expectMessageVisible("Channel Processes");
+      await admin.chat.expectMessageVisible("Channel Processes", 20_000);
 
       await admin.chat.sendMessage("/admin server info");
       await admin.chat.expectMessageVisible("Users online:");

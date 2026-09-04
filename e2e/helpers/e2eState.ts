@@ -47,6 +47,22 @@ export function ensureE2eDatabaseMigrated() {
   runMix(["ecto.migrate"], "Failed to migrate e2e database.");
 }
 
+// The server answers /api/healthz long before it can serve a page: the first
+// real request still compiles templates and builds the LiveView layout, and
+// whichever spec runs first pays it. That cost landed on the two admin specs
+// that sort first, which timed out at six seconds and passed in under two on
+// the retry. Fetching the pages here moves the compile off the first spec.
+export async function warmRenderPaths(baseURL: string): Promise<void> {
+  for (const path of ["/", "/connect", "/chat"]) {
+    try {
+      await fetch(`${baseURL}${path}`, { redirect: "follow" });
+    } catch {
+      // A warmup is best effort: the suite's own specs report a server that
+      // is genuinely unreachable, and reporting it twice helps nobody.
+    }
+  }
+}
+
 export function resetRegistrationOpen() {
   const result = spawnSync(
     "mix",
