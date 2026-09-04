@@ -165,6 +165,26 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
       assert render(view) =~ "hex_pong"
     end
 
+    # Pressing Share is a request to see the address, so the window opens by
+    # itself. Arriving on a surface that already has a link is not: walking into
+    # a room you shared earlier must not put the address in front of you.
+    test "the window opens on the press that mints, and not on arrival", %{conn: conn} do
+      nick = "Auto#{uid()}"
+      {:ok, _} = register(nick)
+
+      {:ok, view, _html} = conn |> chat_conn(nick) |> live(~p"/play/hex_pong")
+
+      html = view |> element(~s([data-testid="share-create"])) |> render_click()
+      assert html =~ ~s(data-testid="share-url")
+      refute open_dialog?(html)
+
+      # Closing it leaves the control saying there is a link, and reopening is
+      # the reader's move rather than the page's.
+      reopened = view |> element(~s([data-testid="share-close"])) |> render_click()
+      assert reopened =~ ~s(data-testid="share-open")
+      assert open_dialog?(reopened)
+    end
+
     test "a guest is told why they cannot", %{conn: conn} do
       {:ok, view, _html} = conn |> chat_conn("Guest#{uid()}") |> live(~p"/play/hex_pong")
 
@@ -190,6 +210,16 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
 
   defp redirected_to_connect({:error, {_kind, %{to: to}}}), do: to == "/connect"
   defp redirected_to_connect(_other), do: false
+
+  # The dialog wrapper carries `hidden` while it is closed; the surrounding
+  # markup is identical either way, so that class is the whole difference.
+  defp open_dialog?(html) do
+    html
+    |> Floki.parse_fragment!()
+    |> Floki.find(~s([data-testid="share-game-dialog"] > div))
+    |> Floki.attribute("class")
+    |> Enum.any?(&String.contains?(&1, "hidden"))
+  end
 
   defp share_url(view) do
     [url] =

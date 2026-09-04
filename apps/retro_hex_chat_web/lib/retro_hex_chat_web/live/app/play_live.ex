@@ -17,7 +17,6 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.RetroGamesPanel
-  import RetroHexChatWeb.Components.UI.ShareBar
   import RetroHexChatWeb.Components.UI.SurfaceTabLink
   import RetroHexChatWeb.Components.UI.Window
 
@@ -30,6 +29,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
   alias RetroHexChatWeb.Components.UI.Button
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.OpenSurfaces
+  alias RetroHexChatWeb.Live.ShareControl
   alias RetroHexChatWeb.ShareLinkRef
 
   @difficulties ~w(easy normal hard)
@@ -104,17 +104,13 @@ defmodule RetroHexChatWeb.App.PlayLive do
     ~H"""
     <div class="flex h-full min-h-0 flex-col gap-2">
       <div :if={@selected_game} class="flex flex-wrap items-center gap-2">
-        <.share_bar
-          url={@share_url}
-          available={sharable?(@nickname)}
-          on_share="share_game"
-          on_revoke="revoke_game"
-          class="min-w-0 flex-1"
-        />
         <%!-- Where a match is born, and deliberately inside the game rather
               than beside it: you decide to play with somebody while looking at
               what you would play. The room comes first and the link second —
-              opening a game does not mint an address, pressing Share does. --%>
+              opening a game does not mint an address, pressing Share does.
+
+              Both are invitations, so they are read together and weighted:
+              a match is the whole thing, a link is one way to hand it out. --%>
         <Button.button
           :if={sharable?(@nickname)}
           type="button"
@@ -124,6 +120,15 @@ defmodule RetroHexChatWeb.App.PlayLive do
           <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
           {dgettext("games", "Play with someone")}
         </Button.button>
+        <.live_component
+          module={ShareControl}
+          id="share-game"
+          url={@share_url}
+          available={sharable?(@nickname)}
+          on_share="share_game"
+          on_revoke="revoke_game"
+          variant="outline"
+        />
         <p :if={@match_error} class="text-warning text-sm" data-testid="play-match-error">
           {@match_error}
         </p>

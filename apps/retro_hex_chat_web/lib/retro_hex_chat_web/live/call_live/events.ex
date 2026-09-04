@@ -672,6 +672,15 @@ defmodule RetroHexChatWeb.CallLive.Events do
     |> Enum.reject(&(is_nil(&1) or &1 == ""))
   end
 
+  @spec room_token(String.t()) :: String.t() | nil
+  defp room_token(channel_name) do
+    channel_name
+    |> GroupCallSummary.fetch()
+    |> GroupCallSummary.normalize(channel_name)
+    |> Map.get(:room, %{})
+    |> Map.get(:token)
+  end
+
   @doc """
   Fold a room broadcast into the call, when it is this call's room.
 
@@ -748,6 +757,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
       group_call_prejoin: %{
         channel_name: channel_name,
         user_id: user_id,
+        # The room exists before you walk into it, so its address can be handed
+        # out from here. Inviting people and then joining is the order every
+        # other surface already has.
+        token: room_token(channel_name),
         # Whose antechamber this is, and whether the server had anything to
         # render. A terminal that was never trusted has no record here, and the
         # browser's own copy is then the only memory of the choice there is.

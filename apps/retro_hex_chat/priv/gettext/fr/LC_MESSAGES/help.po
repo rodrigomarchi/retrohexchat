@@ -5488,20 +5488,6 @@ msgstr ""
 "Annuler, dans le salon, le tue immédiatement ; dans les deux cas vous en "
 "créez un autre depuis le jeu."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1154
-#, elixir-autogen, elixir-format
-msgid "Revoke, beside the address on any Share bar, stops the link working. The room is untouched: whoever is already inside stays inside, and anyone who can reach it another way still can. Only the address dies. Asking to share the same room again hands you a new one, so a link you pasted in the wrong place is fixable rather than permanent. Share gives you one address per room rather than a fresh one per press, which is what makes revoking it a whole answer instead of closing one of several. Your own links are yours to revoke, and a channel operator can also revoke a link that leads into their channel."
-msgstr ""
-"Révoquer, à côté de l'adresse dans toute barre de partage, désactive le "
-"lien. La salle n'est pas touchée : qui est déjà à l'intérieur y reste, et "
-"qui peut l'atteindre autrement le peut toujours. Seule l'adresse meurt. "
-"Repartager la même salle vous en donne une nouvelle : un lien collé au "
-"mauvais endroit se répare, il n'est pas définitif. Partager vous donne une "
-"adresse par salle plutôt qu'une nouvelle à chaque clic, et c'est ce qui fait"
-" de la révocation une réponse entière au lieu de fermer l'une parmi "
-"plusieurs. Vos propres liens sont à vous de révoquer, et un opérateur de "
-"salon peut aussi révoquer un lien qui mène dans son salon."
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1141
 #, elixir-autogen, elixir-format
 msgid "Undoing a Link You Shared"
@@ -5548,29 +5534,6 @@ msgstr ""
 " statistiques en direct. La modération suit les permissions du canal : à "
 "partir de demi-opérateur, on peut modérer les participants de rang "
 "inférieur."
-
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1129
-#, elixir-autogen, elixir-format
-msgid "Opening a conference already posts its card in the channel, and Share, above the conference, hands you that same address to paste anywhere else — pressing it again gives you the link you already have rather than a second one. Pasted into a conversation it draws a card instead of a bare address, and that card is the room as it is now: it counts who is inside and changes on its own as people come and go, with Join to go in and Copy link to pass it on. When the room finishes — or you revoke the link — the card stays and becomes the record of what happened: how long the conference ran and how many different people were in it, with the next thing you can still do instead of a button that no longer works. A P2P session says how long it lasted; a space and a solo game say neither, because a place has no beginning to measure from. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
-msgstr ""
-"Ouvrir une conférence publie déjà sa carte dans le canal, et Share, au-"
-"dessus de la conférence, vous donne cette même adresse à coller ailleurs — "
-"appuyer de nouveau rend le lien que vous avez déjà, pas un second. Collé "
-"dans une conversation, il dessine une carte plutôt qu'une adresse nue, et "
-"cette carte est la salle telle qu'elle est maintenant : elle compte qui est "
-"à l'intérieur et change d'elle-même à mesure que les gens entrent et "
-"sortent, avec Join pour entrer et Copy link pour la transmettre. Quand la "
-"salle se termine — ou que vous révoquez le lien — la carte reste et devient "
-"le compte rendu de ce qui s'est passé : combien de temps la conférence a "
-"duré et combien de personnes différentes y étaient, avec la prochaine chose "
-"encore possible plutôt qu'un bouton qui ne marche plus. Une session P2P dit "
-"combien de temps elle a duré ; un espace et un jeu solo ne disent ni l'un ni"
-" l'autre, parce qu'un lieu n'a pas de début à mesurer. Le lien porte de "
-"quelle salle il s'agit et jamais le droit d'y être : celui qui le suit doit "
-"toujours être enregistré et membre du canal ; un lien est donc une "
-"invitation vers une salle que vous pouviez déjà atteindre, pas un "
-"contournement de la porte du canal. Seul un pseudonyme enregistré peut en "
-"créer un."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1250
 #, elixir-autogen, elixir-format
@@ -5662,19 +5625,6 @@ msgstr ""
 "onglet et vous emmène à celui que vous avez plutôt que d'en ouvrir un "
 "second."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:3784
-#, elixir-autogen, elixir-format
-msgid "Share, on the character picker, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
-msgstr ""
-"Partager, sur le sélecteur de personnage, crée un lien que vous pouvez "
-"coller n'importe où. Collé dans une conversation, il dessine une carte au "
-"lieu d'une adresse nue. Ce lien nomme le lieu plutôt qu'une soirée passée "
-"dedans, il continue donc de fonctionner une fois que tout le monde est "
-"parti. Il porte de quel espace il s'agit et jamais la permission d'y être : "
-"l'espace d'un canal demande toujours à celui qui suit le lien d'être dans ce"
-" canal, et un espace privé appartient toujours à ses deux personnes. Seul un"
-" pseudo enregistré peut en créer un."
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3764
 #, elixir-autogen, elixir-format
 msgid "Walking into an empty space posts a card in the conversation it belongs to, so everybody reading can see that something is happening and follow it in. The card counts who is inside while it lasts, and once the last person leaves it becomes the record of what happened: how long the gathering ran, and how many people came. Walking into a space somebody is already in posts nothing — one gathering, one card. Only a registered nickname posts one; a guest still walks in as usual."
@@ -5749,3 +5699,18 @@ msgstr "Enregistrez, inspectez et libérez le salon actuel via les commandes Cha
 #, elixir-autogen, elixir-format
 msgid "Send files directly to other users via peer-to-peer with drag-and-drop support. Picking a second file while one is still going queues it: the panel says so, and it starts on its own when the current transfer finishes. See also: P2P Session."
 msgstr "Envoyez des fichiers directement à d'autres personnes en peer-to-peer, avec le glisser-déposer. Choisir un deuxième fichier pendant qu'un transfert est en cours le met en file d'attente : le panneau le signale, et il démarre tout seul quand le transfert actuel se termine. Voir aussi : Session P2P."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1129
+#, elixir-autogen, elixir-format
+msgid "Opening a conference already posts its card in the channel, and Share — in the antechamber before you join, and in the conference bar afterwards — opens a small window with that same address to paste anywhere else, next to Copy and Revoke. Opening it again shows the link you already have rather than minting a second one. Pasted into a conversation it draws a card instead of a bare address, and that card is the room as it is now: it counts who is inside and changes on its own as people come and go, with Join to go in and Copy link to pass it on. When the room finishes — or you revoke the link — the card stays and becomes the record of what happened: how long the conference ran and how many different people were in it, with the next thing you can still do instead of a button that no longer works. A P2P session says how long it lasted; a space and a solo game say neither, because a place has no beginning to measure from. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
+msgstr "Ouvrir une conférence publie déjà sa carte dans le salon, et Partager — dans l'antichambre avant que vous entriez, et dans la barre de la conférence ensuite — ouvre une petite fenêtre contenant cette même adresse à coller ailleurs, à côté de Copier et Révoquer. La rouvrir affiche le lien que vous avez déjà, au lieu d'en forger un deuxième. Quand la salle se termine — ou que vous révoquez le lien — la carte reste et devient le compte rendu de ce qui s'est passé : combien de temps la conférence a duré et combien de personnes différentes y étaient, avec la prochaine chose encore possible plutôt qu'un bouton qui ne marche plus. Une session P2P dit combien de temps elle a duré ; un espace et un jeu solo ne disent ni l'un ni l'autre, parce qu'un lieu n'a pas de début à mesurer. Le lien porte de quelle salle il s'agit et jamais le droit d'y être : celui qui le suit doit toujours être enregistré et membre du canal ; un lien est donc une invitation vers une salle que vous pouviez déjà atteindre, pas un contournement de la porte du canal. Seul un pseudonyme enregistré peut en créer un."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1154
+#, elixir-autogen, elixir-format
+msgid "Revoke, beside the address in the Share link window, stops the link working. The room is untouched: whoever is already inside stays inside, and anyone who can reach it another way still can. Only the address dies. Asking to share the same room again hands you a new one, so a link you pasted in the wrong place is fixable rather than permanent. Share gives you one address per room rather than a fresh one per press, which is what makes revoking it a whole answer instead of closing one of several. Your own links are yours to revoke, and a channel operator can also revoke a link that leads into their channel."
+msgstr "Révoquer, à côté de l'adresse dans la fenêtre Lien de partage, arrête le lien. La salle n'est pas touchée : qui est déjà à l'intérieur y reste, et qui peut l'atteindre autrement le peut toujours. Seule l'adresse meurt. Repartager la même salle vous en donne une nouvelle : un lien collé au mauvais endroit se répare, il n'est pas définitif. Partager vous donne une adresse par salle plutôt qu'une nouvelle à chaque clic, et c'est ce qui fait de la révocation une réponse entière au lieu de fermer l'une parmi plusieurs. Vos propres liens sont à vous de révoquer, et un opérateur de salon peut aussi révoquer un lien qui mène dans son salon."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:3784
+#, elixir-autogen, elixir-format
+msgid "Share, on the character picker, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
+msgstr "Partager, sur le sélecteur de personnage, forge un lien et l'ouvre dans une petite fenêtre avec Copier et Révoquer à côté. Collé dans une conversation, il dessine une carte au lieu d'une adresse nue. Ce lien nomme le lieu plutôt qu'une soirée passée dedans, il continue donc de fonctionner une fois que tout le monde est parti. Il porte de quel espace il s'agit et jamais la permission d'y être : l'espace d'un canal demande toujours à celui qui suit le lien d'être dans ce canal, et un espace privé appartient toujours à ses deux personnes. Seul un pseudo enregistré peut en créer un."

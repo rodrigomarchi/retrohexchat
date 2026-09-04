@@ -28,7 +28,6 @@ defmodule RetroHexChatWeb.App.P2PLive do
   import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.P2P.StartingRoom
-  import RetroHexChatWeb.Components.UI.ShareBar
   import RetroHexChatWeb.Components.UI.SurfaceTabLink
   import RetroHexChatWeb.Components.UI.Window
 
@@ -44,6 +43,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.Live.P2PConfirmDialog
+  alias RetroHexChatWeb.Live.ShareControl
   alias RetroHexChatWeb.P2PLive.Components.P2PSessionConsole
   alias RetroHexChatWeb.P2PLive.Events
   alias RetroHexChatWeb.ShareLinkRef
@@ -186,12 +186,14 @@ defmodule RetroHexChatWeb.App.P2PLive do
           <%!-- Minting is a deliberate act, not a side effect of opening a
                 session: a link per invite sent would fill the table with
                 addresses nobody ever followed. --%>
-          <.share_bar
+          <.live_component
+            module={ShareControl}
+            id="share-p2p"
             url={@share_url}
             available={sharable?(@nickname)}
             on_share="share_p2p"
             on_revoke="revoke_p2p"
-            class="min-w-0 flex-1 justify-start"
+            class="justify-start"
           />
         </:footer>
       </.p2p_starting_room>

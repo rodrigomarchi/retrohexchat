@@ -21,7 +21,6 @@ defmodule RetroHexChatWeb.App.CallLive do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.GroupCall.Panel
   import RetroHexChatWeb.Components.UI.GroupCall.PreJoin
-  import RetroHexChatWeb.Components.UI.ShareBar
   import RetroHexChatWeb.Components.UI.SurfaceTabLink
   import RetroHexChatWeb.Components.UI.Window
 
@@ -39,6 +38,7 @@ defmodule RetroHexChatWeb.App.CallLive do
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.GroupCallConfirmDialog
   alias RetroHexChatWeb.Live.OpenSurfaces
+  alias RetroHexChatWeb.Live.ShareControl
   alias RetroHexChatWeb.ShareLinkRef
 
   # The shortcuts this page answers. Everything else the binding table knows is
@@ -162,21 +162,40 @@ defmodule RetroHexChatWeb.App.CallLive do
         prejoin={@group_call_prejoin}
         participants={@prejoin_roster}
         on_cancel="group_call_prejoin_cancel"
-      />
+      >
+        <:actions>
+          <.live_component
+            module={ShareControl}
+            id="share-call-prejoin"
+            url={@share_url}
+            available={sharable?(@nickname)}
+            on_share="share_call"
+            on_revoke="revoke_call"
+            variant="outline"
+            class="mr-auto"
+          />
+        </:actions>
+      </.group_call_pre_join_panel>
 
       <div :if={@group_call && !@surface_left} class="flex h-full min-h-0 flex-col gap-1">
         <%!-- Minting is a deliberate act, not a side effect of opening a call:
               a link per window opened would fill the table with addresses
-              nobody ever sent. --%>
-        <.share_bar
-          url={@share_url}
-          available={sharable?(@nickname)}
-          on_share="share_call"
-          on_revoke="revoke_call"
-          class="shrink-0 justify-end border border-border bg-surface p-1 shadow-retro-raised"
-        />
+              nobody ever sent. The control rides in the panel's own toolbar
+              rather than a band of its own — a call is the one screen where
+              forty-six permanent pixels are taken from the thing you came for. --%>
         <div class="min-h-0 flex-1">
-          <.group_call_panel id="group-call-panel-surface" call={@group_call} />
+          <.group_call_panel id="group-call-panel-surface" call={@group_call}>
+            <:toolbar_extra>
+              <.live_component
+                module={ShareControl}
+                id="share-call"
+                url={@share_url}
+                available={sharable?(@nickname)}
+                on_share="share_call"
+                on_revoke="revoke_call"
+              />
+            </:toolbar_extra>
+          </.group_call_panel>
         </div>
       </div>
 
@@ -242,22 +261,19 @@ defmodule RetroHexChatWeb.App.CallLive do
   @impl true
   @spec handle_event(String.t(), map(), Socket.t()) :: {:noreply, Socket.t()}
   def handle_event("share_call", _params, %{assigns: %{group_call: %{token: token}}} = socket)
-      when is_binary(token) do
-    nickname = socket.assigns.nickname
+      when is_binary(token),
+      do: mint_call_link(socket, token)
 
-    with {:ok, user_id} <- SessionHelpers.resolve_user_id(nickname || ""),
-         {:ok, link} <-
-           ShareLinks.create(%{
-             kind: "call",
-             target: %{"room_token" => token},
-             creator_id: user_id,
-             creator_nick: nickname
-           }) do
-      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug), share_slug: link.slug)}
-    else
-      _unavailable -> {:noreply, socket}
-    end
-  end
+  # The room is there before you walk into it, so the antechamber hands out the
+  # same address: you invite people and then join, which is the order the space
+  # and the P2P session already have.
+  def handle_event(
+        "share_call",
+        _params,
+        %{assigns: %{group_call_prejoin: %{token: token}}} = socket
+      )
+      when is_binary(token),
+      do: mint_call_link(socket, token)
 
   def handle_event("share_call", _params, socket), do: {:noreply, socket}
 
@@ -291,6 +307,24 @@ defmodule RetroHexChatWeb.App.CallLive do
   def handle_event(event, params, socket) do
     {_halted, socket} = Events.handle_event(event, params, socket)
     {:noreply, socket}
+  end
+
+  @spec mint_call_link(Socket.t(), String.t()) :: {:noreply, Socket.t()}
+  defp mint_call_link(socket, token) do
+    nickname = socket.assigns.nickname
+
+    with {:ok, user_id} <- SessionHelpers.resolve_user_id(nickname || ""),
+         {:ok, link} <-
+           ShareLinks.create(%{
+             kind: "call",
+             target: %{"room_token" => token},
+             creator_id: user_id,
+             creator_nick: nickname
+           }) do
+      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug), share_slug: link.slug)}
+    else
+      _unavailable -> {:noreply, socket}
+    end
   end
 
   # Only the conference's own shortcuts act here. Everything else the binding

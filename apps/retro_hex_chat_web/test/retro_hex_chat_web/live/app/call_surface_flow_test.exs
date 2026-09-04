@@ -295,6 +295,43 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
   end
 
   describe "inside a conference, at its own address" do
+    # The room exists before you walk into it, so its address can be handed out
+    # from the antechamber — the order the space and the P2P session already
+    # have. And walking in must not put that address back in front of you: the
+    # control in the conference bar is a different one, and it mounts with the
+    # link already made.
+    test "the antechamber can share, and joining does not reopen the window", %{conn: conn} do
+      %{view: view} = mount_identified(conn, "gcsh")
+
+      open_prejoin(view)
+
+      call = call_view(view)
+      assert has_element?(call, ~s([data-testid="share-create"]))
+
+      html = call |> element(~s([data-testid="share-create"])) |> render_click()
+
+      assert [url] =
+               html
+               |> Floki.parse_fragment!()
+               |> Floki.find(~s([data-testid="share-url"]))
+               |> Floki.attribute("value")
+
+      assert url =~ "/join/"
+
+      confirm_prejoin(view, %{})
+
+      inside = render(call_view(view))
+      assert inside =~ ~s(data-testid="share-open")
+      refute inside =~ ~s(data-testid="share-create")
+
+      # Present to reopen, and not in the way.
+      assert inside
+             |> Floki.parse_fragment!()
+             |> Floki.find(~s([data-testid="share-call-dialog"] > div))
+             |> Floki.attribute("class")
+             |> Enum.any?(&String.contains?(&1, "hidden"))
+    end
+
     # Recovery is reopening the address. The chat does not reopen a conference
     # for you on reconnect: it has no conference to reopen, and the room server
     # is the authority on the seat either way — so coming back is arriving at

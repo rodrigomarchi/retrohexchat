@@ -290,6 +290,28 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
     content = Map.get(msg, :content, "")
     content_format = Map.get(msg, :content_format, "irc")
 
-    ChatHelpers.format_content(content, content_format, strip_formatting)
+    content
+    |> without_card_address(msg, strip_formatting)
+    |> ChatHelpers.format_content(content_format, strip_formatting)
+  end
+
+  # The card *is* the address, drawn: it names the room, counts who is inside
+  # and carries both Join and Copy link. Printing the raw URL above it says the
+  # same thing a third time, in the one shape a reader cannot act on.
+  #
+  # The address stays in the message — the card is derived from it, and a row
+  # that draws no card still needs it — so it is dropped here, at the last
+  # moment, and only when the card that replaces it is actually being drawn.
+  defp without_card_address(content, msg, strip_formatting) do
+    with false <- strip_formatting,
+         url when is_binary(url) <- share_url(Map.get(msg, :share_card)) do
+      content
+      |> String.replace(url, "")
+      |> String.trim()
+      |> String.trim_trailing("—")
+      |> String.trim()
+    else
+      _ -> content
+    end
   end
 end

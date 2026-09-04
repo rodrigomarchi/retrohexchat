@@ -41,17 +41,19 @@ msgstr ""
 msgid "Open the chat"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:37
+#: lib/retro_hex_chat_web/live/share_control.ex:114
 #, elixir-autogen, elixir-format
 msgid "Register your nickname to share a link."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:33
+#: lib/retro_hex_chat_web/live/share_control.ex:98
 #, elixir-autogen, elixir-format
 msgid "Share"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:52
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:39
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:58
+#: lib/retro_hex_chat_web/live/share_control.ex:110
 #, elixir-autogen, elixir-format
 msgid "Share link"
 msgstr ""
@@ -221,13 +223,13 @@ msgstr ""
 msgid "Open in a tab"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:60
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:82
 #: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:112
 #, elixir-autogen, elixir-format
 msgid "Copied!"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:64
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:86
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr ""
@@ -237,12 +239,12 @@ msgstr ""
 msgid "Somebody shared this with you."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:81
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:74
 #, elixir-autogen, elixir-format
 msgid "Revoke"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/share/share_bar.ex:77
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:69
 #, elixir-autogen, elixir-format
 msgid "Stop this link from working? The room stays open."
 msgstr ""
@@ -358,4 +360,14 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:166
 #, elixir-autogen, elixir-format
 msgid "P2P session"
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:45
+#, elixir-autogen, elixir-format
+msgid "Anyone who opens this link can come in."
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:91
+#, elixir-autogen, elixir-format
+msgid "Close"
 msgstr ""

@@ -21,7 +21,6 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.Desktop
-  import RetroHexChatWeb.Components.UI.ShareBar
   import RetroHexChatWeb.Components.UI.SpaceCharacterSelect
   import RetroHexChatWeb.Components.UI.SpaceFullscreenToggle
   import RetroHexChatWeb.Components.UI.SpaceVirtualPad
@@ -40,6 +39,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.OpenSurfaces
+  alias RetroHexChatWeb.Live.ShareControl
   alias RetroHexChatWeb.ShareLinkRef
   alias RetroHexChatWeb.SpaceAssets
   alias RetroHexChatWeb.SpaceRef
@@ -153,12 +153,14 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         <%!-- The invitation is made at the door: a bar over the map would take
               pixels from the thing the person came for, and the picker is the
               one screen every visit goes through. --%>
-        <.share_bar
+        <.live_component
+          module={ShareControl}
+          id="share-space"
           url={@share_url}
           available={sharable?(@user_id)}
           on_share="share_space"
           on_revoke="revoke_space"
-          class="min-w-0 flex-1 justify-start"
+          class="justify-start"
         />
       </:footer>
     </.space_character_select>

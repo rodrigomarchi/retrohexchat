@@ -50,6 +50,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   attr :on_clear_focus, :any, default: "group_call_clear_focus"
   attr :on_console_select, :any, default: "group_call_console_select"
 
+  slot :toolbar_extra,
+    doc: "an action the surface adds to the section bar, left of the moderation icons"
+
   @spec group_call_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def group_call_panel(assigns) do
     ~H"""
@@ -76,6 +79,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       <.conference_section_nav
         :if={@call && !mini_mode?(@call)}
         call={@call}
+        toolbar_extra={@toolbar_extra}
         on_console_select={@on_console_select}
         on_close_room={@on_close_room}
         on_toggle_mini={@on_toggle_mini}
@@ -137,6 +141,15 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     """
   end
 
+  attr :call, :map, default: nil
+  attr :toolbar_extra, :any, default: []
+  attr :on_console_select, :any, required: true
+  attr :on_close_room, :any, required: true
+  attr :on_toggle_mini, :any, required: true
+  attr :on_mute_all, :any, required: true
+  attr :on_camera_off_all, :any, required: true
+  attr :on_toggle_lock, :any, required: true
+
   defp conference_section_nav(assigns) do
     ~H"""
     <.section_nav
@@ -176,6 +189,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       </:item>
 
       <:actions>
+        <%!-- A surface's own action sits with the actions, not among the tabs:
+              beside them it would read as a fifth section to switch to. --%>
+        <span :for={extra <- @toolbar_extra} class="mr-1">
+          {render_slot(extra)}
+        </span>
         <.group_call_button
           label={dgettext("group_call", "Switch to compact conference mode")}
           pressed={mini_mode?(@call)}

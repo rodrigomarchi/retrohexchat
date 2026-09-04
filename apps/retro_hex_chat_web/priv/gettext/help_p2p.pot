@@ -653,11 +653,6 @@ msgstr ""
 msgid "A link says which room it is; it never says you may be in it. Whoever follows it still has to be registered with NickServ and a member of the channel, and a locked conference still refuses everyone but its moderators. Only a registered nickname can mint one, because the link records who made it."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Share, above the conference, mints a link to the call you are in and puts the address in a field you can copy. Pasting it into a channel or a private message draws a card instead of a bare address — any such link becomes a card, including one somebody sent you from outside."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "The room decides who is in the call, not the tab. Closing the call's tab starts the reconnection window rather than ending your part, and opening the same address again puts you back where you were. Closing the chat's tab does not drop you out of the channel either, as long as the call is still open — you leave the channels when the last of your windows closes. Only Leave, which asks first, is final. The tab always shows a way back to the chat along its bottom edge: there is no conversation inside a call."
@@ -725,16 +720,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "One address per room"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "Pressing Share again for the same room hands you back the address you already have, rather than a second one. That is what makes revoking it a whole answer: there is one link to close, not an unknown number of them. After revoking, Share mints a fresh address — so a link pasted in the wrong place is fixable rather than permanent."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Revoke sits beside the address on any Share bar — a conference, a space, a P2P session, a game. It stops the link working, and it stops nothing else."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:41
@@ -905,4 +890,19 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowUp toggles microphone state and Ctrl+Shift+ArrowLeft toggles camera state."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Opening the Share link window again shows the address you already have, rather than minting a second one. That is what makes revoking it a whole answer: there is one link to close, not an unknown number of them. After revoking, Share mints a fresh address — so a link pasted in the wrong place is fixable rather than permanent."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_share_revoke.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Revoke sits in the Share link window, beside the address — a conference, a space, a P2P session, a game. It stops the link working, and it stops nothing else."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_share.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Share mints a link to the call and opens it in a small window with the address, Copy and Revoke. It is there in the antechamber before you join, and in the conference bar afterwards, so you can invite people and then walk in. Closing the window leaves the button reading Share link, which opens it again. Pasting the address into a channel or a private message draws a card instead of a bare address — any such link becomes a card, including one somebody sent you from outside."
 msgstr ""

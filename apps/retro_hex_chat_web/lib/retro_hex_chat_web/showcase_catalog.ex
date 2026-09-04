@@ -609,6 +609,13 @@ defmodule RetroHexChatWeb.ShowcaseCatalog do
       icon: :icon_dialog_ignore_list
     },
     %{
+      id: "share-link",
+      group: :dialogs,
+      module: Dialogs.ShareLinkPage,
+      label: dgettext_noop("showcase", "Share Link"),
+      icon: :icon_btn_link
+    },
+    %{
       id: "about-dialog",
       group: :dialogs,
       module: Dialogs.AboutDialogPage,

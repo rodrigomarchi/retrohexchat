@@ -1128,7 +1128,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Opening a conference already posts its card in the channel, and Share, above the conference, hands you that same address to paste anywhere else — pressing it again gives you the link you already have rather than a second one. Pasted into a conversation it draws a card instead of a bare address, and that card is the room as it is now: it counts who is inside and changes on its own as people come and go, with Join to go in and Copy link to pass it on. When the room finishes — or you revoke the link — the card stays and becomes the record of what happened: how long the conference ran and how many different people were in it, with the next thing you can still do instead of a button that no longer works. A P2P session says how long it lasted; a space and a solo game say neither, because a place has no beginning to measure from. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
+            "Opening a conference already posts its card in the channel, and Share — in the antechamber before you join, and in the conference bar afterwards — opens a small window with that same address to paste anywhere else, next to Copy and Revoke. Opening it again shows the link you already have rather than minting a second one. Pasted into a conversation it draws a card instead of a bare address, and that card is the room as it is now: it counts who is inside and changes on its own as people come and go, with Join to go in and Copy link to pass it on. When the room finishes — or you revoke the link — the card stays and becomes the record of what happened: how long the conference ran and how many different people were in it, with the next thing you can still do instead of a button that no longer works. A P2P session says how long it lasted; a space and a solo game say neither, because a place has no beginning to measure from. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
           ),
         see_also: [
           "feature-channel-conference",
@@ -1153,7 +1153,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Revoke, beside the address on any Share bar, stops the link working. The room is untouched: whoever is already inside stays inside, and anyone who can reach it another way still can. Only the address dies. Asking to share the same room again hands you a new one, so a link you pasted in the wrong place is fixable rather than permanent. Share gives you one address per room rather than a fresh one per press, which is what makes revoking it a whole answer instead of closing one of several. Your own links are yours to revoke, and a channel operator can also revoke a link that leads into their channel."
+            "Revoke, beside the address in the Share link window, stops the link working. The room is untouched: whoever is already inside stays inside, and anyone who can reach it another way still can. Only the address dies. Asking to share the same room again hands you a new one, so a link you pasted in the wrong place is fixable rather than permanent. Share gives you one address per room rather than a fresh one per press, which is what makes revoking it a whole answer instead of closing one of several. Your own links are yours to revoke, and a channel operator can also revoke a link that leads into their channel."
           ),
         see_also: [
           "feature-conference-share",
@@ -3783,7 +3783,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Share, on the character picker, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
+            "Share, on the character picker, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
           ),
         see_also: ["feature-virtual-spaces", "feature-space-tab"]
       }

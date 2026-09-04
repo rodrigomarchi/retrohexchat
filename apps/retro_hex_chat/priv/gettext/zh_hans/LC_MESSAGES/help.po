@@ -4869,11 +4869,6 @@ msgstr "位置已被占用"
 msgid "A match link has exactly one seat, so it stops working the moment somebody takes it — the card then says the match is full rather than that the link expired. An unclaimed link also expires on its own after about fifteen minutes, which is what keeps an address you pasted somewhere from being a way in for the rest of the day. Cancel, in the room, kills it immediately, and either way you make a new one from the game."
 msgstr "对局链接只有一个座位，所以只要有人坐下它就不再有效——此时卡片会说对局满员，而不是说链接过期了。没人认领的链接也会在大约十五分钟后自行过期，这正是让你贴在某处的地址不至于一整天都还是一道入口的原因。房间里的「取消」会立刻让它失效；两种情况下你都可以从游戏里再做一个。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1154
-#, elixir-autogen, elixir-format
-msgid "Revoke, beside the address on any Share bar, stops the link working. The room is untouched: whoever is already inside stays inside, and anyone who can reach it another way still can. Only the address dies. Asking to share the same room again hands you a new one, so a link you pasted in the wrong place is fixable rather than permanent. Share gives you one address per room rather than a fresh one per press, which is what makes revoking it a whole answer instead of closing one of several. Your own links are yours to revoke, and a channel operator can also revoke a link that leads into their channel."
-msgstr "任何共享栏中地址旁边的「撤销」会让链接失效。房间本身不受影响：已经在里面的人继续在里面，能通过其他方式进入的人依然可以。消失的只是地址。再次共享同一个房间会给你一个新地址，所以贴错地方的链接是可以补救的，而不是永久的。共享为每个房间提供一个地址，而不是每次点击都新建一个——这正是撤销能成为完整答案、而不是关掉其中之一的原因。你自己的链接由你撤销，频道管理员也可以撤销通往自己频道的链接。"
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1141
 #, elixir-autogen, elixir-format
 msgid "Undoing a Link You Shared"
@@ -4895,12 +4890,6 @@ msgstr ""
 msgid "Join a channel-scoped audio/video conference. Group Call in the channel toolbar opens the room and posts a card in the channel carrying its address; everyone goes in through that card, including whoever opened it. If a conference is already running, Group Call is a link into it rather than a second one — one room, one card. Following the address opens the antechamber in a browser tab of its own: a camera preview, the microphone/camera/speaker pickers, and who is already inside. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for next time. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
 msgstr ""
 "加入以频道为范围的音视频会议。频道工具栏上的 Group Call 会开启房间，并在频道里发布一张带有其地址的卡片；所有人都通过这张卡片进入，包括开启它的人。如果会议已在进行，Group Call 就是通往它的链接，而不是第二个会议——一个房间，一张卡片。跟随地址会在独立的浏览器标签页中打开前厅：摄像头预览，麦克风、摄像头与扬声器的选择器，以及已经在里面的人。Join call 让你进入；Cancel 关闭它，而无论你以何种方式离开前厅，它都会记住你留下的麦克风与摄像头设置，供下次使用。里面有布局控制、参与者管理和实时统计。管理遵循频道权限：半操作员及以上可以管理级别更低的参与者。"
-
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1129
-#, elixir-autogen, elixir-format
-msgid "Opening a conference already posts its card in the channel, and Share, above the conference, hands you that same address to paste anywhere else — pressing it again gives you the link you already have rather than a second one. Pasted into a conversation it draws a card instead of a bare address, and that card is the room as it is now: it counts who is inside and changes on its own as people come and go, with Join to go in and Copy link to pass it on. When the room finishes — or you revoke the link — the card stays and becomes the record of what happened: how long the conference ran and how many different people were in it, with the next thing you can still do instead of a button that no longer works. A P2P session says how long it lasted; a space and a solo game say neither, because a place has no beginning to measure from. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
-msgstr ""
-"开启一个会议时，它的卡片已经发布在频道里；而会议上方的 Share 把同一个地址交给你，方便贴到别处——再按一次给回的是你已经有的链接，而不是第二个。贴进对话里，它画出的是一张卡片而不是一个光秃秃的地址，这张卡片就是此刻的房间：它统计里面有谁，并随着人们进出自行变化，带着进入用的 Join 和转发用的 Copy link。当房间结束——或者你撤销了链接——卡片会留下，成为发生过什么的记录：会议持续了多久，有多少不同的人在里面，同时给出你仍然能做的下一件事，而不是一个已经失效的按钮。P2P 会话只说它持续了多久；空间和单人游戏两者都不说，因为一个地方没有可以测量的开始。链接携带的是这是哪个房间，从不携带待在里面的权限：跟随它的人依然必须已注册并且是频道成员，所以链接是通往你本来就能到达的房间的邀请，而不是绕过频道之门的捷径。只有已注册的昵称才能创建一个。"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1250
 #, elixir-autogen, elixir-format
@@ -4931,11 +4920,6 @@ msgstr "每个频道和每段私聊都内置的 8 位多人虚拟空间。标签
 #, elixir-autogen, elixir-format
 msgid "A space always runs in a browser tab of its own, opened with Space beside the conversation's tabs. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back. If you already have that tab open, the entry says In another tab and takes you to the one you have rather than opening a second."
 msgstr "空间始终在独立的浏览器标签页中运行，由对话标签旁边的 Space 打开。空间没有开始也没有结束，所以它的地址一直有效：加入书签，它就能把你带回来。如果你已经开着那个标签页，入口会显示「在其他标签页」，并把你带到已有的那个，而不是再开一个。"
-
-#: lib/retro_hex_chat/chat/help_topics/features.ex:3784
-#, elixir-autogen, elixir-format
-msgid "Share, on the character picker, mints a link you can paste anywhere. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
-msgstr "角色选择界面上的「分享」会生成一个可以粘贴到任何地方的链接。粘贴到对话里时，它会画成一张卡片，而不是一串裸地址。这个链接指的是地方，而不是其中的某一晚，所以在所有人散去之后依然有效。它带着这是哪个空间，却从不带着进入的许可：频道的空间仍然要求跟随链接的人在那个频道里，私密空间仍然属于它的两个人。只有注册过的昵称才能生成一个。"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3764
 #, elixir-autogen, elixir-format
@@ -4986,3 +4970,18 @@ msgstr "通过 ChanServ 命令或 Channel Central 注册、查看和释放当前
 #, elixir-autogen, elixir-format
 msgid "Send files directly to other users via peer-to-peer with drag-and-drop support. Picking a second file while one is still going queues it: the panel says so, and it starts on its own when the current transfer finishes. See also: P2P Session."
 msgstr "通过点对点直接把文件发给其他人，支持拖放。在一个传输还在进行时选择第二个文件会把它排队：面板会这样提示，等当前传输结束后它会自行开始。另见：P2P 会话。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1129
+#, elixir-autogen, elixir-format
+msgid "Opening a conference already posts its card in the channel, and Share — in the antechamber before you join, and in the conference bar afterwards — opens a small window with that same address to paste anywhere else, next to Copy and Revoke. Opening it again shows the link you already have rather than minting a second one. Pasted into a conversation it draws a card instead of a bare address, and that card is the room as it is now: it counts who is inside and changes on its own as people come and go, with Join to go in and Copy link to pass it on. When the room finishes — or you revoke the link — the card stays and becomes the record of what happened: how long the conference ran and how many different people were in it, with the next thing you can still do instead of a button that no longer works. A P2P session says how long it lasted; a space and a solo game say neither, because a place has no beginning to measure from. The link carries which room it is and never permission to be in it: whoever follows it still has to be registered and a member of the channel, so a link is an invitation to a room you can already reach, not a way around the channel's door. Only a registered nickname can mint one."
+msgstr "打开会议时它的卡片就已经贴进频道了，而「分享」——加入前的前厅里，以及加入后的会议栏里——会打开一个小窗口，里面是同一个可以贴到别处的地址，旁边是「复制」和「撤销」。再打开一次显示的是你已经有的链接，而不是铸出第二个。当房间结束——或者你撤销了链接——卡片会留下，成为发生过什么的记录：会议持续了多久，有多少不同的人在里面，同时给出你仍然能做的下一件事，而不是一个已经失效的按钮。P2P 会话只说它持续了多久；空间和单人游戏两者都不说，因为一个地方没有可以测量的开始。链接携带的是这是哪个房间，从不携带待在里面的权限：跟随它的人依然必须已注册并且是频道成员，所以链接是通往你本来就能到达的房间的邀请，而不是绕过频道之门的捷径。只有已注册的昵称才能创建一个。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1154
+#, elixir-autogen, elixir-format
+msgid "Revoke, beside the address in the Share link window, stops the link working. The room is untouched: whoever is already inside stays inside, and anyone who can reach it another way still can. Only the address dies. Asking to share the same room again hands you a new one, so a link you pasted in the wrong place is fixable rather than permanent. Share gives you one address per room rather than a fresh one per press, which is what makes revoking it a whole answer instead of closing one of several. Your own links are yours to revoke, and a channel operator can also revoke a link that leads into their channel."
+msgstr "「分享链接」窗口里地址旁边的「撤销」会让链接停止工作。房间本身不受影响：已经在里面的人继续在里面，能通过其他方式进入的人依然可以。消失的只是地址。再次共享同一个房间会给你一个新地址，所以贴错地方的链接是可以补救的，而不是永久的。共享为每个房间提供一个地址，而不是每次点击都新建一个——这正是撤销能成为完整答案、而不是关掉其中之一的原因。你自己的链接由你撤销，频道管理员也可以撤销通往自己频道的链接。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:3784
+#, elixir-autogen, elixir-format
+msgid "Share, on the character picker, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
+msgstr "角色选择上的「分享」会铸出一个链接，并在带有「复制」和「撤销」的小窗口里打开它。粘贴到对话里时，它会画成一张卡片，而不是一串裸地址。这个链接指的是地方，而不是其中的某一晚，所以在所有人散去之后依然有效。它带着这是哪个空间，却从不带着进入的许可：频道的空间仍然要求跟随链接的人在那个频道里，私密空间仍然属于它的两个人。只有注册过的昵称才能生成一个。"
