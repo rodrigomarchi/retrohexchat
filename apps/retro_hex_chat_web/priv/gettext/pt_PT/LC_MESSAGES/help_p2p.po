@@ -752,11 +752,6 @@ msgstr "As suas ligações são suas. Um operador do canal também pode revogar 
 msgid "A P2P session always runs in a browser tab of its own — the chat has no window for one. The card in the private message is the door; following it gives the session the whole window and leaves the conversation where it was."
 msgstr "Uma sessão P2P corre sempre num separador de navegador só dela — o chat não tem janela para uma. O cartão na mensagem privada é a porta; segui-lo dá a janela inteira à sessão e deixa a conversa onde estava."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and Group Call in the conversation's toolbar leads to the same address; either way the call gets the whole window and the conversation stays where it was."
-msgstr "Uma conferência corre sempre num separador de navegador só dela — o chat não tem janela para uma. O cartão publicado no canal é a porta, e Group Call, na barra da conversa, leva ao mesmo endereço; de uma forma ou de outra a chamada fica com a janela inteira e a conversa continua onde estava."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A P2P session is a direct connection between two people that carries a call, file transfers and games at once. It begins in a private message and runs in a browser tab of its own — the chat has no window for one."
@@ -877,11 +872,6 @@ msgstr "Ctrl+Shift+Q na Consola de Sessão P2P em foco termina apenas os média 
 msgid "End Call stops the media and leaves the session standing for files, games and statistics. End P2P session, at the top of the console, ends the whole thing and asks first. Closing the browser tab is neither: the other side is told you dropped, and you have about half a minute to come back to the address before the session closes itself."
 msgstr "Terminar Chamada para os média e deixa a sessão de pé para ficheiros, jogos e estatísticas. Terminar sessão P2P, no topo da consola, termina tudo e pergunta antes. Fechar o separador do navegador não é nenhum dos dois: o outro lado é avisado de que caiu, e tem cerca de meio minuto para voltar ao endereço antes de a sessão se fechar sozinha."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar — the one control here that is a button rather than a door — and ends the invitation without entering anything."
-msgstr "A pessoa convidada pode recusar. Recusar fica na entrada da sessão na barra de ferramentas da conversa — o único controlo aqui que é um botão e não uma porta — e termina o convite sem entrar em nada."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowRight cycles layouts and Ctrl+Shift+ArrowDown cycles self-view."
@@ -906,3 +896,13 @@ msgstr "Revogar fica na janela Ligação de partilha, ao lado do endereço — u
 #, elixir-autogen, elixir-format
 msgid "Share mints a link to the call and opens it in a small window with the address, Copy and Revoke. It is there in the antechamber before you join, and in the conference bar afterwards, so you can invite people and then walk in. Closing the window leaves the button reading Share link, which opens it again. Pasting the address into a channel or a private message draws a card instead of a bare address — any such link becomes a card, including one somebody sent you from outside."
 msgstr "Partilhar cunha uma ligação para a chamada e abre-a numa janelinha com o endereço, Copiar e Revogar. Está na antecâmara antes de entrar e na barra da conferência depois, por isso pode convidar as pessoas e só então entrar. Fechar a janela deixa o botão escrito Ligação de partilha, que a reabre. Colar o endereço num canal ou numa mensagem privada desenha um cartão em vez de um endereço nu — qualquer ligação dessas vira cartão, incluindo uma que alguém lhe enviou de fora."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and the only one: Group Call in the conversation's toolbar opens the room and writes that card rather than going anywhere itself. The call gets the whole window and the conversation stays where it was."
+msgstr "Uma conferência corre sempre num separador próprio do navegador — o chat não tem janela para uma. O cartão publicado no canal é a porta, e a única: Group Call, na barra da conversa, abre a sala e escreve esse cartão em vez de ir a algum lado. A chamada fica com a janela inteira e a conversa continua onde estava."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar and ends the invitation without entering anything. Nothing in that toolbar is a door: the invite card in the private message is the way in, for both of you."
+msgstr "A pessoa convidada pode recusar. Recusar fica na entrada da sessão, na barra da conversa, e encerra o convite sem ninguém entrar em nada. Nada nessa barra é uma porta: o cartão do convite na mensagem privada é o caminho de entrada, para os dois. Recusar fica na entrada da sessão na barra de ferramentas da conversa — o único controlo aqui que é um botão e não uma porta — e termina o convite sem entrar em nada."

@@ -752,11 +752,6 @@ msgstr "Je eigen links zijn van jou. Een kanaaloperator kan ook een link intrekk
 msgid "A P2P session always runs in a browser tab of its own — the chat has no window for one. The card in the private message is the door; following it gives the session the whole window and leaves the conversation where it was."
 msgstr "Een P2P-sessie draait altijd in een eigen browsertabblad — de chat heeft er geen venster voor. De kaart in het privébericht is de deur; die volgen geeft de sessie het hele venster en laat het gesprek waar het was."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and Group Call in the conversation's toolbar leads to the same address; either way the call gets the whole window and the conversation stays where it was."
-msgstr "Een vergadering draait altijd in een eigen browsertabblad — de chat heeft er geen venster voor. De kaart die in het kanaal staat is de deur, en Group Call in de balk van het gesprek leidt naar hetzelfde adres; hoe dan ook krijgt het gesprek het hele venster en blijft de conversatie waar ze was."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A P2P session is a direct connection between two people that carries a call, file transfers and games at once. It begins in a private message and runs in a browser tab of its own — the chat has no window for one."
@@ -877,11 +872,6 @@ msgstr "Ctrl+Shift+Q in de gefocuste P2P-sessieconsole beëindigt alleen de gesp
 msgid "End Call stops the media and leaves the session standing for files, games and statistics. End P2P session, at the top of the console, ends the whole thing and asks first. Closing the browser tab is neither: the other side is told you dropped, and you have about half a minute to come back to the address before the session closes itself."
 msgstr "Gesprek beëindigen stopt de media en laat de sessie staan voor bestanden, spellen en statistieken. P2P-sessie beëindigen, bovenaan de console, beëindigt het geheel en vraagt eerst. Het browsertabblad sluiten is geen van beide: de andere kant hoort dat je weggevallen bent, en je hebt ongeveer een halve minuut om terug te keren naar het adres voordat de sessie zichzelf sluit."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar — the one control here that is a button rather than a door — and ends the invitation without entering anything."
-msgstr "De uitgenodigde persoon kan weigeren. Weigeren staat op het item van de sessie in de werkbalk van het gesprek — het enige bedieningselement hier dat een knop is en geen deur — en beëindigt de uitnodiging zonder ergens binnen te gaan."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowRight cycles layouts and Ctrl+Shift+ArrowDown cycles self-view."
@@ -906,3 +896,13 @@ msgstr "Intrekken staat in het venster Deellink, naast het adres — een confere
 #, elixir-autogen, elixir-format
 msgid "Share mints a link to the call and opens it in a small window with the address, Copy and Revoke. It is there in the antechamber before you join, and in the conference bar afterwards, so you can invite people and then walk in. Closing the window leaves the button reading Share link, which opens it again. Pasting the address into a channel or a private message draws a card instead of a bare address — any such link becomes a card, including one somebody sent you from outside."
 msgstr "Delen maakt een link naar het gesprek en opent die in een klein venster met het adres, Kopiëren en Intrekken. Hij staat in de voorkamer voordat je binnengaat, en daarna in de conferentiebalk, zodat je mensen kunt uitnodigen en dan naar binnen loopt. Het venster sluiten laat de knop staan met de tekst Deellink, die het weer opent. Het adres in een kanaal of een privébericht plakken tekent een kaart in plaats van een kaal adres — elke zulke link wordt een kaart, ook een die iemand je van buitenaf stuurde."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and the only one: Group Call in the conversation's toolbar opens the room and writes that card rather than going anywhere itself. The call gets the whole window and the conversation stays where it was."
+msgstr "Een conferentie draait altijd in een eigen browsertabblad — de chat heeft er geen venster voor. De kaart die in het kanaal wordt geplaatst is de deur, en de enige: Group Call, in de balk van het gesprek, opent de kamer en schrijft die kaart in plaats van zelf ergens heen te gaan. Het gesprek krijgt het hele venster en de conversatie blijft waar ze was."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar and ends the invitation without entering anything. Nothing in that toolbar is a door: the invite card in the private message is the way in, for both of you."
+msgstr "De uitgenodigde persoon kan weigeren. Weigeren staat op de ingang van de sessie, in de balk van het gesprek, en beëindigt de uitnodiging zonder dat iemand ergens binnengaat. Niets in die balk is een deur: de uitnodigingskaart in het privébericht is de weg naar binnen, voor jullie allebei. Weigeren staat op het item van de sessie in de werkbalk van het gesprek — het enige bedieningselement hier dat een knop is en geen deur — en beëindigt de uitnodiging zonder ergens binnen te gaan."

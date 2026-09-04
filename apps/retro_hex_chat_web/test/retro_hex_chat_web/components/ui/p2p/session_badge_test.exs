@@ -33,9 +33,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadgeTest do
     assert Floki.attribute(item, "aria-label") == []
   end
 
-  # The card and this entry are the same door. Following either one has to leave
-  # the conversation standing, which is what a tab of its own means.
-  test "a session is entered at its own address, in a tab of its own" do
+  # The card is the door and this entry is not one: it carries no address in any
+  # state, so nobody enters a session the conversation was never shown.
+  test "the entry carries no address, whatever the session is doing" do
     html =
       entry(%{
         state: :pending_received,
@@ -48,11 +48,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadgeTest do
     [item] =
       html
       |> Floki.parse_document!()
-      |> Floki.find(~s(a[data-testid="p2p-peer-entry"]))
+      |> Floki.find(~s(button[data-testid="p2p-peer-entry"]))
 
-    assert Floki.attribute(item, "href") == ["/p2p/tok123"]
-    assert Floki.attribute(item, "target") == ["_blank"]
-    assert Floki.attribute(item, "rel") == ["noopener"]
+    assert Floki.attribute(item, "href") == []
+    assert Floki.attribute(item, "target") == []
     assert html =~ ~s(data-p2p-state="pending")
     assert html =~ ~s(data-p2p-status="invite")
   end
@@ -78,23 +77,18 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadgeTest do
 
   # A second tab of a session you are in moves the session into it, so the entry
   # for one you already have open is a way *to that tab* and never a new one.
-  test "a session this reader already has open is a way back to its tab" do
+  # A session this reader already has open changes nothing: the entry was never
+  # an address, so there is no second shape for it to become.
+  test "a session this reader already has open leaves the entry alone" do
     html =
       entry(
         %{state: :connected, token: "tok123", peer_nick: "alice", path: "/p2p/tok123"},
-        open_paths: MapSet.new(["/p2p/tok123"])
+        []
       )
 
-    assert html =~ ~s(data-testid="p2p-peer-elsewhere")
-    assert html =~ ~s(phx-hook="SurfaceTabLinkHook")
-    refute html =~ ~s(data-testid="p2p-peer-entry")
-
-    [item] =
-      html
-      |> Floki.parse_document!()
-      |> Floki.find(~s([data-testid="p2p-peer-elsewhere"]))
-
-    assert Floki.attribute(item, "target") == []
+    assert html =~ ~s(data-testid="p2p-peer-entry")
+    refute html =~ ~s(data-testid="p2p-peer-elsewhere")
+    refute html =~ ~s(href="/p2p/tok123")
   end
 
   # Nothing that happens inside a session reaches the chat any more, so the

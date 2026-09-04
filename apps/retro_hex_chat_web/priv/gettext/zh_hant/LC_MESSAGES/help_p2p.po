@@ -784,13 +784,6 @@ msgid "A P2P session always runs in a browser tab of its own — the chat has no
 msgstr ""
 "P2P 工作階段始終在獨立的瀏覽器分頁中執行 —— 聊天裡沒有為它準備的視窗。私訊中的卡片就是那道門；點開它，工作階段就擁有整個視窗，而對話留在原處。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and Group Call in the conversation's toolbar leads to the same address; either way the call gets the whole window and the conversation stays where it was."
-msgstr ""
-"會議始終在獨立的瀏覽器分頁中執行 —— 聊天裡沒有為它準備的視窗。發布在頻道裡的卡片就是那道門，對話工具列上的 Group Call "
-"也通往同一個位址；無論走哪條路，通話都會擁有整個視窗，而對話留在原處。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A P2P session is a direct connection between two people that carries a call, file transfers and games at once. It begins in a private message and runs in a browser tab of its own — the chat has no window for one."
@@ -911,11 +904,6 @@ msgstr "當 P2P 工作階段主控台處於焦點時，Ctrl+Shift+Q 只結束通
 msgid "End Call stops the media and leaves the session standing for files, games and statistics. End P2P session, at the top of the console, ends the whole thing and asks first. Closing the browser tab is neither: the other side is told you dropped, and you have about half a minute to come back to the address before the session closes itself."
 msgstr "「結束通話」只停下媒體，工作階段仍然立著，供檔案、遊戲和統計使用。主控台頂部的「結束 P2P 工作階段」結束整件事，並會先詢問。關閉瀏覽器分頁兩者都不是：對方會被告知你斷線了，而你大約有半分鐘回到那個位址，之後工作階段會自己關閉。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar — the one control here that is a button rather than a door — and ends the invitation without entering anything."
-msgstr "被邀請的人也可以拒絕。「拒絕」在對話工具列上那條工作階段的項目裡——這裡唯一一個是按鈕而不是門的控制項——它結束邀請，不會進入任何地方。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowRight cycles layouts and Ctrl+Shift+ArrowDown cycles self-view."
@@ -940,3 +928,13 @@ msgstr "「撤銷」在「分享連結」視窗裡，就在位址旁邊——會
 #, elixir-autogen, elixir-format
 msgid "Share mints a link to the call and opens it in a small window with the address, Copy and Revoke. It is there in the antechamber before you join, and in the conference bar afterwards, so you can invite people and then walk in. Closing the window leaves the button reading Share link, which opens it again. Pasting the address into a channel or a private message draws a card instead of a bare address — any such link becomes a card, including one somebody sent you from outside."
 msgstr "「分享」會鑄出一個通話連結，並在一個帶有位址、「複製」和「撤銷」的小視窗裡開啟它。加入之前的前廳裡有它，加入之後的會議列裡也有，所以你可以先邀請別人再走進去。關閉視窗後按鈕會留下「分享連結」的字樣，點它就再開啟一次。把位址貼進頻道或私訊會畫出一張卡片，而不是一個裸位址——任何這樣的連結都會變成卡片，包括別人從外面傳給你的。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and the only one: Group Call in the conversation's toolbar opens the room and writes that card rather than going anywhere itself. The call gets the whole window and the conversation stays where it was."
+msgstr "會議總是在自己的瀏覽器分頁裡執行——聊天沒有容納它的視窗。貼進頻道的那張卡片就是門，而且是唯一的門：對話列上的「Group Call」會開出房間並寫下那張卡片，自己並不去任何地方。通話占據整個視窗，而對話仍然停在原處。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar and ends the invitation without entering anything. Nothing in that toolbar is a door: the invite card in the private message is the way in, for both of you."
+msgstr "被邀請的人也可以拒絕。「拒絕」在對話列上那條工作階段的入口處，它會結束邀請，而不讓任何人進入任何地方。那條列裡沒有門：私訊裡的邀請卡片才是入口，對你們兩個都一樣。「拒絕」在對話工具列上那條工作階段的項目裡——這裡唯一一個是按鈕而不是門的控制項——它結束邀請，不會進入任何地方。"

@@ -26,6 +26,7 @@ import {
   newP2PUser,
   type P2PTestUser,
 } from "../helpers/p2pFlows";
+import { enterViaCard } from "../helpers/surfaceEntry";
 
 async function delayNextRemoteOffer(page: Page) {
   await page.evaluate(() => {
@@ -145,18 +146,10 @@ async function terminateGroupCallPeer(page: Page) {
   return ids;
 }
 
-// The card in the conversation is the door, and it opens a tab of its own.
+// The card in the conversation is the door, and it opens a tab of its own. The
+// entry beside the tabs carries no address at all: it writes that card.
 async function enterP2PSession(user: P2PTestUser): Promise<Page> {
-  const entry = user.page.getByTestId("p2p-peer-entry");
-  await expect(entry).toHaveAttribute("href", /\/p2p\//, { timeout: 20_000 });
-
-  const [session] = await Promise.all([
-    user.ctx.waitForEvent("page"),
-    entry.click(),
-  ]);
-
-  await session.waitForLoadState("domcontentloaded");
-  return session;
+  return enterViaCard(user.page, user.ctx);
 }
 
 async function sendP2PInvite(

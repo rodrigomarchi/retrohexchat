@@ -9,8 +9,11 @@ defmodule RetroHexChatWeb.Live.ShareControl do
   have to carry: whether the dialog is open. Four copies of that assign, four
   copies of an open and a close event, is four chances for them to drift.
 
-  The dialog opens by itself the moment a link first arrives, because pressing
-  Share is a request to see the address, not merely to create one.
+  Pressing Share is a request to *see* the address, not merely to make one, so
+  the dialog opens by itself — but only for the press that asked. Watching the
+  link appear is not the same test: a surface can be handed one after its own
+  mount, and reading that as a mint puts a modal over a room nobody asked to
+  leave.
   """
   use RetroHexChatWeb, :live_component
 
@@ -38,7 +41,7 @@ defmodule RetroHexChatWeb.Live.ShareControl do
     {:ok,
      assign(socket,
        open?: false,
-       seen_once?: false,
+       asked?: false,
        url: nil,
        available: true,
        on_revoke: nil,
@@ -52,24 +55,26 @@ defmodule RetroHexChatWeb.Live.ShareControl do
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket) do
-    # Only a mint opens the dialog, and a mint is a link appearing on a control
-    # that was already on screen without one. A control mounting with a link
-    # already made is somebody arriving where the link exists — walking into a
-    # call you had shared earlier must not put the address in front of you.
-    minted? =
-      socket.assigns.seen_once? and is_nil(socket.assigns.url) and is_binary(assigns[:url])
-
+    # An ask is answered the moment this control has an address to show. A
+    # match already carries one by the time its room is drawn, so the arrival
+    # alone proves nothing — what opens the window is an arrival that somebody
+    # here asked for.
+    answered? = socket.assigns.asked? and is_binary(assigns[:url])
     still_open? = socket.assigns.open? and is_binary(assigns[:url])
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(open?: minted? or still_open?, seen_once?: true)}
+     |> assign(open?: answered? or still_open?)
+     |> assign(:asked?, socket.assigns.asked? and not answered?)}
   end
 
   @impl true
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
+  def handle_event("share_ask", _params, socket),
+    do: {:noreply, assign(socket, asked?: true)}
+
   def handle_event("share_dialog_open", _params, socket),
     do: {:noreply, assign(socket, open?: true)}
 
@@ -77,6 +82,16 @@ defmodule RetroHexChatWeb.Live.ShareControl do
     do: {:noreply, assign(socket, open?: false)}
 
   def handle_event(_event, _params, socket), do: {:noreply, socket}
+
+  # Two pushes on one click: the control records that it is the one asking, and
+  # the surface mints. Only the control that asked opens its window when the
+  # address arrives.
+  @spec ask_and_mint(term(), String.t(), term()) :: Phoenix.LiveView.JS.t()
+  defp ask_and_mint(myself, on_share, nil),
+    do: JS.push("share_ask", target: myself) |> JS.push(on_share)
+
+  defp ask_and_mint(myself, on_share, target),
+    do: JS.push("share_ask", target: myself) |> JS.push(on_share, target: target)
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
@@ -89,8 +104,7 @@ defmodule RetroHexChatWeb.Live.ShareControl do
         :if={is_nil(@url)}
         type="button"
         variant={@variant}
-        phx-click={@on_share}
-        phx-target={@share_target}
+        phx-click={ask_and_mint(@myself, @on_share, @share_target)}
         disabled={!@available}
         data-testid="share-create"
       >

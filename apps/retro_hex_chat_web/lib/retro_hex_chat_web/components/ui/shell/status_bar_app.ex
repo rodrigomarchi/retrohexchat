@@ -147,17 +147,11 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
       :if={@group_call}
       class="flex items-center gap-retro-2 min-w-0 px-[2px]"
     >
-      <%!-- The call is on another screen of this person's, so this zone is a
-            way to that screen and not a control over the call. It stays an
-            anchor with the real address: the hook asks the tab to come
-            forward, and the click after a silent refusal follows the link. --%>
-      <.link
-        href={@group_call.path}
-        target="_blank"
-        rel="noopener"
-        id="status-bar-group-call-elsewhere"
-        phx-hook="SurfaceTabLinkHook"
-        data-surface-path={@group_call.path}
+      <%!-- The call is on another screen of this person's, and this zone says
+            so and nothing more. It was an anchor, which made the status bar a
+            door into a room the conversation may never have been told about;
+            the card is the door now, so what is left here is the readout. --%>
+      <span
         class="inline-flex items-center gap-retro-2 min-w-0 h-full min-h-0 bg-transparent"
         title={@group_call.title}
         aria-label={@group_call.title}
@@ -165,20 +159,15 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
       >
         <Icons.icon_protocol_conference_compact class="w-3 h-3 shrink-0" />
         <span class="truncate text-xs">{@group_call.label}</span>
-      </.link>
+      </span>
     </.window_status_bar_field>
 
     <.window_status_bar_field :if={@p2p} class="flex items-center gap-retro-2 min-w-0 px-[2px]">
-      <%!-- The session is in another page of this person's: a way over to it,
-            and no End beside it, because a session is ended from the screen
-            that is holding it. --%>
-      <.link
-        href={@p2p.path}
-        target="_blank"
-        rel="noopener"
-        id="status-bar-p2p-elsewhere"
-        phx-hook="SurfaceTabLinkHook"
-        data-surface-path={@p2p.path}
+      <%!-- The session is in another page of this person's, and this says so:
+            no way over to it, because the card in the conversation is the only
+            door, and no End beside it, because a session is ended from the
+            screen that is holding it. --%>
+      <span
         class="inline-flex items-center gap-retro-2 min-w-0 h-full min-h-0 bg-transparent"
         title={@p2p.title}
         aria-label={@p2p.title}
@@ -186,7 +175,7 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
       >
         <Icons.icon_protocol_p2p_compact class="w-3 h-3 shrink-0" />
         <span class="truncate text-xs">{@p2p.label}</span>
-      </.link>
+      </span>
     </.window_status_bar_field>
 
     <%!-- Zone 3: Online buddy count (hidden on mobile) --%>

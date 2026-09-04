@@ -752,11 +752,6 @@ msgstr "Tautan Anda sendiri milik Anda. Operator kanal juga dapat mencabut tauta
 msgid "A P2P session always runs in a browser tab of its own — the chat has no window for one. The card in the private message is the door; following it gives the session the whole window and leaves the conversation where it was."
 msgstr "Sesi P2P selalu berjalan di tab peramban tersendiri — obrolan tidak punya jendela untuk itu. Kartu di pesan pribadi adalah pintunya; mengikutinya memberi sesi seluruh jendela dan meninggalkan percakapan di tempatnya."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and Group Call in the conversation's toolbar leads to the same address; either way the call gets the whole window and the conversation stays where it was."
-msgstr "Konferensi selalu berjalan di tab peramban tersendiri — obrolan tidak punya jendela untuk itu. Kartu yang diposting di kanal adalah pintunya, dan Group Call di bilah percakapan menuju alamat yang sama; bagaimanapun juga panggilan mendapat seluruh jendela dan percakapan tetap di tempatnya."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A P2P session is a direct connection between two people that carries a call, file transfers and games at once. It begins in a private message and runs in a browser tab of its own — the chat has no window for one."
@@ -877,11 +872,6 @@ msgstr "Ctrl+Shift+Q saat Konsol Sesi P2P sedang fokus hanya mengakhiri media pa
 msgid "End Call stops the media and leaves the session standing for files, games and statistics. End P2P session, at the top of the console, ends the whole thing and asks first. Closing the browser tab is neither: the other side is told you dropped, and you have about half a minute to come back to the address before the session closes itself."
 msgstr "Akhiri Panggilan menghentikan medianya dan membiarkan sesi tetap berdiri untuk berkas, permainan, dan statistik. Akhiri sesi P2P, di bagian atas konsol, mengakhiri seluruhnya dan bertanya lebih dulu. Menutup tab peramban bukan keduanya: pihak lain diberi tahu bahwa kamu terputus, dan kamu punya sekitar setengah menit untuk kembali ke alamat itu sebelum sesinya menutup diri."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar — the one control here that is a button rather than a door — and ends the invitation without entering anything."
-msgstr "Orang yang diundang boleh menolak. Tolak berada pada entri sesi di bilah alat percakapan — satu-satunya kendali di sini yang berupa tombol dan bukan pintu — dan mengakhiri undangan tanpa memasuki apa pun."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowRight cycles layouts and Ctrl+Shift+ArrowDown cycles self-view."
@@ -906,3 +896,13 @@ msgstr "Cabut ada di jendela Tautan berbagi, di samping alamatnya — sebuah kon
 #, elixir-autogen, elixir-format
 msgid "Share mints a link to the call and opens it in a small window with the address, Copy and Revoke. It is there in the antechamber before you join, and in the conference bar afterwards, so you can invite people and then walk in. Closing the window leaves the button reading Share link, which opens it again. Pasting the address into a channel or a private message draws a card instead of a bare address — any such link becomes a card, including one somebody sent you from outside."
 msgstr "Bagikan membuat tautan ke panggilan dan membukanya di jendela kecil berisi alamat, Salin, dan Cabut. Tombol itu ada di ruang tunggu sebelum kamu masuk, dan di bilah konferensi sesudahnya, jadi kamu bisa mengundang orang lalu masuk. Menutup jendela menyisakan tombol bertuliskan Tautan berbagi, yang membukanya lagi. Menempelkan alamat itu ke kanal atau pesan pribadi menggambar kartu, bukan alamat telanjang — tautan semacam itu selalu menjadi kartu, termasuk yang dikirimkan seseorang dari luar."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and the only one: Group Call in the conversation's toolbar opens the room and writes that card rather than going anywhere itself. The call gets the whole window and the conversation stays where it was."
+msgstr "Konferensi selalu berjalan di tab peramban miliknya sendiri — chat tidak punya jendela untuk itu. Kartu yang dipasang di kanal adalah pintunya, dan satu-satunya: Group Call, di bilah percakapan, membuka ruangan dan menulis kartu itu alih-alih pergi ke mana pun. Panggilan mendapat seluruh jendela dan percakapan tetap di tempatnya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar and ends the invitation without entering anything. Nothing in that toolbar is a door: the invite card in the private message is the way in, for both of you."
+msgstr "Orang yang diundang bisa menolak. Tolak ada pada entri sesi di bilah percakapan dan mengakhiri undangan tanpa siapa pun masuk ke mana pun. Tidak ada di bilah itu yang merupakan pintu: kartu undangan di pesan pribadi adalah jalan masuknya, untuk kalian berdua. Tolak berada pada entri sesi di bilah alat percakapan — satu-satunya kendali di sini yang berupa tombol dan bukan pintu — dan mengakhiri undangan tanpa memasuki apa pun."

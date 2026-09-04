@@ -60,6 +60,40 @@ defmodule RetroHexChat.ShareLinks.Queries do
     |> Repo.all()
   end
 
+  @doc """
+  The live link for this thing, whoever minted it.
+
+  `find_open/4` is scoped to a creator because that is what stops one person's
+  press from handing back somebody else's address. This one is not, because a
+  gathering is started by whoever walks in first and that is rarely the person
+  who posted the door.
+  """
+  @spec find_open_for_target(String.t(), map(), DateTime.t()) :: Link.t() | nil
+  def find_open_for_target(kind, target, now \\ DateTime.utc_now()) do
+    Link
+    |> where([l], l.kind == ^kind)
+    |> where([l], l.target == ^target)
+    |> where([l], is_nil(l.revoked_at))
+    |> where([l], is_nil(l.expires_at) or l.expires_at > ^now)
+    |> order_by([l], desc: l.inserted_at, desc: l.id)
+    |> limit(1)
+    |> Repo.one()
+  end
+
+  @doc """
+  Points a link that is already out there at something more specific.
+
+  The slug does not move, so every address already pasted keeps working. What
+  changes is what the card draws: a door to a place becomes the gathering
+  happening in it, and the same card is the record when that gathering ends.
+  """
+  @spec retarget(Link.t(), map()) :: {:ok, Link.t()} | {:error, Ecto.Changeset.t()}
+  def retarget(link, target) do
+    link
+    |> Ecto.Changeset.change(target: target)
+    |> Repo.update()
+  end
+
   @spec revoke(Link.t(), String.t()) :: {:ok, Link.t()} | {:error, Ecto.Changeset.t()}
   def revoke(link, revoked_by) do
     link

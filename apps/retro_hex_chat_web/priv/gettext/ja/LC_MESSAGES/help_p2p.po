@@ -808,13 +808,6 @@ msgstr ""
 "P2P "
 "セッションは常に専用のブラウザタブで動きます。チャットにそのためのウィンドウはありません。プライベートメッセージのカードが入口です。たどるとセッションがウィンドウ全体を使い、会話はもとの場所に残ります。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and Group Call in the conversation's toolbar leads to the same address; either way the call gets the whole window and the conversation stays where it was."
-msgstr ""
-"会議は常に専用のブラウザタブで動きます。チャットにそのためのウィンドウはありません。チャンネルに投稿されたカードが入口で、会話のツールバーにある "
-"Group Call も同じアドレスへ導きます。どちらの場合も通話がウィンドウ全体を使い、会話はもとの場所に残ります。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A P2P session is a direct connection between two people that carries a call, file transfers and games at once. It begins in a private message and runs in a browser tab of its own — the chat has no window for one."
@@ -935,11 +928,6 @@ msgstr "P2Pセッションコンソールにフォーカスがあるときの Ct
 msgid "End Call stops the media and leaves the session standing for files, games and statistics. End P2P session, at the top of the console, ends the whole thing and asks first. Closing the browser tab is neither: the other side is told you dropped, and you have about half a minute to come back to the address before the session closes itself."
 msgstr "「通話を終了」はメディアだけを止め、ファイル・ゲーム・統計のためにセッションは立ったままにします。コンソール上部の「P2Pセッションを終了」は全体を終わらせ、その前に確認します。ブラウザのタブを閉じるのはどちらでもありません。相手にはあなたが落ちたと伝わり、セッションが自分で閉じるまで、アドレスに戻る猶予がおよそ30秒あります。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar — the one control here that is a button rather than a door — and ends the invitation without entering anything."
-msgstr "誘われた側は断ることもできます。「辞退」は会話のツールバーにあるセッションの項目に置かれていて——ここで扉ではなくボタンである唯一の操作です——どこにも入らないまま招待を終わらせます。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowRight cycles layouts and Ctrl+Shift+ArrowDown cycles self-view."
@@ -964,3 +952,13 @@ msgstr "「失効」は「共有リンク」ウィンドウの、アドレスの
 #, elixir-autogen, elixir-format
 msgid "Share mints a link to the call and opens it in a small window with the address, Copy and Revoke. It is there in the antechamber before you join, and in the conference bar afterwards, so you can invite people and then walk in. Closing the window leaves the button reading Share link, which opens it again. Pasting the address into a channel or a private message draws a card instead of a bare address — any such link becomes a card, including one somebody sent you from outside."
 msgstr "「共有」は通話へのリンクを作り、アドレスと「コピー」「失効」を備えた小さなウィンドウで開きます。参加前の控えの間にも、参加後の会議バーにもあるので、人を招いてから入ることができます。ウィンドウを閉じるとボタンは「共有リンク」の表示のまま残り、そこから再び開けます。アドレスをチャンネルやプライベートメッセージに貼ると、裸のアドレスではなくカードが描かれます。外部から送られてきたものを含め、この種のリンクはすべてカードになります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and the only one: Group Call in the conversation's toolbar opens the room and writes that card rather than going anywhere itself. The call gets the whole window and the conversation stays where it was."
+msgstr "会議は必ずブラウザの専用タブで動きます。チャットにはそのためのウィンドウがありません。チャンネルに投稿されたカードが扉であり、唯一の扉です。会話のバーにある「Group Call」は、自分でどこかへ行くのではなく、部屋を開いてそのカードを書きます。通話はウィンドウ全体を使い、会話はそのままの場所に残ります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar and ends the invitation without entering anything. Nothing in that toolbar is a door: the invite card in the private message is the way in, for both of you."
+msgstr "招かれた人は断ることもできます。「断る」は会話のバーにあるセッションの項目にあり、誰もどこにも入らないまま招待を終わらせます。そのバーに扉はありません。プライベートメッセージの中の招待カードが、二人にとっての入り口です。「辞退」は会話のツールバーにあるセッションの項目に置かれていて——ここで扉ではなくボタンである唯一の操作です——どこにも入らないまま招待を終わらせます。"

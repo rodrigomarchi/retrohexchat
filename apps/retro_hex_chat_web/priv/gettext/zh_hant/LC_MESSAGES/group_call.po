@@ -91,9 +91,8 @@ msgstr "結束組呼叫"
 msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
 msgstr "結束小組呼叫 %{channel} 給大家看? 所有參與者都將被切斷。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:86
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:120
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:441
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:52
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:337
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1083
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1084
 #: lib/retro_hex_chat_web/live/app/call_live.ex:60
@@ -138,7 +137,7 @@ msgstr "集團呼叫媒體退化."
 msgid "Group calls are available in channels only."
 msgstr "團體電話只能通過渠道提供。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:442
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:338
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ to use group calls"
 msgstr "與 NickServe 識別使用組調用"
@@ -220,7 +219,7 @@ msgstr "在啓動分組呼叫前打開頻道 。"
 msgid "Participant is no longer in the group call."
 msgstr "參賽者不再參加集體電話."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:173
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:105
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:660
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:111
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:337
@@ -360,7 +359,7 @@ msgstr "%{connected}/%{total} 連接"
 msgid "%{connection} / ICE %{ice}"
 msgstr "%{connection}/ ICE %{ice}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:397
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:293
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m"
 msgstr "%{hours}h %{minutes}m"
@@ -376,7 +375,7 @@ msgid "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} f
 msgstr ""
 "%{level} 質量:RTT %{rtt}/ms,損失%{loss}%,%{bitrate}kbps,%{fps}fps,凍結%{freezes}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:399
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:295
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m"
 msgstr "%{minutes}米"
@@ -444,7 +443,7 @@ msgstr "%{packets}pkt / %{bytes}"
 msgid "%{sent} up / %{received} down"
 msgstr "%{sent} 上 / %{received} 下"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:445
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:341
 #, elixir-autogen, elixir-format
 msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr "%{state}會議,%{channel}:%{count}/%{max}與會者,%{duration}"
@@ -490,9 +489,9 @@ msgstr "0 活動"
 msgid "0 connected"
 msgstr "0 已連接"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:385
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:406
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:410
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:281
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:302
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:306
 #, elixir-autogen, elixir-format
 msgid "0m"
 msgstr "0m"
@@ -694,8 +693,8 @@ msgstr "會議反應"
 msgid "Conference started in %{channel}."
 msgstr "會議開始於%{channel}。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:139
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:140
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:71
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:72
 #, elixir-autogen, elixir-format
 msgid "Conference summary"
 msgstr "會議摘要"
@@ -745,7 +744,7 @@ msgstr "無法更新升起的手 。"
 msgid "Default device"
 msgstr "默認設備"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:459
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:355
 #, elixir-autogen, elixir-format
 msgid "Degraded"
 msgstr "有辱人格"
@@ -756,7 +755,7 @@ msgstr "有辱人格"
 msgid "Download"
 msgstr "下載"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:460
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:356
 #, elixir-autogen, elixir-format
 msgid "Ending"
 msgstr "結束"
@@ -821,7 +820,7 @@ msgstr "幀率"
 msgid "Freezes"
 msgstr "凍結"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:457
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:353
 #, elixir-autogen, elixir-format
 msgid "Full"
 msgstr "滿"
@@ -890,7 +889,7 @@ msgstr "ICE對"
 msgid "ICE traffic"
 msgstr "ICE 流量"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:185
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:117
 #, elixir-autogen, elixir-format
 msgid "In conference"
 msgstr "開會"
@@ -951,7 +950,7 @@ msgstr "休假會議"
 msgid "Limited by"
 msgstr "受限制"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:456
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:352
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr "現場直播"
@@ -961,7 +960,7 @@ msgstr "現場直播"
 msgid "Lock conference"
 msgstr "鎖定會議"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:458
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:354
 #, elixir-autogen, elixir-format
 msgid "Locked"
 msgstr "已鎖定"
@@ -1350,7 +1349,7 @@ msgstr "在網格中顯示自定義視圖"
 msgid "Signaling"
 msgstr "信號"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:177
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:109
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1184
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:146
 #, elixir-autogen, elixir-format
@@ -1488,7 +1487,7 @@ msgstr "視訊"
 msgid "Video tracks"
 msgstr "視頻軌道"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:201
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:133
 #: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:58
 #, elixir-autogen, elixir-format
 msgid "Waiting for participants"
@@ -1808,25 +1807,10 @@ msgstr "此會議已結束。"
 msgid "This conference is no longer available."
 msgstr "此會議已無法使用。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:57
-#, elixir-autogen, elixir-format
-msgid "In another tab"
-msgstr "在其他分頁"
-
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:49
-#, elixir-autogen, elixir-format
-msgid "This call is open in another tab — click to go to it"
-msgstr "此通話已在其他分頁中開啟 — 點擊前往"
-
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:110
 #, elixir-autogen, elixir-format
 msgid "Call: %{channel} — in another tab"
 msgstr "通話：%{channel} — 在其他分頁"
-
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:112
-#, elixir-autogen, elixir-format
-msgid "The call in %{channel} is open in another tab of yours — click to go to it"
-msgstr "%{channel} 的通話已在你的其他分頁中開啟 — 點擊前往"
 
 #: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:113
 #, elixir-autogen, elixir-format
@@ -1837,11 +1821,6 @@ msgstr "%{nickname} 開啟了一個會議 — %{url}"
 #, elixir-autogen, elixir-format
 msgid "A conference is already open in %{channel}. Its card is in this conversation."
 msgstr "%{channel} 中已經有一個會議在進行。它的卡片就在這個對話裡。"
-
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:76
-#, elixir-autogen, elixir-format
-msgid "Join the conference in a tab of its own"
-msgstr "在獨立分頁中加入會議"
 
 #: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:124
 #, elixir-autogen, elixir-format
@@ -1862,3 +1841,8 @@ msgstr "你已離開 %{channel} 的會議。"
 #, elixir-autogen, elixir-format
 msgid "You left the conference."
 msgstr "你已離開會議。"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:112
+#, elixir-autogen, elixir-format
+msgid "The call in %{channel} is open in another tab of yours"
+msgstr "%{channel} 裡的通話在你的另一個分頁裡開著"

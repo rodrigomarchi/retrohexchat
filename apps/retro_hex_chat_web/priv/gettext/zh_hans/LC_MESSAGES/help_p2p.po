@@ -752,11 +752,6 @@ msgstr "你自己的链接归你。频道管理员也可以撤销通往自己频
 msgid "A P2P session always runs in a browser tab of its own — the chat has no window for one. The card in the private message is the door; following it gives the session the whole window and leaves the conversation where it was."
 msgstr "P2P 会话始终在独立的浏览器标签页中运行 —— 聊天里没有为它准备的窗口。私信中的卡片就是那道门；点开它，会话就拥有整个窗口，而对话留在原处。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and Group Call in the conversation's toolbar leads to the same address; either way the call gets the whole window and the conversation stays where it was."
-msgstr "会议始终在独立的浏览器标签页中运行 —— 聊天里没有为它准备的窗口。发布在频道里的卡片就是那道门，对话工具栏上的 Group Call 也通向同一个地址；无论走哪条路，通话都会拥有整个窗口，而对话留在原处。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A P2P session is a direct connection between two people that carries a call, file transfers and games at once. It begins in a private message and runs in a browser tab of its own — the chat has no window for one."
@@ -877,11 +872,6 @@ msgstr "当 P2P 会话控制台处于焦点时，Ctrl+Shift+Q 只结束通话的
 msgid "End Call stops the media and leaves the session standing for files, games and statistics. End P2P session, at the top of the console, ends the whole thing and asks first. Closing the browser tab is neither: the other side is told you dropped, and you have about half a minute to come back to the address before the session closes itself."
 msgstr "「结束通话」只停下媒体，会话仍然立着，供文件、游戏和统计使用。控制台顶部的「结束 P2P 会话」结束整件事，并会先询问。关闭浏览器标签页两者都不是：对方会被告知你掉线了，而你大约有半分钟回到那个地址，之后会话会自己关闭。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar — the one control here that is a button rather than a door — and ends the invitation without entering anything."
-msgstr "被邀请的人也可以拒绝。「拒绝」在会话工具栏上那条会话的条目里——这里唯一一个是按钮而不是门的控件——它结束邀请，不会进入任何地方。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowRight cycles layouts and Ctrl+Shift+ArrowDown cycles self-view."
@@ -906,3 +896,13 @@ msgstr "「撤销」在「分享链接」窗口里，就在地址旁边——会
 #, elixir-autogen, elixir-format
 msgid "Share mints a link to the call and opens it in a small window with the address, Copy and Revoke. It is there in the antechamber before you join, and in the conference bar afterwards, so you can invite people and then walk in. Closing the window leaves the button reading Share link, which opens it again. Pasting the address into a channel or a private message draws a card instead of a bare address — any such link becomes a card, including one somebody sent you from outside."
 msgstr "「分享」会铸出一个通话链接，并在一个带有地址、「复制」和「撤销」的小窗口里打开它。加入之前的前厅里有它，加入之后的会议栏里也有，所以你可以先邀请别人再走进去。关闭窗口后按钮会留下「分享链接」的字样，点它就再打开一次。把地址贴进频道或私聊会画出一张卡片，而不是一个裸地址——任何这样的链接都会变成卡片，包括别人从外面发给你的。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and the only one: Group Call in the conversation's toolbar opens the room and writes that card rather than going anywhere itself. The call gets the whole window and the conversation stays where it was."
+msgstr "会议总是在自己的浏览器标签页里运行——聊天没有容纳它的窗口。贴进频道的那张卡片就是门，而且是唯一的门：对话栏上的「Group Call」会开出房间并写下那张卡片，自己并不去任何地方。通话占据整个窗口，而对话仍然停在原处。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar and ends the invitation without entering anything. Nothing in that toolbar is a door: the invite card in the private message is the way in, for both of you."
+msgstr "被邀请的人也可以拒绝。「拒绝」在对话栏上那条会话的入口处，它会结束邀请，而不让任何人进入任何地方。那条栏里没有门：私聊里的邀请卡片才是入口，对你们两个都一样。「拒绝」在会话工具栏上那条会话的条目里——这里唯一一个是按钮而不是门的控件——它结束邀请，不会进入任何地方。"

@@ -752,11 +752,6 @@ msgstr "I tuoi link sono tuoi. Anche un operatore del canale può revocare un li
 msgid "A P2P session always runs in a browser tab of its own — the chat has no window for one. The card in the private message is the door; following it gives the session the whole window and leaves the conversation where it was."
 msgstr "Una sessione P2P gira sempre in una scheda del browser tutta sua — la chat non ha una finestra per questo. Il card nel messaggio privato è la porta; seguirlo dà alla sessione la finestra intera e lascia la conversazione dov'era."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and Group Call in the conversation's toolbar leads to the same address; either way the call gets the whole window and the conversation stays where it was."
-msgstr "Una conferenza gira sempre in una scheda del browser tutta sua — la chat non ha una finestra per questo. Il card pubblicato nel canale è la porta, e Group Call, nella barra della conversazione, porta allo stesso indirizzo; in entrambi i casi la chiamata prende la finestra intera e la conversazione resta dov'era."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A P2P session is a direct connection between two people that carries a call, file transfers and games at once. It begins in a private message and runs in a browser tab of its own — the chat has no window for one."
@@ -877,11 +872,6 @@ msgstr "Ctrl+Shift+Q nella Console di sessione P2P a fuoco termina solo il media
 msgid "End Call stops the media and leaves the session standing for files, games and statistics. End P2P session, at the top of the console, ends the whole thing and asks first. Closing the browser tab is neither: the other side is told you dropped, and you have about half a minute to come back to the address before the session closes itself."
 msgstr "Termina chiamata ferma il media e lascia in piedi la sessione per file, giochi e statistiche. Termina sessione P2P, in cima alla console, chiude tutto e chiede prima. Chiudere la scheda del browser non è né l'uno né l'altro: all'altro lato viene detto che sei caduto, e hai circa mezzo minuto per tornare all'indirizzo prima che la sessione si chiuda da sola."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar — the one control here that is a button rather than a door — and ends the invitation without entering anything."
-msgstr "La persona invitata può rifiutare. Rifiuta si trova sulla voce della sessione nella barra degli strumenti della conversazione — l'unico comando qui che è un pulsante e non una porta — e chiude l'invito senza entrare da nessuna parte."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowRight cycles layouts and Ctrl+Shift+ArrowDown cycles self-view."
@@ -906,3 +896,13 @@ msgstr "Revoca sta nella finestra Link di condivisione, accanto all'indirizzo �
 #, elixir-autogen, elixir-format
 msgid "Share mints a link to the call and opens it in a small window with the address, Copy and Revoke. It is there in the antechamber before you join, and in the conference bar afterwards, so you can invite people and then walk in. Closing the window leaves the button reading Share link, which opens it again. Pasting the address into a channel or a private message draws a card instead of a bare address — any such link becomes a card, including one somebody sent you from outside."
 msgstr "Condividi conia un link alla chiamata e lo apre in una finestrella con l'indirizzo, Copia e Revoca. È lì nell'anticamera prima che tu entri, e nella barra della conferenza dopo, così puoi invitare le persone e poi entrare. Chiudere la finestra lascia il pulsante con scritto Link di condivisione, che la riapre. Incollare l'indirizzo in un canale o in un messaggio privato disegna una scheda invece di un indirizzo nudo — qualsiasi link del genere diventa una scheda, compreso uno che qualcuno ti ha mandato da fuori."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_conference_tab.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A conference always runs in a browser tab of its own — the chat has no window for one. The card posted in the channel is the door, and the only one: Group Call in the conversation's toolbar opens the room and writes that card rather than going anywhere itself. The call gets the whole window and the conversation stays where it was."
+msgstr "Una conferenza gira sempre in una scheda tutta sua del browser — la chat non ha una finestra per una. La scheda pubblicata nel canale è la porta, e l'unica: Group Call, nella barra della conversazione, apre la stanza e scrive quella scheda invece di andare da qualche parte. La chiamata prende l'intera finestra e la conversazione resta dov'era."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The invited person can refuse instead. Decline sits on the session's entry in the conversation toolbar and ends the invitation without entering anything. Nothing in that toolbar is a door: the invite card in the private message is the way in, for both of you."
+msgstr "La persona invitata può rifiutare. Rifiuta sta sulla voce della sessione, nella barra della conversazione, e chiude l'invito senza che nessuno entri da nessuna parte. Niente in quella barra è una porta: la scheda dell'invito nel messaggio privato è la via d'ingresso, per entrambi. Rifiuta si trova sulla voce della sessione nella barra degli strumenti della conversazione — l'unico comando qui che è un pulsante e non una porta — e chiude l'invito senza entrare da nessuna parte."

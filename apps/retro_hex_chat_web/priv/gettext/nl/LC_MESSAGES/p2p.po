@@ -113,7 +113,7 @@ msgstr "In afwachting van..."
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:888
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:156
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:403
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:329
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:241
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:517
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:259
 #, elixir-autogen, elixir-format
@@ -864,23 +864,22 @@ msgstr "Directe P2P topologie"
 msgid "End"
 msgstr "Beëindigen"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:330
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:242
 #, elixir-autogen, elixir-format
 msgid "Invite"
 msgstr "Uitnodigen"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:331
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:243
 #, elixir-autogen, elixir-format
 msgid "Link"
 msgstr "Link"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:332
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:244
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr "Levend"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:74
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:125
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:67
 #: lib/retro_hex_chat_web/live/app/p2p_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -896,8 +895,8 @@ msgstr "P2P-indeling"
 msgid "P2P reactions"
 msgstr "P2P-reacties"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:160
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:161
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:95
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:96
 #, elixir-autogen, elixir-format
 msgid "P2P session summary"
 msgstr "Samenvatting P2P-sessie"
@@ -1164,29 +1163,23 @@ msgid "Call controls become available after the peer joins the P2P session."
 msgstr ""
 "Call controls worden beschikbaar nadat de peer meedoet aan de P2P sessie."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:223
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:145
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr "Weigeren"
-
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:147
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:148
-#, elixir-autogen, elixir-format
-msgid "Decline P2P request"
-msgstr "P2P-verzoek afwijzen"
 
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:258
 #, elixir-autogen, elixir-format
 msgid "Invite pending"
 msgstr "Uitnodigen in behandeling"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:198
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:133
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:265
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Starten"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:335
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:247
 #, elixir-autogen, elixir-format
 msgid "Start P2P session with %{peer}"
 msgstr "P2P-sessie starten met %{peer}"
@@ -1422,17 +1415,13 @@ msgstr "wie er meedoet"
 msgid "Taking your seat..."
 msgstr "Je plek wordt ingenomen..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:99
-#, elixir-autogen, elixir-format
-msgid "In another tab"
-msgstr "In een ander tabblad"
-
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:341
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:253
 #, elixir-autogen, elixir-format
 msgid "Open the P2P session with %{peer} in a tab of its own"
 msgstr "De P2P-sessie met %{peer} in een eigen tabblad openen"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:91
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:81
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:82
 #, elixir-autogen, elixir-format
-msgid "This P2P session is open in another tab — click to go to it"
-msgstr "Deze P2P-sessie staat open in een ander tabblad — klik om ernaartoe te gaan"
+msgid "Decline P2P request"
+msgstr "P2P-verzoek weigeren"

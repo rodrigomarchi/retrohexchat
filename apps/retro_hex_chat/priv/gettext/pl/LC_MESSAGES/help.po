@@ -5406,21 +5406,6 @@ msgstr "Cofanie udostępnionego linku"
 msgid "Select and switch between microphones, cameras, and speakers during calls."
 msgstr "Wybrać i przełączyć mikrofony, kamery i głośniki podczas połączeń."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1106
-#, elixir-autogen, elixir-format
-msgid "A conference always runs in a browser tab of its own, so the call gets the whole window and the chat stays the chat. While it is over there the chat says so along the bottom of its window — click that to go to the tab, which is why there is no Leave beside it: you leave a call from the screen that is in it. Ctrl+Shift with the arrow keys works inside that tab: Up for the microphone, Left for the camera, Right for the layout, Down to move the focus; Ctrl+Shift+Q leaves. Closing the tab is not leaving either: the room keeps you for the reconnection window, and reopening the address puts you straight back in. Only Leave, which asks first, actually ends your part in the call — and being removed from the channel ends it for you."
-msgstr ""
-"Konferencja zawsze działa w osobnej karcie przeglądarki, więc rozmowa "
-"dostaje całe okno, a czat pozostaje czatem. Dopóki tam trwa, czat mówi o tym"
-" na dole własnego okna — kliknij tam, aby przejść do karty, i właśnie "
-"dlatego obok nie ma Leave: z rozmowy wychodzi się z ekranu, który w niej "
-"jest. Ctrl+Shift ze strzałkami działa w tej karcie: w górę dla mikrofonu, w "
-"lewo dla kamery, w prawo dla układu, w dół dla przeniesienia ogniska; "
-"Ctrl+Shift+Q wychodzi. Zamknięcie karty też nie jest wyjściem: pokój trzyma "
-"twoje miejsce przez okno ponownego połączenia, a ponowne otwarcie adresu "
-"wstawia cię z powrotem. Dopiero Leave, które najpierw pyta, naprawdę kończy "
-"twój udział — a usunięcie z kanału kończy go za ciebie."
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1079
 #, elixir-autogen, elixir-format
 msgid "Join a channel-scoped audio/video conference. Group Call in the channel toolbar opens the room and posts a card in the channel carrying its address; everyone goes in through that card, including whoever opened it. If a conference is already running, Group Call is a link into it rather than a second one — one room, one card. Following the address opens the antechamber in a browser tab of its own: a camera preview, the microphone/camera/speaker pickers, and who is already inside. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for next time. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
@@ -5509,16 +5494,6 @@ msgstr ""
 "pełny ekran i z powrotem. Powrót do czatu, przy dolnej krawędzi, wraca do "
 "rozmowy."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:3744
-#, elixir-autogen, elixir-format
-msgid "A space always runs in a browser tab of its own, opened with Space beside the conversation's tabs. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back. If you already have that tab open, the entry says In another tab and takes you to the one you have rather than opening a second."
-msgstr ""
-"Przestrzeń zawsze działa we własnej karcie przeglądarki, otwieranej "
-"przyciskiem Space obok kart rozmowy. Przestrzeń nie zaczyna się ani nie "
-"kończy, więc jej adres pozostaje ważny: dodaj go do zakładek, a zaprowadzi "
-"cię z powrotem. Jeśli masz już tę kartę otwartą, wejście mówi W innej karcie"
-" i prowadzi do tej, którą masz, zamiast otwierać drugą."
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3764
 #, elixir-autogen, elixir-format
 msgid "Walking into an empty space posts a card in the conversation it belongs to, so everybody reading can see that something is happening and follow it in. The card counts who is inside while it lasts, and once the last person leaves it becomes the record of what happened: how long the gathering ran, and how many people came. Walking into a space somebody is already in posts nothing — one gathering, one card. Only a registered nickname posts one; a guest still walks in as usual."
@@ -5605,3 +5580,13 @@ msgstr "Odwołaj, obok adresu w oknie Link do udostępnienia, zatrzymuje link. P
 #, elixir-autogen, elixir-format
 msgid "Share, on the character picker, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
 msgstr "Udostępnij, w wyborze postaci, tworzy link i otwiera go w małym oknie z Kopiuj i Odwołaj obok. Wklejony w rozmowę rysuje kartę zamiast gołego adresu. Ten odnośnik nazywa miejsce, a nie jeden wieczór w nim, więc działa dalej, gdy wszyscy już poszli do domu. Niesie ze sobą, o którą przestrzeń chodzi, a nigdy pozwolenie, żeby w niej być: przestrzeń kanału nadal wymaga, by ten, kto podąży za odnośnikiem, był na tym kanale, a przestrzeń prywatna nadal należy do swoich dwóch osób. Stworzyć taki odnośnik może tylko zarejestrowany pseudonim."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1106
+#, elixir-autogen, elixir-format
+msgid "A conference always runs in a browser tab of its own, so the call gets the whole window and the chat stays the chat. While it is over there the chat says so along the bottom of its window — a readout and not a door, because the card in the conversation is the way in, and there is no Leave beside it either: you leave a call from the screen that is in it. Ctrl+Shift with the arrow keys works inside that tab: Up for the microphone, Left for the camera, Right for the layout, Down to move the focus; Ctrl+Shift+Q leaves. Closing the tab is not leaving either: the room keeps you for the reconnection window, and reopening the address puts you straight back in. Only Leave, which asks first, actually ends your part in the call — and being removed from the channel ends it for you."
+msgstr "Konferencja zawsze działa we własnej karcie przeglądarki, więc rozmowa dostaje całe okno, a czat pozostaje czatem. Kiedy jest tam, czat mówi o tym na dole swojego okna — to odczyt, a nie drzwi, bo kartą w rozmowie jest droga do środka, i nie ma obok Wyjdź: z rozmowy wychodzi się z ekranu, który w niej jest. Ctrl+Shift ze strzałkami działa w tej karcie: w górę dla mikrofonu, w lewo dla kamery, w prawo dla układu, w dół dla przeniesienia ogniska; Ctrl+Shift+Q wychodzi. Zamknięcie karty też nie jest wyjściem: pokój trzyma twoje miejsce przez okno ponownego połączenia, a ponowne otwarcie adresu wstawia cię z powrotem. Dopiero Leave, które najpierw pyta, naprawdę kończy twój udział — a usunięcie z kanału kończy go za ciebie."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:3744
+#, elixir-autogen, elixir-format
+msgid "A space always runs in a browser tab of its own. Space, beside the conversation's tabs, puts the space's card in the conversation rather than opening it; Join on that card is the door, for you and for everybody reading. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back."
+msgstr "Space zawsze działa we własnej karcie przeglądarki. Przycisk Space, obok kart rozmowy, go nie otwiera: umieszcza kartę space'u w rozmowie, a to Dołącz na tej karcie otwiera zakładkę. Space nie ma początku ani końca, więc jego adres pozostaje dobry: dodaj go do zakładek, a zaprowadzi cię z powrotem."

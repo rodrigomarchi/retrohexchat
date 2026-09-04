@@ -1,5 +1,6 @@
 import { Browser, expect, Page } from "@playwright/test";
 import { ChatPage } from "../pages/ChatPage";
+import { enterThroughNewCard } from "./surfaceEntry";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { closeUsers, TestUser } from "./chatUsers";
 import { installSyntheticMedia } from "./syntheticMedia";
@@ -37,52 +38,34 @@ export async function closeGroupCallUsers(users: GroupCallUser[]) {
 /**
  * Open a conference from the chat and land in the tab that holds it.
  *
- * Two acts, because that is what the product does now. The control creates the
- * room and writes its card into the channel only while the channel has no room;
- * once one exists the same control is an anchor into it, so the first click may
- * be a creation and the second is always a navigation. Following it opens a
- * real second tab — the page is returned so a spec drives the call where the
- * call actually is, and the chat stays the chat.
+ * Two acts, and neither of them is the control going anywhere. Pressing it
+ * opens the room if there is none and writes the room's card into the channel;
+ * the card is the door, and following it opens a real second tab. The page is
+ * returned so a spec drives the call where the call actually is, and the chat
+ * stays the chat.
  */
 export async function openConference(user: GroupCallUser): Promise<Page> {
-  // The way *in*, specifically: a tab of this call that is on its way out
-  // still colours the entry as "in another tab" until the registry catches up,
-  // and clicking that shape would navigate the chat instead of opening a tab.
   const control = user.page.getByTestId("group-call-open");
   await expect(control).toBeVisible({ timeout: 20_000 });
   await expect(control).toBeEnabled();
 
-  if ((await control.getAttribute("href")) === null) {
-    await control.click();
-    await expect(control).toHaveAttribute("href", /\/call\//);
-  }
-
-  const [call] = await Promise.all([
-    user.ctx.waitForEvent("page"),
-    control.click(),
-  ]);
-
-  await call.waitForLoadState("domcontentloaded");
+  const call = await enterThroughNewCard(
+    user.page,
+    user.ctx,
+    "group-call-open",
+  );
   await expect(call.getByTestId("group-call-window")).toBeVisible();
 
   return call;
 }
 
 /**
- * The room's own address, read from whichever shape the chat is drawing.
+ * The room's own address, read from a tab that is standing in it.
  *
- * The entry has two of them and the difference is the point: a way *in* while
- * this person has no tab of the call, and a way *to that tab* once they do.
- * Both carry the same href, so asking for the address must not care which one
- * is on screen — a helper that only knew the first shape timed out the moment
- * the test did the very thing it was testing.
+ * The chat holds no address any more — the entry beside the tabs is a control
+ * and the card points at the public `/join/` door — so the one place the real
+ * `/call/:token` is written down is the call's own URL.
  */
-export async function conferenceAddress(user: GroupCallUser): Promise<string> {
-  const entry = user.page
-    .getByTestId("group-call-open")
-    .or(user.page.getByTestId("group-call-elsewhere"));
-
-  await expect(entry).toHaveAttribute("href", /\/call\//);
-
-  return (await entry.getAttribute("href")) as string;
+export function conferenceAddress(call: Page): string {
+  return new URL(call.url()).pathname;
 }

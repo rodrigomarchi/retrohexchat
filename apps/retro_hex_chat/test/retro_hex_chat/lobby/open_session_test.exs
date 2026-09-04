@@ -198,7 +198,7 @@ defmodule RetroHexChat.Lobby.OpenSessionTest do
       session = open_lobby(creator)
 
       assert {:error, message} = Lobby.claim_open_session(session.token, claimer.id)
-      assert message =~ "already exists"
+      assert message =~ "already open"
     end
   end
 

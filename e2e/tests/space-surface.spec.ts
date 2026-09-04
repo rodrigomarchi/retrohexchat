@@ -16,6 +16,7 @@ import {
   uniqueChannel,
   TestUser,
 } from "../helpers/chatUsers";
+import { enterThroughNewCard } from "../helpers/surfaceEntry";
 
 // A compact hash of the canvas pixels — changes when anything redraws.
 function canvasSignature(page: Page): Promise<number> {
@@ -32,20 +33,14 @@ function canvasSignature(page: Page): Promise<number> {
     });
 }
 
-// The door is an anchor in the conversation's toolbar, so entering is a new tab
-// rather than a navigation — exactly as a conference and a P2P session are.
+// The entry in the conversation's toolbar writes the space's card and goes
+// nowhere; the card is the door, and following it opens the tab — exactly as a
+// conference and a P2P session are entered.
 async function enterSpace(user: TestUser, channel: string): Promise<Page> {
   await user.chat.sendMessage(`/join ${channel}`);
 
-  const entry = user.page.getByTestId("space-open");
-  await expect(entry).toBeVisible();
+  const space = await enterThroughNewCard(user.page, user.ctx, "space-open");
 
-  const [space] = await Promise.all([
-    user.ctx.waitForEvent("page"),
-    entry.click(),
-  ]);
-
-  await space.waitForLoadState("domcontentloaded");
   await expect(space.getByTestId("space-character-select")).toBeVisible();
   return space;
 }
@@ -174,8 +169,10 @@ test.describe("A space at an address of its own", () => {
       expect(shareUrl).toContain("/join/");
 
       // The public card: it names the space and offers the way in.
+      // The minted address carries the public host, so a spec follows its path
+      // against the server under test rather than the site it names.
       const visitor = await user.ctx.newPage();
-      await visitor.goto(shareUrl);
+      await visitor.goto(new URL(shareUrl).pathname);
       await expect(visitor.getByTestId("join-card")).toBeVisible();
       await expect(visitor.getByTestId("join-enter")).toBeVisible();
 

@@ -267,18 +267,16 @@
                     @session.active_channel
                   )
                 }
-                open_paths={@open_surface_paths}
               />
               <.space_conversation_entry
                 :if={conversation_space}
                 space_id={conversation_space.space_id}
-                open_paths={@open_surface_paths}
+                identified={@session.identified}
               />
               <.p2p_peer_entry
                 :if={p2p_pm_session}
                 peer={@session.active_pm}
                 session={p2p_pm_session}
-                open_paths={@open_surface_paths}
                 current={true}
               />
             </:actions>

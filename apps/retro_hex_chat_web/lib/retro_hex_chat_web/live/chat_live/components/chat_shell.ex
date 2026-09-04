@@ -111,7 +111,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
       title:
         dgettext(
           "group_call",
-          "The call in %{channel} is open in another tab of yours — click to go to it",
+          "The call in %{channel} is open in another tab of yours",
           channel: channel_name
         ),
       path: path
@@ -129,8 +129,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
        when is_binary(peer_nick) and is_binary(path) do
     %{
       label: dgettext("chat", "P2P: %{peer} — in another tab", peer: peer_nick),
-      title:
-        dgettext("chat", "This P2P session is open in another tab of yours — click to go to it"),
+      title: dgettext("chat", "This P2P session is open in another tab of yours"),
       path: path
     }
   end

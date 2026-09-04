@@ -113,9 +113,14 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       session = Lobby.active_session_for_user(ctx.a.id)
       on_exit(fn -> stop_session_server(session.token) end)
 
+      # The entry never carries the address: the invite card it wrote into the
+      # private message is the door, for the host as much as for the peer.
+      assert has_element?(ctx.view_a, ~s(button[data-testid="p2p-peer-entry"]))
+      refute has_element?(ctx.view_a, ~s(a[data-testid="p2p-peer-entry"]))
+
       assert has_element?(
                ctx.view_a,
-               ~s(a[data-testid="p2p-peer-entry"][href="#{Paths.p2p_path(session.token)}"][target="_blank"])
+               ~s([data-testid="share-message-enter"][href*="#{Paths.p2p_path(session.token)}"])
              )
     end
 

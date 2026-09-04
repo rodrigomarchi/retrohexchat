@@ -293,7 +293,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
 
       entry = ~s([data-testid="space-open"])
       assert has_element?(view, "#{entry} svg")
-      assert has_element?(view, ~s(#{entry}[target="_blank"]))
+      assert has_element?(view, ~s(button#{entry}[phx-click="space_open"]))
 
       # Nothing about the conversation changes: the space is somewhere else.
       assert has_element?(view, ~s([data-testid="channel-content-row"] [data-testid="nicklist"]))

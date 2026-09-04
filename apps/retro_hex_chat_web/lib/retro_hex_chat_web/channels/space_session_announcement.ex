@@ -12,10 +12,10 @@ defmodule RetroHexChatWeb.SpaceSessionAnnouncement do
   has a host. The domain opened the gathering and knows nothing about origins.
 
   **Only a registered nickname announces one.** A shared address carries who is
-  accountable for it, which is the rule `ShareLinks` enforces at its own door;
-  a guest still walks into the space, and the space is still entered from the
-  conversation's own entry. There is simply no card, because there is nobody to
-  put on it.
+  accountable for it, which is the rule `ShareLinks` enforces at its own door.
+  A guest walks in through a card somebody else posted — the entry beside the
+  tabs is a registered nickname's control, because a card with nobody on it is
+  not a card.
   """
 
   use Gettext, backend: RetroHexChatWeb.Gettext
@@ -45,9 +45,15 @@ defmodule RetroHexChatWeb.SpaceSessionAnnouncement do
   """
   @spec announce(opening()) :: :ok
   def announce(%{user_id: user_id} = opening) when is_integer(user_id) do
-    case mint(opening) do
-      {:ok, link} -> post(opening, ShareLinkRef.url(link.slug))
-      {:error, reason} -> Logger.warning("Space session link failed: #{inspect(reason)}")
+    case door(opening) do
+      {:existing, link} ->
+        sharpen(link, opening)
+
+      {:minted, link} ->
+        post(opening, ShareLinkRef.url(link.slug))
+
+      {:error, reason} ->
+        Logger.warning("Space session link failed: #{inspect(reason)}")
     end
 
     :ok
@@ -55,14 +61,40 @@ defmodule RetroHexChatWeb.SpaceSessionAnnouncement do
 
   def announce(_opening), do: :ok
 
+  # The entry beside the tabs posts the door before anybody is inside, so the
+  # conversation usually already has the card by the time a gathering starts.
+  # When it does, the gathering is what that card is about — it is pointed at
+  # this session rather than announced beside itself.
+  defp door(opening) do
+    case ShareLinks.find_open_for_target("space", place_target(opening)) do
+      nil ->
+        case mint(opening) do
+          {:ok, link} -> {:minted, link}
+          {:error, reason} -> {:error, reason}
+        end
+
+      link ->
+        {:existing, link}
+    end
+  end
+
+  defp sharpen(link, opening) do
+    case ShareLinks.retarget(link, gathering_target(opening)) do
+      {:ok, _link} -> :ok
+      {:error, reason} -> Logger.warning("Space card retarget failed: #{inspect(reason)}")
+    end
+  end
+
+  defp place_target(%{space_id: space_id, mode: mode}),
+    do: %{"space_id" => space_id, "mode" => mode}
+
+  defp gathering_target(%{space_id: space_id, mode: mode, token: token}),
+    do: %{"space_id" => space_id, "mode" => mode, "session_token" => token}
+
   defp mint(opening) do
     ShareLinks.create(%{
       kind: "space",
-      target: %{
-        "space_id" => opening.space_id,
-        "mode" => opening.mode,
-        "session_token" => opening.token
-      },
+      target: gathering_target(opening),
       creator_id: opening.user_id,
       creator_nick: opening.nickname
     })

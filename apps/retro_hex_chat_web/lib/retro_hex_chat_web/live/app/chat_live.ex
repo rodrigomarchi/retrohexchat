@@ -867,6 +867,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:keyboard_events, &ChatLive.KeyboardEvents.handle_event/3},
       {:connection_events, &ChatLive.ConnectionEvents.handle_event/3},
       {:group_call_events, &ChatLive.GroupCallEvents.handle_event/3},
+      {:space_events, &ChatLive.SpaceEvents.handle_event/3},
       {:p2p_session_events, &ChatLive.P2PSessionEvents.handle_event/3},
       {:arcade_session_events, &ChatLive.ArcadeSessionEvents.handle_event/3},
       {:core_events, &ChatLive.CoreEvents.handle_event/3}

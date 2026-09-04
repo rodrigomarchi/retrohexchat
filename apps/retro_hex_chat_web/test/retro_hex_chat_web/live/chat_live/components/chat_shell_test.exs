@@ -115,17 +115,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
       render_component(&ChatShell.chat_shell_status/1, overrides)
     end
 
-    test "says which channel, and is a way to the tab rather than a control" do
+    test "says which channel, and is a readout rather than a way anywhere" do
       html = status(%{group_call_elsewhere: %{channel_name: "#retro", path: "/call/tok"}})
 
       assert html =~ ~s(data-testid="status-bar-group-call")
-      assert html =~ ~s(data-surface-path="/call/tok")
-      assert html =~ ~s(phx-hook="SurfaceTabLinkHook")
       assert html =~ "#retro"
       assert html =~ "in another tab"
 
-      # Leaving a call is done from the screen that is in it. A Leave here would
-      # act on a session this window is not holding.
+      # The card in the conversation is the only door, so the status bar is not
+      # a second one — and leaving is done from the screen that is in the call.
+      refute html =~ ~s(href="/call/tok")
+      refute html =~ ~s(phx-hook="SurfaceTabLinkHook")
       refute html =~ ~s(data-testid="status-bar-group-call-stop")
     end
 
@@ -146,15 +146,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
   end
 
   describe "the window's status bar, when the P2P session is somewhere else" do
-    test "says so, and is a way to the tab rather than a control" do
+    test "says so, and is a readout rather than a way anywhere" do
       html = status(%{p2p_elsewhere: %{peer_nick: "bob", path: "/p2p/tok12345"}})
 
       assert html =~ ~s(data-testid="status-bar-p2p")
-      assert html =~ ~s(data-surface-path="/p2p/tok12345")
-      assert html =~ ~s(phx-hook="SurfaceTabLinkHook")
       assert html =~ "in another tab"
 
-      # A session is ended from the screen holding it, so no End here.
+      # The card in the conversation is the only door, and a session is ended
+      # from the screen holding it.
+      refute html =~ ~s(href="/p2p/tok12345")
+      refute html =~ ~s(phx-hook="SurfaceTabLinkHook")
       refute html =~ ~s(data-testid="status-bar-p2p-stop")
     end
 

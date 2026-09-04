@@ -5,37 +5,25 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   This mirrors the visual contract of `GroupCall.ChannelBadge`, and for the same
   reason: the two are the same question asked of a conversation instead of a
   channel. A session is never on this screen — it lives at `/p2p/:token`, in a
-  tab of its own — so the entry has exactly three shapes, and which one is drawn
-  is the server's answer:
+  tab of its own — and the entry is not the way there. It is one button that
+  starts the session and writes its invite card into the private message; the
+  card is the door, and following it is what opens the tab.
 
-    * no session, and this reader may start one: a button that sends the invite.
-    * a session, and this reader has its tab open: a way *to that tab*. A second
-      tab of a session you are in moves the session into it, which is the
-      takeover contract firing for somebody who only wanted to look.
-    * a session, and no tab of it: the way in, which is a real anchor to the
-      session's own address.
-
-  Declining is the fourth control and the only one that is not a door. It stays
-  here because refusing an invitation is conversation, and conversation is the
-  chat's.
+  It had two other shapes, both anchors to the session's own address, and both
+  were doors that skipped the conversation: somebody joined a session the
+  private message was never shown. Refusing is the second control here, and the
+  one that was never a door — refusing an invitation is conversation, and
+  conversation is the chat's.
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.SurfaceTabLink
-
-  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Icons
-  alias RetroHexChatWeb.Live.OpenSurfaces
 
   attr :peer, :string, required: true
   attr :session, :map, default: nil
   attr :state, :any, default: nil
   attr :current, :boolean, default: false
   attr :on_start, :any, default: "p2p_start_pm_session"
-
-  attr :open_paths, :any,
-    default: nil,
-    doc: "the addresses this person already has open, from `Live.OpenSurfaces`"
 
   attr :class, :any, default: nil
 
@@ -49,10 +37,11 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
       class={classes(["conversation-toolbar-entry flex items-center gap-px", @class])}
       data-testid="p2p-peer-entry-wrap"
     >
-      <%!-- Nothing to enter yet: this conversation has no session, and the
-            click is what creates one and writes its card into the PM. --%>
+      <%!-- One shape and no second: the click creates the session when there
+            is none and writes its card into the PM, and that card is the door.
+            An anchor beside it was a second door that skipped the
+            conversation. --%>
       <button
-        :if={@idle?}
         type="button"
         phx-click={@on_start}
         phx-value-peer={@peer}
@@ -75,68 +64,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         </span>
       </button>
 
-      <%!-- The tab is already open, so this is a way *to it*: opening a second
-            one would move the session out of the window holding it. --%>
-      <.link
-        :if={not @idle? and @tab_open?}
-        href={@path}
-        id={"p2p-peer-tab-#{@token}"}
-        phx-hook="SurfaceTabLinkHook"
-        data-surface-path={@path}
-        class={[
-          "conversation-toolbar-button flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs",
-          "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-          status_class(@status)
-        ]}
-        title={dgettext("p2p", "This P2P session is open in another tab — click to go to it")}
-        data-testid="p2p-peer-elsewhere"
-        data-peer={@peer}
-        data-p2p-state={@visual_state}
-        data-p2p-status={Atom.to_string(@status)}
-      >
-        <Icons.icon_toolbar_p2p class="h-3.5 w-3.5 shrink-0" />
-        <span class="conversation-toolbar-button__text">
-          {dgettext("p2p", "In another tab")}
-        </span>
-      </.link>
-
-      <%!-- The way in, and the only one: an anchor to the session's own
-            address, so middle-click and open-in-new-tab work and the chat this
-            conversation is in stays exactly where it is. --%>
-      <.link
-        :if={not @idle? and not @tab_open?}
-        href={@path}
-        target="_blank"
-        rel="noopener"
-        class={[
-          "conversation-toolbar-button relative flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs",
-          "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-          @current && "bg-canvas font-bold shadow-retro-sunken",
-          status_class(@status)
-        ]}
-        title={@title}
-        data-testid="p2p-peer-entry"
-        data-peer={@peer}
-        data-p2p-state={@visual_state}
-        data-p2p-status={Atom.to_string(@status)}
-      >
-        <Icons.icon_toolbar_p2p class="h-3.5 w-3.5 shrink-0" />
-        <span class="conversation-toolbar-button__text">
-          {dgettext("p2p", "P2P Session")}
-        </span>
-        <span
-          class={[
-            "absolute bottom-0.5 right-0.5 h-1.5 w-1.5 border border-border",
-            @status in [:link, :live] && "animate-pulse",
-            dot_class(@status)
-          ]}
-          aria-hidden="true"
-        />
-      </.link>
-
-      <%!-- Refusing is not a door, which is why it is the one control here
-            that is still a button: it ends the invitation from the
-            conversation, without anybody entering anything. --%>
+      <%!-- Refusing is not a door, which is why it survived the removal of the
+            ones that were: it ends the invitation from the conversation,
+            without anybody entering anything. --%>
       <button
         :if={@pending_received?}
         type="button"
@@ -147,8 +77,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         title={dgettext("p2p", "Decline P2P request")}
         aria-label={dgettext("p2p", "Decline P2P request")}
         data-testid="p2p-peer-decline"
+        data-peer={@peer}
       >
-        <Icons.icon_reject class="h-3.5 w-3.5" />
+        <Icons.icon_reject class="h-3.5 w-3.5 shrink-0" />
       </button>
 
       <details class="conversation-toolbar-entry relative">
@@ -197,19 +128,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
               <Icons.icon_btn_join class="h-3.5 w-3.5" />
               <span>{dgettext("p2p", "Start")}</span>
             </button>
-            <%!-- The same door in the popover, in the two shapes it has out
-                  in the strip. --%>
-            <.surface_tab_link
-              :if={not @idle?}
-              path={@path}
-              open?={@tab_open?}
-              class={
-                if @pending_received?,
-                  do: "h-6 text-xs font-bold",
-                  else: "col-span-2 h-6 text-xs font-bold"
-              }
-              testid="p2p-peer-popover-join"
-            />
             <button
               :if={@pending_received?}
               type="button"
@@ -274,7 +192,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
     state = value(session, :state)
     role = value(session, :role)
     token = value(session, :token)
-    path = value(session, :path) || (token && Paths.p2p_path(token))
     status = status(state)
 
     assigns
@@ -282,18 +199,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
     |> assign(:idle?, state in [:idle, "idle"])
     |> assign(:pending_received?, pending_received?(state, role))
     |> assign(:token, token)
-    |> assign(:path, path)
-    |> assign(:tab_open?, OpenSurfaces.open?(open_paths(assigns), path))
     |> assign(:status, status)
     |> assign(:visual_state, visual_state(state))
     |> assign(:title, title(assigns.peer, status))
-  end
-
-  defp open_paths(assigns) do
-    case assigns[:open_paths] do
-      %MapSet{} = paths -> paths
-      _absent -> MapSet.new()
-    end
   end
 
   defp normalize_session(nil, nil), do: nil

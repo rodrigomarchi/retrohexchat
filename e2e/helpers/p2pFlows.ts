@@ -5,6 +5,7 @@ import {
   Page,
   expect,
 } from "@playwright/test";
+import { enterViaCard } from "./surfaceEntry";
 import { ChatPage } from "../pages/ChatPage";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 
@@ -414,17 +415,8 @@ export function statusBarP2P(page: Page) {
  * session actually is, and the chat stays the chat.
  */
 export async function enterP2PSession(user: P2PTestUser): Promise<Page> {
-  const entry = user.page.getByTestId("p2p-peer-entry");
+  const session = await enterViaCard(user.page, user.ctx);
 
-  await expect(entry).toBeVisible({ timeout: 20_000 });
-  await expect(entry).toHaveAttribute("href", /\/p2p\//);
-
-  const [session] = await Promise.all([
-    user.ctx.waitForEvent("page"),
-    entry.click(),
-  ]);
-
-  await session.waitForLoadState("domcontentloaded");
   await expect(session.getByTestId("p2p-call-window")).toBeVisible();
 
   return session;
@@ -483,6 +475,7 @@ export async function acceptP2PInvite(
     "data-p2p-state",
     "pending",
   );
+
   await expect(user.page.getByTestId("session-card-accept")).toHaveCount(0);
   await expect(user.page.getByTestId("session-card-decline")).toHaveCount(0);
 

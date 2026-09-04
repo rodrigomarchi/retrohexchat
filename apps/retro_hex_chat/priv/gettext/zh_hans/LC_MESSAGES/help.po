@@ -4879,12 +4879,6 @@ msgstr "撤销你分享过的链接"
 msgid "Select and switch between microphones, cameras, and speakers during calls."
 msgstr "在通话时选择麦克风、摄像机和扬声器并进行切换。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1106
-#, elixir-autogen, elixir-format
-msgid "A conference always runs in a browser tab of its own, so the call gets the whole window and the chat stays the chat. While it is over there the chat says so along the bottom of its window — click that to go to the tab, which is why there is no Leave beside it: you leave a call from the screen that is in it. Ctrl+Shift with the arrow keys works inside that tab: Up for the microphone, Left for the camera, Right for the layout, Down to move the focus; Ctrl+Shift+Q leaves. Closing the tab is not leaving either: the room keeps you for the reconnection window, and reopening the address puts you straight back in. Only Leave, which asks first, actually ends your part in the call — and being removed from the channel ends it for you."
-msgstr ""
-"会议始终在独立的浏览器标签页中运行，通话因此占据整个窗口，而聊天仍然只是聊天。当它在那边运行时，聊天会在自己窗口的底部说明这一点——点击那里即可前往该标签页，这也是旁边没有 Leave 的原因：离开通话要从正在通话的那块屏幕上做。Ctrl+Shift 加方向键在那个标签页里有效：上键控制麦克风，左键控制摄像头，右键切换布局，下键移动焦点；Ctrl+Shift+Q 退出。关闭标签页同样不等于离开：房间会在重连窗口内为你保留座位，重新打开地址就能回到里面。只有会先询问的 Leave 才真正结束你的参与——而被移出频道会替你结束它。"
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1079
 #, elixir-autogen, elixir-format
 msgid "Join a channel-scoped audio/video conference. Group Call in the channel toolbar opens the room and posts a card in the channel carrying its address; everyone goes in through that card, including whoever opened it. If a conference is already running, Group Call is a link into it rather than a second one — one room, one card. Following the address opens the antechamber in a browser tab of its own: a camera preview, the microphone/camera/speaker pickers, and who is already inside. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for next time. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
@@ -4915,11 +4909,6 @@ msgstr "P2P 会话始终在独立的浏览器标签页中运行 —— 聊天里
 #, elixir-autogen, elixir-format
 msgid "A multiplayer 8-bit virtual space built into every channel and every private conversation. Space, beside the tabs, opens it in a browser tab of its own — the conversation stays where it is, and the map gets a whole window instead of competing with the chat for the browser. Move with the Arrow keys, WASD or the on-screen pad in the bottom-right corner — tap for a single step or hold to walk continuously; Space or the pad's sword button swings your weapon. The translucent button in the top-right corner switches to fullscreen and back. Back to Chat, along the bottom edge, returns to the conversation."
 msgstr "每个频道和每段私聊都内置的 8 位多人虚拟空间。标签旁边的 Space 会在独立的浏览器标签页中打开它 —— 对话留在原处，地图拿到一整个窗口，而不必和聊天争抢浏览器。用方向键、WASD 或右下角的屏幕方向键移动 —— 轻点走一步，长按持续行走；空格键或方向键上的剑按钮挥动武器。右上角的半透明按钮在全屏和普通布局之间切换。底边的「返回聊天」带你回到对话。"
-
-#: lib/retro_hex_chat/chat/help_topics/features.ex:3744
-#, elixir-autogen, elixir-format
-msgid "A space always runs in a browser tab of its own, opened with Space beside the conversation's tabs. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back. If you already have that tab open, the entry says In another tab and takes you to the one you have rather than opening a second."
-msgstr "空间始终在独立的浏览器标签页中运行，由对话标签旁边的 Space 打开。空间没有开始也没有结束，所以它的地址一直有效：加入书签，它就能把你带回来。如果你已经开着那个标签页，入口会显示「在其他标签页」，并把你带到已有的那个，而不是再开一个。"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3764
 #, elixir-autogen, elixir-format
@@ -4985,3 +4974,13 @@ msgstr "「分享链接」窗口里地址旁边的「撤销」会让链接停止
 #, elixir-autogen, elixir-format
 msgid "Share, on the character picker, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
 msgstr "角色选择上的「分享」会铸出一个链接，并在带有「复制」和「撤销」的小窗口里打开它。粘贴到对话里时，它会画成一张卡片，而不是一串裸地址。这个链接指的是地方，而不是其中的某一晚，所以在所有人散去之后依然有效。它带着这是哪个空间，却从不带着进入的许可：频道的空间仍然要求跟随链接的人在那个频道里，私密空间仍然属于它的两个人。只有注册过的昵称才能生成一个。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1106
+#, elixir-autogen, elixir-format
+msgid "A conference always runs in a browser tab of its own, so the call gets the whole window and the chat stays the chat. While it is over there the chat says so along the bottom of its window — a readout and not a door, because the card in the conversation is the way in, and there is no Leave beside it either: you leave a call from the screen that is in it. Ctrl+Shift with the arrow keys works inside that tab: Up for the microphone, Left for the camera, Right for the layout, Down to move the focus; Ctrl+Shift+Q leaves. Closing the tab is not leaving either: the room keeps you for the reconnection window, and reopening the address puts you straight back in. Only Leave, which asks first, actually ends your part in the call — and being removed from the channel ends it for you."
+msgstr "会议总是在自己的浏览器标签页里运行，所以通话占据整个窗口，而聊天仍然是聊天。它在那边的时候，聊天会在窗口底部说明这一点——这是一处显示而不是一道门，因为对话里的卡片才是入口；旁边也没有「离开」：要离开一通通话，是从正在通话的那个屏幕上离开。Ctrl+Shift 加方向键在那个标签页里有效：上键控制麦克风，左键控制摄像头，右键切换布局，下键移动焦点；Ctrl+Shift+Q 退出。关闭标签页同样不等于离开：房间会在重连窗口内为你保留座位，重新打开地址就能回到里面。只有会先询问的 Leave 才真正结束你的参与——而被移出频道会替你结束它。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:3744
+#, elixir-autogen, elixir-format
+msgid "A space always runs in a browser tab of its own. Space, beside the conversation's tabs, puts the space's card in the conversation rather than opening it; Join on that card is the door, for you and for everybody reading. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back."
+msgstr "space 总是在自己的浏览器标签页里运行。对话标签旁边的「Space」并不会打开它：它把 space 的卡片放进对话，由那张卡片上的「加入」来打开标签页。space 没有开始也没有结束，所以它的地址一直有效：加进书签，它就能带你回来。"

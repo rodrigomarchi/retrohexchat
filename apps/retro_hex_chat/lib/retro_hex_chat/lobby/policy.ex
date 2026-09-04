@@ -114,7 +114,11 @@ defmodule RetroHexChat.Lobby.Policy do
 
   defp check_no_active_session(creator_id, peer_id) do
     if Queries.active_session_exists?(creator_id, peer_id) do
-      {:error, dgettext("lobby", "An active lobby already exists with this user")}
+      {:error,
+       dgettext(
+         "lobby",
+         "A session with this person is already open. Its card is in this conversation."
+       )}
     else
       :ok
     end

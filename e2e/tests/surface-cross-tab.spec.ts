@@ -173,7 +173,7 @@ test("opening the conference you are in at its own address does not add a second
     // The room's own address, taken from the control that offers it rather
     // than assembled here: the chat is the only place that knows the current
     // room token, and a second spelling of that would drift.
-    const callPath = await conferenceAddress(bob);
+    const callPath = conferenceAddress(bobCall);
     expect(callPath).toMatch(/^\/call\//);
 
     // Follow it a second time — middle-click, a bookmark, or the fallback
@@ -205,12 +205,12 @@ test("opening the conference you are in at its own address does not add a second
     await expect(participantRows(bobCall)).toHaveCount(2);
     await shot(bobCall, "surface-second-tab-keeps-one-seat");
 
-    // And the chat that is not holding the call says where it is, with no way
-    // to leave from there.
-    await expect(bob.page.getByTestId("status-bar-group-call")).toHaveAttribute(
-      "href",
-      callPath,
-    );
+    // And the chat that is not holding the call says where it is — a readout,
+    // not a way over: the card in the conversation is the only door.
+    const bobZone = bob.page.getByTestId("status-bar-group-call");
+    await expect(bobZone).toBeVisible();
+    await expect(bobZone).toContainText("another tab");
+    await expect(bobZone).toHaveCount(1);
     await expect(
       bob.page.getByTestId("status-bar-group-call-stop"),
     ).toHaveCount(0);
@@ -262,13 +262,13 @@ test("the chat's status bar says the call is in another tab (K8)", async ({
 
     // Bob opens the call. Alice has no tab of it, so her chat draws nothing:
     // the zone is about what *she* has open, not about what is running.
-    await joinConference(bob);
+    const bobCall = await joinConference(bob);
 
     await expect(alice.page.getByTestId("status-bar-group-call")).toHaveCount(
       0,
     );
 
-    const callPath = await conferenceAddress(alice);
+    const callPath = conferenceAddress(bobCall);
     expect(callPath).toMatch(/^\/call\//);
 
     const callTab = await alice.ctx.newPage();
@@ -283,10 +283,10 @@ test("the chat's status bar says the call is in another tab (K8)", async ({
     await expect(zone).toBeVisible({ timeout: 15_000 });
     await expect(zone).toContainText(channel);
     await expect(zone).toContainText("another tab");
-    await expect(zone).toHaveAttribute("data-surface-path", callPath);
 
-    // A way over, not a control: there is no Leave for a call this window is
-    // not holding.
+    // A readout, not a door and not a control: no address to follow, and no
+    // Leave for a call this window is not holding.
+    await expect(zone).not.toHaveAttribute("href", /.*/);
     await expect(
       alice.page.getByTestId("status-bar-group-call-stop"),
     ).toHaveCount(0);

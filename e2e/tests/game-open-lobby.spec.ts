@@ -62,11 +62,15 @@ test("a match link fills its one seat and the game runs on it (N45, N46)", async
     await expect(host.getByTestId("p2p-setup-preview")).toHaveCount(0);
     await shot(host, "match-room-host-empty-seat");
 
-    // The address is minted by Share, in the room, and nowhere else.
+    // The address is minted by Share, in the room, and nowhere else. The window
+    // it opens is modal, so it is closed again before the room is used —
+    // exactly what the person who copied the link does next.
     await host.getByTestId("share-create").click();
     const shareUrl = await host.getByTestId("share-url").inputValue();
     expect(shareUrl).toContain("/join/");
     const joinPath = new URL(shareUrl).pathname;
+    await host.getByTestId("share-close").click();
+    await expect(host.getByTestId("share-url")).toBeHidden();
 
     // The guest follows it: the card offers the seat, then the seat is theirs.
     await guest.goto(joinPath);

@@ -1,20 +1,17 @@
 defmodule RetroHexChatWeb.Components.UI.SurfaceTabLink do
   @moduledoc """
-  The way from the chat to a surface's own tab, in the two shapes it has.
+  The way back from a surface to the chat.
 
-  Three screens drew this by hand — the call badge, the space picker and the
-  P2P starting room — and all three drew the same anchor with the same
-  `noopener` and the same three-word label. That was fine while there was only
-  one shape. There are two now: a surface you do **not** have open is *opened*,
-  and one you **do** is *gone back to*, and the difference is not decoration.
-  Opening a second tab of a session you already have would move the session into
-  it, which is the takeover contract firing for somebody who only wanted to look
-  at what they already had.
+  There used to be a matching way *forward* here — an anchor from the chat into
+  a surface's own tab — and it was a second door into a room whose first door is
+  the card in the conversation. A room entered through it was a room the
+  conversation was never told about, so it is gone: the card is the only way in
+  now, and this is only the way out.
 
-  It stays an anchor in both shapes, always with the real address. That is what
-  keeps middle-click, "open in new tab" and the browser's own status bar
-  working, and it is what makes the fallback free: when no tab answers the focus
-  request, the next click simply follows the link.
+  It stays an anchor with the real address, which is what keeps middle-click,
+  "open in new tab" and the browser's own status bar working, and what makes
+  the fallback free: when no tab answers the focus request, the next click
+  simply follows the link.
 
   `rel="noopener"` is not a style choice. Without it the new tab shares this
   one's event loop and the whole point of a separate address is worth nothing —
@@ -23,64 +20,6 @@ defmodule RetroHexChatWeb.Components.UI.SurfaceTabLink do
   use RetroHexChatWeb.Component
 
   alias RetroHexChatWeb.App.Paths
-  alias RetroHexChatWeb.Icons
-
-  attr :path, :string, required: true, doc: "the surface's own address"
-
-  attr :open?, :boolean,
-    default: false,
-    doc: "whether this person already has that address open somewhere"
-
-  attr :label, :string, default: nil, doc: "overrides the open label"
-  attr :testid, :string, default: nil
-  attr :class, :any, default: nil
-
-  @spec surface_tab_link(map()) :: Phoenix.LiveView.Rendered.t()
-  def surface_tab_link(assigns) do
-    ~H"""
-    <div class="contents">
-      <.link
-        href={@path}
-        target="_blank"
-        rel="noopener"
-        id={@open? && "surface-tab-link-#{Base.url_encode64(@path, padding: false)}"}
-        phx-hook={@open? && "SurfaceTabLinkHook"}
-        data-surface-path={@path}
-        class={
-          classes([
-            "shadow-retro-raised bg-surface flex h-[26px] shrink-0 items-center justify-center gap-1 px-3 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-            @class
-          ])
-        }
-        data-testid={@testid}
-        data-surface-open={to_string(@open?)}
-      >
-        <Icons.icon_btn_link class="h-3.5 w-3.5" />
-        <span>{label(@open?, @label)}</span>
-      </.link>
-      <%!-- Only ever shown by the hook, and only after a tab failed to come
-            forward: the honest sentence for a window that exists somewhere the
-            browser will not let us reach.
-
-            `phx-update="ignore"` because the hook writes `data-visible` and the
-            server does not know it did. Without it the next patch of this
-            subtree — and the open set changes often enough to cause one —
-            restores the server's `false` and the sentence disappears again,
-            which is the silence this element exists to end. --%>
-      <p
-        :if={@open?}
-        id={"surface-tab-note-#{Base.url_encode64(@path, padding: false)}"}
-        phx-update="ignore"
-        class="surface-tab-note text-muted-foreground text-xs"
-        data-surface-tab-note
-        data-visible="false"
-        data-testid={@testid && "#{@testid}-note"}
-      >
-        {dgettext("share", "It is already open in another window of yours.")}
-      </p>
-    </div>
-    """
-  end
 
   attr :open?, :boolean,
     default: false,
@@ -141,8 +80,4 @@ defmodule RetroHexChatWeb.Components.UI.SurfaceTabLink do
     </.link>
     """
   end
-
-  defp label(false, nil), do: dgettext("share", "Open in a tab")
-  defp label(false, label), do: label
-  defp label(true, _label), do: dgettext("share", "Go to the tab")
 end

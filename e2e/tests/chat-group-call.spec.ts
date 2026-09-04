@@ -151,14 +151,10 @@ function groupCallStatusAnnouncer(page: Page) {
   return page.getByTestId("group-call-status-announcer");
 }
 
-// The channel entry has two shapes and both carry the same summary: a way in
-// while this person has no tab of the call, and a way to that tab once they do.
-// An indicator that only knew the first stopped existing the moment the person
-// did what the test was about.
+// The entry has one shape and keeps it: it writes the room's card and goes
+// nowhere, so it reads the same before and after the call this person is in.
 function groupCallChannelIndicator(page: Page) {
-  return page
-    .getByTestId("group-call-open")
-    .or(page.getByTestId("group-call-elsewhere"));
+  return page.getByTestId("group-call-open");
 }
 
 function groupCallChannelPopover(page: Page) {
@@ -1009,9 +1005,12 @@ test.describe("Channel group calls", () => {
       await groupCallChannelPopoverToggle(bob.page).click();
       await expect(groupCallChannelPopover(bob.page)).toBeVisible();
       await expect(groupCallChannelPopover(bob.page)).toContainText(alice.nick);
-      await expect(groupCallChannelPopover(bob.page)).toContainText(
-        "Open in a tab",
-      );
+
+      // The popover reports the room; it does not offer a way into it. The
+      // card in the channel is the only door.
+      await expect(
+        groupCallChannelPopover(bob.page).locator("a[href^='/call/']"),
+      ).toHaveCount(0);
 
       const bobCall = await joinGroupCall(bob);
       await expect(groupCallWindow(bobCall)).toBeVisible();
@@ -1072,14 +1071,12 @@ test.describe("Channel group calls", () => {
       await expect(groupCallWindow(aliceCall)).toBeVisible();
       await groupCallSection(aliceCall, "call").click();
 
-      // The chat's zone is a way *to* the tab holding the call and nothing
-      // else: it carries the room's real address, so a middle-click, a
-      // bookmark and the fallback after no tab answers all land in the same
-      // place.
-      const callPath = await conferenceAddress(alice);
-      await expect(groupCallStatusBar(alice.page)).toHaveAttribute(
+      // The chat's zone says where the call is and nothing else: it carries no
+      // address, because the card in the channel is the only door.
+      await expect(groupCallStatusBar(alice.page)).toContainText(channel);
+      await expect(groupCallStatusBar(alice.page)).not.toHaveAttribute(
         "href",
-        callPath,
+        /.*/,
       );
 
       await expect.poll(() => localTrackEnabled(aliceCall, "audio")).toBe(true);
@@ -1643,7 +1640,7 @@ test.describe("Channel group calls", () => {
       // `/call/:token` applies in `resolve_room`, so Bob is turned away on
       // arrival — with the policy's own sentence — instead of choosing a
       // camera first and being refused after.
-      const callPath = await conferenceAddress(bob);
+      const callPath = conferenceAddress(aliceCall);
       const bobCall = await bob.ctx.newPage();
       await bobCall.goto(callPath);
 

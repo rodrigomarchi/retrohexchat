@@ -113,7 +113,7 @@ msgstr "等待着..."
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:888
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:156
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:403
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:329
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:241
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:517
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:259
 #, elixir-autogen, elixir-format
@@ -844,23 +844,22 @@ msgstr "直接 P2P 地形"
 msgid "End"
 msgstr "結束"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:330
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:242
 #, elixir-autogen, elixir-format
 msgid "Invite"
 msgstr "邀請"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:331
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:243
 #, elixir-autogen, elixir-format
 msgid "Link"
 msgstr "連結"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:332
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:244
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr "現場直播"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:74
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:125
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:67
 #: lib/retro_hex_chat_web/live/app/p2p_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -876,8 +875,8 @@ msgstr "P2P 版式"
 msgid "P2P reactions"
 msgstr "P2P反應"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:160
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:161
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:95
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:96
 #, elixir-autogen, elixir-format
 msgid "P2P session summary"
 msgstr "P2P會議摘要"
@@ -1136,29 +1135,23 @@ msgstr "等待同行接受"
 msgid "Call controls become available after the peer joins the P2P session."
 msgstr "在對等點加入P2P會話後,調用控件即可使用."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:223
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:145
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr "拒絕"
-
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:147
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:148
-#, elixir-autogen, elixir-format
-msgid "Decline P2P request"
-msgstr "拒絕P2P請求"
 
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:258
 #, elixir-autogen, elixir-format
 msgid "Invite pending"
 msgstr "邀請待決"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:198
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:133
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:265
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "開始"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:335
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:247
 #, elixir-autogen, elixir-format
 msgid "Start P2P session with %{peer}"
 msgstr "以 %{peer}啓動 P2P 會話"
@@ -1394,17 +1387,13 @@ msgstr "加入的人"
 msgid "Taking your seat..."
 msgstr "正在為你佔位..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:99
-#, elixir-autogen, elixir-format
-msgid "In another tab"
-msgstr "在其他分頁"
-
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:341
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:253
 #, elixir-autogen, elixir-format
 msgid "Open the P2P session with %{peer} in a tab of its own"
 msgstr "在獨立分頁中開啟與 %{peer} 的 P2P 工作階段"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:91
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:81
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:82
 #, elixir-autogen, elixir-format
-msgid "This P2P session is open in another tab — click to go to it"
-msgstr "此 P2P 工作階段已在其他分頁中開啟 — 點擊前往"
+msgid "Decline P2P request"
+msgstr "拒絕 P2P 請求"

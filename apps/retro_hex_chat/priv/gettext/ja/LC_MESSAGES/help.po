@@ -4937,16 +4937,6 @@ msgstr "共有したリンクを取り消す"
 msgid "Select and switch between microphones, cameras, and speakers during calls."
 msgstr "通話中にマイク、カメラ、スピーカーを切り替えます。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:1106
-#, elixir-autogen, elixir-format
-msgid "A conference always runs in a browser tab of its own, so the call gets the whole window and the chat stays the chat. While it is over there the chat says so along the bottom of its window — click that to go to the tab, which is why there is no Leave beside it: you leave a call from the screen that is in it. Ctrl+Shift with the arrow keys works inside that tab: Up for the microphone, Left for the camera, Right for the layout, Down to move the focus; Ctrl+Shift+Q leaves. Closing the tab is not leaving either: the room keeps you for the reconnection window, and reopening the address puts you straight back in. Only Leave, which asks first, actually ends your part in the call — and being removed from the channel ends it for you."
-msgstr ""
-"会議は必ず専用のブラウザタブで動きます。通話がウィンドウ全体を使い、チャットはチャットのままでいられます。会議が向こうで動いている間、チャットは自分のウィンドウの下端でそのことを伝えます。そこをクリックするとそのタブへ移動します。隣に"
-" Leave がないのはそのためで、通話から抜けるのはその通話を開いている画面からです。そのタブの中では Ctrl+Shift "
-"と矢印キーが効きます。上でマイク、左でカメラ、右でレイアウト、下でフォーカスの移動、Ctrl+Shift+Q "
-"で退出します。タブを閉じても退出にはなりません。部屋は再接続の猶予のあいだ席を保持し、アドレスを開き直せばそのまま戻れます。実際に参加を終えるのは、確認を求める"
-" Leave だけです — そしてチャンネルから外されると、あなたの代わりに終わります。"
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1079
 #, elixir-autogen, elixir-format
 msgid "Join a channel-scoped audio/video conference. Group Call in the channel toolbar opens the room and posts a card in the channel carrying its address; everyone goes in through that card, including whoever opened it. If a conference is already running, Group Call is a link into it rather than a second one — one room, one card. Following the address opens the antechamber in a browser tab of its own: a camera preview, the microphone/camera/speaker pickers, and who is already inside. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for next time. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
@@ -5005,14 +4995,6 @@ msgstr ""
 "が、それを専用のブラウザタブで開きます。会話はそのままの場所に残り、マップはチャットとブラウザを取り合う代わりにウィンドウ全体を手にします。移動は矢印キー、WASD、または右下の画面上パッドで"
 " — "
 "一歩だけならタップ、歩き続けるなら長押しです。スペースキーかパッドの剣ボタンで武器を振ります。右上の半透明のボタンで全画面と通常表示を切り替えます。下端の「チャットに戻る」で会話に戻ります。"
-
-#: lib/retro_hex_chat/chat/help_topics/features.ex:3744
-#, elixir-autogen, elixir-format
-msgid "A space always runs in a browser tab of its own, opened with Space beside the conversation's tabs. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back. If you already have that tab open, the entry says In another tab and takes you to the one you have rather than opening a second."
-msgstr ""
-"スペースは常に専用のブラウザタブで動き、会話のタブの横にある Space "
-"から開きます。スペースには始まりも終わりもないので、そのアドレスはずっと有効です。ブックマークしておけば、いつでも戻ってこられます。すでにそのタブを開いている場合、入口は「別のタブ」と表示し、2"
-" つ目を開くのではなく、いま持っているタブへ連れて行きます。"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3764
 #, elixir-autogen, elixir-format
@@ -5086,3 +5068,13 @@ msgstr "「共有リンク」ウィンドウのアドレスの隣にある「失
 #, elixir-autogen, elixir-format
 msgid "Share, on the character picker, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
 msgstr "キャラクター選択にある「共有」はリンクを作り、「コピー」と「失効」を添えた小さなウィンドウで開きます。会話に貼ると、素のアドレスではなくカードとして表示されます。このリンクが指すのは場所であって、そこで過ごした一夜ではありません。だから全員が帰ったあとも機能し続けます。どのスペースかは運びますが、そこにいる許可は決して運びません。チャンネルのスペースはリンクをたどった人がそのチャンネルにいることを求め続け、プライベートスペースは二人のものであり続けます。作れるのは登録済みのニックネームだけです。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1106
+#, elixir-autogen, elixir-format
+msgid "A conference always runs in a browser tab of its own, so the call gets the whole window and the chat stays the chat. While it is over there the chat says so along the bottom of its window — a readout and not a door, because the card in the conversation is the way in, and there is no Leave beside it either: you leave a call from the screen that is in it. Ctrl+Shift with the arrow keys works inside that tab: Up for the microphone, Left for the camera, Right for the layout, Down to move the focus; Ctrl+Shift+Q leaves. Closing the tab is not leaving either: the room keeps you for the reconnection window, and reopening the address puts you straight back in. Only Leave, which asks first, actually ends your part in the call — and being removed from the channel ends it for you."
+msgstr "会議は必ずブラウザの専用タブで動くので、通話がウィンドウ全体を使い、チャットはチャットのままです。向こうで動いている間、チャットはウィンドウの下端でそれを伝えます。これは表示であって扉ではありません。入り口は会話の中のカードだからです。隣に「退出」もありません。通話から抜けるのは、その通話にいる画面からです。会議が向こうで動いている間、チャットは自分のウィンドウの下端でそのことを伝えます。そこをクリックするとそのタブへ移動します。隣に Leave がないのはそのためで、通話から抜けるのはその通話を開いている画面からです。そのタブの中では Ctrl+Shift と矢印キーが効きます。上でマイク、左でカメラ、右でレイアウト、下でフォーカスの移動、Ctrl+Shift+Q で退出します。タブを閉じても退出にはなりません。部屋は再接続の猶予のあいだ席を保持し、アドレスを開き直せばそのまま戻れます。実際に参加を終えるのは、確認を求める Leave だけです — そしてチャンネルから外されると、あなたの代わりに終わります。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:3744
+#, elixir-autogen, elixir-format
+msgid "A space always runs in a browser tab of its own. Space, beside the conversation's tabs, puts the space's card in the conversation rather than opening it; Join on that card is the door, for you and for everybody reading. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back."
+msgstr "space は必ずブラウザの専用タブで動きます。会話のタブの横にある「Space」はそれを開きません。会話に space のカードを置き、そのカードの「参加」がタブを開きます。space には始まりも終わりもないので、そのアドレスはずっと有効です。ブックマークしておけば、また戻れます。"

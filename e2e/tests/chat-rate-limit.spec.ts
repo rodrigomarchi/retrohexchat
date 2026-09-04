@@ -80,9 +80,11 @@ test.describe("Rate-limit and send-error input state", () => {
       await expect(
         alice.chat.page.getByTestId("p2p-starting-room"),
       ).toHaveCount(0);
+      // The entry carries no address at all — it wrote the card, and the card
+      // is the door.
       await expect(
-        alice.chat.page.getByTestId("p2p-peer-entry"),
-      ).toHaveAttribute("href", /\/p2p\//);
+        alice.chat.page.getByTestId("share-message-enter").last(),
+      ).toHaveAttribute("href", /\/(join|p2p)\//);
       await alice.chat.expectMessageVisible(
         `P2P request sent to ${bob.nick}. Open it from the card below.`,
       );
@@ -91,7 +93,7 @@ test.describe("Rate-limit and send-error input state", () => {
       // an error answering a command must leave the composer clean.
       await alice.chat.sendMessage(`/p2p ${bob.nick}`);
       await alice.chat.expectMessageVisible(
-        "An active lobby already exists with this user",
+        "A session with this person is already open",
       );
 
       await expectNoPendingMessages(alice.chat);

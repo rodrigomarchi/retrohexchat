@@ -154,14 +154,13 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         MapSet.member?(group_call_channels(ctx_b.view), channel)
       end)
 
-      # No second room and no second card: what B sees is a way into A's.
+      # No second room and no second card: what B sees is the card A's press
+      # wrote, which is the only door either of them has.
       assert GroupCall.active_room_for_channel(channel).token == room.token
       assert length(system_messages(channel)) == 1
 
-      assert has_element?(
-               ctx_b.view,
-               ~s([data-testid="group-call-open"][href="/call/#{room.token}"])
-             )
+      assert has_element?(ctx_b.view, ~s([data-testid="group-call-open"]))
+      refute has_element?(ctx_b.view, ~s([data-testid="group-call-open"][href]))
     end
 
     test "an unidentified user is refused, in the policy's words", %{conn: conn} do
@@ -226,7 +225,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
     # The status zone is the third shape of "you are in a call": not here, and
     # not merely running — running on a screen of yours that is not this one.
-    test "the status zone is a way to the tab holding the call, with no Leave",
+    test "the status zone says where the call is, with no way over and no Leave",
          %{conn: conn} do
       %{nick: nick, view: view} = mount_identified(conn, "gcff")
       room = open_conference(view)
@@ -249,11 +248,14 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         )
       end)
 
+      # A readout, not a way over: the card in the conversation is the door.
       assert has_element?(
                view,
-               ~s([data-testid="status-bar-group-call"][href="/call/#{room.token}"]),
+               ~s([data-testid="status-bar-group-call"]),
                "in another tab"
              )
+
+      refute has_element?(view, ~s([data-testid="status-bar-group-call"][href]))
 
       refute has_element?(view, ~s([data-testid="status-bar-group-call-stop"]))
     end

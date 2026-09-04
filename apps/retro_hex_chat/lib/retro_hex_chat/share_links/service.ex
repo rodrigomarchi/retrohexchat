@@ -57,6 +57,18 @@ defmodule RetroHexChat.ShareLinks.Service do
     end
   end
 
+  @spec find_open(String.t(), map(), integer()) :: Link.t() | nil
+  def find_open(kind, target, creator_id) when is_integer(creator_id),
+    do: Queries.find_open(kind, target, creator_id)
+
+  def find_open(_kind, _target, _creator_id), do: nil
+
+  @spec find_open_for_target(String.t(), map()) :: Link.t() | nil
+  defdelegate find_open_for_target(kind, target), to: Queries
+
+  @spec retarget(Link.t(), map()) :: {:ok, Link.t()} | {:error, Ecto.Changeset.t()}
+  defdelegate retarget(link, target), to: Queries
+
   @doc """
   What `slug` points at, or why it does not point anywhere any more.
 

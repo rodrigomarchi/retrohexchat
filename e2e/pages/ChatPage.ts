@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from "@playwright/test";
+import { enterThroughNewCard } from "../helpers/surfaceEntry";
 
 export type AddressBookControlType =
   | "all"
@@ -788,22 +789,20 @@ export class ChatPage {
     return this.page.getByRole("tab", { name, exact: false });
   }
 
-  // The space is a screen with an address, entered from the conversation's
-  // toolbar in a tab of its own — never a view of the conversation.
+  // The space is a screen with an address, and this entry does not carry it:
+  // pressing it writes the space's card into the conversation, and the card is
+  // the door — for everybody reading it, not only for whoever pressed.
   get spaceEntry(): Locator {
     return this.page.getByTestId("space-open");
   }
 
-  /** Opens the focused conversation's space in a tab of its own. */
+  /** Puts the space's card in the conversation, then follows it into its tab. */
   async openSpace(): Promise<Page> {
-    await expect(this.spaceEntry).toBeVisible();
-
-    const [space] = await Promise.all([
-      this.page.context().waitForEvent("page"),
-      this.spaceEntry.click(),
-    ]);
-
-    await space.waitForLoadState("domcontentloaded");
+    const space = await enterThroughNewCard(
+      this.page,
+      this.page.context(),
+      "space-open",
+    );
     await expect(space.getByTestId("space-character-select")).toBeVisible();
     return space;
   }

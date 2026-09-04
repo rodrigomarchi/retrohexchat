@@ -21,6 +21,32 @@ defmodule RetroHexChat.ShareLinks do
           {:ok, Schema.Link.t()} | {:error, :unauthorized | Ecto.Changeset.t()}
   defdelegate create(attrs), to: Service
 
+  @doc """
+  The live link this person already has for this exact thing, or `nil`.
+
+  `create/1` hands back the same link rather than minting a second one, so a
+  caller cannot tell from its answer whether the address is new. A screen that
+  posts a card needs to: a link that already exists was already announced, and
+  announcing it again would put a second card in the conversation for one room.
+  """
+  @spec find_open(String.t(), map(), integer()) :: Schema.Link.t() | nil
+  defdelegate find_open(kind, target, creator_id), to: Service
+
+  @doc """
+  The live link for this thing, whoever minted it, and a way to sharpen it.
+
+  A space's door is posted by whoever pressed the entry; the gathering inside it
+  is started by whoever walks in first, and they are rarely the same person. So
+  the second one finds the card that is already in the conversation and points
+  it at the gathering, rather than putting a second door beside it.
+  """
+  @spec find_open_for_target(String.t(), map()) :: Schema.Link.t() | nil
+  defdelegate find_open_for_target(kind, target), to: Service
+
+  @spec retarget(Schema.Link.t(), map()) ::
+          {:ok, Schema.Link.t()} | {:error, Ecto.Changeset.t()}
+  defdelegate retarget(link, target), to: Service
+
   @spec resolve(term()) :: {:ok, resolution()} | {:error, :not_found | :revoked | :expired}
   defdelegate resolve(slug), to: Service
 
