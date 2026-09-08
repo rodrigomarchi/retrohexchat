@@ -156,7 +156,7 @@ defmodule CI do
       cmd: "make",
       args: ["e2e.smoke.mobile"]
     },
-    "e2e" => %{label: "Full E2E Tests", cmd: "make", args: ["e2e.headless"]},
+    "e2e" => %{label: "Full E2E Tests", cmd: "make", args: ["e2e.sweep"]},
     "dialyzer" => %{label: "Dialyzer", cmd: "mix", args: ["dialyzer"]}
   }
 

@@ -576,7 +576,7 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          make e2e.headless 2>&1 | tee /tmp/e2e_output.txt
+          make e2e.sweep 2>&1 | tee /tmp/e2e_output.txt
 
       - uses: actions/upload-artifact@v4
         if: always()
