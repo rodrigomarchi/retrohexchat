@@ -65,6 +65,42 @@ describe("createMenuBar (direct)", () => {
     expect(dropdowns(el)[0].classList.contains("u-hidden")).toBe(true);
   });
 
+  // A LiveView patch re-renders the bar from the server, which knows nothing
+  // about what is open and so ships every dropdown hidden. Without restore(),
+  // a menu closed under the pointer whenever anything in it changed — and the
+  // next click read as "close it again", because the controller still believed
+  // it was open.
+  it("re-opens the menu the server closed under it", () => {
+    mousedown(triggers(el)[0]);
+
+    dropdowns(el)[0].classList.add("u-hidden");
+    triggers(el)[0].classList.remove("bg-primary", "text-primary-foreground");
+
+    bar.restore();
+
+    expect(dropdowns(el)[0].classList.contains("u-hidden")).toBe(false);
+    expect(triggers(el)[0].classList.contains("bg-primary")).toBe(true);
+  });
+
+  it("restores nothing when no menu was open", () => {
+    bar.restore();
+    expect(dropdowns(el)[0].classList.contains("u-hidden")).toBe(true);
+    expect(dropdowns(el)[1].classList.contains("u-hidden")).toBe(true);
+  });
+
+  // A patch can also take the open menu away entirely — a menu goes disabled
+  // and its dropdown is not rendered at all. Restoring must forget it rather
+  // than leave the controller pointing at a node nobody can see.
+  it("forgets an open menu the patch removed", () => {
+    mousedown(triggers(el)[0]);
+    triggers(el)[0].parentElement.remove();
+
+    bar.restore();
+
+    mousedown(triggers(el)[0]);
+    expect(dropdowns(el)[0].classList.contains("u-hidden")).toBe(false);
+  });
+
   it("unbinds document listeners on destroy", () => {
     bar.destroy();
     // With the controller torn down, an outside/Escape sequence is inert and a

@@ -10,6 +10,19 @@ const repoRoot =
     ? resolve(process.cwd(), "..")
     : process.cwd();
 
+// Everything the shared administrators carry from one run into the next.
+//
+// `TestAdmin` and `TestOper` are fixtures, not people: dozens of specs sign in
+// as them, and anything the server remembers about the last session is dealt
+// to whichever spec signs in first next time. Auto-join and perform replay
+// commands at mount; `reconnect_states` replays the *channels* — a run once
+// rejoined a channel a security spec had created half an hour earlier, in a
+// different feature area, and the rejoin landing late stole the active tab from
+// the spec that was reading it.
+//
+// This is not a product concern. Restoring a person's channels is the feature
+// working; sharing one account across unrelated specs is the harness's doing,
+// so the harness clears it.
 const openRegistrationExpression = [
   "Logger.configure(level: :warning)",
   "Application.ensure_all_started(:ecto_sql)",
@@ -17,6 +30,7 @@ const openRegistrationExpression = [
   'Ecto.Adapters.SQL.query!(RetroHexChat.Repo, "DELETE FROM autojoin_entries WHERE owner_nickname IN ($1, $2)", ["TestAdmin", "TestOper"])',
   'Ecto.Adapters.SQL.query!(RetroHexChat.Repo, "DELETE FROM perform_entries WHERE owner_nickname IN ($1, $2)", ["TestAdmin", "TestOper"])',
   'Ecto.Adapters.SQL.query!(RetroHexChat.Repo, "DELETE FROM perform_settings WHERE owner_nickname IN ($1, $2)", ["TestAdmin", "TestOper"])',
+  'Ecto.Adapters.SQL.query!(RetroHexChat.Repo, "DELETE FROM reconnect_states WHERE owner_nickname IN ($1, $2)", ["TestAdmin", "TestOper"])',
   'RetroHexChat.Services.Queries.upsert_setting("registration", "open", "e2e-reset")',
 ].join("; ");
 

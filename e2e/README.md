@@ -15,10 +15,34 @@ user-facing journeys before releases, run locally and sporadically.
 ```bash
 make e2e.install     # first time only: npm deps + Chromium
 make e2e.db.setup    # first time only: create + migrate retro_hex_chat_e2e
-make e2e             # run all specs headed with slow-mo
-make e2e.headless    # run all specs headless
 make e2e.ui          # interactive Playwright UI mode for debugging
 ```
+
+## Feature batches
+
+The suite runs on one worker and takes the better part of an hour end to end,
+which is long enough that a red whole-suite run tells you nothing you can act
+on. So it is cut into **twelve feature batches**, derived from the `@section`
+header every spec already carries:
+
+```bash
+make e2e.prepare                  # fresh database + assets — once, before a sweep
+make e2e.batches                  # the batches, their sections and their size
+make e2e.batch BATCH=channels     # one batch: minutes, and it names a feature
+make e2e.sweep                    # all twelve in order, a verdict and a log each
+```
+
+`make e2e.prepare` wipes `retro_hex_chat_e2e`. That matters more than it sounds:
+nothing else in this repo ever drops it, and an unswept database accumulates
+tens of thousands of messages in `#lobby` — which almost every spec joins —
+along with bots under fixed names that later `/bot create` calls collide with.
+Assertions have been observed passing only because of what an earlier run left
+behind.
+
+The batch list lives in `scripts/batches.mjs` and is derived, not hand-written:
+`node scripts/batches.mjs --check` fails if a spec's section belongs to no
+batch, so "we ran everything" stays true as specs are added. A spec whose header
+carries two `@section` lines is batched by the first.
 
 ## Focused smokes
 

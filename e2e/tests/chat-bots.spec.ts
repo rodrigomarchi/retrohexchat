@@ -121,6 +121,7 @@ test.describe.serial("Bot commands", () => {
   }) => {
     const user = await newSignedInUser(browser, "botu");
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
+    const botName = uniqueBotName("botd");
 
     try {
       // Every /bot subcommand is administrative, including the ones that only
@@ -131,13 +132,21 @@ test.describe.serial("Bot commands", () => {
         "Only admins and server operators can manage bots",
       );
 
+      // The roster this test looks at has to contain something this test put
+      // there. `bot-list` is the <ul>, rendered only when the server has at
+      // least one bot, so asserting it exists asked "does this server have any
+      // bots at all" — a question other specs answered, and on a clean database
+      // nobody answered it and the assertion was simply wrong.
+      await createBot(admin, botName);
+
       await admin.chat.sendMessage("/bot");
       await expect(admin.chat.botManagementDialog).toBeVisible();
       await expect(admin.chat.botManagementDialog).toContainText(
         "Bot Management",
       );
-      await expect(admin.chat.botList).toHaveCount(1);
+      await expect(admin.chat.botItem(botName)).toBeVisible();
     } finally {
+      await cleanupBot(admin, botName);
       await closeUsers([user, admin]);
     }
   });

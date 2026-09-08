@@ -16,6 +16,12 @@ const MenuBarHook = {
     this.menuBar.mount();
   },
 
+  // The server renders every dropdown closed, so any patch of the bar closes
+  // the menu the person is reading. Put it back.
+  updated() {
+    this.menuBar.restore();
+  },
+
   destroyed() {
     this.menuBar.destroy();
   },

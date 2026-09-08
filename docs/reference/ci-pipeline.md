@@ -179,7 +179,30 @@ MIX_ENV=e2e PGPORT=5433 mix assets.build   # skipping this serves stale CSS/JS
 cd e2e && npx playwright test tests/<file>.spec.ts
 ```
 
-Target a single file — never run the whole Playwright suite locally.
+Target a single file — never run the whole Playwright suite in one command.
+
+### Sweeping the whole suite, in batches
+
+A release still needs the browser exercised end to end. That happens batch by
+batch, not in one run:
+
+```bash
+make e2e.prepare                  # wipe retro_hex_chat_e2e, rebuild assets — once
+make e2e.batches                  # the twelve feature batches and their sections
+make e2e.batch BATCH=channels     # one batch
+make e2e.sweep                    # all twelve in order, e2e/.sweep/<batch>.log each
+```
+
+The batches are derived from the `@section` headers by `e2e/scripts/batches.mjs`
+(`--check` proves every spec lands in exactly one), so a batch names a feature
+where a `--shard` names a number.
+
+Two things `make e2e.prepare` handles that nothing else does. It **kills
+`E2E_PORT`** — `playwright.config.ts` sets `reuseExistingServer: true`, so a
+stale `mix phx.server` silently validates old code, and it holds the connections
+that would make `ecto.drop` fail. And it **drops the database**: nothing else in
+this repo ever does, so it otherwise accumulates indefinitely, which is how
+assertions come to pass on rows an earlier run left behind.
 
 ### The catalog is generated from the specs
 

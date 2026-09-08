@@ -50,11 +50,23 @@ Mechanics, options, partitions, browser E2E and deploy: [`docs/reference/ci-pipe
 (production). **Never `make deploy-sun` directly: it skips CI validation.**
 Use `make deploy.skip-ci` only when `make ci` just passed on this exact revision.
 
-**`make e2e.full` before a release.** `make ci` proves the server; it never
-opens a browser. The first whole-suite run found real failures behind a green
-`make ci` — among them a dialog that drew a channel mode it did not have, and a
-window that never handed the keyboard over. Too slow for the commit gate, cheap
-once per release. The spec inventory is `e2e/TEST_CATALOG.md`.
+**Sweep the browser before a release — in batches, never in one command.**
+`make ci` proves the server; it never opens a browser, and a whole-suite run
+found real failures behind a green `make ci`: a dialog that drew a channel mode
+it did not have, a window that never handed the keyboard over. But the suite
+runs on one worker and takes the better part of an hour, so run it the way it
+can be acted on:
+
+```bash
+make e2e.prepare                  # fresh e2e database + assets, once
+make e2e.batches                  # the twelve feature batches
+make e2e.batch BATCH=channels     # one batch, minutes, names a feature when it fails
+make e2e.sweep                    # all twelve in order, a verdict and a log each
+```
+
+A batch is re-runnable while the cause is still in your head; the whole suite in
+one shot is a filename in a wall of output and another hour to try again.
+The spec inventory is `e2e/TEST_CATALOG.md`.
 
 ## Git
 

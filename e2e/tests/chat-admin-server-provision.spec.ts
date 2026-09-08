@@ -124,6 +124,33 @@ async function teardown(page: Page) {
 test.describe("server provisioning script", () => {
   test.describe.configure({ mode: "serial", timeout: 180_000 });
 
+  /**
+   * Unprovision once both tests have had the provisioned server they need.
+   *
+   * Tearing down only at the start was enough to make this spec repeatable and
+   * nothing else: the bots stayed for the rest of the run. `Patches` greets
+   * every arrival in `#lobby`, and `#lobby` is where most specs work — so every
+   * later sign-in flooded the room with "just walked in" lines, and an
+   * assertion on a reply that had arrived seconds earlier failed because the
+   * flood had already pushed it out of the stream. Three admin specs went flaky
+   * on exactly that.
+   *
+   * Best-effort, like the opening teardown: this is cleanup, and a failure here
+   * must not turn a green run red.
+   */
+  test.afterAll(async ({ browser }) => {
+    const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
+
+    try {
+      await admin.chat.openAdminWindow("open_admin_console");
+      await teardown(admin.page);
+    } catch {
+      // The opening teardown catches whatever survives.
+    } finally {
+      await closeUsers([admin]);
+    }
+  });
+
   test("the whole script runs with every line accepted", async ({
     browser,
   }) => {

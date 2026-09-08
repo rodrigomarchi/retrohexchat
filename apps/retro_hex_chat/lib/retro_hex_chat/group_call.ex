@@ -197,10 +197,30 @@ defmodule RetroHexChat.GroupCall do
       %{"group_call.participant.id" => participant_id, reason: normalize_reason(reason)},
       fn ->
         with {:ok, _pid} <- ensure_room_server(token) do
-          RoomServer.disconnect(token, participant_id, signal_pid, reason)
+          disconnect_or_already_gone(token, participant_id, signal_pid, reason)
         end
       end
     )
+  end
+
+  # A closing channel tells its room that it is gone, and the room may have
+  # gone first: the last peer leaving empties it, and an empty room shuts
+  # itself down, so the call lands on a process already on its way out. That
+  # exit is the outcome the caller asked for — the participant is not in the
+  # room, because the room is not there — and crashing the channel over it
+  # logged two GenServer terminations every time a conference ended.
+  #
+  # Only an orderly shutdown counts. Any other exit is a fault and still
+  # propagates, because a room that dies for a reason nobody planned is exactly
+  # what this must not swallow.
+  @spec disconnect_or_already_gone(String.t(), integer(), pid(), String.t()) ::
+          :ok | {:error, term()}
+  defp disconnect_or_already_gone(token, participant_id, signal_pid, reason) do
+    RoomServer.disconnect(token, participant_id, signal_pid, reason)
+  catch
+    :exit, {shutdown, {GenServer, :call, _args}}
+    when shutdown in [:normal, :noproc, :shutdown] ->
+      :ok
   end
 
   @spec answer(String.t(), integer(), String.t(), String.t() | nil) :: :ok | {:error, term()}

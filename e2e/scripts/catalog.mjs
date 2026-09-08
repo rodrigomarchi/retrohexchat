@@ -58,13 +58,13 @@ const SECTION_ORDER = [
   "PW - Public Pages, Landing, And Showcase",
 ];
 
-function specFiles() {
+export function specFiles() {
   return readdirSync(TESTS_DIR)
     .filter((name) => name.endsWith(".spec.ts"))
     .sort();
 }
 
-function parseSpec(name) {
+export function parseSpec(name) {
   const body = readFileSync(join(TESTS_DIR, name), "utf8");
   const header = body.match(/^\/\*\*([\s\S]*?)\*\//);
   const testCount = (body.match(/^\s*test\(/gm) || []).length;
@@ -73,12 +73,14 @@ function parseSpec(name) {
 
   const lines = header[1].split("\n").map((line) => line.replace(/^\s*\*\s?/, ""));
   const flows = [];
+  const sections = [];
   let section = "Uncategorised";
 
   for (const line of lines) {
     const heading = line.match(/^@section\s+(.+?)\s*$/);
     if (heading) {
       section = heading[1];
+      sections.push(section);
       continue;
     }
     const flow = line.match(/^@flow\s+(\S+)\s+\[(\w+)\]\s+(.+?)\s*$/);
@@ -86,7 +88,7 @@ function parseSpec(name) {
       flows.push({ id: flow[1], status: flow[2], text: flow[3], section });
     }
   }
-  return { name, flows, testCount };
+  return { name, sections, flows, testCount };
 }
 
 function escapeCell(text) {
@@ -271,4 +273,9 @@ function main() {
   process.stdout.write(`TEST_CATALOG.md regenerated from ${specs.length} spec files.\n`);
 }
 
-main();
+// Importable as a module (scripts/batches.mjs reuses the header parser above),
+// runnable as a script. Without this guard, importing it would regenerate the
+// catalog as a side effect of asking which section a spec belongs to.
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main();
+}

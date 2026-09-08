@@ -1,7 +1,7 @@
 .PHONY: help setup deps db.setup db.create db.migrate db.rollback db.reset db.seed \
        db.gen.migration server iex routes \
        test test.stale test.unit test.integration test.liveview test.feature test.all test.cover \
-       e2e e2e.headless e2e.full e2e.changed e2e.shard e2e.smoke e2e.smoke.connect e2e.smoke.chat e2e.smoke.dialogs e2e.smoke.i18n e2e.smoke.calls e2e.smoke.mobile e2e.smoke.perf e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
+       e2e e2e.headless e2e.sweep e2e.batch e2e.batches e2e.prepare e2e.db.reset e2e.changed e2e.shard e2e.smoke e2e.smoke.connect e2e.smoke.chat e2e.smoke.dialogs e2e.smoke.i18n e2e.smoke.calls e2e.smoke.mobile e2e.smoke.perf e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
        test.cover.all test.domain test.domain.stale test.web test.web.stale test.failed test.seed test.file test.line \
        test.js test.js.changed test.js.related test.js.watch \
        ci ci.quick ci.changed ci.serial ci.quick.serial ci.partition-profile ci.partition-profile.plan \
@@ -230,11 +230,48 @@ e2e.headless: ## Run Playwright headless (faster, no browser window)
 	$(E2E_MIX) assets.build
 	cd e2e && $(E2E_ENV) npm test
 
-e2e.full: ## Run the whole Playwright suite (~36 min) — the release gate `make ci` cannot be
-	@echo "The whole suite, one worker, roughly 36 minutes."
-	@echo "Run it before a deploy: make ci proves the server, this proves the browser."
+e2e.db.reset: ## Wipe the e2e database (kills the server on E2E_PORT first)
+	@echo "Stopping anything on :$(E2E_PORT) — ecto.drop cannot run while it holds connections,"
+	@echo "and playwright.config.ts would reuse it and validate old code."
+	@pids=$$(lsof -ti:$(E2E_PORT) 2>/dev/null); [ -z "$$pids" ] || kill -9 $$pids
+	$(E2E_MIX) ecto.drop
+	$(E2E_MIX) ecto.create
+	$(E2E_MIX) ecto.migrate
+
+e2e.prepare: ## Clean slate for a sweep: fresh e2e database + freshly built assets
+	$(MAKE) e2e.db.reset
 	$(E2E_MIX) assets.build
-	cd e2e && $(E2E_ENV) npx playwright test
+
+e2e.batches: ## List the feature batches, their sections and their size
+	cd e2e && node scripts/batches.mjs --list
+
+e2e.batch: ## Run one feature batch (usage: make e2e.batch BATCH=channels)
+	@test -n "$(BATCH)" || { cd e2e && node scripts/batches.mjs --list; echo; echo "usage: make e2e.batch BATCH=<name>"; exit 2; }
+	cd e2e && node scripts/batches.mjs --check
+	@# playwright.config.ts reuses whatever is on the port, so a server left over
+	@# from the previous batch would validate the code as it was before the fix
+	@# that batch prompted. Boot costs seconds; a stale green costs the sweep.
+	@pids=$$(lsof -ti:$(E2E_PORT) 2>/dev/null); [ -z "$$pids" ] || kill -9 $$pids
+	cd e2e && $(E2E_ENV) npx playwright test --project=chromium $$(node scripts/batches.mjs $(BATCH))
+	@cd e2e && test -z "$$(node scripts/batches.mjs $(BATCH) --mobile)" || \
+	  $(E2E_ENV) npx playwright test --project=mobile-chrome $$(node scripts/batches.mjs $(BATCH) --mobile)
+
+e2e.sweep: ## Run every batch in order, one log each, a verdict per batch
+	@test -d e2e/.sweep || mkdir -p e2e/.sweep
+	cd e2e && node scripts/batches.mjs --check
+	@fails=""; \
+	for batch in $$(cd e2e && node scripts/batches.mjs --names); do \
+	  printf '\n=== %s ===\n' "$$batch"; \
+	  if $(MAKE) --no-print-directory e2e.batch BATCH=$$batch > e2e/.sweep/$$batch.log 2>&1; then \
+	    echo "PASS  $$batch  (e2e/.sweep/$$batch.log)"; \
+	  else \
+	    echo "FAIL  $$batch  (e2e/.sweep/$$batch.log)"; \
+	    tail -25 e2e/.sweep/$$batch.log; \
+	    fails="$$fails $$batch"; \
+	  fi; \
+	done; \
+	if [ -n "$$fails" ]; then echo; echo "Red batches:$$fails"; exit 1; fi; \
+	echo; echo "Every batch green."
 
 e2e.changed: ## Run Playwright specs changed since SINCE (default: uncommitted changes)
 	$(E2E_MIX) assets.build

@@ -7,8 +7,9 @@
  * which is what lets the same bar run on a public page with no LiveSocket at
  * all — the markup stands on its own and this is pure enhancement.
  *
- * Create one with `createMenuBar(el)` and drive it through `mount()` and
- * `destroy()`. The DOM contract (see `Components.UI.MenuBar`):
+ * Create one with `createMenuBar(el)` and drive it through `mount()`,
+ * `restore()` (after the markup underneath is re-rendered) and `destroy()`.
+ * The DOM contract (see `Components.UI.MenuBar`):
  *
  *   - `[data-menubar-trigger]`         opens the sibling dropdown under one wrapper
  *   - `[data-menubar-dropdown]`        the panel a trigger opens
@@ -148,6 +149,28 @@ const MenuBarCore = {
     }
 
     if (e.target.closest("[data-menubar-dropdown] li")) this._closeAll();
+  },
+
+  /**
+   * Re-applies the open menu after the server has re-rendered the bar.
+   *
+   * Open and closed are DOM state here — `u-hidden` on the dropdown, the
+   * primary colours on the trigger — and the server renders every dropdown
+   * closed, because it has no idea one is open. So a patch that touches the bar
+   * shuts the menu under the pointer: joining a channel changes which items the
+   * Tools menu offers, and a person who opened it a moment earlier watched it
+   * vanish. Worse, `_activeMenu` still pointed at it, so the next click read as
+   * "close" and the menu took two clicks to come back.
+   */
+  restore() {
+    const menu = this._activeMenu;
+    if (!menu || !this.el.contains(menu)) {
+      this._activeMenu = null;
+      return;
+    }
+
+    this._activeMenu = null;
+    this._openMenu(menu);
   },
 
   _openMenu(menu) {

@@ -45,8 +45,18 @@ async function knownSignedInUser(
   return { chat, ctx, page, nick };
 }
 
-async function cleanupBot(admin: TestUser, botName: string) {
+// The bot is not the only thing this test leaves behind. Joining a channel
+// while identified records it on that account's auto-join list, and the account
+// here is the shared administrator: a channel left on it is re-joined by every
+// later sign-in, in this run and the next, and a rejoin landing late steals the
+// active tab out from under whichever spec is reading it.
+async function cleanupBot(admin: TestUser, botName: string, channel?: string) {
   await admin.chat.sendMessage(`/bot destroy ${botName}`).catch(() => {});
+
+  if (channel) {
+    await admin.chat.sendMessage(`/autojoin remove ${channel}`).catch(() => {});
+    await admin.chat.sendMessage(`/part ${channel}`).catch(() => {});
+  }
 }
 
 test.describe("Bot edge cases", () => {
@@ -93,7 +103,7 @@ test.describe("Bot edge cases", () => {
       await admin.chat.closeBotManagementDialog();
     } finally {
       await cleanupBot(admin, secondBotName);
-      await cleanupBot(admin, botName);
+      await cleanupBot(admin, botName, channel);
       await admin.ctx.close();
     }
   });
