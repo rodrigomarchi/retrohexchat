@@ -1012,7 +1012,7 @@ msgid "Connection failed"
 msgstr "連接失敗"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:296
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:404
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:429
 #, elixir-autogen, elixir-format
 msgid "Connection lost"
 msgstr "連接已丟失"
@@ -3295,7 +3295,7 @@ msgstr "自動加入"
 msgid "P2P request"
 msgstr "P2P請求"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:198
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:201
 #, elixir-autogen, elixir-format
 msgid "P2P request from %{from} - join it from the PM header."
 msgstr "p2P請求來自%{from} - 從PM頭加入."
@@ -4013,3 +4013,8 @@ msgstr "註冊你的暱稱，才能把 space 的卡片放在這裡"
 #, elixir-autogen, elixir-format
 msgid "This P2P session is open in another tab of yours"
 msgstr "這個 P2P 工作階段在你的另一個分頁裡開著"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:296
+#, elixir-autogen, elixir-format
+msgid "Registration dropped — you are no longer identified as %{nickname}."
+msgstr "註冊已刪除 — 您不再被確認爲 %{nickname}。"

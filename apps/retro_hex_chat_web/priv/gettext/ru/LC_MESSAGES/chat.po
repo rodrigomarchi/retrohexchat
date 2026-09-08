@@ -1032,7 +1032,7 @@ msgid "Connection failed"
 msgstr "Подключение провалилось"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:296
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:404
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:429
 #, elixir-autogen, elixir-format
 msgid "Connection lost"
 msgstr "Потерянная связь"
@@ -3335,7 +3335,7 @@ msgstr "Авто-Присоединиться"
 msgid "P2P request"
 msgstr "P2P-запрос"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:198
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:201
 #, elixir-autogen, elixir-format
 msgid "P2P request from %{from} - join it from the PM header."
 msgstr "P2P запрос от %{from} - присоединяйтесь к нему из заголовка PM."
@@ -4056,3 +4056,8 @@ msgstr "Зарегистрируйте свой ник, чтобы помест�
 #, elixir-autogen, elixir-format
 msgid "This P2P session is open in another tab of yours"
 msgstr "Эта P2P-сессия открыта в другой вашей вкладке"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:296
+#, elixir-autogen, elixir-format
+msgid "Registration dropped — you are no longer identified as %{nickname}."
+msgstr "Регистрация удалена — вы больше не идентифицированы как %{nickname}."

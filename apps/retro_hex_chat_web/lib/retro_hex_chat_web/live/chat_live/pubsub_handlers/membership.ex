@@ -278,6 +278,31 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     end
   end
 
+  # ── NickServ dropped ──────────────────────────────────────
+
+  # The registration this session was identified against is gone — dropped by
+  # the person themselves, or by an administrator. Either way the flag has to
+  # come down: everything it guards writes against a nickname the database no
+  # longer has, and the nickname keeps whatever privileges being identified
+  # granted it until something says otherwise.
+  def handle_info({:nickserv_dropped, %{nickname: nick}}, socket) do
+    session = socket.assigns.session
+
+    if nick == session.nickname and session.identified do
+      {:halt,
+       socket
+       |> assign(session: Session.set_identified(session, false))
+       |> push_status_message(
+         dgettext("chat", "Registration dropped — you are no longer identified as %{nickname}.",
+           nickname: nick
+         ),
+         :system
+       )}
+    else
+      {:halt, socket}
+    end
+  end
+
   # ── Catch-all: pass unhandled to next hook ────────────────
 
   def handle_info(_, socket), do: {:cont, socket}

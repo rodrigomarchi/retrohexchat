@@ -29,6 +29,20 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Presence do
       {:ok, _} ->
         :ok
 
+      # This process already holds that presence, so nobody is missing from the
+      # room — but it asked twice, and the second ask is work somewhere is doing
+      # for nothing. Where it comes from is the whole question, and the message
+      # alone never answered it: a sweep of the browser suite turned up ten of
+      # these, always on the same channel, and none of them could be reproduced
+      # from the spec that logged them. So it carries its caller now.
+      {:error, {:already_tracked, _pid, _topic, _key}} ->
+        {:current_stacktrace, trace} = Process.info(self(), :current_stacktrace)
+
+        Logger.warning(
+          "Tracker.track_user(#{topic}, #{nickname}): already tracked by this process\n" <>
+            Exception.format_stacktrace(trace)
+        )
+
       {:error, reason} ->
         Logger.warning("Tracker.track_user(#{topic}, #{nickname}): #{inspect(reason)}")
     end

@@ -179,6 +179,7 @@ defmodule RetroHexChat.Services.NickServ do
           TrustedDevices.revoke_all_for_nick(nickname, nickname)
           Queries.delete_registered_nick(nick)
           GenServer.cast(server, {:remove_identified, nickname})
+          broadcast_dropped(nickname)
           {:ok, dgettext("services", "Registration for %{nickname} dropped", nickname: nickname)}
         else
           {:error, dgettext("services", "Invalid password")}
@@ -206,6 +207,7 @@ defmodule RetroHexChat.Services.NickServ do
         TrustedDevices.revoke_all_for_nick(nickname, "NickServ")
         Queries.delete_registered_nick(nick)
         GenServer.cast(server, {:remove_identified, nickname})
+        broadcast_dropped(nickname)
 
         {:ok,
          dgettext("services", "Registration for %{nickname} dropped by admin", nickname: nickname)}
@@ -414,6 +416,27 @@ defmodule RetroHexChat.Services.NickServ do
          ) do
       :ok -> :ok
       {:error, reason} -> Logger.warning("PubSub identify broadcast failed: #{inspect(reason)}")
+    end
+  end
+
+  # A dropped registration has to reach the session, not just the registry.
+  #
+  # Dropping deletes the row and forgets the identification here, but a live
+  # session went on believing it was identified — so every write it guards on
+  # that flag kept firing at a nickname that no longer exists, and the reconnect
+  # state failed its foreign key on each attempt. The person's channels stopped
+  # being saved and all they got was a warning in the server log.
+  #
+  # It matters more when an administrator does the dropping: that session did
+  # nothing, and nothing would have told it.
+  defp broadcast_dropped(nickname) do
+    case Phoenix.PubSub.broadcast(
+           RetroHexChat.PubSub,
+           Topics.inbox(nickname),
+           {:nickserv_dropped, %{nickname: nickname}}
+         ) do
+      :ok -> :ok
+      {:error, reason} -> Logger.warning("PubSub drop broadcast failed: #{inspect(reason)}")
     end
   end
 

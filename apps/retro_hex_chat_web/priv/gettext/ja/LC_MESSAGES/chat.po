@@ -1020,7 +1020,7 @@ msgid "Connection failed"
 msgstr "接続失敗"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:296
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:404
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:429
 #, elixir-autogen, elixir-format
 msgid "Connection lost"
 msgstr "接続が失われた"
@@ -3303,7 +3303,7 @@ msgstr "自動ジョイント"
 msgid "P2P request"
 msgstr "P2Pリクエスト"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:198
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:201
 #, elixir-autogen, elixir-format
 msgid "P2P request from %{from} - join it from the PM header."
 msgstr "P2P リクエスト %{from} - PM ヘッダから入力します。"
@@ -4021,3 +4021,8 @@ msgstr "space のカードをここに置くにはニックネームを登録し
 #, elixir-autogen, elixir-format
 msgid "This P2P session is open in another tab of yours"
 msgstr "この P2P セッションはあなたの別のタブで開いています"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:296
+#, elixir-autogen, elixir-format
+msgid "Registration dropped — you are no longer identified as %{nickname}."
+msgstr "登録を削除しました — %{nickname} として識別されなくなりました。"

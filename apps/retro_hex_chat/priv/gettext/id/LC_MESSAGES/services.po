@@ -11,54 +11,54 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:443
-#: lib/retro_hex_chat/services/nick_serv.ex:444
+#: lib/retro_hex_chat/services/chan_serv.ex:440
+#: lib/retro_hex_chat/services/nick_serv.ex:452
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:406
+#: lib/retro_hex_chat/services/chan_serv.ex:407
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} added to %{level} list of %{channel_name}"
 msgstr "%{target_nick} ditambahkan ke daftar %{level} %{channel_name}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:432
+#: lib/retro_hex_chat/services/chan_serv.ex:433
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} not found in access list"
 msgstr "%{target_nick} tidak ditemukan dalam daftar akses"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:425
+#: lib/retro_hex_chat/services/chan_serv.ex:426
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} removed from access list of %{channel_name}"
 msgstr "%{target_nick} dihapus dari daftar akses %{channel_name}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:193
+#: lib/retro_hex_chat/services/chan_serv.ex:194
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} dropped"
 msgstr "Saluran %{channel_name} dijatuhkan"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:250
+#: lib/retro_hex_chat/services/chan_serv.ex:251
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} dropped by admin"
 msgstr "Saluran %{channel_name} diturunkan oleh admin"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:205
-#: lib/retro_hex_chat/services/chan_serv.ex:318
+#: lib/retro_hex_chat/services/chan_serv.ex:206
+#: lib/retro_hex_chat/services/chan_serv.ex:319
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} is not registered"
 msgstr "Saluran %{channel_name} tidak terdaftar"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:176
+#: lib/retro_hex_chat/services/chan_serv.ex:177
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} registered by %{founder_nick}"
 msgstr "Saluran %{channel_name} terdaftar oleh %{founder_nick}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:414
+#: lib/retro_hex_chat/services/chan_serv.ex:415
 #, elixir-autogen, elixir-format
 msgid "Failed to add %{target_nick} to %{level} list"
 msgstr "Gagal menambahkan %{target_nick} ke daftar %{level}"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:240
+#: lib/retro_hex_chat/services/nick_serv.ex:245
 #, elixir-autogen, elixir-format
 msgid "Failed to reset password for %{nickname}"
 msgstr "Gagal mereset kata sandi untuk %{nickname}"
@@ -68,88 +68,88 @@ msgstr "Gagal mereset kata sandi untuk %{nickname}"
 msgid "Failed to save MOTD."
 msgstr "Gagal menyimpan MOTD."
 
-#: lib/retro_hex_chat/services/chan_serv.ex:271
+#: lib/retro_hex_chat/services/chan_serv.ex:272
 #, elixir-autogen, elixir-format
 msgid "Founder of %{channel_name} transferred to %{new_founder}"
 msgstr "Pendiri %{channel_name} dipindahkan ke %{new_founder}"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:151
+#: lib/retro_hex_chat/services/nick_serv.ex:154
 #, elixir-autogen, elixir-format
 msgid "Ghost command sent for %{target_nick}"
 msgstr "Perintah hantu dikirim untuk %{target_nick}"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:424
+#: lib/retro_hex_chat/services/nick_serv.ex:445
 #, elixir-autogen, elixir-format
 msgid "Ghosted by %{requester_nick}"
 msgstr "Diserahkan oleh %{requester_nick}"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:369
+#: lib/retro_hex_chat/services/nick_serv.ex:374
 #, elixir-autogen, elixir-format
 msgid "Identify timeout (60s)"
 msgstr "Identifikasi waktu habis (60s)"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:100
-#: lib/retro_hex_chat/services/nick_serv.ex:153
-#: lib/retro_hex_chat/services/nick_serv.ex:181
+#: lib/retro_hex_chat/services/nick_serv.ex:103
+#: lib/retro_hex_chat/services/nick_serv.ex:156
+#: lib/retro_hex_chat/services/nick_serv.ex:185
 #, elixir-autogen, elixir-format
 msgid "Invalid password"
 msgstr "Sandi tak valid"
 
-#: lib/retro_hex_chat/services/nick_expiry.ex:106
+#: lib/retro_hex_chat/services/nick_expiry.ex:129
 #, elixir-autogen, elixir-format
 msgid "NickExpiry"
 msgstr "NickExpiry"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:91
-#: lib/retro_hex_chat/services/nick_serv.ex:115
-#: lib/retro_hex_chat/services/nick_serv.ex:172
-#: lib/retro_hex_chat/services/nick_serv.ex:200
-#: lib/retro_hex_chat/services/nick_serv.ex:226
+#: lib/retro_hex_chat/services/nick_serv.ex:94
+#: lib/retro_hex_chat/services/nick_serv.ex:118
+#: lib/retro_hex_chat/services/nick_serv.ex:175
+#: lib/retro_hex_chat/services/nick_serv.ex:204
+#: lib/retro_hex_chat/services/nick_serv.ex:231
 #, elixir-autogen, elixir-format
 msgid "Nickname %{nickname} is not registered"
 msgstr "Nama panggilan %{nickname} tidak terdaftar"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:63
+#: lib/retro_hex_chat/services/nick_serv.ex:66
 #, elixir-autogen, elixir-format
 msgid "Nickname %{nickname} registered successfully"
 msgstr "Nama panggilan %{nickname} sukses terdaftar"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:142
+#: lib/retro_hex_chat/services/nick_serv.ex:145
 #, elixir-autogen, elixir-format
 msgid "Nickname %{target_nick} is not registered"
 msgstr "Nama panggilan %{target_nick} tidak terdaftar"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:331
+#: lib/retro_hex_chat/services/chan_serv.ex:332
 #, elixir-autogen, elixir-format
 msgid "Only the founder can drop a channel"
 msgstr "Hanya pendiri dapat drop saluran"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:236
+#: lib/retro_hex_chat/services/nick_serv.ex:241
 #, elixir-autogen, elixir-format
 msgid "Password for %{nickname} has been reset"
 msgstr "Sandi untuk %{nickname} telah direset"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:179
+#: lib/retro_hex_chat/services/nick_serv.ex:183
 #, elixir-autogen, elixir-format
 msgid "Registration for %{nickname} dropped"
 msgstr "Pendaftaran untuk %{nickname} dijatuhkan"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:208
+#: lib/retro_hex_chat/services/nick_serv.ex:213
 #, elixir-autogen, elixir-format
 msgid "Registration for %{nickname} dropped by admin"
 msgstr "Pendaftaran untuk %{nickname} dijatuhkan oleh admin"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:54
+#: lib/retro_hex_chat/services/nick_serv.ex:57
 #, elixir-autogen, elixir-format
 msgid "Registration is currently closed by the server administrator"
 msgstr "Pendaftaran saat ini ditutup oleh administrator server"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:98
+#: lib/retro_hex_chat/services/nick_serv.ex:101
 #, elixir-autogen, elixir-format
 msgid "You are now identified as %{nickname}"
 msgstr "Anda sekarang diidentifikasi sebagai %{nickname}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:299
+#: lib/retro_hex_chat/services/chan_serv.ex:300
 #, elixir-autogen, elixir-format
 msgid "You must be identified to use ChanServ"
 msgstr "Anda harus diidentifikasi untuk menggunakan ChanServ"

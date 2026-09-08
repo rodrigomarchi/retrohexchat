@@ -183,6 +183,40 @@ defmodule RetroHexChat.Services.NickServTest do
     end
   end
 
+  # A live session guards every persisted write on being identified. Dropping
+  # deletes the row, so the session has to hear about it — otherwise it keeps
+  # writing against a nickname the database no longer has, which is how the
+  # reconnect state came to fail its foreign key on every save.
+  describe "drop broadcasts :nickserv_dropped" do
+    test "a person dropping their own registration is told", %{server: server} do
+      {:ok, _} = NickServ.register("DropBcast", "secret123", server)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:DropBcast")
+
+      {:ok, _} = NickServ.drop("DropBcast", "secret123", server)
+
+      assert_receive {:nickserv_dropped, %{nickname: "DropBcast"}}
+    end
+
+    # This session did nothing; without the broadcast nothing would tell it.
+    test "an admin dropping somebody else's registration reaches them", %{server: server} do
+      {:ok, _} = NickServ.register("AdminDropped", "secret123", server)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:AdminDropped")
+
+      {:ok, _} = NickServ.admin_drop("AdminDropped", server)
+
+      assert_receive {:nickserv_dropped, %{nickname: "AdminDropped"}}
+    end
+
+    test "a refused drop says nothing", %{server: server} do
+      {:ok, _} = NickServ.register("KeptNick", "secret123", server)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:KeptNick")
+
+      {:error, _} = NickServ.drop("KeptNick", "wrong-password", server)
+
+      refute_receive {:nickserv_dropped, _}, 100
+    end
+  end
+
   describe "identify timer expiry" do
     test "forces rename on timeout", _ctx do
       # Start a NickServ with a very short timeout for testing

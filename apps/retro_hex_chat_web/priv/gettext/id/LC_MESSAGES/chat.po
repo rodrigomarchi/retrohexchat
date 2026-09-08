@@ -1022,7 +1022,7 @@ msgid "Connection failed"
 msgstr "Koneksi gagal"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:296
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:404
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:429
 #, elixir-autogen, elixir-format
 msgid "Connection lost"
 msgstr "Koneksi hilang"
@@ -3321,7 +3321,7 @@ msgstr "Otomatis-Gabung"
 msgid "P2P request"
 msgstr "Permintaan P2P"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:198
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:201
 #, elixir-autogen, elixir-format
 msgid "P2P request from %{from} - join it from the PM header."
 msgstr "Permintaan P2P dari %{from} - gabung dari header PM."
@@ -4039,3 +4039,8 @@ msgstr "Daftarkan nama panggilanmu untuk menaruh kartu space di sini"
 #, elixir-autogen, elixir-format
 msgid "This P2P session is open in another tab of yours"
 msgstr "Sesi P2P ini terbuka di tab lain milikmu"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:296
+#, elixir-autogen, elixir-format
+msgid "Registration dropped — you are no longer identified as %{nickname}."
+msgstr "Registrasi dihapus — Anda tidak lagi diidentifikasi sebagai %{nickname}."

@@ -1017,7 +1017,7 @@ msgid "Connection failed"
 msgstr "Connection failed"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:296
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:404
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:429
 #, elixir-autogen, elixir-format
 msgid "Connection lost"
 msgstr "Connection lost"
@@ -3307,7 +3307,7 @@ msgstr "Auto-Join"
 msgid "P2P request"
 msgstr "P2P request"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:198
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:201
 #, elixir-autogen, elixir-format
 msgid "P2P request from %{from} - join it from the PM header."
 msgstr "P2P request from %{from} - join it from the PM header."
@@ -4026,3 +4026,8 @@ msgstr "Register your nickname to put the space card here"
 #, elixir-autogen, elixir-format
 msgid "This P2P session is open in another tab of yours"
 msgstr "This P2P session is open in another tab of yours"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:296
+#, elixir-autogen, elixir-format
+msgid "Registration dropped — you are no longer identified as %{nickname}."
+msgstr "Registration dropped — you are no longer identified as %{nickname}."

@@ -127,6 +127,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:nickserv_identified, _} = msg, socket),
     do: Membership.handle_info(msg, socket)
 
+  def handle_info({:nickserv_dropped, _} = msg, socket),
+    do: Membership.handle_info(msg, socket)
+
   # ── Admin: rename, role change, mute/unmute ───────────────
 
   def handle_info({:admin_rename, _} = msg, socket),
