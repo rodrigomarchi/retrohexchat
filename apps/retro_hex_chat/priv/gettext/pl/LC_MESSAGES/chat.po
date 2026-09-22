@@ -16,11 +16,6 @@ msgstr ""
 msgid "  %{name} (%{type}, %{interval}s) → %{command}"
 msgstr "  %{name} (%{type}, %{interval}s) → %{command}"
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:55
-#, elixir-autogen, elixir-format
-msgid "1 %{singular}"
-msgstr "1 %{singular}"
-
 #: lib/retro_hex_chat/chat/timer_manager.ex:173
 #, elixir-autogen, elixir-format
 msgid "Active timers:\n"
@@ -431,13 +426,13 @@ msgstr "Nie można usunąć wiadomości innych użytkowników."
 msgid "You cannot edit other users' messages."
 msgstr "Nie można edytować wiadomości innych użytkowników."
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:45
+#: lib/retro_hex_chat/chat/time_formatter.ex:55
 #, elixir-autogen, elixir-format
 msgid "just now"
 msgstr "Właśnie teraz"
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:9
-#: lib/retro_hex_chat/chat/time_formatter.ex:21
+#: lib/retro_hex_chat/chat/time_formatter.ex:11
+#: lib/retro_hex_chat/chat/time_formatter.ex:23
 #, elixir-autogen, elixir-format
 msgid "less than a minute"
 msgstr "mniej niż minutę"
@@ -535,10 +530,31 @@ msgstr "plik"
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr "Wiadomość przekracza maksymalną długość %{count} znaków"
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:37
+#: lib/retro_hex_chat/chat/time_formatter.ex:39
 #, elixir-autogen, elixir-format
 msgid "%{count} day"
 msgid_plural "%{count} days"
 msgstr[0] "%{count} dzień"
 msgstr[1] "%{count} dni"
 msgstr[2] "%{count} dni"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:61
+#, elixir-autogen, elixir-format
+msgid "%{span} ago"
+msgstr "%{span} temu"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:64
+#, elixir-autogen, elixir-format
+msgid "%{count} hour"
+msgid_plural "%{count} hours"
+msgstr[0] "%{count} godzina"
+msgstr[1] "%{count} godziny"
+msgstr[2] "%{count} godzin"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:67
+#, elixir-autogen, elixir-format
+msgid "%{count} minute"
+msgid_plural "%{count} minutes"
+msgstr[0] "%{count} minuta"
+msgstr[1] "%{count} minuty"
+msgstr[2] "%{count} minut"

@@ -796,7 +796,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "/invite"
@@ -822,7 +822,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:9
@@ -865,7 +865,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "/knock"
@@ -884,7 +884,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "/list"
@@ -912,7 +912,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:46
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:39
@@ -1868,7 +1868,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:39
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:102
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:16
@@ -2552,7 +2552,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:104
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:18
@@ -4582,4 +4582,14 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "creates the session and writes the request straight into your private message with that person. Nothing is asked of you first. The line carries the session's own address and draws a card, and that card is the door for both of you — the other side opens the same one, or presses Decline beside it. Following it opens the session in a browser tab of its own, starting in the room where you both pick devices and press Ready. Once the host presses Start, Call, Files, Games and Stats all run over the one connection; ending one keeps the others alive."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "A registered channel stays in the list even when everybody has left it. Such a room shows no user count and says instead when it was last used, so an empty row means quiet rather than gone. Joining one brings it back up exactly like any other channel."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Rooms With Nobody In Them"
 msgstr ""

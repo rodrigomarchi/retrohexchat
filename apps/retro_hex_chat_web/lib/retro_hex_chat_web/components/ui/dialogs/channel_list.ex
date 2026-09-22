@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.ActivityIndicator
 
+  alias RetroHexChat.Chat.TimeFormatter
   alias RetroHexChatWeb.Icons
 
   @doc "Renders the channel list dialog."
@@ -121,6 +122,19 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
                   <span class="cl-meta-label">{dgettext("dialogs", "Mode")}</span>
                   <span class="cl-meta-value">{dgettext("dialogs", "Invite only")}</span>
                 </span>
+                <%!--
+                  A room with nobody in it right now is still a room. Saying
+                  when it was last used is the difference between "empty" and
+                  "abandoned", and it is the only thing the reader can act on.
+                --%>
+                <span
+                  :if={last_used(ch)}
+                  class="cl-meta-item"
+                  data-testid={"channel-list-activity-#{ch.name}"}
+                >
+                  <span class="cl-meta-label">{dgettext("dialogs", "Last used")}</span>
+                  <span class="cl-meta-value">{last_used(ch)}</span>
+                </span>
               </span>
             </button>
           <% end %>
@@ -165,6 +179,19 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
 
   defp invite_only?(channel), do: Map.get(channel, :invite_only?, false)
   defp joined?(channel), do: Map.get(channel, :joined?, false)
+
+  # Asked of a room with nobody in it, and only then: with people inside, the
+  # count is the fresher fact and two numbers competing for the same slot is how
+  # a row stops being readable. Whether a process happens to be holding the
+  # channel open is not the reader's question — "is anyone there" is.
+  defp last_used(channel) do
+    with 0 <- Map.get(channel, :user_count, 0),
+         %DateTime{} = at <- Map.get(channel, :last_activity_at) do
+      TimeFormatter.format_relative(at)
+    else
+      _occupied_or_unknown -> nil
+    end
+  end
 
   defp display_topic(nil), do: dgettext("dialogs", "No topic set")
   defp display_topic(""), do: dgettext("dialogs", "No topic set")

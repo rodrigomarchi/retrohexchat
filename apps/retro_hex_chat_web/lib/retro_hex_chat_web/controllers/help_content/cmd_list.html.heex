@@ -13,6 +13,13 @@
     "Opens the Channel List dialog as an inline overlay showing all available channels with their user counts and topics. You can filter channels by name or topic using the search box. Click the Join button next to an open channel to join it directly. Invite-only (+i) channels show a +i badge; when you select one you are not already in, Join changes to Request Access... and opens a knock request dialog. Secret (+s) channels are completely hidden from the list. Private (+p) channels show their name but not their topic. Press Escape or click Close to dismiss the dialog."
   )}
 </p>
+<.help_h4 icon={:icon_clock}>{dgettext("help_commands", "Rooms With Nobody In Them")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "A registered channel stays in the list even when everybody has left it. Such a room shows no user count and says instead when it was last used, so an empty row means quiet rather than gone. Joining one brings it back up exactly like any other channel."
+  )}
+</p>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
 <pre>{dgettext("help_commands", "/list")}</pre>
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>

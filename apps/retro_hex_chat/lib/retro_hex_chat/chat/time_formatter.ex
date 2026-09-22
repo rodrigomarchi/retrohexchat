@@ -5,6 +5,8 @@ defmodule RetroHexChat.Chat.TimeFormatter do
   """
   use Gettext, backend: RetroHexChat.Gettext
 
+  @seconds_per_day 86_400
+
   @spec format_duration(non_neg_integer()) :: String.t()
   def format_duration(0), do: dgettext("chat", "less than a minute")
 
@@ -14,8 +16,8 @@ defmodule RetroHexChat.Chat.TimeFormatter do
 
     parts =
       []
-      |> maybe_add(hours, "hour", "hours")
-      |> maybe_add(minutes, "minute", "minutes")
+      |> maybe_add(hours, &hours/1)
+      |> maybe_add(minutes, &minutes/1)
 
     case parts do
       [] -> dgettext("chat", "less than a minute")
@@ -37,22 +39,36 @@ defmodule RetroHexChat.Chat.TimeFormatter do
     dngettext("chat", "%{count} day", "%{count} days", count)
   end
 
+  @doc """
+  How long ago `timestamp` was, in the reader's language.
+
+  Anything a day old or older counts in days. `format_duration/1` stops at
+  hours because the timer dialog asks it for a countdown, where "72 hours" is
+  the answer somebody set; as an age it is a number nobody says out loud, and a
+  channel last used three days ago read exactly that.
+  """
   @spec format_relative(DateTime.t()) :: String.t()
   def format_relative(%DateTime{} = timestamp) do
     seconds = DateTime.diff(DateTime.utc_now(), timestamp, :second)
 
-    if seconds < 0 do
-      dgettext("chat", "just now")
-    else
-      format_duration(seconds) <> " ago"
+    cond do
+      seconds < 0 -> dgettext("chat", "just now")
+      seconds >= @seconds_per_day -> ago(days(div(seconds, @seconds_per_day)))
+      true -> ago(format_duration(seconds))
     end
   end
 
-  @spec maybe_add([String.t()], non_neg_integer(), String.t(), String.t()) :: [String.t()]
-  defp maybe_add(parts, 0, _singular, _plural), do: parts
+  defp ago(span), do: dgettext("chat", "%{span} ago", span: span)
 
-  defp maybe_add(parts, 1, singular, _plural),
-    do: parts ++ [dgettext("chat", "1 %{singular}", singular: singular)]
+  @spec hours(pos_integer()) :: String.t()
+  defp hours(count), do: dngettext("chat", "%{count} hour", "%{count} hours", count)
 
-  defp maybe_add(parts, n, _singular, plural), do: parts ++ ["#{n} #{plural}"]
+  @spec minutes(pos_integer()) :: String.t()
+  defp minutes(count), do: dngettext("chat", "%{count} minute", "%{count} minutes", count)
+
+  # The unit words used to be interpolated as English literals, so every
+  # duration read half-translated in thirteen languages.
+  @spec maybe_add([String.t()], non_neg_integer(), (pos_integer() -> String.t())) :: [String.t()]
+  defp maybe_add(parts, 0, _spell), do: parts
+  defp maybe_add(parts, n, spell), do: parts ++ [spell.(n)]
 end

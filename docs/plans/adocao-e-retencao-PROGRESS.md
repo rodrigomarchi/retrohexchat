@@ -10,7 +10,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | Item | Estado |
 |---|---|
 | 1.1 Expiração de nick e canal | **pronto** (2026-09-22) |
-| 1.2 Catálogo com salas frias | não iniciado |
+| 1.2 Catálogo com salas frias | **pronto** (2026-09-22) |
 | 1.3 Convite de canal com prévia | não iniciado |
 | 2.1 Notificação de desktop | não iniciado |
 | 2.2 PWA | não iniciado |
@@ -95,4 +95,60 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 `chat/help_topics/features.ex`, `connect_form_panel.ex`, `chat_live.ex`, quatro
 templates de `help_content/` mais seus três módulos hospedeiros, e os catálogos
 de `chat`, `connect`, `help`, `help_channels`, `help_features`.
+
+### 2026-09-22 — item 1.2, catálogo mostra salas vazias
+
+**Pronto.** `make ci` 18/18, `make e2e.shots FILE=tests/chat-channel-list.spec.ts` verde,
+auditoria visual feita nas duas telas.
+
+- `Channels.Directory.catalog/1` é a união do registro de processos vivos com
+  `registered_channels`, e cada linha carrega `live?` e `last_activity_at`.
+- `Commands.Autocomplete.list_visible_channels/2` passou a ler o catálogo; as
+  regras de `+s`/`+p` continuam onde estavam.
+- `Channels.Modes.from_string/1` e `apply_string/2` são agora o único
+  decodificador de uma string de modos guardada — o `Channels.Server` deixou de
+  ter a cópia privada dele.
+- A janela de canais mostra "Último uso" em sala sem ninguém.
+- `Chat.TimeFormatter.format_relative/1` conta em dias a partir de um dia e
+  traduz "há X"; `format_duration/1` deixou de interpolar "hours"/"minutes" em
+  inglês cru.
+
+**Aprendizados**
+
+- **A premissa do item estava meio errada, e o código corrigiu.** Eu tinha
+  escrito no plano que um canal vazio perde o processo. Só perde se **não** for
+  registrado: `Channels.Server` só para quando `Membership.count == 0 and not
+  state.registered`. O caso frio real é **depois de um restart** — ou seja, a
+  cada deploy o catálogo volta a mostrar só o que alguém rejoinar. É um problema
+  maior do que eu tinha descrito, não menor.
+- **A consequência disso mudou o desenho.** A célula "Último uso" ia aparecer
+  quando `live? == false`; passou a aparecer quando `user_count == 0`. Se existe
+  processo por trás não é pergunta de ninguém; "tem alguém lá?" é.
+- **A auditoria visual pagou sozinha.** O segundo screenshot mostrou
+  "POPULAR CHANNELS" sugerindo **três salas com (0) pessoas** para quem tinha
+  acabado de entrar. Nenhum teste unitário pegaria: `popular_channels/2`
+  recebia a lista já filtrada e continuava correta pelo próprio contrato. Foi
+  preciso ver a tela.
+- **O primeiro screenshot mentiu, e quase virou bug reportado.** A janela
+  apareceu com quatro linhas apesar do filtro preenchido, porque o `phx-debounce`
+  de 300 ms ainda não tinha pousado e a asserção que veio antes (`row` visível)
+  já era verdadeira na lista não filtrada. É a mesma armadilha do page object
+  que decide sobre estado que não chegou, só que em forma de foto. **Evidência
+  visual precisa de uma espera pelo estado que ela quer provar** — aqui, uma
+  linha não relacionada desaparecer.
+- **Mudar uma leitura de domínio para tocar o banco quebra casos que não tocavam.**
+  `ConversationsReadModelTest` usava `ExUnit.Case` sem sandbox; assim que
+  `load_popular_channels/1` passou a ler `registered_channels` pelo catálogo,
+  dois testes morreram com erro de ownership. Trocado para `DataCase`.
+- **Um segundo decodificador de modos ia nascer.** A metade fria precisa saber
+  se o canal é `+s`, e a resposta estava presa numa função privada do
+  `Channels.Server`. Puxar para `Modes` custou nada e evitou a divergência que o
+  §1.12 descreve — a que só aparece quando alguém adiciona uma flag num lado.
+
+**Arquivos tocados** — `channels/directory.ex`, `channels/modes.ex`,
+`channels/server.ex`, `services/queries.ex`, `commands/autocomplete.ex`,
+`chat/time_formatter.ex`, `chat/help_topics/commands.ex`,
+`components/ui/dialogs/channel_list.ex`, `chat_live/conversations_read_model.ex`,
+`help_content/cmd_list.html.heex`, `e2e/tests/chat-channel-list.spec.ts`, e os
+catálogos `chat`, `help`, `dialogs`, `help_commands`.
 

@@ -228,6 +228,65 @@ defmodule RetroHexChat.Services.Queries do
     )
   end
 
+  @doc """
+  Every registered channel, newest activity first.
+
+  The directory is built from the running channels, so a room nobody has joined
+  since the node started does not exist for whoever arrives next — and a node
+  restarts on every deploy. This is the other half: what the server knows about
+  a channel when nothing is holding it open, plus the one fact a running
+  channel does not keep in memory, which is when it was last used.
+
+  The filter runs in the database rather than over a materialised list: this
+  table can be large while the live directory is small.
+  """
+  @spec list_registered_channels(keyword()) :: [
+          %{
+            name: String.t(),
+            topic: String.t() | nil,
+            modes: String.t(),
+            last_activity_at: DateTime.t()
+          }
+        ]
+  def list_registered_channels(opts \\ []) do
+    RegisteredChannel
+    |> match_search(Keyword.get(opts, :search))
+    |> order_by([c], desc: c.last_activity_at, asc: c.name)
+    |> limit(^Keyword.get(opts, :limit, 500))
+    |> select([c], %{
+      name: c.name,
+      topic: c.topic,
+      modes: c.modes,
+      last_activity_at: c.last_activity_at
+    })
+    |> Repo.all()
+  end
+
+  defp match_search(queryable, nil), do: queryable
+
+  defp match_search(queryable, term) when is_binary(term) do
+    case String.trim(term) do
+      "" ->
+        queryable
+
+      trimmed ->
+        pattern = "%" <> escape_like(trimmed) <> "%"
+
+        where(
+          queryable,
+          [c],
+          ilike(c.name, ^pattern) or ilike(coalesce(c.topic, ""), ^pattern)
+        )
+    end
+  end
+
+  defp escape_like(term) do
+    term
+    |> String.replace("\\", "\\\\")
+    |> String.replace("%", "\\%")
+    |> String.replace("_", "\\_")
+  end
+
   @spec list_channels_for_founder(String.t()) :: [String.t()]
   def list_channels_for_founder(nickname) do
     from(c in RegisteredChannel,

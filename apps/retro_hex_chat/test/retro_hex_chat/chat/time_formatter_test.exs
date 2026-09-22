@@ -64,5 +64,32 @@ defmodule RetroHexChat.Chat.TimeFormatterTest do
       result = TimeFormatter.format_relative(future)
       assert result == "just now"
     end
+
+    # A channel that emptied three days ago read "72 hours ago", which is a
+    # duration nobody says out loud. Anything a day old or older counts in days.
+    test "a span of a day or more counts in days, not hours" do
+      three_days = DateTime.add(DateTime.utc_now(), -3 * 86_400 - 60, :second)
+
+      assert TimeFormatter.format_relative(three_days) == "3 days ago"
+    end
+
+    test "exactly one day is singular" do
+      one_day = DateTime.add(DateTime.utc_now(), -86_400 - 60, :second)
+
+      assert TimeFormatter.format_relative(one_day) == "1 day ago"
+    end
+
+    test "under a day still counts in hours" do
+      hours = DateTime.add(DateTime.utc_now(), -23 * 3_600, :second)
+
+      assert TimeFormatter.format_relative(hours) == "23 hours ago"
+    end
+  end
+
+  describe "days/1" do
+    test "spells the count and the unit together" do
+      assert TimeFormatter.days(1) == "1 day"
+      assert TimeFormatter.days(180) == "180 days"
+    end
   end
 end

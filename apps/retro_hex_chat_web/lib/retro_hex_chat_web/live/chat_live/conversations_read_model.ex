@@ -3,8 +3,8 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModel do
   Read-model helpers for the conversations sidebar.
 
   This module keeps the sidebar on top of the existing IRC channel directory.
-  Popular channels are visible, joinable public channels, not already joined by
-  the current session, and sorted by member count.
+  Popular channels are visible, joinable public channels with somebody in them,
+  not already joined by the current session, and sorted by member count.
   """
 
   import Phoenix.Component, only: [assign: 2]
@@ -64,9 +64,16 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModel do
     channels
     |> Enum.reject(fn channel -> MapSet.member?(joined, channel.name) end)
     |> Enum.filter(&joinable_public_channel?/1)
+    |> Enum.filter(&occupied?/1)
     |> Enum.sort_by(& &1.user_count, :desc)
     |> Enum.take(@max_popular_channels)
   end
+
+  # The catalogue behind this carries registered channels nobody is in, which is
+  # the right answer for somebody browsing on purpose and the wrong one for a
+  # suggestion: the sidebar offered three rooms with nobody in them to whoever
+  # had just arrived. Browsing them is one click away under "Browse all".
+  defp occupied?(channel), do: Map.get(channel, :user_count, 0) > 0
 
   defp joinable_public_channel?(%{name: name} = channel) when is_binary(name) do
     String.starts_with?(name, "#") and not Map.get(channel, :invite_only?, false) and

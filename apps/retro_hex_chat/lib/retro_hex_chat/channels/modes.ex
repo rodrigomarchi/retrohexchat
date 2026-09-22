@@ -86,6 +86,35 @@ defmodule RetroHexChat.Channels.Modes do
     end
   end
 
+  @doc """
+  The modes a stored mode string adds to `modes`.
+
+  A mode string that cannot be parsed leaves the modes alone rather than
+  raising: it is read from a column, and a channel whose stored string went bad
+  must still come up.
+  """
+  @spec apply_string(t(), String.t() | nil) :: t()
+  def apply_string(%__MODULE__{} = modes, nil), do: modes
+  def apply_string(%__MODULE__{} = modes, ""), do: modes
+
+  def apply_string(%__MODULE__{} = modes, mode_string) when is_binary(mode_string) do
+    case apply_changes(modes, mode_string) do
+      {:ok, new_modes} -> new_modes
+      {:error, _reason} -> modes
+    end
+  end
+
+  @doc """
+  The modes a stored mode string describes, on their own.
+
+  The channel process restores its modes from this string when it starts, and
+  the directory reads the same column for channels that have no process at all.
+  Both ask one question, so both ask it here — a second decoder drifts the day a
+  flag is added to only one of them.
+  """
+  @spec from_string(String.t() | nil) :: t()
+  def from_string(mode_string), do: apply_string(new(), mode_string)
+
   @spec to_string(t()) :: String.t()
   def to_string(%__MODULE__{flags: flags, key: key, limit: limit, join_throttle: join_throttle}) do
     flag_chars =

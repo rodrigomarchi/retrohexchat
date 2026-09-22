@@ -1482,20 +1482,10 @@ defmodule RetroHexChat.Channels.Server do
 
   defp apply_persisted_modes(modes, persisted) do
     modes
-    |> maybe_apply_mode_string(persisted.modes)
+    |> Modes.apply_string(persisted.modes)
     |> maybe_set_key(persisted.mode_key)
     |> maybe_set_limit(persisted.mode_limit)
     |> maybe_set_join_throttle(Map.get(persisted, :mode_join_throttle))
-  end
-
-  defp maybe_apply_mode_string(modes, nil), do: modes
-  defp maybe_apply_mode_string(modes, ""), do: modes
-
-  defp maybe_apply_mode_string(modes, mode_string) do
-    case Modes.apply_changes(modes, mode_string) do
-      {:ok, new_modes} -> new_modes
-      _ -> modes
-    end
   end
 
   defp maybe_set_key(modes, nil), do: modes

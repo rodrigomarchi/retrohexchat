@@ -209,13 +209,15 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           "knock",
           dgettext("help", "request access"),
           "invite-only",
-          "+i"
+          "+i",
+          "empty",
+          dgettext("help", "last used")
         ],
         icon: :icon_dialog_channel_list,
         description:
           dgettext(
             "help",
-            "Browse available channels, join open rooms, or request access to invite-only channels."
+            "Browse available channels, including registered rooms nobody is in right now, and join or request access."
           )
       },
       %{

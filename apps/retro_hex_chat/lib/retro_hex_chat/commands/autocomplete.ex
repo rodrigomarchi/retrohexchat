@@ -380,18 +380,18 @@ defmodule RetroHexChat.Commands.Autocomplete do
   @doc """
   Lists visible channels with user counts, applying secret/private visibility rules.
 
-  Reads the directory snapshot each channel publishes into its own registry
-  entry — one ETS select — rather than a synchronous `Server.get_state/1` per
-  channel, which made opening the channel list cost N blocking round trips.
+  Reads `Directory.catalog/1`: the channels somebody is holding open, from the
+  registry snapshot each one publishes, plus the registered channels that have
+  no process at all. A room everybody left is still a place, and leaving it out
+  meant the catalogue only ever showed what happened to be busy at that second.
 
   Pass `search:` to filter by name or topic before visibility is applied.
   """
   @spec list_visible_channels([String.t()], keyword()) :: [map()]
   def list_visible_channels(user_channels, opts \\ []) do
-    case Keyword.get(opts, :search) do
-      nil -> Directory.all()
-      term -> Directory.search(term)
-    end
+    opts
+    |> Keyword.take([:search, :limit])
+    |> Directory.catalog()
     |> Enum.flat_map(&visible_channel(&1, &1.name in user_channels))
   end
 
@@ -410,7 +410,9 @@ defmodule RetroHexChat.Commands.Autocomplete do
             user_count: snapshot.member_count,
             joined?: false,
             invite_only?: false,
-            modes: ""
+            modes: "",
+            live?: Map.get(snapshot, :live?, true),
+            last_activity_at: nil
           }
         ]
 
@@ -428,7 +430,9 @@ defmodule RetroHexChat.Commands.Autocomplete do
       user_count: snapshot.member_count,
       joined?: joined?,
       invite_only?: snapshot.invite_only?,
-      modes: snapshot.modes
+      modes: snapshot.modes,
+      live?: Map.get(snapshot, :live?, true),
+      last_activity_at: Map.get(snapshot, :last_activity_at)
     }
   end
 

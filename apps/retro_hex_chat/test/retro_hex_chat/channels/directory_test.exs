@@ -6,14 +6,35 @@ defmodule RetroHexChat.Channels.DirectoryTest do
   `GenServer.call` per channel, so opening the dialog on a busy server meant N
   blocking round trips, each queued behind whatever that channel was doing.
   """
-  use ExUnit.Case, async: false
+  use RetroHexChat.DataCase, async: false
 
   @moduletag :integration
 
+  import ExUnit.Callbacks, only: [on_exit: 1]
+
   alias RetroHexChat.Channels.{Directory, Registry, Server, Supervisor}
   alias RetroHexChat.Commands.Autocomplete
+  alias RetroHexChat.Services.Queries, as: ServiceQueries
 
   defp unique(prefix), do: "##{prefix}#{System.unique_integer([:positive])}"
+
+  defp register_channel(name, opts \\ []) do
+    {:ok, _} = ServiceQueries.insert_registered_channel(name, "Founder")
+
+    ServiceQueries.update_registered_channel_settings(name,
+      modes: Keyword.get(opts, :modes, ""),
+      topic: Keyword.get(opts, :topic, "")
+    )
+
+    on_exit(fn ->
+      case ServiceQueries.find_registered_channel(name) do
+        nil -> :ok
+        channel -> ServiceQueries.delete_registered_channel(channel)
+      end
+    end)
+
+    name
+  end
 
   defp start_channel(name) do
     case Registry.lookup(name) do
@@ -157,4 +178,100 @@ defmodule RetroHexChat.Channels.DirectoryTest do
   end
 
   defp find(name), do: Enum.find(Directory.all(), &(&1.name == name))
+
+  describe "catalog/1" do
+    test "a registered channel with nobody in it is still in the catalogue" do
+      name = unique("coldreg")
+      register_channel(name)
+
+      entry = Enum.find(Directory.catalog(), &(&1.name == name))
+
+      assert entry, "a channel that emptied stopped existing for whoever arrives next"
+      refute entry.live?
+      assert entry.member_count == 0
+      assert entry.last_activity_at
+    end
+
+    test "a channel that is both running and registered appears once" do
+      name = unique("bothreg")
+      register_channel(name)
+      start_channel(name)
+
+      matches = Enum.filter(Directory.catalog(), &(&1.name == name))
+
+      assert [entry] = matches
+      assert entry.live?
+    end
+
+    # A registered channel keeps its process after the last person leaves, so a
+    # live row with nobody in it is ordinary. The row still has to answer when
+    # the room was last used, and that fact only exists in the table.
+    test "a running registered channel carries its last activity too" do
+      name = unique("livereg")
+      register_channel(name)
+      start_channel(name)
+
+      entry = Enum.find(Directory.catalog(), &(&1.name == name))
+
+      assert entry.live?
+      assert entry.last_activity_at
+    end
+
+    test "live channels sort ahead of cold ones" do
+      cold = unique("sortcold")
+      live = unique("sortlive")
+      register_channel(cold)
+      start_channel(live)
+      Server.join(live, "Alice")
+
+      names = Directory.catalog() |> Enum.map(& &1.name)
+
+      assert Enum.find_index(names, &(&1 == live)) < Enum.find_index(names, &(&1 == cold))
+    end
+
+    # The catalogue is the raw view; who may be told about a channel is
+    # `Autocomplete.list_visible_channels/2`, exactly as it is for the live
+    # half. What matters here is that a cold row carries the flags that
+    # decision needs, decoded from the column instead of from a process.
+    test "a cold row carries the modes stored against it" do
+      secret = unique("coldsecret")
+      private = unique("coldprivate")
+      register_channel(secret, modes: "+s")
+      register_channel(private, modes: "+p")
+
+      rows = Map.new(Directory.catalog(), &{&1.name, &1})
+
+      assert rows[secret].secret?
+      refute rows[secret].private?
+      assert rows[private].private?
+      refute rows[private].secret?
+    end
+
+    test "the search term reaches the cold half too" do
+      name = unique("coldsearch")
+      register_channel(name, topic: "vintage hardware talk")
+
+      by_name = Directory.catalog(search: String.trim_leading(name, "#"))
+      by_topic = Directory.catalog(search: "vintage hardware")
+
+      assert Enum.any?(by_name, &(&1.name == name))
+      assert Enum.any?(by_topic, &(&1.name == name))
+      refute Enum.any?(Directory.catalog(search: "nothing matches this"), &(&1.name == name))
+    end
+
+    test "every entry carries the same shape, live or cold" do
+      cold = unique("shapecold")
+      live = unique("shapelive")
+      register_channel(cold)
+      start_channel(live)
+
+      keys =
+        Directory.catalog()
+        |> Enum.filter(&(&1.name in [cold, live]))
+        |> Enum.map(&(&1 |> Map.keys() |> Enum.sort()))
+        |> Enum.uniq()
+
+      assert length(keys) == 1, "a cold row with a different shape breaks whoever renders both"
+    end
+  end
 end

@@ -16,11 +16,6 @@ msgstr ""
 msgid "  %{name} (%{type}, %{interval}s) → %{command}"
 msgstr ""
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:55
-#, elixir-autogen, elixir-format
-msgid "1 %{singular}"
-msgstr ""
-
 #: lib/retro_hex_chat/chat/timer_manager.ex:173
 #, elixir-autogen, elixir-format
 msgid "Active timers:\n"
@@ -427,13 +422,13 @@ msgstr ""
 msgid "You cannot edit other users' messages."
 msgstr ""
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:45
+#: lib/retro_hex_chat/chat/time_formatter.ex:55
 #, elixir-autogen, elixir-format
 msgid "just now"
 msgstr ""
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:9
-#: lib/retro_hex_chat/chat/time_formatter.ex:21
+#: lib/retro_hex_chat/chat/time_formatter.ex:11
+#: lib/retro_hex_chat/chat/time_formatter.ex:23
 #, elixir-autogen, elixir-format
 msgid "less than a minute"
 msgstr ""
@@ -531,9 +526,28 @@ msgstr ""
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr ""
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:37
+#: lib/retro_hex_chat/chat/time_formatter.ex:39
 #, elixir-autogen, elixir-format
 msgid "%{count} day"
 msgid_plural "%{count} days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:61
+#, elixir-autogen, elixir-format
+msgid "%{span} ago"
+msgstr ""
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:64
+#, elixir-autogen, elixir-format
+msgid "%{count} hour"
+msgid_plural "%{count} hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:67
+#, elixir-autogen, elixir-format
+msgid "%{count} minute"
+msgid_plural "%{count} minutes"
 msgstr[0] ""
 msgstr[1] ""

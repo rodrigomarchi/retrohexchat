@@ -17,7 +17,9 @@ defmodule RetroHexChat.Channels.Directory do
   else still goes through `Server.get_state/1`.
   """
 
+  alias RetroHexChat.Channels.Modes
   alias RetroHexChat.Channels.Registry, as: ChannelRegistry
+  alias RetroHexChat.Services.Queries, as: ServiceQueries
 
   @type snapshot :: %{
           name: String.t(),
@@ -27,6 +29,26 @@ defmodule RetroHexChat.Channels.Directory do
           private?: boolean(),
           invite_only?: boolean(),
           modes: String.t()
+        }
+
+  @typedoc """
+  One row of the catalogue: a snapshot plus whether anybody is holding the
+  channel open, and when it last had something happen in it.
+
+  `live?` and `last_activity_at` are on every row, live or cold, because the
+  thing that renders them renders both — a cold row shaped differently is a
+  second row type in disguise.
+  """
+  @type entry :: %{
+          name: String.t(),
+          topic: String.t() | nil,
+          member_count: non_neg_integer(),
+          secret?: boolean(),
+          private?: boolean(),
+          invite_only?: boolean(),
+          modes: String.t(),
+          live?: boolean(),
+          last_activity_at: DateTime.t() | nil
         }
 
   @doc "Builds the directory snapshot a channel publishes about itself."
@@ -76,6 +98,78 @@ defmodule RetroHexChat.Channels.Directory do
       _unpublished -> []
     end)
     |> Enum.sort_by(& &1.name)
+  end
+
+  @doc """
+  Every channel somebody could join, running or not.
+
+  `all/0` answers from the process registry, which means a room everybody left
+  is gone from it — and gone from `/list`, and gone for whoever arrives next.
+  A registered channel that nobody is in is still a place; it just has nobody
+  in it, and that is what `member_count: 0` says.
+
+  Live rows come first, busiest first, because a catalogue that interleaves the
+  two hides where there are people. Cold rows follow by how recently anything
+  happened in them.
+
+  Options: `:search` (name or topic, applied to both halves) and `:limit` for
+  the cold half.
+  """
+  @spec catalog(keyword()) :: [entry()]
+  def catalog(opts \\ []) do
+    live =
+      case Keyword.get(opts, :search) do
+        nil -> all()
+        term -> search(term)
+      end
+
+    registered =
+      opts
+      |> Keyword.take([:search, :limit])
+      |> ServiceQueries.list_registered_channels()
+
+    by_name = Map.new(registered, &{&1.name, &1})
+    live_names = MapSet.new(live, & &1.name)
+
+    live_entries =
+      live
+      |> Enum.sort_by(&{-&1.member_count, &1.name})
+      |> Enum.map(&live_entry(&1, by_name))
+
+    cold_entries =
+      registered
+      |> Enum.reject(&MapSet.member?(live_names, &1.name))
+      |> Enum.map(&cold_entry/1)
+
+    live_entries ++ cold_entries
+  end
+
+  # A running channel keeps its membership and modes in memory but not the day
+  # it was last used — that lives in the row, and an empty room is exactly when
+  # somebody wants to know it.
+  defp live_entry(snapshot, by_name) do
+    Map.merge(snapshot, %{
+      live?: true,
+      last_activity_at: get_in(by_name, [snapshot.name, Access.key(:last_activity_at)])
+    })
+  end
+
+  # A cold channel's modes live in a column rather than in a process, so they
+  # are decoded the same way the channel itself decodes them when it starts.
+  defp cold_entry(row) do
+    modes = Modes.from_string(row.modes)
+
+    %{
+      name: row.name,
+      topic: row.topic,
+      member_count: 0,
+      secret?: Modes.secret?(modes),
+      private?: Modes.private?(modes),
+      invite_only?: Modes.invite_only?(modes),
+      modes: row.modes || "",
+      live?: false,
+      last_activity_at: row.last_activity_at
+    }
   end
 
   @doc """

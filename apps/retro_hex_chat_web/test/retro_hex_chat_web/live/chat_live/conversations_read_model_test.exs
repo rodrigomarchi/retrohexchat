@@ -1,11 +1,13 @@
 defmodule RetroHexChatWeb.ChatLive.ConversationsReadModelTest do
-  use ExUnit.Case, async: false
+  use RetroHexChat.DataCase, async: false
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
   alias RetroHexChatWeb.ChatLive.ConversationsReadModel
 
   @moduletag :integration
+
+  import ExUnit.Callbacks, only: [on_exit: 1]
 
   defp unique(prefix), do: "##{prefix}#{System.unique_integer([:positive])}"
 
@@ -186,5 +188,31 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModelTest do
 
   defp socket_with_session(session) do
     %Phoenix.LiveView.Socket{assigns: %{__changed__: %{}, session: session}}
+  end
+
+  describe "popular_channels/2 with an empty room in the catalogue" do
+    # The catalogue now carries registered channels nobody is in, which is the
+    # right answer for someone browsing on purpose and the wrong one for a
+    # suggestion: "popular" offered three rooms with nobody in them to whoever
+    # had just arrived.
+    test "a room with nobody in it is never suggested" do
+      channels = [
+        %{name: "#busy", user_count: 4, invite_only?: false, modes: ""},
+        %{name: "#quiet", user_count: 0, invite_only?: false, modes: ""}
+      ]
+
+      names = channels |> ConversationsReadModel.popular_channels([]) |> Enum.map(& &1.name)
+
+      assert names == ["#busy"]
+    end
+
+    test "a catalogue of nothing but empty rooms suggests nothing" do
+      channels = [
+        %{name: "#quiet", user_count: 0, invite_only?: false, modes: ""},
+        %{name: "#quieter", user_count: 0, invite_only?: false, modes: ""}
+      ]
+
+      assert ConversationsReadModel.popular_channels(channels, []) == []
+    end
   end
 end

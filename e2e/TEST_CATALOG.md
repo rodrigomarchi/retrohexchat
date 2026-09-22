@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **225 spec files** under `e2e/tests/`.
-- **474 Playwright `test()` cases**.
-- **469 documented flows**, 468 done, 1 not done.
+- **475 Playwright `test()` cases**.
+- **470 documented flows**, 469 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -253,6 +253,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | H6 | `/topic` with no args prints current topic (features P1) | `tests/chat-topic-advanced.spec.ts` | done |
 | H7 | Topic changes are visible in realtime to another user (features P1) | `tests/chat-topic-advanced.spec.ts` | done |
 | H8 | `/list` opens channel list; search and Join work (features P1) | `tests/chat-channel-list.spec.ts` | done |
+| H8b | a registered channel everybody left stays listed, says when it was last used, and still joins | `tests/chat-channel-list.spec.ts` | done |
 | H9 | `/setwelcome` shows welcome once for a later joiner (features P1) | `tests/chat-channel-welcome.spec.ts` | done |
 | H10 | `/clearwelcome` stops welcome for later joiners (features P1) | `tests/chat-channel-welcome.spec.ts` | done |
 | H11 | `/setmotd`, `/motd`, new connect, and `/clearmotd` work (features P1) | `tests/chat-server-messages.spec.ts` | done |
