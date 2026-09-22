@@ -105,7 +105,8 @@ defmodule RetroHexChat.Scraper do
   The stored page for `url`, without ever reaching the network.
 
   Used where a request must not depend on the internet being reachable — and by
-  tests that need to assert exactly that.
+  tests that need to assert exactly that. It does record the read, which is a
+  write, though at most one per page per day.
   """
   @spec get(String.t()) :: {:ok, ScrapedPage.t()} | :miss
   def get(url) do
