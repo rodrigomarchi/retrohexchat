@@ -2,9 +2,9 @@ defmodule RetroHexChat.Jobs.ScrapedPagePruneWorker do
   @moduledoc """
   Drops scraped pages nobody asks for any more.
 
-  The archive keeps a page for 120 days, so it grows with every distinct link
-  anyone posts or any feed publishes. Nothing used to remove them at all — the
-  table this replaced had no pruning whatsoever and simply accumulated.
+  The archive grows with every distinct link anyone posts or any feed publishes,
+  and the feeds alone bring in tens of thousands a day. Nothing used to remove
+  them at all — the table this replaced had no pruning whatsoever.
 
   Idle, not expired, is the test. An expired page that someone read this morning
   is about to be revalidated for free with a conditional request; deleting it
@@ -22,7 +22,7 @@ defmodule RetroHexChat.Jobs.ScrapedPagePruneWorker do
     ]
 
   use RetroHexChat.Jobs.Retry,
-    timeout: :timer.minutes(1),
+    timeout: :timer.minutes(3),
     cap_seconds: 15 * 60,
     step_seconds: 60
 
@@ -31,12 +31,10 @@ defmodule RetroHexChat.Jobs.ScrapedPagePruneWorker do
   alias RetroHexChat.Scraper.ImageCache
   alias RetroHexChat.Scraper.Store
 
-  @default_limit 500
-
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: {:ok, map()}
   def perform(%Oban.Job{args: args}) do
-    limit = WorkerArgs.positive_integer(args, "limit", @default_limit)
+    limit = WorkerArgs.positive_integer(args, "limit", Store.default_prune_limit())
 
     Observability.span(
       [:retro_hex_chat, :scraper, :prune],

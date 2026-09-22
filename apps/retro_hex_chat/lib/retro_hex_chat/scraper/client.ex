@@ -37,8 +37,6 @@ defmodule RetroHexChat.Scraper.Client do
           optional(:lang) => String.t() | nil,
           optional(:section) => String.t() | nil,
           optional(:tags) => [String.t()],
-          optional(:content_text) => String.t() | nil,
-          optional(:content_text_truncated) => boolean(),
           optional(:content_word_count) => non_neg_integer() | nil,
           optional(:raw_metadata) => map()
         }
@@ -128,8 +126,6 @@ defmodule RetroHexChat.Scraper.Client do
       lang: Map.get(scrape, :lang),
       section: Map.get(scrape, :section),
       tags: Map.get(scrape, :tags) || [],
-      content_text: Map.get(scrape, :content_text),
-      content_text_truncated: Map.get(scrape, :content_text_truncated, false),
       content_word_count: Map.get(scrape, :content_word_count),
       raw_metadata: Map.get(scrape, :raw_metadata) || %{}
     }
@@ -159,7 +155,7 @@ defmodule RetroHexChat.Scraper.Client do
       modified_at: page.modified_at,
       section: page.section,
       tags: tags(page.tags),
-      word_count: page.content_word_count || word_count(page.content_text)
+      word_count: page.content_word_count
     }
     |> Enum.reject(fn {_key, value} -> is_nil(value) end)
     |> Map.new()
@@ -203,16 +199,4 @@ defmodule RetroHexChat.Scraper.Client do
   end
 
   defp tags(_tags), do: nil
-
-  # Derived on read rather than stored. Counting words costs a `String.split/1`
-  # over a few kilobytes for the one to five items a poll actually renders, while
-  # a column would need a `scraper_version` bump to backfill — and rows renewed by
-  # a `304` never re-extract, so the column would stay empty on exactly the pages
-  # that are still being read.
-  @spec word_count(String.t() | nil) :: non_neg_integer() | nil
-  defp word_count(text) when is_binary(text) and text != "" do
-    text |> String.split() |> length()
-  end
-
-  defp word_count(_text), do: nil
 end

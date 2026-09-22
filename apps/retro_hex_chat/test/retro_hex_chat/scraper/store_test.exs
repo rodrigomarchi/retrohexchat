@@ -277,6 +277,66 @@ defmodule RetroHexChat.Scraper.StoreTest do
     end
   end
 
+  describe "touch_access_many/2" do
+    test "records a read and then stays quiet for the rest of the day" do
+      now = DateTime.utc_now()
+      yesterday = DateTime.add(now, -25 * 60 * 60, :second)
+
+      {:ok, page} = Store.record_success(@url, %{title: "read me"}, now: yesterday)
+      Store.touch_access(page, now: yesterday)
+
+      :ok = Store.touch_access_many([page.url_hash], now: now)
+      touched = Store.get_by_hash(page.url_hash)
+      assert DateTime.compare(touched.last_accessed_at, yesterday) == :gt
+
+      # A second render an hour later must not write again: this runs on every
+      # screenful of chat history.
+      later = DateTime.add(now, 3_600, :second)
+      :ok = Store.touch_access_many([page.url_hash], now: later)
+
+      assert Store.get_by_hash(page.url_hash).last_accessed_at == touched.last_accessed_at
+    end
+
+    test "spares a page from the prune that would otherwise have dropped it" do
+      now = DateTime.utc_now()
+      long_ago = DateTime.add(now, -60 * 24 * 60 * 60, :second)
+
+      {:ok, read} = Store.record_success("https://example.com/read", %{title: "read"}, now: now)
+      {:ok, idle} = Store.record_success("https://example.com/idle", %{title: "idle"}, now: now)
+
+      Store.touch_access(read, now: long_ago)
+      Store.touch_access(idle, now: long_ago)
+
+      # Somebody scrolled past the first one. Before this existed, rendering a
+      # card never touched the column and both looked equally abandoned.
+      :ok = Store.touch_access_many([read.url_hash], now: now)
+
+      assert Store.prune(now: now).deleted == 1
+      assert Store.get_by_url("https://example.com/read")
+      refute Store.get_by_url("https://example.com/idle")
+    end
+
+    test "writes nothing when asked about no pages" do
+      assert :ok = Store.touch_access_many([])
+    end
+  end
+
+  describe "prunable_count/1" do
+    test "counts the whole backlog, not the next batch" do
+      now = DateTime.utc_now()
+      long_ago = DateTime.add(now, -60 * 24 * 60 * 60, :second)
+
+      for n <- 1..3 do
+        {:ok, page} = Store.record_success("https://example.com/#{n}", %{title: "#{n}"}, now: now)
+        Store.touch_access(page, now: long_ago)
+      end
+
+      assert Store.prunable_count(now: now) == 3
+      assert Store.prune(now: now, limit: 1).deleted == 1
+      assert Store.prunable_count(now: now) == 2
+    end
+  end
+
   describe "prune/1" do
     test "deletes idle pages and spares expired ones that are still asked for" do
       now = DateTime.utc_now()

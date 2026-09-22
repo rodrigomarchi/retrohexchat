@@ -12,10 +12,11 @@ defmodule RetroHexChat.Scraper.Store do
     * An expired row is **revalidated, not discarded**. `etag`/`last_modified` go
       back to the publisher as a conditional request; a `304` renews the row for
       another 120 days without downloading anything.
-    * Pruning keys on `last_accessed_at`, never on `expires_at`. Over 120 days those
-      mean opposite things: expired says "check this again", idle says "nobody asks
-      for this any more". Deleting by `expires_at` would evict exactly the pages
-      still in use.
+    * Pruning keys on `last_accessed_at`, never on `expires_at`. The two mean
+      opposite things: expired says "check this again", idle says "nobody asks for
+      this any more". Deleting by `expires_at` would evict exactly the pages still
+      in use. A row nobody has read for 30 days is dropped long before its TTL
+      runs out, which is what keeps the archive from growing without bound.
     * Improving the extractor leaves four months of rows parsed by the old one, so
       `scraper_version` is part of the staleness test and not merely a record.
   """
@@ -177,6 +178,39 @@ defmodule RetroHexChat.Scraper.Store do
 
     ScrapedPage
     |> where([page], page.url_hash == ^url_hash)
+    |> Repo.update_all(set: [last_accessed_at: now])
+
+    :ok
+  end
+
+  # Fine enough for a retention window measured in weeks, and coarse enough that
+  # the column costs one write per row per day instead of one per render.
+  @access_touch_interval_seconds 24 * 60 * 60
+
+  @doc """
+  Records that these rows answered a render, without making rendering a write.
+
+  `Scraper.cards/1` runs for every screenful of chat history, so an unconditional
+  `UPDATE` here would put a write on the busiest read path in the app. The
+  `last_accessed_at` predicate means the statement matches nothing on all but the
+  first read of a day, and the index on that column makes finding out cheap.
+
+  Without this the column means "when the row was last written", and pruning on
+  it would evict pages that are on screen every day — the opposite of what the
+  retention policy says it does.
+  """
+  @spec touch_access_many([String.t()], keyword()) :: :ok
+  def touch_access_many(url_hashes, opts \\ [])
+
+  def touch_access_many([], _opts), do: :ok
+
+  def touch_access_many(url_hashes, opts) when is_list(url_hashes) do
+    now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
+    cutoff = DateTime.add(now, -@access_touch_interval_seconds, :second)
+
+    ScrapedPage
+    |> where([page], page.url_hash in ^url_hashes)
+    |> where([page], page.last_accessed_at < ^cutoff)
     |> Repo.update_all(set: [last_accessed_at: now])
 
     :ok
@@ -596,8 +630,35 @@ defmodule RetroHexChat.Scraper.Store do
     |> Enum.sort_by(&(-&1.count))
   end
 
-  @ready_idle_days 90
+  # Hourly, this clears 48k rows a day against the ~17k the feeds bring in —
+  # enough to eat into a backlog rather than only keep pace with the intake.
+  @default_prune_limit 2_000
+
+  # Every read writes `last_accessed_at` now, so idle finally means idle rather
+  # than "not written since". Thirty days without anybody opening a link is a
+  # long time in a chat, and a window the prune cannot outrun is not a window.
+  @ready_idle_days 30
   @failure_grace_days 7
+
+  @doc "How many rows one prune run removes when the caller names no limit."
+  @spec default_prune_limit() :: pos_integer()
+  def default_prune_limit, do: @default_prune_limit
+
+  @doc """
+  How many rows the next prune would be entitled to delete.
+
+  The backlog, not the batch: this ignores the per-run limit so the Oban window
+  can show work still waiting after a run that hit its cap.
+  """
+  @spec prunable_count(keyword()) :: non_neg_integer()
+  def prunable_count(opts \\ []) do
+    repo = Keyword.get(opts, :repo, Repo)
+    now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
+
+    query = prunable(idle_before(now), failure_before(now))
+
+    repo.one(from page in subquery(query), select: count(page.id)) || 0
+  end
 
   @doc """
   Deletes rows nobody asks for any more.
@@ -614,12 +675,9 @@ defmodule RetroHexChat.Scraper.Store do
   def prune(opts \\ []) do
     repo = Keyword.get(opts, :repo, Repo)
     now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
-    limit = Keyword.get(opts, :limit, 500)
+    limit = Keyword.get(opts, :limit, @default_prune_limit)
 
-    idle_before = DateTime.add(now, -@ready_idle_days * 24 * 60 * 60, :second)
-    failure_before = DateTime.add(now, -@failure_grace_days * 24 * 60 * 60, :second)
-
-    query = prunable(idle_before, failure_before)
+    query = prunable(idle_before(now), failure_before(now))
     candidates = repo.one(from page in subquery(query), select: count(page.id))
     oldest = repo.one(from page in subquery(query), select: min(page.last_accessed_at))
 
@@ -658,6 +716,12 @@ defmodule RetroHexChat.Scraper.Store do
       end
     end)
   end
+
+  @spec idle_before(DateTime.t()) :: DateTime.t()
+  defp idle_before(now), do: DateTime.add(now, -@ready_idle_days * 24 * 60 * 60, :second)
+
+  @spec failure_before(DateTime.t()) :: DateTime.t()
+  defp failure_before(now), do: DateTime.add(now, -@failure_grace_days * 24 * 60 * 60, :second)
 
   @spec prunable(DateTime.t(), DateTime.t()) :: Ecto.Query.t()
   defp prunable(idle_before, failure_before) do

@@ -62,8 +62,6 @@ defmodule RetroHexChat.Scraper.ScrapedPage do
     field :lang, :string
     field :section, :string
     field :tags, {:array, :string}, default: []
-    field :content_text, :string
-    field :content_text_truncated, :boolean, default: false
     field :content_word_count, :integer
 
     field :final_url, :string
@@ -97,7 +95,7 @@ defmodule RetroHexChat.Scraper.ScrapedPage do
     image_thumbnail_error_reason image_thumbnail_error_detail
     site_name canonical_url author
     published_at modified_at lang section tags
-    content_text content_text_truncated content_word_count
+    content_word_count
     final_url http_status content_type etag last_modified scraper_version raw_metadata
     error_reason error_detail attempts last_attempted_at
     fetched_at expires_at last_accessed_at revalidating_since

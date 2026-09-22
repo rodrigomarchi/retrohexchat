@@ -32,6 +32,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
     RegisteredNickExpiryWorker,
     RSSPollWorker,
     RuntimeStaleCleanupWorker,
+    ScrapedPagePruneWorker,
     ServerBanExpiryWorker,
     TrustedDeviceExpiryWorker
   }
@@ -113,6 +114,12 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       label: "Ignore expired cleanup",
       queue: "maintenance",
       worker: IgnoreExpiredCleanupWorker
+    },
+    %{
+      id: "scraped_page_prune",
+      label: "Scraped page prune",
+      queue: "maintenance",
+      worker: ScrapedPagePruneWorker
     }
   ]
 
@@ -1006,6 +1013,9 @@ defmodule RetroHexChat.Jobs.ObanHealth do
 
   defp maintenance_pending_work("ignore_expired_cleanup", now),
     do: IgnoreList.expired_entry_count(now: now)
+
+  defp maintenance_pending_work("scraped_page_prune", now),
+    do: ScraperStore.prunable_count(now: now)
 
   defp maintenance_pending_work(_id, _now), do: 0
 

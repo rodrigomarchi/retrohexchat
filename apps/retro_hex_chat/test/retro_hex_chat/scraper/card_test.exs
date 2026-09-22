@@ -34,7 +34,7 @@ defmodule RetroHexChat.Scraper.CardTest do
             description: "A summary the publisher wrote.",
             image_url: "https://example.com/card.png",
             author: "Ada Lovelace",
-            content_text: String.duplicate("word ", 400)
+            content_word_count: 400
           })
         )
 
@@ -108,7 +108,7 @@ defmodule RetroHexChat.Scraper.CardTest do
     end
 
     test "a short page is not given a reading time it has not earned" do
-      refute Card.markdown(page(%{content_text: "Three short words"})) =~ "min read"
+      refute Card.markdown(page(%{content_word_count: 3})) =~ "min read"
     end
 
     test "uses a stored excerpt when the publisher had no description" do

@@ -49,7 +49,6 @@ defmodule RetroHexChat.Scraper.HTTP do
          }
   @typep content_info :: %{
            text: String.t() | nil,
-           truncated?: boolean(),
            strategy: String.t(),
            word_count: non_neg_integer() | nil,
            excerpt: String.t() | nil
@@ -63,6 +62,7 @@ defmodule RetroHexChat.Scraper.HTTP do
   @max_description_length 500
   @max_hint_description_audit_length 2_000
   @max_hint_content_text_length 50_000
+  @max_hint_content_text_audit_length 2_000
   @max_excerpt_length 360
   @max_site_name_length 120
   @max_section_length 120
@@ -213,16 +213,14 @@ defmodule RetroHexChat.Scraper.HTTP do
       lang: lang(document, metas, json_ld),
       section: section(metas, json_ld, document),
       tags: tags,
-      content_text: content.text,
-      content_text_truncated: content.truncated?,
       content_word_count: content.word_count,
       raw_metadata: raw_metadata(metas, json_ld, sources, image_selection, hints, quality)
     }
   end
 
-  # Generous, because the row is written once and read for four months. A page
-  # long enough to hit this is a transcript or a book chapter, and the opening
-  # 200k characters of one still answer far more than a truncation flag alone.
+  # The extracted body never reaches the database — only the word count derived
+  # from it does. This bounds what a single scrape holds in memory while it reads
+  # the article; the count itself is taken over the whole text, before the cap.
   @max_content_text_length 200_000
 
   @boilerplate ~w(script style noscript nav header footer aside form template iframe svg)
@@ -250,7 +248,7 @@ defmodule RetroHexChat.Scraper.HTTP do
     |> content_candidates()
     |> best_content_info()
   rescue
-    _ -> %{text: nil, truncated?: false, strategy: "none", word_count: nil, excerpt: nil}
+    _ -> %{text: nil, strategy: "none", word_count: nil, excerpt: nil}
   end
 
   @spec enrich_content_info(
@@ -265,7 +263,6 @@ defmodule RetroHexChat.Scraper.HTTP do
     if present?(hint_text) and hint_words > page_words do
       %{
         text: hint_text,
-        truncated?: false,
         strategy: "feed_item",
         word_count: hint_words,
         excerpt: excerpt(hint_text)
@@ -343,13 +340,12 @@ defmodule RetroHexChat.Scraper.HTTP do
     full_text = collapse_whitespace(text)
 
     case cap_content(full_text) do
-      {nil, _truncated?} ->
+      nil ->
         nil
 
-      {text, truncated?} ->
+      text ->
         %{
           text: text,
-          truncated?: truncated?,
           strategy: strategy,
           word_count: word_count(full_text),
           excerpt: excerpt(text)
@@ -489,16 +485,10 @@ defmodule RetroHexChat.Scraper.HTTP do
 
   defp word_count(_text), do: nil
 
-  @spec cap_content(String.t()) :: {String.t() | nil, boolean()}
-  defp cap_content(""), do: {nil, false}
+  @spec cap_content(String.t()) :: String.t() | nil
+  defp cap_content(""), do: nil
 
-  defp cap_content(text) do
-    if String.length(text) > @max_content_text_length do
-      {String.slice(text, 0, @max_content_text_length), true}
-    else
-      {text, false}
-    end
-  end
+  defp cap_content(text), do: String.slice(text, 0, @max_content_text_length)
 
   @spec excerpt(String.t() | nil) :: String.t() | nil
   defp excerpt(nil), do: nil
@@ -650,9 +640,29 @@ defmodule RetroHexChat.Scraper.HTTP do
     |> put_unless_empty("og", namespaced_metas(metas, "property", "og:"))
     |> put_unless_empty("article", namespaced_metas(metas, "property", "article:"))
     |> put_unless_empty("twitter", namespaced_metas(metas, "name", "twitter:"))
-    |> put_unless_empty("json_ld", json_ld)
+    |> put_unless_empty("json_ld", json_ld_audit(json_ld))
     |> put_unless_empty("image_selection", image_selection_audit(image_selection))
   end
+
+  # The graph minus the article body. `json_ld_article_body/1` has already read
+  # those keys to extract the content, and a news site routinely ships the whole
+  # article inside them — keeping the copy would store the very text no column
+  # holds any more.
+  @json_ld_body_keys ~w(articleBody text reviewBody)
+
+  @spec json_ld_audit([map()]) :: [map()]
+  defp json_ld_audit(json_ld), do: Enum.map(json_ld, &drop_json_ld_body/1)
+
+  @spec drop_json_ld_body(term()) :: term()
+  defp drop_json_ld_body(%{} = node) do
+    node
+    |> Map.drop(@json_ld_body_keys)
+    |> Map.new(fn {key, value} -> {key, drop_json_ld_body(value)} end)
+  end
+
+  defp drop_json_ld_body(values) when is_list(values), do: Enum.map(values, &drop_json_ld_body/1)
+
+  defp drop_json_ld_body(value), do: value
 
   @spec quality_audit(
           metadata(),
@@ -748,7 +758,7 @@ defmodule RetroHexChat.Scraper.HTTP do
       {"published", [:published], @max_title_length},
       {"published_at", [:published_at], @max_title_length},
       {"description", [:description], @max_hint_description_audit_length},
-      {"content_text", [:content_text], @max_hint_content_text_length},
+      {"content_text", [:content_text], @max_hint_content_text_audit_length},
       {"author", [:author], @max_site_name_length},
       {"categories", [:categories, :tags], @max_tag_length},
       {"image_url", [:image_url, :image], @max_url_length},

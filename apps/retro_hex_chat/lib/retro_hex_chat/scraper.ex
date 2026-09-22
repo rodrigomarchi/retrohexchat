@@ -108,7 +108,16 @@ defmodule RetroHexChat.Scraper do
   tests that need to assert exactly that.
   """
   @spec get(String.t()) :: {:ok, ScrapedPage.t()} | :miss
-  def get(url), do: lookup(url)
+  def get(url) do
+    case lookup(url) do
+      {:ok, page} ->
+        Store.touch_access_many([page.url_hash])
+        {:ok, page}
+
+      :miss ->
+        :miss
+    end
+  end
 
   @doc "Whether a page should be refreshed before it is trusted again."
   @spec stale?(ScrapedPage.t(), DateTime.t()) :: boolean()
@@ -144,8 +153,12 @@ defmodule RetroHexChat.Scraper do
   def cards([]), do: %{}
 
   def cards(url_hashes) when is_list(url_hashes) do
-    url_hashes
-    |> Store.get_by_hashes()
+    pages = Store.get_by_hashes(url_hashes)
+
+    # The archive answered for these, which is what `last_accessed_at` is for.
+    Store.touch_access_many(Map.keys(pages))
+
+    pages
     |> Enum.flat_map(fn {url_hash, page} -> card_entry(url_hash, page) end)
     |> Map.new()
   end
@@ -456,7 +469,7 @@ defmodule RetroHexChat.Scraper do
   @spec richer_content_hint?(ScrapedPage.t(), map()) :: boolean()
   defp richer_content_hint?(%ScrapedPage{} = page, hints) do
     hint_words = hints |> hint_value(:content_text) |> word_count()
-    stored_words = page.content_word_count || word_count(page.content_text) || 0
+    stored_words = page.content_word_count || 0
 
     is_integer(hint_words) and hint_words > stored_words
   end

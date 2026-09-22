@@ -396,6 +396,20 @@ defmodule RetroHexChat.ScraperTest do
       assert cards[Scraper.fingerprint(@url)] =~ "**Example** | First"
     end
 
+    test "rendering a card counts as reading the page it renders" do
+      Application.put_env(:retro_hex_chat, :page_scraper, ExplodingClient)
+
+      long_ago = DateTime.add(DateTime.utc_now(), -60 * 24 * 60 * 60, :second)
+      {:ok, page} = Store.record_success(@url, %{title: "Scrolled past"})
+      Store.touch_access(page, now: long_ago)
+
+      _cards = Scraper.cards([Scraper.fingerprint(@url)])
+
+      # Without this the archive could not tell a link somebody reads every day
+      # from one nobody has opened since it was written, and pruned both.
+      assert DateTime.compare(Store.get_by_url(@url).last_accessed_at, long_ago) == :gt
+    end
+
     test "a fingerprint survives the campaign parameters a link was posted with" do
       assert Scraper.fingerprint("#{@url}?utm_source=newsletter") == Scraper.fingerprint(@url)
       assert Scraper.fingerprint("not a url") == nil

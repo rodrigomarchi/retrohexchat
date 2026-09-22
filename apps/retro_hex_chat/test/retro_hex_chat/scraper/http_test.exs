@@ -217,8 +217,7 @@ defmodule RetroHexChat.Scraper.HTTPTest do
 
       assert {:ok, scrape} = HTTP.scrape("https://example.com/story")
 
-      assert scrape.content_text == "The first paragraph. The second paragraph."
-      refute scrape.content_text_truncated
+      assert scrape.excerpt == "The first paragraph. The second paragraph."
       assert scrape.raw_metadata["sources"]["content_text"] == "article"
     end
 
@@ -232,7 +231,7 @@ defmodule RetroHexChat.Scraper.HTTPTest do
 
       assert {:ok, scrape} = HTTP.scrape("https://example.com/soup")
 
-      assert scrape.content_text == "Some words"
+      assert scrape.excerpt == "Some words"
       assert scrape.raw_metadata["sources"]["content_text"] == "body"
     end
 
@@ -383,7 +382,7 @@ defmodule RetroHexChat.Scraper.HTTPTest do
       assert scrape.author == "Lia Reporter"
       assert scrape.published_at == published_at
       assert scrape.tags == ["World", "Asia"]
-      assert scrape.content_text =~ "Feed paragraph one"
+      assert scrape.excerpt =~ "Feed paragraph one"
       assert scrape.raw_metadata["sources"]["title"] == "feed_item"
       assert scrape.raw_metadata["sources"]["description"] == "feed_item"
       assert scrape.raw_metadata["sources"]["content_text"] == "feed_item"
@@ -391,7 +390,7 @@ defmodule RetroHexChat.Scraper.HTTPTest do
       assert scrape.raw_metadata["feed_item"]["categories"] == ["World", "Asia"]
     end
 
-    test "caps a very long article and says so" do
+    test "counts every word of a very long article without storing the text" do
       Req.Test.expect(__MODULE__, fn conn ->
         Req.Test.html(conn, """
         <head><meta property="og:title" content="Long"></head>
@@ -401,9 +400,11 @@ defmodule RetroHexChat.Scraper.HTTPTest do
 
       assert {:ok, scrape} = HTTP.scrape("https://example.com/long")
 
-      assert String.length(scrape.content_text) == 200_000
-      assert scrape.content_text_truncated
+      # The body is capped in memory at 200k characters — 40k of these words — but
+      # the count is taken over the whole document, and the text itself never
+      # leaves the scrape.
       assert scrape.content_word_count == 50_000
+      refute Map.has_key?(scrape, :content_text)
     end
 
     test "stores news fields from article metadata" do
@@ -492,7 +493,7 @@ defmodule RetroHexChat.Scraper.HTTPTest do
       assert {:ok, scrape} = HTTP.scrape("https://example.com/jsonld-body")
 
       assert scrape.metadata.title == "Story body from JSON-LD"
-      assert scrape.content_text =~ "jsonld1"
+      assert scrape.excerpt =~ "jsonld1"
       assert scrape.content_word_count == 160
       assert scrape.raw_metadata["sources"]["content_text"] == "json_ld_article_body"
       assert scrape.raw_metadata["quality"]["content_strategy"] == "json_ld_article_body"
@@ -529,7 +530,7 @@ defmodule RetroHexChat.Scraper.HTTPTest do
       assert scrape.published_at == ~U[2026-08-20 09:00:00Z]
       assert "science" in scrape.tags
       assert "climate" in scrape.tags
-      assert scrape.content_text =~ "Microdata paragraph one"
+      assert scrape.excerpt =~ "Microdata paragraph one"
       assert scrape.raw_metadata["sources"]["title"] == "microdata"
       assert scrape.raw_metadata["sources"]["content_text"] == "microdata_article_body"
     end
@@ -554,8 +555,8 @@ defmodule RetroHexChat.Scraper.HTTPTest do
 
       assert {:ok, scrape} = HTTP.scrape("https://example.com/readability")
 
-      assert scrape.content_text =~ "The first reported paragraph"
-      refute scrape.content_text =~ "Home Topics Subscribe"
+      assert scrape.excerpt =~ "The first reported paragraph"
+      refute scrape.excerpt =~ "Home Topics Subscribe"
       assert scrape.raw_metadata["sources"]["content_text"] == "readability"
     end
 

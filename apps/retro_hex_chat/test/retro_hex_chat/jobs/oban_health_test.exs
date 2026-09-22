@@ -267,7 +267,7 @@ defmodule RetroHexChat.Jobs.ObanHealthTest do
 
     snapshot = ObanHealth.snapshot(now: now)
 
-    assert snapshot.summary.maintenance_sweeps == 10
+    assert snapshot.summary.maintenance_sweeps == 11
     assert snapshot.summary.maintenance_failures == 1
     assert snapshot.summary.maintenance_pending_work == 2
     assert Enum.any?(snapshot.status_reasons, &(&1 =~ "maintenance"))
