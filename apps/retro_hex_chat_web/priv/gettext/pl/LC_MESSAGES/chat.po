@@ -721,8 +721,7 @@ msgstr "Próba %{attempt} z %{max_attempts}"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:498
 #, elixir-autogen, elixir-format
-msgid ""
-"Auto-join list is full (20 channels). %{channel} was not added to auto-join."
+msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr ""
 "Lista auto- join jest pełna (20 kanałów). %{channel} nie został dodany do "
 "auto- join."
@@ -749,9 +748,7 @@ msgstr "Zasady automatycznej odpowiedzi:"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:114
 #, elixir-autogen, elixir-format
-msgid ""
-"Available commands: %{commands}\n"
-"Type /help <command> for details, or open Help Topics from the menu for the full help system."
+msgid "Available commands: %{commands}\nType /help <command> for details, or open Help Topics from the menu for the full help system."
 msgstr ""
 "Dostępne polecenia: %{commands}\n"
 "Wpisz /help <command> w celu uzyskania szczegółów lub otwórz Tematy Pomocy z menu dla pełnego systemu pomocy."
@@ -914,7 +911,7 @@ msgstr "Kanał %{channel} nie znaleziono"
 msgid "Channel Info"
 msgstr "Informacje o kanale"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:115
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:127
 #, elixir-autogen, elixir-format
 msgid "Channel Settings"
 msgstr "Ustawienia kanału"
@@ -1052,7 +1049,7 @@ msgid "Conversations"
 msgstr "Rozliczenia"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:247
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:170
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:182
 #, elixir-autogen, elixir-format
 msgid "Copy Channel Name"
 msgstr "Kopiuj nazwę kanału"
@@ -1067,7 +1064,7 @@ msgstr "Kopiuj wiadomość"
 msgid "Copy Nick"
 msgstr "Kopiuj Nicka"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:169
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:181
 #, elixir-autogen, elixir-format
 msgid "Copy Nickname"
 msgstr "Kopiuj nickname"
@@ -1417,7 +1414,7 @@ msgstr "Puk wysłany do %{channel}"
 msgid "Lang"
 msgstr "Lang"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:144
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:156
 #, elixir-autogen, elixir-format
 msgid "Leave Channel"
 msgstr "Opuść kanał"
@@ -1497,12 +1494,12 @@ msgstr "Błąd trybu: %{message}"
 msgid "Mode set: %{mode}"
 msgstr "Zestaw modu: %{mode}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:167
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:179
 #, elixir-autogen, elixir-format
 msgid "Mute Channel"
 msgstr "Kanał mutowy"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:165
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:177
 #, elixir-autogen, elixir-format
 msgid "Mute PM"
 msgstr "Montaż PM"
@@ -1551,8 +1548,7 @@ msgstr "Lista kolorów Nicka jest pełna (max 50)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:1094
 #, elixir-autogen
-msgid ""
-"NickServ protects your nickname with a password so nobody else can use it."
+msgid "NickServ protects your nickname with a password so nobody else can use it."
 msgstr ""
 "NickServ chroni swój pseudonim hasłem, więc nikt inny nie może go używać."
 
@@ -1784,9 +1780,7 @@ msgstr "Odpowiedź"
 
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:252
 #, elixir-autogen, elixir-format
-msgid ""
-"Reply parent message is not currently loaded. Scroll up to load older "
-"history, then try again."
+msgid "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
 msgstr ""
 "Odpowiedz wiadomość rodzica nie jest aktualnie wczytana. Przewiń, aby "
 "załadować starszą historię, a następnie spróbuj ponownie."
@@ -2071,12 +2065,12 @@ msgstr "Nieznany"
 msgid "Unknown user mode: %{flag}"
 msgstr "Nieznany tryb użytkownika: %{flag}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:166
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:178
 #, elixir-autogen, elixir-format
 msgid "Unmute Channel"
 msgstr "Niewyciszony kanał"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:164
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:176
 #, elixir-autogen, elixir-format
 msgid "Unmute PM"
 msgstr "Niewyciszony PM"
@@ -2331,9 +2325,7 @@ msgstr "[NickServ] Nickname Services Online"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:586
 #, elixir-autogen, elixir-format
-msgid ""
-"[NickServ] This nickname is registered. You have 60 seconds to identify via "
-"/ns identify <password> or you will be renamed."
+msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
 msgstr ""
 "[NickServ] Ta ksywka jest zarejestrowana. Masz 60 sekund, aby zidentyfikować"
 " za pośrednictwem /ns zidentyfikować <password> lub zostanie zmieniona "
@@ -3172,9 +3164,7 @@ msgstr "Włączenie / wyłączenie udziału ekranu P2P"
 
 #: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:210
 #, elixir-autogen, elixir-format
-msgid ""
-"You must be registered and identified to play. Use /ns register and /ns "
-"identify first."
+msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
 msgstr ""
 "Musisz być zarejestrowany i zidentyfikowany do gry. Użyj najpierw rejestru "
 "/ns i identyfikacji /ns."
@@ -4010,7 +4000,7 @@ msgstr "Prośba o sesję P2P. Otwórz ją z karty poniżej. /p2p/%{token}"
 msgid "%{nickname} opened the space — %{url}"
 msgstr "%{nickname} otworzył(a) przestrzeń — %{url}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:132
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:144
 #, elixir-autogen, elixir-format
 msgid "Close Conversation"
 msgstr "Zamknij rozmowę"
@@ -4066,3 +4056,8 @@ msgstr "  • Kanały wygasają, gdy są nieaktywne przez %{window}"
 #, elixir-autogen, elixir-format
 msgid "  • Nicks expire after %{window} of inactivity"
 msgstr "  • Nicki wygasają, gdy są nieaktywne przez %{window}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:102
+#, elixir-autogen, elixir-format
+msgid "Copy Invite Link"
+msgstr "Kopiuj link zaproszenia"

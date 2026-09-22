@@ -11,7 +11,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 |---|---|
 | 1.1 Expiração de nick e canal | **pronto** (2026-09-22) |
 | 1.2 Catálogo com salas frias | **pronto** (2026-09-22) |
-| 1.3 Convite de canal com prévia | não iniciado |
+| 1.3 Convite de canal com prévia | **pronto** (2026-09-22) |
 | 2.1 Notificação de desktop | não iniciado |
 | 2.2 PWA | não iniciado |
 | 2.3 Web Push | não iniciado |
@@ -151,4 +151,58 @@ auditoria visual feita nas duas telas.
 `components/ui/dialogs/channel_list.ex`, `chat_live/conversations_read_model.ex`,
 `help_content/cmd_list.html.heex`, `e2e/tests/chat-channel-list.spec.ts`, e os
 catálogos `chat`, `help`, `dialogs`, `help_commands`.
+
+### 2026-09-22 — item 1.3, convite de canal com prévia
+
+**Pronto.** `make ci` 18/18, `make e2e.shots FILE=tests/share-link-join.spec.ts`
+verde, auditoria visual nas duas telas do fluxo.
+
+- Novo kind `channel` em share links, com validação de target no changeset — é o
+  único kind cujo alvo é um nome e não um token opaco, então é o único que um
+  erro de digitação pode fazer parecer resolvível.
+- `Liveness`, `Card` e `Policy` ganharam a cláusula do canal. Um canal é um
+  **lugar**: não acaba, então a pergunta é só se é um lugar sobre o qual se pode
+  falar. `+s`/`+p`/`+i` → link morto, sem oráculo.
+- `Chat.Queries.preview_messages/2` devolve as últimas cinco falas visíveis,
+  truncadas, sem system/service/notice e sem apagadas.
+- `Visibility.nameable?/1` passou a cair na linha de `registered_channels`
+  quando não há processo.
+- Menu de Conversas ganhou "Copiar link de convite"; `enter_path` do card é
+  `/chat?join=<canal>`, que o `ChatLive` já sabia ler.
+
+**Aprendizados**
+
+- **O card só é útil se mostrar a conversa.** Com nome e tópico ele é "alguém te
+  mandou um link"; com as últimas falas ele é "olha do que estão falando". Foi o
+  que decidiu escrever uma query própria em vez de usar `list_messages/2` com
+  limite pequeno: a prévia lê texto **visível**, trunca, e corta tudo o que não é
+  gente falando.
+- **`data-testid` num `context_menu_item` é atributo morto.** O componente já
+  deriva `data-testid="context-menu-item-<action>"`, e em HTML o primeiro
+  atributo duplicado vence — então o `data-testid` que passei nunca chegou ao
+  DOM. A suíte inteira usa a forma derivada; os `data-testid` nos itens vizinhos
+  estão lá sem efeito desde sempre.
+- **O teste de LiveView passou e a tela não funcionava.** Ele chamava
+  `render_click` com o nome do evento, então exercitou o handler e nunca o
+  markup. É a mesma classe de "hook registrado que nenhum template monta": só o
+  Playwright encostou no item de menu de verdade.
+- **O connect devolve ao card, não ao chat.** O spec assumiu que registrar levava
+  direto para dentro do canal; `return_to` leva de volta ao `/join/<slug>`, e o
+  botão do card é a porta. Isso é o desenho (o fluxo K4 já dizia), e o spec agora
+  diz o mesmo.
+- **`Policy.can_create?` tinha um comentário que afirmava não distinguir kind.**
+  Passou a distinguir, e o moduledoc foi corrigido junto — um doc que descreve a
+  regra anterior é pior que nenhum.
+- **Playwright roda de `e2e/`, mas os alvos do Make rodam da raiz.** Um `cd e2e`
+  encadeado antes de `make e2e.shots` custa uma rodada inteira com
+  "No rule to make target".
+
+**Arquivos tocados** — `share_links/schema/link.ex`, `liveness.ex`, `card.ex`,
+`policy.ex`, `service.ex`, `channels/visibility.ex`, `chat/queries.ex`,
+`live/join_live.ex`, `components/ui/share/join_card.ex`,
+`components/ui/chat/conversations_context_menu.ex`,
+`chat_live/conversations_context_menu_events.ex`, `help_topics/features.ex`,
+`help_content/feature_channel_invite_link.html.heex`,
+`e2e/tests/share-link-join.spec.ts`, e os catálogos `chat`, `help`,
+`help_features`, `share`.
 

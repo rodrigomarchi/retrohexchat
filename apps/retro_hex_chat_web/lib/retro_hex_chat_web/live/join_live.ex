@@ -20,7 +20,9 @@ defmodule RetroHexChatWeb.JoinLive do
   import RetroHexChatWeb.Components.UI.JoinCard
 
   alias Phoenix.LiveView.Socket
+  alias RetroHexChat.Channels
   alias RetroHexChat.Channels.Visibility
+  alias RetroHexChat.Chat.Queries
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.GroupCall
   alias RetroHexChat.Lobby
@@ -43,6 +45,7 @@ defmodule RetroHexChatWeb.JoinLive do
        robots: SEO.noindex_content()
      )
      |> assign_card(slug, nickname)
+     |> assign_preview_lines()
      |> assign_preview()}
   end
 
@@ -73,6 +76,7 @@ defmodule RetroHexChatWeb.JoinLive do
       kind={@kind}
       creator_nick={@creator_nick}
       subject={@subject}
+      preview={@preview}
       enter_path={@enter_path}
     />
     """
@@ -173,6 +177,17 @@ defmodule RetroHexChatWeb.JoinLive do
     end
   end
 
+  # A channel names itself only when a stranger could have listed it anyway —
+  # the same rule a call and a space follow, for the same reason: the card is
+  # read by people who are not in the channel and may not be in the product.
+  defp subject(%{kind: "channel", target: %{"channel" => name}}) when is_binary(name) do
+    if Visibility.nameable?(name) do
+      %{name: name, tagline: channel_tagline(name), icon: "channels"}
+    else
+      nil
+    end
+  end
+
   # A call names its channel only when the channel is one a stranger could have
   # found anyway. "A call in #board" in a social-media preview leaks the
   # existence of a channel the reader could not have listed.
@@ -250,6 +265,24 @@ defmodule RetroHexChatWeb.JoinLive do
 
   defp match_tagline(_target), do: nil
 
+  defp channel_tagline(name) do
+    case Channels.Server.get_state(name) do
+      {:ok, %{topic: topic}} when is_binary(topic) and topic != "" -> topic
+      _no_topic -> nil
+    end
+  end
+
+  # The preview is the difference between "somebody sent you a link" and "look
+  # what they are talking about", and it is the whole reason this card is worth
+  # following. It exists only where the channel's own name does: a room a
+  # stranger could not have listed does not get to leak its conversation either.
+  defp assign_preview_lines(%{assigns: %{kind: "channel", subject: %{name: name}}} = socket)
+       when is_binary(name) do
+    assign(socket, preview: Queries.preview_messages(name))
+  end
+
+  defp assign_preview_lines(socket), do: assign(socket, preview: [])
+
   defp space_name(channel_name) do
     if Visibility.nameable?(channel_name) do
       dgettext("share", "The space of %{channel}", channel: channel_name)
@@ -313,6 +346,11 @@ defmodule RetroHexChatWeb.JoinLive do
 
   defp surface_path(%{kind: "p2p", target: %{"session_token" => session_token}}),
     do: Paths.p2p_path(session_token)
+
+  # A channel has no surface of its own: it is a conversation inside the chat,
+  # and the chat already knows how to open one on arrival.
+  defp surface_path(%{kind: "channel", target: %{"channel" => name}}) when is_binary(name),
+    do: ~p"/chat?join=#{name}"
 
   defp surface_path(_resolution), do: ~p"/chat"
 end

@@ -21,12 +21,14 @@ defmodule RetroHexChat.ShareLinks.Card do
   oracle about which private channels exist.
   """
 
+  alias RetroHexChat.Channels.Server
   alias RetroHexChat.Channels.Visibility
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.GroupCall
   alias RetroHexChat.GroupCall.Schema.Room
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.Schema.Session
+  alias RetroHexChat.ShareLinks.Liveness
   alias RetroHexChat.ShareLinks.Schema.Link
   alias RetroHexChat.VirtualSpace
   alias RetroHexChat.VirtualSpace.Schema.Session, as: SpaceSession
@@ -207,6 +209,20 @@ defmodule RetroHexChat.ShareLinks.Card do
 
   defp closed_reason(%Link{}), do: nil
 
+  # A channel's card is the room right now: how many people are in it, and its
+  # name when a stranger could have listed it anyway. A channel that is neither
+  # running nor registered is gone, and a card says so rather than drawing a
+  # blank where a room used to be.
+  defp room_state("channel", %{"channel" => name}) when is_binary(name) and name != "" do
+    if Liveness.live?("channel", %{"channel" => name}) do
+      %{state: :live, count: member_count(name), channel_name: nameable(name)}
+    else
+      %{state: :ended, reason: :over}
+    end
+  end
+
+  defp room_state("channel", _target), do: %{state: :ended, reason: :over}
+
   defp room_state("call", target) do
     token = target["room_token"] || ""
 
@@ -313,6 +329,13 @@ defmodule RetroHexChat.ShareLinks.Card do
 
   defp terminal_room?(%{status: status}) when is_binary(status), do: Room.terminal?(status)
   defp terminal_room?(_room), do: false
+
+  defp member_count(name) do
+    case Server.get_state(name) do
+      {:ok, %{members: members}} -> map_size(Map.new(members))
+      _not_running -> 0
+    end
+  end
 
   defp participant_nicks(summary) do
     summary

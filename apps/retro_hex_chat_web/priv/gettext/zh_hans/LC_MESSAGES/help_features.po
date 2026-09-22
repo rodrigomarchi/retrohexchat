@@ -412,6 +412,7 @@ msgstr "/ignore Command"
 msgid "/invite <nickname>"
 msgstr "/invite <nickname>"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "/invite Command"
@@ -3055,6 +3056,7 @@ msgstr "在当前频道或PM中以实时突出显示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:47
@@ -6177,3 +6179,87 @@ msgstr "以自己的留言断开连接。没有可配置的默认值：不带留
 #, elixir-autogen, elixir-format
 msgid "Simply connect and identify at least once every %{window}"
 msgstr "至少每%{window}一次连接和识别一次"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "/list Command"
+msgstr "/list 命令"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Anyone in an open channel can copy its invite link"
+msgstr "身在开放频道的任何人都可以复制它的邀请链接"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Channel Invites"
+msgstr "频道邀请"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Copying twice hands back the same address, so a channel has one link in "
+"circulation rather than a new one per click"
+msgstr "复制两次得到的是同一个地址，所以一个频道只有一条链接在流通，而不是每点一次就多一条"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "How many people are in the room right now"
+msgstr "现在房间里有多少人"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "In an invite-only channel, only operators can"
+msgstr "在仅限邀请的频道里，只有管理员可以"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Right-click a channel in the Conversations sidebar and choose Copy Invite "
+"Link. The address goes to your clipboard and works for anyone you send it "
+"to, inside the product or outside it."
+msgstr "在「会话」侧栏右键点击一个频道，选择「复制邀请链接」。地址会进入剪贴板，你发给谁都能用，无论对方在不在产品内。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The channel name and topic, and who sent it"
+msgstr "频道的名称和主题，以及是谁发的"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "The last few things people said there, as plain text"
+msgstr "那里最近说的几句话，以纯文本显示"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:15
+#, elixir-autogen, elixir-format
+msgid ""
+"The link names a room; it never grants access to one. Following it into an "
+"invite-only channel still asks the channel, and you are refused exactly as "
+"you would be without the link. A secret (+s), private (+p) or invite-only "
+"(+i) channel is never named and never previewed — such a link shows only "
+"that it has expired."
+msgstr ""
+"链接只是指明一个房间，它从不授予访问权限。用它进入仅限邀请的频道仍然要由频道决定，你会像没有链接时一样被拒绝。秘密 (+s)、私密 (+p) 或仅限邀请"
+" (+i) 的频道永远不会被命名，也不会有预览——这样的链接只会显示它已过期。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:35
+#, elixir-autogen, elixir-format
+msgid ""
+"The person who made the link and any channel operator can revoke it; the "
+"room itself is untouched"
+msgstr "创建链接的人和频道的任何管理员都可以撤销它；房间本身不受影响"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "What It Does Not Do"
+msgstr "它不会做什么"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What the Link Shows"
+msgstr "链接会显示什么"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Who Can Share, and How to Stop"
+msgstr "谁可以分享，以及如何停止"

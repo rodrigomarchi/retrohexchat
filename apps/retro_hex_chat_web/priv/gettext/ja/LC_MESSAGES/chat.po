@@ -712,8 +712,7 @@ msgstr "%{max_attempts}の%{attempt}を試みる"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:498
 #, elixir-autogen, elixir-format
-msgid ""
-"Auto-join list is full (20 channels). %{channel} was not added to auto-join."
+msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr "Auto-join リストは 20 チャンネル です。 %{channel} は自動ジョイントに追加されませんでした。"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:47
@@ -738,9 +737,7 @@ msgstr "自動応答ルール:"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:114
 #, elixir-autogen, elixir-format
-msgid ""
-"Available commands: %{commands}\n"
-"Type /help <command> for details, or open Help Topics from the menu for the full help system."
+msgid "Available commands: %{commands}\nType /help <command> for details, or open Help Topics from the menu for the full help system."
 msgstr ""
 "利用可能なコマンド: %{commands}\n"
 "/help <command>を詳細に入力するか、フルヘルプシステム用のメニューからヘルプトピックを開きます。"
@@ -902,7 +899,7 @@ msgstr "チャンネル%{channel}が見つかりません"
 msgid "Channel Info"
 msgstr "チャネル情報"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:115
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:127
 #, elixir-autogen, elixir-format
 msgid "Channel Settings"
 msgstr "チャネル設定"
@@ -1040,7 +1037,7 @@ msgid "Conversations"
 msgstr "コンバージョン"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:247
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:170
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:182
 #, elixir-autogen, elixir-format
 msgid "Copy Channel Name"
 msgstr "コピー チャネルの名前"
@@ -1055,7 +1052,7 @@ msgstr "コピーメッセージ"
 msgid "Copy Nick"
 msgstr "コピーニック"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:169
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:181
 #, elixir-autogen, elixir-format
 msgid "Copy Nickname"
 msgstr "コピーニックネーム"
@@ -1402,7 +1399,7 @@ msgstr "%{channel}に送られるノック"
 msgid "Lang"
 msgstr "Lang"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:144
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:156
 #, elixir-autogen, elixir-format
 msgid "Leave Channel"
 msgstr "チャネルを残す"
@@ -1482,12 +1479,12 @@ msgstr "モードエラー: %{message}"
 msgid "Mode set: %{mode}"
 msgstr "モード セット: %{mode}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:167
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:179
 #, elixir-autogen, elixir-format
 msgid "Mute Channel"
 msgstr "ミュートチャンネル"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:165
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:177
 #, elixir-autogen, elixir-format
 msgid "Mute PM"
 msgstr "ミュートPM"
@@ -1536,8 +1533,7 @@ msgstr "ニックカラーリストがいっぱい(最大50)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:1094
 #, elixir-autogen
-msgid ""
-"NickServ protects your nickname with a password so nobody else can use it."
+msgid "NickServ protects your nickname with a password so nobody else can use it."
 msgstr "NickServはパスワードであなたのニックネームを保護しますので、他の人はそれを使用することはできません。"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:363
@@ -1767,9 +1763,7 @@ msgstr "スタッフ"
 
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:252
 #, elixir-autogen, elixir-format
-msgid ""
-"Reply parent message is not currently loaded. Scroll up to load older "
-"history, then try again."
+msgid "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
 msgstr "親メッセージが現在読み込まれているわけではありません。 古い歴史を読み込むまでスクロールして、もう一度お試しください。"
 
 #: lib/retro_hex_chat_web/components/ui/chat/reply_bar.ex:42
@@ -2050,12 +2044,12 @@ msgstr "未知の"
 msgid "Unknown user mode: %{flag}"
 msgstr "未知のユーザモード: %{flag}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:166
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:178
 #, elixir-autogen, elixir-format
 msgid "Unmute Channel"
 msgstr "不正なチャネル"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:164
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:176
 #, elixir-autogen, elixir-format
 msgid "Unmute PM"
 msgstr "ミュートPM"
@@ -2310,9 +2304,7 @@ msgstr "[NickServ] ニックネームサービスオンライン"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:586
 #, elixir-autogen, elixir-format
-msgid ""
-"[NickServ] This nickname is registered. You have 60 seconds to identify via "
-"/ns identify <password> or you will be renamed."
+msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
 msgstr "[NickServ] このニックネームが登録されています。 /ns が <password> を識別する 60 秒または名前を変更します。"
 
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:38
@@ -3147,9 +3139,7 @@ msgstr "P2P画面共有を切り替える"
 
 #: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:210
 #, elixir-autogen, elixir-format
-msgid ""
-"You must be registered and identified to play. Use /ns register and /ns "
-"identify first."
+msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
 msgstr "プレイに登録して確認する必要があります。 /ns レジスタおよび /ns を最初に特定して下さい。"
 
 #: lib/retro_hex_chat_web/live/p2p_live/events.ex:1571
@@ -3981,7 +3971,7 @@ msgstr "P2P セッションのリクエストです。下のカードから開�
 msgid "%{nickname} opened the space — %{url}"
 msgstr "%{nickname} がスペースを開きました — %{url}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:132
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:144
 #, elixir-autogen, elixir-format
 msgid "Close Conversation"
 msgstr "会話を閉じる"
@@ -4036,3 +4026,8 @@ msgstr "• チャネルは非アクティブの%{window}後に期限が切れ�
 #, elixir-autogen, elixir-format
 msgid "  • Nicks expire after %{window} of inactivity"
 msgstr "• ニックは、非アクティブの%{window}後に期限切れ"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:102
+#, elixir-autogen, elixir-format
+msgid "Copy Invite Link"
+msgstr "招待リンクをコピー"

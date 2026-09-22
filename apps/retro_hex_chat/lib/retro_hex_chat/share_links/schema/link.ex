@@ -23,7 +23,10 @@ defmodule RetroHexChat.ShareLinks.Schema.Link do
 
   @type t :: %__MODULE__{}
 
-  @kinds ~w(call space p2p play)
+  @kinds ~w(call channel space p2p play)
+
+  # Matches the `size: 50` the channel tables are declared with.
+  @max_channel_name 50
 
   schema "share_links" do
     field :slug, :string
@@ -49,7 +52,38 @@ defmodule RetroHexChat.ShareLinks.Schema.Link do
     |> validate_inclusion(:kind, @kinds)
     |> validate_length(:creator_nick, max: 16)
     |> validate_slug()
+    |> validate_target()
     |> unique_constraint(:slug)
+  end
+
+  # A channel link is the one kind whose target is a name rather than a token,
+  # so it is the one kind a typo can make resolvable-looking. The others carry
+  # an opaque token the resolver either finds or does not.
+  defp validate_target(changeset) do
+    case get_field(changeset, :kind) do
+      "channel" -> validate_channel_target(changeset)
+      _token_kind -> changeset
+    end
+  end
+
+  defp validate_channel_target(changeset) do
+    case get_field(changeset, :target) do
+      %{"channel" => name} when is_binary(name) -> validate_channel_name(changeset, name)
+      _absent -> add_error(changeset, :target, "must name a channel")
+    end
+  end
+
+  defp validate_channel_name(changeset, name) do
+    cond do
+      not String.starts_with?(name, "#") ->
+        add_error(changeset, :target, "channel name must start with #")
+
+      String.length(name) > @max_channel_name ->
+        add_error(changeset, :target, "channel name is too long")
+
+      true ->
+        changeset
+    end
   end
 
   @doc """

@@ -712,8 +712,7 @@ msgstr "Mencoba %{attempt} dari %{max_attempts}"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:498
 #, elixir-autogen, elixir-format
-msgid ""
-"Auto-join list is full (20 channels). %{channel} was not added to auto-join."
+msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr ""
 "Daftar gabungan otomatis penuh (20 saluran). %{channel} tidak ditambahkan ke"
 " auto- join."
@@ -740,9 +739,7 @@ msgstr "Aturan auto- respon:"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:114
 #, elixir-autogen, elixir-format
-msgid ""
-"Available commands: %{commands}\n"
-"Type /help <command> for details, or open Help Topics from the menu for the full help system."
+msgid "Available commands: %{commands}\nType /help <command> for details, or open Help Topics from the menu for the full help system."
 msgstr ""
 "Perintah tersedia: %{commands}\n"
 "Ketik /help <command> untuk rincian, atau buka Topics Bantuan dari menu untuk sistem bantuan penuh."
@@ -904,7 +901,7 @@ msgstr "Saluran %{channel} tidak ditemukan"
 msgid "Channel Info"
 msgstr "Info Saluran"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:115
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:127
 #, elixir-autogen, elixir-format
 msgid "Channel Settings"
 msgstr "Pengaturan Kanal"
@@ -1042,7 +1039,7 @@ msgid "Conversations"
 msgstr "Percakapan"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:247
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:170
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:182
 #, elixir-autogen, elixir-format
 msgid "Copy Channel Name"
 msgstr "Salin Nama Kanal"
@@ -1057,7 +1054,7 @@ msgstr "Salin Pesan"
 msgid "Copy Nick"
 msgstr "Salin Nick"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:169
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:181
 #, elixir-autogen, elixir-format
 msgid "Copy Nickname"
 msgstr "Salin Nama Panggilan"
@@ -1407,7 +1404,7 @@ msgstr "Knock dikirim ke %{channel}"
 msgid "Lang"
 msgstr "Lang"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:144
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:156
 #, elixir-autogen, elixir-format
 msgid "Leave Channel"
 msgstr "Tinggalkan Kanal"
@@ -1487,12 +1484,12 @@ msgstr "Kesalahan mode: %{message}"
 msgid "Mode set: %{mode}"
 msgstr "Set mode: %{mode}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:167
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:179
 #, elixir-autogen, elixir-format
 msgid "Mute Channel"
 msgstr "Mute Channel"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:165
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:177
 #, elixir-autogen, elixir-format
 msgid "Mute PM"
 msgstr "Mute PM"
@@ -1541,8 +1538,7 @@ msgstr "Daftar warna Nick penuh (maksimal 50)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:1094
 #, elixir-autogen
-msgid ""
-"NickServ protects your nickname with a password so nobody else can use it."
+msgid "NickServ protects your nickname with a password so nobody else can use it."
 msgstr ""
 "NickServ melindungi nama panggilan Anda dengan sandi sehingga tidak ada "
 "orang lain dapat menggunakannya."
@@ -1776,9 +1772,7 @@ msgstr "Balas"
 
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:252
 #, elixir-autogen, elixir-format
-msgid ""
-"Reply parent message is not currently loaded. Scroll up to load older "
-"history, then try again."
+msgid "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
 msgstr ""
 "Balas pesan induk saat ini tidak dimuat. Gulung ke atas untuk memuat sejarah"
 " lama, kemudian coba lagi."
@@ -2061,12 +2055,12 @@ msgstr "Tak dikenal"
 msgid "Unknown user mode: %{flag}"
 msgstr "Mode pengguna tidak dikenal: %{flag}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:166
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:178
 #, elixir-autogen, elixir-format
 msgid "Unmute Channel"
 msgstr "Kanal Unmute"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:164
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:176
 #, elixir-autogen, elixir-format
 msgid "Unmute PM"
 msgstr "Unmute PM"
@@ -2322,9 +2316,7 @@ msgstr "[NickServ] Layanan Nickname Online"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:586
 #, elixir-autogen, elixir-format
-msgid ""
-"[NickServ] This nickname is registered. You have 60 seconds to identify via "
-"/ns identify <password> or you will be renamed."
+msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
 msgstr ""
 "[NickServ] Nama panggilan ini terdaftar. Anda memiliki 60 detik untuk "
 "mengidentifikasi melalui /ns mengidentifikasi <password> atau Anda akan "
@@ -3163,9 +3155,7 @@ msgstr "Jungkitkan Berbagi Layar P2P"
 
 #: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:210
 #, elixir-autogen, elixir-format
-msgid ""
-"You must be registered and identified to play. Use /ns register and /ns "
-"identify first."
+msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
 msgstr ""
 "Anda harus terdaftar dan diidentifikasi untuk bermain. Gunakan /ns register "
 "dan /ns identifikasi pertama."
@@ -3999,7 +3989,7 @@ msgstr "Permintaan sesi P2P. Buka dari kartu di bawah ini. /p2p/%{token}"
 msgid "%{nickname} opened the space — %{url}"
 msgstr "%{nickname} membuka ruang — %{url}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:132
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:144
 #, elixir-autogen, elixir-format
 msgid "Close Conversation"
 msgstr "Tutup percakapan"
@@ -4055,3 +4045,8 @@ msgstr "Channels berakhir setelah %{window} tidak aktif"
 #, elixir-autogen, elixir-format
 msgid "  • Nicks expire after %{window} of inactivity"
 msgstr "Nicks berakhir setelah %{window} tidak aktif"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:102
+#, elixir-autogen, elixir-format
+msgid "Copy Invite Link"
+msgstr "Salin tautan undangan"

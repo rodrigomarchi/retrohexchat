@@ -346,4 +346,90 @@ defmodule RetroHexChatWeb.JoinLiveTest do
       last_seen_at: DateTime.utc_now()
     })
   end
+
+  describe "a link that names a channel" do
+    setup ctx do
+      name = "#joinch#{uid()}"
+      {:ok, pid} = Supervisor.start_child(name)
+      on_exit(fn -> if Process.alive?(pid), do: Supervisor.stop_child(pid) end)
+      {:ok, _} = Server.join(name, ctx.nick)
+
+      %{channel: name}
+    end
+
+    # The dead render is what a crawler and a link unfurler receive, and
+    # `live/2` always connects — so the card has to be asserted through `get/2`
+    # or a whole class of defect is invisible.
+    test "says what the room is on the render a crawler gets", ctx do
+      slug = share(ctx, "channel", %{"channel" => ctx.channel})
+
+      html = ctx.conn |> get(~p"/join/#{slug}") |> html_response(200)
+
+      assert html =~ "join-card"
+      assert html =~ ctx.channel
+    end
+
+    test "shows the last few things people said there", ctx do
+      {:ok, _} = Server.send_message(ctx.channel, ctx.nick, "anybody around?")
+      slug = share(ctx, "channel", %{"channel" => ctx.channel})
+
+      html = ctx.conn |> get(~p"/join/#{slug}") |> html_response(200)
+
+      assert html =~ "join-preview"
+      assert html =~ "anybody around?"
+    end
+
+    test "a secret channel is neither named nor previewed", ctx do
+      {:ok, _} = Server.send_message(ctx.channel, ctx.nick, "behind closed doors")
+      slug = share(ctx, "channel", %{"channel" => ctx.channel})
+      :ok = Server.set_mode(ctx.channel, ctx.nick, "+s")
+
+      html = ctx.conn |> get(~p"/join/#{slug}") |> html_response(200)
+
+      refute html =~ ctx.channel
+      refute html =~ "behind closed doors"
+      assert html =~ "join-gone"
+    end
+
+    test "sends a signed-in visitor into the chat already joining the channel", ctx do
+      slug = share(ctx, "channel", %{"channel" => ctx.channel})
+
+      {:ok, view, _html} = ctx.conn |> chat_conn(ctx.nick) |> live(~p"/join/#{slug}")
+
+      assert [href] =
+               view
+               |> element(~s([data-testid="join-enter"]))
+               |> render()
+               |> Floki.parse_fragment!()
+               |> Floki.attribute("href")
+
+      assert URI.decode(href) == "/chat?join=#{ctx.channel}"
+    end
+
+    test "sends a visitor with no session to connect and come back", ctx do
+      slug = share(ctx, "channel", %{"channel" => ctx.channel})
+
+      {:ok, view, _html} = live(ctx.conn, ~p"/join/#{slug}")
+
+      assert [href] =
+               view
+               |> element(~s([data-testid="join-enter"]))
+               |> render()
+               |> Floki.parse_fragment!()
+               |> Floki.attribute("href")
+
+      assert URI.decode(href) =~ "return_to=/join/#{slug}"
+    end
+
+    # A public address exists under every locale segment the public pages do.
+    # The path is built by hand here: a test that only walks the path its own
+    # code constructs is what let `/pt-BR/join/…` ship answering NoRouteError.
+    test "answers under a locale segment too", ctx do
+      slug = share(ctx, "channel", %{"channel" => ctx.channel})
+
+      html = ctx.conn |> get("/pt-BR/join/#{slug}") |> html_response(200)
+
+      assert html =~ "join-card"
+    end
+  end
 end

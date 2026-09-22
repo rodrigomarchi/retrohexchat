@@ -1,0 +1,48 @@
+<p>
+  {dgettext(
+    "help_features",
+    "Right-click a channel in the Conversations sidebar and choose Copy Invite Link. The address goes to your clipboard and works for anyone you send it to, inside the product or outside it."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "What the Link Shows")}</.help_h4>
+<ul>
+  <li>{dgettext("help_features", "The channel name and topic, and who sent it")}</li>
+  <li>{dgettext("help_features", "How many people are in the room right now")}</li>
+  <li>{dgettext("help_features", "The last few things people said there, as plain text")}</li>
+</ul>
+<.help_h4 icon={:icon_lock}>{dgettext("help_features", "What It Does Not Do")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "The link names a room; it never grants access to one. Following it into an invite-only channel still asks the channel, and you are refused exactly as you would be without the link. A secret (+s), private (+p) or invite-only (+i) channel is never named and never previewed — such a link shows only that it has expired."
+  )}
+</p>
+<.help_h4 icon={:icon_shield}>
+  {dgettext("help_features", "Who Can Share, and How to Stop")}
+</.help_h4>
+<ul>
+  <li>{dgettext("help_features", "Anyone in an open channel can copy its invite link")}</li>
+  <li>
+    {dgettext("help_features", "In an invite-only channel, only operators can")}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Copying twice hands back the same address, so a channel has one link in circulation rather than a new one per click"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "The person who made the link and any channel operator can revoke it; the room itself is untouched"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-channel-invites">
+    {dgettext("help_features", "Channel Invites")}
+  </.help_link>
+  · <.help_link topic="cmd-invite">{dgettext("help_features", "/invite Command")}</.help_link>
+  · <.help_link topic="cmd-list">{dgettext("help_features", "/list Command")}</.help_link>
+</p>

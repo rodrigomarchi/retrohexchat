@@ -90,6 +90,18 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
 
       <.context_menu_separator />
 
+      <%!-- Copy Invite Link: the address that leaves the product, so it is only
+            offered for a channel and never for a private conversation. --%>
+      <.context_menu_item
+        :if={@type == :channel}
+        on_click={@on_action}
+        action="ctx_conversations_copy_invite"
+        phx-value-channel={@channel}
+      >
+        <:icon><Icons.icon_btn_link class="w-[14px] h-[14px]" /></:icon>
+        {dgettext("chat", "Copy Invite Link")}
+      </.context_menu_item>
+
       <%!-- Copy Channel Name --%>
       <.context_menu_item
         on_click={@on_action}

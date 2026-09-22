@@ -30,20 +30,67 @@ defmodule RetroHexChat.ShareLinks.Policy do
   alias RetroHexChat.VirtualSpace
 
   @doc """
-  Whether `creator_id` may mint a link of `kind`.
+  Whether `creator_id` may mint a link of `kind` at `target`.
 
-  The kind is taken and, today, not used to distinguish: every kind asks the
-  same thing of the same person. It is in the signature because the question is
-  genuinely per kind — a guest pass, when it exists, is exactly a kind with a
-  different answer — and because a caller that had to remember to pass it is a
-  caller that has already thought about which one it is minting.
+  Every kind needs a registered nickname. Beyond that the kinds divide by who
+  made the room: a call, a match and a space session are minted by whoever just
+  created them, so there is nobody else to ask. A channel is the exception —
+  it existed before the link and outlives it, so minting one asks the channel.
   """
-  @spec can_create?(String.t(), term()) :: :ok | {:error, :unauthorized}
-  def can_create?(kind, creator_id) when is_binary(kind) and is_integer(creator_id) do
-    if registered?(creator_id), do: :ok, else: {:error, :unauthorized}
+  @spec can_create?(String.t(), term(), map()) :: :ok | {:error, :unauthorized}
+  def can_create?(kind, creator_id, target \\ %{})
+
+  def can_create?(kind, creator_id, target) when is_binary(kind) and is_integer(creator_id) do
+    if registered?(creator_id),
+      do: can_create_kind?(kind, creator_id, target),
+      else: unauthorized()
   end
 
-  def can_create?(_kind, _creator_id), do: {:error, :unauthorized}
+  def can_create?(_kind, _creator_id, _target), do: unauthorized()
+
+  # A channel link is the one kind whose room existed before the link and will
+  # outlive it, so minting one is not a side effect of having just made the
+  # room. Handing out a room's address is a thing only the people in it may do,
+  # and in an invite-only room it is the same decision as letting somebody in —
+  # which belongs to whoever already makes that decision.
+  defp can_create_kind?("channel", creator_id, %{"channel" => name}) when is_binary(name) do
+    case nickname_of(creator_id) do
+      nil -> unauthorized()
+      nickname -> channel_sharer?(name, nickname)
+    end
+  end
+
+  defp can_create_kind?("channel", _creator_id, _target), do: unauthorized()
+  defp can_create_kind?(_kind, _creator_id, _target), do: :ok
+
+  defp channel_sharer?(channel_name, nickname) do
+    case Server.get_state(channel_name) do
+      {:ok, state} -> member_may_share?(state, nickname)
+      _unreachable -> unauthorized()
+    end
+  end
+
+  defp member_may_share?(state, nickname) do
+    target = String.downcase(nickname)
+
+    entry =
+      Enum.find(state.members, fn {member, _role} -> String.downcase(member) == target end)
+
+    case {entry, get_in(state, [:modes_detail, :invite_only])} do
+      {nil, _invite_only} -> unauthorized()
+      {{_member, role}, true} -> if operator_rank?(role), do: :ok, else: unauthorized()
+      {{_member, _role}, _open} -> :ok
+    end
+  end
+
+  defp operator_rank?(role), do: Membership.rank(role) >= Membership.rank(:operator)
+
+  defp unauthorized, do: {:error, :unauthorized}
+
+  defp nickname_of(creator_id) do
+    from(r in "registered_nicks", where: r.id == ^creator_id, select: r.nickname)
+    |> Repo.one()
+  end
 
   @doc """
   Whether `nickname` may close `link`.
@@ -95,6 +142,9 @@ defmodule RetroHexChat.ShareLinks.Policy do
   defp channel_of(%Link{kind: "space", target: %{"space_id" => space_id, "mode" => "channel"}}) do
     if VirtualSpace.space_kind(space_id) == :channel, do: space_id, else: nil
   end
+
+  defp channel_of(%Link{kind: "channel", target: %{"channel" => name}}) when is_binary(name),
+    do: name
 
   defp channel_of(%Link{}), do: nil
 

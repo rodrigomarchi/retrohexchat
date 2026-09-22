@@ -18,6 +18,7 @@ defmodule RetroHexChat.ShareLinks.Liveness do
   kind only ever stops working by failing.
   """
 
+  alias RetroHexChat.Channels.Visibility
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.GroupCall
   alias RetroHexChat.GroupCall.Schema.Room
@@ -43,6 +44,16 @@ defmodule RetroHexChat.ShareLinks.Liveness do
   end
 
   def live?("space", _target), do: true
+
+  # A channel is a place, not a gathering: it does not end, so the question is
+  # only whether it is a place somebody may be told about at all. A secret or
+  # invite-only room is not, and a link to one is dead on arrival rather than an
+  # oracle for whether it exists.
+  def live?("channel", %{"channel" => name}) when is_binary(name) and name != "" do
+    Visibility.nameable?(name)
+  end
+
+  def live?("channel", _target), do: false
 
   def live?("call", target) do
     case GroupCall.get_room(target["room_token"] || "") do

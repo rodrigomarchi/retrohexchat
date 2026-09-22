@@ -4,6 +4,7 @@ defmodule RetroHexChat.Channels.VisibilityTest do
   @moduletag :integration
 
   alias RetroHexChat.Channels.{Server, Supervisor, Visibility}
+  alias RetroHexChat.Services.Queries, as: ServiceQueries
 
   defp channel!(suffix) do
     name = "#vis#{suffix}#{System.unique_integer([:positive])}"
@@ -62,5 +63,44 @@ defmodule RetroHexChat.Channels.VisibilityTest do
     names = Visibility.channels_of("nobody-at-all", [])
 
     assert names == Enum.sort(names)
+  end
+
+  describe "nameable?/1 for a channel with no process" do
+    # A registered channel that nobody has joined since the node started has no
+    # process at all, and asking one that is not there used to answer "not
+    # nameable" — so a link to a quiet public room refused to say its own name.
+    setup do
+      name = "#visreg#{System.unique_integer([:positive])}"
+      {:ok, _} = ServiceQueries.insert_registered_channel(name, "Founder")
+
+      on_exit(fn ->
+        case ServiceQueries.find_registered_channel(name) do
+          nil -> :ok
+          channel -> ServiceQueries.delete_registered_channel(channel)
+        end
+      end)
+
+      %{name: name}
+    end
+
+    test "a registered public channel is nameable", %{name: name} do
+      assert Visibility.nameable?(name)
+    end
+
+    test "a registered secret channel is not", %{name: name} do
+      ServiceQueries.update_registered_channel_settings(name, modes: "+s")
+
+      refute Visibility.nameable?(name)
+    end
+
+    test "a registered invite-only channel is not", %{name: name} do
+      ServiceQueries.update_registered_channel_settings(name, modes: "+i")
+
+      refute Visibility.nameable?(name)
+    end
+
+    test "a channel that was never registered and is not running is not" do
+      refute Visibility.nameable?("#neverexisted#{System.unique_integer([:positive])}")
+    end
   end
 end

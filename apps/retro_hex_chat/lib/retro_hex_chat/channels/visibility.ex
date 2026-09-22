@@ -17,7 +17,9 @@ defmodule RetroHexChat.Channels.Visibility do
   """
 
   alias RetroHexChat.Channels.Directory
+  alias RetroHexChat.Channels.Modes
   alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Services.Queries, as: ServiceQueries
 
   @doc """
   The channels `target` is in, as far as a viewer already in `viewer_channels`
@@ -57,11 +59,27 @@ defmodule RetroHexChat.Channels.Visibility do
                Map.get(modes, :invite_only, false))
 
       _unreachable ->
-        false
+        nameable_when_cold?(channel_name)
     end
   end
 
   def nameable?(_channel_name), do: false
+
+  # A registered channel that nobody has joined since the node started has no
+  # process, and a node restarts on every deploy. Answering "not nameable" for
+  # one refused to let a link to a perfectly public room say its own name; the
+  # modes it would have come up with are in the row it would have come up from.
+  defp nameable_when_cold?(channel_name) do
+    case ServiceQueries.find_registered_channel(channel_name) do
+      nil ->
+        false
+
+      channel ->
+        modes = Modes.from_string(channel.modes)
+
+        not (Modes.secret?(modes) or Modes.private?(modes) or Modes.invite_only?(modes))
+    end
+  end
 
   # Cheaper than asking the channel, so it runs first: a secret channel the
   # viewer is not in is dropped without a message being sent at all.

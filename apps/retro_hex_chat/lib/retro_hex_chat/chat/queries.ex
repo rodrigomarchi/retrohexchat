@@ -9,6 +9,13 @@ defmodule RetroHexChat.Chat.Queries do
   alias RetroHexChat.Page
   alias RetroHexChat.Repo
 
+  # What a public preview is allowed to show: people talking, and nothing the
+  # room said about itself.
+  @preview_types ~w(message action)
+  @default_preview_limit 5
+  @max_preview_limit 20
+  @preview_line_length 140
+
   @default_limit 50
 
   # See `list_pm_partners/2` — a bound, not a page size.
@@ -86,6 +93,50 @@ defmodule RetroHexChat.Chat.Queries do
     Message
     |> where([m], m.channel_name == ^channel_name)
     |> page(opts)
+  end
+
+  @doc """
+  The last few things people said in a channel, oldest first.
+
+  Written for the public card a shared link resolves to, which is read by
+  somebody who is not in the channel and may not be in the product. That is why
+  it is not `list_messages/2` with a small limit: it carries the **visible**
+  text rather than the source, truncated, and it leaves out everything that is
+  not a person talking. A join notice, a service reply and a message its author
+  deleted are all things the room said about itself, and none of them belong on
+  a page the room cannot see.
+
+  Not paginated, on purpose. A preview has a size and there is no next page of
+  it.
+  """
+  @spec preview_messages(String.t(), keyword()) :: [
+          %{author: String.t(), content: String.t(), at: DateTime.t()}
+        ]
+  def preview_messages(channel_name, opts \\ []) do
+    limit = opts |> Keyword.get(:limit, @default_preview_limit) |> min(@max_preview_limit)
+
+    Message
+    |> where([m], m.channel_name == ^channel_name)
+    |> where([m], m.type in ^@preview_types)
+    |> where([m], is_nil(m.deleted_at))
+    |> order_by([m], desc: m.id)
+    |> limit(^limit)
+    |> select([m], %{
+      author: m.author_nickname,
+      content: fragment("coalesce(?, ?)", m.plain_content, m.content),
+      at: m.inserted_at
+    })
+    |> Repo.all()
+    |> Enum.reverse()
+    |> Enum.map(&truncate_preview/1)
+  end
+
+  defp truncate_preview(%{content: content} = line) do
+    if String.length(content) > @preview_line_length do
+      %{line | content: String.slice(content, 0, @preview_line_length - 1) <> "…"}
+    else
+      line
+    end
   end
 
   @spec get_message(integer()) :: Message.t() | nil

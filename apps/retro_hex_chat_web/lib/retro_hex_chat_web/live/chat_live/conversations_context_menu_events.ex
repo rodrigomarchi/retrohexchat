@@ -18,8 +18,11 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.UnreadTracker
+  alias RetroHexChat.ShareLinks
+  alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.ChannelCentralEvents
   alias RetroHexChatWeb.ChatLive.CoreEvents
+  alias RetroHexChatWeb.ShareLinkRef
 
   alias RetroHexChatWeb.ChatLive.Components.{
     ConversationsContextMenu,
@@ -91,6 +94,16 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
      |> push_event("clipboard_copy", %{text: conversation_label(params)})}
   end
 
+  # The one address in the product made to leave it. Minting is idempotent per
+  # {kind, target, creator}, so asking twice hands back the link already in
+  # circulation instead of putting a second one out there for one room.
+  def handle_event("ctx_conversations_copy_invite", %{"channel" => channel}, socket) do
+    {:halt,
+     socket
+     |> close_conversations_menu()
+     |> copy_channel_invite(channel)}
+  end
+
   def handle_event("ctx_conversations_leave", %{"channel" => channel}, socket) do
     {:halt,
      socket
@@ -123,6 +136,27 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
   # ── Catch-all: pass unhandled events to next hook ────────
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
+
+  # Refused quietly: the domain already decides who may hand a room's address
+  # out, and the menu must not be the place that answer is softened. A person
+  # who cannot share sees the item do nothing rather than being told why the
+  # channel said no.
+  defp copy_channel_invite(socket, channel) do
+    nickname = socket.assigns.session.nickname
+
+    with {:ok, user_id} <- SessionHelpers.resolve_user_id(nickname),
+         {:ok, link} <-
+           ShareLinks.create(%{
+             kind: "channel",
+             target: %{"channel" => channel},
+             creator_id: user_id,
+             creator_nick: nickname
+           }) do
+      push_event(socket, "clipboard_copy", %{text: ShareLinkRef.url(link.slug)})
+    else
+      _refused -> socket
+    end
+  end
 
   # ── Private helpers ──────────────────────────────────────
 

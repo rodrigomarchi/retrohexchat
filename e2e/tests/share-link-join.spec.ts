@@ -2,6 +2,7 @@
  * @section Auth And Lifecycle
  * @flow K4 [done] A shared game link minted in one browser is followed from another with no session: the public card asks for a connect, and the connect lands back on the link
  * @flow K9 [done] Opening a conference writes its card into the channel by itself, and that card counts up on its own when somebody joins the call, with no reload
+ * @flow K11 [done] A channel invite link shows a stranger the room, its topic and the last lines said there, and lands them inside the channel after connecting
  * @flow K10 [done] When the conference ends, the card in the channel becomes the record of it — how long it ran and how many people were in it — with no reload
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -16,6 +17,7 @@ import {
   newGroupCallUser,
   openConference,
 } from "../helpers/groupCallUsers";
+import { shot } from "../helpers/screenshots";
 
 const PASSWORD = "testpass123";
 
@@ -144,3 +146,71 @@ async function joinFromAntechamber(call: Page) {
   await call.getByTestId("group-call-prejoin-join").click();
   await expect(call.getByTestId("group-call-panel")).toBeVisible();
 }
+
+test("a channel invite shows the room before a stranger commits (K11)", async ({
+  browser,
+}) => {
+  const sharerContext = await browser.newContext();
+  const strangerContext = await browser.newContext();
+  const sharerTab = await sharerContext.newPage();
+  const strangerTab = await strangerContext.newPage();
+  const channel = uniqueChannel("invite");
+
+  try {
+    const connect = new ConnectPage(sharerTab);
+    await connect.open();
+    await connect.enterNickname(uniqueNickname("sharer"));
+    await connect.registerWithPassword(PASSWORD);
+    const sharerChat = new ChatPage(sharerTab);
+    await sharerChat.waitUntilConnected();
+
+    await sharerChat.sendMessage(`/join ${channel}`);
+    await sharerChat.expectTabVisible(channel);
+    await sharerChat.sendMessage(`/topic Where the kettle lives`);
+    await sharerChat.sendMessage("anybody around this evening?");
+
+    // The clipboard is the product's own path for this, so the spec reads the
+    // address back the same way a person would paste it.
+    await sharerTab
+      .context()
+      .grantPermissions(["clipboard-read", "clipboard-write"]);
+    await sharerChat.openConversationContextMenu(channel);
+    await sharerTab
+      .getByTestId("context-menu-item-ctx_conversations_copy_invite")
+      .click();
+    const shareUrl = await sharerTab.evaluate(() =>
+      navigator.clipboard.readText(),
+    );
+    expect(shareUrl).toContain("/join/");
+
+    // A different browser with no cookie: the card is the whole pitch.
+    await strangerTab.goto(new URL(shareUrl).pathname);
+    await expect(strangerTab.getByTestId("join-card")).toBeVisible();
+    await expect(strangerTab.getByTestId("join-subject")).toContainText(
+      channel,
+    );
+    await expect(strangerTab.getByTestId("join-preview")).toContainText(
+      "anybody around this evening?",
+    );
+    await shot(strangerTab.getByTestId("join-card"), "channel-invite-card");
+
+    // Connecting lands back on the card, not in the chat: the address the
+    // stranger was sent is the one they came for, and the way in is still the
+    // card's own button.
+    await strangerTab.getByTestId("join-enter").click();
+    const strangerConnect = new ConnectPage(strangerTab);
+    await strangerConnect.enterNickname(uniqueNickname("stranger"));
+    await strangerConnect.registerWithPassword(PASSWORD);
+
+    await expect(strangerTab).toHaveURL(new RegExp(`/join/`));
+    await strangerTab.getByTestId("join-enter").click();
+
+    const strangerChat = new ChatPage(strangerTab);
+    await strangerChat.waitUntilConnected();
+    await strangerChat.expectTabVisible(channel);
+    await shot(strangerTab, "channel-invite-landed");
+  } finally {
+    await sharerContext.close();
+    await strangerContext.close();
+  }
+});

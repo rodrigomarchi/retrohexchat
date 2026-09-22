@@ -704,8 +704,7 @@ msgstr "%{max_attempts}的尝试%{attempt}"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:498
 #, elixir-autogen, elixir-format
-msgid ""
-"Auto-join list is full (20 channels). %{channel} was not added to auto-join."
+msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr "自动联赛名单满载(20频道). %{channel}没有加入自动连接."
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:47
@@ -730,9 +729,7 @@ msgstr "自动对应规则 :"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:114
 #, elixir-autogen, elixir-format
-msgid ""
-"Available commands: %{commands}\n"
-"Type /help <command> for details, or open Help Topics from the menu for the full help system."
+msgid "Available commands: %{commands}\nType /help <command> for details, or open Help Topics from the menu for the full help system."
 msgstr ""
 "可用命令: %{commands}\n"
 "详情请输入 /help <command>,或从菜单中打开全帮助系统的帮助主题."
@@ -894,7 +891,7 @@ msgstr "找不到频道 %{channel}"
 msgid "Channel Info"
 msgstr "频道信息"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:115
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:127
 #, elixir-autogen, elixir-format
 msgid "Channel Settings"
 msgstr "频道设置"
@@ -1032,7 +1029,7 @@ msgid "Conversations"
 msgstr "谈话"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:247
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:170
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:182
 #, elixir-autogen, elixir-format
 msgid "Copy Channel Name"
 msgstr "复制频道名称"
@@ -1047,7 +1044,7 @@ msgstr "复制信件"
 msgid "Copy Nick"
 msgstr "复制昵称"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:169
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:181
 #, elixir-autogen, elixir-format
 msgid "Copy Nickname"
 msgstr "复制昵称"
@@ -1394,7 +1391,7 @@ msgstr "敲门发送到 %{channel}"
 msgid "Lang"
 msgstr "兰"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:144
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:156
 #, elixir-autogen, elixir-format
 msgid "Leave Channel"
 msgstr "离开频道"
@@ -1474,12 +1471,12 @@ msgstr "模式错误：%{message}"
 msgid "Mode set: %{mode}"
 msgstr "模式集: %{mode}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:167
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:179
 #, elixir-autogen, elixir-format
 msgid "Mute Channel"
 msgstr "静音通道"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:165
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:177
 #, elixir-autogen, elixir-format
 msgid "Mute PM"
 msgstr "静音 PM"
@@ -1528,8 +1525,7 @@ msgstr "昵称颜色列表是满的( 最大 50)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:1094
 #, elixir-autogen
-msgid ""
-"NickServ protects your nickname with a password so nobody else can use it."
+msgid "NickServ protects your nickname with a password so nobody else can use it."
 msgstr "NickServ用密码保护你的昵称 这样别人就不用了"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:363
@@ -1759,9 +1755,7 @@ msgstr "答复"
 
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:252
 #, elixir-autogen, elixir-format
-msgid ""
-"Reply parent message is not currently loaded. Scroll up to load older "
-"history, then try again."
+msgid "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
 msgstr "回复母信件目前尚未装入 。 卷起来加载旧历史,然后再试一次."
 
 #: lib/retro_hex_chat_web/components/ui/chat/reply_bar.ex:42
@@ -2042,12 +2036,12 @@ msgstr "不详"
 msgid "Unknown user mode: %{flag}"
 msgstr "未知用户模式: %{flag}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:166
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:178
 #, elixir-autogen, elixir-format
 msgid "Unmute Channel"
 msgstr "解密频道"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:164
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:176
 #, elixir-autogen, elixir-format
 msgid "Unmute PM"
 msgstr "解密的首相"
@@ -2302,9 +2296,7 @@ msgstr "[NickServ] 昵称服务在线"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:586
 #, elixir-autogen, elixir-format
-msgid ""
-"[NickServ] This nickname is registered. You have 60 seconds to identify via "
-"/ns identify <password> or you will be renamed."
+msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
 msgstr "[尼克塞 此昵称已注册 。 你有60秒的时间通过/ns识别<password>,否则你将被重新命名."
 
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:38
@@ -3139,9 +3131,7 @@ msgstr "切换 P2P 屏幕共享"
 
 #: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:210
 #, elixir-autogen, elixir-format
-msgid ""
-"You must be registered and identified to play. Use /ns register and /ns "
-"identify first."
+msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
 msgstr "您必须注册和识别 玩。 使用/ns登记和/ns先识别。"
 
 #: lib/retro_hex_chat_web/live/p2p_live/events.ex:1571
@@ -3973,7 +3963,7 @@ msgstr "P2P 会话请求。请从下方的卡片打开。/p2p/%{token}"
 msgid "%{nickname} opened the space — %{url}"
 msgstr "%{nickname} 打开了空间 — %{url}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:132
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:144
 #, elixir-autogen, elixir-format
 msgid "Close Conversation"
 msgstr "关闭会话"
@@ -4028,3 +4018,8 @@ msgstr "• 频道在%{window}后失效"
 #, elixir-autogen, elixir-format
 msgid "  • Nicks expire after %{window} of inactivity"
 msgstr "• 尼克在%{window}无活动后过期"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:102
+#, elixir-autogen, elixir-format
+msgid "Copy Invite Link"
+msgstr "复制邀请链接"

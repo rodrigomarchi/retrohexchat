@@ -19,13 +19,34 @@ defmodule RetroHexChat.ShareLinks.Schema.LinkTest do
     creator_nick: "ana"
   }
 
-  test "accepts the four kinds and nothing else" do
+  test "accepts the known kinds and nothing else" do
     for kind <- ~w(call space p2p play) do
       assert changeset(%{kind: kind}).valid?
     end
 
+    assert changeset(%{kind: "channel", target: %{"channel" => "#retro"}}).valid?
+
     refute changeset(%{kind: "chat"}).valid?
     refute changeset(%{kind: ""}).valid?
+  end
+
+  describe "a channel link's target" do
+    test "names one channel" do
+      assert changeset(%{kind: "channel", target: %{"channel" => "#retro"}}).valid?
+    end
+
+    test "is refused when it names nothing, or something that is not a channel" do
+      for target <- [%{}, %{"channel" => ""}, %{"channel" => "retro"}, %{"channel" => 7}] do
+        refute changeset(%{kind: "channel", target: target}).valid?,
+               "#{inspect(target)} should not name a channel"
+      end
+    end
+
+    test "is refused when the name is longer than a channel name may be" do
+      long = "#" <> String.duplicate("a", 60)
+
+      refute changeset(%{kind: "channel", target: %{"channel" => long}}).valid?
+    end
   end
 
   test "requires the slug, the kind and who made it" do

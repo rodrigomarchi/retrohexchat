@@ -11,6 +11,11 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
   attr :kind, :string, default: nil
   attr :creator_nick, :string, default: nil
   attr :subject, :map, default: nil, doc: "what was shared: %{name, tagline, icon}"
+
+  attr :preview, :list,
+    default: [],
+    doc: "the last few visible lines of the room, oldest first"
+
   attr :enter_path, :string, default: nil
 
   @spec join_card(map()) :: Phoenix.LiveView.Rendered.t()
@@ -45,6 +50,7 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
           </:meta>
 
           <.subject_row :if={@subject} subject={@subject} />
+          <.preview_lines :if={@preview != []} lines={@preview} />
 
           <p class="text-center" data-testid={state_testid(@state)}>
             {body_text(@state, @creator_nick)}
@@ -85,6 +91,23 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
         </.desktop_window>
       </.desktop>
     </div>
+    """
+  end
+
+  attr :lines, :list, required: true
+
+  # The difference between "somebody sent you a link" and "look what they are
+  # talking about". Plain text on purpose: this is a public page, and running
+  # the room's own formatting through it would let anybody who can type in the
+  # channel decide how a stranger's screen looks.
+  defp preview_lines(assigns) do
+    ~H"""
+    <ul class="shadow-retro-field bg-canvas flex flex-col gap-1 p-2" data-testid="join-preview">
+      <li :for={line <- @lines} class="font-chat truncate text-sm">
+        <span class="font-bold">{line.author}</span>
+        <span class="text-muted-foreground">{line.content}</span>
+      </li>
+    </ul>
     """
   end
 
@@ -135,6 +158,12 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
     """
   end
 
+  defp kind_icon(%{kind: "channel"} = assigns) do
+    ~H"""
+    <Icons.icon_channels class="h-4 w-4" />
+    """
+  end
+
   defp kind_icon(%{kind: "p2p"} = assigns) do
     ~H"""
     <Icons.icon_protocol_p2p_compact class="h-4 w-4" />
@@ -155,6 +184,7 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
   defp title(_state, "play"), do: dgettext("share", "A game on RetroHexChat")
   defp title(_state, "call"), do: dgettext("share", "A call on RetroHexChat")
   defp title(_state, "p2p"), do: dgettext("share", "A P2P session on RetroHexChat")
+  defp title(_state, "channel"), do: dgettext("share", "A room on RetroHexChat")
   defp title(_state, _kind), do: dgettext("share", "An invitation to RetroHexChat")
 
   defp body_text(:gone, _nick),

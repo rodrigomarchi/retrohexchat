@@ -427,4 +427,81 @@ defmodule RetroHexChat.Chat.QueriesTest do
       assert [] = Queries.reply_ids(msg)
     end
   end
+
+  describe "preview_messages/2" do
+    setup do
+      %{channel: "#preview#{System.unique_integer([:positive])}"}
+    end
+
+    defp say(channel, author, content, attrs \\ %{}) do
+      {:ok, message} =
+        Queries.insert_message(
+          Map.merge(%{channel_name: channel, author_nickname: author, content: content}, attrs)
+        )
+
+      message
+    end
+
+    test "returns the newest lines, oldest first, so the preview reads as a conversation",
+         %{channel: channel} do
+      for n <- 1..8, do: say(channel, "ana", "line #{n}")
+
+      preview = Queries.preview_messages(channel, limit: 5)
+
+      assert Enum.map(preview, & &1.content) == [
+               "line 4",
+               "line 5",
+               "line 6",
+               "line 7",
+               "line 8"
+             ]
+    end
+
+    test "carries who wrote each line", %{channel: channel} do
+      say(channel, "ana", "hello")
+
+      assert [%{author: "ana", content: "hello"}] = Queries.preview_messages(channel, limit: 5)
+    end
+
+    # A public card is not the place to replay a room's joins, kicks and
+    # service notices, and it is certainly not the place to re-run somebody's
+    # deleted message.
+    test "leaves out everything that is not somebody talking", %{channel: channel} do
+      say(channel, "ana", "kept")
+      say(channel, "System", "joined", %{type: "system"})
+      say(channel, "NickServ", "identified", %{type: "service"})
+      say(channel, "ana", "shouted", %{type: "notice"})
+      deleted = say(channel, "ana", "regretted")
+      {:ok, _} = Queries.soft_delete(deleted, DateTime.utc_now())
+
+      assert Enum.map(Queries.preview_messages(channel, limit: 10), & &1.content) == ["kept"]
+    end
+
+    test "an action counts as somebody talking", %{channel: channel} do
+      say(channel, "ana", "waves", %{type: "action"})
+
+      assert [%{content: "waves"}] = Queries.preview_messages(channel, limit: 5)
+    end
+
+    # The card is a public page; rendering the source would put colour codes
+    # somebody typed into a page nobody in the channel is watching.
+    test "reads the visible text, never the source", %{channel: channel} do
+      say(channel, "ana", "\x02bold\x02 talk", %{content_format: "irc"})
+
+      assert [%{content: content}] = Queries.preview_messages(channel, limit: 5)
+      refute content =~ "\x02"
+      assert content =~ "bold talk"
+    end
+
+    test "truncates a long line rather than shipping the whole thing", %{channel: channel} do
+      say(channel, "ana", String.duplicate("x", 400))
+
+      assert [%{content: content}] = Queries.preview_messages(channel, limit: 5)
+      assert String.length(content) <= 140
+    end
+
+    test "a channel with nothing in it previews nothing", %{channel: channel} do
+      assert Queries.preview_messages(channel, limit: 5) == []
+    end
+  end
 end

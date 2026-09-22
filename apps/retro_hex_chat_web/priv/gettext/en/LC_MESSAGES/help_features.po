@@ -430,6 +430,7 @@ msgstr "/ignore Command"
 msgid "/invite <nickname>"
 msgstr "/invite <nickname>"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "/invite Command"
@@ -3243,6 +3244,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:47
@@ -6715,3 +6717,97 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Simply connect and identify at least once every %{window}"
 msgstr "Simply connect and identify at least once every %{window}"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "/list Command"
+msgstr "/list Command"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Anyone in an open channel can copy its invite link"
+msgstr "Anyone in an open channel can copy its invite link"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Channel Invites"
+msgstr "Channel Invites"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Copying twice hands back the same address, so a channel has one link in "
+"circulation rather than a new one per click"
+msgstr ""
+"Copying twice hands back the same address, so a channel has one link in "
+"circulation rather than a new one per click"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "How many people are in the room right now"
+msgstr "How many people are in the room right now"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "In an invite-only channel, only operators can"
+msgstr "In an invite-only channel, only operators can"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Right-click a channel in the Conversations sidebar and choose Copy Invite "
+"Link. The address goes to your clipboard and works for anyone you send it "
+"to, inside the product or outside it."
+msgstr ""
+"Right-click a channel in the Conversations sidebar and choose Copy Invite "
+"Link. The address goes to your clipboard and works for anyone you send it "
+"to, inside the product or outside it."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The channel name and topic, and who sent it"
+msgstr "The channel name and topic, and who sent it"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "The last few things people said there, as plain text"
+msgstr "The last few things people said there, as plain text"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:15
+#, elixir-autogen, elixir-format
+msgid ""
+"The link names a room; it never grants access to one. Following it into an "
+"invite-only channel still asks the channel, and you are refused exactly as "
+"you would be without the link. A secret (+s), private (+p) or invite-only "
+"(+i) channel is never named and never previewed — such a link shows only "
+"that it has expired."
+msgstr ""
+"The link names a room; it never grants access to one. Following it into an "
+"invite-only channel still asks the channel, and you are refused exactly as "
+"you would be without the link. A secret (+s), private (+p) or invite-only "
+"(+i) channel is never named and never previewed — such a link shows only "
+"that it has expired."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:35
+#, elixir-autogen, elixir-format
+msgid ""
+"The person who made the link and any channel operator can revoke it; the "
+"room itself is untouched"
+msgstr ""
+"The person who made the link and any channel operator can revoke it; the "
+"room itself is untouched"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "What It Does Not Do"
+msgstr "What It Does Not Do"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What the Link Shows"
+msgstr "What the Link Shows"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Who Can Share, and How to Stop"
+msgstr "Who Can Share, and How to Stop"

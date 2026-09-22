@@ -44,7 +44,7 @@ defmodule RetroHexChat.ShareLinks.Service do
     target = Map.get(attrs, :target) || Map.get(attrs, "target") || %{}
     creator_id = Map.get(attrs, :creator_id) || Map.get(attrs, "creator_id")
 
-    with :ok <- Policy.can_create?(to_string(kind), creator_id) do
+    with :ok <- Policy.can_create?(to_string(kind), creator_id, target) do
       case Queries.find_open(to_string(kind), target, creator_id) do
         %Link{} = existing ->
           {:ok, existing}

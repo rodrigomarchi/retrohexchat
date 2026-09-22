@@ -272,6 +272,25 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           )
       },
       %{
+        id: "feature-channel-invite-link",
+        title: dgettext("help", "Channel Invite Link"),
+        category: dgettext("help", "Channel Settings"),
+        keywords: [
+          dgettext("help", "invite link"),
+          dgettext("help", "share channel"),
+          "link",
+          "share",
+          "slug",
+          dgettext("help", "revoke link")
+        ],
+        icon: :icon_btn_link,
+        description:
+          dgettext(
+            "help",
+            "Copy a public address for a channel that shows what the room is and who invited you."
+          )
+      },
+      %{
         id: "feature-channel-invites",
         title: dgettext("help", "Channel Invites"),
         category: dgettext("help", "Channel Settings"),
@@ -284,7 +303,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "auto-join on invite"),
           dgettext("help", "invite expiration"),
           "invite-only",
-          "knock"
+          "knock",
+          dgettext("help", "invite link")
         ],
         icon: :icon_dialog_invite,
         description:
