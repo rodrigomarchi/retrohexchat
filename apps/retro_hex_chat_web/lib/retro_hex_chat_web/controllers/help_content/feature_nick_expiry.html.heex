@@ -1,6 +1,8 @@
 <p>
   {dgettext("help_features", "Registered nicknames that have not been used for")}
-  <strong>{dgettext("help_features", "7 days")}</strong>
+  <strong>
+    {TimeFormatter.days(NickExpiry.configured_expiration_days())}
+  </strong>
   {dgettext(
     "help_features",
     "are automatically purged and become available for new registration."
@@ -42,7 +44,11 @@
 </ul>
 <.help_h4 icon={:icon_shield}>{dgettext("help_features", "How to Prevent Expiration")}</.help_h4>
 <ul>
-  <li>{dgettext("help_features", "Simply connect and identify at least once every 7 days")}</li>
+  <li>
+    {dgettext("help_features", "Simply connect and identify at least once every %{window}",
+      window: TimeFormatter.days(NickExpiry.configured_expiration_days())
+    )}
+  </li>
   <li>{dgettext("help_features", "Each login resets the expiration timer")}</li>
 </ul>
 <.help_h4 icon={:icon_warning}>{dgettext("help_features", "Important Notes")}</.help_h4>

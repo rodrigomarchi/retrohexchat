@@ -163,4 +163,62 @@ defmodule RetroHexChat.Services.ChanExpiryTest do
       assert channel.founder_nickname == "NewFounder"
     end
   end
+
+  describe "configured expiration window" do
+    setup do
+      previous = Application.get_env(:retro_hex_chat, :expiry)
+      on_exit(fn -> Application.put_env(:retro_hex_chat, :expiry, previous) end)
+      :ok
+    end
+
+    test "without an explicit window, a channel quiet for a month survives" do
+      register_nick("ColdFounder", "pass12345", 0)
+      register_channel("#quiet-month", "ColdFounder")
+      backdate_channel_activity("#quiet-month", 30)
+
+      result = ChanExpiry.purge()
+
+      assert result.purged_names == []
+      assert Queries.find_registered_channel("#quiet-month") != nil
+    end
+
+    test "without an explicit window, a channel past the default window is purged" do
+      register_nick("StaleFounder", "pass12345", 0)
+      register_channel("#quiet-forever", "StaleFounder")
+      backdate_channel_activity("#quiet-forever", 120)
+
+      result = ChanExpiry.purge()
+
+      assert "#quiet-forever" in result.purged_names
+    end
+
+    # Wider than the historical seven days on purpose — a narrower window would
+    # be satisfied by the old constant and prove nothing.
+    test "the configured window decides when no option is given" do
+      Application.put_env(:retro_hex_chat, :expiry, nick_days: 180, channel_days: 60)
+
+      register_nick("CfgFounder", "pass12345", 0)
+      register_channel("#past-configured", "CfgFounder")
+      register_channel("#within-configured", "CfgFounder")
+      backdate_channel_activity("#past-configured", 90)
+      backdate_channel_activity("#within-configured", 20)
+
+      result = ChanExpiry.purge()
+
+      assert "#past-configured" in result.purged_names
+      refute "#within-configured" in result.purged_names
+    end
+
+    test "expired_count reads the same window as purge" do
+      Application.put_env(:retro_hex_chat, :expiry, nick_days: 180, channel_days: 60)
+
+      register_nick("CountFounder", "pass12345", 0)
+      register_channel("#counted", "CountFounder")
+      register_channel("#uncounted", "CountFounder")
+      backdate_channel_activity("#counted", 90)
+      backdate_channel_activity("#uncounted", 20)
+
+      assert ChanExpiry.expired_count() == 1
+    end
+  end
 end

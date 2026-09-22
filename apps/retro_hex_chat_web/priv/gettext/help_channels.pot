@@ -260,7 +260,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:23
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:128
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:133
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:49
@@ -275,7 +275,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr ""
@@ -400,7 +400,7 @@ msgstr ""
 msgid "(no external) — Only channel members can send messages."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:109
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:114
 #, elixir-autogen, elixir-format
 msgid "(no joins or messages)"
 msgstr ""
@@ -539,7 +539,7 @@ msgstr ""
 msgid "/ban"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:141
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:146
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:52
 #, elixir-autogen, elixir-format
@@ -624,8 +624,8 @@ msgstr ""
 msgid "/ns"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:150
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:155
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "/ns Command"
 msgstr ""
@@ -655,16 +655,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:152
 #, elixir-autogen, elixir-format
 msgid "/unban"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:45
-#, elixir-autogen, elixir-format
-msgid "7 days"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:109
-#, elixir-autogen, elixir-format
-msgid "7 days of inactivity"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:31
@@ -862,7 +852,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:206
 #: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:148
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:153
 #, elixir-autogen, elixir-format
 msgid "Channel Modes"
 msgstr ""
@@ -870,7 +860,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:126
 #: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:144
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:149
 #, elixir-autogen, elixir-format
 msgid "Channel Permissions"
 msgstr ""
@@ -890,7 +880,7 @@ msgstr ""
 msgid "Channels are chat rooms where multiple users can talk. Channel names begin with"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:121
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:126
 #, elixir-autogen, elixir-format
 msgid "Channels with no remaining access list entries are deregistered immediately"
 msgstr ""
@@ -908,12 +898,12 @@ msgstr ""
 msgid "Common Commands"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Connecting"
 msgstr ""
@@ -993,7 +983,7 @@ msgstr ""
 msgid "If no channel is specified, you leave the current channel."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "If you change your nick in chat to a registered name you don't own, you have 60 seconds to identify before being force-renamed"
 msgstr ""
@@ -1068,8 +1058,8 @@ msgstr ""
 msgid "Moderated"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:46
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Nick Expiration"
 msgstr ""
@@ -1292,7 +1282,7 @@ msgstr ""
 msgid "What Each Rank Can Do"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:115
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:120
 #, elixir-autogen, elixir-format
 msgid "When a founder's nick expires, the next-ranked user is promoted to founder (SOP → AOP → VOP)"
 msgstr ""
@@ -1348,7 +1338,7 @@ msgstr ""
 msgid "command."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "of inactivity — connect regularly to keep yours (see"
 msgstr ""
@@ -1468,13 +1458,13 @@ msgstr ""
 msgid "AOP users can manage VOP lists."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:135
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:140
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Access Lists"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Account Dialog"
 msgstr ""
@@ -1522,7 +1512,7 @@ msgstr ""
 msgid "Channel Central"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:139
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:144
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:50
 #, elixir-autogen, elixir-format
@@ -1534,7 +1524,7 @@ msgstr ""
 msgid "Channel Central includes a Registration tab that maps ChanServ registration and access-list commands to dialog controls."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:131
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:136
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:57
 #, elixir-autogen, elixir-format
@@ -1576,7 +1566,7 @@ msgstr ""
 msgid "Founders can manage SOP, AOP, and VOP lists."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "Identity & Presence"
 msgstr ""
@@ -1725,4 +1715,9 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Open Channel Central for a channel you have joined, then choose Registration after Access Lists. The status area shows whether the channel is registered and who the founder is."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:110
+#, elixir-autogen, elixir-format
+msgid "%{window} of inactivity"
 msgstr ""

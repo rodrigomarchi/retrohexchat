@@ -106,7 +106,12 @@
 <ul>
   <li>
     {dgettext("help_channels", "Registered channels expire after")}
-    <strong>{dgettext("help_channels", "7 days of inactivity")}</strong> {dgettext(
+    <strong>
+      {dgettext("help_channels", "%{window} of inactivity",
+        window: TimeFormatter.days(ChanExpiry.configured_expiration_days())
+      )}
+    </strong>
+    {dgettext(
       "help_channels",
       "(no joins or messages)"
     )}

@@ -5,7 +5,7 @@ defmodule RetroHexChat.Services.ChanExpiry do
 
   alias RetroHexChat.Services.Queries
 
-  @default_expiration_days 7
+  @default_expiration_days 90
 
   @type purge_result :: %{
           candidate_count: non_neg_integer(),
@@ -18,10 +18,23 @@ defmodule RetroHexChat.Services.ChanExpiry do
           welcome_messages_removed: non_neg_integer()
         }
 
+  @doc """
+  How many days a registered channel may stay quiet before it is released.
+
+  Read at call time for the same reason the nickname window is: a release that
+  compiled the number in would ignore `RHC_CHANNEL_EXPIRY_DAYS`.
+  """
+  @spec configured_expiration_days() :: pos_integer()
+  def configured_expiration_days do
+    :retro_hex_chat
+    |> Application.get_env(:expiry, [])
+    |> Keyword.get(:channel_days, @default_expiration_days)
+  end
+
   @spec expired_count() :: non_neg_integer()
   @spec expired_count(keyword()) :: non_neg_integer()
   def expired_count(opts \\ []) do
-    expiration_days = Keyword.get(opts, :expiration_days, @default_expiration_days)
+    expiration_days = Keyword.get(opts, :expiration_days, configured_expiration_days())
     now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
 
     Queries.expired_channel_count(expiration_days, now)
@@ -30,7 +43,7 @@ defmodule RetroHexChat.Services.ChanExpiry do
   @spec purge() :: purge_result()
   @spec purge(keyword()) :: purge_result()
   def purge(opts \\ []) do
-    expiration_days = Keyword.get(opts, :expiration_days, @default_expiration_days)
+    expiration_days = Keyword.get(opts, :expiration_days, configured_expiration_days())
     now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
     names = Queries.list_expired_channel_names(expiration_days, now)
     cleanup = cleanup_channels(names)

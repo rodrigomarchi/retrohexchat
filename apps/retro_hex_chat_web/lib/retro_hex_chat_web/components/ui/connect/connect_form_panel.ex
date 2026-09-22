@@ -18,6 +18,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
   import RetroHexChatWeb.Components.UI.Label
   import RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard
 
+  alias RetroHexChat.Chat.TimeFormatter
+  alias RetroHexChat.Services.NickExpiry
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Timezone
 
@@ -362,7 +364,9 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
         title={dgettext("connect", "Nickname cleanup")}
         data-testid="nick-expiry-notice"
       >
-        {dgettext("connect", "Nicknames unused for 7 days are automatically released.")}
+        {dgettext("connect", "Nicknames unused for %{window} are automatically released.",
+          window: TimeFormatter.days(NickExpiry.configured_expiration_days())
+        )}
       </.connect_notice>
     </div>
     """

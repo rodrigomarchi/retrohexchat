@@ -26,6 +26,32 @@ config :retro_hex_chat_web,
 config :retro_hex_chat,
   default_channel: System.get_env("DEFAULT_CHANNEL") || "#lobby"
 
+# How long an unused nickname or a quiet channel is kept, in days. A malformed
+# value raises at boot rather than silently falling back: a server that meant to
+# widen the window and typo'd it would otherwise release identities on the old
+# one, and the loss is not recoverable.
+expiry_days = fn var, default ->
+  case System.get_env(var) do
+    nil ->
+      default
+
+    value ->
+      case Integer.parse(value) do
+        {days, ""} when days > 0 ->
+          days
+
+        _invalid ->
+          raise """
+          environment variable #{var} must be a positive whole number of days, got: #{inspect(value)}
+          """
+      end
+  end
+end
+
+config :retro_hex_chat, :expiry,
+  nick_days: expiry_days.("RHC_NICK_EXPIRY_DAYS", 180),
+  channel_days: expiry_days.("RHC_CHANNEL_EXPIRY_DAYS", 90)
+
 # Base URL for generating links in domain layer (bots, etc.)
 config :retro_hex_chat,
   base_url: System.get_env("BASE_URL") || "http://localhost:4000"

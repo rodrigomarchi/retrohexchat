@@ -7,6 +7,15 @@ defmodule RetroHexChat.Jobs.RegisteredChannelExpiryWorkerTest do
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.Queries
 
+  # The worker is the subject here, not the window it sweeps on: pinning the
+  # window keeps these tests honest when the product default moves.
+  setup do
+    previous = Application.get_env(:retro_hex_chat, :expiry)
+    Application.put_env(:retro_hex_chat, :expiry, nick_days: 7, channel_days: 7)
+    on_exit(fn -> Application.put_env(:retro_hex_chat, :expiry, previous) end)
+    :ok
+  end
+
   test "purges inactive registered channels and emits telemetry" do
     register_channel("#worker-expired", "Founder")
     backdate_channel_activity("#worker-expired", 8)

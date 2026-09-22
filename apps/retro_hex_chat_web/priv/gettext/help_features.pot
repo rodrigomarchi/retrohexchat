@@ -722,11 +722,6 @@ msgstr ""
 msgid "500ms or more — significant lag."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:3
-#, elixir-autogen, elixir-format
-msgid "7 days"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:29
 #, elixir-autogen, elixir-format
 msgid ": 60-second cooldown per rule per triggering user to prevent spam."
@@ -918,7 +913,7 @@ msgstr ""
 msgid "Aliases let you create custom command shortcuts. Type a short name and it expands into a longer command or message, with optional variable substitution."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "All associated data is removed: preferences, notify list, contacts, highlight words, nick colors, auto-join list"
 msgstr ""
@@ -1056,7 +1051,7 @@ msgstr ""
 msgid "Behavior"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Being connected — your last-seen time is updated when you disconnect"
 msgstr ""
@@ -1159,7 +1154,7 @@ msgstr ""
 msgid "Channel Welcome Messages"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Channel access lists that reference the expired nick are also removed"
 msgstr ""
@@ -1299,12 +1294,12 @@ msgid "Connected"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:28
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "Connecting"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Connecting and identifying (logging in) with the nickname"
 msgstr ""
@@ -1595,7 +1590,7 @@ msgstr ""
 msgid "During reconnection attempts, a"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Each login resets the expiration timer"
 msgstr ""
@@ -1892,7 +1887,7 @@ msgstr ""
 msgid "How to Enable"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "How to Prevent Expiration"
 msgstr ""
@@ -1964,7 +1959,7 @@ msgstr ""
 msgid "Ignore all content, or just messages, PMs, actions, notices, or invites."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Important Notes"
 msgstr ""
@@ -2312,7 +2307,7 @@ msgid "NickServ"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:53
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "NickServ Overview"
 msgstr ""
@@ -2327,7 +2322,7 @@ msgstr ""
 msgid "Nicknames"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Nicknames that are currently connected are never purged, even if their last-seen date is old"
 msgstr ""
@@ -2687,7 +2682,7 @@ msgstr ""
 msgid "Registered users' ignore lists are saved across sessions."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Registering a new nickname (starts the 7-day clock immediately)"
 msgstr ""
@@ -2872,7 +2867,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:23
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
@@ -2998,11 +2993,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_display_settings.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Show or hide the right-side user list."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:45
-#, elixir-autogen, elixir-format
-msgid "Simply connect and identify at least once every 7 days"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:56
@@ -3182,7 +3172,7 @@ msgstr ""
 msgid "The message is replaced with \"[mensagem removida]\" in italic text for all viewers. The original content is preserved in the database (soft-delete) for audit purposes."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "The nickname becomes available for anyone to register"
 msgstr ""
@@ -3202,12 +3192,12 @@ msgstr ""
 msgid "The placeholder text changes based on your current context:"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "The purge runs automatically every 6 hours"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "The registration is permanently deleted"
 msgstr ""
@@ -3222,7 +3212,7 @@ msgstr ""
 msgid "The status bar shows four possible connection states with visual indicators."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "There is no warning before expiration — connect regularly to keep your nick"
 msgstr ""
@@ -3493,7 +3483,7 @@ msgstr ""
 msgid "Warning (yellow):"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "What Counts as \"Usage\""
 msgstr ""
@@ -3503,7 +3493,7 @@ msgstr ""
 msgid "What Happens"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "What Happens When a Nick Expires"
 msgstr ""
@@ -3618,7 +3608,7 @@ msgstr ""
 msgid "and someone sends you a private message, the system automatically replies with your away message."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:4
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "are automatically purged and become available for new registration."
 msgstr ""
@@ -5421,4 +5411,9 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "to disconnect with a custom message. There is no default to configure: a quit with no message uses the one below."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Simply connect and identify at least once every %{window}"
 msgstr ""

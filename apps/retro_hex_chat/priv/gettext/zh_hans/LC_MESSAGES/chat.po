@@ -16,7 +16,7 @@ msgstr ""
 msgid "  %{name} (%{type}, %{interval}s) → %{command}"
 msgstr "%{name}(%{type},%{interval}s) → %{command} (中文(简体) )."
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:41
+#: lib/retro_hex_chat/chat/time_formatter.ex:55
 #, elixir-autogen, elixir-format
 msgid "1 %{singular}"
 msgstr "1辆%{singular}"
@@ -106,15 +106,16 @@ msgstr "叮当高"
 msgid "Ding Low"
 msgstr "小叮当"
 
-#: lib/retro_hex_chat/chat/policy.ex:51
-#: lib/retro_hex_chat/chat/policy.ex:80
+#: lib/retro_hex_chat/chat/policy.ex:51 lib/retro_hex_chat/chat/policy.ex:80
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
 msgstr "编辑窗口已过期 。"
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
-msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
+msgid ""
+"Expansion must not contain command chaining characters (|, &&, ;, or "
+"newlines)"
 msgstr "扩展不得包含命令链字符(QQ, QQ, 或新行)"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:280
@@ -124,18 +125,18 @@ msgstr "格式化"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:111
 #, elixir-autogen, elixir-format
-msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
+msgid ""
+"Invalid timer name. Use only letters, numbers, hyphens, underscores (max "
+"%{max_name_length} chars)."
 msgstr "无效的计时器名称 。 只使用字母,数字,连字符,下划线(最大%{max_name_length}字符)."
 
-#: lib/retro_hex_chat/chat/content.ex:135
-#: lib/retro_hex_chat/chat/policy.ex:19
+#: lib/retro_hex_chat/chat/content.ex:135 lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
 msgid "Message cannot be empty"
 msgstr "信件不能为空"
 
-#: lib/retro_hex_chat/chat/policy.ex:48
-#: lib/retro_hex_chat/chat/policy.ex:70
+#: lib/retro_hex_chat/chat/policy.ex:48 lib/retro_hex_chat/chat/policy.ex:70
 #: lib/retro_hex_chat/chat/policy.ex:91
 #, elixir-autogen, elixir-format
 msgid "Message has already been deleted."
@@ -247,8 +248,7 @@ msgstr "Open/close 键盘快捷键"
 msgid "Original message not found."
 msgstr "找不到原始信件 。"
 
-#: lib/retro_hex_chat/chat/policy.ex:54
-#: lib/retro_hex_chat/chat/policy.ex:119
+#: lib/retro_hex_chat/chat/policy.ex:54 lib/retro_hex_chat/chat/policy.ex:119
 #, elixir-autogen, elixir-format
 msgid "Please wait a few seconds before editing again."
 msgstr "请稍候几秒钟再编辑."
@@ -421,13 +421,12 @@ msgstr "窗口 9"
 msgid "You cannot delete other users' messages."
 msgstr "您不能删除其他用户的消息 。"
 
-#: lib/retro_hex_chat/chat/policy.ex:45
-#: lib/retro_hex_chat/chat/policy.ex:67
+#: lib/retro_hex_chat/chat/policy.ex:45 lib/retro_hex_chat/chat/policy.ex:67
 #, elixir-autogen, elixir-format
 msgid "You cannot edit other users' messages."
 msgstr "您不能编辑其他用户的消息 。"
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:31
+#: lib/retro_hex_chat/chat/time_formatter.ex:45
 #, elixir-autogen, elixir-format
 msgid "just now"
 msgstr "刚才"
@@ -498,7 +497,7 @@ msgstr "切换会议相机"
 msgid "Toggle Conference Microphone"
 msgstr "切换会议麦克风"
 
-#: lib/retro_hex_chat/channels/server.ex:1300
+#: lib/retro_hex_chat/channels/server.ex:1306
 #: lib/retro_hex_chat/chat/service.ex:307
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -530,3 +529,9 @@ msgstr "文件"
 #, elixir-autogen, elixir-format
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr "信件超过最大长度 %{count} 个字符"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:37
+#, elixir-autogen, elixir-format
+msgid "%{count} day"
+msgid_plural "%{count} days"
+msgstr[0] "%{count}天"

@@ -46,7 +46,10 @@
 </p>
 <.help_h4 icon={:icon_clock}>{dgettext("help", "Nick Expiration")}</.help_h4>
 <p>
-  {dgettext("help", "Nicknames not used for")} <strong>{dgettext("help", "7 days")}</strong>
+  {dgettext("help", "Nicknames not used for")}
+  <strong>
+    {TimeFormatter.days(NickExpiry.configured_expiration_days())}
+  </strong>
   {dgettext("help", "are automatically freed. Connect regularly to keep your registration. See")}
   <.help_link topic="feature-nick-expiry">{dgettext("help", "Nick Expiration")}</.help_link>
   {dgettext("help", "for details.")}

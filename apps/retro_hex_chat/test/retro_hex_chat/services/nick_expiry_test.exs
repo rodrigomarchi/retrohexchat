@@ -130,4 +130,52 @@ defmodule RetroHexChat.Services.NickExpiryTest do
       refute NickServ.identified?("RemId", ctx.nickserv)
     end
   end
+
+  describe "configured expiration window" do
+    setup do
+      previous = Application.get_env(:retro_hex_chat, :expiry)
+      on_exit(fn -> Application.put_env(:retro_hex_chat, :expiry, previous) end)
+      :ok
+    end
+
+    test "without an explicit window, a nick unused for a month survives", ctx do
+      register_nick("MonthOldNick", "pass12345", 30)
+
+      result = NickExpiry.purge(nickserv: ctx.nickserv)
+
+      assert result.purged_names == []
+      assert Queries.find_by_nickname("MonthOldNick") != nil
+    end
+
+    test "without an explicit window, a nick past the default window is purged", ctx do
+      register_nick("AncientNick", "pass12345", 200)
+
+      result = NickExpiry.purge(nickserv: ctx.nickserv)
+
+      assert "AncientNick" in result.purged_names
+    end
+
+    # The window is deliberately wider than the historical seven days: a window
+    # narrower than it would be satisfied by the old constant and prove nothing.
+    test "the configured window decides when no option is given", ctx do
+      Application.put_env(:retro_hex_chat, :expiry, nick_days: 60, channel_days: 90)
+
+      register_nick("PastConfigured", "pass12345", 90)
+      register_nick("WithinConfigured", "pass12345", 20)
+
+      result = NickExpiry.purge(nickserv: ctx.nickserv)
+
+      assert "PastConfigured" in result.purged_names
+      refute "WithinConfigured" in result.purged_names
+    end
+
+    test "expired_count reads the same window as purge", ctx do
+      Application.put_env(:retro_hex_chat, :expiry, nick_days: 60, channel_days: 90)
+
+      register_nick("CountedNick", "pass12345", 90)
+      register_nick("UncountedNick", "pass12345", 20)
+
+      assert NickExpiry.expired_count(nickserv: ctx.nickserv) == 1
+    end
+  end
 end

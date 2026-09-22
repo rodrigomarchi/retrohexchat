@@ -48,14 +48,17 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChat.Accounts.{NicknameValidator, Session, TrustedDevices}
   alias RetroHexChat.Admin.ServerBans
   alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Services.ChanExpiry
   alias RetroHexChat.Services.{Motd, Queries}
+  alias RetroHexChat.Services.NickExpiry
 
   alias RetroHexChat.Chat.{
     DuplicateTracker,
     FloodTracker,
     KeyBindings,
     ReconnectState,
-    SoundSettings
+    SoundSettings,
+    TimeFormatter
   }
 
   alias RetroHexChat.Presence.{Tracker, WhowasCache}
@@ -1071,7 +1074,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
       dgettext("chat", "Access hierarchy: Owner > SOP > AOP > VOP"),
       "",
       dgettext("chat", "Rules:"),
-      dgettext("chat", "  • Channels expire after 7 days of inactivity"),
+      dgettext("chat", "  • Channels expire after %{window} of inactivity",
+        window: TimeFormatter.days(ChanExpiry.configured_expiration_days())
+      ),
       dgettext("chat", "  • If a founder's nick expires, the next ranked user is promoted"),
       "",
       dgettext("chat", "Type /help chanserv or /help channel-permissions for full details.")
@@ -1100,7 +1105,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
       "",
       dgettext("chat", "Rules:"),
       dgettext("chat", "  • Nicks are case sensitive — \"Alice\" and \"alice\" are different"),
-      dgettext("chat", "  • Nicks expire after 7 days of inactivity"),
+      dgettext("chat", "  • Nicks expire after %{window} of inactivity",
+        window: TimeFormatter.days(NickExpiry.configured_expiration_days())
+      ),
       dgettext("chat", "  • Switching to a registered nick gives you 60s to identify"),
       "",
       dgettext("chat", "Type /help nickserv for full details.")

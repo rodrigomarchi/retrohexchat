@@ -157,4 +157,31 @@ defmodule RetroHexChatWeb.ConnectDesktopShellTest do
       assert has_element?(view, ~s([data-window-id="connect"] form[phx-submit="connect"]))
     end
   end
+
+  describe "nickname cleanup notice" do
+    setup do
+      previous = Application.get_env(:retro_hex_chat, :expiry)
+      on_exit(fn -> Application.put_env(:retro_hex_chat, :expiry, previous) end)
+      :ok
+    end
+
+    test "quotes the window the server actually sweeps on", %{conn: conn} do
+      Application.put_env(:retro_hex_chat, :expiry, nick_days: 45, channel_days: 90)
+
+      {:ok, view, _html} = live(conn, "/connect")
+
+      assert view |> element(~s([data-testid="nick-expiry-notice"])) |> render() =~ "45"
+    end
+
+    test "a different configured window changes the notice", %{conn: conn} do
+      Application.put_env(:retro_hex_chat, :expiry, nick_days: 200, channel_days: 90)
+
+      {:ok, view, _html} = live(conn, "/connect")
+
+      notice = view |> element(~s([data-testid="nick-expiry-notice"])) |> render()
+
+      assert notice =~ "200"
+      refute notice =~ "45"
+    end
+  end
 end

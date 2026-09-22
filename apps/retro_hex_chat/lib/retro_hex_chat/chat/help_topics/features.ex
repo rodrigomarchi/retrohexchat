@@ -3,6 +3,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
 
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Chat.TimeFormatter
+  alias RetroHexChat.Services.NickExpiry
+
   @spec topics() :: [map()]
   def topics do
     [
@@ -1505,7 +1508,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "expiration",
           "inactive",
           "purge",
-          dgettext("help", "7 days"),
+          "window",
           "automatic",
           "freed",
           "released"
@@ -1514,7 +1517,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Registered nicknames expire after 7 days of inactivity and become available again."
+            "Registered nicknames expire after %{window} of inactivity and become available again.",
+            window: TimeFormatter.days(NickExpiry.configured_expiration_days())
           )
       },
       %{

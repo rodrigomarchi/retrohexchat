@@ -37,6 +37,14 @@ config :retro_hex_chat,
   # Virtual space runtime
   virtual_space_step_ms: 150
 
+# How long an unused identity or a quiet channel is kept. Long on purpose: a
+# nickname is the only durable identity in chat, and releasing one takes the
+# person's channels, access entries and founder rights with it. Overridable at
+# runtime so a server with a crowded namespace can tighten it without a rebuild.
+config :retro_hex_chat, :expiry,
+  nick_days: 180,
+  channel_days: 90
+
 config :retro_hex_chat, Oban,
   engine: Oban.Engines.Basic,
   repo: RetroHexChat.Repo,

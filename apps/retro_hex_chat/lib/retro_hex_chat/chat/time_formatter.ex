@@ -23,6 +23,20 @@ defmodule RetroHexChat.Chat.TimeFormatter do
     end
   end
 
+  @doc """
+  A number of days, spelled the way the reader's language spells it.
+
+  Every screen that quotes an expiry window reads it from here instead of
+  writing the sentence itself. The window is configuration, so the number is
+  not known when the sentence is written, and a sentence per screen would be a
+  plural rule per screen in fourteen languages — the same rule, restated seven
+  times, wrong in six of them by the second edit.
+  """
+  @spec days(pos_integer()) :: String.t()
+  def days(count) when is_integer(count) and count > 0 do
+    dngettext("chat", "%{count} day", "%{count} days", count)
+  end
+
   @spec format_relative(DateTime.t()) :: String.t()
   def format_relative(%DateTime{} = timestamp) do
     seconds = DateTime.diff(DateTime.utc_now(), timestamp, :second)

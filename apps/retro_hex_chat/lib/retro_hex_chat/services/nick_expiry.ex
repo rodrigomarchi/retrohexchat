@@ -9,7 +9,7 @@ defmodule RetroHexChat.Services.NickExpiry do
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.Queries
 
-  @default_expiration_days 7
+  @default_expiration_days 180
 
   @type purge_result :: %{
           expired_count: non_neg_integer(),
@@ -27,10 +27,25 @@ defmodule RetroHexChat.Services.NickExpiry do
           welcome_messages_removed: non_neg_integer()
         }
 
+  @doc """
+  How many days a nickname may go unused before it is released.
+
+  Read at call time rather than frozen into an attribute: a self-hosted server
+  sets `RHC_NICK_EXPIRY_DAYS` and expects the next sweep to obey it, and a
+  release that compiled the number in would ignore the variable it was told to
+  read. The module attribute stays as the answer when nothing is configured.
+  """
+  @spec configured_expiration_days() :: pos_integer()
+  def configured_expiration_days do
+    :retro_hex_chat
+    |> Application.get_env(:expiry, [])
+    |> Keyword.get(:nick_days, @default_expiration_days)
+  end
+
   @spec expired_count() :: non_neg_integer()
   @spec expired_count(keyword()) :: non_neg_integer()
   def expired_count(opts \\ []) do
-    expiration_days = Keyword.get(opts, :expiration_days, @default_expiration_days)
+    expiration_days = Keyword.get(opts, :expiration_days, configured_expiration_days())
     now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
     nickserv = Keyword.get(opts, :nickserv, NickServ)
     protected = protected_nicks(nickserv)
@@ -41,7 +56,7 @@ defmodule RetroHexChat.Services.NickExpiry do
   @spec purge() :: purge_result()
   @spec purge(keyword()) :: purge_result()
   def purge(opts \\ []) do
-    expiration_days = Keyword.get(opts, :expiration_days, @default_expiration_days)
+    expiration_days = Keyword.get(opts, :expiration_days, configured_expiration_days())
     now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
     nickserv = Keyword.get(opts, :nickserv, NickServ)
 

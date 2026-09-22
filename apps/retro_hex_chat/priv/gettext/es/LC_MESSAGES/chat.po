@@ -16,7 +16,7 @@ msgstr ""
 msgid "  %{name} (%{type}, %{interval}s) → %{command}"
 msgstr "%{name} (%{type}, %{interval}s) → %{command}"
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:41
+#: lib/retro_hex_chat/chat/time_formatter.ex:55
 #, elixir-autogen, elixir-format
 msgid "1 %{singular}"
 msgstr "1 %{singular}"
@@ -107,15 +107,16 @@ msgstr "Ding High"
 msgid "Ding Low"
 msgstr "Ding Low"
 
-#: lib/retro_hex_chat/chat/policy.ex:51
-#: lib/retro_hex_chat/chat/policy.ex:80
+#: lib/retro_hex_chat/chat/policy.ex:51 lib/retro_hex_chat/chat/policy.ex:80
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
 msgstr "Editar la ventana ha expirado."
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
-msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
+msgid ""
+"Expansion must not contain command chaining characters (|, &&, ;, or "
+"newlines)"
 msgstr ""
 "La expansión no debe contener caracteres de encadenamiento de comandos "
 "(última, &quot; ; o nuevas líneas)"
@@ -127,20 +128,20 @@ msgstr "Formato"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:111
 #, elixir-autogen, elixir-format
-msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
+msgid ""
+"Invalid timer name. Use only letters, numbers, hyphens, underscores (max "
+"%{max_name_length} chars)."
 msgstr ""
 "Nombre del temporizador inválido. Utilice sólo letras, números, hyphens, "
 "subrayados (max %{max_name_length} chars)."
 
-#: lib/retro_hex_chat/chat/content.ex:135
-#: lib/retro_hex_chat/chat/policy.ex:19
+#: lib/retro_hex_chat/chat/content.ex:135 lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
 msgid "Message cannot be empty"
 msgstr "El mensaje no puede estar vacío"
 
-#: lib/retro_hex_chat/chat/policy.ex:48
-#: lib/retro_hex_chat/chat/policy.ex:70
+#: lib/retro_hex_chat/chat/policy.ex:48 lib/retro_hex_chat/chat/policy.ex:70
 #: lib/retro_hex_chat/chat/policy.ex:91
 #, elixir-autogen, elixir-format
 msgid "Message has already been deleted."
@@ -252,8 +253,7 @@ msgstr "Open/close la hoja de trampa atajo teclado"
 msgid "Original message not found."
 msgstr "Mensaje original no encontrado."
 
-#: lib/retro_hex_chat/chat/policy.ex:54
-#: lib/retro_hex_chat/chat/policy.ex:119
+#: lib/retro_hex_chat/chat/policy.ex:54 lib/retro_hex_chat/chat/policy.ex:119
 #, elixir-autogen, elixir-format
 msgid "Please wait a few seconds before editing again."
 msgstr "Por favor, espere unos segundos antes de editar de nuevo."
@@ -428,13 +428,12 @@ msgstr "Ventana 9"
 msgid "You cannot delete other users' messages."
 msgstr "No puede borrar los mensajes de otros usuarios."
 
-#: lib/retro_hex_chat/chat/policy.ex:45
-#: lib/retro_hex_chat/chat/policy.ex:67
+#: lib/retro_hex_chat/chat/policy.ex:45 lib/retro_hex_chat/chat/policy.ex:67
 #, elixir-autogen, elixir-format
 msgid "You cannot edit other users' messages."
 msgstr "No puede editar los mensajes de otros usuarios."
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:31
+#: lib/retro_hex_chat/chat/time_formatter.ex:45
 #, elixir-autogen, elixir-format
 msgid "just now"
 msgstr "ahora"
@@ -505,7 +504,7 @@ msgstr "Toggle Conference Camera"
 msgid "Toggle Conference Microphone"
 msgstr "Toggle Conference Microphone"
 
-#: lib/retro_hex_chat/channels/server.ex:1300
+#: lib/retro_hex_chat/channels/server.ex:1306
 #: lib/retro_hex_chat/chat/service.ex:307
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -537,3 +536,10 @@ msgstr "archivo"
 #, elixir-autogen, elixir-format
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr "El mensaje supera la longitud máxima de %{count} caracteres"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:37
+#, elixir-autogen, elixir-format
+msgid "%{count} day"
+msgid_plural "%{count} days"
+msgstr[0] "%{count} día"
+msgstr[1] "%{count} días"

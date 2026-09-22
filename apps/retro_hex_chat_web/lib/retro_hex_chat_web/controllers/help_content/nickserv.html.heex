@@ -42,7 +42,9 @@
   </li>
   <li>
     {dgettext("help_channels", "Nicknames expire after")}
-    <strong>{dgettext("help_channels", "7 days")}</strong>
+    <strong>
+      {TimeFormatter.days(NickExpiry.configured_expiration_days())}
+    </strong>
     {dgettext("help_channels", "of inactivity — connect regularly to keep yours (see")} <.help_link topic="feature-nick-expiry">{dgettext("help_channels", "Nick Expiration")}</.help_link>)
   </li>
   <li>
