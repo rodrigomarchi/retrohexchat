@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **226 spec files** under `e2e/tests/`.
-- **481 Playwright `test()` cases**.
-- **476 documented flows**, 475 done, 1 not done.
+- **227 spec files** under `e2e/tests/`.
+- **482 Playwright `test()` cases**.
+- **477 documented flows**, 476 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -500,6 +500,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | P17 | A short outage shows the reconnect banner but not the intrusive modal (BA1) | `tests/chat-deploy-reconnect.spec.ts` | done |
 | P18 | A cold remount does not replay the login sequence (BA2) | `tests/chat-deploy-reconnect.spec.ts` | done |
 | P19 | A mention made while away is counted, listed in the Mentions window, and leads back to the line | `tests/chat-mentions.spec.ts` | done |
+| P20 | Reading, leaving, receiving and coming back draws the new-messages rule in the right place | `tests/chat-unread-divider.spec.ts` | done |
 
 ### Q - Catalog, Help, Parser, And Command Surface
 

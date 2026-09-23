@@ -969,6 +969,12 @@ defmodule RetroHexChatWeb.App.ChatLive do
       # Separate from the unread count above: one says there is something new,
       # the other says it is about you.
       mention_counts: %{},
+      # Where the reader had got to in each conversation, and the newest line the
+      # viewport has actually shown. The second is what the first is set from
+      # when the reader looks away.
+      read_markers: %{},
+      newest_message_id: nil,
+      unread_boundary_id: nil,
       url_catcher_entries: [],
       url_catcher_dropped: 0,
       ignore_timers: %{},

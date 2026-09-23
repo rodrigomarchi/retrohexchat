@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChat.Page
   alias RetroHexChat.Topics
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  alias RetroHexChatWeb.ChatLive.ReadMarkers
   alias RetroHexChatWeb.ChatLive.StreamItem
 
   alias RetroHexChatWeb.ChatLive.Components.Composer
@@ -68,6 +69,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   end
 
   defp setup_joined_channel(socket, channel_name, session, :activate) do
+    # The conversation on screen is about to be replaced, so it is finished
+    # being read. Joining does not go through `enter_conversation`, which is
+    # where every other switch settles this.
+    socket = ReadMarkers.advance(socket)
+
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.channel_calls(channel_name))
     client_meta = Map.get(socket.assigns, :client_info, %{})
@@ -238,6 +244,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       has_more: page.has_more,
       loaded_message_count: length(page.items)
     )
+    |> ReadMarkers.put_boundary(stream_items)
     |> MessageViewport.reset(stream_items)
   end
 

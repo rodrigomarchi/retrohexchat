@@ -15,11 +15,19 @@ defmodule RetroHexChat.Chat.ReconnectState do
           active_channel: String.t() | nil,
           active_pm: String.t() | nil,
           open_pm_tabs: [String.t()],
-          welcomed_channels: [String.t()]
+          welcomed_channels: [String.t()],
+          read_markers: %{String.t() => pos_integer()}
         }
 
   @max_channels 50
   @max_open_pm_tabs 20
+
+  # Where somebody had read to, per conversation. Kept even for a channel they
+  # left — that is precisely what they want when they come back to it — so the
+  # only thing bounding the map is this ceiling. It is generous on purpose: a
+  # person with a hundred conversations behind them is a person the product is
+  # working for.
+  @max_read_markers 100
 
   @spec new() :: t()
   def new do
@@ -29,9 +37,14 @@ defmodule RetroHexChat.Chat.ReconnectState do
       active_channel: nil,
       active_pm: nil,
       open_pm_tabs: [],
-      welcomed_channels: []
+      welcomed_channels: [],
+      read_markers: %{}
     }
   end
+
+  @doc "How many conversations a snapshot remembers a position in."
+  @spec max_read_markers() :: pos_integer()
+  def max_read_markers, do: @max_read_markers
 
   @spec normalize(map()) :: t()
   def normalize(snapshot) when is_map(snapshot) do
@@ -58,6 +71,10 @@ defmodule RetroHexChat.Chat.ReconnectState do
       welcomed_channels:
         normalize_channels(
           Map.get(snapshot, :welcomed_channels) || Map.get(snapshot, "welcomed_channels")
+        ),
+      read_markers:
+        normalize_read_markers(
+          Map.get(snapshot, :read_markers) || Map.get(snapshot, "read_markers")
         )
     }
   end
@@ -81,7 +98,8 @@ defmodule RetroHexChat.Chat.ReconnectState do
       active_channel: normalized.active_channel,
       active_pm: normalized.active_pm,
       open_pm_tabs: normalized.open_pm_tabs,
-      welcomed_channels: normalized.welcomed_channels
+      welcomed_channels: normalized.welcomed_channels,
+      read_markers: normalized.read_markers
     }
 
     case Repo.get(ReconnectStateSchema, owner) do
@@ -116,7 +134,8 @@ defmodule RetroHexChat.Chat.ReconnectState do
            active_channel: db_entry.active_channel,
            active_pm: db_entry.active_pm,
            open_pm_tabs: db_entry.open_pm_tabs,
-           welcomed_channels: db_entry.welcomed_channels
+           welcomed_channels: db_entry.welcomed_channels,
+           read_markers: db_entry.read_markers
          })}
     end
   end
@@ -138,6 +157,30 @@ defmodule RetroHexChat.Chat.ReconnectState do
   end
 
   def delete(_owner), do: :ok
+
+  # A snapshot is written by a browser, so every part of it can arrive wrong: a
+  # key that is not a conversation, a value that is not an id, more entries than
+  # anybody could have conversations. None of that may reach a row, and none of
+  # it may raise — a malformed snapshot taking the mount down is far worse than
+  # a forgotten position.
+  defp normalize_read_markers(markers) when is_map(markers) do
+    markers
+    |> Enum.filter(fn {key, value} -> conversation_key?(key) and message_id?(value) end)
+    |> Enum.sort_by(fn {key, _value} -> key end)
+    |> Enum.take(@max_read_markers)
+    |> Map.new()
+  end
+
+  defp normalize_read_markers(_markers), do: %{}
+
+  defp conversation_key?(key) when is_binary(key) do
+    String.starts_with?(key, "#") or String.starts_with?(key, "pm:")
+  end
+
+  defp conversation_key?(_key), do: false
+
+  defp message_id?(value) when is_integer(value) and value > 0, do: true
+  defp message_id?(_value), do: false
 
   defp normalize_channels(channels) when is_list(channels) do
     channels

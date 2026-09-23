@@ -3154,6 +3154,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "Zie ook"
@@ -3732,6 +3733,7 @@ msgstr "Onder de 200ms is de verbinding goed."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy_feedback.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Unread Indicators"
 msgstr "Ongelezen indicatoren"
@@ -6500,3 +6502,53 @@ msgstr "Wat nooit meetelt"
 #, elixir-autogen, elixir-format
 msgid "Your own messages, deleted messages, and anything the server itself said — a join, a service reply, a notice. Those name people constantly and none of it is somebody reaching for you."
 msgstr "Je eigen berichten, verwijderde berichten en alles wat de server zelf zei — een binnenkomst, een dienstantwoord, een mededeling. Die noemen voortdurend mensen en niets daarvan is iemand die jou zoekt."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "A First Visit Has No Rule"
+msgstr "Een eerste bezoek heeft geen lijn"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "A conversation you have never opened has nothing marked as read, so nothing is drawn. The mark is remembered per conversation for registered nicknames and survives a reconnect."
+msgstr "Een gesprek dat je nooit hebt geopend heeft niets als gelezen gemarkeerd, dus er wordt niets getekend. De markering wordt per gesprek onthouden voor geregistreerde bijnamen en overleeft een herverbinding."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "It never moves as messages arrive. If it did, the rule would always sit at the bottom and there would be nothing to separate."
+msgstr "Hij schuift nooit op als er berichten binnenkomen. Deed hij dat wel, dan zou de lijn altijd onderaan staan en viel er niets te scheiden."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Jumping Straight There"
+msgstr "Er direct heen springen"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Mentions"
+msgstr "Vermeldingen"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "When the Mark Moves"
+msgstr "Wanneer de markering opschuift"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "When you come back to a conversation with something new in it, a red rule marks where you stopped reading. Everything below it arrived while you were away."
+msgstr "Wanneer je terugkomt bij een gesprek met iets nieuws, markeert een rode lijn waar je stopte met lezen. Alles eronder kwam binnen terwijl je weg was."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "When you come back to the tab with the conversation open"
+msgstr "Wanneer je terugkomt op het tabblad met het gesprek open"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "When you switch to another conversation"
+msgstr "Wanneer je naar een ander gesprek wisselt"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "While there is something new, a First unread button appears beside the conversation's other controls and scrolls to the first line you have not read. If that line is older than the part of the history currently loaded, scroll up once to load more and press it again."
+msgstr "Zolang er iets nieuws is, verschijnt naast de andere bedieningselementen van het gesprek een knop Eerste ongelezen die naar de eerste ongelezen regel scrollt. Is die regel ouder dan het geladen deel van de geschiedenis, scroll dan één keer omhoog om meer te laden en druk opnieuw."

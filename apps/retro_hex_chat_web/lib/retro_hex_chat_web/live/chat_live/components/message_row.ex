@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
   use RetroHexChatWeb, :html
 
   import RetroHexChatWeb.Components.UI.MessageRow
+  import RetroHexChatWeb.Components.UI.UnreadDivider
 
   alias RetroHexChat.Chat.Content
   alias RetroHexChatWeb.App.ChatHelpers
@@ -27,6 +28,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
   attr :strip_formatting, :boolean, required: true
   attr :edit_mode_message_id, :any, required: true
   attr :viewer, :string, default: nil, doc: "Viewing user's nickname (legacy P2P rows)"
+
+  attr :unread_boundary_id, :any,
+    default: nil,
+    doc: "The first message the reader had not seen; this row draws the rule above itself"
 
   @doc "Renders one chat message row (wrapper + type-specific body) for the viewport stream."
   @spec message_row(map()) :: Phoenix.LiveView.Rendered.t()
@@ -52,6 +57,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
       }
       data-real-id={Map.get(@msg, :id)}
     >
+      <%!-- Inside the row rather than beside it. A stream container requires an
+            id on every child, and a synthetic sibling would also reorder with
+            its neighbours and be pruned by the negative `limit:` — which is
+            what removes the rows a prepend has just added. --%>
+      <.unread_divider :if={boundary?(@msg, @unread_boundary_id)} />
       <.message_row_body
         msg={@msg}
         nick_color_fn={@nick_color_fn}
@@ -63,6 +73,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
     </div>
     """
   end
+
+  @spec boundary?(map(), term()) :: boolean()
+  defp boundary?(_msg, nil), do: false
+  defp boundary?(msg, boundary_id), do: Map.get(msg, :id) == boundary_id
 
   @spec message_classes(map(), term()) :: String.t()
   defp message_classes(msg, edit_mode_message_id) do

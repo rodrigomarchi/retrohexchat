@@ -1,0 +1,40 @@
+<p>
+  {dgettext(
+    "help_features",
+    "When you come back to a conversation with something new in it, a red rule marks where you stopped reading. Everything below it arrived while you were away."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "When the Mark Moves")}</.help_h4>
+<ul>
+  <li>{dgettext("help_features", "When you switch to another conversation")}</li>
+  <li>{dgettext("help_features", "When you come back to the tab with the conversation open")}</li>
+</ul>
+<p>
+  {dgettext(
+    "help_features",
+    "It never moves as messages arrive. If it did, the rule would always sit at the bottom and there would be nothing to separate."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_down}>{dgettext("help_features", "Jumping Straight There")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "While there is something new, a First unread button appears beside the conversation's other controls and scrolls to the first line you have not read. If that line is older than the part of the history currently loaded, scroll up once to load more and press it again."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>
+  {dgettext("help_features", "A First Visit Has No Rule")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "A conversation you have never opened has nothing marked as read, so nothing is drawn. The mark is remembered per conversation for registered nicknames and survives a reconnect."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-unread-indicators">
+    {dgettext("help_features", "Unread Indicators")}
+  </.help_link>
+  · <.help_link topic="feature-mentions">{dgettext("help_features", "Mentions")}</.help_link>
+</p>

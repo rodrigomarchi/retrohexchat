@@ -2948,6 +2948,7 @@ msgstr "現在のチャンネルまたはPMでリアルタイムのハイライ�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "関連項目"
@@ -3477,6 +3478,7 @@ msgstr "200ms未満 — 接続が良好です。"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy_feedback.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Unread Indicators"
 msgstr "未読の表示器"
@@ -5964,3 +5966,53 @@ msgstr "決して数えないもの"
 #, elixir-autogen, elixir-format
 msgid "Your own messages, deleted messages, and anything the server itself said — a join, a service reply, a notice. Those name people constantly and none of it is somebody reaching for you."
 msgstr "自分のメッセージ、削除されたメッセージ、そしてサーバー自身が言ったこと — 参加、サービスの応答、通知。これらは絶えず人の名前を出しますが、どれもあなたを呼んでいるものではありません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "A First Visit Has No Rule"
+msgstr "初めての訪問に線はありません"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "A conversation you have never opened has nothing marked as read, so nothing is drawn. The mark is remembered per conversation for registered nicknames and survives a reconnect."
+msgstr "一度も開いたことのない会話には既読の印がないため、何も描かれません。この印は登録済みのニックネームについて会話ごとに記憶され、再接続しても残ります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "It never moves as messages arrive. If it did, the rule would always sit at the bottom and there would be nothing to separate."
+msgstr "メッセージが届いても印は動きません。動いてしまえば、線は常に一番下にあり、分けるものが何もなくなります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Jumping Straight There"
+msgstr "そこへ直接飛ぶ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Mentions"
+msgstr "メンション"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "When the Mark Moves"
+msgstr "印が動くとき"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "When you come back to a conversation with something new in it, a red rule marks where you stopped reading. Everything below it arrived while you were away."
+msgstr "新しいものがある会話に戻ると、赤い線がどこまで読んだかを示します。その下にあるものはすべて、あなたが離れている間に届いたものです。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "When you come back to the tab with the conversation open"
+msgstr "会話を開いたままタブに戻ったとき"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "When you switch to another conversation"
+msgstr "別の会話に切り替えたとき"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "While there is something new, a First unread button appears beside the conversation's other controls and scrolls to the first line you have not read. If that line is older than the part of the history currently loaded, scroll up once to load more and press it again."
+msgstr "新しいものがある間は、会話の他の操作の隣に「最初の未読」ボタンが現れ、まだ読んでいない最初の行までスクロールします。その行が読み込まれている履歴より古い場合は、一度上にスクロールして追加を読み込み、もう一度押してください。"

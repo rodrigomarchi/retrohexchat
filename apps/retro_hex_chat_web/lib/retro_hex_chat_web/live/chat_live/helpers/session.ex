@@ -403,7 +403,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       active_channel: session.active_channel,
       active_pm: session.active_pm,
       open_pm_tabs: socket.assigns[:open_pm_tabs] || [],
-      welcomed_channels: MapSet.to_list(session.welcomed_channels || MapSet.new())
+      welcomed_channels: MapSet.to_list(session.welcomed_channels || MapSet.new()),
+      read_markers: socket.assigns[:read_markers] || %{}
     })
   end
 
@@ -438,6 +439,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       socket
       |> restore_welcomed_channels(params.welcomed_channels)
       |> assign(
+        read_markers: params.read_markers,
         reconnect_active_channel: active_channel,
         reconnect_active_pm: active_pm,
         reconnect_open_pm_tabs: open_pm_tabs,

@@ -245,6 +245,18 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     {:halt, push_event(socket, "scroll_to_message", %{message_id: parent_id})}
   end
 
+  # -- jump_to_first_unread --
+
+  def handle_event("jump_to_first_unread", _params, socket) do
+    case socket.assigns[:unread_boundary_id] do
+      nil ->
+        {:halt, socket}
+
+      id ->
+        {:halt, push_event(socket, "scroll_to_message", %{message_id: to_string(id)})}
+    end
+  end
+
   def handle_event("scroll_to_message_missing", _params, socket) do
     {:halt,
      MessageHelpers.system_event(

@@ -14,6 +14,7 @@ defmodule RetroHexChat.Chat.Schemas.ReconnectState do
     field :active_pm, :string
     field :open_pm_tabs, {:array, :string}, default: []
     field :welcomed_channels, {:array, :string}, default: []
+    field :read_markers, :map, default: %{}
 
     timestamps(type: :utc_datetime_usec)
   end
@@ -27,13 +28,15 @@ defmodule RetroHexChat.Chat.Schemas.ReconnectState do
       :active_channel,
       :active_pm,
       :open_pm_tabs,
-      :welcomed_channels
+      :welcomed_channels,
+      :read_markers
     ])
     |> validate_required([
       :owner_nickname,
       :channels,
       :open_pm_tabs,
-      :welcomed_channels
+      :welcomed_channels,
+      :read_markers
     ])
     |> validate_length(:owner_nickname, max: 16)
     # A snapshot belongs to a registered nickname, and the owner can stop being

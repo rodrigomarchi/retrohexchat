@@ -763,6 +763,24 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "Automatically reply to private messages when you are marked as away.")
       },
       %{
+        id: "feature-where-you-left-off",
+        title: dgettext("help", "Where You Left Off"),
+        category: dgettext("help", "Chat Display"),
+        keywords: [
+          dgettext("help", "new messages"),
+          dgettext("help", "unread line"),
+          dgettext("help", "first unread"),
+          "divider",
+          "marker"
+        ],
+        icon: :icon_btn_down,
+        description:
+          dgettext(
+            "help",
+            "A rule across the conversation showing where you stopped reading, and a button that jumps to it."
+          )
+      },
+      %{
         id: "feature-mentions",
         title: dgettext("help", "Mentions"),
         category: dgettext("help", "Notifications & Sounds"),

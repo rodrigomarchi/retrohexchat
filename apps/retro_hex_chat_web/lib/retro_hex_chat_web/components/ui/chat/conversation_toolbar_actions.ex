@@ -31,6 +31,11 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
   attr :active_channel, :string, default: nil
   attr :active_pm, :string, default: nil
   attr :show_status_tab, :boolean, default: false
+
+  attr :unread_boundary_id, :any,
+    default: nil,
+    doc: "First line the reader had not seen; the jump button exists only while there is one"
+
   attr :class, :any, default: nil
 
   @spec conversation_toolbar_actions(map()) :: Phoenix.LiveView.Rendered.t()
@@ -79,6 +84,20 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
         aria-hidden="true"
         data-testid="conversation-toolbar-context-separator"
       />
+
+      <%!-- Only while there is somewhere to jump to. A button that scrolls to
+            where you already are is a button that teaches people to ignore
+            the toolbar. --%>
+      <.action_button
+        :if={@unread_boundary_id}
+        event="jump_to_first_unread"
+        active={false}
+        text={dgettext("chat", "First unread")}
+        label={dgettext("chat", "Jump to the first message you have not read")}
+        testid="conversation-toolbar-first-unread"
+      >
+        <Icons.icon_btn_down class="h-4 w-4" />
+      </.action_button>
 
       <.action_button
         :if={@show_channel_context}

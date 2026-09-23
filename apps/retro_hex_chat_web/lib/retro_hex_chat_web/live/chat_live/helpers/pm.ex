@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.P2PReadModel
+  alias RetroHexChatWeb.ChatLive.ReadMarkers
   alias RetroHexChatWeb.ChatLive.StreamItem
 
   @spec load_pm_messages_with_pagination(Phoenix.LiveView.Socket.t(), String.t()) ::
@@ -284,6 +285,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     socket
     |> maybe_clear_empty_stream(stream_items)
     |> assign(assigns)
+    |> ReadMarkers.put_boundary(stream_items)
     |> MessageViewport.reset(stream_items)
   end
 

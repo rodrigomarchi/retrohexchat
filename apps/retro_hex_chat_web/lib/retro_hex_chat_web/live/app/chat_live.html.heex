@@ -187,6 +187,7 @@
                   has_more={@has_more}
                   loading_channel={@loading_channel}
                   viewer={@session.nickname}
+                  unread_boundary_id={@unread_boundary_id}
                 />
 
                 <%!-- Status messages stream (stateful island — owns the :status_messages stream) --%>
@@ -260,6 +261,7 @@
                 active_channel={@session.active_channel}
                 active_pm={@session.active_pm}
                 show_status_tab={@show_status_tab}
+                unread_boundary_id={@unread_boundary_id}
               />
               <.group_call_channel_entry
                 :if={@session.active_channel && !@show_status_tab}

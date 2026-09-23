@@ -45,6 +45,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   alias RetroHexChat.ShareLinks.Card
   alias RetroHexChatWeb.ChatLive.Components.MessageRow
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
+  alias RetroHexChatWeb.ChatLive.ReadMarkers
   alias RetroHexChatWeb.ShareLinkRef
 
   @id "message-viewport"
@@ -74,7 +75,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   @spec insert(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
   def insert(socket, msg) do
     send_update(__MODULE__, id: @id, action: {:insert, msg})
-    socket
+    ReadMarkers.seen(socket, newest_id(socket, msg))
   end
 
   @doc "Prepends a chronological page of older messages. Returns the socket."
@@ -95,8 +96,26 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   @spec reset(Phoenix.LiveView.Socket.t(), [map()]) :: Phoenix.LiveView.Socket.t()
   def reset(socket, items) do
     send_update(__MODULE__, id: @id, action: {:reset, items})
-    socket
+
+    # A reset replaces the conversation, so what the viewport has shown is
+    # replaced too — including with nothing. Carrying the previous
+    # conversation's newest line across would move the wrong marker on the way
+    # back out.
+    ReadMarkers.replace_seen(
+      socket,
+      Enum.reduce(items, nil, fn item, acc -> newest(acc, Map.get(item, :id)) end)
+    )
   end
+
+  # An edit or a delete re-inserts a row that is not the newest one, so what the
+  # viewport has shown only ever moves forward.
+  @spec newest_id(Phoenix.LiveView.Socket.t(), map()) :: integer() | nil
+  defp newest_id(socket, msg), do: newest(socket.assigns[:newest_message_id], Map.get(msg, :id))
+
+  @spec newest(term(), term()) :: integer() | nil
+  defp newest(current, id) when is_integer(current) and is_integer(id), do: max(current, id)
+  defp newest(_current, id) when is_integer(id), do: id
+  defp newest(current, _id), do: current
 
   @doc """
   Re-renders the rows already on screen, without reading the database.
@@ -145,6 +164,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
        loading_channel: nil,
        has_more: false,
        viewer: nil,
+       unread_boundary_id: nil,
        rendered: [],
        share_card_spaces: MapSet.new(),
        scrollback?: false
@@ -252,7 +272,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
       :show_status_tab,
       :loading_channel,
       :has_more,
-      :viewer
+      :viewer,
+      :unread_boundary_id
     ]
 
     merged =
@@ -335,6 +356,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
             strip_formatting={@strip_formatting}
             edit_mode_message_id={@edit_mode_message_id}
             viewer={@viewer}
+            unread_boundary_id={@unread_boundary_id}
           />
         </div>
 

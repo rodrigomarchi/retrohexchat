@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.ChatLive.PmTypingEvents do
   import Phoenix.LiveView, only: [push_event: 3]
 
   alias RetroHexChat.Topics
+  alias RetroHexChatWeb.ChatLive.ReadMarkers
 
   def handle_event("pm_typing", _params, socket) do
     {:halt, tell_peer(socket, "typing")}
@@ -19,8 +20,12 @@ defmodule RetroHexChatWeb.ChatLive.PmTypingEvents do
     {:halt, tell_peer(socket, "stop_typing")}
   end
 
+  # Coming back to the tab with a conversation already open means everything in
+  # it has been seen, so the marker catches up here — never when a message
+  # arrives, which would put the marker past the very lines the divider exists
+  # to separate.
   def handle_event("tab_focused", _params, socket) do
-    {:halt, push_event(socket, "title_flash_stop", %{})}
+    {:halt, socket |> ReadMarkers.advance() |> push_event("title_flash_stop", %{})}
   end
 
   def handle_event("mute_state_sync", _params, socket), do: {:halt, socket}

@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
+  alias RetroHexChatWeb.ChatLive.ReadMarkers
   alias RetroHexChatWeb.ChatLive.ShareCards
 
   @doc """
@@ -138,7 +139,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
   defp enter_conversation(socket, session, unread_key) do
     if socket.assigns[:pm_typing_timer], do: Process.cancel_timer(socket.assigns.pm_typing_timer)
 
+    # The conversation being left is finished being read, so its marker catches
+    # up here — before the new one's stream replaces what the viewport knows it
+    # has shown.
     socket
+    |> ReadMarkers.advance()
+    |> ReadMarkers.reset_seen()
     |> assign(
       session: session,
       notice_active: false,

@@ -17,7 +17,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 2.3 Web Push | **pronto** (2026-09-23) |
 | 3.1 Reações | **pronto** (2026-09-23) |
 | 3.2 Menções | **pronto** (2026-09-23) |
-| 3.3 Régua de não lidas | não iniciado |
+| 3.3 Régua de não lidas | **pronto** (2026-09-23) |
 | 4.1 Multi-dispositivo | não iniciado |
 | 4.2 E-mail opcional | não iniciado |
 | 4.3 Fixar mensagem | não iniciado |
@@ -543,3 +543,62 @@ que você tem que ler antes de clicar.
 `help_topics/features.ex`, `help_content/feature_mentions.html.heex`,
 `e2e/tests/chat-mentions.spec.ts`, e os catálogos `chat`, `dialogs`, `help`,
 `help_features`, `ui`.
+
+---
+
+### 2026-09-23 — item 3.3, régua de não lidas e voltar para onde parei
+
+**Pronto.** `make ci` 18/18 e `make e2e.batch BATCH=persistence`. Fecha a onda 3.
+
+- Coluna `read_markers` em `reconnect_states` — a tabela que já guarda o que a
+  pessoa tinha aberto passa a guardar também onde ela estava. Nenhuma tabela
+  nova.
+- `ReconnectState.normalize/1` defende tudo: chave que não é conversa, valor
+  que não é id, mapa maior que o teto.
+- `ChatLive.ReadMarkers` com a regra que define o recurso: **o marcador não
+  anda enquanto você lê.** Anda ao trocar de conversa, ao entrar em outra e ao
+  focar a aba — nunca quando a mensagem chega.
+- Componente `UnreadDivider` e botão "Primeira não lida" na barra da conversa,
+  visível só quando há algo para pular.
+
+**Aprendizados**
+
+- **A régua não pode ser irmã das linhas.** Um container `phx-update="stream"`
+  exige id em **todo** filho, e o LiveView levanta
+  `ArgumentError` no primeiro render. A régua foi para *dentro* da linha, como
+  primeiro filho — o que também resolve o motivo original do plano (um item
+  sintético reordena e é podado pelo `limit:` negativo).
+- **Entrar num canal não passa por `enter_conversation`.** `setup_joined_channel`
+  monta a conversa por conta própria, então o avanço do marcador precisou de
+  dois pontos. O teste que pegou isso usa `switch_channel` explicitamente,
+  porque o `/join` exercita o outro caminho.
+- **`reset` do viewport precisa zerar o "visto", não só atualizar.** Entrar numa
+  conversa vazia deixava o `newest_message_id` da conversa anterior, e ao sair
+  o marcador **da conversa errada** avançava. `replace_seen/2` aceita `nil`;
+  `seen/2` continua só avançando.
+- **Adicionar um campo ao snapshot quebra asserções de shape exato.**
+  `reconnect_state_test.exs` compara o mapa inteiro com `==` em dois lugares.
+  Errado meu não ter procurado antes; corrigido nos dois.
+- **A auditoria visual confirmou de primeira**: régua vermelha atravessando a
+  conversa com "NEW MESSAGES" no meio, entre a linha lida e a que chegou depois.
+
+**Arquivos tocados** — migration `add_read_markers_to_reconnect_states`,
+`chat/reconnect_state.ex`, `chat/schemas/reconnect_state.ex`,
+`chat_live/read_markers.ex`, `chat_live/components/{message_row,message_viewport}.ex`,
+`chat_live/helpers/{channel,conversation,pm,session}.ex`,
+`chat_live/pm_typing_events.ex`, `chat_live/core_events.ex`,
+`components/ui/chat/{unread_divider,conversation_toolbar_actions}.ex`,
+`live/app/chat_live.{ex,html.heex}`,
+`assets/css/retrohex/components/chat-message.css`, `help_topics/features.ex`,
+`help_content/feature_where_you_left_off.html.heex`,
+`e2e/tests/chat-unread-divider.spec.ts`, e os catálogos `chat`, `help`,
+`help_features`.
+
+---
+
+## Onda 3 fechada
+
+Reações, menções e a régua de não lidas. As três respondem à mesma coisa: antes
+delas, a única forma de participar era escrever, e a única forma de voltar era
+rolar. Onda 4 (uso diário) começa em 4.1, que o plano marca como **plan mode
+obrigatório**.

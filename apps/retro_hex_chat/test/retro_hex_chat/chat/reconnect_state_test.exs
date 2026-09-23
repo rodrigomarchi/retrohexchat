@@ -23,7 +23,8 @@ defmodule RetroHexChat.Chat.ReconnectStateTest do
                active_channel: "#lobby",
                active_pm: "Alice",
                open_pm_tabs: ["Alice"],
-               welcomed_channels: ["#lobby", "#dev"]
+               welcomed_channels: ["#lobby", "#dev"],
+               read_markers: %{}
              }
     end
 
@@ -87,7 +88,8 @@ defmodule RetroHexChat.Chat.ReconnectStateTest do
                active_channel: "#dev",
                active_pm: "Alice",
                open_pm_tabs: ["Alice"],
-               welcomed_channels: ["#lobby"]
+               welcomed_channels: ["#lobby"],
+               read_markers: %{}
              }
     end
 
