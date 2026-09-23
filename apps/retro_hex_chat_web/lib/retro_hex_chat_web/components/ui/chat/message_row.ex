@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   import RetroHexChatWeb.Components.UI.ChatAttachment
   import RetroHexChatWeb.Components.UI.InlineHelpCard
   import RetroHexChatWeb.Components.UI.MessageIndicators
+  import RetroHexChatWeb.Components.UI.MessageReactions
   import RetroHexChatWeb.Components.UI.MessageReplyBlock
   import RetroHexChatWeb.Components.UI.ShareMessageCard
 
@@ -32,7 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   attr :timestamp_format, :atom, required: true
   attr :timezone, :string, required: true
   attr :strip_formatting, :boolean, required: true
-  attr :viewer, :string, default: nil, doc: "Legacy caller compatibility"
+  attr :viewer, :string, default: nil, doc: "whose reaction chips are drawn as pressed"
 
   @spec message_row_body(map()) :: Phoenix.LiveView.Rendered.t()
   def message_row_body(assigns) do
@@ -221,6 +222,17 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
               target={Map.get(@msg, :target, "")}
               on_retry="retry_message"
             />
+            <%!-- The cheapest answer there is, under the line it answers. The
+                  strip draws nothing when nobody has reacted; the quick picks
+                  are always in the markup and CSS decides when they show, so
+                  hovering a line costs no round trip. --%>
+            <.message_reactions
+              message_id={@msg.id}
+              reactions={Map.get(@msg, :reactions)}
+              viewer={@viewer}
+              on_toggle="toggle_reaction"
+            />
+            <.message_reaction_bar message_id={@msg.id} on_toggle="toggle_reaction" />
           </.chat_message>
         <% end %>
     <% end %>

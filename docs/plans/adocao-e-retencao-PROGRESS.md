@@ -15,7 +15,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 2.1 Notificação de desktop | **pronto** (2026-09-23) |
 | 2.2 PWA | **pronto** (2026-09-23) |
 | 2.3 Web Push | **pronto** (2026-09-23) |
-| 3.1 Reações | não iniciado |
+| 3.1 Reações | **pronto** (2026-09-23) |
 | 3.2 Menções | não iniciado |
 | 3.3 Régua de não lidas | não iniciado |
 | 4.1 Multi-dispositivo | não iniciado |
@@ -405,3 +405,80 @@ migration `create_push_subscriptions`, `notifications/{candidates,policy,queries
 `help_content/chat_status_features.ex`, `assets/css/retrohex/dialogs/sound-settings.css`,
 `e2e/tests/chat-sound-settings.spec.ts`, `e2e/TEST_BACKLOG.md`, e os catálogos
 `help`, `help_features`, `dialogs`, `landing`.
+
+---
+
+### 2026-09-23 — item 3.1, reações em mensagem
+
+**Pronto.** `make ci` 18/18 e `make e2e.batch BATCH=messages`.
+
+- Uma tabela para as duas conversas: `message_reactions` com `message_id` e
+  `private_message_id` anuláveis e um `CHECK` de exatamente um preenchido. O
+  terceiro fork canal/privado não foi criado.
+- `Chat.Reactions` com `toggle/3`, `summary_for/1` e `summary_for_many/2`
+  (uma query por página, não por linha). `Chat.Service.toggle_reaction/3` e
+  `toggle_private_reaction/3` publicam `reaction_changed` por
+  `broadcast_to_conversation/3`.
+- Componente `MessageReactions` **composto do primitivo `.button`** — a tira de
+  chips e a barra de acesso rápido. Nada de markup dedicado: um segundo botão
+  parecido divergiria do bisel retro na primeira mudança dele.
+- Sem hook novo. A barra vive no markup e o CSS decide quando aparece; passar o
+  mouse numa linha não custa round trip.
+- Reação não marca não lida, não toca som e não gera push.
+
+**Aprendizados**
+
+- **O bug estava no roteador de PubSub, não em nada testado.** `Chat.Service`
+  publicava, `PubsubHandlers.Messages` tratava — e `PubsubHandlers` não tinha
+  cláusula para `reaction_changed`, então o evento caía no chão. Todos os testes
+  de unidade abaixo disso estavam verdes. O teste que pega isso é síncrono:
+  `handle_info/2` com uma conversa inativa devolve `{:halt, _}` se está
+  roteado e `{:cont, _}` se não está.
+- **Não dá para assertar a tira no stream do LiveView.** `MessageViewport.insert`
+  vai por `send_update`, então o primeiro `render/1` depois do broadcast não tem
+  a linha e o segundo tem. Isso é exatamente o render-retry que
+  `.claude/rules/testing.md` proíbe — a metade visível ficou no Playwright, que
+  é onde ela pode ser vista de verdade.
+- **`@apply` num modificador perde para o primitivo.** `.message-reaction--mine`
+  e o `shadow-retro-raised` do `.button` têm a mesma especificidade, e quem
+  ganha é quem o Tailwind emitir por último — o que este arquivo não decide.
+  Seletor composto (`.message-reaction.message-reaction--mine`) resolve.
+- **O filtro do catálogo comia um dos cinco atalhos em silêncio.** 🎉 não está
+  no `EmojiData`, então a barra nascia com quatro. O teste que pega isso é a
+  contagem (`length(quick_picks()) == 5`), não "todos os que sobraram são
+  válidos" — esse passava vazio.
+- **Um bisel de 1 px não sobrevive a um screenshot de chip de 16 px.** A
+  auditoria visual confirmou o layout (tira acima da barra, cinco atalhos, nada
+  empurrando a linha) mas não conseguia provar o estado "pressionado"; isso
+  virou asserção de `getComputedStyle().boxShadow` no spec.
+- **Escrever tradução casando só por msgid atropela outro domínio.** O msgid
+  `thumbs up` já existia como *keyword* no domínio `emoji`; o passe em lote o
+  sobrescreveu em 11 locales. Auditoria contra o snapshot pegou, restaurei e
+  passei a escopar por domínio. **0 entradas pré-existentes alteradas** no
+  fechamento.
+- **Catálogo `en` guarda msgstr igual ao msgid.** O merge deixa vazio, e o gate
+  só reclama quando o msgid tem placeholder — por isso havia 47 entradas vazias
+  de sessões anteriores passando verdes. Preenchi as 39 que introduzi; as
+  outras continuam lá e não são deste commit.
+- **`make i18n.glossary` precisa de `polib`**, que não está no ambiente. Os
+  rótulos novos (`React`, `React...`) entraram em `scripts/i18n/glossary.py`
+  para a próxima rodada e foram escritos nos `.po` com a mesma tradução.
+
+**Decisão que desvia do plano.** Os cinco atalhos são uma lista fixa curada
+(👍 ❤️ 😂 🔥 👀), não "os cinco mais usados". Um ranking seria uma query no
+caminho de render de toda linha, e uma barra cujo conteúdo se move é uma barra
+que você tem que ler antes de clicar.
+
+**Arquivos tocados** — migration `create_message_reactions`,
+`chat/schemas/message_reaction.ex`, `chat/reactions.ex`, `chat/emoji_data.ex`
+(`known?/1`, `chars/0`), `chat/service.ex`,
+`components/ui/chat/message_reactions.ex`, `components/ui/chat/message_row.ex`,
+`components/ui/chat/chat_context_menu.ex`, `chat_live/reaction_events.ex`,
+`chat_live/emoji_events.ex`, `chat_live/stream_item.ex`,
+`chat_live/pubsub_handlers.ex` + `pubsub_handlers/messages.ex`,
+`chat_live/helpers/{channel,pm}.ex`, `chat_live/core_events.ex`,
+`live/app/chat_live.ex`, `assets/css/retrohex/components/chat-message.css`,
+`help_topics/features.ex`, `help_content/feature_reactions.html.heex`,
+`scripts/i18n/glossary.py`, `e2e/pages/ChatPage.ts`,
+`e2e/tests/chat-message-actions.spec.ts`, e os catálogos `chat`, `help`,
+`help_features`.

@@ -1331,6 +1331,7 @@ msgstr "背景菜单 :"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:45
 #, elixir-autogen, elixir-format
@@ -2895,6 +2896,7 @@ msgstr "在当前频道或PM中以实时突出显示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
@@ -5714,3 +5716,53 @@ msgstr "什么会提醒你"
 #, elixir-autogen, elixir-format
 msgid "Your nickname written in a channel you were in"
 msgstr "你所在频道中写到的你的昵称"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A reaction is an answer to a message that costs one click. It reaches the person who wrote the line, and it never asks anybody to read anything."
+msgstr "回应是只需一次点击的消息答复。它会送达写下那行字的人，也从不要求任何人去读什么。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "A reaction plays no sound, marks nothing unread and wakes no device. That is deliberate: the cheapest thing you can say here should stay cheap for the person receiving it too."
+msgstr "回应不会播放声音、不会标记未读，也不会唤醒任何设备。这是刻意的：你在这里能说的最便宜的话，对收到它的人也该一样便宜。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Click your own reaction again to take it back"
+msgstr "再次点击你自己的回应即可撤回"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Emoji Picker"
+msgstr "爱莫吉·皮克"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "How to React"
+msgstr "如何回应"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "It Notifies Nobody"
+msgstr "不会通知任何人"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "On a computer: hover a message and pick one of the emoji that appear under it"
+msgstr "在电脑上：把鼠标移到消息上，从下面出现的表情中挑一个"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "On a phone: press and hold the message and choose React, then pick any emoji"
+msgstr "在手机上：长按消息并选择“回应”，然后挑选任意表情"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "The number beside an emoji is how many people chose it, and hovering it names them. Your own reactions are drawn pressed. One person counts once per emoji, however many times they click."
+msgstr "表情旁边的数字是选择它的人数，把鼠标移上去会显示他们的名字。你自己的回应会画成按下的样子。无论点击多少次，一个人在每个表情上只算一次。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "What the Numbers Mean"
+msgstr "数字的含义"

@@ -3,7 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   Route PubSub broadcast messages to focused sub-modules.
 
   Delegates to:
-  - `Messages` — new_message, new_pm, typing/stop_typing, notices
+  - `Messages` — new_message, new_pm, typing/stop_typing, notices, reactions
   - `ChannelState` — mode_changed, kicked/banned/unbanned, ban/invite exceptions, topic,
     group-call presence
   - `Membership` — user_joined/left, nick_changed, force_disconnect/rename, nickserv
@@ -46,6 +46,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     do: Messages.handle_info(msg, socket)
 
   def handle_info(%{event: "reply_quote_updated"} = msg, socket),
+    do: Messages.handle_info(msg, socket)
+
+  def handle_info(%{event: "reaction_changed"} = msg, socket),
     do: Messages.handle_info(msg, socket)
 
   # ── Channel state: modes, kicks, bans, exceptions, topic ─

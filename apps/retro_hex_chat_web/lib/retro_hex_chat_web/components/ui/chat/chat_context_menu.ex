@@ -291,6 +291,16 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       <:icon><Icons.icon_code class="w-[14px] h-[14px]" /></:icon>
       {dgettext("chat", "Copy Source")}
     </.context_menu_item>
+    <%!-- The way in on a phone: there is no hover there, and this menu is what
+          a long press already opens. --%>
+    <.context_menu_item
+      on_click={@on_action}
+      action="ctx_chat_react"
+      phx-value-message_id={@msg_id}
+    >
+      <:icon><Icons.icon_fmt_emoji class="w-[14px] h-[14px]" /></:icon>
+      {dgettext("chat", "React...")}
+    </.context_menu_item>
     <.context_menu_item on_click={@on_action} action="reply_to_message" phx-value-message_id={@msg_id}>
       <:icon><Icons.icon_chat class="w-[14px] h-[14px]" /></:icon>
       {dgettext("chat", "Reply")}

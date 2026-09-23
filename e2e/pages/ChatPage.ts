@@ -153,6 +153,7 @@ export class ChatPage {
   readonly chatContextMenu: Locator;
   readonly contextCopyMessageMenuItem: Locator;
   readonly contextReplyMenuItem: Locator;
+  readonly contextReactMenuItem: Locator;
   readonly contextEditMenuItem: Locator;
   readonly contextDeleteMenuItem: Locator;
   readonly chatContextCallMenuItem: Locator;
@@ -501,6 +502,9 @@ export class ChatPage {
     );
     this.contextReplyMenuItem = page.getByTestId(
       "context-menu-item-reply_to_message",
+    );
+    this.contextReactMenuItem = page.getByTestId(
+      "context-menu-item-ctx_chat_react",
     );
     this.contextEditMenuItem = page.getByTestId(
       "context-menu-item-edit_message",
@@ -1031,6 +1035,28 @@ export class ChatPage {
 
   messageNickByText(text: string, nick: string): Locator {
     return this.messageRowByText(text).locator(`[data-nick="${nick}"]`).first();
+  }
+
+  // Two things in a row can carry the same emoji: the quick pick that adds a
+  // reaction, and the chip that shows one. They are told apart by the container
+  // they live in, not by a testid prefix that is a prefix of the other.
+  reactionQuickPick(text: string, emoji: string): Locator {
+    return this.messageRowByText(text)
+      .locator(`.message-reaction-bar [data-testid$="-${emoji}"]`)
+      .first();
+  }
+
+  messageReaction(text: string, emoji: string): Locator {
+    return this.messageRowByText(text)
+      .locator(`.message-reactions [data-testid$="-${emoji}"]`)
+      .first();
+  }
+
+  // The quick picks are revealed by hover, so reacting starts by hovering the
+  // row rather than by opening anything.
+  async reactTo(text: string, emoji: string) {
+    await this.messageRowByText(text).hover();
+    await this.reactionQuickPick(text, emoji).click();
   }
 
   // Near the left edge, not the middle. A right-click lands on whatever is

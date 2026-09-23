@@ -21,7 +21,7 @@ msgstr "%{name}(%{type},%{interval}s) → %{command} (中文(简体) )."
 msgid "Active timers:\n"
 msgstr "活动计时器 :"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:35
+#: lib/retro_hex_chat/chat/sound_settings.ex:36
 #, elixir-autogen, elixir-format
 msgid "Alert"
 msgstr "警报"
@@ -31,17 +31,17 @@ msgstr "警报"
 msgid "Alt"
 msgstr "备选案文"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:28
+#: lib/retro_hex_chat/chat/sound_settings.ex:29
 #, elixir-autogen, elixir-format
 msgid "Beep"
 msgstr "哔"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:40
+#: lib/retro_hex_chat/chat/sound_settings.ex:41
 #, elixir-autogen, elixir-format
 msgid "Blip"
 msgstr "线条"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:36
+#: lib/retro_hex_chat/chat/sound_settings.ex:37
 #, elixir-autogen, elixir-format
 msgid "Buzz"
 msgstr "巴兹"
@@ -51,27 +51,27 @@ msgstr "巴兹"
 msgid "Chat"
 msgstr "聊天"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:33
+#: lib/retro_hex_chat/chat/sound_settings.ex:34
 #, elixir-autogen, elixir-format
 msgid "Chime High"
 msgstr "奇美高楼"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:32
+#: lib/retro_hex_chat/chat/sound_settings.ex:33
 #, elixir-autogen, elixir-format
 msgid "Chime Long"
 msgstr "千梅龙"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:34
+#: lib/retro_hex_chat/chat/sound_settings.ex:35
 #, elixir-autogen, elixir-format
 msgid "Chime Low"
 msgstr "低头"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:31
+#: lib/retro_hex_chat/chat/sound_settings.ex:32
 #, elixir-autogen, elixir-format
 msgid "Chime Short"
 msgstr "奇姆短线"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:37
+#: lib/retro_hex_chat/chat/sound_settings.ex:38
 #, elixir-autogen, elixir-format
 msgid "Click"
 msgstr "单击"
@@ -91,26 +91,25 @@ msgstr "代码"
 msgid "Delete window has expired."
 msgstr "删除窗口已过期 。"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:30
+#: lib/retro_hex_chat/chat/sound_settings.ex:31
 #, elixir-autogen, elixir-format
 msgid "Ding High"
 msgstr "叮当高"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:29
+#: lib/retro_hex_chat/chat/sound_settings.ex:30
 #, elixir-autogen, elixir-format
 msgid "Ding Low"
 msgstr "小叮当"
 
-#: lib/retro_hex_chat/chat/policy.ex:51 lib/retro_hex_chat/chat/policy.ex:80
+#: lib/retro_hex_chat/chat/policy.ex:51
+#: lib/retro_hex_chat/chat/policy.ex:80
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
 msgstr "编辑窗口已过期 。"
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
-msgid ""
-"Expansion must not contain command chaining characters (|, &&, ;, or "
-"newlines)"
+msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
 msgstr "扩展不得包含命令链字符(QQ, QQ, 或新行)"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:280
@@ -120,25 +119,26 @@ msgstr "格式化"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:111
 #, elixir-autogen, elixir-format
-msgid ""
-"Invalid timer name. Use only letters, numbers, hyphens, underscores (max "
-"%{max_name_length} chars)."
+msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
 msgstr "无效的计时器名称 。 只使用字母,数字,连字符,下划线(最大%{max_name_length}字符)."
 
-#: lib/retro_hex_chat/chat/content.ex:135 lib/retro_hex_chat/chat/policy.ex:19
+#: lib/retro_hex_chat/chat/content.ex:135
+#: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
 msgid "Message cannot be empty"
 msgstr "信件不能为空"
 
-#: lib/retro_hex_chat/chat/policy.ex:48 lib/retro_hex_chat/chat/policy.ex:70
+#: lib/retro_hex_chat/chat/policy.ex:48
+#: lib/retro_hex_chat/chat/policy.ex:70
 #: lib/retro_hex_chat/chat/policy.ex:91
 #, elixir-autogen, elixir-format
 msgid "Message has already been deleted."
 msgstr "信件已被删除 。"
 
-#: lib/retro_hex_chat/chat/service.ex:93
-#: lib/retro_hex_chat/chat/service.ex:141
+#: lib/retro_hex_chat/chat/service.ex:103
+#: lib/retro_hex_chat/chat/service.ex:151
+#: lib/retro_hex_chat/chat/service.ex:187
 #, elixir-autogen, elixir-format
 msgid "Message not found."
 msgstr "找不到信件 。"
@@ -158,12 +158,12 @@ msgstr "下一个窗口"
 msgid "No active timers."
 msgstr "没有活动定时器 。"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:27
+#: lib/retro_hex_chat/chat/sound_settings.ex:28
 #, elixir-autogen, elixir-format
 msgid "None"
 msgstr "None"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:39
+#: lib/retro_hex_chat/chat/sound_settings.ex:40
 #, elixir-autogen, elixir-format
 msgid "Notify"
 msgstr "Notify"
@@ -238,12 +238,13 @@ msgstr "忽略列表的 Open/close"
 msgid "Open/close the keyboard shortcut cheatsheet"
 msgstr "Open/close 键盘快捷键"
 
-#: lib/retro_hex_chat/chat/service.ex:219
+#: lib/retro_hex_chat/chat/service.ex:265
 #, elixir-autogen, elixir-format
 msgid "Original message not found."
 msgstr "找不到原始信件 。"
 
-#: lib/retro_hex_chat/chat/policy.ex:54 lib/retro_hex_chat/chat/policy.ex:119
+#: lib/retro_hex_chat/chat/policy.ex:54
+#: lib/retro_hex_chat/chat/policy.ex:119
 #, elixir-autogen, elixir-format
 msgid "Please wait a few seconds before editing again."
 msgstr "请稍候几秒钟再编辑."
@@ -258,7 +259,7 @@ msgstr "上一个窗口"
 msgid "Repeat interval clamped to minimum %{min_repeat_interval} seconds."
 msgstr "重复间隔被夹到最小的%{min_repeat_interval}秒."
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:38
+#: lib/retro_hex_chat/chat/sound_settings.ex:39
 #, elixir-autogen, elixir-format
 msgid "Ring"
 msgstr "环"
@@ -329,7 +330,7 @@ msgid "Switch to window 9"
 msgstr "切换到窗口 9"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:281
-#: lib/retro_hex_chat/chat/service.ex:164
+#: lib/retro_hex_chat/chat/service.ex:210
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "系统"
@@ -361,7 +362,7 @@ msgstr "用法:/timer <name>重复<seconds> <command>"
 msgid "Usage: /timer stop <name>"
 msgstr "用法:/timer停止<name>"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:41
+#: lib/retro_hex_chat/chat/sound_settings.ex:42
 #, elixir-autogen, elixir-format
 msgid "Whoosh"
 msgstr "呜呼"
@@ -416,7 +417,8 @@ msgstr "窗口 9"
 msgid "You cannot delete other users' messages."
 msgstr "您不能删除其他用户的消息 。"
 
-#: lib/retro_hex_chat/chat/policy.ex:45 lib/retro_hex_chat/chat/policy.ex:67
+#: lib/retro_hex_chat/chat/policy.ex:45
+#: lib/retro_hex_chat/chat/policy.ex:67
 #, elixir-autogen, elixir-format
 msgid "You cannot edit other users' messages."
 msgstr "您不能编辑其他用户的消息 。"
@@ -492,8 +494,8 @@ msgstr "切换会议相机"
 msgid "Toggle Conference Microphone"
 msgstr "切换会议麦克风"
 
-#: lib/retro_hex_chat/channels/server.ex:1306
-#: lib/retro_hex_chat/chat/service.ex:307
+#: lib/retro_hex_chat/channels/server.ex:1308
+#: lib/retro_hex_chat/chat/service.ex:353
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
 msgstr "信件中无法附加附件"
@@ -547,3 +549,23 @@ msgstr[0] "%{count}小时"
 msgid "%{count} minute"
 msgid_plural "%{count} minutes"
 msgstr[0] "%{count}分钟"
+
+#: lib/retro_hex_chat/chat/reactions.ex:65
+#, elixir-autogen, elixir-format
+msgid "Reaction could not be saved."
+msgstr "无法保存该回应。"
+
+#: lib/retro_hex_chat/chat/reactions.ex:107
+#, elixir-autogen, elixir-format
+msgid "That is not an emoji you can react with."
+msgstr "那不是可以用来回应的表情。"
+
+#: lib/retro_hex_chat/chat/reactions.ex:110
+#, elixir-autogen, elixir-format
+msgid "That message was deleted."
+msgstr "那条消息已被删除。"
+
+#: lib/retro_hex_chat/chat/reactions.ex:114
+#, elixir-autogen, elixir-format
+msgid "This message already has %{count} different reactions."
+msgstr "这条消息已经有 %{count} 种不同的回应。"

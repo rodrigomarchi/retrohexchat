@@ -234,6 +234,8 @@ _ROWS = {
     "Pause":        ("Pausar", "Pausar", "Pausar", "Pause", "Pause", "Pausa", "Pauzeren", "Wstrzymaj", "Пауза", "Jeda", "一時停止", "暂停", "暫停"),
     "Resume":       ("Retomar", "Retomar", "Reanudar", "Reprendre", "Fortsetzen", "Riprendi", "Hervatten", "Wznów", "Продолжить", "Lanjutkan", "再開", "继续", "繼續"),
     "Ignore":       ("Ignorar", "Ignorar", "Ignorar", "Ignorer", "Ignorieren", "Ignora", "Negeren", "Ignoruj", "Игнорировать", "Abaikan", "無視", "忽略", "忽略"),
+    "React":        ("Reagir", "Reagir", "Reaccionar", "Réagir", "Reagieren", "Reagisci", "Reageren", "Zareaguj", "Отреагировать", "Bereaksi", "リアクション", "回应", "回應"),
+    "React...":     ("Reagir...", "Reagir...", "Reaccionar...", "Réagir...", "Reagieren...", "Reagisci...", "Reageren...", "Zareaguj...", "Отреагировать...", "Bereaksi...", "リアクション...", "回应...", "回應..."),
     "Block":        ("Bloquear", "Bloquear", "Bloquear", "Bloquer", "Blockieren", "Blocca", "Blokkeren", "Zablokuj", "Заблокировать", "Blokir", "ブロック", "屏蔽", "封鎖"),
 
     # ── Account ───────────────────────────────────────────────

@@ -1342,6 +1342,7 @@ msgstr "コンテキストメニュー:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:45
 #, elixir-autogen, elixir-format
@@ -2932,6 +2933,7 @@ msgstr "現在のチャンネルまたはPMでリアルタイムのハイライ�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
@@ -5864,3 +5866,53 @@ msgstr "通知が届く場合"
 #, elixir-autogen, elixir-format
 msgid "Your nickname written in a channel you were in"
 msgstr "あなたがいたチャンネルに書かれたあなたのニックネーム"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A reaction is an answer to a message that costs one click. It reaches the person who wrote the line, and it never asks anybody to read anything."
+msgstr "リアクションは、ワンクリックで済むメッセージへの返事です。その行を書いた人に届き、誰にも何かを読ませることはありません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "A reaction plays no sound, marks nothing unread and wakes no device. That is deliberate: the cheapest thing you can say here should stay cheap for the person receiving it too."
+msgstr "リアクションは音を鳴らさず、未読の印もつけず、端末も起こしません。これは意図的です。ここで言える最も安いことは、受け取る側にとっても安いままであるべきだからです。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Click your own reaction again to take it back"
+msgstr "自分のリアクションをもう一度クリックすると取り消せます"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Emoji Picker"
+msgstr "絵文字ピッカー"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "How to React"
+msgstr "リアクションのしかた"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "It Notifies Nobody"
+msgstr "誰にも通知されません"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "On a computer: hover a message and pick one of the emoji that appear under it"
+msgstr "パソコンでは、メッセージにカーソルを合わせ、その下に出てくる絵文字から選びます"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "On a phone: press and hold the message and choose React, then pick any emoji"
+msgstr "スマートフォンでは、メッセージを長押しして「リアクション」を選び、好きな絵文字を選びます"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "The number beside an emoji is how many people chose it, and hovering it names them. Your own reactions are drawn pressed. One person counts once per emoji, however many times they click."
+msgstr "絵文字の横の数字は選んだ人数で、カーソルを合わせると名前が出ます。自分のリアクションは押された状態で描かれます。何度クリックしても、1 人は絵文字ごとに 1 回だけ数えられます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "What the Numbers Mean"
+msgstr "数字の意味"

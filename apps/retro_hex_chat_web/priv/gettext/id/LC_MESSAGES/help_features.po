@@ -1428,6 +1428,7 @@ msgstr "Menu Konteks:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:45
 #, elixir-autogen, elixir-format
@@ -3111,6 +3112,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
@@ -6385,3 +6387,53 @@ msgstr "Apa yang membangunkan Anda"
 #, elixir-autogen, elixir-format
 msgid "Your nickname written in a channel you were in"
 msgstr "Nama panggilan Anda ditulis di kanal tempat Anda berada"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A reaction is an answer to a message that costs one click. It reaches the person who wrote the line, and it never asks anybody to read anything."
+msgstr "Reaksi adalah jawaban atas sebuah pesan yang hanya butuh satu klik. Ia sampai ke orang yang menulis baris itu, dan tidak pernah meminta siapa pun membaca apa pun."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "A reaction plays no sound, marks nothing unread and wakes no device. That is deliberate: the cheapest thing you can say here should stay cheap for the person receiving it too."
+msgstr "Reaksi tidak membunyikan suara, tidak menandai apa pun sebagai belum dibaca, dan tidak membangunkan perangkat apa pun. Itu disengaja: hal termurah yang bisa Anda katakan di sini juga harus tetap murah bagi yang menerimanya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Click your own reaction again to take it back"
+msgstr "Klik lagi reaksi Anda sendiri untuk menariknya kembali"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Emoji Picker"
+msgstr "Emoji Picker"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "How to React"
+msgstr "Cara bereaksi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "It Notifies Nobody"
+msgstr "Tidak memberi tahu siapa pun"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "On a computer: hover a message and pick one of the emoji that appear under it"
+msgstr "Di komputer: arahkan kursor ke pesan dan pilih salah satu emoji yang muncul di bawahnya"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "On a phone: press and hold the message and choose React, then pick any emoji"
+msgstr "Di ponsel: tekan dan tahan pesan, pilih Bereaksi, lalu pilih emoji mana pun"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "The number beside an emoji is how many people chose it, and hovering it names them. Your own reactions are drawn pressed. One person counts once per emoji, however many times they click."
+msgstr "Angka di samping emoji adalah jumlah orang yang memilihnya, dan mengarahkan kursor akan menyebut nama mereka. Reaksi Anda sendiri digambar tertekan. Satu orang dihitung sekali per emoji, sebanyak apa pun kliknya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "What the Numbers Mean"
+msgstr "Arti angka-angka itu"

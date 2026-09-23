@@ -230,7 +230,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     stream_items =
       page.items
       |> Enum.reverse()
-      |> Enum.map(&StreamItem.from_message/1)
+      |> StreamItem.from_messages()
 
     socket
     |> assign(

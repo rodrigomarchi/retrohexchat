@@ -1409,6 +1409,7 @@ msgstr "Context Menu:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:45
 #, elixir-autogen, elixir-format
@@ -3083,6 +3084,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
@@ -6212,12 +6214,12 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Notifications With the Chat Closed"
-msgstr ""
+msgstr "Notifications With the Chat Closed"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "A private message sent to you"
-msgstr ""
+msgstr "A private message sent to you"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:46
 #, elixir-autogen, elixir-format
@@ -6227,49 +6229,99 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "If you have Retro Hex Chat open anywhere — a chat tab, a call, a Space — nothing is sent. You already have the sound, the flashing title and, if you asked for it, a desktop notification."
-msgstr ""
+msgstr "If you have Retro Hex Chat open anywhere — a chat tab, a call, a Space — nothing is sent. You already have the sound, the flashing title and, if you asked for it, a desktop notification."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Nothing else, ever. Not an ordinary channel line, not a join or a part, and never a bot. A busy room while you were away is one notification, not one per line."
-msgstr ""
+msgstr "Nothing else, ever. Not an ordinary channel line, not a join or a part, and never a bot. A busy room while you were away is one notification, not one per line."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "On Your Own Server"
-msgstr ""
+msgstr "On Your Own Server"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Only When Nothing Is Open"
-msgstr ""
+msgstr "Only When Nothing Is Open"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Per Device, and What Leaves the Server"
-msgstr ""
+msgstr "Per Device, and What Leaves the Server"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The Sounds window has one switch above the event list: notify me on this device even when Retro Hex Chat is closed. With it on, this browser can be woken up after every tab is gone."
-msgstr ""
+msgstr "The Sounds window has one switch above the event list: notify me on this device even when Retro Hex Chat is closed. With it on, this browser can be woken up after every tab is gone."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "The switch is about this browser on this machine, so turning it off on your laptop leaves your phone alone. What the server sends is encrypted for that one browser: the push service in between — your browser vendor's — carries an address and a block of ciphertext, and can read neither the conversation nor the message."
-msgstr ""
+msgstr "The switch is about this browser on this machine, so turning it off on your laptop leaves your phone alone. What the server sends is encrypted for that one browser: the push service in between — your browser vendor's — carries an address and a block of ciphertext, and can read neither the conversation nor the message."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "This needs a VAPID key pair, and a server without one simply does not have the feature: the switch is not drawn at all rather than drawn and broken."
-msgstr ""
+msgstr "This needs a VAPID key pair, and a server without one simply does not have the feature: the switch is not drawn at all rather than drawn and broken."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "What Wakes You"
-msgstr ""
+msgstr "What Wakes You"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Your nickname written in a channel you were in"
+msgstr "Your nickname written in a channel you were in"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A reaction is an answer to a message that costs one click. It reaches the person who wrote the line, and it never asks anybody to read anything."
+msgstr "A reaction is an answer to a message that costs one click. It reaches the person who wrote the line, and it never asks anybody to read anything."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "A reaction plays no sound, marks nothing unread and wakes no device. That is deliberate: the cheapest thing you can say here should stay cheap for the person receiving it too."
+msgstr "A reaction plays no sound, marks nothing unread and wakes no device. That is deliberate: the cheapest thing you can say here should stay cheap for the person receiving it too."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Click your own reaction again to take it back"
+msgstr "Click your own reaction again to take it back"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Emoji Picker"
 msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:7
+#, elixir-autogen, elixir-format, fuzzy
+msgid "How to React"
+msgstr "How to Reply"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "It Notifies Nobody"
+msgstr "It Notifies Nobody"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "On a computer: hover a message and pick one of the emoji that appear under it"
+msgstr "On a computer: hover a message and pick one of the emoji that appear under it"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "On a phone: press and hold the message and choose React, then pick any emoji"
+msgstr "On a phone: press and hold the message and choose React, then pick any emoji"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "The number beside an emoji is how many people chose it, and hovering it names them. Your own reactions are drawn pressed. One person counts once per emoji, however many times they click."
+msgstr "The number beside an emoji is how many people chose it, and hovering it names them. Your own reactions are drawn pressed. One person counts once per emoji, however many times they click."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "What the Numbers Mean"
+msgstr "What the Numbers Mean"

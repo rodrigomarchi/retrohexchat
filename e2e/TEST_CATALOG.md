@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **225 spec files** under `e2e/tests/`.
-- **479 Playwright `test()` cases**.
-- **474 documented flows**, 473 done, 1 not done.
+- **480 Playwright `test()` cases**.
+- **475 documented flows**, 474 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -471,6 +471,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | O25 | A pasted link grows the RSS card under the message, live and again after a reload | `tests/chat-link-card.spec.ts` | done |
 | O26 | A card landing decorates its message in place, without reordering the conversation | `tests/chat-link-card.spec.ts` | done |
 | O27 | A link in the first private message is captured and carded on both sides, once | `tests/chat-pm-link-card.spec.ts` | done |
+| O28 | Reacting from the hover bar reaches the other person's screen, and clicking again removes it | `tests/chat-message-actions.spec.ts` | done |
 
 ### P - Persistence, Reconnect, History, No-Focus-Steal
 

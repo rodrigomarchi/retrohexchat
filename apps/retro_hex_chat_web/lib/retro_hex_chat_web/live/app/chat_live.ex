@@ -865,6 +865,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:user_lookup_events, &ChatLive.UserLookupEvents.handle_event/3},
       {:hover_events, &ChatLive.HoverEvents.handle_event/3},
       {:context_menu_events, &ChatLive.ContextMenuEvents.handle_event/3},
+      {:reaction_events, &ChatLive.ReactionEvents.handle_event/3},
       {:tip_events, &ChatLive.TipEvents.handle_event/3},
       {:admin_events, &ChatLive.AdminEvents.handle_event/3},
       {:bot_events, &ChatLive.BotEvents.handle_event/3},
@@ -918,6 +919,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
       # until the hook reports, which is why "default" is not the starting value:
       # the Sounds window must not offer to ask before it knows whether it can.
       desktop_notify_permission: "unknown",
+      # Which message the emoji picker was opened for, when it was opened from a
+      # message rather than from the composer. Cleared as soon as it is used.
+      reaction_target_id: nil,
       # Whether this server can send a push at all, and whether this browser has
       # asked it to. The first is the server's configuration and never changes
       # within a session; the second is the browser's own fact, reported by the

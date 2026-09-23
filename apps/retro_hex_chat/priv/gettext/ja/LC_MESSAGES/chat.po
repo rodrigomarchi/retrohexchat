@@ -21,7 +21,7 @@ msgstr "%{name} (%{type}、%{interval}) → %{command}"
 msgid "Active timers:\n"
 msgstr "活動的なタイマー:"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:35
+#: lib/retro_hex_chat/chat/sound_settings.ex:36
 #, elixir-autogen, elixir-format
 msgid "Alert"
 msgstr "アラート"
@@ -31,17 +31,17 @@ msgstr "アラート"
 msgid "Alt"
 msgstr "Alt"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:28
+#: lib/retro_hex_chat/chat/sound_settings.ex:29
 #, elixir-autogen, elixir-format
 msgid "Beep"
 msgstr "ビープ"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:40
+#: lib/retro_hex_chat/chat/sound_settings.ex:41
 #, elixir-autogen, elixir-format
 msgid "Blip"
 msgstr "バリップ"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:36
+#: lib/retro_hex_chat/chat/sound_settings.ex:37
 #, elixir-autogen, elixir-format
 msgid "Buzz"
 msgstr "バズ"
@@ -51,27 +51,27 @@ msgstr "バズ"
 msgid "Chat"
 msgstr "チャット"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:33
+#: lib/retro_hex_chat/chat/sound_settings.ex:34
 #, elixir-autogen, elixir-format
 msgid "Chime High"
 msgstr "チームハイ"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:32
+#: lib/retro_hex_chat/chat/sound_settings.ex:33
 #, elixir-autogen, elixir-format
 msgid "Chime Long"
 msgstr "チームロング"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:34
+#: lib/retro_hex_chat/chat/sound_settings.ex:35
 #, elixir-autogen, elixir-format
 msgid "Chime Low"
 msgstr "チーム・ロー"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:31
+#: lib/retro_hex_chat/chat/sound_settings.ex:32
 #, elixir-autogen, elixir-format
 msgid "Chime Short"
 msgstr "チームショート"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:37
+#: lib/retro_hex_chat/chat/sound_settings.ex:38
 #, elixir-autogen, elixir-format
 msgid "Click"
 msgstr "クリック"
@@ -91,26 +91,25 @@ msgstr "Ctrlキー"
 msgid "Delete window has expired."
 msgstr "削除ウィンドウが期限切れになりました。"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:30
+#: lib/retro_hex_chat/chat/sound_settings.ex:31
 #, elixir-autogen, elixir-format
 msgid "Ding High"
 msgstr "Ding 高い"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:29
+#: lib/retro_hex_chat/chat/sound_settings.ex:30
 #, elixir-autogen, elixir-format
 msgid "Ding Low"
 msgstr "低いDing"
 
-#: lib/retro_hex_chat/chat/policy.ex:51 lib/retro_hex_chat/chat/policy.ex:80
+#: lib/retro_hex_chat/chat/policy.ex:51
+#: lib/retro_hex_chat/chat/policy.ex:80
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
 msgstr "編集ウィンドウが無効になっています。"
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
-msgid ""
-"Expansion must not contain command chaining characters (|, &&, ;, or "
-"newlines)"
+msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
 msgstr "拡張には、コマンドチェーン文字(|、&&、;、または newlines)が含まれていません。"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:280
@@ -120,25 +119,26 @@ msgstr "フォーマット"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:111
 #, elixir-autogen, elixir-format
-msgid ""
-"Invalid timer name. Use only letters, numbers, hyphens, underscores (max "
-"%{max_name_length} chars)."
+msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
 msgstr "無効なタイマー名。 文字、数字、ハイフン、アンダースコア(最大%{max_name_length}文字)のみを使用してください。"
 
-#: lib/retro_hex_chat/chat/content.ex:135 lib/retro_hex_chat/chat/policy.ex:19
+#: lib/retro_hex_chat/chat/content.ex:135
+#: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
 msgid "Message cannot be empty"
 msgstr "メッセージは空にすることはできません"
 
-#: lib/retro_hex_chat/chat/policy.ex:48 lib/retro_hex_chat/chat/policy.ex:70
+#: lib/retro_hex_chat/chat/policy.ex:48
+#: lib/retro_hex_chat/chat/policy.ex:70
 #: lib/retro_hex_chat/chat/policy.ex:91
 #, elixir-autogen, elixir-format
 msgid "Message has already been deleted."
 msgstr "メッセージは既に削除されました。"
 
-#: lib/retro_hex_chat/chat/service.ex:93
-#: lib/retro_hex_chat/chat/service.ex:141
+#: lib/retro_hex_chat/chat/service.ex:103
+#: lib/retro_hex_chat/chat/service.ex:151
+#: lib/retro_hex_chat/chat/service.ex:187
 #, elixir-autogen, elixir-format
 msgid "Message not found."
 msgstr "メッセージが見つかりません。"
@@ -158,12 +158,12 @@ msgstr "次のウィンドウ"
 msgid "No active timers."
 msgstr "アクティブタイマーはありません。"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:27
+#: lib/retro_hex_chat/chat/sound_settings.ex:28
 #, elixir-autogen, elixir-format
 msgid "None"
 msgstr "なし"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:39
+#: lib/retro_hex_chat/chat/sound_settings.ex:40
 #, elixir-autogen, elixir-format
 msgid "Notify"
 msgstr "Notify"
@@ -238,12 +238,13 @@ msgstr "Open/close 無視リスト"
 msgid "Open/close the keyboard shortcut cheatsheet"
 msgstr "Open/close キーボードショートカットチートシート"
 
-#: lib/retro_hex_chat/chat/service.ex:219
+#: lib/retro_hex_chat/chat/service.ex:265
 #, elixir-autogen, elixir-format
 msgid "Original message not found."
 msgstr "元のメッセージが見つかりませんでした。"
 
-#: lib/retro_hex_chat/chat/policy.ex:54 lib/retro_hex_chat/chat/policy.ex:119
+#: lib/retro_hex_chat/chat/policy.ex:54
+#: lib/retro_hex_chat/chat/policy.ex:119
 #, elixir-autogen, elixir-format
 msgid "Please wait a few seconds before editing again."
 msgstr "もう一度編集する前に数秒待ってください。"
@@ -258,7 +259,7 @@ msgstr "前のウィンドウ"
 msgid "Repeat interval clamped to minimum %{min_repeat_interval} seconds."
 msgstr "最小%{min_repeat_interval}秒にクランプされた間隔を繰り返します。"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:38
+#: lib/retro_hex_chat/chat/sound_settings.ex:39
 #, elixir-autogen, elixir-format
 msgid "Ring"
 msgstr "リング"
@@ -329,7 +330,7 @@ msgid "Switch to window 9"
 msgstr "ウィンドウに切り替える 9"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:281
-#: lib/retro_hex_chat/chat/service.ex:164
+#: lib/retro_hex_chat/chat/service.ex:210
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "システム"
@@ -361,7 +362,7 @@ msgstr "使用法: /timer <name>は<seconds> <command>を繰り返します"
 msgid "Usage: /timer stop <name>"
 msgstr "使用法: /timerは<name>を停止します"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:41
+#: lib/retro_hex_chat/chat/sound_settings.ex:42
 #, elixir-autogen, elixir-format
 msgid "Whoosh"
 msgstr "Whoosh"
@@ -416,7 +417,8 @@ msgstr "ウィンドウ 9"
 msgid "You cannot delete other users' messages."
 msgstr "他のユーザーのメッセージを削除することはできません。"
 
-#: lib/retro_hex_chat/chat/policy.ex:45 lib/retro_hex_chat/chat/policy.ex:67
+#: lib/retro_hex_chat/chat/policy.ex:45
+#: lib/retro_hex_chat/chat/policy.ex:67
 #, elixir-autogen, elixir-format
 msgid "You cannot edit other users' messages."
 msgstr "他のユーザーのメッセージを編集することはできません。"
@@ -492,8 +494,8 @@ msgstr "トグル会議カメラ"
 msgid "Toggle Conference Microphone"
 msgstr "トグル会議マイク"
 
-#: lib/retro_hex_chat/channels/server.ex:1306
-#: lib/retro_hex_chat/chat/service.ex:307
+#: lib/retro_hex_chat/channels/server.ex:1308
+#: lib/retro_hex_chat/chat/service.ex:353
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
 msgstr "添付ファイルがメッセージに添付できません"
@@ -547,3 +549,23 @@ msgstr[0] "%{count}時間"
 msgid "%{count} minute"
 msgid_plural "%{count} minutes"
 msgstr[0] "%{count}分"
+
+#: lib/retro_hex_chat/chat/reactions.ex:65
+#, elixir-autogen, elixir-format
+msgid "Reaction could not be saved."
+msgstr "リアクションを保存できませんでした。"
+
+#: lib/retro_hex_chat/chat/reactions.ex:107
+#, elixir-autogen, elixir-format
+msgid "That is not an emoji you can react with."
+msgstr "それはリアクションに使えない絵文字です。"
+
+#: lib/retro_hex_chat/chat/reactions.ex:110
+#, elixir-autogen, elixir-format
+msgid "That message was deleted."
+msgstr "そのメッセージは削除されました。"
+
+#: lib/retro_hex_chat/chat/reactions.ex:114
+#, elixir-autogen, elixir-format
+msgid "This message already has %{count} different reactions."
+msgstr "このメッセージにはすでに %{count} 種類のリアクションがあります。"

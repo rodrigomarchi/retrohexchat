@@ -137,6 +137,24 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     |> then(&{:halt, &1})
   end
 
+  # ── Reactions ─────────────────────────────────────────────
+
+  # A reaction changes a message that is already on screen, so it travels the
+  # same road an edit does: rebuild that one row and put it back. It is
+  # deliberately the end of the story — no unread mark, no sound, no
+  # notification. The moment the cheapest gesture in the product costs somebody
+  # an alert, it stops being cheap.
+  def handle_info(%{event: "reaction_changed", payload: payload}, socket) do
+    if active_context?(payload, socket.assigns.session) do
+      case stream_item_for_message_event(payload, socket.assigns.session) do
+        nil -> {:halt, socket}
+        item -> {:halt, MessageViewport.insert(socket, item)}
+      end
+    else
+      {:halt, socket}
+    end
+  end
+
   # ── Notices ───────────────────────────────────────────────
 
   def handle_info({:new_notice, %{sender: sender, content: content}}, socket) do
@@ -470,13 +488,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   # broadcast: a private payload names one participant, and a conversation is
   # the pair.
   defp stream_item_for_message_event(%{channel: _channel, id: id}, session) do
-    id |> Queries.get_message() |> stream_item_if_active(session, &StreamItem.from_message/1)
+    id |> Queries.get_message() |> stream_item_if_active(session, &channel_item/1)
   end
 
   defp stream_item_for_message_event(%{sender: _sender, id: id}, session) do
     id
     |> Queries.get_private_message()
-    |> stream_item_if_active(session, &StreamItem.from_private_message/1)
+    |> stream_item_if_active(session, &private_item/1)
   end
 
   defp stream_item_for_message_event(_payload, _session), do: nil
@@ -484,14 +502,20 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   defp stream_item_for_reply_quote(reply_id, %{active_pm: nil} = session) do
     reply_id
     |> Queries.get_message()
-    |> stream_item_if_active(session, &StreamItem.from_message/1)
+    |> stream_item_if_active(session, &channel_item/1)
   end
 
   defp stream_item_for_reply_quote(reply_id, session) do
     reply_id
     |> Queries.get_private_message()
-    |> stream_item_if_active(session, &StreamItem.from_private_message/1)
+    |> stream_item_if_active(session, &private_item/1)
   end
+
+  # A row rebuilt on its own still has to carry its reactions, or an edit would
+  # quietly wipe the strip under the line it edited.
+  defp channel_item(message), do: [message] |> StreamItem.from_messages() |> List.first()
+
+  defp private_item(pm), do: [pm] |> StreamItem.from_private_messages() |> List.first()
 
   defp stream_item_if_active(nil, _session, _build), do: nil
 

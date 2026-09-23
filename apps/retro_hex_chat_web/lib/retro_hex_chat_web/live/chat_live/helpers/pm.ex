@@ -57,7 +57,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       |> Messages.visible_private_page(socket.assigns.session.ignore_list)
       |> Map.fetch!(:items)
       |> Enum.reverse()
-      |> Enum.map(&StreamItem.from_private_message/1)
+      |> StreamItem.from_private_messages()
 
     socket
     |> assign(
@@ -271,7 +271,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       |> Messages.visible_private_page(socket.assigns.session.ignore_list)
       |> Map.fetch!(:items)
       |> Enum.reverse()
-      |> Enum.map(&StreamItem.from_private_message/1)
+      |> StreamItem.from_private_messages()
 
     assigns =
       [

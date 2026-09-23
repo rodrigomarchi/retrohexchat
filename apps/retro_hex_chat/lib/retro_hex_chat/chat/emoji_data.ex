@@ -1631,6 +1631,9 @@ defmodule RetroHexChat.Chat.EmojiData do
               |> Map.values()
               |> List.flatten()
 
+  @char_list Enum.map(@all_emojis, & &1.char)
+  @chars MapSet.new(@char_list)
+
   @doc "Returns all emojis grouped by category."
   @spec all() :: %{String.t() => [emoji()]}
   def all do
@@ -1638,6 +1641,21 @@ defmodule RetroHexChat.Chat.EmojiData do
       {t(category), translate_emojis(emojis)}
     end)
   end
+
+  @doc """
+  Whether `char` is an emoji this product offers.
+
+  Asked wherever an emoji arrives as data rather than as a click — a reaction,
+  say. The picker is the only place an emoji is meant to come from, so anything
+  outside it is either a mistake or somebody hiding text inside a counter.
+  """
+  @spec known?(String.t()) :: boolean()
+  def known?(char) when is_binary(char), do: MapSet.member?(@chars, char)
+  def known?(_char), do: false
+
+  @doc "Every emoji character this product offers, in catalog order."
+  @spec chars() :: [String.t()]
+  def chars, do: @char_list
 
   @doc "Returns the list of category names in display order."
   @spec categories() :: [String.t()]

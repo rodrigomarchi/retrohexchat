@@ -6,7 +6,16 @@ defmodule RetroHexChat.Chat.Service do
 
   require Logger
 
-  alias RetroHexChat.Chat.{Attachments, Content, Conversation, Policy, Queries, Replies}
+  alias RetroHexChat.Chat.{
+    Attachments,
+    Content,
+    Conversation,
+    Policy,
+    Queries,
+    Reactions,
+    Replies
+  }
+
   alias RetroHexChat.Notifications
   alias RetroHexChat.Observability
   alias RetroHexChat.Repo
@@ -107,6 +116,42 @@ defmodule RetroHexChat.Chat.Service do
       refresh_reply_previews(updated, Content.reply_preview(updated))
 
       {:ok, updated}
+    end
+  end
+
+  @doc """
+  Put `nickname`'s `emoji` on a channel message, or take it off again.
+
+  Answers — and publishes — the emoji's whole state rather than a delta: a
+  reader that has been away, or that missed one broadcast, would otherwise
+  count wrong forever.
+  """
+  @spec toggle_reaction(integer(), String.t(), String.t()) ::
+          {:ok, map()} | {:error, String.t()}
+  def toggle_reaction(message_id, nickname, emoji) do
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :react],
+      %{"chat.message.id" => message_id, conversation_type: "channel"},
+      fn -> do_toggle_reaction(message_id |> Queries.get_message(), nickname, emoji) end
+    )
+  end
+
+  @doc "The same, on a private message."
+  @spec toggle_private_reaction(integer(), String.t(), String.t()) ::
+          {:ok, map()} | {:error, String.t()}
+  def toggle_private_reaction(pm_id, nickname, emoji) do
+    Observability.span(
+      [:retro_hex_chat, :chat, :message, :react],
+      %{"chat.message.id" => pm_id, conversation_type: "private"},
+      fn -> do_toggle_reaction(pm_id |> Queries.get_private_message(), nickname, emoji) end
+    )
+  end
+
+  defp do_toggle_reaction(message, nickname, emoji) do
+    with %{} = message <- message || {:error, dgettext("chat", "Message not found.")},
+         {:ok, state} <- Reactions.toggle(message, nickname, emoji) do
+      broadcast_to_conversation(message, "reaction_changed", state)
+      {:ok, state}
     end
   end
 

@@ -308,3 +308,51 @@
     animation: none;
   }
 }
+
+/* ── Reactions ──────────────────────────────────────────────────────────────
+   The cheapest answer in the product, and its cost on screen has to match. A
+   chip is the button primitive shrunk to what it holds, so it keeps the same
+   bevel every other control has and needs no colour of its own. */
+.message-reaction {
+  height: auto;
+  min-height: 0;
+  gap: 2px;
+  padding: 0 4px;
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.message-reaction > span:first-child {
+  width: 14px;
+  height: 14px;
+  font-size: 12px;
+}
+
+/* Yours reads pressed, the way a toggled toolbar button does here. Written as a
+   compound selector on purpose: the button primitive already carries
+   `shadow-retro-raised`, and two utility classes of equal specificity are
+   settled by whichever the generated stylesheet emits last — which is not a
+   thing this file gets to decide. */
+.message-reaction.message-reaction--mine {
+  @apply bg-accent text-accent-foreground shadow-retro-sunken;
+  padding: 1px 3px 0 5px;
+}
+
+.message-reactions {
+  @apply mt-1 flex flex-wrap items-center gap-1;
+}
+
+/* The quick picks are always in the markup and hidden by CSS rather than
+   fetched on hover: a round trip to find out which five emoji exist would make
+   the cheapest gesture the slowest one. On a touch screen there is no hover at
+   all, so they stay hidden there and the long-press menu is the way in. */
+.message-reaction-bar {
+  @apply mt-1 hidden flex-wrap items-center gap-1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .chat-message:hover .message-reaction-bar,
+  .chat-message:focus-within .message-reaction-bar {
+    display: flex;
+  }
+}

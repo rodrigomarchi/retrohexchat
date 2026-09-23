@@ -597,7 +597,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       |> MessageHelpers.visible_channel_page(socket.assigns.session.ignore_list)
       |> Map.fetch!(:items)
       |> Enum.reverse()
-      |> Enum.map(&StreamItem.from_message/1)
+      |> StreamItem.from_messages()
 
     socket
     |> assign(

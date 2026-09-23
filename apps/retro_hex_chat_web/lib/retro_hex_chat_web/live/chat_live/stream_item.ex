@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
   """
 
   alias RetroHexChat.Chat.Attachments
+  alias RetroHexChat.Chat.Reactions
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
   @optional_fields [
@@ -28,8 +29,24 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
     :reply_to_preview,
     :plain_content,
     :edited_at,
-    :deleted_at
+    :deleted_at,
+    :reactions
   ]
+
+  @doc """
+  The rows for a page of channel messages, with their reactions.
+
+  Built as a page rather than row by row because the reactions are: asking per
+  line would be fifty queries for one screenful, and a page is the only place
+  that knows it is a page.
+  """
+  @spec from_messages([map()]) :: [map()]
+  def from_messages(messages), do: with_reactions(messages, :message, &from_message/1)
+
+  @doc "The same, for a page of private messages."
+  @spec from_private_messages([map()]) :: [map()]
+  def from_private_messages(messages),
+    do: with_reactions(messages, :private_message, &from_private_message/1)
 
   @doc "The row for a message written in a channel."
   @spec from_message(map()) :: map()
@@ -54,6 +71,34 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
     )
     |> put_optional(pm)
   end
+
+  defp with_reactions([], _kind, _builder), do: []
+
+  defp with_reactions(messages, kind, builder) do
+    summaries =
+      messages
+      |> Enum.map(&Map.get(&1, :id))
+      |> Enum.filter(&is_integer/1)
+      |> then(&Reactions.summary_for_many(kind, &1))
+
+    Enum.map(messages, fn message ->
+      message
+      |> builder.()
+      |> put_reactions(Map.get(summaries, Map.get(message, :id)))
+    end)
+  end
+
+  @doc """
+  Put a message's reactions on a row that was built without them.
+
+  A row rebuilt from a single broadcast — an edit, a delete, a reaction — comes
+  through `from_message/1` rather than the page path, and the strip it draws is
+  keyed on this field being present.
+  """
+  @spec put_reactions(map(), map() | nil) :: map()
+  def put_reactions(item, nil), do: item
+  def put_reactions(item, summary) when map_size(summary) == 0, do: item
+  def put_reactions(item, summary), do: Map.put(item, :reactions, summary)
 
   defp base(source, id, author, timestamp) do
     %{

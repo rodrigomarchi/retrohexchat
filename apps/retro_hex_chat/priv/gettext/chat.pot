@@ -136,8 +136,9 @@ msgstr ""
 msgid "Message has already been deleted."
 msgstr ""
 
-#: lib/retro_hex_chat/chat/service.ex:94
-#: lib/retro_hex_chat/chat/service.ex:142
+#: lib/retro_hex_chat/chat/service.ex:103
+#: lib/retro_hex_chat/chat/service.ex:151
+#: lib/retro_hex_chat/chat/service.ex:187
 #, elixir-autogen, elixir-format
 msgid "Message not found."
 msgstr ""
@@ -237,7 +238,7 @@ msgstr ""
 msgid "Open/close the keyboard shortcut cheatsheet"
 msgstr ""
 
-#: lib/retro_hex_chat/chat/service.ex:220
+#: lib/retro_hex_chat/chat/service.ex:265
 #, elixir-autogen, elixir-format
 msgid "Original message not found."
 msgstr ""
@@ -329,7 +330,7 @@ msgid "Switch to window 9"
 msgstr ""
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:281
-#: lib/retro_hex_chat/chat/service.ex:165
+#: lib/retro_hex_chat/chat/service.ex:210
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr ""
@@ -494,7 +495,7 @@ msgid "Toggle Conference Microphone"
 msgstr ""
 
 #: lib/retro_hex_chat/channels/server.ex:1308
-#: lib/retro_hex_chat/chat/service.ex:308
+#: lib/retro_hex_chat/chat/service.ex:353
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
 msgstr ""
@@ -551,3 +552,23 @@ msgid "%{count} minute"
 msgid_plural "%{count} minutes"
 msgstr[0] ""
 msgstr[1] ""
+
+#: lib/retro_hex_chat/chat/reactions.ex:65
+#, elixir-autogen, elixir-format
+msgid "Reaction could not be saved."
+msgstr ""
+
+#: lib/retro_hex_chat/chat/reactions.ex:107
+#, elixir-autogen, elixir-format
+msgid "That is not an emoji you can react with."
+msgstr ""
+
+#: lib/retro_hex_chat/chat/reactions.ex:110
+#, elixir-autogen, elixir-format
+msgid "That message was deleted."
+msgstr ""
+
+#: lib/retro_hex_chat/chat/reactions.ex:114
+#, elixir-autogen, elixir-format
+msgid "This message already has %{count} different reactions."
+msgstr ""

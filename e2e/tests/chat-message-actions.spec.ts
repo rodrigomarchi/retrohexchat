@@ -4,6 +4,7 @@
  * @flow O9 [done] Edit last own message with ArrowUp; submit edit updates message (features P1)
  * @flow O10 [done] Delete own message marks deleted placeholder for both users (features P1)
  * @flow O11 [done] Retry failed pending message appears when send rejected by mode/mute (features P2)
+ * @flow O28 [done] Reacting from the hover bar reaches the other person's screen, and clicking again removes it
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -11,6 +12,7 @@
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { shot } from "../helpers/screenshots";
 
 type TestUser = {
   chat: ChatPage;
@@ -62,7 +64,66 @@ async function setupTwoUsersInChannel(browser: Browser, channel: string) {
   return { alice, bob };
 }
 
+const THUMBS = "\u{1F44D}";
+
 test.describe("Message actions", () => {
+  test("a reaction reaches the other person, and clicking it again takes it back (O28)", async ({
+    browser,
+  }) => {
+    const channel = uniqueChannel("react");
+    const { alice, bob } = await setupTwoUsersInChannel(browser, channel);
+    const line = `react-me-${Date.now()}`;
+
+    try {
+      await bob.chat.switchToTab(channel);
+      await bob.chat.sendMessage(line);
+      await alice.chat.expectMessageVisible(line);
+
+      // Nobody has reacted, so there is no strip to find — a line that has not
+      // been reacted to must take no room at all.
+      await expect(alice.chat.messageReaction(line, THUMBS)).toHaveCount(0);
+
+      await alice.chat.reactTo(line, THUMBS);
+
+      await expect(alice.chat.messageReaction(line, THUMBS)).toBeVisible();
+      await expect(alice.chat.messageReaction(line, THUMBS)).toHaveAttribute(
+        "aria-pressed",
+        "true",
+      );
+
+      // The bevel that says "this one is yours" is one pixel of Win98 and does
+      // not survive a screenshot of a 16px chip, so it is asserted rather than
+      // looked at: a pressed chip and an unpressed one must not draw the same.
+      const pressed = await alice.chat
+        .messageReaction(line, THUMBS)
+        .evaluate((el) => getComputedStyle(el).boxShadow);
+
+      await shot(alice.chat.messageRowByText(line), "reaction-own-chip");
+
+      // The author sees it without touching anything, and it is not theirs.
+      await expect(bob.chat.messageReaction(line, THUMBS)).toBeVisible();
+      await expect(bob.chat.messageReaction(line, THUMBS)).toHaveAttribute(
+        "aria-pressed",
+        "false",
+      );
+
+      const unpressed = await bob.chat
+        .messageReaction(line, THUMBS)
+        .evaluate((el) => getComputedStyle(el).boxShadow);
+
+      expect(pressed).not.toBe(unpressed);
+
+      await shot(bob.chat.messageRowByText(line), "reaction-seen-by-author");
+
+      await alice.chat.messageReaction(line, THUMBS).click();
+
+      await expect(alice.chat.messageReaction(line, THUMBS)).toHaveCount(0);
+      await expect(bob.chat.messageReaction(line, THUMBS)).toHaveCount(0);
+    } finally {
+      await Promise.all([alice.ctx.close(), bob.ctx.close()]);
+    }
+  });
+
   test("reply via message context menu creates a reply bar, sends a reply block, and dismiss cancels (O8)", async ({
     page,
   }) => {

@@ -21,7 +21,7 @@ msgstr "%{name} (%{type}, %{interval}s) → %{command}"
 msgid "Active timers:\n"
 msgstr "Timers activos:\n"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:35
+#: lib/retro_hex_chat/chat/sound_settings.ex:36
 #, elixir-autogen, elixir-format
 msgid "Alert"
 msgstr "Alerta"
@@ -31,17 +31,17 @@ msgstr "Alerta"
 msgid "Alt"
 msgstr "Alt"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:28
+#: lib/retro_hex_chat/chat/sound_settings.ex:29
 #, elixir-autogen, elixir-format
 msgid "Beep"
 msgstr "Bip"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:40
+#: lib/retro_hex_chat/chat/sound_settings.ex:41
 #, elixir-autogen, elixir-format
 msgid "Blip"
 msgstr "Blip"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:36
+#: lib/retro_hex_chat/chat/sound_settings.ex:37
 #, elixir-autogen, elixir-format
 msgid "Buzz"
 msgstr "Buzz"
@@ -51,27 +51,27 @@ msgstr "Buzz"
 msgid "Chat"
 msgstr "Chat"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:33
+#: lib/retro_hex_chat/chat/sound_settings.ex:34
 #, elixir-autogen, elixir-format
 msgid "Chime High"
 msgstr "Alto Chime"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:32
+#: lib/retro_hex_chat/chat/sound_settings.ex:33
 #, elixir-autogen, elixir-format
 msgid "Chime Long"
 msgstr "Chime Long"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:34
+#: lib/retro_hex_chat/chat/sound_settings.ex:35
 #, elixir-autogen, elixir-format
 msgid "Chime Low"
 msgstr "Chime Baixo"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:31
+#: lib/retro_hex_chat/chat/sound_settings.ex:32
 #, elixir-autogen, elixir-format
 msgid "Chime Short"
 msgstr "Chime Short"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:37
+#: lib/retro_hex_chat/chat/sound_settings.ex:38
 #, elixir-autogen, elixir-format
 msgid "Click"
 msgstr "Clique"
@@ -92,26 +92,25 @@ msgstr "Ctrl"
 msgid "Delete window has expired."
 msgstr "A janela de exclusão expirou."
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:30
+#: lib/retro_hex_chat/chat/sound_settings.ex:31
 #, elixir-autogen, elixir-format
 msgid "Ding High"
 msgstr "Ding Alto"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:29
+#: lib/retro_hex_chat/chat/sound_settings.ex:30
 #, elixir-autogen, elixir-format
 msgid "Ding Low"
 msgstr "Ding Baixo"
 
-#: lib/retro_hex_chat/chat/policy.ex:51 lib/retro_hex_chat/chat/policy.ex:80
+#: lib/retro_hex_chat/chat/policy.ex:51
+#: lib/retro_hex_chat/chat/policy.ex:80
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
 msgstr "A janela de edição expirou."
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
-msgid ""
-"Expansion must not contain command chaining characters (|, &&, ;, or "
-"newlines)"
+msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
 msgstr ""
 "Expansão não deve conter caracteres de encadeamento de comandos (!, & &,;, "
 "ou novas linhas)"
@@ -123,27 +122,28 @@ msgstr "Formatação"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:111
 #, elixir-autogen, elixir-format
-msgid ""
-"Invalid timer name. Use only letters, numbers, hyphens, underscores (max "
-"%{max_name_length} chars)."
+msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
 msgstr ""
 "Nome do cronômetro inválido. Use apenas letras, números, hífens, sublinhas "
 "(máximo caracteres %{max_name_length})."
 
-#: lib/retro_hex_chat/chat/content.ex:135 lib/retro_hex_chat/chat/policy.ex:19
+#: lib/retro_hex_chat/chat/content.ex:135
+#: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
 msgid "Message cannot be empty"
 msgstr "A mensagem não pode estar vazia"
 
-#: lib/retro_hex_chat/chat/policy.ex:48 lib/retro_hex_chat/chat/policy.ex:70
+#: lib/retro_hex_chat/chat/policy.ex:48
+#: lib/retro_hex_chat/chat/policy.ex:70
 #: lib/retro_hex_chat/chat/policy.ex:91
 #, elixir-autogen, elixir-format
 msgid "Message has already been deleted."
 msgstr "A mensagem já foi apagada."
 
-#: lib/retro_hex_chat/chat/service.ex:93
-#: lib/retro_hex_chat/chat/service.ex:141
+#: lib/retro_hex_chat/chat/service.ex:103
+#: lib/retro_hex_chat/chat/service.ex:151
+#: lib/retro_hex_chat/chat/service.ex:187
 #, elixir-autogen, elixir-format
 msgid "Message not found."
 msgstr "Mensagem não encontrada."
@@ -163,12 +163,12 @@ msgstr "Próxima Janela"
 msgid "No active timers."
 msgstr "Sem timers activos."
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:27
+#: lib/retro_hex_chat/chat/sound_settings.ex:28
 #, elixir-autogen, elixir-format
 msgid "None"
 msgstr "Nenhum"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:39
+#: lib/retro_hex_chat/chat/sound_settings.ex:40
 #, elixir-autogen, elixir-format
 msgid "Notify"
 msgstr "Notificar"
@@ -243,12 +243,13 @@ msgstr "Abrir/fechar a lista de ignorar"
 msgid "Open/close the keyboard shortcut cheatsheet"
 msgstr "Abrir/fechar a folha de atalho do teclado"
 
-#: lib/retro_hex_chat/chat/service.ex:219
+#: lib/retro_hex_chat/chat/service.ex:265
 #, elixir-autogen, elixir-format
 msgid "Original message not found."
 msgstr "A mensagem original não foi encontrada."
 
-#: lib/retro_hex_chat/chat/policy.ex:54 lib/retro_hex_chat/chat/policy.ex:119
+#: lib/retro_hex_chat/chat/policy.ex:54
+#: lib/retro_hex_chat/chat/policy.ex:119
 #, elixir-autogen, elixir-format
 msgid "Please wait a few seconds before editing again."
 msgstr "Por favor, aguarde alguns segundos antes de editar novamente."
@@ -265,7 +266,7 @@ msgstr ""
 "Intervalo de repetição apertado para o mínimo de segundos "
 "%{min_repeat_interval}."
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:38
+#: lib/retro_hex_chat/chat/sound_settings.ex:39
 #, elixir-autogen, elixir-format
 msgid "Ring"
 msgstr "Anel"
@@ -336,7 +337,7 @@ msgid "Switch to window 9"
 msgstr "Mudar para a janela 9"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:281
-#: lib/retro_hex_chat/chat/service.ex:164
+#: lib/retro_hex_chat/chat/service.ex:210
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "Sistema"
@@ -368,7 +369,7 @@ msgstr "Uso: /timer <name> repeat <seconds> <command>"
 msgid "Usage: /timer stop <name>"
 msgstr "Uso: /timer stop <name>"
 
-#: lib/retro_hex_chat/chat/sound_settings.ex:41
+#: lib/retro_hex_chat/chat/sound_settings.ex:42
 #, elixir-autogen, elixir-format
 msgid "Whoosh"
 msgstr "Whoosh"
@@ -423,7 +424,8 @@ msgstr "Janela 9"
 msgid "You cannot delete other users' messages."
 msgstr "Você não pode excluir as mensagens de outros usuários."
 
-#: lib/retro_hex_chat/chat/policy.ex:45 lib/retro_hex_chat/chat/policy.ex:67
+#: lib/retro_hex_chat/chat/policy.ex:45
+#: lib/retro_hex_chat/chat/policy.ex:67
 #, elixir-autogen, elixir-format
 msgid "You cannot edit other users' messages."
 msgstr "Você não pode editar as mensagens de outros usuários."
@@ -499,8 +501,8 @@ msgstr "Alternar câmera de conferência"
 msgid "Toggle Conference Microphone"
 msgstr "Alternar o Microfone da Conferência"
 
-#: lib/retro_hex_chat/channels/server.ex:1306
-#: lib/retro_hex_chat/chat/service.ex:307
+#: lib/retro_hex_chat/channels/server.ex:1308
+#: lib/retro_hex_chat/chat/service.ex:353
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
 msgstr "Não foi possível anexar o anexo à mensagem"
@@ -557,3 +559,23 @@ msgid "%{count} minute"
 msgid_plural "%{count} minutes"
 msgstr[0] "%{count} minuto"
 msgstr[1] "%{count} minutos"
+
+#: lib/retro_hex_chat/chat/reactions.ex:65
+#, elixir-autogen, elixir-format
+msgid "Reaction could not be saved."
+msgstr "Não foi possível salvar a reação."
+
+#: lib/retro_hex_chat/chat/reactions.ex:107
+#, elixir-autogen, elixir-format
+msgid "That is not an emoji you can react with."
+msgstr "Esse não é um emoji com que você pode reagir."
+
+#: lib/retro_hex_chat/chat/reactions.ex:110
+#, elixir-autogen, elixir-format
+msgid "That message was deleted."
+msgstr "Essa mensagem foi apagada."
+
+#: lib/retro_hex_chat/chat/reactions.ex:114
+#, elixir-autogen, elixir-format
+msgid "This message already has %{count} different reactions."
+msgstr "Esta mensagem já tem %{count} reações diferentes."

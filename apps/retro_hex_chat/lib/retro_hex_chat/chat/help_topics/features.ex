@@ -763,6 +763,24 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "Automatically reply to private messages when you are marked as away.")
       },
       %{
+        id: "feature-reactions",
+        title: dgettext("help", "Reacting to a Message"),
+        category: dgettext("help", "Chat & Messaging"),
+        keywords: [
+          dgettext("help", "reaction"),
+          "react",
+          "emoji",
+          dgettext("help", "thumbs up"),
+          dgettext("help", "long press")
+        ],
+        icon: :icon_heart,
+        description:
+          dgettext(
+            "help",
+            "Answer a message with one click, without writing anything and without notifying anyone."
+          )
+      },
+      %{
         id: "feature-emoji",
         title: dgettext("help", "Emoji Picker"),
         category: dgettext("help", "Chat Input"),
