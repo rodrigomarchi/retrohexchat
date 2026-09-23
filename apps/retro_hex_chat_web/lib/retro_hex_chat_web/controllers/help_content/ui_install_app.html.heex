@@ -1,0 +1,45 @@
+<p>
+  {dgettext(
+    "help_ui",
+    "RetroHexChat can be installed straight from the browser. It then gets its own icon and its own window, with no address bar — the same chat, reached the way any other app on the device is reached."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_ui", "How to Install")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Desktop Chrome or Edge: an install icon appears at the right of the address bar, or use the browser menu's Install option"
+    )}
+  </li>
+  <li>{dgettext("help_ui", "Android Chrome: menu, then Add to Home screen")}</li>
+  <li>{dgettext("help_ui", "iPhone or iPad Safari: Share, then Add to Home Screen")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_ui", "What Changes")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_ui", "Opening the icon lands you on the chat rather than the front page")}
+  </li>
+  <li>{dgettext("help_ui", "The window has no browser chrome")}</li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Nothing is stored offline: the chat needs the server, and an installed copy showing a stale screen would be worse than not opening at all"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_warning}>{dgettext("help_ui", "This Is Not Self-Hosting")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Installing puts this chat on your device. Running your own server is a different thing entirely, and it has its own guide on the website."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="ui-overview">{dgettext("help_ui", "User Interface Overview")}</.help_link>
+  ·
+  <.help_link topic="feature-desktop-notifications">
+    {dgettext("help_ui", "Desktop Notifications")}
+  </.help_link>
+</p>

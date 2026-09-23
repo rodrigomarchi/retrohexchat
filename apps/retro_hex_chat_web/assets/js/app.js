@@ -15,6 +15,7 @@ import { createPlausibleTracker } from "./lib/analytics/plausible";
 import { getClientInfo } from "./lib/connection/client_info";
 import { loadCurrentLocaleCatalog } from "./lib/i18n";
 import { S3DirectUploader } from "./lib/uploads/s3_direct";
+import { registerServiceWorker } from "./lib/system/service_worker.js";
 
 const Hooks = buildHooks();
 
@@ -99,3 +100,8 @@ if (process.env.NODE_ENV === "development") {
     window.liveReloader = reloader;
   });
 }
+
+// Registered from the app bundle and not from the public pages: every reader
+// and every crawler downloads those, and the worker is only of use to somebody
+// who signed in. A failure here never changes what is on screen.
+registerServiceWorker();

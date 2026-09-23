@@ -33,6 +33,36 @@ defmodule RetroHexChatWeb.EndpointStaticTest do
     assert conn |> get("/favicon.ico") |> response(200)
   end
 
+  describe "installable web app" do
+    test "serves the manifest", %{conn: conn} do
+      response = conn |> get("/manifest.webmanifest") |> response(200)
+
+      assert response =~ ~s("start_url")
+      assert Jason.decode!(response)["start_url"] == "/chat"
+    end
+
+    test "the manifest points at icons that are actually served", %{conn: conn} do
+      manifest = conn |> get("/manifest.webmanifest") |> response(200) |> Jason.decode!()
+
+      assert manifest["icons"] != []
+
+      for %{"src" => src} <- manifest["icons"] do
+        assert build_conn() |> get(src) |> response(200),
+               "#{src} is named by the manifest but not served"
+      end
+    end
+
+    # The worker's scope is its own path, so anywhere but the root would leave
+    # the app outside the scope it is supposed to control.
+    test "serves the service worker from the root", %{conn: conn} do
+      conn = get(conn, "/sw.js")
+
+      assert response(conn, 200) =~ "addEventListener"
+      assert [content_type] = get_resp_header(conn, "content-type")
+      assert content_type =~ "javascript"
+    end
+  end
+
   test "leaves unrelated top-level files unserved", %{conn: conn} do
     url = with_static_file("endpointstatictest-secrets.env", "nope")
 

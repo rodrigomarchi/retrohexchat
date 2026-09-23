@@ -322,6 +322,30 @@
         </:status>
       </.desktop_window>
 
+      <%!-- ══════════════ INSTALL ON A DEVICE ══════════════
+            Not the same subject as /install, which is about running your own
+            server. This one is about putting the chat on your own home screen. --%>
+      <.desktop_window
+        id="install-app"
+        width={420}
+        title={dgettext("landing", "Keep It On Your Device")}
+        pinned
+      >
+        <:icon><Icons.icon_hex_stone class="w-4 h-4" /></:icon>
+        <p class="text-sm">
+          {dgettext(
+            "landing",
+            "RetroHexChat installs from the browser. Open it, choose Install or Add to Home Screen, and it gets its own icon and its own window — no store, no download, no account anywhere else."
+          )}
+        </p>
+        <:status>
+          <.window_status_bar_field grow>
+            <Icons.icon_checkmark class="w-3 h-3 inline" />
+            {dgettext("landing", "No store required")}
+          </.window_status_bar_field>
+        </:status>
+      </.desktop_window>
+
       <%!-- ══════════════ SECURITY ══════════════ --%>
       <.desktop_window
         id="security-layers"

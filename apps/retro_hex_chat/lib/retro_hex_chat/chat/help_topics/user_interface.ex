@@ -19,6 +19,25 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           )
       },
       %{
+        id: "ui-install-app",
+        title: dgettext("help", "Install on Your Device"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "install",
+          "pwa",
+          dgettext("help", "home screen"),
+          dgettext("help", "add to home screen"),
+          "standalone",
+          "icon"
+        ],
+        icon: :icon_laptop,
+        description:
+          dgettext(
+            "help",
+            "Give RetroHexChat its own icon and window from the browser, with no store and no download."
+          )
+      },
+      %{
         id: "ui-connect-window",
         title: dgettext("help", "Connect Window"),
         category: dgettext("help", "User Interface"),

@@ -40,6 +40,11 @@ defmodule RetroHexChatWeb.LandingLive.HowItWorks do
            icon: :icon_lock
          },
          %{
+           id: "install-app",
+           label: dgettext("landing", "Keep It On Your Device"),
+           icon: :icon_hex_stone
+         },
+         %{
            id: "security-layers",
            label: dgettext("landing", "Security Layers"),
            icon: :icon_shield

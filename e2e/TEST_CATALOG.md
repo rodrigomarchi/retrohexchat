@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **225 spec files** under `e2e/tests/`.
-- **477 Playwright `test()` cases**.
-- **472 documented flows**, 471 done, 1 not done.
+- **478 Playwright `test()` cases**.
+- **473 documented flows**, 472 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -738,6 +738,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW16 | The landing keeps its LiveSocket off until a reader reaches for the form | `tests/landing-connect-window.spec.ts` | done |
 | PW17 | A remembered terminal signs back in with one click from the landing | `tests/landing-connect-window.spec.ts` | done |
 | PW18 | The landing connect window opens fully on screen at every desktop size | `tests/landing-connect-window.spec.ts` | done |
+| PW19 | The public pages declare an installable web app: a linked manifest whose icons and service worker are actually served | `tests/landing-public.spec.ts` | done |
 
 ### P - Performance Budgets
 

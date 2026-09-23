@@ -13,7 +13,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 1.2 Catálogo com salas frias | **pronto** (2026-09-22) |
 | 1.3 Convite de canal com prévia | **pronto** (2026-09-22) |
 | 2.1 Notificação de desktop | **pronto** (2026-09-23) |
-| 2.2 PWA | não iniciado |
+| 2.2 PWA | **pronto** (2026-09-23) |
 | 2.3 Web Push | não iniciado |
 | 3.1 Reações | não iniciado |
 | 3.2 Menções | não iniciado |
@@ -262,4 +262,51 @@ verde, auditoria visual da janela de Sons.
 `help_content/feature_desktop_notifications.html.heex`,
 `e2e/tests/chat-sound-settings.spec.ts`, e os catálogos `help`, `dialogs`,
 `help_features`.
+
+### 2026-09-23 — item 2.2, PWA
+
+**Pronto.** `make ci` 18/18, `make e2e.shots FILE=tests/landing-public.spec.ts`
+verde, auditoria visual da landing.
+
+- `manifest.webmanifest` e `sw.js` em `priv/static/`, ambos na allowlist de
+  `static_paths/0` **e** `static_only_matching/0` (o digest reescreve o primeiro
+  segmento do nome).
+- Ícones 192 e 512 gerados do `favicon.svg` pelo Vix, compostos sobre o teal do
+  desktop — **sem esticar**: o viewBox é 92×100 e um ícone de launcher é
+  quadrado.
+- O worker não cacheia HTML. Só `/assets/*`, que é imutável por construção.
+- Registro em `lib/system/service_worker.js`, chamado de `app.js` e nunca de
+  `public_pages.js` (orçamento de 80 KB no caminho crítico de todo crawler).
+- Janela "Keep It On Your Device" no `/how-it-works` e tópico de ajuda
+  `ui-install-app`, que diz explicitamente que **isto não é auto-hospedagem**.
+
+**Aprendizados**
+
+- **O `.gitignore` come `icon-192.png`.** A regra
+  `priv/static/**/*-[0-9a-f]*.*` casa qualquer hífen seguido de dígitos hex —
+  e `1`, `9`, `2` são todos hex. Nomes com underscore (`app_icon_192.png`)
+  escapam, e é a convenção que os arquivos vizinhos já usavam.
+- **`Operation.thumbnail` sobre SVG achata em branco.** O caminho certo é
+  `svgload` (que devolve `{:ok, {img, meta}}`, não `{:ok, img}`) →
+  `thumbnail_image` → `flatten` sobre a cor de fundo → `embed`. Sem o `flatten`,
+  o miolo transparente deixa o fundo do sistema aparecer através do hexágono.
+- **Uma janela nova na landing quebra um invariante que já existia.**
+  `landing_controller_test.exs` compara o conjunto de janelas com o de botões da
+  taskbar: "uma janela sem botão não pode ser reaberta depois de fechada". O
+  teste apontou `install-app` em segundos — exatamente o tipo de regra que vale
+  a pena ter escrita como teste em vez de como parágrafo.
+- **`/install` e "instalar o app" são assuntos diferentes.** A página existente
+  é sobre subir o seu próprio servidor; confundir os dois na mesma tela seria o
+  pior dos dois mundos. A janela nova vive em `/how-it-works` e o tópico de ajuda
+  tem uma seção só para dizer que não é a mesma coisa.
+- **Bônus da auditoria visual**: o screenshot da landing mostrou a janela Connect
+  dizendo "Nicknames unused for **180 days**" — confirmação visual do item 1.1
+  que nenhum teste tinha dado.
+
+**Arquivos tocados** — `priv/static/manifest.webmanifest`, `priv/static/sw.js`,
+`priv/static/images/app_icon_{192,512}.png`, `retro_hex_chat_web.ex`,
+os três layouts, `landing_live/how_it_works.{ex,html.heex}`,
+`assets/js/lib/system/service_worker.js`, `assets/js/app.js`,
+`help_topics/user_interface.ex`, `help_content/ui_install_app.html.heex`,
+`e2e/tests/landing-public.spec.ts`, e os catálogos `help`, `help_ui`, `landing`.
 

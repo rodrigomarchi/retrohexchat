@@ -3,6 +3,7 @@
  * @flow PW1 [done] The landing loads the public bundle and enables desktop interactions
  * @flow PW2 [done] Mobile navigation works and the Start menu offers no route to /connect
  * @flow PW3 [done] The landing runs the real window manager over a taskbar of links
+ * @flow PW19 [done] The public pages declare an installable web app: a linked manifest whose icons and service worker are actually served
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -210,6 +211,42 @@ test.describe("Landing public pages", () => {
     await startMenu.locator('a[href="/faq"]').click();
     await expect(page).toHaveURL(/\/faq$/);
     await expect(page.locator("#faq-heading")).toBeVisible();
+
+    expect(failures).toEqual([]);
+  });
+
+  test("the public pages offer an installable app (PW19)", async ({ page }) => {
+    const failures = watchBrowserFailures(page);
+
+    await page.goto("/how-it-works");
+
+    // A manifest reachable at its URL but linked from no page installs nothing.
+    const href = await page
+      .locator('link[rel="manifest"]')
+      .first()
+      .getAttribute("href");
+    expect(href).toBeTruthy();
+
+    const manifestResponse = await page.request.get(href as string);
+    expect(manifestResponse.status()).toBe(200);
+    const manifest = await manifestResponse.json();
+    expect(manifest.start_url).toBe("/chat");
+    expect(manifest.display).toBe("standalone");
+
+    // Every icon the manifest names has to exist, or the install prompt is
+    // offered against a broken picture.
+    for (const icon of manifest.icons) {
+      const iconResponse = await page.request.get(icon.src);
+      expect(iconResponse.status(), `${icon.src} should be served`).toBe(200);
+    }
+
+    const worker = await page.request.get("/sw.js");
+    expect(worker.status()).toBe(200);
+
+    await expect(
+      page.locator('[data-window-taskbar="install-app"]'),
+    ).toBeVisible();
+    await shot(page, "landing-installable");
 
     expect(failures).toEqual([]);
   });
