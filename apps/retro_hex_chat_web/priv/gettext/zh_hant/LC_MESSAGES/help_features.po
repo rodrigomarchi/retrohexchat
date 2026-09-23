@@ -1951,6 +1951,7 @@ msgid "Highlight"
 msgstr "突出顯示"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
 msgstr "突出顯示單詞"
@@ -2411,6 +2412,7 @@ msgstr "多線擴展"
 msgid "Multiple Kicks"
 msgstr "多腳"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Mute"
@@ -3068,6 +3070,7 @@ msgstr "在當前頻道或PM中以實時突出顯示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy_feedback.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_display_settings.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/feature_flood_protection.html.heex:49
@@ -3254,6 +3257,7 @@ msgstr "聲音目錄"
 msgid "Sound Notifications"
 msgstr "聲音通知"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Sounds"
@@ -6264,3 +6268,66 @@ msgstr "連結會顯示什麼"
 #, elixir-autogen, elixir-format
 msgid "Who Can Share, and How to Stop"
 msgstr "誰可以分享，以及如何停止"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Browser Permission"
+msgstr "瀏覽器權限"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Never for a conversation you have muted"
+msgstr "絕不針對你已靜音的對話"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:13
+#, elixir-autogen, elixir-format
+msgid ""
+"One per conversation: a busy room replaces its own notification instead of "
+"stacking one per line"
+msgstr "每個對話一條：熱鬧的房間會替換掉自己的通知，而不是每行堆一條"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Only for a conversation that is not the one on screen"
+msgstr "只針對不在畫面上的對話"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Only while the tab is in the background"
+msgstr "只在分頁處於背景時"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:21
+#, elixir-autogen, elixir-format
+msgid ""
+"Private messages and mentions of your nickname, because those are the two "
+"that are about you. Everything else starts off — notifying on every line of "
+"every channel is how the whole thing gets switched off on the first day."
+msgstr "私訊，以及提到你暱稱的訊息，因為這兩件事是關於你的。其餘預設關閉——每個頻道的每一行都通知，正是這整個功能在第一天就被關掉的原因。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Sounds window has a Notify box beside each event's sound and flash. "
+"Ticking one raises a system notification when that kind of thing happens in "
+"a conversation you are not looking at."
+msgstr "「聲音」視窗在每個事件的聲音和閃爍旁邊有一個「通知」核取方塊。勾選它，當這類事情發生在你沒有在看的對話裡時，就會彈出系統通知。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "What Starts On"
+msgstr "預設就開著的是什麼"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "When One Appears"
+msgstr "什麼時候會出現"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Your browser decides whether this is possible at all, and it only asks when "
+"you click Allow desktop notifications in the Sounds window. If you refuse, "
+"the window says so and stops offering: blocked is final until you change it "
+"in your browser's own site settings."
+msgstr ""
+"這件事是否可行由你的瀏覽器決定，而它只在你點擊「聲音」視窗裡的「允許桌面通知」時才會詢問。如果你拒絕，視窗會說明並不再詢問：封鎖是最終的，除非你在瀏覽器自己的網站設定裡改掉。"

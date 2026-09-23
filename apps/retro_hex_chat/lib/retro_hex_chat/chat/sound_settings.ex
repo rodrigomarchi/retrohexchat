@@ -1,6 +1,7 @@
 defmodule RetroHexChat.Chat.SoundSettings do
   @moduledoc """
-  Domain module for managing per-event sound and flash preferences.
+  Domain module for managing per-event sound, flash and desktop-notification
+  preferences.
 
   Provides in-memory CRUD operations on the settings map
   and persistence functions (save/2, load/1) for registered users.
@@ -69,6 +70,22 @@ defmodule RetroHexChat.Chat.SoundSettings do
     buddy_offline: false
   }
 
+  # A desktop notification is the one of the three that leaves the page, so it
+  # starts on only for the events that are about *you*. Notifying on every line
+  # of every channel is how the feature gets switched off on the first day.
+  @default_notify_settings %{
+    message: false,
+    pm: true,
+    highlight: true,
+    join: false,
+    part: false,
+    kick: false,
+    connect: false,
+    disconnect: false,
+    buddy_online: false,
+    buddy_offline: false
+  }
+
   # ---------------------------------------------------------------------------
   # In-Memory CRUD
   # ---------------------------------------------------------------------------
@@ -78,6 +95,7 @@ defmodule RetroHexChat.Chat.SoundSettings do
     %{
       sound_mappings: @default_sound_mappings,
       flash_settings: @default_flash_settings,
+      notify_settings: @default_notify_settings,
       muted: false
     }
   end
@@ -103,6 +121,23 @@ defmodule RetroHexChat.Chat.SoundSettings do
       when event_type in @event_types and is_boolean(enabled) do
     put_in(settings, [:flash_settings, event_type], enabled)
   end
+
+  @spec get_notify(map(), atom()) :: boolean()
+  def get_notify(%{notify_settings: notify}, event_type) when event_type in @event_types do
+    Map.get(notify, event_type, false)
+  end
+
+  def get_notify(_settings, event_type) when event_type in @event_types, do: false
+
+  @spec set_notify(map(), atom(), boolean()) :: map()
+  def set_notify(settings, event_type, enabled)
+      when event_type in @event_types and is_boolean(enabled) do
+    put_in(settings, [:notify_settings, event_type], enabled)
+  end
+
+  @spec get_notify_settings(map()) :: map()
+  def get_notify_settings(%{notify_settings: notify}), do: notify
+  def get_notify_settings(_settings), do: @default_notify_settings
 
   @spec get_sound_mappings(map()) :: map()
   def get_sound_mappings(%{sound_mappings: mappings}), do: mappings
@@ -139,6 +174,7 @@ defmodule RetroHexChat.Chat.SoundSettings do
       owner_nickname: owner,
       sound_mappings: stringify_keys(settings.sound_mappings),
       flash_settings: stringify_keys(settings.flash_settings),
+      notify_settings: stringify_keys(get_notify_settings(settings)),
       muted: muted?(settings)
     }
 
@@ -170,6 +206,7 @@ defmodule RetroHexChat.Chat.SoundSettings do
          %{
            sound_mappings: atomize_keys(db_entry.sound_mappings),
            flash_settings: atomize_flash(db_entry.flash_settings),
+           notify_settings: load_notify(db_entry.notify_settings),
            muted: db_entry.muted == true
          }}
     end
@@ -189,6 +226,16 @@ defmodule RetroHexChat.Chat.SoundSettings do
       {key, v}
     end)
   end
+
+  # A row written before this setting existed carries an empty map, and coming
+  # back with every notification off is not what that row meant — it meant
+  # nothing at all. An absent setting falls back to the default, per event.
+  defp load_notify(stored) when is_map(stored) do
+    stored = atomize_flash(stored)
+    Map.merge(@default_notify_settings, stored)
+  end
+
+  defp load_notify(_absent), do: @default_notify_settings
 
   defp atomize_flash(map) do
     Map.new(map, fn {k, v} ->

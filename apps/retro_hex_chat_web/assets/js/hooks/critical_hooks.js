@@ -12,6 +12,7 @@ import ChatPaginationHook from "./chat/chat_pagination_hook";
 import SearchHighlightHook from "./chat/search_highlight_hook";
 import ShortcutDispatcherHook from "./input/shortcut_dispatcher_hook";
 import SoundHook from "./input/sound_hook";
+import DesktopNotifyHook from "./notifications/desktop_notify_hook";
 import DocumentTitleHook from "./notifications/document_title_hook";
 import MenuBarHook from "./ui/menu_bar_hook";
 import MenuRepositionHook from "./ui/menu_reposition_hook";
@@ -51,6 +52,7 @@ export const criticalHooks = {
   SurfacePresenceHook: SurfacePresenceHook,
   SurfaceTabLinkHook: SurfaceTabLinkHook,
   SoundHook: SoundHook,
+  DesktopNotifyHook: DesktopNotifyHook,
   DocumentTitleHook: DocumentTitleHook,
   MenuBarHook: MenuBarHook,
   MenuRepositionHook: MenuRepositionHook,

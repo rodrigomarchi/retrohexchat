@@ -111,6 +111,17 @@
   user-select: none;
 }
 
+/* What the browser last answered about notifications, and the one control that
+   can change it. Sits above the event list because it governs every row in it. */
+.ss-permission-note {
+  padding: 6px 8px;
+  border: 1px solid #808080;
+  background: #dfdfdf;
+  color: #000000;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
 .ss-dialog-footer {
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -126,7 +137,7 @@
   }
 
   .ss-event-controls {
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) auto auto;
     align-items: end;
   }
 

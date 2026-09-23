@@ -913,6 +913,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
       nick_color_fn: ChatHelpers.build_nick_color_fn(session),
       has_more: true,
       notice_active: false,
+      # What the browser last told us about its notification permission. Unknown
+      # until the hook reports, which is why "default" is not the starting value:
+      # the Sounds window must not offer to ask before it knows whether it can.
+      desktop_notify_permission: "unknown",
       chat_clear_token: 0,
       cleared_conversation_cutoffs: %{},
       messages: %{},

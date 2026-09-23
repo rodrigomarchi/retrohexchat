@@ -138,6 +138,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
   defdelegate maybe_flash_channel(socket, channel_key, event_type, session),
     to: __MODULE__.Session
 
+  defdelegate maybe_notify_desktop(socket, row, conversation, session),
+    to: __MODULE__.Session
+
   defdelegate push_reconnect_state(socket), to: __MODULE__.Session
   defdelegate persist_reconnect_state(socket), to: __MODULE__.Session
   defdelegate clear_reconnect_state(socket), to: __MODULE__.Session

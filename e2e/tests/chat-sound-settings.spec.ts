@@ -1,6 +1,7 @@
 /**
  * @section U - Dialog CRUD And Settings Depth
  * @flow U3 [done] Sound Settings OK/Apply/Cancel/Preview persists only intended settings (features P2)
+ * @flow U17 [done] The Sounds window carries a Notify box per event and says what the browser answered about permission
  * @flow U4 [done] Sound mute/status-bar setting and Sound Settings preview stay in sync across rerenders/reconnect (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -9,6 +10,7 @@
 import { Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { shot } from "../helpers/screenshots";
 import {
   expectNoSoundStarts,
   expectSoundStarts,
@@ -147,5 +149,48 @@ test.describe("Sound settings dialog", () => {
     await resetAudioSpy(page);
     await chat.soundPreviewButton("message").click();
     await expectSoundStarts(page, 1);
+  });
+
+  test("the Notify column sits beside sound and flash, and the window says what the browser answered (U17)", async ({
+    page,
+  }) => {
+    const { chat } = await signedInUser(page);
+    await chat.openSoundSettingsFromMenu();
+
+    for (const event of ["pm", "highlight", "message", "join"]) {
+      await expect(page.getByTestId(`notify-toggle-${event}`)).toBeVisible();
+    }
+
+    // The permission itself is the browser's to give and is not drivable from
+    // here, so the invariant asserted is the one that must hold whatever it
+    // answers: the window shows exactly the note for the state it is in, and
+    // never offers to ask when asking cannot work.
+    const permission = await page.evaluate(() =>
+      typeof Notification === "undefined"
+        ? "unsupported"
+        : Notification.permission,
+    );
+    const notes = {
+      granted: null,
+      default: "notify-permission-ask",
+      denied: "notify-permission-denied",
+      unsupported: "notify-permission-unsupported",
+    };
+    const expected = notes[permission];
+
+    for (const testId of Object.values(notes).filter(Boolean)) {
+      await expect(page.getByTestId(testId)).toHaveCount(
+        testId === expected ? 1 : 0,
+      );
+    }
+
+    await shot(chat.soundSettingsDialog, `sound-settings-notify-${permission}`);
+
+    await page.getByTestId("notify-toggle-message").click();
+    await chat.soundSettingsDialog.getByRole("button", { name: "OK" }).click();
+    await expect(chat.soundSettingsDialog).toBeHidden();
+
+    await chat.openSoundSettingsFromMenu();
+    await expect(page.getByTestId("notify-toggle-message")).toBeVisible();
   });
 });

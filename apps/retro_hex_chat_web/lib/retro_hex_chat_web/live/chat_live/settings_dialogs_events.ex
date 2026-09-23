@@ -5,8 +5,9 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
 
   Covers: open_flood_protection_dialog, close_flood_protection_dialog, flood_save_settings,
   flood_reset_defaults, open_sound_settings_dialog, close_sound_settings_dialog,
-  sound_settings_change, sound_flash_toggle, sound_preview, sound_settings_apply,
-  sound_settings_ok, toggle_mute.
+  sound_settings_change, sound_flash_toggle, sound_notify_toggle, sound_preview,
+  sound_settings_apply, sound_settings_ok, toggle_mute, and the two desktop-
+  notification events the browser answers with.
 
   Attached as an `attach_hook(:settings_dialogs_events, :handle_event, ...)` in ChatLive.mount/3.
   Returns `{:halt, socket}` when the event is handled, `{:cont, socket}` otherwise.
@@ -25,7 +26,37 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   alias RetroHexChat.Chat.{FloodProtection, PreferencePersistence, SoundSettings}
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog
+  alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Windows
+
+  # ── Desktop notifications ───────────────────────────────────
+
+  # Clicking a notification is a way into a conversation like any other, so it
+  # goes through the same door the sidebar and the tabs use.
+  def handle_event("desktop_notify_click", %{"conversation" => "pm:" <> peer}, socket) do
+    {:halt, Conversation.activate_pm(socket, peer)}
+  end
+
+  def handle_event("desktop_notify_click", %{"conversation" => channel}, socket) do
+    if channel in socket.assigns.session.channels do
+      {:halt, Conversation.activate_channel(socket, channel)}
+    else
+      {:halt, socket}
+    end
+  end
+
+  # Asking is a gesture the browser insists on, so the request starts with a
+  # click here and the answer comes back on the event above.
+  def handle_event("sound_notify_permission_ask", _params, socket) do
+    {:halt, push_event(socket, "desktop_notify_request_permission", %{})}
+  end
+
+  # The browser's answer, kept so the Sounds window can say whether asking is
+  # still possible or the person has to change it in their browser.
+  def handle_event("desktop_notify_permission", %{"permission" => permission}, socket)
+      when is_binary(permission) do
+    {:halt, assign(socket, desktop_notify_permission: permission)}
+  end
 
   # ── Flood Protection ────────────────────────────────────────
 

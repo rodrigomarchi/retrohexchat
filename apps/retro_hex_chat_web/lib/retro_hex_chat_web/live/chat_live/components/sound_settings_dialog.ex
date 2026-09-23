@@ -31,7 +31,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog do
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: {:ok, assign(socket, id: @id, draft: nil)}
+  def mount(socket),
+    do: {:ok, assign(socket, id: @id, draft: nil, notify_permission: "unknown")}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
@@ -43,7 +44,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog do
   # Passthrough: seed the draft from the session's settings once, at mount —
   # later parent re-renders must not clobber an in-progress draft.
   def update(assigns, socket) do
-    {:ok, assign(socket, draft: socket.assigns.draft || Map.get(assigns, :settings))}
+    {:ok,
+     assign(socket,
+       draft: socket.assigns.draft || Map.get(assigns, :settings),
+       notify_permission:
+         Map.get(assigns, :notify_permission, socket.assigns[:notify_permission] || "unknown")
+     )}
   end
 
   @impl true
@@ -56,6 +62,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog do
     {:noreply,
      assign(socket,
        draft: SoundSettings.set_flash(draft, event, not SoundSettings.get_flash(draft, event))
+     )}
+  end
+
+  def handle_event("sound_notify_toggle", %{"event" => event_str}, socket) do
+    event = String.to_existing_atom(event_str)
+    draft = socket.assigns.draft
+
+    {:noreply,
+     assign(socket,
+       draft: SoundSettings.set_notify(draft, event, not SoundSettings.get_notify(draft, event))
      )}
   end
 
@@ -93,6 +109,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog do
         on_apply={JS.push("sound_settings_apply", target: @myself)}
         on_sound_change="sound_settings_change"
         on_flash_toggle={JS.push("sound_flash_toggle", target: @myself)}
+        on_notify_toggle={JS.push("sound_notify_toggle", target: @myself)}
+        on_notify_permission_ask="sound_notify_permission_ask"
+        notify_permission={@notify_permission}
         on_preview={JS.push("sound_preview", target: @myself)}
       />
     </div>

@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       capture_urls: 6,
       play_event_sound: 3,
       maybe_flash_channel: 4,
+      maybe_notify_desktop: 4,
       push_status_message: 3
     ]
 
@@ -318,6 +319,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     socket
     |> maybe_play_sound(is_highlighted, session)
     |> maybe_flash_channel(channel, flash_type, session)
+    |> maybe_notify_desktop(decorated, channel, session)
   end
 
   defp maybe_play_sound(socket, true = _is_highlighted, _session), do: socket
@@ -392,34 +394,35 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   # unread — a message of one's own arrives here too, from another window.
   defp mark_pm_background(socket, decorated, %{peer: peer} = payload) do
     key = "pm:#{peer}"
-    socket = maybe_count_pm_unread(socket, key, payload)
+    socket = maybe_count_pm_unread(socket, key, payload, decorated)
 
     assign(socket, highlight_channels: maybe_add_highlight_channel(socket, decorated, key))
   end
 
-  defp maybe_count_pm_unread(socket, key, %{direction: :incoming}) do
+  defp maybe_count_pm_unread(socket, key, %{direction: :incoming}, row) do
     session = socket.assigns.session
     unread_counts = UnreadTracker.increment(socket.assigns.unread_counts, key)
 
     socket
-    |> maybe_notify_pm_unmuted(key, session)
+    |> maybe_notify_pm_unmuted(key, session, row)
     |> assign(unread_counts: unread_counts)
   end
 
-  defp maybe_count_pm_unread(socket, _key, _decorated), do: socket
+  defp maybe_count_pm_unread(socket, _key, _payload, _row), do: socket
 
   defp maybe_refresh_p2p_pm_read_model(socket, peer, :invite),
     do: P2PSessionEvents.refresh_pm_session_read_model(socket, peer)
 
   defp maybe_refresh_p2p_pm_read_model(socket, _peer, _type), do: socket
 
-  defp maybe_notify_pm_unmuted(socket, pm_key, session) do
+  defp maybe_notify_pm_unmuted(socket, pm_key, session, row) do
     if MapSet.member?(socket.assigns.muted_channels, pm_key) do
       socket
     else
       socket
       |> play_event_sound(:pm, session)
       |> maybe_flash_channel(pm_key, :pm, session)
+      |> maybe_notify_desktop(row, pm_key, session)
     end
   end
 

@@ -2115,6 +2115,7 @@ msgid "Highlight"
 msgstr "Highlight"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
 msgstr "Palabras de alto nivel"
@@ -2612,6 +2613,7 @@ msgstr "Ampliación multilínea"
 msgid "Multiple Kicks"
 msgstr "Múltiples patos"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Mute"
@@ -3320,6 +3322,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy_feedback.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_display_settings.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/feature_flood_protection.html.heex:49
@@ -3520,6 +3523,7 @@ msgstr "Catálogo de sonido"
 msgid "Sound Notifications"
 msgstr "Notificaciones sonoras"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Sounds"
@@ -6996,3 +7000,78 @@ msgstr "Qué muestra el enlace"
 #, elixir-autogen, elixir-format
 msgid "Who Can Share, and How to Stop"
 msgstr "Quién puede compartir y cómo detenerlo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Browser Permission"
+msgstr "Permiso del navegador"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Never for a conversation you have muted"
+msgstr "Nunca para una conversación que has silenciado"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:13
+#, elixir-autogen, elixir-format
+msgid ""
+"One per conversation: a busy room replaces its own notification instead of "
+"stacking one per line"
+msgstr ""
+"Una por conversación: una sala concurrida reemplaza su propia notificación "
+"en lugar de apilar una por línea"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Only for a conversation that is not the one on screen"
+msgstr "Solo para una conversación que no es la que está en pantalla"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Only while the tab is in the background"
+msgstr "Solo mientras la pestaña está en segundo plano"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:21
+#, elixir-autogen, elixir-format
+msgid ""
+"Private messages and mentions of your nickname, because those are the two "
+"that are about you. Everything else starts off — notifying on every line of "
+"every channel is how the whole thing gets switched off on the first day."
+msgstr ""
+"Los mensajes privados y las menciones de tu apodo, porque esos dos van sobre"
+" ti. El resto empieza apagado: notificar cada línea de cada canal es como "
+"todo esto acaba desactivado el primer día."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Sounds window has a Notify box beside each event's sound and flash. "
+"Ticking one raises a system notification when that kind of thing happens in "
+"a conversation you are not looking at."
+msgstr ""
+"La ventana de Sonidos tiene una casilla Notificar junto al sonido y el "
+"parpadeo de cada evento. Marcarla hace que aparezca una notificación del "
+"sistema cuando eso ocurre en una conversación que no estás mirando."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "What Starts On"
+msgstr "Qué viene activado"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "When One Appears"
+msgstr "Cuándo aparece una"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Your browser decides whether this is possible at all, and it only asks when "
+"you click Allow desktop notifications in the Sounds window. If you refuse, "
+"the window says so and stops offering: blocked is final until you change it "
+"in your browser's own site settings."
+msgstr ""
+"Quien decide si esto es posible es tu navegador, y solo pregunta cuando "
+"haces clic en Permitir notificaciones del sistema en la ventana de Sonidos. "
+"Si te niegas, la ventana lo dice y deja de ofrecerlo: bloqueado es "
+"definitivo hasta que lo cambies en la configuración del sitio de tu propio "
+"navegador."

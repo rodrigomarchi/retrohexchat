@@ -262,4 +262,73 @@ defmodule RetroHexChat.Chat.SoundSettingsTest do
   defp insert_registered_nick(nickname) do
     {:ok, _} = Queries.insert_registered_nick(nickname, "password123")
   end
+
+  describe "desktop notifications" do
+    @describetag :integration
+
+    setup do
+      owner = "NotifyUser#{System.unique_integer([:positive])}"
+      insert_registered_nick(owner)
+      %{owner: owner}
+    end
+
+    # Notifying on every channel line turns the feature into noise on day one,
+    # so it starts on for exactly the two events that are about you.
+    test "start on only for the events addressed to you" do
+      settings = SoundSettings.new()
+
+      assert SoundSettings.get_notify(settings, :pm)
+      assert SoundSettings.get_notify(settings, :highlight)
+
+      for event <- SoundSettings.event_types() -- [:pm, :highlight] do
+        refute SoundSettings.get_notify(settings, event),
+               "#{event} should not notify unless asked for"
+      end
+    end
+
+    test "can be turned on and off per event" do
+      settings = SoundSettings.new()
+
+      assert settings
+             |> SoundSettings.set_notify(:message, true)
+             |> SoundSettings.get_notify(:message)
+
+      refute settings |> SoundSettings.set_notify(:pm, false) |> SoundSettings.get_notify(:pm)
+    end
+
+    test "an unknown event is refused rather than silently stored" do
+      settings = SoundSettings.new()
+
+      assert_raise FunctionClauseError, fn ->
+        SoundSettings.set_notify(settings, :nonsense, true)
+      end
+    end
+
+    test "survives a round trip through the database", %{owner: owner} do
+      settings =
+        SoundSettings.new()
+        |> SoundSettings.set_notify(:message, true)
+        |> SoundSettings.set_notify(:pm, false)
+
+      assert :ok = SoundSettings.save(owner, settings)
+      assert {:ok, loaded} = SoundSettings.load(owner)
+
+      assert SoundSettings.get_notify(loaded, :message)
+      refute SoundSettings.get_notify(loaded, :pm)
+      assert SoundSettings.get_notify(loaded, :highlight)
+    end
+
+    # A row written before this setting existed has no notify column content,
+    # and must come back with the defaults rather than with everything off.
+    test "a row saved without the setting loads the defaults", %{owner: owner} do
+      :ok = SoundSettings.save(owner, SoundSettings.new())
+
+      RetroHexChat.Repo.get(RetroHexChat.Chat.Schemas.SoundSetting, owner)
+      |> Ecto.Changeset.change(notify_settings: %{})
+      |> RetroHexChat.Repo.update!()
+
+      assert {:ok, loaded} = SoundSettings.load(owner)
+      assert SoundSettings.get_notify(loaded, :pm)
+    end
+  end
 end

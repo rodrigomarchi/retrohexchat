@@ -1970,6 +1970,7 @@ msgid "Highlight"
 msgstr "ハイライト"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
 msgstr "高い単語"
@@ -2439,6 +2440,7 @@ msgstr "マルチライン拡張"
 msgid "Multiple Kicks"
 msgstr "複数のキック"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Mute"
@@ -3104,6 +3106,7 @@ msgstr "現在のチャンネルまたはPMでリアルタイムのハイライ�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy_feedback.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_display_settings.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/feature_flood_protection.html.heex:49
@@ -3292,6 +3295,7 @@ msgstr "サウンドカタログ"
 msgid "Sound Notifications"
 msgstr "音声通知"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Sounds"
@@ -6411,3 +6415,68 @@ msgstr "リンクが示すもの"
 #, elixir-autogen, elixir-format
 msgid "Who Can Share, and How to Stop"
 msgstr "誰が共有できるか、そして止め方"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Browser Permission"
+msgstr "ブラウザーの許可"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Never for a conversation you have muted"
+msgstr "ミュートした会話には決して出ません"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:13
+#, elixir-autogen, elixir-format
+msgid ""
+"One per conversation: a busy room replaces its own notification instead of "
+"stacking one per line"
+msgstr "会話ごとに一つ。にぎやかな部屋は自分の通知を置き換え、行ごとに積み上げません"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Only for a conversation that is not the one on screen"
+msgstr "画面に出ている会話以外のものだけ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Only while the tab is in the background"
+msgstr "タブがバックグラウンドにあるときだけ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:21
+#, elixir-autogen, elixir-format
+msgid ""
+"Private messages and mentions of your nickname, because those are the two "
+"that are about you. Everything else starts off — notifying on every line of "
+"every channel is how the whole thing gets switched off on the first day."
+msgstr ""
+"プライベートメッセージと、自分のニックネームへの言及です。この二つが自分に向けられたものだからです。それ以外は最初オフです。どのチャンネルのどの行でも通知していては、初日に全部オフにされてしまいます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Sounds window has a Notify box beside each event's sound and flash. "
+"Ticking one raises a system notification when that kind of thing happens in "
+"a conversation you are not looking at."
+msgstr ""
+"「サウンド」ウィンドウには、各イベントの音と点滅の隣に「通知」のチェックがあります。これを入れると、いま見ていない会話でそれが起きたときにデスクトップ通知が出ます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "What Starts On"
+msgstr "最初からオンになっているもの"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "When One Appears"
+msgstr "通知が出るとき"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Your browser decides whether this is possible at all, and it only asks when "
+"you click Allow desktop notifications in the Sounds window. If you refuse, "
+"the window says so and stops offering: blocked is final until you change it "
+"in your browser's own site settings."
+msgstr ""
+"そもそも可能かどうかを決めるのはブラウザーで、「サウンド」ウィンドウで「デスクトップ通知を許可」を押したときだけ尋ねます。拒否すると、ウィンドウはそう表示して以後は尋ねません。ブロックはブラウザー自身のサイト設定で変えるまで覆りません。"

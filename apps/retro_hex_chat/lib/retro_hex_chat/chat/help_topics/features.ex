@@ -416,6 +416,25 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           )
       },
       %{
+        id: "feature-desktop-notifications",
+        title: dgettext("help", "Desktop Notifications"),
+        category: dgettext("help", "Notifications & Sounds"),
+        keywords: [
+          dgettext("help", "desktop notification"),
+          "notification",
+          "notify",
+          "permission",
+          "blocked",
+          dgettext("help", "background tab")
+        ],
+        icon: :icon_megaphone,
+        description:
+          dgettext(
+            "help",
+            "Raise a system notification for a conversation you are not looking at, per event."
+          )
+      },
+      %{
         id: "feature-sounds",
         title: dgettext("help", "Sounds"),
         category: dgettext("help", "Notifications & Sounds"),
@@ -427,7 +446,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "ding",
           "alert",
           "chime",
-          dgettext("help", "notification sound")
+          dgettext("help", "notification sound"),
+          dgettext("help", "desktop notification")
         ],
         icon: :icon_dialog_sound,
         description:

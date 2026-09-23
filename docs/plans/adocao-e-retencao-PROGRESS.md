@@ -12,7 +12,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 1.1 Expiração de nick e canal | **pronto** (2026-09-22) |
 | 1.2 Catálogo com salas frias | **pronto** (2026-09-22) |
 | 1.3 Convite de canal com prévia | **pronto** (2026-09-22) |
-| 2.1 Notificação de desktop | não iniciado |
+| 2.1 Notificação de desktop | **pronto** (2026-09-23) |
 | 2.2 PWA | não iniciado |
 | 2.3 Web Push | não iniciado |
 | 3.1 Reações | não iniciado |
@@ -205,4 +205,61 @@ verde, auditoria visual nas duas telas do fluxo.
 `help_content/feature_channel_invite_link.html.heex`,
 `e2e/tests/share-link-join.spec.ts`, e os catálogos `chat`, `help`,
 `help_features`, `share`.
+
+### 2026-09-23 — item 2.1, notificação de desktop
+
+**Pronto.** `make ci` 18/18, `make e2e.shots FILE=tests/chat-sound-settings.spec.ts`
+verde, auditoria visual da janela de Sons.
+
+- `sound_settings` ganhou `notify_settings` (migration + schema + domínio), com
+  `pm` e `highlight` ligados por padrão e todo o resto desligado.
+- `Helpers.Session.maybe_notify_desktop/4` é a irmã de `maybe_flash_channel/4`:
+  o servidor empurra `desktop_notify` só para conversa fora da tela e não mutada.
+- `lib/notifications/desktop_notifier.js` decide o resto (aba oculta, permissão,
+  substituição por `tag`); o hook é só a ligação, com 6 testes Vitest próprios e
+  10 no controller.
+- Janela de Sons ganhou a terceira coluna "Notificar" e a faixa que diz o que o
+  navegador respondeu — pedindo permissão só no clique.
+
+**Aprendizados**
+
+- **Quatro asserções de ausência foram vistas ficando vermelhas.** Sabotei o
+  gate (`if true or …`, notificar do caminho ativo, remover o mute) e as quatro
+  falharam; revertido em seguida. Sem isso, "não notifica" é um teste que passa
+  porque nada acontece.
+- **Preferência persistida só carrega para quem se identificou.**
+  `load_persisted_data/2` roda no identify, não no mount, então o teste que
+  prova o desligamento precisa de `chat_conn(nick, pre_identified: true)`. A
+  primeira versão usava `:sys.replace_state` e testava a struct, não o caminho.
+- **Uma linha carregada antes do campo existir significa "nada", não "tudo
+  desligado".** `load_notify/1` faz merge sobre os defaults; sem isso, todo
+  mundo que já tinha linha em `sound_settings` perderia PM e menção em silêncio.
+- **Permissão de notificação não é dirigível em Chromium headless** — ele
+  responde `denied` mesmo com `grantPermissions(["notifications"])`. O spec
+  passou a asseverar o invariante que vale com qualquer resposta: a janela mostra
+  exatamente a nota do estado em que está, e nunca oferece perguntar quando
+  perguntar não funciona. Foi o que produziu a evidência visual do estado
+  bloqueado, que é um estado real de usuário.
+- **Id de `@flow` é único por seção.** `U5` já existia em
+  `chat-flood-protection.spec.ts`; `make e2e.catalog` recusa duplicata, e isso
+  é gate de `make ci`.
+- **Lacuna deixada de propósito**: o projeto `mobile-chrome` só casa
+  `*mobile*.spec.ts`, então esta janela não tem captura mobile. O CSS empilha
+  pelo mesmo padrão de uma coluna que já valia com um toggle (`justify-self: end`
+  só existe acima de 700px), então não há deformação nova — mas é verificação
+  por leitura, não por foto.
+
+**Arquivos tocados** — migration `add_notify_settings_to_sound_settings`,
+`chat/schemas/sound_setting.ex`, `chat/sound_settings.ex`,
+`chat_live/helpers/session.ex`, `chat_live/helpers.ex`,
+`chat_live/pubsub_handlers/messages.ex`, `chat_live/settings_dialogs_events.ex`,
+`chat_live/components/sound_settings_dialog.ex`,
+`components/ui/dialogs/sound_settings_dialog.ex`, `live/app/chat_live.ex(.heex)`,
+`assets/js/lib/notifications/desktop_notifier.js`,
+`assets/js/hooks/notifications/desktop_notify_hook.js`,
+`assets/js/hooks/critical_hooks.js`, `assets/js/SURFACE.txt`,
+`assets/css/retrohex/dialogs/sound-settings.css`, `help_topics/features.ex`,
+`help_content/feature_desktop_notifications.html.heex`,
+`e2e/tests/chat-sound-settings.spec.ts`, e os catálogos `help`, `dialogs`,
+`help_features`.
 

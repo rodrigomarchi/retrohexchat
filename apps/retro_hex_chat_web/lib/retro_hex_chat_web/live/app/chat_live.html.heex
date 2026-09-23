@@ -8,6 +8,9 @@
   class="hidden"
 >
 </div>
+<%!-- Raises a desktop notification for a conversation you are not looking at.
+      The server decides whether; the browser decides when. --%>
+<div id="desktop-notify" phx-hook="DesktopNotifyHook" class="hidden"></div>
 <div id="nick-change-hook" phx-hook="NickChangeFormHook" class="hidden"></div>
 <form id="nick-change-session-form" action={~p"/chat/session"} method="post" class="hidden">
   <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
@@ -458,6 +461,7 @@
         module={RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog}
         id={RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog.id()}
         settings={@session.sound_settings}
+        notify_permission={@desktop_notify_permission}
       />
     </.desktop_window>
 

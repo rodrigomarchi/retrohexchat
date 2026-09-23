@@ -261,6 +261,53 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
   def maybe_play_highlight_sound(socket, _payload, _session), do: socket
 
+  @doc """
+  Asks the browser to raise a desktop notification for a message the reader is
+  not looking at.
+
+  The server decides *whether*, the browser decides *when*: this fires only for
+  a conversation that is not on screen and not muted, and the client suppresses
+  it again while the tab is in front, where the row has already appeared.
+
+  `tag` is the conversation, so a busy room replaces its own notification
+  instead of stacking five.
+  """
+  @spec maybe_notify_desktop(Phoenix.LiveView.Socket.t(), map(), String.t(), Session.t()) ::
+          Phoenix.LiveView.Socket.t()
+  def maybe_notify_desktop(socket, row, conversation, session) do
+    event_type = notify_event_type(row, conversation)
+
+    if SoundSettings.get_notify(session.sound_settings, event_type) do
+      push_event(socket, "desktop_notify", %{
+        conversation: conversation,
+        title: conversation,
+        body: notify_body(row),
+        tag: conversation
+      })
+    else
+      socket
+    end
+  end
+
+  # A mention is a mention wherever it lands, so a private message carrying one
+  # is still the highlight event — the reader turned that one on for a reason.
+  defp notify_event_type(row, "pm:" <> _peer) do
+    if Map.get(row, :highlighted), do: :highlight, else: :pm
+  end
+
+  defp notify_event_type(row, _channel) do
+    if Map.get(row, :highlighted), do: :highlight, else: :message
+  end
+
+  # Visible text, never the source: a notification is read by a person, and an
+  # IRC colour code is not something a person reads.
+  defp notify_body(row) do
+    author = Map.get(row, :author)
+    text = Content.preview(Map.get(row, :content) || "", Map.get(row, :content_format) || "irc")
+
+    if is_binary(author), do: "#{author}: #{text}", else: text
+  end
+
   @spec maybe_flash_channel(Phoenix.LiveView.Socket.t(), String.t(), atom(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
   def maybe_flash_channel(socket, channel_key, event_type, session) do
