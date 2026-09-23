@@ -5,6 +5,11 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
   @moduletag :liveview
 
+  # A snapshot belongs to a nickname on one browser, and the browser id is a
+  # cookie the request carries: saving under one and mounting under another is
+  # two different screens, which is the whole point of the column.
+  @browser "persistence-browser"
+
   alias RetroHexChat.Chat.{Queries, ReconnectState}
   alias RetroHexChat.Services.NickServ
 
@@ -323,7 +328,8 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       nick = "RP#{uid()}"
       register_and_identify(nick)
 
-      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, _html} =
+        live(chat_conn(conn, nick, pre_identified: true, browser_id: @browser), "/chat")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -335,7 +341,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
         open_pm_tabs: ["Bob"]
       })
 
-      assert {:ok, snapshot} = ReconnectState.load(nick)
+      assert {:ok, snapshot} = ReconnectState.load(nick, @browser)
       assert snapshot.open_pm_tabs == ["Bob"]
       assert snapshot.active_pm == "Bob"
       assert "#lobby" in snapshot.channels
@@ -346,13 +352,18 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       register_and_identify(nick)
 
       assert :ok =
-               ReconnectState.save(nick, %{
-                 channels: ["#lobby", "#restore"],
-                 active_channel: "#restore",
-                 welcomed_channels: ["#restore"]
-               })
+               ReconnectState.save(
+                 nick,
+                 %{
+                   channels: ["#lobby", "#restore"],
+                   active_channel: "#restore",
+                   welcomed_channels: ["#restore"]
+                 },
+                 @browser
+               )
 
-      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, _html} =
+        live(chat_conn(conn, nick, pre_identified: true, browser_id: @browser), "/chat")
 
       assert assigns(view).reconnect_active_channel == "#restore"
 
@@ -370,16 +381,23 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
     test "intentional quit deletes the persisted reconnect state", %{conn: conn} do
       nick = "RQ#{uid()}"
       register_and_identify(nick)
-      assert :ok = ReconnectState.save(nick, %{channels: ["#lobby"], active_channel: "#lobby"})
 
-      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      assert :ok =
+               ReconnectState.save(
+                 nick,
+                 %{channels: ["#lobby"], active_channel: "#lobby"},
+                 @browser
+               )
+
+      {:ok, view, _html} =
+        live(chat_conn(conn, nick, pre_identified: true, browser_id: @browser), "/chat")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/quit"})
 
       assert_push_event(view, "intentional_disconnect", %{})
-      assert {:error, :not_found} = ReconnectState.load(nick)
+      assert {:error, :not_found} = ReconnectState.load(nick, @browser)
     end
 
     test "opening a PM tab saves open_pm_tabs in reconnect state", %{conn: conn} do

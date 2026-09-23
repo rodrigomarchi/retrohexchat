@@ -1,0 +1,45 @@
+<p>
+  {dgettext(
+    "help_games",
+    "You can be signed in with the same nickname on more than one screen at a time — the desktop at work and the phone on the way home, both live, both showing the same conversations."
+  )}
+</p>
+<.help_h4 icon={:icon_devices}>{dgettext("help_games", "How many at once")}</.help_h4>
+<p>
+  {dgettext(
+    "help_games",
+    "Three chats at a time. Opening a fourth ends the one you have not used for longest, and that screen is sent back to the Connect page saying so. Nothing else you have open is affected: a conference, a space, a P2P session and a game each have an address of their own and are yours to open beside the chat as many as you like."
+  )}
+</p>
+<.help_h4 icon={:icon_channels}>{dgettext("help_games", "What the screens share")}</.help_h4>
+<p>
+  {dgettext(
+    "help_games",
+    "The channels you are in, and the place you had read up to. Reading a conversation on one screen clears its unread badge on the other. What each screen keeps to itself is what it has on screen: the tabs you opened on the phone do not rearrange the desktop, and closing one screen never takes the other out of a channel."
+  )}
+</p>
+<.help_h4 icon={:icon_lock}>{dgettext("help_games", "Ending the others")}</.help_h4>
+<p>
+  {dgettext(
+    "help_games",
+    "The Sessions tab of the Trusted Terminals window, in the Start menu, lists every screen signed in as you. It marks the one you are on, and ends any of them — or all the others at once, which is what to reach for after signing in somewhere you do not control."
+  )}
+</p>
+<.help_h4 icon={:icon_clock}>{dgettext("help_games", "Session Expiry")}</.help_h4>
+<p>
+  {dgettext(
+    "help_games",
+    "If your connection drops unexpectedly, the client attempts to reconnect automatically with exponential backoff (up to 10 attempts). If all attempts fail, the session is considered"
+  )}
+  <strong>expired</strong>
+  {dgettext("help_games", "and you are redirected to the Connect screen with the message:")}
+</p>
+<pre>{dgettext("help_games", "Session expired")}</pre>
+<p>{dgettext("help_games", "You can then reconnect manually.")}</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-auto-reconnect">
+    {dgettext("help_games", "Auto-Reconnect")}
+  </.help_link>
+  | <.help_link topic="cmd-ghost">{dgettext("help_games", "GHOST Command")}</.help_link>
+</p>

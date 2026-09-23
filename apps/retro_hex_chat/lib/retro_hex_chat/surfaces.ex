@@ -103,6 +103,19 @@ defmodule RetroHexChat.Surfaces do
   end
 
   @doc """
+  How many surfaces of one kind `nickname` has open right now.
+
+  "Is anything still open?" and "is a chat still open?" are different questions
+  and are answered by different callers: the channel membership outlives every
+  kind of tab, while being online, and being recorded as having quit, are about
+  the chat alone.
+  """
+  @spec count_kind(String.t(), kind(), GenServer.server()) :: non_neg_integer()
+  def count_kind(nickname, kind, server \\ __MODULE__) when is_binary(nickname) do
+    GenServer.call(server, {:count_kind, key(nickname), kind})
+  end
+
+  @doc """
   Where to listen for `nickname`'s open set changing.
 
   Exposed here rather than left to the caller because this process keys people
@@ -221,6 +234,15 @@ defmodule RetroHexChat.Surfaces do
 
   def handle_call({:count, key}, _from, state) do
     {:reply, map_size(surfaces(state, key)), state}
+  end
+
+  def handle_call({:count_kind, key, kind}, _from, state) do
+    count =
+      state
+      |> surfaces(key)
+      |> Enum.count(fn {_pid, surface} -> surface.kind == kind end)
+
+    {:reply, count, state}
   end
 
   def handle_call({:list, key}, _from, state) do

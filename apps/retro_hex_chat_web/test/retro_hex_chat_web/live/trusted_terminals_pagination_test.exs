@@ -6,12 +6,13 @@ defmodule RetroHexChatWeb.TrustedTerminalsPaginationTest do
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Channels.{Registry, Supervisor}
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChat.SessionControl
   alias RetroHexChatWeb.App.TrustedDeviceCookie
   alias RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog
 
-  # Both lists page at these sizes; the seed is one row past the larger of them
-  # so a single fixture proves two pages exist for each.
-  @sessions_page_size 25
+  # The events list pages at this size; the seed is one row past it so a single
+  # fixture proves two pages exist. The sessions list is bounded by the session
+  # ceiling instead, well under a page.
   @events_page_size 20
   @seeded 26
 
@@ -25,11 +26,21 @@ defmodule RetroHexChatWeb.TrustedTerminalsPaginationTest do
       %{view: view} = open_window(conn)
       html = render(view)
 
-      assert count_sessions(html) == @sessions_page_size
       assert count_events(html) == @events_page_size
-
-      assert has_element?(view, load_more("sessions"))
       assert has_element?(view, load_more("events"))
+    end
+
+    # The sessions list cannot fill a page any more, and that is the ceiling
+    # working rather than the list being broken: a nickname holds at most
+    # `SessionControl.max_sessions/0` open sessions, and opening this window
+    # went through the mount that enforces it. The seeded rows are culled on the
+    # way in, which is also what clears the rows a crashed browser left open.
+    test "the sessions list shows every screen, because there are few", %{conn: conn} do
+      %{view: view} = open_window(conn)
+      html = render(view)
+
+      assert count_sessions(html) == SessionControl.max_sessions()
+      refute has_element?(view, load_more("sessions"))
     end
 
     test "the load-more button brings the next page and closes the list", %{conn: conn} do
@@ -49,7 +60,7 @@ defmodule RetroHexChatWeb.TrustedTerminalsPaginationTest do
 
       html = view |> element(load_more("events")) |> render_click()
 
-      assert count_sessions(html) == @sessions_page_size,
+      assert count_sessions(html) == SessionControl.max_sessions(),
              "the sessions list must not reload because the events list paged"
     end
 

@@ -558,6 +558,44 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   end
 
   @doc """
+  Every chat session `nickname` currently has open, oldest first.
+
+  The database rather than a process registry, because a session whose process
+  died and has not been swept yet still holds a row: counting processes would
+  say the screen is gone while the person still has it in front of them. Ordered
+  by id — rows are inserted on connect, so id order is the chronology.
+  """
+  @spec open_sessions_for_nick(String.t(), keyword()) :: [ChatDeviceSession.t()]
+  def open_sessions_for_nick(nickname, opts \\ []) do
+    from(s in ChatDeviceSession,
+      where: s.nickname == ^nickname,
+      where: is_nil(s.disconnected_at),
+      order_by: [asc: s.id]
+    )
+    |> maybe_exclude_session(Keyword.get(opts, :except) || "")
+    |> Repo.all()
+  end
+
+  @doc """
+  Ends one chat session, telling it what to leave behind.
+
+  Unlike `kill_session/3` this says nothing about trusted terminals and writes
+  no audit event: it is the ceiling giving way, not somebody signing a screen
+  out. The payload travels verbatim so the caller can say the departing window
+  must not take the channel membership with it.
+  """
+  @spec end_session(String.t(), map()) :: :ok
+  def end_session(session_ref, payload) when is_binary(session_ref) and is_map(payload) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      "chat_device_session:#{session_ref}",
+      {:force_disconnect, Map.put(payload, :session_ref, session_ref)}
+    )
+
+    record_session_stop(session_ref, Map.get(payload, :stop_reason, "session_limit"))
+  end
+
+  @doc """
   Returns the recent session that took over a nickname and disconnected another
   window. The session ref is opaque and short lived at the UI boundary.
   """

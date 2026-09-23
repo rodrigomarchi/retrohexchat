@@ -269,6 +269,33 @@ defmodule RetroHexChat.SurfacesTest do
       assert Surfaces.count(String.upcase(nickname)) == 1
       close(pid)
     end
+
+    # "Is anybody still reading?" and "is anything still open?" are different
+    # questions. A person with the chat closed and a call running is here, but
+    # nothing is showing them the conversation.
+    test "counting one kind ignores the surfaces of every other" do
+      nickname = unique_nick("kinds")
+      chat = start_surface(nickname, RetroHexChatWeb.App.ChatLive)
+      phone = start_surface(nickname, RetroHexChatWeb.App.ChatLive)
+      call = start_surface(nickname, RetroHexChatWeb.App.CallLive)
+
+      assert Surfaces.count(nickname) == 3
+      assert Surfaces.count_kind(nickname, RetroHexChatWeb.App.ChatLive) == 2
+      assert Surfaces.count_kind(nickname, RetroHexChatWeb.App.CallLive) == 1
+
+      close(phone)
+      assert Surfaces.count_kind(nickname, RetroHexChatWeb.App.ChatLive) == 1
+
+      close(chat)
+      assert Surfaces.count_kind(nickname, RetroHexChatWeb.App.ChatLive) == 0
+      assert Surfaces.count(nickname) == 1
+
+      close(call)
+    end
+
+    test "counting a kind for somebody with nothing open is not an error" do
+      assert Surfaces.count_kind(unique_nick("nokind"), RetroHexChatWeb.App.ChatLive) == 0
+    end
   end
 
   describe "the departure the chat hands over" do

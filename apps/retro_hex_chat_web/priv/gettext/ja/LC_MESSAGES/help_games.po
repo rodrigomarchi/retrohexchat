@@ -1717,7 +1717,7 @@ msgstr "スコアリング: ラブ → 15 → 30 → 40 → ゲーム (40-40で�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:102
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -3093,7 +3093,7 @@ msgstr "矢印キー"
 msgid "Asteroids are static — same layout for both players, randomly generated per match"
 msgstr "Asteroidsは静的です — 両方のプレイヤーの同じレイアウトで、マッチごとにランダムに生成されます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Auto-Reconnect"
 msgstr "自動再接続"
@@ -3168,11 +3168,6 @@ msgstr "デブリスフィールド"
 msgid "Destroy all 50 blocks to win (max 1500 points), or lose all 3 lives for game over"
 msgstr "勝つためにすべての50のブロックを破壊して下さい(最高1500ポイント)、またはゲーム上のすべての3生命を失って下さい"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "Duplicate presence in channels"
-msgstr "チャネルにおける重複的な存在"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Every cell you cross becomes part of your trail permanently"
@@ -3193,7 +3188,7 @@ msgstr "最初から7のキルがマッチを獲得"
 msgid "Flying into the star's danger zone is instant death (scores a point for your opponent)"
 msgstr "星の危険地帯への飛行は瞬間死です(あなたの対戦相手のポイントをスコアします)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "GHOST Command"
 msgstr "GHOST コマンド"
@@ -3236,11 +3231,6 @@ msgstr "六角ポン"
 msgid "Hits score 1 point — most hits when the 2-minute timer runs out wins the round"
 msgstr "ヒットスコア1ポイント - 2分タイマーがラウンドを獲得したときに最もヒット"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "How It Works"
-msgstr "仕組み"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Hyperspace warp: random position, 20% death chance, 3-second cooldown"
@@ -3251,7 +3241,7 @@ msgstr "ハイパースペースワープ:ランダムポジション、20%の�
 msgid "If both players collide head-on in the same cell, the round is a draw (no points)"
 msgstr "同じセルで両方のプレイヤーがヘッドオンを衝突した場合、ラウンドはドロー(ポイントなし)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "If your connection drops unexpectedly, the client attempts to reconnect automatically with exponential backoff (up to 10 attempts). If all attempts fail, the session is considered"
 msgstr ""
@@ -3267,11 +3257,6 @@ msgstr "レイアウトを素早く知る"
 #, elixir-autogen, elixir-format
 msgid "Maze is randomly selected from 5 symmetrical layouts"
 msgstr "マゼは5つの対称レイアウトからランダムに選択"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:33
-#, elixir-autogen, elixir-format
-msgid "Messages being received in multiple windows simultaneously"
-msgstr "複数のウィンドウで同時に受信されるメッセージ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:74
 #, elixir-autogen, elixir-format
@@ -3332,17 +3317,12 @@ msgstr ""
 "あなたの後ろに輝くトレイルを残してネオングリッドを渡るレース。 任意のトレイルや壁を探し出します。 勝つためにあなたの相手をトラップ. "
 "どちらのプレイヤーも固定ペースで継続的に動きます。止まらないので、次へ向かう場所だけを選ぶだけです。 最初から3ラウンドの勝利はマッチを取ります。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "RetroHexChat enforces a"
-msgstr "RetroHexChat は、"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Session Expiry"
 msgstr "セッション調査"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Session expired"
 msgstr "セッション終了"
@@ -3394,20 +3374,10 @@ msgstr ""
 msgid "Starting positions swap each round for fairness"
 msgstr "開始位置は公正性のために各ラウンドを交換します"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "State inconsistencies between sessions"
-msgstr "セッション間の状態の矛盾"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "The arena wraps around — fly off one edge, appear on the other"
 msgstr "周りのアリーナラップ — 1つのエッジを飛ばし、他の端に現れます"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "The new session takes over and becomes the active connection."
-msgstr "新たなセッションが終わると、アクティブな接続になります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:57
 #, elixir-autogen, elixir-format
@@ -3461,12 +3431,7 @@ msgstr "ワープは余計な危険性です。アスタノイドにテレポー
 msgid "Warp is suicide"
 msgstr "Warpは自殺者です"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:29
-#, elixir-autogen, elixir-format
-msgid "Why Single Session?"
-msgstr "なぜシングルセッション?"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "You can then reconnect manually."
 msgstr "手動で再接続できます。"
@@ -3476,12 +3441,7 @@ msgstr "手動で再接続できます。"
 msgid "You cannot reverse direction — 180-degree turns are blocked"
 msgstr "180度回転がブロックされていない"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "and redirected to the Connect screen with the message:"
-msgstr "メッセージをコネクト画面にリダイレクトします。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "and you are redirected to the Connect screen with the message:"
 msgstr "そして、メッセージでConnect画面にリダイレクトされます。"
@@ -3875,42 +3835,42 @@ msgstr "レトロゲームは、ピアセッションなしで遊べるブラウ
 msgid "The address is the door"
 msgstr "アドレスが入口です"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ". One chat can be connected with the same nickname at a time — but a conference, a space, a P2P session and a game each have an address of their own, and those tabs are yours to open beside the chat as many as you like."
-msgstr "。同じニックネームで同時につながれるチャットはひとつです——ただし会議、スペース、P2Pセッション、ゲームにはそれぞれ自分のアドレスがあり、それらのタブはあなたのものです。チャットの隣に好きなだけ開けます。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "Enforcing one chat per nickname prevents:"
-msgstr "ニックネームごとにチャットをひとつに保つことで防げるもの:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Session ended — logged in from another window"
-msgstr "セッション終了 — 別のウィンドウからログイン"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "The rule is about the conversation, not about tabs. A conference, a space, a P2P session and a game are not chats: they carry no channel list and no presence of their own, which is why you can hold several at once. Your channels are left when the last of your tabs closes, not when the chat's does."
-msgstr "この決まりは会話についてのもので、タブについてではありません。会議、スペース、P2Pセッション、ゲームはチャットではありません。チャンネル一覧も自分の在席も持たないので、いくつも同時に持てます。チャンネルから離れるのは、あなたのタブの最後のひとつが閉じたときであって、チャットのタブが閉じたときではありません。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "When you open the chat with a nickname that already has a chat somewhere (even your own, in another tab or browser), the"
-msgstr "すでにどこかにチャットのあるニックネーム（別のタブやブラウザにある自分のものも含みます）でチャットを開くと、"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "previous chat is immediately disconnected"
-msgstr "前のチャットは直ちに切断されます"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "single chat session per nickname"
-msgstr "ニックネームごとにチャットセッションはひとつ"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Inside the room, Share mints the address and opens a small window holding it, with Copy and Revoke. Paste it into a channel or a private message and it draws a card with the game on it and the number of seats left. Opening the game does not create an address — pressing Share does, so you never leave links behind for rooms nobody used."
 msgstr "部屋の中では、「共有」がアドレスを作り、「コピー」と「失効」を添えた小さなウィンドウで開きます。チャンネルやプライベートメッセージに貼れば、ゲームと残りの席数を載せたカードが描かれます。ゲームを開くだけではアドレスはできません。作るのは「共有」を押したときだけなので、誰も使わなかった部屋のリンクを残してしまうことはありません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Ending the others"
+msgstr "他を終了する"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "How many at once"
+msgstr "同時にいくつまで"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The channels you are in, and the place you had read up to. Reading a conversation on one screen clears its unread badge on the other. What each screen keeps to itself is what it has on screen: the tabs you opened on the phone do not rearrange the desktop, and closing one screen never takes the other out of a channel."
+msgstr "参加しているチャンネルと、どこまで読んだかです。片方の画面で会話を読むと、もう片方の未読バッジも消えます。各画面が自分だけのものとして保つのは、いま開いている内容です。スマートフォンで開いたタブがパソコンの並びを変えることはなく、片方の画面を閉じても、もう片方がチャンネルから外れることはありません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Three chats at a time. Opening a fourth ends the one you have not used for longest, and that screen is sent back to the Connect page saying so. Nothing else you have open is affected: a conference, a space, a P2P session and a game each have an address of their own and are yours to open beside the chat as many as you like."
+msgstr "同時に 3 つのチャットまでです。4 つ目を開くと、最も長く使っていなかったものが終了し、その画面はその旨を伝えて接続ページに戻ります。ほかに開いているものには影響しません。会議、スペース、P2P セッション、ゲームはそれぞれ独自のアドレスを持ち、チャットと並べていくつでも開けます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "What the screens share"
+msgstr "画面どうしで共有されるもの"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "You can be signed in with the same nickname on more than one screen at a time — the desktop at work and the phone on the way home, both live, both showing the same conversations."
+msgstr "同じニックネームで複数の画面に同時にサインインできます。職場のパソコンと帰り道のスマートフォン、どちらも生きていて、どちらも同じ会話を表示します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "The Sessions tab of the Trusted Terminals window, in the Start menu, lists every screen signed in as you. It marks the one you are on, and ends any of them — or all the others at once, which is what to reach for after signing in somewhere you do not control."
+msgstr "スタートメニューの「信頼済み端末」ウィンドウにある「セッション」タブに、あなたとしてサインインしている画面がすべて並びます。いま使っている画面には印が付き、どれでも終了できます。ほかをまとめて終了することもでき、自分の管理下にない場所でサインインしたあとはこれを使ってください。"

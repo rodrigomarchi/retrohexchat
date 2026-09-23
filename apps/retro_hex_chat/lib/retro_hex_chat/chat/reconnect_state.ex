@@ -4,6 +4,12 @@ defmodule RetroHexChat.Chat.ReconnectState do
 
   The snapshot mirrors the old client payload, but this module owns all durable
   storage and defensive normalization.
+
+  A snapshot is addressed by a nickname **and a browser**, because what somebody
+  had on screen is a fact about a screen: a desktop and a phone signed in as the
+  same person hold two channel lists and two places they had read to. A browser
+  with no id is addressed by the empty string, which is what a browser that
+  blocks the cookie sends and what every row written before this existed holds.
   """
 
   alias RetroHexChat.Chat.Schemas.ReconnectState, as: ReconnectStateSchema
@@ -88,12 +94,16 @@ defmodule RetroHexChat.Chat.ReconnectState do
     |> Map.put(:nickname, owner)
   end
 
-  @spec save(String.t(), map()) :: :ok | {:error, term()}
-  def save(owner, snapshot) when is_binary(owner) do
+  @spec save(String.t(), map(), String.t()) :: :ok | {:error, term()}
+  def save(owner, snapshot, browser_id \\ "")
+
+  def save(owner, snapshot, browser_id) when is_binary(owner) do
     normalized = to_client_state(owner, snapshot)
+    browser_id = browser_key(browser_id)
 
     attrs = %{
       owner_nickname: owner,
+      browser_id: browser_id,
       channels: normalized.channels,
       active_channel: normalized.active_channel,
       active_pm: normalized.active_pm,
@@ -102,7 +112,7 @@ defmodule RetroHexChat.Chat.ReconnectState do
       read_markers: normalized.read_markers
     }
 
-    case Repo.get(ReconnectStateSchema, owner) do
+    case row(owner, browser_id) do
       nil ->
         %ReconnectStateSchema{}
         |> ReconnectStateSchema.changeset(attrs)
@@ -119,11 +129,13 @@ defmodule RetroHexChat.Chat.ReconnectState do
     end
   end
 
-  def save(_owner, _snapshot), do: {:error, :invalid_owner}
+  def save(_owner, _snapshot, _browser_id), do: {:error, :invalid_owner}
 
-  @spec load(String.t()) :: {:ok, t()} | {:error, :not_found}
-  def load(owner) when is_binary(owner) do
-    case Repo.get(ReconnectStateSchema, owner) do
+  @spec load(String.t(), String.t()) :: {:ok, t()} | {:error, :not_found}
+  def load(owner, browser_id \\ "")
+
+  def load(owner, browser_id) when is_binary(owner) do
+    case row(owner, browser_key(browser_id)) do
       nil ->
         {:error, :not_found}
 
@@ -140,11 +152,13 @@ defmodule RetroHexChat.Chat.ReconnectState do
     end
   end
 
-  def load(_owner), do: {:error, :not_found}
+  def load(_owner, _browser_id), do: {:error, :not_found}
 
-  @spec delete(String.t()) :: :ok | {:error, term()}
-  def delete(owner) when is_binary(owner) do
-    case Repo.get(ReconnectStateSchema, owner) do
+  @spec delete(String.t(), String.t()) :: :ok | {:error, term()}
+  def delete(owner, browser_id \\ "")
+
+  def delete(owner, browser_id) when is_binary(owner) do
+    case row(owner, browser_key(browser_id)) do
       nil ->
         :ok
 
@@ -156,7 +170,14 @@ defmodule RetroHexChat.Chat.ReconnectState do
     end
   end
 
-  def delete(_owner), do: :ok
+  def delete(_owner, _browser_id), do: :ok
+
+  defp row(owner, browser_id) do
+    Repo.get_by(ReconnectStateSchema, owner_nickname: owner, browser_id: browser_id)
+  end
+
+  defp browser_key(browser_id) when is_binary(browser_id), do: browser_id
+  defp browser_key(_browser_id), do: ""
 
   # A snapshot is written by a browser, so every part of it can arrive wrong: a
   # key that is not a conversation, a value that is not an id, more entries than

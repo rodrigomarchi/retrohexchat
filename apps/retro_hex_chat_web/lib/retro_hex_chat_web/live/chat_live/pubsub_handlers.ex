@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
   alias RetroHexChat.Chat.IgnoreList
   alias RetroHexChatWeb.ChatLive.P2PSessionEvents
+  alias RetroHexChatWeb.ChatLive.ReadMarkers
 
   alias __MODULE__.{ChannelState, Membership, Messages, Presence, ServerMessages}
 
@@ -172,6 +173,15 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
   def handle_info({:channel_invite, _} = msg, socket),
     do: Presence.handle_info(msg, socket)
+
+  # ── Read markers: where this person's other screens have got to ─
+  #
+  # Explicit, never the catch-all. A marker that fell through to `{:cont, …}`
+  # would be a feature that silently does nothing on the second screen, which is
+  # the same bug class as a swallowed `try/catch`.
+
+  def handle_info({:read_marker_advanced, %{key: key, message_id: id}}, socket),
+    do: {:halt, ReadMarkers.accept_remote(socket, key, id)}
 
   # ── Server messages: announcements, wallops, MOTD, welcome ─
 

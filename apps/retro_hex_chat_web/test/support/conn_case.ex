@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.ConnCase do
 
   use ExUnit.CaseTemplate
 
+  alias RetroHexChatWeb.App.BrowserIdCookie
   alias RetroHexChatWeb.App.TrustedDeviceCookie
 
   using do
@@ -51,17 +52,21 @@ defmodule RetroHexChatWeb.ConnCase do
   """
   @spec chat_conn(Plug.Conn.t(), String.t(), keyword()) :: Plug.Conn.t()
   def chat_conn(conn, nickname, opts \\ []) do
-    conn =
-      case Keyword.fetch(opts, :trusted_device_cookie) do
-        {:ok, cookie} ->
-          Plug.Conn.put_req_header(
-            conn,
-            "cookie",
-            "#{TrustedDeviceCookie.name()}=#{cookie}"
-          )
+    # Cookies, not session keys: the browser id is minted by a plug on the way
+    # in, so a value planted in the session would simply be overwritten.
+    cookies =
+      [
+        {TrustedDeviceCookie.name(), Keyword.get(opts, :trusted_device_cookie)},
+        {BrowserIdCookie.name(), Keyword.get(opts, :browser_id)}
+      ]
+      |> Enum.reject(fn {_name, value} -> is_nil(value) end)
+      |> Enum.map_join("; ", fn {name, value} -> "#{name}=#{value}" end)
 
-        :error ->
-          conn
+    conn =
+      if cookies == "" do
+        conn
+      else
+        Plug.Conn.put_req_header(conn, "cookie", cookies)
       end
 
     session = %{"chat_nickname" => nickname}

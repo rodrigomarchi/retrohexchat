@@ -116,49 +116,44 @@ msgstr "黃色"
 msgid "Nickname contains invalid characters"
 msgstr "暱稱包含無效字符"
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:796
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:811
 #, elixir-autogen, elixir-format
 msgid "Active session not found for this nick."
 msgstr "找不到該暱稱的使用中工作階段。"
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:1311
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1326
 #, elixir-autogen, elixir-format
 msgid "Browser"
 msgstr "瀏覽器"
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:677
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:715
 #, elixir-autogen, elixir-format
 msgid "Could not rename the terminal."
 msgstr "無法重新命名終端。"
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:778
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:812
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:1228
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:793
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:827
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1243
 #, elixir-autogen, elixir-format
 msgid "Session ended from Trusted Terminals by %{actor}"
 msgstr "%{actor} 從「受信任終端」結束了工作階段"
 
 #: lib/retro_hex_chat/accounts/trusted_devices.ex:207
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:737
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:752
 #, elixir-autogen, elixir-format
 msgid "This terminal is not remembered."
 msgstr "這台終端未被記住。"
 
 #: lib/retro_hex_chat/accounts/trusted_devices.ex:219
 #: lib/retro_hex_chat/accounts/trusted_devices.ex:222
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:681
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:695
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:709
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:719
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:733
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:747
 #, elixir-autogen, elixir-format
 msgid "Trusted terminal not found for this nick."
 msgstr "找不到該暱稱的受信任終端。"
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:732
-#, elixir-autogen, elixir-format
-msgid "Trusted terminal not found."
-msgstr "找不到受信任的終端。"
-
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:1312
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1327
 #, elixir-autogen, elixir-format
 msgid "Unknown OS"
 msgstr "未知的作業系統"
@@ -167,3 +162,8 @@ msgstr "未知的作業系統"
 #, elixir-autogen, elixir-format
 msgid "Could not update auto-login."
 msgstr "無法更新自動登入。"
+
+#: lib/retro_hex_chat/session_control.ex:89
+#, elixir-autogen, elixir-format
+msgid "Session ended — this was your oldest window"
+msgstr "工作階段已結束 — 這是你最久沒用的視窗"

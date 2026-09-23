@@ -116,49 +116,44 @@ msgstr "Amarelo"
 msgid "Nickname contains invalid characters"
 msgstr "Apelido contém caracteres inválidos"
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:796
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:811
 #, elixir-autogen, elixir-format
 msgid "Active session not found for this nick."
 msgstr "Sessão ativa não encontrada para este nick."
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:1311
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1326
 #, elixir-autogen, elixir-format
 msgid "Browser"
 msgstr "Navegador"
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:677
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:715
 #, elixir-autogen, elixir-format
 msgid "Could not rename the terminal."
 msgstr "Não foi possível renomear o terminal."
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:778
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:812
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:1228
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:793
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:827
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1243
 #, elixir-autogen, elixir-format
 msgid "Session ended from Trusted Terminals by %{actor}"
 msgstr "Sessão encerrada em Terminais Confiáveis por %{actor}"
 
 #: lib/retro_hex_chat/accounts/trusted_devices.ex:207
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:737
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:752
 #, elixir-autogen, elixir-format
 msgid "This terminal is not remembered."
 msgstr "Este terminal não está lembrado."
 
 #: lib/retro_hex_chat/accounts/trusted_devices.ex:219
 #: lib/retro_hex_chat/accounts/trusted_devices.ex:222
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:681
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:695
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:709
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:719
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:733
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:747
 #, elixir-autogen, elixir-format
 msgid "Trusted terminal not found for this nick."
 msgstr "Terminal confiável não encontrado para este nick."
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:732
-#, elixir-autogen, elixir-format
-msgid "Trusted terminal not found."
-msgstr "Terminal confiável não encontrado."
-
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:1312
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1327
 #, elixir-autogen, elixir-format
 msgid "Unknown OS"
 msgstr "SO desconhecido"
@@ -167,3 +162,8 @@ msgstr "SO desconhecido"
 #, elixir-autogen, elixir-format
 msgid "Could not update auto-login."
 msgstr "Não foi possível atualizar o auto-login."
+
+#: lib/retro_hex_chat/session_control.ex:89
+#, elixir-autogen, elixir-format
+msgid "Session ended — this was your oldest window"
+msgstr "Sessão encerrada — esta era a sua janela mais antiga"

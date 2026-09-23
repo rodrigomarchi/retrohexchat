@@ -116,44 +116,44 @@ msgstr ""
 msgid "Nickname contains invalid characters"
 msgstr ""
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:773
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:811
 #, elixir-autogen, elixir-format
 msgid "Active session not found for this nick."
 msgstr ""
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:1288
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1326
 #, elixir-autogen, elixir-format
 msgid "Browser"
 msgstr ""
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:677
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:715
 #, elixir-autogen, elixir-format
 msgid "Could not rename the terminal."
 msgstr ""
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:755
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:789
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:1205
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:793
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:827
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1243
 #, elixir-autogen, elixir-format
 msgid "Session ended from Trusted Terminals by %{actor}"
 msgstr ""
 
 #: lib/retro_hex_chat/accounts/trusted_devices.ex:207
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:714
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:752
 #, elixir-autogen, elixir-format
 msgid "This terminal is not remembered."
 msgstr ""
 
 #: lib/retro_hex_chat/accounts/trusted_devices.ex:219
 #: lib/retro_hex_chat/accounts/trusted_devices.ex:222
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:681
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:695
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:709
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:719
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:733
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:747
 #, elixir-autogen, elixir-format
 msgid "Trusted terminal not found for this nick."
 msgstr ""
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:1289
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1327
 #, elixir-autogen, elixir-format
 msgid "Unknown OS"
 msgstr ""
@@ -161,4 +161,9 @@ msgstr ""
 #: lib/retro_hex_chat/accounts/trusted_devices.ex:255
 #, elixir-autogen, elixir-format
 msgid "Could not update auto-login."
+msgstr ""
+
+#: lib/retro_hex_chat/session_control.ex:89
+#, elixir-autogen, elixir-format
+msgid "Session ended — this was your oldest window"
 msgstr ""

@@ -116,49 +116,44 @@ msgstr "Kuning"
 msgid "Nickname contains invalid characters"
 msgstr "Nama panggilan berisi karakter tidak valid"
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:796
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:811
 #, elixir-autogen, elixir-format
 msgid "Active session not found for this nick."
 msgstr "Sesi aktif tidak ditemukan untuk nama panggilan ini."
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:1311
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1326
 #, elixir-autogen, elixir-format
 msgid "Browser"
 msgstr "Peramban"
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:677
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:715
 #, elixir-autogen, elixir-format
 msgid "Could not rename the terminal."
 msgstr "Tidak dapat mengganti nama terminal."
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:778
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:812
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:1228
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:793
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:827
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1243
 #, elixir-autogen, elixir-format
 msgid "Session ended from Trusted Terminals by %{actor}"
 msgstr "Sesi diakhiri dari Terminal Tepercaya oleh %{actor}"
 
 #: lib/retro_hex_chat/accounts/trusted_devices.ex:207
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:737
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:752
 #, elixir-autogen, elixir-format
 msgid "This terminal is not remembered."
 msgstr "Terminal ini tidak diingat."
 
 #: lib/retro_hex_chat/accounts/trusted_devices.ex:219
 #: lib/retro_hex_chat/accounts/trusted_devices.ex:222
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:681
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:695
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:709
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:719
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:733
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:747
 #, elixir-autogen, elixir-format
 msgid "Trusted terminal not found for this nick."
 msgstr "Terminal tepercaya tidak ditemukan untuk nama panggilan ini."
 
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:732
-#, elixir-autogen, elixir-format
-msgid "Trusted terminal not found."
-msgstr "Terminal tepercaya tidak ditemukan."
-
-#: lib/retro_hex_chat/accounts/trusted_devices.ex:1312
+#: lib/retro_hex_chat/accounts/trusted_devices.ex:1327
 #, elixir-autogen, elixir-format
 msgid "Unknown OS"
 msgstr "Sistem operasi tidak dikenal"
@@ -167,3 +162,8 @@ msgstr "Sistem operasi tidak dikenal"
 #, elixir-autogen, elixir-format
 msgid "Could not update auto-login."
 msgstr "Tidak dapat memperbarui masuk otomatis."
+
+#: lib/retro_hex_chat/session_control.ex:89
+#, elixir-autogen, elixir-format
+msgid "Session ended — this was your oldest window"
+msgstr "Sesi diakhiri — ini jendela Anda yang paling lama tidak dipakai"

@@ -1592,24 +1592,24 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: ["cmd-autojoin", "feature-perform", "cmd-join", "cmd-part"]
       },
       %{
-        id: "feature-single-session",
-        title: dgettext("help", "Single Session"),
+        id: "feature-sessions",
+        title: dgettext("help", "Signing In On Several Screens"),
         category: dgettext("help", "Users & Identity"),
         keywords: [
-          dgettext("help", "single session"),
           "session",
-          "duplicate",
+          dgettext("help", "several screens"),
           dgettext("help", "multiple tabs"),
           dgettext("help", "another window"),
+          dgettext("help", "phone and desktop"),
           "disconnect",
           "expired",
-          dgettext("help", "one session")
+          dgettext("help", "end other sessions")
         ],
-        icon: :icon_lock,
+        icon: :icon_devices,
         description:
           dgettext(
             "help",
-            "Only one active session per nickname is allowed to prevent conflicts."
+            "Use the same nickname on a desktop and a phone at once, and end the screens you are finished with."
           )
       },
       %{

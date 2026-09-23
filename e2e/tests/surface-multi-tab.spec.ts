@@ -1,6 +1,6 @@
 /**
  * @section Auth And Lifecycle
- * @flow K2 [done] A game surface tab and the chat tab coexist in one browser context, and a chat takeover ends only the chat
+ * @flow K2 [done] A game surface tab and the chat tab coexist in one browser context, and a second chat tab disturbs neither
  * @flow K3 [done] A game address with no session lands on connect and reaches the game once the nickname is registered
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -12,11 +12,12 @@ import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 
 const PASSWORD = "testpass123";
 
-// The chat announces a takeover on the person's inbox when it mounts, which is
-// what ends a previous chat session. Everything here is about a second tab that
-// is NOT the chat: it has to survive that announcement.
+// Everything here is about a second tab that is NOT the chat. It used to have
+// to survive the takeover announcement a mounting chat made on the person's
+// inbox; there is no takeover any more, so what it has to survive is simply
+// another chat opening beside it.
 test.describe("A surface tab beside the chat", () => {
-  test("coexists with the chat, and a takeover ends only the chat (K2)", async ({
+  test("coexists with the chat, and a second chat disturbs neither (K2)", async ({
     browser,
   }) => {
     // One context: the same cookie, the same session — which is the case that
@@ -42,8 +43,8 @@ test.describe("A surface tab beside the chat", () => {
       await expect(chatTab.getByTestId("session-alert")).toHaveCount(0);
       await expect(chat.menuBar).toBeVisible();
 
-      // And the chat must not disturb the game surface: a third tab taking the
-      // nickname over ends the chat and leaves the game running.
+      // And a second chat must disturb neither: it joins the first rather than
+      // replacing it, and the game surface keeps running throughout.
       const secondChatTab = await context.newPage();
       const secondConnect = new ConnectPage(secondChatTab);
       const secondChat = new ChatPage(secondChatTab);
@@ -52,7 +53,8 @@ test.describe("A surface tab beside the chat", () => {
       await secondConnect.authenticateWithPassword(PASSWORD);
       await secondChat.waitUntilConnected();
 
-      await expect(chatTab).toHaveURL(/\/connect\?reason=/);
+      await expect(chatTab).toHaveURL(/\/chat(\?.*)?$/);
+      await expect(chatTab.getByTestId("session-alert")).toHaveCount(0);
       await expect(gameTab).toHaveURL(/\/play\/hex_pong$/);
       await expect(gameTab.getByTestId("retro-games-window")).toBeVisible();
 

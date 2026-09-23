@@ -88,11 +88,23 @@ defmodule RetroHexChat.Notifications.Queries do
       tokens ->
         except = opts |> Keyword.get(:except, "") |> String.downcase()
 
-        PushSubscription
-        |> join(:inner, [s], r in ReconnectState, on: r.owner_nickname == s.owner_nickname)
+        # `exists` rather than a join: the question is whether the person had
+        # this channel open on *some* browser, and they have one reconnect row
+        # per browser. A join answers it once per row, which would hand the same
+        # browser back twice and wake the same phone twice for one line.
+        from(s in PushSubscription, as: :subscription)
         |> where([s], fragment("lower(?)", s.owner_nickname) in ^tokens)
         |> where([s], fragment("lower(?)", s.owner_nickname) != ^except)
-        |> where([_s, r], fragment("? = ANY(?)", ^channel_name, r.channels))
+        |> where(
+          [s],
+          exists(
+            from(r in ReconnectState,
+              where: r.owner_nickname == parent_as(:subscription).owner_nickname,
+              where: fragment("? = ANY(?)", ^channel_name, r.channels),
+              select: 1
+            )
+          )
+        )
         |> order_by([s], asc: s.id)
         |> Repo.all()
     end

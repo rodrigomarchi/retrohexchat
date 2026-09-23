@@ -1,7 +1,7 @@
 /**
  * @section AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
  * @flow AA6 [done] Closed registration blocks brand-new nick registration while existing registered users can still authenticate (features P1)
- * @flow AA7 [done] Closed registration keeps same-nick takeover password-gated: wrong password does not displace the source, correct password performs normal takeover (features P2)
+ * @flow AA7 [done] Closed registration keeps a nickname password-gated: a wrong password neither signs in nor displaces the session already using it, and the right one signs in beside it (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -114,7 +114,7 @@ test.describe.serial("Registration closed edges", () => {
     }
   });
 
-  test("closed registration does not let nickname takeover bypass password auth (AA7)", async ({
+  test("closed registration does not let a nickname be claimed without its password (AA7)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
@@ -147,14 +147,16 @@ test.describe.serial("Registration closed edges", () => {
       await source.chat.sendMessage(sourceMarker);
       await source.chat.expectMessageVisible(sourceMarker);
 
+      // The right password gets in — and getting in is no longer taking the
+      // nickname from anybody: both screens are the same person, signed in
+      // twice. The security property this test exists for is above: a wrong
+      // password buys nothing, least of all somebody else's session.
       await challengerConnect.authPasswordInput.fill(source.password);
       await challengerConnect.authButton.click();
       await challengerChat.waitUntilConnected();
 
-      await expect(source.page).toHaveURL(/\/connect\?reason=/);
-      await expect(source.page.getByTestId("session-alert")).toContainText(
-        "logged in from another window",
-      );
+      await expect(source.page).toHaveURL(/\/chat(\?.*)?$/);
+      await expect(source.page.getByTestId("session-alert")).toHaveCount(0);
     } finally {
       await setRegistration(admin, "open").catch(() => {});
       await challengerCtx?.close();

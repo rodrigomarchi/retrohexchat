@@ -1811,7 +1811,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:102
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -3352,7 +3352,7 @@ msgstr ""
 "Asteroidy są statyczne - ten sam układ dla obu graczy, losowo generowane na "
 "mecz"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Auto-Reconnect"
 msgstr "Rekonstytucja auto-"
@@ -3438,11 +3438,6 @@ msgstr ""
 "Zniszcz wszystkie 50 bloków, aby wygrać (max 1500 punktów), lub stracić "
 "wszystkie 3 życia dla gry ponad"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "Duplicate presence in channels"
-msgstr "Duplikat obecności w kanałach"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Every cell you cross becomes part of your trail permanently"
@@ -3465,7 +3460,7 @@ msgstr ""
 "Latanie w niebezpiecznej strefie gwiazdy to natychmiastowa śmierć (punkt dla"
 " przeciwnika)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "GHOST Command"
 msgstr "Polecenie GHOST"
@@ -3512,11 +3507,6 @@ msgstr ""
 "Wynik trafienia 1 punkt - większość trafień, gdy 2-minutowy timer kończy "
 "wygrywa rundę"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "How It Works"
-msgstr "Jak to działa"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Hyperspace warp: random position, 20% death chance, 3-second cooldown"
@@ -3531,7 +3521,7 @@ msgstr ""
 "Jeśli obaj gracze zderzą się w tej samej komórce, runda jest remisem (bez "
 "punktów)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "If your connection drops unexpectedly, the client attempts to reconnect automatically with exponential backoff (up to 10 attempts). If all attempts fail, the session is considered"
 msgstr ""
@@ -3548,11 +3538,6 @@ msgstr "Szybko poznaj układ"
 #, elixir-autogen, elixir-format
 msgid "Maze is randomly selected from 5 symmetrical layouts"
 msgstr "Labirynt jest losowo wybierany z 5 układów symetrycznych"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:33
-#, elixir-autogen, elixir-format
-msgid "Messages being received in multiple windows simultaneously"
-msgstr "Wiadomości otrzymywane jednocześnie w wielu oknach"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:74
 #, elixir-autogen, elixir-format
@@ -3623,17 +3608,12 @@ msgstr ""
 "gracze poruszają się w stałym tempie - nie ma zatrzymania, tylko wybór, "
 "gdzie skręcić dalej. Pierwsze do trzech rund wygrywa."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "RetroHexChat enforces a"
-msgstr "RetroHexChat"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Session Expiry"
 msgstr "Wygaśnięcie sesji"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Session expired"
 msgstr "Sesja wygasła"
@@ -3689,21 +3669,11 @@ msgstr ""
 msgid "Starting positions swap each round for fairness"
 msgstr "Pozycje wyjściowe zamieniają każdą rundę na uczciwość"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "State inconsistencies between sessions"
-msgstr "Niespójności między sesjami"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "The arena wraps around — fly off one edge, appear on the other"
 msgstr ""
 "Arena owija się wokół - latać z jednej krawędzi, pojawiają się na drugiej"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "The new session takes over and becomes the active connection."
-msgstr "Nowa sesja przejmuje kontrolę i staje się aktywnym połączeniem."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:57
 #, elixir-autogen, elixir-format
@@ -3765,12 +3735,7 @@ msgstr "Warp jest bardzo ryzykowny - możesz teleportować się na asteroidę"
 msgid "Warp is suicide"
 msgstr "Warp to samobójstwo."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:29
-#, elixir-autogen, elixir-format
-msgid "Why Single Session?"
-msgstr "Dlaczego jedna sesja?"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "You can then reconnect manually."
 msgstr "Następnie można ponownie połączyć się ręcznie."
@@ -3780,12 +3745,7 @@ msgstr "Następnie można ponownie połączyć się ręcznie."
 msgid "You cannot reverse direction — 180-degree turns are blocked"
 msgstr "Nie można odwrócić kierunku - 180-stopniowe obroty są zablokowane"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "and redirected to the Connect screen with the message:"
-msgstr "i przekierowany do ekranu Connect z wiadomością:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "and you are redirected to the Connect screen with the message:"
 msgstr "i jesteś przekierowany do ekranu Connect z wiadomością:"
@@ -4213,42 +4173,42 @@ msgstr "Gry retro to natywne dla przeglądarki gry RetroHexChat, w które grasz 
 msgid "The address is the door"
 msgstr "Adres jest drzwiami"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
-#, elixir-autogen, elixir-format
-msgid ". One chat can be connected with the same nickname at a time — but a conference, a space, a P2P session and a game each have an address of their own, and those tabs are yours to open beside the chat as many as you like."
-msgstr ". Jeden czat naraz może być połączony z tym samym pseudonimem — ale konferencja, przestrzeń, sesja P2P i gra mają każde własny adres, a te karty należą do ciebie: otwieraj ich obok czatu, ile chcesz."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "Enforcing one chat per nickname prevents:"
-msgstr "Wymuszenie jednego czatu na pseudonim zapobiega:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Session ended — logged in from another window"
-msgstr "Sesja zakończona - zalogowany z innego okna"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "The rule is about the conversation, not about tabs. A conference, a space, a P2P session and a game are not chats: they carry no channel list and no presence of their own, which is why you can hold several at once. Your channels are left when the last of your tabs closes, not when the chat's does."
-msgstr "Zasada dotyczy rozmowy, nie kart. Konferencja, przestrzeń, sesja P2P i gra nie są czatami: nie niosą listy kanałów ani własnej obecności, i dlatego możesz mieć ich kilka naraz. Twoje kanały opuszczasz, gdy zamknie się ostatnia z twoich kart, a nie gdy zamknie się ta z czatem."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "When you open the chat with a nickname that already has a chat somewhere (even your own, in another tab or browser), the"
-msgstr "Gdy otwierasz czat z pseudonimem, który ma już gdzieś czat (nawet twój własny, w innej karcie lub przeglądarce),"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "previous chat is immediately disconnected"
-msgstr "poprzedni czat zostaje natychmiast rozłączony"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_single_session.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "single chat session per nickname"
-msgstr "jedna sesja czatu na pseudonim"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Inside the room, Share mints the address and opens a small window holding it, with Copy and Revoke. Paste it into a channel or a private message and it draws a card with the game on it and the number of seats left. Opening the game does not create an address — pressing Share does, so you never leave links behind for rooms nobody used."
 msgstr "W pokoju Udostępnij tworzy adres i otwiera go w małym oknie, obok Kopiuj i Odwołaj. Wklej go na kanał albo w wiadomość prywatną, a narysuje kartę z grą i liczbą wolnych miejsc. Otwarcie gry nie tworzy adresu — tworzy go naciśnięcie Udostępnij, dzięki czemu nigdy nie zostawiasz po sobie linków do pokoi, których nikt nie użył."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Ending the others"
+msgstr "Kończenie pozostałych"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "How many at once"
+msgstr "Ile naraz"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The channels you are in, and the place you had read up to. Reading a conversation on one screen clears its unread badge on the other. What each screen keeps to itself is what it has on screen: the tabs you opened on the phone do not rearrange the desktop, and closing one screen never takes the other out of a channel."
+msgstr "Kanały, na których jesteś, i miejsce, do którego doczytałeś. Przeczytanie rozmowy na jednym ekranie kasuje znacznik nieprzeczytanych na drugim. To, co każdy ekran zachowuje dla siebie, to jego własny układ: karty otwarte na telefonie nie przestawiają komputera, a zamknięcie jednego ekranu nigdy nie wyrzuca drugiego z kanału."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Three chats at a time. Opening a fourth ends the one you have not used for longest, and that screen is sent back to the Connect page saying so. Nothing else you have open is affected: a conference, a space, a P2P session and a game each have an address of their own and are yours to open beside the chat as many as you like."
+msgstr "Trzy rozmowy naraz. Otwarcie czwartej kończy tę, której najdłużej nie używałeś, a tamten ekran wraca na stronę połączenia z odpowiednim komunikatem. Nic innego, co masz otwarte, nie jest ruszane: konferencja, przestrzeń, sesja P2P i gra mają własne adresy i możesz je otwierać obok czatu, ile chcesz."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "What the screens share"
+msgstr "Co ekrany współdzielą"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "You can be signed in with the same nickname on more than one screen at a time — the desktop at work and the phone on the way home, both live, both showing the same conversations."
+msgstr "Możesz być zalogowany tym samym pseudonimem na więcej niż jednym ekranie naraz — komputer w pracy i telefon w drodze do domu, oba aktywne, oba pokazujące te same rozmowy."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "The Sessions tab of the Trusted Terminals window, in the Start menu, lists every screen signed in as you. It marks the one you are on, and ends any of them — or all the others at once, which is what to reach for after signing in somewhere you do not control."
+msgstr "Zakładka Sesje w oknie Zaufane terminale, w menu Start, wypisuje każdy ekran zalogowany jako ty. Zaznacza ten, na którym jesteś, i kończy dowolny z nich — albo wszystkie pozostałe naraz, po co warto sięgnąć po zalogowaniu się gdzieś, czego nie kontrolujesz."

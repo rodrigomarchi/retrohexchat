@@ -354,7 +354,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     session = socket.assigns.session
 
     if session.identified do
-      case ReconnectState.save(session.nickname, reconnect_snapshot(socket)) do
+      case ReconnectState.save(session.nickname, reconnect_snapshot(socket), browser_id(socket)) do
         :ok ->
           :ok
 
@@ -380,7 +380,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     session = socket.assigns.session
 
     if session.identified do
-      case ReconnectState.delete(session.nickname) do
+      case ReconnectState.delete(session.nickname, browser_id(socket)) do
         :ok ->
           :ok
 
@@ -392,6 +392,16 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     end
 
     socket
+  end
+
+  # A snapshot belongs to this browser, not to every browser the person owns:
+  # closing the desktop must not erase where the phone had got to.
+  @spec browser_id(Phoenix.LiveView.Socket.t()) :: String.t()
+  def browser_id(socket) do
+    case socket.assigns[:browser_id] do
+      value when is_binary(value) -> value
+      _missing -> ""
+    end
   end
 
   @spec reconnect_snapshot(Phoenix.LiveView.Socket.t()) :: map()

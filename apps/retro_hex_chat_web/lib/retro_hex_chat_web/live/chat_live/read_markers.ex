@@ -18,6 +18,8 @@ defmodule RetroHexChatWeb.ChatLive.ReadMarkers do
   import Phoenix.Component, only: [assign: 2]
 
   alias RetroHexChat.Chat.ReconnectState
+  alias RetroHexChat.Chat.UnreadTracker
+  alias RetroHexChat.Topics
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
   @type markers :: %{String.t() => pos_integer()}
@@ -48,9 +50,35 @@ defmodule RetroHexChatWeb.ChatLive.ReadMarkers do
   def advance(socket, key) do
     case socket.assigns[:newest_message_id] do
       nil -> socket
-      id -> put(socket, key, id)
+      id -> socket |> put(key, id) |> publish(key, id)
     end
   end
+
+  @doc """
+  Take a marker another screen of the same person just moved.
+
+  Only ever forward: two screens move at their own pace, and a marker arriving
+  from a window that was showing an older page must not drag the reader back
+  through lines they have already read. The conversation's counts go with it —
+  reading on the phone is what should clear the badge on the desktop, and that
+  is the whole point of having two screens.
+  """
+  @spec accept_remote(Phoenix.LiveView.Socket.t(), String.t(), term()) ::
+          Phoenix.LiveView.Socket.t()
+  def accept_remote(socket, key, id) when is_binary(key) and is_integer(id) do
+    if id > Map.get(markers(socket), key, 0) do
+      socket
+      |> put(key, id)
+      |> assign(
+        unread_counts: UnreadTracker.reset(socket.assigns.unread_counts, key),
+        mention_counts: UnreadTracker.reset(socket.assigns.mention_counts, key)
+      )
+    else
+      socket
+    end
+  end
+
+  def accept_remote(socket, _key, _id), do: socket
 
   @doc "Remember the newest line the viewport has shown, whichever conversation."
   @spec seen(Phoenix.LiveView.Socket.t(), term()) :: Phoenix.LiveView.Socket.t()
@@ -109,6 +137,22 @@ defmodule RetroHexChatWeb.ChatLive.ReadMarkers do
     assign(socket,
       read_markers: ReconnectState.normalize(%{read_markers: markers}).read_markers
     )
+  end
+
+  # `broadcast_from` rather than `broadcast`: every screen of this person is
+  # subscribed to the same inbox, including this one, and a marker that came
+  # back to its author would be a message handled for nothing.
+  @spec publish(Phoenix.LiveView.Socket.t(), String.t(), pos_integer()) ::
+          Phoenix.LiveView.Socket.t()
+  defp publish(socket, key, id) do
+    Phoenix.PubSub.broadcast_from(
+      RetroHexChat.PubSub,
+      self(),
+      Topics.inbox(socket.assigns.session.nickname),
+      {:read_marker_advanced, %{key: key, message_id: id}}
+    )
+
+    socket
   end
 
   @spec markers(Phoenix.LiveView.Socket.t()) :: markers()

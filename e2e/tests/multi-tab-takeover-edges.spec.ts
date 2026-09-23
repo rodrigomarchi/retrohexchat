@@ -1,6 +1,6 @@
 /**
  * @section AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
- * @flow AA4 [done] Same-nick multi-context takeover redirects the source with unsaved draft/dialog state and leaves the new chat session usable without inherited local state (features P1)
+ * @flow AA4 [done] A second context of the same nickname leaves the first one's unsaved draft and open dialog intact, and starts clean itself
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -9,8 +9,8 @@ import { expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 
-test.describe("Multi-tab takeover edges", () => {
-  test("same nick takeover closes source with unsaved draft/dialog and keeps new session usable (AA4)", async ({
+test.describe("Two screens, unfinished work on one", () => {
+  test("the second screen inherits no local state and disturbs none (AA4)", async ({
     browser,
   }) => {
     const ctxA = await browser.newContext();
@@ -48,22 +48,23 @@ test.describe("Multi-tab takeover edges", () => {
       await connectB.authenticateWithPassword(password);
       await chatB.waitUntilConnected();
 
-      await expect(pageA).toHaveURL(/\/connect\?reason=/);
-      await expect(pageA.getByTestId("session-alert")).toContainText(
-        "Session ended",
-      );
-      await expect(pageA.getByTestId("session-alert")).toContainText(
-        "logged in from another window",
-      );
-      await expect(connectA.nicknameInput).toBeVisible();
-      await expect(pageA.getByTestId("alias-dialog")).toHaveCount(0);
-      await expect(pageA.getByTestId("chat-input-field")).toHaveCount(0);
+      // What one screen has half-finished is its own: the draft is still typed
+      // and the dialog is still open, because the second screen no longer ends
+      // the first.
+      await expect(pageA).toHaveURL(/\/chat(\?.*)?$/);
+      await expect(chatA.chatInput).toHaveValue(draft);
+      await expect(chatA.aliasDialog).toBeVisible();
 
+      // And none of it leaks the other way: the new screen starts clean.
       await chatB.expectTabSelected("#lobby");
       await expect(chatB.aliasDialog).toBeHidden();
       await expect(chatB.chatInput).toHaveValue("");
       await chatB.sendMessage(message);
       await chatB.expectMessageVisible(message);
+
+      // The line sent from B reaches A, which is the proof A is still live
+      // rather than merely still painted.
+      await chatA.expectMessageVisible(message);
     } finally {
       await ctxA.close();
       await ctxB.close();

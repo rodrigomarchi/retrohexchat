@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
 
   alias RetroHexChat.Chat.TimeFormatter
   alias RetroHexChat.Services.NickExpiry
+  alias RetroHexChat.SessionControl
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Timezone
 
@@ -353,8 +354,13 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
     </div>
 
     <div class="mt-4 space-y-2 text-xs">
-      <.connect_notice icon={:connect} title={dgettext("connect", "One session per nickname")}>
-        {dgettext("connect", "Connecting from another window ends the previous session.")}
+      <.connect_notice icon={:connect} title={dgettext("connect", "More than one screen")}>
+        {dgettext(
+          "connect",
+          "You can be signed in on up to %{count} screens at once. Opening a %{next}th ends the one you have not used for longest.",
+          count: SessionControl.max_sessions(),
+          next: SessionControl.max_sessions() + 1
+        )}
       </.connect_notice>
       <.connect_notice icon={:clock} title={dgettext("connect", "Session expiry")}>
         {dgettext("connect", "Sessions expire after 10 failed reconnection attempts.")}

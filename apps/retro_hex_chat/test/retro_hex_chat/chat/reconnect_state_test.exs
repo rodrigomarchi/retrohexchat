@@ -111,6 +111,68 @@ defmodule RetroHexChat.Chat.ReconnectStateTest do
     end
   end
 
+  describe "one snapshot per browser" do
+    @tag :integration
+    test "two browsers of the same nickname keep independent snapshots" do
+      nick = "ReconnUser3"
+      insert_registered_nick(nick)
+
+      assert :ok = ReconnectState.save(nick, %{channels: ["#desk"]}, "browser-a")
+      assert :ok = ReconnectState.save(nick, %{channels: ["#phone"]}, "browser-b")
+
+      assert {:ok, desk} = ReconnectState.load(nick, "browser-a")
+      assert {:ok, phone} = ReconnectState.load(nick, "browser-b")
+
+      assert desk.channels == ["#desk"]
+      assert phone.channels == ["#phone"]
+    end
+
+    @tag :integration
+    test "the same browser still overwrites its own snapshot" do
+      nick = "ReconnUser4"
+      insert_registered_nick(nick)
+
+      assert :ok = ReconnectState.save(nick, %{channels: ["#old"]}, "browser-a")
+      assert :ok = ReconnectState.save(nick, %{channels: ["#new"]}, "browser-a")
+
+      assert {:ok, loaded} = ReconnectState.load(nick, "browser-a")
+      assert loaded.channels == ["#new"]
+    end
+
+    @tag :integration
+    test "deleting one browser leaves the other browser's snapshot alone" do
+      nick = "ReconnUser5"
+      insert_registered_nick(nick)
+
+      assert :ok = ReconnectState.save(nick, %{channels: ["#desk"]}, "browser-a")
+      assert :ok = ReconnectState.save(nick, %{channels: ["#phone"]}, "browser-b")
+
+      assert :ok = ReconnectState.delete(nick, "browser-a")
+
+      assert {:error, :not_found} = ReconnectState.load(nick, "browser-a")
+      assert {:ok, phone} = ReconnectState.load(nick, "browser-b")
+      assert phone.channels == ["#phone"]
+    end
+
+    # A browser that never got the cookie — one blocking them, or a visit that
+    # predates the plug — is not a special case anywhere in the code: it is the
+    # empty browser id, which is also what every row carried before this column
+    # existed.
+    @tag :integration
+    test "no browser id at all is a browser like any other" do
+      nick = "ReconnUser6"
+      insert_registered_nick(nick)
+
+      assert :ok = ReconnectState.save(nick, %{channels: ["#anon"]})
+      assert {:ok, loaded} = ReconnectState.load(nick)
+      assert loaded.channels == ["#anon"]
+
+      assert :ok = ReconnectState.save(nick, %{channels: ["#named"]}, "browser-a")
+      assert {:ok, still_anon} = ReconnectState.load(nick)
+      assert still_anon.channels == ["#anon"]
+    end
+  end
+
   defp insert_registered_nick(nickname) do
     {:ok, _} = Queries.insert_registered_nick(nickname, "password123")
   end

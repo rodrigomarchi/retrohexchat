@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **227 spec files** under `e2e/tests/`.
-- **482 Playwright `test()` cases**.
-- **477 documented flows**, 476 done, 1 not done.
+- **483 Playwright `test()` cases**.
+- **478 documented flows**, 477 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -160,8 +160,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | H | Direct `/chat` access without session bounces to `/connect` | `tests/chat-guard.spec.ts` | done |
 | I | `/connect?reason=expired` surfaces session expired message | `tests/disconnect-reason.spec.ts` | done |
 | J | `/connect?reason=disconnected` surfaces session ended message | `tests/disconnect-reason.spec.ts` | done |
-| K | Same nickname from second context force-disconnects first context | `tests/multi-tab-takeover.spec.ts` | done |
-| K2 | A game surface tab and the chat tab coexist in one browser context, and a chat takeover ends only the chat | `tests/surface-multi-tab.spec.ts` | done |
+| K | A second browser context with the same nickname leaves the first one connected | `tests/multi-tab-takeover.spec.ts` | done |
+| K2 | A game surface tab and the chat tab coexist in one browser context, and a second chat tab disturbs neither | `tests/surface-multi-tab.spec.ts` | done |
 | K3 | A game address with no session lands on connect and reaches the game once the nickname is registered | `tests/surface-multi-tab.spec.ts` | done |
 | K4 | A shared game link minted in one browser is followed from another with no session: the public card asks for a connect, and the connect lands back on the link | `tests/share-link-join.spec.ts` | done |
 | K5 | A surface open beside the chat offers to go back to the tab that exists instead of opening a second chat, and says so when no tab answers | `tests/surface-cross-tab.spec.ts` | done |
@@ -171,6 +171,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | K9 | Opening a conference writes its card into the channel by itself, and that card counts up on its own when somebody joins the call, with no reload | `tests/share-link-join.spec.ts` | done |
 | K10 | When the conference ends, the card in the channel becomes the record of it — how long it ran and how many people were in it — with no reload | `tests/share-link-join.spec.ts` | done |
 | K11 | A channel invite link shows a stranger the room, its topic and the last lines said there, and lands them inside the channel after connecting | `tests/share-link-join.spec.ts` | done |
+| K12 | A fourth screen ends the one unused for longest and leaves the rest connected | `tests/multi-tab-takeover.spec.ts` | done |
 | L | Logged-in user disconnects via UI and lands on `/connect` | `tests/logout.spec.ts` | done |
 | M | Admin bans user with `/admin user ban` and victim is force-disconnected | `tests/admin-ban.spec.ts` | done |
 | N | Admin closes registration; new user sees registration closed; spec restores open | `tests/admin-registration-closed.spec.ts` | done |
@@ -674,10 +675,10 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | --- | --- | --- | --- |
 | AA1 | Browser offline/online during an active PM preserves the PM draft, selected PM tab, existing unread PM badge, and typing indicator state (features P1) | `tests/chat-reconnect-window-state.spec.ts` | done |
 | AA2 | Browser offline/online with an unsaved Alias Editor draft preserves the dialog inputs and can save/run the alias after reconnect (features P2) | `tests/chat-reconnect-dialog-state.spec.ts` | done |
-| AA4 | Same-nick multi-context takeover redirects the source with unsaved draft/dialog state and leaves the new chat session usable without inherited local state (features P1) | `tests/multi-tab-takeover-edges.spec.ts` | done |
+| AA4 | A second context of the same nickname leaves the first one's unsaved draft and open dialog intact, and starts clean itself | `tests/multi-tab-takeover-edges.spec.ts` | done |
 | AA5 | Admin kick while a target browser is offline redirects on reconnect but allows later login, while admin ban blocks reconnect until unban (features P1) | `tests/chat-admin-reconnect-edges.spec.ts` | done |
 | AA6 | Closed registration blocks brand-new nick registration while existing registered users can still authenticate (features P1) | `tests/admin-registration-closed-edges.spec.ts` | done |
-| AA7 | Closed registration keeps same-nick takeover password-gated: wrong password does not displace the source, correct password performs normal takeover (features P2) | `tests/admin-registration-closed-edges.spec.ts` | done |
+| AA7 | Closed registration keeps a nickname password-gated: a wrong password neither signs in nor displaces the session already using it, and the right one signs in beside it (features P2) | `tests/admin-registration-closed-edges.spec.ts` | done |
 | AA8 | Mute survives reload for the account that set it, silences its sound preview, and does not leak to another session (features P2) | `tests/chat-mute-isolation.spec.ts` | done |
 
 ### MB - Mobile & Touch

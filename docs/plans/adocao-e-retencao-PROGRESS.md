@@ -18,7 +18,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 3.1 Reações | **pronto** (2026-09-23) |
 | 3.2 Menções | **pronto** (2026-09-23) |
 | 3.3 Régua de não lidas | **pronto** (2026-09-23) |
-| 4.1 Multi-dispositivo | não iniciado |
+| 4.1 Multi-dispositivo | **pronto** (2026-09-23) |
 | 4.2 E-mail opcional | não iniciado |
 | 4.3 Fixar mensagem | não iniciado |
 | 4.4 Salvar mensagem | não iniciado |
@@ -602,3 +602,110 @@ Reações, menções e a régua de não lidas. As três respondem à mesma coisa
 delas, a única forma de participar era escrever, e a única forma de voltar era
 rolar. Onda 4 (uso diário) começa em 4.1, que o plano marca como **plan mode
 obrigatório**.
+
+---
+
+## Iteração 4.1 — Duas telas do mesmo nick ao mesmo tempo
+
+Abrir o chat no celular deixou de matar o desktop. Teto de **3 sessões
+simultâneas** por nick (`SessionControl.max_sessions/0`, configurável); a quarta
+derruba a que está há mais tempo sem uso.
+
+**O que ficou**
+
+- Coluna `browser_id` em `reconnect_states` e chave primária composta
+  `(owner_nickname, browser_id)`. O que você tinha aberto é fato de uma tela,
+  não de uma pessoa.
+- Plug `PutBrowserId` + `App.BrowserIdCookie`: um nome opaco por navegador,
+  cunhado no primeiro acesso, no desenho do `PutTrustedDevice` ao lado.
+- `SessionControl.enforce_limit/2` substitui o `disconnect(…, :chat)`
+  incondicional no mount. Conta pelas linhas abertas de `chat_device_sessions`
+  — query, não lookup, porque um processo morto e ainda não varrido mente.
+- `Surfaces.count_kind/3`: "há processo de chat vivo" e "há alguma aba aberta"
+  são perguntas diferentes e agora têm funções diferentes.
+- Marcador de leitura sincroniza pelo `Topics.inbox/1` com cláusula explícita em
+  `PubsubHandlers`. Ler no celular limpa o badge no desktop.
+- Ajuda: `feature-single-session` virou `feature-sessions`, dizendo o oposto do
+  que dizia. `/privacy` ganhou o parágrafo do `browser_id`.
+
+**Quatro descobertas que encurtaram o trabalho**
+
+- **O endereço por sessão já existia.** `chat_device_session:<ref>` já era
+  assinado pelo `ChatLive` e publicado por `TrustedDevices` e `Admin`. Derrubar
+  *uma* sessão não precisou de mecanismo novo.
+- **A chave que evita o estrago já era lida.** O handler de `force_disconnect`
+  já consulta `skip_channel_cleanup` no payload. A sessão derrubada manda essa
+  chave e não abandona os canais que os sobreviventes ocupam — zero mudança no
+  handler.
+- **Reentrar em canal já era suportado.** `{:error, "Already in channel"}` já
+  caía em `setup_joined_channel`, então a segunda tela adota a membership sem um
+  segundo `user_joined`.
+- **"Encerrar as outras sessões" já estava no ar** em Terminais confiáveis
+  (`trusted_terminals_kill_other_sessions`). O plano previa construir; o
+  trabalho real foi apontar a ajuda para lá.
+
+**Dois alargamentos que o plano não previa**
+
+- **O push duplicaria.** `candidates_for_channel_message/2` fazia `join` em
+  `owner_nickname` sem `distinct`. Com uma linha por navegador, cada inscrição
+  voltaria N vezes e o mesmo aparelho receberia N notificações por mensagem.
+  Virou `EXISTS`, que diz a intenção e não pode multiplicar por construção. O
+  teste que pega isso é vermelho contra o `join`.
+- **Fechar uma aba diria que a pessoa saiu.** `terminate/2` publicava
+  `{:user_disconnected}` e gravava whowas incondicionalmente, e esse evento
+  alimenta a notify list. Agora só quando é a última sessão **de chat**.
+
+**Aprendizados**
+
+- **A espera de takeover saiu inteira** — `takeover_expected?`,
+  `takeover_acker?`, `wait_for_takeover_cleanup`, o `takeover_ack`. Ela existia
+  para a sessão antiga abandonar os canais antes da nova entrar; a sessão
+  derrubada não abandona mais nada, então não havia o que esperar. Some um
+  `receive` bloqueante de até 1s do mount. *Desvio consciente do plano escrito.*
+- **Minha ferramenta de `.po` corrompeu acentuação.** `unicode_escape` destrói
+  UTF-8: o travessão virou mojibake em 44 entradas. Restaurei tudo do snapshot e
+  reescrevi o unescape para tratar só `\n`, `\t`, `\"` e `\\`. A auditoria
+  final fecha com **0 entradas pré-existentes alteradas**.
+- **O mesmo passo também preencheu 44 entradas vazias de domínios alheios.**
+  Dívida pré-existente que não é deste item; revertida junto.
+- **Mexer num comentário invalida o `.pot`.** As referências `#:` guardam
+  número de linha, então reescrever um moduledoc num arquivo com `dgettext`
+  derruba "i18n Catalog Coverage". Aconteceu duas vezes; a lição é extrair
+  **depois** do último retoque de texto, não antes.
+- **O merge marcou meu próprio msgid como `fuzzy`** nos 14 catálogos, por ser
+  uma reescrita de uma frase anterior. Limpar a marca só é legítimo porque o
+  `msgstr` já era a tradução que eu tinha escrito — e só nessa entrada.
+- **O plug roda no teste de LiveView.** Plantar `browser_id` na sessão não
+  adianta: o plug sobrescreve. `chat_conn` passou a mandar cookie, que é como um
+  navegador de verdade faz.
+- **Escrevi um teste contra a regra de testes.** Assertei em linha de stream
+  (`send_update` assíncrono) com um helper de polling. A pergunta real —
+  "cada tela recebe uma entrega só" — é respondida de forma síncrona pelo
+  registro de assinantes do PubSub.
+- **Quatro specs afirmavam o takeover, dois deles de lado.** Os dois diretos
+  (`multi-tab-takeover`, `multi-tab-takeover-edges`) eu já esperava reescrever.
+  Os outros dois foram as únicas falhas dos batches: `surface-multi-tab` (K2)
+  provava que uma aba de jogo sobrevive à derrubada do chat, e
+  `admin-registration-closed-edges` (AA7) terminava exigindo que a senha certa
+  derrubasse a sessão de origem. Nesse, a parte que importa — senha errada não
+  entra **nem desloca** quem já está lá — passava e continua intacta; só as duas
+  últimas linhas caíram. Nenhuma das duas falhas apontou defeito no código: as
+  duas apontaram texto descrevendo um mecanismo removido.
+- **A paginação da lista de sessões ficou inalcançável.** Um teste existente
+  semeava 26 sessões abertas e o teto poda para 3. É o recurso funcionando: a
+  lista nunca passa de uma página, e a poda também limpa linhas que um navegador
+  que travou deixou abertas. O teste passou a afirmar isso.
+
+**Arquivos tocados** — migration `rekey_reconnect_states_by_browser`,
+`chat/reconnect_state.ex`, `chat/schemas/reconnect_state.ex`,
+`session_control.ex`, `surfaces.ex`, `accounts/trusted_devices.ex`,
+`notifications/queries.ex`, `plugs/put_browser_id.ex`,
+`app/browser_id_cookie.ex`, `router.ex`, `live/app/chat_live.ex`,
+`chat_live/read_markers.ex`, `chat_live/pubsub_handlers.ex`,
+`chat_live/helpers/session.ex`, `components/ui/connect/connect_form_panel.ex`,
+`help_topics/features.ex`, `help_content/feature_sessions.html.heex`,
+`landing_live/privacy.html.heex`, `e2e/tests/multi-tab-takeover*.spec.ts`,
+`e2e/tests/surface-multi-tab.spec.ts`,
+`e2e/tests/admin-registration-closed-edges.spec.ts`, e os
+catálogos `accounts`, `help`, `connect`, `help_features`, `help_games`,
+`landing`.

@@ -47,7 +47,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── Domain aliases ────────────────────────────────────────────
   alias RetroHexChat.Accounts.{NicknameValidator, Session, TrustedDevices}
   alias RetroHexChat.Admin.ServerBans
-  alias RetroHexChat.Channels.Server
   alias RetroHexChat.Services.ChanExpiry
   alias RetroHexChat.Services.{Motd, Queries}
   alias RetroHexChat.Services.NickExpiry
@@ -62,7 +61,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   }
 
   alias RetroHexChat.Notifications
-  alias RetroHexChat.Presence.{Tracker, WhowasCache}
+  alias RetroHexChat.Presence.WhowasCache
   alias RetroHexChat.Scraper
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.SessionControl
@@ -123,34 +122,20 @@ defmodule RetroHexChatWeb.App.ChatLive do
   defp mount_connected_chat(params, http_session, socket, session, nickname) do
     default_channel = Application.get_env(:retro_hex_chat, :default_channel, "#lobby")
 
-    # Asked before the broadcast, so the answer is about who can receive it. A
-    # session that dies afterwards leaves the wait to time out, which is what
-    # already happened and is the safe direction.
-    takeover_expected? =
-      takeover_expected?(default_channel, nickname) and takeover_acker?(nickname)
-
-    takeover_ref = make_ref()
     timezone = resolve_timezone(http_session, socket)
     connect_params = get_connect_params(socket) || %{}
     client_info = SessionHelpers.parse_client_info(connect_params)
     trusted_device_id = normalize_trusted_device_id(http_session["trusted_device_id"])
+    browser_id = normalize_browser_id(http_session["browser_id"])
     chat_device_session = start_chat_device_session(nickname, trusted_device_id, client_info)
     chat_device_session_ref = trusted_device_session_ref(chat_device_session)
 
-    # `:chat` scope on purpose: this ends the previous CHAT session and nothing
-    # else. A call or a space the person has open in another tab keeps running —
-    # only a ban or a nuke (`:all`) reaches those.
-    SessionControl.disconnect(
-      nickname,
-      %{
-        reason: dgettext("chat", "Session ended — logged in from another window"),
-        disconnected_by_session_ref: chat_device_session_ref,
-        takeover_ack: {self(), takeover_ref}
-      },
-      :chat
-    )
-
-    if takeover_expected?, do: wait_for_takeover_cleanup(takeover_ref)
+    # Opening the chat no longer ends the chat somebody already has: two screens
+    # of one nickname share a channel membership and an inbox, so there is
+    # nothing to hand over and nothing to wait for. Only the count is enforced,
+    # and the screen that gives way is told to leave the membership behind for
+    # the ones that outlive it.
+    SessionControl.enforce_limit(nickname, chat_device_session_ref)
 
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(nickname))
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.presence())
@@ -177,7 +162,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     # few lines below. It is still a guard: a guest who has not identified
     # cannot pick up the snapshot a registered owner left behind.
     identified? = pre_identified or NickServ.identified?(nickname)
-    backend_reconnect_state = load_reconnect_state(nickname, identified?)
+    backend_reconnect_state = load_reconnect_state(nickname, browser_id, identified?)
     reconnecting? = backend_reconnect_state != nil
     join_channel = params["join"]
 
@@ -201,6 +186,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
         timezone: timezone,
         client_info: client_info,
         trusted_device_id: trusted_device_id,
+        browser_id: browser_id,
         chat_device_session_ref: chat_device_session_ref,
         last_device_session_touch_at: DateTime.utc_now()
       )
@@ -238,62 +224,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
     end
   end
 
-  defp takeover_expected?(default_channel, nickname) do
-    Tracker.online?(Topics.presence(), nickname) or
-      channel_has_member?(default_channel, nickname)
-  end
-
-  # Presence and a channel's member list both answer "was a session here",
-  # which is not the same question as "is one here to hand over". A tab that
-  # vanished leaves the first true and the second false, and the mount then sat
-  # out the whole acknowledgement timeout — 1486 ms measured, against ~50 ms
-  # when a previous session really was there.
-  #
-  # A session subscribed to the nickname's inbox before it could receive the
-  # force_disconnect, and Phoenix.PubSub drops a subscriber the moment its
-  # process dies. So the subscriber list is the live answer, and the new mount
-  # is not on it yet — it subscribes after the handover. Anything unexpected
-  # from the lookup falls back to waiting, because being slow is the safe
-  # failure and joining ahead of the old session's departure is not.
-  defp takeover_acker?(nickname) do
-    RetroHexChat.PubSub
-    |> Registry.lookup(Topics.inbox(nickname))
-    |> Enum.any?(fn {pid, _value} -> Process.alive?(pid) end)
-  rescue
-    error ->
-      Logger.warning(
-        "Could not inspect inbox subscribers, waiting for takeover: #{inspect(error)}"
-      )
-
-      true
-  end
-
-  defp channel_has_member?(channel_name, nickname) do
-    target = String.downcase(nickname)
-
-    case Server.get_state(channel_name) do
-      {:ok, state} ->
-        Enum.any?(state.members, fn {member, _role} ->
-          String.downcase(member) == target
-        end)
-
-      {:error, _} ->
-        false
-    end
-  catch
-    :exit, _reason -> false
-  end
-
-  defp wait_for_takeover_cleanup(ref) do
-    receive do
-      {:force_disconnect_ack, ^ref} -> :ok
-    after
-      1_000 ->
-        Logger.warning("Timed out waiting for previous chat session takeover cleanup")
-        :ok
-    end
-  end
-
   defp mount_disconnected_chat(http_session, socket, session) do
     socket
     |> assign_defaults(session)
@@ -301,6 +231,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       timezone: Timezone.validate(http_session["chat_timezone"]),
       client_info: %{},
       trusted_device_id: normalize_trusted_device_id(http_session["trusted_device_id"]),
+      browser_id: normalize_browser_id(http_session["browser_id"]),
       chat_device_session_ref: nil,
       last_device_session_touch_at: nil
     )
@@ -318,17 +249,20 @@ defmodule RetroHexChatWeb.App.ChatLive do
       TrustedDevices.record_session_stop(socket.assigns[:chat_device_session_ref], quit_reason)
       Queries.update_last_seen_by_nickname(session.nickname)
 
-      Phoenix.PubSub.broadcast(
-        RetroHexChat.PubSub,
-        Topics.presence(),
-        {:user_disconnected, %{nickname: session.nickname}}
-      )
-
-      ChatLive.Helpers.safe_untrack_user(Topics.presence(), session.nickname)
-
-      unless socket.assigns[:skip_whowas_record] do
-        WhowasCache.record(session.nickname, session.channels, quit_reason)
+      # Closing one screen is not going offline. Being online, and being
+      # recorded as having quit, are facts about the person, so they belong to
+      # the last chat that closes — a phone still open means they are still
+      # here, whatever the desktop just did. The kind matters: a call in a tab
+      # of its own is not somebody reading the conversation, so it does not
+      # keep them online either.
+      if last_chat_session?(session.nickname) do
+        announce_departure(socket, session, quit_reason)
       end
+
+      # Untracked either way: presence keeps a meta per process, so dropping
+      # this one leaves the other screen's behind and the person stays online
+      # by the only means that is actually counted.
+      ChatLive.Helpers.safe_untrack_user(Topics.presence(), session.nickname)
 
       unless socket.assigns[:skip_channel_cleanup] do
         depart_channels(session, quit_reason)
@@ -340,11 +274,30 @@ defmodule RetroHexChatWeb.App.ChatLive do
     :ok
   end
 
+  defp announce_departure(socket, session, quit_reason) do
+    Phoenix.PubSub.broadcast(
+      RetroHexChat.PubSub,
+      Topics.presence(),
+      {:user_disconnected, %{nickname: session.nickname}}
+    )
+
+    unless socket.assigns[:skip_whowas_record] do
+      WhowasCache.record(session.nickname, session.channels, quit_reason)
+    end
+  end
+
+  # `terminate/2` runs before the process is gone, so this surface is still
+  # registered and counts itself.
+  defp last_chat_session?(nickname) do
+    Surfaces.count_kind(nickname, __MODULE__) <= 1
+  end
+
   # The tab closing is not the person leaving any more. A conference at
-  # `/call/:token` outlives this window, and the room asks on every rejoin
-  # whether they are still a member of the channel — so the channels are left
-  # when the LAST surface closes. When this is not it, the departure is handed
-  # over and runs when the one that outlived us goes down.
+  # `/call/:token` outlives this window, and so does the same person's chat on
+  # another screen; the room asks on every rejoin whether they are still a
+  # member of the channel — so the channels are left when the LAST surface
+  # closes, of any kind. When this is not it, the departure is handed over and
+  # runs when the one that outlived us goes down.
   defp depart_channels(session, quit_reason) do
     if Surfaces.count(session.nickname) > 1 do
       # The one thing that is about this window rather than the membership: no
@@ -743,14 +696,17 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   defp normalize_trusted_device_id(_id), do: nil
 
-  defp load_reconnect_state(nickname, true) do
-    case ReconnectState.load(nickname) do
+  defp load_reconnect_state(nickname, browser_id, true) do
+    case ReconnectState.load(nickname, browser_id) do
       {:ok, snapshot} -> snapshot
       {:error, :not_found} -> nil
     end
   end
 
-  defp load_reconnect_state(_nickname, _pre_identified), do: nil
+  defp load_reconnect_state(_nickname, _browser_id, _pre_identified), do: nil
+
+  defp normalize_browser_id(browser_id) when is_binary(browser_id), do: browser_id
+  defp normalize_browser_id(_browser_id), do: ""
 
   defp maybe_restore_reconnect_state(socket, nil), do: socket
 

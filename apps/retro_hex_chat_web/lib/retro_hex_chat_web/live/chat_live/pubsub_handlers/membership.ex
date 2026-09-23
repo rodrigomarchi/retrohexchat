@@ -219,7 +219,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
      socket
      |> assign(skip_channel_cleanup: true)
      |> assign(skip_whowas_record: Map.get(payload, :skip_whowas, false))
-     |> clear_reconnect_state()
+     |> maybe_clear_reconnect_state(payload)
      |> push_event("intentional_disconnect", %{})
      |> push_event("clear_client_state", %{})
      |> Phoenix.LiveView.redirect(
@@ -417,7 +417,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     socket
   end
 
-  defp maybe_ack_force_disconnect(%{takeover_ack: {pid, ref}}) when is_pid(pid) do
+  # Being signed out clears what this browser had on screen; being asked to make
+  # room for another screen does not. The person is coming back to this browser,
+  # and the snapshot is the reason coming back does not start from nothing.
+  defp maybe_clear_reconnect_state(socket, %{keep_reconnect_state: true}), do: socket
+  defp maybe_clear_reconnect_state(socket, _payload), do: clear_reconnect_state(socket)
+
+  defp maybe_ack_force_disconnect(%{cleanup_ack: {pid, ref}}) when is_pid(pid) do
     send(pid, {:force_disconnect_ack, ref})
     :ok
   end

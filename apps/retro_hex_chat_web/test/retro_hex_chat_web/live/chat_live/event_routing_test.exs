@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.ChatLive.EventRoutingTest do
           reason: "system-reset",
           system_nuke: true,
           skip_whowas: true,
-          takeover_ack: {self(), ack_ref}
+          cleanup_ack: {self(), ack_ref}
         }
       })
 

@@ -75,6 +75,23 @@ defmodule RetroHexChat.Notifications.QueriesTest do
                )
     end
 
+    # A person with the chat open on a desktop and a phone has one reconnect row
+    # per browser. Both say they were in this channel, and a join would hand the
+    # same browser back once per row — one line, two notifications on the same
+    # device.
+    test "a person with two browsers is still reached once", ctx do
+      nick = register("TwoBrowsers")
+      {:ok, _} = Queries.subscribe(nick, params("https://push.example/two"))
+      remembers(nick, [ctx.channel], "browser-a")
+      remembers(nick, [ctx.channel], "browser-b")
+
+      assert [%{owner_nickname: ^nick}] =
+               Queries.candidates_for_channel_message(ctx.channel,
+                 tokens: [nick],
+                 except: "Author"
+               )
+    end
+
     test "matches the nickname however it was typed", ctx do
       nick = register("MiXed")
       {:ok, _} = Queries.subscribe(nick, params("https://push.example/mixed"))
@@ -208,10 +225,11 @@ defmodule RetroHexChat.Notifications.QueriesTest do
     nickname
   end
 
-  defp remembers(nickname, channels) do
+  defp remembers(nickname, channels, browser_id \\ "") do
     {:ok, _} =
       Repo.insert(%ReconnectState{
         owner_nickname: nickname,
+        browser_id: browser_id,
         channels: channels
       })
   end

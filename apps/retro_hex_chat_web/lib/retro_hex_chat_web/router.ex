@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.Router do
     # The landing pages host the connect window, so they need the same
     # trusted-device context the app pipeline provides.
     plug RetroHexChatWeb.Plugs.PutTrustedDevice
+    plug RetroHexChatWeb.Plugs.PutBrowserId
     plug RetroHexChatWeb.Plugs.PutLocale, :public
     plug :fetch_live_flash
     plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :landing_live}
@@ -135,6 +136,7 @@ defmodule RetroHexChatWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug RetroHexChatWeb.Plugs.PutTrustedDevice
+    plug RetroHexChatWeb.Plugs.PutBrowserId
     plug RetroHexChatWeb.Plugs.PutLocale
     plug :fetch_live_flash
     plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :chat}
