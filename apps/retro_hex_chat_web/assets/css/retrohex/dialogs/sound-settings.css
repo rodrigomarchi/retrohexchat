@@ -122,6 +122,19 @@
   line-height: 1.35;
 }
 
+/* The one notification that survives the window being closed. It governs no
+   single event row, so it sits with the permission note above the list rather
+   than inside it. */
+.ss-push-row {
+  align-items: flex-start;
+  padding: 6px 8px;
+  border: 1px solid #808080;
+  background: #dfdfdf;
+  color: #000000;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
 .ss-dialog-footer {
   flex-wrap: wrap;
   justify-content: flex-end;

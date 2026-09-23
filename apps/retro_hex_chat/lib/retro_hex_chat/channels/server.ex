@@ -26,6 +26,7 @@ defmodule RetroHexChat.Channels.Server do
 
   alias RetroHexChat.Chat
   alias RetroHexChat.Chat.{Attachments, Content}
+  alias RetroHexChat.Notifications
   alias RetroHexChat.Observability
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.ChanServ
@@ -894,6 +895,7 @@ defmodule RetroHexChat.Channels.Server do
       }
 
       broadcast(state.name, %{event: "new_message", payload: payload})
+      Notifications.notify_channel_message(payload)
 
       reply({:ok, id}, maybe_touch_activity(state))
     else

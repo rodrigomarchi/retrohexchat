@@ -1831,7 +1831,7 @@ msgid "Highlight"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:38
-#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
 msgstr ""
@@ -2252,7 +2252,8 @@ msgstr ""
 msgid "Multiple Kicks"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Mute"
@@ -2845,6 +2846,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_states.html.heex:38
@@ -3031,7 +3033,8 @@ msgstr ""
 msgid "Sound Notifications"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Sounds"
@@ -5542,4 +5545,69 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Your browser decides whether this is possible at all, and it only asks when you click Allow desktop notifications in the Sounds window. If you refuse, the window says so and stops offering: blocked is final until you change it in your browser's own site settings."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Notifications With the Chat Closed"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "A private message sent to you"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Desktop Notifications"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "If you have Retro Hex Chat open anywhere — a chat tab, a call, a Space — nothing is sent. You already have the sound, the flashing title and, if you asked for it, a desktop notification."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Nothing else, ever. Not an ordinary channel line, not a join or a part, and never a bot. A busy room while you were away is one notification, not one per line."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "On Your Own Server"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Only When Nothing Is Open"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Per Device, and What Leaves the Server"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The Sounds window has one switch above the event list: notify me on this device even when Retro Hex Chat is closed. With it on, this browser can be woken up after every tab is gone."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "The switch is about this browser on this machine, so turning it off on your laptop leaves your phone alone. What the server sends is encrypted for that one browser: the push service in between — your browser vendor's — carries an address and a block of ciphertext, and can read neither the conversation nor the message."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "This needs a VAPID key pair, and a server without one simply does not have the feature: the switch is not drawn at all rather than drawn and broken."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What Wakes You"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Your nickname written in a channel you were in"
 msgstr ""

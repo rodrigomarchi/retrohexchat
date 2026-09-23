@@ -111,6 +111,21 @@
             </span>
           </li>
         </ul>
+        <h3 class="text-sm font-bold mt-4 mb-2">
+          {dgettext("landing", "The one thing that does leave: push notifications")}
+        </h3>
+        <p class="text-sm">
+          {dgettext(
+            "landing",
+            "If you switch on notifications for when the chat is closed, your browser gives the server an address at its vendor's push service — Google's, Mozilla's or Apple's — and the server sends a notification there. What it sends is encrypted for your browser alone: the push service carries an address and a block of ciphertext, and can read neither the conversation nor the message."
+          )}
+        </p>
+        <p class="text-sm mt-2">
+          {dgettext(
+            "landing",
+            "It is off until you turn it on, it is per device, and the same switch in the Sounds window turns it off again. A self-hosted server with no VAPID key pair does not have the feature at all."
+          )}
+        </p>
         <:status>
           <.window_status_bar_field grow>
             {dgettext("landing", "Your rules")}

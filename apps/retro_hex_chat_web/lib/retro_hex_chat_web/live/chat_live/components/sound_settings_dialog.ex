@@ -31,8 +31,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog do
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket),
-    do: {:ok, assign(socket, id: @id, draft: nil, notify_permission: "unknown")}
+  def mount(socket) do
+    {:ok,
+     assign(socket,
+       id: @id,
+       draft: nil,
+       notify_permission: "unknown",
+       push_available: false,
+       push_subscribed: false
+     )}
+  end
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
@@ -48,7 +56,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog do
      assign(socket,
        draft: socket.assigns.draft || Map.get(assigns, :settings),
        notify_permission:
-         Map.get(assigns, :notify_permission, socket.assigns[:notify_permission] || "unknown")
+         Map.get(assigns, :notify_permission, socket.assigns[:notify_permission] || "unknown"),
+       push_available:
+         Map.get(assigns, :push_available, socket.assigns[:push_available] || false),
+       push_subscribed:
+         Map.get(assigns, :push_subscribed, socket.assigns[:push_subscribed] || false)
      )}
   end
 
@@ -112,6 +124,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog do
         on_notify_toggle={JS.push("sound_notify_toggle", target: @myself)}
         on_notify_permission_ask="sound_notify_permission_ask"
         notify_permission={@notify_permission}
+        push_available={@push_available}
+        push_subscribed={@push_subscribed}
+        on_push_toggle="push_toggle"
         on_preview={JS.push("sound_preview", target: @myself)}
       />
     </div>

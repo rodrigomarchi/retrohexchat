@@ -71,3 +71,13 @@ config :retro_hex_chat,
 
 # Basic auth for LiveDashboard
 config :retro_hex_chat_web, :basic_auth, username: "admin", password: "e2e"
+
+# A throwaway VAPID pair so the browser suite sees the feature turned on. It
+# signs nothing that leaves the machine: no push service is ever contacted from
+# here, and the pair exists only so the Sounds window draws the control a person
+# would actually click.
+config :web_push_ex, :vapid,
+  public_key:
+    "BJ8fSvhwpKIxX45jHj82nirayWMy9ldoPh3--QHzToDAQnVJVoWWjdm2aVJ1wYwFFpPzAjtRe9GfuvEWgT1Nt5c",
+  private_key: "2OGnPNoIsFYkejZaLQ-h1bkcMi8Vx8f344Md-r59Vs4",
+  subject: "mailto:e2e@retrohexchat.test"

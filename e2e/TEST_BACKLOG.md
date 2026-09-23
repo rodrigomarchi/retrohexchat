@@ -69,3 +69,21 @@ shipped and were still listed as pending work.
 |---|----------|---------------------|----------|--------|
 | AA3 | Reconnect during P2P invite/lobby/session produces coherent state for both peers | `tests/chat-reconnect-p2p.spec.ts` | P2 | unverified |
 | AA9 | Confirmed `/admin nuke --confirm` remains blocked until disposable isolated profile exists | `tests/chat-admin-nuke.spec.ts` | P2 | block |
+
+## Web push has no browser coverage
+
+Sending a real push needs a browser vendor's push service — Google's, Mozilla's
+or Apple's — which is a third party with no test double. Playwright can drive the
+switch in the Sounds window, but `pushManager.subscribe` in headless Chromium
+answers with a subscription nothing will ever deliver to, so a green spec would
+prove only that the button is clickable.
+
+What is covered instead: the service worker's `push` and `notificationclick`
+handlers are driven directly in Vitest against the shipped `sw.js`
+(`assets/test/service_worker/sw_push.test.js`), the encryption and the endpoint's
+answers are covered in `notifications/service_test.exs` with a stub transport, and
+the rest of the path is unit-tested.
+
+What stays uncovered, and must be checked by hand before a release that touches
+it: that a real push service accepts what this server signs. Do it once against a
+browser with a registered worker.

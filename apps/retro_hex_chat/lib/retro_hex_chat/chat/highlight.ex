@@ -96,8 +96,16 @@ defmodule RetroHexChat.Chat.Highlight do
     Regex.match?(pattern, text)
   end
 
+  @doc """
+  Blank out every URL in `text`, preserving its length.
+
+  Public because it is not only highlighting that has to answer "is this word
+  somebody's name, or is it part of a link" — deciding who a line of text was
+  addressed to asks exactly the same question, and a second URL grammar beside
+  this one would drift from it on the first odd link.
+  """
   @spec mask_urls(String.t()) :: String.t()
-  defp mask_urls(text) do
+  def mask_urls(text) do
     Regex.replace(@url_pattern, text, fn match ->
       String.duplicate(" ", String.length(match))
     end)

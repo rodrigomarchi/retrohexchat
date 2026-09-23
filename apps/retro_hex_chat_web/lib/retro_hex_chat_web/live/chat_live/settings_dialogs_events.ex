@@ -24,10 +24,27 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.{FloodProtection, PreferencePersistence, SoundSettings}
+  alias RetroHexChat.Notifications
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Windows
+
+  # The window is a live component, so the parent's assign has to be handed to
+  # it explicitly — it does not re-render just because the page did.
+  defp assign_push(socket, subscribed) do
+    send_update(SoundSettingsDialog, id: SoundSettingsDialog.id(), push_subscribed: subscribed)
+    assign(socket, push_subscribed: subscribed)
+  end
+
+  defp subscription_params(params) do
+    %{
+      endpoint: Map.get(params, "endpoint"),
+      p256dh: Map.get(params, "p256dh"),
+      auth: Map.get(params, "auth"),
+      user_agent: Map.get(params, "user_agent")
+    }
+  end
 
   # ── Desktop notifications ───────────────────────────────────
 
@@ -56,6 +73,56 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   def handle_event("desktop_notify_permission", %{"permission" => permission}, socket)
       when is_binary(permission) do
     {:halt, assign(socket, desktop_notify_permission: permission)}
+  end
+
+  # ── Push notifications ──────────────────────────────────────
+
+  # Ticking the box is a request to the browser, not a change to the server:
+  # only the browser can produce the endpoint a push is sent to, so the server
+  # hands over its public key and waits to be told what came back.
+  def handle_event("push_toggle", _params, socket) do
+    if socket.assigns.push_subscribed do
+      {:halt, push_event(socket, "push_unsubscribe", %{})}
+    else
+      {:halt, push_event(socket, "push_subscribe", %{public_key: Notifications.public_key()})}
+    end
+  end
+
+  def handle_event("push_subscription_created", params, socket) do
+    nickname = socket.assigns.session.nickname
+
+    case Notifications.subscribe(nickname, subscription_params(params)) do
+      {:ok, _subscription} ->
+        {:halt, assign_push(socket, true)}
+
+      {:error, reason} ->
+        Logger.warning("Push subscription for #{nickname} was refused: #{inspect(reason)}")
+        {:halt, assign_push(socket, false)}
+    end
+  end
+
+  def handle_event("push_subscription_removed", %{"endpoint" => endpoint}, socket)
+      when is_binary(endpoint) do
+    :ok = Notifications.unsubscribe(socket.assigns.session.nickname, endpoint)
+    {:halt, assign_push(socket, false)}
+  end
+
+  def handle_event("push_subscription_removed", _params, socket) do
+    {:halt, assign_push(socket, false)}
+  end
+
+  # What the browser found when it looked. A browser holding a subscription this
+  # server has never heard of — a restored profile, a dropped nickname — is
+  # still not subscribed as far as anything here is concerned.
+  def handle_event("push_subscription_state", %{"subscribed" => subscribed}, socket)
+      when is_boolean(subscribed) do
+    stored = Notifications.list_for(socket.assigns.session.nickname) != []
+    {:halt, assign_push(socket, subscribed and stored)}
+  end
+
+  def handle_event("push_subscription_failed", %{"reason" => reason}, socket) do
+    Logger.info("Push subscription could not be created: #{reason}")
+    {:halt, assign_push(socket, false)}
   end
 
   # ── Flood Protection ────────────────────────────────────────

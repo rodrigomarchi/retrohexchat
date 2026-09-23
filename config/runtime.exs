@@ -385,3 +385,25 @@ if config_env() == :prod do
     password:
       System.get_env("DASHBOARD_PASSWORD") || raise("DASHBOARD_PASSWORD env var is required")
 end
+
+# Web Push (all environments). Absent keys are not a misconfiguration: a
+# self-hosted server that never generated a VAPID pair simply does not have the
+# feature, and `RetroHexChat.Notifications.enabled?/0` reads exactly this to
+# decide whether anything — table, job or control — exists at all. The same
+# discipline as TURN, where a missing secret disables relaying rather than
+# producing a broken button.
+#
+# Generate a pair with `mix web_push_ex.vapid`.
+#
+# Only written when all three are present: a half-configured pair would replace
+# whatever the environment's own config said with something that cannot sign,
+# and the e2e environment carries a throwaway pair of its own.
+vapid = [
+  public_key: System.get_env("RHC_VAPID_PUBLIC_KEY"),
+  private_key: System.get_env("RHC_VAPID_PRIVATE_KEY"),
+  subject: System.get_env("RHC_VAPID_SUBJECT")
+]
+
+if Enum.all?(vapid, fn {_key, value} -> is_binary(value) and String.trim(value) != "" end) do
+  config :web_push_ex, :vapid, vapid
+end

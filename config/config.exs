@@ -77,7 +77,7 @@ config :retro_hex_chat, Oban,
     {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(6)},
     Oban.Plugins.Pruner
   ],
-  queues: [rss: 2, maintenance: 1, bots: 2, scrape: 2, persistence: 1]
+  queues: [rss: 2, maintenance: 1, bots: 2, scrape: 2, persistence: 1, push: 3]
 
 config :retro_hex_chat_web,
   ecto_repos: [RetroHexChat.Repo],

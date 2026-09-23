@@ -7,6 +7,7 @@ defmodule RetroHexChat.Chat.Service do
   require Logger
 
   alias RetroHexChat.Chat.{Attachments, Content, Conversation, Policy, Queries, Replies}
+  alias RetroHexChat.Notifications
   alias RetroHexChat.Observability
   alias RetroHexChat.Repo
   alias RetroHexChat.Topics
@@ -365,6 +366,8 @@ defmodule RetroHexChat.Chat.Service do
         |> Enum.find(:ok, &match?({:error, _reason}, &1))
       end
     )
+
+    Notifications.notify_private_message(payload)
   end
 
   defp deliver_private(nickname, payload) do
@@ -418,6 +421,8 @@ defmodule RetroHexChat.Chat.Service do
         end
       end
     )
+
+    Notifications.notify_channel_message(payload)
   end
 
   # What happened to a message reaches whoever is in the conversation it was

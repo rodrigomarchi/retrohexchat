@@ -2,6 +2,7 @@
  * @section U - Dialog CRUD And Settings Depth
  * @flow U3 [done] Sound Settings OK/Apply/Cancel/Preview persists only intended settings (features P2)
  * @flow U17 [done] The Sounds window carries a Notify box per event and says what the browser answered about permission
+ * @flow U18 [done] The Sounds window offers one switch for notifications with the chat closed, and remembers it per browser
  * @flow U4 [done] Sound mute/status-bar setting and Sound Settings preview stay in sync across rerenders/reconnect (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -192,5 +193,34 @@ test.describe("Sound settings dialog", () => {
 
     await chat.openSoundSettingsFromMenu();
     await expect(page.getByTestId("notify-toggle-message")).toBeVisible();
+  });
+
+  test("the Sounds window offers one switch for a closed chat (U18)", async ({
+    page,
+  }) => {
+    // Notification permission is not drivable in headless Chromium — it answers
+    // "denied" whatever is granted — and a browser that refuses notifications
+    // cannot hold a push subscription, so the row would be correctly absent.
+    // Standing in for a browser that would allow one is what makes the rest of
+    // this test about the switch rather than about Chromium. The absent half is
+    // asserted in `sound_settings_push_test.exs`.
+    await page.addInitScript(() => {
+      Object.defineProperty(window, "Notification", {
+        configurable: true,
+        value: Object.assign(function Notification() {}, {
+          permission: "granted",
+          requestPermission: () => Promise.resolve("granted"),
+        }),
+      });
+    });
+
+    const { chat } = await signedInUser(page);
+
+    await chat.openSoundSettingsFromMenu();
+
+    await expect(page.getByTestId("push-row")).toBeVisible();
+    await expect(page.getByTestId("push-toggle")).not.toBeChecked();
+
+    await shot(chat.soundSettingsDialog, "sound-settings-push-row");
   });
 });

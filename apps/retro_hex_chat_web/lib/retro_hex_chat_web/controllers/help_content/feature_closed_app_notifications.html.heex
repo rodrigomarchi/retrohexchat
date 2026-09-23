@@ -1,0 +1,50 @@
+<p>
+  {dgettext(
+    "help_features",
+    "The Sounds window has one switch above the event list: notify me on this device even when Retro Hex Chat is closed. With it on, this browser can be woken up after every tab is gone."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "What Wakes You")}</.help_h4>
+<ul>
+  <li>{dgettext("help_features", "A private message sent to you")}</li>
+  <li>{dgettext("help_features", "Your nickname written in a channel you were in")}</li>
+</ul>
+<p>
+  {dgettext(
+    "help_features",
+    "Nothing else, ever. Not an ordinary channel line, not a join or a part, and never a bot. A busy room while you were away is one notification, not one per line."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>
+  {dgettext("help_features", "Only When Nothing Is Open")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "If you have Retro Hex Chat open anywhere — a chat tab, a call, a Space — nothing is sent. You already have the sound, the flashing title and, if you asked for it, a desktop notification."
+  )}
+</p>
+<.help_h4 icon={:icon_lock}>
+  {dgettext("help_features", "Per Device, and What Leaves the Server")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "The switch is about this browser on this machine, so turning it off on your laptop leaves your phone alone. What the server sends is encrypted for that one browser: the push service in between — your browser vendor's — carries an address and a block of ciphertext, and can read neither the conversation nor the message."
+  )}
+</p>
+<.help_h4 icon={:icon_server}>{dgettext("help_features", "On Your Own Server")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "This needs a VAPID key pair, and a server without one simply does not have the feature: the switch is not drawn at all rather than drawn and broken."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-desktop-notifications">
+    {dgettext("help_features", "Desktop Notifications")}
+  </.help_link>
+  · <.help_link topic="feature-sounds">{dgettext("help_features", "Sounds")}</.help_link>
+  · <.help_link topic="feature-mute">{dgettext("help_features", "Mute")}</.help_link>
+</p>

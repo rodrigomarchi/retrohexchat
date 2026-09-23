@@ -435,6 +435,25 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           )
       },
       %{
+        id: "feature-closed-app-notifications",
+        title: dgettext("help", "Notifications With the Chat Closed"),
+        category: dgettext("help", "Notifications & Sounds"),
+        keywords: [
+          "push",
+          dgettext("help", "web push"),
+          dgettext("help", "closed tab"),
+          dgettext("help", "per device"),
+          "offline",
+          "vapid"
+        ],
+        icon: :icon_megaphone,
+        description:
+          dgettext(
+            "help",
+            "Be told about a private message or a mention after every tab is closed, on this device only."
+          )
+      },
+      %{
         id: "feature-sounds",
         title: dgettext("help", "Sounds"),
         category: dgettext("help", "Notifications & Sounds"),

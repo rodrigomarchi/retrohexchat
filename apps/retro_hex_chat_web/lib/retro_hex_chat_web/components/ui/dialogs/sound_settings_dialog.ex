@@ -28,6 +28,10 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
   alias RetroHexChat.Chat.SoundSettings
   alias RetroHexChatWeb.Icons
 
+  # A push has to raise a notification, so a browser that will not show one
+  # cannot hold a subscription either.
+  @blocked_permissions ~w(denied unsupported)
+
   @doc "Renders the sound settings dialog."
   attr :id, :string, required: true
   attr :show, :boolean, default: false
@@ -62,6 +66,16 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
     default: "unknown",
     doc: "What the browser last answered: granted, denied, default, unsupported or unknown"
 
+  attr :push_available, :boolean,
+    default: false,
+    doc: "Whether this server has the keys to send a push at all"
+
+  attr :push_subscribed, :boolean,
+    default: false,
+    doc: "Whether this browser is already subscribed"
+
+  attr :on_push_toggle, :any, default: nil, doc: "Callback for the closed-app notification toggle"
+
   attr :on_preview, :any, default: nil, doc: "Preview (play) button callback (phx-value-event)"
 
   @spec sound_settings_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -85,6 +99,9 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
           on_notify_toggle={@on_notify_toggle}
           on_notify_permission_ask={@on_notify_permission_ask}
           notify_permission={@notify_permission}
+          push_available={@push_available}
+          push_subscribed={@push_subscribed}
+          on_push_toggle={@on_push_toggle}
           on_preview={@on_preview}
           table_class="max-h-[300px]"
         />
@@ -108,6 +125,9 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
   attr :on_notify_toggle, :any, default: nil
   attr :on_notify_permission_ask, :any, default: nil
   attr :notify_permission, :string, default: "unknown"
+  attr :push_available, :boolean, default: false
+  attr :push_subscribed, :boolean, default: false
+  attr :on_push_toggle, :any, default: nil
   attr :on_preview, :any, default: nil
 
   attr :table_class, :any,
@@ -147,6 +167,13 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
           <.notify_permission_row
             permission={@notify_permission}
             on_ask={@on_notify_permission_ask}
+          />
+
+          <.push_row
+            available={@push_available}
+            permission={@notify_permission}
+            subscribed={@push_subscribed}
+            on_toggle={@on_push_toggle}
           />
 
           <div class={classes(["ss-event-list flex-1 overflow-y-auto retro-scrollbar", @table_class])}>
@@ -339,6 +366,39 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
         {dgettext("dialogs", "Allow desktop notifications")}
       </.button>
     </div>
+    """
+  end
+
+  attr :available, :boolean, required: true
+  attr :permission, :string, required: true
+  attr :subscribed, :boolean, required: true
+  attr :on_toggle, :any, default: nil
+
+  # The one notification that survives the tab being closed, and the only one
+  # that leaves this server. Two things can make it impossible, and either one
+  # removes the row rather than drawing a switch that cannot work: a server with
+  # no VAPID keys, and a browser that has blocked notifications — a push is
+  # required to show one, so a blocked browser refuses the subscription outright.
+  defp push_row(assigns) do
+    assigns =
+      assign(
+        assigns,
+        :offered,
+        assigns.available and assigns.permission not in @blocked_permissions
+      )
+
+    ~H"""
+    <label :if={@offered} class="ss-toggle-row ss-push-row" data-testid="push-row">
+      <.checkbox
+        id="push-toggle"
+        value={@subscribed}
+        phx-click={@on_toggle}
+        data-testid="push-toggle"
+      />
+      <span>
+        {dgettext("dialogs", "Notify me on this device even when Retro Hex Chat is closed")}
+      </span>
+    </label>
     """
   end
 

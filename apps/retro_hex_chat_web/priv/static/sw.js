@@ -60,3 +60,88 @@ self.addEventListener("fetch", (event) => {
     })(),
   );
 });
+
+// ── Push ──────────────────────────────────────────────────────────────────
+//
+// The payload is encrypted end to end for this browser, so the push service in
+// the middle — Google's, Mozilla's, Apple's — carried ciphertext and an
+// endpoint. What arrives here is the doorbell: which conversation, who, and
+// enough of the line to know whether it is worth opening. The message itself is
+// read in the app.
+
+const NOTIFICATION_PATH = "/chat";
+
+function notificationFrom(payload) {
+  const data = payload && typeof payload === "object" ? payload : {};
+  const conversation = typeof data.conversation === "string" ? data.conversation : "";
+
+  return {
+    title: typeof data.title === "string" && data.title !== "" ? data.title : "Retro Hex Chat",
+    options: {
+      body: typeof data.body === "string" ? data.body : "",
+      // One notification per conversation: a room that was busy while the tab
+      // was closed is one thing to come back to, not fifteen.
+      tag: conversation || "retrohexchat",
+      renotify: false,
+      data: { conversation },
+    },
+  };
+}
+
+function conversationUrl(conversation) {
+  if (!conversation) return NOTIFICATION_PATH;
+  return `${NOTIFICATION_PATH}?conversation=${encodeURIComponent(conversation)}`;
+}
+
+// A person who already has the chat open somewhere wants that window raised,
+// not a second one beside it. Only a window already on the app counts: focusing
+// an unrelated tab of theirs would be worse than opening a new one.
+function chooseClickTarget(windows, url) {
+  const existing = (windows || []).find((client) => {
+    try {
+      return new URL(client.url).pathname.startsWith(NOTIFICATION_PATH);
+    } catch {
+      return false;
+    }
+  });
+
+  return existing ? { focus: existing, url } : { open: url };
+}
+
+function readPayload(event) {
+  if (!event || !event.data) return {};
+  try {
+    return event.data.json();
+  } catch {
+    return {};
+  }
+}
+
+self.addEventListener("push", (event) => {
+  const { title, options } = notificationFrom(readPayload(event));
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const conversation = (event.notification.data || {}).conversation;
+  const url = conversationUrl(conversation);
+
+  event.waitUntil(
+    (async () => {
+      const windows = await self.clients.matchAll({
+        type: "window",
+        includeUncontrolled: true,
+      });
+      const target = chooseClickTarget(windows, url);
+
+      if (target.focus) {
+        await target.focus.focus();
+        if (target.focus.navigate) await target.focus.navigate(target.url);
+        return;
+      }
+
+      await self.clients.openWindow(target.open);
+    })(),
+  );
+});

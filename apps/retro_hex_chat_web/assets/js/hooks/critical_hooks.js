@@ -14,6 +14,7 @@ import ShortcutDispatcherHook from "./input/shortcut_dispatcher_hook";
 import SoundHook from "./input/sound_hook";
 import DesktopNotifyHook from "./notifications/desktop_notify_hook";
 import DocumentTitleHook from "./notifications/document_title_hook";
+import PushSubscribeHook from "./notifications/push_subscribe_hook";
 import MenuBarHook from "./ui/menu_bar_hook";
 import MenuRepositionHook from "./ui/menu_reposition_hook";
 import InfiniteScrollHook from "./ui/infinite_scroll_hook";
@@ -54,6 +55,7 @@ export const criticalHooks = {
   SoundHook: SoundHook,
   DesktopNotifyHook: DesktopNotifyHook,
   DocumentTitleHook: DocumentTitleHook,
+  PushSubscribeHook: PushSubscribeHook,
   MenuBarHook: MenuBarHook,
   MenuRepositionHook: MenuRepositionHook,
   InfiniteScrollHook: InfiniteScrollHook,

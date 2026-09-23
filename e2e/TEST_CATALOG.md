@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **225 spec files** under `e2e/tests/`.
-- **478 Playwright `test()` cases**.
-- **473 documented flows**, 472 done, 1 not done.
+- **479 Playwright `test()` cases**.
+- **474 documented flows**, 473 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -592,6 +592,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | U15 | Channel Central ban exception and invite exception add/remove flows affect join/ban behavior (features P1) | `tests/chat-channel-central-exceptions.spec.ts` | done |
 | U16 | Channel Central topic/mode edits stay in sync with slash command output after dialog close/reopen (features P2) | `tests/chat-channel-central-sync.spec.ts` | done |
 | U17 | The Sounds window carries a Notify box per event and says what the browser answered about permission | `tests/chat-sound-settings.spec.ts` | done |
+| U18 | The Sounds window offers one switch for notifications with the chat closed, and remembers it per browser | `tests/chat-sound-settings.spec.ts` | done |
 
 ### V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
 

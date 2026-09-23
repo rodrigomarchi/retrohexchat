@@ -14,7 +14,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 1.3 Convite de canal com prévia | **pronto** (2026-09-22) |
 | 2.1 Notificação de desktop | **pronto** (2026-09-23) |
 | 2.2 PWA | **pronto** (2026-09-23) |
-| 2.3 Web Push | não iniciado |
+| 2.3 Web Push | **pronto** (2026-09-23) |
 | 3.1 Reações | não iniciado |
 | 3.2 Menções | não iniciado |
 | 3.3 Régua de não lidas | não iniciado |
@@ -310,3 +310,98 @@ os três layouts, `landing_live/how_it_works.{ex,html.heex}`,
 `help_topics/user_interface.ex`, `help_content/ui_install_app.html.heex`,
 `e2e/tests/landing-public.spec.ts`, e os catálogos `help`, `help_ui`, `landing`.
 
+
+---
+
+### 2026-09-23 — item 2.3, web push
+
+**Pronto.** `make ci` 18/18. O item mais pesado da onda: dependência nova,
+tabela nova, contexto novo, fila nova, service worker com dois handlers novos,
+controle novo e um parágrafo de privacidade.
+
+- Contexto `RetroHexChat.Notifications` com o layer da casa — `Candidates`
+  (puro), `Queries`, `Policy`, `Service`, mais a fachada.
+- `Jobs.PushDispatchWorker` na fila `push`, com
+  `unique: [period: 60, keys: [:nickname, :conversation]]`.
+- Enfileiramento nos **dois** caminhos de mensagem de canal
+  (`Chat.Service.broadcast_message/2` e `Channels.Server.do_handle_send_message/5`)
+  com o par de asserções duplicado, como o `AGENT-GUIDE` §5 exige enquanto as
+  duas vias existirem.
+- `sw.js` ganhou `push` e `notificationclick`. `/privacy` ganhou dois parágrafos.
+  Tópico de ajuda `feature-closed-app-notifications`.
+
+**Aprendizados**
+
+- **`web_push_encryption` não entra neste projeto.** O plano o nomeava; ele
+  depende de `httpoison ~> 1.0` → `hackney ~> 1.8`, e `ex_aws ~> 2.7` exige
+  `hackney ~> 4.0`. O resolvedor recusa. Troquei por **`web_push_ex`**, cuja
+  única dependência de runtime é `jose`: ele *monta* a requisição (cifra RFC
+  8291 + JWT VAPID) e quem envia é o `Req`, que já estava aqui. Melhor arranjo
+  que o do plano — o cliente HTTP fica sendo o mesmo do resto do servidor.
+- **`Req.Test` engole o `content-encoding` da requisição.** O adaptador de plug
+  lê esse cabeçalho, tenta descomprimir o corpo com ele e o *apaga* antes do
+  plug rodar (`Req.Steps.run_plug`). O adaptador real envia. Ou seja: aquele
+  cabeçalho não é asserível por esse caminho, e um teste que "falhou" ali não
+  estava achando bug nenhum.
+- **`rescue` largo demais come a asserção do teste.** O primeiro `deliver/2`
+  envolvia cifra *e* POST num `rescue`; uma asserção falhando dentro do plug do
+  `Req.Test` virava `{:error, :transient}` em vez de teste vermelho. O `rescue`
+  agora cobre só a montagem da requisição, que é onde uma chave malformada da
+  assinatura pode de fato levantar.
+- **Um teto de 8 tokens gasto em ordem de leitura perde o nome.** "lorem ipsum
+  … Bob" consome o orçamento antes de chegar no Bob. Os tokens escritos com `@`
+  entram primeiro na lista; o resto segue a ordem do texto.
+- **A auditoria visual pegou um controle que não poderia funcionar.** O
+  screenshot mostrou o interruptor de push desenhado logo abaixo de "Your
+  browser is blocking notifications for this site". Um push *precisa* levantar
+  uma notificação, então navegador com permissão negada recusa a assinatura —
+  a linha agora some em `denied` e `unsupported`. Nenhum teste de unidade
+  pegaria: cada metade estava certa sozinha.
+- **Permissão de notificação continua não sendo dirigível no Chromium headless**
+  (responde `denied` mesmo com `grantPermissions`). Para o screenshot valer, o
+  spec U18 injeta um `window.Notification` com `permission: "granted"` via
+  `addInitScript`; a metade ausente é asserida no teste de componente.
+- **O `sw.js` não é importável, e não deve virar artefato de build.** Um worker
+  ESM quebra no Firefox e um `esbuild` escrevendo `priv/static/sw.js` tornaria
+  um arquivo versionado — que `endpoint_static_test.exs` exige servido em
+  `MIX_ENV=test` — dependente de `assets.build`. O Vitest passou a **avaliar o
+  arquivo publicado** num `vm` com um `self` falso e a dirigir os dois
+  listeners. Testa o que é servido, não uma cópia das decisões dele.
+- **Um `.heex` novo em `help_content/` não é extraído sozinho.** Ele precisa
+  entrar no glob de `embed_templates` do módulo `HelpContent` correspondente;
+  sem isso o `gettext.extract` não vê uma linha e o catálogo fica verde com a
+  ajuda inteira em inglês.
+- **O `gettext.merge` fuzzificou "closed tab"** com o palpite de "Close Tab"
+  (imperativo: "fechar página", "Zamknij zakładkę"). Eram msgid **novos**, não
+  entradas antigas estragadas — mas o palpite estava errado em todos os 13
+  locales. Auditoria contra o snapshot: **0 entradas pré-existentes alteradas**;
+  273 traduções curadas escritas à mão.
+- **`config/runtime.exs` só escreve o VAPID quando os três valores existem.**
+  Escrever `nil` ali sobrescreveria o par descartável do `config/e2e.exs` e o
+  recurso sumiria da suíte de browser.
+
+**Compromisso conhecido e aceito.** A janela de unicidade colapsa por
+`{nickname, conversation}`. Duas menções a pessoas *diferentes* na mesma sala
+dentro de 60 s viram uma job, e a segunda pessoa não é avisada. É o que o plano
+travou e é o que impede uma rajada de virar vinte pushes; a alternativa —
+resolver candidatos no enfileiramento — põe uma query no caminho de toda
+mensagem humana. Se aparecer sala movimentada de verdade, a saída é chavear a
+unicidade pelo conjunto de tokens, não aumentar o período.
+
+**Sem cobertura de browser, de propósito.** Push real depende de serviço de
+terceiro sem duplo de teste; a lacuna está registrada em `e2e/TEST_BACKLOG.md`
+com o que a substitui e o que precisa ser conferido à mão antes de um release.
+
+**Arquivos tocados** — `apps/retro_hex_chat/mix.exs`, `config/{config,runtime,e2e}.exs`,
+migration `create_push_subscriptions`, `notifications/{candidates,policy,queries,service}.ex`
++ `notifications/schema/push_subscription.ex` + `notifications.ex`,
+`jobs/push_dispatch_worker.ex`, `chat/{highlight,service}.ex`, `channels/server.ex`,
+`priv/static/sw.js`, `assets/js/lib/notifications/push_subscriptions.js`,
+`assets/js/hooks/notifications/push_subscribe_hook.js`, `hooks/critical_hooks.js`,
+`components/ui/dialogs/sound_settings_dialog.ex`, `chat_live/components/sound_settings_dialog.ex`,
+`chat_live/settings_dialogs_events.ex`, `live/app/chat_live.{ex,html.heex}`,
+`landing_live/privacy.html.heex`, `help_topics/features.ex`,
+`help_content/feature_closed_app_notifications.html.heex`,
+`help_content/chat_status_features.ex`, `assets/css/retrohex/dialogs/sound-settings.css`,
+`e2e/tests/chat-sound-settings.spec.ts`, `e2e/TEST_BACKLOG.md`, e os catálogos
+`help`, `help_features`, `dialogs`, `landing`.

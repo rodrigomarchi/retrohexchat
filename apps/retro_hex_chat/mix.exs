@@ -79,6 +79,7 @@ defmodule RetroHexChat.MixProject do
       {:opentelemetry, "~> 1.7"},
       {:prom_ex, "~> 1.11"},
       {:tz, "~> 0.28"},
+      {:web_push_ex, "~> 0.2"},
 
       # Test dependencies
       {:mox, "~> 1.0", only: :test},

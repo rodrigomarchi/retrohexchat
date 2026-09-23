@@ -61,6 +61,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     TimeFormatter
   }
 
+  alias RetroHexChat.Notifications
   alias RetroHexChat.Presence.{Tracker, WhowasCache}
   alias RetroHexChat.Scraper
   alias RetroHexChat.Services.NickServ
@@ -917,6 +918,12 @@ defmodule RetroHexChatWeb.App.ChatLive do
       # until the hook reports, which is why "default" is not the starting value:
       # the Sounds window must not offer to ask before it knows whether it can.
       desktop_notify_permission: "unknown",
+      # Whether this server can send a push at all, and whether this browser has
+      # asked it to. The first is the server's configuration and never changes
+      # within a session; the second is the browser's own fact, reported by the
+      # hook once it has looked.
+      push_available: Notifications.enabled?(),
+      push_subscribed: false,
       chat_clear_token: 0,
       cleared_conversation_cutoffs: %{},
       messages: %{},
