@@ -272,6 +272,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       )
       |> assign(:msg_id, Map.get(msg, :id))
       |> assign(:msg_nick, Map.get(msg, :nick))
+      |> assign(:msg_pinned, Map.get(msg, :pinned, false))
 
     ~H"""
     <.context_menu_item
@@ -300,6 +301,27 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
     >
       <:icon><Icons.icon_fmt_emoji class="w-[14px] h-[14px]" /></:icon>
       {dgettext("chat", "React...")}
+    </.context_menu_item>
+    <%!-- Hidden rather than disabled: a menu item somebody cannot use teaches
+          them the menu is full of things that do not work. It is also the only
+          practical way to pin — nobody reads message ids off a screen. --%>
+    <.context_menu_item
+      :if={@viewer_is_op and not @msg_pinned}
+      on_click={@on_action}
+      action="ctx_chat_pin_message"
+      phx-value-message_id={@msg_id}
+    >
+      <:icon><Icons.icon_btn_set_topic class="w-[14px] h-[14px]" /></:icon>
+      {dgettext("chat", "Pin")}
+    </.context_menu_item>
+    <.context_menu_item
+      :if={@viewer_is_op and @msg_pinned}
+      on_click={@on_action}
+      action="ctx_chat_unpin_message"
+      phx-value-message_id={@msg_id}
+    >
+      <:icon><Icons.icon_reject class="w-[14px] h-[14px]" /></:icon>
+      {dgettext("chat", "Unpin")}
     </.context_menu_item>
     <.context_menu_item on_click={@on_action} action="reply_to_message" phx-value-message_id={@msg_id}>
       <:icon><Icons.icon_chat class="w-[14px] h-[14px]" /></:icon>

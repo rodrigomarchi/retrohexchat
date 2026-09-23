@@ -36,6 +36,10 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
     default: nil,
     doc: "First line the reader had not seen; the jump button exists only while there is one"
 
+  attr :pinned_count, :integer,
+    default: 0,
+    doc: "How many lines this channel keeps; the button exists only while there is one"
+
   attr :class, :any, default: nil
 
   @spec conversation_toolbar_actions(map()) :: Phoenix.LiveView.Rendered.t()
@@ -88,6 +92,20 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
       <%!-- Only while there is somewhere to jump to. A button that scrolls to
             where you already are is a button that teaches people to ignore
             the toolbar. --%>
+      <%!-- Only where there is something to show. A channel that keeps nothing
+            has no list worth opening, and a button that opens an empty window
+            is the kind that teaches people to ignore the toolbar. --%>
+      <.action_button
+        :if={@pinned_count > 0}
+        event="open_pinned_dialog"
+        active={false}
+        text={dgettext("chat", "Pinned (%{count})", count: @pinned_count)}
+        label={dgettext("chat", "Show the messages this channel keeps")}
+        testid="conversation-toolbar-pinned"
+      >
+        <Icons.icon_btn_set_topic class="h-4 w-4" />
+      </.action_button>
+
       <.action_button
         :if={@unread_boundary_id}
         event="jump_to_first_unread"

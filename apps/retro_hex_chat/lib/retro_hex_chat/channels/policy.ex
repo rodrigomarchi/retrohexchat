@@ -107,6 +107,22 @@ defmodule RetroHexChat.Channels.Policy do
     end
   end
 
+  @doc """
+  Whether `nickname` may keep a line in view for the channel.
+
+  Operator or above, deliberately the same bar as the topic: both are the
+  channel speaking about itself to everybody who walks in. Half-operators
+  moderate conversation rather than author what the channel says.
+  """
+  @spec can_pin?(Membership.t(), String.t()) :: :ok | {:error, String.t()}
+  def can_pin?(membership, nickname) do
+    if operator?(membership, nickname) do
+      :ok
+    else
+      {:error, dgettext("channels", "You must be a channel operator to pin messages")}
+    end
+  end
+
   @spec can_kick?(Membership.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
   def can_kick?(membership, actor, target) do
     with {:ok, actor_role} <- Membership.role(membership, actor),

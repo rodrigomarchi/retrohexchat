@@ -78,6 +78,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:invite_exception_removed, _} = msg, socket),
     do: ChannelState.handle_info(msg, socket)
 
+  def handle_info({:pinned_changed, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
   def handle_info({:topic_changed, _} = msg, socket),
     do: ChannelState.handle_info(msg, socket)
 

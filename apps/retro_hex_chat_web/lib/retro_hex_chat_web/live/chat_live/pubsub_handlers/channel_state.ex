@@ -223,6 +223,20 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
      |> system_event(msg)}
   end
 
+  # The count travels, not the list. Every screen showing this channel keeps the
+  # number in the conversation bar; only a window that is open needs the lines,
+  # and it asks for them when it opens.
+  def handle_info({:pinned_changed, %{channel: channel, count: count}}, socket) do
+    socket =
+      if channel == socket.assigns.session.active_channel do
+        assign(socket, pinned_count: count)
+      else
+        socket
+      end
+
+    {:halt, socket}
+  end
+
   # ── Admin channel events ──────────────────────────────────
 
   def handle_info({:channel_deleted, %{channel: channel, admin: admin}}, socket) do

@@ -262,6 +262,7 @@
                 active_pm={@session.active_pm}
                 show_status_tab={@show_status_tab}
                 unread_boundary_id={@unread_boundary_id}
+                pinned_count={@pinned_count}
               />
               <.group_call_channel_entry
                 :if={@session.active_channel && !@show_status_tab}
@@ -485,6 +486,25 @@
         module={RetroHexChatWeb.ChatLive.Components.MentionsDialog}
         id={RetroHexChatWeb.ChatLive.Components.MentionsDialog.id()}
         session={@session}
+        timezone={@timezone}
+        nick_color_fn={@nick_color_fn}
+      />
+    </.desktop_window>
+
+    <%!-- Pinned — the lines the channel on screen is keeping. The island
+          reloads when the channel changes, because that is a different list. --%>
+    <.desktop_window
+      :if={"pinned" in @open_windows}
+      {WindowRegistry.attrs("pinned")}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="pinned-window"
+    >
+      <:icon><Icons.icon_btn_set_topic class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.PinnedDialog}
+        id={RetroHexChatWeb.ChatLive.Components.PinnedDialog.id()}
+        channel={@session.active_channel}
+        can_unpin={@can_pin}
         timezone={@timezone}
         nick_color_fn={@nick_color_fn}
       />

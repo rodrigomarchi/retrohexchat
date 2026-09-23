@@ -89,6 +89,20 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     end
   end
 
+  def handle_ui_action(socket, :pin_message, %{channel: channel, message_id: id}) do
+    case Server.pin_message(channel, socket.assigns.session.nickname, id) do
+      :ok -> system_event(socket, dgettext("chat", "Message pinned."))
+      {:error, message} -> error_event(socket, message)
+    end
+  end
+
+  def handle_ui_action(socket, :unpin_message, %{channel: channel, message_id: id}) do
+    case Server.unpin_message(channel, socket.assigns.session.nickname, id) do
+      :ok -> system_event(socket, dgettext("chat", "Message unpinned."))
+      {:error, message} -> error_event(socket, message)
+    end
+  end
+
   def handle_ui_action(socket, :view_topic, %{channel: channel}) do
     case Server.get_state(channel) do
       {:ok, state} ->

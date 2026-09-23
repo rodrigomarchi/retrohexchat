@@ -4001,38 +4001,61 @@ msgstr "Nessuno ti ha ancora menzionato."
 msgid "Address:"
 msgstr "Indirizzo:"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:273
 #, elixir-autogen, elixir-format
 msgid "Optional, and nobody else ever sees it. It exists so you can get back in if you forget your password."
 msgstr "Facoltativo, e nessun altro lo vede. Serve a farti rientrare se dimentichi la password."
-
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:271
 #, elixir-autogen, elixir-format
 msgid "Recovery address"
 msgstr "Indirizzo di recupero"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:332
 #, elixir-autogen, elixir-format
 msgid "Save address"
 msgstr "Salva indirizzo"
-
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:331
 #, elixir-autogen, elixir-format
 msgid "Send link again"
 msgstr "Invia di nuovo il link"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:290
 #, elixir-autogen, elixir-format
 msgid "confirmed"
 msgstr "confermato"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:291
 #, elixir-autogen, elixir-format
 msgid "waiting for you to follow the link"
 msgstr "in attesa che tu segua il link"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:55
+#, elixir-autogen, elixir-format
+msgid "An operator can pin a message — the rules, a link, what was agreed — and it stays findable here after it scrolls away."
+msgstr "Un operatore può fissare un messaggio — le regole, un link, quello che è stato deciso — e resta rintracciabile qui dopo essere scomparso nello scorrimento."
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:130
+#, elixir-autogen, elixir-format
+msgid "Could not load more pinned messages."
+msgstr "Non è stato possibile caricare altri messaggi fissati."
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:53
+#, elixir-autogen, elixir-format
+msgid "This channel is not keeping anything yet."
+msgstr "Questo canale non tiene ancora nulla."
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:113
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "Libera"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:98
+#, elixir-autogen, elixir-format
+msgid "pinned by %{nickname}"
+msgstr "fissato da %{nickname}"

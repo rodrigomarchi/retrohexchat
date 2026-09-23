@@ -16,11 +16,14 @@ defmodule RetroHexChatWeb.ChatLive.UiActionHandlers do
   NOT a hook module — public function called by CommandDispatch.
   """
 
+  require Logger
+
   alias RetroHexChatWeb.ChatLive.UiActions
 
   @core_actions ~w(
     open_query open_channel_list clear_chat set_away clear_away
-    set_topic view_topic show_whois_info show_help show_command_help
+    set_topic view_topic pin_message unpin_message
+    show_whois_info show_help show_command_help
     set_mode kick_user ban_user unban_user
     channel_mute_user channel_unmute_user transfer_ownership
     knock_channel
@@ -98,5 +101,12 @@ defmodule RetroHexChatWeb.ChatLive.UiActionHandlers do
   def handle_ui_action(socket, action, payload) when action in @bot_actions,
     do: UiActions.Bots.handle_ui_action(socket, action, payload)
 
-  def handle_ui_action(socket, _action, _payload), do: socket
+  # Every action here is routed by an explicit list, so reaching this clause
+  # means a handler exists and nothing sends work to it — a command that appears
+  # to run and does nothing at all. It says so rather than swallowing it: that
+  # silence cost an afternoon once, and would have cost the next one too.
+  def handle_ui_action(socket, action, _payload) do
+    Logger.warning("No UI action handler is registered for #{inspect(action)}")
+    socket
+  end
 end

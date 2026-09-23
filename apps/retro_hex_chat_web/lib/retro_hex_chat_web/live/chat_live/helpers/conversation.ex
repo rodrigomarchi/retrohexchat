@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
   import Phoenix.LiveView, only: [send_update: 2]
 
   alias RetroHexChat.Accounts.Session
+  alias RetroHexChat.Channels.Pins
   alias RetroHexChat.Chat.Roster
   alias RetroHexChat.Chat.UnreadTracker
   alias RetroHexChatWeb.ChatLive
@@ -164,20 +165,35 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
   @spec apply_roster(Phoenix.LiveView.Socket.t(), Roster.t()) :: Phoenix.LiveView.Socket.t()
   defp apply_roster(socket, %Roster{kind: :channel} = roster) do
     socket
-    |> assign(current_topic: roster.topic, current_modes: roster.modes)
+    |> assign(
+      current_topic: roster.topic,
+      current_modes: roster.modes,
+      pinned_count: Pins.count(roster.label),
+      can_pin: operator_in?(roster.members, socket.assigns.session.nickname)
+    )
     |> put_members(roster.members)
   end
 
   defp apply_roster(socket, %Roster{} = roster) do
     socket
-    |> assign(current_topic: nil, current_modes: nil)
+    |> assign(current_topic: nil, current_modes: nil, pinned_count: 0, can_pin: false)
     |> put_members(roster.members)
+  end
+
+  # Drawn from the roster the conversation already loaded rather than asked of
+  # the channel again: this decides whether a button appears, and the channel
+  # decides again when the button is pressed.
+  @spec operator_in?([map()], String.t()) :: boolean()
+  defp operator_in?(members, nickname) do
+    Enum.any?(members, fn member ->
+      member.nickname == nickname and member.role in [:owner, :operator]
+    end)
   end
 
   @spec reset_roster(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
   defp reset_roster(socket) do
     socket
-    |> assign(current_topic: nil, current_modes: nil)
+    |> assign(current_topic: nil, current_modes: nil, pinned_count: 0, can_pin: false)
     |> put_members([])
   end
 

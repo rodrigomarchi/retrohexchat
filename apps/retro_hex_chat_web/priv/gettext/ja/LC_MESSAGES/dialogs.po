@@ -3958,38 +3958,61 @@ msgstr "まだ誰もあなたに言及していません。"
 msgid "Address:"
 msgstr "アドレス:"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:273
 #, elixir-autogen, elixir-format
 msgid "Optional, and nobody else ever sees it. It exists so you can get back in if you forget your password."
 msgstr "任意で、ほかの誰にも表示されません。パスワードを忘れたときに戻ってこられるようにするためのものです。"
-
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:271
 #, elixir-autogen, elixir-format
 msgid "Recovery address"
 msgstr "復旧用アドレス"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:332
 #, elixir-autogen, elixir-format
 msgid "Save address"
 msgstr "アドレスを保存"
-
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:331
 #, elixir-autogen, elixir-format
 msgid "Send link again"
 msgstr "リンクを再送"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:290
 #, elixir-autogen, elixir-format
 msgid "confirmed"
 msgstr "確認済み"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:291
 #, elixir-autogen, elixir-format
 msgid "waiting for you to follow the link"
 msgstr "リンクを開くのを待っています"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:55
+#, elixir-autogen, elixir-format
+msgid "An operator can pin a message — the rules, a link, what was agreed — and it stays findable here after it scrolls away."
+msgstr "運営者はメッセージを固定できます——決まりごと、リンク、合意した内容。スクロールで流れたあとも、ここから見つけられます。"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:130
+#, elixir-autogen, elixir-format
+msgid "Could not load more pinned messages."
+msgstr "固定メッセージをこれ以上読み込めませんでした。"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:53
+#, elixir-autogen, elixir-format
+msgid "This channel is not keeping anything yet."
+msgstr "このチャンネルはまだ何も保持していません。"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:113
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "固定を解除"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:98
+#, elixir-autogen, elixir-format
+msgid "pinned by %{nickname}"
+msgstr "%{nickname} が固定"

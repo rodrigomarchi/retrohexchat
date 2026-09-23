@@ -1,0 +1,25 @@
+<p>
+  {dgettext(
+    "help_ui",
+    "What the channel you are reading is keeping — newest first. A channel keeps up to 50 lines; everything else scrolls away as usual."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_set_topic}>{dgettext("help_ui", "Opening it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "A Pinned button appears in the conversation toolbar, with the count beside it, and only while the channel is keeping something. An empty window is not worth a button."
+  )}
+</p>
+<.help_h4 icon={:icon_channels}>{dgettext("help_ui", "What a row does")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Pressing a row scrolls the conversation to the line it kept, where the message sits in its original place with everything around it. Operators also get an Unpin beside each row."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-pin">{dgettext("help_ui", "/pin")}</.help_link>
+  | <.help_link topic="cmd-unpin">{dgettext("help_ui", "/unpin")}</.help_link>
+</p>

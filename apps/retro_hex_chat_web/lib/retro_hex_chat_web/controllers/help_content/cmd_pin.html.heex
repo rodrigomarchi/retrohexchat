@@ -1,0 +1,32 @@
+<p>
+  {dgettext(
+    "help_commands",
+    "A channel has one topic and a welcome nobody reads twice. Everything else — the rules, the link to the event, what was agreed last week — scrolls away and gets retyped. Pinning keeps a message findable."
+  )}
+</p>
+<pre>/pin &lt;message id&gt;</pre>
+<p>
+  {dgettext(
+    "help_commands",
+    "Easier than the id: right-click the message and choose Pin. The command exists for when you already have the id in front of you."
+  )}
+</p>
+<.help_h4 icon={:icon_lock}>{dgettext("help_commands", "Who can")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Channel operators and owners — the same bar as the topic, and for the same reason: both are the channel speaking about itself to everybody who walks in. Half-operators moderate the conversation instead."
+  )}
+</p>
+<.help_h4 icon={:icon_channels}>{dgettext("help_commands", "What it keeps")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "A channel keeps up to 50 messages, listed newest first in the Pinned window. Pinning the same message twice is the same pin. A message can only be pinned by the channel it was said in, and deleting the message removes the pin with it."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-unpin">{dgettext("help_commands", "/unpin")}</.help_link>
+  | <.help_link topic="cmd-topic">{dgettext("help_commands", "/topic")}</.help_link>
+</p>

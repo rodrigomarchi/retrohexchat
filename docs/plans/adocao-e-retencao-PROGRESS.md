@@ -20,7 +20,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 3.3 Régua de não lidas | **pronto** (2026-09-23) |
 | 4.1 Multi-dispositivo | **pronto** (2026-09-23) |
 | 4.2 E-mail opcional | **pronto** (2026-09-23) |
-| 4.3 Fixar mensagem | não iniciado |
+| 4.3 Fixar mensagem | **pronto** (2026-09-23) |
 | 4.4 Salvar mensagem | não iniciado |
 | 5.1 Arquivo público | não iniciado |
 | 5.2 Threads | não iniciado |
@@ -783,3 +783,54 @@ catálogos `accounts`, `help`, `connect`, `help_features`, `help_games`,
 privada quando a pessoa está fora há N horas) não foi construído: depende de
 preferência por pessoa e de saber há quanto tempo ela sumiu, que é trabalho de
 domínio próprio. Os outros dois usos estão de pé. E2E ainda não rodou.
+
+---
+
+## Iteração 4.3 — Fixar mensagem no canal
+
+Um canal tinha um tópico (uma linha, substituída a cada vez) e uma mensagem de
+boas-vindas que ninguém lê duas vezes. As regras, o link do evento e o combinado
+sumiam no scroll e eram redigitados.
+
+**O que ficou**
+
+- Tabela `pinned_messages` com FK `on_delete: :delete_all`: o pin é propriedade
+  da **conversa**, não da mensagem — dois canais podem manter a mesma linha por
+  motivos diferentes, e uma linha apagada leva seus pins junto sem código
+  nenhum lembrar disso.
+- `Channels.Pins` com teto de 50, idempotência e `Page`; `Policy.can_pin?/2` na
+  mesma régua do tópico.
+- `/pin` e `/unpin`, um Handler cada; `Server.pin_message/3` e
+  `unpin_message/3` decidem no processo do canal, onde a membership vive.
+- Broadcast `pinned_changed` com **a contagem, não a lista** — toda tela mostra
+  o número, só a janela aberta precisa das linhas.
+- Janela Pinned, item no menu de contexto e botão na barra da conversa.
+
+**Aprendizados**
+
+- **O menu de contexto não era opcional.** Eu ia deixá-lo para depois, até
+  perceber que sem ele **não há como criar o primeiro pin**: ninguém lê ids de
+  mensagem numa tela, e o botão da barra só aparece quando já existe um pin. O
+  próprio texto de ajuda que escrevi expôs o círculo.
+- **Um catch-all silencioso engoliu a ação nova.** `UiActionHandlers` roteia por
+  listas explícitas e terminava com `def handle_ui_action(socket, _action,
+  _payload), do: socket`. `/pin` rodava e não fazia nada, sem erro e sem log —
+  a classe de bug que o `CLAUDE.md` proíbe. Agora ele avisa.
+- **Mais três números escritos à mão em teste.** `registry_test` afirmava
+  `length(commands) == 54` em três lugares. Trocados por propriedades: todo
+  comando responde `known?/1`, a lista não tem repetidos, e as categorias cobrem
+  exatamente a lista. Mesma classe do `maintenance_sweeps == 11` do item 4.2.
+- **`Page` expõe `next_cursor`, não `cursor`.** Detalhe pequeno que só aparece
+  quando se escreve o teste antes.
+
+**Arquivos tocados** — migration `create_pinned_messages`, `channels/pins.ex`,
+`channels/schemas/pinned_message.ex`, `channels/policy.ex`, `channels/server.ex`,
+`commands/handlers/{pin,unpin}.ex`, `commands/registry.ex`,
+`chat_live/pin_events.ex`, `chat_live/components/pinned_dialog.ex`,
+`components/ui/dialogs/pinned_dialog.ex`,
+`components/ui/chat/{chat_context_menu,conversation_toolbar_actions}.ex`,
+`chat_live/{ui_action_handlers,ui_actions/core,pubsub_handlers,
+pubsub_handlers/channel_state,helpers/conversation,window_registry}.ex`,
+`help_topics/{commands,user_interface}.ex`, três `.heex` de ajuda, e os
+catálogos `channels`, `chat`, `commands`, `dialogs`, `help`, `help_commands`,
+`help_ui`.

@@ -59,6 +59,24 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           )
       },
       %{
+        id: "ui-pinned-window",
+        title: dgettext("help", "Pinned Window"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "pinned",
+          dgettext("help", "pinned messages"),
+          dgettext("help", "channel rules"),
+          dgettext("help", "kept messages")
+        ],
+        icon: :icon_btn_set_topic,
+        description:
+          dgettext(
+            "help",
+            "The lines a channel is keeping: the rules, a link, what was agreed."
+          ),
+        see_also: ["cmd-pin", "cmd-unpin"]
+      },
+      %{
         id: "ui-desktop",
         title: dgettext("help", "Desktop & Windows"),
         category: dgettext("help", "User Interface"),

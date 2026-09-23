@@ -3995,38 +3995,61 @@ msgstr "Niemand heeft je nog vermeld."
 msgid "Address:"
 msgstr "Adres:"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:273
 #, elixir-autogen, elixir-format
 msgid "Optional, and nobody else ever sees it. It exists so you can get back in if you forget your password."
 msgstr "Optioneel, en niemand anders ziet het. Het bestaat zodat je weer binnenkomt als je je wachtwoord vergeet."
-
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:271
 #, elixir-autogen, elixir-format
 msgid "Recovery address"
 msgstr "Hersteladres"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:332
 #, elixir-autogen, elixir-format
 msgid "Save address"
 msgstr "Adres opslaan"
-
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:331
 #, elixir-autogen, elixir-format
 msgid "Send link again"
 msgstr "Link opnieuw sturen"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:290
 #, elixir-autogen, elixir-format
 msgid "confirmed"
 msgstr "bevestigd"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:291
 #, elixir-autogen, elixir-format
 msgid "waiting for you to follow the link"
 msgstr "wacht tot je de link volgt"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:55
+#, elixir-autogen, elixir-format
+msgid "An operator can pin a message — the rules, a link, what was agreed — and it stays findable here after it scrolls away."
+msgstr "Een operator kan een bericht vastzetten — de regels, een link, wat is afgesproken — en het blijft hier vindbaar nadat het is weggescrold."
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:130
+#, elixir-autogen, elixir-format
+msgid "Could not load more pinned messages."
+msgstr "Meer vastgezette berichten konden niet worden geladen."
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:53
+#, elixir-autogen, elixir-format
+msgid "This channel is not keeping anything yet."
+msgstr "Dit kanaal bewaart nog niets."
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:113
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "Losmaken"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:98
+#, elixir-autogen, elixir-format
+msgid "pinned by %{nickname}"
+msgstr "vastgezet door %{nickname}"

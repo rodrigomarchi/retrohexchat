@@ -4001,38 +4001,61 @@ msgstr "Personne ne vous a encore mentionné."
 msgid "Address:"
 msgstr "Adresse :"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:273
 #, elixir-autogen, elixir-format
 msgid "Optional, and nobody else ever sees it. It exists so you can get back in if you forget your password."
 msgstr "Facultative, et personne d'autre ne la voit. Elle existe pour que vous puissiez revenir si vous oubliez votre mot de passe."
-
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:271
 #, elixir-autogen, elixir-format
 msgid "Recovery address"
 msgstr "Adresse de récupération"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:332
 #, elixir-autogen, elixir-format
 msgid "Save address"
 msgstr "Enregistrer l'adresse"
-
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:331
 #, elixir-autogen, elixir-format
 msgid "Send link again"
 msgstr "Renvoyer le lien"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:290
 #, elixir-autogen, elixir-format
 msgid "confirmed"
 msgstr "confirmée"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:291
 #, elixir-autogen, elixir-format
 msgid "waiting for you to follow the link"
 msgstr "en attente que vous suiviez le lien"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:55
+#, elixir-autogen, elixir-format
+msgid "An operator can pin a message — the rules, a link, what was agreed — and it stays findable here after it scrolls away."
+msgstr "Un opérateur peut épingler un message — les règles, un lien, ce qui a été convenu — et il reste trouvable ici une fois remonté hors de l'écran."
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:130
+#, elixir-autogen, elixir-format
+msgid "Could not load more pinned messages."
+msgstr "Impossible de charger plus de messages épinglés."
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:53
+#, elixir-autogen, elixir-format
+msgid "This channel is not keeping anything yet."
+msgstr "Ce salon ne garde encore rien."
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:113
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "Détacher"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:98
+#, elixir-autogen, elixir-format
+msgid "pinned by %{nickname}"
+msgstr "épinglé par %{nickname}"

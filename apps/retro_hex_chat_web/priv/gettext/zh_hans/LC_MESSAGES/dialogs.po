@@ -3955,38 +3955,61 @@ msgstr "还没有人提到你。"
 msgid "Address:"
 msgstr "地址："
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:273
 #, elixir-autogen, elixir-format
 msgid "Optional, and nobody else ever sees it. It exists so you can get back in if you forget your password."
 msgstr "可填可不填，别人都看不到。它的用处只有一个：忘记密码时还能回来。"
-
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:271
 #, elixir-autogen, elixir-format
 msgid "Recovery address"
 msgstr "找回用地址"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:332
 #, elixir-autogen, elixir-format
 msgid "Save address"
 msgstr "保存地址"
-
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:331
 #, elixir-autogen, elixir-format
 msgid "Send link again"
 msgstr "再发一次链接"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:290
 #, elixir-autogen, elixir-format
 msgid "confirmed"
 msgstr "已确认"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:291
 #, elixir-autogen, elixir-format
 msgid "waiting for you to follow the link"
 msgstr "等你点开链接"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:55
+#, elixir-autogen, elixir-format
+msgid "An operator can pin a message — the rules, a link, what was agreed — and it stays findable here after it scrolls away."
+msgstr "管理员可以置顶一条消息——规则、一个链接、约定好的事——它滚走之后仍然能在这里找到。"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:130
+#, elixir-autogen, elixir-format
+msgid "Could not load more pinned messages."
+msgstr "无法加载更多置顶消息。"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:53
+#, elixir-autogen, elixir-format
+msgid "This channel is not keeping anything yet."
+msgstr "这个频道还没有保留任何内容。"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:113
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "取消置顶"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:98
+#, elixir-autogen, elixir-format
+msgid "pinned by %{nickname}"
+msgstr "由 %{nickname} 置顶"

@@ -19,6 +19,7 @@ defmodule RetroHexChat.Channels.Server do
     Membership,
     Modes,
     Mutes,
+    Pins,
     Policy,
     Queries,
     Registry
@@ -203,6 +204,32 @@ defmodule RetroHexChat.Channels.Server do
       [:retro_hex_chat, :channels, :topic, :set],
       %{"chat.channel" => channel_name, topic_size_bytes: byte_size(topic)},
       fn -> GenServer.call(via(channel_name), {:set_topic, nickname, topic}) end
+    )
+  end
+
+  @doc """
+  Keeps a message in view for the channel. Requires operator privilege.
+
+  Goes through the channel process because the membership lives there: whether
+  somebody may pin is a question about this channel right now, and the process
+  is the only thing that knows.
+  """
+  @spec pin_message(String.t(), String.t(), integer()) :: :ok | {:error, String.t()}
+  def pin_message(channel_name, nickname, message_id) do
+    Observability.span(
+      [:retro_hex_chat, :channels, :pin, :set],
+      %{"chat.channel" => channel_name},
+      fn -> GenServer.call(via(channel_name), {:pin_message, nickname, message_id}) end
+    )
+  end
+
+  @doc "Stops keeping a message in view. Requires operator privilege."
+  @spec unpin_message(String.t(), String.t(), integer()) :: :ok | {:error, String.t()}
+  def unpin_message(channel_name, nickname, message_id) do
+    Observability.span(
+      [:retro_hex_chat, :channels, :pin, :remove],
+      %{"chat.channel" => channel_name},
+      fn -> GenServer.call(via(channel_name), {:unpin_message, nickname, message_id}) end
     )
   end
 
@@ -508,6 +535,28 @@ defmodule RetroHexChat.Channels.Server do
   def handle_call({:rename_user, old_nick, new_nick}, _from, state) do
     new_membership = Membership.rename(state.membership, old_nick, new_nick)
     reply(:ok, %{state | membership: new_membership})
+  end
+
+  def handle_call({:pin_message, nickname, message_id}, _from, state) do
+    with :ok <- Policy.can_pin?(state.membership, nickname),
+         {:ok, _pin} <- Pins.pin(state.name, message_id, nickname) do
+      announce_pins(state.name)
+      reply(:ok, state)
+    else
+      {:error, _reason} = error -> reply(error, state)
+    end
+  end
+
+  def handle_call({:unpin_message, nickname, message_id}, _from, state) do
+    case Policy.can_pin?(state.membership, nickname) do
+      :ok ->
+        Pins.unpin(state.name, message_id)
+        announce_pins(state.name)
+        reply(:ok, state)
+
+      {:error, _reason} = error ->
+        reply(error, state)
+    end
   end
 
   def handle_call({:set_topic, nickname, topic}, _from, state) do
@@ -1422,6 +1471,16 @@ defmodule RetroHexChat.Channels.Server do
   # `k`, `l` and `j` without their values, and reapplying it supplies no
   # params — so the flags survive and the three parameterised modes come back
   # from the columns of their own beside it.
+  # The count rather than the list: every screen showing a channel displays how
+  # many lines it keeps, and only the window that is open needs the lines
+  # themselves — which it asks for when it opens.
+  defp announce_pins(channel_name) do
+    broadcast(
+      channel_name,
+      {:pinned_changed, %{channel: channel_name, count: Pins.count(channel_name)}}
+    )
+  end
+
   defp maybe_persist_channel_settings(state) do
     if state.registered do
       ServiceQueries.update_registered_channel_settings(state.name,

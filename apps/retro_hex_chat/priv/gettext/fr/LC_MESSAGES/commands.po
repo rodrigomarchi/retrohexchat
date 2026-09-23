@@ -1061,7 +1061,7 @@ msgstr "Ajouter un utilisateur à votre liste de notification"
 msgid "Add an auto-respond rule"
 msgstr "Ajouter une règle de réponse automatique"
 
-#: lib/retro_hex_chat/commands/registry.ex:72
+#: lib/retro_hex_chat/commands/registry.ex:74
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "Avancé"
@@ -1107,7 +1107,7 @@ msgstr "Interdiction"
 msgid "Ban user from channel"
 msgstr "Interdire l'utilisateur du canal"
 
-#: lib/retro_hex_chat/commands/registry.ex:68
+#: lib/retro_hex_chat/commands/registry.ex:70
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "Données de base"
@@ -1155,7 +1155,7 @@ msgstr ""
 "Caractères autorisés : lettres, nombres, [ ] \\ ^   ` {=} et tirets.\n"
 "Impossible de changer votre surnom actuel ou celui déjà utilisé."
 
-#: lib/retro_hex_chat/commands/registry.ex:69
+#: lib/retro_hex_chat/commands/registry.ex:71
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "Canal"
@@ -1233,7 +1233,7 @@ msgstr "Effacer toute votre liste d'autojoin"
 msgid "Command name to view detailed help"
 msgstr "Nom de commande pour afficher l'aide détaillée"
 
-#: lib/retro_hex_chat/commands/registry.ex:71
+#: lib/retro_hex_chat/commands/registry.ex:73
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "Configuration"
@@ -2665,7 +2665,7 @@ msgstr "Utilisation : /whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "Utilisation : /whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:70
+#: lib/retro_hex_chat/commands/registry.ex:72
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "Utilisateur"
@@ -2819,8 +2819,10 @@ msgstr "Vous utilisez déjà ce surnom"
 #: lib/retro_hex_chat/commands/handlers/me.ex:19
 #: lib/retro_hex_chat/commands/handlers/part.ex:16
 #: lib/retro_hex_chat/commands/handlers/part.ex:33
+#: lib/retro_hex_chat/commands/handlers/pin.ex:24
 #: lib/retro_hex_chat/commands/handlers/topic.ex:16
 #: lib/retro_hex_chat/commands/handlers/topic.ex:24
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:25
 #, elixir-autogen, elixir-format
 msgid "You are not in any channel"
 msgstr "Vous n'êtes dans aucune chaîne"
@@ -3288,3 +3290,71 @@ msgstr "Accueil public désactivé."
 #, elixir-autogen, elixir-format
 msgid "Public greeting set to '%{greeting}'."
 msgstr "Accueil public défini sur '%{greeting}'."
+
+#: lib/retro_hex_chat/commands/handlers/pin.ex:50
+#: lib/retro_hex_chat/commands/handlers/pin.ex:71
+#, elixir-autogen, elixir-format
+msgid "/pin <message id>"
+msgstr "/pin <id du message>"
+
+
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:51
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:72
+#, elixir-autogen, elixir-format
+msgid "/unpin <message id>"
+msgstr "/unpin <id du message>"
+
+
+#: lib/retro_hex_chat/commands/handlers/pin.ex:80
+#, elixir-autogen, elixir-format
+msgid "Id of the message to keep"
+msgstr "Id du message à garder"
+
+
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:81
+#, elixir-autogen, elixir-format
+msgid "Id of the message to stop keeping"
+msgstr "Id du message à ne plus garder"
+
+
+#: lib/retro_hex_chat/commands/handlers/pin.ex:52
+#, elixir-autogen, elixir-format
+msgid "Keep a message in view for the whole channel — the rules, a link, what was agreed.\nPinned messages are listed in the Pinned window and stay findable after they scroll away.\nOperators only. A channel keeps up to 50."
+msgstr "Garde un message en vue pour tout le salon — les règles, un lien, ce qui a été convenu.\nLes messages épinglés sont listés dans la fenêtre Épinglés et restent trouvables après avoir défilé.\nOpérateurs uniquement. Un salon en garde jusqu'à 50."
+
+
+#: lib/retro_hex_chat/commands/handlers/pin.ex:72
+#, elixir-autogen, elixir-format
+msgid "Keep a message in view for the whole channel."
+msgstr "Garde un message en vue pour tout le salon."
+
+
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:73
+#, elixir-autogen, elixir-format
+msgid "Stop keeping a message in view."
+msgstr "Cesse de garder un message en vue."
+
+
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:53
+#, elixir-autogen, elixir-format
+msgid "Stop keeping a message in view. The message itself stays where it is — only the pin goes.\nOperators only."
+msgstr "Cesse de garder un message en vue. Le message lui-même reste où il est — seule l'épingle part.\nOpérateurs uniquement."
+
+
+#: lib/retro_hex_chat/commands/handlers/pin.ex:36
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:37
+#, elixir-autogen, elixir-format
+msgid "That is not a message id"
+msgstr "Ce n'est pas un id de message"
+
+
+#: lib/retro_hex_chat/commands/handlers/pin.ex:18
+#, elixir-autogen, elixir-format
+msgid "Which message? Use /pin <id>, or pin it from its right-click menu."
+msgstr "Quel message ? Utilisez /pin <id>, ou épinglez-le depuis son menu contextuel."
+
+
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:16
+#, elixir-autogen, elixir-format
+msgid "Which message? Use /unpin <id>, or unpin it from the Pinned window."
+msgstr "Quel message ? Utilisez /unpin <id>, ou détachez-le depuis la fenêtre Épinglés."

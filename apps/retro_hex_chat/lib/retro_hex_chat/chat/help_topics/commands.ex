@@ -423,6 +423,30 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           dgettext("help", "Schedule commands to run after a delay or at regular intervals.")
       },
       %{
+        id: "cmd-pin",
+        title: "/pin",
+        category: dgettext("help", "Channels"),
+        keywords: [
+          "pin",
+          dgettext("help", "pin message"),
+          dgettext("help", "channel rules"),
+          dgettext("help", "keep message")
+        ],
+        icon: :icon_btn_set_topic,
+        description:
+          dgettext("help", "Keep a message in view for the whole channel. Operators only."),
+        see_also: ["cmd-unpin", "cmd-topic", "ui-pinned-window"]
+      },
+      %{
+        id: "cmd-unpin",
+        title: "/unpin",
+        category: dgettext("help", "Channels"),
+        keywords: ["unpin", dgettext("help", "remove pin"), dgettext("help", "stop keeping")],
+        icon: :icon_reject,
+        description: dgettext("help", "Stop keeping a message in view. Operators only."),
+        see_also: ["cmd-pin", "ui-pinned-window"]
+      },
+      %{
         id: "cmd-topic",
         title: "/topic",
         category: dgettext("help", "Channels"),
