@@ -95,7 +95,7 @@ msgstr "確定超時( 60s)"
 msgid "Invalid password"
 msgstr "無效的密碼"
 
-#: lib/retro_hex_chat/services/nick_expiry.ex:129
+#: lib/retro_hex_chat/services/nick_expiry.ex:144
 #, elixir-autogen, elixir-format
 msgid "NickExpiry"
 msgstr "暱稱Expiry"
@@ -153,3 +153,70 @@ msgstr "您現在被確認爲 %{nickname}"
 #, elixir-autogen, elixir-format
 msgid "You must be identified to use ChanServ"
 msgstr "您必須確定使用 ChanServ 的身份"
+
+#: lib/retro_hex_chat/services/nick_email.ex:78
+#, elixir-autogen, elixir-format
+msgid "Confirm your RetroHexChat address"
+msgstr "確認你的 RetroHexChat 位址"
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:373
+#, elixir-autogen, elixir-format
+msgid "Could not be saved"
+msgstr "無法儲存"
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:279
+#: lib/retro_hex_chat/services/nick_email.ex:284
+#, elixir-autogen, elixir-format
+msgid "Nickname is not registered"
+msgstr "該暱稱尚未註冊"
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:149
+#, elixir-autogen, elixir-format
+msgid "Reset your RetroHexChat password"
+msgstr "重設你的 RetroHexChat 密碼"
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:79
+#, elixir-autogen, elixir-format
+msgid "Somebody added this address to the RetroHexChat nickname %{nickname}. Open this link to confirm it:\n\n%{link}\n\nIf this was not you, ignore this message — nothing has changed and the address will stay unconfirmed."
+msgstr "有人把這個位址加到了 RetroHexChat 暱稱 %{nickname} 上。開啟這個連結來確認：\n\n%{link}\n\n如果不是你，忽略這封信即可——什麼都沒有改變，位址仍然未確認。"
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:150
+#, elixir-autogen, elixir-format
+msgid "Somebody asked to reset the password for the RetroHexChat nickname %{nickname}. Open this link to choose a new one:\n\n%{link}\n\nIf this was not you, ignore this message — your password has not changed."
+msgstr "有人要求重設 RetroHexChat 暱稱 %{nickname} 的密碼。開啟這個連結來設定新密碼：\n\n%{link}\n\n如果不是你，忽略這封信即可——你的密碼沒有改變。"
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:248
+#: lib/retro_hex_chat/services/nick_email.ex:272
+#, elixir-autogen, elixir-format
+msgid "The message could not be sent"
+msgstr "訊息傳送失敗"
+
+
+#: lib/retro_hex_chat/jobs/nick_expiry_warning_worker.ex:94
+#, elixir-autogen, elixir-format
+msgid "The nickname %{nickname} has not been used for a while, and nicknames left unused are released so somebody else can take them.\n\nSigning in once keeps it — nothing else is needed, and you have about %{days} days.\n\nIf you would rather let it go, ignore this message."
+msgstr "暱稱 %{nickname} 已經有一陣子沒用了，閒置的暱稱會被釋出，好讓別人可以使用。\n\n登入一次就能保住它——別的都不用做，你還有大約 %{days} 天。\n\n如果你願意放手，忽略這封信即可。"
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:257
+#, elixir-autogen, elixir-format
+msgid "This server cannot send e-mail"
+msgstr "此伺服器不寄送郵件"
+
+
+#: lib/retro_hex_chat/jobs/nick_expiry_warning_worker.ex:93
+#, elixir-autogen, elixir-format
+msgid "Your RetroHexChat nickname is about to be released"
+msgstr "你的 RetroHexChat 暱稱即將被釋出"
+
+
+#: lib/retro_hex_chat/services/registered_nick.ex:59
+#, elixir-autogen, elixir-format
+msgid "is not a valid address"
+msgstr "不是有效的位址"

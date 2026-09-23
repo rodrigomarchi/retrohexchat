@@ -2687,7 +2687,7 @@ msgstr "Mute (canale)"
 msgid "Nickname"
 msgstr "Cognome"
 
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:98
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:117
 #, elixir-autogen, elixir-format
 msgid "Nickname is required"
 msgstr "Nickname è richiesto"
@@ -2751,15 +2751,15 @@ msgstr "Solo il fondatore può far cadere un canale."
 msgid "Opening chat..."
 msgstr "Apertura chat..."
 
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:47
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:61
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:101
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:66
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:80
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:120
 #, elixir-autogen, elixir-format
 msgid "Password is required"
 msgstr "La password è richiesta"
 
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:44
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:78
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:63
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:97
 #, elixir-autogen, elixir-format
 msgid "Passwords do not match"
 msgstr "Le password non corrispondono"
@@ -4099,3 +4099,20 @@ msgstr "Vai al primo messaggio che non hai letto"
 #, elixir-autogen, elixir-format
 msgid "New messages"
 msgstr "Nuovi messaggi"
+
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:46
+#, elixir-autogen, elixir-format
+msgid "Address removed."
+msgstr "Indirizzo rimosso."
+
+
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:234
+#, elixir-autogen, elixir-format
+msgid "Check that address for a link confirming it."
+msgstr "Cerca a quell'indirizzo un link che lo confermi."
+
+
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:224
+#, elixir-autogen, elixir-format
+msgid "Identify with NickServ first."
+msgstr "Identificati prima con NickServ."

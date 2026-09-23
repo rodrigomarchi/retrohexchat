@@ -6,7 +6,7 @@ defmodule RetroHexChat.ProcessRegistryTest do
   alias RetroHexChat.ProcessRegistry
 
   setup do
-    name = :"process_registry_test_#{System.unique_integer([:positive])}"
+    name = :"process_registry_test_#{rem(System.unique_integer([:positive]), 100_000)}"
     start_supervised!({Registry, keys: :unique, name: name})
 
     {:ok, registry: name}

@@ -267,7 +267,7 @@ defmodule RetroHexChat.Chat.SoundSettingsTest do
     @describetag :integration
 
     setup do
-      owner = "NotifyUser#{System.unique_integer([:positive])}"
+      owner = "NotifyUser#{rem(System.unique_integer([:positive]), 100_000)}"
       insert_registered_nick(owner)
       %{owner: owner}
     end

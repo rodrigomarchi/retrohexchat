@@ -7,7 +7,7 @@ defmodule RetroHexChat.Services.NickExpiryTest do
   alias RetroHexChat.Services.{NickExpiry, NickServ, Queries}
 
   setup do
-    nickserv_name = :"nickserv_expiry_#{System.unique_integer([:positive])}"
+    nickserv_name = :"nickserv_expiry_#{rem(System.unique_integer([:positive]), 100_000)}"
     {:ok, _} = NickServ.start_link(name: nickserv_name)
 
     %{nickserv: nickserv_name}

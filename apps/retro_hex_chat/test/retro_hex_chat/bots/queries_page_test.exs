@@ -26,7 +26,10 @@ defmodule RetroHexChat.Bots.QueriesPageTest do
 
   describe "list_event_logs/2" do
     test "an empty log is an empty page" do
-      page = Queries.list_event_logs(bot("EmptyBot#{System.unique_integer([:positive])}").id)
+      page =
+        Queries.list_event_logs(
+          bot("EmptyBot#{rem(System.unique_integer([:positive]), 100_000)}").id
+        )
 
       assert %Page{} = page
       assert page.items == []
@@ -44,7 +47,7 @@ defmodule RetroHexChat.Bots.QueriesPageTest do
     end
 
     test "a full page with nothing behind it reports nothing more" do
-      b = bot("ExactBot#{System.unique_integer([:positive])}")
+      b = bot("ExactBot#{rem(System.unique_integer([:positive]), 100_000)}")
       log_events(b, 10)
 
       page = Queries.list_event_logs(b.id, limit: 10)

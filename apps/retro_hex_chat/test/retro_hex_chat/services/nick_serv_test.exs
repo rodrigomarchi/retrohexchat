@@ -6,7 +6,7 @@ defmodule RetroHexChat.Services.NickServTest do
   alias RetroHexChat.Services.NickServ
 
   setup do
-    server_name = :"nickserv_#{System.unique_integer([:positive])}"
+    server_name = :"nickserv_#{rem(System.unique_integer([:positive]), 100_000)}"
     {:ok, pid} = NickServ.start_link(name: server_name)
     %{server: server_name, pid: pid}
   end
@@ -42,7 +42,7 @@ defmodule RetroHexChat.Services.NickServTest do
       {:ok, _} = NickServ.register("IdNick", "secret123", server)
 
       # Start a new server to lose identified state
-      new_server = :"nickserv_ident_#{System.unique_integer([:positive])}"
+      new_server = :"nickserv_ident_#{rem(System.unique_integer([:positive]), 100_000)}"
       {:ok, _} = NickServ.start_link(name: new_server)
 
       assert {:ok, msg} = NickServ.identify("IdNick", "secret123", new_server)
@@ -164,7 +164,7 @@ defmodule RetroHexChat.Services.NickServTest do
       {:ok, _} = NickServ.register("BcastNick", "secret123", server)
 
       # New server to lose identified state
-      new_server = :"nickserv_bcast_#{System.unique_integer([:positive])}"
+      new_server = :"nickserv_bcast_#{rem(System.unique_integer([:positive]), 100_000)}"
       {:ok, _} = NickServ.start_link(name: new_server)
 
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:BcastNick")
@@ -220,13 +220,13 @@ defmodule RetroHexChat.Services.NickServTest do
   describe "identify timer expiry" do
     test "forces rename on timeout", _ctx do
       # Start a NickServ with a very short timeout for testing
-      short_server = :"nickserv_short_#{System.unique_integer([:positive])}"
+      short_server = :"nickserv_short_#{rem(System.unique_integer([:positive]), 100_000)}"
       {:ok, _pid} = NickServ.start_link(name: short_server, identify_timeout_ms: 100)
 
       {:ok, _} = NickServ.register("TimeoutNick", "secret123", short_server)
 
       # Start a new server for the timeout test (no identified state)
-      timeout_server = :"nickserv_timeout_#{System.unique_integer([:positive])}"
+      timeout_server = :"nickserv_timeout_#{rem(System.unique_integer([:positive]), 100_000)}"
       {:ok, _} = NickServ.start_link(name: timeout_server, identify_timeout_ms: 100)
 
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:TimeoutNick")

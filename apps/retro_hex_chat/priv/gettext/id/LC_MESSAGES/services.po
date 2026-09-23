@@ -95,7 +95,7 @@ msgstr "Identifikasi waktu habis (60s)"
 msgid "Invalid password"
 msgstr "Sandi tak valid"
 
-#: lib/retro_hex_chat/services/nick_expiry.ex:129
+#: lib/retro_hex_chat/services/nick_expiry.ex:144
 #, elixir-autogen, elixir-format
 msgid "NickExpiry"
 msgstr "NickExpiry"
@@ -153,3 +153,70 @@ msgstr "Anda sekarang diidentifikasi sebagai %{nickname}"
 #, elixir-autogen, elixir-format
 msgid "You must be identified to use ChanServ"
 msgstr "Anda harus diidentifikasi untuk menggunakan ChanServ"
+
+#: lib/retro_hex_chat/services/nick_email.ex:78
+#, elixir-autogen, elixir-format
+msgid "Confirm your RetroHexChat address"
+msgstr "Konfirmasi alamat RetroHexChat Anda"
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:373
+#, elixir-autogen, elixir-format
+msgid "Could not be saved"
+msgstr "Tidak dapat disimpan"
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:279
+#: lib/retro_hex_chat/services/nick_email.ex:284
+#, elixir-autogen, elixir-format
+msgid "Nickname is not registered"
+msgstr "Nama panggilan belum terdaftar"
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:149
+#, elixir-autogen, elixir-format
+msgid "Reset your RetroHexChat password"
+msgstr "Atur ulang kata sandi RetroHexChat Anda"
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:79
+#, elixir-autogen, elixir-format
+msgid "Somebody added this address to the RetroHexChat nickname %{nickname}. Open this link to confirm it:\n\n%{link}\n\nIf this was not you, ignore this message — nothing has changed and the address will stay unconfirmed."
+msgstr "Seseorang menambahkan alamat ini ke nama panggilan RetroHexChat %{nickname}. Buka tautan ini untuk mengonfirmasinya:\n\n%{link}\n\nJika ini bukan Anda, abaikan pesan ini — tidak ada yang berubah dan alamatnya tetap belum terkonfirmasi."
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:150
+#, elixir-autogen, elixir-format
+msgid "Somebody asked to reset the password for the RetroHexChat nickname %{nickname}. Open this link to choose a new one:\n\n%{link}\n\nIf this was not you, ignore this message — your password has not changed."
+msgstr "Seseorang meminta pengaturan ulang kata sandi untuk nama panggilan RetroHexChat %{nickname}. Buka tautan ini untuk memilih yang baru:\n\n%{link}\n\nJika ini bukan Anda, abaikan pesan ini — kata sandi Anda tidak berubah."
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:248
+#: lib/retro_hex_chat/services/nick_email.ex:272
+#, elixir-autogen, elixir-format
+msgid "The message could not be sent"
+msgstr "Pesan tidak dapat dikirim"
+
+
+#: lib/retro_hex_chat/jobs/nick_expiry_warning_worker.ex:94
+#, elixir-autogen, elixir-format
+msgid "The nickname %{nickname} has not been used for a while, and nicknames left unused are released so somebody else can take them.\n\nSigning in once keeps it — nothing else is needed, and you have about %{days} days.\n\nIf you would rather let it go, ignore this message."
+msgstr "Nama panggilan %{nickname} sudah lama tidak dipakai, dan nama panggilan yang menganggur dilepas agar orang lain bisa memakainya.\n\nMasuk sekali saja sudah cukup untuk mempertahankannya — tidak perlu yang lain, dan Anda punya sekitar %{days} hari.\n\nKalau Anda lebih suka melepasnya, abaikan pesan ini."
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:257
+#, elixir-autogen, elixir-format
+msgid "This server cannot send e-mail"
+msgstr "Server ini tidak mengirim surel"
+
+
+#: lib/retro_hex_chat/jobs/nick_expiry_warning_worker.ex:93
+#, elixir-autogen, elixir-format
+msgid "Your RetroHexChat nickname is about to be released"
+msgstr "Nama panggilan RetroHexChat Anda akan segera dilepas"
+
+
+#: lib/retro_hex_chat/services/registered_nick.ex:59
+#, elixir-autogen, elixir-format
+msgid "is not a valid address"
+msgstr "bukan alamat yang sah"

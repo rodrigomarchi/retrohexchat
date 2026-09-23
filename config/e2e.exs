@@ -81,3 +81,9 @@ config :web_push_ex, :vapid,
     "BJ8fSvhwpKIxX45jHj82nirayWMy9ldoPh3--QHzToDAQnVJVoWWjdm2aVJ1wYwFFpPzAjtRe9GfuvEWgT1Nt5c",
   private_key: "2OGnPNoIsFYkejZaLQ-h1bkcMi8Vx8f344Md-r59Vs4",
   subject: "mailto:e2e@retrohexchat.test"
+
+# Mail goes to the local mailbox, which the browser suite can read.
+config :retro_hex_chat, RetroHexChat.Mailer,
+  adapter: Swoosh.Adapters.Local,
+  from_address: "no-reply@retrohexchat.test",
+  from_name: "RetroHexChat"

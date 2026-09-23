@@ -13,7 +13,9 @@ defmodule RetroHexChat.SystemInfo.QueryTest do
     end
 
     test "an unknown column is dropped rather than interned as an atom" do
-      unknown_column = "definitely_not_a_column_#{System.unique_integer([:positive])}"
+      unknown_column =
+        "definitely_not_a_column_#{rem(System.unique_integer([:positive]), 100_000)}"
+
       refute_existing_atom(unknown_column)
 
       assert %Query{sort_by: nil} = Query.new(%{"sort_by" => unknown_column}, @columns)

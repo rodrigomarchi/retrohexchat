@@ -407,3 +407,26 @@ vapid = [
 if Enum.all?(vapid, fn {_key, value} -> is_binary(value) and String.trim(value) != "" end) do
   config :web_push_ex, :vapid, vapid
 end
+
+# Mail, same discipline: a relay and a from-address or the feature is not there.
+# SMTP rather than a transactional-mail API because this product is hosted by
+# the person running it, and requiring an account with a third party to let
+# somebody recover a password would contradict that.
+smtp_relay = System.get_env("RHC_SMTP_RELAY")
+smtp_from = System.get_env("RHC_SMTP_FROM")
+
+if is_binary(smtp_relay) and String.trim(smtp_relay) != "" and
+     is_binary(smtp_from) and String.trim(smtp_from) != "" do
+  config :retro_hex_chat, RetroHexChat.Mailer,
+    adapter: Swoosh.Adapters.SMTP,
+    relay: smtp_relay,
+    from_address: smtp_from,
+    from_name: System.get_env("RHC_SMTP_FROM_NAME") || "RetroHexChat",
+    username: System.get_env("RHC_SMTP_USERNAME"),
+    password: System.get_env("RHC_SMTP_PASSWORD"),
+    port: String.to_integer(System.get_env("RHC_SMTP_PORT") || "587"),
+    tls: :always,
+    auth: if(System.get_env("RHC_SMTP_USERNAME"), do: :always, else: :never),
+    retries: 2,
+    no_mx_lookups: false
+end

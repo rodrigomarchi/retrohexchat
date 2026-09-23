@@ -12,8 +12,8 @@ defmodule RetroHexChat.Bots.FeedsTest do
   defp bot(capabilities \\ %{"rss" => %{"enabled" => true, "feeds" => []}}) do
     {:ok, bot} =
       Queries.create_bot(%{
-        name: "FeedsBot#{System.unique_integer([:positive])}",
-        nickname: "FeedsBot#{System.unique_integer([:positive])}",
+        name: "FeedsBot#{rem(System.unique_integer([:positive]), 100_000)}",
+        nickname: "FeedsBot#{rem(System.unique_integer([:positive]), 100_000)}",
         created_by: "admin",
         capabilities: capabilities
       })

@@ -1810,6 +1810,7 @@ msgid "Scoring: Love → 15 → 30 → 40 → Game (deuce at 40-40, advantage, w
 msgstr ""
 "Pontuação: Amor → 15 → 30 → 40 → Jogo (menos 40-40, vantagem, vitória por 2)"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:97
@@ -4270,3 +4271,80 @@ msgstr "Você pode entrar com o mesmo nick em mais de uma tela ao mesmo tempo �
 #, elixir-autogen, elixir-format
 msgid "The Sessions tab of the Trusted Terminals window, in the Start menu, lists every screen signed in as you. It marks the one you are on, and ends any of them — or all the others at once, which is what to reach for after signing in somewhere you do not control."
 msgstr "A aba Sessões da janela Terminais confiáveis, no menu Iniciar, lista todas as telas conectadas como você. Ela marca a que você está usando e encerra qualquer uma delas — ou todas as outras de uma vez, que é o que fazer depois de entrar em algum lugar que você não controla."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A registered nickname is a name and a password, and nothing else is required. Adding an address is optional, and what it buys is one thing: a way back in if the password is gone. Without it, a forgotten password means losing the nickname until it is released for disuse."
+msgstr "Um nick registrado é um nome e uma senha, e nada mais é exigido. Acrescentar um endereço é opcional, e o que ele traz é uma coisa só: um caminho de volta se a senha se perder. Sem ele, esquecer a senha significa perder o nick até que ele seja liberado por desuso."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Adding and confirming one"
+msgstr "Como adicionar e confirmar"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Before a nickname is released"
+msgstr "Antes de um nick ser liberado"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Forgetting your password"
+msgstr "Quando você esquece a senha"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "NickServ"
+msgstr "NickServ"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Nicknames left unused are released so somebody else can take them. If you confirmed an address, you are told about two weeks beforehand, and signing in once is all it takes to keep it."
+msgstr "Nicks sem uso são liberados para que outra pessoa possa usá-los. Se você confirmou um endereço, é avisado cerca de duas semanas antes, e entrar uma vez já basta para mantê-lo."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Nobody. It is not shown in your profile, not in WHOIS, not to channel operators and not to the person you are talking to. It is used to send you a link and for nothing else — no digest, no announcements, no “we miss you”."
+msgstr "Ninguém. Não aparece no seu perfil, nem no WHOIS, nem para operadores de canal, nem para quem conversa com você. Serve para lhe enviar um link e mais nada — sem resumo semanal, sem avisos, sem “sentimos sua falta”."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "On the Connect screen, after typing your nickname, press “I forgot my password”. The answer is the same whatever you type — a nickname with an address, one without, one that does not exist — because any other answer would let somebody read the register one guess at a time. If there was an address to send to, a link arrives and is good for a day."
+msgstr "Na tela de conexão, depois de digitar o nick, aperte “Esqueci minha senha”. A resposta é a mesma seja qual for o nick — com endereço, sem endereço, ou inexistente — porque qualquer outra resposta deixaria alguém ler o registro um palpite por vez. Se havia endereço para onde enviar, chega um link válido por um dia."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Open the Account window from the Start menu and type it in. A link arrives; following it confirms the address. Until you follow that link the address counts for nothing — in particular, no password reset will be sent to it. That is what stops somebody typing an address they do not own."
+msgstr "Abra a janela Conta no menu Iniciar e digite o endereço. Chega um link; segui-lo confirma o endereço. Até você seguir esse link o endereço não vale nada — em particular, nenhuma redefinição de senha será enviada para ele. É isso que impede alguém de digitar um endereço que não é seu."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Removing it"
+msgstr "Como remover"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Signing In On Several Screens"
+msgstr "Entrar em várias telas"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "The same Account window removes it, and removing it also cancels any link already sent. A server whose operator never configured outgoing mail does not offer any of this: there is no address field and no recovery link, because there would be nowhere to send."
+msgstr "A mesma janela Conta remove, e remover também cancela qualquer link já enviado. Um servidor cujo operador nunca configurou envio de e-mail não oferece nada disso: não há campo de endereço nem link de recuperação, porque não haveria para onde enviar."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Who can see it"
+msgstr "Quem vê"

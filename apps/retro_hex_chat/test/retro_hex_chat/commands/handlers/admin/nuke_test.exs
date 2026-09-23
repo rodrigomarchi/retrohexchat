@@ -275,7 +275,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.NukeTest do
 
     test "force-disconnects online users, active device sessions, and requesting admin" do
       seed_data()
-      victim = "NukeOnline#{System.unique_integer([:positive])}"
+      victim = "NukeOnline#{rem(System.unique_integer([:positive]), 100_000)}"
 
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:NukeAdmin")
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{victim}")

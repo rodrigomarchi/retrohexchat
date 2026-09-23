@@ -2659,7 +2659,7 @@ msgstr "静音( 频道)"
 msgid "Nickname"
 msgstr "昵称"
 
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:98
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:117
 #, elixir-autogen, elixir-format
 msgid "Nickname is required"
 msgstr "需要昵称"
@@ -2723,15 +2723,15 @@ msgstr "只有创始人才能丢弃一个频道."
 msgid "Opening chat..."
 msgstr "正在打开聊天..."
 
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:47
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:61
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:101
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:66
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:80
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:120
 #, elixir-autogen, elixir-format
 msgid "Password is required"
 msgstr "需要密码"
 
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:44
-#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:78
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:63
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:97
 #, elixir-autogen, elixir-format
 msgid "Passwords do not match"
 msgstr "密码不匹配"
@@ -4060,3 +4060,20 @@ msgstr "跳到你还没读的第一条消息"
 #, elixir-autogen, elixir-format
 msgid "New messages"
 msgstr "新消息"
+
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:46
+#, elixir-autogen, elixir-format
+msgid "Address removed."
+msgstr "地址已删除。"
+
+
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:234
+#, elixir-autogen, elixir-format
+msgid "Check that address for a link confirming it."
+msgstr "去那个地址查收一封带确认链接的邮件。"
+
+
+#: lib/retro_hex_chat_web/live/chat_live/account_events.ex:224
+#, elixir-autogen, elixir-format
+msgid "Identify with NickServ first."
+msgstr "请先在 NickServ 完成身份确认。"

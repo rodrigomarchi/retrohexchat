@@ -1668,6 +1668,7 @@ msgstr "個人追蹤得分 但目標是共享生存"
 msgid "Scoring: Love → 15 → 30 → 40 → Game (deuce at 40-40, advantage, win by 2)"
 msgstr "賽制:愛~15~30~40~比賽(成績40~40,優勢,2勝)."
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:97
@@ -3842,3 +3843,80 @@ msgstr "你可以用同一個暱稱同時登入多個螢幕 — 辦公室的電�
 #, elixir-autogen, elixir-format
 msgid "The Sessions tab of the Trusted Terminals window, in the Start menu, lists every screen signed in as you. It marks the one you are on, and ends any of them — or all the others at once, which is what to reach for after signing in somewhere you do not control."
 msgstr "開始功能表中「受信任的終端機」視窗的「工作階段」分頁會列出所有以你身分登入的螢幕。它會標出你正在使用的那個，並可結束其中任何一個 — 也可以一次結束其餘全部，在你無法掌控的地方登入過之後就該這麼做。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A registered nickname is a name and a password, and nothing else is required. Adding an address is optional, and what it buys is one thing: a way back in if the password is gone. Without it, a forgotten password means losing the nickname until it is released for disuse."
+msgstr "註冊一個暱稱只需要名字和密碼，別的都不要求。留下位址是可選的，它只帶來一件事：密碼丟了還能回來。沒有位址，忘記密碼就意味著失去這個暱稱，直到它因閒置被釋出。"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Adding and confirming one"
+msgstr "怎麼新增和確認"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Before a nickname is released"
+msgstr "暱稱被釋出之前"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Forgetting your password"
+msgstr "忘記密碼時"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "NickServ"
+msgstr "NickServ"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Nicknames left unused are released so somebody else can take them. If you confirmed an address, you are told about two weeks beforehand, and signing in once is all it takes to keep it."
+msgstr "閒置的暱稱會被釋出，好讓別人可以使用。如果你確認過位址，大約兩週前會收到提醒，登入一次就足以保住它。"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Nobody. It is not shown in your profile, not in WHOIS, not to channel operators and not to the person you are talking to. It is used to send you a link and for nothing else — no digest, no announcements, no “we miss you”."
+msgstr "沒有人。它不出現在你的資料裡，不在 WHOIS 裡，頻道管理員看不到，和你說話的人也看不到。它的用途只是寄一個連結給你，此外再無別的——沒有摘要，沒有公告，沒有「我們想你了」。"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "On the Connect screen, after typing your nickname, press “I forgot my password”. The answer is the same whatever you type — a nickname with an address, one without, one that does not exist — because any other answer would let somebody read the register one guess at a time. If there was an address to send to, a link arrives and is good for a day."
+msgstr "在連線畫面輸入暱稱後，按「我忘記密碼了」。無論你輸入什麼，回答都一樣——有位址的暱稱、沒位址的、根本不存在的，都一樣——因為換成別的回答，就等於讓人一次一猜地讀出整個註冊表。如果有位址可寄，連結會送到，有效期一天。"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Open the Account window from the Start menu and type it in. A link arrives; following it confirms the address. Until you follow that link the address counts for nothing — in particular, no password reset will be sent to it. That is what stops somebody typing an address they do not own."
+msgstr "從開始功能表開啟「帳號」視窗，把位址填進去。會收到一個連結，點開它就確認了位址。在你點開之前，這個位址不算數——尤其是，密碼重設不會寄到那裡。這就是別人填了不屬於自己的位址也無妨的原因。"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Removing it"
+msgstr "怎麼刪除"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Signing In On Several Screens"
+msgstr "在多個螢幕上登入"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "The same Account window removes it, and removing it also cancels any link already sent. A server whose operator never configured outgoing mail does not offer any of this: there is no address field and no recovery link, because there would be nowhere to send."
+msgstr "同一個「帳號」視窗可以刪除，刪除也會讓已經寄出的連結失效。營運者從未設定外寄郵件的伺服器不提供這些：沒有位址欄，也沒有找回連結，因為根本無處可寄。"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Who can see it"
+msgstr "誰能看到"

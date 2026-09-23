@@ -363,7 +363,7 @@ defmodule RetroHexChat.Chat.PerformListTest do
   describe "save/2 and load/1" do
     @tag :integration
     test "persists and loads perform list with entries and settings" do
-      owner = "PerfUser#{System.unique_integer([:positive])}"
+      owner = "PerfUser#{rem(System.unique_integer([:positive]), 100_000)}"
       register_nick(owner)
 
       list = PerformList.new()
@@ -384,7 +384,7 @@ defmodule RetroHexChat.Chat.PerformListTest do
 
     @tag :integration
     test "persists disabled state" do
-      owner = "PerfUser#{System.unique_integer([:positive])}"
+      owner = "PerfUser#{rem(System.unique_integer([:positive]), 100_000)}"
       register_nick(owner)
 
       list = PerformList.new() |> PerformList.set_enabled(false)
@@ -398,7 +398,7 @@ defmodule RetroHexChat.Chat.PerformListTest do
 
     @tag :integration
     test "save replaces previous entries" do
-      owner = "PerfUser#{System.unique_integer([:positive])}"
+      owner = "PerfUser#{rem(System.unique_integer([:positive]), 100_000)}"
       register_nick(owner)
 
       list1 = PerformList.new()
@@ -422,7 +422,7 @@ defmodule RetroHexChat.Chat.PerformListTest do
 
     @tag :integration
     test "save empty list with settings still loads" do
-      owner = "PerfUser#{System.unique_integer([:positive])}"
+      owner = "PerfUser#{rem(System.unique_integer([:positive]), 100_000)}"
       register_nick(owner)
 
       list = PerformList.new() |> PerformList.set_enabled(false)

@@ -7,7 +7,7 @@ defmodule RetroHexChat.Services.ChanExpiryTest do
   alias RetroHexChat.Services.{ChanExpiry, NickExpiry, NickServ, Queries}
 
   setup do
-    nickserv_name = :"nickserv_chanexp_#{System.unique_integer([:positive])}"
+    nickserv_name = :"nickserv_chanexp_#{rem(System.unique_integer([:positive]), 100_000)}"
     {:ok, _} = NickServ.start_link(name: nickserv_name)
 
     %{

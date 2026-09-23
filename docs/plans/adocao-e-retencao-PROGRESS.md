@@ -19,7 +19,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 3.2 Menções | **pronto** (2026-09-23) |
 | 3.3 Régua de não lidas | **pronto** (2026-09-23) |
 | 4.1 Multi-dispositivo | **pronto** (2026-09-23) |
-| 4.2 E-mail opcional | não iniciado |
+| 4.2 E-mail opcional | **pronto** (2026-09-23) |
 | 4.3 Fixar mensagem | não iniciado |
 | 4.4 Salvar mensagem | não iniciado |
 | 5.1 Arquivo público | não iniciado |
@@ -709,3 +709,77 @@ derruba a que está há mais tempo sem uso.
 `e2e/tests/admin-registration-closed-edges.spec.ts`, e os
 catálogos `accounts`, `help`, `connect`, `help_features`, `help_games`,
 `landing`.
+
+---
+
+## Iteração 4.2 — E-mail opcional
+
+**Pronto**
+
+- `swoosh` + `gen_smtp`, `RetroHexChat.Mailer` com `configured?/0`. SMTP em
+  produção por env, `Local` em dev e e2e, `Test` em teste. Sem relay, o recurso
+  não existe — mesma disciplina do VAPID e do TURN.
+- Migration `add_email_to_registered_nicks` com índice único **parcial** sobre
+  `lower(email)`: um endereço pertence a um nick, e todo nick sem endereço
+  continua livre.
+- `Services.NickEmail` — endereço opcional, confirmação, reset e envio. 16
+  testes.
+- `/account/verify/:token` e `/account/reset/:token` no pipeline `:landing_live`
+  e **dentro do loop de locales**. 7 testes.
+
+**Aprendizados**
+
+- **O render estático gastava o token.** Um LiveView monta duas vezes, e o link
+  é de uso único: a primeira passagem consumia, a segunda achava gasto, e
+  *todo mundo* veria "link inválido" ao confirmar um endereço. Só acontece com
+  token de uso único — nada no repo tinha esse formato antes. `connected?/1`
+  decide, e a passagem estática apenas diz que está checando.
+- **Erro de validação não é link morto.** Esconder o formulário quando havia
+  qualquer erro fazia uma senha curta demais matar a página. São dois estados
+  diferentes: `link_dead` esconde, `error` mantém o formulário aberto.
+- **A página de reset precisa checar o link sem gastá-lo.** Oferecer um
+  formulário que o submit vai recusar é pior do que dizer de cara que o link
+  morreu — daí `reset_token_valid?/2`.
+- **Confirmar precisa zerar o carimbo de envio.** O debounce de 5 min existe
+  para espaçar envios, e um link seguido é um envio concluído; sem zerar, quem
+  acabou de confirmar o endereço ouvia "espere" ao pedir reset.
+- **O e-mail não sai do domínio montando URL.** `apps/retro_hex_chat` não tem
+  rotas, então quem chama passa uma função que transforma token em link. O teste
+  usa isso para extrair o token da mensagem realmente enviada, em vez de ler o
+  banco — e assim prova que o link da mensagem funciona.
+
+- `Jobs.NickExpiryWarningWorker` — avisa 14 dias antes da liberação, fechando o
+  item 1.1. Não guarda quem foi avisado: a janela tem um dia de largura sobre
+  `last_seen_at` e a job roda diária, então cada nick passa por ela uma vez, e
+  quem volta sai da janela voltando.
+- "Esqueci minha senha" na tela de conexão e a seção de endereço na janela
+  Conta, ambas invisíveis sem SMTP.
+- Tópico `feature-account-email`, `/privacy` com o que é guardado e como apagar,
+  e os 57 msgids novos traduzidos nos 13 locales.
+
+**Mais aprendizados**
+
+- **Eu estava fazendo SMTP dentro do `handle_event`.** O teste do LiveView
+  quebrou porque a mensagem chegava no processo dele — e isso expôs o problema
+  real: o socket ficava preso pela duração da conversa com o outro servidor.
+  `AGENTS.md` é explícito ("Oban owns all background work"), então o envio virou
+  `Jobs.MailWorker` numa fila `mail` própria. Os testes passaram a ler **a job
+  enfileirada**, que carrega a mensagem inteira, e um teste só do worker prova
+  que uma job vira mensagem enviada — sem ele, todos os outros passariam num
+  servidor que nunca entregou nada.
+- **Um contador de teste estourou o limite de 16 caracteres do nick.** 36
+  lugares em 19 arquivos montavam nicks como `"NotifyUser#{unique_integer}"`;
+  `System.unique_integer/1` cresce com a atividade da VM, então bastou a suíte
+  ganhar testes para um prefixo de 10 letras não caber mais. Falha latente que
+  este item apenas expôs — todos passaram a usar `rem(…, 100_000)`.
+- **Um número de varreduras estava escrito no teste.** `oban_health_test`
+  afirmava `maintenance_sweeps == 11`; apodrece no dia em que alguém adiciona
+  uma varredura e não diz nada sobre o snapshot estar certo. Agora deriva.
+- **Desvio do plano:** as funções ficaram em `Services.NickEmail`, não em
+  `NickServ`. O NickServ já tem 455 linhas e carrega o GenServer do conjunto de
+  identificados; recuperação não compartilha nada desse estado.
+
+**Falta neste item** — o terceiro uso previsto no plano (avisar de mensagem
+privada quando a pessoa está fora há N horas) não foi construído: depende de
+preferência por pessoa e de saber há quanto tempo ela sumiu, que é trabalho de
+domínio próprio. Os outros dois usos estão de pé. E2E ainda não rodou.

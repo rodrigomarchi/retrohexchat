@@ -258,7 +258,7 @@ defmodule RetroHexChat.Chat.AliasListTest do
   describe "save/2 and load/1" do
     @tag :integration
     test "persists and loads alias list" do
-      owner = "AliasUser#{System.unique_integer([:positive])}"
+      owner = "AliasUser#{rem(System.unique_integer([:positive]), 100_000)}"
       register_nick(owner)
 
       list = AliasList.new()
@@ -276,7 +276,7 @@ defmodule RetroHexChat.Chat.AliasListTest do
 
     @tag :integration
     test "save replaces previous entries" do
-      owner = "AliasUser#{System.unique_integer([:positive])}"
+      owner = "AliasUser#{rem(System.unique_integer([:positive]), 100_000)}"
       register_nick(owner)
 
       list1 = AliasList.new()

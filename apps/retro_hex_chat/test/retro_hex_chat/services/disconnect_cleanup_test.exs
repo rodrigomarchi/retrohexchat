@@ -24,7 +24,7 @@ defmodule RetroHexChat.Services.DisconnectCleanupTest do
   end
 
   setup do
-    nick_server = :"nickserv_cleanup_#{System.unique_integer([:positive])}"
+    nick_server = :"nickserv_cleanup_#{rem(System.unique_integer([:positive]), 100_000)}"
     {:ok, _} = NickServ.start_link(name: nick_server)
 
     %{nick_server: nick_server}

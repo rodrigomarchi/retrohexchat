@@ -72,12 +72,16 @@ config :retro_hex_chat, Oban,
        {"*/5 * * * *", RetroHexChat.Jobs.OpenLobbyExpiryWorker},
        {"50 * * * *", RetroHexChat.Jobs.ScrapedPagePruneWorker},
        {"55 * * * *", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker},
-       {"5 4 * * *", RetroHexChat.Jobs.BotGreetingPruneWorker}
+       {"5 4 * * *", RetroHexChat.Jobs.BotGreetingPruneWorker},
+       # Daily, and only daily: the warning window is one day wide, so a second
+       # run in the same day would reach nobody new and a missed day skips a
+       # cohort rather than doubling one.
+       {"20 9 * * *", RetroHexChat.Jobs.NickExpiryWarningWorker}
      ]},
     {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(6)},
     Oban.Plugins.Pruner
   ],
-  queues: [rss: 2, maintenance: 1, bots: 2, scrape: 2, persistence: 1, push: 3]
+  queues: [rss: 2, maintenance: 1, bots: 2, scrape: 2, persistence: 1, push: 3, mail: 2]
 
 config :retro_hex_chat_web,
   ecto_repos: [RetroHexChat.Repo],
@@ -183,6 +187,12 @@ config :phoenix, :json_library, Jason
 
 # Use Tz for timezone database (compile-time, no GenServer)
 config :elixir, :time_zone_database, Tz.TimeZoneDatabase
+
+# Mail. No adapter by default: a server that has not been given an SMTP relay
+# does not have password recovery, expiry warnings or an account e-mail field at
+# all, and `RetroHexChat.Mailer.configured?/0` is what every one of those asks.
+# Each environment says what it can actually reach.
+config :swoosh, :api_client, false
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

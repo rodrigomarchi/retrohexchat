@@ -24,6 +24,12 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
   attr :auth_confirm, :string, default: ""
   attr :error_message, :string, default: nil
   attr :ghost_error, :string, default: nil
+  attr :email_available, :boolean, default: false
+  attr :email, :string, default: nil
+  attr :email_confirmed, :boolean, default: false
+  attr :email_draft, :string, default: ""
+  attr :email_error, :string, default: nil
+  attr :email_notice, :string, default: nil
 
   @spec account_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def account_panel(assigns) do
@@ -62,6 +68,15 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
             <p :if={@error_message} class="text-xs text-error" data-testid="account-error">
               {@error_message}
             </p>
+
+            <.account_email_section
+              :if={@email_available and @identified}
+              email={@email}
+              email_confirmed={@email_confirmed}
+              email_draft={@email_draft}
+              email_error={@email_error}
+              email_notice={@email_notice}
+            />
 
             <div
               :if={@identified}
@@ -237,6 +252,87 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
           </div>
         </div>
       </.focus_wrap>
+    </div>
+    """
+  end
+
+  attr :email, :string, default: nil
+  attr :email_confirmed, :boolean, default: false
+  attr :email_draft, :string, default: ""
+  attr :email_error, :string, default: nil
+  attr :email_notice, :string, default: nil
+
+  # Drawn only where there is mail to send and only to somebody who has proved
+  # who they are: an address is the way back into an account, so offering to set
+  # one before identifying would be offering to take the account.
+  defp account_email_section(assigns) do
+    ~H"""
+    <div class="acct-field space-y-retro-4 text-xs" data-testid="account-email-section">
+      <p class="font-bold">{dgettext("dialogs", "Recovery address")}</p>
+      <p class="text-muted-foreground">
+        {dgettext(
+          "dialogs",
+          "Optional, and nobody else ever sees it. It exists so you can get back in if you forget your password."
+        )}
+      </p>
+
+      <div
+        :if={@email}
+        class="acct-notice flex items-center gap-retro-4"
+        data-testid="account-email-current"
+      >
+        <Icons.icon_checkmark :if={@email_confirmed} class="w-4 h-4" />
+        <Icons.icon_warning :if={!@email_confirmed} class="w-4 h-4" />
+        <span>
+          {@email}
+          <span class="text-muted-foreground">
+            ({if @email_confirmed,
+              do: dgettext("dialogs", "confirmed"),
+              else: dgettext("dialogs", "waiting for you to follow the link")})
+          </span>
+        </span>
+      </div>
+
+      <form phx-submit="account_email_submit" class="space-y-retro-4">
+        <label class="font-bold" for="account-email">{dgettext("dialogs", "Address:")}</label>
+        <.input
+          id="account-email"
+          name="email"
+          type="email"
+          value={@email_draft}
+          autocomplete="email"
+          class="text-xs h-7"
+          data-testid="account-email-input"
+        />
+
+        <p :if={@email_error} class="text-error" data-testid="account-email-error">
+          {@email_error}
+        </p>
+        <p :if={@email_notice} class="text-muted-foreground" data-testid="account-email-notice">
+          {@email_notice}
+        </p>
+
+        <div class="acct-action-row flex justify-end gap-retro-4">
+          <.button
+            :if={@email}
+            type="button"
+            size="sm"
+            variant="outline"
+            phx-click="account_email_remove"
+            class="acct-action-button"
+            data-testid="account-email-remove"
+          >
+            <:icon><Icons.icon_reject class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Remove")}
+          </.button>
+          <.button type="submit" size="sm" class="acct-action-button" data-testid="account-email-save">
+            <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+            {if @email,
+              do: dgettext("dialogs", "Send link again"),
+              else: dgettext("dialogs", "Save address")}
+          </.button>
+        </div>
+      </form>
     </div>
     """
   end

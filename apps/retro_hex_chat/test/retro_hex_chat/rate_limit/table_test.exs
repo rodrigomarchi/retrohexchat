@@ -23,7 +23,7 @@ defmodule RetroHexChat.RateLimit.TableTest do
 
     test "accepts read/write operations" do
       table = Table.table_name()
-      key = "table_test_user_#{System.unique_integer([:positive])}"
+      key = "table_test_user_#{rem(System.unique_integer([:positive]), 100_000)}"
       :ets.insert(table, {key, "value"})
       assert [{^key, "value"}] = :ets.lookup(table, key)
       :ets.delete(table, key)

@@ -1805,6 +1805,7 @@ msgstr ""
 "Скоринг: Любовь → 15 → 30 → 40 → Игра (двойка на 40-40, преимущество, победа"
 " на 2)"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:97
@@ -4264,3 +4265,80 @@ msgstr "Вы можете войти под одним ником сразу н�
 #, elixir-autogen, elixir-format
 msgid "The Sessions tab of the Trusted Terminals window, in the Start menu, lists every screen signed in as you. It marks the one you are on, and ends any of them — or all the others at once, which is what to reach for after signing in somewhere you do not control."
 msgstr "Вкладка «Сеансы» окна «Доверенные терминалы» в меню «Пуск» перечисляет каждый экран, вошедший под вашим именем. Она отмечает тот, за которым вы сидите, и завершает любой из них — или все остальные разом, к чему и стоит прибегнуть после входа там, где вы ничего не контролируете."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A registered nickname is a name and a password, and nothing else is required. Adding an address is optional, and what it buys is one thing: a way back in if the password is gone. Without it, a forgotten password means losing the nickname until it is released for disuse."
+msgstr "Зарегистрированный ник — это имя и пароль, больше ничего не требуется. Адрес добавлять необязательно, и даёт он ровно одно: возможность вернуться, если пароль потерян. Без него забытый пароль означает потерю ника, пока тот не освободится за ненадобностью."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Adding and confirming one"
+msgstr "Как добавить и подтвердить"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Before a nickname is released"
+msgstr "Перед тем как ник освободят"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Forgetting your password"
+msgstr "Если вы забыли пароль"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "NickServ"
+msgstr "NickServ"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Nicknames left unused are released so somebody else can take them. If you confirmed an address, you are told about two weeks beforehand, and signing in once is all it takes to keep it."
+msgstr "Неиспользуемые ники освобождают, чтобы их мог занять кто-то другой. Если вы подтвердили адрес, вас предупредят примерно за две недели, и одного входа достаточно, чтобы ник сохранить."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Nobody. It is not shown in your profile, not in WHOIS, not to channel operators and not to the person you are talking to. It is used to send you a link and for nothing else — no digest, no announcements, no “we miss you”."
+msgstr "Никто. Его нет ни в профиле, ни в WHOIS, его не видят операторы канала и собеседник. Он нужен, чтобы отправить вам ссылку, и больше ни для чего — никаких сводок, объявлений и «мы скучаем»."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "On the Connect screen, after typing your nickname, press “I forgot my password”. The answer is the same whatever you type — a nickname with an address, one without, one that does not exist — because any other answer would let somebody read the register one guess at a time. If there was an address to send to, a link arrives and is good for a day."
+msgstr "На экране подключения, введя ник, нажмите «Я забыл пароль». Ответ одинаков, что бы вы ни ввели — ник с адресом, без адреса, несуществующий, — потому что любой другой позволял бы читать реестр по одной догадке. Если адрес был, придёт ссылка, действующая сутки."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Open the Account window from the Start menu and type it in. A link arrives; following it confirms the address. Until you follow that link the address counts for nothing — in particular, no password reset will be sent to it. That is what stops somebody typing an address they do not own."
+msgstr "Откройте окно «Учётная запись» в меню «Пуск» и введите адрес. Придёт ссылка; переход по ней подтверждает адрес. Пока вы по ней не перешли, адрес ничего не значит — в частности, сброс пароля туда не отправят. Именно это мешает вписать чужой адрес."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Removing it"
+msgstr "Как удалить"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Signing In On Several Screens"
+msgstr "Вход с нескольких экранов"
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "The same Account window removes it, and removing it also cancels any link already sent. A server whose operator never configured outgoing mail does not offer any of this: there is no address field and no recovery link, because there would be nowhere to send."
+msgstr "То же окно «Учётная запись» удаляет адрес, и удаление отменяет любую уже отправленную ссылку. Сервер, на котором администратор не настроил исходящую почту, не предлагает ничего из этого: нет ни поля адреса, ни ссылки для восстановления, потому что отправлять было бы некуда."
+
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Who can see it"
+msgstr "Кто его видит"

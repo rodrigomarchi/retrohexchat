@@ -60,7 +60,7 @@ defmodule RetroHexChat.Services.ChanServAutoPrivilegeTest do
     test "user with no access list entry gets :regular role" do
       channel = unique_channel()
       founder = "Founder#{System.unique_integer([:positive])}"
-      user = "RegularUser#{System.unique_integer([:positive])}"
+      user = "RegularUser#{rem(System.unique_integer([:positive]), 100_000)}"
 
       start_registered_channel(channel, founder)
 
@@ -106,7 +106,7 @@ defmodule RetroHexChat.Services.ChanServAutoPrivilegeTest do
     test "first user in registered channel with no access gets :regular (not :operator)" do
       channel = unique_channel()
       founder = "Founder#{System.unique_integer([:positive])}"
-      user = "FirstNoAccess#{System.unique_integer([:positive])}"
+      user = "FirstNoAccess#{rem(System.unique_integer([:positive]), 100_000)}"
 
       start_registered_channel(channel, founder)
 

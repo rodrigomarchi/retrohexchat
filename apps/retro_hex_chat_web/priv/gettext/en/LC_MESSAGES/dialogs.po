@@ -447,7 +447,7 @@ msgstr ""
 msgid "Confirm"
 msgstr "Confirm"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:757
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:794
 #: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:297
 #, elixir-autogen, elixir-format
 msgid "Connected"
@@ -911,8 +911,8 @@ msgstr "Nicklist"
 msgid "Nickname"
 msgstr "Nickname"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:49
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:200
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:55
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:215
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:277
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:354
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:69
@@ -1152,6 +1152,7 @@ msgstr "Public Chat Platform"
 msgid "RSS"
 msgstr "RSS"
 
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:326
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:331
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:192
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:208
@@ -1582,7 +1583,7 @@ msgstr "Audio/video tracks stop"
 msgid "Audit Log"
 msgstr "Audit Log"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:245
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:341
 #, elixir-autogen, elixir-format
 msgid "Away"
 msgstr "Away"
@@ -1634,7 +1635,7 @@ msgstr "Change"
 msgid "Change nickname:"
 msgstr "Change nickname:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:90
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:105
 #, elixir-autogen, elixir-format
 msgid "Claims your current nickname with a NickServ password."
 msgstr "Claims your current nickname with a NickServ password."
@@ -1699,7 +1700,7 @@ msgstr "Confirm unban"
 msgid "Confirm unmute"
 msgstr "Confirm unmute"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:122
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:137
 #, elixir-autogen, elixir-format
 msgid "Confirm:"
 msgstr "Confirm:"
@@ -1724,7 +1725,7 @@ msgstr "Danger Zone"
 msgid "Delete channel"
 msgstr "Delete channel"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:169
 #, elixir-autogen, elixir-format
 msgid "Deletes this nickname registration after you confirm with its password."
 msgstr ""
@@ -1735,12 +1736,12 @@ msgstr ""
 msgid "Destructive actions"
 msgstr "Destructive actions"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:192
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:207
 #, elixir-autogen, elixir-format
 msgid "Disconnect a stale session that is holding a registered nickname."
 msgstr "Disconnect a stale session that is holding a registered nickname."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:178
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:193
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:363
 #, elixir-autogen, elixir-format
 msgid "Drop Registration"
@@ -1754,7 +1755,7 @@ msgstr "Drop Registration"
 msgid "Drop registration"
 msgstr "Drop registration"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:152
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:167
 #, elixir-autogen, elixir-format
 msgid "Drop registration..."
 msgstr "Drop registration..."
@@ -1818,12 +1819,12 @@ msgstr "Founder"
 msgid "From nick"
 msgstr "From nick"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:232
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:247
 #, elixir-autogen, elixir-format
 msgid "Ghost Session"
 msgstr "Ghost Session"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:188
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:203
 #, elixir-autogen, elixir-format
 msgid "Ghost session..."
 msgstr "Ghost session..."
@@ -1833,7 +1834,7 @@ msgstr "Ghost session..."
 msgid "Gone to lunch"
 msgstr "Gone to lunch"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:247
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:343
 #, elixir-autogen, elixir-format
 msgid "Guest"
 msgstr "Guest"
@@ -1843,18 +1844,18 @@ msgstr "Guest"
 msgid "I'm away"
 msgstr "I'm away"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:246
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:342
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:81
 #, elixir-autogen, elixir-format
 msgid "Identified"
 msgstr "Identified"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:140
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:155
 #, elixir-autogen, elixir-format
 msgid "Identify"
 msgstr "Identify"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:99
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:114
 #, elixir-autogen, elixir-format
 msgid "Identify (log in)"
 msgstr "Identify (log in)"
@@ -2014,9 +2015,9 @@ msgstr "Operator broadcast messages"
 msgid "P2P games close"
 msgstr "P2P games close"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:107
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:163
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:213
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:122
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:178
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:228
 #, elixir-autogen, elixir-format
 msgid "Password:"
 msgstr "Password:"
@@ -2068,7 +2069,7 @@ msgstr "Refresh"
 msgid "Refresh preview"
 msgstr "Refresh preview"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:139
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
 #, elixir-autogen, elixir-format
 msgid "Register"
 msgstr "Register"
@@ -2079,7 +2080,7 @@ msgstr "Register"
 msgid "Register Channel"
 msgstr "Register Channel"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:88
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:103
 #, elixir-autogen, elixir-format
 msgid "Register this nickname"
 msgstr "Register this nickname"
@@ -2228,7 +2229,7 @@ msgstr "Shown to others via /whois."
 msgid "Stats"
 msgstr "Stats"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:51
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:57
 #, elixir-autogen, elixir-format
 msgid "Status:"
 msgstr "Status:"
@@ -2254,7 +2255,7 @@ msgstr "TURN"
 msgid "This cannot be undone without the new owner's cooperation."
 msgstr "This cannot be undone without the new owner's cooperation."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:101
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:116
 #, elixir-autogen, elixir-format
 msgid "This nickname is registered. Enter its NickServ password."
 msgstr "This nickname is registered. Enter its NickServ password."
@@ -2348,7 +2349,7 @@ msgstr "Whowas"
 msgid "Whowas retention"
 msgstr "Whowas retention"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:72
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:87
 #, elixir-autogen, elixir-format
 msgid "You are identified with NickServ."
 msgstr "You are identified with NickServ."
@@ -2420,7 +2421,7 @@ msgstr "no"
 msgid "open"
 msgstr "open"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:56
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:62
 #, elixir-autogen, elixir-format
 msgid "registered"
 msgstr "registered"
@@ -2443,7 +2444,7 @@ msgstr "sop"
 msgid "unknown"
 msgstr "unknown"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:57
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:63
 #, elixir-autogen, elixir-format
 msgid "unregistered"
 msgstr "unregistered"
@@ -3972,3 +3973,44 @@ msgstr "Messages that write your nickname in a channel you were in show up here.
 #, elixir-autogen, elixir-format
 msgid "Nobody has mentioned you yet."
 msgstr "Nobody has mentioned you yet."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:297
+#, elixir-autogen, elixir-format
+msgid "Address:"
+msgstr "Address:"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:273
+#, elixir-autogen, elixir-format
+msgid "Optional, and nobody else ever sees it. It exists so you can get back in if you forget your password."
+msgstr "Optional, and nobody else ever sees it. It exists so you can get back in if you forget your password."
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:271
+#, elixir-autogen, elixir-format
+msgid "Recovery address"
+msgstr "Recovery address"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:332
+#, elixir-autogen, elixir-format
+msgid "Save address"
+msgstr "Save address"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:331
+#, elixir-autogen, elixir-format
+msgid "Send link again"
+msgstr "Send link again"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:290
+#, elixir-autogen, elixir-format
+msgid "confirmed"
+msgstr "confirmed"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:291
+#, elixir-autogen, elixir-format
+msgid "waiting for you to follow the link"
+msgstr "waiting for you to follow the link"

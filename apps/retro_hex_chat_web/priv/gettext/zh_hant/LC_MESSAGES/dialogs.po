@@ -439,7 +439,7 @@ msgstr "配置限制以防止頻道和私人消息中的信息淹沒."
 msgid "Confirm"
 msgstr "確認"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:757
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:794
 #: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:297
 #, elixir-autogen, elixir-format
 msgid "Connected"
@@ -903,8 +903,8 @@ msgstr "暱稱列表"
 msgid "Nickname"
 msgstr "暱稱"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:49
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:200
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:55
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:215
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:277
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:354
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:69
@@ -1144,6 +1144,7 @@ msgstr "公共聊天平臺"
 msgid "RSS"
 msgstr "RSS"
 
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:326
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:331
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:192
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:208
@@ -1572,7 +1573,7 @@ msgstr "Audio/video 軌道停止"
 msgid "Audit Log"
 msgstr "審計日誌"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:245
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:341
 #, elixir-autogen, elixir-format
 msgid "Away"
 msgstr "離開"
@@ -1624,7 +1625,7 @@ msgstr "變動"
 msgid "Change nickname:"
 msgstr "更改暱稱 :"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:90
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:105
 #, elixir-autogen, elixir-format
 msgid "Claims your current nickname with a NickServ password."
 msgstr "用 NickServ 密碼聲稱您現在的暱稱 。"
@@ -1689,7 +1690,7 @@ msgstr "確認取消封禁"
 msgid "Confirm unmute"
 msgstr "確認解密"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:122
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:137
 #, elixir-autogen, elixir-format
 msgid "Confirm:"
 msgstr "確認:"
@@ -1714,7 +1715,7 @@ msgstr "危險區"
 msgid "Delete channel"
 msgstr "刪除頻道"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:169
 #, elixir-autogen, elixir-format
 msgid "Deletes this nickname registration after you confirm with its password."
 msgstr "在用密碼確認後刪除此暱稱註冊 。"
@@ -1724,12 +1725,12 @@ msgstr "在用密碼確認後刪除此暱稱註冊 。"
 msgid "Destructive actions"
 msgstr "破壞行動"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:192
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:207
 #, elixir-autogen, elixir-format
 msgid "Disconnect a stale session that is holding a registered nickname."
 msgstr "斷開一個帶有註冊暱稱的 stale 會話 。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:178
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:193
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:363
 #, elixir-autogen, elixir-format
 msgid "Drop Registration"
@@ -1743,7 +1744,7 @@ msgstr "丟棄註冊"
 msgid "Drop registration"
 msgstr "放棄註冊"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:152
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:167
 #, elixir-autogen, elixir-format
 msgid "Drop registration..."
 msgstr "丟棄註冊..."
@@ -1805,12 +1806,12 @@ msgstr "創建者"
 msgid "From nick"
 msgstr "從暱稱"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:232
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:247
 #, elixir-autogen, elixir-format
 msgid "Ghost Session"
 msgstr "幽靈會話"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:188
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:203
 #, elixir-autogen, elixir-format
 msgid "Ghost session..."
 msgstr "鬼會..."
@@ -1820,7 +1821,7 @@ msgstr "鬼會..."
 msgid "Gone to lunch"
 msgstr "去喫午飯了"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:247
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:343
 #, elixir-autogen, elixir-format
 msgid "Guest"
 msgstr "來賓"
@@ -1830,18 +1831,18 @@ msgstr "來賓"
 msgid "I'm away"
 msgstr "我走了,我來了"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:246
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:342
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:81
 #, elixir-autogen, elixir-format
 msgid "Identified"
 msgstr "已確認"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:140
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:155
 #, elixir-autogen, elixir-format
 msgid "Identify"
 msgstr "識別"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:99
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:114
 #, elixir-autogen, elixir-format
 msgid "Identify (log in)"
 msgstr "識別( 登錄)"
@@ -2001,9 +2002,9 @@ msgstr "操作員廣播消息"
 msgid "P2P games close"
 msgstr "P2P 遊戲關閉"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:107
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:163
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:213
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:122
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:178
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:228
 #, elixir-autogen, elixir-format
 msgid "Password:"
 msgstr "密碼 :"
@@ -2055,7 +2056,7 @@ msgstr "重新整理"
 msgid "Refresh preview"
 msgstr "刷新預覽"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:139
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
 #, elixir-autogen, elixir-format
 msgid "Register"
 msgstr "註冊"
@@ -2066,7 +2067,7 @@ msgstr "註冊"
 msgid "Register Channel"
 msgstr "註冊頻道"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:88
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:103
 #, elixir-autogen, elixir-format
 msgid "Register this nickname"
 msgstr "註冊此暱稱"
@@ -2215,7 +2216,7 @@ msgstr "通過/whois向他人展示."
 msgid "Stats"
 msgstr "狀態"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:51
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:57
 #, elixir-autogen, elixir-format
 msgid "Status:"
 msgstr "狀態 :"
@@ -2241,7 +2242,7 @@ msgstr "土耳其"
 msgid "This cannot be undone without the new owner's cooperation."
 msgstr "沒有新主人的合作,這一點是無法消除的。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:101
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:116
 #, elixir-autogen, elixir-format
 msgid "This nickname is registered. Enter its NickServ password."
 msgstr "此暱稱已註冊 。 輸入其 NickServ 密碼 。"
@@ -2335,7 +2336,7 @@ msgstr "誰"
 msgid "Whowas retention"
 msgstr "誰被保留"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:72
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:87
 #, elixir-autogen, elixir-format
 msgid "You are identified with NickServ."
 msgstr "你和NickServ有聯繫"
@@ -2407,7 +2408,7 @@ msgstr "無"
 msgid "open"
 msgstr "打開"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:56
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:62
 #, elixir-autogen, elixir-format
 msgid "registered"
 msgstr "登記"
@@ -2430,7 +2431,7 @@ msgstr "蘇普"
 msgid "unknown"
 msgstr "不詳"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:57
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:63
 #, elixir-autogen, elixir-format
 msgid "unregistered"
 msgstr "未登記"
@@ -3948,3 +3949,44 @@ msgstr "在你所在頻道中寫到你暱稱的訊息會出現在這裡。"
 #, elixir-autogen, elixir-format
 msgid "Nobody has mentioned you yet."
 msgstr "還沒有人提到你。"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:297
+#, elixir-autogen, elixir-format
+msgid "Address:"
+msgstr "位址："
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:273
+#, elixir-autogen, elixir-format
+msgid "Optional, and nobody else ever sees it. It exists so you can get back in if you forget your password."
+msgstr "可填可不填，別人都看不到。它的用處只有一個：忘記密碼時還能回來。"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:271
+#, elixir-autogen, elixir-format
+msgid "Recovery address"
+msgstr "復原用位址"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:332
+#, elixir-autogen, elixir-format
+msgid "Save address"
+msgstr "儲存位址"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:331
+#, elixir-autogen, elixir-format
+msgid "Send link again"
+msgstr "再寄一次連結"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:290
+#, elixir-autogen, elixir-format
+msgid "confirmed"
+msgstr "已確認"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:291
+#, elixir-autogen, elixir-format
+msgid "waiting for you to follow the link"
+msgstr "等你點開連結"

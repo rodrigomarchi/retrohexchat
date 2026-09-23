@@ -17,7 +17,7 @@ defmodule RetroHexChat.Bots.CapabilitiesTest do
     end
 
     test "a name that is not an existing atom does not create one" do
-      name = "never_a_capability_#{System.unique_integer([:positive])}"
+      name = "never_a_capability_#{rem(System.unique_integer([:positive]), 100_000)}"
 
       assert Capabilities.module_for(name) == nil
       assert_raise ArgumentError, fn -> String.to_existing_atom(name) end

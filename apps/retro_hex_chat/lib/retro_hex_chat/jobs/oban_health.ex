@@ -28,6 +28,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
     ChatDeviceSessionCleanupWorker,
     GlobalMuteExpiryWorker,
     IgnoreExpiredCleanupWorker,
+    NickExpiryWarningWorker,
     RegisteredChannelExpiryWorker,
     RegisteredNickExpiryWorker,
     RSSPollWorker,
@@ -40,7 +41,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
   alias RetroHexChat.Repo
   alias RetroHexChat.RuntimeStaleCleanup
   alias RetroHexChat.Scraper.Store, as: ScraperStore
-  alias RetroHexChat.Services.{ChanExpiry, NickExpiry}
+  alias RetroHexChat.Services.{ChanExpiry, NickEmail, NickExpiry}
   alias RetroHexChat.Table
 
   @default_filter "active"
@@ -72,6 +73,12 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       label: "Registered nick expiry",
       queue: "maintenance",
       worker: RegisteredNickExpiryWorker
+    },
+    %{
+      id: "nick_expiry_warning",
+      label: "Nick expiry warning",
+      queue: "maintenance",
+      worker: NickExpiryWarningWorker
     },
     %{
       id: "attachment_orphan_cleanup",
@@ -986,6 +993,20 @@ defmodule RetroHexChat.Jobs.ObanHealth do
 
   defp maintenance_pending_work("registered_nick_expiry", now),
     do: NickExpiry.expired_count(now: now)
+
+  # How many will be warned on the next run. Zero on a server with no mail is
+  # the honest answer: there is nothing pending because nothing can be sent.
+  defp maintenance_pending_work("nick_expiry_warning", now) do
+    if NickEmail.enabled?() do
+      days = NickExpiry.configured_expiration_days() - NickExpiryWarningWorker.warning_days()
+      from = DateTime.add(now, -(days + 1) * 24 * 60 * 60, :second)
+      to = DateTime.add(now, -days * 24 * 60 * 60, :second)
+
+      from |> NickEmail.confirmed_between(to) |> length()
+    else
+      0
+    end
+  end
 
   defp maintenance_pending_work("attachment_orphan_cleanup", now),
     do: Attachments.orphan_upload_count(cutoff: DateTime.add(now, -3_600, :second))

@@ -9,10 +9,10 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
   alias RetroHexChat.Services.NickServ
 
   setup do
-    nick_server = :"nickserv_cs_h_#{System.unique_integer([:positive])}"
+    nick_server = :"nickserv_cs_h_#{rem(System.unique_integer([:positive]), 100_000)}"
     {:ok, _} = NickServ.start_link(name: nick_server)
 
-    cs_server = :"chanserv_h_#{System.unique_integer([:positive])}"
+    cs_server = :"chanserv_h_#{rem(System.unique_integer([:positive]), 100_000)}"
     {:ok, _} = ChanServ.start_link(name: cs_server, nick_serv: nick_server)
 
     {:ok, _} = NickServ.register("CsTestUser", "pass123", nick_server)

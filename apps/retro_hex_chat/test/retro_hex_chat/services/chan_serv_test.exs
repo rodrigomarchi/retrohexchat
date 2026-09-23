@@ -7,10 +7,10 @@ defmodule RetroHexChat.Services.ChanServTest do
   alias RetroHexChat.Services.NickServ
 
   setup do
-    nick_server = :"nickserv_cs_#{System.unique_integer([:positive])}"
+    nick_server = :"nickserv_cs_#{rem(System.unique_integer([:positive]), 100_000)}"
     {:ok, _} = NickServ.start_link(name: nick_server)
 
-    cs_server = :"chanserv_#{System.unique_integer([:positive])}"
+    cs_server = :"chanserv_#{rem(System.unique_integer([:positive]), 100_000)}"
     {:ok, _} = ChanServ.start_link(name: cs_server, nick_serv: nick_server)
 
     %{server: cs_server, nick_server: nick_server}

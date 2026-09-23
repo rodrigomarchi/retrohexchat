@@ -95,7 +95,7 @@ msgstr "Déterminez le temps écoulé (60 s)"
 msgid "Invalid password"
 msgstr "Mot de passe non valide"
 
-#: lib/retro_hex_chat/services/nick_expiry.ex:129
+#: lib/retro_hex_chat/services/nick_expiry.ex:144
 #, elixir-autogen, elixir-format
 msgid "NickExpiry"
 msgstr "NickExpiry"
@@ -154,3 +154,70 @@ msgstr "Vous êtes maintenant identifié comme %{nickname}"
 #, elixir-autogen, elixir-format
 msgid "You must be identified to use ChanServ"
 msgstr "Vous devez être identifié pour utiliser ChanServ"
+
+#: lib/retro_hex_chat/services/nick_email.ex:78
+#, elixir-autogen, elixir-format
+msgid "Confirm your RetroHexChat address"
+msgstr "Confirmez votre adresse RetroHexChat"
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:373
+#, elixir-autogen, elixir-format
+msgid "Could not be saved"
+msgstr "N'a pas pu être enregistré"
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:279
+#: lib/retro_hex_chat/services/nick_email.ex:284
+#, elixir-autogen, elixir-format
+msgid "Nickname is not registered"
+msgstr "Ce pseudo n'est pas enregistré"
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:149
+#, elixir-autogen, elixir-format
+msgid "Reset your RetroHexChat password"
+msgstr "Réinitialisez votre mot de passe RetroHexChat"
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:79
+#, elixir-autogen, elixir-format
+msgid "Somebody added this address to the RetroHexChat nickname %{nickname}. Open this link to confirm it:\n\n%{link}\n\nIf this was not you, ignore this message — nothing has changed and the address will stay unconfirmed."
+msgstr "Quelqu'un a ajouté cette adresse au pseudo RetroHexChat %{nickname}. Ouvrez ce lien pour la confirmer :\n\n%{link}\n\nSi ce n'était pas vous, ignorez ce message — rien n'a changé et l'adresse restera non confirmée."
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:150
+#, elixir-autogen, elixir-format
+msgid "Somebody asked to reset the password for the RetroHexChat nickname %{nickname}. Open this link to choose a new one:\n\n%{link}\n\nIf this was not you, ignore this message — your password has not changed."
+msgstr "Quelqu'un a demandé à réinitialiser le mot de passe du pseudo RetroHexChat %{nickname}. Ouvrez ce lien pour en choisir un nouveau :\n\n%{link}\n\nSi ce n'était pas vous, ignorez ce message — votre mot de passe n'a pas changé."
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:248
+#: lib/retro_hex_chat/services/nick_email.ex:272
+#, elixir-autogen, elixir-format
+msgid "The message could not be sent"
+msgstr "Le message n'a pas pu être envoyé"
+
+
+#: lib/retro_hex_chat/jobs/nick_expiry_warning_worker.ex:94
+#, elixir-autogen, elixir-format
+msgid "The nickname %{nickname} has not been used for a while, and nicknames left unused are released so somebody else can take them.\n\nSigning in once keeps it — nothing else is needed, and you have about %{days} days.\n\nIf you would rather let it go, ignore this message."
+msgstr "Le pseudo %{nickname} n'a pas servi depuis un moment, et les pseudos inutilisés sont libérés pour que quelqu'un d'autre puisse les prendre.\n\nUne seule connexion suffit à le garder — rien d'autre n'est nécessaire, et il vous reste environ %{days} jours.\n\nSi vous préférez le laisser partir, ignorez ce message."
+
+
+#: lib/retro_hex_chat/services/nick_email.ex:257
+#, elixir-autogen, elixir-format
+msgid "This server cannot send e-mail"
+msgstr "Ce serveur n'envoie pas de courrier"
+
+
+#: lib/retro_hex_chat/jobs/nick_expiry_warning_worker.ex:93
+#, elixir-autogen, elixir-format
+msgid "Your RetroHexChat nickname is about to be released"
+msgstr "Votre pseudo RetroHexChat est sur le point d'être libéré"
+
+
+#: lib/retro_hex_chat/services/registered_nick.ex:59
+#, elixir-autogen, elixir-format
+msgid "is not a valid address"
+msgstr "n'est pas une adresse valide"

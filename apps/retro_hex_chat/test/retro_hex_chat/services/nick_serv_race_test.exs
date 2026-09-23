@@ -7,7 +7,7 @@ defmodule RetroHexChat.Services.NickServRaceTest do
 
   describe "identify timer race condition" do
     test "identify just before timeout cancels timer and keeps user identified" do
-      server_name = :"test_nickserv_race_#{System.unique_integer([:positive])}"
+      server_name = :"test_nickserv_race_#{rem(System.unique_integer([:positive]), 100_000)}"
       {:ok, _pid} = NickServ.start_link(name: server_name, identify_timeout_ms: 300)
 
       nickname = unique_nick("RaceNick")
@@ -46,14 +46,14 @@ defmodule RetroHexChat.Services.NickServRaceTest do
     end
 
     test "timeout fires before identify sends force_rename" do
-      server_name = :"test_nickserv_timeout_#{System.unique_integer([:positive])}"
+      server_name = :"test_nickserv_timeout_#{rem(System.unique_integer([:positive]), 100_000)}"
       {:ok, _pid} = NickServ.start_link(name: server_name, identify_timeout_ms: 100)
 
       nickname = unique_nick("TimeoutNick")
       password = "secret123"
 
       # Register the nick using a separate server
-      reg_server = :"test_nickserv_reg_#{System.unique_integer([:positive])}"
+      reg_server = :"test_nickserv_reg_#{rem(System.unique_integer([:positive]), 100_000)}"
       {:ok, _} = NickServ.start_link(name: reg_server)
       {:ok, _} = NickServ.register(nickname, password, reg_server)
 
@@ -72,7 +72,7 @@ defmodule RetroHexChat.Services.NickServRaceTest do
       # This test verifies that GenServer call/cast serialization works:
       # if identify is called before the timer message is processed,
       # the timer is cancelled during identify.
-      server_name = :"test_nickserv_serial_#{System.unique_integer([:positive])}"
+      server_name = :"test_nickserv_serial_#{rem(System.unique_integer([:positive]), 100_000)}"
       {:ok, _pid} = NickServ.start_link(name: server_name, identify_timeout_ms: 100)
 
       nickname = unique_nick("SerialNick")

@@ -448,7 +448,7 @@ msgstr ""
 msgid "Confirm"
 msgstr "Confirmar"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:757
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:794
 #: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:297
 #, elixir-autogen, elixir-format
 msgid "Connected"
@@ -912,8 +912,8 @@ msgstr "Lista de nicks"
 msgid "Nickname"
 msgstr "Apodo"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:49
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:200
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:55
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:215
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:277
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:354
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:69
@@ -1154,6 +1154,7 @@ msgstr "Public Chat Platform"
 msgid "RSS"
 msgstr "RSS"
 
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:326
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:331
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:192
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:208
@@ -1589,7 +1590,7 @@ msgstr "Se detienen las pistas de audio realizadas/ph0"
 msgid "Audit Log"
 msgstr "Audit Log"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:245
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:341
 #, elixir-autogen, elixir-format
 msgid "Away"
 msgstr "Ausente"
@@ -1641,7 +1642,7 @@ msgstr "Cambio"
 msgid "Change nickname:"
 msgstr "Cambiar apodo:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:90
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:105
 #, elixir-autogen, elixir-format
 msgid "Claims your current nickname with a NickServ password."
 msgstr "Reclama su apodo actual con una contraseña de NickServ."
@@ -1706,7 +1707,7 @@ msgstr "Confirmar unban"
 msgid "Confirm unmute"
 msgstr "Confirmar unmute"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:122
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:137
 #, elixir-autogen, elixir-format
 msgid "Confirm:"
 msgstr "Confirme:"
@@ -1731,7 +1732,7 @@ msgstr "Zona peligrosa"
 msgid "Delete channel"
 msgstr "Eliminar el canal"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:169
 #, elixir-autogen, elixir-format
 msgid "Deletes this nickname registration after you confirm with its password."
 msgstr ""
@@ -1742,12 +1743,12 @@ msgstr ""
 msgid "Destructive actions"
 msgstr "Medidas destructivas"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:192
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:207
 #, elixir-autogen, elixir-format
 msgid "Disconnect a stale session that is holding a registered nickname."
 msgstr "Desconectar una sesión de escalón que tiene un apodo registrado."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:178
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:193
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:363
 #, elixir-autogen, elixir-format
 msgid "Drop Registration"
@@ -1761,7 +1762,7 @@ msgstr "Registro"
 msgid "Drop registration"
 msgstr "Registro de la caída"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:152
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:167
 #, elixir-autogen, elixir-format
 msgid "Drop registration..."
 msgstr "Suelta el registro..."
@@ -1825,12 +1826,12 @@ msgstr "Founder"
 msgid "From nick"
 msgstr "De nick"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:232
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:247
 #, elixir-autogen, elixir-format
 msgid "Ghost Session"
 msgstr "Sesión de fantasmas"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:188
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:203
 #, elixir-autogen, elixir-format
 msgid "Ghost session..."
 msgstr "Sesión fantasma..."
@@ -1840,7 +1841,7 @@ msgstr "Sesión fantasma..."
 msgid "Gone to lunch"
 msgstr "Se fue a almorzar"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:247
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:343
 #, elixir-autogen, elixir-format
 msgid "Guest"
 msgstr "Invitado"
@@ -1850,18 +1851,18 @@ msgstr "Invitado"
 msgid "I'm away"
 msgstr "Estoy lejos."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:246
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:342
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:81
 #, elixir-autogen, elixir-format
 msgid "Identified"
 msgstr "Identificada"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:140
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:155
 #, elixir-autogen, elixir-format
 msgid "Identify"
 msgstr "Identificar"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:99
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:114
 #, elixir-autogen, elixir-format
 msgid "Identify (log in)"
 msgstr "Identificar (log in)"
@@ -2022,9 +2023,9 @@ msgstr "Mensajes de transmisión de operador"
 msgid "P2P games close"
 msgstr "P2P juegos cercanos"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:107
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:163
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:213
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:122
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:178
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:228
 #, elixir-autogen, elixir-format
 msgid "Password:"
 msgstr "Contraseña:"
@@ -2076,7 +2077,7 @@ msgstr "Actualizar"
 msgid "Refresh preview"
 msgstr "Previsualización de referencia"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:139
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
 #, elixir-autogen, elixir-format
 msgid "Register"
 msgstr "Registrarse"
@@ -2087,7 +2088,7 @@ msgstr "Registrarse"
 msgid "Register Channel"
 msgstr "Register Channel"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:88
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:103
 #, elixir-autogen, elixir-format
 msgid "Register this nickname"
 msgstr "Registrar este apodo"
@@ -2236,7 +2237,7 @@ msgstr "Se muestran a otros a través de неph0 títulos/ph0 título."
 msgid "Stats"
 msgstr "Stats"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:51
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:57
 #, elixir-autogen, elixir-format
 msgid "Status:"
 msgstr "Situación:"
@@ -2262,7 +2263,7 @@ msgstr "TURN"
 msgid "This cannot be undone without the new owner's cooperation."
 msgstr "Esto no se puede deshacer sin la cooperación del nuevo propietario."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:101
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:116
 #, elixir-autogen, elixir-format
 msgid "This nickname is registered. Enter its NickServ password."
 msgstr "Este apodo está registrado. Introduzca su contraseña de NickServ."
@@ -2356,7 +2357,7 @@ msgstr "¿Quién era?"
 msgid "Whowas retention"
 msgstr "Que era retención"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:72
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:87
 #, elixir-autogen, elixir-format
 msgid "You are identified with NickServ."
 msgstr "Estás identificado con NickServ."
@@ -2430,7 +2431,7 @@ msgstr "no"
 msgid "open"
 msgstr "abierto"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:56
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:62
 #, elixir-autogen, elixir-format
 msgid "registered"
 msgstr "registrados"
@@ -2453,7 +2454,7 @@ msgstr "sop"
 msgid "unknown"
 msgstr "desconocida"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:57
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:63
 #, elixir-autogen, elixir-format
 msgid "unregistered"
 msgstr "sin registro"
@@ -3989,3 +3990,44 @@ msgstr "Aquí aparecen los mensajes que escriben tu apodo en un canal en el que 
 #, elixir-autogen, elixir-format
 msgid "Nobody has mentioned you yet."
 msgstr "Nadie te ha mencionado todavía."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:297
+#, elixir-autogen, elixir-format
+msgid "Address:"
+msgstr "Dirección:"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:273
+#, elixir-autogen, elixir-format
+msgid "Optional, and nobody else ever sees it. It exists so you can get back in if you forget your password."
+msgstr "Opcional, y nadie más la ve. Existe para que puedas volver a entrar si olvidas la contraseña."
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:271
+#, elixir-autogen, elixir-format
+msgid "Recovery address"
+msgstr "Dirección de recuperación"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:332
+#, elixir-autogen, elixir-format
+msgid "Save address"
+msgstr "Guardar dirección"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:331
+#, elixir-autogen, elixir-format
+msgid "Send link again"
+msgstr "Enviar el enlace otra vez"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:290
+#, elixir-autogen, elixir-format
+msgid "confirmed"
+msgstr "confirmada"
+
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:291
+#, elixir-autogen, elixir-format
+msgid "waiting for you to follow the link"
+msgstr "esperando a que sigas el enlace"

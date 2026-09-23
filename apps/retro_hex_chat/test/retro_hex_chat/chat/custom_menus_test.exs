@@ -253,7 +253,7 @@ defmodule RetroHexChat.Chat.CustomMenusTest do
   describe "save/2 and load/1" do
     @tag :integration
     test "persists and loads custom menus" do
-      owner = "MenuUser#{System.unique_integer([:positive])}"
+      owner = "MenuUser#{rem(System.unique_integer([:positive]), 100_000)}"
       register_nick(owner)
 
       menus = CustomMenus.new()
@@ -269,7 +269,7 @@ defmodule RetroHexChat.Chat.CustomMenusTest do
 
     @tag :integration
     test "persists and loads chat menu items" do
-      owner = "ChatMenu#{System.unique_integer([:positive])}"
+      owner = "ChatMenu#{rem(System.unique_integer([:positive]), 100_000)}"
       register_nick(owner)
 
       menus = CustomMenus.new()

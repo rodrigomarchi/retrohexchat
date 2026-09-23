@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.ConnectForm do
 
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Accounts.TrustedDevices
+  alias RetroHexChat.Services.NickEmail
   alias RetroHexChat.Services.NickServ
 
   @id "connect-form"
@@ -43,6 +44,8 @@ defmodule RetroHexChatWeb.ConnectForm do
        password_confirm: "",
        password_error: nil,
        step: :nickname,
+       recovery_available: NickEmail.enabled?(),
+       recovery_sent: false,
        auth_token: nil,
        remembered_nicks: [],
        manual_login: false,
@@ -213,6 +216,15 @@ defmodule RetroHexChatWeb.ConnectForm do
       true ->
         register_nickname(socket, nickname, password, password_confirm, params)
     end
+  end
+
+  # Always the same answer, whatever the nickname is. Telling somebody that a
+  # nickname has no address on it — or does not exist — would make this form a
+  # way to read the register one guess at a time.
+  def handle_event("forgot_password", _params, socket) do
+    NickEmail.request_reset(socket.assigns.nickname, &reset_url/1)
+
+    {:noreply, assign(socket, recovery_sent: true)}
   end
 
   def handle_event("back", _params, socket) do
@@ -410,6 +422,8 @@ defmodule RetroHexChatWeb.ConnectForm do
         trusted_device_login={@trusted_device_login}
         remember_device={@remember_device}
         device_label={@device_label}
+        recovery_available={@recovery_available}
+        recovery_sent={@recovery_sent}
         csrf_token={@csrf_token}
         chat_session_path={@chat_session_path}
         return_to={@return_to}
@@ -417,5 +431,11 @@ defmodule RetroHexChatWeb.ConnectForm do
       />
     </div>
     """
+  end
+
+  # The domain has no routes, so the link is built here. Absolute, because it is
+  # about to travel to somebody's inbox.
+  defp reset_url(token) do
+    RetroHexChatWeb.Endpoint.url() <> "/account/reset/" <> token
   end
 end
