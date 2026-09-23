@@ -1985,6 +1985,7 @@ msgstr "Выделить"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
 msgstr "Выделить слова"
@@ -3125,6 +3126,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
@@ -3733,6 +3735,7 @@ msgstr "Под 200 мс — соединение хорошее."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy_feedback.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Unread Indicators"
 msgstr "Непрочитанные показатели"
@@ -6472,3 +6475,48 @@ msgstr "Число рядом с эмодзи — сколько людей ег
 #, elixir-autogen, elixir-format
 msgid "What the Numbers Mean"
 msgstr "Что означают числа"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A mention is a message that writes your nickname, or one of your highlight words, in a channel you were in. The chat counts those separately from everything else that is new."
+msgstr "Упоминание — это сообщение, где написан ваш ник или одно из ваших слов для выделения в канале, где вы были. Чат считает их отдельно от всего остального нового."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Opening the conversation clears both"
+msgstr "Открытие беседы обнуляет оба"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Mentions lists every message that named you, newest first, across the channels you are in. Clicking one switches to that conversation and scrolls to the line. While anything is waiting, a badge appears in the taskbar tray and opens the same window."
+msgstr "Пуск ▸ Упоминания перечисляет каждое сообщение, где вас назвали, начиная с новых, по всем каналам, где вы есть. Щелчок переключает на эту беседу и прокручивает до строки. Пока что-то ждёт, в трее панели задач появляется значок, открывающий то же окно."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "The Mentions Window"
+msgstr "Окно «Упоминания»"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "The grey count beside a conversation says there is something new in it"
+msgstr "Серое число рядом с беседой говорит, что в ней есть что-то новое"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "The red count beside it says some of it is about you"
+msgstr "Красное число рядом говорит, что часть из этого — о вас"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Two Numbers, Two Questions"
+msgstr "Два числа, два вопроса"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "What Never Counts"
+msgstr "Что никогда не считается"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Your own messages, deleted messages, and anything the server itself said — a join, a service reply, a notice. Those name people constantly and none of it is somebody reaching for you."
+msgstr "Ваши собственные сообщения, удалённые сообщения и всё, что сказал сам сервер — вход, ответ службы, уведомление. Они постоянно называют людей, и ничто из этого не является тем, кто ищет вас."

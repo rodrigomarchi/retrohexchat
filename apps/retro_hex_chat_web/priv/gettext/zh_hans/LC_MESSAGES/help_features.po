@@ -1838,6 +1838,7 @@ msgstr "突出显示"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
 msgstr "突出显示单词"
@@ -2883,6 +2884,7 @@ msgstr "在当前频道或PM中以实时突出显示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
@@ -3412,6 +3414,7 @@ msgstr "200ms以下——连接良好."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy_feedback.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Unread Indicators"
 msgstr "未读指标"
@@ -5766,3 +5769,48 @@ msgstr "表情旁边的数字是选择它的人数，把鼠标移上去会显示
 #, elixir-autogen, elixir-format
 msgid "What the Numbers Mean"
 msgstr "数字的含义"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A mention is a message that writes your nickname, or one of your highlight words, in a channel you were in. The chat counts those separately from everything else that is new."
+msgstr "提及是指在你所在的频道里写到你昵称或你的高亮词的消息。聊天会把它们与其他新消息分开统计。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Opening the conversation clears both"
+msgstr "打开会话会清除两者"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Mentions lists every message that named you, newest first, across the channels you are in. Clicking one switches to that conversation and scrolls to the line. While anything is waiting, a badge appears in the taskbar tray and opens the same window."
+msgstr "开始 ▸ 提及会按从新到旧列出所有点名你的消息，涵盖你所在的全部频道。点击其中一条会切换到那个会话并滚动到该行。只要还有等待中的内容，任务栏托盘就会出现一个徽章，打开的是同一个窗口。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "The Mentions Window"
+msgstr "提及窗口"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "The grey count beside a conversation says there is something new in it"
+msgstr "会话旁的灰色数字表示里面有新内容"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "The red count beside it says some of it is about you"
+msgstr "旁边的红色数字表示其中有些是关于你的"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Two Numbers, Two Questions"
+msgstr "两个数字，两个问题"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "What Never Counts"
+msgstr "什么永远不计入"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Your own messages, deleted messages, and anything the server itself said — a join, a service reply, a notice. Those name people constantly and none of it is somebody reaching for you."
+msgstr "你自己的消息、已删除的消息，以及服务器自己说的任何话——加入、服务回复、通知。这些会不断点到人名，但没有一条是有人在找你。"

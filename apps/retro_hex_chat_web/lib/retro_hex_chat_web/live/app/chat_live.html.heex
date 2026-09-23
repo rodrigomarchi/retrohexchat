@@ -118,6 +118,7 @@
           pm_conversations_truncated={@session.pm_conversations_truncated}
           autojoin_list={@session.autojoin_list}
           unread_counts={@unread_counts}
+          mention_counts={@mention_counts}
           channel_activity_order={@channel_activity_order}
           highlight_channels={@highlight_channels}
           flash_channels={@flash_channels}
@@ -465,6 +466,25 @@
         notify_permission={@desktop_notify_permission}
         push_available={@push_available}
         push_subscribed={@push_subscribed}
+      />
+    </.desktop_window>
+
+    <%!-- Mentions — the one window whose contents are a query rather than a
+          preference, so the island loads them and closing it throws them
+          away. --%>
+    <.desktop_window
+      :if={"mentions" in @open_windows}
+      {WindowRegistry.attrs("mentions")}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="mentions-window"
+    >
+      <:icon><Icons.icon_megaphone class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.MentionsDialog}
+        id={RetroHexChatWeb.ChatLive.Components.MentionsDialog.id()}
+        session={@session}
+        timezone={@timezone}
+        nick_color_fn={@nick_color_fn}
       />
     </.desktop_window>
 
@@ -965,6 +985,7 @@
         is_admin={admin?(@session)}
         arcade_available={@session.identified == true}
         online_buddy_count={ChatShell.online_buddy_count(@session.notify_list)}
+        mention_count={Enum.sum(Map.values(@mention_counts))}
         lag_ms={@lag_ms}
         lag_status={@lag_status}
         muted={@muted}

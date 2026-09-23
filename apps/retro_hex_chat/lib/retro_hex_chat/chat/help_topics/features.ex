@@ -763,6 +763,24 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "Automatically reply to private messages when you are marked as away.")
       },
       %{
+        id: "feature-mentions",
+        title: dgettext("help", "Mentions"),
+        category: dgettext("help", "Notifications & Sounds"),
+        keywords: [
+          "mention",
+          "mentions",
+          dgettext("help", "named you"),
+          dgettext("help", "mention badge"),
+          dgettext("help", "highlight word")
+        ],
+        icon: :icon_megaphone,
+        description:
+          dgettext(
+            "help",
+            "Count and list the messages that wrote your nickname, and jump back to any of them."
+          )
+      },
+      %{
         id: "feature-reactions",
         title: dgettext("help", "Reacting to a Message"),
         category: dgettext("help", "Chat & Messaging"),

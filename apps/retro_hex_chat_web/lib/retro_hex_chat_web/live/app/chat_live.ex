@@ -866,6 +866,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:hover_events, &ChatLive.HoverEvents.handle_event/3},
       {:context_menu_events, &ChatLive.ContextMenuEvents.handle_event/3},
       {:reaction_events, &ChatLive.ReactionEvents.handle_event/3},
+      {:mention_events, &ChatLive.MentionEvents.handle_event/3},
       {:tip_events, &ChatLive.TipEvents.handle_event/3},
       {:admin_events, &ChatLive.AdminEvents.handle_event/3},
       {:bot_events, &ChatLive.BotEvents.handle_event/3},
@@ -880,6 +881,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
     info_hooks = [
       {:settings_dialogs_info, &ChatLive.SettingsDialogsEvents.handle_info/2},
+      {:mention_info, &ChatLive.MentionEvents.handle_info/2},
       {:timer_handlers, &ChatLive.TimerHandlers.handle_info/2},
       {:pubsub_handlers, &ChatLive.PubsubHandlers.handle_info/2},
       # The call surface reports to its host: what the chat's chrome draws,
@@ -964,6 +966,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
       lookup_result: nil,
       cc_window_channel: nil,
       unread_counts: %{},
+      # Separate from the unread count above: one says there is something new,
+      # the other says it is about you.
+      mention_counts: %{},
       url_catcher_entries: [],
       url_catcher_dropped: 0,
       ignore_timers: %{},

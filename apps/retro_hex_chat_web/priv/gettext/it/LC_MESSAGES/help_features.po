@@ -2012,6 +2012,7 @@ msgstr "In evidenza"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/feature_desktop_notifications.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
 msgstr "Parole in evidenza"
@@ -3157,6 +3158,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
@@ -3767,6 +3769,7 @@ msgstr "Sotto 200ms — la connessione è buona."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy_feedback.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Unread Indicators"
 msgstr "Indicatori non letti"
@@ -6535,3 +6538,48 @@ msgstr "Il numero accanto a un emoji indica quante persone l'hanno scelto, e pas
 #, elixir-autogen, elixir-format
 msgid "What the Numbers Mean"
 msgstr "Cosa significano i numeri"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A mention is a message that writes your nickname, or one of your highlight words, in a channel you were in. The chat counts those separately from everything else that is new."
+msgstr "Una menzione è un messaggio che scrive il tuo soprannome, o una delle tue parole evidenziate, in un canale in cui eri. La chat le conta separatamente da tutto il resto che è nuovo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Opening the conversation clears both"
+msgstr "Aprire la conversazione azzera entrambi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Mentions lists every message that named you, newest first, across the channels you are in. Clicking one switches to that conversation and scrolls to the line. While anything is waiting, a badge appears in the taskbar tray and opens the same window."
+msgstr "Start ▸ Menzioni elenca ogni messaggio che ti ha nominato, dal più recente, in tutti i canali in cui sei. Cliccarne uno passa a quella conversazione e scorre fino alla riga. Finché qualcosa è in attesa, un badge compare nell'area di notifica e apre la stessa finestra."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "The Mentions Window"
+msgstr "La finestra Menzioni"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "The grey count beside a conversation says there is something new in it"
+msgstr "Il numero grigio accanto a una conversazione dice che c'è qualcosa di nuovo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "The red count beside it says some of it is about you"
+msgstr "Il numero rosso accanto dice che una parte riguarda te"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Two Numbers, Two Questions"
+msgstr "Due numeri, due domande"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "What Never Counts"
+msgstr "Cosa non conta mai"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Your own messages, deleted messages, and anything the server itself said — a join, a service reply, a notice. Those name people constantly and none of it is somebody reaching for you."
+msgstr "I tuoi messaggi, i messaggi eliminati e tutto ciò che ha detto il server stesso — un ingresso, una risposta di servizio, un avviso. Quelli nominano persone di continuo e niente di tutto ciò è qualcuno che cerca te."

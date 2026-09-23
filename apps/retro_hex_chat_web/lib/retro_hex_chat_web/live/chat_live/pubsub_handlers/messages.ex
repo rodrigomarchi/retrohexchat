@@ -323,6 +323,19 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     socket
     |> maybe_notify_unmuted(decorated, channel, session)
     |> assign(unread_counts: unread_counts, highlight_channels: highlight)
+    |> maybe_count_mention(decorated, channel)
+  end
+
+  # Two numbers, because they answer two questions. The grey count says there is
+  # something new in there; this one says somebody is waiting on you. A reader
+  # who has to open the conversation to tell them apart has done the work the
+  # badge was for.
+  defp maybe_count_mention(socket, decorated, key) do
+    if Map.get(decorated, :highlighted) do
+      assign(socket, mention_counts: UnreadTracker.increment(socket.assigns.mention_counts, key))
+    else
+      socket
+    end
   end
 
   defp maybe_notify_unmuted(socket, decorated, channel, session) do
@@ -414,8 +427,17 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     key = "pm:#{peer}"
     socket = maybe_count_pm_unread(socket, key, payload, decorated)
 
-    assign(socket, highlight_channels: maybe_add_highlight_channel(socket, decorated, key))
+    socket
+    |> assign(highlight_channels: maybe_add_highlight_channel(socket, decorated, key))
+    |> maybe_count_pm_mention(key, payload, decorated)
   end
+
+  # Only what somebody else wrote, like the unread count beside it: a line of
+  # one's own arriving from another window is not somebody asking for you.
+  defp maybe_count_pm_mention(socket, key, %{direction: :incoming}, decorated),
+    do: maybe_count_mention(socket, decorated, key)
+
+  defp maybe_count_pm_mention(socket, _key, _payload, _decorated), do: socket
 
   defp maybe_count_pm_unread(socket, key, %{direction: :incoming}, row) do
     session = socket.assigns.session

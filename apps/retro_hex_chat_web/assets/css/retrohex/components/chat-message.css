@@ -356,3 +356,38 @@
     display: flex;
   }
 }
+
+/* ── Mentions ───────────────────────────────────────────────────────────────
+   The count that says "this one is about you", beside the grey one that only
+   says "something is new". Smaller than the unread badge on purpose: two
+   numbers of the same weight in one row read as one number split in half. */
+.chat-mention-badge {
+  padding: 0 3px;
+  font-size: 10px;
+  line-height: 14px;
+}
+
+/* A row in the Mentions window is a door, so it is a button — and a button in
+   a list needs the hover and focus a list row has, not the bevel a control
+   has. */
+.mentions-row {
+  @apply bg-transparent;
+  cursor: pointer;
+}
+
+.mentions-row:hover,
+.mentions-row:focus-visible {
+  @apply bg-hover-bg;
+}
+
+.mentions-row__head {
+  @apply text-text;
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.mentions-row__body {
+  @apply text-text;
+  font-size: 12px;
+  line-height: 1.4;
+}

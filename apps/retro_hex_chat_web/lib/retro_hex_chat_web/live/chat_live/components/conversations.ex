@@ -45,6 +45,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
        pm_conversations_truncated: false,
        autojoin_list: AutoJoinList.new(),
        unread_counts: %{},
+       mention_counts: %{},
        channel_activity_order: %{},
        highlight_channels: MapSet.new(),
        flash_channels: MapSet.new(),
@@ -73,6 +74,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
       :pm_conversations_truncated,
       :autojoin_list,
       :unread_counts,
+      :mention_counts,
       :channel_activity_order,
       :highlight_channels,
       :flash_channels,
@@ -143,6 +145,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
           channels={@channels}
           active_channel={@active_channel}
           unread_counts={@unread_counts}
+          mention_counts={@mention_counts}
           channel_activity_order={@channel_activity_order}
           unread_channels={@unread_channels}
           unread_pms={@unread_pms}

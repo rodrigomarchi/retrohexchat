@@ -29,6 +29,12 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
 
   attr :on_notify_toggle, :any, default: "toggle_notify_list"
 
+  attr :mention_count, :integer,
+    default: 0,
+    doc: "Unread messages that name the reader, across every conversation"
+
+  attr :on_mentions_open, :any, default: "open_mentions"
+
   attr :lag_ms, :any, default: nil, doc: "Round-trip to the server, or nil when unknown"
   attr :lag_status, :atom, default: :normal, values: [:normal, :warning, :critical, :timeout]
   attr :muted, :boolean, default: false
@@ -117,6 +123,27 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
             data-testid="tray-notify-badge"
           >
             <:icon><Icons.icon_btn_bell class="h-3 w-3" /></:icon>
+          </.desktop_tray_item>
+
+          <%!-- The one tray item that survives a phone. Everything else here is
+                status; this one is somebody waiting for an answer, and it is
+                the only place that says so while the conversation is off
+                screen. --%>
+          <.desktop_tray_item
+            :if={@mention_count > 0}
+            on_click={@on_mentions_open}
+            title={
+              dngettext(
+                "ui",
+                "%{count} message mentions you",
+                "%{count} messages mention you",
+                @mention_count
+              )
+            }
+            label={to_string(@mention_count)}
+            data-testid="tray-mention-badge"
+          >
+            <:icon><Icons.icon_megaphone class="h-3 w-3" /></:icon>
           </.desktop_tray_item>
 
           <%!-- Hidden on a phone, as it was in the status bar: a number that

@@ -16,7 +16,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 2.2 PWA | **pronto** (2026-09-23) |
 | 2.3 Web Push | **pronto** (2026-09-23) |
 | 3.1 Reações | **pronto** (2026-09-23) |
-| 3.2 Menções | não iniciado |
+| 3.2 Menções | **pronto** (2026-09-23) |
 | 3.3 Régua de não lidas | não iniciado |
 | 4.1 Multi-dispositivo | não iniciado |
 | 4.2 E-mail opcional | não iniciado |
@@ -482,3 +482,64 @@ que você tem que ler antes de clicar.
 `scripts/i18n/glossary.py`, `e2e/pages/ChatPage.ts`,
 `e2e/tests/chat-message-actions.spec.ts`, e os catálogos `chat`, `help`,
 `help_features`.
+
+---
+
+### 2026-09-23 — item 3.2, menção deixa de ser só uma cor
+
+**Pronto.** `make ci` 18/18 e `make e2e.batch BATCH=persistence`.
+
+- `Chat.Search.list_mentions/3` — a query de lista que o moduledoc já previa,
+  sob o contrato `Page`, keyset por id, `has_more` vindo do `limit + 1`.
+  Ignora as próprias linhas, as apagadas e tudo que não é `message`/`action`.
+- `mention_counts` ao lado de `unread_counts`, alimentado nos mesmos dois
+  pontos e zerado no mesmo lugar. Reusa `UnreadTracker`; nenhum módulo novo.
+- Componente `MentionBadge` **composto do primitivo `.badge`**, usado na barra
+  lateral e na bandeja da taskbar.
+- Janela `mentions` no `WindowRegistry` + ilha `MentionsDialog` usando
+  `PaginatedList` e os cinco estados de lista. A primeira página carrega no
+  primeiro `update/2` da ilha — nunca num `send_update` pós-mount.
+- Clicar numa linha ativa a conversa e empurra `scroll_to_message`, o mesmo
+  caminho que o bloco de resposta já usa.
+
+**Aprendizados**
+
+- **A barra de abas não ganhou o selo, e isso foi decisão e não esquecimento.**
+  O plano pedia `IrcTabs`, mas essa barra hoje mostra Status + a conversa em
+  foco — um selo de menção na conversa que você está lendo não informa nada.
+  Cheguei a escrever o atributo e o reverti: atributo morto é pior que ausência.
+- **A ilha tem lista branca de assigns.** `Conversations.update/2` copia só as
+  chaves que conhece, então `mention_counts` chegava ao template do host e
+  morria ali. Nenhum teste de unidade pegou — o e2e pegou em 5 segundos,
+  porque é o único que olha a tela montada de verdade.
+- **A auditoria visual mudou o desenho.** O screenshot mostrou `(2) 1 1`: dois
+  números idênticos lado a lado lidos como um número partido ao meio. O selo de
+  menção passou a levar `@` na frente (`@1`), e isso virou teste.
+- **Uma asserção pode passar pelo motivo errado.** "abre com a primeira página
+  desenhada" casava com o texto da mensagem — que estava no chat atrás da
+  janela. Sabotar a carga não deixou o teste vermelho. Passou a assertar no
+  `data-testid` da linha da janela, e aí sim ficou vermelho.
+- **O erro de escopo de i18n se repetiu.** `Mentions` já existia no domínio
+  `help_bots`; o passe em lote o sobrescreveu em 3 locales. Mesma correção:
+  restaurar do snapshot e escopar por domínio. Vale escrever a regra: **o passe
+  de tradução casa msgid E domínio, sempre.**
+- **Escrever plural com regex quebrou um arquivo.** Um `msgstr[1] ""` vazio não
+  casou o padrão multilinha e o resultado saiu concatenado na mesma linha
+  (`msgstr[0] "..."msgstr[1] ""`). O gate de placeholder pegou; acrescentei uma
+  varredura por linhas com dois `msgstr[` ao fechamento.
+- **Tradução idêntica ao inglês é reprovada pelo gate.** "%{count} mention" em
+  francês é literalmente "%{count} mention"; o `i18n_source_fallback_check`
+  trata isso como não traduzido. Resolvido com "%{count} mention reçue".
+
+**Arquivos tocados** — `chat/search.ex`,
+`components/ui/chat/mention_badge.ex`, `components/ui/chat/conversations.ex`,
+`components/ui/chat/chat_taskbar.ex`,
+`components/ui/dialogs/mentions_dialog.ex`,
+`chat_live/components/{conversations,mentions_dialog}.ex`,
+`chat_live/mention_events.ex`, `chat_live/pubsub_handlers/messages.ex`,
+`chat_live/helpers/conversation.ex`, `chat_live/window_registry.ex`,
+`live/app/chat_live.{ex,html.heex}`,
+`assets/css/retrohex/components/chat-message.css`,
+`help_topics/features.ex`, `help_content/feature_mentions.html.heex`,
+`e2e/tests/chat-mentions.spec.ts`, e os catálogos `chat`, `dialogs`, `help`,
+`help_features`, `ui`.

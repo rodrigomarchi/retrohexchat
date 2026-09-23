@@ -143,6 +143,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
       session: session,
       notice_active: false,
       unread_counts: UnreadTracker.reset(socket.assigns.unread_counts, unread_key),
+      mention_counts: UnreadTracker.reset(socket.assigns.mention_counts, unread_key),
       highlight_channels: MapSet.delete(socket.assigns.highlight_channels, unread_key),
       flash_channels: MapSet.delete(socket.assigns.flash_channels, unread_key),
       show_status_tab: false,

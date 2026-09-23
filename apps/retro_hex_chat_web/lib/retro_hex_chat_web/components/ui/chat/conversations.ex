@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.MentionBadge
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.EmptyState
   import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
@@ -238,6 +239,10 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :unread_channels, :list, default: []
   attr :unread_counts, :map, default: %{}, doc: "Map of channel/pm name to unread count"
 
+  attr :mention_counts, :map,
+    default: %{},
+    doc: "Map of channel/pm name to how many of those are about the reader"
+
   attr :channel_activity_order, :map,
     default: %{},
     doc: "Monotonic activity order keyed by channel name"
@@ -380,6 +385,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
               active={ch == @active_channel}
               unread={member?(@unread_channels, ch)}
               unread_count={unread_count(@unread_counts, ch)}
+              mention_count={unread_count(@mention_counts, ch)}
               highlight={member?(@highlight_channels, ch) or member?(@flash_channels, ch)}
               flash={member?(@flash_channels, ch)}
               muted={member?(@muted_channels, ch)}
@@ -409,6 +415,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
               unread={member?(@unread_pms, pm)}
               highlight={member?(@highlight_channels, "pm:#{pm}")}
               unread_count={unread_count(@unread_counts, "pm:#{pm}")}
+              mention_count={unread_count(@mention_counts, "pm:#{pm}")}
               flash={member?(@flash_channels, "pm:#{pm}")}
               muted={member?(@muted_channels, "pm:#{pm}")}
               nick_color={nick_color(assigns, pm)}
@@ -536,6 +543,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :testid, :string, default: nil
   attr :unread_badge_testid, :string, default: nil
   attr :unread_dot_testid, :string, default: nil
+  attr :mention_count, :integer, default: 0
 
   defp channel_item(assigns) do
     assigns =
@@ -593,6 +601,10 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       >
         ({@user_count})
       </span>
+      <.mention_badge
+        count={@mention_count}
+        testid={"channel-mention-badge-#{@name}"}
+      />
       <span
         :if={@unread && !@active && @unread_count > 0}
         class={unread_badge_classes(@highlight)}
@@ -623,6 +635,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :testid, :string, default: nil
   attr :unread_badge_testid, :string, default: nil
   attr :unread_dot_testid, :string, default: nil
+  attr :mention_count, :integer, default: 0
 
   defp pm_item(assigns) do
     assigns =
@@ -672,6 +685,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
           testid={"pm-p2p-glyph-#{@nick}"}
         />
       </span>
+      <.mention_badge count={@mention_count} testid={"pm-mention-badge-#{@nick}"} />
       <span
         :if={@unread && !@active && @unread_count > 0}
         class="chat-conversations-unread-badge"

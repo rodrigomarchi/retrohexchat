@@ -199,6 +199,9 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
         taskbar_when: :always,
         geometry: geometry(120, 70, 620, 480, 480, 320)
       ),
+      window("mentions", dgettext("chat", "Mentions"), :icon_megaphone,
+        geometry: geometry(160, 80, 620, 480, 420, 320)
+      ),
       window("channel-central", dgettext("chat", "Channel Central"), :icon_dialog_channel_central,
         managed?: false,
         render_when: :always,

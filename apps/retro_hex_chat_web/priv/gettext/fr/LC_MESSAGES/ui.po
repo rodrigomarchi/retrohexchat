@@ -311,7 +311,7 @@ msgstr "Affichage"
 msgid "Language"
 msgstr "Langue"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:108
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:114
 #: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:255
 #, elixir-autogen, elixir-format
 msgid "%{count} buddy online"
@@ -639,19 +639,19 @@ msgstr "Terminaux de confiance..."
 msgid "Try again"
 msgstr "Réessayer"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:779
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:783
 #: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:377
 #, elixir-autogen, elixir-format
 msgid "%{bits}-bit"
 msgstr "%{bits}-bit"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:785
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:789
 #: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:383
 #, elixir-autogen, elixir-format
 msgid "%{count} cores"
 msgstr "%{count} cœurs"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:178
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:180
 #: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:277
 #, elixir-autogen, elixir-format
 msgid "Active"
@@ -683,7 +683,7 @@ msgstr "Première"
 msgid "IP"
 msgstr "IP"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:752
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:756
 #: lib/retro_hex_chat_web/components/ui/trusted_devices/trusted_terminal_card.ex:272
 #, elixir-autogen, elixir-format
 msgid "Last"
@@ -778,12 +778,12 @@ msgstr "Système"
 msgid "Retro Games"
 msgstr "Jeux rétro"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:140
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:167
 #, elixir-autogen, elixir-format
 msgid "Mute"
 msgstr "Couper le son"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:140
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:167
 #, elixir-autogen, elixir-format
 msgid "Unmute"
 msgstr "Réactiver le son"
@@ -794,3 +794,10 @@ msgid "%{count} object"
 msgid_plural "%{count} objects"
 msgstr[0] "%{count} objet"
 msgstr[1] "%{count} objets"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:136
+#, elixir-autogen, elixir-format
+msgid "%{count} message mentions you"
+msgid_plural "%{count} messages mention you"
+msgstr[0] "%{count} message vous mentionne"
+msgstr[1] "%{count} messages vous mentionnent"
