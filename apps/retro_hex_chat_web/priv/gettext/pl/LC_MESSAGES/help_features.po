@@ -1215,6 +1215,7 @@ msgstr "Autokomplet kanału"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "Kanał centralny"
@@ -3131,6 +3132,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
@@ -6572,3 +6574,63 @@ msgstr "Zapisywanie jest prywatne. Autor nie dostaje powiadomienia, nikomu nie p
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Tools ▸ Saved Messages lists everything you kept, newest first, and each row goes back to the line in its own conversation. You can keep up to 500; each one can carry a short note about why."
 msgstr "Start ▸ Narzędzia ▸ Zapisane wiadomości wypisuje wszystko, co zachowano, od najnowszych, a każdy wiersz wraca do linijki w jej własnej rozmowie. Można zachować do 500; każda może nieść krótką notatkę o powodzie."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "A secret channel cannot have a public archive"
+msgstr "Tajny kanał nie może mieć publicznego archiwum"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Attachments are never published — the page says nothing about them"
+msgstr "Załączniki nigdy nie są publikowane — strona nic o nich nie mówi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Deleted messages are absent; edited ones are marked as edited"
+msgstr "Usunięte wiadomości są nieobecne; edytowane są oznaczone jako edytowane"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Everything a group knows usually dies inside the room it was said in. A channel can choose otherwise: its founder can open a public archive, and from that moment the channel gets a page per day that anybody can read and a search engine can index."
+msgstr "Wszystko, co wie grupa, zwykle umiera w pokoju, w którym zostało powiedziane. Kanał może wybrać inaczej: jego założyciel może otworzyć publiczne archiwum, a od tej chwili kanał dostaje jedną stronę dziennie, którą każdy może przeczytać, a wyszukiwarka zaindeksować."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Joins, parts and other channel notices are not published"
+msgstr "Wejścia, wyjścia i inne powiadomienia kanału nie są publikowane"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Only what is said from the moment the switch goes on. Nothing already in the channel is ever published, however long it has been there — whoever wrote it wrote it into a room, not onto the internet. Everyone present is told when the switch changes, so nobody learns it from a search engine."
+msgstr "Tylko to, co powiedziano od chwili włączenia przełącznika. Nic, co już jest na kanale, nigdy nie zostanie opublikowane, choćby leżało tam od dawna — kto to napisał, napisał do pokoju, a nie do internetu. Wszyscy obecni są powiadamiani, gdy przełącznik się zmienia, żeby nikt nie dowiedział się tego z wyszukiwarki."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Registering a channel"
+msgstr "Rejestrowanie kanału"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Rules & Limits"
+msgstr "Zasady i ograniczenia"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Switching it off takes every page down straight away"
+msgstr "Wyłączenie natychmiast zdejmuje wszystkie strony"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, and only a registered channel has one."
+msgstr "Założyciel, i nikt inny. Operator moderuje pokój; decyzja, że to, co się w nim mówi, stanie się czytelne z zewnątrz, jest decyzją innego rodzaju i należy do osoby odpowiadającej za kanał. Przełącznik jest w Channel Central, na karcie Rejestracja, i ma go tylko zarejestrowany kanał."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "What is published"
+msgstr "Co jest publikowane"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Who can"
+msgstr "Kto może"

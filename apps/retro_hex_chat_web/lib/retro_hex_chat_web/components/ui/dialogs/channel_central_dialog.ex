@@ -84,6 +84,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :on_list_remove, :any, default: nil
   attr :on_list_select, :any, default: nil, doc: "List row select event (phx-value-nickname)"
   attr :on_cs_register, :any, default: nil
+  attr :on_cs_archive_toggle, :any, default: nil
   attr :on_cs_drop_request, :any, default: nil
   attr :on_cs_drop, :any, default: nil
   attr :on_cs_drop_cancel, :any, default: nil
@@ -213,6 +214,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             error_message={@cs_error}
             confirm_drop={@cs_confirm_drop}
             on_register={@on_cs_register}
+            on_archive_toggle={@on_cs_archive_toggle}
             on_drop_request={@on_cs_drop_request}
             on_drop={@on_cs_drop}
             on_drop_cancel={@on_cs_drop_cancel}
@@ -256,6 +258,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :error_message, :string, default: nil
   attr :confirm_drop, :boolean, default: false
   attr :on_register, :any, default: nil
+  attr :on_archive_toggle, :any, default: nil
   attr :on_drop_request, :any, default: nil
   attr :on_drop, :any, default: nil
   attr :on_drop_cancel, :any, default: nil
@@ -281,6 +284,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       |> assign(:access_entries, active_access_entries(registration, active_level))
       |> assign(:can_manage_active?, can_manage_access?(role, active_level, assigns.identified))
       |> assign(:can_remove?, removable?(assigns.access_selected, assigns.access_nick))
+      |> assign(:public_archive?, Map.get(registration, :public_archive?, false))
+      |> assign(:founder?, role == "founder")
 
     ~H"""
     <div class="space-y-2">
@@ -319,6 +324,31 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         <p :if={!@registered? && !@operator} class="text-[10px] text-muted-foreground italic mt-2">
           {dgettext("dialogs", "Only channel operators can register this channel.")}
         </p>
+
+        <%!-- The founder's decision, and nobody else's. An operator moderates
+              the room; deciding that what is said in it becomes readable from
+              outside is a different kind of decision. --%>
+        <div :if={@registered? && @founder?} class="mt-3" data-testid="cc-archive-switch">
+          <label class="flex items-start gap-2 text-xs">
+            <input
+              type="checkbox"
+              checked={@public_archive?}
+              phx-click={@on_archive_toggle}
+              phx-target={@target}
+              phx-value-enabled={to_string(!@public_archive?)}
+              data-testid="cc-archive-toggle"
+            />
+            <span>
+              <span class="font-bold">{dgettext("dialogs", "Public archive")}</span>
+              <span class="block text-[10px] text-muted-foreground">
+                {dgettext(
+                  "dialogs",
+                  "Publish a page per day that anybody can read and a search engine can index. Only what is said from the moment you switch this on — nothing already in the channel is ever published. Switching it off takes the pages down."
+                )}
+              </span>
+            </span>
+          </label>
+        </div>
 
         <div :if={!@registered? && @operator} class="mt-2">
           <.button

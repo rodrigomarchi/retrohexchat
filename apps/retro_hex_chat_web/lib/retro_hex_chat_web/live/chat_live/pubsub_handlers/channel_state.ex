@@ -204,6 +204,30 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
 
   # ── Topic changed ─────────────────────────────────────────
 
+  # Everybody in the room is told, because a decision to publish what they say
+  # next is not one they should find out about from a search engine.
+  def handle_info({:public_archive_changed, payload}, socket) do
+    msg =
+      if payload.enabled do
+        dgettext(
+          "chat",
+          "%{nickname} opened this channel's public archive. Everything said from now on is published at a page anybody can read.",
+          nickname: payload.nickname
+        )
+      else
+        dgettext(
+          "chat",
+          "%{nickname} closed this channel's public archive. The pages are no longer readable.",
+          nickname: payload.nickname
+        )
+      end
+
+    {:halt,
+     socket
+     |> maybe_refresh_cc(Map.get(payload, :channel))
+     |> system_event(msg)}
+  end
+
   def handle_info({:topic_changed, %{nickname: nick, topic: topic} = payload}, socket) do
     msg =
       dgettext("chat", "%{nickname} changed the topic to: %{topic}", nickname: nick, topic: topic)

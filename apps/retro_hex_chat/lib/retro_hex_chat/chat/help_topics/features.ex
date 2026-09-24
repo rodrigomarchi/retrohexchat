@@ -209,6 +209,26 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           )
       },
       %{
+        id: "feature-public-archive",
+        title: dgettext("help", "Public Channel Archive"),
+        category: dgettext("help", "Channel Settings"),
+        keywords: [
+          "archive",
+          dgettext("help", "public archive"),
+          dgettext("help", "search engine"),
+          dgettext("help", "indexable"),
+          dgettext("help", "channel logs"),
+          "seo"
+        ],
+        icon: :icon_channels,
+        description:
+          dgettext(
+            "help",
+            "Publish a page per day that anybody can read — only from the moment the founder switches it on."
+          ),
+        see_also: ["feature-channel-central", "chanserv-register"]
+      },
+      %{
         id: "feature-channel-central",
         title: dgettext("help", "Channel Central"),
         category: dgettext("help", "Channel Settings"),

@@ -18,6 +18,13 @@ defmodule RetroHexChat.Services.RegisteredChannel do
     field :registered_at, :utc_datetime_usec
     field :last_activity_at, :utc_datetime_usec
 
+    # Whether the channel agreed to be readable from outside, and from when.
+    # The instant is the ethical half: nothing said before it is ever
+    # published, and turning the archive off keeps it so that turning it back
+    # on cannot publish the stretch it was off for.
+    field :public_archive, :boolean, default: false
+    field :archive_since, :utc_datetime_usec
+
     timestamps(type: :utc_datetime_usec)
   end
 

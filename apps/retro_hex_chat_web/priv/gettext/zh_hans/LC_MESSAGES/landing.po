@@ -2480,3 +2480,45 @@ msgstr "你的地址已确认。它仍然是私密的，你随时可以在聊天
 #, elixir-autogen, elixir-format
 msgid "Your password has been changed. You can sign in with it now."
 msgstr "你的密码已修改，现在可以用它登录。"
+
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:183
+#: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "%{channel} archive"
+msgstr "%{channel} 的存档"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "%{channel} on %{date}"
+msgstr "%{date} 的 %{channel}"
+
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:193
+#, elixir-autogen, elixir-format
+msgid "%{channel} on %{date}: %{opening}"
+msgstr "%{date} 的 %{channel}：%{opening}"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "(edited)"
+msgstr "（已编辑）"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "All days"
+msgstr "全部日期"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Everything said here since the channel opened its archive, one page per day. Nothing from before it was opened is published."
+msgstr "自从频道开启存档以来这里说过的一切，每天一页。开启之前的内容一概不公开。"
+
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:59
+#, elixir-autogen, elixir-format
+msgid "Everything said in %{channel} since it opened its archive, one page per day."
+msgstr "自从 %{channel} 开启存档以来说过的一切，每天一页。"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:36
+#: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Join %{channel}"
+msgstr "加入 %{channel}"

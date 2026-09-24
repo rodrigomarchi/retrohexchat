@@ -1,0 +1,45 @@
+<p>
+  {dgettext(
+    "help_features",
+    "Everything a group knows usually dies inside the room it was said in. A channel can choose otherwise: its founder can open a public archive, and from that moment the channel gets a page per day that anybody can read and a search engine can index."
+  )}
+</p>
+<.help_h4 icon={:icon_lock}>{dgettext("help_features", "Who can")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, and only a registered channel has one."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "What is published")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Only what is said from the moment the switch goes on. Nothing already in the channel is ever published, however long it has been there — whoever wrote it wrote it into a room, not onto the internet. Everyone present is told when the switch changes, so nobody learns it from a search engine."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_features", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_features", "Deleted messages are absent; edited ones are marked as edited")}
+  </li>
+  <li>{dgettext("help_features", "Joins, parts and other channel notices are not published")}</li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Attachments are never published — the page says nothing about them"
+    )}
+  </li>
+  <li>{dgettext("help_features", "A secret channel cannot have a public archive")}</li>
+  <li>{dgettext("help_features", "Switching it off takes every page down straight away")}</li>
+</ul>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-channel-central">
+    {dgettext("help_features", "Channel Central")}
+  </.help_link>
+  ·
+  <.help_link topic="chanserv-register">
+    {dgettext("help_features", "Registering a channel")}
+  </.help_link>
+</p>

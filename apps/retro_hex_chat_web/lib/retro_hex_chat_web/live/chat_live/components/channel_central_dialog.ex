@@ -111,6 +111,26 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
 
   # ── ChanServ Registration / Access ───────────────────────────────
 
+  # The founder opening or closing the channel's public archive. The refusal is
+  # the channel's, checked again where the membership lives — the switch is
+  # only drawn for somebody who looks like the founder.
+  def handle_event("cc_cs_archive_toggle", %{"enabled" => enabled}, socket) do
+    channel = socket.assigns.channel_central_channel
+    nickname = socket.assigns.session.nickname
+
+    case Server.set_public_archive(channel, nickname, enabled == "true") do
+      :ok ->
+        {:noreply,
+         assign(socket,
+           channel_central_cs_error: nil,
+           channel_central_registration: ChanServ.registration_snapshot(channel, nickname)
+         )}
+
+      {:error, reason} ->
+        {:noreply, chanserv_error(socket, reason)}
+    end
+  end
+
   def handle_event("cc_cs_register", _params, socket) do
     cond do
       !socket.assigns.session.identified ->
@@ -506,6 +526,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         on_list_remove="cc_remove_list_entry"
         on_list_select="cc_list_select"
         on_cs_register="cc_cs_register"
+        on_cs_archive_toggle="cc_cs_archive_toggle"
         on_cs_drop_request="cc_cs_drop_request"
         on_cs_drop="cc_cs_drop"
         on_cs_drop_cancel="cc_cs_drop_cancel"

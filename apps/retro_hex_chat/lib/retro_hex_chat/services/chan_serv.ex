@@ -6,6 +6,7 @@ defmodule RetroHexChat.Services.ChanServ do
   require Logger
 
   alias RetroHexChat.ChangesetErrors
+  alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Observability
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.Queries
@@ -79,7 +80,8 @@ defmodule RetroHexChat.Services.ChanServ do
           founder: info.founder,
           registered_at: info.registered_at,
           viewer_role: viewer_role(channel_name, viewer_nick, server),
-          access: access_by_level(channel_name)
+          access: access_by_level(channel_name),
+          public_archive?: Archive.published?(channel_name)
         }
 
       {:error, _msg} ->
@@ -89,7 +91,8 @@ defmodule RetroHexChat.Services.ChanServ do
           founder: nil,
           registered_at: nil,
           viewer_role: nil,
-          access: empty_access()
+          access: empty_access(),
+          public_archive?: false
         }
     end
   end

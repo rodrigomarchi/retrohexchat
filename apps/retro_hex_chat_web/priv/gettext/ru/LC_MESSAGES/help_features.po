@@ -1216,6 +1216,7 @@ msgstr "Автоматический канал"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "Центральный канал"
@@ -3140,6 +3141,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
@@ -6614,3 +6616,63 @@ msgstr "Сохранение приватно. Автору не сообщаю�
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Tools ▸ Saved Messages lists everything you kept, newest first, and each row goes back to the line in its own conversation. You can keep up to 500; each one can carry a short note about why."
 msgstr "Пуск ▸ Инструменты ▸ Сохранённые сообщения перечисляет всё, что вы сохранили, начиная с нового, и каждая строка возвращает к сообщению в его собственном разговоре. Хранить можно до 500; к каждому можно добавить короткую заметку о причине."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "A secret channel cannot have a public archive"
+msgstr "У секретного канала не может быть публичного архива"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Attachments are never published — the page says nothing about them"
+msgstr "Вложения никогда не публикуются — страница о них ничего не говорит"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Deleted messages are absent; edited ones are marked as edited"
+msgstr "Удалённые сообщения отсутствуют; изменённые помечены как изменённые"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Everything a group knows usually dies inside the room it was said in. A channel can choose otherwise: its founder can open a public archive, and from that moment the channel gets a page per day that anybody can read and a search engine can index."
+msgstr "Всё, что знает группа, обычно умирает в той комнате, где это было сказано. Канал может выбрать иначе: его основатель может открыть публичный архив, и с этого момента у канала появляется по странице в день, которую может прочитать любой, а поисковая система — проиндексировать."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Joins, parts and other channel notices are not published"
+msgstr "Входы, выходы и прочие уведомления канала не публикуются"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Only what is said from the moment the switch goes on. Nothing already in the channel is ever published, however long it has been there — whoever wrote it wrote it into a room, not onto the internet. Everyone present is told when the switch changes, so nobody learns it from a search engine."
+msgstr "Только то, что сказано с момента включения. Ничего из уже имеющегося в канале не публикуется, сколько бы оно там ни лежало: кто это написал, написал в комнату, а не в интернет. Всем присутствующим сообщают, когда переключатель меняется, чтобы никто не узнал об этом из поисковой системы."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Registering a channel"
+msgstr "Регистрация канала"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Rules & Limits"
+msgstr "Правила и ограничения"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Switching it off takes every page down straight away"
+msgstr "Выключение сразу убирает все страницы"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, and only a registered channel has one."
+msgstr "Основатель, и никто больше. Оператор модерирует комнату; решение о том, что сказанное в ней становится читаемым снаружи, — решение другого рода, и оно принадлежит тому, кто отвечает за канал. Переключатель находится в Channel Central, на вкладке регистрации, и он есть только у зарегистрированного канала."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "What is published"
+msgstr "Что публикуется"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Who can"
+msgstr "Кто может"

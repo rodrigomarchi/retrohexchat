@@ -499,7 +499,7 @@ msgstr "Камера конференции Toggle"
 msgid "Toggle Conference Microphone"
 msgstr "Микрофон конференции Toggle"
 
-#: lib/retro_hex_chat/channels/server.ex:1357
+#: lib/retro_hex_chat/channels/server.ex:1387
 #: lib/retro_hex_chat/chat/service.ex:353
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -602,3 +602,19 @@ msgstr "Это сохранённое сообщение не ваше."
 #, elixir-autogen, elixir-format
 msgid "You have already saved %{count} messages. Remove one first."
 msgstr "Вы уже сохранили %{count} сообщений. Сначала удалите одно."
+
+#: lib/retro_hex_chat/chat/archive.ex:204
+#, elixir-autogen, elixir-format
+msgid "A secret channel cannot have a public archive."
+msgstr "У секретного канала не может быть публичного архива."
+
+#: lib/retro_hex_chat/chat/archive.ex:227
+#, elixir-autogen, elixir-format
+msgid "That change could not be saved."
+msgstr "Не удалось сохранить это изменение."
+
+#: lib/retro_hex_chat/chat/archive.ex:211
+#: lib/retro_hex_chat/chat/archive.ex:217
+#, elixir-autogen, elixir-format
+msgid "That channel is not registered."
+msgstr "Этот канал не зарегистрирован."

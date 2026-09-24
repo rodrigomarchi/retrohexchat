@@ -26,7 +26,7 @@ defmodule RetroHexChat.Channels.Server do
   }
 
   alias RetroHexChat.Chat
-  alias RetroHexChat.Chat.{Attachments, Content}
+  alias RetroHexChat.Chat.{Archive, Attachments, Content}
   alias RetroHexChat.Notifications
   alias RetroHexChat.Observability
   alias RetroHexChat.Repo
@@ -220,6 +220,22 @@ defmodule RetroHexChat.Channels.Server do
       [:retro_hex_chat, :channels, :pin, :set],
       %{"chat.channel" => channel_name},
       fn -> GenServer.call(via(channel_name), {:pin_message, nickname, message_id}) end
+    )
+  end
+
+  @doc """
+  Opens or closes the channel's public archive. Founder only.
+
+  Goes through the channel process rather than straight to the table because
+  everybody in the room has to be told: a decision to publish what they say
+  next is not one they should find out about from a search engine.
+  """
+  @spec set_public_archive(String.t(), String.t(), boolean()) :: :ok | {:error, String.t()}
+  def set_public_archive(channel_name, nickname, enabled?) do
+    Observability.span(
+      [:retro_hex_chat, :channels, :archive, :set],
+      %{"chat.channel" => channel_name},
+      fn -> GenServer.call(via(channel_name), {:set_public_archive, nickname, enabled?}) end
     )
   end
 
@@ -544,6 +560,20 @@ defmodule RetroHexChat.Channels.Server do
       reply(:ok, state)
     else
       {:error, _reason} = error -> reply(error, state)
+    end
+  end
+
+  def handle_call({:set_public_archive, nickname, enabled?}, _from, state) do
+    with :ok <- founder?(state.name, nickname),
+         {:ok, _channel} <- toggle_archive(state.name, enabled?) do
+      broadcast(
+        state.name,
+        {:public_archive_changed, %{channel: state.name, nickname: nickname, enabled: enabled?}}
+      )
+
+      reply(:ok, state)
+    else
+      {:error, reason} -> reply({:error, reason}, state)
     end
   end
 
@@ -1474,6 +1504,20 @@ defmodule RetroHexChat.Channels.Server do
   # The count rather than the list: every screen showing a channel displays how
   # many lines it keeps, and only the window that is open needs the lines
   # themselves — which it asks for when it opens.
+  # The founder and nobody else. An operator can moderate the room; deciding
+  # that what is said in it becomes public is a different kind of decision, and
+  # it belongs to whoever answers for the channel.
+  defp founder?(channel_name, nickname) do
+    if ChanServ.viewer_role(channel_name, nickname) == "founder" do
+      :ok
+    else
+      {:error, dgettext("channels", "Only the channel founder can change the public archive")}
+    end
+  end
+
+  defp toggle_archive(channel_name, true), do: Archive.publish(channel_name)
+  defp toggle_archive(channel_name, false), do: Archive.unpublish(channel_name)
+
   defp announce_pins(channel_name) do
     broadcast(
       channel_name,

@@ -22,7 +22,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 4.2 E-mail opcional | **pronto** (2026-09-23) |
 | 4.3 Fixar mensagem | **pronto** (2026-09-23) |
 | 4.4 Salvar mensagem | **pronto** (2026-09-23) |
-| 5.1 Arquivo público | não iniciado |
+| 5.1 Arquivo público | **pronto** (2026-09-24) |
 | 5.2 Threads | não iniciado |
 | 5.3 Eventos | não iniciado |
 | 5.4 Avatar no chat | não iniciado |
@@ -995,3 +995,86 @@ comando novo é o batch `commands`; um parágrafo no `/privacy` é o `public`.
 **O plano não está concluído.** 13 de 18 itens. A Onda 5 inteira — 5.1 arquivo
 público, 5.2 threads (plan mode obrigatório), 5.3 eventos, 5.4 avatar, 5.5
 emoji do servidor, 5.6 mensagem de voz — não foi iniciada.
+
+
+---
+
+## Iteração 5.1 — Arquivo público indexável
+
+Abre a Onda 5. Tudo o que um grupo sabe morre dentro da sala onde foi dito —
+é a queixa número um contra as plataformas fechadas e a razão de ninguém novo
+chegar sozinho: não há o que encontrar. Um canal que opta por isso ganha uma
+página por dia, em texto puro, que um mecanismo de busca consegue ler.
+
+**O que ficou**
+
+- `public_archive` e `archive_since` em `registered_channels`. A segunda coluna
+  é a ética: **nada dito antes do interruptor é publicado, nunca**. Desligar
+  mantém o instante, para que religar não publique o trecho em que esteve
+  desligado.
+- `Chat.Archive` com `publish/1`, `unpublish/1`, `published?/1`, `days_for/1`,
+  `messages_for/2` e `published_channels/0`. Uma consulta compartilhada carrega
+  as duas metades do recurso: o corte por `archive_since` e o que conta como
+  alguém falando (`message` e `action`, nada de `system`/`service`/`notice`).
+- Publica-se o **texto visível**, nunca a fonte: uma página que imprimisse o
+  formato de fio mostraria os dígitos do código de cor ao leitor.
+- Rotas `/archive/:channel` e `/archive/:channel/:date`, sem prefixo **e** no
+  loop de locales, com canônica sempre sem prefixo e **zero alternates de
+  hreflang** — uma conversa não tem versão traduzida.
+- Pedaço próprio no sitemap, `robots.txt` liberando `/archive/`, interruptor em
+  Channel Central (só fundador) e mensagem de sistema no canal quando muda.
+
+**Desvios do plano, conscientes**
+
+- **Controller, não `ArchiveLive`.** O plano nomeava uma LiveView na atividade
+  4 e, na mesma respiração, pedia `etag`/`304`/gzip na atividade 5 e `get/2`
+  nos testes — que são coisas de controller. Nada nesta página se mexe; uma
+  LiveView abriria um socket para desenhar texto do passado. O plano
+  contradizia a si mesmo e eu segui a metade que os testes descreviam.
+- **Nada é cacheado entre requisições**, ao contrário do `SitemapController`
+  que o plano mandou copiar. Desligar o arquivo, apagar uma linha ou tornar o
+  canal secreto tem de derrubar a página na requisição seguinte, e um corpo em
+  `:persistent_term` continuaria respondendo. O pedaço do sitemap é construído
+  por requisição pelo mesmo motivo.
+
+**Aprendizados**
+
+- **O CSRF do layout tornava o `etag` inútil.** A primeira versão fazia hash do
+  documento renderizado; o layout carrega um token novo a cada requisição, e
+  nenhum robô jamais teria revalidado nada. O `etag` passou a sair dos **dados**
+  (as linhas e o que muda como elas leem), o que também permite responder 304
+  antes de renderizar.
+- **`max-age=300` mantinha no ar uma página já retirada.** O Playwright provou:
+  o leitor voltou ao endereço depois de o fundador desligar e o próprio browser
+  serviu a página do cache, sem consultar o servidor. Virou
+  `max-age=0, must-revalidate` — revalidar não custa nada ao robô, que recebe
+  304, e é a única configuração em que desligar realmente desliga.
+- **A tela nova não renderizava sem o `landing_layout`.** Um `desktop_window`
+  solto não tem workspace; a auditoria visual pegou na primeira foto, e a
+  segunda mostrou a janela deslocada atrás do About — passou a `default_centered`
+  com altura própria.
+- **O erro de escopo do i18n se repetiu duas vezes na mesma iteração.** O passe
+  de overrides casa **msgid**, não msgid+domínio: 41 entradas alheias na
+  primeira passada ("Pinned Window", "(edited)", "Join %{channel}") e mais 14
+  na segunda (Kick, Status, Auto — que o próprio `i18n.quality.check` acusou
+  como desvio de glossário). Todas revertidas contra o snapshot, e os msgid
+  compartilhados saíram do bloco. **Auditar depois de cada passada, não no fim.**
+- **O palpite fuzzy de novo.** "That change could not be saved." veio copiado de
+  "That note could not be saved." e "channel logs" de "channel list". Desta vez
+  li antes de limpar a marca, que é o que faltou no 4.4.
+- **Inventei uma `@section` que não existia** no spec de e2e, e `batches.mjs
+  --check` recusou na hora: uma seção fora de batch é um spec que a varredura
+  pula. Passou para `PW`, que é o batch que o Gate do item nomeia.
+
+**Arquivos tocados** — migration `add_public_archive_to_registered_channels`,
+`chat/archive.ex`, `services/registered_channel.ex`, `services/chan_serv.ex`,
+`channels/server.ex`, `controllers/archive_controller.ex`,
+`controllers/archive_html.ex` + dois `.heex`, `controllers/sitemap_controller.ex`,
+`components/layouts/landing_live.html.heex`,
+`components/ui/dialogs/channel_central_dialog.ex`,
+`chat_live/components/channel_central_dialog.ex`,
+`chat_live/pubsub_handlers/channel_state.ex`, `router.ex`,
+`priv/static/robots.txt`, `help_topics/features.ex`,
+`help_content/feature_public_archive.html.heex`,
+`e2e/tests/archive-public.spec.ts`, e os catálogos `channels`, `chat`,
+`dialogs`, `help`, `help_features`, `landing`.

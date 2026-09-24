@@ -1,0 +1,41 @@
+<.landing_layout active_page={:archive} windows={@windows}>
+  <section class="m-4" aria-labelledby="archive-heading">
+    <.desktop_window id="archive-day" width={760} height={560} default_centered title={@channel}>
+      <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
+
+      <h1 id="archive-heading" class="text-sm font-bold mb-2">
+        {dgettext("landing", "%{channel} on %{date}", channel: @channel, date: @date)}
+      </h1>
+
+      <ol class="space-y-1" data-testid="archive-lines">
+        <li
+          :for={entry <- @entries}
+          class="text-sm flex items-start gap-2"
+          id={"line-#{entry.id}"}
+        >
+          <span class="text-muted-foreground shrink-0 tabular-nums">{at(entry.at)}</span>
+          <span class="font-bold shrink-0">
+            {if entry.action?, do: "*", else: "<#{entry.author}>"}
+          </span>
+          <span class="break-words">
+            <span :if={entry.action?} class="italic">{entry.author}</span>
+            {entry.text}
+            <span :if={entry.edited?} class="text-muted-foreground">
+              {dgettext("landing", "(edited)")}
+            </span>
+          </span>
+        </li>
+      </ol>
+
+      <p class="text-sm mt-4">
+        <.link navigate={~p"/archive/#{@slug}"} class="underline">
+          {dgettext("landing", "All days")}
+        </.link>
+        ·
+        <.link navigate={~p"/join/#{@slug}"} class="underline">
+          {dgettext("landing", "Join %{channel}", channel: @channel)}
+        </.link>
+      </p>
+    </.desktop_window>
+  </section>
+</.landing_layout>

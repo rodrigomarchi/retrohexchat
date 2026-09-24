@@ -1205,6 +1205,7 @@ msgstr "Lengkapi Otomatis Saluran"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "Pusat Saluran"
@@ -3114,6 +3115,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
@@ -6579,3 +6581,63 @@ msgstr "Menyimpan bersifat pribadi. Penulisnya tidak diberi tahu, tidak ada hitu
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Tools ▸ Saved Messages lists everything you kept, newest first, and each row goes back to the line in its own conversation. You can keep up to 500; each one can carry a short note about why."
 msgstr "Start ▸ Perkakas ▸ Pesan Tersimpan mendaftar semua yang Anda simpan, terbaru dulu, dan setiap baris kembali ke pesan di percakapannya sendiri. Anda bisa menyimpan hingga 500; masing-masing bisa membawa catatan singkat tentang alasannya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "A secret channel cannot have a public archive"
+msgstr "Kanal rahasia tidak boleh punya arsip publik"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Attachments are never published — the page says nothing about them"
+msgstr "Lampiran tidak pernah diterbitkan — halaman tidak menyebutkannya sama sekali"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Deleted messages are absent; edited ones are marked as edited"
+msgstr "Pesan yang dihapus tidak ada; yang disunting ditandai sebagai disunting"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Everything a group knows usually dies inside the room it was said in. A channel can choose otherwise: its founder can open a public archive, and from that moment the channel gets a page per day that anybody can read and a search engine can index."
+msgstr "Semua yang diketahui sebuah kelompok biasanya mati di dalam ruangan tempat ia dikatakan. Sebuah kanal bisa memilih lain: pendirinya dapat membuka arsip publik, dan sejak saat itu kanal mendapat satu halaman per hari yang bisa dibaca siapa saja dan diindeks mesin pencari."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Joins, parts and other channel notices are not published"
+msgstr "Masuk, keluar dan pemberitahuan kanal lainnya tidak diterbitkan"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Only what is said from the moment the switch goes on. Nothing already in the channel is ever published, however long it has been there — whoever wrote it wrote it into a room, not onto the internet. Everyone present is told when the switch changes, so nobody learns it from a search engine."
+msgstr "Hanya yang dikatakan sejak sakelar dinyalakan. Tidak ada yang sudah ada di kanal yang pernah diterbitkan, sudah berapa lama pun ia di sana — siapa pun yang menulisnya menulisnya ke dalam sebuah ruangan, bukan ke internet. Semua yang hadir diberi tahu saat sakelar berubah, sehingga tak seorang pun mengetahuinya dari mesin pencari."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Registering a channel"
+msgstr "Mendaftarkan kanal"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Rules & Limits"
+msgstr "Aturan & Batas"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Switching it off takes every page down straight away"
+msgstr "Mematikannya langsung menurunkan semua halaman"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, and only a registered channel has one."
+msgstr "Pendirinya, dan tidak ada orang lain. Seorang operator memoderasi ruangan; memutuskan bahwa apa yang dikatakan di dalamnya menjadi terbaca dari luar adalah keputusan jenis lain, jadi itu milik siapa pun yang bertanggung jawab atas kanal. Sakelarnya ada di Channel Central, pada tab Pendaftaran, dan hanya kanal terdaftar yang punya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "What is published"
+msgstr "Apa yang diterbitkan"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Who can"
+msgstr "Siapa yang bisa"

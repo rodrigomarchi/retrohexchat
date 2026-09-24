@@ -6,7 +6,12 @@
 >
   <head>
     <% canonical_path = assigns[:canonical_path] || "/" %>
-    <% canonical_url = RetroHexChatWeb.SEO.canonical_url(canonical_path) %>
+    <%!-- A page may name its own canonical. The archive does: a conversation
+          has no translated version, so its canonical is the unprefixed URL
+          under every locale segment rather than the current locale's. --%>
+    <% canonical_url =
+      assigns[:canonical_url] || RetroHexChatWeb.SEO.canonical_url(canonical_path) %>
+    <% hreflang_alternates? = assigns[:hreflang_alternates] != false %>
     <% page_title = assigns[:page_title] || "Retro Hex Chat — Self-hosted chat with P2P calls" %>
     <% page_description =
       assigns[:page_description] ||
@@ -49,8 +54,17 @@
           a share link in the index is an invitation nobody extended. --%>
     <meta name="robots" content={assigns[:robots] || "index, follow"} />
     <link rel="canonical" href={canonical_url} />
+    <%!-- hreflang is a claim that the same page exists in another language.
+          For a conversation it is false, so the archive emits none rather than
+          pointing a search engine at the same text fourteen times. --%>
     <link
-      :for={alternate <- RetroHexChatWeb.SEO.alternate_links(canonical_path)}
+      :for={
+        alternate <-
+          if(hreflang_alternates?,
+            do: RetroHexChatWeb.SEO.alternate_links(canonical_path),
+            else: []
+          )
+      }
       rel="alternate"
       hreflang={alternate.hreflang}
       href={alternate.href}
@@ -72,7 +86,13 @@
       content={RetroHexChatWeb.I18n.open_graph_locale()}
     />
     <meta
-      :for={locale <- RetroHexChatWeb.SEO.open_graph_alternate_locales()}
+      :for={
+        locale <-
+          if(hreflang_alternates?,
+            do: RetroHexChatWeb.SEO.open_graph_alternate_locales(),
+            else: []
+          )
+      }
       property="og:locale:alternate"
       content={locale}
     />

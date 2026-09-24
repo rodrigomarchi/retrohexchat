@@ -2511,3 +2511,45 @@ msgstr "アドレスが確認されました。非公開のままで、チャッ
 #, elixir-autogen, elixir-format
 msgid "Your password has been changed. You can sign in with it now."
 msgstr "パスワードを変更しました。そのままサインインできます。"
+
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:183
+#: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "%{channel} archive"
+msgstr "%{channel} のアーカイブ"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "%{channel} on %{date}"
+msgstr "%{date} の %{channel}"
+
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:193
+#, elixir-autogen, elixir-format
+msgid "%{channel} on %{date}: %{opening}"
+msgstr "%{date} の %{channel}：%{opening}"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "(edited)"
+msgstr "（編集済み）"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "All days"
+msgstr "すべての日"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Everything said here since the channel opened its archive, one page per day. Nothing from before it was opened is published."
+msgstr "チャンネルがアーカイブを開いてから、ここで語られたすべて。1 日 1 ページで、開く前のものは公開されません。"
+
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:59
+#, elixir-autogen, elixir-format
+msgid "Everything said in %{channel} since it opened its archive, one page per day."
+msgstr "%{channel} がアーカイブを開いてから語られたすべて。1 日 1 ページです。"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:36
+#: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Join %{channel}"
+msgstr "%{channel} に参加"

@@ -128,6 +128,30 @@ defmodule RetroHexChatWeb.Router do
     get "/sitemaps/:name", SitemapController, :show
   end
 
+  # The archive is the only part of a conversation readable from outside, and
+  # it is a controller rather than a LiveView because nothing on it moves and
+  # a robot needs an `etag`. `archive` joins the reserved first segments; it
+  # collides with no locale tag in `config/i18n_locales.exs`.
+  scope "/", RetroHexChatWeb do
+    pipe_through :landing_live
+
+    get "/archive/:channel", ArchiveController, :index
+    get "/archive/:channel/:date", ArchiveController, :day
+  end
+
+  for locale_segment <- @localized_locale_segments do
+    scope "/#{locale_segment}", RetroHexChatWeb do
+      pipe_through :landing_live
+
+      # Registered under every locale segment like any other public route, so
+      # a reader browsing in pt-BR gets the page instead of a router error —
+      # the mistake `/join/:slug` shipped with. The canonical still points at
+      # the unprefixed URL, because a conversation has no translation.
+      get "/archive/:channel", ArchiveController, :index
+      get "/archive/:channel/:date", ArchiveController, :day
+    end
+  end
+
   for locale_segment <- @localized_locale_segments do
     live_session_name = :"help_locale_#{String.replace(locale_segment, "-", "_")}"
 

@@ -195,7 +195,7 @@ msgstr[0] "%{count} 用戶"
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:410
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:434
 #, elixir-autogen, elixir-format
 msgid "%{message} (%{reason})"
 msgstr "%{message} (%{reason})"
@@ -205,7 +205,7 @@ msgstr "%{message} (%{reason})"
 msgid "%{nickname} already has a custom color"
 msgstr "%{nickname} 已經有自定義顏色"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:209
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:233
 #, elixir-autogen, elixir-format
 msgid "%{nickname} changed the topic to: %{topic}"
 msgstr "%{nickname}將話題改爲: %{topic}"
@@ -302,13 +302,13 @@ msgstr "%{operator}在%{channel}中取消了%{nickname}的邀請例外。"
 msgid "%{syntax} - %{description}"
 msgstr "%{syntax} - %{description}"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:298
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:322
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:202
 #, elixir-autogen, elixir-format
 msgid "%{target} has been muted in %{channel}."
 msgstr "%{target}在%{channel}中已變音."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:313
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:337
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:218
 #, elixir-autogen, elixir-format
 msgid "%{target} has been unmuted in %{channel}."
@@ -354,12 +354,12 @@ msgstr "*%{inviter}邀請您參加%{channel}"
 msgid "* %{nickname} has gone offline"
 msgstr "* %{nickname} 已經下線"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:340
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:364
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} has knocked on %{channel}"
 msgstr "*%{nickname} 敲了%{channel}"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:334
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:358
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} has knocked on %{channel} (%{message})"
 msgstr "* %{nickname} 敲了%{channel} (%{message})"
@@ -753,13 +753,13 @@ msgstr "離開"
 msgid "Ban"
 msgstr "禁止"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:643
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:664
 #, elixir-autogen, elixir-format
 msgid "Ban error: %{message}"
 msgstr "封禁錯誤: %{message}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:646
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:655
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:667
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:676
 #, elixir-autogen, elixir-format
 msgid "Ban exception error: %{message}"
 msgstr "禁止例外錯誤: %{message}"
@@ -865,23 +865,23 @@ msgstr "ChanServ管理頻道註冊和訪問控制."
 msgid "Changing nickname"
 msgstr "更改暱稱"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:247
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:257
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:271
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:281
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel} has been deleted by %{admin}."
 msgstr "頻道%{channel}已被%{admin}刪除."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:270
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:294
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel} history from %{from} was purged by %{admin}."
 msgstr "從%{from}開始的頻道%{channel}歷史被%{admin}清除."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:276
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:300
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel} history was purged by %{admin}."
 msgstr "頻道%{channel}歷史被%{admin}清除."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:558
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:579
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel} not found"
 msgstr "頻道 %{channel} 未找到"
@@ -902,7 +902,7 @@ msgstr "頻道設置"
 msgid "Channel filter must start with #"
 msgstr "頻道過濾器必須從 # 開始"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:392
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:412
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:236
 #, elixir-autogen, elixir-format
 msgid "Channel ownership transferred to %{target}."
@@ -1338,8 +1338,8 @@ msgstr "無效的正則"
 msgid "Invalid trigger event"
 msgstr "無效的觸發事件"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:649
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:658
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:670
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:679
 #, elixir-autogen, elixir-format
 msgid "Invite exception error: %{message}"
 msgstr "邀請例外錯誤: %{message}"
@@ -1461,7 +1461,7 @@ msgstr "菜單已滿( 每類最多10項)"
 msgid "Message to %{target} — / for commands"
 msgstr "信件到 %{target} - / 用於命令"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:748
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:769
 #, elixir-autogen, elixir-format
 msgid "Mode error: %{message}"
 msgstr "模式錯誤: %{message}"
@@ -1954,7 +1954,7 @@ msgstr "計時器 '%{name}' 找不到"
 msgid "Tip: Go to Help > Help Topics for the full documentation."
 msgstr "提示: 去幫助 > 幫助主題用於完整文檔 。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:306
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:326
 #, elixir-autogen, elixir-format
 msgid "Topic error: %{message}"
 msgstr "話題錯誤: %{message}"
@@ -2000,7 +2000,7 @@ msgstr "鍵入信件..."
 msgid "URL saved to URL Catcher"
 msgstr "URL 保存到 URL 抓取器"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:652
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:673
 #, elixir-autogen, elixir-format
 msgid "Unban error: %{message}"
 msgstr "取消禁用錯誤: %{message}"
@@ -2179,7 +2179,7 @@ msgstr "您已被管理員啞音 : %{reason}"
 msgid "You have been unmuted by an administrator."
 msgstr "您已經被管理員解禁了 。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:551
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:572
 #, elixir-autogen, elixir-format
 msgid "You must be a member of %{channel} to open Channel Central"
 msgstr "您必須加入 %{channel} 打開中央頻道"
@@ -2590,17 +2590,17 @@ msgstr "閒置爲"
 msgid "Invite to Channel..."
 msgstr "邀請到頻道..."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:336
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:356
 #, elixir-autogen, elixir-format
 msgid "Join throttle disabled."
 msgstr "加入節流閥禁用 。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:843
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:864
 #, elixir-autogen, elixir-format
 msgid "Join throttle must be a non-negative integer."
 msgstr "加入節流閥必須是非負整數."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:344
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:364
 #, elixir-autogen, elixir-format
 msgid "Join throttle set to %{seconds} seconds."
 msgstr "加入限流已設定為 %{seconds} 秒。"
@@ -2664,8 +2664,8 @@ msgstr "暱稱"
 msgid "Nickname is required"
 msgstr "需要暱稱"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:228
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:378
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:248
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:398
 #: lib/retro_hex_chat_web/live/chat_live/user_lookup_events.ex:91
 #, elixir-autogen, elixir-format
 msgid "Nickname is required."
@@ -2708,12 +2708,12 @@ msgstr "離線"
 msgid "Online for"
 msgstr "在線"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:941
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:962
 #, elixir-autogen, elixir-format
 msgid "Only channel operators can register this channel."
 msgstr "只有頻道運營商可以註冊此頻道."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:163
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:183
 #, elixir-autogen, elixir-format
 msgid "Only the founder can drop a channel."
 msgstr "只有創始人才能丟棄一個頻道."
@@ -2778,12 +2778,12 @@ msgstr "搜索歷史"
 msgid "Seconds must be a number."
 msgstr "秒必須是一個數字。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:706
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:727
 #, elixir-autogen, elixir-format
 msgid "Select a nickname from this list."
 msgstr "從此列表中選擇暱稱 。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:700
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:721
 #, elixir-autogen, elixir-format
 msgid "Select a nickname to remove."
 msgstr "選擇要刪除的暱稱 。"
@@ -2809,8 +2809,8 @@ msgstr "共享頻道"
 msgid "Sound Settings"
 msgstr "聲音設置"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:860
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:862
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:881
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:883
 #, elixir-autogen, elixir-format
 msgid "Throttle error: %{message}"
 msgstr "限流錯誤：%{message}"
@@ -2862,20 +2862,20 @@ msgstr "用戶查詢"
 msgid "Wallops"
 msgstr "Wallops"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:815
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:817
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:834
 #: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:836
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:838
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:855
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:857
 #, elixir-autogen, elixir-format
 msgid "Welcome error: %{message}"
 msgstr "歡迎訊息錯誤：%{message}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:828
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:849
 #, elixir-autogen, elixir-format
 msgid "Welcome message cleared."
 msgstr "歡迎留言完畢"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:809
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:830
 #, elixir-autogen, elixir-format
 msgid "Welcome message saved."
 msgstr "歡迎留言已保存 。"
@@ -2895,12 +2895,12 @@ msgstr "你已經在用這個綽號了"
 msgid "You are not in any channel"
 msgstr "你沒有在任何頻道"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:947
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:968
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to manage this list."
 msgstr "您沒有權限管理此列表 。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:938
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:959
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to change this setting."
 msgstr "您必須是頻道操作員來更改此設置 。"
@@ -2910,7 +2910,7 @@ msgstr "您必須是頻道操作員來更改此設置 。"
 msgid "You must be a channel operator to use this command"
 msgstr "您必須是頻道操作員才能使用此命令"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:944
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:965
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use ChanServ."
 msgstr "你必須和NickServ確認身份才能使用ChanServ."
@@ -4130,3 +4130,13 @@ msgstr "已儲存的訊息"
 #, elixir-autogen, elixir-format
 msgid "That message could not be found."
 msgstr "找不到該訊息。"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:218
+#, elixir-autogen, elixir-format
+msgid "%{nickname} closed this channel's public archive. The pages are no longer readable."
+msgstr "%{nickname} 關閉了這個頻道的公開封存。那些頁面已經無法閱讀。"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:212
+#, elixir-autogen, elixir-format
+msgid "%{nickname} opened this channel's public archive. Everything said from now on is published at a page anybody can read."
+msgstr "%{nickname} 開啟了這個頻道的公開封存。從現在起說的每一句話都會發布在任何人都能讀到的頁面上。"
