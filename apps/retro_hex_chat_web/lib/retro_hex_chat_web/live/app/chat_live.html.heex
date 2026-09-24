@@ -528,6 +528,26 @@
       />
     </.desktop_window>
 
+    <%!-- Thread — one message and everything that answered it, read forwards.
+          Nothing is moved here: the replies are still in the conversation. --%>
+    <.desktop_window
+      :if={"thread" in @open_windows}
+      {WindowRegistry.attrs("thread")}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="thread-window"
+    >
+      <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.ThreadDialog}
+        id={RetroHexChatWeb.ChatLive.Components.ThreadDialog.id()}
+        nick_color_fn={@nick_color_fn}
+        timestamp_format={@timestamp_format}
+        timezone={@timezone}
+        strip_formatting={@session.strip_formatting}
+        viewer={@session.nickname}
+      />
+    </.desktop_window>
+
     <%!-- Flood Protection — server-managed: uncontrolled form, nothing to keep
           across closes. --%>
     <.desktop_window

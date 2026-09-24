@@ -119,6 +119,20 @@ defmodule RetroHexChatWeb.PaginatedList do
   end
 
   @doc """
+  Adds or replaces one row at the end of the list.
+
+  For a row that arrives outside a page — something written while the list is
+  on screen. `stream_insert` of an id already in the stream replaces it in
+  place, so this is also how such a row is corrected.
+  """
+  @spec insert(Phoenix.LiveView.Socket.t(), atom(), term()) :: Phoenix.LiveView.Socket.t()
+  def insert(socket, name, item) do
+    socket
+    |> update_state(name, &State.counted_one/1)
+    |> insert_all(name, [item], at: -1)
+  end
+
+  @doc """
   Adds a page before the current rows, preserving their order.
 
   Items arrive oldest-first; inserting them reversed at position 0 lands them in

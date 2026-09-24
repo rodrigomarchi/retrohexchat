@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **229 spec files** under `e2e/tests/`.
-- **485 Playwright `test()` cases**.
-- **480 documented flows**, 479 done, 1 not done.
+- **230 spec files** under `e2e/tests/`.
+- **486 Playwright `test()` cases**.
+- **481 documented flows**, 480 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -551,6 +551,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | S11 | Failed pending message can be deleted without leaving retry/orphan UI behind (features P2) | `tests/chat-message-retry.spec.ts` | done |
 | S12 | Message timestamps use detected browser timezone with the current default `dd/mm HH:MM` format (features P2) | `tests/chat-timestamps.spec.ts` | done |
 | S13 | Saving a message from its menu keeps it in the Saved Messages window, privately, with a note (features P1) | `tests/chat-saved-messages.spec.ts` | done |
+| S14 | A message that was answered counts its replies and opens them together, while every reply stays in the room (features P1) | `tests/chat-threads.spec.ts` | done |
 
 ### T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
 

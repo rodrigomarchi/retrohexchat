@@ -357,6 +357,20 @@
   }
 }
 
+/* ── Threads ────────────────────────────────────────────────────────────────
+   "N replies" under the line that collected them. A link rather than a chip:
+   a reaction is something you press back, a thread is somewhere you go, and
+   drawing them the same way would offer the same gesture for both. */
+.chat-thread-tag {
+  @apply mt-1 inline-flex items-center gap-1 text-[11px] text-accent underline-offset-2;
+  line-height: 16px;
+}
+
+.chat-thread-tag:hover,
+.chat-thread-tag:focus-visible {
+  @apply underline;
+}
+
 /* ── Mentions ───────────────────────────────────────────────────────────────
    The count that says "this one is about you", beside the grey one that only
    says "something is new". Smaller than the unread badge on purpose: two

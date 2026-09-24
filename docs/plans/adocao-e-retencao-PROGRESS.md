@@ -23,7 +23,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 4.3 Fixar mensagem | **pronto** (2026-09-23) |
 | 4.4 Salvar mensagem | **pronto** (2026-09-23) |
 | 5.1 Arquivo público | **pronto** (2026-09-24) |
-| 5.2 Threads | não iniciado |
+| 5.2 Threads | **pronto** (2026-09-24) |
 | 5.3 Eventos | não iniciado |
 | 5.4 Avatar no chat | não iniciado |
 | 5.5 Emoji do servidor | não iniciado |
@@ -1078,3 +1078,97 @@ página por dia, em texto puro, que um mecanismo de busca consegue ler.
 `help_content/feature_public_archive.html.heex`,
 `e2e/tests/archive-public.spec.ts`, e os catálogos `channels`, `chat`,
 `dialogs`, `help`, `help_features`, `landing`.
+
+---
+
+## Iteração 5.2 — Threads
+
+A maior mudança de interface do plano, e a que mais depende de não exagerar.
+Responder já era bom; o que faltava era **saber que a conversa aconteceu**: uma
+linha que juntou seis respostas parecia idêntica a uma que não juntou nenhuma, e
+as seis ficavam espalhadas por trinta linhas de outro assunto.
+
+**O que ficou**
+
+- `Chat.Replies` resolve a raiz antes de montar a citação. `reply_to_id` passa a
+  ser **o ponteiro da thread**, e o invariante "uma resposta nunca tem
+  respostas" vira testável. Sem coluna nova, sem CTE recursiva, sem migração de
+  dados: cadeias antigas continuam como sempre foram, apenas fora da contagem.
+- `Queries.thread_for/2` — página ascendente (`id > cursor`), porque uma thread
+  se lê para a frente e a linha que a começou já está acima — e
+  `thread_counts_for_many/2`, um `group_by` só para a página inteira, na forma
+  de `Reactions.summary_for_many/2`.
+- Índice composto `(reply_to_id, id)` nas duas tabelas, substituindo os de
+  coluna única de 2026-02: o composto responde às duas perguntas e cobre o que o
+  antigo cobria.
+- `StreamItem` busca reações **e** contagens na mesma passada; `reply_count`
+  ausente e zero são a mesma frase e a linha não desenha nenhuma das duas.
+- Janela Thread: raiz no topo, respostas em ordem, "Responder nesta thread" no
+  rodapé. Tudo desenhado por `MessageRow` — o painel não tem ideia própria de
+  como é uma mensagem.
+- A ajuda ganhou `feature-threads` e o tópico de resposta foi **corrigido**:
+  descrevia um botão ↩ de hover que não existe e pedia para escolher
+  "Responder" dentro de uma frase em inglês. Ajuda que nomeia um controle
+  inexistente é defeito, não estilo.
+
+**Desvios do plano, conscientes**
+
+- **Aplanamento na escrita, não na leitura.** O plano dizia "aplanadas na raiz"
+  e "não uma coluna nova". Com `reply_to_id` apontando para o pai real, ler uma
+  thread exigiria CTE recursiva em duas consultas e seria a primeira do
+  repositório. Resolver a raiz em `Replies.attrs/2` custa um hop, e só quando o
+  pai já é resposta. Consequência assumida: responder a uma resposta passa a
+  citar a **raiz**, e a citação vira o marcador de qual conversa aquela linha
+  continua.
+- **A janela não ganhou composer.** `Components.Composer` é ilha de id fixo e o
+  `send_update` do pai é roteado por `Composer.id()`: uma segunda instância
+  dentro do ChatLive colidiria. O botão arma o composer da sala — que é
+  literalmente "o `reply_to_id` vem do painel", sem forkar o componente.
+- **Janela do desktop, não faixa lateral.** O plano dizia "painel lateral";
+  neste produto toda lista é janela gerenciada. Uma faixa fixa na casca seria um
+  conceito de layout novo para nada.
+
+**Aprendizados**
+
+- **`stream_insert` de um id que o stream não tem acrescenta a linha no fim.**
+  Recontar a raiz quando chega uma resposta desenharia a raiz de novo lá
+  embaixo, fora de ordem, se ela já tivesse rolado para fora da página
+  carregada. `MessageViewport` ganhou `insert_if_present/2`, que usa o
+  `rendered` que a ilha já mantinha — ela sempre soube o que tem na tela,
+  ninguém tinha perguntado. Vermelho visto por sabotagem e revertido.
+- **O script de overrides reescreveu 13 entradas alheias outra vez** (Kick,
+  Auto, Status), o mesmo defeito do 5.1 — ele casa **msgid**, não msgid+domínio,
+  e o valor curado no script já divergia do catálogo. A auditoria depois de cada
+  passada pegou na hora; revertido contra o snapshot.
+- **As chaves do override são texto desescapado.** Duas entradas com aspas
+  internas não casaram e ficaram vazias, porque eu escrevi a chave com `\"` e o
+  parser do script já desescapa. Só o gate `i18n.catalog.check` contou a
+  verdade: `empty=2` em treze locales.
+- **Todo palpite fuzzy do merge estava errado**, sem exceção: "%{count} reply"
+  veio de "%{count} user", "Could not load more of this thread." veio das
+  menções, "Opening a Thread" veio de "Opening". Lidos antes de limpar a marca,
+  como manda a memória.
+- **A auditoria visual pegou o que nenhum teste pegaria:** dentro da janela,
+  cada resposta repetia a citação da raiz que já estava fixa no topo — três
+  cópias da mesma frase. `without_quote/1` no painel. A janela é a citação.
+- **O teste que conta consultas precisa ser `async: false`.** Verde sozinho,
+  vermelho no `make ci`: o handler de telemetria conta as consultas de todos os
+  testes assíncronos da partição. 97 em vez de 1. `reactions_test` já era
+  síncrono pelo mesmo motivo, e eu não tinha lido por quê.
+
+**Gates** — `make ci` 18/18 · `make e2e.batch BATCH=messages` 43 passed ·
+`make e2e.batch BATCH=shell` 58 passed · auditoria visual em três quadros.
+
+**Arquivos tocados** — migration `index_replies_by_parent`, `chat/replies.ex`,
+`chat/queries.ex`, `chat_live/stream_item.ex`, `chat_live/thread_events.ex`,
+`chat_live/components/thread_dialog.ex`,
+`chat_live/components/message_viewport.ex`,
+`components/ui/dialogs/thread_dialog.ex`,
+`components/ui/chat/message_indicators.ex`, `components/ui/chat/message_row.ex`,
+`components/ui/chat/chat_context_menu.ex`, `chat_live/context_menu_events.ex`,
+`chat_live/pubsub_handlers/messages.ex`, `chat_live/window_registry.ex`,
+`live/paginated_list.ex` + `state.ex`, `app/chat_live.ex` + `.html.heex`,
+`assets/css/retrohex/components/chat-message.css`, `help_topics/features.ex`,
+`help_content/feature_threads.html.heex` +
+`feature_message_reply.html.heex`, `e2e/tests/chat-threads.spec.ts`, e os
+catálogos `chat`, `dialogs`, `help`, `help_features`.

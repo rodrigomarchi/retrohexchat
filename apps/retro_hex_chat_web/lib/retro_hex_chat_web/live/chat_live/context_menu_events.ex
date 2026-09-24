@@ -62,6 +62,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelper
   alias RetroHexChatWeb.ChatLive.Helpers.LobbyInvite
   alias RetroHexChatWeb.ChatLive.SaveEvents
+  alias RetroHexChatWeb.ChatLive.ThreadEvents
   alias RetroHexChatWeb.ChatLive.UiActions.Invite
 
   def handle_event("nick_right_click", %{"nick" => nick} = params, socket) do
@@ -753,11 +754,12 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   defp kept_state(socket, params, :message) do
     %{
       pinned: pinned?(socket, params["message_id"]),
-      saved: SaveEvents.saved?(socket, params["message_id"])
+      saved: SaveEvents.saved?(socket, params["message_id"]),
+      replies: ThreadEvents.reply_count(socket, params["message_id"])
     }
   end
 
-  defp kept_state(_socket, _params, _type), do: %{pinned: false, saved: false}
+  defp kept_state(_socket, _params, _type), do: %{pinned: false, saved: false, replies: 0}
 
   defp pinned?(socket, message_id) do
     channel = socket.assigns.session.active_channel

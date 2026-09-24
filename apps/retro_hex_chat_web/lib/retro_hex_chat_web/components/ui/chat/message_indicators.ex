@@ -2,13 +2,14 @@ defmodule RetroHexChatWeb.Components.UI.MessageIndicators do
   @moduledoc """
   Small indicator components for chat messages in the showcase design system.
 
-  Provides `edited_tag/1`, `deleted_placeholder/1`, and `retry_button/1`
-  for inline message status indicators.
+  Provides `edited_tag/1`, `deleted_placeholder/1`, `thread_tag/1` and
+  `retry_button/1` for inline message status indicators.
 
   ## Usage
 
       <.edited_tag timestamp="14:30 28/02/2026" />
       <.deleted_placeholder />
+      <.thread_tag message_id={12} count={3} on_open="open_thread" />
       <.retry_button temp_id="abc" content="Hello" target="#lobby" on_retry="retry_message" />
   """
   use RetroHexChatWeb.Component
@@ -48,6 +49,38 @@ defmodule RetroHexChatWeb.Components.UI.MessageIndicators do
     >
       {dgettext("chat", "[message deleted]")}
     </span>
+    """
+  end
+
+  @doc """
+  Renders the "N replies" a message collected, which opens its thread.
+
+  Drawn only when somebody answered: a nought under every line is noise, and it
+  is also a promise of a window with nothing in it. The line stays where it is
+  in the conversation — this says the conversation happened, it does not move
+  it somewhere else.
+  """
+  attr :message_id, :any, required: true
+  attr :count, :integer, required: true
+  attr :on_open, :any, default: nil, doc: "Event name for opening the thread"
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @spec thread_tag(map()) :: Phoenix.LiveView.Rendered.t()
+  def thread_tag(assigns) do
+    ~H"""
+    <button
+      :if={@count > 0}
+      type="button"
+      class={classes(["chat-thread-tag", @class])}
+      phx-click={@on_open}
+      phx-value-message_id={@message_id}
+      data-testid={"thread-count-#{@message_id}"}
+      {@rest}
+    >
+      <Icons.icon_chat class="h-3 w-3" />
+      {dngettext("chat", "%{count} reply", "%{count} replies", @count, count: @count)}
+    </button>
     """
   end
 

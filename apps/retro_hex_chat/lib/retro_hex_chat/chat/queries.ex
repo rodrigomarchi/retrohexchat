@@ -18,6 +18,9 @@ defmodule RetroHexChat.Chat.Queries do
 
   @default_limit 50
 
+  # A thread is a handful of lines, not a channel's history.
+  @default_thread_limit 25
+
   # See `list_pm_partners/2` — a bound, not a page size.
   @max_pm_partners 500
 
@@ -57,6 +60,55 @@ defmodule RetroHexChat.Chat.Queries do
     |> replies_to()
     |> select([r], r.id)
     |> Repo.all()
+  end
+
+  @doc """
+  One page of the thread hanging off `root`, oldest first.
+
+  A thread is read forwards — it is a conversation, and the line that started
+  it is already on screen above. So the cursor walks the other way from every
+  other list here (`id > cursor`), which `Page` does not care about: the cursor
+  is whatever the last row of the page was.
+
+  Every reply points straight at its root (`Chat.Replies`), so this stays one
+  flat query however deep the disagreement went.
+  """
+  @spec thread_for(message(), keyword()) :: Page.t()
+  def thread_for(root, opts \\ []) do
+    limit = Keyword.get(opts, :limit, @default_thread_limit)
+
+    root
+    |> replies_to()
+    |> maybe_after(Keyword.get(opts, :cursor))
+    |> order_by(asc: :id)
+    |> preload(attachments: :file)
+    |> limit(^Page.limit_with_lookahead(limit))
+    |> Repo.all()
+    |> Page.new(limit, & &1.id)
+  end
+
+  @doc """
+  How many replies each of these messages has, in one query.
+
+  Asked for a whole page of rows at once for the same reason the reactions are:
+  a page is fifty lines, and a counter that costs a query per line costs fifty.
+  A message nobody answered is absent rather than zero — the row draws nothing
+  at all for it, which is not the same as drawing a nought.
+
+  A reply is never a root, so an id that answers something answers nothing here.
+  """
+  @spec thread_counts_for_many(:message | :private_message, [integer()]) ::
+          %{integer() => non_neg_integer()}
+  def thread_counts_for_many(_kind, []), do: %{}
+
+  def thread_counts_for_many(kind, ids) do
+    kind
+    |> thread_schema()
+    |> where([m], m.reply_to_id in ^ids)
+    |> group_by([m], m.reply_to_id)
+    |> select([m], {m.reply_to_id, count(m.id)})
+    |> Repo.all()
+    |> Map.new()
   end
 
   @doc "Rewrites the quote every reply to this message carries."
@@ -524,6 +576,9 @@ defmodule RetroHexChat.Chat.Queries do
   defp replies_to(%Message{id: id}), do: where(Message, [m], m.reply_to_id == ^id)
   defp replies_to(%PrivateMessage{id: id}), do: where(PrivateMessage, [pm], pm.reply_to_id == ^id)
 
+  defp thread_schema(:message), do: Message
+  defp thread_schema(:private_message), do: PrivateMessage
+
   defp edit_changeset(%Message{} = message, attrs), do: Message.edit_changeset(message, attrs)
   defp edit_changeset(%PrivateMessage{} = pm, attrs), do: PrivateMessage.edit_changeset(pm, attrs)
 
@@ -536,6 +591,12 @@ defmodule RetroHexChat.Chat.Queries do
 
   defp maybe_before(query, before_id) do
     where(query, [m], m.id < ^before_id)
+  end
+
+  defp maybe_after(query, nil), do: query
+
+  defp maybe_after(query, after_id) do
+    where(query, [m], m.id > ^after_id)
   end
 
   defp maybe_put_content_format(attrs, opts) do

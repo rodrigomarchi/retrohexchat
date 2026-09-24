@@ -830,7 +830,7 @@ msgstr ": 誰かが PM を送ると、会話が既にリストに表示されて
 msgid ": Your own joins/parts/nick changes never trigger your auto-respond rules."
 msgstr ":独自のjoins/parts/nickは、自動応答ルールをトリガーしません。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "A bar appears above the input showing the original author and a preview of their message. Click ✕ to cancel the reply."
 msgstr "元の作者と自分のメッセージのプレビューを示す入力の上にバーが表示されます。 返信をキャンセルするには ✕ をクリックしてください。"
@@ -1288,7 +1288,7 @@ msgstr "コマンド同期ツールチップ"
 msgid "Commands"
 msgstr "コマンド"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Compose Bar"
 msgstr "作曲バー"
@@ -1349,11 +1349,6 @@ msgstr "コンテキストメニュー:"
 #, elixir-autogen, elixir-format
 msgid "Context Menus"
 msgstr "コンテキストメニュー"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Context menu:"
-msgstr "コンテキストメニュー:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:7
 #, elixir-autogen, elixir-format
@@ -1626,7 +1621,7 @@ msgstr ""
 "図の各側面は、ブラウザの名前とバージョン、オペレーティングシステム、画面解像度、言語、タイムゾーン、CPUコア、色深度に関する詳細な情報を示しています。"
 " タッチ対応デバイスはタッチインジケーターを表示します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Edge Cases"
@@ -1873,16 +1868,6 @@ msgstr "ハイライト"
 msgid "History:"
 msgstr "歴史:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "Hover button:"
-msgstr "Hoverボタン:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Hover over a message and click the ↩ button that appears."
-msgstr "メッセージの上にカーソルを合わせ、 ↩ ボタンが表示されます。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Hover over a nickname in a chat message for 500ms to see a hover card with user info: online duration, channels, away status, client details (browser, OS, screen, language, timezone), and contact/ignore badges."
@@ -1953,13 +1938,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "If the list is full, joining a new channel still works but a system message explains it was not added to auto-join."
 msgstr "リストがいっぱいになったら、新しいチャンネルはまだ機能しますが、システムメッセージは自動joinに追加されませんでした。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "If the original message was deleted, the quote shows \"[mensagem removida]\". Long messages are truncated in the reply preview. Editing the original message updates the quote in all replies."
-msgstr ""
-"元のメッセージが削除された場合、引用は「[mensagem removida]」を示しています。 長いメッセージは、返信プレビューで中断されます。 "
-"元のメッセージの編集は、すべての返信で引用を更新します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:16
 #, elixir-autogen, elixir-format
@@ -2112,7 +2090,7 @@ msgstr "キーボードの運行"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:49
 #, elixir-autogen, elixir-format
@@ -2252,13 +2230,13 @@ msgid "Message"
 msgstr "メッセージ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Message Delete"
 msgstr "メッセージ削除"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:37
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Message Edit"
 msgstr "メッセージ編集"
@@ -2270,6 +2248,7 @@ msgstr "メッセージメニュー"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Message Reply"
 msgstr "メッセージ返信"
@@ -2754,7 +2733,7 @@ msgstr "正規表現マッチング(例、"
 msgid "Repeating"
 msgstr "リピート"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Replies appear with a quoted block showing the original message, with your response below. Click the quoted block to scroll to and highlight the original message."
 msgstr ""
@@ -2819,11 +2798,6 @@ msgstr ""
 msgid "Right-click a URL in a chat message to see: Open Link, Copy URL, Save to URL List."
 msgstr "チャットメッセージのURLを右クリックし、URLをコピーし、URLリストに保存します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Right-click a message and select \"Responder\"."
-msgstr "メッセージを右クリックし、「応答」を選択します。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Right-click a nickname to quickly Ignore or Unignore."
@@ -2866,6 +2840,7 @@ msgstr "安全特徴"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "検索"
@@ -2927,7 +2902,7 @@ msgstr "現在のチャンネルまたはPMでリアルタイムのハイライ�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:70
@@ -2947,6 +2922,7 @@ msgstr "現在のチャンネルまたはPMでリアルタイムのハイライ�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_typing_indicator.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:53
@@ -3554,7 +3530,7 @@ msgstr "チャンネルモードの表示と切り替え (+m, +i, +t, +k, +l)."
 msgid "View, add, and remove ignores from the visual dialog."
 msgstr "ビジュアルダイアログから無視を表示、追加、削除します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "Visual Format"
 msgstr "ビジュアル形式"
@@ -6120,3 +6096,78 @@ msgstr "何が公開されるか"
 #, elixir-autogen, elixir-format
 msgid "Who can"
 msgstr "誰ができるか"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "\"Reply in this thread\" aims the channel's own input at the message that started it. You write where you always write, and what you send lands in the room and in the thread at once."
+msgstr "「このスレッドに返信」は、チャンネル自身の入力欄を、そのスレッドを始めたメッセージに向けます。いつも書いている場所で書き、送ったものは部屋とスレッドの両方に同時に届きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A message somebody answered says how many replies it collected. Choose that line to read the whole exchange together, in the order it happened."
+msgstr "誰かが返信したメッセージには、集まった返信の数が表示されます。その行を選ぶと、やり取り全体を起きた順にまとめて読めます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Answering a reply answers the conversation it belongs to: your message quotes the original message, not the reply you clicked. That keeps one disagreement as one thread instead of a branching tree, and it is why a reply never collects replies of its own."
+msgstr "返信に返信することは、その返信が属する会話に返信することです。あなたのメッセージは、クリックした返信ではなく、元のメッセージを引用します。こうして一つの議論は枝分かれした木ではなく一本のスレッドのままになり、だからこそ返信が自分の返信を集めることはありません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Every reply still appears in the channel where it was written. The Thread window is a second place to read them, never the only place — in a small room, hiding replies behind a panel is how a conversation stops happening in front of everybody."
+msgstr "どの返信も、それが書かれたチャンネルに残ります。スレッドウィンドウはそれを読む二つ目の場所であって、唯一の場所ではありません。小さな部屋では、返信をパネルの陰に隠すことこそが、会話がみんなの前で起きなくなる原因です。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Everything that answers the first message, including replies somebody later deleted, which are shown as removed so the count and the list always agree. Replies written before this feature existed keep the message they quoted and are not counted here."
+msgstr "最初のメッセージに答えるものすべてです。あとで削除された返信も含まれ、削除済みとして表示されるので、件数と一覧は常に一致します。この機能ができる前に書かれた返信は、引用した相手のメッセージをそのまま保ち、ここでは数えられません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "If the original message was deleted, the quote shows that it is gone and the reply stays where it is. Long messages are truncated in the reply preview. Editing the original message updates the quote in all replies."
+msgstr "元のメッセージが削除された場合、引用はそれが失われたことを示し、返信はその場に残ります。長いメッセージは返信のプレビューで切り詰められます。元のメッセージを編集すると、すべての返信の引用が更新されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Nothing Is Moved"
+msgstr "何も移動しません"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Opening a Thread"
+msgstr "スレッドを開く"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Replying From the Window"
+msgstr "ウィンドウから返信する"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Replying to a Reply"
+msgstr "返信に返信する"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Right-click a message and choose Reply. On a phone, press and hold the message to open the same menu."
+msgstr "メッセージを右クリックして「返信」を選びます。スマートフォンでは、メッセージを長押しすると同じメニューが開きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Saving a Message"
+msgstr "メッセージを保存する"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Threads"
+msgstr "スレッド"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Under a message that was answered there is a \"2 replies\" line. Click it, or right-click the message and choose Open Thread, and the Thread window opens on that conversation. Opening it from one of the replies opens the same thread."
+msgstr "返信されたメッセージの下には「2件の返信」という行があります。それをクリックするか、メッセージを右クリックして「スレッドを開く」を選ぶと、スレッドウィンドウがその会話で開きます。返信のどれかから開いても同じスレッドが開きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "What a Thread Contains"
+msgstr "スレッドに含まれるもの"

@@ -877,7 +877,7 @@ msgstr ""
 "Anda sendiri joins/parts/nick perubahan tidak pernah memicu Anda otomatis "
 "menanggapi aturan."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "A bar appears above the input showing the original author and a preview of their message. Click ✕ to cancel the reply."
 msgstr ""
@@ -1374,7 +1374,7 @@ msgstr "Tooltip Sintaksis Perintah"
 msgid "Commands"
 msgstr "Perintah"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Compose Bar"
 msgstr "Batang Kompose"
@@ -1435,11 +1435,6 @@ msgstr "Menu Konteks:"
 #, elixir-autogen, elixir-format
 msgid "Context Menus"
 msgstr "Menu Konteks"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Context menu:"
-msgstr "Menu konteks:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:7
 #, elixir-autogen, elixir-format
@@ -1726,7 +1721,7 @@ msgstr ""
 " waktu, inti CPU, dan kedalaman warna. Perangkat yang diaktifkan sentuh "
 "menampilkan indikator sentuh."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Edge Cases"
@@ -1989,16 +1984,6 @@ msgstr "Penyorotan"
 msgid "History:"
 msgstr "Sejarah:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "Hover button:"
-msgstr "Tombol hover:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Hover over a message and click the ↩ button that appears."
-msgstr "Hover atas pesan dan klik tombol ucapan yang muncul."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Hover over a nickname in a chat message for 500ms to see a hover card with user info: online duration, channels, away status, client details (browser, OS, screen, language, timezone), and contact/ignore badges."
@@ -2077,14 +2062,6 @@ msgid "If the list is full, joining a new channel still works but a system messa
 msgstr ""
 "Jika daftar penuh, bergabung saluran baru masih bekerja tapi pesan sistem "
 "menjelaskan itu tidak ditambahkan ke auto-join."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "If the original message was deleted, the quote shows \"[mensagem removida]\". Long messages are truncated in the reply preview. Editing the original message updates the quote in all replies."
-msgstr ""
-"Jika pesan asli dihapus, kutipan menunjukkan \"[mentagem remocda]\". Pesan "
-"panjang dipotong dalam pratinjau balasan. Menyunting pesan asli update "
-"kutipan dalam semua jawaban."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:16
 #, elixir-autogen, elixir-format
@@ -2245,7 +2222,7 @@ msgstr "Navigasi Papan Ketik"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:49
 #, elixir-autogen, elixir-format
@@ -2391,13 +2368,13 @@ msgid "Message"
 msgstr "Pesan"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Message Delete"
 msgstr "Hapus Pesan"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:37
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Message Edit"
 msgstr "Sunting Pesan"
@@ -2409,6 +2386,7 @@ msgstr "Menu Pesan"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Message Reply"
 msgstr "Balas Pesan"
@@ -2912,7 +2890,7 @@ msgstr "Ekspresi reguler yang cocok (misalnya,"
 msgid "Repeating"
 msgstr "Ulangi"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Replies appear with a quoted block showing the original message, with your response below. Click the quoted block to scroll to and highlight the original message."
 msgstr ""
@@ -2993,11 +2971,6 @@ msgstr ""
 "Klik URL ke dalam pesan obrolan untuk melihat: Buka Link, Salin URL, Simpan "
 "ke Daftar URL."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Right-click a message and select \"Responder\"."
-msgstr "Klik pesan dan pilih \"Lanjutkan\"."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Right-click a nickname to quickly Ignore or Unignore."
@@ -3044,6 +3017,7 @@ msgstr "Fitur Keselamatan"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "Cari"
@@ -3106,7 +3080,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:45
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:70
@@ -3126,6 +3100,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_typing_indicator.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:53
@@ -3783,7 +3758,7 @@ msgstr "view-action"
 msgid "View, add, and remove ignores from the visual dialog."
 msgstr "Lihat, tambahkan, dan hapus mengabaikan dari dialog visual."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "Visual Format"
 msgstr "Format Visual"
@@ -6641,3 +6616,78 @@ msgstr "Apa yang diterbitkan"
 #, elixir-autogen, elixir-format
 msgid "Who can"
 msgstr "Siapa yang bisa"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "\"Reply in this thread\" aims the channel's own input at the message that started it. You write where you always write, and what you send lands in the room and in the thread at once."
+msgstr "\"Balas di utas ini\" mengarahkan kolom tulis kanal ke pesan yang memulainya. Kamu menulis di tempat kamu selalu menulis, dan yang kamu kirim mendarat di ruangan dan di utas sekaligus."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A message somebody answered says how many replies it collected. Choose that line to read the whole exchange together, in the order it happened."
+msgstr "Pesan yang dibalas seseorang menyebutkan berapa banyak balasan yang terkumpul. Pilih baris itu untuk membaca seluruh percakapan bersama, sesuai urutan kejadiannya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Answering a reply answers the conversation it belongs to: your message quotes the original message, not the reply you clicked. That keeps one disagreement as one thread instead of a branching tree, and it is why a reply never collects replies of its own."
+msgstr "Membalas sebuah balasan berarti membalas percakapan tempatnya berada: pesanmu mengutip pesan aslinya, bukan balasan yang kamu klik. Dengan begitu satu perselisihan tetap satu utas alih-alih pohon bercabang, dan karena itulah sebuah balasan tidak pernah mengumpulkan balasannya sendiri."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Every reply still appears in the channel where it was written. The Thread window is a second place to read them, never the only place — in a small room, hiding replies behind a panel is how a conversation stops happening in front of everybody."
+msgstr "Setiap balasan tetap muncul di kanal tempat ia ditulis. Jendela Utas adalah tempat kedua untuk membacanya, bukan satu-satunya — di ruangan kecil, menyembunyikan balasan di balik panel adalah cara sebuah percakapan berhenti terjadi di depan semua orang."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Everything that answers the first message, including replies somebody later deleted, which are shown as removed so the count and the list always agree. Replies written before this feature existed keep the message they quoted and are not counted here."
+msgstr "Semua yang membalas pesan pertama, termasuk balasan yang kemudian dihapus seseorang, yang ditampilkan sebagai terhapus agar jumlah dan daftarnya selalu cocok. Balasan yang ditulis sebelum fitur ini ada tetap mengutip pesan aslinya dan tidak dihitung di sini."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "If the original message was deleted, the quote shows that it is gone and the reply stays where it is. Long messages are truncated in the reply preview. Editing the original message updates the quote in all replies."
+msgstr "Jika pesan aslinya dihapus, kutipan menunjukkan bahwa pesan itu sudah tiada dan balasannya tetap di tempatnya. Pesan panjang dipotong dalam pratinjau balasan. Menyunting pesan asli memperbarui kutipan di semua balasan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Nothing Is Moved"
+msgstr "Tidak ada yang dipindahkan"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Opening a Thread"
+msgstr "Membuka utas"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Replying From the Window"
+msgstr "Membalas dari jendela"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Replying to a Reply"
+msgstr "Membalas sebuah balasan"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Right-click a message and choose Reply. On a phone, press and hold the message to open the same menu."
+msgstr "Klik kanan sebuah pesan dan pilih Balas. Di ponsel, tekan dan tahan pesannya untuk membuka menu yang sama."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Saving a Message"
+msgstr "Menyimpan pesan"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Threads"
+msgstr "Utas"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Under a message that was answered there is a \"2 replies\" line. Click it, or right-click the message and choose Open Thread, and the Thread window opens on that conversation. Opening it from one of the replies opens the same thread."
+msgstr "Di bawah pesan yang dibalas ada baris \"2 balasan\". Klik baris itu, atau klik kanan pesannya lalu pilih Buka utas, dan jendela Utas terbuka pada percakapan tersebut. Membukanya dari salah satu balasan membuka utas yang sama."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "What a Thread Contains"
+msgstr "Apa yang ada di dalam utas"

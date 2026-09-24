@@ -1123,6 +1123,26 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           )
       },
       %{
+        id: "feature-threads",
+        title: dgettext("help", "Threads"),
+        category: dgettext("help", "Chat & Messaging"),
+        keywords: [
+          "thread",
+          "threads",
+          "replies",
+          dgettext("help", "reply count"),
+          dgettext("help", "open thread"),
+          dgettext("help", "read replies together")
+        ],
+        icon: :icon_chat,
+        description:
+          dgettext(
+            "help",
+            "Read every reply to a message together, without taking any of them out of the room."
+          ),
+        see_also: ["feature-message-reply", "feature-saved-messages"]
+      },
+      %{
         id: "feature-message-reply",
         title: dgettext("help", "Message Reply"),
         category: dgettext("help", "Chat & Messaging"),
@@ -1139,7 +1159,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "Reply to specific messages with quoted context for threaded conversations."
-          )
+          ),
+        see_also: ["feature-threads", "feature-message-edit"]
       },
       %{
         id: "feature-message-edit",

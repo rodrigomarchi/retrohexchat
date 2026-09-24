@@ -274,6 +274,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       |> assign(:msg_nick, Map.get(msg, :nick))
       |> assign(:msg_pinned, Map.get(msg, :pinned, false))
       |> assign(:msg_saved, Map.get(msg, :saved, false))
+      |> assign(:msg_replies, Map.get(msg, :replies, 0))
 
     ~H"""
     <.context_menu_item
@@ -347,6 +348,24 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
     <.context_menu_item on_click={@on_action} action="reply_to_message" phx-value-message_id={@msg_id}>
       <:icon><Icons.icon_chat class="w-[14px] h-[14px]" /></:icon>
       {dgettext("chat", "Reply")}
+    </.context_menu_item>
+    <%!-- Offered only where there is something to open: the line under the
+          message already says so, and this is the way in on a phone, where
+          there is no hover and a long press opens this menu. --%>
+    <.context_menu_item
+      :if={@msg_replies > 0}
+      on_click={@on_action}
+      action="open_thread"
+      phx-value-message_id={@msg_id}
+    >
+      <:icon><Icons.icon_chat class="w-[14px] h-[14px]" /></:icon>
+      {dngettext(
+        "chat",
+        "Open Thread (%{count} reply)",
+        "Open Thread (%{count} replies)",
+        @msg_replies,
+        count: @msg_replies
+      )}
     </.context_menu_item>
     <.context_menu_item
       :if={@is_own}

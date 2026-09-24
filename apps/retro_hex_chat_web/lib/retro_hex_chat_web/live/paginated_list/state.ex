@@ -89,6 +89,17 @@ defmodule RetroHexChatWeb.PaginatedList.State do
   end
 
   @doc """
+  Records one row that arrived outside a page.
+
+  A live list grows between pages — a reply written while its thread is open —
+  and the count is what decides whether the list draws itself or its empty
+  state. Only the count moves: the cursor still describes where the *paged*
+  reading got to, and a row that arrived after it does not change that.
+  """
+  @spec counted_one(t()) :: t()
+  def counted_one(%__MODULE__{} = state), do: %{state | count: state.count + 1, loaded?: true}
+
+  @doc """
   Records that a page could not be fetched.
 
   The cursor is kept on purpose: the reader has not moved, so retrying must ask

@@ -233,6 +233,15 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
               on_toggle="toggle_reaction"
             />
             <.message_reaction_bar message_id={@msg.id} on_toggle="toggle_reaction" />
+            <%!-- What the line collected, said once under it. The replies stay
+                  in the conversation where they were written — this only says
+                  that they happened, so a small room never has to choose
+                  between reading the room and reading the thread. --%>
+            <.thread_tag
+              message_id={@msg.id}
+              count={Map.get(@msg, :reply_count, 0)}
+              on_open="open_thread"
+            />
           </.chat_message>
         <% end %>
     <% end %>

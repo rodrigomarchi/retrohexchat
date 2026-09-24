@@ -51,6 +51,54 @@ defmodule RetroHexChat.Chat.RepliesTest do
     assert attrs.reply_to_author == "Ada"
   end
 
+  # Two levels are a forum, and that is a different product. Answering a reply
+  # answers the conversation it belongs to: the pointer and the quote both move
+  # up to the root, so a reply can never accumulate replies of its own.
+  describe "a reply to a reply" do
+    test "points at the root of the thread, not at the line it answered" do
+      root = channel_message("the original")
+      {:ok, reply_attrs} = Replies.attrs(:message, root.id)
+
+      {:ok, reply} =
+        Queries.insert_reply_message(
+          Map.merge(reply_attrs, %{
+            channel_name: "#lobby",
+            author_nickname: "Grace",
+            content: "the answer",
+            type: "message"
+          })
+        )
+
+      assert {:ok, attrs} = Replies.attrs(:message, reply.id)
+      assert attrs.reply_to_id == root.id
+      assert attrs.reply_to_preview =~ "the original"
+    end
+
+    test "quotes the root in a private conversation too" do
+      root = private_message("the original")
+      {:ok, reply_attrs} = Replies.attrs(:pm, root.id)
+
+      {:ok, reply} =
+        Queries.insert_reply_pm(
+          Map.merge(reply_attrs, %{
+            sender_nickname: "Grace",
+            recipient_nickname: "Ada",
+            content: "the answer"
+          })
+        )
+
+      assert {:ok, attrs} = Replies.attrs(:pm, reply.id)
+      assert attrs.reply_to_id == root.id
+      assert attrs.reply_to_author == "Ada"
+    end
+
+    test "the root of a root is itself" do
+      root = channel_message("the original")
+
+      assert Replies.root_id(:message, root.id) == root.id
+    end
+  end
+
   test "a parent that is not there is reported, not decided" do
     assert Replies.attrs(:message, 999_999) == :not_found
     assert Replies.attrs(:pm, 999_999) == :not_found

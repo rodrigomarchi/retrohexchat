@@ -6,12 +6,10 @@
 </p>
 <.help_h4 icon={:icon_chat}>{dgettext("help_features", "How to Reply")}</.help_h4>
 <p>
-  <strong>{dgettext("help_features", "Context menu:")}</strong>
-  {dgettext("help_features", "Right-click a message and select \"Responder\".")}<br />
-  <strong>
-    {dgettext("help_features", "Hover button:")}
-  </strong>
-  {dgettext("help_features", "Hover over a message and click the ↩ button that appears.")}
+  {dgettext(
+    "help_features",
+    "Right-click a message and choose Reply. On a phone, press and hold the message to open the same menu."
+  )}
 </p>
 <.help_h4 icon={:icon_notepad}>{dgettext("help_features", "Compose Bar")}</.help_h4>
 <p>
@@ -27,15 +25,26 @@
     "Replies appear with a quoted block showing the original message, with your response below. Click the quoted block to scroll to and highlight the original message."
   )}
 </p>
+<.help_h4 icon={:icon_chat}>{dgettext("help_features", "Replying to a Reply")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Answering a reply answers the conversation it belongs to: your message quotes the original message, not the reply you clicked. That keeps one disagreement as one thread instead of a branching tree, and it is why a reply never collects replies of its own."
+  )}
+</p>
 <.help_h4 icon={:icon_warning}>{dgettext("help_features", "Edge Cases")}</.help_h4>
 <p>
   {dgettext(
     "help_features",
-    "If the original message was deleted, the quote shows \"[mensagem removida]\". Long messages are truncated in the reply preview. Editing the original message updates the quote in all replies."
+    "If the original message was deleted, the quote shows that it is gone and the reply stays where it is. Long messages are truncated in the reply preview. Editing the original message updates the quote in all replies."
   )}
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
+  <.help_link topic="feature-threads">
+    {dgettext("help_features", "Threads")}
+  </.help_link>
+  ·
   <.help_link topic="feature-message-edit">
     {dgettext("help_features", "Message Edit")}
   </.help_link>

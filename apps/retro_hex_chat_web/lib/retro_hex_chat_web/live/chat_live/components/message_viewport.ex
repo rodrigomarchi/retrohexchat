@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   delta here via `send_update/2`:
 
     * `insert/2` — append or update a single message row
+    * `insert_if_present/2` — refresh a row only if it is already on screen
     * `delete/2` — remove a row by message id
     * `reset/2`  — replace the whole list (channel/PM switch, load-more, clear)
     * `attach_preview/3` — decorate the rows waiting on a page that just landed
@@ -76,6 +77,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   def insert(socket, msg) do
     send_update(__MODULE__, id: @id, action: {:insert, msg})
     ReadMarkers.seen(socket, newest_id(socket, msg))
+  end
+
+  @doc """
+  Refreshes a row **only if** the viewport is already showing it. Returns the socket.
+
+  For a row that changed for a reason the reader did not cause on it — a reply
+  landing under a message and moving its reply count. `insert/2` would be wrong
+  there: a stream insert of an id the stream does not hold appends it, so a
+  root that had scrolled out of the loaded page would reappear at the bottom,
+  out of order, in the middle of a live conversation.
+  """
+  @spec insert_if_present(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
+  def insert_if_present(socket, msg) do
+    send_update(__MODULE__, id: @id, action: {:insert_if_present, msg})
+    socket
   end
 
   @doc "Prepends a chronological page of older messages. Returns the socket."
@@ -181,6 +197,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
      socket
      |> track(fn rendered -> upsert(rendered, msg) end)
      |> stream_insert(:chat_messages, msg, tail_opts(socket))}
+  end
+
+  # `rendered` mirrors the stream, pruning included, so it is the honest answer
+  # to "is this row on screen" — and the row is dropped rather than appended
+  # when it is not.
+  def update(%{action: {:insert_if_present, msg}}, socket) do
+    if Enum.any?(socket.assigns.rendered, &(&1.id == Map.get(msg, :id))) do
+      update(%{action: {:insert, msg}}, socket)
+    else
+      {:ok, socket}
+    end
   end
 
   # Items arrive oldest-first; inserting reversed at position 0 lands them in

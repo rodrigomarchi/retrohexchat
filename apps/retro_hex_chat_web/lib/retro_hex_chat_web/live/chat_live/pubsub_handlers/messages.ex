@@ -39,6 +39,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.ChatLive.P2PSessionEvents
   alias RetroHexChatWeb.ChatLive.StreamItem
+  alias RetroHexChatWeb.ChatLive.ThreadEvents
 
   # ── Channel messages ──────────────────────────────────────
 
@@ -313,7 +314,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   # `pending` status). A message from anyone else carries a new id and appends.
   # Either way a plain insert is correct — no reconciliation bookkeeping needed.
   defp apply_visible_channel_message(socket, decorated, _session) do
-    MessageViewport.insert(socket, decorated)
+    socket
+    |> MessageViewport.insert(decorated)
+    |> ThreadEvents.reply_arrived(decorated)
   end
 
   defp apply_background_message(socket, decorated, channel, session) do
@@ -411,9 +414,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   defp place_pm_row(socket, decorated, %{peer: peer} = payload) do
     if socket.assigns.session.active_pm == peer do
-      if MessageHelpers.cleared_from_conversation?(socket, "pm:#{peer}", decorated),
-        do: socket,
-        else: MessageViewport.insert(socket, decorated)
+      if MessageHelpers.cleared_from_conversation?(socket, "pm:#{peer}", decorated) do
+        socket
+      else
+        socket
+        |> MessageViewport.insert(decorated)
+        |> ThreadEvents.reply_arrived(decorated)
+      end
     else
       mark_pm_background(socket, decorated, payload)
     end

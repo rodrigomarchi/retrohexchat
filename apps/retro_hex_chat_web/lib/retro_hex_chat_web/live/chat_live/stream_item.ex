@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
   """
 
   alias RetroHexChat.Chat.Attachments
+  alias RetroHexChat.Chat.Queries
   alias RetroHexChat.Chat.Reactions
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
@@ -30,23 +31,24 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
     :plain_content,
     :edited_at,
     :deleted_at,
-    :reactions
+    :reactions,
+    :reply_count
   ]
 
   @doc """
-  The rows for a page of channel messages, with their reactions.
+  The rows for a page of channel messages, with their reactions and reply counts.
 
-  Built as a page rather than row by row because the reactions are: asking per
-  line would be fifty queries for one screenful, and a page is the only place
-  that knows it is a page.
+  Built as a page rather than row by row because both of those are: asking per
+  line would be a hundred queries for one screenful, and a page is the only
+  place that knows it is a page.
   """
   @spec from_messages([map()]) :: [map()]
-  def from_messages(messages), do: with_reactions(messages, :message, &from_message/1)
+  def from_messages(messages), do: decorated(messages, :message, &from_message/1)
 
   @doc "The same, for a page of private messages."
   @spec from_private_messages([map()]) :: [map()]
   def from_private_messages(messages),
-    do: with_reactions(messages, :private_message, &from_private_message/1)
+    do: decorated(messages, :private_message, &from_private_message/1)
 
   @doc "The row for a message written in a channel."
   @spec from_message(map()) :: map()
@@ -72,19 +74,24 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
     |> put_optional(pm)
   end
 
-  defp with_reactions([], _kind, _builder), do: []
+  defp decorated([], _kind, _builder), do: []
 
-  defp with_reactions(messages, kind, builder) do
-    summaries =
+  defp decorated(messages, kind, builder) do
+    ids =
       messages
       |> Enum.map(&Map.get(&1, :id))
       |> Enum.filter(&is_integer/1)
-      |> then(&Reactions.summary_for_many(kind, &1))
+
+    summaries = Reactions.summary_for_many(kind, ids)
+    counts = Queries.thread_counts_for_many(kind, ids)
 
     Enum.map(messages, fn message ->
+      id = Map.get(message, :id)
+
       message
       |> builder.()
-      |> put_reactions(Map.get(summaries, Map.get(message, :id)))
+      |> put_reactions(Map.get(summaries, id))
+      |> put_reply_count(Map.get(counts, id))
     end)
   end
 
@@ -99,6 +106,18 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
   def put_reactions(item, nil), do: item
   def put_reactions(item, summary) when map_size(summary) == 0, do: item
   def put_reactions(item, summary), do: Map.put(item, :reactions, summary)
+
+  @doc """
+  Put a message's reply count on a row that was built without it.
+
+  Absent and nought are the same sentence — "nobody answered this" — and the
+  row draws nothing for either, so a count of zero is left off rather than
+  written down.
+  """
+  @spec put_reply_count(map(), non_neg_integer() | nil) :: map()
+  def put_reply_count(item, nil), do: item
+  def put_reply_count(item, 0), do: item
+  def put_reply_count(item, count), do: Map.put(item, :reply_count, count)
 
   defp base(source, id, author, timestamp) do
     %{
