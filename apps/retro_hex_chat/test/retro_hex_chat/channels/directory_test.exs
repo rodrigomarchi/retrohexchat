@@ -217,6 +217,30 @@ defmodule RetroHexChat.Channels.DirectoryTest do
       assert entry.last_activity_at
     end
 
+    # `:limit` is documented as the cap on the cold half, and a cap that a live
+    # channel can eat is a different cap: the rows that reach the reader come
+    # up short by however many registered rooms happen to be running.
+    test "a running registered channel does not eat a cold slot", ctx do
+      _ = ctx
+      cold_a = unique("capcolda")
+      cold_b = unique("capcoldb")
+      live = unique("caplive")
+
+      register_channel(cold_a)
+      register_channel(cold_b)
+      register_channel(live)
+      start_channel(live)
+      Server.join(live, "Alice")
+
+      names =
+        [limit: 2]
+        |> Directory.catalog()
+        |> Enum.reject(& &1.live?)
+        |> Enum.map(& &1.name)
+
+      assert length(names) == 2
+    end
+
     test "live channels sort ahead of cold ones" do
       cold = unique("sortcold")
       live = unique("sortlive")

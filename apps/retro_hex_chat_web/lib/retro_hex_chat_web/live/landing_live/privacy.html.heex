@@ -64,9 +64,13 @@
       </.desktop_window>
 
       <%!-- ══════════════ RETRO HEX CHAT ══════════════ --%>
+      <%!-- Wider than its neighbour because it says more: push, the browser
+            cookie and the optional address each added a section, and at the
+            old width the window had become a column of text taller than it
+            was wide. --%>
       <.desktop_window
         id="retro-hex-chat"
-        width={560}
+        width={680}
         title={dgettext("landing", "Retro Hex Chat")}
       >
         <:icon><Icons.icon_shield class="w-4 h-4" /></:icon>

@@ -123,23 +123,30 @@ defmodule RetroHexChat.Channels.Directory do
         term -> search(term)
       end
 
-    registered =
+    live_names = live |> Enum.map(& &1.name) |> Enum.uniq()
+
+    # Two questions, two queries. The cold half is capped, so the names already
+    # in hand are excluded inside it rather than dropped after: a row removed
+    # once `limit` has counted it spends a slot nobody sees. The live half is
+    # looked up by name, uncapped, only to learn when each room was last used —
+    # a fact that lives in the table and not in the process.
+    cold =
       opts
       |> Keyword.take([:search, :limit])
+      |> Keyword.put(:exclude, live_names)
       |> ServiceQueries.list_registered_channels()
 
-    by_name = Map.new(registered, &{&1.name, &1})
-    live_names = MapSet.new(live, & &1.name)
+    by_name =
+      live_names
+      |> ServiceQueries.list_registered_channels_by_name()
+      |> Map.new(&{&1.name, &1})
 
     live_entries =
       live
       |> Enum.sort_by(&{-&1.member_count, &1.name})
       |> Enum.map(&live_entry(&1, by_name))
 
-    cold_entries =
-      registered
-      |> Enum.reject(&MapSet.member?(live_names, &1.name))
-      |> Enum.map(&cold_entry/1)
+    cold_entries = Enum.map(cold, &cold_entry/1)
 
     live_entries ++ cold_entries
   end

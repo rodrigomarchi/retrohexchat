@@ -1,7 +1,14 @@
 <p>
   {dgettext("help_commands", "Stops keeping a message in view.")}
 </p>
-<pre>/unpin &lt;message id&gt;</pre>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/unpin <message id>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
+<p>
+  <code>message id</code>
+  {dgettext("help_commands", "— The number of a message this channel is keeping.")}
+</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
   {dgettext(
     "help_commands",
@@ -15,7 +22,10 @@
     "Channel operators and owners, the same as pinning. Unpinning a message nothing was keeping is not an error — it says so and changes nothing."
   )}
 </p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/unpin 1284")}</pre>
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-pin">{dgettext("help_commands", "/pin")}</.help_link>
+  · <.help_link topic="ui-pinned-window">{dgettext("help_commands", "Pinned Window")}</.help_link>
 </p>

@@ -1355,7 +1355,7 @@ msgstr ""
 " is still here /timer list /timer stop heartbeat"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:110
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:68
 #, elixir-autogen, elixir-format
@@ -1963,6 +1963,7 @@ msgstr "输入要读取和发送消息的聊天频道 。 如果这个频道还�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:23
@@ -1976,6 +1977,7 @@ msgstr "输入要读取和发送消息的聊天频道 。 如果这个频道还�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:19
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:30
@@ -2059,6 +2061,7 @@ msgstr "隐藏特定用户的消息 。 被忽略的用户没有被通知——�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:16
@@ -2071,6 +2074,7 @@ msgstr "隐藏特定用户的消息 。 被忽略的用户没有被通知——�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:11
@@ -2333,6 +2337,7 @@ msgstr "选项"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:12
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:9
@@ -2345,6 +2350,7 @@ msgstr "选项"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:6
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:6
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:9
@@ -2577,6 +2583,7 @@ msgstr "根管理员不能通过命令降级"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:23
@@ -2652,7 +2659,7 @@ msgstr "将命令排在延迟之后运行, 可在正常间隔中选择重复 。
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:38
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:25
@@ -2666,7 +2673,7 @@ msgstr "将命令排在延迟之后运行, 可在正常间隔中选择重复 。
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:24
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:32
@@ -2837,6 +2844,7 @@ msgstr "子命令"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:10
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:7
@@ -2850,6 +2858,7 @@ msgstr "子命令"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:4
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:4
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:7
@@ -4740,68 +4749,104 @@ msgstr ""
 msgid "Rooms With Nobody In Them"
 msgstr "没有人的房间"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "/pin"
 msgstr "/pin"
 
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "/unpin"
 msgstr "/unpin"
-
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A channel has one topic and a welcome nobody reads twice. Everything else — the rules, the link to the event, what was agreed last week — scrolls away and gets retyped. Pinning keeps a message findable."
 msgstr "一个频道只有一个主题，和一句没人会读第二遍的欢迎语。别的一切——规则、活动链接、上周约好的事——都会滚走，然后被重新打一遍。置顶让一条消息保持可找。"
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "A channel keeps up to 50 messages, listed newest first in the Pinned window. Pinning the same message twice is the same pin. A message can only be pinned by the channel it was said in, and deleting the message removes the pin with it."
-msgstr "一个频道最多保留 50 条消息，在“置顶”窗口里按从新到旧排列。把同一条消息置顶两次还是同一个置顶。消息只能由它被说出的那个频道置顶，删除消息会一并删掉置顶。"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Channel operators and owners — the same bar as the topic, and for the same reason: both are the channel speaking about itself to everybody who walks in. Half-operators moderate the conversation instead."
 msgstr "频道管理员和所有者——和主题同样的门槛，理由也一样：两者都是频道对每个进来的人讲述自己。副管理员负责的是维持对话秩序。"
 
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Channel operators and owners, the same as pinning. Unpinning a message nothing was keeping is not an error — it says so and changes nothing."
 msgstr "频道管理员和所有者，和置顶一样。取消一条本来就没被保留的消息不是错误——它会这么说，并且什么都不改。"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Easier than the id: right-click the message and choose Pin. The command exists for when you already have the id in front of you."
-msgstr "比记 id 更省事：右键点这条消息，选“置顶”。命令是给你手边已经有 id 的时候用的。"
-
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Stops keeping a message in view."
 msgstr "不再让一条消息保持可见。"
 
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:6
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "The message itself stays exactly where it is in the conversation — only the pin goes. The Pinned window unpins from the entry too, which is usually where you are when you decide to."
 msgstr "消息本身还在对话里原来的位置——走掉的只是置顶。“置顶”窗口也能直接从条目上取消，而你决定取消时通常正看着那里。"
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "What it keeps"
-msgstr "它保留什么"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:14
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Who can"
 msgstr "谁可以"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "/pin 1284"
+msgstr "/pin 1284"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "/pin <message id>"
+msgstr "/pin <消息 id>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "/unpin 1284"
+msgstr "/unpin 1284"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "/unpin <message id>"
+msgstr "/unpin <消息 id>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "A channel keeps up to 50 messages, newest first"
+msgstr "一个频道最多保留 50 条消息，最新的在前"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "A message can only be pinned by the channel it was said in"
+msgstr "一条消息只能由说出它的那个频道置顶"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Deleting the message removes the pin with it"
+msgstr "删除消息会连同置顶一起移除"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Easier than the id: right-click the message and choose Pin. The command exists for when you already have the id in front of you. Either way the channel checks again when the pin arrives, and a Pinned button appears in the conversation toolbar as soon as there is something to show."
+msgstr "比用 id 更省事：右键点击消息并选择置顶。这个命令是给你手边已经有 id 的时候用的。无论哪种方式，置顶送达时频道都会再检查一次，而且只要有东西可以显示，对话工具栏上就会出现一个置顶按钮。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Pinned Window"
+msgstr "置顶窗口"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Pinning the same message twice is the same pin"
+msgstr "同一条消息置顶两次仍然是同一个置顶"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "— The number of a message said in this channel."
+msgstr "— 在这个频道里说过的某条消息的编号。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "— The number of a message this channel is keeping."
+msgstr "— 这个频道正在保留的某条消息的编号。"

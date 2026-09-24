@@ -251,6 +251,7 @@ defmodule RetroHexChat.Services.Queries do
   def list_registered_channels(opts \\ []) do
     RegisteredChannel
     |> match_search(Keyword.get(opts, :search))
+    |> exclude_names(Keyword.get(opts, :exclude))
     |> order_by([c], desc: c.last_activity_at, asc: c.name)
     |> limit(^Keyword.get(opts, :limit, 500))
     |> select([c], %{
@@ -261,6 +262,45 @@ defmodule RetroHexChat.Services.Queries do
     })
     |> Repo.all()
   end
+
+  # The names to leave out travel into the WHERE rather than being dropped
+  # afterwards: a row removed after `limit` has already spent a slot, so the
+  # caller asks for 500 and is handed fewer with no way to tell why.
+  @doc """
+  The registered rows for exactly these names, however many there are.
+
+  Its caller already knows the names and wants what only the table can answer,
+  so this takes no limit: capping a lookup by name would silently drop rows the
+  caller is holding.
+  """
+  @spec list_registered_channels_by_name([String.t()]) :: [
+          %{
+            name: String.t(),
+            topic: String.t() | nil,
+            modes: String.t(),
+            last_activity_at: DateTime.t()
+          }
+        ]
+  def list_registered_channels_by_name([]), do: []
+
+  def list_registered_channels_by_name(names) when is_list(names) do
+    from(c in RegisteredChannel,
+      where: c.name in ^names,
+      select: %{
+        name: c.name,
+        topic: c.topic,
+        modes: c.modes,
+        last_activity_at: c.last_activity_at
+      }
+    )
+    |> Repo.all()
+  end
+
+  defp exclude_names(queryable, nil), do: queryable
+  defp exclude_names(queryable, []), do: queryable
+
+  defp exclude_names(queryable, names) when is_list(names),
+    do: where(queryable, [c], c.name not in ^names)
 
   defp match_search(queryable, nil), do: queryable
 

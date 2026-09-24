@@ -911,3 +911,87 @@ em que a pessoa **já sabe agora** que vai querer aquilo depois.
 `help_content/chat_status_features.ex`, `e2e/tests/chat-saved-messages.spec.ts`,
 `scripts/i18n_apply_translation_overrides.py` e os catálogos `chat`, `dialogs`,
 `help`, `help_features`, `help_ui`, `ui`.
+
+
+---
+
+## Auditoria de fechamento da Onda 4 — 2026-09-24
+
+Varredura dos 13 commits locais contra o plano, o código e este arquivo, antes
+de qualquer push. O que foi conferido e o que saiu dela.
+
+**Conferido e correto**
+
+- Cada item de 1.1 a 4.4 foi lido contra a sua lista de Atividades do plano.
+  Os desvios encontrados já estavam registrados e justificados: `IrcTabs` sem
+  selo de menção (3.2), `Reactions` validando em vez de `Chat.Policy.can_react?`
+  (3.1), `web_push_ex` no lugar de `web_push_encryption` (2.3), `cmd-list`
+  reusado em vez de um tópico novo para o catálogo frio (1.2, que é o que a
+  regra 6 manda).
+- **As 8 migrations replicam do zero**, revertem as 8 e reaplicam, tudo com
+  saída 0. Testado num banco vazio, não no incremental.
+- **A decisão travada continua de pé**: `route_valid_nickname/2` só leva a
+  senha ou a registro, e não existe caminho de convidado em lugar nenhum da
+  tela de conexão.
+- Rotas públicas novas (`/account/verify/:token`, `/account/reset/:token`)
+  estão no loop de locales **e** sem prefixo — a armadilha do `/join/:slug`.
+- Nenhum `TODO`/`FIXME`, nenhum teste pulado, nenhum evento novo sem handler,
+  nenhum `attr` declarado e não lido. Os 39 arquivos de teste novos têm
+  `@moduletag`. Dialyzer rodou e passou.
+- Ajuda: todo item acionável tem tópico. Os controllers JS novos têm Vitest;
+  os hooks são ligação fina dentro do teto de 200 linhas.
+- `delete_env(:web_push_ex, :vapid)` nos testes **não** é a armadilha que o
+  1.1 descreve: `config/test.exs` não define a chave, então ausente é de fato o
+  valor neutro, e os testes são `async: false`.
+
+**Corrigido nesta auditoria**
+
+- **1.2 não pôs a exclusão no `WHERE`, e isso custava linhas.** A atividade 1
+  pedia `exclude` na consulta; o código trazia até `limit` linhas registradas e
+  **depois** descartava as que já estavam vivas. Com o teto de 500, cada canal
+  rodando comia uma vaga da metade fria — o `:limit` documentado como "da
+  metade fria" era, na verdade, da metade registrada. Agora são duas consultas:
+  a fria exclui os nomes vivos dentro do `WHERE`, e os vivos são buscados por
+  nome, sem teto, só para saber quando a sala foi usada pela última vez.
+  Asserção nova em `directory_test`, vista vermelha antes e depois da correção.
+
+**A varredura de browser encontrou dois defeitos que nenhum gate de item pegou**
+
+Doze batches em sequência — a primeira varredura completa sobre os 13 commits.
+Dez verdes, dois vermelhos, e os dois eram reais:
+
+- **`commands` (2 specs): `/pin` e `/unpin` não tinham `Syntax` nem
+  `Examples`.** `chat-command-registry` varre **todo** comando registrado e
+  exige a forma que todas as outras páginas de comando seguem; o item 4.3
+  escreveu prosa livre e o gate dele era `channels`, então ninguém rodou o
+  spec que cobria isso. As duas páginas foram reescritas na forma canônica
+  (Syntax, Parameters, How It Works, Who can, Rules & Limits, Examples, See
+  Also), e uma varredura conferiu que **nenhuma** página `cmd_*` está sem as
+  duas seções.
+- **`public` (1 spec): a janela do `/privacy` virou uma tira.** Os itens 2.3,
+  4.1 e 4.2 acrescentaram uma seção cada — push, o cookie de navegador, o
+  endereço opcional — e ninguém alargou a janela. 560×908 dá proporção 1,62,
+  acima do teto de 1,5 que `desktop-window-sizing` cobra. Alargada para 680.
+
+A lição é a do gate por item: **um item que acrescenta a uma superfície
+compartilhada precisa rodar o batch daquela superfície, não só o seu.** Um
+comando novo é o batch `commands`; um parágrafo no `/privacy` é o `public`.
+
+**Registrado, não corrigido**
+
+- **3.3, atalho de teclado: avaliado e recusado.** O plano pedia "avaliar em
+  `Chat.KeyBindings`; se entrar, atualizar Keyboard Shortcuts". Não entrou, e a
+  entrada de progresso do item não dizia isso. O botão "Primeira não lida" só
+  aparece quando há algo a pular, e um atalho global para uma ação que quase
+  sempre não tem alvo é ruído. Fica dito aqui.
+- **2.3 continua com a verificação manual pendente** (`e2e/TEST_BACKLOG.md`):
+  um push real contra um serviço de push de verdade, uma vez, antes de um
+  release que toque nisso. Estes 13 commits tocam. **É bloqueio de release, não
+  de commit.**
+- **4.2 não construiu o terceiro uso do e-mail** (avisar de PM depois de N
+  horas fora). Decisão registrada no item; `/privacy` descreve só os três usos
+  que existem de fato, então o texto não mente.
+
+**O plano não está concluído.** 13 de 18 itens. A Onda 5 inteira — 5.1 arquivo
+público, 5.2 threads (plan mode obrigatório), 5.3 eventos, 5.4 avatar, 5.5
+emoji do servidor, 5.6 mensagem de voz — não foi iniciada.

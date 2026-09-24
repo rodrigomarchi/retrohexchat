@@ -1389,7 +1389,7 @@ msgstr ""
 " is still here /timer list /timer stop heartbeat"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:110
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:68
 #, elixir-autogen, elixir-format
@@ -2039,6 +2039,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:23
@@ -2052,6 +2053,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:19
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:30
@@ -2137,6 +2139,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:16
@@ -2149,6 +2152,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:11
@@ -2447,6 +2451,7 @@ msgstr "Opcje"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:12
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:9
@@ -2459,6 +2464,7 @@ msgstr "Opcje"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:6
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:6
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:9
@@ -2727,6 +2733,7 @@ msgstr "Administratorów korzeni nie można zdegradować poleceniami"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:23
@@ -2805,7 +2812,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:38
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:25
@@ -2819,7 +2826,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:24
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:32
@@ -3019,6 +3026,7 @@ msgstr "Podpolecenia"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:10
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:7
@@ -3032,6 +3040,7 @@ msgstr "Podpolecenia"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:4
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:4
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:7
@@ -5133,68 +5142,104 @@ msgstr ""
 msgid "Rooms With Nobody In Them"
 msgstr "Pokoje, w których nikogo nie ma"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "/pin"
 msgstr "/pin"
 
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "/unpin"
 msgstr "/unpin"
-
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A channel has one topic and a welcome nobody reads twice. Everything else — the rules, the link to the event, what was agreed last week — scrolls away and gets retyped. Pinning keeps a message findable."
 msgstr "Kanał ma jeden temat i powitanie, którego nikt nie czyta dwa razy. Cała reszta — zasady, link do wydarzenia, ustalenia z zeszłego tygodnia — znika w przewijaniu i jest wpisywana od nowa. Przypięcie sprawia, że wiadomość da się odnaleźć."
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "A channel keeps up to 50 messages, listed newest first in the Pinned window. Pinning the same message twice is the same pin. A message can only be pinned by the channel it was said in, and deleting the message removes the pin with it."
-msgstr "Kanał trzyma do 50 wiadomości, od najnowszej, w oknie Przypięte. Przypięcie tej samej wiadomości dwa razy to to samo przypięcie. Wiadomość może przypiąć tylko kanał, w którym padła, a jej usunięcie zabiera przypięcie ze sobą."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Channel operators and owners — the same bar as the topic, and for the same reason: both are the channel speaking about itself to everybody who walks in. Half-operators moderate the conversation instead."
 msgstr "Operatorzy i właściciele kanału — ta sama poprzeczka co przy temacie i z tego samego powodu: oba są kanałem mówiącym o sobie do każdego, kto wchodzi. Półoperatorzy moderują rozmowę."
 
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Channel operators and owners, the same as pinning. Unpinning a message nothing was keeping is not an error — it says so and changes nothing."
 msgstr "Operatorzy i właściciele kanału, tak jak przy przypinaniu. Odpięcie wiadomości, której nic nie trzymało, nie jest błędem — mówi o tym i nic nie zmienia."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Easier than the id: right-click the message and choose Pin. The command exists for when you already have the id in front of you."
-msgstr "Łatwiej niż z id: kliknij wiadomość prawym przyciskiem i wybierz Przypnij. Komenda istnieje na wypadek, gdy id i tak masz przed sobą."
-
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Stops keeping a message in view."
 msgstr "Przestaje trzymać wiadomość na widoku."
 
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:6
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "The message itself stays exactly where it is in the conversation — only the pin goes. The Pinned window unpins from the entry too, which is usually where you are when you decide to."
 msgstr "Sama wiadomość zostaje dokładnie tam, gdzie była w rozmowie — znika tylko przypięcie. Okno Przypięte odpina też z samego wpisu, a tam zwykle jesteś, kiedy o tym decydujesz."
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "What it keeps"
-msgstr "Co trzyma"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:14
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Who can"
 msgstr "Kto może"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "/pin 1284"
+msgstr "/pin 1284"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "/pin <message id>"
+msgstr "/pin <id wiadomości>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "/unpin 1284"
+msgstr "/unpin 1284"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "/unpin <message id>"
+msgstr "/unpin <id wiadomości>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "A channel keeps up to 50 messages, newest first"
+msgstr "Kanał zachowuje do 50 wiadomości, od najnowszych"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "A message can only be pinned by the channel it was said in"
+msgstr "Wiadomość może przypiąć tylko kanał, na którym ją napisano"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Deleting the message removes the pin with it"
+msgstr "Usunięcie wiadomości usuwa wraz z nią przypięcie"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Easier than the id: right-click the message and choose Pin. The command exists for when you already have the id in front of you. Either way the channel checks again when the pin arrives, and a Pinned button appears in the conversation toolbar as soon as there is something to show."
+msgstr "Prościej niż przez id: kliknij wiadomość prawym przyciskiem i wybierz Przypnij. Polecenie istnieje na wypadek, gdy id już masz przed sobą. Tak czy inaczej kanał sprawdza ponownie, gdy przypięcie dociera, a na pasku rozmowy pojawia się przycisk Przypięte, gdy tylko jest co pokazać."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Pinned Window"
+msgstr "Okno przypiętych"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Pinning the same message twice is the same pin"
+msgstr "Przypięcie tej samej wiadomości dwa razy to to samo przypięcie"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "— The number of a message said in this channel."
+msgstr "— Numer wiadomości napisanej na tym kanale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "— The number of a message this channel is keeping."
+msgstr "— Numer wiadomości, którą ten kanał zachowuje."
