@@ -224,6 +224,15 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             icon_fn={:icon_btn_url_catcher}
             disabled={!@chat?}
           />
+          <%!-- Server opener: the list is read from the database on open, so
+                this one cannot be client-side. --%>
+          <.app_item
+            action="open_saved_dialog"
+            on_action={@on_action}
+            label={dgettext("ui", "Saved Messages")}
+            icon_fn={:icon_btn_star}
+            disabled={!@chat?}
+          />
           <%!-- Server openers: /list rows and channel state are loaded by the
                 LiveView on open, so these two cannot be client-side. --%>
           <.app_item

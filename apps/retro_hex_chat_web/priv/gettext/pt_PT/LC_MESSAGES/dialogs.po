@@ -1016,6 +1016,7 @@ msgid "No topic set"
 msgstr "Nenhum tópico definido"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:172
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:121
 #, elixir-autogen, elixir-format
 msgid "Note"
 msgstr "Nota"
@@ -1169,6 +1170,7 @@ msgstr "RSS"
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:314
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:214
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:189
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:137
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Remover"
@@ -4027,26 +4029,52 @@ msgstr "à espera de que siga o link"
 msgid "An operator can pin a message — the rules, a link, what was agreed — and it stays findable here after it scrolls away."
 msgstr "Um operador pode afixar uma mensagem — as regras, um link, o que ficou combinado — e ela continua encontrável aqui depois de desaparecer no scroll."
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:130
 #, elixir-autogen, elixir-format
 msgid "Could not load more pinned messages."
 msgstr "Não foi possível carregar mais mensagens afixadas."
-
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:53
 #, elixir-autogen, elixir-format
 msgid "This channel is not keeping anything yet."
 msgstr "Este canal ainda não mantém nada."
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:113
 #, elixir-autogen, elixir-format
 msgid "Unpin"
 msgstr "Desafixar"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:98
 #, elixir-autogen, elixir-format
 msgid "pinned by %{nickname}"
 msgstr "afixada por %{nickname}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:154
+#, elixir-autogen, elixir-format
+msgid "Could not load more saved messages."
+msgstr "Não foi possível carregar mais mensagens guardadas."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:54
+#, elixir-autogen, elixir-format
+msgid "Right-click a message and choose Save to keep it here. Nobody else can see what you keep, and it stays after the conversation has scrolled away."
+msgstr "Clique com o botão direito numa mensagem e escolha Guardar para a manter aqui. Mais ninguém vê o que guarda, e fica depois de a conversa desaparecer no deslocamento."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:105
+#, elixir-autogen, elixir-format
+msgid "This message was deleted."
+msgstr "Esta mensagem foi apagada."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:120
+#, elixir-autogen, elixir-format
+msgid "Why you kept it (optional)"
+msgstr "Porque guardou (opcional)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:52
+#, elixir-autogen, elixir-format
+msgid "You have not kept anything yet."
+msgstr "Ainda não guardou nada."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:167
+#, elixir-autogen, elixir-format
+msgid "with %{nickname}"
+msgstr "com %{nickname}"

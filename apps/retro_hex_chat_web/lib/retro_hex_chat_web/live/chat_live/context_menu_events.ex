@@ -40,6 +40,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     ]
 
   alias RetroHexChat.Accounts.{ContactList, NickColors, ServerRoles, Session}
+  alias RetroHexChat.Channels.Pins
   alias RetroHexChat.Channels.Roles
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{CapturedURL, IgnoreList}
@@ -60,6 +61,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChatWeb.ChatLive.CoreEvents
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelper
   alias RetroHexChatWeb.ChatLive.Helpers.LobbyInvite
+  alias RetroHexChatWeb.ChatLive.SaveEvents
   alias RetroHexChatWeb.ChatLive.UiActions.Invite
 
   def handle_event("nick_right_click", %{"nick" => nick} = params, socket) do
@@ -699,18 +701,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     type = String.to_existing_atom(params["type"])
     urls = params["message_urls"] || []
 
-    target_message = %{
-      author: params["author"],
-      nick: params["author"],
-      text: params["message_text"],
-      source: params["message_source"] || params["message_text"],
-      content_format: params["message_format"] || "irc",
-      id: params["message_id"],
-      is_system: params["is_system"] == true,
-      urls: urls,
-      message_id: params["message_id"],
-      is_own: params["author"] == socket.assigns.session.nickname
-    }
+    target_message = target_message(socket, params, type, urls)
 
     target_nick = params["nick"]
 
@@ -738,6 +729,53 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
       show_context_color_picker: false
     )
   end
+
+  defp target_message(socket, params, type, urls) do
+    %{
+      author: params["author"],
+      nick: params["author"],
+      text: params["message_text"],
+      source: params["message_source"] || params["message_text"],
+      content_format: params["message_format"] || "irc",
+      id: params["message_id"],
+      is_system: params["is_system"] == true,
+      urls: urls,
+      message_id: params["message_id"],
+      is_own: params["author"] == socket.assigns.session.nickname
+    }
+    |> Map.merge(kept_state(socket, params, type))
+  end
+
+  # Asked once, for the one line somebody right-clicked. Carrying either answer
+  # on every rendered message would be a query a row; leaving them out is what
+  # made the Unpin item unreachable — it was written, drawn by nothing, and
+  # green in every test.
+  defp kept_state(socket, params, :message) do
+    %{
+      pinned: pinned?(socket, params["message_id"]),
+      saved: SaveEvents.saved?(socket, params["message_id"])
+    }
+  end
+
+  defp kept_state(_socket, _params, _type), do: %{pinned: false, saved: false}
+
+  defp pinned?(socket, message_id) do
+    channel = socket.assigns.session.active_channel
+
+    is_binary(channel) and is_nil(socket.assigns.session.active_pm) and
+      Pins.pinned?(channel, to_message_id(message_id))
+  end
+
+  defp to_message_id(value) when is_integer(value), do: value
+
+  defp to_message_id(value) when is_binary(value) do
+    case Integer.parse(value) do
+      {id, _rest} -> id
+      :error -> 0
+    end
+  end
+
+  defp to_message_id(_value), do: 0
 
   defp close_chat_context_menu(socket) do
     put_menu(socket, chat_context_menu: UserContextMenus.chat_closed())

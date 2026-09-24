@@ -715,57 +715,17 @@ defmodule RetroHexChatWeb.App.ChatLive do
   end
 
   # ── Hook dispatch ─────────────────────────────────────────────
-  # Ordered list of event hook functions. Used by both attach_all_hooks/1
-  # (to register LiveView hooks) and dispatch_to_hooks/3 (to simulate the
-  # hook pipeline for internally-dispatched events).
-
-  @event_hook_fns [
-    &ChatLive.EmojiEvents.handle_event/3,
-    &ChatLive.UrlCatcherEvents.handle_event/3,
-    &ChatLive.PmTypingEvents.handle_event/3,
-    &ChatLive.AliasEvents.handle_event/3,
-    &ChatLive.CustomMenusEvents.handle_event/3,
-    &ChatLive.AutorespondEvents.handle_event/3,
-    &ChatLive.TimerEvents.handle_event/3,
-    &ChatLive.HighlightEvents.handle_event/3,
-    &ChatLive.SettingsDialogsEvents.handle_event/3,
-    &ChatLive.AccountEvents.handle_event/3,
-    &ChatLive.TrustedTerminalsEvents.handle_event/3,
-    &ChatLive.ProfileEvents.handle_event/3,
-    &ChatLive.AwayEvents.handle_event/3,
-    &ChatLive.UserModesEvents.handle_event/3,
-    &ChatLive.NotifyEvents.handle_event/3,
-    &ChatLive.AddressBookEvents.handle_event/3,
-    &ChatLive.NickColorsEvents.handle_event/3,
-    &ChatLive.IgnoreListEvents.handle_event/3,
-    &ChatLive.ConversationsEvents.handle_event/3,
-    &ChatLive.ConversationsContextMenuEvents.handle_event/3,
-    &ChatLive.ChannelCentralEvents.handle_event/3,
-    &ChatLive.NavigationEvents.handle_event/3,
-    &ChatLive.SearchEvents.handle_event/3,
-    &ChatLive.PerformEvents.handle_event/3,
-    &ChatLive.AutojoinEvents.handle_event/3,
-    &ChatLive.ChannelListEvents.handle_event/3,
-    &ChatLive.MenuToolbarEvents.handle_event/3,
-    &ChatLive.UserLookupEvents.handle_event/3,
-    &ChatLive.HoverEvents.handle_event/3,
-    &ChatLive.ContextMenuEvents.handle_event/3,
-    &ChatLive.TipEvents.handle_event/3,
-    &ChatLive.AdminEvents.handle_event/3,
-    &ChatLive.BotEvents.handle_event/3,
-    &ChatLive.KeyboardEvents.handle_event/3,
-    &ChatLive.ConnectionEvents.handle_event/3,
-    &ChatLive.GroupCallEvents.handle_event/3,
-    &ChatLive.P2PSessionEvents.handle_event/3,
-    &ChatLive.ArcadeSessionEvents.handle_event/3,
-    &ChatLive.CoreEvents.handle_event/3
-  ]
+  # `event_hooks/0` is the one ordered list. `attach_all_hooks/1` registers it
+  # with LiveView and `dispatch_to_hooks/3` replays it for events the app
+  # dispatches to itself (a compound `toolbar_action`, a tab bar press). It was
+  # written twice, and the second copy quietly fell behind by four modules —
+  # so a Start-menu entry could be wired, drawn, and do nothing at all.
 
   @spec dispatch_to_hooks(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   defp dispatch_to_hooks(event, params, socket) do
     result =
-      Enum.reduce_while(@event_hook_fns, socket, fn hook_fn, acc ->
+      Enum.reduce_while(event_hooks(), socket, fn {_name, hook_fn}, acc ->
         case hook_fn.(event, params, acc) do
           {:halt, updated_socket} -> {:halt, {:halted, updated_socket}}
           {:cont, updated_socket} -> {:cont, updated_socket}
@@ -787,8 +747,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # ── Hooks ─────────────────────────────────────────────────────
 
-  defp attach_all_hooks(socket) do
-    event_hooks = [
+  defp event_hooks do
+    [
       {:emoji_events, &ChatLive.EmojiEvents.handle_event/3},
       {:url_catcher_events, &ChatLive.UrlCatcherEvents.handle_event/3},
       {:pm_typing_events, &ChatLive.PmTypingEvents.handle_event/3},
@@ -824,6 +784,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:reaction_events, &ChatLive.ReactionEvents.handle_event/3},
       {:mention_events, &ChatLive.MentionEvents.handle_event/3},
       {:pin_events, &ChatLive.PinEvents.handle_event/3},
+      {:save_events, &ChatLive.SaveEvents.handle_event/3},
       {:tip_events, &ChatLive.TipEvents.handle_event/3},
       {:admin_events, &ChatLive.AdminEvents.handle_event/3},
       {:bot_events, &ChatLive.BotEvents.handle_event/3},
@@ -835,11 +796,16 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:arcade_session_events, &ChatLive.ArcadeSessionEvents.handle_event/3},
       {:core_events, &ChatLive.CoreEvents.handle_event/3}
     ]
+  end
+
+  defp attach_all_hooks(socket) do
+    event_hooks = event_hooks()
 
     info_hooks = [
       {:settings_dialogs_info, &ChatLive.SettingsDialogsEvents.handle_info/2},
       {:mention_info, &ChatLive.MentionEvents.handle_info/2},
       {:pin_info, &ChatLive.PinEvents.handle_info/2},
+      {:save_info, &ChatLive.SaveEvents.handle_info/2},
       {:timer_handlers, &ChatLive.TimerHandlers.handle_info/2},
       {:pubsub_handlers, &ChatLive.PubsubHandlers.handle_info/2},
       # The call surface reports to its host: what the chat's chrome draws,

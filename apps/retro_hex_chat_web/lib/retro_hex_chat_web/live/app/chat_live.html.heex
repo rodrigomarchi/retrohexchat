@@ -510,6 +510,24 @@
       />
     </.desktop_window>
 
+    <%!-- Saved Messages — one person's pile, across every conversation they
+          were in. Nobody else can see it, so nothing about it is broadcast. --%>
+    <.desktop_window
+      :if={"saved" in @open_windows}
+      {WindowRegistry.attrs("saved")}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="saved-window"
+    >
+      <:icon><Icons.icon_btn_star class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.SavedDialog}
+        id={RetroHexChatWeb.ChatLive.Components.SavedDialog.id()}
+        nickname={@session.nickname}
+        timezone={@timezone}
+        nick_color_fn={@nick_color_fn}
+      />
+    </.desktop_window>
+
     <%!-- Flood Protection — server-managed: uncontrolled form, nothing to keep
           across closes. --%>
     <.desktop_window

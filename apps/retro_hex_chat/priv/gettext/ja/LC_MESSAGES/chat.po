@@ -561,6 +561,7 @@ msgid "That is not an emoji you can react with."
 msgstr "それはリアクションに使えない絵文字です。"
 
 #: lib/retro_hex_chat/chat/reactions.ex:110
+#: lib/retro_hex_chat/chat/saved_messages.ex:252
 #, elixir-autogen, elixir-format
 msgid "That message was deleted."
 msgstr "そのメッセージは削除されました。"
@@ -569,3 +570,24 @@ msgstr "そのメッセージは削除されました。"
 #, elixir-autogen, elixir-format
 msgid "This message already has %{count} different reactions."
 msgstr "このメッセージにはすでに %{count} 種類のリアクションがあります。"
+
+#: lib/retro_hex_chat/chat/saved_messages.ex:242
+#, elixir-autogen, elixir-format
+msgid "That message could not be saved."
+msgstr "そのメッセージは保存できませんでした。"
+
+#: lib/retro_hex_chat/chat/saved_messages.ex:221
+#, elixir-autogen, elixir-format
+msgid "That note could not be saved."
+msgstr "そのメモは保存できませんでした。"
+
+#: lib/retro_hex_chat/chat/saved_messages.ex:108
+#: lib/retro_hex_chat/chat/saved_messages.ex:213
+#, elixir-autogen, elixir-format
+msgid "That saved message is not yours."
+msgstr "その保存済みメッセージはあなたのものではありません。"
+
+#: lib/retro_hex_chat/chat/saved_messages.ex:262
+#, elixir-autogen, elixir-format
+msgid "You have already saved %{count} messages. Remove one first."
+msgstr "すでに %{count} 件のメッセージを保存しています。まず 1 件削除してください。"

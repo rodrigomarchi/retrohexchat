@@ -555,6 +555,7 @@ msgstr "節"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:113
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:49
@@ -2679,38 +2680,64 @@ msgstr "iPhone 或 iPad 的 Safari：分享，然後「加入主畫面」"
 msgid "/pin"
 msgstr "/pin"
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "/unpin"
 msgstr "/unpin"
-
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "A Pinned button appears in the conversation toolbar, with the count beside it, and only while the channel is keeping something. An empty window is not worth a button."
 msgstr "對話工具列上會出現一個「置頂」按鈕，旁邊帶著數量，而且只在頻道保留著東西時出現。空視窗不值得一個按鈕。"
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Opening it"
 msgstr "怎麼開啟"
-
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Pressing a row scrolls the conversation to the line it kept, where the message sits in its original place with everything around it. Operators also get an Unpin beside each row."
 msgstr "按一行會把對話捲到那則被保留的訊息，它就在原來的位置，前後文都在。管理員每行旁邊還有一個「取消置頂」。"
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "What a row does"
 msgstr "按一行會怎樣"
-
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "What the channel you are reading is keeping — newest first. A channel keeps up to 50 lines; everything else scrolls away as usual."
 msgstr "你正在讀的頻道保留了什麼——從新到舊。一個頻道最多保留 50 行，其餘照常捲走。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "A line that was deleted"
+msgstr "已被刪除的一行"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Each row says who wrote the line and where, and pressing it switches to that conversation and scrolls to the line. Remove takes the row away without touching the message. The note field beside it is yours: press Enter to keep it."
+msgstr "每一行都會說明是誰在哪裡寫的，按下它會切換到那個對話並捲動到該行。移除只會拿掉這一行，不動訊息本身。旁邊的備註框是你的：按 Enter 儲存。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Everything you kept for later, newest first, from every conversation you were in — channels and private messages in one list. Nobody else can see it."
+msgstr "你留著稍後看的一切，最新的在前，來自你參與過的每一個對話——頻道和私訊在同一個清單裡。別人看不到。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Saving a Message"
+msgstr "儲存一則訊息"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Tools ▸ Saved Messages. It opens whether or not anything is in it, and tells you how to put something there."
+msgstr "開始 ▸ 工具 ▸ 已儲存的訊息。無論裡面有沒有內容都會開啟，並告訴你怎麼往裡放東西。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "The row stays and says the message was deleted, without showing what it said. It disappears only if the message is removed from the server entirely."
+msgstr "這一行會保留，並說明訊息已被刪除，但不顯示它說過什麼。只有當訊息被完全從伺服器移除時，這一行才會消失。"

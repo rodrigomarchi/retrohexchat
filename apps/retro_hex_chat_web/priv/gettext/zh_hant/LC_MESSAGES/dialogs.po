@@ -1007,6 +1007,7 @@ msgid "No topic set"
 msgstr "未設定主題"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:172
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:121
 #, elixir-autogen, elixir-format
 msgid "Note"
 msgstr "說明"
@@ -1160,6 +1161,7 @@ msgstr "RSS"
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:314
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:214
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:189
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:137
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "移除"
@@ -3990,26 +3992,52 @@ msgstr "等你點開連結"
 msgid "An operator can pin a message — the rules, a link, what was agreed — and it stays findable here after it scrolls away."
 msgstr "管理員可以置頂一則訊息——規則、一個連結、約定好的事——它捲走之後仍然能在這裡找到。"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:130
 #, elixir-autogen, elixir-format
 msgid "Could not load more pinned messages."
 msgstr "無法載入更多置頂訊息。"
-
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:53
 #, elixir-autogen, elixir-format
 msgid "This channel is not keeping anything yet."
 msgstr "這個頻道還沒有保留任何內容。"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:113
 #, elixir-autogen, elixir-format
 msgid "Unpin"
 msgstr "取消置頂"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:98
 #, elixir-autogen, elixir-format
 msgid "pinned by %{nickname}"
 msgstr "由 %{nickname} 置頂"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:154
+#, elixir-autogen, elixir-format
+msgid "Could not load more saved messages."
+msgstr "無法載入更多已儲存的訊息。"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:54
+#, elixir-autogen, elixir-format
+msgid "Right-click a message and choose Save to keep it here. Nobody else can see what you keep, and it stays after the conversation has scrolled away."
+msgstr "在訊息上按右鍵並選擇儲存，就會留在這裡。別人看不到你儲存了什麼，而且對話捲動過去後它依然在。"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:105
+#, elixir-autogen, elixir-format
+msgid "This message was deleted."
+msgstr "這則訊息已被刪除。"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:120
+#, elixir-autogen, elixir-format
+msgid "Why you kept it (optional)"
+msgstr "儲存的理由（選填）"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:52
+#, elixir-autogen, elixir-format
+msgid "You have not kept anything yet."
+msgstr "你還沒有儲存任何內容。"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:167
+#, elixir-autogen, elixir-format
+msgid "with %{nickname}"
+msgstr "與 %{nickname}"

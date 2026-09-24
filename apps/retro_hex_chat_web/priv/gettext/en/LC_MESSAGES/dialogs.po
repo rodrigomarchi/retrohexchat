@@ -1015,6 +1015,7 @@ msgid "No topic set"
 msgstr "No topic set"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:172
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:121
 #, elixir-autogen, elixir-format
 msgid "Note"
 msgstr "Note"
@@ -1168,6 +1169,7 @@ msgstr "RSS"
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:314
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:214
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:189
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:137
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Remove"
@@ -3962,7 +3964,7 @@ msgstr "Notify me on this device even when Retro Hex Chat is closed"
 #: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:108
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Could not load more mentions."
-msgstr "Could not load more events."
+msgstr "Could not load more mentions."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:52
 #, elixir-autogen, elixir-format
@@ -4014,26 +4016,52 @@ msgstr "waiting for you to follow the link"
 msgid "An operator can pin a message — the rules, a link, what was agreed — and it stays findable here after it scrolls away."
 msgstr "An operator can pin a message — the rules, a link, what was agreed — and it stays findable here after it scrolls away."
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:130
 #, elixir-autogen, elixir-format
 msgid "Could not load more pinned messages."
 msgstr "Could not load more pinned messages."
-
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:53
 #, elixir-autogen, elixir-format
 msgid "This channel is not keeping anything yet."
 msgstr "This channel is not keeping anything yet."
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:113
 #, elixir-autogen, elixir-format
 msgid "Unpin"
 msgstr "Unpin"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:98
 #, elixir-autogen, elixir-format
 msgid "pinned by %{nickname}"
 msgstr "pinned by %{nickname}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:154
+#, elixir-autogen, elixir-format
+msgid "Could not load more saved messages."
+msgstr "Could not load more saved messages."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:54
+#, elixir-autogen, elixir-format
+msgid "Right-click a message and choose Save to keep it here. Nobody else can see what you keep, and it stays after the conversation has scrolled away."
+msgstr "Right-click a message and choose Save to keep it here. Nobody else can see what you keep, and it stays after the conversation has scrolled away."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:105
+#, elixir-autogen, elixir-format
+msgid "This message was deleted."
+msgstr "This message was deleted."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:120
+#, elixir-autogen, elixir-format
+msgid "Why you kept it (optional)"
+msgstr "Why you kept it (optional)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:52
+#, elixir-autogen, elixir-format
+msgid "You have not kept anything yet."
+msgstr "You have not kept anything yet."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:167
+#, elixir-autogen, elixir-format
+msgid "with %{nickname}"
+msgstr "with %{nickname}"

@@ -3083,6 +3083,7 @@ msgid "Safety Features"
 msgstr "Sicherheitsmerkmale"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "Suchen"
@@ -3157,6 +3158,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
@@ -6608,3 +6610,43 @@ msgstr "Solange es etwas Neues gibt, erscheint neben den anderen Bedienelementen
 #, elixir-autogen, elixir-format
 msgid "Signing In On Several Screens"
 msgstr "Auf mehreren Geräten anmelden"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A chat loses things. The address somebody typed, the link to the build, the paragraph worth reading twice — all of it scrolls. Saving is for the moment you already know you will want it later."
+msgstr "Ein Chat verliert Dinge. Die Adresse, die jemand getippt hat, der Link zum Build, der Absatz, den man zweimal lesen sollte – alles scrollt weg. Speichern ist für den Moment, in dem du schon weißt, dass du es später brauchen wirst."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Getting it back"
+msgstr "Wieder darauf zugreifen"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Keeping a line"
+msgstr "Eine Zeile behalten"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Nobody else can see it"
+msgstr "Niemand sonst sieht es"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Right-click a message — long press on a phone — and choose Save for Later. The same menu offers Remove from Saved on a line you already kept. It works on channel messages and on private ones."
+msgstr "Klicke mit der rechten Maustaste auf eine Nachricht – auf dem Handy lange drücken – und wähle „Für später speichern“. Dasselbe Menü bietet „Aus Gespeichert entfernen“ für eine Zeile, die du schon behalten hast. Es funktioniert bei Kanalnachrichten und bei privaten."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Saved Messages Window"
+msgstr "Fenster „Gespeicherte Nachrichten“"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Saving is private. The author is not told, no count is shown to anyone, and nothing appears beside the message. It is a note to yourself, not a vote."
+msgstr "Speichern ist privat. Der Autor erfährt nichts davon, niemandem wird eine Zahl angezeigt, und neben der Nachricht erscheint nichts. Es ist eine Notiz an dich selbst, keine Stimme."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Tools ▸ Saved Messages lists everything you kept, newest first, and each row goes back to the line in its own conversation. You can keep up to 500; each one can carry a short note about why."
+msgstr "Start ▸ Werkzeuge ▸ Gespeicherte Nachrichten listet alles auf, was du behalten hast – neueste zuerst –, und jede Zeile führt zurück zur Stelle in ihrem eigenen Gespräch. Du kannst bis zu 500 aufbewahren; jede kann eine kurze Notiz zum Warum tragen."

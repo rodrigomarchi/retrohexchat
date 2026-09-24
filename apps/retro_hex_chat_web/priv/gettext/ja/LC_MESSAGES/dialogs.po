@@ -1009,6 +1009,7 @@ msgid "No topic set"
 msgstr "トピックセットなし"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:172
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:121
 #, elixir-autogen, elixir-format
 msgid "Note"
 msgstr "Note"
@@ -1162,6 +1163,7 @@ msgstr "RSS"
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:314
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:214
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:189
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:137
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "削除"
@@ -3993,26 +3995,52 @@ msgstr "リンクを開くのを待っています"
 msgid "An operator can pin a message — the rules, a link, what was agreed — and it stays findable here after it scrolls away."
 msgstr "運営者はメッセージを固定できます——決まりごと、リンク、合意した内容。スクロールで流れたあとも、ここから見つけられます。"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:130
 #, elixir-autogen, elixir-format
 msgid "Could not load more pinned messages."
 msgstr "固定メッセージをこれ以上読み込めませんでした。"
-
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:53
 #, elixir-autogen, elixir-format
 msgid "This channel is not keeping anything yet."
 msgstr "このチャンネルはまだ何も保持していません。"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:113
 #, elixir-autogen, elixir-format
 msgid "Unpin"
 msgstr "固定を解除"
 
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:98
 #, elixir-autogen, elixir-format
 msgid "pinned by %{nickname}"
 msgstr "%{nickname} が固定"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:154
+#, elixir-autogen, elixir-format
+msgid "Could not load more saved messages."
+msgstr "保存したメッセージをこれ以上読み込めませんでした。"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:54
+#, elixir-autogen, elixir-format
+msgid "Right-click a message and choose Save to keep it here. Nobody else can see what you keep, and it stays after the conversation has scrolled away."
+msgstr "メッセージを右クリックして「保存」を選ぶと、ここに残ります。何を保存したかはほかの人には見えず、会話が流れたあとも残ります。"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:105
+#, elixir-autogen, elixir-format
+msgid "This message was deleted."
+msgstr "このメッセージは削除されました。"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:120
+#, elixir-autogen, elixir-format
+msgid "Why you kept it (optional)"
+msgstr "保存した理由（任意）"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:52
+#, elixir-autogen, elixir-format
+msgid "You have not kept anything yet."
+msgstr "まだ何も保存していません。"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:167
+#, elixir-autogen, elixir-format
+msgid "with %{nickname}"
+msgstr "%{nickname} との会話"

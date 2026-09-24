@@ -77,6 +77,21 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         see_also: ["cmd-pin", "cmd-unpin"]
       },
       %{
+        id: "ui-saved-window",
+        title: dgettext("help", "Saved Messages Window"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "saved",
+          dgettext("help", "saved messages"),
+          dgettext("help", "save for later"),
+          dgettext("help", "bookmarks")
+        ],
+        icon: :icon_btn_star,
+        description:
+          dgettext("help", "Everything you kept for later, newest first, and private to you."),
+        see_also: ["feature-saved-messages"]
+      },
+      %{
         id: "ui-desktop",
         title: dgettext("help", "Desktop & Windows"),
         category: dgettext("help", "User Interface"),

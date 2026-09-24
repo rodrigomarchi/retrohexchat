@@ -2828,6 +2828,7 @@ msgid "Safety Features"
 msgstr "安全特性"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "搜尋"
@@ -2900,6 +2901,7 @@ msgstr "在當前頻道或PM中以實時突出顯示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
@@ -5867,3 +5869,43 @@ msgstr "只要還有新內容，對話的其他控制項旁就會出現一個「
 #, elixir-autogen, elixir-format
 msgid "Signing In On Several Screens"
 msgstr "在多個螢幕上登入"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A chat loses things. The address somebody typed, the link to the build, the paragraph worth reading twice — all of it scrolls. Saving is for the moment you already know you will want it later."
+msgstr "聊天會弄丟東西。有人打出的地址、指向建置的連結、值得讀兩遍的那一段——全都會捲走。儲存是為了你此刻已經知道以後會用到它的那一刻。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Getting it back"
+msgstr "再次找到它"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Keeping a line"
+msgstr "留下一行"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Nobody else can see it"
+msgstr "別人看不到"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Right-click a message — long press on a phone — and choose Save for Later. The same menu offers Remove from Saved on a line you already kept. It works on channel messages and on private ones."
+msgstr "在訊息上按右鍵（手機上長按），然後選擇稍後查看。對於已經儲存的一行，同一個選單會提供從已儲存中移除。頻道訊息和私訊都可以。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Saved Messages Window"
+msgstr "已儲存的訊息視窗"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Saving is private. The author is not told, no count is shown to anyone, and nothing appears beside the message. It is a note to yourself, not a vote."
+msgstr "儲存是私密的。不會通知作者，不會向任何人顯示數量，訊息旁邊也不會出現任何東西。它是給自己的備註，不是投票。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Tools ▸ Saved Messages lists everything you kept, newest first, and each row goes back to the line in its own conversation. You can keep up to 500; each one can carry a short note about why."
+msgstr "開始 ▸ 工具 ▸ 已儲存的訊息會按從新到舊列出你儲存的一切，每一行都能回到它所在對話中的那則訊息。最多可以儲存 500 則，每則都可以附一句簡短的理由。"

@@ -273,6 +273,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       |> assign(:msg_id, Map.get(msg, :id))
       |> assign(:msg_nick, Map.get(msg, :nick))
       |> assign(:msg_pinned, Map.get(msg, :pinned, false))
+      |> assign(:msg_saved, Map.get(msg, :saved, false))
 
     ~H"""
     <.context_menu_item
@@ -322,6 +323,26 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
     >
       <:icon><Icons.icon_reject class="w-[14px] h-[14px]" /></:icon>
       {dgettext("chat", "Unpin")}
+    </.context_menu_item>
+    <%!-- Keeping a line is nobody else's business, so it is offered to
+          everybody and says nothing to anybody. --%>
+    <.context_menu_item
+      :if={not @msg_saved}
+      on_click={@on_action}
+      action="ctx_chat_save_message"
+      phx-value-message_id={@msg_id}
+    >
+      <:icon><Icons.icon_btn_star class="w-[14px] h-[14px]" /></:icon>
+      {dgettext("chat", "Save for Later")}
+    </.context_menu_item>
+    <.context_menu_item
+      :if={@msg_saved}
+      on_click={@on_action}
+      action="ctx_chat_unsave_message"
+      phx-value-message_id={@msg_id}
+    >
+      <:icon><Icons.icon_reject class="w-[14px] h-[14px]" /></:icon>
+      {dgettext("chat", "Remove from Saved")}
     </.context_menu_item>
     <.context_menu_item on_click={@on_action} action="reply_to_message" phx-value-message_id={@msg_id}>
       <:icon><Icons.icon_chat class="w-[14px] h-[14px]" /></:icon>

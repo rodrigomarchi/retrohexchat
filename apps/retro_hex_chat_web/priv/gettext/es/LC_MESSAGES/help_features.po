@@ -3078,6 +3078,7 @@ msgid "Safety Features"
 msgstr "Características de seguridad"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "Buscar"
@@ -3152,6 +3153,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
@@ -6611,3 +6613,43 @@ msgstr "Mientras haya algo nuevo, aparece un botón Primer no leído junto a los
 #, elixir-autogen, elixir-format
 msgid "Signing In On Several Screens"
 msgstr "Entrar en varias pantallas"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A chat loses things. The address somebody typed, the link to the build, the paragraph worth reading twice — all of it scrolls. Saving is for the moment you already know you will want it later."
+msgstr "Un chat pierde cosas. La dirección que alguien escribió, el enlace a la compilación, el párrafo que vale la pena leer dos veces: todo se desplaza. Guardar es para el momento en que ya sabes que lo querrás después."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Getting it back"
+msgstr "Recuperarlo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Keeping a line"
+msgstr "Guardar una línea"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Nobody else can see it"
+msgstr "Nadie más puede verlo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Right-click a message — long press on a phone — and choose Save for Later. The same menu offers Remove from Saved on a line you already kept. It works on channel messages and on private ones."
+msgstr "Haz clic derecho en un mensaje —mantén pulsado en el teléfono— y elige Guardar para después. El mismo menú ofrece Quitar de Guardados en una línea que ya guardaste. Funciona con mensajes de canal y con privados."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Saved Messages Window"
+msgstr "Ventana de mensajes guardados"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Saving is private. The author is not told, no count is shown to anyone, and nothing appears beside the message. It is a note to yourself, not a vote."
+msgstr "Guardar es privado. No se avisa al autor, no se muestra ningún recuento a nadie y no aparece nada junto al mensaje. Es una nota para ti, no un voto."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Tools ▸ Saved Messages lists everything you kept, newest first, and each row goes back to the line in its own conversation. You can keep up to 500; each one can carry a short note about why."
+msgstr "Inicio ▸ Herramientas ▸ Mensajes guardados lista todo lo que guardaste, lo más reciente primero, y cada fila vuelve a la línea en su propia conversación. Puedes guardar hasta 500; cada una puede llevar una nota breve sobre por qué."

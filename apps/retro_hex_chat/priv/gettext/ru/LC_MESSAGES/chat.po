@@ -572,6 +572,7 @@ msgid "That is not an emoji you can react with."
 msgstr "Этим эмодзи отреагировать нельзя."
 
 #: lib/retro_hex_chat/chat/reactions.ex:110
+#: lib/retro_hex_chat/chat/saved_messages.ex:252
 #, elixir-autogen, elixir-format
 msgid "That message was deleted."
 msgstr "Это сообщение было удалено."
@@ -580,3 +581,24 @@ msgstr "Это сообщение было удалено."
 #, elixir-autogen, elixir-format
 msgid "This message already has %{count} different reactions."
 msgstr "У этого сообщения уже %{count} разных реакций."
+
+#: lib/retro_hex_chat/chat/saved_messages.ex:242
+#, elixir-autogen, elixir-format
+msgid "That message could not be saved."
+msgstr "Не удалось сохранить это сообщение."
+
+#: lib/retro_hex_chat/chat/saved_messages.ex:221
+#, elixir-autogen, elixir-format
+msgid "That note could not be saved."
+msgstr "Не удалось сохранить эту заметку."
+
+#: lib/retro_hex_chat/chat/saved_messages.ex:108
+#: lib/retro_hex_chat/chat/saved_messages.ex:213
+#, elixir-autogen, elixir-format
+msgid "That saved message is not yours."
+msgstr "Это сохранённое сообщение не ваше."
+
+#: lib/retro_hex_chat/chat/saved_messages.ex:262
+#, elixir-autogen, elixir-format
+msgid "You have already saved %{count} messages. Remove one first."
+msgstr "Вы уже сохранили %{count} сообщений. Сначала удалите одно."

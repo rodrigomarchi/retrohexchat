@@ -205,6 +205,9 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
       window("pinned", dgettext("chat", "Pinned"), :icon_btn_set_topic,
         geometry: geometry(170, 90, 620, 480, 420, 320)
       ),
+      window("saved", dgettext("chat", "Saved Messages"), :icon_btn_star,
+        geometry: geometry(180, 100, 620, 480, 420, 320)
+      ),
       window("channel-central", dgettext("chat", "Channel Central"), :icon_dialog_channel_central,
         managed?: false,
         render_when: :always,

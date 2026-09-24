@@ -3110,6 +3110,7 @@ msgid "Safety Features"
 msgstr "Caractéristiques de sécurité"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "Rechercher"
@@ -3184,6 +3185,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
@@ -6672,3 +6674,43 @@ msgstr "Tant qu'il y a du nouveau, un bouton Premier non lu apparaît à côté 
 #, elixir-autogen, elixir-format
 msgid "Signing In On Several Screens"
 msgstr "Se connecter sur plusieurs écrans"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A chat loses things. The address somebody typed, the link to the build, the paragraph worth reading twice — all of it scrolls. Saving is for the moment you already know you will want it later."
+msgstr "Une discussion perd des choses. L'adresse que quelqu'un a tapée, le lien vers la version, le paragraphe qui mérite deux lectures : tout défile. Enregistrer sert au moment où vous savez déjà que vous en aurez besoin plus tard."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Getting it back"
+msgstr "Le retrouver"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Keeping a line"
+msgstr "Conserver une ligne"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Nobody else can see it"
+msgstr "Personne d'autre ne le voit"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Right-click a message — long press on a phone — and choose Save for Later. The same menu offers Remove from Saved on a line you already kept. It works on channel messages and on private ones."
+msgstr "Faites un clic droit sur un message — appui long sur téléphone — et choisissez Enregistrer pour plus tard. Le même menu propose Retirer des enregistrés sur une ligne déjà gardée. Cela fonctionne pour les messages de salon comme pour les privés."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Saved Messages Window"
+msgstr "Fenêtre Messages enregistrés"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Saving is private. The author is not told, no count is shown to anyone, and nothing appears beside the message. It is a note to yourself, not a vote."
+msgstr "L'enregistrement est privé. L'auteur n'en est pas informé, aucun compteur n'est montré à personne, et rien n'apparaît à côté du message. C'est une note pour vous, pas un vote."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Tools ▸ Saved Messages lists everything you kept, newest first, and each row goes back to the line in its own conversation. You can keep up to 500; each one can carry a short note about why."
+msgstr "Démarrer ▸ Outils ▸ Messages enregistrés liste tout ce que vous avez gardé, du plus récent au plus ancien, et chaque ligne renvoie au message dans sa propre conversation. Vous pouvez en garder jusqu'à 500 ; chacun peut porter une courte note expliquant pourquoi."

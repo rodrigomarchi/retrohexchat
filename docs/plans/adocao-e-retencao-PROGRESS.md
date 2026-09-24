@@ -21,7 +21,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 4.1 Multi-dispositivo | **pronto** (2026-09-23) |
 | 4.2 E-mail opcional | **pronto** (2026-09-23) |
 | 4.3 Fixar mensagem | **pronto** (2026-09-23) |
-| 4.4 Salvar mensagem | não iniciado |
+| 4.4 Salvar mensagem | **pronto** (2026-09-23) |
 | 5.1 Arquivo público | não iniciado |
 | 5.2 Threads | não iniciado |
 | 5.3 Eventos | não iniciado |
@@ -834,3 +834,80 @@ pubsub_handlers/channel_state,helpers/conversation,window_registry}.ex`,
 `help_topics/{commands,user_interface}.ex`, três `.heex` de ajuda, e os
 catálogos `channels`, `chat`, `commands`, `dialogs`, `help`, `help_commands`,
 `help_ui`.
+
+
+---
+
+## Iteração 4.4 — Salvar mensagem para depois
+
+Fecha a Onda 4. Um chat perde coisas: o endereço que alguém digitou, o link da
+build, o parágrafo que vale ler duas vezes. A única recuperação que o produto
+oferecia era a busca, que exige lembrar uma palavra. Salvar serve para o momento
+em que a pessoa **já sabe agora** que vai querer aquilo depois.
+
+**O que ficou**
+
+- Tabela `saved_messages` com os **dois pais anuláveis e o mesmo `CHECK`** das
+  reações — canal e privado no mesmo modelo, não um terceiro fork. FK do dono em
+  `registered_nicks` com `on_delete: :delete_all`.
+- `Chat.SavedMessages`: `save/3` idempotente, `unsave/2` (por mensagem, do menu),
+  `unsave_id/2` (por linha, da janela, sempre com o dono na pergunta),
+  `list/2` sob `Page` com os dois `left_join` numa consulta só, `set_note/3`,
+  `saved?/2`, `saved_ids/3`. Teto de 500.
+- **Linha apagada mantém a linha salva, marcada e sem o conteúdo.** Sumir
+  ensinaria que salvar não funciona; mostrar o texto desfaria a exclusão. Quem
+  some é só a mensagem removida de verdade do banco, e quem faz isso é a FK.
+- **`counterpart` sai do banco**, não da tela: quem é "a outra pessoa" numa
+  conversa privada só o dono da linha pode dizer, e é ele que faz a consulta.
+- Janela Saved Messages (ilha + componente de apresentação, cinco estados de
+  lista), item no menu de contexto com Save/Unsave, entrada em Start ▸ Tools,
+  campo de nota por linha.
+- Ajuda: `feature-saved-messages` e `ui-saved-window`, 34 msgid curados nos 13
+  idiomas.
+
+**Aprendizados**
+
+- **Havia duas listas de hooks e a segunda estava quatro módulos atrás.**
+  `@event_hook_fns` (usada por `dispatch_to_hooks/3`, o caminho de
+  `toolbar_action`) era uma cópia manual da lista de `attach_all_hooks/1` e não
+  tinha `ReactionEvents`, `MentionEvents`, `PinEvents` nem o novo
+  `SaveEvents`. Resultado: um item de menu podia estar ligado, desenhado e
+  **não fazer nada**. Agora é `event_hooks/0`, uma fonte só. Mesma classe do
+  catch-all silencioso do 4.3.
+- **O menu de contexto nunca soube o que já estava fixado.** `msg_pinned` lia
+  `Map.get(msg, :pinned, false)` e ninguém jamais preenchia `:pinned` — o item
+  "Unpin", escrito no 4.3, era desenhado por nada e estava verde em todo teste.
+  Agora `pinned?` e `saved?` são perguntados uma vez, para a linha em que se
+  clicou.
+- **O item do menu não se fechava depois de agir.** Ficava por cima da linha
+  seguinte, então o segundo clique com o botão direito caía no menu em vez da
+  mensagem. Valia para Pin/Unpin também; os quatro fecham agora.
+- **A auditoria visual pegou o título errado da janela.** Ela dizia "Private
+  Message". Causa: limpei a marca `fuzzy` de seis msgid meus sem ler o texto
+  que o gettext havia **copiado de outro msgid** — exatamente a armadilha que a
+  memória `gettext-fuzzy-is-a-different-msgid` descreve. Em `en` o palpite ficou
+  valendo, porque as tabelas curadas não cobrem `en`. Varri o `en` inteiro:
+  **20 entradas** tinham `msgstr != msgid`, 6 minhas e 14 de itens anteriores
+  ("Mentions" aparecia como "My mentions", "New messages" como "Notice
+  message"). Todas realinhadas.
+- **`i18n_apply_translation_overrides.py` reescreveu 14 entradas alheias**
+  (Kick, Status, Auto) mesmo com o glob do domínio, porque esses msgid vivem nos
+  mesmos domínios. Revertidas contra o snapshot. A auditoria "0 entradas
+  pré-existentes alteradas" é obrigatória depois de **cada** passada, não só no
+  fim.
+- **`nick_serv_race_test` é instável sob carga.** Falhou uma vez na partição 3
+  com `refute_receive {:force_rename, _}, 500` recebendo o timeout de 60s;
+  passa isolado e no `make ci` seguinte. É relógio de parede dentro de uma
+  partição concorrida, não regressão deste item.
+
+**Arquivos tocados** — migration `create_saved_messages`,
+`chat/saved_messages.ex`, `chat/schemas/saved_message.ex`,
+`chat_live/save_events.ex`, `chat_live/components/saved_dialog.ex`,
+`components/ui/dialogs/saved_dialog.ex`, `chat_live/pin_events.ex`,
+`chat_live/context_menu_events.ex`, `components/ui/chat/chat_context_menu.ex`,
+`components/ui/shell/start_menu_app.ex`, `chat_live/window_registry.ex`,
+`live/app/chat_live.ex` + `.html.heex`,
+`help_topics/{features,user_interface}.ex`, dois `.heex` de ajuda,
+`help_content/chat_status_features.ex`, `e2e/tests/chat-saved-messages.spec.ts`,
+`scripts/i18n_apply_translation_overrides.py` e os catálogos `chat`, `dialogs`,
+`help`, `help_features`, `help_ui`, `ui`.

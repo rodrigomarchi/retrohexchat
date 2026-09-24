@@ -575,6 +575,7 @@ msgstr "Abschnitte"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:113
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:49
@@ -3156,38 +3157,64 @@ msgstr "Safari auf iPhone oder iPad: Teilen, dann Zum Home-Bildschirm"
 msgid "/pin"
 msgstr "/pin"
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "/unpin"
 msgstr "/unpin"
-
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "A Pinned button appears in the conversation toolbar, with the count beside it, and only while the channel is keeping something. An empty window is not worth a button."
 msgstr "In der Gesprächsleiste erscheint ein Angeheftet-Knopf mit der Zahl daneben, und nur solange der Kanal etwas behält. Ein leeres Fenster ist keinen Knopf wert."
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Opening it"
 msgstr "Wie man es öffnet"
-
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Pressing a row scrolls the conversation to the line it kept, where the message sits in its original place with everything around it. Operators also get an Unpin beside each row."
 msgstr "Eine Zeile zu drücken scrollt das Gespräch zu der behaltenen Nachricht, die an ihrem ursprünglichen Platz steht, mit allem drumherum. Operatoren bekommen zusätzlich ein Lösen neben jeder Zeile."
 
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "What a row does"
 msgstr "Was eine Zeile tut"
-
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "What the channel you are reading is keeping — newest first. A channel keeps up to 50 lines; everything else scrolls away as usual."
 msgstr "Was der Kanal, den du gerade liest, behält — von der neuesten zur ältesten. Ein Kanal behält bis zu 50 Zeilen; alles andere scrollt wie gewohnt weg."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "A line that was deleted"
+msgstr "Eine gelöschte Zeile"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Each row says who wrote the line and where, and pressing it switches to that conversation and scrolls to the line. Remove takes the row away without touching the message. The note field beside it is yours: press Enter to keep it."
+msgstr "Jede Zeile nennt, wer sie geschrieben hat und wo, und ein Druck darauf wechselt zu diesem Gespräch und scrollt zur Zeile. „Entfernen“ nimmt die Zeile weg, ohne die Nachricht anzurühren. Das Notizfeld daneben gehört dir: mit Enter behalten."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Everything you kept for later, newest first, from every conversation you were in — channels and private messages in one list. Nobody else can see it."
+msgstr "Alles, was du für später aufbewahrt hast – neueste zuerst, aus jedem Gespräch, in dem du warst: Kanäle und private Nachrichten in einer Liste. Niemand sonst sieht sie."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Saving a Message"
+msgstr "Eine Nachricht speichern"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Tools ▸ Saved Messages. It opens whether or not anything is in it, and tells you how to put something there."
+msgstr "Start ▸ Werkzeuge ▸ Gespeicherte Nachrichten. Das Fenster öffnet sich auch, wenn nichts darin ist, und erklärt, wie etwas hineinkommt."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "The row stays and says the message was deleted, without showing what it said. It disappears only if the message is removed from the server entirely."
+msgstr "Die Zeile bleibt und sagt, dass die Nachricht gelöscht wurde, ohne zu zeigen, was darin stand. Sie verschwindet erst, wenn die Nachricht vollständig vom Server entfernt wird."

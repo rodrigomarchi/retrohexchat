@@ -817,6 +817,26 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           )
       },
       %{
+        id: "feature-saved-messages",
+        title: dgettext("help", "Saving a Message"),
+        category: dgettext("help", "Chat & Messaging"),
+        keywords: [
+          "save",
+          "saved",
+          "bookmark",
+          dgettext("help", "save for later"),
+          dgettext("help", "saved messages"),
+          dgettext("help", "keep a message")
+        ],
+        icon: :icon_btn_star,
+        description:
+          dgettext(
+            "help",
+            "Keep a message where you can find it after it has scrolled away, privately."
+          ),
+        see_also: ["ui-saved-window", "feature-search"]
+      },
+      %{
         id: "feature-emoji",
         title: dgettext("help", "Emoji Picker"),
         category: dgettext("help", "Chat Input"),
