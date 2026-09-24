@@ -53,6 +53,12 @@ Part of the [Agent Guide](../AGENT-GUIDE.md) (§13). Section numbers there are s
   only when the row was already present, so a join that had not landed left the drawer shut and
   the assertion then waited for a row a shut drawer could never show. Do the setup
   unconditionally when it is idempotent, or wait for the element before branching on it.
+- **A test that counts database queries must be `async: false`.** The telemetry handler
+  it attaches sees every `[:retro_hex_chat, :repo, :query]` event in the VM, not just its
+  own — so "one query for a whole page" measured 1 in isolation and 97 inside a `make ci`
+  partition running other async tests. Green alone, red in the gate, and the number tells
+  you nothing about the code under test. `reactions_test.exs` is sync for exactly this
+  reason; `queries_thread_test.exs` learned it the slow way.
 - **Feature tests run concurrently — never mutate shared global state destructively.** Set caches
   to `:unset`/neutral values instead of deleting them (deleting `:motd_cache` forced unrelated
   mounts to query outside their Ecto sandbox owner). Accept BOTH valid values when another test

@@ -137,6 +137,14 @@ becomes a thin orchestrator; each island owns its own state, events, and streams
   (mass/context change), `{:upsert, item}` (`stream_insert`), `{:remove, key}`
   (`stream_delete_by_dom_id`). Per-row for frequent events; `:reset` for rare/bulk. Pass a
   stable `dom_id: &row_dom_id/1` at mount **and** on every `:reset`.
+- **`stream_insert` of an id the stream does not hold APPENDS it.** There is no such
+  thing as "update if present" — a row rebuilt for a reason the reader did not cause on
+  it (a reply landing under a message and moving its reply count) reappears at the
+  bottom, out of order, in the middle of a live conversation, whenever the original had
+  scrolled out of the loaded page. When the refresh is only meaningful for a row already
+  on screen, check first: `MessageViewport` keeps `rendered` — its own mirror of the
+  stream, pruning included — and `insert_if_present/2` drops the delta when the id is not
+  in it. The island already knows what it is showing; ask it.
 - **A stream does NOT re-style existing rows on an ordinary re-render.** If a per-item style
   assign changes (e.g. a color-palette edit), re-`stream` (`{:reset, items}`).
 - **Stream isn't always right.** For a *small* list whose per-row style churns (unread badges,
