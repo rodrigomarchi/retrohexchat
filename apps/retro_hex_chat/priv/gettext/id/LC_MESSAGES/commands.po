@@ -1061,7 +1061,7 @@ msgstr "Tambahkan pengguna ke daftar pemberitahuan Anda"
 msgid "Add an auto-respond rule"
 msgstr "Tambahkan aturan auto- respon"
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:75
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "Tingkat lanjut"
@@ -1107,7 +1107,7 @@ msgstr "Ban"
 msgid "Ban user from channel"
 msgstr "Ban pengguna dari saluran"
 
-#: lib/retro_hex_chat/commands/registry.ex:70
+#: lib/retro_hex_chat/commands/registry.ex:71
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "Basics"
@@ -1155,7 +1155,7 @@ msgstr ""
 "Diijinkan karakter: huruf, nomor, []\\ ^ _ '{126;} dan tanda hubung.\n"
 "Tidak dapat mengubah ke nama panggilan Anda saat ini atau salah satu yang telah digunakan."
 
-#: lib/retro_hex_chat/commands/registry.ex:71
+#: lib/retro_hex_chat/commands/registry.ex:72
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "Kanal"
@@ -1233,7 +1233,7 @@ msgstr "Bersihkan seluruh daftar autojoin Anda"
 msgid "Command name to view detailed help"
 msgstr "Nama perintah untuk menampilkan bantuan terrinci"
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:74
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "Konfigurasi"
@@ -2657,7 +2657,7 @@ msgstr "Penggunaan: /whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "Penggunaan: /whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:72
+#: lib/retro_hex_chat/commands/registry.ex:73
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "Pengguna"
@@ -2807,6 +2807,7 @@ msgid "You are already using that nickname"
 msgstr "Anda sudah menggunakan nama panggilan itu"
 
 #: lib/retro_hex_chat/commands/handler/guards.ex:22
+#: lib/retro_hex_chat/commands/handlers/event.ex:49
 #: lib/retro_hex_chat/commands/handlers/me.ex:19
 #: lib/retro_hex_chat/commands/handlers/part.ex:16
 #: lib/retro_hex_chat/commands/handlers/part.ex:33
@@ -3288,49 +3289,41 @@ msgstr "Sambutan publik disetel ke '%{greeting}'."
 msgid "/pin <message id>"
 msgstr "/pin <id pesan>"
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:51
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:72
 #, elixir-autogen, elixir-format
 msgid "/unpin <message id>"
 msgstr "/unpin <id pesan>"
 
-
 #: lib/retro_hex_chat/commands/handlers/pin.ex:80
 #, elixir-autogen, elixir-format
 msgid "Id of the message to keep"
 msgstr "Id pesan yang disimpan"
-
 
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:81
 #, elixir-autogen, elixir-format
 msgid "Id of the message to stop keeping"
 msgstr "Id pesan yang tidak lagi disimpan"
 
-
 #: lib/retro_hex_chat/commands/handlers/pin.ex:52
 #, elixir-autogen, elixir-format
 msgid "Keep a message in view for the whole channel — the rules, a link, what was agreed.\nPinned messages are listed in the Pinned window and stay findable after they scroll away.\nOperators only. A channel keeps up to 50."
 msgstr "Menjaga sebuah pesan tetap terlihat oleh seluruh kanal — aturan, sebuah tautan, apa yang disepakati.\nPesan tersemat terdaftar di jendela Tersemat dan tetap mudah ditemukan setelah hilang tergulung.\nHanya operator. Satu kanal menyimpan hingga 50."
-
 
 #: lib/retro_hex_chat/commands/handlers/pin.ex:72
 #, elixir-autogen, elixir-format
 msgid "Keep a message in view for the whole channel."
 msgstr "Menjaga sebuah pesan tetap terlihat oleh seluruh kanal."
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:73
 #, elixir-autogen, elixir-format
 msgid "Stop keeping a message in view."
 msgstr "Berhenti menjaga sebuah pesan tetap terlihat."
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:53
 #, elixir-autogen, elixir-format
 msgid "Stop keeping a message in view. The message itself stays where it is — only the pin goes.\nOperators only."
 msgstr "Berhenti menjaga sebuah pesan tetap terlihat. Pesannya sendiri tetap di tempatnya — hanya sematannya yang hilang.\nHanya operator."
-
 
 #: lib/retro_hex_chat/commands/handlers/pin.ex:36
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:37
@@ -3338,14 +3331,63 @@ msgstr "Berhenti menjaga sebuah pesan tetap terlihat. Pesannya sendiri tetap di 
 msgid "That is not a message id"
 msgstr "Itu bukan id pesan"
 
-
 #: lib/retro_hex_chat/commands/handlers/pin.ex:18
 #, elixir-autogen, elixir-format
 msgid "Which message? Use /pin <id>, or pin it from its right-click menu."
 msgstr "Pesan yang mana? Pakai /pin <id>, atau sematkan lewat menu klik kanannya."
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:16
 #, elixir-autogen, elixir-format
 msgid "Which message? Use /unpin <id>, or unpin it from the Pinned window."
 msgstr "Pesan yang mana? Pakai /unpin <id>, atau lepas sematannya dari jendela Tersemat."
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:88
+#: lib/retro_hex_chat/commands/handlers/event.ex:114
+#, elixir-autogen, elixir-format
+msgid "/event [<when> <title> | cancel <id>]"
+msgstr "/event [<when> <title> | cancel <id>]"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:60
+#, elixir-autogen, elixir-format
+msgid "An event has to start later than now."
+msgstr "Sebuah acara harus dimulai setelah sekarang."
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:123
+#, elixir-autogen, elixir-format
+msgid "How long from now it starts: 2h, 30m, 3d"
+msgstr "Berapa lama lagi dimulai: 2h, 30m, 3d"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:90
+#, elixir-autogen, elixir-format
+msgid "Schedule something the channel will do together, and announce it in the room.\nThe time is a delay from now — 2h, 30m, 3d — so it means the same instant for everybody reading it.\nEveryone sees the card and can say they are going; whoever said so is reminded shortly before it starts.\nOperators only. With no arguments it opens the Events window."
+msgstr "Jadwalkan sesuatu yang akan dilakukan kanal bersama, dan umumkan di ruangan.\nWaktunya adalah jeda dari sekarang — 2h, 30m, 3d — jadi artinya saat yang sama bagi semua yang membacanya.\nSemua orang melihat kartunya dan bisa bilang akan datang; yang bilang begitu diingatkan sesaat sebelum mulai.\nHanya operator. Tanpa argumen, perintah ini membuka jendela Acara."
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:115
+#, elixir-autogen, elixir-format
+msgid "Schedule something the channel will do together."
+msgstr "Jadwalkan sesuatu yang akan dilakukan kanal bersama."
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:74
+#, elixir-autogen, elixir-format
+msgid "That is not an event id"
+msgstr "Itu bukan id acara"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:66
+#, elixir-autogen, elixir-format
+msgid "What is it called? Use /event <when> <title>."
+msgstr "Apa namanya? Gunakan /event <kapan> <judul>."
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:130
+#, elixir-autogen, elixir-format
+msgid "What the channel is going to do"
+msgstr "Apa yang akan dilakukan kanal"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:54
+#, elixir-autogen, elixir-format
+msgid "When? Give it as a delay from now, like 2h, 30m or 3d."
+msgstr "Kapan? Sebutkan sebagai jeda dari sekarang, seperti 2h, 30m atau 3d."
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:20
+#, elixir-autogen, elixir-format
+msgid "Which one? Use /event cancel <id>."
+msgstr "Yang mana? Gunakan /event cancel <id>."

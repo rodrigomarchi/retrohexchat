@@ -2662,6 +2662,7 @@ msgid "Could not load more activity."
 msgstr "これ以上のアクティビティを読み込めませんでした。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:776
+#: lib/retro_hex_chat_web/components/ui/dialogs/events_dialog.ex:92
 #, elixir-autogen, elixir-format
 msgid "Could not load more events."
 msgstr "これ以上のイベントを読み込めませんでした。"
@@ -4084,3 +4085,18 @@ msgstr "このスレッドに返信"
 #, elixir-autogen, elixir-format
 msgid "Your reply starts the thread, and stays in the room as well."
 msgstr "あなたの返信がスレッドを始め、同時に部屋にも残ります。"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/events_dialog.ex:34
+#, elixir-autogen, elixir-format
+msgid "Nothing is planned yet."
+msgstr "まだ何も予定されていません。"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/events_dialog.ex:38
+#, elixir-autogen, elixir-format
+msgid "Use /event 2h Tuesday tournament to put something on the calendar. Everyone in the channel sees it and can say they are going."
+msgstr "/event 2h 火曜トーナメント のように書くとカレンダーに載ります。チャンネルの全員に見え、参加を表明できます。"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/events_dialog.ex:43
+#, elixir-autogen, elixir-format
+msgid "When an operator schedules something, it shows up here and in the conversation."
+msgstr "オペレーターが何かを予定すると、ここと会話の両方に表示されます。"

@@ -16,7 +16,7 @@ msgstr ""
 msgid "+s and +p are mutually exclusive"
 msgstr "+s en +p sluiten elkaar uit"
 
-#: lib/retro_hex_chat/channels/server.ex:1330
+#: lib/retro_hex_chat/channels/server.ex:1382
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "Al in kanaal"
@@ -26,18 +26,18 @@ msgstr "Al in kanaal"
 msgid "Bad channel key (+k)"
 msgstr "Slechte kanaaltoets (+k)"
 
-#: lib/retro_hex_chat/channels/server.ex:542
-#: lib/retro_hex_chat/channels/server.ex:1057
+#: lib/retro_hex_chat/channels/server.ex:569
+#: lib/retro_hex_chat/channels/server.ex:1109
 #, elixir-autogen, elixir-format
 msgid "Banned"
 msgstr "Verboden"
 
-#: lib/retro_hex_chat/channels/policy.ex:169
+#: lib/retro_hex_chat/channels/policy.ex:179
 #, elixir-autogen, elixir-format
 msgid "Cannot ban a user with equal or higher rank"
 msgstr "Kan een gebruiker met een gelijke of hogere rang niet verbieden"
 
-#: lib/retro_hex_chat/channels/policy.ex:142
+#: lib/retro_hex_chat/channels/policy.ex:152
 #, elixir-autogen, elixir-format
 msgid "Cannot kick a higher-ranked user"
 msgstr "Kan een gebruiker met een hogere rang niet aftrappen"
@@ -62,37 +62,37 @@ msgstr "Kanaal is alleen uitnodigen (+i)"
 msgid "Channel is moderated (+m). You need voice (+v) to speak."
 msgstr "Kanaal wordt gemodereerd (+m). Je hebt stem (+v) nodig om te spreken."
 
-#: lib/retro_hex_chat/channels/server.ex:792
+#: lib/retro_hex_chat/channels/server.ex:844
 #, elixir-autogen, elixir-format
 msgid "Channel is not invite-only"
 msgstr "Kanaal is niet alleen uitnodigen"
 
-#: lib/retro_hex_chat/channels/server.ex:1355
+#: lib/retro_hex_chat/channels/server.ex:1407
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "Kanaal join gaspedaal actief, probeer het binnenkort opnieuw"
 
-#: lib/retro_hex_chat/channels/server.ex:95
-#: lib/retro_hex_chat/channels/server.ex:98
-#: lib/retro_hex_chat/channels/server.ex:341
-#: lib/retro_hex_chat/channels/server.ex:344
+#: lib/retro_hex_chat/channels/server.ex:96
+#: lib/retro_hex_chat/channels/server.ex:99
+#: lib/retro_hex_chat/channels/server.ex:368
+#: lib/retro_hex_chat/channels/server.ex:371
 #, elixir-autogen, elixir-format
 msgid "Channel not found"
 msgstr "Kanaal niet gevonden"
 
-#: lib/retro_hex_chat/channels/policy.ex:132
-#: lib/retro_hex_chat/channels/policy.ex:133
-#: lib/retro_hex_chat/channels/policy.ex:158
-#: lib/retro_hex_chat/channels/policy.ex:159
-#: lib/retro_hex_chat/channels/server.ex:836
-#: lib/retro_hex_chat/channels/server.ex:855
-#: lib/retro_hex_chat/channels/server.ex:858
+#: lib/retro_hex_chat/channels/policy.ex:142
+#: lib/retro_hex_chat/channels/policy.ex:143
+#: lib/retro_hex_chat/channels/policy.ex:168
+#: lib/retro_hex_chat/channels/policy.ex:169
+#: lib/retro_hex_chat/channels/server.ex:888
+#: lib/retro_hex_chat/channels/server.ex:907
+#: lib/retro_hex_chat/channels/server.ex:910
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges"
 msgstr "Onvoldoende voorrechten"
 
-#: lib/retro_hex_chat/channels/policy.ex:185
-#: lib/retro_hex_chat/channels/policy.ex:189
+#: lib/retro_hex_chat/channels/policy.ex:195
+#: lib/retro_hex_chat/channels/policy.ex:199
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges to set channel modes"
 msgstr "Onvoldoende privileges om kanaalmodi in te stellen"
@@ -102,43 +102,43 @@ msgstr "Onvoldoende privileges om kanaalmodi in te stellen"
 msgid "Invalid mode string: must start with + or -"
 msgstr "Ongeldige modus tekenreeks: moet beginnen met + of -"
 
-#: lib/retro_hex_chat/channels/server.ex:795
+#: lib/retro_hex_chat/channels/server.ex:847
 #, elixir-autogen, elixir-format
 msgid "Knocking is disabled for this channel"
 msgstr "Kloppen is uitgeschakeld voor dit kanaal"
 
-#: lib/retro_hex_chat/channels/server.ex:443
+#: lib/retro_hex_chat/channels/server.ex:470
 #, elixir-autogen, elixir-format
 msgid "Not in channel"
 msgstr "Niet in kanaal"
 
-#: lib/retro_hex_chat/channels/server.ex:913
+#: lib/retro_hex_chat/channels/server.ex:965
 #, elixir-autogen, elixir-format
 msgid "Only the channel owner can transfer ownership"
 msgstr "Alleen de eigenaar van het kanaal kan eigendom overdragen"
 
-#: lib/retro_hex_chat/channels/server.ex:1143
+#: lib/retro_hex_chat/channels/server.ex:1195
 #, elixir-autogen, elixir-format
 msgid "User %{target} is not in channel"
 msgstr "Gebruiker %{target} is niet in kanaal"
 
-#: lib/retro_hex_chat/channels/server.ex:833
-#: lib/retro_hex_chat/channels/server.ex:918
+#: lib/retro_hex_chat/channels/server.ex:885
+#: lib/retro_hex_chat/channels/server.ex:970
 #, elixir-autogen, elixir-format
 msgid "User is not in channel"
 msgstr "Gebruiker is niet in kanaal"
 
-#: lib/retro_hex_chat/channels/server.ex:802
+#: lib/retro_hex_chat/channels/server.ex:854
 #, elixir-autogen, elixir-format
 msgid "You are already in that channel"
 msgstr "Je bent al in dat kanaal"
 
-#: lib/retro_hex_chat/channels/server.ex:799
+#: lib/retro_hex_chat/channels/server.ex:851
 #, elixir-autogen, elixir-format
 msgid "You are banned from that channel"
 msgstr "Je bent verbannen uit dat kanaal."
 
-#: lib/retro_hex_chat/channels/server.ex:1186
+#: lib/retro_hex_chat/channels/server.ex:1238
 #, elixir-autogen, elixir-format
 msgid "You are muted in this channel"
 msgstr "Je bent gedempt in dit kanaal."
@@ -150,15 +150,15 @@ msgstr "Je bent gedempt in dit kanaal."
 msgid "You are not in this channel"
 msgstr "Je bent niet in dit kanaal"
 
-#: lib/retro_hex_chat/channels/policy.ex:152
+#: lib/retro_hex_chat/channels/policy.ex:162
 #, elixir-autogen, elixir-format
 msgid "You cannot ban yourself"
 msgstr "Je kunt jezelf niet verbieden."
 
-#: lib/retro_hex_chat/channels/server.ex:641
-#: lib/retro_hex_chat/channels/server.ex:667
 #: lib/retro_hex_chat/channels/server.ex:693
 #: lib/retro_hex_chat/channels/server.ex:719
+#: lib/retro_hex_chat/channels/server.ex:745
+#: lib/retro_hex_chat/channels/server.ex:771
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator"
 msgstr "U moet een kanaal operator zijn"
@@ -168,8 +168,8 @@ msgstr "U moet een kanaal operator zijn"
 msgid "You must be a channel operator to change the topic"
 msgstr "U moet een kanaaloperator zijn om het onderwerp te veranderen"
 
-#: lib/retro_hex_chat/channels/server.ex:738
-#: lib/retro_hex_chat/channels/server.ex:1073
+#: lib/retro_hex_chat/channels/server.ex:790
+#: lib/retro_hex_chat/channels/server.ex:1125
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to unban users"
 msgstr "U moet een kanaal operator zijn om gebruikers te ontbannen"
@@ -179,12 +179,12 @@ msgstr "U moet een kanaal operator zijn om gebruikers te ontbannen"
 msgid "You must be registered to join this channel"
 msgstr "U moet geregistreerd zijn om zich bij dit kanaal aan te sluiten"
 
-#: lib/retro_hex_chat/channels/server.ex:840
+#: lib/retro_hex_chat/channels/server.ex:892
 #, elixir-autogen, elixir-format
 msgid "Could not persist channel mute"
 msgstr "Kon het dempen van het kanaal niet opslaan"
 
-#: lib/retro_hex_chat/channels/server.ex:862
+#: lib/retro_hex_chat/channels/server.ex:914
 #, elixir-autogen, elixir-format
 msgid "Could not persist channel unmute"
 msgstr "Kon het opheffen van het dempen van het kanaal niet opslaan"
@@ -215,7 +215,59 @@ msgstr "Dit kanaal bewaart al %{count} berichten. Maak er eerst een los."
 msgid "You must be a channel operator to pin messages"
 msgstr "Je moet kanaaloperator zijn om berichten vast te zetten"
 
-#: lib/retro_hex_chat/channels/server.ex:1514
+#: lib/retro_hex_chat/channels/server.ex:1618
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "Alleen de oprichter van het kanaal kan het openbare archief wijzigen"
+
+#: lib/retro_hex_chat/channels/server.ex:1568
+#, elixir-autogen, elixir-format
+msgid "%{nickname} scheduled: %{title}"
+msgstr "%{nickname} heeft gepland: %{title}"
+
+#: lib/retro_hex_chat/channels/server.ex:1593
+#, elixir-autogen, elixir-format
+msgid "That event belongs to another channel."
+msgstr "Die gebeurtenis hoort bij een ander kanaal."
+
+#: lib/retro_hex_chat/channels/scheduled_events.ex:105
+#: lib/retro_hex_chat/channels/scheduled_events.ex:131
+#: lib/retro_hex_chat/channels/server.ex:1590
+#, elixir-autogen, elixir-format
+msgid "That event could not be found."
+msgstr "Die gebeurtenis kon niet worden gevonden."
+
+#: lib/retro_hex_chat/channels/policy.ex:132
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator to schedule events"
+msgstr "Je moet kanaaloperator zijn om gebeurtenissen te plannen"
+
+#: lib/retro_hex_chat/channels/scheduled_events.ex:117
+#, elixir-autogen, elixir-format
+msgid "Only whoever scheduled it can call it off."
+msgstr "Alleen wie het heeft gepland, kan het afzeggen."
+
+#: lib/retro_hex_chat/channels/scheduled_events.ex:327
+#, elixir-autogen, elixir-format
+msgid "That event could not be saved."
+msgstr "Die gebeurtenis kon niet worden opgeslagen."
+
+#: lib/retro_hex_chat/channels/scheduled_events.ex:143
+#, elixir-autogen, elixir-format
+msgid "That event was called off."
+msgstr "Die gebeurtenis is afgezegd."
+
+#: lib/retro_hex_chat/channels/scheduled_events.ex:288
+#, elixir-autogen, elixir-format
+msgid "That time is already in the past."
+msgstr "Dat tijdstip is al voorbij."
+
+#: lib/retro_hex_chat/channels/scheduled_events.ex:307
+#, elixir-autogen, elixir-format
+msgid "This channel already has %{count} events coming up."
+msgstr "Dit kanaal heeft al %{count} komende gebeurtenissen."
+
+#: lib/retro_hex_chat/channels/scheduled_events.ex:292
+#, elixir-autogen, elixir-format
+msgid "When does it start?"
+msgstr "Wanneer begint het?"

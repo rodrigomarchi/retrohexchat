@@ -3118,6 +3118,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:39
@@ -6445,6 +6446,7 @@ msgstr "Notifications avec le chat fermé"
 msgid "A private message sent to you"
 msgstr "Un message privé qui vous est adressé"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Desktop Notifications"
@@ -6824,3 +6826,68 @@ msgstr "Sous un message auquel on a répondu figure une ligne « 2 réponses ».
 #, elixir-autogen, elixir-format
 msgid "What a Thread Contains"
 msgstr "Ce que contient un fil"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "/event"
+msgstr "/event"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A channel can agree to do something at a time — a tournament, a film night, a meeting — and everyone sees it, says whether they are coming, and is reminded shortly before it starts."
+msgstr "Un salon peut convenir de faire quelque chose à une heure — un tournoi, une soirée cinéma, une réunion — et tout le monde le voit, dit s'il vient, et est prévenu peu avant le début."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Notifications When the App Is Closed"
+msgstr "Notifications avec le chat fermé"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Operators only, with /event followed by how long from now it starts and what it is called: /event 2h Tuesday tournament. The time is a delay rather than a clock reading, so it means the same instant for everybody who can read it, wherever they are."
+msgstr "Opérateurs seulement, avec /event suivi du délai avant le début et du nom : /event 2h tournoi du mardi. L'heure est un délai plutôt qu'une heure d'horloge, donc le même instant pour tous, où qu'ils soient."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Press I'm going on the card. It is the only answer there is — a maybe tells the organiser nothing they did not already know. Press it again to take yourself back off. The count beside it is everybody who said yes."
+msgstr "Appuyez sur Je viens sur la carte. C'est la seule réponse possible : un peut-être n'apprend rien à l'organisateur. Appuyez de nouveau pour vous retirer. Le nombre à côté, ce sont tous ceux qui ont dit oui."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Saying You Will Be There"
+msgstr "Dire que vous venez"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Scheduling One"
+msgstr "En programmer un"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Shortly before it starts, the channel gets a line saying so, and everyone who said they were going gets a notification — a desktop one if you have the chat open, a push one if you do not. There is no separate alerts channel and no setting of its own: it uses the notifications you have already chosen."
+msgstr "Peu avant le début, le salon reçoit une ligne qui le dit, et tous ceux qui avaient dit venir reçoivent une notification — une notification de bureau si le chat est ouvert, une notification push sinon. Il n'y a pas de canal d'alertes séparé ni de réglage propre : cela utilise les notifications que vous avez déjà choisies."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Tools ▸ Events, or /event with nothing after it, lists what this channel has coming up, soonest first. Whoever scheduled something can call it off with /event cancel followed by its number; the record that it was going to happen stays."
+msgstr "Démarrer ▸ Outils ▸ Événements, ou /event sans rien après, liste ce que ce salon a prévu, le plus proche d'abord. Qui a programmé quelque chose peut l'annuler avec /event cancel suivi de son numéro ; la trace que cela allait avoir lieu reste."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "The Events Window"
+msgstr "La fenêtre Événements"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "The Reminder"
+msgstr "Le rappel"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The card shows the start in your own time zone, and how far off it is. Two people in different countries see different clock times for the same event, which is the point: the stored instant is the same one."
+msgstr "La carte affiche le début dans votre propre fuseau horaire et dans combien de temps c'est. Deux personnes dans des pays différents voient des heures différentes pour le même événement, et c'est le but : l'instant enregistré est le même."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Your Own Clock"
+msgstr "Votre propre horloge"

@@ -233,6 +233,13 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             icon_fn={:icon_btn_star}
             disabled={!@chat?}
           />
+          <.app_item
+            action="open_events_dialog"
+            on_action={@on_action}
+            label={dgettext("ui", "Events")}
+            icon_fn={:icon_clock}
+            disabled={!@chat?}
+          />
           <%!-- Server openers: /list rows and channel state are loaded by the
                 LiveView on open, so these two cannot be client-side. --%>
           <.app_item

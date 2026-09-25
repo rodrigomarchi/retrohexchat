@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   alias RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog
   alias RetroHexChatWeb.ChatLive.Components.KickQueueDialog
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
+  alias RetroHexChatWeb.ChatLive.EventEvents
   alias RetroHexChatWeb.ChatLive.GroupCallReadModel
   alias RetroHexChatWeb.ChatLive.ShareCards
 
@@ -200,6 +201,32 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
       )
 
     {:halt, socket}
+  end
+
+  # ── Channel calendar ──────────────────────────────────────
+
+  # The card is drawn under the announcement line, which arrives on the ordinary
+  # message path — so there is nothing to insert here. What the window needs is
+  # to stop showing a calendar it has just been told is out of date.
+  def handle_info({:event_scheduled, _card}, socket) do
+    {:halt, EventEvents.refresh_window(socket)}
+  end
+
+  def handle_info({:event_cancelled, card}, socket) do
+    {:halt,
+     socket
+     |> EventEvents.refresh_card(card.event_id)
+     |> EventEvents.refresh_window()}
+  end
+
+  # The one interruption an event is allowed to make, and it is a line in the
+  # room rather than a channel of its own. The push to whoever said they would
+  # be there is the worker's business; this is for whoever is looking.
+  def handle_info({:event_reminder, card}, socket) do
+    {:halt,
+     socket
+     |> EventEvents.refresh_card(card.event_id)
+     |> system_event(dgettext("chat", "%{title} is about to start.", title: card.title))}
   end
 
   # ── Topic changed ─────────────────────────────────────────

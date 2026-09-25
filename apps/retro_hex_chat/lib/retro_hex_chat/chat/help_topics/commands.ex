@@ -423,6 +423,25 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           dgettext("help", "Schedule commands to run after a delay or at regular intervals.")
       },
       %{
+        id: "cmd-event",
+        title: "/event",
+        category: dgettext("help", "Channels"),
+        keywords: [
+          "event",
+          dgettext("help", "schedule event"),
+          dgettext("help", "channel calendar"),
+          dgettext("help", "meet up"),
+          dgettext("help", "reminder")
+        ],
+        icon: :icon_clock,
+        description:
+          dgettext(
+            "help",
+            "Schedule something the channel will do together, and remind whoever says they are coming."
+          ),
+        see_also: ["feature-channel-events", "cmd-pin"]
+      },
+      %{
         id: "cmd-pin",
         title: "/pin",
         category: dgettext("help", "Channels"),

@@ -323,6 +323,12 @@ defmodule RetroHexChatWeb.Components.UI.ListStates do
     """
   end
 
+  defp state_icon(%{icon: :clock} = assigns) do
+    ~H"""
+    <Icons.icon_clock class="h-6 w-6" />
+    """
+  end
+
   defp state_icon(assigns) do
     ~H"""
     <Icons.icon_document_alert class="h-6 w-6" />

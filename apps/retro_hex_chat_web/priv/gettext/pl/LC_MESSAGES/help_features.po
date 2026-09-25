@@ -3068,6 +3068,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:39
@@ -6305,6 +6306,7 @@ msgstr "Powiadomienia przy zamkniętym czacie"
 msgid "A private message sent to you"
 msgstr "Prywatna wiadomość wysłana do Ciebie"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Desktop Notifications"
@@ -6684,3 +6686,68 @@ msgstr "Pod wiadomością, na którą odpowiedziano, znajduje się wiersz \"2 od
 #, elixir-autogen, elixir-format
 msgid "What a Thread Contains"
 msgstr "Co zawiera wątek"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "/event"
+msgstr "/event"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A channel can agree to do something at a time — a tournament, a film night, a meeting — and everyone sees it, says whether they are coming, and is reminded shortly before it starts."
+msgstr "Kanał może umówić się na coś o danej porze — turniej, wieczór filmowy, spotkanie — a wszyscy to widzą, mówią, czy przyjdą, i dostają przypomnienie tuż przed startem."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Notifications When the App Is Closed"
+msgstr "Powiadomienia przy zamkniętym czacie"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Operators only, with /event followed by how long from now it starts and what it is called: /event 2h Tuesday tournament. The time is a delay rather than a clock reading, so it means the same instant for everybody who can read it, wherever they are."
+msgstr "Tylko operatorzy, przez /event, po którym podaje się, za ile się zaczyna i jak się nazywa: /event 2h wtorkowy turniej. Czas to odstęp, a nie godzina z zegara, więc oznacza tę samą chwilę dla wszystkich, gdziekolwiek są."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Press I'm going on the card. It is the only answer there is — a maybe tells the organiser nothing they did not already know. Press it again to take yourself back off. The count beside it is everybody who said yes."
+msgstr "Naciśnij Będę na karcie. To jedyna odpowiedź, jaka istnieje — „może” nie mówi organizatorowi niczego nowego. Naciśnij ponownie, aby się wycofać. Liczba obok to wszyscy, którzy powiedzieli tak."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Saying You Will Be There"
+msgstr "Deklaracja obecności"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Scheduling One"
+msgstr "Planowanie wydarzenia"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Shortly before it starts, the channel gets a line saying so, and everyone who said they were going gets a notification — a desktop one if you have the chat open, a push one if you do not. There is no separate alerts channel and no setting of its own: it uses the notifications you have already chosen."
+msgstr "Tuż przed startem kanał dostaje wiersz, który to oznajmia, a wszyscy, którzy się zadeklarowali, dostają powiadomienie — na pulpicie, jeśli masz czat otwarty, push, jeśli nie. Nie ma osobnego kanału alertów ani własnego ustawienia: korzysta z powiadomień, które już wybrałeś."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Tools ▸ Events, or /event with nothing after it, lists what this channel has coming up, soonest first. Whoever scheduled something can call it off with /event cancel followed by its number; the record that it was going to happen stays."
+msgstr "Start ▸ Narzędzia ▸ Wydarzenia albo samo /event bez niczego wypisuje, co ten kanał ma przed sobą, od najbliższego. Kto coś zaplanował, może to odwołać przez /event cancel i numer; zapis, że miało się odbyć, zostaje."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "The Events Window"
+msgstr "Okno Wydarzenia"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "The Reminder"
+msgstr "Przypomnienie"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The card shows the start in your own time zone, and how far off it is. Two people in different countries see different clock times for the same event, which is the point: the stored instant is the same one."
+msgstr "Karta pokazuje start w twojej własnej strefie czasowej i ile do niego zostało. Dwie osoby w różnych krajach widzą różne godziny zegarowe tego samego wydarzenia — i o to chodzi: zapisana chwila jest ta sama."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Your Own Clock"
+msgstr "Twój własny zegar"

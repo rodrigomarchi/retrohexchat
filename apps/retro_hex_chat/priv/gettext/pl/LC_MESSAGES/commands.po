@@ -1061,7 +1061,7 @@ msgstr "Dodaj użytkownika do listy powiadomień"
 msgid "Add an auto-respond rule"
 msgstr "Dodaj regułę auto- response"
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:75
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "Zaawansowane"
@@ -1107,7 +1107,7 @@ msgstr "Zakaz"
 msgid "Ban user from channel"
 msgstr "Zakaz korzystania z kanału"
 
-#: lib/retro_hex_chat/commands/registry.ex:70
+#: lib/retro_hex_chat/commands/registry.ex:71
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "Podstawy"
@@ -1155,7 +1155,7 @@ msgstr ""
 "Dozwolone znaki: litery, liczby, []\\ ^ _ '{< 124;} i hyphens.\n"
 "Nie można zmienić aktualnego pseudonimu lub już używanego."
 
-#: lib/retro_hex_chat/commands/registry.ex:71
+#: lib/retro_hex_chat/commands/registry.ex:72
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "Kanał"
@@ -1233,7 +1233,7 @@ msgstr "Wyczyść całą listę autodołącz"
 msgid "Command name to view detailed help"
 msgstr "Nazwa polecenia, aby wyświetlić szczegółową pomoc"
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:74
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "Konfiguracja"
@@ -2647,7 +2647,7 @@ msgstr "Sposób użycia: /whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "Sposób użycia: /whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:72
+#: lib/retro_hex_chat/commands/registry.ex:73
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "User"
@@ -2798,6 +2798,7 @@ msgid "You are already using that nickname"
 msgstr "Już używasz tej ksywki."
 
 #: lib/retro_hex_chat/commands/handler/guards.ex:22
+#: lib/retro_hex_chat/commands/handlers/event.ex:49
 #: lib/retro_hex_chat/commands/handlers/me.ex:19
 #: lib/retro_hex_chat/commands/handlers/part.ex:16
 #: lib/retro_hex_chat/commands/handlers/part.ex:33
@@ -3276,49 +3277,41 @@ msgstr "Powitanie publiczne ustawione na '%{greeting}'."
 msgid "/pin <message id>"
 msgstr "/pin <id wiadomości>"
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:51
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:72
 #, elixir-autogen, elixir-format
 msgid "/unpin <message id>"
 msgstr "/unpin <id wiadomości>"
 
-
 #: lib/retro_hex_chat/commands/handlers/pin.ex:80
 #, elixir-autogen, elixir-format
 msgid "Id of the message to keep"
 msgstr "Id wiadomości do zachowania"
-
 
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:81
 #, elixir-autogen, elixir-format
 msgid "Id of the message to stop keeping"
 msgstr "Id wiadomości, której już nie trzymamy"
 
-
 #: lib/retro_hex_chat/commands/handlers/pin.ex:52
 #, elixir-autogen, elixir-format
 msgid "Keep a message in view for the whole channel — the rules, a link, what was agreed.\nPinned messages are listed in the Pinned window and stay findable after they scroll away.\nOperators only. A channel keeps up to 50."
 msgstr "Trzyma wiadomość na widoku całego kanału — zasady, link, ustalenia.\nPrzypięte wiadomości są wypisane w oknie Przypięte i pozostają do znalezienia po zniknięciu w przewijaniu.\nTylko operatorzy. Kanał trzyma do 50."
-
 
 #: lib/retro_hex_chat/commands/handlers/pin.ex:72
 #, elixir-autogen, elixir-format
 msgid "Keep a message in view for the whole channel."
 msgstr "Trzyma wiadomość na widoku całego kanału."
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:73
 #, elixir-autogen, elixir-format
 msgid "Stop keeping a message in view."
 msgstr "Przestaje trzymać wiadomość na widoku."
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:53
 #, elixir-autogen, elixir-format
 msgid "Stop keeping a message in view. The message itself stays where it is — only the pin goes.\nOperators only."
 msgstr "Przestaje trzymać wiadomość na widoku. Sama wiadomość zostaje tam, gdzie jest — znika tylko przypięcie.\nTylko operatorzy."
-
 
 #: lib/retro_hex_chat/commands/handlers/pin.ex:36
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:37
@@ -3326,14 +3319,63 @@ msgstr "Przestaje trzymać wiadomość na widoku. Sama wiadomość zostaje tam, 
 msgid "That is not a message id"
 msgstr "To nie jest id wiadomości"
 
-
 #: lib/retro_hex_chat/commands/handlers/pin.ex:18
 #, elixir-autogen, elixir-format
 msgid "Which message? Use /pin <id>, or pin it from its right-click menu."
 msgstr "Która wiadomość? Użyj /pin <id> albo przypnij ją z menu pod prawym przyciskiem."
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:16
 #, elixir-autogen, elixir-format
 msgid "Which message? Use /unpin <id>, or unpin it from the Pinned window."
 msgstr "Która wiadomość? Użyj /unpin <id> albo odepnij ją w oknie Przypięte."
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:88
+#: lib/retro_hex_chat/commands/handlers/event.ex:114
+#, elixir-autogen, elixir-format
+msgid "/event [<when> <title> | cancel <id>]"
+msgstr "/event [<when> <title> | cancel <id>]"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:60
+#, elixir-autogen, elixir-format
+msgid "An event has to start later than now."
+msgstr "Wydarzenie musi zacząć się później niż teraz."
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:123
+#, elixir-autogen, elixir-format
+msgid "How long from now it starts: 2h, 30m, 3d"
+msgstr "Za ile się zaczyna: 2h, 30m, 3d"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:90
+#, elixir-autogen, elixir-format
+msgid "Schedule something the channel will do together, and announce it in the room.\nThe time is a delay from now — 2h, 30m, 3d — so it means the same instant for everybody reading it.\nEveryone sees the card and can say they are going; whoever said so is reminded shortly before it starts.\nOperators only. With no arguments it opens the Events window."
+msgstr "Zaplanuj coś, co kanał zrobi razem, i ogłoś to w pokoju.\nCzas podaje się jako odstęp od teraz — 2h, 30m, 3d — więc oznacza tę samą chwilę dla każdego, kto to przeczyta.\nWszyscy widzą kartę i mogą się zadeklarować; kto to zrobił, dostanie przypomnienie tuż przed startem.\nTylko operatorzy. Bez argumentów otwiera okno Wydarzenia."
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:115
+#, elixir-autogen, elixir-format
+msgid "Schedule something the channel will do together."
+msgstr "Zaplanuj coś, co kanał zrobi razem."
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:74
+#, elixir-autogen, elixir-format
+msgid "That is not an event id"
+msgstr "To nie jest id wydarzenia"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:66
+#, elixir-autogen, elixir-format
+msgid "What is it called? Use /event <when> <title>."
+msgstr "Jak się nazywa? Użyj /event <kiedy> <tytuł>."
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:130
+#, elixir-autogen, elixir-format
+msgid "What the channel is going to do"
+msgstr "Co kanał zamierza zrobić"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:54
+#, elixir-autogen, elixir-format
+msgid "When? Give it as a delay from now, like 2h, 30m or 3d."
+msgstr "Kiedy? Podaj jako odstęp od teraz, na przykład 2h, 30m albo 3d."
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:20
+#, elixir-autogen, elixir-format
+msgid "Which one? Use /event cancel <id>."
+msgstr "Które? Użyj /event cancel <id>."

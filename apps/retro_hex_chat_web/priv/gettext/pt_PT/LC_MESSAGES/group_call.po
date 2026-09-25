@@ -269,80 +269,80 @@ msgstr "Você deve estar registrado no NickServ para usar chamadas de grupo."
 msgid "%{active}/%{total} active"
 msgstr "%{active}/%{total} activa"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:467
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:518
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{count} conference camera."
 msgid_plural "%{actor} allowed %{count} conference cameras."
 msgstr[0] "%{actor} permitido %{count} câmera de conferência."
 msgstr[1] "%{actor} permitido %{count} câmeras de conferência."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:453
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:504
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{count} conference microphone."
 msgid_plural "%{actor} allowed %{count} conference microphones."
 msgstr[0] "%{actor} permitido %{count} microfone conferência."
 msgstr[1] "%{actor} permitido %{count} microfones de conferência."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:550
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:601
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target} to share a screen again."
 msgstr "%{actor} permitiu %{target} compartilhar uma tela novamente."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:561
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:612
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target} to speak."
 msgstr "%{actor} permitiu que %{target} falasse."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:514
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:565
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target}'s conference camera."
 msgstr "%{actor} permitido %{target} câmera de conferência."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:492
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:543
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target}'s conference microphone."
 msgstr "%{actor} permitido %{target} microfone conferência."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:579
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:630
 #, elixir-autogen, elixir-format
 msgid "%{actor} locked the conference."
 msgstr "%{actor} bloqueou a conferência."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:425
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:476
 #, elixir-autogen, elixir-format
 msgid "%{actor} muted %{count} conference microphone."
 msgid_plural "%{actor} muted %{count} conference microphones."
 msgstr[0] "%{actor} mutado %{count} microfone de conferência."
 msgstr[1] "%{actor} silenciado %{count} microfones de conferência."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:481
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:532
 #, elixir-autogen, elixir-format
 msgid "%{actor} muted %{target}'s conference microphone."
 msgstr "%{actor} silenciado %{target} microfone conferência."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:572
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:623
 #, elixir-autogen, elixir-format
 msgid "%{actor} removed %{target} from the conference."
 msgstr "%{actor} removido %{target} da conferência."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:539
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:590
 #, elixir-autogen, elixir-format
 msgid "%{actor} stopped %{target}'s screen share."
 msgstr "%{actor} parou %{target} compartilhamento de tela."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:439
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:490
 #, elixir-autogen, elixir-format
 msgid "%{actor} turned off %{count} conference camera."
 msgid_plural "%{actor} turned off %{count} conference cameras."
 msgstr[0] "%{actor} desligado %{count} câmara de conferência."
 msgstr[1] "%{actor} desligado %{count} câmeras de conferência."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:503
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:554
 #, elixir-autogen, elixir-format
 msgid "%{actor} turned off %{target}'s conference camera."
 msgstr "%{actor} desligado %{target} câmera de conferência."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:583
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:634
 #, elixir-autogen, elixir-format
 msgid "%{actor} unlocked the conference."
 msgstr "%{actor} desbloqueou a conferência."
@@ -461,12 +461,12 @@ msgstr "%{status} / máximo %{max}"
 msgid "%{subs} subs / %{routes} routes"
 msgstr "%{subs} subs / %{routes} rotas"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:524
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:575
 #, elixir-autogen, elixir-format
 msgid "%{target} started sharing a screen."
 msgstr "%{target} começou a compartilhar uma tela."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:531
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:582
 #, elixir-autogen, elixir-format
 msgid "%{target} stopped sharing a screen."
 msgstr "%{target} parou de compartilhar uma tela."
@@ -653,7 +653,7 @@ msgstr "Controlos compactos das conferências"
 msgid "Conference connection closes"
 msgstr "Fecha a ligação da conferência"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:394
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:445
 #, elixir-autogen, elixir-format
 msgid "Conference ended in %{channel}."
 msgstr "A conferência terminou em %{channel}."
@@ -668,7 +668,7 @@ msgstr "Controlos da disposição da conferência"
 msgid "Conference media"
 msgstr "Meios de comunicação social"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:587
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:638
 #, elixir-autogen, elixir-format
 msgid "Conference moderation updated."
 msgstr "Actualização da moderação da conferência."
@@ -691,7 +691,7 @@ msgstr "Participantes na conferência"
 msgid "Conference reactions"
 msgstr "Reacções da conferência"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:361
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:412
 #, elixir-autogen, elixir-format
 msgid "Conference started in %{channel}."
 msgstr "A conferência começou em %{channel}."

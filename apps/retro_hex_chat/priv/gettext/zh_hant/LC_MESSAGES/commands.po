@@ -1061,7 +1061,7 @@ msgstr "在通知列表中添加一個用戶"
 msgid "Add an auto-respond rule"
 msgstr "添加自動對應的規則"
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:75
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "高級"
@@ -1105,7 +1105,7 @@ msgstr "禁止"
 msgid "Ban user from channel"
 msgstr "從頻道禁止用戶"
 
-#: lib/retro_hex_chat/commands/registry.ex:70
+#: lib/retro_hex_chat/commands/registry.ex:71
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "基本情況"
@@ -1149,7 +1149,7 @@ msgstr ""
 "Allowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\n"
 "Cannot change to your current nickname or one already in use."
 
-#: lib/retro_hex_chat/commands/registry.ex:71
+#: lib/retro_hex_chat/commands/registry.ex:72
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "頻道"
@@ -1225,7 +1225,7 @@ msgstr "清除全部自動連接列表"
 msgid "Command name to view detailed help"
 msgstr "查看詳細幫助的命令名稱"
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:74
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "配置"
@@ -2590,7 +2590,7 @@ msgstr "用法:/whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "用法:/whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:72
+#: lib/retro_hex_chat/commands/registry.ex:73
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "用戶"
@@ -2734,6 +2734,7 @@ msgid "You are already using that nickname"
 msgstr "你已經在用這個綽號了"
 
 #: lib/retro_hex_chat/commands/handler/guards.ex:22
+#: lib/retro_hex_chat/commands/handlers/event.ex:49
 #: lib/retro_hex_chat/commands/handlers/me.ex:19
 #: lib/retro_hex_chat/commands/handlers/part.ex:16
 #: lib/retro_hex_chat/commands/handlers/part.ex:33
@@ -3204,49 +3205,41 @@ msgstr "已將公開問候設為 '%{greeting}'。"
 msgid "/pin <message id>"
 msgstr "/pin <訊息 id>"
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:51
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:72
 #, elixir-autogen, elixir-format
 msgid "/unpin <message id>"
 msgstr "/unpin <訊息 id>"
 
-
 #: lib/retro_hex_chat/commands/handlers/pin.ex:80
 #, elixir-autogen, elixir-format
 msgid "Id of the message to keep"
 msgstr "要保留的訊息 id"
-
 
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:81
 #, elixir-autogen, elixir-format
 msgid "Id of the message to stop keeping"
 msgstr "不再保留的訊息 id"
 
-
 #: lib/retro_hex_chat/commands/handlers/pin.ex:52
 #, elixir-autogen, elixir-format
 msgid "Keep a message in view for the whole channel — the rules, a link, what was agreed.\nPinned messages are listed in the Pinned window and stay findable after they scroll away.\nOperators only. A channel keeps up to 50."
 msgstr "讓一則訊息對整個頻道保持可見——規則、一個連結、約定好的事。\n置頂的訊息列在「置頂」視窗裡，捲走之後仍然能找到。\n僅限管理員。一個頻道最多保留 50 則。"
-
 
 #: lib/retro_hex_chat/commands/handlers/pin.ex:72
 #, elixir-autogen, elixir-format
 msgid "Keep a message in view for the whole channel."
 msgstr "讓一則訊息對整個頻道保持可見。"
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:73
 #, elixir-autogen, elixir-format
 msgid "Stop keeping a message in view."
 msgstr "不再讓一則訊息保持可見。"
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:53
 #, elixir-autogen, elixir-format
 msgid "Stop keeping a message in view. The message itself stays where it is — only the pin goes.\nOperators only."
 msgstr "不再讓一則訊息保持可見。訊息本身還在原處——只是置頂沒了。\n僅限管理員。"
-
 
 #: lib/retro_hex_chat/commands/handlers/pin.ex:36
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:37
@@ -3254,14 +3247,63 @@ msgstr "不再讓一則訊息保持可見。訊息本身還在原處——只是
 msgid "That is not a message id"
 msgstr "那不是訊息 id"
 
-
 #: lib/retro_hex_chat/commands/handlers/pin.ex:18
 #, elixir-autogen, elixir-format
 msgid "Which message? Use /pin <id>, or pin it from its right-click menu."
 msgstr "哪一則訊息？用 /pin <id>，或者從它的右鍵選單置頂。"
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:16
 #, elixir-autogen, elixir-format
 msgid "Which message? Use /unpin <id>, or unpin it from the Pinned window."
 msgstr "哪一則訊息？用 /unpin <id>，或者在「置頂」視窗裡取消。"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:88
+#: lib/retro_hex_chat/commands/handlers/event.ex:114
+#, elixir-autogen, elixir-format
+msgid "/event [<when> <title> | cancel <id>]"
+msgstr "/event [<when> <title> | cancel <id>]"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:60
+#, elixir-autogen, elixir-format
+msgid "An event has to start later than now."
+msgstr "活動必須晚於現在開始。"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:123
+#, elixir-autogen, elixir-format
+msgid "How long from now it starts: 2h, 30m, 3d"
+msgstr "距離開始還有多久：2h、30m、3d"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:90
+#, elixir-autogen, elixir-format
+msgid "Schedule something the channel will do together, and announce it in the room.\nThe time is a delay from now — 2h, 30m, 3d — so it means the same instant for everybody reading it.\nEveryone sees the card and can say they are going; whoever said so is reminded shortly before it starts.\nOperators only. With no arguments it opens the Events window."
+msgstr "安排頻道一起做的事，並在房間裡公布。\n時間是距離現在的時長——2h、30m、3d——所以對每個讀到它的人都是同一個時刻。\n所有人都能看到卡片並表示參加；表示參加的人會在開始前不久收到提醒。\n僅限管理員。不帶參數時會開啟活動視窗。"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:115
+#, elixir-autogen, elixir-format
+msgid "Schedule something the channel will do together."
+msgstr "安排頻道一起做的事。"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:74
+#, elixir-autogen, elixir-format
+msgid "That is not an event id"
+msgstr "那不是活動編號"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:66
+#, elixir-autogen, elixir-format
+msgid "What is it called? Use /event <when> <title>."
+msgstr "它叫什麼？請使用 /event <時間> <標題>。"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:130
+#, elixir-autogen, elixir-format
+msgid "What the channel is going to do"
+msgstr "頻道要做的事"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:54
+#, elixir-autogen, elixir-format
+msgid "When? Give it as a delay from now, like 2h, 30m or 3d."
+msgstr "什麼時候？請給出距離現在的時長，例如 2h、30m 或 3d。"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:20
+#, elixir-autogen, elixir-format
+msgid "Which one? Use /event cancel <id>."
+msgstr "哪一個？請使用 /event cancel <id>。"

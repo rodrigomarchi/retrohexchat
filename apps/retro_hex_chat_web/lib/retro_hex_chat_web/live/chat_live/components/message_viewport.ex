@@ -41,6 +41,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.ListStates
 
+  alias RetroHexChat.Channels.ScheduledEvents
   alias RetroHexChat.Scraper
   alias RetroHexChat.ShareLinks
   alias RetroHexChat.ShareLinks.Card
@@ -191,7 +192,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{action: {:insert, msg}}, socket) do
-    msg = decorate(msg)
+    msg = decorate(socket, msg)
 
     {:ok,
      socket
@@ -215,7 +216,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   # ephemeral system lines are not in the DB and would vanish). No limit: see
   # the note on `@dom_limit` — a limit here deletes the page being inserted.
   def update(%{action: {:prepend, items}}, socket) do
-    items = decorate_all(items)
+    items = decorate_all(items, viewer(socket))
 
     {:ok,
      items
@@ -243,7 +244,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   # same thing (rows removed, rows added), and guessing between them throws a
   # reader paging through history down to the newest message.
   def update(%{action: {:reset, items}}, socket) do
-    items = decorate_all(items)
+    items = decorate_all(items, viewer(socket))
 
     {:ok,
      socket
@@ -493,13 +494,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   @card_types [:message, :action, :system]
   @card_formats ["irc", "plain"]
 
-  @spec decorate(map()) :: map()
-  defp decorate(msg), do: msg |> List.wrap() |> decorate_all() |> hd()
+  @spec decorate(Phoenix.LiveView.Socket.t(), map()) :: map()
+  defp decorate(socket, msg), do: msg |> List.wrap() |> decorate_all(viewer(socket)) |> hd()
 
-  @spec decorate_all([map()]) :: [map()]
-  defp decorate_all([]), do: []
+  defp viewer(socket), do: socket.assigns[:viewer]
 
-  defp decorate_all(items) do
+  @spec decorate_all([map()], String.t() | nil) :: [map()]
+  defp decorate_all([], _viewer), do: []
+
+  defp decorate_all(items, viewer) do
     items = Enum.map(items, &tag_link/1)
 
     cards =
@@ -511,6 +514,39 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     items
     |> Enum.map(&put_card(&1, cards))
     |> put_share_cards()
+    |> put_event_cards(viewer)
+  end
+
+  # An event card hangs off the line that announced it, resolved by message id
+  # rather than by reading the text — the announcement is an ordinary message
+  # and the calendar entry is what knows it announced anything. One query for
+  # the cards and one for this reader's own answers, per screenful.
+  @spec put_event_cards([map()], String.t() | nil) :: [map()]
+  defp put_event_cards(items, viewer) do
+    ids = items |> Enum.map(&Map.get(&1, :id)) |> Enum.filter(&is_integer/1)
+    cards = ScheduledEvents.cards_for_messages(ids)
+
+    if map_size(cards) == 0 do
+      items
+    else
+      going =
+        ScheduledEvents.attending_many(viewer || "", Enum.map(Map.values(cards), & &1.event_id))
+
+      Enum.map(items, &put_event_card(&1, cards, going))
+    end
+  end
+
+  @spec put_event_card(map(), map(), MapSet.t()) :: map()
+  defp put_event_card(item, cards, going) do
+    case Map.get(cards, Map.get(item, :id)) do
+      nil ->
+        item
+
+      card ->
+        item
+        |> Map.put(:event_card, card)
+        |> Map.put(:event_attending, MapSet.member?(going, card.event_id))
+    end
   end
 
   # A link into this app resolves against the database rather than the scraper:

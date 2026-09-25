@@ -58,7 +58,27 @@ defmodule RetroHexChat.Chat.TimeFormatter do
     end
   end
 
+  @doc """
+  How far off a future instant is, in words: "in 2 hours".
+
+  The mirror of `format_relative/1`, and separate from it because the two are
+  different sentences rather than the same one with a sign. Something that has
+  already started says so instead of counting backwards — a countdown that goes
+  negative is how a reminder comes to say "in -5 minutes".
+  """
+  @spec format_until(DateTime.t()) :: String.t()
+  def format_until(%DateTime{} = timestamp) do
+    seconds = DateTime.diff(timestamp, DateTime.utc_now(), :second)
+
+    cond do
+      seconds <= 0 -> dgettext("chat", "now")
+      seconds >= @seconds_per_day -> ahead(days(div(seconds, @seconds_per_day)))
+      true -> ahead(format_duration(seconds))
+    end
+  end
+
   defp ago(span), do: dgettext("chat", "%{span} ago", span: span)
+  defp ahead(span), do: dgettext("chat", "in %{span}", span: span)
 
   @spec hours(pos_integer()) :: String.t()
   defp hours(count), do: dngettext("chat", "%{count} hour", "%{count} hours", count)

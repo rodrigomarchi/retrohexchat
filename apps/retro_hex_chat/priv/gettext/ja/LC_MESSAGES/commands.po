@@ -1061,7 +1061,7 @@ msgstr "通知リストにユーザーを追加"
 msgid "Add an auto-respond rule"
 msgstr "自動応答ルールを追加する"
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:75
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "アドバンスト"
@@ -1105,7 +1105,7 @@ msgstr "Ban"
 msgid "Ban user from channel"
 msgstr "チャネルからユーザーを禁止"
 
-#: lib/retro_hex_chat/commands/registry.ex:70
+#: lib/retro_hex_chat/commands/registry.ex:71
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "基本情報"
@@ -1149,7 +1149,7 @@ msgstr ""
 "許可された文字: 文字、数字、 [ ] \\ ^   `{ | } およびハイフン。\n"
 "現在のニックネームや既に使用しているニックネームに変更することはできません。"
 
-#: lib/retro_hex_chat/commands/registry.ex:71
+#: lib/retro_hex_chat/commands/registry.ex:72
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "チャンネル"
@@ -1225,7 +1225,7 @@ msgstr "オートジョイントリスト全体をクリアする"
 msgid "Command name to view detailed help"
 msgstr "詳細なヘルプを表示するコマンド名"
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:74
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "コンテンツ"
@@ -2591,7 +2591,7 @@ msgstr "使用法: /whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "使用法: /whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:72
+#: lib/retro_hex_chat/commands/registry.ex:73
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "ユーザー登録"
@@ -2735,6 +2735,7 @@ msgid "You are already using that nickname"
 msgstr "そのニックネームを既に使用しています"
 
 #: lib/retro_hex_chat/commands/handler/guards.ex:22
+#: lib/retro_hex_chat/commands/handlers/event.ex:49
 #: lib/retro_hex_chat/commands/handlers/me.ex:19
 #: lib/retro_hex_chat/commands/handlers/part.ex:16
 #: lib/retro_hex_chat/commands/handlers/part.ex:33
@@ -3206,49 +3207,41 @@ msgstr "公開の挨拶を '%{greeting}' に設定しました。"
 msgid "/pin <message id>"
 msgstr "/pin <メッセージ id>"
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:51
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:72
 #, elixir-autogen, elixir-format
 msgid "/unpin <message id>"
 msgstr "/unpin <メッセージ id>"
 
-
 #: lib/retro_hex_chat/commands/handlers/pin.ex:80
 #, elixir-autogen, elixir-format
 msgid "Id of the message to keep"
 msgstr "保持するメッセージの id"
-
 
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:81
 #, elixir-autogen, elixir-format
 msgid "Id of the message to stop keeping"
 msgstr "保持をやめるメッセージの id"
 
-
 #: lib/retro_hex_chat/commands/handlers/pin.ex:52
 #, elixir-autogen, elixir-format
 msgid "Keep a message in view for the whole channel — the rules, a link, what was agreed.\nPinned messages are listed in the Pinned window and stay findable after they scroll away.\nOperators only. A channel keeps up to 50."
 msgstr "チャンネル全体に向けてメッセージを見えるようにしておきます——決まりごと、リンク、合意した内容。\n固定したメッセージは「固定」ウィンドウに並び、スクロールで流れたあとも見つけられます。\n運営者のみ。1 チャンネルにつき 50 件までです。"
-
 
 #: lib/retro_hex_chat/commands/handlers/pin.ex:72
 #, elixir-autogen, elixir-format
 msgid "Keep a message in view for the whole channel."
 msgstr "チャンネル全体に向けてメッセージを見えるようにしておきます。"
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:73
 #, elixir-autogen, elixir-format
 msgid "Stop keeping a message in view."
 msgstr "メッセージを見えるようにしておくのをやめます。"
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:53
 #, elixir-autogen, elixir-format
 msgid "Stop keeping a message in view. The message itself stays where it is — only the pin goes.\nOperators only."
 msgstr "メッセージを見えるようにしておくのをやめます。メッセージ自体はその場に残り、固定だけが外れます。\n運営者のみ。"
-
 
 #: lib/retro_hex_chat/commands/handlers/pin.ex:36
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:37
@@ -3256,14 +3249,63 @@ msgstr "メッセージを見えるようにしておくのをやめます。メ
 msgid "That is not a message id"
 msgstr "それはメッセージ id ではありません"
 
-
 #: lib/retro_hex_chat/commands/handlers/pin.ex:18
 #, elixir-autogen, elixir-format
 msgid "Which message? Use /pin <id>, or pin it from its right-click menu."
 msgstr "どのメッセージですか。/pin <id> を使うか、右クリックメニューから固定してください。"
 
-
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:16
 #, elixir-autogen, elixir-format
 msgid "Which message? Use /unpin <id>, or unpin it from the Pinned window."
 msgstr "どのメッセージですか。/unpin <id> を使うか、「固定」ウィンドウから解除してください。"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:88
+#: lib/retro_hex_chat/commands/handlers/event.ex:114
+#, elixir-autogen, elixir-format
+msgid "/event [<when> <title> | cancel <id>]"
+msgstr "/event [<when> <title> | cancel <id>]"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:60
+#, elixir-autogen, elixir-format
+msgid "An event has to start later than now."
+msgstr "イベントは今より後に始まる必要があります。"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:123
+#, elixir-autogen, elixir-format
+msgid "How long from now it starts: 2h, 30m, 3d"
+msgstr "今からどれくらいで始まるか: 2h、30m、3d"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:90
+#, elixir-autogen, elixir-format
+msgid "Schedule something the channel will do together, and announce it in the room.\nThe time is a delay from now — 2h, 30m, 3d — so it means the same instant for everybody reading it.\nEveryone sees the card and can say they are going; whoever said so is reminded shortly before it starts.\nOperators only. With no arguments it opens the Events window."
+msgstr "チャンネルで一緒にすることを予定し、部屋に告知します。\n時刻は今からの間隔で指定します（2h、30m、3d）。読む人すべてにとって同じ瞬間を意味します。\n全員がカードを見て参加を表明でき、表明した人には開始の少し前に知らせが届きます。\nオペレーターのみ。引数なしで実行するとイベントウィンドウが開きます。"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:115
+#, elixir-autogen, elixir-format
+msgid "Schedule something the channel will do together."
+msgstr "チャンネルで一緒にすることを予定します。"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:74
+#, elixir-autogen, elixir-format
+msgid "That is not an event id"
+msgstr "それはイベント ID ではありません"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:66
+#, elixir-autogen, elixir-format
+msgid "What is it called? Use /event <when> <title>."
+msgstr "何という名前ですか？ /event <いつ> <タイトル> を使ってください。"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:130
+#, elixir-autogen, elixir-format
+msgid "What the channel is going to do"
+msgstr "チャンネルがすること"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:54
+#, elixir-autogen, elixir-format
+msgid "When? Give it as a delay from now, like 2h, 30m or 3d."
+msgstr "いつですか？ 今からの間隔で指定してください（2h、30m、3d など）。"
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:20
+#, elixir-autogen, elixir-format
+msgid "Which one? Use /event cancel <id>."
+msgstr "どれですか？ /event cancel <id> を使ってください。"

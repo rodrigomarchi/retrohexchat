@@ -92,4 +92,20 @@ defmodule RetroHexChat.Chat.TimeFormatterTest do
       assert TimeFormatter.days(180) == "180 days"
     end
   end
+
+  describe "format_until/1" do
+    test "counts forwards in the words the reader would use" do
+      assert TimeFormatter.format_until(DateTime.add(DateTime.utc_now(), 7200, :second)) =~ "in "
+
+      assert TimeFormatter.format_until(
+               DateTime.add(DateTime.utc_now(), 3 * 86_400 + 60, :second)
+             ) =~ "3"
+    end
+
+    # The countdown that must never go negative: an event already under way says
+    # so rather than counting backwards at the reader.
+    test "something already under way says now, never a negative span" do
+      assert TimeFormatter.format_until(DateTime.add(DateTime.utc_now(), -600, :second)) == "now"
+    end
+  end
 end

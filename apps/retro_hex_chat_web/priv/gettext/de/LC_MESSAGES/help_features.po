@@ -3088,6 +3088,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:39
@@ -6378,6 +6379,7 @@ msgstr "Benachrichtigungen bei geschlossenem Chat"
 msgid "A private message sent to you"
 msgstr "Eine private Nachricht an Sie"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Desktop Notifications"
@@ -6757,3 +6759,68 @@ msgstr "Unter einer beantworteten Nachricht steht eine Zeile wie „2 Antworten�
 #, elixir-autogen, elixir-format
 msgid "What a Thread Contains"
 msgstr "Was ein Thread enthält"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "/event"
+msgstr "/event"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A channel can agree to do something at a time — a tournament, a film night, a meeting — and everyone sees it, says whether they are coming, and is reminded shortly before it starts."
+msgstr "Ein Kanal kann sich auf etwas zu einer Zeit einigen — ein Turnier, ein Filmabend, ein Treffen — und alle sehen es, sagen ob sie kommen, und werden kurz vorher erinnert."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Notifications When the App Is Closed"
+msgstr "Benachrichtigungen bei geschlossenem Chat"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Operators only, with /event followed by how long from now it starts and what it is called: /event 2h Tuesday tournament. The time is a delay rather than a clock reading, so it means the same instant for everybody who can read it, wherever they are."
+msgstr "Nur Operatoren, mit /event gefolgt davon, wie lange von jetzt an es beginnt und wie es heißt: /event 2h Dienstagsturnier. Die Zeit ist ein Abstand statt einer Uhrzeit, also derselbe Zeitpunkt für alle, wo immer sie sind."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Press I'm going on the card. It is the only answer there is — a maybe tells the organiser nothing they did not already know. Press it again to take yourself back off. The count beside it is everybody who said yes."
+msgstr "Drücke auf der Karte Ich komme. Es ist die einzige Antwort — ein Vielleicht sagt der organisierenden Person nichts Neues. Nochmal drücken nimmt dich wieder heraus. Die Zahl daneben sind alle, die zugesagt haben."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Saying You Will Be There"
+msgstr "Zusagen"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Scheduling One"
+msgstr "Eines ansetzen"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Shortly before it starts, the channel gets a line saying so, and everyone who said they were going gets a notification — a desktop one if you have the chat open, a push one if you do not. There is no separate alerts channel and no setting of its own: it uses the notifications you have already chosen."
+msgstr "Kurz vor dem Beginn bekommt der Kanal eine Zeile, die das sagt, und alle, die zugesagt haben, bekommen eine Benachrichtigung — eine Desktop-Benachrichtigung, wenn der Chat offen ist, sonst eine Push-Benachrichtigung. Es gibt keinen eigenen Hinweiskanal und keine eigene Einstellung: es nutzt die Benachrichtigungen, die du bereits gewählt hast."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Tools ▸ Events, or /event with nothing after it, lists what this channel has coming up, soonest first. Whoever scheduled something can call it off with /event cancel followed by its number; the record that it was going to happen stays."
+msgstr "Start ▸ Extras ▸ Ereignisse, oder /event ohne alles dahinter, listet auf, was dieser Kanal vorhat, das Nächste zuerst. Wer etwas angesetzt hat, kann es mit /event cancel und der Nummer absagen; der Eintrag, dass es stattfinden sollte, bleibt."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "The Events Window"
+msgstr "Das Ereignisfenster"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "The Reminder"
+msgstr "Die Erinnerung"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The card shows the start in your own time zone, and how far off it is. Two people in different countries see different clock times for the same event, which is the point: the stored instant is the same one."
+msgstr "Die Karte zeigt den Beginn in deiner eigenen Zeitzone und wie weit er entfernt ist. Zwei Personen in verschiedenen Ländern sehen für dasselbe Ereignis verschiedene Uhrzeiten — genau darum geht es: der gespeicherte Zeitpunkt ist derselbe."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Your Own Clock"
+msgstr "Deine eigene Uhr"

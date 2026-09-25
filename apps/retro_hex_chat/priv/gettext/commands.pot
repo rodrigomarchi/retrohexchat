@@ -1059,7 +1059,7 @@ msgstr ""
 msgid "Add an auto-respond rule"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:75
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr ""
@@ -1099,7 +1099,7 @@ msgstr ""
 msgid "Ban user from channel"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/registry.ex:70
+#: lib/retro_hex_chat/commands/registry.ex:71
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr ""
@@ -1136,7 +1136,7 @@ msgstr ""
 msgid "Change your display name. A confirmation dialog appears before the change takes effect.\nRules: 1-16 characters, no spaces. Must start with a letter or [ ] \\ ^ _ { | }.\nAllowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\nCannot change to your current nickname or one already in use."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/registry.ex:71
+#: lib/retro_hex_chat/commands/registry.ex:72
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr ""
@@ -1212,7 +1212,7 @@ msgstr ""
 msgid "Command name to view detailed help"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:74
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr ""
@@ -2476,7 +2476,7 @@ msgstr ""
 msgid "Usage: /whowas <nickname>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/registry.ex:72
+#: lib/retro_hex_chat/commands/registry.ex:73
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr ""
@@ -2614,6 +2614,7 @@ msgid "You are already using that nickname"
 msgstr ""
 
 #: lib/retro_hex_chat/commands/handler/guards.ex:22
+#: lib/retro_hex_chat/commands/handlers/event.ex:49
 #: lib/retro_hex_chat/commands/handlers/me.ex:19
 #: lib/retro_hex_chat/commands/handlers/part.ex:16
 #: lib/retro_hex_chat/commands/handlers/part.ex:33
@@ -3119,4 +3120,55 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:16
 #, elixir-autogen, elixir-format
 msgid "Which message? Use /unpin <id>, or unpin it from the Pinned window."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:88
+#: lib/retro_hex_chat/commands/handlers/event.ex:114
+#, elixir-autogen, elixir-format
+msgid "/event [<when> <title> | cancel <id>]"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:60
+#, elixir-autogen, elixir-format
+msgid "An event has to start later than now."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:123
+#, elixir-autogen, elixir-format
+msgid "How long from now it starts: 2h, 30m, 3d"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:90
+#, elixir-autogen, elixir-format
+msgid "Schedule something the channel will do together, and announce it in the room.\nThe time is a delay from now — 2h, 30m, 3d — so it means the same instant for everybody reading it.\nEveryone sees the card and can say they are going; whoever said so is reminded shortly before it starts.\nOperators only. With no arguments it opens the Events window."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:115
+#, elixir-autogen, elixir-format
+msgid "Schedule something the channel will do together."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:74
+#, elixir-autogen, elixir-format
+msgid "That is not an event id"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:66
+#, elixir-autogen, elixir-format
+msgid "What is it called? Use /event <when> <title>."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:130
+#, elixir-autogen, elixir-format
+msgid "What the channel is going to do"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:54
+#, elixir-autogen, elixir-format
+msgid "When? Give it as a delay from now, like 2h, 30m or 3d."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/event.ex:20
+#, elixir-autogen, elixir-format
+msgid "Which one? Use /event cancel <id>."
 msgstr ""

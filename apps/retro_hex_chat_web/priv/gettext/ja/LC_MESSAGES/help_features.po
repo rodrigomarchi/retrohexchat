@@ -2873,6 +2873,7 @@ msgstr "現在のチャンネルまたはPMでリアルタイムのハイライ�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:39
@@ -5792,6 +5793,7 @@ msgstr "チャットを閉じているときの通知"
 msgid "A private message sent to you"
 msgstr "あなた宛てのプライベートメッセージ"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Desktop Notifications"
@@ -6171,3 +6173,68 @@ msgstr "返信されたメッセージの下には「2件の返信」という�
 #, elixir-autogen, elixir-format
 msgid "What a Thread Contains"
 msgstr "スレッドに含まれるもの"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "/event"
+msgstr "/event"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A channel can agree to do something at a time — a tournament, a film night, a meeting — and everyone sees it, says whether they are coming, and is reminded shortly before it starts."
+msgstr "チャンネルは時間を決めて何かをすることにできます — トーナメント、映画の夜、ミーティング — 全員がそれを見て、参加するかを答え、開始の少し前に知らせを受け取ります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Notifications When the App Is Closed"
+msgstr "チャットを閉じているときの通知"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Operators only, with /event followed by how long from now it starts and what it is called: /event 2h Tuesday tournament. The time is a delay rather than a clock reading, so it means the same instant for everybody who can read it, wherever they are."
+msgstr "オペレーターのみ。/event の後に、今からどれくらいで始まるかと名前を続けます: /event 2h 火曜トーナメント。時刻は時計の時刻ではなく間隔なので、どこにいる人にとっても同じ瞬間を意味します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Press I'm going on the card. It is the only answer there is — a maybe tells the organiser nothing they did not already know. Press it again to take yourself back off. The count beside it is everybody who said yes."
+msgstr "カードの「参加します」を押してください。答えはこれだけです。「たぶん」は主催者がすでに知っていること以上を何も伝えません。もう一度押すと取り消せます。隣の数字は参加と答えた全員です。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Saying You Will Be There"
+msgstr "参加を伝える"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Scheduling One"
+msgstr "予定を立てる"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Shortly before it starts, the channel gets a line saying so, and everyone who said they were going gets a notification — a desktop one if you have the chat open, a push one if you do not. There is no separate alerts channel and no setting of its own: it uses the notifications you have already chosen."
+msgstr "開始の少し前に、チャンネルにそう伝える 1 行が投稿され、参加と答えた全員に通知が届きます。チャットを開いていればデスクトップ通知、開いていなければプッシュ通知です。専用の通知チャンネルも専用の設定もありません。すでに選んである通知の仕組みをそのまま使います。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Tools ▸ Events, or /event with nothing after it, lists what this channel has coming up, soonest first. Whoever scheduled something can call it off with /event cancel followed by its number; the record that it was going to happen stays."
+msgstr "スタート ▸ ツール ▸ イベント、または後ろに何も付けない /event で、このチャンネルの予定が近い順に並びます。予定した人は /event cancel と番号で中止でき、行われる予定だったという記録は残ります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "The Events Window"
+msgstr "イベントウィンドウ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "The Reminder"
+msgstr "リマインダー"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The card shows the start in your own time zone, and how far off it is. Two people in different countries see different clock times for the same event, which is the point: the stored instant is the same one."
+msgstr "カードは開始時刻をあなた自身のタイムゾーンで、そしてどれくらい先かを示します。別の国にいる二人は同じイベントに違う時計の時刻を見ます。それが要点です。保存されている瞬間は同じものです。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Your Own Clock"
+msgstr "あなた自身の時計"

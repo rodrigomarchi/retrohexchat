@@ -357,6 +357,15 @@
   }
 }
 
+/* ── Events ─────────────────────────────────────────────────────────────────
+   The card hangs off a system line, and a system line is grey italic — which
+   is right for "the room said something about itself" and wrong for the object
+   underneath it. The card is a thing you act on, so it takes back the upright
+   body text the rest of the conversation uses. */
+.chat-event-card {
+  @apply not-italic text-foreground;
+}
+
 /* ── Threads ────────────────────────────────────────────────────────────────
    "N replies" under the line that collected them. A link rather than a chip:
    a reaction is something you press back, a thread is somewhere you go, and

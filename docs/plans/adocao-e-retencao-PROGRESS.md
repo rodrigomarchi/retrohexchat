@@ -24,7 +24,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 4.4 Salvar mensagem | **pronto** (2026-09-23) |
 | 5.1 Arquivo público | **pronto** (2026-09-24) |
 | 5.2 Threads | **pronto** (2026-09-24) |
-| 5.3 Eventos | não iniciado |
+| 5.3 Eventos | **pronto** (2026-09-25) |
 | 5.4 Avatar no chat | não iniciado |
 | 5.5 Emoji do servidor | não iniciado |
 | 5.6 Mensagem de voz | não iniciado |
@@ -1172,3 +1172,93 @@ as seis ficavam espalhadas por trinta linhas de outro assunto.
 `help_content/feature_threads.html.heex` +
 `feature_message_reply.html.heex`, `e2e/tests/chat-threads.spec.ts`, e os
 catálogos `chat`, `dialogs`, `help`, `help_features`.
+
+---
+
+## Iteração 5.3 — Eventos agendados
+
+O mecanismo que faz servidor pequeno voltar toda semana. Um canal que só existe
+enquanto alguém está digitando não tem próxima vez; um evento **é** a próxima
+vez, escrita onde a sala inteira vê.
+
+**O que ficou**
+
+- `channel_events` + `channel_event_attendees`, e `Channels.ScheduledEvents` com
+  `create/3`, `list/2` (Page), `cancel/2`, `attend/2`, `unattend/2`,
+  `attending_many/2`, `due_for_reminder/2`, `mark_reminded/2` e
+  `cards_for_messages/1`.
+- **Tudo em UTC, desenhado no fuso do leitor.** É o único valor do produto que
+  erra nos dois sentidos se você escolher um lado só. Nada no domínio formata
+  hora; `TimeFormatter` e o fuso da sessão fazem isso na borda.
+- `TimeFormatter.format_until/1`, o espelho de `format_relative/1` — e separado
+  dele porque são frases diferentes, não a mesma com sinal trocado. Algo já
+  começado diz "agora" em vez de contar para trás.
+- `EventReminderWorker` **varre** em vez de agendar um job por evento: um job já
+  na fila para uma linha que mudou é como chega lembrete de algo que não vai
+  acontecer. Lê as linhas no momento de lembrar, e `reminded_at` é o que impede
+  a varredura seguinte de achar o mesmo evento.
+- Duas entregas, ambas já existentes: a sala ouve como linha, e quem disse que
+  vai recebe push. Sem canal de aviso próprio, sem ajuste próprio.
+- Comando `/event` com o tempo como **atraso** (2h, 30m, 3d), nunca leitura de
+  relógio — um comando não tem como perguntar de que fuso você falou.
+- Card na conversa **e** linha na janela, os dois desenhados pelo mesmo
+  `event_card`. O card resolve por id da mensagem de anúncio, uma query por
+  página, na forma das reações.
+
+**Desvios do plano, conscientes**
+
+- **`announcement_message_id` no evento, não uma coluna em `messages`.** O plano
+  não dizia como o card chega à conversa. A tabela de mensagens não precisa
+  saber o que é um evento; o evento é que sabe qual linha o anunciou.
+- **O card resolve no `MessageViewport`, junto com os share cards.** Mesma
+  passada, mesma razão: uma página é o único lugar que sabe que é página.
+- **Permissão no `Channels.Server`, não no handler.** Se alguém pode agendar é
+  pergunta sobre este canal agora, e se responde onde a membership mora — a
+  mesma regra que o `/pin` já seguia.
+
+**Aprendizados**
+
+- **As chaves do pass de overrides são texto desescapado, inclusive `\n`.** Em
+  5.2 foi a aspa; aqui foi a quebra de linha. O parser roda `ast.literal_eval`,
+  então `\n` na chave vira newline de verdade — escrever `\\n` não casa nada,
+  em silêncio, e a descrição longa do `/event` saiu vazia em treze locales. Só
+  `i18n.catalog.check` contou.
+- **Dois msgid meus já existiam traduzidos em outro domínio** ("Events", "Could
+  not load more events."). O pass casa msgid em qualquer domínio, então o certo
+  não era traduzir de novo: foi **adotar a tradução existente** como valor do
+  override. O produto já tinha decidido como se chama.
+- **O guard de fallback pega coincidência entre idiomas.** "in %{span}" em
+  alemão é literalmente "in %{span}", e o `i18n.source-fallback.check` acusa
+  igualdade como inglês não traduzido. Virou "noch %{span}", que aliás lê melhor
+  como fragmento solto.
+- **`dgettext("errors", …)` no app de domínio cria um catálogo novo do nada** —
+  `errors.pot` apareceu, e com ele 14 locales a encher. As mensagens de canal
+  já têm casa: o domínio `channels`.
+- **A auditoria visual pegou o card em itálico.** Ele pendura numa linha de
+  sistema, que é cinza itálico — certo para "a sala falou de si mesma", errado
+  para o objeto embaixo. Um card é coisa em que se clica, e voltou a ter o corpo
+  de texto do resto da conversa.
+
+**Gates** — `make ci` 18/18 · `make e2e.batch BATCH=channels` 32 passed ·
+`BATCH=shell` 58 passed · `BATCH=commands` 40 passed · auditoria visual em
+quatro quadros, com uma correção.
+
+**Arquivos tocados** — migration `create_channel_events`,
+`channels/scheduled_events.ex`, `channels/schemas/channel_event.ex` +
+`channel_event_attendee.ex`, `channels/policy.ex`, `channels/server.ex`,
+`chat/time_formatter.ex`, `notifications.ex`, `jobs/event_reminder_worker.ex`,
+`jobs/push_dispatch_worker.ex`, `commands/handlers/event.ex`,
+`commands/registry.ex`, `config/config.exs`,
+`components/ui/chat/event_card.ex`, `components/ui/chat/message_row.ex`,
+`components/ui/dialogs/events_dialog.ex`,
+`components/ui/layout/list_states.ex`, `components/ui/shell/start_menu_app.ex`,
+`chat_live/components/events_dialog.ex`,
+`chat_live/components/message_viewport.ex`, `chat_live/event_events.ex`,
+`chat_live/ui_actions/events.ex`, `chat_live/ui_action_handlers.ex`,
+`chat_live/pubsub_handlers/channel_state.ex`, `chat_live/window_registry.ex`,
+`app/chat_live.ex` + `.html.heex`,
+`assets/css/retrohex/components/chat-message.css`, `help_topics/commands.ex` +
+`features.ex`, `help_content/cmd_event.html.heex` +
+`feature_channel_events.html.heex`, `e2e/tests/chat-channel-events.spec.ts`, e
+os catálogos `chat`, `channels`, `commands`, `dialogs`, `help`,
+`help_commands`, `help_features`, `ui`.

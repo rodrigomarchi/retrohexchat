@@ -1,0 +1,65 @@
+<p>
+  {dgettext(
+    "help_commands",
+    "A channel that only exists while somebody happens to be typing has no next time. An event is the next time, written down where the whole room can see it — and everyone who says they are coming is reminded before it starts."
+  )}
+</p>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/event [<when> <title> | cancel <id>]")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
+<p>
+  <code>when</code>
+  {dgettext(
+    "help_commands",
+    "— How long from now it starts: 30m, 2h, 3d. A delay rather than a clock reading, so it means the same instant for everybody."
+  )}<br />
+  <code>title</code>
+  {dgettext("help_commands", "— What the channel is going to do. Up to 120 characters.")}<br />
+  <code>cancel &lt;id&gt;</code>
+  {dgettext("help_commands", "— Calls off the event with that number.")}
+</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "The channel gets a line with a card under it showing the start in each reader's own time zone and a button to say you are going. Shortly before it starts the room is told again, and everybody who said yes gets a notification through whatever they already have switched on. With no arguments at all, the command opens the Events window instead."
+  )}
+</p>
+<.help_h4 icon={:icon_lock}>{dgettext("help_commands", "Who can")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Channel operators and owners schedule; anybody in the channel can say they are going. An event is called off by whoever scheduled it, or by an operator."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>{dgettext("help_commands", "The start has to be later than now")}</li>
+  <li>{dgettext("help_commands", "A channel holds up to 50 events at once")}</li>
+  <li>{dgettext("help_commands", "Saying you are going twice is saying it once")}</li>
+  <li>
+    {dgettext("help_commands", "Calling one off keeps the record that it was going to happen")}
+  </li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "A reminder goes out once, and never for something already under way"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/event")}
+{dgettext("help_commands", "/event 2h Tuesday tournament")}
+{dgettext("help_commands", "/event 3d Film night in the space")}
+{dgettext("help_commands", "/event cancel 12")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-channel-events">
+    {dgettext("help_commands", "Channel Events")}
+  </.help_link>
+  · <.help_link topic="cmd-pin">{dgettext("help_commands", "/pin")}</.help_link>
+  ·
+  <.help_link topic="feature-closed-app-notifications">
+    {dgettext("help_commands", "Notifications When the App Is Closed")}
+  </.help_link>
+</p>

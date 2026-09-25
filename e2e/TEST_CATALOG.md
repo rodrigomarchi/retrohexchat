@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **230 spec files** under `e2e/tests/`.
-- **486 Playwright `test()` cases**.
-- **481 documented flows**, 480 done, 1 not done.
+- **231 spec files** under `e2e/tests/`.
+- **487 Playwright `test()` cases**.
+- **482 documented flows**, 481 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -260,6 +260,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | H10 | `/clearwelcome` stops welcome for later joiners (features P1) | `tests/chat-channel-welcome.spec.ts` | done |
 | H11 | `/setmotd`, `/motd`, new connect, and `/clearmotd` work (features P1) | `tests/chat-server-messages.spec.ts` | done |
 | H12 | `/quit reason` disconnects self and broadcasts reason to channel (features P1) | `tests/chat-quit.spec.ts` | done |
+| H13 | An operator schedules a channel event; the room gets a card in its own time zone, a second person says they are going, and the window lists it (features P1) | `tests/chat-channel-events.spec.ts` | done |
 
 ### I - Channel Modes, Privileges, Moderation
 

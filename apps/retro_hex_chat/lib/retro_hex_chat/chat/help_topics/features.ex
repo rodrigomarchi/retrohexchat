@@ -1123,6 +1123,26 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           )
       },
       %{
+        id: "feature-channel-events",
+        title: dgettext("help", "Channel Events"),
+        category: dgettext("help", "Channel Settings"),
+        keywords: [
+          "event",
+          "events",
+          dgettext("help", "schedule"),
+          dgettext("help", "calendar"),
+          dgettext("help", "meet up"),
+          dgettext("help", "going")
+        ],
+        icon: :icon_clock,
+        description:
+          dgettext(
+            "help",
+            "Agree to do something at a time, say whether you are coming, and be reminded before it starts."
+          ),
+        see_also: ["cmd-event", "feature-closed-app-notifications"]
+      },
+      %{
         id: "feature-threads",
         title: dgettext("help", "Threads"),
         category: dgettext("help", "Chat & Messaging"),

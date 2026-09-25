@@ -3051,6 +3051,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invite_link.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:39
@@ -6312,6 +6313,7 @@ msgstr "Notifikasi saat obrolan tertutup"
 msgid "A private message sent to you"
 msgstr "Pesan pribadi yang dikirim kepada Anda"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Desktop Notifications"
@@ -6691,3 +6693,68 @@ msgstr "Di bawah pesan yang dibalas ada baris \"2 balasan\". Klik baris itu, ata
 #, elixir-autogen, elixir-format
 msgid "What a Thread Contains"
 msgstr "Apa yang ada di dalam utas"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "/event"
+msgstr "/event"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A channel can agree to do something at a time — a tournament, a film night, a meeting — and everyone sees it, says whether they are coming, and is reminded shortly before it starts."
+msgstr "Sebuah kanal bisa sepakat melakukan sesuatu pada suatu waktu — turnamen, malam film, rapat — dan semua orang melihatnya, bilang apakah datang, dan diingatkan sesaat sebelum mulai."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Notifications When the App Is Closed"
+msgstr "Notifikasi saat obrolan tertutup"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Operators only, with /event followed by how long from now it starts and what it is called: /event 2h Tuesday tournament. The time is a delay rather than a clock reading, so it means the same instant for everybody who can read it, wherever they are."
+msgstr "Hanya operator, dengan /event diikuti berapa lama lagi dimulai dan namanya: /event 2h turnamen Selasa. Waktunya adalah jeda, bukan jam dinding, jadi artinya saat yang sama bagi semua orang di mana pun mereka berada."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Press I'm going on the card. It is the only answer there is — a maybe tells the organiser nothing they did not already know. Press it again to take yourself back off. The count beside it is everybody who said yes."
+msgstr "Tekan Saya ikut pada kartu. Itu satu-satunya jawaban yang ada — sebuah mungkin tidak memberi tahu penyelenggara apa pun yang belum mereka ketahui. Tekan lagi untuk menarik diri. Angka di sebelahnya adalah semua yang bilang ya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Saying You Will Be There"
+msgstr "Menyatakan kamu datang"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Scheduling One"
+msgstr "Menjadwalkan satu"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Shortly before it starts, the channel gets a line saying so, and everyone who said they were going gets a notification — a desktop one if you have the chat open, a push one if you do not. There is no separate alerts channel and no setting of its own: it uses the notifications you have already chosen."
+msgstr "Sesaat sebelum mulai, kanal mendapat satu baris yang menyatakannya, dan semua yang bilang akan datang mendapat notifikasi — notifikasi desktop jika obrolan terbuka, notifikasi push jika tidak. Tidak ada kanal peringatan terpisah dan tidak ada pengaturan tersendiri: ia memakai notifikasi yang sudah kamu pilih."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Tools ▸ Events, or /event with nothing after it, lists what this channel has coming up, soonest first. Whoever scheduled something can call it off with /event cancel followed by its number; the record that it was going to happen stays."
+msgstr "Start ▸ Alat ▸ Acara, atau /event tanpa apa pun setelahnya, menampilkan apa yang akan datang di kanal ini, yang paling dekat dulu. Siapa pun yang menjadwalkan sesuatu bisa membatalkannya dengan /event cancel diikuti nomornya; catatan bahwa itu akan terjadi tetap ada."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "The Events Window"
+msgstr "Jendela Acara"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "The Reminder"
+msgstr "Pengingatnya"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The card shows the start in your own time zone, and how far off it is. Two people in different countries see different clock times for the same event, which is the point: the stored instant is the same one."
+msgstr "Kartu itu menampilkan waktu mulai di zona waktumu sendiri, dan berapa lama lagi. Dua orang di negara berbeda melihat jam yang berbeda untuk acara yang sama, dan itulah intinya: saat yang tersimpan sama."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Your Own Clock"
+msgstr "Jam kamu sendiri"

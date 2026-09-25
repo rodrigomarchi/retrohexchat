@@ -68,6 +68,13 @@ defmodule RetroHexChat.Jobs.PushDispatchWorker do
     Notifications.list_for(nickname)
   end
 
+  # An event reminder is addressed, not derived: the person is on the list
+  # because they said they would be there, so there is nothing to match against
+  # what was written.
+  defp recipients(%{"kind" => "event", "nickname" => nickname}) do
+    Notifications.list_for(nickname)
+  end
+
   defp recipients(_args), do: []
 
   # The one check that has to happen here and not earlier: somebody who has the

@@ -499,7 +499,7 @@ msgstr "Jungkitkan Kamera Konferensi"
 msgid "Toggle Conference Microphone"
 msgstr "Jungkitkan Mikrofon Konferensi"
 
-#: lib/retro_hex_chat/channels/server.ex:1387
+#: lib/retro_hex_chat/channels/server.ex:1439
 #: lib/retro_hex_chat/chat/service.ex:353
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -538,18 +538,18 @@ msgid "%{count} day"
 msgid_plural "%{count} days"
 msgstr[0] "%{count} hari"
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:61
+#: lib/retro_hex_chat/chat/time_formatter.ex:80
 #, elixir-autogen, elixir-format
 msgid "%{span} ago"
 msgstr "%{span} yang lalu"
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:64
+#: lib/retro_hex_chat/chat/time_formatter.ex:84
 #, elixir-autogen, elixir-format
 msgid "%{count} hour"
 msgid_plural "%{count} hours"
 msgstr[0] "%{count} jam"
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:67
+#: lib/retro_hex_chat/chat/time_formatter.ex:87
 #, elixir-autogen, elixir-format
 msgid "%{count} minute"
 msgid_plural "%{count} minutes"
@@ -612,3 +612,18 @@ msgstr "Perubahan itu tidak dapat disimpan."
 #, elixir-autogen, elixir-format
 msgid "That channel is not registered."
 msgstr "Kanal itu tidak terdaftar."
+
+#: lib/retro_hex_chat/jobs/event_reminder_worker.ex:102
+#, elixir-autogen, elixir-format
+msgid "%{title} is about to start."
+msgstr "%{title} akan segera dimulai."
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:81
+#, elixir-autogen, elixir-format
+msgid "in %{span}"
+msgstr "dalam %{span}"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:74
+#, elixir-autogen, elixir-format
+msgid "now"
+msgstr "sekarang"

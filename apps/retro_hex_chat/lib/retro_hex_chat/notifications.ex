@@ -135,6 +135,33 @@ defmodule RetroHexChat.Notifications do
 
   def notify_private_message(_payload), do: :ok
 
+  @doc """
+  Tells the people who said they would be there that it is about to start.
+
+  Addressed to a list rather than derived from what was written, which is the
+  difference between this and every other push here: nobody typed anything, and
+  the only reason a person is on the list is that they asked to be. One job per
+  person, so the worker's own uniqueness window still collapses a burst.
+  """
+  @spec notify_event_reminder(map()) :: :ok
+  def notify_event_reminder(%{channel: channel, attendees: attendees, body: body})
+      when is_list(attendees) do
+    if enabled?() do
+      Enum.each(attendees, fn nickname ->
+        enqueue(%{
+          "kind" => "event",
+          "conversation" => channel,
+          "nickname" => nickname,
+          "body" => body
+        })
+      end)
+    end
+
+    :ok
+  end
+
+  def notify_event_reminder(_payload), do: :ok
+
   @spec enqueue(map()) :: :ok
   defp enqueue(args) do
     args

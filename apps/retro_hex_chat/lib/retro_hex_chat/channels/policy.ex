@@ -123,6 +123,16 @@ defmodule RetroHexChat.Channels.Policy do
     end
   end
 
+  @doc "Whether this member may put something on the channel's calendar."
+  @spec can_schedule_event?(Membership.t(), String.t()) :: :ok | {:error, String.t()}
+  def can_schedule_event?(membership, nickname) do
+    if operator?(membership, nickname) do
+      :ok
+    else
+      {:error, dgettext("channels", "You must be a channel operator to schedule events")}
+    end
+  end
+
   @spec can_kick?(Membership.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
   def can_kick?(membership, actor, target) do
     with {:ok, actor_role} <- Membership.role(membership, actor),

@@ -548,6 +548,25 @@
       />
     </.desktop_window>
 
+    <%!-- Events — what the channel on screen has agreed to do, soonest first.
+          The same card the conversation draws, in a list. --%>
+    <.desktop_window
+      :if={"events" in @open_windows}
+      {WindowRegistry.attrs("events")}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="events-window"
+    >
+      <:icon><Icons.icon_clock class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.EventsDialog}
+        id={RetroHexChatWeb.ChatLive.Components.EventsDialog.id()}
+        channel={@session.active_channel}
+        viewer={@session.nickname}
+        timezone={@timezone}
+        can_schedule={@can_pin}
+      />
+    </.desktop_window>
+
     <%!-- Flood Protection — server-managed: uncontrolled form, nothing to keep
           across closes. --%>
     <.desktop_window

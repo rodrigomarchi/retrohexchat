@@ -2018,6 +2018,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:40
@@ -2123,6 +2124,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:22
@@ -2439,6 +2441,7 @@ msgstr "Opções"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:9
@@ -2727,6 +2730,7 @@ msgstr "Os administradores raiz não podem ser rebaixados através de comandos"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:22
@@ -2799,6 +2803,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:42
@@ -3016,6 +3021,7 @@ msgstr "Subcomandos"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:7
@@ -5169,6 +5175,7 @@ msgstr ""
 msgid "Rooms With Nobody In Them"
 msgstr "Salas sem ninguém dentro"
 
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "/pin"
@@ -5204,6 +5211,7 @@ msgstr "Deixa de manter uma mensagem à vista."
 msgid "The message itself stays exactly where it is in the conversation — only the pin goes. The Pinned window unpins from the entry too, which is usually where you are when you decide to."
 msgstr "A mensagem em si continua exatamente onde está na conversa — só a fixação sai. A janela Fixadas também desafixa pela própria entrada, que é onde você normalmente está quando decide."
 
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:18
 #, elixir-autogen, elixir-format
@@ -5270,3 +5278,93 @@ msgstr "— O número de uma mensagem dita neste canal."
 #, elixir-autogen, elixir-format
 msgid "— The number of a message this channel is keeping."
 msgstr "— O número de uma mensagem que este canal está mantendo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "/event"
+msgstr "/event"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "/event 2h Tuesday tournament"
+msgstr "/event 2h Tuesday tournament"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "/event 3d Film night in the space"
+msgstr "/event 3d Film night in the space"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "/event [<when> <title> | cancel <id>]"
+msgstr "/event [<when> <title> | cancel <id>]"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "/event cancel 12"
+msgstr "/event cancel 12"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "A channel holds up to 50 events at once"
+msgstr "Um canal guarda até 50 eventos de cada vez"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A channel that only exists while somebody happens to be typing has no next time. An event is the next time, written down where the whole room can see it — and everyone who says they are coming is reminded before it starts."
+msgstr "Um canal que só existe enquanto alguém está digitando não tem próxima vez. Um evento é a próxima vez, anotada onde a sala inteira vê — e quem diz que vai é lembrado antes de começar."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "A reminder goes out once, and never for something already under way"
+msgstr "O lembrete sai uma vez, e nunca para algo que já começou"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Calling one off keeps the record that it was going to happen"
+msgstr "Cancelar mantém o registro de que ia acontecer"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Channel Events"
+msgstr "Eventos do canal"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Channel operators and owners schedule; anybody in the channel can say they are going. An event is called off by whoever scheduled it, or by an operator."
+msgstr "Operadores e donos do canal agendam; qualquer pessoa no canal pode dizer que vai. Um evento é cancelado por quem o agendou, ou por um operador."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:63
+#, elixir-autogen, elixir-format
+msgid "Notifications When the App Is Closed"
+msgstr "Avisos com o chat fechado"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Saying you are going twice is saying it once"
+msgstr "Dizer que vai duas vezes é dizer uma"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "The channel gets a line with a card under it showing the start in each reader's own time zone and a button to say you are going. Shortly before it starts the room is told again, and everybody who said yes gets a notification through whatever they already have switched on. With no arguments at all, the command opens the Events window instead."
+msgstr "O canal recebe uma linha com um card embaixo mostrando o início no fuso de cada leitor e um botão para dizer que você vai. Pouco antes de começar a sala é avisada de novo, e todo mundo que disse sim recebe uma notificação pelo que já tiver ligado. Sem nenhum argumento, o comando abre a janela de Eventos."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "The start has to be later than now"
+msgstr "O início tem que ser depois de agora"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "— Calls off the event with that number."
+msgstr "— Cancela o evento com esse número."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "— How long from now it starts: 30m, 2h, 3d. A delay rather than a clock reading, so it means the same instant for everybody."
+msgstr "— Daqui a quanto tempo começa: 30m, 2h, 3d. Um intervalo em vez de uma hora do relógio, então é o mesmo instante para todo mundo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "— What the channel is going to do. Up to 120 characters."
+msgstr "— O que o canal vai fazer. Até 120 caracteres."

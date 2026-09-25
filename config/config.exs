@@ -68,6 +68,9 @@ config :retro_hex_chat, Oban,
        {"30 * * * *", RetroHexChat.Jobs.AttachmentOrphanCleanupWorker},
        {"35 * * * *", RetroHexChat.Jobs.TrustedDeviceExpiryWorker},
        {"*/15 * * * *", RetroHexChat.Jobs.ChatDeviceSessionCleanupWorker},
+       # Every five minutes, because the reminder window is fifteen: a sweep
+       # slower than a third of the window can miss an event entirely.
+       {"*/5 * * * *", RetroHexChat.Jobs.EventReminderWorker},
        {"45 * * * *", RetroHexChat.Jobs.RuntimeStaleCleanupWorker},
        {"*/5 * * * *", RetroHexChat.Jobs.OpenLobbyExpiryWorker},
        {"50 * * * *", RetroHexChat.Jobs.ScrapedPagePruneWorker},

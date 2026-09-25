@@ -494,7 +494,7 @@ msgstr "切換會議相機"
 msgid "Toggle Conference Microphone"
 msgstr "切換會議麥克風"
 
-#: lib/retro_hex_chat/channels/server.ex:1387
+#: lib/retro_hex_chat/channels/server.ex:1439
 #: lib/retro_hex_chat/chat/service.ex:353
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -533,18 +533,18 @@ msgid "%{count} day"
 msgid_plural "%{count} days"
 msgstr[0] "%{count}天"
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:61
+#: lib/retro_hex_chat/chat/time_formatter.ex:80
 #, elixir-autogen, elixir-format
 msgid "%{span} ago"
 msgstr "%{span}前"
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:64
+#: lib/retro_hex_chat/chat/time_formatter.ex:84
 #, elixir-autogen, elixir-format
 msgid "%{count} hour"
 msgid_plural "%{count} hours"
 msgstr[0] "%{count}小時"
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:67
+#: lib/retro_hex_chat/chat/time_formatter.ex:87
 #, elixir-autogen, elixir-format
 msgid "%{count} minute"
 msgid_plural "%{count} minutes"
@@ -607,3 +607,18 @@ msgstr "無法儲存該變更。"
 #, elixir-autogen, elixir-format
 msgid "That channel is not registered."
 msgstr "該頻道未註冊。"
+
+#: lib/retro_hex_chat/jobs/event_reminder_worker.ex:102
+#, elixir-autogen, elixir-format
+msgid "%{title} is about to start."
+msgstr "%{title} 即將開始。"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:81
+#, elixir-autogen, elixir-format
+msgid "in %{span}"
+msgstr "%{span}後"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:74
+#, elixir-autogen, elixir-format
+msgid "now"
+msgstr "現在"

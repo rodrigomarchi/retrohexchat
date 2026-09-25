@@ -22,7 +22,8 @@ defmodule RetroHexChat.Channels.Server do
     Pins,
     Policy,
     Queries,
-    Registry
+    Registry,
+    ScheduledEvents
   }
 
   alias RetroHexChat.Chat
@@ -236,6 +237,32 @@ defmodule RetroHexChat.Channels.Server do
       [:retro_hex_chat, :channels, :archive, :set],
       %{"chat.channel" => channel_name},
       fn -> GenServer.call(via(channel_name), {:set_public_archive, nickname, enabled?}) end
+    )
+  end
+
+  @doc """
+  Puts something on the channel's calendar and tells the room.
+
+  Requires operator privilege, checked here rather than at the command: whether
+  somebody may schedule is a question about this channel right now.
+  """
+  @spec schedule_event(String.t(), String.t(), map()) ::
+          {:ok, map()} | {:error, String.t()}
+  def schedule_event(channel_name, nickname, attrs) do
+    Observability.span(
+      [:retro_hex_chat, :channels, :events, :schedule],
+      %{"chat.channel" => channel_name},
+      fn -> GenServer.call(via(channel_name), {:schedule_event, nickname, attrs}) end
+    )
+  end
+
+  @doc "Calls off something on the calendar. The operator who runs the channel, or whoever scheduled it."
+  @spec cancel_event(String.t(), String.t(), integer()) :: {:ok, map()} | {:error, String.t()}
+  def cancel_event(channel_name, nickname, event_id) do
+    Observability.span(
+      [:retro_hex_chat, :channels, :events, :cancel],
+      %{"chat.channel" => channel_name},
+      fn -> GenServer.call(via(channel_name), {:cancel_event, nickname, event_id}) end
     )
   end
 
@@ -560,6 +587,31 @@ defmodule RetroHexChat.Channels.Server do
       reply(:ok, state)
     else
       {:error, _reason} = error -> reply(error, state)
+    end
+  end
+
+  def handle_call({:schedule_event, nickname, attrs}, _from, state) do
+    with :ok <- Policy.can_schedule_event?(state.membership, nickname),
+         {:ok, event} <- ScheduledEvents.create(state.name, nickname, attrs) do
+      event = announce_event(state, nickname, event)
+      card = ScheduledEvents.card(event)
+
+      broadcast(state.name, {:event_scheduled, card})
+      reply({:ok, card}, state)
+    else
+      {:error, reason} -> reply({:error, reason}, state)
+    end
+  end
+
+  def handle_call({:cancel_event, nickname, event_id}, _from, state) do
+    with :ok <- may_cancel_event?(state, nickname, event_id),
+         {:ok, event} <- ScheduledEvents.cancel(event_id, cancel_actor(event_id, nickname)) do
+      card = ScheduledEvents.card(event)
+
+      broadcast(state.name, {:event_cancelled, card})
+      reply({:ok, card}, state)
+    else
+      {:error, reason} -> reply({:error, reason}, state)
     end
   end
 
@@ -1507,6 +1559,58 @@ defmodule RetroHexChat.Channels.Server do
   # The founder and nobody else. An operator can moderate the room; deciding
   # that what is said in it becomes public is a different kind of decision, and
   # it belongs to whoever answers for the channel.
+  # The room hears about it as an ordinary line from whoever scheduled it, and
+  # the event points back at that line so the card can be drawn under it. A line
+  # that could not be written is not worth failing the event over: the calendar
+  # entry is the record, the announcement is the courtesy.
+  defp announce_event(state, nickname, event) do
+    content =
+      dgettext("channels", "%{nickname} scheduled: %{title}",
+        nickname: nickname,
+        title: event.title
+      )
+
+    case do_handle_send_message(nickname, content, :system, [], state) do
+      {:reply, {:ok, message_id}, _state} when is_integer(message_id) ->
+        case ScheduledEvents.attach_announcement(event, message_id) do
+          {:ok, attached} -> attached
+          {:error, _reason} -> event
+        end
+
+      _other ->
+        event
+    end
+  end
+
+  # Either the operator who runs the room or the person who put it there. The
+  # domain enforces the second; this is the first.
+  defp may_cancel_event?(state, nickname, event_id) do
+    case ScheduledEvents.get(event_id) do
+      nil ->
+        {:error, dgettext("channels", "That event could not be found.")}
+
+      %{channel_name: channel} when channel != state.name ->
+        {:error, dgettext("channels", "That event belongs to another channel.")}
+
+      %{created_by: ^nickname} ->
+        :ok
+
+      _other ->
+        Policy.can_schedule_event?(state.membership, nickname)
+    end
+  end
+
+  # `ScheduledEvents.cancel/2` only lets the creator through, and an operator
+  # calling off somebody else's event has already been allowed by the channel —
+  # so the domain is told the creator's name, and the channel keeps the rule
+  # about who may ask.
+  defp cancel_actor(event_id, nickname) do
+    case ScheduledEvents.get(event_id) do
+      %{created_by: created_by} -> created_by
+      nil -> nickname
+    end
+  end
+
   defp founder?(channel_name, nickname) do
     if ChanServ.viewer_role(channel_name, nickname) == "founder" do
       :ok

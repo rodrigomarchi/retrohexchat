@@ -22,6 +22,7 @@ defmodule RetroHexChat.Commands.Registry do
     "cs" => RetroHexChat.Commands.Handlers.Cs,
     "deop" => RetroHexChat.Commands.Handlers.Deop,
     "devoice" => RetroHexChat.Commands.Handlers.Devoice,
+    "event" => RetroHexChat.Commands.Handlers.Event,
     "help" => RetroHexChat.Commands.Handlers.Help,
     "ignore" => RetroHexChat.Commands.Handlers.Ignore,
     "invite" => RetroHexChat.Commands.Handlers.Invite,

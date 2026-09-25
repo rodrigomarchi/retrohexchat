@@ -499,7 +499,7 @@ msgstr "Włączenie / wyłączenie kamery konferencyjnej"
 msgid "Toggle Conference Microphone"
 msgstr "Włączenie / wyłączenie mikrofonu konferencji"
 
-#: lib/retro_hex_chat/channels/server.ex:1387
+#: lib/retro_hex_chat/channels/server.ex:1439
 #: lib/retro_hex_chat/chat/service.ex:353
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
@@ -540,12 +540,12 @@ msgstr[0] "%{count} dzień"
 msgstr[1] "%{count} dni"
 msgstr[2] "%{count} dni"
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:61
+#: lib/retro_hex_chat/chat/time_formatter.ex:80
 #, elixir-autogen, elixir-format
 msgid "%{span} ago"
 msgstr "%{span} temu"
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:64
+#: lib/retro_hex_chat/chat/time_formatter.ex:84
 #, elixir-autogen, elixir-format
 msgid "%{count} hour"
 msgid_plural "%{count} hours"
@@ -553,7 +553,7 @@ msgstr[0] "%{count} godzina"
 msgstr[1] "%{count} godziny"
 msgstr[2] "%{count} godzin"
 
-#: lib/retro_hex_chat/chat/time_formatter.ex:67
+#: lib/retro_hex_chat/chat/time_formatter.ex:87
 #, elixir-autogen, elixir-format
 msgid "%{count} minute"
 msgid_plural "%{count} minutes"
@@ -618,3 +618,18 @@ msgstr "Nie udało się zapisać tej zmiany."
 #, elixir-autogen, elixir-format
 msgid "That channel is not registered."
 msgstr "Ten kanał nie jest zarejestrowany."
+
+#: lib/retro_hex_chat/jobs/event_reminder_worker.ex:102
+#, elixir-autogen, elixir-format
+msgid "%{title} is about to start."
+msgstr "%{title} zaraz się zacznie."
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:81
+#, elixir-autogen, elixir-format
+msgid "in %{span}"
+msgstr "za %{span}"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:74
+#, elixir-autogen, elixir-format
+msgid "now"
+msgstr "teraz"

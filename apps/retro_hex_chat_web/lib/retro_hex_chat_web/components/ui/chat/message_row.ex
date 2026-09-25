@@ -17,12 +17,14 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   import Phoenix.HTML, only: [raw: 1]
   import RetroHexChatWeb.Components.UI.ChatMessage
   import RetroHexChatWeb.Components.UI.ChatAttachment
+  import RetroHexChatWeb.Components.UI.EventCard
   import RetroHexChatWeb.Components.UI.InlineHelpCard
   import RetroHexChatWeb.Components.UI.MessageIndicators
   import RetroHexChatWeb.Components.UI.MessageReactions
   import RetroHexChatWeb.Components.UI.MessageReplyBlock
   import RetroHexChatWeb.Components.UI.ShareMessageCard
 
+  alias RetroHexChat.Chat.TimeFormatter
   alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.App.Paths
@@ -73,6 +75,18 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           layout={if Map.get(@msg, :share_card), do: "stacked", else: "auto"}
         >
           * {raw(formatted_content(@msg, @strip_formatting))}
+          <%!-- What the channel agreed to do, under the line that said so. The
+                same reasoning as the session card: the line exists because of
+                the thing, and a line without it is an announcement of nothing. --%>
+          <.event_card
+            card={Map.get(@msg, :event_card)}
+            when_text={ChatHelpers.format_datetime(event_start(@msg), @timezone)}
+            relative_text={event_relative(@msg)}
+            attending={Map.get(@msg, :event_attending, false)}
+            on_attend="event_attend"
+            on_unattend="event_unattend"
+            surface_path={event_surface_path(@msg)}
+          />
           <%!-- A session's door is a system line: the server writes the room's
                 address into the channel, and the card under it is the whole
                 reason that line exists. Attaching the card without drawing it
@@ -268,6 +282,39 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   end
 
   defp help_url(topic_id), do: "/chat/help/#{topic_id}"
+
+  defp event_start(msg) do
+    case Map.get(msg, :event_card) do
+      %{starts_at: starts_at} -> starts_at
+      _no_card -> nil
+    end
+  end
+
+  # Both readings of the instant come from the same place, so a card can never
+  # show a clock time and a countdown that disagree.
+  defp event_relative(msg) do
+    case event_start(msg) do
+      nil -> nil
+      starts_at -> TimeFormatter.format_until(starts_at)
+    end
+  end
+
+  # An event points at a place only when this product has one to open. A game
+  # id names a game; "space" means the channel's own place, which the toolbar
+  # already knows how to enter, so the card does not offer a second door to it.
+  defp event_surface_path(msg) do
+    case Map.get(msg, :event_card) do
+      %{surface_hint: hint} when is_binary(hint) and hint != "" -> game_path(hint)
+      _no_hint -> nil
+    end
+  end
+
+  defp game_path(game_id) do
+    case Catalog.get_game(game_id) do
+      {:ok, game} -> Paths.play_path(game.id)
+      {:error, :not_found} -> nil
+    end
+  end
 
   # Resolved here rather than in the viewport because the catalogue read is
   # cheap and pure, and the card is the only thing that wants it.
