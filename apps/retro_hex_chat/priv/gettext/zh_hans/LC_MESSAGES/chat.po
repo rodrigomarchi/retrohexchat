@@ -500,12 +500,12 @@ msgstr "切换会议麦克风"
 msgid "Attachment could not be attached to the message"
 msgstr "信件中无法附加附件"
 
-#: lib/retro_hex_chat/chat/attachments.ex:263
+#: lib/retro_hex_chat/chat/attachments.ex:274
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "附件超过 %{mb} MB 限制"
 
-#: lib/retro_hex_chat/chat/attachments.ex:258
+#: lib/retro_hex_chat/chat/attachments.ex:269
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "附件为空"
@@ -515,9 +515,9 @@ msgstr "附件为空"
 msgid "Unsupported message format"
 msgstr "不支持的消息格式"
 
-#: lib/retro_hex_chat/chat/attachments.ex:270
-#: lib/retro_hex_chat/chat/attachments.ex:351
-#: lib/retro_hex_chat/chat/attachments.ex:356
+#: lib/retro_hex_chat/chat/attachments.ex:281
+#: lib/retro_hex_chat/chat/attachments.ex:362
+#: lib/retro_hex_chat/chat/attachments.ex:367
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "文件"
@@ -622,3 +622,23 @@ msgstr "%{span}后"
 #, elixir-autogen, elixir-format
 msgid "now"
 msgstr "现在"
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:193
+#, elixir-autogen, elixir-format
+msgid "An emoji name is 2 to 32 characters: lower-case letters, digits and underscores."
+msgstr "表情名称为 2 到 32 个字符：小写字母、数字和下划线。"
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:199
+#, elixir-autogen, elixir-format
+msgid "That emoji could not be saved."
+msgstr "无法保存该表情。"
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:190
+#, elixir-autogen, elixir-format
+msgid "This server already answers to that name."
+msgstr "这台服务器已经响应这个名称了。"
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:182
+#, elixir-autogen, elixir-format
+msgid "This server already has %{count} emoji."
+msgstr "这台服务器已经有 %{count} 个表情了。"

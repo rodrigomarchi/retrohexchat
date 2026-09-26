@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **232 spec files** under `e2e/tests/`.
-- **488 Playwright `test()` cases**.
-- **483 documented flows**, 482 done, 1 not done.
+- **233 spec files** under `e2e/tests/`.
+- **489 Playwright `test()` cases**.
+- **484 documented flows**, 483 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -601,6 +601,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | U16 | Channel Central topic/mode edits stay in sync with slash command output after dialog close/reopen (features P2) | `tests/chat-channel-central-sync.spec.ts` | done |
 | U17 | The Sounds window carries a Notify box per event and says what the browser answered about permission | `tests/chat-sound-settings.spec.ts` | done |
 | U18 | The Sounds window offers one switch for notifications with the chat closed, and remembers it per browser | `tests/chat-sound-settings.spec.ts` | done |
+| U19 | An administrator adds a server emoji from its window, and everybody writing :name: sees the picture while an unknown name stays text (features P2) | `tests/chat-server-emoji.spec.ts` | done |
 
 ### V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
 

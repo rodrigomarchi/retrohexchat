@@ -201,7 +201,7 @@ msgstr[0] "%{count} пользователь"
 msgstr[1] "%{count} пользователи"
 msgstr[2] "%{count} пользователи"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:605
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:612
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
@@ -649,7 +649,7 @@ msgstr "Платформа чата в реальном времени с рет
 msgid "Access hierarchy: Owner > SOP > AOP > VOP"
 msgstr "Иерархия доступа: владелец > SOP > AOP > VOP"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:172
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:204
 #, elixir-autogen, elixir-format
 msgid "Activities"
 msgstr "Мероприятия"
@@ -710,7 +710,7 @@ msgstr "Лимит рекурсии Alias (максимум 5 уровней)"
 msgid "An item with that label already exists"
 msgstr "Товар с такой этикеткой уже существует"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:169
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:201
 #, elixir-autogen, elixir-format
 msgid "Animals & Nature"
 msgstr "Животные и природа"
@@ -806,13 +806,13 @@ msgstr "Смелый (Ctrl+Shift+B)"
 msgid "Bot"
 msgstr "Бот"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:376
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:383
 #, elixir-autogen, elixir-format
 msgid "Bot already in %{channel}."
 msgstr "Бот уже в %{channel}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:67
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/bots.ex:27
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:68
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/bots.ex:39
 #, elixir-autogen, elixir-format
 msgid "Bot management is restricted to server administrators."
 msgstr "Управление ботами ограничено администраторами серверов."
@@ -964,7 +964,7 @@ msgstr "Цвет (Ctrl+Shift+D)"
 msgid "Colors"
 msgstr "Цвета"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:276
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:283
 #, elixir-autogen, elixir-format
 msgid "Command '%{trigger}' already exists."
 msgstr "Командовать%{trigger}Уже существует."
@@ -1118,7 +1118,7 @@ msgstr "Готово"
 msgid "Edited at %{timestamp}"
 msgstr "Редактировать на %{timestamp}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:73
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:77
 #, elixir-autogen, elixir-format
 msgid "Emoji"
 msgstr "Эмодзи"
@@ -1183,7 +1183,7 @@ msgstr "Не удалось добавить команду: %{reason}"
 msgid "Failed to send. Click to retry"
 msgstr "Не удалось отправить. Click to retry"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:493
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:500
 #, elixir-autogen, elixir-format
 msgid "Failed to update capability."
 msgstr "Не удалось обновить возможности."
@@ -1198,12 +1198,12 @@ msgstr "Найти"
 msgid "Find text..."
 msgstr "Найдите текст..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:166
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:198
 #, elixir-autogen, elixir-format
 msgid "Food"
 msgstr "Еда"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:170
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:202
 #, elixir-autogen, elixir-format
 msgid "Food & Drink"
 msgstr "Еда и напитки"
@@ -1479,8 +1479,8 @@ msgstr "Максимум 10 правил автоответа"
 msgid "Menu is full (max 10 items per type)"
 msgstr "Меню заполнено (максимум 10 пунктов на тип)"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:147
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:152
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:189
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:194
 #, elixir-autogen, elixir-format
 msgid "Message to %{target} — / for commands"
 msgstr "Сообщение %{target} - для команд"
@@ -1515,7 +1515,7 @@ msgstr "Мои упоминания"
 msgid "Name"
 msgstr "Имя"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:165
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:197
 #, elixir-autogen, elixir-format
 msgid "Nature"
 msgstr "Природа"
@@ -1622,7 +1622,7 @@ msgstr "Список уведомлений заполнен (максимум 5
 msgid "OS"
 msgstr "ОСО"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:173
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:205
 #, elixir-autogen, elixir-format
 msgid "Objects"
 msgstr "Объекты"
@@ -1668,12 +1668,12 @@ msgstr "Оранжевый"
 msgid "Owner"
 msgstr "владелец"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:164
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:196
 #, elixir-autogen, elixir-format
 msgid "People"
 msgstr "Люди"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:168
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:200
 #, elixir-autogen, elixir-format
 msgid "People & Body"
 msgstr "Люди и тело"
@@ -1803,7 +1803,7 @@ msgid "Reset (Ctrl+Shift+X)"
 msgstr "Перезагрузка (Ctrl+Shift+X)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:988
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1085
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1102
 #, elixir-autogen
 msgid "RetroHexChat"
 msgstr "RetroHexChat"
@@ -1840,7 +1840,7 @@ msgstr "Сохранить список URL"
 msgid "Screen"
 msgstr "экран"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:175
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:207
 #, elixir-autogen, elixir-format
 msgid "Search Results"
 msgstr "Результаты поиска"
@@ -1850,7 +1850,7 @@ msgstr "Результаты поиска"
 msgid "Search chat history"
 msgstr "История поискового чата"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:103
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:107
 #, elixir-autogen, elixir-format
 msgid "Search emoji..."
 msgstr "Поиск смайликов..."
@@ -1904,12 +1904,12 @@ msgstr "Установить Nick Color"
 msgid "Silver"
 msgstr "Серебро"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:163
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:195
 #, elixir-autogen, elixir-format
 msgid "Smileys"
 msgstr "Смайлики"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:167
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:199
 #, elixir-autogen, elixir-format
 msgid "Smileys & Emotion"
 msgstr "Смайлики и эмоции"
@@ -1927,7 +1927,7 @@ msgstr "Источник и место назначения одинаковы"
 msgid "Status"
 msgstr "Состояние"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:174
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:206
 #, elixir-autogen, elixir-format
 msgid "Symbols"
 msgstr "Символы"
@@ -1937,7 +1937,7 @@ msgstr "Символы"
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:104
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:91
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:103
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:389
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:393
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "Система"
@@ -2000,7 +2000,7 @@ msgstr "Тема для %{channel}: %{topic}"
 msgid "Topic set: %{topic}"
 msgstr "Тема: %{topic}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:171
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:203
 #, elixir-autogen, elixir-format
 msgid "Travel & Places"
 msgstr "Путешествия и места"
@@ -2015,8 +2015,8 @@ msgstr "Тип /help чансер или /help Канал-разрешение �
 msgid "Type /help nickserv for full details."
 msgstr "Тип /help Никсерв для подробностей."
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:144
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:157
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:186
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:199
 #, elixir-autogen, elixir-format
 msgid "Type a command — / for list"
 msgstr "Введите команду - / для списка"
@@ -2260,47 +2260,47 @@ msgstr "Роль сервера была изменена на: %{role}"
 msgid "[Auto-Whois] %{nickname}:"
 msgstr "[Авто-Куис] %{nickname}:"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:552
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:559
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' %{action}."
 msgstr "[Служба Бота]%{name}' %{action}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:199
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:206
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' created."
 msgstr "[Служба Бота]%{name}Создан."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:143
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:150
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' destroyed."
 msgstr "[Служба Бота]%{name}Уничтожен."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:369
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:376
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' joined %{channel}."
 msgstr "[Служба Бота]%{name}присоединяется %{channel}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:237
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:244
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' left %{channel}."
 msgstr "[Служба Бота]%{name}слева %{channel}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:486
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:493
 #, elixir-autogen, elixir-format
 msgid "[BotService] Capability '%{capability}' %{action}."
 msgstr "[БотСервис] Способность%{capability}' %{action}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:270
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:277
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' added."
 msgstr "[Бот-Сервис] Командование%{trigger}Добавлено."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:295
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:302
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed."
 msgstr "[Бот-Сервис] Командование%{trigger}Убрали."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:206
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:213
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to create bot '%{name}': %{message}"
 msgstr "[Бот-Сервис] Не удалось создать бота%{name}': %{message}"
@@ -2348,20 +2348,20 @@ msgstr "[Сообщение удалено]"
 msgid "all"
 msgstr "все"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:137
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:169
 #, elixir-autogen, elixir-format
 msgid "click to insert"
 msgstr "Нажмите, чтобы вставить"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:480
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:547
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:487
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:554
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:34
 #, elixir-autogen, elixir-format
 msgid "disabled"
 msgstr "инвалид"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:481
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:547
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:488
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:554
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:33
 #, elixir-autogen, elixir-format
 msgid "enabled"
@@ -2373,7 +2373,7 @@ msgstr "включенный"
 msgid "expands to itself and will hit the recursion limit"
 msgstr "Расширяется до самого себя и достигнет предела рекурсии"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:138
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:170
 #, elixir-autogen, elixir-format
 msgid "hover to preview"
 msgstr "Для предварительного просмотра"
@@ -2507,7 +2507,7 @@ msgstr "Отменить уведомление"
 msgid "Channel Central"
 msgstr "Центральный канал"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:673
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:690
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr "Центральный канал: %{channel}"
@@ -2598,7 +2598,7 @@ msgstr "Введите новый ник."
 msgid "Error"
 msgstr "Ошибка"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:559
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:566
 #, elixir-autogen, elixir-format
 msgid "Failed to update bot status."
 msgstr "Не удалось обновить статус бота."
@@ -2751,7 +2751,7 @@ msgstr "Зарегистрировать этот канал могут толь
 msgid "Only the founder can drop a channel."
 msgstr "Только основатель может отключить канал."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1086
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1103
 #, elixir-autogen, elixir-format
 msgid "Opening chat..."
 msgstr "Открытие чата..."
@@ -3485,24 +3485,24 @@ msgstr "Форматирование текста"
 msgid "User lookup"
 msgstr "Поиск пользователей"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:444
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:460
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:451
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:467
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{reason}"
 msgstr "[BotService] %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:428
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:449
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:435
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:456
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot not found."
 msgstr "[Бот-Сервис] Бот не найден."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:437
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:444
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feed added: %{url} → %{channel}"
 msgstr "[BotService] Добавлено: %{url} → %{channel}"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:457
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:464
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feed removed."
 msgstr "Питание удалено."
@@ -3798,42 +3798,42 @@ msgstr "Вы"
 msgid "file"
 msgstr "файл"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:394
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:398
 #, elixir-autogen, elixir-format
 msgid "App Info"
 msgstr "App Info"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:414
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:418
 #, elixir-autogen, elixir-format
 msgid "Applications"
 msgstr "Приложения"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:444
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:448
 #, elixir-autogen, elixir-format
 msgid "Database Stats"
 msgstr "Статистика баз данных"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:419
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:423
 #, elixir-autogen, elixir-format
 msgid "ETS Tables"
 msgstr "Таблицы ETS"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:449
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:453
 #, elixir-autogen, elixir-format
 msgid "Live Log"
 msgstr "Live Logog"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:434
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:438
 #, elixir-autogen, elixir-format
 msgid "Memory Allocators"
 msgstr "Распределители памяти"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:399
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:403
 #, elixir-autogen, elixir-format
 msgid "Metrics"
 msgstr "Метрики"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:439
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:443
 #, elixir-autogen, elixir-format
 msgid "OS Data"
 msgstr "OS Data Data"
@@ -3844,17 +3844,17 @@ msgstr "OS Data Data"
 msgid "P2P action failed: %{reason}"
 msgstr "P2P не удалось: %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:424
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:428
 #, elixir-autogen, elixir-format
 msgid "Ports"
 msgstr "Порты"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:409
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:413
 #, elixir-autogen, elixir-format
 msgid "Processes"
 msgstr "Процессы"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:429
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:433
 #, elixir-autogen, elixir-format
 msgid "Sockets"
 msgstr "Сокеты"
@@ -4256,3 +4256,18 @@ msgstr "Где"
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "Портреты персонажей"
+
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:381
+#, elixir-autogen, elixir-format
+msgid "Server Emoji"
+msgstr "Эмодзи сервера"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/bots.ex:25
+#, elixir-autogen, elixir-format
+msgid "Server emoji are managed by administrators."
+msgstr "Эмодзи сервера управляются администраторами."
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:124
+#, elixir-autogen, elixir-format
+msgid "This server"
+msgstr "Этот сервер"

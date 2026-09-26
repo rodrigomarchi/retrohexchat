@@ -357,6 +357,19 @@
   }
 }
 
+/* ── Server emoji ───────────────────────────────────────────────────────────
+   A picture standing in for a word, so it sits on the text baseline and takes
+   the line's own height rather than a size of its own: an emoji that made every
+   line it appears in taller would be a conversation that shifts as it loads. */
+.chat-emoji {
+  display: inline-block;
+  vertical-align: text-bottom;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
 /* ── Events ─────────────────────────────────────────────────────────────────
    The card hangs off a system line, and a system line is grey italic — which
    is right for "the room said something about itself" and wrong for the object

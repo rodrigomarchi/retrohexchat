@@ -505,12 +505,12 @@ msgstr "Jungkitkan Mikrofon Konferensi"
 msgid "Attachment could not be attached to the message"
 msgstr "Lampiran tidak dapat dicantolkan ke pesan"
 
-#: lib/retro_hex_chat/chat/attachments.ex:263
+#: lib/retro_hex_chat/chat/attachments.ex:274
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "Lampiran melebihi batas %{mb} MB"
 
-#: lib/retro_hex_chat/chat/attachments.ex:258
+#: lib/retro_hex_chat/chat/attachments.ex:269
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "Lampiran kosong"
@@ -520,9 +520,9 @@ msgstr "Lampiran kosong"
 msgid "Unsupported message format"
 msgstr "Format pesan tidak didukung"
 
-#: lib/retro_hex_chat/chat/attachments.ex:270
-#: lib/retro_hex_chat/chat/attachments.ex:351
-#: lib/retro_hex_chat/chat/attachments.ex:356
+#: lib/retro_hex_chat/chat/attachments.ex:281
+#: lib/retro_hex_chat/chat/attachments.ex:362
+#: lib/retro_hex_chat/chat/attachments.ex:367
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "berkas"
@@ -627,3 +627,23 @@ msgstr "dalam %{span}"
 #, elixir-autogen, elixir-format
 msgid "now"
 msgstr "sekarang"
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:193
+#, elixir-autogen, elixir-format
+msgid "An emoji name is 2 to 32 characters: lower-case letters, digits and underscores."
+msgstr "Nama emoji terdiri dari 2 sampai 32 karakter: huruf kecil, angka dan garis bawah."
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:199
+#, elixir-autogen, elixir-format
+msgid "That emoji could not be saved."
+msgstr "Emoji itu tidak dapat disimpan."
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:190
+#, elixir-autogen, elixir-format
+msgid "This server already answers to that name."
+msgstr "Server ini sudah menjawab nama itu."
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:182
+#, elixir-autogen, elixir-format
+msgid "This server already has %{count} emoji."
+msgstr "Server ini sudah punya %{count} emoji."

@@ -328,6 +328,10 @@ defmodule RetroHexChat.Chat.Queries do
     |> Repo.insert()
   end
 
+  @doc "One uploaded file by id, or nil."
+  @spec get_uploaded_file(integer()) :: UploadedFile.t() | nil
+  def get_uploaded_file(id), do: Repo.get(UploadedFile, id)
+
   @spec list_orphan_uploaded_files(DateTime.t(), pos_integer()) :: [UploadedFile.t()]
   def list_orphan_uploaded_files(%DateTime{} = cutoff, limit) when limit > 0 do
     UploadedFile

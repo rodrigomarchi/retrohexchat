@@ -500,12 +500,12 @@ msgstr "トグル会議マイク"
 msgid "Attachment could not be attached to the message"
 msgstr "添付ファイルがメッセージに添付できません"
 
-#: lib/retro_hex_chat/chat/attachments.ex:263
+#: lib/retro_hex_chat/chat/attachments.ex:274
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "付属品は%{mb} MBの限界を超過します"
 
-#: lib/retro_hex_chat/chat/attachments.ex:258
+#: lib/retro_hex_chat/chat/attachments.ex:269
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "付属品は空です"
@@ -515,9 +515,9 @@ msgstr "付属品は空です"
 msgid "Unsupported message format"
 msgstr "サポートされていないメッセージ形式"
 
-#: lib/retro_hex_chat/chat/attachments.ex:270
-#: lib/retro_hex_chat/chat/attachments.ex:351
-#: lib/retro_hex_chat/chat/attachments.ex:356
+#: lib/retro_hex_chat/chat/attachments.ex:281
+#: lib/retro_hex_chat/chat/attachments.ex:362
+#: lib/retro_hex_chat/chat/attachments.ex:367
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "ファイル"
@@ -622,3 +622,23 @@ msgstr "%{span}後"
 #, elixir-autogen, elixir-format
 msgid "now"
 msgstr "今"
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:193
+#, elixir-autogen, elixir-format
+msgid "An emoji name is 2 to 32 characters: lower-case letters, digits and underscores."
+msgstr "絵文字の名前は 2〜32 文字です。小文字、数字、アンダースコアが使えます。"
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:199
+#, elixir-autogen, elixir-format
+msgid "That emoji could not be saved."
+msgstr "その絵文字は保存できませんでした。"
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:190
+#, elixir-autogen, elixir-format
+msgid "This server already answers to that name."
+msgstr "このサーバーはすでにその名前に応えています。"
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:182
+#, elixir-autogen, elixir-format
+msgid "This server already has %{count} emoji."
+msgstr "このサーバーにはすでに %{count} 個の絵文字があります。"

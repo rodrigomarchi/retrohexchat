@@ -3123,6 +3123,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:76
@@ -6400,6 +6401,7 @@ msgid "Click your own reaction again to take it back"
 msgstr "Klik nogmaals op je eigen reactie om die terug te nemen"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Emoji Picker"
 msgstr "Emoji Picker"
@@ -6818,3 +6820,43 @@ msgstr "Beeld ▸ Personageportretten, in de menubalk of het Startmenu, zet ze u
 #, elixir-autogen, elixir-format
 msgid "Who Has One"
 msgstr "Wie er een heeft"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A server can teach itself pictures and answer to them by name. Write :shrug: and everybody on this server sees the picture; everybody elsewhere never does, because the set belongs to the server."
+msgstr "Een server kan zichzelf plaatjes aanleren en er bij naam op reageren. Schrijf :shrug: en iedereen op deze server ziet het plaatje; elders nooit, want de verzameling hoort bij de server."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Adding One"
+msgstr "Er een toevoegen"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Administrators only, from Admin ▸ Server Emoji. Choose a picture, give it a name, and it is available to everybody here at once. A server holds up to 100, and removing one frees its name again."
+msgstr "Alleen beheerders, via Beheer ▸ Server-emoji. Kies een afbeelding, geef die een naam, en ze is meteen voor iedereen hier beschikbaar. Een server houdt er tot 100, en er een verwijderen maakt de naam weer vrij."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Names"
+msgstr "Namen"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Reactions"
+msgstr "Reacties"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Two to thirty-two characters: lower-case letters, digits and underscores. That is what somebody can type between two colons without thinking about it, and a name that cannot be typed is an emoji that only half exists."
+msgstr "Twee tot tweeëndertig tekens: kleine letters, cijfers en liggende streepjes. Dat is wat iemand zonder nadenken tussen twee dubbele punten typt, en een naam die je niet kunt typen is een emoji die maar half bestaat."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Type the name between two colons, or pick it from the top of the emoji picker, where this server's own are listed above the ones everybody has. A name this server does not have stays exactly as you typed it — it never becomes a broken picture."
+msgstr "Typ de naam tussen twee dubbele punten, of kies hem bovenaan de emojikiezer, waar de eigen emoji van deze server boven die van iedereen staan. Een naam die deze server niet heeft blijft precies zoals je hem typte — hij wordt nooit een kapot plaatje."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Writing One"
+msgstr "Er een schrijven"

@@ -191,7 +191,7 @@ msgid "%{count} user"
 msgid_plural "%{count} users"
 msgstr[0] "Pengguna %{count}"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:605
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:612
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
@@ -639,7 +639,7 @@ msgstr "Sebuah platform obrolan real time dengan tampilan retro dan rasakan."
 msgid "Access hierarchy: Owner > SOP > AOP > VOP"
 msgstr "Hirarki akses: Pemilik > SOP > AOP > VOP"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:172
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:204
 #, elixir-autogen, elixir-format
 msgid "Activities"
 msgstr "Aktivitas"
@@ -700,7 +700,7 @@ msgstr "Batas rekursi Alias dicapai (tingkat maksimal 5)"
 msgid "An item with that label already exists"
 msgstr "Butir dengan label itu sudah ada"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:169
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:201
 #, elixir-autogen, elixir-format
 msgid "Animals & Nature"
 msgstr "Hewan & Alam"
@@ -796,13 +796,13 @@ msgstr "Tebal (Ctrl + Shift + B)"
 msgid "Bot"
 msgstr "Bot"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:376
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:383
 #, elixir-autogen, elixir-format
 msgid "Bot already in %{channel}."
 msgstr "Bot sudah di %{channel}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:67
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/bots.ex:27
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:68
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/bots.ex:39
 #, elixir-autogen, elixir-format
 msgid "Bot management is restricted to server administrators."
 msgstr "Manajemen Bot dibatasi untuk administrator server."
@@ -954,7 +954,7 @@ msgstr "Warna (Ctrl + Shift + D)"
 msgid "Colors"
 msgstr "Warna"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:276
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:283
 #, elixir-autogen, elixir-format
 msgid "Command '%{trigger}' already exists."
 msgstr "Perintah '%{trigger}' sudah ada."
@@ -1108,7 +1108,7 @@ msgstr "Selesai"
 msgid "Edited at %{timestamp}"
 msgstr "Diedit pada %{timestamp}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:73
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:77
 #, elixir-autogen, elixir-format
 msgid "Emoji"
 msgstr "Emoji"
@@ -1173,7 +1173,7 @@ msgstr "Gagal menambahkan perintah perform: %{reason}"
 msgid "Failed to send. Click to retry"
 msgstr "Gagal mengirim. Klik untuk mencoba lagi"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:493
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:500
 #, elixir-autogen, elixir-format
 msgid "Failed to update capability."
 msgstr "Gagal memperbarui kemampuan."
@@ -1188,12 +1188,12 @@ msgstr "Temukan"
 msgid "Find text..."
 msgstr "Cari teks..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:166
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:198
 #, elixir-autogen, elixir-format
 msgid "Food"
 msgstr "Makanan"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:170
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:202
 #, elixir-autogen, elixir-format
 msgid "Food & Drink"
 msgstr "Makanan & Minum"
@@ -1468,8 +1468,8 @@ msgstr "Maksimum 10 aturan auto- respon"
 msgid "Menu is full (max 10 items per type)"
 msgstr "Menu penuh (maksimal 10 butir per tipe)"
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:147
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:152
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:189
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:194
 #, elixir-autogen, elixir-format
 msgid "Message to %{target} — / for commands"
 msgstr "Pesan ke %{target} - / untuk perintah"
@@ -1504,7 +1504,7 @@ msgstr "Saya menyebutkan"
 msgid "Name"
 msgstr "Nama"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:165
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:197
 #, elixir-autogen, elixir-format
 msgid "Nature"
 msgstr "Alam"
@@ -1611,7 +1611,7 @@ msgstr "Daftar pemberitahuan penuh (maksimal 50 entri)"
 msgid "OS"
 msgstr "OS"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:173
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:205
 #, elixir-autogen, elixir-format
 msgid "Objects"
 msgstr "Obyek"
@@ -1657,12 +1657,12 @@ msgstr "Oranye"
 msgid "Owner"
 msgstr "Pemilik"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:164
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:196
 #, elixir-autogen, elixir-format
 msgid "People"
 msgstr "Orang"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:168
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:200
 #, elixir-autogen, elixir-format
 msgid "People & Body"
 msgstr "Orang & Tubuh"
@@ -1793,7 +1793,7 @@ msgid "Reset (Ctrl+Shift+X)"
 msgstr "Reset (Ctrl + Shift + X)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:988
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1085
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1102
 #, elixir-autogen
 msgid "RetroHexChat"
 msgstr "RetroHexChat"
@@ -1830,7 +1830,7 @@ msgstr "Simpan ke Daftar URL"
 msgid "Screen"
 msgstr "Layar"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:175
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:207
 #, elixir-autogen, elixir-format
 msgid "Search Results"
 msgstr "Hasil Pencarian"
@@ -1840,7 +1840,7 @@ msgstr "Hasil Pencarian"
 msgid "Search chat history"
 msgstr "Cari riwayat obrolan"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:103
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:107
 #, elixir-autogen, elixir-format
 msgid "Search emoji..."
 msgstr "Cari emoji..."
@@ -1894,12 +1894,12 @@ msgstr "Atur Warna Nick"
 msgid "Silver"
 msgstr "Perak"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:163
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:195
 #, elixir-autogen, elixir-format
 msgid "Smileys"
 msgstr "Senyum"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:167
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:199
 #, elixir-autogen, elixir-format
 msgid "Smileys & Emotion"
 msgstr "Senyum & Emosi"
@@ -1917,7 +1917,7 @@ msgstr "Sumber dan tujuan sama"
 msgid "Status"
 msgstr "Status"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:174
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:206
 #, elixir-autogen, elixir-format
 msgid "Symbols"
 msgstr "Simbol"
@@ -1927,7 +1927,7 @@ msgstr "Simbol"
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:104
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:91
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:103
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:389
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:393
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "Sistem"
@@ -1988,7 +1988,7 @@ msgstr "Topik untuk %{channel}: %{topic}"
 msgid "Topic set: %{topic}"
 msgstr "Topik set: %{topic}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:171
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:203
 #, elixir-autogen, elixir-format
 msgid "Travel & Places"
 msgstr "Perjalanan & Tempat"
@@ -2003,8 +2003,8 @@ msgstr "Ketik chanserv /help atau saluran /help untuk rincian penuh."
 msgid "Type /help nickserv for full details."
 msgstr "Ketik /help nickserv untuk rincian penuh."
 
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:144
-#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:157
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:186
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:199
 #, elixir-autogen, elixir-format
 msgid "Type a command — / for list"
 msgstr "Ketik perintah - / untuk daftar"
@@ -2249,47 +2249,47 @@ msgstr "Peran server Anda telah diubah menjadi: %{role}"
 msgid "[Auto-Whois] %{nickname}:"
 msgstr "[Auto- Whois] %{nickname}:"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:552
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:559
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' %{action}."
 msgstr "Font color = \"# 404040\" BotService: Bot '%{name}' %{action}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:199
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:206
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' created."
 msgstr "Font color = \"# 404040\" BotService: Bot '%{name}' dibuat."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:143
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:150
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' destroyed."
 msgstr "Font color = \"# 404040\" BotService: Bot '%{name}' hancur."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:369
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:376
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' joined %{channel}."
 msgstr "Bot '%{name}' bergabung dengan %{channel}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:237
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:244
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' left %{channel}."
 msgstr "Bot '%{name}' meninggalkan %{channel}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:486
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:493
 #, elixir-autogen, elixir-format
 msgid "[BotService] Capability '%{capability}' %{action}."
 msgstr "[BotService] Kapabilitas '%{capability}' %{action}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:270
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:277
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' added."
 msgstr "Perintah '%{trigger}' ditambahkan."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:295
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:302
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed."
 msgstr "Perintah '%{trigger}' dihapus."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:206
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:213
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to create bot '%{name}': %{message}"
 msgstr "[BotService] Gagal membuat bot '%{name}': %{message}"
@@ -2338,20 +2338,20 @@ msgstr "[pesan dihapus]"
 msgid "all"
 msgstr "semua"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:137
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:169
 #, elixir-autogen, elixir-format
 msgid "click to insert"
 msgstr "klik untuk menyisipkan"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:480
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:547
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:487
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:554
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:34
 #, elixir-autogen, elixir-format
 msgid "disabled"
 msgstr "dinonaktifkan"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:481
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:547
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:488
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:554
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:33
 #, elixir-autogen, elixir-format
 msgid "enabled"
@@ -2363,7 +2363,7 @@ msgstr "diaktifkan"
 msgid "expands to itself and will hit the recursion limit"
 msgstr "mengembang ke dirinya sendiri dan akan menekan batas rekursi"
 
-#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:138
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:170
 #, elixir-autogen, elixir-format
 msgid "hover to preview"
 msgstr "hover untuk preview"
@@ -2497,7 +2497,7 @@ msgstr "Batalkan pemberitahuan"
 msgid "Channel Central"
 msgstr "Pusat Saluran"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:673
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:690
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr "Pusat Kanal: %{channel}"
@@ -2588,7 +2588,7 @@ msgstr "Masukkan nick baru."
 msgid "Error"
 msgstr "Kesalahan"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:559
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:566
 #, elixir-autogen, elixir-format
 msgid "Failed to update bot status."
 msgstr "Gagal memperbarui status robot."
@@ -2741,7 +2741,7 @@ msgstr "Hanya operator saluran yang dapat mendaftarkan kanal ini."
 msgid "Only the founder can drop a channel."
 msgstr "Hanya pendiri dapat drop saluran."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1086
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1103
 #, elixir-autogen, elixir-format
 msgid "Opening chat..."
 msgstr "Membuka percakapan..."
@@ -3471,24 +3471,24 @@ msgstr "Memformat teks"
 msgid "User lookup"
 msgstr "Pencarian pengguna"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:444
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:460
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:451
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:467
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{reason}"
 msgstr "Font color = \"# 404040\" BotService: %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:428
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:449
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:435
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:456
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot not found."
 msgstr "[BotService] Bot tidak ditemukan."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:437
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:444
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feed added: %{url} → %{channel}"
 msgstr "Font color = \"# 404040\" BotService: Feed ditambahkan: %{url} %{channel}"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:457
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:464
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feed removed."
 msgstr "[BotService] Feed dihapus."
@@ -3784,42 +3784,42 @@ msgstr "Anda"
 msgid "file"
 msgstr "berkas"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:394
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:398
 #, elixir-autogen, elixir-format
 msgid "App Info"
 msgstr "Info App"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:414
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:418
 #, elixir-autogen, elixir-format
 msgid "Applications"
 msgstr "Aplikasi"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:444
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:448
 #, elixir-autogen, elixir-format
 msgid "Database Stats"
 msgstr "Status Basis Data"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:419
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:423
 #, elixir-autogen, elixir-format
 msgid "ETS Tables"
 msgstr "Tabel ETS"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:449
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:453
 #, elixir-autogen, elixir-format
 msgid "Live Log"
 msgstr "Log Hidup"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:434
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:438
 #, elixir-autogen, elixir-format
 msgid "Memory Allocators"
 msgstr "Alotator Memori"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:399
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:403
 #, elixir-autogen, elixir-format
 msgid "Metrics"
 msgstr "Metrik"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:439
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:443
 #, elixir-autogen, elixir-format
 msgid "OS Data"
 msgstr "Data OS"
@@ -3830,17 +3830,17 @@ msgstr "Data OS"
 msgid "P2P action failed: %{reason}"
 msgstr "Aksi P2P gagal: %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:424
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:428
 #, elixir-autogen, elixir-format
 msgid "Ports"
 msgstr "Port"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:409
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:413
 #, elixir-autogen, elixir-format
 msgid "Processes"
 msgstr "Proses"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:429
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:433
 #, elixir-autogen, elixir-format
 msgid "Sockets"
 msgstr "Soket"
@@ -4232,3 +4232,18 @@ msgstr "Di mana"
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "Potret karakter"
+
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:381
+#, elixir-autogen, elixir-format
+msgid "Server Emoji"
+msgstr "Emoji server"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/bots.ex:25
+#, elixir-autogen, elixir-format
+msgid "Server emoji are managed by administrators."
+msgstr "Emoji server dikelola oleh administrator."
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:124
+#, elixir-autogen, elixir-format
+msgid "This server"
+msgstr "Server ini"

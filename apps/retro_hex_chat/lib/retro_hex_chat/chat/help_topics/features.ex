@@ -876,6 +876,25 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: ["ui-saved-window", "feature-search"]
       },
       %{
+        id: "feature-server-emoji",
+        title: dgettext("help", "Server Emoji"),
+        category: dgettext("help", "Chat Input"),
+        keywords: [
+          "emoji",
+          "custom",
+          dgettext("help", "server emoji"),
+          dgettext("help", "custom emoji"),
+          dgettext("help", "emoji name")
+        ],
+        icon: :icon_fmt_emoji,
+        description:
+          dgettext(
+            "help",
+            "Pictures this server answers to by name, written between two colons and added by administrators."
+          ),
+        see_also: ["feature-emoji", "feature-reactions"]
+      },
+      %{
         id: "feature-emoji",
         title: dgettext("help", "Emoji Picker"),
         category: dgettext("help", "Chat Input"),

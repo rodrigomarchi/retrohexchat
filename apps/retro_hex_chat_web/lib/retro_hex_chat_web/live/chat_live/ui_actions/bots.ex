@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.ChatLive.UiActions.Bots do
   @moduledoc """
-  Bot UI actions: open dialog, create bot, etc.
+  Administrator-scoped windows: bot management, and the server's own emoji.
   """
 
   use Gettext, backend: RetroHexChatWeb.Gettext
@@ -13,6 +13,18 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Bots do
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
+
+  # The server's own emoji: the same bar as bot management, because both change
+  # something every conversation on this server sees.
+  def handle_ui_action(socket, :open_server_emoji_dialog, _payload) do
+    session = socket.assigns.session
+
+    if admin?(session) do
+      Windows.open(socket, "server-emoji")
+    else
+      error_event(socket, dgettext("chat", "Server emoji are managed by administrators."))
+    end
+  end
 
   def handle_ui_action(socket, :open_bot_dialog, _payload) do
     session = socket.assigns.session

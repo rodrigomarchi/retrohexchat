@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActionHandlers do
     set_bio view_bio clear_bio
   )a
 
-  @bot_actions ~w(open_bot_dialog)a
+  @bot_actions ~w(open_bot_dialog open_server_emoji_dialog)a
 
   @event_actions ~w(open_events_dialog create_event cancel_event)a
 

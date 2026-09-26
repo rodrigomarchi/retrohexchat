@@ -31,6 +31,7 @@ defmodule RetroHexChat.Application do
       RetroHexChat.Arcade.Supervisor,
       RetroHexChat.Admin.BanCache,
       RetroHexChat.Admin.RoleCache,
+      RetroHexChat.Chat.CustomEmojis,
       RetroHexChat.Admin.GlobalMuteTable,
       RetroHexChat.Presence.Tracker,
       # Ahead of nothing in particular, but after the channel servers it parts

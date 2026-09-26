@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
   alias RetroHexChat.Accounts.{NickColors, Session}
   alias RetroHexChat.Chat.{Content, URLDetector}
   alias RetroHexChat.Chat.Content.Html
+  alias RetroHexChat.Chat.CustomEmojis
   alias RetroHexChatWeb.Timezone
 
   @nick_color_count 12
@@ -48,7 +49,7 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
         maybe_linkify_rendered_html(raw, normalized_format)
       end
 
-    linkify_channels(html)
+    html |> linkify_channels() |> emojify()
   end
 
   defp normalize_content_format(content_format) do
@@ -64,6 +65,47 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
   @spec linkify_channels(String.t()) :: String.t()
   def linkify_channels(html) do
     Html.rewrite_text(html, &linkify_channel_part/1)
+  end
+
+  @doc """
+  Turns `:name:` into the picture this server answers to.
+
+  Runs over the **text** of the rendered markup rather than the source, for the
+  same reason the channel links do: a replacement made before rendering would
+  put an `<img>` through the escaper, and one made blindly over the HTML would
+  rewrite the inside of an attribute.
+
+  A name this server does not have is left exactly as it was typed. An unknown
+  `:money:` is a word somebody wrote, and turning it into a broken image would
+  be the feature inventing a failure that nobody caused.
+  """
+  @spec emojify(String.t()) :: String.t()
+  def emojify(html) do
+    if CustomEmojis.count() == 0 do
+      html
+    else
+      Html.rewrite_text(html, &emojify_part/1)
+    end
+  end
+
+  @emoji_name_regex ~r/:([a-z0-9_]{2,32}):/i
+
+  defp emojify_part(text) do
+    Regex.replace(@emoji_name_regex, text, fn match, name ->
+      case CustomEmojis.get(name) do
+        nil -> match
+        emoji -> emoji_img(emoji)
+      end
+    end)
+  end
+
+  # The name is an administrator's input and it lands inside two attributes, so
+  # it is escaped here rather than trusted for having come from an administrator.
+  defp emoji_img(emoji) do
+    label = Phoenix.HTML.html_escape(":#{emoji.name}:") |> Phoenix.HTML.safe_to_string()
+
+    ~s(<img class="chat-emoji" src="/chat/emoji/#{emoji.id}" alt="#{label}" ) <>
+      ~s(title="#{label}" data-emoji-id="#{emoji.id}" loading="lazy" />)
   end
 
   @channel_name_regex ~r/#[a-zA-Z][a-zA-Z0-9_-]{0,49}/

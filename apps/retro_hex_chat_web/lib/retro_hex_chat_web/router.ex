@@ -193,6 +193,7 @@ defmodule RetroHexChatWeb.Router do
     get "/chat/scraped-pages/:url_hash/thumbnail", ScrapedPageThumbnailController, :show
     get "/chat/attachments/:id/preview", AttachmentController, :preview
     get "/chat/attachments/:id", AttachmentController, :show
+    get "/chat/emoji/:id", EmojiController, :show
 
     # Declared before `/play/:game/:token`, which it would otherwise be read as:
     # `arcade` is a reserved word inside the game namespace, not a game id.

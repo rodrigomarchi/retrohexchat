@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   # is a far cheaper mistake than an ungated one.
   @bot_events ~w(
     open_bot_dialog
+    open_server_emoji_dialog
     bot_select
     bot_back
     bot_toggle_enabled
@@ -82,6 +83,12 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   defp authorized("open_bot_dialog", _params, socket) do
     # Managed window: the island loads the bot list itself on mount.
     Windows.open(socket, BotManagementDialog.id())
+  end
+
+  # The server's own emoji are gated by the same membership list, so the window
+  # is opened here rather than behind a second copy of the admin check.
+  defp authorized("open_server_emoji_dialog", _params, socket) do
+    Windows.open(socket, "server-emoji")
   end
 
   defp authorized("bot_select", %{"name" => name}, socket) do

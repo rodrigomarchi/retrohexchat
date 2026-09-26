@@ -2884,6 +2884,7 @@ msgstr "在当前频道或PM中以实时突出显示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:76
@@ -5718,6 +5719,7 @@ msgid "Click your own reaction again to take it back"
 msgstr "再次点击你自己的回应即可撤回"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Emoji Picker"
 msgstr "爱莫吉·皮克"
@@ -6136,3 +6138,43 @@ msgstr "菜单栏或开始菜单中的「查看 ▸ 角色头像」可以把它�
 #, elixir-autogen, elixir-format
 msgid "Who Has One"
 msgstr "谁有头像"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A server can teach itself pictures and answer to them by name. Write :shrug: and everybody on this server sees the picture; everybody elsewhere never does, because the set belongs to the server."
+msgstr "一台服务器可以给自己添加图片，并按名称响应它们。写下 :shrug:，这台服务器上的每个人都会看到图片；别处的人永远看不到，因为这一套属于这台服务器。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Adding One"
+msgstr "如何新增"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Administrators only, from Admin ▸ Server Emoji. Choose a picture, give it a name, and it is available to everybody here at once. A server holds up to 100, and removing one frees its name again."
+msgstr "仅限管理员，从「管理 ▸ 服务器表情」进入。选一张图片，给它起个名字，这里的每个人立刻就能用。一台服务器最多存 100 个，删除一个会重新释放它的名称。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Names"
+msgstr "名称"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Reactions"
+msgstr "反应"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Two to thirty-two characters: lower-case letters, digits and underscores. That is what somebody can type between two colons without thinking about it, and a name that cannot be typed is an emoji that only half exists."
+msgstr "两到三十二个字符：小写字母、数字和下划线。这是一个人可以不假思索地写在两个冒号之间的东西，而打不出来的名称，是只存在一半的表情。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Type the name between two colons, or pick it from the top of the emoji picker, where this server's own are listed above the ones everybody has. A name this server does not have stays exactly as you typed it — it never becomes a broken picture."
+msgstr "把名称写在两个冒号之间，或从表情选择器顶部挑选——这台服务器自己的表情列在所有人都有的那些之上。这台服务器没有的名称会原样保留，永远不会变成损坏的图片。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Writing One"
+msgstr "如何書寫"

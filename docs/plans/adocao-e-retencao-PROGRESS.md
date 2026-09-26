@@ -26,7 +26,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 5.2 Threads | **pronto** (2026-09-24) |
 | 5.3 Eventos | **pronto** (2026-09-25) |
 | 5.4 Avatar no chat | **pronto** (2026-09-25) |
-| 5.5 Emoji do servidor | não iniciado |
+| 5.5 Emoji do servidor | **pronto** (2026-09-26) |
 | 5.6 Mensagem de voz | não iniciado |
 
 ---
@@ -1346,3 +1346,82 @@ três quadros, com um defeito encontrado.
 `help_topics/features.ex`, `help_content/feature_character_portraits.html.heex`,
 `e2e/tests/chat-character-portraits.spec.ts`, e os catálogos `chat`, `help`,
 `help_features`, `ui`.
+
+---
+
+## Iteração 5.5 — Emoji do servidor
+
+Um servidor pode aprender imagens e responder a elas pelo nome. Escreve-se
+`:shrug:` e todo mundo **naquele servidor** vê a figura; quem está em outro
+nunca vê, porque o conjunto pertence ao servidor.
+
+**O que ficou**
+
+- `custom_emojis` (nome único por `lower(name)`, arquivo, quem adicionou) e
+  `Chat.CustomEmojis` com cache ETS semeado no boot e escrito em toda mudança,
+  no formato do `Admin.RoleCache`. É ETS porque a leitura está no caminho de
+  render de **toda** linha: resolver `:shrug:` por query seria uma query por
+  linha.
+- Nome de 2 a 32 caracteres, minúsculas/dígitos/sublinhado — o que alguém digita
+  entre dois-pontos sem pensar. Um nome que não dá para digitar é um emoji que
+  só existe pela metade.
+- Resolução sobre o **texto** do markup renderizado, na mesma passada dos links
+  de canal, e o nome vai escapado para dentro de dois atributos. Nome
+  desconhecido fica exatamente como foi escrito — nunca vira imagem quebrada.
+- Rota `/chat/emoji/:id` redirecionando para URL assinada, endereçada por **id**
+  e não por nome: um nome liberado e retomado devolveria o que o navegador
+  guardou. Assinar na renderização faria cada mensagem custar uma assinatura.
+- Janela Admin ▸ Server Emoji, com upload pelo caminho presignado que os anexos
+  já usam — é o que dá limite de tamanho, storage e limpeza de órfãos sem
+  escrever nenhum dos três de novo. Teto de 100.
+- Seção "Este servidor" no topo do seletor de emoji, inserindo `:nome:`.
+
+**Desvios do plano, conscientes**
+
+- **O plano dizia "`Chat.EmojiData` passa a compor catálogo padrão + custom".**
+  Não compus: o catálogo padrão são caracteres Unicode, e `EmojiData.known?/1`
+  é o que decide o que vale como **reação**. Misturar os dois faria uma reação
+  aceitar um nome que a tabela de reações não sabe guardar. O seletor compõe na
+  tela; o domínio segue separado.
+
+**Aprendizados**
+
+- **Uma sabotagem que não falha é um teste que passa pelo motivo errado.**
+  O teste de "nome desconhecido fica texto" passava porque o resolvedor sai cedo
+  quando o servidor não tem emoji nenhum — nunca chegava a olhar o nome. Agora o
+  teste adiciona um emoji antes, e a sabotagem vermelha.
+- **O alinhamento do `en` precisa corrigir divergência, não só preencher vazio.**
+  Enchi os `msgstr` vazios e deixei os palpites fuzzy de pé: a janela ficou
+  intitulada **"Server"** em vez de "Server Emoji", e só a auditoria visual viu.
+  A varredura correta é a do 5.1 — todo `en` lê de volta o próprio msgid — e ela
+  também achou dois defeitos antigos, um deles deixado pelo 5.4 ("Who Has One"
+  exibindo "Who can").
+- **A segunda lista à mão outra vez.** O Start monta o submenu Admin filtrando
+  `family == :admin or id == "bot-management-dialog"` — uma lista de exceções
+  mantida à mão. A janela nova entrou na barra e ficou fora do Start, e o teste
+  de superconjunto acusou. Virou derivação: `render_when == :admin and family
+  != :system`.
+- **Um input de arquivo nativo é a única coisa nesta mesa que parece de outra
+  década.** Escondido atrás de um rótulo com o mesmo relevo dos outros controles,
+  como o composer já fazia.
+
+**Gates** — `make ci` 18/18 · `make e2e.batch BATCH=shell` 60 passed ·
+`BATCH=messages` 43 passed · auditoria visual em três quadros, com dois defeitos
+encontrados e corrigidos.
+
+**Arquivos tocados** — migration `create_custom_emojis`,
+`chat/custom_emojis.ex`, `chat/schemas/custom_emoji.ex`, `chat/attachments.ex`,
+`chat/queries.ex`, `application.ex`,
+`controllers/app/emoji_controller.ex`, `router.ex`,
+`live/app/chat_helpers.ex`, `components/ui/chat/emoji_picker.ex`,
+`components/ui/dialogs/server_emoji_dialog.ex`,
+`chat_live/components/emoji_picker_dialog.ex`,
+`chat_live/components/server_emoji_dialog.ex`,
+`chat_live/ui_actions/bots.ex`, `chat_live/ui_action_handlers.ex`,
+`chat_live/bot_events.ex`, `chat_live/window_registry.ex`,
+`components/ui/shell/menu_bar_app.ex` + `start_menu_app.ex`,
+`live/app/chat_live.html.heex`,
+`assets/css/retrohex/components/chat-message.css`, `help_topics/features.ex`,
+`help_content/feature_server_emoji.html.heex`,
+`e2e/tests/chat-server-emoji.spec.ts`, e os catálogos `chat`, `dialogs`,
+`help`, `help_features`, `ui`.

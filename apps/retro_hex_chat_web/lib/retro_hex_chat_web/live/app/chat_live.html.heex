@@ -569,6 +569,23 @@
       />
     </.desktop_window>
 
+    <%!-- Server Emoji — the pictures this server answers to by name. The set
+          belongs to the server, so only an administrator may change it. --%>
+    <.desktop_window
+      :if={"server-emoji" in @open_windows}
+      {WindowRegistry.attrs("server-emoji")}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="server-emoji-window"
+    >
+      <:icon><Icons.icon_fmt_emoji class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.ServerEmojiDialog}
+        id={RetroHexChatWeb.ChatLive.Components.ServerEmojiDialog.id()}
+        nickname={@session.nickname}
+        identified={@session.identified}
+      />
+    </.desktop_window>
+
     <%!-- Flood Protection — server-managed: uncontrolled form, nothing to keep
           across closes. --%>
     <.desktop_window

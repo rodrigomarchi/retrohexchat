@@ -3128,6 +3128,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:76
@@ -6419,6 +6420,7 @@ msgid "Click your own reaction again to take it back"
 msgstr "Clique de novo na sua própria reação para tirá-la"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Emoji Picker"
 msgstr "Emoji Picker"
@@ -6837,3 +6839,43 @@ msgstr "Exibir ▸ Retratos de personagem, na barra de menus ou no menu Iniciar,
 #, elixir-autogen, elixir-format
 msgid "Who Has One"
 msgstr "Quem tem um"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A server can teach itself pictures and answer to them by name. Write :shrug: and everybody on this server sees the picture; everybody elsewhere never does, because the set belongs to the server."
+msgstr "Um servidor pode ensinar imagens a si mesmo e responder a elas pelo nome. Escreva :shrug: e todo mundo neste servidor vê a imagem; quem está em outro nunca vê, porque o conjunto é do servidor."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Adding One"
+msgstr "Adicionar um"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Administrators only, from Admin ▸ Server Emoji. Choose a picture, give it a name, and it is available to everybody here at once. A server holds up to 100, and removing one frees its name again."
+msgstr "Só administradores, em Admin ▸ Emoji do servidor. Escolha uma imagem, dê um nome, e ela fica disponível para todo mundo aqui de uma vez. Um servidor guarda até 100, e remover um libera o nome de novo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Names"
+msgstr "Nomes"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Reactions"
+msgstr "Reações"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Two to thirty-two characters: lower-case letters, digits and underscores. That is what somebody can type between two colons without thinking about it, and a name that cannot be typed is an emoji that only half exists."
+msgstr "De dois a trinta e dois caracteres: minúsculas, dígitos e sublinhados. É o que alguém consegue digitar entre dois-pontos sem pensar, e um nome que não dá para digitar é um emoji que só existe pela metade."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Type the name between two colons, or pick it from the top of the emoji picker, where this server's own are listed above the ones everybody has. A name this server does not have stays exactly as you typed it — it never becomes a broken picture."
+msgstr "Escreva o nome entre dois-pontos, ou escolha no topo do seletor de emoji, onde os próprios deste servidor ficam acima dos que todo mundo tem. Um nome que este servidor não tem fica exatamente como você digitou — nunca vira uma imagem quebrada."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Writing One"
+msgstr "Escrever um"

@@ -42,6 +42,10 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
     default: nil,
     doc: "List of {name, emoji_list} tuples (defaults to built-in set)"
 
+  attr :custom, :list,
+    default: [],
+    doc: "This server's own emoji: %{id:, name:} entries, inserted as :name:"
+
   attr :on_select, :any, default: nil, doc: "Emoji select callback (receives phx-value-emoji)"
 
   attr :on_category, :any,
@@ -111,6 +115,34 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
 
         <%!-- Emoji grid --%>
         <div class="h-[180px] overflow-y-auto retro-scrollbar px-retro-4 pb-retro-4">
+          <%!-- This server's own, above the catalogue everybody has: they are
+                the reason somebody opens this picker on a server they run, and
+                they insert the word rather than a character, because a name
+                between colons is what the conversation actually stores. --%>
+          <div :if={@custom != []} class="mb-retro-4">
+            <div class="mb-retro-2 text-[10px] font-bold uppercase text-muted-foreground">
+              {dgettext("chat", "This server")}
+            </div>
+            <div class="grid grid-cols-8 gap-retro-2">
+              <button
+                :for={emoji <- @custom}
+                type="button"
+                class="flex h-7 w-7 cursor-pointer items-center justify-center rounded-sm hover:bg-selection-bg"
+                phx-click={@on_select}
+                phx-value-emoji={":#{emoji.name}:"}
+                title={":#{emoji.name}:"}
+                data-testid={"emoji-custom-#{emoji.name}"}
+              >
+                <img
+                  class="chat-emoji"
+                  src={"/chat/emoji/#{emoji.id}"}
+                  alt={":#{emoji.name}:"}
+                  loading="lazy"
+                />
+              </button>
+            </div>
+          </div>
+
           <div
             :for={{name, emojis} <- @resolved_categories}
             class={unless(category_active?(name, @active_category), do: "hidden")}

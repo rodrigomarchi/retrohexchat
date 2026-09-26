@@ -667,7 +667,13 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   # Both privileged groups are derived from `WindowRegistry`, so a window cannot
   # be openable from a menu that does not know its title, nor carry a different
   # icon here than it does on its own title bar.
-  defp admin_entries, do: menu_entries(&(&1.family == :admin or &1.id == "bot-management-dialog"))
+  # Everything the admin role gates that is not filed under System. Derived
+  # from the registry rather than listed here: a hand-kept list of ids is how a
+  # window comes to be in the menu bar and missing from the Start menu, which
+  # the superset test then reports as a defect in the menu rather than in the
+  # list nobody remembered to extend.
+  defp admin_entries,
+    do: menu_entries(&(&1.render_when == :admin and &1.family != :system))
 
   defp system_entries, do: menu_entries(&(&1.family == :system))
 

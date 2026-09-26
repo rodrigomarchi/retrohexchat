@@ -104,6 +104,17 @@ defmodule RetroHexChat.Chat.Attachments do
     storage().presigned_get_url(file.storage_bucket, file.storage_key, opts)
   end
 
+  @doc """
+  A short-lived URL for an uploaded file that is not hanging off a message.
+
+  A server emoji is stored the same way an attachment is but belongs to nobody
+  in particular, so it has no `Attachment` row to ask through.
+  """
+  @spec file_url(UploadedFile.t(), keyword()) :: {:ok, String.t()} | {:error, term()}
+  def file_url(%UploadedFile{} = file, opts \\ []) do
+    storage().presigned_get_url(file.storage_bucket, file.storage_key, opts)
+  end
+
   @spec cleanup_orphan_uploads(keyword()) :: {:ok, cleanup_summary()} | {:error, term()}
   def cleanup_orphan_uploads(opts \\ []) do
     cutoff = Keyword.get_lazy(opts, :cutoff, fn -> orphan_cutoff(opts) end)

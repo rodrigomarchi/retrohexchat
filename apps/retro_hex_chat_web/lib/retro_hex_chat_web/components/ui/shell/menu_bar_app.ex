@@ -453,6 +453,13 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       action="open_bot_dialog"
       on_action={@on_action}
     />
+    <.menu_item
+      :if={@is_admin}
+      icon_fn={:icon_fmt_emoji}
+      label={dgettext("ui", "Server Emoji")}
+      action="open_server_emoji_dialog"
+      on_action={@on_action}
+    />
     """
   end
 

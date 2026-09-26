@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog do
 
   import RetroHexChatWeb.Components.UI.EmojiPicker
 
+  alias RetroHexChat.Chat.CustomEmojis
   alias RetroHexChat.Chat.EmojiData
 
   @id "emoji-picker"
@@ -75,7 +76,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog do
         {[{"search_results", EmojiData.search(assigns.search)}], "search_results"}
       end
 
-    assigns = assign(assigns, categories: categories, active_category: active_category)
+    assigns =
+      assign(assigns,
+        categories: categories,
+        active_category: active_category,
+        custom: CustomEmojis.all()
+      )
 
     ~H"""
     <div id={"#{@id}-mount"}>
@@ -86,6 +92,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog do
         search={@search}
         active_category={@active_category}
         categories={@categories}
+        custom={@custom}
         on_select="emoji_select"
         on_category="emoji_category"
         on_search="emoji_search"

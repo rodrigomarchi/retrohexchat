@@ -506,12 +506,12 @@ msgstr "Microfono di conferenza di Toggle"
 msgid "Attachment could not be attached to the message"
 msgstr "L'allegato non può essere allegato al messaggio"
 
-#: lib/retro_hex_chat/chat/attachments.ex:263
+#: lib/retro_hex_chat/chat/attachments.ex:274
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "L'attacco supera il limite %{mb} MB"
 
-#: lib/retro_hex_chat/chat/attachments.ex:258
+#: lib/retro_hex_chat/chat/attachments.ex:269
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "L'attaccamento è vuoto"
@@ -521,9 +521,9 @@ msgstr "L'attaccamento è vuoto"
 msgid "Unsupported message format"
 msgstr "Formato messaggio non supportato"
 
-#: lib/retro_hex_chat/chat/attachments.ex:270
-#: lib/retro_hex_chat/chat/attachments.ex:351
-#: lib/retro_hex_chat/chat/attachments.ex:356
+#: lib/retro_hex_chat/chat/attachments.ex:281
+#: lib/retro_hex_chat/chat/attachments.ex:362
+#: lib/retro_hex_chat/chat/attachments.ex:367
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "file"
@@ -631,3 +631,23 @@ msgstr "tra %{span}"
 #, elixir-autogen, elixir-format
 msgid "now"
 msgstr "adesso"
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:193
+#, elixir-autogen, elixir-format
+msgid "An emoji name is 2 to 32 characters: lower-case letters, digits and underscores."
+msgstr "Un nome di emoji va da 2 a 32 caratteri: minuscole, cifre e trattini bassi."
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:199
+#, elixir-autogen, elixir-format
+msgid "That emoji could not be saved."
+msgstr "Impossibile salvare quell'emoji."
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:190
+#, elixir-autogen, elixir-format
+msgid "This server already answers to that name."
+msgstr "Questo server risponde già a quel nome."
+
+#: lib/retro_hex_chat/chat/custom_emojis.ex:182
+#, elixir-autogen, elixir-format
+msgid "This server already has %{count} emoji."
+msgstr "Questo server ha già %{count} emoji."

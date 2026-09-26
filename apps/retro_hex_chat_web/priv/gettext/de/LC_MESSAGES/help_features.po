@@ -3134,6 +3134,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:76
@@ -6452,6 +6453,7 @@ msgid "Click your own reaction again to take it back"
 msgstr "Klicken Sie erneut auf Ihre eigene Reaktion, um sie zurückzunehmen"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Emoji Picker"
 msgstr "Emoji Picker"
@@ -6870,3 +6872,43 @@ msgstr "Ansicht ▸ Charakterporträts, in der Menüleiste oder im Startmenü, s
 #, elixir-autogen, elixir-format
 msgid "Who Has One"
 msgstr "Wer eines hat"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A server can teach itself pictures and answer to them by name. Write :shrug: and everybody on this server sees the picture; everybody elsewhere never does, because the set belongs to the server."
+msgstr "Ein Server kann sich Bilder beibringen und beim Namen darauf antworten. Schreibe :shrug:, und alle auf diesem Server sehen das Bild; alle anderswo nie, denn der Satz gehört dem Server."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Adding One"
+msgstr "Eines hinzufügen"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Administrators only, from Admin ▸ Server Emoji. Choose a picture, give it a name, and it is available to everybody here at once. A server holds up to 100, and removing one frees its name again."
+msgstr "Nur Administratoren, über Admin ▸ Server-Emoji. Wähle ein Bild, gib ihm einen Namen, und es steht allen hier sofort zur Verfügung. Ein Server hält bis zu 100, und ein Entfernen gibt den Namen wieder frei."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Names"
+msgstr "Namen"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Reactions"
+msgstr "Reaktionen"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Two to thirty-two characters: lower-case letters, digits and underscores. That is what somebody can type between two colons without thinking about it, and a name that cannot be typed is an emoji that only half exists."
+msgstr "Zwei bis zweiunddreißig Zeichen: Kleinbuchstaben, Ziffern und Unterstriche. Das ist, was jemand zwischen zwei Doppelpunkten tippt, ohne nachzudenken — und ein Name, den man nicht tippen kann, ist ein Emoji, das nur halb existiert."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Type the name between two colons, or pick it from the top of the emoji picker, where this server's own are listed above the ones everybody has. A name this server does not have stays exactly as you typed it — it never becomes a broken picture."
+msgstr "Schreibe den Namen zwischen zwei Doppelpunkte oder wähle ihn oben im Emoji-Picker, wo die eigenen dieses Servers über denen stehen, die alle haben. Ein Name, den dieser Server nicht hat, bleibt genau so stehen, wie du ihn getippt hast — er wird nie zu einem kaputten Bild."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Writing One"
+msgstr "Eines schreiben"

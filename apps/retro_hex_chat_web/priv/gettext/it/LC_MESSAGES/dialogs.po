@@ -99,6 +99,7 @@ msgstr "Azioni"
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:290
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:189
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:168
+#: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:74
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:121
 #, elixir-autogen, elixir-format
 msgid "Add"
@@ -858,6 +859,7 @@ msgstr "MyBot"
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:212
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:34
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:387
+#: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:56
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:166
 #, elixir-autogen, elixir-format
 msgid "Name"
@@ -1173,6 +1175,7 @@ msgstr "RSS"
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:214
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:189
 #: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:137
+#: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:130
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Rimuovi"
@@ -4143,3 +4146,51 @@ msgstr "Usa /event 2h torneo del martedì per mettere qualcosa in calendario. Tu
 #, elixir-autogen, elixir-format
 msgid "When an operator schedules something, it shows up here and in the conversation."
 msgstr "Quando un operatore programma qualcosa, compare qui e nella conversazione."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:77
+#, elixir-autogen, elixir-format
+msgid "%{count} of %{max} used"
+msgid_plural "%{count} of %{max} used"
+msgstr[0] "%{count} di %{max} usati"
+msgstr[1] "%{count} di %{max} usati"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:96
+#, elixir-autogen, elixir-format
+msgid "Add one and everybody here can write it between two colons, like :shrug:."
+msgstr "Aggiungine uno e tutti qui potranno scriverlo tra due due punti, come :shrug:."
+
+#: lib/retro_hex_chat_web/live/chat_live/components/server_emoji_dialog.ex:117
+#, elixir-autogen, elixir-format
+msgid "Choose a picture first."
+msgstr "Scegli prima un'immagine."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:45
+#, elixir-autogen, elixir-format
+msgid "Picture"
+msgstr "Immagine"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/server_emoji_dialog.ex:78
+#: lib/retro_hex_chat_web/live/chat_live/components/server_emoji_dialog.ex:87
+#, elixir-autogen, elixir-format
+msgid "Server administrators only."
+msgstr "Solo amministratori del server."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:94
+#, elixir-autogen, elixir-format
+msgid "This server has no emoji of its own yet."
+msgstr "Questo server non ha ancora emoji propri."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:65
+#, elixir-autogen, elixir-format
+msgid "shrug"
+msgstr "shrug"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:47
+#, elixir-autogen, elixir-format
+msgid "Choose..."
+msgstr "Scegli..."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:144
+#, elixir-autogen, elixir-format
+msgid "no picture chosen"
+msgstr "nessuna immagine scelta"
