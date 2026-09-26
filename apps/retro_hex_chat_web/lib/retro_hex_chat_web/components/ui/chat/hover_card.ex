@@ -22,6 +22,8 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.NickPortrait
+
   import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.Separator
@@ -56,6 +58,11 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
   attr :is_contact, :boolean, default: false
   attr :contact_note, :string, default: nil
   attr :is_ignored, :boolean, default: false
+
+  attr :avatar, :string,
+    default: nil,
+    doc: "the character this person chose; nil draws nothing"
+
   attr :class, :string, default: nil
   attr :rest, :global
 
@@ -96,6 +103,14 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
             class="w-full justify-center"
           />
         <% else %>
+          <%!-- Who they chose to be. Bigger here than in the conversation
+                because the card is where you look somebody up, and there is
+                room; still the same crop of the same art, never resized. --%>
+          <div :if={@avatar} class="flex items-center gap-retro-4">
+            <.nick_portrait avatar={@avatar} nickname={@nick} />
+            <span class="text-muted-foreground">{avatar_label(@avatar)}</span>
+          </div>
+
           <%!-- Role badge (from role attr) --%>
           <div :if={@role} class="flex gap-retro-4 flex-wrap">
             <.role_badge role={@role} />
@@ -230,4 +245,20 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
   defp role_badge(assigns) do
     ~H""
   end
+
+  # The name of the class, the same words the picker uses. A portrait with no
+  # name under it in a lookup card is a face you cannot ask about.
+  @avatar_labels %{
+    "hero" => "Hero",
+    "knight" => "Knight",
+    "sorceress" => "Sorceress",
+    "archer" => "Archer",
+    "barbarian" => "Barbarian",
+    "rogue" => "Rogue",
+    "cleric" => "Cleric",
+    "monk" => "Monk"
+  }
+
+  @spec avatar_label(String.t() | nil) :: String.t() | nil
+  defp avatar_label(avatar), do: Map.get(@avatar_labels, avatar)
 end

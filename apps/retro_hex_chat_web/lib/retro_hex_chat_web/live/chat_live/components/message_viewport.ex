@@ -41,6 +41,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.ListStates
 
+  alias RetroHexChat.Accounts.Avatars
   alias RetroHexChat.Channels.ScheduledEvents
   alias RetroHexChat.Scraper
   alias RetroHexChat.ShareLinks
@@ -48,6 +49,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   alias RetroHexChatWeb.ChatLive.Components.MessageRow
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
   alias RetroHexChatWeb.ChatLive.ReadMarkers
+  alias RetroHexChatWeb.ChatLive.StreamItem
   alias RetroHexChatWeb.ShareLinkRef
 
   @id "message-viewport"
@@ -181,6 +183,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
        loading_channel: nil,
        has_more: false,
        viewer: nil,
+       show_avatars: true,
        unread_boundary_id: nil,
        rendered: [],
        share_card_spaces: MapSet.new(),
@@ -301,6 +304,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
       :loading_channel,
       :has_more,
       :viewer,
+      :show_avatars,
       :unread_boundary_id
     ]
 
@@ -384,6 +388,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
             strip_formatting={@strip_formatting}
             edit_mode_message_id={@edit_mode_message_id}
             viewer={@viewer}
+            show_avatars={@show_avatars}
             unread_boundary_id={@unread_boundary_id}
           />
         </div>
@@ -515,6 +520,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     |> Enum.map(&put_card(&1, cards))
     |> put_share_cards()
     |> put_event_cards(viewer)
+    |> put_avatars()
+  end
+
+  # Whose face goes beside each nickname, one query for the whole batch. Every
+  # row reaches here — a page, a prepended page and a single arriving message —
+  # so this is the one place that has to know.
+  @spec put_avatars([map()]) :: [map()]
+  defp put_avatars(items) do
+    avatars =
+      items |> Enum.map(&Map.get(&1, :author)) |> Enum.filter(&is_binary/1) |> Avatars.for_nicks()
+
+    Enum.map(items, &StreamItem.put_avatar(&1, Map.get(avatars, Map.get(&1, :author))))
   end
 
   # An event card hangs off the line that announced it, resolved by message id

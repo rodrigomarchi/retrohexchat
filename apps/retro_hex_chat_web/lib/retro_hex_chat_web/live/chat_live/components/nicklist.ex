@@ -111,6 +111,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
         away_count: 0,
         muted_count: 0,
         call_nicks: MapSet.new(),
+        show_avatars: true,
         nick_color_fn: fn _nick -> nil end
       )
 
@@ -167,8 +168,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
     end
   end
 
+  # The rows are a stream, and a stream does not restyle what nobody re-inserts:
+  # turning the portraits off has to re-stream the list, or the faces stay on
+  # screen until the next channel switch.
   def update(assigns, socket) do
-    {:ok, assign_context(socket, assigns)}
+    before = socket.assigns.show_avatars
+    socket = assign_context(socket, assigns)
+
+    if socket.assigns.show_avatars == before do
+      {:ok, socket}
+    else
+      {:ok, reset_role_streams(socket, socket.assigns.users)}
+    end
   end
 
   @impl true
@@ -237,6 +248,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
                 current={same_nick?(user.nickname, @current_nick)}
                 in_call={MapSet.member?(@call_nicks, String.downcase(user.nickname))}
                 nick_color={@nick_color_fn.(user.nickname)}
+                avatar={@show_avatars && Map.get(user, :avatar)}
                 data-nick={user.nickname}
               />
             </div>
@@ -262,6 +274,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
       current_modes: Map.get(assigns, :current_modes, socket.assigns.current_modes),
       current_nick: Map.get(assigns, :current_nick, socket.assigns.current_nick),
       nick_color_fn: Map.get(assigns, :nick_color_fn, socket.assigns.nick_color_fn),
+      show_avatars: Map.get(assigns, :show_avatars, socket.assigns.show_avatars),
       call_nicks: normalize_call_nicks(assigns, socket)
     )
   end

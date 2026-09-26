@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog
+  alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Windows
 
   use Phoenix.VerifiedRoutes, endpoint: RetroHexChatWeb.Endpoint, router: RetroHexChatWeb.Router
@@ -48,6 +49,18 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   def handle_event("toggle_conversations", _params, socket) do
     {:halt, assign(socket, show_conversations: !socket.assigns.show_conversations)}
+  end
+
+  # A stream does not restyle rows nobody re-inserts, so the portraits appearing
+  # and disappearing is a re-render of what is on screen — not a re-read of the
+  # conversation.
+  def handle_event("toggle_show_avatars", _params, socket) do
+    session = Session.toggle_show_avatars(socket.assigns.session)
+
+    {:halt,
+     socket
+     |> assign(session: session)
+     |> MessageViewport.restyle()}
   end
 
   def handle_event("toggle_strip_formatting", _params, socket) do

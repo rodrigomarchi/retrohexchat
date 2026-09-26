@@ -2,6 +2,8 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   @moduledoc false
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.NickPortrait
+
   import RetroHexChatWeb.Components.UI.Button
 
   alias RetroHexChat.Channels.Modes
@@ -442,6 +444,10 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   attr :muted, :boolean, default: false
   attr :current, :boolean, default: false
 
+  attr :avatar, :string,
+    default: nil,
+    doc: "the character this person chose; nil draws nothing"
+
   attr :in_call, :boolean,
     default: false,
     doc: "whether this person is in the channel's conference, from the summary the chat holds"
@@ -486,6 +492,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
       <span class="chat-nicklist-row__role" aria-hidden="true">
         {role_icon(assigns)}
       </span>
+      <.nick_portrait avatar={@avatar} nickname={@nick} />
       <span class={["chat-nicklist-row__nick", @nick_color || "text-text"]}>
         {@nick}
       </span>

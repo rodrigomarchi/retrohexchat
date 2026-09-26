@@ -36,6 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   attr :timezone, :string, required: true
   attr :strip_formatting, :boolean, required: true
   attr :viewer, :string, default: nil, doc: "whose reaction chips are drawn as pressed"
+  attr :show_avatars, :boolean, default: true, doc: "whether character portraits are drawn"
 
   @spec message_row_body(map()) :: Phoenix.LiveView.Rendered.t()
   def message_row_body(assigns) do
@@ -48,6 +49,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           type="action"
           nick={@msg.author}
           nick_color={@nick_color_fn.(@msg.author)}
+          avatar={@show_avatars && Map.get(@msg, :avatar)}
         >
           * {raw(formatted_content(@msg, @strip_formatting))}
           <.link_preview_card
@@ -207,6 +209,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
             nick={@msg.author}
             nick_color={@nick_color_fn.(@msg.author)}
+            avatar={@show_avatars && Map.get(@msg, :avatar)}
           >
             {raw(formatted_content(@msg, @strip_formatting))}
             <.link_preview_card

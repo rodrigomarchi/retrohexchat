@@ -29,6 +29,7 @@ defmodule RetroHexChat.Accounts.Session do
           away: boolean(),
           away_message: String.t() | nil,
           strip_formatting: boolean(),
+          show_avatars: boolean(),
           notify_list: map(),
           contacts: map(),
           nick_colors: map(),
@@ -64,6 +65,7 @@ defmodule RetroHexChat.Accounts.Session do
     away: false,
     away_message: nil,
     strip_formatting: false,
+    show_avatars: true,
     notify_list: nil,
     contacts: nil,
     nick_colors: nil,
@@ -206,6 +208,19 @@ defmodule RetroHexChat.Accounts.Session do
   @spec set_active_pm(t(), String.t() | nil) :: t()
   def set_active_pm(%__MODULE__{} = session, nickname) do
     %{session | active_pm: nickname, active_channel: nil}
+  end
+
+  @doc """
+  Turns the character portraits beside nicknames on or off.
+
+  On by default: the chosen character is this product's own visual identity, and
+  a person who picked one has said who they are. Off is a real choice all the
+  same — the plain mIRC line is the other half of what this looks like, and
+  somebody reading a busy channel may want the text and nothing else.
+  """
+  @spec toggle_show_avatars(t()) :: t()
+  def toggle_show_avatars(%__MODULE__{show_avatars: current} = session) do
+    %{session | show_avatars: !current}
   end
 
   @spec toggle_strip_formatting(t()) :: t()

@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
+  alias RetroHexChat.Accounts.Avatars
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Channels.Visibility
@@ -115,7 +116,8 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
         role: get_role_in_active_channel(nick, session.active_channel),
         is_contact: contact?(nick, session.contacts),
         contact_note: contact_note(nick, session.contacts),
-        is_ignored: IgnoreList.get_entry(session.ignore_list, nick) != nil
+        is_ignored: IgnoreList.get_entry(session.ignore_list, nick) != nil,
+        avatar: Avatars.for_nick(nick)
       }
       |> Map.merge(extract_client_fields(target_meta))
 
@@ -141,7 +143,8 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
       role: hover_role(data.role),
       is_contact: data.is_contact,
       contact_note: data.contact_note,
-      is_ignored: data.is_ignored
+      is_ignored: data.is_ignored,
+      avatar: data.avatar
     }
   end
 

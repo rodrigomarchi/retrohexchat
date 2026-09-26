@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   import RetroHexChatWeb.Components.UI.Window
 
   alias Phoenix.LiveView.Socket
+  alias RetroHexChat.Accounts.Avatars
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Channels.Visibility
   alias RetroHexChat.ShareLinks
@@ -234,6 +235,11 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   # one.
   def handle_event("space_select_avatar", %{"avatar" => avatar}, socket) do
     if avatar in socket.assigns.avatars and socket.assigns.space do
+      # The choice outlives the visit now: the chat draws the same figure beside
+      # this nickname, and a character that vanished when you walked out was a
+      # costume rather than an identity.
+      Avatars.remember(socket.assigns.nickname, avatar)
+
       {:noreply,
        assign(socket,
          avatar: avatar,

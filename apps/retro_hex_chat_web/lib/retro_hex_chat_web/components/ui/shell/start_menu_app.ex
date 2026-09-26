@@ -132,6 +132,13 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             icon_fn={:icon_fmt_color}
             disabled={!@chat?}
           />
+          <.app_item
+            action="toggle_show_avatars"
+            on_action={@on_action}
+            label={dgettext("chat", "Character Portraits")}
+            icon_fn={:icon_tab_nicklist}
+            disabled={!@chat?}
+          />
           <.start_menu_separator />
           <.app_item
             action="clear_window"

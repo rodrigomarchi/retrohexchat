@@ -114,6 +114,25 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: ["feature-nick-colors", "feature-ignore-list", "feature-notify-list"]
       },
       %{
+        id: "feature-character-portraits",
+        title: dgettext("help", "Character Portraits"),
+        category: dgettext("help", "Chat Display"),
+        keywords: [
+          "avatar",
+          "portrait",
+          dgettext("help", "character portrait"),
+          dgettext("help", "avatar in chat"),
+          dgettext("help", "hide portraits")
+        ],
+        icon: :icon_tab_nicklist,
+        description:
+          dgettext(
+            "help",
+            "The character you chose in a space stands beside your nickname in the chat, and can be switched off."
+          ),
+        see_also: ["feature-choose-character", "feature-nick-colors"]
+      },
+      %{
         id: "feature-nick-colors",
         title: dgettext("help", "Nick Colors"),
         category: dgettext("help", "Contacts & Notify"),

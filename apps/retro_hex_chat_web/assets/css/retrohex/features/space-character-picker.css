@@ -62,3 +62,49 @@
     animation: none;
   }
 }
+
+/* ── Portraits in the chat ──────────────────────────────────────────────────
+   The same sheet the picker uses, windowed onto the head of the first walk
+   frame. A crop, never a resize: the art is shown at the size it was authored,
+   which is why this is 24x24 rather than the 16x16 a layout would have asked
+   for — a face scaled down is a different, worse drawing.
+
+   The cell is 80x95 and the head sits at (28, 2) within it, so the background
+   is offset by that much on top of the row offset. */
+.rh-portrait {
+  /* An inline element ignores width and height, so the span would draw at zero
+     by zero and the portrait would be in the document and on no screen. */
+  display: inline-block;
+  vertical-align: middle;
+  width: 24px;
+  height: 24px;
+  background-image: url("/images/space/charsel.webp");
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  flex: none;
+}
+
+.rh-portrait--hero {
+  background-position: -28px -2px;
+}
+.rh-portrait--knight {
+  background-position: -28px -97px;
+}
+.rh-portrait--sorceress {
+  background-position: -28px -192px;
+}
+.rh-portrait--archer {
+  background-position: -28px -287px;
+}
+.rh-portrait--barbarian {
+  background-position: -28px -382px;
+}
+.rh-portrait--rogue {
+  background-position: -28px -477px;
+}
+.rh-portrait--cleric {
+  background-position: -28px -572px;
+}
+.rh-portrait--monk {
+  background-position: -28px -667px;
+}

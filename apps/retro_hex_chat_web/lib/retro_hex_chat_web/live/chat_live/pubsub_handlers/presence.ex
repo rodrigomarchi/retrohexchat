@@ -32,9 +32,34 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
   alias RetroHexChat.Scraper.Store
   alias RetroHexChatWeb.ChatLive.Components.HoverCard
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
+  alias RetroHexChatWeb.ChatLive.Components.Nicklist
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
 
   # ── Global presence events ────────────────────────────────
+
+  # Somebody chose a character. The user list is a stream, so the row has to be
+  # re-inserted or it keeps the face it was drawn with.
+  def handle_info({:avatar_changed, %{nickname: nick, avatar: avatar}}, socket) do
+    members = socket.assigns.conversation_members
+
+    socket =
+      case Enum.find(members, &(&1.nickname == nick)) do
+        nil ->
+          socket
+
+        member ->
+          updated = Map.put(member, :avatar, avatar)
+
+          socket
+          |> assign(
+            conversation_members:
+              Enum.map(members, &if(&1.nickname == nick, do: updated, else: &1))
+          )
+          |> Nicklist.upsert(updated)
+      end
+
+    {:halt, socket}
+  end
 
   def handle_info({:user_connected, %{nickname: nick}}, socket) do
     session = socket.assigns.session

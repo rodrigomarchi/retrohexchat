@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
   attr :strip_formatting, :boolean, required: true
   attr :edit_mode_message_id, :any, required: true
   attr :viewer, :string, default: nil, doc: "Viewing user's nickname (legacy P2P rows)"
+  attr :show_avatars, :boolean, default: true, doc: "Whether character portraits are drawn"
 
   attr :unread_boundary_id, :any,
     default: nil,
@@ -69,6 +70,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
         timezone={@timezone}
         strip_formatting={@strip_formatting}
         viewer={@viewer}
+        show_avatars={@show_avatars}
       />
     </div>
     """

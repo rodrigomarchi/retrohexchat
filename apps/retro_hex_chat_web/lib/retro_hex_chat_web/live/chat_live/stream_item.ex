@@ -32,7 +32,8 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
     :edited_at,
     :deleted_at,
     :reactions,
-    :reply_count
+    :reply_count,
+    :avatar
   ]
 
   @doc """
@@ -118,6 +119,22 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
   def put_reply_count(item, nil), do: item
   def put_reply_count(item, 0), do: item
   def put_reply_count(item, count), do: Map.put(item, :reply_count, count)
+
+  @doc """
+  Put the author's chosen character on a row that was built without it.
+
+  Filled by the viewport rather than here, because every row reaches the
+  viewport — a page, a prepended page and a single broadcast alike — and doing
+  it in one place is what stops a live message arriving without the portrait
+  every other line has.
+
+  Absent means they never chose, and the row draws nothing for that rather than
+  a placeholder silhouette — a stranger's face where a person is reads worse
+  than the plain text this chat is made of.
+  """
+  @spec put_avatar(map(), String.t() | nil) :: map()
+  def put_avatar(item, nil), do: item
+  def put_avatar(item, avatar), do: Map.put(item, :avatar, avatar)
 
   defp base(source, id, author, timestamp) do
     %{

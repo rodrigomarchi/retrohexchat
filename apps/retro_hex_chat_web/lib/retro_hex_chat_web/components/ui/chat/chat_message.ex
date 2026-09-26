@@ -16,6 +16,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.NickPortrait
+
   alias RetroHexChatWeb.Icons
 
   @doc "Renders a scrollable chat message list container."
@@ -75,6 +77,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   attr :timestamp, :string, default: nil
   attr :nick, :string, default: nil, doc: "Interactive author nick (rendered as .chat-nick)"
 
+  attr :avatar, :string,
+    default: nil,
+    doc: "The character the author chose, drawn beside the nick; nil draws nothing"
+
   attr :source, :string,
     default: nil,
     doc: "Non-interactive origin label"
@@ -114,6 +120,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
     >
       <div class="chat-message__head">
         <.message_kind_icon kind={resolve_kind(@kind, @nick, @source, @type)} />
+        <.nick_portrait :if={@nick} avatar={@avatar} nickname={@nick} />
         <span
           :if={@nick}
           class={["chat-nick chat-message__author", @nick_color || "text-text"]}

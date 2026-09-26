@@ -187,6 +187,7 @@
                   has_more={@has_more}
                   loading_channel={@loading_channel}
                   viewer={@session.nickname}
+                  show_avatars={@session.show_avatars}
                   unread_boundary_id={@unread_boundary_id}
                 />
 
@@ -214,6 +215,7 @@
               conversation_label={@session.active_pm || @session.active_channel}
               current_modes={@current_modes}
               current_nick={@session.nickname}
+              show_avatars={@session.show_avatars}
               nick_color_fn={@nick_color_fn}
             />
           </div>

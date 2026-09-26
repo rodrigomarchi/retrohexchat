@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   require Logger
 
+  alias RetroHexChat.Accounts.Avatars
   alias RetroHexChat.VirtualSpace
   alias RetroHexChat.VirtualSpace.ChannelJoinToken
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
@@ -119,6 +120,10 @@ defmodule RetroHexChatWeb.SpaceChannel do
     with %{space_kind: kind, space_id: space_id, participant_key: key} <- socket.assigns,
          {:ok, avatar} <- parse_select_avatar(payload) do
       dispatch_select_avatar(kind, space_id, key, avatar)
+      # Remembered here as well as in the picker: a character can also be
+      # changed from inside the running space, and the chat must not keep
+      # drawing the one that was left behind.
+      remember_avatar(socket, avatar)
     end
 
     {:noreply, socket}
@@ -126,6 +131,18 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   def handle_in(_event, _payload, socket) do
     {:noreply, socket}
+  end
+
+  @spec remember_avatar(Phoenix.Socket.t(), String.t()) :: :ok
+  defp remember_avatar(socket, avatar) do
+    case socket.assigns do
+      %{nickname: nickname} when is_binary(nickname) ->
+        Avatars.remember(nickname, avatar)
+        :ok
+
+      _no_nickname ->
+        :ok
+    end
   end
 
   @impl true

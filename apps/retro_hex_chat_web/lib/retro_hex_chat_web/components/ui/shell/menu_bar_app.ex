@@ -339,6 +339,14 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       action="toggle_strip_formatting"
       on_action={@on_action}
     />
+    <%!-- The other half of how the conversation reads: the chosen character
+          beside each nickname, or the plain mIRC line and nothing else. --%>
+    <.menu_item
+      icon_fn={:icon_tab_nicklist}
+      label={dgettext("chat", "Character Portraits")}
+      action="toggle_show_avatars"
+      on_action={@on_action}
+    />
     """
   end
 

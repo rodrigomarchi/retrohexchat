@@ -19,6 +19,7 @@ defmodule RetroHexChat.Services.RegisteredNick do
     field :email_verified_at, :utc_datetime_usec
     field :email_token_hash, :string, redact: true
     field :email_token_sent_at, :utc_datetime_usec
+    field :avatar, :string
 
     timestamps(type: :utc_datetime_usec)
   end

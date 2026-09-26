@@ -31,6 +31,7 @@ defmodule RetroHexChat.Chat.Roster do
 
   require Logger
 
+  alias RetroHexChat.Accounts.Avatars
   alias RetroHexChat.Bots
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Presence.Tracker
@@ -50,7 +51,8 @@ defmodule RetroHexChat.Chat.Roster do
           away_message: String.t() | nil,
           muted: boolean(),
           online: boolean(),
-          rank: non_neg_integer()
+          rank: non_neg_integer(),
+          avatar: String.t() | nil
         }
 
   @type t :: %__MODULE__{
@@ -120,7 +122,8 @@ defmodule RetroHexChat.Chat.Roster do
       away_message: nil,
       muted: false,
       online: true,
-      rank: role_rank(role)
+      rank: role_rank(role),
+      avatar: Avatars.for_nick(nickname)
     }
   end
 
@@ -141,6 +144,12 @@ defmodule RetroHexChat.Chat.Roster do
     presence = channel_presence(name)
     muted = MapSet.new(Map.get(state, :channel_mutes, []))
 
+    # One query for everybody's chosen character, not one per row: a portrait
+    # beside every nickname is exactly the feature that turns a roster into a
+    # query a member.
+    avatars =
+      state.members |> Enum.map(fn {nickname, _role} -> nickname end) |> Avatars.for_nicks()
+
     Enum.map(state.members, fn {nickname, role} ->
       meta = Map.get(presence, String.downcase(nickname), %{})
 
@@ -151,7 +160,8 @@ defmodule RetroHexChat.Chat.Roster do
         away_message: Map.get(meta, :away_message),
         muted: MapSet.member?(muted, nickname),
         online: true,
-        rank: role_rank(role)
+        rank: role_rank(role),
+        avatar: Map.get(avatars, nickname)
       }
     end)
   end
@@ -178,7 +188,8 @@ defmodule RetroHexChat.Chat.Roster do
       away_message: meta && Map.get(meta, :away_message),
       muted: false,
       online: meta != nil,
-      rank: rank
+      rank: rank,
+      avatar: Avatars.for_nick(nickname)
     }
   end
 end

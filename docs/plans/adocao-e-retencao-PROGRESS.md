@@ -25,7 +25,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 5.1 Arquivo público | **pronto** (2026-09-24) |
 | 5.2 Threads | **pronto** (2026-09-24) |
 | 5.3 Eventos | **pronto** (2026-09-25) |
-| 5.4 Avatar no chat | não iniciado |
+| 5.4 Avatar no chat | **pronto** (2026-09-25) |
 | 5.5 Emoji do servidor | não iniciado |
 | 5.6 Mensagem de voz | não iniciado |
 
@@ -1262,3 +1262,87 @@ quatro quadros, com uma correção.
 `feature_channel_events.html.heex`, `e2e/tests/chat-channel-events.spec.ts`, e
 os catálogos `chat`, `channels`, `commands`, `dialogs`, `help`,
 `help_commands`, `help_features`, `ui`.
+
+---
+
+## Iteração 5.4 — Avatar no chat
+
+O personagem que alguém escolheu no espaço passa a estar ao lado do apelido no
+chat: na conversa, na lista de usuários e no card de consulta.
+
+**A premissa do plano estava errada**
+
+O plano dizia "ler a escolha de personagem **que já é persistida**". Não era. A
+escolha vivia no processo do espaço e no `localStorage` do navegador — o próprio
+moduledoc do picker diz por quê: "nada no servidor sobrevive a uma visita". Ela
+sumia quando a pessoa saía, e o chat nunca teve como saber. Metade deste item
+virou **fazer a escolha durar**, que é o que torna "o avatar do chat é o mesmo do
+espaço" uma frase verdadeira em vez de uma intenção.
+
+E a segunda parte também estava vencida: a preferência iria para
+`user_preferences.display_settings`, mas essa tabela foi **removida** na migration
+`20260904120000_drop_unwritten_columns`. Preferências de exibição vivem na
+`Session`, como `strip_formatting` — é onde `show_avatars` foi.
+
+**O que ficou**
+
+- `avatar` em `registered_nicks` e `Accounts.Avatars` com `remember/2`,
+  `for_nick/1` e `for_nicks/1` (uma query por roster / por página). Coluna na
+  linha do apelido porque é identidade: some com o apelido, como o resto.
+- As duas portas do espaço gravam — o picker do `SpaceLive` e o canal do espaço,
+  porque o personagem também muda de dentro do mundo rodando.
+- `Roster` carrega `avatar`; `MessageViewport` preenche na decoração, que é o
+  ponto por onde **toda** linha passa — página, página anterior e mensagem que
+  chega ao vivo.
+- Retrato em `MessageRow`, nicklist e hover card, com o nome da classe no card.
+- View ▸ Retratos de personagem, na barra e no Start.
+
+**Desvios do plano, conscientes**
+
+- **24×24, não 16×16.** A arte é autorada num tamanho e mostrada nesse tamanho;
+  16×16 só sairia encolhendo, que a memória `no-aspect-ratio-deform` proíbe. O
+  recorte fica em CSS — que é o que o próprio arquivo do picker já dizia:
+  "cropping and positioning live here (CSS)". Testei quatro janelas e li as oito
+  classes lado a lado antes de escolher; em 16 e 18 o herói e o bárbaro perdiam
+  metade do rosto.
+- **Sem arte nova.** A cabeça do primeiro quadro de cada classe, na folha que o
+  picker já usa. Recortar não é redimensionar.
+
+**Aprendizados**
+
+- **Um `<span>` é inline, e inline ignora largura e altura.** O retrato estava no
+  documento e em tela nenhuma — o Playwright achava o elemento e dizia "hidden".
+  Nenhum teste de servidor pegaria isso; a auditoria visual pegou na primeira
+  execução.
+- **Duas listas são streams, e um stream não redesenha o que ninguém reinsere.**
+  Escrever o teste já achou a primeira (a nicklist mantinha os retratos depois de
+  desligar) e o e2e achou a segunda (a nicklist dos outros mantinha o rosto
+  antigo depois de alguém trocar de personagem). A segunda virou broadcast
+  `{:avatar_changed, …}` — e a rota dele em `PubsubHandlers` tem de ser
+  **explícita**: caiu no catch-all e sumiu em silêncio, exatamente o que o
+  comentário três linhas abaixo dela avisa.
+- **Quebrei minha própria regra de dois commits atrás:** o teste que conta
+  consultas nasceu `async: true`, verde sozinho e vermelho no `make ci` com 4 em
+  vez de 1. A regra está em `docs/guide/testing.md` desde `14032e991`.
+- **Uma categoria de ajuda inventada passa no compilador e falha no teste.**
+  "Display & Appearance" não existe; a que existe é "Chat Display", e
+  `topics_by_category` conta 294 contra 295 até alguém consertar.
+
+**Gates** — `make ci` 18/18 · `make e2e.batch BATCH=shell` 59 passed ·
+`BATCH=media` 57 passed (é onde vivem as specs de espaço) · auditoria visual em
+três quadros, com um defeito encontrado.
+
+**Arquivos tocados** — migration `add_avatar_to_registered_nicks`,
+`accounts/avatars.ex`, `accounts/session.ex`, `services/registered_nick.ex`,
+`chat/roster.ex`, `components/ui/chat/nick_portrait.ex`,
+`components/ui/chat/chat_message.ex`, `components/ui/chat/message_row.ex`,
+`components/ui/chat/nicklist.ex`, `components/ui/chat/hover_card.ex`,
+`components/ui/shell/menu_bar_app.ex` + `start_menu_app.ex`,
+`chat_live/components/message_viewport.ex` + `message_row.ex` + `nicklist.ex` +
+`hover_card.ex`, `chat_live/stream_item.ex`, `chat_live/menu_toolbar_events.ex`,
+`chat_live/hover_events.ex`, `chat_live/pubsub_handlers.ex` + `presence.ex`,
+`live/app/space_live.ex`, `channels/space_channel.ex`,
+`assets/css/retrohex/features/space-character-picker.css`,
+`help_topics/features.ex`, `help_content/feature_character_portraits.html.heex`,
+`e2e/tests/chat-character-portraits.spec.ts`, e os catálogos `chat`, `help`,
+`help_features`, `ui`.
