@@ -360,23 +360,12 @@ if config_env() == :prod do
   #
   # Check `Plug.SSL` for all available options in `force_ssl`.
 
-  # ## Configuring the mailer
-  #
-  # In production you need to configure the mailer to use a different adapter.
-  # Here is an example configuration for Mailgun:
-  #
-  #     config :retro_hex_chat, RetroHexChat.Mailer,
-  #       adapter: Swoosh.Adapters.Mailgun,
-  #       api_key: System.get_env("MAILGUN_API_KEY"),
-  #       domain: System.get_env("MAILGUN_DOMAIN")
-  #
-  # Most non-SMTP adapters require an API client. Swoosh supports Req, Hackney,
-  # and Finch out-of-the-box. This configuration is typically done at
-  # compile-time in your config/prod.exs:
-  #
-  #     config :swoosh, :api_client, Swoosh.ApiClient.Req
-  #
-  # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+  # The mailer is configured further down, from RHC_SMTP_*. The generator's
+  # advice about transactional-mail APIs was deleted rather than left as a
+  # comment: `config :swoosh, :api_client, false` makes every one of them
+  # inert here, on purpose. This server talks SMTP to a relay its operator
+  # names — which may be one running on this same machine — or it sends no
+  # mail at all and offers none of the features that need it.
 
   config :retro_hex_chat, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
