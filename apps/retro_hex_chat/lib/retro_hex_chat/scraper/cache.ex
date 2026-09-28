@@ -8,6 +8,14 @@ defmodule RetroHexChat.Scraper.Cache do
   120 days. A miss here costs one indexed read, not one HTTP request, which is
   why a short TTL is affordable and why nothing needs to invalidate it by hand.
 
+  **Expiry is swept, not only read.** Checking an entry's age when somebody asks
+  for it never serves a stale page, and never frees one either: a page nobody
+  asks about again is never looked up, so nothing notices that it expired and it
+  stays resident. With feeds scraped around the clock that is a table that only
+  grows, and it grew until the machine had no memory left. The server sweeps on
+  a timer, so the table's size follows what is being read rather than everything
+  that was ever read.
+
   It also carries the in-flight claim. `:ets.insert_new/2` is atomic, so the first
   process to claim a URL is the only one that fetches it; the rest read what is
   already stored rather than opening a second connection to the same publisher.
@@ -22,6 +30,18 @@ defmodule RetroHexChat.Scraper.Cache do
   @default_table __MODULE__
   @page_ttl_ms :timer.hours(1)
   @inflight_ttl_ms :timer.seconds(30)
+
+  # Comfortably shorter than the page TTL: a sweep slower than the life of what
+  # it collects lets a whole generation pile up between passes.
+  @sweep_interval_ms :timer.minutes(5)
+
+  @doc "How long a cached page is served before it has to be read again."
+  @spec page_ttl_ms() :: pos_integer()
+  def page_ttl_ms, do: @page_ttl_ms
+
+  @doc "How long a fetch claim stands before it is treated as abandoned."
+  @spec inflight_ttl_ms() :: pos_integer()
+  def inflight_ttl_ms, do: @inflight_ttl_ms
 
   @spec start_link(keyword()) :: GenServer.on_start()
   def start_link(opts \\ []) do
@@ -103,13 +123,45 @@ defmodule RetroHexChat.Scraper.Cache do
     ArgumentError -> :ok
   end
 
+  @doc """
+  Drops every entry that has outlived its kind. Returns how many it removed.
+
+  Public because it is the whole point of this module's periodic work, and a
+  test that had to wait an hour to watch it happen would not be written.
+  """
+  @spec sweep(atom()) :: non_neg_integer()
+  def sweep(table \\ @default_table) do
+    now = now_ms()
+
+    :ets.select_delete(table, [
+      {{{:page, :_}, :_, :"$1"}, [{:<, :"$1", now - @page_ttl_ms}], [true]},
+      {{{:inflight, :_}, :"$1"}, [{:<, :"$1", now - @inflight_ttl_ms}], [true]}
+    ])
+  rescue
+    ArgumentError -> 0
+  end
+
   @impl true
   @spec init(keyword()) :: {:ok, map()}
   def init(opts) do
     table = Keyword.get(opts, :table_name, @default_table)
     _table = :ets.new(table, [:named_table, :public, :set, read_concurrency: true])
+    schedule_sweep()
     {:ok, %{table: table}}
   end
+
+  @impl true
+  @spec handle_info(:sweep, map()) :: {:noreply, map()}
+  def handle_info(:sweep, %{table: table} = state) do
+    _dropped = sweep(table)
+    schedule_sweep()
+    {:noreply, state}
+  end
+
+  def handle_info(_message, state), do: {:noreply, state}
+
+  @spec schedule_sweep() :: reference()
+  defp schedule_sweep, do: Process.send_after(self(), :sweep, @sweep_interval_ms)
 
   @spec page_key(String.t()) :: {:page, String.t()}
   defp page_key(url_hash), do: {:page, url_hash}
