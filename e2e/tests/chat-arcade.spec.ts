@@ -89,12 +89,22 @@ test.describe("In-chat Arcade", () => {
       await expect(start).toHaveAttribute("target", "_blank");
       await expect(start).toHaveAttribute("rel", "noopener");
 
-      const popupPromise = user.page.waitForEvent("popup");
+      // The first click only asks. The domain call that starts the game is held
+      // with the tab rather than fired beside it, so at this point nothing has
+      // begun — a reader who cancels here has not started a game.
       await start.click();
+      const confirm = user.page.getByTestId("open-tab-confirm-open");
+      await expect(confirm).toBeVisible();
+      await expect(
+        user.page.getByTestId("arcade-playing-state"),
+      ).not.toBeVisible();
+
+      const popupPromise = user.page.waitForEvent("popup");
+      await confirm.click();
       const gameWindow = await popupPromise;
       await gameWindow.waitForLoadState("domcontentloaded");
 
-      // One click did both: the tab opened and the server was told.
+      // Confirming did both: the tab opened and the server was told.
       await expect(user.page.getByTestId("arcade-playing-state")).toBeVisible();
       expect(await gameWindow.evaluate(() => window.opener === null)).toBe(
         true,

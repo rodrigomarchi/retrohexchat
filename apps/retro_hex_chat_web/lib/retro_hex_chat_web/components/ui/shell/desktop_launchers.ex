@@ -443,6 +443,8 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       link(Paths.play_path(), dgettext("ui", "Retro Games"), :icon_game_pong,
         target: "_blank",
         rel: "noopener",
+        confirm_tab: "surface",
+        confirm_label: dgettext("ui", "Retro Games"),
         disabled: !cap.chat?,
         testid: "desktop-launcher-item-retro-games"
       ),
@@ -624,6 +626,8 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       hreflang: Keyword.get(opts, :hreflang),
       target: Keyword.get(opts, :target),
       rel: Keyword.get(opts, :rel),
+      confirm_tab: Keyword.get(opts, :confirm_tab),
+      confirm_label: Keyword.get(opts, :confirm_label),
       class: Keyword.get(opts, :class),
       disabled: Keyword.get(opts, :disabled, false),
       testid: Keyword.fetch!(opts, :testid)
@@ -727,6 +731,8 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       rel={@item.rel}
       hreflang={@item.hreflang}
       data-locale={@item.locale}
+      data-confirm-tab={@item.confirm_tab}
+      data-confirm-label={@item.confirm_label}
       data-testid={@item.testid}
     >
       <.launcher_item_icon item={@item} class="h-8 w-8" />

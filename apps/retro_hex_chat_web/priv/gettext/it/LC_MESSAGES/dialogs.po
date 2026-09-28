@@ -51,8 +51,8 @@ msgstr "/join #channel"
 msgid "/say Hello!"
 msgstr "/say Hello!"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:326
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:327
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:328
 #, elixir-autogen, elixir-format
 msgid "1 URL"
 msgid_plural "%{count} URLs"
@@ -66,7 +66,10 @@ msgstr "Un bot utile"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:64
 #, elixir-autogen, elixir-format
-msgid "A retro-styled IRC chat platform inspired by the classic desktop chat clients of the late '90s. Real-time messaging, channels, peer-to-peer sessions, and arcade games — all in the browser."
+msgid ""
+"A retro-styled IRC chat platform inspired by the classic desktop chat "
+"clients of the late '90s. Real-time messaging, channels, peer-to-peer "
+"sessions, and arcade games — all in the browser."
 msgstr ""
 "Una piattaforma di chat IRC in stile retrò ispirata ai classici client di "
 "chat desktop della fine degli anni '90. Messaggistica in tempo reale, "
@@ -316,6 +319,7 @@ msgstr "Buddy Online"
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:212
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:316
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:393
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:112
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:85
 #: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:105
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:86
@@ -349,7 +353,7 @@ msgstr "Cambia nome"
 #: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:50
 #: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:62
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:195
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:256
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:257
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "Canale"
@@ -437,7 +441,9 @@ msgstr "Comandi"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:96
 #, elixir-autogen, elixir-format
-msgid "Configure limits to prevent message flooding in channels and private messages."
+msgid ""
+"Configure limits to prevent message flooding in channels and private "
+"messages."
 msgstr ""
 "Configurare i limiti per prevenire l'inondazione di messaggi nei canali e "
 "nei messaggi privati."
@@ -889,7 +895,7 @@ msgstr "Nuovo"
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:234
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:255
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:188
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:252
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:253
 #, elixir-autogen, elixir-format
 msgid "Nick"
 msgstr "Nick"
@@ -922,7 +928,7 @@ msgstr "Cognome"
 msgid "Nickname:"
 msgstr "Nickname:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:325
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:326
 #, elixir-autogen, elixir-format
 msgid "No URLs captured"
 msgstr "Nessun URL catturato"
@@ -1302,13 +1308,14 @@ msgstr "Il comando che attiva questa risposta (ad esempio!"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:71
 #, elixir-autogen, elixir-format
-msgid "This nickname is registered. Please enter the NickServ password to identify."
+msgid ""
+"This nickname is registered. Please enter the NickServ password to identify."
 msgstr ""
 "Questo soprannome è registrato. Si prega di inserire la password NickServ "
 "per identificare."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:202
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:260
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:261
 #, elixir-autogen, elixir-format
 msgid "Time"
 msgstr "Tempo"
@@ -1418,7 +1425,8 @@ msgstr "Versione %{version}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:74
 #, elixir-autogen, elixir-format
-msgid "Warning: This exceeds the flood protection limit. Messages may be throttled."
+msgid ""
+"Warning: This exceeds the flood protection limit. Messages may be throttled."
 msgstr ""
 "Attenzione: Questo supera il limite di protezione dell'alluvione. I messaggi"
 " possono essere sistemati."
@@ -1739,7 +1747,8 @@ msgstr "Cancella canale"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
 #, elixir-autogen, elixir-format
-msgid "Deletes this nickname registration after you confirm with its password."
+msgid ""
+"Deletes this nickname registration after you confirm with its password."
 msgstr ""
 "Elimina questa registrazione soprannome dopo aver confermato con la sua "
 "password."
@@ -1802,7 +1811,9 @@ msgstr "Sessione finale"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:96
 #, elixir-autogen, elixir-format
-msgid "End the P2P session with %{peer}? Any call, game or file transfer in progress will stop."
+msgid ""
+"End the P2P session with %{peer}? Any call, game or file transfer in "
+"progress will stop."
 msgstr ""
 "Fine della sessione P2P con %{peer}Qualsiasi chiamata, gioco o trasferimento"
 " di file in corso si fermerà."
@@ -3420,14 +3431,18 @@ msgstr "Questo rapporto non è disponibile su questo server."
 
 #: lib/retro_hex_chat_web/components/ui/system/os_panel.ex:60
 #, elixir-autogen, elixir-format
-msgid "The :os_mon application is not running on this node, so the host cannot be read."
+msgid ""
+"The :os_mon application is not running on this node, so the host cannot be "
+"read."
 msgstr ""
 "L'applicazione :os mon non è in esecuzione su questo nodo, quindi l'host non"
 " può essere letto."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/system_database_dialog.ex:95
 #, elixir-autogen, elixir-format
-msgid "The report could not be run — the database refused the query or an extension it needs is missing."
+msgid ""
+"The report could not be run — the database refused the query or an extension"
+" it needs is missing."
 msgstr ""
 "La relazione non potrebbe essere eseguita — la banca dati ha rifiutato la "
 "query o un'estensione di cui ha bisogno è mancante."
@@ -3444,7 +3459,9 @@ msgstr "Questo gruppo non dichiara metriche."
 
 #: lib/retro_hex_chat_web/components/ui/system/log_panel.ex:112
 #, elixir-autogen, elixir-format
-msgid "This node logs at %{primary} and drops anything below it before a window can see it, so nothing at %{selected} will ever appear here."
+msgid ""
+"This node logs at %{primary} and drops anything below it before a window can"
+" see it, so nothing at %{selected} will ever appear here."
 msgstr ""
 "Questo nodo registra a %{primary} e lascia cadere qualsiasi cosa sotto di "
 "esso prima che una finestra possa vederlo, quindi nulla a %{selected} "
@@ -3934,7 +3951,9 @@ msgstr "Questo gruppo di applicazioni richiede una sessione di chat."
 
 #: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:223
 #, elixir-autogen, elixir-format
-msgid "Connect first to use this desktop app folder. Help and Language remain available without a chat session."
+msgid ""
+"Connect first to use this desktop app folder. Help and Language remain "
+"available without a chat session."
 msgstr ""
 "Connettiti prima per usare questa cartella di applicazioni. Aiuto e Lingua "
 "restano disponibili senza una sessione di chat."
@@ -3976,7 +3995,9 @@ msgstr "Questo browser non può mostrare notifiche di sistema."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:346
 #, elixir-autogen, elixir-format
-msgid "Your browser is blocking notifications for this site. Allow them in the browser's site settings to turn these on."
+msgid ""
+"Your browser is blocking notifications for this site. Allow them in the "
+"browser's site settings to turn these on."
 msgstr ""
 "Il tuo browser sta bloccando le notifiche per questo sito. Consentile nelle "
 "impostazioni del sito per poterle attivare."
@@ -3993,8 +4014,11 @@ msgstr "Non è stato possibile caricare altre menzioni."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:52
 #, elixir-autogen, elixir-format
-msgid "Messages that write your nickname in a channel you were in show up here."
-msgstr "Qui compaiono i messaggi che scrivono il tuo soprannome in un canale in cui eri."
+msgid ""
+"Messages that write your nickname in a channel you were in show up here."
+msgstr ""
+"Qui compaiono i messaggi che scrivono il tuo soprannome in un canale in cui "
+"eri."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:50
 #, elixir-autogen, elixir-format
@@ -4003,8 +4027,13 @@ msgstr "Nessuno ti ha ancora menzionato."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:55
 #, elixir-autogen, elixir-format
-msgid "An operator can pin a message — the rules, a link, what was agreed — and it stays findable here after it scrolls away."
-msgstr "Un operatore può fissare un messaggio — le regole, un link, quello che è stato deciso — e resta rintracciabile qui dopo essere scomparso nello scorrimento."
+msgid ""
+"An operator can pin a message — the rules, a link, what was agreed — and it "
+"stays findable here after it scrolls away."
+msgstr ""
+"Un operatore può fissare un messaggio — le regole, un link, quello che è "
+"stato deciso — e resta rintracciabile qui dopo essere scomparso nello "
+"scorrimento."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:130
 #, elixir-autogen, elixir-format
@@ -4033,8 +4062,13 @@ msgstr "Impossibile caricare altri messaggi salvati."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:54
 #, elixir-autogen, elixir-format
-msgid "Right-click a message and choose Save to keep it here. Nobody else can see what you keep, and it stays after the conversation has scrolled away."
-msgstr "Fai clic destro su un messaggio e scegli Salva per conservarlo qui. Nessun altro vede ciò che conservi, e resta anche dopo che la conversazione è scorsa via."
+msgid ""
+"Right-click a message and choose Save to keep it here. Nobody else can see "
+"what you keep, and it stays after the conversation has scrolled away."
+msgstr ""
+"Fai clic destro su un messaggio e scegli Salva per conservarlo qui. Nessun "
+"altro vede ciò che conservi, e resta anche dopo che la conversazione è "
+"scorsa via."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:105
 #, elixir-autogen, elixir-format
@@ -4063,13 +4097,24 @@ msgstr "Archivio pubblico"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:344
 #, elixir-autogen, elixir-format
-msgid "Publish a page per day that anybody can read and a search engine can index. Only what is said from the moment you switch this on — nothing already in the channel is ever published. Switching it off takes the pages down."
-msgstr "Pubblica una pagina al giorno che chiunque può leggere e un motore di ricerca può indicizzare. Solo ciò che viene detto da quando lo attivi: nulla di già presente nel canale viene mai pubblicato. Spegnerlo toglie le pagine."
+msgid ""
+"Publish a page per day that anybody can read and a search engine can index. "
+"Only what is said from the moment you switch this on — nothing already in "
+"the channel is ever published. Switching it off takes the pages down."
+msgstr ""
+"Pubblica una pagina al giorno che chiunque può leggere e un motore di "
+"ricerca può indicizzare. Solo ciò che viene detto da quando lo attivi: nulla"
+" di già presente nel canale viene mai pubblicato. Spegnerlo toglie le "
+"pagine."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:49
 #, elixir-autogen, elixir-format
-msgid "A message that somebody answered shows how many replies it collected. Choose that to read them together."
-msgstr "Un messaggio a cui qualcuno ha risposto mostra quante risposte ha raccolto. Scegli quello per leggerle insieme."
+msgid ""
+"A message that somebody answered shows how many replies it collected. Choose"
+" that to read them together."
+msgstr ""
+"Un messaggio a cui qualcuno ha risposto mostra quante risposte ha raccolto. "
+"Scegli quello per leggerle insieme."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:120
 #, elixir-autogen, elixir-format
@@ -4103,13 +4148,20 @@ msgstr "Non c'è ancora niente in programma."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/events_dialog.ex:38
 #, elixir-autogen, elixir-format
-msgid "Use /event 2h Tuesday tournament to put something on the calendar. Everyone in the channel sees it and can say they are going."
-msgstr "Usa /event 2h torneo del martedì per mettere qualcosa in calendario. Tutti nel canale lo vedono e possono dire che ci sono."
+msgid ""
+"Use /event 2h Tuesday tournament to put something on the calendar. Everyone "
+"in the channel sees it and can say they are going."
+msgstr ""
+"Usa /event 2h torneo del martedì per mettere qualcosa in calendario. Tutti "
+"nel canale lo vedono e possono dire che ci sono."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/events_dialog.ex:43
 #, elixir-autogen, elixir-format
-msgid "When an operator schedules something, it shows up here and in the conversation."
-msgstr "Quando un operatore programma qualcosa, compare qui e nella conversazione."
+msgid ""
+"When an operator schedules something, it shows up here and in the "
+"conversation."
+msgstr ""
+"Quando un operatore programma qualcosa, compare qui e nella conversazione."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:77
 #, elixir-autogen, elixir-format
@@ -4120,8 +4172,11 @@ msgstr[1] "%{count} di %{max} usati"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:96
 #, elixir-autogen, elixir-format
-msgid "Add one and everybody here can write it between two colons, like :shrug:."
-msgstr "Aggiungine uno e tutti qui potranno scriverlo tra due due punti, come :shrug:."
+msgid ""
+"Add one and everybody here can write it between two colons, like :shrug:."
+msgstr ""
+"Aggiungine uno e tutti qui potranno scriverlo tra due due punti, come "
+":shrug:."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/server_emoji_dialog.ex:117
 #, elixir-autogen, elixir-format
@@ -4158,3 +4213,53 @@ msgstr "Scegli..."
 #, elixir-autogen, elixir-format
 msgid "no picture chosen"
 msgstr "nessuna immagine scelta"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:84
+#, elixir-autogen, elixir-format
+msgid "It opens in a new browser tab. This one stays where it is."
+msgstr "Si apre in una nuova scheda del browser. Questa resta dov'è."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:159
+#, elixir-autogen, elixir-format
+msgid "Leaving RetroHexChat"
+msgstr "Stai uscendo da RetroHexChat"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:103
+#, elixir-autogen, elixir-format
+msgid "Open"
+msgstr "Apri"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:160
+#, elixir-autogen, elixir-format
+msgid "Open in a New Tab"
+msgstr "Apri in una nuova scheda"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:173
+#, elixir-autogen, elixir-format
+msgid "This link goes somewhere outside RetroHexChat."
+msgstr "Questo link porta fuori da RetroHexChat."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:168
+#, elixir-autogen, elixir-format
+msgid "This link goes to %{host}, which is not part of RetroHexChat."
+msgstr "Questo link porta a %{host}, che non fa parte di RetroHexChat."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:182
+#, elixir-autogen, elixir-format
+msgid "This opens %{name}."
+msgstr "Questo apre %{name}."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:185
+#, elixir-autogen, elixir-format
+msgid "This opens another part of RetroHexChat."
+msgstr "Questo apre un'altra parte di RetroHexChat."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:176
+#, elixir-autogen, elixir-format
+msgid "This opens the attachment %{name}."
+msgstr "Questo apre l'allegato %{name}."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:179
+#, elixir-autogen, elixir-format
+msgid "This opens the attachment."
+msgstr "Questo apre l'allegato."

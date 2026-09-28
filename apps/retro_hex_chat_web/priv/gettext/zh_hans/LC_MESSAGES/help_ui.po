@@ -553,6 +553,7 @@ msgstr "节"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_install_app.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:28
@@ -725,6 +726,7 @@ msgid "UI Overview"
 msgstr "UI 概览"
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:114
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
@@ -2740,3 +2742,43 @@ msgstr "开始 ▸ 工具 ▸ 已保存的消息。无论里面有没有内容�
 #, elixir-autogen, elixir-format
 msgid "The row stays and says the message was deleted, without showing what it said. It disappears only if the message is removed from the server entirely."
 msgstr "这一行会保留，并说明消息已被删除，但不显示它说过什么。只有当消息被完全从服务器移除时，这一行才会消失。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Answering it"
+msgstr "如何回应"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "For something of ours it names it — the conference in a channel, the file, the game — so you can tell which door you pressed. For a link that leaves RetroHexChat it names the site and prints the whole address underneath. Read that address before pressing Open, especially when the link came from somebody you do not know: a link pretending to be somewhere else only ever gives itself away there."
+msgstr "对于我们自己的内容，它会写出名称——某个频道的会议、文件、游戏——让你知道自己按下的是哪扇门。对于离开 RetroHexChat 的链接，它会写出站点名称，并在下方打印完整地址。在按下「打开」之前请阅读这个地址，尤其当链接来自你不认识的人时：伪装成别处的链接只会在那里露出破绽。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Link previews"
+msgstr "链接预览"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Open a link the way your browser already opens things in a background tab and you are not asked: middle-click it, hold Ctrl (Cmd on a Mac) while clicking, or use your browser's own right-click menu. Confirming a tab you explicitly asked for would be noise, so those go straight through. There is no setting to turn the question off — the useful part of it is the address, and the address is different every time."
+msgstr "按照浏览器本来在后台标签页中打开内容的方式打开链接，就不会被询问：中键点击、按住 Ctrl（Mac 上是 Cmd）点击，或使用浏览器自己的右键菜单。为你明确要求的标签页再做确认只是噪音，所以这些会直接通过。没有设置可以关闭这个询问——它有用的部分是地址，而地址每次都不同。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Open opens it in a new tab, and the tab you are in stays exactly where it is — your channels, your conversation, your place in the scrollback. Cancel closes the question and does nothing else; so do Escape and a click outside. Nothing is left half-done: cancelling a game you were about to launch means the game was never launched."
+msgstr "「打开」会在新标签页中打开它，而你所在的标签页保持原样——你的频道、你的会话、你在历史记录中的位置。「取消」只关闭这个询问，不做别的；Esc 和点击外部也是一样。不会留下做了一半的事：取消一个你正要启动的游戏，意味着这个游戏从未启动。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Skipping it"
+msgstr "跳过询问"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Some things open in a second browser tab instead of taking over the one you are reading: a conference, a space, a game, an attachment, and any link somebody posted. Before that happens you get a short question naming where you are going, and nothing opens until you answer it."
+msgstr "有些内容会在第二个浏览器标签页中打开，而不是占用你正在阅读的这个：会议、空间、游戏、附件，以及任何人发布的链接。在此之前，你会看到一个简短的询问，说明你将前往哪里，在你回答之前不会打开任何内容。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "What it tells you"
+msgstr "它告诉你什么"

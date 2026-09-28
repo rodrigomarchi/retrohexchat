@@ -1172,6 +1172,15 @@
   id={RetroHexChatWeb.ChatLive.Components.PasteConfirmDialog.id()}
 />
 
+<%!-- Hosts the click gate for every door in the chat that opens a tab. Its
+      mount element carries the hook on purpose: the listener is delegated on
+      `document`, and a hook that pushes must sit on something small and stable
+      rather than on the shell it would ref-lock. --%>
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.OpenTabConfirmDialog}
+  id={RetroHexChatWeb.ChatLive.Components.OpenTabConfirmDialog.id()}
+/>
+
 <.live_component
   module={RetroHexChatWeb.ChatLive.Components.InviteQueueDialog}
   id={RetroHexChatWeb.ChatLive.Components.InviteQueueDialog.id()}

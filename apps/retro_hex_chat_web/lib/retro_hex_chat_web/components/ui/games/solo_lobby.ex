@@ -184,9 +184,15 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           </.button>
           <%!-- An anchor, not a scripted `window.open`: `rel="noopener"` is
                 what gives the game its own event loop, and without it the tab
-                shares this one — measured at 1203 ms against 12 ms. The click
-                still tells the server the session started; a real `href` is
-                left alone by the click binding. --%>
+                shares this one — measured at 1203 ms against 12 ms.
+
+                The click that tells the server the session started is held with
+                the tab rather than fired beside it. `OpenTabConfirmHook` asks
+                first, and `data-confirm-event` is what the confirmation replays
+                — so a reader who cancels has not started a game. The
+                `phx-click` stays for the case the gate is not there to catch it
+                (no JavaScript at all), where the anchor and the click go
+                together exactly as they used to. --%>
           <.button
             size="sm"
             class="font-bold"
@@ -195,6 +201,9 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             rel="noopener"
             phx-click={@on_select_game}
             phx-value-game-id={@previewed_game.id}
+            data-confirm-tab="external"
+            data-confirm-event={@on_select_game}
+            data-confirm-params={Jason.encode!(%{"game-id" => @previewed_game.id})}
             data-testid={"solo-game-start-#{@previewed_game.id}"}
           >
             <:icon><Icons.icon_btn_join class="w-4 h-4" /></:icon>
@@ -320,6 +329,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           href={Paths.arcade_path(@game_id)}
           target="_blank"
           rel="noopener"
+          data-confirm-tab="external"
           data-testid="arcade-reopen"
         >
           <:icon><Icons.icon_btn_open class="w-4 h-4" /></:icon>

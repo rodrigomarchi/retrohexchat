@@ -541,6 +541,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_install_app.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:28
@@ -713,6 +714,7 @@ msgid "UI Overview"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:114
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
@@ -2616,4 +2618,44 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "The row stays and says the message was deleted, without showing what it said. It disappears only if the message is removed from the server entirely."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Answering it"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "For something of ours it names it — the conference in a channel, the file, the game — so you can tell which door you pressed. For a link that leaves RetroHexChat it names the site and prints the whole address underneath. Read that address before pressing Open, especially when the link came from somebody you do not know: a link pretending to be somewhere else only ever gives itself away there."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Link previews"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Open a link the way your browser already opens things in a background tab and you are not asked: middle-click it, hold Ctrl (Cmd on a Mac) while clicking, or use your browser's own right-click menu. Confirming a tab you explicitly asked for would be noise, so those go straight through. There is no setting to turn the question off — the useful part of it is the address, and the address is different every time."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Open opens it in a new tab, and the tab you are in stays exactly where it is — your channels, your conversation, your place in the scrollback. Cancel closes the question and does nothing else; so do Escape and a click outside. Nothing is left half-done: cancelling a game you were about to launch means the game was never launched."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Skipping it"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Some things open in a second browser tab instead of taking over the one you are reading: a conference, a space, a game, an attachment, and any link somebody posted. Before that happens you get a short question naming where you are going, and nothing opens until you answer it."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "What it tells you"
 msgstr ""

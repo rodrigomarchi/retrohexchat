@@ -61,6 +61,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChatWeb.ChatLive.CoreEvents
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelper
   alias RetroHexChatWeb.ChatLive.Helpers.LobbyInvite
+  alias RetroHexChatWeb.ChatLive.OpenTabEvents
   alias RetroHexChatWeb.ChatLive.SaveEvents
   alias RetroHexChatWeb.ChatLive.ThreadEvents
   alias RetroHexChatWeb.ChatLive.UiActions.Invite
@@ -580,11 +581,14 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
      |> context_channel_unmute(channel, nick)}
   end
 
+  # Asks before it opens, like every other door. It used to push `open_url`
+  # straight at the viewport hook's `window.open`, which is now reached only by
+  # the help shortcut.
   def handle_event("ctx_chat_open_url", %{"url" => url}, socket) do
     {:halt,
      socket
      |> close_chat_context_menu()
-     |> push_event("open_url", %{url: url})}
+     |> OpenTabEvents.confirm(url)}
   end
 
   def handle_event("ctx_chat_copy_url", %{"url" => url}, socket) do

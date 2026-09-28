@@ -59,6 +59,24 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           )
       },
       %{
+        id: "ui-open-tab-confirm",
+        title: dgettext("help", "Opening Something in a New Tab"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          dgettext("help", "new tab"),
+          dgettext("help", "external link"),
+          dgettext("help", "leaving the site"),
+          dgettext("help", "open link")
+        ],
+        icon: :icon_btn_open,
+        description:
+          dgettext(
+            "help",
+            "What the question is for when a link is about to open a second tab, and how to skip it."
+          ),
+        see_also: ["feature-url-catcher", "feature-link-previews"]
+      },
+      %{
         id: "ui-pinned-window",
         title: dgettext("help", "Pinned Window"),
         category: dgettext("help", "User Interface"),

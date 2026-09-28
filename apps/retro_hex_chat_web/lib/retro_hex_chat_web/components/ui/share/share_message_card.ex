@@ -101,6 +101,8 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
         href={@enter_path}
         target="_blank"
         rel="noopener"
+        data-confirm-tab="surface"
+        data-confirm-label={heading(@subject, @card)}
         size="sm"
         class="shrink-0"
         data-testid="share-message-enter"

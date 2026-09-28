@@ -869,9 +869,16 @@ export class ChatPage {
     await this.openGamesFolder();
     await expect(this.retroGamesMenuItem).toBeVisible();
 
+    // Asked first, like every door that opens a tab: the entry raises the
+    // question and the dialog's Open is the anchor that carries you out.
+    await this.retroGamesMenuItem.click();
+
+    const confirm = this.page.getByTestId("open-tab-confirm-open");
+    await expect(confirm).toBeVisible();
+
     const [games] = await Promise.all([
       this.page.context().waitForEvent("page"),
-      this.retroGamesMenuItem.click(),
+      confirm.click(),
     ]);
 
     await games.waitForLoadState("domcontentloaded");

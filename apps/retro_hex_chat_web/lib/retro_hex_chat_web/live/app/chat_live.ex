@@ -750,6 +750,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   defp event_hooks do
     [
       {:emoji_events, &ChatLive.EmojiEvents.handle_event/3},
+      {:open_tab_events, &ChatLive.OpenTabEvents.handle_event/3},
       {:url_catcher_events, &ChatLive.UrlCatcherEvents.handle_event/3},
       {:pm_typing_events, &ChatLive.PmTypingEvents.handle_event/3},
       {:alias_events, &ChatLive.AliasEvents.handle_event/3},

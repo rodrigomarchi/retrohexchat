@@ -1,0 +1,36 @@
+<p>
+  {dgettext(
+    "help_ui",
+    "Some things open in a second browser tab instead of taking over the one you are reading: a conference, a space, a game, an attachment, and any link somebody posted. Before that happens you get a short question naming where you are going, and nothing opens until you answer it."
+  )}
+</p>
+
+<.help_h4 icon={:icon_globe}>{dgettext("help_ui", "What it tells you")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "For something of ours it names it — the conference in a channel, the file, the game — so you can tell which door you pressed. For a link that leaves RetroHexChat it names the site and prints the whole address underneath. Read that address before pressing Open, especially when the link came from somebody you do not know: a link pretending to be somewhere else only ever gives itself away there."
+  )}
+</p>
+
+<.help_h4 icon={:icon_btn_open}>{dgettext("help_ui", "Answering it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Open opens it in a new tab, and the tab you are in stays exactly where it is — your channels, your conversation, your place in the scrollback. Cancel closes the question and does nothing else; so do Escape and a click outside. Nothing is left half-done: cancelling a game you were about to launch means the game was never launched."
+  )}
+</p>
+
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_ui", "Skipping it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Open a link the way your browser already opens things in a background tab and you are not asked: middle-click it, hold Ctrl (Cmd on a Mac) while clicking, or use your browser's own right-click menu. Confirming a tab you explicitly asked for would be noise, so those go straight through. There is no setting to turn the question off — the useful part of it is the address, and the address is different every time."
+  )}
+</p>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-url-catcher">{dgettext("help_ui", "URL Catcher")}</.help_link>
+  | <.help_link topic="feature-link-previews">{dgettext("help_ui", "Link previews")}</.help_link>
+</p>

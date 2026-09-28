@@ -345,6 +345,8 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             disabled={!@chat?}
             target="_blank"
             rel="noopener"
+            data-confirm-tab="surface"
+            data-confirm-label={dgettext("ui", "Retro Games")}
             testid="start-menu-item-retro-games"
           />
           <%!-- The arcade keeps scores against a nick, so it needs one that is

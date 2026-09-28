@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **234 spec files** under `e2e/tests/`.
-- **490 Playwright `test()` cases**.
-- **485 documented flows**, 484 done, 1 not done.
+- **235 spec files** under `e2e/tests/`.
+- **493 Playwright `test()` cases**.
+- **488 documented flows**, 487 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -474,6 +474,9 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | O26 | A card landing decorates its message in place, without reordering the conversation | `tests/chat-link-card.spec.ts` | done |
 | O27 | A link in the first private message is captured and carded on both sides, once | `tests/chat-pm-link-card.spec.ts` | done |
 | O28 | Reacting from the hover bar reaches the other person's screen, and clicking again removes it | `tests/chat-message-actions.spec.ts` | done |
+| O29 | A link posted in a channel asks before opening a tab, naming the host and the whole address | `tests/chat-open-tab-confirm.spec.ts` | done |
+| O30 | Cancelling the question opens nothing and leaves the conversation where it was | `tests/chat-open-tab-confirm.spec.ts` | done |
+| O31 | Ctrl-clicking a link skips the question, because it already asked for a tab | `tests/chat-open-tab-confirm.spec.ts` | done |
 
 ### P - Persistence, Reconnect, History, No-Focus-Steal
 

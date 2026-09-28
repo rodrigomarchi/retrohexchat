@@ -51,8 +51,8 @@ msgstr "/join #channel"
 msgid "/say Hello!"
 msgstr "/say Hello!"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:326
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:327
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:328
 #, elixir-autogen, elixir-format
 msgid "1 URL"
 msgid_plural "%{count} URLs"
@@ -313,6 +313,7 @@ msgstr "Buddy Online"
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:212
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:316
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:393
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:112
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:85
 #: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:105
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:86
@@ -346,7 +347,7 @@ msgstr "Change Nickname"
 #: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:50
 #: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:62
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:195
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:256
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:257
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "Channel"
@@ -884,7 +885,7 @@ msgstr "New"
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:234
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:255
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:188
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:252
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:253
 #, elixir-autogen, elixir-format
 msgid "Nick"
 msgstr "Nick"
@@ -917,7 +918,7 @@ msgstr "Nickname"
 msgid "Nickname:"
 msgstr "Nickname:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:325
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:326
 #, elixir-autogen, elixir-format
 msgid "No URLs captured"
 msgstr "No URLs captured"
@@ -1298,7 +1299,7 @@ msgid "This nickname is registered. Please enter the NickServ password to identi
 msgstr "This nickname is registered. Please enter the NickServ password to identify."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:202
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:260
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:261
 #, elixir-autogen, elixir-format
 msgid "Time"
 msgstr "Time"
@@ -4116,3 +4117,53 @@ msgstr "Choose..."
 #, elixir-autogen, elixir-format
 msgid "no picture chosen"
 msgstr "no picture chosen"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:84
+#, elixir-autogen, elixir-format
+msgid "It opens in a new browser tab. This one stays where it is."
+msgstr "It opens in a new browser tab. This one stays where it is."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:159
+#, elixir-autogen, elixir-format
+msgid "Leaving RetroHexChat"
+msgstr "Leaving RetroHexChat"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:103
+#, elixir-autogen, elixir-format
+msgid "Open"
+msgstr "Open"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:160
+#, elixir-autogen, elixir-format
+msgid "Open in a New Tab"
+msgstr "Open in a New Tab"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:173
+#, elixir-autogen, elixir-format
+msgid "This link goes somewhere outside RetroHexChat."
+msgstr "This link goes somewhere outside RetroHexChat."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:168
+#, elixir-autogen, elixir-format
+msgid "This link goes to %{host}, which is not part of RetroHexChat."
+msgstr "This link goes to %{host}, which is not part of RetroHexChat."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:182
+#, elixir-autogen, elixir-format
+msgid "This opens %{name}."
+msgstr "This opens %{name}."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:185
+#, elixir-autogen, elixir-format
+msgid "This opens another part of RetroHexChat."
+msgstr "This opens another part of RetroHexChat."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:176
+#, elixir-autogen, elixir-format
+msgid "This opens the attachment %{name}."
+msgstr "This opens the attachment %{name}."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:179
+#, elixir-autogen, elixir-format
+msgid "This opens the attachment."
+msgstr "This opens the attachment."

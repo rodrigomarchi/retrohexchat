@@ -575,6 +575,7 @@ msgstr "Sekcje"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_install_app.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:28
@@ -756,6 +757,7 @@ msgid "UI Overview"
 msgstr "Przegląd interfejsu użytkownika"
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:114
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
@@ -3170,3 +3172,43 @@ msgstr "Start ▸ Narzędzia ▸ Zapisane wiadomości. Okno otwiera się niezale
 #, elixir-autogen, elixir-format
 msgid "The row stays and says the message was deleted, without showing what it said. It disappears only if the message is removed from the server entirely."
 msgstr "Wiersz zostaje i informuje, że wiadomość usunięto, nie pokazując jej treści. Znika dopiero wtedy, gdy wiadomość zostanie całkowicie usunięta z serwera."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Answering it"
+msgstr "Odpowiadanie"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "For something of ours it names it — the conference in a channel, the file, the game — so you can tell which door you pressed. For a link that leaves RetroHexChat it names the site and prints the whole address underneath. Read that address before pressing Open, especially when the link came from somebody you do not know: a link pretending to be somewhere else only ever gives itself away there."
+msgstr "Dla czegoś naszego podaje nazwę — konferencji na kanale, pliku, gry — abyś wiedział, które drzwi otworzyłeś. Dla odnośnika opuszczającego RetroHexChat podaje witrynę i wypisuje pod nią pełny adres. Przeczytaj ten adres przed naciśnięciem Otwórz, zwłaszcza gdy odnośnik pochodzi od kogoś, kogo nie znasz: odnośnik udający inne miejsce zdradza się tylko tam."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Link previews"
+msgstr "Podglądy odnośników"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Open a link the way your browser already opens things in a background tab and you are not asked: middle-click it, hold Ctrl (Cmd on a Mac) while clicking, or use your browser's own right-click menu. Confirming a tab you explicitly asked for would be noise, so those go straight through. There is no setting to turn the question off — the useful part of it is the address, and the address is different every time."
+msgstr "Otwórz odnośnik tak, jak przeglądarka już otwiera rzeczy w karcie w tle, i nie zostaniesz zapytany: kliknij środkowym przyciskiem, przytrzymaj Ctrl (Cmd na Macu) podczas klikania lub użyj własnego menu kontekstowego przeglądarki. Potwierdzanie karty, o którą wyraźnie poprosiłeś, byłoby szumem, więc te przechodzą od razu. Nie ma ustawienia wyłączającego pytanie — przydatną jego częścią jest adres, a adres jest inny za każdym razem."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Open opens it in a new tab, and the tab you are in stays exactly where it is — your channels, your conversation, your place in the scrollback. Cancel closes the question and does nothing else; so do Escape and a click outside. Nothing is left half-done: cancelling a game you were about to launch means the game was never launched."
+msgstr "Otwórz otwiera to w nowej karcie, a karta, w której jesteś, zostaje dokładnie tam, gdzie była — twoje kanały, twoja rozmowa, twoje miejsce w historii. Anuluj zamyka pytanie i nie robi nic więcej; Esc i kliknięcie poza oknem działają tak samo. Nic nie zostaje w połowie: anulowanie gry, którą miałeś uruchomić, oznacza, że gra nigdy nie została uruchomiona."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Skipping it"
+msgstr "Pomijanie pytania"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Some things open in a second browser tab instead of taking over the one you are reading: a conference, a space, a game, an attachment, and any link somebody posted. Before that happens you get a short question naming where you are going, and nothing opens until you answer it."
+msgstr "Niektóre rzeczy otwierają się w drugiej karcie przeglądarki, zamiast zajmować tę, którą czytasz: konferencja, przestrzeń, gra, załącznik i każdy odnośnik, który ktoś opublikował. Wcześniej pojawia się krótkie pytanie wskazujące cel, i nic nie otworzy się, dopóki nie odpowiesz."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "What it tells you"
+msgstr "Co mówi"

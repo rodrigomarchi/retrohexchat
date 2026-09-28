@@ -588,6 +588,13 @@ defmodule RetroHexChatWeb.ShowcaseCatalog do
       icon: :icon_warning
     },
     %{
+      id: "open-tab-confirm",
+      group: :dialogs,
+      module: Dialogs.OpenTabConfirmDialogPage,
+      label: dgettext_noop("showcase", "Open Tab Confirmation"),
+      icon: :icon_btn_open
+    },
+    %{
       id: "address-book",
       group: :dialogs,
       module: Dialogs.AddressBookPage,

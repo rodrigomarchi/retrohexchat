@@ -557,6 +557,7 @@ msgstr "セクション"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_install_app.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:28
@@ -730,6 +731,7 @@ msgid "UI Overview"
 msgstr "UIの概要"
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:114
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
@@ -2840,3 +2842,43 @@ msgstr "スタート ▸ ツール ▸ 保存したメッセージ。中が空�
 #, elixir-autogen, elixir-format
 msgid "The row stays and says the message was deleted, without showing what it said. It disappears only if the message is removed from the server entirely."
 msgstr "行は残り、メッセージが削除されたことを伝えます。内容は表示されません。行が消えるのは、メッセージがサーバーから完全に取り除かれたときだけです。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Answering it"
+msgstr "確認への回答"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "For something of ours it names it — the conference in a channel, the file, the game — so you can tell which door you pressed. For a link that leaves RetroHexChat it names the site and prints the whole address underneath. Read that address before pressing Open, especially when the link came from somebody you do not know: a link pretending to be somewhere else only ever gives itself away there."
+msgstr "当サービス内のものであれば、チャンネルの会議、ファイル、ゲームといった名前が示され、どの入口を押したのか分かります。RetroHexChat の外に出るリンクであれば、サイト名とその下に完全なアドレスが表示されます。特に知らない人から届いたリンクでは、「開く」を押す前にそのアドレスを読んでください。別の場所を装ったリンクは、そこでしか正体を明かしません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Link previews"
+msgstr "リンクプレビュー"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Open a link the way your browser already opens things in a background tab and you are not asked: middle-click it, hold Ctrl (Cmd on a Mac) while clicking, or use your browser's own right-click menu. Confirming a tab you explicitly asked for would be noise, so those go straight through. There is no setting to turn the question off — the useful part of it is the address, and the address is different every time."
+msgstr "ブラウザーがすでに背景タブで開くのと同じ方法でリンクを開けば、確認は表示されません。中クリック、Ctrl（Mac では Cmd）を押しながらクリック、またはブラウザー自身の右クリックメニューを使ってください。自分で明示的に求めたタブをあらためて確認するのは雑音になるため、これらはそのまま通ります。確認を無効にする設定はありません。役に立つのはアドレスであり、アドレスは毎回違います。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Open opens it in a new tab, and the tab you are in stays exactly where it is — your channels, your conversation, your place in the scrollback. Cancel closes the question and does nothing else; so do Escape and a click outside. Nothing is left half-done: cancelling a game you were about to launch means the game was never launched."
+msgstr "「開く」を押すと新しいタブで開き、いま見ているタブはそのままの状態で残ります — チャンネル、会話、スクロール位置もそのままです。「キャンセル」は確認を閉じるだけで、ほかには何もしません。Esc と外側のクリックも同じです。中途半端な状態は残りません。開始しようとしていたゲームをキャンセルすれば、そのゲームは開始されていません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Skipping it"
+msgstr "確認を省略する"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Some things open in a second browser tab instead of taking over the one you are reading: a conference, a space, a game, an attachment, and any link somebody posted. Before that happens you get a short question naming where you are going, and nothing opens until you answer it."
+msgstr "会議、スペース、ゲーム、添付ファイル、そして誰かが投稿したリンクなど、一部のものは読んでいるタブを置き換えるのではなく 2 つ目のブラウザータブで開きます。その前に移動先を示す短い確認が表示され、答えるまで何も開きません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "What it tells you"
+msgstr "確認に表示される内容"

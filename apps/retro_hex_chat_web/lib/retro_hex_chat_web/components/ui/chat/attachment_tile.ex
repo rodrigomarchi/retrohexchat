@@ -53,6 +53,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
       href={attachment_href(@attachment)}
       target="_blank"
       rel="noopener"
+      data-confirm-tab="attachment"
+      data-confirm-label={confirm_label(@attachment)}
       class="block w-60 max-w-full border border-border bg-surface text-xs shadow-retro-field hover:bg-muted"
       data-testid="message-attachment"
       data-preview-kind={preview_kind(@attachment)}
@@ -173,6 +175,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
           href={attachment_href(@attachment)}
           target="_blank"
           rel="noopener"
+          data-confirm-tab="attachment"
+          data-confirm-label={confirm_label(@attachment)}
           class="shrink-0 font-bold text-foreground hover:underline"
           data-testid="message-attachment-download"
         >
@@ -203,6 +207,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
           href={attachment_href(@attachment)}
           target="_blank"
           rel="noopener"
+          data-confirm-tab="attachment"
+          data-confirm-label={confirm_label(@attachment)}
           class="block max-w-[28rem] truncate font-mono font-bold text-foreground hover:underline"
           data-testid="message-attachment-download"
         >
@@ -224,6 +230,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
         href={preview_href(@attachment)}
         target="_blank"
         rel="noopener"
+        data-confirm-tab="attachment"
+        data-confirm-label={confirm_label(@attachment)}
         class="flex shrink-0 items-center border-l border-border bg-muted px-2 font-bold hover:bg-surface"
         data-testid="message-attachment-preview"
       >
@@ -259,6 +267,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
         href={attachment_href(@attachment)}
         target="_blank"
         rel="noopener"
+        data-confirm-tab="attachment"
+        data-confirm-label={confirm_label(@attachment)}
         class="shrink-0 font-bold text-foreground hover:underline"
         data-testid="message-attachment-download"
       >
@@ -318,6 +328,17 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
 
   defp filename(attachment) do
     Map.get(attachment, :filename) || Map.get(attachment, "filename") || dgettext("chat", "file")
+  end
+
+  # What the confirmation may call this attachment, which is whatever the tile
+  # itself calls it. A recording's filename is a timestamp the recorder made up
+  # and the voice tile deliberately never shows it — so neither does the dialog,
+  # or the name is back in the markup by a side door.
+  defp confirm_label(attachment) do
+    case tile_kind(attachment) do
+      "voice" -> dgettext("chat", "Voice message")
+      _named -> filename(attachment)
+    end
   end
 
   defp attachment_byte_size(attachment) do

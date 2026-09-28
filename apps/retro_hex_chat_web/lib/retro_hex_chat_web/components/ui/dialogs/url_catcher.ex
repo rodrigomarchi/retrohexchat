@@ -236,6 +236,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                 href={entry.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-confirm-tab="external"
                 class="uc-entry-url text-link hover:underline"
               >
                 {entry.url}

@@ -77,7 +77,19 @@ export async function followCard(
 
   await expect(card).toBeVisible({ timeout });
 
-  const [opened] = await Promise.all([ctx.waitForEvent("page"), card.click()]);
+  // Every door in the chat asks before it opens a tab, so following a card is two
+  // clicks now: the card raises the question, and the dialog's Open is the anchor
+  // that actually carries the reader out. Absorbed here rather than in each spec
+  // — this helper is the one place they all go through.
+  await card.click();
+
+  const confirm = page.getByTestId("open-tab-confirm-open");
+  await expect(confirm).toBeVisible({ timeout });
+
+  const [opened] = await Promise.all([
+    ctx.waitForEvent("page"),
+    confirm.click(),
+  ]);
 
   await opened.waitForLoadState("domcontentloaded");
 

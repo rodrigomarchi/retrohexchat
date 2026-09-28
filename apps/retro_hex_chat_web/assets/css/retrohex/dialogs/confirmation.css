@@ -91,6 +91,30 @@
   margin: 0;
 }
 
+/* The destination of an external link, shown in full. It wraps instead of
+   truncating on purpose: a cut URL hides the path, and the path is where a link
+   pretending to be somewhere else does its pretending. Two lines is enough for
+   the host plus a readable head of the path; the rest is the reader's to scroll
+   past, not ours to hide. */
+.otc-url {
+  margin: 0;
+  padding: 6px 8px;
+  min-width: 0;
+  max-height: 2.9em;
+  overflow: hidden;
+  background: #ffffff;
+  color: #000000;
+  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
 .cd-dialog-footer {
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -123,4 +147,3 @@
     height: 28px;
   }
 }
-
