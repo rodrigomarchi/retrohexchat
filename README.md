@@ -366,6 +366,46 @@ SUN_IP=              # production server IP
 SSH_PORT=2222        # SSH port, optional; defaults to 2222
 ```
 
+### Optional Environment Variables
+
+Two capabilities are off until the operator turns them on, and each is off as a
+whole: no half-configured state, and no control rendered anywhere for something
+that cannot work. The server runs correctly without either.
+
+**Web push** — notifying somebody with the tab closed. Generate the pair with
+`mix web_push_ex.vapid`. All three or none: a key without its partner would
+replace working config with something that cannot sign.
+
+```bash
+RHC_VAPID_PUBLIC_KEY=    # from mix web_push_ex.vapid
+RHC_VAPID_PRIVATE_KEY=   # from the same pair
+RHC_VAPID_SUBJECT=       # mailto:you@example.com — how a push service reaches you
+```
+
+**E-mail** — password recovery, address verification, and the warning before a
+nickname expires. SMTP rather than a transactional-mail API, because requiring
+an account with a third party to let somebody recover a password would
+contradict a product you host yourself. Needs a relay and a from-address; the
+rest has defaults.
+
+```bash
+RHC_SMTP_RELAY=          # smtp.example.com
+RHC_SMTP_FROM=           # noreply@example.com
+RHC_SMTP_FROM_NAME=      # optional; defaults to RetroHexChat
+RHC_SMTP_USERNAME=       # optional; without it the relay is used unauthenticated
+RHC_SMTP_PASSWORD=       # optional
+RHC_SMTP_PORT=587        # optional; defaults to 587, always TLS
+```
+
+**Retention windows** — how long an unused nickname or channel is kept. Both are
+read at boot and a malformed value fails the boot rather than falling back in
+silence.
+
+```bash
+RHC_NICK_EXPIRY_DAYS=180     # optional; defaults to 180
+RHC_CHANNEL_EXPIRY_DAYS=90   # optional; defaults to 90
+```
+
 ### Ports
 
 | Port | Protocol | Purpose |

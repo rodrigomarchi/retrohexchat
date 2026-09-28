@@ -19,7 +19,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 3.2 Menções | **pronto** (2026-09-23) |
 | 3.3 Régua de não lidas | **pronto** (2026-09-23) |
 | 4.1 Multi-dispositivo | **pronto** (2026-09-23) |
-| 4.2 E-mail opcional | **pronto** (2026-09-23) |
+| 4.2 E-mail opcional | **parcial** (2026-09-23) — dois dos três usos; falta o aviso de PM com a pessoa fora, e nenhuma cobertura de navegador |
 | 4.3 Fixar mensagem | **pronto** (2026-09-23) |
 | 4.4 Salvar mensagem | **pronto** (2026-09-23) |
 | 5.1 Arquivo público | **pronto** (2026-09-24) |
@@ -28,6 +28,48 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 5.4 Avatar no chat | **pronto** (2026-09-25) |
 | 5.5 Emoji do servidor | **pronto** (2026-09-26) |
 | 5.6 Mensagem de voz | **pronto** (2026-09-27) |
+
+---
+
+## Auditoria de fechamento — 2026-09-28
+
+Feita contra o **código**, não contra este arquivo: cada atividade escrita no
+plano foi procurada na árvore. Dezesseis itens fecham inteiros. O que não fecha:
+
+- **4.2 entregou dois dos três usos.** O plano decidiu três — recuperar senha,
+  avisar antes do nick expirar, e avisar de mensagem privada com a pessoa fora
+  há mais de N horas. O terceiro nunca foi construído, e a janela Conta não tem
+  as "preferências de aviso" que a atividade 6 previa. Estava escrito aqui em
+  "Falta neste item"; a tabela de estado é que dizia **pronto**. Corrigida.
+- **4.2 não tem nenhuma cobertura de navegador.** `/account/verify/:token` e
+  `/account/reset/:token` são rotas públicas que um estranho abre a partir do
+  cliente de e-mail dele, e nenhuma spec as dirige. O domínio e as duas
+  LiveViews têm teste de ExUnit (`nick_email_test.exs`, `account_test.exs`,
+  `connect_recovery_test.exs`) — o caminho que ninguém exercita é o do
+  navegador, que é exatamente onde um token expirado, um link aberto duas vezes
+  ou uma sessão já iniciada se comportam de forma diferente.
+- **O arquivo público publica linha em branco.** Uma mensagem só com anexo é
+  gravada com `content: ""` (`allow_blank_content: attachment_ids != []`), e
+  `Archive.entry/1` devolve `text: ""` com `attachment?: false` — um campo
+  declarado no tipo, fixado numa constante e lido por ninguém. Numa página feita
+  para estranhos e robôs, sai autor, horário e nada. O 5.6 torna o caso comum:
+  mensagem de voz normalmente não tem texto.
+- **Duas capacidades subiam apagadas.** `RHC_VAPID_*` e `RHC_SMTP_*` eram lidas
+  pelo `runtime.exs` e não apareciam em lugar nenhum de `README`/`docs`: push e
+  e-mail existem no código e o operador não tinha como saber que existem, nem o
+  que setar. Documentadas na seção de deploy, junto com
+  `RHC_NICK_EXPIRY_DAYS`/`RHC_CHANNEL_EXPIRY_DAYS`.
+
+Continua de pé o bloqueio de release do 2.3: um push real contra um serviço de
+push de verdade, conferido à mão uma vez (`e2e/TEST_BACKLOG.md`).
+
+**O que a auditoria confirmou íntegro**, por ter procurado e achado: entrada
+segue exigindo nick registrado nos três caminhos de `route_valid_nickname/2`;
+o arquivo público filtra `archive_since`, apagadas, tipos não publicáveis e
+canal `+s` na leitura e na escrita; os dois caminhos de mensagem (`Chat.Service`
+e `Channels.Server`) enfileiram push; os três workers novos têm telemetria;
+nenhum `TODO`/stub no código do plano; o service worker só cacheia asset
+digerido, então cache velho não serve código velho.
 
 ---
 
