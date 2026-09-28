@@ -49,7 +49,6 @@ defmodule RetroHexChatWeb.Components.UI.EventCard do
       :if={@card}
       class={[
         "chat-event-card shadow-retro-field bg-canvas my-1 flex max-w-md items-start gap-2 p-2",
-        @card.cancelled? && "opacity-70",
         @class
       ]}
       data-testid={"event-card-#{@card.event_id}"}
@@ -63,9 +62,13 @@ defmodule RetroHexChatWeb.Components.UI.EventCard do
       <span class="min-w-0 flex-1">
         <span class="flex min-w-0 items-center gap-1">
           <span class="min-w-0 flex-1 truncate font-bold">{@card.title}</span>
+          <%!-- Called off is said in the badge, not by dimming the card. The
+                same reasoning as the session card: an event that will not happen
+                is still something a reader has to read, and seven tenths opacity
+                is how this product draws a control it has refused. --%>
           <span
             :if={@card.cancelled?}
-            class="shrink-0 text-[10px] font-bold uppercase"
+            class="shrink-0 text-[10px] font-bold uppercase text-muted-foreground"
             data-testid="event-card-cancelled"
           >
             {dgettext("chat", "Called off")}

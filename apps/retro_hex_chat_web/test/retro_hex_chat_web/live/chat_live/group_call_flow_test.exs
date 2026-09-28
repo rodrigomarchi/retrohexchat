@@ -67,6 +67,19 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
     |> ChatQueries.list_messages(limit: 50)
     |> Map.fetch!(:items)
     |> Enum.filter(&(&1.type == "system"))
+    |> Enum.sort_by(& &1.id)
+  end
+
+  defp say(channel, content) do
+    {:ok, _message} =
+      ChatQueries.insert_message(%{
+        channel_name: channel,
+        author_nickname: "Someone",
+        content: content,
+        type: "message"
+      })
+
+    :ok
   end
 
   defp cleanup_room(token) do
@@ -122,22 +135,38 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert card.creator_nick == nick.nickname
     end
 
-    # A room, a link, a card. Clicking again is not a second conference, and the
-    # negative here is the point: revert the idempotence and this goes red.
-    test "clicking again with a live room mints nothing and posts nothing", %{conn: conn} do
+    # A room, a link, a card. Clicking again is not a second conference and not a
+    # second address — it is the one card brought back down to where the reader
+    # is, because a door thirty lines up is a door nobody finds.
+    test "clicking again with a live room brings the same card back down", %{conn: conn} do
       %{view: view} = mount_identified(conn, "gcfz")
       channel = active_channel(view)
 
       _room = open_conference(view)
-      assert length(system_messages(channel)) == 1
+      assert [first] = system_messages(channel)
 
-      # The control is an anchor once a room exists, so the click that would
-      # repeat it can only arrive as the event itself.
+      say(channel, "meanwhile, in the channel")
+      render_click(view, "group_call_open", %{})
+      flush(view)
+
+      assert [^first, second] = system_messages(channel)
+
+      assert RetroHexChatWeb.ShareLinkRef.slugs_in(second.content) ==
+               RetroHexChatWeb.ShareLinkRef.slugs_in(first.content)
+    end
+
+    # The press with nothing to find. Revert the guard and this goes red with two
+    # identical cards, which is what a double click used to be worth.
+    test "clicking twice in a row posts one card", %{conn: conn} do
+      %{view: view} = mount_identified(conn, "gcfy")
+      channel = active_channel(view)
+
+      _room = open_conference(view)
       render_click(view, "group_call_open", %{})
       flush(view)
 
       assert length(system_messages(channel)) == 1
-      assert render(view) =~ "already open"
+      assert render(view) =~ "the line below"
     end
 
     test "a second person in the channel lands in the same room", %{conn: conn} do

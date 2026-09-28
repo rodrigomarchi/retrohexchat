@@ -45,7 +45,23 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEntryFlowTest do
     |> ChatQueries.list_messages(limit: 50)
     |> Map.fetch!(:items)
     |> Enum.filter(&(&1.type == "system"))
+    |> Enum.sort_by(& &1.id)
   end
+
+  defp say(channel, content) do
+    {:ok, _message} =
+      ChatQueries.insert_message(%{
+        channel_name: channel,
+        author_nickname: "Someone",
+        content: content,
+        type: "message"
+      })
+
+    :ok
+  end
+
+  defp slug_of(message),
+    do: message.content |> String.split("/join/") |> List.last() |> String.trim()
 
   describe "the space entry beside the conversation's tabs" do
     test "goes nowhere, and writes the space's card into the channel", %{conn: conn} do
@@ -75,17 +91,33 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEntryFlowTest do
       assert resolution.live?
     end
 
-    # One room, one card. A second press answers in the conversation without
-    # putting a second door in it.
-    test "pressing it again does not post a second card", %{conn: conn} do
+    # One address, however many presses — but the card comes back down each
+    # time, because somebody pressing again is somebody who cannot find it.
+    test "pressing it again brings the same card back to the bottom", %{conn: conn} do
       %{view: view} = mount_identified(conn, "spg")
       channel = active_channel(view)
 
       press_space(view)
-      assert [_one] = system_messages(channel)
+      assert [first] = system_messages(channel)
+
+      say(channel, "meanwhile, in the channel")
+      press_space(view)
+
+      assert [^first, second] = system_messages(channel)
+      assert slug_of(second) == slug_of(first)
+    end
+
+    # The press with nothing to find: the card is already the line at the
+    # bottom, so a second one would only be a double click made visible.
+    test "pressing it twice in a row posts one card", %{conn: conn} do
+      %{view: view} = mount_identified(conn, "sph")
+      channel = active_channel(view)
 
       press_space(view)
-      assert [_still_one] = system_messages(channel)
+      press_space(view)
+
+      assert [_one] = system_messages(channel)
+      assert render(view) =~ "the line below"
     end
 
     # A card carries who is accountable for the address on it, so the control is

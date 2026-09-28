@@ -44,9 +44,9 @@ export async function enterThroughNewCard(
   const before = new Set(await cardAddresses(page));
   await entry.click();
 
-  // A press into a room that is already open answers with a sentence rather
-  // than a second card — one room, one door — so the card to follow is either
-  // the one that just appeared or the one that was already there.
+  // A press into a room that is already open writes that room's one card again
+  // at the bottom, unless it is already the bottom line — so the card to follow
+  // is either the one that just appeared or the one that was already there.
   let address: string | undefined;
 
   await expect

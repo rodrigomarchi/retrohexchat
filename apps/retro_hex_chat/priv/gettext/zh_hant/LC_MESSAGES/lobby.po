@@ -11,14 +11,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/lobby/policy.ex:96
+#: lib/retro_hex_chat/lobby/policy.ex:114
 #, elixir-autogen, elixir-format
 msgid "Cannot create a session with yourself"
 msgstr "無法與您創建會話"
 
-#: lib/retro_hex_chat/lobby/service.ex:214
-#: lib/retro_hex_chat/lobby/service.ex:231
-#: lib/retro_hex_chat/lobby/service.ex:253
+#: lib/retro_hex_chat/lobby/service.ex:217
+#: lib/retro_hex_chat/lobby/service.ex:234
+#: lib/retro_hex_chat/lobby/service.ex:256
 #, elixir-autogen, elixir-format
 msgid "Failed to create lobby"
 msgstr "創建大廳失敗"
@@ -28,17 +28,17 @@ msgstr "創建大廳失敗"
 msgid "Invalid transition from %{from} to %{to}"
 msgstr "從%{from}到%{to}的過渡無效"
 
-#: lib/retro_hex_chat/lobby/policy.ex:297
+#: lib/retro_hex_chat/lobby/policy.ex:315
 #, elixir-autogen, elixir-format
 msgid "Invite is no longer pending"
 msgstr "不再等待邀請"
 
-#: lib/retro_hex_chat/lobby/policy.ex:301
+#: lib/retro_hex_chat/lobby/policy.ex:319
 #, elixir-autogen, elixir-format
 msgid "Lobby is no longer active"
 msgstr "大廳不再活動了"
 
-#: lib/retro_hex_chat/lobby/service.ex:263
+#: lib/retro_hex_chat/lobby/service.ex:266
 #, elixir-autogen, elixir-format
 msgid "Lobby not found"
 msgstr "找不到前廳"
@@ -48,17 +48,17 @@ msgstr "找不到前廳"
 msgid "Not a participant"
 msgstr "未參加"
 
-#: lib/retro_hex_chat/lobby/policy.ex:258
+#: lib/retro_hex_chat/lobby/policy.ex:276
 #, elixir-autogen, elixir-format
 msgid "Only the invited user can decline"
 msgstr "只有被邀請的用戶才能拒絕"
 
-#: lib/retro_hex_chat/lobby/policy.ex:266
+#: lib/retro_hex_chat/lobby/policy.ex:284
 #, elixir-autogen, elixir-format
 msgid "Only the inviter can cancel the invite"
 msgstr "只有邀請者可以取消邀請"
 
-#: lib/retro_hex_chat/lobby/service.ex:197
+#: lib/retro_hex_chat/lobby/service.ex:200
 #: lib/retro_hex_chat/lobby/session_server.ex:130
 #: lib/retro_hex_chat/lobby/session_server.ex:1003
 #: lib/retro_hex_chat/lobby/session_server.ex:1004
@@ -67,48 +67,48 @@ msgstr "只有邀請者可以取消邀請"
 msgid "Session process not running"
 msgstr "會話進程未運行"
 
-#: lib/retro_hex_chat/lobby/policy.ex:110
+#: lib/retro_hex_chat/lobby/policy.ex:128
 #, elixir-autogen, elixir-format
 msgid "Target user must be registered"
 msgstr "目標用戶必須註冊"
 
-#: lib/retro_hex_chat/lobby/policy.ex:136
+#: lib/retro_hex_chat/lobby/policy.ex:154
 #, elixir-autogen, elixir-format
 msgid "User not available"
 msgstr "用戶不可用"
 
-#: lib/retro_hex_chat/lobby/policy.ex:250
+#: lib/retro_hex_chat/lobby/policy.ex:268
 #, elixir-autogen, elixir-format
 msgid "You are not a participant in this lobby"
 msgstr "你不是這個大廳的參與者"
 
-#: lib/retro_hex_chat/lobby/policy.ex:109
+#: lib/retro_hex_chat/lobby/policy.ex:127
 #, elixir-autogen, elixir-format
 msgid "You must be registered to use the lobby"
 msgstr "你必須註冊才能使用大廳"
 
-#: lib/retro_hex_chat/lobby/policy.ex:273
+#: lib/retro_hex_chat/lobby/policy.ex:291
 #, elixir-autogen, elixir-format
 msgid "This match is already full"
 msgstr "這場對局已經滿員"
 
-#: lib/retro_hex_chat/lobby/policy.ex:277
+#: lib/retro_hex_chat/lobby/policy.ex:295
 #, elixir-autogen, elixir-format
 msgid "This match link has expired"
 msgstr "這個對局連結已過期"
 
-#: lib/retro_hex_chat/lobby/policy.ex:286
+#: lib/retro_hex_chat/lobby/policy.ex:304
 #, elixir-autogen, elixir-format
 msgid "You cannot join your own match"
 msgstr "你不能加入自己的對局"
 
-#: lib/retro_hex_chat/lobby/service.ex:294
+#: lib/retro_hex_chat/lobby/service.ex:297
 #, elixir-autogen, elixir-format
 msgid "Too many lobbies created. Try again in %{count} second"
 msgid_plural "Too many lobbies created. Try again in %{count} seconds"
 msgstr[0] "建立的大廳過多。請在 %{count} 秒後重試"
 
-#: lib/retro_hex_chat/lobby/policy.ex:118
+#: lib/retro_hex_chat/lobby/policy.ex:136
 #, elixir-autogen, elixir-format
 msgid "A session with this person is already open. Its card is in this conversation."
 msgstr "與這個人的工作階段已經開啟了，它的卡片就在這個對話裡。"

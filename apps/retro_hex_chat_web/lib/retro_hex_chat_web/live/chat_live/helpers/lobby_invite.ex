@@ -11,15 +11,19 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
   the door, for the person who asked exactly as much as for the person who was
   asked — which is what makes a session something you *go to*, in a tab of its
   own, instead of something that opens on top of the chat you were reading.
+
+  Asking again for a session the two of them already have is not a second
+  session and never was. It used to be a refusal in the sender's own words; it
+  is now that session's card put back at the bottom of the conversation, which
+  is the rule `CardDoor` holds for every room in this product.
   """
 
   import Phoenix.LiveView, only: [push_event: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
-  alias RetroHexChat.Chat.Service
   alias RetroHexChat.Lobby
-  alias RetroHexChatWeb.ChatLive.Helpers.{Messages, PM}
+  alias RetroHexChatWeb.ChatLive.Helpers.{CardDoor, Messages, PM}
   alias RetroHexChatWeb.ChatLive.P2PReadModel
 
   @spec handle_lobby_invite(Phoenix.LiveView.Socket.t(), map(), map()) ::
@@ -37,6 +41,17 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
   end
 
   def deliver_invite(socket, session, %{creator_id: creator_id, target_id: target_id} = payload) do
+    case Lobby.active_session_between(creator_id, target_id) do
+      %{token: token} -> do_deliver_invite(socket, session, Map.put(payload, :token, token))
+      nil -> create_session(socket, session, payload)
+    end
+  end
+
+  def deliver_invite(socket, _session, _payload) do
+    Messages.system_event(socket, dgettext("chat", "Could not start the P2P invite."))
+  end
+
+  defp create_session(socket, session, %{creator_id: creator_id, target_id: target_id} = payload) do
     case Lobby.create_session(creator_id, target_id) do
       {:ok, %{token: token}} ->
         do_deliver_invite(socket, session, Map.put(payload, :token, token))
@@ -46,35 +61,37 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
     end
   end
 
-  def deliver_invite(socket, _session, _payload) do
-    Messages.system_event(socket, dgettext("chat", "Could not start the P2P invite."))
-  end
-
   defp do_deliver_invite(socket, session, payload) do
     %{target: target, token: token} = payload
 
-    case Service.send_private_message(
-           session.nickname,
-           target,
-           lobby_invite_content(token),
-           "p2p_invite"
-         ) do
-      {:ok, _pm} -> :ok
-      {:error, _reason} -> :ok
-    end
+    outcome =
+      CardDoor.deliver(
+        {:pm, session.nickname, target},
+        "/p2p/" <> token,
+        lobby_invite_content(token),
+        type: "p2p_invite"
+      )
 
-    socket = PM.open_pm_conversation(socket, target)
+    socket
+    |> PM.open_pm_conversation(target)
+    |> P2PReadModel.refresh_pm(target)
+    |> Messages.system_event(confirmation(outcome, target))
+    |> push_event("scroll_to_bottom", %{})
+  end
 
-    confirm_msg =
+  defp confirmation(:posted, target),
+    do:
       dgettext("chat", "P2P request sent to %{target}. Open it from the card below.",
         target: target
       )
 
-    socket
-    |> P2PReadModel.refresh_pm(target)
-    |> Messages.system_event(confirm_msg)
-    |> push_event("scroll_to_bottom", %{})
-  end
+  defp confirmation(:already_there, target),
+    do:
+      dgettext(
+        "chat",
+        "You already have a P2P session with %{target}. Its card is the line below.",
+        target: target
+      )
 
   @spec lobby_invite_content(String.t()) :: String.t()
   def lobby_invite_content(token),

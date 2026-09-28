@@ -56,6 +56,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     |> ChatQueries.list_private_messages(nick_b, limit: 50)
     |> Map.fetch!(:items)
     |> Enum.filter(&(&1.type == "p2p_invite"))
+    |> Enum.sort_by(& &1.id)
   end
 
   defp invite(ctx) do
@@ -85,6 +86,41 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       assert [message] = invite_messages(ctx.a.nickname, ctx.b.nickname)
       assert message.content =~ Paths.p2p_path(session.token)
       assert message.sender_nickname == ctx.a.nickname
+    end
+
+    # Asking again is not a second session, and it is not a refusal either: the
+    # one session's card comes back to the bottom of the conversation, the same
+    # rule the conference and the space controls follow.
+    test "asking again brings the same session's card back down", %{conn: conn} do
+      ctx = mount_pair(conn, "p2pcw", "p2pcx")
+      session = invite(ctx)
+
+      assert [first] = invite_messages(ctx.a.nickname, ctx.b.nickname)
+
+      {:ok, _chatter} =
+        ChatQueries.insert_private_message(%{
+          sender_nickname: ctx.b.nickname,
+          recipient_nickname: ctx.a.nickname,
+          content: "one moment",
+          type: "message"
+        })
+
+      submit_command_sync(ctx.view_a, "/p2p #{ctx.b.nickname}")
+
+      assert [^first, second] = invite_messages(ctx.a.nickname, ctx.b.nickname)
+      assert second.content =~ Paths.p2p_path(session.token)
+      assert Lobby.active_sessions_for_user(ctx.a.id) |> length() == 1
+    end
+
+    # The press with nothing to find: the card is already the line at the bottom.
+    test "asking twice in a row leaves one card", %{conn: conn} do
+      ctx = mount_pair(conn, "p2pcy", "p2pcz")
+      _session = invite(ctx)
+
+      submit_command_sync(ctx.view_a, "/p2p #{ctx.b.nickname}")
+
+      assert [_one] = invite_messages(ctx.a.nickname, ctx.b.nickname)
+      assert render(ctx.view_a) =~ "the line below"
     end
 
     # Nobody is put inside anything by asking. The creator uses the same door as

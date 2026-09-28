@@ -3010,7 +3010,7 @@ msgstr "Выберите своего персонажа"
 msgid "Could not load the game. Please try again."
 msgstr "Не удалось загрузить игру. Пожалуйста, попробуйте еще раз."
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:50
+#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:51
 #, elixir-autogen, elixir-format
 msgid "Could not start the P2P invite."
 msgstr "Не удалось запустить P2P-приглашение."
@@ -3985,19 +3985,19 @@ msgstr "В звонке канала"
 msgid "P2P: %{peer} — in another tab"
 msgstr "P2P: %{peer} — в другой вкладке"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:69
+#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:84
 #, elixir-autogen, elixir-format
 msgid "P2P request sent to %{target}. Open it from the card below."
 msgstr ""
 "Запрос P2P отправлен пользователю %{target}. Откройте его из карточки ниже."
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:82
+#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:99
 #, elixir-autogen, elixir-format
 msgid "P2P session request. Open it from the card below. /p2p/%{token}"
 msgstr "Запрос сессии P2P. Откройте его из карточки ниже. /p2p/%{token}"
 
 #: lib/retro_hex_chat_web/channels/space_session_announcement.ex:122
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:116
+#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:121
 #, elixir-autogen, elixir-format
 msgid "%{nickname} opened the space — %{url}"
 msgstr "%{nickname} открыл(а) пространство — %{url}"
@@ -4012,23 +4012,17 @@ msgstr "Закрыть разговор"
 msgid "Put the space card in this conversation"
 msgstr "Поместить карточку space в этот разговор"
 
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:87
+#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:85
 #, elixir-autogen, elixir-format
 msgid "The space could not be opened. Try again."
 msgstr "Не удалось открыть space. Попробуйте ещё раз."
 
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:65
-#, elixir-autogen, elixir-format
-msgid "The space is already open here. Its card is in this conversation."
-msgstr "Space здесь уже открыт. Его карточка есть в этом разговоре."
-
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:102
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:111
+#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:109
 #, elixir-autogen, elixir-format
 msgid "The space is open. Its card is in this conversation."
 msgstr "Space открыт. Его карточка есть в этом разговоре."
 
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:53
+#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:55
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to open a space."
 msgstr "Чтобы открыть space, нужно быть зарегистрированным в NickServ."
@@ -4194,7 +4188,7 @@ msgstr[2] "Открыть тред (%{count} ответа)"
 msgid "Thread"
 msgstr "Тред"
 
-#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:101
+#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:104
 #, elixir-autogen, elixir-format
 msgid "%{count} going"
 msgid_plural "%{count} going"
@@ -4212,7 +4206,7 @@ msgstr "%{title} вот-вот начнётся."
 msgid "%{title} was called off."
 msgstr "%{title} отменено."
 
-#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:71
+#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:74
 #, elixir-autogen, elixir-format
 msgid "Called off"
 msgstr "Отменено"
@@ -4222,17 +4216,17 @@ msgstr "Отменено"
 msgid "Events"
 msgstr "События"
 
-#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:97
+#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:100
 #, elixir-autogen, elixir-format
 msgid "Going"
 msgstr "Иду"
 
-#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:97
+#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:100
 #, elixir-autogen, elixir-format
 msgid "I'm going"
 msgstr "Я приду"
 
-#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:117
+#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:120
 #, elixir-autogen, elixir-format
 msgid "Where"
 msgstr "Где"
@@ -4308,3 +4302,13 @@ msgstr "До %{seconds} секунд"
 #, elixir-autogen, elixir-format
 msgid "Voice message"
 msgstr "Голосовое сообщение"
+
+#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:116
+#, elixir-autogen, elixir-format
+msgid "The space is open. Its card is the line below."
+msgstr "Space открыт. Его карточка — строка ниже."
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:90
+#, elixir-autogen, elixir-format
+msgid "You already have a P2P session with %{target}. Its card is the line below."
+msgstr "У вас уже есть P2P-сессия с %{target}. Её карточка — строка ниже."

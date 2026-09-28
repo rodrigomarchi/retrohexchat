@@ -92,6 +92,21 @@ defmodule RetroHexChatWeb.ChatLive.EventsTest do
     assert ScheduledEvents.get(event.id).cancelled_at
   end
 
+  # A card that was called off is still something people have to read, and the
+  # card used to be drawn at seven tenths opacity to say so — which is how this
+  # product draws a control it has refused. It says it in words instead.
+  test "a card that was called off is not dimmed like a disabled control", ctx do
+    submit_command_sync(ctx.view, "/event 2h Tuesday tournament")
+    [event] = ScheduledEvents.list(ctx.channel).items
+
+    submit_command_sync(ctx.view, "/event cancel #{event.id}")
+    card = render(element(ctx.view, ~s([data-testid="event-card-#{event.id}"])))
+
+    assert card =~ ~s(data-event-state="cancelled")
+    assert card =~ "Called off"
+    refute card =~ "opacity-"
+  end
+
   # The classic trap. The same instant, two readers, two zones — and the card
   # has to say a different clock time to each of them.
   describe "the reader's own clock" do

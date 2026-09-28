@@ -338,6 +338,12 @@ get fresh timers with the *remaining* duration.
   `menubar-copy-disabled`), never raw Tailwind utilities, because the CSS lint scans
   `classList.*` strings. Emit boolean-ish `data-*` attributes as explicit `"true"`/`"false"`
   strings — hooks/CSS compare against the string.
+- **Opacity is the disabled look; never spend it on content.** Every refused control in
+  this product dims (`disabled:opacity-50` in the button, input, select, toolbar and tab
+  primitives), so dimming a *card* to say "this ended" or "this was called off" tells the
+  reader the card is broken. A card in a conversation is something to read, and the card
+  most likely to be read weeks later is exactly the finished one. Say the state in the
+  badge's word and its colour, and draw the card's surface identically in both states.
 
 ---
 
@@ -593,5 +599,7 @@ a move that renames one is caught before commit.
 ## 19. Surfaces: an address of their own
 
 **→ [`guide/surfaces.md`](guide/surfaces.md)** — Read when adding a screen that can live in a browser tab of its own, or changing how one is reached. **No surface has a mount inside the chat**: there is no `"embedded" => true` and no `embedded?` branch anywhere, and a screen with an address is reached only at that address. A conference and a P2P session are reached through the card the chat writes into the conversation when the room is created; a space is a place whose address always works, entered from the conversation's toolbar, and its card is the record of one gathering in it; the games catalogue is a plain link, because a catalogue has nothing to create and nothing to announce.
+
+**Pressing the control again brings the card back down.** A room that is already open used to answer "its card is in this conversation" and write nothing — which is a refusal aimed at the one person who cannot find it, since that is why anybody presses twice. Every one of those controls now writes the same room's one card again at the bottom of the conversation, and the only press that writes nothing is the press where the card is already the last line. One rule, in `ChatLive.Helpers.CardDoor.deliver/4` over `Chat.Queries.newest_line_carries?/2`, and the thing it looks for is the address (`/join/<slug>`, `/p2p/<token>`) rather than the sentence around it, which is free to change. Splitting "may this pair have a session" (`Lobby.can_ask_for_session?/2`) from "may a session be inserted" (`Lobby.can_create_session?/2`) is what let `/p2p` reach the card instead of dying in the command handler.
 
 

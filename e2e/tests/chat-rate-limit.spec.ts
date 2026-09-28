@@ -62,9 +62,9 @@ async function expectInputIdle(chat: ChatPage) {
 test.describe("Rate-limit and send-error input state", () => {
   // How many sessions a person may create in a window is enforced by
   // `RateLimiter.check_session_rate/3` and covered in its own test. It cannot be
-  // reached from the composer any more — a duplicate request is refused before
-  // it counts — so what is driven here is the refusal a user can actually
-  // provoke.
+  // reached from the composer any more — asking again for a session that exists
+  // brings its card back rather than creating a second one — so what is driven
+  // here is a refusal a user can actually provoke.
   test("P2P command errors leave no pending messages and keep input usable (R9)", async ({
     browser,
   }) => {
@@ -89,11 +89,18 @@ test.describe("Rate-limit and send-error input state", () => {
         `P2P request sent to ${bob.nick}. Open it from the card below.`,
       );
 
-      // Asking again is refused, and the refusal is what this spec is about:
-      // an error answering a command must leave the composer clean.
+      // Asking again is not a refusal any more: the same session's card comes
+      // back to the bottom, which is what every room's control does now.
       await alice.chat.sendMessage(`/p2p ${bob.nick}`);
       await alice.chat.expectMessageVisible(
-        "A session with this person is already open",
+        `You already have a P2P session with ${bob.nick}`,
+      );
+
+      // The refusal this spec is about — an error answering a command must
+      // leave the composer clean — is one the command still gives.
+      await alice.chat.sendMessage(`/p2p ${alice.nick}`);
+      await alice.chat.expectMessageVisible(
+        "You cannot start a P2P session with yourself",
       );
 
       await expectNoPendingMessages(alice.chat);

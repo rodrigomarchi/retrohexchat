@@ -12,8 +12,10 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       it is a private one.
     * **minting the address, once.** Opening creates the room; the room's
       address is written into the channel as a message everyone can see and
-      scroll back to. A channel that already has a live room gets neither a
-      second room nor a second card.
+      scroll back to. A channel that already has a live room gets no second
+      room — pressing again puts that one room's card back at the bottom of the
+      channel, which is the rule `CardDoor` holds for every room in the
+      product.
     * **saying what happened.** A refusal belongs in the conversation, which is
       where every other refusal in this product appears.
 
@@ -26,11 +28,11 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias Phoenix.LiveView.Socket
-  alias RetroHexChat.Chat.Service, as: ChatService
   alias RetroHexChat.GroupCall
   alias RetroHexChat.ShareLinks
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.GroupCallReadModel
+  alias RetroHexChatWeb.ChatLive.Helpers.CardDoor
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ShareLinkRef
 
@@ -85,21 +87,20 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     end
   end
 
-  # A room that was already running keeps the card it was opened with. Saying so
-  # is transient on purpose — it answers the click, and the durable answer is
-  # the card that is already in the conversation.
-  defp announce(socket, %{created?: false}, channel, _actor) do
-    Messages.system_event(
-      socket,
-      dgettext(
-        "group_call",
-        "A conference is already open in %{channel}. Its card is in this conversation.",
-        channel: channel
-      )
-    )
+  # A room that was already running keeps the one card it was opened with, and
+  # the press brings that card back down to where the reader is. The room is not
+  # the thing somebody is looking for on a second press — the door is, and it
+  # was thirty lines up.
+  defp announce(socket, %{created?: false, token: token} = room, channel, actor) do
+    case ShareLinks.find_open_for_target("call", %{"room_token" => token}) do
+      nil -> mint_and_write(socket, room, channel, actor)
+      link -> write_card(socket, channel, link, actor.nickname)
+    end
   end
 
-  defp announce(socket, %{token: token}, channel, actor) do
+  defp announce(socket, room, channel, actor), do: mint_and_write(socket, room, channel, actor)
+
+  defp mint_and_write(socket, %{token: token}, channel, actor) do
     case ShareLinks.create(%{
            kind: "call",
            target: %{"room_token" => token},
@@ -107,16 +108,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
            creator_nick: actor.nickname
          }) do
       {:ok, link} ->
-        _ =
-          ChatService.send_system_message(
-            channel,
-            dgettext("group_call", "%{nickname} opened a conference — %{url}",
-              nickname: actor.nickname,
-              url: ShareLinkRef.url(link.slug)
-            )
-          )
-
-        socket
+        write_card(socket, channel, link, actor.nickname)
 
       {:error, _reason} ->
         Messages.error_event(
@@ -124,6 +116,30 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
           dgettext("group_call", "The conference opened, but its link could not be created.")
         )
     end
+  end
+
+  defp write_card(socket, channel, link, nickname) do
+    case CardDoor.deliver({:channel, channel}, "/join/" <> link.slug, content(nickname, link)) do
+      :posted ->
+        socket
+
+      :already_there ->
+        Messages.system_event(
+          socket,
+          dgettext(
+            "group_call",
+            "The conference in %{channel} is open. Its card is the line below.",
+            channel: channel
+          )
+        )
+    end
+  end
+
+  defp content(nickname, link) do
+    dgettext("group_call", "%{nickname} opened a conference — %{url}",
+      nickname: nickname,
+      url: ShareLinkRef.url(link.slug)
+    )
   end
 
   # The room and the seat in it, for a channel this person may not be sitting

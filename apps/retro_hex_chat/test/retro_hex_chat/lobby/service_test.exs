@@ -131,4 +131,29 @@ defmodule RetroHexChat.Lobby.ServiceTest do
       assert :ok = Lobby.can_create_session?(peer.id, creator.id)
     end
   end
+
+  # The two questions came apart when asking again stopped being a refusal. What
+  # may be *inserted* still refuses a pair who already have a session; what the
+  # control may *do* does not, because what it does is put that session's card
+  # back in the conversation.
+  describe "can_ask_for_session?/2" do
+    test "a pair who already have a session may still ask" do
+      {creator, peer} = pair("a1")
+      _existing = create_session_record(creator.id, peer.id)
+
+      assert {:error, _refused} = Lobby.can_create_session?(creator.id, peer.id)
+      assert :ok = Lobby.can_ask_for_session?(creator.id, peer.id)
+    end
+
+    # Absence: it drops exactly one check and no others. Blocking still refuses,
+    # or the control would reach somebody who asked not to be reached.
+    test "every other gate still refuses" do
+      {creator, peer} = pair("a2")
+      {:ok, ignore_list} = IgnoreList.add_entry(IgnoreList.new(), peer.nickname, :invites, nil)
+      assert :ok = IgnoreList.save(creator.nickname, ignore_list)
+
+      assert {:error, _blocked} = Lobby.can_ask_for_session?(peer.id, creator.id)
+      assert {:error, _self} = Lobby.can_ask_for_session?(creator.id, creator.id)
+    end
+  end
 end

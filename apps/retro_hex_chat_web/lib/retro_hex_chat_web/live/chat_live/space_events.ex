@@ -13,18 +13,20 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEvents do
   person who pressed it, walks through.
 
   `ShareLinks.create/1` hands back the link that already exists for the same
-  place and the same person, so pressing twice cannot scatter addresses. What
-  the second press must not do is post the card twice, which is why an existing
-  link answers with a sentence instead of another card.
+  place and the same person, so pressing twice cannot scatter addresses — one
+  place, one address, however many presses. What a second press *does* do is put
+  that one address back at the bottom of the conversation, because somebody
+  pressing again is somebody who cannot find the card, and `CardDoor` is the
+  rule every room's control follows.
   """
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   require Logger
 
-  alias RetroHexChat.Chat.Service, as: ChatService
   alias RetroHexChat.ShareLinks
   alias RetroHexChatWeb.App.SessionHelpers
+  alias RetroHexChatWeb.ChatLive.Helpers.CardDoor
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.SpaceReadModel
   alias RetroHexChatWeb.ShareLinkRef
@@ -59,13 +61,9 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEvents do
     nickname = socket.assigns.session.nickname
     target = %{"space_id" => space.space_id, "mode" => space.mode}
 
-    if ShareLinks.find_open("space", target, user_id) do
-      Messages.system_event(
-        socket,
-        dgettext("chat", "The space is already open here. Its card is in this conversation.")
-      )
-    else
-      mint_and_write(socket, space, target, user_id, nickname)
+    case ShareLinks.find_open("space", target, user_id) do
+      nil -> mint_and_write(socket, space, target, user_id, nickname)
+      link -> write_card(socket, space, link, nickname)
     end
   end
 
@@ -94,21 +92,28 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEvents do
   defp write_card(socket, %{mode: "direct_message", participants: [_, _] = pair}, link, nickname) do
     peer = Enum.find(pair, &(String.downcase(&1) != String.downcase(nickname)))
 
-    _ =
-      ChatService.send_private_message(nickname, peer, content(nickname, link), "system")
+    {:pm, nickname, peer}
+    |> CardDoor.deliver(reference(link), content(nickname, link))
+    |> announce(socket)
+  end
 
+  defp write_card(socket, space, link, nickname) do
+    {:channel, space.space_id}
+    |> CardDoor.deliver(reference(link), content(nickname, link))
+    |> announce(socket)
+  end
+
+  defp announce(:posted, socket) do
     Messages.system_event(
       socket,
       dgettext("chat", "The space is open. Its card is in this conversation.")
     )
   end
 
-  defp write_card(socket, space, link, nickname) do
-    _ = ChatService.send_system_message(space.space_id, content(nickname, link))
-
+  defp announce(:already_there, socket) do
     Messages.system_event(
       socket,
-      dgettext("chat", "The space is open. Its card is in this conversation.")
+      dgettext("chat", "The space is open. Its card is the line below.")
     )
   end
 
@@ -118,6 +123,8 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEvents do
       url: ShareLinkRef.url(link.slug)
     )
   end
+
+  defp reference(link), do: "/join/" <> link.slug
 
   defp conversation_space(socket) do
     SpaceReadModel.conversation_space(

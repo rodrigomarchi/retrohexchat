@@ -26,6 +26,24 @@ defmodule RetroHexChat.Lobby.Policy do
   end
 
   @doc """
+  Whether these two may have a session between them at all.
+
+  Every gate of `can_create?/2` except the one about a session already running,
+  because that one is not a refusal any more: a pair who already have a session
+  get that session's card put back in the conversation, and the control that
+  asks this is asking whether it may act, not whether a row may be inserted.
+  """
+  @spec can_ask?(integer(), integer()) :: :ok | {:error, String.t()}
+  def can_ask?(creator_id, peer_id) do
+    with :ok <- check_not_self(creator_id, peer_id),
+         :ok <- check_registered(creator_id, :creator),
+         :ok <- check_registered(peer_id, :peer),
+         :ok <- check_no_block(creator_id, peer_id) do
+      :ok
+    end
+  end
+
+  @doc """
   Whether `creator_id` may mint a match link.
 
   Only registration, because there is nobody else in the room yet: the checks

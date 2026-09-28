@@ -3013,7 +3013,7 @@ msgstr "Choisissez votre personnage"
 msgid "Could not load the game. Please try again."
 msgstr "Impossible de charger le jeu. Veuillez réessayer."
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:50
+#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:51
 #, elixir-autogen, elixir-format
 msgid "Could not start the P2P invite."
 msgstr "Impossible de démarrer l'invitation P2P."
@@ -3984,20 +3984,20 @@ msgstr "Dans l'appel du salon"
 msgid "P2P: %{peer} — in another tab"
 msgstr "P2P : %{peer} — dans un autre onglet"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:69
+#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:84
 #, elixir-autogen, elixir-format
 msgid "P2P request sent to %{target}. Open it from the card below."
 msgstr ""
 "Demande P2P envoyée à %{target}. Ouvrez-la depuis la carte ci-dessous."
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:82
+#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:99
 #, elixir-autogen, elixir-format
 msgid "P2P session request. Open it from the card below. /p2p/%{token}"
 msgstr ""
 "Demande de session P2P. Ouvrez-la depuis la carte ci-dessous. /p2p/%{token}"
 
 #: lib/retro_hex_chat_web/channels/space_session_announcement.ex:122
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:116
+#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:121
 #, elixir-autogen, elixir-format
 msgid "%{nickname} opened the space — %{url}"
 msgstr "%{nickname} a ouvert l'espace — %{url}"
@@ -4012,23 +4012,17 @@ msgstr "Fermer la conversation"
 msgid "Put the space card in this conversation"
 msgstr "Mettre la carte du space dans cette conversation"
 
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:87
+#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:85
 #, elixir-autogen, elixir-format
 msgid "The space could not be opened. Try again."
 msgstr "Le space n'a pas pu être ouvert. Réessayez."
 
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:65
-#, elixir-autogen, elixir-format
-msgid "The space is already open here. Its card is in this conversation."
-msgstr "Le space est déjà ouvert ici. Sa carte est dans cette conversation."
-
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:102
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:111
+#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:109
 #, elixir-autogen, elixir-format
 msgid "The space is open. Its card is in this conversation."
 msgstr "Le space est ouvert. Sa carte est dans cette conversation."
 
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:53
+#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:55
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to open a space."
 msgstr "Vous devez être enregistré auprès de NickServ pour ouvrir un space."
@@ -4192,7 +4186,7 @@ msgstr[1] "Ouvrir le fil (%{count} réponses)"
 msgid "Thread"
 msgstr "Fil de discussion"
 
-#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:101
+#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:104
 #, elixir-autogen, elixir-format
 msgid "%{count} going"
 msgid_plural "%{count} going"
@@ -4209,7 +4203,7 @@ msgstr "%{title} va commencer."
 msgid "%{title} was called off."
 msgstr "%{title} a été annulé."
 
-#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:71
+#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:74
 #, elixir-autogen, elixir-format
 msgid "Called off"
 msgstr "Annulé"
@@ -4219,17 +4213,17 @@ msgstr "Annulé"
 msgid "Events"
 msgstr "Événements"
 
-#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:97
+#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:100
 #, elixir-autogen, elixir-format
 msgid "Going"
 msgstr "Je viens"
 
-#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:97
+#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:100
 #, elixir-autogen, elixir-format
 msgid "I'm going"
 msgstr "Je viens"
 
-#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:117
+#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:120
 #, elixir-autogen, elixir-format
 msgid "Where"
 msgstr "Où"
@@ -4305,3 +4299,13 @@ msgstr "Jusqu'à %{seconds} secondes"
 #, elixir-autogen, elixir-format
 msgid "Voice message"
 msgstr "Message vocal"
+
+#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:116
+#, elixir-autogen, elixir-format
+msgid "The space is open. Its card is the line below."
+msgstr "Le space est ouvert. Sa carte est la ligne ci-dessous."
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:90
+#, elixir-autogen, elixir-format
+msgid "You already have a P2P session with %{target}. Its card is the line below."
+msgstr "Vous avez déjà une session P2P avec %{target}. Sa carte est la ligne ci-dessous."

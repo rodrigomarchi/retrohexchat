@@ -1332,7 +1332,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Join a channel-scoped audio/video conference. Group Call in the channel toolbar opens the room and posts a card in the channel carrying its address; everyone goes in through that card, including whoever opened it. If a conference is already running, Group Call is a link into it rather than a second one — one room, one card. Following the address opens the antechamber in a browser tab of its own: a camera preview, the microphone/camera/speaker pickers, and who is already inside. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for next time. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
+            "Join a channel-scoped audio/video conference. Group Call in the channel toolbar opens the room and posts a card in the channel carrying its address; everyone goes in through that card, including whoever opened it. If a conference is already running, Group Call starts no second one — it writes that room's card again at the bottom of the channel, so the door is where you are reading instead of somewhere up the scrollback. Press it twice in a row and you get one card, because the second press has nothing to bring down. Following the address opens the antechamber in a browser tab of its own: a camera preview, the microphone/camera/speaker pickers, and who is already inside. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for next time. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
           ),
         see_also: [
           "feature-conference-tab",
@@ -1510,7 +1510,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "Following it opens the session in a browser tab of its own, so the chat you " <>
               "were reading stays exactly where it is. The invited person can refuse " <>
               "instead: Decline sits beside the card and ends the invitation without " <>
-              "entering anything. You can have a session with more than one person at " <>
+              "entering anything. Asking again for a session you already have with that " <>
+              "person is not a second session and not a refusal: the same card comes back " <>
+              "to the bottom of the conversation, unless it is already the line there. " <>
+              "You can have a session with more than one person at " <>
               "once, each in a tab of its own. The conversation IS the private message: " <>
               "session events (connected, file received, game results, who ended it) are " <>
               "saved into the PM history as P2P lines, and the PM tab shows a small P2P " <>
@@ -3998,7 +4001,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "A space always runs in a browser tab of its own. Space, beside the conversation's tabs, puts the space's card in the conversation rather than opening it; Join on that card is the door, for you and for everybody reading. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back."
+            "A space always runs in a browser tab of its own. Space, beside the conversation's tabs, puts the space's card in the conversation rather than opening it; Join on that card is the door, for you and for everybody reading. Pressing it again does not make a second space or a second address — it writes that one card again at the bottom, so you never have to go looking for it. Press it twice in a row and you get one card, because the second press has nothing to bring down. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back."
           ),
         see_also: ["feature-virtual-spaces", "feature-space-card", "feature-space-share"]
       },

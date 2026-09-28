@@ -96,6 +96,16 @@ defmodule RetroHexChat.Lobby do
   defdelegate can_create_session?(creator_id, peer_id), to: Service
 
   @doc """
+  Whether these two may have a session between them, existing one or not.
+
+  What `/p2p` asks before it acts. A pair who already have a session are not
+  refused — they get that session's card back in the conversation — so the
+  control must not be gated on the absence of one.
+  """
+  @spec can_ask_for_session?(integer(), integer()) :: :ok | {:error, String.t()}
+  defdelegate can_ask_for_session?(creator_id, peer_id), to: Service
+
+  @doc """
   Takes the caller's seat in the session, monitoring it as that side's live
   connection.
 
@@ -201,6 +211,20 @@ defmodule RetroHexChat.Lobby do
   defdelegate active_sessions_for_user(user_id), to: Queries
 
   @doc """
+  The most recent non-terminal session between two users, if there is one.
+
+  Asked before creating one, by the control that sends an invite: a pair that
+  already has a session gets that session's card put back in the conversation
+  rather than a refusal, so the caller needs the session rather than a yes or no.
+  """
+  @spec active_session_between(integer(), integer()) :: Session.t() | nil
+  def active_session_between(user_a_id, user_b_id) do
+    user_a_id
+    |> Queries.active_sessions_between(user_b_id)
+    |> List.first()
+  end
+
+  @doc """
   Returns the most recent non-terminal P2P session between two registered nicks.
 
   Used by the chat PM chrome to expose pending requests without depending on
@@ -211,9 +235,7 @@ defmodule RetroHexChat.Lobby do
       when is_binary(nick_a) and is_binary(nick_b) do
     with %{id: user_a_id} <- ServiceQueries.find_by_nickname(nick_a),
          %{id: user_b_id} <- ServiceQueries.find_by_nickname(nick_b) do
-      user_a_id
-      |> Queries.active_sessions_between(user_b_id)
-      |> List.first()
+      active_session_between(user_a_id, user_b_id)
     else
       _ -> nil
     end

@@ -27,6 +27,9 @@ defmodule RetroHexChat.Chat.Queries do
   @typedoc "A message somebody wrote, in whichever kind of conversation."
   @type message :: Message.t() | PrivateMessage.t()
 
+  @typedoc "Where a conversation's lines live: a channel, or the pair in a PM."
+  @type conversation :: {:channel, String.t()} | {:pm, String.t(), String.t()}
+
   # ── Any message ──
   #
   # Written once because the two tables answer these identically: what changes
@@ -295,6 +298,51 @@ defmodule RetroHexChat.Chat.Queries do
 
   @spec get_private_message(integer()) :: PrivateMessage.t() | nil
   def get_private_message(id), do: PrivateMessage |> Repo.get(id) |> preload_attachments()
+
+  @doc """
+  Whether the newest line of a conversation already carries `fragment`.
+
+  Asked by the controls that put a room's card into the conversation. Pressing
+  one of those always writes the card again, because the reason somebody presses
+  it a second time is that they cannot find the first — and being told the card
+  exists somewhere above is not an answer to that. The one press that must not
+  write is the press where the card is *already* the line at the bottom: there is
+  nothing to bring down, and a second identical card is the only thing a double
+  click could produce.
+
+  One row, newest first, content only. A message its author deleted is not a
+  card anybody can read, so it does not count as one being there.
+  """
+  @spec newest_line_carries?(conversation(), String.t()) :: boolean()
+  def newest_line_carries?(conversation, fragment)
+      when is_binary(fragment) and fragment != "" do
+    case newest_line(conversation) do
+      content when is_binary(content) -> String.contains?(content, fragment)
+      _nothing -> false
+    end
+  end
+
+  def newest_line_carries?(_conversation, _fragment), do: false
+
+  defp newest_line({:channel, channel_name}) do
+    Message
+    |> where([m], m.channel_name == ^channel_name)
+    |> where([m], is_nil(m.deleted_at))
+    |> order_by([m], desc: m.id)
+    |> limit(1)
+    |> select([m], m.content)
+    |> Repo.one()
+  end
+
+  defp newest_line({:pm, nick_a, nick_b}) do
+    PrivateMessage
+    |> between(nick_a, nick_b)
+    |> where([pm], is_nil(pm.deleted_at))
+    |> order_by([pm], desc: pm.id)
+    |> limit(1)
+    |> select([pm], pm.content)
+    |> Repo.one()
+  end
 
   @spec last_own_message(String.t(), String.t()) :: Message.t() | nil
   def last_own_message(nickname, channel_name) do

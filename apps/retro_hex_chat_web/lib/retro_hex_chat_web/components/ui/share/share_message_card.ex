@@ -37,12 +37,18 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
     assigns = assign(assigns, :ended?, ended?(assigns.card))
 
     ~H"""
+    <%!-- A card that has ended is a record, not a dead control, and the whole
+          card used to be drawn at seven tenths opacity to say so. That is the
+          product's own spelling of *disabled* — it is what a refused button
+          looks like — so the one card in the conversation that is pure history,
+          and the one somebody is most likely to be reading weeks later, was the
+          card that looked broken. The state is already said three times over:
+          the badge word, the missing way in, and a detail written in the past
+          tense. It is said in the badge's colour now, and nothing on the card is
+          dimmed. --%>
     <div
       :if={@card}
-      class={[
-        "shadow-retro-field bg-canvas my-1 flex max-w-md items-center gap-2 p-2",
-        @ended? && "opacity-70"
-      ]}
+      class="shadow-retro-field bg-canvas my-1 flex max-w-md items-center gap-2 p-2"
       data-testid="share-message-card"
       data-share-kind={@card.kind}
       data-share-state={state(@card)}
@@ -58,7 +64,10 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
         <span class="flex min-w-0 items-center gap-1">
           <span class="min-w-0 flex-1 truncate font-bold">{heading(@subject, @card)}</span>
           <span
-            class={["shrink-0 text-[10px] font-bold uppercase", not @ended? && "text-primary"]}
+            class={[
+              "shrink-0 text-[10px] font-bold uppercase",
+              if(@ended?, do: "text-muted-foreground", else: "text-primary")
+            ]}
             data-testid="share-message-state"
           >
             {badge(@card)}
