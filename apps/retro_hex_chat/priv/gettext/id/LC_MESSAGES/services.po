@@ -11,49 +11,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:440
+#: lib/retro_hex_chat/services/chan_serv.ex:443
 #: lib/retro_hex_chat/services/nick_serv.ex:452
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:407
+#: lib/retro_hex_chat/services/chan_serv.ex:410
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} added to %{level} list of %{channel_name}"
 msgstr "%{target_nick} ditambahkan ke daftar %{level} %{channel_name}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:433
+#: lib/retro_hex_chat/services/chan_serv.ex:436
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} not found in access list"
 msgstr "%{target_nick} tidak ditemukan dalam daftar akses"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:426
+#: lib/retro_hex_chat/services/chan_serv.ex:429
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} removed from access list of %{channel_name}"
 msgstr "%{target_nick} dihapus dari daftar akses %{channel_name}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:194
+#: lib/retro_hex_chat/services/chan_serv.ex:197
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} dropped"
 msgstr "Saluran %{channel_name} dijatuhkan"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:251
+#: lib/retro_hex_chat/services/chan_serv.ex:254
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} dropped by admin"
 msgstr "Saluran %{channel_name} diturunkan oleh admin"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:206
-#: lib/retro_hex_chat/services/chan_serv.ex:319
+#: lib/retro_hex_chat/services/chan_serv.ex:209
+#: lib/retro_hex_chat/services/chan_serv.ex:322
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} is not registered"
 msgstr "Saluran %{channel_name} tidak terdaftar"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:177
+#: lib/retro_hex_chat/services/chan_serv.ex:180
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} registered by %{founder_nick}"
 msgstr "Saluran %{channel_name} terdaftar oleh %{founder_nick}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:415
+#: lib/retro_hex_chat/services/chan_serv.ex:418
 #, elixir-autogen, elixir-format
 msgid "Failed to add %{target_nick} to %{level} list"
 msgstr "Gagal menambahkan %{target_nick} ke daftar %{level}"
@@ -68,7 +68,7 @@ msgstr "Gagal mereset kata sandi untuk %{nickname}"
 msgid "Failed to save MOTD."
 msgstr "Gagal menyimpan MOTD."
 
-#: lib/retro_hex_chat/services/chan_serv.ex:272
+#: lib/retro_hex_chat/services/chan_serv.ex:275
 #, elixir-autogen, elixir-format
 msgid "Founder of %{channel_name} transferred to %{new_founder}"
 msgstr "Pendiri %{channel_name} dipindahkan ke %{new_founder}"
@@ -119,7 +119,7 @@ msgstr "Nama panggilan %{nickname} sukses terdaftar"
 msgid "Nickname %{target_nick} is not registered"
 msgstr "Nama panggilan %{target_nick} tidak terdaftar"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:332
+#: lib/retro_hex_chat/services/chan_serv.ex:335
 #, elixir-autogen, elixir-format
 msgid "Only the founder can drop a channel"
 msgstr "Hanya pendiri dapat drop saluran"
@@ -149,74 +149,7 @@ msgstr "Pendaftaran saat ini ditutup oleh administrator server"
 msgid "You are now identified as %{nickname}"
 msgstr "Anda sekarang diidentifikasi sebagai %{nickname}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:300
+#: lib/retro_hex_chat/services/chan_serv.ex:303
 #, elixir-autogen, elixir-format
 msgid "You must be identified to use ChanServ"
 msgstr "Anda harus diidentifikasi untuk menggunakan ChanServ"
-
-#: lib/retro_hex_chat/services/nick_email.ex:78
-#, elixir-autogen, elixir-format
-msgid "Confirm your RetroHexChat address"
-msgstr "Konfirmasi alamat RetroHexChat Anda"
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:373
-#, elixir-autogen, elixir-format
-msgid "Could not be saved"
-msgstr "Tidak dapat disimpan"
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:279
-#: lib/retro_hex_chat/services/nick_email.ex:284
-#, elixir-autogen, elixir-format
-msgid "Nickname is not registered"
-msgstr "Nama panggilan belum terdaftar"
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:149
-#, elixir-autogen, elixir-format
-msgid "Reset your RetroHexChat password"
-msgstr "Atur ulang kata sandi RetroHexChat Anda"
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:79
-#, elixir-autogen, elixir-format
-msgid "Somebody added this address to the RetroHexChat nickname %{nickname}. Open this link to confirm it:\n\n%{link}\n\nIf this was not you, ignore this message — nothing has changed and the address will stay unconfirmed."
-msgstr "Seseorang menambahkan alamat ini ke nama panggilan RetroHexChat %{nickname}. Buka tautan ini untuk mengonfirmasinya:\n\n%{link}\n\nJika ini bukan Anda, abaikan pesan ini — tidak ada yang berubah dan alamatnya tetap belum terkonfirmasi."
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:150
-#, elixir-autogen, elixir-format
-msgid "Somebody asked to reset the password for the RetroHexChat nickname %{nickname}. Open this link to choose a new one:\n\n%{link}\n\nIf this was not you, ignore this message — your password has not changed."
-msgstr "Seseorang meminta pengaturan ulang kata sandi untuk nama panggilan RetroHexChat %{nickname}. Buka tautan ini untuk memilih yang baru:\n\n%{link}\n\nJika ini bukan Anda, abaikan pesan ini — kata sandi Anda tidak berubah."
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:248
-#: lib/retro_hex_chat/services/nick_email.ex:272
-#, elixir-autogen, elixir-format
-msgid "The message could not be sent"
-msgstr "Pesan tidak dapat dikirim"
-
-
-#: lib/retro_hex_chat/jobs/nick_expiry_warning_worker.ex:94
-#, elixir-autogen, elixir-format
-msgid "The nickname %{nickname} has not been used for a while, and nicknames left unused are released so somebody else can take them.\n\nSigning in once keeps it — nothing else is needed, and you have about %{days} days.\n\nIf you would rather let it go, ignore this message."
-msgstr "Nama panggilan %{nickname} sudah lama tidak dipakai, dan nama panggilan yang menganggur dilepas agar orang lain bisa memakainya.\n\nMasuk sekali saja sudah cukup untuk mempertahankannya — tidak perlu yang lain, dan Anda punya sekitar %{days} hari.\n\nKalau Anda lebih suka melepasnya, abaikan pesan ini."
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:257
-#, elixir-autogen, elixir-format
-msgid "This server cannot send e-mail"
-msgstr "Server ini tidak mengirim surel"
-
-
-#: lib/retro_hex_chat/jobs/nick_expiry_warning_worker.ex:93
-#, elixir-autogen, elixir-format
-msgid "Your RetroHexChat nickname is about to be released"
-msgstr "Nama panggilan RetroHexChat Anda akan segera dilepas"
-
-
-#: lib/retro_hex_chat/services/registered_nick.ex:59
-#, elixir-autogen, elixir-format
-msgid "is not a valid address"
-msgstr "bukan alamat yang sah"

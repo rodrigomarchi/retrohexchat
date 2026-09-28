@@ -34,8 +34,6 @@ defmodule RetroHexChatWeb.Router do
       post "/e2e/group-call-peer/terminate",
            E2EFaultController,
            :terminate_group_call_peer
-
-      get "/e2e/mailbox", E2EController, :mailbox
     end
   end
 
@@ -62,19 +60,11 @@ defmodule RetroHexChatWeb.Router do
       live "/community", LandingLive.Community
       live "/faq", LandingLive.Faq
     end
-
-    # Where an e-mail link lands. On the landing pipeline because whoever
-    # follows one may have no session at all.
-    live_session :account_link, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
-      live "/account/verify/:token", LandingLive.Account, :verify
-      live "/account/reset/:token", LandingLive.Account, :reset
-    end
   end
 
   for locale_segment <- @localized_locale_segments do
     live_session_name = :"landing_locale_#{String.replace(locale_segment, "-", "_")}"
     join_session_name = :"share_join_#{String.replace(locale_segment, "-", "_")}"
-    account_session_name = :"account_link_#{String.replace(locale_segment, "-", "_")}"
 
     scope "/#{locale_segment}", RetroHexChatWeb do
       pipe_through :landing_live
@@ -85,11 +75,6 @@ defmodule RetroHexChatWeb.Router do
       # sent — the URL is the one thing about a shared link nobody can fix.
       live_session join_session_name, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
         live "/join/:slug", JoinLive
-      end
-
-      live_session account_session_name, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
-        live "/account/verify/:token", LandingLive.Account, :verify
-        live "/account/reset/:token", LandingLive.Account, :reset
       end
 
       live_session live_session_name,

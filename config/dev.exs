@@ -131,9 +131,3 @@ config :phoenix, :stacktrace_depth, 20
 config :retro_hex_chat,
   admins: ["Admin"],
   server_operators: ["Oper"]
-
-# Mail goes to the preview mailbox at /dev/mailbox rather than anywhere real.
-config :retro_hex_chat, RetroHexChat.Mailer,
-  adapter: Swoosh.Adapters.Local,
-  from_address: "no-reply@retrohexchat.test",
-  from_name: "RetroHexChat"

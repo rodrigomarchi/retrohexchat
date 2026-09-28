@@ -444,7 +444,7 @@ msgstr ""
 msgid "Confirm"
 msgstr "Konfirmasi"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:794
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:757
 #: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:297
 #, elixir-autogen, elixir-format
 msgid "Connected"
@@ -909,8 +909,8 @@ msgstr "Daftar nick"
 msgid "Nickname"
 msgstr "Nama panggilan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:55
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:215
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:49
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:200
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:277
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:354
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:69
@@ -1156,7 +1156,6 @@ msgstr "Platform Percakapan Publik"
 msgid "RSS"
 msgstr "RSS"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:326
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:331
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:192
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:208
@@ -1591,7 +1590,7 @@ msgstr "Trek Audio/video berhenti"
 msgid "Audit Log"
 msgstr "Log Audit"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:341
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:245
 #, elixir-autogen, elixir-format
 msgid "Away"
 msgstr "Tidak di tempat"
@@ -1643,7 +1642,7 @@ msgstr "Ubah"
 msgid "Change nickname:"
 msgstr "Ubah nama panggilan:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:105
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:90
 #, elixir-autogen, elixir-format
 msgid "Claims your current nickname with a NickServ password."
 msgstr "Mengklaim nama panggilan Anda saat ini dengan sandi NickServ."
@@ -1708,7 +1707,7 @@ msgstr "Konfirmasi unban"
 msgid "Confirm unmute"
 msgstr "Konfirmasi unmute"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:137
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:122
 #, elixir-autogen, elixir-format
 msgid "Confirm:"
 msgstr "Konfirmasi:"
@@ -1733,7 +1732,7 @@ msgstr "Zona Bahaya"
 msgid "Delete channel"
 msgstr "Hapus kanal"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:169
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
 #, elixir-autogen, elixir-format
 msgid "Deletes this nickname registration after you confirm with its password."
 msgstr ""
@@ -1745,12 +1744,12 @@ msgstr ""
 msgid "Destructive actions"
 msgstr "Aksi penghancuran"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:207
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:192
 #, elixir-autogen, elixir-format
 msgid "Disconnect a stale session that is holding a registered nickname."
 msgstr "Putuskan sesi basi yang berisi nama panggilan terdaftar."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:193
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:178
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:393
 #, elixir-autogen, elixir-format
 msgid "Drop Registration"
@@ -1764,7 +1763,7 @@ msgstr "Jatuhkan Registrasi"
 msgid "Drop registration"
 msgstr "Jatuhkan registrasi"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:167
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:152
 #, elixir-autogen, elixir-format
 msgid "Drop registration..."
 msgstr "Jatuhkan STNK..."
@@ -1828,12 +1827,12 @@ msgstr "Pendiri"
 msgid "From nick"
 msgstr "Dari nick"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:247
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:232
 #, elixir-autogen, elixir-format
 msgid "Ghost Session"
 msgstr "Sesi Hantu"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:203
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:188
 #, elixir-autogen, elixir-format
 msgid "Ghost session..."
 msgstr "Sesi hantu..."
@@ -1843,7 +1842,7 @@ msgstr "Sesi hantu..."
 msgid "Gone to lunch"
 msgstr "Pergi makan siang"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:343
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:247
 #, elixir-autogen, elixir-format
 msgid "Guest"
 msgstr "Tamu"
@@ -1853,18 +1852,18 @@ msgstr "Tamu"
 msgid "I'm away"
 msgstr "Aku pergi"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:342
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:246
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:81
 #, elixir-autogen, elixir-format
 msgid "Identified"
 msgstr "Teridentifikasi"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:155
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:140
 #, elixir-autogen, elixir-format
 msgid "Identify"
 msgstr "Identifikasi"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:114
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:99
 #, elixir-autogen, elixir-format
 msgid "Identify (log in)"
 msgstr "Identifikasi (log in)"
@@ -2024,9 +2023,9 @@ msgstr "Operator siarkan pesan"
 msgid "P2P games close"
 msgstr "Permainan P2P tutup"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:122
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:178
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:228
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:107
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:163
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:213
 #, elixir-autogen, elixir-format
 msgid "Password:"
 msgstr "Sandi:"
@@ -2079,7 +2078,7 @@ msgstr "Segarkan"
 msgid "Refresh preview"
 msgstr "Refresh preview"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:139
 #, elixir-autogen, elixir-format
 msgid "Register"
 msgstr "Daftar"
@@ -2090,7 +2089,7 @@ msgstr "Daftar"
 msgid "Register Channel"
 msgstr "Kanal Register"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:103
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:88
 #, elixir-autogen, elixir-format
 msgid "Register this nickname"
 msgstr "Daftar nama panggilan ini"
@@ -2239,7 +2238,7 @@ msgstr "Shown kepada orang lain melalui /whois."
 msgid "Stats"
 msgstr "Stat"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:57
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:51
 #, elixir-autogen, elixir-format
 msgid "Status:"
 msgstr "Status:"
@@ -2265,7 +2264,7 @@ msgstr "TURN"
 msgid "This cannot be undone without the new owner's cooperation."
 msgstr "Ini tak bisa dibatalkan tanpa kerjasama pemilik baru."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:116
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:101
 #, elixir-autogen, elixir-format
 msgid "This nickname is registered. Enter its NickServ password."
 msgstr "Nama panggilan ini terdaftar. Masukkan sandi NickServ-nya."
@@ -2359,7 +2358,7 @@ msgstr "Whowas"
 msgid "Whowas retention"
 msgstr "Whowas retention"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:87
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:72
 #, elixir-autogen, elixir-format
 msgid "You are identified with NickServ."
 msgstr "Anda diidentifikasi dengan NickServ."
@@ -2433,7 +2432,7 @@ msgstr "tidak"
 msgid "open"
 msgstr "terbuka"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:62
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:56
 #, elixir-autogen, elixir-format
 msgid "registered"
 msgstr "terdaftar"
@@ -2456,7 +2455,7 @@ msgstr "sop"
 msgid "unknown"
 msgstr "tidak diketahui"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:63
+#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:57
 #, elixir-autogen, elixir-format
 msgid "unregistered"
 msgstr "tidak terdaftar"
@@ -3998,41 +3997,6 @@ msgstr "Pesan yang menulis nama panggilan Anda di kanal tempat Anda berada muncu
 #, elixir-autogen, elixir-format
 msgid "Nobody has mentioned you yet."
 msgstr "Belum ada yang menyebut Anda."
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:297
-#, elixir-autogen, elixir-format
-msgid "Address:"
-msgstr "Alamat:"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:273
-#, elixir-autogen, elixir-format
-msgid "Optional, and nobody else ever sees it. It exists so you can get back in if you forget your password."
-msgstr "Opsional, dan tidak ada orang lain yang melihatnya. Gunanya agar Anda bisa masuk lagi kalau lupa kata sandi."
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:271
-#, elixir-autogen, elixir-format
-msgid "Recovery address"
-msgstr "Alamat pemulihan"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:332
-#, elixir-autogen, elixir-format
-msgid "Save address"
-msgstr "Simpan alamat"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:331
-#, elixir-autogen, elixir-format
-msgid "Send link again"
-msgstr "Kirim tautan lagi"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:290
-#, elixir-autogen, elixir-format
-msgid "confirmed"
-msgstr "terkonfirmasi"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:291
-#, elixir-autogen, elixir-format
-msgid "waiting for you to follow the link"
-msgstr "menunggu Anda mengikuti tautannya"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:55
 #, elixir-autogen, elixir-format

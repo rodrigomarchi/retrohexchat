@@ -16,8 +16,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
 
   import RetroHexChatWeb.Components.UI.AccountDialog
 
-  alias RetroHexChat.Services.NickEmail
-
   @id "account-dialog"
 
   @doc "Stable component id."
@@ -40,15 +38,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
        auth_password: "",
        auth_confirm: "",
        error: nil,
-       ghost_error: nil,
-       # The recovery address. Loaded when the window opens rather than on every
-       # parent render: it is a query, and nothing else here needs it.
-       email_available: NickEmail.enabled?(),
-       email: nil,
-       email_confirmed: false,
-       email_draft: "",
-       email_error: nil,
-       email_notice: nil
+       ghost_error: nil
      )}
   end
 
@@ -85,13 +75,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
     {:ok, assign(socket, ghost_error: message)}
   end
 
-  def update(%{action: {:email, result}}, socket) do
-    {:ok,
-     socket
-     |> assign(email_error: result[:error], email_notice: result[:notice])
-     |> load_email()}
-  end
-
   def update(assigns, socket) do
     {:ok,
      assign(socket,
@@ -100,21 +83,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
        account_state: Map.get(assigns, :account_state, socket.assigns.account_state),
        registered: Map.get(assigns, :registered, socket.assigns.registered),
        identified: Map.get(assigns, :identified, socket.assigns.identified)
-     )
-     |> load_email()}
-  end
-
-  # One query, and only where the section is drawn at all.
-  defp load_email(socket) do
-    if socket.assigns.email_available and socket.assigns.identified and
-         socket.assigns.nickname != "" do
-      case NickEmail.address(socket.assigns.nickname) do
-        {address, confirmed?} ->
-          assign(socket, email: address, email_confirmed: confirmed?, email_draft: address || "")
-      end
-    else
-      socket
-    end
+     )}
   end
 
   @impl true
@@ -133,12 +102,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
         auth_confirm={@auth_confirm}
         error_message={@error}
         ghost_error={@ghost_error}
-        email_available={@email_available}
-        email={@email}
-        email_confirmed={@email_confirmed}
-        email_draft={@email_draft}
-        email_error={@email_error}
-        email_notice={@email_notice}
       />
     </div>
     """

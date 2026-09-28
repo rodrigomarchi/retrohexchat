@@ -19,7 +19,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 3.2 Menções | **pronto** (2026-09-23) |
 | 3.3 Régua de não lidas | **pronto** (2026-09-23) |
 | 4.1 Multi-dispositivo | **pronto** (2026-09-23) |
-| 4.2 E-mail opcional | **parcial** (2026-09-28) — dois dos três usos entregues e agora cobertos no navegador; falta o aviso de PM com a pessoa fora |
+| 4.2 E-mail opcional | **removido** (2026-09-28) — o produto não manda e-mail; ver "Remoção do e-mail" |
 | 4.3 Fixar mensagem | **pronto** (2026-09-23) |
 | 4.4 Salvar mensagem | **pronto** (2026-09-23) |
 | 5.1 Arquivo público | **pronto** (2026-09-24) |
@@ -129,6 +129,58 @@ documentadas no README, com as janelas de retenção.
 - **Rodar o batch certo importa mais do que rodar muitos.** `foundation` guarda
   os orçamentos e ficou quatro itens sem rodar enquanto cada um deles somava um
   tópico de ajuda.
+
+---
+
+## Remoção do e-mail — 2026-09-28
+
+Decisão do dono do produto, e ela reverte o item 4.2 inteiro: **este projeto não
+manda e-mail.** Nunca precisou, e continua sem precisar.
+
+O código não dependia de provedor — só `Swoosh.Adapters.SMTP` sobre `gen_smtp`,
+com `config :swoosh, :api_client, false` tornando todo adaptador de API inerte —
+mas essa não era a pergunta. A pergunta era se o servidor precisa falar com uma
+máquina que não é dele para alguém voltar para dentro. Precisava, e agora não.
+
+**O que saiu**
+
+- Dependências `swoosh` e `gen_smtp`, e a configuração de mailer dos quatro
+  ambientes.
+- `RetroHexChat.Mailer`, `Services.NickEmail`, `Jobs.MailWorker`,
+  `Jobs.NickExpiryWarningWorker`, a fila `mail` do Oban e a entrada de cron.
+- As colunas `email`, `email_verified_at`, `email_token_hash` e
+  `email_token_sent_at` de `registered_nicks`, com o índice parcial — por
+  migration nova, que **apaga os endereços**: manter a coluna "por via das
+  dúvidas" é guardar dado pessoal que o servidor não tem mais uso para.
+- As rotas `/account/verify/:token` e `/account/reset/:token` nos quatorze
+  segmentos de locale, e a LiveView delas.
+- "Esqueci minha senha" na tela de conexão, a seção de endereço na janela Conta,
+  o tópico de ajuda, a seção de `/privacy` e o bloco `RHC_SMTP_*` do README.
+- A varredura `nick_expiry_warning` do painel de saúde do Oban.
+
+**Consequência, dita em voz alta**
+
+Quem esquece a senha **não tem volta por conta própria**. Sobram o
+`admin_reset_password` do operador e os terminais confiáveis, que são um
+caminho para quem ainda tem uma máquina reconhecida. O nick só se libera na
+expiração dos 180 dias.
+
+Isso é uma lacuna real, e a resposta certa para ela não é e-mail: são **códigos
+de recuperação** gerados no registro, mostrados uma vez e guardados só como
+hash. Recuperação que não sai do servidor. Fica proposto, não construído.
+
+**Aprendizados**
+
+- **"Não depende de terceiro" e "não precisa de infraestrutura que não é sua"
+  são perguntas diferentes.** O código passava na primeira e falhava na segunda,
+  e eu tinha respondido a primeira quando a preocupação era a segunda.
+- **Comentário de gerador é recomendação até alguém apagar.** O esqueleto do
+  Phoenix vinha, desde o commit `initial`, ensinando a apontar o mailer para o
+  Mailgun — a três linhas de uma config que desliga exatamente isso. Removido
+  antes desta decisão, e teria envenenado a leitura de quem chegasse depois.
+- **Uma remoção é uma migration para frente, não uma edição para trás.** A
+  migration que criou as colunas continua onde está; a que as apaga é nova, e o
+  `down` dela devolve a forma, nunca o conteúdo.
 
 ---
 

@@ -80,8 +80,6 @@ defmodule RetroHexChat.MixProject do
       {:prom_ex, "~> 1.11"},
       {:tz, "~> 0.28"},
       {:web_push_ex, "~> 0.2"},
-      {:swoosh, "~> 1.16"},
-      {:gen_smtp, "~> 1.2"},
 
       # Test dependencies
       {:mox, "~> 1.0", only: :test},

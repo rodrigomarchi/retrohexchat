@@ -382,21 +382,6 @@ RHC_VAPID_PRIVATE_KEY=   # from the same pair
 RHC_VAPID_SUBJECT=       # mailto:you@example.com — how a push service reaches you
 ```
 
-**E-mail** — password recovery, address verification, and the warning before a
-nickname expires. SMTP rather than a transactional-mail API, because requiring
-an account with a third party to let somebody recover a password would
-contradict a product you host yourself. Needs a relay and a from-address; the
-rest has defaults.
-
-```bash
-RHC_SMTP_RELAY=          # smtp.example.com
-RHC_SMTP_FROM=           # noreply@example.com
-RHC_SMTP_FROM_NAME=      # optional; defaults to RetroHexChat
-RHC_SMTP_USERNAME=       # optional; without it the relay is used unauthenticated
-RHC_SMTP_PASSWORD=       # optional
-RHC_SMTP_PORT=587        # optional; defaults to 587, always TLS
-```
-
 **Retention windows** — how long an unused nickname or channel is kept. Both are
 read at boot and a malformed value fails the boot rather than falling back in
 silence.

@@ -11,49 +11,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:440
+#: lib/retro_hex_chat/services/chan_serv.ex:443
 #: lib/retro_hex_chat/services/nick_serv.ex:452
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:407
+#: lib/retro_hex_chat/services/chan_serv.ex:410
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} added to %{level} list of %{channel_name}"
 msgstr "%{target_nick} zur Liste %{level} von %{channel_name} hinzugefügt"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:433
+#: lib/retro_hex_chat/services/chan_serv.ex:436
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} not found in access list"
 msgstr "%{target_nick} nicht in der Zugangsliste gefunden"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:426
+#: lib/retro_hex_chat/services/chan_serv.ex:429
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} removed from access list of %{channel_name}"
 msgstr "%{target_nick} aus der Zugriffsliste von %{channel_name} entfernt"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:194
+#: lib/retro_hex_chat/services/chan_serv.ex:197
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} dropped"
 msgstr "Channel %{channel_name} Drop"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:251
+#: lib/retro_hex_chat/services/chan_serv.ex:254
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} dropped by admin"
 msgstr "Channel %{channel_name} von admin"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:206
-#: lib/retro_hex_chat/services/chan_serv.ex:319
+#: lib/retro_hex_chat/services/chan_serv.ex:209
+#: lib/retro_hex_chat/services/chan_serv.ex:322
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} is not registered"
 msgstr "Channel %{channel_name} ist nicht registriert"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:177
+#: lib/retro_hex_chat/services/chan_serv.ex:180
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} registered by %{founder_nick}"
 msgstr "Channel %{channel_name} registriert von %{founder_nick}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:415
+#: lib/retro_hex_chat/services/chan_serv.ex:418
 #, elixir-autogen, elixir-format
 msgid "Failed to add %{target_nick} to %{level} list"
 msgstr "%{target_nick} konnte nicht zur Liste %{level} hinzugefügt werden"
@@ -68,7 +68,7 @@ msgstr "Passwort für %{nickname} konnte nicht zurückgesetzt werden"
 msgid "Failed to save MOTD."
 msgstr "Versäumt, MOTD zu retten."
 
-#: lib/retro_hex_chat/services/chan_serv.ex:272
+#: lib/retro_hex_chat/services/chan_serv.ex:275
 #, elixir-autogen, elixir-format
 msgid "Founder of %{channel_name} transferred to %{new_founder}"
 msgstr "Gründer von %{channel_name} übertragen auf %{new_founder}"
@@ -119,7 +119,7 @@ msgstr "Nickname %{nickname} erfolgreich registriert"
 msgid "Nickname %{target_nick} is not registered"
 msgstr "Nickname %{target_nick} ist nicht registriert"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:332
+#: lib/retro_hex_chat/services/chan_serv.ex:335
 #, elixir-autogen, elixir-format
 msgid "Only the founder can drop a channel"
 msgstr "Nur der Gründer kann einen Kanal fallen"
@@ -149,74 +149,7 @@ msgstr "Die Registrierung wird derzeit vom Serveradministrator geschlossen"
 msgid "You are now identified as %{nickname}"
 msgstr "Sie werden jetzt als %{nickname} identifiziert"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:300
+#: lib/retro_hex_chat/services/chan_serv.ex:303
 #, elixir-autogen, elixir-format
 msgid "You must be identified to use ChanServ"
 msgstr "Sie müssen identifiziert ChanServ verwenden"
-
-#: lib/retro_hex_chat/services/nick_email.ex:78
-#, elixir-autogen, elixir-format
-msgid "Confirm your RetroHexChat address"
-msgstr "Bestätige deine RetroHexChat-Adresse"
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:373
-#, elixir-autogen, elixir-format
-msgid "Could not be saved"
-msgstr "Konnte nicht gespeichert werden"
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:279
-#: lib/retro_hex_chat/services/nick_email.ex:284
-#, elixir-autogen, elixir-format
-msgid "Nickname is not registered"
-msgstr "Der Spitzname ist nicht registriert"
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:149
-#, elixir-autogen, elixir-format
-msgid "Reset your RetroHexChat password"
-msgstr "Setze dein RetroHexChat-Passwort zurück"
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:79
-#, elixir-autogen, elixir-format
-msgid "Somebody added this address to the RetroHexChat nickname %{nickname}. Open this link to confirm it:\n\n%{link}\n\nIf this was not you, ignore this message — nothing has changed and the address will stay unconfirmed."
-msgstr "Jemand hat diese Adresse zum RetroHexChat-Spitznamen %{nickname} hinzugefügt. Öffne diesen Link, um sie zu bestätigen:\n\n%{link}\n\nWarst du das nicht, ignoriere diese Nachricht — es hat sich nichts geändert und die Adresse bleibt unbestätigt."
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:150
-#, elixir-autogen, elixir-format
-msgid "Somebody asked to reset the password for the RetroHexChat nickname %{nickname}. Open this link to choose a new one:\n\n%{link}\n\nIf this was not you, ignore this message — your password has not changed."
-msgstr "Jemand hat darum gebeten, das Passwort des RetroHexChat-Spitznamens %{nickname} zurückzusetzen. Öffne diesen Link, um ein neues zu wählen:\n\n%{link}\n\nWarst du das nicht, ignoriere diese Nachricht — dein Passwort hat sich nicht geändert."
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:248
-#: lib/retro_hex_chat/services/nick_email.ex:272
-#, elixir-autogen, elixir-format
-msgid "The message could not be sent"
-msgstr "Die Nachricht konnte nicht gesendet werden"
-
-
-#: lib/retro_hex_chat/jobs/nick_expiry_warning_worker.ex:94
-#, elixir-autogen, elixir-format
-msgid "The nickname %{nickname} has not been used for a while, and nicknames left unused are released so somebody else can take them.\n\nSigning in once keeps it — nothing else is needed, and you have about %{days} days.\n\nIf you would rather let it go, ignore this message."
-msgstr "Der Spitzname %{nickname} wurde eine Weile nicht benutzt, und ungenutzte Spitznamen werden freigegeben, damit jemand anderes sie nehmen kann.\n\nEinmal anmelden genügt, um ihn zu behalten — mehr ist nicht nötig, und du hast noch etwa %{days} Tage.\n\nWenn du ihn lieber abgibst, ignoriere diese Nachricht."
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:257
-#, elixir-autogen, elixir-format
-msgid "This server cannot send e-mail"
-msgstr "Dieser Server versendet keine E-Mail"
-
-
-#: lib/retro_hex_chat/jobs/nick_expiry_warning_worker.ex:93
-#, elixir-autogen, elixir-format
-msgid "Your RetroHexChat nickname is about to be released"
-msgstr "Dein RetroHexChat-Spitzname wird bald freigegeben"
-
-
-#: lib/retro_hex_chat/services/registered_nick.ex:59
-#, elixir-autogen, elixir-format
-msgid "is not a valid address"
-msgstr "ist keine gültige Adresse"

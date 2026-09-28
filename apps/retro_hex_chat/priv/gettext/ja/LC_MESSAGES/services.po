@@ -11,49 +11,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:440
+#: lib/retro_hex_chat/services/chan_serv.ex:443
 #: lib/retro_hex_chat/services/nick_serv.ex:452
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:407
+#: lib/retro_hex_chat/services/chan_serv.ex:410
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} added to %{level} list of %{channel_name}"
 msgstr "%{target_nick} を %{channel_name} の %{level} リストに追加しました"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:433
+#: lib/retro_hex_chat/services/chan_serv.ex:436
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} not found in access list"
 msgstr "アクセスリストに%{target_nick}が見つかりません"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:426
+#: lib/retro_hex_chat/services/chan_serv.ex:429
 #, elixir-autogen, elixir-format
 msgid "%{target_nick} removed from access list of %{channel_name}"
 msgstr "%{channel_name}のアクセスリストから削除された%{target_nick}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:194
+#: lib/retro_hex_chat/services/chan_serv.ex:197
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} dropped"
 msgstr "チャネル%{channel_name}低下"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:251
+#: lib/retro_hex_chat/services/chan_serv.ex:254
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} dropped by admin"
 msgstr "チャネル%{channel_name}は管理者によって低下しました"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:206
-#: lib/retro_hex_chat/services/chan_serv.ex:319
+#: lib/retro_hex_chat/services/chan_serv.ex:209
+#: lib/retro_hex_chat/services/chan_serv.ex:322
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} is not registered"
 msgstr "チャンネル%{channel_name}は登録されていません"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:177
+#: lib/retro_hex_chat/services/chan_serv.ex:180
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel_name} registered by %{founder_nick}"
 msgstr "%{founder_nick}で登録した%{channel_name}"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:415
+#: lib/retro_hex_chat/services/chan_serv.ex:418
 #, elixir-autogen, elixir-format
 msgid "Failed to add %{target_nick} to %{level} list"
 msgstr "%{target_nick} を %{level} リストに追加できませんでした"
@@ -68,7 +68,7 @@ msgstr "%{nickname} のパスワードをリセットできませんでした"
 msgid "Failed to save MOTD."
 msgstr "MOTD を保存できません。"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:272
+#: lib/retro_hex_chat/services/chan_serv.ex:275
 #, elixir-autogen, elixir-format
 msgid "Founder of %{channel_name} transferred to %{new_founder}"
 msgstr "%{channel_name} の創設者、%{new_founder} に転送"
@@ -119,7 +119,7 @@ msgstr "Nickname %{nickname}が正常に登録"
 msgid "Nickname %{target_nick} is not registered"
 msgstr "ニックネーム %{target_nick} は登録されていません"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:332
+#: lib/retro_hex_chat/services/chan_serv.ex:335
 #, elixir-autogen, elixir-format
 msgid "Only the founder can drop a channel"
 msgstr "創設者だけがチャネルをドロップすることができます"
@@ -149,74 +149,7 @@ msgstr "サーバ管理者が登録を解除する"
 msgid "You are now identified as %{nickname}"
 msgstr "%{nickname} として識別できるようになりました"
 
-#: lib/retro_hex_chat/services/chan_serv.ex:300
+#: lib/retro_hex_chat/services/chan_serv.ex:303
 #, elixir-autogen, elixir-format
 msgid "You must be identified to use ChanServ"
 msgstr "チャンサーブの使用を識別する必要があります"
-
-#: lib/retro_hex_chat/services/nick_email.ex:78
-#, elixir-autogen, elixir-format
-msgid "Confirm your RetroHexChat address"
-msgstr "RetroHexChat のアドレスを確認してください"
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:373
-#, elixir-autogen, elixir-format
-msgid "Could not be saved"
-msgstr "保存できませんでした"
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:279
-#: lib/retro_hex_chat/services/nick_email.ex:284
-#, elixir-autogen, elixir-format
-msgid "Nickname is not registered"
-msgstr "このニックネームは登録されていません"
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:149
-#, elixir-autogen, elixir-format
-msgid "Reset your RetroHexChat password"
-msgstr "RetroHexChat のパスワードを再設定してください"
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:79
-#, elixir-autogen, elixir-format
-msgid "Somebody added this address to the RetroHexChat nickname %{nickname}. Open this link to confirm it:\n\n%{link}\n\nIf this was not you, ignore this message — nothing has changed and the address will stay unconfirmed."
-msgstr "RetroHexChat のニックネーム %{nickname} にこのアドレスが登録されました。次のリンクを開いて確認してください:\n\n%{link}\n\n心当たりがなければ、このメッセージは無視してかまいません。何も変わっておらず、アドレスは未確認のままです。"
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:150
-#, elixir-autogen, elixir-format
-msgid "Somebody asked to reset the password for the RetroHexChat nickname %{nickname}. Open this link to choose a new one:\n\n%{link}\n\nIf this was not you, ignore this message — your password has not changed."
-msgstr "RetroHexChat のニックネーム %{nickname} のパスワード再設定が要求されました。次のリンクを開いて新しいパスワードを決めてください:\n\n%{link}\n\n心当たりがなければ、このメッセージは無視してかまいません。パスワードは変わっていません。"
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:248
-#: lib/retro_hex_chat/services/nick_email.ex:272
-#, elixir-autogen, elixir-format
-msgid "The message could not be sent"
-msgstr "メッセージを送信できませんでした"
-
-
-#: lib/retro_hex_chat/jobs/nick_expiry_warning_worker.ex:94
-#, elixir-autogen, elixir-format
-msgid "The nickname %{nickname} has not been used for a while, and nicknames left unused are released so somebody else can take them.\n\nSigning in once keeps it — nothing else is needed, and you have about %{days} days.\n\nIf you would rather let it go, ignore this message."
-msgstr "ニックネーム %{nickname} はしばらく使われていません。使われないニックネームは、ほかの人が使えるように解放されます。\n\n一度サインインすれば、それだけで保持できます。ほかに必要なことはなく、あと %{days} 日ほどあります。\n\n手放してよければ、このメッセージは無視してください。"
-
-
-#: lib/retro_hex_chat/services/nick_email.ex:257
-#, elixir-autogen, elixir-format
-msgid "This server cannot send e-mail"
-msgstr "このサーバーはメールを送信できません"
-
-
-#: lib/retro_hex_chat/jobs/nick_expiry_warning_worker.ex:93
-#, elixir-autogen, elixir-format
-msgid "Your RetroHexChat nickname is about to be released"
-msgstr "RetroHexChat のニックネームがまもなく解放されます"
-
-
-#: lib/retro_hex_chat/services/registered_nick.ex:59
-#, elixir-autogen, elixir-format
-msgid "is not a valid address"
-msgstr "は正しいアドレスではありません"

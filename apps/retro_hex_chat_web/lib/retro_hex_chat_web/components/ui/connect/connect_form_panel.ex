@@ -37,8 +37,6 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
   attr :trusted_device_login, :boolean, default: false
   attr :remember_device, :boolean, default: false
   attr :device_label, :string, default: ""
-  attr :recovery_available, :boolean, default: false
-  attr :recovery_sent, :boolean, default: false
   attr :csrf_token, :string, required: true
   attr :chat_session_path, :string, required: true
   attr :return_to, :string, default: nil
@@ -57,8 +55,6 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
       remembered_nicks={@remembered_nicks}
       takeover_session={@takeover_session}
       manual_login={@manual_login}
-      recovery_available={@recovery_available}
-      recovery_sent={@recovery_sent}
       remember_device={@remember_device}
       device_label={@device_label}
       target={@target}
@@ -86,8 +82,6 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
   attr :remembered_nicks, :list, default: []
   attr :takeover_session, :map, default: nil
   attr :manual_login, :boolean, default: false
-  attr :recovery_available, :boolean, default: false
-  attr :recovery_sent, :boolean, default: false
   attr :remember_device, :boolean, default: false
   attr :device_label, :string, default: ""
   attr :target, :any, default: nil
@@ -113,8 +107,6 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
       password_error={@password_error}
       remember_device={@remember_device}
       device_label={@device_label}
-      recovery_available={@recovery_available}
-      recovery_sent={@recovery_sent}
       target={@target}
     />
     """
@@ -391,8 +383,6 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
   attr :password_error, :string, default: nil
   attr :remember_device, :boolean, default: false
   attr :device_label, :string, default: ""
-  attr :recovery_available, :boolean, default: false
-  attr :recovery_sent, :boolean, default: false
   attr :target, :any, default: nil
 
   defp connect_password_step(assigns) do
@@ -438,33 +428,6 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
       </.retro_fieldset>
 
       <.remember_terminal_fields remember_device={@remember_device} device_label={@device_label} />
-
-      <%!-- Only where there is mail to send. A server with no SMTP relay would
-            draw a link that can do nothing, which is worse than not offering
-            recovery at all. --%>
-      <p :if={@recovery_available} class="mt-3 text-xs">
-        <.button
-          type="button"
-          variant="outline"
-          size="sm"
-          phx-click="forgot_password"
-          phx-target={@target}
-          data-testid="forgot-password-btn"
-        >
-          <:icon><Icons.icon_question /></:icon>
-          {dgettext("connect", "I forgot my password")}
-        </.button>
-      </p>
-
-      <.alert :if={@recovery_sent} class="mt-3" data-testid="recovery-sent">
-        <:icon><Icons.icon_checkmark /></:icon>
-        <.alert_description>
-          {dgettext(
-            "connect",
-            "If that nickname has a confirmed address, a link to choose a new password is on its way to it."
-          )}
-        </.alert_description>
-      </.alert>
 
       <div class="flex justify-end gap-2 mt-4">
         <.button

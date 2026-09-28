@@ -17,7 +17,6 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.SoundSettings
-  alias RetroHexChat.Services.NickEmail
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Components.AccountDialog
@@ -30,24 +29,6 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
   def handle_event("open_account_dialog", _params, socket), do: {:halt, open(socket)}
   def handle_event("open_account_register", _params, socket), do: {:halt, open(socket)}
   def handle_event("open_account_identify", _params, socket), do: {:halt, open(socket)}
-
-  # Adding an address the person does not own would be a way to take the account,
-  # so this is only reachable once they have identified — the section is not
-  # drawn otherwise, and NickServ is asked again here rather than trusted from
-  # the render.
-  def handle_event("account_email_submit", %{"email" => address}, socket) do
-    {:halt, with_identified(socket, fn nickname -> set_email(nickname, address) end)}
-  end
-
-  def handle_event("account_email_remove", _params, socket) do
-    {:halt,
-     with_identified(socket, fn nickname ->
-       case NickEmail.remove_email(nickname) do
-         :ok -> [notice: dgettext("chat", "Address removed.")]
-         {:error, message} -> [error: message]
-       end
-     end)}
-  end
 
   def handle_event("account_info", _params, socket) do
     {:halt, CommandDispatch.dispatch_command(socket, socket.assigns.session, "ns", ["info"])}
@@ -213,34 +194,4 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
     do: Helpers.rebuild_nick_color_fn(socket, session)
 
   defp maybe_rebuild_nick_color_fn(socket, _session, _identified, _was_identified), do: socket
-
-  defp with_identified(socket, fun) do
-    nickname = socket.assigns.session.nickname
-
-    result =
-      if NickEmail.enabled?() and NickServ.identified?(nickname) do
-        fun.(nickname)
-      else
-        [error: dgettext("chat", "Identify with NickServ first.")]
-      end
-
-    send_update(AccountDialog, id: AccountDialog.id(), action: {:email, result})
-    socket
-  end
-
-  defp set_email(nickname, address) do
-    case NickEmail.set_email(nickname, address, &confirm_url/1) do
-      :ok ->
-        [notice: dgettext("chat", "Check that address for a link confirming it.")]
-
-      {:error, message} ->
-        [error: message]
-    end
-  end
-
-  # The domain has no routes, so the link is built here, and absolute: it is
-  # about to travel to somebody's inbox.
-  defp confirm_url(token) do
-    RetroHexChatWeb.Endpoint.url() <> "/account/verify/" <> token
-  end
 end

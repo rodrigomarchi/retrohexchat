@@ -1730,26 +1730,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: ["cmd-autojoin", "feature-perform", "cmd-join", "cmd-part"]
       },
       %{
-        id: "feature-account-email",
-        title: dgettext("help", "The Address On Your Account"),
-        category: dgettext("help", "Users & Identity"),
-        keywords: [
-          "email",
-          "e-mail",
-          dgettext("help", "forgot password"),
-          dgettext("help", "reset password"),
-          dgettext("help", "recover account"),
-          dgettext("help", "account address")
-        ],
-        icon: :icon_shield,
-        description:
-          dgettext(
-            "help",
-            "Add an address to get back in if you forget your password. Optional, private, and removable at any time."
-          ),
-        see_also: ["feature-sessions", "cmd-ns"]
-      },
-      %{
         id: "feature-sessions",
         title: dgettext("help", "Signing In On Several Screens"),
         category: dgettext("help", "Users & Identity"),

@@ -97,9 +97,3 @@ config :retro_hex_chat,
 
 # Basic auth for LiveDashboard
 config :retro_hex_chat_web, :basic_auth, username: "admin", password: "test"
-
-# Mail is collected in the test process rather than sent.
-config :retro_hex_chat, RetroHexChat.Mailer,
-  adapter: Swoosh.Adapters.Test,
-  from_address: "no-reply@retrohexchat.test",
-  from_name: "RetroHexChat"
