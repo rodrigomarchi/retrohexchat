@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.E2EController do
   alias RetroHexChat.Channels.Server, as: ChannelServer
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat.Content
+  alias Swoosh.Adapters.Local.Storage.Memory, as: Mailbox
 
   @message_types %{
     "message" => :message,
@@ -16,6 +17,43 @@ defmodule RetroHexChatWeb.E2EController do
   @channel_pattern ~r/^#[A-Za-z0-9_-]{1,48}$/
   @nickname_pattern ~r/^[A-Za-z][A-Za-z0-9_\-\[\]\\`^{}|]{0,15}$/
   @max_content_length 1_100
+
+  @doc """
+  Every message this server sent since it booted, newest first.
+
+  Password recovery and address verification happen across two places — a chat
+  window and a mailbox — and the browser suite can only reach one of them. The
+  e2e environment already posts to `Swoosh.Adapters.Local`, which keeps what it
+  sent in memory; this is the window onto it, so a spec can follow the link a
+  person would have clicked instead of asserting that a button was clickable.
+
+  Behind the same switch as the rest of this controller: absent from any build
+  that did not compile it in.
+  """
+  @spec mailbox(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def mailbox(conn, _params) do
+    if Application.get_env(:retro_hex_chat, :e2e_fault_injection?, false) do
+      json(conn, %{status: "ok", messages: Enum.map(sent_messages(), &describe_email/1)})
+    else
+      not_found(conn)
+    end
+  end
+
+  defp sent_messages do
+    Mailbox.all()
+  rescue
+    # The storage is a process, and a spec may ask before anything has been
+    # sent — an empty mailbox is an answer, not a failure.
+    _error -> []
+  end
+
+  defp describe_email(email) do
+    %{
+      to: email |> Map.get(:to, []) |> Enum.map(&elem(&1, 1)),
+      subject: Map.get(email, :subject),
+      text: Map.get(email, :text_body) || ""
+    }
+  end
 
   @spec create_channel_message(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def create_channel_message(conn, params) do

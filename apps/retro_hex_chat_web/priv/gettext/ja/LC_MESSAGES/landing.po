@@ -2436,22 +2436,22 @@ msgstr "ログインではない唯一のクッキー"
 msgid "Your browser is given a random name so the server can tell your phone from your desktop. It identifies a browser, never a person: nothing is stored against it but which channels that screen had open and where in them you had read to, and a different browser on the same machine gets a different one. It follows you nowhere, because it only exists on this server."
 msgstr "サーバーがスマートフォンとパソコンを区別できるよう、ブラウザにランダムな名前が割り当てられます。これはブラウザを指すもので、人物を指すものではありません。ひも付くのは、その画面がどのチャンネルを開いていたか、どこまで読んだかだけで、同じ端末でも別のブラウザには別の名前が割り当てられます。このサーバーにしか存在しないため、どこへもあなたを追いかけません。"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:171
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:181
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "アカウント"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:140
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:156
 #, elixir-autogen, elixir-format
 msgid "An address on a nickname is optional, private, and the only way back in when a password is gone."
 msgstr "ニックネームに付けるアドレスは任意で、非公開で、パスワードを失ったときの唯一の戻り道です。"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:232
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:242
 #, elixir-autogen, elixir-format
 msgid "Change password"
 msgstr "パスワードを変更"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:158
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:168
 #, elixir-autogen, elixir-format
 msgid "Checking this link…"
 msgstr "このリンクを確認しています…"
@@ -2466,8 +2466,8 @@ msgstr "新しいパスワードを決める"
 msgid "Confirm your address"
 msgstr "アドレスを確認"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:192
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:208
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:202
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:218
 #, elixir-autogen, elixir-format
 msgid "Go to Connect"
 msgstr "接続画面へ"
@@ -2477,7 +2477,7 @@ msgstr "接続画面へ"
 msgid "It is kept until you remove it, and the Account window removes it in one press — along with any link already sent. Nothing is derived from it, nothing is shared, and a server whose operator never configured outgoing mail does not offer the field at all."
 msgstr "削除するまで保持され、「アカウント」ウィンドウから一度の操作で削除できます。送信済みのリンクも同時に無効になります。そこから何かを導き出すことも、共有することもありません。運営者が送信メールを設定していないサーバーでは、この欄自体が表示されません。"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:220
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:230
 #, elixir-autogen, elixir-format
 msgid "New password"
 msgstr "新しいパスワード"
@@ -2502,12 +2502,12 @@ msgstr "このリンクはもう使えません。すでに使われたか、よ
 msgid "You can add an e-mail address to a registered nickname. It is optional, nobody but you ever sees it, and it is used for exactly three things: a link to confirm it, a link to choose a new password when you have forgotten yours, and a warning before an unused nickname is released."
 msgstr "登録したニックネームにメールアドレスを追加できます。任意で、あなた以外の誰にも表示されず、用途はちょうど三つです。アドレスを確認するリンク、パスワードを忘れたときに新しいものを決めるリンク、そして未使用のニックネームが解放される前の予告です。"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:184
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:194
 #, elixir-autogen, elixir-format
 msgid "Your address is confirmed. It stays private, and you can remove it at any time from the Account window in the chat."
 msgstr "アドレスが確認されました。非公開のままで、チャット内の「アカウント」ウィンドウからいつでも削除できます。"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:203
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:213
 #, elixir-autogen, elixir-format
 msgid "Your password has been changed. You can sign in with it now."
 msgstr "パスワードを変更しました。そのままサインインできます。"
@@ -2523,17 +2523,17 @@ msgstr "%{channel} のアーカイブ"
 msgid "%{channel} on %{date}"
 msgstr "%{date} の %{channel}"
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:193
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:197
 #, elixir-autogen, elixir-format
 msgid "%{channel} on %{date}: %{opening}"
 msgstr "%{date} の %{channel}：%{opening}"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:24
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "(edited)"
 msgstr "（編集済み）"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:32
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "All days"
 msgstr "すべての日"
@@ -2548,8 +2548,13 @@ msgstr "チャンネルがアーカイブを開いてから、ここで語られ
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
 msgstr "%{channel} がアーカイブを開いてから語られたすべて。1 日 1 ページです。"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:36
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:43
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
 msgstr "%{channel} に参加"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "(attachment)"
+msgstr "(添付ファイル)"

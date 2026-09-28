@@ -2405,22 +2405,22 @@ msgstr "唯一一個不是登入憑證的 Cookie"
 msgid "Your browser is given a random name so the server can tell your phone from your desktop. It identifies a browser, never a person: nothing is stored against it but which channels that screen had open and where in them you had read to, and a different browser on the same machine gets a different one. It follows you nowhere, because it only exists on this server."
 msgstr "你的瀏覽器會拿到一個隨機名稱，好讓伺服器分清手機和電腦。它標示的是一個瀏覽器，而不是一個人：除了那個螢幕開過哪些頻道、讀到哪裡之外不會存別的；同一台機器上的另一個瀏覽器會拿到另一個名稱。它不會跟著你到任何地方，因為它只存在於這台伺服器上。"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:171
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:181
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "帳號"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:140
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:156
 #, elixir-autogen, elixir-format
 msgid "An address on a nickname is optional, private, and the only way back in when a password is gone."
 msgstr "暱稱上的位址是可選的、私密的，也是密碼遺失時唯一的回頭路。"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:232
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:242
 #, elixir-autogen, elixir-format
 msgid "Change password"
 msgstr "修改密碼"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:158
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:168
 #, elixir-autogen, elixir-format
 msgid "Checking this link…"
 msgstr "正在檢查這個連結…"
@@ -2435,8 +2435,8 @@ msgstr "設定新密碼"
 msgid "Confirm your address"
 msgstr "確認你的位址"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:192
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:208
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:202
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:218
 #, elixir-autogen, elixir-format
 msgid "Go to Connect"
 msgstr "前往連線"
@@ -2446,7 +2446,7 @@ msgstr "前往連線"
 msgid "It is kept until you remove it, and the Account window removes it in one press — along with any link already sent. Nothing is derived from it, nothing is shared, and a server whose operator never configured outgoing mail does not offer the field at all."
 msgstr "它會一直保留到你刪除為止，「帳號」視窗一按即刪——連同已經寄出的連結一起失效。不會從中推導出任何東西，不會分享，營運者從未設定外寄郵件的伺服器連這個欄位都不會顯示。"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:220
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:230
 #, elixir-autogen, elixir-format
 msgid "New password"
 msgstr "新密碼"
@@ -2471,12 +2471,12 @@ msgstr "這個連結不再有效。可能已經用過，或者被更新的取代
 msgid "You can add an e-mail address to a registered nickname. It is optional, nobody but you ever sees it, and it is used for exactly three things: a link to confirm it, a link to choose a new password when you have forgotten yours, and a warning before an unused nickname is released."
 msgstr "你可以給註冊暱稱加一個電子郵件位址。它是可選的，除你之外沒人看得到，用途恰好三件：確認它的連結、忘記密碼時設定新密碼的連結，以及閒置暱稱被釋出前的提醒。"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:184
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:194
 #, elixir-autogen, elixir-format
 msgid "Your address is confirmed. It stays private, and you can remove it at any time from the Account window in the chat."
 msgstr "你的位址已確認。它仍然是私密的，你隨時可以在聊天裡的「帳號」視窗刪除它。"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:203
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:213
 #, elixir-autogen, elixir-format
 msgid "Your password has been changed. You can sign in with it now."
 msgstr "你的密碼已修改，現在可以用它登入。"
@@ -2492,17 +2492,17 @@ msgstr "%{channel} 的封存"
 msgid "%{channel} on %{date}"
 msgstr "%{date} 的 %{channel}"
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:193
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:197
 #, elixir-autogen, elixir-format
 msgid "%{channel} on %{date}: %{opening}"
 msgstr "%{date} 的 %{channel}：%{opening}"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:24
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "(edited)"
 msgstr "（已編輯）"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:32
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "All days"
 msgstr "全部日期"
@@ -2517,8 +2517,13 @@ msgstr "自從頻道開啟封存以來這裡說過的一切，每天一頁。開
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
 msgstr "自從 %{channel} 開啟封存以來說過的一切，每天一頁。"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:36
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:43
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
 msgstr "加入 %{channel}"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "(attachment)"
+msgstr "(附件)"

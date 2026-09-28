@@ -20,6 +20,13 @@
           <span class="break-words">
             <span :if={entry.action?} class="italic">{entry.author}</span>
             {entry.text}
+            <%!-- A file was part of what was said, and the archive publishes no
+                  files: saying so keeps a line that is nothing but an
+                  attachment from reading as a line where somebody said
+                  nothing. --%>
+            <span :if={entry.attachment?} class="text-muted-foreground italic">
+              {dgettext("landing", "(attachment)")}
+            </span>
             <span :if={entry.edited?} class="text-muted-foreground">
               {dgettext("landing", "(edited)")}
             </span>

@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **234 spec files** under `e2e/tests/`.
-- **490 Playwright `test()` cases**.
-- **485 documented flows**, 484 done, 1 not done.
+- **235 spec files** under `e2e/tests/`.
+- **493 Playwright `test()` cases**.
+- **488 documented flows**, 487 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -148,6 +148,9 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | # | Flow | Spec file | Status |
 | --- | --- | --- | --- |
 | A | Brand-new user registers a nickname and lands on `/chat` | `tests/connect-flow.spec.ts` | done |
+| A6 | A recovery address is added from the Account window and confirmed by following the link | `tests/account-recovery.spec.ts` | done |
+| A7 | A forgotten password is replaced from the emailed link and the new one signs in | `tests/account-recovery.spec.ts` | done |
+| A8 | A reset link that was already used no longer sets a password | `tests/account-recovery.spec.ts` | done |
 | B | Register a nick, disconnect, reconnect with correct password lands on `/chat` | `tests/returning-user.spec.ts` | done |
 | C1 | Empty nickname keeps Connect disabled | `tests/nickname-validation.spec.ts` | done |
 | C2 | Nickname longer than 16 chars shows inline error | `tests/nickname-validation.spec.ts` | done |

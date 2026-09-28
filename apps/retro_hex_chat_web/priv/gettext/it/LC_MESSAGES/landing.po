@@ -2547,22 +2547,22 @@ msgstr "L'unico cookie che non è un accesso"
 msgid "Your browser is given a random name so the server can tell your phone from your desktop. It identifies a browser, never a person: nothing is stored against it but which channels that screen had open and where in them you had read to, and a different browser on the same machine gets a different one. It follows you nowhere, because it only exists on this server."
 msgstr "Al tuo browser viene dato un nome casuale perché il server distingua il telefono dal computer. Identifica un browser, mai una persona: non vi è associato nulla se non quali canali quello schermo aveva aperti e fin dove li avevi letti, e un altro browser sulla stessa macchina ne riceve uno diverso. Non ti segue da nessuna parte, perché esiste solo su questo server."
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:171
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:181
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "Account"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:140
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:156
 #, elixir-autogen, elixir-format
 msgid "An address on a nickname is optional, private, and the only way back in when a password is gone."
 msgstr "Un indirizzo su un soprannome è facoltativo, privato, e l'unico modo per rientrare quando la password è persa."
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:232
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:242
 #, elixir-autogen, elixir-format
 msgid "Change password"
 msgstr "Cambia la password"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:158
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:168
 #, elixir-autogen, elixir-format
 msgid "Checking this link…"
 msgstr "Sto controllando questo link…"
@@ -2577,8 +2577,8 @@ msgstr "Scegli una nuova password"
 msgid "Confirm your address"
 msgstr "Conferma il tuo indirizzo"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:192
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:208
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:202
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:218
 #, elixir-autogen, elixir-format
 msgid "Go to Connect"
 msgstr "Vai alla connessione"
@@ -2588,7 +2588,7 @@ msgstr "Vai alla connessione"
 msgid "It is kept until you remove it, and the Account window removes it in one press — along with any link already sent. Nothing is derived from it, nothing is shared, and a server whose operator never configured outgoing mail does not offer the field at all."
 msgstr "Resta finché non lo rimuovi, e la finestra Account lo rimuove con una pressione — insieme a qualsiasi link già inviato. Non se ne ricava nulla, non si condivide nulla, e un server il cui gestore non ha mai configurato la posta in uscita non mostra nemmeno il campo."
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:220
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:230
 #, elixir-autogen, elixir-format
 msgid "New password"
 msgstr "Nuova password"
@@ -2613,12 +2613,12 @@ msgstr "Questo link non va più bene. Forse è già stato usato, o sostituito da
 msgid "You can add an e-mail address to a registered nickname. It is optional, nobody but you ever sees it, and it is used for exactly three things: a link to confirm it, a link to choose a new password when you have forgotten yours, and a warning before an unused nickname is released."
 msgstr "Puoi aggiungere un indirizzo e-mail a un soprannome registrato. È facoltativo, nessuno tranne te lo vede, e serve esattamente a tre cose: un link per confermarlo, un link per scegliere una nuova password quando hai dimenticato la tua, e un avviso prima che un soprannome inutilizzato venga liberato."
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:184
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:194
 #, elixir-autogen, elixir-format
 msgid "Your address is confirmed. It stays private, and you can remove it at any time from the Account window in the chat."
 msgstr "Il tuo indirizzo è confermato. Resta privato, e puoi rimuoverlo quando vuoi dalla finestra Account, dentro la chat."
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:203
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:213
 #, elixir-autogen, elixir-format
 msgid "Your password has been changed. You can sign in with it now."
 msgstr "La tua password è stata cambiata. Puoi accedere con quella."
@@ -2634,17 +2634,17 @@ msgstr "Archivio di %{channel}"
 msgid "%{channel} on %{date}"
 msgstr "%{channel} il %{date}"
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:193
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:197
 #, elixir-autogen, elixir-format
 msgid "%{channel} on %{date}: %{opening}"
 msgstr "%{channel} il %{date}: %{opening}"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:24
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "(edited)"
 msgstr "(modificato)"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:32
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "All days"
 msgstr "Tutti i giorni"
@@ -2659,8 +2659,13 @@ msgstr "Tutto ciò che è stato detto qui da quando il canale ha aperto il suo a
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
 msgstr "Tutto ciò che è stato detto in %{channel} da quando ha aperto il suo archivio, una pagina al giorno."
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:36
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:43
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
 msgstr "Entra in %{channel}"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "(attachment)"
+msgstr "(allegato)"

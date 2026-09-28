@@ -14,6 +14,8 @@ defmodule RetroHexChat.Chat.ArchiveTest do
   @moduletag :integration
 
   alias RetroHexChat.Chat.Archive
+  alias RetroHexChat.Chat.Attachment
+  alias RetroHexChat.Chat.Attachments
   alias RetroHexChat.Chat.Queries
   alias RetroHexChat.Services.RegisteredChannel
 
@@ -102,6 +104,40 @@ defmodule RetroHexChat.Chat.ArchiveTest do
       texts = ctx.channel |> Archive.messages_for(day_of(said)) |> Enum.map(& &1.text)
 
       assert texts == ["a person said this"]
+    end
+
+    # A message can be nothing but a file: the composer sends with an empty box
+    # when something is attached, and a recorded voice message usually is
+    # exactly that. The line still happened, and the archive publishes no
+    # attachment — so it says an attachment was there rather than drawing an
+    # author, a timestamp and a blank space on a page made for strangers.
+    test "a message that is nothing but an attachment says so", ctx do
+      said = message_with(ctx.channel, %{content: "", allow_blank_content: true})
+      attach(said)
+
+      [entry] = Archive.messages_for(ctx.channel, day_of(said))
+
+      assert entry.attachment?
+      assert entry.text == ""
+    end
+
+    test "a line with both its words and a file keeps the words and marks the file", ctx do
+      said = message(ctx.channel, "look at this")
+      attach(said)
+
+      [entry] = Archive.messages_for(ctx.channel, day_of(said))
+
+      assert entry.text == "look at this"
+      assert entry.attachment?
+    end
+
+    # Absence, and the one this replaces: `attachment?` used to be a constant.
+    test "an ordinary line carries no attachment mark", ctx do
+      said = message(ctx.channel, "just talking")
+
+      [entry] = Archive.messages_for(ctx.channel, day_of(said))
+
+      refute entry.attachment?
     end
 
     test "an action is published, because somebody meant it", ctx do
@@ -218,6 +254,23 @@ defmodule RetroHexChat.Chat.ArchiveTest do
 
   defp message(channel, content, type \\ "message") do
     message_with(channel, %{content: content, plain_content: content, type: type})
+  end
+
+  defp attach(message) do
+    {:ok, file, _meta} =
+      Attachments.prepare_direct_upload("Speaker", %{
+        filename: "voice-20260928-101500.weba",
+        content_type: "audio/webm",
+        byte_size: 9_112
+      })
+
+    {:ok, _} =
+      Repo.insert(%Attachment{
+        file_id: file.id,
+        message_id: message.id,
+        display_filename: "voice-20260928-101500.weba",
+        position: 0
+      })
   end
 
   defp message_with(channel, attrs) do

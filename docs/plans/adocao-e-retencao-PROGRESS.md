@@ -19,7 +19,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 3.2 Menções | **pronto** (2026-09-23) |
 | 3.3 Régua de não lidas | **pronto** (2026-09-23) |
 | 4.1 Multi-dispositivo | **pronto** (2026-09-23) |
-| 4.2 E-mail opcional | **parcial** (2026-09-23) — dois dos três usos; falta o aviso de PM com a pessoa fora, e nenhuma cobertura de navegador |
+| 4.2 E-mail opcional | **parcial** (2026-09-28) — dois dos três usos entregues e agora cobertos no navegador; falta o aviso de PM com a pessoa fora |
 | 4.3 Fixar mensagem | **pronto** (2026-09-23) |
 | 4.4 Salvar mensagem | **pronto** (2026-09-23) |
 | 5.1 Arquivo público | **pronto** (2026-09-24) |
@@ -70,6 +70,65 @@ canal `+s` na leitura e na escrita; os dois caminhos de mensagem (`Chat.Service`
 e `Channels.Server`) enfileiram push; os três workers novos têm telemetria;
 nenhum `TODO`/stub no código do plano; o service worker só cacheia asset
 digerido, então cache velho não serve código velho.
+
+---
+
+## Correções da auditoria — 2026-09-28
+
+Três das quatro lacunas fechadas. A segunda encontrou duas falhas de produção
+que nenhum teste de servidor podia ver.
+
+**O arquivo público não publica mais linha em branco**
+
+- `Archive.entry/1` tinha `attachment?: false` — um campo declarado no tipo,
+  fixado numa constante e lido por ninguém. Agora vem de um `exists` sobre
+  `chat_attachments` na mesma query, e a linha diz "(anexo)" onde havia autor,
+  horário e vazio. Mensagem só com anexo é caso real e suportado
+  (`allow_blank_content: attachment_ids != []`), e a de voz normalmente é uma.
+- A descrição que vai para o buscador passou a ignorar linha sem palavras: ela
+  era o nome do canal seguido de uma fileira de espaços.
+
+**A recuperação de conta estava morta no navegador**
+
+- `/account/verify/:token` e `/account/reset/:token` **nunca funcionaram numa
+  aba de verdade.** O bundle público só liga o LiveSocket quando alguém toca a
+  janela de sign-in; sem janela de sign-in na página, `setupConnectBoot` saía na
+  primeira linha e o socket não abria nunca. Toda a página está atrás de
+  `connected?(socket)`, então ela ficava em "Checking this link…" para sempre.
+  Provado com um probe: zero WebSocket na página. Agora uma página que não
+  funciona morta declara `data-live-boot="true"` e o bundle liga o socket.
+- **A janela do formulário ficava embaixo da janela que a explicava.** O desk
+  cascateia o que recebe, e a página abria duas janelas com o mesmo título: a
+  de baixo tinha o campo de senha e o botão, a de cima tinha uma frase. Virou
+  uma janela só, centralizada, que diz o que é e faz a coisa.
+- Três fluxos de navegador novos (`A6`, `A7`, `A8`): endereço confirmado pelo
+  link, senha trocada pelo link e usada para entrar, e link de reset já gasto
+  que não troca senha de novo.
+- O seam que faltava: `GET /api/e2e/mailbox`, atrás da mesma chave de compilação
+  do resto do `E2EController`. O ambiente e2e já postava para o mailbox local e
+  o comentário do `config/e2e.exs` já dizia "which the browser suite can read" —
+  só não havia por onde ler.
+
+**Duas capacidades subiam apagadas** — `RHC_VAPID_*` e `RHC_SMTP_*`
+documentadas no README, com as janelas de retenção.
+
+**Aprendizados**
+
+- **Um teste de LiveView sempre conecta; um navegador nem sempre.** `live/2`
+  conecta por construção, então as duas rotas passavam em ExUnit enquanto
+  estavam mortas para qualquer pessoa. É a `browser-coverage-blind-spot` outra
+  vez, e a lacuna de cobertura não era papelada: escondia o recurso inteiro.
+- **Um campo fixado numa constante é uma promessa que ninguém cumpriu.**
+  `attachment?: false` estava no tipo, no `select` e em lugar nenhum da tela.
+  Vale procurar constantes assim quando um item fecha.
+- **O orçamento de payload tinha dois espelhos discordando.** O e2e cobrava
+  300_000 e o ExUnit 310_000; o índice de ajuda mede 303_678, então só um dos
+  dois falhava — e o batch que o roda não tinha sido rodado desde o 5.2. Os dois
+  agora dizem o mesmo número, com a medição escrita. O que nenhum dos dois
+  responde: o índice desenha os 297 tópicos numa página aberta para achar um.
+- **Rodar o batch certo importa mais do que rodar muitos.** `foundation` guarda
+  os orçamentos e ficou quatro itens sem rodar enquanto cada um deles somava um
+  tópico de ajuda.
 
 ---
 

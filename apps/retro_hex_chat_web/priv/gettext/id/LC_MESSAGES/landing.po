@@ -2531,22 +2531,22 @@ msgstr "Satu-satunya kuki yang bukan proses masuk"
 msgid "Your browser is given a random name so the server can tell your phone from your desktop. It identifies a browser, never a person: nothing is stored against it but which channels that screen had open and where in them you had read to, and a different browser on the same machine gets a different one. It follows you nowhere, because it only exists on this server."
 msgstr "Peramban Anda diberi nama acak agar server bisa membedakan ponsel dari komputer. Nama itu menandai sebuah peramban, bukan seseorang: tidak ada yang disimpan padanya selain kanal apa yang dibuka layar itu dan sampai di mana Anda membacanya, dan peramban lain di mesin yang sama mendapat nama berbeda. Ia tidak mengikuti Anda ke mana pun, karena hanya ada di server ini."
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:171
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:181
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "Akun"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:140
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:156
 #, elixir-autogen, elixir-format
 msgid "An address on a nickname is optional, private, and the only way back in when a password is gone."
 msgstr "Alamat pada nama panggilan itu opsional, pribadi, dan satu-satunya jalan kembali ketika kata sandi hilang."
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:232
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:242
 #, elixir-autogen, elixir-format
 msgid "Change password"
 msgstr "Ubah kata sandi"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:158
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:168
 #, elixir-autogen, elixir-format
 msgid "Checking this link…"
 msgstr "Memeriksa tautan ini…"
@@ -2561,8 +2561,8 @@ msgstr "Pilih kata sandi baru"
 msgid "Confirm your address"
 msgstr "Konfirmasi alamat Anda"
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:192
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:208
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:202
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:218
 #, elixir-autogen, elixir-format
 msgid "Go to Connect"
 msgstr "Ke halaman koneksi"
@@ -2572,7 +2572,7 @@ msgstr "Ke halaman koneksi"
 msgid "It is kept until you remove it, and the Account window removes it in one press — along with any link already sent. Nothing is derived from it, nothing is shared, and a server whose operator never configured outgoing mail does not offer the field at all."
 msgstr "Alamat disimpan sampai Anda menghapusnya, dan jendela Akun menghapusnya sekali tekan — berikut tautan apa pun yang sudah terkirim. Tidak ada yang diturunkan darinya, tidak ada yang dibagikan, dan server yang pengelolanya tidak pernah menyiapkan surel keluar bahkan tidak menampilkan kolomnya."
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:220
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:230
 #, elixir-autogen, elixir-format
 msgid "New password"
 msgstr "Kata sandi baru"
@@ -2597,12 +2597,12 @@ msgstr "Tautan ini sudah tidak berlaku. Mungkin sudah dipakai, atau digantikan y
 msgid "You can add an e-mail address to a registered nickname. It is optional, nobody but you ever sees it, and it is used for exactly three things: a link to confirm it, a link to choose a new password when you have forgotten yours, and a warning before an unused nickname is released."
 msgstr "Anda bisa menambahkan alamat surel ke nama panggilan terdaftar. Sifatnya opsional, tidak ada orang lain yang melihatnya, dan gunanya tepat tiga hal: tautan untuk mengonfirmasinya, tautan untuk memilih kata sandi baru saat Anda lupa, dan peringatan sebelum nama panggilan yang menganggur dilepas."
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:184
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:194
 #, elixir-autogen, elixir-format
 msgid "Your address is confirmed. It stays private, and you can remove it at any time from the Account window in the chat."
 msgstr "Alamat Anda terkonfirmasi. Alamat itu tetap pribadi, dan Anda bisa menghapusnya kapan saja dari jendela Akun di dalam obrolan."
 
-#: lib/retro_hex_chat_web/live/landing_live/account.ex:203
+#: lib/retro_hex_chat_web/live/landing_live/account.ex:213
 #, elixir-autogen, elixir-format
 msgid "Your password has been changed. You can sign in with it now."
 msgstr "Kata sandi Anda sudah diubah. Anda bisa masuk dengan kata sandi itu sekarang."
@@ -2618,17 +2618,17 @@ msgstr "Arsip %{channel}"
 msgid "%{channel} on %{date}"
 msgstr "%{channel} pada %{date}"
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:193
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:197
 #, elixir-autogen, elixir-format
 msgid "%{channel} on %{date}: %{opening}"
 msgstr "%{channel} pada %{date}: %{opening}"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:24
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "(edited)"
 msgstr "(disunting)"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:32
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "All days"
 msgstr "Semua hari"
@@ -2643,8 +2643,13 @@ msgstr "Semua yang dikatakan di sini sejak kanal membuka arsipnya, satu halaman 
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
 msgstr "Semua yang dikatakan di %{channel} sejak membuka arsipnya, satu halaman per hari."
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:36
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:43
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
 msgstr "Gabung %{channel}"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "(attachment)"
+msgstr "(lampiran)"

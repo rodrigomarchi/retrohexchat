@@ -9066,6 +9066,30 @@ PO_VOICE_MESSAGE_OVERRIDES = {
 for source, translations in PO_VOICE_MESSAGE_OVERRIDES.items():
     PO_OVERRIDES.setdefault(source, {}).update(translations)
 
+# The archive's one word for a file it does not publish. Curated because it is
+# a parenthetical marker beside a timestamp, not a sentence: every locale needs
+# the noun alone, lower case, and short enough to sit at the end of a line.
+PO_ARCHIVE_ATTACHMENT_OVERRIDES = {
+    "(attachment)": t(
+        "(Anhang)",
+        "(adjunto)",
+        "(pièce jointe)",
+        "(lampiran)",
+        "(添付ファイル)",
+        "(附件)",
+        pt_BR="(anexo)",
+        pt_PT="(anexo)",
+        it="(allegato)",
+        pl="(załącznik)",
+        nl="(bijlage)",
+        ru="(вложение)",
+        zh_hant="(附件)",
+    ),
+}
+
+for source, translations in PO_ARCHIVE_ATTACHMENT_OVERRIDES.items():
+    PO_OVERRIDES.setdefault(source, {}).update(translations)
+
 JS_OVERRIDES = {
     "%{0}  Wv:%{1}": {
     },

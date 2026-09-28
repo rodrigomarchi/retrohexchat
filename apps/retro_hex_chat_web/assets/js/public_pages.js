@@ -107,6 +107,13 @@ function setupMenuBar() {
 // never interact at all. So the socket arrives on first touch — the window is
 // already dead-rendered, and connecting hydrates what is on screen.
 const CONNECT_WINDOW = '[data-testid="landing-connect-window"]';
+
+// A public page that cannot do its job dead says so here. The sign-in window
+// waits for somebody to reach for it, because a reader who never signs in
+// should not pay for a socket; a page whose whole content is the answer to a
+// link — confirming an address, choosing a new password — has nothing to show
+// until LiveView is driving it, and nothing on it to reach for first.
+const LIVE_BOOT = '[data-live-boot="true"]';
 let connectBootState = "idle";
 let pendingSubmit = null;
 
@@ -197,6 +204,11 @@ async function bootConnect() {
 }
 
 function setupConnectBoot() {
+  if (document.querySelector(LIVE_BOOT)) {
+    bootConnect();
+    return;
+  }
+
   const win = document.querySelector(CONNECT_WINDOW);
   if (!win) return;
 

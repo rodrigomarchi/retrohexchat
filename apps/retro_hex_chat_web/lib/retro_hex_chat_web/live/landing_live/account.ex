@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.LandingLive.Account do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Label
-  import RetroHexChatWeb.Components.UI.Landing.LandingShell
+  import RetroHexChatWeb.Components.UI.Landing.LandingShell, only: [landing_layout: 1]
   import RetroHexChatWeb.Components.UI.Window
 
   alias RetroHexChat.Services.NickEmail
@@ -132,22 +132,32 @@ defmodule RetroHexChatWeb.LandingLive.Account do
   def render(assigns) do
     ~H"""
     <.landing_layout active_page={@active_page} windows={@windows}>
-      <section class="m-4" aria-labelledby="account-heading">
-        <.landing_page_intro
-          heading_id="account-heading"
+      <%!-- This page has nothing to show until LiveView is driving it: the token
+            is spent on the connected mount, and the reset form is a `phx-submit`.
+            The public bundle keeps its socket shut until a reader reaches for the
+            sign-in window, and there is no sign-in window here to reach for. --%>
+      <section class="m-4" aria-labelledby="account-heading" data-live-boot="true">
+        <%!-- One window, and it is the one that acts. A second window explaining
+              the first would land on top of it — the desk cascades what it is
+              given — and the control this page exists for would be behind the
+              explanation of why it exists. --%>
+        <.desktop_window
+          id="account-link"
+          width={460}
+          default_centered
           title={window_label(%{assigns: assigns})}
-          description={
-            dgettext(
-              "landing",
-              "An address on a nickname is optional, private, and the only way back in when a password is gone."
-            )
-          }
         >
           <:icon><Icons.icon_lock class="w-4 h-4" /></:icon>
-        </.landing_page_intro>
 
-        <.desktop_window id="account-link" width={460} title={window_label(%{assigns: assigns})}>
-          <:icon><Icons.icon_lock class="w-4 h-4" /></:icon>
+          <h1 id="account-heading" class="text-lg font-bold mb-2 text-text">
+            {window_label(%{assigns: assigns})}
+          </h1>
+          <p class="text-sm mb-3">
+            {dgettext(
+              "landing",
+              "An address on a nickname is optional, private, and the only way back in when a password is gone."
+            )}
+          </p>
 
           <.alert :if={@error} class="mb-3" data-testid="account-error">
             <:icon><Icons.icon_reject /></:icon>

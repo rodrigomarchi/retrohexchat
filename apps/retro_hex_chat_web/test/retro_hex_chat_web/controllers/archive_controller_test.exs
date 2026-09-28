@@ -14,6 +14,8 @@ defmodule RetroHexChatWeb.ArchiveControllerTest do
   @moduletag :integration
 
   alias RetroHexChat.Chat.Archive
+  alias RetroHexChat.Chat.Attachment
+  alias RetroHexChat.Chat.Attachments
   alias RetroHexChat.Chat.Queries
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.RegisteredChannel
@@ -75,6 +77,28 @@ defmodule RetroHexChatWeb.ArchiveControllerTest do
 
       assert body =~ "the meeting notes live at example.test/notes"
       assert body =~ "Speaker"
+    end
+
+    # The page a robot reads must not contain a line that says nothing. A
+    # message can be nothing but a file — a recorded voice message usually is —
+    # and the archive publishes no attachments, so the line says one was there.
+    test "a message that is only an attachment reads as one", ctx do
+      said = attachment_only(ctx.channel)
+
+      body = build_conn() |> get(~p"/archive/#{ctx.slug}/#{day_of(said)}") |> html_response(200)
+
+      assert body =~ "attachment"
+      refute body =~ ~s(<span class="break-words">\n            \n            \n          </span>)
+    end
+
+    # What a search result shows is the words somebody wrote, so a line with
+    # none contributes none — not a run of spaces.
+    test "the description skips a line that has no words", ctx do
+      attachment_only(ctx.channel)
+
+      body = build_conn() |> get(~p"/archive/#{ctx.slug}/#{ctx.date}") |> html_response(200)
+
+      refute body =~ "notes  "
     end
 
     test "a day with nothing in it answers 404", ctx do
@@ -215,6 +239,35 @@ defmodule RetroHexChatWeb.ArchiveControllerTest do
         content: content,
         plain_content: content,
         type: "message"
+      })
+
+    message
+  end
+
+  defp attachment_only(channel) do
+    {:ok, message} =
+      Queries.insert_message(%{
+        channel_name: channel,
+        author_nickname: "Speaker",
+        content: "",
+        plain_content: "",
+        type: "message",
+        allow_blank_content: true
+      })
+
+    {:ok, file, _meta} =
+      Attachments.prepare_direct_upload("Speaker", %{
+        filename: "voice-20260928-101500.weba",
+        content_type: "audio/webm",
+        byte_size: 9_112
+      })
+
+    {:ok, _} =
+      Repo.insert(%Attachment{
+        file_id: file.id,
+        message_id: message.id,
+        display_filename: "voice-20260928-101500.weba",
+        position: 0
       })
 
     message

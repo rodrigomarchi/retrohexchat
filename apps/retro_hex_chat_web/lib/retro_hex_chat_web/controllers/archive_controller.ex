@@ -184,9 +184,13 @@ defmodule RetroHexChatWeb.ArchiveController do
   end
 
   defp description(channel, date, entries) do
+    # A line that is only an attachment has no text, and a description built
+    # from it would be the channel name followed by a run of spaces. What a
+    # search result shows is the words somebody wrote.
     opening =
       entries
-      |> Enum.map(& &1.text)
+      |> Enum.map(&String.trim(&1.text))
+      |> Enum.reject(&(&1 == ""))
       |> Enum.join(" ")
       |> String.slice(0, 150)
 

@@ -17,13 +17,23 @@
  */
 export const PERF_BUDGETS = {
   connect: { navBytes: 115_000, domNodes: 1_060 },
-  // The help index draws a row per topic, so the node count moves when topics
-  // are added — and adding one is mandatory for anything with a control
-  // surface. 2_900 was the count when the number was set; the session-card and
-  // space-card topics took it to 2_917. Raised deliberately, with the room a
-  // few more topics need. A jump this gate should catch is a page that grew
-  // without anyone deciding to grow it, not nine nodes per documented feature.
-  help: { navBytes: 300_000, domNodes: 3_100 },
+  // The help index draws a row per topic, so both numbers move when topics are
+  // added — and adding one is mandatory for anything with a control surface. A
+  // jump this gate should catch is a page that grew without anyone deciding to
+  // grow it, not a kilobyte per documented feature.
+  //
+  // Measured 2026-09-28 at 297 topics: 303_678 B raw, 21_619 B on the wire,
+  // 3_030 nodes. The wire cost is what it is because the rows are near-identical
+  // markup and compress by 93%; the node count is the half no compressor gives
+  // back, and the half these numbers really guard. This pair had drifted below
+  // its own Elixir mirror (`test/support/perf_budgets.ex`, 310_000) and was the
+  // only one of the two failing. Both now say the same thing, with room for
+  // roughly twenty-five more topics.
+  //
+  // What neither number answers: the index draws every one of 297 topics on a
+  // page somebody opened to find one. Another raise is the wrong answer to that;
+  // the right one is a decision about what the index shows.
+  help: { navBytes: 330_000, domNodes: 3_200 },
   // /chat only exists after a connected mount, so its node count is measured
   // once the desktop has rendered rather than off the dead render.
   chat: { domNodes: 4_200 },

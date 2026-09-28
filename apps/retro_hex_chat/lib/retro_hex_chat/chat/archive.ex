@@ -30,6 +30,7 @@ defmodule RetroHexChat.Chat.Archive do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Channels.Modes
+  alias RetroHexChat.Chat.Attachment
   alias RetroHexChat.Chat.Message
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.RegisteredChannel
@@ -127,6 +128,7 @@ defmodule RetroHexChat.Chat.Archive do
          {:ok, day} <- to_date(date) do
       channel
       |> publishable_messages()
+      |> from(as: :message)
       |> where([m], fragment("date(? at time zone 'UTC')", m.inserted_at) == ^day)
       |> order_by([m], asc: m.id)
       |> select([m], %{
@@ -136,7 +138,9 @@ defmodule RetroHexChat.Chat.Archive do
         plain_content: m.plain_content,
         type: m.type,
         edited_at: m.edited_at,
-        at: m.inserted_at
+        at: m.inserted_at,
+        attachment?:
+          exists(from(a in Attachment, where: parent_as(:message).id == a.message_id, select: 1))
       })
       |> Repo.all()
       |> Enum.map(&entry/1)
@@ -237,7 +241,7 @@ defmodule RetroHexChat.Chat.Archive do
       at: row.at,
       action?: row.type == "action",
       edited?: not is_nil(row.edited_at),
-      attachment?: false
+      attachment?: row.attachment?
     }
   end
 

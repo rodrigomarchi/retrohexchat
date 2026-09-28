@@ -34,6 +34,8 @@ defmodule RetroHexChatWeb.Router do
       post "/e2e/group-call-peer/terminate",
            E2EFaultController,
            :terminate_group_call_peer
+
+      get "/e2e/mailbox", E2EController, :mailbox
     end
   end
 
