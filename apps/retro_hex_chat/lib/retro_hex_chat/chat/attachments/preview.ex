@@ -40,7 +40,7 @@ defmodule RetroHexChat.Chat.Attachments.Preview do
 
   @image_extensions ~w(.png .jpg .jpeg .gif .webp .avif .bmp)
   @video_extensions ~w(.mp4 .webm .mov .ogv)
-  @audio_extensions ~w(.mp3 .wav .ogg .oga .m4a .aac)
+  @audio_extensions ~w(.mp3 .wav .ogg .oga .m4a .aac .weba)
   @pdf_extensions ~w(.pdf)
   @text_extensions ~w(.txt .md .markdown .log .csv .tsv .ini .conf .env)
 
@@ -103,8 +103,12 @@ defmodule RetroHexChat.Chat.Attachments.Preview do
   defp classifiers do
     [
       &classify_image/2,
-      &classify_video/2,
+      # Audio before video: the WebM and MP4 containers hold either, and a
+      # recording arrives as `audio/webm` with a `.webm` name — asking the
+      # extension first would file it as a video and draw a black rectangle
+      # where a player belongs.
       &classify_audio/2,
+      &classify_video/2,
       &classify_pdf/2,
       &classify_office/2,
       &classify_archive/2,

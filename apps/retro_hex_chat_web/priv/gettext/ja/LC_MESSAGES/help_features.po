@@ -2931,6 +2931,7 @@ msgstr "現在のチャンネルまたはPMでリアルタイムのハイライ�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -6326,3 +6327,43 @@ msgstr "名前をコロン 2 つの間に書くか、絵文字ピッカーの上
 #, elixir-autogen, elixir-format
 msgid "Writing One"
 msgstr "書くには"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "A Minute, and Then It Stops"
+msgstr "1 分で止まります"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "A take ends itself at sixty seconds and is attached as it stands. Past a minute it stops being something the other person can take in the middle of a conversation — which is what writing is for."
+msgstr "録音は 60 秒で自動的に終わり、そのまま添付されます。1 分を超えると、会話の途中で相手が受け取れるものではなくなります。そのために文字があります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Message Attachments"
+msgstr "メッセージの添付ファイル"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "On a phone, and only in a browser that can record. On a desktop the file picker beside the input already attaches an audio file, so nothing is missing there."
+msgstr "スマートフォンで、しかも録音できるブラウザだけです。パソコンでは入力欄の隣のファイル選択で音声ファイルを添付できるので、足りないものはありません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Press Record and allow the microphone when the browser asks. The clock beside it counts up while you speak. Attach ends the take and adds it to the message, where it waits with any other attachment until you press Send; Discard throws it away and the microphone is released either way."
+msgstr "「録音」を押し、ブラウザに聞かれたらマイクを許可します。隣の時計は話している間ずっと進みます。「添付」は録音を終えてメッセージに加え、ほかの添付と同じように送信を押すまで待ちます。「破棄」は捨てます。どちらの場合もマイクは解放されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Recording One"
+msgstr "録音する"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Some things are faster said than typed. On a phone the composer offers a Record strip: speak for up to a minute, and the recording is attached to your message like any other file."
+msgstr "打つより話すほうが速いこともあります。スマートフォンでは入力欄に録音バーが出ます。最大 1 分話せば、その録音はほかのファイルと同じようにメッセージへ添付されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Where It Is Offered"
+msgstr "どこで使えるか"

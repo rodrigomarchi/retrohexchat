@@ -379,6 +379,42 @@
   @apply not-italic text-foreground;
 }
 
+/* ── Voice messages ─────────────────────────────────────────────────────────
+   The recording strip under the input: its own row rather than another icon in
+   the toolbar, because while a take is running the clock and the two ways out
+   of it are the only controls that matter, and a phone has no room to show them
+   beside everything else. The dot is the recording indicator every recorder has
+   had since tape, and it breathes so that a strip left open reads as running
+   rather than merely present. */
+.chat-voice-strip {
+  @apply flex flex-wrap items-center gap-1 border-x border-b border-border bg-surface px-1 py-1 text-xs;
+}
+
+.chat-voice-dot {
+  @apply inline-block h-3 w-3 shrink-0 rounded-full bg-destructive;
+  animation: chat-voice-pulse 1.2s ease-in-out infinite;
+}
+
+.chat-voice-error {
+  @apply min-w-0 basis-full truncate text-destructive;
+}
+
+@keyframes chat-voice-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-voice-dot {
+    animation: none;
+  }
+}
+
 /* ── Threads ────────────────────────────────────────────────────────────────
    "N replies" under the line that collected them. A link rather than a chip:
    a reaction is something you press back, a thread is somewhere you go, and

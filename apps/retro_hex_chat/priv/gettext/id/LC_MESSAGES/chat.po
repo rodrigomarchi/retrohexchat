@@ -505,12 +505,12 @@ msgstr "Jungkitkan Mikrofon Konferensi"
 msgid "Attachment could not be attached to the message"
 msgstr "Lampiran tidak dapat dicantolkan ke pesan"
 
-#: lib/retro_hex_chat/chat/attachments.ex:274
+#: lib/retro_hex_chat/chat/attachments.ex:275
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "Lampiran melebihi batas %{mb} MB"
 
-#: lib/retro_hex_chat/chat/attachments.ex:269
+#: lib/retro_hex_chat/chat/attachments.ex:270
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "Lampiran kosong"
@@ -520,9 +520,9 @@ msgstr "Lampiran kosong"
 msgid "Unsupported message format"
 msgstr "Format pesan tidak didukung"
 
-#: lib/retro_hex_chat/chat/attachments.ex:281
-#: lib/retro_hex_chat/chat/attachments.ex:362
-#: lib/retro_hex_chat/chat/attachments.ex:367
+#: lib/retro_hex_chat/chat/attachments.ex:315
+#: lib/retro_hex_chat/chat/attachments.ex:397
+#: lib/retro_hex_chat/chat/attachments.ex:402
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "berkas"
@@ -647,3 +647,8 @@ msgstr "Server ini sudah menjawab nama itu."
 #, elixir-autogen, elixir-format
 msgid "This server already has %{count} emoji."
 msgstr "Server ini sudah punya %{count} emoji."
+
+#: lib/retro_hex_chat/chat/attachments.ex:309
+#, elixir-autogen, elixir-format
+msgid "A recording cannot be sent as %{type}"
+msgstr "Rekaman tidak bisa dikirim sebagai %{type}"

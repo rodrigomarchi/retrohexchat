@@ -1515,7 +1515,7 @@ msgstr "ネイビー"
 msgid "Next"
 msgstr "次へ"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:946
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:978
 #, elixir-autogen, elixir-format
 msgid "Next: %{parameter}"
 msgstr "次へ: %{parameter}"
@@ -1782,7 +1782,7 @@ msgid "Reset (Ctrl+Shift+X)"
 msgstr "リセット(Ctrl+Shift+X)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:988
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1102
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1103
 #, elixir-autogen
 msgid "RetroHexChat"
 msgstr "レトロヘックスチャット"
@@ -2162,7 +2162,7 @@ msgstr "%{nickname} として識別できるようになりました"
 msgid "You are now known as %{nickname}"
 msgstr "あなたは今、%{nickname}として知られています"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:959
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:991
 #, elixir-autogen, elixir-format
 msgid "You are setting: %{flag} (%{label})"
 msgstr "設定:%{flag} (%{label})"
@@ -2482,7 +2482,7 @@ msgstr "キャンセルについて"
 msgid "Channel Central"
 msgstr "チャネルの中央"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:690
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:691
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr "チャンネル セントラル: %{channel}"
@@ -2689,7 +2689,7 @@ msgstr "サーバーの設定は変更されません。"
 msgid "Notice message"
 msgstr "Notice message"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:579
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:610
 #, elixir-autogen, elixir-format
 msgid "Notice message cannot be empty"
 msgstr "通知メッセージは空にすることはできません"
@@ -2726,7 +2726,7 @@ msgstr "チャネル演算子のみこのチャンネルを登録できます。
 msgid "Only the founder can drop a channel."
 msgstr "創設者だけがチャネルをドロップすることができます。"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1103
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1104
 #, elixir-autogen, elixir-format
 msgid "Opening chat..."
 msgstr "チャットを開く..."
@@ -3560,33 +3560,33 @@ msgstr "プライベートメッセージ"
 msgid "User list rail"
 msgstr "ユーザー一覧バー"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:283
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:350
 #, elixir-autogen, elixir-format
 msgid "Archive"
 msgstr "アーカイブ"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:423
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:424
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:448
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:449
 #, elixir-autogen, elixir-format
 msgid "Attach file"
 msgstr "ファイルを添付"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:622
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:653
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "付属品は%{mb} MBの限界を超過します"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:628
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:659
 #, elixir-autogen, elixir-format
 msgid "Attachment type not accepted"
 msgstr "付属品のタイプは受け入れられません"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:557
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:588
 #, elixir-autogen, elixir-format
 msgid "Attachment upload could not be confirmed"
 msgstr "添付ファイルアップロードは確認できません"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:629
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:660
 #, elixir-autogen, elixir-format
 msgid "Attachment upload failed"
 msgstr "添付ファイルアップロード失敗"
@@ -3596,7 +3596,7 @@ msgstr "添付ファイルアップロード失敗"
 msgid "Attachments can only be sent with messages"
 msgstr "添付ファイルのみメッセージで送信できます"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:279
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:346
 #, elixir-autogen, elixir-format
 msgid "Audio"
 msgstr "オーディオ"
@@ -3611,7 +3611,7 @@ msgstr "太字"
 msgid "Bulleted list"
 msgstr "箇条書きリスト"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:282
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:349
 #, elixir-autogen, elixir-format
 msgid "Code"
 msgstr "コード"
@@ -3626,12 +3626,12 @@ msgstr "コードブロック"
 msgid "Copy Source"
 msgstr "ソースをコピー"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:618
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:649
 #, elixir-autogen, elixir-format
 msgid "Could not store attachment: %{reason}"
 msgstr "添付ファイルを保存できません: %{reason}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:285
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:352
 #, elixir-autogen, elixir-format
 msgid "File"
 msgstr "ファイル"
@@ -3646,7 +3646,7 @@ msgstr "見出し"
 msgid "IRC formatting"
 msgstr "IRC 書式"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:277
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:344
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "画像"
@@ -3686,17 +3686,18 @@ msgstr "メッセージ形式"
 msgid "Numbered list"
 msgstr "番号付きリスト"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:284
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:351
 #, elixir-autogen, elixir-format
 msgid "Office"
 msgstr "Office"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:207
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:179
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:265
 #, elixir-autogen, elixir-format
 msgid "Open"
 msgstr "開く"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:280
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:347
 #, elixir-autogen, elixir-format
 msgid "PDF"
 msgstr "PDF"
@@ -3706,7 +3707,7 @@ msgstr "PDF"
 msgid "Plain text"
 msgstr "プレーンテキスト"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:172
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:230
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:150
 #, elixir-autogen, elixir-format
 msgid "Preview"
@@ -3717,8 +3718,8 @@ msgstr "プレビュー"
 msgid "Quote"
 msgstr "引用"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:469
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:470
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:499
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:500
 #, elixir-autogen, elixir-format
 msgid "Remove attachment"
 msgstr "添付ファイルを削除"
@@ -3736,17 +3737,17 @@ msgstr "取り消し線"
 msgid "Strip Formatting"
 msgstr "書式を解除"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:281
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:348
 #, elixir-autogen, elixir-format
 msgid "Text"
 msgstr "テキスト"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:627
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:658
 #, elixir-autogen, elixir-format
 msgid "Too many attachments"
 msgstr "添付ファイルが多すぎます"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:278
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:345
 #, elixir-autogen, elixir-format
 msgid "Video"
 msgstr "ビデオ"
@@ -3756,12 +3757,12 @@ msgstr "ビデオ"
 msgid "Write"
 msgstr "作成"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:685
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:717
 #, elixir-autogen, elixir-format
 msgid "You"
 msgstr "あなた"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:253
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:320
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "ファイル"
@@ -4228,3 +4229,54 @@ msgstr "サーバー絵文字は管理者が管理します。"
 #, elixir-autogen, elixir-format
 msgid "This server"
 msgstr "このサーバー"
+
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:85
+#, elixir-autogen, elixir-format
+msgid "Attach"
+msgstr "添付"
+
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:92
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:93
+#, elixir-autogen, elixir-format
+msgid "Discard the recording"
+msgstr "録音を破棄"
+
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:82
+#, elixir-autogen, elixir-format
+msgid "Finish the recording and attach it"
+msgstr "録音を終えて添付する"
+
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:61
+#, elixir-autogen, elixir-format
+msgid "Record"
+msgstr "録音"
+
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:58
+#, elixir-autogen, elixir-format
+msgid "Record a voice message"
+msgstr "音声メッセージを録音"
+
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:103
+#, elixir-autogen, elixir-format
+msgid "This browser cannot record. Attach an audio file instead."
+msgstr "このブラウザは録音できません。代わりに音声ファイルを添付してください。"
+
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:100
+#, elixir-autogen, elixir-format
+msgid "This browser did not give access to the microphone."
+msgstr "このブラウザはマイクへのアクセスを許可しませんでした。"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:350
+#, elixir-autogen, elixir-format
+msgid "This browser recorded in a format this chat cannot send"
+msgstr "このブラウザはこのチャットが送信できない形式で録音しました"
+
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:64
+#, elixir-autogen, elixir-format
+msgid "Up to %{seconds} seconds"
+msgstr "最大 %{seconds} 秒"
+
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:148
+#, elixir-autogen, elixir-format
+msgid "Voice message"
+msgstr "音声メッセージ"

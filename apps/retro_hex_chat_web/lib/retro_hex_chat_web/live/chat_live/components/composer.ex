@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   `channels`, `strip_formatting`, `placeholder`, `show_emoji_picker`,
   `pm_typing_from`, and a `capabilities` map (`nick_autocomplete`,
   `channel_autocomplete`, `command_autocomplete`, `formatting_toolbar`, `emoji`,
-  `typing_indicator`, `paste`) that toggles which features light up. The main chat
+  `typing_indicator`, `paste`, `voice`) that toggles which features light up. The main chat
   passes a stable `%Session{}` + `show_status_tab` and the composer derives the
   read-model in `update/2` (keeping change tracking keyed on the session struct);
   a host may pass the `capabilities`/`nickname`/… fields directly. Same
@@ -44,10 +44,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   import RetroHexChatWeb.Components.UI.SyntaxTooltip
   import RetroHexChatWeb.Components.UI.HistorySearch
   import RetroHexChatWeb.Components.UI.TypingIndicator
+  import RetroHexChatWeb.Components.UI.VoiceRecorder
   import Phoenix.HTML, only: [raw: 1]
 
   alias RetroHexChat.Chat.Attachments
   alias RetroHexChat.Chat.InputHistory
+  alias RetroHexChat.Chat.VoiceMessages
   alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Registry}
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog
@@ -66,7 +68,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     formatting_toolbar: true,
     emoji: true,
     typing_indicator: false,
-    paste: true
+    paste: true,
+    voice: false
   }
 
   @doc """
@@ -82,7 +85,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
       formatting_toolbar: not show_status_tab,
       emoji: true,
       typing_indicator: not is_nil(session.active_pm),
-      paste: true
+      paste: true,
+      voice: not show_status_tab
     }
   end
 
@@ -104,7 +108,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     autocomplete_results: [],
     autocomplete_selected: 0,
     syntax_tooltip: nil,
-    command_help_level: :beginner
+    command_help_level: :beginner,
+    voice_recordings: %{}
   }
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
@@ -132,6 +137,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
        show_emoji_picker: false,
        pm_typing_from: nil,
        edit_mode_message_id: nil,
+       mobile_viewport: false,
        timestamp_format: :dd_mm_hh_mm,
        timezone: "Etc/UTC"
      )}
@@ -327,6 +333,25 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     {:noreply, cancel_upload(socket, :attachments, ref)}
   end
 
+  # A recording announces itself just before its upload starts, because the
+  # reservation is the only moment the length can be written beside the file.
+  def handle_event("voice_recorded", params, socket) do
+    %{"filename" => filename, "content_type" => content_type} = params
+
+    case VoiceMessages.metadata(content_type, params["duration_ms"]) do
+      {:ok, metadata} ->
+        recordings = Map.put(socket.assigns.voice_recordings, filename, metadata)
+        {:noreply, assign(socket, voice_recordings: recordings, input_error: nil)}
+
+      {:error, :unsupported_content_type} ->
+        {:noreply,
+         assign(socket,
+           input_error:
+             dgettext("chat", "This browser recorded in a format this chat cannot send")
+         )}
+    end
+  end
+
   def handle_event("send_input", %{"input" => ""} = params, socket) do
     content_format = submitted_content_format(socket, params)
 
@@ -443,6 +468,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
             </:toolbar_buttons>
           </.chat_input>
 
+          <.voice_recorder
+            :if={@capabilities.voice and @mobile_viewport and is_nil(@edit_mode_message_id)}
+            target={@myself}
+          />
+
           <div
             :if={attachment_selected?(@uploads.attachments)}
             class="border-x border-b border-border bg-surface px-1 py-1 text-xs"
@@ -538,7 +568,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
         autocomplete_results: [],
         autocomplete_selected: 0,
         syntax_tooltip: nil,
-        composer_view: :write
+        composer_view: :write,
+        voice_recordings: %{}
       )
       |> push_event("clear_input", %{})
     else
@@ -633,7 +664,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
       filename: entry.client_name,
       content_type: entry.client_type,
       byte_size: entry.client_size,
-      directory_path: upload_directory_path(socket)
+      directory_path: upload_directory_path(socket),
+      preview_metadata: Map.get(socket.assigns.voice_recordings, entry.client_name, %{})
     }
 
     case Attachments.prepare_direct_upload(socket.assigns.nickname, metadata) do

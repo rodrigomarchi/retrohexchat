@@ -9,5 +9,5 @@ defmodule RetroHexChatWeb.HelpContent.ChatStatusFeatures do
   import RetroHexChatWeb.Components.Diagrams, warn: false
   import RetroHexChatWeb.HelpContent.Helpers
 
-  embed_templates "feature_{channel_events*,server_emoji*,closed_app_notifications*,saved_messages*,public_archive*,desktop_notifications*,identity_presence*,link_previews*,nick_alignment*,nick_expiry*,notices*,notify_list*,paste_dialog*,perform*,pm_persistence*,quit_message*,search*,server_broadcasts*,smart_input*,sounds*,special_messages*,status_bar*,threads*,timers*,timestamp_format*,typing_indicator*,unread_indicators*,url_catcher*,user_lookup*,where_you_left_off*}"
+  embed_templates "feature_{channel_events*,server_emoji*,closed_app_notifications*,saved_messages*,public_archive*,desktop_notifications*,identity_presence*,link_previews*,nick_alignment*,nick_expiry*,notices*,notify_list*,paste_dialog*,perform*,pm_persistence*,quit_message*,search*,server_broadcasts*,smart_input*,sounds*,special_messages*,status_bar*,threads*,timers*,timestamp_format*,typing_indicator*,unread_indicators*,url_catcher*,user_lookup*,voice_messages*,where_you_left_off*}"
 end

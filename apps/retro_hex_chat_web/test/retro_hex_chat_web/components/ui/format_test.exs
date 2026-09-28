@@ -40,4 +40,18 @@ defmodule RetroHexChatWeb.Components.UI.FormatTest do
       assert Format.bytes(2048.0) == "—"
     end
   end
+
+  describe "clock_ms/1" do
+    test "reads like a player, seconds always shown" do
+      assert Format.clock_ms(0) == "0:00"
+      assert Format.clock_ms(7_400) == "0:07"
+      assert Format.clock_ms(60_000) == "1:00"
+      assert Format.clock_ms(83_000) == "1:23"
+    end
+
+    test "says nothing rather than zero for a length nobody recorded" do
+      assert Format.clock_ms(nil) == "—"
+      assert Format.clock_ms(-1) == "—"
+    end
+  end
 end

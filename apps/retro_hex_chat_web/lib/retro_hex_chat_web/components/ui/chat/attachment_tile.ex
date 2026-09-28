@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
   """
   use RetroHexChatWeb.Component
 
+  alias RetroHexChat.Chat.VoiceMessages
   alias RetroHexChatWeb.Components.UI.Format
   alias RetroHexChatWeb.Icons
 
@@ -29,11 +30,13 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
     assigns = assign(assigns, :preview_kind, preview_kind(assigns.attachment))
 
     ~H"""
-    <%= case inline_kind(@attachment) do %>
+    <%= case tile_kind(@attachment) do %>
       <% "image" -> %>
         <.image_tile attachment={@attachment} />
       <% "video" -> %>
         <.video_tile attachment={@attachment} />
+      <% "voice" -> %>
+        <.voice_tile attachment={@attachment} />
       <% "audio" -> %>
         <.audio_tile attachment={@attachment} />
       <% _kind_or_nil -> %>
@@ -121,6 +124,61 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
         </audio>
       </div>
       <.tile_footer attachment={@attachment} />
+    </div>
+    """
+  end
+
+  attr :attachment, :map, required: true
+
+  # Somebody speaking, and for how long. The filename is a timestamp the
+  # recorder invented and the byte size is a fact about storage, so neither is
+  # on the tile — the length is the one measurement a listener decides with.
+  defp voice_tile(assigns) do
+    assigns = assign(assigns, :duration_ms, VoiceMessages.duration_ms(assigns.attachment))
+
+    ~H"""
+    <div
+      class="w-72 max-w-full border border-border bg-surface text-xs shadow-retro-field"
+      data-testid="message-voice"
+      data-preview-kind="voice"
+    >
+      <div class="flex h-6 items-center gap-1 border-b border-border bg-muted px-1">
+        <Icons.icon_microphone class="h-4 w-4 shrink-0" />
+        <span class="min-w-0 flex-1 truncate font-bold">
+          {dgettext("chat", "Voice message")}
+        </span>
+        <span
+          :if={@duration_ms}
+          class="shrink-0 tabular-nums text-muted-foreground"
+          data-testid="message-voice-duration"
+        >
+          {Format.clock_ms(@duration_ms)}
+        </span>
+      </div>
+      <div class="bg-white p-1">
+        <audio
+          src={preview_href(@attachment)}
+          controls
+          preload="metadata"
+          class="h-8 w-full"
+          data-testid="message-attachment-audio-preview"
+        >
+        </audio>
+      </div>
+      <div class="flex items-center gap-1 border-t border-border px-1 py-0.5">
+        <span class="min-w-0 flex-1 truncate text-muted-foreground">
+          {Format.bytes(attachment_byte_size(@attachment))}
+        </span>
+        <a
+          href={attachment_href(@attachment)}
+          target="_blank"
+          rel="noopener"
+          class="shrink-0 font-bold text-foreground hover:underline"
+          data-testid="message-attachment-download"
+        >
+          {dgettext("chat", "Open")}
+        </a>
+      </div>
     </div>
     """
   end
@@ -231,6 +289,15 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
 
   defp preview_action?(attachment) do
     preview_kind(attachment) == "pdf" and preview_status(attachment) == "ready"
+  end
+
+  # A recording is an audio file with a fact attached, so it only takes its own
+  # tile where an ordinary audio file would have played inline anyway.
+  defp tile_kind(attachment) do
+    case inline_kind(attachment) do
+      "audio" -> if VoiceMessages.voice?(attachment), do: "voice", else: "audio"
+      kind_or_nil -> kind_or_nil
+    end
   end
 
   defp inline_kind(attachment) do

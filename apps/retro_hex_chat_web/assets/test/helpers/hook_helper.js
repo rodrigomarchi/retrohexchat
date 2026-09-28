@@ -68,6 +68,15 @@ export function mountHook(hookDef, options = {}) {
     hook.__pushEvents.push({ target, event, payload });
   });
 
+  // Uploads go through the same channel as events and fail the same way when it
+  // is down, so the double refuses in the same place rather than recording a
+  // call that could not have happened.
+  hook.__uploads = [];
+  hook.uploadTo = vi.fn((target, name, files) => {
+    refuseWhenDisconnected();
+    hook.__uploads.push({ target, name, files });
+  });
+
   // handleEvent registry
   hook.__eventHandlers = {};
   hook.handleEvent = vi.fn((event, callback) => {

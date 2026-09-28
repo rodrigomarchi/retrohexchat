@@ -93,6 +93,14 @@ export const lazyFeatureHooks = {
     readyEvent: "metric_chart_ready",
     reason: "The metrics chart renderer is only needed inside the admin-only Metrics window.",
   }),
+  VoiceRecorderHook: lazyFeatureHook({
+    name: "VoiceRecorderHook",
+    loader: () => import("./chat/voice_recorder_hook"),
+    serverEvents: [],
+    reason:
+      "Recording is offered on a phone and only once somebody reaches for the microphone; " +
+      "the MediaRecorder plumbing has no business in the chat shell everybody loads.",
+  }),
   RetroTableHook: lazyFeatureHook({
     name: "RetroTableHook",
     loader: () => import("./ui/retro_table_hook"),

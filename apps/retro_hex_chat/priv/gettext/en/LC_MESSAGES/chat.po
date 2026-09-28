@@ -500,12 +500,12 @@ msgstr "Toggle Conference Microphone"
 msgid "Attachment could not be attached to the message"
 msgstr "Attachment could not be attached to the message"
 
-#: lib/retro_hex_chat/chat/attachments.ex:274
+#: lib/retro_hex_chat/chat/attachments.ex:275
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "Attachment exceeds the %{mb} MB limit"
 
-#: lib/retro_hex_chat/chat/attachments.ex:269
+#: lib/retro_hex_chat/chat/attachments.ex:270
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "Attachment is empty"
@@ -515,9 +515,9 @@ msgstr "Attachment is empty"
 msgid "Unsupported message format"
 msgstr "Unsupported message format"
 
-#: lib/retro_hex_chat/chat/attachments.ex:281
-#: lib/retro_hex_chat/chat/attachments.ex:362
-#: lib/retro_hex_chat/chat/attachments.ex:367
+#: lib/retro_hex_chat/chat/attachments.ex:315
+#: lib/retro_hex_chat/chat/attachments.ex:397
+#: lib/retro_hex_chat/chat/attachments.ex:402
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "file"
@@ -645,3 +645,8 @@ msgstr "This server already answers to that name."
 #, elixir-autogen, elixir-format
 msgid "This server already has %{count} emoji."
 msgstr "This server already has %{count} emoji."
+
+#: lib/retro_hex_chat/chat/attachments.ex:309
+#, elixir-autogen, elixir-format
+msgid "A recording cannot be sent as %{type}"
+msgstr "A recording cannot be sent as %{type}"

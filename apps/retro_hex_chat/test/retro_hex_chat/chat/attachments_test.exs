@@ -34,6 +34,51 @@ defmodule RetroHexChat.Chat.AttachmentsTest do
     assert meta.url =~ file.storage_key
   end
 
+  test "prepare_direct_upload keeps a recording's length beside the file" do
+    assert {:ok, file, _meta} =
+             Attachments.prepare_direct_upload("Alice", %{
+               filename: "voice-message.weba",
+               content_type: "audio/webm;codecs=opus",
+               byte_size: 9_112,
+               preview_metadata: %{"voice" => true, "duration_ms" => 7_400}
+             })
+
+    assert file.preview_kind == "audio"
+    assert file.preview_status == "ready"
+    assert file.preview_metadata == %{"voice" => true, "duration_ms" => 7_400}
+  end
+
+  # Absence: a caller may not smuggle any file in as a recording. The list of
+  # containers is the whole answer, and it is checked here rather than in the
+  # composer, where a second caller would not be checked at all.
+  test "prepare_direct_upload refuses a recording in a type it cannot be" do
+    assert {:error, message} =
+             Attachments.prepare_direct_upload("Alice", %{
+               filename: "definitely-a-recording.zip",
+               content_type: "application/zip",
+               byte_size: 9_112,
+               preview_metadata: %{"voice" => true}
+             })
+
+    assert message =~ "recording"
+    assert Repo.aggregate(UploadedFile, :count) == 0
+  end
+
+  # The recording is the only thing a caller may say about a file it is still
+  # uploading, so metadata that claims anything else is dropped whole rather
+  # than filtered key by key — one doorway, and nothing walks in beside it.
+  test "prepare_direct_upload stores no metadata that does not declare a recording" do
+    assert {:ok, file, _meta} =
+             Attachments.prepare_direct_upload("Alice", %{
+               filename: "notes.txt",
+               content_type: "text/plain",
+               byte_size: 12,
+               preview_metadata: %{"trusted" => true, "duration_ms" => 1_000}
+             })
+
+    assert file.preview_metadata == %{}
+  end
+
   test "confirm_uploaded_files moves reserved files to uploaded for the owner" do
     assert {:ok, file, _meta} =
              Attachments.prepare_direct_upload("Alice", %{
@@ -113,6 +158,13 @@ defmodule RetroHexChat.Chat.AttachmentsTest do
              "sheet.xlsx",
              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
            ) == "office"
+
+    # The WebM container holds either, so the type decides and the extension
+    # only has the last word when nobody said what the file is. A recording
+    # named like a video clip is still a recording.
+    assert Preview.classify("voice.webm", "audio/webm") == "audio"
+    assert Preview.classify("voice.weba", nil) == "audio"
+    assert Preview.classify("clip.webm", nil) == "video"
 
     assert Preview.classify("icon.svg", "image/svg+xml") == "download"
     assert Preview.classify("page.html", "text/html") == "code"

@@ -8,6 +8,7 @@ defmodule RetroHexChat.Chat.Attachments do
   alias RetroHexChat.Chat.{Attachment, PrivateMessage, Queries, UploadedFile}
   alias RetroHexChat.Chat.Attachments.Preview
   alias RetroHexChat.Chat.Message
+  alias RetroHexChat.Chat.VoiceMessages
 
   @default_content_type "application/octet-stream"
   @default_max_size_mb 25
@@ -18,7 +19,8 @@ defmodule RetroHexChat.Chat.Attachments do
           optional(:filename) => String.t(),
           optional(:content_type) => String.t(),
           optional(:byte_size) => non_neg_integer(),
-          optional(:directory_path) => String.t()
+          optional(:directory_path) => String.t(),
+          optional(:preview_metadata) => map()
         }
 
   @type cleanup_summary :: %{
@@ -76,9 +78,8 @@ defmodule RetroHexChat.Chat.Attachments do
   @spec prepare_direct_upload(String.t(), upload_metadata()) ::
           {:ok, UploadedFile.t(), map()} | {:error, term()}
   def prepare_direct_upload(owner_nickname, metadata) do
-    attrs = file_attrs(owner_nickname, metadata, nil, "reserved")
-
-    with :ok <- validate_size(attrs.byte_size),
+    with {:ok, attrs} <- reserved_attrs(owner_nickname, metadata),
+         :ok <- validate_size(attrs.byte_size),
          {:ok, upload} <-
            storage().presigned_put_url(attrs.storage_bucket, attrs.storage_key,
              content_type: attrs.content_type,
@@ -276,6 +277,39 @@ defmodule RetroHexChat.Chat.Attachments do
      )}
   end
 
+  # A caller uploading a file may say one thing about its contents: that it is a
+  # recording, and how long it runs. Everything else in `preview_metadata` is
+  # dropped whole — one doorway, and a refused content type never reserves a row
+  # or a presigned URL.
+  defp reserved_attrs(owner_nickname, metadata) do
+    attrs = file_attrs(owner_nickname, metadata, nil, "reserved")
+
+    case voice_metadata(metadata, attrs.content_type) do
+      {:ok, preview_metadata} -> {:ok, %{attrs | preview_metadata: preview_metadata}}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp voice_metadata(metadata, content_type) do
+    given = %{preview_metadata: Map.get(metadata, :preview_metadata) || %{}}
+
+    if VoiceMessages.voice?(given) do
+      validated_voice_metadata(content_type, VoiceMessages.duration_ms(given))
+    else
+      {:ok, %{}}
+    end
+  end
+
+  defp validated_voice_metadata(content_type, duration_ms) do
+    case VoiceMessages.metadata(content_type, duration_ms) do
+      {:ok, preview_metadata} ->
+        {:ok, preview_metadata}
+
+      {:error, :unsupported_content_type} ->
+        {:error, dgettext("chat", "A recording cannot be sent as %{type}", type: content_type)}
+    end
+  end
+
   defp file_attrs(owner_nickname, metadata, checksum_sha256, status) do
     uuid = Ecto.UUID.generate()
     original_filename = clean_filename(Map.get(metadata, :filename, dgettext("chat", "file")))
@@ -283,6 +317,7 @@ defmodule RetroHexChat.Chat.Attachments do
     byte_size = Map.get(metadata, :byte_size, 0)
     directory_path = clean_directory_path(Map.get(metadata, :directory_path), owner_nickname)
     preview_kind = Preview.classify(original_filename, content_type)
+    preview_metadata = Map.get(metadata, :preview_metadata) || %{}
 
     %{
       owner_nickname: owner_nickname,
@@ -297,7 +332,7 @@ defmodule RetroHexChat.Chat.Attachments do
       logical_path: Path.join(directory_path, logical_filename(uuid, original_filename)),
       preview_kind: preview_kind,
       preview_status: Preview.initial_status(preview_kind, content_type),
-      preview_metadata: %{},
+      preview_metadata: preview_metadata,
       status: status
     }
   end

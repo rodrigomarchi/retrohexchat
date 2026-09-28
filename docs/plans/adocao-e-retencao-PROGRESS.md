@@ -27,7 +27,7 @@ plano. Aprendizado durável migra para `AGENT-GUIDE.md` ou um playbook de
 | 5.3 Eventos | **pronto** (2026-09-25) |
 | 5.4 Avatar no chat | **pronto** (2026-09-25) |
 | 5.5 Emoji do servidor | **pronto** (2026-09-26) |
-| 5.6 Mensagem de voz | não iniciado |
+| 5.6 Mensagem de voz | **pronto** (2026-09-27) |
 
 ---
 
@@ -1425,3 +1425,62 @@ encontrados e corrigidos.
 `help_content/feature_server_emoji.html.heex`,
 `e2e/tests/chat-server-emoji.spec.ts`, e os catálogos `chat`, `dialogs`,
 `help`, `help_features`, `ui`.
+
+## Iteração 5.6 — Mensagem de voz
+
+Algumas coisas saem mais rápido faladas que digitadas. No celular o composer
+oferece uma tira de gravação: até um minuto, e a gravação sobe pelo caminho de
+anexo que já existe.
+
+**O que ficou**
+
+- `js/lib/uploads/voice_recorder.js` — a máquina de estados sobre `MediaRecorder`
+  e o fluxo de mídia, sem nada de LiveView. Toda saída solta as faixas: a que
+  terminou, a descartada, a que bateu no teto e a janela fechada no meio.
+  `destroy` é o espelho exato do `mount`.
+- `js/lib/uploads/voice_recorder_panel.js` — o controller de DOM que escolhe
+  qual parte da tira aparece. Nenhuma palavra em JS: as três mensagens e os
+  três botões são renderizados pelo servidor, e a tira carrega
+  `phx-update="ignore"` porque o composer re-renderiza a cada tecla.
+- Hook fino de 45 linhas: cria o controller, empurra `voice_recorded` e chama
+  `uploadTo`. `navigator.mediaDevices` é primitivo proibido dentro de hook, e
+  este é o motivo da regra existir.
+- Domínio: `Chat.VoiceMessages` com o teto de 60 s e a lista de contêineres que
+  uma gravação pode ser, e uma porta única em `prepare_direct_upload` — metadado
+  que não declara gravação é descartado inteiro, e um tipo fora da lista não
+  reserva linha nem URL assinada.
+- A duração vive no `preview_metadata` que a tabela já tinha; nenhuma migração.
+  Ela é escrita no único instante possível: a reserva do upload, empurrada pelo
+  hook logo antes do `uploadTo`.
+- Ladrilho próprio: "Mensagem de voz", a duração e o player. Sem nome de
+  arquivo — é um timestamp que o gravador inventou, e pôr isso onde vão as
+  palavras de alguém é a interface admitindo que não tem o que dizer.
+
+**Desvios do plano, conscientes**
+
+- **O plano dizia "grava só no mobile e em navegador com permissão" sem dizer
+  quem decide.** Ficaram dois portões, cada um do lado que sabe: o servidor não
+  renderiza a tira fora de `mobile_viewport`, e o controller esconde a tira num
+  navegador que não grava. Um botão que pede microfone e depois se explica é
+  pior que botão nenhum.
+
+**Aprendizados**
+
+- **O contêiner WebM guarda os dois, e a extensão decidia.** `Preview.classify`
+  perguntava a extensão antes do tipo, então uma gravação `audio/webm` chamada
+  `.webm` era classificada **vídeo** — um retângulo preto onde vai um player.
+  Áudio passou a ser consultado antes de vídeo, e o arquivo gravado sai `.weba`.
+  Defeito que já estava lá para qualquer anexo de áudio em WebM.
+- **Uma segunda declaração do mesmo alvo é uma segunda coisa para manter
+  verdadeira.** O hook lia `data-voice-target` enquanto o elemento já dizia a
+  quem pertence em `phx-target` — e o teste de LiveView provou a diferença: um
+  evento disparado no elemento sem `phx-target` vai para o LiveView raiz e some
+  no log de "evento não roteado". Ficou uma declaração só.
+- **Uma sabotagem que não falha, de novo, e por um motivo diferente.** "O teto
+  para a gravação" passava mesmo trocando `stop()` por `finish()`, porque os
+  dois zeram o estado deste lado. O que a troca quebra é o `MediaRecorder`, que
+  continua com o microfone aberto. A asserção virou o estado do dublê, não o
+  deste lado.
+- **A auditoria visual pegou uma tira desequilibrada, não um bug.** O rodapé do
+  ladrilho tinha só "Open" encostado à direita e um vão cinza à esquerda; ganhou
+  o tamanho do arquivo, que num celular é informação e não enfeite.

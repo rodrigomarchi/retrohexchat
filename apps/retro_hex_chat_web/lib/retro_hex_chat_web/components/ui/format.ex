@@ -92,6 +92,23 @@ defmodule RetroHexChatWeb.Components.UI.Format do
   def duration_ms(value) when is_integer(value) and value >= 0, do: "#{value}ms"
   def duration_ms(_value), do: "—"
 
+  @doc """
+  A short duration as a clock reading.
+
+  `duration_ms/1` answers "how long has this been up"; this answers "how long is
+  this to listen to", which is the reading on every player ever made: `0:07`,
+  `1:23`. Seconds are never dropped, because for a recording they are the whole
+  figure.
+  """
+  @spec clock_ms(term()) :: String.t()
+  def clock_ms(value) when is_integer(value) and value >= 0 do
+    seconds = div(value, @second)
+
+    "#{div(seconds, 60)}:#{String.pad_leading(Integer.to_string(rem(seconds, 60)), 2, "0")}"
+  end
+
+  def clock_ms(_value), do: "—"
+
   @doc "A percentage at one decimal."
   @spec percent(term()) :: String.t()
   def percent(value) when is_float(value), do: "#{Float.round(value, 1)}%"

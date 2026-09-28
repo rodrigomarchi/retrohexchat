@@ -500,12 +500,12 @@ msgstr "切换会议麦克风"
 msgid "Attachment could not be attached to the message"
 msgstr "信件中无法附加附件"
 
-#: lib/retro_hex_chat/chat/attachments.ex:274
+#: lib/retro_hex_chat/chat/attachments.ex:275
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "附件超过 %{mb} MB 限制"
 
-#: lib/retro_hex_chat/chat/attachments.ex:269
+#: lib/retro_hex_chat/chat/attachments.ex:270
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "附件为空"
@@ -515,9 +515,9 @@ msgstr "附件为空"
 msgid "Unsupported message format"
 msgstr "不支持的消息格式"
 
-#: lib/retro_hex_chat/chat/attachments.ex:281
-#: lib/retro_hex_chat/chat/attachments.ex:362
-#: lib/retro_hex_chat/chat/attachments.ex:367
+#: lib/retro_hex_chat/chat/attachments.ex:315
+#: lib/retro_hex_chat/chat/attachments.ex:397
+#: lib/retro_hex_chat/chat/attachments.ex:402
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "文件"
@@ -642,3 +642,8 @@ msgstr "这台服务器已经响应这个名称了。"
 #, elixir-autogen, elixir-format
 msgid "This server already has %{count} emoji."
 msgstr "这台服务器已经有 %{count} 个表情了。"
+
+#: lib/retro_hex_chat/chat/attachments.ex:309
+#, elixir-autogen, elixir-format
+msgid "A recording cannot be sent as %{type}"
+msgstr "录音无法以 %{type} 发送"

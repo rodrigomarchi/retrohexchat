@@ -216,6 +216,25 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           )
       },
       %{
+        id: "feature-voice-messages",
+        title: dgettext("help", "Voice Messages"),
+        category: dgettext("help", "Chat & Messaging"),
+        keywords: [
+          dgettext("help", "voice"),
+          dgettext("help", "recording"),
+          dgettext("help", "microphone"),
+          dgettext("help", "audio"),
+          dgettext("help", "record")
+        ],
+        icon: :icon_microphone,
+        description:
+          dgettext(
+            "help",
+            "Record up to a minute of audio from the composer on a phone and send it as an attachment; the message plays inline and shows how long it runs."
+          ),
+        see_also: ["feature-message-attachments"]
+      },
+      %{
         id: "feature-ignore-list",
         title: dgettext("help", "Ignore List"),
         category: dgettext("help", "Contacts & Notify"),

@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **233 spec files** under `e2e/tests/`.
-- **489 Playwright `test()` cases**.
-- **484 documented flows**, 483 done, 1 not done.
+- **234 spec files** under `e2e/tests/`.
+- **490 Playwright `test()` cases**.
+- **485 documented flows**, 484 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -700,6 +700,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | MB8 | PM reply, edit, and delete work from touch message actions | `tests/chat-mobile-message-flow.spec.ts` | done |
 | MB9 | Nicklist and conversation actions open by long press | `tests/chat-mobile-message-flow.spec.ts` | done |
 | MB10 | Every tab and control fits the phone's tab strip without clipping | `tests/chat-mobile-desktop.spec.ts` | done |
+| MB11 | A voice message is recorded from the phone composer, attached, sent, and plays in the row | `tests/chat-mobile-voice.spec.ts` | done |
 
 ### SP - Virtual Spaces
 
