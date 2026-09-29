@@ -59,10 +59,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
-  def handle_event("highlight_select", %{"word" => word}, socket) do
-    {:noreply, assign(socket, highlight_selected: word)}
-  end
-
   # ── Sub-form open/close ──────────────────────────────────────────
 
   def handle_event("open_highlight_add_dialog", _params, socket) do
@@ -73,7 +69,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
     {:noreply, assign(socket, show_highlight_add_dialog: false)}
   end
 
-  def handle_event("open_highlight_edit_dialog", _params, socket) do
+  # The row press names the word and opens it for editing.
+  def handle_event("open_highlight_edit_dialog", %{"word" => word}, socket) do
+    socket = assign(socket, highlight_selected: word)
+
     {:noreply,
      assign(socket,
        show_highlight_edit_dialog: true,
@@ -169,7 +168,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
         selected_color={@highlight_selected_color}
         show_highlight_add_dialog={@show_highlight_add_dialog}
         show_highlight_edit_dialog={@show_highlight_edit_dialog}
-        on_select="highlight_select"
         on_add="open_highlight_add_dialog"
         on_edit="open_highlight_edit_dialog"
         on_remove="highlight_remove"

@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Textarea
@@ -47,7 +48,6 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
 
   attr :warning_message, :string, default: nil, doc: "Optional warning message to display"
   attr :error_message, :string, default: nil, doc: "Optional error message inside the edit form"
-  attr :on_select, :any, default: nil, doc: "Row click callback (receives phx-value-name)"
   attr :on_add, :any, default: nil, doc: "Add button callback"
   attr :on_edit, :any, default: nil, doc: "Edit button callback"
   attr :on_delete, :any, default: nil, doc: "Remove button callback"
@@ -73,7 +73,6 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
           draft_expansion={@draft_expansion}
           warning_message={@warning_message}
           error_message={@error_message}
-          on_select={@on_select}
           on_add={@on_add}
           on_edit={@on_edit}
           on_delete={@on_delete}
@@ -98,7 +97,6 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
   attr :draft_expansion, :string, default: ""
   attr :warning_message, :string, default: nil
   attr :error_message, :string, default: nil
-  attr :on_select, :any, default: nil
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
   attr :on_delete, :any, default: nil
@@ -132,25 +130,37 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
                   {dgettext("dialogs", "No aliases configured. Click \"Add\" to create one.")}
                 </div>
 
-                <button
-                  :for={entry <- @aliases}
-                  type="button"
-                  data-testid="alias-row"
-                  data-alias-name={entry.name}
-                  aria-pressed={entry.name == @selected_alias}
-                  aria-label={"/#{entry.name}"}
-                  class={alias_entry_class(entry.name == @selected_alias)}
-                  phx-click={@on_select}
-                  phx-value-name={entry.name}
+                <.action_list
+                  :if={@aliases != []}
+                  id={"#{@id}-aliases"}
+                  label={dgettext("dialogs", "Alias Editor")}
                 >
-                  <span class="al-entry-name">/{entry.name}</span>
-                  <span class="al-entry-expansion">
-                    <span class="al-entry-expansion-label">
-                      {dgettext("dialogs", "Expansion")}
-                    </span>
-                    <code>{entry.expansion}</code>
-                  </span>
-                </button>
+                  <.action_row
+                    :for={entry <- @aliases}
+                    on_activate={@on_edit}
+                    value={%{"name" => entry.name}}
+                    current={entry.name == @selected_alias}
+                    data-testid="alias-row"
+                    data-alias-name={entry.name}
+                  >
+                    <:title>/{entry.name}</:title>
+                    <:meta>
+                      <span class="al-entry-expansion-label">
+                        {dgettext("dialogs", "Expansion")}
+                      </span>
+                      <code>{entry.expansion}</code>
+                    </:meta>
+                    <:action
+                      event={@on_delete}
+                      value={%{"name" => entry.name}}
+                      label={dgettext("dialogs", "Remove %{name}", name: entry.name)}
+                      variant="destructive"
+                      testid={"alias-remove-#{entry.name}"}
+                    >
+                      <Icons.icon_btn_remove class="w-4 h-4" />
+                    </:action>
+                  </.action_row>
+                </.action_list>
               </div>
 
               <div
@@ -170,26 +180,6 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
                 >
                   <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
                   {dgettext("dialogs", "Add")}
-                </.button>
-                <.button
-                  size="sm"
-                  variant="outline"
-                  phx-click={@on_edit}
-                  disabled={@selected_alias == nil}
-                  class="al-action-button"
-                >
-                  <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-                  {dgettext("dialogs", "Edit")}
-                </.button>
-                <.button
-                  size="sm"
-                  variant="outline"
-                  phx-click={@on_delete}
-                  disabled={@selected_alias == nil}
-                  class="al-action-button"
-                >
-                  <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-                  {dgettext("dialogs", "Remove")}
                 </.button>
               </div>
             </div>
@@ -281,7 +271,4 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
     </div>
     """
   end
-
-  defp alias_entry_class(true), do: "al-alias-entry bg-selection-bg text-selection-fg"
-  defp alias_entry_class(false), do: "al-alias-entry"
 end

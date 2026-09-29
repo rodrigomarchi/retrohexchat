@@ -61,8 +61,7 @@ test.describe("Alias dialog edge cases", () => {
     await chat.cancelAliasDraft();
     await expect(chat.aliasRow(cancelAlias)).toHaveCount(0);
 
-    await chat.aliasRow(alias).click();
-    await chat.aliasDialog.getByRole("button", { name: "Edit" }).click();
+    await chat.rowPress(chat.aliasRow(alias)).click();
     await expect(chat.aliasEditForm).toBeVisible();
     await chat.aliasEditForm
       .getByTestId("alias-expansion-input")

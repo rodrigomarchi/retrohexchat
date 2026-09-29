@@ -56,10 +56,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
   @impl true
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
-  def handle_event("alias_select", %{"name" => name}, socket) do
-    {:noreply, assign(socket, selected: name, editing: false)}
-  end
-
   def handle_event("alias_dialog_add", _params, socket) do
     {:noreply,
      assign(socket,
@@ -72,21 +68,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
      )}
   end
 
-  def handle_event("alias_dialog_edit", _params, socket) do
-    entry =
-      socket.assigns.selected &&
-        AliasList.find_entry(socket.assigns.aliases, socket.assigns.selected)
+  # The row press names the alias and opens it: one gesture where there were two.
+  def handle_event("alias_dialog_edit", %{"name" => name}, socket) do
+    case AliasList.find_entry(socket.assigns.aliases, name) do
+      nil ->
+        {:noreply, socket}
 
-    if entry do
-      {:noreply,
-       assign(socket,
-         editing: true,
-         draft_name: entry.name,
-         draft_expansion: entry.expansion,
-         error: nil
-       )}
-    else
-      {:noreply, socket}
+      entry ->
+        {:noreply,
+         assign(socket,
+           selected: entry.name,
+           editing: true,
+           draft_name: entry.name,
+           draft_expansion: entry.expansion,
+           error: nil
+         )}
     end
   end
 
@@ -115,7 +111,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
         draft_expansion={@draft_expansion}
         warning_message={@warning}
         error_message={@error}
-        on_select={JS.push("alias_select", target: @myself)}
         on_add={JS.push("alias_dialog_add", target: @myself)}
         on_edit={JS.push("alias_dialog_edit", target: @myself)}
         on_save={JS.push("alias_dialog_save", value: %{selected: @selected})}

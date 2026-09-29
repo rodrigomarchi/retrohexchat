@@ -71,7 +71,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AutoRespondDialogPage do
           &lt;.auto_respond_dialog
           id="auto-respond"
           rules=&#123;@rules&#125;
-          on_select="ar-select"
           on_toggle="ar-toggle"
           on_add="ar-add"
           on_edit="ar-edit"
@@ -94,7 +93,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AutoRespondDialogPage do
         <.auto_respond_dialog
           id="auto-respond-editing"
           rules={@rules}
-          selected_position={1}
           editing={true}
           draft_trigger="on_join"
           draft_channel="#lobby"

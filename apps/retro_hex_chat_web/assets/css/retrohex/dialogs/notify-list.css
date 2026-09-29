@@ -44,57 +44,10 @@
     inset 2px 2px #0a0a0a;
 }
 
-.nl-entry,
-.nl-entry-header,
-.nl-entry-name,
-.nl-entry-meta,
-.nl-entry-note,
 .nl-empty-state,
 .nl-sub-form {
   min-width: 0;
   overflow-wrap: anywhere;
-}
-
-.nl-entry {
-  display: grid;
-  gap: 6px;
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #808080;
-  background: #c0c0c0;
-  color: #000000;
-  text-align: left;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
-}
-
-.nl-entry:hover {
-  background: #dfdfdf;
-}
-
-.nl-entry:focus-visible {
-  outline: 2px solid #000000;
-  outline-offset: 1px;
-}
-
-.nl-entry.bg-selection-bg {
-  background: #000080;
-  color: #ffffff;
-}
-
-.nl-entry-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 4px 10px;
-}
-
-.nl-entry-name {
-  font-weight: 700;
 }
 
 .nl-status {
@@ -122,19 +75,6 @@
 
 .nl-status--offline .nl-status-dot {
   background: #606060;
-}
-
-.nl-entry-meta,
-.nl-entry-note {
-  color: #606060;
-  font-size: 11px;
-  line-height: 1.35;
-}
-
-.nl-entry.bg-selection-bg .nl-status,
-.nl-entry.bg-selection-bg .nl-entry-meta,
-.nl-entry.bg-selection-bg .nl-entry-note {
-  color: inherit;
 }
 
 .nl-entry-meta-label {
@@ -196,11 +136,6 @@
   min-height: 132px;
   max-height: min(44vh, 340px);
   flex: 0 0 auto;
-}
-
-.desktop--stacked .nl-entry {
-  min-height: 86px;
-  padding: 9px 10px;
 }
 
 .desktop--stacked .nl-action-row,

@@ -74,13 +74,12 @@ defmodule RetroHexChatWeb.NotifyListFeatureTest do
       view = connect_user(conn, "E2ENtRm#{uid()}")
       render_click(view, "toggle_notify_list")
 
-      # Add then select and remove
+      # Add, then remove from the row itself
       ab_click(view, "notify_add_dialog")
       ab_form(view, "notify-add-form", %{"nickname" => "RmNotify", "note" => ""})
       assert render(view) =~ "RmNotify"
 
-      ab_select(view, "notify_select", "RmNotify")
-      ab_click(view, "notify_remove")
+      ab_select(view, "notify_remove", "RmNotify")
 
       html = render(view)
       refute html =~ "notify-list-row-RmNotify"

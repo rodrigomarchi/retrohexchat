@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
 
@@ -33,7 +34,6 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
   attr :selected, :string, default: nil
   attr :show_add_dialog, :boolean, default: false
   attr :show_edit_dialog, :boolean, default: false
-  attr :on_select, :any, default: nil
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
   attr :on_remove, :any, default: nil
@@ -60,7 +60,6 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
           selected={@selected}
           show_add_dialog={@show_add_dialog}
           show_edit_dialog={@show_edit_dialog}
-          on_select={@on_select}
           on_add={@on_add}
           on_edit={@on_edit}
           on_remove={@on_remove}
@@ -92,7 +91,6 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
   attr :selected, :string, default: nil
   attr :show_add_dialog, :boolean, default: false
   attr :show_edit_dialog, :boolean, default: false
-  attr :on_select, :any, default: nil
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
   attr :on_remove, :any, default: nil
@@ -101,8 +99,6 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
 
   @spec autojoin_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def autojoin_panel(assigns) do
-    assigns = assign(assigns, :has_selection, assigns.selected != nil)
-
     ~H"""
     <div id={@id} class="contents">
       <.focus_wrap id={"#{@id}-focus-wrap"} class="contents">
@@ -120,53 +116,43 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
               {dgettext("dialogs", "No auto-join channels. Click Add to create one.")}
             </div>
 
-            <button
-              :for={entry <- @entries}
-              type="button"
-              data-testid="autojoin-row"
-              data-channel={entry.channel_name}
-              aria-pressed={@selected == entry.channel_name}
-              class={row_class(@selected == entry.channel_name)}
-              phx-click={@on_select}
-              phx-target={@target}
-              phx-value-channel={entry.channel_name}
+            <.action_list
+              :if={@entries != []}
+              id={"#{@id}-entries"}
+              label={dgettext("dialogs", "Auto-Join")}
             >
-              <span class="aj-entry-content">
-                <span class="aj-entry-label">{entry.channel_name}</span>
-                <span class="aj-entry-meta">
+              <.action_row
+                :for={entry <- @entries}
+                on_activate={@on_edit}
+                value={%{"channel" => entry.channel_name}}
+                target={@target}
+                current={@selected == entry.channel_name}
+                data-testid="autojoin-row"
+                data-channel={entry.channel_name}
+              >
+                <:title>{entry.channel_name}</:title>
+                <:meta>
                   {dgettext("dialogs", "Key")}: {if entry.channel_key,
                     do: "***",
                     else: dgettext("dialogs", "none")}
-                </span>
-              </span>
-            </button>
+                </:meta>
+                <:action
+                  event={@on_remove}
+                  value={%{"channel" => entry.channel_name}}
+                  label={dgettext("dialogs", "Remove %{channel}", channel: entry.channel_name)}
+                  variant="destructive"
+                  testid={"autojoin-remove-#{entry.channel_name}"}
+                >
+                  <Icons.icon_btn_remove class="w-4 h-4" />
+                </:action>
+              </.action_row>
+            </.action_list>
           </div>
 
           <div class="aj-action-row flex gap-1">
             <.button size="sm" phx-click={@on_add} phx-target={@target} class="aj-action-button">
               <:icon><Icons.icon_btn_add /></:icon>
               {dgettext("dialogs", "Add")}
-            </.button>
-            <.button
-              size="sm"
-              phx-click={@on_edit}
-              phx-target={@target}
-              disabled={!@has_selection}
-              class="aj-action-button"
-            >
-              <:icon><Icons.icon_btn_edit /></:icon>
-              {dgettext("dialogs", "Edit")}
-            </.button>
-            <.button
-              size="sm"
-              variant="destructive"
-              phx-click={@on_remove}
-              phx-target={@target}
-              disabled={!@has_selection}
-              class="aj-action-button"
-            >
-              <:icon><Icons.icon_btn_remove /></:icon>
-              {dgettext("dialogs", "Remove")}
             </.button>
           </div>
 
@@ -368,8 +354,4 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
   end
 
   # ── Private Helpers ───────────────────────────────────
-
-  @spec row_class(boolean()) :: String.t()
-  defp row_class(true), do: "aj-entry bg-selection-bg text-selection-fg"
-  defp row_class(false), do: "aj-entry"
 end

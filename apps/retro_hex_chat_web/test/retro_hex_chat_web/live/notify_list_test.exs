@@ -77,8 +77,7 @@ defmodule RetroHexChatWeb.NotifyListTest do
       view |> ab_form("notify-add-form", %{"nickname" => "RemBuddy", "note" => ""})
       assert render(view) =~ "RemBuddy"
 
-      view |> ab_select("notify_select", "RemBuddy")
-      view |> ab_click("notify_remove")
+      view |> ab_select("notify_remove", "RemBuddy")
 
       html = render(view)
       refute html =~ "notify-list-row-RemBuddy"
@@ -94,9 +93,8 @@ defmodule RetroHexChatWeb.NotifyListTest do
       view |> ab_form("notify-add-form", %{"nickname" => "EditBud", "note" => "old note"})
       assert render(view) =~ "old note"
 
-      # Select and edit
-      view |> ab_select("notify_select", "EditBud")
-      view |> ab_click("notify_edit_dialog")
+      # Pressing the row opens it for editing — one gesture, not two.
+      view |> ab_select("notify_edit_dialog", "EditBud")
       assert render(view) =~ "Edit Notify Entry"
 
       view |> ab_form("notify-edit-form", %{"nickname" => "EditBud", "note" => "new note"})
@@ -106,24 +104,27 @@ defmodule RetroHexChatWeb.NotifyListTest do
       refute html =~ "old note"
     end
 
-    test "select notify entry enables edit/remove buttons", %{conn: conn} do
+    test "every row carries its own edit and remove", %{conn: conn} do
       view = connect_user(conn, "SelectNotify")
       view |> render_click("toggle_notify_list")
 
-      # Add entry
       view |> ab_click("notify_add_dialog")
       view |> ab_form("notify-add-form", %{"nickname" => "SelBud", "note" => ""})
 
-      # Before selection, buttons disabled
-      assert has_element?(view, "[data-testid=\"notify-list-remove\"][disabled]")
-      assert has_element?(view, "[data-testid=\"notify-list-edit\"][disabled]")
+      # No selection to make, and no control waiting for one: the row names
+      # itself in both events it can send.
+      assert has_element?(
+               view,
+               "[phx-click='notify_edit_dialog'][phx-value-nickname='SelBud']"
+             )
 
-      # Select
-      view |> ab_select("notify_select", "SelBud")
+      assert has_element?(
+               view,
+               "[phx-click='notify_remove'][phx-value-nickname='SelBud']"
+             )
 
-      # After selection, not disabled
-      refute has_element?(view, "[data-testid=\"notify-list-remove\"][disabled]")
-      refute has_element?(view, "[data-testid=\"notify-list-edit\"][disabled]")
+      refute has_element?(view, "[data-testid='notify-list-edit']")
+      refute has_element?(view, "[data-testid='notify-list-remove']")
     end
 
     test "notify tab shares data with standalone notify list", %{conn: conn} do

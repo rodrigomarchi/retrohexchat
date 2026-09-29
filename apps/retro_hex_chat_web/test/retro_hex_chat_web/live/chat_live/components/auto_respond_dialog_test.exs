@@ -30,4 +30,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialogTest do
     # Toggle (always-present per-row control) carries the position to the parent.
     assert html =~ "autorespond_toggle"
   end
+
+  # A row sends its position as a `phx-value-*` string. `remove_entry/2` compares
+  # positions with `==`, so a string matches nothing and the rule silently
+  # survives — which is exactly what the browser suite caught.
+  test "removing by the position a row sends, a string, takes the rule out" do
+    {:ok, rules} =
+      AutoRespondRules.add_entry(AutoRespondRules.new(), :on_join, "#elixir", "/me waves")
+
+    [entry] = rules.entries
+
+    assert {:ok, updated} = AutoRespondRules.remove_entry(rules, entry.position)
+    assert updated.entries == []
+
+    assert {:error, :not_found} =
+             AutoRespondRules.remove_entry(rules, to_string(entry.position))
+  end
 end

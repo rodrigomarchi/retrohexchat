@@ -18,6 +18,9 @@ defmodule RetroHexChatWeb.Components.UI.ActionList do
       that does nothing on press is a table row, and that is `UI.Table`.
     * **A second action on the same subject** — remove, stop, reorder — is an
       `<:action>`, rendered on the row.
+    * **A control that is not a button** — a checkbox that turns the row's rule
+      on and off — is a `<:control>`. It cannot live inside the press for the
+      same reason an action cannot: a `<button>` holds no interactive content.
     * **An action with no subject** — add, import — is not part of this list. It
       belongs to the panel around it, and stays in the panel's own button row.
 
@@ -133,6 +136,10 @@ defmodule RetroHexChatWeb.Components.UI.ActionList do
     attr :testid, :string
   end
 
+  slot :control,
+    doc:
+      "a control on the row that is not a button — a checkbox, a picker. Rendered beside the press, never inside it: a button cannot contain one."
+
   slot :action, doc: "a second action on this row's subject; the block is its icon" do
     attr :event, :any, required: true
     attr :value, :map
@@ -177,7 +184,10 @@ defmodule RetroHexChatWeb.Components.UI.ActionList do
         </span>
       </button>
 
-      <span :if={@cta != [] or @action != []} class="action-list__actions">
+      <span :if={@cta != [] or @control != [] or @action != []} class="action-list__actions">
+        <span :for={control <- @control} class="action-list__control">
+          {render_slot(control)}
+        </span>
         <.button
           :for={cta <- @cta}
           type="button"

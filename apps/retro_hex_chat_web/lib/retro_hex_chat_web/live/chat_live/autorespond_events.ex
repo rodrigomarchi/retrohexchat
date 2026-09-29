@@ -82,7 +82,7 @@ defmodule RetroHexChatWeb.ChatLive.AutorespondEvents do
   end
 
   def handle_event("autorespond_dialog_delete", params, socket) do
-    selected = params["selected"]
+    selected = position(params["position"] || params["selected"])
     session = socket.assigns.session
 
     case AutoRespondRules.remove_entry(session.autorespond_rules, selected) do
@@ -121,4 +121,18 @@ defmodule RetroHexChatWeb.ChatLive.AutorespondEvents do
     do: dgettext("chat", "Command must not contain chaining (|, &&, ;)")
 
   defp autorespond_error_msg(:not_found), do: dgettext("chat", "Rule not found")
+  # A row sends its position as a `phx-value-*` string; the rule list keys on the
+  # integer, and `remove_entry/2` compares with `==` — a string silently matches
+  # nothing.
+  @spec position(term()) :: integer() | nil
+  defp position(value) when is_integer(value), do: value
+
+  defp position(value) when is_binary(value) do
+    case Integer.parse(value) do
+      {position, _rest} -> position
+      :error -> nil
+    end
+  end
+
+  defp position(_other), do: nil
 end

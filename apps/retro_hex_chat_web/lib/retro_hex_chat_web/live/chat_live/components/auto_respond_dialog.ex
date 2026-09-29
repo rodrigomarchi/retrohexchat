@@ -56,11 +56,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialog do
   @impl true
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
-  def handle_event("autorespond_select", %{"position" => pos_str}, socket) do
-    {pos, _} = Integer.parse(pos_str)
-    {:noreply, assign(socket, selected: pos)}
-  end
-
   def handle_event("autorespond_dialog_add", _params, socket) do
     {:noreply,
      assign(socket,
@@ -73,22 +68,24 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialog do
      )}
   end
 
-  def handle_event("autorespond_dialog_edit", _params, socket) do
-    entry =
-      socket.assigns.selected &&
-        Enum.find(entries(socket.assigns.rules), &(&1.position == socket.assigns.selected))
+  # The row press names the rule and opens it in the editor beside the list.
+  def handle_event("autorespond_dialog_edit", %{"position" => pos}, socket) do
+    position = to_position(pos)
 
-    if entry do
-      {:noreply,
-       assign(socket,
-         editing: true,
-         draft_trigger: Atom.to_string(entry.trigger_event),
-         draft_channel: entry.channel_filter || "",
-         draft_command: entry.command,
-         error: nil
-       )}
-    else
-      {:noreply, socket}
+    case Enum.find(entries(socket.assigns.rules), &(&1.position == position)) do
+      nil ->
+        {:noreply, socket}
+
+      entry ->
+        {:noreply,
+         assign(socket,
+           selected: entry.position,
+           editing: true,
+           draft_trigger: Atom.to_string(entry.trigger_event),
+           draft_channel: entry.channel_filter || "",
+           draft_command: entry.command,
+           error: nil
+         )}
     end
   end
 
@@ -117,7 +114,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialog do
         draft_channel={@draft_channel}
         draft_command={@draft_command}
         error_message={@error}
-        on_select={JS.push("autorespond_select", target: @myself)}
         on_toggle="autorespond_toggle"
         on_add={JS.push("autorespond_dialog_add", target: @myself)}
         on_edit={JS.push("autorespond_dialog_edit", target: @myself)}
@@ -162,4 +158,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialog do
   @spec entries(term()) :: [map()]
   defp entries(nil), do: []
   defp entries(rules), do: AutoRespondRules.entries(rules)
+  # `phx-value-position` arrives as a string; the rule list keys on the integer.
+
+  defp to_position(value) when is_integer(value), do: value
+
+  defp to_position(value) when is_binary(value) do
+    case Integer.parse(value) do
+      {position, _rest} -> position
+      :error -> nil
+    end
+  end
 end

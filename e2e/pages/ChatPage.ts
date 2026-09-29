@@ -1238,6 +1238,11 @@ export class ChatPage {
       .first();
   }
 
+  /** The press of a row in an ActionList — the row itself is the `<li>`. */
+  rowPress(row: Locator): Locator {
+    return row.locator(".action-list__primary");
+  }
+
   customMenuPanel(tab: "Nicklist" | "Channel" | "Chat"): Locator {
     const value = tab.toLowerCase();
     return this.customMenusDialog.locator(`.tabs-content[value="${value}"]`);
@@ -2068,8 +2073,8 @@ export class ChatPage {
   }
 
   async editAliasFromDialog(name: string, expansion: string) {
-    await this.aliasRow(name).click();
-    await this.aliasDialog.getByRole("button", { name: "Edit" }).click();
+    // Pressing the row opens it in the editor beside the list.
+    await this.rowPress(this.aliasRow(name)).click();
     await expect(this.aliasEditForm).toBeVisible();
     await this.aliasEditForm
       .getByTestId("alias-expansion-input")
@@ -2080,8 +2085,7 @@ export class ChatPage {
   }
 
   async removeAliasFromDialog(name: string) {
-    await this.aliasRow(name).click();
-    await this.aliasDialog.getByRole("button", { name: "Remove" }).click();
+    await this.page.getByTestId(`alias-remove-${name}`).click();
     await expect(this.aliasRow(name)).toHaveCount(0);
   }
 
@@ -2139,8 +2143,7 @@ export class ChatPage {
   }
 
   async editHighlightWordColor(word: string, colorIndex: number) {
-    await this.highlightWordRow(word).click();
-    await this.highlightDialog.getByRole("button", { name: "Edit" }).click();
+    await this.rowPress(this.highlightWordRow(word)).click();
     await expect(this.highlightEditForm).toBeVisible();
     await this.pickColor(this.highlightEditForm, colorIndex);
     await this.highlightEditForm.getByRole("button", { name: "OK" }).click();
@@ -2148,8 +2151,7 @@ export class ChatPage {
   }
 
   async removeHighlightWord(word: string) {
-    await this.highlightWordRow(word).click();
-    await this.highlightDialog.getByRole("button", { name: "Remove" }).click();
+    await this.page.getByTestId(`highlight-word-remove-${word}`).click();
     await expect(this.highlightWordRow(word)).toHaveCount(0);
   }
 
@@ -2297,8 +2299,7 @@ export class ChatPage {
   }
 
   async editAutojoinKey(channel: string, key: string) {
-    await this.autojoinRow(channel).click();
-    await this.autojoinPanel().getByRole("button", { name: "Edit" }).click();
+    await this.rowPress(this.autojoinRow(channel)).click();
     await expect(this.autojoinEditDialog).toBeVisible();
     await this.autojoinEditDialog.locator("#autojoin-edit-key").fill(key);
     await this.autojoinEditDialog.getByRole("button", { name: "OK" }).click();
@@ -2306,8 +2307,7 @@ export class ChatPage {
   }
 
   async removeAutojoinEntry(channel: string) {
-    await this.autojoinRow(channel).click();
-    await this.autojoinPanel().getByRole("button", { name: "Remove" }).click();
+    await this.page.getByTestId(`autojoin-remove-${channel}`).click();
     await expect(this.autojoinRow(channel)).toHaveCount(0);
   }
 
@@ -2351,8 +2351,7 @@ export class ChatPage {
   }
 
   async editAutorespondRule(command: string, replacement: string) {
-    await this.autorespondRuleRow(command).click();
-    await this.autorespondDialog.getByRole("button", { name: "Edit" }).click();
+    await this.rowPress(this.autorespondRuleRow(command)).click();
     await expect(this.autorespondEditForm).toBeVisible();
     await this.autorespondEditForm
       .locator('[name="command"]')
@@ -2363,9 +2362,8 @@ export class ChatPage {
   }
 
   async removeAutorespondRule(text: string) {
-    await this.autorespondRuleRow(text).click();
-    await this.autorespondDialog
-      .getByRole("button", { name: "Remove" })
+    await this.autorespondRuleRow(text)
+      .locator('[data-testid^="autorespond-remove-"]')
       .click();
     await expect(this.autorespondRuleRow(text)).toHaveCount(0);
   }

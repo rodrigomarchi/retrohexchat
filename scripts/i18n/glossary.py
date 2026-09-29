@@ -104,6 +104,10 @@ _ROWS = {
     # Dutch and Japanese all put the verb after the subject.
     "Remove %{nickname}": ("Remover %{nickname}", "Remover %{nickname}", "Quitar %{nickname}", "Retirer %{nickname}", "%{nickname} entfernen", "Rimuovi %{nickname}", "%{nickname} verwijderen", "Usuń %{nickname}", "Удалить %{nickname}", "Hapus %{nickname}", "%{nickname} を削除", "移除 %{nickname}", "移除 %{nickname}"),
     "Remove %{mask}": ("Remover %{mask}", "Remover %{mask}", "Quitar %{mask}", "Retirer %{mask}", "%{mask} entfernen", "Rimuovi %{mask}", "%{mask} verwijderen", "Usuń %{mask}", "Удалить %{mask}", "Hapus %{mask}", "%{mask} を削除", "移除 %{mask}", "移除 %{mask}"),
+    "Remove %{name}": ("Remover %{name}", "Remover %{name}", "Quitar %{name}", "Retirer %{name}", "%{name} entfernen", "Rimuovi %{name}", "%{name} verwijderen", "Usuń %{name}", "Удалить %{name}", "Hapus %{name}", "%{name} を削除", "移除 %{name}", "移除 %{name}"),
+    "Remove %{channel}": ("Remover %{channel}", "Remover %{channel}", "Quitar %{channel}", "Retirer %{channel}", "%{channel} entfernen", "Rimuovi %{channel}", "%{channel} verwijderen", "Usuń %{channel}", "Удалить %{channel}", "Hapus %{channel}", "%{channel} を削除", "移除 %{channel}", "移除 %{channel}"),
+    "Remove %{word}": ("Remover %{word}", "Remover %{word}", "Quitar %{word}", "Retirer %{word}", "%{word} entfernen", "Rimuovi %{word}", "%{word} verwijderen", "Usuń %{word}", "Удалить %{word}", "Hapus %{word}", "%{word} を削除", "移除 %{word}", "移除 %{word}"),
+    "Remove rule %{position}": ("Remover a regra %{position}", "Remover a regra %{position}", "Quitar la regla %{position}", "Retirer la règle %{position}", "Regel %{position} entfernen", "Rimuovi la regola %{position}", "Regel %{position} verwijderen", "Usuń regułę %{position}", "Удалить правило %{position}", "Hapus aturan %{position}", "ルール %{position} を削除", "移除规则 %{position}", "移除規則 %{position}"),
 
     # ── Transfer ──────────────────────────────────────────────
     "Send":         ("Enviar", "Enviar", "Enviar", "Envoyer", "Senden", "Invia", "Verzenden", "Wyślij", "Отправить", "Kirim", "送信", "发送", "傳送"),

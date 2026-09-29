@@ -74,15 +74,16 @@ test.describe("Address Book", () => {
     await expect(chat.notifyListRow(notifyNick)).toContainText(notifyNote);
     await expect(chat.notifyListRow(notifyNick)).toContainText("Offline");
 
+    // The row press is the whole gesture — it names the entry and opens it.
     await chat.notifyListRow(notifyNick).click();
-    await chat.notifyListDialog.getByTestId("notify-list-edit").click();
     form = page.getByTestId("notify-edit-form");
     await form.locator("#notify-edit-note").fill(notifyEdited);
     await submitDialogForm(form);
     await expect(chat.notifyListRow(notifyNick)).toContainText(notifyEdited);
 
-    await chat.notifyListRow(notifyNick).click();
-    await chat.notifyListDialog.getByTestId("notify-list-remove").click();
+    await chat.notifyListDialog
+      .getByTestId(`notify-list-remove-${notifyNick}`)
+      .click();
     await expect(chat.notifyListRow(notifyNick)).toHaveCount(0);
 
     await chat.openNickColorsFromMenu();

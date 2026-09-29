@@ -58,11 +58,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
-  def handle_event("notify_select", %{"nickname" => nick}, socket) do
-    note = NotifyOps.note_for(socket.assigns.session.notify_list, nick)
-    {:noreply, assign(socket, notify_selected: nick, selected_note: note)}
-  end
-
   def handle_event("notify_add_dialog", _params, socket) do
     {:noreply, assign(socket, show_notify_add_dialog: true)}
   end
@@ -71,9 +66,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
     {:noreply, assign(socket, show_notify_add_dialog: false)}
   end
 
-  def handle_event("notify_edit_dialog", _params, socket) do
-    note = NotifyOps.note_for(socket.assigns.session.notify_list, socket.assigns.notify_selected)
-    {:noreply, assign(socket, show_notify_edit_dialog: true, selected_note: note)}
+  # Pressing a row is the whole gesture: it says which entry, and it opens it.
+  def handle_event("notify_edit_dialog", %{"nickname" => nick}, socket) do
+    note = NotifyOps.note_for(socket.assigns.session.notify_list, nick)
+
+    {:noreply,
+     assign(socket, notify_selected: nick, selected_note: note, show_notify_edit_dialog: true)}
   end
 
   def handle_event("notify_edit_cancel", _params, socket) do
@@ -171,7 +169,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
         auto_add_pm={@auto_add_pm}
         show_add_dialog={@show_notify_add_dialog}
         show_edit_dialog={@show_notify_edit_dialog}
-        on_select="notify_select"
         on_add="notify_add_dialog"
         on_edit="notify_edit_dialog"
         on_remove="notify_remove"

@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
 
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.ColorPicker
+  import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
 
@@ -70,7 +71,6 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
           selected_color={@selected_color}
           show_highlight_add_dialog={@show_highlight_add_dialog}
           show_highlight_edit_dialog={@show_highlight_edit_dialog}
-          on_select={@on_select}
           on_add={@on_add}
           on_edit={@on_edit}
           on_remove={@on_remove}
@@ -105,7 +105,6 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   attr :own_nick, :string, default: nil
   attr :selected_word, :string, default: nil
   attr :selected_color, :integer, default: nil
-  attr :on_select, :any, default: nil
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
   attr :on_remove, :any, default: nil
@@ -150,26 +149,40 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
                   {dgettext("dialogs", "No highlight words configured. Click Add to create one.")}
                 </div>
 
-                <button
-                  :for={word <- @words}
-                  type="button"
-                  data-testid={"highlight-word-row-#{word.word}"}
-                  aria-pressed={@selected_word == word.word}
-                  aria-label={word.word}
-                  class={highlight_entry_class(@selected_word == word.word)}
-                  phx-click={@on_select}
-                  phx-target={@target}
-                  phx-value-word={word.word}
+                <.action_list
+                  :if={@words != []}
+                  id={"#{@id}-words"}
+                  label={dgettext("dialogs", "Highlight Words")}
                 >
-                  <span class="hl-entry-word">{word.word}</span>
-                  <span class="hl-entry-color">
-                    <span
-                      class={["hl-color-swatch", color_class(word.bg_color)]}
-                      data-testid={"highlight-word-color-#{word.word}"}
-                    />
-                    <span>{color_label(word.bg_color)}</span>
-                  </span>
-                </button>
+                  <.action_row
+                    :for={word <- @words}
+                    on_activate={@on_edit}
+                    value={%{"word" => word.word}}
+                    target={@target}
+                    current={@selected_word == word.word}
+                    data-testid={"highlight-word-row-#{word.word}"}
+                  >
+                    <:title>{word.word}</:title>
+                    <:trailing>
+                      <span class="hl-entry-color">
+                        <span
+                          class={["hl-color-swatch", color_class(word.bg_color)]}
+                          data-testid={"highlight-word-color-#{word.word}"}
+                        />
+                        <span>{color_label(word.bg_color)}</span>
+                      </span>
+                    </:trailing>
+                    <:action
+                      event={@on_remove}
+                      value={%{"word" => word.word}}
+                      label={dgettext("dialogs", "Remove %{word}", word: word.word)}
+                      variant="destructive"
+                      testid={"highlight-word-remove-#{word.word}"}
+                    >
+                      <Icons.icon_btn_remove class="w-4 h-4" />
+                    </:action>
+                  </.action_row>
+                </.action_list>
               </div>
 
               <div class="hl-action-row flex gap-retro-4">
@@ -182,29 +195,6 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
                 >
                   <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
                   {dgettext("dialogs", "Add")}
-                </.button>
-                <.button
-                  size="sm"
-                  variant="outline"
-                  phx-click={@on_edit}
-                  phx-target={@target}
-                  disabled={@selected_word == nil}
-                  class="hl-action-button"
-                >
-                  <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-                  {dgettext("dialogs", "Edit")}
-                </.button>
-                <.button
-                  size="sm"
-                  variant="outline"
-                  phx-click={@on_remove}
-                  phx-target={@target}
-                  phx-value-word={@selected_word || ""}
-                  disabled={@selected_word == nil}
-                  class="hl-action-button"
-                >
-                  <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-                  {dgettext("dialogs", "Remove")}
                 </.button>
               </div>
             </div>
@@ -411,7 +401,4 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
     do: dgettext("dialogs", "Color %{index}", index: n)
 
   defp color_label(_), do: dgettext("dialogs", "Default")
-
-  defp highlight_entry_class(true), do: "hl-highlight-entry bg-selection-bg text-selection-fg"
-  defp highlight_entry_class(false), do: "hl-highlight-entry"
 end

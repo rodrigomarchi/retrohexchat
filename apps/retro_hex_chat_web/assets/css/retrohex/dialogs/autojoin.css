@@ -23,65 +23,9 @@
     inset 2px 2px #0a0a0a;
 }
 
-.aj-entry,
-.aj-entry-content,
-.aj-entry-label,
-.aj-entry-meta,
 .aj-sub-form {
   min-width: 0;
   overflow-wrap: anywhere;
-}
-
-.aj-entry {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 8px;
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #808080;
-  background: #c0c0c0;
-  color: #000000;
-  text-align: left;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
-}
-
-.aj-entry:hover {
-  background: #dfdfdf;
-}
-
-.aj-entry:focus-visible {
-  outline: 2px solid #000000;
-  outline-offset: 1px;
-}
-
-.aj-entry.bg-selection-bg {
-  background: #000080;
-  color: #ffffff;
-}
-
-.aj-entry-content {
-  display: grid;
-  gap: 3px;
-}
-
-.aj-entry-label {
-  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
-  font-size: 12px;
-  line-height: 1.35;
-}
-
-.aj-entry-meta {
-  color: #606060;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.aj-entry.bg-selection-bg .aj-entry-meta {
-  color: inherit;
 }
 
 .aj-empty-state {
@@ -112,11 +56,6 @@
 
 .desktop--stacked .aj-entry-list {
   max-height: min(42vh, 320px);
-}
-
-.desktop--stacked .aj-entry {
-  min-height: 64px;
-  padding: 9px 10px;
 }
 
 .desktop--stacked .aj-action-row,

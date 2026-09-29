@@ -51,10 +51,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
-  def handle_event("autojoin_select", %{"channel" => channel}, socket) do
-    {:noreply, assign(socket, selected: channel)}
-  end
-
   # ── Sub-form open/close ──────────────────────────────────────────
 
   def handle_event("autojoin_add", _params, socket) do
@@ -65,12 +61,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
     {:noreply, assign(socket, show_add_dialog: false)}
   end
 
-  def handle_event("autojoin_edit", _params, socket) do
-    if socket.assigns.selected do
-      {:noreply, assign(socket, show_edit_dialog: true)}
-    else
-      {:noreply, socket}
-    end
+  # The row press names the channel and opens it for editing.
+  def handle_event("autojoin_edit", %{"channel" => channel}, socket) do
+    {:noreply, assign(socket, selected: channel, show_edit_dialog: true)}
   end
 
   def handle_event("close_autojoin_edit", _params, socket) do
@@ -124,8 +117,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
     end
   end
 
-  def handle_event("autojoin_remove", _params, socket) do
-    channel = socket.assigns.selected
+  def handle_event("autojoin_remove", %{"channel" => channel}, socket) do
     session = socket.assigns.session
 
     with true <- channel != nil,
@@ -154,7 +146,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
         selected={@selected}
         show_add_dialog={@show_add_dialog}
         show_edit_dialog={@show_edit_dialog}
-        on_select="autojoin_select"
         on_add="autojoin_add"
         on_edit="autojoin_edit"
         on_remove="autojoin_remove"

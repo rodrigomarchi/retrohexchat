@@ -78,7 +78,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AliasDialogPage do
         <.alias_dialog
           id="alias-dialog-selected"
           aliases={@aliases}
-          selected_alias="away"
         />
       </.showcase_card>
 
@@ -93,7 +92,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AliasDialogPage do
         <.alias_dialog
           id="alias-dialog-editing"
           aliases={@aliases}
-          selected_alias="hi"
           editing={true}
           draft_name="hi"
           draft_expansion="/msg $1 hello!"

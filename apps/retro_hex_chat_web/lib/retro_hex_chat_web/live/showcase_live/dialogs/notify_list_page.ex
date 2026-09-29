@@ -56,26 +56,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NotifyListPage do
           id="notify-list"
           entries=&#123;@entries&#125;
           auto_whois=&#123;@auto_whois&#125;
-          on_select="nl_select"
           on_add="nl_add"
           on_remove="nl_remove"
           /&gt;
         </.code_example>
-      </.showcase_card>
-
-      <.showcase_card
-        title={dgettext("showcase", "With Selection")}
-        description="Notify list with a nick pre-selected. Edit/Remove buttons are enabled."
-      >
-        <.button variant="outline" phx-click={show_modal("notify-list-selected")}>
-          <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Notify List (Selected)")}
-        </.button>
-        <.notify_list
-          id="notify-list-selected"
-          entries={@entries}
-          selected_entry="bob"
-        />
       </.showcase_card>
 
       <.showcase_card

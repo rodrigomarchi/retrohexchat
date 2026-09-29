@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Input
@@ -31,7 +32,6 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
 
   attr :selected_entry, :string, default: nil, doc: "Currently selected nickname"
   attr :auto_whois, :boolean, default: false, doc: "Auto-Whois checkbox state"
-  attr :on_select, :any, default: nil, doc: "Row click callback (phx-value-nickname)"
   attr :on_add, :any, default: nil, doc: "Add button callback"
   attr :on_edit, :any, default: nil, doc: "Edit button callback"
   attr :on_remove, :any, default: nil, doc: "Remove button callback"
@@ -62,7 +62,6 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
           auto_add_pm={@auto_add_pm}
           show_add_dialog={@show_add_dialog}
           show_edit_dialog={@show_edit_dialog}
-          on_select={@on_select}
           on_add={@on_add}
           on_edit={@on_edit}
           on_remove={@on_remove}
@@ -88,11 +87,10 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   attr :id, :string, required: true
   attr :target, :any, default: nil
   attr :entries, :list, default: []
-  attr :selected_entry, :string, default: nil
+  attr :selected_entry, :string, default: nil, doc: "the entry the edit sub-form is about"
   attr :auto_whois, :boolean, default: false
-  attr :on_select, :any, default: nil
   attr :on_add, :any, default: nil
-  attr :on_edit, :any, default: nil
+  attr :on_edit, :any, default: nil, doc: "row press — opens the entry for editing"
   attr :on_remove, :any, default: nil
   attr :show_add_dialog, :boolean, default: false
   attr :show_edit_dialog, :boolean, default: false
@@ -149,30 +147,43 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               {dgettext("dialogs", "No notify nicks yet. Add a nick to track online status.")}
             </div>
 
-            <button
-              :for={entry <- @entries}
-              type="button"
-              class={entry_class(@selected_entry == entry.tracked_nickname)}
-              phx-click={@on_select}
-              phx-target={@target}
-              phx-value-nickname={entry.tracked_nickname}
-              data-testid={"notify-list-row-#{entry.tracked_nickname}"}
-              aria-pressed={@selected_entry == entry.tracked_nickname}
-              aria-label={entry.tracked_nickname}
+            <.action_list
+              :if={@entries != []}
+              id={"#{@id}-entries"}
+              label={dgettext("dialogs", "Notify List")}
             >
-              <span class="nl-entry-header">
-                <span class="nl-entry-name">{entry.tracked_nickname}</span>
-                <.online_status online={entry.online} />
-              </span>
-              <span class="nl-entry-meta">
-                <span class="nl-entry-meta-label">{dgettext("dialogs", "Last Seen")}</span>
-                {last_seen_label(entry, @timezone)}
-              </span>
-              <span class="nl-entry-note">
-                <span class="nl-entry-meta-label">{dgettext("dialogs", "Note")}</span>
-                {note_label(entry)}
-              </span>
-            </button>
+              <.action_row
+                :for={entry <- @entries}
+                on_activate={@on_edit}
+                value={%{"nickname" => entry.tracked_nickname}}
+                target={@target}
+                data-testid={"notify-list-row-#{entry.tracked_nickname}"}
+              >
+                <:title>
+                  {entry.tracked_nickname}
+                  <.online_status online={entry.online} />
+                </:title>
+                <:meta>
+                  <span class="nl-entry-meta-label">{dgettext("dialogs", "Note")}</span>
+                  {note_label(entry)}
+                </:meta>
+                <:trailing>
+                  <.action_figure
+                    label={dgettext("dialogs", "Last Seen")}
+                    value={last_seen_label(entry, @timezone)}
+                  />
+                </:trailing>
+                <:action
+                  event={@on_remove}
+                  value={%{"nickname" => entry.tracked_nickname}}
+                  label={dgettext("dialogs", "Remove %{nickname}", nickname: entry.tracked_nickname)}
+                  variant="destructive"
+                  testid={"notify-list-remove-#{entry.tracked_nickname}"}
+                >
+                  <Icons.icon_btn_remove class="w-4 h-4" />
+                </:action>
+              </.action_row>
+            </.action_list>
           </div>
 
           <%!-- CRUD buttons --%>
@@ -187,31 +198,6 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
             >
               <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
               {dgettext("dialogs", "Add")}
-            </.button>
-            <.button
-              size="sm"
-              variant="outline"
-              phx-click={@on_edit}
-              phx-target={@target}
-              disabled={@selected_entry == nil}
-              data-testid="notify-list-edit"
-              class="nl-action-button"
-            >
-              <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Edit")}
-            </.button>
-            <.button
-              size="sm"
-              variant="outline"
-              phx-click={@on_remove}
-              phx-target={@target}
-              phx-value-nickname={@selected_entry}
-              disabled={@selected_entry == nil}
-              data-testid="notify-list-remove"
-              class="nl-action-button"
-            >
-              <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Remove")}
             </.button>
           </div>
 
@@ -418,9 +404,6 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
     </span>
     """
   end
-
-  defp entry_class(true), do: "nl-entry bg-selection-bg text-selection-fg"
-  defp entry_class(false), do: "nl-entry"
 
   defp note_label(entry) do
     case Map.get(entry, :note) do

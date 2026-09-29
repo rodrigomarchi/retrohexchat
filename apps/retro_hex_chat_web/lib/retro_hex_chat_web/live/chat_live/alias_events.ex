@@ -64,7 +64,7 @@ defmodule RetroHexChatWeb.ChatLive.AliasEvents do
   end
 
   def handle_event("alias_dialog_delete", params, socket) do
-    selected = params["selected"]
+    selected = params["name"] || params["selected"]
 
     if selected do
       session = socket.assigns.session

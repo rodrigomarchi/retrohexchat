@@ -269,3 +269,57 @@ o `Remove` de cada linha.** Não há seleção nenhuma.
 - `channel_central_feature_test.exs` + `chanserv_channel_central_feature_test.exs` — 37/37
 - Playwright: `chat-channel-central`, `-exceptions`, `-sync`, `chat-ui-features-channel` — 7/7
 - `make ci` verde
+
+---
+
+## Fase 3 — os editores lista + formulário · **metade concluída**
+
+Os oito diálogos se separaram em dois grupos, e a divisão coincide exatamente com
+o acoplamento de CSS que o plano tinha previsto:
+
+| forma | diálogos | tratamento |
+|---|---|---|
+| **cartões** (`<button>` por linha) | Alias, Auto-Join, Auto-Respond, Highlight Words, Notify List | `ActionList`: o toque abre o formulário ao lado, `Remove` é `<:action>` |
+| **tabelas** (colunas alinhadas, prefixo `ab-`) | Address Book, Ignore List, Nick Colors | coluna de ação como no Channel Central — **próxima sessão** |
+
+Este bloco entrega os **cinco de cartões**. As três tabelas ficam para a próxima:
+compartilham CSS e migram juntas, e Nick Colors ainda precisa da spec Playwright
+que o plano exige escrever antes de tocar no diálogo.
+
+### Aprendizados
+
+21. **Um `<:control>` entrou no componente por necessidade real.** A linha do
+    Auto-Respond carrega um checkbox On/Off. Ela era um `<div role="button">`, o
+    que escondia o problema; como `<button>` de verdade, um checkbox dentro é
+    HTML inválido. `<:control>` renderiza conteúdo interativo como irmão do
+    press — mesma razão que já valia para `<:action>`.
+22. **O nome da lista não precisa de tradução nova.** Os cinco `aria-label` que
+    escrevi ("Aliases", "Notify entries", …) voltaram errados do motor: pt_BR
+    "Outros nomes", alemão "Anmeldungen", polonês "Pseudonimy". Cada diálogo já
+    tem um título traduzido e revisado — "Alias Editor", "Notify List",
+    "Auto-Join" — e usá-lo como rótulo da lista é ao mesmo tempo mais correto e
+    zero tradução nova. Cinco msgid a menos.
+23. **`phx-value-*` chega como string, e `==` não avisa.** `autorespond_dialog_delete`
+    passou a receber a posição da linha; `remove_entry/2` compara com `==` contra
+    um inteiro, então a regra simplesmente sobrevivia em silêncio. **O `make ci`
+    passou verde** — quem pegou foi o Playwright. Consertado no evento e coberto
+    por um teste de unidade que afirma o contrato dos dois lados.
+24. **Uma spec descartável que abre cinco diálogos em sequência não funciona.**
+    O diálogo anterior fica por cima do menu. Um teste por diálogo.
+
+### Evidência visual
+
+`alias`, `highlight`, `autojoin`, `autorespond`, `notify` — todos com o toque
+abrindo o editor, `Remove` na linha e `Add` no rodapé. No Auto-Respond o checkbox
+On/Off e o `Remove` convivem como irmãos do press.
+
+Pendência estética anotada: em Highlight Words a linha "Own nick" (`hl-own-entry`,
+uma lista à parte, sem ação) ficou com um desenho diferente das linhas migradas.
+Não é regressão — é a vizinhança nova tornando visível uma diferença que já existia.
+
+### Validação
+
+- suíte web inteira: 2340 testes, 0 falhas
+- Playwright: alias (3), autojoin (2), highlights (2), autorespond (3), notify,
+  address-book — 25 no total
+- `make ci` verde

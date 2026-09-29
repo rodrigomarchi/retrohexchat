@@ -106,8 +106,7 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
       click(view, "autojoin_add")
       submit_form(view, "autojoin-add-dialog", %{"channel" => "#ajrem", "key" => ""})
 
-      select_channel(view, "#ajrem")
-      click(view, "autojoin_remove")
+      remove_channel(view, "#ajrem")
 
       html = render(view)
       refute html =~ "#ajrem"
@@ -126,16 +125,16 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
       refute html =~ "s3cret"
     end
 
-    test "Remove stays disabled until a channel is selected", %{conn: conn} do
+    test "every channel row carries its own edit and remove", %{conn: conn} do
       view = connect_user(conn, "E2EAjS#{uid()}")
 
       open_autojoin(view)
       click(view, "autojoin_add")
       submit_form(view, "autojoin-add-dialog", %{"channel" => "#ajsel", "key" => ""})
 
-      assert has_element?(view, ~s([phx-click="autojoin_remove"][disabled]))
-
-      select_channel(view, "#ajsel")
+      # There is nothing to select, and no control waiting for a selection.
+      assert has_element?(view, ~s([phx-click="autojoin_edit"][phx-value-channel="#ajsel"]))
+      assert has_element?(view, ~s([phx-click="autojoin_remove"][phx-value-channel="#ajsel"]))
       refute has_element?(view, ~s([phx-click="autojoin_remove"][disabled]))
     end
   end
@@ -156,9 +155,9 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
     view |> element("[phx-click='#{event}']") |> render_click()
   end
 
-  defp select_channel(view, channel) do
+  defp remove_channel(view, channel) do
     view
-    |> element("[phx-click='autojoin_select'][phx-value-channel='#{channel}']")
+    |> element("[phx-click='autojoin_remove'][phx-value-channel='#{channel}']")
     |> render_click()
   end
 

@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Textarea
@@ -73,7 +74,6 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
           draft_channel={@draft_channel}
           draft_command={@draft_command}
           error_message={@error_message}
-          on_select={@on_select}
           on_toggle={@on_toggle}
           on_add={@on_add}
           on_edit={@on_edit}
@@ -99,7 +99,6 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   attr :draft_channel, :any, default: nil
   attr :draft_command, :any, default: nil
   attr :error_message, :any, default: nil
-  attr :on_select, :any, default: nil
   attr :on_toggle, :any, default: nil
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
@@ -134,47 +133,57 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
                   {dgettext("dialogs", "No auto-respond rules configured. Click Add to create one.")}
                 </div>
 
-                <div
-                  :for={rule <- @rules}
-                  role="button"
-                  tabindex="0"
-                  data-testid="autorespond-rule-row"
-                  data-position={rule.position}
-                  aria-pressed={@selected_position == rule.position}
-                  aria-label={rule_accessible_name(rule)}
-                  class={rule_entry_class(@selected_position == rule.position)}
-                  phx-click={@on_select}
-                  phx-value-position={rule.position}
+                <.action_list
+                  :if={@rules != []}
+                  id={"#{@id}-rules"}
+                  label={dgettext("dialogs", "Auto Respond")}
                 >
-                  <div class="ar-rule-header">
-                    <span class="ar-rule-trigger">{trigger_label(rule_trigger(rule))}</span>
-                    <span class="ar-rule-status">
+                  <.action_row
+                    :for={rule <- @rules}
+                    on_activate={@on_edit}
+                    value={%{"position" => rule.position}}
+                    current={@selected_position == rule.position}
+                    data-testid="autorespond-rule-row"
+                    data-position={rule.position}
+                  >
+                    <:title>{trigger_label(rule_trigger(rule))}</:title>
+                    <:meta>
+                      <code class="ar-rule-command">{Map.get(rule, :command, "")}</code>
+                    </:meta>
+                    <:trailing>
+                      <.action_figure
+                        label={dgettext("dialogs", "Channel")}
+                        value={rule_channel_label(rule)}
+                      />
+                      <.action_figure
+                        label={dgettext("dialogs", "Position")}
+                        value={rule.position}
+                      />
+                    </:trailing>
+                    <:control>
                       <.checkbox
                         value={rule_enabled?(rule)}
                         phx-click={@on_toggle}
                         phx-value-position={rule.position}
+                        aria-label={rule_accessible_name(rule)}
                       />
                       <span>
                         {if rule_enabled?(rule),
                           do: dgettext("dialogs", "On"),
                           else: dgettext("dialogs", "Off")}
                       </span>
-                    </span>
-                  </div>
-
-                  <div class="ar-rule-meta">
-                    <span>
-                      <span class="ar-rule-meta-label">{dgettext("dialogs", "Channel")}</span>
-                      {rule_channel_label(rule)}
-                    </span>
-                    <span>
-                      <span class="ar-rule-meta-label">{dgettext("dialogs", "Position")}</span>
-                      {rule.position}
-                    </span>
-                  </div>
-
-                  <code class="ar-rule-command">{Map.get(rule, :command, "")}</code>
-                </div>
+                    </:control>
+                    <:action
+                      event={@on_delete}
+                      value={%{"position" => rule.position}}
+                      label={dgettext("dialogs", "Remove rule %{position}", position: rule.position)}
+                      variant="destructive"
+                      testid={"autorespond-remove-#{rule.position}"}
+                    >
+                      <Icons.icon_btn_remove class="w-4 h-4" />
+                    </:action>
+                  </.action_row>
+                </.action_list>
               </div>
 
               <div class="ar-action-row flex gap-retro-4">
@@ -186,26 +195,6 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
                 >
                   <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
                   {dgettext("dialogs", "Add")}
-                </.button>
-                <.button
-                  size="sm"
-                  variant="outline"
-                  phx-click={@on_edit}
-                  disabled={@selected_position == nil}
-                  class="ar-action-button"
-                >
-                  <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-                  {dgettext("dialogs", "Edit")}
-                </.button>
-                <.button
-                  size="sm"
-                  variant="outline"
-                  phx-click={@on_delete}
-                  disabled={@selected_position == nil}
-                  class="ar-action-button"
-                >
-                  <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-                  {dgettext("dialogs", "Remove")}
                 </.button>
               </div>
             </div>
@@ -348,7 +337,4 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   defp rule_accessible_name(rule) do
     "#{trigger_label(rule_trigger(rule))} #{rule_channel_label(rule)} #{Map.get(rule, :command, "")}"
   end
-
-  defp rule_entry_class(true), do: "ar-rule-entry bg-selection-bg text-selection-fg"
-  defp rule_entry_class(false), do: "ar-rule-entry"
 end
