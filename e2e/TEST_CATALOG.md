@@ -136,7 +136,7 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 - **235 spec files** under `e2e/tests/`.
 - **493 Playwright `test()` cases**.
-- **488 documented flows**, 487 done, 1 not done.
+- **489 documented flows**, 488 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -592,6 +592,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | U4 | Sound mute/status-bar setting and Sound Settings preview stay in sync across rerenders/reconnect (features P2) | `tests/chat-sound-settings.spec.ts` | done |
 | U5 | Flood Protection save/reset/cancel paths update effective paste flood behavior only when intended (features P1) | `tests/chat-flood-protection.spec.ts` | done |
 | U6 | Perform window edit/move/toggle-enabled paths mirror slash command behavior and reconnect execution (features P1) | `tests/chat-perform-dialog.spec.ts` | done |
+| U6b | Removing the last row keeps the keyboard inside the list instead of dropping it on the page | `tests/chat-perform-dialog.spec.ts` | done |
 | U7 | Auto-Join window add/edit/remove paths mirror slash command behavior and reconnect execution (features P1) | `tests/chat-perform-dialog.spec.ts` | done |
 | U8 | Autorespond dialog add/edit/toggle/delete validates fields and mirrors slash list output (features P1) | `tests/chat-autorespond-dialog.spec.ts` | done |
 | U9 | Custom Menus dialog validates duplicate labels, empty command, command chaining, and tab-specific menu types (features P1) | `tests/chat-custom-menus-dialog.spec.ts` | done |

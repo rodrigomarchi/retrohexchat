@@ -1,3 +1,4 @@
+import ActionListFocusHook from "./ui/action_list_focus_hook";
 import CharCounterHook from "./ui/char_counter_hook";
 import ClockHook from "./connection/clock_hook";
 import ConnectFormHook from "./connection/connect_form_hook";
@@ -34,6 +35,7 @@ import SurfacePresenceHook from "./surfaces/surface_presence_hook";
 import SurfaceTabLinkHook from "./surfaces/surface_tab_link_hook";
 
 export const criticalHooks = {
+  ActionListFocusHook: ActionListFocusHook,
   CharCounterHook: CharCounterHook,
   ClockHook: ClockHook,
   ConnectFormHook: ConnectFormHook,

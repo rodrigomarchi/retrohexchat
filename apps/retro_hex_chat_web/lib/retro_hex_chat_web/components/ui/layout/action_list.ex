@@ -93,6 +93,10 @@ defmodule RetroHexChatWeb.Components.UI.ActionList do
 
   `label` names the list for assistive technology; it is required because a
   bare list of rows in a dialog that holds more than one list is ambiguous.
+
+  It is focusable but not tabbable (`tabindex="-1"`) so that
+  `ActionListFocusHook` has somewhere to put focus when a row's own remove
+  button leaves with the row — the browser would otherwise drop it on `<body>`.
   """
   attr :id, :string, required: true
   attr :label, :string, required: true, doc: "accessible name for the list"
@@ -104,7 +108,14 @@ defmodule RetroHexChatWeb.Components.UI.ActionList do
   @spec action_list(map()) :: Phoenix.LiveView.Rendered.t()
   def action_list(assigns) do
     ~H"""
-    <ul id={@id} class={classes(["action-list", @class])} aria-label={@label} {@rest}>
+    <ul
+      id={@id}
+      class={classes(["action-list", @class])}
+      aria-label={@label}
+      tabindex="-1"
+      phx-hook="ActionListFocusHook"
+      {@rest}
+    >
       {render_slot(@inner_block)}
     </ul>
     """

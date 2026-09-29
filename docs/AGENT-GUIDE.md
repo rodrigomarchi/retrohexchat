@@ -387,6 +387,11 @@ get fresh timers with the *remaining* duration.
   at nothing. Send the identity as `phx-value-*`. It arrives as a **string** — parse it at the edge
   when the domain keys on an integer, because `==` against the wrong type matches nothing and
   fails silently. This bit three times during the list migration and never once failed `make ci`.
+- **A control that can remove itself must not take the keyboard with it.** A row's remove button
+  leaves with its row, and the browser drops focus on `<body>` when the focused element stops
+  existing — a reader tidying a list from the bottom loses their place on every press. The list is
+  `tabindex="-1"` and `ActionListFocusHook` catches only that fall, so reordering with the arrow
+  buttons (whose row survives) keeps its focus untouched.
 - **A label with a colour of its own must follow the selected row.** `.action-list__row--current`
   paints white; every `*-label` inside a row that sets its own colour needs a `color: inherit`
   under that selector or it goes unreadable on the selection blue.

@@ -2,6 +2,7 @@
  * @section U - Dialog CRUD And Settings Depth
  * @flow U6 [done] Perform window edit/move/toggle-enabled paths mirror slash command behavior and reconnect execution (features P1)
  * @flow U7 [done] Auto-Join window add/edit/remove paths mirror slash command behavior and reconnect execution (features P1)
+ * @flow U6b [done] Removing the last row keeps the keyboard inside the list instead of dropping it on the page
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -64,9 +65,29 @@ test.describe("Perform dialog", () => {
 
     await chat.editPerformCommand(firstCommand, editedCommand);
     await chat.movePerformCommandUp(movedCommand);
+
+    // Reordering must not cost the arrow its focus: the row stays, so the
+    // browser has somewhere real to leave it.
+    await expect(
+      page.locator('[data-testid^="perform-move-up-"]:focus'),
+    ).toHaveCount(1);
+
     await expect(chat.performEnabledCheckbox()).toBeChecked();
     await chat.performEnabledCheckbox().click();
     await expect(chat.performEnabledCheckbox()).not.toBeChecked();
+    // The remove button leaves with the row it removes. When nothing takes its
+    // index — the last row — the browser drops focus on the page body unless
+    // the list catches it, and a reader tidying a list from the bottom loses
+    // their place on every press. Added and removed here so the command list
+    // below is the one the rest of this test is about.
+    const rows = page.locator(".action-list__row");
+    await chat.addPerformCommand(`/join ${uniqueChannel("pffocus")}`);
+    const last = (await rows.count()) - 1;
+    await page.getByTestId(`perform-remove-${last}`).focus();
+    await page.getByTestId(`perform-remove-${last}`).click();
+    await expect(rows).toHaveCount(last);
+    await expect(page.locator(".action-list:focus")).toHaveCount(1);
+
     await chat.closePerformDialog();
 
     await chat.sendMessage("/clear");
