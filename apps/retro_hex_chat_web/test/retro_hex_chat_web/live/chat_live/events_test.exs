@@ -37,6 +37,22 @@ defmodule RetroHexChatWeb.ChatLive.EventsTest do
     assert render(ctx.view) =~ "event-card-#{event.id}"
   end
 
+  # The room, not just the person who typed it. The card hangs off a message the
+  # channel broadcasts, and the calendar entry only learns which message that
+  # was after the broadcast has gone out — so a second reader decorates the line
+  # before there is anything to decorate it with.
+  test "a second person in the room gets the card too", ctx do
+    {:ok, guest_view, _html} =
+      ctx.conn |> chat_conn(ctx.guest, pre_identified: true) |> live(~p"/chat")
+
+    submit_command_sync(guest_view, "/join #{ctx.channel}")
+
+    submit_command_sync(ctx.view, "/event 2h Tuesday tournament")
+    [event] = ScheduledEvents.list(ctx.channel).items
+
+    assert render(guest_view) =~ "event-card-#{event.id}"
+  end
+
   test "bare /event opens the window on this channel", ctx do
     submit_command_sync(ctx.view, "/event 2h Tuesday tournament")
     submit_command_sync(ctx.view, "/event")

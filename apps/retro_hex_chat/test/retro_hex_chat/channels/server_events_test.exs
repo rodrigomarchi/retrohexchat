@@ -44,6 +44,30 @@ defmodule RetroHexChat.Channels.ServerEventsTest do
     assert_receive {:event_scheduled, ^card}
   end
 
+  # The room decorates the announcement as it arrives, and there is no second
+  # chance: the refresh that follows only lands on a row already on screen, so a
+  # reader who decorates a millisecond too early gets no card and is never told
+  # again. The event therefore has to know which line announced it *before* that
+  # line is broadcast.
+  test "the line is already attached to the event when the room hears it", ctx do
+    # Scheduled from somewhere else so this process is a subscriber like any
+    # reader: it is handed the line while the channel is still working, which is
+    # exactly the moment a reader decorates it.
+    parent = self()
+
+    # `async: false` here, so the sandbox connection is shared and the spawned
+    # process can use it.
+    spawn_link(fn ->
+      send(parent, {:scheduled, Server.schedule_event(ctx.channel, ctx.host, attrs())})
+    end)
+
+    assert_receive %{event: "new_message", payload: %{id: message_id}}
+    cards = ScheduledEvents.cards_for_messages([message_id])
+
+    assert_receive {:scheduled, {:ok, _card}}
+    assert map_size(cards) == 1
+  end
+
   # The line is what the card hangs off: without it the conversation shows
   # nothing at all about an event that was just created.
   test "the room gets a line, and the event points at it", ctx do

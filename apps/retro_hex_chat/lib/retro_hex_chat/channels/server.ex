@@ -1025,6 +1025,13 @@ defmodule RetroHexChat.Channels.Server do
         attachments: Attachments.payloads(msg)
       }
 
+      # Whatever has to be true about this message before the room hears about
+      # it happens here. A card that hangs off a line cannot be attached after
+      # the broadcast: every reader decorates the line as it arrives, and the
+      # one who decorates it a millisecond too early gets no card and is never
+      # told again.
+      run_before_broadcast(opts, id)
+
       broadcast(state.name, %{event: "new_message", payload: payload})
       Notifications.notify_channel_message(payload)
 
@@ -1033,6 +1040,16 @@ defmodule RetroHexChat.Channels.Server do
       {:error, _} = err ->
         reply(err, state)
     end
+  end
+
+  @spec run_before_broadcast(keyword(), integer()) :: :ok
+  defp run_before_broadcast(opts, message_id) do
+    case Keyword.get(opts, :before_broadcast) do
+      fun when is_function(fun, 1) -> _ignored = fun.(message_id)
+      _none -> :ok
+    end
+
+    :ok
   end
 
   defp extract_ban_operations(mode_string, params) do
@@ -1570,12 +1587,19 @@ defmodule RetroHexChat.Channels.Server do
         title: event.title
       )
 
-    case do_handle_send_message(nickname, content, :system, [], state) do
-      {:reply, {:ok, message_id}, _state} when is_integer(message_id) ->
-        case ScheduledEvents.attach_announcement(event, message_id) do
-          {:ok, attached} -> attached
-          {:error, _reason} -> event
-        end
+    # The line is attached to the event before the room hears it, so a second
+    # reader decorating the arrival already finds the card. Re-read afterwards
+    # rather than smuggle the updated struct back out of the callback: one query
+    # against a row that was just written, and no machinery.
+    opts = [
+      before_broadcast: fn message_id ->
+        ScheduledEvents.attach_announcement(event, message_id)
+      end
+    ]
+
+    case do_handle_send_message(nickname, content, :system, opts, state) do
+      {:reply, {:ok, id}, _state} when is_integer(id) ->
+        ScheduledEvents.get(event.id) || event
 
       _other ->
         event
