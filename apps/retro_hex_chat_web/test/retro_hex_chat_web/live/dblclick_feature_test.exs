@@ -34,7 +34,10 @@ defmodule RetroHexChatWeb.DblclickFeatureTest do
       assert html =~ nick2
     end
 
-    test "channel_dblclick joins a new channel", %{conn: conn, channel: channel} do
+    # Going to a channel you are not in is joining it, on the one click every
+    # row answers. The double click that used to carry this was a second gesture
+    # for the same intention, and no finger could perform it.
+    test "switch_channel joins a channel you are not in", %{conn: conn, channel: channel} do
       nick = "DEJ#{uid()}"
       target = "#dbjt-#{uid()}"
       ensure_channel(target)
@@ -42,7 +45,7 @@ defmodule RetroHexChatWeb.DblclickFeatureTest do
       {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
-      render_click(view, "channel_dblclick", %{"channel" => target})
+      render_click(view, "switch_channel", %{"channel" => target})
       html = render(view)
 
       assert html =~ target

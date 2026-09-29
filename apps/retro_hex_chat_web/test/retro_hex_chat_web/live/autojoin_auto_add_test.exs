@@ -154,4 +154,77 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       assert {:error, :not_found} = AutoJoinList.load(nick)
     end
   end
+
+  # ── A refused join is not a join ─────────────────────────
+
+  describe "a channel that refused you never reaches the list" do
+    test "an invite-only room that turned you away stays off the list", %{conn: conn} do
+      owner = "AJO#{uid()}"
+      outsider = "AJK#{uid()}"
+      register_and_identify(owner)
+      register_and_identify(outsider)
+      channel = "#test-ajk-#{uid()}"
+
+      {:ok, owner_view, _} = live(chat_conn(conn, owner, pre_identified: true), "/chat")
+      submit_command_sync(owner_view, "/join #{channel}")
+      submit_command_sync(owner_view, "/mode +i")
+
+      {:ok, view, _} = live(chat_conn(conn, outsider, pre_identified: true), "/chat")
+      submit_command_sync(view, "/join #{channel}")
+      PreferencePersistence.apply_pending(outsider, "autojoin_list")
+
+      refute channel in :sys.get_state(view.pid).socket.assigns.session.channels,
+             "the room was supposed to refuse the join"
+
+      refute channel in autojoin_names(outsider),
+             "a room that refused the join must not be on the list it is joined from"
+    end
+
+    test "leaving from the row's menu takes it off the list, like the command", %{conn: conn} do
+      nick = "AJM#{uid()}"
+      register_and_identify(nick)
+      channel = "#test-ajm-#{uid()}"
+
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      submit_command_sync(view, "/join #{channel}")
+      apply_autojoin(nick)
+      assert channel in autojoin_names(nick)
+
+      # Not the command: the menu item, which reaches part_channel/3 directly.
+      render_click(view, "ctx_conversations_leave", %{"channel" => channel})
+      PreferencePersistence.apply_pending(nick, "autojoin_list")
+
+      refute channel in autojoin_names(nick),
+             "every way of leaving has to mean the same thing"
+    end
+
+    test "being kicked takes the channel back off the list", %{conn: conn} do
+      nick = "AJX#{uid()}"
+      register_and_identify(nick)
+      channel = "#test-ajx-#{uid()}"
+
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      submit_command_sync(view, "/join #{channel}")
+      apply_autojoin(nick)
+      assert channel in autojoin_names(nick)
+
+      send(
+        view.pid,
+        {:user_kicked, %{operator: "op", target: nick, reason: "bye", channel: channel}}
+      )
+
+      render(view)
+      PreferencePersistence.apply_pending(nick, "autojoin_list")
+
+      refute channel in autojoin_names(nick),
+             "a room that put you out must not be walked back into on every connect"
+    end
+  end
+
+  defp autojoin_names(nick) do
+    case AutoJoinList.load(nick) do
+      {:ok, list} -> list |> AutoJoinList.entries() |> Enum.map(& &1.channel_name)
+      {:error, :not_found} -> []
+    end
+  end
 end

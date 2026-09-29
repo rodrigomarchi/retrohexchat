@@ -79,4 +79,34 @@ describe("lib/menu", () => {
       expect(el.style.top).toBe("100px");
     });
   });
+
+  describe("sheet presentation", () => {
+    function sheetEl() {
+      const el = document.createElement("div");
+      el.dataset.sheet = "true";
+      el.style.left = "500px";
+      el.style.top = "700px";
+      el.getBoundingClientRect = () => ({ right: 9999, bottom: 9999, left: 500, top: 700 });
+      return el;
+    }
+
+    it("leaves a sheet alone: CSS pins it to the bottom edge", () => {
+      window.matchMedia = () => ({ matches: true });
+      const el = sheetEl();
+
+      repositionMenu(el);
+
+      expect(el.style.left).toBe("500px");
+      expect(el.style.top).toBe("700px");
+    });
+
+    it("still clamps the same menu where it is not a sheet", () => {
+      window.matchMedia = () => ({ matches: false });
+      const el = sheetEl();
+
+      repositionMenu(el);
+
+      expect(el.style.left).not.toBe("500px");
+    });
+  });
 });

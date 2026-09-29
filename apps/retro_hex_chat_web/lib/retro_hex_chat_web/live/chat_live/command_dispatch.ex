@@ -340,10 +340,10 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     |> maybe_auto_add_to_autojoin(channel_name, nil)
   end
 
+  # Leaving takes the room off the auto-join list — `part_channel/3` does that
+  # now, for every way of leaving rather than for this one.
   defp handle_dispatch_result(socket, _session, {:ok, :part, channel_name, msg}) do
-    socket
-    |> part_channel(channel_name, msg)
-    |> maybe_auto_remove_from_autojoin(channel_name)
+    part_channel(socket, channel_name, msg)
   end
 
   defp handle_dispatch_result(
@@ -480,10 +480,16 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   # ── Private: auto-join management ──────────────────────────
 
+  # Only rooms you actually got into. This ran on the attempt rather than on the
+  # result, so a channel that refused you — invite-only, wrong key, full, banned
+  # — went onto the list anyway, and every connect after that replayed the same
+  # refusal. It stayed invisible while the list had a pane of its own that
+  # nothing asserted on; it is the channel list now, and a room you were never
+  # in has no business in it.
   defp maybe_auto_add_to_autojoin(socket, channel_name, key) do
     session = socket.assigns.session
 
-    if session.identified and channel_name != "#lobby" do
+    if session.identified and channel_name != "#lobby" and channel_name in session.channels do
       case AutoJoinList.add_entry(session.autojoin_list, channel_name, key) do
         {:ok, new_list} ->
           new_session = Session.set_autojoin_list(session, new_list)
@@ -503,26 +509,6 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
           )
 
         {:error, :duplicate} ->
-          socket
-      end
-    else
-      socket
-    end
-  end
-
-  defp maybe_auto_remove_from_autojoin(socket, channel_name) do
-    session = socket.assigns.session
-
-    if session.identified do
-      case AutoJoinList.remove_entry(session.autojoin_list, channel_name) do
-        {:ok, new_list} ->
-          new_session = Session.set_autojoin_list(session, new_list)
-
-          socket
-          |> assign(session: new_session)
-          |> maybe_persist_autojoin_list(new_session)
-
-        {:error, :not_found} ->
           socket
       end
     else

@@ -53,16 +53,61 @@ describe("ConversationsHook", () => {
     expect(hook.pushEvent).not.toHaveBeenCalled();
   });
 
-  it("pushes nicklist_dblclick with nick on double-click", () => {
+  // A single click already opens the conversation, so a second one had nothing
+  // left to do — and a double click is a gesture no finger performs. The
+  // nicklist keeps its own, on its own rows, in its own hook.
+  it("ignores a double-click: one click is the whole grammar", () => {
+    hook.pushEvent.mockClear();
     const li = hook.el.querySelector("li[data-nick='Alice']");
     li.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
-    expect(hook.pushEvent).toHaveBeenCalledWith("nicklist_dblclick", { nick: "Alice" });
+    expect(hook.pushEvent).not.toHaveBeenCalled();
   });
 
-  it("does not push dblclick when double-clicking outside a nick", () => {
-    hook.pushEvent.mockClear();
-    hook.el.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
-    expect(hook.pushEvent).not.toHaveBeenCalled();
+  describe("the row menu button", () => {
+    function menuButtonIn(selector) {
+      const row = hook.el.querySelector(selector);
+      const button = document.createElement("button");
+      button.setAttribute("data-conversations-menu", "");
+      button.getBoundingClientRect = () => ({ left: 12, bottom: 34 });
+      row.appendChild(button);
+      return button;
+    }
+
+    it("opens the channel menu at the button, not at the pointer", () => {
+      hook.pushEvent.mockClear();
+      menuButtonIn("[data-channel='#general']").dispatchEvent(
+        new MouseEvent("click", { bubbles: true, cancelable: true }),
+      );
+
+      expect(hook.pushEvent).toHaveBeenCalledWith("channel_right_click", {
+        channel: "#general",
+        x: 12,
+        y: 34,
+      });
+    });
+
+    it("opens the private conversation menu the same way", () => {
+      hook.pushEvent.mockClear();
+      menuButtonIn("li[data-nick='Alice']").dispatchEvent(
+        new MouseEvent("click", { bubbles: true, cancelable: true }),
+      );
+
+      expect(hook.pushEvent).toHaveBeenCalledWith("pm_right_click", {
+        nick: "Alice",
+        x: 12,
+        y: 34,
+      });
+    });
+
+    it("keeps the click off the row, so the menu never navigates", () => {
+      const event = new MouseEvent("click", { bubbles: true, cancelable: true });
+      const stopped = vi.spyOn(event, "stopPropagation");
+
+      menuButtonIn("[data-channel='#general']").dispatchEvent(event);
+
+      expect(stopped).toHaveBeenCalled();
+      expect(event.defaultPrevented).toBe(true);
+    });
   });
 
   it("opens the channel context menu from a touch long press", () => {

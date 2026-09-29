@@ -22,9 +22,15 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
   """
   use RetroHexChatWeb.Component
 
+  alias RetroHexChat.Chat.UnreadTracker
   alias RetroHexChatWeb.Icons
 
   attr :conversations_open, :boolean, default: false
+
+  attr :conversations_unread, :integer,
+    default: 0,
+    doc: "Unread across every conversation; the drawer's own rail is not rendered on a phone"
+
   attr :nicklist_open, :boolean, default: false
   attr :show_sidebar_toggles, :boolean, default: true
   attr :sidebar_toggles_class, :any, default: nil
@@ -63,9 +69,13 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
         class={classes(["flex shrink-0 items-center gap-1", @sidebar_toggles_class])}
         data-testid="conversation-toolbar-sidebar-toggles"
       >
+        <%!-- The drawer's rail carries this count on a desktop, and a phone has
+              no rail: below the stacking breakpoint this button is the only
+              thing left that can say another conversation is waiting. --%>
         <.action_button
           event="toggle_conversations"
           active={@conversations_open}
+          badge={@conversations_unread}
           text={dgettext("chat", "Conversations")}
           label={dgettext("chat", "Show conversations")}
           testid="conversation-toolbar-conversations"
@@ -147,6 +157,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
   attr :active, :boolean, default: false
   attr :text, :string, required: true, doc: "Visible label — also the accessible name"
   attr :label, :string, required: true, doc: "Longer description for the tooltip"
+  attr :badge, :integer, default: 0, doc: "Count to ride on the glyph; 0 draws nothing"
   attr :testid, :string, required: true
   attr :rest, :global
   slot :inner_block, required: true
@@ -156,20 +167,41 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
     <button
       type="button"
       class={[
-        "conversation-toolbar-button bg-surface inline-flex shrink-0 items-center justify-center",
+        "conversation-toolbar-button relative bg-surface inline-flex shrink-0 items-center justify-center",
         "focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-black",
         "active:shadow-retro-sunken",
         if(@active, do: "shadow-retro-sunken bg-hover-bg", else: "shadow-retro-raised")
       ]}
       phx-click={@event}
-      title={@label}
+      title={describe(@label, @badge)}
       aria-pressed={to_string(@active)}
       data-testid={@testid}
       {@rest}
     >
       {render_slot(@inner_block)}
       <span class="conversation-toolbar-button__text">{@text}</span>
+      <span
+        :if={@badge > 0}
+        class="conversation-toolbar-button__badge"
+        data-testid={"#{@testid}-badge"}
+        aria-hidden="true"
+      >
+        {UnreadTracker.display_count(@badge)}
+      </span>
     </button>
     """
   end
+
+  # The count says itself in the tooltip rather than in an aria-label, because
+  # the visible text is this button's accessible name and an aria-label would
+  # take that job away from it. Where the text is hidden — the phone width where
+  # the badge exists at all — the title is what a screen reader falls back to,
+  # so the count reaches both readings without a second name competing.
+  defp describe(label, badge) when is_integer(badge) and badge > 0 do
+    label <>
+      " — " <>
+      dngettext("chat", "%{count} unread", "%{count} unread", badge, count: badge)
+  end
+
+  defp describe(label, _badge), do: label
 end

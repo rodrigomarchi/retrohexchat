@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Departure
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.{Queries, UnreadTracker}
+  alias RetroHexChat.Chat.{AutoJoinList, Queries, UnreadTracker}
   alias RetroHexChat.Page
   alias RetroHexChat.Topics
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChatWeb.ChatLive.GroupCallEvents
   alias RetroHexChatWeb.ChatLive.GroupCallReadModel
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
+  alias RetroHexChatWeb.ChatLive.Helpers.Persistence
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
 
@@ -140,7 +141,16 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, Topics.channel_calls(channel_name))
     PresenceHelpers.safe_untrack_user("channel:#{channel_name}", session.nickname)
-    new_session = Session.remove_channel(session, channel_name)
+
+    # Leaving takes the room off the auto-join list, and it does so here rather
+    # than at one caller, because there is more than one way to leave: the
+    # command, the row's menu, the tab's close button. Wired at the command
+    # only, the other two left a room you had walked out of still waiting to be
+    # walked back into on the next connect.
+    new_session =
+      session
+      |> Session.remove_channel(channel_name)
+      |> drop_from_autojoin(channel_name)
 
     unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, channel_name)
     highlight = MapSet.delete(socket.assigns.highlight_channels, channel_name)
@@ -153,6 +163,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         highlight_channels: highlight,
         flash_channels: flash
       )
+      |> Persistence.maybe_persist_autojoin_list(new_session)
       |> ConversationsReadModel.drop_channel_activity(channel_name)
       |> GroupCallReadModel.mark_inactive(channel_name)
 
@@ -175,15 +186,35 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
   @spec part_channel_after_kick(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
+  # Being removed leaves the auto-join list the way leaving does. The list says
+  # which rooms to walk into on connect, and a room that just put you out is not
+  # one of them — left on it, a ban replays its refusal every single connect.
+  # It costs nothing to be wrong about: rejoining puts the room back.
+  defp drop_from_autojoin(session, channel_name) do
+    if session.identified do
+      case AutoJoinList.remove_entry(session.autojoin_list, channel_name) do
+        {:ok, list} -> Session.set_autojoin_list(session, list)
+        {:error, :not_found} -> session
+      end
+    else
+      session
+    end
+  end
+
   def part_channel_after_kick(socket, channel_name) do
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, Topics.channel_calls(channel_name))
     PresenceHelpers.safe_untrack_user("channel:#{channel_name}", socket.assigns.session.nickname)
-    new_session = Session.remove_channel(socket.assigns.session, channel_name)
+
+    new_session =
+      socket.assigns.session
+      |> Session.remove_channel(channel_name)
+      |> drop_from_autojoin(channel_name)
 
     socket =
       socket
       |> assign(session: new_session)
+      |> Persistence.maybe_persist_autojoin_list(new_session)
       |> ConversationsReadModel.drop_channel_activity(channel_name)
       |> GroupCallReadModel.mark_inactive(channel_name)
 

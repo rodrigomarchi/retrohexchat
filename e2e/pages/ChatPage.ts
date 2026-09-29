@@ -943,18 +943,31 @@ export class ChatPage {
     await expect(this.tab(name)).toHaveAttribute("aria-selected", "true");
   }
 
+  // "Not open any more", which the sidebar can say two ways. A room nothing
+  // holds loses its row outright — that is a guest, a room you were put out of,
+  // and a room that refused you. A room still on the auto-join list keeps its
+  // row, hollow, because you walk back into it on the next connect and leaving
+  // that out would be the sidebar lying. Both are this: no tab, nothing joined.
   async expectTabHidden(name: string) {
-    await expect(this.conversationRow(name)).toHaveCount(0);
+    await expect(this.tab(name)).toHaveCount(0);
+
+    const row = this.conversationRow(name);
+    if ((await row.count()) > 0) {
+      await expect(row).toHaveAttribute("data-joined", "false");
+    }
   }
 
   // A PM tab is a view of a conversation, not the conversation. Closing it
-  // takes the tab and the "open" badge off the sidebar row; the row itself
+  // takes the tab away and empties the sidebar row's signal; the row itself
   // stays, because the sidebar lists recent private messages and that is how
   // the conversation is reopened. Asserting the row is gone is asserting the
   // product forgot somebody wrote to you.
   async expectPmTabClosed(nick: string) {
     await expect(this.tab(nick)).toHaveCount(0);
-    await expect(this.page.getByTestId(`pm-open-state-${nick}`)).toHaveCount(0);
+    await expect(this.conversationRow(nick)).toHaveAttribute(
+      "data-joined",
+      "false",
+    );
   }
 
   // Unread is a sidebar signal: the bar only shows it for the focused

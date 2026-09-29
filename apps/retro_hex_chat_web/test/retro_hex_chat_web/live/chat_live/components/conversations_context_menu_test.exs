@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsContextMenuTest do
   import Phoenix.LiveViewTest
 
   alias RetroHexChat.Accounts.Session
+  alias RetroHexChat.Chat.AutoJoinList
   alias RetroHexChatWeb.ChatLive.Components.ConversationsContextMenu
 
   @moduletag :unit
@@ -89,5 +90,84 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsContextMenuTest do
       })
 
     assert html =~ "bob"
+  end
+
+  describe "join on connect" do
+    defp channel_menu(session) do
+      menu(%{visible: true, type: :channel, channel: "#elixir", session: session})
+    end
+
+    test "is offered on a channel and never on a private conversation" do
+      session = Session.new("alice")
+
+      assert channel_menu(session) =~ ~s(data-testid="ctx-toggle-autojoin")
+
+      pm = menu(%{visible: true, type: :pm, nick: "bob", session: session})
+      refute pm =~ ~s(data-testid="ctx-toggle-autojoin")
+    end
+
+    test "reads the state off the account's list, checked and unchecked" do
+      off = "alice" |> Session.new() |> channel_menu()
+
+      {:ok, list} = AutoJoinList.add_entry(AutoJoinList.new(), "#elixir")
+      on = "alice" |> Session.new() |> Session.set_autojoin_list(list) |> channel_menu()
+
+      assert [item] =
+               off
+               |> Floki.parse_document!()
+               |> Floki.find(~s([data-testid="ctx-toggle-autojoin"]))
+
+      assert Floki.attribute(item, "aria-checked") == ["false"]
+
+      assert [item] =
+               on
+               |> Floki.parse_document!()
+               |> Floki.find(~s([data-testid="ctx-toggle-autojoin"]))
+
+      assert Floki.attribute(item, "aria-checked") == ["true"]
+    end
+
+    test "matches the channel regardless of case, the way the list itself does" do
+      {:ok, list} = AutoJoinList.add_entry(AutoJoinList.new(), "#ELIXIR")
+      html = "alice" |> Session.new() |> Session.set_autojoin_list(list) |> channel_menu()
+
+      assert [item] =
+               html
+               |> Floki.parse_document!()
+               |> Floki.find(~s([data-testid="ctx-toggle-autojoin"]))
+
+      assert Floki.attribute(item, "aria-checked") == ["true"]
+    end
+  end
+
+  # Same menu, same items, a frame a thumb can reach. The desktop keeps the
+  # pointer-anchored placement it always had; the sheet is what the CSS makes
+  # of it below the stacking breakpoint.
+  test "opts into the bottom-sheet presentation and names what it is about" do
+    html =
+      menu(%{visible: true, type: :channel, channel: "#lobby", session: Session.new("alice")})
+
+    doc = Floki.parse_document!(html)
+
+    assert [menu_el] =
+             Floki.find(doc, ~s([data-testid="context-menu-conversations-context-menu"]))
+
+    assert Floki.attribute(menu_el, "data-sheet") == ["true"]
+    assert Floki.attribute(menu_el, "class") |> to_string() =~ "context-menu--sheet"
+    assert [title] = Floki.find(menu_el, ".context-menu__sheet-title")
+    assert Floki.text(title) =~ "#lobby"
+
+    # Dismissal is a target of its own: a sheet has no click-away area to aim at.
+    assert [dismiss] = Floki.find(menu_el, ".context-menu__sheet-dismiss")
+    assert Floki.attribute(dismiss, "phx-click") == ["close_conversations_context_menu"]
+  end
+
+  test "a private conversation's sheet is named by the nickname" do
+    html = menu(%{visible: true, type: :pm, nick: "bob", session: Session.new("alice")})
+
+    assert [title] =
+             html |> Floki.parse_document!() |> Floki.find(".context-menu__sheet-title")
+
+    assert Floki.text(title) =~ "bob"
   end
 end

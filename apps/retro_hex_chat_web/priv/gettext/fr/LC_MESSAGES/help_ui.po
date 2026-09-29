@@ -11,11 +11,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
-#, elixir-autogen, elixir-format
-msgid ". User counts appear next to all channels."
-msgstr ". Le nombre d'utilisateurs apparaît à côté de tous les canaux."
-
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "/join"
@@ -300,11 +295,6 @@ msgstr "Erreurs :"
 msgid "Every"
 msgstr "Chaque"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:43
-#, elixir-autogen, elixir-format
-msgid "Features"
-msgstr "Caractéristiques"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:58
 #, elixir-autogen, elixir-format
@@ -337,11 +327,6 @@ msgstr "Vert, audacieux. Une modération limitée."
 #, elixir-autogen, elixir-format
 msgid "Half-Ops (%):"
 msgstr "Demi-option (%):"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "Header"
-msgstr "En-tête"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:193
@@ -565,7 +550,7 @@ msgstr "Rechercher"
 msgid "Search Navigation"
 msgstr "Navigation de recherche"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Sections"
 msgstr "Sections"
@@ -771,11 +756,6 @@ msgstr "Aperçu de l'AE"
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
 msgstr "Collecteur d'URL"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:74
-#, elixir-autogen, elixir-format
-msgid "User Interactions"
-msgstr "Interactions avec les utilisateurs"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:99
 #: lib/retro_hex_chat_web/controllers/help_content/ui_install_app.html.heex:40
@@ -1869,70 +1849,22 @@ msgstr ""
 "— Certaines listes sont plafonnées plutôt que paginées, et le disent. Un tel"
 " décompte signifie que la liste à l'écran n'est pas la liste entière."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "- PM conversations restored from the current session or account history"
 msgstr ""
 "- conversations PM restaurées à partir de l'historique de la session ou du "
 "compte en cours"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "- Saved channels that will be joined automatically on connect"
-msgstr ""
-"- Enregistré les canaux qui seront automatiquement connectés à la connexion"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:48
-#, elixir-autogen, elixir-format
-msgid ". Rows with highlights"
-msgstr ". Lignes avec des points forts"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "AUTO-JOIN"
-msgstr "AUTO-JOIN"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:60
-#, elixir-autogen, elixir-format
-msgid "Auto-Join"
-msgstr "Intégration automatique"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:62
-#, elixir-autogen, elixir-format
-msgid "Auto-Join shows saved channels from your account auto-join list. Channels with saved keys show only a +key marker; the key itself is not displayed in the sidebar."
-msgstr ""
-"Auto-Join affiche les canaux enregistrés à partir de votre liste d'accès "
-"automatique de compte. Les canaux avec les clés enregistrées n'affichent "
-"qu'un marqueur +key ; la clé elle-même n'est pas affichée dans la barre "
-"latérale."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "Collapsible sections with clickable headers:"
 msgstr "Sections collapsibles avec en-têtes cliquables :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "OPEN CHANNELS"
-msgstr "CHANNELS OUVERTS"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:53
-#, elixir-autogen, elixir-format
-msgid "Open Channels"
-msgstr "Chaînes ouvertes"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "RECENT PRIVATE MESSAGES"
 msgstr "MESSAGES PRIVÉS RÉCENTS"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:76
-#, elixir-autogen, elixir-format
-msgid "Right-click a channel or PM row for context actions. Double-click a PM row to open or focus that private message tab."
-msgstr ""
-"Faites un clic droit sur un canal ou une ligne de PM pour les actions "
-"contextuelles. Double-cliquez sur une ligne PM pour ouvrir ou focaliser cet "
-"onglet de message privé."
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:28
 #, elixir-autogen, elixir-format
@@ -1940,14 +1872,6 @@ msgid "There is no dedicated keyboard shortcut for /me actions. Type /me directl
 msgstr ""
 "Il n'y a pas de raccourci clavier dédié pour les actions /me. Tapez /me "
 "directement dans une entrée de canal."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "The header shows the title, a close button, and compact counters for open channels, recent PMs, and auto-join entries. You can also toggle the panel via the toolbar."
-msgstr ""
-"L'en-tête affiche le titre, le bouton de fermeture et des compteurs compacts"
-" pour les canaux ouverts, les MP récents et les entrées auto-join. Vous "
-"pouvez aussi basculer le panneau depuis la barre d'outils."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:37
 #, elixir-autogen, elixir-format
@@ -1961,19 +1885,10 @@ msgstr ""
 msgid "POPULAR CHANNELS"
 msgstr "CANAUX POPULAIRES"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Popular Channels"
 msgstr "Canaux populaires"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:69
-#, elixir-autogen, elixir-format
-msgid "Shows active public channels you have not joined yet when the server has rooms to suggest. Click [+] to join a suggestion, or click \"Browse All Channels...\" to open the full channel list dialog."
-msgstr ""
-"Affiche les canaux publics actifs que vous n'avez pas encore rejoints "
-"lorsque le serveur a des salons à suggérer. Cliquez sur [+] pour rejoindre "
-"une suggestion, ou sur \"Parcourir tous les canaux...\" pour ouvrir la liste"
-" complète des canaux."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:29
 #, elixir-autogen, elixir-format
@@ -2697,39 +2612,6 @@ msgstr ""
 msgid "covers all of it."
 msgstr "Couvre tout."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "- Channels you are currently joined to, ordered by recent activity, with user counts, unread badges, and highlight markers"
-msgstr ""
-"- Canaux auxquels vous êtes actuellement joint, commandés par une activité "
-"récente, avec nombre d'utilisateurs, badges non lus et marqueurs de mise en "
-"valeur"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:45
-#, elixir-autogen, elixir-format
-msgid "Click a channel or PM to switch to it. Open channel rows keep unread badges and highlight markers in one place; unread rows appear"
-msgstr ""
-"Cliquez sur un canal ou un PM pour y passer. Les rangées de canaux ouverts "
-"conservent les badges non lus et mettent en évidence les marqueurs en un "
-"seul endroit; les rangées non lues apparaissent"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The Conversations sidebar is the left IRC navigation pane: joined channels ordered by recent activity, recent PMs, auto-join channels, and popular channel suggestions."
-msgstr ""
-"La barre latérale Conversations est le panneau de navigation IRC de gauche :"
-" canaux rejoints commandés par des activités récentes, des PM récentes, des "
-"canaux d'accès automatique et des suggestions de canaux populaires."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:55
-#, elixir-autogen, elixir-format
-msgid "The active channel is highlighted in the Open Channels section. New channel activity moves that channel toward the top without changing the tab order. Closing a channel tab leaves the channel, so joined channels and channel tabs stay aligned."
-msgstr ""
-"Le canal actif est surligné dans la section des canaux ouverts. Nouvelle "
-"activité de canal déplace ce canal vers le haut sans changer l'ordre des "
-"onglets. Fermeture d'un onglet de canal quitte le canal, de sorte que les "
-"canaux joints et les onglets de canal restent alignés."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Games"
@@ -3051,27 +2933,17 @@ msgstr ""
 msgid "Who is here"
 msgstr "Qui est là"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:96
 #, elixir-autogen, elixir-format
 msgid "Channels work the other way: Leave Channel actually leaves, so you stop receiving what is said there until you join again."
 msgstr ""
 "Les canaux fonctionnent à l'inverse : Quitter le canal le quitte vraiment, "
 "vous ne recevez plus ce qui s'y dit jusqu'à ce que vous le rejoigniez."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:81
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "Putting a conversation away"
 msgstr "Ranger une conversation"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:83
-#, elixir-autogen, elixir-format
-msgid "Right-click a private message row and choose Close Conversation to take it off the list. Nothing is deleted: the messages stay, and the next line from that person puts the conversation back. It is not marked read either — if it was in bold when you closed it, it comes back in bold."
-msgstr ""
-"Faites un clic droit sur une ligne de message privé et choisissez Fermer la "
-"conversation pour la retirer de la liste. Rien n'est supprimé : les messages"
-" restent, et la prochaine ligne de cette personne ramène la conversation. "
-"Elle n'est pas non plus marquée comme lue — si elle était en gras à la "
-"fermeture, elle revient en gras."
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:19
 #, elixir-autogen, elixir-format
@@ -3194,7 +3066,10 @@ msgstr "/unpin"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "A Pinned button appears in the conversation toolbar, with the count beside it, and only while the channel is keeping something. An empty window is not worth a button."
-msgstr "Un bouton Épinglés apparaît dans la barre de conversation, avec le compte à côté, et seulement tant que le salon garde quelque chose. Une fenêtre vide ne mérite pas de bouton."
+msgstr ""
+"Un bouton Épinglés apparaît dans la barre de conversation, avec le compte à "
+"côté, et seulement tant que le salon garde quelque chose. Une fenêtre vide "
+"ne mérite pas de bouton."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:7
@@ -3205,7 +3080,10 @@ msgstr "Comment l'ouvrir"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Pressing a row scrolls the conversation to the line it kept, where the message sits in its original place with everything around it. Operators also get an Unpin beside each row."
-msgstr "Appuyer sur une ligne fait défiler la conversation jusqu'au message gardé, à sa place d'origine avec tout ce qui l'entoure. Les opérateurs ont en plus un Détacher à côté de chaque ligne."
+msgstr ""
+"Appuyer sur une ligne fait défiler la conversation jusqu'au message gardé, à"
+" sa place d'origine avec tout ce qui l'entoure. Les opérateurs ont en plus "
+"un Détacher à côté de chaque ligne."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:14
@@ -3216,7 +3094,9 @@ msgstr "Ce que fait une ligne"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "What the channel you are reading is keeping — newest first. A channel keeps up to 50 lines; everything else scrolls away as usual."
-msgstr "Ce que garde le salon que vous lisez, du plus récent au plus ancien. Un salon garde jusqu'à 50 lignes ; le reste défile comme d'habitude."
+msgstr ""
+"Ce que garde le salon que vous lisez, du plus récent au plus ancien. Un "
+"salon garde jusqu'à 50 lignes ; le reste défile comme d'habitude."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:21
 #, elixir-autogen, elixir-format
@@ -3226,12 +3106,19 @@ msgstr "Une ligne supprimée"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Each row says who wrote the line and where, and pressing it switches to that conversation and scrolls to the line. Remove takes the row away without touching the message. The note field beside it is yours: press Enter to keep it."
-msgstr "Chaque ligne indique qui l'a écrite et où ; l'activer bascule vers cette conversation et défile jusqu'au message. Retirer enlève la ligne sans toucher au message. Le champ de note à côté est à vous : appuyez sur Entrée pour le garder."
+msgstr ""
+"Chaque ligne indique qui l'a écrite et où ; l'activer bascule vers cette "
+"conversation et défile jusqu'au message. Retirer enlève la ligne sans "
+"toucher au message. Le champ de note à côté est à vous : appuyez sur Entrée "
+"pour le garder."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Everything you kept for later, newest first, from every conversation you were in — channels and private messages in one list. Nobody else can see it."
-msgstr "Tout ce que vous avez gardé pour plus tard, du plus récent au plus ancien, depuis chaque conversation où vous étiez : salons et messages privés dans une seule liste. Personne d'autre ne la voit."
+msgstr ""
+"Tout ce que vous avez gardé pour plus tard, du plus récent au plus ancien, "
+"depuis chaque conversation où vous étiez : salons et messages privés dans "
+"une seule liste. Personne d'autre ne la voit."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:31
 #, elixir-autogen, elixir-format
@@ -3241,12 +3128,17 @@ msgstr "Enregistrer un message"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Tools ▸ Saved Messages. It opens whether or not anything is in it, and tells you how to put something there."
-msgstr "Démarrer ▸ Outils ▸ Messages enregistrés. La fenêtre s'ouvre qu'elle contienne quelque chose ou non, et explique comment y mettre quelque chose."
+msgstr ""
+"Démarrer ▸ Outils ▸ Messages enregistrés. La fenêtre s'ouvre qu'elle "
+"contienne quelque chose ou non, et explique comment y mettre quelque chose."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "The row stays and says the message was deleted, without showing what it said. It disappears only if the message is removed from the server entirely."
-msgstr "La ligne reste et indique que le message a été supprimé, sans montrer ce qu'il disait. Elle ne disparaît que si le message est entièrement retiré du serveur."
+msgstr ""
+"La ligne reste et indique que le message a été supprimé, sans montrer ce "
+"qu'il disait. Elle ne disparaît que si le message est entièrement retiré du "
+"serveur."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:16
 #, elixir-autogen, elixir-format
@@ -3256,7 +3148,13 @@ msgstr "Y répondre"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "For something of ours it names it — the conference in a channel, the file, the game — so you can tell which door you pressed. For a link that leaves RetroHexChat it names the site and prints the whole address underneath. Read that address before pressing Open, especially when the link came from somebody you do not know: a link pretending to be somewhere else only ever gives itself away there."
-msgstr "Pour quelque chose qui nous appartient, elle le nomme — la conférence d'un canal, le fichier, le jeu — afin que vous sachiez quelle porte vous avez ouverte. Pour un lien qui quitte RetroHexChat, elle nomme le site et affiche l'adresse complète en dessous. Lisez cette adresse avant d'appuyer sur Ouvrir, surtout si le lien vient de quelqu'un que vous ne connaissez pas : un lien qui se fait passer pour un autre ne se trahit que là."
+msgstr ""
+"Pour quelque chose qui nous appartient, elle le nomme — la conférence d'un "
+"canal, le fichier, le jeu — afin que vous sachiez quelle porte vous avez "
+"ouverte. Pour un lien qui quitte RetroHexChat, elle nomme le site et affiche"
+" l'adresse complète en dessous. Lisez cette adresse avant d'appuyer sur "
+"Ouvrir, surtout si le lien vient de quelqu'un que vous ne connaissez pas : "
+"un lien qui se fait passer pour un autre ne se trahit que là."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:35
 #, elixir-autogen, elixir-format
@@ -3266,12 +3164,24 @@ msgstr "Aperçus de liens"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Open a link the way your browser already opens things in a background tab and you are not asked: middle-click it, hold Ctrl (Cmd on a Mac) while clicking, or use your browser's own right-click menu. Confirming a tab you explicitly asked for would be noise, so those go straight through. There is no setting to turn the question off — the useful part of it is the address, and the address is different every time."
-msgstr "Ouvrez un lien comme votre navigateur ouvre déjà les choses dans un onglet d'arrière-plan et la question ne se pose pas : clic du milieu, Ctrl (Cmd sur un Mac) enfoncé en cliquant, ou le menu contextuel du navigateur lui-même. Confirmer un onglet que vous avez explicitement demandé serait du bruit, alors ceux-là passent directement. Aucun réglage ne permet de désactiver la question — ce qu'elle apporte, c'est l'adresse, et l'adresse est différente chaque fois."
+msgstr ""
+"Ouvrez un lien comme votre navigateur ouvre déjà les choses dans un onglet "
+"d'arrière-plan et la question ne se pose pas : clic du milieu, Ctrl (Cmd sur"
+" un Mac) enfoncé en cliquant, ou le menu contextuel du navigateur lui-même. "
+"Confirmer un onglet que vous avez explicitement demandé serait du bruit, "
+"alors ceux-là passent directement. Aucun réglage ne permet de désactiver la "
+"question — ce qu'elle apporte, c'est l'adresse, et l'adresse est différente "
+"chaque fois."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Open opens it in a new tab, and the tab you are in stays exactly where it is — your channels, your conversation, your place in the scrollback. Cancel closes the question and does nothing else; so do Escape and a click outside. Nothing is left half-done: cancelling a game you were about to launch means the game was never launched."
-msgstr "Ouvrir l'ouvre dans un nouvel onglet, et l'onglet où vous êtes reste exactement où il était : vos canaux, votre conversation, votre position dans l'historique. Annuler ferme la question et ne fait rien d'autre ; Échap et un clic à l'extérieur font de même. Rien ne reste à moitié fait : annuler un jeu que vous alliez lancer signifie que le jeu n'a jamais été lancé."
+msgstr ""
+"Ouvrir l'ouvre dans un nouvel onglet, et l'onglet où vous êtes reste "
+"exactement où il était : vos canaux, votre conversation, votre position dans"
+" l'historique. Annuler ferme la question et ne fait rien d'autre ; Échap et "
+"un clic à l'extérieur font de même. Rien ne reste à moitié fait : annuler un"
+" jeu que vous alliez lancer signifie que le jeu n'a jamais été lancé."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:24
 #, elixir-autogen, elixir-format
@@ -3281,9 +3191,143 @@ msgstr "Passer la question"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Some things open in a second browser tab instead of taking over the one you are reading: a conference, a space, a game, an attachment, and any link somebody posted. Before that happens you get a short question naming where you are going, and nothing opens until you answer it."
-msgstr "Certaines choses s'ouvrent dans un second onglet du navigateur au lieu de remplacer celui que vous lisez : une conférence, un espace, un jeu, une pièce jointe et tout lien publié par quelqu'un. Avant cela, une brève question vous indique où vous allez, et rien ne s'ouvre avant que vous y répondiez."
+msgstr ""
+"Certaines choses s'ouvrent dans un second onglet du navigateur au lieu de "
+"remplacer celui que vous lisez : une conférence, un espace, un jeu, une "
+"pièce jointe et tout lien publié par quelqu'un. Avant cela, une brève "
+"question vous indique où vous allez, et rien ne s'ouvre avant que vous y "
+"répondiez."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "What it tells you"
 msgstr "Ce qu'elle vous dit"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "- Every channel you are in, ordered by recent activity, plus the ones on your auto-join list that you are not in right now. Each channel appears once."
+msgstr ""
+"- Chaque canal dans lequel vous êtes, commandé par une activité récente, "
+"ainsi que ceux sur votre liste d'auto-join que vous n'êtes pas en ce moment."
+" Chaque canal apparaît une fois."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "A channel with the auto-join marker is one you rejoin automatically every time you connect. Turn it on or off from the row's menu: Join on connect. A channel with a saved key shows the marker too, and the key itself is never displayed."
+msgstr ""
+"Un canal avec le marqueur de jointure automatique est un que vous rejoignez "
+"automatiquement chaque fois que vous vous connectez. Activez ou désactivez-"
+"le depuis le menu de la ligne : Connectez-vous. Un canal avec une clé "
+"enregistrée montre aussi le marqueur, et la clé elle-même n'est jamais "
+"affichée."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "CHANNELS"
+msgstr "CANAUX"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Clicking a row goes to that conversation. If it is a channel you are not in yet, going there joins it — there is nothing else to click and no second gesture to learn. That is true of every row in every section, suggestions included."
+msgstr ""
+"Cliquer sur une ligne va à cette conversation. S'il s'agit d'une chaîne dans"
+" laquelle vous n'êtes pas encore, aller là la rejoint — il n'y a rien "
+"d'autre à cliquer et aucun second geste à apprendre. C'est vrai pour chaque "
+"ligne de chaque section, suggestions incluses."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Everything that is not \"go there\" is on the row's own menu. Open it with the [...] button at the end of the row, by right-clicking the row, or by holding your finger on it. All three open the same menu; the button is the one that works everywhere."
+msgstr ""
+"Tout ce qui n'est pas « aller là-bas » est dans le menu de la ligne. Ouvrez-"
+"le avec le [...] bouton à la fin de la ligne, en cliquant droit sur la "
+"ligne, ou en tenant votre doigt dessus. Tous les trois ouvrent le même menu;"
+" le bouton est celui qui fonctionne partout."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "If you are signed in, joining a channel puts it on that list by itself and leaving takes it off again, so most of the channels you are in carry the marker without you doing anything. The menu item is how you settle the ones that differ."
+msgstr ""
+"Si vous êtes connecté, rejoindre un canal le met sur cette liste par lui-"
+"même et quitter le prend à nouveau, donc la plupart des canaux que vous êtes"
+" dans porter le marqueur sans vous faire quoi que ce soit. L'élément de menu"
+" est la façon dont vous réglez ceux qui diffèrent."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Joining on connect"
+msgstr "Connexion"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "On the right, a red @ badge counts the messages that are about you, and a plain badge counts the rest. The @ badge wins when there are both, because it is the one worth interrupting for. How many people are in a channel is in the row's tooltip."
+msgstr ""
+"Sur la droite, un badge @ rouge compte les messages qui vous concernent, et "
+"un badge simple compte le reste. Le badge @ gagne quand il y a les deux, "
+"parce que c'est celui qui mérite d'être interrompu. Combien de personnes "
+"sont dans un canal est dans le tooltip de la rangée."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "One click, every row"
+msgstr "Un clic, chaque ligne"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:90
+#, elixir-autogen, elixir-format
+msgid "Open a private message row's menu and choose Close Conversation to take it off the list. Nothing is deleted: the messages stay, and the next line from that person puts the conversation back. It is not marked read either — if it was in bold when you closed it, it comes back in bold."
+msgstr ""
+"Ouvrez le menu d'une ligne de message privée et choisissez Fermer "
+"Conversation pour le retirer de la liste. Rien n'est supprimé: les messages "
+"restent, et la prochaine ligne de cette personne remet la conversation en "
+"arrière. Il n'est pas marqué non plus — s'il était en gras lorsque vous "
+"l'avez fermé, il revient en gras."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Reading a row"
+msgstr "Lecture d'une ligne"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "The Auto-Join window is still where the list itself is managed — the order the channels are joined in, and the keys. Open it from Start, or with /autojoin."
+msgstr ""
+"La fenêtre Auto-Join est toujours l'endroit où la liste elle-même est gérée "
+"— l'ordre dans lequel les canaux sont connectés, et les clés. Ouvrez-le "
+"depuis Start ou avec /autojoin."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The Conversations sidebar is the left IRC navigation pane: the channels you are in and the ones you join on connect, in one list ordered by recent activity; then recent private messages, then channel suggestions."
+msgstr ""
+"La barre latérale Conversations est le panneau de navigation IRC de gauche :"
+" les canaux que vous êtes et ceux que vous rejoignez sur connect, dans une "
+"liste ordonnée par une activité récente ; puis les messages privés récents, "
+"puis les suggestions de canaux."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "The bar down the left of each row says whether the conversation is open. Filled means it is; hollow means it is on your list and one click away. Its colour says whether anything is waiting: blue for the conversation you are in, red when somebody said your name, and the unread colour otherwise."
+msgstr ""
+"La barre en bas à gauche de chaque rangée indique si la conversation est "
+"ouverte. Rempli signifie qu'il est; creux signifie qu'il est sur votre liste"
+" et un clic loin. Sa couleur indique si quelque chose attend : bleu pour la "
+"conversation dans laquelle vous êtes, rouge quand quelqu'un a dit votre nom,"
+" et la couleur non lue autrement."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:83
+#, elixir-autogen, elixir-format
+msgid "\"Browse All Channels...\" sits at the bottom of the sidebar and opens the full channel list. It is outside the sections, so it is there whatever they are doing."
+msgstr ""
+"\"Parcourir tous les canaux...\" est assis au bas de la barre latérale et "
+"ouvre la liste complète des canaux. Il est en dehors des sections, donc il "
+"est là quoi qu'ils fassent."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:77
+#, elixir-autogen, elixir-format
+msgid "Shows active public channels you have not joined yet when the server has rooms to suggest. Click one to join it and go there. The section opens by itself while you have almost no channels and stays shut once you do — its heading reopens it whenever you want it."
+msgstr ""
+"Affiche les canaux publics actifs que vous n'avez pas encore rejoint lorsque"
+" le serveur a des chambres à suggérer. Cliquez sur un pour le rejoindre et "
+"aller là-bas. La section s'ouvre tout seul alors que vous n'avez presque pas"
+" de canaux et reste fermée une fois que vous le faites — son titre le rouvre"
+" quand vous le voulez."

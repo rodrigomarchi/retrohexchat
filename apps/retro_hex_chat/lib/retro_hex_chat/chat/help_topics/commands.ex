@@ -49,8 +49,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         description:
           dgettext(
             "help",
-            "Manage the list of channels that are automatically joined on connect."
-          )
+            "Manage the list of channels that are automatically joined on connect. A single channel is easier to add or drop from its own row in the Conversations sidebar — open the row's menu and choose Join on connect; this command and the window it opens are for the list as a whole, including the order and the keys."
+          ),
+        see_also: ["ui-conversations"]
       },
       %{
         id: "cmd-autorespond",

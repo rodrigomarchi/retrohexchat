@@ -261,14 +261,24 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         id: "ui-conversations",
         title: dgettext("help", "Conversations"),
         category: dgettext("help", "User Interface"),
-        keywords: ["conversations", "sidebar", "navigation", "left pane", "channels", "popular"],
+        keywords: [
+          "conversations",
+          "sidebar",
+          "navigation",
+          "left pane",
+          "channels",
+          "popular",
+          "auto-join",
+          dgettext("help", "join on connect"),
+          dgettext("help", "row menu")
+        ],
         icon: :icon_tab_conversations,
         description:
           dgettext(
             "help",
-            "Switch between every joined channel and private conversation, and watch unread pile up on the ones you are not reading."
+            "Switch between every joined channel and private conversation, and watch unread pile up on the ones you are not reading. Clicking a row goes there, joining the channel first if you are not in it; everything else is on the row's menu, which the [...] button, a right-click and a held finger all open."
           ),
-        see_also: ["ui-lists", "ui-tab-bar"]
+        see_also: ["ui-lists", "ui-tab-bar", "cmd-autojoin"]
       },
       %{
         id: "ui-tab-bar",

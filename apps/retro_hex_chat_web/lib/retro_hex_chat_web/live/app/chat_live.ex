@@ -57,7 +57,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
     KeyBindings,
     ReconnectState,
     SoundSettings,
-    TimeFormatter
+    TimeFormatter,
+    UnreadTracker
   }
 
   alias RetroHexChat.Notifications
@@ -888,11 +889,13 @@ defmodule RetroHexChatWeb.App.ChatLive do
       show_conversations: true,
       channel_user_counts: %{},
       popular_channels: [],
+      # Suggestions are for somebody who has nowhere to go yet. Expanded they
+      # are ten rows in a sidebar of fifteen, so they open for an arrival and
+      # stay shut for anybody who already has rooms — until asked for.
       conversations_sections: %{
         channels: true,
         pms: true,
-        autojoin: true,
-        popular: true
+        popular: discovery_open?(session)
       },
       lookup_result: nil,
       cc_window_channel: nil,
@@ -955,6 +958,15 @@ defmodule RetroHexChatWeb.App.ChatLive do
   end
 
   # ── View helpers ──────────────────────────────────────────────
+
+  # Three rooms is the line between somebody finding their way in and somebody
+  # who lives here: below it the suggestions are the point of the sidebar, at
+  # it they are ten rows of something you already solved.
+  @discovery_channel_threshold 3
+
+  defp discovery_open?(session) do
+    length(session.channels) < @discovery_channel_threshold
+  end
 
   defp admin?(session), do: ChatContext.admin?(session)
 

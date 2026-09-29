@@ -54,6 +54,15 @@ _ROWS = {
     "Accept":       ("Aceitar", "Aceitar", "Aceptar", "Accepter", "Annehmen", "Accetta", "Accepteren", "Akceptuj", "Принять", "Terima", "承認", "接受", "接受"),
     "Decline":      ("Recusar", "Recusar", "Rechazar", "Refuser", "Ablehnen", "Rifiuta", "Weigeren", "Odrzuć", "Отклонить", "Tolak", "拒否", "拒绝", "拒絕"),
 
+    # ── Conversations sidebar ─────────────────────────────────
+    # The pipeline read these as sentences about connecting rather than as the
+    # sidebar's vocabulary: "CHANNELS" came back as Cannes in ru and as
+    # "attachment" in it and pl, and "Join on connect" as "log in" in fr.
+    "CHANNELS":     ("CANAIS", "CANAIS", "CANALES", "CANAUX", "KANÄLE", "CANALI", "KANALEN", "KANAŁY", "КАНАЛЫ", "KANAL", "チャンネル", "频道", "頻道"),
+    "Join on connect": ("Entrar ao conectar", "Entrar ao ligar", "Entrar al conectar", "Rejoindre à la connexion", "Beim Verbinden betreten", "Entra alla connessione", "Deelnemen bij verbinden", "Dołącz po połączeniu", "Входить при подключении", "Gabung saat terhubung", "接続時に参加", "连接时加入", "連線時加入"),
+    "Joined on connect": ("Entra ao conectar", "Entra ao ligar", "Entra al conectar", "Rejoint à la connexion", "Wird beim Verbinden betreten", "Entra alla connessione", "Neemt deel bij verbinden", "Dołącza po połączeniu", "Входит при подключении", "Bergabung saat terhubung", "接続時に参加します", "连接时加入", "連線時加入"),
+    "Joined on connect, with a key": ("Entra ao conectar, com senha", "Entra ao ligar, com senha", "Entra al conectar, con clave", "Rejoint à la connexion, avec une clé", "Wird beim Verbinden betreten, mit Schlüssel", "Entra alla connessione, con una chiave", "Neemt deel bij verbinden, met een sleutel", "Dołącza po połączeniu, z kluczem", "Входит при подключении, с ключом", "Bergabung saat terhubung, dengan kunci", "接続時にキーで参加します", "连接时使用密钥加入", "連線時使用金鑰加入"),
+
     # ── Navigation ────────────────────────────────────────────
     "Back":         ("Voltar", "Voltar", "Atrás", "Retour", "Zurück", "Indietro", "Terug", "Wstecz", "Назад", "Kembali", "戻る", "返回", "返回"),
     "Next":         ("Próximo", "Próximo", "Siguiente", "Suivant", "Weiter", "Avanti", "Volgende", "Dalej", "Далее", "Berikutnya", "次へ", "下一步", "下一步"),

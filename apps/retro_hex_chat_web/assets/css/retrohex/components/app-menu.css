@@ -301,3 +301,52 @@
 [data-submenu-open="true"] > .desktop-start-menu__item {
   box-shadow: inset 2px 0 #000080;
 }
+
+/* ── Context menu as a bottom sheet ────────────────────────────────────────
+   A context menu is placed at the pointer with inline left/top. That is right
+   where there is a pointer; it is wrong on a phone, where the menu arrives
+   from a held finger inside a 300px drawer and lands on top of the row it is
+   about — or at the top of the screen, out of reach of the thumb that opened
+   it. Below the stacking breakpoint an opted-in menu becomes a sheet on the
+   bottom edge: same items, same order, same definition, a frame that a thumb
+   can reach. The inline coordinates are overridden rather than removed, so the
+   desktop presentation stays exactly what it was. */
+@media (max-width: 767px) {
+  .context-menu--sheet {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    bottom: 0 !important;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .context-menu--sheet ul {
+    min-width: 0;
+  }
+}
+
+/* Only the sheet draws these: on a desktop the menu is anchored to the thing
+   it is about, and saying so again in a heading is noise. */
+.context-menu__sheet-title,
+.context-menu__sheet-dismiss {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .context-menu__sheet-title {
+    @apply flex min-h-[36px] items-center bg-primary px-retro-16 text-sm font-bold text-white;
+    display: flex;
+  }
+
+  .context-menu__sheet-dismiss {
+    @apply mt-retro-2 flex min-h-[44px] cursor-pointer select-none items-center justify-center border-t border-separator text-sm font-bold;
+    display: flex;
+  }
+
+  .context-menu__sheet-dismiss:hover {
+    @apply bg-selection-bg text-selection-fg;
+  }
+}

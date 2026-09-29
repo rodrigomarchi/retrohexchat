@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     html = render_conv([])
     assert html =~ "#lobby"
     assert html =~ "#elixir"
-    assert html =~ "OPEN CHANNELS"
+    assert html =~ "CHANNELS"
     refute html =~ "MY CHANNELS"
     # Row events bubble to the parent unchanged.
     assert html =~ "switch_channel"
@@ -63,13 +63,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
 
     assert html =~ ~s(data-testid="conversations-section-channels")
     assert html =~ ~s(data-testid="conversations-section-pms")
-    assert html =~ ~s(data-testid="conversations-section-autojoin")
     assert html =~ ~s(data-testid="conversations-section-popular")
 
-    assert html =~ "OPEN CHANNELS"
+    assert html =~ "CHANNELS"
     assert html =~ "RECENT PRIVATE MESSAGES"
-    assert html =~ "AUTO-JOIN"
     assert html =~ "POPULAR CHANNELS"
+
+    # The auto-join list is not a section of its own any more: it is a property
+    # of the channel rows, so the same room never gets a second row.
+    refute html =~ ~s(data-testid="conversations-section-autojoin")
 
     refute html =~ ~s(data-testid="conversations-section-alerts")
     refute html =~ "ACTIVITY"
@@ -117,13 +119,60 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     assert html =~ ~s(data-testid="conversations-browse-all")
   end
 
-  test "renders autojoin entries from the session without leaking keys" do
+  test "an auto-join channel you are not in is one row in the channel list" do
     html = render_conv(autojoin_list: autojoin([{"#secret", "hunter2"}]))
+    document = Floki.parse_document!(html)
 
-    assert html =~ ~s(data-testid="autojoin-#secret")
-    assert html =~ "#secret"
-    assert html =~ "+key"
+    assert [row] = Floki.find(document, ~s([data-testid="channel-#secret"]))
+    assert Floki.attribute(row, "data-joined") == ["false"]
+    assert Floki.attribute(row, "data-pinned") == ["true"]
+    # Going there is what a click does, so the row carries the same event an
+    # open channel's row carries.
+    assert Floki.attribute(row, "phx-click") == ["switch_channel"]
+    assert Floki.find(row, ".chat-conversations-row__signal--saved") != []
     refute html =~ "hunter2"
+  end
+
+  test "an auto-join channel you are in appears once, pinned" do
+    html = render_conv(autojoin_list: autojoin(["#elixir"]))
+    document = Floki.parse_document!(html)
+
+    assert [row] = Floki.find(document, ~s([data-testid="channel-#elixir"]))
+    assert Floki.attribute(row, "data-joined") == ["true"]
+    assert Floki.attribute(row, "data-pinned") == ["true"]
+    assert Floki.find(row, ~s([data-testid="channel-autojoin-pin-#elixir"])) != []
+  end
+
+  test "every row carries the menu button that right-click also opens" do
+    html = render_conv(pm_conversations: ["alice"])
+    document = Floki.parse_document!(html)
+
+    for testid <- ["channel-#lobby", "pm-alice"] do
+      assert [row] = Floki.find(document, ~s([data-testid="#{testid}"]))
+      assert Floki.find(row, "[data-conversations-menu]") != []
+    end
+  end
+
+  test "a suggestion is joined by its row, not only by a 16px button" do
+    html = render_conv(popular_channels: [%{name: "#retro", user_count: 7}])
+    document = Floki.parse_document!(html)
+
+    assert [row] = Floki.find(document, ~s([data-testid="popular-#retro"]))
+    assert Floki.attribute(row, "phx-click") == ["conversations_join_popular"]
+    assert Floki.attribute(row, "phx-value-channel") == ["#retro"]
+  end
+
+  test "the desktop shortcuts are absent at a phone's width, not merely hidden" do
+    desktop = render_conv(popular_channels: [%{name: "#retro", user_count: 7}])
+
+    mobile =
+      render_conv(popular_channels: [%{name: "#retro", user_count: 7}], mobile_viewport: true)
+
+    assert desktop =~ ~s(data-testid="join-#retro")
+    refute mobile =~ ~s(data-testid="join-#retro")
+
+    # What is left on a phone is the row and its menu.
+    assert mobile =~ ~s(data-testid="popular-#retro")
   end
 
   test "draws highlights in the canonical conversation rows" do
@@ -176,15 +225,40 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     assert Floki.find(alice, ".chat-conversations-row__signal--highlight") == []
   end
 
-  test "marks PMs that already have an open tab" do
+  test "a PM with no tab mounted reads as saved, the way an unopened channel does" do
     html =
       render_conv(
         open_pm_tabs: ["alice"],
         pm_conversations: ["alice", "bob"]
       )
 
-    assert html =~ ~s(data-testid="pm-open-state-alice")
-    refute html =~ ~s(data-testid="pm-open-state-bob")
+    document = Floki.parse_document!(html)
+
+    assert [alice] = Floki.find(document, ~s([data-testid="pm-alice"]))
+    assert [bob] = Floki.find(document, ~s([data-testid="pm-bob"]))
+
+    assert Floki.attribute(alice, "data-joined") == ["true"]
+    assert Floki.attribute(bob, "data-joined") == ["false"]
+    assert Floki.find(bob, ".chat-conversations-row__signal--saved") != []
+
+    # The chip that used to say "tab" named an internal state and had no
+    # counterpart on channels, which carry tabs too.
+    refute html =~ ~s(data-testid="pm-open-state-alice")
+  end
+
+  test "an unopened conversation still shows that it is the loud one" do
+    html =
+      render_conv(
+        pm_conversations: ["alice"],
+        open_pm_tabs: [],
+        highlight_channels: MapSet.new(["pm:alice"])
+      )
+
+    document = Floki.parse_document!(html)
+    assert [alice] = Floki.find(document, ~s([data-testid="pm-alice"]))
+
+    assert Floki.find(alice, ".chat-conversations-row__signal--highlight") != []
+    assert Floki.find(alice, ".chat-conversations-row__signal--saved") != []
   end
 
   test "collapses to the rail when not visible and expands when visible" do
@@ -239,5 +313,37 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     assert html =~ ~s(data-testid="pm-p2p-glyph-alice")
     assert html =~ ~s(data-p2p-status="live")
     refute html =~ ~s(data-testid="pm-p2p-glyph-bob")
+  end
+
+  # It used to be an <li> inside the suggestions section, so collapsing the
+  # suggestions took away the one door that is always right.
+  test "the full channel list is the sidebar's footer, outside every section" do
+    html = render_conv(collapsed_sections: ["popular"])
+    doc = Floki.parse_document!(html)
+
+    assert [button] = Floki.find(doc, ~s([data-testid="conversations-browse-all"]))
+
+    assert Floki.find(
+             doc,
+             ~s(.chat-conversations-footer [data-testid="conversations-browse-all"])
+           ) == [button]
+
+    assert Floki.find(
+             doc,
+             ~s(.chat-conversations-section [data-testid="conversations-browse-all"])
+           ) == []
+  end
+
+  test "suggestions are set apart from the rooms you are in" do
+    html = render_conv(popular_channels: [%{name: "#retro", user_count: 7}])
+    doc = Floki.parse_document!(html)
+
+    assert [section] = Floki.find(doc, ~s([data-testid="conversations-section-popular"]))
+
+    assert Floki.attribute(section, "class") |> to_string() =~
+             "chat-conversations-section--discovery"
+
+    assert [channels] = Floki.find(doc, ~s([data-testid="conversations-section-channels"]))
+    refute Floki.attribute(channels, "class") |> to_string() =~ "discovery"
   end
 end

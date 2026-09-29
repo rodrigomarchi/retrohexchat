@@ -52,6 +52,18 @@ defmodule RetroHexChat.Chat.UnreadTracker do
   end
 
   @doc """
+  How many unread messages there are across every conversation.
+
+  The one number a control outside the sidebar can carry: a collapsed rail, or
+  the toolbar toggle a phone reaches the drawer from. Reading it from the same
+  map the rows read means the badge and the rows can never disagree.
+  """
+  @spec total(counts()) :: non_neg_integer()
+  def total(counts) when is_map(counts) do
+    counts |> Map.values() |> Enum.sum()
+  end
+
+  @doc """
   Return all keys that have unread messages.
   """
   @spec unread_keys(counts()) :: [String.t()]

@@ -8,6 +8,10 @@
  * @param {HTMLElement} el
  */
 export function repositionMenu(el) {
+  // A sheet is pinned to the bottom edge by CSS; clamping its inline
+  // coordinates would be computing a position nothing reads.
+  if (isSheet(el)) return;
+
   const rect = el.getBoundingClientRect();
   const vw = window.innerWidth;
   const vh = window.innerHeight;
@@ -25,4 +29,15 @@ export function repositionMenu(el) {
     const currentTop = parseInt(el.style.top, 10) || rect.top;
     el.style.top = Math.max(0, currentTop - overflow - 4) + "px";
   }
+}
+
+/**
+ * Whether the menu is currently presented as a bottom sheet.
+ *
+ * @param {HTMLElement} el
+ * @returns {boolean}
+ */
+function isSheet(el) {
+  if (el.dataset.sheet !== "true") return false;
+  return window.matchMedia?.("(max-width: 767px)").matches ?? false;
 }

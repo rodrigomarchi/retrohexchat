@@ -134,6 +134,12 @@
   white-space: nowrap;
 }
 
+/* The count rides on the glyph rather than beside it: the label next to it is
+   hidden at the width where this badge exists at all. */
+.conversation-toolbar-button__badge {
+  @apply absolute right-[-3px] top-[-3px] min-w-[14px] border border-error-dark bg-error px-[1px] text-center text-[8px] font-bold leading-[12px] text-white;
+}
+
 .conversation-toolbar-entry {
   height: 22px;
 }

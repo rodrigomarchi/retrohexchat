@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
   @moduletag :liveview_feature
 
   alias RetroHexChat.Channels.{Registry, Supervisor}
+  alias RetroHexChat.Chat.AutoJoinList
   alias RetroHexChatWeb.Components.UI.{MenuBarApp, StartMenuApp, ToolbarApp}
 
   setup do
@@ -60,7 +61,12 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
       assert_push_event(view, "window_command", %{action: "open", id: "autojoin"})
     end
 
-    test "the conversations sidebar auto-join row opens the managed window", %{conn: conn} do
+    # A saved channel reaches the sidebar as a channel, not as an entry in a
+    # second list beside the channels. The window that manages the list is
+    # opened from the three navigation surfaces above and from /autojoin; it is
+    # not opened from a 16px button riding on a row, which is the shape a phone
+    # could not hit and the reason the row had two meanings.
+    test "a saved channel shows up in the sidebar as a channel row", %{conn: conn} do
       view = connect_user(conn, "E2EAjSide#{uid()}")
 
       open_autojoin(view)
@@ -68,14 +74,9 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
       submit_form(view, "autojoin-add-dialog", %{"channel" => "#ajside", "key" => ""})
       render_hook(view, "window_closed", %{"id" => "autojoin"})
 
-      assert has_element?(view, ~s([data-testid="autojoin-#ajside"]))
-
-      view
-      |> element(~s([data-testid="autojoin-open-#ajside"]))
-      |> render_click()
-
-      assert has_element?(view, ~s([data-window-id="autojoin"][data-window-managed="true"]))
-      assert_push_event(view, "window_command", %{action: "open", id: "autojoin"})
+      assert has_element?(view, ~s([data-testid="channel-#ajside"][data-joined="false"]))
+      refute has_element?(view, ~s([data-testid="autojoin-#ajside"]))
+      refute has_element?(view, ~s([data-testid="autojoin-open-#ajside"]))
     end
   end
 
@@ -194,5 +195,64 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
       {:ok, _pid} -> :ok
       {:error, :not_found} -> Supervisor.start_child(name)
     end
+  end
+
+  # The list is still a list — order and keys live in the window — but whether a
+  # single room is on it is a property of that room, answered where the room is.
+  describe "join on connect, from the channel's own row" do
+    test "adds a channel that is not on the list yet", %{conn: conn} do
+      nick = "AJT#{uid()}"
+      channel = "#ajt-#{uid()}"
+      ensure_channel(channel)
+
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      render_click(view, "switch_channel", %{"channel" => channel})
+
+      render_click(view, "ctx_conversations_toggle_autojoin", %{"channel" => channel})
+
+      assert autojoin_names(view) |> Enum.member?(channel)
+    end
+
+    test "takes a channel back off the list", %{conn: conn} do
+      nick = "AJT#{uid()}"
+      channel = "#ajt-#{uid()}"
+      ensure_channel(channel)
+
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      render_click(view, "switch_channel", %{"channel" => channel})
+
+      render_click(view, "ctx_conversations_toggle_autojoin", %{"channel" => channel})
+      assert autojoin_names(view) |> Enum.member?(channel)
+
+      render_click(view, "ctx_conversations_toggle_autojoin", %{"channel" => channel})
+      refute autojoin_names(view) |> Enum.member?(channel)
+    end
+
+    test "a saved channel you are not in is one row, and clicking it joins", %{conn: conn} do
+      nick = "AJT#{uid()}"
+      channel = "#ajt-#{uid()}"
+      ensure_channel(channel)
+
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      render_click(view, "switch_channel", %{"channel" => channel})
+      render_click(view, "ctx_conversations_toggle_autojoin", %{"channel" => channel})
+      render_click(view, "close_channel_tab", %{"channel" => channel})
+
+      html = render(view)
+      assert html =~ ~s(data-testid="channel-#{channel}")
+
+      # Going there is joining it: one click, the same one every row answers.
+      render_click(view, "switch_channel", %{"channel" => channel})
+      assert channel in :sys.get_state(view.pid).socket.assigns.session.channels
+    end
+  end
+
+  defp autojoin_names(view) do
+    view.pid
+    |> :sys.get_state()
+    |> get_in([Access.key(:socket), Access.key(:assigns), Access.key(:session)])
+    |> Map.fetch!(:autojoin_list)
+    |> AutoJoinList.entries()
+    |> Enum.map(& &1.channel_name)
   end
 end

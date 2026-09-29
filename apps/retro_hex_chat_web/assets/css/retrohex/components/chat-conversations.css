@@ -36,8 +36,13 @@
   @apply mb-0;
 }
 
+/* 44px is what the context menu's own items already resolved to below the
+   stacking breakpoint; the drawer these rows live in is wider on a phone than
+   the column they were sized for on a desktop, and it was still handing a
+   finger a 28px row and a 16px button. */
 .chat-conversations-section__trigger {
-  @apply flex h-7 w-full items-center gap-1 overflow-hidden border border-border bg-surface px-1 text-left text-[11px] font-bold uppercase text-muted-foreground shadow-retro-status;
+  @apply flex min-h-[44px] w-full items-center gap-1 overflow-hidden border border-border bg-surface px-1 text-left text-[11px] font-bold uppercase text-muted-foreground shadow-retro-status;
+  @apply md:h-7 md:min-h-0;
   @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-black;
 }
 
@@ -57,10 +62,6 @@
   @apply shrink-0 bg-white px-1 text-[10px] font-bold leading-4 text-muted-foreground shadow-retro-status;
 }
 
-.chat-conversations-section--autojoin .chat-conversations-section__trigger {
-  @apply border-l-2 border-success bg-surface text-success-dark;
-}
-
 .chat-conversations-section--popular .chat-conversations-section__trigger {
   @apply border-l-2 border-primary bg-surface text-primary;
 }
@@ -70,7 +71,8 @@
 }
 
 .chat-conversations-row {
-  @apply flex min-h-[28px] w-full items-center gap-1.5 overflow-hidden border border-transparent px-1 py-[2px] text-[13px] leading-5 select-none;
+  @apply flex min-h-[44px] w-full items-center gap-1.5 overflow-hidden border border-transparent px-1 py-[2px] text-[13px] leading-5 select-none;
+  @apply md:min-h-[28px];
   @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-black;
   @apply bg-white;
 }
@@ -87,48 +89,92 @@
   @apply border-border bg-hover-bg;
 }
 
-.chat-conversations-row--static {
-  @apply cursor-default;
-}
-
 .chat-conversations-row--active {
   @apply border-primary bg-hover-bg font-bold text-foreground shadow-retro-sunken;
 }
 
-.chat-conversations-section--autojoin .chat-conversations-row:not(.chat-conversations-row--active) {
-  @apply bg-white;
-}
-
 .chat-conversations-row__signal {
-  @apply h-5 w-1 shrink-0;
+  @apply h-5 w-1 shrink-0 border border-transparent;
 }
 
 .chat-conversations-row__signal--idle {
-  background: transparent;
+  @apply border-transparent bg-transparent;
 }
 
 .chat-conversations-row__signal--active {
-  @apply bg-primary;
+  @apply border-primary bg-primary;
 }
 
 .chat-conversations-row__signal--highlight {
-  @apply bg-error;
+  @apply border-error-dark bg-error;
 }
 
 .chat-conversations-row__signal--unread {
-  @apply bg-link;
+  @apply border-link bg-link;
 }
 
-.chat-conversations-row__signal--autojoin-open {
-  @apply bg-success;
+/* Hollow, not absent: the place is on your list and is not open yet. Clicking
+   the row opens it, which is why the row still reads as a row. The fill is what
+   presence takes away — the outline keeps whatever colour attention put there,
+   so an unopened conversation can still be the loud one. Last in the file, and
+   two classes deep for the idle case, because both are settled by order. */
+.chat-conversations-row__signal--saved {
+  @apply bg-transparent;
 }
 
-.chat-conversations-row__signal--autojoin-key {
-  @apply bg-warning-alt;
+.chat-conversations-row__signal--idle.chat-conversations-row__signal--saved {
+  @apply border-muted-foreground;
 }
 
-.chat-conversations-row__signal--autojoin-saved {
-  @apply bg-teal;
+/* Muted is not disabled. Half-opacity is how this product draws a thing you
+   cannot act on, and a muted channel is one people click all day; it is the
+   name that goes quiet, and the glyph that says why. */
+.chat-conversations-row--muted .chat-conversations-row__label {
+  @apply text-muted-foreground;
+}
+
+/* Saved but not open, said in the same voice as muted — a place you have not
+   walked into yet, not a place that is unavailable. */
+.chat-conversations-row--saved:not(.chat-conversations-row--active)
+  .chat-conversations-row__label {
+  @apply text-muted-foreground;
+}
+
+/* One slot, filled by precedence in the component. Its width is reserved either
+   way so a call starting mid-conversation does not shove the name sideways. */
+.chat-conversations-row__status {
+  @apply inline-flex h-4 w-4 shrink-0 items-center justify-center;
+}
+
+.chat-conversations-row__pin {
+  @apply inline-flex h-3 w-3 shrink-0 items-center justify-center text-success-dark;
+}
+
+/* The visible way into the row's menu. It is a real target on a phone and a
+   quieter one beside a pointer, but it is present on both — a control that
+   appears only on hover is a control a touch screen does not have. */
+.chat-conversations-row__menu {
+  @apply inline-flex h-11 w-11 shrink-0 items-center justify-center bg-transparent text-muted-foreground;
+  @apply md:h-5 md:w-5;
+  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-black;
+}
+
+.chat-conversations-row__menu:hover {
+  @apply bg-hover-bg text-foreground shadow-retro-raised;
+}
+
+.chat-conversations-row__menu:active {
+  @apply shadow-retro-sunken;
+}
+
+/* Desktop accelerators. Not rendered at all below the breakpoint — the
+   component decides that, so they leave the tab order with the pixels. */
+.chat-conversations-row__shortcut {
+  @apply ml-1 h-4 w-4 min-h-0 shrink-0;
+}
+
+.chat-conversations-unread-dot {
+  @apply h-2 w-2 shrink-0 bg-link;
 }
 
 .chat-conversations-row__icon {
@@ -151,19 +197,6 @@
   @apply text-primary;
 }
 
-.chat-conversations-chip {
-  @apply shrink-0 border px-1 text-[9px] font-bold leading-4 shadow-retro-status;
-}
-
-.chat-conversations-chip--tab,
-.chat-conversations-chip--key {
-  @apply border-muted-foreground bg-white text-muted-foreground;
-}
-
-.chat-conversations-chip--open {
-  @apply border-primary bg-primary text-white;
-}
-
 .chat-conversations-unread-badge {
   @apply min-w-[18px] shrink-0 border border-primary bg-link px-1 text-center text-[10px] font-bold text-white;
 }
@@ -172,10 +205,23 @@
   @apply border-error-dark bg-error;
 }
 
-.chat-conversations-browse-row {
-  @apply mt-retro-2 border-t border-border pt-retro-2;
+/* Outside the scrolling body and outside every section, because the full
+   channel list is the one door that is right whatever the sections are doing. */
+.chat-conversations-footer {
+  @apply shrink-0 bg-surface p-[6px] shadow-retro-status;
 }
 
 .chat-conversations-browse-button {
-  @apply h-7 w-full justify-start gap-retro-4 border-l-2 border-border bg-surface px-retro-4 text-xs shadow-retro-raised;
+  @apply min-h-[44px] w-full justify-start gap-retro-4 border-l-2 border-border bg-surface px-retro-4 text-xs shadow-retro-raised;
+  @apply md:h-7 md:min-h-0;
+}
+
+/* Rooms you are not in are not a peer of the rooms you are. The rule above the
+   heading is where the sidebar stops being about your conversations. */
+.chat-conversations-section--discovery {
+  @apply mt-retro-6 border-t-2 border-border pt-retro-6;
+}
+
+.chat-conversations-section--discovery .chat-conversations-row__label {
+  @apply text-[12px];
 }

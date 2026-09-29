@@ -148,4 +148,35 @@ defmodule RetroHexChatWeb.Components.UI.Chat.ConversationToolbarActionsTest do
     assert Floki.find(doc, ~s([data-testid="conversation-toolbar-channel-central"])) == []
     assert Floki.find(doc, ~s([data-testid="conversation-toolbar-user-lookup"])) == []
   end
+
+  # A desktop keeps a 36px rail that carries this count; below the stacking
+  # breakpoint the rail is not rendered at all, and this button is the only
+  # thing left that can say another conversation is waiting.
+  test "the conversations toggle carries the unread total a phone has no rail for" do
+    html =
+      render_component(&conversation_toolbar_actions/1, %{
+        active_channel: "#lobby",
+        conversations_unread: 7
+      })
+
+    doc = Floki.parse_document!(html)
+
+    assert [badge] =
+             Floki.find(doc, ~s([data-testid="conversation-toolbar-conversations-badge"]))
+
+    assert Floki.text(badge) =~ "7"
+
+    # The count says itself in the tooltip too: where the visible label is
+    # hidden by CSS, the title is what a screen reader reads.
+    assert [button] = Floki.find(doc, ~s([data-testid="conversation-toolbar-conversations"]))
+    assert Floki.attribute(button, "title") |> to_string() =~ "7"
+  end
+
+  test "no badge when nothing is waiting" do
+    html = render_component(&conversation_toolbar_actions/1, %{active_channel: "#lobby"})
+
+    assert html
+           |> Floki.parse_document!()
+           |> Floki.find(~s([data-testid="conversation-toolbar-conversations-badge"])) == []
+  end
 end

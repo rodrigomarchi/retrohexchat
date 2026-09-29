@@ -33,6 +33,11 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
   attr :channel, :string, default: nil
   attr :nick, :string, default: nil
   attr :is_muted, :boolean, default: false
+
+  attr :is_autojoin, :boolean,
+    default: false,
+    doc: "The channel is on the account's auto-join list"
+
   attr :has_unread, :boolean, default: false
   attr :custom_items, :list, default: []
   attr :on_action, :any, default: nil
@@ -54,6 +59,8 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
       y={@y}
       position="absolute"
       reposition
+      sheet
+      sheet_title={@target}
       class={@class}
       on_close="close_conversations_context_menu"
       {@rest}
@@ -66,7 +73,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
         phx-value-channel={@channel}
         phx-value-nick={@nick}
         phx-value-type={@type}
-        data-testid="ctx-mark-read"
+        testid="ctx-mark-read"
       >
         <:icon><Icons.icon_checkmark class="w-[14px] h-[14px]" /></:icon>
         {dgettext("chat", "Mark as Read")}
@@ -79,7 +86,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
         phx-value-channel={@channel}
         phx-value-nick={@nick}
         phx-value-type={@type}
-        data-testid="ctx-mute-toggle"
+        testid="ctx-mute-toggle"
       >
         <:icon>
           <Icons.icon_mute :if={@is_muted} class="w-[14px] h-[14px]" />
@@ -89,6 +96,40 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
       </.context_menu_item>
 
       <.context_menu_separator />
+
+      <%!-- Auto-join, as an attribute of the room rather than a list of its own.
+            It is the canonical way to set it: a pin on the row is 16 pixels and
+            exists only where there is a pointer, and a menu item is the same
+            size on every input. --%>
+      <.context_menu_item
+        :if={@type == :channel}
+        on_click={@on_action}
+        action="ctx_conversations_toggle_autojoin"
+        phx-value-channel={@channel}
+        role="menuitemcheckbox"
+        aria-checked={to_string(@is_autojoin)}
+        testid="ctx-toggle-autojoin"
+      >
+        <:icon>
+          <Icons.icon_checkmark :if={@is_autojoin} class="w-[14px] h-[14px]" />
+          <Icons.icon_dialog_autojoin :if={!@is_autojoin} class="w-[14px] h-[14px]" />
+        </:icon>
+        {dgettext("chat", "Join on connect")}
+      </.context_menu_item>
+
+      <%!-- Channel Settings --%>
+      <.context_menu_item
+        :if={!@is_pm}
+        on_click={@on_action}
+        action="ctx_conversations_settings"
+        phx-value-channel={@channel}
+        testid="ctx-channel-settings"
+      >
+        <:icon><Icons.icon_btn_settings class="w-[14px] h-[14px]" /></:icon>
+        {dgettext("chat", "Channel Settings")}
+      </.context_menu_item>
+
+      <.context_menu_separator :if={!@is_pm} />
 
       <%!-- Copy Invite Link: the address that leaves the product, so it is only
             offered for a channel and never for a private conversation. --%>
@@ -109,36 +150,23 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
         phx-value-channel={@channel}
         phx-value-nick={@nick}
         phx-value-type={@type}
-        data-testid="ctx-copy-name"
+        testid="ctx-copy-name"
       >
         <:icon><Icons.icon_copy class="w-[14px] h-[14px]" /></:icon>
         {copy_name_label(@is_pm)}
       </.context_menu_item>
 
-      <%!-- Channel Settings --%>
-      <.context_menu_item
-        :if={!@is_pm}
-        on_click={@on_action}
-        action="ctx_conversations_settings"
-        phx-value-channel={@channel}
-        data-testid="ctx-channel-settings"
-      >
-        <:icon><Icons.icon_btn_settings class="w-[14px] h-[14px]" /></:icon>
-        {dgettext("chat", "Channel Settings")}
-      </.context_menu_item>
-
-      <.context_menu_separator :if={!@is_pm} />
+      <.context_menu_separator />
 
       <%!-- Close Conversation — the private half of Leave Channel. A channel is
             left; a private conversation is only put away, and the next line
             from that nickname brings it back. --%>
-      <.context_menu_separator :if={@is_pm} />
       <.context_menu_item
         :if={@is_pm}
         on_click={@on_action}
         action="ctx_conversations_close_pm"
         phx-value-nick={@nick}
-        data-testid="ctx-close-pm"
+        testid="ctx-close-pm"
       >
         <:icon><Icons.icon_close class="w-[14px] h-[14px]" /></:icon>
         {dgettext("chat", "Close Conversation")}
@@ -150,7 +178,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
         on_click={@on_action}
         action="ctx_conversations_leave"
         phx-value-channel={@channel}
-        data-testid="ctx-leave"
+        testid="ctx-leave"
       >
         <:icon><Icons.icon_btn_disconnect class="w-[14px] h-[14px]" /></:icon>
         {dgettext("chat", "Leave Channel")}

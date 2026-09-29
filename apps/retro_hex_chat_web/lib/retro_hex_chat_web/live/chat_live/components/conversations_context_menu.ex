@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsContextMenu do
   import RetroHexChatWeb.Components.UI.ConversationsContextMenu
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.{CustomMenus, UnreadTracker}
+  alias RetroHexChat.Chat.{AutoJoinList, CustomMenus, UnreadTracker}
 
   @id "conversations-context-menu"
 
@@ -47,6 +47,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsContextMenu do
       assign(assigns,
         is_muted: MapSet.member?(assigns.muted_channels, key),
         has_unread: UnreadTracker.unread?(assigns.unread_counts, key),
+        is_autojoin: autojoin?(assigns.session, assigns.channel),
         custom_items: custom_items(assigns.session, assigns.type)
       )
 
@@ -60,6 +61,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsContextMenu do
         channel={@channel}
         nick={@nick}
         is_muted={@is_muted}
+        is_autojoin={@is_autojoin}
         has_unread={@has_unread}
         custom_items={@custom_items}
         on_action="conversations_context_action"
@@ -74,6 +76,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsContextMenu do
 
   defp context_key(%{channel: channel}) when is_binary(channel), do: channel
   defp context_key(_assigns), do: nil
+
+  @spec autojoin?(Session.t() | nil, String.t() | nil) :: boolean()
+  defp autojoin?(%Session{} = session, channel) when is_binary(channel) do
+    wanted = String.downcase(channel)
+
+    session.autojoin_list
+    |> AutoJoinList.entries()
+    |> Enum.any?(fn entry -> String.downcase(entry.channel_name) == wanted end)
+  end
+
+  defp autojoin?(_session, _channel), do: false
 
   @spec custom_items(Session.t() | nil, atom() | String.t()) :: list()
   defp custom_items(_session, type) when type in [:pm, "pm"], do: []

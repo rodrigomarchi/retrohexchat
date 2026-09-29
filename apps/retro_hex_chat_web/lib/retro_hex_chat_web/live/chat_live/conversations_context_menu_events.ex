@@ -4,7 +4,8 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
 
   Covers: channel_right_click, close_conversations_context_menu,
   ctx_conversations_mark_read, ctx_conversations_mute, ctx_conversations_copy_name,
-  ctx_conversations_leave, ctx_conversations_close_pm, ctx_conversations_settings.
+  ctx_conversations_leave, ctx_conversations_close_pm, ctx_conversations_settings,
+  ctx_conversations_toggle_autojoin.
 
   Attached as an `attach_hook(:conversations_context_menu_events, :handle_event, ...)` in ChatLive.mount/3.
   Returns `{:halt, socket}` when the event is handled, `{:cont, socket}` otherwise.
@@ -17,11 +18,13 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
     only: [part_channel: 2]
 
   alias RetroHexChat.Accounts.Session
+  alias RetroHexChat.Chat.AutoJoinList
   alias RetroHexChat.Chat.UnreadTracker
   alias RetroHexChat.ShareLinks
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.ChannelCentralEvents
   alias RetroHexChatWeb.ChatLive.CoreEvents
+  alias RetroHexChatWeb.ChatLive.UiActions.Autojoin
   alias RetroHexChatWeb.ShareLinkRef
 
   alias RetroHexChatWeb.ChatLive.Components.{
@@ -85,6 +88,18 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
      socket
      |> close_conversations_menu()
      |> assign(muted_channels: muted)}
+  end
+
+  # Auto-join is a property of the room, set from the room. The list it belongs
+  # to is still a list — order matters on connect and a row cannot show order —
+  # so the dialog keeps that job and this only answers whether the room is on it.
+  def handle_event("ctx_conversations_toggle_autojoin", %{"channel" => channel}, socket) do
+    socket = close_conversations_menu(socket)
+
+    action =
+      if autojoin?(socket.assigns.session, channel), do: :autojoin_remove, else: :autojoin_add
+
+    {:halt, Autojoin.handle_ui_action(socket, action, %{channel: channel, key: nil})}
   end
 
   def handle_event("ctx_conversations_copy_name", params, socket) do
@@ -178,6 +193,14 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
     )
 
     socket
+  end
+
+  defp autojoin?(%Session{} = session, channel) do
+    wanted = String.downcase(channel)
+
+    session.autojoin_list
+    |> AutoJoinList.entries()
+    |> Enum.any?(fn entry -> String.downcase(entry.channel_name) == wanted end)
   end
 
   defp conversation_key(%{"type" => "pm", "nick" => nick}) when is_binary(nick), do: "pm:#{nick}"

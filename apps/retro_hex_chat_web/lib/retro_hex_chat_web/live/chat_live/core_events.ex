@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   Covers: send_input, switch_channel, switch_pm, switch_to_status,
   close_channel_tab, close_pm_tab, close_dialog, load_more,
-  scroll_to_bottom, history_navigate, tab_complete, channel_dblclick,
+  scroll_to_bottom, history_navigate, tab_complete,
   paste_lines, paste_cancel, paste_send.
 
   Attached as `attach_hook(:core_events, :handle_event, ...)` in ChatLive.mount/3.
@@ -82,13 +82,10 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   # -- switch_channel --
 
+  # Going to a channel you are not in is joining it. That was a double click for
+  # a while, beside a single click that only switched — two gestures for one
+  # intention, and the double click had no equivalent a finger could perform.
   def handle_event("switch_channel", %{"channel" => channel}, socket) do
-    {:halt, Conversation.activate_channel(socket, channel)}
-  end
-
-  # -- channel_dblclick --
-
-  def handle_event("channel_dblclick", %{"channel" => channel}, socket) do
     session = socket.assigns.session
 
     if channel in session.channels do

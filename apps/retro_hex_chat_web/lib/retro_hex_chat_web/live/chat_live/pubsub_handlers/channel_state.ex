@@ -206,10 +206,17 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   # ── Channel calendar ──────────────────────────────────────
 
   # The card is drawn under the announcement line, which arrives on the ordinary
-  # message path — so there is nothing to insert here. What the window needs is
-  # to stop showing a calendar it has just been told is out of date.
-  def handle_info({:event_scheduled, _card}, socket) do
-    {:halt, EventEvents.refresh_window(socket)}
+  # message path — but it arrives there before the calendar entry knows which
+  # line announced it, so everyone but the scheduler resolves no card and gets a
+  # bare system line. The link is written by the time this broadcast goes out,
+  # which makes here the first moment the row can be drawn with its card. The
+  # scheduler re-renders a row that already had one; everybody else gets the one
+  # they missed.
+  def handle_info({:event_scheduled, card}, socket) do
+    {:halt,
+     socket
+     |> EventEvents.refresh_card(card.event_id)
+     |> EventEvents.refresh_window()}
   end
 
   def handle_info({:event_cancelled, card}, socket) do

@@ -1,6 +1,13 @@
 /**
- * LiveView hook for conversations sidebar channel right-click context menu,
- * nick double-click → PM, feedback toasts, and channel join flash.
+ * LiveView hook for the conversations sidebar: the row menu button, the
+ * right-click and long-press that open the same menu, feedback toasts, and the
+ * channel join flash.
+ *
+ * The button is the only one of the three a person can find without being told,
+ * so it is the one the other two are accelerators for. All three end in the
+ * same `channel_right_click` / `pm_right_click` push; the button supplies the
+ * menu's coordinates from its own rect so the menu opens on the row it belongs
+ * to rather than wherever a pointer last was.
  */
 import { findClosestWithData } from "../../lib/ui/dom.js";
 import { showFeedbackToast } from "../../lib/notifications/feedback_toast.js";
@@ -52,6 +59,19 @@ const ConversationsHook = {
       true,
     );
 
+    this.el.addEventListener(
+      "click",
+      (e) => {
+        const trigger = e.target.closest("[data-conversations-menu]");
+        if (!trigger) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        this.openRowMenu(trigger);
+      },
+      true,
+    );
+
     this._pointerDown = (e) => this.startLongPress(e);
     this._pointerMove = (e) => this.moveLongPress(e);
     this._pointerUp = (e) => this.finishLongPress(e);
@@ -87,14 +107,6 @@ const ConversationsHook = {
       }
     });
 
-    // Double-click on nick in user list → open PM
-    this.el.addEventListener("dblclick", (e) => {
-      const nick = findClosestWithData(e.target, "li[data-nick]", "nick");
-      if (nick) {
-        this.pushEvent("nicklist_dblclick", { nick });
-      }
-    });
-
     // Feedback toast from server (e.g., "Settings saved")
     this.handleEvent("feedback_toast", ({ message, duration }) => {
       showFeedbackToast(this.el, message, duration);
@@ -117,6 +129,23 @@ const ConversationsHook = {
     this.el.removeEventListener("pointermove", this._pointerMove);
     this.el.removeEventListener("pointerup", this._pointerUp);
     this.el.removeEventListener("pointercancel", this._pointerCancel);
+  },
+
+  openRowMenu(trigger) {
+    const rect = trigger.getBoundingClientRect();
+    const x = Math.round(rect.left);
+    const y = Math.round(rect.bottom);
+
+    const channel = findClosestWithData(trigger, "[data-channel]", "channel");
+    if (channel) {
+      this.pushEvent("channel_right_click", { channel, x, y });
+      return;
+    }
+
+    const nick = findClosestWithData(trigger, "[data-nick]", "nick");
+    if (nick) {
+      this.pushEvent("pm_right_click", { nick, x, y });
+    }
   },
 
   startLongPress(e) {

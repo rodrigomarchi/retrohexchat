@@ -136,4 +136,14 @@ defmodule RetroHexChat.Chat.UnreadTrackerTest do
       assert Enum.sort(keys) == ["#general", "#random"]
     end
   end
+
+  describe "total/1" do
+    test "sums every conversation, so one control outside the sidebar can carry it" do
+      assert UnreadTracker.total(%{"#lobby" => 3, "pm:alice" => 4}) == 7
+    end
+
+    test "is zero when nothing is waiting" do
+      assert UnreadTracker.total(%{}) == 0
+    end
+  end
 end

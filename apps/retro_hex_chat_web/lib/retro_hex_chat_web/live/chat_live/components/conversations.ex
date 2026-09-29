@@ -17,6 +17,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
   menu/toolbar) and arrives as `visible`. The row events (`switch_channel`,
   `switch_pm`, `conversations_toggle_section`, ...) bubble to the parent
   unchanged.
+
+  `mobile_viewport` arrives for the same reason the menu bar takes it: the
+  per-row desktop shortcuts are not rendered at a phone's width rather than
+  hidden there. A control that is invisible but still in the tab order is a
+  control a keyboard and a screen reader still find.
   """
   use RetroHexChatWeb, :live_component
 
@@ -57,6 +62,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
        conversations_sections: %{},
        channel_user_counts: %{},
        popular_channels: [],
+       mobile_viewport: false,
        nick_color_fn: fn _nick -> nil end
      )}
   end
@@ -86,6 +92,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
       :conversations_sections,
       :channel_user_counts,
       :popular_channels,
+      :mobile_viewport,
       :nick_color_fn
     ]
 
@@ -135,7 +142,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
             active_pm={@active_pm}
             channel_count={length(@channels)}
             pm_count={length(@pm_conversations)}
-            autojoin_count={length(@autojoin_entries)}
             popular_count={length(@popular_channels)}
             unread_count={@unread_total}
             on_toggle="toggle_conversations"
@@ -165,13 +171,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
           channel_user_counts={@channel_user_counts}
           popular_channels={@popular_channels}
           collapsed_sections={@collapsed_sections}
+          mobile={@mobile_viewport == true}
           on_channel_click="switch_channel"
-          on_channel_dblclick="channel_dblclick"
           on_pm_click="switch_pm"
           on_toggle_section="conversations_toggle_section"
           on_browse_channels="conversations_browse_all"
           on_join_popular="conversations_join_popular"
-          on_autojoin_open="open_autojoin_dialog"
           on_close="toggle_conversations"
         />
       </.conversations_sidebar>
