@@ -154,7 +154,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 <:action
                   event={@on_move_up}
                   value={%{"position" => entry.position}}
-                  label={dgettext("dialogs", "Move up")}
+                  label={dgettext("dialogs", "Move %{name} up", name: mask_command(entry.command))}
                   target={@target}
                   disabled={entry.position == @first_pos}
                   testid={"perform-move-up-#{entry.position}"}
@@ -164,7 +164,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 <:action
                   event={@on_move_down}
                   value={%{"position" => entry.position}}
-                  label={dgettext("dialogs", "Move down")}
+                  label={dgettext("dialogs", "Move %{name} down", name: mask_command(entry.command))}
                   target={@target}
                   disabled={entry.position == @last_pos}
                   testid={"perform-move-down-#{entry.position}"}

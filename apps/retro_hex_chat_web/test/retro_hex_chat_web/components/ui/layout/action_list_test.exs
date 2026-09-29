@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.ActionListTest do
   """
   use RetroHexChatWeb.ConnCase, async: true
 
+  import Phoenix.HTML, only: [raw: 1]
   import Phoenix.LiveViewTest
   import RetroHexChatWeb.Components.UI.ActionList
 
@@ -103,6 +104,54 @@ defmodule RetroHexChatWeb.Components.UI.ActionListTest do
       html = row(%{target: "#host", action: [action([])]})
 
       assert html =~ ~s(phx-target="#host")
+    end
+  end
+
+  describe "a control that is not a button" do
+    test "sits beside the press, because a button holds no interactive content" do
+      html =
+        row(%{
+          control: [
+            %{
+              __slot__: :control,
+              inner_block: fn _, _ -> ~s(<input type="checkbox" name="on" />) |> raw() end
+            }
+          ]
+        })
+
+      doc = Floki.parse_fragment!(html)
+
+      assert Floki.find(doc, ".action-list__primary input") == []
+      assert doc |> Floki.find(".action-list__control input") |> length() == 1
+    end
+  end
+
+  describe "row_action/1, the control a table row shares with a card row" do
+    test "carries its event, its params and its accessible name" do
+      html =
+        render_component(&row_action/1,
+          event: "remove",
+          value: %{"nickname" => "alice"},
+          label: "Remove alice",
+          inner_block: [%{inner_block: fn _, _ -> "" end, __slot__: :inner_block}]
+        )
+
+      button = html |> Floki.parse_fragment!() |> Floki.find("button")
+
+      assert Floki.attribute(button, "phx-click") == ["remove"]
+      assert Floki.attribute(button, "phx-value-nickname") == ["alice"]
+      assert Floki.attribute(button, "aria-label") == ["Remove alice"]
+      assert html =~ "sr-only"
+    end
+  end
+
+  describe "action_figure/1" do
+    test "labels the number it shows" do
+      html = render_component(&action_figure/1, label: "Users", value: 42)
+
+      assert html =~ "Users"
+      assert html =~ "42"
+      assert html =~ "action-list__figure"
     end
   end
 

@@ -38,7 +38,6 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
 
   attr :selected_word, :string, default: nil, doc: "Currently selected word text"
   attr :selected_color, :integer, default: nil, doc: "Selected color index from color picker"
-  attr :on_select, :any, default: nil, doc: "Row selection callback (receives phx-value-word)"
   attr :on_add, :any, default: nil, doc: "Add word callback"
   attr :on_edit, :any, default: nil, doc: "Edit word callback"
   attr :on_remove, :any, default: nil, doc: "Remove word callback"

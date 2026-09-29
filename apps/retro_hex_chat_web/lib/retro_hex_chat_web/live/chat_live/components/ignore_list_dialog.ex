@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
   @spec id() :: String.t()
   def id, do: @id
 
-  @initial %{selected: nil, show_add_dialog: false}
+  @initial %{show_add_dialog: false}
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
@@ -103,7 +103,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
 
       {:noreply,
        socket
-       |> assign(selected: nil)
        |> put_session(Session.set_ignore_list(session, updated_list))
        |> bubble_status(
          :system_event,

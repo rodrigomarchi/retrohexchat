@@ -10,7 +10,6 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
       <.nick_colors_panel
         id="nick-colors"
         nick_colors={@entries}
-        on_select="nick_color_select"
       />
   """
   use RetroHexChatWeb.Component
@@ -35,7 +34,6 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
   attr :palette_editing_index, :integer, default: nil, doc: "Color index in the palette editor"
   attr :show_add_dialog, :boolean, default: false
   attr :show_edit_dialog, :boolean, default: false
-  attr :on_select, :any, default: nil
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
   attr :on_remove, :any, default: nil

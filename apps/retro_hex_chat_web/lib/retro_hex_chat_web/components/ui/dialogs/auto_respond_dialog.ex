@@ -12,7 +12,6 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
         id="auto-respond"
         show={true}
         rules={@rules}
-        on_select="ar-select"
         on_add="ar-add"
         on_close="ar-close"
       />
@@ -47,7 +46,6 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   attr :draft_command, :string, default: "", doc: "Draft command for edit form"
   attr :error_message, :string, default: nil, doc: "Validation error to display in the form"
 
-  attr :on_select, :any, default: nil, doc: "Row click callback (phx-value-position)"
   attr :on_toggle, :any, default: nil, doc: "Enable checkbox callback (phx-value-position)"
   attr :on_add, :any, default: nil, doc: "Add button callback"
   attr :on_edit, :any, default: nil, doc: "Edit button callback"

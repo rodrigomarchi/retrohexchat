@@ -48,7 +48,6 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
   attr :error_message, :string, default: nil, doc: "Validation error to display in the form"
 
   attr :on_tab, :any, default: nil, doc: "Tab change callback (phx-value-tab)"
-  attr :on_select, :any, default: nil, doc: "Row click callback (phx-value-label)"
   attr :on_add, :any, default: nil, doc: "Add button callback"
   attr :on_edit, :any, default: nil, doc: "Edit button callback"
   attr :on_delete, :any, default: nil, doc: "Remove button callback"
