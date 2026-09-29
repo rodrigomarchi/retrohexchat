@@ -91,8 +91,7 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
       click(view, "perform_add")
       submit_form(view, "perform-add-dialog", %{"command" => "/join #dlgrem"})
 
-      select_perform(view, 0)
-      click(view, "perform_remove")
+      remove_perform(view, 0)
 
       html = render(view)
       refute html =~ "/join #dlgrem"
@@ -241,9 +240,9 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
     view |> element("[phx-click='#{event}']") |> render_click()
   end
 
-  defp select_perform(view, position) do
+  defp remove_perform(view, position) do
     view
-    |> element("[phx-click='perform_select'][phx-value-position='#{position}']")
+    |> element("[phx-click='perform_remove'][phx-value-position='#{position}']")
     |> render_click()
   end
 

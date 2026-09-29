@@ -714,6 +714,13 @@ defmodule RetroHexChatWeb.ShowcaseCatalog do
       icon: :icon_dialog_custom_menus
     },
     %{
+      id: "timers-dialog",
+      group: :dialogs,
+      module: Dialogs.TimersDialogPage,
+      label: dgettext_noop("showcase", "Timers"),
+      icon: :icon_clock
+    },
+    %{
       id: "sound-settings-dialog",
       group: :dialogs,
       module: Dialogs.SoundSettingsDialogPage,

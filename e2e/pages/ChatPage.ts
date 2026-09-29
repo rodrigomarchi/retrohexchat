@@ -2240,10 +2240,7 @@ export class ChatPage {
   }
 
   async editPerformCommand(command: string, replacement: string) {
-    await this.performCommandRow(command).click();
-    await this.performCommandsPanel()
-      .getByRole("button", { name: "Edit" })
-      .click();
+    await this.rowPress(this.performCommandRow(command)).click();
     await expect(this.performEditDialog).toBeVisible();
     await this.performEditDialog
       .locator("#perform-edit-input")
@@ -2254,9 +2251,8 @@ export class ChatPage {
   }
 
   async movePerformCommandUp(command: string) {
-    await this.performCommandRow(command).click();
-    await this.performCommandsPanel()
-      .getByRole("button", { name: "Up" })
+    await this.performCommandRow(command)
+      .locator('[data-testid^="perform-move-up-"]')
       .click();
   }
 

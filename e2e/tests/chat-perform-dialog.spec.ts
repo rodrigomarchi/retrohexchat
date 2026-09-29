@@ -111,8 +111,7 @@ test.describe("Perform dialog", () => {
     await chat.addAutojoinEntry(removedChannel);
 
     await chat.editAutojoinKey(keyedChannel, editedKey);
-    await chat.autojoinRow(keyedChannel).click();
-    await chat.autojoinDialog.getByRole("button", { name: "Edit" }).click();
+    await chat.rowPress(chat.autojoinRow(keyedChannel)).click();
     await expect(
       chat.autojoinEditDialog.locator("#autojoin-edit-key"),
     ).toHaveValue(editedKey);

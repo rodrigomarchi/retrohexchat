@@ -175,8 +175,10 @@ defmodule RetroHexChatWeb.TimersDialogFeatureTest do
       assert html =~ "no"
       assert html =~ "/me standup in 15 seconds"
 
-      view |> element(~s([data-testid="timer-row-remind"])) |> render_click()
-      view |> element(~s([data-testid="timers-dialog-edit"])) |> render_click()
+      # The row press opens the timer in the editor beside the list.
+      view
+      |> element(~s([data-testid="timer-row-remind"] .action-list__primary))
+      |> render_click()
 
       view
       |> element(~s([data-testid="timers-edit-form"]))
@@ -191,8 +193,7 @@ defmodule RetroHexChatWeb.TimersDialogFeatureTest do
       assert html =~ "20s"
       assert html =~ "/me updated"
 
-      view |> element(~s([data-testid="timer-row-remind"])) |> render_click()
-      view |> element(~s([data-testid="timers-dialog-stop"])) |> render_click()
+      view |> element(~s([data-testid="timers-stop-remind"])) |> render_click()
 
       html = render(view)
       refute html =~ ~s(data-testid="timer-row-remind")

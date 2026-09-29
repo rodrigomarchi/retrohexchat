@@ -277,8 +277,7 @@ test.describe.serial("UI feature shell journeys", () => {
         user.page.getByTestId(`timer-row-${timerName}`),
       ).toBeVisible();
 
-      await user.page.getByTestId(`timer-row-${timerName}`).click();
-      await user.chat.timersDialog.getByTestId("timers-dialog-stop").click();
+      await user.page.getByTestId(`timers-stop-${timerName}`).click();
       await expect(user.page.getByTestId(`timer-row-${timerName}`)).toHaveCount(
         0,
       );

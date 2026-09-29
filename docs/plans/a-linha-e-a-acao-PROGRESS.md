@@ -358,3 +358,51 @@ lápis e X por linha, `Add` no rodapé.
 - 47 testes dos seis arquivos das três tabelas, 0 falhas
 - Playwright: address-book (4), ignore (2) — 12 no total
 - `make ci` verde
+
+---
+
+## Fase 4 — os três com ação além de editar · CONCLUÍDA
+
+| diálogo | o que tinha | o que tem |
+|---|---|---|
+| **Perform** | `Edit / Remove / Up / Down` no rodapé | setas e `Remove` na linha; a posição vira o ícone da linha |
+| **Timers** | `Edit / Stop`, cinza até selecionar | toque abre o editor; `Stop` na linha |
+| **Custom Menus** | `Edit / Remove` no rodapé | toque abre o editor; `Remove` na linha |
+
+Timers ganhou a **página de showcase** que era a única faltando do grupo.
+
+### Aprendizados
+
+28. **Reordenar era mesmo a sequência mais cara.** No rodapé, subir um comando
+    custava selecionar, atravessar o diálogo, `Up`, atravessar de volta para ver.
+    Na linha é uma prensa por passo, com as setas sempre na mesma posição —
+    `disabled` na primeira e na última em vez de `:if`, ou os controles pulariam
+    de lugar entre as linhas.
+29. **`phx-value-*` como string mordeu de novo, em dois lugares.** `perform_move_up`,
+    `perform_move_down`, `perform_remove` e `perform_edit` liam
+    `socket.assigns.selected`, um inteiro; agora recebem a posição da linha, que
+    chega como texto. Mesma armadilha do `autorespond_dialog_delete` na fase
+    anterior — a terceira vez que aparece nesta migração.
+30. **Um rótulo com cor própria não segue a linha selecionada.** `Command` ficou
+    ilegível sobre o azul-marinho no Custom Menus. `.action-list__row--current`
+    precisa de um `color: inherit` para cada rótulo que pinta a si mesmo —
+    corrigido nos quatro diálogos que têm editor ao lado.
+31. **`Remove` sem sujeito é um nome inútil para leitor de tela.** No Perform
+    escrevi `label={dgettext("dialogs", "Remove")}` e três linhas ficaram com o
+    mesmo nome acessível. Passou a nomear o comando mascarado, reusando o msgid
+    `Remove %{name}` que já existia — zero string nova.
+32. **O glossário precisa rodar depois da tradução automática, não antes.** O
+    motor traduziu "Timers" como "Relógios" em pt_BR por cima do valor curado.
+    `make i18n.quality.check` pegou como *glossary drift*; a ordem certa é
+    extract → merge → machine → **glossary** → merge.
+
+### Evidência visual
+
+`perform` (badge de posição, setas com a primeira e a última desabilitadas),
+`timers` (Every/Repeat/Next como figuras, `Stop` na linha), `custom-menus`
+(rótulo legível na linha selecionada).
+
+### Validação
+
+- Playwright: perform (3), timer (3), custom-menus (2), ui-features-shell — 20
+- `make ci` verde
