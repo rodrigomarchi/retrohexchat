@@ -23,44 +23,9 @@
     inset 2px 2px #0a0a0a;
 }
 
-.pf-entry,
-.pf-entry-content,
-.pf-entry-label,
-.pf-entry-meta,
 .pf-sub-form {
   min-width: 0;
   overflow-wrap: anywhere;
-}
-
-.pf-entry {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 8px;
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #808080;
-  background: #c0c0c0;
-  color: #000000;
-  text-align: left;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
-}
-
-.pf-entry:hover {
-  background: #dfdfdf;
-}
-
-.pf-entry:focus-visible {
-  outline: 2px solid #000000;
-  outline-offset: 1px;
-}
-
-.pf-entry.bg-selection-bg {
-  background: #000080;
-  color: #ffffff;
 }
 
 .pf-entry-index {
@@ -75,27 +40,6 @@
   font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
   font-size: 12px;
   font-weight: 700;
-}
-
-.pf-entry-content {
-  display: grid;
-  gap: 3px;
-}
-
-.pf-entry-label {
-  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
-  font-size: 12px;
-  line-height: 1.35;
-}
-
-.pf-entry-meta {
-  color: #606060;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.pf-entry.bg-selection-bg .pf-entry-meta {
-  color: inherit;
 }
 
 .pf-empty-state {
@@ -135,11 +79,6 @@
 
 .desktop--stacked .pf-entry-list {
   max-height: min(42vh, 320px);
-}
-
-.desktop--stacked .pf-entry {
-  min-height: 64px;
-  padding: 9px 10px;
 }
 
 .desktop--stacked .pf-action-row,

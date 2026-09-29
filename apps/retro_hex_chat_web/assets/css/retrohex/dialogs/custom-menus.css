@@ -40,55 +40,10 @@
     inset 2px 2px #0a0a0a;
 }
 
-.cm-menu-entry,
-.cm-entry-label,
-.cm-entry-command,
 .cm-form-label,
 .cm-edit-form {
   min-width: 0;
   overflow-wrap: anywhere;
-}
-
-.cm-menu-entry {
-  display: grid;
-  grid-template-columns: minmax(112px, 0.38fr) minmax(0, 1fr);
-  gap: 6px 12px;
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #808080;
-  background: #c0c0c0;
-  color: #000000;
-  text-align: left;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
-}
-
-.cm-menu-entry:hover {
-  background: #dfdfdf;
-}
-
-.cm-menu-entry:focus-visible {
-  outline: 2px solid #000000;
-  outline-offset: 1px;
-}
-
-.cm-menu-entry.bg-selection-bg {
-  background: #000080;
-  color: #ffffff;
-}
-
-.cm-entry-label {
-  font-weight: 700;
-  line-height: 1.35;
-}
-
-.cm-entry-command {
-  display: grid;
-  gap: 2px;
-  line-height: 1.35;
 }
 
 .cm-entry-command-label {
@@ -98,14 +53,9 @@
   font-weight: 700;
 }
 
-.cm-menu-entry.bg-selection-bg .cm-entry-command-label {
-  color: inherit;
-}
-
-.cm-entry-command code {
+.cm-entry-command-label + code {
   font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
   font-size: 11px;
-  white-space: normal;
 }
 
 .cm-empty-state {
@@ -242,12 +192,6 @@
   max-height: min(42vh, 320px);
 }
 
-.desktop--stacked .cm-menu-entry {
-  grid-template-columns: minmax(0, 1fr);
-  min-height: 64px;
-  padding: 9px 10px;
-}
-
 .desktop--stacked .cm-action-row,
 .desktop--stacked .cm-form-actions,
 .desktop--stacked .cm-dialog-footer {
@@ -269,3 +213,9 @@
   font-size: 16px;
 }
 
+/* The row a side editor is open on paints white; a label with a colour of
+   its own has to follow it. */
+.action-list__row--current .cm-entry-command-label,
+.action-list__row--current .cm-entry-command-label + code {
+  color: inherit;
+}

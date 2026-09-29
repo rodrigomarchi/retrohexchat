@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Input
@@ -27,7 +28,6 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
   attr :draft_seconds, :string, default: "", doc: "Draft interval in seconds"
   attr :draft_command, :string, default: "", doc: "Draft command"
   attr :error_message, :string, default: nil, doc: "Inline form error"
-  attr :on_select, :any, default: nil, doc: "Row select event"
   attr :on_add, :any, default: nil, doc: "Add button event"
   attr :on_edit, :any, default: nil, doc: "Edit button event"
   attr :on_stop, :any, default: nil, doc: "Stop button event"
@@ -71,33 +71,47 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
                   {dgettext("dialogs", "No active timers. Click Add to schedule one.")}
                 </div>
 
-                <button
-                  :for={row <- @rows}
-                  type="button"
-                  data-testid={"timer-row-#{row.name}"}
-                  aria-pressed={row.name == @selected_timer}
-                  aria-label={row.name}
-                  class={timer_entry_class(row.name == @selected_timer)}
-                  phx-click={@on_select}
-                  phx-value-name={row.name}
+                <.action_list
+                  :if={@rows != []}
+                  id={"#{@id}-timers"}
+                  label={dgettext("dialogs", "Timers")}
                 >
-                  <span class="tm-timer-name">{row.name}</span>
-                  <span class="tm-timer-meta">
-                    <span>
-                      <span class="tm-timer-meta-label">{dgettext("dialogs", "Every")}</span>
-                      {row.interval}s
-                    </span>
-                    <span>
-                      <span class="tm-timer-meta-label">{dgettext("dialogs", "Repeat")}</span>
-                      {repeat_label(row.type)}
-                    </span>
-                    <span>
-                      <span class="tm-timer-meta-label">{dgettext("dialogs", "Next")}</span>
-                      {row.next_fire}
-                    </span>
-                  </span>
-                  <code class="tm-timer-command">{row.command}</code>
-                </button>
+                  <.action_row
+                    :for={row <- @rows}
+                    on_activate={@on_edit}
+                    value={%{"name" => row.name}}
+                    current={row.name == @selected_timer}
+                    data-testid={"timer-row-#{row.name}"}
+                  >
+                    <:title>{row.name}</:title>
+                    <:meta>
+                      <code class="tm-timer-command">{row.command}</code>
+                    </:meta>
+                    <:trailing>
+                      <.action_figure
+                        label={dgettext("dialogs", "Every")}
+                        value={"#{row.interval}s"}
+                      />
+                      <.action_figure
+                        label={dgettext("dialogs", "Repeat")}
+                        value={repeat_label(row.type)}
+                      />
+                      <.action_figure
+                        label={dgettext("dialogs", "Next")}
+                        value={row.next_fire}
+                      />
+                    </:trailing>
+                    <:action
+                      event={@on_stop}
+                      value={%{"selected" => row.name}}
+                      label={dgettext("dialogs", "Stop %{timer}", timer: row.name)}
+                      variant="destructive"
+                      testid={"timers-stop-#{row.name}"}
+                    >
+                      <Icons.icon_btn_remove class="w-4 h-4" />
+                    </:action>
+                  </.action_row>
+                </.action_list>
               </div>
 
               <p :if={@at_limit} class="tm-note text-xs text-muted-foreground">
@@ -119,29 +133,6 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
                 >
                   <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
                   {dgettext("dialogs", "Add")}
-                </.button>
-                <.button
-                  size="sm"
-                  variant="outline"
-                  phx-click={@on_edit}
-                  disabled={!@selected_active}
-                  data-testid="timers-dialog-edit"
-                  class="tm-action-button"
-                >
-                  <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-                  {dgettext("dialogs", "Edit")}
-                </.button>
-                <.button
-                  size="sm"
-                  variant="outline"
-                  phx-click={@on_stop}
-                  phx-value-selected={@selected_timer}
-                  disabled={!@selected_active}
-                  data-testid="timers-dialog-stop"
-                  class="tm-action-button"
-                >
-                  <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-                  {dgettext("dialogs", "Stop")}
                 </.button>
               </div>
             </div>
@@ -331,7 +322,4 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
   defp repeat_seconds_invalid?(_, _seconds), do: false
 
   defp repeat_min_message, do: dgettext("dialogs", "min 10s for repeating timers")
-
-  defp timer_entry_class(true), do: "tm-timer-entry bg-selection-bg text-selection-fg"
-  defp timer_entry_class(false), do: "tm-timer-entry"
 end

@@ -295,6 +295,13 @@ get fresh timers with the *remaining* duration.
 - **Composition refactors need real gates.** Preserve ids, `data-testid`, events and hooks, then run
   focused tests for the touched surface plus `make ci` before merging. If Playwright is needed,
   use the local-only E2E suite deliberately; it is not part of `make ci`.
+- **A primitive may draw structure; it may never redraw a control.** `components/ui/layout/**`
+  writes real markup — `table.ex` writes `<table>`, `action_list.ex` writes `<ul>/<li>` — and that
+  is the one place it belongs. What it must not do is hand-roll the *face* of something that
+  already exists: a span with the Win98 bevel written out in CSS instead of `shadow-retro-raised`
+  is a second button, free to drift from the first. Reach for the existing primitive even when a
+  constraint (a button cannot nest) makes it awkward; the constraint has an answer, and the
+  hand-drawn copy is not it.
 - **Enhance an existing component; never fork a parallel dialog/menu.** New channel-config and
   ChanServ tabs extend the existing Channel Central dialog; wiring specs just add a menu entry to
   an already-built dialog. **Reuse a whole stateful component across contexts via
@@ -364,6 +371,25 @@ get fresh timers with the *remaining* duration.
   because it had double click; a finger has no equivalent. An action with no subject (Add,
   Import) is not part of the list and stays in the panel's own button row. Disabled-until-selected
   is not a valid state — it is the shape this rule replaces.
+- **Two media, one rule.** A list of cards is `action_list/1` + `action_row/1`: the row is a
+  `<button>`, the verb a `<:cta>`, a second action an `<:action>`, a checkbox a `<:control>`, a
+  labelled number an `action_figure/1`. A list whose data is genuinely columnar — a ban mask, who
+  set it and when — **stays a `UI.Table`** and grows a trailing cell of `row_action/1` instead;
+  turning it into cards destroys the alignment to solve a problem the columns do not have. Both
+  media render the *same* control, which is why `row_action/1` was extracted rather than written
+  twice.
+- **A `<button>` holds no interactive content.** Actions and controls are siblings of the press,
+  never inside it — nested buttons are invalid HTML with no defined click behaviour, and a `<div
+  role="button">` only hides the problem. The same goes for a row's verb: it is a real `UI.Button`
+  beside the press, not a `<span>` wearing a bevel drawn by hand.
+- **The event carries its subject.** A handler that reads `socket.assigns.selected` acts on a
+  choice made earlier, which can be stale, and a control on a row that has left the screen points
+  at nothing. Send the identity as `phx-value-*`. It arrives as a **string** — parse it at the edge
+  when the domain keys on an integer, because `==` against the wrong type matches nothing and
+  fails silently. This bit three times during the list migration and never once failed `make ci`.
+- **A label with a colour of its own must follow the selected row.** `.action-list__row--current`
+  paints white; every `*-label` inside a row that sets its own colour needs a `color: inherit`
+  under that selector or it goes unreadable on the selection blue.
 - Respect standard visibility gates: op-only, admin-only, identified-only, never-on-self,
   disabled-when-disconnected. Admin-only affordances are fully hidden (`:if`), not grayed.
 - **The composer line belongs to the input.** Mode/format controls compete directly with typing

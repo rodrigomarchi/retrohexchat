@@ -151,3 +151,8 @@
   min-height: 112px;
 }
 
+/* The row a side editor is open on paints white; a label with a colour of
+   its own has to follow it. */
+.action-list__row--current .ar-rule-command {
+  color: inherit;
+}

@@ -56,16 +56,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.TimersDialog do
   @impl true
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
-  def handle_event("timers_select", %{"name" => name}, socket) do
-    {:noreply, assign(socket, selected: name, editing: false, error: nil)}
-  end
-
   def handle_event("timers_dialog_add", _params, socket) do
     {:noreply, assign(socket, [{:selected, nil}, {:editing, true} | draft_fields()])}
   end
 
-  def handle_event("timers_dialog_edit", _params, socket) do
-    case Map.get(socket.assigns.timers, socket.assigns.selected) do
+  # The row press names the timer and opens it in the editor beside the list.
+  def handle_event("timers_dialog_edit", %{"name" => name}, socket) do
+    socket = assign(socket, selected: name, error: nil)
+
+    case Map.get(socket.assigns.timers, name) do
       nil ->
         {:noreply, assign(socket, error: dgettext("chat", "Timer not found"))}
 
@@ -120,7 +119,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.TimersDialog do
         draft_seconds={@draft_seconds}
         draft_command={@draft_command}
         error_message={@error}
-        on_select={JS.push("timers_select", target: @myself)}
         on_add={JS.push("timers_dialog_add", target: @myself)}
         on_edit={JS.push("timers_dialog_edit", target: @myself)}
         on_stop="timers_dialog_stop"

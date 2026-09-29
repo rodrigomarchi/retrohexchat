@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Separator
@@ -35,7 +36,6 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   attr :enabled, :boolean, default: true
   attr :show_add_dialog, :boolean, default: false
   attr :show_edit_dialog, :boolean, default: false
-  attr :on_select, :any, default: nil
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
   attr :on_remove, :any, default: nil
@@ -66,7 +66,6 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
           enabled={@enabled}
           show_add_dialog={@show_add_dialog}
           show_edit_dialog={@show_edit_dialog}
-          on_select={@on_select}
           on_add={@on_add}
           on_edit={@on_edit}
           on_remove={@on_remove}
@@ -102,7 +101,6 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   attr :enabled, :boolean, default: true
   attr :show_add_dialog, :boolean, default: false
   attr :show_edit_dialog, :boolean, default: false
-  attr :on_select, :any, default: nil
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
   attr :on_remove, :any, default: nil
@@ -118,11 +116,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     last_pos = if assigns.entries != [], do: List.last(assigns.entries).position, else: nil
 
     assigns =
-      assign(assigns,
-        first_pos: first_pos,
-        last_pos: last_pos,
-        has_selection: assigns.selected != nil
-      )
+      assign(assigns, first_pos: first_pos, last_pos: last_pos)
 
     ~H"""
     <div id={@id} class="contents">
@@ -141,74 +135,60 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               {dgettext("dialogs", "No commands configured. Click Add to create one.")}
             </div>
 
-            <button
-              :for={entry <- @entries}
-              type="button"
-              data-testid="perform-command-row"
-              data-position={entry.position}
-              aria-pressed={@selected == entry.position}
-              class={row_class(@selected == entry.position)}
-              phx-click={@on_select}
-              phx-target={@target}
-              phx-value-position={entry.position}
+            <.action_list
+              :if={@entries != []}
+              id={"#{@id}-commands"}
+              label={dgettext("dialogs", "Perform")}
             >
-              <span class="pf-entry-index">{entry.position}</span>
-              <span class="pf-entry-content">
-                <span class="pf-entry-label">{mask_command(entry.command)}</span>
-                <span class="pf-entry-meta">
-                  {dgettext("dialogs", "Position")} {entry.position}
-                </span>
-              </span>
-            </button>
+              <.action_row
+                :for={entry <- @entries}
+                on_activate={@on_edit}
+                value={%{"position" => entry.position}}
+                target={@target}
+                current={@selected == entry.position}
+                data-testid="perform-command-row"
+                data-position={entry.position}
+              >
+                <:icon><span class="pf-entry-index">{entry.position}</span></:icon>
+                <:title>{mask_command(entry.command)}</:title>
+                <:action
+                  event={@on_move_up}
+                  value={%{"position" => entry.position}}
+                  label={dgettext("dialogs", "Move up")}
+                  target={@target}
+                  disabled={entry.position == @first_pos}
+                  testid={"perform-move-up-#{entry.position}"}
+                >
+                  <Icons.icon_btn_up class="w-4 h-4" />
+                </:action>
+                <:action
+                  event={@on_move_down}
+                  value={%{"position" => entry.position}}
+                  label={dgettext("dialogs", "Move down")}
+                  target={@target}
+                  disabled={entry.position == @last_pos}
+                  testid={"perform-move-down-#{entry.position}"}
+                >
+                  <Icons.icon_btn_down class="w-4 h-4" />
+                </:action>
+                <:action
+                  event={@on_remove}
+                  value={%{"position" => entry.position}}
+                  label={dgettext("dialogs", "Remove %{name}", name: mask_command(entry.command))}
+                  variant="destructive"
+                  target={@target}
+                  testid={"perform-remove-#{entry.position}"}
+                >
+                  <Icons.icon_btn_remove class="w-4 h-4" />
+                </:action>
+              </.action_row>
+            </.action_list>
           </div>
 
           <div class="pf-action-row flex gap-1">
             <.button size="sm" phx-click={@on_add} phx-target={@target} class="pf-action-button">
               <:icon><Icons.icon_btn_add /></:icon>
               {dgettext("dialogs", "Add")}
-            </.button>
-            <.button
-              size="sm"
-              phx-click={@on_edit}
-              phx-target={@target}
-              disabled={!@has_selection}
-              class="pf-action-button"
-            >
-              <:icon><Icons.icon_btn_edit /></:icon>
-              {dgettext("dialogs", "Edit")}
-            </.button>
-            <.button
-              size="sm"
-              variant="destructive"
-              phx-click={@on_remove}
-              phx-target={@target}
-              disabled={!@has_selection}
-              class="pf-action-button"
-            >
-              <:icon><Icons.icon_btn_remove /></:icon>
-              {dgettext("dialogs", "Remove")}
-            </.button>
-            <.button
-              size="sm"
-              variant="outline"
-              phx-click={@on_move_up}
-              phx-target={@target}
-              disabled={!@has_selection || @selected == @first_pos}
-              class="pf-action-button"
-            >
-              <:icon><Icons.icon_btn_up /></:icon>
-              {dgettext("dialogs", "Up")}
-            </.button>
-            <.button
-              size="sm"
-              variant="outline"
-              phx-click={@on_move_down}
-              phx-target={@target}
-              disabled={!@has_selection || @selected == @last_pos}
-              class="pf-action-button"
-            >
-              <:icon><Icons.icon_btn_down /></:icon>
-              {dgettext("dialogs", "Down")}
             </.button>
           </div>
 
@@ -397,8 +377,4 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     |> String.replace(~r{(?i)(identify|ns identify|nickserv identify)\s+\S+}, "\\1 ***")
     |> String.replace(~r{(?i)(msg\s+nickserv\s+identify)\s+\S+}, "\\1 ***")
   end
-
-  @spec row_class(boolean()) :: String.t()
-  defp row_class(true), do: "pf-entry bg-selection-bg text-selection-fg"
-  defp row_class(false), do: "pf-entry"
 end

@@ -108,7 +108,7 @@ defmodule RetroHexChatWeb.ChatLive.CustomMenusEvents do
   end
 
   def handle_event("custom_menu_dialog_delete", params, socket) do
-    selected = params["selected"]
+    selected = params["label"] || params["selected"]
     tab = String.to_existing_atom(params["tab"])
 
     if selected do

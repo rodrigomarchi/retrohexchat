@@ -83,14 +83,16 @@ test.describe("Dialog keyboard behavior", () => {
     await page.locator("#highlight-word-input").fill(savedWord);
     await page.locator("#highlight-word-input").press("Enter");
     await expect(highlightAddForm).toBeHidden();
-    await expect(chat.highlightDialog.getByText(savedWord)).toBeVisible();
+    // The row, not "anything mentioning the word": the remove button's
+    // accessible name carries it too.
+    await expect(chat.highlightWordRow(savedWord)).toBeVisible();
 
     await chat.highlightDialog.getByRole("button", { name: "Add" }).click();
     await expect(highlightAddForm).toBeVisible();
     await page.locator("#highlight-word-input").fill(cancelledWord);
     await page.keyboard.press("Escape");
     await expect(highlightAddForm).toBeHidden();
-    await expect(chat.highlightDialog.getByText(cancelledWord)).toHaveCount(0);
+    await expect(chat.highlightWordRow(cancelledWord)).toHaveCount(0);
 
     await chat.highlightDialog.getByRole("button", { name: "OK" }).click();
     await expect(chat.highlightDialog).toBeHidden();

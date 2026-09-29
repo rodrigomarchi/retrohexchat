@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
 
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Tabs
+  import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
 
@@ -77,7 +78,6 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
           draft_command={@draft_command}
           error_message={@error_message}
           on_tab={@on_tab}
-          on_select={@on_select}
           on_add={@on_add}
           on_edit={@on_edit}
           on_delete={@on_delete}
@@ -103,7 +103,6 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
   attr :draft_command, :any, default: nil
   attr :error_message, :any, default: nil
   attr :on_tab, :any, default: nil
-  attr :on_select, :any, default: nil
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
   attr :on_delete, :any, default: nil
@@ -170,7 +169,6 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
                 draft_label={@draft_label}
                 draft_command={@draft_command}
                 error_message={@error_message}
-                on_select={@on_select}
                 on_add={@on_add}
                 on_edit={@on_edit}
                 on_delete={@on_delete}
@@ -189,7 +187,6 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
                 draft_label={@draft_label}
                 draft_command={@draft_command}
                 error_message={@error_message}
-                on_select={@on_select}
                 on_add={@on_add}
                 on_edit={@on_edit}
                 on_delete={@on_delete}
@@ -208,7 +205,6 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
                 draft_label={@draft_label}
                 draft_command={@draft_command}
                 error_message={@error_message}
-                on_select={@on_select}
                 on_add={@on_add}
                 on_edit={@on_edit}
                 on_delete={@on_delete}
@@ -239,7 +235,6 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
   attr :draft_label, :string, default: ""
   attr :draft_command, :string, default: ""
   attr :error_message, :string, default: nil
-  attr :on_select, :any, default: nil
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
   attr :on_delete, :any, default: nil
@@ -259,49 +254,42 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
             {dgettext("dialogs", "No custom menu entries yet.")}
           </div>
 
-          <button
-            :for={entry <- @entries}
-            type="button"
-            data-testid="custom-menu-row"
-            data-menu-type={entry.menu_type}
-            data-menu-label={entry.label}
-            aria-pressed={@selected_item == entry.label}
-            class={row_class("cm-menu-entry", @selected_item == entry.label)}
-            phx-click={@on_select}
-            phx-value-label={entry.label}
+          <.action_list
+            :if={@entries != []}
+            id={"#{@id}-entries"}
+            label={dgettext("dialogs", "Custom Menus")}
           >
-            <span class="cm-entry-label">{entry.label}</span>
-            <span class="cm-entry-command">
-              <span class="cm-entry-command-label">{dgettext("dialogs", "Command")}</span>
-              <code>{entry.command}</code>
-            </span>
-          </button>
+            <.action_row
+              :for={entry <- @entries}
+              on_activate={@on_edit}
+              value={%{"label" => entry.label}}
+              current={@selected_item == entry.label}
+              data-testid="custom-menu-row"
+              data-menu-type={entry.menu_type}
+              data-menu-label={entry.label}
+            >
+              <:title>{entry.label}</:title>
+              <:meta>
+                <span class="cm-entry-command-label">{dgettext("dialogs", "Command")}</span>
+                <code>{entry.command}</code>
+              </:meta>
+              <:action
+                event={@on_delete}
+                value={%{"label" => entry.label}}
+                label={dgettext("dialogs", "Remove %{name}", name: entry.label)}
+                variant="destructive"
+                testid={"custom-menu-remove-#{entry.label}"}
+              >
+                <Icons.icon_btn_remove class="w-4 h-4" />
+              </:action>
+            </.action_row>
+          </.action_list>
         </div>
 
         <div class="cm-action-row flex gap-retro-4">
           <.button size="sm" variant="outline" phx-click={@on_add} class="cm-action-button">
             <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
             {dgettext("dialogs", "Add")}
-          </.button>
-          <.button
-            size="sm"
-            variant="outline"
-            phx-click={@on_edit}
-            disabled={@selected_item == nil}
-            class="cm-action-button"
-          >
-            <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Edit")}
-          </.button>
-          <.button
-            size="sm"
-            variant="outline"
-            phx-click={@on_delete}
-            disabled={@selected_item == nil}
-            class="cm-action-button"
-          >
-            <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Remove")}
           </.button>
         </div>
       </div>
@@ -380,7 +368,4 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
   defp filter_entries(entries, menu_type) do
     Enum.filter(entries, &(Map.get(&1, :menu_type) == menu_type))
   end
-
-  defp row_class(base, true), do: "#{base} bg-selection-bg text-selection-fg"
-  defp row_class(base, false), do: base
 end

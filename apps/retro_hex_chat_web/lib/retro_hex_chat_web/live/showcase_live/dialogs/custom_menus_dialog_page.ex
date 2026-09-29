@@ -86,7 +86,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.CustomMenusDialogPage do
           entries=&#123;@entries&#125;
           active_tab=&#123;:nicklist&#125;
           on_tab="cm-tab"
-          on_select="cm-select"
           on_add="cm-add"
           on_edit="cm-edit"
           on_delete="cm-delete"

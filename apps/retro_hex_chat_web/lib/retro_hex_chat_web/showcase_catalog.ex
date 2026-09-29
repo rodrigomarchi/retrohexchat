@@ -581,13 +581,6 @@ defmodule RetroHexChatWeb.ShowcaseCatalog do
       icon: :icon_group_view
     },
     %{
-      id: "config-form",
-      group: :shell,
-      module: Shell.ConfigFormPage,
-      label: dgettext_noop("showcase", "Config Form"),
-      icon: :icon_btn_settings
-    },
-    %{
       id: "confirm-dialog",
       group: :dialogs,
       module: Dialogs.ConfirmDialogPage,

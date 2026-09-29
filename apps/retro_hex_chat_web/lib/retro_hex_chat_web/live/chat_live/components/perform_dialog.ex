@@ -51,10 +51,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
-  def handle_event("perform_select", %{"position" => pos}, socket) do
-    {:noreply, assign(socket, selected: String.to_integer(pos))}
-  end
-
   # ── Sub-form open/close ──────────────────────────────────────────
 
   def handle_event("perform_add", _params, socket) do
@@ -65,12 +61,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
     {:noreply, assign(socket, show_add_dialog: false)}
   end
 
-  def handle_event("perform_edit", _params, socket) do
-    if socket.assigns.selected do
-      {:noreply, assign(socket, show_edit_dialog: true)}
-    else
-      {:noreply, socket}
-    end
+  # The row press names the command and opens it.
+  def handle_event("perform_edit", %{"position" => pos}, socket) do
+    {:noreply, assign(socket, selected: position(pos), show_edit_dialog: true)}
   end
 
   def handle_event("close_perform_edit", _params, socket) do
@@ -122,8 +115,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
     end
   end
 
-  def handle_event("perform_remove", _params, socket) do
-    position = socket.assigns.selected
+  def handle_event("perform_remove", %{"position" => pos}, socket) do
+    position = position(pos)
     session = socket.assigns.session
 
     with true <- position != nil,
@@ -137,12 +130,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
     end
   end
 
-  def handle_event("perform_move_up", _params, socket) do
-    {:noreply, move(socket, -1)}
+  def handle_event("perform_move_up", %{"position" => pos}, socket) do
+    {:noreply, move(socket, position(pos), -1)}
   end
 
-  def handle_event("perform_move_down", _params, socket) do
-    {:noreply, move(socket, +1)}
+  def handle_event("perform_move_down", %{"position" => pos}, socket) do
+    {:noreply, move(socket, position(pos), +1)}
   end
 
   def handle_event("perform_toggle_enabled", _params, socket) do
@@ -173,7 +166,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
         enabled={@enabled}
         show_add_dialog={@show_add_dialog}
         show_edit_dialog={@show_edit_dialog}
-        on_select="perform_select"
         on_add="perform_add"
         on_edit="perform_edit"
         on_remove="perform_remove"
@@ -188,8 +180,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
 
   # ── Internal helpers ─────────────────────────────────────────────
 
-  defp move(socket, delta) do
-    position = socket.assigns.selected
+  defp move(socket, position, delta) do
     session = socket.assigns.session
     target = if position, do: position + delta, else: nil
 
@@ -220,4 +211,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
     send(self(), {:perform_system_error, message})
     socket
   end
+
+  # A row sends its position as a `phx-value-*` string; the list keys on the
+  # integer.
+  @spec position(term()) :: integer() | nil
+  defp position(value) when is_integer(value), do: value
+
+  defp position(value) when is_binary(value) do
+    case Integer.parse(value) do
+      {position, _rest} -> position
+      :error -> nil
+    end
+  end
+
+  defp position(_other), do: nil
 end

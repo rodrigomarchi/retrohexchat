@@ -43,70 +43,12 @@
     inset 2px 2px #0a0a0a;
 }
 
-.tm-timer-entry,
-.tm-timer-name,
-.tm-timer-meta,
 .tm-timer-command,
 .tm-edit-form,
 .tm-note,
 .tm-error {
   min-width: 0;
   overflow-wrap: anywhere;
-}
-
-.tm-timer-entry {
-  display: grid;
-  gap: 6px;
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #808080;
-  background: #c0c0c0;
-  color: #000000;
-  text-align: left;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
-}
-
-.tm-timer-entry:hover {
-  background: #dfdfdf;
-}
-
-.tm-timer-entry:focus-visible {
-  outline: 2px solid #000000;
-  outline-offset: 1px;
-}
-
-.tm-timer-entry.bg-selection-bg {
-  background: #000080;
-  color: #ffffff;
-}
-
-.tm-timer-name {
-  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.35;
-}
-
-.tm-timer-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 10px;
-  color: #606060;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.tm-timer-entry.bg-selection-bg .tm-timer-meta {
-  color: inherit;
-}
-
-.tm-timer-meta-label {
-  margin-right: 3px;
-  text-transform: uppercase;
 }
 
 .tm-timer-command {
@@ -192,11 +134,6 @@
   flex: 0 0 auto;
 }
 
-.desktop--stacked .tm-timer-entry {
-  min-height: 74px;
-  padding: 9px 10px;
-}
-
 .desktop--stacked .tm-edit-form {
   width: 100%;
   max-height: none;
@@ -229,3 +166,8 @@
   min-height: 112px;
 }
 
+/* The row a side editor is open on paints white; a label with a colour of
+   its own has to follow it. */
+.action-list__row--current .tm-timer-command {
+  color: inherit;
+}

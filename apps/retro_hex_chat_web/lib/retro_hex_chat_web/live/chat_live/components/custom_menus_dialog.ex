@@ -58,10 +58,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialog do
     {:noreply, assign(socket, tab: String.to_existing_atom(tab), selected: nil, editing: false)}
   end
 
-  def handle_event("custom_menu_select", %{"label" => label}, socket) do
-    {:noreply, assign(socket, selected: label, editing: false)}
-  end
-
   def handle_event("custom_menu_dialog_add", _params, socket) do
     {:noreply,
      assign(socket,
@@ -73,17 +69,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialog do
      )}
   end
 
-  def handle_event("custom_menu_dialog_edit", _params, socket) do
+  # The row press names the entry and opens it in the editor beside the list.
+  def handle_event("custom_menu_dialog_edit", %{"label" => label}, socket) do
     entry =
-      socket.assigns.selected &&
-        Enum.find(
-          entries(socket.assigns.custom_menus, socket.assigns.tab),
-          &(&1.label == socket.assigns.selected)
-        )
+      Enum.find(entries(socket.assigns.custom_menus, socket.assigns.tab), &(&1.label == label))
 
     if entry do
       {:noreply,
        assign(socket,
+         selected: entry.label,
          editing: true,
          draft_label: entry.label,
          draft_command: entry.command,
@@ -120,7 +114,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialog do
         draft_command={@draft_command}
         error_message={@error}
         on_tab={JS.push("custom_menus_tab", target: @myself)}
-        on_select={JS.push("custom_menu_select", target: @myself)}
         on_add={JS.push("custom_menu_dialog_add", target: @myself)}
         on_edit={JS.push("custom_menu_dialog_edit", target: @myself)}
         on_save={JS.push("custom_menu_dialog_save", value: %{selected: @selected, tab: @tab})}
