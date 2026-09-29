@@ -66,10 +66,7 @@ msgstr "Een nuttige bot"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:64
 #, elixir-autogen, elixir-format
-msgid ""
-"A retro-styled IRC chat platform inspired by the classic desktop chat "
-"clients of the late '90s. Real-time messaging, channels, peer-to-peer "
-"sessions, and arcade games — all in the browser."
+msgid "A retro-styled IRC chat platform inspired by the classic desktop chat clients of the late '90s. Real-time messaging, channels, peer-to-peer sessions, and arcade games — all in the browser."
 msgstr ""
 "Een retro-achtige IRC chat platform geïnspireerd door de klassieke desktop "
 "chat clients van de late jaren '90. Real-time messaging, kanalen, peer-to-"
@@ -93,8 +90,8 @@ msgstr "Acties"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:621
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:678
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:731
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:539
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1172
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:535
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1155
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:284
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:184
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:325
@@ -118,12 +115,12 @@ msgstr "Alias toevoegen"
 msgid "Add Auto-Join Channel"
 msgstr "Automatisch kanaal toevoegen"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1239
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1211
 #, elixir-autogen, elixir-format
 msgid "Add Ban"
 msgstr "Ban toevoegen"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1240
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1212
 #, elixir-autogen, elixir-format
 msgid "Add Ban Exception"
 msgstr "Ban-uitzondering toevoegen"
@@ -153,7 +150,7 @@ msgstr "Woord markeren"
 msgid "Add Ignore Entry"
 msgstr "Item negeren toevoegen"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1241
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1213
 #, elixir-autogen, elixir-format
 msgid "Add Invite Exception"
 msgstr "Uitzondering toevoegen"
@@ -213,7 +210,7 @@ msgstr "Antispam (detectie dupliceren)"
 msgid "Apply"
 msgstr "Toepassen"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1020
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1001
 #, elixir-autogen, elixir-format
 msgid "Apply Modes"
 msgstr "Modi toepassen"
@@ -258,12 +255,12 @@ msgstr "Achtergrondkleur (facultatief):"
 msgid "Background Color:"
 msgstr "Achtergrondkleur:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1228
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1200
 #, elixir-autogen, elixir-format
 msgid "Ban Exc."
 msgstr "Ban Exc."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1227
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1199
 #, elixir-autogen, elixir-format
 msgid "Bans"
 msgstr "Verbod"
@@ -299,9 +296,9 @@ msgstr "Buddy Online"
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:361
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:120
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:190
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:429
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:628
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:704
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:418
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:609
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:685
 #: lib/retro_hex_chat_web/components/ui/dialogs/confirm_dialog.ex:48
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:370
 #: lib/retro_hex_chat_web/components/ui/dialogs/delete_confirm_dialog.ex:80
@@ -373,8 +370,8 @@ msgstr "Kanaaluitnodiging"
 msgid "Channel Message"
 msgstr "Kanaalbericht"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:946
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1026
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:927
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1007
 #, elixir-autogen, elixir-format
 msgid "Channel Modes"
 msgstr "Kanaalmodi"
@@ -382,6 +379,7 @@ msgstr "Kanaalmodi"
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:60
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:299
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:434
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:80
 #: lib/retro_hex_chat_web/components/ui/system/app_info_panel.ex:55
 #, elixir-autogen, elixir-format
 msgid "Channels"
@@ -401,8 +399,8 @@ msgid "Clear"
 msgstr "Wissen"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:78
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:592
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:661
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:573
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:642
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:76
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:229
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:546
@@ -441,9 +439,7 @@ msgstr "Opdrachten"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:96
 #, elixir-autogen, elixir-format
-msgid ""
-"Configure limits to prevent message flooding in channels and private "
-"messages."
+msgid "Configure limits to prevent message flooding in channels and private messages."
 msgstr ""
 "Bepaal limieten om overstroming van berichten in kanalen en privéberichten "
 "te voorkomen."
@@ -477,7 +473,7 @@ msgid "Create New Bot"
 msgstr "Nieuwe bot aanmaken"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:407
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:745
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:726
 #, elixir-autogen, elixir-format
 msgid "Created"
 msgstr "Aangemaakt"
@@ -665,7 +661,7 @@ msgstr "Verlopen"
 msgid "Expires"
 msgstr "Verloopt"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:57
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:51
 #, elixir-autogen, elixir-format
 msgid "Filter channels..."
 msgstr "Filterkanalen..."
@@ -681,7 +677,7 @@ msgid "Flood Protection"
 msgstr "Bescherming tegen overstromingen"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:291
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:123
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:119
 #, elixir-autogen, elixir-format
 msgid "General"
 msgstr "Algemeen"
@@ -723,7 +719,7 @@ msgstr "Woorden markeren"
 msgid "Highlight/Mention"
 msgstr "Oplichten/Mention"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:603
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:584
 #, elixir-autogen, elixir-format
 msgid "Hostmask"
 msgstr "Hostmasker"
@@ -733,13 +729,13 @@ msgstr "Hostmasker"
 msgid "Ignore"
 msgstr "Negeren"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1229
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1201
 #, elixir-autogen, elixir-format
 msgid "Invite Exc."
 msgstr "Uitnodigen Excl."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:965
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1036
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:946
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1017
 #, elixir-autogen, elixir-format
 msgid "Invite Only (+i)"
 msgstr "Alleen uitnodigen (+i)"
@@ -749,7 +745,7 @@ msgstr "Alleen uitnodigen (+i)"
 msgid "Invites"
 msgstr "Uitnodigingen"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:162
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:91
 #: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:91
 #, elixir-autogen, elixir-format
 msgid "Join"
@@ -762,8 +758,8 @@ msgstr "Deelnemen"
 msgid "Key"
 msgstr "Toets"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:986
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1048
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:967
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1029
 #, elixir-autogen, elixir-format
 msgid "Key (+k)"
 msgstr "Sleutel (+k)"
@@ -791,8 +787,8 @@ msgstr "Laatst gezien"
 msgid "Leave empty if no key"
 msgstr "leeg laten als er geen sleutel is"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1004
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1055
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:985
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1036
 #, elixir-autogen, elixir-format
 msgid "Limit (+l)"
 msgstr "Maximumhoeveelheid (+l)"
@@ -802,13 +798,13 @@ msgstr "Maximumhoeveelheid (+l)"
 msgid "LiveView"
 msgstr "LiveView"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1113
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1137
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1091
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1107
 #, elixir-autogen, elixir-format
 msgid "Mask"
 msgstr "Masker"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:749
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:730
 #, elixir-autogen, elixir-format
 msgid "Members"
 msgstr "Leden"
@@ -838,8 +834,8 @@ msgstr "Berichtenstroom"
 msgid "Messages"
 msgstr "Berichten"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:956
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1030
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:937
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1011
 #, elixir-autogen, elixir-format
 msgid "Moderated (+m)"
 msgstr "Matig (+m)"
@@ -851,7 +847,7 @@ msgstr "Matig (+m)"
 msgid "Moderation"
 msgstr "Moderatie"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:133
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:129
 #, elixir-autogen, elixir-format
 msgid "Modes"
 msgstr "Modi"
@@ -889,7 +885,7 @@ msgstr "Nieuw"
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:159
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:278
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:387
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:520
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:516
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:105
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:126
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:234
@@ -909,8 +905,8 @@ msgstr "Nicklijst"
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:184
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:44
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:391
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:463
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:486
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:452
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:470
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:173
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:114
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:180
@@ -943,12 +939,12 @@ msgstr "Geen aliassen geconfigureerd. Klik op \"Toevoegen\" om er een te maken."
 msgid "No auto-join channels. Click Add to create one."
 msgstr "Geen automatische kanalen. Klik op Toevoegen om er een te maken."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1233
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1205
 #, elixir-autogen, elixir-format
 msgid "No ban exceptions set."
 msgstr "Geen uitzonderingen op het verbod."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1232
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1204
 #, elixir-autogen, elixir-format
 msgid "No bans set on this channel."
 msgstr "Geen verbod op dit kanaal."
@@ -964,7 +960,7 @@ msgstr "Geen mogelijkheden ingesteld"
 msgid "No channels assigned"
 msgstr "Geen kanalen toegewezen"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:83
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:77
 #, elixir-autogen, elixir-format
 msgid "No channels found"
 msgstr "Geen kanalen gevonden"
@@ -1001,7 +997,7 @@ msgid "No ignored users. Click Add to ignore a nickname."
 msgstr ""
 "Geen genegeerde gebruikers. Klik op Toevoegen om een bijnaam te negeren."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1234
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1206
 #, elixir-autogen, elixir-format
 msgid "No invite exceptions set."
 msgstr "Geen uitnodiging uitzonderingen ingesteld."
@@ -1016,10 +1012,10 @@ msgstr "Geen lopende uitnodigingen."
 msgid "No shortcuts defined."
 msgstr "Geen sneltoetsen gedefinieerd."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:763
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:787
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:196
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:197
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:744
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:768
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:156
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:157
 #, elixir-autogen, elixir-format
 msgid "No topic set"
 msgstr "Geen onderwerp ingesteld"
@@ -1063,7 +1059,7 @@ msgstr "Lijst aanmelden"
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:182
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:262
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:350
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:617
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:598
 #: lib/retro_hex_chat_web/components/ui/dialogs/confirm_dialog.ex:47
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:224
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:85
@@ -1170,8 +1166,8 @@ msgstr "RSS"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:589
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:662
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:723
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:554
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1183
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:458
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1099
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:304
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:207
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:80
@@ -1219,7 +1215,7 @@ msgstr "Uitvoeren"
 msgid "Save"
 msgstr "Opslaan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:776
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:757
 #, elixir-autogen, elixir-format
 msgid "Save Topic"
 msgstr "Onderwerp opslaan"
@@ -1232,7 +1228,7 @@ msgstr "Planner"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:111
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:111
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:65
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:59
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:174
 #, elixir-autogen, elixir-format
 msgid "Search"
@@ -1243,7 +1239,7 @@ msgstr "Zoeken"
 msgid "Search URLs..."
 msgstr "URL-adressen doorzoeken..."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:76
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:70
 #, elixir-autogen, elixir-format
 msgid "Searching..."
 msgstr "Zoeken..."
@@ -1253,27 +1249,27 @@ msgstr "Zoeken..."
 msgid "Send All"
 msgstr "Alles verzenden"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1118
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1149
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1096
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1119
 #, elixir-autogen, elixir-format
 msgid "Set At"
 msgstr "Instellen op"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1115
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1143
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1093
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1113
 #, elixir-autogen, elixir-format
 msgid "Set By"
 msgstr "Geselecteerd op"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:770
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:795
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:751
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:776
 #, elixir-autogen, elixir-format
 msgid "Set by %{nick}"
 msgstr "Instellen op %{nick}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:245
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:275
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:313
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:302
 #, elixir-autogen, elixir-format
 msgid "Since"
 msgstr "Sinds"
@@ -1294,7 +1290,7 @@ msgid "Sound Settings"
 msgstr "Geluidsinstellingen"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:650
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:300
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:289
 #: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:51
 #, elixir-autogen, elixir-format
 msgid "Status"
@@ -1307,8 +1303,7 @@ msgstr "Het commando dat dit antwoord activeert (bijv. !hallo)"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:71
 #, elixir-autogen, elixir-format
-msgid ""
-"This nickname is registered. Please enter the NickServ password to identify."
+msgid "This nickname is registered. Please enter the NickServ password to identify."
 msgstr ""
 "Deze bijnaam is geregistreerd. Voer het NickServ-wachtwoord in om te "
 "identificeren."
@@ -1319,14 +1314,14 @@ msgstr ""
 msgid "Time"
 msgstr "Tijd"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:758
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:782
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:739
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:763
 #, elixir-autogen, elixir-format
 msgid "Topic"
 msgstr "Onderwerp"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:974
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1042
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:955
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1023
 #, elixir-autogen, elixir-format
 msgid "Topic Lock (+t)"
 msgstr "Onderwerp vergrendelen (+t)"
@@ -1367,8 +1362,8 @@ msgstr "URL"
 msgid "URL Catcher"
 msgstr "URL-vanger"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:747
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1268
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:728
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1235
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:839
 #, elixir-autogen, elixir-format
 msgid "Unknown"
@@ -1406,7 +1401,7 @@ msgid "User Left"
 msgstr "Gebruiker links"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:61
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:118
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:109
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "Gebruikers"
@@ -1423,8 +1418,7 @@ msgstr "Versie %{version}"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:74
 #, elixir-autogen, elixir-format
-msgid ""
-"Warning: This exceeds the flood protection limit. Messages may be throttled."
+msgid "Warning: This exceeds the flood protection limit. Messages may be throttled."
 msgstr ""
 "Waarschuwing: Dit overschrijdt de overstromingsgrens. Berichten kunnen "
 "worden gedwarsboomd."
@@ -1449,17 +1443,17 @@ msgstr "U staat op het punt %{count} tekst te versturen."
 msgid "You have been invited to join the following channels:"
 msgstr "U bent uitgenodigd om deel te nemen aan de volgende kanalen:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1060
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1041
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to change modes."
 msgstr "U moet een kanaaloperator zijn om van modus te veranderen."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:799
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:780
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to edit the topic."
 msgstr "U moet een kanaaloperator zijn om het onderwerp te bewerken."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1188
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1160
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to manage this list."
 msgstr "U moet een kanaaloperator zijn om deze lijst te beheren."
@@ -1499,8 +1493,8 @@ msgstr "verbonden"
 msgid "messages"
 msgstr "berichten"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:771
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:796
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:752
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:777
 #, elixir-autogen, elixir-format
 msgid "on %{date}"
 msgstr "op %{date}"
@@ -1517,7 +1511,7 @@ msgstr "afscheid"
 msgid "seconds"
 msgstr "seconden"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1049
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1030
 #, elixir-autogen, elixir-format
 msgid "set"
 msgstr "ingesteld"
@@ -1559,13 +1553,13 @@ msgstr "Timer toevoegen"
 msgid "Add access"
 msgstr "Toegang toevoegen"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:466
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:492
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:455
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:476
 #, elixir-autogen, elixir-format
 msgid "Added By"
 msgstr "Toegevoegd door"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:535
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:531
 #, elixir-autogen, elixir-format
 msgid "Adding..."
 msgstr "Optellen..."
@@ -1580,12 +1574,12 @@ msgstr "Toewijzingen"
 msgid "Announce"
 msgstr "Aankondiging"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:880
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:861
 #, elixir-autogen, elixir-format
 msgid "Apply Throttle"
 msgstr "Toepassen Throttle"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:401
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:390
 #, elixir-autogen, elixir-format
 msgid "Are you sure you want to drop %{channel}? This cannot be undone."
 msgstr ""
@@ -1674,12 +1668,12 @@ msgstr "Clear Bio"
 msgid "Clear MOTD"
 msgstr "MOTD wissen"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:833
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:814
 #, elixir-autogen, elixir-format
 msgid "Clear Welcome"
 msgstr "Welkomstwoord wissen"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:418
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:407
 #, elixir-autogen, elixir-format
 msgid "Confirm Drop"
 msgstr "Drop bevestigen"
@@ -1746,8 +1740,7 @@ msgstr "Kanaal verwijderen"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:154
 #, elixir-autogen, elixir-format
-msgid ""
-"Deletes this nickname registration after you confirm with its password."
+msgid "Deletes this nickname registration after you confirm with its password."
 msgstr ""
 "Verwijdert deze bijnaam registratie nadat u bevestigt met het wachtwoord."
 
@@ -1762,7 +1755,7 @@ msgid "Disconnect a stale session that is holding a registered nickname."
 msgstr "Verbreek een oude sessie met een geregistreerde bijnaam."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:178
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:393
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:382
 #, elixir-autogen, elixir-format
 msgid "Drop Registration"
 msgstr "Inschrijving laten vallen"
@@ -1780,7 +1773,7 @@ msgstr "Registratie laten vallen"
 msgid "Drop registration..."
 msgstr "Geen registratie..."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:414
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:403
 #, elixir-autogen, elixir-format
 msgid "Dropping..."
 msgstr "Dropping..."
@@ -1809,9 +1802,7 @@ msgstr "Einde sessie"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex:96
 #, elixir-autogen, elixir-format
-msgid ""
-"End the P2P session with %{peer}? Any call, game or file transfer in "
-"progress will stop."
+msgid "End the P2P session with %{peer}? Any call, game or file transfer in progress will stop."
 msgstr ""
 "De P2P-sessie beëindigen met %{peer}? Elk gesprek, spel of "
 "bestandsoverdracht in uitvoering zal stoppen."
@@ -1831,7 +1822,7 @@ msgstr "Elke"
 msgid "File transfers stop"
 msgstr "Stoppen met bestandsoverdrachten"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:309
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:298
 #, elixir-autogen, elixir-format
 msgid "Founder"
 msgstr "Oprichter"
@@ -1899,8 +1890,8 @@ msgstr "Uitnodigen naar kanaal"
 msgid "Inviting"
 msgstr "Uitnodigen"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:866
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:887
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:847
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:868
 #, elixir-autogen, elixir-format
 msgid "Join throttle (seconds)"
 msgstr "Doe gaspedaal (seconden)"
@@ -1991,7 +1982,7 @@ msgstr "NickServ admin"
 msgid "NickServ info"
 msgstr "NickServ-info"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:502
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:498
 #, elixir-autogen, elixir-format
 msgid "No %{level} entries"
 msgstr "Geen %{level} items"
@@ -2006,13 +1997,13 @@ msgstr "Er is geen MOTD ingesteld."
 msgid "No active timers. Click Add to schedule one."
 msgstr "Geen actieve timers. Klik op Toevoegen aan schema 1."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:815
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:847
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:796
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:828
 #, elixir-autogen, elixir-format
 msgid "No welcome message set."
 msgstr "Geen welkomstbericht ingesteld."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:305
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:294
 #, elixir-autogen, elixir-format
 msgid "Not registered"
 msgstr "Niet geregistreerd"
@@ -2022,7 +2013,7 @@ msgstr "Niet geregistreerd"
 msgid "Online only"
 msgstr "Alleen online"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:325
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:314
 #, elixir-autogen, elixir-format
 msgid "Only channel operators can register this channel."
 msgstr "Alleen kanaaloperators kunnen dit kanaal registreren."
@@ -2096,8 +2087,8 @@ msgstr "Voorbeeld verversen"
 msgid "Register"
 msgstr "Registreren"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:365
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:375
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:354
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:364
 #, elixir-autogen, elixir-format
 msgid "Register Channel"
 msgstr "Kanaal registreren"
@@ -2107,18 +2098,18 @@ msgstr "Kanaal registreren"
 msgid "Register this nickname"
 msgstr "Deze bijnaam registreren"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:304
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:293
 #, elixir-autogen, elixir-format
 msgid "Registered"
 msgstr "Geregistreerd"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:361
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:350
 #, elixir-autogen, elixir-format
 msgid "Registering..."
 msgstr "Registreren..."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_server_settings_dialog.ex:116
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:153
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:149
 #, elixir-autogen, elixir-format
 msgid "Registration"
 msgstr "Registratie"
@@ -2128,11 +2119,6 @@ msgstr "Registratie"
 #, elixir-autogen, elixir-format
 msgid "Remove access"
 msgstr "Toegang verwijderen"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:550
-#, elixir-autogen, elixir-format
-msgid "Removing..."
-msgstr "Verwijderen..."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:262
 #, elixir-autogen, elixir-format
@@ -2154,7 +2140,7 @@ msgstr "Herhalen"
 msgid "Repeating timer"
 msgstr "Herhaaltijd"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:161
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:90
 #, elixir-autogen, elixir-format
 msgid "Request Access..."
 msgstr "Toegang aanvragen..."
@@ -2175,7 +2161,7 @@ msgstr "Wachtwoord resetten"
 msgid "Save Bio"
 msgstr "Bio opslaan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:822
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:803
 #, elixir-autogen, elixir-format
 msgid "Save Welcome"
 msgstr "Welkomstwoord opslaan"
@@ -2272,7 +2258,7 @@ msgstr "Dit kan niet ongedaan worden gemaakt."
 msgid "TURN"
 msgstr "TURN"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:685
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:666
 #, elixir-autogen, elixir-format
 msgid "This cannot be undone without the new owner's cooperation."
 msgstr ""
@@ -2291,13 +2277,13 @@ msgstr ""
 "Timers zijn alleen sessies en zullen verloren gaan bij het verbreken van "
 "verbinding."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:693
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:674
 #, elixir-autogen, elixir-format
 msgid "Transfer"
 msgstr "Overdracht"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:656
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:920
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:637
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:901
 #, elixir-autogen, elixir-format
 msgid "Transfer Ownership"
 msgstr "Overdracht Eigendom"
@@ -2308,7 +2294,7 @@ msgstr "Overdracht Eigendom"
 msgid "Transfer founder"
 msgstr "Transfer oprichter"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:671
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:652
 #, elixir-autogen, elixir-format
 msgid "Transfer ownership of %{channel} to:"
 msgstr "Overdracht eigendom van %{channel} naar:"
@@ -2348,8 +2334,8 @@ msgstr "Gebruikersopzoeken"
 msgid "Wallops"
 msgstr "Wallops"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:808
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:840
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:789
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:821
 #, elixir-autogen, elixir-format
 msgid "Welcome Message"
 msgstr "Welkomstbericht"
@@ -2380,23 +2366,23 @@ msgstr "Wie was retentie?"
 msgid "You are identified with NickServ."
 msgstr "Je bent geïdentificeerd met NickServ."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:560
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:541
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to manage this list."
 msgstr "U heeft geen toestemming om deze lijst te beheren."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:900
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:881
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to change the join throttle."
 msgstr "Je moet een kanaal operator zijn om het join gas te veranderen."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:853
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:834
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to edit the welcome message."
 msgstr "U moet een kanaaloperator zijn om het welkomstbericht te bewerken."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:322
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:562
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:311
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:543
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use ChanServ."
 msgstr "Je moet geïdentificeerd worden met NickServ om ChanServ te gebruiken."
@@ -2534,7 +2520,7 @@ msgstr "Standaard"
 msgid "Duplicate limit"
 msgstr "Maximumduplicatie:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:123
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:113
 #, elixir-autogen, elixir-format
 msgid "Invite only"
 msgstr "Alleen uitnodigen (+i)"
@@ -2544,7 +2530,7 @@ msgstr "Alleen uitnodigen (+i)"
 msgid "Invited by %{inviter}"
 msgstr "Uitgenodigd door %{inviter}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:122
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:112
 #, elixir-autogen, elixir-format
 msgid "Mode"
 msgstr "Modus"
@@ -2676,7 +2662,7 @@ msgstr "nee"
 msgid "the channel"
 msgstr "Nieuw kanaal"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:143
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:139
 #, elixir-autogen, elixir-format
 msgid "Access Lists"
 msgstr "Toegangslijsten"
@@ -3428,18 +3414,14 @@ msgstr "Dat rapport is niet beschikbaar op deze server."
 
 #: lib/retro_hex_chat_web/components/ui/system/os_panel.ex:60
 #, elixir-autogen, elixir-format
-msgid ""
-"The :os_mon application is not running on this node, so the host cannot be "
-"read."
+msgid "The :os_mon application is not running on this node, so the host cannot be read."
 msgstr ""
 "De :os mon-applicatie draait niet op dit knooppunt, dus de host kan niet "
 "worden gelezen."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/system_database_dialog.ex:95
 #, elixir-autogen, elixir-format
-msgid ""
-"The report could not be run — the database refused the query or an extension"
-" it needs is missing."
+msgid "The report could not be run — the database refused the query or an extension it needs is missing."
 msgstr "Het rapport kon niet worden uitgevoerd"
 
 #: lib/retro_hex_chat_web/components/ui/system/database_panel.ex:90
@@ -3454,9 +3436,7 @@ msgstr "Deze groep verklaart geen statistieken."
 
 #: lib/retro_hex_chat_web/components/ui/system/log_panel.ex:112
 #, elixir-autogen, elixir-format
-msgid ""
-"This node logs at %{primary} and drops anything below it before a window can"
-" see it, so nothing at %{selected} will ever appear here."
+msgid "This node logs at %{primary} and drops anything below it before a window can see it, so nothing at %{selected} will ever appear here."
 msgstr ""
 "Deze knooppunt logt op %{primary} en laat alles onder voordat een venster "
 "het kan zien, dus niets op %{selected} zal ooit hier verschijnen."
@@ -3945,9 +3925,7 @@ msgstr "Deze appgroep heeft een chatsessie nodig."
 
 #: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:223
 #, elixir-autogen, elixir-format
-msgid ""
-"Connect first to use this desktop app folder. Help and Language remain "
-"available without a chat session."
+msgid "Connect first to use this desktop app folder. Help and Language remain available without a chat session."
 msgstr ""
 "Maak eerst verbinding om deze appmap te gebruiken. Help en Taal blijven "
 "beschikbaar zonder chatsessie."
@@ -3967,7 +3945,7 @@ msgstr "Onderhoudstaken"
 msgid "No maintenance jobs are configured"
 msgstr "Er zijn geen onderhoudstaken ingesteld"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:135
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:122
 #, elixir-autogen, elixir-format
 msgid "Last used"
 msgstr "Laatst gebruikt"
@@ -3989,9 +3967,7 @@ msgstr "Deze browser kan geen systeemmeldingen tonen."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:346
 #, elixir-autogen, elixir-format
-msgid ""
-"Your browser is blocking notifications for this site. Allow them in the "
-"browser's site settings to turn these on."
+msgid "Your browser is blocking notifications for this site. Allow them in the browser's site settings to turn these on."
 msgstr ""
 "Je browser blokkeert meldingen voor deze site. Sta ze toe in de site-"
 "instellingen van de browser om dit aan te zetten."
@@ -4008,8 +3984,7 @@ msgstr "Kon geen verdere vermeldingen laden."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:52
 #, elixir-autogen, elixir-format
-msgid ""
-"Messages that write your nickname in a channel you were in show up here."
+msgid "Messages that write your nickname in a channel you were in show up here."
 msgstr ""
 "Berichten die je bijnaam schrijven in een kanaal waar je was, verschijnen "
 "hier."
@@ -4021,9 +3996,7 @@ msgstr "Niemand heeft je nog vermeld."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:55
 #, elixir-autogen, elixir-format
-msgid ""
-"An operator can pin a message — the rules, a link, what was agreed — and it "
-"stays findable here after it scrolls away."
+msgid "An operator can pin a message — the rules, a link, what was agreed — and it stays findable here after it scrolls away."
 msgstr ""
 "Een operator kan een bericht vastzetten — de regels, een link, wat is "
 "afgesproken — en het blijft hier vindbaar nadat het is weggescrold."
@@ -4055,9 +4028,7 @@ msgstr "Kon niet meer bewaarde berichten laden."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:54
 #, elixir-autogen, elixir-format
-msgid ""
-"Right-click a message and choose Save to keep it here. Nobody else can see "
-"what you keep, and it stays after the conversation has scrolled away."
+msgid "Right-click a message and choose Save to keep it here. Nobody else can see what you keep, and it stays after the conversation has scrolled away."
 msgstr ""
 "Klik met de rechtermuisknop op een bericht en kies Bewaren om het hier te "
 "houden. Niemand anders ziet wat je bewaart, en het blijft nadat het gesprek "
@@ -4083,17 +4054,14 @@ msgstr "Je hebt nog niets bewaard."
 msgid "with %{nickname}"
 msgstr "met %{nickname}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:342
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:331
 #, elixir-autogen, elixir-format
 msgid "Public archive"
 msgstr "Openbaar archief"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:344
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:333
 #, elixir-autogen, elixir-format
-msgid ""
-"Publish a page per day that anybody can read and a search engine can index. "
-"Only what is said from the moment you switch this on — nothing already in "
-"the channel is ever published. Switching it off takes the pages down."
+msgid "Publish a page per day that anybody can read and a search engine can index. Only what is said from the moment you switch this on — nothing already in the channel is ever published. Switching it off takes the pages down."
 msgstr ""
 "Publiceert één pagina per dag die iedereen kan lezen en een zoekmachine kan "
 "indexeren. Alleen wat wordt gezegd vanaf het moment dat je dit aanzet — "
@@ -4102,9 +4070,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/thread_dialog.ex:49
 #, elixir-autogen, elixir-format
-msgid ""
-"A message that somebody answered shows how many replies it collected. Choose"
-" that to read them together."
+msgid "A message that somebody answered shows how many replies it collected. Choose that to read them together."
 msgstr ""
 "Een bericht waarop iemand heeft geantwoord laat zien hoeveel reacties het "
 "verzamelde. Kies dat om ze samen te lezen."
@@ -4141,18 +4107,14 @@ msgstr "Er is nog niets gepland."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/events_dialog.ex:38
 #, elixir-autogen, elixir-format
-msgid ""
-"Use /event 2h Tuesday tournament to put something on the calendar. Everyone "
-"in the channel sees it and can say they are going."
+msgid "Use /event 2h Tuesday tournament to put something on the calendar. Everyone in the channel sees it and can say they are going."
 msgstr ""
 "Gebruik /event 2h dinsdagtoernooi om iets in de agenda te zetten. Iedereen "
 "in het kanaal ziet het en kan zeggen dat ze komen."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/events_dialog.ex:43
 #, elixir-autogen, elixir-format
-msgid ""
-"When an operator schedules something, it shows up here and in the "
-"conversation."
+msgid "When an operator schedules something, it shows up here and in the conversation."
 msgstr ""
 "Wanneer een operator iets plant, verschijnt het hier en in het gesprek."
 
@@ -4165,8 +4127,7 @@ msgstr[1] "%{count} van %{max} gebruikt"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:96
 #, elixir-autogen, elixir-format
-msgid ""
-"Add one and everybody here can write it between two colons, like :shrug:."
+msgid "Add one and everybody here can write it between two colons, like :shrug:."
 msgstr ""
 "Voeg er een toe en iedereen hier kan het tussen twee dubbele punten "
 "schrijven, zoals :shrug:."
@@ -4210,8 +4171,9 @@ msgstr "geen afbeelding gekozen"
 #: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:84
 #, elixir-autogen, elixir-format
 msgid "It opens in a new browser tab. This one stays where it is."
-msgstr "Het opent in een nieuw browsertabblad. Dit tabblad blijft waar het is."
-"Het opent in een nieuw browsertabblad. Dit tabblad blijft waar het is."
+msgstr ""
+"Het opent in een nieuw browsertabblad. Dit tabblad blijft waar het is.Het "
+"opent in een nieuw browsertabblad. Dit tabblad blijft waar het is."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/open_tab_confirm_dialog.ex:159
 #, elixir-autogen, elixir-format
@@ -4257,3 +4219,13 @@ msgstr "Dit opent de bijlage %{name}."
 #, elixir-autogen, elixir-format
 msgid "This opens the attachment."
 msgstr "Dit opent de bijlage."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1127
+#, elixir-autogen, elixir-format
+msgid "Remove %{mask}"
+msgstr "%{mask} verwijderen"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:484
+#, elixir-autogen, elixir-format
+msgid "Remove %{nickname}"
+msgstr "%{nickname} verwijderen"

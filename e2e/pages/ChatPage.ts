@@ -1806,12 +1806,9 @@ export class ChatPage {
     nick: string,
   ) {
     await this.switchChannelCentralToAccessList(list);
-    const row = this.channelCentralEntry(nick);
-    await expect(row).toBeVisible();
-    await row.click();
-    await this.channelCentralPanel("access_lists")
-      .getByRole("button", { name: "Remove" })
-      .click();
+    await expect(this.channelCentralEntry(nick)).toBeVisible();
+    // Remove belongs to the row it removes — there is no selection to make.
+    await this.page.getByTestId(`cc-list-remove-${nick}`).click();
     await expect(this.channelCentralEntry(nick)).toHaveCount(0);
   }
 

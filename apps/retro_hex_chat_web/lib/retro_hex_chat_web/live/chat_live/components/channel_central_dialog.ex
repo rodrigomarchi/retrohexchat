@@ -55,12 +55,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     channel_central_operator: false,
     channel_central_owner: false,
     channel_central_list_type: "bans",
-    channel_central_list_selected: nil,
     channel_central_notice: nil,
     channel_central_transfer_error: nil,
     channel_central_registration: nil,
     channel_central_access_tab: "sop",
-    channel_central_access_selected: nil,
     channel_central_access_nick: "",
     channel_central_cs_error: nil,
     channel_central_cs_confirm_drop: false,
@@ -153,7 +151,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
                channel_central_cs_error: nil,
                channel_central_cs_confirm_drop: false,
                channel_central_access_tab: "sop",
-               channel_central_access_selected: nil,
                channel_central_access_nick: ""
              )
              |> refresh_channel_central()}
@@ -194,7 +191,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
                channel_central_cs_error: nil,
                channel_central_cs_confirm_drop: false,
                channel_central_access_tab: "sop",
-               channel_central_access_selected: nil,
                channel_central_access_nick: ""
              )
              |> refresh_channel_central()}
@@ -210,7 +206,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
      socket
      |> assign(
        channel_central_access_tab: normalize_access_level(level),
-       channel_central_access_selected: nil,
        channel_central_access_nick: "",
        channel_central_cs_error: nil
      )
@@ -223,15 +218,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
        channel_central_access_tab:
          normalize_access_level(params["level"] || socket.assigns.channel_central_access_tab),
        channel_central_access_nick: String.trim(to_string(params["nickname"] || "")),
-       channel_central_cs_error: nil
-     )}
-  end
-
-  def handle_event("cc_cs_access_select", %{"nick" => nickname}, socket) do
-    {:noreply,
-     assign(socket,
-       channel_central_access_selected: nickname,
-       channel_central_access_nick: nickname,
        channel_central_cs_error: nil
      )}
   end
@@ -260,7 +246,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
              socket
              |> assign(
                channel_central_access_tab: level,
-               channel_central_access_selected: nil,
                channel_central_access_nick: "",
                channel_central_cs_error: nil
              )
@@ -275,11 +260,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
   def handle_event("cc_cs_access_remove", params, socket) do
     level = normalize_access_level(params["level"] || socket.assigns.channel_central_access_tab)
 
-    target =
-      socket.assigns.channel_central_access_selected ||
-        String.trim(
-          to_string(params["nickname"] || socket.assigns.channel_central_access_nick || "")
-        )
+    target = String.trim(to_string(params["nickname"] || ""))
 
     case validate_access_remove(socket, level, target) do
       :ok -> {:noreply, remove_chanserv_access(socket, level, target)}
@@ -289,18 +270,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
 
   # ── Access lists (bans / ban exceptions / invite exceptions) ─────
 
-  # Switching list type drops the selection: a mask picked in one list is not a
-  # row of the next one, and Remove acts on whatever is selected.
   def handle_event("cc_list_type", %{"list" => list_type}, socket) do
-    {:noreply,
-     assign(socket,
-       channel_central_list_type: normalize_list_type(list_type),
-       channel_central_list_selected: nil
-     )}
-  end
-
-  def handle_event("cc_list_select", %{"nickname" => mask}, socket) do
-    {:noreply, assign(socket, channel_central_list_selected: mask)}
+    {:noreply, assign(socket, channel_central_list_type: normalize_list_type(list_type))}
   end
 
   def handle_event("cc_open_add_list_entry", _params, socket) do
@@ -436,9 +407,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     end
   end
 
-  def handle_event("cc_remove_list_entry", _params, socket) do
+  def handle_event("cc_remove_list_entry", params, socket) do
     list_type = normalize_list_type(socket.assigns.channel_central_list_type)
-    mask = socket.assigns.channel_central_list_selected
+    mask = params["nickname"]
 
     if mask do
       channel = socket.assigns.channel_central_channel
@@ -448,7 +419,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         :ok ->
           {:noreply,
            socket
-           |> assign(channel_central_list_selected: nil)
            |> refresh_channel_central()}
 
         {:error, msg} ->
@@ -500,7 +470,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         transfer_error={@channel_central_transfer_error}
         registration={@channel_central_registration}
         access_tab={@channel_central_access_tab}
-        access_selected={@channel_central_access_selected}
         access_nick={@channel_central_access_nick}
         cs_error={@channel_central_cs_error}
         cs_confirm_drop={@channel_central_cs_confirm_drop}
@@ -509,7 +478,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         list_type={@channel_central_list_type}
         list_entries={@cc_list_entries}
         list_total={@cc_list_total}
-        list_selected={@channel_central_list_selected}
         show_add_list_entry_dialog={@show_cc_add_list_entry_dialog}
         show_transfer_dialog={@show_cc_transfer_dialog}
         on_tab={JS.push("channel_central_tab", target: @myself)}
@@ -524,7 +492,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         on_list_type="cc_list_type"
         on_list_add="cc_open_add_list_entry"
         on_list_remove="cc_remove_list_entry"
-        on_list_select="cc_list_select"
         on_cs_register="cc_cs_register"
         on_cs_archive_toggle="cc_cs_archive_toggle"
         on_cs_drop_request="cc_cs_drop_request"
@@ -533,7 +500,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         on_cs_access_tab="cc_cs_access_tab"
         on_cs_access_change="cc_cs_access_change"
         on_cs_access_add="cc_cs_access_add"
-        on_cs_access_select="cc_cs_access_select"
         on_cs_access_remove="cc_cs_access_remove"
       />
     </div>
@@ -717,14 +683,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
       !socket.assigns.session.identified ->
         {:error, identified_required_message()}
 
-      target in [nil, ""] ->
-        {:error, dgettext("chat", "Select a nickname to remove.")}
+      target == "" ->
+        {:error, dgettext("chat", "That row carries no nickname to remove.")}
 
       !can_manage_access?(socket, level) ->
         {:error, manage_access_denied_message()}
 
       !access_entry_in_level?(socket, level, target) ->
-        {:error, dgettext("chat", "Select a nickname from this list.")}
+        {:error, dgettext("chat", "%{nickname} is not on this list.", nickname: target)}
 
       true ->
         :ok
@@ -740,7 +706,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         socket
         |> assign(
           channel_central_access_tab: level,
-          channel_central_access_selected: nil,
           channel_central_access_nick: "",
           channel_central_cs_error: nil
         )

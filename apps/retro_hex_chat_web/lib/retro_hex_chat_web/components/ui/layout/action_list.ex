@@ -192,25 +192,64 @@ defmodule RetroHexChatWeb.Components.UI.ActionList do
           <:icon>{render_slot(cta)}</:icon>
           {cta.label}
         </.button>
-        <.button
+        <.row_action
           :for={action <- @action}
-          type="button"
-          size="icon"
+          event={action.event}
+          value={Map.get(action, :value, %{})}
+          label={action.label}
           variant={Map.get(action, :variant, "outline")}
-          class="action-list__action"
-          phx-click={action.event}
-          phx-target={Map.get(action, :target) || @target}
+          target={Map.get(action, :target) || @target}
           disabled={Map.get(action, :disabled, false)}
-          aria-label={action.label}
-          title={action.label}
-          data-testid={Map.get(action, :testid)}
-          {phx_values(Map.get(action, :value, %{}))}
+          testid={Map.get(action, :testid)}
         >
-          <:icon>{render_slot(action)}</:icon>
-          <span class="sr-only">{action.label}</span>
-        </.button>
+          {render_slot(action)}
+        </.row_action>
       </span>
     </li>
+    """
+  end
+
+  @doc """
+  One icon-only control belonging to a single row.
+
+  Shared with the tables that are not card lists: a ban list is three aligned
+  columns and stays a table, but its remove button has to be the same control as
+  the one on a card row, or the two drift. `label` is required and becomes the
+  accessible name, because the button carries only an icon.
+  """
+  attr :event, :any, required: true
+  attr :value, :map, default: %{}
+  attr :label, :string, required: true, doc: "accessible name — the control is icon-only"
+
+  attr :variant, :string,
+    default: "outline",
+    values: ~w(default secondary destructive outline ghost)
+
+  attr :target, :any, default: nil
+  attr :disabled, :boolean, default: false
+  attr :testid, :string, default: nil
+
+  slot :inner_block, required: true, doc: "the 16×16 icon"
+
+  @spec row_action(map()) :: Phoenix.LiveView.Rendered.t()
+  def row_action(assigns) do
+    ~H"""
+    <.button
+      type="button"
+      size="icon"
+      variant={@variant}
+      class="action-list__action"
+      phx-click={@event}
+      phx-target={@target}
+      disabled={@disabled}
+      aria-label={@label}
+      title={@label}
+      data-testid={@testid}
+      {phx_values(@value)}
+    >
+      <:icon>{render_slot(@inner_block)}</:icon>
+      <span class="sr-only">{@label}</span>
+    </.button>
     """
   end
 

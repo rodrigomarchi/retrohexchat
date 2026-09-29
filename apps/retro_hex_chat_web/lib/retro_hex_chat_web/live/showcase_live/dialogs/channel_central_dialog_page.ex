@@ -13,11 +13,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelCentralDialogPage do
 
   @impl true
   def handle_event("cc_list_type", %{"list" => list_type}, socket) do
-    {:noreply, assign(socket, list_type: list_type, list_selected: nil)}
-  end
-
-  def handle_event("cc_list_select", %{"nickname" => mask}, socket) do
-    {:noreply, assign(socket, list_selected: mask)}
+    {:noreply, assign(socket, list_type: list_type)}
   end
 
   def handle_event(_event, _params, socket) do
@@ -31,7 +27,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelCentralDialogPage do
        page_title: dgettext("showcase", "Channel Central Dialog"),
        active_page: "channel-central-dialog",
        list_type: "bans",
-       list_selected: nil,
        sample_lists: %{
          "bans" => sample_bans(),
          "ban_exceptions" => sample_ban_exceptions(),

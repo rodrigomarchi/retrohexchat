@@ -761,13 +761,13 @@ msgstr "離席中"
 msgid "Ban"
 msgstr "Ban"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:664
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:630
 #, elixir-autogen, elixir-format
 msgid "Ban error: %{message}"
 msgstr "バンエラー: %{message}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:667
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:676
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:633
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:642
 #, elixir-autogen, elixir-format
 msgid "Ban exception error: %{message}"
 msgstr "禁止例外エラー:%{message}"
@@ -889,7 +889,7 @@ msgstr "%{from}の%{channel}の歴史は%{admin}によって浄化されまし�
 msgid "Channel %{channel} history was purged by %{admin}."
 msgstr "%{channel}の歴史は%{admin}によって浄化されました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:579
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:545
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel} not found"
 msgstr "チャンネル%{channel}が見つかりません"
@@ -910,7 +910,7 @@ msgstr "チャネル設定"
 msgid "Channel filter must start with #"
 msgstr "チャネル フィルターは # から始まる必要があります。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:412
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:383
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:236
 #, elixir-autogen, elixir-format
 msgid "Channel ownership transferred to %{target}."
@@ -1346,8 +1346,8 @@ msgstr "無効な正規表現"
 msgid "Invalid trigger event"
 msgstr "無効トリガーイベント"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:670
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:679
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:636
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:645
 #, elixir-autogen, elixir-format
 msgid "Invite exception error: %{message}"
 msgstr "例外エラーを招待: %{message}"
@@ -1469,7 +1469,7 @@ msgstr "メニューがいっぱいです(最大10個/種類)"
 msgid "Message to %{target} — / for commands"
 msgstr "%{target}へのメッセージ — / コマンド"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:769
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:734
 #, elixir-autogen, elixir-format
 msgid "Mode error: %{message}"
 msgstr "モードエラー: %{message}"
@@ -1962,7 +1962,7 @@ msgstr "Timer '%{name}'が見つかりません"
 msgid "Tip: Go to Help > Help Topics for the full documentation."
 msgstr "ヒント: ヘルプ > 完全なドキュメントのヘルプトピックに移動します。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:326
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:297
 #, elixir-autogen, elixir-format
 msgid "Topic error: %{message}"
 msgstr "トピックエラー: %{message}"
@@ -2008,7 +2008,7 @@ msgstr "メッセージを入力してください。"
 msgid "URL saved to URL Catcher"
 msgstr "URLに保存されたURLキャッチャー"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:673
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:639
 #, elixir-autogen, elixir-format
 msgid "Unban error: %{message}"
 msgstr "禁止エラー:%{message}"
@@ -2187,7 +2187,7 @@ msgstr "あなたは管理者によってミュートされています: %{reaso
 msgid "You have been unmuted by an administrator."
 msgstr "管理者が退去しました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:572
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:538
 #, elixir-autogen, elixir-format
 msgid "You must be a member of %{channel} to open Channel Central"
 msgstr "チャンネル中央を開くには%{channel}のメンバーでなければなりません"
@@ -2598,17 +2598,17 @@ msgstr "アイドル用"
 msgid "Invite to Channel..."
 msgstr "チャネルへの招待"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:356
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:327
 #, elixir-autogen, elixir-format
 msgid "Join throttle disabled."
 msgstr "スロットル無効にしてください。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:864
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:829
 #, elixir-autogen, elixir-format
 msgid "Join throttle must be a non-negative integer."
 msgstr "スロットルに参加するには、非負の整数でなければなりません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:364
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:335
 #, elixir-autogen, elixir-format
 msgid "Join throttle set to %{seconds} seconds."
 msgstr "参加制限を%{seconds}秒に設定しました。"
@@ -2650,7 +2650,7 @@ msgstr "%{channel}を読み込み中..."
 msgid "MOTD"
 msgstr "モットD"
 
-#: lib/retro_hex_chat_web/live/chat_live/channel_list_events.ex:114
+#: lib/retro_hex_chat_web/live/chat_live/channel_list_events.ex:107
 #, elixir-autogen, elixir-format
 msgid "Message must be 200 characters or less"
 msgstr "メッセージは200文字以内"
@@ -2672,8 +2672,8 @@ msgstr "ニックネーム"
 msgid "Nickname is required"
 msgstr "ニックネームが必要です"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:248
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:398
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:234
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:369
 #: lib/retro_hex_chat_web/live/chat_live/user_lookup_events.ex:91
 #, elixir-autogen, elixir-format
 msgid "Nickname is required."
@@ -2716,12 +2716,12 @@ msgstr "オフライン"
 msgid "Online for"
 msgstr "オンライン"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:962
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:927
 #, elixir-autogen, elixir-format
 msgid "Only channel operators can register this channel."
 msgstr "チャネル演算子のみこのチャンネルを登録できます。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:183
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:180
 #, elixir-autogen, elixir-format
 msgid "Only the founder can drop a channel."
 msgstr "創設者だけがチャネルをドロップすることができます。"
@@ -2786,16 +2786,6 @@ msgstr "歴史検索"
 msgid "Seconds must be a number."
 msgstr "秒は数でなければなりません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:727
-#, elixir-autogen, elixir-format
-msgid "Select a nickname from this list."
-msgstr "このリストからニックネームを選択します。"
-
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:721
-#, elixir-autogen, elixir-format
-msgid "Select a nickname to remove."
-msgstr "削除するニックネームを選択します。"
-
 #: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:184
 #, elixir-autogen, elixir-format
 msgid "Send Notice"
@@ -2817,8 +2807,8 @@ msgstr "共有チャネル"
 msgid "Sound Settings"
 msgstr "サウンド設定"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:881
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:883
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:846
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:848
 #, elixir-autogen, elixir-format
 msgid "Throttle error: %{message}"
 msgstr "制限エラー: %{message}"
@@ -2870,20 +2860,20 @@ msgstr "ユーザー検索"
 msgid "Wallops"
 msgstr "Wallops"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:836
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:838
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:855
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:857
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:801
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:803
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:820
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:822
 #, elixir-autogen, elixir-format
 msgid "Welcome error: %{message}"
 msgstr "ウェルカムエラー: %{message}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:849
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:814
 #, elixir-autogen, elixir-format
 msgid "Welcome message cleared."
 msgstr "歓迎されたメッセージは明確にしました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:830
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:795
 #, elixir-autogen, elixir-format
 msgid "Welcome message saved."
 msgstr "歓迎されたメッセージは保存しました。"
@@ -2903,12 +2893,12 @@ msgstr "そのニックネームを既に使用しています"
 msgid "You are not in any channel"
 msgstr "どのチャネルでも"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:968
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:933
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to manage this list."
 msgstr "このリストを管理する権限はありません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:959
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:924
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to change this setting."
 msgstr "この設定を変更するためにチャンネル演算子でなければなりません。"
@@ -2918,7 +2908,7 @@ msgstr "この設定を変更するためにチャンネル演算子でなけれ
 msgid "You must be a channel operator to use this command"
 msgstr "このコマンドを使用するチャンネル演算子でなければなりません"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:965
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:930
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use ChanServ."
 msgstr "あなたはChanServを使用するためにNickServで識別する必要があります。"
@@ -4301,3 +4291,13 @@ msgstr "接続時に参加します"
 #, elixir-autogen, elixir-format
 msgid "Joined on connect, with a key"
 msgstr "接続時にキーで参加します"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:693
+#, elixir-autogen, elixir-format
+msgid "%{nickname} is not on this list."
+msgstr "%{nickname} はこのリストにはありません。"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:687
+#, elixir-autogen, elixir-format
+msgid "That row carries no nickname to remove."
+msgstr "その行には削除するニックネームがありません。"

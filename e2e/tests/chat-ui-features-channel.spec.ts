@@ -237,8 +237,9 @@ test.describe.serial("UI feature channel journeys", () => {
         founder.page.getByTestId(`cc-cs-access-row-${target.nick}`),
       ).toBeVisible();
 
-      await founder.page.getByTestId(`cc-cs-access-row-${target.nick}`).click();
-      await founder.page.getByTestId("cc-cs-access-remove").click();
+      await founder.page
+        .getByTestId(`cc-cs-access-remove-${target.nick}`)
+        .click();
       await expect(
         founder.page.getByTestId(`cc-cs-access-row-${target.nick}`),
       ).toHaveCount(0);

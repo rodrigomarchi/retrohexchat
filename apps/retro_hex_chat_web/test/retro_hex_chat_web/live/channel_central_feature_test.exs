@@ -132,9 +132,11 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
 
     test "1.7 operator sees editable controls", %{conn: conn} do
       channel = "#e2eop-#{uid()}"
-      view = connect_user(conn, "E2ECcOp#{uid()}")
+      nick = "E2ECcOp#{uid()}"
+      view = connect_user(conn, nick)
       submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
+      Server.ban(channel, nick, "OpBan")
       html = open_cc(view, channel)
 
       # Save Topic button visible
@@ -144,10 +146,10 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       html = cc(view, "channel_central_tab", %{"tab" => "modes"})
       assert html =~ "Apply Modes"
 
-      # Access Lists — Add/Remove buttons visible
+      # Access Lists — Add belongs to the panel, Remove to the banned row.
       html = cc(view, "channel_central_tab", %{"tab" => "access_lists"})
       assert html =~ "cc_open_add_list_entry"
-      assert html =~ "cc_remove_list_entry"
+      assert html =~ ~s(data-testid="cc-list-remove-OpBan")
     end
 
     test "1.8 empty bans shows placeholder", %{conn: conn} do
@@ -434,8 +436,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       html = render(view)
       assert html =~ "TempBan"
 
-      cc(view, "cc_list_select", %{"nickname" => "TempBan"})
-      cc(view, "cc_remove_list_entry")
+      cc(view, "cc_remove_list_entry", %{"nickname" => "TempBan"})
 
       html = render(view)
       # After removing, the ban table should show the empty placeholder
@@ -486,8 +487,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       html = cc_list(view, "ban_exceptions")
       assert html =~ "ExUser"
 
-      cc(view, "cc_list_select", %{"nickname" => "ExUser"})
-      cc(view, "cc_remove_list_entry")
+      cc(view, "cc_remove_list_entry", %{"nickname" => "ExUser"})
 
       html = render(view)
       # After removing, the ban exceptions table should show the empty placeholder
@@ -550,8 +550,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       html = cc_list(view, "invite_exceptions")
       assert html =~ "InvEx1"
 
-      cc(view, "cc_list_select", %{"nickname" => "InvEx1"})
-      cc(view, "cc_remove_list_entry")
+      cc(view, "cc_remove_list_entry", %{"nickname" => "InvEx1"})
 
       html = render(view)
       # After removing, the invite exceptions table should show the empty placeholder
@@ -622,7 +621,11 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       assert html =~ "RtBanned"
     end
 
-    test "7.4 switching access list type drops the stale selection", %{conn: conn} do
+    # Remove used to act on "whatever is selected", so switching list type had to
+    # remember to clear the selection or the button pointed at a row that was no
+    # longer on screen. A control that belongs to its own row cannot go stale:
+    # it leaves with the row.
+    test "7.4 a removed list type takes its controls with it", %{conn: conn} do
       channel = "#e2ert4-#{uid()}"
       nick = "E2ERt4#{uid()}"
       view = connect_user(conn, nick)
@@ -633,14 +636,10 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       open_cc(view, channel)
 
       cc(view, "channel_central_tab", %{"tab" => "access_lists"})
-      cc(view, "cc_list_select", %{"nickname" => "SelBan"})
+      assert has_element?(view, ~s([data-testid="cc-list-remove-SelBan"]))
 
-      # Remove is enabled while the ban is selected...
-      refute has_element?(view, ~s([phx-click="cc_remove_list_entry"][disabled]))
-
-      # ...and disabled again once the list type changes under it.
       cc_list(view, "ban_exceptions")
-      assert has_element?(view, ~s([phx-click="cc_remove_list_entry"][disabled]))
+      refute has_element?(view, ~s([data-testid="cc-list-remove-SelBan"]))
     end
   end
 

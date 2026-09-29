@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.Tabs
   import RetroHexChatWeb.Components.UI.Table
@@ -37,7 +38,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         on_tab="channel_central_tab"
         list_type="bans"
         on_list_type="cc_list_type"
-        on_list_select="cc_list_select"
       />
   """
   attr :id, :string, required: true
@@ -56,7 +56,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :transfer_error, :string, default: nil
   attr :registration, :map, default: nil
   attr :access_tab, :string, default: "sop"
-  attr :access_selected, :string, default: nil
   attr :access_nick, :string, default: ""
   attr :cs_error, :string, default: nil
   attr :cs_confirm_drop, :boolean, default: false
@@ -69,7 +68,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
     default: nil,
     doc: "How many entries the channel actually holds, for the truncation strip"
 
-  attr :list_selected, :string, default: nil
   attr :on_tab, :any, default: nil, doc: "Tab switch event (phx-value-tab=value)"
   attr :on_topic_save, :any, default: nil
   attr :on_welcome_save, :any, default: nil
@@ -82,7 +80,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :on_list_type, :any, default: nil, doc: "Access list switch event (phx-value-list=type)"
   attr :on_list_add, :any, default: nil
   attr :on_list_remove, :any, default: nil
-  attr :on_list_select, :any, default: nil, doc: "List row select event (phx-value-nickname)"
   attr :on_cs_register, :any, default: nil
   attr :on_cs_archive_toggle, :any, default: nil
   attr :on_cs_drop_request, :any, default: nil
@@ -91,7 +88,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :on_cs_access_tab, :any, default: nil
   attr :on_cs_access_change, :any, default: nil
   attr :on_cs_access_add, :any, default: nil
-  attr :on_cs_access_select, :any, default: nil
   attr :on_cs_access_remove, :any, default: nil
   attr :show_add_list_entry_dialog, :boolean, default: false
   attr :show_transfer_dialog, :boolean, default: false
@@ -192,12 +188,10 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             list_type={@list_type}
             entries={@list_entries}
             total={@list_total}
-            selected={@list_selected}
             operator={@operator}
             on_list_type={@on_list_type}
             on_add={@on_list_add}
             on_remove={@on_list_remove}
-            on_select={@on_list_select}
           />
         </.tabs_content>
 
@@ -209,7 +203,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             identified={@identified}
             registration={@registration}
             access_tab={@access_tab}
-            access_selected={@access_selected}
             access_nick={@access_nick}
             error_message={@cs_error}
             confirm_drop={@cs_confirm_drop}
@@ -221,7 +214,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             on_access_tab={@on_cs_access_tab}
             on_access_change={@on_cs_access_change}
             on_access_add={@on_cs_access_add}
-            on_access_select={@on_cs_access_select}
             on_access_remove={@on_cs_access_remove}
           />
         </.tabs_content>
@@ -253,7 +245,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :identified, :boolean, default: false
   attr :registration, :map, default: nil
   attr :access_tab, :string, default: "sop"
-  attr :access_selected, :string, default: nil
   attr :access_nick, :string, default: ""
   attr :error_message, :string, default: nil
   attr :confirm_drop, :boolean, default: false
@@ -265,7 +256,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :on_access_tab, :any, default: nil
   attr :on_access_change, :any, default: nil
   attr :on_access_add, :any, default: nil
-  attr :on_access_select, :any, default: nil
   attr :on_access_remove, :any, default: nil
 
   attr :target, :any, default: nil
@@ -283,7 +273,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       |> assign(:registered?, Map.get(registration, :registered?, false))
       |> assign(:access_entries, active_access_entries(registration, active_level))
       |> assign(:can_manage_active?, can_manage_access?(role, active_level, assigns.identified))
-      |> assign(:can_remove?, removable?(assigns.access_selected, assigns.access_nick))
       |> assign(:public_archive?, Map.get(registration, :public_archive?, false))
       |> assign(:founder?, role == "founder")
 
@@ -465,20 +454,15 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                 <.table_head class="text-xs px-2 py-1">
                   {dgettext("dialogs", "Added By")}
                 </.table_head>
+                <.table_head :if={@can_manage_active?} class="w-[44px] text-xs px-2 py-1">
+                  <span class="sr-only">{dgettext("dialogs", "Remove")}</span>
+                </.table_head>
               </.table_row>
             </.table_header>
             <.table_body>
               <.table_row
                 :for={entry <- @access_entries}
-                class={
-                  classes([
-                    "cc-mobile-list-row cursor-pointer text-xs",
-                    @access_selected == entry.nickname && "bg-selection-bg text-selection-fg"
-                  ])
-                }
-                phx-click={@on_access_select}
-                phx-target={@target}
-                phx-value-nick={entry.nickname}
+                class="cc-mobile-list-row text-xs"
                 data-testid={"cc-cs-access-row-#{entry.nickname}"}
               >
                 <.table_cell
@@ -493,10 +477,22 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                 >
                   {entry.added_by}
                 </.table_cell>
+                <.table_cell :if={@can_manage_active?} class="cc-mobile-list-action px-2 py-1">
+                  <.row_action
+                    event={@on_access_remove}
+                    value={%{"level" => @active_level, "nickname" => entry.nickname}}
+                    label={dgettext("dialogs", "Remove %{nickname}", nickname: entry.nickname)}
+                    variant="destructive"
+                    target={@target}
+                    testid={"cc-cs-access-remove-#{entry.nickname}"}
+                  >
+                    <Icons.icon_btn_remove class="w-4 h-4" />
+                  </.row_action>
+                </.table_cell>
               </.table_row>
               <tr :if={@access_entries == []} class="cc-empty-row">
                 <td
-                  colspan="2"
+                  colspan={if @can_manage_active?, do: "3", else: "2"}
                   class="cc-empty-cell px-2 py-4 text-xs text-center text-muted-foreground"
                 >
                   {dgettext("dialogs", "No %{level} entries", level: String.upcase(@active_level))}
@@ -537,21 +533,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
           >
             <:icon><Icons.icon_btn_add /></:icon>
             {dgettext("dialogs", "Add")}
-          </.button>
-          <.button
-            type="button"
-            size="sm"
-            variant="destructive"
-            class="cc-action-button"
-            phx-click={@on_access_remove}
-            phx-target={@target}
-            phx-value-level={@active_level}
-            disabled={!@can_remove?}
-            phx-disable-with={dgettext("dialogs", "Removing...")}
-            data-testid="cc-cs-access-remove"
-          >
-            <:icon><Icons.icon_btn_remove /></:icon>
-            {dgettext("dialogs", "Remove")}
           </.button>
         </form>
 
@@ -1069,12 +1050,10 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :list_type, :string, required: true
   attr :entries, :list, required: true
   attr :total, :integer, default: nil, doc: "Entries the channel holds, for the truncation strip"
-  attr :selected, :string, default: nil
   attr :operator, :boolean, default: false
   attr :on_list_type, :any, default: nil
   attr :on_add, :any, default: nil
-  attr :on_remove, :any, default: nil
-  attr :on_select, :any, default: nil, doc: "Row select event (phx-value-nickname)"
+  attr :on_remove, :any, default: nil, doc: "Row remove event (phx-value-nickname)"
 
   attr :target, :any, default: nil
 
@@ -1084,7 +1063,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
     assigns =
       assigns
       |> assign(:active_list, active)
-      |> assign(:has_selection, assigns.selected != nil)
       |> assign(:empty_label, empty_list_label(active))
 
     ~H"""
@@ -1117,21 +1095,13 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               <.table_head class="w-[100px] text-xs px-2 py-1">
                 {dgettext("dialogs", "Set At")}
               </.table_head>
+              <.table_head :if={@operator} class="w-[44px] text-xs px-2 py-1">
+                <span class="sr-only">{dgettext("dialogs", "Remove")}</span>
+              </.table_head>
             </.table_row>
           </.table_header>
           <.table_body>
-            <.table_row
-              :for={entry <- @entries}
-              class={
-                classes([
-                  "cc-mobile-list-row cursor-pointer text-xs",
-                  @selected == entry.mask && "bg-primary text-white"
-                ])
-              }
-              phx-click={@on_select}
-              phx-target={@target}
-              phx-value-nickname={entry.mask}
-            >
+            <.table_row :for={entry <- @entries} class="cc-mobile-list-row text-xs">
               <.table_cell
                 class="cc-mobile-list-primary px-2 py-1 text-xs font-mono"
                 data-label={dgettext("dialogs", "Mask")}
@@ -1150,9 +1120,21 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               >
                 {entry.set_at}
               </.table_cell>
+              <.table_cell :if={@operator} class="cc-mobile-list-action px-2 py-1">
+                <.row_action
+                  event={@on_remove}
+                  value={%{"nickname" => entry.mask}}
+                  label={dgettext("dialogs", "Remove %{mask}", mask: entry.mask)}
+                  variant="destructive"
+                  target={@target}
+                  testid={"cc-list-remove-#{entry.mask}"}
+                >
+                  <Icons.icon_btn_remove class="w-4 h-4" />
+                </.row_action>
+              </.table_cell>
             </.table_row>
             <tr :if={@entries == []} class="cc-empty-row">
-              <td colspan="3" class="cc-empty-cell">
+              <td colspan={if @operator, do: "4", else: "3"} class="cc-empty-cell">
                 <.list_empty_state title={@empty_label} icon={:people} />
               </td>
             </tr>
@@ -1166,21 +1148,11 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         data-testid="cc-list-count-strip"
       />
 
+      <%!-- Add has no row to belong to, so it stays with the panel. --%>
       <div :if={@operator} class="cc-action-row flex gap-1">
         <.button size="sm" class="cc-action-button" phx-click={@on_add} phx-target={@target}>
           <:icon><Icons.icon_btn_add /></:icon>
           {dgettext("dialogs", "Add")}
-        </.button>
-        <.button
-          size="sm"
-          variant="destructive"
-          class="cc-action-button"
-          phx-click={@on_remove}
-          phx-target={@target}
-          disabled={!@has_selection}
-        >
-          <:icon><Icons.icon_btn_remove /></:icon>
-          {dgettext("dialogs", "Remove")}
         </.button>
       </div>
 
@@ -1258,11 +1230,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   defp can_manage_access?("sop", level, true), do: level in ~w(aop vop)
   defp can_manage_access?("aop", "vop", true), do: true
   defp can_manage_access?(_role, _level, _identified), do: false
-
-  @spec removable?(String.t() | nil, String.t() | nil) :: boolean()
-  defp removable?(selected, nickname) do
-    selected not in [nil, ""] or String.trim(to_string(nickname)) != ""
-  end
 
   @spec format_registered_at(DateTime.t() | String.t() | nil) :: String.t()
   defp format_registered_at(nil), do: dgettext("dialogs", "Unknown")

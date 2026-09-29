@@ -191,3 +191,81 @@ face de botão feita à mão.
 **Regra que sai daqui para a Fase 2 em diante:** nenhuma linha desenha um
 controle. Verbo é `<:cta>`, ação secundária é `<:action>`, número é
 `action_figure/1` — os três são componentes, e nenhum deles repinta um bisel.
+
+---
+
+## Fase 2 — Channel Central · CONCLUÍDA
+
+Duas listas: os *access lists* (bans / exceções de ban / exceções de convite) e a
+lista de acesso do ChanServ na aba Registration.
+
+### A premissa do plano estava errada
+
+O plano dizia "a linha ativa abre o detalhe da entrada (quem adicionou, quando)".
+**Não existe detalhe para abrir** — "quem adicionou" e "quando" já são colunas da
+própria linha. E as duas listas não são cartões: são tabelas de três e duas
+colunas alinhadas, com uma única ação, destrutiva.
+
+Converter para `ActionList` teria destruído a tabela para resolver um problema
+que a tabela não tem. A regra que vale é a mesma — a ação pertence à linha — mas
+o meio pede outra forma: **a tabela continua tabela e ganha uma coluna final com
+o `Remove` de cada linha.** Não há seleção nenhuma.
+
+### O que entrou
+
+| Arquivo | |
+|---|---|
+| `components/ui/layout/action_list.ex` | `row_action/1` extraído — o controle que `<:action>` já renderizava, agora compartilhado com a tabela |
+| `components/ui/dialogs/channel_central_dialog.ex` | coluna de ação nas duas tabelas; `selected`/`has_selection`/`can_remove?`/`removable?/2` removidos; `Remove` sai dos rodapés |
+| `live/chat_live/components/channel_central_dialog.ex` | `cc_list_select` e `cc_cs_access_select` removidos, e os dois assigns de seleção junto |
+| `assets/css/retrohex/dialogs/channel-central.css` | 4 regras de seleção apagadas; `cc-mobile-list-action` entra |
+| `live/showcase_live/dialogs/channel_central_dialog_page.{ex,html.heex}` | |
+| 2 testes de feature + `e2e/pages/ChatPage.ts` + `chat-ui-features-channel.spec.ts` | |
+| `scripts/i18n/glossary.py` | `Remove %{nickname}` e `Remove %{mask}` curados |
+
+### Aprendizados
+
+14. **`row_action/1` é o que impede os dois meios de divergirem.** Um cartão e
+    uma linha de tabela desenham o mesmo botão de remover; sem extrair, a segunda
+    cópia nasceria no dia seguinte. `<:action>` do `ActionList` agora só delega.
+15. **O handler parou de ler estado do socket.** `cc_remove_list_entry` e
+    `cc_cs_access_remove` liam `channel_central_list_selected` /
+    `channel_central_access_selected`; agora recebem `phx-value-nickname` da
+    linha. O evento carrega o sujeito, e o sujeito não pode estar velho.
+16. **Um teste inteiro deixou de fazer sentido e virou outro.** "7.4 switching
+    access list type drops the stale selection" existia porque `Remove` agia
+    sobre "o que estiver selecionado", e trocar de lista podia deixar o botão
+    apontando para uma linha que saiu da tela. Um controle que pertence à linha
+    **sai com ela** — o teste agora afirma exatamente isso.
+17. **O rótulo com placeholder foi para o glossário, não para o motor.**
+    `Remove %{nickname}` é duas palavras sem frase em volta, e alemão, holandês
+    e japonês põem o verbo depois do sujeito. Curado à mão nos 13 locales.
+18. **Menu Start no celular abre um nível por vez.** Perdi três tentativas
+    tentando clicar `start-menu-item-open_channel_central` direto; é preciso
+    abrir `start-menu-tools-submenu` antes. Está em `chat-mobile-desktop.spec.ts`
+    (MB3) e eu não tinha lido.
+
+### Evidência visual
+
+- desktop: a tabela mantém `Mask | Set By | Set At` alinhados e ganha a coluna de
+  remoção; `Add` continua com o painel
+- toque (375×720): a linha vira cartão com os rótulos embutidos e o botão de
+  remover numa linha própria, no alvo de 40px
+
+19. **O Dialyzer pegou uma cópia que virou mentira.** `target in [nil, ""]`
+    deixou de ser possível quando `target` passou a vir sempre do
+    `phx-value-nickname` — `:exact_compare`, binário contra `nil`. As duas
+    mensagens em volta diziam "Select a nickname", e não há mais o que
+    selecionar: viraram "%{nickname} is not on this list." e "That row carries
+    no nickname to remove.".
+20. **O motor injetou um cabeçalho falso em três idiomas.** As novas frases
+    saíram como `シリーズ\nその行は…`, `数据\n该行…`, `數據\n該行…` — o modo de
+    falha "injected heading" que `make i18n.quality.check` existe para pegar — e
+    o polonês devolveu o inglês. Corrigidos à mão nos oito locales afetados. O
+    portão pegou; a tradução automática sozinha teria shipado.
+
+### Validação
+
+- `channel_central_feature_test.exs` + `chanserv_channel_central_feature_test.exs` — 37/37
+- Playwright: `chat-channel-central`, `-exceptions`, `-sync`, `chat-ui-features-channel` — 7/7
+- `make ci` verde

@@ -75,7 +75,7 @@ defmodule RetroHexChatWeb.ChanServChannelCentralFeatureTest do
   end
 
   describe "Channel Central access lists" do
-    test "founder adds, selects, and removes AOP entries inline", %{conn: conn} do
+    test "founder adds and removes AOP entries from the row itself", %{conn: conn} do
       founder = "CsUiA#{uid()}"
       target = "CsT#{uid()}"
       channel = "#csaop-#{uid()}"
@@ -101,8 +101,7 @@ defmodule RetroHexChatWeb.ChanServChannelCentralFeatureTest do
       assert html =~ founder
       assert Queries.find_access(channel, target).level == "aop"
 
-      cc(view, "cc_cs_access_select", %{"nick" => target})
-      html = cc(view, "cc_cs_access_remove", %{"level" => "aop"})
+      html = cc(view, "cc_cs_access_remove", %{"level" => "aop", "nickname" => target})
 
       refute html =~ ~s(data-testid="cc-cs-access-row-#{target}")
       refute Queries.find_access(channel, target)

@@ -60,6 +60,11 @@
   overflow-wrap: anywhere;
 }
 
+.cc-mobile-list-action {
+  width: 44px;
+  text-align: right;
+}
+
 .cc-segmented-tabs {
   flex-wrap: wrap;
 }
@@ -225,21 +230,6 @@
     inset 2px 2px #0a0a0a;
 }
 
-.desktop--stacked .cc-mobile-list-row.bg-primary,
-.desktop--stacked .cc-mobile-list-row.bg-selection-bg {
-  background: #000080;
-  color: #ffffff;
-}
-
-.desktop--stacked .cc-mobile-list-row:hover {
-  background: #ffffd0;
-}
-
-.desktop--stacked .cc-mobile-list-row.bg-primary:hover,
-.desktop--stacked .cc-mobile-list-row.bg-selection-bg:hover {
-  background: #000080;
-}
-
 .desktop--stacked .cc-mobile-list-row td {
   display: block;
   width: 100%;
@@ -257,9 +247,12 @@
   color: #606060;
 }
 
-.desktop--stacked .cc-mobile-list-row.bg-primary .cc-mobile-list-meta,
-.desktop--stacked .cc-mobile-list-row.bg-selection-bg .cc-mobile-list-meta {
-  color: #ffffff;
+/* On a phone the row is a card, so its control sits on a line of its own at the
+   touch target the rest of the mobile shell uses. */
+.desktop--stacked .cc-mobile-list-action {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 8px;
 }
 
 .desktop--stacked .cc-mobile-list-meta::before {

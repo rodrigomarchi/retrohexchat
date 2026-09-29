@@ -99,6 +99,12 @@ _ROWS = {
     "Rooms":        ("Salas", "Salas", "Salas", "Salons", "Räume", "Stanze", "Ruimtes", "Pokoje", "Комнаты", "Ruang", "ルーム", "房间", "房間"),
     "Action List":  ("Lista de Ações", "Lista de Ações", "Lista de acciones", "Liste d'actions", "Aktionsliste", "Elenco azioni", "Actielijst", "Lista akcji", "Список действий", "Daftar Tindakan", "アクションリスト", "操作列表", "操作清單"),
 
+    # The accessible name of a row's remove button. Two words and a placeholder,
+    # so the engine has no sentence to read the word order from, and German,
+    # Dutch and Japanese all put the verb after the subject.
+    "Remove %{nickname}": ("Remover %{nickname}", "Remover %{nickname}", "Quitar %{nickname}", "Retirer %{nickname}", "%{nickname} entfernen", "Rimuovi %{nickname}", "%{nickname} verwijderen", "Usuń %{nickname}", "Удалить %{nickname}", "Hapus %{nickname}", "%{nickname} を削除", "移除 %{nickname}", "移除 %{nickname}"),
+    "Remove %{mask}": ("Remover %{mask}", "Remover %{mask}", "Quitar %{mask}", "Retirer %{mask}", "%{mask} entfernen", "Rimuovi %{mask}", "%{mask} verwijderen", "Usuń %{mask}", "Удалить %{mask}", "Hapus %{mask}", "%{mask} を削除", "移除 %{mask}", "移除 %{mask}"),
+
     # ── Transfer ──────────────────────────────────────────────
     "Send":         ("Enviar", "Enviar", "Enviar", "Envoyer", "Senden", "Invia", "Verzenden", "Wyślij", "Отправить", "Kirim", "送信", "发送", "傳送"),
     "Upload":       ("Enviar", "Carregar", "Subir", "Téléverser", "Hochladen", "Carica", "Uploaden", "Prześlij", "Загрузить", "Unggah", "アップロード", "上传", "上傳"),
