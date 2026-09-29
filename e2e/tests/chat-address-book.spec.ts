@@ -52,8 +52,7 @@ test.describe("Address Book", () => {
       contactNote,
     );
 
-    await chat.addressBookContactRow(contactNick).click();
-    await chat.addressBookDialog.getByTestId("contact-edit").click();
+    await page.getByTestId(`contact-edit-${contactNick}`).click();
     form = page.getByTestId("contact-edit-form");
     await form.locator("#contact-edit-note").fill(contactEdited);
     await submitDialogForm(form);
@@ -61,8 +60,7 @@ test.describe("Address Book", () => {
       contactEdited,
     );
 
-    await chat.addressBookContactRow(contactNick).click();
-    await chat.addressBookDialog.getByTestId("contact-remove").click();
+    await page.getByTestId(`contact-remove-${contactNick}`).click();
     await expect(chat.addressBookContactRow(contactNick)).toHaveCount(0);
 
     await chat.openNotifyListFromMenu();
@@ -97,8 +95,7 @@ test.describe("Address Book", () => {
       "4",
     );
 
-    await chat.addressBookNickColorRow(colorNick).click();
-    await chat.nickColorsDialog.getByTestId("nick-color-edit").click();
+    await page.getByTestId(`nick-color-edit-${colorNick}`).click();
     form = page.getByTestId("nick-color-edit-form");
     await chat.pickColor(form, 5);
     await submitDialogForm(form);
@@ -107,8 +104,7 @@ test.describe("Address Book", () => {
       "5",
     );
 
-    await chat.addressBookNickColorRow(colorNick).click();
-    await chat.nickColorsDialog.getByTestId("nick-color-remove").click();
+    await page.getByTestId(`nick-color-remove-${colorNick}`).click();
     await expect(chat.addressBookNickColorRow(colorNick)).toHaveCount(0);
 
     await chat.openIgnoreListFromMenu();
@@ -121,8 +117,7 @@ test.describe("Address Book", () => {
       "messages",
     );
 
-    await chat.addressBookControlRow(controlNick).click();
-    await chat.ignoreListDialog.getByTestId("control-remove").click();
+    await page.getByTestId(`control-remove-${controlNick}`).click();
     await expect(chat.addressBookControlRow(controlNick)).toHaveCount(0);
 
     await chat.closeAddressBook();

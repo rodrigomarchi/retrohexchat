@@ -37,10 +37,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
-  def handle_event("control_select", %{"nickname" => nick}, socket) do
-    {:noreply, assign(socket, selected: nick)}
-  end
-
   def handle_event("control_add_dialog", _params, socket) do
     {:noreply, assign(socket, show_add_dialog: true)}
   end
@@ -98,8 +94,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
     end
   end
 
-  def handle_event("control_remove", _params, socket) do
-    nick = socket.assigns.selected
+  def handle_event("control_remove", %{"nickname" => nick}, socket) do
     session = socket.assigns.session
 
     with true <- nick != nil,
@@ -131,9 +126,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
         id={@id}
         target={@myself}
         entries={@entries}
-        selected={@selected}
         show_add_dialog={@show_add_dialog}
-        on_select="control_select"
         on_add="control_add_dialog"
         on_remove="control_remove"
       />

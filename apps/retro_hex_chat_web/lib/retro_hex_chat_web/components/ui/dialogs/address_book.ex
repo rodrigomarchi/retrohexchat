@@ -11,12 +11,12 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
       <.address_book_panel
         id="address-book"
         contacts={@contacts}
-        on_select="contact_select"
         on_add="contact_add_dialog"
       />
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
@@ -38,7 +38,6 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   attr :nick_color_fn, :any, default: nil, doc: "Function for nick color display"
   attr :timezone, :string, default: nil, doc: "Timezone for timestamps"
   attr :selected_contact_note, :string, default: "", doc: "Note for the selected contact (edit)"
-  attr :on_select, :any, default: nil, doc: "Row selection callback"
   attr :on_add, :any, default: nil, doc: "Add button callback"
   attr :on_edit, :any, default: nil, doc: "Edit button callback"
   attr :on_remove, :any, default: nil, doc: "Remove button callback"
@@ -60,19 +59,12 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           <.contacts_table
             target={@target}
             contacts={@contacts}
-            selected={@selected}
-            on_select={@on_select}
+            on_edit={@on_edit}
+            on_remove={@on_remove}
             nick_color_fn={@nick_color_fn}
             timezone={@timezone}
           />
-          <.crud_buttons
-            target={@target}
-            on_add={@on_add}
-            on_edit={@on_edit}
-            on_remove={@on_remove}
-            selected={@selected != nil}
-            testid_prefix="contact"
-          />
+          <.add_button target={@target} on_add={@on_add} testid_prefix="contact" />
 
           <%!-- Contact Add Sub-Dialog --%>
           <.contact_add_form :if={@show_contact_add_dialog} target={@target} />
@@ -229,8 +221,8 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   attr :target, :any, default: nil
   attr :contacts, :list, required: true
-  attr :selected, :any, default: nil
-  attr :on_select, :any, default: nil
+  attr :on_edit, :any, default: nil
+  attr :on_remove, :any, default: nil
   attr :nick_color_fn, :any, default: nil
   attr :timezone, :string, default: nil
 
@@ -243,21 +235,21 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
             <.table_head>{dgettext("dialogs", "Nick")}</.table_head>
             <.table_head>{dgettext("dialogs", "Notes")}</.table_head>
             <.table_head>{dgettext("dialogs", "Since")}</.table_head>
+            <.table_head class="ab-mobile-list-action-head">
+              <span class="sr-only">{dgettext("dialogs", "Actions")}</span>
+            </.table_head>
           </.table_row>
         </.table_header>
         <.table_body>
           <.table_row :if={@contacts == []} class="ab-empty-row">
-            <.table_cell colspan="3" class="ab-empty-cell text-center text-muted-foreground py-4">
+            <.table_cell colspan="4" class="ab-empty-cell text-center text-muted-foreground py-4">
               {dgettext("dialogs", "No contacts saved")}
             </.table_cell>
           </.table_row>
           <.table_row
             :for={contact <- @contacts}
             id={"contact-entry-#{contact.contact_nickname}"}
-            class={row_class("ab-mobile-list-row", @selected == contact.contact_nickname)}
-            phx-click={@on_select}
-            phx-target={@target}
-            phx-value-nickname={contact.contact_nickname}
+            class="ab-mobile-list-row"
           >
             <.table_cell
               class="ab-mobile-list-primary"
@@ -276,6 +268,27 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
             >
               {format_contact_date(Map.get(contact, :first_contact_date), @timezone)}
             </.table_cell>
+            <.table_cell class="ab-mobile-list-action">
+              <.row_action
+                event={@on_edit}
+                value={%{"nickname" => contact.contact_nickname}}
+                label={dgettext("dialogs", "Edit %{nickname}", nickname: contact.contact_nickname)}
+                target={@target}
+                testid={"contact-edit-#{contact.contact_nickname}"}
+              >
+                <Icons.icon_btn_edit class="w-4 h-4" />
+              </.row_action>
+              <.row_action
+                event={@on_remove}
+                value={%{"nickname" => contact.contact_nickname}}
+                label={dgettext("dialogs", "Remove %{nickname}", nickname: contact.contact_nickname)}
+                variant="destructive"
+                target={@target}
+                testid={"contact-remove-#{contact.contact_nickname}"}
+              >
+                <Icons.icon_btn_remove class="w-4 h-4" />
+              </.row_action>
+            </.table_cell>
           </.table_row>
         </.table_body>
       </.table>
@@ -283,16 +296,13 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
     """
   end
 
-  # ── CRUD Buttons ────────────────────────────────────
+  # ── Add, the one action with no row to belong to ────
 
   attr :target, :any, default: nil
   attr :on_add, :any, default: nil
-  attr :on_edit, :any, default: nil
-  attr :on_remove, :any, default: nil
-  attr :selected, :boolean, default: false
   attr :testid_prefix, :string, default: nil
 
-  defp crud_buttons(assigns) do
+  defp add_button(assigns) do
     ~H"""
     <div class="ab-action-row flex gap-retro-4 mt-retro-4">
       <.button
@@ -306,38 +316,11 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
         <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
         {dgettext("dialogs", "Add")}
       </.button>
-      <.button
-        size="sm"
-        variant="outline"
-        phx-click={@on_edit}
-        phx-target={@target}
-        disabled={!@selected}
-        data-testid={@testid_prefix && "#{@testid_prefix}-edit"}
-        class="ab-action-button"
-      >
-        <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-        {dgettext("dialogs", "Edit")}
-      </.button>
-      <.button
-        size="sm"
-        variant="outline"
-        phx-click={@on_remove}
-        phx-target={@target}
-        disabled={!@selected}
-        data-testid={@testid_prefix && "#{@testid_prefix}-remove"}
-        class="ab-action-button"
-      >
-        <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-        {dgettext("dialogs", "Remove")}
-      </.button>
     </div>
     """
   end
 
   # ── Helpers ────────────────────────────────────────
-
-  defp row_class(base, true), do: "#{base} bg-selection-bg text-selection-fg"
-  defp row_class(base, false), do: base
 
   @spec format_contact_date(DateTime.t() | nil, String.t() | nil) :: String.t()
   defp format_contact_date(nil, _timezone), do: ""

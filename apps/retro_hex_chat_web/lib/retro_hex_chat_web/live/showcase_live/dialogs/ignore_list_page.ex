@@ -50,8 +50,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.IgnoreListPage do
           <.ignore_list_panel
             id="ignore-list-demo"
             entries={@entries}
-            selected={@selected}
-            on_select="control_select"
           />
         </div>
         <.code_example>
@@ -59,7 +57,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.IgnoreListPage do
           id="ignore-list"
           entries=&#123;@entries&#125;
           selected=&#123;@selected&#125;
-          on_select="control_select"
           /&gt;
         </.code_example>
       </.showcase_card>

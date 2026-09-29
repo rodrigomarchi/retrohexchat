@@ -52,11 +52,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
-  def handle_event("contact_select", %{"nickname" => nick}, socket) do
-    note = contact_note(socket.assigns.session.contacts, nick)
-    {:noreply, assign(socket, selected: nick, selected_contact_note: note)}
-  end
-
   def handle_event("contact_add_dialog", _params, socket) do
     {:noreply, assign(socket, show_contact_add_dialog: true)}
   end
@@ -85,9 +80,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
     end
   end
 
-  def handle_event("contact_edit_dialog", _params, socket) do
-    note = contact_note(socket.assigns.session.contacts, socket.assigns.selected)
-    {:noreply, assign(socket, show_contact_edit_dialog: true, selected_contact_note: note)}
+  # The row's Edit names the contact and opens it: the sub-form needs no
+  # selection made beforehand.
+  def handle_event("contact_edit_dialog", %{"nickname" => nick}, socket) do
+    note = contact_note(socket.assigns.session.contacts, nick)
+
+    {:noreply,
+     assign(socket, selected: nick, show_contact_edit_dialog: true, selected_contact_note: note)}
   end
 
   def handle_event("contact_edit_cancel", _params, socket) do
@@ -167,7 +166,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
         nick_color_fn={@nick_color_fn}
         timezone={@timezone}
         selected_contact_note={@selected_contact_note}
-        on_select="contact_select"
         on_add="contact_add_dialog"
         on_edit="contact_edit_dialog"
         on_remove="contact_remove"

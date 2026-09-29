@@ -272,7 +272,7 @@ o `Remove` de cada linha.** Não há seleção nenhuma.
 
 ---
 
-## Fase 3 — os editores lista + formulário · **metade concluída**
+## Fase 3 — os editores lista + formulário · CONCLUÍDA
 
 Os oito diálogos se separaram em dois grupos, e a divisão coincide exatamente com
 o acoplamento de CSS que o plano tinha previsto:
@@ -282,9 +282,8 @@ o acoplamento de CSS que o plano tinha previsto:
 | **cartões** (`<button>` por linha) | Alias, Auto-Join, Auto-Respond, Highlight Words, Notify List | `ActionList`: o toque abre o formulário ao lado, `Remove` é `<:action>` |
 | **tabelas** (colunas alinhadas, prefixo `ab-`) | Address Book, Ignore List, Nick Colors | coluna de ação como no Channel Central — **próxima sessão** |
 
-Este bloco entrega os **cinco de cartões**. As três tabelas ficam para a próxima:
-compartilham CSS e migram juntas, e Nick Colors ainda precisa da spec Playwright
-que o plano exige escrever antes de tocar no diálogo.
+Entregues em dois commits: primeiro os cinco de cartões, depois as três tabelas
+juntas — compartilham CSS e não podiam sair separadas.
 
 ### Aprendizados
 
@@ -322,4 +321,40 @@ Não é regressão — é a vizinhança nova tornando visível uma diferença qu
 - suíte web inteira: 2340 testes, 0 falhas
 - Playwright: alias (3), autojoin (2), highlights (2), autorespond (3), notify,
   address-book — 25 no total
+- `make ci` verde
+
+
+### As três tabelas
+
+Mesmo tratamento do Channel Central: coluna final com `Edit` e `Remove` da
+própria linha, `Add` no rodapé, nenhuma seleção. O `crud_buttons` de três botões
+virou `add_button` de um — o único que não tem linha a que pertencer.
+
+### Aprendizados
+
+25. **A lacuna de cobertura que o plano apontou não existia.** Escrevi no plano
+    que "Nick Colors não tem spec Playwright" porque não há arquivo
+    `chat-nick-color*.spec.ts`. O fluxo add/edit/remove está inteiro dentro de
+    `chat-address-book.spec.ts`, mais um segundo teste para a cor aplicada à
+    mensagem. Julguei pelo nome do arquivo em vez de pelo conteúdo, e isso teria
+    custado uma spec duplicada.
+26. **O helper genérico dos testes sobreviveu à mudança.** `ab_select(view,
+    evento, nick)` casa `[phx-click=EVENTO][phx-value-nickname=NICK]` — a forma
+    nova continua sendo exatamente isso, só com outro nome de evento. Os seis
+    arquivos de teste precisaram de troca de nome, não de reescrita.
+27. **Os testes "o botão acorda quando seleciono" descreviam o defeito.** Três
+    deles (contatos, cores, notify) existiam só para afirmar que os controles
+    ficavam cinza até haver seleção. Não dava para adaptá-los: o estado que
+    descreviam deixou de existir. Viraram a afirmação oposta — cada linha carrega
+    os próprios controles e nenhum deles nasce desabilitado.
+
+### Evidência visual
+
+`address-book`, `nick-colors`, `ignore-list` — colunas alinhadas preservadas,
+lápis e X por linha, `Add` no rodapé.
+
+### Validação
+
+- 47 testes dos seis arquivos das três tabelas, 0 falhas
+- Playwright: address-book (4), ignore (2) — 12 no total
 - `make ci` verde

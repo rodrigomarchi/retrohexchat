@@ -129,8 +129,7 @@ defmodule RetroHexChatWeb.AddressBookFeatureTest do
       assert render(view) =~ "old note"
 
       # Select and edit
-      ab_select(view, "contact_select", "EditMe")
-      ab_click(view, "contact_edit_dialog")
+      ab_select(view, "contact_edit_dialog", "EditMe")
       assert render(view) =~ "Edit Contact"
 
       ab_form(view, "contact-edit-form", %{"nickname" => "EditMe", "note" => "new note"})
@@ -150,8 +149,7 @@ defmodule RetroHexChatWeb.AddressBookFeatureTest do
       assert render(view) =~ "RemoveMe"
 
       # Select and remove
-      ab_select(view, "contact_select", "RemoveMe")
-      ab_click(view, "contact_remove")
+      ab_select(view, "contact_remove", "RemoveMe")
 
       html = render(view)
       refute html =~ "contact-entry-RemoveMe"

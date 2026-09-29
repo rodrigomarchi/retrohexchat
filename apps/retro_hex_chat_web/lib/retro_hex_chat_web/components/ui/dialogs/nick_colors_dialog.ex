@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
@@ -56,17 +57,10 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
           <.nick_colors_table
             target={@target}
             nick_colors={@nick_colors}
-            selected={@selected}
-            on_select={@on_select}
-          />
-          <.crud_buttons
-            target={@target}
-            on_add={@on_add}
             on_edit={@on_edit}
             on_remove={@on_remove}
-            selected={@selected != nil}
-            testid_prefix="nick-color"
           />
+          <.add_button target={@target} on_add={@on_add} testid_prefix="nick-color" />
 
           <%!-- Add Sub-Dialog --%>
           <.nick_color_add_form
@@ -222,8 +216,8 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
 
   attr :target, :any, default: nil
   attr :nick_colors, :list, required: true
-  attr :selected, :any, default: nil
-  attr :on_select, :any, default: nil
+  attr :on_edit, :any, default: nil
+  attr :on_remove, :any, default: nil
 
   defp nick_colors_table(assigns) do
     ~H"""
@@ -233,11 +227,14 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
           <.table_row>
             <.table_head>{dgettext("dialogs", "Nick")}</.table_head>
             <.table_head>{dgettext("dialogs", "Color")}</.table_head>
+            <.table_head class="ab-mobile-list-action-head">
+              <span class="sr-only">{dgettext("dialogs", "Actions")}</span>
+            </.table_head>
           </.table_row>
         </.table_header>
         <.table_body>
           <.table_row :if={@nick_colors == []} class="ab-empty-row">
-            <.table_cell colspan="2" class="ab-empty-cell text-center text-muted-foreground py-4">
+            <.table_cell colspan="3" class="ab-empty-cell text-center text-muted-foreground py-4">
               {dgettext("dialogs", "No custom colors set. Nicknames use automatic colors.")}
             </.table_cell>
           </.table_row>
@@ -245,10 +242,7 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
             :for={entry <- @nick_colors}
             id={"nick-color-entry-#{entry.target_nickname}"}
             data-color-index={entry.color_index}
-            class={row_class("ab-mobile-list-row", @selected == entry.target_nickname)}
-            phx-click={@on_select}
-            phx-target={@target}
-            phx-value-nickname={entry.target_nickname}
+            class="ab-mobile-list-row"
           >
             <.table_cell
               class="ab-mobile-list-primary"
@@ -259,6 +253,27 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
             <.table_cell class="ab-mobile-list-meta" data-label={dgettext("dialogs", "Color")}>
               <div class={"ab-color-swatch w-4 h-4 border border-border #{nick_color_class(entry.color_index)}"} />
             </.table_cell>
+            <.table_cell class="ab-mobile-list-action">
+              <.row_action
+                event={@on_edit}
+                value={%{"nickname" => entry.target_nickname}}
+                label={dgettext("dialogs", "Edit %{nickname}", nickname: entry.target_nickname)}
+                target={@target}
+                testid={"nick-color-edit-#{entry.target_nickname}"}
+              >
+                <Icons.icon_btn_edit class="w-4 h-4" />
+              </.row_action>
+              <.row_action
+                event={@on_remove}
+                value={%{"nickname" => entry.target_nickname}}
+                label={dgettext("dialogs", "Remove %{nickname}", nickname: entry.target_nickname)}
+                variant="destructive"
+                target={@target}
+                testid={"nick-color-remove-#{entry.target_nickname}"}
+              >
+                <Icons.icon_btn_remove class="w-4 h-4" />
+              </.row_action>
+            </.table_cell>
           </.table_row>
         </.table_body>
       </.table>
@@ -266,16 +281,13 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
     """
   end
 
-  # ── CRUD Buttons ────────────────────────────────────
+  # ── Add, the one action with no row to belong to ────
 
   attr :target, :any, default: nil
   attr :on_add, :any, default: nil
-  attr :on_edit, :any, default: nil
-  attr :on_remove, :any, default: nil
-  attr :selected, :boolean, default: false
   attr :testid_prefix, :string, default: nil
 
-  defp crud_buttons(assigns) do
+  defp add_button(assigns) do
     ~H"""
     <div class="ab-action-row flex gap-retro-4 mt-retro-4">
       <.button
@@ -289,38 +301,11 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
         <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
         {dgettext("dialogs", "Add")}
       </.button>
-      <.button
-        size="sm"
-        variant="outline"
-        phx-click={@on_edit}
-        phx-target={@target}
-        disabled={!@selected}
-        data-testid={@testid_prefix && "#{@testid_prefix}-edit"}
-        class="ab-action-button"
-      >
-        <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-        {dgettext("dialogs", "Edit")}
-      </.button>
-      <.button
-        size="sm"
-        variant="outline"
-        phx-click={@on_remove}
-        phx-target={@target}
-        disabled={!@selected}
-        data-testid={@testid_prefix && "#{@testid_prefix}-remove"}
-        class="ab-action-button"
-      >
-        <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-        {dgettext("dialogs", "Remove")}
-      </.button>
     </div>
     """
   end
 
   # ── Helpers ────────────────────────────────────────
-
-  defp row_class(base, true), do: "#{base} bg-selection-bg text-selection-fg"
-  defp row_class(base, false), do: base
 
   @spec nick_color_class(any()) :: String.t()
   defp nick_color_class(n) when is_integer(n), do: "irc-bg-#{n}"

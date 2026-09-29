@@ -10,11 +10,11 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
       <.ignore_list_panel
         id="ignore-list"
         entries={@entries}
-        on_select="ignore_select"
       />
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
@@ -29,9 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
   attr :id, :string, required: true
   attr :target, :any, default: nil
   attr :entries, :list, default: [], doc: "List of ignore entries"
-  attr :selected, :string, default: nil, doc: "Selected nickname"
   attr :show_add_dialog, :boolean, default: false
-  attr :on_select, :any, default: nil
   attr :on_add, :any, default: nil
   attr :on_remove, :any, default: nil
 
@@ -49,12 +47,7 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
           phx-mounted={JS.focus(to: "##{@id}-content")}
           class="ab-dialog flex h-full min-h-0 flex-col gap-retro-8"
         >
-          <.control_table
-            target={@target}
-            control_list={@entries}
-            selected={@selected}
-            on_select={@on_select}
-          />
+          <.control_table target={@target} control_list={@entries} on_remove={@on_remove} />
           <div class="ab-action-row flex gap-retro-4 mt-retro-4">
             <.button
               size="sm"
@@ -66,18 +59,6 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
             >
               <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
               {dgettext("dialogs", "Add")}
-            </.button>
-            <.button
-              size="sm"
-              variant="outline"
-              phx-click={@on_remove}
-              phx-target={@target}
-              disabled={@selected == nil}
-              data-testid="control-remove"
-              class="ab-action-button"
-            >
-              <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Remove")}
             </.button>
           </div>
 
@@ -93,8 +74,7 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
 
   attr :target, :any, default: nil
   attr :control_list, :list, required: true
-  attr :selected, :any, default: nil
-  attr :on_select, :any, default: nil
+  attr :on_remove, :any, default: nil
 
   defp control_table(assigns) do
     ~H"""
@@ -105,21 +85,21 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
             <.table_head>{dgettext("dialogs", "Nick")}</.table_head>
             <.table_head>{dgettext("dialogs", "Type")}</.table_head>
             <.table_head>{dgettext("dialogs", "Expires")}</.table_head>
+            <.table_head class="ab-mobile-list-action-head">
+              <span class="sr-only">{dgettext("dialogs", "Actions")}</span>
+            </.table_head>
           </.table_row>
         </.table_header>
         <.table_body>
           <.table_row :if={@control_list == []} class="ab-empty-row">
-            <.table_cell colspan="3" class="ab-empty-cell text-center text-muted-foreground py-4">
+            <.table_cell colspan="4" class="ab-empty-cell text-center text-muted-foreground py-4">
               {dgettext("dialogs", "No ignored users. Click Add to ignore a nickname.")}
             </.table_cell>
           </.table_row>
           <.table_row
             :for={entry <- @control_list}
             id={"control-entry-#{control_nick(entry)}"}
-            class={row_class("ab-mobile-list-row", @selected == control_nick(entry))}
-            phx-click={@on_select}
-            phx-target={@target}
-            phx-value-nickname={control_nick(entry)}
+            class="ab-mobile-list-row"
           >
             <.table_cell
               class="ab-mobile-list-primary font-bold text-xs"
@@ -138,6 +118,18 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
               data-label={dgettext("dialogs", "Expires")}
             >
               {format_expires(Map.get(entry, :expires_at))}
+            </.table_cell>
+            <.table_cell class="ab-mobile-list-action">
+              <.row_action
+                event={@on_remove}
+                value={%{"nickname" => control_nick(entry)}}
+                label={dgettext("dialogs", "Remove %{nickname}", nickname: control_nick(entry))}
+                variant="destructive"
+                target={@target}
+                testid={"control-remove-#{control_nick(entry)}"}
+              >
+                <Icons.icon_btn_remove class="w-4 h-4" />
+              </.row_action>
             </.table_cell>
           </.table_row>
         </.table_body>
@@ -231,9 +223,6 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
   end
 
   # ── Helpers ────────────────────────────────────────
-
-  defp row_class(base, true), do: "#{base} bg-selection-bg text-selection-fg"
-  defp row_class(base, false), do: base
 
   # Support both IgnoreEntry structs (:nickname) and showcase maps (:nick)
   @spec control_nick(map()) :: String.t()

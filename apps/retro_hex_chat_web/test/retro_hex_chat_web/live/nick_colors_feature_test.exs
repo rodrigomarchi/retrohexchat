@@ -63,8 +63,7 @@ defmodule RetroHexChatWeb.NickColorsFeatureTest do
       assert render(view) =~ "Red"
 
       # Select and edit to Blue (12)
-      ab_select(view, "nick_color_select", "EditClr")
-      ab_click(view, "nick_color_edit_dialog")
+      ab_select(view, "nick_color_edit_dialog", "EditClr")
       assert render(view) =~ "Edit Nick Color"
 
       ab_form(view, "nick-color-edit-form", %{"nickname" => "EditClr", "color_index" => "12"})
@@ -84,8 +83,7 @@ defmodule RetroHexChatWeb.NickColorsFeatureTest do
       assert render(view) =~ "RmClr"
 
       # Select and remove
-      ab_select(view, "nick_color_select", "RmClr")
-      ab_click(view, "nick_color_remove")
+      ab_select(view, "nick_color_remove", "RmClr")
 
       html = render(view)
       refute html =~ "nick-color-entry-RmClr"

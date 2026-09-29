@@ -86,8 +86,7 @@ defmodule RetroHexChatWeb.NickColorsTest do
       view |> ab_click("nick_color_add_dialog")
       view |> ab_form("nick-color-add-form", %{"nickname" => "EditMe", "color_index" => "4"})
 
-      view |> ab_select("nick_color_select", "EditMe")
-      view |> ab_click("nick_color_edit_dialog")
+      view |> ab_select("nick_color_edit_dialog", "EditMe")
 
       view |> ab_form("nick-color-edit-form", %{"nickname" => "EditMe", "color_index" => ""})
 
@@ -121,8 +120,7 @@ defmodule RetroHexChatWeb.NickColorsTest do
       assert render(view) =~ "Red"
 
       # Select and edit to Blue (12)
-      view |> ab_select("nick_color_select", "EditNick")
-      view |> ab_click("nick_color_edit_dialog")
+      view |> ab_select("nick_color_edit_dialog", "EditNick")
       assert render(view) =~ "Edit Nick Color"
 
       view |> ab_form("nick-color-edit-form", %{"nickname" => "EditNick", "color_index" => "12"})
@@ -143,32 +141,23 @@ defmodule RetroHexChatWeb.NickColorsTest do
       assert render(view) =~ "RemNick"
 
       # Select and remove
-      view |> ab_select("nick_color_select", "RemNick")
-      view |> ab_click("nick_color_remove")
+      view |> ab_select("nick_color_remove", "RemNick")
 
       html = render(view)
       refute html =~ "nick-color-entry-RemNick"
       assert html =~ "No custom colors set. Nicknames use automatic colors."
     end
 
-    test "select entry enables edit/remove buttons", %{conn: conn} do
+    test "every colour row carries its own edit and remove", %{conn: conn} do
       view = connect_user(conn, "SelColor")
       view |> render_click("open_nick_colors_dialog")
 
-      # Add entry
       view |> ab_click("nick_color_add_dialog")
       view |> ab_form("nick-color-add-form", %{"nickname" => "SelNick", "color_index" => "3"})
 
-      # Before selection, buttons disabled
-      assert has_element?(view, "[data-testid=\"nick-color-edit\"][disabled]")
-      assert has_element?(view, "[data-testid=\"nick-color-remove\"][disabled]")
-
-      # Select
-      view |> ab_select("nick_color_select", "SelNick")
-
-      # After selection, not disabled
-      refute has_element?(view, "[data-testid=\"nick-color-edit\"][disabled]")
-      refute has_element?(view, "[data-testid=\"nick-color-remove\"][disabled]")
+      assert has_element?(view, "[data-testid=\"nick-color-edit-SelNick\"]")
+      assert has_element?(view, "[data-testid=\"nick-color-remove-SelNick\"]")
+      refute has_element?(view, "[data-testid=\"nick-color-remove-SelNick\"][disabled]")
     end
 
     test "color override applies to chat message nickname", %{conn: conn} do

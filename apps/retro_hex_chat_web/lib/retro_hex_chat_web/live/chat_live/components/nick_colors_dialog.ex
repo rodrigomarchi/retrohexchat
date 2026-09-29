@@ -42,10 +42,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
-  def handle_event("nick_color_select", %{"nickname" => nick}, socket) do
-    {:noreply, assign(socket, selected: nick)}
-  end
-
   def handle_event("nick_color_add_dialog", _params, socket) do
     {:noreply, assign(socket, show_add_dialog: true, palette_editing_index: nil)}
   end
@@ -73,11 +69,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
     end
   end
 
-  def handle_event("nick_color_edit_dialog", _params, socket) do
-    color =
-      NickColors.color_index_for(socket.assigns.session.nick_colors, socket.assigns.selected)
+  # The row's Edit names the nickname and opens the palette on its colour.
+  def handle_event("nick_color_edit_dialog", %{"nickname" => nick}, socket) do
+    color = NickColors.color_index_for(socket.assigns.session.nick_colors, nick)
 
-    {:noreply, assign(socket, show_edit_dialog: true, palette_editing_index: color)}
+    {:noreply,
+     assign(socket, selected: nick, show_edit_dialog: true, palette_editing_index: color)}
   end
 
   def handle_event("nick_color_edit_cancel", _params, socket) do
@@ -145,7 +142,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
         palette_editing_index={@palette_editing_index}
         show_add_dialog={@show_add_dialog}
         show_edit_dialog={@show_edit_dialog}
-        on_select="nick_color_select"
         on_add="nick_color_add_dialog"
         on_edit="nick_color_edit_dialog"
         on_remove="nick_color_remove"

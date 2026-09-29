@@ -204,7 +204,7 @@ msgstr ""
 msgid "%{message} (%{reason})"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:182
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:178
 #, elixir-autogen, elixir-format
 msgid "%{nickname} already has a custom color"
 msgstr ""
@@ -229,12 +229,12 @@ msgstr ""
 msgid "%{nickname} has left (%{reason})"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:126
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:123
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has no custom color"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:222
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:220
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:256
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is already in your contacts"
@@ -251,8 +251,8 @@ msgstr ""
 msgid "%{nickname} is away: %{message}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:121
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:147
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:120
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:146
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is not in your contacts"
 msgstr ""
@@ -378,7 +378,7 @@ msgstr ""
 msgid "* %{nickname} is no longer auto-ignored"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:115
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:110
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:320
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:801
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:91
@@ -398,7 +398,7 @@ msgstr ""
 msgid "* %{nickname} is now ignored"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:84
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:80
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:57
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now ignored (%{type})"
@@ -645,7 +645,7 @@ msgstr ""
 msgid "Add to Contacts"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:80
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:75
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:247
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:499
 #, elixir-autogen, elixir-format
@@ -829,7 +829,7 @@ msgstr ""
 msgid "Cannot add highlight: %{reason}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:219
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:217
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:264
 #, elixir-autogen, elixir-format
 msgid "Cannot add yourself to contacts"
@@ -1019,7 +1019,7 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:225
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:223
 #, elixir-autogen, elixir-format
 msgid "Contact list is full (max 100 entries)"
 msgstr ""
@@ -1149,7 +1149,7 @@ msgstr ""
 msgid "Failed to add auto-join channel: %{reason}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:95
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:91
 #, elixir-autogen, elixir-format
 msgid "Failed to add ignore: %{reason}"
 msgstr ""
@@ -1282,8 +1282,8 @@ msgstr ""
 msgid "Invalid alias name. Use only letters, numbers, hyphens, underscores."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:102
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:188
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:99
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:184
 #, elixir-autogen, elixir-format
 msgid "Invalid color"
 msgstr ""
@@ -1293,7 +1293,7 @@ msgstr ""
 msgid "Invalid command. Commands must start with /"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:68
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:64
 #, elixir-autogen, elixir-format
 msgid "Invalid duration format. Use: 5m, 2h, or 1d"
 msgstr ""
@@ -1318,8 +1318,8 @@ msgstr ""
 msgid "Invalid name. Use letters, numbers, hyphens, underscores."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:227
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:187
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:225
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:183
 #, elixir-autogen, elixir-format
 msgid "Invalid nickname"
 msgstr ""
@@ -1514,12 +1514,12 @@ msgstr ""
 msgid "Next: %{parameter}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:99
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:96
 #, elixir-autogen, elixir-format
 msgid "Nick color entry not found"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:185
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:181
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:356
 #, elixir-autogen, elixir-format
 msgid "Nick color list is full (max 50)"
@@ -1556,7 +1556,7 @@ msgstr ""
 msgid "No command at position %{position}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:103
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:102
 #, elixir-autogen, elixir-format
 msgid "No contact selected"
 msgstr ""
@@ -1734,7 +1734,7 @@ msgstr ""
 msgid "Registered"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:139
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:138
 #, elixir-autogen, elixir-format
 msgid "Removed %{nickname} from contacts"
 msgstr ""
@@ -1745,7 +1745,7 @@ msgstr ""
 msgid "Removed %{nickname} from notify list"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:118
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:115
 #, elixir-autogen, elixir-format
 msgid "Removed custom color for %{nickname}"
 msgstr ""
@@ -2043,7 +2043,7 @@ msgstr ""
 msgid "Unmute PM"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:113
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:112
 #: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:63
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:102
 #, elixir-autogen, elixir-format
@@ -2161,7 +2161,7 @@ msgstr ""
 msgid "You are setting: %{flag} (%{label})"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:61
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:57
 #, elixir-autogen, elixir-format
 msgid "You cannot ignore yourself"
 msgstr ""
@@ -2312,7 +2312,7 @@ msgstr ""
 msgid "[message deleted]"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:156
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:149
 #, elixir-autogen, elixir-format
 msgid "all"
 msgstr ""
@@ -2352,7 +2352,7 @@ msgstr ""
 msgid "identified"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:159
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:152
 #, elixir-autogen, elixir-format
 msgid "invites"
 msgstr ""
@@ -2362,7 +2362,7 @@ msgstr ""
 msgid "is typing..."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:157
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:150
 #: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:331
 #, elixir-autogen, elixir-format
 msgid "messages"
@@ -2373,7 +2373,7 @@ msgstr ""
 msgid "not identified"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:158
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:151
 #, elixir-autogen, elixir-format
 msgid "notices"
 msgstr ""

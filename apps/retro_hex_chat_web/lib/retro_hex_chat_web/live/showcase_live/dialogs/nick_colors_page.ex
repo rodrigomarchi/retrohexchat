@@ -47,8 +47,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NickColorsPage do
           <.nick_colors_panel
             id="nick-colors-demo"
             nick_colors={@nick_colors}
-            selected={@selected}
-            on_select="nick_color_select"
           />
         </div>
         <.code_example>
@@ -56,7 +54,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NickColorsPage do
           id="nick-colors"
           nick_colors=&#123;@entries&#125;
           selected=&#123;@selected&#125;
-          on_select="nick_color_select"
           /&gt;
         </.code_example>
       </.showcase_card>

@@ -1964,8 +1964,7 @@ export class ChatPage {
 
   async editAddressBookNickColor(nick: string, colorIndex: number) {
     await this.openNickColorsFromMenu();
-    await this.addressBookNickColorRow(nick).click();
-    await this.nickColorsDialog.getByTestId("nick-color-edit").click();
+    await this.page.getByTestId(`nick-color-edit-${nick}`).click();
     const form = this.page.getByTestId("nick-color-edit-form");
     await expect(form).toBeVisible();
     await this.pickColor(form, colorIndex);
@@ -1978,8 +1977,7 @@ export class ChatPage {
 
   async removeAddressBookNickColor(nick: string) {
     await this.openNickColorsFromMenu();
-    await this.addressBookNickColorRow(nick).click();
-    await this.nickColorsDialog.getByTestId("nick-color-remove").click();
+    await this.page.getByTestId(`nick-color-remove-${nick}`).click();
     await expect(this.addressBookNickColorRow(nick)).toHaveCount(0);
   }
 
@@ -2002,8 +2000,7 @@ export class ChatPage {
 
   async removeAddressBookControlEntry(nick: string) {
     await this.openIgnoreListFromMenu();
-    await this.addressBookControlRow(nick).click();
-    await this.ignoreListDialog.getByTestId("control-remove").click();
+    await this.page.getByTestId(`control-remove-${nick}`).click();
     await expect(this.addressBookControlRow(nick)).toHaveCount(0);
     await this.closeIgnoreList();
   }

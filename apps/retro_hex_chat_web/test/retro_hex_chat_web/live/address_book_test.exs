@@ -169,24 +169,18 @@ defmodule RetroHexChatWeb.AddressBookTest do
       assert html =~ "Invalid nickname"
     end
 
-    test "select contact enables Edit/Remove buttons", %{conn: conn} do
+    test "every contact row carries its own edit and remove", %{conn: conn} do
       view = connect_user(conn, "SelectBtns")
       view |> render_click("toggle_address_book")
 
-      # Add a contact
       view |> ab_click("contact_add_dialog")
       view |> ab_form("contact-add-form", %{"nickname" => "SelectTarget", "note" => ""})
 
-      # Before selection, buttons are disabled
-      assert has_element?(view, "[data-testid=\"contact-edit\"][disabled]")
-      assert has_element?(view, "[data-testid=\"contact-remove\"][disabled]")
-
-      # Select the contact
-      view |> ab_select("contact_select", "SelectTarget")
-
-      # After selection, buttons should NOT be disabled
-      refute has_element?(view, "[data-testid=\"contact-edit\"][disabled]")
-      refute has_element?(view, "[data-testid=\"contact-remove\"][disabled]")
+      # The controls name their contact, so there is nothing to select first
+      # and nothing disabled while waiting for a selection.
+      assert has_element?(view, "[data-testid=\"contact-edit-SelectTarget\"]")
+      assert has_element?(view, "[data-testid=\"contact-remove-SelectTarget\"]")
+      refute has_element?(view, "[data-testid=\"contact-remove-SelectTarget\"][disabled]")
     end
 
     test "edit note updates in list", %{conn: conn} do
@@ -199,8 +193,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
       assert render(view) =~ "old note"
 
       # Select and edit
-      view |> ab_select("contact_select", "EditTarget")
-      view |> ab_click("contact_edit_dialog")
+      view |> ab_select("contact_edit_dialog", "EditTarget")
       assert render(view) =~ "Edit Contact"
 
       view
@@ -222,9 +215,8 @@ defmodule RetroHexChatWeb.AddressBookTest do
       view |> ab_form("contact-add-form", %{"nickname" => "RemoveMe", "note" => ""})
       assert render(view) =~ "RemoveMe"
 
-      # Select and remove
-      view |> ab_select("contact_select", "RemoveMe")
-      view |> ab_click("contact_remove")
+      # Remove from the row itself
+      view |> ab_select("contact_remove", "RemoveMe")
 
       html = render(view)
       refute html =~ "contact-entry-RemoveMe"
