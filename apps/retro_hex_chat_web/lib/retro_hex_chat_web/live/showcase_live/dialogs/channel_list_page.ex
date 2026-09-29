@@ -24,7 +24,13 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
            topic: dgettext("showcase", "Welcome to RetroHexChat!")
          },
          %{name: "#help", user_count: 38, topic: dgettext("showcase", "Ask your questions here")},
-         %{name: "#dev", user_count: 24, topic: dgettext("showcase", "Development discussion")},
+         %{
+           name: "#dev",
+           user_count: 24,
+           topic: dgettext("showcase", "Development discussion"),
+           invite_only?: true,
+           joined?: false
+         },
          %{
            name: "#music",
            user_count: 67,
@@ -50,7 +56,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
 
       <.showcase_card
         title={dgettext("showcase", "Channel List")}
-        description="Searchable channel table with user count and topic."
+        description="Every row is a door: pressing it joins the channel. A closed room cannot be entered, so its row asks for access instead — the verb is on the row, and it does not change under the pointer."
       >
         <div class="h-[360px] shadow-retro-field overflow-hidden p-2">
           <.channel_list_panel id="channel-list-demo" channels={@channels} />
@@ -60,23 +66,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
           id="channel-list"
           channels=&#123;@channels&#125;
           on_search="filter_channels"
-          on_select="select_channel"
           on_join="join_channel"
+          on_knock="knock_channel"
           /&gt;
         </.code_example>
-      </.showcase_card>
-
-      <.showcase_card
-        title={dgettext("showcase", "With Selection")}
-        description="Channel list with a channel pre-selected. Join button is enabled."
-      >
-        <div class="h-[360px] shadow-retro-field overflow-hidden p-2">
-          <.channel_list_panel
-            id="channel-list-selected"
-            channels={@channels}
-            selected_channel="#dev"
-          />
-        </div>
       </.showcase_card>
 
       <.showcase_card

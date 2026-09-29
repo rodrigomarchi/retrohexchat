@@ -158,7 +158,6 @@ test.describe("Conversations sidebar", () => {
 
       await alice.chat.sendMessage("/list");
       await expect(alice.chat.channelListDialog).toBeVisible();
-      await expect(alice.chat.channelListJoinButton).toBeDisabled();
       await alice.chat.channelListSearch.fill(searchTerm);
       await expect(alice.chat.channelListRow(targetChannel)).toBeVisible();
       // Wait for the (debounced) filter to actually register server-side before
@@ -172,11 +171,8 @@ test.describe("Conversations sidebar", () => {
       await shot(alice.chat.channelListDialog, "browse-all-channels-dialog");
       await expect(alice.chat.channelListSearch).toHaveValue(searchTerm);
       await expect(alice.chat.channelListRow(targetChannel)).toBeVisible();
-      await expect(alice.chat.channelListJoinButton).toBeDisabled();
 
       await alice.chat.channelListRow(targetChannel).click();
-      await expect(alice.chat.channelListJoinButton).toBeEnabled();
-      await alice.chat.channelListJoinButton.click();
       await alice.chat.expectTabVisible(targetChannel);
       await alice.chat.expectTabSelected(targetChannel);
     } finally {

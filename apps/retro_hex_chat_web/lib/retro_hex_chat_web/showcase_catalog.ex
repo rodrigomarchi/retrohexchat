@@ -378,6 +378,13 @@ defmodule RetroHexChatWeb.ShowcaseCatalog do
       icon: :icon_btn_channel_list
     },
     %{
+      id: "action-list",
+      group: :layout,
+      module: Layout.ActionListPage,
+      label: dgettext_noop("showcase", "Action List"),
+      icon: :icon_table_grid
+    },
+    %{
       id: "toast",
       group: :layout,
       module: Layout.ToastPage,

@@ -1,0 +1,211 @@
+/* A list whose row is a control (UI.ActionList).
+
+   The row is the raised Win98 panel; the primary button inside it is
+   transparent and carries no bevel of its own, so a row with actions and a row
+   without one read as the same object. The verb and the row actions sit in the
+   same well, to the right, and are always visible — touch has no hover. */
+
+.action-list {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.action-list__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 6px;
+  min-width: 0;
+  padding: 8px;
+  color: #000000;
+  background: #c0c0c0;
+  box-shadow:
+    inset -1px -1px #808080,
+    inset 1px 1px #ffffff,
+    inset -2px -2px #0a0a0a,
+    inset 2px 2px #dfdfdf;
+}
+
+.action-list__row:hover {
+  background: #d0d0d0;
+}
+
+.action-list__row--current,
+.action-list__row--current:hover {
+  color: #ffffff;
+  background: #000080;
+}
+
+/* Flex, not grid: the icon, the figures and the verb are each optional, and a
+   fixed column count leaves a hole in every row that omits one.
+
+   Transparent on purpose: the bevel belongs to the row, and a second one here
+   would draw a button inside a button. */
+.action-list__primary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 0;
+  color: inherit;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.action-list__primary:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+
+.action-list__row--current .action-list__primary:focus-visible {
+  outline-color: #ffffff;
+}
+
+.action-list__icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  align-self: flex-start;
+  color: #000000;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.action-list__copy {
+  display: grid;
+  flex: 1 1 auto;
+  gap: 3px;
+  min-width: 0;
+}
+
+.action-list__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  color: #000080;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.action-list__meta {
+  min-width: 0;
+  color: #303030;
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.action-list__row--current .action-list__title,
+.action-list__row--current .action-list__meta {
+  color: #ffffff;
+}
+
+.action-list__trailing {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* The verb and the row's other controls. Both are real buttons — the app's own
+   — so nothing here redraws a bevel. */
+.action-list__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.action-list__cta {
+  min-width: 118px;
+}
+
+.action-list__action {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+}
+
+/* A labelled figure on a row: a count, a mode, when it was last used. */
+.action-list__figure {
+  display: grid;
+  min-width: 54px;
+  gap: 1px;
+  padding: 4px 6px;
+  color: #000000;
+  background: #dfdfdf;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080;
+}
+
+.action-list__figure-label,
+.action-list__figure-value {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.action-list__figure-label {
+  color: #606060;
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+.action-list__figure-value {
+  color: #000000;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+/* Stacked desktop is the touch layout. The row goes to one column, the parts
+   stop competing for width, and the verb takes a full-width line of its own at
+   the 40px target the rest of the mobile shell uses. */
+.desktop--stacked .action-list__row {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.desktop--stacked .action-list__primary {
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.desktop--stacked .action-list__trailing {
+  flex: 1 0 100%;
+  justify-content: flex-start;
+  padding-left: 36px;
+}
+
+.desktop--stacked .action-list__actions {
+  grid-column: 1;
+  justify-content: stretch;
+}
+
+.desktop--stacked .action-list__cta {
+  flex: 1 1 auto;
+  min-height: 40px;
+}
+
+.desktop--stacked .action-list__action {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+}

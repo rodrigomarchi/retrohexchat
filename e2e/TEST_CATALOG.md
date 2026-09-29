@@ -254,7 +254,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | H5 | `/clear` clears only active window; other windows preserve history (features P1) | `tests/chat-channel-lifecycle.spec.ts` | done |
 | H6 | `/topic` with no args prints current topic (features P1) | `tests/chat-topic-advanced.spec.ts` | done |
 | H7 | Topic changes are visible in realtime to another user (features P1) | `tests/chat-topic-advanced.spec.ts` | done |
-| H8 | `/list` opens channel list; search and Join work (features P1) | `tests/chat-channel-list.spec.ts` | done |
+| H8 | `/list` opens channel list; search and the row press join (features P1) | `tests/chat-channel-list.spec.ts` | done |
 | H8b | a registered channel everybody left stays listed, says when it was last used, and still joins | `tests/chat-channel-list.spec.ts` | done |
 | H9 | `/setwelcome` shows welcome once for a later joiner (features P1) | `tests/chat-channel-welcome.spec.ts` | done |
 | H10 | `/clearwelcome` stops welcome for later joiners (features P1) | `tests/chat-channel-welcome.spec.ts` | done |

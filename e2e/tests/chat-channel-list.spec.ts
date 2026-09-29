@@ -1,6 +1,6 @@
 /**
  * @section H - Channels, Server Messages, Local Window State
- * @flow H8 [done] `/list` opens channel list; search and Join work (features P1)
+ * @flow H8 [done] `/list` opens channel list; search and the row press join (features P1)
  * @flow H8b [done] a registered channel everybody left stays listed, says when it was last used, and still joins
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -49,7 +49,7 @@ async function setupListedChannel(browser: Browser, channel: string) {
 }
 
 test.describe("Channel list dialog", () => {
-  test("/list filters a unique channel and joins it through the Join button (H8)", async ({
+  test("/list filters a unique channel and the row press joins it (H8)", async ({
     browser,
   }) => {
     const channel = uniqueChannel("listed");
@@ -60,14 +60,15 @@ test.describe("Channel list dialog", () => {
       await joinerChat.sendMessage("/list");
 
       await expect(joinerChat.channelListSearch).toBeVisible();
-      await expect(joinerChat.channelListJoinButton).toBeDisabled();
 
       await joinerChat.channelListSearch.fill(channel.slice(1));
       await expect(joinerChat.channelListRow(channel)).toBeVisible();
 
+      // The row says what its press does, and the press is the whole gesture:
+      // there is no button under the list waiting for a selection.
+      await expect(joinerChat.channelListRowAction(channel)).toHaveText("Join");
+      await shot(joinerChat.channelListDialog, "row-is-the-door");
       await joinerChat.channelListRow(channel).click();
-      await expect(joinerChat.channelListJoinButton).toBeEnabled();
-      await joinerChat.channelListJoinButton.click();
 
       await joinerChat.expectTabVisible(channel);
       await expect(joinerChat.channelListSearch).toBeHidden();
@@ -118,7 +119,6 @@ test.describe("Channel list dialog", () => {
       await shot(joiner.chat.channelListDialog, "cold-channel-row");
 
       await row.click();
-      await joiner.chat.channelListJoinButton.click();
       await joiner.chat.expectTabVisible(channel);
       await shot(joinerPage, "cold-channel-joined");
     } finally {

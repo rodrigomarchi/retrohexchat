@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
   end
 
   describe "knock entry point" do
-    test "Channel List marks invite-only rows and swaps Join for Request Access" do
+    test "a closed room's own row asks for access while its neighbour joins" do
       html =
         render_component(&ChannelList.channel_list_panel/1,
           id: "channel-list-dialog",
@@ -107,9 +107,7 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
               joined?: false
             }
           ],
-          selected_channel: "#private",
           on_search: "channel_list_filter",
-          on_select: "channel_list_select",
           on_join: "channel_list_join",
           on_knock: "channel_list_knock"
         )
@@ -117,8 +115,10 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
       assert html =~ "data-testid=\"channel-list-invite-only-#private\""
       assert html =~ "+i"
       assert html =~ "Request Access..."
-      assert html =~ "channel-list-knock"
-      refute html =~ "data-testid=\"channel-list-join\""
+
+      # The verb is a property of the row, so both live on screen at once.
+      assert row_event(html, "#private") == "channel_list_knock"
+      assert row_event(html, "#open") == "channel_list_join"
     end
 
     test "Channel List keeps Join for invite-only channels already joined" do
@@ -134,15 +134,13 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
               joined?: true
             }
           ],
-          selected_channel: "#private",
           on_search: "channel_list_filter",
-          on_select: "channel_list_select",
           on_join: "channel_list_join",
           on_knock: "channel_list_knock"
         )
 
       assert html =~ "Join"
-      assert html =~ "channel-list-join"
+      assert row_event(html, "#private") == "channel_list_join"
       refute html =~ "Request Access..."
     end
 
@@ -160,8 +158,6 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
       guest_view = connect_user(conn, guest)
 
       render_click(guest_view, "channel_list")
-      # Selection lives in the LiveComponent — forwarded via send_update; flush with render.
-      render_click(guest_view, "channel_list_select", %{"channel" => channel})
       html = render(guest_view)
 
       assert html =~ "channel-list-invite-only-#{channel}"
@@ -293,6 +289,16 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
 
   defp show_knock_request_dialog?(view) do
     :sys.get_state(view.pid).socket.assigns[:show_knock_request_dialog] == true
+  end
+
+  # The press each row sends — what the old dialog kept in one footer button that
+  # relabelled itself depending on what was selected.
+  defp row_event(html, channel) do
+    html
+    |> Floki.parse_fragment!()
+    |> Floki.find(~s([data-testid="channel-list-row-#{channel}"] .action-list__primary))
+    |> Floki.attribute("phx-click")
+    |> List.first()
   end
 
   defp cleanup_channel(name) do

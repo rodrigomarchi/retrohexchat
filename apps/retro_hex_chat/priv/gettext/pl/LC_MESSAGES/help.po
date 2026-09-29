@@ -1095,7 +1095,7 @@ msgstr ""
 msgid "Emoji Picker"
 msgstr "Emoji Picker"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:605
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:608
 #, elixir-autogen, elixir-format
 msgid "Empty States"
 msgstr "Puste stany"
@@ -1234,7 +1234,7 @@ msgstr "Dobrze"
 msgid "Headlights-only visibility — pure reflexes. Most overtakes wins. "
 msgstr "Widoczność tylko świateł - czysty refleks. Większość wygrywa."
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:618
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:621
 #, elixir-autogen, elixir-format
 msgid "Helpful placeholders shown when lists are empty, guiding you on what to do next."
 msgstr ""
@@ -2621,7 +2621,7 @@ msgstr ""
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:525
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:546
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:581
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:606
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:609
 #, elixir-autogen, elixir-format
 msgid "User Interface"
 msgstr "Interfejs użytkownika"
@@ -3276,7 +3276,7 @@ msgstr "wyłączenie pukania"
 msgid "doom ii"
 msgstr "doom ii"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:609
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:612
 #, elixir-autogen, elixir-format
 msgid "empty state"
 msgstr "stan pusty"
@@ -3715,7 +3715,7 @@ msgstr "Ochrona pseudonimów"
 msgid "no avalanche"
 msgstr "brak lawiny"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:613
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:616
 #, elixir-autogen, elixir-format
 msgid "no channels"
 msgstr "Brak kanałów"
@@ -3741,7 +3741,7 @@ msgstr "bez pukania"
 msgid "no man's land"
 msgstr "ziemi niczyjej"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:611
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:614
 #, elixir-autogen, elixir-format
 msgid "no messages"
 msgstr "brak wiadomości"
@@ -3756,12 +3756,12 @@ msgstr "brak min"
 msgid "no steal"
 msgstr "bez kradzieży"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:614
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:617
 #, elixir-autogen, elixir-format
 msgid "no urls"
 msgstr "brak urli"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:612
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:615
 #, elixir-autogen, elixir-format
 msgid "no users"
 msgstr "brak użytkowników"
@@ -5020,14 +5020,6 @@ msgstr ""
 "Wyświetl i zarządzaj adresami URL udostępnianymi na wszystkich kanałach z "
 "podglądami linków."
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:598
-#, elixir-autogen, elixir-format
-msgid "Every window that shows rows shares one table: resize its columns, choose which ones show, order by any of them, and copy what you select."
-msgstr ""
-"Każde okno, które pokazuje wiersze dzieli jedną tabelę: zmienić rozmiar "
-"kolumn, wybrać które z nich pokazać, zamówić przez którąkolwiek z nich i "
-"skopiować to, co wybrać."
-
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:580
 #, elixir-autogen, elixir-format
 msgid "Listings & Tables"
@@ -5040,22 +5032,22 @@ msgstr ""
 "Trzynaście okien admin- only, które czytają uruchomiony serwer: jego pamięć,"
 " procesy, połączenia, baza danych, zadania Oban i wskaźniki na żywo."
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:592
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:593
 #, elixir-autogen, elixir-format
 msgid "column"
 msgstr "kolumna"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:593
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:594
 #, elixir-autogen, elixir-format
 msgid "resize"
 msgstr "zmiana rozmiaru"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:594
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:595
 #, elixir-autogen, elixir-format
 msgid "sort"
 msgstr "sortuj"
 
-#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:591
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:592
 #, elixir-autogen, elixir-format
 msgid "table"
 msgstr "tabela"
@@ -6228,3 +6220,18 @@ msgstr "dołącz do połączenia"
 #, elixir-autogen, elixir-format
 msgid "row menu"
 msgstr "menu wiersza"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:600
+#, elixir-autogen, elixir-format
+msgid "Every window that shows rows shares one table: resize its columns, choose which ones show, order by any of them, and copy what you select. Clicking a row does what the row is about — joins the channel, opens the entry for editing — and anything else that row can do is a button on the row itself."
+msgstr ""
+"Każde okno, które pokazuje wiersze dzieli jedną tabelę: zmienić rozmiar "
+"kolumn, wybrać które z nich pokazać, zamówić przez którąkolwiek z nich i "
+"skopiować to, co wybrać. Kliknięcie wiersza robi to, o co chodzi w wierszu -"
+" łączy kanał, otwiera wpis do edycji - a wszystko inne, co wiersz może "
+"zrobić, to przycisk na samym wierszu."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:596
+#, elixir-autogen, elixir-format
+msgid "click a row"
+msgstr "kliknij wiersz"

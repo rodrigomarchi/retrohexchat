@@ -14,6 +14,7 @@ import {
   newSignedInUser,
   uniqueChannel,
 } from "../helpers/chatUsers";
+import { shot } from "../helpers/screenshots";
 
 test.describe.serial("UI feature channel journeys", () => {
   test("moderation context menu grants/removes roles and mutes/unmutes channel sends (Feature 05)", async ({
@@ -118,11 +119,16 @@ test.describe.serial("UI feature channel journeys", () => {
       await expect(guest.chat.channelListDialog).toBeVisible();
       await guest.chat.channelListSearch.fill(channel);
       await expect(guest.chat.channelListRow(channel)).toBeVisible();
-      await guest.chat.channelListRow(channel).click();
       await expect(
         guest.page.getByTestId(`channel-list-invite-only-${channel}`),
       ).toBeVisible();
-      await guest.page.getByTestId("channel-list-knock").click();
+      // A closed room's row asks for access instead of joining, and says so
+      // before it is pressed.
+      await expect(guest.chat.channelListRowAction(channel)).toHaveText(
+        "Request Access...",
+      );
+      await shot(guest.chat.channelListDialog, "closed-room-row");
+      await guest.chat.channelListRow(channel).click();
       await expect(guest.chat.knockRequestDialog).toBeVisible();
       await guest.chat.knockRequestDialog
         .getByTestId("knock-request-message")

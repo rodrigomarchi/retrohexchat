@@ -272,7 +272,6 @@ export class ChatPage {
   readonly nickChangeCancelButton: Locator;
   readonly nickChangeError: Locator;
   readonly channelListSearch: Locator;
-  readonly channelListJoinButton: Locator;
   readonly channelListCloseButton: Locator;
 
   constructor(page: Page) {
@@ -730,7 +729,6 @@ export class ChatPage {
     this.nickChangeCancelButton = page.getByTestId("nick-change-cancel");
     this.nickChangeError = page.getByTestId("nick-change-error");
     this.channelListSearch = page.getByTestId("channel-list-search");
-    this.channelListJoinButton = page.getByTestId("channel-list-join");
     this.channelListCloseButton = page
       .getByTestId("channel-list-window")
       .locator('[data-window-control="close"]');
@@ -1210,6 +1208,11 @@ export class ChatPage {
 
   channelListRow(channel: string): Locator {
     return this.page.getByTestId(`channel-list-row-${channel}`);
+  }
+
+  /** The verb a row draws — "Join", or "Request Access..." for a closed room. */
+  channelListRowAction(channel: string): Locator {
+    return this.channelListRow(channel).locator(".action-list__cta");
   }
 
   notifyListRow(nick: string): Locator {

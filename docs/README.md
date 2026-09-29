@@ -69,6 +69,9 @@ migration, context, schema and hook counts — never write them into prose.
   multi-dispositivo, e-mail opcional, fixados, salvos e arquivo público.
 - [plans/retro-games-ai.md](plans/retro-games-ai.md) — nova superfície `Retro Games`
   para jogos nativos do chat em modo single player contra AI, começando pelo Hex Pong.
+- [plans/a-linha-e-a-acao.md](plans/a-linha-e-a-acao.md) — as listas em que o clique
+  numa linha não faz nada e a ação mora num botão de rodapé; o componente único que
+  as unifica e a migração diálogo a diálogo.
 The channel/PM unification shipped and its plan was deleted; the rule it produced
 is Principle 12 in `AGENT-GUIDE.md`.
 

@@ -23,7 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialogTest do
     refute html =~ "phx-show-modal"
   end
 
-  test "renders the supplied channels and bubbling event names" do
+  test "each row carries the event its own press sends" do
     html =
       render_component(ChannelListDialog,
         id: ChannelListDialog.id(),
@@ -32,8 +32,24 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialogTest do
 
     assert html =~ "#elixir"
     assert html =~ "#secret"
-    # The filter/select events bubble to the parent as string events.
+    # The filter and the row presses bubble to the parent as string events.
     assert html =~ "channel_list_filter"
-    assert html =~ "channel_list_select"
+    assert html =~ "channel_list_join"
+    assert html =~ "channel_list_knock"
+  end
+
+  test "nothing is selected first — the press is the whole gesture" do
+    html =
+      render_component(ChannelListDialog,
+        id: ChannelListDialog.id(),
+        channels: @channels
+      )
+
+    refute html =~ "channel_list_select"
+
+    assert html
+           |> Floki.parse_fragment!()
+           |> Floki.find(".action-list__primary")
+           |> Floki.attribute("disabled") == []
   end
 end

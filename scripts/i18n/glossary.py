@@ -84,6 +84,21 @@ _ROWS = {
     "Reset":        ("Redefinir", "Repor", "Restablecer", "Réinitialiser", "Zurücksetzen", "Reimposta", "Herstellen", "Resetuj", "Сбросить", "Atur ulang", "リセット", "重置", "重設"),
     "Refresh":      ("Atualizar", "Atualizar", "Actualizar", "Actualiser", "Aktualisieren", "Aggiorna", "Vernieuwen", "Odśwież", "Обновить", "Segarkan", "更新", "刷新", "重新整理"),
 
+    # ── Reordering a row in place ─────────────────────────────
+    # Two labels that only ever appear as the accessible name of an arrow
+    # button, so there is no sentence to disambiguate them. The engine read
+    # "Move up" as the intransitive "to rise" in pt_BR ("Subir") and lost the
+    # pairing with "Move down", which it kept transitive.
+    "Move up":      ("Mover para cima", "Mover para cima", "Mover arriba", "Déplacer vers le haut", "Nach oben verschieben", "Sposta su", "Omhoog verplaatsen", "Przenieś w górę", "Переместить вверх", "Pindahkan ke atas", "上に移動", "上移", "上移"),
+    "Move down":    ("Mover para baixo", "Mover para baixo", "Mover abajo", "Déplacer vers le bas", "Nach unten verschieben", "Sposta giù", "Omlaag verplaatsen", "Przenieś w dół", "Переместить вниз", "Pindahkan ke bawah", "下に移動", "下移", "下移"),
+
+    # ── Rows that are controls ────────────────────────────────
+    # "Rooms" names chat channels, and every engine read it as lodging:
+    # "Quartos", "Habitaciones", "Chambres", "Zimmer", "客室案内". "Action List"
+    # is the component's own name, which German turned into "Artikel".
+    "Rooms":        ("Salas", "Salas", "Salas", "Salons", "Räume", "Stanze", "Ruimtes", "Pokoje", "Комнаты", "Ruang", "ルーム", "房间", "房間"),
+    "Action List":  ("Lista de Ações", "Lista de Ações", "Lista de acciones", "Liste d'actions", "Aktionsliste", "Elenco azioni", "Actielijst", "Lista akcji", "Список действий", "Daftar Tindakan", "アクションリスト", "操作列表", "操作清單"),
+
     # ── Transfer ──────────────────────────────────────────────
     "Send":         ("Enviar", "Enviar", "Enviar", "Envoyer", "Senden", "Invia", "Verzenden", "Wyślij", "Отправить", "Kirim", "送信", "发送", "傳送"),
     "Upload":       ("Enviar", "Carregar", "Subir", "Téléverser", "Hochladen", "Carica", "Uploaden", "Prześlij", "Загрузить", "Unggah", "アップロード", "上传", "上傳"),

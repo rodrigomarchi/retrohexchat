@@ -3,8 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
   Handle events for the Channel List dialog.
 
   Covers: channel_list / toggle_channel_list (open/focus the window),
-  channel_list_filter, channel_list_select, channel_list_join, and the
-  knock-request modal flow.
+  channel_list_filter, channel_list_join, and the knock-request modal flow.
 
   Attached as `attach_hook(:channel_list_events, :handle_event, ...)` in ChatLive.mount/3.
   """
@@ -24,10 +23,9 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
   @max_knock_message_length 200
 
   @doc """
-  Opens/focuses the Channel List window: loads the visible channels into the
-  parent passthrough assign and resets the island's selection. Shared by the
-  menu/toolbar event, the conversations "browse all" button, and the `/list`
-  command.
+  Opens/focuses the Channel List window and loads the visible channels into the
+  parent passthrough assign. Shared by the menu/toolbar event, the conversations
+  "browse all" button, and the `/list` command.
   """
   @spec open(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
   def open(socket) do
@@ -66,11 +64,6 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
       action: {:filter, search, channels}
     )
 
-    {:halt, socket}
-  end
-
-  def handle_event("channel_list_select", %{"channel" => channel_name}, socket) do
-    send_update(ChannelListDialog, id: ChannelListDialog.id(), action: {:select, channel_name})
     {:halt, socket}
   end
 

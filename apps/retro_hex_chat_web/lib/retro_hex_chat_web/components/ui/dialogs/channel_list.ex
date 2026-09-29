@@ -1,16 +1,19 @@
 defmodule RetroHexChatWeb.Components.UI.ChannelList do
   @moduledoc """
-  Channel list dialog component for the showcase design system.
+  The window that lists the rooms you can go to.
 
-  Composed from dialog + table + input + button primitives.
-  Shows channel table (name/users/topic) with search and Join button.
+  Each row is its own door: pressing it joins the channel, or asks for access
+  when the channel is invite-only and you are not in it. The verb is drawn on
+  the row, because two neighbouring rows can do different things — one press,
+  and you can read which one before making it.
 
   ## Usage
 
-      <.channel_list id="channel-list" show={true} channels={@channels} />
+      <.channel_list_panel id="channel-list" channels={@channels} />
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Badge
@@ -23,22 +26,13 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   attr :id, :string, required: true
   attr :channels, :list, default: []
   attr :search, :string, default: ""
-  attr :selected_channel, :string, default: nil, doc: "Currently selected channel name"
   attr :loading, :boolean, default: false, doc: "Show loading state"
   attr :on_search, :any, default: nil, doc: "Search input change callback"
-  attr :on_select, :any, default: nil, doc: "Row click callback"
-  attr :on_join, :any, default: nil, doc: "Join button callback"
-  attr :on_knock, :any, default: nil, doc: "Request-access button callback"
+  attr :on_join, :any, default: nil, doc: "Row press callback for a joinable channel"
+  attr :on_knock, :any, default: nil, doc: "Row press callback for an invite-only channel"
 
   @spec channel_list_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def channel_list_panel(assigns) do
-    assigns =
-      assign(
-        assigns,
-        :request_access?,
-        request_access?(assigns.channels, assigns.selected_channel)
-      )
-
     ~H"""
     <div
       id={"#{@id}-content"}
@@ -83,99 +77,65 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
               <p>{dgettext("dialogs", "No channels found")}</p>
             </div>
           <% else %>
-            <button
-              :for={ch <- @channels}
-              type="button"
-              class={[
-                "cl-channel-entry",
-                @selected_channel == ch.name && "cl-channel-entry--selected"
-              ]}
-              phx-click={@on_select}
-              phx-value-channel={ch.name}
-              data-testid={"channel-list-row-#{ch.name}"}
-            >
-              <span class="cl-channel-main">
-                <span class="cl-channel-icon" aria-hidden="true">
-                  <Icons.icon_channels class="w-4 h-4" />
-                </span>
-                <span class="cl-channel-copy">
-                  <span class="cl-channel-title-row">
-                    <span class="cl-channel-name">{ch.name}</span>
-                    <.badge
-                      :if={invite_only?(ch)}
-                      variant="secondary"
-                      class="cl-channel-badge"
-                      data-testid={"channel-list-invite-only-#{ch.name}"}
-                    >
-                      +i
-                    </.badge>
-                  </span>
-                  <span class="cl-channel-topic">{display_topic(ch.topic)}</span>
-                </span>
-              </span>
-              <span class="cl-channel-meta">
-                <span class="cl-meta-item">
-                  <span class="cl-meta-label">{dgettext("dialogs", "Users")}</span>
-                  <span class="cl-meta-value">{ch.user_count}</span>
-                </span>
-                <span :if={invite_only?(ch)} class="cl-meta-item">
-                  <span class="cl-meta-label">{dgettext("dialogs", "Mode")}</span>
-                  <span class="cl-meta-value">{dgettext("dialogs", "Invite only")}</span>
-                </span>
-                <%!--
-                  A room with nobody in it right now is still a room. Saying
-                  when it was last used is the difference between "empty" and
-                  "abandoned", and it is the only thing the reader can act on.
-                --%>
-                <span
-                  :if={last_used(ch)}
-                  class="cl-meta-item"
-                  data-testid={"channel-list-activity-#{ch.name}"}
-                >
-                  <span class="cl-meta-label">{dgettext("dialogs", "Last used")}</span>
-                  <span class="cl-meta-value">{last_used(ch)}</span>
-                </span>
-              </span>
-            </button>
+            <.action_list id={"#{@id}-rows"} label={dgettext("dialogs", "Channels")}>
+              <.action_row
+                :for={ch <- @channels}
+                on_activate={if request_access?(ch), do: @on_knock, else: @on_join}
+                value={%{"channel" => ch.name}}
+                data-testid={"channel-list-row-#{ch.name}"}
+              >
+                <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
+                <:cta label={
+                  if request_access?(ch),
+                    do: dgettext("dialogs", "Request Access..."),
+                    else: dgettext("dialogs", "Join")
+                }>
+                  <Icons.icon_btn_add :if={not request_access?(ch)} class="w-4 h-4" />
+                  <Icons.icon_dialog_invite :if={request_access?(ch)} class="w-4 h-4" />
+                </:cta>
+                <:title>
+                  {ch.name}
+                  <.badge
+                    :if={invite_only?(ch)}
+                    variant="secondary"
+                    class="cl-channel-badge"
+                    data-testid={"channel-list-invite-only-#{ch.name}"}
+                  >
+                    +i
+                  </.badge>
+                </:title>
+                <:meta>{display_topic(ch.topic)}</:meta>
+                <:trailing>
+                  <.action_figure label={dgettext("dialogs", "Users")} value={ch.user_count} />
+                  <.action_figure
+                    :if={invite_only?(ch)}
+                    label={dgettext("dialogs", "Mode")}
+                    value={dgettext("dialogs", "Invite only")}
+                  />
+                  <%!--
+                    A room with nobody in it right now is still a room. Saying
+                    when it was last used is the difference between "empty" and
+                    "abandoned", and it is the only thing the reader can act on.
+                  --%>
+                  <.action_figure
+                    :if={last_used(ch)}
+                    label={dgettext("dialogs", "Last used")}
+                    value={last_used(ch)}
+                    data-testid={"channel-list-activity-#{ch.name}"}
+                  />
+                </:trailing>
+              </.action_row>
+            </.action_list>
           <% end %>
         <% end %>
-      </div>
-
-      <div class="cl-action-row">
-        <.button
-          variant="default"
-          phx-click={if @request_access?, do: @on_knock, else: @on_join}
-          phx-value-channel={@selected_channel}
-          disabled={@selected_channel == nil}
-          class="cl-action-button"
-          data-testid={if @request_access?, do: "channel-list-knock", else: "channel-list-join"}
-        >
-          <:icon>
-            <%= if @request_access? do %>
-              <Icons.icon_dialog_invite class="w-4 h-4" />
-            <% else %>
-              <Icons.icon_btn_add class="w-4 h-4" />
-            <% end %>
-          </:icon>
-          {if @request_access?,
-            do: dgettext("dialogs", "Request Access..."),
-            else: dgettext("dialogs", "Join")}
-        </.button>
       </div>
     </div>
     """
   end
 
-  defp selected_entry(channels, selected_channel) do
-    Enum.find(channels, &(Map.get(&1, :name) == selected_channel))
-  end
-
-  defp request_access?(channels, selected_channel) do
-    case selected_entry(channels, selected_channel) do
-      nil -> false
-      channel -> invite_only?(channel) and not joined?(channel)
-    end
-  end
+  # A closed room you are not in cannot be entered, only knocked on. It is a
+  # property of the row, so the verb it draws never changes under the pointer.
+  defp request_access?(channel), do: invite_only?(channel) and not joined?(channel)
 
   defp invite_only?(channel), do: Map.get(channel, :invite_only?, false)
   defp joined?(channel), do: Map.get(channel, :joined?, false)

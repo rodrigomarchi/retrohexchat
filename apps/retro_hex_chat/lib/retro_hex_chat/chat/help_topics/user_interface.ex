@@ -588,17 +588,20 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "hide column",
           "select row",
           "copy rows",
+          "click row",
           dgettext("help", "table"),
           dgettext("help", "column"),
           dgettext("help", "resize"),
-          dgettext("help", "sort")
+          dgettext("help", "sort"),
+          dgettext("help", "click a row")
         ],
         icon: :icon_table_grid,
         description:
           dgettext(
             "help",
-            "Every window that shows rows shares one table: resize its columns, choose which ones show, order by any of them, and copy what you select."
-          )
+            "Every window that shows rows shares one table: resize its columns, choose which ones show, order by any of them, and copy what you select. Clicking a row does what the row is about — joins the channel, opens the entry for editing — and anything else that row can do is a button on the row itself."
+          ),
+        see_also: ["ui-lists", "ui-conversations", "keyboard-shortcuts"]
       },
       %{
         id: "empty-states",

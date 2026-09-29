@@ -354,7 +354,16 @@ get fresh timers with the *remaining* duration.
   maps to an equivalent slash command (document the control→command mapping).
 - Follow mIRC dialog conventions: tree/tabbed Options with Apply/OK/Cancel; two-panel list +
   inline edit form; context menus that only APPEND to (never replace) built-ins;
-  keyboard-shortcut hints aligned right; grayed disabled states for unavailable actions.
+  keyboard-shortcut hints aligned right; grayed disabled states for actions unavailable by
+  permission or by state.
+- **The row is the action** (`UI.ActionList`). Pressing a row does what the row is about —
+  enter this channel, open this entry in the panel beside the list. A second action on the same
+  subject (remove, stop, reorder) is a button on that row. Never a list that only paints a
+  selection plus a button underneath acting on "the selected item": that is two gestures for one
+  intention, and the button has no subject until something is picked. mIRC could afford it
+  because it had double click; a finger has no equivalent. An action with no subject (Add,
+  Import) is not part of the list and stays in the panel's own button row. Disabled-until-selected
+  is not a valid state — it is the shape this rule replaces.
 - Respect standard visibility gates: op-only, admin-only, identified-only, never-on-self,
   disabled-when-disconnected. Admin-only affordances are fully hidden (`:if`), not grayed.
 - **The composer line belongs to the input.** Mode/format controls compete directly with typing
