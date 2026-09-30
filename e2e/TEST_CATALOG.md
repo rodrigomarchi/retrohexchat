@@ -169,7 +169,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | K7 | Opening the conference you are already in at its own address takes the seat rather than adding one: the other participant still sees a single row for you, and the room still counts two | `tests/surface-cross-tab.spec.ts` | done |
 | K8 | With the conference open at its own address and not in the chat's window, the chat's status bar says the call is in another tab and is a way over to it | `tests/surface-cross-tab.spec.ts` | done |
 | K9 | Opening a conference writes its card into the channel by itself, and that card counts up on its own when somebody joins the call, with no reload | `tests/share-link-join.spec.ts` | done |
-| K10 | When the conference ends, the card in the channel becomes the record of it — how long it ran and how many people were in it — with no reload | `tests/share-link-join.spec.ts` | done |
+| K10 | When the conference ends, the card in the channel becomes the record of it — when it stopped, how long it ran and how many people were in it — and offers no way on, with no reload | `tests/share-link-join.spec.ts` | done |
 | K11 | A channel invite link shows a stranger the room, its topic and the last lines said there, and lands them inside the channel after connecting | `tests/share-link-join.spec.ts` | done |
 | K12 | A fourth screen ends the one unused for longest and leaves the rest connected | `tests/multi-tab-takeover.spec.ts` | done |
 | L | Logged-in user disconnects via UI and lands on `/connect` | `tests/logout.spec.ts` | done |

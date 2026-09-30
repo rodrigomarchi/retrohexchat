@@ -720,14 +720,17 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "A room somebody opened — a conference, a space, a P2P session, a match — " <>
-              "appears in the conversation as a card that reads the room as you scroll " <>
-              "past it. Live, it says who is inside and offers Join, which opens a tab of " <>
-              "its own, and Copy link. Ended, it goes grey, loses the way in, and becomes " <>
-              "the record: how long it ran and how many were in it, with the next " <>
-              "plausible thing in place of Join. A match somebody already took says so " <>
-              "rather than reading as broken, and a revoked link stays as a card that " <>
-              "explains itself instead of leaving a bare address behind."
+            "A room somebody opened — a channel, a conference, a space, a P2P session, " <>
+              "a match — appears in the conversation as a card that reads the room as you " <>
+              "scroll past it. Live, it says who is inside and offers Join, which opens a " <>
+              "tab of its own, and Copy link. Ended, it loses the way in and becomes the " <>
+              "record: when it stopped, how long it ran and how many were in it. It " <>
+              "offers nothing further, because you are reading it in the chat and that is " <>
+              "where any way on would have led — the one exception is a match, which " <>
+              "still offers the game, since a game is somewhere else. A match somebody " <>
+              "already took says so rather than reading as broken, and a revoked link " <>
+              "stays as a card that explains itself instead of leaving a bare address " <>
+              "behind."
           ),
         see_also: [
           "feature-interactive-elements",

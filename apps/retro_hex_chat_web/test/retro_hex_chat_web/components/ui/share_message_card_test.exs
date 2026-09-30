@@ -91,6 +91,49 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
       assert html =~ ~s(data-share-count="2")
     end
 
+    # The domain has been carrying the channel's name and its headcount all
+    # along; the component had no clause for the kind and dropped both, so a
+    # link to a public channel drew "An invitation / shared by ana" and never
+    # said which room it led to.
+    test "a channel is its own name, and counts who is in it" do
+      html =
+        render_row(
+          Map.put(@base, :share_card, %{
+            card()
+            | kind: "channel",
+              target: %{"channel" => "#retro"},
+              channel_name: "#retro",
+              participants: ["ana", "bob"],
+              count: 2
+          })
+        )
+
+      assert html =~ "#retro"
+      assert html =~ "ana, bob"
+      assert html =~ "2 people inside now"
+      refute html =~ "An invitation"
+      refute html =~ "shared by ana"
+    end
+
+    # The same rule as every other kind: the domain decides whether the reader
+    # may be told, and a name it withheld is not reconstructed from the target.
+    test "a channel the reader may not be told about is still not named" do
+      html =
+        render_row(
+          Map.put(@base, :share_card, %{
+            card()
+            | kind: "channel",
+              target: %{"channel" => "#secret"},
+              channel_name: nil,
+              count: 3
+          })
+        )
+
+      assert html =~ "share-message-card"
+      refute html =~ "#secret"
+      assert html =~ "An invitation"
+    end
+
     # The one number the card is for: it comes from the summary it was handed,
     # so a screen that redraws with a new summary redraws with a new number.
     test "the count is whatever the summary said, not a stored figure" do
@@ -192,6 +235,47 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
       refute html =~ ~s(data-share-visitors=")
     end
 
+    # The row this card hangs under is stamped with the moment the door was
+    # written — the room *opening* — so a gathering that ran all afternoon said
+    # how long it lasted and nothing at all about when it stopped.
+    test "says when it stopped, not only how long it ran" do
+      html =
+        render_row(
+          Map.put(
+            @base,
+            :share_card,
+            ended(
+              kind: "call",
+              metrics: %{
+                duration_seconds: 90,
+                visitors: 1,
+                ended_at: ~U[2026-08-28 13:31:00Z]
+              }
+            )
+          )
+        )
+
+      assert html =~ ~s(data-testid="share-message-ended-at")
+      assert html =~ "28/08/2026 13:31"
+    end
+
+    # The link died, not the room, and a card that named the moment somebody
+    # revoked an address as the moment the call finished would be lying about
+    # the one fact it exists to carry.
+    test "names no ending when the record carries none" do
+      html = render_row(Map.put(@base, :share_card, ended(reason: :revoked, kind: "call")))
+
+      assert html =~ ~s(data-share-state="ended")
+      refute html =~ ~s(data-testid="share-message-ended-at")
+    end
+
+    # A live card is not a record and has nothing to date.
+    test "a live card names no ending" do
+      html = render_row(Map.put(@base, :share_card, card()))
+
+      refute html =~ ~s(data-testid="share-message-ended-at")
+    end
+
     # A place has no beginning to measure from. Falling back to who shared it is
     # the honest sentence, not a duration invented from a catalogue entry.
     test "a kind with no session falls back to who shared it" do
@@ -222,15 +306,37 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
       assert html =~ "Over"
     end
 
-    test "loses the way in and keeps a way forward" do
+    # The card is only ever drawn inside the chat, so the "next plausible thing"
+    # it used to offer was always where the reader already was: a finished call
+    # pointed at the channel it was sitting in, everything else at the chat
+    # itself — and following one re-mounted the chat, costing them every open
+    # window to arrive where they started.
+    test "loses the way in and offers nothing in its place" do
       html = render_row(Map.put(@base, :share_card, ended(kind: "call", channel_name: "#retro")))
 
       assert html =~ ~s(data-share-state="ended")
       refute html =~ ~s(data-testid="share-message-enter")
       refute html =~ ~s(data-testid="share-message-copy")
-      assert html =~ ~s(data-testid="share-message-next")
-      assert html =~ "Open #retro"
-      assert html =~ "/chat?join="
+      refute html =~ ~s(data-testid="share-message-next")
+      refute html =~ "Open #retro"
+      refute html =~ "/chat"
+    end
+
+    # One button survives, and it is the one that leads somewhere else: a game
+    # is a place in a catalogue rather than a room, and never where the reader
+    # is standing.
+    test "no kind but a match points anywhere" do
+      for kind <- ~w(call space p2p channel) do
+        html =
+          render_row(
+            Map.put(@base, :share_card, ended(kind: kind, channel_name: "#retro", target: %{}))
+          )
+
+        refute html =~ ~s(data-testid="share-message-next"),
+               "an ended #{kind} card still offers a way on"
+
+        refute html =~ "/chat", "an ended #{kind} card still points at the chat"
+      end
     end
 
     test "a match somebody already took says so, and offers the game" do
@@ -310,11 +416,19 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
         render_row(
           @base
           |> Map.put(:type, :system)
-          |> Map.put(:share_card, ended(reason: :over, kind: "call"))
+          |> Map.put(
+            :share_card,
+            ended(
+              reason: :over,
+              kind: "call",
+              metrics: %{duration_seconds: 90, visitors: 2, ended_at: ~U[2026-08-28 13:31:00Z]}
+            )
+          )
         )
 
       assert html =~ ~s(data-share-state="ended")
-      assert html =~ ~s(data-testid="share-message-next")
+      assert html =~ ~s(data-testid="share-message-ended-at")
+      assert html =~ "2 people took part"
     end
 
     test "a system message with no link of ours draws none" do

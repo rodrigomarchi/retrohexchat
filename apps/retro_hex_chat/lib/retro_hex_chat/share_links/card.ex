@@ -47,10 +47,18 @@ defmodule RetroHexChat.ShareLinks.Card do
   measure to. A space is a place too — its address stays good forever — but
   what a card in a conversation is about is the *gathering* in it, and a
   gathering both begins and ends.
+
+  `ended_at` is the instant, and it is not the same question as the duration:
+  the line a card hangs under is stamped with the room's *opening*, so a
+  gathering that ran all afternoon says when it started and, without this,
+  nothing at all about when it stopped. It is `nil` when the link closed rather
+  than the room — a revoked address outlives whatever is still running behind
+  it, and there is no ending to name yet.
   """
   @type metrics :: %{
           duration_seconds: non_neg_integer() | nil,
-          visitors: non_neg_integer() | nil
+          visitors: non_neg_integer() | nil,
+          ended_at: DateTime.t() | nil
         }
 
   @type t :: %{
@@ -136,7 +144,8 @@ defmodule RetroHexChat.ShareLinks.Card do
       {:ok, room} ->
         %{
           duration_seconds: elapsed(started_at(room), room.closed_at),
-          visitors: GroupCall.count_visitors(room.id)
+          visitors: GroupCall.count_visitors(room.id),
+          ended_at: room.closed_at
         }
 
       _absent ->
@@ -153,7 +162,8 @@ defmodule RetroHexChat.ShareLinks.Card do
         %{
           duration_seconds:
             session.duration_seconds || elapsed(connected_at(session), session.closed_at),
-          visitors: nil
+          visitors: nil,
+          ended_at: session.closed_at
         }
 
       _absent ->
@@ -166,7 +176,8 @@ defmodule RetroHexChat.ShareLinks.Card do
       {:ok, %SpaceSession{} = session} ->
         %{
           duration_seconds: elapsed(session.opened_at, session.closed_at),
-          visitors: VirtualSpace.session_visitors(session)
+          visitors: VirtualSpace.session_visitors(session),
+          ended_at: session.closed_at
         }
 
       _absent ->

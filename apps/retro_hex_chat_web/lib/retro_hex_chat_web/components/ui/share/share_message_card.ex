@@ -2,14 +2,20 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
   @moduledoc """
   A shared link, drawn in the conversation as the room it names.
 
-  Four kinds — a conference, a space, a game, a P2P session — and two states
-  each. Live, it
-  says who is in there and offers the way in beside the way to pass it on. The
-  way in opens a tab of its own, because this card is the only door those rooms
-  have and following a door must not close the conversation behind you.
-  Ended, it says what happened and offers **the next plausible thing**, never a
-  dead end: a call that finished offers the channel it happened in, a match
-  somebody already took offers the game itself.
+  Five kinds — a channel, a conference, a space, a game, a P2P session — and
+  two states each. Live, it says who is in there and offers the way in beside
+  the way to pass it on. The way in opens a tab of its own, because this card is
+  the only door those rooms have and following a door must not close the
+  conversation behind you.
+
+  **Ended, it is a record and offers nothing.** It says what happened, when it
+  stopped and who was there, and that is all — because this card is only ever
+  drawn inside the chat, so every "next plausible thing" it used to offer led
+  where the reader already was: a finished call pointed at the channel it was
+  sitting in, everything else at the chat itself. Following one re-mounted the
+  chat and cost the reader their open windows to arrive where they started. The
+  one exception is a match, and it is not really an exception: a game is a place
+  in a catalogue rather than a room, and it is never where the reader is.
 
   The card never names a channel the reader could not have found on their own.
   That decision is made in the domain (`ShareLinks.Card`, via
@@ -32,9 +38,16 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
   attr :share_url, :string, default: nil, doc: "the address to hand on, for the Copy button"
   attr :next_path, :string, default: nil, doc: "where an ended card points instead of in"
 
+  attr :ended_at_text, :string,
+    default: nil,
+    doc: "when the room stopped, already in the reader's timezone"
+
   @spec share_message_card(map()) :: Phoenix.LiveView.Rendered.t()
   def share_message_card(assigns) do
-    assigns = assign(assigns, :ended?, ended?(assigns.card))
+    assigns =
+      assigns
+      |> assign(:ended?, ended?(assigns.card))
+      |> assign(:next_label, next_label(assigns.subject, assigns.card))
 
     ~H"""
     <%!-- A card that has ended is a record, not a dead control, and the whole
@@ -73,6 +86,22 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
             {badge(@card)}
           </span>
         </span>
+
+        <%!-- The instant, on a line of its own. The row this card hangs under
+              is stamped with the moment the door was written — the room
+              *opening* — so a gathering that ran all afternoon said how long it
+              lasted and nothing about when it stopped. Written in full because
+              it is the one clock on the row with no neighbouring date to be
+              read against, and kept out of the sentence below because that
+              sentence is clamped and the ending would push the headcount off
+              the end of it. --%>
+        <span
+          :if={@ended? and @ended_at_text}
+          class="text-muted-foreground block text-sm"
+          data-testid="share-message-ended-at"
+        >
+          {dgettext("share", "ended %{when}", when: @ended_at_text)}
+        </span>
         <%!-- The heading truncates because a channel name has no length limit
               worth designing around. The detail must not: it is a short fixed
               sentence, and the half of it that got cut was the headcount the
@@ -86,9 +115,9 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
         </span>
       </span>
 
-      <%!-- A card that has ended keeps a way forward and loses the way in: the
-            room is not there to be entered, and a button that says Join and
-            cannot is worse than no button.
+      <%!-- A card that has ended loses the way in: the room is not there to be
+            entered, and a button that says Join and cannot is worse than no
+            button.
 
             The way in is a real anchor into a tab of its own. The card is the
             only door a session has, and following it must not cost the reader
@@ -127,8 +156,10 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
         {dgettext("share", "Copy link")}
       </.button>
 
+      <%!-- The label is required as well as the path, so a kind added later
+            gets no button rather than somebody else's. --%>
       <.button
-        :if={@ended? and @next_path}
+        :if={@ended? && @next_path && @next_label}
         navigate={@next_path}
         size="sm"
         variant="outline"
@@ -136,7 +167,7 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
         data-testid="share-message-next"
       >
         <:icon><Icons.icon_btn_link class="h-4 w-4" /></:icon>
-        {next_label(@subject, @card)}
+        {@next_label}
       </.button>
     </div>
     """
@@ -170,6 +201,13 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
 
   defp heading(_subject, %{kind: "space", channel_name: channel}) when is_binary(channel),
     do: dgettext("share", "Space of %{channel}", channel: channel)
+
+  # A channel is its own name and needs no sentence around it. Without this the
+  # card fell through to "An invitation" and never said which room it led to,
+  # however public that room was — while the domain had been carrying the name
+  # and the headcount all along.
+  defp heading(_subject, %{kind: "channel", channel_name: channel}) when is_binary(channel),
+    do: channel
 
   defp heading(%{name: name}, _card) when is_binary(name), do: name
   defp heading(_subject, %{kind: "call"}), do: dgettext("share", "A conference")
@@ -215,7 +253,7 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
   end
 
   defp detail(_subject, %{kind: kind, participants: [_ | _] = nicks, count: count})
-       when kind in ["call", "space"] do
+       when kind in ["call", "space", "channel"] do
     dngettext(
       "share",
       "%{names} · %{count} person inside now",
@@ -227,7 +265,7 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
   end
 
   defp detail(_subject, %{kind: kind, count: count})
-       when kind in ["call", "space"] and is_integer(count) do
+       when kind in ["call", "space", "channel"] and is_integer(count) do
     dngettext(
       "share",
       "%{count} person inside now",
@@ -271,12 +309,12 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
 
   defp shared_by(_card), do: dgettext("share", "shared with this conversation")
 
-  defp next_label(_subject, %{kind: "call", channel_name: channel}) when is_binary(channel),
-    do: dgettext("share", "Open %{channel}", channel: channel)
-
+  # Only a match has anywhere to send the reader. Everything else falls through
+  # to `nil` and draws no button at all — the catch-all here used to say "Back
+  # to the chat" to somebody who was reading it *in* the chat.
   defp next_label(%{name: name}, %{kind: "play"}) when is_binary(name),
     do: dgettext("share", "Play %{game}", game: name)
 
   defp next_label(_subject, %{kind: "play"}), do: dgettext("share", "Play")
-  defp next_label(_subject, _card), do: dgettext("share", "Back to the chat")
+  defp next_label(_subject, _card), do: nil
 end

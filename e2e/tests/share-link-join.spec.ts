@@ -3,7 +3,7 @@
  * @flow K4 [done] A shared game link minted in one browser is followed from another with no session: the public card asks for a connect, and the connect lands back on the link
  * @flow K9 [done] Opening a conference writes its card into the channel by itself, and that card counts up on its own when somebody joins the call, with no reload
  * @flow K11 [done] A channel invite link shows a stranger the room, its topic and the last lines said there, and lands them inside the channel after connecting
- * @flow K10 [done] When the conference ends, the card in the channel becomes the record of it — how long it ran and how many people were in it — with no reload
+ * @flow K10 [done] When the conference ends, the card in the channel becomes the record of it — when it stopped, how long it ran and how many people were in it — and offers no way on, with no reload
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -136,6 +136,17 @@ test("opening a conference writes the card, and the card counts up on its own (K
     await expect(card.getByTestId("share-message-detail")).toContainText(
       "took part",
     );
+
+    // And it says when, which the row above it cannot: that timestamp is the
+    // moment the door was written, not the moment the room emptied.
+    await expect(card.getByTestId("share-message-ended-at")).toContainText(
+      "ended",
+    );
+
+    // A record, not a door. Bob is reading this in the channel the conference
+    // happened in, so every way on the card used to offer led where he already
+    // was — and following one re-mounted the chat under him.
+    await expect(card.getByTestId("share-message-next")).toHaveCount(0);
   } finally {
     await closeGroupCallUsers([ana, bob]);
   }

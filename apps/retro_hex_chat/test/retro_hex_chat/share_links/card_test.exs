@@ -123,10 +123,15 @@ defmodule RetroHexChat.ShareLinks.CardTest do
   # a room and is wrong the moment somebody joins.
   describe "of/1 and the record a finished room keeps" do
     test "a conference says how long it ran and how many different people were in it" do
+      # Both instants off one clock reading: two separate `minutes_ago/1` calls
+      # are microseconds apart, and the duration lands a second short.
+      activated_at = minutes_ago(30)
+      closed_at = DateTime.add(activated_at, 25 * 60, :second)
+
       room =
         closed_room(
-          activated_at: minutes_ago(30),
-          closed_at: minutes_ago(5)
+          activated_at: activated_at,
+          closed_at: closed_at
         )
 
       # Four rows, three people: one of them dropped and came back, and a
@@ -138,6 +143,11 @@ defmodule RetroHexChat.ShareLinks.CardTest do
       assert card.state == :ended
       assert card.metrics.duration_seconds == 25 * 60
       assert card.metrics.visitors == 3
+
+      # How long it ran is not when it stopped: the line the card hangs under is
+      # stamped with the room *opening*, so without this the record says an
+      # afternoon passed and never says when.
+      assert card.metrics.ended_at == closed_at
     end
 
     # A room nobody ever joined has no `activated_at`, and the honest measure of
@@ -172,12 +182,13 @@ defmodule RetroHexChat.ShareLinks.CardTest do
     test "a session says the time and does not count to two" do
       creator = insert(:registered_nick)
       {:ok, %{session: session}} = Lobby.create_open_session(creator.id)
+      closed_at = minutes_ago(2)
 
       {:ok, _closed} =
         session
         |> Ecto.Changeset.change(%{
           status: "closed",
-          closed_at: DateTime.utc_now(),
+          closed_at: closed_at,
           duration_seconds: 615
         })
         |> Repo.update()
@@ -187,6 +198,7 @@ defmodule RetroHexChat.ShareLinks.CardTest do
       assert card.state == :ended
       assert card.metrics.duration_seconds == 615
       assert card.metrics.visitors == nil
+      assert card.metrics.ended_at == closed_at
     end
 
     # A place has no beginning to measure from. A duration here would be the age
@@ -199,7 +211,9 @@ defmodule RetroHexChat.ShareLinks.CardTest do
     end
 
     test "a gathering says how long it lasted and how many people came" do
-      session = closed_gathering(opened_at: minutes_ago(20), closed_at: minutes_ago(5))
+      opened_at = minutes_ago(20)
+      closed_at = DateTime.add(opened_at, 900, :second)
+      session = closed_gathering(opened_at: opened_at, closed_at: closed_at)
       :ok = SpaceQueries.record_arrival(session.id, "ana")
       :ok = SpaceQueries.record_arrival(session.id, "bob")
       :ok = SpaceQueries.record_arrival(session.id, "ana")
@@ -209,6 +223,21 @@ defmodule RetroHexChat.ShareLinks.CardTest do
       assert card.state == :ended
       assert card.metrics.duration_seconds == 900
       assert card.metrics.visitors == 2
+      assert card.metrics.ended_at == closed_at
+    end
+
+    # The link died, not the room. There is no ending to name yet, and inventing
+    # the moment somebody revoked an address as the moment a call finished would
+    # be a card lying about the one fact it exists to carry.
+    test "a link revoked over a room that is still running names no ending" do
+      room = closed_room(status: "open", closed_at: nil)
+
+      card =
+        Card.of(%{link("call", %{"room_token" => room.token}) | revoked_at: DateTime.utc_now()})
+
+      assert card.state == :ended
+      assert card.reason == :revoked
+      assert card.metrics.ended_at == nil
     end
   end
 

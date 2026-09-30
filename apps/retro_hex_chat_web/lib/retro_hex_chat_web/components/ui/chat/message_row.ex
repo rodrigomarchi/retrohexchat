@@ -66,6 +66,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             enter_path={share_enter_path(Map.get(@msg, :share_card))}
             share_url={share_url(Map.get(@msg, :share_card))}
             next_path={share_next_path(Map.get(@msg, :share_card))}
+            ended_at_text={share_ended_at_text(Map.get(@msg, :share_card), @timezone)}
           />
         </.chat_message>
       <% :system -> %>
@@ -101,6 +102,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             enter_path={share_enter_path(Map.get(@msg, :share_card))}
             share_url={share_url(Map.get(@msg, :share_card))}
             next_path={share_next_path(Map.get(@msg, :share_card))}
+            ended_at_text={share_ended_at_text(Map.get(@msg, :share_card), @timezone)}
           />
         </.chat_message>
       <% :p2p_system -> %>
@@ -183,6 +185,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             card={Map.get(@msg, :share_card)}
             enter_path={p2p_enter_path(Map.get(@msg, :share_card))}
             next_path={share_next_path(Map.get(@msg, :share_card))}
+            ended_at_text={share_ended_at_text(Map.get(@msg, :share_card), @timezone)}
           />
         </.chat_message>
       <% _ -> %>
@@ -225,6 +228,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
               enter_path={share_enter_path(Map.get(@msg, :share_card))}
               share_url={share_url(Map.get(@msg, :share_card))}
               next_path={share_next_path(Map.get(@msg, :share_card))}
+              ended_at_text={share_ended_at_text(Map.get(@msg, :share_card), @timezone)}
             />
             <.attachment_gallery attachments={Map.get(@msg, :attachments, [])} />
             <.edited_tag
@@ -343,19 +347,28 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
 
   defp p2p_enter_path(_card), do: nil
 
-  # Never a dead end: a card whose room has ended points at the nearest thing
-  # the reader can still do. The chat is the fallback because every surface's
-  # way out already points there.
-  defp share_next_path(%{state: :ended, kind: "call", channel_name: channel})
-       when is_binary(channel),
-       do: Paths.chat_path(channel)
-
+  # A card whose room has ended is a record, and a record is read rather than
+  # followed. This card is only ever drawn inside the chat, so every "next" it
+  # used to offer led where the reader already was — and following one cost
+  # them the whole desktop, because navigating to the chat from the chat
+  # re-mounts it. A match is the exception that shows the shape: a game is a
+  # place in a catalogue rather than a room, and it is never where the reader
+  # is standing.
   defp share_next_path(%{state: :ended, kind: "play", target: %{"game_id" => game_id}})
        when is_binary(game_id),
        do: Paths.play_path(game_id)
 
-  defp share_next_path(%{state: :ended}), do: Paths.chat_path()
   defp share_next_path(_card), do: nil
+
+  # The row's own timestamp belongs to the line, and the line is the room
+  # *opening* — which leaves the record saying how long a gathering lasted and
+  # nothing about when it stopped. Written in full rather than in the reader's
+  # short clock: it is the one instant on the row that has no neighbouring date
+  # to be read against, and `:none` timestamps would otherwise blank it.
+  defp share_ended_at_text(%{metrics: %{ended_at: %DateTime{} = ended_at}}, timezone),
+    do: ChatHelpers.format_datetime(ended_at, timezone)
+
+  defp share_ended_at_text(_card, _timezone), do: nil
 
   defp formatted_content(msg, strip_formatting) do
     content = Map.get(msg, :content, "")
