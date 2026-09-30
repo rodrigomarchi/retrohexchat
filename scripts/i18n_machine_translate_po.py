@@ -36,6 +36,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--overwrite", action="store_true", help="Overwrite existing non-source translations"
     )
+    parser.add_argument(
+        "--repair-fallbacks",
+        action="store_true",
+        help=(
+            "Also retranslate entries whose msgstr is still the English source. "
+            "Off by default: those are pre-existing debt, and sweeping them into "
+            "an unrelated run buries the change under thousands of edits."
+        ),
+    )
     parser.add_argument("--batch-size", type=int, default=DEFAULT_BATCH_SIZE)
     parser.add_argument("--batch-chars", type=int, default=DEFAULT_BATCH_CHARS)
     parser.add_argument("paths", nargs="*", help="Optional PO glob paths")
@@ -45,7 +54,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     selected = [code.strip() for code in args.locales.split(",") if code.strip()]
-    known = {locale.code: locale for locale in locales.translatable_locales()}
+    known = {locale.code: locale for locale in locales.enabled_locales()}
     unknown = [code for code in selected if code not in known]
 
     if unknown:
@@ -61,7 +70,9 @@ def main() -> int:
         pipeline = build_pipeline(code, args)
 
         for path in resolve_paths(args.paths, code):
-            entries = translate_file(path, locale, pipeline, cache, args.overwrite)
+            entries = translate_file(
+                path, locale, pipeline, cache, args.overwrite, args.repair_fallbacks
+            )
             total_entries += entries
 
             if entries:
@@ -103,9 +114,11 @@ def resolve_paths(paths: list[str], code: str) -> list[Path]:
     return sorted(path for path in found if catalogs.locale_of(path) == code)
 
 
-def translate_file(path: Path, locale, pipeline: Pipeline, cache: dict, overwrite: bool) -> int:
+def translate_file(
+    path: Path, locale, pipeline: Pipeline, cache: dict, overwrite: bool, fallbacks: bool
+) -> int:
     po = catalogs.load_po(path)
-    pending = collect_pending(po, locale, cache, overwrite)
+    pending = collect_pending(po, locale, cache, overwrite, fallbacks)
 
     if pending:
         for source, translated in pipeline.translate_many(pending).items():
@@ -117,14 +130,14 @@ def translate_file(path: Path, locale, pipeline: Pipeline, cache: dict, overwrit
         if entry.msgid_plural:
             for index, source in catalogs.plural_sources(entry, locale.one_form).items():
                 if not needs_translation(
-                    entry.msgstr_plural.get(index, ""), source, entry, overwrite
+                    entry.msgstr_plural.get(index, ""), source, entry, overwrite, fallbacks
                 ):
                     continue
 
                 entry.msgstr_plural[index] = lookup(cache, locale.code, source)
                 changed += 1
                 clear_fuzzy(entry)
-        elif needs_translation(entry.msgstr, entry.msgid, entry, overwrite):
+        elif needs_translation(entry.msgstr, entry.msgid, entry, overwrite, fallbacks):
             entry.msgstr = lookup(cache, locale.code, entry.msgid)
             changed += 1
             clear_fuzzy(entry)
@@ -135,15 +148,17 @@ def translate_file(path: Path, locale, pipeline: Pipeline, cache: dict, overwrit
     return changed
 
 
-def collect_pending(po, locale, cache: dict, overwrite: bool) -> list[str]:
+def collect_pending(po, locale, cache: dict, overwrite: bool, fallbacks: bool) -> list[str]:
     pending: list[str] = []
 
     for entry in catalogs.translatable_entries(po):
         if entry.msgid_plural:
             for index, source in catalogs.plural_sources(entry, locale.one_form).items():
-                if needs_translation(entry.msgstr_plural.get(index, ""), source, entry, overwrite):
+                if needs_translation(
+                    entry.msgstr_plural.get(index, ""), source, entry, overwrite, fallbacks
+                ):
                     pending.append(source)
-        elif needs_translation(entry.msgstr, entry.msgid, entry, overwrite):
+        elif needs_translation(entry.msgstr, entry.msgid, entry, overwrite, fallbacks):
             pending.append(entry.msgid)
 
     missing = [
@@ -154,11 +169,23 @@ def collect_pending(po, locale, cache: dict, overwrite: bool) -> list[str]:
     return list(dict.fromkeys(missing))
 
 
-def needs_translation(current: str, source: str, entry, overwrite: bool) -> bool:
+def needs_translation(current: str, source: str, entry, overwrite: bool, fallbacks: bool) -> bool:
+    """Whether this entry is one of the ones this run is meant to touch.
+
+    An entry that is empty or fuzzy is new: the merge just created it and
+    nothing has ever translated it. An entry whose msgstr still reads as the
+    English source is *old* debt — it may have been left that way on purpose,
+    because a bad translation is worse than English.
+
+    Those two are separate jobs, and conflating them is what made every run
+    rewrite thousands of unrelated entries: translating 96 new strings dragged
+    16.000 English fallbacks along, and each one had to be reverted by hand
+    afterwards to keep the diff honest. Repairing fallbacks is now opt-in.
+    """
     if overwrite or is_fuzzy(entry) or current == "":
         return True
 
-    return current in {source, entry.msgid, entry.msgid_plural}
+    return fallbacks and current in {source, entry.msgid, entry.msgid_plural}
 
 
 def cache_key(code: str, source: str) -> str:
