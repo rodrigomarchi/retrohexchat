@@ -24,10 +24,12 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
 
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.ActionList
+  import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Textarea
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   @doc "Renders the alias configuration CRUD dialog."
@@ -106,6 +108,8 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
 
   @spec alias_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def alias_panel(assigns) do
+    assigns = assign(assigns, :expansion_lines, expansion_lines(assigns))
+
     ~H"""
     <div id={"#{@id}-panel-root"} class="contents">
       <.focus_wrap id={"#{@id}-focus-wrap"} class="contents">
@@ -118,6 +122,22 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
           phx-mounted={JS.focus(to: "##{@id}-content")}
           class="al-dialog flex h-full min-h-0 flex-col gap-retro-8"
         >
+          <.dialog_banner heading={dgettext("dialogs", "Shorthand you type in the composer")}>
+            <:art>
+              <Diagrams.diagram_dialog_preview
+                kind={:composer}
+                title={dgettext("dialogs", "Composer")}
+                lines={@expansion_lines}
+                label={dgettext("dialogs", "A miniature showing an alias expanding as it is sent")}
+              />
+            </:art>
+            <:glyph><Icons.icon_dialog_alias class="h-8 w-8" /></:glyph>
+            {dgettext(
+              "dialogs",
+              "An alias is a command of your own: type its name and the expansion is what actually runs. Aliases live in this browser and follow no one else."
+            )}
+          </.dialog_banner>
+
           <div class={
             classes([
               "al-editor min-h-0 flex-1",
@@ -270,5 +290,20 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
       </.focus_wrap>
     </div>
     """
+  end
+
+  # The picture is the alias the reader is looking at — the selected row, or
+  # the first one — expanding the way it will when they send it.
+  @spec expansion_lines(map()) :: [map()]
+  defp expansion_lines(%{aliases: []}), do: []
+
+  defp expansion_lines(assigns) do
+    entry =
+      Enum.find(assigns.aliases, hd(assigns.aliases), &(&1.name == assigns[:selected_alias]))
+
+    [
+      %{text: "/" <> entry.name, tone: :muted},
+      %{text: entry.expansion, tone: :accent}
+    ]
   end
 end

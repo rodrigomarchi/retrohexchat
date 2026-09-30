@@ -10,11 +10,9 @@
 }
 
 .acct-value,
-.acct-label,
 .acct-field,
 .acct-notice,
-.acct-check-row span,
-.acct-details p {
+.acct-check-row span {
   min-width: 0;
   overflow-wrap: anywhere;
 }
@@ -82,10 +80,6 @@
   padding-inline: 12px;
 }
 
-.desktop--stacked .acct-details summary {
-  min-height: 36px;
-  line-height: 36px;
-}
 
 .desktop--stacked .acct-check-row {
   align-items: flex-start;

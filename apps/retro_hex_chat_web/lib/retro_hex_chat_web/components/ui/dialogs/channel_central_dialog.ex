@@ -14,14 +14,16 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.ActionList
+  import RetroHexChatWeb.Components.UI.DialogBanner
+  import RetroHexChatWeb.Components.UI.Fieldset
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.Tabs
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
-  import RetroHexChatWeb.Components.UI.Separator
   import RetroHexChatWeb.Components.UI.Textarea
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   @doc """
@@ -176,6 +178,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         <.tabs_content value="modes" builder={builder}>
           <.modes_tab
             target={@target}
+            channel_name={@channel_name}
             modes={@modes}
             operator={@operator}
             on_mode_apply={@on_mode_apply}
@@ -278,6 +281,22 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
     ~H"""
     <div class="space-y-2">
+      <.dialog_banner heading={registration_heading(@registered?)}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:card}
+            title={dgettext("dialogs", "ChanServ")}
+            lines={registration_lines(@registration, @registered?)}
+            label={dgettext("dialogs", "A miniature of the ChanServ record for this channel")}
+          />
+        </:art>
+        <:glyph><Icons.icon_shield class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "Registering hands the channel to ChanServ, which keeps the founder, the access lists and the settings even when nobody is inside. An unregistered channel stops existing the moment its last member leaves."
+        )}
+      </.dialog_banner>
+
       <div class="cc-status-card shadow-retro-field bg-white p-2" data-testid="cc-cs-status">
         <div class="cc-dialog-heading flex items-center gap-2 mb-2">
           <Icons.icon_shield class="w-[16px] h-[16px]" />
@@ -716,6 +735,24 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   defp general_tab(assigns) do
     ~H"""
     <div class="space-y-2">
+      <.dialog_banner
+        heading={dgettext("dialogs", "How this channel greets people")}
+        data-testid="cc-general-banner"
+      >
+        <:art>
+          <Diagrams.diagram_channel_preview
+            channel_name={display_channel(@channel_name)}
+            topic={@topic}
+            welcome={@welcome_message}
+          />
+        </:art>
+        <:glyph><Icons.icon_tab_channel class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "The topic rides above every message for everyone in the channel; the welcome message is written once to each person as they arrive, and nobody else sees it."
+        )}
+      </.dialog_banner>
+
       <div class="cc-status-card shadow-retro-field bg-white p-2">
         <div class="cc-dialog-heading flex items-center gap-2 mb-2">
           <Icons.icon_tab_channel class="w-[16px] h-[16px]" />
@@ -733,61 +770,76 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         </div>
       </div>
 
-      <.separator />
+      <.dialog_section
+        legend={dgettext("dialogs", "Topic")}
+        description={
+          dgettext(
+            "dialogs",
+            "One line describing what the channel is for. Everyone already in the channel sees it change."
+          )
+        }
+        command={command_syntax("topic")}
+      >
+        <:icon><Icons.icon_btn_set_topic class="h-4 w-4" /></:icon>
 
-      <form :if={@operator} phx-submit={@on_topic_save} phx-target={@target} class="cc-form-block">
-        <label class="text-xs font-bold block mb-1">{dgettext("dialogs", "Topic")}:</label>
-        <.input
-          type="text"
-          name="topic"
-          value={@topic}
-          placeholder={dgettext("dialogs", "No topic set")}
-          class="cc-topic-input text-xs h-8"
-        />
-        <p :if={@topic != ""} class="cc-topic-preview text-xs shadow-retro-field bg-white p-2 mt-1">
-          {@topic}
-        </p>
-        <div :if={@topic_set_by} class="text-[10px] text-muted-foreground mt-1">
-          {dgettext("dialogs", "Set by %{nick}", nick: @topic_set_by)}
-          <span :if={@topic_set_at}>{dgettext("dialogs", "on %{date}", date: @topic_set_at)}</span>
+        <form :if={@operator} phx-submit={@on_topic_save} phx-target={@target} class="cc-form-block">
+          <.input
+            type="text"
+            name="topic"
+            value={@topic}
+            placeholder={dgettext("dialogs", "No topic set")}
+            class="cc-topic-input text-xs h-8"
+          />
+          <p :if={@topic != ""} class="cc-topic-preview text-xs shadow-retro-field bg-white p-2 mt-1">
+            {@topic}
+          </p>
+          <div :if={@topic_set_by} class="text-[10px] text-muted-foreground mt-1">
+            {dgettext("dialogs", "Set by %{nick}", nick: @topic_set_by)}
+            <span :if={@topic_set_at}>{dgettext("dialogs", "on %{date}", date: @topic_set_at)}</span>
+          </div>
+          <div class="cc-action-row flex gap-1 mt-2">
+            <.button type="submit" size="sm" class="cc-action-button">
+              <:icon><Icons.icon_btn_set_topic /></:icon>
+              {dgettext("dialogs", "Save Topic")}
+            </.button>
+          </div>
+        </form>
+
+        <div :if={!@operator} class="cc-form-block">
+          <.input
+            type="text"
+            name="topic"
+            value={@topic}
+            placeholder={dgettext("dialogs", "No topic set")}
+            disabled
+            class="cc-topic-input text-xs h-8"
+          />
+          <p :if={@topic != ""} class="cc-topic-preview text-xs shadow-retro-field bg-white p-2 mt-1">
+            {@topic}
+          </p>
+          <div :if={@topic_set_by} class="text-[10px] text-muted-foreground mt-1">
+            {dgettext("dialogs", "Set by %{nick}", nick: @topic_set_by)}
+            <span :if={@topic_set_at}>{dgettext("dialogs", "on %{date}", date: @topic_set_at)}</span>
+          </div>
+          <p class="text-[10px] text-muted-foreground italic mt-2">
+            {dgettext("dialogs", "You must be a channel operator to edit the topic.")}
+          </p>
         </div>
-        <div class="cc-action-row flex gap-1 mt-2">
-          <.button type="submit" size="sm" class="cc-action-button">
-            <:icon><Icons.icon_btn_set_topic /></:icon>
-            {dgettext("dialogs", "Save Topic")}
-          </.button>
-        </div>
-      </form>
+      </.dialog_section>
 
-      <div :if={!@operator} class="cc-form-block">
-        <label class="text-xs font-bold block mb-1">{dgettext("dialogs", "Topic")}:</label>
-        <.input
-          type="text"
-          name="topic"
-          value={@topic}
-          placeholder={dgettext("dialogs", "No topic set")}
-          disabled
-          class="cc-topic-input text-xs h-8"
-        />
-        <p :if={@topic != ""} class="cc-topic-preview text-xs shadow-retro-field bg-white p-2 mt-1">
-          {@topic}
-        </p>
-        <div :if={@topic_set_by} class="text-[10px] text-muted-foreground mt-1">
-          {dgettext("dialogs", "Set by %{nick}", nick: @topic_set_by)}
-          <span :if={@topic_set_at}>{dgettext("dialogs", "on %{date}", date: @topic_set_at)}</span>
-        </div>
-        <p class="text-[10px] text-muted-foreground italic mt-2">
-          {dgettext("dialogs", "You must be a channel operator to edit the topic.")}
-        </p>
-      </div>
+      <.dialog_section
+        legend={dgettext("dialogs", "Welcome Message")}
+        description={
+          dgettext(
+            "dialogs",
+            "Sent privately to each person the moment they join — the house rules, the link, whatever they need before they speak."
+          )
+        }
+        command={command_syntax("setwelcome")}
+      >
+        <:icon><Icons.icon_megaphone class="h-4 w-4" /></:icon>
 
-      <.separator />
-
-      <section class="space-y-2">
         <form :if={@operator} phx-submit={@on_welcome_save} phx-target={@target} class="cc-form-block">
-          <label class="text-xs font-bold block mb-1">
-            {dgettext("dialogs", "Welcome Message")}:
-          </label>
           <.textarea
             id="cc-welcome-message"
             name="message"
@@ -817,9 +869,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         </form>
 
         <div :if={!@operator} class="cc-form-block">
-          <label class="text-xs font-bold block mb-1">
-            {dgettext("dialogs", "Welcome Message")}:
-          </label>
           <.textarea
             id="cc-welcome-message"
             name="message"
@@ -834,9 +883,20 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             {dgettext("dialogs", "You must be a channel operator to edit the welcome message.")}
           </p>
         </div>
-      </section>
+      </.dialog_section>
 
-      <section class="space-y-2">
+      <.dialog_section
+        legend={dgettext("dialogs", "Join throttle")}
+        description={
+          dgettext(
+            "dialogs",
+            "How long someone must wait between joins, which is what stops a join flood. Zero turns it off."
+          )
+        }
+        command={command_syntax("slow")}
+      >
+        <:icon><Icons.icon_clock class="h-4 w-4" /></:icon>
+
         <form
           :if={@operator}
           phx-submit={@on_throttle_apply}
@@ -844,7 +904,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
           class="cc-form-block"
         >
           <label class="text-xs font-bold block mb-1" for="cc-throttle-seconds">
-            {dgettext("dialogs", "Join throttle (seconds)")}:
+            {dgettext("dialogs", "Seconds")}:
           </label>
           <div class="cc-inline-control flex items-center gap-2">
             <.input
@@ -865,7 +925,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
         <div :if={!@operator}>
           <label class="text-xs font-bold block mb-1" for="cc-throttle-seconds">
-            {dgettext("dialogs", "Join throttle (seconds)")}:
+            {dgettext("dialogs", "Seconds")}:
           </label>
           <.input
             type="number"
@@ -881,32 +941,47 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             {dgettext("dialogs", "You must be a channel operator to change the join throttle.")}
           </p>
         </div>
-      </section>
+      </.dialog_section>
 
       <p :if={@notice} class="text-xs text-accent-foreground bg-accent px-2 py-1">
         {@notice}
       </p>
 
-      <div :if={@owner} class="cc-action-row flex gap-1">
-        <.button
-          type="button"
-          size="sm"
-          variant="destructive"
-          class="cc-danger-action"
-          phx-click={@on_transfer_open}
-          phx-target={@target}
-          data-testid="cc-transfer-open"
-        >
-          <:icon><Icons.icon_role_owner /></:icon>
-          {dgettext("dialogs", "Transfer Ownership")}
-        </.button>
-      </div>
+      <.dialog_section
+        :if={@owner}
+        legend={dgettext("dialogs", "Ownership")}
+        description={
+          dgettext(
+            "dialogs",
+            "Hands the channel to somebody else. You keep operator status; they get everything that is founder-only, including this tab."
+          )
+        }
+        command={command_syntax("transfer")}
+      >
+        <:icon><Icons.icon_role_owner class="h-4 w-4" /></:icon>
+
+        <div class="cc-action-row flex gap-1">
+          <.button
+            type="button"
+            size="sm"
+            variant="destructive"
+            class="cc-danger-action"
+            phx-click={@on_transfer_open}
+            phx-target={@target}
+            data-testid="cc-transfer-open"
+          >
+            <:icon><Icons.icon_role_owner /></:icon>
+            {dgettext("dialogs", "Transfer Ownership")}
+          </.button>
+        </div>
+      </.dialog_section>
     </div>
     """
   end
 
   # ── Modes Tab ─────────────────────────────────────────
 
+  attr :channel_name, :string, default: nil
   attr :modes, :map, required: true
   attr :operator, :boolean, default: false
   attr :on_mode_apply, :any, default: nil
@@ -920,8 +995,26 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   # re-render sends no diff for a value that did not change — so ignoring the
   # element bought nothing and cost the one update that matters.
   defp modes_tab(assigns) do
+    assigns = assign(assigns, :door_lines, door_lines(assigns.modes))
+
     ~H"""
     <div class="space-y-2">
+      <.dialog_banner heading={dgettext("dialogs", "Who gets in, and who gets to talk")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:query}
+            title={display_channel(@channel_name)}
+            lines={@door_lines}
+            label={dgettext("dialogs", "A miniature of what a newcomer meets at the door")}
+          />
+        </:art>
+        <:glyph><Icons.icon_tab_modes class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "A mode changes the channel for everybody at once and takes effect the moment you apply it — people already inside are affected too, not just the next person through the door."
+        )}
+      </.dialog_banner>
+
       <form :if={@operator} phx-submit={@on_mode_apply} phx-target={@target}>
         <div class="cc-settings-panel shadow-retro-field bg-white p-2">
           <p class="text-xs font-bold mb-2">{dgettext("dialogs", "Channel Modes")}:</p>
@@ -1067,6 +1160,22 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
     ~H"""
     <div class="space-y-2">
+      <.dialog_banner heading={dgettext("dialogs", "The names the door checks")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:ordered}
+            title={list_type_label(@active_list)}
+            lines={mask_lines(@entries)}
+            label={dgettext("dialogs", "A miniature of the masks this list is holding")}
+          />
+        </:art>
+        <:glyph><Icons.icon_ban class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "Each entry is a mask rather than a nickname, so it keeps matching after somebody renames. An exception outranks a ban, which is how you bar a range and still let one person through."
+        )}
+      </.dialog_banner>
+
       <div class="cc-segmented-tabs inline-flex shadow-retro-field bg-surface p-[2px] gap-[2px]">
         <button
           :for={list_type <- list_types()}
@@ -1239,4 +1348,53 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   @spec display_channel(String.t() | nil) :: String.t()
   defp display_channel(nil), do: "#unknown"
   defp display_channel(name), do: name
+
+  # What a newcomer actually meets at the door, in the order they meet it.
+  @spec door_lines(map()) :: [map()]
+  defp door_lines(modes) do
+    cond do
+      Map.get(modes, :invite_only) ->
+        [
+          %{text: system_line(dgettext("dialogs", "cannot join")), tone: :danger},
+          %{text: dgettext("dialogs", "invite only"), tone: :muted}
+        ]
+
+      Map.get(modes, :moderated) ->
+        [
+          %{text: system_line(dgettext("dialogs", "joined")), tone: :system},
+          %{text: dgettext("dialogs", "cannot speak"), tone: :danger}
+        ]
+
+      true ->
+        [
+          %{text: system_line(dgettext("dialogs", "joined")), tone: :system},
+          %{text: dgettext("dialogs", "hello everyone")}
+        ]
+    end
+  end
+
+  @spec mask_lines([map()]) :: [map()]
+  defp mask_lines(entries) do
+    Enum.map(entries, &%{text: Map.get(&1, :mask, ""), tone: :normal})
+  end
+
+  @spec registration_heading(boolean()) :: String.t()
+  defp registration_heading(true), do: dgettext("dialogs", "ChanServ is holding this channel")
+  defp registration_heading(false), do: dgettext("dialogs", "This channel is not registered")
+
+  @spec registration_lines(map(), boolean()) :: [map()]
+  defp registration_lines(_registration, false), do: []
+
+  defp registration_lines(registration, true) do
+    [
+      %{text: Map.get(registration, :founder) || "", tone: :accent},
+      %{text: dgettext("dialogs", "founder"), tone: :muted}
+    ]
+  end
+
+  # The chat's own marker for a line nobody typed. It is punctuation, not
+  # prose: inside a msgid the engine reads it as list markup and mangles the
+  # sentence after it, so it is prefixed here instead.
+  @spec system_line(String.t()) :: String.t()
+  defp system_line(text), do: "* " <> text
 end

@@ -218,7 +218,7 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
         managed?: false,
         render_when: :always,
         taskbar_when: {:present, :cc_window_channel},
-        geometry: geometry(140, 50, 620, 560, 480, 380)
+        geometry: geometry(140, 30, 640, 660, 500, 440)
       ),
       window("cheatsheet", dgettext("chat", "Keyboard Shortcuts"), :icon_dialog_cheatsheet,
         geometry: geometry(200, 60, 600, 500, 360, 320)
@@ -293,7 +293,7 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
     [
       window("account", dgettext("chat", "Account"), :icon_status_user,
         family: :account,
-        geometry: geometry(180, 70, 560, 480, 420, 340)
+        geometry: geometry(180, 40, 560, 620, 420, 380)
       ),
       window("trusted-terminals", dgettext("chat", "Trusted Terminals"), :icon_lock,
         family: :account,
@@ -301,15 +301,15 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
       ),
       window("profile", dgettext("chat", "Profile"), :icon_dialog_profile,
         family: :account,
-        geometry: geometry(210, 100, 520, 380, 400, 300)
+        geometry: geometry(210, 60, 540, 560, 420, 400)
       ),
       window("away", dgettext("chat", "Away"), :icon_dialog_away,
         family: :account,
-        geometry: geometry(240, 130, 440, 320, 360, 260)
+        geometry: geometry(240, 100, 480, 440, 400, 380)
       ),
       window("user-modes", dgettext("chat", "User Modes"), :icon_dialog_user_modes,
         family: :account,
-        geometry: geometry(270, 160, 400, 260, 340, 220)
+        geometry: geometry(270, 130, 440, 380, 380, 340)
       )
     ]
   end

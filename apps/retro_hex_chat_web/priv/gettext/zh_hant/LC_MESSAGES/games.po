@@ -11,25 +11,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:414
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:424
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m %{seconds}s"
 msgstr "%{hours}h %{minutes}m %{seconds}s"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:420
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:430
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m %{seconds}s"
 msgstr "%{minutes}m %{seconds}s"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:404
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:414
 #, elixir-autogen, elixir-format
 msgid "%{seconds}s"
 msgstr "%{seconds} 秒"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:336
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:183
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:330
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:375
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:340
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:385
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "返回"
@@ -39,17 +39,17 @@ msgstr "返回"
 msgid "Classic games running in your browser via WebAssembly"
 msgstr "通過 WebAssembly 在瀏覽器中運行的經典遊戲"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:379
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:389
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr "關閉"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:334
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:344
 #, elixir-autogen, elixir-format
 msgid "End Session"
 msgstr "結束會話"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:367
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:377
 #, elixir-autogen, elixir-format
 msgid "Play time:"
 msgstr "播放時間 :"
@@ -64,17 +64,17 @@ msgstr "復古拱門"
 msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
 msgstr "由於會議即將結束。 選擇一個遊戲以保持其活動 。"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:297
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:306
 #, elixir-autogen, elixir-format
 msgid "Game in progress"
 msgstr "遊戲中"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:361
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:371
 #, elixir-autogen, elixir-format
 msgid "Session complete"
 msgstr "會話完成"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:301
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:310
 #, elixir-autogen, elixir-format
 msgid "Started %{time}"
 msgstr "開始 %{time}"
@@ -458,37 +458,37 @@ msgstr "WebAssembly"
 msgid "%{engine} Engine"
 msgstr "%{engine} 引擎"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:216
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:225
 #, elixir-autogen, elixir-format
 msgid "About"
 msgstr "關於"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:242
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:251
 #, elixir-autogen, elixir-format
 msgid "Action"
 msgstr "動作"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:239
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:248
 #, elixir-autogen, elixir-format
 msgid "Key"
 msgstr "按鍵"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:232
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:241
 #, elixir-autogen, elixir-format
 msgid "Keyboard Controls"
 msgstr "鍵盤控制"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:205
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:214
 #, elixir-autogen, elixir-format
 msgid "Leave"
 msgstr "離開"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:201
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:210
 #, elixir-autogen, elixir-format
 msgid "Start Game"
 msgstr "開始遊戲"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:264
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:273
 #, elixir-autogen, elixir-format
 msgid "Tips"
 msgstr "提示"
@@ -509,12 +509,12 @@ msgstr "和別人一起玩"
 msgid "You cannot start a match right now."
 msgstr "現在無法開始對局。"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:326
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:336
 #, elixir-autogen, elixir-format
 msgid "Open the game tab"
 msgstr "開啟遊戲分頁"
 
-#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:308
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:317
 #, elixir-autogen, elixir-format
 msgid "The game runs in a tab of its own, with its own address. Closing that tab does not end the session — End Session does, and so does leaving it alone for a while."
 msgstr "遊戲在自己的分頁裡執行，有自己的位址。關閉那個分頁並不會結束工作階段——結束它的是「結束工作階段」，或者放著不管一段時間。"

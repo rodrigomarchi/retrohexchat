@@ -773,12 +773,12 @@ msgid "Following it opens a tab"
 msgstr "Following it opens a tab"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:74
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "If the media connection is interrupted, the conference tries a short automatic recovery sequence. When automatic recovery is exhausted, use Retry to request a fresh media offer without leaving the conference."
 msgstr "If the media connection is interrupted, the conference tries a short automatic recovery sequence. When automatic recovery is exhausted, use Retry to request a fresh media offer without leaving the conference."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:26
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Inside the conference, use the layout buttons to switch between automatic, grid, focus and speaker layouts, show or hide the participant panel, pin important participants, cycle your self-view between tile, picture-in-picture and hidden, or switch to compact mode when you want the call to take less of the page. Larger calls automatically use a denser grid while focus and speaker layouts keep a filmstrip for the remaining participants."
 msgstr "Inside the conference, use the layout buttons to switch between automatic, grid, focus and speaker layouts, show or hide the participant panel, pin important participants, cycle your self-view between tile, picture-in-picture and hidden, or switch to compact mode when you want the call to take less of the page. Larger calls automatically use a denser grid while focus and speaker layouts keep a filmstrip for the remaining participants."
 
@@ -788,7 +788,7 @@ msgid "More than one, one tab each"
 msgstr "More than one, one tab each"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_starting_room.html.heex:28
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Open Route and privacy to force the connection through the relay, which hides your IP address from the other side at the cost of some latency. It is only available when this server has a relay configured, and the starting room is where it is decided: once the session begins, the route is fixed for it. The choice is remembered for the next one."
 msgstr "Open Route and privacy to force the connection through the relay, which hides your IP address from the other side at the cost of some latency. It is only available when this server has a relay configured, and the starting room is where it is decided: once the session begins, the route is fixed for it. The choice is remembered for the next one."
 
@@ -798,7 +798,7 @@ msgid "The P2P Session is the connection behind /p2p: one direct link between tw
 msgstr "The P2P Session is the connection behind /p2p: one direct link between two people that hosts a call, file transfers and games all at the same time. It lives at an address of its own, and the console on that page is where every part of it is operated."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:2
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "The Stats section of a P2P session shows live telemetry for the whole session: WebRTC connection, audio, video or screen source, file transfer and game data channels. Click the ? button in the panel to see a short explanation of each metric inline, or hover any row for a tooltip."
 msgstr "The Stats section of a P2P session shows live telemetry for the whole session: WebRTC connection, audio, video or screen source, file transfer and game data channels. Click the ? button in the panel to see a short explanation of each metric inline, or hover any row for a tooltip."
 
@@ -813,7 +813,7 @@ msgid "The card opens the session beside the conversation, never on top of it, s
 msgstr "The card opens the session beside the conversation, never on top of it, so the chat you were reading stays exactly where it is. You arrive in the starting room, where both of you pick devices and press Ready before anything is negotiated."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:66
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "The conference shows explicit states while waiting for participants, joining receive-only, recovering media, or handling a failed connection. Recoverable failures keep the call open and expose Retry; leaving from a warning or error still uses the confirmation dialog so microphone, camera and SFU cleanup stay predictable."
 msgstr "The conference shows explicit states while waiting for participants, joining receive-only, recovering media, or handling a failed connection. Recoverable failures keep the call open and expose Retry; leaving from a warning or error still uses the confirmation dialog so microphone, camera and SFU cleanup stay predictable."
 
@@ -853,7 +853,7 @@ msgid "You can hold a session with several people at the same time, each in a ta
 msgstr "You can hold a session with several people at the same time, each in a tab of its own. The only session refused is a second one with somebody you already have one with. Nothing has to be ended to start another."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_tab.html.heex:18
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "A session can only be live in one of your windows. Opening it somewhere else moves it there, and the window that lost it says so and offers Bring it back here — which is why the conversation offers a way to the tab you already have instead of a second one. Closing the tab is not the same as ending the session: you have about half a minute to come back to the address before it closes itself. Only End session, which asks first, is final straight away."
 msgstr "A session can only be live in one of your windows. Opening it somewhere else moves it there, and the window that lost it says so and offers Bring it back here — which is why the conversation offers a way to the tab you already have instead of a second one. Closing the tab is not the same as ending the session: you have about half a minute to come back to the address before it closes itself. Only End session, which asks first, is final straight away."
 
@@ -868,7 +868,7 @@ msgid "Ctrl+Shift+Q in the focused P2P Session Console ends only the call media.
 msgstr "Ctrl+Shift+Q in the focused P2P Session Console ends only the call media. End P2P session, at the top of the console, ends the whole session and asks before it does."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:28
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "End Call stops the media and leaves the session standing for files, games and statistics. End P2P session, at the top of the console, ends the whole thing and asks first. Closing the browser tab is neither: the other side is told you dropped, and you have about half a minute to come back to the address before the session closes itself."
 msgstr "End Call stops the media and leaves the session standing for files, games and statistics. End P2P session, at the top of the console, ends the whole thing and asks first. Closing the browser tab is neither: the other side is told you dropped, and you have about half a minute to come back to the address before the session closes itself."
 

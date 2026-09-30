@@ -70,6 +70,7 @@ export class ChatPage {
   readonly accountProfileMenuItem: Locator;
   readonly accountAwayMenuItem: Locator;
   readonly accountUserModesMenuItem: Locator;
+  readonly trustedTerminalsMenuItem: Locator;
   readonly accountInfoMenuItem: Locator;
   readonly clearWindowMenuItem: Locator;
   readonly copySelectionMenuItem: Locator;
@@ -233,6 +234,7 @@ export class ChatPage {
   readonly profileDialog: Locator;
   readonly awayDialog: Locator;
   readonly userModesDialog: Locator;
+  readonly trustedTerminalsDialog: Locator;
   readonly accountPasswordInput: Locator;
   readonly accountConfirmInput: Locator;
   readonly accountDropPasswordInput: Locator;
@@ -400,6 +402,10 @@ export class ChatPage {
       "open_profile_dialog",
     ).first();
     this.accountAwayMenuItem = visibleContextMenuItem(page, "open_away_dialog");
+    this.trustedTerminalsMenuItem = visibleContextMenuItem(
+      page,
+      "open_trusted_terminals_dialog",
+    );
     this.accountUserModesMenuItem = visibleContextMenuItem(
       page,
       "open_user_modes_dialog",
@@ -668,6 +674,7 @@ export class ChatPage {
     this.profileDialog = page.getByTestId("profile-window");
     this.awayDialog = page.getByTestId("away-window");
     this.userModesDialog = page.getByTestId("user-modes-window");
+    this.trustedTerminalsDialog = page.getByTestId("trusted-terminals-window");
     this.accountPasswordInput = page.getByTestId("account-password");
     this.accountConfirmInput = page.getByTestId("account-confirm");
     this.accountDropPasswordInput = page.getByTestId("account-drop-password");
@@ -1644,6 +1651,13 @@ export class ChatPage {
     await expect(this.accountAwayMenuItem).toBeVisible();
     await this.accountAwayMenuItem.click();
     await expect(this.awayDialog).toBeVisible();
+  }
+
+  async openTrustedTerminalsFromMenu() {
+    await this.openFileMenu();
+    await expect(this.trustedTerminalsMenuItem).toBeVisible();
+    await this.trustedTerminalsMenuItem.click();
+    await expect(this.trustedTerminalsDialog).toBeVisible();
   }
 
   async openUserModesFromMenu() {

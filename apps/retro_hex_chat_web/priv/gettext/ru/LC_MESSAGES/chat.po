@@ -1247,7 +1247,7 @@ msgstr "Серый"
 msgid "Half-Op"
 msgstr "пол-оп"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:156
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:158
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:182
 #, elixir-autogen, elixir-format
 msgid "Help"
@@ -1803,7 +1803,7 @@ msgid "Reset (Ctrl+Shift+X)"
 msgstr "Перезагрузка (Ctrl+Shift+X)"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:1001
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1105
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1106
 #, elixir-autogen
 msgid "RetroHexChat"
 msgstr "RetroHexChat"
@@ -1871,7 +1871,7 @@ msgid "Send"
 msgstr "Отправить"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:134
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:147
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:149
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:22
 #, elixir-autogen, elixir-format
 msgid "Server"
@@ -1882,7 +1882,7 @@ msgstr "Сервер"
 msgid "Server setting '%{key}' changed to '%{value}'."
 msgstr "Настройка сервера%{key}Изменился на%{value}'."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:119
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:121
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:470
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:106
 #, elixir-autogen, elixir-format
@@ -1933,7 +1933,7 @@ msgid "Symbols"
 msgstr "Символы"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:216
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:75
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:76
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:104
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:91
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:103
@@ -2543,7 +2543,7 @@ msgstr "Контактная записка"
 msgid "Custom Menus"
 msgstr "Пользовательское меню"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:201
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:204
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "Удаленный"
@@ -2592,7 +2592,7 @@ msgstr "Введите текущий ник."
 msgid "Enter the new nick."
 msgstr "Введите новый ник."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:128
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:130
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:105
 #, elixir-autogen, elixir-format
 msgid "Error"
@@ -2751,7 +2751,7 @@ msgstr "Зарегистрировать этот канал могут толь
 msgid "Only the founder can drop a channel."
 msgstr "Только основатель может отключить канал."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1106
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1107
 #, elixir-autogen, elixir-format
 msgid "Opening chat..."
 msgstr "Открытие чата..."
@@ -3062,8 +3062,8 @@ msgstr "Следующий P2P Layout"
 msgid "Opening private room..."
 msgstr "Открытие частной комнаты..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:110
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:171
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:112
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:173
 #, elixir-autogen, elixir-format
 msgid "P2P"
 msgstr "P2P"
@@ -3305,7 +3305,7 @@ msgstr "%{peer} принял P2P-запрос - соединил..."
 msgid "Auto-Join"
 msgstr "Авто-Присоединиться"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:174
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:176
 #, elixir-autogen, elixir-format
 msgid "P2P request"
 msgstr "P2P-запрос"
@@ -3315,7 +3315,7 @@ msgstr "P2P-запрос"
 msgid "P2P request from %{from} - join it from the PM header."
 msgstr "P2P запрос от %{from} - присоединяйтесь к нему из заголовка PM."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:176
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:178
 #, elixir-autogen, elixir-format
 msgid "Use the P2P control in this private message."
 msgstr "Используйте P2P в этом личном сообщении."
@@ -3729,7 +3729,7 @@ msgid "Strikethrough"
 msgstr "Зачёркнутый"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:323
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:420
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:456
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:130
 #, elixir-autogen, elixir-format

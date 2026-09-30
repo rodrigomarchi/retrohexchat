@@ -114,12 +114,12 @@ defmodule RetroHexChatWeb.AccountEntryPointsFeatureTest do
       render_click(view, "toolbar_action", %{"action" => "open_account_register"})
       html = render(view)
       assert html =~ ~s(data-testid="account-panel")
-      refute html =~ "Bio (about me)"
+      refute html =~ ~s(data-testid="profile-bio")
       refute html =~ "Away message"
       refute html =~ "Receive wallops"
 
       render_click(view, "toolbar_action", %{"action" => "open_profile_dialog"})
-      assert render(view) =~ "Bio (about me)"
+      assert render(view) =~ ~s(data-testid="profile-bio")
 
       render_click(view, "toolbar_action", %{"action" => "open_away_dialog"})
       assert render(view) =~ "Away message"

@@ -1226,7 +1226,7 @@ msgstr "灰色"
 msgid "Half-Op"
 msgstr "半业务"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:156
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:158
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:182
 #, elixir-autogen, elixir-format
 msgid "Help"
@@ -1774,7 +1774,7 @@ msgid "Reset (Ctrl+Shift+X)"
 msgstr "重置( Ctrl+Shift) 。"
 
 #: lib/retro_hex_chat_web/live/app/chat_live.ex:1001
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1105
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1106
 #, elixir-autogen
 msgid "RetroHexChat"
 msgstr "反转HexChat"
@@ -1842,7 +1842,7 @@ msgid "Send"
 msgstr "发送"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:134
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:147
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:149
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:22
 #, elixir-autogen, elixir-format
 msgid "Server"
@@ -1853,7 +1853,7 @@ msgstr "服务器"
 msgid "Server setting '%{key}' changed to '%{value}'."
 msgstr "服务器设置\"%{key}\"改为\"%{value}\"."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:119
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:121
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:470
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:106
 #, elixir-autogen, elixir-format
@@ -1904,7 +1904,7 @@ msgid "Symbols"
 msgstr "符号"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:216
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:75
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:76
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:104
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:91
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:103
@@ -2510,7 +2510,7 @@ msgstr "联系说明"
 msgid "Custom Menus"
 msgstr "自定义菜单"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:201
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:204
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "删除"
@@ -2559,7 +2559,7 @@ msgstr "输入当前昵称 。"
 msgid "Enter the new nick."
 msgstr "输入新昵称 。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:128
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:130
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:105
 #, elixir-autogen, elixir-format
 msgid "Error"
@@ -2718,7 +2718,7 @@ msgstr "只有频道运营商可以注册此频道."
 msgid "Only the founder can drop a channel."
 msgstr "只有创始人才能丢弃一个频道."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1106
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1107
 #, elixir-autogen, elixir-format
 msgid "Opening chat..."
 msgstr "正在打开聊天..."
@@ -3026,8 +3026,8 @@ msgstr "下一个 P2P 版式"
 msgid "Opening private room..."
 msgstr "打开私人房间..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:110
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:171
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:112
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:173
 #, elixir-autogen, elixir-format
 msgid "P2P"
 msgstr "P2P"
@@ -3265,7 +3265,7 @@ msgstr "%{peer}接受了P2P请求 - 连接."
 msgid "Auto-Join"
 msgstr "自动加入"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:174
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:176
 #, elixir-autogen, elixir-format
 msgid "P2P request"
 msgstr "P2P请求"
@@ -3275,7 +3275,7 @@ msgstr "P2P请求"
 msgid "P2P request from %{from} - join it from the PM header."
 msgstr "p2P请求来自%{from} - 从PM头加入."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:176
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:178
 #, elixir-autogen, elixir-format
 msgid "Use the P2P control in this private message."
 msgstr "在此私有信件中使用 P2P 控制 。"
@@ -3689,7 +3689,7 @@ msgid "Strikethrough"
 msgstr "删除线"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:323
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:420
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:456
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:130
 #, elixir-autogen, elixir-format

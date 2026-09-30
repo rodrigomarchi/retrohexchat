@@ -9,11 +9,13 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
 
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.ActionList
+  import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Separator
   import RetroHexChatWeb.Components.UI.Textarea
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   @doc """
@@ -112,6 +114,8 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
 
   @spec perform_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def perform_panel(assigns) do
+    assigns = assign(assigns, :perform_lines, perform_lines(assigns.entries, assigns.enabled))
+
     first_pos = if assigns.entries != [], do: List.first(assigns.entries).position, else: nil
     last_pos = if assigns.entries != [], do: List.last(assigns.entries).position, else: nil
 
@@ -130,6 +134,22 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
           phx-mounted={JS.focus(to: "##{@id}-content")}
           class="pf-dialog flex h-full min-h-0 flex-col gap-retro-8"
         >
+          <.dialog_banner heading={dgettext("dialogs", "What runs the moment you connect")}>
+            <:art>
+              <Diagrams.diagram_dialog_preview
+                title={dgettext("dialogs", "Status")}
+                kind={:ordered}
+                lines={@perform_lines}
+                label={dgettext("dialogs", "A miniature of the commands that run on connect")}
+              />
+            </:art>
+            <:glyph><Icons.icon_dialog_perform class="h-8 w-8" /></:glyph>
+            {dgettext(
+              "dialogs",
+              "Every line here is sent as if you had typed it, top to bottom, once the connection is up. Turning the list off keeps the lines and runs none of them."
+            )}
+          </.dialog_banner>
+
           <div class="pf-entry-list min-h-0 flex-1 overflow-y-auto">
             <div :if={@entries == []} class="pf-empty-state text-center text-muted-foreground">
               {dgettext("dialogs", "No commands configured. Click Add to create one.")}
@@ -376,5 +396,16 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     cmd
     |> String.replace(~r{(?i)(identify|ns identify|nickserv identify)\s+\S+}, "\\1 ***")
     |> String.replace(~r{(?i)(msg\s+nickserv\s+identify)\s+\S+}, "\\1 ***")
+  end
+
+  # Switched off, the list still exists and nothing in it runs — so the
+  # picture shows the Status window as it will actually look: empty.
+  @spec perform_lines([map()], boolean()) :: [map()]
+  defp perform_lines(_entries, false), do: []
+
+  defp perform_lines(entries, true) do
+    # The same masking the list applies: a perform line often carries the
+    # NickServ password, and a picture of it is no less a leak than a row.
+    Enum.map(entries, &%{text: mask_command(&1.command), tone: :muted})
   end
 end

@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AwayDialog do
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do
-    {:ok, assign(socket, id: @id, away: false, away_message: "")}
+    {:ok, assign(socket, id: @id, nickname: "", away: false, away_message: "")}
   end
 
   @impl true
@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AwayDialog do
     {:ok,
      assign(socket,
        id: Map.get(assigns, :id, socket.assigns.id),
+       nickname: Map.get(assigns, :nickname, socket.assigns.nickname),
        away: Map.get(assigns, :away, socket.assigns.away),
        away_message: Map.get(assigns, :away_message, socket.assigns.away_message)
      )}
@@ -38,7 +39,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.AwayDialog do
   def render(assigns) do
     ~H"""
     <div id={"#{@id}-mount"} class="contents">
-      <.away_panel id={@id} away={@away} away_message={@away_message || ""} />
+      <.away_panel
+        id={@id}
+        nickname={@nickname}
+        away={@away}
+        away_message={@away_message || ""}
+      />
     </div>
     """
   end

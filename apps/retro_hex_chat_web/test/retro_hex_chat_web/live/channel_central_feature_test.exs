@@ -275,7 +275,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       render_click(view, "switch_channel", %{"channel" => channel})
       html = open_cc(view, channel)
 
-      assert html =~ "Welcome Message:"
+      assert html =~ "Welcome Message"
       assert html =~ "Save Welcome"
       assert html =~ "Clear Welcome"
 
@@ -305,7 +305,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       render_click(view, "switch_channel", %{"channel" => channel})
       html = open_cc(view, channel)
 
-      assert html =~ "Join throttle (seconds):"
+      assert html =~ "Join throttle"
       assert html =~ "Apply Throttle"
 
       html =
@@ -342,7 +342,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       render_click(view, "switch_channel", %{"channel" => channel})
       html = open_cc(view, channel)
 
-      assert html =~ "Welcome Message:"
+      assert html =~ "Welcome Message"
       assert html =~ "Owner managed welcome"
       assert html =~ "You must be a channel operator to edit the welcome message."
       assert html =~ "You must be a channel operator to change the join throttle."

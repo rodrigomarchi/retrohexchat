@@ -10,9 +10,11 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
 
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.ActionList
+  import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   @doc """
@@ -99,6 +101,8 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
 
   @spec autojoin_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def autojoin_panel(assigns) do
+    assigns = assign(assigns, :join_lines, join_lines(assigns.entries))
+
     ~H"""
     <div id={@id} class="contents">
       <.focus_wrap id={"#{@id}-focus-wrap"} class="contents">
@@ -111,6 +115,22 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
           phx-mounted={JS.focus(to: "##{@id}-content")}
           class="aj-dialog flex h-full min-h-0 flex-col gap-retro-8"
         >
+          <.dialog_banner heading={dgettext("dialogs", "What happens the moment you connect")}>
+            <:art>
+              <Diagrams.diagram_dialog_preview
+                title={dgettext("dialogs", "Status")}
+                kind={:tabs}
+                lines={@join_lines}
+                label={dgettext("dialogs", "A miniature of the joins that run on connect")}
+              />
+            </:art>
+            <:glyph><Icons.icon_dialog_autojoin class="h-8 w-8" /></:glyph>
+            {dgettext(
+              "dialogs",
+              "These channels are joined for you as soon as the connection is up, in this order, before you type anything."
+            )}
+          </.dialog_banner>
+
           <div class="aj-entry-list min-h-0 flex-1 overflow-y-auto">
             <div :if={@entries == []} class="aj-empty-state text-center text-muted-foreground">
               {dgettext("dialogs", "No auto-join channels. Click Add to create one.")}
@@ -354,4 +374,11 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
   end
 
   # ── Private Helpers ───────────────────────────────────
+
+  # The picture is the Status window on the next connect: these channels,
+  # in this order, joined before the reader touches anything.
+  @spec join_lines([map()]) :: [map()]
+  defp join_lines(entries) do
+    Enum.map(entries, &%{text: &1.channel_name, tone: :accent})
+  end
 end

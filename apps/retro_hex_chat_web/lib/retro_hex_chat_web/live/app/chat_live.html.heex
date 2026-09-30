@@ -766,6 +766,7 @@
       <.live_component
         module={RetroHexChatWeb.ChatLive.Components.AwayDialog}
         id={RetroHexChatWeb.ChatLive.Components.AwayDialog.id()}
+        nickname={@session.nickname}
         away={@session.away}
         away_message={@session.away_message || @account_last_away_message || ""}
       />

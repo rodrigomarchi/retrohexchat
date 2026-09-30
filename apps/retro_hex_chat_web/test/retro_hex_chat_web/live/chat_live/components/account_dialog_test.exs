@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialogTest do
   test "the sibling account windows are not part of this panel" do
     html = render_component(AccountDialog, id: AccountDialog.id(), nickname: "Alice")
 
-    refute html =~ "Bio (about me)"
+    refute html =~ ~s(data-testid="profile-bio")
     refute html =~ "Away message"
     refute html =~ "Receive wallops"
   end

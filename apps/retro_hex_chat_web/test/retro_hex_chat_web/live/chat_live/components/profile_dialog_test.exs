@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ProfileDialogTest do
       )
 
     assert html =~ "Alice"
-    assert html =~ "Bio (about me)"
+    assert html =~ ~s(data-testid="profile-bio")
     assert html =~ "5 / 200"
   end
 end

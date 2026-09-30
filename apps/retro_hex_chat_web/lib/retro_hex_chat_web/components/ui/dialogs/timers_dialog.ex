@@ -10,12 +10,14 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.ActionList
+  import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Textarea
 
   alias RetroHexChat.Chat.TimerManager
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
@@ -41,6 +43,7 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
     assigns =
       assign(assigns,
         rows: timer_rows(assigns.timers),
+        timer_lines: timer_lines(timer_rows(assigns.timers)),
         at_limit: map_size(assigns.timers) >= TimerManager.max_timers(),
         selected_active: Map.has_key?(assigns.timers, assigns.selected_timer),
         repeat_seconds_invalid:
@@ -59,6 +62,22 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
           phx-mounted={JS.focus(to: "##{@id}-content")}
           class="tm-dialog flex h-full min-h-0 flex-col gap-retro-8"
         >
+          <.dialog_banner heading={dgettext("dialogs", "Commands that run without you")}>
+            <:art>
+              <Diagrams.diagram_dialog_preview
+                title={dgettext("dialogs", "Status")}
+                kind={:schedule}
+                lines={@timer_lines}
+                label={dgettext("dialogs", "A miniature of a timer firing its command")}
+              />
+            </:art>
+            <:glyph><Icons.icon_btn_timers class="h-8 w-8" /></:glyph>
+            {dgettext(
+              "dialogs",
+              "A timer sends its command on its own schedule, as if you had typed it. Timers last as long as this session does and are gone when you disconnect."
+            )}
+          </.dialog_banner>
+
           <div class={
             classes([
               "tm-editor min-h-0 flex-1",
@@ -322,4 +341,25 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
   defp repeat_seconds_invalid?(_, _seconds), do: false
 
   defp repeat_min_message, do: dgettext("dialogs", "min 10s for repeating timers")
+
+  # A timer is only visible when it fires, so the picture is the line it
+  # will put in Status when it does.
+  @spec timer_lines([map()]) :: [map()]
+  defp timer_lines([]), do: []
+
+  defp timer_lines([row | _rest]) do
+    [
+      %{
+        text: system_line(dgettext("dialogs", "timer %{name} fired", name: row.name)),
+        tone: :system
+      },
+      %{text: row.command, tone: :muted}
+    ]
+  end
+
+  # The chat's own marker for a line nobody typed. It is punctuation, not
+  # prose: inside a msgid the engine reads it as list markup and mangles the
+  # sentence after it, so it is prefixed here instead.
+  @spec system_line(String.t()) :: String.t()
+  defp system_line(text), do: "* " <> text
 end

@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
 
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.ActionList
+  import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Textarea
@@ -27,6 +28,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   import RetroHexChatWeb.Components.UI.Label
   import RetroHexChatWeb.Components.UI.Select
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   @trigger_keys ~w(on_join on_part on_nick_change)
@@ -107,6 +109,8 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
 
   @spec auto_respond_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def auto_respond_panel(assigns) do
+    assigns = assign(assigns, :respond_lines, respond_lines(assigns.rules))
+
     ~H"""
     <div id={"#{@id}-panel-root"} class="contents">
       <.focus_wrap id={"#{@id}-focus-wrap"} class="contents">
@@ -119,6 +123,22 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
           phx-mounted={JS.focus(to: "##{@id}-content")}
           class="ar-dialog flex h-full min-h-0 flex-col gap-retro-8"
         >
+          <.dialog_banner heading={dgettext("dialogs", "What the room sees you do")}>
+            <:art>
+              <Diagrams.diagram_dialog_preview
+                title={dgettext("dialogs", "Channel")}
+                kind={:query}
+                lines={@respond_lines}
+                label={dgettext("dialogs", "A miniature of a rule firing in a channel")}
+              />
+            </:art>
+            <:glyph><Icons.icon_dialog_auto_respond class="h-8 w-8" /></:glyph>
+            {dgettext(
+              "dialogs",
+              "A rule watches for something happening in a channel and answers with a command. Everyone present sees the answer — it is you talking, not a note to yourself."
+            )}
+          </.dialog_banner>
+
           <div class={
             classes([
               "ar-editor min-h-0 flex-1",
@@ -335,4 +355,33 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   defp rule_accessible_name(rule) do
     "#{trigger_label(rule_trigger(rule))} #{rule_channel_label(rule)} #{Map.get(rule, :command, "")}"
   end
+
+  # The first enabled rule is the one drawn: the event that trips it, then
+  # the command everybody in the channel will see it send.
+  @spec respond_lines(list() | nil) :: [map()]
+  defp respond_lines(rules) when is_list(rules) do
+    case Enum.find(rules, &Map.get(&1, :enabled, true)) do
+      nil ->
+        []
+
+      rule ->
+        [
+          %{text: trigger_caption(Map.get(rule, :trigger_event, "on_join")), tone: :system},
+          %{text: Map.get(rule, :command, ""), tone: :accent}
+        ]
+    end
+  end
+
+  defp respond_lines(_rules), do: []
+
+  @spec trigger_caption(String.t()) :: String.t()
+  defp trigger_caption("on_join"), do: system_line(dgettext("dialogs", "somebody joined"))
+  defp trigger_caption("on_part"), do: system_line(dgettext("dialogs", "somebody left"))
+  defp trigger_caption(_other), do: system_line(dgettext("dialogs", "something happened"))
+
+  # The chat's own marker for a line nobody typed. It is punctuation, not
+  # prose: inside a msgid the engine reads it as list markup and mangles the
+  # sentence after it, so it is prefixed here instead.
+  @spec system_line(String.t()) :: String.t()
+  defp system_line(text), do: "* " <> text
 end

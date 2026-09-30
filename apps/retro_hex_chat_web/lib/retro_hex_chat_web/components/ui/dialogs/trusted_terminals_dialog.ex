@@ -13,7 +13,9 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Tabs
   import RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
   alias RetroHexChatWeb.Timezone
@@ -47,6 +49,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
   @spec trusted_terminals_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def trusted_terminals_panel(assigns) do
     assigns = assign(assigns, :active_tab, trusted_tab(assigns.active_tab))
+    assigns = assign(assigns, :device_lines, device_lines(assigns.devices))
 
     ~H"""
     <div id={@id} class="contents">
@@ -62,6 +65,27 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
         >
           <div class="min-h-0 flex-1 overflow-y-auto pr-1 retro-scrollbar">
             <div class="flex min-h-full flex-col gap-retro-8">
+              <.dialog_banner heading={dgettext("dialogs", "Which machines can skip the password")}>
+                <:art>
+                  <Diagrams.diagram_dialog_preview
+                    kind={:ordered}
+                    title={dgettext("dialogs", "Connect")}
+                    lines={@device_lines}
+                    label={
+                      dgettext(
+                        "dialogs",
+                        "A miniature of the Connect screen listing the machines that log in without a password"
+                      )
+                    }
+                  />
+                </:art>
+                <:glyph><Icons.icon_lock class="h-8 w-8" /></:glyph>
+                {dgettext(
+                  "dialogs",
+                  "A trusted terminal is a browser that may take this nickname back without typing the NickServ password. Revoking one makes that browser ask again; ending a session disconnects it now."
+                )}
+              </.dialog_banner>
+
               <div class="grid gap-retro-8 md:grid-cols-[1fr_auto] md:items-start">
                 <div class="grid gap-retro-6 sm:grid-cols-3">
                   <div class="grid min-w-0 grid-cols-[16px_minmax(0,1fr)] gap-x-retro-4">
@@ -891,4 +915,13 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
   defp event_label("session.killed"), do: dgettext("dialogs", "Session ended")
   defp event_label("session.killed_all"), do: dgettext("dialogs", "Sessions ended")
   defp event_label(_action), do: dgettext("dialogs", "Terminal activity")
+
+  # The picture is the Connect screen: the machines that will be offered
+  # there, by the label their owner gave them.
+  @spec device_lines([map()]) :: [map()]
+  defp device_lines(devices) do
+    Enum.map(devices, fn device ->
+      %{text: Map.get(device, :label) || dgettext("dialogs", "Unnamed terminal"), tone: :accent}
+    end)
+  end
 end

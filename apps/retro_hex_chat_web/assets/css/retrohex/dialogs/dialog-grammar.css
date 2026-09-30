@@ -1,0 +1,87 @@
+/* The shared grammar every dialog body is written in: a banner that pictures
+   the subject, groupboxes that name each region, and a status strip that
+   carries the `/` command doing the same job from the composer.
+
+   The banner is a Win98 wizard band: a fixed illustration column beside the
+   heading and its prose. A managed window is resizable, so the band collapses
+   to the message-box glyph when the desktop stacks and the column would eat
+   the text it is explaining. */
+
+.dlg-banner {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.dlg-banner__art {
+  flex: 0 0 auto;
+  width: 128px;
+  background: #ffffff;
+  padding: 4px;
+}
+
+.dlg-banner__art > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.dlg-banner__glyph {
+  display: none;
+  flex: 0 0 auto;
+}
+
+.dlg-banner__body {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow-wrap: anywhere;
+}
+
+.desktop--stacked .dlg-banner__art {
+  display: none;
+}
+
+.desktop--stacked .dlg-banner__glyph {
+  display: block;
+}
+
+/* A groupbox legend carrying an icon sits on the groove, so it needs the
+   dialog's own background behind it rather than the sunken field white. */
+.dlg-section {
+  min-width: 0;
+}
+
+.dlg-section__description {
+  overflow-wrap: anywhere;
+}
+
+.dlg-section__hint {
+  overflow-wrap: anywhere;
+}
+
+.dlg-section__command {
+  font-family: "Source Code Pro", monospace;
+  background: #ffffff;
+  padding: 0 3px;
+  box-shadow:
+    inset 1px 1px #808080,
+    inset -1px -1px #ffffff;
+}
+
+.desktop--stacked .dlg-section__hint {
+  text-align: left;
+}
+
+/* A legend that carries an icon becomes a flex row, so it needs the dialog's
+   own background behind it to break the groove it sits on. */
+.dlg-section__legend {
+  max-width: 100%;
+}
+
+.dlg-section__legend-icon {
+  justify-content: center;
+}
+
+.dlg-section__hint-label {
+  font-style: italic;
+}

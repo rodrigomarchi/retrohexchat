@@ -384,4 +384,19 @@ defmodule RetroHexChatWeb.ComponentHelpers do
       nil -> nil
     end
   end
+
+  @doc """
+  Returns the syntax line a dialog shows as the `/` equivalent of a control.
+
+  The string comes from the command handler itself, so a dialog can never
+  advertise a syntax the parser stopped accepting. A command with no syntax
+  definition falls back to its bare name.
+  """
+  @spec command_syntax(String.t()) :: String.t()
+  def command_syntax(name) when is_binary(name) do
+    case RetroHexChat.Commands.Registry.get_syntax(name) do
+      %RetroHexChat.Commands.CommandSyntax{syntax: syntax} when is_binary(syntax) -> syntax
+      _ -> "/" <> name
+    end
+  end
 end

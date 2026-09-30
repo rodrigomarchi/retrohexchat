@@ -59,12 +59,12 @@ msgstr "Een leeg kanaal toont een welkomstbericht en tips om te starten."
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Arrow Down — Next menu item Arrow Up — Previous menu item Enter — Select focused menu item Escape — Close context menu"
-msgstr "Arrow Down"
+msgstr "Arrow Down — Next menu item Arrow Up — Previous menu item Enter — Select focused menu item Escape — Close context menu"
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Arrow Down — Next search result (in search bar) Arrow Up — Previous search result (in search bar)"
-msgstr "Arrow Down"
+msgstr "Arrow Down — Next search result (in search bar) Arrow Up — Previous search result (in search bar)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:33
 #, elixir-autogen, elixir-format
@@ -204,12 +204,12 @@ msgstr "Ctrl+C De geselecteerde tekst kopiëren"
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color (opens color picker) Ctrl+Shift+V — Reverse Ctrl+Shift+X — Reset all formatting"
-msgstr "Ctrl+Shift+B"
+msgstr "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color (opens color picker) Ctrl+Shift+V — Reverse Ctrl+Shift+X — Reset all formatting"
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color Ctrl+Shift+V — Reverse (also in formatting toolbar) Ctrl+Shift+X — Reset formatting (also in formatting toolbar)"
-msgstr "Ctrl+Shift+B"
+msgstr "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color Ctrl+Shift+V — Reverse (also in formatting toolbar) Ctrl+Shift+X — Reset formatting (also in formatting toolbar)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:9
 #, elixir-autogen, elixir-format
@@ -239,7 +239,7 @@ msgstr "Emoji"
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Emoji Picker — Click smiley button in formatting toolbar"
-msgstr "Emoji Picker"
+msgstr "Emoji Picker — Click smiley button in formatting toolbar"
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:28
 #, elixir-autogen, elixir-format
@@ -256,7 +256,7 @@ msgstr "Verbeterde geschiedenis"
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Enter — Send message / select autocomplete item Shift+Enter — Insert newline in input Up — Edit last message (when input is empty) / command history Up / Down — Command history / navigate autocomplete dropdown Ctrl+Up — Browse history (saves draft) Ctrl+Down — Browse history forward (restores draft) Ctrl+R — Reverse search history Tab — Select autocomplete item / cycle nick completion Escape — Cancel edit mode / dismiss autocomplete / tooltip / — Open command autocomplete (at start of input) @ — Open nick autocomplete (at word boundary) # — Open channel autocomplete (at word boundary)"
-msgstr "Voer een bericht in / selecteer automatisch volledig item Shift+Enter"
+msgstr "Enter — Send message / select autocomplete item Shift+Enter — Insert newline in input Up — Edit last message (when input is empty) / command history Up / Down — Command history / navigate autocomplete dropdown Ctrl+Up — Browse history (saves draft) Ctrl+Down — Browse history forward (restores draft) Ctrl+R — Reverse search history Tab — Select autocomplete item / cycle nick completion Escape — Cancel edit mode / dismiss autocomplete / tooltip / — Open command autocomplete (at start of input) @ — Open nick autocomplete (at word boundary) # — Open channel autocomplete (at word boundary)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:24
 #, elixir-autogen, elixir-format
@@ -1170,12 +1170,12 @@ msgstr "Kopiëren"
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+/ — Shortcut Cheatsheet Ctrl+Shift+F — Find / Search (Edit > Find) Ctrl+Shift+] — Next Window Ctrl+Shift+[ — Previous Window Ctrl+Shift+1..9 — Switch to Window 1-9 Escape — Close search bar / dialog"
-msgstr "Ctrl+Shift+/"
+msgstr "Ctrl+Shift+/ — Shortcut Cheatsheet Ctrl+Shift+F — Find / Search (Edit > Find) Ctrl+Shift+] — Next Window Ctrl+Shift+[ — Previous Window Ctrl+Shift+1..9 — Switch to Window 1-9 Escape — Close search bar / dialog"
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+ArrowUp — Toggle microphone Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next layout Ctrl+Shift+ArrowDown — Focus next participant Ctrl+Shift+Q — Leave confirmation Hold Ctrl+Shift+Z — Push to talk while muted"
-msgstr "Ctrl+Shift+Shift+ShiftUp"
+msgstr "Ctrl+Shift+ArrowUp — Toggle microphone Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next layout Ctrl+Shift+ArrowDown — Focus next participant Ctrl+Shift+Q — Leave confirmation Hold Ctrl+Shift+Z — Push to talk while muted"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:48
@@ -2312,9 +2312,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Arrow Up / Arrow Down — Move the selection one row Home / End — First / last row PageUp / PageDown — Move a screen of rows Shift+Arrow — Extend the selection Ctrl+Click — Add or remove one row Ctrl+A — Select every row on screen Ctrl+C — Copy the selection as tab-separated text Shift+F10 or Menu — Choose which columns show"
-msgstr ""
-"Pijl omhoog / naar beneden pijlen verplaatsen Verschuif de selectie een rij "
-"Home / End"
+msgstr "Arrow Up / Arrow Down — Move the selection one row Home / End — First / last row PageUp / PageDown — Move a screen of rows Shift+Arrow — Extend the selection Ctrl+Click — Add or remove one row Ctrl+A — Select every row on screen Ctrl+C — Copy the selection as tab-separated text Shift+F10 or Menu — Choose which columns show"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:36
 #, elixir-autogen, elixir-format

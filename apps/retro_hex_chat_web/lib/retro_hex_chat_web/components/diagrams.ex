@@ -26,6 +26,8 @@ defmodule RetroHexChatWeb.Components.Diagrams do
   | `Diagrams.GameScreens`     | Shared `win98_chrome/1` helper only        |
   | `Diagrams.Game*`           | Win98-style game screen (1 per game)       |
   | `Diagrams.Arcade*`         | Solo Arcade game logos/cover art (1 per game) |
+  | `Diagrams.DialogPreview`   | The shared dialog banner miniature         |
+  | `Diagrams.Dialog*`         | A dialog banner needing art of its own     |
   """
   use Phoenix.Component
   use Gettext, backend: RetroHexChatWeb.Gettext
@@ -84,4 +86,13 @@ defmodule RetroHexChatWeb.Components.Diagrams do
 
   defdelegate diagram_arcade_scummvm(assigns),
     to: RetroHexChatWeb.Components.Diagrams.ArcadeScummvm
+
+  # ── Dialog banners ────────────────────────────────
+  defdelegate diagram_account_card(assigns), to: RetroHexChatWeb.Components.Diagrams.DialogAccount
+
+  defdelegate diagram_channel_preview(assigns),
+    to: RetroHexChatWeb.Components.Diagrams.DialogChannel
+
+  defdelegate diagram_dialog_preview(assigns),
+    to: RetroHexChatWeb.Components.Diagrams.DialogPreview
 end

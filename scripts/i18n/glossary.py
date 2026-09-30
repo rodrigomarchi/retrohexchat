@@ -113,6 +113,14 @@ _ROWS = {
     "Edit %{nickname}": ("Editar %{nickname}", "Editar %{nickname}", "Editar %{nickname}", "Modifier %{nickname}", "%{nickname} bearbeiten", "Modifica %{nickname}", "%{nickname} bewerken", "Edytuj %{nickname}", "Изменить %{nickname}", "Sunting %{nickname}", "%{nickname} を編集", "编辑 %{nickname}", "編輯 %{nickname}"),
     "Remove rule %{position}": ("Remover a regra %{position}", "Remover a regra %{position}", "Quitar la regla %{position}", "Retirer la règle %{position}", "Regel %{position} entfernen", "Rimuovi la regola %{position}", "Regel %{position} verwijderen", "Usuń regułę %{position}", "Удалить правило %{position}", "Hapus aturan %{position}", "ルール %{position} を削除", "移除规则 %{position}", "移除規則 %{position}"),
 
+    # Two settings labels the engine had already collapsed onto one Japanese
+    # word — 免責事項, "disclaimer" — which it also gave Dismiss and Permanent,
+    # so none of the three could be told apart. Russian had turned Disable into
+    # "инвалид", the noun for a disabled person, and Spanish into a noun where
+    # the control is a verb.
+    "Disable":      ("Desativar", "Desativar", "Desactivar", "Désactiver", "Deaktivieren", "Disattiva", "Uitschakelen", "Wyłącz", "Отключить", "Nonaktifkan", "無効にする", "禁用", "停用"),
+    "Permanent":    ("Permanente", "Permanente", "Permanente", "Permanent", "Dauerhaft", "Permanente", "Permanent", "Stały", "Постоянно", "Permanen", "無期限", "永久", "永久"),
+
     # ── Transfer ──────────────────────────────────────────────
     "Send":         ("Enviar", "Enviar", "Enviar", "Envoyer", "Senden", "Invia", "Verzenden", "Wyślij", "Отправить", "Kirim", "送信", "发送", "傳送"),
     "Upload":       ("Enviar", "Carregar", "Subir", "Téléverser", "Hochladen", "Carica", "Uploaden", "Prześlij", "Загрузить", "Unggah", "アップロード", "上传", "上傳"),
@@ -227,6 +235,14 @@ _ROWS = {
     "Warning":      ("Aviso", "Aviso", "Advertencia", "Avertissement", "Warnung", "Avviso", "Waarschuwing", "Ostrzeżenie", "Предупреждение", "Peringatan", "警告", "警告", "警告"),
     "Failed":       ("Falhou", "Falhou", "Falló", "Échec", "Fehlgeschlagen", "Non riuscito", "Mislukt", "Niepowodzenie", "Не удалось", "Gagal", "失敗", "失败", "失敗"),
     "Success":      ("Sucesso", "Sucesso", "Éxito", "Succès", "Erfolg", "Successo", "Gelukt", "Powodzenie", "Успешно", "Berhasil", "成功", "成功", "成功"),
+
+    # A nickname's identity card reads one of these three words, so they have
+    # to be three distinguishable words in every locale. Left to the engine,
+    # "unclaimed" landed on the same ja term as Disable, Dismiss and Permanent.
+    "verified":     ("verificado", "verificado", "verificado", "vérifié", "bestätigt", "verificato", "geverifieerd", "zweryfikowany", "подтверждён", "terverifikasi", "確認済み", "已验证", "已驗證"),
+    "not verified": ("não verificado", "não verificado", "sin verificar", "non vérifié", "nicht bestätigt", "non verificato", "niet geverifieerd", "niezweryfikowany", "не подтверждён", "belum terverifikasi", "未確認", "未验证", "未驗證"),
+    "unclaimed":    ("sem dono", "sem dono", "sin dueño", "non réclamé", "nicht beansprucht", "non reclamato", "niet geclaimd", "nieprzypisany", "не занят", "belum diklaim", "未登録", "未认领", "未認領"),
+    "founder":      ("fundador", "fundador", "fundador", "fondateur", "Gründer", "fondatore", "oprichter", "założyciel", "основатель", "pendiri", "設立者", "创建者", "建立者"),
 
     # ── Sharing a surface ─────────────────────────────────────
     # A share link is followed by people who may never have seen this product,
