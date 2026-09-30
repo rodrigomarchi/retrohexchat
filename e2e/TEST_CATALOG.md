@@ -388,8 +388,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M33 | A runtime listing is resized, narrowed, and read row by row | `tests/chat-system-windows.spec.ts` | done |
 | M34 | Open system windows are reachable from the taskbar | `tests/chat-system-windows.spec.ts` | done |
 | M35 | The system windows coexist on one desktop | `tests/chat-system-windows.spec.ts` | done |
-| M36 | Games menu -> Retro Games opens the catalogue in a tab of its own and a game icon starts a solo session (features P2) | `tests/chat-retro-games.spec.ts` | done |
-| M37 | Desktop game shortcuts reach Retro Games and the Arcade (features P2) | `tests/chat-retro-games.spec.ts` | done |
+| M36 | The Games folder is the catalogue and a game icon opens that game in a tab of its own (features P2) | `tests/chat-retro-games.spec.ts` | done |
+| M37 | Start -> Games -> Retro Games opens the folder, and the Arcade is still a window (features P2) | `tests/chat-retro-games.spec.ts` | done |
 
 ### N - P2P, File, Call, Game
 

@@ -1807,7 +1807,6 @@ msgstr ""
 "Mencetak: Cinta = 15: 30: 40 Permainan (deuce at 40-40, keuntungan, menang "
 "dengan 2)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:97
@@ -4216,11 +4215,6 @@ msgstr "Batal, di dalam ruang pertandingan, menutupnya dan langsung mematikan ta
 msgid "Choose a game icon in the library."
 msgstr "Pilih ikon game di pustaka."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
-#, elixir-autogen, elixir-format
-msgid "Double-click the Games desktop folder and choose Retro Games, or open Start ▸ Games and choose Retro Games. Either one opens the library in a browser tab of its own, and the chat stays exactly where it was."
-msgstr "Klik dua kali folder Games di desktop lalu pilih Retro Games, atau buka Start ▸ Games dan pilih Retro Games. Keduanya membuka pustaka di tab peramban tersendiri, dan obrolan tetap persis di tempatnya."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Every game has an address of its own: /play opens the library and /play/hex_pong opens that game directly. Send someone the address and they land on the same screen."
@@ -4276,79 +4270,7 @@ msgstr "Anda bisa masuk dengan nama panggilan yang sama di lebih dari satu layar
 msgid "The Sessions tab of the Trusted Terminals window, in the Start menu, lists every screen signed in as you. It marks the one you are on, and ends any of them — or all the others at once, which is what to reach for after signing in somewhere you do not control."
 msgstr "Tab Sesi pada jendela Terminal tepercaya, di menu Mulai, mendaftar setiap layar yang masuk sebagai Anda. Tab itu menandai layar yang sedang Anda pakai dan mengakhiri salah satunya — atau semua yang lain sekaligus, yang berguna setelah Anda masuk di tempat yang tidak Anda kendalikan."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:2
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
 #, elixir-autogen, elixir-format
-msgid "A registered nickname is a name and a password, and nothing else is required. Adding an address is optional, and what it buys is one thing: a way back in if the password is gone. Without it, a forgotten password means losing the nickname until it is released for disuse."
-msgstr "Nama panggilan terdaftar adalah sebuah nama dan kata sandi, tidak ada syarat lain. Menambahkan alamat itu opsional, dan gunanya cuma satu: jalan kembali kalau kata sandi hilang. Tanpa itu, lupa kata sandi berarti kehilangan nama panggilan sampai dilepas karena tidak dipakai."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Adding and confirming one"
-msgstr "Menambah dan mengonfirmasi"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:28
-#, elixir-autogen, elixir-format
-msgid "Before a nickname is released"
-msgstr "Sebelum nama panggilan dilepas"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "Forgetting your password"
-msgstr "Kalau Anda lupa kata sandi"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:47
-#, elixir-autogen, elixir-format
-msgid "NickServ"
-msgstr "NickServ"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "Nicknames left unused are released so somebody else can take them. If you confirmed an address, you are told about two weeks beforehand, and signing in once is all it takes to keep it."
-msgstr "Nama panggilan yang menganggur dilepas agar orang lain bisa memakainya. Kalau Anda sudah mengonfirmasi alamat, Anda diberi tahu sekitar dua minggu sebelumnya, dan masuk sekali saja cukup untuk mempertahankannya."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Nobody. It is not shown in your profile, not in WHOIS, not to channel operators and not to the person you are talking to. It is used to send you a link and for nothing else — no digest, no announcements, no “we miss you”."
-msgstr "Tidak ada. Tidak muncul di profil, tidak di WHOIS, tidak untuk operator kanal, dan tidak untuk lawan bicara Anda. Gunanya mengirimi Anda tautan, dan tidak lebih — tanpa ringkasan, tanpa pengumuman, tanpa “kami merindukanmu”."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "On the Connect screen, after typing your nickname, press “I forgot my password”. The answer is the same whatever you type — a nickname with an address, one without, one that does not exist — because any other answer would let somebody read the register one guess at a time. If there was an address to send to, a link arrives and is good for a day."
-msgstr "Di layar koneksi, setelah mengetik nama panggilan, tekan “Saya lupa kata sandi”. Jawabannya sama apa pun yang Anda ketik — nama panggilan dengan alamat, tanpa alamat, atau yang tidak ada — karena jawaban lain akan membiarkan orang membaca daftar satu tebakan demi satu tebakan. Kalau ada alamat tujuan, sebuah tautan datang dan berlaku sehari."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Open the Account window from the Start menu and type it in. A link arrives; following it confirms the address. Until you follow that link the address counts for nothing — in particular, no password reset will be sent to it. That is what stops somebody typing an address they do not own."
-msgstr "Buka jendela Akun dari menu Mulai dan ketik alamatnya. Sebuah tautan datang; mengikutinya mengonfirmasi alamat itu. Selama tautan itu belum diikuti, alamatnya tidak berarti apa-apa — khususnya, tidak ada pengaturan ulang kata sandi yang dikirim ke sana. Itulah yang mencegah orang mengetik alamat milik orang lain."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "Removing it"
-msgstr "Menghapusnya"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:45
-#, elixir-autogen, elixir-format
-msgid "Signing In On Several Screens"
-msgstr "Masuk di Beberapa Layar"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "The same Account window removes it, and removing it also cancels any link already sent. A server whose operator never configured outgoing mail does not offer any of this: there is no address field and no recovery link, because there would be nowhere to send."
-msgstr "Jendela Akun yang sama menghapusnya, dan menghapusnya juga membatalkan tautan yang sudah terkirim. Server yang pengelolanya tidak pernah menyiapkan surel keluar tidak menawarkan semua ini: tidak ada kolom alamat dan tidak ada tautan pemulihan, karena tidak akan ada tujuan pengiriman."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "Who can see it"
-msgstr "Siapa yang melihatnya"
+msgid "Double-click the Games desktop folder, or open Start ▸ Games and choose Retro Games: both show the library, one icon per game. Choosing a game opens that game in a browser tab of its own, and the chat stays exactly where it was."
+msgstr "Klik dua kali folder Games di desktop, atau buka Start ▸ Games dan pilih Retro Games: keduanya menampilkan pustaka, satu ikon per game. Memilih sebuah game akan membukanya di tab peramban tersendiri, dan obrolan tetap persis di tempatnya."

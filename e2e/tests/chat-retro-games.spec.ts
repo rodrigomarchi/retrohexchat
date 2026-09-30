@@ -1,7 +1,7 @@
 /**
  * @section M - Admin, Server Operations, Bots
- * @flow M36 [done] Games menu -> Retro Games opens the catalogue in a tab of its own and a game icon starts a solo session (features P2)
- * @flow M37 [done] Desktop game shortcuts reach Retro Games and the Arcade (features P2)
+ * @flow M36 [done] The Games folder is the catalogue and a game icon opens that game in a tab of its own (features P2)
+ * @flow M37 [done] Start -> Games -> Retro Games opens the folder, and the Arcade is still a window (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -12,7 +12,7 @@ import { ChatPage } from "../pages/ChatPage";
 import { shot } from "../helpers/screenshots";
 
 test.describe("Retro Games from the chat", () => {
-  test("Games -> Retro Games opens the catalogue in a tab and launches Pixel Tanks", async ({
+  test("the Games folder lists the games and an icon opens Pixel Tanks in a tab", async ({
     page,
   }) => {
     const connect = new ConnectPage(page);
@@ -24,23 +24,24 @@ test.describe("Retro Games from the chat", () => {
     await chat.waitUntilConnected();
 
     // The chat has no window for the games any more, so nothing about them is
-    // on this page before the entry is followed and nothing after it either.
+    // on this page before a game is opened and nothing after it either.
     await expect(page.getByTestId("retro-games-window")).toHaveCount(0);
 
-    const games = await chat.openRetroGames();
+    // The catalogue is the folder: a game per icon, and no shortcut standing
+    // between the reader and the list — that shortcut was the bug.
+    await chat.openGamesFolder();
+    await expect(chat.gamesFolderGrid).toBeVisible();
+    await expect(chat.gameFolderIcon("pixel_tanks")).toBeVisible();
+    await expect(chat.gameFolderIcon("hex_pong")).toBeVisible();
+    await expect(
+      page.getByTestId("desktop-launcher-item-retro-games"),
+    ).toHaveCount(0);
+    await shot(chat.gamesFolderWindow, "games-folder-catalogue");
+
+    const games = await chat.openGameFromFolder("pixel_tanks");
     await expect(page.getByTestId("retro-games-window")).toHaveCount(0);
 
-    await expect(games.getByTestId("retro-games-icon-grid")).toBeVisible();
-    await expect(games.getByTestId("retro-games-catalog")).toHaveCount(0);
-    await shot(
-      games.getByTestId("retro-games-window"),
-      "retro-games-icon-launcher",
-    );
-
-    const pixelTanksIcon = games.getByTestId("retro-game-pixel_tanks");
-    await expect(pixelTanksIcon).toBeVisible();
-    await pixelTanksIcon.click();
-
+    // The tab lands on the game that was chosen, already selected.
     await expect(
       games.getByTestId("retro-game-session-pixel_tanks"),
     ).toBeVisible();
@@ -54,7 +55,7 @@ test.describe("Retro Games from the chat", () => {
     await expect(games.getByTestId("retro-games-icon-grid")).toBeVisible();
   });
 
-  test("desktop game shortcuts reach Retro Games and the Arcade", async ({
+  test("Start reaches the same folder, and the Arcade is still a window", async ({
     page,
   }) => {
     const connect = new ConnectPage(page);
@@ -65,8 +66,10 @@ test.describe("Retro Games from the chat", () => {
     await connect.registerWithPassword("pass12345");
     await chat.waitUntilConnected();
 
-    // The catalogue leaves the desktop; the arcade is still a window on it.
-    await chat.openRetroGames();
+    // Start carries the way to the catalogue, not a second copy of it.
+    await chat.openGamesFolderFromStart();
+    await expect(chat.gameFolderIcon("pixel_tanks")).toBeVisible();
+
     await chat.openArcadeFromDesktopShortcut();
   });
 });

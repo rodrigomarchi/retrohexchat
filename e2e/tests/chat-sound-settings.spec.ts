@@ -179,7 +179,9 @@ test.describe("Sound settings dialog", () => {
     };
     const expected = notes[permission];
 
-    for (const testId of Object.values(notes).filter(Boolean)) {
+    for (const testId of Object.values(notes).filter(
+      (id): id is string => id !== null,
+    )) {
       await expect(page.getByTestId(testId)).toHaveCount(
         testId === expected ? 1 : 0,
       );

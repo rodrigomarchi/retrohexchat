@@ -345,6 +345,17 @@ is not, so changing one means arguing with the reason rather than the line.
   that posts nothing, and it is what the rule looks like when the premise has
   not changed.
 
+  **Where the catalogue is read is not where it is played, 2026-09-30.** A
+  catalogue with an address of its own put a second tab between the reader and
+  the list, which is the one thing a list must not cost: you opened a tab to
+  find out what there was. So the Games desktop folder holds the catalogue —
+  one icon per game, from `Games.Catalog` — and each icon is the address of
+  that game. The tab is offered on the game the reader chose, never on the list
+  they are still reading, and Start ▸ Games ▸ Retro Games opens that folder
+  rather than carrying a second copy of it. None of this is a mount: the folder
+  is links, `PlayLive` still lives only at its own address, and the rule above
+  is untouched.
+
 - **After it starts, the link still works.** A link spends most of its life
   after minute zero. Call and space let a late click in; a full match says
   "already full" — the one kind that dies by success. A link must never become

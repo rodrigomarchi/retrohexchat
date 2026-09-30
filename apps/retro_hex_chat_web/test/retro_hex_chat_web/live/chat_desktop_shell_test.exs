@@ -52,11 +52,17 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
                ~s(#chat-desktop [data-testid="desktop-launcher-window-games"][data-window-id="desktop-launcher-games"][data-window-initial-open="false"])
              )
 
-      # A catalogue, not a room: the Games folder links to its address in a
-      # tab of its own instead of opening a window here.
+      # A catalogue, not a room, and the folder is the catalogue: it holds a
+      # game per game, each linking to its own address in a tab of its own
+      # instead of opening a window here.
       assert has_element?(
                view,
-               ~s(#chat-desktop [data-testid="desktop-launcher-window-games"] [data-testid="desktop-launcher-item-retro-games"][href="/play"][target="_blank"])
+               ~s(#chat-desktop [data-testid="desktop-launcher-window-games"] [data-testid="desktop-launcher-item-game-hex_pong"][href="/play/hex_pong"][target="_blank"])
+             )
+
+      refute has_element?(
+               view,
+               ~s(#chat-desktop [data-testid="desktop-launcher-item-retro-games"])
              )
     end
 

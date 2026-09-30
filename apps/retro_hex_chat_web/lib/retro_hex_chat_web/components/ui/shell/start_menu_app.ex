@@ -45,7 +45,6 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
 
-  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Components.UI.LanguageMenu
   alias RetroHexChatWeb.Icons
@@ -336,21 +335,23 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           testid="start-menu-games-submenu"
         >
           <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
-          <%!-- A catalogue, not a room: nothing to create and nothing to
-                announce, so it is a plain address in a tab of its own. --%>
-          <.link_item
-            href={Paths.play_path()}
+          <%!-- Opens the catalogue, not a tab. A catalogue is not a room and
+                still has nothing to announce, but it is also not one address:
+                each game has one of its own, and the second tab belongs to the
+                game the reader picked rather than to the list they are about to
+                read. The Games folder is where that list lives, and this row is
+                the way to it — mirroring its contents here would put the same
+                catalogue on five screens to be reachable from one. --%>
+          <.window_item
+            window="desktop-launcher-games"
             label={dgettext("ui", "Retro Games")}
             icon_fn={:icon_game_pong}
             disabled={!@chat?}
-            target="_blank"
-            rel="noopener"
-            data-confirm-tab="surface"
-            data-confirm-label={dgettext("ui", "Retro Games")}
             testid="start-menu-item-retro-games"
           />
           <%!-- The arcade keeps scores against a nick, so it needs one that is
-                registered and identified — a chat alone is not enough. --%>
+                registered and identified — a chat alone is not enough. It is a
+                catalogue of its own and stays one row. --%>
           <.app_item
             action="open_arcade"
             on_action={@on_action}

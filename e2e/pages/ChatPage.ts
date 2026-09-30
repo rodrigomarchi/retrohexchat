@@ -42,7 +42,10 @@ export class ChatPage {
   readonly helpMenuTrigger: Locator;
   readonly toolsMenuTrigger: Locator;
   readonly gamesFolderIcon: Locator;
-  readonly retroGamesMenuItem: Locator;
+  readonly gamesFolderWindow: Locator;
+  readonly gamesFolderGrid: Locator;
+  readonly startGamesSubmenuTrigger: Locator;
+  readonly startRetroGamesItem: Locator;
   readonly retroGamesWindow: Locator;
   readonly retroGamesLibrary: Locator;
   readonly retroGamesIconGrid: Locator;
@@ -339,13 +342,17 @@ export class ChatPage {
     this.toolsMenuTrigger = page
       .locator("button[data-menubar-trigger]")
       .filter({ hasText: "Tools" });
-    // Games left the menu bar for a desktop folder: the icon opens a window
-    // with Retro Games and Arcade inside it, so the way in is a double-click
-    // on the folder rather than a menu.
+    // Games left the menu bar for a desktop folder, and the folder is the
+    // catalogue: one icon per game plus the Arcade. The way in is a
+    // double-click on the folder rather than a menu, and Start ▸ Games ▸ Retro
+    // Games opens that same folder rather than a tab.
     this.gamesFolderIcon = page.getByTestId("desktop-icon-games");
-    this.retroGamesMenuItem = page
-      .getByTestId("desktop-launcher-item-retro-games")
-      .filter({ visible: true });
+    this.gamesFolderWindow = page.getByTestId("desktop-launcher-window-games");
+    this.gamesFolderGrid = page.getByTestId("desktop-launcher-grid-games");
+    this.startGamesSubmenuTrigger = page.getByTestId(
+      "start-menu-games-submenu",
+    );
+    this.startRetroGamesItem = page.getByTestId("start-menu-item-retro-games");
     this.retroGamesWindow = page.getByTestId("retro-games-window");
     this.retroGamesLibrary = page.getByTestId("retro-games-library");
     this.retroGamesIconGrid = page.getByTestId("retro-games-icon-grid");
@@ -863,13 +870,29 @@ export class ChatPage {
 
   // Retro Games is a catalogue with an address, so the Games folder's entry is
   // a link and opening it is a new tab rather than a window on this desktop.
-  async openRetroGames(): Promise<Page> {
+  /** The icon a single game has inside the Games folder. */
+  gameFolderIcon(gameId: string): Locator {
+    return this.page
+      .getByTestId(`desktop-launcher-item-game-${gameId}`)
+      .filter({ visible: true });
+  }
+
+  /**
+   * Opens one game from the Games folder, in the tab of its own it lands in.
+   *
+   * The second tab is offered on the game and never on the catalogue: the
+   * folder is the catalogue, so there is nothing to open a tab for until a
+   * game is chosen.
+   */
+  async openGameFromFolder(gameId: string): Promise<Page> {
     await this.openGamesFolder();
-    await expect(this.retroGamesMenuItem).toBeVisible();
+
+    const icon = this.gameFolderIcon(gameId);
+    await expect(icon).toBeVisible();
 
     // Asked first, like every door that opens a tab: the entry raises the
     // question and the dialog's Open is the anchor that carries you out.
-    await this.retroGamesMenuItem.click();
+    await icon.click();
 
     const confirm = this.page.getByTestId("open-tab-confirm-open");
     await expect(confirm).toBeVisible();
@@ -880,8 +903,19 @@ export class ChatPage {
     ]);
 
     await games.waitForLoadState("domcontentloaded");
-    await expect(games.getByTestId("retro-games-library")).toBeVisible();
+    await expect(games.getByTestId("retro-games-window")).toBeVisible();
     return games;
+  }
+
+  /** Start ▸ Games ▸ Retro Games, which opens the folder rather than a tab. */
+  async openGamesFolderFromStart() {
+    await this.openStartGroup(
+      this.startGamesSubmenuTrigger,
+      this.startRetroGamesItem,
+    );
+    await this.startRetroGamesItem.click();
+    await expect(this.gamesFolderWindow).toBeVisible();
+    await expect(this.gamesFolderGrid).toBeVisible();
   }
 
   async openArcadeFromDesktopShortcut() {

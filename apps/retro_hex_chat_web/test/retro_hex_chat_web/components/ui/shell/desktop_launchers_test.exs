@@ -118,7 +118,10 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     refute html =~ ~s(data-window-id="desktop-launcher-navigate")
     refute html =~ ~s(data-window-id="desktop-launcher-admin")
     refute html =~ ~s(data-window-id="desktop-launcher-system")
-    assert enabled?(html, "desktop-launcher-item-retro-games")
+    # The Games folder holds the games themselves, so the tab is offered on a
+    # game rather than on the list of them.
+    assert enabled?(html, "desktop-launcher-item-game-hex_pong")
+    assert enabled?(html, "desktop-launcher-item-game-hex_hockey")
     refute enabled?(html, "desktop-launcher-item-open_arcade")
   end
 

@@ -1668,7 +1668,6 @@ msgstr "个人追踪得分 但目标是共享生存"
 msgid "Scoring: Love → 15 → 30 → 40 → Game (deuce at 40-40, advantage, win by 2)"
 msgstr "赛制:爱~15~30~40~比赛(成绩40~40,优势,2胜)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:97
@@ -3784,11 +3783,6 @@ msgstr "对局房间里的「取消」会关闭房间并立刻让链接失效—
 msgid "Choose a game icon in the library."
 msgstr "在游戏库中选择一个游戏图标。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
-#, elixir-autogen, elixir-format
-msgid "Double-click the Games desktop folder and choose Retro Games, or open Start ▸ Games and choose Retro Games. Either one opens the library in a browser tab of its own, and the chat stays exactly where it was."
-msgstr "双击桌面上的 Games 文件夹并选择 Retro Games，或者打开「开始」▸ Games 并选择 Retro Games。两者都会在独立的浏览器标签页中打开游戏库，而聊天完全留在原处。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Every game has an address of its own: /play opens the library and /play/hex_pong opens that game directly. Send someone the address and they land on the same screen."
@@ -3844,79 +3838,7 @@ msgstr "你可以用同一个昵称同时登录多个屏幕 — 办公室的电�
 msgid "The Sessions tab of the Trusted Terminals window, in the Start menu, lists every screen signed in as you. It marks the one you are on, and ends any of them — or all the others at once, which is what to reach for after signing in somewhere you do not control."
 msgstr "开始菜单中「受信任的终端」窗口的「会话」标签页会列出所有以你身份登录的屏幕。它会标出你正在使用的那个，并可结束其中任意一个 — 也可以一次结束其余全部，在你不受控制的地方登录过之后就该这么做。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:2
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
 #, elixir-autogen, elixir-format
-msgid "A registered nickname is a name and a password, and nothing else is required. Adding an address is optional, and what it buys is one thing: a way back in if the password is gone. Without it, a forgotten password means losing the nickname until it is released for disuse."
-msgstr "注册一个昵称只需要名字和密码，别的都不要求。留下地址是可选的，它只带来一件事：密码丢了还能回来。没有地址，忘记密码就意味着失去这个昵称，直到它因闲置被释放。"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Adding and confirming one"
-msgstr "怎么添加和确认"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:28
-#, elixir-autogen, elixir-format
-msgid "Before a nickname is released"
-msgstr "昵称被释放之前"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "Forgetting your password"
-msgstr "忘记密码时"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:47
-#, elixir-autogen, elixir-format
-msgid "NickServ"
-msgstr "NickServ"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "Nicknames left unused are released so somebody else can take them. If you confirmed an address, you are told about two weeks beforehand, and signing in once is all it takes to keep it."
-msgstr "闲置的昵称会被释放，好让别人可以使用。如果你确认过地址，大约两周前会收到提醒，登录一次就足以保住它。"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Nobody. It is not shown in your profile, not in WHOIS, not to channel operators and not to the person you are talking to. It is used to send you a link and for nothing else — no digest, no announcements, no “we miss you”."
-msgstr "没有人。它不出现在你的资料里，不在 WHOIS 里，频道管理员看不到，和你说话的人也看不到。它的用途只是给你发一个链接，此外再无别的——没有摘要，没有通告，没有“我们想你了”。"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "On the Connect screen, after typing your nickname, press “I forgot my password”. The answer is the same whatever you type — a nickname with an address, one without, one that does not exist — because any other answer would let somebody read the register one guess at a time. If there was an address to send to, a link arrives and is good for a day."
-msgstr "在连接界面输入昵称后，按“我忘记密码了”。无论你输入什么，回答都一样——有地址的昵称、没地址的、根本不存在的，都一样——因为换成别的回答，就等于让人一次一猜地读出整个注册表。如果有地址可寄，链接会送到，有效期一天。"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Open the Account window from the Start menu and type it in. A link arrives; following it confirms the address. Until you follow that link the address counts for nothing — in particular, no password reset will be sent to it. That is what stops somebody typing an address they do not own."
-msgstr "从开始菜单打开“账号”窗口，把地址填进去。会收到一个链接，点开它就确认了地址。在你点开之前，这个地址不作数——尤其是，密码重设不会发到那里。这就是别人填了不属于自己的地址也无妨的原因。"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "Removing it"
-msgstr "怎么删除"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:45
-#, elixir-autogen, elixir-format
-msgid "Signing In On Several Screens"
-msgstr "在多个屏幕上登录"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "The same Account window removes it, and removing it also cancels any link already sent. A server whose operator never configured outgoing mail does not offer any of this: there is no address field and no recovery link, because there would be nowhere to send."
-msgstr "同一个“账号”窗口可以删除，删除也会让已经发出的链接失效。运营者从未配置外发邮件的服务器不提供这些：没有地址栏，也没有找回链接，因为根本无处可寄。"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "Who can see it"
-msgstr "谁能看到"
+msgid "Double-click the Games desktop folder, or open Start ▸ Games and choose Retro Games: both show the library, one icon per game. Choosing a game opens that game in a browser tab of its own, and the chat stays exactly where it was."
+msgstr "双击桌面上的 Games 文件夹，或者打开「开始」▸ Games 并选择 Retro Games：两者都会显示游戏库，每个游戏一个图标。选择某个游戏会在独立的浏览器标签页中打开它，而聊天完全留在原处。"

@@ -1825,7 +1825,6 @@ msgid "Scoring: Love → 15 → 30 → 40 → Game (deuce at 40-40, advantage, w
 msgstr ""
 "Scoring: Love → 15 → 30 → 40 → Juego (deuce a 40-40, ventaja, ganar por 2)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:97
@@ -4246,11 +4245,6 @@ msgstr "Cancelar, dentro de la sala de partida, la cierra y mata su enlace al in
 msgid "Choose a game icon in the library."
 msgstr "Elige un icono de juego en la biblioteca."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
-#, elixir-autogen, elixir-format
-msgid "Double-click the Games desktop folder and choose Retro Games, or open Start ▸ Games and choose Retro Games. Either one opens the library in a browser tab of its own, and the chat stays exactly where it was."
-msgstr "Haz doble clic en la carpeta Juegos del escritorio y elige Retro Games, o abre Inicio ▸ Juegos y elige Retro Games. Cualquiera de los dos abre la biblioteca en su propia pestaña del navegador, y el chat se queda exactamente donde estaba."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Every game has an address of its own: /play opens the library and /play/hex_pong opens that game directly. Send someone the address and they land on the same screen."
@@ -4306,79 +4300,7 @@ msgstr "Puedes entrar con el mismo apodo en más de una pantalla a la vez — el
 msgid "The Sessions tab of the Trusted Terminals window, in the Start menu, lists every screen signed in as you. It marks the one you are on, and ends any of them — or all the others at once, which is what to reach for after signing in somewhere you do not control."
 msgstr "La pestaña Sesiones de la ventana Terminales de confianza, en el menú Inicio, lista todas las pantallas conectadas como tú. Marca la que estás usando y cierra cualquiera de ellas — o todas las demás de una vez, que es lo que conviene tras entrar en algún sitio que no controlas."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:2
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
 #, elixir-autogen, elixir-format
-msgid "A registered nickname is a name and a password, and nothing else is required. Adding an address is optional, and what it buys is one thing: a way back in if the password is gone. Without it, a forgotten password means losing the nickname until it is released for disuse."
-msgstr "Un apodo registrado es un nombre y una contraseña, y no se exige nada más. Añadir una dirección es opcional, y lo que da es una sola cosa: una forma de volver si se pierde la contraseña. Sin ella, olvidarla significa perder el apodo hasta que se libere por desuso."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Adding and confirming one"
-msgstr "Añadirla y confirmarla"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:28
-#, elixir-autogen, elixir-format
-msgid "Before a nickname is released"
-msgstr "Antes de liberar un apodo"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "Forgetting your password"
-msgstr "Si olvidas la contraseña"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:47
-#, elixir-autogen, elixir-format
-msgid "NickServ"
-msgstr "NickServ"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "Nicknames left unused are released so somebody else can take them. If you confirmed an address, you are told about two weeks beforehand, and signing in once is all it takes to keep it."
-msgstr "Los apodos sin uso se liberan para que otra persona pueda tomarlos. Si confirmaste una dirección, se te avisa unas dos semanas antes, y basta con entrar una vez para conservarlo."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Nobody. It is not shown in your profile, not in WHOIS, not to channel operators and not to the person you are talking to. It is used to send you a link and for nothing else — no digest, no announcements, no “we miss you”."
-msgstr "Nadie. No aparece en tu perfil, ni en WHOIS, ni para los operadores de canal, ni para quien habla contigo. Sirve para enviarte un enlace y para nada más: sin resúmenes, sin anuncios, sin “te echamos de menos”."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "On the Connect screen, after typing your nickname, press “I forgot my password”. The answer is the same whatever you type — a nickname with an address, one without, one that does not exist — because any other answer would let somebody read the register one guess at a time. If there was an address to send to, a link arrives and is good for a day."
-msgstr "En la pantalla de conexión, tras escribir tu apodo, pulsa “Olvidé mi contraseña”. La respuesta es la misma escribas lo que escribas —un apodo con dirección, uno sin ella, uno que no existe— porque cualquier otra permitiría leer el registro a base de conjeturas. Si había una dirección a la que enviar, llega un enlace válido durante un día."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Open the Account window from the Start menu and type it in. A link arrives; following it confirms the address. Until you follow that link the address counts for nothing — in particular, no password reset will be sent to it. That is what stops somebody typing an address they do not own."
-msgstr "Abre la ventana Cuenta desde el menú Inicio y escríbela. Llega un enlace; seguirlo confirma la dirección. Hasta que lo sigas la dirección no vale nada: en particular, no se enviará allí ningún restablecimiento de contraseña. Eso es lo que impide que alguien escriba una dirección que no es suya."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "Removing it"
-msgstr "Cómo quitarla"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:45
-#, elixir-autogen, elixir-format
-msgid "Signing In On Several Screens"
-msgstr "Entrar en varias pantallas"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "The same Account window removes it, and removing it also cancels any link already sent. A server whose operator never configured outgoing mail does not offer any of this: there is no address field and no recovery link, because there would be nowhere to send."
-msgstr "La misma ventana Cuenta la quita, y quitarla cancela además cualquier enlace ya enviado. Un servidor cuyo operador nunca configuró el correo saliente no ofrece nada de esto: no hay campo de dirección ni enlace de recuperación, porque no habría adónde enviar."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "Who can see it"
-msgstr "Quién la ve"
+msgid "Double-click the Games desktop folder, or open Start ▸ Games and choose Retro Games: both show the library, one icon per game. Choosing a game opens that game in a browser tab of its own, and the chat stays exactly where it was."
+msgstr "Haz doble clic en la carpeta Juegos del escritorio, o abre Inicio ▸ Juegos y elige Retro Games: ambos muestran la biblioteca, un icono por juego. Elegir un juego lo abre en su propia pestaña del navegador, y el chat se queda exactamente donde estaba."

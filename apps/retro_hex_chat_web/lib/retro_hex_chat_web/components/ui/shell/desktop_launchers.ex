@@ -13,10 +13,12 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Window
 
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Components.UI.LanguageMenu
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Icons.Registry
 
   @screens [:chat, :connect, :landing, :help, :showcase]
   @app_screens [:chat, :connect]
@@ -435,23 +437,33 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     ]
   end
 
+  # The folder is the catalogue, because a folder full of games is what a
+  # catalogue looks like on this desktop. A game has an address of its own, so
+  # the tab opens on the game the reader chose — not on the list they are still
+  # reading. The names are proper nouns and stay untranslated.
   defp games_items(cap) do
-    [
-      # A catalogue, not a room: nothing to create and nothing to announce, so
-      # it is a plain address opened in a tab of its own like every other
-      # screen that is not the chat.
-      link(Paths.play_path(), dgettext("ui", "Retro Games"), :icon_game_pong,
-        target: "_blank",
-        rel: "noopener",
-        confirm_tab: "surface",
-        confirm_label: dgettext("ui", "Retro Games"),
-        disabled: !cap.chat?,
-        testid: "desktop-launcher-item-retro-games"
-      ),
-      action(cap, "open_arcade", dgettext("ui", "Arcade..."), :icon_game_arcade,
-        disabled: !cap.chat? or !cap.arcade_available?
-      )
-    ]
+    Enum.map(Catalog.list_solo_games(), &game_item(cap, &1)) ++
+      [
+        separator(),
+        # The arcade keeps scores against a nick, so it needs one that is
+        # registered and identified — a chat alone is not enough. It is a
+        # catalogue of its own, and stays one icon rather than spilling its
+        # games in beside ours.
+        action(cap, "open_arcade", dgettext("ui", "Arcade..."), :icon_game_arcade,
+          disabled: !cap.chat? or !cap.arcade_available?
+        )
+      ]
+  end
+
+  defp game_item(cap, game) do
+    link(Paths.play_path(game.id), game.name, Registry.game(game.id),
+      target: "_blank",
+      rel: "noopener",
+      confirm_tab: "surface",
+      confirm_label: game.name,
+      disabled: !cap.chat?,
+      testid: "desktop-launcher-item-game-#{game.id}"
+    )
   end
 
   defp account_items(cap) do

@@ -1820,7 +1820,6 @@ msgid "Scoring: Love → 15 → 30 → 40 → Game (deuce at 40-40, advantage, w
 msgstr ""
 "Punteggio: Amore → 15 → 30 → 40 → Gioco (deuce a 40-40, vantaggio, win by 2)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_debris_field.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/feature_gravity_well.html.heex:97
@@ -4236,11 +4235,6 @@ msgstr "Annulla, dentro la stanza della partita, la chiude e uccide il suo link 
 msgid "Choose a game icon in the library."
 msgstr "Scegli un'icona di gioco nella libreria."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
-#, elixir-autogen, elixir-format
-msgid "Double-click the Games desktop folder and choose Retro Games, or open Start ▸ Games and choose Retro Games. Either one opens the library in a browser tab of its own, and the chat stays exactly where it was."
-msgstr "Fai doppio clic sulla cartella Giochi del desktop e scegli Retro Games, oppure apri Start ▸ Giochi e scegli Retro Games. In entrambi i casi la libreria si apre in una scheda del browser tutta sua, e la chat resta esattamente dov'era."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Every game has an address of its own: /play opens the library and /play/hex_pong opens that game directly. Send someone the address and they land on the same screen."
@@ -4296,79 +4290,7 @@ msgstr "Puoi accedere con lo stesso soprannome su più schermi contemporaneament
 msgid "The Sessions tab of the Trusted Terminals window, in the Start menu, lists every screen signed in as you. It marks the one you are on, and ends any of them — or all the others at once, which is what to reach for after signing in somewhere you do not control."
 msgstr "La scheda Sessioni della finestra Terminali attendibili, nel menu Start, elenca ogni schermo connesso a tuo nome. Segnala quello che stai usando e ne chiude uno qualsiasi — o tutti gli altri in una volta, che è ciò a cui ricorrere dopo aver effettuato l'accesso da qualche parte che non controlli."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:2
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
 #, elixir-autogen, elixir-format
-msgid "A registered nickname is a name and a password, and nothing else is required. Adding an address is optional, and what it buys is one thing: a way back in if the password is gone. Without it, a forgotten password means losing the nickname until it is released for disuse."
-msgstr "Un soprannome registrato è un nome e una password, e non serve altro. Aggiungere un indirizzo è facoltativo, e porta una cosa sola: un modo per rientrare se la password è persa. Senza, dimenticarla significa perdere il soprannome finché non viene liberato per inutilizzo."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Adding and confirming one"
-msgstr "Aggiungerlo e confermarlo"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:28
-#, elixir-autogen, elixir-format
-msgid "Before a nickname is released"
-msgstr "Prima che un soprannome venga liberato"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "Forgetting your password"
-msgstr "Se dimentichi la password"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:47
-#, elixir-autogen, elixir-format
-msgid "NickServ"
-msgstr "NickServ"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "Nicknames left unused are released so somebody else can take them. If you confirmed an address, you are told about two weeks beforehand, and signing in once is all it takes to keep it."
-msgstr "I soprannomi inutilizzati vengono liberati perché qualcun altro possa prenderli. Se hai confermato un indirizzo, vieni avvisato circa due settimane prima, e basta accedere una volta per tenerlo."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Nobody. It is not shown in your profile, not in WHOIS, not to channel operators and not to the person you are talking to. It is used to send you a link and for nothing else — no digest, no announcements, no “we miss you”."
-msgstr "Nessuno. Non compare nel profilo, né in WHOIS, né per gli operatori di canale, né per chi ti sta parlando. Serve a mandarti un link e a nient'altro: niente riepiloghi, niente annunci, niente “ci manchi”."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "On the Connect screen, after typing your nickname, press “I forgot my password”. The answer is the same whatever you type — a nickname with an address, one without, one that does not exist — because any other answer would let somebody read the register one guess at a time. If there was an address to send to, a link arrives and is good for a day."
-msgstr "Nella schermata di connessione, dopo aver scritto il soprannome, premi “Ho dimenticato la password”. La risposta è la stessa qualunque cosa tu scriva — un soprannome con indirizzo, uno senza, uno che non esiste — perché qualsiasi altra lascerebbe leggere il registro un tentativo alla volta. Se c'era un indirizzo, arriva un link valido per un giorno."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Open the Account window from the Start menu and type it in. A link arrives; following it confirms the address. Until you follow that link the address counts for nothing — in particular, no password reset will be sent to it. That is what stops somebody typing an address they do not own."
-msgstr "Apri la finestra Account dal menu Start e scrivilo. Arriva un link; seguirlo conferma l'indirizzo. Finché non lo segui l'indirizzo non vale nulla — in particolare, nessun reimpostaggio di password verrà inviato lì. È questo a impedire che qualcuno scriva un indirizzo non suo."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "Removing it"
-msgstr "Come rimuoverlo"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:45
-#, elixir-autogen, elixir-format
-msgid "Signing In On Several Screens"
-msgstr "Accedere da più schermi"
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "The same Account window removes it, and removing it also cancels any link already sent. A server whose operator never configured outgoing mail does not offer any of this: there is no address field and no recovery link, because there would be nowhere to send."
-msgstr "La stessa finestra Account lo rimuove, e rimuoverlo annulla anche qualsiasi link già inviato. Un server il cui gestore non ha mai configurato la posta in uscita non offre niente di tutto questo: nessun campo indirizzo e nessun link di recupero, perché non ci sarebbe dove inviare."
-
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_account_email.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "Who can see it"
-msgstr "Chi lo vede"
+msgid "Double-click the Games desktop folder, or open Start ▸ Games and choose Retro Games: both show the library, one icon per game. Choosing a game opens that game in a browser tab of its own, and the chat stays exactly where it was."
+msgstr "Fai doppio clic sulla cartella Giochi del desktop, oppure apri Start ▸ Giochi e scegli Retro Games: entrambi mostrano la libreria, un'icona per gioco. Scegliere un gioco lo apre in una scheda del browser tutta sua, e la chat resta esattamente dov'era."
