@@ -145,6 +145,59 @@ test.describe("dialog gallery", () => {
     await user.page.keyboard.press("Escape");
   });
 
+  test("highlight words", async () => {
+    await user.chat.openHighlightDialogFromMenu();
+    await user.chat.addHighlightWord("release", 4);
+    await shootWithBanner(user.page, user.chat.highlightDialog, "highlight");
+    await user.page.keyboard.press("Escape");
+  });
+
+  test("nick colors", async () => {
+    await user.chat.openNickColorsFromMenu();
+    await user.chat.nickColorsDialog
+      .getByRole("button", { name: "Add" })
+      .click();
+    const addForm = user.page.getByTestId("nick-color-add-form");
+    await expect(addForm).toBeVisible();
+    await addForm.locator("#nick-color-add-nick").fill("Brutus");
+    await user.chat.pickColor(addForm, 3);
+    await addForm.getByRole("button", { name: "OK", exact: true }).click();
+    await expect(addForm).toBeHidden();
+    await shootWithBanner(user.page, user.chat.nickColorsDialog, "nick-colors");
+    await user.page.keyboard.press("Escape");
+  });
+
+  test("sound settings", async () => {
+    await user.chat.openSoundSettingsFromMenu();
+    await shootWithBanner(
+      user.page,
+      user.chat.soundSettingsDialog,
+      "sound-settings",
+    );
+    await user.page.keyboard.press("Escape");
+  });
+
+  test("flood protection", async () => {
+    await user.chat.openFloodProtectionFromToolsMenu();
+    await shootWithBanner(
+      user.page,
+      user.chat.floodProtectionDialog,
+      "flood-protection",
+    );
+    await user.page.keyboard.press("Escape");
+  });
+
+  test("custom menus", async () => {
+    await user.chat.openCustomMenusDialogFromMenu();
+    await user.chat.addCustomMenuItem("Nicklist", "Slap", "/me slaps $1");
+    await shootWithBanner(
+      user.page,
+      user.chat.customMenusDialog,
+      "custom-menus",
+    );
+    await user.page.keyboard.press("Escape");
+  });
+
   test("trusted terminals", async () => {
     await user.chat.openTrustedTerminalsFromMenu();
     await shootWithBanner(

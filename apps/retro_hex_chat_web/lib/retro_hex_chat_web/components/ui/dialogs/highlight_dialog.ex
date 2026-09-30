@@ -23,7 +23,9 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   @doc "Renders the highlight dialog."
@@ -115,6 +117,8 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
 
   @spec highlight_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def highlight_panel(assigns) do
+    assigns = assign(assigns, :hit_lines, hit_lines(assigns.words, assigns.own_nick))
+
     ~H"""
     <div id={"#{@id}-panel-root"} class="contents">
       <.focus_wrap id={"#{@id}-focus-wrap"} class="contents">
@@ -127,6 +131,22 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
           phx-mounted={JS.focus(to: "##{@id}-content")}
           class="hl-dialog flex h-full min-h-0 flex-col gap-retro-8"
         >
+          <.dialog_banner heading={dgettext("dialogs", "Lines that will come looking for you")}>
+            <:art>
+              <Diagrams.diagram_dialog_preview
+                kind={:query}
+                title={dgettext("dialogs", "Channel")}
+                lines={@hit_lines}
+                label={dgettext("dialogs", "A miniature of a channel line matching a highlight word")}
+              />
+            </:art>
+            <:glyph><Icons.icon_dialog_highlight class="h-8 w-8" /></:glyph>
+            {dgettext(
+              "dialogs",
+              "A highlight paints the whole line and can sound the highlight alert, so the message finds you in a channel you are not reading. Your own nickname counts without being on the list."
+            )}
+          </.dialog_banner>
+
           <div class="hl-content min-h-0 flex-1">
             <div class="hl-list-pane min-h-0">
               <div class="hl-entry-list overflow-y-auto retro-scrollbar">
@@ -400,4 +420,27 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
     do: dgettext("dialogs", "Color %{index}", index: n)
 
   defp color_label(_), do: dgettext("dialogs", "Default")
+
+  # The picture is a line arriving with one of these words in it — the moment
+  # the setting exists for.
+  @spec hit_lines([map()], String.t() | nil) :: [map()]
+  defp hit_lines([], own_nick) do
+    [
+      %{text: dgettext("dialogs", "anyone around?")},
+      %{text: highlight_sample(own_nick), tone: :danger}
+    ]
+  end
+
+  defp hit_lines([word | _rest], _own_nick) do
+    [
+      %{text: dgettext("dialogs", "anyone around?")},
+      %{text: dgettext("dialogs", "…about %{word} again", word: word.word), tone: :danger}
+    ]
+  end
+
+  @spec highlight_sample(String.t() | nil) :: String.t()
+  defp highlight_sample(nick) when is_binary(nick) and nick != "",
+    do: dgettext("dialogs", "%{nick}, got a second?", nick: nick)
+
+  defp highlight_sample(_nick), do: dgettext("dialogs", "your nickname, got a second?")
 end

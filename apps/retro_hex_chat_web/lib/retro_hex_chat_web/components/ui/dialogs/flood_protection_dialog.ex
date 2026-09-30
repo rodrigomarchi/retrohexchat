@@ -24,7 +24,9 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   @default_settings %{
@@ -87,17 +89,29 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
 
   @spec flood_protection_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def flood_protection_panel(assigns) do
-    assigns = assign_new(assigns, :settings, fn -> @default_settings end)
+    assigns =
+      assigns
+      |> assign_new(:settings, fn -> @default_settings end)
+      |> then(&assign(&1, :cutoff_lines, cutoff_lines(&1.settings)))
 
     ~H"""
     <div id={"#{@id}-content"} class="fp-panel" data-testid="flood-protection-panel">
       <form phx-submit={@on_save} class="fp-form">
-        <p class="fp-description">
+        <.dialog_banner heading={dgettext("dialogs", "What happens when somebody floods")}>
+          <:art>
+            <Diagrams.diagram_dialog_preview
+              kind={:query}
+              title={dgettext("dialogs", "Channel")}
+              lines={@cutoff_lines}
+              label={dgettext("dialogs", "A miniature of a flood being cut off at the threshold")}
+            />
+          </:art>
+          <:glyph><Icons.icon_dialog_flood class="h-8 w-8" /></:glyph>
           {dgettext(
             "dialogs",
-            "Configure limits to prevent message flooding in channels and private messages."
+            "These limits apply to everybody in every channel and private conversation on this server. Somebody who crosses one is silenced for the cooldown, not disconnected."
           )}
-        </p>
+        </.dialog_banner>
 
         <div class="fp-section-grid retro-scrollbar">
           <%!-- Message Flood --%>
@@ -227,4 +241,35 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
     </div>
     """
   end
+
+  # The picture counts the threshold out loud: this many lines inside the
+  # window get through, the next one does not.
+  @spec cutoff_lines(map()) :: [map()]
+  defp cutoff_lines(settings) do
+    threshold = Map.get(settings, :flood_threshold, 5)
+    window = Map.get(settings, :flood_window_seconds, 10)
+
+    shown = min(threshold, 3)
+
+    Enum.map(1..shown, fn index ->
+      %{text: dgettext("dialogs", "line %{index}", index: index), tone: :muted}
+    end) ++
+      [
+        %{
+          text:
+            system_line(
+              dgettext("dialogs", "muted after %{count} lines in %{window} seconds",
+                count: threshold,
+                window: window
+              )
+            ),
+          tone: :danger
+        }
+      ]
+  end
+
+  # The chat's marker for a line nobody typed. It is punctuation: inside a
+  # msgid the engine reads it as list markup and mangles the sentence after.
+  @spec system_line(String.t()) :: String.t()
+  defp system_line(text), do: "* " <> text
 end

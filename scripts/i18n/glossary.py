@@ -121,6 +121,13 @@ _ROWS = {
     "Disable":      ("Desativar", "Desativar", "Desactivar", "Désactiver", "Deaktivieren", "Disattiva", "Uitschakelen", "Wyłącz", "Отключить", "Nonaktifkan", "無効にする", "禁用", "停用"),
     "Permanent":    ("Permanente", "Permanente", "Permanente", "Permanent", "Dauerhaft", "Permanente", "Permanent", "Stały", "Постоянно", "Permanen", "無期限", "永久", "永久"),
 
+    # The flood miniature's own caption. Short, and two placeholders with no
+    # sentence around them to read word order from: half the locales came back
+    # with "lines %{count}", and "lines" arrived as the geometric kind —
+    # "linhas", "线", "Linien" — rather than lines of text. German dropped the
+    # word "muted" altogether, which is the only word that matters.
+    "muted after %{count} lines in %{window} seconds": ("silenciado após %{count} linhas em %{window} segundos", "silenciado após %{count} linhas em %{window} segundos", "silenciado tras %{count} líneas en %{window} segundos", "muet après %{count} lignes en %{window} secondes", "stumm nach %{count} Zeilen in %{window} Sekunden", "silenziato dopo %{count} righe in %{window} secondi", "gedempt na %{count} regels in %{window} seconden", "wyciszony po %{count} wierszach w %{window} s", "молчание после %{count} строк за %{window} с", "dibisukan setelah %{count} baris dalam %{window} detik", "%{window}秒間に%{count}行でミュート", "%{window} 秒内 %{count} 行后禁言", "%{window} 秒內 %{count} 行後禁言"),
+
     # ── Transfer ──────────────────────────────────────────────
     "Send":         ("Enviar", "Enviar", "Enviar", "Envoyer", "Senden", "Invia", "Verzenden", "Wyślij", "Отправить", "Kirim", "送信", "发送", "傳送"),
     "Upload":       ("Enviar", "Carregar", "Subir", "Téléverser", "Hochladen", "Carica", "Uploaden", "Prześlij", "Загрузить", "Unggah", "アップロード", "上传", "上傳"),

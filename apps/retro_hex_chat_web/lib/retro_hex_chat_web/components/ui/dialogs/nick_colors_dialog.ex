@@ -20,7 +20,9 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ColorPicker
   import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   @doc """
@@ -40,6 +42,8 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
 
   @spec nick_colors_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def nick_colors_panel(assigns) do
+    assigns = assign(assigns, :roster_lines, roster_lines(assigns.nick_colors))
+
     ~H"""
     <div id={@id} class="contents">
       <.focus_wrap id={"#{@id}-focus-wrap"} class="contents">
@@ -52,6 +56,24 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
           phx-mounted={JS.focus(to: "##{@id}-content")}
           class="ab-dialog flex h-full min-h-0 flex-col gap-retro-8"
         >
+          <.dialog_banner heading={dgettext("dialogs", "How names read in the list and the log")}>
+            <:art>
+              <Diagrams.diagram_dialog_preview
+                kind={:ordered}
+                title={dgettext("dialogs", "Nicknames")}
+                lines={@roster_lines}
+                label={
+                  dgettext("dialogs", "A miniature of the nickname list with these colours applied")
+                }
+              />
+            </:art>
+            <:glyph><Icons.icon_dialog_nick_colors class="h-8 w-8" /></:glyph>
+            {dgettext(
+              "dialogs",
+              "A colour set here follows the nickname everywhere it appears — the list beside the room and every line they write. It is yours alone; nobody else sees the colour you picked."
+            )}
+          </.dialog_banner>
+
           <.nick_colors_table
             target={@target}
             nick_colors={@nick_colors}
@@ -308,4 +330,10 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
   @spec nick_color_class(any()) :: String.t()
   defp nick_color_class(n) when is_integer(n), do: "irc-bg-#{n}"
   defp nick_color_class(_), do: "bg-black"
+
+  # The picture is the nicklist itself, which is where a colour is read.
+  @spec roster_lines([map()]) :: [map()]
+  defp roster_lines(nick_colors) do
+    Enum.map(nick_colors, &%{text: &1.target_nickname, tone: :accent})
+  end
 end

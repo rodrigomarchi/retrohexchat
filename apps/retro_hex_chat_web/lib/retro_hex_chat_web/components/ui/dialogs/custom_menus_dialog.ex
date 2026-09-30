@@ -25,7 +25,9 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
   import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   @doc "Renders the custom menus dialog with Nicklist/Channel tabs."
@@ -111,6 +113,8 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
 
   @spec custom_menus_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def custom_menus_panel(assigns) do
+    assigns = assign(assigns, :menu_lines, menu_lines(assigns.entries))
+
     assigns = assign(assigns, :active_tab_str, Atom.to_string(assigns.active_tab))
 
     ~H"""
@@ -125,6 +129,24 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
           phx-mounted={JS.focus(to: "##{@id}-content")}
           class="cm-dialog flex h-full min-h-0 flex-col gap-retro-8"
         >
+          <.dialog_banner heading={dgettext("dialogs", "What your right-click menu will hold")}>
+            <:art>
+              <Diagrams.diagram_dialog_preview
+                kind={:menu}
+                title={dgettext("dialogs", "Right-click")}
+                lines={@menu_lines}
+                label={
+                  dgettext("dialogs", "A miniature of the context menu these entries are added to")
+                }
+              />
+            </:art>
+            <:glyph><Icons.icon_dialog_custom_menus class="h-8 w-8" /></:glyph>
+            {dgettext(
+              "dialogs",
+              "Entries are appended below what the menu already offers — they never replace a built-in. Each one runs its command against whatever you right-clicked."
+            )}
+          </.dialog_banner>
+
           <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab_str} class="cm-tabs min-h-0">
             <div class="cm-tabs-shell">
               <.tabs_list class="cm-main-tabs">
@@ -366,5 +388,18 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
   @spec filter_entries(list(), atom()) :: list()
   defp filter_entries(entries, menu_type) do
     Enum.filter(entries, &(Map.get(&1, :menu_type) == menu_type))
+  end
+
+  # A menu entry only makes sense in a menu, and the built-ins above the
+  # separator are why an entry is appended rather than replacing anything.
+  @spec menu_lines([map()]) :: [map()]
+  defp menu_lines([]), do: []
+
+  defp menu_lines(entries) do
+    [
+      %{text: dgettext("dialogs", "Query"), tone: :muted},
+      %{text: dgettext("dialogs", "Whois"), tone: :muted},
+      %{text: "-"}
+    ] ++ Enum.map(entries, &%{text: &1.label, tone: :normal})
   end
 end

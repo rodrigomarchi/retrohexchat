@@ -24,8 +24,10 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Select
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
   alias RetroHexChat.Chat.SoundSettings
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   # A push has to raise a notification, so a browser that will not show one
@@ -136,6 +138,8 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
 
   @spec sound_settings_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def sound_settings_panel(assigns) do
+    assigns = assign(assigns, :audible_lines, audible_lines(assigns.settings))
+
     assigns =
       assigns
       |> assign(:event_order, [
@@ -164,6 +168,24 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
           phx-mounted={JS.focus(to: "##{@id}-content")}
           class="ss-dialog flex h-full min-h-0 flex-col gap-retro-8"
         >
+          <.dialog_banner heading={dgettext("dialogs", "What this browser will make a noise about")}>
+            <:art>
+              <Diagrams.diagram_dialog_preview
+                kind={:ordered}
+                title={dgettext("dialogs", "Makes a sound")}
+                lines={@audible_lines}
+                label={
+                  dgettext("dialogs", "A miniature listing the events that currently play a sound")
+                }
+              />
+            </:art>
+            <:glyph><Icons.icon_dialog_sound class="h-8 w-8" /></:glyph>
+            {dgettext(
+              "dialogs",
+              "Each event can play a sound, flash the taskbar, or raise a desktop notification. All of it is per browser: the same nickname on another machine is silent until you set it there too."
+            )}
+          </.dialog_banner>
+
           <.notify_permission_row
             permission={@notify_permission}
             on_ask={@on_notify_permission_ask}
@@ -417,5 +439,21 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
       {^value, label} -> label
       _ -> nil
     end)
+  end
+
+  # Sound has no picture of its own, so the miniature answers the question the
+  # reader actually has: which events are audible right now.
+  @spec audible_lines(map()) :: [map()]
+  defp audible_lines(settings) do
+    [:message, :pm, :highlight, :join, :part, :kick, :connect, :disconnect]
+    |> Enum.filter(&audible?(settings, &1))
+    |> Enum.map(&%{text: event_label(&1), tone: :accent})
+  end
+
+  # `get_sound/2` always answers with a string, and "none" is how it says the
+  # event is silent.
+  @spec audible?(map(), atom()) :: boolean()
+  defp audible?(settings, event) do
+    event_sound(settings, event) not in ["", "none"]
   end
 end
