@@ -17,6 +17,19 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     desktop-icon-help
   )
 
+  # Programs that are not folders sit beside the folder they belong with, so
+  # the arcade follows Retro Games rather than trailing the column.
+  @shortcut_ids ~w(
+    desktop-icon-view
+    desktop-icon-tools
+    desktop-icon-automation
+    desktop-icon-games
+    desktop-icon-arcade
+    desktop-icon-account
+    desktop-icon-language
+    desktop-icon-help
+  )
+
   @admin_group_icon_ids ~w(
     desktop-icon-view
     desktop-icon-tools
@@ -66,7 +79,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     html = render_component(&DesktopLaunchers.desktop_launcher_icons/1, screen: :landing)
     document = document(html)
 
-    assert testids(html, ".desktop-shortcut") == @group_icon_ids
+    assert testids(html, ".desktop-shortcut") == @shortcut_ids
 
     assert Floki.attribute(
              document,
@@ -97,7 +110,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
              []
 
     assert length(Floki.find(document, "[data-desktop-connect-required]")) ==
-             length(@group_icon_ids) - 2
+             length(@shortcut_ids) - 2
 
     refute html =~ ~s(data-testid="desktop-icon-windows")
     refute html =~ ~s(data-testid="desktop-icon-navigate")
@@ -119,10 +132,12 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     refute html =~ ~s(data-window-id="desktop-launcher-admin")
     refute html =~ ~s(data-window-id="desktop-launcher-system")
     # The Games folder holds the games themselves, so the tab is offered on a
-    # game rather than on the list of them.
+    # game rather than on the list of them — and nothing else is in there. The
+    # arcade is a program with an icon of its own, not the last row of a list
+    # you have to scroll to reach it.
     assert enabled?(html, "desktop-launcher-item-game-hex_pong")
     assert enabled?(html, "desktop-launcher-item-game-hex_hockey")
-    refute enabled?(html, "desktop-launcher-item-open_arcade")
+    refute html =~ ~s(data-testid="desktop-launcher-item-open_arcade")
   end
 
   test "public launcher windows render only the always-available Language and Help folders" do
@@ -200,7 +215,34 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
 
     assert enabled?(admin_html, "desktop-launcher-item-open_admin_users")
     assert enabled?(admin_html, "desktop-launcher-item-open_system_home")
-    assert enabled?(admin_html, "desktop-launcher-item-open_arcade")
+  end
+
+  # The arcade is not a folder, so its gate is on the desktop icon that runs
+  # it: live once the nick is identified, present and gray until then.
+  test "the arcade icon waits for an identified nick" do
+    guest_html = render_component(&DesktopLaunchers.desktop_launcher_icons/1, screen: :chat)
+
+    identified_html =
+      render_component(&DesktopLaunchers.desktop_launcher_icons/1,
+        screen: :chat,
+        arcade_available: true
+      )
+
+    refute enabled?(guest_html, "desktop-icon-arcade")
+
+    assert enabled?(identified_html, "desktop-icon-arcade")
+
+    assert Floki.attribute(
+             document(identified_html),
+             ~s([data-testid="desktop-icon-arcade"]),
+             "data-window-shortcut-action"
+           ) == ["open_arcade"]
+
+    assert Floki.attribute(
+             document(identified_html),
+             ~s([data-testid="desktop-icon-arcade"]),
+             "data-window-shortcut"
+           ) == ["arcade-games"]
   end
 
   test "launcher taskbar buttons target the app-folder windows" do

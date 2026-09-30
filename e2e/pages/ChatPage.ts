@@ -49,7 +49,7 @@ export class ChatPage {
   readonly retroGamesWindow: Locator;
   readonly retroGamesLibrary: Locator;
   readonly retroGamesIconGrid: Locator;
-  readonly arcadeMenuItem: Locator;
+  readonly arcadeIcon: Locator;
   readonly arcadeWindow: Locator;
   readonly arcadeLibrary: Locator;
   readonly arcadeIconGrid: Locator;
@@ -356,9 +356,10 @@ export class ChatPage {
     this.retroGamesWindow = page.getByTestId("retro-games-window");
     this.retroGamesLibrary = page.getByTestId("retro-games-library");
     this.retroGamesIconGrid = page.getByTestId("retro-games-icon-grid");
-    this.arcadeMenuItem = page
-      .getByTestId("desktop-launcher-item-open_arcade")
-      .filter({ visible: true });
+    // The arcade is a program, not a folder row: it has a desktop icon of its
+    // own beside Retro Games, because the last icon of a list you must scroll
+    // is a feature in hiding.
+    this.arcadeIcon = page.getByTestId("desktop-icon-arcade");
     this.arcadeWindow = page.getByTestId("arcade-games-window");
     this.arcadeLibrary = page.getByTestId("arcade-library");
     this.arcadeIconGrid = page.getByTestId("arcade-icon-grid");
@@ -919,9 +920,8 @@ export class ChatPage {
   }
 
   async openArcadeFromDesktopShortcut() {
-    await this.openGamesFolder();
-    await expect(this.arcadeMenuItem).toBeVisible();
-    await this.arcadeMenuItem.dblclick();
+    await expect(this.arcadeIcon).toBeVisible();
+    await this.arcadeIcon.dblclick();
     await expect(this.arcadeWindow).toBeVisible();
     await expect(this.arcadeIconGrid).toBeVisible();
   }

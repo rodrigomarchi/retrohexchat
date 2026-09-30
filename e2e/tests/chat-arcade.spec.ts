@@ -1,6 +1,6 @@
 /**
  * @section M - Admin, Server Operations, Bots
- * @flow M20 [done] Games folder -> Arcade opens an icon launcher, game details, then launches a WASM session through a noopener anchor at its own address
+ * @flow M20 [done] The Arcade desktop icon opens an icon launcher, game details, then launches a WASM session through a noopener anchor at its own address
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -52,12 +52,12 @@ test.describe("In-chat Arcade", () => {
     );
 
     try {
-      await user.chat.openGamesFolder();
-      await expect(user.chat.arcadeMenuItem).toBeVisible();
+      // One double-click from the desktop, with no folder in between.
+      await expect(user.chat.arcadeIcon).toBeVisible();
       await expect(
         user.page.getByTestId("menu-game-doom_shareware"),
       ).toHaveCount(0);
-      await user.chat.arcadeMenuItem.click();
+      await user.chat.arcadeIcon.dblclick();
 
       await expect(user.chat.arcadeWindow).toBeVisible();
       await expect(user.chat.arcadeLibrary).toBeVisible();

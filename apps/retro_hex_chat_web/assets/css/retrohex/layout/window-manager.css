@@ -293,6 +293,11 @@
 .desktop-shortcut.is-selected .desktop-shortcut__icon {
   @apply bg-primary/40;
 }
+.desktop-shortcut--disabled {
+  @apply opacity-50;
+  cursor: default;
+}
+
 .desktop-shortcut.is-selected .desktop-shortcut__label {
   @apply bg-primary text-white;
   text-shadow: none;

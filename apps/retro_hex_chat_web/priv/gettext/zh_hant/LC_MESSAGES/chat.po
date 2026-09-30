@@ -200,7 +200,7 @@ msgstr "%{field}: %{errors}"
 msgid "%{message} (%{reason})"
 msgstr "%{message} (%{reason})"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:182
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:178
 #, elixir-autogen, elixir-format
 msgid "%{nickname} already has a custom color"
 msgstr "%{nickname} 已經有自定義顏色"
@@ -225,12 +225,12 @@ msgstr "%{nickname}已經離開"
 msgid "%{nickname} has left (%{reason})"
 msgstr "%{nickname}已離開(%{reason})"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:126
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:123
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has no custom color"
 msgstr "%{nickname} 沒有自定義顏色"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:222
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:220
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:256
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is already in your contacts"
@@ -247,8 +247,8 @@ msgstr "%{nickname} 已經在您的通知列表中"
 msgid "%{nickname} is away: %{message}"
 msgstr "%{nickname}離場:%{message}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:121
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:147
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:120
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:146
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is not in your contacts"
 msgstr "%{nickname} 不屬於您的聯繫人"
@@ -374,7 +374,7 @@ msgstr "*%{nickname} 忽略更新爲:%{type}"
 msgid "* %{nickname} is no longer auto-ignored"
 msgstr "* %{nickname} 已經不再自動"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:115
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:109
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:320
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:801
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:91
@@ -394,7 +394,7 @@ msgstr "* %{nickname} 不再忽略( 計時器過期)"
 msgid "* %{nickname} is now ignored"
 msgstr "* %{nickname} 現在被忽略"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:84
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:80
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:57
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now ignored (%{type})"
@@ -641,7 +641,7 @@ msgstr "Activities"
 msgid "Add to Contacts"
 msgstr "添加到聯繫人"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:80
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:75
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:247
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:499
 #, elixir-autogen, elixir-format
@@ -822,12 +822,12 @@ msgstr "瀏覽器"
 msgid "Cancel"
 msgstr "取消"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/highlight_dialog.ex:115
+#: lib/retro_hex_chat_web/live/chat_live/components/highlight_dialog.ex:114
 #, elixir-autogen, elixir-format
 msgid "Cannot add highlight: %{reason}"
 msgstr "無法添加突出顯示 : %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:219
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:217
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:264
 #, elixir-autogen, elixir-format
 msgid "Cannot add yourself to contacts"
@@ -845,7 +845,7 @@ msgstr "無法將自己添加到通知列表"
 msgid "Cannot send text to status window. Use /commands."
 msgstr "無法向狀態窗口發送文本 。 使用/commands."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/highlight_dialog.ex:150
+#: lib/retro_hex_chat_web/live/chat_live/components/highlight_dialog.ex:149
 #, elixir-autogen, elixir-format
 msgid "Cannot update highlight: %{reason}"
 msgstr "無法更新突出顯示 : %{reason}"
@@ -1017,7 +1017,7 @@ msgstr "連接丟失 。"
 msgid "Contact"
 msgstr "聯繫人"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:225
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:223
 #, elixir-autogen, elixir-format
 msgid "Contact list is full (max 100 entries)"
 msgstr "聯繫人列表已完整( 最多 100 個條目)"
@@ -1141,18 +1141,18 @@ msgstr "擴展不得包含命令鏈(QQ, QQ, ; 新的行)"
 msgid "Expansion too long (max 500 characters)"
 msgstr "擴展太長( 最大500 個字符)"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/autojoin_dialog.ex:104
+#: lib/retro_hex_chat_web/live/chat_live/components/autojoin_dialog.ex:97
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/autojoin.ex:55
 #, elixir-autogen, elixir-format
 msgid "Failed to add auto-join channel: %{reason}"
 msgstr "添加自動連接通道失敗 : %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:95
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:91
 #, elixir-autogen, elixir-format
 msgid "Failed to add ignore: %{reason}"
 msgstr "添加忽略失敗: %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/perform_dialog.ex:103
+#: lib/retro_hex_chat_web/live/chat_live/components/perform_dialog.ex:96
 #, elixir-autogen, elixir-format
 msgid "Failed to add perform command: %{reason}"
 msgstr "添加執行命令失敗 : %{reason}"
@@ -1280,8 +1280,8 @@ msgstr "密碼錯誤"
 msgid "Invalid alias name. Use only letters, numbers, hyphens, underscores."
 msgstr "無效的別名 。 只使用字母,數字,連字符,下劃線."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:102
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:188
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:99
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:184
 #, elixir-autogen, elixir-format
 msgid "Invalid color"
 msgstr "無效的顏色"
@@ -1291,7 +1291,7 @@ msgstr "無效的顏色"
 msgid "Invalid command. Commands must start with /"
 msgstr "無效的命令 。 命令必須從 / 開始"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:68
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:64
 #, elixir-autogen, elixir-format
 msgid "Invalid duration format. Use: 5m, 2h, or 1d"
 msgstr "無效的時長格式 。 使用:5米、2小時或1小時"
@@ -1316,8 +1316,8 @@ msgstr "無效的模式字符串 。"
 msgid "Invalid name. Use letters, numbers, hyphens, underscores."
 msgstr "無效的名稱 。 使用字母,數字,連字符,下劃線."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:227
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:187
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:225
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:183
 #, elixir-autogen, elixir-format
 msgid "Invalid nickname"
 msgstr "無效的暱稱"
@@ -1512,12 +1512,12 @@ msgstr "下一步"
 msgid "Next: %{parameter}"
 msgstr "下一個: %{parameter}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:99
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:96
 #, elixir-autogen, elixir-format
 msgid "Nick color entry not found"
 msgstr "找不到暱稱顏色條目"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:185
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:181
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:356
 #, elixir-autogen, elixir-format
 msgid "Nick color list is full (max 50)"
@@ -1554,7 +1554,7 @@ msgstr "沒有頻道"
 msgid "No command at position %{position}"
 msgstr "位置沒有命令 %{position}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:103
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:102
 #, elixir-autogen, elixir-format
 msgid "No contact selected"
 msgstr "未選擇聯繫人"
@@ -1732,7 +1732,7 @@ msgstr "在沒有操作員在線時註冊您的頻道以保護它 。"
 msgid "Registered"
 msgstr "已登記"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:139
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:138
 #, elixir-autogen, elixir-format
 msgid "Removed %{nickname} from contacts"
 msgstr "刪除 %{nickname} 從聯繫人中"
@@ -1743,7 +1743,7 @@ msgstr "刪除 %{nickname} 從聯繫人中"
 msgid "Removed %{nickname} from notify list"
 msgstr "從通知列表中刪除 %{nickname}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:118
+#: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:115
 #, elixir-autogen, elixir-format
 msgid "Removed custom color for %{nickname}"
 msgstr "刪除了 %{nickname} 的自定義顏色"
@@ -2041,7 +2041,7 @@ msgstr "解密頻道"
 msgid "Unmute PM"
 msgstr "解密的首相"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:113
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:112
 #: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:63
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:102
 #, elixir-autogen, elixir-format
@@ -2111,7 +2111,7 @@ msgstr "白色"
 msgid "Whois"
 msgstr "誰是"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/highlight_dialog.ex:131
+#: lib/retro_hex_chat_web/live/chat_live/components/highlight_dialog.ex:130
 #, elixir-autogen, elixir-format
 msgid "Word not in highlight list"
 msgstr "突出顯示列表中的單詞"
@@ -2159,7 +2159,7 @@ msgstr "您現在被稱爲 %{nickname}"
 msgid "You are setting: %{flag} (%{label})"
 msgstr "您正在設置: %{flag} (%{label})"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:61
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:57
 #, elixir-autogen, elixir-format
 msgid "You cannot ignore yourself"
 msgstr "你不能無視自己"
@@ -2310,7 +2310,7 @@ msgstr "[歡迎] %{message}"
 msgid "[message deleted]"
 msgstr "[信息刪除]"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:156
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:148
 #, elixir-autogen, elixir-format
 msgid "all"
 msgstr "全部"
@@ -2350,7 +2350,7 @@ msgstr "徘徊以預覽"
 msgid "identified"
 msgstr "確定"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:159
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:151
 #, elixir-autogen, elixir-format
 msgid "invites"
 msgstr "邀請"
@@ -2360,7 +2360,7 @@ msgstr "邀請"
 msgid "is typing..."
 msgstr "正在輸入..."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:157
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:149
 #: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:331
 #, elixir-autogen, elixir-format
 msgid "messages"
@@ -2371,7 +2371,7 @@ msgstr "信件"
 msgid "not identified"
 msgstr "未識別"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:158
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:150
 #, elixir-autogen, elixir-format
 msgid "notices"
 msgstr "notices"
@@ -2441,7 +2441,7 @@ msgstr "別名編輯器"
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:319
 #, elixir-autogen, elixir-format
 msgid "Arcade"
-msgstr "拱門"
+msgstr "街機"
 
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:269
 #, elixir-autogen, elixir-format
@@ -2805,7 +2805,7 @@ msgstr "聲音設置"
 msgid "Throttle error: %{message}"
 msgstr "限流錯誤：%{message}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/timers_dialog.ex:70
+#: lib/retro_hex_chat_web/live/chat_live/components/timers_dialog.ex:69
 #, elixir-autogen, elixir-format
 msgid "Timer not found"
 msgstr "未找到計時器"
@@ -2905,7 +2905,7 @@ msgstr "您必須是頻道操作員才能使用此命令"
 msgid "You must be identified with NickServ to use ChanServ."
 msgstr "你必須和NickServ確認身份才能使用ChanServ."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/timers_dialog.ex:170
+#: lib/retro_hex_chat_web/live/chat_live/components/timers_dialog.ex:168
 #: lib/retro_hex_chat_web/live/chat_live/timer_events.ex:96
 #, elixir-autogen, elixir-format
 msgid "min 10s for repeating timers"
@@ -3689,9 +3689,9 @@ msgid "Strikethrough"
 msgstr "刪除線"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:323
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:348
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:420
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:131
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:130
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "清除格式"
@@ -4148,7 +4148,7 @@ msgid "Where"
 msgstr "在哪"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:346
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:138
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:137
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "角色頭像"

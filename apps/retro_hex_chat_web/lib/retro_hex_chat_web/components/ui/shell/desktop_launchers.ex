@@ -39,48 +39,121 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
   @spec desktop_launcher_icons(map()) :: Phoenix.LiveView.Rendered.t()
   def desktop_launcher_icons(assigns) do
-    assigns = assign(assigns, :groups, launcher_groups(assigns))
+    assigns =
+      assigns
+      |> assign(:groups, launcher_groups(assigns))
+      |> assign(:apps, launcher_apps(assigns))
+      |> assign(:chat?, assigns.screen == :chat)
+
+    assigns = assign(assigns, :items, interleave(assigns.groups, assigns.apps))
 
     ~H"""
-    <%= for group <- @groups do %>
-      <.desktop_icon
-        :if={desktop_window_icon?(@screen, group)}
-        window={group.window_id}
-        action={desktop_icon_action(@screen, group)}
-        href={desktop_icon_href(@screen, group)}
-        label={group.label}
-        data-testid={"desktop-icon-#{group.id}"}
-      >
-        <:icon>{apply(Icons, group.icon_fn, [%{class: "h-8 w-8"}])}</:icon>
-      </.desktop_icon>
+    <.launcher_shortcut
+      :for={item <- @items}
+      item={item}
+      screen={@screen}
+      chat?={@chat?}
+      connect_dialog_id={@connect_dialog_id}
+    />
+    """
+  end
 
-      <button
-        :if={desktop_click_target_icon?(@screen, group)}
-        type="button"
-        class="desktop-shortcut"
-        data-desktop-click-target={desktop_click_target(@screen, group)}
-        data-testid={"desktop-icon-#{group.id}"}
-      >
-        <span class="desktop-shortcut__icon inline-flex h-8 w-8 items-center justify-center">
-          {apply(Icons, group.icon_fn, [%{class: "h-8 w-8"}])}
-        </span>
-        <span class="desktop-shortcut__label">{group.label}</span>
-      </button>
+  # One desktop icon, in whichever of the four shapes the screen allows: the
+  # window it opens, the control it stands in for, the program it runs, or the
+  # closed door that says a chat session is what is missing.
+  attr :item, :any, required: true
+  attr :screen, :atom, required: true
+  attr :chat?, :boolean, required: true
+  attr :connect_dialog_id, :string, required: true
 
-      <button
-        :if={!desktop_icon_available?(@screen, group)}
-        type="button"
-        class="desktop-shortcut"
-        data-desktop-connect-required="true"
-        data-desktop-connect-dialog={@connect_dialog_id}
-        data-testid={"desktop-icon-#{group.id}"}
-      >
-        <span class="desktop-shortcut__icon inline-flex h-8 w-8 items-center justify-center">
-          {apply(Icons, group.icon_fn, [%{class: "h-8 w-8"}])}
-        </span>
-        <span class="desktop-shortcut__label">{group.label}</span>
-      </button>
-    <% end %>
+  defp launcher_shortcut(%{item: {:group, group}} = assigns) do
+    assigns = assign(assigns, :group, group)
+
+    ~H"""
+    <.desktop_icon
+      :if={desktop_window_icon?(@screen, @group)}
+      window={@group.window_id}
+      action={desktop_icon_action(@screen, @group)}
+      href={desktop_icon_href(@screen, @group)}
+      label={@group.label}
+      data-testid={"desktop-icon-#{@group.id}"}
+    >
+      <:icon>{apply(Icons, @group.icon_fn, [%{class: "h-8 w-8"}])}</:icon>
+    </.desktop_icon>
+
+    <button
+      :if={desktop_click_target_icon?(@screen, @group)}
+      type="button"
+      class="desktop-shortcut"
+      data-desktop-click-target={desktop_click_target(@screen, @group)}
+      data-testid={"desktop-icon-#{@group.id}"}
+    >
+      <.shortcut_face icon_fn={@group.icon_fn} label={@group.label} />
+    </button>
+
+    <button
+      :if={!desktop_icon_available?(@screen, @group)}
+      type="button"
+      class="desktop-shortcut"
+      data-desktop-connect-required="true"
+      data-desktop-connect-dialog={@connect_dialog_id}
+      data-testid={"desktop-icon-#{@group.id}"}
+    >
+      <.shortcut_face icon_fn={@group.icon_fn} label={@group.label} />
+    </button>
+    """
+  end
+
+  defp launcher_shortcut(%{item: {:app, app}} = assigns) do
+    assigns = assign(assigns, :app, app)
+
+    ~H"""
+    <.desktop_icon
+      :if={@chat? and @app.enabled?}
+      window={@app.window_id}
+      action={@app.action}
+      label={@app.label}
+      data-testid={"desktop-icon-#{@app.id}"}
+    >
+      <:icon>{apply(Icons, @app.icon_fn, [%{class: "h-8 w-8"}])}</:icon>
+    </.desktop_icon>
+
+    <%!-- Present and grayed rather than absent: an icon that names what the app
+          can do and says it is out of reach is the same bargain the Start menu
+          makes everywhere else. --%>
+    <button
+      :if={@chat? and not @app.enabled?}
+      type="button"
+      class="desktop-shortcut desktop-shortcut--disabled"
+      disabled
+      aria-disabled="true"
+      data-testid={"desktop-icon-#{@app.id}"}
+    >
+      <.shortcut_face icon_fn={@app.icon_fn} label={@app.label} />
+    </button>
+
+    <button
+      :if={!@chat?}
+      type="button"
+      class="desktop-shortcut"
+      data-desktop-connect-required="true"
+      data-desktop-connect-dialog={@connect_dialog_id}
+      data-testid={"desktop-icon-#{@app.id}"}
+    >
+      <.shortcut_face icon_fn={@app.icon_fn} label={@app.label} />
+    </button>
+    """
+  end
+
+  attr :icon_fn, :atom, required: true
+  attr :label, :string, required: true
+
+  defp shortcut_face(assigns) do
+    ~H"""
+    <span class="desktop-shortcut__icon inline-flex h-8 w-8 items-center justify-center">
+      {apply(Icons, @icon_fn, [%{class: "h-8 w-8"}])}
+    </span>
+    <span class="desktop-shortcut__label">{@label}</span>
     """
   end
 
@@ -250,6 +323,12 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     """
   end
 
+  defp interleave(groups, apps) do
+    Enum.flat_map(groups, fn group ->
+      [{:group, group} | for(app <- apps, app.after == group.id, do: {:app, app})]
+    end)
+  end
+
   defp launcher_groups(assigns) do
     cap = capabilities(assigns)
 
@@ -262,7 +341,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
         :icon_dialog_perform,
         automation_items(cap)
       ),
-      group(:games, dgettext("ui", "Games"), :icon_game_arcade, games_items(cap)),
+      group(:games, dgettext("ui", "Retro Games"), :icon_game_pong, games_items(cap)),
       group(:account, dgettext("ui", "Account"), :icon_status_user, account_items(cap)),
       group(:admin, dgettext("ui", "Admin"), :icon_shield, admin_items(cap)),
       group(:system, dgettext("ui", "System"), :icon_server, system_items(cap)),
@@ -278,6 +357,33 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       |> Map.put(:default_y, 48 + div(index, 4) * 28)
       |> Map.put(:object_count, object_count(group.items))
     end)
+  end
+
+  # Desktop programs that are not folders: double-clicking one runs it rather
+  # than opening a drawer to pick from. The arcade is the only one, and it is
+  # one because its window already *is* a catalogue — nesting it inside another
+  # bought a scroll and cost a feature.
+  defp launcher_apps(assigns) do
+    cap = capabilities(assigns)
+
+    [
+      %{
+        id: :arcade,
+        label: dgettext("ui", "Arcade"),
+        icon_fn: :icon_game_arcade,
+        window_id: "arcade-games",
+        # Beside Retro Games, because they are the same family: a desktop that
+        # puts them at opposite ends of the column has split the feature again,
+        # just horizontally instead of by depth.
+        after: :games,
+        # The server opens this window: a session has to exist before there is
+        # anything to draw, so the icon pushes the event and the window follows.
+        action: "open_arcade",
+        # The arcade keeps scores against a nick, so it needs one that is
+        # registered and identified — a chat alone is not enough.
+        enabled?: cap.arcade_available?
+      }
+    ]
   end
 
   defp launcher_window_groups(%{screen: :chat} = assigns), do: launcher_groups(assigns)
@@ -441,18 +547,14 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   # catalogue looks like on this desktop. A game has an address of its own, so
   # the tab opens on the game the reader chose — not on the list they are still
   # reading. The names are proper nouns and stay untranslated.
+  #
+  # Nothing but games lives here. The arcade used to sit at the end of this
+  # list and was the thirty-fifth icon in it: a whole feature below the fold of
+  # a window you had to scroll, reached by two clicks, which is the same thing
+  # as hiding it. It is a program of its own now, with an icon of its own —
+  # `launcher_apps/1`.
   defp games_items(cap) do
-    Enum.map(Catalog.list_solo_games(), &game_item(cap, &1)) ++
-      [
-        separator(),
-        # The arcade keeps scores against a nick, so it needs one that is
-        # registered and identified — a chat alone is not enough. It is a
-        # catalogue of its own, and stays one icon rather than spilling its
-        # games in beside ours.
-        action(cap, "open_arcade", dgettext("ui", "Arcade..."), :icon_game_arcade,
-          disabled: !cap.chat? or !cap.arcade_available?
-        )
-      ]
+    Enum.map(Catalog.list_solo_games(), &game_item(cap, &1))
   end
 
   defp game_item(cap, game) do

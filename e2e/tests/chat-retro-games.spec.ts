@@ -29,12 +29,21 @@ test.describe("Retro Games from the chat", () => {
 
     // The catalogue is the folder: a game per icon, and no shortcut standing
     // between the reader and the list — that shortcut was the bug.
+    // Two programs, two icons, no folder inside a folder.
+    await expect(chat.gamesFolderIcon).toBeVisible();
+    await expect(chat.arcadeIcon).toBeVisible();
+    await shot(page.locator(".desktop__shortcuts"), "desktop-game-icons");
+
     await chat.openGamesFolder();
     await expect(chat.gamesFolderGrid).toBeVisible();
     await expect(chat.gameFolderIcon("pixel_tanks")).toBeVisible();
     await expect(chat.gameFolderIcon("hex_pong")).toBeVisible();
     await expect(
       page.getByTestId("desktop-launcher-item-retro-games"),
+    ).toHaveCount(0);
+    // Games only: the arcade is its own icon on the desktop.
+    await expect(
+      page.getByTestId("desktop-launcher-item-open_arcade"),
     ).toHaveCount(0);
     await shot(chat.gamesFolderWindow, "games-folder-catalogue");
 

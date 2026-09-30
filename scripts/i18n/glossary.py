@@ -359,6 +359,9 @@ _ROWS = {
     "Nick":         ("Apelido", "Alcunha", "Apodo", "Pseudo", "Nick", "Nick", "Nick", "Nick", "Ник", "Nama panggilan", "ニック", "昵称", "暱稱"),
     "Auto":         ("Auto", "Auto", "Auto", "Auto", "Auto", "Auto", "Auto", "Auto", "Авто", "Otomatis", "自動", "自动", "自動"),
     "Jitter":       ("Jitter", "Jitter", "Fluctuación", "Gigue", "Jitter", "Jitter", "Jitter", "Jitter", "Джиттер", "Jitter", "ジッター", "抖动", "抖動"),
+    # The coin-op cabinet, never the row of arches. Measured: the pipeline gave
+    # es "Arcada" and zh "拱门/拱門", which are the architecture.
+    "Arcade":       ("Arcade", "Arcade", "Arcade", "Arcade", "Arcade", "Arcade", "Arcade", "Arcade", "Аркада", "Arcade", "アーケード", "街机", "街機"),
 }
 # fmt: on
 

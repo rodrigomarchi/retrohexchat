@@ -2099,7 +2099,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Play browser-native RetroHexChat games solo against AI. The Games desktop folder is the library: every game has an icon in it, and Start ▸ Games ▸ Retro Games opens that folder. Choosing a game opens that game in a browser tab of its own, and the chat stays where it was. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants are available."
+            "Play browser-native RetroHexChat games solo against AI. The Retro Games desktop icon opens the library: every game has an icon in it, and Start ▸ Games ▸ Retro Games opens the same window. Choosing a game opens that game in a browser tab of its own, and the chat stays where it was. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants are available."
           ) <>
             " " <>
             dgettext("help", "Hex Boxing is also available.") <>
@@ -3122,8 +3122,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ) <>
             dgettext(
               "help",
-              "gameplay tips before launching. Open Start ▸ Games and choose Arcade to " <>
-                "start (you must be registered and identified). "
+              "gameplay tips before launching. Double-click the Arcade desktop icon, or " <>
+                "open Start ▸ Games and choose Arcade, to start (you must be registered " <>
+                "and identified). "
             ) <>
             dgettext(
               "help",
