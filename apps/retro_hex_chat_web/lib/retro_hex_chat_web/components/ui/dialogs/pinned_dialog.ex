@@ -23,13 +23,19 @@ defmodule RetroHexChatWeb.Components.UI.PinnedDialog do
         timezone={@timezone}
         nick_color_fn={@nick_color_fn}
       />
+
+  The banner draws the strip a pin occupies at the top of the room, which is
+  what a pin *is*; the rows below arrive as a stream the component cannot
+  read.
   """
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ListStates
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
   alias RetroHexChatWeb.App.ChatHelpers
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
 
@@ -47,6 +53,25 @@ defmodule RetroHexChatWeb.Components.UI.PinnedDialog do
   def pinned_panel(assigns) do
     ~H"""
     <div id={"#{@id}-panel"} class="flex h-full min-h-0 flex-col gap-retro-4">
+      <.dialog_banner heading={dgettext("dialogs", "What the channel keeps above everything")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:pinned}
+            title={dgettext("dialogs", "Channel")}
+            lines={[
+              %{text: dgettext("dialogs", "the rules, the link"), tone: :accent},
+              %{text: dgettext("dialogs", "anyone around?")}
+            ]}
+            label={dgettext("dialogs", "A miniature of the room wearing its pinned line")}
+          />
+        </:art>
+        <:glyph><Icons.icon_pin class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "A pin belongs to the channel, not to you: everybody sees the same one, and an operator is the only one who can put a line up here or take it down."
+        )}
+      </.dialog_banner>
+
       <.list_empty_state
         :if={State.empty?(@state)}
         icon={:chat}

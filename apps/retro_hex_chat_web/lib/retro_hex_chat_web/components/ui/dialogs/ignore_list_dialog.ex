@@ -19,7 +19,9 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   @doc """
@@ -35,6 +37,8 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
 
   @spec ignore_list_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def ignore_list_panel(assigns) do
+    assigns = assign(assigns, :hidden_lines, hidden_lines(assigns.entries))
+
     ~H"""
     <div id={@id} class="contents">
       <.focus_wrap id={"#{@id}-focus-wrap"} class="contents">
@@ -47,6 +51,22 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
           phx-mounted={JS.focus(to: "##{@id}-content")}
           class="ab-dialog flex h-full min-h-0 flex-col gap-retro-8"
         >
+          <.dialog_banner heading={dgettext("dialogs", "What you stop being shown")}>
+            <:art>
+              <Diagrams.diagram_dialog_preview
+                kind={:query}
+                title={dgettext("dialogs", "Channel")}
+                lines={@hidden_lines}
+                label={dgettext("dialogs", "A miniature of a channel with an ignored line withheld")}
+              />
+            </:art>
+            <:glyph><Icons.icon_dialog_ignore class="h-8 w-8" /></:glyph>
+            {dgettext(
+              "dialogs",
+              "An ignored person still speaks and everyone else still reads them — the lines simply never reach your screen. They are not told, and it holds in channels and private messages alike."
+            )}
+          </.dialog_banner>
+
           <.control_table target={@target} control_list={@entries} on_remove={@on_remove} />
           <div class="ab-action-row flex gap-retro-4 mt-retro-4">
             <.button
@@ -241,5 +261,19 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
       remaining < 86_400 -> "#{div(remaining, 3600)}h"
       true -> "#{div(remaining, 86_400)}d"
     end
+  end
+
+  # Ignoring is invisible by definition, so the picture draws the gap: the
+  # room carries on and one line is withheld.
+  @spec hidden_lines([map()]) :: [map()]
+  defp hidden_lines([]), do: []
+
+  defp hidden_lines([entry | _rest]) do
+    who = Map.get(entry, :nickname) || Map.get(entry, :nick) || ""
+
+    [
+      %{text: dgettext("dialogs", "anyone around?")},
+      %{text: dgettext("dialogs", "%{nick} — hidden", nick: who), tone: :muted}
+    ]
   end
 end

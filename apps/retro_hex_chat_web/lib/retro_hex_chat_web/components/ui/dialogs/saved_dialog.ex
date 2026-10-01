@@ -23,13 +23,18 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
         timezone={@timezone}
         nick_color_fn={@nick_color_fn}
       />
+
+  The banner draws a kept line as a clipping with its origin beneath it; the
+  rows below arrive as a stream the component cannot read.
   """
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ListStates
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
   alias RetroHexChatWeb.App.ChatHelpers
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
 
@@ -46,6 +51,25 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
   def saved_panel(assigns) do
     ~H"""
     <div id={"#{@id}-panel"} class="flex h-full min-h-0 flex-col gap-retro-4">
+      <.dialog_banner heading={dgettext("dialogs", "Lines you decided to keep")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:card}
+            title={dgettext("dialogs", "Saved")}
+            lines={[
+              %{text: dgettext("dialogs", "the link from Tuesday"), tone: :accent},
+              %{text: dgettext("dialogs", "kept from #channel"), tone: :muted}
+            ]}
+            label={dgettext("dialogs", "A miniature of a kept line and where it came from")}
+          />
+        </:art>
+        <:glyph><Icons.icon_btn_star class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "Saving keeps a copy for you alone — nobody is told, and the line stays here even if the conversation it came from is gone. Opening one takes you back to where it was said."
+        )}
+      </.dialog_banner>
+
       <.list_empty_state
         :if={State.empty?(@state)}
         icon={:chat}

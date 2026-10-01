@@ -198,6 +198,47 @@ test.describe("dialog gallery", () => {
     await user.page.keyboard.press("Escape");
   });
 
+  test("notify list", async () => {
+    await user.chat.sendMessage("/notify add Brutus");
+    await user.page.waitForTimeout(600);
+    await user.chat.openNotifyListFromMenu();
+    await shootWithBanner(user.page, user.chat.notifyListDialog, "notify-list");
+    await user.page.keyboard.press("Escape");
+  });
+
+  test("address book", async () => {
+    await user.chat.openAddressBookFromMenu();
+    await user.chat.addAddressBookContact("Brutus", "runs the trivia night");
+    await shootWithBanner(
+      user.page,
+      user.chat.addressBookDialog,
+      "address-book",
+    );
+    await user.page.keyboard.press("Escape");
+  });
+
+  test("ignore list", async () => {
+    await user.chat.sendMessage("/ignore Patches");
+    await user.page.waitForTimeout(600);
+    await user.chat.openIgnoreListFromMenu();
+    await shootWithBanner(user.page, user.chat.ignoreListDialog, "ignore-list");
+    await user.page.keyboard.press("Escape");
+  });
+
+  test("url catcher", async () => {
+    await user.chat.sendMessage("have a look at https://example.com/retro");
+    await user.page.waitForTimeout(800);
+    await user.chat.openUrlCatcherFromMenu();
+    await shootWithBanner(user.page, user.chat.urlCatcherDialog, "url-catcher");
+    await user.page.keyboard.press("Escape");
+  });
+
+  test("saved messages", async () => {
+    await user.chat.openSavedFromStartMenu();
+    await shootWithBanner(user.page, user.chat.savedDialog, "saved");
+    await user.page.keyboard.press("Escape");
+  });
+
   test("trusted terminals", async () => {
     await user.chat.openTrustedTerminalsFromMenu();
     await shootWithBanner(

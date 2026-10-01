@@ -22,12 +22,18 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
         timezone={@timezone}
         nick_color_fn={@nick_color_fn}
       />
+
+  The banner draws a channel line rather than the rows below it: the rows
+  arrive as a LiveView stream, which the component cannot read, and drawing
+  the list twice would say nothing the panel does not already say.
   """
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.ListStates
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
   alias RetroHexChatWeb.App.ChatHelpers
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
 
@@ -44,6 +50,25 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
   def mentions_panel(assigns) do
     ~H"""
     <div id={"#{@id}-panel"} class="flex h-full min-h-0 flex-col gap-retro-4">
+      <.dialog_banner heading={dgettext("dialogs", "Lines that named you while you were away")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:query}
+            title={dgettext("dialogs", "Channel")}
+            lines={[
+              %{text: dgettext("dialogs", "anyone around?")},
+              %{text: dgettext("dialogs", "…ask them about it"), tone: :danger}
+            ]}
+            label={dgettext("dialogs", "A miniature of a channel line naming you")}
+          />
+        </:art>
+        <:glyph><Icons.icon_btn_bell class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "A mention is recorded whenever somebody writes your nickname in a channel you had joined, whether or not the window was open. Opening one takes you to the line in its own conversation."
+        )}
+      </.dialog_banner>
+
       <.list_empty_state
         :if={State.empty?(@state)}
         icon={:chat}

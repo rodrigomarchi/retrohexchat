@@ -235,6 +235,9 @@ export class ChatPage {
   readonly awayDialog: Locator;
   readonly userModesDialog: Locator;
   readonly trustedTerminalsDialog: Locator;
+  readonly mentionsDialog: Locator;
+  readonly pinnedDialog: Locator;
+  readonly savedDialog: Locator;
   readonly accountPasswordInput: Locator;
   readonly accountConfirmInput: Locator;
   readonly accountDropPasswordInput: Locator;
@@ -675,6 +678,9 @@ export class ChatPage {
     this.awayDialog = page.getByTestId("away-window");
     this.userModesDialog = page.getByTestId("user-modes-window");
     this.trustedTerminalsDialog = page.getByTestId("trusted-terminals-window");
+    this.mentionsDialog = page.getByTestId("mentions-window");
+    this.pinnedDialog = page.getByTestId("pinned-window");
+    this.savedDialog = page.getByTestId("saved-window");
     this.accountPasswordInput = page.getByTestId("account-password");
     this.accountConfirmInput = page.getByTestId("account-confirm");
     this.accountDropPasswordInput = page.getByTestId("account-drop-password");
@@ -1651,6 +1657,25 @@ export class ChatPage {
     await expect(this.accountAwayMenuItem).toBeVisible();
     await this.accountAwayMenuItem.click();
     await expect(this.awayDialog).toBeVisible();
+  }
+
+  /** The mention badge in the tray is the only way in. */
+  async openMentionsFromTray() {
+    await this.page.getByTestId("tray-mention-badge").click();
+    await expect(this.mentionsDialog).toBeVisible();
+  }
+
+  /** The toolbar button exists only while the channel keeps something. */
+  async openPinnedFromToolbar() {
+    await this.page.getByTestId("conversation-toolbar-pinned").click();
+    await expect(this.pinnedDialog).toBeVisible();
+  }
+
+  async openSavedFromStartMenu() {
+    const item = this.page.getByTestId("start-menu-item-open_saved_dialog");
+    await this.openStartGroup(this.toolsSubmenuTrigger, item);
+    await item.click();
+    await expect(this.savedDialog).toBeVisible();
   }
 
   async openTrustedTerminalsFromMenu() {

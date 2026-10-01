@@ -128,6 +128,17 @@ _ROWS = {
     # word "muted" altogether, which is the only word that matters.
     "muted after %{count} lines in %{window} seconds": ("silenciado após %{count} linhas em %{window} segundos", "silenciado após %{count} linhas em %{window} segundos", "silenciado tras %{count} líneas en %{window} segundos", "muet après %{count} lignes en %{window} secondes", "stumm nach %{count} Zeilen in %{window} Sekunden", "silenziato dopo %{count} righe in %{window} secondi", "gedempt na %{count} regels in %{window} seconden", "wyciszony po %{count} wierszach w %{window} s", "молчание после %{count} строк за %{window} с", "dibisukan setelah %{count} baris dalam %{window} detik", "%{window}秒間に%{count}行でミュート", "%{window} 秒内 %{count} 行后禁言", "%{window} 秒內 %{count} 行後禁言"),
 
+    # The notify miniature's three captions: two words and a placeholder, so
+    # the engine has no sentence to read tense from. "posted" came back as a
+    # past participle rather than a verb everywhere — "publicado", "affiché",
+    # "veröffentlicht" — and Spanish gave up. Dutch really does say "is
+    # offline", which the source-fallback gate cannot tell from an untranslated
+    # entry — so the source says "is now online", which is also what the notice
+    # means: it fires on the change, not on a state.
+    "%{nick} is now online": ("%{nick} está online agora", "%{nick} está online agora", "%{nick} ya está en línea", "%{nick} est maintenant en ligne", "%{nick} ist jetzt online", "%{nick} è ora online", "%{nick} is nu online", "%{nick} jest teraz online", "%{nick} сейчас в сети", "%{nick} sekarang daring", "%{nick} が今オンライン", "%{nick} 现已在线", "%{nick} 現已線上"),
+    "%{nick} is now offline": ("%{nick} está offline agora", "%{nick} está offline agora", "%{nick} ya está desconectado", "%{nick} est maintenant hors ligne", "%{nick} ist jetzt offline", "%{nick} è ora offline", "%{nick} is nu offline", "%{nick} jest teraz offline", "%{nick} сейчас не в сети", "%{nick} sekarang luring", "%{nick} が今オフライン", "%{nick} 现已离线", "%{nick} 現已離線"),
+    "%{nick} posted": ("%{nick} publicou", "%{nick} publicou", "%{nick} publicó", "%{nick} a publié", "%{nick} hat gepostet", "%{nick} ha pubblicato", "%{nick} plaatste", "%{nick} opublikował", "%{nick} опубликовал", "%{nick} membagikan", "%{nick} が投稿", "%{nick} 发布了", "%{nick} 發佈了"),
+
     # ── Transfer ──────────────────────────────────────────────
     "Send":         ("Enviar", "Enviar", "Enviar", "Envoyer", "Senden", "Invia", "Verzenden", "Wyślij", "Отправить", "Kirim", "送信", "发送", "傳送"),
     "Upload":       ("Enviar", "Carregar", "Subir", "Téléverser", "Hochladen", "Carica", "Uploaden", "Prześlij", "Загрузить", "Unggah", "アップロード", "上传", "上傳"),

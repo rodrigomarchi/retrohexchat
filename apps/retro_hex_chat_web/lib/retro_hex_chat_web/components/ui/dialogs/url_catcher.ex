@@ -17,7 +17,9 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Select
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   @doc "Renders the URL catcher dialog."
@@ -107,6 +109,8 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
 
   @spec url_catcher_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def url_catcher_panel(assigns) do
+    assigns = assign(assigns, :link_lines, link_lines(assigns.entries))
+
     ~H"""
     <div
       id={"#{@id}-panel-root"}
@@ -123,6 +127,22 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
           phx-mounted={JS.focus(to: "##{@id}-content")}
           class="uc-dialog flex h-full min-h-0 flex-col gap-retro-8"
         >
+          <.dialog_banner heading={dgettext("dialogs", "Links picked out of what was said")}>
+            <:art>
+              <Diagrams.diagram_dialog_preview
+                kind={:query}
+                title={dgettext("dialogs", "Channel")}
+                lines={@link_lines}
+                label={dgettext("dialogs", "A miniature of the message a caught link came from")}
+              />
+            </:art>
+            <:glyph><Icons.icon_btn_url_catcher class="h-8 w-8" /></:glyph>
+            {dgettext(
+              "dialogs",
+              "Every link anybody posts is collected here as it goes by, so a URL you scrolled past is still findable. The list lives in this browser and holds a fixed number before the oldest drops off."
+            )}
+          </.dialog_banner>
+
           <%!-- Filters row --%>
           <div class="uc-toolbar">
             <%!-- Channel filter --%>
@@ -326,4 +346,16 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   defp entry_count_label(0), do: dgettext("dialogs", "No URLs captured")
   defp entry_count_label(1), do: dgettext("dialogs", "1 URL")
   defp entry_count_label(n), do: dngettext("dialogs", "1 URL", "%{count} URLs", n)
+
+  # A link is only ever met inside a line somebody wrote, which is what the
+  # list below cannot show.
+  @spec link_lines([map()]) :: [map()]
+  defp link_lines([]), do: []
+
+  defp link_lines([entry | _rest]) do
+    [
+      %{text: dgettext("dialogs", "%{nick} posted", nick: entry.posted_by), tone: :muted},
+      %{text: entry.url, tone: :accent}
+    ]
+  end
 end

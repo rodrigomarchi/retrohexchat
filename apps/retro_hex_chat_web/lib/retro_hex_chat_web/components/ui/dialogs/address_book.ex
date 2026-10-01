@@ -21,7 +21,9 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   @doc """
@@ -44,6 +46,8 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   @spec address_book_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def address_book_panel(assigns) do
+    assigns = assign(assigns, :contact_lines, contact_lines(assigns.contacts))
+
     ~H"""
     <div id={@id} class="contents">
       <.focus_wrap id={"#{@id}-focus-wrap"} class="contents">
@@ -56,6 +60,22 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           phx-mounted={JS.focus(to: "##{@id}-content")}
           class="ab-dialog flex h-full min-h-0 flex-col gap-retro-8"
         >
+          <.dialog_banner heading={dgettext("dialogs", "The people you keep a note on")}>
+            <:art>
+              <Diagrams.diagram_dialog_preview
+                kind={:card}
+                title={dgettext("dialogs", "Whois")}
+                lines={@contact_lines}
+                label={dgettext("dialogs", "A miniature of the card a contact is read on")}
+              />
+            </:art>
+            <:glyph><Icons.icon_dialog_address_book class="h-8 w-8" /></:glyph>
+            {dgettext(
+              "dialogs",
+              "A contact is yours alone: the nickname, the colour you gave it and your own note. Nobody is told you added them, and nothing here reaches the server they see."
+            )}
+          </.dialog_banner>
+
           <.contacts_table
             target={@target}
             contacts={@contacts}
@@ -340,5 +360,16 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
       {:ok, shifted} -> shifted
       {:error, _} -> dt
     end
+  end
+
+  # A contact is read as a card, which is why the miniature is one.
+  @spec contact_lines([map()]) :: [map()]
+  defp contact_lines([]), do: []
+
+  defp contact_lines([contact | _rest]) do
+    [
+      %{text: contact.contact_nickname, tone: :accent},
+      %{text: dgettext("dialogs", "in your address book"), tone: :muted}
+    ]
   end
 end

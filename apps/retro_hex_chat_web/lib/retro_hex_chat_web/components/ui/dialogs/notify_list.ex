@@ -18,7 +18,9 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Textarea
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   @doc "Renders the notify list dialog."
@@ -103,6 +105,8 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
 
   @spec notify_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def notify_panel(assigns) do
+    assigns = assign(assigns, :notice_lines, notice_lines(assigns.entries))
+
     ~H"""
     <div id={"#{@id}-panel-root"} class="contents">
       <.focus_wrap id={"#{@id}-focus-wrap"} class="contents">
@@ -115,6 +119,24 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
           phx-mounted={JS.focus(to: "##{@id}-content")}
           class="nl-dialog flex h-full min-h-0 flex-col gap-retro-8"
         >
+          <.dialog_banner heading={dgettext("dialogs", "How you find out somebody arrived")}>
+            <:art>
+              <Diagrams.diagram_dialog_preview
+                kind={:status}
+                title={dgettext("dialogs", "Status")}
+                lines={@notice_lines}
+                label={
+                  dgettext("dialogs", "A miniature of the Status notice a tracked nickname produces")
+                }
+              />
+            </:art>
+            <:glyph><Icons.icon_btn_bell class="h-8 w-8" /></:glyph>
+            {dgettext(
+              "dialogs",
+              "Tracking somebody writes a line to Status the moment they connect, whether or not you share a channel with them. They are never told they are on the list."
+            )}
+          </.dialog_banner>
+
           <%!-- Settings toggles --%>
           <div class="nl-settings">
             <label class="nl-setting-row">
@@ -436,4 +458,25 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
       {:error, _} -> dt
     end
   end
+
+  # The picture is the notice itself — the only thing tracking actually
+  # produces — rather than the roster already drawn below it.
+  @spec notice_lines([map()]) :: [map()]
+  defp notice_lines([]), do: []
+
+  defp notice_lines(entries) do
+    Enum.map(Enum.take(entries, 3), fn entry ->
+      %{
+        text: online_notice(entry),
+        tone: if(Map.get(entry, :online), do: :system, else: :muted)
+      }
+    end)
+  end
+
+  @spec online_notice(map()) :: String.t()
+  defp online_notice(%{online: true} = entry),
+    do: "* " <> dgettext("dialogs", "%{nick} is now online", nick: entry.tracked_nickname)
+
+  defp online_notice(entry),
+    do: "* " <> dgettext("dialogs", "%{nick} is now offline", nick: entry.tracked_nickname)
 end
