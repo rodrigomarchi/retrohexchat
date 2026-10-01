@@ -12,10 +12,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
@@ -65,6 +67,24 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
       data-testid="admin-server-settings-panel"
       class="adm-dialog flex h-full min-h-0 flex-col gap-retro-8"
     >
+      <.dialog_banner heading={dgettext("dialogs", "What this server tells everyone")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:fields}
+            title={dgettext("dialogs", "Server")}
+            lines={settings_lines(@values)}
+            label={
+              dgettext("dialogs", "A miniature of the settings sheet, each name beside its value")
+            }
+          />
+        </:art>
+        <:glyph><Icons.icon_server class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "The name and the description are read on the page where people arrive, before anybody creates a nickname. Closing registration stops new nicknames. The ones that already exist still work."
+        )}
+      </.dialog_banner>
+
       <div class="adm-scroll min-h-0 flex-1 overflow-y-auto">
         <div class="space-y-retro-8">
           <form
@@ -235,4 +255,14 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
   end
 
   defp setting_value(values, key), do: values |> Map.get(key, "") |> to_string()
+
+  # The three settings a reader meets before they have an account.
+  @spec settings_lines(map()) :: [map()]
+  defp settings_lines(values) do
+    [
+      %{text: dgettext("dialogs", "Name"), value: setting_value(values, "server_name")},
+      %{text: dgettext("dialogs", "Channels"), value: setting_value(values, "max_channels")},
+      %{text: dgettext("dialogs", "Sign-up"), value: setting_value(values, "registration")}
+    ]
+  end
 end

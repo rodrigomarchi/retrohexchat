@@ -38,10 +38,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialogTest do
     assert html =~ ~s(phx-click="admin_console_clear")
   end
 
+  # The empty transcript used to say `Type "help"`, and the console refuses
+  # anything without a leading slash — the invitation walked the reader into
+  # the one error the window can produce before they have done anything.
   test "invites a first command while the transcript is empty" do
     html = island(%{})
 
-    assert html =~ "Type a command and press Enter."
+    assert html =~ "Every command starts with a slash"
+    assert html =~ "/admin"
   end
 
   test "renders a transcript entry with its echoed line" do

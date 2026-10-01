@@ -8,9 +8,11 @@ defmodule RetroHexChatWeb.Components.UI.AdminTurnDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
@@ -54,6 +56,27 @@ defmodule RetroHexChatWeb.Components.UI.AdminTurnDialog do
       data-testid="admin-turn-panel"
       class="adm-dialog flex h-full min-h-0 flex-col gap-retro-8"
     >
+      <.dialog_banner heading={dgettext("dialogs", "The relay that carries a call")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:relay}
+            title={dgettext("dialogs", "TURN")}
+            lines={relay_lines(@allocations)}
+            label={
+              dgettext(
+                "dialogs",
+                "A miniature of two people and the relay that carries the call between them"
+              )
+            }
+          />
+        </:art>
+        <:glyph><Icons.icon_websocket class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "Two people in a call reach each other directly whenever their networks allow it. When a network refuses, the call goes through this relay instead. Each relayed call costs this server bandwidth. This window only shows numbers and has no setting to change."
+        )}
+      </.dialog_banner>
+
       <div class="adm-scroll min-h-0 flex-1 overflow-y-auto">
         <div class="space-y-retro-8">
           <div class="flex justify-end">
@@ -92,5 +115,19 @@ defmodule RetroHexChatWeb.Components.UI.AdminTurnDialog do
       </div>
     </div>
     """
+  end
+
+  # The first line of the allocation report: how much is going through the
+  # relay right now is the only part of this window that is news.
+  @spec relay_lines(String.t() | nil) :: [map()]
+  defp relay_lines(allocations) do
+    if present?(allocations) do
+      allocations
+      |> String.split("\n", trim: true)
+      |> Enum.take(2)
+      |> Enum.map(&%{text: &1, tone: :muted})
+    else
+      []
+    end
   end
 end

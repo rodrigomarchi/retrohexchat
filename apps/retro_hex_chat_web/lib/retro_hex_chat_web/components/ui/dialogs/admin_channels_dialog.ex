@@ -13,10 +13,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
@@ -102,6 +104,22 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
       data-testid="admin-channels-panel"
       class="adm-dialog flex h-full min-h-0 flex-col gap-retro-8"
     >
+      <.dialog_banner heading={dgettext("dialogs", "Every room on the server")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:tabs}
+            title={dgettext("dialogs", "Channels")}
+            lines={channel_lines(@table)}
+            label={dgettext("dialogs", "A miniature of the channel tabs these rooms open as")}
+          />
+        </:art>
+        <:glyph><Icons.icon_channels class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "A channel exists only while somebody is in it, unless it is registered. Registration gives it an owner and keeps its settings after the last person has gone. If you delete a channel here, the people inside it lose the room."
+        )}
+      </.dialog_banner>
+
       <div class="adm-scroll min-h-0 flex-1 overflow-y-auto">
         <div class="space-y-retro-8">
           <form id="admin-channels-search-form" phx-submit={@on_refresh} phx-target={@target}>
@@ -399,5 +417,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
       </div>
     </form>
     """
+  end
+
+  @spec channel_lines(term()) :: [map()]
+  defp channel_lines(table) do
+    table
+    |> table_rows(2)
+    |> Enum.map(&%{text: Map.get(&1, :name) || "", tone: :accent})
   end
 end

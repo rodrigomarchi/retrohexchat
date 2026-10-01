@@ -14,7 +14,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
@@ -56,6 +58,24 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
       data-testid="admin-console-panel"
       class="adm-dialog flex h-full min-h-0 flex-col gap-retro-8"
     >
+      <.dialog_banner heading={dgettext("dialogs", "The commands behind every other window")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:composer}
+            title={dgettext("dialogs", "Console")}
+            lines={console_lines(@results)}
+            label={
+              dgettext("dialogs", "A miniature of the console, showing what a command printed back")
+            }
+          />
+        </:art>
+        <:glyph><Icons.icon_dialog_admin_console class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "Every other admin window runs one of these commands for you. You can type the same command here. It does the same thing and prints the same answer, one command per line. The transcript keeps only the most recent lines."
+        )}
+      </.dialog_banner>
+
       <div class="adm-scroll min-h-0 flex-1 overflow-y-auto">
         <div class="space-y-retro-8">
           <div
@@ -84,7 +104,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             <div :if={@results == []} class="text-muted-foreground">
               {dgettext(
                 "dialogs",
-                "Type a command and press Enter. Type \"help\" for available commands."
+                "Every command starts with a slash. Type /admin with no arguments to list the privileged subcommands."
               )}
             </div>
           </div>
@@ -120,5 +140,19 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
       </div>
     </div>
     """
+  end
+
+  # The last exchange: what was typed is drawn on the strip, what came back
+  # above it.
+  @spec console_lines(list()) :: [map()]
+  defp console_lines([]), do: []
+
+  defp console_lines(results) do
+    last = List.last(results)
+
+    [
+      %{text: Map.get(last, :message) || "", tone: :system},
+      %{text: Map.get(last, :line) || "", tone: :accent}
+    ]
   end
 end

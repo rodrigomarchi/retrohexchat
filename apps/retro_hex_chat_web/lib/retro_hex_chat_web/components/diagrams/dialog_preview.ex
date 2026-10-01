@@ -12,6 +12,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   draws a portrait well with label/value rows, a roster draws a running lamp
   per row, and a checklist draws a box per row with nothing ticked.
 
+  Three of them are not lists at all: a settings sheet draws a value well
+  beside each label, a relay draws the two ends and the thing between them,
+  and a broadcast draws the same line in three windows at once.
+
   The rows still come from what the form is holding right now, so an empty
   setting looks empty.
   """
@@ -29,14 +33,19 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
     :menu,
     :pinned,
     :roster,
-    :checklist
+    :checklist,
+    :fields,
+    :relay,
+    :broadcast
   ]
 
   @doc """
   Renders the miniature.
 
   `lines` are maps of `%{text:, tone:}`; the tone picks the colour the real
-  surface would give that row (`:accent`, `:system`, `:muted`, `:danger`).
+  surface would give that row (`:accent`, `:system`, `:muted`, `:danger`,
+  and for a lamp `:ok` or `:warn`). A `:fields` line carries a second string
+  under `value`, drawn in the well beside its label.
   """
   attr :class, :string, default: nil
   attr :title, :string, required: true
@@ -167,6 +176,76 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
         <rect :for={row <- @rows} x="8" y={row.y - 5} width="4" height="4" fill={turn_fill(row)} />
       </g>
       
+    <!-- Settings sheet: a name is only half a setting, the value is the half
+           that changes -->
+      <g :if={@kind == :fields}>
+        <g :for={row <- @rows}>
+          <rect x="62" y={row.y - 7} width="56" height="9" fill="#ffffff" />
+          <polyline
+            points={"62,#{row.y + 1} 62,#{row.y - 7} 117,#{row.y - 7}"}
+            fill="none"
+            stroke="#808080"
+            stroke-width="1"
+          />
+          <text
+            x="64"
+            y={row.y}
+            fill={tone_fill(row.tone)}
+            font-size="7"
+            font-family="Tahoma,sans-serif"
+          >
+            {row.value}
+          </text>
+        </g>
+      </g>
+      
+    <!-- Relay: the two ends, and the box that carries the call when they
+           cannot reach each other -->
+      <g :if={@kind == :relay}>
+        <rect x="32" y="40" width="18" height="2" fill="#000080" />
+        <rect x="78" y="40" width="18" height="2" fill="#000080" />
+        <rect x="10" y="33" width="22" height="16" fill="#c0c0c0" stroke="#000000" stroke-width="1" />
+        <polyline points="11,48 11,34 30,34" fill="none" stroke="#ffffff" stroke-width="1" />
+        <rect x="96" y="33" width="22" height="16" fill="#c0c0c0" stroke="#000000" stroke-width="1" />
+        <polyline points="97,48 97,34 116,34" fill="none" stroke="#ffffff" stroke-width="1" />
+        <rect x="50" y="29" width="28" height="24" fill="#c0c0c0" stroke="#000000" stroke-width="1" />
+        <polyline points="51,52 51,30 76,30" fill="none" stroke="#ffffff" stroke-width="1" />
+        <rect x="55" y="34" width="18" height="3" fill="#000080" />
+        <rect x="55" y="39" width="18" height="3" fill="#008080" />
+        <rect x="55" y="44" width="18" height="3" fill="#000080" />
+      </g>
+      
+    <!-- Broadcast: one line, and every window that receives it -->
+      <g :if={@kind == :broadcast}>
+        <g :for={{top, left} <- [{25, 30}, {44, 20}, {63, 10}]}>
+          <rect
+            x={left}
+            y={top}
+            width="84"
+            height="17"
+            fill="#c0c0c0"
+            stroke="#000000"
+            stroke-width="1"
+          />
+          <polyline
+            points={"#{left + 1},#{top + 16} #{left + 1},#{top + 1} #{left + 82},#{top + 1}"}
+            fill="none"
+            stroke="#ffffff"
+            stroke-width="1"
+          />
+          <rect x={left + 2} y={top + 2} width="80" height="5" fill="#000080" />
+          <text
+            x={left + 4}
+            y={top + 14}
+            fill={tone_fill(broadcast_tone(@rows))}
+            font-size="7"
+            font-family="Tahoma,sans-serif"
+          >
+            {broadcast_line(@rows)}
+          </text>
+        </g>
+      </g>
+      
     <!-- The rows themselves -->
       <g :for={row <- @rows}>
         <rect
@@ -186,7 +265,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
           fill="#000080"
         />
         <text
-          :if={row.text != "-"}
+          :if={row.text != "-" and @kind != :broadcast}
           x={row_x(@kind)}
           y={row.y}
           fill={tone_fill(row.tone)}
@@ -198,7 +277,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
       </g>
       
     <!-- Nothing set yet: the space the rows would occupy, left empty -->
-      <g :if={@rows == []}>
+      <g :if={@rows == [] and @kind not in [:relay, :broadcast]}>
         <rect x={row_x(@kind)} y={empty_top(@kind)} width="82" height="4" fill="#e0e0e0" />
         <rect x={row_x(@kind)} y={empty_top(@kind) + 9} width="64" height="4" fill="#e0e0e0" />
         <rect x={row_x(@kind)} y={empty_top(@kind) + 18} width="74" height="4" fill="#e0e0e0" />
@@ -270,6 +349,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   defp row_x(:pinned), do: 20
   defp row_x(:roster), do: 18
   defp row_x(:checklist), do: 21
+  defp row_x(:relay), do: 8
   defp row_x(_kind), do: 8
 
   @spec empty_top(atom()) :: pos_integer()
@@ -285,12 +365,17 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   defp first_row(:schedule), do: 38
   defp first_row(:pinned), do: 32
   defp first_row(kind) when kind in [:roster, :checklist], do: 32
+  defp first_row(:relay), do: 66
+  defp first_row(:broadcast), do: 32
   defp first_row(_kind), do: 40
 
   @spec max_rows(atom()) :: pos_integer()
   defp max_rows(kind) when kind in [:composer, :tabs], do: 3
   defp max_rows(:schedule), do: 3
   defp max_rows(kind) when kind in [:roster, :checklist], do: 6
+  defp max_rows(:fields), do: 6
+  defp max_rows(:relay), do: 3
+  defp max_rows(:broadcast), do: 1
   defp max_rows(_kind), do: 5
 
   @spec rows([map()], atom()) :: [map()]
@@ -302,6 +387,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
     |> Enum.map(fn {line, index} ->
       %{
         text: if(line.text == "-", do: "-", else: clip(line.text, row_chars(kind))),
+        value: clip(Map.get(line, :value), 13),
         tone: Map.get(line, :tone, :normal),
         y: first_row(kind) + index * 9
       }
@@ -314,6 +400,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   defp row_chars(:pinned), do: 22
   defp row_chars(:roster), do: 21
   defp row_chars(:checklist), do: 20
+  defp row_chars(:fields), do: 15
+  defp row_chars(:relay), do: 26
+  defp row_chars(:broadcast), do: 24
   defp row_chars(_kind), do: 26
 
   # The composer's own strip shows the last row — what the person typed —
@@ -337,6 +426,16 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   defp lamp_fill(:ok), do: "#00a000"
   defp lamp_fill(:warn), do: "#e0b000"
   defp lamp_fill(_tone), do: "#a0a0a0"
+
+  # Every window gets the same line, so the picture draws the same line in
+  # every window.
+  @spec broadcast_line([map()]) :: String.t()
+  defp broadcast_line([]), do: ""
+  defp broadcast_line([row | _rest]), do: row.text
+
+  @spec broadcast_tone([map()]) :: atom()
+  defp broadcast_tone([]), do: :normal
+  defp broadcast_tone([row | _rest]), do: row.tone
 
   @spec tone_fill(atom()) :: String.t()
   defp tone_fill(:ok), do: "#006000"
@@ -393,6 +492,19 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
         "diagrams",
         "A miniature of a list of choices. Nothing is selected yet."
       )
+
+  defp kind_label(:fields),
+    do: dgettext("diagrams", "A miniature of the settings sheet, each name beside its value")
+
+  defp kind_label(:relay),
+    do:
+      dgettext(
+        "diagrams",
+        "A miniature of two people and the relay that carries the call between them"
+      )
+
+  defp kind_label(:broadcast),
+    do: dgettext("diagrams", "A miniature of one line arriving in every window at once")
 
   defp kind_label(:menu),
     do: dgettext("diagrams", "A miniature of the menu these entries appear in")

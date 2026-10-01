@@ -1978,7 +1978,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Use the tabbed Admin Console for server administration, with the raw batch command console preserved for power users."
+            "Server administration is split into focused windows: users, channels, settings, the audit log, the MOTD, TURN, broadcasts and the danger zone. They are all in the Admin group of the Start menu. The Console runs those same commands as a script, one command per line, and every command starts with a slash."
           ),
         see_also: [
           "cmd-admin",

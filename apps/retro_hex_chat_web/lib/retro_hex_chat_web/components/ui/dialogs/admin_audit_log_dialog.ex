@@ -9,10 +9,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
@@ -62,6 +64,24 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
       data-testid="admin-audit-log-panel"
       class="adm-dialog flex h-full min-h-0 flex-col gap-retro-8"
     >
+      <.dialog_banner heading={dgettext("dialogs", "Who did what, and when")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:ordered}
+            title={dgettext("dialogs", "Audit Log")}
+            lines={audit_lines(@table)}
+            label={
+              dgettext("dialogs", "A miniature of the log these actions are written to, newest first")
+            }
+          />
+        </:art>
+        <:glyph><Icons.icon_notepad class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "Every privileged action writes a line here. A rejected action is written here too. The Danger Zone leaves this log alone, so the record survives the data."
+        )}
+      </.dialog_banner>
+
       <div class="adm-scroll min-h-0 flex-1 overflow-y-auto">
         <div class="space-y-retro-8">
           <form id="admin-audit-log-form" phx-submit={@on_refresh} phx-target={@target}>
@@ -121,5 +141,16 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
       </div>
     </div>
     """
+  end
+
+  @spec audit_lines(term()) :: [map()]
+  defp audit_lines(table) do
+    table
+    |> table_rows(5)
+    |> Enum.map(fn row ->
+      actor = Map.get(row, :actor) || ""
+      action = Map.get(row, :action) || ""
+      %{text: String.trim(actor <> " " <> action), tone: :accent}
+    end)
   end
 end

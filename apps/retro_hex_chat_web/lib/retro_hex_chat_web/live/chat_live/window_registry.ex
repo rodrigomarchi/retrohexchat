@@ -329,47 +329,47 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
       window("admin-users", dgettext("chat", "Users"), :icon_community,
         admin: "open_admin_users",
         family: :admin,
-        geometry: geometry(150, 60, 680, 580, 520, 400)
+        geometry: geometry(150, 60, 680, 680, 520, 460)
       ),
       window("admin-channels", dgettext("chat", "Channels"), :icon_channels,
         admin: "open_admin_channels",
         family: :admin,
-        geometry: geometry(160, 70, 680, 580, 520, 400)
+        geometry: geometry(160, 70, 680, 680, 520, 460)
       ),
       window("admin-server-settings", dgettext("chat", "Server Settings"), :icon_server,
         admin: "open_admin_server_settings",
         family: :admin,
-        geometry: geometry(170, 80, 700, 600, 480, 360)
+        geometry: geometry(170, 80, 700, 700, 480, 420)
       ),
       window("admin-audit-log", dgettext("chat", "Audit Log"), :icon_notepad,
         admin: "open_admin_audit_log",
         family: :admin,
-        geometry: geometry(180, 90, 620, 500, 480, 360)
+        geometry: geometry(180, 90, 620, 600, 480, 420)
       ),
       window("admin-motd", dgettext("chat", "MOTD"), :icon_notepad,
         admin: "open_admin_motd",
         family: :admin,
-        geometry: geometry(190, 100, 600, 480, 480, 360)
+        geometry: geometry(190, 100, 600, 580, 480, 420)
       ),
       window("admin-turn", dgettext("chat", "TURN"), :icon_websocket,
         admin: "open_admin_turn",
         family: :admin,
-        geometry: geometry(200, 110, 640, 460, 480, 360)
+        geometry: geometry(200, 110, 640, 560, 480, 420)
       ),
       window("admin-broadcast", dgettext("chat", "Broadcast"), :icon_megaphone,
         admin: "open_admin_broadcast",
         family: :admin,
-        geometry: geometry(210, 120, 560, 460, 480, 360)
+        geometry: geometry(210, 120, 560, 560, 480, 420)
       ),
       window("admin-danger-zone", dgettext("chat", "Danger Zone"), :icon_warning,
         admin: "open_admin_danger_zone",
         family: :admin,
-        geometry: geometry(220, 130, 600, 520, 480, 360)
+        geometry: geometry(220, 130, 600, 620, 480, 420)
       ),
       window("admin-console", dgettext("chat", "Console"), :icon_dialog_admin_console,
         admin: "open_admin_console",
         family: :admin,
-        geometry: geometry(140, 50, 680, 580, 520, 400)
+        geometry: geometry(140, 50, 680, 680, 520, 460)
       ),
       window(
         "bot-management-dialog",

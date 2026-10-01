@@ -183,7 +183,7 @@ defmodule RetroHexChatWeb.AdminWindowsFeatureTest do
 
       click(view, "admin_console_clear")
 
-      assert render(view) =~ "Type a command and press Enter."
+      assert render(view) =~ "Every command starts with a slash"
     end
 
     test "a line that is not a command is reported, not dispatched", %{conn: conn} do

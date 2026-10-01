@@ -14,10 +14,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
@@ -102,6 +104,24 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
       data-testid="admin-users-panel"
       class="adm-dialog flex h-full min-h-0 flex-col gap-retro-8"
     >
+      <.dialog_banner heading={dgettext("dialogs", "Everybody who has a nickname here")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:roster}
+            title={dgettext("dialogs", "Users")}
+            lines={user_lines(@table)}
+            label={
+              dgettext("dialogs", "A miniature of the server's nicknames, each with its online lamp")
+            }
+          />
+        </:art>
+        <:glyph><Icons.icon_community class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "This is every account on the server, not the people in one channel. A green lamp means that person is connected right now. Anything you do here reaches the whole server. A ban blocks the nickname on the whole server. If you remove a registration, the name becomes free for somebody else."
+        )}
+      </.dialog_banner>
+
       <div class="adm-scroll min-h-0 flex-1 overflow-y-auto">
         <div class="space-y-retro-8">
           <form id="admin-users-search-form" phx-submit={@on_refresh} phx-target={@target}>
@@ -423,5 +443,19 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
       </div>
     </form>
     """
+  end
+
+  # The lamp is the table's own `online` column, so the picture and the list
+  # cannot disagree about who is connected.
+  @spec user_lines(term()) :: [map()]
+  defp user_lines(table) do
+    table
+    |> table_rows(6)
+    |> Enum.map(fn row ->
+      %{
+        text: Map.get(row, :nickname) || "",
+        tone: if(Map.get(row, :online), do: :ok, else: :muted)
+      }
+    end)
   end
 end

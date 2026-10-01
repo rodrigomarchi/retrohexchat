@@ -9,9 +9,11 @@ defmodule RetroHexChatWeb.Components.UI.AdminDangerZoneDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
@@ -68,6 +70,22 @@ defmodule RetroHexChatWeb.Components.UI.AdminDangerZoneDialog do
       data-testid="admin-danger-zone-panel"
       class="adm-dialog flex h-full min-h-0 flex-col gap-retro-8"
     >
+      <.dialog_banner heading={dgettext("dialogs", "What is left afterwards")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:checklist}
+            title={dgettext("dialogs", "Preserved")}
+            lines={preserved_lines()}
+            label={dgettext("dialogs", "A miniature of the four lists the wipe keeps")}
+          />
+        </:art>
+        <:glyph><Icons.icon_warning class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "This action deletes the conversations, the channels and the nicknames. Four lists are kept: the administrators, the bans, the settings and the audit log. Everything else is deleted permanently."
+        )}
+      </.dialog_banner>
+
       <div class="adm-scroll min-h-0 flex-1 overflow-y-auto">
         <div class="space-y-retro-8">
           <div class="shadow-retro-sunken bg-white p-retro-8 text-sm">
@@ -138,5 +156,15 @@ defmodule RetroHexChatWeb.Components.UI.AdminDangerZoneDialog do
       </div>
     </div>
     """
+  end
+
+  # Table names, not labels: these are what the wipe preserves, spelled the
+  # way the database spells them.
+  @spec preserved_lines() :: [map()]
+  defp preserved_lines do
+    Enum.map(
+      ~w(admin_roles audit_logs server_bans server_settings),
+      &%{text: &1, tone: :accent}
+    )
   end
 end

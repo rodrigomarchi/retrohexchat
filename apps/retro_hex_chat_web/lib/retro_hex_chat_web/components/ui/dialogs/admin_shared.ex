@@ -37,6 +37,18 @@ defmodule RetroHexChatWeb.Components.UI.AdminShared do
     """
   end
 
+  @doc """
+  The first few rows of a listing, for a banner to draw.
+
+  Four admin windows picture the listing they are about, and all four get it
+  from a `%RetroHexChat.Table{}` that may not have arrived yet — the window
+  renders before its command answers. Anything without rows draws nothing,
+  which is the truth at that moment.
+  """
+  @spec table_rows(term(), pos_integer()) :: [map()]
+  def table_rows(%{rows: rows}, limit) when is_list(rows), do: Enum.take(rows, limit)
+  def table_rows(_table, _limit), do: []
+
   @doc "Whether a value is a string with something other than whitespace in it."
   @spec present?(term()) :: boolean()
   def present?(value), do: is_binary(value) and String.trim(value) != ""

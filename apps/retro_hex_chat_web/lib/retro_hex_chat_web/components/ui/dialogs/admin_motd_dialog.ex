@@ -8,9 +8,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminMotdDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
 
+  alias RetroHexChatWeb.Components.Diagrams
+  alias RetroHexChatWeb.Components.Diagrams.DialogPreview
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
@@ -56,6 +59,22 @@ defmodule RetroHexChatWeb.Components.UI.AdminMotdDialog do
       data-testid="admin-motd-panel"
       class="adm-dialog flex h-full min-h-0 flex-col gap-retro-8"
     >
+      <.dialog_banner heading={dgettext("dialogs", "The first thing anybody reads")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:status}
+            title={dgettext("dialogs", "Status")}
+            lines={motd_lines(@content)}
+            label={dgettext("dialogs", "A miniature of the Status window this is printed in")}
+          />
+        </:art>
+        <:glyph><Icons.icon_notepad class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "The message of the day is printed in the Status window the moment somebody connects, before they have joined anything. If you clear it, a new arrival reads nothing."
+        )}
+      </.dialog_banner>
+
       <div class="adm-scroll min-h-0 flex-1 overflow-y-auto">
         <div class="space-y-retro-8">
           <div>
@@ -134,5 +153,10 @@ defmodule RetroHexChatWeb.Components.UI.AdminMotdDialog do
       </div>
     </div>
     """
+  end
+
+  @spec motd_lines(String.t() | nil) :: [map()]
+  defp motd_lines(content) do
+    if present?(content), do: DialogPreview.wrap_lines(content, :system, 26), else: []
   end
 end

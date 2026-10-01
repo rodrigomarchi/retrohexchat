@@ -597,4 +597,94 @@ test.describe("dialog gallery, administrator", () => {
     await expect(window.getByTestId(`server-emoji-row-${name}`)).toBeHidden();
     await admin.page.keyboard.press("Escape");
   });
+
+  // The nine focused admin windows. `openAdminWindow` returns the panel, which
+  // is the scope the banner is looked for in — the window frame also carries
+  // the title bar, and a tabbed neighbour could put a second banner in reach.
+  const adminWindow = async (action: string) => {
+    const panel = await admin.chat.openAdminWindow(action);
+    const window = admin.page.getByTestId(
+      `${action.replace(/^open_/, "").replaceAll("_", "-")}-window`,
+    );
+    return { panel, window };
+  };
+
+  test("admin users", async () => {
+    const { panel, window } = await adminWindow("open_admin_users");
+    await expect(panel.getByTestId("admin-users-table")).toBeVisible();
+    await shootWithBanner(admin.page, window, "admin-users", panel);
+    await admin.page.keyboard.press("Escape");
+  });
+
+  test("admin channels", async () => {
+    const { panel, window } = await adminWindow("open_admin_channels");
+    await admin.page.waitForTimeout(600);
+    await shootWithBanner(admin.page, window, "admin-channels", panel);
+    await admin.page.keyboard.press("Escape");
+  });
+
+  test("admin server settings", async () => {
+    const { panel, window } = await adminWindow("open_admin_server_settings");
+    await admin.page.waitForTimeout(600);
+    await shootWithBanner(admin.page, window, "admin-server-settings", panel);
+    await admin.page.keyboard.press("Escape");
+  });
+
+  test("admin audit log", async () => {
+    const { panel, window } = await adminWindow("open_admin_audit_log");
+    await admin.page.waitForTimeout(800);
+    await shootWithBanner(admin.page, window, "admin-audit-log", panel);
+    await admin.page.keyboard.press("Escape");
+  });
+
+  // Set, photograph, clear: an MOTD left behind is printed to every later
+  // spec's connect, and a spec that asserts on the Status window would read it.
+  test("admin motd", async () => {
+    const { panel, window } = await adminWindow("open_admin_motd");
+    await panel
+      .locator("#admin-motd-input")
+      .fill("Arcade night is Thursday. Be kind in #lobby.");
+    await panel.getByRole("button", { name: "Set MOTD" }).click();
+    await expect(panel.locator("#admin-motd-current")).toContainText(
+      "Arcade night",
+    );
+
+    await shootWithBanner(admin.page, window, "admin-motd", panel);
+
+    await panel.getByRole("button", { name: "Clear MOTD" }).click();
+    await expect(panel.locator("#admin-motd-current")).toContainText(
+      "No MOTD has been set.",
+    );
+    await admin.page.keyboard.press("Escape");
+  });
+
+  test("admin turn", async () => {
+    const { panel, window } = await adminWindow("open_admin_turn");
+    await admin.page.waitForTimeout(600);
+    await shootWithBanner(admin.page, window, "admin-turn", panel);
+    await admin.page.keyboard.press("Escape");
+  });
+
+  test("admin broadcast", async () => {
+    const { panel, window } = await adminWindow("open_admin_broadcast");
+    await shootWithBanner(admin.page, window, "admin-broadcast", panel);
+    await admin.page.keyboard.press("Escape");
+  });
+
+  test("admin danger zone", async () => {
+    const { panel, window } = await adminWindow("open_admin_danger_zone");
+    await admin.page.waitForTimeout(600);
+    await shootWithBanner(admin.page, window, "admin-danger-zone", panel);
+    await admin.page.keyboard.press("Escape");
+  });
+
+  test("admin console", async () => {
+    const { panel, window } = await adminWindow("open_admin_console");
+    await panel.locator("#admin-console-input").fill("/admin");
+    await panel.getByRole("button", { name: "Run" }).click();
+    await expect(panel.getByTestId("admin-console-output")).not.toBeEmpty();
+    await admin.page.waitForTimeout(400);
+    await shootWithBanner(admin.page, window, "admin-console", panel);
+    await admin.page.keyboard.press("Escape");
+  });
 });

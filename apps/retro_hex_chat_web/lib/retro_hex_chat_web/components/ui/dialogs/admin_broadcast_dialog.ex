@@ -9,9 +9,11 @@ defmodule RetroHexChatWeb.Components.UI.AdminBroadcastDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.AdminShared
+  import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
@@ -53,6 +55,22 @@ defmodule RetroHexChatWeb.Components.UI.AdminBroadcastDialog do
       data-testid="admin-broadcast-panel"
       class="adm-dialog flex h-full min-h-0 flex-col gap-retro-8"
     >
+      <.dialog_banner heading={dgettext("dialogs", "One line, every window")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:broadcast}
+            title={dgettext("dialogs", "Broadcast")}
+            lines={reach_lines(@can_announce)}
+            label={dgettext("dialogs", "A miniature of one line arriving in every window at once")}
+          />
+        </:art>
+        <:glyph><Icons.icon_megaphone class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "People who set user mode +w receive a wallops. Everybody on the server receives an announce. You cannot take back either one after you send it."
+        )}
+      </.dialog_banner>
+
       <div class="adm-scroll min-h-0 flex-1 overflow-y-auto">
         <div class="space-y-retro-8">
           <form
@@ -109,4 +127,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminBroadcastDialog do
     </div>
     """
   end
+
+  # The widest reach this session has, which is the one worth picturing.
+  @spec reach_lines(boolean()) :: [map()]
+  defp reach_lines(true), do: [%{text: dgettext("dialogs", "Announce"), tone: :danger}]
+  defp reach_lines(_can_announce), do: [%{text: dgettext("dialogs", "Wallops"), tone: :system}]
 end

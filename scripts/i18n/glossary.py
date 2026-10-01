@@ -408,6 +408,13 @@ _ROWS = {
     # for either one matched nothing the other did not, and German read "nick"
     # as spitz and produced "Spitzmenü" — a pointed menu.
     "nick menu":    ("menu do nick", "menu do nick", "menú del nick", "menu du pseudo", "Nick-Menü", "menu del nick", "nick-menu", "menu nicka", "меню ника", "menu nick", "ニックメニュー", "昵称菜单", "暱稱菜單"),
+    # Three labels the admin banners introduced. Short and standalone, so the
+    # engine has no sentence to read them from: "Console" is the terminal, not
+    # a games console, and "Preserved" heads the list of what a wipe keeps.
+    "Console":      ("Console", "Consola", "Consola", "Console", "Konsole", "Console", "Console", "Konsola", "\u041a\u043e\u043d\u0441\u043e\u043b\u044c", "Konsol", "\u30b3\u30f3\u30bd\u30fc\u30eb", "\u63a7\u5236\u53f0", "\u4e3b\u63a7\u53f0"),
+    "Preserved":    ("Preservado", "Preservado", "Conservado", "Conserv\u00e9", "Erhalten", "Conservato", "Behouden", "Zachowane", "\u0421\u043e\u0445\u0440\u0430\u043d\u044f\u0435\u0442\u0441\u044f", "Dipertahankan", "\u4fdd\u6301", "\u4fdd\u7559", "\u4fdd\u7559"),
+    "Sign-up":      ("Cadastro", "Registo", "Registro", "Inscription", "Registrierung", "Registrazione", "Registratie", "Rejestracja", "\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044f", "Pendaftaran", "\u767b\u9332", "\u6ce8\u518c", "\u8a3b\u518a"),
+
     "nicklist menu": ("menu da lista de nicks", "menu da lista de nicks", "menú de la lista de nicks", "menu de la liste des pseudos", "Nicklisten-Menü", "menu della lista nick", "nicklijst-menu", "menu listy nicków", "меню списка ников", "menu daftar nick", "ニックリストメニュー", "昵称列表菜单", "暱稱列表菜單"),
 }
 # fmt: on

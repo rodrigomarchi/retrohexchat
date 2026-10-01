@@ -140,4 +140,78 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogBannersTest do
       assert html =~ ~s(width="2" height="4")
     end
   end
+
+  describe "settings sheet" do
+    defp fields(lines) do
+      render_component(&diagram_dialog_preview/1, %{
+        kind: :fields,
+        title: "Server",
+        lines: lines
+      })
+    end
+
+    test "a name is drawn beside the value it currently holds" do
+      html = fields([%{text: "Name", value: "RetroHexChat"}])
+
+      assert html =~ "Name"
+      assert html =~ "RetroHexChat"
+    end
+
+    test "a setting with nothing in it draws the well and leaves it empty" do
+      html = fields([%{text: "Welcome", value: ""}])
+
+      assert html =~ "Welcome"
+      assert html =~ ~s(width="56")
+    end
+
+    test "a value too long for the well is clipped rather than run off it" do
+      html = fields([%{text: "Name", value: "A Server With A Very Long Name"}])
+
+      refute html =~ "A Server With A Very Long Name"
+      assert html =~ "…"
+    end
+  end
+
+  describe "relay" do
+    test "draws both ends and the box between them, whatever the telemetry says" do
+      html =
+        render_component(&diagram_dialog_preview/1, %{
+          kind: :relay,
+          title: "TURN",
+          lines: []
+        })
+
+      # Two peers and the relay: three frames, drawn even with no allocation
+      # to report, because the window is about the path rather than the number.
+      assert html =~ ~s(x="10" y="33")
+      assert html =~ ~s(x="96" y="33")
+      assert html =~ ~s(x="50" y="29")
+      refute html =~ ~s(fill="#e0e0e0"), "the empty-row bars would read as a fourth box"
+    end
+  end
+
+  describe "broadcast" do
+    test "the same line lands in every window" do
+      html =
+        render_component(&diagram_dialog_preview/1, %{
+          kind: :broadcast,
+          title: "Broadcast",
+          lines: [%{text: "Announce", tone: :danger}]
+        })
+
+      # Once per window: a broadcast that drew its line once would be a notice.
+      assert html |> String.split("Announce") |> length() == 4
+    end
+
+    test "a second line is not a second broadcast" do
+      html =
+        render_component(&diagram_dialog_preview/1, %{
+          kind: :broadcast,
+          title: "Broadcast",
+          lines: [%{text: "Announce", tone: :danger}, %{text: "Wallops", tone: :system}]
+        })
+
+      refute html =~ "Wallops"
+    end
+  end
 end
