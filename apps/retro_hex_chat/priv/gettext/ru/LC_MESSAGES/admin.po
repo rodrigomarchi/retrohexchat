@@ -427,12 +427,6 @@ msgstr "*** Настройка сервера отсутствует."
 msgid "*** No users found."
 msgstr "*** Пользователей нет."
 
-#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
-#, elixir-autogen, elixir-format
-msgid "*** Run /admin nuke --confirm to execute. THIS CANNOT BE UNDONE."
-msgstr ""
-"*Беги* /admin Ядерная бомба - подтвердите выполнение. Этого не может быть."
-
 #: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** SYSTEM NUKED — %{total} records destroyed ***"
@@ -929,3 +923,10 @@ msgstr "Не удалось заглушить %{nickname}."
 #, elixir-autogen, elixir-format
 msgid "Failed to unmute %{nickname}."
 msgstr "Не удалось снять заглушение с %{nickname}."
+
+#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
+#, elixir-autogen, elixir-format
+msgid "*** Run /admin nuke --confirm to execute. This cannot be undone."
+msgstr ""
+"Запускайте ядерную бомбу /admin - подтвердите выполнение. Это нельзя "
+"отменить."

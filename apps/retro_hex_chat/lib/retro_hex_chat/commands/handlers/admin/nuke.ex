@@ -37,7 +37,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Nuke do
       dgettext("admin", "*** NUKE PREVIEW — %{total} records will be destroyed ***", total: total)
 
     warning =
-      dgettext("admin", "*** Run /admin nuke --confirm to execute. THIS CANNOT BE UNDONE.")
+      dgettext("admin", "*** Run /admin nuke --confirm to execute. This cannot be undone.")
 
     preserved =
       dgettext(

@@ -427,13 +427,6 @@ msgstr "*** Geen serverinstellingen ingesteld."
 msgid "*** No users found."
 msgstr "*** Geen gebruikers gevonden."
 
-#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
-#, elixir-autogen, elixir-format
-msgid "*** Run /admin nuke --confirm to execute. THIS CANNOT BE UNDONE."
-msgstr ""
-"*** Start /admin nuke --bevestigt om uit te voeren. Dit kan niet ongedaan "
-"worden gemaakt."
-
 #: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** SYSTEM NUKED — %{total} records destroyed ***"
@@ -930,3 +923,10 @@ msgstr "Kon %{nickname} niet dempen."
 #, elixir-autogen, elixir-format
 msgid "Failed to unmute %{nickname}."
 msgstr "Kon dempen van %{nickname} niet opheffen."
+
+#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
+#, elixir-autogen, elixir-format
+msgid "*** Run /admin nuke --confirm to execute. This cannot be undone."
+msgstr ""
+"*** Start /admin nuke --bevestig om uit te voeren. Dit kan niet ongedaan "
+"worden gemaakt."

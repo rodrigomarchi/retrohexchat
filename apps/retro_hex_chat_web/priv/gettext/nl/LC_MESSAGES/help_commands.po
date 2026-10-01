@@ -83,7 +83,8 @@ msgstr "(standaard),"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "(half-operator) — Give or remove half-op status (can kick and set +v)."
-msgstr "(half-operator) — Give or remove half-op status (can kick and set +v)."
+msgstr ""
+"(half-operator) — Give or remove half-op status (can kick and set +v)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:31
 #, elixir-autogen, elixir-format
@@ -125,7 +126,8 @@ msgstr "(alleen berichtberichten),"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "(operator) — Give or remove full operator status (can manage all modes)."
-msgstr "(operator) — Give or remove full operator status (can manage all modes)."
+msgstr ""
+"(operator) — Give or remove full operator status (can manage all modes)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:16
 #, elixir-autogen, elixir-format
@@ -3172,7 +3174,7 @@ msgstr "Timers"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Timers are session-only — they do not survive page reload or disconnect"
-msgstr "Timers are session-only — they do not survive page reload or disconnect"
+msgstr "Timers zijn sessie-only"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:38
 #, elixir-autogen, elixir-format
@@ -3242,7 +3244,9 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "View the server's Message of the Day — a welcome message from the server administrators that is also shown automatically when you first connect."
-msgstr "View the server's Message of the Day — a welcome message from the server administrators that is also shown automatically when you first connect."
+msgstr ""
+"View the server's Message of the Day — a welcome message from the server "
+"administrators that is also shown automatically when you first connect."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:13
 #, elixir-autogen, elixir-format
@@ -3871,7 +3875,7 @@ msgstr "Volledige audit trail (de kernkop zelf is gelogd)"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "— Globally mute (cannot send messages anywhere). Supports"
-msgstr "— Globally mute (cannot send messages anywhere). Supports"
+msgstr "Ondersteuning"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:75
 #, elixir-autogen, elixir-format
@@ -5196,17 +5200,26 @@ msgstr "/unpin"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A channel has one topic and a welcome nobody reads twice. Everything else — the rules, the link to the event, what was agreed last week — scrolls away and gets retyped. Pinning keeps a message findable."
-msgstr "Een kanaal heeft één onderwerp en een welkom dat niemand twee keer leest. Al het andere — de regels, de link naar het evenement, wat vorige week is afgesproken — scrolt weg en wordt opnieuw getypt. Vastzetten houdt een bericht vindbaar."
+msgstr ""
+"Een kanaal heeft één onderwerp en een welkom dat niemand twee keer leest. Al"
+" het andere — de regels, de link naar het evenement, wat vorige week is "
+"afgesproken — scrolt weg en wordt opnieuw getypt. Vastzetten houdt een "
+"bericht vindbaar."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Channel operators and owners — the same bar as the topic, and for the same reason: both are the channel speaking about itself to everybody who walks in. Half-operators moderate the conversation instead."
-msgstr "Kanaaloperators en eigenaars — dezelfde lat als het onderwerp, en om dezelfde reden: beide zijn het kanaal dat over zichzelf spreekt tegen iedereen die binnenkomt. Halve operators modereren het gesprek."
+msgstr ""
+"Kanaaloperators en eigenaars — dezelfde lat als het onderwerp, en om "
+"dezelfde reden: beide zijn het kanaal dat over zichzelf spreekt tegen "
+"iedereen die binnenkomt. Halve operators modereren het gesprek."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Channel operators and owners, the same as pinning. Unpinning a message nothing was keeping is not an error — it says so and changes nothing."
-msgstr "Kanaaloperators en eigenaars, net als bij vastzetten. Een bericht losmaken dat niets bewaarde is geen fout — het zegt het en verandert niets."
+msgstr ""
+"Kanaaloperators en eigenaars, net als bij vastzetten. Een bericht losmaken "
+"dat niets bewaarde is geen fout — het zegt het en verandert niets."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:2
 #, elixir-autogen, elixir-format
@@ -5216,7 +5229,10 @@ msgstr "Houdt een bericht niet langer in beeld."
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "The message itself stays exactly where it is in the conversation — only the pin goes. The Pinned window unpins from the entry too, which is usually where you are when you decide to."
-msgstr "Het bericht blijft precies waar het staat in het gesprek — alleen de speld gaat weg. Het venster Vastgezet maakt ook los vanaf de vermelding zelf, waar je meestal bent als je het besluit."
+msgstr ""
+"Het bericht blijft precies waar het staat in het gesprek — alleen de speld "
+"gaat weg. Het venster Vastgezet maakt ook los vanaf de vermelding zelf, waar"
+" je meestal bent als je het besluit."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:21
@@ -5253,7 +5269,8 @@ msgstr "Een kanaal bewaart tot 50 berichten, nieuwste eerst"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "A message can only be pinned by the channel it was said in"
-msgstr "Een bericht kan alleen worden vastgezet door het kanaal waarin het is gezegd"
+msgstr ""
+"Een bericht kan alleen worden vastgezet door het kanaal waarin het is gezegd"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:35
 #, elixir-autogen, elixir-format
@@ -5263,7 +5280,11 @@ msgstr "Het bericht verwijderen haalt de speld mee weg"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Easier than the id: right-click the message and choose Pin. The command exists for when you already have the id in front of you. Either way the channel checks again when the pin arrives, and a Pinned button appears in the conversation toolbar as soon as there is something to show."
-msgstr "Makkelijker dan het id: klik met de rechtermuisknop op het bericht en kies Vastzetten. Het commando bestaat voor wanneer je het id al voor je hebt. Hoe dan ook controleert het kanaal opnieuw wanneer de speld aankomt, en er verschijnt een knop Vastgezet in de gespreksbalk zodra er iets te tonen is."
+msgstr ""
+"Makkelijker dan het id: klik met de rechtermuisknop op het bericht en kies "
+"Vastzetten. Het commando bestaat voor wanneer je het id al voor je hebt. Hoe"
+" dan ook controleert het kanaal opnieuw wanneer de speld aankomt, en er "
+"verschijnt een knop Vastgezet in de gespreksbalk zodra er iets te tonen is."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:30
@@ -5319,7 +5340,10 @@ msgstr "Een kanaal houdt maximaal 50 gebeurtenissen tegelijk"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A channel that only exists while somebody happens to be typing has no next time. An event is the next time, written down where the whole room can see it — and everyone who says they are coming is reminded before it starts."
-msgstr "Een kanaal dat alleen bestaat zolang er toevallig iemand typt, heeft geen volgende keer. Een gebeurtenis is die volgende keer, opgeschreven waar de hele ruimte het ziet — en wie zegt te komen, wordt er vooraf aan herinnerd."
+msgstr ""
+"Een kanaal dat alleen bestaat zolang er toevallig iemand typt, heeft geen "
+"volgende keer. Een gebeurtenis is die volgende keer, opgeschreven waar de "
+"hele ruimte het ziet — en wie zegt te komen, wordt er vooraf aan herinnerd."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:44
 #, elixir-autogen, elixir-format
@@ -5339,7 +5363,10 @@ msgstr "Kanaalgebeurtenissen"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Channel operators and owners schedule; anybody in the channel can say they are going. An event is called off by whoever scheduled it, or by an operator."
-msgstr "Kanaaloperators en -eigenaars plannen; iedereen in het kanaal kan zeggen te komen. Een gebeurtenis wordt afgezegd door wie het plande, of door een operator."
+msgstr ""
+"Kanaaloperators en -eigenaars plannen; iedereen in het kanaal kan zeggen te "
+"komen. Een gebeurtenis wordt afgezegd door wie het plande, of door een "
+"operator."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:63
 #, elixir-autogen, elixir-format
@@ -5354,7 +5381,12 @@ msgstr "Twee keer zeggen dat je komt is één keer"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "The channel gets a line with a card under it showing the start in each reader's own time zone and a button to say you are going. Shortly before it starts the room is told again, and everybody who said yes gets a notification through whatever they already have switched on. With no arguments at all, the command opens the Events window instead."
-msgstr "Het kanaal krijgt een regel met daaronder een kaart die de start in de tijdzone van elke lezer toont en een knop om te zeggen dat je komt. Kort voor het begin wordt de ruimte opnieuw ingelicht, en iedereen die ja zei krijgt een melding via wat ze al aan hebben staan. Zonder enig argument opent het commando in plaats daarvan het venster Gebeurtenissen."
+msgstr ""
+"Het kanaal krijgt een regel met daaronder een kaart die de start in de "
+"tijdzone van elke lezer toont en een knop om te zeggen dat je komt. Kort "
+"voor het begin wordt de ruimte opnieuw ingelicht, en iedereen die ja zei "
+"krijgt een melding via wat ze al aan hebben staan. Zonder enig argument "
+"opent het commando in plaats daarvan het venster Gebeurtenissen."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:37
 #, elixir-autogen, elixir-format
@@ -5369,7 +5401,9 @@ msgstr "— Zegt de gebeurtenis met dat nummer af."
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— How long from now it starts: 30m, 2h, 3d. A delay rather than a clock reading, so it means the same instant for everybody."
-msgstr "— Over hoe lang het begint: 30m, 2h, 3d. Een afstand in plaats van een kloktijd, dus hetzelfde moment voor iedereen."
+msgstr ""
+"— Over hoe lang het begint: 30m, 2h, 3d. Een afstand in plaats van een "
+"kloktijd, dus hetzelfde moment voor iedereen."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:17
 #, elixir-autogen, elixir-format

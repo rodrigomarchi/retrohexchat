@@ -16,6 +16,7 @@ from i18n.quality import (
     introduced_degeneration,
     invented_break,
     is_degenerate,
+    lost_negation,
     is_usable_translation,
     looks_like_mojibake,
 )
@@ -251,6 +252,58 @@ class InventedBreakTest(unittest.TestCase):
             invented_break(source, translated),
             "Der Bot antwortet auf ein Präfix und nichts sonst.",
         )
+
+
+class LostNegationTest(unittest.TestCase):
+    """A source that says "cannot" whose translation says nothing of the kind.
+
+    The one failure every other guard passes: the output is a well-formed
+    sentence, so collapse, degeneration and residue all see a healthy entry.
+    Found in the shipped catalogues on the line that precedes wiping the
+    server — "THIS CANNOT BE UNDONE" reached German as "DIESER KANNES" and
+    "Das ist alles", and Japanese turned "No active server bans" into a
+    sentence saying there is one.
+    """
+
+    def test_catches_a_negation_the_model_dropped(self):
+        self.assertTrue(
+            lost_negation("THIS CANNOT BE UNDONE", "DIESER KANNES", "de")
+        )
+
+    def test_accepts_a_translation_that_negates(self):
+        self.assertFalse(
+            lost_negation(
+                "THIS CANNOT BE UNDONE",
+                "Dies kann nicht rückgängig gemacht werden",
+                "de",
+            )
+        )
+
+    def test_accepts_the_impossible_family(self):
+        # French and the Romance locales negate with "impossible", which is a
+        # negation without a negative particle.
+        self.assertFalse(
+            lost_negation("Cannot ban a user", "Impossible de bannir un utilisateur", "fr")
+        )
+
+    def test_accepts_a_japanese_inflection(self):
+        self.assertFalse(
+            lost_negation("You cannot write", "書くことができません", "ja")
+        )
+
+    def test_ignores_a_source_with_no_negation(self):
+        self.assertFalse(lost_negation("Open in a new tab", "Neuer Tab", "de"))
+
+    def test_ignores_a_bare_no(self):
+        # "No topic set" is rendered a dozen ways that carry the sense without
+        # a marker; flagging them all would bury the ones that matter.
+        self.assertFalse(lost_negation("No topic set", "Sem tópico", "pt_BR"))
+
+    def test_ignores_an_empty_translation(self):
+        self.assertFalse(lost_negation("Cannot do that", "", "de"))
+
+    def test_does_not_judge_a_locale_with_no_marker_table(self):
+        self.assertFalse(lost_negation("Cannot do that", "whatever", "xx"))
 
 
 if __name__ == "__main__":

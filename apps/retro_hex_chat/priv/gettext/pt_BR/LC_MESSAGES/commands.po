@@ -1429,8 +1429,8 @@ msgid "Hide messages from a specific user.\nTypes: all (default), messages, pms,
 msgstr ""
 "Ocultar mensagens de um usuário específico.\n"
 "Tipos: todos (padrão), mensagens, pms, ações, avisos, convites.\n"
-"Duração: Nm (minutos), Nh (horas), Nd (dias). Sem duração = permanente até /unignore.\n"
-"No args: show your ignore list. You cannot ignore yourself."
+"Duração: Nm (minutos), Nh (horas), Nd (dias). Nenhuma duração = permanente até /unignore.\n"
+"Sem args: mostrar a sua lista de ignorar. Não podes ignorar-te."
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:67
 #, elixir-autogen, elixir-format
@@ -3301,7 +3301,10 @@ msgstr "Id da mensagem a deixar de manter"
 #: lib/retro_hex_chat/commands/handlers/pin.ex:52
 #, elixir-autogen, elixir-format
 msgid "Keep a message in view for the whole channel — the rules, a link, what was agreed.\nPinned messages are listed in the Pinned window and stay findable after they scroll away.\nOperators only. A channel keeps up to 50."
-msgstr "Mantém uma mensagem à vista de todo o canal — as regras, um link, o que foi combinado.\nAs mensagens fixadas ficam listadas na janela Fixadas e continuam encontráveis depois de sumirem no scroll.\nSó operadores. Um canal mantém até 50."
+msgstr ""
+"Mantém uma mensagem à vista de todo o canal — as regras, um link, o que foi combinado.\n"
+"As mensagens fixadas ficam listadas na janela Fixadas e continuam encontráveis depois de sumirem no scroll.\n"
+"Só operadores. Um canal mantém até 50."
 
 #: lib/retro_hex_chat/commands/handlers/pin.ex:72
 #, elixir-autogen, elixir-format
@@ -3316,7 +3319,9 @@ msgstr "Deixa de manter uma mensagem à vista."
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:53
 #, elixir-autogen, elixir-format
 msgid "Stop keeping a message in view. The message itself stays where it is — only the pin goes.\nOperators only."
-msgstr "Deixa de manter uma mensagem à vista. A mensagem em si continua onde está — só o pin sai.\nSó operadores."
+msgstr ""
+"Deixa de manter uma mensagem à vista. A mensagem em si continua onde está — só o pin sai.\n"
+"Só operadores."
 
 #: lib/retro_hex_chat/commands/handlers/pin.ex:36
 #: lib/retro_hex_chat/commands/handlers/unpin.ex:37
@@ -3353,7 +3358,11 @@ msgstr "Daqui a quanto tempo começa: 2h, 30m, 3d"
 #: lib/retro_hex_chat/commands/handlers/event.ex:90
 #, elixir-autogen, elixir-format
 msgid "Schedule something the channel will do together, and announce it in the room.\nThe time is a delay from now — 2h, 30m, 3d — so it means the same instant for everybody reading it.\nEveryone sees the card and can say they are going; whoever said so is reminded shortly before it starts.\nOperators only. With no arguments it opens the Events window."
-msgstr "Agende algo que o canal vai fazer junto e anuncie na sala.\nO horário é um intervalo a partir de agora — 2h, 30m, 3d — então significa o mesmo instante para todo mundo que ler.\nTodos veem o card e podem dizer que vão; quem disse é lembrado pouco antes de começar.\nSó operadores. Sem argumentos, abre a janela de Eventos."
+msgstr ""
+"Agende algo que o canal vai fazer junto e anuncie na sala.\n"
+"O horário é um intervalo a partir de agora — 2h, 30m, 3d — então significa o mesmo instante para todo mundo que ler.\n"
+"Todos veem o card e podem dizer que vão; quem disse é lembrado pouco antes de começar.\n"
+"Só operadores. Sem argumentos, abre a janela de Eventos."
 
 #: lib/retro_hex_chat/commands/handlers/event.ex:115
 #, elixir-autogen, elixir-format

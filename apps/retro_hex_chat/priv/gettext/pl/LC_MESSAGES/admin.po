@@ -427,13 +427,6 @@ msgstr "* * * Nie skonfigurowano ustawień serwera."
 msgid "*** No users found."
 msgstr "Nie znaleziono żadnych użytkowników."
 
-#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
-#, elixir-autogen, elixir-format
-msgid "*** Run /admin nuke --confirm to execute. THIS CANNOT BE UNDONE."
-msgstr ""
-"* * * Uruchom atomówkę /admin -- potwierdź wykonanie. To nie może być "
-"niepotrzebne."
-
 #: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** SYSTEM NUKED — %{total} records destroyed ***"
@@ -930,3 +923,10 @@ msgstr "Nie udało się wyciszyć %{nickname}."
 #, elixir-autogen, elixir-format
 msgid "Failed to unmute %{nickname}."
 msgstr "Nie udało się wyłączyć wyciszenia %{nickname}."
+
+#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
+#, elixir-autogen, elixir-format
+msgid "*** Run /admin nuke --confirm to execute. This cannot be undone."
+msgstr ""
+"* * * Uruchom atomówkę /admin -- potwierdź wykonanie. Tego nie da się "
+"cofnąć."

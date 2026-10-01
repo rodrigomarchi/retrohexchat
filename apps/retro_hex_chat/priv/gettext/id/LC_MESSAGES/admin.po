@@ -427,13 +427,6 @@ msgstr "* * * Tidak ada pengaturan server yang dikonfigurasi."
 msgid "*** No users found."
 msgstr "* * * Tidak ada pengguna ditemukan."
 
-#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
-#, elixir-autogen, elixir-format
-msgid "*** Run /admin nuke --confirm to execute. THIS CANNOT BE UNDONE."
-msgstr ""
-"* * * Jalankan /admin nuke --mengkonfirmasi untuk mengeksekusi. Tempat ini "
-"tidak boleh dibiarkan."
-
 #: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** SYSTEM NUKED — %{total} records destroyed ***"
@@ -930,3 +923,10 @@ msgstr "Gagal membisukan %{nickname}."
 #, elixir-autogen, elixir-format
 msgid "Failed to unmute %{nickname}."
 msgstr "Gagal membatalkan bisu %{nickname}."
+
+#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
+#, elixir-autogen, elixir-format
+msgid "*** Run /admin nuke --confirm to execute. This cannot be undone."
+msgstr ""
+"* * * Jalankan /admin nuke --mengkonfirmasi untuk mengeksekusi. Ini tidak "
+"bisa dibatalkan."

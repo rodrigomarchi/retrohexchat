@@ -427,11 +427,6 @@ msgstr "*** Pas de configuration du serveur."
 msgid "*** No users found."
 msgstr "*** Aucun utilisateur trouvé."
 
-#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
-#, elixir-autogen, elixir-format
-msgid "*** Run /admin nuke --confirm to execute. THIS CANNOT BE UNDONE."
-msgstr "*** Exécuter /admin Nuke --confirmer à exécuter. C'est impossible."
-
 #: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** SYSTEM NUKED — %{total} records destroyed ***"
@@ -930,3 +925,10 @@ msgstr "Échec de la mise en sourdine de %{nickname}."
 #, elixir-autogen, elixir-format
 msgid "Failed to unmute %{nickname}."
 msgstr "Échec de la réactivation du son de %{nickname}."
+
+#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
+#, elixir-autogen, elixir-format
+msgid "*** Run /admin nuke --confirm to execute. This cannot be undone."
+msgstr ""
+"*** Exécuter /admin Nuke --confirmer à exécuter. Cela ne peut pas être "
+"annulé."

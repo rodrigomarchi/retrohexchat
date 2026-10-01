@@ -2199,11 +2199,6 @@ msgstr "Status:"
 msgid "Stop"
 msgstr "Zatrzymaj"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_danger_zone_dialog.ex:93
-#, elixir-autogen, elixir-format
-msgid "THIS CANNOT BE UNDONE"
-msgstr "NIE MOŻE BYĆ NIEWYKONANE"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_turn_dialog.ex:33
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_turn_dialog.ex:63
 #, elixir-autogen, elixir-format
@@ -3060,7 +3055,7 @@ msgstr "Problem"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:607
 #, elixir-autogen, elixir-format
 msgid "never"
-msgstr "Nigdy"
+msgstr "nigdy"
 
 #: lib/retro_hex_chat_web/components/ui/system/metrics_panel.ex:39
 #, elixir-autogen, elixir-format
@@ -5393,3 +5388,8 @@ msgstr ""
 "Osoba ta może dołączyć do kanału z zaproszeniem, nawet gdy kanał jest "
 "zamknięty. Dochodzi do nich gdziekolwiek są i oni wybierają, czy z niego "
 "korzystać."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_danger_zone_dialog.ex:93
+#, elixir-autogen, elixir-format
+msgid "This cannot be undone."
+msgstr "Tego nie da się cofnąć."

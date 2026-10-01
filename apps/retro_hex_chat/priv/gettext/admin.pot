@@ -427,11 +427,6 @@ msgstr ""
 msgid "*** No users found."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
-#, elixir-autogen, elixir-format
-msgid "*** Run /admin nuke --confirm to execute. THIS CANNOT BE UNDONE."
-msgstr ""
-
 #: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** SYSTEM NUKED — %{total} records destroyed ***"
@@ -922,4 +917,9 @@ msgstr ""
 #: lib/retro_hex_chat/admin.ex:138
 #, elixir-autogen, elixir-format
 msgid "Failed to unmute %{nickname}."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
+#, elixir-autogen, elixir-format
+msgid "*** Run /admin nuke --confirm to execute. This cannot be undone."
 msgstr ""

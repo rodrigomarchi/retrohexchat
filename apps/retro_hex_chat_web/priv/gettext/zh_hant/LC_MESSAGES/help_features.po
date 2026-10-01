@@ -5658,7 +5658,9 @@ msgstr "桌面通知"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "If you have Retro Hex Chat open anywhere — a chat tab, a call, a Space — nothing is sent. You already have the sound, the flashing title and, if you asked for it, a desktop notification."
-msgstr "只要你在任何地方開著 Retro Hex Chat — 聊天分頁、通話、空間 — 就不會發送任何內容。你已經有聲音、閃爍的標題，以及在你要求時的桌面通知。"
+msgstr ""
+"只要你在任何地方開著 Retro Hex Chat — 聊天分頁、通話、空間 — "
+"就不會發送任何內容。你已經有聲音、閃爍的標題，以及在你要求時的桌面通知。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:13
 #, elixir-autogen, elixir-format
@@ -5683,12 +5685,15 @@ msgstr "按裝置，以及哪些內容離開伺服器"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The Sounds window has one switch above the event list: notify me on this device even when Retro Hex Chat is closed. With it on, this browser can be woken up after every tab is gone."
-msgstr "聲音設置視窗在事件清單上方有一個開關：即使關閉 Retro Hex Chat 也在此裝置上通知我。開啟後，在所有分頁都關閉之後仍可喚醒這個瀏覽器。"
+msgstr ""
+"聲音設置視窗在事件清單上方有一個開關：即使關閉 Retro Hex Chat 也在此裝置上通知我。開啟後，在所有分頁都關閉之後仍可喚醒這個瀏覽器。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "The switch is about this browser on this machine, so turning it off on your laptop leaves your phone alone. What the server sends is encrypted for that one browser: the push service in between — your browser vendor's — carries an address and a block of ciphertext, and can read neither the conversation nor the message."
-msgstr "這個開關只針對這台機器上的這個瀏覽器，所以在筆電上關掉它不會影響你的手機。伺服器發送的內容只為那一個瀏覽器加密：中間的推播服務 — 你的瀏覽器廠商的服務 — 只攜帶一個位址和一段密文，既讀不到對話也讀不到訊息。"
+msgstr ""
+"這個開關只針對這台機器上的這個瀏覽器，所以在筆電上關掉它不會影響你的手機。伺服器發送的內容只為那一個瀏覽器加密：中間的推播服務 — 你的瀏覽器廠商的服務"
+" — 只攜帶一個位址和一段密文，既讀不到對話也讀不到訊息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:38
 #, elixir-autogen, elixir-format
@@ -5769,7 +5774,9 @@ msgstr "開啟對話會清除兩者"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Mentions lists every message that named you, newest first, across the channels you are in. Clicking one switches to that conversation and scrolls to the line. While anything is waiting, a badge appears in the taskbar tray and opens the same window."
-msgstr "開始 ▸ 提及會按從新到舊列出所有點名你的訊息，涵蓋你所在的全部頻道。點擊其中一則會切換到那個對話並捲動到該行。只要還有等待中的內容，工作列系統匣就會出現一個徽章，開啟的是同一個視窗。"
+msgstr ""
+"開始 ▸ "
+"提及會按從新到舊列出所有點名你的訊息，涵蓋你所在的全部頻道。點擊其中一則會切換到那個對話並捲動到該行。只要還有等待中的內容，工作列系統匣就會出現一個徽章，開啟的是同一個視窗。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:22
 #, elixir-autogen, elixir-format
@@ -5849,7 +5856,8 @@ msgstr "當你切換到另一個對話時"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "While there is something new, a First unread button appears beside the conversation's other controls and scrolls to the first line you have not read. If that line is older than the part of the history currently loaded, scroll up once to load more and press it again."
-msgstr "只要還有新內容，對話的其他控制項旁就會出現一個「第一則未讀」按鈕，捲動到你還沒讀的第一行。如果那一行比目前載入的歷史還舊，先向上捲動一次載入更多，然後再按一次。"
+msgstr ""
+"只要還有新內容，對話的其他控制項旁就會出現一個「第一則未讀」按鈕，捲動到你還沒讀的第一行。如果那一行比目前載入的歷史還舊，先向上捲動一次載入更多，然後再按一次。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:56
 #, elixir-autogen, elixir-format
@@ -5894,7 +5902,9 @@ msgstr "儲存是私密的。不會通知作者，不會向任何人顯示數量
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Tools ▸ Saved Messages lists everything you kept, newest first, and each row goes back to the line in its own conversation. You can keep up to 500; each one can carry a short note about why."
-msgstr "開始 ▸ 工具 ▸ 已儲存的訊息會按從新到舊列出你儲存的一切，每一行都能回到它所在對話中的那則訊息。最多可以儲存 500 則，每則都可以附一句簡短的理由。"
+msgstr ""
+"開始 ▸ 工具 ▸ 已儲存的訊息會按從新到舊列出你儲存的一切，每一行都能回到它所在對話中的那則訊息。最多可以儲存 500 "
+"則，每則都可以附一句簡短的理由。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:33
 #, elixir-autogen, elixir-format
@@ -5914,7 +5924,8 @@ msgstr "已刪除的訊息不會出現；編輯過的會標記為已編輯"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Everything a group knows usually dies inside the room it was said in. A channel can choose otherwise: its founder can open a public archive, and from that moment the channel gets a page per day that anybody can read and a search engine can index."
-msgstr "一個群體所知道的一切，通常就死在它被說出的那個房間裡。頻道可以選擇不這樣：創建者可以開啟公開封存，從那一刻起，頻道每天都會有一頁任何人都能讀、搜尋引擎也能索引的內容。"
+msgstr ""
+"一個群體所知道的一切，通常就死在它被說出的那個房間裡。頻道可以選擇不這樣：創建者可以開啟公開封存，從那一刻起，頻道每天都會有一頁任何人都能讀、搜尋引擎也能索引的內容。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:26
 #, elixir-autogen, elixir-format
@@ -5924,7 +5935,8 @@ msgstr "進入、離開和其他頻道通知不會被公開"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Only what is said from the moment the switch goes on. Nothing already in the channel is ever published, however long it has been there — whoever wrote it wrote it into a room, not onto the internet. Everyone present is told when the switch changes, so nobody learns it from a search engine."
-msgstr "只有開關打開之後說的話才會公開。頻道裡已有的內容，無論放了多久，都永遠不會被發布——寫下它的人是寫進一個房間，而不是寫到網際網路上。開關變化時在場的每個人都會被告知，這樣就沒有人是從搜尋引擎得知的。"
+msgstr ""
+"只有開關打開之後說的話才會公開。頻道裡已有的內容，無論放了多久，都永遠不會被發布——寫下它的人是寫進一個房間，而不是寫到網際網路上。開關變化時在場的每個人都會被告知，這樣就沒有人是從搜尋引擎得知的。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:43
 #, elixir-autogen, elixir-format
@@ -5944,7 +5956,9 @@ msgstr "關掉它會立刻撤下所有頁面"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, and only a registered channel has one."
-msgstr "只有創建者，別人都不行。管理員管理房間；而決定房間裡說的話能不能被外面讀到，是另一種性質的決定，屬於為這個頻道負責的人。開關在 Channel Central 的註冊分頁裡，只有已註冊的頻道才有。"
+msgstr ""
+"只有創建者，別人都不行。管理員管理房間；而決定房間裡說的話能不能被外面讀到，是另一種性質的決定，屬於為這個頻道負責的人。開關在 Channel "
+"Central 的註冊分頁裡，只有已註冊的頻道才有。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:14
 #, elixir-autogen, elixir-format
@@ -5969,17 +5983,20 @@ msgstr "有人回覆過的訊息會說明它收到了多少則回覆。選擇那
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Answering a reply answers the conversation it belongs to: your message quotes the original message, not the reply you clicked. That keeps one disagreement as one thread instead of a branching tree, and it is why a reply never collects replies of its own."
-msgstr "回覆一則回覆，就是在回覆它所屬的那段對話：你的訊息引用的是原始訊息，而不是你點擊的那則回覆。這樣一次分歧仍然是一條討論串，而不是一棵分叉的樹——這也是回覆永遠不會收集自己的回覆的原因。"
+msgstr ""
+"回覆一則回覆，就是在回覆它所屬的那段對話：你的訊息引用的是原始訊息，而不是你點擊的那則回覆。這樣一次分歧仍然是一條討論串，而不是一棵分叉的樹——這也是回覆永遠不會收集自己的回覆的原因。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Every reply still appears in the channel where it was written. The Thread window is a second place to read them, never the only place — in a small room, hiding replies behind a panel is how a conversation stops happening in front of everybody."
-msgstr "每一則回覆都仍然出現在它被寫下的頻道裡。討論串視窗是閱讀它們的第二個地方，而絕不是唯一的地方——在小房間裡，把回覆藏在面板後面，正是對話不再當著大家發生的原因。"
+msgstr ""
+"每一則回覆都仍然出現在它被寫下的頻道裡。討論串視窗是閱讀它們的第二個地方，而絕不是唯一的地方——在小房間裡，把回覆藏在面板後面，正是對話不再當著大家發生的原因。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Everything that answers the first message, including replies somebody later deleted, which are shown as removed so the count and the list always agree. Replies written before this feature existed keep the message they quoted and are not counted here."
-msgstr "所有回答第一則訊息的內容，包括後來被人刪除的回覆；它們會顯示為已刪除，這樣計數和清單始終一致。在此功能出現之前寫下的回覆會保留它們引用的訊息，不計入這裡。"
+msgstr ""
+"所有回答第一則訊息的內容，包括後來被人刪除的回覆；它們會顯示為已刪除，這樣計數和清單始終一致。在此功能出現之前寫下的回覆會保留它們引用的訊息，不計入這裡。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
 #, elixir-autogen, elixir-format
@@ -6024,7 +6041,9 @@ msgstr "討論串"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Under a message that was answered there is a \"2 replies\" line. Click it, or right-click the message and choose Open Thread, and the Thread window opens on that conversation. Opening it from one of the replies opens the same thread."
-msgstr "在被回覆過的訊息下方有一行「2 則回覆」。點擊它，或以右鍵點擊該訊息並選擇「開啟討論串」，討論串視窗就會開啟那段對話。從任一則回覆開啟，開啟的也是同一個討論串。"
+msgstr ""
+"在被回覆過的訊息下方有一行「2 "
+"則回覆」。點擊它，或以右鍵點擊該訊息並選擇「開啟討論串」，討論串視窗就會開啟那段對話。從任一則回覆開啟，開啟的也是同一個討論串。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:28
 #, elixir-autogen, elixir-format
@@ -6049,7 +6068,9 @@ msgstr "關閉聊天後的通知"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Operators only, with /event followed by how long from now it starts and what it is called: /event 2h Tuesday tournament. The time is a delay rather than a clock reading, so it means the same instant for everybody who can read it, wherever they are."
-msgstr "僅限管理員，使用 /event 後面跟上距離開始的時長和名稱：/event 2h 週二錦標賽。時間是時長而不是時鐘時間，所以無論身在何處，對每個人都是同一個時刻。"
+msgstr ""
+"僅限管理員，使用 /event 後面跟上距離開始的時長和名稱：/event 2h "
+"週二錦標賽。時間是時長而不是時鐘時間，所以無論身在何處，對每個人都是同一個時刻。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:25
 #, elixir-autogen, elixir-format
@@ -6069,12 +6090,15 @@ msgstr "安排一個"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Shortly before it starts, the channel gets a line saying so, and everyone who said they were going gets a notification — a desktop one if you have the chat open, a push one if you do not. There is no separate alerts channel and no setting of its own: it uses the notifications you have already chosen."
-msgstr "開始前不久，頻道會收到一行說明，所有表示參加的人都會收到通知——如果你開著聊天就是桌面通知，否則是推播通知。沒有單獨的提醒頻道，也沒有自己的設定：它使用你已經選擇的通知方式。"
+msgstr ""
+"開始前不久，頻道會收到一行說明，所有表示參加的人都會收到通知——如果你開著聊天就是桌面通知，否則是推播通知。沒有單獨的提醒頻道，也沒有自己的設定：它使用你已經選擇的通知方式。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Tools ▸ Events, or /event with nothing after it, lists what this channel has coming up, soonest first. Whoever scheduled something can call it off with /event cancel followed by its number; the record that it was going to happen stays."
-msgstr "開始 ▸ 工具 ▸ 活動，或者後面什麼都不加的 /event，會按從近到遠列出這個頻道的安排。安排了某件事的人可以用 /event cancel 加上編號來取消；它本來要發生的紀錄會保留。"
+msgstr ""
+"開始 ▸ 工具 ▸ 活動，或者後面什麼都不加的 /event，會按從近到遠列出這個頻道的安排。安排了某件事的人可以用 /event cancel "
+"加上編號來取消；它本來要發生的紀錄會保留。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:38
 #, elixir-autogen, elixir-format
@@ -6134,7 +6158,7 @@ msgstr "如何關掉"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "View ▸ Character Portraits, in the menu bar or the Start menu, switches them off and back on. The plain text line is the other half of what this chat looks like, and somebody reading a busy channel may want nothing but the words."
-msgstr "選單列或開始選單中的「檢視 ▸ 角色頭像」可以把它們關掉再打開。純文字的一行是這個聊天外觀的另一半，而閱讀繁忙頻道的人可能只想要文字。"
+msgstr "在菜單欄或“開始”菜單中查看 QQ 字符縮寫, 把它們關閉並重新打開 。 純文本線是聊天的另一半, 有人讀到一個忙碌的頻道可能只想要字。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:21
 #, elixir-autogen, elixir-format
@@ -6144,7 +6168,8 @@ msgstr "誰有頭像"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A server can teach itself pictures and answer to them by name. Write :shrug: and everybody on this server sees the picture; everybody elsewhere never does, because the set belongs to the server."
-msgstr "一台伺服器可以給自己新增圖片，並按名稱回應它們。寫下 :shrug:，這台伺服器上的每個人都會看到圖片；別處的人永遠看不到，因為這一套屬於這台伺服器。"
+msgstr ""
+"一台伺服器可以給自己新增圖片，並按名稱回應它們。寫下 :shrug:，這台伺服器上的每個人都會看到圖片；別處的人永遠看不到，因為這一套屬於這台伺服器。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:14
 #, elixir-autogen, elixir-format
@@ -6154,7 +6179,8 @@ msgstr "如何新增"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Administrators only, from Admin ▸ Server Emoji. Choose a picture, give it a name, and it is available to everybody here at once. A server holds up to 100, and removing one frees its name again."
-msgstr "僅限管理員，從「管理 ▸ 伺服器表情」進入。選一張圖片，給它取個名字，這裡的每個人立刻就能用。一台伺服器最多存 100 個，刪除一個會重新釋放它的名稱。"
+msgstr ""
+"僅限管理員，從「管理 ▸ 伺服器表情」進入。選一張圖片，給它取個名字，這裡的每個人立刻就能用。一台伺服器最多存 100 個，刪除一個會重新釋放它的名稱。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:21
 #, elixir-autogen, elixir-format
@@ -6174,7 +6200,8 @@ msgstr "兩到三十二個字元：小寫字母、數字和底線。這是一個
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Type the name between two colons, or pick it from the top of the emoji picker, where this server's own are listed above the ones everybody has. A name this server does not have stays exactly as you typed it — it never becomes a broken picture."
-msgstr "把名稱寫在兩個冒號之間，或從表情選擇器頂部挑選——這台伺服器自己的表情列在所有人都有的那些之上。這台伺服器沒有的名稱會原樣保留，永遠不會變成損壞的圖片。"
+msgstr ""
+"把名稱寫在兩個冒號之間，或從表情選擇器頂部挑選——這台伺服器自己的表情列在所有人都有的那些之上。這台伺服器沒有的名稱會原樣保留，永遠不會變成損壞的圖片。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:7
 #, elixir-autogen, elixir-format
@@ -6204,7 +6231,8 @@ msgstr "在手機上，而且只在能錄音的瀏覽器裡。在電腦上，輸
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Press Record and allow the microphone when the browser asks. The clock beside it counts up while you speak. Attach ends the take and adds it to the message, where it waits with any other attachment until you press Send; Discard throws it away and the microphone is released either way."
-msgstr "按下「錄音」，瀏覽器詢問時允許使用麥克風。旁邊的計時器會在你說話時計數。「附加」結束錄音並加入訊息，與其他附件一起等到你按下傳送；「捨棄」把它丟掉，兩種情況下麥克風都會釋放。"
+msgstr ""
+"按下「錄音」，瀏覽器詢問時允許使用麥克風。旁邊的計時器會在你說話時計數。「附加」結束錄音並加入訊息，與其他附件一起等到你按下傳送；「捨棄」把它丟掉，兩種情況下麥克風都會釋放。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:7
 #, elixir-autogen, elixir-format

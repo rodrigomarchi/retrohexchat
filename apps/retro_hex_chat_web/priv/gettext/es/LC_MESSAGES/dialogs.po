@@ -2196,11 +2196,6 @@ msgstr "Situación:"
 msgid "Stop"
 msgstr "Detener"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_danger_zone_dialog.ex:93
-#, elixir-autogen, elixir-format
-msgid "THIS CANNOT BE UNDONE"
-msgstr "Esto no se puede perder"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_turn_dialog.ex:33
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_turn_dialog.ex:63
 #, elixir-autogen, elixir-format
@@ -3060,7 +3055,7 @@ msgstr "Problema"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:607
 #, elixir-autogen, elixir-format
 msgid "never"
-msgstr "Nunca"
+msgstr "nunca"
 
 #: lib/retro_hex_chat_web/components/ui/system/metrics_panel.ex:39
 #, elixir-autogen, elixir-format
@@ -5411,3 +5406,8 @@ msgid "This person can join the channel with the invitation, even when the chann
 msgstr ""
 "Esta persona puede unirse al canal con la invitación, incluso cuando el "
 "canal está cerrado. Los alcanza dondequiera que estén, y eligen si lo usan."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_danger_zone_dialog.ex:93
+#, elixir-autogen, elixir-format
+msgid "This cannot be undone."
+msgstr "Esto no puede ser deshecho."

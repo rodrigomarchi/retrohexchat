@@ -427,11 +427,6 @@ msgstr "*** サーバの設定は行いません。"
 msgid "*** No users found."
 msgstr "*** 利用者が見つかりません。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
-#, elixir-autogen, elixir-format
-msgid "*** Run /admin nuke --confirm to execute. THIS CANNOT BE UNDONE."
-msgstr "*** /admin nuke --confirmを実行して実行します。 これは、ドンドンになりません。"
-
 #: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** SYSTEM NUKED — %{total} records destroyed ***"
@@ -926,3 +921,8 @@ msgstr "%{nickname} をミュートできませんでした。"
 #, elixir-autogen, elixir-format
 msgid "Failed to unmute %{nickname}."
 msgstr "%{nickname} のミュートを解除できませんでした。"
+
+#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
+#, elixir-autogen, elixir-format
+msgid "*** Run /admin nuke --confirm to execute. This cannot be undone."
+msgstr "*** /admin nuke --confirmを実行して実行します。 これは元に戻すことができません。"

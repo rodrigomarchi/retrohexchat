@@ -2182,11 +2182,6 @@ msgstr "ステータス:"
 msgid "Stop"
 msgstr "停止"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_danger_zone_dialog.ex:93
-#, elixir-autogen, elixir-format
-msgid "THIS CANNOT BE UNDONE"
-msgstr "これは、ドンドンになりません"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_turn_dialog.ex:33
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_turn_dialog.ex:63
 #, elixir-autogen, elixir-format
@@ -3040,7 +3035,7 @@ msgstr "問題の問題"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:607
 #, elixir-autogen, elixir-format
 msgid "never"
-msgstr "決してない"
+msgstr "なし"
 
 #: lib/retro_hex_chat_web/components/ui/system/metrics_panel.ex:39
 #, elixir-autogen, elixir-format
@@ -3939,7 +3934,9 @@ msgstr "保存したメッセージをこれ以上読み込めませんでした
 #: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:77
 #, elixir-autogen, elixir-format
 msgid "Right-click a message and choose Save to keep it here. Nobody else can see what you keep, and it stays after the conversation has scrolled away."
-msgstr "メッセージを右クリックして「保存」を選ぶと、ここに残ります。何を保存したかはほかの人には見えず、会話が流れたあとも残ります。"
+msgstr ""
+"メッセージを右クリックし、[保存]を選択して、ここに保存します。 "
+"他の人は、あなたが維持しているものを見ることができず、それは会話が離れてスクロールした後にとどまります。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:128
 #, elixir-autogen, elixir-format
@@ -5237,3 +5234,8 @@ msgstr "この人はチャンネルに滞在し、それをまだ読むことが
 #, elixir-autogen, elixir-format
 msgid "This person can join the channel with the invitation, even when the channel is closed. It reaches them wherever they are, and they choose whether to use it."
 msgstr "チャンネルを閉じても、この人が招待状でチャンネルに参加できます。 どこにいても達し、使うか選ぶ。"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_danger_zone_dialog.ex:93
+#, elixir-autogen, elixir-format
+msgid "This cannot be undone."
+msgstr "これは元に戻すことができません。"

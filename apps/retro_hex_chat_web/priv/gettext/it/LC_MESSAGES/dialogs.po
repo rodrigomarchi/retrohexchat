@@ -2196,11 +2196,6 @@ msgstr "Stato:"
 msgid "Stop"
 msgstr "Ferma"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_danger_zone_dialog.ex:93
-#, elixir-autogen, elixir-format
-msgid "THIS CANNOT BE UNDONE"
-msgstr "Questo non può essere niente"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_turn_dialog.ex:33
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_turn_dialog.ex:63
 #, elixir-autogen, elixir-format
@@ -3064,7 +3059,7 @@ msgstr "Problematiche"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:607
 #, elixir-autogen, elixir-format
 msgid "never"
-msgstr "Mai"
+msgstr "mai"
 
 #: lib/retro_hex_chat_web/components/ui/system/metrics_panel.ex:39
 #, elixir-autogen, elixir-format
@@ -5420,3 +5415,8 @@ msgid "This person can join the channel with the invitation, even when the chann
 msgstr ""
 "Questa persona può aderire al canale con l'invito, anche quando il canale è "
 "chiuso. Li raggiunge ovunque si trovino, e scelgono se usarlo."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_danger_zone_dialog.ex:93
+#, elixir-autogen, elixir-format
+msgid "This cannot be undone."
+msgstr "Questo non può essere annullato."

@@ -231,6 +231,56 @@ def invented_break(source: str, translated: str) -> str | None:
     return " ".join(lines)
 
 
+# The negations whose loss changes what the reader does. A bare "no" is left
+# out on purpose: "No topic set" translates to a dozen shapes that carry the
+# sense without a marker, and flagging them all would bury the ones that matter.
+NEGATED_SOURCE = re.compile(
+    r"\b(cannot|can't|won't|never|nothing|nobody|neither|nor"
+    r"|do not|does not|will not|is not|are not)\b",
+    re.IGNORECASE,
+)
+
+# What a negation looks like in each catalogue. Substrings, not words: German
+# compounds ("niemals", "niemand") and Japanese inflections ("ません", "ない")
+# are the same marker wearing different endings.
+NEGATION_MARKERS = {
+    "pt_BR": r"não|nem\b|nunca|ninguém|nada|nenhum|jamais|imposs",
+    "pt_PT": r"não|nem\b|nunca|ninguém|nada|nenhum|jamais|imposs",
+    "es": r"\bno\b|\bni\b|nunca|nadie|nada|ning|jamás|imposib",
+    "fr": r"\bne\b|\bn'|\bpas\b|jamais|personne|\brien\b|aucun|\bni\b|imposs",
+    "de": r"nicht|kein|\bnie|niemand|nichts|weder|nein|unmöglich",
+    "it": r"\bnon\b|\bné\b|mai\b|nessun|niente|nulla|imposs",
+    "nl": r"niet|geen|nooit|niemand|niets|noch|onmogelijk",
+    "pl": r"\bnie|żad|nigdy|nikt|\bnic\b|ani\b|brak",
+    "ru": r"\bне\b|\bни|нет|никог|никт|ничего|нечего|некому|никак|нельзя|невозмож",
+    "id": r"tidak|bukan|jangan|belum|\btak\b|mustahil",
+    "ja": r"ない|なく|ませ|なし|せず|不|無|非|できま",
+    "zh_hans": r"不|没|无|未|别|非|勿",
+    "zh_hant": r"不|沒|無|未|別|非|勿",
+}
+
+_MARKER_RE = {code: re.compile(pat, re.IGNORECASE) for code, pat in NEGATION_MARKERS.items()}
+
+
+def lost_negation(source: str, translated: str, locale_code: str) -> bool:
+    """A source that says "cannot" and a translation that says nothing of the kind.
+
+    This is the failure that matters most and that every other guard passes:
+    the output is a well-formed sentence, so collapse, degeneration and
+    residue all see a healthy entry. Measured in the shipped catalogues:
+    "THIS CANNOT BE UNDONE" reached German as "DIESER KANNES" and, elsewhere,
+    as "Das ist alles" — on the line that precedes destroying the server.
+
+    A locale with no marker table is not judged rather than judged wrongly.
+    """
+    marker = _MARKER_RE.get(locale_code)
+
+    if marker is None or not source or not translated.strip():
+        return False
+
+    return bool(NEGATED_SOURCE.search(source)) and not marker.search(translated)
+
+
 def find_collapses(
     entries: list[tuple[str, str]], threshold: int = COLLAPSE_THRESHOLD
 ) -> dict[str, set[str]]:

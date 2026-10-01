@@ -28,6 +28,7 @@ from i18n.quality import (  # noqa: E402
     find_collapses,
     find_shared_headings,
     invented_break,
+    lost_negation,
     introduced_degeneration,
 )
 from i18n.translator import TraditionalChinesePostprocessor, build  # noqa: E402
@@ -89,7 +90,7 @@ def repair_locale(locale, args: argparse.Namespace) -> None:
     # Collapse is judged after stripping: an injected heading makes distinct
     # translations look distinct, and removing it can reveal that what sat
     # beneath was collapsed all along.
-    broken = collect_broken(files, args.collapse_threshold)
+    broken = collect_broken(files, args.collapse_threshold, locale.code)
     print(f"{locale.code}: stripped={stripped} still_broken={len(broken)}")
 
     if broken and not args.no_retranslate:
@@ -156,7 +157,7 @@ def rejoin_invented_breaks(files: dict) -> int:
     return repaired
 
 
-def collect_broken(files: dict, threshold: int) -> list:
+def collect_broken(files: dict, threshold: int, locale_code: str) -> list:
     pairs = [pair for po in files.values() for pair in catalogs.entry_pairs(po)]
     collapsed = set(find_collapses(pairs, threshold))
     broken = []
@@ -170,6 +171,7 @@ def collect_broken(files: dict, threshold: int) -> list:
                 if (
                     has_sentinel_residue(current)
                     or introduced_degeneration(source, current)
+                    or lost_negation(source, current, locale_code)
                     or current.strip() in collapsed
                 ):
                     broken.append((path, entry, index, source))

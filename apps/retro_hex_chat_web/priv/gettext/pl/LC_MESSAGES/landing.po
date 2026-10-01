@@ -58,7 +58,7 @@ msgstr "Podziel się z przyjaciółmi"
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:475
 #, elixir-autogen, elixir-format
 msgid "“Your data. Your rules. Nobody in between.”"
-msgstr "& ldquo; Twoje dane. Twoje zasady. Nikogo pomiędzy. & rdquo;"
+msgstr "\"Twoje dane. Twoje zasady. Nikt pomiędzy\"."
 
 #: lib/retro_hex_chat_web/live/landing_live/install.ex:124
 #, elixir-autogen, elixir-format
@@ -2514,12 +2514,20 @@ msgstr ""
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:131
 #, elixir-autogen, elixir-format
 msgid "If you switch on notifications for when the chat is closed, your browser gives the server an address at its vendor's push service — Google's, Mozilla's or Apple's — and the server sends a notification there. What it sends is encrypted for your browser alone: the push service carries an address and a block of ciphertext, and can read neither the conversation nor the message."
-msgstr "Jeśli włączysz powiadomienia na czas, gdy czat jest zamknięty, Twoja przeglądarka poda serwerowi adres w usłudze push swojego dostawcy — Google, Mozilli lub Apple — a serwer wyśle tam powiadomienie. To, co wysyła, jest zaszyfrowane wyłącznie dla Twojej przeglądarki: usługa push niesie adres i blok szyfrogramu i nie może odczytać ani rozmowy, ani wiadomości."
+msgstr ""
+"Jeśli włączysz powiadomienia na czas, gdy czat jest zamknięty, Twoja "
+"przeglądarka poda serwerowi adres w usłudze push swojego dostawcy — Google, "
+"Mozilli lub Apple — a serwer wyśle tam powiadomienie. To, co wysyła, jest "
+"zaszyfrowane wyłącznie dla Twojej przeglądarki: usługa push niesie adres i "
+"blok szyfrogramu i nie może odczytać ani rozmowy, ani wiadomości."
 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:137
 #, elixir-autogen, elixir-format
 msgid "It is off until you turn it on, it is per device, and the same switch in the Sounds window turns it off again. A self-hosted server with no VAPID key pair does not have the feature at all."
-msgstr "Jest wyłączone, dopóki go nie włączysz, działa na urządzenie, a ten sam przełącznik w oknie Dźwięki wyłącza je z powrotem. Samodzielnie hostowany serwer bez pary kluczy VAPID w ogóle nie ma tej funkcji."
+msgstr ""
+"Jest wyłączone, dopóki go nie włączysz, działa na urządzenie, a ten sam "
+"przełącznik w oknie Dźwięki wyłącza je z powrotem. Samodzielnie hostowany "
+"serwer bez pary kluczy VAPID w ogóle nie ma tej funkcji."
 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:128
 #, elixir-autogen, elixir-format
@@ -2534,7 +2542,12 @@ msgstr "Jedyne ciasteczko, które nie jest logowaniem"
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "Your browser is given a random name so the server can tell your phone from your desktop. It identifies a browser, never a person: nothing is stored against it but which channels that screen had open and where in them you had read to, and a different browser on the same machine gets a different one. It follows you nowhere, because it only exists on this server."
-msgstr "Twoja przeglądarka dostaje losową nazwę, żeby serwer odróżnił telefon od komputera. Oznacza przeglądarkę, nigdy osobę: nie zapisuje się przy niej nic poza tym, które kanały ten ekran miał otwarte i dokąd w nich doczytałeś, a inna przeglądarka na tej samej maszynie dostaje inną. Nie chodzi za tobą nigdzie, bo istnieje tylko na tym serwerze."
+msgstr ""
+"Twoja przeglądarka dostaje losową nazwę, żeby serwer odróżnił telefon od "
+"komputera. Oznacza przeglądarkę, nigdy osobę: nie zapisuje się przy niej nic"
+" poza tym, które kanały ten ekran miał otwarte i dokąd w nich doczytałeś, a "
+"inna przeglądarka na tej samej maszynie dostaje inną. Nie chodzi za tobą "
+"nigdzie, bo istnieje tylko na tym serwerze."
 
 #: lib/retro_hex_chat_web/controllers/archive_controller.ex:183
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:7
@@ -2565,12 +2578,16 @@ msgstr "Wszystkie dni"
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Everything said here since the channel opened its archive, one page per day. Nothing from before it was opened is published."
-msgstr "Wszystko, co powiedziano tutaj, odkąd kanał otworzył archiwum — jedna strona dziennie. Nic sprzed otwarcia nie jest publikowane."
+msgstr ""
+"Wszystko, co powiedziano tutaj, odkąd kanał otworzył archiwum — jedna strona"
+" dziennie. Nic sprzed otwarcia nie jest publikowane."
 
 #: lib/retro_hex_chat_web/controllers/archive_controller.ex:59
 #, elixir-autogen, elixir-format
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
-msgstr "Wszystko, co powiedziano na %{channel}, odkąd otwarto archiwum — jedna strona dziennie."
+msgstr ""
+"Wszystko, co powiedziano na %{channel}, odkąd otwarto archiwum — jedna "
+"strona dziennie."
 
 #: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:43
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:26

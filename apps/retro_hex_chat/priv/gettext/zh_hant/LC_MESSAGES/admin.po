@@ -427,11 +427,6 @@ msgstr "*** 沒有配置服務器設置 。"
 msgid "*** No users found."
 msgstr "*** 沒有找到用戶。"
 
-#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
-#, elixir-autogen, elixir-format
-msgid "*** Run /admin nuke --confirm to execute. THIS CANNOT BE UNDONE."
-msgstr "*** 運行 /admin 核武器 -- 確認執行。 這不可能是孤獨的。"
-
 #: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** SYSTEM NUKED — %{total} records destroyed ***"
@@ -924,3 +919,8 @@ msgstr "無法將 %{nickname} 靜音。"
 #, elixir-autogen, elixir-format
 msgid "Failed to unmute %{nickname}."
 msgstr "無法解除 %{nickname} 的靜音。"
+
+#: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:40
+#, elixir-autogen, elixir-format
+msgid "*** Run /admin nuke --confirm to execute. This cannot be undone."
+msgstr "*** 運行 /admin 核武器 -- 確認執行。 這一點是無法消除的。"
