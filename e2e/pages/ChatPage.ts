@@ -238,6 +238,9 @@ export class ChatPage {
   readonly mentionsDialog: Locator;
   readonly pinnedDialog: Locator;
   readonly savedDialog: Locator;
+  readonly eventsDialog: Locator;
+  readonly threadDialog: Locator;
+  readonly serverEmojiDialog: Locator;
   readonly accountPasswordInput: Locator;
   readonly accountConfirmInput: Locator;
   readonly accountDropPasswordInput: Locator;
@@ -681,6 +684,9 @@ export class ChatPage {
     this.mentionsDialog = page.getByTestId("mentions-window");
     this.pinnedDialog = page.getByTestId("pinned-window");
     this.savedDialog = page.getByTestId("saved-window");
+    this.eventsDialog = page.getByTestId("events-window");
+    this.threadDialog = page.getByTestId("thread-window");
+    this.serverEmojiDialog = page.getByTestId("server-emoji-window");
     this.accountPasswordInput = page.getByTestId("account-password");
     this.accountConfirmInput = page.getByTestId("account-confirm");
     this.accountDropPasswordInput = page.getByTestId("account-drop-password");
@@ -1669,6 +1675,21 @@ export class ChatPage {
   async openPinnedFromToolbar() {
     await this.page.getByTestId("conversation-toolbar-pinned").click();
     await expect(this.pinnedDialog).toBeVisible();
+  }
+
+  /** Admin-only, and it lives on the Tools strip rather than in Start. */
+  async openServerEmojiFromMenu() {
+    const item = visibleContextMenuItem(this.page, "open_server_emoji_dialog");
+    await this.openToolsMenuItem(item);
+    await item.click();
+    await expect(this.serverEmojiDialog).toBeVisible();
+  }
+
+  async openEventsFromStartMenu() {
+    const item = this.page.getByTestId("start-menu-item-open_events_dialog");
+    await this.openStartGroup(this.toolsSubmenuTrigger, item);
+    await item.click();
+    await expect(this.eventsDialog).toBeVisible();
   }
 
   async openSavedFromStartMenu() {

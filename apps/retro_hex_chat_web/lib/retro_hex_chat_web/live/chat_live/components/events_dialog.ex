@@ -44,7 +44,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.EventsDialog do
        viewer: nil,
        timezone: "Etc/UTC",
        can_schedule: false,
-       loaded?: false
+       loaded?: false,
+       first_row: nil
      )
      |> PaginatedList.init(:events,
        page_size: @page_size,
@@ -81,6 +82,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.EventsDialog do
       <.events_panel
         id={@id}
         events={@streams.events}
+        first_row={@first_row}
         state={@paginated.events}
         target={@myself}
         can_schedule={@can_schedule}
@@ -91,7 +93,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.EventsDialog do
 
   @spec load_first_page(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
   defp load_first_page(socket) do
-    PaginatedList.reset(socket, :events, fetch(socket, limit: @page_size))
+    page = fetch(socket, limit: @page_size)
+
+    socket
+    |> assign(:first_row, List.first(page.items))
+    |> PaginatedList.reset(:events, page)
   end
 
   @spec fetch(Phoenix.LiveView.Socket.t(), keyword()) :: Page.t()

@@ -8,7 +8,9 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, default: "user-lookup-dialog"
@@ -40,6 +42,22 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
       data-testid="user-lookup-panel"
       class="ul-panel"
     >
+      <.dialog_banner heading={dgettext("dialogs", "What the server will tell you")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:card}
+            title={dgettext("dialogs", "Whois")}
+            lines={lookup_lines(@result, @nickname)}
+            label={dgettext("dialogs", "A miniature of the card a lookup answers with")}
+          />
+        </:art>
+        <:glyph><Icons.icon_btn_find class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "Whois answers for somebody connected right now; Last Seen answers for somebody who is not. Neither tells them you asked."
+        )}
+      </.dialog_banner>
+
       <form
         id={"#{@id}-form"}
         data-testid="user-lookup-form"
@@ -200,4 +218,22 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
     </section>
     """
   end
+
+  # The card the form is about to fill, showing the last answer while there
+  # is one and the nickname being typed while there is not.
+  @spec lookup_lines(map() | nil, String.t()) :: [map()]
+  defp lookup_lines(nil, ""), do: []
+
+  defp lookup_lines(nil, nickname), do: [%{text: nickname, tone: :accent}]
+
+  defp lookup_lines(result, _nickname) do
+    [
+      %{text: Map.get(result, :nickname, ""), tone: :accent},
+      %{text: lookup_caption(Map.get(result, :kind)), tone: :muted}
+    ]
+  end
+
+  @spec lookup_caption(atom() | nil) :: String.t()
+  defp lookup_caption(:whowas), do: dgettext("dialogs", "last seen")
+  defp lookup_caption(_kind), do: dgettext("dialogs", "connected now")
 end

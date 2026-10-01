@@ -18,8 +18,10 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.ActivityIndicator
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
   alias RetroHexChat.Chat.TimeFormatter
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   @doc "Renders the channel list dialog."
@@ -39,6 +41,22 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
       data-testid="channel-list-panel"
       class="cl-dialog"
     >
+      <.dialog_banner heading={dgettext("dialogs", "Rooms you can walk into")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:tabs}
+            title={dgettext("dialogs", "Chat")}
+            lines={joinable_lines(@channels)}
+            label={dgettext("dialogs", "A miniature of the tab a room opens as")}
+          />
+        </:art>
+        <:glyph><Icons.icon_channels class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "Pressing a row goes in and opens the room as a tab beside the ones you already have. A room marked invite-only asks to be let in instead, and the people inside decide."
+        )}
+      </.dialog_banner>
+
       <%!-- Search --%>
       <form
         class="cl-search-form"
@@ -156,4 +174,13 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   defp display_topic(nil), do: dgettext("dialogs", "No topic set")
   defp display_topic(""), do: dgettext("dialogs", "No topic set")
   defp display_topic(topic), do: topic
+
+  # Joining opens a tab, which is where the reader meets the room next.
+  @spec joinable_lines([map()]) :: [map()]
+  defp joinable_lines(channels) do
+    channels
+    |> Enum.reject(&Map.get(&1, :joined))
+    |> Enum.take(2)
+    |> Enum.map(&%{text: &1.name, tone: :normal})
+  end
 end

@@ -15,7 +15,9 @@ defmodule RetroHexChatWeb.Components.UI.ServerEmojiDialog do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ListStates
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   @doc "Renders the Server Emoji window body."
@@ -31,6 +33,22 @@ defmodule RetroHexChatWeb.Components.UI.ServerEmojiDialog do
   def server_emoji_panel(assigns) do
     ~H"""
     <div id={"#{@id}-panel"} class="flex h-full min-h-0 flex-col gap-retro-4">
+      <.dialog_banner heading={dgettext("dialogs", "Shorthand anybody here can type")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:query}
+            title={dgettext("dialogs", "Channel")}
+            lines={emoji_lines(@emojis)}
+            label={dgettext("dialogs", "A miniature of a channel line using a server emoji")}
+          />
+        </:art>
+        <:glyph><Icons.icon_fmt_emoji class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "An emoji added here belongs to the server: everybody writes it between two colons and everybody sees the same picture. Removing one leaves the colons behind in the lines that already used it."
+        )}
+      </.dialog_banner>
+
       <form
         id={"#{@id}-form"}
         class="shrink-0 space-y-retro-4 bg-white p-2 shadow-retro-field"
@@ -142,4 +160,15 @@ defmodule RetroHexChatWeb.Components.UI.ServerEmojiDialog do
   defp chosen(%{entries: [entry | _rest]}), do: entry.client_name
 
   defp chosen(_upload), do: dgettext("dialogs", "no picture chosen")
+
+  # An emoji is only ever met inside a line somebody typed.
+  @spec emoji_lines([map()]) :: [map()]
+  defp emoji_lines([]), do: []
+
+  defp emoji_lines([emoji | _rest]) do
+    [
+      %{text: dgettext("dialogs", "that went well"), tone: :normal},
+      %{text: ":" <> emoji.name <> ":", tone: :accent}
+    ]
+  end
 end

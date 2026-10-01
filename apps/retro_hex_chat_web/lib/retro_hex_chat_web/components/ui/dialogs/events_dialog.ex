@@ -14,11 +14,15 @@ defmodule RetroHexChatWeb.Components.UI.EventsDialog do
 
   import RetroHexChatWeb.Components.UI.EventCard
   import RetroHexChatWeb.Components.UI.ListStates
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
+  alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
 
   @doc "Renders the Events window body."
   attr :id, :string, required: true
+  attr :first_row, :map, default: nil, doc: "Soonest event, for the banner picture"
   attr :events, :any, required: true, doc: "the stream of event rows"
   attr :state, :any, default: nil, doc: "PaginatedList.State for the list"
   attr :target, :any, default: nil
@@ -28,6 +32,22 @@ defmodule RetroHexChatWeb.Components.UI.EventsDialog do
   def events_panel(assigns) do
     ~H"""
     <div id={"#{@id}-panel"} class="flex h-full min-h-0 flex-col gap-retro-4">
+      <.dialog_banner heading={dgettext("dialogs", "What the room has coming up")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:schedule}
+            title={dgettext("dialogs", "Channel")}
+            lines={event_lines(@first_row)}
+            label={dgettext("dialogs", "A miniature of the next event and when it starts")}
+          />
+        </:art>
+        <:glyph><Icons.icon_clock class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "An event belongs to the channel, so everybody in it sees the same list and is told in the room when the time comes. Only an operator can put one on the calendar."
+        )}
+      </.dialog_banner>
+
       <.list_empty_state
         :if={State.empty?(@state)}
         icon={:clock}
@@ -94,5 +114,19 @@ defmodule RetroHexChatWeb.Components.UI.EventsDialog do
       <.list_end_marker :if={State.exhausted?(@state)} testid="events-end" />
     </div>
     """
+  end
+
+  # The soonest one, which is the only part of the list that is news.
+  @spec event_lines(map() | nil) :: [map()]
+  defp event_lines(nil), do: []
+
+  defp event_lines(row) do
+    # The row wraps the card the list renders; the title lives on the card.
+    card = Map.get(row, :card) || %{}
+
+    [
+      %{text: Map.get(card, :title) || "", tone: :accent},
+      %{text: Map.get(row, :when_text) || "", tone: :muted}
+    ]
   end
 end

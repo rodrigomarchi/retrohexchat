@@ -5,6 +5,11 @@
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
  *
+ * Two dialogs are deliberately absent: Server Emoji is admin-only and this
+ * gallery runs as an ordinary session, and the Share link dialog belongs to a
+ * surface rather than to the chat desktop. Both have banners; neither is
+ * photographed here.
+ *
  * This spec is the visual half of the dialog grammar work. It asserts the
  * banner is there — a dialog that lost its illustration fails here — and
  * writes a PNG per dialog so the drawing itself can be judged by eye. The
@@ -301,6 +306,55 @@ test.describe("dialog gallery", () => {
     await user.page.waitForTimeout(600);
     await user.chat.openPinnedFromToolbar();
     await shootWithBanner(user.page, user.chat.pinnedDialog, "pinned");
+    await user.page.keyboard.press("Escape");
+  });
+
+  test("channel list", async () => {
+    await user.chat.browseAllChannelsFromConversations();
+    await shootWithBanner(
+      user.page,
+      user.chat.channelListDialog,
+      "channel-list",
+    );
+    await user.chat.closeChannelList();
+  });
+
+  test("user lookup", async () => {
+    await user.chat.openUserLookupFromToolsMenu();
+    await user.chat.userLookupDialog
+      .getByTestId("user-lookup-nickname")
+      .fill(user.nick);
+    await user.chat.userLookupDialog
+      .getByRole("button", { name: "Whois", exact: true })
+      .click();
+    await user.page.waitForTimeout(900);
+    await shootWithBanner(user.page, user.chat.userLookupDialog, "user-lookup");
+    await user.page.keyboard.press("Escape");
+  });
+
+  test("events", async () => {
+    await user.chat.switchToTab(channel);
+    await user.page.waitForTimeout(400);
+    await user.chat.sendMessage("/event 2h Tuesday tournament");
+    await user.page.waitForTimeout(900);
+    await user.chat.openEventsFromStartMenu();
+    await shootWithBanner(user.page, user.chat.eventsDialog, "events");
+    await user.page.keyboard.press("Escape");
+  });
+
+  test("thread", async () => {
+    await user.chat.switchToTab(channel);
+    await user.page.waitForTimeout(400);
+    // Open Thread only appears once a line has an answer, which is the
+    // point of the window.
+    await user.chat.openMessageContextMenu("the rules live at");
+    await user.page.getByTestId("context-menu-item-reply_to_message").click();
+    await user.chat.sendMessage("they changed on Tuesday");
+    await user.page.waitForTimeout(900);
+
+    await user.chat.openMessageContextMenu("the rules live at");
+    await user.page.getByTestId("context-menu-item-open_thread").click();
+    await shootWithBanner(user.page, user.chat.threadDialog, "thread");
     await user.page.keyboard.press("Escape");
   });
 

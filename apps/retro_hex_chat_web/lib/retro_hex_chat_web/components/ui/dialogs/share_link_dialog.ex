@@ -16,7 +16,9 @@ defmodule RetroHexChatWeb.Components.UI.ShareLinkDialog do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
@@ -41,9 +43,21 @@ defmodule RetroHexChatWeb.Components.UI.ShareLinkDialog do
         </.dialog_header>
 
         <.dialog_body>
-          <p class="text-xs">
-            {dgettext("share", "Anyone who opens this link can come in.")}
-          </p>
+          <.dialog_banner heading={dgettext("share", "What somebody sees when they follow it")}>
+            <:art>
+              <Diagrams.diagram_dialog_preview
+                kind={:tabs}
+                title={dgettext("share", "Chat")}
+                lines={arrival_lines(@url)}
+                label={dgettext("share", "A miniature of the room a shared link opens into")}
+              />
+            </:art>
+            <:glyph><Icons.icon_btn_link class="h-8 w-8" /></:glyph>
+            {dgettext(
+              "share",
+              "The link goes straight into the room, with no account and nothing to fill in. Revoking it closes that door without touching anybody already inside."
+            )}
+          </.dialog_banner>
 
           <%!-- The field is the fallback, so it is given the width to be one:
                 an address you can see and select is what still works when the
@@ -94,5 +108,16 @@ defmodule RetroHexChatWeb.Components.UI.ShareLinkDialog do
       </.dialog>
     </span>
     """
+  end
+
+  # A share link is a door into a room, so the picture is the tab it opens as.
+  @spec arrival_lines(String.t() | nil) :: [map()]
+  defp arrival_lines(nil), do: []
+
+  defp arrival_lines(url) do
+    case URI.parse(url).path do
+      nil -> []
+      path -> [%{text: Path.basename(path), tone: :normal}]
+    end
   end
 end

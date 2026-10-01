@@ -21,7 +21,9 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.MessageRow
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
 
@@ -41,6 +43,24 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialog do
   def thread_panel(assigns) do
     ~H"""
     <div id={"#{@id}-panel"} class="flex h-full min-h-0 flex-col gap-retro-4">
+      <.dialog_banner heading={dgettext("dialogs", "One disagreement, start to finish")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:query}
+            title={dgettext("dialogs", "Channel")}
+            lines={thread_lines(@root)}
+            label={
+              dgettext("dialogs", "A miniature of the line a thread hangs off and its first answer")
+            }
+          />
+        </:art>
+        <:glyph><Icons.icon_chat class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "A thread keeps an argument out of the room it started in: the replies live here instead of scrolling the channel. Everyone in the channel can open it and read the whole thing."
+        )}
+      </.dialog_banner>
+
       <.list_empty_state
         :if={is_nil(@root)}
         icon={:chat}
@@ -138,5 +158,23 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialog do
       </.button>
     </div>
     """
+  end
+
+  # The line everything else hangs off, which is the one thing the reply list
+  # below cannot show on its own.
+  @spec thread_lines(map() | nil) :: [map()]
+  defp thread_lines(nil), do: []
+
+  defp thread_lines(root) do
+    [
+      %{text: Map.get(root, :author) || "", tone: :muted},
+      %{text: root_text(root), tone: :accent}
+    ]
+  end
+
+  @spec root_text(map()) :: String.t()
+  defp root_text(root) do
+    (Map.get(root, :plain_content) || Map.get(root, :content) || "")
+    |> String.slice(0, 60)
   end
 end

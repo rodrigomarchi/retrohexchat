@@ -51,8 +51,8 @@ msgstr "Daftarkan nama panggilan Anda untuk membagikan tautan."
 msgid "Share"
 msgstr "Bagikan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:39
-#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:58
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:41
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:72
 #: lib/retro_hex_chat_web/live/share_control.ex:124
 #, elixir-autogen, elixir-format
 msgid "Share link"
@@ -201,6 +201,7 @@ msgstr "Kursi sudah terisi"
 msgid "Somebody already took the seat. This match is full."
 msgstr "Kursinya sudah diambil orang lain. Pertandingan ini penuh."
 
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:50
 #: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:57
 #: lib/retro_hex_chat_web/components/ui/share/surface_tab_link.ex:79
 #, elixir-autogen, elixir-format
@@ -212,13 +213,13 @@ msgstr "Obrolan"
 msgid "It is already open in another window of yours."
 msgstr "Sudah terbuka di jendela Anda yang lain."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:82
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:96
 #: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:152
 #, elixir-autogen, elixir-format
 msgid "Copied!"
 msgstr "Tersalin!"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:86
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:100
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr "Salin"
@@ -228,12 +229,12 @@ msgstr "Salin"
 msgid "Somebody shared this with you."
 msgstr "Seseorang membagikan ini kepada Anda."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:74
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:88
 #, elixir-autogen, elixir-format
 msgid "Revoke"
 msgstr "Cabut"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:69
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:83
 #, elixir-autogen, elixir-format
 msgid "Stop this link from working? The room stays open."
 msgstr "Hentikan tautan ini? Ruangnya tetap terbuka."
@@ -337,12 +338,7 @@ msgstr "kurang dari satu menit"
 msgid "P2P session"
 msgstr "Sesi P2P"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:45
-#, elixir-autogen, elixir-format
-msgid "Anyone who opens this link can come in."
-msgstr "Siapa pun yang membuka tautan ini bisa masuk."
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:91
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:105
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr "Tutup"
@@ -356,3 +352,21 @@ msgstr "Sebuah ruang di RetroHexChat"
 #, elixir-autogen, elixir-format
 msgid "ended %{when}"
 msgstr "%{when} berakhir"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:52
+#, elixir-autogen, elixir-format
+msgid "A miniature of the room a shared link opens into"
+msgstr "Sebuah miniatur ruangan link bersama terbuka ke"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:56
+#, elixir-autogen, elixir-format
+msgid "The link goes straight into the room, with no account and nothing to fill in. Revoking it closes that door without touching anybody already inside."
+msgstr ""
+"Link langsung masuk ke ruangan, tanpa akun dan tidak ada untuk mengisi masuk"
+" Menghancurkannya menutup pintu itu tanpa menyentuh siapa pun sudah di "
+"dalam."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:46
+#, elixir-autogen, elixir-format
+msgid "What somebody sees when they follow it"
+msgstr "Apa yang seseorang lihat ketika mereka mengikutinya"
