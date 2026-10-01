@@ -14,6 +14,7 @@ from i18n.quality import (
     find_shared_headings,
     has_trailing_stop,
     introduced_degeneration,
+    invented_break,
     is_degenerate,
     is_usable_translation,
     looks_like_mojibake,
@@ -205,6 +206,51 @@ class FindCollapsesTest(unittest.TestCase):
         entries = [(f"source {index}", "") for index in range(10)]
 
         self.assertEqual(find_collapses(entries), {})
+
+
+class InventedBreakTest(unittest.TestCase):
+    """A single-line source that came back as two lines.
+
+    Found in `ja/diagrams.po`: Argos prefixed one entry with シリーズ
+    ("series"). `find_shared_headings` needs the same heading on several
+    entries before it will act, so one occurrence shipped.
+    """
+
+    def test_drops_a_short_heading_the_model_prefixed(self):
+        self.assertEqual(
+            invented_break(
+                "A miniature of the list that shows these.",
+                "シリーズ\nこれらのリストのミニチュア。",
+            ),
+            "これらのリストのミニチュア。",
+        )
+
+    def test_rejoins_a_sentence_the_model_split(self):
+        self.assertEqual(
+            invented_break(
+                "People reach the bot by its name and its prefix.",
+                "Die Menschen erreichen den Bot\nmit seinem Namen.",
+            ),
+            "Die Menschen erreichen den Bot mit seinem Namen.",
+        )
+
+    def test_leaves_a_single_line_translation_alone(self):
+        self.assertIsNone(invented_break("One line in", "Uma linha dentro"))
+
+    def test_leaves_a_break_the_source_asked_for(self):
+        self.assertIsNone(invented_break("First\nSecond", "Primeiro\nSegundo"))
+
+    def test_leaves_an_empty_translation_to_the_other_gates(self):
+        self.assertIsNone(invented_break("Anything", ""))
+
+    def test_a_long_first_line_is_content_not_a_heading(self):
+        source = "The bot answers a prefix."
+        translated = "Der Bot antwortet auf ein Präfix\nund nichts sonst."
+
+        self.assertEqual(
+            invented_break(source, translated),
+            "Der Bot antwortet auf ein Präfix und nichts sonst.",
+        )
 
 
 if __name__ == "__main__":

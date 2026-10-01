@@ -73,7 +73,13 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
           id={"#{@id}-wrap"}
           phx-window-keydown={!@lock && close_modal(@on_cancel, @id)}
           phx-key="escape"
-          class={classes(["w-full max-w-none md:max-w-lg p-0 md:p-4", @class])}
+          class={
+            classes([
+              "w-full max-w-none md:max-w-lg p-0 md:p-4",
+              scope_wrap_classes(@scope),
+              @class
+            ])
+          }
         >
           <%!-- Window frame (Win98 3D border) --%>
           <div
@@ -95,6 +101,15 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
   # stacked mobile layout). Both revert to a centered card at `md`.
   defp scope_position(:viewport), do: "fixed"
   defp scope_position(:window), do: "absolute"
+
+  # The frame's own `max-h-full` is a percentage, and a percentage height only
+  # binds when the ancestor it is a percentage *of* has a height. The viewport
+  # scope is safe because `90dvh` is not a percentage; the window scope was not,
+  # so a card taller than its host window simply grew past it and took the
+  # footer — the submit button — out of reach. Making the wrap a flex column
+  # that may shrink lets the body scroll instead.
+  defp scope_wrap_classes(:window), do: "flex min-h-0 max-h-full flex-col"
+  defp scope_wrap_classes(:viewport), do: nil
 
   defp scope_frame_classes(:viewport) do
     "flex flex-col bg-surface shadow-retro-window p-[3px] " <>

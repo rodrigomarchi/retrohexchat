@@ -3,6 +3,16 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
   Bot form dialogs: New Bot and Add Command.
 
   Uses app design system primitives (Dialog, Button, Input, Label, Checkbox).
+
+  Both lead with a banner, because neither form explains itself from its fields:
+  a prefix and a cooldown say nothing about what a bot *is*, and a trigger with
+  a response says nothing about who can call it. New Bot pictures the capability
+  list with nothing ticked — a bot starts able to do nothing — and Add Command
+  pictures the turns this bot already answers, so a second one reads as another
+  of the same thing rather than as a setting.
+
+  The nine capability checkboxes come from one list rather than nine copied
+  blocks, so the picture and the form cannot drift apart.
   """
   use RetroHexChatWeb.Component
 
@@ -11,7 +21,9 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Label
   import RetroHexChatWeb.Components.UI.Checkbox
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
   # ── New Bot Dialog ─────────────────────────────────────────
@@ -30,6 +42,27 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
       <form phx-submit="create_bot" class="bm-form flex min-h-0 flex-1 flex-col">
         <.dialog_body class="bm-form-body">
           <div class="space-y-retro-8">
+            <.dialog_banner heading={dgettext("dialogs", "A new bot can do nothing yet")}>
+              <:art>
+                <Diagrams.diagram_dialog_preview
+                  kind={:checklist}
+                  title={dgettext("dialogs", "Capabilities")}
+                  lines={capability_lines()}
+                  label={
+                    dgettext(
+                      "dialogs",
+                      "A miniature of the list of capabilities. Nothing is selected yet."
+                    )
+                  }
+                />
+              </:art>
+              <:glyph><Icons.icon_btn_bot_management class="h-8 w-8" /></:glyph>
+              {dgettext(
+                "dialogs",
+                "People reach the bot by its name and its prefix. Each capability below is one more thing the bot can do. No capability is active until you select it. A bot with no capability does not answer."
+              )}
+            </.dialog_banner>
+
             <div>
               <.label for="bot-name">{dgettext("dialogs", "Name")}</.label>
               <.input
@@ -74,38 +107,11 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
               </legend>
               <div class="bm-checkbox-grid grid grid-cols-2 gap-retro-4">
                 <.checkbox_item
-                  id="cap-mention"
-                  name="cap_mention"
-                  label={dgettext("dialogs", "Mention Response")}
+                  :for={capability <- capability_fields()}
+                  id={capability.id}
+                  name={capability.name}
+                  label={capability.label}
                 />
-                <.checkbox_item
-                  id="cap-greeter"
-                  name="cap_greeter"
-                  label={dgettext("dialogs", "Greeter")}
-                />
-                <.checkbox_item
-                  id="cap-custom-commands"
-                  name="cap_custom_commands"
-                  label={dgettext("dialogs", "Custom Commands")}
-                />
-                <.checkbox_item id="cap-help" name="cap_help" label={dgettext("dialogs", "Help")} />
-                <.checkbox_item id="cap-dice" name="cap_dice" label={dgettext("dialogs", "Dice")} />
-                <.checkbox_item
-                  id="cap-moderation"
-                  name="cap_moderation"
-                  label={dgettext("dialogs", "Moderation")}
-                />
-                <.checkbox_item
-                  id="cap-trivia"
-                  name="cap_trivia"
-                  label={dgettext("dialogs", "Trivia")}
-                />
-                <.checkbox_item
-                  id="cap-scheduler"
-                  name="cap_scheduler"
-                  label={dgettext("dialogs", "Scheduler")}
-                />
-                <.checkbox_item id="cap-rss" name="cap_rss" label={dgettext("dialogs", "RSS")} />
               </div>
             </fieldset>
           </div>
@@ -130,6 +136,12 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
   attr :id, :string, required: true
   attr :show, :boolean, default: false
   attr :bot_name, :string, default: ""
+  attr :prefix, :string, default: "!"
+
+  attr :commands, :list,
+    default: [],
+    doc: "The bot's existing custom commands, so the banner draws a real turn"
+
   attr :on_close, :any, default: nil
 
   @spec add_command_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -143,6 +155,27 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
         <input type="hidden" name="bot_name" value={@bot_name} />
         <.dialog_body class="bm-form-body">
           <div class="space-y-retro-8">
+            <.dialog_banner heading={dgettext("dialogs", "The same answer, every time")}>
+              <:art>
+                <Diagrams.diagram_dialog_preview
+                  kind={:query}
+                  title={@bot_name}
+                  lines={command_lines(@commands, @prefix, @bot_name)}
+                  label={
+                    dgettext(
+                      "dialogs",
+                      "A miniature of a command and the bot's answer to it"
+                    )
+                  }
+                />
+              </:art>
+              <:glyph><Icons.icon_tab_commands class="h-8 w-8" /></:glyph>
+              {dgettext(
+                "dialogs",
+                "Anyone in a channel where the bot is present can use this command, and everyone in that channel sees the answer. The bot always replies with the same line, so the text in the Response field is the text the channel will read."
+              )}
+            </.dialog_banner>
+
             <div>
               <.label for="cmd-trigger">{dgettext("dialogs", "Trigger")}</.label>
               <.input
@@ -193,6 +226,48 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
       </form>
     </.dialog>
     """
+  end
+
+  # ── Private: the capability list ────────────────────────────
+
+  # The nine capabilities, in the order the form has always shown them. One
+  # list, read twice: once by the checkboxes, once by the banner's picture.
+  @spec capability_fields() :: [%{id: String.t(), name: String.t(), label: String.t()}]
+  defp capability_fields do
+    [
+      %{id: "cap-mention", name: "cap_mention", label: dgettext("dialogs", "Mention Response")},
+      %{id: "cap-greeter", name: "cap_greeter", label: dgettext("dialogs", "Greeter")},
+      %{
+        id: "cap-custom-commands",
+        name: "cap_custom_commands",
+        label: dgettext("dialogs", "Custom Commands")
+      },
+      %{id: "cap-help", name: "cap_help", label: dgettext("dialogs", "Help")},
+      %{id: "cap-dice", name: "cap_dice", label: dgettext("dialogs", "Dice")},
+      %{id: "cap-moderation", name: "cap_moderation", label: dgettext("dialogs", "Moderation")},
+      %{id: "cap-trivia", name: "cap_trivia", label: dgettext("dialogs", "Trivia")},
+      %{id: "cap-scheduler", name: "cap_scheduler", label: dgettext("dialogs", "Scheduler")},
+      %{id: "cap-rss", name: "cap_rss", label: dgettext("dialogs", "RSS")}
+    ]
+  end
+
+  # Nothing is ticked, because nothing is: a capability is off until the
+  # checkbox beside it is on.
+  @spec capability_lines() :: [map()]
+  defp capability_lines do
+    Enum.map(capability_fields(), &%{text: &1.label, tone: :normal})
+  end
+
+  # The turn this bot already answers, so a second command reads as another of
+  # the same thing. A bot with none draws an empty well, which is the truth.
+  @spec command_lines(list(), String.t(), String.t()) :: [map()]
+  defp command_lines([], _prefix, _bot_name), do: []
+
+  defp command_lines([command | _rest], prefix, bot_name) do
+    [
+      %{text: prefix <> bot_name <> " " <> Map.get(command, :trigger, ""), tone: :accent},
+      %{text: Map.get(command, :response) || "", tone: :normal}
+    ]
   end
 
   # ── Private: checkbox helper ────────────────────────────────

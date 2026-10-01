@@ -8,6 +8,7 @@ silently:
   collapse   one translation serving many unrelated sources
   degenerate a decoding loop ("kalıcı kalıcı kalıcı kalıcı")
   residue    an internal sentinel left in the shipped string
+  break      a one-line source that came back as two
 """
 
 from __future__ import annotations
@@ -25,6 +26,7 @@ from i18n.quality import (  # noqa: E402
     find_collapses,
     find_shared_headings,
     introduced_degeneration,
+    invented_break,
     looks_like_mojibake,
 )
 
@@ -69,6 +71,7 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
     residue: list[tuple[str, str]] = []
     drifted: list[tuple[str, str]] = []
     mojibake: list[tuple[str, str]] = []
+    broken_lines: list[tuple[str, str]] = []
     curated = glossary.for_locale(code)
 
     for path in catalogs.po_files(code):
@@ -89,6 +92,9 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
             if looks_like_mojibake(translated):
                 mojibake.append((source, translated))
 
+            if invented_break(source, translated) is not None:
+                broken_lines.append((source, translated))
+
     collapses = find_collapses(pairs, args.collapse_threshold)
     headings = find_shared_headings(pairs, args.collapse_threshold)
     findings = (
@@ -96,6 +102,7 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
         + len(residue)
         + len(drifted)
         + len(mojibake)
+        + len(broken_lines)
         + sum(len(sources) for sources in collapses.values())
         + sum(len(sources) for sources in headings.values())
     )
@@ -110,6 +117,7 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
     report_simple("residue", residue, args.max_examples)
     report_simple("glossary drift", drifted, args.max_examples)
     report_simple("mojibake", mojibake, args.max_examples)
+    report_simple("invented line break", broken_lines, args.max_examples)
     return findings
 
 

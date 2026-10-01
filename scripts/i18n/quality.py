@@ -193,6 +193,44 @@ def find_shared_headings(
     return {head: sources for head, sources in headings.items() if len(sources) >= threshold}
 
 
+# A heading short enough that it can only be a label the model prefixed, never
+# a sentence the source asked for.
+HEADING_CHARS = 12
+
+
+def invented_break(source: str, translated: str) -> str | None:
+    """Repair a translation that broke a single-line source into two.
+
+    `find_shared_headings` needs a heading to recur across the catalog before
+    it will call it injected, which is right for a bulk contamination and
+    blind to a single one: Argos prefixed exactly one diagrams entry with
+    シリーズ ("series") and the rule could not see it.
+
+    A UI string's newlines are its own. A source with none that comes back
+    with one is always the model's invention, whatever the rest of the catalog
+    does, so this judges the pair alone. A short leading line is a heading and
+    is dropped; anything else is a sentence the model split, and is rejoined.
+
+    Returns the repaired value, or None when there is nothing wrong.
+    """
+    if not source or not translated:
+        return None
+
+    if "\n" in source or "\n" not in translated:
+        return None
+
+    lines = [line.strip() for line in translated.split("\n")]
+    lines = [line for line in lines if line]
+
+    if not lines:
+        return None
+
+    if len(lines) > 1 and len(lines[0]) <= HEADING_CHARS:
+        return " ".join(lines[1:])
+
+    return " ".join(lines)
+
+
 def find_collapses(
     entries: list[tuple[str, str]], threshold: int = COLLAPSE_THRESHOLD
 ) -> dict[str, set[str]]:

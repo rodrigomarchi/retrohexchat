@@ -5,10 +5,15 @@
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
  *
- * Two dialogs are deliberately absent: Server Emoji is admin-only and this
- * gallery runs as an ordinary session, and the Share link dialog belongs to a
- * surface rather than to the chat desktop. Both have banners; neither is
- * photographed here.
+ * One dialog is deliberately absent: the Share link dialog belongs to a
+ * surface rather than to the chat desktop, so no chat window opens it. It has a
+ * banner; it is not photographed here.
+ *
+ * The admin-only windows are photographed by the second describe block, which
+ * signs in as the administrator `config/e2e.exs` names. It is a separate
+ * session rather than a flag on the first one because every one of its shots
+ * needs server-wide powers, and a gallery of ordinary windows taken by an
+ * administrator would not be the gallery an ordinary person sees.
  *
  * This spec is the visual half of the dialog grammar work. It asserts the
  * banner is there — a dialog that lost its illustration fails here — and
@@ -25,12 +30,22 @@ import {
 import { ChatPage } from "../pages/ChatPage";
 import { ConnectPage } from "../pages/ConnectPage";
 import {
+  ADMIN_NICK,
+  ADMIN_PW,
+  knownSignedInUser,
   newSignedInUser,
   uniqueChannel,
   type TestUser,
 } from "../helpers/chatUsers";
 
 const SHOTS = "screenshots/dialog-gallery";
+
+// The smallest thing the emoji upload will accept. The gallery photographs the
+// window with something in it, so it has to put something in it.
+const ONE_PIXEL_PNG = Buffer.from(
+  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+  "base64",
+);
 
 async function shoot(page: Page, target: Locator, name: string) {
   await expect(target).toBeVisible();
@@ -52,6 +67,26 @@ async function shootWithBanner(
 ) {
   await expect(scope.locator("[data-dialog-banner]").first()).toBeVisible();
   await shoot(page, target, name);
+}
+
+/**
+ * Asserts a control sits wholly within the window that owns it.
+ *
+ * A window-scoped dialog is clipped by its host window, not by the viewport,
+ * so a control pushed past the bottom edge is still "visible" to Playwright
+ * and still unreachable to a person.
+ */
+async function expectInsideWindow(control: Locator, window: Locator) {
+  const [inner, outer] = await Promise.all([
+    control.boundingBox(),
+    window.boundingBox(),
+  ]);
+
+  expect(inner, "the control has no box").not.toBeNull();
+  expect(outer, "the window has no box").not.toBeNull();
+  expect(inner!.y + inner!.height).toBeLessThanOrEqual(
+    outer!.y + outer!.height,
+  );
 }
 
 test.describe("dialog gallery", () => {
@@ -412,5 +447,154 @@ test.describe("dialog gallery", () => {
     }
 
     await user.page.keyboard.press("Escape");
+  });
+});
+
+/**
+ * The windows only an administrator can open.
+ *
+ * Signed in as the account `config/e2e.exs` lists under `admins`, which
+ * `ConnectPage.signIn` registers on first use — there is nothing to provision.
+ *
+ * Everything this block photographs it also creates, and the cleanup is not
+ * optional: joining a channel while identified puts it on this account's
+ * auto-join list, so a channel left behind is re-joined by every later login in
+ * every later run.
+ */
+test.describe("dialog gallery, administrator", () => {
+  test.describe.configure({ mode: "serial" });
+
+  let admin: TestUser;
+  let channel: string;
+  let runningBot: string;
+  let stoppedBot: string;
+  const trigger = "rules";
+
+  test.beforeAll(async ({ browser }) => {
+    admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
+    channel = uniqueChannel("galbot");
+    const suffix = Math.random().toString(36).slice(2, 7);
+    runningBot = `galrun${suffix}`;
+    stoppedBot = `galoff${suffix}`;
+
+    await admin.chat.sendMessage(`/join ${channel}`);
+    await admin.chat.expectTabVisible(channel);
+    await admin.chat.switchToTab(channel);
+
+    // Two bots, because the roster's picture is its lamps: one lit, one not.
+    await admin.chat.sendMessage(
+      `/bot create ${runningBot} Answers questions about the rules`,
+    );
+    await admin.chat.expectMessageVisible(
+      `[BotService] Bot '${runningBot}' created successfully.`,
+    );
+    await admin.chat.sendMessage(`/bot join ${runningBot} ${channel}`);
+    await admin.chat.expectMessageVisible(
+      `[BotService] Bot '${runningBot}' joined ${channel}.`,
+    );
+    await admin.chat.sendMessage(
+      `/bot addcmd ${runningBot} ${trigger} Read the topic, then say hello.`,
+    );
+    await admin.chat.expectMessageVisible(
+      `[BotService] Command '${trigger}' set for ${runningBot}.`,
+    );
+
+    await admin.chat.sendMessage(
+      `/bot create ${stoppedBot} Posts the weekly tournament bracket`,
+    );
+    await admin.chat.expectMessageVisible(
+      `[BotService] Bot '${stoppedBot}' created successfully.`,
+    );
+    await admin.chat.sendMessage(`/bot disable ${stoppedBot}`);
+    await admin.page.waitForTimeout(600);
+  });
+
+  test.afterAll(async () => {
+    if (!admin) {
+      return;
+    }
+
+    await admin.chat
+      .sendMessage(`/bot part ${runningBot} ${channel}`)
+      .catch(() => {});
+    await admin.chat.sendMessage(`/bot destroy ${runningBot}`).catch(() => {});
+    await admin.chat.sendMessage(`/bot destroy ${stoppedBot}`).catch(() => {});
+    await admin.chat.sendMessage(`/autojoin remove ${channel}`).catch(() => {});
+    await admin.chat.sendMessage(`/part ${channel}`).catch(() => {});
+    await admin.ctx.close();
+  });
+
+  test("bot management roster", async () => {
+    await admin.chat.openBotManagementFromToolsMenu();
+    await expect(admin.chat.botList).toBeVisible();
+    await shootWithBanner(
+      admin.page,
+      admin.chat.botManagementDialog,
+      "bot-management-roster",
+    );
+  });
+
+  test("new bot", async () => {
+    await admin.chat.openNewBotDialog();
+    await shootWithBanner(admin.page, admin.chat.newBotDialog, "bot-new");
+
+    // A banner makes a form taller, and this one is a card inside a window
+    // rather than over the viewport: the submit button is the first thing that
+    // falls out the bottom, and a form you cannot submit is not a style
+    // regression. Measured, because `toBeVisible` says nothing about whether
+    // the window clipped it.
+    await expectInsideWindow(
+      admin.chat.newBotCreateButton,
+      admin.chat.botManagementDialog,
+    );
+
+    await admin.chat.newBotCancelButton.click();
+    await expect(admin.chat.newBotDialog).toBeHidden();
+  });
+
+  test("add command", async () => {
+    await admin.chat.botItem(runningBot).click();
+    await admin.page.getByTestId("bot-back").waitFor();
+    // The tab strip is a row of buttons carrying `data-target`, not ARIA tabs.
+    await admin.chat.botManagementDialog
+      .locator('button[data-target="commands"]')
+      .click();
+    await admin.chat.botManagementDialog
+      .getByRole("button", { name: "Add", exact: true })
+      .click();
+    await expect(admin.chat.addCommandDialog).toBeVisible();
+    await shootWithBanner(
+      admin.page,
+      admin.chat.addCommandDialog,
+      "bot-add-command",
+    );
+    await admin.chat.addCommandDialog
+      .getByRole("button", { name: "Cancel" })
+      .click();
+    await admin.chat.closeBotManagementDialog();
+  });
+
+  // There is no slash command for this: an emoji is a picture, so it is added
+  // from the window, which is the only place that can take a file.
+  test("server emoji", async () => {
+    const name = `gal${Math.random().toString(36).slice(2, 7)}`;
+
+    await admin.chat.openServerEmojiFromMenu();
+    const window = admin.chat.serverEmojiDialog;
+
+    await window.locator('input[type="file"]').setInputFiles({
+      name: `${name}.png`,
+      mimeType: "image/png",
+      buffer: ONE_PIXEL_PNG,
+    });
+    await window.getByTestId("server-emoji-name").fill(name);
+    await window.getByTestId("server-emoji-submit").click();
+    await expect(window.getByTestId(`server-emoji-row-${name}`)).toBeVisible();
+
+    await shootWithBanner(admin.page, window, "server-emoji");
+
+    await window.getByTestId(`server-emoji-remove-${name}`).click();
+    await expect(window.getByTestId(`server-emoji-row-${name}`)).toBeHidden();
+    await admin.page.keyboard.press("Escape");
   });
 });

@@ -11,13 +11,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:152
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:185
 #, elixir-autogen, elixir-format
 msgid "!hello"
 msgstr "哈罗!"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:985
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:990
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:1020
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:1025
 #, elixir-autogen, elixir-format
 msgid "%{count} entry"
 msgid_plural "%{count} entries"
@@ -56,7 +56,7 @@ msgid "1 URL"
 msgid_plural "%{count} URLs"
 msgstr[0] "%{count} URL 用户名"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:58
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:91
 #, elixir-autogen, elixir-format
 msgid "A helpful bot"
 msgstr "一个有用的机器人"
@@ -83,10 +83,10 @@ msgstr "行动"
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:202
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:215
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:175
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:186
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:621
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:678
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:731
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:219
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:656
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:713
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:766
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:554
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1264
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:313
@@ -122,7 +122,7 @@ msgstr "添加禁区"
 msgid "Add Ban Exception"
 msgstr "添加例外"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:139
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:151
 #, elixir-autogen, elixir-format
 msgid "Add Command — %{bot}"
 msgstr "添加命令 — %{bot}"
@@ -265,13 +265,14 @@ msgstr "禁止执行。"
 msgid "Bans"
 msgstr "禁令"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:69
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:71
 #, elixir-autogen, elixir-format
 msgid "Bot Management"
 msgstr "机器人管理"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:123
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:234
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:126
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:143
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:269
 #: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:563
 #, elixir-autogen, elixir-format
 msgid "Bots"
@@ -294,8 +295,8 @@ msgstr "巴迪在线"
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:78
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:279
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:367
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:120
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:190
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:126
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:223
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:437
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:628
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:704
@@ -328,9 +329,10 @@ msgstr "巴迪在线"
 msgid "Cancel"
 msgstr "取消"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:73
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:295
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:416
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:49
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:106
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:330
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:451
 #, elixir-autogen, elixir-format
 msgid "Capabilities"
 msgstr "能力"
@@ -346,7 +348,7 @@ msgstr "更改昵称"
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:173
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:239
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:328
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:646
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:681
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:169
 #: lib/retro_hex_chat_web/components/ui/dialogs/events_dialog.ex:39
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:104
@@ -387,8 +389,8 @@ msgid "Channel Modes"
 msgstr "频道模式"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:60
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:299
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:434
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:334
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:469
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:98
 #: lib/retro_hex_chat_web/components/ui/system/app_info_panel.ex:55
 #, elixir-autogen, elixir-format
@@ -409,7 +411,7 @@ msgstr "聊天"
 msgid "Clear"
 msgstr "清除"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:78
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:80
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:592
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:661
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:77
@@ -438,12 +440,12 @@ msgstr "颜色"
 msgid "Command"
 msgstr "命令"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:63
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:96
 #, elixir-autogen, elixir-format
 msgid "Command Prefix"
 msgstr "命令前缀"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:303
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:338
 #, elixir-autogen, elixir-format
 msgid "Commands"
 msgstr "命令"
@@ -460,29 +462,29 @@ msgstr "确认"
 msgid "Connected"
 msgstr "已连接"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:67
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:100
 #, elixir-autogen, elixir-format
 msgid "Cooldown (s)"
 msgstr "冷却(s)"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:185
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:116
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:122
 #, elixir-autogen, elixir-format
 msgid "Create"
 msgstr "创建"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:27
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:39
 #, elixir-autogen, elixir-format
 msgid "Create New Bot"
 msgstr "创建新机器人"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:407
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:442
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:763
 #, elixir-autogen, elixir-format
 msgid "Created"
 msgstr "创建"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:89
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:243
 #, elixir-autogen, elixir-format
 msgid "Custom Commands"
 msgstr "自定义命令"
@@ -493,7 +495,7 @@ msgstr "自定义命令"
 msgid "Custom Menus"
 msgstr "自定义菜单"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:281
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:316
 #: lib/retro_hex_chat_web/components/ui/dialogs/delete_confirm_dialog.ex:71
 #, elixir-autogen, elixir-format
 msgid "Delete"
@@ -505,26 +507,26 @@ msgid "Delete Message"
 msgstr "删除信件"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_server_settings_dialog.ex:96
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:53
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:173
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:86
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:206
 #, elixir-autogen, elixir-format
 msgid "Description"
 msgstr "描述"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:92
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:939
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:246
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:974
 #, elixir-autogen, elixir-format
 msgid "Dice"
 msgstr "ice"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:504
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:892
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:539
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:927
 #, elixir-autogen, elixir-format
 msgid "Disable"
 msgstr "禁用"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:481
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:867
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:516
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:902
 #, elixir-autogen, elixir-format
 msgid "Disabled"
 msgstr "已禁用"
@@ -599,8 +601,8 @@ msgstr "编辑规则"
 msgid "Elixir"
 msgstr "埃利克斯尔"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:505
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:893
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:540
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:928
 #, elixir-autogen, elixir-format
 msgid "Enable"
 msgstr "启用"
@@ -610,7 +612,7 @@ msgstr "启用"
 msgid "Enable perform on connect"
 msgstr "连接时启用执行"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:480
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:515
 #, elixir-autogen, elixir-format
 msgid "Enabled"
 msgstr "已启用"
@@ -625,7 +627,7 @@ msgstr "输入管理员命令... (每行一个)"
 msgid "Enter password"
 msgstr "输入密码"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:307
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:342
 #, elixir-autogen, elixir-format
 msgid "Events"
 msgstr "活动"
@@ -662,30 +664,30 @@ msgstr "闪光"
 msgid "Flood Protection"
 msgstr "防洪"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:291
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:326
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:121
 #, elixir-autogen, elixir-format
 msgid "General"
 msgstr "常规"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:84
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:944
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:239
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:979
 #, elixir-autogen, elixir-format
 msgid "Greeter"
 msgstr "格里特尔"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:178
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:211
 #, elixir-autogen, elixir-format
 msgid "Greets the user"
 msgstr "问候用户"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:165
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:198
 #, elixir-autogen, elixir-format
 msgid "Hello, {nick}!"
 msgstr "哈罗,{尼克}!"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:91
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:946
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:245
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:981
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "帮助"
@@ -796,12 +798,12 @@ msgstr "遮罩"
 msgid "Members"
 msgstr "成员"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:945
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:980
 #, elixir-autogen, elixir-format
 msgid "Mention"
 msgstr "提及"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:79
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:238
 #, elixir-autogen, elixir-format
 msgid "Mention Response"
 msgstr "答复"
@@ -828,8 +830,8 @@ msgid "Moderated (+m)"
 msgstr "调制( +m)"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:179
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:96
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:940
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:247
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:975
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "调和"
@@ -840,15 +842,15 @@ msgstr "调和"
 msgid "Modes"
 msgstr "模式"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:39
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:49
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:72
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:82
 #, elixir-autogen, elixir-format
 msgid "MyBot"
 msgstr "Mybot 键"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:222
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:34
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:387
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:67
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:422
 #: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:74
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:176
 #, elixir-autogen, elixir-format
@@ -862,7 +864,7 @@ msgstr "名称"
 msgid "Never"
 msgstr "从不"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:134
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:154
 #, elixir-autogen, elixir-format
 msgid "New"
 msgstr "新设"
@@ -891,8 +893,8 @@ msgstr "昵称列表"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:126
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:196
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:44
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:391
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:77
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:426
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:471
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:489
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:185
@@ -938,13 +940,13 @@ msgstr "未设定禁止例外 。"
 msgid "No bans set on this channel."
 msgstr "此频道没有设置禁止 。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:426
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:461
 #, elixir-autogen, elixir-format
 msgid "No capabilities configured"
 msgstr "没有配置能力"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:438
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:639
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:473
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:674
 #, elixir-autogen, elixir-format
 msgid "No channels assigned"
 msgstr "没有指定频道"
@@ -959,7 +961,7 @@ msgstr "没有找到频道"
 msgid "No commands configured. Click Add to create one."
 msgstr "未配置命令 。 单击添加以创建一个。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:459
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:494
 #, elixir-autogen, elixir-format
 msgid "No configurable capabilities enabled."
 msgstr "没有启用可配置能力 。"
@@ -974,7 +976,7 @@ msgstr "没有保存联系人"
 msgid "No custom colors set. Nicknames use automatic colors."
 msgstr "未设定自定义颜色 。 昵称使用自动颜色."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:696
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:731
 #, elixir-autogen, elixir-format
 msgid "No custom commands"
 msgstr "没有自定义命令"
@@ -1142,15 +1144,15 @@ msgstr "私人信件"
 msgid "Public Chat Platform"
 msgstr "公共聊天平台"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:108
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:943
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:250
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:978
 #, elixir-autogen, elixir-format
 msgid "RSS"
 msgstr "RSS"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:589
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:662
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:723
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:624
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:697
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:758
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:477
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1208
 #: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:160
@@ -1164,7 +1166,7 @@ msgstr "移除"
 msgid "Reset Defaults"
 msgstr "重置默认值"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:160
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:193
 #, elixir-autogen, elixir-format
 msgid "Response"
 msgstr "回应"
@@ -1199,8 +1201,8 @@ msgstr "保存"
 msgid "Save Topic"
 msgstr "保存主题"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:106
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:942
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:249
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:977
 #, elixir-autogen, elixir-format
 msgid "Scheduler"
 msgstr "调度器"
@@ -1269,7 +1271,7 @@ msgid "Sound Settings"
 msgstr "声音设置"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:121
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:650
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:685
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:308
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:126
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:140
@@ -1280,7 +1282,7 @@ msgstr "声音设置"
 msgid "Status"
 msgstr "状态"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:156
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:189
 #, elixir-autogen, elixir-format
 msgid "The command that triggers this response (e.g. !hello)"
 msgstr "触发此响应的命令( 如 ! hello)"
@@ -1308,13 +1310,13 @@ msgid "Topic Lock (+t)"
 msgstr "主题锁定 (+t)"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:235
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:147
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:180
 #, elixir-autogen, elixir-format
 msgid "Trigger"
 msgstr "触发"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:101
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:941
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:248
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:976
 #, elixir-autogen, elixir-format
 msgid "Trivia"
 msgstr "特里维亚"
@@ -1349,13 +1351,13 @@ msgstr "URL 捕捉器"
 msgid "Unknown"
 msgstr "不详"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:361
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:396
 #: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:72
 #, elixir-autogen, elixir-format
 msgid "Uptime"
 msgstr "时间"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:169
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:202
 #, elixir-autogen, elixir-format
 msgid "Use {nick} for the caller's name, {channel} for the channel"
 msgstr "使用 {nick} 为呼叫者名称, {channel} 为频道"
@@ -1456,7 +1458,7 @@ msgstr "比如说,你好。"
 msgid "identical msgs"
 msgstr "相同的毫秒数"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:1018
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:1053
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1364
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1370
 #, elixir-autogen, elixir-format
@@ -1474,7 +1476,7 @@ msgstr "信件"
 msgid "on %{date}"
 msgstr "于 %{date}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:1019
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:1054
 #, elixir-autogen, elixir-format
 msgid "parted"
 msgstr "分离"
@@ -2567,7 +2569,7 @@ msgid "Your current chat session will end."
 msgstr "您的当前聊天会结束 。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:157
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:968
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:1003
 #, elixir-autogen, elixir-format
 msgid "none"
 msgstr "无"
@@ -2602,7 +2604,7 @@ msgstr "已撤销所有终端"
 msgid "Could not load more activity."
 msgstr "无法加载更多活动。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:776
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:811
 #: lib/retro_hex_chat_web/components/ui/dialogs/events_dialog.ex:112
 #, elixir-autogen, elixir-format
 msgid "Could not load more events."
@@ -3003,32 +3005,32 @@ msgstr "未知语言"
 msgid "Unknown type"
 msgstr "未知类型"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:560
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:595
 #, elixir-autogen, elixir-format
 msgid "Feed"
 msgstr "种子"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:570
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:605
 #, elixir-autogen, elixir-format
 msgid "Last checked"
 msgstr "上次选中"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:548
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:583
 #, elixir-autogen, elixir-format
 msgid "No feeds yet. Add one and it will start polling."
 msgstr "还没有饲料。 增加一个,它会开始投票。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:566
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:601
 #, elixir-autogen, elixir-format
 msgid "Posts to"
 msgstr "员额"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:576
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:611
 #, elixir-autogen, elixir-format
 msgid "Problem"
 msgstr "问题"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:572
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:607
 #, elixir-autogen, elixir-format
 msgid "never"
 msgstr "从不"
@@ -3412,118 +3414,118 @@ msgstr "在排程器上等待工作"
 msgid "… %{count} earlier lines dropped"
 msgstr ". %{count} 先前的线路已下架"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:865
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:900
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "运行中"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:866
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:901
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "已停止"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:352
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:387
 #, elixir-autogen, elixir-format
 msgid "Runtime"
 msgstr "运行状态"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:355
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:390
 #, elixir-autogen, elixir-format
 msgid "Process"
 msgstr "进程"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:365
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:400
 #, elixir-autogen, elixir-format
 msgid "Messages handled"
 msgstr "已处理消息"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:369
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:404
 #, elixir-autogen, elixir-format
 msgid "Commands processed"
 msgstr "已处理命令"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:384
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:419
 #, elixir-autogen, elixir-format
 msgid "Identity"
 msgstr "身份"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:395
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:430
 #, elixir-autogen, elixir-format
 msgid "Command prefix"
 msgstr "命令前缀"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:399
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:434
 #, elixir-autogen, elixir-format
 msgid "Cooldown"
 msgstr "冷却时间"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:403
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:438
 #, elixir-autogen, elixir-format
 msgid "Created by"
 msgstr "创建者"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:947
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:982
 #, elixir-autogen, elixir-format
 msgid "Custom commands"
 msgstr "自定义命令"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:545
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:580
 #, elixir-autogen, elixir-format
 msgid "Feeds"
 msgstr "订阅源"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:711
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:746
 #, elixir-autogen, elixir-format
 msgid "Replies"
 msgstr "回复"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:423
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:458
 #, elixir-autogen, elixir-format
 msgid "off"
 msgstr "已关闭"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:966
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:1001
 #, elixir-autogen, elixir-format
 msgid "Yes"
 msgstr "是"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:967
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:1002
 #, elixir-autogen, elixir-format
 msgid "No"
 msgstr "否"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:172
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:255
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:192
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:290
 #, elixir-autogen, elixir-format
 msgid "No description"
 msgstr "无描述"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:186
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:206
 #, elixir-autogen, elixir-format
 msgid "No capabilities"
 msgstr "无功能"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:140
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:160
 #, elixir-autogen, elixir-format
 msgid "No bots yet. Create one and it will appear here."
 msgstr "还没有机器人。创建一个后会显示在这里。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:374
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:409
 #, elixir-autogen, elixir-format
 msgid "No process is running for this bot, so it is not answering anyone."
 msgstr "该机器人没有正在运行的进程，因此不会回应任何人。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:511
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:546
 #, elixir-autogen, elixir-format
 msgid "Declared but not implemented — this capability answers nothing."
 msgstr "已声明但未实现——此功能不会响应任何内容。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:463
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:498
 #, elixir-autogen, elixir-format
 msgid "Change these with /bot set %{bot} <key> <value> in the console."
 msgstr "在控制台使用 /bot set %{bot} <key> <value> 修改。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:193
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:213
 #, elixir-autogen, elixir-format
 msgid "%{count} command"
 msgid_plural "%{count} commands"
@@ -4833,9 +4835,7 @@ msgstr "远离 %{channel}"
 #: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:221
 #, elixir-autogen, elixir-format
 msgid "kept from a private conversation"
-msgstr ""
-"数据\n"
-"私下谈话时保密"
+msgstr "私下谈话时保密"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:42
 #, elixir-autogen, elixir-format
@@ -4926,3 +4926,51 @@ msgstr "最后一次见到"
 #, elixir-autogen, elixir-format
 msgid "that went well"
 msgstr "不错"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:129
+#, elixir-autogen, elixir-format
+msgid "A miniature of the bot list. Each bot has a lamp for its state."
+msgstr "机器人列表的缩写. 每个瓶子都有它的状态的灯."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:45
+#, elixir-autogen, elixir-format
+msgid "A new bot can do nothing yet"
+msgstr "新的机器人还不能做什么"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:173
+#, elixir-autogen, elixir-format
+msgid "Anyone in a channel where the bot is present can use this command, and everyone in that channel sees the answer. The bot always replies with the same line, so the text in the Response field is the text the channel will read."
+msgstr ""
+"任何在有机器人的频道中的人都可以使用这个命令,而该频道中的每个人都能看到答案. 机器人总是用同一行的回答,所以反应字段中的文字是通道会读的文字."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:122
+#, elixir-autogen, elixir-format
+msgid "The nicknames here that are not people"
+msgstr "这里的绰号不是人"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:158
+#, elixir-autogen, elixir-format
+msgid "The same answer, every time"
+msgstr "同样的答案,每次"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:165
+#, elixir-autogen, elixir-format
+msgid "A miniature of a command and the bot's answer to it"
+msgstr "一个小型命令和机器人的答案"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:134
+#, elixir-autogen, elixir-format
+msgid "A bot is a nickname with a process behind it. It is present in channels. People type its prefix and it replies. You can disable a bot without deleting it. The lamp shows whether its process is running, and an enabled bot can still have no process."
+msgstr ""
+"机器人是一个绰号,后面有一个过程. 它存在于各种渠道。 人们打它的前缀 并回答。 您可以禁用一个机器人而不删除它 。 "
+"该灯显示其进程是否在运行,一个被启用的机器人仍然不能有进程."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:52
+#, elixir-autogen, elixir-format
+msgid "A miniature of the list of capabilities. Nothing is selected yet."
+msgstr "能力清单的缩略语. 还没有选择"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:60
+#, elixir-autogen, elixir-format
+msgid "People reach the bot by its name and its prefix. Each capability below is one more thing the bot can do. No capability is active until you select it. A bot with no capability does not answer."
+msgstr "人们通过它的名字和前缀到达了机器人. 下方的每个能力 也是机器人所能做的 在您选中之前, 无法激活 。 没有能力的机器人不会回答"

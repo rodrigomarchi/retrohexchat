@@ -132,6 +132,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
         id="add-command-dialog"
         show={@show_add_command}
         bot_name={if @selected, do: @selected.name, else: ""}
+        prefix={(@selected && Map.get(@selected, :command_prefix)) || "!"}
+        commands={@commands}
         on_close="close_add_command_dialog"
       />
     </div>

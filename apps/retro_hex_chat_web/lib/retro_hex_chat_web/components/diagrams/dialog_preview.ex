@@ -7,9 +7,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   merely different text. A first cut drew the same window for every dialog
   and changed only the title word, which made ten banners that were one
   picture repeated: at 128×96 nobody reads two lines of 7px type, they read
-  the silhouette. So a composer draws its input strip, a roster draws its
-  column header and rows, a schedule draws a clock, and a whois card draws a
-  portrait well with label/value rows.
+  the silhouette. So a composer draws its input strip, an ordered list draws
+  its column header and numbered rows, a schedule draws a clock, a whois card
+  draws a portrait well with label/value rows, a roster draws a running lamp
+  per row, and a checklist draws a box per row with nothing ticked.
 
   The rows still come from what the form is holding right now, so an empty
   setting looks empty.
@@ -17,7 +18,19 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   use Phoenix.Component
   use Gettext, backend: RetroHexChatWeb.Gettext
 
-  @kinds [:status, :query, :composer, :tabs, :ordered, :schedule, :card, :menu, :pinned]
+  @kinds [
+    :status,
+    :query,
+    :composer,
+    :tabs,
+    :ordered,
+    :schedule,
+    :card,
+    :menu,
+    :pinned,
+    :roster,
+    :checklist
+  ]
 
   @doc """
   Renders the miniature.
@@ -103,6 +116,39 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
         <rect x="6" y="22" width="116" height="9" fill="#c0c0c0" />
         <polyline points="6,30 6,22 121,22" fill="none" stroke="#ffffff" stroke-width="1" />
         <polyline points="121,23 121,30 6,30" fill="none" stroke="#808080" stroke-width="1" />
+      </g>
+      
+    <!-- Running lamps: a roster of processes is read by which ones are lit -->
+      <g :if={@kind == :roster}>
+        <circle
+          :for={row <- @rows}
+          cx="11"
+          cy={row.y - 3}
+          r="3"
+          fill={lamp_fill(row.tone)}
+          stroke="#404040"
+          stroke-width="1"
+        />
+      </g>
+      
+    <!-- Checkboxes: a capability list is a set of things not yet chosen -->
+      <g :if={@kind == :checklist}>
+        <g :for={row <- @rows}>
+          <rect
+            x="9"
+            y={row.y - 7}
+            width="8"
+            height="8"
+            fill="#ffffff"
+            stroke="#404040"
+            stroke-width="1"
+          />
+          <g :if={row.tone == :accent}>
+            <rect x="11" y={row.y - 4} width="2" height="2" fill="#000000" />
+            <rect x="13" y={row.y - 2} width="2" height="2" fill="#000000" />
+            <rect x="15" y={row.y - 6} width="2" height="4" fill="#000000" />
+          </g>
+        </g>
       </g>
       
     <!-- Clock face: a schedule is a time before it is a command -->
@@ -222,12 +268,15 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   defp row_x(:card), do: 39
   defp row_x(:menu), do: 14
   defp row_x(:pinned), do: 20
+  defp row_x(:roster), do: 18
+  defp row_x(:checklist), do: 21
   defp row_x(_kind), do: 8
 
   @spec empty_top(atom()) :: pos_integer()
   defp empty_top(:card), do: 33
   defp empty_top(:schedule), do: 34
   defp empty_top(:pinned), do: 42
+  defp empty_top(kind) when kind in [:roster, :checklist], do: 29
   defp empty_top(_kind), do: 38
 
   @spec first_row(atom()) :: pos_integer()
@@ -235,11 +284,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   defp first_row(:ordered), do: 41
   defp first_row(:schedule), do: 38
   defp first_row(:pinned), do: 32
+  defp first_row(kind) when kind in [:roster, :checklist], do: 32
   defp first_row(_kind), do: 40
 
   @spec max_rows(atom()) :: pos_integer()
   defp max_rows(kind) when kind in [:composer, :tabs], do: 3
   defp max_rows(:schedule), do: 3
+  defp max_rows(kind) when kind in [:roster, :checklist], do: 6
   defp max_rows(_kind), do: 5
 
   @spec rows([map()], atom()) :: [map()]
@@ -261,6 +312,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   defp row_chars(kind) when kind in [:query, :ordered, :card], do: 23
   defp row_chars(:schedule), do: 18
   defp row_chars(:pinned), do: 22
+  defp row_chars(:roster), do: 21
+  defp row_chars(:checklist), do: 20
   defp row_chars(_kind), do: 26
 
   # The composer's own strip shows the last row — what the person typed —
@@ -278,7 +331,16 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   defp turn_fill(%{tone: :normal}), do: "#808080"
   defp turn_fill(row), do: tone_fill(row.tone)
 
+  # The lamp takes the roster's own colours, so the picture and the list under
+  # it do not disagree about what "up" looks like.
+  @spec lamp_fill(atom()) :: String.t()
+  defp lamp_fill(:ok), do: "#00a000"
+  defp lamp_fill(:warn), do: "#e0b000"
+  defp lamp_fill(_tone), do: "#a0a0a0"
+
   @spec tone_fill(atom()) :: String.t()
+  defp tone_fill(:ok), do: "#006000"
+  defp tone_fill(:warn), do: "#805000"
   defp tone_fill(:accent), do: "#000080"
   defp tone_fill(:system), do: "#008080"
   defp tone_fill(:muted), do: "#808080"
@@ -317,6 +379,20 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
 
   defp kind_label(:pinned),
     do: dgettext("diagrams", "A miniature of the room with its pinned line across the top")
+
+  defp kind_label(:roster),
+    do:
+      dgettext(
+        "diagrams",
+        "A miniature of the list that shows these. Each row has a lamp for its state."
+      )
+
+  defp kind_label(:checklist),
+    do:
+      dgettext(
+        "diagrams",
+        "A miniature of a list of choices. Nothing is selected yet."
+      )
 
   defp kind_label(:menu),
     do: dgettext("diagrams", "A miniature of the menu these entries appear in")

@@ -19,10 +19,12 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   import RetroHexChatWeb.Components.UI.Tabs
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Separator
+  import RetroHexChatWeb.Components.UI.DialogBanner
 
   alias RetroHexChat.Bots.Capabilities
   alias RetroHexChat.Chat.Content
   alias RetroHexChat.Chat.TimeFormatter
+  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
 
@@ -116,7 +118,25 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   @spec bot_roster(map()) :: Phoenix.LiveView.Rendered.t()
   defp bot_roster(assigns) do
     ~H"""
-    <div class="bm-roster flex min-h-0 flex-1 flex-col">
+    <div class="bm-roster flex min-h-0 flex-1 flex-col gap-retro-4">
+      <.dialog_banner heading={dgettext("dialogs", "The nicknames here that are not people")}>
+        <:art>
+          <Diagrams.diagram_dialog_preview
+            kind={:roster}
+            title={dgettext("dialogs", "Bots")}
+            lines={roster_lines(@bots, @running)}
+            label={
+              dgettext("dialogs", "A miniature of the bot list. Each bot has a lamp for its state.")
+            }
+          />
+        </:art>
+        <:glyph><Icons.icon_btn_bot_management class="h-8 w-8" /></:glyph>
+        {dgettext(
+          "dialogs",
+          "A bot is a nickname with a process behind it. It is present in channels. People type its prefix and it replies. You can disable a bot without deleting it. The lamp shows whether its process is running, and an enabled bot can still have no process."
+        )}
+      </.dialog_banner>
+
       <div class="bm-roster-head">
         <span class="bm-roster-title">
           <Icons.icon_btn_bot_management class="w-[16px] h-[16px]" />
@@ -205,6 +225,21 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
     </div>
     """
   end
+
+  # One row per bot, carrying the state its lamp is lit from. The three states
+  # are the roster's own, so the picture cannot say "up" where the list says
+  # "stopped".
+  @spec roster_lines(list(), list()) :: [map()]
+  defp roster_lines(bots, running) do
+    Enum.map(bots, fn bot ->
+      %{text: bot_name(bot), tone: lamp_tone(bot_state(bot, running))}
+    end)
+  end
+
+  @spec lamp_tone(:running | :stopped | :disabled) :: atom()
+  defp lamp_tone(:running), do: :ok
+  defp lamp_tone(:stopped), do: :warn
+  defp lamp_tone(:disabled), do: :muted
 
   # ── Detail ───────────────────────────────────────────────
 

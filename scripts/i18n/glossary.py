@@ -396,6 +396,19 @@ _ROWS = {
     # The coin-op cabinet, never the row of arches. Measured: the pipeline gave
     # es "Arcada" and zh "拱门/拱門", which are the architecture.
     "Arcade":       ("Arcade", "Arcade", "Arcade", "Arcade", "Arcade", "Arcade", "Arcade", "Arcade", "Аркада", "Arcade", "アーケード", "街机", "街機"),
+
+    # The channel key, shown masked. Italian dropped the asterisks entirely
+    # ("Chiave:"), Indonesian and Polish spaced them out ("* * *"), and
+    # Japanese collapsed the whole string onto "メニュー" — the word menu,
+    # from nowhere. A masked value is not text to translate.
+    "Key: ***":     ("Chave: ***", "Chave: ***", "Clave: ***", "Clé : ***", "Schlüssel: ***", "Chiave: ***", "Sleutel: ***", "Klucz: ***", "Ключ: ***", "Kunci: ***", "キー: ***", "密钥: ***", "密鑰: ***"),
+
+    # Help-topic search keywords. Two words with no sentence around them:
+    # Japanese reduced both to "メニュー", so searching the help in Japanese
+    # for either one matched nothing the other did not, and German read "nick"
+    # as spitz and produced "Spitzmenü" — a pointed menu.
+    "nick menu":    ("menu do nick", "menu do nick", "menú del nick", "menu du pseudo", "Nick-Menü", "menu del nick", "nick-menu", "menu nicka", "меню ника", "menu nick", "ニックメニュー", "昵称菜单", "暱稱菜單"),
+    "nicklist menu": ("menu da lista de nicks", "menu da lista de nicks", "menú de la lista de nicks", "menu de la liste des pseudos", "Nicklisten-Menü", "menu della lista nick", "nicklijst-menu", "menu listy nicków", "меню списка ников", "menu daftar nick", "ニックリストメニュー", "昵称列表菜单", "暱稱列表菜單"),
 }
 # fmt: on
 

@@ -376,7 +376,7 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
         dgettext("chat", "Bot Management"),
         :icon_btn_bot_management,
         admin: "open_bot_dialog",
-        geometry: geometry(200, 80, 720, 560, 520, 400)
+        geometry: geometry(200, 80, 720, 660, 520, 460)
       ),
       window("server-emoji", dgettext("chat", "Server Emoji"), :icon_fmt_emoji,
         admin: "open_server_emoji_dialog",

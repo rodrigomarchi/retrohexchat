@@ -2,15 +2,17 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogBannersTest do
   @moduledoc """
   A banner illustration is only worth its space if it changes with the thing
   it pictures. These assert the part that can silently stop being true: the
-  account card must draw a different lock per state, and the channel preview
-  must carry the topic and welcome the form currently holds rather than a
-  fixed picture of a channel.
+  account card must draw a different lock per state, the channel preview must
+  carry the topic and welcome the form currently holds rather than a fixed
+  picture of a channel, and the bot roster's lamps must take their colour from
+  the bot's state rather than from their position in the list.
   """
   use RetroHexChatWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
   import RetroHexChatWeb.Components.Diagrams.DialogAccount
   import RetroHexChatWeb.Components.Diagrams.DialogChannel
+  import RetroHexChatWeb.Components.Diagrams.DialogPreview
 
   @moduletag :unit
 
@@ -78,6 +80,64 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogBannersTest do
 
       refute html =~ ~s(fill="#000080" font-size="7")
       assert html =~ ~s(fill="#e0e0e0")
+    end
+  end
+
+  describe "roster lamps" do
+    defp roster(lines) do
+      render_component(&diagram_dialog_preview/1, %{
+        kind: :roster,
+        title: "Bots",
+        lines: lines
+      })
+    end
+
+    test "a bot that is up and one that is not get different lamps" do
+      html = roster([%{text: "Helper", tone: :ok}, %{text: "Bracket", tone: :muted}])
+
+      assert html =~ "#00a000", "a running bot's lamp is the roster's running green"
+      assert html =~ "#a0a0a0", "a disabled bot's lamp is the roster's grey"
+      assert html =~ "Helper"
+      assert html =~ "Bracket"
+    end
+
+    test "enabled but not running is its own colour, not one of the other two" do
+      html = roster([%{text: "Stalled", tone: :warn}])
+
+      assert html =~ "#e0b000"
+      refute html =~ "#00a000"
+      refute html =~ "#a0a0a0"
+    end
+
+    test "a server with no bots draws the empty rows rather than a lamp" do
+      html = roster([])
+
+      refute html =~ "<circle"
+      assert html =~ ~s(fill="#e0e0e0")
+    end
+  end
+
+  describe "capability checklist" do
+    defp checklist(lines) do
+      render_component(&diagram_dialog_preview/1, %{
+        kind: :checklist,
+        title: "Capabilities",
+        lines: lines
+      })
+    end
+
+    test "nothing chosen draws a box per row and no tick" do
+      html = checklist([%{text: "Dice", tone: :normal}, %{text: "Help", tone: :normal}])
+
+      assert html =~ ~s(stroke="#404040")
+      refute html =~ ~s(width="2" height="4")
+      assert html =~ "Dice"
+    end
+
+    test "a chosen capability gets the tick its checkbox would carry" do
+      html = checklist([%{text: "Dice", tone: :accent}])
+
+      assert html =~ ~s(width="2" height="4")
     end
   end
 end

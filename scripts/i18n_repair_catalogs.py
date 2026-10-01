@@ -27,6 +27,7 @@ from i18n.quality import (  # noqa: E402
     COLLAPSE_THRESHOLD,
     find_collapses,
     find_shared_headings,
+    invented_break,
     introduced_degeneration,
 )
 from i18n.translator import TraditionalChinesePostprocessor, build  # noqa: E402
@@ -83,6 +84,7 @@ def repair_locale(locale, args: argparse.Namespace) -> None:
     files = {path: catalogs.load_po(path) for path in catalogs.po_files(locale.code)}
     original_pairs = {path: catalogs.entry_pairs(po) for path, po in files.items()}
     stripped = strip_injected_headings(files, args.collapse_threshold)
+    stripped += rejoin_invented_breaks(files)
 
     # Collapse is judged after stripping: an injected heading makes distinct
     # translations look distinct, and removing it can reveal that what sat
@@ -132,6 +134,26 @@ def strip_injected_headings(files: dict, threshold: int) -> int:
                     stripped += 1
 
     return stripped
+
+
+def rejoin_invented_breaks(files: dict) -> int:
+    """Put back on one line what the model split in two.
+
+    `strip_injected_headings` needs the same heading on several entries. This
+    needs only the entry: a source without a newline whose translation has one.
+    """
+    repaired = 0
+
+    for po in files.values():
+        for entry in catalogs.translatable_entries(po):
+            for index, current, source in slots(entry):
+                fixed = invented_break(source, current)
+
+                if fixed and fixed != current:
+                    set_slot(entry, index, fixed)
+                    repaired += 1
+
+    return repaired
 
 
 def collect_broken(files: dict, threshold: int) -> list:
