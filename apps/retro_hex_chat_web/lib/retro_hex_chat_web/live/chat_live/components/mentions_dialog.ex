@@ -39,7 +39,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.MentionsDialog do
        session: nil,
        timezone: "Etc/UTC",
        nick_color_fn: nil,
-       loaded?: false
+       loaded?: false,
+       first_row: nil
      )
      |> PaginatedList.init(:mentions,
        page_size: @page_size,
@@ -81,6 +82,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MentionsDialog do
       <.mentions_panel
         id={@id}
         mentions={@streams.mentions}
+        first_row={@first_row}
         state={@paginated.mentions}
         target={@myself}
         timezone={@timezone}
@@ -92,7 +94,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.MentionsDialog do
 
   @spec load_first_page(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
   defp load_first_page(socket) do
-    PaginatedList.reset(socket, :mentions, fetch(socket, limit: @page_size))
+    page = fetch(socket, limit: @page_size)
+
+    socket
+    |> assign(:first_row, List.first(page.items))
+    |> PaginatedList.reset(:mentions, page)
   end
 
   @spec fetch(Phoenix.LiveView.Socket.t(), keyword()) :: RetroHexChat.Page.t()

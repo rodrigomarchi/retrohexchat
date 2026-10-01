@@ -24,8 +24,9 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
         nick_color_fn={@nick_color_fn}
       />
 
-  The banner draws a kept line as a clipping with its origin beneath it; the
-  rows below arrive as a stream the component cannot read.
+  The banner draws the newest kept line as a clipping with the conversation
+  it came from beneath it. A stream is write-only to the component, so the
+  island hands over its first row.
   """
   use RetroHexChatWeb.Component
 
@@ -40,6 +41,7 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
 
   @doc "Renders the Saved Messages window body."
   attr :id, :string, required: true
+  attr :first_row, :map, default: nil, doc: "Newest row, for the banner picture"
   attr :entries, :any, required: true, doc: "The stream of saved rows"
   attr :state, :any, default: nil, doc: "PaginatedList.State for the list"
   attr :target, :any, default: nil
@@ -56,10 +58,7 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
           <Diagrams.diagram_dialog_preview
             kind={:card}
             title={dgettext("dialogs", "Saved")}
-            lines={[
-              %{text: dgettext("dialogs", "the link from Tuesday"), tone: :accent},
-              %{text: dgettext("dialogs", "kept from #channel"), tone: :muted}
-            ]}
+            lines={clipping_lines(@first_row)}
             label={dgettext("dialogs", "A miniature of a kept line and where it came from")}
           />
         </:art>
@@ -204,4 +203,31 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
   @spec nick_class(function() | nil, String.t() | nil) :: String.t() | nil
   defp nick_class(nil, _nick), do: nil
   defp nick_class(nick_color_fn, nick), do: nick_color_fn.(nick)
+
+  # The newest clipping and where it was cut from.
+  @spec clipping_lines(map() | nil) :: [map()]
+  defp clipping_lines(nil), do: []
+
+  defp clipping_lines(row) do
+    [
+      %{text: row_text(row), tone: :accent},
+      %{text: origin_label(row), tone: :muted}
+    ]
+  end
+
+  @spec origin_label(map()) :: String.t()
+  defp origin_label(row) do
+    case Map.get(row, :channel_name) do
+      nil -> dgettext("dialogs", "kept from a private conversation")
+      channel -> dgettext("dialogs", "kept from %{channel}", channel: channel)
+    end
+  end
+
+  # Both the pin list and the banner read the same field, and a row that
+  # carries no plain text still has to draw as something.
+  @spec row_text(map()) :: String.t()
+  defp row_text(row) do
+    (Map.get(row, :plain_content) || Map.get(row, :content) || "")
+    |> String.slice(0, 60)
+  end
 end

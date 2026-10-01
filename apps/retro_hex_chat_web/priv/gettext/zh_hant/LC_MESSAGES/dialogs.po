@@ -353,8 +353,8 @@ msgstr "更改暱稱"
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:58
 #: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:50
 #: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:62
-#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:57
-#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:60
+#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:58
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:61
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:134
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:215
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:277
@@ -1004,7 +1004,7 @@ msgid "No topic set"
 msgstr "未設定主題"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:189
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:145
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:144
 #, elixir-autogen, elixir-format
 msgid "Note"
 msgstr "說明"
@@ -1149,7 +1149,7 @@ msgstr "RSS"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:723
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:477
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1208
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:161
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:160
 #: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:130
 #, elixir-autogen, elixir-format
 msgid "Remove"
@@ -3876,72 +3876,72 @@ msgstr "你的瀏覽器正在封鎖本站的通知。請在瀏覽器的網站設
 msgid "Notify me on this device even when Retro Hex Chat is closed"
 msgstr "即使關閉 Retro Hex Chat 也在此裝置上通知我"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:133
+#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:131
 #, elixir-autogen, elixir-format
 msgid "Could not load more mentions."
 msgstr "無法載入更多提及。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:77
+#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:75
 #, elixir-autogen, elixir-format
 msgid "Messages that write your nickname in a channel you were in show up here."
 msgstr "在你所在頻道中寫到你暱稱的訊息會出現在這裡。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:75
+#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:73
 #, elixir-autogen, elixir-format
 msgid "Nobody has mentioned you yet."
 msgstr "還沒有人提到你。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:80
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:78
 #, elixir-autogen, elixir-format
 msgid "An operator can pin a message — the rules, a link, what was agreed — and it stays findable here after it scrolls away."
 msgstr "管理員可以置頂一則訊息——規則、一個連結、約定好的事——它捲走之後仍然能在這裡找到。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:155
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:153
 #, elixir-autogen, elixir-format
 msgid "Could not load more pinned messages."
 msgstr "無法載入更多置頂訊息。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:78
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:76
 #, elixir-autogen, elixir-format
 msgid "This channel is not keeping anything yet."
 msgstr "這個頻道還沒有保留任何內容。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:138
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:136
 #, elixir-autogen, elixir-format
 msgid "Unpin"
 msgstr "取消置頂"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:123
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:121
 #, elixir-autogen, elixir-format
 msgid "pinned by %{nickname}"
 msgstr "由 %{nickname} 置頂"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:178
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:177
 #, elixir-autogen, elixir-format
 msgid "Could not load more saved messages."
 msgstr "無法載入更多已儲存的訊息。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:78
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:77
 #, elixir-autogen, elixir-format
 msgid "Right-click a message and choose Save to keep it here. Nobody else can see what you keep, and it stays after the conversation has scrolled away."
 msgstr "在訊息上按右鍵並選擇儲存，就會留在這裡。別人看不到你儲存了什麼，而且對話捲動過去後它依然在。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:129
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:128
 #, elixir-autogen, elixir-format
 msgid "This message was deleted."
 msgstr "這則訊息已被刪除。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:144
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:143
 #, elixir-autogen, elixir-format
 msgid "Why you kept it (optional)"
 msgstr "儲存的理由（選填）"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:76
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:75
 #, elixir-autogen, elixir-format
 msgid "You have not kept anything yet."
 msgstr "你還沒有儲存任何內容。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:191
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:190
 #, elixir-autogen, elixir-format
 msgid "with %{nickname}"
 msgstr "與 %{nickname}"
@@ -4661,8 +4661,6 @@ msgstr "您的右鍵菜單將持有什麼"
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:429
 #: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:436
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:275
-#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:59
-#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:63
 #, elixir-autogen, elixir-format
 msgid "anyone around?"
 msgstr "有人在嗎?"
@@ -4702,12 +4700,12 @@ msgstr "%{nick} — 隱藏"
 msgid "A contact is yours alone: the nickname, the colour you gave it and your own note. Nobody is told you added them, and nothing here reaches the server they see."
 msgstr "聯繫人是你一個人的:暱稱、你給的顏色和你自己的筆記。 沒有人被告知你添加了它們, 這裏沒有任何到達他們看到的服務器。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:66
+#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:64
 #, elixir-autogen, elixir-format
 msgid "A mention is recorded whenever somebody writes your nickname in a channel you had joined, whether or not the window was open. Opening one takes you to the line in its own conversation."
 msgstr "每當有人在您加入的頻道中寫下您的暱稱時, 無論窗口是否打開, 都會被錄製一個提示 。 開場白讓你在自己的談話中走到一線"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:62
+#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:60
 #, elixir-autogen, elixir-format
 msgid "A miniature of a channel line naming you"
 msgstr "一個小頻道線命名您"
@@ -4717,7 +4715,7 @@ msgstr "一個小頻道線命名您"
 msgid "A miniature of a channel with an ignored line withheld"
 msgstr "一個被忽略的頻道的迷你功能"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:63
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:62
 #, elixir-autogen, elixir-format
 msgid "A miniature of a kept line and where it came from"
 msgstr "一條小線,從哪裏來的"
@@ -4737,12 +4735,12 @@ msgstr "一張小卡片 聯繫人在"
 msgid "A miniature of the message a caught link came from"
 msgstr "一條小消息 被捕獲的鏈接來自"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:65
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:63
 #, elixir-autogen, elixir-format
 msgid "A miniature of the room wearing its pinned line"
 msgstr "一間小房間 穿着它固定的線"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:69
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:67
 #, elixir-autogen, elixir-format
 msgid "A pin belongs to the channel, not to you: everybody sees the same one, and an operator is the only one who can put a line up here or take it down."
 msgstr "一個釘子屬於頻道,不是屬於你:每個人都看到同一個釘子,只有操作員可以在這裏排隊或把它拆下來."
@@ -4762,12 +4760,12 @@ msgstr "每一個鏈接,任何帖子都會被收集到這裏,所以你滾動過�
 msgid "How you find out somebody arrived"
 msgstr "你怎麼發現有人來了"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:53
+#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:54
 #, elixir-autogen, elixir-format
 msgid "Lines that named you while you were away"
 msgstr "在你離開時命名你的線條"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:54
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:56
 #, elixir-autogen, elixir-format
 msgid "Lines you decided to keep"
 msgstr "你決定保留線條"
@@ -4777,12 +4775,12 @@ msgstr "你決定保留線條"
 msgid "Links picked out of what was said"
 msgstr "連結從剛纔說的話中挑選出來"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:58
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:60
 #, elixir-autogen, elixir-format
 msgid "Saved"
 msgstr "已保存"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:67
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:66
 #, elixir-autogen, elixir-format
 msgid "Saving keeps a copy for you alone — nobody is told, and the line stays here even if the conversation it came from is gone. Opening one takes you back to where it was said."
 msgstr "保存一個拷貝給你獨自保存——沒有人被告知,線條即使來自對話也留在這. 打開一個讓你回到人們說的地方"
@@ -4797,7 +4795,7 @@ msgstr "你留個字條的人"
 msgid "Tracking somebody writes a line to Status the moment they connect, whether or not you share a channel with them. They are never told they are on the list."
 msgstr "追蹤某人在連接時寫到狀態的一行, 不管你是否與他們共用一個頻道. 他們從未被告知自己在名單上。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:56
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:57
 #, elixir-autogen, elixir-format
 msgid "What the channel keeps above everything"
 msgstr "頻道所保持的一切"
@@ -4812,26 +4810,6 @@ msgstr "你停止顯示的東西"
 msgid "in your address book"
 msgstr "在您的地址簿中"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:61
-#, elixir-autogen, elixir-format
-msgid "kept from #channel"
-msgstr "遠離 #channel"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:60
-#, elixir-autogen, elixir-format
-msgid "the link from Tuesday"
-msgstr "從星期二開始的鏈接"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:62
-#, elixir-autogen, elixir-format
-msgid "the rules, the link"
-msgstr "規則,鏈接"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:60
-#, elixir-autogen, elixir-format
-msgid "…ask them about it"
-msgstr "問他們吧"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:481
 #, elixir-autogen, elixir-format
 msgid "%{nick} is now offline"
@@ -4841,3 +4819,15 @@ msgstr "%{nick} 現已離線"
 #, elixir-autogen, elixir-format
 msgid "%{nick} is now online"
 msgstr "%{nick} 現已線上"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:222
+#, elixir-autogen, elixir-format
+msgid "kept from %{channel}"
+msgstr "遠離 %{channel}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:221
+#, elixir-autogen, elixir-format
+msgid "kept from a private conversation"
+msgstr ""
+"數據\n"
+"私下談話時保密"

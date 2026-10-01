@@ -23,9 +23,9 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
         nick_color_fn={@nick_color_fn}
       />
 
-  The banner draws a channel line rather than the rows below it: the rows
-  arrive as a LiveView stream, which the component cannot read, and drawing
-  the list twice would say nothing the panel does not already say.
+  The banner draws the line as it was said in its channel rather than the
+  rows below it. A stream is write-only to the component, so the island
+  hands over its first row for the picture to use.
   """
   use RetroHexChatWeb.Component
 
@@ -39,6 +39,7 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
 
   @doc "Renders the Mentions window body."
   attr :id, :string, required: true
+  attr :first_row, :map, default: nil, doc: "Newest row, for the banner picture"
   attr :mentions, :any, required: true, doc: "The stream of mention rows"
   attr :state, :any, default: nil, doc: "PaginatedList.State for the list"
   attr :target, :any, default: nil
@@ -55,10 +56,7 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
           <Diagrams.diagram_dialog_preview
             kind={:query}
             title={dgettext("dialogs", "Channel")}
-            lines={[
-              %{text: dgettext("dialogs", "anyone around?")},
-              %{text: dgettext("dialogs", "…ask them about it"), tone: :danger}
-            ]}
+            lines={mention_lines(@first_row)}
             label={dgettext("dialogs", "A miniature of a channel line naming you")}
           />
         </:art>
@@ -148,4 +146,24 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
   @spec nick_class(function() | nil, String.t()) :: String.t() | nil
   defp nick_class(nil, _nick), do: nil
   defp nick_class(nick_color_fn, nick), do: nick_color_fn.(nick)
+
+  # The newest mention, drawn where it happened. The island passes the row
+  # because a stream cannot be read back out of the component.
+  @spec mention_lines(map() | nil) :: [map()]
+  defp mention_lines(nil), do: []
+
+  defp mention_lines(row) do
+    [
+      %{text: Map.get(row, :author_nickname, ""), tone: :muted},
+      %{text: row_text(row), tone: :danger}
+    ]
+  end
+
+  # Both the pin list and the banner read the same field, and a row that
+  # carries no plain text still has to draw as something.
+  @spec row_text(map()) :: String.t()
+  defp row_text(row) do
+    (Map.get(row, :plain_content) || Map.get(row, :content) || "")
+    |> String.slice(0, 60)
+  end
 end

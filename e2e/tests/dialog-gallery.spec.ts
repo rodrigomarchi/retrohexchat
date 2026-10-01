@@ -10,7 +10,15 @@
  * writes a PNG per dialog so the drawing itself can be judged by eye. The
  * screenshots are build output, not fixtures: nothing compares them.
  */
-import { test, expect, type Locator, type Page } from "@playwright/test";
+import {
+  test,
+  expect,
+  type Browser,
+  type Locator,
+  type Page,
+} from "@playwright/test";
+import { ChatPage } from "../pages/ChatPage";
+import { ConnectPage } from "../pages/ConnectPage";
 import {
   newSignedInUser,
   uniqueChannel,
@@ -46,8 +54,10 @@ test.describe("dialog gallery", () => {
 
   let user: TestUser;
   let channel: string;
+  let browserRef: Browser;
 
   test.beforeAll(async ({ browser }) => {
+    browserRef = browser;
     user = await newSignedInUser(browser, "gal", "pass12345");
     channel = uniqueChannel("gallery");
     await user.chat.sendMessage(`/join ${channel}`);
@@ -56,6 +66,20 @@ test.describe("dialog gallery", () => {
     await user.page.waitForTimeout(400);
     await user.chat.sendMessage("/setwelcome Read the topic, then say hello.");
     await user.page.waitForTimeout(600);
+    await user.chat.sendMessage("/cs register");
+    await user.page.waitForTimeout(800);
+    await user.chat.sendMessage("/ban Patches being loud");
+    await user.page.waitForTimeout(600);
+    await user.chat.sendMessage("the rules live at https://example.com/rules");
+    await user.page.waitForTimeout(600);
+
+    // A pin needs a line to pin, and the Pinned toolbar button only exists
+    // once the channel keeps something.
+    await user.chat.openMessageContextMenu("the rules live at");
+    await user.page
+      .getByTestId("context-menu-item-ctx_chat_pin_message")
+      .click();
+    await user.page.waitForTimeout(800);
   });
 
   test.afterAll(async () => {
@@ -234,17 +258,83 @@ test.describe("dialog gallery", () => {
   });
 
   test("saved messages", async () => {
+    await user.chat.switchToTab(channel);
+    await user.page.waitForTimeout(500);
+    await user.chat.openMessageContextMenu("the rules live at");
+    await user.page
+      .getByTestId("context-menu-item-ctx_chat_save_message")
+      .click();
+    await user.page.waitForTimeout(800);
+
     await user.chat.openSavedFromStartMenu();
     await shootWithBanner(user.page, user.chat.savedDialog, "saved");
     await user.page.keyboard.press("Escape");
   });
 
+  test("mentions", async () => {
+    // Somebody else has to say the nickname: a window that answers "who said
+    // my name" has nothing to draw until one of them does.
+    // A mention is only unread if the reader was looking elsewhere, and the
+    // tray badge only exists while one is unread.
+    await user.chat.sendMessage("/join #gallery-elsewhere");
+    await user.page.waitForTimeout(800);
+
+    const other = await newSignedInUser(browserRef, "say", "pass12345");
+    try {
+      await other.chat.sendMessage(`/join ${channel}`);
+      await other.page.waitForTimeout(800);
+      await other.chat.sendMessage(`${user.nick} did you see the rules?`);
+      await other.page.waitForTimeout(1500);
+    } finally {
+      await other.ctx.close();
+    }
+
+    await user.chat.openMentionsFromTray();
+    await shootWithBanner(user.page, user.chat.mentionsDialog, "mentions");
+    await user.page.keyboard.press("Escape");
+  });
+
+  test("pinned", async () => {
+    // The mention shot moved the reader to another room; the Pinned button
+    // belongs to whichever conversation is on screen.
+    await user.chat.switchToTab(channel);
+    await user.page.waitForTimeout(600);
+    await user.chat.openPinnedFromToolbar();
+    await shootWithBanner(user.page, user.chat.pinnedDialog, "pinned");
+    await user.page.keyboard.press("Escape");
+  });
+
   test("trusted terminals", async () => {
+    // The list is empty for a browser that never asked to be remembered, so
+    // the shot needs somebody who ticked the box at connect.
+    const remembered = await browserRef.newContext();
+    const page = await remembered.newPage();
+    const connect = new ConnectPage(page);
+    const chat = new ChatPage(page);
+    try {
+      await connect.open();
+      await connect.enterNickname(`Trust${Date.now().toString().slice(-5)}`);
+      await page.getByTestId("remember-device").check();
+      await connect.registerWithPassword("pass12345");
+      await chat.waitUntilConnected();
+
+      await chat.openTrustedTerminalsFromMenu();
+      await shootWithBanner(
+        page,
+        chat.trustedTerminalsDialog,
+        "trusted-terminals",
+      );
+    } finally {
+      await remembered.close();
+    }
+  });
+
+  test("trusted terminals, empty", async () => {
     await user.chat.openTrustedTerminalsFromMenu();
     await shootWithBanner(
       user.page,
       user.chat.trustedTerminalsDialog,
-      "trusted-terminals",
+      "trusted-terminals-empty",
     );
     await user.page.keyboard.press("Escape");
   });

@@ -36,7 +36,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.SavedDialog do
        nickname: nil,
        timezone: "Etc/UTC",
        nick_color_fn: nil,
-       loaded?: false
+       loaded?: false,
+       first_row: nil
      )
      |> PaginatedList.init(:saved,
        page_size: @page_size,
@@ -100,6 +101,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SavedDialog do
       <.saved_panel
         id={@id}
         entries={@streams.saved}
+        first_row={@first_row}
         state={@paginated.saved}
         target={@myself}
         timezone={@timezone}
@@ -111,7 +113,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.SavedDialog do
 
   @spec load_first_page(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
   defp load_first_page(socket) do
-    PaginatedList.reset(socket, :saved, fetch(socket, limit: @page_size))
+    page = fetch(socket, limit: @page_size)
+
+    socket
+    |> assign(:first_row, List.first(page.items))
+    |> PaginatedList.reset(:saved, page)
   end
 
   @spec fetch(Phoenix.LiveView.Socket.t(), keyword()) :: RetroHexChat.Page.t()

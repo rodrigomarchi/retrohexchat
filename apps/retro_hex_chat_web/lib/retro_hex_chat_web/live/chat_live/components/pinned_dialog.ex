@@ -38,7 +38,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.PinnedDialog do
        can_unpin: false,
        timezone: "Etc/UTC",
        nick_color_fn: nil,
-       loaded?: false
+       loaded?: false,
+       first_row: nil
      )
      |> PaginatedList.init(:pins,
        page_size: @page_size,
@@ -88,6 +89,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.PinnedDialog do
       <.pinned_panel
         id={@id}
         pins={@streams.pins}
+        first_row={@first_row}
         state={@paginated.pins}
         can_unpin={@can_unpin}
         target={@myself}
@@ -100,7 +102,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.PinnedDialog do
 
   @spec load_first_page(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
   defp load_first_page(socket) do
-    PaginatedList.reset(socket, :pins, fetch(socket, limit: @page_size))
+    page = fetch(socket, limit: @page_size)
+
+    socket
+    |> assign(:first_row, List.first(page.items))
+    |> PaginatedList.reset(:pins, page)
   end
 
   @spec fetch(Phoenix.LiveView.Socket.t(), keyword()) :: RetroHexChat.Page.t()

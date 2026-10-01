@@ -5509,8 +5509,8 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Every consumer reads from one shared archive. A page is fetched the first time anyone links to it and kept for 120 days, so the same link posted in another channel, or published later by a feed bot, is answered without contacting the site again."
 msgstr ""
-"シリーズ\n"
-"1つの共有アーカイブからすべての消費者が読み込まれます。 ページは、誰がリンクして120日間保存したかを初めて取得しています。そのため、別のチャネルに投稿されたリンクも、フィードボットによって公開され、再びサイトに連絡することなく回答されます。"
+"1つの共有アーカイブからすべての消費者が読み込まれます。 "
+"ページは、誰がリンクして120日間保存したかを初めて取得しています。そのため、別のチャネルに投稿されたリンクも、フィードボットによって公開され、再びサイトに連絡することなく回答されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:26
 #, elixir-autogen, elixir-format
@@ -5805,12 +5805,16 @@ msgstr "デスクトップ通知"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "If you have Retro Hex Chat open anywhere — a chat tab, a call, a Space — nothing is sent. You already have the sound, the flashing title and, if you asked for it, a desktop notification."
-msgstr "Retro Hex Chat をどこかで開いている場合 — チャットのタブ、通話、スペース — 何も送信されません。すでに音、点滅するタイトル、そして希望していればデスクトップ通知があります。"
+msgstr ""
+"Retro Hex Chat をどこかで開いている場合 — チャットのタブ、通話、スペース — "
+"何も送信されません。すでに音、点滅するタイトル、そして希望していればデスクトップ通知があります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Nothing else, ever. Not an ordinary channel line, not a join or a part, and never a bot. A busy room while you were away is one notification, not one per line."
-msgstr "それ以外は決してありません。通常のチャンネルの発言も、参加や退出も、ボットも通知しません。留守のあいだに賑わった部屋は 1 件の通知であり、1 行につき 1 件ではありません。"
+msgstr ""
+"それ以外は決してありません。通常のチャンネルの発言も、参加や退出も、ボットも通知しません。留守のあいだに賑わった部屋は 1 件の通知であり、1 行につき"
+" 1 件ではありません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:36
 #, elixir-autogen, elixir-format
@@ -5830,17 +5834,23 @@ msgstr "端末ごと、そしてサーバーから出るもの"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The Sounds window has one switch above the event list: notify me on this device even when Retro Hex Chat is closed. With it on, this browser can be woken up after every tab is gone."
-msgstr "サウンド設定のウィンドウには、イベント一覧の上にスイッチが 1 つあります。「Retro Hex Chat を閉じていても、この端末に通知する」です。オンにすると、すべてのタブが閉じたあとでもこのブラウザーを起こせます。"
+msgstr ""
+"サウンド設定のウィンドウには、イベント一覧の上にスイッチが 1 つあります。「Retro Hex Chat "
+"を閉じていても、この端末に通知する」です。オンにすると、すべてのタブが閉じたあとでもこのブラウザーを起こせます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "The switch is about this browser on this machine, so turning it off on your laptop leaves your phone alone. What the server sends is encrypted for that one browser: the push service in between — your browser vendor's — carries an address and a block of ciphertext, and can read neither the conversation nor the message."
-msgstr "このスイッチはこの端末のこのブラウザーについてのものです。ノートパソコンでオフにしても、電話はそのままです。サーバーが送るものはそのブラウザー専用に暗号化されます。間に入るプッシュサービス — ブラウザーの提供元のもの — が運ぶのはアドレスと暗号文の塊だけで、会話もメッセージも読めません。"
+msgstr ""
+"このスイッチはこの端末のこのブラウザーについてのものです。ノートパソコンでオフにしても、電話はそのままです。サーバーが送るものはそのブラウザー専用に暗号化されます。間に入るプッシュサービス"
+" — ブラウザーの提供元のもの — が運ぶのはアドレスと暗号文の塊だけで、会話もメッセージも読めません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "This needs a VAPID key pair, and a server without one simply does not have the feature: the switch is not drawn at all rather than drawn and broken."
-msgstr "これには VAPID の鍵ペアが必要で、それがないサーバーにはこの機能そのものがありません。スイッチは壊れた状態で描かれるのではなく、まったく描かれません。"
+msgstr ""
+"これには VAPID "
+"の鍵ペアが必要で、それがないサーバーにはこの機能そのものがありません。スイッチは壊れた状態で描かれるのではなく、まったく描かれません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:7
 #, elixir-autogen, elixir-format
@@ -5860,7 +5870,8 @@ msgstr "リアクションは、ワンクリックで済むメッセージへの
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "A reaction plays no sound, marks nothing unread and wakes no device. That is deliberate: the cheapest thing you can say here should stay cheap for the person receiving it too."
-msgstr "リアクションは音を鳴らさず、未読の印もつけず、端末も起こしません。これは意図的です。ここで言える最も安いことは、受け取る側にとっても安いままであるべきだからです。"
+msgstr ""
+"リアクションは音を鳴らさず、未読の印もつけず、端末も起こしません。これは意図的です。ここで言える最も安いことは、受け取る側にとっても安いままであるべきだからです。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:21
 #, elixir-autogen, elixir-format
@@ -5896,7 +5907,9 @@ msgstr "スマートフォンでは、メッセージを長押しして「リア
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "The number beside an emoji is how many people chose it, and hovering it names them. Your own reactions are drawn pressed. One person counts once per emoji, however many times they click."
-msgstr "絵文字の横の数字は選んだ人数で、カーソルを合わせると名前が出ます。自分のリアクションは押された状態で描かれます。何度クリックしても、1 人は絵文字ごとに 1 回だけ数えられます。"
+msgstr ""
+"絵文字の横の数字は選んだ人数で、カーソルを合わせると名前が出ます。自分のリアクションは押された状態で描かれます。何度クリックしても、1 人は絵文字ごとに"
+" 1 回だけ数えられます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:23
 #, elixir-autogen, elixir-format
@@ -5906,7 +5919,8 @@ msgstr "数字の意味"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A mention is a message that writes your nickname, or one of your highlight words, in a channel you were in. The chat counts those separately from everything else that is new."
-msgstr "メンションとは、あなたがいたチャンネルで、あなたのニックネームやハイライトワードが書かれたメッセージのことです。チャットはそれを他の新着とは別に数えます。"
+msgstr ""
+"メンションとは、あなたがいたチャンネルで、あなたのニックネームやハイライトワードが書かれたメッセージのことです。チャットはそれを他の新着とは別に数えます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:20
 #, elixir-autogen, elixir-format
@@ -5916,7 +5930,9 @@ msgstr "会話を開くと両方が消えます"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Mentions lists every message that named you, newest first, across the channels you are in. Clicking one switches to that conversation and scrolls to the line. While anything is waiting, a badge appears in the taskbar tray and opens the same window."
-msgstr "スタート ▸ メンションは、あなたがいるチャンネル全体から、あなたを名指ししたメッセージを新しい順に並べます。クリックするとその会話に切り替わり、その行までスクロールします。待っているものがある間は、タスクバーのトレイにバッジが出て、同じウィンドウを開きます。"
+msgstr ""
+"スタート ▸ "
+"メンションは、あなたがいるチャンネル全体から、あなたを名指ししたメッセージを新しい順に並べます。クリックするとその会話に切り替わり、その行までスクロールします。待っているものがある間は、タスクバーのトレイにバッジが出て、同じウィンドウを開きます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:22
 #, elixir-autogen, elixir-format
@@ -5946,7 +5962,9 @@ msgstr "決して数えないもの"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Your own messages, deleted messages, and anything the server itself said — a join, a service reply, a notice. Those name people constantly and none of it is somebody reaching for you."
-msgstr "自分のメッセージ、削除されたメッセージ、そしてサーバー自身が言ったこと — 参加、サービスの応答、通知。これらは絶えず人の名前を出しますが、どれもあなたを呼んでいるものではありません。"
+msgstr ""
+"自分のメッセージ、削除されたメッセージ、そしてサーバー自身が言ったこと — "
+"参加、サービスの応答、通知。これらは絶えず人の名前を出しますが、どれもあなたを呼んでいるものではありません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:26
 #, elixir-autogen, elixir-format
@@ -5956,7 +5974,8 @@ msgstr "初めての訪問に線はありません"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "A conversation you have never opened has nothing marked as read, so nothing is drawn. The mark is remembered per conversation for registered nicknames and survives a reconnect."
-msgstr "一度も開いたことのない会話には既読の印がないため、何も描かれません。この印は登録済みのニックネームについて会話ごとに記憶され、再接続しても残ります。"
+msgstr ""
+"一度も開いたことのない会話には既読の印がないため、何も描かれません。この印は登録済みのニックネームについて会話ごとに記憶され、再接続しても残ります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:13
 #, elixir-autogen, elixir-format
@@ -5996,7 +6015,8 @@ msgstr "別の会話に切り替えたとき"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "While there is something new, a First unread button appears beside the conversation's other controls and scrolls to the first line you have not read. If that line is older than the part of the history currently loaded, scroll up once to load more and press it again."
-msgstr "新しいものがある間は、会話の他の操作の隣に「最初の未読」ボタンが現れ、まだ読んでいない最初の行までスクロールします。その行が読み込まれている履歴より古い場合は、一度上にスクロールして追加を読み込み、もう一度押してください。"
+msgstr ""
+"新しいものがある間は、会話の他の操作の隣に「最初の未読」ボタンが現れ、まだ読んでいない最初の行までスクロールします。その行が読み込まれている履歴より古い場合は、一度上にスクロールして追加を読み込み、もう一度押してください。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:56
 #, elixir-autogen, elixir-format
@@ -6006,7 +6026,8 @@ msgstr "複数の画面でのサインイン"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A chat loses things. The address somebody typed, the link to the build, the paragraph worth reading twice — all of it scrolls. Saving is for the moment you already know you will want it later."
-msgstr "チャットではものが失われます。誰かが打った住所、ビルドへのリンク、二度読む価値のある段落——どれも流れていきます。保存は、あとで必要になると今わかっている瞬間のためのものです。"
+msgstr ""
+"チャットではものが失われます。誰かが打った住所、ビルドへのリンク、二度読む価値のある段落——どれも流れていきます。保存は、あとで必要になると今わかっている瞬間のためのものです。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:23
 #, elixir-autogen, elixir-format
@@ -6026,7 +6047,8 @@ msgstr "ほかの人には見えません"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Right-click a message — long press on a phone — and choose Save for Later. The same menu offers Remove from Saved on a line you already kept. It works on channel messages and on private ones."
-msgstr "メッセージを右クリック（スマートフォンでは長押し）して「後で見る」を選びます。すでに保存した行では、同じメニューに「保存から削除」が出ます。チャンネルのメッセージにもプライベートメッセージにも使えます。"
+msgstr ""
+"メッセージを右クリック（スマートフォンでは長押し）して「後で見る」を選びます。すでに保存した行では、同じメニューに「保存から削除」が出ます。チャンネルのメッセージにもプライベートメッセージにも使えます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:33
 #, elixir-autogen, elixir-format
@@ -6041,7 +6063,9 @@ msgstr "保存は非公開です。書いた人に通知は行かず、誰にも
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Tools ▸ Saved Messages lists everything you kept, newest first, and each row goes back to the line in its own conversation. You can keep up to 500; each one can carry a short note about why."
-msgstr "スタート ▸ ツール ▸ 保存したメッセージには、保存したものが新しい順に並び、各行はそれぞれの会話の中のその行に戻ります。保存できるのは 500 件までで、それぞれに理由の短いメモを付けられます。"
+msgstr ""
+"スタート ▸ ツール ▸ 保存したメッセージには、保存したものが新しい順に並び、各行はそれぞれの会話の中のその行に戻ります。保存できるのは 500 "
+"件までで、それぞれに理由の短いメモを付けられます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:33
 #, elixir-autogen, elixir-format
@@ -6061,7 +6085,9 @@ msgstr "削除されたメッセージは現れず、編集されたものは編
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Everything a group knows usually dies inside the room it was said in. A channel can choose otherwise: its founder can open a public archive, and from that moment the channel gets a page per day that anybody can read and a search engine can index."
-msgstr "グループが知っていることは、たいていそれが語られた部屋の中で死んでいきます。チャンネルは別の道を選べます。創設者が公開アーカイブを開けば、その時点からチャンネルには、誰でも読めて検索エンジンがインデックスできる 1 日 1 ページができます。"
+msgstr ""
+"グループが知っていることは、たいていそれが語られた部屋の中で死んでいきます。チャンネルは別の道を選べます。創設者が公開アーカイブを開けば、その時点からチャンネルには、誰でも読めて検索エンジンがインデックスできる"
+" 1 日 1 ページができます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:26
 #, elixir-autogen, elixir-format
@@ -6071,7 +6097,8 @@ msgstr "参加や退出などのチャンネル通知は公開されません"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Only what is said from the moment the switch goes on. Nothing already in the channel is ever published, however long it has been there — whoever wrote it wrote it into a room, not onto the internet. Everyone present is told when the switch changes, so nobody learns it from a search engine."
-msgstr "公開されるのは、スイッチを入れた時点以降の発言だけです。すでにチャンネルにあるものは、どれだけ長くそこにあっても決して公開されません。書いた人は部屋に向けて書いたのであって、インターネットに向けて書いたのではないからです。スイッチが変わると、その場にいる全員に知らされます。検索エンジンで知ることがないようにです。"
+msgstr ""
+"公開されるのは、スイッチを入れた時点以降の発言だけです。すでにチャンネルにあるものは、どれだけ長くそこにあっても決して公開されません。書いた人は部屋に向けて書いたのであって、インターネットに向けて書いたのではないからです。スイッチが変わると、その場にいる全員に知らされます。検索エンジンで知ることがないようにです。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:43
 #, elixir-autogen, elixir-format
@@ -6091,7 +6118,9 @@ msgstr "オフにすると、すべてのページがただちに見られなく
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, and only a registered channel has one."
-msgstr "創設者だけです。オペレーターは部屋を管理しますが、そこで話されたことを外から読めるようにするかどうかは別の種類の決定であり、チャンネルの責任者のものです。スイッチは Channel Central の登録タブにあり、登録済みのチャンネルにしかありません。"
+msgstr ""
+"創設者だけです。オペレーターは部屋を管理しますが、そこで話されたことを外から読めるようにするかどうかは別の種類の決定であり、チャンネルの責任者のものです。スイッチは"
+" Channel Central の登録タブにあり、登録済みのチャンネルにしかありません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:14
 #, elixir-autogen, elixir-format
@@ -6106,7 +6135,8 @@ msgstr "誰ができるか"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "\"Reply in this thread\" aims the channel's own input at the message that started it. You write where you always write, and what you send lands in the room and in the thread at once."
-msgstr "「このスレッドに返信」は、チャンネル自身の入力欄を、そのスレッドを始めたメッセージに向けます。いつも書いている場所で書き、送ったものは部屋とスレッドの両方に同時に届きます。"
+msgstr ""
+"「このスレッドに返信」は、チャンネル自身の入力欄を、そのスレッドを始めたメッセージに向けます。いつも書いている場所で書き、送ったものは部屋とスレッドの両方に同時に届きます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:2
 #, elixir-autogen, elixir-format
@@ -6116,22 +6146,26 @@ msgstr "誰かが返信したメッセージには、集まった返信の数が
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Answering a reply answers the conversation it belongs to: your message quotes the original message, not the reply you clicked. That keeps one disagreement as one thread instead of a branching tree, and it is why a reply never collects replies of its own."
-msgstr "返信に返信することは、その返信が属する会話に返信することです。あなたのメッセージは、クリックした返信ではなく、元のメッセージを引用します。こうして一つの議論は枝分かれした木ではなく一本のスレッドのままになり、だからこそ返信が自分の返信を集めることはありません。"
+msgstr ""
+"返信に返信することは、その返信が属する会話に返信することです。あなたのメッセージは、クリックした返信ではなく、元のメッセージを引用します。こうして一つの議論は枝分かれした木ではなく一本のスレッドのままになり、だからこそ返信が自分の返信を集めることはありません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Every reply still appears in the channel where it was written. The Thread window is a second place to read them, never the only place — in a small room, hiding replies behind a panel is how a conversation stops happening in front of everybody."
-msgstr "どの返信も、それが書かれたチャンネルに残ります。スレッドウィンドウはそれを読む二つ目の場所であって、唯一の場所ではありません。小さな部屋では、返信をパネルの陰に隠すことこそが、会話がみんなの前で起きなくなる原因です。"
+msgstr ""
+"どの返信も、それが書かれたチャンネルに残ります。スレッドウィンドウはそれを読む二つ目の場所であって、唯一の場所ではありません。小さな部屋では、返信をパネルの陰に隠すことこそが、会話がみんなの前で起きなくなる原因です。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Everything that answers the first message, including replies somebody later deleted, which are shown as removed so the count and the list always agree. Replies written before this feature existed keep the message they quoted and are not counted here."
-msgstr "最初のメッセージに答えるものすべてです。あとで削除された返信も含まれ、削除済みとして表示されるので、件数と一覧は常に一致します。この機能ができる前に書かれた返信は、引用した相手のメッセージをそのまま保ち、ここでは数えられません。"
+msgstr ""
+"最初のメッセージに答えるものすべてです。あとで削除された返信も含まれ、削除済みとして表示されるので、件数と一覧は常に一致します。この機能ができる前に書かれた返信は、引用した相手のメッセージをそのまま保ち、ここでは数えられません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "If the original message was deleted, the quote shows that it is gone and the reply stays where it is. Long messages are truncated in the reply preview. Editing the original message updates the quote in all replies."
-msgstr "元のメッセージが削除された場合、引用はそれが失われたことを示し、返信はその場に残ります。長いメッセージは返信のプレビューで切り詰められます。元のメッセージを編集すると、すべての返信の引用が更新されます。"
+msgstr ""
+"元のメッセージが削除された場合、引用はそれが失われたことを示し、返信はその場に残ります。長いメッセージは返信のプレビューで切り詰められます。元のメッセージを編集すると、すべての返信の引用が更新されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:14
 #, elixir-autogen, elixir-format
@@ -6171,7 +6205,8 @@ msgstr "スレッド"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Under a message that was answered there is a \"2 replies\" line. Click it, or right-click the message and choose Open Thread, and the Thread window opens on that conversation. Opening it from one of the replies opens the same thread."
-msgstr "返信されたメッセージの下には「2件の返信」という行があります。それをクリックするか、メッセージを右クリックして「スレッドを開く」を選ぶと、スレッドウィンドウがその会話で開きます。返信のどれかから開いても同じスレッドが開きます。"
+msgstr ""
+"返信されたメッセージの下には「2件の返信」という行があります。それをクリックするか、メッセージを右クリックして「スレッドを開く」を選ぶと、スレッドウィンドウがその会話で開きます。返信のどれかから開いても同じスレッドが開きます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:28
 #, elixir-autogen, elixir-format
@@ -6186,7 +6221,9 @@ msgstr "/event"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A channel can agree to do something at a time — a tournament, a film night, a meeting — and everyone sees it, says whether they are coming, and is reminded shortly before it starts."
-msgstr "チャンネルは時間を決めて何かをすることにできます — トーナメント、映画の夜、ミーティング — 全員がそれを見て、参加するかを答え、開始の少し前に知らせを受け取ります。"
+msgstr ""
+"チャンネルは時間を決めて何かをすることにできます — トーナメント、映画の夜、ミーティング — "
+"全員がそれを見て、参加するかを答え、開始の少し前に知らせを受け取ります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:57
 #, elixir-autogen, elixir-format
@@ -6196,12 +6233,15 @@ msgstr "チャットを閉じているときの通知"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Operators only, with /event followed by how long from now it starts and what it is called: /event 2h Tuesday tournament. The time is a delay rather than a clock reading, so it means the same instant for everybody who can read it, wherever they are."
-msgstr "オペレーターのみ。/event の後に、今からどれくらいで始まるかと名前を続けます: /event 2h 火曜トーナメント。時刻は時計の時刻ではなく間隔なので、どこにいる人にとっても同じ瞬間を意味します。"
+msgstr ""
+"オペレーターのみ。/event の後に、今からどれくらいで始まるかと名前を続けます: /event 2h "
+"火曜トーナメント。時刻は時計の時刻ではなく間隔なので、どこにいる人にとっても同じ瞬間を意味します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Press I'm going on the card. It is the only answer there is — a maybe tells the organiser nothing they did not already know. Press it again to take yourself back off. The count beside it is everybody who said yes."
-msgstr "カードの「参加します」を押してください。答えはこれだけです。「たぶん」は主催者がすでに知っていること以上を何も伝えません。もう一度押すと取り消せます。隣の数字は参加と答えた全員です。"
+msgstr ""
+"カードの「参加します」を押してください。答えはこれだけです。「たぶん」は主催者がすでに知っていること以上を何も伝えません。もう一度押すと取り消せます。隣の数字は参加と答えた全員です。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:22
 #, elixir-autogen, elixir-format
@@ -6216,12 +6256,16 @@ msgstr "予定を立てる"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Shortly before it starts, the channel gets a line saying so, and everyone who said they were going gets a notification — a desktop one if you have the chat open, a push one if you do not. There is no separate alerts channel and no setting of its own: it uses the notifications you have already chosen."
-msgstr "開始の少し前に、チャンネルにそう伝える 1 行が投稿され、参加と答えた全員に通知が届きます。チャットを開いていればデスクトップ通知、開いていなければプッシュ通知です。専用の通知チャンネルも専用の設定もありません。すでに選んである通知の仕組みをそのまま使います。"
+msgstr ""
+"開始の少し前に、チャンネルにそう伝える 1 "
+"行が投稿され、参加と答えた全員に通知が届きます。チャットを開いていればデスクトップ通知、開いていなければプッシュ通知です。専用の通知チャンネルも専用の設定もありません。すでに選んである通知の仕組みをそのまま使います。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Tools ▸ Events, or /event with nothing after it, lists what this channel has coming up, soonest first. Whoever scheduled something can call it off with /event cancel followed by its number; the record that it was going to happen stays."
-msgstr "スタート ▸ ツール ▸ イベント、または後ろに何も付けない /event で、このチャンネルの予定が近い順に並びます。予定した人は /event cancel と番号で中止でき、行われる予定だったという記録は残ります。"
+msgstr ""
+"スタート ▸ ツール ▸ イベント、または後ろに何も付けない /event で、このチャンネルの予定が近い順に並びます。予定した人は /event "
+"cancel と番号で中止でき、行われる予定だったという記録は残ります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:38
 #, elixir-autogen, elixir-format
@@ -6236,7 +6280,8 @@ msgstr "リマインダー"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "The card shows the start in your own time zone, and how far off it is. Two people in different countries see different clock times for the same event, which is the point: the stored instant is the same one."
-msgstr "カードは開始時刻をあなた自身のタイムゾーンで、そしてどれくらい先かを示します。別の国にいる二人は同じイベントに違う時計の時刻を見ます。それが要点です。保存されている瞬間は同じものです。"
+msgstr ""
+"カードは開始時刻をあなた自身のタイムゾーンで、そしてどれくらい先かを示します。別の国にいる二人は同じイベントに違う時計の時刻を見ます。それが要点です。保存されている瞬間は同じものです。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:14
 #, elixir-autogen, elixir-format
@@ -6256,7 +6301,8 @@ msgstr "キャラクターを選ぶ"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Enter a space from the conversation toolbar and pick a character. That choice is now remembered for your nickname, so it is still yours the next time you connect — and the chat shows it even when you are nowhere near a space."
-msgstr "会話のツールバーからスペースに入り、キャラクターを選びます。その選択はニックネームに紐づいて保存されるので、次に接続したときもあなたのものです。スペースから離れていてもチャットに表示されます。"
+msgstr ""
+"会話のツールバーからスペースに入り、キャラクターを選びます。その選択はニックネームに紐づいて保存されるので、次に接続したときもあなたのものです。スペースから離れていてもチャットに表示されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:35
 #, elixir-autogen, elixir-format
@@ -6266,12 +6312,14 @@ msgstr "ニックカラー"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Only people who have chosen. Somebody who has never walked into a space gets no portrait at all rather than a stand-in face, because a stranger's picture where a person should be is worse than no picture."
-msgstr "選んだ人だけです。スペースに一度も入ったことがない人には、代わりの顔ではなく肖像がまったく表示されません。人がいるべき場所に見知らぬ顔があるほうが、何もないより悪いからです。"
+msgstr ""
+"選んだ人だけです。スペースに一度も入ったことがない人には、代わりの顔ではなく肖像がまったく表示されません。人がいるべき場所に見知らぬ顔があるほうが、何もないより悪いからです。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The character you chose in a virtual space stands beside your nickname in the chat: in the conversation, in the user list, and on the card somebody sees when they look you up."
-msgstr "仮想スペースで選んだキャラクターが、チャットのニックネームの横に表示されます。会話の中、ユーザー一覧、そして誰かがあなたを調べたときのカードに。"
+msgstr ""
+"仮想スペースで選んだキャラクターが、チャットのニックネームの横に表示されます。会話の中、ユーザー一覧、そして誰かがあなたを調べたときのカードに。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:14
 #, elixir-autogen, elixir-format
@@ -6281,7 +6329,9 @@ msgstr "オフにするには"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "View ▸ Character Portraits, in the menu bar or the Start menu, switches them off and back on. The plain text line is the other half of what this chat looks like, and somebody reading a busy channel may want nothing but the words."
-msgstr "メニューバーまたはスタートメニューの「表示 ▸ キャラクターの肖像」でオフにしたり戻したりできます。素のテキスト行はこのチャットの見た目のもう半分であり、にぎやかなチャンネルを読む人は言葉だけを望むかもしれません。"
+msgstr ""
+"メニューバーまたはスタートメニューの「表示 ▸ "
+"キャラクターの肖像」でオフにしたり戻したりできます。素のテキスト行はこのチャットの見た目のもう半分であり、にぎやかなチャンネルを読む人は言葉だけを望むかもしれません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:21
 #, elixir-autogen, elixir-format
@@ -6291,7 +6341,9 @@ msgstr "誰が持っているか"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A server can teach itself pictures and answer to them by name. Write :shrug: and everybody on this server sees the picture; everybody elsewhere never does, because the set belongs to the server."
-msgstr "サーバーは画像を覚え、その名前で応えられます。:shrug: と書けばこのサーバーの全員に画像が見えます。ほかの場所の人には決して見えません。その一式はサーバーのものだからです。"
+msgstr ""
+"サーバーは画像を覚え、その名前で応えられます。:shrug: "
+"と書けばこのサーバーの全員に画像が見えます。ほかの場所の人には決して見えません。その一式はサーバーのものだからです。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:14
 #, elixir-autogen, elixir-format
@@ -6301,7 +6353,9 @@ msgstr "追加するには"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Administrators only, from Admin ▸ Server Emoji. Choose a picture, give it a name, and it is available to everybody here at once. A server holds up to 100, and removing one frees its name again."
-msgstr "管理者のみ、管理 ▸ サーバー絵文字から行います。画像を選んで名前を付ければ、すぐにここの全員が使えます。1 つのサーバーで最大 100 個、削除すればその名前は再び空きます。"
+msgstr ""
+"管理者のみ、管理 ▸ サーバー絵文字から行います。画像を選んで名前を付ければ、すぐにここの全員が使えます。1 つのサーバーで最大 100 "
+"個、削除すればその名前は再び空きます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:21
 #, elixir-autogen, elixir-format
@@ -6316,12 +6370,16 @@ msgstr "リアクション"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Two to thirty-two characters: lower-case letters, digits and underscores. That is what somebody can type between two colons without thinking about it, and a name that cannot be typed is an emoji that only half exists."
-msgstr "2 文字から 32 文字まで。小文字、数字、アンダースコアです。それが、考えずにコロン 2 つの間に打てるものであり、打てない名前は半分しか存在しない絵文字です。"
+msgstr ""
+"2 文字から 32 文字まで。小文字、数字、アンダースコアです。それが、考えずにコロン 2 "
+"つの間に打てるものであり、打てない名前は半分しか存在しない絵文字です。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Type the name between two colons, or pick it from the top of the emoji picker, where this server's own are listed above the ones everybody has. A name this server does not have stays exactly as you typed it — it never becomes a broken picture."
-msgstr "名前をコロン 2 つの間に書くか、絵文字ピッカーの上部から選びます。そこにはこのサーバー独自のものが、誰でも持っているものの上に並びます。このサーバーにない名前は、書いたそのままで残ります。壊れた画像になることは決してありません。"
+msgstr ""
+"名前をコロン 2 "
+"つの間に書くか、絵文字ピッカーの上部から選びます。そこにはこのサーバー独自のものが、誰でも持っているものの上に並びます。このサーバーにない名前は、書いたそのままで残ります。壊れた画像になることは決してありません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:7
 #, elixir-autogen, elixir-format
@@ -6336,7 +6394,8 @@ msgstr "1 分で止まります"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "A take ends itself at sixty seconds and is attached as it stands. Past a minute it stops being something the other person can take in the middle of a conversation — which is what writing is for."
-msgstr "録音は 60 秒で自動的に終わり、そのまま添付されます。1 分を超えると、会話の途中で相手が受け取れるものではなくなります。そのために文字があります。"
+msgstr ""
+"録音は 60 秒で自動的に終わり、そのまま添付されます。1 分を超えると、会話の途中で相手が受け取れるものではなくなります。そのために文字があります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:33
 #, elixir-autogen, elixir-format
@@ -6346,12 +6405,14 @@ msgstr "メッセージの添付ファイル"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "On a phone, and only in a browser that can record. On a desktop the file picker beside the input already attaches an audio file, so nothing is missing there."
-msgstr "スマートフォンで、しかも録音できるブラウザだけです。パソコンでは入力欄の隣のファイル選択で音声ファイルを添付できるので、足りないものはありません。"
+msgstr ""
+"スマートフォンで、しかも録音できるブラウザだけです。パソコンでは入力欄の隣のファイル選択で音声ファイルを添付できるので、足りないものはありません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Press Record and allow the microphone when the browser asks. The clock beside it counts up while you speak. Attach ends the take and adds it to the message, where it waits with any other attachment until you press Send; Discard throws it away and the microphone is released either way."
-msgstr "「録音」を押し、ブラウザに聞かれたらマイクを許可します。隣の時計は話している間ずっと進みます。「添付」は録音を終えてメッセージに加え、ほかの添付と同じように送信を押すまで待ちます。「破棄」は捨てます。どちらの場合もマイクは解放されます。"
+msgstr ""
+"「録音」を押し、ブラウザに聞かれたらマイクを許可します。隣の時計は話している間ずっと進みます。「添付」は録音を終えてメッセージに加え、ほかの添付と同じように送信を押すまで待ちます。「破棄」は捨てます。どちらの場合もマイクは解放されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:7
 #, elixir-autogen, elixir-format
@@ -6361,7 +6422,9 @@ msgstr "録音する"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Some things are faster said than typed. On a phone the composer offers a Record strip: speak for up to a minute, and the recording is attached to your message like any other file."
-msgstr "打つより話すほうが速いこともあります。スマートフォンでは入力欄に録音バーが出ます。最大 1 分話せば、その録音はほかのファイルと同じようにメッセージへ添付されます。"
+msgstr ""
+"打つより話すほうが速いこともあります。スマートフォンでは入力欄に録音バーが出ます。最大 1 "
+"分話せば、その録音はほかのファイルと同じようにメッセージへ添付されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:23
 #, elixir-autogen, elixir-format

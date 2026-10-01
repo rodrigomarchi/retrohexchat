@@ -25,8 +25,8 @@ defmodule RetroHexChatWeb.Components.UI.PinnedDialog do
       />
 
   The banner draws the strip a pin occupies at the top of the room, which is
-  what a pin *is*; the rows below arrive as a stream the component cannot
-  read.
+  what a pin *is*, carrying the line that is actually up there. A stream is
+  write-only to the component, so the island hands over its first row.
   """
   use RetroHexChatWeb.Component
 
@@ -41,6 +41,7 @@ defmodule RetroHexChatWeb.Components.UI.PinnedDialog do
 
   @doc "Renders the Pinned window body."
   attr :id, :string, required: true
+  attr :first_row, :map, default: nil, doc: "Newest row, for the banner picture"
   attr :pins, :any, required: true, doc: "The stream of pinned rows"
   attr :can_unpin, :boolean, default: false
   attr :state, :any, default: nil, doc: "PaginatedList.State for the list"
@@ -58,10 +59,7 @@ defmodule RetroHexChatWeb.Components.UI.PinnedDialog do
           <Diagrams.diagram_dialog_preview
             kind={:pinned}
             title={dgettext("dialogs", "Channel")}
-            lines={[
-              %{text: dgettext("dialogs", "the rules, the link"), tone: :accent},
-              %{text: dgettext("dialogs", "anyone around?")}
-            ]}
+            lines={pin_lines(@first_row)}
             label={dgettext("dialogs", "A miniature of the room wearing its pinned line")}
           />
         </:art>
@@ -170,4 +168,15 @@ defmodule RetroHexChatWeb.Components.UI.PinnedDialog do
   @spec nick_class(function() | nil, String.t()) :: String.t() | nil
   defp nick_class(nil, _nick), do: nil
   defp nick_class(nick_color_fn, nick), do: nick_color_fn.(nick)
+
+  # What the room is actually wearing above its messages.
+  @spec pin_lines(map() | nil) :: [map()]
+  defp pin_lines(nil), do: []
+
+  defp pin_lines(row) do
+    [
+      %{text: preview(row), tone: :accent},
+      %{text: Map.get(row, :author_nickname, ""), tone: :muted}
+    ]
+  end
 end
