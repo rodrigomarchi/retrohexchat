@@ -16,6 +16,12 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   beside each label, a relay draws the two ends and the thing between them,
   and a broadcast draws the same line in three windows at once.
 
+  Two more draw what happens *to* a line rather than what it says: a
+  highlighted row wears the band the real one wears, and a hidden row is
+  struck out where it would have been. Both windows used to draw the same
+  channel with the same two bullets, and the only thing telling them apart
+  was text nobody reads at 7px.
+
   The rows still come from what the form is holding right now, so an empty
   setting looks empty.
   """
@@ -34,6 +40,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
     :pinned,
     :roster,
     :checklist,
+    :highlighted,
+    :hidden,
     :fields,
     :relay,
     :broadcast
@@ -45,7 +53,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   `lines` are maps of `%{text:, tone:}`; the tone picks the colour the real
   surface would give that row (`:accent`, `:system`, `:muted`, `:danger`,
   and for a lamp `:ok` or `:warn`). A `:fields` line carries a second string
-  under `value`, drawn in the well beside its label.
+  under `value`, drawn in the well beside its label, and a `:tabs` line sets
+  `tab: true` to be drawn on the tab strip instead of in the well.
   """
   attr :class, :string, default: nil
   attr :title, :string, required: true
@@ -176,6 +185,36 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
         <rect :for={row <- @rows} x="8" y={row.y - 5} width="4" height="4" fill={turn_fill(row)} />
       </g>
       
+    <!-- Highlight band: the row does not merely say it matched, it wears
+           the colour the real line wears -->
+      <g :if={@kind == :highlighted}>
+        <rect
+          :for={row <- Enum.filter(@rows, &(&1.tone == :accent))}
+          x="6"
+          y={row.y - 7}
+          width="116"
+          height="10"
+          fill="#ffffcc"
+        />
+        <rect
+          :for={row <- Enum.filter(@rows, &(&1.tone == :accent))}
+          x="6"
+          y={row.y - 7}
+          width="2"
+          height="10"
+          fill="#800000"
+        />
+      </g>
+      
+    <!-- A hidden line is not a line with different words, it is a line that
+           is not there -->
+      <g :if={@kind == :hidden}>
+        <g :for={row <- Enum.filter(@rows, &(&1.tone == :muted))}>
+          <rect x="8" y={row.y - 7} width="112" height="9" fill="#e8e8e8" />
+          <rect x="10" y={row.y - 3} width="108" height="1" fill="#808080" />
+        </g>
+      </g>
+      
     <!-- Settings sheet: a name is only half a setting, the value is the half
            that changes -->
       <g :if={@kind == :fields}>
@@ -265,7 +304,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
           fill="#000080"
         />
         <text
-          :if={row.text != "-" and @kind != :broadcast}
+          :if={row.text != "-" and text_row?(@kind, row)}
           x={row_x(@kind)}
           y={row.y}
           fill={tone_fill(row.tone)}
@@ -350,6 +389,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   defp row_x(:roster), do: 18
   defp row_x(:checklist), do: 21
   defp row_x(:relay), do: 8
+  defp row_x(:highlighted), do: 11
+  defp row_x(:hidden), do: 10
   defp row_x(_kind), do: 8
 
   @spec empty_top(atom()) :: pos_integer()
@@ -366,6 +407,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   defp first_row(:pinned), do: 32
   defp first_row(kind) when kind in [:roster, :checklist], do: 32
   defp first_row(:relay), do: 66
+  defp first_row(kind) when kind in [:highlighted, :hidden], do: 33
   defp first_row(:broadcast), do: 32
   defp first_row(_kind), do: 40
 
@@ -375,20 +417,29 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   defp max_rows(kind) when kind in [:roster, :checklist], do: 6
   defp max_rows(:fields), do: 6
   defp max_rows(:relay), do: 3
+  defp max_rows(kind) when kind in [:highlighted, :hidden], do: 5
   defp max_rows(:broadcast), do: 1
   defp max_rows(_kind), do: 5
 
   @spec rows([map()], atom()) :: [map()]
   defp rows(lines, kind) do
-    lines
-    |> Enum.reject(&(Map.get(&1, :text) != "-" and clip(Map.get(&1, :text), 26) == ""))
-    |> Enum.take(max_rows(kind))
+    kept =
+      lines
+      |> Enum.reject(&(Map.get(&1, :text) != "-" and clip(Map.get(&1, :text), 26) == ""))
+      |> Enum.take(max_rows(kind))
+
+    last = length(kept) - 1
+
+    kept
     |> Enum.with_index()
     |> Enum.map(fn {line, index} ->
       %{
         text: if(line.text == "-", do: "-", else: clip(line.text, row_chars(kind))),
         value: clip(Map.get(line, :value), 13),
         tone: Map.get(line, :tone, :normal),
+        index: index,
+        last?: index == last,
+        tab?: Map.get(line, :tab, false),
         y: first_row(kind) + index * 9
       }
     end)
@@ -402,6 +453,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   defp row_chars(:checklist), do: 20
   defp row_chars(:fields), do: 15
   defp row_chars(:relay), do: 26
+  defp row_chars(kind) when kind in [:highlighted, :hidden], do: 24
   defp row_chars(:broadcast), do: 24
   defp row_chars(_kind), do: 26
 
@@ -411,8 +463,12 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   defp typed_line([]), do: ""
   defp typed_line(rows), do: rows |> List.last() |> Map.get(:text) |> clip(22)
 
+  # A tab says so. Deciding it by position meant a caller with one tab and one
+  # line lost the line, because position two was assumed to be a second tab.
   @spec tab_labels([map()]) :: [String.t()]
-  defp tab_labels(rows), do: rows |> Enum.take(2) |> Enum.map(&clip(&1.text, 11))
+  defp tab_labels(rows) do
+    rows |> Enum.filter(& &1.tab?) |> Enum.take(2) |> Enum.map(&clip(&1.text, 11))
+  end
 
   # A turn marker takes the colour of the voice that said it, so the two
   # sides of a query read as two sides.
@@ -426,6 +482,17 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   defp lamp_fill(:ok), do: "#00a000"
   defp lamp_fill(:warn), do: "#e0b000"
   defp lamp_fill(_tone), do: "#a0a0a0"
+
+  # A row the surface has already drawn somewhere else is not drawn again.
+  # Three anatomies place a row outside the well — a broadcast puts it in
+  # every window, a tab strip puts it on a tab, a composer puts it on the
+  # typed strip — and each of them was also printing it as a plain line, so
+  # half of a 128×96 picture said the same thing twice.
+  @spec text_row?(atom(), map()) :: boolean()
+  defp text_row?(:broadcast, _row), do: false
+  defp text_row?(:tabs, row), do: not row.tab?
+  defp text_row?(:composer, row), do: not row.last?
+  defp text_row?(_kind, _row), do: true
 
   # Every window gets the same line, so the picture draws the same line in
   # every window.
@@ -491,6 +558,20 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
       dgettext(
         "diagrams",
         "A miniature of a list of choices. Nothing is selected yet."
+      )
+
+  defp kind_label(:highlighted),
+    do:
+      dgettext(
+        "diagrams",
+        "A miniature of the conversation with the matching line wearing its highlight"
+      )
+
+  defp kind_label(:hidden),
+    do:
+      dgettext(
+        "diagrams",
+        "A miniature of a conversation with a grey bar where the hidden line was"
       )
 
   defp kind_label(:fields),

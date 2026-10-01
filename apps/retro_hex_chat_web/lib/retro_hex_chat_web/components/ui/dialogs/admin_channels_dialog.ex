@@ -107,10 +107,15 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
       <.dialog_banner heading={dgettext("dialogs", "Every room on the server")}>
         <:art>
           <Diagrams.diagram_dialog_preview
-            kind={:tabs}
+            kind={:fields}
             title={dgettext("dialogs", "Channels")}
             lines={channel_lines(@table)}
-            label={dgettext("dialogs", "A miniature of the channel tabs these rooms open as")}
+            label={
+              dgettext(
+                "dialogs",
+                "A miniature of the channel list, each name beside the number of people in it"
+              )
+            }
           />
         </:art>
         <:glyph><Icons.icon_channels class="h-8 w-8" /></:glyph>
@@ -422,7 +427,13 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
   @spec channel_lines(term()) :: [map()]
   defp channel_lines(table) do
     table
-    |> table_rows(2)
-    |> Enum.map(&%{text: Map.get(&1, :name) || "", tone: :accent})
+    |> table_rows(5)
+    |> Enum.map(fn row ->
+      %{
+        text: Map.get(row, :name) || "",
+        value: row |> Map.get(:member_count) |> to_string(),
+        tone: :accent
+      }
+    end)
   end
 end

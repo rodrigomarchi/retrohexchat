@@ -379,6 +379,6 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
   # in this order, joined before the reader touches anything.
   @spec join_lines([map()]) :: [map()]
   defp join_lines(entries) do
-    Enum.map(entries, &%{text: &1.channel_name, tone: :accent})
+    Enum.map(entries, &%{text: &1.channel_name, tone: :accent, tab: true})
   end
 end

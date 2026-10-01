@@ -65,8 +65,17 @@ async function shootWithBanner(
   name: string,
   scope: Locator = target,
 ) {
-  await expect(scope.locator("[data-dialog-banner]").first()).toBeVisible();
+  const banner = scope.locator("[data-dialog-banner]").first();
+  await expect(banner).toBeVisible();
   await shoot(page, target, name);
+
+  // The miniature on its own, so "is this the same picture as that one" is a
+  // question a checksum answers. Two banners that render identically are one
+  // picture repeated, whatever the call sites intended.
+  const art = banner.locator(".dlg-banner__art").first();
+  if (await art.isVisible().catch(() => false)) {
+    await art.screenshot({ path: `${SHOTS}/art/${name}.png` });
+  }
 }
 
 /**
@@ -192,6 +201,10 @@ test.describe("dialog gallery", () => {
   });
 
   test("auto respond", async () => {
+    await user.chat.sendMessage(
+      `/autorespond add on_join ${channel} /me waves at the new arrival`,
+    );
+    await user.page.waitForTimeout(600);
     await user.chat.openAutorespondDialogFromMenu();
     await shootWithBanner(
       user.page,

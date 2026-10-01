@@ -302,8 +302,8 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
       Enum.find(assigns.aliases, hd(assigns.aliases), &(&1.name == assigns[:selected_alias]))
 
     [
-      %{text: "/" <> entry.name, tone: :muted},
-      %{text: entry.expansion, tone: :accent}
+      %{text: entry.expansion, tone: :accent},
+      %{text: "/" <> entry.name, tone: :muted}
     ]
   end
 end

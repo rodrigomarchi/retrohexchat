@@ -56,7 +56,7 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
       <.dialog_banner heading={dgettext("dialogs", "Lines you decided to keep")}>
         <:art>
           <Diagrams.diagram_dialog_preview
-            kind={:card}
+            kind={:ordered}
             title={dgettext("dialogs", "Saved")}
             lines={clipping_lines(@first_row)}
             label={dgettext("dialogs", "A miniature of a kept line and where it came from")}

@@ -54,10 +54,15 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
           <.dialog_banner heading={dgettext("dialogs", "What you stop being shown")}>
             <:art>
               <Diagrams.diagram_dialog_preview
-                kind={:query}
+                kind={:hidden}
                 title={dgettext("dialogs", "Channel")}
                 lines={@hidden_lines}
-                label={dgettext("dialogs", "A miniature of a channel with an ignored line withheld")}
+                label={
+                  dgettext(
+                    "dialogs",
+                    "A miniature of a channel with a grey bar where the ignored line was"
+                  )
+                }
               />
             </:art>
             <:glyph><Icons.icon_dialog_ignore class="h-8 w-8" /></:glyph>
@@ -272,8 +277,9 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
     who = Map.get(entry, :nickname) || Map.get(entry, :nick) || ""
 
     [
-      %{text: dgettext("dialogs", "anyone around?")},
-      %{text: dgettext("dialogs", "%{nick} — hidden", nick: who), tone: :muted}
+      %{text: dgettext("dialogs", "That is the third time today.")},
+      %{text: who, tone: :muted},
+      %{text: dgettext("dialogs", "Anyway, where were we?")}
     ]
   end
 end

@@ -134,10 +134,15 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
           <.dialog_banner heading={dgettext("dialogs", "Lines that will come looking for you")}>
             <:art>
               <Diagrams.diagram_dialog_preview
-                kind={:query}
+                kind={:highlighted}
                 title={dgettext("dialogs", "Channel")}
                 lines={@hit_lines}
-                label={dgettext("dialogs", "A miniature of a channel line matching a highlight word")}
+                label={
+                  dgettext(
+                    "dialogs",
+                    "A miniature of a channel where the matching line wears its highlight"
+                  )
+                }
               />
             </:art>
             <:glyph><Icons.icon_dialog_highlight class="h-8 w-8" /></:glyph>
@@ -426,15 +431,17 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   @spec hit_lines([map()], String.t() | nil) :: [map()]
   defp hit_lines([], own_nick) do
     [
-      %{text: dgettext("dialogs", "anyone around?")},
-      %{text: highlight_sample(own_nick), tone: :danger}
+      %{text: dgettext("dialogs", "So are we still on for tonight?")},
+      %{text: highlight_sample(own_nick), tone: :accent},
+      %{text: dgettext("dialogs", "I will be there.")}
     ]
   end
 
   defp hit_lines([word | _rest], _own_nick) do
     [
-      %{text: dgettext("dialogs", "anyone around?")},
-      %{text: dgettext("dialogs", "…about %{word} again", word: word.word), tone: :danger}
+      %{text: dgettext("dialogs", "So are we still on for tonight?")},
+      %{text: dgettext("dialogs", "…about %{word} again", word: word.word), tone: :accent},
+      %{text: dgettext("dialogs", "I will be there.")}
     ]
   end
 

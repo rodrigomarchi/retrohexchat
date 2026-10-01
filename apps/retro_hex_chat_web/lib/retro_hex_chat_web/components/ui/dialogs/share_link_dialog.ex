@@ -115,9 +115,17 @@ defmodule RetroHexChatWeb.Components.UI.ShareLinkDialog do
   defp arrival_lines(nil), do: []
 
   defp arrival_lines(url) do
-    case URI.parse(url).path do
-      nil -> []
-      path -> [%{text: Path.basename(path), tone: :normal}]
+    uri = URI.parse(url)
+
+    case uri.path do
+      nil ->
+        []
+
+      path ->
+        [
+          %{text: Path.basename(path), tone: :normal, tab: true},
+          %{text: uri.host || url, tone: :system}
+        ]
     end
   end
 end

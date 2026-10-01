@@ -411,6 +411,12 @@ _ROWS = {
     # Three labels the admin banners introduced. Short and standalone, so the
     # engine has no sentence to read them from: "Console" is the terminal, not
     # a games console, and "Preserved" heads the list of what a wipe keeps.
+    # A sample chat line in the Highlight banner. Japanese answered it with
+    # the web boilerplate お問い合わせ ("contact us") whether or not it had a
+    # full stop to parse — four words with no context is a glossary entry, not
+    # a translation task.
+    "I will be there.": ("Estarei l\u00e1.", "Estarei l\u00e1.", "All\u00ed estar\u00e9.", "J'y serai.", "Ich werde da sein.", "Ci sar\u00f2.", "Ik zal er zijn.", "B\u0119d\u0119 tam.", "\u042f \u0431\u0443\u0434\u0443 \u0442\u0430\u043c.", "Saya akan ada di sana.", "\u884c\u304d\u307e\u3059\u3002", "\u6211\u4f1a\u53bb\u7684\u3002", "\u6211\u6703\u53bb\u7684\u3002"),
+
     "Console":      ("Console", "Consola", "Consola", "Console", "Konsole", "Console", "Console", "Konsola", "\u041a\u043e\u043d\u0441\u043e\u043b\u044c", "Konsol", "\u30b3\u30f3\u30bd\u30fc\u30eb", "\u63a7\u5236\u53f0", "\u4e3b\u63a7\u53f0"),
     "Preserved":    ("Preservado", "Preservado", "Conservado", "Conserv\u00e9", "Erhalten", "Conservato", "Behouden", "Zachowane", "\u0421\u043e\u0445\u0440\u0430\u043d\u044f\u0435\u0442\u0441\u044f", "Dipertahankan", "\u4fdd\u6301", "\u4fdd\u7559", "\u4fdd\u7559"),
     "Sign-up":      ("Cadastro", "Registo", "Registro", "Inscription", "Registrierung", "Registrazione", "Registratie", "Rejestracja", "\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044f", "Pendaftaran", "\u767b\u9332", "\u6ce8\u518c", "\u8a3b\u518a"),

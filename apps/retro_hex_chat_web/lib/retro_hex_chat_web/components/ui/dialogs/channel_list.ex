@@ -175,12 +175,17 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   defp display_topic(""), do: dgettext("dialogs", "No topic set")
   defp display_topic(topic), do: topic
 
-  # Joining opens a tab, which is where the reader meets the room next.
+  # Joining opens a tab, which is where the reader meets the room next. The
+  # first two rows become the tabs; anything after them is drawn in the well,
+  # so the third line is what the first of those rooms is talking about.
   @spec joinable_lines([map()]) :: [map()]
   defp joinable_lines(channels) do
-    channels
-    |> Enum.reject(&Map.get(&1, :joined))
-    |> Enum.take(2)
-    |> Enum.map(&%{text: &1.name, tone: :normal})
+    joinable = channels |> Enum.reject(&Map.get(&1, :joined)) |> Enum.take(2)
+    tabs = Enum.map(joinable, &%{text: &1.name, tone: :normal, tab: true})
+
+    case joinable do
+      [first | _rest] -> tabs ++ [%{text: display_topic(first.topic), tone: :system}]
+      [] -> tabs
+    end
   end
 end

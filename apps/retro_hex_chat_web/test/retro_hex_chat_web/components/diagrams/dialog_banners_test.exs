@@ -214,4 +214,97 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogBannersTest do
       refute html =~ "Wallops"
     end
   end
+
+  describe "a row drawn outside the well is not drawn in it as well" do
+    # At 128×96 there is room for one picture, and three anatomies were
+    # spending half of it saying the same thing twice: the tab strip, the
+    # composer's typed line and the broadcast all printed their row as plain
+    # text underneath themselves.
+    defp occurrences(html, text), do: html |> String.split(text) |> length() |> Kernel.-(1)
+
+    test "a tab is on the strip and not also a line in the well" do
+      html =
+        render_component(&diagram_dialog_preview/1, %{
+          kind: :tabs,
+          title: "Chat",
+          lines: [
+            %{text: "#lobby", tone: :normal, tab: true},
+            %{text: "the rules are pinned", tone: :system}
+          ]
+        })
+
+      assert occurrences(html, "#lobby") == 1
+      assert html =~ "the rules are pinned", "an unmarked line belongs in the well"
+    end
+
+    test "one tab and one line do not both become tabs" do
+      html =
+        render_component(&diagram_dialog_preview/1, %{
+          kind: :tabs,
+          title: "Chat",
+          lines: [
+            %{text: "#lobby", tone: :normal, tab: true},
+            %{text: "retrohexchat.app", tone: :system}
+          ]
+        })
+
+      # Taking the first two rows as tabs lost the second one entirely.
+      assert html =~ "retrohexchat.app"
+    end
+
+    test "the composer's typed line is on the strip and not above it" do
+      html =
+        render_component(&diagram_dialog_preview/1, %{
+          kind: :composer,
+          title: "Composer",
+          lines: [%{text: "/me waves", tone: :accent}, %{text: "/wave", tone: :muted}]
+        })
+
+      assert occurrences(html, "/wave") == 1
+      assert html =~ "/me waves"
+    end
+  end
+
+  describe "what happens to a line" do
+    test "a highlighted row wears the band, not a different colour of text" do
+      html =
+        render_component(&diagram_dialog_preview/1, %{
+          kind: :highlighted,
+          title: "Channel",
+          lines: [
+            %{text: "so are we on for tonight", tone: :normal},
+            %{text: "…about release again", tone: :accent}
+          ]
+        })
+
+      assert html =~ "#ffffcc", "the matched row gets the highlight band"
+      assert html =~ ~s(width="116")
+    end
+
+    test "an unmatched row gets no band" do
+      html =
+        render_component(&diagram_dialog_preview/1, %{
+          kind: :highlighted,
+          title: "Channel",
+          lines: [%{text: "nothing matched here", tone: :normal}]
+        })
+
+      refute html =~ "#ffffcc"
+    end
+
+    test "a hidden row is struck where it would have been" do
+      html =
+        render_component(&diagram_dialog_preview/1, %{
+          kind: :hidden,
+          title: "Channel",
+          lines: [
+            %{text: "that is the third time today", tone: :normal},
+            %{text: "Patches", tone: :muted}
+          ]
+        })
+
+      assert html =~ "#e8e8e8", "the suppressed row is drawn as a gap"
+      assert html =~ ~s(width="108" height="1"), "with the line through it"
+    end
+  end
 end
