@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.KnockRequestDialog do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.DialogMessage
   import RetroHexChatWeb.Components.UI.Textarea
 
   alias RetroHexChatWeb.Icons
@@ -54,15 +55,16 @@ defmodule RetroHexChatWeb.Components.UI.KnockRequestDialog do
         >
           <input type="hidden" name="channel" value={@channel || ""} />
 
-          <div class="kr-channel-card">
-            <span class="kr-channel-icon" aria-hidden="true">
-              <Icons.icon_dialog_invite class="w-4 h-4" />
-            </span>
-            <div class="kr-channel-copy">
-              <p class="kr-field-label">{dgettext("dialogs", "Channel")}</p>
-              <p class="kr-channel-value">{display_channel(@channel)}</p>
-            </div>
-          </div>
+          <.dialog_message boxed label={dgettext("dialogs", "Channel")}>
+            <:glyph><Icons.icon_dialog_invite class="w-4 h-4" /></:glyph>
+            {display_channel(@channel)}
+            <:note>
+              {dgettext(
+                "dialogs",
+                "The people who run this channel see your request and decide. Nothing happens until one of them accepts it."
+              )}
+            </:note>
+          </.dialog_message>
 
           <div class="kr-field-group">
             <label class="kr-field-label" for={"#{@id}-message"}>

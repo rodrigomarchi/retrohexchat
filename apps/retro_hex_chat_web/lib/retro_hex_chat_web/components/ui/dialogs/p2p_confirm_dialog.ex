@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.DialogMessage
   import RetroHexChatWeb.Components.UI.Button
 
   alias RetroHexChatWeb.Icons
@@ -52,23 +53,21 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
         </.dialog_header>
 
         <.dialog_body>
-          <div class="flex items-start gap-2 text-xs">
-            <span class={dialog_badge_class(@mode)}>
-              <.inline_icon name={mode_icon(@mode)} class="h-5 w-5" />
-            </span>
-            <div class="min-w-0">
-              <p>{body(@mode, @peer)}</p>
-              <div class="mt-2 grid gap-1">
+          <.dialog_message tone={mode_tone(@mode)}>
+            <:glyph><.inline_icon name={mode_icon(@mode)} class="h-5 w-5" /></:glyph>
+            {body(@mode, @peer)}
+            <:note>
+              <div class="grid gap-1">
                 <div
                   :for={impact <- impact_items(@mode)}
-                  class="flex min-w-0 items-center gap-1 text-muted-foreground"
+                  class="flex min-w-0 items-center gap-1"
                 >
                   <.inline_icon name={impact.icon} class="h-3.5 w-3.5 shrink-0" />
                   <span class="truncate">{impact.label}</span>
                 </div>
               </div>
-            </div>
-          </div>
+            </:note>
+          </.dialog_message>
         </.dialog_body>
 
         <.dialog_footer>
@@ -114,9 +113,8 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
   defp mode_icon(:end), do: :icon_phone_end
   defp confirm_icon(_mode), do: :icon_btn_disconnect
 
-  defp dialog_badge_class(_mode),
-    do:
-      "flex h-9 w-9 shrink-0 items-center justify-center bg-destructive text-destructive-foreground shadow-retro-sunken"
+  # Ending a call is destructive and there is no other mode here.
+  defp mode_tone(_mode), do: :danger
 
   defp impact_items(:end) do
     [

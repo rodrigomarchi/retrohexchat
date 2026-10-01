@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfirmDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.DialogMessage
   import RetroHexChatWeb.Components.UI.Button
 
   alias RetroHexChatWeb.Icons
@@ -38,6 +39,9 @@ defmodule RetroHexChatWeb.Components.UI.ConfirmDialog do
 
   attr :class, :string, default: nil
   slot :icon, doc: "Optional custom icon (default: warning)"
+
+  slot :note,
+    doc: "What happens if the reader confirms. A question without this makes them guess."
 
   @spec confirm_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def confirm_dialog(assigns) do
@@ -60,12 +64,17 @@ defmodule RetroHexChatWeb.Components.UI.ConfirmDialog do
       </.dialog_header>
 
       <.dialog_body class={classes(["cd-dialog-body", @class])}>
-        <div class="cd-message-row">
-          <span class="cd-message-icon" aria-hidden="true">
-            <Icons.icon_warning class="w-5 h-5" />
-          </span>
-          <p class="cd-message-text">{@message}</p>
-        </div>
+        <.dialog_message>
+          <:glyph>
+            <%= if @icon != [] do %>
+              {render_slot(@icon)}
+            <% else %>
+              <Icons.icon_warning class="w-5 h-5" />
+            <% end %>
+          </:glyph>
+          {@message}
+          <:note :if={@note != []}>{render_slot(@note)}</:note>
+        </.dialog_message>
       </.dialog_body>
 
       <.dialog_footer class="cd-dialog-footer">

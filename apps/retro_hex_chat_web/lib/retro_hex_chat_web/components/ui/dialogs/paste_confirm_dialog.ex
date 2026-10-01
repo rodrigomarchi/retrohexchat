@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.PasteConfirmDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.DialogMessage
   import RetroHexChatWeb.Components.UI.Button
 
   alias RetroHexChatWeb.Icons
@@ -48,21 +49,15 @@ defmodule RetroHexChatWeb.Components.UI.PasteConfirmDialog do
 
         <.dialog_body class="cd-dialog-body">
           <div class="cd-paste-stack">
-            <div class="cd-message-row">
-              <span class="cd-message-icon" aria-hidden="true">
-                <Icons.icon_dialog_paste class="w-5 h-5" />
-              </span>
-              <div class="cd-message-copy">
-                <p class="cd-message-text">
-                  {dgettext("dialogs", "You are about to send %{count} of text.",
-                    count: dngettext("dialogs", "%{count} line", "%{count} lines", @line_count)
-                  )}
-                </p>
-                <p class="cd-message-note">
-                  {dgettext("dialogs", "Send them as a paced batch to the active conversation.")}
-                </p>
-              </div>
-            </div>
+            <.dialog_message>
+              <:glyph><Icons.icon_dialog_paste class="w-5 h-5" /></:glyph>
+              {dgettext("dialogs", "You are about to send %{count} of text.",
+                count: dngettext("dialogs", "%{count} line", "%{count} lines", @line_count)
+              )}
+              <:note>
+                {dgettext("dialogs", "Send them as a paced batch to the active conversation.")}
+              </:note>
+            </.dialog_message>
 
             <div
               :if={@flood_warning}

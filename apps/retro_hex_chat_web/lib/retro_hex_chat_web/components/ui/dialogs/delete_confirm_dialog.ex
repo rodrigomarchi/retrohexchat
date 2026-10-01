@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.DeleteConfirmDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.DialogMessage
   import RetroHexChatWeb.Components.UI.Button
 
   alias RetroHexChatWeb.Icons
@@ -45,19 +46,11 @@ defmodule RetroHexChatWeb.Components.UI.DeleteConfirmDialog do
         </.dialog_header>
 
         <.dialog_body class="cd-dialog-body">
-          <div class="cd-message-row">
-            <span class="cd-message-icon" aria-hidden="true">
-              <Icons.icon_dialog_delete class="w-5 h-5" />
-            </span>
-            <div class="cd-message-copy">
-              <p class="cd-message-text">
-                {dgettext("dialogs", "Are you sure you want to delete this message?")}
-              </p>
-              <p class="cd-message-note">
-                {dgettext("dialogs", "This action cannot be undone.")}
-              </p>
-            </div>
-          </div>
+          <.dialog_message>
+            <:glyph><Icons.icon_dialog_delete class="w-5 h-5" /></:glyph>
+            {dgettext("dialogs", "Are you sure you want to delete this message?")}
+            <:note>{dgettext("dialogs", "This action cannot be undone.")}</:note>
+          </.dialog_message>
         </.dialog_body>
 
         <.dialog_footer class="cd-dialog-footer">

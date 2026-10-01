@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.MuteDurationDialog do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.DialogMessage
   import RetroHexChatWeb.Components.UI.Input
 
   alias RetroHexChatWeb.Icons
@@ -32,17 +33,16 @@ defmodule RetroHexChatWeb.Components.UI.MuteDurationDialog do
         <form id={"#{@id}-form"} phx-submit={@on_submit} class="mud-form">
           <input type="hidden" name="nick" value={@target_nick || ""} />
 
-          <div class="mud-target-card">
-            <span class="mud-target-icon" aria-hidden="true">
-              <Icons.icon_mute class="w-4 h-4" />
-            </span>
-            <div class="mud-target-copy">
-              <p class="mud-field-label">{dgettext("dialogs", "Target")}</p>
-              <p class="mud-target-value">
-                {dgettext("dialogs", "Mute user: %{nick}", nick: display_nick(@target_nick))}
-              </p>
-            </div>
-          </div>
+          <.dialog_message boxed label={dgettext("dialogs", "Target")}>
+            <:glyph><Icons.icon_mute class="w-4 h-4" /></:glyph>
+            {dgettext("dialogs", "Mute user: %{nick}", nick: display_nick(@target_nick))}
+            <:note>
+              {dgettext(
+                "dialogs",
+                "This person stays in the channel and can still read it. They cannot write until the time is over, or until you let them write again."
+              )}
+            </:note>
+          </.dialog_message>
 
           <div class="mud-field-group">
             <label class="mud-field-label" for={"#{@id}-duration"}>

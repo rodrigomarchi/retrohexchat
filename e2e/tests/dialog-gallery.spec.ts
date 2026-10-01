@@ -701,3 +701,162 @@ test.describe("dialog gallery, administrator", () => {
     await admin.page.keyboard.press("Escape");
   });
 });
+
+/**
+ * The confirmation tier: windows that interrupt to ask one thing.
+ *
+ * These carry no banner. A wizard band between the question and the buttons
+ * delays an answer the reader already has in mind, so they get the Win98
+ * message box instead — a 32×32 glyph of the subject, the question, and what
+ * follows from saying yes.
+ *
+ * Three of the family are not here. Kicked from Channel needs an operator to
+ * remove this session from a room, and the two call confirmations need a peer
+ * on the other end of a real connection; neither is a browser gesture a
+ * gallery can make on its own.
+ */
+test.describe("dialog gallery, confirmations", () => {
+  test.describe.configure({ mode: "serial" });
+
+  let user: TestUser;
+  let other: TestUser;
+  let channel: string;
+  let takenNick: string;
+
+  // Whichever dialog surface is on screen. The ids differ per dialog and the
+  // wrappers collapse to nothing when closed, so the shape is the handle.
+  const onScreen = (page: Page) =>
+    page.locator('[id$="-surface"]:visible').first();
+
+  async function shootMessage(page: Page, name: string) {
+    const surface = onScreen(page);
+    await expect(
+      surface.locator("[data-dialog-message]").first(),
+    ).toBeVisible();
+    await page.waitForTimeout(300);
+    await surface.screenshot({ path: `${SHOTS}/${name}.png` });
+  }
+
+  test.beforeAll(async ({ browser }) => {
+    user = await newSignedInUser(browser, "cfm", "pass12345");
+    other = await newSignedInUser(browser, "cfo", "pass12345");
+    channel = uniqueChannel("confirm");
+
+    await user.chat.sendMessage(`/join ${channel}`);
+    await user.chat.expectTabVisible(channel);
+    await user.chat.sendMessage("/cs register");
+    await user.page.waitForTimeout(800);
+
+    await other.chat.sendMessage(`/join ${channel}`);
+    await other.chat.expectTabVisible(channel);
+    await user.chat.expectNickInList(other.nick);
+
+    // A nickname that is registered to somebody and is not currently held,
+    // which is the only case the Change Nickname dialog is about.
+    // Photographing it with a free name let the change go through, and the
+    // session lost its identification for every test after it.
+    const spare = await newSignedInUser(browser, "cfs", "pass12345");
+    takenNick = spare.nick;
+    await spare.ctx.close();
+  });
+
+  test.afterAll(async () => {
+    await user?.ctx.close();
+    await other?.ctx.close();
+  });
+
+  test("delete a message", async () => {
+    await user.chat.switchToTab(channel);
+    await user.chat.sendMessage("that came out wrong");
+    await user.chat.openMessageContextMenu("that came out wrong");
+    await user.chat.contextDeleteMenuItem.click();
+    await shootMessage(user.page, "confirm-delete");
+    await user.page.keyboard.press("Escape");
+  });
+
+  test("follow a link out of the app", async () => {
+    await user.chat.sendMessage(
+      "the schedule is at https://example.com/nights",
+    );
+    await user.page.waitForTimeout(500);
+    await user.page
+      .locator('[data-testid="chat-message-list"] a[href*="example.com"]')
+      .first()
+      .click();
+    await expect(
+      user.page.getByTestId("open-tab-confirm-message"),
+    ).toBeVisible();
+    await shootMessage(user.page, "confirm-open-tab");
+    await user.page.getByTestId("open-tab-confirm-cancel").click();
+  });
+
+  test("send a pasted block", async () => {
+    await user.chat.pasteText(
+      Array.from({ length: 12 }, (_, i) => `line ${i + 1}`).join("\n"),
+    );
+    await expect(user.chat.pasteConfirmSendButton).toBeVisible();
+    await shootMessage(user.page, "confirm-paste");
+    await user.chat.pasteConfirmCancelButton.click();
+  });
+
+  test("take a registered nickname", async () => {
+    await user.chat.sendMessage(`/nick ${takenNick}`);
+    await expect(user.chat.nickChangeDialog).toBeVisible();
+    await shootMessage(user.page, "confirm-nick-change");
+    await user.chat.nickChangeCancelButton.click();
+  });
+
+  test("mute somebody", async () => {
+    await user.chat.switchToTab(channel);
+    await user.chat.openNicklistContextMenu(other.nick);
+    await user.page.getByTestId("context-menu-item-context_mute").click();
+    await expect(user.chat.muteDurationDialog).toBeVisible();
+    await shootMessage(user.page, "confirm-mute-duration");
+    await user.page.keyboard.press("Escape");
+  });
+
+  test("invite somebody into a room", async () => {
+    const second = uniqueChannel("cfinv");
+    await user.chat.sendMessage(`/join ${second}`);
+    await user.chat.expectTabVisible(second);
+    await user.chat.switchToTab(channel);
+
+    await user.chat.openNicklistContextMenu(other.nick);
+    await user.page
+      .getByTestId("context-menu-item-context_invite_to_channel")
+      .click();
+    await expect(user.chat.inviteChannelPickerDialog).toBeVisible();
+    await shootMessage(user.page, "confirm-invite-picker");
+    await user.page.keyboard.press("Escape");
+    await user.chat.sendMessage(`/part ${second}`);
+    await user.chat.expectTabHidden(second);
+  });
+
+  test("ask to be let into a closed room", async () => {
+    await user.chat.switchToTab(channel);
+    await user.chat.sendMessage("/mode +i");
+    await user.page.waitForTimeout(600);
+
+    await other.chat.sendMessage(`/part ${channel}`);
+    await other.page.waitForTimeout(500);
+    await other.chat.browseAllChannelsFromConversations();
+    await expect(other.chat.channelListRowAction(channel)).toHaveText(
+      "Request Access...",
+    );
+    await other.chat.channelListRow(channel).click();
+    await expect(other.chat.knockRequestDialog).toBeVisible();
+    await shootMessage(other.page, "confirm-knock-request");
+    await other.page.keyboard.press("Escape");
+
+    await user.chat.sendMessage("/mode -i");
+  });
+
+  test("disconnect from the server", async () => {
+    await other.chat.openFileMenu();
+    await expect(other.chat.disconnectMenuItem).toBeVisible();
+    await other.chat.disconnectMenuItem.click();
+    await expect(other.chat.disconnectConfirmButton).toBeVisible();
+    await shootMessage(other.page, "confirm-disconnect");
+    await other.page.keyboard.press("Escape");
+  });
+});

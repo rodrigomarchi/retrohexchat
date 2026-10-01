@@ -26,6 +26,116 @@
   height: auto;
 }
 
+/* The message box is the other half of the grammar: a window that interrupts
+   to ask one thing, rather than one that explains itself. Four dialogs had
+   written this rule out separately — `.cd-message-row` and `.kd-message-row`
+   were byte for byte the same — so it lives here once. */
+
+.dlg-message {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.dlg-message__glyph {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  background: #ffffff;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+
+.dlg-message__copy {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+}
+
+.dlg-message__text,
+.dlg-message__note {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.dlg-message__text {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.dlg-message__note {
+  display: grid;
+  gap: 6px;
+  color: #606060;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+/* The call confirmations tinted their glyph to say how bad the answer is.
+   Carried here so the shape is one component and the signal survives. */
+
+.dlg-message--danger .dlg-message__glyph {
+  background: #800000;
+  color: #ffffff;
+}
+
+.dlg-message--warn .dlg-message__glyph {
+  background: #e0b000;
+  color: #000000;
+}
+
+/* The boxed shape: a form naming the one thing it acts on. */
+
+.dlg-message--boxed {
+  gap: 8px;
+  padding: 8px;
+  background: #dfdfdf;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080;
+}
+
+.dlg-message--boxed .dlg-message__glyph {
+  width: 28px;
+  height: 28px;
+}
+
+.dlg-message--boxed .dlg-message__copy {
+  gap: 4px;
+}
+
+.dlg-message__label {
+  margin: 0;
+  min-width: 0;
+  color: #303030;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.dlg-message__text--value {
+  color: #000080;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* The glyph well shrinks with the dialog on a stacked desktop, the same way
+   the banner's illustration gives way to it. */
+@media (max-width: 430px) {
+  .dlg-message__glyph {
+    width: 28px;
+    height: 28px;
+  }
+}
+
 .dlg-banner__glyph {
   display: none;
   flex: 0 0 auto;

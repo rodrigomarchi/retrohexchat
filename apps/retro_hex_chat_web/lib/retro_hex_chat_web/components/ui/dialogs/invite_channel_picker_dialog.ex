@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.InviteChannelPickerDialog do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.DialogMessage
 
   alias RetroHexChatWeb.Icons
 
@@ -40,10 +41,16 @@ defmodule RetroHexChatWeb.Components.UI.InviteChannelPickerDialog do
         <form id={"#{@id}-form"} phx-submit={@on_submit} class="icp-form">
           <input type="hidden" name="target" value={@target_nick || ""} />
 
-          <div class="icp-target-row">
-            <span class="icp-field-label">{dgettext("dialogs", "Inviting")}</span>
-            <span class="icp-target-value">{display_nick(@target_nick)}</span>
-          </div>
+          <.dialog_message boxed label={dgettext("dialogs", "Inviting")}>
+            <:glyph><Icons.icon_dialog_invite class="w-4 h-4" /></:glyph>
+            {display_nick(@target_nick)}
+            <:note>
+              {dgettext(
+                "dialogs",
+                "This person can join the channel with the invitation, even when the channel is closed. It reaches them wherever they are, and they choose whether to use it."
+              )}
+            </:note>
+          </.dialog_message>
 
           <div class="icp-field-group">
             <label class="icp-field-label" for={"#{@id}-channel"}>

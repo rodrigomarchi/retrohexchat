@@ -1002,10 +1002,18 @@ export class ChatPage {
   async expectTabHidden(name: string) {
     await expect(this.tab(name)).toHaveCount(0);
 
-    const row = this.conversationRow(name);
-    if ((await row.count()) > 0) {
-      await expect(row).toHaveAttribute("data-joined", "false");
-    }
+    // Read the row's existence and its attribute as one value. Checking the
+    // count and then the attribute leaves a gap, and a room that loses its
+    // row outright can be removed inside it — which under load failed with
+    // "element(s) not found" for a state that is the one being asserted.
+    await expect
+      .poll(async () => {
+        const row = this.conversationRow(name);
+        return (await row.count()) === 0
+          ? "gone"
+          : await row.getAttribute("data-joined");
+      })
+      .not.toBe("true");
   }
 
   // A PM tab is a view of a conversation, not the conversation. Closing it

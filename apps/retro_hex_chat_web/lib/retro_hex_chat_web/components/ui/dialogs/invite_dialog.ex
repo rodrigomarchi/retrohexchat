@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.DialogMessage
   import RetroHexChatWeb.Components.UI.Button
 
   alias RetroHexChatWeb.Icons
@@ -56,9 +57,16 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
 
         <.dialog_body class="iv-dialog-body">
           <div class="iv-dialog-stack">
-            <p class="iv-summary">
+            <.dialog_message>
+              <:glyph><Icons.icon_dialog_invite class="w-5 h-5" /></:glyph>
               {dgettext("dialogs", "You have been invited to join the following channels:")}
-            </p>
+              <:note>
+                {dgettext(
+                  "dialogs",
+                  "If you accept, the channel opens as a tab. Everybody in it is told that you joined. If you decline, nobody is told."
+                )}
+              </:note>
+            </.dialog_message>
 
             <div :if={@invites != []} class="iv-invite-list">
               <div

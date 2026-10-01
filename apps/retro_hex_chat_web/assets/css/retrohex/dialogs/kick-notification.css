@@ -21,35 +21,9 @@
   overflow-y: auto;
 }
 
-.kd-message-row {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: start;
-  gap: 10px;
-  min-width: 0;
-}
-
-.kd-message-icon {
-  display: grid;
-  width: 32px;
-  height: 32px;
-  place-items: center;
-  background: #ffffff;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
-}
-
-.kd-message-copy,
 .kd-details {
   display: grid;
   min-width: 0;
-}
-
-.kd-message-copy {
-  gap: 8px;
 }
 
 .kd-details {
@@ -79,26 +53,6 @@
   overflow-wrap: anywhere;
 }
 
-.kd-message-title,
-.kd-message-note {
-  min-width: 0;
-  margin: 0;
-  overflow-wrap: anywhere;
-}
-
-.kd-message-title {
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.kd-message-note {
-  padding-top: 6px;
-  border-top: 1px solid #808080;
-  color: #606060;
-  font-size: 11px;
-  line-height: 1.35;
-}
-
 .kd-dialog-footer {
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -122,14 +76,6 @@
 }
 
 @media (max-width: 430px) {
-  .kd-message-row {
-    gap: 8px;
-  }
-
-  .kd-message-icon {
-    width: 28px;
-    height: 28px;
-  }
 
   .kd-detail {
     grid-template-columns: 1fr;

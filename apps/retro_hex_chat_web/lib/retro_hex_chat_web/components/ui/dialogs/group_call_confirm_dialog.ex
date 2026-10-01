@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.DialogMessage
 
   alias RetroHexChatWeb.Icons
 
@@ -36,23 +37,21 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
         </.dialog_header>
 
         <.dialog_body>
-          <div class="flex items-start gap-2 text-xs">
-            <span class={dialog_badge_class(@mode)}>
-              <.inline_icon name={mode_icon(@mode)} class="h-5 w-5" />
-            </span>
-            <div class="min-w-0">
-              <p>{body(@mode, @channel, @target_nickname)}</p>
-              <div class="mt-2 grid gap-1">
+          <.dialog_message tone={mode_tone(@mode)}>
+            <:glyph><.inline_icon name={mode_icon(@mode)} class="h-5 w-5" /></:glyph>
+            {body(@mode, @channel, @target_nickname)}
+            <:note>
+              <div class="grid gap-1">
                 <div
                   :for={impact <- impact_items(@mode)}
-                  class="flex min-w-0 items-center gap-1 text-muted-foreground"
+                  class="flex min-w-0 items-center gap-1"
                 >
                   <.inline_icon name={impact.icon} class="h-3.5 w-3.5 shrink-0" />
                   <span class="truncate">{impact.label}</span>
                 </div>
               </div>
-            </div>
-          </div>
+            </:note>
+          </.dialog_message>
         </.dialog_body>
 
         <.dialog_footer>
@@ -151,24 +150,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
   defp confirm_icon(:camera_off_all), do: :icon_camera_off
   defp confirm_icon(_mode), do: :icon_phone_end
 
-  defp dialog_badge_class(:kick_participant),
-    do:
-      "flex h-9 w-9 shrink-0 items-center justify-center bg-destructive text-destructive-foreground shadow-retro-sunken"
-
-  defp dialog_badge_class(:end_call),
-    do:
-      "flex h-9 w-9 shrink-0 items-center justify-center bg-destructive text-destructive-foreground shadow-retro-sunken"
-
-  defp dialog_badge_class(:mute_all),
-    do:
-      "flex h-9 w-9 shrink-0 items-center justify-center bg-warning text-foreground shadow-retro-sunken"
-
-  defp dialog_badge_class(:camera_off_all),
-    do:
-      "flex h-9 w-9 shrink-0 items-center justify-center bg-warning text-foreground shadow-retro-sunken"
-
-  defp dialog_badge_class(_mode),
-    do: "flex h-9 w-9 shrink-0 items-center justify-center bg-canvas shadow-retro-sunken"
+  # How bad the answer is: ending or removing somebody cannot be taken back,
+  # muting or blinding everybody can.
+  defp mode_tone(mode) when mode in [:kick_participant, :end_call], do: :danger
+  defp mode_tone(mode) when mode in [:mute_all, :camera_off_all], do: :warn
+  defp mode_tone(_mode), do: :normal
 
   defp impact_items(:leave) do
     [

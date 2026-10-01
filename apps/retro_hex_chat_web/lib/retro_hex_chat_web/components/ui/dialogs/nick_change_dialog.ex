@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.Components.UI.NickChangeDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.DialogMessage
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
 
@@ -57,15 +58,16 @@ defmodule RetroHexChatWeb.Components.UI.NickChangeDialog do
 
         <.dialog_body class="nc-dialog-body">
           <div class="nc-dialog-content" data-testid="nick-change-dialog">
-            <div class="nc-target-card">
-              <span class="nc-target-icon" aria-hidden="true">
-                <Icons.icon_dialog_nick class="w-4 h-4" />
-              </span>
-              <div class="nc-target-copy">
-                <p class="nc-field-label">{dgettext("dialogs", "Changing nickname to")}</p>
-                <p class="nc-target-value">{@target_nick}</p>
-              </div>
-            </div>
+            <.dialog_message boxed label={dgettext("dialogs", "Changing nickname to")}>
+              <:glyph><Icons.icon_dialog_nick class="w-4 h-4" /></:glyph>
+              {@target_nick}
+              <:note>
+                {dgettext(
+                  "dialogs",
+                  "Everybody in your channels sees the change immediately. Your old name becomes available to other people, unless you registered it."
+                )}
+              </:note>
+            </.dialog_message>
 
             <div :if={@registered} class="nc-notice">
               {dgettext(

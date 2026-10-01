@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.KickDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.DialogMessage
   import RetroHexChatWeb.Components.UI.Button
 
   alias RetroHexChatWeb.Icons
@@ -45,22 +46,19 @@ defmodule RetroHexChatWeb.Components.UI.KickDialog do
         </.dialog_header>
 
         <.dialog_body class="kd-dialog-body">
-          <div class="kd-message-row">
-            <span class="kd-message-icon" aria-hidden="true">
-              <Icons.icon_dialog_kick class="w-5 h-5" />
+          <.dialog_message>
+            <:glyph><Icons.icon_dialog_kick class="w-5 h-5" /></:glyph>
+            <span>
+              <%= if @kick_info do %>
+                {dgettext("dialogs", "You were kicked from %{channel}.",
+                  channel: kick_channel(@kick_info)
+                )}
+              <% else %>
+                {dgettext("dialogs", "You were kicked from the channel.")}
+              <% end %>
             </span>
 
-            <div class="kd-message-copy">
-              <p class="kd-message-title">
-                <%= if @kick_info do %>
-                  {dgettext("dialogs", "You were kicked from %{channel}.",
-                    channel: kick_channel(@kick_info)
-                  )}
-                <% else %>
-                  {dgettext("dialogs", "You were kicked from the channel.")}
-                <% end %>
-              </p>
-
+            <:note>
               <dl :if={@kick_info} class="kd-details">
                 <div :if={kick_operator(@kick_info) != ""} class="kd-detail">
                   <dt>{dgettext("dialogs", "By")}</dt>
@@ -73,11 +71,9 @@ defmodule RetroHexChatWeb.Components.UI.KickDialog do
                 </div>
               </dl>
 
-              <p class="kd-message-note">
-                {dgettext("dialogs", "The channel tab was closed. You can rejoin if allowed.")}
-              </p>
-            </div>
-          </div>
+              {dgettext("dialogs", "The channel tab was closed. You can rejoin if allowed.")}
+            </:note>
+          </.dialog_message>
         </.dialog_body>
 
         <.dialog_footer class="kd-dialog-footer">

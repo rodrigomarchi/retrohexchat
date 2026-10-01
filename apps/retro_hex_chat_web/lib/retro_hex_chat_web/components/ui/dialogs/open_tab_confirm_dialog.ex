@@ -35,6 +35,7 @@ defmodule RetroHexChatWeb.Components.UI.OpenTabConfirmDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.DialogMessage
   import RetroHexChatWeb.Components.UI.Button
 
   alias RetroHexChatWeb.Icons
@@ -60,14 +61,10 @@ defmodule RetroHexChatWeb.Components.UI.OpenTabConfirmDialog do
         </.dialog_header>
 
         <.dialog_body class="cd-dialog-body">
-          <div class="cd-message-row">
-            <span class="cd-message-icon" aria-hidden="true">
-              <.kind_icon kind={kind(@target)} />
-            </span>
-            <div class="cd-message-copy">
-              <p class="cd-message-text" data-testid="open-tab-confirm-message">
-                {message(@target)}
-              </p>
+          <.dialog_message>
+            <:glyph><.kind_icon kind={kind(@target)} /></:glyph>
+            <span data-testid="open-tab-confirm-message">{message(@target)}</span>
+            <:note>
               <%!-- The address, and only when a host was actually resolved. It
                     wraps rather than truncates: the half of a URL that a
                     truncation eats is the path, which is exactly where a link
@@ -80,11 +77,9 @@ defmodule RetroHexChatWeb.Components.UI.OpenTabConfirmDialog do
               <p :if={show_url?(@target)} class="otc-url" data-testid="open-tab-confirm-url">
                 {url(@target)}
               </p>
-              <p class="cd-message-question">
-                {dgettext("dialogs", "It opens in a new browser tab. This one stays where it is.")}
-              </p>
-            </div>
-          </div>
+              {dgettext("dialogs", "It opens in a new browser tab. This one stays where it is.")}
+            </:note>
+          </.dialog_message>
         </.dialog_body>
 
         <.dialog_footer class="cd-dialog-footer">

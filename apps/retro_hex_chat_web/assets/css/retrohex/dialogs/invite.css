@@ -31,15 +31,6 @@
   gap: 10px;
 }
 
-.iv-summary {
-  min-width: 0;
-  margin: 0;
-  color: #606060;
-  font-size: 12px;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
-}
-
 .iv-invite-list {
   display: grid;
   max-height: min(52dvh, 360px);
@@ -127,22 +118,10 @@
   white-space: nowrap;
 }
 
-.icp-target-row,
 .icp-field-group {
   display: grid;
   min-width: 0;
   gap: 4px;
-}
-
-.icp-target-row {
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: baseline;
-  gap: 8px;
-  padding: 8px;
-  background: #dfdfdf;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080;
 }
 
 .icp-field-label {
@@ -150,15 +129,6 @@
   font-size: 12px;
   font-weight: 700;
   line-height: 1.35;
-}
-
-.icp-target-value {
-  min-width: 0;
-  color: #000000;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
 }
 
 .icp-select {
@@ -215,11 +185,6 @@
   .icp-action-button {
     min-height: 40px;
     padding-inline: 12px;
-  }
-
-  .icp-target-row {
-    grid-template-columns: 1fr;
-    gap: 2px;
   }
 }
 

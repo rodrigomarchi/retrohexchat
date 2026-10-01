@@ -21,7 +21,7 @@
 }
 
 .nc-dialog-content,
-.nc-target-copy,
+
 .nc-field-group {
   display: grid;
   min-width: 0;
@@ -31,40 +31,14 @@
   gap: 10px;
 }
 
-.nc-target-card {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: start;
-  gap: 8px;
-  min-width: 0;
-  padding: 8px;
-  background: #dfdfdf;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080;
-}
-
-.nc-target-icon {
-  display: grid;
-  width: 28px;
-  height: 28px;
-  place-items: center;
-  background: #ffffff;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
-}
-
-.nc-target-copy,
 .nc-field-group {
   gap: 4px;
 }
 
 .nc-field-label,
-.nc-target-value,
+
 .nc-notice,
+
 .nc-error {
   min-width: 0;
   margin: 0;
@@ -74,13 +48,6 @@
 .nc-field-label {
   color: #303030;
   font-size: 12px;
-  font-weight: 700;
-  line-height: 1.35;
-}
-
-.nc-target-value {
-  color: #000080;
-  font-size: 13px;
   font-weight: 700;
   line-height: 1.35;
 }
@@ -135,10 +102,6 @@
 @media (max-width: 430px) {
   .nc-dialog-body {
     padding: 10px;
-  }
-
-  .nc-target-card {
-    padding: 8px;
   }
 
   .nc-action-button {
