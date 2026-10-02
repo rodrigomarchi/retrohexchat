@@ -28,15 +28,12 @@ defmodule RetroHexChatWeb.Components.UI.TreeView do
   def tree_view_group(assigns) do
     ~H"""
     <details open={@open} class={classes(["mb-1", @class])} {@rest}>
-      <summary class="cursor-pointer select-none text-xs font-bold text-gray-600 uppercase tracking-wide px-1 py-0.5 hover:bg-hover-bg list-none flex items-center gap-1">
-        <span class="inline-flex items-center justify-center w-[9px] h-[9px] border border-gray-500 bg-white text-[8px] leading-none flex-shrink-0 font-mono">
+      <summary class="tree-view-summary">
+        <span class="tree-view-marker">
           <span class="tree-view-marker-open hidden">-</span>
           <span class="tree-view-marker-closed">+</span>
         </span>
-        <span
-          :if={@icon != []}
-          class="w-4 h-4 flex-shrink-0 inline-flex items-center justify-center"
-        >
+        <span :if={@icon != []} class="icon-slot-16">
           {render_slot(@icon)}
         </span>
         {@label}
@@ -59,16 +56,10 @@ defmodule RetroHexChatWeb.Components.UI.TreeView do
   def tree_view_item(assigns) do
     ~H"""
     <div
-      class={
-        classes([
-          "flex items-center gap-1.5 px-1 py-[1px] text-sm cursor-pointer select-none",
-          if(@active, do: "menu-row--selected", else: "menu-row"),
-          @class
-        ])
-      }
+      class={classes(["menu-row", @active && "menu-row--selected", @class])}
       {@rest}
     >
-      <span :if={@icon != []} class="w-4 h-4 flex-shrink-0 inline-flex items-center justify-center">
+      <span :if={@icon != []} class="icon-slot-16">
         {render_slot(@icon)}
       </span>
       {render_slot(@inner_block)}

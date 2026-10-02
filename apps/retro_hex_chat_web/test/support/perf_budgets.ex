@@ -37,12 +37,15 @@ defmodule RetroHexChatWeb.PerfBudgets do
   """
   @spec html_bytes(atom()) :: pos_integer()
   def html_bytes(:connect), do: 132_000
-  # 303_678 B raw / 21_619 B on the wire at 297 topics, measured 2026-09-28. The
-  # index draws a row per topic and a topic is mandatory for anything with a
-  # control surface, so this number tracks documented features rather than
-  # bloat. Room for roughly twenty-five more; past that the question is what the
-  # index should show, not what it may weigh.
-  def html_bytes(:help), do: 330_000
+  # 243_104 B raw at 297 topics, measured 2026-10-02, down from 303_678 B on
+  # 2026-09-28 — the page is unchanged; what left was repeated `class` attributes,
+  # now project classes in the stylesheet. The index still draws a row per topic
+  # and a topic is still mandatory for anything with a control surface, so this
+  # number tracks documented features rather than bloat. Room for roughly fifty
+  # more at the new per-row cost; past that the question is what the index should
+  # show, not what it may weigh — and the element count, not this, is the tighter
+  # guard on that.
+  def html_bytes(:help), do: 265_000
   # /chat's disconnected render is the boot overlay and the dialog mount points:
   # the desktop under it is invisible and arrives with the connected render.
   # 92_554 B raw measured, but 7_599 B gzipped — the dialog chrome repeats, so

@@ -631,6 +631,19 @@
    The menu carries the same entries on every screen, so most of them are out of
    reach at any given moment. Grayed and inert is the Win98 answer, and it keeps
    the app's surface legible from the landing page as much as from the chat. */
+/* The layout of a Start menu entry, moved off the markup: it was written as a
+   line of utilities repeated on every item of every menu, forty-four times on a
+   landing page. */
+.desktop-start-menu__item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  text-align: left;
+  @apply text-xs;
+}
+
 .desktop-start-menu__item--disabled,
 .desktop-start-menu__item--disabled:hover {
   @apply text-disabled;

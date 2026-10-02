@@ -311,7 +311,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
               class={classes([button_variant(%{}), "gap-retro-4"])}
               data-desktop-connect-dialog-close
             >
-              <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
+              <span class="icon-slot-16">
                 <Icons.icon_checkmark class="w-4 h-4" />
               </span>
               {dgettext("dialogs", "OK")}

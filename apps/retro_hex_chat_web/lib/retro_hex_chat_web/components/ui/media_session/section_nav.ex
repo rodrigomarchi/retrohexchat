@@ -73,7 +73,7 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.SectionNav do
           aria-pressed={to_string(item.active)}
           data-testid={"#{@testid_prefix}-#{item.section}"}
         >
-          <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
+          <span class="icon-slot-16">
             {render_slot(item)}
           </span>
           <span class="truncate">{item.label}</span>

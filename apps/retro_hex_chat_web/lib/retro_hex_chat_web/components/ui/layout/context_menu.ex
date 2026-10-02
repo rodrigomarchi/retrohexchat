@@ -119,7 +119,7 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
     <li
       class={
         classes([
-          "flex items-center gap-retro-6 px-retro-16 py-2.5 md:py-[2px] min-h-[44px] md:min-h-0 whitespace-nowrap text-sm md:text-xs cursor-pointer select-none",
+          "menu-item-row",
           if(@disabled,
             do: "text-disabled cursor-default",
             else: "hover:bg-selection-bg hover:text-selection-fg"
@@ -133,7 +133,7 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
       data-testid={@testid || if(@action, do: "context-menu-item-#{@action}")}
       {@rest}
     >
-      <span class="shrink-0 w-[14px] h-[14px] inline-flex items-center justify-center">
+      <span class="icon-slot-14">
         {render_slot(@icon)}
       </span>
       <span class="flex-1">{render_slot(@inner_block)}</span>

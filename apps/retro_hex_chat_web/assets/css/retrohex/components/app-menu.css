@@ -286,6 +286,24 @@
 
    The components decide *when* a row is highlighted — each knows its own idea
    of disabled — and only borrow the look. */
+/* The layout a menu row has always had, moved off the markup. It was written as
+   eighty-three bytes of utilities on every row, which on the help contents tree
+   alone is 296 rows of the same sentence — a quarter of that page's weight was
+   class attributes repeating what one rule can say once.
+
+   `--selected` is now a modifier rather than an alternative, so a row carries
+   the base whether or not it is the active one. */
+.menu-row {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 1px 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  cursor: pointer;
+  user-select: none;
+}
+
 .menu-row:hover,
 .menu-row:focus-visible,
 .menu-row--selected,
@@ -348,5 +366,23 @@
 
   .context-menu__sheet-dismiss:hover {
     @apply bg-selection-bg text-selection-fg;
+  }
+}
+
+/* A row in a menu bar's dropdown or a context menu: the same line written out
+   twice in markup and drawn fifty-four times on a landing page. The touch
+   target is forty-four pixels on a phone and tight on a pointer. */
+.menu-item-row {
+  @apply flex items-center gap-retro-6 px-retro-16 py-2.5 text-sm;
+  min-height: 44px;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .menu-item-row {
+    @apply py-[2px] text-xs;
+    min-height: 0;
   }
 }

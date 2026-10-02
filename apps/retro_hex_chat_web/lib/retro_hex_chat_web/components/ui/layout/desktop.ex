@@ -491,7 +491,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       }
       {@rest}
     >
-      <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
+      <span class="icon-slot-16">
         {render_slot(@icon)}
       </span>
       <%!-- 16ch: a window titled after its conversation ("#lobby[Troll]") must
@@ -549,7 +549,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
         aria-haspopup="true"
         aria-expanded="false"
       >
-        <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
+        <span class="icon-slot-16">
           {render_slot(@icon)}
         </span>
         <span class="max-w-[12ch] truncate">{@label}</span>
@@ -590,7 +590,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       }
       {@rest}
     >
-      <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
+      <span class="icon-slot-16">
         {render_slot(@icon)}
       </span>
       {@label}
@@ -667,7 +667,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       aria-disabled={@disabled && "true"}
       class={
         classes([
-          "desktop-start-menu__item flex w-full items-center gap-2 px-2 py-1 text-left text-xs",
+          "desktop-start-menu__item",
           if(@disabled,
             do: "desktop-start-menu__item--disabled cursor-default",
             else: "menu-row"
@@ -680,7 +680,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
     >
       <span class={
         classes([
-          "inline-flex h-4 w-4 shrink-0 items-center justify-center",
+          "icon-slot-16",
           @disabled && "opacity-50"
         ])
       }>
@@ -737,7 +737,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       >
         <span class={
           classes([
-            "inline-flex h-4 w-4 shrink-0 items-center justify-center",
+            "icon-slot-16",
             @muted && "opacity-50"
           ])
         }>

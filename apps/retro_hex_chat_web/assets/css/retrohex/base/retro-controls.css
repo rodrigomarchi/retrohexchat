@@ -58,3 +58,58 @@ details:not([open]) .tree-view-marker-closed {
   border: 2px groove #d4d0c8;
 }
 
+/* A 16×16 box that holds an icon and refuses to be squeezed by its neighbours.
+   It appeared as sixty-one bytes of utilities on 324 elements of a single help
+   page; naming it once costs one rule. */
+.icon-slot-16 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+}
+
+/* The same box at the fourteen-pixel size a menu row uses for its icon. */
+.icon-slot-14 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+}
+
+/* The heading of a tree view section, and the +/- box in front of it. */
+.tree-view-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  @apply text-gray-600;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+}
+
+.tree-view-summary:hover {
+  @apply bg-hover-bg;
+}
+
+.tree-view-marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  @apply border border-gray-500 bg-white;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 8px;
+  line-height: 1;
+}

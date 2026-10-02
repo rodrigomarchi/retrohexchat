@@ -211,7 +211,7 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
   defp info_field(assigns) do
     ~H"""
     <div class="flex items-center gap-retro-4">
-      <span class="shrink-0 w-[14px] h-[14px] inline-flex items-center justify-center">
+      <span class="icon-slot-14">
         {render_slot(@icon)}
       </span>
       <span class="font-bold text-muted-foreground w-[52px] shrink-0">{@label}</span>

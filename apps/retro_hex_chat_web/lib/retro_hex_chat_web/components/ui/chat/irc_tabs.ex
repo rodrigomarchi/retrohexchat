@@ -107,7 +107,7 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
       }
       {@rest}
     >
-      <span class="irc-tab__icon w-4 h-4 flex-shrink-0 inline-flex items-center justify-center">
+      <span class="irc-tab__icon icon-slot-16">
         {type_icon(assigns)}
       </span>
       <%!-- A PM tab keeps its nick colour while selected. The bar holds one

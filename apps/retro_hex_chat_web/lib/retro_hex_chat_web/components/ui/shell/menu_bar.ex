@@ -138,8 +138,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
       <div
         class={
           classes([
-            "flex items-center gap-retro-6 px-retro-16 py-2.5 md:py-[2px] min-h-[44px] md:min-h-0",
-            "whitespace-nowrap text-sm md:text-xs cursor-pointer select-none",
+            "menu-item-row",
             "hover:bg-selection-bg hover:text-selection-fg",
             "group-data-[submenu-open=true]/submenu:bg-selection-bg",
             "group-data-[submenu-open=true]/submenu:text-selection-fg"
@@ -149,7 +148,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
         data-testid={@testid}
         aria-haspopup="true"
       >
-        <span class="shrink-0 w-[14px] h-[14px] inline-flex items-center justify-center">
+        <span class="icon-slot-14">
           {render_slot(@icon)}
         </span>
         <span class="flex-1">{@label}</span>
@@ -317,7 +316,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
     >
       <span class={
         classes([
-          "inline-flex h-4 w-4 shrink-0 items-center justify-center",
+          "icon-slot-16",
           @disabled && "opacity-50"
         ])
       }>
