@@ -84,6 +84,7 @@ const BATCHES = [
       "T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard",
       "U - Dialog CRUD And Settings Depth",
       "UI Features Browser Regression",
+      "Dialog Gallery",
     ],
   },
   {
