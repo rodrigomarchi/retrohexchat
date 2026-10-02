@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.LandingLive.Community do
   import RetroHexChatWeb.Components.UI.Window
 
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.SEO
 
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) ::
           {:ok, Phoenix.LiveView.Socket.t()}
@@ -26,6 +27,12 @@ defmodule RetroHexChatWeb.LandingLive.Community do
          %{id: "tech-stack", label: dgettext("landing", "Tech Stack"), icon: :icon_server}
        ],
        canonical_path: "/community",
+       json_ld: [
+         SEO.breadcrumb_json_ld([
+           {dgettext("landing", "Home"), "/"},
+           {dgettext("landing", "Community"), "/community"}
+         ])
+       ],
        page_title: dgettext("landing", "Open Source & Community — Retro Hex Chat"),
        page_description:
          dgettext(

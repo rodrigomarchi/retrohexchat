@@ -104,9 +104,19 @@
     <meta name="twitter:image" content={RetroHexChatWeb.SEO.social_image_url()} />
     <meta name="twitter:image:alt" content="Retro Hex Chat peer-to-peer chat preview" />
 
-    <%!-- JSON-LD Structured Data --%>
-    <script type="application/ld+json">
-      <%= Phoenix.HTML.raw(RetroHexChatWeb.SEO.software_application_json_ld(page_description)) %>
+    <%!-- JSON-LD Structured Data. A page names what it is; only the home page
+          describes the application, because the application is one entity and
+          claiming it on all ninety-eight landing URLs described it ninety-eight
+          times with the same `url`. --%>
+    <script
+      :for={
+        json <-
+          assigns[:json_ld] ||
+            [RetroHexChatWeb.SEO.software_application_json_ld(page_description)]
+      }
+      type="application/ld+json"
+    >
+      <%= Phoenix.HTML.raw(json) %>
     </script>
 
     <%!-- Fonts and the icon sprite --%>

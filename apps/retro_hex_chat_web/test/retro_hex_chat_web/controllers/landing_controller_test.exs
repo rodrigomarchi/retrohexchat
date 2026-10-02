@@ -3,6 +3,8 @@ defmodule RetroHexChatWeb.LandingLiveTest do
 
   import Phoenix.LiveViewTest
 
+  alias RetroHexChatWeb.LandingLive.Faq
+
   @landing_pages [
     {"/", "hero-heading"},
     {"/how-it-works", "how-it-works-heading"},
@@ -280,11 +282,17 @@ defmodule RetroHexChatWeb.LandingLiveTest do
 
       assert body =~ ~s(rel="alternate" hreflang="x-default" href="https://retrohexchat.app/")
 
-      [{"script", _attrs, [json_ld_body]}] =
-        Floki.find(document, ~s(script[type="application/ld+json"]))
+      # The home page is where the application is described, and it is described
+      # exactly once: emitting `SoftwareApplication` on all ninety-eight landing
+      # URLs claimed one entity ninety-eight times with the same `url`.
+      types =
+        document
+        |> Floki.find(~s(script[type="application/ld+json"]))
+        |> Enum.map(fn {"script", _attrs, [body]} ->
+          body |> String.trim() |> Jason.decode!() |> Map.fetch!("@type")
+        end)
 
-      assert json_ld_body |> String.trim() |> Jason.decode!() |> Map.fetch!("@type") ==
-               "SoftwareApplication"
+      assert types == ["WebSite", "Organization", "SoftwareApplication"]
     end
 
     test "uses English lang attribute", %{conn: conn} do
@@ -449,11 +457,32 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       assert pages |> Enum.map(&elem(&1, 2)) |> Enum.uniq() |> length() == length(pages)
     end
 
-    test "FAQ page does not emit FAQPage structured data", %{conn: conn} do
+    # The questions and the structured data come from one list in `LandingLive.Faq`,
+    # so a rich result can never quote an answer the page stopped giving.
+    test "FAQ page states its questions as FAQPage structured data", %{conn: conn} do
       conn = get(conn, "/faq")
-      body = html_response(conn, 200)
+      document = conn |> html_response(200) |> Floki.parse_document!()
 
-      refute body =~ "FAQPage"
+      faq =
+        document
+        |> Floki.find(~s(script[type="application/ld+json"]))
+        |> Enum.map(&(&1 |> elem(2) |> hd() |> String.trim() |> Jason.decode!()))
+        |> Enum.find(&(&1["@type"] == "FAQPage"))
+
+      assert faq, "/faq emits no FAQPage structured data"
+      assert faq["url"] == "https://retrohexchat.app/faq"
+
+      questions = Enum.map(faq["mainEntity"], & &1["name"])
+      answers = Enum.map(faq["mainEntity"], &get_in(&1, ["acceptedAnswer", "text"]))
+
+      assert length(questions) == length(Faq.entries())
+      assert "Is it free?" in questions
+      refute Enum.any?(answers, &(&1 in [nil, ""]))
+
+      # Every question the page draws is a question the structured data states.
+      for question <- questions do
+        assert html_response(get(build_conn(), "/faq"), 200) =~ question
+      end
     end
 
     test "localized public paths canonicalize to their clean locale path", %{conn: conn} do

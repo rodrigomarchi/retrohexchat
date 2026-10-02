@@ -152,6 +152,86 @@ defmodule RetroHexChatWeb.SEO do
   end
 
   @doc """
+  The site itself, stated once.
+
+  `SoftwareApplication` used to be emitted on all ninety-eight landing URLs with
+  `url` pointing at `/` on every one of them — the same entity claimed ninety-
+  eight times. The application is described where it lives, on the home page,
+  and the other pages describe themselves.
+  """
+  @spec website_json_ld() :: String.t()
+  def website_json_ld do
+    %{
+      "@context" => "https://schema.org",
+      "@type" => "WebSite",
+      "name" => "Retro Hex Chat",
+      "url" => site_url("/"),
+      "inLanguage" => Enum.map(Locales.enabled(), & &1.bcp47)
+    }
+    |> Jason.encode!()
+  end
+
+  @spec organization_json_ld() :: String.t()
+  def organization_json_ld do
+    %{
+      "@context" => "https://schema.org",
+      "@type" => "Organization",
+      "name" => "Retro Hex Chat",
+      "url" => site_url("/"),
+      "logo" => social_image_url(),
+      "sameAs" => ["https://github.com/rodrigomarchi/retro_hex_chat"]
+    }
+    |> Jason.encode!()
+  end
+
+  @doc """
+  A page of questions and the answers it actually prints.
+
+  The caller passes the same list the page renders from, never a second copy:
+  structured data that quotes an answer the page no longer gives is worse than
+  no structured data, because a search engine will show it.
+  """
+  @spec faq_page_json_ld([{String.t(), String.t()}], String.t()) :: String.t()
+  def faq_page_json_ld(questions, path) do
+    %{
+      "@context" => "https://schema.org",
+      "@type" => "FAQPage",
+      "url" => canonical_url(path),
+      "mainEntity" =>
+        Enum.map(questions, fn {question, answer} ->
+          %{
+            "@type" => "Question",
+            "name" => question,
+            "acceptedAnswer" => %{"@type" => "Answer", "text" => answer}
+          }
+        end)
+    }
+    |> Jason.encode!()
+  end
+
+  @doc """
+  One help topic, as the documentation it is.
+  """
+  @spec tech_article_json_ld(String.t(), String.t(), String.t()) :: String.t()
+  def tech_article_json_ld(title, description, path) do
+    %{
+      "@context" => "https://schema.org",
+      "@type" => "TechArticle",
+      "headline" => title,
+      "description" => description,
+      "url" => canonical_url(path),
+      "inLanguage" => Locales.bcp47(I18n.current_locale()),
+      "isPartOf" => %{
+        "@type" => "WebSite",
+        "name" => "Retro Hex Chat",
+        "url" => site_url("/")
+      },
+      "publisher" => %{"@type" => "Organization", "name" => "Retro Hex Chat"}
+    }
+    |> Jason.encode!()
+  end
+
+  @doc """
   Structured data for a showcase page.
 
   The index is a collection; a component page is the source code it documents.

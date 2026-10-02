@@ -71,7 +71,14 @@ defmodule RetroHexChatWeb.HelpLive.Index do
          |> assign(:page_title, page_title(selected_topic))
          |> assign(:page_description, page_description(selected_topic))
          |> assign(:canonical_path, canonical_path)
-         |> assign(:breadcrumb_items, breadcrumb_items(selected_topic, canonical_path))}
+         |> assign(:breadcrumb_items, breadcrumb_items(selected_topic, canonical_path))
+         |> assign(:json_ld, [
+           SEO.tech_article_json_ld(
+             page_title(selected_topic),
+             page_description(selected_topic),
+             canonical_path
+           )
+         ])}
 
       {:redirect, path} ->
         {:noreply, redirect(socket, to: path)}

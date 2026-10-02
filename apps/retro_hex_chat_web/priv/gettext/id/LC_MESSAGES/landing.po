@@ -118,7 +118,7 @@ msgstr "2025 – 2026"
 msgid "4 object(s)"
 msgstr "4 objek"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:256
+#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "6 questions"
 msgstr "6 pertanyaan"
@@ -135,7 +135,7 @@ msgstr "Sebuah perusahaan"
 msgid "About"
 msgstr "Tentang"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:230
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:109
 #, elixir-autogen, elixir-format
 msgid "Absolutely. Run a private server, create invite-only channels, and keep all your team’s communication on your own infrastructure. No per-seat pricing, no message limits."
 msgstr ""
@@ -250,7 +250,7 @@ msgstr "Panggilan"
 msgid "Calls routed through corporate infrastructure"
 msgstr "Panggilan dialihkan melalui infrastruktur perusahaan"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:226
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:108
 #, elixir-autogen, elixir-format
 msgid "Can I use it for my company or team?"
 msgstr "Dapatkah saya menggunakannya untuk perusahaan saya atau tim?"
@@ -281,7 +281,7 @@ msgstr "Kanal"
 msgid "Channels are chat rooms."
 msgstr "Kanal adalah chat room."
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:185
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:91
 #, elixir-autogen, elixir-format
 msgid "Check out our contributing guide on GitHub! We accept code, documentation, translation, design, testing, and bug reports. Issues marked “good first issue” are a great place to start."
 msgstr ""
@@ -390,7 +390,7 @@ msgstr "Discord / Slack / Telegram"
 msgid "Discord can ban your server tomorrow."
 msgstr "Discord dapat melarang server Anda besok."
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:76
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:54
 #, elixir-autogen, elixir-format
 msgid "Do I need to run my own server?"
 msgstr "Apa aku perlu menjalankan serverku sendiri?"
@@ -402,7 +402,7 @@ msgstr "Apa aku perlu menjalankan serverku sendiri?"
 msgid "Documentation"
 msgstr "Dokumentasi"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:211
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:102
 #, elixir-autogen, elixir-format
 msgid "Does it work on mobile?"
 msgstr "Apakah itu bekerja pada ponsel?"
@@ -412,7 +412,7 @@ msgstr "Apakah itu bekerja pada ponsel?"
 msgid "Drascula"
 msgstr "Draskula"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:245
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:116
 #, elixir-autogen, elixir-format
 msgid "Each nickname can only have"
 msgstr "Setiap nama panggilan hanya dapat memiliki"
@@ -450,12 +450,13 @@ msgstr "Mungkin"
 
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:195
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:725
-#: lib/retro_hex_chat_web/live/landing_live/faq.ex:20
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:130
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:152
 #, elixir-autogen, elixir-format
 msgid "FAQ"
 msgstr "PSD"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.ex:33
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:143
 #, elixir-autogen, elixir-format
 msgid "FAQ — Retro Hex Chat"
 msgstr "PSD - Retro Hex Chat"
@@ -507,7 +508,7 @@ msgstr "Kendali penuh"
 msgid "Full dashboard with real-time logs and metrics."
 msgstr "Penuh dashboard dengan catatan waktu dan metrik."
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.ex:23
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:133
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Getting Started"
@@ -556,22 +557,22 @@ msgstr "Hoki"
 msgid "How It Works"
 msgstr "¶ How It Works"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:181
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:90
 #, elixir-autogen, elixir-format
 msgid "How can I contribute?"
 msgstr "Bagaimana aku bisa berkontribusi?"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:196
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:96
 #, elixir-autogen, elixir-format
 msgid "How can I support financially?"
 msgstr "Bagaimana aku bisa mendukung secara finansial?"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:241
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:114
 #, elixir-autogen, elixir-format
 msgid "How do sessions work?"
 msgstr "Bagaimana sesi bekerja?"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:106
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:66
 #, elixir-autogen, elixir-format
 msgid "How is it different from Discord?"
 msgstr "Apa bedanya dengan Discord?"
@@ -619,12 +620,12 @@ msgstr "Instalasi selesai"
 msgid "Invaders"
 msgstr "Penyerang"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:91
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:60
 #, elixir-autogen, elixir-format
 msgid "Is it free?"
 msgstr "Apakah itu gratis?"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:136
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:78
 #, elixir-autogen, elixir-format
 msgid "Is it secure?"
 msgstr "Apakah aman?"
@@ -782,7 +783,7 @@ msgstr "Tidak ada peringatan. Tidak ada banding. Tidak ada bantuan."
 msgid "Node.js"
 msgstr "Node.js"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:80
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:55
 #, elixir-autogen, elixir-format
 msgid "Not necessarily! You can create an account on any public server. Running your own server is for those who want total control."
 msgstr ""
@@ -1240,8 +1241,8 @@ msgstr "Tank"
 msgid "Tech Stack"
 msgstr "Tech Stack"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.ex:28
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:159
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:138
+#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Technical & Community"
 msgstr "Teknis & Komunitas"
@@ -1293,7 +1294,7 @@ msgstr "Mereka dapat melarang komunitas Anda setiap saat"
 msgid "They read your messages — and they do"
 msgstr "Mereka membaca pesan Anda — dan mereka membaca"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:200
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:97
 #, elixir-autogen, elixir-format
 msgid "Through GitHub Sponsors. Every contribution, no matter how small, helps keep the project alive and in active development."
 msgstr ""
@@ -1371,17 +1372,17 @@ msgstr "Sinyal WebRTC dan diagram aliran data"
 msgid "WebSocket"
 msgstr "WebSocket"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:121
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:72
 #, elixir-autogen, elixir-format
 msgid "What if my server goes down?"
 msgstr "Bagaimana jika serverku mati?"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:31
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:36
 #, elixir-autogen, elixir-format
 msgid "What is P2P?"
 msgstr "Apa itu P2P?"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:166
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:84
 #, elixir-autogen, elixir-format
 msgid "What technologies are used?"
 msgstr "Teknologi apa yang digunakan?"
@@ -1411,7 +1412,7 @@ msgstr "Wolf3D"
 msgid "Yes — and they do"
 msgstr "Ya — dan mereka"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:215
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:103
 #, elixir-autogen, elixir-format
 msgid "Yes! The interface is responsive and works on any modern browser. Native apps are planned for the future."
 msgstr ""
@@ -1423,7 +1424,7 @@ msgstr ""
 msgid "Yes, at any time"
 msgstr "Ya, setiap saat"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:95
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:61
 #, elixir-autogen, elixir-format
 msgid "Yes, the software is 100% free and open source (MIT). If you run your own server, you only pay for hosting (a $5/month VPS is enough)."
 msgstr ""
@@ -1546,7 +1547,7 @@ msgstr "Server Anda, aturan Anda."
 msgid "anyone can audit the code. No backdoors."
 msgstr "Semua orang bisa mengaudit kodenya. Tidak ada pintu belakang."
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:246
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:118
 #, elixir-autogen, elixir-format
 msgid "at a time. If you connect from another browser or tab, the previous session is automatically disconnected. If your connection drops, the client attempts to reconnect up to 10 times with exponential backoff. After all attempts fail, the session expires and you’re redirected to the login screen. Registered nicknames are protected by password — only the owner can connect with that nick."
 msgstr ""
@@ -1602,7 +1603,7 @@ msgstr "invite- saja, untuk perusahaan atau kelompok Anda."
 msgid "no server involvement"
 msgstr "tidak ada keterlibatan server"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:246
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:117
 #, elixir-autogen, elixir-format
 msgid "one active session"
 msgstr "satu sesi aktif"
@@ -1803,6 +1804,7 @@ msgstr "Bantuan"
 
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:164
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:694
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:151
 #, elixir-autogen, elixir-format
 msgid "Home"
 msgstr "Rumah"
@@ -1840,7 +1842,7 @@ msgstr ", seperti panggilan P2P pribadi."
 msgid "50+ commands"
 msgstr "50 + perintah"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:150
+#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "8 questions"
 msgstr "8 pertanyaan"
@@ -1857,7 +1859,7 @@ msgstr ""
 msgid "Access is controlled by your own server and policies"
 msgstr "Akses dikendalikan oleh server dan kebijakan Anda sendiri"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:61
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:48
 #, elixir-autogen, elixir-format
 msgid "Are channel conferences P2P?"
 msgstr "Apakah konferensi saluran P2P?"
@@ -1978,7 +1980,7 @@ msgstr ""
 "Setiap peramban mengirim media ke server kamar; rute server kamar mengalir "
 "ke peserta lain."
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:170
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:85
 #, elixir-autogen, elixir-format
 msgid "Elixir and Phoenix on the backend, PostgreSQL for data, Phoenix Channels for real-time messaging, Vanilla JS and Canvas for Spaces, WebRTC for private P2P sessions, and a self-hosted SFU for channel conferences. Everything is open source."
 msgstr ""
@@ -2021,7 +2023,7 @@ msgstr ""
 "Untuk panggilan pribadi, transfer file, dan permainan multiplayer, server "
 "hanya menangani"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.ex:35
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:145
 #, elixir-autogen, elixir-format
 msgid "Frequently asked questions about Retro Hex Chat: Spaces, private P2P calls, channel conferences, server requirements, security, contributing, and more."
 msgstr ""
@@ -2091,7 +2093,7 @@ msgstr "NickServ dan Chand- gaya pendaftaran dan kontrol akses."
 msgid "No gameplay server — synced through the private P2P session"
 msgstr "Tidak ada server gameplay - disinkronkan melalui sesi P2P pribadi"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:65
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:49
 #, elixir-autogen, elixir-format
 msgid "No. Private 1:1 calls are P2P, but channel conferences use a self-hosted SFU/room server. Each browser sends media to your server, and your server routes streams to the other participants. That makes group calls practical while keeping infrastructure under your control."
 msgstr ""
@@ -2101,7 +2103,7 @@ msgstr ""
 "lain. Yang membuat panggilan kelompok praktis sementara menjaga "
 "infrastruktur di bawah kendalimu."
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:110
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:67
 #, elixir-autogen, elixir-format
 msgid "On Discord, your data lives on their servers and your communities can be removed at any time. On Retro Hex Chat, you control your server and database, private sessions can run directly between users via P2P, channel conferences run on your own infrastructure, and the code is open source — you can audit every line."
 msgstr ""
@@ -2123,7 +2125,7 @@ msgstr ""
 msgid "Over 50 commands with smart autocomplete."
 msgstr "Lebih dari 50 perintah dengan autocomplete cerdas."
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:35
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:37
 #, elixir-autogen, elixir-format
 msgid "P2P (peer-to-peer) means data goes directly between users without passing through the chat server. Retro Hex Chat uses WebRTC P2P for private calls, file transfers, and multiplayer game sessions. The server helps users find each other (signaling), then the private session runs browser-to-browser when the network allows it."
 msgstr ""
@@ -2295,7 +2297,7 @@ msgid "Spaces are real-time map views of the same conversation."
 msgstr ""
 "Ruang angkasa adalah real-time pandangan peta dari percakapan yang sama."
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:50
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:43
 #, elixir-autogen, elixir-format
 msgid "Spaces are shared 8-bit map views attached to channels and direct messages. You choose an avatar, move around the same conversation, and see chat messages as in-map bubbles. They do not create a separate chat room; they visualize the conversation you are already in."
 msgstr ""
@@ -2366,12 +2368,12 @@ msgstr "Media WebRTC dialihkan oleh server kamar milik Anda sendiri."
 msgid "WebRTC sessions"
 msgstr "Sesi WebRTC"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:46
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:42
 #, elixir-autogen, elixir-format
 msgid "What are Spaces?"
 msgstr "Apa itu Spaces?"
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:140
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:79
 #, elixir-autogen, elixir-format
 msgid "Yes. Server connections use HTTPS/WSS with TLS encryption. Private P2P calls use WebRTC transport encryption, channel conferences use WebRTC media through your self-hosted room server, and passwords are hashed with bcrypt. The code is open source, so anyone can audit it."
 msgstr ""
@@ -2380,7 +2382,7 @@ msgstr ""
 "media WebRTC melalui server kamar beralamat sendiri Anda, dan sandi hashed "
 "dengan bcrypt. Kodenya open source, jadi semua orang bisa mengaudit itu."
 
-#: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:125
+#: lib/retro_hex_chat_web/live/landing_live/faq.ex:73
 #, elixir-autogen, elixir-format
 msgid "Your data lives in your PostgreSQL database. Regular backups mean you can restore on any new machine. Active private P2P sessions may keep working through brief server interruptions because they connect directly between users; chat, Spaces, and channel conferences depend on the server and reconnect when it returns."
 msgstr ""

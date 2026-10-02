@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.LandingLive.Privacy do
   import RetroHexChatWeb.Components.UI.Window
 
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.SEO
 
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) ::
           {:ok, Phoenix.LiveView.Socket.t()}
@@ -34,6 +35,12 @@ defmodule RetroHexChatWeb.LandingLive.Privacy do
          }
        ],
        canonical_path: "/privacy",
+       json_ld: [
+         SEO.breadcrumb_json_ld([
+           {dgettext("landing", "Home"), "/"},
+           {dgettext("landing", "Privacy"), "/privacy"}
+         ])
+       ],
        page_title:
          dgettext("landing", "Privacy Comparison — Retro Hex Chat vs Discord, Slack & Telegram"),
        page_description:

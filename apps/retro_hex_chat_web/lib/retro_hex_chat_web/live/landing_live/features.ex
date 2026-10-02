@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.LandingLive.Features do
 
   alias RetroHexChatWeb.Endpoint
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.SEO
 
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) ::
           {:ok, Phoenix.LiveView.Socket.t()}
@@ -56,6 +57,12 @@ defmodule RetroHexChatWeb.LandingLive.Features do
          %{id: "irc-commands", label: dgettext("landing", "IRC Commands"), icon: :icon_terminal}
        ],
        canonical_path: "/features",
+       json_ld: [
+         SEO.breadcrumb_json_ld([
+           {dgettext("landing", "Home"), "/"},
+           {dgettext("landing", "Features"), "/features"}
+         ])
+       ],
        page_title: dgettext("landing", "Features — Retro Hex Chat"),
        page_description:
          dgettext(

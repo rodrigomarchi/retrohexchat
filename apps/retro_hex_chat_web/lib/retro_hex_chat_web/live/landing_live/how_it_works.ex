@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.LandingLive.HowItWorks do
   import RetroHexChatWeb.Components.Diagrams
 
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.SEO
 
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) ::
           {:ok, Phoenix.LiveView.Socket.t()}
@@ -51,6 +52,12 @@ defmodule RetroHexChatWeb.LandingLive.HowItWorks do
          }
        ],
        canonical_path: "/how-it-works",
+       json_ld: [
+         SEO.breadcrumb_json_ld([
+           {dgettext("landing", "Home"), "/"},
+           {dgettext("landing", "How It Works"), "/how-it-works"}
+         ])
+       ],
        page_title:
          dgettext("landing", "How Retro Hex Chat Works — Server, Spaces, Calls & Privacy"),
        page_description:

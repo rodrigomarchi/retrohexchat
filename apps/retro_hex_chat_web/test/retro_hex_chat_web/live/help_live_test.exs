@@ -148,12 +148,20 @@ defmodule RetroHexChatWeb.HelpLiveTest do
       conn = get(conn, "/chat/help/commands-overview")
       document = conn |> html_response(200) |> Floki.parse_document!()
 
-      [{"script", _attrs, [json_ld_body]}] =
-        Floki.find(document, ~s(script[type="application/ld+json"]))
+      entities =
+        document
+        |> Floki.find(~s(script[type="application/ld+json"]))
+        |> Enum.map(&(&1 |> elem(2) |> hd() |> String.trim() |> Jason.decode!()))
 
-      json_ld = json_ld_body |> String.trim() |> Jason.decode!()
+      # A topic is the trail that reaches it and the documentation it is.
+      assert Enum.map(entities, & &1["@type"]) == ["BreadcrumbList", "TechArticle"]
 
-      assert json_ld["@type"] == "BreadcrumbList"
+      json_ld = Enum.find(entities, &(&1["@type"] == "BreadcrumbList"))
+      article = Enum.find(entities, &(&1["@type"] == "TechArticle"))
+
+      assert article["url"] == "https://retrohexchat.app/chat/help/commands-overview"
+      assert article["inLanguage"] == "en"
+      assert article["headline"] =~ "IRC Commands Reference"
 
       assert List.last(json_ld["itemListElement"]) == %{
                "@type" => "ListItem",

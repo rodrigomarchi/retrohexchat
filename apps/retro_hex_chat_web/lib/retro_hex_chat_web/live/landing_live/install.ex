@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.LandingLive.Install do
   import RetroHexChatWeb.Components.UI.Window
 
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.SEO
 
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) ::
           {:ok, Phoenix.LiveView.Socket.t()}
@@ -29,6 +30,12 @@ defmodule RetroHexChatWeb.LandingLive.Install do
          }
        ],
        canonical_path: "/install",
+       json_ld: [
+         SEO.breadcrumb_json_ld([
+           {dgettext("landing", "Home"), "/"},
+           {dgettext("landing", "Install"), "/install"}
+         ])
+       ],
        page_title: dgettext("landing", "Install Retro Hex Chat — Three steps to your own server"),
        page_description:
          dgettext(

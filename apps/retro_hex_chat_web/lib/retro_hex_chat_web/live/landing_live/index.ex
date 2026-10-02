@@ -10,10 +10,17 @@ defmodule RetroHexChatWeb.LandingLive.Index do
 
   alias RetroHexChatWeb.Endpoint
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.SEO
 
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) ::
           {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_params, _session, socket) do
+    description =
+      dgettext(
+        "landing",
+        "Run your own chat server with channels, virtual spaces, private P2P calls, channel conferences, bots, and retro games. Open source, self-hosted, and MIT licensed."
+      )
+
     {:ok,
      assign(socket,
        active_page: :home,
@@ -46,11 +53,14 @@ defmodule RetroHexChatWeb.LandingLive.Index do
        canonical_path: "/",
        page_title:
          dgettext("landing", "Retro Hex Chat — Self-hosted chat, spaces, calls and games"),
-       page_description:
-         dgettext(
-           "landing",
-           "Run your own chat server with channels, virtual spaces, private P2P calls, channel conferences, bots, and retro games. Open source, self-hosted, and MIT licensed."
-         )
+       page_description: description,
+       # The application is one entity, so it is described here and nowhere
+       # else. The other six landing pages describe themselves instead.
+       json_ld: [
+         SEO.website_json_ld(),
+         SEO.organization_json_ld(),
+         SEO.software_application_json_ld(description)
+       ]
      )}
   end
 end
