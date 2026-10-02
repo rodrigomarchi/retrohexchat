@@ -80,6 +80,20 @@ details:not([open]) .tree-view-marker-closed {
   height: 14px;
 }
 
+/* A leaf in a tree view. This is the row that was written as eighty-three bytes
+   of utilities 296 times on a single help page. It is its own class rather than
+   part of `.menu-row`, because `.menu-row` is the look five other components
+   borrow and none of them wants these measurements. */
+.tree-view-item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 1px 0.25rem;
+  cursor: pointer;
+  user-select: none;
+  @apply text-sm;
+}
+
 /* The heading of a tree view section, and the +/- box in front of it. */
 .tree-view-summary {
   display: flex;

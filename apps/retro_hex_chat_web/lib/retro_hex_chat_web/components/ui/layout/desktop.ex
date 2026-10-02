@@ -727,7 +727,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
         type="button"
         class={
           classes([
-            "desktop-start-menu__item menu-row flex w-full items-center gap-2 px-2 py-1 text-left text-xs",
+            "desktop-start-menu__item menu-row",
             @muted && "desktop-start-menu__item--muted"
           ])
         }

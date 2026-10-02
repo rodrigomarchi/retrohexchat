@@ -286,23 +286,15 @@
 
    The components decide *when* a row is highlighted — each knows its own idea
    of disabled — and only borrow the look. */
-/* The layout a menu row has always had, moved off the markup. It was written as
-   eighty-three bytes of utilities on every row, which on the help contents tree
-   alone is 296 rows of the same sentence — a quarter of that page's weight was
-   class attributes repeating what one rule can say once.
+/* `.menu-row` is a *look*, never a layout. Six components borrow it — the tree
+   view, the menu bar, the Start menu, a select option, a dropdown item — and
+   each one sets its own padding: a select option indents six for its checkmark,
+   a menu item is forty-four pixels tall on a phone. Giving this class a padding
+   of its own put the tree view's measurements on all of them and left the
+   winner to stylesheet order. The layout belongs to whoever owns the row.
 
-   `--selected` is now a modifier rather than an alternative, so a row carries
-   the base whether or not it is the active one. */
-.menu-row {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 1px 0.25rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  cursor: pointer;
-  user-select: none;
-}
+   `--selected` is a modifier rather than an alternative, so a row carries the
+   base whether or not it is the active one. */
 
 .menu-row:hover,
 .menu-row:focus-visible,

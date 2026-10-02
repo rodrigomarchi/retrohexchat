@@ -56,7 +56,7 @@ defmodule RetroHexChatWeb.Components.UI.TreeView do
   def tree_view_item(assigns) do
     ~H"""
     <div
-      class={classes(["menu-row", @active && "menu-row--selected", @class])}
+      class={classes(["tree-view-item menu-row", @active && "menu-row--selected", @class])}
       {@rest}
     >
       <span :if={@icon != []} class="icon-slot-16">
