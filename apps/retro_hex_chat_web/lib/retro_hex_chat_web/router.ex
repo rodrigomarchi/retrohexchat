@@ -110,6 +110,19 @@ defmodule RetroHexChatWeb.Router do
       live "/chat/help", HelpLive.Index, :index
       live "/chat/help/:topic", HelpLive.Index, :show
     end
+  end
+
+  # A sitemap is XML read by robots, so it takes none of what an HTML page
+  # needs: no session to fetch, no CSRF token, no root layout, no browser
+  # security headers. It sat on the help pipeline and collected all four. The
+  # locale of a list of URLs is meaningless too, which is why `PutLocale`
+  # already exempted these paths from its redirect.
+  pipeline :sitemap do
+    plug :accepts, ["xml"]
+  end
+
+  scope "/", RetroHexChatWeb do
+    pipe_through :sitemap
 
     get "/sitemap.xml", SitemapController, :index
     get "/sitemaps/:name", SitemapController, :show

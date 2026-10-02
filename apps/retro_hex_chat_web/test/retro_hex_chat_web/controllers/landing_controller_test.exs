@@ -509,8 +509,17 @@ defmodule RetroHexChatWeb.LandingLiveTest do
 
       assert body =~ "Sitemap: https://retrohexchat.app/sitemap.xml"
       assert body =~ "Allow: /chat/help"
-      assert body =~ "Disallow: /showcase"
       assert body =~ "Disallow: /p2p/"
+    end
+
+    # The showcase is submitted in the sitemap, linked from the home page footer
+    # and serves `index, follow`. Blocking it here made all three of those a lie
+    # and earned one "submitted URL blocked by robots.txt" per component page.
+    test "robots.txt does not block the showcase it submits", %{conn: conn} do
+      conn = get(conn, "/robots.txt")
+      body = response(conn, 200)
+
+      refute body =~ "Disallow: /showcase"
     end
 
     test "sitemap index points to chunked public sitemaps", %{conn: conn} do
@@ -526,6 +535,20 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       refute body =~ "<urlset"
       refute body =~ ~s(xmlns:xhtml="http://www.w3.org/1999/xhtml")
       refute body =~ "?locale="
+    end
+
+    # `public, max-age=3600` promises a shared cache may store these, and no
+    # shared cache stores a response that sets a cookie. Nothing sets one today
+    # — the controller never asks for a CSRF token, so the session stays
+    # untouched even when a pipeline fetches it — and this is what keeps it that
+    # way, because the promise is in the header where a CDN will read it.
+    test "sitemaps carry no cookie, so a shared cache can honour their lifetime" do
+      for path <- ["/sitemap.xml", "/sitemaps/public-1.xml"] do
+        conn = get(build_conn(), path)
+
+        assert response(conn, 200)
+        assert get_resp_header(conn, "set-cookie") == [], "#{path} sets a cookie"
+      end
     end
 
     test "sitemap index supports conditional requests", %{conn: conn} do
