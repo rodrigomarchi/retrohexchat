@@ -613,9 +613,19 @@ defmodule RetroHexChatWeb.LandingLiveTest do
 
       refute body =~ "<loc>https://retrohexchat.app/about</loc>"
       refute body =~ "?locale="
-      refute body =~ "<lastmod>"
+
+      # `changefreq` and `priority` are ignored by every search engine that
+      # reads this file. `lastmod` is not, which is why it has to be true: it
+      # comes from the day the page's own source last changed in git, and a
+      # page whose day is unknowable gets none rather than a guess.
       refute body =~ "<changefreq>"
       refute body =~ "<priority>"
+      assert body =~ ~r|<lastmod>\d{4}-\d{2}-\d{2}</lastmod>|
+
+      dates = Regex.scan(~r|<lastmod>([^<]+)</lastmod>|, body, capture: :all_but_first)
+
+      assert length(Enum.uniq(dates)) > 1,
+             "every page claims the same lastmod, which is the stamp-the-deploy-date mistake"
 
       {_conn, help_body} =
         sitemap_chunk_body_containing(conn, "<loc>https://retrohexchat.app/chat/help</loc>")

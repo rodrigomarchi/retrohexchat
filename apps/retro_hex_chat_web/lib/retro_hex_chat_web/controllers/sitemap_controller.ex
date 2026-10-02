@@ -6,11 +6,18 @@ defmodule RetroHexChatWeb.SitemapController do
 
   alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Chat.HelpTopics
+  alias RetroHexChatWeb.ContentDates
   alias RetroHexChatWeb.SEO
   alias RetroHexChatWeb.ShowcaseCatalog
 
   @cache_key {__MODULE__, :sitemaps}
-  @chunk_size 5
+  # Paths, not URLs: each one expands to fourteen localized URLs carrying
+  # fifteen alternates each. At five the index named sixty-one chunks of
+  # seventy URLs, and at five hundred it named one file of eight megabytes.
+  # A hundred paths is about fourteen hundred URLs and two megabytes — well
+  # inside the protocol's fifty, and small enough that a failed fetch retries
+  # two megabytes rather than eight.
+  @chunk_size 100
   # A showcase entry is one URL, not one per locale, so far more fit per file.
   @showcase_chunk_size 50
   @archive_chunk "archive.xml"
@@ -110,14 +117,19 @@ defmodule RetroHexChatWeb.SitemapController do
     }
   end
 
+  # Each entry is `{path, lastmod}`, and `lastmod` is `nil` whenever the day a
+  # page last changed is not knowable — a build with no git to ask. The sitemap
+  # may be silent about a page; it may not guess.
   defp sitemap_paths(topics) do
     help_topic_paths =
       topics
       |> Enum.reject(&(&1.id == "welcome"))
-      |> Enum.map(&"/chat/help/#{&1.id}")
+      |> Enum.map(&{"/chat/help/#{&1.id}", ContentDates.help_topic(&1.id)})
 
-    (SEO.landing_paths() ++ ["/chat/help"] ++ help_topic_paths)
-    |> Enum.uniq()
+    landing_paths = Enum.map(SEO.landing_paths(), &{&1, ContentDates.landing(&1)})
+
+    (landing_paths ++ [{"/chat/help", ContentDates.help_topic("welcome")}] ++ help_topic_paths)
+    |> Enum.uniq_by(&elem(&1, 0))
   end
 
   defp chunks(paths, prefix, size, builder) do
@@ -163,30 +175,37 @@ defmodule RetroHexChatWeb.SitemapController do
   # has no translated version, so the archive's pages are the same URL for
   # every reader.
   defp build_archive_urlset do
-    paths =
+    entries =
       for channel <- Archive.published_channels(),
           slug = String.trim_leading(channel, "#"),
-          path <- [
-            "/archive/#{slug}" | Enum.map(Archive.days_for(channel), &"/archive/#{slug}/#{&1}")
+          days = Archive.days_for(channel),
+          entry <- [
+            # The channel's index last changed on its most recent published day,
+            # and a day's page is dated by the day it is.
+            {"/archive/#{slug}", List.first(days)}
+            | Enum.map(days, &{"/archive/#{slug}/#{&1}", &1})
           ] do
-        path
+        entry
       end
 
-    build_canonical_urlset(paths)
+    build_canonical_urlset(entries)
   end
 
   # One canonical URL per path, no hreflang: the showcase ships in English only.
-  defp build_canonical_urlset(paths) do
+  defp build_canonical_urlset(entries) do
     [
       ~s(<?xml version="1.0" encoding="UTF-8"?>\n),
       ~s(<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n),
-      Enum.map(paths, &url_entry(SEO.site_url(&1), [])),
+      Enum.map(entries, fn
+        {path, lastmod} -> url_entry(SEO.site_url(path), [], lastmod)
+        path -> url_entry(SEO.site_url(path), [])
+      end),
       "</urlset>\n"
     ]
     |> IO.iodata_to_binary()
   end
 
-  defp localized_url_entries(path) do
+  defp localized_url_entries({path, lastmod}) do
     alternate_links =
       path
       |> SEO.alternate_links()
@@ -194,19 +213,25 @@ defmodule RetroHexChatWeb.SitemapController do
 
     path
     |> SEO.localized_urls()
-    |> Enum.map(&url_entry(&1.href, alternate_links))
+    |> Enum.map(&url_entry(&1.href, alternate_links, lastmod))
   end
 
-  defp url_entry(loc, alternate_links) do
+  defp url_entry(loc, alternate_links, lastmod \\ nil) do
     [
       "  <url>\n",
       "    <loc>",
       xml_escape(loc),
       "</loc>\n",
+      lastmod_element(lastmod),
       alternate_links,
       "  </url>\n"
     ]
   end
+
+  defp lastmod_element(nil), do: []
+
+  defp lastmod_element(lastmod),
+    do: ["    <lastmod>", xml_escape(lastmod), "</lastmod>\n"]
 
   defp alternate_link(alternate) do
     [
