@@ -10,14 +10,21 @@
         title={dgettext("landing", "Retro Hex Chat — Welcome")}
       >
         <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
+        <%!-- The heading of the site's most important page was a wordmark and
+              nothing else, so it said only the brand's own name. The text now
+              carries what the thing is; the wordmark becomes decorative, since
+              a reader hearing the heading would otherwise hear the name twice. --%>
         <h1 id="hero-heading" class="mb-3">
           <img
             src={Endpoint.static_path("/images/landing/wordmark.svg")}
-            alt={dgettext("landing", "Retro Hex Chat")}
+            alt=""
             width="800"
             height="120"
             class="inline-block max-w-[400px] w-full"
           />
+          <span class="sr-only">
+            {dgettext("landing", "Retro Hex Chat — Self-hosted chat, spaces, calls and games")}
+          </span>
         </h1>
 
         <p class="text-sm mb-2">
@@ -289,6 +296,8 @@
                   "End of Time Space map with avatars and in-world chat bubbles"
                 )
               }
+              width="960"
+              height="481"
               class="block w-full h-auto"
               loading="lazy"
             />

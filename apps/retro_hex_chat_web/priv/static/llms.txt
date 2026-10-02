@@ -1,0 +1,58 @@
+# Retro Hex Chat
+
+> A self-hosted chat server styled after Windows 98 and mIRC. Channels, virtual
+> spaces, private peer-to-peer calls over WebRTC, channel conferences, bots, and
+> retro games — all in the browser. Open source under the MIT licence, built with
+> Elixir, Phoenix LiveView and PostgreSQL.
+
+The point of the project is that the server is yours. Messages live in your own
+PostgreSQL database, private one-to-one calls go browser-to-browser without the
+media passing through the server, and the whole thing is MIT licensed so you can
+read, change and run it yourself.
+
+The site is published in fourteen languages. English lives at the unprefixed
+path and every other language under a BCP 47 segment — `/pt-BR/features`,
+`/zh-Hans/faq`. Each page declares its own canonical URL and a reciprocal
+`hreflang` set, so any one of them is a fine place to start.
+
+## Start here
+
+- [Home](https://retrohexchat.app/): what the project is and who it is for.
+- [How it works](https://retrohexchat.app/how-it-works): the server, spaces,
+  calls and the privacy model, with the P2P and TURN fallback explained.
+- [Features](https://retrohexchat.app/features): channels, spaces, conferences,
+  bots, multiplayer games and the solo arcade.
+- [FAQ](https://retrohexchat.app/faq): fourteen questions on P2P, self-hosting,
+  server requirements, security and contributing.
+
+## Documentation
+
+- [Help](https://retrohexchat.app/chat/help): roughly three hundred topics
+  covering every command, channel mode, keyboard shortcut and window, each at
+  its own URL and translated into all fourteen languages.
+- [Component showcase](https://retrohexchat.app/showcase): the Windows 98 UI
+  primitives the interface is built from, one page per component.
+
+## Running it yourself
+
+- [Install](https://retrohexchat.app/install): clone, set up, run — and the
+  system requirements.
+- [Privacy comparison](https://retrohexchat.app/privacy): data ownership, call
+  routing, message access and AI training, next to the closed alternatives.
+- [Community](https://retrohexchat.app/community): the licence, how to
+  contribute, and where the source lives.
+
+## Source
+
+- [GitHub](https://github.com/rodrigomarchi/retro_hex_chat)
+- [Licence (MIT)](https://github.com/rodrigomarchi/retro_hex_chat/blob/main/LICENSE)
+- [Contributing](https://github.com/rodrigomarchi/retro_hex_chat/blob/main/CONTRIBUTING.md)
+- [Security policy](https://github.com/rodrigomarchi/retro_hex_chat/blob/main/SECURITY.md)
+
+## Notes
+
+- `/sitemap.xml` indexes every public URL, including each help topic in every
+  language, and the archive of any channel that opted into publishing.
+- A channel is archived only from the moment somebody agreed to publish it.
+  Nothing said before that is ever published, and turning the switch off
+  unpublishes the pages rather than leaving them up.

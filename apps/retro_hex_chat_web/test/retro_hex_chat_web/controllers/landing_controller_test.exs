@@ -541,6 +541,18 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       assert body =~ "Disallow: /p2p/"
     end
 
+    # Reachable at its URL is the whole job, and the trap is `phx.digest`: it
+    # rewrites a top-level file to `llms-<digest>.txt`, whose first path segment
+    # is not the one `static_paths/0` names, so the prefix has to be in
+    # `static_only_matching/0` too or this 404s in production and nowhere else.
+    test "llms.txt is served and maps the public pages", %{conn: conn} do
+      body = conn |> get("/llms.txt") |> response(200)
+
+      assert body =~ "# Retro Hex Chat"
+      assert body =~ "https://retrohexchat.app/chat/help"
+      assert body =~ "https://retrohexchat.app/faq"
+    end
+
     # The showcase is submitted in the sitemap, linked from the home page footer
     # and serves `index, follow`. Blocking it here made all three of those a lie
     # and earned one "submitted URL blocked by robots.txt" per component page.

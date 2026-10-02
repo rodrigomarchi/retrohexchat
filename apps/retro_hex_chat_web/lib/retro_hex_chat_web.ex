@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb do
   """
 
   def static_paths,
-    do: ~w(assets fonts images favicon.ico robots.txt manifest.webmanifest sw.js)
+    do: ~w(assets fonts images favicon.ico robots.txt llms.txt manifest.webmanifest sw.js)
 
   @doc """
   First-segment prefixes served in addition to `static_paths/0`.
@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb do
   unaffected: their first segment is the directory.
   """
   @spec static_only_matching() :: [String.t()]
-  def static_only_matching, do: ~w(favicon robots manifest sw)
+  def static_only_matching, do: ~w(favicon robots llms manifest sw)
 
   def router do
     quote do
