@@ -1,57 +1,27 @@
-# Negations already lost when the guard was added. One line per locale
-# and source, keyed by hash. Never add to this by hand: a new finding is
-# a new defect, and the gate exists to say so.
-de	615aec1597bbc37ddc60b1d9c47593169f18a780
-de	8febec77a0a1e3614bd99759ce38bd3853826244
-de	c570fb6a6a19cd5a27d352b9bfbca05df3b1512c
-de	d0f5d9d3fec184ea146698aee6556b364da1f769
-de	e571f168f051dae63eefac17741b53327b991763
-de	e944c403715cbe2fa6aecc70a339fbb3bf00b761
-de	ff6cce270c8fd1763988eeacd1fae15321a3da2f
-id	066a2f4561c35c65f95d98c18e057e757fc032d8
+# Negations lost in paragraphs still waiting on a native reader. One line
+# per locale and source, keyed by hash. Never add to this by hand: a new
+# finding is a new defect, and the gate exists to say so.
+#
+# This file is a debt ledger, and the debt is meant to reach zero. It held
+# 54 hashes when the guard was added, including "THIS CANNOT BE UNDONE"
+# reaching German as "Das ist alles" — on the line that precedes wiping a
+# server. Widening the guard to see typographic contractions, filling the
+# gaps in the marker tables that made it cry wolf, and curating every
+# sentence short enough to say exactly what it meant brought it to these.
+# What is left is long prose where the negation may be carried by a
+# construction no marker lists, and where guessing would be worse than
+# admitting the entry has not been read.
 id	569b6dd36429853909b5c6b7c3e3947d1e3cfef3
 id	67c8f7a1c2991bfaf21171c749f8212f94c92bed
-id	86bb8208c8b66de6f61855271fb868886337b686
-id	87502b5c440968686929d7bfd58e7e6720e369b9
-id	8d159da52a4b77a8de71ff460c2b8fd79952e423
 id	cbb2db0a5585f0966a79a8f9f4de1b50f7c70ed3
 id	efefa7fb86596a00dd575fd036b14d12b59c47fc
-it	67c8f7a1c2991bfaf21171c749f8212f94c92bed
-it	ff6cce270c8fd1763988eeacd1fae15321a3da2f
-ja	06c140b6cf8a320cc1487e66bcf57aadd9f8d87a
-ja	08eaa2e863ea22af0b5c45805226e87c29de7a3c
-ja	24659950a83b191d96740668ae69f2dc836a0466
-ja	2a42c79aa4fcec2b6ba3cc93e127359bd4efcf0a
 ja	32dbc5fa8e0f5dea8a546b17fcebda26a22592af
-ja	4119ada3f850727ffa57ca3587e98002204d6887
 ja	4ccc22b98345eb5a21e287ba99ce11652519179d
 ja	58fa20559ba781c8746325ba8ba3954018a7eca2
-ja	5b8a0b841a349d2500096d56c51b72b020c85de9
-ja	6f0ae47b9db0c45830eaefbc2374631b796f6d77
-ja	764bd43880c7a578ec3a928fb21a8f0060cfd7ec
-ja	7e4166fa30963ebdf066d02bd38069947243057b
-ja	c4cfc3772b3171316cb0ce23b6c95dac05a43f4f
-ja	c5388ce1869d176bebe7658a933edacc35962321
 ja	c70e5a325207be6b9229af51828152d60eef88eb
-ja	cb12710cdbc1fd1e6d67ff2854f9f01a122cef2d
 ja	f575ea9611265fe54f66f1820f01b9b6ddbea6e8
-ja	ff6cce270c8fd1763988eeacd1fae15321a3da2f
 nl	1a92db92bb51b3221cd7773423608d3cc85f6a87
-nl	224b023c771836d73bff3346d6c70aad8f33d0dc
 nl	25d7bfe98397a25d38aad457c52506c49988fd2e
 nl	8d9f3b7c44d4b770835936163d7c0fb98dafaa22
-nl	a14268761a7f93c519dcbfaec3e3b09e1acd4b2b
-nl	f93d38b3434caab2e0567c53d9aac51141e95528
-nl	feeb9942d2d0d9ff943a24c0710e77dd02e047d9
-pl	066a2f4561c35c65f95d98c18e057e757fc032d8
-pl	67c8f7a1c2991bfaf21171c749f8212f94c92bed
-pl	8b836f184a247ab023b138541791dada346cca5c
-pl	cbb2db0a5585f0966a79a8f9f4de1b50f7c70ed3
-ru	0179270b81231e820d7673e8dae8dc8025d0ac97
-ru	6823eb0775da06ef60fcb1da9100d753c535d335
-ru	8093093b3eda6d35b9df59ac73c20f7e2f36d76b
-zh_hans	67c8f7a1c2991bfaf21171c749f8212f94c92bed
 zh_hans	6b33b031b9f398ed146f9cad83f94f840d0fa252
-zh_hans	e936720ef341a9f3996251a059f375a632002f79
-zh_hant	67c8f7a1c2991bfaf21171c749f8212f94c92bed
 zh_hant	6b33b031b9f398ed146f9cad83f94f840d0fa252

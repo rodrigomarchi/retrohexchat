@@ -1272,7 +1272,7 @@ msgstr "Si el balón pasa tu paleta, tu oponente marca un punto"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Igloo & Winning"
-msgstr "Igloo &amp; Winning"
+msgstr "Igloo & Winning"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:32
 #, elixir-autogen, elixir-format
@@ -4142,12 +4142,16 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "A game tab and the chat run side by side. Opening one does not close the other, and closing the game tab leaves the chat untouched."
-msgstr "Una pestaña de juego y el chat funcionan a la vez. Abrir una no cierra la otra, y cerrar la pestaña del juego deja el chat intacto."
+msgstr ""
+"Una pestaña de juego y el chat funcionan a la vez. Abrir una no cierra la "
+"otra, y cerrar la pestaña del juego deja el chat intacto."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Use the Chat link in the game window's status bar to go back."
-msgstr "Usa el enlace Chat de la barra de estado de la ventana del juego para volver."
+msgstr ""
+"Usa el enlace Chat de la barra de estado de la ventana del juego para "
+"volver."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:60
 #, elixir-autogen, elixir-format
@@ -4157,32 +4161,51 @@ msgstr "Compartir un juego"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Sharing needs a registered nickname, because the link records who created it. Register with /ns register first."
-msgstr "Compartir requiere un apodo registrado, porque el enlace guarda quién lo creó. Regístrate antes con /ns register."
+msgstr ""
+"Compartir requiere un apodo registrado, porque el enlace guarda quién lo "
+"creó. Regístrate antes con /ns register."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Whoever opens the link sees a card telling them what was shared. If they have no session yet they connect first and land back on the link."
-msgstr "Quien abre el enlace ve una tarjeta que le dice qué se compartió. Si aún no tiene sesión, primero se conecta y vuelve al enlace."
+msgstr ""
+"Quien abre el enlace ve una tarjeta que le dice qué se compartió. Si aún no "
+"tiene sesión, primero se conecta y vuelve al enlace."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "With a game selected, press Share. You get a short link you can paste anywhere — a channel, a private message, or outside RetroHexChat entirely."
-msgstr "Con un juego seleccionado, pulsa Compartir. Obtienes un enlace corto que puedes pegar donde sea: un canal, un mensaje privado o fuera de RetroHexChat."
+msgstr ""
+"Con un juego seleccionado, pulsa Compartir. Obtienes un enlace corto que "
+"puedes pegar donde sea: un canal, un mensaje privado o fuera de "
+"RetroHexChat."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A match link has exactly one seat. The moment somebody takes it the link stops working, and the card it draws says the match is full rather than that the link expired — it stopped working because it worked."
-msgstr "Un enlace de partida tiene exactamente una plaza. En cuanto alguien la ocupa el enlace deja de funcionar, y la tarjeta que dibuja dice que la partida está completa, no que el enlace haya caducado: dejó de funcionar porque funcionó."
+msgstr ""
+"Un enlace de partida tiene exactamente una plaza. En cuanto alguien la ocupa"
+" el enlace deja de funcionar, y la tarjeta que dibuja dice que la partida "
+"está completa, no que el enlace haya caducado: dejó de funcionar porque "
+"funcionó."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "A match nobody joins closes itself after about fifteen minutes. That is deliberate: an address pasted in a channel would otherwise stay a way into your session for the rest of the day, and a room waiting for nobody is worth less than a fresh one."
-msgstr "Una partida a la que no se une nadie se cierra sola al cabo de unos quince minutos. Es deliberado: una dirección pegada en un canal seguiría siendo una entrada a tu sesión durante el resto del día, y una sala que no espera a nadie vale menos que una nueva."
+msgstr ""
+"Una partida a la que no se une nadie se cierra sola al cabo de unos quince "
+"minutos. Es deliberado: una dirección pegada en un canal seguiría siendo una"
+" entrada a tu sesión durante el resto del día, y una sala que no espera a "
+"nadie vale menos que una nueva."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Creating a match link needs a registered nickname you have identified with NickServ, and so does taking the seat. Somebody either of you has blocked cannot join, and neither can you join your own match from a second window."
-msgstr "Crear un enlace de partida exige un apodo registrado e identificado con NickServ, y ocupar la plaza también. Alguien a quien cualquiera de los dos haya bloqueado no puede unirse, y tú tampoco puedes unirte a tu propia partida desde una segunda ventana."
+msgstr ""
+"Crear un enlace de partida exige un apodo registrado e identificado con "
+"NickServ, y ocupar la plaza también. Alguien a quien cualquiera de los dos "
+"haya bloqueado no puede unirse, y tú tampoco puedes unirte a tu propia "
+"partida desde una segunda ventana."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:16
 #, elixir-autogen, elixir-format
@@ -4197,7 +4220,10 @@ msgstr "También caduca por sí solo"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Open a game from Retro Games and press Play with someone. That creates a match room and drops you into it as its host, with one empty seat opposite you. Nothing has been sent anywhere yet."
-msgstr "Abre un juego en Retro Games y pulsa Jugar con alguien. Eso crea una sala de partida y te deja dentro como anfitrión, con una plaza libre enfrente. Todavía no se ha enviado nada a ninguna parte."
+msgstr ""
+"Abre un juego en Retro Games y pulsa Jugar con alguien. Eso crea una sala de"
+" partida y te deja dentro como anfitrión, con una plaza libre enfrente. "
+"Todavía no se ha enviado nada a ninguna parte."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:27
 #, elixir-autogen, elixir-format
@@ -4228,7 +4254,11 @@ msgstr "Quién puede jugar"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Whoever follows the link takes the seat and lands in the same room. Both of you press Ready, and then the host's Start begins the match. There is no accept step for the game itself: the link named it, and following the link was the agreement."
-msgstr "Quien siga el enlace ocupa la plaza y aterriza en la misma sala. Los dos pulsáis Listo y luego el Iniciar del anfitrión empieza la partida. No hay un paso de aceptar el juego: el enlace ya lo nombraba, y seguirlo era el acuerdo."
+msgstr ""
+"Quien siga el enlace ocupa la plaza y aterriza en la misma sala. Los dos "
+"pulsáis Listo y luego el Iniciar del anfitrión empieza la partida. No hay un"
+" paso de aceptar el juego: el enlace ya lo nombraba, y seguirlo era el "
+"acuerdo."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:35
 #, elixir-autogen, elixir-format
@@ -4238,7 +4268,11 @@ msgstr "Por qué un enlace de partida dejó de funcionar"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Cancel, in the match room, closes it and kills its link immediately — it is there for the host, and only until the match starts. To play again, open the game and press Play with someone for a new room and a new address."
-msgstr "Cancelar, dentro de la sala de partida, la cierra y mata su enlace al instante: es del anfitrión, y solo está ahí hasta que la partida empieza. Para volver a jugar, abre el juego y pulsa Jugar con alguien para tener una sala nueva y una dirección nueva."
+msgstr ""
+"Cancelar, dentro de la sala de partida, la cierra y mata su enlace al "
+"instante: es del anfitrión, y solo está ahí hasta que la partida empieza. "
+"Para volver a jugar, abre el juego y pulsa Jugar con alguien para tener una "
+"sala nueva y una dirección nueva."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:25
 #, elixir-autogen, elixir-format
@@ -4248,12 +4282,22 @@ msgstr "Elige un icono de juego en la biblioteca."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Every game has an address of its own: /play opens the library and /play/hex_pong opens that game directly. Send someone the address and they land on the same screen."
-msgstr "Cada juego tiene su propia dirección: /play abre la biblioteca y /play/hex_pong abre ese juego directamente. Envía la dirección a alguien y llegará a la misma pantalla."
+msgstr ""
+"Cada juego tiene su propia dirección: /play abre la biblioteca y "
+"/play/hex_pong abre ese juego directamente. Envía la dirección a alguien y "
+"llegará a la misma pantalla."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Retro Games are browser-native RetroHexChat games you play without a peer session. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants use the same game engine foundation as P2P play with an AI controller on the remote side."
-msgstr "Los Juegos retro son juegos RetroHexChat nativos del navegador que juegas sin una sesión con pares. Hex Pong, Light Trails, las variantes de Star Duel, Block Breakers, Hex Warlords, las variantes de Hex Raid, las variantes de Hex Outlaw, las variantes de Hex Tennis, las variantes de Hex Invaders, las variantes de Hex Enduro, las variantes de Hex Skiing, las variantes de Hex Frost y las variantes de Hex Hockey usan la misma base de motor que el juego P2P, con un controlador de IA en el lado remoto."
+msgstr ""
+"Los Juegos retro son juegos RetroHexChat nativos del navegador que juegas "
+"sin una sesión con pares. Hex Pong, Light Trails, las variantes de Star "
+"Duel, Block Breakers, Hex Warlords, las variantes de Hex Raid, las variantes"
+" de Hex Outlaw, las variantes de Hex Tennis, las variantes de Hex Invaders, "
+"las variantes de Hex Enduro, las variantes de Hex Skiing, las variantes de "
+"Hex Frost y las variantes de Hex Hockey usan la misma base de motor que el "
+"juego P2P, con un controlador de IA en el lado remoto."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:38
 #, elixir-autogen, elixir-format
@@ -4263,7 +4307,12 @@ msgstr "La dirección es la puerta"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Inside the room, Share mints the address and opens a small window holding it, with Copy and Revoke. Paste it into a channel or a private message and it draws a card with the game on it and the number of seats left. Opening the game does not create an address — pressing Share does, so you never leave links behind for rooms nobody used."
-msgstr "Dentro de la sala, Compartir acuña la dirección y la abre en una ventanita, junto a Copiar y Revocar. Pégala en un canal o en un mensaje privado y dibuja una tarjeta con el juego y el número de plazas que quedan. Abrir el juego no crea una dirección: pulsar Compartir sí, así nunca dejas enlaces atrás de salas que nadie usó."
+msgstr ""
+"Dentro de la sala, Compartir acuña la dirección y la abre en una ventanita, "
+"junto a Copiar y Revocar. Pégala en un canal o en un mensaje privado y "
+"dibuja una tarjeta con el juego y el número de plazas que quedan. Abrir el "
+"juego no crea una dirección: pulsar Compartir sí, así nunca dejas enlaces "
+"atrás de salas que nadie usó."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:21
 #, elixir-autogen, elixir-format
@@ -4278,12 +4327,22 @@ msgstr "Cuántas a la vez"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "The channels you are in, and the place you had read up to. Reading a conversation on one screen clears its unread badge on the other. What each screen keeps to itself is what it has on screen: the tabs you opened on the phone do not rearrange the desktop, and closing one screen never takes the other out of a channel."
-msgstr "Los canales en los que estás y el punto hasta donde habías leído. Leer una conversación en una pantalla borra el aviso de no leídas en la otra. Lo que cada pantalla guarda para sí es lo que tiene abierto: las pestañas que abriste en el móvil no reordenan el ordenador, y cerrar una pantalla nunca saca a la otra de un canal."
+msgstr ""
+"Los canales en los que estás y el punto hasta donde habías leído. Leer una "
+"conversación en una pantalla borra el aviso de no leídas en la otra. Lo que "
+"cada pantalla guarda para sí es lo que tiene abierto: las pestañas que "
+"abriste en el móvil no reordenan el ordenador, y cerrar una pantalla nunca "
+"saca a la otra de un canal."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Three chats at a time. Opening a fourth ends the one you have not used for longest, and that screen is sent back to the Connect page saying so. Nothing else you have open is affected: a conference, a space, a P2P session and a game each have an address of their own and are yours to open beside the chat as many as you like."
-msgstr "Tres chats a la vez. Abrir un cuarto cierra el que lleves más tiempo sin usar, y esa pantalla vuelve a la página de conexión diciéndolo. Nada más de lo que tengas abierto se ve afectado: una conferencia, un espacio, una sesión P2P y un juego tienen dirección propia y puedes abrir tantos como quieras junto al chat."
+msgstr ""
+"Tres chats a la vez. Abrir un cuarto cierra el que lleves más tiempo sin "
+"usar, y esa pantalla vuelve a la página de conexión diciéndolo. Nada más de "
+"lo que tengas abierto se ve afectado: una conferencia, un espacio, una "
+"sesión P2P y un juego tienen dirección propia y puedes abrir tantos como "
+"quieras junto al chat."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:14
 #, elixir-autogen, elixir-format
@@ -4293,14 +4352,25 @@ msgstr "Qué comparten las pantallas"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "You can be signed in with the same nickname on more than one screen at a time — the desktop at work and the phone on the way home, both live, both showing the same conversations."
-msgstr "Puedes entrar con el mismo apodo en más de una pantalla a la vez — el ordenador del trabajo y el móvil de camino a casa, los dos activos, los dos mostrando las mismas conversaciones."
+msgstr ""
+"Puedes entrar con el mismo apodo en más de una pantalla a la vez — el "
+"ordenador del trabajo y el móvil de camino a casa, los dos activos, los dos "
+"mostrando las mismas conversaciones."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "The Sessions tab of the Trusted Terminals window, in the Start menu, lists every screen signed in as you. It marks the one you are on, and ends any of them — or all the others at once, which is what to reach for after signing in somewhere you do not control."
-msgstr "La pestaña Sesiones de la ventana Terminales de confianza, en el menú Inicio, lista todas las pantallas conectadas como tú. Marca la que estás usando y cierra cualquiera de ellas — o todas las demás de una vez, que es lo que conviene tras entrar en algún sitio que no controlas."
+msgstr ""
+"La pestaña Sesiones de la ventana Terminales de confianza, en el menú "
+"Inicio, lista todas las pantallas conectadas como tú. Marca la que estás "
+"usando y cierra cualquiera de ellas — o todas las demás de una vez, que es "
+"lo que conviene tras entrar en algún sitio que no controlas."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Double-click the Retro Games desktop icon, or open Start ▸ Games and choose Retro Games: both show the library, one icon per game. Choosing a game opens that game in a browser tab of its own, and the chat stays exactly where it was."
-msgstr "Haz doble clic en el icono Retro Games del escritorio, o abre Inicio ▸ Juegos y elige Retro Games: ambos muestran la biblioteca, un icono por juego. Elegir un juego lo abre en su propia pestaña del navegador, y el chat se queda exactamente donde estaba."
+msgstr ""
+"Haz doble clic en el icono Retro Games del escritorio, o abre Inicio ▸ "
+"Juegos y elige Retro Games: ambos muestran la biblioteca, un icono por "
+"juego. Elegir un juego lo abre en su propia pestaña del navegador, y el chat"
+" se queda exactamente donde estaba."

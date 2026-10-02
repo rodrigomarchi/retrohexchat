@@ -260,7 +260,7 @@ msgstr "+j нениениентениханиениентиенихинание�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "+k <key>"
-msgstr "+k &gt; &gt; &gt;"
+msgstr "+k > > >"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:41
 #, elixir-autogen, elixir-format
@@ -5221,17 +5221,26 @@ msgstr "/unpin"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A channel has one topic and a welcome nobody reads twice. Everything else — the rules, the link to the event, what was agreed last week — scrolls away and gets retyped. Pinning keeps a message findable."
-msgstr "Un canal tiene un tema y una bienvenida que nadie lee dos veces. Todo lo demás —las reglas, el enlace del evento, lo que se acordó la semana pasada— se pierde en el scroll y se vuelve a escribir. Fijar mantiene un mensaje fácil de encontrar."
+msgstr ""
+"Un canal tiene un tema y una bienvenida que nadie lee dos veces. Todo lo "
+"demás —las reglas, el enlace del evento, lo que se acordó la semana pasada— "
+"se pierde en el scroll y se vuelve a escribir. Fijar mantiene un mensaje "
+"fácil de encontrar."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Channel operators and owners — the same bar as the topic, and for the same reason: both are the channel speaking about itself to everybody who walks in. Half-operators moderate the conversation instead."
-msgstr "Operadores y dueños del canal: el mismo listón que el tema, y por la misma razón: ambos son el canal hablando de sí mismo a quien entra. Los semioperadores moderan la conversación."
+msgstr ""
+"Operadores y dueños del canal: el mismo listón que el tema, y por la misma "
+"razón: ambos son el canal hablando de sí mismo a quien entra. Los "
+"semioperadores moderan la conversación."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Channel operators and owners, the same as pinning. Unpinning a message nothing was keeping is not an error — it says so and changes nothing."
-msgstr "Operadores y dueños del canal, igual que al fijar. Desfijar un mensaje que no estaba fijado no es un error: lo dice y no cambia nada."
+msgstr ""
+"Operadores y dueños del canal, igual que al fijar. Desfijar un mensaje que "
+"no estaba fijado no es un error: lo dice y no cambia nada."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:2
 #, elixir-autogen, elixir-format
@@ -5241,7 +5250,10 @@ msgstr "Deja de mantener un mensaje a la vista."
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "The message itself stays exactly where it is in the conversation — only the pin goes. The Pinned window unpins from the entry too, which is usually where you are when you decide to."
-msgstr "El mensaje sigue exactamente donde estaba en la conversación: solo se va la fijación. La ventana Fijados también desfija desde la propia entrada, que es donde sueles estar cuando lo decides."
+msgstr ""
+"El mensaje sigue exactamente donde estaba en la conversación: solo se va la "
+"fijación. La ventana Fijados también desfija desde la propia entrada, que es"
+" donde sueles estar cuando lo decides."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:21
@@ -5288,7 +5300,11 @@ msgstr "Borrar el mensaje quita el fijado con él"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Easier than the id: right-click the message and choose Pin. The command exists for when you already have the id in front of you. Either way the channel checks again when the pin arrives, and a Pinned button appears in the conversation toolbar as soon as there is something to show."
-msgstr "Más fácil que el id: haz clic derecho en el mensaje y elige Fijar. El comando existe para cuando ya tienes el id delante. En cualquier caso el canal vuelve a comprobar cuando llega el fijado, y aparece un botón de Fijados en la barra de la conversación en cuanto hay algo que mostrar."
+msgstr ""
+"Más fácil que el id: haz clic derecho en el mensaje y elige Fijar. El "
+"comando existe para cuando ya tienes el id delante. En cualquier caso el "
+"canal vuelve a comprobar cuando llega el fijado, y aparece un botón de "
+"Fijados en la barra de la conversación en cuanto hay algo que mostrar."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:30
@@ -5344,7 +5360,10 @@ msgstr "Un canal guarda hasta 50 eventos a la vez"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A channel that only exists while somebody happens to be typing has no next time. An event is the next time, written down where the whole room can see it — and everyone who says they are coming is reminded before it starts."
-msgstr "Un canal que solo existe mientras alguien está escribiendo no tiene próxima vez. Un evento es la próxima vez, anotada donde toda la sala la ve, y a quien diga que va se le avisa antes de que empiece."
+msgstr ""
+"Un canal que solo existe mientras alguien está escribiendo no tiene próxima "
+"vez. Un evento es la próxima vez, anotada donde toda la sala la ve, y a "
+"quien diga que va se le avisa antes de que empiece."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:44
 #, elixir-autogen, elixir-format
@@ -5364,7 +5383,9 @@ msgstr "Eventos del canal"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Channel operators and owners schedule; anybody in the channel can say they are going. An event is called off by whoever scheduled it, or by an operator."
-msgstr "Los operadores y dueños del canal programan; cualquiera en el canal puede decir que va. Un evento lo cancela quien lo programó, o un operador."
+msgstr ""
+"Los operadores y dueños del canal programan; cualquiera en el canal puede "
+"decir que va. Un evento lo cancela quien lo programó, o un operador."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:63
 #, elixir-autogen, elixir-format
@@ -5379,7 +5400,12 @@ msgstr "Decir que vas dos veces es decirlo una"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "The channel gets a line with a card under it showing the start in each reader's own time zone and a button to say you are going. Shortly before it starts the room is told again, and everybody who said yes gets a notification through whatever they already have switched on. With no arguments at all, the command opens the Events window instead."
-msgstr "El canal recibe una línea con una tarjeta debajo que muestra el inicio en la zona horaria de cada lector y un botón para decir que vas. Poco antes de empezar se avisa de nuevo a la sala, y todos los que dijeron que sí reciben una notificación por lo que ya tengan activado. Sin argumentos, el comando abre la ventana de Eventos."
+msgstr ""
+"El canal recibe una línea con una tarjeta debajo que muestra el inicio en la"
+" zona horaria de cada lector y un botón para decir que vas. Poco antes de "
+"empezar se avisa de nuevo a la sala, y todos los que dijeron que sí reciben "
+"una notificación por lo que ya tengan activado. Sin argumentos, el comando "
+"abre la ventana de Eventos."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:37
 #, elixir-autogen, elixir-format
@@ -5394,7 +5420,9 @@ msgstr "— Cancela el evento con ese número."
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— How long from now it starts: 30m, 2h, 3d. A delay rather than a clock reading, so it means the same instant for everybody."
-msgstr "— Cuánto falta para que empiece: 30m, 2h, 3d. Un plazo en vez de una hora del reloj, así que es el mismo instante para todos."
+msgstr ""
+"— Cuánto falta para que empiece: 30m, 2h, 3d. Un plazo en vez de una hora "
+"del reloj, así que es el mismo instante para todos."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:17
 #, elixir-autogen, elixir-format

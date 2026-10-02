@@ -3727,7 +3727,7 @@ msgstr "Collecteur d'URL"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "URL Catcher Window:"
-msgstr "Fenêtre de capture d'URL & #160;:"
+msgstr "Fenêtre de capture d'URL :"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:25
 #, elixir-autogen, elixir-format
@@ -6458,12 +6458,18 @@ msgstr "Notifications système"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "If you have Retro Hex Chat open anywhere — a chat tab, a call, a Space — nothing is sent. You already have the sound, the flashing title and, if you asked for it, a desktop notification."
-msgstr "Si Retro Hex Chat est ouvert quelque part — un onglet de discussion, un appel, un Espace — rien n'est envoyé. Vous avez déjà le son, le titre clignotant et, si vous l'avez demandé, une notification système."
+msgstr ""
+"Si Retro Hex Chat est ouvert quelque part — un onglet de discussion, un "
+"appel, un Espace — rien n'est envoyé. Vous avez déjà le son, le titre "
+"clignotant et, si vous l'avez demandé, une notification système."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Nothing else, ever. Not an ordinary channel line, not a join or a part, and never a bot. A busy room while you were away is one notification, not one per line."
-msgstr "Rien d'autre, jamais. Ni une ligne ordinaire de salon, ni une arrivée ou un départ, et jamais un bot. Un salon animé pendant votre absence donne une notification, pas une par ligne."
+msgstr ""
+"Rien d'autre, jamais. Ni une ligne ordinaire de salon, ni une arrivée ou un "
+"départ, et jamais un bot. Un salon animé pendant votre absence donne une "
+"notification, pas une par ligne."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:36
 #, elixir-autogen, elixir-format
@@ -6483,17 +6489,29 @@ msgstr "Par appareil, et ce qui quitte le serveur"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The Sounds window has one switch above the event list: notify me on this device even when Retro Hex Chat is closed. With it on, this browser can be woken up after every tab is gone."
-msgstr "La fenêtre Sons comporte un interrupteur au-dessus de la liste des événements : me prévenir sur cet appareil même quand Retro Hex Chat est fermé. Activé, ce navigateur peut être réveillé une fois tous les onglets fermés."
+msgstr ""
+"La fenêtre Sons comporte un interrupteur au-dessus de la liste des "
+"événements : me prévenir sur cet appareil même quand Retro Hex Chat est "
+"fermé. Activé, ce navigateur peut être réveillé une fois tous les onglets "
+"fermés."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "The switch is about this browser on this machine, so turning it off on your laptop leaves your phone alone. What the server sends is encrypted for that one browser: the push service in between — your browser vendor's — carries an address and a block of ciphertext, and can read neither the conversation nor the message."
-msgstr "L'interrupteur concerne ce navigateur sur cette machine : le désactiver sur votre portable laisse votre téléphone tranquille. Ce que le serveur envoie est chiffré pour ce seul navigateur : le service de push intermédiaire — celui de l'éditeur de votre navigateur — transporte une adresse et un bloc de texte chiffré, et ne peut lire ni la conversation ni le message."
+msgstr ""
+"L'interrupteur concerne ce navigateur sur cette machine : le désactiver sur "
+"votre portable laisse votre téléphone tranquille. Ce que le serveur envoie "
+"est chiffré pour ce seul navigateur : le service de push intermédiaire — "
+"celui de l'éditeur de votre navigateur — transporte une adresse et un bloc "
+"de texte chiffré, et ne peut lire ni la conversation ni le message."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "This needs a VAPID key pair, and a server without one simply does not have the feature: the switch is not drawn at all rather than drawn and broken."
-msgstr "Cela nécessite une paire de clés VAPID, et un serveur qui n'en a pas n'a tout simplement pas la fonction : l'interrupteur n'est pas dessiné du tout, plutôt que dessiné et inopérant."
+msgstr ""
+"Cela nécessite une paire de clés VAPID, et un serveur qui n'en a pas n'a "
+"tout simplement pas la fonction : l'interrupteur n'est pas dessiné du tout, "
+"plutôt que dessiné et inopérant."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:7
 #, elixir-autogen, elixir-format
@@ -6508,12 +6526,18 @@ msgstr "Votre pseudo écrit dans un salon où vous étiez"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A reaction is an answer to a message that costs one click. It reaches the person who wrote the line, and it never asks anybody to read anything."
-msgstr "Une réaction est une réponse à un message qui coûte un clic. Elle atteint la personne qui a écrit la ligne et ne demande à personne de lire quoi que ce soit."
+msgstr ""
+"Une réaction est une réponse à un message qui coûte un clic. Elle atteint la"
+" personne qui a écrit la ligne et ne demande à personne de lire quoi que ce "
+"soit."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "A reaction plays no sound, marks nothing unread and wakes no device. That is deliberate: the cheapest thing you can say here should stay cheap for the person receiving it too."
-msgstr "Une réaction ne joue aucun son, ne marque rien comme non lu et ne réveille aucun appareil. C'est délibéré : la chose la moins coûteuse que vous puissiez dire ici doit le rester aussi pour celui qui la reçoit."
+msgstr ""
+"Une réaction ne joue aucun son, ne marque rien comme non lu et ne réveille "
+"aucun appareil. C'est délibéré : la chose la moins coûteuse que vous "
+"puissiez dire ici doit le rester aussi pour celui qui la reçoit."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:21
 #, elixir-autogen, elixir-format
@@ -6539,17 +6563,24 @@ msgstr "Cela ne prévient personne"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "On a computer: hover a message and pick one of the emoji that appear under it"
-msgstr "Sur un ordinateur : survolez un message et choisissez l'un des emoji qui apparaissent dessous"
+msgstr ""
+"Sur un ordinateur : survolez un message et choisissez l'un des emoji qui "
+"apparaissent dessous"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "On a phone: press and hold the message and choose React, then pick any emoji"
-msgstr "Sur un téléphone : appuyez longuement sur le message, choisissez Réagir, puis n'importe quel emoji"
+msgstr ""
+"Sur un téléphone : appuyez longuement sur le message, choisissez Réagir, "
+"puis n'importe quel emoji"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "The number beside an emoji is how many people chose it, and hovering it names them. Your own reactions are drawn pressed. One person counts once per emoji, however many times they click."
-msgstr "Le nombre à côté d'un emoji indique combien de personnes l'ont choisi, et le survol les nomme. Vos propres réactions sont dessinées enfoncées. Une personne compte une fois par emoji, quel que soit le nombre de clics."
+msgstr ""
+"Le nombre à côté d'un emoji indique combien de personnes l'ont choisi, et le"
+" survol les nomme. Vos propres réactions sont dessinées enfoncées. Une "
+"personne compte une fois par emoji, quel que soit le nombre de clics."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:23
 #, elixir-autogen, elixir-format
@@ -6559,7 +6590,10 @@ msgstr "Ce que signifient les chiffres"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A mention is a message that writes your nickname, or one of your highlight words, in a channel you were in. The chat counts those separately from everything else that is new."
-msgstr "Une mention est un message qui écrit votre pseudo, ou l'un de vos mots mis en évidence, dans un salon où vous étiez. Le chat les compte séparément de tout le reste qui est nouveau."
+msgstr ""
+"Une mention est un message qui écrit votre pseudo, ou l'un de vos mots mis "
+"en évidence, dans un salon où vous étiez. Le chat les compte séparément de "
+"tout le reste qui est nouveau."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:20
 #, elixir-autogen, elixir-format
@@ -6569,7 +6603,12 @@ msgstr "Ouvrir la conversation efface les deux"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Mentions lists every message that named you, newest first, across the channels you are in. Clicking one switches to that conversation and scrolls to the line. While anything is waiting, a badge appears in the taskbar tray and opens the same window."
-msgstr "Démarrer ▸ Mentions liste tous les messages qui vous ont nommé, du plus récent au plus ancien, dans les salons où vous êtes. En cliquer un bascule vers cette conversation et défile jusqu'à la ligne. Tant que quelque chose attend, un badge apparaît dans la zone de notification et ouvre la même fenêtre."
+msgstr ""
+"Démarrer ▸ Mentions liste tous les messages qui vous ont nommé, du plus "
+"récent au plus ancien, dans les salons où vous êtes. En cliquer un bascule "
+"vers cette conversation et défile jusqu'à la ligne. Tant que quelque chose "
+"attend, un badge apparaît dans la zone de notification et ouvre la même "
+"fenêtre."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:22
 #, elixir-autogen, elixir-format
@@ -6579,7 +6618,8 @@ msgstr "La fenêtre Mentions"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "The grey count beside a conversation says there is something new in it"
-msgstr "Le nombre gris à côté d'une conversation indique qu'il y a du nouveau dedans"
+msgstr ""
+"Le nombre gris à côté d'une conversation indique qu'il y a du nouveau dedans"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:18
 #, elixir-autogen, elixir-format
@@ -6599,7 +6639,11 @@ msgstr "Ce qui ne compte jamais"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Your own messages, deleted messages, and anything the server itself said — a join, a service reply, a notice. Those name people constantly and none of it is somebody reaching for you."
-msgstr "Vos propres messages, les messages supprimés et tout ce que le serveur lui-même a dit — une arrivée, une réponse de service, un avis. Ceux-là nomment des gens en permanence et rien de tout cela n'est quelqu'un qui vous cherche."
+msgstr ""
+"Vos propres messages, les messages supprimés et tout ce que le serveur lui-"
+"même a dit — une arrivée, une réponse de service, un avis. Ceux-là nomment "
+"des gens en permanence et rien de tout cela n'est quelqu'un qui vous "
+"cherche."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:26
 #, elixir-autogen, elixir-format
@@ -6609,12 +6653,17 @@ msgstr "Une première visite n'a pas de ligne"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "A conversation you have never opened has nothing marked as read, so nothing is drawn. The mark is remembered per conversation for registered nicknames and survives a reconnect."
-msgstr "Une conversation que vous n'avez jamais ouverte n'a rien de marqué comme lu, donc rien n'est dessiné. Le repère est mémorisé par conversation pour les pseudos enregistrés et survit à une reconnexion."
+msgstr ""
+"Une conversation que vous n'avez jamais ouverte n'a rien de marqué comme lu,"
+" donc rien n'est dessiné. Le repère est mémorisé par conversation pour les "
+"pseudos enregistrés et survit à une reconnexion."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "It never moves as messages arrive. If it did, the rule would always sit at the bottom and there would be nothing to separate."
-msgstr "Il ne bouge jamais à l'arrivée des messages. S'il le faisait, la ligne serait toujours tout en bas et il n'y aurait rien à séparer."
+msgstr ""
+"Il ne bouge jamais à l'arrivée des messages. S'il le faisait, la ligne "
+"serait toujours tout en bas et il n'y aurait rien à séparer."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:18
 #, elixir-autogen, elixir-format
@@ -6634,7 +6683,10 @@ msgstr "Quand le repère avance"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "When you come back to a conversation with something new in it, a red rule marks where you stopped reading. Everything below it arrived while you were away."
-msgstr "Quand vous revenez à une conversation où il y a du nouveau, une ligne rouge marque où vous avez arrêté de lire. Tout ce qui est en dessous est arrivé pendant votre absence."
+msgstr ""
+"Quand vous revenez à une conversation où il y a du nouveau, une ligne rouge "
+"marque où vous avez arrêté de lire. Tout ce qui est en dessous est arrivé "
+"pendant votre absence."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:10
 #, elixir-autogen, elixir-format
@@ -6649,7 +6701,12 @@ msgstr "Quand vous passez à une autre conversation"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "While there is something new, a First unread button appears beside the conversation's other controls and scrolls to the first line you have not read. If that line is older than the part of the history currently loaded, scroll up once to load more and press it again."
-msgstr "Tant qu'il y a du nouveau, un bouton Premier non lu apparaît à côté des autres commandes de la conversation et défile jusqu'à la première ligne que vous n'avez pas lue. Si cette ligne est plus ancienne que la partie de l'historique chargée, remontez une fois pour en charger plus et appuyez de nouveau."
+msgstr ""
+"Tant qu'il y a du nouveau, un bouton Premier non lu apparaît à côté des "
+"autres commandes de la conversation et défile jusqu'à la première ligne que "
+"vous n'avez pas lue. Si cette ligne est plus ancienne que la partie de "
+"l'historique chargée, remontez une fois pour en charger plus et appuyez de "
+"nouveau."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:56
 #, elixir-autogen, elixir-format
@@ -6659,7 +6716,11 @@ msgstr "Se connecter sur plusieurs écrans"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A chat loses things. The address somebody typed, the link to the build, the paragraph worth reading twice — all of it scrolls. Saving is for the moment you already know you will want it later."
-msgstr "Une discussion perd des choses. L'adresse que quelqu'un a tapée, le lien vers la version, le paragraphe qui mérite deux lectures : tout défile. Enregistrer sert au moment où vous savez déjà que vous en aurez besoin plus tard."
+msgstr ""
+"Une discussion perd des choses. L'adresse que quelqu'un a tapée, le lien "
+"vers la version, le paragraphe qui mérite deux lectures : tout défile. "
+"Enregistrer sert au moment où vous savez déjà que vous en aurez besoin plus "
+"tard."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:23
 #, elixir-autogen, elixir-format
@@ -6679,7 +6740,11 @@ msgstr "Personne d'autre ne le voit"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Right-click a message — long press on a phone — and choose Save for Later. The same menu offers Remove from Saved on a line you already kept. It works on channel messages and on private ones."
-msgstr "Faites un clic droit sur un message — appui long sur téléphone — et choisissez Enregistrer pour plus tard. Le même menu propose Retirer des enregistrés sur une ligne déjà gardée. Cela fonctionne pour les messages de salon comme pour les privés."
+msgstr ""
+"Faites un clic droit sur un message — appui long sur téléphone — et "
+"choisissez Enregistrer pour plus tard. Le même menu propose Retirer des "
+"enregistrés sur une ligne déjà gardée. Cela fonctionne pour les messages de "
+"salon comme pour les privés."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:33
 #, elixir-autogen, elixir-format
@@ -6689,12 +6754,19 @@ msgstr "Fenêtre Messages enregistrés"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Saving is private. The author is not told, no count is shown to anyone, and nothing appears beside the message. It is a note to yourself, not a vote."
-msgstr "L'enregistrement est privé. L'auteur n'en est pas informé, aucun compteur n'est montré à personne, et rien n'apparaît à côté du message. C'est une note pour vous, pas un vote."
+msgstr ""
+"L'enregistrement est privé. L'auteur n'en est pas informé, aucun compteur "
+"n'est montré à personne, et rien n'apparaît à côté du message. C'est une "
+"note pour vous, pas un vote."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Tools ▸ Saved Messages lists everything you kept, newest first, and each row goes back to the line in its own conversation. You can keep up to 500; each one can carry a short note about why."
-msgstr "Démarrer ▸ Outils ▸ Messages enregistrés liste tout ce que vous avez gardé, du plus récent au plus ancien, et chaque ligne renvoie au message dans sa propre conversation. Vous pouvez en garder jusqu'à 500 ; chacun peut porter une courte note expliquant pourquoi."
+msgstr ""
+"Démarrer ▸ Outils ▸ Messages enregistrés liste tout ce que vous avez gardé, "
+"du plus récent au plus ancien, et chaque ligne renvoie au message dans sa "
+"propre conversation. Vous pouvez en garder jusqu'à 500 ; chacun peut porter "
+"une courte note expliquant pourquoi."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:33
 #, elixir-autogen, elixir-format
@@ -6709,12 +6781,17 @@ msgstr "Les pièces jointes ne sont jamais publiées : la page n'en dit rien"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Deleted messages are absent; edited ones are marked as edited"
-msgstr "Les messages supprimés sont absents ; les modifiés sont marqués comme tels"
+msgstr ""
+"Les messages supprimés sont absents ; les modifiés sont marqués comme tels"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Everything a group knows usually dies inside the room it was said in. A channel can choose otherwise: its founder can open a public archive, and from that moment the channel gets a page per day that anybody can read and a search engine can index."
-msgstr "Tout ce qu'un groupe sait meurt d'ordinaire dans la pièce où cela a été dit. Un salon peut en décider autrement : son fondateur peut ouvrir une archive publique, et dès lors le salon obtient une page par jour que n'importe qui peut lire et qu'un moteur de recherche peut indexer."
+msgstr ""
+"Tout ce qu'un groupe sait meurt d'ordinaire dans la pièce où cela a été dit."
+" Un salon peut en décider autrement : son fondateur peut ouvrir une archive "
+"publique, et dès lors le salon obtient une page par jour que n'importe qui "
+"peut lire et qu'un moteur de recherche peut indexer."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:26
 #, elixir-autogen, elixir-format
@@ -6724,7 +6801,12 @@ msgstr "Les arrivées, départs et autres avis du salon ne sont pas publiés"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Only what is said from the moment the switch goes on. Nothing already in the channel is ever published, however long it has been there — whoever wrote it wrote it into a room, not onto the internet. Everyone present is told when the switch changes, so nobody learns it from a search engine."
-msgstr "Seulement ce qui est dit à partir de l'activation. Rien de ce qui est déjà dans le salon n'est jamais publié, depuis quelque temps que ce soit — qui l'a écrit l'a écrit dans une pièce, pas sur internet. Toutes les personnes présentes sont prévenues quand l'interrupteur change, pour que personne ne l'apprenne par un moteur de recherche."
+msgstr ""
+"Seulement ce qui est dit à partir de l'activation. Rien de ce qui est déjà "
+"dans le salon n'est jamais publié, depuis quelque temps que ce soit — qui "
+"l'a écrit l'a écrit dans une pièce, pas sur internet. Toutes les personnes "
+"présentes sont prévenues quand l'interrupteur change, pour que personne ne "
+"l'apprenne par un moteur de recherche."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:43
 #, elixir-autogen, elixir-format
@@ -6744,7 +6826,11 @@ msgstr "L'éteindre retire toutes les pages aussitôt"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, and only a registered channel has one."
-msgstr "Le fondateur, et personne d'autre. Un opérateur modère la pièce ; décider que ce qui s'y dit devienne lisible de l'extérieur est une décision d'un autre ordre, et elle revient à qui répond du salon. L'interrupteur est dans Channel Central, onglet Enregistrement, et seul un salon enregistré en a un."
+msgstr ""
+"Le fondateur, et personne d'autre. Un opérateur modère la pièce ; décider "
+"que ce qui s'y dit devienne lisible de l'extérieur est une décision d'un "
+"autre ordre, et elle revient à qui répond du salon. L'interrupteur est dans "
+"Channel Central, onglet Enregistrement, et seul un salon enregistré en a un."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:14
 #, elixir-autogen, elixir-format
@@ -6759,32 +6845,54 @@ msgstr "Qui peut"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "\"Reply in this thread\" aims the channel's own input at the message that started it. You write where you always write, and what you send lands in the room and in the thread at once."
-msgstr "« Répondre dans ce fil » pointe la zone de saisie du salon vers le message qui l'a ouvert. Vous écrivez là où vous écrivez toujours, et ce que vous envoyez arrive à la fois dans le salon et dans le fil."
+msgstr ""
+"« Répondre dans ce fil » pointe la zone de saisie du salon vers le message "
+"qui l'a ouvert. Vous écrivez là où vous écrivez toujours, et ce que vous "
+"envoyez arrive à la fois dans le salon et dans le fil."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A message somebody answered says how many replies it collected. Choose that line to read the whole exchange together, in the order it happened."
-msgstr "Un message auquel quelqu'un a répondu indique combien de réponses il a réunies. Choisissez cette ligne pour lire tout l'échange ensemble, dans l'ordre où il s'est produit."
+msgstr ""
+"Un message auquel quelqu'un a répondu indique combien de réponses il a "
+"réunies. Choisissez cette ligne pour lire tout l'échange ensemble, dans "
+"l'ordre où il s'est produit."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Answering a reply answers the conversation it belongs to: your message quotes the original message, not the reply you clicked. That keeps one disagreement as one thread instead of a branching tree, and it is why a reply never collects replies of its own."
-msgstr "Répondre à une réponse répond à la conversation à laquelle elle appartient : votre message cite le message d'origine, pas la réponse sur laquelle vous avez cliqué. Un désaccord reste ainsi un seul fil plutôt qu'un arbre ramifié, et c'est pourquoi une réponse ne réunit jamais de réponses à elle."
+msgstr ""
+"Répondre à une réponse répond à la conversation à laquelle elle appartient :"
+" votre message cite le message d'origine, pas la réponse sur laquelle vous "
+"avez cliqué. Un désaccord reste ainsi un seul fil plutôt qu'un arbre "
+"ramifié, et c'est pourquoi une réponse ne réunit jamais de réponses à elle."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Every reply still appears in the channel where it was written. The Thread window is a second place to read them, never the only place — in a small room, hiding replies behind a panel is how a conversation stops happening in front of everybody."
-msgstr "Chaque réponse apparaît toujours dans le salon où elle a été écrite. La fenêtre Fil est un deuxième endroit pour les lire, jamais le seul : dans un petit salon, cacher les réponses derrière un panneau est précisément ce qui fait qu'une conversation cesse de se dérouler devant tout le monde."
+msgstr ""
+"Chaque réponse apparaît toujours dans le salon où elle a été écrite. La "
+"fenêtre Fil est un deuxième endroit pour les lire, jamais le seul : dans un "
+"petit salon, cacher les réponses derrière un panneau est précisément ce qui "
+"fait qu'une conversation cesse de se dérouler devant tout le monde."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Everything that answers the first message, including replies somebody later deleted, which are shown as removed so the count and the list always agree. Replies written before this feature existed keep the message they quoted and are not counted here."
-msgstr "Tout ce qui répond au premier message, y compris les réponses supprimées par la suite, affichées comme retirées pour que le compte et la liste concordent toujours. Les réponses écrites avant l'existence de cette fonction gardent le message qu'elles citaient et ne sont pas comptées ici."
+msgstr ""
+"Tout ce qui répond au premier message, y compris les réponses supprimées par"
+" la suite, affichées comme retirées pour que le compte et la liste "
+"concordent toujours. Les réponses écrites avant l'existence de cette "
+"fonction gardent le message qu'elles citaient et ne sont pas comptées ici."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "If the original message was deleted, the quote shows that it is gone and the reply stays where it is. Long messages are truncated in the reply preview. Editing the original message updates the quote in all replies."
-msgstr "Si le message d'origine a été supprimé, la citation indique qu'il n'est plus là et la réponse reste où elle est. Les messages longs sont tronqués dans l'aperçu de la réponse. Modifier le message d'origine met à jour la citation dans toutes les réponses."
+msgstr ""
+"Si le message d'origine a été supprimé, la citation indique qu'il n'est plus"
+" là et la réponse reste où elle est. Les messages longs sont tronqués dans "
+"l'aperçu de la réponse. Modifier le message d'origine met à jour la citation"
+" dans toutes les réponses."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:14
 #, elixir-autogen, elixir-format
@@ -6809,7 +6917,9 @@ msgstr "Répondre à une réponse"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Right-click a message and choose Reply. On a phone, press and hold the message to open the same menu."
-msgstr "Faites un clic droit sur un message et choisissez Répondre. Sur téléphone, appuyez longuement sur le message pour ouvrir le même menu."
+msgstr ""
+"Faites un clic droit sur un message et choisissez Répondre. Sur téléphone, "
+"appuyez longuement sur le message pour ouvrir le même menu."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:42
 #, elixir-autogen, elixir-format
@@ -6824,7 +6934,11 @@ msgstr "Fils de discussion"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Under a message that was answered there is a \"2 replies\" line. Click it, or right-click the message and choose Open Thread, and the Thread window opens on that conversation. Opening it from one of the replies opens the same thread."
-msgstr "Sous un message auquel on a répondu figure une ligne « 2 réponses ». Cliquez dessus, ou faites un clic droit sur le message et choisissez Ouvrir le fil : la fenêtre Fil s'ouvre sur cette conversation. L'ouvrir depuis une des réponses ouvre le même fil."
+msgstr ""
+"Sous un message auquel on a répondu figure une ligne « 2 réponses ». Cliquez"
+" dessus, ou faites un clic droit sur le message et choisissez Ouvrir le fil "
+": la fenêtre Fil s'ouvre sur cette conversation. L'ouvrir depuis une des "
+"réponses ouvre le même fil."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_threads.html.heex:28
 #, elixir-autogen, elixir-format
@@ -6839,7 +6953,10 @@ msgstr "/event"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A channel can agree to do something at a time — a tournament, a film night, a meeting — and everyone sees it, says whether they are coming, and is reminded shortly before it starts."
-msgstr "Un salon peut convenir de faire quelque chose à une heure — un tournoi, une soirée cinéma, une réunion — et tout le monde le voit, dit s'il vient, et est prévenu peu avant le début."
+msgstr ""
+"Un salon peut convenir de faire quelque chose à une heure — un tournoi, une "
+"soirée cinéma, une réunion — et tout le monde le voit, dit s'il vient, et "
+"est prévenu peu avant le début."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:57
 #, elixir-autogen, elixir-format
@@ -6849,12 +6966,18 @@ msgstr "Notifications avec le chat fermé"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Operators only, with /event followed by how long from now it starts and what it is called: /event 2h Tuesday tournament. The time is a delay rather than a clock reading, so it means the same instant for everybody who can read it, wherever they are."
-msgstr "Opérateurs seulement, avec /event suivi du délai avant le début et du nom : /event 2h tournoi du mardi. L'heure est un délai plutôt qu'une heure d'horloge, donc le même instant pour tous, où qu'ils soient."
+msgstr ""
+"Opérateurs seulement, avec /event suivi du délai avant le début et du nom : "
+"/event 2h tournoi du mardi. L'heure est un délai plutôt qu'une heure "
+"d'horloge, donc le même instant pour tous, où qu'ils soient."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Press I'm going on the card. It is the only answer there is — a maybe tells the organiser nothing they did not already know. Press it again to take yourself back off. The count beside it is everybody who said yes."
-msgstr "Appuyez sur Je viens sur la carte. C'est la seule réponse possible : un peut-être n'apprend rien à l'organisateur. Appuyez de nouveau pour vous retirer. Le nombre à côté, ce sont tous ceux qui ont dit oui."
+msgstr ""
+"Appuyez sur Je viens sur la carte. C'est la seule réponse possible : un "
+"peut-être n'apprend rien à l'organisateur. Appuyez de nouveau pour vous "
+"retirer. Le nombre à côté, ce sont tous ceux qui ont dit oui."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:22
 #, elixir-autogen, elixir-format
@@ -6869,12 +6992,21 @@ msgstr "En programmer un"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Shortly before it starts, the channel gets a line saying so, and everyone who said they were going gets a notification — a desktop one if you have the chat open, a push one if you do not. There is no separate alerts channel and no setting of its own: it uses the notifications you have already chosen."
-msgstr "Peu avant le début, le salon reçoit une ligne qui le dit, et tous ceux qui avaient dit venir reçoivent une notification — une notification de bureau si le chat est ouvert, une notification push sinon. Il n'y a pas de canal d'alertes séparé ni de réglage propre : cela utilise les notifications que vous avez déjà choisies."
+msgstr ""
+"Peu avant le début, le salon reçoit une ligne qui le dit, et tous ceux qui "
+"avaient dit venir reçoivent une notification — une notification de bureau si"
+" le chat est ouvert, une notification push sinon. Il n'y a pas de canal "
+"d'alertes séparé ni de réglage propre : cela utilise les notifications que "
+"vous avez déjà choisies."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Tools ▸ Events, or /event with nothing after it, lists what this channel has coming up, soonest first. Whoever scheduled something can call it off with /event cancel followed by its number; the record that it was going to happen stays."
-msgstr "Démarrer ▸ Outils ▸ Événements, ou /event sans rien après, liste ce que ce salon a prévu, le plus proche d'abord. Qui a programmé quelque chose peut l'annuler avec /event cancel suivi de son numéro ; la trace que cela allait avoir lieu reste."
+msgstr ""
+"Démarrer ▸ Outils ▸ Événements, ou /event sans rien après, liste ce que ce "
+"salon a prévu, le plus proche d'abord. Qui a programmé quelque chose peut "
+"l'annuler avec /event cancel suivi de son numéro ; la trace que cela allait "
+"avoir lieu reste."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:38
 #, elixir-autogen, elixir-format
@@ -6889,7 +7021,11 @@ msgstr "Le rappel"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "The card shows the start in your own time zone, and how far off it is. Two people in different countries see different clock times for the same event, which is the point: the stored instant is the same one."
-msgstr "La carte affiche le début dans votre propre fuseau horaire et dans combien de temps c'est. Deux personnes dans des pays différents voient des heures différentes pour le même événement, et c'est le but : l'instant enregistré est le même."
+msgstr ""
+"La carte affiche le début dans votre propre fuseau horaire et dans combien "
+"de temps c'est. Deux personnes dans des pays différents voient des heures "
+"différentes pour le même événement, et c'est le but : l'instant enregistré "
+"est le même."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:14
 #, elixir-autogen, elixir-format
@@ -6909,7 +7045,11 @@ msgstr "Choisir un personnage"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Enter a space from the conversation toolbar and pick a character. That choice is now remembered for your nickname, so it is still yours the next time you connect — and the chat shows it even when you are nowhere near a space."
-msgstr "Entrez dans un espace depuis la barre de la conversation et choisissez un personnage. Ce choix est désormais retenu pour votre pseudo : il reste le vôtre à la prochaine connexion, et le chat l'affiche même quand vous n'êtes près d'aucun espace."
+msgstr ""
+"Entrez dans un espace depuis la barre de la conversation et choisissez un "
+"personnage. Ce choix est désormais retenu pour votre pseudo : il reste le "
+"vôtre à la prochaine connexion, et le chat l'affiche même quand vous n'êtes "
+"près d'aucun espace."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:35
 #, elixir-autogen, elixir-format
@@ -6919,12 +7059,19 @@ msgstr "Couleurs de Nick"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Only people who have chosen. Somebody who has never walked into a space gets no portrait at all rather than a stand-in face, because a stranger's picture where a person should be is worse than no picture."
-msgstr "Seulement les personnes qui ont choisi. Qui n'est jamais entré dans un espace n'a aucun portrait plutôt qu'un visage de remplacement, car l'image d'un inconnu là où devrait être une personne est pire que pas d'image du tout."
+msgstr ""
+"Seulement les personnes qui ont choisi. Qui n'est jamais entré dans un "
+"espace n'a aucun portrait plutôt qu'un visage de remplacement, car l'image "
+"d'un inconnu là où devrait être une personne est pire que pas d'image du "
+"tout."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The character you chose in a virtual space stands beside your nickname in the chat: in the conversation, in the user list, and on the card somebody sees when they look you up."
-msgstr "Le personnage que vous avez choisi dans un espace virtuel apparaît à côté de votre pseudo dans le chat : dans la conversation, dans la liste des utilisateurs et sur la carte que quelqu'un voit en vous recherchant."
+msgstr ""
+"Le personnage que vous avez choisi dans un espace virtuel apparaît à côté de"
+" votre pseudo dans le chat : dans la conversation, dans la liste des "
+"utilisateurs et sur la carte que quelqu'un voit en vous recherchant."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:14
 #, elixir-autogen, elixir-format
@@ -6934,7 +7081,11 @@ msgstr "Les désactiver"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "View ▸ Character Portraits, in the menu bar or the Start menu, switches them off and back on. The plain text line is the other half of what this chat looks like, and somebody reading a busy channel may want nothing but the words."
-msgstr "Affichage ▸ Portraits de personnage, dans la barre de menus ou le menu Démarrer, les désactive et les réactive. La ligne de texte brut est l'autre moitié de l'allure de ce chat, et qui lit un salon animé ne veut peut-être que les mots."
+msgstr ""
+"Affichage ▸ Portraits de personnage, dans la barre de menus ou le menu "
+"Démarrer, les désactive et les réactive. La ligne de texte brut est l'autre "
+"moitié de l'allure de ce chat, et qui lit un salon animé ne veut peut-être "
+"que les mots."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:21
 #, elixir-autogen, elixir-format
@@ -6944,7 +7095,10 @@ msgstr "Qui en a un"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "A server can teach itself pictures and answer to them by name. Write :shrug: and everybody on this server sees the picture; everybody elsewhere never does, because the set belongs to the server."
-msgstr "Un serveur peut s'apprendre des images et y répondre par leur nom. Écrivez :shrug: et tout le monde sur ce serveur voit l'image ; ailleurs, jamais, car l'ensemble appartient au serveur."
+msgstr ""
+"Un serveur peut s'apprendre des images et y répondre par leur nom. Écrivez "
+":shrug: et tout le monde sur ce serveur voit l'image ; ailleurs, jamais, car"
+" l'ensemble appartient au serveur."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:14
 #, elixir-autogen, elixir-format
@@ -6954,7 +7108,10 @@ msgstr "En ajouter un"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Administrators only, from Admin ▸ Server Emoji. Choose a picture, give it a name, and it is available to everybody here at once. A server holds up to 100, and removing one frees its name again."
-msgstr "Administrateurs uniquement, via Admin ▸ Émojis du serveur. Choisissez une image, donnez-lui un nom, et elle est disponible pour tout le monde ici aussitôt. Un serveur en garde jusqu'à 100, et en retirer un libère son nom."
+msgstr ""
+"Administrateurs uniquement, via Admin ▸ Émojis du serveur. Choisissez une "
+"image, donnez-lui un nom, et elle est disponible pour tout le monde ici "
+"aussitôt. Un serveur en garde jusqu'à 100, et en retirer un libère son nom."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:21
 #, elixir-autogen, elixir-format
@@ -6969,12 +7126,19 @@ msgstr "Réactions"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Two to thirty-two characters: lower-case letters, digits and underscores. That is what somebody can type between two colons without thinking about it, and a name that cannot be typed is an emoji that only half exists."
-msgstr "De deux à trente-deux caractères : minuscules, chiffres et tirets bas. C'est ce qu'on tape entre deux deux-points sans y penser, et un nom qu'on ne peut pas taper est un émoji qui n'existe qu'à moitié."
+msgstr ""
+"De deux à trente-deux caractères : minuscules, chiffres et tirets bas. C'est"
+" ce qu'on tape entre deux deux-points sans y penser, et un nom qu'on ne peut"
+" pas taper est un émoji qui n'existe qu'à moitié."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Type the name between two colons, or pick it from the top of the emoji picker, where this server's own are listed above the ones everybody has. A name this server does not have stays exactly as you typed it — it never becomes a broken picture."
-msgstr "Écrivez le nom entre deux deux-points, ou choisissez-le en haut du sélecteur d'émojis, où ceux de ce serveur figurent au-dessus de ceux que tout le monde a. Un nom que ce serveur n'a pas reste exactement tel que vous l'avez tapé : il ne devient jamais une image cassée."
+msgstr ""
+"Écrivez le nom entre deux deux-points, ou choisissez-le en haut du sélecteur"
+" d'émojis, où ceux de ce serveur figurent au-dessus de ceux que tout le "
+"monde a. Un nom que ce serveur n'a pas reste exactement tel que vous l'avez "
+"tapé : il ne devient jamais une image cassée."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:7
 #, elixir-autogen, elixir-format
@@ -6989,7 +7153,10 @@ msgstr "Une minute, puis ça s'arrête"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "A take ends itself at sixty seconds and is attached as it stands. Past a minute it stops being something the other person can take in the middle of a conversation — which is what writing is for."
-msgstr "Une prise s'arrête d'elle-même à soixante secondes et est jointe telle quelle. Au-delà d'une minute, ce n'est plus quelque chose que l'autre peut suivre au milieu d'une conversation — c'est à cela que sert l'écrit."
+msgstr ""
+"Une prise s'arrête d'elle-même à soixante secondes et est jointe telle "
+"quelle. Au-delà d'une minute, ce n'est plus quelque chose que l'autre peut "
+"suivre au milieu d'une conversation — c'est à cela que sert l'écrit."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:33
 #, elixir-autogen, elixir-format
@@ -6999,12 +7166,20 @@ msgstr "Pièces jointes des messages"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "On a phone, and only in a browser that can record. On a desktop the file picker beside the input already attaches an audio file, so nothing is missing there."
-msgstr "Sur un téléphone, et seulement dans un navigateur capable d'enregistrer. Sur un ordinateur, le sélecteur de fichiers à côté du champ joint déjà un fichier audio : rien ne manque là."
+msgstr ""
+"Sur un téléphone, et seulement dans un navigateur capable d'enregistrer. Sur"
+" un ordinateur, le sélecteur de fichiers à côté du champ joint déjà un "
+"fichier audio : rien ne manque là."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Press Record and allow the microphone when the browser asks. The clock beside it counts up while you speak. Attach ends the take and adds it to the message, where it waits with any other attachment until you press Send; Discard throws it away and the microphone is released either way."
-msgstr "Appuyez sur Enregistrer et autorisez le microphone quand le navigateur le demande. L'horloge à côté avance pendant que vous parlez. Joindre termine la prise et l'ajoute au message, où elle attend avec les autres pièces jointes jusqu'à ce que vous appuyiez sur Envoyer ; Supprimer la jette, et le microphone est libéré dans les deux cas."
+msgstr ""
+"Appuyez sur Enregistrer et autorisez le microphone quand le navigateur le "
+"demande. L'horloge à côté avance pendant que vous parlez. Joindre termine la"
+" prise et l'ajoute au message, où elle attend avec les autres pièces jointes"
+" jusqu'à ce que vous appuyiez sur Envoyer ; Supprimer la jette, et le "
+"microphone est libéré dans les deux cas."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:7
 #, elixir-autogen, elixir-format
@@ -7014,7 +7189,11 @@ msgstr "En enregistrer un"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Some things are faster said than typed. On a phone the composer offers a Record strip: speak for up to a minute, and the recording is attached to your message like any other file."
-msgstr "Certaines choses se disent plus vite qu'elles ne s'écrivent. Sur un téléphone, la zone de saisie propose une barre d'enregistrement : parlez jusqu'à une minute, et l'enregistrement est joint à votre message comme n'importe quel fichier."
+msgstr ""
+"Certaines choses se disent plus vite qu'elles ne s'écrivent. Sur un "
+"téléphone, la zone de saisie propose une barre d'enregistrement : parlez "
+"jusqu'à une minute, et l'enregistrement est joint à votre message comme "
+"n'importe quel fichier."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:23
 #, elixir-autogen, elixir-format

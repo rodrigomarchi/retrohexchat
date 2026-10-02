@@ -9090,6 +9090,223 @@ PO_ARCHIVE_ATTACHMENT_OVERRIDES = {
 for source, translations in PO_ARCHIVE_ATTACHMENT_OVERRIDES.items():
     PO_OVERRIDES.setdefault(source, {}).update(translations)
 
+# The escaping asymmetry: the engine HTML-escaped each source before translating
+# and never unescaped the result. `i18n_repair_entity_residue.py` undoes that
+# mechanically wherever the entity still names the character it replaced. These
+# are the remainder, where it does not — the engine substituted a *different*
+# entity (`&` came back as `&quot;`, `&gt;`, `&apos;`) or dropped the negation
+# that lived inside a typographic contraction, and only a person can say what
+# the sentence meant.
+#
+# The two landing strings here are the ones that mattered most: the home page's
+# own headline reached ten locales saying the community *is* yours, and the
+# sentence the whole privacy story rests on reached eleven saying a direct
+# connection *is* possible.
+PO_ESCAPING_DAMAGE_OVERRIDES = {
+    "Your community isn\u2019t yours.": {
+        "de": "Ihre Community geh\u00f6rt Ihnen nicht.",
+        "es": "Tu comunidad no es tuya.",
+        "fr": "Votre communaut\u00e9 ne vous appartient pas.",
+        "id": "Komunitas Anda bukan milik Anda.",
+        "it": "La tua comunit\u00e0 non \u00e8 tua.",
+        "ja": "\u3042\u306a\u305f\u306e\u30b3\u30df\u30e5\u30cb\u30c6\u30a3\u306f\u3001\u3042\u306a\u305f\u306e\u3082\u306e\u3067\u306f\u3042\u308a\u307e\u305b\u3093\u3002",
+        "nl": "Jouw gemeenschap is niet van jou.",
+        "pl": "Twoja spo\u0142eczno\u015b\u0107 nie jest twoja.",
+        "pt_BR": "A sua comunidade n\u00e3o \u00e9 sua.",
+        "pt_PT": "A sua comunidade n\u00e3o \u00e9 sua.",
+        "zh_hans": "\u4f60\u7684\u793e\u533a\u4e0d\u5c5e\u4e8e\u4f60\u3002",
+        "zh_hant": "\u4f60\u7684\u793e\u7fa4\u4e0d\u5c6c\u65bc\u4f60\u3002",
+    },
+    # Fragment one of three: "… a" + "TURN relay" + "is used as fallback …".
+    # Each ending has to hand over to that locale's own fragment three, which is
+    # why these are not interchangeable with a generic translation.
+    "If a direct connection isn\u2019t possible (strict firewalls), a": {
+        "de": "Ist eine direkte Verbindung nicht m\u00f6glich (strenge Firewalls), ein",
+        "es": "Si una conexi\u00f3n directa no es posible (cortafuegos estrictos), un",
+        "fr": "Si une connexion directe n\u2019est pas possible (pare-feux stricts), un",
+        "id": "Jika koneksi langsung tidak memungkinkan (firewall ketat), sebuah",
+        "it": "Se una connessione diretta non \u00e8 possibile (firewall restrittivi), un",
+        "ja": "\u76f4\u63a5\u63a5\u7d9a\u304c\u3067\u304d\u306a\u3044\u5834\u5408\uff08\u53b3\u3057\u3044\u30d5\u30a1\u30a4\u30a2\u30a6\u30a9\u30fc\u30eb\uff09\u3001",
+        "nl": "Als een directe verbinding niet mogelijk is (strikte firewalls), een",
+        "pl": "Je\u015bli bezpo\u015brednie po\u0142\u0105czenie nie jest mo\u017cliwe (surowe zapory),",
+        "pt_BR": "Se uma conex\u00e3o direta n\u00e3o for poss\u00edvel (firewalls restritos), um",
+        "pt_PT": "Se uma liga\u00e7\u00e3o direta n\u00e3o for poss\u00edvel (firewalls restritas), um",
+        "zh_hans": "\u5982\u679c\u65e0\u6cd5\u5efa\u7acb\u76f4\u63a5\u8fde\u63a5\uff08\u4e25\u683c\u7684\u9632\u706b\u5899\uff09\uff0c",
+        "zh_hant": "\u5982\u679c\u7121\u6cd5\u5efa\u7acb\u76f4\u63a5\u9023\u63a5\uff08\u56b4\u683c\u7684\u9632\u706b\u7246\uff09\uff0c",
+    },
+    # TURN is a protocol, not an electrical component: zh read "relay" as a
+    # relay switch, id as a summary, ru as a relay race.
+    "TURN relay": {
+        "id": "Relai TURN",
+        "ru": "TURN-\u0440\u0435\u0442\u0440\u0430\u043d\u0441\u043b\u044f\u0442\u043e\u0440",
+        "zh_hans": "TURN \u4e2d\u7ee7",
+        "zh_hant": "TURN \u4e2d\u7e7c",
+    },
+    # The line that precedes wiping a server. It reached German as "that's all".
+    "THIS CANNOT BE UNDONE.": {
+        "de": "DIES KANN NICHT R\u00dcCKG\u00c4NGIG GEMACHT WERDEN.",
+    },
+    "Cannot: set channel modes, ban users, kick operators or owners": {
+        "de": "Nicht m\u00f6glich: Kanalmodi setzen, Benutzer bannen, Operatoren oder Eigent\u00fcmer kicken",
+        "it": "Non \u00e8 possibile: impostare le modalit\u00e0 del canale, bandire utenti, espellere operatori o proprietari",
+        "ja": "\u3067\u304d\u306a\u3044\u3053\u3068: \u30c1\u30e3\u30f3\u30cd\u30eb\u30e2\u30fc\u30c9\u306e\u8a2d\u5b9a\u3001\u30e6\u30fc\u30b6\u30fc\u306eBAN\u3001\u30aa\u30d7\u30ec\u30fc\u30bf\u30fc\u307e\u305f\u306f\u30aa\u30fc\u30ca\u30fc\u306e\u30ad\u30c3\u30af",
+    },
+    "Cannot kick users with equal or higher rank than you": {
+        "de": "Benutzer mit gleichem oder h\u00f6herem Rang k\u00f6nnen nicht gekickt werden",
+    },
+    "Cannot mute users with equal or higher rank": {
+        "de": "Benutzer mit gleichem oder h\u00f6herem Rang k\u00f6nnen nicht stummgeschaltet werden",
+    },
+    "Cannot update highlight: %{reason}": {
+        "de": "Hervorhebung kann nicht aktualisiert werden: %{reason}",
+    },
+    # Spanish lost every "&" in a category label to a random entity.
+    "People & Body": {"es": "Personas y cuerpo"},
+    "Travel & Places": {"es": "Viajes y lugares"},
+    "Contacts & Notify": {"es": "Contactos y notificaciones"},
+    "Notifications & Sounds": {"es": "Notificaciones y sonidos"},
+    "P2P & Calls": {"es": "P2P y llamadas"},
+    "Services & Protocols": {"es": "Servicios y protocolos"},
+    "Settings & Preferences": {"es": "Ajustes y preferencias"},
+    "Health & MOS": {"es": "Salud y MOS"},
+    "Long Lists & Loading More": {"es": "Listas largas y cargar m\u00e1s"},
+    "How Retro Hex Chat Works \u2014 Server, Spaces, Calls & Privacy": {
+        "es": "C\u00f3mo funciona Retro Hex Chat \u2014 Servidor, espacios, llamadas y privacidad",
+    },
+}
+
+for source, translations in PO_ESCAPING_DAMAGE_OVERRIDES.items():
+    PO_OVERRIDES.setdefault(source, {}).update(translations)
+
+# The remainder of the same escaping damage, where the engine substituted a
+# different entity instead of merely escaping one — Spanish lost every "&" in a
+# sentence to `&quot;` or `&gt;` — plus the negations that no marker table can
+# rescue because the translation is a confident sentence saying the opposite.
+PO_ESCAPING_DAMAGE_PROSE_OVERRIDES = {
+    "Point & click: left-click interact, right-click examine. Inventory at bottom of screen. F5 save/load, Esc skip cutscene": {
+        "es": "Point & click: clic izquierdo para interactuar, clic derecho para examinar. Inventario en la parte inferior de la pantalla. F5 guardar/cargar, Esc saltar escena",
+    },
+    "Point & click: left-click interact, right-click examine. Inventory at top of screen. F5 save/load, Esc skip cutscene": {
+        "es": "Point & click: clic izquierdo para interactuar, clic derecho para examinar. Inventario en la parte superior de la pantalla. F5 guardar/cargar, Esc saltar escena",
+    },
+    "Point & click: left-click interact, right-click examine. Simple, streamlined interface. F5 save/load, Esc skip cutscene": {
+        "es": "Point & click: clic izquierdo para interactuar, clic derecho para examinar. Interfaz simple y depurada. F5 guardar/cargar, Esc saltar escena",
+    },
+    "Point & click: left-click interact, right-click verb menu. NPCs follow their own schedules. F5 save/load, Esc skip cutscene": {
+        "es": "Point & click: clic izquierdo para interactuar, clic derecho para el men\u00fa de verbos. Los NPC siguen sus propios horarios. F5 guardar/cargar, Esc saltar escena",
+    },
+    "Point & click: left-click interact/walk, right-click examine. Inventory at top of screen. F5 save/load, Esc skip cutscene": {
+        "es": "Point & click: clic izquierdo para interactuar/caminar, clic derecho para examinar. Inventario en la parte superior de la pantalla. F5 guardar/cargar, Esc saltar escena",
+    },
+    "British real estate agent John Hacker must defeat the vampire Drascula in this hilarious Spanish point & click adventure full of pop culture references and absurd humor.": {
+        "es": "El agente inmobiliario brit\u00e1nico John Hacker debe derrotar al vampiro Drascula en esta hilarante aventura espa\u00f1ola de point & click, llena de referencias a la cultura pop y humor absurdo.",
+    },
+    "Pilot Joe King crash-lands in the Amazon and stumbles into a mad scientist's plot to turn humans into dinosaurs. A hilarious Indiana Jones-style point & click adventure with full voice acting.": {
+        "es": "El piloto Joe King se estrella en el Amazonas y tropieza con el plan de un cient\u00edfico loco para convertir a los humanos en dinosaurios. Una hilarante aventura de point & click al estilo de Indiana Jones, con doblaje completo.",
+    },
+    "Rescue your grandfather from underground pirates in this charmingly absurd Polish point & click adventure full of creative puzzles and surreal humor.": {
+        "es": "Rescata a tu abuelo de unos piratas subterr\u00e1neos en esta encantadoramente absurda aventura polaca de point & click, llena de puzles creativos y humor surrealista.",
+    },
+    "Hilarious Spanish point & click parody of Dracula (1996) \u2014 defeat the vampire Drascula with absurd humor.": {
+        "es": "Hilarante parodia espa\u00f1ola de Dr\u00e1cula en point & click (1996): derrota al vampiro Drascula con humor absurdo.",
+    },
+    "Expansion must not contain command chaining characters (|, &&, ;, or newlines)": {
+        "es": "La expansi\u00f3n no debe contener caracteres de encadenamiento de comandos (|, &&, ; o saltos de l\u00ednea)",
+    },
+    "Mensagem para #channel \u2014 / para comandos": {
+        "es": "Mensaje para #channel \u2014 / para comandos",
+    },
+    "*** Channel List (2 results) ***\n  #lobby\n  #dev": {
+        "es": "*** Lista de canales (2 resultados) ***\n  #lobby\n  #dev",
+    },
+    # The engine read the multiplication sign as the Indonesian word for "times"
+    # and wrapped it back up as an entity.
+    "\u00d7": {"id": "\u00d7"},
+    # The braces are escaped in the msgid on purpose; only the spacing was damage.
+    "List of %&#123;channel_name, channel_key&#125; maps": {
+        "id": "Daftar peta %&#123;channel_name, channel_key&#125;",
+        "pl": "Lista map %&#123;channel_name, channel_key&#125;",
+    },
+    "List of %&#123;position, command&#125; maps": {
+        "id": "Daftar peta %&#123;position, command&#125;",
+        "pl": "Lista map %&#123;position, command&#125;",
+    },
+    # A game hint that told German players to do the opposite.
+    "Don't watch the avalanche": {"de": "Beobachte die Lawine nicht"},
+    # "the publisher thought it wasn't fun enough" arrived saying it was.
+    "Half-Life was almost cancelled when Valve showed it to Sierra in 1997 \u2014 the publisher thought it wasn't fun enough. Valve scrapped 12 months of work and started over.": {
+        "ja": "\u30d0\u30eb\u30d6\u304c1997\u5e74\u306b\u30b7\u30a8\u30e9\u306b\u898b\u305b\u305f\u3068\u304d\u3001\u30cf\u30fc\u30d5\u30e9\u30a4\u30d5\u306f\u4e2d\u6b62\u5bf8\u524d\u3067\u3057\u305f\u3002\u30d1\u30d6\u30ea\u30c3\u30b7\u30e3\u30fc\u306f\u5341\u5206\u306b\u9762\u767d\u304f\u306a\u3044\u3068\u8003\u3048\u305f\u306e\u3067\u3059\u3002\u30d0\u30eb\u30d6\u306f12\u304b\u6708\u5206\u306e\u4f5c\u696d\u3092\u7834\u68c4\u3057\u3001\u3084\u308a\u76f4\u3057\u307e\u3057\u305f\u3002",
+        "ru": "Half-Life \u0431\u044b\u043b \u043f\u043e\u0447\u0442\u0438 \u043e\u0442\u043c\u0435\u043d\u0451\u043d, \u043a\u043e\u0433\u0434\u0430 Valve \u043f\u043e\u043a\u0430\u0437\u0430\u043b\u0430 \u0435\u0433\u043e Sierra \u0432 1997 \u0433\u043e\u0434\u0443 \u2014 \u0438\u0437\u0434\u0430\u0442\u0435\u043b\u044c \u0441\u0447\u0451\u043b \u0438\u0433\u0440\u0443 \u043d\u0435\u0434\u043e\u0441\u0442\u0430\u0442\u043e\u0447\u043d\u043e \u0443\u0432\u043b\u0435\u043a\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0439. Valve \u0432\u044b\u0431\u0440\u043e\u0441\u0438\u043b\u0430 12 \u043c\u0435\u0441\u044f\u0446\u0435\u0432 \u0440\u0430\u0431\u043e\u0442\u044b \u0438 \u043d\u0430\u0447\u0430\u043b\u0430 \u0437\u0430\u043d\u043e\u0432\u043e.",
+    },
+    # Dutch dropped the whole clause after the dash, negation and all.
+    "Reload during quiet moments \u2014 don't get caught mid-reload in a firefight.": {
+        "nl": "Herlaad tijdens rustige momenten \u2014 laat je niet halverwege het herladen verrassen in een vuurgevecht.",
+    },
+    ", wallops can be opted out of \u2014 users who haven't enabled": {
+        "nl": ", wallops kunnen worden uitgezet \u2014 gebruikers die ze niet hebben aangezet",
+    },
+    # Chinese received Wikipedia citation boilerplate instead of a translation.
+    "Check \"Don't show more tips\" on any tip toast to suppress all future tips. You can re-enable tips in": {
+        "id": "Centang \"Don't show more tips\" pada notifikasi tip mana pun agar tip berikutnya tidak muncul lagi. Anda dapat mengaktifkannya kembali di",
+        "zh_hans": "\u5728\u4efb\u610f\u63d0\u793a\u6d6e\u7a97\u4e0a\u52fe\u9009 \"Don't show more tips\"\uff0c\u5c31\u4e0d\u518d\u663e\u793a\u540e\u7eed\u7684\u6240\u6709\u63d0\u793a\u3002\u4f60\u53ef\u4ee5\u91cd\u65b0\u542f\u7528\u63d0\u793a\uff1a",
+        "zh_hant": "\u5728\u4efb\u610f\u63d0\u793a\u6d6e\u7a97\u4e0a\u52fe\u9078 \"Don't show more tips\"\uff0c\u5c31\u4e0d\u518d\u986f\u793a\u5f8c\u7e8c\u7684\u6240\u6709\u63d0\u793a\u3002\u4f60\u53ef\u4ee5\u91cd\u65b0\u555f\u7528\u63d0\u793a\uff1a",
+    },
+}
+
+for source, translations in PO_ESCAPING_DAMAGE_PROSE_OVERRIDES.items():
+    PO_OVERRIDES.setdefault(source, {}).update(translations)
+
+# The short half of what the negation guard still saw after the mechanical
+# repair: each one a sentence whose negation the engine simply dropped, short
+# enough to say exactly what it meant.
+PO_LOST_NEGATION_OVERRIDES = {
+    "Feed '%{id}' checked. Nothing new.": {
+        "ja": "\u30d5\u30a3\u30fc\u30c9 '%{id}' \u3092\u78ba\u8a8d\u3057\u307e\u3057\u305f\u3002\u65b0\u7740\u306f\u3042\u308a\u307e\u305b\u3093\u3002",
+    },
+    "You are not in any channel": {
+        "ja": "\u3069\u306e\u30c1\u30e3\u30f3\u30cd\u30eb\u306b\u3082\u53c2\u52a0\u3057\u3066\u3044\u307e\u305b\u3093",
+    },
+    'Shows "Nobody here" when you are the only user (or the channel is truly empty).': {
+        "ja": "\u307b\u304b\u306b\u8ab0\u3082\u3044\u306a\u3044\u3068\u304d\uff08\u307e\u305f\u306f\u30c1\u30e3\u30f3\u30cd\u30eb\u304c\u672c\u5f53\u306b\u7a7a\u306e\u3068\u304d\uff09\u3001\"Nobody here\" \u3068\u8868\u793a\u3055\u308c\u307e\u3059\u3002",
+    },
+    "(Nothing rendered below \u2014 tooltip is nil)": {
+        "ja": "\uff08\u4e0b\u306b\u306f\u4f55\u3082\u30ec\u30f3\u30c0\u30ea\u30f3\u30b0\u3055\u308c\u307e\u305b\u3093 \u2014 tooltip \u306f nil\uff09",
+    },
+    "(autocomplete is hidden \u2014 nothing rendered below)": {
+        "ja": "\uff08\u30aa\u30fc\u30c8\u30b3\u30f3\u30d7\u30ea\u30fc\u30c8\u306f\u975e\u8868\u793a \u2014 \u4e0b\u306b\u306f\u4f55\u3082\u30ec\u30f3\u30c0\u30ea\u30f3\u30b0\u3055\u308c\u307e\u305b\u3093\uff09",
+    },
+    "We'll never share your email.": {
+        "ja": "\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u3092\u5171\u6709\u3059\u308b\u3053\u3068\u306f\u3042\u308a\u307e\u305b\u3093\u3002",
+    },
+    "%{nickname} is not in your contacts": {
+        "zh_hans": "%{nickname} \u4e0d\u5728\u60a8\u7684\u8054\u7cfb\u4eba\u4e2d",
+    },
+    "Rooms With Nobody In Them": {"id": "Ruangan Tanpa Siapa pun di Dalamnya"},
+    "bcrypt hashing, never stored in plain text.": {
+        "id": "Hashing bcrypt, tidak pernah disimpan sebagai teks biasa.",
+    },
+    "(empty \u2014 history_search renders nothing)": {
+        "id": "(kosong \u2014 history_search tidak merender apa pun)",
+    },
+    "\u2014 Toggle Do Not Disturb mode. When active, notifications are suppressed.": {
+        "ru": "\u2014 \u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0440\u0435\u0436\u0438\u043c \u00ab\u041d\u0435 \u0431\u0435\u0441\u043f\u043e\u043a\u043e\u0438\u0442\u044c\u00bb. \u0412 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u043c \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0438 \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f \u043f\u043e\u0434\u0430\u0432\u043b\u044f\u044e\u0442\u0441\u044f.",
+    },
+    # Fragment: "Messages stored on **your** " + this.
+    "server, never leave": {"pl": "serwerze i nigdy go nie opuszczaj\u0105"},
+    "Timers are session-only \u2014 they do not survive page reload or disconnect": {
+        "nl": "Timers gelden alleen voor de sessie \u2014 ze overleven het herladen van de pagina of een verbroken verbinding niet",
+    },
+    "\u2014 Globally mute (cannot send messages anywhere). Supports": {
+        "nl": "\u2014 Globaal dempen (kan nergens berichten versturen). Ondersteunt",
+    },
+}
+
+for source, translations in PO_LOST_NEGATION_OVERRIDES.items():
+    PO_OVERRIDES.setdefault(source, {}).update(translations)
+
+
+
+
 JS_OVERRIDES = {
     "%{0}  Wv:%{1}": {
     },

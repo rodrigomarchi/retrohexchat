@@ -234,29 +234,72 @@ def invented_break(source: str, translated: str) -> str | None:
 # The negations whose loss changes what the reader does. A bare "no" is left
 # out on purpose: "No topic set" translates to a dozen shapes that carry the
 # sense without a marker, and flagging them all would bury the ones that matter.
+#
+# Both apostrophes, and the contraction list is exhaustive on purpose. The first
+# version of this pattern listed only can't and won't and matched only the ASCII
+# apostrophe, while the repository writes the typographic one in prose — so the
+# home page's own headline, "Your community isn’t yours.", was invisible to the
+# guard and reached ten locales saying the opposite.
 NEGATED_SOURCE = re.compile(
-    r"\b(cannot|can't|won't|never|nothing|nobody|neither|nor"
-    r"|do not|does not|will not|is not|are not)\b",
+    r"\b(cannot|never|nothing|nobody|neither|nor"
+    r"|do not|does not|did not|will not|is not|are not|was not|were not"
+    r"|has not|have not|had not|would not|should not|could not|must not"
+    r"|(?:can|won|shan|ain|isn|aren|wasn|weren|don|doesn|didn"
+    r"|hasn|haven|hadn|wouldn|shouldn|couldn|mustn|needn)['’]t)\b",
     re.IGNORECASE,
+)
+
+# A translation that carries a literal HTML entity. The engine HTML-escapes the
+# source before translating and never unescapes the result, so a `&`, `’` or `“`
+# in the msgid comes back as the entity's own letters — and when the escaped
+# character sat inside a negative contraction, the negation left with it. Every
+# damaged entry measured in the catalogues contained one of those three
+# characters; none without.
+#
+# A space inside an entity is the categorical case: `& mdash;` is never markup,
+# whatever the msgid holds. An unspaced entity is only damage when the msgid has
+# none of its own, because landing and help msgids do legitimately carry `&amp;`.
+_SPACED_ENTITY = re.compile(
+    r"&\s+(?:[a-zA-Z][a-zA-Z0-9]{1,10}|#\s*[0-9]{1,6}|#\s*[xX]\s*[0-9a-fA-F]{1,6})\s*;"
+)
+_ANY_ENTITY = re.compile(
+    r"&\s*(?:[a-zA-Z][a-zA-Z0-9]{1,10}|#\s*[0-9]{1,6}|#\s*[xX]\s*[0-9a-fA-F]{1,6})\s*;"
 )
 
 # What a negation looks like in each catalogue. Substrings, not words: German
 # compounds ("niemals", "niemand") and Japanese inflections ("ません", "ない")
 # are the same marker wearing different endings.
+#
+# Prefix negations belong here too, and their absence is what made this table
+# cry wolf. "not read" is a correct `ungelesen` in German and
+# `непрочитанному` in Russian; "could not be found" is a correct `introuvable`
+# in French; "Nothing is selected" is a correct `未選択` in Japanese. A table
+# that misses those reports healthy entries, and a guard that cries wolf gets
+# a baseline instead of a fix — which is how "THIS CANNOT BE UNDONE" stayed in
+# German as "Das ist alles" behind 54 accepted hashes.
+#
+# The bias is deliberate: a marker that is slightly too generous misses a real
+# inversion, while one that is too strict buries every real inversion in noise.
 NEGATION_MARKERS = {
-    "pt_BR": r"não|nem\b|nunca|ninguém|nada|nenhum|jamais|imposs",
-    "pt_PT": r"não|nem\b|nunca|ninguém|nada|nenhum|jamais|imposs",
-    "es": r"\bno\b|\bni\b|nunca|nadie|nada|ning|jamás|imposib",
-    "fr": r"\bne\b|\bn'|\bpas\b|jamais|personne|\brien\b|aucun|\bni\b|imposs",
-    "de": r"nicht|kein|\bnie|niemand|nichts|weder|nein|unmöglich",
-    "it": r"\bnon\b|\bné\b|mai\b|nessun|niente|nulla|imposs",
-    "nl": r"niet|geen|nooit|niemand|niets|noch|onmogelijk",
-    "pl": r"\bnie|żad|nigdy|nikt|\bnic\b|ani\b|brak",
-    "ru": r"\bне\b|\bни|нет|никог|никт|ничего|нечего|некому|никак|нельзя|невозмож",
-    "id": r"tidak|bukan|jangan|belum|\btak\b|mustahil",
-    "ja": r"ない|なく|ませ|なし|せず|不|無|非|できま",
-    "zh_hans": r"不|没|无|未|别|非|勿",
-    "zh_hant": r"不|沒|無|未|別|非|勿",
+    "pt_BR": r"não|nem\b|nunca|ninguém|nada|nenhum|jamais|imposs|\bin[a-z]{5,}|\bsem\b",
+    "pt_PT": r"não|nem\b|nunca|ninguém|nada|nenhum|jamais|imposs|\bin[a-z]{5,}|\bsem\b",
+    "es": r"\bno\b|\bni\b|nunca|nadie|nada|ning|jamás|imposib|\bin[a-z]{5,}|\bsin\b|\bsolo\b",
+    "fr": r"\bne\b|\bn['’]|\bpas\b|jamais|personne|\brien\b|aucun|\bni\b|imposs"
+    r"|\bin(?:trouvable|disponible|connu|actif|existant)|\bsans\b",
+    "de": r"nicht|kein|\bnie|niemand|nichts|weder|nein|unmöglich"
+    r"|\bun(?:gelesen|bekannt|gültig|tätig|sichtbar)|\berst\b|\bohne\b",
+    "it": r"\bnon\b|\bné\b|mai\b|nessun|niente|nulla|imposs|\bin[a-z]{5,}|\bsenza\b"
+    r"|\bsolo\b|\bsoltanto\b",
+    "nl": r"niet|geen|nooit|niemand|niets|nergens|noch|onmogelijk"
+    r"|\bon(?:gelezen|bekend|zichtbaar|geldig)|\bzonder\b|alleen",
+    "pl": r"\bnie|żad|nigdy|nikt|\bnic\b|ani\b|brak|\bbez\b|tylko|jedynie",
+    # "не" also prefixes a negated adjective — непрочитанный, недоступный —
+    # so the right boundary has to go.
+    "ru": r"\bне|\bни|нет|никог|никт|ничего|нечего|некому|никак|нельзя|невозмож|\bбез\b",
+    "ja": r"ない|なく|なかっ|ませ|なし|せず|れず|ずに|不|無|非|未|できま|決して|だけ",
+    "zh_hans": r"不|没|无|未|别|非|勿|仅|只",
+    "zh_hant": r"不|沒|無|未|別|非|勿|僅|只",
+    "id": r"tidak|bukan|jangan|belum|\btak\b|mustahil|tanpa|hanya|gagal",
 }
 
 _MARKER_RE = {code: re.compile(pat, re.IGNORECASE) for code, pat in NEGATION_MARKERS.items()}
@@ -279,6 +322,28 @@ def lost_negation(source: str, translated: str, locale_code: str) -> bool:
         return False
 
     return bool(NEGATED_SOURCE.search(source)) and not marker.search(translated)
+
+
+def has_entity_residue(source: str, translated: str) -> bool:
+    """A translation printing an HTML entity's letters at the reader.
+
+    The same escaping asymmetry that eats negations leaves its other half in
+    plain sight: "Step 1 — Clone" reached Spanish as "Paso 1 & mdash; Clone",
+    and "💻 Contribute code" as "& #x1F4BB; Gentileza de código". Measured in
+    the shipped catalogues, `& mdash;` alone accounted for 91 occurrences.
+
+    Two rules, because only one of them is categorical. A space inside an
+    entity is never markup, so it is damage whatever the source holds. An
+    unspaced entity is damage only when the source carries none of its own —
+    the landing and help msgids do legitimately contain `&amp;`.
+    """
+    if not translated.strip():
+        return False
+
+    if _SPACED_ENTITY.search(translated):
+        return True
+
+    return bool(_ANY_ENTITY.search(translated)) and not _ANY_ENTITY.search(source)
 
 
 def find_collapses(

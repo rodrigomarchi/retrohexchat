@@ -585,7 +585,7 @@ msgstr "Comandos IRC"
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:108
 #, elixir-autogen, elixir-format
 msgid "If a direct connection isn’t possible (strict firewalls), a"
-msgstr "Se uma conexão directa for possível (firewalls restritos), a"
+msgstr "Se uma conexão direta não for possível (firewalls restritos), um"
 
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:368
 #, elixir-autogen, elixir-format
@@ -1476,7 +1476,7 @@ msgstr "Seus backups"
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:106
 #, elixir-autogen, elixir-format
 msgid "Your community isn’t yours."
-msgstr "A tua comunidade é tua."
+msgstr "A sua comunidade não é sua."
 
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:282
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:320
@@ -1552,9 +1552,9 @@ msgstr ""
 "de cada vez. Se você se conectar de outro navegador ou aba, a sessão "
 "anterior é automaticamente desconectada. Se sua conexão cair, o cliente "
 "tenta reconectar até 10 vezes com backoff exponencial. Depois de todas as "
-"tentativas falharem, a sessão expira e você & rsquo;re redirecionado para a "
-"tela de login. Os apelidos registrados são protegidos pela senha — somente o"
-" proprietário pode se conectar com esse apelido."
+"tentativas falharem, a sessão expira e você ’re redirecionado para a tela de"
+" login. Os apelidos registrados são protegidos pela senha — somente o "
+"proprietário pode se conectar com esse apelido."
 
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:378
 #, elixir-autogen, elixir-format
@@ -2519,12 +2519,21 @@ msgstr ""
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:131
 #, elixir-autogen, elixir-format
 msgid "If you switch on notifications for when the chat is closed, your browser gives the server an address at its vendor's push service — Google's, Mozilla's or Apple's — and the server sends a notification there. What it sends is encrypted for your browser alone: the push service carries an address and a block of ciphertext, and can read neither the conversation nor the message."
-msgstr "Se você ligar os avisos para quando o chat está fechado, seu navegador dá ao servidor um endereço no serviço de push do fabricante dele — do Google, da Mozilla ou da Apple — e o servidor manda a notificação para lá. O que ele manda é cifrado só para o seu navegador: o serviço de push carrega um endereço e um bloco de texto cifrado, e não consegue ler nem a conversa nem a mensagem."
+msgstr ""
+"Se você ligar os avisos para quando o chat está fechado, seu navegador dá ao"
+" servidor um endereço no serviço de push do fabricante dele — do Google, da "
+"Mozilla ou da Apple — e o servidor manda a notificação para lá. O que ele "
+"manda é cifrado só para o seu navegador: o serviço de push carrega um "
+"endereço e um bloco de texto cifrado, e não consegue ler nem a conversa nem "
+"a mensagem."
 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:137
 #, elixir-autogen, elixir-format
 msgid "It is off until you turn it on, it is per device, and the same switch in the Sounds window turns it off again. A self-hosted server with no VAPID key pair does not have the feature at all."
-msgstr "Vem desligado até você ligar, vale por aparelho, e o mesmo interruptor na janela de Sons desliga de novo. Um servidor auto-hospedado sem par de chaves VAPID não tem o recurso."
+msgstr ""
+"Vem desligado até você ligar, vale por aparelho, e o mesmo interruptor na "
+"janela de Sons desliga de novo. Um servidor auto-hospedado sem par de chaves"
+" VAPID não tem o recurso."
 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:128
 #, elixir-autogen, elixir-format
@@ -2539,7 +2548,12 @@ msgstr "O único cookie que não é login"
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "Your browser is given a random name so the server can tell your phone from your desktop. It identifies a browser, never a person: nothing is stored against it but which channels that screen had open and where in them you had read to, and a different browser on the same machine gets a different one. It follows you nowhere, because it only exists on this server."
-msgstr "Seu navegador recebe um nome aleatório para o servidor distinguir o celular do computador. Ele identifica um navegador, nunca uma pessoa: nada é guardado nele além de quais canais aquela tela tinha abertos e até onde você leu neles, e outro navegador na mesma máquina recebe um diferente. Ele não te segue a lugar nenhum, porque só existe neste servidor."
+msgstr ""
+"Seu navegador recebe um nome aleatório para o servidor distinguir o celular "
+"do computador. Ele identifica um navegador, nunca uma pessoa: nada é "
+"guardado nele além de quais canais aquela tela tinha abertos e até onde você"
+" leu neles, e outro navegador na mesma máquina recebe um diferente. Ele não "
+"te segue a lugar nenhum, porque só existe neste servidor."
 
 #: lib/retro_hex_chat_web/controllers/archive_controller.ex:183
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:7
@@ -2570,12 +2584,16 @@ msgstr "Todos os dias"
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Everything said here since the channel opened its archive, one page per day. Nothing from before it was opened is published."
-msgstr "Tudo o que foi dito aqui desde que o canal abriu seu arquivo, uma página por dia. Nada de antes da abertura é publicado."
+msgstr ""
+"Tudo o que foi dito aqui desde que o canal abriu seu arquivo, uma página por"
+" dia. Nada de antes da abertura é publicado."
 
 #: lib/retro_hex_chat_web/controllers/archive_controller.ex:59
 #, elixir-autogen, elixir-format
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
-msgstr "Tudo o que foi dito em %{channel} desde que abriu seu arquivo, uma página por dia."
+msgstr ""
+"Tudo o que foi dito em %{channel} desde que abriu seu arquivo, uma página "
+"por dia."
 
 #: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:43
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:26

@@ -41,7 +41,9 @@ SENTINEL_RE = re.compile(r"XPH\d+X|<\s*/?\s*ph\s*\d+", re.IGNORECASE)
 
 BATCH_SEPARATOR = "XSEGX"
 
-WORD_RE = re.compile(r"[A-Za-z][A-Za-z']+")
+# Both apostrophes: the repository writes the typographic one in prose, so an
+# ASCII-only class splits "don’t" into "don" and a stray "t".
+WORD_RE = re.compile(r"[A-Za-z][A-Za-z'’]+")
 
 
 def protect(text: str) -> tuple[str, dict[str, str]]:

@@ -10,6 +10,7 @@ silently:
   residue    an internal sentinel left in the shipped string
   break      a one-line source that came back as two
   negation   a source that says "cannot" whose translation says nothing of it
+  entity     an HTML entity's letters printed at the reader ("& mdash;")
 """
 
 from __future__ import annotations
@@ -27,6 +28,7 @@ from i18n.quality import (  # noqa: E402
     COLLAPSE_THRESHOLD,
     find_collapses,
     find_shared_headings,
+    has_entity_residue,
     introduced_degeneration,
     invented_break,
     lost_negation,
@@ -111,6 +113,7 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
     mojibake: list[tuple[str, str]] = []
     broken_lines: list[tuple[str, str]] = []
     unnegated: list[tuple[str, str]] = []
+    entities: list[tuple[str, str]] = []
     curated = glossary.for_locale(code)
     accepted = read_baseline()
 
@@ -140,6 +143,9 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
             ) not in accepted:
                 unnegated.append((source, translated))
 
+            if has_entity_residue(source, translated):
+                entities.append((source, translated))
+
     collapses = find_collapses(pairs, args.collapse_threshold)
     headings = find_shared_headings(pairs, args.collapse_threshold)
     findings = (
@@ -149,6 +155,7 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
         + len(mojibake)
         + len(broken_lines)
         + len(unnegated)
+        + len(entities)
         + sum(len(sources) for sources in collapses.values())
         + sum(len(sources) for sources in headings.values())
     )
@@ -165,6 +172,7 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
     report_simple("mojibake", mojibake, args.max_examples)
     report_simple("invented line break", broken_lines, args.max_examples)
     report_simple("lost negation", unnegated, args.max_examples)
+    report_simple("entity residue", entities, args.max_examples)
     return findings
 
 
@@ -179,9 +187,19 @@ def write_baseline(selected: list[str]) -> int:
 
     body = "\n".join(sorted(set(lines)))
     BASELINE.write_text(
-        "# Negations already lost when the guard was added. One line per locale\n"
-        "# and source, keyed by hash. Never add to this by hand: a new finding is\n"
-        "# a new defect, and the gate exists to say so.\n" + body + "\n",
+        "# Negations lost in paragraphs still waiting on a native reader. One line\n"
+        "# per locale and source, keyed by hash. Never add to this by hand: a new\n"
+        "# finding is a new defect, and the gate exists to say so.\n"
+        "#\n"
+        "# This file is a debt ledger, and the debt is meant to reach zero. It held\n"
+        "# 54 hashes when the guard was added, including \"THIS CANNOT BE UNDONE\"\n"
+        "# reaching German as \"Das ist alles\" — on the line that precedes wiping a\n"
+        "# server. Widening the guard to see typographic contractions, filling the\n"
+        "# gaps in the marker tables that made it cry wolf, and curating every\n"
+        "# sentence short enough to say exactly what it meant brought it to these.\n"
+        "# What is left is long prose where the negation may be carried by a\n"
+        "# construction no marker lists, and where guessing would be worse than\n"
+        "# admitting the entry has not been read.\n" + body + "\n",
         encoding="utf-8",
     )
     print(f"baseline={len(set(lines))}")

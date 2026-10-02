@@ -12,6 +12,7 @@ from i18n.quality import (
     batch_is_contaminated,
     find_collapses,
     find_shared_headings,
+    has_entity_residue,
     has_trailing_stop,
     introduced_degeneration,
     invented_break,
@@ -304,6 +305,114 @@ class LostNegationTest(unittest.TestCase):
 
     def test_does_not_judge_a_locale_with_no_marker_table(self):
         self.assertFalse(lost_negation("Cannot do that", "whatever", "xx"))
+
+    def test_catches_a_typographic_contraction(self):
+        # The home page's own headline. The first version of this guard listed
+        # only can't and won't and matched only the ASCII apostrophe, so this
+        # reached ten locales saying the community *is* yours.
+        self.assertTrue(
+            lost_negation("Your community isn’t yours.", "A tua comunidade é tua.", "pt_BR")
+        )
+
+    def test_catches_an_ascii_contraction(self):
+        # Same sentence, ASCII apostrophe: both spellings have to be seen.
+        self.assertTrue(
+            lost_negation("Your community isn't yours.", "Tu comunidad es tuya.", "es")
+        )
+
+    def test_catches_a_contraction_in_the_middle_of_a_sentence(self):
+        # landing.po, eleven locales: the claim the whole privacy story rests
+        # on, reaching pt_BR as "if a direct connection *is* possible".
+        self.assertTrue(
+            lost_negation(
+                "If a direct connection isn’t possible (strict firewalls), a",
+                "Se uma conexão directa for possível (firewalls restritos), a",
+                "pt_BR",
+            )
+        )
+
+    def test_accepts_a_german_prefix_negation(self):
+        # chat.po: "ungelesen" is how German negates this, with no "nicht" in
+        # sight. Missing it is what made the guard cry wolf and earned a
+        # baseline instead of a fix.
+        self.assertFalse(
+            lost_negation(
+                "Jump to the first message you have not read",
+                "Zur ersten ungelesenen Nachricht springen",
+                "de",
+            )
+        )
+
+    def test_accepts_a_russian_prefix_negation(self):
+        # chat.po: "непрочитанному" carries the negation as a prefix, which a
+        # right word boundary on "не" cannot see.
+        self.assertFalse(
+            lost_negation(
+                "Jump to the first message you have not read",
+                "Перейти к первому непрочитанному сообщению",
+                "ru",
+            )
+        )
+
+    def test_accepts_a_french_prefix_negation(self):
+        # chat.po: "introuvable" is the idiomatic French for this.
+        self.assertFalse(
+            lost_negation("That message could not be found.", "Ce message est introuvable.", "fr")
+        )
+
+    def test_accepts_a_japanese_prefix_negation(self):
+        # diagrams.po: 未選択 is "unselected"; the marker table had 不 and 無
+        # but not 未.
+        self.assertFalse(
+            lost_negation(
+                "A miniature of a list of choices. Nothing is selected yet.",
+                "選択肢のリストのミニチュア。 未選択です。",
+                "ja",
+            )
+        )
+
+
+class EntityResidueTest(unittest.TestCase):
+    """A translation printing an HTML entity's letters at the reader.
+
+    The other half of the escaping asymmetry that eats negations: the engine
+    HTML-escapes the source before translating and never unescapes the result.
+    Measured in the shipped catalogues, `& mdash;` alone accounted for 91
+    occurrences, and every damaged entry's msgid held a `&`, `’` or `“`.
+    """
+
+    def test_catches_a_spaced_named_entity(self):
+        # landing.po, es: "Step 1 — Clone".
+        self.assertTrue(has_entity_residue("Step 1 — Clone", "Paso 1 & mdash; Clone"))
+
+    def test_catches_a_spaced_numeric_entity(self):
+        # landing.po, es: "💻 Contribute code".
+        self.assertTrue(
+            has_entity_residue("💻 Contribute code", "& #x1F4BB; Gentileza de código")
+        )
+
+    def test_catches_a_spaced_entity_even_when_the_source_has_markup(self):
+        # A space inside an entity is never markup, whatever the msgid holds.
+        self.assertTrue(has_entity_residue("Admin &amp; Server", "Administración & amp; Servidor"))
+
+    def test_catches_an_unspaced_entity_the_source_never_had(self):
+        # emoji.po, es: "Smileys & Emotion" came back escaped.
+        self.assertTrue(has_entity_residue("Smileys & Emotion", "Smileys &amp; Emotion"))
+
+    def test_allows_markup_the_source_asked_for(self):
+        # Landing and help msgids do legitimately carry entities; an unspaced
+        # one that the source also has is the markup the writer meant.
+        self.assertFalse(has_entity_residue("Admin &amp; Server", "Administración &amp; Servidor"))
+
+    def test_ignores_a_clean_translation(self):
+        self.assertFalse(has_entity_residue("Step 1 — Clone", "Paso 1 — Clonar"))
+
+    def test_ignores_an_empty_translation(self):
+        self.assertFalse(has_entity_residue("Smileys & Emotion", ""))
+
+    def test_ignores_an_ampersand_that_opens_no_entity(self):
+        # An accelerator marker or a bare conjunction is not an entity.
+        self.assertFalse(has_entity_residue("Cut & paste", "Cortar & pegar"))
 
 
 if __name__ == "__main__":
