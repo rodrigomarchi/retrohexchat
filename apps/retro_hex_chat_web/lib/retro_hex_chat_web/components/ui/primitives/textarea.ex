@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.Components.UI.Textarea do
     <textarea
       class={
         classes([
-          "min-h-[80px] border-none shadow-retro-field bg-white flex w-full px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-50",
+          "min-h-[80px] border-none shadow-retro-field bg-white flex w-full px-3 py-2 text-sm placeholder:text-muted-foreground disabled:cursor-not-allowed",
           @class
         ])
       }

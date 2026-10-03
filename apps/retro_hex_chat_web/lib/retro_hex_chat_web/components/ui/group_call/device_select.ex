@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.DeviceSelect do
       </span>
       <select
         name={@name}
-        class="h-7 w-full min-w-0 bg-white px-1 text-xs shadow-retro-sunken focus:outline focus:outline-1 focus:outline-foreground"
+        class="h-7 w-full min-w-0 bg-white px-1 text-xs shadow-retro-sunken"
         data-group-call-prejoin-device-select={@kind}
         data-testid={@testid}
       >

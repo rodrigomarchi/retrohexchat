@@ -145,7 +145,7 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
             ])
           }>
             <div class="al-list-pane min-h-0">
-              <div class="al-entry-list overflow-y-auto retro-scrollbar">
+              <div class="al-entry-list overflow-y-auto">
                 <div :if={@aliases == []} class="al-empty-state text-center text-muted-foreground">
                   {dgettext("dialogs", "No aliases configured. Click \"Add\" to create one.")}
                 </div>

@@ -47,7 +47,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         phx-value-peer={@peer}
         class={[
           "conversation-toolbar-button relative flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs",
-          "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
           @current && "bg-canvas font-bold shadow-retro-sunken",
           status_class(@status)
         ]}
@@ -73,7 +72,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         phx-click="p2p_decline_invite"
         phx-value-token={@token}
         disabled={is_nil(@token)}
-        class="conversation-toolbar-button flex items-center justify-center shadow-retro-raised bg-surface text-destructive focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground disabled:opacity-50"
+        class="conversation-toolbar-button flex items-center justify-center shadow-retro-raised bg-surface text-destructive"
         title={dgettext("p2p", "Decline P2P request")}
         aria-label={dgettext("p2p", "Decline P2P request")}
         data-testid="p2p-peer-decline"
@@ -85,8 +84,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
       <details class="conversation-toolbar-entry relative">
         <summary
           class={[
-            "conversation-toolbar-button flex cursor-pointer list-none items-center justify-center shadow-retro-raised bg-surface text-primary",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+            "conversation-toolbar-button flex cursor-pointer list-none items-center justify-center shadow-retro-raised bg-surface text-primary"
           ]}
           aria-label={dgettext("p2p", "P2P session summary")}
           title={dgettext("p2p", "P2P session summary")}
@@ -122,7 +120,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
               type="button"
               phx-click={@on_start}
               phx-value-peer={@peer}
-              class="col-span-2 flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+              class="col-span-2 flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold"
               data-testid="p2p-peer-start"
             >
               <Icons.icon_btn_join class="h-3.5 w-3.5" />
@@ -134,7 +132,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
               phx-click="p2p_decline_invite"
               phx-value-token={@token}
               disabled={is_nil(@token)}
-              class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold text-destructive focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground disabled:opacity-50"
+              class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold text-destructive"
               data-testid="p2p-peer-popover-decline"
             >
               <Icons.icon_reject class="h-3.5 w-3.5" />

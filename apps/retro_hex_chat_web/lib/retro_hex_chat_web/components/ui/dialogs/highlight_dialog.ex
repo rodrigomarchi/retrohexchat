@@ -154,7 +154,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
 
           <div class="hl-content min-h-0 flex-1">
             <div class="hl-list-pane min-h-0">
-              <div class="hl-entry-list overflow-y-auto retro-scrollbar">
+              <div class="hl-entry-list overflow-y-auto">
                 <div :if={@own_nick} class="hl-own-entry">
                   <span class="hl-entry-word">
                     <span>{@own_nick}</span>

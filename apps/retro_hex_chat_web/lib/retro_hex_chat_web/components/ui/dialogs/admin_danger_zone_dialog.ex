@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminDangerZoneDialog do
       <div class="adm-scroll min-h-0 flex-1 overflow-y-auto">
         <div class="space-y-retro-8">
           <div class="shadow-retro-sunken bg-white p-retro-8 text-sm">
-            <div class="font-bold uppercase text-destructive">
+            <div class="font-bold text-destructive">
               {dgettext("dialogs", "This cannot be undone.")}
             </div>
             <div class="mt-retro-4">

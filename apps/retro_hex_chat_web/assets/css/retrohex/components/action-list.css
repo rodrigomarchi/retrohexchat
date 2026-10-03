@@ -58,13 +58,8 @@
   cursor: pointer;
 }
 
-.action-list__primary:focus-visible {
-  outline: 2px solid #000000;
-  outline-offset: 2px;
-}
-
 .action-list__row--current .action-list__primary:focus-visible {
-  outline-color: #ffffff;
+  outline-color: #ffff7f;
 }
 
 .action-list__icon {

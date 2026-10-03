@@ -120,7 +120,7 @@ defmodule RetroHexChatWeb.Components.UI.ServerEmojiDialog do
 
       <div
         :if={@emojis != []}
-        class="min-h-[120px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field retro-scrollbar"
+        class="min-h-[120px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field"
         data-testid="server-emoji-list"
       >
         <div

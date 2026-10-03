@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
           data-window-control={control}
           class={[
             "inline-flex items-center justify-center w-[16px] h-[14px] p-0 shadow-retro-raised bg-surface",
-            "active:shadow-retro-sunken focus:outline-none",
+            "active:shadow-retro-sunken",
             control == :close && "ml-[2px]",
             control == :restore && "u-hidden"
           ]}

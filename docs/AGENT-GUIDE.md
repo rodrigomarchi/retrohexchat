@@ -345,12 +345,15 @@ get fresh timers with the *remaining* duration.
   `menubar-copy-disabled`), never raw Tailwind utilities, because the CSS lint scans
   `classList.*` strings. Emit boolean-ish `data-*` attributes as explicit `"true"`/`"false"`
   strings — hooks/CSS compare against the string.
-- **Opacity is the disabled look; never spend it on content.** Every refused control in
-  this product dims (`disabled:opacity-50` in the button, input, select, toolbar and tab
-  primitives), so dimming a *card* to say "this ended" or "this was called off" tells the
-  reader the card is broken. A card in a conversation is something to read, and the card
-  most likely to be read weeks later is exactly the finished one. Say the state in the
-  badge's word and its colour, and draw the card's surface identically in both states.
+- **Disabled is etched grey, and only controls get it.** A refused control is drawn the
+  Win98 way by one global rule in `base/retro-controls.css` — `#808080` text with a white
+  copy one pixel down-right, its icon a grey silhouette — keyed on `:disabled`,
+  `aria-disabled="true"` or `data-disabled="true"`. Never fade a control with
+  `opacity-*`, and never fade content either: dimming a *card* to say "this ended" or
+  "this was called off" tells the reader the card is broken. A card in a conversation is
+  something to read, and the card most likely to be read weeks later is exactly the
+  finished one. Say the state in the badge's word and its colour, and draw the card's
+  surface identically in both states.
 
 ---
 

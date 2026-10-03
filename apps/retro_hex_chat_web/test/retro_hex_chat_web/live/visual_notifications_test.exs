@@ -56,6 +56,14 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
     end
   end
 
+  defp row_highlighted?(html, channel) do
+    html
+    |> Floki.parse_document!()
+    |> Floki.find(~s([data-testid="channel-#{channel}"]))
+    |> Floki.attribute("class")
+    |> Enum.any?(&String.contains?(&1, "chat-conversations-row--highlight"))
+  end
+
   defp row_pos(html, testid) do
     html
     |> :binary.match(~s(data-testid="#{testid}"))
@@ -98,17 +106,15 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
       # Send a highlight to background channel (highlight flash is enabled by default)
       send_new_message(view, "Other", "hey #{nick}!", ch)
 
-      html = render(view)
-      assert html =~ "text-error"
+      assert row_highlighted?(render(view), ch)
 
       # Switch to that channel — flash should clear
       view
       |> element(~s([data-testid="channel-#{ch}"]))
       |> render_click()
 
-      html = render(view)
-      # The highlight class should be gone for the switched-to channel
-      refute html =~ ~r/data-testid="channel-#{Regex.escape(ch)}"[^>]*text-error/
+      # The highlight should be gone for the switched-to channel
+      refute row_highlighted?(render(view), ch)
     end
 
     test "channel activity reorders the single open-channel list", %{conn: conn} do

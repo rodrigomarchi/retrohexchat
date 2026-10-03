@@ -1,9 +1,6 @@
 /* Shared by the four account windows (Account, Profile, Away, User Modes):
    form-heavy panels that stay dense on desktop while stacked mobile gets
    full-size controls and wrapping action rows. */
-.acct-dialog {
-  scrollbar-width: thin;
-}
 
 .acct-dialog:focus {
   outline: none;
@@ -79,7 +76,6 @@
   min-height: 40px;
   padding-inline: 12px;
 }
-
 
 .desktop--stacked .acct-check-row {
   align-items: flex-start;

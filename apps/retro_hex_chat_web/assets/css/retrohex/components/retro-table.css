@@ -111,7 +111,7 @@
 }
 
 .retro-table__sort:focus-visible {
-  @apply outline-1 outline-offset-[-1px] outline-primary;
+  outline-offset: -4px;
 }
 
 .retro-table__sort[data-active="true"] {
@@ -167,5 +167,10 @@
 }
 
 .retro-table__row:focus {
-  @apply outline-1 outline-offset-[-1px] outline-primary;
+  outline: 1px dotted #000000;
+  outline-offset: -1px;
+}
+
+.retro-table__row[aria-selected="true"]:focus {
+  outline-color: #ffff7f;
 }

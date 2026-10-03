@@ -9,7 +9,7 @@
 }
 
 .chat-conversations-stat {
-  @apply flex h-6 min-w-0 items-center justify-start gap-1 overflow-hidden border-b-2 border-border bg-white px-1 text-[10px] font-bold leading-none shadow-retro-status;
+  @apply flex h-6 min-w-0 items-center justify-start gap-1 overflow-hidden bg-white px-1 text-[10px] font-bold leading-none shadow-retro-status;
 }
 
 .chat-conversations-stat svg {
@@ -21,7 +21,7 @@
 }
 
 .chat-conversations-stat__label {
-  @apply min-w-0 truncate text-[9px] uppercase leading-none text-muted-foreground;
+  @apply min-w-0 truncate text-[10px] leading-none text-muted-foreground;
 }
 
 .chat-conversations-body {
@@ -41,9 +41,8 @@
    the column they were sized for on a desktop, and it was still handing a
    finger a 28px row and a 16px button. */
 .chat-conversations-section__trigger {
-  @apply flex min-h-[44px] w-full items-center gap-1 overflow-hidden border border-border bg-surface px-1 text-left text-[11px] font-bold uppercase text-muted-foreground shadow-retro-status;
+  @apply flex min-h-[44px] w-full items-center gap-1 overflow-hidden border border-border bg-surface px-1 text-left text-[11px] font-bold text-muted-foreground shadow-retro-status;
   @apply md:h-7 md:min-h-0;
-  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-black;
 }
 
 .chat-conversations-section__trigger:hover {
@@ -62,10 +61,6 @@
   @apply shrink-0 bg-white px-1 text-[10px] font-bold leading-4 text-muted-foreground shadow-retro-status;
 }
 
-.chat-conversations-section--popular .chat-conversations-section__trigger {
-  @apply border-l-2 border-primary bg-surface text-primary;
-}
-
 .chat-conversations-section__list {
   @apply mt-px space-y-px;
 }
@@ -73,7 +68,6 @@
 .chat-conversations-row {
   @apply flex min-h-[44px] w-full items-center gap-1.5 overflow-hidden border border-transparent px-1 py-[2px] text-[13px] leading-5 select-none;
   @apply md:min-h-[28px];
-  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-black;
   @apply bg-white;
 }
 
@@ -89,44 +83,17 @@
   @apply border-border bg-hover-bg;
 }
 
+/* The open conversation is the list's selection, drawn the Windows way: navy
+   across the row, white text. */
 .chat-conversations-row--active {
-  @apply border-primary bg-hover-bg font-bold text-foreground shadow-retro-sunken;
+  @apply border-transparent bg-selection-bg text-selection-fg;
 }
 
-.chat-conversations-row__signal {
-  @apply h-5 w-1 shrink-0 border border-transparent;
+.chat-conversations-row--active .chat-conversations-row__menu {
+  @apply text-selection-fg;
 }
 
-.chat-conversations-row__signal--idle {
-  @apply border-transparent bg-transparent;
-}
-
-.chat-conversations-row__signal--active {
-  @apply border-primary bg-primary;
-}
-
-.chat-conversations-row__signal--highlight {
-  @apply border-error-dark bg-error;
-}
-
-.chat-conversations-row__signal--unread {
-  @apply border-link bg-link;
-}
-
-/* Hollow, not absent: the place is on your list and is not open yet. Clicking
-   the row opens it, which is why the row still reads as a row. The fill is what
-   presence takes away — the outline keeps whatever colour attention put there,
-   so an unopened conversation can still be the loud one. Last in the file, and
-   two classes deep for the idle case, because both are settled by order. */
-.chat-conversations-row__signal--saved {
-  @apply bg-transparent;
-}
-
-.chat-conversations-row__signal--idle.chat-conversations-row__signal--saved {
-  @apply border-muted-foreground;
-}
-
-/* Muted is not disabled. Half-opacity is how this product draws a thing you
+/* Muted is not disabled. Etched grey is how this product draws a thing you
    cannot act on, and a muted channel is one people click all day; it is the
    name that goes quiet, and the glyph that says why. */
 .chat-conversations-row--muted .chat-conversations-row__label {
@@ -138,6 +105,13 @@
 .chat-conversations-row--saved:not(.chat-conversations-row--active)
   .chat-conversations-row__label {
   @apply text-muted-foreground;
+}
+
+/* Somebody said your name. It wins over the grey of a place you have not
+   opened, because an unopened conversation can be exactly the loud one. */
+.chat-conversations-row--highlight,
+.chat-conversations-row--highlight .chat-conversations-row__label {
+  @apply text-error;
 }
 
 /* One slot, filled by precedence in the component. Its width is reserved either
@@ -156,7 +130,6 @@
 .chat-conversations-row__menu {
   @apply inline-flex h-11 w-11 shrink-0 items-center justify-center bg-transparent text-muted-foreground;
   @apply md:h-5 md:w-5;
-  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-black;
 }
 
 .chat-conversations-row__menu:hover {
@@ -194,7 +167,7 @@
 }
 
 .chat-conversations-row--active .chat-conversations-row__count {
-  @apply text-primary;
+  @apply text-selection-fg;
 }
 
 .chat-conversations-unread-badge {
@@ -212,7 +185,7 @@
 }
 
 .chat-conversations-browse-button {
-  @apply min-h-[44px] w-full justify-start gap-retro-4 border-l-2 border-border bg-surface px-retro-4 text-xs shadow-retro-raised;
+  @apply min-h-[44px] w-full justify-start gap-retro-4 bg-surface px-retro-4 text-xs shadow-retro-raised;
   @apply md:h-7 md:min-h-0;
 }
 

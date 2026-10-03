@@ -63,7 +63,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
           phx-mounted={JS.focus(to: "##{@id}-content")}
           class="flex h-full min-h-0 flex-col text-xs outline-none"
         >
-          <div class="min-h-0 flex-1 overflow-y-auto pr-1 retro-scrollbar">
+          <div class="min-h-0 flex-1 overflow-y-auto pr-1">
             <div class="flex min-h-full flex-col gap-retro-8">
               <.dialog_banner heading={dgettext("dialogs", "Which machines can skip the password")}>
                 <:art>
@@ -220,7 +220,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                 </.tabs_list>
 
                 <.tabs_content value="devices" builder={builder} class="flex min-h-0 flex-1 flex-col">
-                  <div class="min-h-[240px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field retro-scrollbar">
+                  <div class="min-h-[240px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field">
                     <.list_empty_state
                       :if={@devices == []}
                       title={dgettext("dialogs", "No trusted terminals for this nickname.")}
@@ -298,7 +298,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                   <div
                     :if={not State.empty?(@sessions_state)}
                     id={"#{@id}-sessions"}
-                    class="min-h-[240px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field retro-scrollbar"
+                    class="min-h-[240px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field"
                     phx-hook="InfiniteScrollHook"
                     phx-update="stream"
                     data-edge="bottom"
@@ -468,7 +468,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                   <div
                     :if={not State.empty?(@events_state)}
                     id={"#{@id}-events"}
-                    class="min-h-[240px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field retro-scrollbar"
+                    class="min-h-[240px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field"
                     phx-hook="InfiniteScrollHook"
                     phx-update="stream"
                     data-edge="bottom"

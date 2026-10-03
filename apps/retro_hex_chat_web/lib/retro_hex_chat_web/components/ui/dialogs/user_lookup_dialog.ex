@@ -156,7 +156,7 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
         <span data-testid="lookup-result-title" class="ul-result-title">{@title}</span>
       </header>
 
-      <dl class="ul-result-list retro-scrollbar">
+      <dl class="ul-result-list">
         <div :for={row <- @rows} class="ul-result-row">
           <dt class="ul-result-label">{row.label}:</dt>
           <dd class="ul-result-value">{row.value}</dd>

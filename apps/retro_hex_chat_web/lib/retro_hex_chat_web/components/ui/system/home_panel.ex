@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.System.HomePanel do
     ~H"""
     <div
       id={"#{@id}-home"}
-      class="adm-dialog retro-scrollbar flex h-full min-h-0 flex-col gap-retro-8 overflow-y-auto"
+      class="adm-dialog flex h-full min-h-0 flex-col gap-retro-8 overflow-y-auto"
       data-testid={@testid}
     >
       <section class="shrink-0">

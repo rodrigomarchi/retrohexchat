@@ -1,42 +1,478 @@
-/* ── Win98 Scrollbar ── */
+/* ── Text selection ──
+   Selected text is the Win98 highlight: navy with white letters. */
+::selection {
+  background: #000080;
+  color: #ffffff;
+}
+
+/* ── Win98 Scrollbar ──
+   Every scrollable box gets the Windows 98 scrollbar: a 16px gutter with a
+   one-pixel silver/white checkerboard for a track, a raised thumb, and a raised
+   arrow button at each end that sinks while it is held.
+
+   Nothing in this stylesheet may set `scrollbar-width` (other than `none`) or
+   `scrollbar-color` on an element Chrome renders: either one switches Chrome to
+   the standard scrollbar properties and every `::-webkit-scrollbar` rule below
+   stops applying, which hands the box back to the operating system's scrollbar
+   — an overlay that is invisible until you scroll, on macOS. */
 ::-webkit-scrollbar {
   width: 16px;
   height: 16px;
 }
 ::-webkit-scrollbar-track {
-  background: #c0c0c0;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080;
+  background-color: #c0c0c0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='2' height='2'%3E%3Cpath d='M1 0h1v1H1zM0 1h1v1H0z' fill='%23fff'/%3E%3C/svg%3E");
 }
 ::-webkit-scrollbar-thumb {
-  background: #c0c0c0;
+  background-color: #c0c0c0;
   box-shadow:
     inset -1px -1px #0a0a0a,
-    inset 1px 1px #ffffff,
+    inset 1px 1px #dfdfdf,
     inset -2px -2px #808080,
-    inset 2px 2px #dfdfdf;
+    inset 2px 2px #ffffff;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #d4d0c8;
-}
+/* One arrow at each end, as Windows draws it — never the doubled pair some
+   platforms put at both ends. */
 ::-webkit-scrollbar-button {
-  background: #c0c0c0;
-  box-shadow:
-    inset -1px -1px #0a0a0a,
-    inset 1px 1px #ffffff,
-    inset -2px -2px #808080,
-    inset 2px 2px #dfdfdf;
+  display: none;
+}
+::-webkit-scrollbar-button:vertical:start:decrement,
+::-webkit-scrollbar-button:vertical:end:increment,
+::-webkit-scrollbar-button:horizontal:start:decrement,
+::-webkit-scrollbar-button:horizontal:end:increment {
+  display: block;
   width: 16px;
   height: 16px;
+  background-color: #c0c0c0;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow:
+    inset -1px -1px #0a0a0a,
+    inset 1px 1px #dfdfdf,
+    inset -2px -2px #808080,
+    inset 2px 2px #ffffff;
+}
+::-webkit-scrollbar-button:vertical:start:decrement {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='7' height='4'%3E%3Cpath d='M3 0h1v1h1v1h1v1h1v1H0V3h1V2h1V1h1z'/%3E%3C/svg%3E");
+}
+::-webkit-scrollbar-button:vertical:end:increment {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='7' height='4'%3E%3Cpath d='M0 0h7v1H6v1H5v1H4v1H3V3H2V2H1V1H0z'/%3E%3C/svg%3E");
+}
+::-webkit-scrollbar-button:horizontal:start:decrement {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='4' height='7'%3E%3Cpath d='M3 0h1v7H3V6H2V5H1V4H0V3h1V2h1V1h1z'/%3E%3C/svg%3E");
+}
+::-webkit-scrollbar-button:horizontal:end:increment {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='4' height='7'%3E%3Cpath d='M0 0h1v1h1v1h1v1h1v1H3v1H2v1H1v1H0z'/%3E%3C/svg%3E");
+}
+/* A held arrow button goes flat with a single dark edge, and its glyph moves
+   one pixel down and right — the Win98 pressed look. */
+::-webkit-scrollbar-button:active {
+  background-position: calc(50% + 1px) calc(50% + 1px);
+  box-shadow: inset 0 0 0 1px #808080;
 }
 ::-webkit-scrollbar-corner {
   background: #c0c0c0;
 }
-/* Firefox */
-* {
-  scrollbar-width: auto;
-  scrollbar-color: #c0c0c0 #c0c0c0;
+
+/* Phone-sized strips that scroll sideways under a finger (tab rows, the
+   formatting toolbar) keep a slim bar: a 16px gutter would cost a third of the
+   strip's height, and nobody aims at an arrow button with a thumb. */
+.desktop--stacked [role="tablist"]::-webkit-scrollbar,
+.formatting-toolbar__actions::-webkit-scrollbar,
+.media-session-section-nav::-webkit-scrollbar,
+.desktop--stacked .desktop-start-menu::-webkit-scrollbar,
+.desktop--stacked :is(.bm-main-tabs, .cm-main-tabs, .cc-main-tabs)::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.desktop--stacked [role="tablist"]::-webkit-scrollbar-button,
+.formatting-toolbar__actions::-webkit-scrollbar-button,
+.media-session-section-nav::-webkit-scrollbar-button,
+.desktop--stacked .desktop-start-menu::-webkit-scrollbar-button,
+.desktop--stacked :is(.bm-main-tabs, .cm-main-tabs, .cc-main-tabs)/* One arrow at each end, as Windows draws it — never the doubled pair some
+   platforms put at both ends. */
+::-webkit-scrollbar-button {
+  display: none;
+}
+.desktop--stacked [role="tablist"]::-webkit-scrollbar-track,
+.formatting-toolbar__actions::-webkit-scrollbar-track,
+.media-session-section-nav::-webkit-scrollbar-track,
+.desktop--stacked .desktop-start-menu::-webkit-scrollbar-track,
+.desktop--stacked :is(.bm-main-tabs, .cm-main-tabs, .cc-main-tabs)::-webkit-scrollbar-track {
+  background: #dfdfdf;
+}
+.desktop--stacked [role="tablist"]::-webkit-scrollbar-thumb,
+.formatting-toolbar__actions::-webkit-scrollbar-thumb,
+.media-session-section-nav::-webkit-scrollbar-thumb,
+.desktop--stacked .desktop-start-menu::-webkit-scrollbar-thumb,
+.desktop--stacked :is(.bm-main-tabs, .cm-main-tabs, .cc-main-tabs)::-webkit-scrollbar-thumb {
+  background: #808080;
+  box-shadow: none;
+}
+
+/* Firefox has no scrollbar pseudo-elements, so a flat silver thumb on a pale
+   track is as close as it gets. Scoped to engines without them, because these
+   two properties would switch Chrome off the drawing above. */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-color: #b5b5b5 #e0e0e0;
+  }
+}
+
+/* ── Check boxes and option buttons ──
+   Every check box and radio button is the Win98 one: a 13px sunken white box
+   with a seven-pixel tick, a 12px two-tone ring with a four-pixel dot. Both
+   are bitmaps, drawn pixel for pixel, because a vector tick or a CSS circle
+   antialiases into something no 1998 screen ever showed.
+
+   The rules weigh nothing (`:where`), so an input that is hidden or stretched
+   over a swatch by its own utilities keeps its size. Disabled, the white goes
+   silver and the mark goes grey. */
+:where(input[type="checkbox"]) {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  flex-shrink: 0;
+  background-color: #ffffff;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+  cursor: default;
+}
+:where(input[type="checkbox"]):checked {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='7' height='7' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M6 0h1v1H6zM5 1h2v1H5zM0 2h1v1H0zM4 2h3v1H4zM0 3h2v1H0zM3 3h3v1H3zM0 4h5v1H0zM1 5h3v1H1zM2 6h1v1H2z'/%3E%3C/svg%3E");
+}
+:where(input[type="checkbox"]):disabled {
+  background-color: #c0c0c0;
+}
+:where(input[type="checkbox"]):disabled:checked {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='7' height='7' shape-rendering='crispEdges'%3E%3Cpath fill='%23808080' d='M6 0h1v1H6zM5 1h2v1H5zM0 2h1v1H0zM4 2h3v1H4zM0 3h2v1H0zM3 3h3v1H3zM0 4h5v1H0zM1 5h3v1H1zM2 6h1v1H2z'/%3E%3C/svg%3E");
+}
+
+:where(input[type="radio"]),
+.retro-radio {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  margin: 0;
+  flex-shrink: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='12' height='12' shape-rendering='crispEdges'%3E%3Cpath fill='%23808080' d='M4 0h4v1H4zM2 1h2v1H2zM8 1h2v1H8zM1 2h1v1H1zM1 3h1v1H1zM0 4h1v1H0zM0 5h1v1H0zM0 6h1v1H0zM0 7h1v1H0zM1 8h1v1H1zM1 9h1v1H1z'/%3E%3Cpath fill='%23fff' d='M4 2h4v1H4zM10 2h1v1H10zM3 3h6v1H3zM10 3h1v1H10zM2 4h8v1H2zM11 4h1v1H11zM2 5h8v1H2zM11 5h1v1H11zM2 6h8v1H2zM11 6h1v1H11zM2 7h8v1H2zM11 7h1v1H11zM3 8h6v1H3zM10 8h1v1H10zM4 9h4v1H4zM10 9h1v1H10zM2 10h2v1H2zM8 10h2v1H8zM4 11h4v1H4z'/%3E%3Cpath fill='%230a0a0a' d='M4 1h4v1H4zM2 2h2v1H2zM8 2h1v1H8zM2 3h1v1H2zM1 4h1v1H1zM1 5h1v1H1zM1 6h1v1H1zM1 7h1v1H1zM2 8h1v1H2z'/%3E%3Cpath fill='%23dfdfdf' d='M9 2h1v1H9zM9 3h1v1H9zM10 4h1v1H10zM10 5h1v1H10zM10 6h1v1H10zM10 7h1v1H10zM9 8h1v1H9zM2 9h2v1H2zM8 9h2v1H8zM4 10h4v1H4z'/%3E%3C/svg%3E") no-repeat;
+  cursor: default;
+}
+:where(input[type="radio"]):checked,
+.retro-radio:has(> input:checked) {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M1 0h2v1H1zM0 1h4v1H0zM0 2h4v1H0zM1 3h2v1H1z'/%3E%3C/svg%3E") 4px 4px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='12' height='12' shape-rendering='crispEdges'%3E%3Cpath fill='%23808080' d='M4 0h4v1H4zM2 1h2v1H2zM8 1h2v1H8zM1 2h1v1H1zM1 3h1v1H1zM0 4h1v1H0zM0 5h1v1H0zM0 6h1v1H0zM0 7h1v1H0zM1 8h1v1H1zM1 9h1v1H1z'/%3E%3Cpath fill='%23fff' d='M4 2h4v1H4zM10 2h1v1H10zM3 3h6v1H3zM10 3h1v1H10zM2 4h8v1H2zM11 4h1v1H11zM2 5h8v1H2zM11 5h1v1H11zM2 6h8v1H2zM11 6h1v1H11zM2 7h8v1H2zM11 7h1v1H11zM3 8h6v1H3zM10 8h1v1H10zM4 9h4v1H4zM10 9h1v1H10zM2 10h2v1H2zM8 10h2v1H8zM4 11h4v1H4z'/%3E%3Cpath fill='%230a0a0a' d='M4 1h4v1H4zM2 2h2v1H2zM8 2h1v1H8zM2 3h1v1H2zM1 4h1v1H1zM1 5h1v1H1zM1 6h1v1H1zM1 7h1v1H1zM2 8h1v1H2z'/%3E%3Cpath fill='%23dfdfdf' d='M9 2h1v1H9zM9 3h1v1H9zM10 4h1v1H10zM10 5h1v1H10zM10 6h1v1H10zM10 7h1v1H10zM9 8h1v1H9zM2 9h2v1H2zM8 9h2v1H8zM4 10h4v1H4z'/%3E%3C/svg%3E") no-repeat;
+}
+:where(input[type="radio"]):disabled,
+.retro-radio:has(> input:disabled) {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='12' height='12' shape-rendering='crispEdges'%3E%3Cpath fill='%23808080' d='M4 0h4v1H4zM2 1h2v1H2zM8 1h2v1H8zM1 2h1v1H1zM1 3h1v1H1zM0 4h1v1H0zM0 5h1v1H0zM0 6h1v1H0zM0 7h1v1H0zM1 8h1v1H1zM1 9h1v1H1z'/%3E%3Cpath fill='%23fff' d='M10 2h1v1H10zM10 3h1v1H10zM11 4h1v1H11zM11 5h1v1H11zM11 6h1v1H11zM11 7h1v1H11zM10 8h1v1H10zM10 9h1v1H10zM2 10h2v1H2zM8 10h2v1H8zM4 11h4v1H4z'/%3E%3Cpath fill='%230a0a0a' d='M4 1h4v1H4zM2 2h2v1H2zM8 2h1v1H8zM2 3h1v1H2zM1 4h1v1H1zM1 5h1v1H1zM1 6h1v1H1zM1 7h1v1H1zM2 8h1v1H2z'/%3E%3Cpath fill='%23dfdfdf' d='M9 2h1v1H9zM9 3h1v1H9zM10 4h1v1H10zM10 5h1v1H10zM10 6h1v1H10zM10 7h1v1H10zM9 8h1v1H9zM2 9h2v1H2zM8 9h2v1H8zM4 10h4v1H4z'/%3E%3Cpath fill='%23c0c0c0' d='M4 2h4v1H4zM3 3h6v1H3zM2 4h8v1H2zM2 5h8v1H2zM2 6h8v1H2zM2 7h8v1H2zM3 8h6v1H3zM4 9h4v1H4z'/%3E%3C/svg%3E") no-repeat;
+}
+:where(input[type="radio"]):disabled:checked,
+.retro-radio:has(> input:disabled:checked) {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath fill='%23808080' d='M1 0h2v1H1zM0 1h4v1H0zM0 2h4v1H0zM1 3h2v1H1z'/%3E%3C/svg%3E") 4px 4px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='12' height='12' shape-rendering='crispEdges'%3E%3Cpath fill='%23808080' d='M4 0h4v1H4zM2 1h2v1H2zM8 1h2v1H8zM1 2h1v1H1zM1 3h1v1H1zM0 4h1v1H0zM0 5h1v1H0zM0 6h1v1H0zM0 7h1v1H0zM1 8h1v1H1zM1 9h1v1H1z'/%3E%3Cpath fill='%23fff' d='M10 2h1v1H10zM10 3h1v1H10zM11 4h1v1H11zM11 5h1v1H11zM11 6h1v1H11zM11 7h1v1H11zM10 8h1v1H10zM10 9h1v1H10zM2 10h2v1H2zM8 10h2v1H8zM4 11h4v1H4z'/%3E%3Cpath fill='%230a0a0a' d='M4 1h4v1H4zM2 2h2v1H2zM8 2h1v1H8zM2 3h1v1H2zM1 4h1v1H1zM1 5h1v1H1zM1 6h1v1H1zM1 7h1v1H1zM2 8h1v1H2z'/%3E%3Cpath fill='%23dfdfdf' d='M9 2h1v1H9zM9 3h1v1H9zM10 4h1v1H10zM10 5h1v1H10zM10 6h1v1H10zM10 7h1v1H10zM9 8h1v1H9zM2 9h2v1H2zM8 9h2v1H8zM4 10h4v1H4z'/%3E%3Cpath fill='%23c0c0c0' d='M4 2h4v1H4zM3 3h6v1H3zM2 4h8v1H2zM2 5h8v1H2zM2 6h8v1H2zM2 7h8v1H2zM3 8h6v1H3zM4 9h4v1H4z'/%3E%3C/svg%3E") no-repeat;
+}
+
+/* ── Drop-down list (select) ──
+   A closed select is the Win98 combo box: a sunken white field with a raised
+   arrow button inside its right edge. The button is painted as background
+   layers — face, then each bevel line, then the arrow on top — so it stretches
+   to whatever height the field is given. The list that opens is the browser's
+   own wherever the browser offers no way to style it. `.retro-combo` gives the
+   same face to the `select` primitive's trigger button. */
+:where(select:not([multiple], [size]), .retro-combo) {
+  border: 0;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+:is(select:not([multiple], [size]), .retro-combo) {
+  --rhc-combo-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='7' height='4' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M0 0h7v1H0zM1 1h5v1H1zM2 2h3v1H2zM3 3h1v1H3z'/%3E%3C/svg%3E");
+  appearance: none;
+  padding-right: 22px;
+  background-color: #ffffff;
+  background-image:
+    var(--rhc-combo-arrow),
+    linear-gradient(#0a0a0a, #0a0a0a),
+    linear-gradient(#0a0a0a, #0a0a0a),
+    linear-gradient(#808080, #808080),
+    linear-gradient(#808080, #808080),
+    linear-gradient(#ffffff, #ffffff),
+    linear-gradient(#ffffff, #ffffff),
+    linear-gradient(#dfdfdf, #dfdfdf),
+    linear-gradient(#dfdfdf, #dfdfdf),
+    linear-gradient(#c0c0c0, #c0c0c0);
+  background-position:
+    right 6px center,
+    right 2px bottom 2px,
+    right 2px top 2px,
+    right 3px bottom 3px,
+    right 3px top 3px,
+    right 3px top 2px,
+    right 17px top 2px,
+    right 4px top 3px,
+    right 16px top 3px,
+    right 2px top 2px;
+  background-size:
+    auto,
+    16px 1px,
+    1px calc(100% - 4px),
+    14px 1px,
+    1px calc(100% - 6px),
+    15px 1px,
+    1px calc(100% - 5px),
+    13px 1px,
+    1px calc(100% - 7px),
+    16px calc(100% - 4px);
+  background-repeat: no-repeat;
+  cursor: default;
+}
+:is(select:not([multiple], [size]), .retro-combo):disabled {
+  --rhc-combo-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='8' height='5' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff' d='M1 1h7v1H1zM2 2h5v1H2zM3 3h3v1H3zM4 4h1v1H4z'/%3E%3Cpath fill='%23808080' d='M0 0h7v1H0zM1 1h5v1H1zM2 2h3v1H2zM3 3h1v1H3z'/%3E%3C/svg%3E");
+}
+
+/* Where the browser lets the open list be styled, it is the Win98 one too: a
+   white box with a black border, rows that turn navy under the pointer, and
+   no checkmark or rounded popover of the operating system. */
+@supports (appearance: base-select) {
+  select:not([multiple], [size]),
+  select:not([multiple], [size])::picker(select) {
+    appearance: base-select;
+  }
+  select:not([multiple], [size]) {
+    display: inline-flex;
+    align-items: center;
+    border: 0;
+    border-radius: 0;
+  }
+  select:not([multiple], [size])::picker-icon {
+    display: none;
+  }
+  select:not([multiple], [size])::picker(select) {
+    padding: 0;
+    border: 1px solid #000000;
+    border-radius: 0;
+    background: #ffffff;
+    box-shadow: none;
+  }
+  select:not([multiple], [size]) option {
+    padding: 1px 4px;
+    color: #000000;
+  }
+  select:not([multiple], [size]) option::checkmark {
+    display: none;
+  }
+  /* One row lit at a time, and it follows the pointer; with the pointer
+     outside the list it is the row the keyboard is on. */
+  select:not([multiple], [size]) option:hover,
+  select:not([multiple], [size]):not(:has(option:hover)) option:focus {
+    background: #000080;
+    color: #ffffff;
+    outline: none;
+  }
+}
+
+/* ── Up-down (number field) ──
+   The browser's spinner is replaced by the Win98 up-down control the `updown`
+   component renders: two raised half-height buttons attached to the field's
+   right edge. */
+input[type="number"] {
+  appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+.retro-updown {
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+}
+.retro-updown > input {
+  min-width: 0;
+}
+.retro-updown__buttons {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  width: 16px;
+}
+.retro-updown__button {
+  flex: 1 1 0;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: #c0c0c0 url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='5' height='3' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M2 0h1v1H2zM1 1h3v1H1zM0 2h5v1H0z'/%3E%3C/svg%3E") center no-repeat;
+  box-shadow:
+    inset -1px -1px #0a0a0a,
+    inset 1px 1px #ffffff,
+    inset -2px -2px #808080,
+    inset 2px 2px #dfdfdf;
+  cursor: default;
+}
+.retro-updown__button--down {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='5' height='3' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M0 0h5v1H0zM1 1h3v1H1zM2 2h1v1H2z'/%3E%3C/svg%3E");
+}
+.retro-updown__button:active:not(:disabled) {
+  background-position: calc(50% + 1px) calc(50% + 1px);
+  box-shadow: inset 0 0 0 1px #808080;
+}
+.retro-updown__button--up:disabled {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='6' height='4' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff' d='M3 1h1v1H3zM2 2h3v1H2zM1 3h5v1H1z'/%3E%3Cpath fill='%23808080' d='M2 0h1v1H2zM1 1h3v1H1zM0 2h5v1H0z'/%3E%3C/svg%3E");
+}
+.retro-updown__button--down:disabled {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='6' height='4' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff' d='M1 1h5v1H1zM2 2h3v1H2zM3 3h1v1H3z'/%3E%3Cpath fill='%23808080' d='M0 0h5v1H0zM1 1h3v1H1zM2 2h1v1H2z'/%3E%3C/svg%3E");
+}
+
+/* ── Trackbar (range) ──
+   A thin sunken channel and the Win98 thumb: an 11×21 raised tab with a
+   pointed foot, drawn as a bitmap. */
+input[type="range"] {
+  appearance: none;
+  height: 21px;
+  margin: 0;
+  background: transparent;
+  cursor: default;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: #c0c0c0;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 11px;
+  height: 21px;
+  margin-top: -8.5px;
+  border: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='11' height='21' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff' d='M0 0h10v1H0zM0 1h1v1H0zM0 2h1v1H0zM0 3h1v1H0zM0 4h1v1H0zM0 5h1v1H0zM0 6h1v1H0zM0 7h1v1H0zM0 8h1v1H0zM0 9h1v1H0zM0 10h1v1H0zM0 11h1v1H0zM0 12h1v1H0zM0 13h1v1H0zM0 14h1v1H0zM0 15h1v1H0zM1 16h1v1H1zM2 17h1v1H2zM3 18h1v1H3zM4 19h1v1H4z'/%3E%3Cpath fill='%23dfdfdf' d='M1 1h8v1H1zM1 2h1v1H1zM1 3h1v1H1zM1 4h1v1H1zM1 5h1v1H1zM1 6h1v1H1zM1 7h1v1H1zM1 8h1v1H1zM1 9h1v1H1zM1 10h1v1H1zM1 11h1v1H1zM1 12h1v1H1zM1 13h1v1H1zM1 14h1v1H1zM1 15h1v1H1zM2 16h1v1H2zM3 17h1v1H3zM4 18h1v1H4z'/%3E%3Cpath fill='%23c0c0c0' d='M2 2h7v1H2zM2 3h7v1H2zM2 4h7v1H2zM2 5h7v1H2zM2 6h7v1H2zM2 7h7v1H2zM2 8h7v1H2zM2 9h7v1H2zM2 10h7v1H2zM2 11h7v1H2zM2 12h7v1H2zM2 13h7v1H2zM2 14h7v1H2zM2 15h7v1H2zM3 16h5v1H3zM4 17h3v1H4zM5 18h1v1H5z'/%3E%3Cpath fill='%23808080' d='M9 1h1v1H9zM9 2h1v1H9zM9 3h1v1H9zM9 4h1v1H9zM9 5h1v1H9zM9 6h1v1H9zM9 7h1v1H9zM9 8h1v1H9zM9 9h1v1H9zM9 10h1v1H9zM9 11h1v1H9zM9 12h1v1H9zM9 13h1v1H9zM9 14h1v1H9zM9 15h1v1H9zM8 16h1v1H8zM7 17h1v1H7zM6 18h1v1H6zM5 19h1v1H5z'/%3E%3Cpath fill='%230a0a0a' d='M10 0h1v1H10zM10 1h1v1H10zM10 2h1v1H10zM10 3h1v1H10zM10 4h1v1H10zM10 5h1v1H10zM10 6h1v1H10zM10 7h1v1H10zM10 8h1v1H10zM10 9h1v1H10zM10 10h1v1H10zM10 11h1v1H10zM10 12h1v1H10zM10 13h1v1H10zM10 14h1v1H10zM10 15h1v1H10zM9 16h1v1H9zM8 17h1v1H8zM7 18h1v1H7zM6 19h1v1H6zM5 20h1v1H5z'/%3E%3C/svg%3E") no-repeat;
+}
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: #c0c0c0;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 11px;
+  height: 21px;
+  border: 0;
+  border-radius: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='11' height='21' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff' d='M0 0h10v1H0zM0 1h1v1H0zM0 2h1v1H0zM0 3h1v1H0zM0 4h1v1H0zM0 5h1v1H0zM0 6h1v1H0zM0 7h1v1H0zM0 8h1v1H0zM0 9h1v1H0zM0 10h1v1H0zM0 11h1v1H0zM0 12h1v1H0zM0 13h1v1H0zM0 14h1v1H0zM0 15h1v1H0zM1 16h1v1H1zM2 17h1v1H2zM3 18h1v1H3zM4 19h1v1H4z'/%3E%3Cpath fill='%23dfdfdf' d='M1 1h8v1H1zM1 2h1v1H1zM1 3h1v1H1zM1 4h1v1H1zM1 5h1v1H1zM1 6h1v1H1zM1 7h1v1H1zM1 8h1v1H1zM1 9h1v1H1zM1 10h1v1H1zM1 11h1v1H1zM1 12h1v1H1zM1 13h1v1H1zM1 14h1v1H1zM1 15h1v1H1zM2 16h1v1H2zM3 17h1v1H3zM4 18h1v1H4z'/%3E%3Cpath fill='%23c0c0c0' d='M2 2h7v1H2zM2 3h7v1H2zM2 4h7v1H2zM2 5h7v1H2zM2 6h7v1H2zM2 7h7v1H2zM2 8h7v1H2zM2 9h7v1H2zM2 10h7v1H2zM2 11h7v1H2zM2 12h7v1H2zM2 13h7v1H2zM2 14h7v1H2zM2 15h7v1H2zM3 16h5v1H3zM4 17h3v1H4zM5 18h1v1H5z'/%3E%3Cpath fill='%23808080' d='M9 1h1v1H9zM9 2h1v1H9zM9 3h1v1H9zM9 4h1v1H9zM9 5h1v1H9zM9 6h1v1H9zM9 7h1v1H9zM9 8h1v1H9zM9 9h1v1H9zM9 10h1v1H9zM9 11h1v1H9zM9 12h1v1H9zM9 13h1v1H9zM9 14h1v1H9zM9 15h1v1H9zM8 16h1v1H8zM7 17h1v1H7zM6 18h1v1H6zM5 19h1v1H5z'/%3E%3Cpath fill='%230a0a0a' d='M10 0h1v1H10zM10 1h1v1H10zM10 2h1v1H10zM10 3h1v1H10zM10 4h1v1H10zM10 5h1v1H10zM10 6h1v1H10zM10 7h1v1H10zM10 8h1v1H10zM10 9h1v1H10zM10 10h1v1H10zM10 11h1v1H10zM10 12h1v1H10zM10 13h1v1H10zM10 14h1v1H10zM10 15h1v1H10zM9 16h1v1H9zM8 17h1v1H8zM7 18h1v1H7zM6 19h1v1H6zM5 20h1v1H5z'/%3E%3C/svg%3E") no-repeat;
+}
+
+/* ── Tooltip ──
+   What `lib/ui/tooltip.js` shows for a `title`: Win98's pale yellow note with
+   a one-pixel black border, no rounding and no shadow. */
+.rhc-tooltip {
+  position: fixed;
+  z-index: 9000;
+  max-width: 320px;
+  padding: 1px 4px;
+  border: 1px solid #000000;
+  background: #ffffe1;
+  color: #000000;
+  font-size: 12px;
+  line-height: 1.35;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
+
+/* ── Disabled: etched grey ──
+   A control that cannot be used is drawn the Windows way, not faded: grey
+   text with a white copy one pixel down and right, so it looks pressed into
+   the surface. Its icon becomes the same — a grey silhouette with a white
+   shadow — instead of a pale version of its colours. A disabled text field
+   loses its white and turns silver. */
+:is(:disabled, [aria-disabled="true"], [data-disabled="true"]):not(input, textarea, select),
+:where(label:has(> input:disabled), input:disabled ~ label) {
+  color: #808080;
+  text-shadow: 1px 1px 0 #ffffff;
+  cursor: default;
+}
+:is(:disabled, [aria-disabled="true"], [data-disabled="true"]) svg,
+:where(label:has(> input:disabled), input:disabled ~ label) svg {
+  filter: brightness(0) invert(50%) drop-shadow(1px 1px 0 #ffffff);
+}
+:is(
+    input:not([type="checkbox"], [type="radio"], [type="range"], [type="button"], [type="submit"], [type="reset"]),
+    textarea,
+    select
+  ):disabled {
+  background-color: #c0c0c0;
+  color: #808080;
+}
+
+/* ── Focus: the Win98 dotted rectangle ──
+   Windows 98 marks the keyboard focus with a one-pixel dotted rectangle, never
+   a solid ring. Its position depends on the control: inside the bevel of a
+   raised button or tab, hugging a list row or a link, around the caption of a
+   check box rather than the box. A text field has none — the caret is the
+   mark — and neither does a menu row, whose highlight already says it.
+
+   Every rule is wrapped in `:where()` so it weighs nothing, and a component
+   that draws its own focus wins without fighting this one. */
+:where(:focus-visible) {
+  outline: 1px dotted #000000;
+  outline-offset: -1px;
+}
+:where(
+    .shadow-retro-raised,
+    .shadow-retro-default-raised,
+    .shadow-retro-tab,
+    [role="tab"],
+    input[type="button"],
+    input[type="submit"],
+    input[type="reset"],
+    select
+  ):focus-visible {
+  outline-offset: -4px;
+}
+:where(a):focus-visible {
+  outline-offset: 0;
+}
+/* On the navy of a selection the rectangle is drawn inverted, which is how
+   Windows painted it (an XOR over the highlight), so it stays visible. */
+:where([aria-selected="true"], [aria-current="true"], .bg-selection-bg):focus-visible {
+  outline-color: #ffff7f;
+}
+:where(
+    input:not([type="checkbox"], [type="radio"], [type="range"], [type="button"], [type="submit"], [type="reset"]),
+    textarea,
+    [contenteditable="true"],
+    .menu-row,
+    [tabindex="-1"]
+  ):focus-visible {
+  outline: none;
+}
+:where(input[type="checkbox"], input[type="radio"]):focus-visible {
+  outline-offset: 1px;
+}
+:where(label:has(> input:is([type="checkbox"], [type="radio"]):focus-visible)) {
+  outline: 1px dotted #000000;
+  outline-offset: 0;
+}
+:where(label > input:is([type="checkbox"], [type="radio"])):focus-visible {
+  outline: none;
 }
 
 /* ── Tree View: details/summary markers ── */
@@ -103,8 +539,6 @@ details:not([open]) .tree-view-marker-closed {
   font-size: 0.75rem;
   line-height: 1rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
   @apply text-gray-600;
   cursor: pointer;
   user-select: none;

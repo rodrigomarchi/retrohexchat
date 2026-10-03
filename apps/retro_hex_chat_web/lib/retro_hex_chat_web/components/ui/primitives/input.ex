@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.Components.UI.Input do
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
                 multiple pattern placeholder readonly required rows size step)
 
+  @spec input(map()) :: Phoenix.LiveView.Rendered.t()
   def input(assigns) do
     assigns = prepare_assign(assigns)
 
@@ -39,15 +40,70 @@ defmodule RetroHexChatWeb.Components.UI.Input do
     assigns = assign(assigns, :rest, rest)
 
     ~H"""
+    <.updown :if={@type == "number"} disabled={@rest[:disabled]}>
+      <.text_field class={@class} rest={@rest} />
+    </.updown>
+    <.text_field :if={@type != "number"} class={@class} rest={@rest} />
+    """
+  end
+
+  attr :class, :any, default: nil
+  attr :rest, :map, required: true
+
+  defp text_field(assigns) do
+    ~H"""
     <input
       class={
         classes([
-          "flex h-10 w-full border-none shadow-retro-field bg-white px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-50",
+          "flex h-10 w-full border-none shadow-retro-field bg-white px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed",
           @class
         ])
       }
       {@rest}
     />
+    """
+  end
+
+  @doc """
+  Win98 up-down control: two small arrow buttons attached to the right edge of
+  the number field it wraps. A press steps the field and fires `input` and
+  `change`, so a `phx-change` form hears it as if the value had been typed;
+  holding it repeats. The buttons are not tab stops — the arrow keys already
+  step a focused number field.
+
+  `<.input type="number">` wraps itself; a hand-written number input is wrapped
+  explicitly:
+
+      <.updown disabled={@locked}>
+        <input type="number" name="limit" disabled={@locked} />
+      </.updown>
+  """
+  attr :disabled, :any, default: false, doc: "disables both arrows; pass the field's own flag"
+  attr :class, :any, default: nil
+  slot :inner_block, required: true
+
+  @spec updown(map()) :: Phoenix.LiveView.Rendered.t()
+  def updown(assigns) do
+    ~H"""
+    <span class={classes(["retro-updown", @class])} data-updown>
+      {render_slot(@inner_block)}
+      <span class="retro-updown__buttons" aria-hidden="true">
+        <button
+          type="button"
+          tabindex="-1"
+          class="retro-updown__button retro-updown__button--up"
+          data-updown-step="up"
+          disabled={@disabled not in [nil, false, "false"]}
+        />
+        <button
+          type="button"
+          tabindex="-1"
+          class="retro-updown__button retro-updown__button--down"
+          data-updown-step="down"
+          disabled={@disabled not in [nil, false, "false"]}
+        />
+      </span>
+    </span>
     """
   end
 end

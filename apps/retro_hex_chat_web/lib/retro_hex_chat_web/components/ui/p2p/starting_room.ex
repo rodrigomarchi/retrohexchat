@@ -208,7 +208,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
                     value="true"
                     checked={@turn_only}
                     disabled={!@turn_configured}
-                    class="retro-checkbox mt-0.5 shrink-0"
+                    class="mt-0.5 shrink-0"
                     data-testid="p2p-setup-turn-only"
                   />
                   <span class="grid min-w-0 gap-0.5">
@@ -436,7 +436,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
         name={@name}
         value="true"
         checked={@checked}
-        class="retro-checkbox shrink-0"
+        class="shrink-0"
         data-testid={@testid}
       />
       <span class="inline-flex min-w-0 items-center gap-1">

@@ -223,7 +223,6 @@
 }
 /* Taskbar context-menu items the hook marks inapplicable for the target window. */
 [data-taskbar-menu] [data-taskbar-menu-action][aria-disabled="true"] {
-  @apply text-disabled;
   pointer-events: none;
 }
 /* Transient Win98 zoom wireframe that flies between a window and its taskbar
@@ -293,8 +292,20 @@
 .desktop-shortcut.is-selected .desktop-shortcut__icon {
   @apply bg-primary/40;
 }
+/* Windows draws a desktop icon's focus on its caption, not the icon: the
+   caption takes the selection navy and the dotted rectangle, inverted over
+   the navy the way Windows painted it. */
+.desktop-shortcut:focus-visible,
+.desktop-launcher-item:focus-visible {
+  outline: none;
+}
+.desktop-shortcut:focus-visible .desktop-shortcut__label,
+.desktop-launcher-item:focus-visible .desktop-launcher-item__label {
+  background: #000080;
+  color: #ffffff;
+  outline: 1px dotted #ffff7f;
+}
 .desktop-shortcut--disabled {
-  @apply opacity-50;
   cursor: default;
 }
 
@@ -324,13 +335,6 @@
   @apply bg-primary/15;
 }
 
-.desktop-launcher-item:focus-visible {
-  @apply outline outline-1 outline-primary;
-}
-
-.desktop-launcher-item--disabled {
-  @apply opacity-50;
-}
 
 .desktop-launcher-item__label {
   @apply text-xs leading-tight;
@@ -419,7 +423,6 @@
 
 .desktop--stacked [role="tablist"] {
   min-height: var(--rhc-chat-tabbar-height);
-  scrollbar-width: thin;
 }
 
 .desktop--stacked [role="tab"] {
@@ -646,7 +649,6 @@
 
 .desktop-start-menu__item--disabled,
 .desktop-start-menu__item--disabled:hover {
-  @apply text-disabled;
   background: transparent;
   cursor: default;
 }
@@ -655,7 +657,12 @@
    "nothing here for you yet", not "this does not exist". The open state has to
    win, or the row loses its selection highlight while its panel is showing. */
 .desktop-start-menu__item--muted:not([aria-expanded="true"]):not(:hover) {
-  @apply text-disabled;
+  color: #808080;
+  text-shadow: 1px 1px 0 #ffffff;
+}
+
+.desktop-start-menu__item--muted:not([aria-expanded="true"]):not(:hover) svg {
+  filter: brightness(0) invert(50%) drop-shadow(1px 1px 0 #ffffff);
 }
 
 /* ── Start menu groups ─────────────────────────────────────── */
@@ -684,7 +691,6 @@
 .desktop--stacked .desktop-start-menu {
   max-height: min(72vh, 560px);
   overflow-y: auto;
-  scrollbar-width: thin;
 }
 
 /* A phone has no room beside the list for a flyout, and an inline expansion

@@ -34,7 +34,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
     ~H"""
     <div
       id={"#{@id}-oban"}
-      class="adm-dialog retro-scrollbar flex h-full min-h-0 flex-col gap-retro-8 overflow-y-auto"
+      class="adm-dialog flex h-full min-h-0 flex-col gap-retro-8 overflow-y-auto"
       data-loading={to_string(@loading)}
       data-testid={@testid}
     >
@@ -506,7 +506,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
 
   defp table_shell(assigns) do
     ~H"""
-    <div class="retro-scrollbar max-h-[260px] overflow-auto bg-white shadow-retro-sunken">
+    <div class="max-h-[260px] overflow-auto bg-white shadow-retro-sunken">
       {render_slot(@inner_block)}
     </div>
     """
@@ -532,7 +532,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
   defp config_item(assigns) do
     ~H"""
     <div class="min-w-0">
-      <span class="block truncate font-bold uppercase text-muted-foreground">{@label}</span>
+      <span class="block truncate font-bold text-muted-foreground">{@label}</span>
       <span class="block truncate font-mono" title={@value || ""}>{@value || "—"}</span>
     </div>
     """

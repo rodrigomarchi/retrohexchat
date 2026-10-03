@@ -741,7 +741,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           :if={@devices[kind] not in [nil, []]}
           class="grid min-w-0 gap-0.5"
         >
-          <span class="flex items-center gap-1 text-[10px] font-bold uppercase text-muted-foreground">
+          <span class="flex items-center gap-1 text-[10px] font-bold text-muted-foreground">
             <.device_icon kind={kind} />
             {device_label(kind)}
           </span>
@@ -829,8 +829,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
   defp base_tile_class do
     [
-      "relative min-h-0 overflow-hidden border border-border bg-black text-white shadow-retro-sunken",
-      "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+      "relative min-h-0 overflow-hidden border border-border bg-black text-white shadow-retro-sunken"
     ]
   end
 

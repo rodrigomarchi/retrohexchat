@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.Components.UI.Switch do
       phx-click={toggle(@id, @on_toggle, @event_value, @target)}
       class={
         classes([
-          "group/switch inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full shadow-retro-field focus-visible:outline focus-visible:outline-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-white"
+          "group/switch inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full shadow-retro-field disabled:cursor-not-allowed data-[state=checked]:bg-primary data-[state=unchecked]:bg-white"
         ])
       }
       id={@id}

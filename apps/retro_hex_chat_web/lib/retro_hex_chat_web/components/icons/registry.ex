@@ -221,7 +221,6 @@ defmodule RetroHexChatWeb.Icons.Registry do
     {:icon_checkmark, RetroHexChatWeb.Icons.Marks},
     {:icon_warning, RetroHexChatWeb.Icons.Marks},
     {:icon_ellipsis, RetroHexChatWeb.Icons.Marks},
-    {:icon_radio_dot, RetroHexChatWeb.Icons.Marks},
     {:icon_check_thin, RetroHexChatWeb.Icons.Marks},
     {:icon_close_pixel, RetroHexChatWeb.Icons.Marks},
     {:icon_close_thin, RetroHexChatWeb.Icons.Marks},

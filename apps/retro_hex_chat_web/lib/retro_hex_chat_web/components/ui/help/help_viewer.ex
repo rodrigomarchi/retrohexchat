@@ -153,7 +153,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
       class="mt-6 pt-3 border-t border-gray-300"
       data-testid="help-see-also"
     >
-      <h2 class="text-xs font-bold text-text mb-2 uppercase tracking-wide">
+      <h2 class="text-xs font-bold text-text mb-2">
         {dgettext("help", "See Also")}
       </h2>
       <ul class="list-none m-0 p-0 flex flex-wrap gap-x-4 gap-y-1">
@@ -210,7 +210,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
             autocomplete="off"
             phx-debounce="150"
             placeholder={dgettext("help", "Search topics...")}
-            class="flex-1 min-w-0 bg-transparent py-0.5 text-xs focus:outline-none"
+            class="flex-1 min-w-0 bg-transparent py-0.5 text-xs"
             data-testid="help-search-input"
           />
         </label>

@@ -168,7 +168,6 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
       type="button"
       class={[
         "conversation-toolbar-button relative bg-surface inline-flex shrink-0 items-center justify-center",
-        "focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-black",
         "active:shadow-retro-sunken",
         if(@active, do: "shadow-retro-sunken bg-hover-bg", else: "shadow-retro-raised")
       ]}

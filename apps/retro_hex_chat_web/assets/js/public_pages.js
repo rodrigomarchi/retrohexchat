@@ -5,6 +5,7 @@ import { createPlausibleTracker } from "./lib/analytics/plausible";
 import { formatTime, CLOCK_INTERVAL } from "./lib/connection/clock.js";
 import { log } from "./lib/logger";
 import { createMenuBar } from "./lib/ui/menu_bar";
+import { installRetroTooltips } from "./lib/ui/tooltip";
 import { mountPublicWindowManager } from "./lib/window_manager/public_manager";
 
 function targetElement(selector) {
@@ -239,6 +240,7 @@ setupClock();
 setupMenuBar();
 setupWindowManager();
 setupConnectBoot();
+installRetroTooltips(document);
 
 const plausibleEnv = document.querySelector('meta[name="plausible-env"]')?.content || "prod";
 const plausible = createPlausibleTracker({

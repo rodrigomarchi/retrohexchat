@@ -336,21 +336,21 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
       <div class="chat-conversations-status-strip">
         <.conversation_stat
-          label={dgettext("chat", "OPEN CHANNELS")}
+          label={dgettext("chat", "Open channels")}
           short_label={dgettext("chat", "Channels")}
           count={@channel_count}
           icon={:channels}
           testid="conversations-stat-channels"
         />
         <.conversation_stat
-          label={dgettext("chat", "RECENT PRIVATE MESSAGES")}
+          label={dgettext("chat", "Recent private messages")}
           short_label={dgettext("chat", "PM")}
           count={@pm_count}
           icon={:pms}
           testid="conversations-stat-pms"
         />
         <.conversation_stat
-          label={dgettext("chat", "AUTO-JOIN")}
+          label={dgettext("chat", "Joined on connect")}
           short_label={dgettext("chat", "Auto")}
           count={@autojoin_count}
           icon={:autojoin}
@@ -358,7 +358,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         />
       </div>
 
-      <div class="chat-conversations-body flex-1 min-h-0 overflow-y-auto retro-scrollbar shadow-retro-field">
+      <div class="chat-conversations-body flex-1 min-h-0 overflow-y-auto shadow-retro-field">
         <%= if !@has_conversations_content do %>
           <.empty_state>
             <:icon><Icons.icon_channels class="w-6 h-6" /></:icon>
@@ -382,11 +382,11 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
                 same rooms, so they are one list. Split in two they appeared
                 twice over — the open half answering a click, the saved half
                 answering nothing — and a name in both places meant two rows
-                for one door. Which half a row is in is now the signal beside
-                it, and the pin on it says the list still holds it. --%>
+                for one door. Which half a row is in is now the grey of its
+                name, and the pin on it says the list still holds it. --%>
           <.conversation_section
             :if={@channel_rows != []}
-            label={dgettext("chat", "CHANNELS")}
+            label={dgettext("chat", "Channels")}
             section="channels"
             count={length(@channel_rows)}
             open={section_open?(@collapsed_sections, "channels")}
@@ -416,7 +416,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
           <.conversation_section
             :if={@pm_conversations != []}
-            label={dgettext("chat", "RECENT PRIVATE MESSAGES")}
+            label={dgettext("chat", "Recent private messages")}
             section="pms"
             count={length(@pm_conversations)}
             open={section_open?(@collapsed_sections, "pms")}
@@ -449,7 +449,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
           <.conversation_section
             :if={@popular_section_visible}
-            label={dgettext("chat", "POPULAR CHANNELS")}
+            label={dgettext("chat", "Popular channels")}
             discovery
             section="popular"
             count={@popular_section_count}
@@ -507,8 +507,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     <section
       class={[
         "chat-conversations-section",
-        @discovery && "chat-conversations-section--discovery",
-        @section == "popular" && "chat-conversations-section--popular"
+        @discovery && "chat-conversations-section--discovery"
       ]}
       data-testid={@testid}
     >
@@ -573,7 +572,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         row_classes(@active),
         !@joined && "chat-conversations-row--saved",
         @unread && !@active && "font-bold",
-        @highlight && !@active && "text-error",
+        @highlight && !@active && "chat-conversations-row--highlight",
         @flash && "animate-pulse",
         @muted && "chat-conversations-row--muted"
       ]}
@@ -590,8 +589,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       tabindex="0"
       aria-current={if @active, do: "page"}
     >
-      <span class={status_bar_classes(@active, @highlight, @unread, @joined)} aria-hidden="true">
-      </span>
       <span class="chat-conversations-row__icon">
         <span :if={@disconnected} title={dgettext("chat", "Disconnected")}>
           <Icons.icon_warning class="w-3 h-3 text-warning-alt" />
@@ -665,7 +662,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         row_classes(@active),
         !@open_tab && "chat-conversations-row--saved",
         @unread && !@active && "font-bold italic",
-        @highlight && !@active && "text-error",
+        @highlight && !@active && "chat-conversations-row--highlight",
         @flash && "animate-pulse",
         @muted && "chat-conversations-row--muted"
       ]}
@@ -681,12 +678,10 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       aria-current={if @active, do: "page"}
     >
       <%!-- A conversation with no tab mounted reads the way a channel you have
-            not opened reads: the same hollow signal, not a word of its own. The
+            not opened reads: the same greyed name, not a word of its own. The
             chip that used to say "tab" here named a thing the sidebar knows and
             the reader does not, and channels carry tabs too without ever having
             said so. --%>
-      <span class={status_bar_classes(@active, @highlight, @unread, @open_tab)} aria-hidden="true">
-      </span>
       <span class="chat-conversations-row__icon">
         <Icons.icon_tab_pm class="w-3 h-3" />
       </span>
@@ -746,7 +741,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       }
       tabindex="0"
     >
-      <span class={status_bar_classes(false, false, false, false)} aria-hidden="true"></span>
       <span class="chat-conversations-row__icon">
         <Icons.icon_tab_channel class="w-3 h-3" />
       </span>
@@ -869,28 +863,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     [
       "chat-conversations-row chat-conversations-row--interactive",
       active && "chat-conversations-row--active"
-    ]
-  end
-
-  # One axis and no second. This strip used to mean attention in two sections
-  # and something else entirely in a third — open, keyed, merely saved — which
-  # is three vocabularies for four pixels. It says presence now: filled when the
-  # place is open, hollow when it is only on your list. Colour still carries
-  # attention on top of that.
-  defp status_bar_classes(active, highlight, unread, present?) do
-    [
-      "chat-conversations-row__signal",
-      cond do
-        active -> "chat-conversations-row__signal--active"
-        highlight -> "chat-conversations-row__signal--highlight"
-        unread -> "chat-conversations-row__signal--unread"
-        true -> "chat-conversations-row__signal--idle"
-      end,
-      # Presence empties the shape; it does not repaint it. A conversation you
-      # have not opened can still be the one somebody just said your name in,
-      # and an earlier spelling of this let presence win that argument — the
-      # hollow row went quiet in exactly the case worth shouting about.
-      !present? && "chat-conversations-row__signal--saved"
     ]
   end
 

@@ -98,7 +98,7 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialog do
       <div
         :if={@root && not State.empty?(@state)}
         id={"#{@id}-list"}
-        class="min-h-[160px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field retro-scrollbar"
+        class="min-h-[160px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field"
         phx-hook="InfiniteScrollHook"
         phx-update="stream"
         data-edge="bottom"

@@ -34,9 +34,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
         phx-click={@on_open}
         class={[
           "conversation-toolbar-button flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs",
-          "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-          active_state_class(@active, @state),
-          !@identified && "opacity-60"
+          active_state_class(@active, @state)
         ]}
         title={open_title(@identified)}
         disabled={!@identified}
@@ -65,8 +63,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
       <details :if={@active} class="conversation-toolbar-entry relative">
         <summary
           class={[
-            "conversation-toolbar-button flex cursor-pointer list-none items-center justify-center shadow-retro-raised bg-surface text-primary",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+            "conversation-toolbar-button flex cursor-pointer list-none items-center justify-center shadow-retro-raised bg-surface text-primary"
           ]}
           aria-label={dgettext("group_call", "Conference summary")}
           title={dgettext("group_call", "Conference summary")}
@@ -112,7 +109,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
           </div>
 
           <div class="mt-2 shadow-retro-sunken bg-white p-1">
-            <div class="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase">
+            <div class="mb-1 flex items-center gap-1 text-[10px] font-bold">
               <Icons.icon_status_user class="h-3 w-3" />
               <span>{dgettext("group_call", "In conference")}</span>
             </div>

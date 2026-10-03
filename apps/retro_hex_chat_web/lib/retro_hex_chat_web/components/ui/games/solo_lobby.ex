@@ -123,7 +123,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             aria-label={game.name}
             class={[
               "group flex min-h-[88px] flex-col items-center justify-start gap-retro-4 px-retro-4 py-retro-6 text-center",
-              "cursor-pointer hover:bg-hover-bg focus:outline-none focus:shadow-retro-focus active:shadow-retro-sunken"
+              "cursor-pointer hover:bg-hover-bg active:shadow-retro-sunken"
             ]}
             data-testid={"arcade-game-#{game.id}"}
           >
@@ -216,7 +216,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
         </div>
       </div>
 
-      <div class="retro-scrollbar min-h-0 flex-1 overflow-auto bg-white p-retro-10 shadow-retro-sunken">
+      <div class="min-h-0 flex-1 overflow-auto bg-white p-retro-10 shadow-retro-sunken">
         <div class="grid min-h-full grid-cols-1 items-stretch gap-retro-10 md:grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
           <fieldset
             :if={@previewed_game[:about] && @previewed_game.about != []}

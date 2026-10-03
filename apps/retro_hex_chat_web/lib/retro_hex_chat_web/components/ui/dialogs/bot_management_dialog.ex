@@ -155,7 +155,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
         </.button>
       </div>
 
-      <div class="bm-roster-scroll min-h-0 flex-1 overflow-y-auto retro-scrollbar">
+      <div class="bm-roster-scroll min-h-0 flex-1 overflow-y-auto">
         <p :if={@bots == []} class="bm-empty">
           {dgettext("dialogs", "No bots yet. Create one and it will appear here.")}
         </p>
@@ -782,7 +782,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
     <div class="bm-pane">
       <div
         id="bm-events-list"
-        class="bm-events-list shadow-retro-sunken bg-white overflow-y-auto p-retro-2 retro-scrollbar"
+        class="bm-events-list shadow-retro-sunken bg-white overflow-y-auto p-retro-2"
         phx-hook="InfiniteScrollHook"
         phx-update="stream"
         data-edge="bottom"

@@ -70,7 +70,7 @@ defmodule RetroHexChatWeb.Components.UI.EventsDialog do
       <div
         :if={not State.empty?(@state)}
         id={"#{@id}-list"}
-        class="min-h-[200px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field retro-scrollbar"
+        class="min-h-[200px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field"
         phx-hook="InfiniteScrollHook"
         phx-update="stream"
         data-edge="bottom"

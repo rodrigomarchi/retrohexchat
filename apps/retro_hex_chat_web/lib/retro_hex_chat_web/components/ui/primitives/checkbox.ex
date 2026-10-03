@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.Components.UI.Checkbox do
       type="checkbox"
       class={
         classes([
-          "retro-checkbox peer shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-black",
+          "peer shrink-0",
           @class
         ])
       }

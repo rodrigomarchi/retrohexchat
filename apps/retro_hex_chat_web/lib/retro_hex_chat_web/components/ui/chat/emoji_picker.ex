@@ -114,13 +114,13 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
         </div>
 
         <%!-- Emoji grid --%>
-        <div class="h-[180px] overflow-y-auto retro-scrollbar px-retro-4 pb-retro-4">
+        <div class="h-[180px] overflow-y-auto px-retro-4 pb-retro-4">
           <%!-- This server's own, above the catalogue everybody has: they are
                 the reason somebody opens this picker on a server they run, and
                 they insert the word rather than a character, because a name
                 between colons is what the conversation actually stores. --%>
           <div :if={@custom != []} class="mb-retro-4">
-            <div class="mb-retro-2 text-[10px] font-bold uppercase text-muted-foreground">
+            <div class="mb-retro-2 text-[10px] font-bold text-muted-foreground">
               {dgettext("chat", "This server")}
             </div>
             <div class="grid grid-cols-8 gap-retro-2">

@@ -54,8 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.Card do
       class={
         classes([
           "block w-full border-none bg-card text-left text-card-foreground shadow-retro-window",
-          "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-          "disabled:cursor-not-allowed disabled:opacity-60",
+          "disabled:cursor-not-allowed",
           @class
         ])
       }

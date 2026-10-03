@@ -255,21 +255,6 @@ defmodule RetroHexChatWeb.Icons.Marks do
 
   attr :class, :string, default: nil
 
-  @spec icon_radio_dot(map()) :: Phoenix.LiveView.Rendered.t()
-  def icon_radio_dot(assigns) do
-    ~H"""
-    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
-      <rect x="6" y="6" width="4" height="4" fill="#000" />
-      <rect x="7" y="5" width="2" height="1" fill="#000" />
-      <rect x="7" y="10" width="2" height="1" fill="#000" />
-      <rect x="5" y="7" width="1" height="2" fill="#000" />
-      <rect x="10" y="7" width="1" height="2" fill="#000" />
-    </svg>
-    """
-  end
-
-  attr :class, :string, default: nil
-
   @spec icon_check_thin(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_check_thin(assigns) do
     ~H"""

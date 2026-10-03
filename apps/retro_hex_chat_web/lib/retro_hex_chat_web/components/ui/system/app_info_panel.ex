@@ -94,7 +94,7 @@ defmodule RetroHexChatWeb.Components.UI.System.AppInfoPanel do
         <span class="truncate">{dgettext("dialogs", "Occupancy by channel")}</span>
       </h4>
 
-      <div class="retro-scrollbar min-h-0 flex-1 overflow-auto bg-white shadow-retro-sunken">
+      <div class="min-h-0 flex-1 overflow-auto bg-white shadow-retro-sunken">
         <.retro_table
           id={"#{@testid}-table"}
           table={@table}

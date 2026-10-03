@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.System.SourceBrowser do
 
   import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.Input, only: [updown: 1]
 
   alias RetroHexChatWeb.Components.UI.Format
   alias RetroHexChatWeb.Icons
@@ -81,15 +82,17 @@ defmodule RetroHexChatWeb.Components.UI.System.SourceBrowser do
           <label for={"#{@id}-limit"} class="mb-retro-2 block text-xs font-bold">
             {dgettext("dialogs", "Rows")}
           </label>
-          <input
-            id={"#{@id}-limit"}
-            name="limit"
-            type="number"
-            min="1"
-            max="500"
-            value={@limit}
-            class="w-full bg-white px-retro-4 py-retro-2 text-sm shadow-retro-sunken"
-          />
+          <.updown>
+            <input
+              id={"#{@id}-limit"}
+              name="limit"
+              type="number"
+              min="1"
+              max="500"
+              value={@limit}
+              class="w-full bg-white px-retro-4 py-retro-2 text-sm shadow-retro-sunken"
+            />
+          </.updown>
         </div>
 
         <.button
@@ -104,7 +107,7 @@ defmodule RetroHexChatWeb.Components.UI.System.SourceBrowser do
         </.button>
       </form>
 
-      <div class="retro-scrollbar min-h-0 flex-1 overflow-auto bg-white shadow-retro-sunken">
+      <div class="min-h-0 flex-1 overflow-auto bg-white shadow-retro-sunken">
         <.retro_table
           id={"#{@testid}-table"}
           table={@table}

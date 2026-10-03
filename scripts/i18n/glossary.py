@@ -56,9 +56,14 @@ _ROWS = {
 
     # ── Conversations sidebar ─────────────────────────────────
     # The pipeline read these as sentences about connecting rather than as the
-    # sidebar's vocabulary: "CHANNELS" came back as Cannes in ru and as
+    # sidebar's vocabulary: "Channels" came back as Cannes in ru and as
     # "attachment" in it and pl, and "Join on connect" as "log in" in fr.
-    "CHANNELS":     ("CANAIS", "CANAIS", "CANALES", "CANAUX", "KANÄLE", "CANALI", "KANALEN", "KANAŁY", "КАНАЛЫ", "KANAL", "チャンネル", "频道", "頻道"),
+    "Channels":     ("Canais", "Canais", "Canales", "Canaux", "Kanäle", "Canali", "Kanalen", "Kanały", "Каналы", "Kanal", "チャンネル", "频道", "頻道"),
+    # "Open" is an adjective here — the channels you have open — and the
+    # pipeline read it as the verb: "Abrir canais", "Buka kanal", "打开频道".
+    "Open channels": ("Canais abertos", "Canais abertos", "Canales abiertos", "Canaux ouverts", "Offene Kanäle", "Canali aperti", "Open kanalen", "Otwarte kanały", "Открытые каналы", "Kanal terbuka", "開いているチャンネル", "已打开的频道", "已開啟的頻道"),
+    "Popular channels": ("Canais populares", "Canais populares", "Canales populares", "Canaux populaires", "Beliebte Kanäle", "Canali popolari", "Populaire kanalen", "Popularne kanały", "Популярные каналы", "Kanal populer", "人気チャンネル", "热门频道", "熱門頻道"),
+    "Recent private messages": ("Mensagens privadas recentes", "Mensagens privadas recentes", "Mensajes privados recientes", "Messages privés récents", "Letzte private Nachrichten", "Messaggi privati recenti", "Recente privéberichten", "Ostatnie wiadomości prywatne", "Недавние личные сообщения", "Pesan pribadi terbaru", "最近のプライベートメッセージ", "最近的私信", "最近的私訊"),
     "Join on connect": ("Entrar ao conectar", "Entrar ao ligar", "Entrar al conectar", "Rejoindre à la connexion", "Beim Verbinden betreten", "Entra alla connessione", "Deelnemen bij verbinden", "Dołącz po połączeniu", "Входить при подключении", "Gabung saat terhubung", "接続時に参加", "连接时加入", "連線時加入"),
     "Joined on connect": ("Entra ao conectar", "Entra ao ligar", "Entra al conectar", "Rejoint à la connexion", "Wird beim Verbinden betreten", "Entra alla connessione", "Neemt deel bij verbinden", "Dołącza po połączeniu", "Входит при подключении", "Bergabung saat terhubung", "接続時に参加します", "连接时加入", "連線時加入"),
     "Joined on connect, with a key": ("Entra ao conectar, com senha", "Entra ao ligar, com senha", "Entra al conectar, con clave", "Rejoint à la connexion, avec une clé", "Wird beim Verbinden betreten, mit Schlüssel", "Entra alla connessione, con una chiave", "Neemt deel bij verbinden, met een sleutel", "Dołącza po połączeniu, z kluczem", "Входит при подключении, с ключом", "Bergabung saat terhubung, dengan kunci", "接続時にキーで参加します", "连接时使用密钥加入", "連線時使用金鑰加入"),

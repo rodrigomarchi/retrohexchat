@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.Components.UI.Select do
       type="button"
       class={
         classes([
-          "flex h-10 w-full items-center justify-between border-none shadow-retro-field bg-white px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline focus:outline-2 focus:outline-black disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+          "retro-combo flex h-10 w-full items-center justify-between px-3 py-2 text-sm text-left [&>span]:line-clamp-1",
           @class
         ])
       }
@@ -101,7 +101,6 @@ defmodule RetroHexChatWeb.Components.UI.Select do
         data-content={@builder.label || @builder.value || @builder.placeholder}
       >
       </span>
-      <Icons.icon_chevron_down class="h-4 w-4 opacity-50" />
     </button>
     """
   end
@@ -133,16 +132,14 @@ defmodule RetroHexChatWeb.Components.UI.Select do
       class={
         classes([
           "select-content absolute hidden",
-          "z-50 left-0 w-full max-h-96 overflow-hidden border-none shadow-retro-window bg-surface p-[3px]",
+          "z-50 left-0 w-full max-h-96 overflow-hidden border border-black bg-white",
           @position_class,
           @class
         ])
       }
       {@rest}
     >
-      <div class="shadow-retro-field bg-white p-[2px]">
-        {render_slot(@inner_block)}
-      </div>
+      {render_slot(@inner_block)}
     </.focus_wrap>
     """
   end
@@ -193,7 +190,7 @@ defmodule RetroHexChatWeb.Components.UI.Select do
       class={
         classes([
           "group/item",
-          "menu-row relative flex w-full cursor-default select-none items-center py-1 pl-6 pr-2 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+          "menu-row relative flex w-full cursor-default select-none items-center py-1 pl-6 pr-2 text-sm outline-none data-[disabled]:pointer-events-none",
           @class
         ])
       }

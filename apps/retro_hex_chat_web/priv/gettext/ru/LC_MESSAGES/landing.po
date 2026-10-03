@@ -274,7 +274,7 @@ msgstr "Бросить вызов любому"
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Channels"
-msgstr "каналы"
+msgstr "Каналы"
 
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:67
 #, elixir-autogen, elixir-format
@@ -2542,12 +2542,20 @@ msgstr ""
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:131
 #, elixir-autogen, elixir-format
 msgid "If you switch on notifications for when the chat is closed, your browser gives the server an address at its vendor's push service — Google's, Mozilla's or Apple's — and the server sends a notification there. What it sends is encrypted for your browser alone: the push service carries an address and a block of ciphertext, and can read neither the conversation nor the message."
-msgstr "Если вы включите уведомления для закрытого чата, ваш браузер передаст серверу адрес в push-службе своего производителя — Google, Mozilla или Apple — и сервер отправит уведомление туда. То, что он отправляет, зашифровано только для вашего браузера: push-служба несёт адрес и блок шифротекста и не может прочитать ни беседу, ни сообщение."
+msgstr ""
+"Если вы включите уведомления для закрытого чата, ваш браузер передаст "
+"серверу адрес в push-службе своего производителя — Google, Mozilla или Apple"
+" — и сервер отправит уведомление туда. То, что он отправляет, зашифровано "
+"только для вашего браузера: push-служба несёт адрес и блок шифротекста и не "
+"может прочитать ни беседу, ни сообщение."
 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:137
 #, elixir-autogen, elixir-format
 msgid "It is off until you turn it on, it is per device, and the same switch in the Sounds window turns it off again. A self-hosted server with no VAPID key pair does not have the feature at all."
-msgstr "Оно выключено, пока вы его не включите, действует на устройство, и тот же переключатель в окне «Звуки» выключает его снова. Самостоятельно размещённый сервер без пары ключей VAPID вовсе не имеет этой возможности."
+msgstr ""
+"Оно выключено, пока вы его не включите, действует на устройство, и тот же "
+"переключатель в окне «Звуки» выключает его снова. Самостоятельно размещённый"
+" сервер без пары ключей VAPID вовсе не имеет этой возможности."
 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:128
 #, elixir-autogen, elixir-format
@@ -2562,7 +2570,12 @@ msgstr "Единственная кука, которая не является 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "Your browser is given a random name so the server can tell your phone from your desktop. It identifies a browser, never a person: nothing is stored against it but which channels that screen had open and where in them you had read to, and a different browser on the same machine gets a different one. It follows you nowhere, because it only exists on this server."
-msgstr "Ваш браузер получает случайное имя, чтобы сервер отличал телефон от компьютера. Оно обозначает браузер, а не человека: с ним не хранится ничего, кроме того, какие каналы были открыты на этом экране и до какого места вы их дочитали, а другой браузер на той же машине получит другое. Оно никуда за вами не следует, потому что существует только на этом сервере."
+msgstr ""
+"Ваш браузер получает случайное имя, чтобы сервер отличал телефон от "
+"компьютера. Оно обозначает браузер, а не человека: с ним не хранится ничего,"
+" кроме того, какие каналы были открыты на этом экране и до какого места вы "
+"их дочитали, а другой браузер на той же машине получит другое. Оно никуда за"
+" вами не следует, потому что существует только на этом сервере."
 
 #: lib/retro_hex_chat_web/controllers/archive_controller.ex:183
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:7
@@ -2593,12 +2606,16 @@ msgstr "Все дни"
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Everything said here since the channel opened its archive, one page per day. Nothing from before it was opened is published."
-msgstr "Всё сказанное здесь с тех пор, как канал открыл архив, — по странице на день. Ничего из того, что было раньше, не публикуется."
+msgstr ""
+"Всё сказанное здесь с тех пор, как канал открыл архив, — по странице на "
+"день. Ничего из того, что было раньше, не публикуется."
 
 #: lib/retro_hex_chat_web/controllers/archive_controller.ex:59
 #, elixir-autogen, elixir-format
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
-msgstr "Всё сказанное в %{channel} с тех пор, как открылся архив, — по странице на день."
+msgstr ""
+"Всё сказанное в %{channel} с тех пор, как открылся архив, — по странице на "
+"день."
 
 #: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:43
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:26

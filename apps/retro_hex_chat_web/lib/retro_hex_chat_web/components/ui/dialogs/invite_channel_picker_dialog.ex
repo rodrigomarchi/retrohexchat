@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.Components.UI.InviteChannelPickerDialog do
             <select
               id={"#{@id}-channel"}
               name="channel"
-              class="icp-select flex h-10 w-full border-none shadow-retro-field bg-white px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-50"
+              class="icp-select flex h-10 w-full border-none shadow-retro-field bg-white px-3 py-2 text-sm disabled:cursor-not-allowed"
               disabled={!@has_channels}
               data-testid="invite-channel-picker-select"
             >

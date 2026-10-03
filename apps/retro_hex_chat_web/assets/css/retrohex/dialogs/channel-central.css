@@ -1,9 +1,6 @@
 /* Channel Central uses the same desktop window shell as other tools, but its
    content is a dense admin surface. These classes keep desktop compact while
    giving stacked mobile a first-class layout instead of a scaled desktop panel. */
-.cc-dialog {
-  scrollbar-width: thin;
-}
 
 .cc-dialog .tabs-content {
   min-height: 0;
@@ -81,21 +78,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   padding: 6px 6px 0;
-  scrollbar-width: thin;
   -webkit-overflow-scrolling: touch;
-}
-
-.desktop--stacked .cc-main-tabs::-webkit-scrollbar {
-  height: 6px;
-}
-
-.desktop--stacked .cc-main-tabs::-webkit-scrollbar-track {
-  background: #dfdfdf;
-}
-
-.desktop--stacked .cc-main-tabs::-webkit-scrollbar-thumb {
-  background: #808080;
-  border: 1px solid #606060;
 }
 
 .desktop--stacked .cc-main-tabs-shell::after {

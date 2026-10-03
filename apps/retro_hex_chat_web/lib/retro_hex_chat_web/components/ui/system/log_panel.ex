@@ -119,7 +119,7 @@ defmodule RetroHexChatWeb.Components.UI.System.LogPanel do
 
       <div
         id={"#{@id}-stream"}
-        class="retro-scrollbar min-h-0 flex-1 overflow-auto bg-black p-retro-6 font-mono text-xs shadow-retro-sunken"
+        class="min-h-0 flex-1 overflow-auto bg-black p-retro-6 font-mono text-xs shadow-retro-sunken"
         data-testid="system-log-stream"
       >
         <p :if={@entries == []} class="text-gray-400">

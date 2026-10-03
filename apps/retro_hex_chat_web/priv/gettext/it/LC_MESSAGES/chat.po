@@ -753,7 +753,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:128
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:126
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:325
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:514
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:505
 #: lib/retro_hex_chat_web/live/chat_live/away_events.ex:32
 #: lib/retro_hex_chat_web/live/chat_live/components/hover_card.ex:118
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:153
@@ -926,6 +926,7 @@ msgid "Channel ownership transferred to %{target}."
 msgstr "Proprietà del canale trasferita a %{target}."
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:340
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:389
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:185
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:131
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:192
@@ -1093,7 +1094,7 @@ msgid "Delete"
 msgstr "Elimina"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:154
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:596
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:593
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
 msgstr "Disconnesso"
@@ -1373,7 +1374,7 @@ msgstr "Italica (Ctrl+Shift+Y)"
 msgid "Item not found"
 msgstr "Articolo non trovato"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:763
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:757
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
 msgstr "Iscriviti %{channel}"
@@ -3066,12 +3067,12 @@ msgstr "P2P"
 msgid "P2P connection failed."
 msgstr "La connessione P2P è fallita."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:245
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:243
 #, elixir-autogen, elixir-format
 msgid "P2P invite pending"
 msgstr "P2P invita in attesa"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:246
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:244
 #, elixir-autogen, elixir-format
 msgid "P2P session connecting"
 msgstr "Connessione sessione P2P"
@@ -3087,7 +3088,7 @@ msgstr "sessione P2P con %{peer} Finito."
 msgid "Private Space"
 msgstr "Spazio privato"
 
-#: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:41
+#: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:39
 #: lib/retro_hex_chat_web/live/app/space_live.ex:456
 #, elixir-autogen, elixir-format
 msgid "Space"
@@ -3413,11 +3414,6 @@ msgstr "Auto-login disattivato."
 msgid "Auto-login enabled."
 msgstr "Auto-login abilitato."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:353
-#, elixir-autogen, elixir-format
-msgid "AUTO-JOIN"
-msgstr "AUTO-JOIN"
-
 #: lib/retro_hex_chat_web/components/ui/chat/conversation_toolbar_actions.ex:135
 #, elixir-autogen, elixir-format
 msgid "Channel settings"
@@ -3433,24 +3429,13 @@ msgstr "Formattazione barra degli strumenti"
 msgid "IRC colors"
 msgstr "IRC colori"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:827
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:821
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:134
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:332
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:522
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:513
 #, elixir-autogen, elixir-format
 msgid "Muted"
 msgstr "Muted"
-
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:339
-#, elixir-autogen, elixir-format
-msgid "OPEN CHANNELS"
-msgstr "ALLEGATI"
-
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:346
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:419
-#, elixir-autogen, elixir-format
-msgid "RECENT PRIVATE MESSAGES"
-msgstr "VALUTAZIONI PRIVATE"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:159
 #, elixir-autogen, elixir-format
@@ -3494,11 +3479,6 @@ msgstr "Auto"
 msgid "PM"
 msgstr "PM"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:452
-#, elixir-autogen, elixir-format
-msgid "POPULAR CHANNELS"
-msgstr "CANALI POPOLARI"
-
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:126
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:131
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:324
@@ -3535,11 +3515,13 @@ msgid "Expand user list"
 msgstr "Espandi elenco utenti"
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:150
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:339
 #, elixir-autogen, elixir-format
 msgid "Open channels"
 msgstr "Canali aperti"
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:165
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:452
 #, elixir-autogen, elixir-format
 msgid "Popular channels"
 msgstr "Canali popolari"
@@ -3864,12 +3846,12 @@ msgid_plural "%{count} in the space"
 msgstr[0] "%{count} nello spazio"
 msgstr[1] "%{count} nello spazio"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:97
+#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:96
 #, elixir-autogen, elixir-format
 msgid "Inside right now"
 msgstr "Dentro in questo momento"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:99
+#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:98
 #, elixir-autogen, elixir-format
 msgid "Nobody is in here yet."
 msgstr "Qui non c'è ancora nessuno."
@@ -3936,7 +3918,7 @@ msgstr "%{peer} è tornato."
 msgid "This space belongs to a channel you are not in."
 msgstr "Questo spazio appartiene a un canale di cui non fai parte."
 
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:505
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:496
 #, elixir-autogen, elixir-format
 msgid "In the channel call"
 msgstr "Nella chiamata del canale"
@@ -3968,7 +3950,7 @@ msgstr "%{nickname} ha aperto lo spazio — %{url}"
 msgid "Close Conversation"
 msgstr "Chiudi conversazione"
 
-#: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:50
+#: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:48
 #, elixir-autogen, elixir-format
 msgid "Put the space card in this conversation"
 msgstr "Metti la scheda dello space in questa conversazione"
@@ -3988,7 +3970,7 @@ msgstr "Lo space è aperto. La sua scheda è in questa conversazione."
 msgid "You must be registered with NickServ to open a space."
 msgstr "Devi essere registrato su NickServ per aprire uno space."
 
-#: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:53
+#: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:51
 #, elixir-autogen, elixir-format
 msgid "Register your nickname to put the space card here"
 msgstr "Registra il tuo nickname per mettere qui la scheda dello space"
@@ -4278,42 +4260,37 @@ msgid "You already have a P2P session with %{target}. Its card is the line below
 msgstr ""
 "Hai già una sessione P2P con %{target}. La sua scheda è la riga qui sotto."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1042
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1014
 #, elixir-autogen, elixir-format
 msgid "%{channel} — %{count} person here"
 msgid_plural "%{channel} — %{count} people here"
 msgstr[0] "%{channel} — %{count} persona qui"
 msgstr[1] "%{channel} — %{count} persone qui"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1038
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1010
 #, elixir-autogen, elixir-format
 msgid "%{channel} — saved, not open. Opens when you click it."
 msgstr "%{channel} — salvato, non aperto. Si apre quando si fa clic."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversation_toolbar_actions.ex:203
+#: lib/retro_hex_chat_web/components/ui/chat/conversation_toolbar_actions.ex:202
 #, elixir-autogen, elixir-format
 msgid "%{count} unread"
 msgid_plural "%{count} unread"
 msgstr[0] "%{count} non letto"
 msgstr[1] "%{count} non letti"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1057
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1029
 #, elixir-autogen, elixir-format
 msgid "%{nick} — not open. Opens when you click it."
 msgstr "%{nick} — non aperto. Si apre quando si fa clic."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:788
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:789
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:782
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:783
 #, elixir-autogen, elixir-format
 msgid "Actions for %{name}"
 msgstr "Azioni per %{name}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:389
-#, elixir-autogen, elixir-format
-msgid "CHANNELS"
-msgstr "CANALI"
-
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:738
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:733
 #, elixir-autogen, elixir-format
 msgid "Join %{channel} — %{count} person here"
 msgid_plural "Join %{channel} — %{count} people here"
@@ -4325,12 +4302,13 @@ msgstr[1] "Entra in %{channel} — %{count} persone qui"
 msgid "Join on connect"
 msgstr "Entra alla connessione"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1064
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:353
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1036
 #, elixir-autogen, elixir-format
 msgid "Joined on connect"
 msgstr "Entra alla connessione"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1061
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1033
 #, elixir-autogen, elixir-format
 msgid "Joined on connect, with a key"
 msgstr "Entra alla connessione, con una chiave"
@@ -4344,3 +4322,9 @@ msgstr "%{nickname} non è in questa lista."
 #, elixir-autogen, elixir-format
 msgid "That row carries no nickname to remove."
 msgstr "Quella riga non contiene un soprannome da rimuovere."
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:346
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:419
+#, elixir-autogen, elixir-format
+msgid "Recent private messages"
+msgstr "Messaggi privati recenti"

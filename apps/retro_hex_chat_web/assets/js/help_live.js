@@ -6,6 +6,7 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import { buildHelpHooks } from "./hooks/help_hooks";
 import { createPlausibleTracker } from "./lib/analytics/plausible";
+import { installRetroTooltips } from "./lib/ui/tooltip";
 
 const csrfToken = document.querySelector("meta[name='csrf-token']")?.getAttribute("content") || "";
 const Hooks = buildHelpHooks();
@@ -18,6 +19,8 @@ const liveSocket = new LiveSocket("/live", Socket, {
 
 liveSocket.connect();
 window.liveSocket = liveSocket;
+
+installRetroTooltips(document);
 
 const plausibleEnv = document.querySelector('meta[name="plausible-env"]')?.content || "prod";
 const plausible = createPlausibleTracker({

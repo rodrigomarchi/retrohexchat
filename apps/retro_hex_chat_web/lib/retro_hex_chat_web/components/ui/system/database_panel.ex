@@ -79,7 +79,7 @@ defmodule RetroHexChatWeb.Components.UI.System.DatabasePanel do
         {@error}
       </p>
 
-      <div class="retro-scrollbar min-h-0 flex-1 overflow-auto bg-white shadow-retro-sunken">
+      <div class="min-h-0 flex-1 overflow-auto bg-white shadow-retro-sunken">
         <.retro_table
           id={"#{@testid}-table"}
           table={@table}

@@ -39,7 +39,7 @@ defmodule RetroHexChatWeb.Components.UI.HistorySearch do
       <input
         type="text"
         placeholder={dgettext("chat", "Search history...")}
-        class="history-search-input flex-1 shadow-retro-field bg-white px-retro-4 py-retro-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none"
+        class="history-search-input flex-1 shadow-retro-field bg-white px-retro-4 py-retro-2 text-xs text-foreground placeholder:text-muted-foreground"
         aria-label={dgettext("chat", "Search chat history")}
         data-testid="history-search-input"
       />

@@ -77,8 +77,7 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
           "bg-gray-300 text-foreground",
           "top-[1px]",
           "data-[state=active]:bg-surface data-[state=active]:border-b-surface data-[state=active]:font-bold data-[state=active]:z-10 data-[state=active]:top-0 data-[state=active]:pt-retro-4",
-          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-black",
-          "disabled:pointer-events-none disabled:opacity-50",
+          "disabled:pointer-events-none",
           @class
         ])
       }
@@ -120,7 +119,6 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
           "tabs-content",
           "border border-border bg-surface p-retro-8",
           "border-t-0",
-          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-black",
           @initially_hidden && "hidden",
           @class
         ])

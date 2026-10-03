@@ -34,7 +34,7 @@ defmodule RetroHexChatWeb.Components.UI.System.OsPanel do
     ~H"""
     <div
       id={"#{@id}-os"}
-      class="adm-dialog retro-scrollbar flex h-full min-h-0 flex-col gap-retro-8 overflow-y-auto"
+      class="adm-dialog flex h-full min-h-0 flex-col gap-retro-8 overflow-y-auto"
       data-testid={@testid}
     >
       <h3 class="flex min-w-0 shrink-0 items-center gap-1 text-xs font-bold">

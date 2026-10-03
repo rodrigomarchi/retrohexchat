@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
   import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.Input, only: [updown: 1]
 
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
@@ -90,15 +91,17 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
                 <label for="admin-audit-log-last" class="block text-xs font-bold mb-retro-2">
                   {dgettext("dialogs", "Last")}
                 </label>
-                <input
-                  id="admin-audit-log-last"
-                  name="last"
-                  type="number"
-                  min="1"
-                  class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
-                  value={@last}
-                  disabled={not @can_refresh}
-                />
+                <.updown disabled={not @can_refresh}>
+                  <input
+                    id="admin-audit-log-last"
+                    name="last"
+                    type="number"
+                    min="1"
+                    class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+                    value={@last}
+                    disabled={not @can_refresh}
+                  />
+                </.updown>
               </div>
               <div class="flex-1 min-w-[160px]">
                 <label for="admin-audit-log-user" class="block text-xs font-bold mb-retro-2">
@@ -123,7 +126,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
 
           <div
             id="admin-audit-log-output"
-            class="shadow-retro-sunken bg-white min-h-[190px] max-h-[260px] overflow-y-auto retro-scrollbar"
+            class="shadow-retro-sunken bg-white min-h-[190px] max-h-[260px] overflow-y-auto"
           >
             <.retro_table
               id="admin-audit-log-table"

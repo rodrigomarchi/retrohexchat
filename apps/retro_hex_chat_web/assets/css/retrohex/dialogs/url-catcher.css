@@ -1,8 +1,5 @@
 /* URL Catcher is a captured-content viewer: filters and sort stay compact, while
    each URL becomes a readable entry with preview and source metadata. */
-.uc-dialog {
-  scrollbar-width: thin;
-}
 
 .uc-dialog:focus {
   outline: none;
@@ -44,7 +41,6 @@
   overflow-x: auto;
   overflow-y: hidden;
   padding-bottom: 2px;
-  scrollbar-width: thin;
 }
 
 .uc-sort-button {
@@ -121,7 +117,6 @@
 .uc-meta-label {
   margin-right: 3px;
   font-weight: 700;
-  text-transform: uppercase;
 }
 
 .uc-empty-state {

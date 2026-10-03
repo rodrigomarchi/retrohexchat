@@ -49,7 +49,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
     ~H"""
     <div class="flex h-full min-h-0 flex-col gap-[2px]" data-testid="retro-games-library">
       <div
-        class="retro-scrollbar min-h-0 flex-1 overflow-auto bg-white p-retro-10 shadow-retro-sunken"
+        class="min-h-0 flex-1 overflow-auto bg-white p-retro-10 shadow-retro-sunken"
         data-testid="retro-games-icon-window"
       >
         <div
@@ -239,7 +239,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
                 class={[
                   "flex h-8 min-w-0 items-center justify-center gap-retro-3 px-retro-4 text-[11px] font-bold leading-none",
                   "bg-surface shadow-retro-raised hover:bg-hover-bg active:shadow-retro-sunken",
-                  "disabled:pointer-events-none disabled:opacity-60",
+                  "disabled:pointer-events-none",
                   @difficulty == difficulty && "bg-white shadow-retro-sunken"
                 ]}
                 disabled={@status == "playing"}

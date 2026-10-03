@@ -898,8 +898,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     assign(assigns, :item_class, [
       "desktop-launcher-item",
       item.kind == :link && "text-text no-underline",
-      item[:class],
-      item[:disabled] && "desktop-launcher-item--disabled"
+      item[:class]
     ])
   end
 

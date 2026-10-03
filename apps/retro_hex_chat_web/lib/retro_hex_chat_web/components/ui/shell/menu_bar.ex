@@ -314,12 +314,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
       aria-haspopup="true"
       aria-label={@label}
     >
-      <span class={
-        classes([
-          "icon-slot-16",
-          @disabled && "opacity-50"
-        ])
-      }>
+      <span class="icon-slot-16">
         {render_slot(@icon)}
       </span>
       <span class={@label_class} data-menubar-label>{@label}</span>

@@ -113,7 +113,7 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
           )}
         </.dialog_banner>
 
-        <div class="fp-section-grid retro-scrollbar">
+        <div class="fp-section-grid">
           <%!-- Message Flood --%>
           <fieldset class="fp-section">
             <legend class="fp-section-title">{dgettext("dialogs", "Message Flood")}</legend>

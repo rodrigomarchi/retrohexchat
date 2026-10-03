@@ -152,7 +152,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
 
           <div
             id="admin-channels-output"
-            class="shadow-retro-sunken bg-white min-h-[120px] max-h-[190px] overflow-y-auto retro-scrollbar"
+            class="shadow-retro-sunken bg-white min-h-[120px] max-h-[190px] overflow-y-auto"
           >
             <.retro_table
               id="admin-channels-table"

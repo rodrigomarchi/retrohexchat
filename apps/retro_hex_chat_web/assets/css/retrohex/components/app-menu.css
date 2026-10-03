@@ -29,8 +29,13 @@
   background: transparent;
 }
 .menubar-copy-disabled {
-  color: var(--color-muted);
+  color: #808080;
+  text-shadow: 1px 1px 0 #ffffff;
   cursor: default;
+}
+
+.menubar-copy-disabled svg {
+  filter: brightness(0) invert(50%) drop-shadow(1px 1px 0 #ffffff);
 }
 
 /* ── Submenus ──────────────────────────────────────────────── */
@@ -142,8 +147,7 @@
 }
 
 :is(.desktop--stacked, .desktop-window--narrow) .app-menu-bar__mobile-rail-button:focus-visible {
-  outline: 2px solid #000000;
-  outline-offset: 1px;
+  outline-offset: -4px;
 }
 
 :is(.desktop--stacked, .desktop-window--narrow) .app-menu-bar__mobile-menu [data-menubar-dropdown] {
@@ -221,8 +225,11 @@
 }
 
 .desktop--stacked .app-mobile-menu__category:focus-visible {
-  outline: 2px solid #000000;
-  outline-offset: 1px;
+  outline-offset: -4px;
+}
+
+.desktop--stacked .app-mobile-menu__category[data-active="true"]:focus-visible {
+  outline-color: #ffff7f;
 }
 
 .desktop--stacked .app-mobile-menu__category-icon {
@@ -269,7 +276,7 @@
 }
 
 .menubar-copy-disabled:hover {
-  color: var(--color-muted);
+  color: #808080;
   background: transparent;
 }
 

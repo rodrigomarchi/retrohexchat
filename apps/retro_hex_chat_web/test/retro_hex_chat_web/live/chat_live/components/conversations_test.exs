@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     html = render_conv([])
     assert html =~ "#lobby"
     assert html =~ "#elixir"
-    assert html =~ "CHANNELS"
+    assert html =~ "Channels"
     refute html =~ "MY CHANNELS"
     # Row events bubble to the parent unchanged.
     assert html =~ "switch_channel"
@@ -65,9 +65,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     assert html =~ ~s(data-testid="conversations-section-pms")
     assert html =~ ~s(data-testid="conversations-section-popular")
 
-    assert html =~ "CHANNELS"
-    assert html =~ "RECENT PRIVATE MESSAGES"
-    assert html =~ "POPULAR CHANNELS"
+    assert html =~ "Channels"
+    assert html =~ "Recent private messages"
+    assert html =~ "Popular channels"
 
     # The auto-join list is not a section of its own any more: it is a property
     # of the channel rows, so the same room never gets a second row.
@@ -113,7 +113,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
       )
 
     assert html =~ ~s(data-testid="conversations-section-popular")
-    assert html =~ "POPULAR CHANNELS"
+    assert html =~ "Popular channels"
     assert html =~ ~s(data-testid="popular-#retro")
     assert html =~ ~s(data-testid="join-#retro")
     assert html =~ ~s(data-testid="conversations-browse-all")
@@ -129,7 +129,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     # Going there is what a click does, so the row carries the same event an
     # open channel's row carries.
     assert Floki.attribute(row, "phx-click") == ["switch_channel"]
-    assert Floki.find(row, ".chat-conversations-row__signal--saved") != []
+    assert Floki.attribute(row, "class") |> to_string() =~ "chat-conversations-row--saved"
     refute html =~ "hunter2"
   end
 
@@ -188,10 +188,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     channel = Floki.find(document, ~s([data-testid="channel-#elixir"]))
 
     assert alice != []
-    assert Floki.attribute(alice, "class") |> to_string() =~ "text-error"
-
-    assert Floki.find(alice, ".chat-conversations-row__signal--highlight") != []
-    assert Floki.find(channel, ".chat-conversations-row__signal--highlight") != []
+    assert Floki.attribute(alice, "class") |> to_string() =~ "chat-conversations-row--highlight"
+    assert Floki.attribute(channel, "class") |> to_string() =~ "chat-conversations-row--highlight"
   end
 
   test "orders open channels by recent activity before join order" do
@@ -221,8 +219,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     alice = Floki.find(document, ~s([data-testid="pm-alice"]))
 
     assert alice != []
-    refute Floki.attribute(alice, "class") |> to_string() =~ "text-error"
-    assert Floki.find(alice, ".chat-conversations-row__signal--highlight") == []
+    refute Floki.attribute(alice, "class") |> to_string() =~ "chat-conversations-row--highlight"
   end
 
   test "a PM with no tab mounted reads as saved, the way an unopened channel does" do
@@ -239,7 +236,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
 
     assert Floki.attribute(alice, "data-joined") == ["true"]
     assert Floki.attribute(bob, "data-joined") == ["false"]
-    assert Floki.find(bob, ".chat-conversations-row__signal--saved") != []
+    assert Floki.attribute(bob, "class") |> to_string() =~ "chat-conversations-row--saved"
 
     # The chip that used to say "tab" named an internal state and had no
     # counterpart on channels, which carry tabs too.
@@ -257,8 +254,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     document = Floki.parse_document!(html)
     assert [alice] = Floki.find(document, ~s([data-testid="pm-alice"]))
 
-    assert Floki.find(alice, ".chat-conversations-row__signal--highlight") != []
-    assert Floki.find(alice, ".chat-conversations-row__signal--saved") != []
+    classes = Floki.attribute(alice, "class") |> to_string()
+    assert classes =~ "chat-conversations-row--highlight"
+    assert classes =~ "chat-conversations-row--saved"
   end
 
   test "collapses to the rail when not visible and expands when visible" do

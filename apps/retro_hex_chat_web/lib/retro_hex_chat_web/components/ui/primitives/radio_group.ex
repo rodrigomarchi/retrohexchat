@@ -2,8 +2,6 @@ defmodule RetroHexChatWeb.Components.UI.RadioGroup do
   @moduledoc false
   use RetroHexChatWeb.Component
 
-  alias RetroHexChatWeb.Icons
-
   @doc """
   Radio input group component
 
@@ -62,21 +60,18 @@ defmodule RetroHexChatWeb.Components.UI.RadioGroup do
     ~H"""
     <label class={
       classes([
-        "retro-radio has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 inline-grid focus-visible:outline focus-visible:outline-2 focus-visible:outline-black",
+        "retro-radio has-[:disabled]:cursor-not-allowed inline-grid",
         @class
       ])
     }>
       <input
         type="radio"
-        class="hidden peer/radio"
+        class="hidden"
         name={@builder.name}
         value={@value}
         checked={normalize_boolean(@checked) || @builder.value == @value}
         {@rest}
       />
-      <span class="hidden items-center justify-center peer-checked/radio:flex">
-        <Icons.icon_radio_dot class="h-2.5 w-2.5 fill-current text-current" />
-      </span>
     </label>
     """
   end

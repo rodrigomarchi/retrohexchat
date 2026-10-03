@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
   import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.Input, only: [updown: 1]
 
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
@@ -195,7 +196,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
               <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Settings")}</div>
               <div
                 id="admin-server-settings-output"
-                class="shadow-retro-sunken bg-white min-h-[120px] max-h-[180px] overflow-y-auto retro-scrollbar"
+                class="shadow-retro-sunken bg-white min-h-[120px] max-h-[180px] overflow-y-auto"
               >
                 <.retro_table
                   id="admin-server-settings-table"
@@ -229,18 +230,10 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
     ~H"""
     <div>
       <label for={@id} class="block text-xs font-bold mb-retro-2">{@label}</label>
-      <input
-        :if={@type != "textarea"}
-        id={@id}
-        name={@name}
-        type={@type}
-        min={@min}
-        max={@max}
-        value={@value}
-        disabled={@disabled}
-        autocomplete="off"
-        class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
-      />
+      <.updown :if={@type == "number"} disabled={@disabled}>
+        <.setting_input {assigns} />
+      </.updown>
+      <.setting_input :if={@type not in ["number", "textarea"]} {assigns} />
       <textarea
         :if={@type == "textarea"}
         id={@id}
@@ -251,6 +244,22 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
         class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm resize-y"
       >{@value}</textarea>
     </div>
+    """
+  end
+
+  defp setting_input(assigns) do
+    ~H"""
+    <input
+      id={@id}
+      name={@name}
+      type={@type}
+      min={@min}
+      max={@max}
+      value={@value}
+      disabled={@disabled}
+      autocomplete="off"
+      class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+    />
     """
   end
 

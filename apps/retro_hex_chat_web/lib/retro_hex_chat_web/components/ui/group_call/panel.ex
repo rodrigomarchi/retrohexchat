@@ -645,7 +645,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   defp setting_status_card(assigns) do
     ~H"""
     <div class="grid min-w-0 gap-1 border border-border bg-surface px-2 py-1 shadow-retro-sunken">
-      <span class="inline-flex min-w-0 items-center gap-1 text-[10px] font-bold uppercase text-muted-foreground">
+      <span class="inline-flex min-w-0 items-center gap-1 text-[10px] font-bold text-muted-foreground">
         {apply(Icons, @icon, [%{class: "h-4 w-4 shrink-0"}])}
         <span class="truncate">{@label}</span>
       </span>
@@ -732,7 +732,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       aria-live="polite"
       data-testid="group-call-raised-hand-queue"
     >
-      <div class="mb-2 flex items-center justify-between gap-1 text-[10px] font-bold uppercase">
+      <div class="mb-2 flex items-center justify-between gap-1 text-[10px] font-bold">
         <span class="inline-flex min-w-0 items-center gap-1">
           <CallControls.icon_call_raise_hand class="h-4 w-4 shrink-0" />
           <span class="truncate">{dgettext("group_call", "Requests to speak")}</span>

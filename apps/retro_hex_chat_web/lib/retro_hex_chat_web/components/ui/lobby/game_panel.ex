@@ -123,7 +123,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
               <Icons.game_icon game_id={@game.game_id} class="h-6 w-6" />
             </span>
             <div class="min-w-0 flex-1">
-              <p class="text-[10px] font-bold uppercase leading-3 text-muted-foreground">
+              <p class="text-[10px] font-bold leading-3 text-muted-foreground">
                 {dgettext("lobby", "Final Score")}
               </p>
               <p class="truncate text-xs font-bold">{game_name(@games, @game.game_id)}</p>
@@ -242,7 +242,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
             phx-click="propose_game"
             phx-value-game_id={game.id}
             disabled={@game_request != nil}
-            class="shadow-retro-raised flex min-h-[3.75rem] items-center gap-2 bg-secondary p-2 text-left text-xs disabled:opacity-50"
+            class="shadow-retro-raised flex min-h-[3.75rem] items-center gap-2 bg-secondary p-2 text-left text-xs"
             data-testid={"lobby-game-#{game.id}"}
           >
             <span class="shadow-retro-sunken inline-flex h-8 w-8 shrink-0 items-center justify-center bg-canvas">

@@ -37,7 +37,7 @@
 }
 
 .chat-nicklist-stat {
-  @apply flex h-6 min-w-0 items-center justify-start gap-1 overflow-hidden border-b-2 border-border bg-white px-1 text-[10px] font-bold leading-none shadow-retro-status;
+  @apply flex h-6 min-w-0 items-center justify-start gap-1 overflow-hidden bg-white px-1 text-[10px] font-bold leading-none shadow-retro-status;
 }
 
 .chat-nicklist-stat svg {
@@ -49,19 +49,7 @@
 }
 
 .chat-nicklist-stat__label {
-  @apply min-w-0 truncate text-[9px] uppercase leading-none text-muted-foreground;
-}
-
-.chat-nicklist-stat--online {
-  @apply border-success;
-}
-
-.chat-nicklist-stat--away {
-  @apply border-warning;
-}
-
-.chat-nicklist-stat--muted {
-  @apply border-error;
+  @apply min-w-0 truncate text-[10px] leading-none text-muted-foreground;
 }
 
 .chat-nicklist-body {
@@ -77,7 +65,7 @@
 }
 
 .chat-nicklist-section__header {
-  @apply flex h-6 min-w-0 items-center gap-1 overflow-hidden border border-border bg-surface px-1 text-[10px] font-bold uppercase text-muted-foreground shadow-retro-status;
+  @apply flex h-6 min-w-0 items-center gap-1 overflow-hidden border border-border bg-surface px-1 text-[10px] font-bold text-muted-foreground shadow-retro-status;
 }
 
 .chat-nicklist-section__icon {
@@ -92,33 +80,12 @@
   @apply shrink-0 bg-white px-1 text-[10px] font-bold leading-4 text-muted-foreground shadow-retro-status;
 }
 
-.chat-nicklist-section--owner .chat-nicklist-section__header {
-  @apply border-l-2 border-warning bg-warning-bg text-foreground;
-}
-
-.chat-nicklist-section--operator .chat-nicklist-section__header {
-  @apply border-l-2 border-primary text-primary;
-}
-
-.chat-nicklist-section--half-operator .chat-nicklist-section__header {
-  @apply border-l-2 border-success text-success-dark;
-}
-
-.chat-nicklist-section--voiced .chat-nicklist-section__header {
-  @apply border-l-2 border-teal text-teal;
-}
-
-.chat-nicklist-section--bot .chat-nicklist-section__header {
-  @apply border-l-2 border-warning-alt text-foreground;
-}
-
 .chat-nicklist-section__rows {
   @apply mt-px space-y-px;
 }
 
 .chat-nicklist-row {
   @apply flex min-h-[28px] w-full cursor-pointer select-none items-center gap-1 overflow-hidden border border-transparent bg-white px-1 py-[2px] text-[13px] leading-5;
-  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-black;
 }
 
 .chat-nicklist-section__rows [phx-update="stream"] > .chat-nicklist-row:nth-child(even):not([data-current="true"]) {
@@ -129,32 +96,14 @@
   @apply border-border bg-hover-bg;
 }
 
+/* You, drawn as the list's selection: navy across the row, white text. */
 .chat-nicklist-row[data-current="true"] {
-  @apply border-primary bg-hover-bg font-bold text-foreground shadow-retro-sunken;
+  @apply border-transparent bg-selection-bg text-selection-fg;
 }
 
-.chat-nicklist-row[data-status="away"]:not([data-current="true"]) .chat-nicklist-row__nick {
+.chat-nicklist-row:is([data-status="away"], [data-status="offline"]):not([data-current="true"])
+  .chat-nicklist-row__nick {
   @apply text-muted-foreground;
-}
-
-.chat-nicklist-row__signal {
-  @apply h-5 w-1 shrink-0;
-}
-
-.chat-nicklist-row__signal--online {
-  @apply bg-success;
-}
-
-.chat-nicklist-row__signal--away {
-  @apply bg-warning;
-}
-
-.chat-nicklist-row__signal--offline {
-  @apply bg-muted-foreground;
-}
-
-.chat-nicklist-row[data-current="true"] .chat-nicklist-row__signal {
-  @apply bg-primary;
 }
 
 .chat-nicklist-row__role {
@@ -170,7 +119,7 @@
 }
 
 .chat-nicklist-row[data-current="true"] .chat-nicklist-row__nick {
-  @apply text-foreground;
+  @apply text-selection-fg;
 }
 
 .chat-nicklist-row__badge {

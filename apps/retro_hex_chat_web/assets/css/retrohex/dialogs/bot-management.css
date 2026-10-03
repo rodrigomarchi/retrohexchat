@@ -3,9 +3,6 @@
    box, because the window is resizable and a maximised one used to be mostly
    empty grey. On mobile the same two screens stack, with table-like bot data
    converted to list rows so command/channel text is not clipped offscreen. */
-.bm-dialog {
-  scrollbar-width: thin;
-}
 
 .bm-dialog,
 .bm-roster-scroll,
@@ -208,7 +205,6 @@
 
 .bm-roster-state {
   font-size: 11px;
-  text-transform: uppercase;
 }
 
 .bm-roster-desc {
@@ -307,8 +303,6 @@
   margin: 0;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
 
 .bm-subsection-title {
@@ -369,7 +363,6 @@
 
 .bm-cap-state {
   font-size: 11px;
-  text-transform: uppercase;
 }
 
 .bm-cap-state--on {
@@ -612,21 +605,7 @@
   overflow-y: hidden;
   padding: 6px 6px 0;
   scroll-padding-inline: 36px;
-  scrollbar-width: thin;
   -webkit-overflow-scrolling: touch;
-}
-
-.desktop--stacked .bm-main-tabs::-webkit-scrollbar {
-  height: 6px;
-}
-
-.desktop--stacked .bm-main-tabs::-webkit-scrollbar-track {
-  background: #dfdfdf;
-}
-
-.desktop--stacked .bm-main-tabs::-webkit-scrollbar-thumb {
-  background: #808080;
-  border: 1px solid #606060;
 }
 
 .desktop--stacked .bm-tabs-shell::before,

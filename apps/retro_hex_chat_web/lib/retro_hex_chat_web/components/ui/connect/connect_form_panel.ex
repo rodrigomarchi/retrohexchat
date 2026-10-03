@@ -239,7 +239,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
         </.button>
       </div>
 
-      <div class="grid max-h-[430px] gap-retro-6 overflow-y-auto pr-1 retro-scrollbar">
+      <div class="grid max-h-[430px] gap-retro-6 overflow-y-auto pr-1">
         <.trusted_terminal_card
           :for={entry <- @remembered_nicks}
           entry={entry}

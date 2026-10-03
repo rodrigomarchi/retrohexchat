@@ -85,7 +85,7 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
             ])
           }>
             <div class="tm-list-pane min-h-0">
-              <div class="tm-timer-list overflow-y-auto retro-scrollbar">
+              <div class="tm-timer-list overflow-y-auto">
                 <div :if={@rows == []} class="tm-empty-state text-center text-muted-foreground">
                   {dgettext("dialogs", "No active timers. Click Add to schedule one.")}
                 </div>

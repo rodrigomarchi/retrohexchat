@@ -196,7 +196,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
             </form>
           </div>
 
-          <div class="uc-sort-row retro-scrollbar">
+          <div class="uc-sort-row">
             <.sort_button
               label={dgettext("dialogs", "URL")}
               column={:url}
@@ -228,7 +228,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
           </div>
 
           <%!-- URL list --%>
-          <div class={classes(["uc-entry-list flex-1 overflow-y-auto retro-scrollbar", @table_class])}>
+          <div class={classes(["uc-entry-list flex-1 overflow-y-auto", @table_class])}>
             <.list_empty_state
               :if={@entries == []}
               class="uc-empty-state"

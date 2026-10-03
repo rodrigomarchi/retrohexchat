@@ -480,15 +480,6 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
       data-in-call={to_string(@in_call)}
       {@rest}
     >
-      <span
-        class={[
-          "chat-nicklist-row__signal",
-          @status == "online" && "chat-nicklist-row__signal--online",
-          @status == "away" && "chat-nicklist-row__signal--away",
-          @status == "offline" && "chat-nicklist-row__signal--offline"
-        ]}
-        aria-hidden="true"
-      />
       <span class="chat-nicklist-row__role" aria-hidden="true">
         {role_icon(assigns)}
       </span>

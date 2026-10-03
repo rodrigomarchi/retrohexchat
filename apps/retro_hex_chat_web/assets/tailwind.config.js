@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-const plugin = require("tailwindcss/plugin");
 
 /*
  * RetroHexChat Tailwind theme.
@@ -240,95 +239,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    /* Retro form controls — Win98-style checkbox and radio */
-    plugin(function ({ addComponents }) {
-      addComponents({
-        ".retro-checkbox": {
-          appearance: "none",
-          width: "13px",
-          height: "13px",
-          background: "#ffffff",
-          boxShadow:
-            "inset -1px -1px #ffffff, inset 1px 1px #808080, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a",
-          cursor: "pointer",
-          "&:checked": {
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 7 7'%3E%3Cpath d='M0 3L1 3L3 5L6 1L7 2L3 7Z' fill='%23000'/%3E%3C/svg%3E\")",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          },
-          "&:disabled": {
-            cursor: "not-allowed",
-            opacity: "0.5",
-          },
-        },
-        ".retro-radio": {
-          appearance: "none",
-          width: "12px",
-          height: "12px",
-          borderRadius: "50%",
-          background: "#ffffff",
-          boxShadow:
-            "inset -1px -1px #ffffff, inset 1px 1px #808080, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a",
-          cursor: "pointer",
-          "&:checked": {
-            backgroundImage:
-              "radial-gradient(circle at center, #000000 2px, transparent 3px)",
-          },
-          "&:disabled": {
-            cursor: "not-allowed",
-            opacity: "0.5",
-          },
-        },
-      });
-    }),
-    /* Retro scrollbar — Win98-style with SVG arrow buttons */
-    plugin(function ({ addBase }) {
-      addBase({
-        ".retro-scrollbar::-webkit-scrollbar": {
-          width: "16px",
-        },
-        ".retro-scrollbar::-webkit-scrollbar:horizontal": {
-          height: "17px",
-        },
-        ".retro-scrollbar::-webkit-scrollbar-corner": {
-          background: "#dfdfdf",
-        },
-        ".retro-scrollbar::-webkit-scrollbar-track": {
-          backgroundImage:
-            "url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='2' height='2' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M1 0H0v1h1v1h1V1H1V0z' fill='silver'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M2 0H1v1H0v1h1V1h1V0z' fill='%23fff'/%3E%3C/svg%3E\")",
-        },
-        ".retro-scrollbar::-webkit-scrollbar-thumb": {
-          backgroundColor: "#dfdfdf",
-          boxShadow:
-            "inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf",
-        },
-        ".retro-scrollbar::-webkit-scrollbar-button:horizontal:start:decrement, .retro-scrollbar::-webkit-scrollbar-button:horizontal:end:increment, .retro-scrollbar::-webkit-scrollbar-button:vertical:start:decrement, .retro-scrollbar::-webkit-scrollbar-button:vertical:end:increment":
-          {
-            display: "block",
-          },
-        ".retro-scrollbar::-webkit-scrollbar-button:vertical:start": {
-          height: "17px",
-          backgroundImage:
-            "url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='16' height='17' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M15 0H0v16h1V1h14V0z' fill='%23DFDFDF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M2 1H1v14h1V2h12V1H2z' fill='%23fff'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M16 17H0v-1h15V0h1v17z' fill='%23000'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M15 1h-1v14H1v1h14V1z' fill='gray'/%3E%3Cpath fill='silver' d='M2 2h12v13H2z'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M8 6H7v1H6v1H5v1H4v1h7V9h-1V8H9V7H8V6z' fill='%23000'/%3E%3C/svg%3E\")",
-        },
-        ".retro-scrollbar::-webkit-scrollbar-button:vertical:end": {
-          height: "17px",
-          backgroundImage:
-            "url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='16' height='17' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M15 0H0v16h1V1h14V0z' fill='%23DFDFDF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M2 1H1v14h1V2h12V1H2z' fill='%23fff'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M16 17H0v-1h15V0h1v17z' fill='%23000'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M15 1h-1v14H1v1h14V1z' fill='gray'/%3E%3Cpath fill='silver' d='M2 2h12v13H2z'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M11 6H4v1h1v1h1v1h1v1h1V9h1V8h1V7h1V6z' fill='%23000'/%3E%3C/svg%3E\")",
-        },
-        ".retro-scrollbar::-webkit-scrollbar-button:horizontal:start": {
-          width: "16px",
-          backgroundImage:
-            "url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='16' height='17' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M15 0H0v16h1V1h14V0z' fill='%23DFDFDF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M2 1H1v14h1V2h12V1H2z' fill='%23fff'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M16 17H0v-1h15V0h1v17z' fill='%23000'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M15 1h-1v14H1v1h14V1z' fill='gray'/%3E%3Cpath fill='silver' d='M2 2h12v13H2z'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M9 4H8v1H7v1H6v1H5v1h1v1h1v1h1v1h1V4z' fill='%23000'/%3E%3C/svg%3E\")",
-        },
-        ".retro-scrollbar::-webkit-scrollbar-button:horizontal:end": {
-          width: "16px",
-          backgroundImage:
-            "url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='16' height='17' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M15 0H0v16h1V1h14V0z' fill='%23DFDFDF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M2 1H1v14h1V2h12V1H2z' fill='%23fff'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M16 17H0v-1h15V0h1v17z' fill='%23000'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M15 1h-1v14H1v1h14V1z' fill='gray'/%3E%3Cpath fill='silver' d='M2 2h12v13H2z'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M7 4H6v7h1v-1h1V9h1V8h1V7H9V6H8V5H7V4z' fill='%23000'/%3E%3C/svg%3E\")",
-        },
-      });
-    }),
-  ],
+  plugins: [],
 };

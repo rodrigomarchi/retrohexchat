@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.Icons.RegistryTest do
       # A shrinking registry silently drops icons from the sprite and leaves
       # their <use> dangling, so the count is pinned. Raise it deliberately
       # when you add an icon.
-      assert length(Registry.all()) >= 344
+      assert length(Registry.all()) >= 343
     end
   end
 

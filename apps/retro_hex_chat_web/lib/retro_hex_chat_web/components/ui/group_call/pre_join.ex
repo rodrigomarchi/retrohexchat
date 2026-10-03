@@ -289,7 +289,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
         name={@name}
         value="true"
         checked={@checked}
-        class="retro-checkbox shrink-0"
+        class="shrink-0"
         data-testid={@testid}
       />
       <span class="inline-flex min-w-0 items-center gap-1">
@@ -316,7 +316,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
       </span>
       <select
         name={@name}
-        class="h-7 w-full min-w-0 bg-white px-1 text-xs shadow-retro-sunken focus:outline focus:outline-1 focus:outline-foreground"
+        class="h-7 w-full min-w-0 bg-white px-1 text-xs shadow-retro-sunken"
         data-testid={@testid}
       >
         <option :for={{value, label} <- @options} value={value} selected={value == @value}>

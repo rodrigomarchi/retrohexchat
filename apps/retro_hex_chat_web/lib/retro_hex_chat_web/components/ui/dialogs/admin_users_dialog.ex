@@ -159,7 +159,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
 
           <div
             id="admin-users-output"
-            class="shadow-retro-sunken bg-white min-h-[140px] max-h-[210px] overflow-y-auto retro-scrollbar"
+            class="shadow-retro-sunken bg-white min-h-[140px] max-h-[210px] overflow-y-auto"
           >
             <.retro_table
               id="admin-users-table"
@@ -358,7 +358,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
             <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Ban list")}</div>
             <div
               id="admin-users-banlist"
-              class="shadow-retro-sunken bg-white min-h-[84px] max-h-[150px] overflow-y-auto retro-scrollbar"
+              class="shadow-retro-sunken bg-white min-h-[84px] max-h-[150px] overflow-y-auto"
             >
               <.retro_table
                 id="admin-users-banlist-table"

@@ -1099,32 +1099,32 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       <div :if={!@operator} class="cc-settings-panel shadow-retro-field bg-white p-2">
         <p class="text-xs font-bold mb-2">{dgettext("dialogs", "Channel Modes")}:</p>
         <div class="space-y-1">
-          <label class="inline-flex items-center gap-2 text-xs opacity-50">
+          <label class="inline-flex items-center gap-2 text-xs">
             <input type="checkbox" disabled checked={@modes[:moderated] || false} />
             {dgettext("dialogs", "Moderated (+m)")}
           </label>
         </div>
         <div class="space-y-1 mt-1">
-          <label class="inline-flex items-center gap-2 text-xs opacity-50">
+          <label class="inline-flex items-center gap-2 text-xs">
             <input type="checkbox" disabled checked={@modes[:invite_only] || false} />
             {dgettext("dialogs", "Invite Only (+i)")}
           </label>
         </div>
         <div class="space-y-1 mt-1">
-          <label class="inline-flex items-center gap-2 text-xs opacity-50">
+          <label class="inline-flex items-center gap-2 text-xs">
             <input type="checkbox" disabled checked={@modes[:topic_lock] || false} />
             {dgettext("dialogs", "Topic Lock (+t)")}
           </label>
         </div>
         <div class="mt-1">
-          <label class="inline-flex items-center gap-2 text-xs opacity-50">
+          <label class="inline-flex items-center gap-2 text-xs">
             <input type="checkbox" disabled checked={@modes[:key] != nil} />
             {dgettext("dialogs", "Key (+k)")}
             <span :if={@modes[:key]}>({dgettext("dialogs", "set")})</span>
           </label>
         </div>
         <div class="mt-1">
-          <label class="inline-flex items-center gap-2 text-xs opacity-50">
+          <label class="inline-flex items-center gap-2 text-xs">
             <input type="checkbox" disabled checked={@modes[:limit] != nil} />
             {dgettext("dialogs", "Limit (+l)")}
             <span :if={@modes[:limit]}>({@modes[:limit]})</span>

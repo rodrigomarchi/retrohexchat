@@ -137,7 +137,7 @@ defmodule RetroHexChatWeb.Components.UI.Sheet do
           <% else %>
             <button
               type="button"
-              class="ring-offset-background absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-ring focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:pointer-events-none"
+              class="ring-offset-background absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 disabled:pointer-events-none"
               phx-click={hide_sheet(@id, @side)}
             >
               <Icons.icon_close_thin class="h-4 w-4" />

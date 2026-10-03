@@ -268,7 +268,7 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
       <%!-- Entries list --%>
       <div class="cm-list-pane flex-1 space-y-retro-4">
         <div
-          class="cm-entry-list max-h-[220px] overflow-y-auto retro-scrollbar"
+          class="cm-entry-list max-h-[220px] overflow-y-auto"
           aria-label={dgettext("dialogs", "Custom menu entries")}
         >
           <div :if={@entries == []} class="cm-empty-state text-center text-muted-foreground">

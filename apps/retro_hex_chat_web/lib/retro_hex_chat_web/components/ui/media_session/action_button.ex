@@ -33,7 +33,6 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.ActionButton do
   def media_session_action_button_class(tone, extra \\ nil) do
     classes([
       "inline-flex h-8 shrink-0 items-center justify-center gap-1 bg-surface px-2 text-[10px] font-bold text-foreground shadow-retro-raised",
-      "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
       tone == "danger" && "bg-destructive text-destructive-foreground",
       extra
     ])

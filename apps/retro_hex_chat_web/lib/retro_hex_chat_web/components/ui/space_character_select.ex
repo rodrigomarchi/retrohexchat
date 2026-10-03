@@ -79,7 +79,6 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterSelect do
             aria-pressed={to_string(id == @selected)}
             class={[
               "flex flex-col items-center gap-1 p-2 bg-surface hover:bg-surface-hover",
-              "focus:outline-none focus-visible:shadow-retro-sunken",
               if(id == @selected,
                 do: "shadow-retro-sunken bg-surface-hover",
                 else: "shadow-retro-raised"

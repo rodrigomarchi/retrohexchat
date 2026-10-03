@@ -164,7 +164,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
           </div>
 
           <%!-- Entries list --%>
-          <div class="nl-entry-list flex-1 overflow-y-auto retro-scrollbar">
+          <div class="nl-entry-list flex-1 overflow-y-auto">
             <div :if={@entries == []} class="nl-empty-state text-center text-muted-foreground">
               {dgettext("dialogs", "No notify nicks yet. Add a nick to track online status.")}
             </div>

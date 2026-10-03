@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.SectionNav do
           type="button"
           class={
             classes([
-              "media-session-section-nav__item inline-flex h-8 shrink-0 items-center justify-center gap-1 px-2 text-xs font-bold shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
+              "media-session-section-nav__item inline-flex h-8 shrink-0 items-center justify-center gap-1 px-2 text-xs font-bold shadow-retro-raised",
               @button_class,
               item.active && "bg-primary text-primary-foreground",
               !item.active && "bg-surface text-foreground"

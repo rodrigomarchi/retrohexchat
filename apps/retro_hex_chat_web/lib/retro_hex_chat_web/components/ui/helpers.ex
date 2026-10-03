@@ -174,7 +174,7 @@ defmodule RetroHexChatWeb.ComponentHelpers do
     variation_classes = Enum.map_join(variants, " ", fn {key, value} -> @variants[key][value] end)
 
     shared_classes =
-      "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-black disabled:pointer-events-none disabled:opacity-50"
+      "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium disabled:pointer-events-none"
 
     "#{shared_classes} #{variation_classes}"
   end

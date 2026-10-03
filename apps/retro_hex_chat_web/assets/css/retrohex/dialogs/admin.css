@@ -6,9 +6,6 @@
    work below is done once instead of per window.
 
    Apply `adm-dialog` to the panel root and `adm-scroll` to its scroll region. */
-.adm-dialog {
-  scrollbar-width: thin;
-}
 
 .adm-scroll {
   overscroll-behavior: contain;
@@ -27,10 +24,6 @@
 .adm-dialog [data-testid="admin-inline-result"] {
   min-width: 0;
   overflow-wrap: anywhere;
-}
-
-.adm-dialog pre {
-  scrollbar-width: thin;
 }
 
 /* ── Stacked (mobile) ──────────────────────────────────────── */

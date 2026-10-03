@@ -20,6 +20,9 @@ const ALLOWED_DYNAMIC_IMPORT_FILES = new Set([
   // before importing anything, so a page with RUM off never fetches the 262 KB
   // Faro SDK, and a page with it on waits for idle first.
   "js/faro_entry.js",
+  // Tooltips and up-down arrows: chrome nobody needs for the first paint, kept
+  // out of app.js so the critical bundle pays nothing for them.
+  "js/lib/ui/retro_chrome_loader.js",
 ]);
 
 const ALLOWED_LAZY_FACADE_FILES = new Set([

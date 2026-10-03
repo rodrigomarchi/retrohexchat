@@ -1,9 +1,6 @@
 /* Custom Menus is a single mobile-first editor surface: the same entry-list
    item appears on every viewport, while available space decides whether the
    edit form sits beside or below the list. */
-.cm-dialog {
-  scrollbar-width: thin;
-}
 
 .cm-dialog:focus {
   outline: none;
@@ -106,21 +103,7 @@
   overflow-y: hidden;
   padding: 6px 6px 0;
   scroll-padding-inline: 36px;
-  scrollbar-width: thin;
   -webkit-overflow-scrolling: touch;
-}
-
-.desktop--stacked .cm-main-tabs::-webkit-scrollbar {
-  height: 6px;
-}
-
-.desktop--stacked .cm-main-tabs::-webkit-scrollbar-track {
-  background: #dfdfdf;
-}
-
-.desktop--stacked .cm-main-tabs::-webkit-scrollbar-thumb {
-  background: #808080;
-  border: 1px solid #606060;
 }
 
 .desktop--stacked .cm-tabs-shell::before,

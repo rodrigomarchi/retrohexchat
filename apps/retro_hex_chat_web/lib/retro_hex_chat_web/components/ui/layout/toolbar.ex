@@ -42,8 +42,8 @@ defmodule RetroHexChatWeb.Components.UI.Toolbar do
         classes([
           "inline-flex items-center justify-center p-0 cursor-pointer",
           "border border-transparent hover:shadow-retro-raised",
-          "active:shadow-retro-sunken focus:outline-none",
-          "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none",
+          "active:shadow-retro-sunken",
+          "disabled:cursor-not-allowed disabled:hover:shadow-none",
           if(@active, do: "shadow-retro-sunken bg-hover-bg", else: "bg-surface"),
           size_classes(@variant),
           @class

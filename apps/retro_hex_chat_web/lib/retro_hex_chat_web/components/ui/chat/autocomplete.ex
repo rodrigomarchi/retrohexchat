@@ -39,7 +39,7 @@ defmodule RetroHexChatWeb.Components.UI.Autocomplete do
       id="autocomplete-dropdown"
       class={
         classes([
-          "shadow-retro-window bg-surface border border-border max-h-[250px] overflow-y-auto retro-scrollbar",
+          "shadow-retro-window bg-surface border border-border max-h-[250px] overflow-y-auto",
           @class
         ])
       }

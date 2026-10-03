@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ActiveSpeakerRing do
     ~H"""
     <span
       :if={@active}
-      class="inline-flex h-4 items-center gap-1 border border-primary bg-primary/10 px-1 text-[9px] font-bold uppercase leading-none text-primary"
+      class="inline-flex h-4 items-center gap-1 border border-primary bg-primary/10 px-1 text-[9px] font-bold leading-none text-primary"
       title={dgettext("group_call", "Speaking now")}
       aria-label={dgettext("group_call", "Speaking now")}
       data-testid={"group-call-participant-active-speaker-#{@participant_id}"}

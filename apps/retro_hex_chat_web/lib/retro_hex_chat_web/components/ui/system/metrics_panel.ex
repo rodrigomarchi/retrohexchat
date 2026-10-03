@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.Components.UI.System.MetricsPanel do
         </button>
       </nav>
 
-      <div class="retro-scrollbar min-h-0 flex-1 overflow-y-auto">
+      <div class="min-h-0 flex-1 overflow-y-auto">
         <p
           :if={@charts == []}
           class="bg-white p-2 text-xs shadow-retro-sunken"

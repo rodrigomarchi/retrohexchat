@@ -678,12 +678,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       }
       {@rest}
     >
-      <span class={
-        classes([
-          "icon-slot-16",
-          @disabled && "opacity-50"
-        ])
-      }>
+      <span class="icon-slot-16">
         {render_slot(@icon)}
       </span>
       <span class="truncate">{@label}</span>
@@ -735,12 +730,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
         data-testid={@testid}
         aria-haspopup="true"
       >
-        <span class={
-          classes([
-            "icon-slot-16",
-            @muted && "opacity-50"
-          ])
-        }>
+        <span class="icon-slot-16">
           {render_slot(@icon)}
         </span>
         <span class="flex-1 truncate">{@label}</span>

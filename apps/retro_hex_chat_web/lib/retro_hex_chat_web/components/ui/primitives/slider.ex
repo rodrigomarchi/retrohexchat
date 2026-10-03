@@ -3,7 +3,8 @@ defmodule RetroHexChatWeb.Components.UI.Slider do
   use RetroHexChatWeb.Component
 
   @doc """
-  Render Slider range input
+  Renders a range input, drawn as the Win98 trackbar by the global
+  `input[type="range"]` rules.
 
   ## Example
 
@@ -25,6 +26,7 @@ defmodule RetroHexChatWeb.Components.UI.Slider do
   attr :step, :integer, default: 1
   attr :rest, :global
 
+  @spec slider(map()) :: Phoenix.LiveView.Rendered.t()
   def slider(assigns) do
     assigns =
       prepare_assign(assigns)
@@ -37,43 +39,12 @@ defmodule RetroHexChatWeb.Components.UI.Slider do
       |> Map.put(:step, normalize_integer(assigns[:step]))
 
     ~H"""
-    <div
-      class={classes(["retro-slider relative w-full", @class])}
-      style={"--retro-slider-val: #{(@value - @min)/(@max - @min) * 100}"}
-    >
-      <span class={["relative flex w-full touch-none select-none items-center"]}>
-        <span
-          data-orientation="horizontal"
-          class="relative h-2 w-full grow overflow-hidden shadow-retro-sunken bg-surface"
-        >
-          <span
-            data-orientation="horizontal"
-            class="absolute left-0 h-full bg-primary w-[calc(var(--retro-slider-val)*1%)]"
-          >
-          </span>
-        </span>
-        <span class="absolute left-[calc(var(--retro-slider-val)*1%)] -translate-x-1/2">
-          <span
-            role="slider"
-            aria-valuemin={@min}
-            aria-valuemax={@max}
-            aria-orientation="horizontal"
-            data-orientation="horizontal"
-            tabindex="0"
-            class="block h-5 w-5 shadow-retro-raised bg-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-black disabled:pointer-events-none disabled:opacity-50"
-          >
-          </span>
-        </span>
-      </span>
-      <input
-        type="range"
-        class="absolute top-0 -left-2 z-1 w-[calc(100%+20px)] appearance-none cursor-pointer opacity-0"
-        phx-update="ignore"
-        oninput={"this.parentNode.style.setProperty('--retro-slider-val', (this.value - #{@min})/#{@max - @min}*100); return true;"}
-        {%{min: @min, max: @max, value: @value, step: @step, id: @id, name: @name}}
-        {@rest}
-      />
-    </div>
+    <input
+      type="range"
+      class={classes(["w-full", @class])}
+      {%{min: @min, max: @max, value: @value, step: @step, id: @id, name: @name}}
+      {@rest}
+    />
     """
   end
 end

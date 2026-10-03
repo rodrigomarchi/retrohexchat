@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
     <div
       id={"#{@id}-content"}
       data-testid="cheatsheet-dialog"
-      class="cs-panel retro-scrollbar"
+      class="cs-panel"
     >
       <div :if={@bindings == []} class="cs-empty-state">
         {dgettext("dialogs", "No shortcuts defined.")}

@@ -146,7 +146,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
             ])
           }>
             <div class="ar-list-pane min-h-0">
-              <div class="ar-rule-list overflow-y-auto retro-scrollbar">
+              <div class="ar-rule-list overflow-y-auto">
                 <div :if={@rules == []} class="ar-empty-state text-center text-muted-foreground">
                   {dgettext("dialogs", "No auto-respond rules configured. Click Add to create one.")}
                 </div>

@@ -1,9 +1,6 @@
 /* Shared by the three address-book windows (Address Book, Nick Colors, Ignore
    List): table-backed lists with window-scoped sub-dialogs. Desktop keeps the
    compact table treatment; stacked mobile turns rows into readable cardlets. */
-.ab-dialog {
-  scrollbar-width: thin;
-}
 
 .ab-dialog .tabs-content {
   min-height: 0;

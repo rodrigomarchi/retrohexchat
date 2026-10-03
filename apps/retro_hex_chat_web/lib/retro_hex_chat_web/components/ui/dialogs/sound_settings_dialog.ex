@@ -198,7 +198,7 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
             on_toggle={@on_push_toggle}
           />
 
-          <div class={classes(["ss-event-list flex-1 overflow-y-auto retro-scrollbar", @table_class])}>
+          <div class={classes(["ss-event-list flex-1 overflow-y-auto", @table_class])}>
             <article
               :for={event <- @event_order}
               class="ss-event-entry"

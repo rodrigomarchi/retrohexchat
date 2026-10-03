@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.Toggle do
       type="button"
       class={
         classes([
-          "inline-flex items-center justify-center text-sm font-medium shadow-retro-raised hover:bg-muted hover:text-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-black disabled:pointer-events-none disabled:opacity-50 has-[:checked]:shadow-retro-sunken has-[:checked]:bg-accent has-[:checked]:text-accent-foreground",
+          "inline-flex items-center justify-center text-sm font-medium shadow-retro-raised hover:bg-muted hover:text-muted-foreground disabled:pointer-events-none has-[:checked]:shadow-retro-sunken has-[:checked]:bg-accent has-[:checked]:text-accent-foreground",
           @variant_class,
           @class
         ])

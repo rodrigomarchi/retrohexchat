@@ -29,9 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.Space.ConversationEntry do
         phx-click="space_open"
         disabled={!@identified}
         class={[
-          "conversation-toolbar-button flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs",
-          "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-          !@identified && "opacity-60"
+          "conversation-toolbar-button flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs"
         ]}
         title={title(@identified)}
         data-testid="space-open"

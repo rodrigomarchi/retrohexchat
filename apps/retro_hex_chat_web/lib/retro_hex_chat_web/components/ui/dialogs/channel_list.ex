@@ -79,7 +79,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
       </form>
 
       <%!-- Channel list --%>
-      <div class="cl-channel-list retro-scrollbar">
+      <div class="cl-channel-list">
         <%= if @loading do %>
           <div class="cl-loading-state">
             <.activity_indicator
