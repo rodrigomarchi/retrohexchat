@@ -5,12 +5,24 @@
 [![Elixir](https://img.shields.io/badge/Elixir-1.17+-4B275F?logo=elixir)](https://elixir-lang.org)
 [![Phoenix](https://img.shields.io/badge/Phoenix-1.8-FF6F00?logo=phoenix)](https://phoenixframework.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Live](https://img.shields.io/badge/live-retrohexchat.app-008080)](https://retrohexchat.app)
+
+**[▶ Open it in your browser — retrohexchat.app](https://retrohexchat.app)** · no install, no sign-up, pick a nick and join.
+
+[![RetroHexChat — a Windows 98 desktop with two chat windows connected over the network](apps/retro_hex_chat_web/priv/static/images/social/retrohexchat_og.png)](https://retrohexchat.app)
+
+| Try it | |
+|---|---|
+| [Chat](https://retrohexchat.app/connect) | Join a channel with just a nickname |
+| [Games](https://retrohexchat.app/games) | The arcade and the multiplayer catalog |
+| [mIRC commands](https://retrohexchat.app/mirc-commands) | The classic `/` commands that work here |
+| [mIRC online](https://retrohexchat.app/mirc-online) · [IRC chat](https://retrohexchat.app/irc-chat) | What it is, for people coming from mIRC |
 
 ---
 
 RetroHexChat is a **fully-featured IRC client built with Elixir + Phoenix LiveView**, styled after classic mIRC and the Windows 98 desktop era. Not ironically. Just faithfully.
 
-It has 54 slash commands, multi-user presence, NickServ/ChanServ services, virtual Spaces, private P2P calls and files, channel conferences via a self-hosted SFU, 34 multiplayer games, and 18 classic single-player games running via WASM — all inside a single chat interface with zero JavaScript frameworks.
+It has mIRC-style slash commands, multi-user presence, NickServ/ChanServ services, virtual Spaces, private P2P calls and files, channel conferences via a self-hosted SFU, two-player games over P2P, and classic single-player games running via WASM — all inside a single chat interface with zero JavaScript frameworks.
 
 ---
 
@@ -94,7 +106,7 @@ Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are u
 
 ### UI & Keyboard
 
-- **Command palette** — `Ctrl+/` to browse all 54 slash commands with descriptions
+- **Command palette** — `Ctrl+/` to browse every slash command with descriptions
 - **Nick completion** — `Tab` autocomplete in message input
 - **Message history** — `↑`/`↓` to navigate previous messages
 - **Context menu** — Right-click users: Query, Whois, Kick, Ban, Op, Voice, Ignore, Nick Color, Contacts
@@ -116,7 +128,7 @@ Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are u
 - **Channel conferences** — Group audio/video calls live inside channels with pre-join devices, screen sharing, reactions, hand raise, layouts, and moderator controls
 - **Self-hosted SFU** — Private calls are P2P, while channel conferences route media through your own server so group calls remain practical
 
-### Arcade (18 Single-player + 34 Multiplayer)
+### Arcade (single-player + multiplayer)
 
 Single-player games run via WebAssembly engines directly in the browser. No installs, no plugins.
 
@@ -136,13 +148,13 @@ Single-player games run via WebAssembly engines directly in the browser. No inst
 
 **Other** — Wolfenstein 3D, Half-Life: Uplink, and ScummVM classic point-and-click adventures
 
-**Multiplayer game sessions** — Invite another user via P2P, choose from 34 two-player games, and sync gameplay over WebRTC DataChannel. Bilateral accept flow and time-limited tokens.
+**Multiplayer game sessions** — Invite another user via P2P, choose a two-player game, and sync gameplay over WebRTC DataChannel. Bilateral accept flow and time-limited tokens.
 
 ---
 
 ## Architecture
 
-RetroHexChat is a **Phoenix umbrella application** with strict compile-time separation between domain logic and web concerns. The `retro_hex_chat` app has zero Phoenix dependencies.
+RetroHexChat is a **Phoenix umbrella application** with strict separation between domain logic and web concerns. The `retro_hex_chat` app carries no web layer — no LiveView, controller, route or endpoint — and uses Phoenix only as a library (PubSub, Token, Presence).
 
 ```
 ┌──────────────────────────────────────────────────────────┐
@@ -183,7 +195,7 @@ RetroHexChat.Supervisor (:one_for_one)
 │
 ├── Repo                         Ecto database connection pool
 ├── Phoenix.PubSub               Message broadcast backbone
-│     topics: "channel:#{name}" · "user:#{nick}" · "pm:#{ids}" · "game:#{token}"
+│     topics: "channel:#{name}" · "user:#{nick}" · "game:#{token}"
 │
 ├── Registry (ChannelRegistry)   Named process lookup
 ├── Channels.Supervisor          DynamicSupervisor — spawns/terminates on demand
@@ -223,7 +235,7 @@ RetroHexChat.Supervisor (:one_for_one)
 | Auth | bcrypt\_elixir (passwords), Plug.Crypto (favorites encryption) |
 | Observability | PromEx `/metrics` for Prometheus, with core Ecto metrics captured before `Repo` startup, plus OpenTelemetry OTLP traces for Tempo |
 | Assets | esbuild + Tailwind CSS |
-| JS Testing | Vitest + jsdom (706 tests, 62 files) |
+| JS Testing | Vitest + jsdom |
 | Static Analysis | Credo (strict), Dialyxir, mix format, ESLint + Prettier |
 | Testing | ExUnit, Mox, ExMachina, StreamData, Floki, Playwright (E2E) |
 
@@ -241,8 +253,8 @@ RetroHexChat.Supervisor (:one_for_one)
 ### Setup
 
 ```bash
-git clone https://github.com/rodrigomarchi/retro_hex_chat.git
-cd retro_hex_chat
+git clone https://github.com/rodrigomarchi/retrohexchat.git
+cd retrohexchat
 
 # Generate a dev secret key
 mix phx.gen.secret
@@ -406,7 +418,7 @@ RHC_CHANNEL_EXPIRY_DAYS=90   # optional; defaults to 90
 ```
 retro_hex_chat/
 ├── apps/
-│   ├── retro_hex_chat/              # Domain (pure Elixir, no Phoenix deps)
+│   ├── retro_hex_chat/              # Domain (no web layer)
 │   │   ├── lib/retro_hex_chat/
 │   │   │   ├── accounts/            # Sessions, nickname validation
 │   │   │   ├── channels/            # GenServer per channel, modes, policy
@@ -453,7 +465,7 @@ This project follows the governing principles documented in `docs/AGENT-GUIDE.md
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for setup instructions and PR guidelines.
 
-Bug reports and feature requests go in [Issues](https://github.com/rodrigomarchi/retro_hex_chat/issues).
+Bug reports and feature requests go in [Issues](https://github.com/rodrigomarchi/retrohexchat/issues).
 
 Security vulnerabilities should be reported privately — see [SECURITY.md](SECURITY.md).
 
