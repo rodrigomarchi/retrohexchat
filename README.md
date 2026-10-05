@@ -9,7 +9,7 @@
 
 **[▶ Open it in your browser — retrohexchat.app](https://retrohexchat.app)** · no install, no sign-up, pick a nick and join.
 
-[![RetroHexChat — a Windows 98 desktop with two chat windows connected over the network](apps/retro_hex_chat_web/priv/static/images/social/retrohexchat_og.png)](https://retrohexchat.app)
+[![RetroHexChat in production: a channel conversation in the chat window, with the Arcade and the Retro Games folder open on the Windows 98 desktop](docs/images/readme-hero.webp)](https://retrohexchat.app)
 
 | Try it | |
 |---|---|
