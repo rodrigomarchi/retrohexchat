@@ -32,6 +32,7 @@ defmodule RetroHexChat.Channels.Server do
   alias RetroHexChat.Observability
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.ChanServ
+  alias RetroHexChat.Services.Policy, as: ServicesPolicy
   alias RetroHexChat.Services.Queries, as: ServiceQueries
   alias RetroHexChat.Topics
 
@@ -244,7 +245,18 @@ defmodule RetroHexChat.Channels.Server do
       end
     )
   catch
-    :exit, _reason -> {:error, dgettext("channels", "Channel not found")}
+    # The room stopped between the lookup and the call: it is gone, as above.
+    :exit, {:noproc, _call} ->
+      {:error, dgettext("channels", "Channel not found")}
+
+    # A timeout or a crash is not a missing room. The switch may even have
+    # flipped after the caller stopped waiting, so the founder is told to look
+    # rather than told something false.
+    :exit, reason ->
+      Logger.error("Public archive switch failed for #{channel_name}: #{inspect(reason)}")
+
+      {:error,
+       dgettext("channels", "The archive switch did not answer. Check its state and try again.")}
   end
 
   @doc """
@@ -623,7 +635,8 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   def handle_call({:set_public_archive, nickname, enabled?}, _from, state) do
-    with :ok <- founder?(state.name, nickname),
+    with :ok <- identified?(nickname),
+         :ok <- founder?(state.name, nickname),
          {:ok, _channel} <- toggle_archive(state.name, enabled?) do
       broadcast(
         state.name,
@@ -1639,6 +1652,17 @@ defmodule RetroHexChat.Channels.Server do
     case ScheduledEvents.get(event_id) do
       %{created_by: created_by} -> created_by
       nil -> nickname
+    end
+  end
+
+  # Founder status is read by nickname, and a registered nickname can be held
+  # for a minute before NickServ enforces it. Publishing a room to search
+  # engines is not something to allow in that minute.
+  defp identified?(nickname) do
+    if ServicesPolicy.identified?(nickname) do
+      :ok
+    else
+      {:error, dgettext("channels", "Identify with NickServ before changing the public archive")}
     end
   end
 

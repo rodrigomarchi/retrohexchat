@@ -279,11 +279,20 @@ defmodule RetroHexChat.Chat.ArchiveTest do
       assert page.items == []
     end
 
-    test "a deleted line is not a cursor", ctx do
+    # The page after a line keeps its address when the line is withdrawn: the
+    # line disappears from its own page, and the next page still opens after it.
+    test "a deleted line still opens the page after it", ctx do
       gone = Enum.at(ctx.said, 2)
       {:ok, _} = Queries.soft_delete(gone, DateTime.utc_now())
 
-      assert %{page: %{items: []}} = Archive.page_for(ctx.channel, ctx.day, after: gone.id)
+      %{page: page} = Archive.page_for(ctx.channel, ctx.day, after: gone.id)
+
+      assert Enum.map(page.items, & &1.text) == ["line 4", "line 5"]
+    end
+
+    test "only the canonical spelling of a day is a day", ctx do
+      assert %{page: %{items: []}} = Archive.page_for(ctx.channel, "+" <> ctx.day)
+      refute Archive.page_for(ctx.channel, ctx.day).page.items == []
     end
   end
 

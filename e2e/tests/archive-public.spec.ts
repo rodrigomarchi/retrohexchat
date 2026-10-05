@@ -1,7 +1,7 @@
 /**
  * @section PW - Public Pages, Landing, And Showcase
  * @flow PW20 [done] A channel's public archive is reachable, indexable, and disappears when the founder switches it off (features P1)
- * @flow PW21 [done] The founder switches the archive with /cs archive on|off, and the room is told (features P1)
+ * @flow PW21 [done] The founder switches the archive with /cs archive on|off, and another member of the room sees the notice (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -70,9 +70,9 @@ test("a channel opens its archive, and closing it takes the pages down (PW20)", 
   expect(gone?.status()).toBe(404);
 });
 
-test("the founder switches the archive from the command line (PW21)", async ({
+test("the founder switches the archive from the command line, and the room is told (PW21)", async ({
   page,
-  context,
+  browser,
 }) => {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
@@ -89,29 +89,55 @@ test("the founder switches the archive from the command line (PW21)", async ({
   await chat.expectTabVisible(channel);
   await chat.sendMessage(`/cs register ${channel}`);
 
-  await chat.sendMessage("/cs archive on");
-  await expect(
-    page.getByText(`The public archive of ${channel} is on`).first(),
-  ).toBeVisible();
+  // Somebody else in the room: the notice is for them, not for the founder.
+  const otherContext = await browser.newContext();
+  try {
+    const otherPage = await otherContext.newPage();
+    const otherConnect = new ConnectPage(otherPage);
+    const otherChat = new ChatPage(otherPage);
+    await otherConnect.open();
+    await otherConnect.enterNickname(uniqueNickname("arcrd"));
+    await otherConnect.registerWithPassword("pass12345");
+    await otherChat.waitUntilConnected();
+    await otherChat.sendMessage(`/join ${channel}`);
+    await otherChat.expectTabVisible(channel);
 
-  await chat.sendMessage("published because the command said so");
+    await chat.sendMessage("/cs archive on");
+    await expect(
+      page.getByText(`The public archive of ${channel} is on`).first(),
+    ).toBeVisible();
+    await expect(
+      otherPage
+        .getByText(`${nick} opened this channel's public archive`)
+        .first(),
+    ).toBeVisible();
 
-  const reader = await context.newPage();
-  const day = new Date().toISOString().slice(0, 10);
-  const open = await reader.goto(`/archive/${slug}/${day}`);
-  expect(open?.status()).toBe(200);
-  await expect(reader.getByTestId("archive-lines")).toContainText(
-    "published because the command said so",
-  );
-  // One short day is one page: no pager to walk.
-  await expect(reader.getByTestId("archive-pager")).toHaveCount(0);
-  await shot(reader, "archive-day-from-command");
+    await chat.sendMessage("published because the command said so");
 
-  await chat.sendMessage("/cs archive off");
-  await expect(
-    page.getByText(`The public archive of ${channel} is off`).first(),
-  ).toBeVisible();
+    const reader = await otherContext.newPage();
+    const day = new Date().toISOString().slice(0, 10);
+    const open = await reader.goto(`/archive/${slug}/${day}`);
+    expect(open?.status()).toBe(200);
+    await expect(reader.getByTestId("archive-lines")).toContainText(
+      "published because the command said so",
+    );
+    // One short day is one page: no pager to walk.
+    await expect(reader.getByTestId("archive-pager")).toHaveCount(0);
+    await shot(reader, "archive-day-from-command");
 
-  const gone = await reader.goto(`/archive/${slug}/${day}`);
-  expect(gone?.status()).toBe(404);
+    await chat.sendMessage("/cs archive off");
+    await expect(
+      page.getByText(`The public archive of ${channel} is off`).first(),
+    ).toBeVisible();
+    await expect(
+      otherPage
+        .getByText(`${nick} closed this channel's public archive`)
+        .first(),
+    ).toBeVisible();
+
+    const gone = await reader.goto(`/archive/${slug}/${day}`);
+    expect(gone?.status()).toBe(404);
+  } finally {
+    await otherContext.close();
+  }
 });

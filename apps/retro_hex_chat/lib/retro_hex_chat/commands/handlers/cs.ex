@@ -6,6 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Policy
   alias RetroHexChat.Services.{ChanServ, Queries}
 
   @access_levels ~w(sop aop vop)
@@ -34,11 +35,15 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   end
 
   def execute(["archive", state | _], context) when state in ~w(on off) do
-    call_set_archive(context.active_channel, context.nickname, state == "on")
+    with :ok <- Policy.require_channel(context) do
+      call_set_archive(context.active_channel, context.nickname, state == "on")
+    end
   end
 
   def execute(["archive" | _], context) do
-    call_archive_status(context.active_channel)
+    with :ok <- Policy.require_channel(context) do
+      call_archive_status(context.active_channel)
+    end
   end
 
   def execute([level, "add", target | _], context) when level in @access_levels do
@@ -150,7 +155,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   defp call_set_archive(channel, nickname, enabled?) do
     case Server.set_public_archive(channel, nickname, enabled?) do
       :ok ->
-        {:ok, :system, %{content: archive_state(channel, enabled?)}}
+        {:ok, :system, %{content: archive_switched(channel, enabled?)}}
 
       {:error, msg} ->
         {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
@@ -170,12 +175,20 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
     {:ok, :system, %{content: text}}
   end
 
-  defp archive_state(channel, true) do
+  # Switching it on is the moment "from now on" means something; asked later,
+  # the archive has simply been on since whenever that was.
+  defp archive_switched(channel, true) do
     dgettext(
       "commands",
       "[ChanServ] The public archive of %{channel} is on: what is said from now on is published.",
       channel: channel
     )
+  end
+
+  defp archive_switched(channel, false), do: archive_state(channel, false)
+
+  defp archive_state(channel, true) do
+    dgettext("commands", "[ChanServ] The public archive of %{channel} is on.", channel: channel)
   end
 
   defp archive_state(channel, false) do

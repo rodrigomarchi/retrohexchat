@@ -149,7 +149,7 @@ defmodule RetroHexChat.Chat.Archive do
     with channel when not is_nil(channel) <- publishing_channel(channel_name),
          {:ok, day} <- to_date(date),
          query = day_messages(channel, day),
-         :ok <- check_cursor(query, cursor) do
+         :ok <- check_cursor(channel, day, cursor) do
       page =
         query
         |> maybe_after(cursor)
@@ -224,14 +224,22 @@ defmodule RetroHexChat.Chat.Archive do
     |> where([m], fragment("date(? at time zone 'UTC')", m.inserted_at) == ^day)
   end
 
-  @spec check_cursor(Ecto.Query.t(), integer() | nil) :: :ok | :error
-  defp check_cursor(_query, nil), do: :ok
+  # A cursor is any line said in this channel on this day — deleted, or a
+  # notice, included. A page's address names the line it follows, and that
+  # line being withdrawn later must not take the page after it down with it.
+  @spec check_cursor(RegisteredChannel.t(), Date.t(), term()) :: :ok | :error
+  defp check_cursor(_channel, _day, nil), do: :ok
 
-  defp check_cursor(query, cursor) when is_integer(cursor) do
-    if Repo.exists?(where(query, [m], m.id == ^cursor)), do: :ok, else: :error
+  defp check_cursor(channel, day, cursor) when is_integer(cursor) do
+    said_that_day =
+      Message
+      |> where([m], m.channel_name == ^channel.name and m.id == ^cursor)
+      |> where([m], fragment("date(? at time zone 'UTC')", m.inserted_at) == ^day)
+
+    if Repo.exists?(said_that_day), do: :ok, else: :error
   end
 
-  defp check_cursor(_query, _cursor), do: :error
+  defp check_cursor(_channel, _day, _cursor), do: :error
 
   defp maybe_after(query, nil), do: query
   defp maybe_after(query, cursor), do: where(query, [m], m.id > ^cursor)
@@ -317,6 +325,14 @@ defmodule RetroHexChat.Chat.Archive do
 
   @spec to_date(String.t() | Date.t()) :: {:ok, Date.t()} | :error
   defp to_date(%Date{} = date), do: {:ok, date}
-  defp to_date(value) when is_binary(value), do: Date.from_iso8601(value)
+  # Only the canonical spelling of a day: `Date.from_iso8601/1` also reads
+  # "+2026-10-05", and a second address for the same page is a duplicate.
+  defp to_date(value) when is_binary(value) do
+    case Date.from_iso8601(value) do
+      {:ok, date} -> if Date.to_iso8601(date) == value, do: {:ok, date}, else: :error
+      error -> error
+    end
+  end
+
   defp to_date(_value), do: :error
 end

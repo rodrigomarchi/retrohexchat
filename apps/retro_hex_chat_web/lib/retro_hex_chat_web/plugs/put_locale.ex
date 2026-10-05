@@ -70,6 +70,10 @@ defmodule RetroHexChatWeb.Plugs.PutLocale do
 
   defp redirectable_public_path?("/sitemap.xml"), do: false
   defp redirectable_public_path?("/sitemaps/" <> _name), do: false
+  # A conversation has one canonical address, the unprefixed one; sending a
+  # reader with another language preference to a prefixed copy of it moves
+  # them off the page every search result names.
+  defp redirectable_public_path?("/archive/" <> _rest), do: false
   defp redirectable_public_path?(_path), do: true
 
   defp maybe_put_public_locale(conn, nil), do: conn

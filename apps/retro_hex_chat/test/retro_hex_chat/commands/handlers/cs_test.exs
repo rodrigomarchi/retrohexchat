@@ -66,6 +66,8 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
       {:ok, _pid} = Channels.Supervisor.start_child(channel)
       context = %{ctx.context | active_channel: channel, channels: [channel]}
       {:ok, :system, _} = Cs.execute(["register"], context)
+      # The channel reads identification from the server's own NickServ.
+      identify(context.nickname)
       %{context: context, channel: channel}
     end
 
@@ -80,11 +82,48 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
     end
 
     test "nobody but the founder may", ctx do
+      identify("NotTheFounder")
       stranger = %{ctx.context | nickname: "NotTheFounder"}
 
       assert {:error, msg} = Cs.execute(["archive", "on"], stranger)
       assert msg =~ "founder"
       refute Archive.published?(ctx.channel)
+    end
+
+    # A registered nickname can be held for a minute before NickServ enforces
+    # it; whoever holds the founder's name in that minute may not publish.
+    test "the founder's nickname, unidentified, may not", ctx do
+      NickServ.remove_identified(ctx.context.nickname)
+      # A cast; a call from this same process cannot overtake it.
+      refute NickServ.identified?(ctx.context.nickname)
+
+      assert {:error, msg} = Cs.execute(["archive", "on"], ctx.context)
+      assert msg =~ "Identify"
+      refute Archive.published?(ctx.channel)
+    end
+
+    test "asked later, it reports the state without promising anything new", ctx do
+      {:ok, :system, _} = Cs.execute(["archive", "on"], ctx.context)
+
+      assert {:ok, :system, %{content: content}} = Cs.execute(["archive"], ctx.context)
+      assert content =~ "is on."
+      refute content =~ "from now on"
+    end
+
+    test "outside a channel it asks for one", ctx do
+      assert {:error, msg} = Cs.execute(["archive", "on"], %{ctx.context | active_channel: nil})
+      assert msg =~ "channel"
+    end
+
+    test "a room nobody registered cannot be published", ctx do
+      unregistered = "#csfree#{rem(System.unique_integer([:positive]), 100_000)}"
+      {:ok, _pid} = Channels.Supervisor.start_child(unregistered)
+
+      # An unregistered room has no founder, so nobody may.
+      assert {:error, _msg} =
+               Cs.execute(["archive", "on"], %{ctx.context | active_channel: unregistered})
+
+      refute Archive.published?(unregistered)
     end
 
     test "without on or off it reports the state and the usage", ctx do
@@ -318,5 +357,12 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
       assert is_binary(help.description)
       assert is_list(help.examples)
     end
+  end
+
+  # The outer setup registers CsTestUser with this password; a nickname it did
+  # not register is registered with the same one.
+  defp identify(nickname) do
+    _ = NickServ.register(nickname, "pass123")
+    {:ok, _} = NickServ.identify(nickname, "pass123")
   end
 end
