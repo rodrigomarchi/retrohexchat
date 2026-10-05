@@ -87,16 +87,14 @@
 
 .group-call-video-tile[data-track-source="screen"] {
   border-color: #ffd700;
-  background:
-    repeating-linear-gradient(45deg, #000000 0, #000000 6px, #101010 6px, #101010 12px);
+  background: repeating-linear-gradient(45deg, #000000 0, #000000 6px, #101010 6px, #101010 12px);
 }
 
+/* The speaker gets the Win98 focus rectangle: a dotted frame inside the tile. */
 .group-call-video-tile[data-active-speaker="true"] {
-  border-color: #008000;
-  box-shadow:
-    inset 2px 2px #ffffff,
-    inset -2px -2px #008000,
-    0 0 0 2px #00ff00;
+  border-color: #00ff00;
+  outline: 2px dotted #00ff00;
+  outline-offset: -5px;
 }
 
 .group-call-video-tile--pinned,
@@ -159,6 +157,13 @@
   object-fit: cover;
 }
 
+/* A shared screen is read, not looked at: never crop it. */
+.group-call-video-tile[data-track-source="screen"] .group-call-video-tile__video,
+.group-call-video-tile[data-track-source="screen"] .group-call-remote-video,
+.group-call-video-tile[data-media-screen="true"] .group-call-video-tile__video {
+  object-fit: contain;
+}
+
 .group-call-video-tile__empty {
   position: absolute;
   inset: 0;
@@ -168,8 +173,7 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  background:
-    repeating-linear-gradient(45deg, #000000 0, #000000 6px, #101010 6px, #101010 12px);
+  background: repeating-linear-gradient(45deg, #000000 0, #000000 6px, #101010 6px, #101010 12px);
   color: #dfdfdf;
   padding: 12px;
   text-align: center;
@@ -180,29 +184,29 @@
   display: flex;
 }
 
+/*
+ * The nameplate is a chip in the tile's top-left corner, over the picture: the
+ * bottom edge belongs to the dock. Its badges report state; none is a control.
+ */
 .group-call-video-tile__nameplate {
   position: absolute;
-  left: 4px;
-  right: 4px;
-  bottom: 4px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  left: 6px;
+  top: 6px;
+  z-index: 2;
+  display: inline-flex;
+  max-width: calc(100% - 12px);
   align-items: center;
   gap: 6px;
-  min-height: 2.4rem;
-  border: 1px solid #000000;
-  background: #c0c0c0;
-  color: #222222;
-  padding: 2px 4px;
-  box-shadow:
-    inset 1px 1px #ffffff,
-    inset -1px -1px #808080;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  padding: 2px 4px 2px 6px;
 }
 
 .group-call-video-tile__badges {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .group-call-reaction-stack {
@@ -272,8 +276,8 @@
 
 .group-call-video-badge {
   display: inline-flex;
-  width: 2rem;
-  height: 2rem;
+  width: 1.25rem;
+  height: 1.25rem;
   align-items: center;
   justify-content: center;
   background: #dfdfdf;
@@ -281,6 +285,11 @@
   box-shadow:
     inset 1px 1px #ffffff,
     inset -1px -1px #808080;
+}
+
+.group-call-video-badge svg {
+  width: 0.875rem;
+  height: 0.875rem;
 }
 
 .group-call-video-badge[hidden] {
@@ -291,8 +300,8 @@
 .group-call-video-tile[data-media-audio="false"] [data-group-call-local-audio-badge],
 .group-call-video-tile[data-media-video="false"] [data-group-call-video-badge],
 .group-call-video-tile[data-media-video="false"] [data-group-call-local-video-badge] {
-  background: #808080;
-  color: #222222;
+  background: #cc0000;
+  color: #ffffff;
 }
 
 [data-group-call-screen-badge],
@@ -325,7 +334,8 @@
 [data-group-call-quality-badge][data-quality-level="good"] [data-quality-icon="high"],
 [data-group-call-quality-badge][data-quality-level="fair"] [data-quality-icon="medium"],
 [data-group-call-quality-badge][data-quality-level="poor"] [data-quality-icon="low"],
-[data-group-call-quality-badge][data-quality-level="reconnecting"] [data-quality-icon="reconnecting"],
+[data-group-call-quality-badge][data-quality-level="reconnecting"]
+  [data-quality-icon="reconnecting"],
 [data-group-call-quality-badge][data-quality-level="unknown"] [data-quality-icon="unknown"] {
   display: inline-flex;
 }
@@ -370,18 +380,65 @@
   display: none;
 }
 
-.group-call-room[data-self-view="pip"] [data-group-call-local-tile] {
-  position: absolute;
-  right: 8px;
-  bottom: 8px;
-  z-index: 3;
-  width: min(10rem, 34%);
-  height: min(7rem, 34%);
-  min-height: 5rem;
-}
-
 .group-call-room[data-self-view="hidden"] [data-group-call-local-tile] {
   display: none;
+}
+
+/*
+ * Automatic layout, by how many remote videos there are.
+ *
+ * None yet: your own camera takes the stage and the waiting note floats over it.
+ * One: it takes the stage and your camera sits in a corner, clear of the dock
+ * (`--media-dock-clearance`, published by the dock's host).
+ */
+.group-call-room[data-layout-mode="auto"]
+  .group-call-video-surface[data-remote-count="0"]
+  .group-call-empty-tile {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  z-index: 3;
+  min-height: 0;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.6);
+  color: #dfdfdf;
+}
+
+.group-call-room[data-layout-mode="auto"]
+  .group-call-video-surface[data-remote-count="0"]
+  .group-call-empty-tile
+  .text-foreground,
+.group-call-room[data-layout-mode="auto"]
+  .group-call-video-surface[data-remote-count="0"]
+  .group-call-empty-tile
+  .text-muted-foreground {
+  color: #dfdfdf;
+}
+
+.group-call-room[data-layout-mode="auto"][data-self-view="tile"]
+  .group-call-video-surface[data-remote-count="1"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.group-call-room[data-layout-mode="auto"][data-self-view="tile"]
+  .group-call-video-surface[data-remote-count="1"]
+  [data-group-call-local-tile],
+.group-call-room[data-self-view="pip"] [data-group-call-local-tile] {
+  position: absolute;
+  right: 12px;
+  bottom: var(--media-dock-clearance, 12px);
+  z-index: 3;
+  width: min(12rem, 30%);
+  height: min(7.5rem, 30%);
+  min-height: 5rem;
+  transition: bottom 240ms ease-out var(--media-dock-fade-delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group-call-room [data-group-call-local-tile] {
+    transition: none;
+  }
 }
 
 @media (max-width: 700px) {
@@ -414,4 +471,3 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-

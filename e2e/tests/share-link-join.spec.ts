@@ -16,6 +16,7 @@ import {
   closeGroupCallUsers,
   newGroupCallUser,
   openConference,
+  openModerationMenu,
 } from "../helpers/groupCallUsers";
 import { shot } from "../helpers/screenshots";
 
@@ -125,6 +126,7 @@ test("opening a conference writes the card, and the card counts up on its own (K
     // (K10) The room ends. The card is the only thing left of it, so it stops
     // being a door and becomes the record — and it does that on Bob's screen,
     // which nobody touches, because the room changed and not the page.
+    await openModerationMenu(anaCall);
     await anaCall.getByTestId("group-call-close-room").click();
     await anaCall.getByTestId("group-call-confirm-dialog-confirm").click();
 

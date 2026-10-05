@@ -79,7 +79,7 @@ msgstr "已连接"
 msgid "Connecting..."
 msgstr "正在连接..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:884
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:889
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:400
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
@@ -110,29 +110,29 @@ msgstr "调用中"
 msgid "Pending..."
 msgstr "等待着..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:888
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:893
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:156
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:403
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:237
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:235
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:517
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:259
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:260
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "就绪"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:888
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:895
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:893
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:900
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:142
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:413
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:416
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:257
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:258
 #, elixir-autogen, elixir-format
 msgid "Receiving"
 msgstr "接收"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:738
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:384
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:338
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:339
 #, elixir-autogen, elixir-format
 msgid "Reconnecting"
 msgstr "重新连接中"
@@ -184,7 +184,7 @@ msgstr "视频呼叫"
 msgid "Waiting..."
 msgstr "等着..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:917
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:922
 #, elixir-autogen, elixir-format
 msgid "%{count} tracks"
 msgstr "%{count}轨道"
@@ -229,7 +229,7 @@ msgstr "%{n}%"
 msgid "%{w}×%{h}"
 msgstr "%{w}×%{h}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:276
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:277
 #, elixir-autogen, elixir-format
 msgid "1:1"
 msgstr "1:1"
@@ -244,27 +244,22 @@ msgstr "Active"
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:255
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:672
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:702
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:256
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:257
 #, elixir-autogen, elixir-format
 msgid "Audio"
 msgstr "音频"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:157
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:158
 #, elixir-autogen, elixir-format
 msgid "Audio and data channels can keep running."
 msgstr "音频和数据频道可以持续运行."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:894
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:899
 #, elixir-autogen, elixir-format
 msgid "Audio call active"
 msgstr "音频调用活动"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:927
-#, elixir-autogen, elixir-format
-msgid "Audio session"
-msgstr "音频会话"
-
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:549
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:545
 #, elixir-autogen, elixir-format
 msgid "Auto layout"
 msgstr "自动布局"
@@ -291,7 +286,7 @@ msgid "Call %{duration}"
 msgstr "调用 %{duration}"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:693
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:949
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:943
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:161
 #, elixir-autogen, elixir-format
 msgid "Camera"
@@ -302,17 +297,12 @@ msgstr "摄影机"
 msgid "Camera preview is off"
 msgstr "相机预览关闭"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:925
-#, elixir-autogen, elixir-format
-msgid "Camera session"
-msgstr "相机会话"
-
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:191
 #, elixir-autogen, elixir-format
 msgid "Capacity"
 msgstr "能力"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:859
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:864
 #, elixir-autogen, elixir-format
 msgid "Change self view"
 msgstr "更改自定义视图"
@@ -327,7 +317,7 @@ msgstr "检查设备"
 msgid "Closed"
 msgstr "关闭"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:589
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:585
 #, elixir-autogen, elixir-format
 msgid "Compact"
 msgstr "压缩"
@@ -352,7 +342,7 @@ msgstr "目前从同行收到数据,以千位/秒计。"
 msgid "Data currently being sent to the peer, in kilobits per second."
 msgstr "数据目前发送到对等点, 单位为千位/ 每秒 。"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:255
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:256
 #, elixir-autogen, elixir-format
 msgid "Direct call with %{peer}"
 msgstr "用 %{peer}直接调用"
@@ -373,7 +363,7 @@ msgstr "发送到端点的估计带宽, 单位为千位/ 每秒 。"
 msgid "Excellent"
 msgstr "不错"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:446
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:457
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:65
 #, elixir-autogen, elixir-format
 msgid "Expand call window"
@@ -390,7 +380,7 @@ msgstr "公平"
 msgid "Files"
 msgstr "文件"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:853
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:858
 #, elixir-autogen, elixir-format
 msgid "Focus peer video"
 msgstr "焦点对等视频"
@@ -433,7 +423,7 @@ msgstr "游戏"
 msgid "Good"
 msgstr "不错"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:857
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:862
 #, elixir-autogen, elixir-format
 msgid "Hide self view"
 msgstr "隐藏自定义视图"
@@ -498,7 +488,7 @@ msgstr "计量"
 msgid "Messages"
 msgstr "信件"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:948
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:942
 #, elixir-autogen, elixir-format
 msgid "Mic"
 msgstr "麦可"
@@ -508,14 +498,13 @@ msgstr "麦可"
 msgid "Microphone"
 msgstr "麦克风"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:447
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:525
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:521
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:66
 #, elixir-autogen, elixir-format
 msgid "Mini call window"
 msgstr "迷你呼叫窗口"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:856
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:861
 #, elixir-autogen, elixir-format
 msgid "Move self view to picture-in-picture"
 msgstr "将自己视图移动到图片中"
@@ -540,7 +529,7 @@ msgstr "打开"
 msgid "Other"
 msgstr "其他人员"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:950
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:944
 #, elixir-autogen, elixir-format
 msgid "Output"
 msgstr "产出"
@@ -550,12 +539,12 @@ msgstr "产出"
 msgid "Overall connection health, rated from Excellent to Poor based on the MOS score."
 msgstr "整体连线健康,根据MOS得分排名从优秀到贫穷."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:51
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:52
 #, elixir-autogen, elixir-format
 msgid "P2P call"
 msgstr "P2P电话"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:375
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:374
 #, elixir-autogen, elixir-format
 msgid "P2P media controls"
 msgstr "P2P 媒体控制"
@@ -607,7 +596,7 @@ msgstr "预览"
 msgid "Privacy relay"
 msgstr "隐私中继"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:325
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:326
 #, elixir-autogen, elixir-format
 msgid "Ready for private media"
 msgstr "为私营媒体做好准备"
@@ -616,11 +605,6 @@ msgstr "为私营媒体做好准备"
 #, elixir-autogen, elixir-format
 msgid "Received"
 msgstr "实收"
-
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:926
-#, elixir-autogen, elixir-format
-msgid "Recv-only session"
-msgstr "只剪切会话"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:465
 #, elixir-autogen, elixir-format
@@ -643,12 +627,12 @@ msgid "Resolution of the received video, in pixels."
 msgstr "已接收视频的分辨率, 以像素表示 。"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:417
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:301
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:302
 #, elixir-autogen, elixir-format
 msgid "Retry"
 msgstr "重试"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:852
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:857
 #, elixir-autogen, elixir-format
 msgid "Return to split layout"
 msgstr "返回拆分布局"
@@ -668,11 +652,6 @@ msgstr "屏幕"
 #, elixir-autogen, elixir-format
 msgid "Screen %{duration}"
 msgstr "屏幕共享 %{duration}"
-
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:921
-#, elixir-autogen, elixir-format
-msgid "Screen session"
-msgstr "屏幕会议"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:655
 #, elixir-autogen, elixir-format
@@ -709,12 +688,12 @@ msgstr "发送"
 msgid "Session"
 msgstr "届会"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:423
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:430
 #, elixir-autogen, elixir-format
 msgid "Share screen"
 msgstr "共享屏幕"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:858
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:863
 #, elixir-autogen, elixir-format
 msgid "Show self view as tile"
 msgstr "将自己视图显示为平板"
@@ -724,18 +703,18 @@ msgstr "将自己视图显示为平板"
 msgid "Source"
 msgstr "来源"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:579
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:575
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:170
 #, elixir-autogen, elixir-format
 msgid "Speaker"
 msgstr "发言者"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:569
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:565
 #, elixir-autogen, elixir-format
 msgid "Split"
 msgstr "分开"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:336
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:337
 #, elixir-autogen, elixir-format
 msgid "Start P2P media"
 msgstr "启动 P2P 介质"
@@ -757,7 +736,7 @@ msgstr "用麦克风开始"
 msgid "Status"
 msgstr "状态"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:422
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:429
 #, elixir-autogen, elixir-format
 msgid "Stop sharing screen"
 msgstr "停止共享屏幕"
@@ -787,12 +766,12 @@ msgstr "包裹到达时间变化 高热度导致音频和视频不畅。"
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:301
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:671
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:703
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:255
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:256
 #, elixir-autogen, elixir-format
 msgid "Video"
 msgstr "视频"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:893
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:898
 #, elixir-autogen, elixir-format
 msgid "Video call active"
 msgstr "视频通话活动"
@@ -812,17 +791,17 @@ msgstr "活动视频 RTP 是相机还是共享屏幕 。"
 msgid "Why quality was capped: CPU means your device is too busy; Bandwidth means the network is too slow."
 msgstr "为什么质量被封盖:CPU表示你的设备太忙;Bandwidth表示网络太慢."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:208
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:209
 #, elixir-autogen, elixir-format
 msgid "You"
 msgstr "你"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:207
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:208
 #, elixir-autogen, elixir-format
 msgid "Your screen"
 msgstr "你的屏幕"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:881
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:886
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:471
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:508
 #, elixir-autogen, elixir-format
@@ -839,33 +818,33 @@ msgstr "老师"
 msgid "Direct P2P topology"
 msgstr "直接 P2P 地形"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:310
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:311
 #, elixir-autogen, elixir-format
 msgid "End"
 msgstr "结束"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:238
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:236
 #, elixir-autogen, elixir-format
 msgid "Invite"
 msgstr "邀请"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:239
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:237
 #, elixir-autogen, elixir-format
 msgid "Link"
 msgstr "链接"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:240
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:238
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr "现场直播"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:63
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:62
 #: lib/retro_hex_chat_web/live/app/p2p_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2P 会话"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:545
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:541
 #, elixir-autogen, elixir-format
 msgid "P2P layout"
 msgstr "P2P 版式"
@@ -875,18 +854,18 @@ msgstr "P2P 版式"
 msgid "P2P reactions"
 msgstr "P2P反应"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:91
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:92
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:89
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:90
 #, elixir-autogen, elixir-format
 msgid "P2P session summary"
 msgstr "P2P会议摘要"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:487
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:490
 #, elixir-autogen, elixir-format
 msgid "P2P view and window controls"
 msgstr "P2P 视图和窗口控制"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:497
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:500
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:44
 #, elixir-autogen, elixir-format
 msgid "P2P window controls"
@@ -953,7 +932,7 @@ msgstr "接受收到的文件"
 msgid "Audio + Video"
 msgstr "音频 + 视频"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:341
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:342
 #, elixir-autogen, elixir-format
 msgid "Automatic recovery did not reconnect. Retry or end the session."
 msgstr "自动恢复没有重新连接 。 重试或结束会话 。"
@@ -968,7 +947,7 @@ msgstr "都活着"
 msgid "Cancel file transfer"
 msgstr "取消文件传输"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:337
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:338
 #, elixir-autogen, elixir-format
 msgid "Connection needs attention"
 msgstr "连接需要注意"
@@ -983,8 +962,8 @@ msgstr "数据"
 msgid "Direct preferred"
 msgstr "直接首选"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:83
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:304
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:84
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:305
 #, elixir-autogen, elixir-format
 msgid "End P2P session"
 msgstr "结束 P2P 会话"
@@ -1034,8 +1013,8 @@ msgstr "媒体默认值"
 msgid "No video"
 msgstr "没有视频"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:435
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:516
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:447
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:512
 #, elixir-autogen, elixir-format
 msgid "Open stats"
 msgstr "打开数据"
@@ -1050,7 +1029,7 @@ msgstr "P2P 健康摘要"
 msgid "P2P session sections"
 msgstr "P2P会议科"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:292
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:293
 #, elixir-autogen, elixir-format
 msgid "Peer media state"
 msgstr "端媒体状态"
@@ -1070,12 +1049,12 @@ msgstr "无法中继"
 msgid "Resuming transfer"
 msgstr "恢复调动"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:296
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:297
 #, elixir-autogen, elixir-format
 msgid "Retry P2P connection"
 msgstr "重试 P2P 连接"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:370
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:371
 #, elixir-autogen, elixir-format
 msgid "Retrying the peer connection, attempt %{attempt} of 3."
 msgstr "正在重试对端连接，第 %{attempt}/3 次。"
@@ -1085,7 +1064,7 @@ msgstr "正在重试对端连接，第 %{attempt}/3 次。"
 msgid "Route and privacy"
 msgstr "路线和隐私"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:356
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:357
 #, elixir-autogen, elixir-format
 msgid "The P2P media connection failed. Retry or end the session."
 msgstr "P2P 媒体连接失败 。 重试或结束会话 。"
@@ -1120,7 +1099,7 @@ msgstr "已暂停传输"
 msgid "Transfer rejected"
 msgstr "转让被拒绝"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:374
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:375
 #, elixir-autogen, elixir-format
 msgid "Trying to restore the peer connection."
 msgstr "试图恢复对等连接 。"
@@ -1130,33 +1109,33 @@ msgstr "试图恢复对等连接 。"
 msgid "Waiting for the peer to accept"
 msgstr "等待同行接受"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:65
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:66
 #, elixir-autogen, elixir-format
 msgid "Call controls become available after the peer joins the P2P session."
 msgstr "在对等点加入P2P会话后,调用控件即可使用."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:141
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:139
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr "拒绝"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:258
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:259
 #, elixir-autogen, elixir-format
 msgid "Invite pending"
 msgstr "邀请待决"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:129
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:127
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:265
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "开始"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:243
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:241
 #, elixir-autogen, elixir-format
 msgid "Start P2P session with %{peer}"
 msgstr "以 %{peer}启动 P2P 会话"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:63
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:64
 #, elixir-autogen, elixir-format
 msgid "Waiting for peer"
 msgstr "正在等待对等点"
@@ -1171,7 +1150,7 @@ msgstr "%{state} / %{reason}"
 msgid "Attempt"
 msgstr "尝试"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:352
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:353
 #, elixir-autogen, elixir-format
 msgid "Could not restore this P2P session. Retry or end the session."
 msgstr "无法恢复此 P2P 会话。请重试或结束会话。"
@@ -1222,7 +1201,7 @@ msgstr "未开始"
 msgid "Offer"
 msgstr "提议"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:365
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:366
 #, elixir-autogen, elixir-format
 msgid "Peer media connection was interrupted. Recovery is monitoring the link."
 msgstr "与对端的媒体连接已中断，恢复正在监控链路。"
@@ -1237,7 +1216,7 @@ msgstr "原因"
 msgid "Recovery"
 msgstr "恢复"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:360
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:361
 #, elixir-autogen, elixir-format
 msgid "Restoring this P2P session after reconnect."
 msgstr "正在重新连接后恢复此 P2P 会话。"
@@ -1257,7 +1236,7 @@ msgstr "触发恢复的来源：浏览器、对端或服务器。"
 msgid "State"
 msgstr "状态"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:345
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:346
 #, elixir-autogen, elixir-format
 msgid "This session is still active in another window. Close that window, retry, or end this session."
 msgstr "此会话仍在另一个窗口中活动。请关闭那个窗口、重试，或结束此会话。"
@@ -1387,13 +1366,18 @@ msgstr "加入的人"
 msgid "Taking your seat..."
 msgstr "正在为你占位..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:249
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:247
 #, elixir-autogen, elixir-format
 msgid "Open the P2P session with %{peer} in a tab of its own"
 msgstr "在独立标签页中打开与 %{peer} 的 P2P 会话"
 
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:76
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:77
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:78
 #, elixir-autogen, elixir-format
 msgid "Decline P2P request"
 msgstr "拒绝 P2P 请求"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:468
+#, elixir-autogen, elixir-format
+msgid "Leave"
+msgstr "离开"

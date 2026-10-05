@@ -69,3 +69,16 @@ export async function openConference(user: GroupCallUser): Promise<Page> {
 export function conferenceAddress(call: Page): string {
   return new URL(call.url()).pathname;
 }
+
+/**
+ * The room-wide moderator actions live behind the Moderation menu in the
+ * conference header; open it (once) before reaching for one of them.
+ */
+export async function openModerationMenu(call: Page) {
+  const menu = call.getByTestId("group-call-moderation");
+  await expect(menu).toBeVisible();
+  if ((await menu.getAttribute("open")) === null) {
+    await call.getByTestId("group-call-moderation-toggle").click();
+  }
+  await expect(menu).toHaveAttribute("open", "");
+}

@@ -79,7 +79,7 @@ msgstr "Połączono"
 msgid "Connecting..."
 msgstr "Łączenie..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:884
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:889
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:400
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
@@ -110,29 +110,29 @@ msgstr "W wezwaniu"
 msgid "Pending..."
 msgstr "Do czasu..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:888
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:893
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:156
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:403
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:237
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:235
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:517
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:259
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:260
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "Gotowy"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:888
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:895
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:893
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:900
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:142
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:413
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:416
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:257
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:258
 #, elixir-autogen, elixir-format
 msgid "Receiving"
 msgstr "Odbieranie"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:738
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:384
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:338
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:339
 #, elixir-autogen, elixir-format
 msgid "Reconnecting"
 msgstr "Ponowne łączenie"
@@ -184,7 +184,7 @@ msgstr "Połączenie wideo"
 msgid "Waiting..."
 msgstr "Czekam..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:917
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:922
 #, elixir-autogen, elixir-format
 msgid "%{count} tracks"
 msgstr "%{count} utwory"
@@ -229,7 +229,7 @@ msgstr "%{n}%"
 msgid "%{w}×%{h}"
 msgstr "%{w}×%{h}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:276
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:277
 #, elixir-autogen, elixir-format
 msgid "1:1"
 msgstr "1:1"
@@ -244,27 +244,22 @@ msgstr "Aktywne"
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:255
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:672
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:702
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:256
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:257
 #, elixir-autogen, elixir-format
 msgid "Audio"
 msgstr "Dźwięk"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:157
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:158
 #, elixir-autogen, elixir-format
 msgid "Audio and data channels can keep running."
 msgstr "Kanały audio i danych mogą nadal działać."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:894
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:899
 #, elixir-autogen, elixir-format
 msgid "Audio call active"
 msgstr "Aktywne wywołanie dźwiękowe"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:927
-#, elixir-autogen, elixir-format
-msgid "Audio session"
-msgstr "Sesja dźwiękowa"
-
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:549
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:545
 #, elixir-autogen, elixir-format
 msgid "Auto layout"
 msgstr "Układ Auto"
@@ -291,7 +286,7 @@ msgid "Call %{duration}"
 msgstr "Połączenie %{duration}"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:693
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:949
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:943
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:161
 #, elixir-autogen, elixir-format
 msgid "Camera"
@@ -302,17 +297,12 @@ msgstr "Kamera"
 msgid "Camera preview is off"
 msgstr "Podgląd kamery wyłączony"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:925
-#, elixir-autogen, elixir-format
-msgid "Camera session"
-msgstr "Sesja kamery"
-
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:191
 #, elixir-autogen, elixir-format
 msgid "Capacity"
 msgstr "Zdolność"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:859
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:864
 #, elixir-autogen, elixir-format
 msgid "Change self view"
 msgstr "Zmień własny widok"
@@ -327,7 +317,7 @@ msgstr "Urządzenia kontrolne"
 msgid "Closed"
 msgstr "Zamknięte"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:589
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:585
 #, elixir-autogen, elixir-format
 msgid "Compact"
 msgstr "Kompakt"
@@ -352,7 +342,7 @@ msgstr "Dane otrzymywane obecnie od partnera, w kilobitach na sekundę."
 msgid "Data currently being sent to the peer, in kilobits per second."
 msgstr "Dane wysyłane obecnie do partnera, w kilobitach na sekundę."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:255
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:256
 #, elixir-autogen, elixir-format
 msgid "Direct call with %{peer}"
 msgstr "Bezpośrednie połączenie z %{peer}"
@@ -375,7 +365,7 @@ msgstr ""
 msgid "Excellent"
 msgstr "Doskonale."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:446
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:457
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:65
 #, elixir-autogen, elixir-format
 msgid "Expand call window"
@@ -392,7 +382,7 @@ msgstr "Fair"
 msgid "Files"
 msgstr "Pliki"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:853
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:858
 #, elixir-autogen, elixir-format
 msgid "Focus peer video"
 msgstr "Focus peer video"
@@ -436,7 +426,7 @@ msgstr "Gry"
 msgid "Good"
 msgstr "Dobrze."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:857
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:862
 #, elixir-autogen, elixir-format
 msgid "Hide self view"
 msgstr "Ukryj własny widok"
@@ -503,7 +493,7 @@ msgstr "Pomiar"
 msgid "Messages"
 msgstr "Wiadomości"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:948
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:942
 #, elixir-autogen, elixir-format
 msgid "Mic"
 msgstr "Mic"
@@ -513,14 +503,13 @@ msgstr "Mic"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:447
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:525
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:521
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:66
 #, elixir-autogen, elixir-format
 msgid "Mini call window"
 msgstr "Mini okno wywołania"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:856
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:861
 #, elixir-autogen, elixir-format
 msgid "Move self view to picture-in-picture"
 msgstr "Przesuń widok na obraz"
@@ -545,7 +534,7 @@ msgstr "Otwórz"
 msgid "Other"
 msgstr "Inne"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:950
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:944
 #, elixir-autogen, elixir-format
 msgid "Output"
 msgstr "Wyjście"
@@ -557,12 +546,12 @@ msgstr ""
 "Ogólne zdrowie połączeń, oceniane od Excellent do Poor na podstawie wyniku "
 "MOS."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:51
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:52
 #, elixir-autogen, elixir-format
 msgid "P2P call"
 msgstr "P2P call"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:375
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:374
 #, elixir-autogen, elixir-format
 msgid "P2P media controls"
 msgstr "Sterowanie nośnikami P2P"
@@ -616,7 +605,7 @@ msgstr "Podgląd"
 msgid "Privacy relay"
 msgstr "Przekaźnik prywatności"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:325
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:326
 #, elixir-autogen, elixir-format
 msgid "Ready for private media"
 msgstr "Gotowy na prywatne media"
@@ -625,11 +614,6 @@ msgstr "Gotowy na prywatne media"
 #, elixir-autogen, elixir-format
 msgid "Received"
 msgstr "Otrzymane"
-
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:926
-#, elixir-autogen, elixir-format
-msgid "Recv-only session"
-msgstr "Recv- only session"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:465
 #, elixir-autogen, elixir-format
@@ -654,12 +638,12 @@ msgid "Resolution of the received video, in pixels."
 msgstr "Rozdzielczość otrzymanego wideo, w pikselach."
 
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:417
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:301
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:302
 #, elixir-autogen, elixir-format
 msgid "Retry"
 msgstr "Ponów"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:852
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:857
 #, elixir-autogen, elixir-format
 msgid "Return to split layout"
 msgstr "Powrót do układu podziału"
@@ -681,11 +665,6 @@ msgstr "Ekran"
 #, elixir-autogen, elixir-format
 msgid "Screen %{duration}"
 msgstr "Ekran %{duration}"
-
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:921
-#, elixir-autogen, elixir-format
-msgid "Screen session"
-msgstr "Sesja ekranu"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:655
 #, elixir-autogen, elixir-format
@@ -722,12 +701,12 @@ msgstr "Wysłany"
 msgid "Session"
 msgstr "Sesja"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:423
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:430
 #, elixir-autogen, elixir-format
 msgid "Share screen"
 msgstr "Ekran udostępniania"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:858
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:863
 #, elixir-autogen, elixir-format
 msgid "Show self view as tile"
 msgstr "Pokaż własny widok jako płytki"
@@ -737,18 +716,18 @@ msgstr "Pokaż własny widok jako płytki"
 msgid "Source"
 msgstr "Źródło"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:579
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:575
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:170
 #, elixir-autogen, elixir-format
 msgid "Speaker"
 msgstr "Przewodniczący"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:569
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:565
 #, elixir-autogen, elixir-format
 msgid "Split"
 msgstr "Podziel"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:336
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:337
 #, elixir-autogen, elixir-format
 msgid "Start P2P media"
 msgstr "Uruchom P2P media"
@@ -770,7 +749,7 @@ msgstr "Zacznij od mikrofonu"
 msgid "Status"
 msgstr "Status"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:422
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:429
 #, elixir-autogen, elixir-format
 msgid "Stop sharing screen"
 msgstr "Zatrzymaj udostępnianie ekranu"
@@ -802,12 +781,12 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:301
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:671
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:703
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:255
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:256
 #, elixir-autogen, elixir-format
 msgid "Video"
 msgstr "Wideo"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:893
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:898
 #, elixir-autogen, elixir-format
 msgid "Video call active"
 msgstr "Aktywne wywołanie wideo"
@@ -829,17 +808,17 @@ msgstr ""
 "Dlaczego jakość została ograniczona: CPU oznacza, że urządzenie jest zbyt "
 "zajęte; Szerokość pasma oznacza, że sieć jest zbyt wolna."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:208
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:209
 #, elixir-autogen, elixir-format
 msgid "You"
 msgstr "Ty"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:207
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:208
 #, elixir-autogen, elixir-format
 msgid "Your screen"
 msgstr "Twój ekran"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:881
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:886
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:471
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:508
 #, elixir-autogen, elixir-format
@@ -856,33 +835,33 @@ msgstr "Ty"
 msgid "Direct P2P topology"
 msgstr "Topologia bezpośrednia P2P"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:310
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:311
 #, elixir-autogen, elixir-format
 msgid "End"
 msgstr "Zakończ"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:238
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:236
 #, elixir-autogen, elixir-format
 msgid "Invite"
 msgstr "Zaproszenie"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:239
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:237
 #, elixir-autogen, elixir-format
 msgid "Link"
 msgstr "Odnośnik"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:240
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:238
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr "Żywe"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:63
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:62
 #: lib/retro_hex_chat_web/live/app/p2p_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "Sesja P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:545
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:541
 #, elixir-autogen, elixir-format
 msgid "P2P layout"
 msgstr "Układ P2P"
@@ -892,18 +871,18 @@ msgstr "Układ P2P"
 msgid "P2P reactions"
 msgstr "Reakcje P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:91
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:92
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:89
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:90
 #, elixir-autogen, elixir-format
 msgid "P2P session summary"
 msgstr "Podsumowanie sesji P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:487
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:490
 #, elixir-autogen, elixir-format
 msgid "P2P view and window controls"
 msgstr "Kontrola widoku i okna P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:497
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:500
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:44
 #, elixir-autogen, elixir-format
 msgid "P2P window controls"
@@ -974,7 +953,7 @@ msgstr "Akceptuj plik przychodzący"
 msgid "Audio + Video"
 msgstr "Audio + Video"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:341
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:342
 #, elixir-autogen, elixir-format
 msgid "Automatic recovery did not reconnect. Retry or end the session."
 msgstr ""
@@ -991,7 +970,7 @@ msgstr "Obaj żyją."
 msgid "Cancel file transfer"
 msgstr "Anuluj transfer pliku"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:337
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:338
 #, elixir-autogen, elixir-format
 msgid "Connection needs attention"
 msgstr "Połączenie wymaga uwagi."
@@ -1006,8 +985,8 @@ msgstr "Dane"
 msgid "Direct preferred"
 msgstr "Bezpośredni preferowany"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:83
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:304
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:84
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:305
 #, elixir-autogen, elixir-format
 msgid "End P2P session"
 msgstr "Zakończ sesję P2P"
@@ -1057,8 +1036,8 @@ msgstr "Domyślne media"
 msgid "No video"
 msgstr "Brak nagrania"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:435
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:516
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:447
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:512
 #, elixir-autogen, elixir-format
 msgid "Open stats"
 msgstr "Otwarte statystyki"
@@ -1073,7 +1052,7 @@ msgstr "Podsumowanie P2P dotyczące zdrowia"
 msgid "P2P session sections"
 msgstr "Sekcje sesji P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:292
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:293
 #, elixir-autogen, elixir-format
 msgid "Peer media state"
 msgstr "Państwo peer media"
@@ -1093,12 +1072,12 @@ msgstr "Przekaźnik niedostępny"
 msgid "Resuming transfer"
 msgstr "Wznowienie transferu"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:296
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:297
 #, elixir-autogen, elixir-format
 msgid "Retry P2P connection"
 msgstr "Przyłącze Retry P2P"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:370
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:371
 #, elixir-autogen, elixir-format
 msgid "Retrying the peer connection, attempt %{attempt} of 3."
 msgstr "Ponawianie połączenia z peerem, próba %{attempt} z 3."
@@ -1108,7 +1087,7 @@ msgstr "Ponawianie połączenia z peerem, próba %{attempt} z 3."
 msgid "Route and privacy"
 msgstr "Trasa i prywatność"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:356
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:357
 #, elixir-autogen, elixir-format
 msgid "The P2P media connection failed. Retry or end the session."
 msgstr "Połączenie z mediami P2P nie powiodło się. Cofnij lub zakończ sesję."
@@ -1143,7 +1122,7 @@ msgstr "Przeniesienie wstrzymane"
 msgid "Transfer rejected"
 msgstr "Przeniesienie odrzucone"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:374
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:375
 #, elixir-autogen, elixir-format
 msgid "Trying to restore the peer connection."
 msgstr "Próbuję przywrócić wzajemne połączenie."
@@ -1153,33 +1132,33 @@ msgstr "Próbuję przywrócić wzajemne połączenie."
 msgid "Waiting for the peer to accept"
 msgstr "Oczekiwanie na zgodę partnera"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:65
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:66
 #, elixir-autogen, elixir-format
 msgid "Call controls become available after the peer joins the P2P session."
 msgstr "Sterowanie wywołaniem jest dostępne po dołączeniu do sesji P2P."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:141
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:139
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr "Odrzuć"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:258
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:259
 #, elixir-autogen, elixir-format
 msgid "Invite pending"
 msgstr "Zaproszenie oczekujące"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:129
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:127
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:265
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Rozpocznij"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:243
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:241
 #, elixir-autogen, elixir-format
 msgid "Start P2P session with %{peer}"
 msgstr "Rozpocznij sesję P2P z %{peer}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:63
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:64
 #, elixir-autogen, elixir-format
 msgid "Waiting for peer"
 msgstr "Czekam na partnera"
@@ -1194,7 +1173,7 @@ msgstr "%{state} / %{reason}"
 msgid "Attempt"
 msgstr "Próba"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:352
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:353
 #, elixir-autogen, elixir-format
 msgid "Could not restore this P2P session. Retry or end the session."
 msgstr "Nie udało się przywrócić tej sesji P2P. Spróbuj ponownie lub zakończ sesję."
@@ -1245,7 +1224,7 @@ msgstr "Nie rozpoczęto"
 msgid "Offer"
 msgstr "Oferta"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:365
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:366
 #, elixir-autogen, elixir-format
 msgid "Peer media connection was interrupted. Recovery is monitoring the link."
 msgstr "Połączenie multimedialne z peerem zostało przerwane. Odzyskiwanie monitoruje łącze."
@@ -1260,7 +1239,7 @@ msgstr "Powód"
 msgid "Recovery"
 msgstr "Odzyskiwanie"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:360
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:361
 #, elixir-autogen, elixir-format
 msgid "Restoring this P2P session after reconnect."
 msgstr "Przywracanie tej sesji P2P po ponownym połączeniu."
@@ -1280,7 +1259,7 @@ msgstr "Źródło, które uruchomiło odzyskiwanie: przeglądarka, peer lub serw
 msgid "State"
 msgstr "Stan"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:345
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:346
 #, elixir-autogen, elixir-format
 msgid "This session is still active in another window. Close that window, retry, or end this session."
 msgstr "Ta sesja jest nadal aktywna w innym oknie. Zamknij tamto okno, spróbuj ponownie lub zakończ tę sesję."
@@ -1410,13 +1389,18 @@ msgstr "kto dołączy"
 msgid "Taking your seat..."
 msgstr "Zajmowanie miejsca..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:249
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:247
 #, elixir-autogen, elixir-format
 msgid "Open the P2P session with %{peer} in a tab of its own"
 msgstr "Otwórz sesję P2P z %{peer} w osobnej karcie"
 
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:76
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:77
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:78
 #, elixir-autogen, elixir-format
 msgid "Decline P2P request"
 msgstr "Odrzuć prośbę P2P"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:468
+#, elixir-autogen, elixir-format
+msgid "Leave"
+msgstr "Opuść"

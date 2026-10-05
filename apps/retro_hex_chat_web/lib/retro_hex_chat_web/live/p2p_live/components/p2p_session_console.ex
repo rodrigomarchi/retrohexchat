@@ -65,6 +65,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PSessionConsole do
                 do: dgettext("p2p", "Expand call window"),
                 else: dgettext("p2p", "Mini call window")
             }
+            variant="flat"
             active={Map.get(@p2p_session, :call_mini, false)}
             pressed={Map.get(@p2p_session, :call_mini, false)}
             phx-click="p2p_toggle_call_mini"
@@ -81,7 +82,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PSessionConsole do
           </.media_session_icon_button>
           <.media_session_icon_button
             label={dgettext("p2p", "End P2P session")}
-            tone="danger"
+            variant="flat"
             phx-click="p2p_end_session"
             data-testid="p2p-console-end-session"
           >

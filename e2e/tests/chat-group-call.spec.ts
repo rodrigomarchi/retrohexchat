@@ -30,6 +30,7 @@ import {
   GroupCallUser,
   newGroupCallUser,
   openConference,
+  openModerationMenu,
 } from "../helpers/groupCallUsers";
 
 const groupCallScreenshotDir = "test-results/group-call-visual-polish";
@@ -1485,6 +1486,7 @@ test.describe("Channel group calls", () => {
       await expect.poll(() => localTrackEnabled(bobCall, "audio")).toBe(true);
       await expect.poll(() => localTrackEnabled(carolCall, "audio")).toBe(true);
 
+      await openModerationMenu(aliceCall);
       await groupCallMuteAll(aliceCall).click();
       await expect(
         aliceCall.getByTestId("group-call-confirm-dialog"),
@@ -1516,6 +1518,7 @@ test.describe("Channel group calls", () => {
         .poll(() => localTrackEnabled(bobCall, "audio"), { timeout: 10_000 })
         .toBe(false);
 
+      await openModerationMenu(aliceCall);
       await groupCallCameraOffAll(aliceCall).click();
       await expect(
         aliceCall.getByTestId("group-call-confirm-dialog"),
@@ -1565,6 +1568,7 @@ test.describe("Channel group calls", () => {
         .toBe(true);
       await expect.poll(() => localTrackEnabled(bobCall, "audio")).toBe(true);
 
+      await openModerationMenu(aliceCall);
       await groupCallMuteAll(aliceCall).click();
       await expect(
         aliceCall.getByTestId("group-call-confirm-dialog"),
@@ -1621,9 +1625,11 @@ test.describe("Channel group calls", () => {
 
       const aliceCall = await joinGroupCall(alice);
       await expect(groupCallWindow(aliceCall)).toBeVisible();
+      await openModerationMenu(aliceCall);
       await expect(groupCallLockToggle(aliceCall)).toBeVisible();
       await openPeopleSection(aliceCall);
 
+      await openModerationMenu(aliceCall);
       await groupCallLockToggle(aliceCall).click();
       await expect(groupCallLockToggle(aliceCall)).toHaveAttribute(
         "aria-pressed",

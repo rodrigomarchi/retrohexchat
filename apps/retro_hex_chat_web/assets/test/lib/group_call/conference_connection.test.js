@@ -1074,16 +1074,32 @@ describe("GroupCallWebRTCHook media fallback", () => {
     expect(hook.pushEvent).toHaveBeenCalledWith("group_call_clear_focus", {});
   });
 
+  it("counts a single remote video apart from the local tile", () => {
+    const hook = setupLayoutHook();
+    const host = hook.el.querySelector("[data-group-call-video-grid]");
+
+    fireServer(hook, "group_call_layout_state", {
+      participants: [{ id: 789, nickname: "Grace", media_state: { audio: true, video: true } }],
+      tracks: [{ id: 2, participant_id: 789, stream_id: "stream-789" }],
+    });
+    hook._attachRemoteStream({ id: "stream-789" });
+
+    expect(host.dataset.tileCount).toBe("2");
+    expect(host.dataset.remoteCount).toBe("1");
+  });
+
   it("removes the local tile from layout counts when self view is hidden", () => {
     const hook = setupLayoutHook();
     const host = hook.el.querySelector("[data-group-call-video-grid]");
 
     expect(host.dataset.tileCount).toBe("1");
+    expect(host.dataset.remoteCount).toBe("0");
 
     fireServer(hook, "group_call_layout_state", { self_view: "hidden" });
 
     expect(hook.el.dataset.selfView).toBe("hidden");
     expect(host.dataset.tileCount).toBe("0");
+    expect(host.dataset.remoteCount).toBe("0");
   });
 
   it("speaker layout follows the active speaker without replacing remote videos", () => {
@@ -1154,6 +1170,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     });
 
     expect(host.dataset.tileCount).toBe("5");
+    expect(host.dataset.remoteCount).toBe("4");
     expect(host.dataset.tileDensity).toBe("dense");
     expect(hook.el.querySelector('[data-stream-id="stream-456"]').dataset.pinned).toBe("true");
     expect(hook.el.querySelector('[data-stream-id="stream-789"]').dataset.pinned).toBe("true");

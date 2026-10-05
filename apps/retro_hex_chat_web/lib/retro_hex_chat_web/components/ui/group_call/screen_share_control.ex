@@ -12,18 +12,16 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ScreenShareControl do
   alias RetroHexChatWeb.Icons.CallControls
 
   attr :call, :map, required: true
+  attr :variant, :string, values: ~w(raised flat dock), default: "raised"
 
   @spec screen_share_control(map()) :: Phoenix.LiveView.Rendered.t()
   def screen_share_control(assigns) do
     ~H"""
     <.media_session_icon_button
       label={screen_share_title(@call)}
-      active={screen_share_active?(@call)}
+      active={screen_share_active?(@call) || screen_share_blocked?(@call)}
       pressed={screen_share_active?(@call)}
-      class={
-        screen_share_blocked?(@call) &&
-          "bg-destructive text-destructive-foreground shadow-retro-sunken"
-      }
+      variant={@variant}
       disabled={screen_share_blocked?(@call)}
       data-group-call-screen-share-for={@call.token}
       data-testid="group-call-screen-share-toggle"

@@ -107,6 +107,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     assert html =~ ~s(data-device-kind="audioinput")
     assert html =~ ~s(data-device-kind="videoinput")
     assert html =~ ~s(data-device-kind="audiooutput")
+    assert html =~ ~s(data-testid="p2p-call-dock")
+
+    assert html =~
+             ~s(class="media-dock-button media-dock-button--captioned media-dock-button--danger")
   end
 
   test "mini mode keeps essential call controls and hides wide controls" do
@@ -137,6 +141,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     refute html =~ ~s(data-testid="p2p-call-layout-controls")
     refute html =~ ~s(data-testid="p2p-call-reaction-heart")
     refute html =~ ~s(data-testid="lobby-devices")
+    refute html =~ "media-dock-button--captioned"
   end
 
   test "tile self-view renders local video as a layout tile" do
@@ -166,7 +171,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     assert html =~ ~s(data-testid="p2p-call-screen-share")
     assert html =~ ~s(data-screen-share="true")
     assert html =~ "Your screen"
-    assert html =~ "Screen session"
+    assert html =~ "Stop sharing screen"
   end
 
   test "renders local and peer reaction overlays" do

@@ -897,6 +897,7 @@ export function createConferenceConnection(el, ports) {
 
       host.dataset.tileCount = String(visibleTiles.length);
       host.dataset.tileDensity = tileDensity(visibleTiles.length);
+      host.dataset.remoteCount = String(remoteCount);
 
       for (const tile of tiles) {
         const focused = focusedTile === tile;

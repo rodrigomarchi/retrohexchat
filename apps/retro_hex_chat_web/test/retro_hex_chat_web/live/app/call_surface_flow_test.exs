@@ -1890,6 +1890,22 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
         }
       })
 
+      # The room-wide actions live in the Moderation menu, and choosing one
+      # closes it; the caller's own controls live in the dock over the video.
+      assert has_element?(
+               call_view(moderator.view),
+               ~s([data-testid="group-call-moderation"] [data-testid="group-call-mute-all"])
+             )
+
+      assert call_view(moderator.view)
+             |> element(~s([data-testid="group-call-mute-all"]))
+             |> render() =~ "remove_attr"
+
+      assert has_element?(
+               call_view(moderator.view),
+               ~s(.media-dock-host [data-testid="group-call-media-controls"] [data-testid="group-call-leave"])
+             )
+
       call_view(moderator.view)
       |> element(~s([data-testid="group-call-mute-all"]))
       |> render_click()

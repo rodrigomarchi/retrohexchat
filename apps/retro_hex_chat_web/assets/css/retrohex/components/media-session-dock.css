@@ -1,0 +1,245 @@
+/*
+ * The dock: a translucent toolbar laid over the bottom of a call's video.
+ *
+ * Its host is the stage that holds the video (`.media-dock-host`). The dock
+ * shows while the pointer is over the stage or anything inside it has focus,
+ * and fades out a moment after the pointer leaves. It fades by opacity only —
+ * the buttons stay in the layout and in the accessibility tree, and a click
+ * on the stage always lands on a real control. Touch screens have no hover to
+ * bring it back, so there it never fades.
+ */
+
+/*
+ * The host publishes how much of its bottom edge the dock is covering, and how
+ * long the dock waits before fading, so anything laid in the corner of the
+ * picture (a call's own camera) can ride above the dock and settle with it.
+ */
+.media-dock-host {
+  --media-dock-clearance: 60px;
+  --media-dock-fade-delay: 0s;
+  position: relative;
+}
+
+.media-dock-host:has(.media-dock--compact) {
+  --media-dock-clearance: 40px;
+}
+
+.media-dock-host:not(:hover):not(:focus-within):not(:has(details[open])) {
+  --media-dock-clearance: 12px;
+  --media-dock-fade-delay: 1.6s;
+}
+
+.media-dock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 8px;
+  background: rgba(0, 0, 0, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  opacity: 1;
+  transition: opacity 240ms ease-out;
+  animation: media-dock-intro 4s;
+}
+
+/* An open popover (reactions, devices) holds the dock up while it is open. */
+.media-dock-host:not(:hover):not(:focus-within):not(:has(details[open])) .media-dock {
+  opacity: 0;
+  transition-delay: var(--media-dock-fade-delay);
+}
+
+@keyframes media-dock-intro {
+  0%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (hover: none) {
+  .media-dock-host:not(:hover):not(:focus-within):not(:has(details[open])) {
+    --media-dock-clearance: 60px;
+  }
+
+  .media-dock-host:not(:hover):not(:focus-within):not(:has(details[open])) .media-dock {
+    opacity: 1;
+  }
+
+  .media-dock-host:has(.media-dock--compact):not(:hover):not(:focus-within) {
+    --media-dock-clearance: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media-dock {
+    transition: none;
+  }
+}
+
+.media-dock__separator {
+  align-self: stretch;
+  width: 0;
+  margin: 4px 4px;
+  border-left: 1px solid rgba(0, 0, 0, 0.7);
+  border-right: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+
+.media-dock-button {
+  display: inline-flex;
+  height: 40px;
+  min-width: 40px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #ffffff;
+  padding: 0;
+  font-weight: 700;
+}
+
+/*
+ * The call icons are drawn for grey chrome, with black outlines that vanish on
+ * the dark dock. A one-pixel light rim — four hard drop shadows, no blur — cuts
+ * them out like a sticker and keeps the pixels crisp.
+ */
+.media-dock-button > svg {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  filter: drop-shadow(1px 0 0 rgba(255, 255, 255, 0.75))
+    drop-shadow(-1px 0 0 rgba(255, 255, 255, 0.75)) drop-shadow(0 1px 0 rgba(255, 255, 255, 0.75))
+    drop-shadow(0 -1px 0 rgba(255, 255, 255, 0.75));
+}
+
+.media-dock-button--danger > svg {
+  filter: none;
+}
+
+.media-dock-button:hover {
+  box-shadow:
+    inset 1px 1px rgba(255, 255, 255, 0.55),
+    inset -1px -1px rgba(0, 0, 0, 0.9);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.media-dock-button:active,
+.media-dock-button--active,
+.media-dock-button--active:hover {
+  box-shadow:
+    inset 1px 1px rgba(0, 0, 0, 0.9),
+    inset -1px -1px rgba(255, 255, 255, 0.4);
+}
+
+/* Media that is off: sunken, over the same diagonal hatch the empty tile uses. */
+.media-dock-button--active {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.16) 0,
+    rgba(255, 255, 255, 0.16) 3px,
+    rgba(0, 0, 0, 0.35) 3px,
+    rgba(0, 0, 0, 0.35) 6px
+  );
+}
+
+.media-dock-button:focus-visible {
+  outline: 1px dotted #ffffff;
+  outline-offset: -4px;
+}
+
+.media-dock-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.media-dock-button--captioned {
+  padding: 0 12px;
+}
+
+.media-dock-button--danger {
+  margin-left: 4px;
+  background: #cc0000;
+  box-shadow:
+    inset -1px -1px #0a0a0a,
+    inset 1px 1px #ff8080,
+    inset -2px -2px #800000;
+}
+
+.media-dock-button--danger:hover {
+  background: #e00000;
+  box-shadow:
+    inset -1px -1px #0a0a0a,
+    inset 1px 1px #ffa0a0,
+    inset -2px -2px #800000;
+}
+
+.media-dock-button--danger:active {
+  box-shadow:
+    inset 1px 1px #0a0a0a,
+    inset -1px -1px #ff8080;
+}
+
+.media-session-icon-button__caption {
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* A popover that opens out of the dock sits above it, in the light chrome. */
+.media-dock__popover {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  z-index: 30;
+  transform: translateX(-50%);
+}
+
+/* A mini call window is a few hundred pixels wide: one row of small buttons. */
+.media-dock--compact {
+  flex-wrap: nowrap;
+  gap: 1px;
+  padding: 2px;
+}
+
+.media-dock--compact .media-dock__separator {
+  display: none;
+}
+
+.media-dock--compact .media-dock-button {
+  min-width: 30px;
+  height: 30px;
+}
+
+.media-dock--compact .media-dock-button > svg {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 480px) {
+  .media-dock {
+    gap: 2px;
+    padding: 4px;
+  }
+
+  .media-dock-button {
+    min-width: 36px;
+    height: 36px;
+  }
+
+  .media-dock-button > svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .media-dock-button--captioned {
+    padding: 0 8px;
+  }
+}

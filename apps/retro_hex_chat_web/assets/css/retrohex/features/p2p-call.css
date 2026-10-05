@@ -1,0 +1,29 @@
+/*
+ * The P2P call's own camera, laid in the corner of the peer's picture.
+ *
+ * It sits `--media-dock-clearance` above the bottom edge — clear of the dock
+ * while the dock shows, settling into the corner once it fades.
+ */
+.p2p-call-pip {
+  position: absolute;
+  right: 12px;
+  bottom: var(--media-dock-clearance, 12px);
+  z-index: 15;
+  width: min(12rem, 30%);
+  height: min(7.5rem, 30%);
+  min-height: 4.5rem;
+  transition: bottom 240ms ease-out var(--media-dock-fade-delay, 0s);
+}
+
+/* In a mini window the corner camera shrinks to fit beside the compact dock. */
+[data-call-mini="true"] .p2p-call-pip {
+  width: min(5.5rem, 32%);
+  height: min(3.5rem, 30%);
+  min-height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .p2p-call-pip {
+    transition: none;
+  }
+}

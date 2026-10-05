@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
   attr :on_cycle_self_view, :any, default: "group_call_cycle_self_view"
   attr :on_clear_focus, :any, default: "group_call_clear_focus"
   attr :orientation, :string, values: ~w(horizontal vertical), default: "horizontal"
+  attr :variant, :string, values: ~w(raised flat), default: "raised"
   attr :class, :any, default: nil
 
   @spec layout_controls(map()) :: Phoenix.LiveView.Rendered.t()
@@ -32,6 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         mode={:auto}
         current={layout_mode(@call)}
         event={@on_layout_mode}
+        variant={@variant}
         label={dgettext("group_call", "Auto layout")}
         testid="group-call-layout-auto"
       >
@@ -42,6 +44,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         mode={:grid}
         current={layout_mode(@call)}
         event={@on_layout_mode}
+        variant={@variant}
         label={dgettext("group_call", "Grid layout")}
         testid="group-call-layout-grid"
       >
@@ -52,6 +55,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         mode={:focus}
         current={layout_mode(@call)}
         event={@on_layout_mode}
+        variant={@variant}
         label={dgettext("group_call", "Focus layout")}
         testid="group-call-layout-focus"
       >
@@ -62,6 +66,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         mode={:speaker}
         current={layout_mode(@call)}
         event={@on_layout_mode}
+        variant={@variant}
         label={dgettext("group_call", "Speaker layout")}
         testid="group-call-layout-speaker"
       >
@@ -70,6 +75,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
 
       <.media_session_icon_button
         label={self_view_title(@call)}
+        variant={@variant}
         active={self_view(@call) != :hidden}
         pressed={self_view(@call) != :hidden}
         phx-click={@on_cycle_self_view}
@@ -82,6 +88,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
       <.media_session_icon_button
         :if={focused_participant_id(@call)}
         label={dgettext("group_call", "Clear focused participant")}
+        variant={@variant}
         phx-click={@on_clear_focus}
         data-testid="group-call-clear-focus"
       >
@@ -96,6 +103,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
   attr :event, :any, required: true
   attr :label, :string, required: true
   attr :testid, :string, required: true
+  attr :variant, :string, required: true
   slot :inner_block, required: true
 
   defp layout_button(assigns) do
@@ -106,6 +114,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
       label={@label}
       active={@selected}
       pressed={@selected}
+      variant={@variant}
       phx-click={@event}
       phx-value-mode={@mode}
       data-layout-mode={@mode}

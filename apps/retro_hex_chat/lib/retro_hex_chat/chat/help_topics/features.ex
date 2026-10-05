@@ -1311,7 +1311,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "help",
             "Make video calls with camera controls, picture-in-picture, and quality settings. " <>
               "See also: P2P Session."
-          )
+          ) <>
+            " " <>
+            dgettext(
+              "help",
+              "The call controls — microphone, camera, screen share, reactions, Devices and the Leave button — are in a dark bar at the bottom of the video. The bar fades shortly after the pointer leaves the video and comes back when you point at it. Devices chooses the microphone, camera and speaker. The End P2P session button at the top right closes the whole session, not only the call."
+            )
       },
       %{
         id: "feature-channel-conference",
@@ -1336,7 +1341,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "Join a channel-scoped audio/video conference. Group Call in the channel toolbar opens the room and posts a card in the channel carrying its address; everyone goes in through that card, including whoever opened it. If a conference is already running, Group Call starts no second one — it writes that room's card again at the bottom of the channel, so the door is where you are reading instead of somewhere up the scrollback. Press it twice in a row and you get one card, because the second press has nothing to bring down. Following the address opens the antechamber in a browser tab of its own: a camera preview, the microphone/camera/speaker pickers, and who is already inside. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for next time. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
-          ),
+          ) <>
+            " " <>
+            dgettext(
+              "help",
+              "Moderators find the room-wide actions in the Moderation menu at the top right of the conference: lock the room, mute everyone ranked below you, turn off their cameras, and end the call for everyone."
+            ),
         see_also: [
           "feature-conference-tab",
           "feature-conference-share",
@@ -1363,7 +1373,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "A conference always runs in a browser tab of its own, so the call gets the whole window and the chat stays the chat. While it is over there the chat says so along the bottom of its window — a readout and not a door, because the card in the conversation is the way in, and there is no Leave beside it either: you leave a call from the screen that is in it. Ctrl+Shift with the arrow keys works inside that tab: Up for the microphone, Left for the camera, Right for the layout, Down to move the focus; Ctrl+Shift+Q leaves. Closing the tab is not leaving either: the room keeps you for the reconnection window, and reopening the address puts you straight back in. Only Leave, which asks first, actually ends your part in the call — and being removed from the channel ends it for you."
-          ),
+          ) <>
+            " " <>
+            dgettext(
+              "help",
+              "The call controls — microphone, camera, screen share, raised hand, reactions and the Leave button — are in a dark bar at the bottom of the video. The bar fades shortly after the pointer leaves the video, and it comes back when you point at the video or press Tab. On a touch screen it is always visible. In the automatic layout, when there is exactly one other video in the call, it fills the stage and your own camera moves to a corner. When you are alone, your camera fills the stage until someone joins."
+            ),
         see_also: ["feature-channel-conference", "feature-conference-share"]
       },
       %{

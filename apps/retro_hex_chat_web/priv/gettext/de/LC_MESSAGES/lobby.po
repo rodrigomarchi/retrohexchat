@@ -11,12 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:224
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:235
 #, elixir-autogen, elixir-format
 msgid "%{peer} is muted"
 msgstr "%{peer} wird mutiert"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:154
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:155
 #, elixir-autogen, elixir-format
 msgid "%{peer}'s camera is off"
 msgstr "%{peer}'s Kamera ist aus"
@@ -42,12 +42,12 @@ msgstr "Zurück zu den Spielen"
 msgid "Browse files"
 msgstr "Dateien durchsuchen"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:409
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:415
 #, elixir-autogen, elixir-format
 msgid "Camera Off"
 msgstr "Kamera ab"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:408
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:414
 #, elixir-autogen, elixir-format
 msgid "Camera On"
 msgstr "Kamera auf"
@@ -72,10 +72,9 @@ msgstr "Kann nicht auf Ihr Mikrofon oder Kamera zugreifen."
 msgid "Decline"
 msgstr "Ablehnen"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:508
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:732
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:733
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:736
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:738
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:739
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:748
 #, elixir-autogen, elixir-format
 msgid "Devices"
 msgstr "Geräte"
@@ -85,7 +84,7 @@ msgstr "Geräte"
 msgid "Draw."
 msgstr "Zeichnen."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:458
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:466
 #, elixir-autogen, elixir-format
 msgid "End call"
 msgstr "Endanruf"
@@ -105,7 +104,7 @@ msgstr "Dateiübertragung abgeschlossen: %{name}"
 msgid "Final Score"
 msgstr "Schlusspunkt"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:559
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:555
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "Schwerpunkt"
@@ -120,7 +119,7 @@ msgstr "Spiel im Fortschritt"
 msgid "Game over — %{game}: %{p1} × %{p2}"
 msgstr "Spiel over — %{game}: %{p1} × %{p2}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:387
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:390
 #, elixir-autogen, elixir-format
 msgid "Mute"
 msgstr "Stummschalten"
@@ -130,39 +129,39 @@ msgstr "Stummschalten"
 msgid "P1 %{score}"
 msgstr "P1 %{score}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:501
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:504
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
 msgstr "Bild-in-Bild"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:339
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:340
 #, elixir-autogen, elixir-format
 msgid "Start audio"
 msgstr "Audio starten"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:327
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:328
 #, elixir-autogen, elixir-format
 msgid "Start audio or video — or the peer can, independently. You'll join automatically."
 msgstr ""
 "Audio oder Video starten – oder der Peer kann unabhängig voneinander. Du "
 "kommst automatisch mit."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:347
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:348
 #, elixir-autogen, elixir-format
 msgid "Start video"
 msgstr "Video starten"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:398
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:402
 #, elixir-autogen, elixir-format
 msgid "Turn on camera"
 msgstr "Kamera drehen"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:379
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:380
 #, elixir-autogen, elixir-format
 msgid "Turn on microphone"
 msgstr "Mikrofon einschalten"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:387
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:390
 #, elixir-autogen, elixir-format
 msgid "Unmute"
 msgstr "Stummschaltung aufheben"

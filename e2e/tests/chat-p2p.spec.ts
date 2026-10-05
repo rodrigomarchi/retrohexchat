@@ -634,9 +634,6 @@ test.describe("In-chat P2P session", () => {
       await expect(
         bobSession.getByTestId("p2p-call-enable-video"),
       ).toBeVisible();
-      await expect(bobSession.getByTestId("p2p-call-panel")).toContainText(
-        "Recv-only session",
-      );
 
       await bobSession.setViewportSize({ width: 390, height: 844 });
       await expectMobileSectionNavCue(bobSession, "p2p-console-nav");
