@@ -254,19 +254,57 @@ class SavePoTest(unittest.TestCase):
 
 
 class NoPolibSaveTest(unittest.TestCase):
-    def test_no_script_writes_a_catalog_through_polib(self):
-        scripts = Path(__file__).resolve().parents[1]
-        offenders = [
-            str(path.relative_to(scripts))
-            for path in scripts.rglob("*.py")
-            if "tests" not in path.parts and re.search(r"\.save\(\s*(str\()?path", path.read_text(encoding="utf-8"))
-        ]
+    """No script writes a catalog through polib, however it spells the call."""
 
-        self.assertEqual(offenders, [], "write catalogs with catalogs.save_po, never po.save")
+    def test_no_script_calls_a_save_method(self):
+        import ast
+
+        scripts = Path(__file__).resolve().parents[1]
+        offenders = []
+
+        for path in scripts.rglob("*.py"):
+            if "tests" in path.parts:
+                continue
+
+            for node in ast.walk(ast.parse(path.read_text(encoding="utf-8"))):
+                if (
+                    isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Attribute)
+                    and node.func.attr == "save"
+                ):
+                    offenders.append(f"{path.relative_to(scripts)}:{node.lineno}")
+
+        self.assertEqual(offenders, [], "write catalogs with catalogs.save_po, never .save()")
 
 
 class SavePoRealCatalogTest(unittest.TestCase):
-    """Round-trips the committed catalogs, when polib is there to read them."""
+    """Round-trips the committed catalogs: through the stdlib reader always, so
+    the CI gate runs it, and through polib when the venv is there."""
+
+    def test_saving_an_unchanged_catalog_changes_no_byte_without_polib(self):
+        from i18n import locales
+
+        for locale in locales.enabled_locales():
+            for path in catalogs.po_files(locale.code):
+                before = path.read_bytes()
+                copy = Path(tempfile.mkdtemp()) / path.name
+                copy.write_bytes(before)
+
+                self.assertEqual(
+                    catalogs.save_po(catalogs.read_entries(path), copy), 0, f"{path} would be rewritten"
+                )
+                self.assertEqual(copy.read_bytes(), before)
+
+    def test_an_entry_with_no_block_raises_instead_of_vanishing(self):
+        path = catalogs.po_files("pt_BR")[0]
+        copy = Path(tempfile.mkdtemp()) / path.name
+        copy.write_bytes(path.read_bytes())
+        entries = catalogs.read_entries(path) + [entry("Appended in memory", "Novo")]
+
+        with self.assertRaises(ValueError):
+            catalogs.save_po(entries, copy)
+
+        self.assertEqual(copy.read_bytes(), path.read_bytes())
 
     def test_saving_an_unchanged_catalog_changes_no_byte(self):
         try:

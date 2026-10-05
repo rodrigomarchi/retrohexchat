@@ -127,17 +127,14 @@ arquivo para os dominios selecionados, preservando traducoes e marcando fuzzy
 quando o Gettext achar uma correspondencia aproximada. Use `APP=web` ou
 `APP=domain` para limitar o app, e `LOCALES=pt_BR,es` para limitar locales.
 
-Para traduzir ou reparar um diff especifico, passe sempre paths explicitos aos
-scripts de traducao/reparo. Exemplo:
+Para traduzir as entradas novas e fuzzy de um dominio, use os targets: eles
+escopam os paths, recusam um `DOMAINS` que nao casa nenhum catalogo e aplicam o
+glossario depois da maquina:
 
 ```sh
-/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_machine_translate_po.py \
-  --locales pt_BR,es,fr \
-  apps/retro_hex_chat_web/priv/gettext/*/LC_MESSAGES/landing.po
+make i18n.venv                                # uma vez: polib, Argos e um modelo por locale
+make i18n.translate DOMAINS=landing APP=web
 ```
-
-Evite rodar scripts de traducao ou reparo sem paths quando a intencao for
-atualizar apenas uma feature ou dominio.
 
 Para adicionar uma onda:
 
@@ -151,25 +148,6 @@ Para adicionar locales especificos:
 make i18n.locales.add LOCALES=es,fr,de
 ```
 
-Para preencher catalogos com traducao automatica draft, use um ambiente Python
-temporario com Argos Translate e Polib:
-
-```sh
-python -m venv /tmp/retro_hex_chat_i18n_venv
-/tmp/retro_hex_chat_i18n_venv/bin/python -m pip install argostranslate polib
-/tmp/retro_hex_chat_i18n_venv/bin/python - <<'PY'
-from argostranslate import package
-wanted = {"es", "fr", "de"}
-package.update_package_index()
-for pkg in package.get_available_packages():
-    if pkg.from_code == "en" and pkg.to_code in wanted:
-        package.install_from_path(pkg.download())
-PY
-/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_machine_translate_po.py \
-  --locales es,fr,de \
-  apps/retro_hex_chat_web/priv/gettext/*/LC_MESSAGES/landing.po
-```
-
 Para catalogos JavaScript, rode `scripts/i18n_machine_translate_js.py` apenas
 quando a mudanca realmente tocar os catalogos de browser em
 `apps/retro_hex_chat_web/assets/js/lib/i18n_catalogs`.
@@ -179,66 +157,31 @@ quando a mudanca realmente tocar os catalogos de browser em
 `scripts/i18n_source_fallback_check.py` usam `scripts/i18n_js_catalogs.py` para
 preservar esse layout splitado.
 
-Para lotes grandes, prefira `ARGOS_CHUNK_TYPE=MINISBD` para evitar download de
-modelos extras em tempo de execucao. Os scripts protegem placeholders com tags
-pareadas, por exemplo `<ph0></ph0>`, porque esse formato e preservado melhor
-pelos modelos Argos do que sentinelas soltas.
+Os scripts protegem placeholders com sentinelas alfanumericas (`XPH0X`), nunca
+com tags: os modelos tratam `<ph0></ph0>` como markup e o mutilam. A excecao e
+`%{count}` em plurais, traduzido como numero ("1 game", "2 games", "5 games",
+escolhidos pela propria regra `Plural-Forms` do locale) e devolvido a
+placeholder depois — ver `scripts/i18n/numerals.py`.
 
-Para reparos grandes em catalogos existentes, evite uma unica chamada global de
-traducao. Ela demora mais, mistura problemas de varios idiomas e pode reutilizar
-cache com traducoes que perderam placeholders. Prefira lotes por locale e por
-familia de arquivos, validando cada lote antes de seguir:
+Todo script grava catalogos por `catalogs.save_po`, que reescreve so as
+entradas alteradas; `po.save()` do polib reflui msgstrs que ninguem tocou e o
+`mix gettext.merge` nao desfaz.
 
-```sh
-/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_repair_placeholder_mismatches.py apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/*.po
-rm -f /tmp/retro_hex_chat_i18n_fragment_cache.json
-/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_machine_translate_po.py \
-  --cache /tmp/retro_hex_chat_i18n_fragment_cache.json \
-  --locales tr \
-  --protected-mode fragment \
-  apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/chat.po \
-  apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/dialogs.po \
-  apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/group_call.po \
-  apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/lobby.po \
-  apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/p2p.po \
-  apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/ui.po
-mix run --no-start scripts/i18n_placeholder_check.exs --fail-on-findings apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/*.po
-python3 scripts/i18n_source_fallback_check.py --locales tr --fail-on-findings
-```
+Reparos em catalogos existentes:
 
-Quando `zh_hant` entra no lote, instale tambem o conversor OpenCC no ambiente
-temporario:
+- `make i18n.repair` — re-traduz entradas inutilizaveis.
+- `make i18n.repair.plurals` — plurais curtos `%{count} <substantivo>` com o
+  numero depois do substantivo ou com as formas "poucos"/"muitos" colapsadas;
+  so aplica o resultado se ele remover um defeito.
+- `--msgid "<texto>"` em `i18n_machine_translate_po.py` — re-traduz um msgid
+  conhecido como ruim, pelo pipeline, em vez de editar o catalogo a mao.
+
+Depois de qualquer passada, valide o mesmo conjunto de arquivos:
 
 ```sh
-/tmp/retro_hex_chat_i18n_venv/bin/python -m pip install opencc-python-reimplemented
-```
-
-Ordem recomendada para reparo:
-
-1. Rode `i18n_repair_placeholder_mismatches.py` para voltar entradas inseguras
-   ao `msgid` fonte.
-2. Traduza um locale por vez com `--protected-mode fragment` e cache dedicado.
-3. Rode `i18n_placeholder_check.exs` antes de olhar fallback. Fallback em ingles
-   e menos grave que uma traducao sem placeholder.
-4. Rode `i18n_source_fallback_check.py --locales <locale>` e resolva sobras com
-   `scripts/i18n_apply_translation_overrides.py` ou allowlist tecnica explicita.
-5. So depois rode `make i18n.catalog.check` e `make i18n.gettext.check`.
-
-Depois da traducao automatica de um dominio especifico, valide o mesmo conjunto
-de arquivos que foi traduzido:
-
-```sh
-/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_repair_placeholder_mismatches.py \
-  apps/retro_hex_chat_web/priv/gettext/*/LC_MESSAGES/landing.po
-/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_apply_translation_overrides.py \
-  --locales pt_BR,es,fr,de,ja,zh_hans,id,ar,ru,hi,ko,tr,vi,bn,ur,zh_hant,pt_PT,it,pl,nl \
-  apps/retro_hex_chat_web/priv/gettext/*/LC_MESSAGES/landing.po
 mix run --no-start scripts/i18n_placeholder_check.exs --fail-on-findings \
   apps/retro_hex_chat_web/priv/gettext/*/LC_MESSAGES/landing.po
-python3 scripts/i18n_source_fallback_check.py \
-  --locales pt_BR,es,fr,de,ja,zh_hans,id,ar,ru,hi,ko,tr,vi,bn,ur,zh_hant,pt_PT,it,pl,nl \
-  --fail-on-findings \
-  apps/retro_hex_chat_web/priv/gettext/*/LC_MESSAGES/landing.po
+make i18n.quality.check
 make i18n.catalog.check
 ```
 

@@ -15,6 +15,7 @@ import re
 from pathlib import Path
 
 from i18n_js_catalogs import LOCALE_EXPORTS, read_catalogs, write_catalogs
+from i18n import glossary
 from i18n.locales import codes as enabled_locale_codes
 
 PLACEHOLDER_RE = re.compile(r"%\{[A-Za-z0-9_]+\}")
@@ -10245,6 +10246,280 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+# Public games catalogue. Curated because these are the titles, descriptions
+# and buttons a search result shows: the engine read "play" as playing media
+# (播放, 再生, afspelen), translated the brand, and turned "free" into "libre".
+# The arcade's count plural is here too: the model gave French a different
+# noun for each form ("entrée", "rubriques"), so no repair could land it.
+PO_GAMES_CATALOGUE_OVERRIDES = {
+    "Play %{name} in your browser — Retro Hex Chat": t(
+        de="%{name} im Browser spielen — Retro Hex Chat",
+        es="Juega a %{name} en el navegador — Retro Hex Chat",
+        fr="Jouez à %{name} dans le navigateur — Retro Hex Chat",
+        id="Mainkan %{name} di browser — Retro Hex Chat",
+        ja="%{name} をブラウザでプレイ — Retro Hex Chat",
+        zh_hans="在浏览器中玩 %{name} — Retro Hex Chat",
+        pt_BR="Jogue %{name} no navegador — Retro Hex Chat",
+        pt_PT="Jogue %{name} no browser — Retro Hex Chat",
+        it="Gioca a %{name} nel browser — Retro Hex Chat",
+        pl="Zagraj w %{name} w przeglądarce — Retro Hex Chat",
+        nl="Speel %{name} in je browser — Retro Hex Chat",
+        ru="Играйте в %{name} в браузере — Retro Hex Chat",
+        zh_hant="在瀏覽器中玩 %{name} — Retro Hex Chat",
+    ),
+    "Play %{name} in your browser": t(
+        de="%{name} im Browser spielen",
+        es="Juega a %{name} en el navegador",
+        fr="Jouez à %{name} dans le navigateur",
+        id="Mainkan %{name} di browser",
+        ja="%{name} をブラウザでプレイ",
+        zh_hans="在浏览器中玩 %{name}",
+        pt_BR="Jogue %{name} no navegador",
+        pt_PT="Jogue %{name} no browser",
+        it="Gioca a %{name} nel browser",
+        pl="Zagraj w %{name} w przeglądarce",
+        nl="Speel %{name} in je browser",
+        ru="Играйте в %{name} в браузере",
+        zh_hant="在瀏覽器中玩 %{name}",
+    ),
+    "Play now — pick a nickname": t(
+        de="Jetzt spielen — Spitznamen wählen",
+        es="Jugar ahora — elige un apodo",
+        fr="Jouer maintenant — choisissez un pseudo",
+        id="Main sekarang — pilih nama panggilan",
+        ja="今すぐプレイ — ニックネームを決める",
+        zh_hans="立即开玩 — 选个昵称",
+        pt_BR="Jogar agora — escolha um apelido",
+        pt_PT="Jogar agora — escolha uma alcunha",
+        it="Gioca ora — scegli un soprannome",
+        pl="Zagraj teraz — wybierz pseudonim",
+        nl="Nu spelen — kies een bijnaam",
+        ru="Играть сейчас — выберите ник",
+        zh_hant="立即開玩 — 選個暱稱",
+    ),
+    "Retro games in your browser": t(
+        de="Retro-Spiele im Browser",
+        es="Juegos retro en tu navegador",
+        fr="Jeux rétro dans votre navigateur",
+        id="Game retro di browser",
+        ja="ブラウザで遊べるレトロゲーム",
+        zh_hans="浏览器里的复古游戏",
+        pt_BR="Jogos retrô no navegador",
+        pt_PT="Jogos retro no browser",
+        it="Giochi retrò nel browser",
+        pl="Gry retro w przeglądarce",
+        nl="Retrogames in je browser",
+        ru="Ретро-игры в браузере",
+        zh_hant="瀏覽器裡的復古遊戲",
+    ),
+    "Retro games you can play in your browser — Retro Hex Chat": t(
+        de="Retro-Spiele im Browser spielen — Retro Hex Chat",
+        es="Juegos retro para jugar en el navegador — Retro Hex Chat",
+        fr="Jeux rétro à jouer dans le navigateur — Retro Hex Chat",
+        id="Game retro untuk dimainkan di browser — Retro Hex Chat",
+        ja="ブラウザで遊べるレトロゲーム — Retro Hex Chat",
+        zh_hans="可在浏览器中玩的复古游戏 — Retro Hex Chat",
+        pt_BR="Jogos retrô para jogar no navegador — Retro Hex Chat",
+        pt_PT="Jogos retro para jogar no browser — Retro Hex Chat",
+        it="Giochi retrò da giocare nel browser — Retro Hex Chat",
+        pl="Gry retro do grania w przeglądarce — Retro Hex Chat",
+        nl="Retrogames om in je browser te spelen — Retro Hex Chat",
+        ru="Ретро-игры для браузера — Retro Hex Chat",
+        zh_hant="可在瀏覽器中玩的復古遊戲 — Retro Hex Chat",
+    ),
+    "DOOM, Quake, Wolfenstein 3D, Half-Life and classic adventures in the browser, plus multiplayer arcade games to play with friends — free, nothing to install.": t(
+        de="DOOM, Quake, Wolfenstein 3D, Half-Life und klassische Adventures im Browser, dazu Multiplayer-Arcadespiele mit Freunden — kostenlos, ohne Installation.",
+        es="DOOM, Quake, Wolfenstein 3D, Half-Life y aventuras clásicas en el navegador, además de juegos arcade multijugador con amigos — gratis, sin instalar nada.",
+        fr="DOOM, Quake, Wolfenstein 3D, Half-Life et des aventures classiques dans le navigateur, plus des jeux d'arcade multijoueur entre amis — gratuit, rien à installer.",
+        id="DOOM, Quake, Wolfenstein 3D, Half-Life, dan petualangan klasik di browser, plus game arkade multipemain bersama teman — gratis, tanpa instalasi.",
+        ja="DOOM、Quake、Wolfenstein 3D、Half-Life、名作アドベンチャーをブラウザで。友だちと遊べるマルチプレイのアーケードゲームも — 無料、インストール不要。",
+        zh_hans="在浏览器中玩 DOOM、Quake、Wolfenstein 3D、Half-Life 和经典冒险游戏，还有可与朋友对战的多人街机游戏 — 免费，无需安装。",
+        pt_BR="DOOM, Quake, Wolfenstein 3D, Half-Life e aventuras clássicas no navegador, além de jogos arcade multijogador com amigos — grátis, sem instalar nada.",
+        pt_PT="DOOM, Quake, Wolfenstein 3D, Half-Life e aventuras clássicas no browser, além de jogos arcade multijogador com amigos — grátis, sem instalar nada.",
+        it="DOOM, Quake, Wolfenstein 3D, Half-Life e avventure classiche nel browser, più giochi arcade multigiocatore con gli amici — gratis, niente da installare.",
+        pl="DOOM, Quake, Wolfenstein 3D, Half-Life i klasyczne przygodówki w przeglądarce, a do tego wieloosobowe gry zręcznościowe ze znajomymi — za darmo, bez instalacji.",
+        nl="DOOM, Quake, Wolfenstein 3D, Half-Life en klassieke adventures in je browser, plus multiplayer-arcadegames met vrienden — gratis, niets te installeren.",
+        ru="DOOM, Quake, Wolfenstein 3D, Half-Life и классические квесты в браузере, а ещё многопользовательские аркады с друзьями — бесплатно, без установки.",
+        zh_hant="在瀏覽器中玩 DOOM、Quake、Wolfenstein 3D、Half-Life 和經典冒險遊戲，還有可與朋友對戰的多人街機遊戲 — 免費，無需安裝。",
+    ),
+    "Shareware classics and freeware adventures running on their original engines, and arcade games to play against a friend or the AI. Free, and nothing to install: pick a nickname and play.": t(
+        de="Shareware-Klassiker und Freeware-Adventures auf ihren Original-Engines, dazu Arcadespiele gegen Freunde oder die KI. Kostenlos und ohne Installation: Spitznamen wählen und spielen.",
+        es="Clásicos shareware y aventuras freeware en sus motores originales, y juegos arcade contra un amigo o la IA. Gratis y sin instalar nada: elige un apodo y juega.",
+        fr="Des classiques shareware et des aventures freeware sur leurs moteurs d'origine, et des jeux d'arcade contre un ami ou l'IA. Gratuit, rien à installer : choisissez un pseudo et jouez.",
+        id="Klasik shareware dan petualangan freeware di mesin aslinya, plus game arkade melawan teman atau AI. Gratis, tanpa instalasi: pilih nama panggilan dan main.",
+        ja="シェアウェアの名作とフリーウェアのアドベンチャーをオリジナルのエンジンで。友だちや AI と対戦できるアーケードゲームも。無料、インストール不要：ニックネームを決めて遊ぶだけ。",
+        zh_hans="共享软件经典和免费冒险游戏，运行在原版引擎上；还有可与朋友或 AI 对战的街机游戏。免费、无需安装：选个昵称就能玩。",
+        pt_BR="Clássicos shareware e aventuras freeware rodando nos motores originais, e jogos arcade para jogar contra um amigo ou a IA. Grátis e sem instalar nada: escolha um apelido e jogue.",
+        pt_PT="Clássicos shareware e aventuras freeware a correr nos motores originais, e jogos arcade para jogar contra um amigo ou a IA. Grátis e sem instalar nada: escolha uma alcunha e jogue.",
+        it="Classici shareware e avventure freeware sui loro motori originali, e giochi arcade contro un amico o l'IA. Gratis, niente da installare: scegli un soprannome e gioca.",
+        pl="Klasyki shareware i darmowe przygodówki na oryginalnych silnikach oraz gry zręcznościowe przeciwko znajomemu lub SI. Za darmo, bez instalacji: wybierz pseudonim i graj.",
+        nl="Shareware-klassiekers en freeware-adventures op hun originele engines, en arcadegames tegen een vriend of de AI. Gratis, niets te installeren: kies een bijnaam en speel.",
+        ru="Классика shareware и бесплатные квесты на оригинальных движках, а ещё аркады против друга или ИИ. Бесплатно и без установки: выберите ник и играйте.",
+        zh_hant="共享軟體經典和免費冒險遊戲，執行在原版引擎上；還有可與朋友或 AI 對戰的街機遊戲。免費、無需安裝：選個暱稱就能玩。",
+    ),
+    "Free, in the browser": t(
+        de="Kostenlos, im Browser",
+        es="Gratis, en el navegador",
+        fr="Gratuit, dans le navigateur",
+        id="Gratis, di browser",
+        ja="無料、ブラウザで",
+        zh_hans="免费，在浏览器中",
+        pt_BR="Grátis, no navegador",
+        pt_PT="Grátis, no browser",
+        it="Gratis, nel browser",
+        pl="Za darmo, w przeglądarce",
+        nl="Gratis, in je browser",
+        ru="Бесплатно, в браузере",
+        zh_hant="免費，在瀏覽器中",
+    ),
+    "Multiplayer — or against the AI": t(
+        de="Mehrspieler — oder gegen die KI",
+        es="Multijugador — o contra la IA",
+        fr="Multijoueur — ou contre l'IA",
+        id="Multipemain — atau melawan AI",
+        ja="マルチプレイ — または AI と対戦",
+        zh_hans="多人 — 或与 AI 对战",
+        pt_BR="Multijogador — ou contra a IA",
+        pt_PT="Multijogador — ou contra a IA",
+        it="Multigiocatore — o contro l'IA",
+        pl="Wieloosobowa — albo przeciw SI",
+        nl="Multiplayer — of tegen de AI",
+        ru="Мультиплеер — или против ИИ",
+        zh_hant="多人 — 或與 AI 對戰",
+    ),
+    "Screenshot of %{name}": t(
+        de="Screenshot von %{name}",
+        es="Captura de pantalla de %{name}",
+        fr="Capture d'écran de %{name}",
+        id="Tangkapan layar %{name}",
+        ja="%{name} のスクリーンショット",
+        zh_hans="%{name} 的截图",
+        pt_BR="Captura de tela de %{name}",
+        pt_PT="Captura de ecrã de %{name}",
+        it="Schermata di %{name}",
+        pl="Zrzut ekranu z %{name}",
+        nl="Schermafbeelding van %{name}",
+        ru="Скриншот %{name}",
+        zh_hant="%{name} 的截圖",
+    ),
+    "See every game in the catalogue": t(
+        de="Alle Spiele im Katalog ansehen",
+        es="Ver todos los juegos del catálogo",
+        fr="Voir tous les jeux du catalogue",
+        id="Lihat semua game di katalog",
+        ja="カタログですべてのゲームを見る",
+        zh_hans="在目录中查看全部游戏",
+        pt_BR="Ver todos os jogos do catálogo",
+        pt_PT="Ver todos os jogos do catálogo",
+        it="Vedi tutti i giochi del catalogo",
+        pl="Zobacz wszystkie gry w katalogu",
+        nl="Bekijk alle games in de catalogus",
+        ru="Все игры в каталоге",
+        zh_hant="在目錄中查看全部遊戲",
+    ),
+    "Screenshots and more games in the games catalogue": t(
+        de="Screenshots und weitere Spiele im Spielekatalog",
+        es="Capturas y más juegos en el catálogo de juegos",
+        fr="Captures d'écran et autres jeux dans le catalogue",
+        id="Tangkapan layar dan game lain di katalog game",
+        ja="スクリーンショットと他のゲームはゲームカタログで",
+        zh_hans="截图和更多游戏见游戏目录",
+        pt_BR="Imagens e mais jogos no catálogo de jogos",
+        pt_PT="Imagens e mais jogos no catálogo de jogos",
+        it="Schermate e altri giochi nel catalogo dei giochi",
+        pl="Zrzuty ekranu i więcej gier w katalogu gier",
+        nl="Schermafbeeldingen en meer games in de gamecatalogus",
+        ru="Скриншоты и другие игры — в каталоге игр",
+        zh_hant="截圖和更多遊戲見遊戲目錄",
+    ),
+}
+
+# The public archive switch. Curated because the engine invented a heading
+# above the sentence in Japanese and Chinese ("シリーズ\n…", "数据\n…"), and
+# because these are the lines that tell a founder what just became public.
+PO_GAMES_CATALOGUE_OVERRIDES.update(
+    {
+        "The archive switch did not answer. Check its state and try again.": t(
+            de="Der Archivschalter hat nicht geantwortet. Prüfe seinen Zustand und versuche es erneut.",
+            es="El interruptor del archivo no respondió. Comprueba su estado e inténtalo de nuevo.",
+            fr="L'interrupteur de l'archive n'a pas répondu. Vérifiez son état et réessayez.",
+            id="Sakelar arsip tidak menjawab. Periksa statusnya lalu coba lagi.",
+            ja="アーカイブのスイッチが応答しませんでした。状態を確認してもう一度お試しください。",
+            zh_hans="存档开关没有响应。请检查其状态后重试。",
+            pt_BR="O interruptor do arquivo não respondeu. Confira o estado dele e tente de novo.",
+            pt_PT="O interruptor do arquivo não respondeu. Confirme o estado dele e tente novamente.",
+            it="L'interruttore dell'archivio non ha risposto. Controllane lo stato e riprova.",
+            pl="Przełącznik archiwum nie odpowiedział. Sprawdź jego stan i spróbuj ponownie.",
+            nl="De archiefschakelaar reageerde niet. Controleer de status en probeer het opnieuw.",
+            ru="Переключатель архива не ответил. Проверьте его состояние и попробуйте снова.",
+            zh_hant="存檔開關沒有回應。請檢查其狀態後重試。",
+        ),
+        "Identify with NickServ before changing the public archive": t(
+            de="Identifiziere dich bei NickServ, bevor du das öffentliche Archiv änderst",
+            es="Identifícate con NickServ antes de cambiar el archivo público",
+            fr="Identifiez-vous auprès de NickServ avant de modifier l'archive publique",
+            id="Identifikasi diri dengan NickServ sebelum mengubah arsip publik",
+            ja="公開アーカイブを変更する前に NickServ で認証してください",
+            zh_hans="更改公开存档前请先向 NickServ 验证身份",
+            pt_BR="Identifique-se no NickServ antes de mudar o arquivo público",
+            pt_PT="Identifique-se no NickServ antes de alterar o arquivo público",
+            it="Identificati con NickServ prima di modificare l'archivio pubblico",
+            pl="Zidentyfikuj się w NickServ przed zmianą publicznego archiwum",
+            nl="Identificeer je bij NickServ voordat je het openbare archief wijzigt",
+            ru="Идентифицируйтесь в NickServ, прежде чем менять публичный архив",
+            zh_hant="變更公開存檔前請先向 NickServ 驗證身分",
+        ),
+        "[ChanServ] The public archive of %{channel} is on.": t(
+            de="[ChanServ] Das öffentliche Archiv von %{channel} ist an.",
+            es="[ChanServ] El archivo público de %{channel} está activado.",
+            fr="[ChanServ] L'archive publique de %{channel} est activée.",
+            id="[ChanServ] Arsip publik %{channel} aktif.",
+            ja="[ChanServ] %{channel} の公開アーカイブはオンです。",
+            zh_hans="[ChanServ] %{channel} 的公开存档已开启。",
+            pt_BR="[ChanServ] O arquivo público de %{channel} está ligado.",
+            pt_PT="[ChanServ] O arquivo público de %{channel} está ligado.",
+            it="[ChanServ] L'archivio pubblico di %{channel} è attivo.",
+            pl="[ChanServ] Publiczne archiwum %{channel} jest włączone.",
+            nl="[ChanServ] Het openbare archief van %{channel} staat aan.",
+            ru="[ChanServ] Публичный архив %{channel} включён.",
+            zh_hant="[ChanServ] %{channel} 的公開存檔已開啟。",
+        ),
+        "The founder must be identified with NickServ to switch it, not merely using the founder's nickname": t(
+            de="Wer den Kanal gegründet hat, muss bei NickServ identifiziert sein, um ihn umzuschalten — den Spitznamen nur zu tragen genügt nicht",
+            es="El fundador debe estar identificado con NickServ para cambiarlo; no basta con usar su apodo",
+            fr="Le fondateur doit être identifié auprès de NickServ pour le basculer ; porter son pseudo ne suffit pas",
+            id="Pendiri harus teridentifikasi di NickServ untuk mengubahnya; sekadar memakai nama panggilannya tidak cukup",
+            ja="切り替えるには創設者が NickServ で認証済みである必要があります。ニックネームを使っているだけでは不十分です",
+            zh_hans="创建者必须向 NickServ 验证身份才能切换，仅仅使用其昵称不行",
+            pt_BR="O fundador precisa estar identificado no NickServ para mudá-lo; só usar o apelido dele não basta",
+            pt_PT="O fundador tem de estar identificado no NickServ para o mudar; usar só a alcunha dele não chega",
+            it="Il fondatore deve essere identificato con NickServ per cambiarlo; usare solo il suo soprannome non basta",
+            pl="Założyciel musi być zidentyfikowany w NickServ, aby go przełączyć; samo używanie jego pseudonimu nie wystarczy",
+            nl="De oprichter moet bij NickServ geïdentificeerd zijn om het om te zetten; alleen de bijnaam gebruiken is niet genoeg",
+            ru="Чтобы переключить его, основатель должен пройти идентификацию в NickServ; просто использовать его ник недостаточно",
+            zh_hant="創建者必須向 NickServ 驗證身分才能切換，僅僅使用其暱稱不行",
+        ),
+    }
+)
+
+# German for "the founder" is the person who founded the channel; "die Gründung"
+# is the founding itself, which cannot open an archive or identify anywhere.
+PO_GERMAN_FOUNDER_OVERRIDES = {
+    'Everything a group knows usually dies inside the room it was said in. A channel can choose otherwise: its founder can open a public archive, and from that moment the channel gets a page per day that anybody can read and a search engine can index.': {"de": 'Alles, was eine Gruppe weiß, stirbt üblicherweise in dem Raum, in dem es gesagt wurde. Ein Kanal kann sich anders entscheiden: wer ihn gegründet hat, kann ein öffentliches Archiv öffnen, und von da an bekommt der Kanal eine Seite pro Tag, die jeder lesen und eine Suchmaschine indexieren kann.'},
+    'The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, or typed as /cs archive on and /cs archive off; only a registered channel has one.': {"de": 'Wer den Kanal gegründet hat, und sonst niemand. Ein Operator moderiert den Raum; zu entscheiden, dass das dort Gesagte von außen lesbar wird, ist eine andere Art von Entscheidung und gehört daher zu der Person, die für den Kanal einsteht. Der Schalter sitzt in Channel Central auf dem Reiter Registrierung oder wird als /cs archive on und /cs archive off eingegeben; nur ein registrierter Kanal hat einen.'},
+    "The founder must be identified with NickServ to switch it, not merely using the founder's nickname": {"de": 'Wer den Kanal gegründet hat, muss bei NickServ identifiziert sein, um ihn umzuschalten — den Spitznamen nur zu tragen genügt nicht'},
+}
+
+for source, translations in PO_GERMAN_FOUNDER_OVERRIDES.items():
+    PO_OVERRIDES.setdefault(source, {}).update(translations)
+
+for source, translations in PO_GAMES_CATALOGUE_OVERRIDES.items():
+    PO_OVERRIDES.setdefault(source, {}).update(translations)
+
+PO_OVERRIDES.setdefault("%{count} entry", {})["fr"] = "%{count} entrée"
+PO_OVERRIDES.setdefault("%{count} entries", {})["fr"] = "%{count} entrées"
+
+
 def main() -> int:
     args = parse_args()
     locales = tuple(locale.strip() for locale in args.locales.split(",") if locale.strip())
@@ -10378,6 +10653,20 @@ def unquote(value: str) -> str:
     return ast.literal_eval(f'"{value}"')
 
 
+def override_for(source: str, locale: str) -> str | None:
+    """The curated value for `source`, unless the glossary owns it.
+
+    The glossary is the authority on short UI labels and runs last; an
+    override written before a glossary row existed ("Kick" -> "Kick" against
+    the glossary's "Kicken") would otherwise drift every catalog it touches,
+    and the quality gate would fail on it.
+    """
+    if source.strip() in glossary.terms():
+        return None
+
+    return PO_OVERRIDES.get(source, {}).get(locale)
+
+
 def apply_po_block_overrides(block: str, entry: dict, locale: str) -> tuple[str, int]:
     changed_entries = 0
 
@@ -10385,8 +10674,15 @@ def apply_po_block_overrides(block: str, entry: dict, locale: str) -> tuple[str,
         plural_forms = entry["msgstr_plural"]
 
         for index in sorted(plural_forms.keys()):
+            # An override names one plural, but Polish and Russian have two:
+            # "%{count} gry" is right for 2–4 and wrong for 5, which is "gier".
+            # A language with more than two forms keeps its own plurals and
+            # takes only the singular from an override.
+            if len(plural_forms) > 2 and index > 0:
+                continue
+
             source = entry["msgid_plural"] if len(plural_forms) == 1 or index > 0 else entry["msgid"]
-            translated = PO_OVERRIDES.get(source, {}).get(locale)
+            translated = override_for(source, locale)
 
             if translated is None:
                 continue
@@ -10397,7 +10693,7 @@ def apply_po_block_overrides(block: str, entry: dict, locale: str) -> tuple[str,
                 block = replace_msgstr(block, translated, index)
                 changed_entries += 1
     else:
-        translated = PO_OVERRIDES.get(entry["msgid"], {}).get(locale)
+        translated = override_for(entry["msgid"], locale)
 
         if translated is not None:
             ensure_placeholders(entry["msgid"], translated)

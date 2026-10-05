@@ -170,8 +170,14 @@ def save_po(po, path: Path) -> int:
 
     So the file text is the source of truth. Each entry block is matched to its
     polib entry by context and msgid, and a block is rewritten only when its
-    msgstr, its flags or its previous-msgid lines differ — and then only those
+    msgstr or its flags differ, or its previous-msgid lines were dropped — and
+    then only those
     lines, in the writer's own style. Everything else stays byte for byte.
+
+    It writes translations, never structure: an entry with no block in the file
+    (one appended in memory) or a changed header has nowhere to go, and raises
+    rather than vanishing. Adding and removing entries is `mix gettext.merge`'s
+    job.
 
     Stdlib only: the entries are read by attribute, so tests drive it with
     plain objects and the CI gate needs no polib. Returns the number of blocks
@@ -183,6 +189,17 @@ def save_po(po, path: Path) -> int:
     blocks = text.rstrip("\n").split("\n\n")
     rewritten = 0
     out = []
+
+    metadata = getattr(po, "metadata", None)
+
+    if metadata is not None and metadata != _header_metadata(blocks):
+        raise ValueError(f"{path}: the header changed in memory; save_po writes translations only")
+
+    placed = {_block_key(block) for block in blocks}
+    unplaced = sorted(str(key[1])[:60] for key in entries if key[1] and key not in placed)
+
+    if unplaced:
+        raise ValueError(f"{path}: entries with no block to write into: {unplaced}")
 
     for block in blocks:
         new_block = _rewrite_block(block, entries)
@@ -196,6 +213,76 @@ def save_po(po, path: Path) -> int:
         path.write_text("\n\n".join(out) + trailing, encoding="utf-8")
 
     return rewritten
+
+
+def read_entries(path: Path) -> list:
+    """Every live entry of a PO file as the attributes `save_po` reads, without
+    polib — what lets the CI gate, which has none, round-trip real catalogs."""
+    from types import SimpleNamespace
+
+    entries = []
+
+    for block in path.read_text(encoding="utf-8").rstrip("\n").split("\n\n"):
+        lines = block.split("\n")
+
+        if any(line.startswith("#~") for line in lines):
+            continue
+
+        fields = _block_fields(lines)
+        msgid = "".join(fields.get("msgid", ([], 0))[0])
+
+        if not msgid:
+            continue
+
+        values = {name: "".join(parts) for name, (parts, _start) in fields.items()}
+        plural = {
+            int(name[7:-1]): value for name, value in values.items() if name.startswith("msgstr[")
+        }
+        flags = [
+            flag.strip()
+            for line in lines
+            if line.startswith("#,")
+            for flag in line[2:].split(",")
+            if flag.strip()
+        ]
+
+        entries.append(
+            SimpleNamespace(
+                msgid=msgid,
+                msgctxt=values.get("msgctxt"),
+                msgid_plural=values.get("msgid_plural", ""),
+                msgstr=values.get("msgstr", ""),
+                msgstr_plural=plural,
+                flags=flags,
+                previous_msgid="" if any(line.startswith("#|") for line in lines) else None,
+                obsolete=False,
+            )
+        )
+
+    return entries
+
+
+def _header_metadata(blocks: list[str]) -> dict[str, str]:
+    for block in blocks:
+        fields = _block_fields(block.split("\n"))
+
+        if "msgid" in fields and "".join(fields["msgid"][0]) == "":
+            text = "".join(fields.get("msgstr", ([], 0))[0])
+            pairs = (line.split(":", 1) for line in text.split("\n") if ":" in line)
+            return {key.strip(): value.strip() for key, value in pairs}
+
+    return {}
+
+
+def _block_key(block: str) -> tuple | None:
+    lines = block.split("\n")
+
+    if any(line.startswith("#~") for line in lines):
+        return None
+
+    fields = _block_fields(lines)
+    msgctxt = fields.get("msgctxt")
+    return ("".join(msgctxt[0]) if msgctxt else None, "".join(fields.get("msgid", ([], 0))[0]))
 
 
 def _rewrite_block(block: str, entries: dict) -> str:

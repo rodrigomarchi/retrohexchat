@@ -292,6 +292,14 @@ class LostNegationTest(unittest.TestCase):
             lost_negation("You cannot write", "書くことができません", "ja")
         )
 
+    def test_nothing_but_means_only_and_is_not_a_negation(self):
+        source = "somebody reading a busy channel may want nothing but the words."
+
+        self.assertFalse(lost_negation(source, "может хотеть одних лишь слов.", "ru"))
+        self.assertFalse(lost_negation(source, "może chcieć wyłącznie słów.", "pl"))
+        # "Nothing" on its own still is one.
+        self.assertTrue(lost_negation("Nothing was saved.", "Все сохранено.", "ru"))
+
     def test_ignores_a_source_with_no_negation(self):
         self.assertFalse(lost_negation("Open in a new tab", "Neuer Tab", "de"))
 

@@ -11,6 +11,8 @@ silently:
   break      a one-line source that came back as two
   negation   a source that says "cannot" whose translation says nothing of it
   entity     an HTML entity's letters printed at the reader ("& mdash;")
+  count      a plural whose source leads with its count and whose
+             translation moved it after the noun ("Heures %{count}")
 """
 
 from __future__ import annotations
@@ -22,7 +24,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from i18n import catalogs, glossary, locales  # noqa: E402
+from i18n import catalogs, glossary, locales, numerals  # noqa: E402
 from i18n.protection import has_sentinel_residue  # noqa: E402
 from i18n.quality import (  # noqa: E402
     COLLAPSE_THRESHOLD,
@@ -114,7 +116,12 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
     broken_lines: list[tuple[str, str]] = []
     unnegated: list[tuple[str, str]] = []
     entities: list[tuple[str, str]] = []
+    misplaced_counts: list[tuple[str, str]] = []
     curated = glossary.for_locale(code)
+    plural_forms = next(
+        (locale.plural_forms for locale in locales.enabled_locales() if locale.code == code), ""
+    )
+    nplurals = numerals.parse_plural_forms(plural_forms)[0] if plural_forms else 1
     accepted = read_baseline()
 
     for path in catalogs.po_files(code):
@@ -146,6 +153,17 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
             if has_entity_residue(source, translated):
                 entities.append((source, translated))
 
+        # Only the "order" defect gates: a collapsed few/many slot is sometimes
+        # the language's own grammar (Polish "2 dni", "5 dni").
+        for entry in catalogs.read_entries(path):
+            if not entry.msgid_plural:
+                continue
+
+            forms = [entry.msgstr_plural[index] for index in sorted(entry.msgstr_plural)]
+
+            if "order" in numerals.plural_defects(forms, entry.msgid, nplurals):
+                misplaced_counts.append((entry.msgid, " | ".join(forms)))
+
     collapses = find_collapses(pairs, args.collapse_threshold)
     headings = find_shared_headings(pairs, args.collapse_threshold)
     findings = (
@@ -156,6 +174,7 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
         + len(broken_lines)
         + len(unnegated)
         + len(entities)
+        + len(misplaced_counts)
         + sum(len(sources) for sources in collapses.values())
         + sum(len(sources) for sources in headings.values())
     )
@@ -173,6 +192,7 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
     report_simple("invented line break", broken_lines, args.max_examples)
     report_simple("lost negation", unnegated, args.max_examples)
     report_simple("entity residue", entities, args.max_examples)
+    report_simple("count moved after its noun", misplaced_counts, args.max_examples)
     return findings
 
 

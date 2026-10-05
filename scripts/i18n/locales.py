@@ -49,6 +49,9 @@ class Locale:
     direction: str
     wave: int
     status: str
+    # Gettext's plural rule, e.g. "nplurals=2; plural=(n != 1);". Empty when the
+    # registry does not say, which only a fixture would do.
+    plural_forms: str = ""
 
     @property
     def enabled(self) -> bool:
@@ -84,6 +87,7 @@ def _parse(registry_text: str) -> tuple[Locale, ...]:
                 direction=fields.get("direction", "ltr"),
                 wave=int(fields.get("wave", 0)),
                 status=fields.get("status", "enabled"),
+                plural_forms=fields.get("plural_forms", ""),
             )
         )
 

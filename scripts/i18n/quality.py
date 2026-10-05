@@ -240,8 +240,10 @@ def invented_break(source: str, translated: str) -> str | None:
 # apostrophe, while the repository writes the typographic one in prose — so the
 # home page's own headline, "Your community isn’t yours.", was invisible to the
 # guard and reached ten locales saying the opposite.
+# "Nothing but" is not a negation: "may want nothing but the words" means
+# "only the words", and a translation saying "only" said it right.
 NEGATED_SOURCE = re.compile(
-    r"\b(cannot|never|nothing|nobody|neither|nor"
+    r"\b(cannot|never|nothing(?!\s+but\b)|nobody|neither|nor"
     r"|do not|does not|did not|will not|is not|are not|was not|were not"
     r"|has not|have not|had not|would not|should not|could not|must not"
     r"|(?:can|won|shan|ain|isn|aren|wasn|weren|don|doesn|didn"

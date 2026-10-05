@@ -69,6 +69,15 @@ _ROWS = {
     "Joined on connect, with a key": ("Entra ao conectar, com senha", "Entra ao ligar, com senha", "Entra al conectar, con clave", "Rejoint à la connexion, avec une clé", "Wird beim Verbinden betreten, mit Schlüssel", "Entra alla connessione, con una chiave", "Neemt deel bij verbinden, met een sleutel", "Dołącza po połączeniu, z kluczem", "Входит при подключении, с ключом", "Bergabung saat terhubung, dengan kunci", "接続時にキーで参加します", "连接时使用密钥加入", "連線時使用金鑰加入"),
 
     # ── Navigation ────────────────────────────────────────────
+    # The public games catalogue. "Modes" matches what the channel-mode
+    # dialogs already say in every language, so one row serves both.
+    "All games":    ("Todos os jogos", "Todos os jogos", "Todos los juegos", "Tous les jeux", "Alle Spiele", "Tutti i giochi", "Alle spellen", "Wszystkie gry", "Все игры", "Semua game", "すべてのゲーム", "全部游戏", "全部遊戲"),
+    "More games":   ("Mais jogos", "Mais jogos", "Más juegos", "Plus de jeux", "Weitere Spiele", "Altri giochi", "Meer spellen", "Więcej gier", "Ещё игры", "Game lainnya", "その他のゲーム", "更多游戏", "更多遊戲"),
+    "How to play":  ("Como jogar", "Como jogar", "Cómo jugar", "Comment jouer", "So wird gespielt", "Come si gioca", "Zo speel je", "Jak grać", "Как играть", "Cara bermain", "遊び方", "玩法", "玩法"),
+    "Solo arcade":  ("Arcade solo", "Arcade a solo", "Arcade en solitario", "Arcade en solo", "Solo-Arcade", "Arcade in solitaria", "Solo-arcade", "Arcade solo", "Одиночная аркада", "Arkade solo", "ソロアーケード", "单人街机", "單人街機"),
+    "Controls":     ("Controles", "Controlos", "Controles", "Commandes", "Steuerung", "Comandi", "Besturing", "Sterowanie", "Управление", "Kontrol", "操作", "控制", "控制"),
+    "Modes":        ("Modos", "Modos", "Modos", "Modes", "Moden", "Modalità", "Modi", "Tryby", "Режимы", "Mode", "モード", "模式", "模式"),
+
     # The pager between the pages of one archive day: earlier and later lines,
     # not a previous and next step in a flow.
     "← Earlier":    ("← Antes", "← Antes", "← Antes", "← Plus tôt", "← Früher", "← Prima", "← Eerder", "← Wcześniej", "← Раньше", "← Sebelumnya", "← 前へ", "← 更早", "← 更早"),
