@@ -6,6 +6,10 @@ defmodule RetroHexChatWeb.PublicPages do
 
   Paths are the canonical, unprefixed ones; a menu localizes them for its
   reader with `localized_path/1`.
+
+  Guides are public pages written for a search rather than for the menus:
+  they are in the sitemap and link to each other, but the menus — the same
+  on every screen — stay the product's own pages.
   """
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -25,6 +29,12 @@ defmodule RetroHexChatWeb.PublicPages do
     {:faq, "/faq", :icon_question}
   ]
 
+  @guides [
+    {:mirc_commands, "/mirc-commands", :icon_terminal},
+    {:mirc_online, "/mirc-online", :icon_chat},
+    {:irc_chat, "/irc-chat", :icon_channels}
+  ]
+
   @doc "Every public page, in menu order, labelled in the current locale."
   @spec all() :: [page()]
   def all do
@@ -33,9 +43,17 @@ defmodule RetroHexChatWeb.PublicPages do
     end)
   end
 
-  @doc "The canonical path of every public page, for the sitemap."
+  @doc "Every guide, labelled in the current locale."
+  @spec guides() :: [page()]
+  def guides do
+    Enum.map(@guides, fn {page, path, icon} ->
+      %{page: page, path: path, label: label(page), icon: icon}
+    end)
+  end
+
+  @doc "The canonical path of every public page and guide, for the sitemap."
   @spec paths() :: [String.t()]
-  def paths, do: Enum.map(@pages, &elem(&1, 1))
+  def paths, do: Enum.map(@pages ++ @guides, &elem(&1, 1))
 
   @doc """
   The canonical path of a page by its name. A page that is not one of these —
@@ -43,7 +61,7 @@ defmodule RetroHexChatWeb.PublicPages do
   """
   @spec path(atom()) :: String.t()
   def path(page) do
-    case List.keyfind(@pages, page, 0) do
+    case List.keyfind(@pages ++ @guides, page, 0) do
       {^page, path, _icon} -> path
       nil -> "/"
     end
@@ -64,4 +82,7 @@ defmodule RetroHexChatWeb.PublicPages do
   defp label(:install), do: dgettext("landing", "Install")
   defp label(:community), do: dgettext("landing", "Community")
   defp label(:faq), do: dgettext("landing", "FAQ")
+  defp label(:mirc_commands), do: dgettext("landing", "mIRC commands")
+  defp label(:mirc_online), do: dgettext("landing", "mIRC online")
+  defp label(:irc_chat), do: dgettext("landing", "IRC chat")
 end

@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.LandingConnectWindowTest do
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.App.TrustedDeviceCookie
 
-  @landing_paths ~w(/ /how-it-works /features /privacy /install /community /faq)
+  @landing_paths ~w(/ /how-it-works /features /privacy /install /community /faq /mirc-commands /mirc-online /irc-chat)
 
   describe "the connect window on the public pages" do
     for path <- @landing_paths do

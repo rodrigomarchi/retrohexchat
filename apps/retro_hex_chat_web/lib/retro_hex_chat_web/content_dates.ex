@@ -33,6 +33,15 @@ defmodule RetroHexChatWeb.ContentDates do
     "apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/landing/game_cards.ex"
   ]
 
+  # What every guide is drawn from besides its own template.
+  @guide_sources [
+    "apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/landing_live/guides.ex",
+    "apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/landing/irc_guides.ex"
+  ]
+
+  # The mIRC commands page's rows.
+  @mirc_parity "apps/retro_hex_chat/lib/retro_hex_chat/commands/mirc_parity.ex"
+
   # One pass over the log of every public page's sources, newest commit first,
   # so the first date a path appears under is the last time it changed.
   @dates (fn ->
@@ -49,7 +58,11 @@ defmodule RetroHexChatWeb.ContentDates do
                      ":(top)" <> @help_content_dir,
                      ":(top)" <> @landing_dir,
                      ":(top)" <> @game_shots_dir
-                   ] ++ Enum.map(@game_sources, &(":(top)" <> &1)),
+                   ] ++
+                     Enum.map(
+                       @game_sources ++ @guide_sources ++ [@mirc_parity],
+                       &(":(top)" <> &1)
+                     ),
                    cd: __DIR__,
                    stderr_to_stdout: true
                  ) do
@@ -77,6 +90,10 @@ defmodule RetroHexChatWeb.ContentDates do
   The day a public landing path last changed, or `nil`.
   """
   @spec landing(String.t()) :: String.t() | nil
+  def landing("/mirc-commands"), do: guide("mirc_commands", [@mirc_parity])
+  def landing("/mirc-online"), do: guide("mirc_online", [])
+  def landing("/irc-chat"), do: guide("irc_chat", [])
+
   def landing(path) do
     case landing_basename(path) do
       nil -> nil
@@ -121,6 +138,15 @@ defmodule RetroHexChatWeb.ContentDates do
   """
   @spec known?() :: boolean()
   def known?, do: @dates != %{}
+
+  # A guide changes when its template, the pieces every guide shares, or the
+  # data it is drawn from does.
+  defp guide(base, sources) do
+    newest_date(
+      ["#{@landing_dir}/#{base}.html.heex", "#{@landing_dir}/#{base}.ex"] ++
+        @guide_sources ++ sources
+    )
+  end
 
   # The newest of the days any of `candidates` changed: a page changes when any
   # of what it is drawn from does. ISO dates compare correctly as strings.

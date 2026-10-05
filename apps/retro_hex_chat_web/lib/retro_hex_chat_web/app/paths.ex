@@ -55,6 +55,14 @@ defmodule RetroHexChatWeb.App.Paths do
   @spec chat_arcade_path(String.t()) :: String.t()
   def chat_arcade_path(game_id), do: ~p"/chat?arcade=#{game_id}"
 
+  @doc """
+  A channel's public archive. The `#` cannot travel in a URL — everything
+  after it belongs to the browser — so the address carries the name without it.
+  """
+  @spec archive_path(String.t()) :: String.t()
+  def archive_path("#" <> slug), do: ~p"/archive/#{slug}"
+  def archive_path(slug), do: ~p"/archive/#{slug}"
+
   @doc "The games catalogue, at an address of its own."
   @spec play_path() :: String.t()
   def play_path, do: ~p"/play"

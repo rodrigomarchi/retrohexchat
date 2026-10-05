@@ -25,6 +25,24 @@ defmodule RetroHexChatWeb.ContentDatesTest do
     end
   end
 
+  describe "a guide" do
+    # The mIRC commands page is drawn from the parity rows in the domain as much
+    # as from its template, so a new row is a new date for the page.
+    test "is dated by the newest of its template, the shared guide pieces and its rows" do
+      sources = [
+        "apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/landing_live/mirc_commands.html.heex",
+        "apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/landing_live/mirc_commands.ex",
+        "apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/landing_live/guides.ex",
+        "apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/landing/irc_guides.ex",
+        "apps/retro_hex_chat/lib/retro_hex_chat/commands/mirc_parity.ex"
+      ]
+
+      if ContentDates.known?() do
+        assert ContentDates.landing("/mirc-commands") == newest(sources)
+      end
+    end
+  end
+
   describe "the newest of a page's sources" do
     # A game's page changes when its catalogue does, even when its template
     # has not moved: the date is the newest of all its sources, which git
@@ -40,21 +58,8 @@ defmodule RetroHexChatWeb.ContentDatesTest do
         "apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/landing/game_cards.ex"
       ]
 
-      newest =
-        sources
-        |> Enum.map(fn path ->
-          {out, 0} =
-            System.cmd("git", ["log", "-1", "--format=%cI", "--", ":(top)" <> path],
-              cd: Path.expand("../../..", __DIR__)
-            )
-
-          out |> String.trim() |> String.slice(0, 10)
-        end)
-        |> Enum.reject(&(&1 == ""))
-        |> Enum.max(fn -> nil end)
-
       if ContentDates.known?() do
-        assert ContentDates.game_page("hex-tennis") == newest
+        assert ContentDates.game_page("hex-tennis") == newest(sources)
       end
     end
   end
@@ -63,5 +68,21 @@ defmodule RetroHexChatWeb.ContentDatesTest do
     test "a path that is not a landing page has no date" do
       assert ContentDates.landing("not-a-path") == nil
     end
+  end
+
+  # The day the most recently changed of `sources` was committed, asked of git
+  # directly rather than of the module under test.
+  defp newest(sources) do
+    sources
+    |> Enum.map(fn path ->
+      {out, 0} =
+        System.cmd("git", ["log", "-1", "--format=%cI", "--", ":(top)" <> path],
+          cd: Path.expand("../../..", __DIR__)
+        )
+
+      out |> String.trim() |> String.slice(0, 10)
+    end)
+    |> Enum.reject(&(&1 == ""))
+    |> Enum.max(fn -> nil end)
   end
 end

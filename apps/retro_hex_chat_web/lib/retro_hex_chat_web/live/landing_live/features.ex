@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.LandingLive.Features do
      assign(socket,
        active_page: :features,
        catalogue_path: PublicPages.localized_path("/games"),
+       mirc_commands_path: PublicPages.localized_path(PublicPages.path(:mirc_commands)),
        windows: [
          %{id: "intro", label: dgettext("landing", "Features"), icon: :icon_chat},
          %{id: "real-time-chat", label: dgettext("landing", "Real-time Chat"), icon: :icon_chat},

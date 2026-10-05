@@ -596,6 +596,16 @@
         <.commands_mockup />
       </div>
       <p class="text-sm">{dgettext("landing", "Over 50 commands with smart autocomplete.")}</p>
+      <p class="text-xs mt-2">
+        <.link
+          navigate={@mirc_commands_path}
+          class="inline-flex items-center gap-1 underline"
+          data-testid="features-mirc-commands-link"
+        >
+          <Icons.icon_terminal class="w-3 h-3 shrink-0" />
+          {dgettext("landing", "Coming from mIRC? See which commands work the same")}
+        </.link>
+      </p>
       <:status>
         <.window_status_bar_field grow>
           <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "50+ commands")}

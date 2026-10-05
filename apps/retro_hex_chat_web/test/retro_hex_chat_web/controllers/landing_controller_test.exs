@@ -14,7 +14,10 @@ defmodule RetroHexChatWeb.LandingLiveTest do
     {"/privacy", "privacy-heading"},
     {"/install", "install-heading"},
     {"/community", "community-heading"},
-    {"/faq", "faq-heading"}
+    {"/faq", "faq-heading"},
+    {"/mirc-commands", "mirc-commands-heading"},
+    {"/mirc-online", "mirc-online-heading"},
+    {"/irc-chat", "irc-chat-heading"}
   ]
 
   @secondary_landing_pages @landing_pages -- [{"/", "hero-heading"}]
@@ -553,6 +556,7 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       assert body =~ "# Retro Hex Chat"
       assert body =~ "https://retrohexchat.app/chat/help"
       assert body =~ "https://retrohexchat.app/faq"
+      assert body =~ "https://retrohexchat.app/mirc-commands"
     end
 
     # The showcase is submitted in the sitemap, linked from the home page footer

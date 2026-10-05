@@ -41,6 +41,11 @@ DEFAULT_PATHS = [
     "/chat/help",
     "/chat/help/feature-arcade-doom-shareware",
     "/pt-BR/chat/help/feature-arcade-quake-shareware",
+    "/games",
+    "/pt-BR/games/doom-shareware",
+    "/mirc-commands",
+    "/pt-BR/mirc-online",
+    "/irc-chat",
 ]
 
 CLOCK = re.compile(r"\d{1,2}:\d{2}")

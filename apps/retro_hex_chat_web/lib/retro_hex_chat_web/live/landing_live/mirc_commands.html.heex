@@ -1,0 +1,23 @@
+<.landing_layout active_page={@active_page} windows={@windows}>
+  <.landing_connect_window trusted_device_id={@trusted_device_id} active_page={@active_page} />
+
+  <section class="m-4" aria-labelledby="mirc-commands-heading">
+    <.landing_page_intro
+      heading_id="mirc-commands-heading"
+      title={dgettext("landing", "Your mIRC commands, in the browser")}
+      description={
+        dgettext(
+          "landing",
+          "Retro Hex Chat is a chat in the style of mIRC that runs in the browser, and most of what your fingers remember still works. Below are the commands mIRC users type most, each marked the same, different, or not here — with what to type instead."
+        )
+      }
+      status={dgettext("landing", "Commands start with a slash")}
+    >
+      <:icon><Icons.icon_terminal class="w-4 h-4" /></:icon>
+    </.landing_page_intro>
+
+    <.parity_window :for={group <- @groups} id={group.id} title={group.label} rows={group.rows} />
+
+    <.guide_links links={@links} />
+  </section>
+</.landing_layout>

@@ -5996,49 +5996,17 @@ msgstr "voice"
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1507
 #, elixir-autogen, elixir-format
 msgid "/p2p <nick>, or the P2P Session button in a private message, sends the request line into that conversation straight away. The line carries a card with the session's own address, and that card is the way in for both of you — the person who asked uses the same door as the person who was asked. Following it opens the session in a browser tab of its own, so the chat you were reading stays exactly where it is. The invited person can refuse instead: Decline sits beside the card and ends the invitation without entering anything. Asking again for a session you already have with that person is not a second session and not a refusal: the same card comes back to the bottom of the conversation, unless it is already the line there. You can have a session with more than one person at once, each in a tab of its own. The conversation IS the private message: session events (connected, file received, game results, who ended it) are saved into the PM history as P2P lines, and the PM tab shows a small P2P icon while the session is live. Once you have the session open somewhere, the chat's status bar says so and takes you back to that tab rather than opening a second one. See also: P2P Starting Room, P2P Session in Its Own Tab, Video Call, File Transfer, Private Messages."
-msgstr ""
-"/p2p <nick>, or the P2P Session button in a private message, sends the "
-"request line into that conversation straight away. The line carries a card "
-"with the session's own address, and that card is the way in for both of you "
-"— the person who asked uses the same door as the person who was asked. "
-"Following it opens the session in a browser tab of its own, so the chat you "
-"were reading stays exactly where it is. The invited person can refuse "
-"instead: Decline sits beside the card and ends the invitation without "
-"entering anything. You can have a session with more than one person at once,"
-" each in a tab of its own. The conversation IS the private message: session "
-"events (connected, file received, game results, who ended it) are saved into"
-" the PM history as P2P lines, and the PM tab shows a small P2P icon while "
-"the session is live. Once you have the session open somewhere, the chat's "
-"status bar says so and takes you back to that tab rather than opening a "
-"second one. See also: P2P Starting Room, P2P Session in Its Own Tab, Video "
-"Call, File Transfer, Private Messages."
+msgstr "/p2p <nick>, or the P2P Session button in a private message, sends the request line into that conversation straight away. The line carries a card with the session's own address, and that card is the way in for both of you — the person who asked uses the same door as the person who was asked. Following it opens the session in a browser tab of its own, so the chat you were reading stays exactly where it is. The invited person can refuse instead: Decline sits beside the card and ends the invitation without entering anything. Asking again for a session you already have with that person is not a second session and not a refusal: the same card comes back to the bottom of the conversation, unless it is already the line there. You can have a session with more than one person at once, each in a tab of its own. The conversation IS the private message: session events (connected, file received, game results, who ended it) are saved into the PM history as P2P lines, and the PM tab shows a small P2P icon while the session is live. Once you have the session open somewhere, the chat's status bar says so and takes you back to that tab rather than opening a second one. See also: P2P Starting Room, P2P Session in Its Own Tab, Video Call, File Transfer, Private Messages."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:4006
 #, elixir-autogen, elixir-format
 msgid "A space always runs in a browser tab of its own. Space, beside the conversation's tabs, puts the space's card in the conversation rather than opening it; Join on that card is the door, for you and for everybody reading. Pressing it again does not make a second space or a second address — it writes that one card again at the bottom, so you never have to go looking for it. Press it twice in a row and you get one card, because the second press has nothing to bring down. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back."
-msgstr ""
-"A space always runs in a browser tab of its own. Space, beside the "
-"conversation's tabs, puts the space's card in the conversation rather than "
-"opening it; Join on that card is the door, for you and for everybody "
-"reading. A space has no beginning and no end, so its address stays good: "
-"bookmark it and it takes you back."
+msgstr "A space always runs in a browser tab of its own. Space, beside the conversation's tabs, puts the space's card in the conversation rather than opening it; Join on that card is the door, for you and for everybody reading. Pressing it again does not make a second space or a second address — it writes that one card again at the bottom, so you never have to go looking for it. Press it twice in a row and you get one card, because the second press has nothing to bring down. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1336
 #, elixir-autogen, elixir-format
 msgid "Join a channel-scoped audio/video conference. Group Call in the channel toolbar opens the room and posts a card in the channel carrying its address; everyone goes in through that card, including whoever opened it. If a conference is already running, Group Call starts no second one — it writes that room's card again at the bottom of the channel, so the door is where you are reading instead of somewhere up the scrollback. Press it twice in a row and you get one card, because the second press has nothing to bring down. Following the address opens the antechamber in a browser tab of its own: a camera preview, the microphone/camera/speaker pickers, and who is already inside. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for next time. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
-msgstr ""
-"Join a channel-scoped audio/video conference. Group Call in the channel "
-"toolbar opens the room and posts a card in the channel carrying its address;"
-" everyone goes in through that card, including whoever opened it. If a "
-"conference is already running, Group Call is a link into it rather than a "
-"second one — one room, one card. Following the address opens the antechamber"
-" in a browser tab of its own: a camera preview, the "
-"microphone/camera/speaker pickers, and who is already inside. Join call puts"
-" you in; Cancel closes it, and whichever way you leave the antechamber it "
-"remembers how you left the microphone and camera set for next time. Inside "
-"there are layout controls, participant moderation and live statistics. "
-"Moderation follows channel permissions: half-operators and above can "
-"moderate lower-ranked participants."
+msgstr "Join a channel-scoped audio/video conference. Group Call in the channel toolbar opens the room and posts a card in the channel carrying its address; everyone goes in through that card, including whoever opened it. If a conference is already running, Group Call starts no second one — it writes that room's card again at the bottom of the channel, so the door is where you are reading instead of somewhere up the scrollback. Press it twice in a row and you get one card, because the second press has nothing to bring down. Following the address opens the antechamber in a browser tab of its own: a camera preview, the microphone/camera/speaker pickers, and who is already inside. Join call puts you in; Cancel closes it, and whichever way you leave the antechamber it remembers how you left the microphone and camera set for next time. Inside there are layout controls, participant moderation and live statistics. Moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
 
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:63
 #, elixir-autogen, elixir-format
@@ -6095,12 +6063,12 @@ msgstr ""
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:272
 #, elixir-autogen, elixir-format
 msgid "join on connect"
-msgstr "on connect"
+msgstr "join on connect"
 
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:273
 #, elixir-autogen, elixir-format
 msgid "row menu"
-msgstr "url menu"
+msgstr "row menu"
 
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:600
 #, elixir-autogen, elixir-format
@@ -6132,10 +6100,7 @@ msgstr ""
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3126
 #, elixir-autogen, elixir-format
 msgid "gameplay tips before launching. Double-click the Arcade desktop icon, or open Start ▸ Games and choose Arcade, to start (you must be registered and identified). "
-msgstr ""
-"gameplay tips before launching. Double-click the Arcade desktop icon, or "
-"open Start ▸ Games and choose Arcade, to start (you must be registered and "
-"identified)."
+msgstr "gameplay tips before launching. Double-click the Arcade desktop icon, or open Start ▸ Games and choose Arcade, to start (you must be registered and identified). "
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:721
 #, elixir-autogen, elixir-format

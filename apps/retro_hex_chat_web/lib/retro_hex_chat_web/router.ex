@@ -61,6 +61,9 @@ defmodule RetroHexChatWeb.Router do
       live "/faq", LandingLive.Faq
       live "/games", LandingLive.Games
       live "/games/:slug", LandingLive.Game
+      live "/mirc-commands", LandingLive.MircCommands
+      live "/mirc-online", LandingLive.MircOnline
+      live "/irc-chat", LandingLive.IrcChat
     end
   end
 
@@ -93,6 +96,9 @@ defmodule RetroHexChatWeb.Router do
         live "/faq", LandingLive.Faq
         live "/games", LandingLive.Games
         live "/games/:slug", LandingLive.Game
+        live "/mirc-commands", LandingLive.MircCommands
+        live "/mirc-online", LandingLive.MircOnline
+        live "/irc-chat", LandingLive.IrcChat
       end
     end
   end

@@ -3350,3 +3350,140 @@ msgstr "[ChanServ] %{channel} の公開アーカイブはオンです。今後�
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] The public archive of %{channel} is on."
 msgstr "[ChanServ] %{channel} の公開アーカイブはオンです。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:50
+#, elixir-autogen, elixir-format
+msgid "Asks you to confirm before the change takes effect."
+msgstr "変更が有効になる前に確認するように依頼します。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:37
+#, elixir-autogen, elixir-format
+msgid "Automation"
+msgstr "自動化"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:35
+#, elixir-autogen, elixir-format
+msgid "Channel operators"
+msgstr "チャンネルオペレーター"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:34
+#, elixir-autogen, elixir-format
+msgid "Channels"
+msgstr "チャンネル"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:38
+#, elixir-autogen, elixir-format
+msgid "Files, servers and scripts"
+msgstr "ファイル、サーバー、スクリプト"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:36
+#, elixir-autogen, elixir-format
+msgid "NickServ and ChanServ"
+msgstr "NickServとChanServ"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:53
+#, elixir-autogen, elixir-format
+msgid "Open the private conversation and use /me there."
+msgstr "プライベートな会話を開き、そこに/meを使用します。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:61
+#, elixir-autogen, elixir-format
+msgid "Opens a channel list you can sort and filter."
+msgstr "ソートしてフィルタリングできるチャンネルリストを開きます。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:33
+#, elixir-autogen, elixir-format
+msgid "Talking"
+msgstr "会話"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:67
+#, elixir-autogen, elixir-format
+msgid "The nick list beside every channel shows who is there."
+msgstr "そこにあるすべてのチャネルショーの横にあるニックネームのリスト。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:126
+#, elixir-autogen, elixir-format
+msgid "There are no .mrc scripts. /autorespond runs a command when someone joins, leaves or changes nickname."
+msgstr "There are no .mrc scripts. /autorespond runs a command when someone joins, leaves or changes nickname."
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:57
+#, elixir-autogen, elixir-format
+msgid "There is no CTCP. /whois shows idle time and away status."
+msgstr "CTCPはありません。 /whoisはアイドルタイムと離脱状態を示します。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:84
+#, elixir-autogen, elixir-format
+msgid "There is no operator login: the server's administrator appoints its staff."
+msgstr "オペレータのログインはありません。サーバーの管理者はスタッフを任命します。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:121
+#, elixir-autogen, elixir-format
+msgid "This is one server, in the browser. There are no networks to switch to, and the mIRC program cannot connect to it."
+msgstr "ブラウザで1つのサーバーです。 mIRCプログラムは接続できません。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:103
+#, elixir-autogen, elixir-format
+msgid "Your own right-click menu items for the nick list and channels."
+msgstr "ニックネームリストとチャンネルのメニュー項目を右クリックします。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:55
+#, elixir-autogen, elixir-format
+msgid "Each chat room is its own conversation: say it in each one."
+msgstr "各チャットルームは、それぞれの会話です。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:91
+#, elixir-autogen, elixir-format
+msgid "ChanServ answers to its own command, typed inside the channel."
+msgstr "ChanServは、チャンネル内で入力された独自のコマンドに応答します。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:116
+#, elixir-autogen, elixir-format
+msgid "Files go over a direct session between browsers. Both nicknames must be registered."
+msgstr "ファイルがブラウザ間で直接セッションを通過します。 両方のニックネームを登録する必要があります。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:89
+#, elixir-autogen, elixir-format
+msgid "NickServ answers to its own command."
+msgstr "NickServは独自のコマンドに応答します。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:108
+#, elixir-autogen, elixir-format
+msgid "Runs a command once after a delay, or again and again."
+msgstr "遅延後、または再度コマンドを実行します。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:93
+#, elixir-autogen, elixir-format
+msgid "Takes $1 to $9, $nick and $chan. There is no scripting language behind it."
+msgstr "$1 を $9、$nick および $chan に取ります。 後ろにはスクリプト言語はありません。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:112
+#, elixir-autogen, elixir-format
+msgid "Takes a type and a duration."
+msgstr "種類と時間を取る。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:63
+#: lib/retro_hex_chat/commands/mirc_parity.ex:73
+#: lib/retro_hex_chat/commands/mirc_parity.ex:77
+#, elixir-autogen, elixir-format
+msgid "Works on the channel you are in."
+msgstr "あなたがいるチャネルで動作します。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:114
+#, elixir-autogen, elixir-format
+msgid "mIRC keeps it in the Favorites; here it is a command."
+msgstr "mIRCはお気に入りに保管します。ここでコマンドです。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:98
+#, elixir-autogen, elixir-format
+msgid "mIRC keeps it under Options; here it is a command, or the Perform dialog."
+msgstr "mIRC は、オプションの下に保持します。ここでコマンド、または実行ダイアログです。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:79
+#, elixir-autogen, elixir-format
+msgid "Bans a nickname in the channel you are in. There are no host masks."
+msgstr "あなたがいるチャネルでニックネームを禁止します。 ホストマスクはありません。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:110
+#, elixir-autogen, elixir-format
+msgid "Takes a subcommand; on its own it opens the notify list."
+msgstr "サブコマンドを実行します。それ自体で通知リストが開きます。"

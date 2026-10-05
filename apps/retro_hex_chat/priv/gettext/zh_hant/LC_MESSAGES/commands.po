@@ -3348,3 +3348,140 @@ msgstr "[ChanServ] %{channel} 的公開存檔已開啟：從現在起說的話�
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] The public archive of %{channel} is on."
 msgstr "[ChanServ] %{channel} 的公開存檔已開啟。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:50
+#, elixir-autogen, elixir-format
+msgid "Asks you to confirm before the change takes effect."
+msgstr "要求您在更改生效前確認。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:37
+#, elixir-autogen, elixir-format
+msgid "Automation"
+msgstr "自動化"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:35
+#, elixir-autogen, elixir-format
+msgid "Channel operators"
+msgstr "頻道管理員"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:34
+#, elixir-autogen, elixir-format
+msgid "Channels"
+msgstr "頻道"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:38
+#, elixir-autogen, elixir-format
+msgid "Files, servers and scripts"
+msgstr "文件、服務器和腳本"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:36
+#, elixir-autogen, elixir-format
+msgid "NickServ and ChanServ"
+msgstr "NickServ 和 ChanServ 數據"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:53
+#, elixir-autogen, elixir-format
+msgid "Open the private conversation and use /me there."
+msgstr "打開私人對話並使用/me在那裏."
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:61
+#, elixir-autogen, elixir-format
+msgid "Opens a channel list you can sort and filter."
+msgstr "打開您可以排序和過濾的頻道列表。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:33
+#, elixir-autogen, elixir-format
+msgid "Talking"
+msgstr "聊天"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:67
+#, elixir-autogen, elixir-format
+msgid "The nick list beside every channel shows who is there."
+msgstr "每個頻道旁邊的暱稱列表顯示是誰在那裏。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:126
+#, elixir-autogen, elixir-format
+msgid "There are no .mrc scripts. /autorespond runs a command when someone joins, leaves or changes nickname."
+msgstr "沒有.mrc腳本. /autorespond在有人加入,離開或更改暱稱時運行一個命令."
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:57
+#, elixir-autogen, elixir-format
+msgid "There is no CTCP. /whois shows idle time and away status."
+msgstr "沒有CTCP。 /whois顯示閒置時間和離場狀態."
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:84
+#, elixir-autogen, elixir-format
+msgid "There is no operator login: the server's administrator appoints its staff."
+msgstr "沒有操作員登錄:服務器的管理員任命其工作人員."
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:121
+#, elixir-autogen, elixir-format
+msgid "This is one server, in the browser. There are no networks to switch to, and the mIRC program cannot connect to it."
+msgstr "這是一個服務器,在瀏覽器。 沒有可切換的網絡,mIRC程序無法與之連接."
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:103
+#, elixir-autogen, elixir-format
+msgid "Your own right-click menu items for the nick list and channels."
+msgstr "您自己右鍵單擊暱稱列表和頻道的菜單項 。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:55
+#, elixir-autogen, elixir-format
+msgid "Each chat room is its own conversation: say it in each one."
+msgstr "每個聊天室都是自己的對話:在每一個聊天室裏說."
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:91
+#, elixir-autogen, elixir-format
+msgid "ChanServ answers to its own command, typed inside the channel."
+msgstr "ChanServ answers to its own command, typed inside the channel."
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:116
+#, elixir-autogen, elixir-format
+msgid "Files go over a direct session between browsers. Both nicknames must be registered."
+msgstr "文件通過瀏覽器之間的直接會話。 兩個暱稱都必須註冊."
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:89
+#, elixir-autogen, elixir-format
+msgid "NickServ answers to its own command."
+msgstr "NickServ響應自己的指令."
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:108
+#, elixir-autogen, elixir-format
+msgid "Runs a command once after a delay, or again and again."
+msgstr "延遲後運行一次命令, 或一次又一次 。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:93
+#, elixir-autogen, elixir-format
+msgid "Takes $1 to $9, $nick and $chan. There is no scripting language behind it."
+msgstr "使用$1到$9,$nick和$chan. 後面沒有腳本語言。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:112
+#, elixir-autogen, elixir-format
+msgid "Takes a type and a duration."
+msgstr "需要一個類型和一個持續時間。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:63
+#: lib/retro_hex_chat/commands/mirc_parity.ex:73
+#: lib/retro_hex_chat/commands/mirc_parity.ex:77
+#, elixir-autogen, elixir-format
+msgid "Works on the channel you are in."
+msgstr "在你的頻道工作"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:114
+#, elixir-autogen, elixir-format
+msgid "mIRC keeps it in the Favorites; here it is a command."
+msgstr "mIRC將它保存在Favorites;這裏是一個命令."
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:98
+#, elixir-autogen, elixir-format
+msgid "mIRC keeps it under Options; here it is a command, or the Perform dialog."
+msgstr "mIRC 將其保留在選項下; 這裏是一個命令, 或者執行對話框 。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:79
+#, elixir-autogen, elixir-format
+msgid "Bans a nickname in the channel you are in. There are no host masks."
+msgstr "在您所在的頻道中禁止暱稱 。 沒有主機面具。"
+
+#: lib/retro_hex_chat/commands/mirc_parity.ex:110
+#, elixir-autogen, elixir-format
+msgid "Takes a subcommand; on its own it opens the notify list."
+msgstr "需要一個子命令; 它自己打開通知列表 。"

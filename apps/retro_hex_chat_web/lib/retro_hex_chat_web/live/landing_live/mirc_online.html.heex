@@ -1,0 +1,99 @@
+<.landing_layout active_page={@active_page} windows={@windows}>
+  <.landing_connect_window trusted_device_id={@trusted_device_id} active_page={@active_page} />
+
+  <section class="m-4" aria-labelledby="mirc-online-heading">
+    <.landing_page_intro
+      heading_id="mirc-online-heading"
+      title={dgettext("landing", "mIRC online, in your browser")}
+      description={
+        dgettext(
+          "landing",
+          "A chat built the way mIRC taught a generation to chat, running in a browser tab: no download, no server list to configure. Pick a nickname, and you are in a channel."
+        )
+      }
+      status={dgettext("landing", "Free of charge, nothing to install")}
+    >
+      <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
+    </.landing_page_intro>
+
+    <.desktop_window
+      id="the-window"
+      width={560}
+      title={dgettext("landing", "The window you know")}
+    >
+      <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
+      <h2 class="text-sm font-bold mb-2">{dgettext("landing", "The window you know")}</h2>
+      <p class="text-sm mb-3">
+        {dgettext(
+          "landing",
+          "The channel fills the middle, its topic runs across the top, the nick list sits on the right with operators first, and the line at the bottom takes text — or a command, when it starts with a slash. Messages keep the 16 colours of the IRC palette."
+        )}
+      </p>
+      <div class="shadow-retro-field bg-canvas-bg text-canvas-fg p-3">
+        <.chat_mockup />
+      </div>
+    </.desktop_window>
+
+    <.desktop_window
+      id="carries-over"
+      width={560}
+      title={dgettext("landing", "What stays the same")}
+    >
+      <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+      <h2 class="text-sm font-bold mb-2">{dgettext("landing", "What stays the same")}</h2>
+      <ul class="text-sm list-disc pl-5 space-y-1 mb-3">
+        <li>
+          {dgettext(
+            "landing",
+            "The everyday commands: /join, /msg, /query, /me, /whois, /away and the rest."
+          )}
+        </li>
+        <li>
+          {dgettext(
+            "landing",
+            "Aliases, timers, a perform list run on every connect, and your own right-click popups."
+          )}
+        </li>
+        <li>
+          {dgettext(
+            "landing",
+            "Owners, operators, half-ops and voice, with channel modes such as +m, +i, +k and +t."
+          )}
+        </li>
+        <li>
+          {dgettext(
+            "landing",
+            "NickServ to keep your nickname and ChanServ to keep your channel."
+          )}
+        </li>
+        <li>
+          {dgettext("landing", "A notify list for friends, and an ignore list for everyone else.")}
+        </li>
+      </ul>
+      <.link navigate={@commands_path} class="text-sm underline">
+        {dgettext("landing", "Which mIRC commands work here, one by one")}
+      </.link>
+    </.desktop_window>
+
+    <.desktop_window id="not-mirc" width={480} title={dgettext("landing", "What it is not")}>
+      <:icon><Icons.icon_shield class="w-4 h-4" /></:icon>
+      <h2 class="text-sm font-bold mb-2">{dgettext("landing", "What it is not")}</h2>
+      <p class="text-sm mb-2">
+        {dgettext(
+          "landing",
+          "It is not mIRC, and it is not an IRC network. The mIRC program cannot connect here, and there are no servers to hop between: one server, in the browser, with its own channels."
+        )}
+      </p>
+      <p class="text-sm">
+        {dgettext(
+          "landing",
+          "What it has that mIRC never did: the history is still there when you come back, private calls and file transfers run between browsers, and there are games to play in the same window."
+        )}
+      </p>
+    </.desktop_window>
+
+    <.guide_questions entries={@questions} />
+
+    <.guide_links links={@links} />
+  </section>
+</.landing_layout>

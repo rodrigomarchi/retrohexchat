@@ -124,6 +124,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
       </article>
 
       <.help_catalogue_link topic_id={@topic.id} />
+      <.help_mirc_link :if={@topic.id == "commands-overview"} />
 
       <.see_also_section see_also={Map.get(@topic, :see_also, [])} />
     </div>
@@ -162,6 +163,27 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
     >
       {dgettext("help", "Screenshots and more games in the games catalogue")}
     </GameCards.catalogue_link>
+    """
+  end
+
+  # The overview lists this chat's commands; a reader arriving from mIRC wants
+  # the other question answered — which of theirs still work — and that page
+  # is public, so it is linked rather than repeated here.
+  defp help_mirc_link(assigns) do
+    assigns =
+      assign(assigns, :path, PublicPages.localized_path(PublicPages.path(:mirc_commands)))
+
+    ~H"""
+    <p class="mt-4 text-xs">
+      <.link
+        navigate={@path}
+        class="inline-flex items-center gap-1 underline"
+        data-testid="help-mirc-link"
+      >
+        <Icons.icon_terminal class="w-3 h-3 shrink-0" />
+        {dgettext("help", "Coming from mIRC? See which of its commands work the same here")}
+      </.link>
+    </p>
     """
   end
 

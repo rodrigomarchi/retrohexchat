@@ -1,0 +1,110 @@
+<.landing_layout active_page={@active_page} windows={@windows}>
+  <.landing_connect_window trusted_device_id={@trusted_device_id} active_page={@active_page} />
+
+  <section class="m-4" aria-labelledby="irc-chat-heading">
+    <.landing_page_intro
+      heading_id="irc-chat-heading"
+      title={dgettext("landing", "IRC-style chat rooms in your browser")}
+      description={
+        dgettext(
+          "landing",
+          "Channels whose names start with #, operators who keep order, and nicknames you can register — the way IRC has always worked, in a browser tab, free and with nothing to install."
+        )
+      }
+      status={dgettext("landing", "Chat rooms open to anyone")}
+    >
+      <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
+    </.landing_page_intro>
+
+    <.desktop_window id="rooms" width={560} title={dgettext("landing", "How a chat room works")}>
+      <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
+      <h2 class="text-sm font-bold mb-2">{dgettext("landing", "How a chat room works")}</h2>
+      <p class="text-sm mb-3">
+        {dgettext(
+          "landing",
+          "A chat room is a channel, and its name starts with #. /list shows every public channel with its topic and how many people are in it; /join enters one, and creates it when nobody has yet. Whoever creates a channel owns it."
+        )}
+      </p>
+      <div class="shadow-retro-field bg-canvas-bg text-canvas-fg p-3">
+        <.channel_list_mockup />
+      </div>
+    </.desktop_window>
+
+    <.desktop_window id="who-runs" width={520} title={dgettext("landing", "Who runs a chat room")}>
+      <:icon><Icons.icon_shield class="w-4 h-4" /></:icon>
+      <h2 class="text-sm font-bold mb-2">{dgettext("landing", "Who runs a chat room")}</h2>
+      <ul class="text-sm list-disc pl-5 space-y-1 mb-2">
+        <li>
+          <code>~</code> {dgettext(
+            "landing",
+            "the owner, who created the channel or was handed it."
+          )}
+        </li>
+        <li>
+          <code>@</code> {dgettext(
+            "landing",
+            "operators, who set the topic, the modes, and who stays."
+          )}
+        </li>
+        <li><code>%</code> {dgettext("landing", "half-operators, who help keep order.")}</li>
+        <li>
+          <code>+</code> {dgettext(
+            "landing",
+            "users with voice, who can speak when the chat room is moderated."
+          )}
+        </li>
+      </ul>
+      <p class="text-sm">
+        {dgettext(
+          "landing",
+          "Modes shape the chat room: +m lets only users with voice speak, +i lets in only who is invited, +k asks for a key, +t keeps the topic for operators. ChanServ remembers who gets operator or voice when they come back."
+        )}
+      </p>
+    </.desktop_window>
+
+    <.desktop_window
+      id="keep-your-nickname"
+      width={480}
+      title={dgettext("landing", "Your nickname")}
+    >
+      <:icon><Icons.icon_btn_profile class="w-4 h-4" /></:icon>
+      <h2 class="text-sm font-bold mb-2">{dgettext("landing", "Your nickname")}</h2>
+      <p class="text-sm">
+        {dgettext("landing", "Pick any nickname that is not taken.")}
+        {dgettext(
+          "landing",
+          "To keep your nickname, register it with %{register} and a password.",
+          register: "/ns register"
+        )}
+        {dgettext("landing", "When you come back, identify with %{identify}.",
+          identify: "/ns identify"
+        )}
+      </p>
+    </.desktop_window>
+
+    <.desktop_window
+      :if={@rooms != []}
+      id="open-rooms"
+      width={420}
+      title={dgettext("landing", "Read a chat room first")}
+    >
+      <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
+      <h2 class="text-sm font-bold mb-2">{dgettext("landing", "Read a chat room first")}</h2>
+      <p class="text-sm mb-2">
+        {dgettext(
+          "landing",
+          "These chat rooms publish what is said in them, so you can read the conversation before you join."
+        )}
+      </p>
+      <ul class="text-sm columns-2 gap-4" data-testid="open-rooms">
+        <li :for={room <- @rooms}>
+          <a href={room.path} class="underline">{room.name}</a>
+        </li>
+      </ul>
+    </.desktop_window>
+
+    <.guide_questions entries={@questions} />
+
+    <.guide_links links={@links} />
+  </section>
+</.landing_layout>

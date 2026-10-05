@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **237 spec files** under `e2e/tests/`.
-- **544 Playwright `test()` cases**.
-- **492 documented flows**, 491 done, 1 not done.
+- **238 spec files** under `e2e/tests/`.
+- **545 Playwright `test()` cases**.
+- **493 documented flows**, 492 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -757,6 +757,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW20 | A channel's public archive is reachable, indexable, and disappears when the founder switches it off (features P1) | `tests/archive-public.spec.ts` | done |
 | PW21 | The founder switches the archive with /cs archive on\|off, and another member of the room sees the notice (features P1) | `tests/archive-public.spec.ts` | done |
 | PW22 | The public games catalogue leads from a game's page, through the page's own Connect window, into the game | `tests/games-catalog.spec.ts` | done |
+| PW23 | The mIRC commands guide answers a mIRC habit row by row, and its links lead into the matching help topic and the other guides | `tests/irc-guides.spec.ts` | done |
 
 ### Dialog Gallery
 
