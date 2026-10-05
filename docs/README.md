@@ -63,12 +63,8 @@ migration, context, schema and hook counts — never write them into prose.
 
 ## In flight (`plans/`)
 
-- [plans/adocao-e-retencao.md](plans/adocao-e-retencao.md) — as lacunas que impedem
-  uma pessoa de entrar, voltar e interagir: expiração de nick/canal, catálogo de salas
-  frias, convite de canal, notificação e push, reações, menções, marcador de leitura,
-  multi-dispositivo, e-mail opcional, fixados, salvos e arquivo público.
-- [plans/retro-games-ai.md](plans/retro-games-ai.md) — nova superfície `Retro Games`
-  para jogos nativos do chat em modo single player contra AI, começando pelo Hex Pong.
+Nothing is in flight right now.
+
 The channel/PM unification shipped and its plan was deleted; the rule it produced
 is Principle 12 in `AGENT-GUIDE.md`.
 
