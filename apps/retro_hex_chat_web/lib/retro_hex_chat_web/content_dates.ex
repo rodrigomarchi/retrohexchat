@@ -42,6 +42,29 @@ defmodule RetroHexChatWeb.ContentDates do
   # The mIRC commands page's rows.
   @mirc_parity "apps/retro_hex_chat/lib/retro_hex_chat/commands/mirc_parity.ex"
 
+  # The commit the dates below were read at. History moves without any source
+  # file of this module changing, so Mix is told to recompile it whenever the
+  # checkout's HEAD is no longer that commit — otherwise a build keeps the
+  # dates of whichever commit it first compiled at.
+  @compiled_head (case System.cmd("git", ["rev-parse", "HEAD"],
+                         cd: __DIR__,
+                         stderr_to_stdout: true
+                       ) do
+                    {sha, 0} -> String.trim(sha)
+                    _other -> nil
+                  end)
+
+  @doc false
+  @spec __mix_recompile__?() :: boolean()
+  def __mix_recompile__?, do: current_head() != @compiled_head
+
+  defp current_head do
+    case System.cmd("git", ["rev-parse", "HEAD"], cd: __DIR__, stderr_to_stdout: true) do
+      {sha, 0} -> String.trim(sha)
+      _other -> nil
+    end
+  end
+
   # One pass over the log of every public page's sources, newest commit first,
   # so the first date a path appears under is the last time it changed.
   @dates (fn ->
