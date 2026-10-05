@@ -29,6 +29,13 @@
   </code>
   {dgettext("help_commands", "- View current-channel registration details.")}<br />
   <code>
+    {dgettext("help_commands", "archive on/off")}
+  </code>
+  {dgettext(
+    "help_commands",
+    "- Publish the channel's public archive, a page per day anybody can read (founder only). Without on or off it shows whether the archive is on."
+  )}<br />
+  <code>
     {dgettext("help_commands", "sop add/del/list <nick>")}
   </code>
   {dgettext("help_commands", "- Manage Super Operators (can manage AOP and VOP lists).")}<br />
@@ -46,6 +53,9 @@
   <li>{dgettext("help_commands", "You must be a registered user to use ChanServ")}</li>
   <li>{dgettext("help_commands", "You must be a channel operator to register a channel")}</li>
   <li>{dgettext("help_commands", "Access hierarchy: Owner > SOP > AOP > VOP")}</li>
+  <li>
+    {dgettext("help_commands", "Only the founder can drop the channel or switch its archive")}
+  </li>
 </ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
 <pre>{dgettext("help_commands", "/join #mychannel /cs register /cs info /cs aop add Alice /cs aop list /cs vop add Bob /cs drop")}</pre>
@@ -61,5 +71,9 @@
   ·
   <.help_link topic="channel-permissions">
     {dgettext("help_commands", "Channel Permissions")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-public-archive">
+    {dgettext("help_commands", "Public Channel Archive")}
   </.help_link>
 </p>

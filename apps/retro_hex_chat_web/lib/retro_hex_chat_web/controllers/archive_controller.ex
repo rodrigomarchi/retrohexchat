@@ -38,6 +38,7 @@ defmodule RetroHexChatWeb.ArchiveController do
   use RetroHexChatWeb, :controller
 
   alias RetroHexChat.Chat.Archive
+  alias RetroHexChatWeb.ArchiveHTML
   alias RetroHexChatWeb.SEO
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -67,24 +68,66 @@ defmodule RetroHexChatWeb.ArchiveController do
   end
 
   @spec day(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def day(conn, %{"channel" => slug, "date" => date}) do
+  def day(conn, %{"channel" => slug, "date" => date} = params) do
     channel = channel_name(slug)
 
-    case Archive.messages_for(channel, date) do
-      [] ->
-        not_found(conn)
+    with {:ok, cursor} <- cursor(params),
+         %{page: %{items: [first | _] = entries} = page, previous: previous} <-
+           Archive.page_for(channel, date, after: cursor) do
+      day_path = "/archive/#{slug}/#{date}"
 
-      entries ->
-        conn
-        |> maybe_not_modified(etag_for([channel, date, Enum.map(entries, &{&1.id, &1.edited?})]))
-        |> assign_page(channel, slug, path: "/archive/#{slug}/#{date}")
-        |> assign(:entries, entries)
-        |> assign(:date, date)
-        |> assign(:days, Archive.days_for(channel))
-        |> assign(:page_title, "#{page_title(channel)} — #{date}")
-        |> assign(:page_description, description(channel, date, entries))
-        |> render_cached(:day)
+      conn
+      |> maybe_not_modified(
+        etag_for([channel, date, cursor, page.has_more, Enum.map(entries, &{&1.id, &1.edited?})])
+      )
+      |> assign_page(channel, slug, path: page_path(day_path, cursor))
+      |> assign(:entries, entries)
+      |> assign(:date, date)
+      |> assign(:days, Archive.days_for(channel))
+      |> assign(:prev_path, previous_path(day_path, previous))
+      |> assign(:next_path, page.has_more && page_path(day_path, page.next_cursor))
+      |> assign_neighbour_urls()
+      |> assign(:page_title, day_title(channel, date, cursor, first))
+      |> assign(:page_description, description(channel, date, entries))
+      |> render_cached(:day)
+    else
+      _ -> not_found(conn)
     end
+  end
+
+  # `after` is the id of the line the page follows. Anything that is not a
+  # whole number is a URL nobody was ever given.
+  defp cursor(%{"after" => value}) when is_binary(value) do
+    case Integer.parse(value) do
+      {id, ""} when id > 0 -> {:ok, id}
+      _ -> :error
+    end
+  end
+
+  defp cursor(_params), do: {:ok, nil}
+
+  defp page_path(day_path, nil), do: day_path
+  defp page_path(day_path, cursor), do: "#{day_path}?after=#{cursor}"
+
+  defp previous_path(_day_path, nil), do: nil
+  defp previous_path(day_path, :start), do: day_path
+  defp previous_path(day_path, cursor), do: page_path(day_path, cursor)
+
+  defp assign_neighbour_urls(conn) do
+    conn
+    |> assign(:prev_url, conn.assigns.prev_path && SEO.site_url(conn.assigns.prev_path))
+    |> assign(:next_url, conn.assigns.next_path && SEO.site_url(conn.assigns.next_path))
+  end
+
+  # Every page of a day is its own canonical, so each needs a title of its own:
+  # a search result list of identical titles reads as one page repeated.
+  defp day_title(channel, date, nil, _first), do: "#{page_title(channel)} — #{date}"
+
+  defp day_title(channel, date, _cursor, first) do
+    dgettext("landing", "%{title} — from %{time}",
+      title: "#{page_title(channel)} — #{date}",
+      time: ArchiveHTML.at(first.at)
+    )
   end
 
   # The canonical is the unprefixed URL under every locale, and the layout is

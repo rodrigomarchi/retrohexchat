@@ -1215,7 +1215,7 @@ msgstr "Kanaal automatisch aanvullen"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "Kanaal centraal"
@@ -3117,7 +3117,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
@@ -6648,11 +6648,6 @@ msgstr ""
 msgid "A secret channel cannot have a public archive"
 msgstr "Een geheim kanaal kan geen openbaar archief hebben"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:28
-#, elixir-autogen, elixir-format
-msgid "Attachments are never published — the page says nothing about them"
-msgstr "Bijlagen worden nooit gepubliceerd — de pagina zegt er niets over"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Deleted messages are absent; edited ones are marked as edited"
@@ -6684,7 +6679,7 @@ msgstr ""
 "Iedereen die aanwezig is wordt verteld wanneer de schakelaar verandert, "
 "zodat niemand het van een zoekmachine hoeft te horen."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Registering a channel"
 msgstr "Een kanaal registreren"
@@ -6698,16 +6693,6 @@ msgstr "Regels en limieten"
 #, elixir-autogen, elixir-format
 msgid "Switching it off takes every page down straight away"
 msgstr "Het uitzetten haalt elke pagina direct offline"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, and only a registered channel has one."
-msgstr ""
-"De oprichter, en niemand anders. Een operator modereert de ruimte; beslissen"
-" dat wat daar gezegd wordt van buitenaf leesbaar wordt, is een ander soort "
-"beslissing en hoort bij wie voor het kanaal instaat. De schakelaar zit in "
-"Channel Central, op het tabblad Registratie, en alleen een geregistreerd "
-"kanaal heeft er een."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:14
 #, elixir-autogen, elixir-format
@@ -7073,3 +7058,23 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Where It Is Offered"
 msgstr "Waar het wordt aangeboden"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "/cs"
+msgstr "/cs"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "A busy day is split into pages of 200 lines, with Earlier and Later links between them"
+msgstr "Een drukke dag wordt opgedeeld in pagina's van 200 regels, met de links Eerder en Later ertussen"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Attachments are never published — the page only notes that one was there"
+msgstr "Bijlagen worden nooit gepubliceerd — de pagina vermeldt alleen dat er een was"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, or typed as /cs archive on and /cs archive off; only a registered channel has one."
+msgstr "De oprichter, en niemand anders. Een operator modereert de ruimte; beslissen dat wat daar gezegd wordt van buitenaf leesbaar wordt, is een ander soort beslissing en hoort bij wie voor het kanaal instaat. De schakelaar zit in Channel Central, op het tabblad Registratie, of je typt /cs archive on en /cs archive off; alleen een geregistreerd kanaal heeft er een."

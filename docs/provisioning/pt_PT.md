@@ -26,51 +26,61 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #portugal
 /cs register
+/cs archive on
 /topic Canal português — conversa à portuguesa. Entra, senta-te, o café é por conta da casa.
 /mode +tn
 
 /join #actualidade
 /cs register
+/cs archive on
 /topic Actualidade — Observador e SAPO 24 directamente do feed. !Duarte fontes mostra de onde vem.
 /mode +tn
 
 /join #ultimahora
 /cs register
+/cs archive on
 /topic Última hora — Notícias ao Minuto e TVI. Chega primeiro aqui, contexto vem depois no #actualidade.
 /mode +tn
 
 /join #informatica
 /cs register
+/cs archive on
 /topic Informática — SAPO Tek e Pplware no fio. Suporte de projecto é com o projecto; aqui é conversa.
 /mode +tn
 
 /join #gadgets
 /cs register
+/cs archive on
 /topic Gadgets — 4gnews e Leak. Telemóveis, relógios e coisas que não precisas mas queres.
 /mode +tn
 
 /join #negocios
 /cs register
+/cs archive on
 /topic Negócios — ECO e Jornal de Negócios. !Afonso fontes lista os feeds.
 /mode +tn
 
 /join #bolsa
 /cs register
+/cs archive on
 /topic Bolsa — Dinheiro Vivo no fio. Manchete não é conselho de investimento.
 /mode +tn
 
 /join #desporto
 /cs register
+/cs archive on
 /topic Desporto — Record e Mais Futebol. Bola, tabela e a discussão do costume.
 /mode +tn
 
 /join #cultura
 /cs register
+/cs archive on
 /topic Cultura — Visão e Sábado. Livros, cinema, exposições e o que anda a dar.
 /mode +tn
 
 /join #natureza
 /cs register
+/cs archive on
 /topic Natureza — Wilder no fio. Aves, plantas, bichos e o território que os aguenta.
 /mode +tn
 

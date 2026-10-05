@@ -1126,7 +1126,7 @@ msgstr "頻道自動完成"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "中央頻道"
@@ -2877,7 +2877,7 @@ msgstr "在當前頻道或PM中以實時突出顯示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
@@ -5909,11 +5909,6 @@ msgstr ""
 msgid "A secret channel cannot have a public archive"
 msgstr "秘密頻道不能有公開封存"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:28
-#, elixir-autogen, elixir-format
-msgid "Attachments are never published — the page says nothing about them"
-msgstr "附件永遠不會被公開——頁面對它們隻字不提"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Deleted messages are absent; edited ones are marked as edited"
@@ -5936,7 +5931,7 @@ msgid "Only what is said from the moment the switch goes on. Nothing already in 
 msgstr ""
 "只有開關打開之後說的話才會公開。頻道裡已有的內容，無論放了多久，都永遠不會被發布——寫下它的人是寫進一個房間，而不是寫到網際網路上。開關變化時在場的每個人都會被告知，這樣就沒有人是從搜尋引擎得知的。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Registering a channel"
 msgstr "註冊一個頻道"
@@ -5950,13 +5945,6 @@ msgstr "規則與限制"
 #, elixir-autogen, elixir-format
 msgid "Switching it off takes every page down straight away"
 msgstr "關掉它會立刻撤下所有頁面"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, and only a registered channel has one."
-msgstr ""
-"只有創建者，別人都不行。管理員管理房間；而決定房間裡說的話能不能被外面讀到，是另一種性質的決定，屬於為這個頻道負責的人。開關在 Channel "
-"Central 的註冊分頁裡，只有已註冊的頻道才有。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:14
 #, elixir-autogen, elixir-format
@@ -6246,3 +6234,23 @@ msgstr "有些事說出來比打字更快。在手機上，輸入欄會出現一
 #, elixir-autogen, elixir-format
 msgid "Where It Is Offered"
 msgstr "在哪裡可用"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "/cs"
+msgstr "/cs"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "A busy day is split into pages of 200 lines, with Earlier and Later links between them"
+msgstr "訊息多的日子會分成每頁 200 行，頁面之間有「更早」和「更晚」連結"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Attachments are never published — the page only notes that one was there"
+msgstr "附件永遠不會公開——頁面只註明那裡有過一個附件"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, or typed as /cs archive on and /cs archive off; only a registered channel has one."
+msgstr "只有創建者，別人都不行。管理員管理房間；而決定房間裡說的話能不能被外面讀到，是另一種性質的決定，屬於為這個頻道負責的人。開關在 Channel Central 的註冊分頁裡，也可以輸入 /cs archive on 和 /cs archive off；只有已註冊的頻道才有。"

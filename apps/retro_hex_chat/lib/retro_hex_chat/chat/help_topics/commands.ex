@@ -117,6 +117,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           "cs register",
           "cs drop",
           "cs info",
+          "cs archive",
+          dgettext("help", "public archive"),
           "sop",
           "aop",
           "vop",
@@ -127,7 +129,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         icon: :icon_shield,
         description:
           dgettext("help", "Send commands to ChanServ for channel registration and management."),
-        see_also: ["chanserv", "chanserv-register", "chanserv-access", "chanserv-ui"]
+        see_also: [
+          "chanserv",
+          "chanserv-register",
+          "chanserv-access",
+          "chanserv-ui",
+          "feature-public-archive"
+        ]
       },
       %{
         id: "cmd-help",

@@ -2419,7 +2419,7 @@ msgid "Your browser is given a random name so the server can tell your phone fro
 msgstr ""
 "你的浏览器会拿到一个随机名字，好让服务器分清手机和电脑。它标识的是一个浏览器，而不是一个人：除了那个屏幕打开过哪些频道、读到了哪里之外，不会存别的；同一台机器上的另一个浏览器会拿到另一个名字。它不会跟着你去任何地方，因为它只存在于这台服务器上。"
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:183
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:226
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "%{channel} archive"
@@ -2430,7 +2430,7 @@ msgstr "%{channel} 的存档"
 msgid "%{channel} on %{date}"
 msgstr "%{date} 的 %{channel}"
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:197
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:240
 #, elixir-autogen, elixir-format
 msgid "%{channel} on %{date}: %{opening}"
 msgstr "%{date} 的 %{channel}：%{opening}"
@@ -2440,7 +2440,7 @@ msgstr "%{date} 的 %{channel}：%{opening}"
 msgid "(edited)"
 msgstr "（已编辑）"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:39
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "All days"
 msgstr "全部日期"
@@ -2450,12 +2450,12 @@ msgstr "全部日期"
 msgid "Everything said here since the channel opened its archive, one page per day. Nothing from before it was opened is published."
 msgstr "自从频道开启存档以来这里说过的一切，每天一页。开启之前的内容一概不公开。"
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:59
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:60
 #, elixir-autogen, elixir-format
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
 msgstr "自从 %{channel} 开启存档以来说过的一切，每天一页。"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:43
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:57
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
@@ -2465,3 +2465,23 @@ msgstr "加入 %{channel}"
 #, elixir-autogen, elixir-format
 msgid "(attachment)"
 msgstr "(附件)"
+
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:127
+#, elixir-autogen, elixir-format
+msgid "%{title} — from %{time}"
+msgstr "%{title} — 从 %{time} 起"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Later →"
+msgstr "更晚 →"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Pages of this day"
+msgstr "这一天的页面"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "← Earlier"
+msgstr "← 更早"

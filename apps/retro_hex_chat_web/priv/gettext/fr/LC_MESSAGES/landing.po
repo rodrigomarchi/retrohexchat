@@ -2591,7 +2591,7 @@ msgstr ""
 "même machine en reçoit un différent. Il ne vous suit nulle part, car il "
 "n'existe que sur ce serveur."
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:183
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:226
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "%{channel} archive"
@@ -2602,7 +2602,7 @@ msgstr "Archive de %{channel}"
 msgid "%{channel} on %{date}"
 msgstr "%{channel} le %{date}"
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:197
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:240
 #, elixir-autogen, elixir-format
 msgid "%{channel} on %{date}: %{opening}"
 msgstr "%{channel} le %{date} : %{opening}"
@@ -2612,7 +2612,7 @@ msgstr "%{channel} le %{date} : %{opening}"
 msgid "(edited)"
 msgstr "(modifié)"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:39
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "All days"
 msgstr "Tous les jours"
@@ -2624,14 +2624,14 @@ msgstr ""
 "Tout ce qui a été dit ici depuis que le salon a ouvert son archive, une page"
 " par jour. Rien d'avant l'ouverture n'est publié."
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:59
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:60
 #, elixir-autogen, elixir-format
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
 msgstr ""
 "Tout ce qui a été dit dans %{channel} depuis l'ouverture de son archive, une"
 " page par jour."
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:43
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:57
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
@@ -2641,3 +2641,23 @@ msgstr "Rejoindre %{channel}"
 #, elixir-autogen, elixir-format
 msgid "(attachment)"
 msgstr "(pièce jointe)"
+
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:127
+#, elixir-autogen, elixir-format
+msgid "%{title} — from %{time}"
+msgstr "%{title} — à partir de %{time}"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Later →"
+msgstr "Plus tard →"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Pages of this day"
+msgstr "Pages de ce jour"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "← Earlier"
+msgstr "← Plus tôt"

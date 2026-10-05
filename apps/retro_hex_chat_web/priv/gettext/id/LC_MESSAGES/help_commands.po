@@ -991,7 +991,7 @@ msgid "/me waves hello /me is thinking... /me grabs some coffee"
 msgstr "/me waves hello /me is thinking... /me grabs some coffee"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:53
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:46
@@ -1176,7 +1176,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:39
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:89
@@ -1588,7 +1588,7 @@ msgstr "Panjang 1 sampai 16 karakter"
 msgid "= max 3 joins per 10 seconds)."
 msgstr "= max 3 join per 10 detik)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Access hierarchy: Owner > SOP > AOP > VOP"
 msgstr "Hirarki akses: Pemilik > SOP > AOP > VOP"
@@ -1778,7 +1778,7 @@ msgstr "Kategori"
 msgid "ChanServ"
 msgstr "ChanServ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "ChanServ Overview"
 msgstr "Tampilan ChanServ"
@@ -1821,7 +1821,7 @@ msgid "Channel Modes"
 msgstr "Mode Saluran"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:53
@@ -2014,7 +2014,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:21
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:50
@@ -2720,7 +2720,7 @@ msgstr "Admin root tidak dapat diturunkan melalui perintah"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:35
@@ -2793,7 +2793,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:23
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:55
@@ -3326,12 +3326,12 @@ msgstr ""
 msgid "You must be a channel operator or owner"
 msgstr "Anda harus menjadi operator saluran atau pemilik"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to register a channel"
 msgstr "Anda harus menjadi operator saluran untuk mendaftar saluran"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "You must be a registered user to use ChanServ"
 msgstr "Anda harus menjadi pengguna terdaftar untuk menggunakan ChanServ"
@@ -4575,17 +4575,17 @@ msgstr ""
 "). Routing tetap ke jendela aktif. Pemberitahuan saluran selalu pergi ke "
 "jendela saluran. Berjalan"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "- Manage Auto Operators (get operator on join)."
 msgstr "- Manage Auto Operator (mendapatkan operator pada bergabung)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "- Manage Auto Voice (get voice on join)."
 msgstr "- Manage Auto Voice (mendapatkan suara pada bergabung)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "- Manage Super Operators (can manage AOP and VOP lists)."
 msgstr "- Manage Super Operator (dapat mengelola AOP dan daftar VOP)."
@@ -4606,7 +4606,7 @@ msgstr "- Unregister saluran saat ini, menyerah kepemilikan."
 msgid "- View current-channel registration details."
 msgstr "- Lihat rincian pendaftaran saluran bukti."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "/join #mychannel /cs register /cs info /cs aop add Alice /cs aop list /cs vop add Bob /cs drop"
 msgstr ""
@@ -4668,7 +4668,7 @@ msgstr ""
 "didukung informasi ChanServ, drop, transfer, daftar akses, tambahkan, dan "
 "hapus kontrol. Membutuhkan peran administrator server."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Channel Central Registration Tab"
 msgstr "Tab Registrasi Pusat Saluran"
@@ -4926,7 +4926,7 @@ msgstr ""
 "yang sama dengan pesan opsional 200- karakter. Operator kemudian dapat "
 "memutuskan apakah akan mengundang Anda menggunakan"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "aop add/del/list <nick>"
 msgstr "aop add/del/list <nick>"
@@ -4969,12 +4969,12 @@ msgstr "Tunjukkan kebijakan saat ini."
 msgid "shows the fixed active-window routing policy"
 msgstr "Menampilkan kebijakan routing jendela aktif tetap"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "sop add/del/list <nick>"
 msgstr "sop add/del/list <nick>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "vop add/del/list <nick>"
 msgstr "vop add/delX/list <nick>"
@@ -5376,3 +5376,23 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "— What the channel is going to do. Up to 120 characters."
 msgstr "— Apa yang akan dilakukan kanal. Maksimal 120 karakter."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "- Publish the channel's public archive, a page per day anybody can read (founder only). Without on or off it shows whether the archive is on."
+msgstr "- Menerbitkan arsip publik saluran, satu halaman per hari yang bisa dibaca siapa saja (hanya pendiri). Tanpa on atau off, menampilkan apakah arsip aktif."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Only the founder can drop the channel or switch its archive"
+msgstr "Hanya pendiri yang bisa membatalkan pendaftaran saluran atau mengaktifkan dan menonaktifkan arsipnya"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:77
+#, elixir-autogen, elixir-format
+msgid "Public Channel Archive"
+msgstr "Arsip publik kanal"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "archive on/off"
+msgstr "archive on/off"

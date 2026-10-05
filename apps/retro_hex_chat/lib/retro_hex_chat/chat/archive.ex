@@ -32,12 +32,17 @@ defmodule RetroHexChat.Chat.Archive do
   alias RetroHexChat.Channels.Modes
   alias RetroHexChat.Chat.Attachment
   alias RetroHexChat.Chat.Message
+  alias RetroHexChat.Page
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.RegisteredChannel
 
   # The two things a person can mean to say. Everything else in the table is
   # the room talking about itself.
   @publishable_types ~w(message action)
+
+  # Lines per page of a day. A news room passes two thousand a day, and a page
+  # of two thousand is one nobody reads to the end.
+  @page_size 200
 
   @typedoc "One published line, as a page renders it."
   @type entry :: %{
@@ -49,6 +54,9 @@ defmodule RetroHexChat.Chat.Archive do
           edited?: boolean(),
           attachment?: boolean()
         }
+
+  @typedoc "One page of a day, and the way back to the page before it."
+  @type day_page :: %{page: Page.t(), previous: nil | :start | integer()}
 
   @doc """
   Starts publishing `channel_name` from this instant on.
@@ -116,36 +124,58 @@ defmodule RetroHexChat.Chat.Archive do
   end
 
   @doc """
-  What `channel_name` said on `date`, oldest first.
+  One page of what `channel_name` said on `date`, oldest first.
 
-  `date` is an ISO-8601 day. A day nobody can read, or a day with nothing in
-  it, is an empty list rather than an error: the page above decides what to do
-  with a channel that does not publish, and it is the same answer either way.
+  `date` is an ISO-8601 day. A busy channel says thousands of lines in one, so
+  a day is read in pages of `:limit` lines (#{@page_size} unless given), each
+  starting after the line id in `:after`. An id is a cursor that stays put:
+  deleting a line removes it from its page without shifting every later line
+  onto a different URL, which page numbers would do.
+
+  `previous` is how to reach the page before this one: `nil` on the first page,
+  `:start` when the previous page is the first, otherwise the `:after` that
+  opens it.
+
+  A day nobody can read, a day with nothing in it, and an `:after` that is not
+  a line of that day all answer an empty page rather than an error. The last
+  one matters: an id from another day would otherwise serve the first page of
+  this one under a second address.
   """
-  @spec messages_for(String.t(), String.t() | Date.t()) :: [entry()]
-  def messages_for(channel_name, date) do
+  @spec page_for(String.t(), String.t() | Date.t(), keyword()) :: day_page()
+  def page_for(channel_name, date, opts \\ []) do
+    limit = Keyword.get(opts, :limit, @page_size)
+    cursor = Keyword.get(opts, :after)
+
     with channel when not is_nil(channel) <- publishing_channel(channel_name),
-         {:ok, day} <- to_date(date) do
-      channel
-      |> publishable_messages()
-      |> from(as: :message)
-      |> where([m], fragment("date(? at time zone 'UTC')", m.inserted_at) == ^day)
-      |> order_by([m], asc: m.id)
-      |> select([m], %{
-        id: m.id,
-        author: m.author_nickname,
-        content: m.content,
-        plain_content: m.plain_content,
-        type: m.type,
-        edited_at: m.edited_at,
-        at: m.inserted_at,
-        attachment?:
-          exists(from(a in Attachment, where: parent_as(:message).id == a.message_id, select: 1))
-      })
-      |> Repo.all()
-      |> Enum.map(&entry/1)
+         {:ok, day} <- to_date(date),
+         query = day_messages(channel, day),
+         :ok <- check_cursor(query, cursor) do
+      page =
+        query
+        |> maybe_after(cursor)
+        |> from(as: :message)
+        |> order_by([m], asc: m.id)
+        |> limit(^Page.limit_with_lookahead(limit))
+        |> select([m], %{
+          id: m.id,
+          author: m.author_nickname,
+          content: m.content,
+          plain_content: m.plain_content,
+          type: m.type,
+          edited_at: m.edited_at,
+          at: m.inserted_at,
+          attachment?:
+            exists(
+              from(a in Attachment, where: parent_as(:message).id == a.message_id, select: 1)
+            )
+        })
+        |> Repo.all()
+        |> Page.new(limit, & &1.id)
+        |> Page.map(&entry/1)
+
+      %{page: page, previous: previous(query, cursor, limit)}
     else
-      _ -> []
+      _ -> %{page: Page.empty(), previous: nil}
     end
   end
 
@@ -185,6 +215,46 @@ defmodule RetroHexChat.Chat.Archive do
     |> where([m], m.inserted_at >= ^channel.archive_since)
     |> where([m], is_nil(m.deleted_at))
     |> where([m], m.type in @publishable_types)
+  end
+
+  @spec day_messages(RegisteredChannel.t(), Date.t()) :: Ecto.Query.t()
+  defp day_messages(channel, day) do
+    channel
+    |> publishable_messages()
+    |> where([m], fragment("date(? at time zone 'UTC')", m.inserted_at) == ^day)
+  end
+
+  @spec check_cursor(Ecto.Query.t(), integer() | nil) :: :ok | :error
+  defp check_cursor(_query, nil), do: :ok
+
+  defp check_cursor(query, cursor) when is_integer(cursor) do
+    if Repo.exists?(where(query, [m], m.id == ^cursor)), do: :ok, else: :error
+  end
+
+  defp check_cursor(_query, _cursor), do: :error
+
+  defp maybe_after(query, nil), do: query
+  defp maybe_after(query, cursor), do: where(query, [m], m.id > ^cursor)
+
+  # The page before this one is the `limit` lines that precede its first line,
+  # and it opens after the line before those. Fewer than a page's worth behind
+  # means the previous page is the first, which has no cursor at all.
+  @spec previous(Ecto.Query.t(), integer() | nil, pos_integer()) :: nil | :start | integer()
+  defp previous(_query, nil, _limit), do: nil
+
+  defp previous(query, cursor, limit) do
+    behind =
+      query
+      |> where([m], m.id <= ^cursor)
+      |> order_by([m], desc: m.id)
+      |> limit(^Page.limit_with_lookahead(limit))
+      |> select([m], m.id)
+      |> Repo.all()
+
+    case Enum.at(behind, limit) do
+      nil -> :start
+      id -> id
+    end
   end
 
   @spec publishing?(RegisteredChannel.t()) :: boolean()

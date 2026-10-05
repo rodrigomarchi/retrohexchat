@@ -30,52 +30,62 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 # 273 pessoas somadas, o maior com 57. Demanda distribuida, sem dono.
 /join #brasil
 /cs register
+/cs archive on
 /topic Canal brasileiro — bate-papo em português. Chega aí, senta e fica à vontade.
 /mode +tn
 
 # #jornal — manchetes por feed, não por opinião.
 /join #jornal
 /cs register
+/cs archive on
 /topic Jornal — manchetes de Folha, BBC Brasil e Poder360, direto do feed. !Zeca fontes lista tudo.
 /mode +tn
 
 /join #tecnologia
 /cs register
+/cs archive on
 /topic Tecnologia — Tecnoblog, Canaltech, Olhar Digital e Manual do Usuário. !Bento fontes para a lista.
 /mode +tn
 
 /join #hardware
 /cs register
+/cs archive on
 /topic Hardware — placa, gabinete, gambiarra e upgrade. Fofoca de silício por conta do !Juca.
 /mode +tn
 
 /join #programacao
 /cs register
+/cs archive on
 /topic Programação — TabNews e Meio Bit no fio. Dúvida de linguagem é com o projeto dela; aqui é o boteco.
 /mode +tn
 
 /join #economia
 /cs register
+/cs archive on
 /topic Economia — InfoMoney, Exame e Valor. !Iara fontes mostra de onde vem cada manchete.
 /mode +tn
 
 /join #futebol
 /cs register
+/cs archive on
 /topic Futebol — ge e Trivela no ar. Tabela, bola rolando e opinião de quem não joga há vinte anos.
 /mode +tn
 
 /join #ciencia
 /cs register
+/cs archive on
 /topic Ciência — Superinteressante e Galileu. Pergunta idiota não existe, existe pergunta não feita.
 /mode +tn
 
 /join #musica
 /cs register
+/cs archive on
 /topic Música — POPline e TMDQA no fio. Lançamento, show e briga de fandom.
 /mode +tn
 
 /join #jogos
 /cs register
+/cs archive on
 /topic Jogos — Adrenaline no fio. Para jogar de verdade, abre o menu Games: 18 clássicos rodando no navegador.
 /mode +tn
 

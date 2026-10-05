@@ -993,7 +993,7 @@ msgid "/me waves hello /me is thinking... /me grabs some coffee"
 msgstr "/me waves hello /me is thinking... /me grabs some coffee"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:53
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:46
@@ -1178,7 +1178,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:39
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:89
@@ -1590,7 +1590,7 @@ msgstr "Długość od 1 do 16 znaków"
 msgid "= max 3 joins per 10 seconds)."
 msgstr "= maksymalnie 3 połączenia na 10 sekund)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Access hierarchy: Owner > SOP > AOP > VOP"
 msgstr "Hierarchia dostępu: Właściciel > SOP > AOP > VOP"
@@ -1778,7 +1778,7 @@ msgstr "Kategorie"
 msgid "ChanServ"
 msgstr "ChanServ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "ChanServ Overview"
 msgstr "Przegląd ChanServ"
@@ -1822,7 +1822,7 @@ msgid "Channel Modes"
 msgstr "Tryby kanału"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:53
@@ -2015,7 +2015,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:21
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:50
@@ -2719,7 +2719,7 @@ msgstr "Administratorów korzeni nie można zdegradować poleceniami"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:35
@@ -2792,7 +2792,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:23
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:55
@@ -3322,12 +3322,12 @@ msgstr ""
 msgid "You must be a channel operator or owner"
 msgstr "Musisz być operatorem kanału lub właścicielem"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to register a channel"
 msgstr "Musisz być operatorem kanału, aby zarejestrować kanał"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "You must be a registered user to use ChanServ"
 msgstr ""
@@ -4569,17 +4569,17 @@ msgstr ""
 "). Routing jest przymocowany do aktywnego okna. Ogłoszenia o kanale zawsze "
 "idą do okna kanału. Uruchomienie"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "- Manage Auto Operators (get operator on join)."
 msgstr "- Zarządzanie autooperatorami (dołącz do operatora)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "- Manage Auto Voice (get voice on join)."
 msgstr "- Zarządzanie Auto Voice (get voice on join)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "- Manage Super Operators (can manage AOP and VOP lists)."
 msgstr "- Zarządzanie super operatorami (może zarządzać listami AOP i VOP)."
@@ -4601,7 +4601,7 @@ msgstr "- Odnotuj obecny kanał, rezygnując z własności."
 msgid "- View current-channel registration details."
 msgstr "- Zobacz bieżące szczegóły rejestracji kanału."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "/join #mychannel /cs register /cs info /cs aop add Alice /cs aop list /cs vop add Bob /cs drop"
 msgstr ""
@@ -4663,7 +4663,7 @@ msgstr ""
 "backed ChanServ info, drop, transfer, lista dostępu, dodawanie i usuwanie "
 "kontroli. Wymaga roli administratora serwera."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Channel Central Registration Tab"
 msgstr "Centralna karta rejestracyjna kanału"
@@ -4924,7 +4924,7 @@ msgstr ""
 "opcjonalnym komunikatem 200- znaków. Operatorzy mogą wtedy zdecydować, czy "
 "zaprosić Cię za pomocą"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "aop add/del/list <nick>"
 msgstr "aop add/del/list <nick>"
@@ -4966,12 +4966,12 @@ msgstr "przedstawia obecną politykę."
 msgid "shows the fixed active-window routing policy"
 msgstr "wyświetla stałą politykę routingu okien aktywnych"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "sop add/del/list <nick>"
 msgstr "sop add/del/list <nick>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "vop add/del/list <nick>"
 msgstr "vop add/del/list <nick>"
@@ -5341,3 +5341,23 @@ msgstr "— Za ile się zaczyna: 30m, 2h, 3d. Odstęp, a nie godzina z zegara, w
 #, elixir-autogen, elixir-format
 msgid "— What the channel is going to do. Up to 120 characters."
 msgstr "— Co kanał zamierza zrobić. Do 120 znaków."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "- Publish the channel's public archive, a page per day anybody can read (founder only). Without on or off it shows whether the archive is on."
+msgstr "- Publikuje publiczne archiwum kanału, jedną stronę na dzień, którą każdy może przeczytać (tylko założyciel). Bez on lub off pokazuje, czy archiwum jest włączone."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Only the founder can drop the channel or switch its archive"
+msgstr "Tylko założyciel może wyrejestrować kanał lub włączać i wyłączać jego archiwum"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:77
+#, elixir-autogen, elixir-format
+msgid "Public Channel Archive"
+msgstr "Publiczne archiwum kanału"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "archive on/off"
+msgstr "archive on/off"

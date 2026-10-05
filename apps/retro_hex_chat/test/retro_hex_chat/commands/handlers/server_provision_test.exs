@@ -20,6 +20,7 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
   alias RetroHexChat.Bots.Capabilities.Trivia.QuestionBank
   alias RetroHexChat.Chat.{Formatter, IrcEscapes}
   alias RetroHexChat.Commands.Handlers.Bot
+  alias RetroHexChat.Commands.Handlers.Cs
   alias RetroHexChat.Commands.Registry
 
   @dir Path.expand("../../../../../../docs/provisioning", __DIR__)
@@ -196,6 +197,37 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
 
       assert unknown == [],
              "#{Path.basename(path)} uses commands with no handler: #{inspect(unknown)}"
+    end
+  end
+
+  test "every /cs line names a subcommand /cs has", %{scripts: scripts} do
+    known = Enum.map(Cs.syntax_definition().subcommands, & &1.name)
+
+    for path <- scripts do
+      {_body, _lines, parsed} = read(path)
+      used = for ["cs", sub | _] <- parsed, uniq: true, do: sub
+
+      unknown = Enum.reject(used, &(&1 in known))
+
+      assert unknown == [],
+             "#{Path.basename(path)} uses /cs subcommands with no clause: #{inspect(unknown)}"
+    end
+  end
+
+  # Every room a script opens publishes its archive, and the switch only takes
+  # on a registered channel, so it belongs right after the registration.
+  test "every registered room switches its archive on", %{scripts: scripts} do
+    for path <- scripts do
+      {_body, _lines, parsed} = read(path)
+
+      missing =
+        parsed
+        |> Enum.chunk_every(2, 1, [[]])
+        |> Enum.filter(&match?([["cs", "register" | _], _next], &1))
+        |> Enum.reject(&match?([_register, ["cs", "archive", "on"]], &1))
+
+      assert missing == [],
+             "#{Path.basename(path)} registers #{length(missing)} room(s) without /cs archive on"
     end
   end
 

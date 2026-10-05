@@ -2557,7 +2557,7 @@ msgstr ""
 "Anda membacanya, dan peramban lain di mesin yang sama mendapat nama berbeda."
 " Ia tidak mengikuti Anda ke mana pun, karena hanya ada di server ini."
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:183
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:226
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "%{channel} archive"
@@ -2568,7 +2568,7 @@ msgstr "Arsip %{channel}"
 msgid "%{channel} on %{date}"
 msgstr "%{channel} pada %{date}"
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:197
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:240
 #, elixir-autogen, elixir-format
 msgid "%{channel} on %{date}: %{opening}"
 msgstr "%{channel} pada %{date}: %{opening}"
@@ -2578,7 +2578,7 @@ msgstr "%{channel} pada %{date}: %{opening}"
 msgid "(edited)"
 msgstr "(disunting)"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:39
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "All days"
 msgstr "Semua hari"
@@ -2590,14 +2590,14 @@ msgstr ""
 "Semua yang dikatakan di sini sejak kanal membuka arsipnya, satu halaman per "
 "hari. Tidak ada yang dari sebelum dibuka yang diterbitkan."
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:59
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:60
 #, elixir-autogen, elixir-format
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
 msgstr ""
 "Semua yang dikatakan di %{channel} sejak membuka arsipnya, satu halaman per "
 "hari."
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:43
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:57
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
@@ -2607,3 +2607,23 @@ msgstr "Gabung %{channel}"
 #, elixir-autogen, elixir-format
 msgid "(attachment)"
 msgstr "(lampiran)"
+
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:127
+#, elixir-autogen, elixir-format
+msgid "%{title} — from %{time}"
+msgstr "%{title} — mulai %{time}"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Later →"
+msgstr "Berikutnya →"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Pages of this day"
+msgstr "Halaman tanggal ini"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "← Earlier"
+msgstr "← Sebelumnya"

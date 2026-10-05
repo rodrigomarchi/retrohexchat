@@ -30,51 +30,61 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #nihon
 /cs register
+/cs archive on
 /topic 日本語チャンネル — どうぞお入りください。座って、話しましょう。コーヒーは店のおごりです。
 /mode +tn
 
 /join #jp-tech
 /cs register
+/cs archive on
 /topic テクノロジー — GIGAZINE、ITmedia、ASCII をフィードから直接。!Ken sources で一覧が出ます。
 /mode +tn
 
 /join #jp-gadgets
 /cs register
+/cs archive on
 /topic ガジェット — ギズモード・ジャパン、ITmedia NEWS、Mogura VR。製品、レビュー、そして VR の話。
 /mode +tn
 
 /join #jp-dev
 /cs register
+/cs archive on
 /topic 開発 — Publickey、Zenn、Qiita。プロジェクトのサポートはプロジェクトへ。ここは雑談です。
 /mode +tn
 
 /join #jp-games
 /cs register
+/cs archive on
 /topic ゲーム — AUTOMATON と電ファミニコゲーマー。実際に遊ぶなら Games メニュー、18本の名作がブラウザで動きます。
 /mode +tn
 
 /join #jp-soccer
 /cs register
+/cs archive on
 /topic サッカー — サッカーキングとフットボールチャンネル。順位表、移籍、いつもの議論。
 /mode +tn
 
 /join #jp-yakyu
 /cs register
+/cs archive on
 /topic 野球 — ベースボールチャンネル。順位、開幕から日本シリーズまで。
 /mode +tn
 
 /join #jp-science
 /cs register
+/cs archive on
 /topic 科学 — sorae とナゾロジー。宇宙開発と、まだ答えの出ていない話。
 /mode +tn
 
 /join #jp-money
 /cs register
+/cs archive on
 /topic 経済 — 東洋経済、ダイヤモンド、Business Insider Japan。見出しは推奨ではありません。
 /mode +tn
 
 /join #jp-life
 /cs register
+/cs archive on
 /topic 暮らし — ライフハッカー・ジャパン。道具、習慣、少しだけ楽をする方法。
 /mode +tn
 

@@ -3,6 +3,8 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
 
   @moduletag :integration
 
+  alias RetroHexChat.Channels
+  alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Commands.Dispatcher
   alias RetroHexChat.Commands.Handlers.Cs
   alias RetroHexChat.Services.ChanServ
@@ -55,6 +57,47 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
     test "returns error for unregistered channel", ctx do
       assert {:error, msg} = Cs.execute(["drop"], ctx.context)
       assert msg =~ "not registered"
+    end
+  end
+
+  describe "execute/2 - archive" do
+    setup ctx do
+      channel = "#csarch#{rem(System.unique_integer([:positive]), 100_000)}"
+      {:ok, _pid} = Channels.Supervisor.start_child(channel)
+      context = %{ctx.context | active_channel: channel, channels: [channel]}
+      {:ok, :system, _} = Cs.execute(["register"], context)
+      %{context: context, channel: channel}
+    end
+
+    test "the founder switches it on and off", ctx do
+      assert {:ok, :system, %{content: on}} = Cs.execute(["archive", "on"], ctx.context)
+      assert on =~ "is on"
+      assert Archive.published?(ctx.channel)
+
+      assert {:ok, :system, %{content: off}} = Cs.execute(["archive", "off"], ctx.context)
+      assert off =~ "is off"
+      refute Archive.published?(ctx.channel)
+    end
+
+    test "nobody but the founder may", ctx do
+      stranger = %{ctx.context | nickname: "NotTheFounder"}
+
+      assert {:error, msg} = Cs.execute(["archive", "on"], stranger)
+      assert msg =~ "founder"
+      refute Archive.published?(ctx.channel)
+    end
+
+    test "without on or off it reports the state and the usage", ctx do
+      assert {:ok, :system, %{content: content}} = Cs.execute(["archive"], ctx.context)
+      assert content =~ "is off"
+      assert content =~ "/cs archive <on|off>"
+    end
+
+    test "a channel with no running room is an error, not a crash", ctx do
+      gone = %{ctx.context | active_channel: "#nobody#{System.unique_integer([:positive])}"}
+
+      assert {:error, msg} = Cs.execute(["archive", "on"], gone)
+      assert msg =~ "Channel not found"
     end
   end
 

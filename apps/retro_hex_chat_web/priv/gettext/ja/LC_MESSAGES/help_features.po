@@ -1136,7 +1136,7 @@ msgstr "チャネルのオートコンプリート"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "チャネルの中央"
@@ -2913,7 +2913,7 @@ msgstr "現在のチャンネルまたはPMでリアルタイムのハイライ�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
@@ -6074,11 +6074,6 @@ msgstr ""
 msgid "A secret channel cannot have a public archive"
 msgstr "秘密チャンネルは公開アーカイブを持てません"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:28
-#, elixir-autogen, elixir-format
-msgid "Attachments are never published — the page says nothing about them"
-msgstr "添付ファイルは決して公開されず、ページには何も出ません"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Deleted messages are absent; edited ones are marked as edited"
@@ -6102,7 +6097,7 @@ msgid "Only what is said from the moment the switch goes on. Nothing already in 
 msgstr ""
 "公開されるのは、スイッチを入れた時点以降の発言だけです。すでにチャンネルにあるものは、どれだけ長くそこにあっても決して公開されません。書いた人は部屋に向けて書いたのであって、インターネットに向けて書いたのではないからです。スイッチが変わると、その場にいる全員に知らされます。検索エンジンで知ることがないようにです。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Registering a channel"
 msgstr "チャンネルを登録する"
@@ -6116,13 +6111,6 @@ msgstr "ルールと制限"
 #, elixir-autogen, elixir-format
 msgid "Switching it off takes every page down straight away"
 msgstr "オフにすると、すべてのページがただちに見られなくなります"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, and only a registered channel has one."
-msgstr ""
-"創設者だけです。オペレーターは部屋を管理しますが、そこで話されたことを外から読めるようにするかどうかは別の種類の決定であり、チャンネルの責任者のものです。スイッチは"
-" Channel Central の登録タブにあり、登録済みのチャンネルにしかありません。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:14
 #, elixir-autogen, elixir-format
@@ -6432,3 +6420,23 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Where It Is Offered"
 msgstr "どこで使えるか"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "/cs"
+msgstr "/cs"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "A busy day is split into pages of 200 lines, with Earlier and Later links between them"
+msgstr "発言の多い日は 200 行ずつのページに分かれ、「前へ」と「次へ」のリンクでつながります"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Attachments are never published — the page only notes that one was there"
+msgstr "添付ファイルは公開されません。ページには添付があったことだけが示されます"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, or typed as /cs archive on and /cs archive off; only a registered channel has one."
+msgstr "創設者だけです。オペレーターは部屋を管理しますが、そこで話されたことを外から読めるようにするかどうかは別の種類の決定であり、チャンネルの責任者のものです。スイッチは Channel Central の登録タブにあり、/cs archive on と /cs archive off で入力することもできます。登録済みのチャンネルにしかありません。"

@@ -2556,7 +2556,7 @@ msgstr "Das eine Cookie, das keine Anmeldung ist"
 msgid "Your browser is given a random name so the server can tell your phone from your desktop. It identifies a browser, never a person: nothing is stored against it but which channels that screen had open and where in them you had read to, and a different browser on the same machine gets a different one. It follows you nowhere, because it only exists on this server."
 msgstr "Dein Browser bekommt einen zufälligen Namen, damit der Server dein Handy von deinem Rechner unterscheiden kann. Er kennzeichnet einen Browser, nie eine Person: gespeichert wird dazu nichts außer, welche Kanäle dieser Bildschirm offen hatte und wie weit du darin gelesen hast, und ein anderer Browser auf demselben Rechner bekommt einen anderen. Er folgt dir nirgendwohin, denn es gibt ihn nur auf diesem Server."
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:183
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:226
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "%{channel} archive"
@@ -2567,7 +2567,7 @@ msgstr "Archiv von %{channel}"
 msgid "%{channel} on %{date}"
 msgstr "%{channel} am %{date}"
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:197
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:240
 #, elixir-autogen, elixir-format
 msgid "%{channel} on %{date}: %{opening}"
 msgstr "%{channel} am %{date}: %{opening}"
@@ -2577,7 +2577,7 @@ msgstr "%{channel} am %{date}: %{opening}"
 msgid "(edited)"
 msgstr "(bearbeitet)"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:39
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "All days"
 msgstr "Alle Tage"
@@ -2587,12 +2587,12 @@ msgstr "Alle Tage"
 msgid "Everything said here since the channel opened its archive, one page per day. Nothing from before it was opened is published."
 msgstr "Alles, was hier gesagt wurde, seit der Kanal sein Archiv geöffnet hat — eine Seite pro Tag. Nichts von davor wird veröffentlicht."
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:59
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:60
 #, elixir-autogen, elixir-format
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
 msgstr "Alles, was in %{channel} gesagt wurde, seit der Kanal sein Archiv geöffnet hat — eine Seite pro Tag."
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:43
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:57
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
@@ -2602,3 +2602,23 @@ msgstr "%{channel} betreten"
 #, elixir-autogen, elixir-format
 msgid "(attachment)"
 msgstr "(Anhang)"
+
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:127
+#, elixir-autogen, elixir-format
+msgid "%{title} — from %{time}"
+msgstr "%{title} — ab %{time}"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Later →"
+msgstr "Später →"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Pages of this day"
+msgstr "Seiten dieses Tages"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "← Earlier"
+msgstr "← Früher"

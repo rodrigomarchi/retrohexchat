@@ -967,7 +967,7 @@ msgid "/me waves hello /me is thinking... /me grabs some coffee"
 msgstr "/me waves hello /me is thinking... /me grabs some coffee"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:53
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:46
@@ -1152,7 +1152,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:39
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:89
@@ -1564,7 +1564,7 @@ msgstr "1〜16文字ロング"
 msgid "= max 3 joins per 10 seconds)."
 msgstr "= 10秒あたりの最大3結合。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Access hierarchy: Owner > SOP > AOP > VOP"
 msgstr "アクセス階層:所有者 > SOP > AOP > VOP"
@@ -1742,7 +1742,7 @@ msgstr "カテゴリー"
 msgid "ChanServ"
 msgstr "チャンサーブ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "ChanServ Overview"
 msgstr "ChanServの概要"
@@ -1780,7 +1780,7 @@ msgid "Channel Modes"
 msgstr "チャネルモード"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:53
@@ -1957,7 +1957,7 @@ msgstr "チャットチャネルを入力してメッセージを読み、送信
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:21
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:50
@@ -2600,7 +2600,7 @@ msgstr "ルート管理者は、コマンドを介してデモすることはで
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:35
@@ -2671,7 +2671,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:23
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:55
@@ -3134,12 +3134,12 @@ msgstr ""
 msgid "You must be a channel operator or owner"
 msgstr "チャンネル演算子または所有者でなければなりません"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to register a channel"
 msgstr "チャンネルを登録するチャンネル演算子でなければなりません"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "You must be a registered user to use ChanServ"
 msgstr "チャンサーブを使用する登録ユーザーでなければなりません"
@@ -4314,17 +4314,17 @@ msgstr "— View/setチャンネルトピック"
 msgid "). Routing is fixed to the active window. Channel notices always go to the channel window. Running"
 msgstr ")。 アクティブウィンドウにルーティングを固定します。 チャンネル通知は常にチャネルウィンドウに移動します。 ランニング"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "- Manage Auto Operators (get operator on join)."
 msgstr "- 自動オペレータを管理して下さい(結合の項目オペレータ)。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "- Manage Auto Voice (get voice on join)."
 msgstr "- 自動音声の管理(参加時に音声を入力)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "- Manage Super Operators (can manage AOP and VOP lists)."
 msgstr "- スーパーオペレーターの管理(AOPとVOPリストの管理)"
@@ -4344,7 +4344,7 @@ msgstr "- 現在のチャンネルを登録解除し、所有権を付与しま�
 msgid "- View current-channel registration details."
 msgstr "- 現在のチャンネル登録の詳細を表示します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "/join #mychannel /cs register /cs info /cs aop add Alice /cs aop list /cs vop add Bob /cs drop"
 msgstr ""
@@ -4404,7 +4404,7 @@ msgstr ""
 "チャンサーブ管理:チャネルの登録をドロップし、創設者を転送し、アクセスリストを管理します。 管理者コンソール チャネル タブは、コマンド バックされた "
 "ChanServ 情報、ドロップ、転送、アクセス リスト、追加、および削除制御を提供します。 サーバー管理者権限が必要です。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Channel Central Registration Tab"
 msgstr "チャネル中央登録タブ"
@@ -4629,7 +4629,7 @@ msgstr ""
 "チャンネルリストは、+iバッジ付きの招待チャンネルをマークし、リクエストアクセスに参加...、オプション200文字メッセージで同じノックリクエストフローを開きます。"
 " オペレータは、あなたが使用して招待するかどうかを決定することができます"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "aop add/del/list <nick>"
 msgstr "aop add/del/list <nick>"
@@ -4671,12 +4671,12 @@ msgstr "現在の方針を示します。"
 msgid "shows the fixed active-window routing policy"
 msgstr "固定アクティブ・ウィンドウ・ルーティング・ポリシーを表示"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "sop add/del/list <nick>"
 msgstr "sop add/del/list <nick>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "vop add/del/list <nick>"
 msgstr "vop add/del/list <nick>"
@@ -5035,3 +5035,23 @@ msgstr "— 今からどれくらいで始まるか: 30m、2h、3d。時計の�
 #, elixir-autogen, elixir-format
 msgid "— What the channel is going to do. Up to 120 characters."
 msgstr "— チャンネルがすること。120 文字まで。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "- Publish the channel's public archive, a page per day anybody can read (founder only). Without on or off it shows whether the archive is on."
+msgstr "- チャンネルの公開アーカイブを公開します。誰でも読める 1 日 1 ページです（創設者のみ）。on/off を付けないと、アーカイブがオンかどうかを表示します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Only the founder can drop the channel or switch its archive"
+msgstr "チャンネルの登録解除とアーカイブの切り替えは創設者だけができます"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:77
+#, elixir-autogen, elixir-format
+msgid "Public Channel Archive"
+msgstr "チャンネルの公開アーカイブ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "archive on/off"
+msgstr "archive on/off"

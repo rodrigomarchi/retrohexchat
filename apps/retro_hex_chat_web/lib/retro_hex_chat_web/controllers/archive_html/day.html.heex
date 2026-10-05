@@ -34,6 +34,20 @@
         </li>
       </ol>
 
+      <nav
+        :if={@prev_path || @next_path}
+        class="text-sm mt-4 flex gap-4"
+        aria-label={dgettext("landing", "Pages of this day")}
+        data-testid="archive-pager"
+      >
+        <.link :if={@prev_path} href={@prev_path} rel="prev" class="underline">
+          {dgettext("landing", "← Earlier")}
+        </.link>
+        <.link :if={@next_path} href={@next_path} rel="next" class="underline">
+          {dgettext("landing", "Later →")}
+        </.link>
+      </nav>
+
       <p class="text-sm mt-4">
         <.link navigate={~p"/archive/#{@slug}"} class="underline">
           {dgettext("landing", "All days")}

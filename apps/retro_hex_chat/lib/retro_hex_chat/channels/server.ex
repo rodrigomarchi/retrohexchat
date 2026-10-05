@@ -236,8 +236,15 @@ defmodule RetroHexChat.Channels.Server do
     Observability.span(
       [:retro_hex_chat, :channels, :archive, :set],
       %{"chat.channel" => channel_name},
-      fn -> GenServer.call(via(channel_name), {:set_public_archive, nickname, enabled?}) end
+      fn ->
+        case Registry.lookup(channel_name) do
+          {:ok, pid} -> GenServer.call(pid, {:set_public_archive, nickname, enabled?})
+          {:error, :not_found} -> {:error, dgettext("channels", "Channel not found")}
+        end
+      end
     )
+  catch
+    :exit, _reason -> {:error, dgettext("channels", "Channel not found")}
   end
 
   @doc """

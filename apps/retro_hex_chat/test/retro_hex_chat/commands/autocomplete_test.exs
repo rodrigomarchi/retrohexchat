@@ -508,7 +508,7 @@ defmodule RetroHexChat.Commands.AutocompleteTest do
     test "works for all commands with subcommands" do
       for {cmd, expected_count} <- [
             {"ns", 10},
-            {"cs", 7},
+            {"cs", 8},
             {"autojoin", 4},
             {"alias", 3},
             {"notify", 4},

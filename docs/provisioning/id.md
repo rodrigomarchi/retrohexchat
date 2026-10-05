@@ -28,51 +28,61 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #indonesia
 /cs register
+/cs archive on
 /topic Kanal berbahasa Indonesia — masuk, duduk, ngobrol. Kopinya gratis.
 /mode +tn
 
 /join #berita
 /cs register
+/cs archive on
 /topic Berita — Tempo, CNN Indonesia dan Republika, langsung dari feed. !Rina sumber menampilkan daftarnya.
 /mode +tn
 
 /join #politik
 /cs register
+/cs archive on
 /topic Politik — Antara, Sindonews dan Okezone. Kabar dari Senayan dan sekitarnya.
 /mode +tn
 
 /join #dunia
 /cs register
+/cs archive on
 /topic Dunia — BBC Indonesia dan CNN Indonesia Internasional. Kabar luar negeri, bahasa sendiri.
 /mode +tn
 
 /join #teknologi
 /cs register
+/cs archive on
 /topic Teknologi — detikInet, Antara Tekno, CNN Indonesia Teknologi dan Hybrid. Dukungan proyek ada di proyeknya; di sini kita ngobrol.
 /mode +tn
 
 /join #olahraga
 /cs register
+/cs archive on
 /topic Olahraga — detikSport, Antara, CNN Indonesia dan Tempo Bola. Klasemen, transfer, dan debat biasa.
 /mode +tn
 
 /join #ekonomi
 /cs register
+/cs archive on
 /topic Ekonomi — CNBC Indonesia, Katadata, Antara, Tempo Bisnis dan CNN Indonesia. Judul berita bukan rekomendasi.
 /mode +tn
 
 /join #hiburan
 /cs register
+/cs archive on
 /topic Hiburan — Antara, CNN Indonesia dan Tempo Seleb. Film, musik, dan gosip yang sudah terverifikasi.
 /mode +tn
 
 /join #gayahidup
 /cs register
+/cs archive on
 /topic Gaya hidup — CNN Indonesia dan Tempo Gaya. Makan, jalan, kesehatan, kebiasaan.
 /mode +tn
 
 /join #gim
 /cs register
+/cs archive on
 /topic Gim — Gamebrott di saluran. Mau benar-benar main? Buka menu Games: 18 klasik langsung di peramban.
 /mode +tn
 

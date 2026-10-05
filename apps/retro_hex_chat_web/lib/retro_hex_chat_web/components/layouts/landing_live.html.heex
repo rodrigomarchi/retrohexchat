@@ -54,6 +54,10 @@
           a share link in the index is an invitation nobody extended. --%>
     <meta name="robots" content={assigns[:robots] || "index, follow"} />
     <link rel="canonical" href={canonical_url} />
+    <%!-- A page that is one of a run — an archive day too long for one page —
+          names its neighbours, so a crawler can walk the day in order. --%>
+    <link :if={assigns[:prev_url]} rel="prev" href={assigns[:prev_url]} />
+    <link :if={assigns[:next_url]} rel="next" href={assigns[:next_url]} />
     <%!-- hreflang is a claim that the same page exists in another language.
           For a conversation it is false, so the archive emits none rather than
           pointing a search engine at the same text fourteen times. --%>

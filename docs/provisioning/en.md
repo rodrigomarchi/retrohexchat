@@ -81,6 +81,7 @@ included, is joined explicitly.
 # the admin happens to be in, and /cs register acts on the active one.
 /join #lobby
 /cs register
+/cs archive on
 /topic The lobby — one room, everyone in it. Pull up a chair, the pixels are warm.
 /mode +tn
 
@@ -88,6 +89,7 @@ included, is joined explicitly.
 # the rest of IRC still runs this on eggdrop from 1997.
 /join #trivia
 /cs register
+/cs archive on
 /topic Trivia — !Wanda trivia start to begin, !Wanda answer <guess> to play, !Wanda trivia score for the board. Six categories.
 /mode +tn
 
@@ -95,6 +97,7 @@ included, is joined explicitly.
 # The largest #arcade on IRC has 15 people. No network offers this.
 /join #arcade
 /cs register
+/cs archive on
 /topic Arcade — 18 classics running in your browser. Open the Games menu, or ask !Pixel games for the catalogue.
 /mode +tn
 
@@ -102,6 +105,7 @@ included, is joined explicitly.
 # the biggest retro room of any name holds 83. Amiga, C64, DOS, demoscene, BBS.
 /join #retro
 /cs register
+/cs archive on
 /topic Retro computing — Amiga, C64, Atari, DOS, demoscene, BBS. If it booted from a floppy, it belongs here.
 /mode +tn
 
@@ -109,6 +113,7 @@ included, is joined explicitly.
 # those rooms are worth what their maintainers make them.
 /join #tech
 /cs register
+/cs archive on
 /topic Tech talk — hardware, self-hosting, sysadmin war stories. Project support lives upstream; this is the pub.
 /mode +tn
 
@@ -116,6 +121,7 @@ included, is joined explicitly.
 # largest room holds 450 and the p90 is 77. Driven by feeds, not opinion.
 /join #news
 /cs register
+/cs archive on
 /topic News — headlines pulled from feeds by Gazeta. !Gazeta rss list to see the sources.
 /mode +tn
 
@@ -123,6 +129,7 @@ included, is joined explicitly.
 # that answered the census.
 /join #help
 /cs register
+/cs archive on
 /topic Lost? Ask here. !Harold faq for the basics, or /help for the manual.
 /mode +tn
 
@@ -141,6 +148,7 @@ included, is joined explicitly.
 # the census found no live #foss room on any network.
 /join #foss
 /cs register
+/cs archive on
 /topic Free software news — releases, kernels, distros. Fed by LWN, Phoronix and It's FOSS.
 /mode +tn
 
@@ -149,6 +157,7 @@ included, is joined explicitly.
 # incident writeups are archetypal feed content.
 /join #security
 /cs register
+/cs archive on
 /topic Security advisories — Krebs, The Hacker News, BleepingComputer and research feeds. Read before you patch.
 /mode +tn
 
@@ -156,6 +165,7 @@ included, is joined explicitly.
 # emptiest subject measured and the busiest one outside IRC. Nobody has claimed it.
 /join #ai
 /cs register
+/cs archive on
 /topic Machine learning — arXiv preprints and model releases as they land.
 /mode +tn
 
@@ -163,6 +173,7 @@ included, is joined explicitly.
 # Distributed demand, no owner.
 /join #science
 /cs register
+/cs archive on
 /topic Science — arXiv astrophysics, NASA, Live Science and discovery feeds. Bring questions.
 /mode +tn
 
@@ -170,6 +181,7 @@ included, is joined explicitly.
 # room holds only 279. A familiar name with a weak incumbent.
 /join #anime
 /cs register
+/cs archive on
 /topic Anime — news and episode releases via Anime News Network and LiveChart.
 /mode +tn
 

@@ -26,51 +26,61 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #italia
 /cs register
+/cs archive on
 /topic Canale italiano — entra, siediti, si chiacchiera. Il caffè lo offre la casa.
 /mode +tn
 
 /join #cronaca
 /cs register
+/cs archive on
 /topic Cronaca — Corriere e Adnkronos, direttamente dal feed. !Vittorio fonti mostra l'elenco.
 /mode +tn
 
 /join #attualita
 /cs register
+/cs archive on
 /topic Attualità — Il Fatto Quotidiano e Open. Il commento, dopo che la cronaca è passata.
 /mode +tn
 
 /join #digitale
 /cs register
+/cs archive on
 /topic Digitale — DDay, HDblog e Wired Italia. Prodotti, servizi e il mondo che ci gira intorno.
 /mode +tn
 
 /join #tecnologie
 /cs register
+/cs archive on
 /topic Tecnologie — Punto Informatico, Il Software e Tom's Hardware. Il supporto di un progetto sta nel progetto; qui si parla.
 /mode +tn
 
 /join #telefonini
 /cs register
+/cs archive on
 /topic Telefonini — AndroidWorld e SmartWorld. Telefoni, orologi e caricabatterie che non entrano da nessuna parte.
 /mode +tn
 
 /join #videogiochi
 /cs register
+/cs archive on
 /topic Videogiochi — Everyeye e SpazioGames. Per giocare davvero apri il menu Games: 18 classici nel browser.
 /mode +tn
 
 /join #calcio
 /cs register
+/cs archive on
 /topic Calcio — la Gazzetta sul filo. Classifica, mercato e la discussione di sempre.
 /mode +tn
 
 /join #spazio
 /cs register
+/cs archive on
 /topic Spazio — Media INAF. Astrofisica, missioni e cielo osservato per mestiere.
 /mode +tn
 
 /join #finanza
 /cs register
+/cs archive on
 /topic Finanza — Il Sole 24 Ore. Un titolo non è un consiglio.
 /mode +tn
 

@@ -29,51 +29,61 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #russkiy
 /cs register
+/cs archive on
 /topic Русскоязычный канал — заходи, садись, разговариваем. Кофе за счёт заведения.
 /mode +tn
 
 /join #novosti
 /cs register
+/cs archive on
 /topic Новости — ТАСС, «Интерфакс», «Коммерсантъ» и «Медуза», прямо из лент. !Grisha istochniki покажет список.
 /mode +tn
 
 /join #tehnologii
 /cs register
+/cs archive on
 /topic Технологии — 3DNews и CNews. Поддержка проекта живёт у проекта; здесь просто разговор.
 /mode +tn
 
 /join #zhelezo
 /cs register
+/cs archive on
 /topic Железо — iXBT и Overclockers. Платы, корпуса, разгон и то, что из этого выходит.
 /mode +tn
 
 /join #razrabotka
 /cs register
+/cs archive on
 /topic Разработка — «Хабр» и «Код». Байки, разборы и чужие коммиты.
 /mode +tn
 
 /join #opensource
 /cs register
+/cs archive on
 /topic Открытый код — OpenNET на проводе. Релизы, ядра, дистрибутивы.
 /mode +tn
 
 /join #igry
 /cs register
+/cs archive on
 /topic Игры — DTF и StopGame. А поиграть по-настоящему — меню Games: 18 классических игр прямо в браузере.
 /mode +tn
 
 /join #nauchpop
 /cs register
+/cs archive on
 /topic Научпоп — N+1, «Элементы» и Naked Science. Глупых вопросов не бывает, бывают незаданные.
 /mode +tn
 
 /join #ekonomika
 /cs register
+/cs archive on
 /topic Экономика — РБК и vc.ru. Заголовок — это не рекомендация.
 /mode +tn
 
 /join #futbol
 /cs register
+/cs archive on
 /topic Футбол — «Чемпионат» на проводе. Таблица, трансферы и обычный спор.
 /mode +tn
 

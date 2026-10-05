@@ -68,7 +68,7 @@ defmodule RetroHexChat.Chat.ArchiveTest do
     end
   end
 
-  describe "messages_for/2" do
+  describe "page_for/3" do
     setup ctx do
       old = message(ctx.channel, "said before anybody agreed to this")
       {:ok, _} = Archive.publish(ctx.channel)
@@ -79,11 +79,11 @@ defmodule RetroHexChat.Chat.ArchiveTest do
     test "nothing said before the switch is published", ctx do
       fresh = message(ctx.channel, "said after")
 
-      texts = ctx.channel |> Archive.messages_for(day_of(fresh)) |> Enum.map(& &1.text)
+      texts = ctx.channel |> lines(day_of(fresh)) |> Enum.map(& &1.text)
 
       assert "said after" in texts
       refute "said before anybody agreed to this" in texts
-      refute ctx.old.id in Enum.map(Archive.messages_for(ctx.channel, day_of(ctx.old)), & &1.id)
+      refute ctx.old.id in Enum.map(lines(ctx.channel, day_of(ctx.old)), & &1.id)
     end
 
     test "a deleted line is absent", ctx do
@@ -91,7 +91,7 @@ defmodule RetroHexChat.Chat.ArchiveTest do
       gone = message(ctx.channel, "this one goes")
       {:ok, _} = Queries.soft_delete(gone, DateTime.utc_now())
 
-      texts = ctx.channel |> Archive.messages_for(day_of(kept)) |> Enum.map(& &1.text)
+      texts = ctx.channel |> lines(day_of(kept)) |> Enum.map(& &1.text)
 
       assert "this one stays" in texts
       refute "this one goes" in texts
@@ -101,7 +101,7 @@ defmodule RetroHexChat.Chat.ArchiveTest do
       said = message(ctx.channel, "a person said this")
       for type <- ~w(system service notice), do: message(ctx.channel, "#{type} noise", type)
 
-      texts = ctx.channel |> Archive.messages_for(day_of(said)) |> Enum.map(& &1.text)
+      texts = ctx.channel |> lines(day_of(said)) |> Enum.map(& &1.text)
 
       assert texts == ["a person said this"]
     end
@@ -115,7 +115,7 @@ defmodule RetroHexChat.Chat.ArchiveTest do
       said = message_with(ctx.channel, %{content: "", allow_blank_content: true})
       attach(said)
 
-      [entry] = Archive.messages_for(ctx.channel, day_of(said))
+      [entry] = lines(ctx.channel, day_of(said))
 
       assert entry.attachment?
       assert entry.text == ""
@@ -125,7 +125,7 @@ defmodule RetroHexChat.Chat.ArchiveTest do
       said = message(ctx.channel, "look at this")
       attach(said)
 
-      [entry] = Archive.messages_for(ctx.channel, day_of(said))
+      [entry] = lines(ctx.channel, day_of(said))
 
       assert entry.text == "look at this"
       assert entry.attachment?
@@ -135,7 +135,7 @@ defmodule RetroHexChat.Chat.ArchiveTest do
     test "an ordinary line carries no attachment mark", ctx do
       said = message(ctx.channel, "just talking")
 
-      [entry] = Archive.messages_for(ctx.channel, day_of(said))
+      [entry] = lines(ctx.channel, day_of(said))
 
       refute entry.attachment?
     end
@@ -143,7 +143,7 @@ defmodule RetroHexChat.Chat.ArchiveTest do
     test "an action is published, because somebody meant it", ctx do
       said = message(ctx.channel, "waves", "action")
 
-      entries = Archive.messages_for(ctx.channel, day_of(said))
+      entries = lines(ctx.channel, day_of(said))
 
       assert [%{text: "waves", action?: true}] = entries
     end
@@ -157,7 +157,7 @@ defmodule RetroHexChat.Chat.ArchiveTest do
           plain_content: "red and bold"
         })
 
-      assert [%{text: "red and bold"}] = Archive.messages_for(ctx.channel, day_of(said))
+      assert [%{text: "red and bold"}] = lines(ctx.channel, day_of(said))
     end
 
     test "an edited line says it was edited", ctx do
@@ -165,7 +165,7 @@ defmodule RetroHexChat.Chat.ArchiveTest do
       {:ok, _} = Queries.update_content(said, "second go", DateTime.utc_now())
 
       assert [%{edited?: true, text: "second go"}] =
-               Archive.messages_for(ctx.channel, day_of(said))
+               lines(ctx.channel, day_of(said))
     end
 
     test "chronological, oldest first", ctx do
@@ -173,7 +173,7 @@ defmodule RetroHexChat.Chat.ArchiveTest do
       message(ctx.channel, "two")
       message(ctx.channel, "three")
 
-      texts = ctx.channel |> Archive.messages_for(day_of(first)) |> Enum.map(& &1.text)
+      texts = ctx.channel |> lines(day_of(first)) |> Enum.map(& &1.text)
 
       assert texts == ["one", "two", "three"]
     end
@@ -182,7 +182,7 @@ defmodule RetroHexChat.Chat.ArchiveTest do
       said = message(ctx.channel, "after the switch")
       {:ok, _} = Archive.unpublish(ctx.channel)
 
-      assert Archive.messages_for(ctx.channel, day_of(said)) == []
+      assert lines(ctx.channel, day_of(said)) == []
     end
   end
 
@@ -235,6 +235,58 @@ defmodule RetroHexChat.Chat.ArchiveTest do
     end
   end
 
+  describe "page_for/3 across pages" do
+    setup ctx do
+      {:ok, _} = Archive.publish(ctx.channel)
+      said = for n <- 1..5, do: message(ctx.channel, "line #{n}")
+      %{said: said, day: day_of(hd(said))}
+    end
+
+    test "the first page has no way back and a cursor forward", ctx do
+      %{page: page, previous: previous} = Archive.page_for(ctx.channel, ctx.day, limit: 2)
+
+      assert Enum.map(page.items, & &1.text) == ["line 1", "line 2"]
+      assert page.has_more
+      assert page.next_cursor == Enum.at(ctx.said, 1).id
+      assert previous == nil
+    end
+
+    test "a cursor opens the page after it, which points back to the start", ctx do
+      %{page: page, previous: previous} =
+        Archive.page_for(ctx.channel, ctx.day, limit: 2, after: Enum.at(ctx.said, 1).id)
+
+      assert Enum.map(page.items, & &1.text) == ["line 3", "line 4"]
+      assert previous == :start
+    end
+
+    test "the last page has nothing after it and a cursor back", ctx do
+      %{page: page, previous: previous} =
+        Archive.page_for(ctx.channel, ctx.day, limit: 2, after: Enum.at(ctx.said, 3).id)
+
+      assert Enum.map(page.items, & &1.text) == ["line 5"]
+      refute page.has_more
+      assert previous == Enum.at(ctx.said, 1).id
+    end
+
+    # An id that is not a line of this day would otherwise answer the day's
+    # first page under a second address.
+    test "a cursor from outside the day is an empty page", ctx do
+      %{page: page} = Archive.page_for(ctx.channel, ctx.day, after: 1)
+      assert page.items == []
+
+      other = message("#elsewhere#{uid()}", "not here")
+      %{page: page} = Archive.page_for(ctx.channel, ctx.day, after: other.id)
+      assert page.items == []
+    end
+
+    test "a deleted line is not a cursor", ctx do
+      gone = Enum.at(ctx.said, 2)
+      {:ok, _} = Queries.soft_delete(gone, DateTime.utc_now())
+
+      assert %{page: %{items: []}} = Archive.page_for(ctx.channel, ctx.day, after: gone.id)
+    end
+  end
+
   defp register(name) do
     {:ok, _} =
       Repo.insert(%RegisteredChannel{
@@ -284,6 +336,8 @@ defmodule RetroHexChat.Chat.ArchiveTest do
 
     message
   end
+
+  defp lines(channel, day), do: Archive.page_for(channel, day).page.items
 
   defp day_of(message), do: message.inserted_at |> DateTime.to_date() |> Date.to_iso8601()
 

@@ -4,6 +4,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Services.{ChanServ, Queries}
 
@@ -16,7 +17,8 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:error, dgettext("commands", "Usage: /cs <register|drop|info|sop|aop|vop|help> [args]")}
+    {:error,
+     dgettext("commands", "Usage: /cs <register|drop|info|archive|sop|aop|vop|help> [args]")}
   end
 
   def execute(["register" | _], context) do
@@ -29,6 +31,14 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
 
   def execute(["info" | _], context) do
     call_info(context.active_channel, server(context))
+  end
+
+  def execute(["archive", state | _], context) when state in ~w(on off) do
+    call_set_archive(context.active_channel, context.nickname, state == "on")
+  end
+
+  def execute(["archive" | _], context) do
+    call_archive_status(context.active_channel)
   end
 
   def execute([level, "add", target | _], context) when level in @access_levels do
@@ -79,12 +89,13 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
       description:
         dgettext(
           "commands",
-          "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop requires being the channel founder."
+          "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, archive on|off, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop and archive require being the channel founder."
         ),
       examples: [
         dgettext("commands", "/cs register"),
         dgettext("commands", "/cs drop"),
         dgettext("commands", "/cs info"),
+        dgettext("commands", "/cs archive on"),
         dgettext("commands", "/cs sop add nick"),
         dgettext("commands", "/cs aop del nick"),
         dgettext("commands", "/cs vop list")
@@ -134,6 +145,41 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
       {:error, msg} ->
         {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
     end
+  end
+
+  defp call_set_archive(channel, nickname, enabled?) do
+    case Server.set_public_archive(channel, nickname, enabled?) do
+      :ok ->
+        {:ok, :system, %{content: archive_state(channel, enabled?)}}
+
+      {:error, msg} ->
+        {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
+    end
+  end
+
+  defp call_archive_status(channel) do
+    text =
+      Enum.join(
+        [
+          archive_state(channel, Archive.published?(channel)),
+          dgettext("commands", "Usage: /cs archive <on|off>")
+        ],
+        "\n"
+      )
+
+    {:ok, :system, %{content: text}}
+  end
+
+  defp archive_state(channel, true) do
+    dgettext(
+      "commands",
+      "[ChanServ] The public archive of %{channel} is on: what is said from now on is published.",
+      channel: channel
+    )
+  end
+
+  defp archive_state(channel, false) do
+    dgettext("commands", "[ChanServ] The public archive of %{channel} is off.", channel: channel)
   end
 
   defp call_manage_access(channel, action, level, target, requester, server) do
@@ -205,7 +251,8 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
           required: true,
           type: :text,
           position: 0,
-          description: dgettext("commands", "Subcommand: register, drop, info, sop, aop, vop")
+          description:
+            dgettext("commands", "Subcommand: register, drop, info, archive, sop, aop, vop")
         },
         %Parameter{
           name: "args",
@@ -219,6 +266,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
         dgettext("commands", "/cs register"),
         dgettext("commands", "/cs drop"),
         dgettext("commands", "/cs info"),
+        dgettext("commands", "/cs archive on"),
         dgettext("commands", "/cs sop add nick"),
         dgettext("commands", "/cs aop del nick"),
         dgettext("commands", "/cs vop list")
@@ -227,6 +275,10 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
         %{name: "register", description: dgettext("commands", "Register the current channel")},
         %{name: "drop", description: dgettext("commands", "Drop channel registration")},
         %{name: "info", description: dgettext("commands", "View channel registration info")},
+        %{
+          name: "archive",
+          description: dgettext("commands", "Publish the channel's public archive (on|off)")
+        },
         %{name: "sop", description: dgettext("commands", "Manage super-operator access list")},
         %{name: "aop", description: dgettext("commands", "Manage auto-operator access list")},
         %{name: "vop", description: dgettext("commands", "Manage auto-voice access list")},

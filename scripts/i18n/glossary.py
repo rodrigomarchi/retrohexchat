@@ -69,6 +69,10 @@ _ROWS = {
     "Joined on connect, with a key": ("Entra ao conectar, com senha", "Entra ao ligar, com senha", "Entra al conectar, con clave", "Rejoint à la connexion, avec une clé", "Wird beim Verbinden betreten, mit Schlüssel", "Entra alla connessione, con una chiave", "Neemt deel bij verbinden, met een sleutel", "Dołącza po połączeniu, z kluczem", "Входит при подключении, с ключом", "Bergabung saat terhubung, dengan kunci", "接続時にキーで参加します", "连接时使用密钥加入", "連線時使用金鑰加入"),
 
     # ── Navigation ────────────────────────────────────────────
+    # The pager between the pages of one archive day: earlier and later lines,
+    # not a previous and next step in a flow.
+    "← Earlier":    ("← Antes", "← Antes", "← Antes", "← Plus tôt", "← Früher", "← Prima", "← Eerder", "← Wcześniej", "← Раньше", "← Sebelumnya", "← 前へ", "← 更早", "← 更早"),
+    "Later →":      ("Depois →", "Depois →", "Después →", "Plus tard →", "Später →", "Dopo →", "Later →", "Później →", "Позже →", "Berikutnya →", "次へ →", "更晚 →", "更晚 →"),
     "Back":         ("Voltar", "Voltar", "Atrás", "Retour", "Zurück", "Indietro", "Terug", "Wstecz", "Назад", "Kembali", "戻る", "返回", "返回"),
     "Next":         ("Próximo", "Próximo", "Siguiente", "Suivant", "Weiter", "Avanti", "Volgende", "Dalej", "Далее", "Berikutnya", "次へ", "下一步", "下一步"),
     "Previous":     ("Anterior", "Anterior", "Anterior", "Précédent", "Zurück", "Precedente", "Vorige", "Poprzedni", "Назад", "Sebelumnya", "前へ", "上一步", "上一步"),

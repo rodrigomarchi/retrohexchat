@@ -26,56 +26,67 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #france
 /cs register
+/cs archive on
 /topic Salon francophone — de Lille à Montréal. Entrez, asseyez-vous, on discute.
 /mode +tn
 
 /join #actualites
 /cs register
+/cs archive on
 /topic Actualités — Le Figaro, Libération et L'Obs, directement du flux. !Colette sources pour la liste.
 /mode +tn
 
 /join #monde
 /cs register
+/cs archive on
 /topic Monde — France 24 et RFI. L'international, en français.
 /mode +tn
 
 /join #informatique
 /cs register
+/cs archive on
 /topic Informatique — Next, Numerama, Les Numériques et 01net. Le support d'un projet reste chez le projet ; ici, on cause.
 /mode +tn
 
 /join #mobile
 /cs register
+/cs archive on
 /topic Mobile — Frandroid et Journal du Geek. Téléphones, montres et chargeurs incompatibles.
 /mode +tn
 
 /join #libre
 /cs register
+/cs archive on
 /topic Logiciel libre — LinuxFr et Korben. Les nouvelles, pas le dépannage : le dépannage appartient au projet.
 /mode +tn
 
 /join #developpement
 /cs register
+/cs archive on
 /topic Développement — Developpez.com sur le fil. Le bistrot, pas le service client.
 /mode +tn
 
 /join #jeuxvideo
 /cs register
+/cs archive on
 /topic Jeux vidéo — JeuxVideo.com et Gamekult. Pour jouer vraiment, ouvrez le menu Games : 18 classiques dans le navigateur.
 /mode +tn
 
 /join #culture
 /cs register
+/cs archive on
 /topic Culture — AlloCiné, Télérama et Les Inrocks. Cinéma, séries, musique, expositions.
 /mode +tn
 
 /join #sciences
 /cs register
+/cs archive on
 /topic Sciences — Futura et Sciences et Avenir. Aucune question bête, seulement des questions non posées.
 /mode +tn
 
 /join #economie
 /cs register
+/cs archive on
 /topic Économie — La Tribune et L'Usine Digitale. Un titre n'est pas un conseil.
 /mode +tn
 

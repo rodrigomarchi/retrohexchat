@@ -264,7 +264,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "help",
             "Publish a page per day that anybody can read — only from the moment the founder switches it on."
           ),
-        see_also: ["feature-channel-central", "chanserv-register"]
+        see_also: ["feature-channel-central", "chanserv-register", "cmd-cs"]
       },
       %{
         id: "feature-channel-central",

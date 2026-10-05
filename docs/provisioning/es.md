@@ -26,61 +26,73 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #hispano
 /cs register
+/cs archive on
 /topic Sala en español — de Madrid a Montevideo. Pasa, siéntate, aquí se charla.
 /mode +tn
 
 /join #noticias
 /cs register
+/cs archive on
 /topic Noticias de España — 20minutos, elDiario.es y El Mundo, directo del feed. !Elena fuentes para la lista.
 /mode +tn
 
 /join #latinoamerica
 /cs register
+/cs archive on
 /topic Latinoamérica — Clarín, La Nación e Infobae. La portada de allá, que no es la de aquí.
 /mode +tn
 
 /join #internacional
 /cs register
+/cs archive on
 /topic Internacional — BBC Mundo, ABC, El Confidencial y La Vanguardia. El mundo, en español.
 /mode +tn
 
 /join #tecno
 /cs register
+/cs archive on
 /topic Tecnología — Xataka, Genbeta, Hipertextual, Microsiervos y Applesfera. !Nacho fuentes para la lista.
 /mode +tn
 
 /join #videojuegos
 /cs register
+/cs archive on
 /topic Videojuegos — Vida Extra en el cable. Para jugar de verdad, abre el menú Games: 18 clásicos en el navegador.
 /mode +tn
 
 /join #deportes
 /cs register
+/cs archive on
 /topic Deportes — Marca y Mundo Deportivo. Liga, fichajes y la discusión de siempre.
 /mode +tn
 
 /join #cine
 /cs register
+/cs archive on
 /topic Cine y series — Espinof en el cable. Estrenos, temporadas y spoilers avisados.
 /mode +tn
 
 /join #divulgacion
 /cs register
+/cs archive on
 /topic Divulgación — Muy Interesante. Preguntas tontas no hay; hay preguntas sin hacer.
 /mode +tn
 
 /join #cocina
 /cs register
+/cs archive on
 /topic Cocina — Directo al Paladar. Recetas, técnica y discusiones sobre la tortilla.
 /mode +tn
 
 /join #motor
 /cs register
+/cs archive on
 /topic Motor — Motorpasión. Coches, motos y opiniones de quien va en metro.
 /mode +tn
 
 /join #mercados
 /cs register
+/cs archive on
 /topic Mercados — Expansión en el cable. Un titular no es una recomendación.
 /mode +tn
 

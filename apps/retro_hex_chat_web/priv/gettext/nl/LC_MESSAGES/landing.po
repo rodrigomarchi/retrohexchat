@@ -2557,7 +2557,7 @@ msgstr ""
 "een andere. Hij volgt je nergens heen, want hij bestaat alleen op deze "
 "server."
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:183
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:226
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "%{channel} archive"
@@ -2568,7 +2568,7 @@ msgstr "Archief van %{channel}"
 msgid "%{channel} on %{date}"
 msgstr "%{channel} op %{date}"
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:197
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:240
 #, elixir-autogen, elixir-format
 msgid "%{channel} on %{date}: %{opening}"
 msgstr "%{channel} op %{date}: %{opening}"
@@ -2578,7 +2578,7 @@ msgstr "%{channel} op %{date}: %{opening}"
 msgid "(edited)"
 msgstr "(bewerkt)"
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:39
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "All days"
 msgstr "Alle dagen"
@@ -2590,14 +2590,14 @@ msgstr ""
 "Alles wat hier is gezegd sinds het kanaal zijn archief opende, één pagina "
 "per dag. Niets van daarvoor wordt gepubliceerd."
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:59
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:60
 #, elixir-autogen, elixir-format
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
 msgstr ""
 "Alles wat in %{channel} is gezegd sinds het archief openging, één pagina per"
 " dag."
 
-#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:43
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:57
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
@@ -2607,3 +2607,23 @@ msgstr "Deelnemen aan %{channel}"
 #, elixir-autogen, elixir-format
 msgid "(attachment)"
 msgstr "(bijlage)"
+
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:127
+#, elixir-autogen, elixir-format
+msgid "%{title} — from %{time}"
+msgstr "%{title} — vanaf %{time}"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Later →"
+msgstr "Later →"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Pages of this day"
+msgstr "Pagina's van deze dag"
+
+#: lib/retro_hex_chat_web/controllers/archive_html/day.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "← Earlier"
+msgstr "← Eerder"

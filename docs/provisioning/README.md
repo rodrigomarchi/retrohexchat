@@ -65,6 +65,12 @@ which lints all fourteen files against the handlers that have to run them.
   `/help` — the same thing whichever door somebody comes through. They are
   written once per language and repeated verbatim per room, which is a
   duplication the lint checks rather than tolerates.
+- **Every room publishes its archive.** `/cs archive on` follows every
+  `/cs register`, so each room gets its public page per day
+  (`/archive/<room>/<day>`) from the moment the script runs. The archive is
+  founder-only and the founder is whoever pasted the script, so it must be
+  pasted by an identified admin. Rooms provisioned before this line existed
+  are switched on by [`archive-migration.txt`](archive-migration.txt).
 - **No farewells.** They become noise on reconnect churn.
 - **A bot only advertises triggers it answers.** `!fontes` in a greeting from a
   bot with no `fontes` command promises silence, and the promise reads as a bug

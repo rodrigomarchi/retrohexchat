@@ -23,12 +23,12 @@ msgstr ""
 msgid "  %{name} [%{status}] — %{description}"
 msgstr "%{name} [%{status}] %{description}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:179
+#: lib/retro_hex_chat/commands/handlers/cs.ex:225
 #, elixir-autogen, elixir-format
 msgid "  %{nickname} [%{level}] (added by %{added_by})"
 msgstr "%{nickname} [%{level}] (toegevoegd door %{added_by})"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:175
+#: lib/retro_hex_chat/commands/handlers/cs.ex:221
 #, elixir-autogen, elixir-format
 msgid "  (empty)"
 msgstr "(leeg)"
@@ -354,44 +354,44 @@ msgstr "/bot list"
 msgid "/bot set GreeterBot greeting Welcome, {nickname}!"
 msgstr "/bot set GreeterBot greeting Welcome, {nickname}!"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:78
-#: lib/retro_hex_chat/commands/handlers/cs.ex:198
+#: lib/retro_hex_chat/commands/handlers/cs.ex:88
+#: lib/retro_hex_chat/commands/handlers/cs.ex:244
 #, elixir-autogen, elixir-format
 msgid "/cs <subcommand> [args]"
 msgstr "/cs <subcommand> [args]"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:89
-#: lib/retro_hex_chat/commands/handlers/cs.ex:223
+#: lib/retro_hex_chat/commands/handlers/cs.ex:100
+#: lib/retro_hex_chat/commands/handlers/cs.ex:271
 #, elixir-autogen, elixir-format
 msgid "/cs aop del nick"
 msgstr "/cs aop del nick"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:86
-#: lib/retro_hex_chat/commands/handlers/cs.ex:220
+#: lib/retro_hex_chat/commands/handlers/cs.ex:96
+#: lib/retro_hex_chat/commands/handlers/cs.ex:267
 #, elixir-autogen, elixir-format
 msgid "/cs drop"
 msgstr "/cs drop"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:87
-#: lib/retro_hex_chat/commands/handlers/cs.ex:221
+#: lib/retro_hex_chat/commands/handlers/cs.ex:97
+#: lib/retro_hex_chat/commands/handlers/cs.ex:268
 #, elixir-autogen, elixir-format
 msgid "/cs info"
 msgstr "/cs info"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:85
-#: lib/retro_hex_chat/commands/handlers/cs.ex:219
+#: lib/retro_hex_chat/commands/handlers/cs.ex:95
+#: lib/retro_hex_chat/commands/handlers/cs.ex:266
 #, elixir-autogen, elixir-format
 msgid "/cs register"
 msgstr "/cs register"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:88
-#: lib/retro_hex_chat/commands/handlers/cs.ex:222
+#: lib/retro_hex_chat/commands/handlers/cs.ex:99
+#: lib/retro_hex_chat/commands/handlers/cs.ex:270
 #, elixir-autogen, elixir-format
 msgid "/cs sop add nick"
 msgstr "/cs sop add nick"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:90
-#: lib/retro_hex_chat/commands/handlers/cs.ex:224
+#: lib/retro_hex_chat/commands/handlers/cs.ex:101
+#: lib/retro_hex_chat/commands/handlers/cs.ex:272
 #, elixir-autogen, elixir-format
 msgid "/cs vop list"
 msgstr "/cs vop list"
@@ -1317,7 +1317,7 @@ msgstr ""
 "Verbinding verbreken van de server en terugkeren naar het connect scherm. "
 "Andere gebruikers zien uw optionele afsluiten bericht."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:228
+#: lib/retro_hex_chat/commands/handlers/cs.ex:276
 #, elixir-autogen, elixir-format
 msgid "Drop channel registration"
 msgstr "Kanaalregistratie afbreken"
@@ -1528,31 +1528,22 @@ msgstr "MOTD is goedgekeurd."
 msgid "MOTD has been updated."
 msgstr "MOTD is bijgewerkt."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:231
+#: lib/retro_hex_chat/commands/handlers/cs.ex:283
 #, elixir-autogen, elixir-format
 msgid "Manage auto-operator access list"
 msgstr "Auto-operatortoegangslijst beheren"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:232
+#: lib/retro_hex_chat/commands/handlers/cs.ex:284
 #, elixir-autogen, elixir-format
 msgid "Manage auto-voice access list"
 msgstr "Auto-spraaktoegangslijst beheren"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:200
+#: lib/retro_hex_chat/commands/handlers/cs.ex:246
 #, elixir-autogen, elixir-format
 msgid "Manage channel registration and access lists through ChanServ."
 msgstr "Beheer kanaalregistratie en toegangslijsten via ChanServ."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:80
-#, elixir-autogen, elixir-format
-msgid "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop requires being the channel founder."
-msgstr ""
-"Beheer kanaalregistratie en toegangslijsten via ChanServ.\n"
-"Subcommando's: register, drop, info, sop/aop/vop voeg de lijst toe, help. Moet in een kanaal zijn.\n"
-"Toegangshiërarchie: SOP (super-operator) > AOP (auto-operator) > VOP (auto-spraak).\n"
-"Register vereist kanaaloperator. Drop vereist de kanaaloprichter te zijn."
-
-#: lib/retro_hex_chat/commands/handlers/cs.ex:230
+#: lib/retro_hex_chat/commands/handlers/cs.ex:282
 #, elixir-autogen, elixir-format
 msgid "Manage super-operator access list"
 msgstr "Toegangslijst superoperator beheren"
@@ -1833,7 +1824,7 @@ msgstr ""
 "Registreer en bescherm je bijnaam met een wachtwoord via NickServ, de "
 "bijnaam services bot."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:227
+#: lib/retro_hex_chat/commands/handlers/cs.ex:275
 #, elixir-autogen, elixir-format
 msgid "Register the current channel"
 msgstr "Het huidige kanaal registreren"
@@ -2154,7 +2145,7 @@ msgstr ""
 "Algemeen gebruik: /perform toevoegen /ns mijn wachtwoord identificeren\n"
 "Posities zijn 0-gebaseerde indexnummers. Wachtwoorden worden gemaskeerd in de lijstweergave."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:233
+#: lib/retro_hex_chat/commands/handlers/cs.ex:285
 #, elixir-autogen, elixir-format
 msgid "Show ChanServ help"
 msgstr "ChanServ-hulp tonen"
@@ -2217,7 +2208,7 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/alias.ex:110
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:179
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:132
-#: lib/retro_hex_chat/commands/handlers/cs.ex:215
+#: lib/retro_hex_chat/commands/handlers/cs.ex:262
 #: lib/retro_hex_chat/commands/handlers/notify.ex:122
 #: lib/retro_hex_chat/commands/handlers/ns.ex:356
 #: lib/retro_hex_chat/commands/handlers/perform.ex:155
@@ -2245,11 +2236,6 @@ msgstr "Subcommando: lijst, toevoegen, verwijderen, wissen"
 #, elixir-autogen, elixir-format
 msgid "Subcommand: list, add, remove, move, clear"
 msgstr "Subcommando: lijst, toevoegen, verwijderen, verplaatsen, wissen"
-
-#: lib/retro_hex_chat/commands/handlers/cs.ex:208
-#, elixir-autogen, elixir-format
-msgid "Subcommand: register, drop, info, sop, aop, vop"
-msgstr "Subcommando: register, drop, info, sop, aop, vop"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:169
 #, elixir-autogen, elixir-format
@@ -2441,11 +2427,6 @@ msgstr "Gebruik: /autorespond <position> verwijderen"
 #, elixir-autogen, elixir-format
 msgid "Usage: /ban <nickname> [reason]"
 msgstr "Gebruik: /ban <nickname> [reden]"
-
-#: lib/retro_hex_chat/commands/handlers/cs.ex:19
-#, elixir-autogen, elixir-format
-msgid "Usage: /cs <register|drop|info|sop|aop|vop|help> [args]"
-msgstr "Gebruik: /cs <register|drop|info|sop|aop|vop|help> [args]"
 
 #: lib/retro_hex_chat/commands/handlers/deop.ex:16
 #, elixir-autogen, elixir-format
@@ -2739,7 +2720,7 @@ msgstr "Gebruiker om te verwijderen"
 msgid "View audit log"
 msgstr "Auditlog bekijken"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:229
+#: lib/retro_hex_chat/commands/handlers/cs.ex:277
 #, elixir-autogen, elixir-format
 msgid "View channel registration info"
 msgstr "Kanaalregistratie-informatie weergeven"
@@ -2982,25 +2963,26 @@ msgstr "Aanmaken bot mislukt: %{message}"
 msgid "[BotService] No bots configured."
 msgstr "[BotService] Geen bots geconfigureerd."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:103
-#: lib/retro_hex_chat/commands/handlers/cs.ex:106
-#: lib/retro_hex_chat/commands/handlers/cs.ex:113
-#: lib/retro_hex_chat/commands/handlers/cs.ex:116
-#: lib/retro_hex_chat/commands/handlers/cs.ex:135
-#: lib/retro_hex_chat/commands/handlers/cs.ex:142
-#: lib/retro_hex_chat/commands/handlers/cs.ex:145
-#: lib/retro_hex_chat/commands/handlers/cs.ex:155
+#: lib/retro_hex_chat/commands/handlers/cs.ex:114
+#: lib/retro_hex_chat/commands/handlers/cs.ex:117
+#: lib/retro_hex_chat/commands/handlers/cs.ex:124
+#: lib/retro_hex_chat/commands/handlers/cs.ex:127
+#: lib/retro_hex_chat/commands/handlers/cs.ex:146
+#: lib/retro_hex_chat/commands/handlers/cs.ex:156
+#: lib/retro_hex_chat/commands/handlers/cs.ex:188
+#: lib/retro_hex_chat/commands/handlers/cs.ex:191
+#: lib/retro_hex_chat/commands/handlers/cs.ex:201
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{message}"
 msgstr "[ChanServ] %{message}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:124
+#: lib/retro_hex_chat/commands/handlers/cs.ex:135
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{name}: founder=%{founder}, registered=%{registered_at}"
 msgstr ""
 "[ChanServ] %{name}: oprichter=%{founder}, geregistreerd=%{registered_at}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:166
+#: lib/retro_hex_chat/commands/handlers/cs.ex:212
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] Access list for %{channel} (%{level})"
 msgstr "[ChanServ] Toegangslijst voor %{channel} (%{level})"
@@ -3386,3 +3368,48 @@ msgstr "Wanneer? Geef het als een afstand vanaf nu, zoals 2h, 30m of 3d."
 #, elixir-autogen, elixir-format
 msgid "Which one? Use /event cancel <id>."
 msgstr "Welke? Gebruik /event cancel <id>."
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:98
+#: lib/retro_hex_chat/commands/handlers/cs.ex:269
+#, elixir-autogen, elixir-format
+msgid "/cs archive on"
+msgstr "/cs archive on"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:90
+#, elixir-autogen, elixir-format
+msgid "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, archive on|off, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop and archive require being the channel founder."
+msgstr ""
+"Beheer kanaalregistratie en toegangslijsten via ChanServ.\n"
+"Subcommando's: register, drop, info, archive on|off, sop/aop/vop add|del|list, help. Je moet in een kanaal zijn.\n"
+"Toegangshiërarchie: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\n"
+"Register vereist kanaaloperator. Drop en archive vereisen dat je de oprichter van het kanaal bent."
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:280
+#, elixir-autogen, elixir-format
+msgid "Publish the channel's public archive (on|off)"
+msgstr "Het openbare kanaalarchief publiceren (on|off)"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:255
+#, elixir-autogen, elixir-format
+msgid "Subcommand: register, drop, info, archive, sop, aop, vop"
+msgstr "Subcommando: register, drop, info, archive, sop, aop, vop"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:21
+#, elixir-autogen, elixir-format
+msgid "Usage: /cs <register|drop|info|archive|sop|aop|vop|help> [args]"
+msgstr "Gebruik: /cs <register|drop|info|archive|sop|aop|vop|help> [args]"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:165
+#, elixir-autogen, elixir-format
+msgid "Usage: /cs archive <on|off>"
+msgstr "Gebruik: /cs archive <on|off>"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:182
+#, elixir-autogen, elixir-format
+msgid "[ChanServ] The public archive of %{channel} is off."
+msgstr "[ChanServ] Het openbare archief van %{channel} staat uit."
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:174
+#, elixir-autogen, elixir-format
+msgid "[ChanServ] The public archive of %{channel} is on: what is said from now on is published."
+msgstr "[ChanServ] Het openbare archief van %{channel} staat aan: wat vanaf nu gezegd wordt, wordt gepubliceerd."

@@ -181,6 +181,56 @@ defmodule RetroHexChatWeb.ArchiveControllerTest do
     end
   end
 
+  # A news room passes two thousand lines a day; a day is read in pages of two
+  # hundred, each one addressed by the line it follows.
+  describe "a day longer than a page" do
+    setup ctx do
+      {:ok, _} = Archive.publish(ctx.channel)
+      said = for n <- 1..201, do: message(ctx.channel, "line #{n}")
+      %{said: said, day: day_of(hd(said))}
+    end
+
+    test "the first page holds two hundred lines and links to the next", ctx do
+      html = ctx |> day_path() |> fetch() |> html_response(200)
+
+      assert html =~ line_id(ctx, 200)
+      refute html =~ line_id(ctx, 201)
+
+      next = "/archive/#{ctx.slug}/#{ctx.day}?after=#{Enum.at(ctx.said, 199).id}"
+      assert html =~ ~s(<link rel="next" href="https://retrohexchat.app#{escape(next)}">)
+      assert html =~ ~s(href="#{escape(next)}")
+      refute html =~ ~s(rel="prev")
+    end
+
+    test "the next page is its own canonical and leads back to the first", ctx do
+      path = day_path(ctx) <> "?after=#{Enum.at(ctx.said, 199).id}"
+      html = path |> fetch() |> html_response(200)
+
+      assert html =~ line_id(ctx, 201)
+      refute html =~ line_id(ctx, 200)
+      assert html =~ ~s(<link rel="canonical" href="https://retrohexchat.app#{escape(path)}")
+      assert html =~ ~s(<link rel="prev" href="https://retrohexchat.app#{day_path(ctx)}">)
+      assert html =~ ~s(href="#{day_path(ctx)}")
+      refute html =~ ~s(rel="next")
+      assert html =~ "from "
+    end
+
+    test "a cursor that is not a line of the day answers 404", ctx do
+      assert fetch(day_path(ctx) <> "?after=1").status == 404
+      assert fetch(day_path(ctx) <> "?after=abc").status == 404
+      assert fetch(day_path(ctx) <> "?after=-5").status == 404
+    end
+
+    test "each page has its own etag", ctx do
+      first = ctx |> day_path() |> fetch() |> get_resp_header("etag")
+
+      second =
+        fetch(day_path(ctx) <> "?after=#{Enum.at(ctx.said, 199).id}") |> get_resp_header("etag")
+
+      refute first == second
+    end
+  end
+
   describe "the sitemap" do
     test "offers a published channel's days", ctx do
       {:ok, _} = Archive.publish(ctx.channel)
@@ -272,6 +322,14 @@ defmodule RetroHexChatWeb.ArchiveControllerTest do
 
     message
   end
+
+  defp day_path(ctx), do: "/archive/#{ctx.slug}/#{ctx.day}"
+
+  defp line_id(ctx, n), do: ~s(id="line-#{Enum.at(ctx.said, n - 1).id}")
+
+  defp fetch(path), do: get(build_conn(), path)
+
+  defp escape(text), do: text |> Phoenix.HTML.html_escape() |> Phoenix.HTML.safe_to_string()
 
   defp day_of(message), do: message.inserted_at |> DateTime.to_date() |> Date.to_iso8601()
 end

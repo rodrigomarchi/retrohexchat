@@ -31,51 +31,61 @@ shot, logged in as an admin who has `/identify`-ed.
 
 /join #zhongwen
 /cs register
+/cs archive on
 /topic 中文频道 — 进来坐，聊聊天。咖啡算店里的。
 /mode +tn
 
 /join #cn-tech
 /cs register
+/cs archive on
 /topic 科技 — cnBeta、IT之家、Solidot，直接来自订阅源。!Lifeng sources 显示清单。
 /mode +tn
 
 /join #cn-digital
 /cs register
+/cs archive on
 /topic 数码 — 爱范儿和极客公园。产品、评测，以及围绕它们的生意。
 /mode +tn
 
 /join #cn-apps
 /cs register
+/cs archive on
 /topic 软件 — 少数派和小众软件。工具、玩法、值得装的东西。
 /mode +tn
 
 /join #cn-blog
 /cs register
+/cs archive on
 /topic 博客 — 月光博客、阮一峰、酷壳。比任何平台都活得久的独立写作。
 /mode +tn
 
 /join #cn-dev
 /cs register
+/cs archive on
 /topic 开发 — InfoQ 中文站在线上。项目的支持在项目那边；这里是闲聊。
 /mode +tn
 
 /join #cn-open
 /cs register
+/cs archive on
 /topic 开源 — 开源中国。发布、内核、发行版。
 /mode +tn
 
 /join #cn-ai
 /cs register
+/cs archive on
 /topic 人工智能 — 雷锋网和量子位。模型、论文、落地和吹牛。
 /mode +tn
 
 /join #cn-games
 /cs register
+/cs archive on
 /topic 游戏 — 机核和游研社。真要玩的话，打开 Games 菜单：18 款经典直接在浏览器里跑。
 /mode +tn
 
 /join #cn-money
 /cs register
+/cs archive on
 /topic 商业 — 钛媒体在线上。标题不是投资建议。
 /mode +tn
 
