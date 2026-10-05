@@ -411,12 +411,15 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
         }
       })
 
-      Process.sleep(50)
-
+      # The bot logs after it answers, in its own process: wait for the job
+      # rather than for a fixed time, which a loaded CI run outlasts.
       assert_enqueued(
-        worker: BotEventLogWorker,
-        queue: :bots,
-        args: %{bot_id: bot.id, event_type: "message_response", channel: "#logtest"}
+        [
+          worker: BotEventLogWorker,
+          queue: :bots,
+          args: %{bot_id: bot.id, event_type: "message_response", channel: "#logtest"}
+        ],
+        1_000
       )
 
       assert %{success: 1, failure: 0} =
