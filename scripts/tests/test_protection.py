@@ -31,6 +31,33 @@ class ProtectTest(unittest.TestCase):
         self.assertIn("NickServ", replacements.values())
         self.assertIn("ChanServ", replacements.values())
 
+    def test_masks_mirc_and_irc(self):
+        _, replacements = protect("A chat in the style of mIRC, not an IRC network")
+
+        self.assertEqual(set(replacements.values()), {"mIRC", "IRC"})
+
+    def test_masks_modes_and_alias_variables(self):
+        _, replacements = protect("Modes such as +m and -v, with $1 to $9 and $nick")
+
+        self.assertEqual(set(replacements.values()), {"+m", "-v", "$1", "$9", "$nick"})
+
+    def test_masks_protocol_names(self):
+        # Russian shipped CTCP transliterated as "КТКП".
+        _, replacements = protect("There is no CTCP, and no DCC either. Do NOT retry.")
+
+        self.assertEqual(set(replacements.values()), {"CTCP", "DCC"})
+
+    def test_masks_the_brand_as_written_in_prose(self):
+        # Dutch dropped "— Retro Hex Chat" from the page titles.
+        _, replacements = protect("IRC chat rooms in your browser — Retro Hex Chat")
+
+        self.assertIn("Retro Hex Chat", replacements.values())
+
+    def test_leaves_hyphenated_words_alone(self):
+        _, replacements = protect("Half-ops keep an e-mail list")
+
+        self.assertEqual(replacements, {})
+
     def test_masks_audit_log_keys(self):
         _, replacements = protect("Action channel.create was logged")
 
@@ -87,6 +114,10 @@ class ShouldMachineTranslateTest(unittest.TestCase):
 
     def test_skips_bare_slash_commands(self):
         self.assertFalse(should_machine_translate("/admin channel delete"))
+
+    def test_skips_a_command_example_even_when_it_ends_in_a_full_stop(self):
+        # Its words are what the reader types: "set" must not become "definir".
+        self.assertFalse(should_machine_translate("/bot set GreeterBot greeting Hello there."))
 
     def test_accepts_prose(self):
         self.assertTrue(should_machine_translate("Channel created and registered."))

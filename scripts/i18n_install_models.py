@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install the Argos models every enabled locale needs, and nothing else.
+"""Install the Argos models every enabled locale needs, both ways, and nothing else.
 
 Run inside the translation venv (`make i18n.venv` does both). The locales
 come from the registry; the Argos code each one needs comes from
@@ -23,24 +23,28 @@ def main() -> int:
     wanted = {locales.argos_code(locale.code) for locale in locales.translatable_locales()}
     wanted.discard("en")
 
+    # Both directions: en -> X translates, X -> en reads the translation back
+    # for the round-trip gate (`quality.meaning_kept`).
+    pairs = {("en", code) for code in wanted} | {(code, "en") for code in wanted}
     installed = {(pkg.from_code, pkg.to_code) for pkg in package.get_installed_packages()}
-    missing = sorted(code for code in wanted if ("en", code) not in installed)
+    missing = sorted(pairs - installed)
 
     if not missing:
-        print(f"all {len(wanted)} models already installed")
+        print(f"all {len(pairs)} models already installed")
         return 0
 
     package.update_package_index()
-    available = {pkg.to_code: pkg for pkg in package.get_available_packages() if pkg.from_code == "en"}
-    unavailable = [code for code in missing if code not in available]
+    available = {(pkg.from_code, pkg.to_code): pkg for pkg in package.get_available_packages()}
+    unavailable = [pair for pair in missing if pair not in available]
 
     if unavailable:
-        print(f"no Argos package for en -> {', '.join(unavailable)}", file=sys.stderr)
+        names = ", ".join(f"{source} -> {target}" for source, target in unavailable)
+        print(f"no Argos package for {names}", file=sys.stderr)
         return 1
 
-    for code in missing:
-        print(f"installing en -> {code}")
-        package.install_from_path(available[code].download())
+    for pair in missing:
+        print(f"installing {pair[0]} -> {pair[1]}")
+        package.install_from_path(available[pair].download())
 
     return 0
 

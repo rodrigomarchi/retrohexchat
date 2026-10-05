@@ -189,10 +189,12 @@ make i18n.catalog.check
 contra qualquer pendencia em locale habilitado. Os comandos anteriores devem ser
 escopados ao dominio/feature em trabalho.
 
-`scripts/i18n_apply_translation_overrides.py` e a memoria manual para strings
-que a traducao automatica costuma deixar em ingles ou traduzir mal por causa de
-placeholders. Sempre que a auditoria de fallback acusar texto humano novo, a
-correcao deve entrar ali ou diretamente no catalogo com uma regra equivalente.
+`scripts/i18n_apply_translation_overrides.py` guarda frases curadas antigas e
+nao recebe frases novas. Texto humano novo que sai errado ou fica em ingles e
+defeito do pipeline: corrija a regra que deixou passar (`scripts/i18n/terms.py`
+para vocabulario do chat, `quality.py` para os gates, `protection.py` para o que
+nao se traduz), com teste em `scripts/tests/`, e retraduza com
+`i18n_machine_translate_po.py --msgid`. Nunca edite o catalogo a mao.
 
 Para refatoracoes grandes:
 

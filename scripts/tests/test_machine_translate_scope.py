@@ -81,6 +81,112 @@ class NeedsTranslationTest(unittest.TestCase):
         )
 
 
+class CacheTest(unittest.TestCase):
+    key = staticmethod(machine_translate_po.cache_key)
+
+    def test_a_cached_translation_is_reused(self):
+        cache = {self.key("pt_BR", "Save Topic"): "Salvar tópico"}
+
+        self.assertFalse(machine_translate_po.must_translate(cache, "pt_BR", "Save Topic", False))
+
+    def test_a_cached_english_fallback_is_not_a_translation(self):
+        # Skipped once as a syntax line, the source was cached as itself and
+        # every later run handed the English back.
+        source = "/join, /msg and the rest of the everyday commands."
+        cache = {self.key("de", source): source}
+
+        self.assertTrue(machine_translate_po.must_translate(cache, "de", source, False))
+
+    def test_a_forced_msgid_never_comes_from_the_cache(self):
+        cache = {self.key("nl", "Who runs a room"): "Wie leidt een kamer"}
+
+        self.assertTrue(
+            machine_translate_po.must_translate(
+                cache, "nl", "Who runs a room", False, frozenset({"Who runs a room"})
+            )
+        )
+
+
+class ForcedPluralTest(unittest.TestCase):
+    """`--msgid` on a plural: the strings sent for it must skip the cache too."""
+
+    class Entry:
+        obsolete = False
+        flags: list[str] = []
+
+        def __init__(self):
+            self.msgid = "%{count} command"
+            self.msgid_plural = "%{count} commands"
+            self.msgstr = ""
+            self.msgstr_plural = {0: "%{count} comando", 1: "%{count} jogos"}
+
+    class Locale:
+        code = "pt_BR"
+        one_form = False
+        plural_forms = ""
+
+    def test_a_forced_plural_is_sent_even_when_cached(self):
+        key = machine_translate_po.cache_key
+        cache = {
+            key("pt_BR", "%{count} command"): "%{count} comando",
+            key("pt_BR", "%{count} commands"): "%{count} jogos",
+        }
+
+        pending = machine_translate_po.collect_pending(
+            [self.Entry()], self.Locale(), cache, False, False, frozenset({"%{count} command"})
+        )
+
+        self.assertEqual(pending, ["%{count} command", "%{count} commands"])
+
+
+class FillSourceLocaleTest(unittest.TestCase):
+    """`en` is its msgids, byte for byte — spaces and plurals included."""
+
+    class Entry:
+        obsolete = False
+
+        def __init__(self, msgid, msgstr, msgid_plural="", msgstr_plural=None):
+            self.msgid = msgid
+            self.msgstr = msgstr
+            self.msgid_plural = msgid_plural
+            self.msgstr_plural = msgstr_plural or {}
+            self.flags = []
+
+    def fill(self, entries):
+        saved = []
+        original = machine_translate_po.catalogs.save_po
+        machine_translate_po.catalogs.save_po = lambda po, path: saved.append(path)
+
+        try:
+            return machine_translate_po.fill_source_locale(entries, Path("en.po")), saved
+        finally:
+            machine_translate_po.catalogs.save_po = original
+
+    def test_keeps_the_spaces_a_fragment_is_joined_by(self):
+        entry = self.Entry("  %{name} (added by %{who})", "%{name} (added by %{who})")
+
+        self.fill([entry])
+
+        self.assertEqual(entry.msgstr, "  %{name} (added by %{who})")
+
+    def test_replaces_a_plural_copied_from_another_entry(self):
+        entry = self.Entry(
+            "%{count} command",
+            "",
+            "%{count} commands",
+            {0: "%{count} game", 1: "%{count} games"},
+        )
+
+        self.fill([entry])
+
+        self.assertEqual(entry.msgstr_plural, {0: "%{count} command", 1: "%{count} commands"})
+
+    def test_an_entry_already_right_is_not_written(self):
+        changed, saved = self.fill([self.Entry("Save", "Save")])
+
+        self.assertEqual((changed, saved), (0, []))
+
+
 class SourceLocaleTest(unittest.TestCase):
     """`en` is expo-only: the msgid is its own translation.
 

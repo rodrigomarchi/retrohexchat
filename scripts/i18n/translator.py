@@ -46,21 +46,25 @@ class ScriptedTranslator:
 class ArgosTranslator:
     """Offline NMT via Argos Translate."""
 
-    def __init__(self, to_code: str):
+    def __init__(self, to_code: str, from_code: str = "en"):
         from argostranslate import translate as argos
 
         installed = argos.get_installed_languages()
 
         try:
-            source = next(language for language in installed if language.code == "en")
+            source = next(language for language in installed if language.code == from_code)
             target = next(language for language in installed if language.code == to_code)
+            translation = source.get_translation(target)
         except StopIteration:
-            raise SystemExit(
-                f"No Argos model installed for en -> {to_code}. "
-                "Install it in the translation venv first."
-            ) from None
+            translation = None
 
-        self._translation = source.get_translation(target)
+        if translation is None:
+            raise SystemExit(
+                f"No Argos model installed for {from_code} -> {to_code}. "
+                "Run make i18n.venv to install it."
+            )
+
+        self._translation = translation
 
     def translate(self, text: str) -> str:
         return self._translation.translate(text)
@@ -71,6 +75,39 @@ def build(locale_code: str, argos_code: str) -> Translator:
         return IdentityTranslator()
 
     return ArgosTranslator(argos_code)
+
+
+def build_back(locale_code: str, argos_code: str) -> Translator | None:
+    """The engine that reads a translation back into English, or None for `en`.
+
+    Traditional Chinese is read back through the Simplified model, which is the
+    one Argos has, after converting the text to the script that model reads.
+    """
+    if locale_code == "en" or argos_code == "en":
+        return None
+
+    back = ArgosTranslator("en", from_code=argos_code)
+
+    if locale_code == "zh_hant":
+        return SimplifiedChineseReader(back)
+
+    return back
+
+
+class SimplifiedChineseReader:
+    """Converts Traditional input to Simplified before the zh -> en model."""
+
+    def __init__(self, inner: Translator):
+        self.inner = inner
+        self._converter = None
+
+    def translate(self, text: str) -> str:
+        if self._converter is None:
+            from opencc import OpenCC
+
+            self._converter = OpenCC("t2s")
+
+        return self.inner.translate(self._converter.convert(text))
 
 
 class TraditionalChinesePostprocessor:

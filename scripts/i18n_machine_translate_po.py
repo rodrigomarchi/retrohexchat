@@ -17,10 +17,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from i18n import catalogs, locales, numerals  # noqa: E402
+from i18n import catalogs, glossary, locales, numerals  # noqa: E402
 from i18n.pipeline import DEFAULT_BATCH_CHARS, DEFAULT_BATCH_SIZE, Pipeline  # noqa: E402
 from i18n.protection import has_sentinel_residue  # noqa: E402
-from i18n.translator import TraditionalChinesePostprocessor, build  # noqa: E402
+from i18n.translator import TraditionalChinesePostprocessor, build, build_back  # noqa: E402
 
 DEFAULT_CACHE = "/tmp/retro_hex_chat_i18n_translation_cache.json"
 
@@ -119,11 +119,17 @@ def build_pipeline(code: str, args: argparse.Namespace) -> Pipeline:
     if code == "zh_hant":
         postprocess = TraditionalChinesePostprocessor(translator).convert
 
+    answers = {word: glossary.for_locale(code)[word] for word in ("Yes", "No")} if code != "en" else {}
+
     return Pipeline(
         translator,
         postprocess=postprocess,
         batch_size=args.batch_size,
         batch_chars=args.batch_chars,
+        locale_code=code,
+        back_translator=build_back(code, locales.argos_code(code)),
+        answers=answers,
+        full_stop="。" if code in ("ja", "zh_hans", "zh_hant") else ".",
     )
 
 
@@ -150,6 +156,10 @@ def translate_file(
     repair_plurals: bool = False,
 ) -> int:
     po = catalogs.load_po(path)
+
+    if locale.code == "en":
+        return fill_source_locale(po, Path(path))
+
     pending = collect_pending(po, locale, cache, overwrite, fallbacks, forced, repair_plurals)
 
     if pending:
@@ -188,6 +198,40 @@ def translate_file(
     return changed
 
 
+def fill_source_locale(po, path: Path) -> int:
+    """Sets every `en` entry to its own source, byte for byte.
+
+    The source locale is its msgids, nothing else. A msgstr that differs is a
+    guess the merge copied from another entry ("%{count} commands" arrived as
+    "%{count} games"), and the pipeline is no way to copy a string: it trims
+    the spaces a fragment is joined by.
+    """
+    changed = 0
+
+    for entry in catalogs.translatable_entries(po):
+        if entry.msgid_plural:
+            wanted = {
+                index: entry.msgid if index == 0 else entry.msgid_plural
+                for index in (sorted(entry.msgstr_plural) or [0, 1])
+            }
+
+            if entry.msgstr_plural != wanted:
+                entry.msgstr_plural = wanted
+                changed += 1
+        elif entry.msgstr != entry.msgid:
+            entry.msgstr = entry.msgid
+            changed += 1
+
+        if "fuzzy" in entry.flags:
+            clear_fuzzy(entry)
+            changed += 1
+
+    if changed:
+        catalogs.save_po(po, path)
+
+    return changed
+
+
 def collect_pending(
     po,
     locale,
@@ -198,8 +242,13 @@ def collect_pending(
     repair_plurals: bool = False,
 ) -> list[str]:
     pending: list[str] = []
+    # A forced plural is sent as its numeral and plural strings, not its msgid,
+    # so the strings it sends are forced too.
+    forced_sources: set[str] = set()
 
     for entry in catalogs.translatable_entries(po):
+        before = len(pending)
+
         if repair_plurals:
             if needs_plural_repair(entry, locale):
                 for index, source in catalogs.plural_sources(entry, locale.one_form).items():
@@ -224,12 +273,26 @@ def collect_pending(
         elif needs_translation(entry.msgstr, entry.msgid, entry, overwrite, fallbacks, forced):
             pending.append(entry.msgid)
 
+        if entry.msgid in forced:
+            forced_sources.update(pending[before:])
+
     missing = [
         source
         for source in pending
-        if overwrite or not cached_usable(cache, locale.code, source)
+        if must_translate(cache, locale.code, source, overwrite, forced | forced_sources)
     ]
     return list(dict.fromkeys(missing))
+
+
+def must_translate(
+    cache: dict, code: str, source: str, overwrite: bool, forced: frozenset = frozenset()
+) -> bool:
+    """Whether a pending source goes to the engine rather than to the cache.
+
+    A forced msgid always goes: `--msgid` exists to replace a known-bad entry,
+    and answering it from the cache hands back the very value being replaced.
+    """
+    return overwrite or source in forced or not cached_usable(cache, code, source)
 
 
 def needs_translation(
@@ -263,8 +326,14 @@ def cache_key(code: str, source: str) -> str:
 
 
 def cached_usable(cache: dict, code: str, source: str) -> bool:
+    """A cached value that is a translation, not a recorded failure.
+
+    A source the engine could not translate is cached as itself; reusing that
+    is how a string skipped once stays English in every later run, even after
+    the reason it was skipped is gone.
+    """
     value = cache.get(cache_key(code, source))
-    return value is not None and not has_sentinel_residue(value)
+    return value is not None and value != source and not has_sentinel_residue(value)
 
 
 def lookup(cache: dict, code: str, source: str) -> str:

@@ -425,3 +425,69 @@ class EntityResidueTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MeaningKeptTest(unittest.TestCase):
+    """Round trip: the translation read back into English. The pairs are what
+    the engines returned for the mIRC guide pages."""
+
+    def test_a_faithful_reading_keeps_the_meaning(self):
+        from i18n.quality import meaning_kept
+
+        self.assertTrue(
+            meaning_kept(
+                "Any free nickname gets you in. To keep it, register it with NickServ.",
+                "Any free nickname will get you in. To keep it, register with NickServ.",
+            )
+        )
+
+    def test_a_different_sentence_does_not(self):
+        from i18n.quality import meaning_kept
+
+        self.assertFalse(
+            meaning_kept(
+                "+ voiced users, who can speak when the room is moderated.",
+                "+ I asked the user to speak properly.",
+            )
+        )
+
+    def test_short_labels_are_not_judged(self):
+        from i18n.quality import meaning_kept
+
+        self.assertTrue(meaning_kept("Games you can play here", "Playable Games"))
+
+    def test_commands_neither_help_nor_hurt(self):
+        from i18n.quality import meaning_kept
+
+        self.assertFalse(
+            meaning_kept(
+                "The nick list beside every channel shows who is there. /names",
+                "A list of new features next to all things. /names",
+            )
+        )
+
+    def test_a_correct_paraphrase_is_kept(self):
+        from i18n.quality import meaning_kept
+
+        # French "définir le sujet" for "set the topic", read back literally.
+        self.assertTrue(
+            meaning_kept(
+                "@ operators, who set the topic, the modes, and who stays.",
+                "@ operators, who have defined the subject, the modes, and who remain.",
+            )
+        )
+
+
+class LostNegationOfEnglishTest(unittest.TestCase):
+    def test_an_entry_left_in_english_has_lost_nothing(self):
+        from i18n.quality import lost_negation
+
+        self.assertFalse(lost_negation("Free, nothing to install", "Free, nothing to install", "id"))
+
+
+class JapaneseFreeIsNotNegationTest(unittest.TestCase):
+    def test_free_of_charge_does_not_carry_the_negation(self):
+        from i18n.quality import lost_negation
+
+        self.assertTrue(lost_negation("Free of charge, nothing to install", "無料でインストールする", "ja"))
+        self.assertFalse(lost_negation("Free of charge, nothing to install", "無料、インストール不要", "ja"))

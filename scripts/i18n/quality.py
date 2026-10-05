@@ -11,7 +11,7 @@ from __future__ import annotations
 import re
 from collections import defaultdict
 
-from .protection import has_sentinel_residue
+from .protection import SENTINEL_RE, has_sentinel_residue, protect
 
 # A token repeated this many times in a row is an NMT decoding loop, e.g.
 # "permanently" -> "Sürekli kalıcı kalıcı kalıcı kalıcı kalıcı".
@@ -298,7 +298,9 @@ NEGATION_MARKERS = {
     # "не" also prefixes a negated adjective — непрочитанный, недоступный —
     # so the right boundary has to go.
     "ru": r"\bне|\bни|нет|никог|никт|ничего|нечего|некому|никак|нельзя|невозмож|\bбез\b",
-    "ja": r"ない|なく|なかっ|ませ|なし|せず|れず|ずに|不|無|非|未|できま|決して|だけ",
+    # 無 negates, but 無料 is "free of charge": "install for free" passed as
+    # "nothing to install".
+    "ja": r"ない|なく|なかっ|ませ|なし|せず|れず|ずに|不|無(?!料)|非|未|できま|決して|だけ",
     "zh_hans": r"不|没|无|未|别|非|勿|仅|只",
     "zh_hant": r"不|沒|無|未|別|非|勿|僅|只",
     "id": r"tidak|bukan|jangan|belum|\btak\b|mustahil|tanpa|hanya|gagal",
@@ -321,6 +323,10 @@ def lost_negation(source: str, translated: str, locale_code: str) -> bool:
     marker = _MARKER_RE.get(locale_code)
 
     if marker is None or not source or not translated.strip():
+        return False
+
+    # An entry left in English has lost nothing: its negation is still there.
+    if translated.strip() == source.strip():
         return False
 
     return bool(NEGATED_SOURCE.search(source)) and not marker.search(translated)
@@ -369,3 +375,45 @@ def find_collapses(
         for translated, sources in by_translation.items()
         if len(sources) >= threshold
     }
+
+
+# The round-trip gate. Read back into English, a translation that kept its
+# meaning shares most of the source's content words; one that turned "Do I
+# need an account?" into "Do I need a bill?" or "+ voiced users, who can speak"
+# into "I asked the user to speak properly" does not. Measured over the guide
+# pages, the garbage read back a third of its content words or fewer, while a
+# correct paraphrase ("set the topic" -> "defined the subject") can fall to
+# two in five; a single wrong word in a long sentence stays well above, which
+# is what `terms.missing_terms` is for.
+MEANING_THRESHOLD = 0.4
+# Below this many content words a short label reads back too loosely to judge
+# ("Games you can play here" -> "Playable Games"), so it is not judged.
+MEANING_MIN_WORDS = 4
+
+_CONTENT_WORD = re.compile(r"[A-Za-z]{3,}")
+_STOPWORDS = frozenset(
+    "the and are for its this that with from you your can not but has have had was were "
+    "will would there their they them what when who how which into onto than then also "
+    "any all one each every here does did".split()
+)
+
+
+def content_words(text: str) -> set[str]:
+    """Content words, reduced to a five-letter stem so "voiced" meets "voice"."""
+    words = _CONTENT_WORD.findall(SENTINEL_RE.sub(" ", text))
+    return {word.lower()[:5] for word in words if word.lower() not in _STOPWORDS}
+
+
+def meaning_kept(source: str, read_back: str) -> bool:
+    """True when the translation, read back into English, still says the source.
+
+    Both sides are compared masked, so commands and placeholders — which the
+    translation keeps verbatim anyway — neither help nor hurt the score.
+    """
+    wanted = content_words(protect(source)[0])
+
+    if len(wanted) < MEANING_MIN_WORDS:
+        return True
+
+    found = content_words(protect(read_back)[0])
+    return len(wanted & found) / len(wanted) >= MEANING_THRESHOLD

@@ -14,13 +14,19 @@ import re
 # Brand and service names must survive byte-identical: the UI and the help
 # pages refer to them literally.
 BRAND_RE = re.compile(
-    r"\b(RetroHexChat|RetroHex|ChanServ|NickServ|MemoServ|OperServ|HostServ|"
+    r"\b(Retro Hex Chat|RetroHexChat|RetroHex|ChanServ|NickServ|MemoServ|OperServ|HostServ|"
+    r"mIRC|IRC|CTCP|DCC|"
     r"LibreQuake|QuakeSpasm|WebRTC|LiveView|PostgreSQL|Elixir|Phoenix)\b"
 )
 
 # Dotted lowercase identifiers are audit-log action keys (channel.create,
 # cs.drop), never prose.
 DOTTED_KEY_RE = re.compile(r"\b[a-z][a-z0-9_]*\.[a-z][a-z0-9_]*\b")
+
+# A channel or user mode as typed (+m, -v) and an alias variable ($1, $nick):
+# syntax a reader copies, which a model reads as stray punctuation and drops.
+MODE_RE = re.compile(r"(?<![\w+-])[+-][A-Za-z]\b")
+ALIAS_VARIABLE_RE = re.compile(r"\$[A-Za-z0-9]+\b")
 
 PROTECTED_PATTERNS = (
     re.compile(r"https?://[^\s<>\"]+"),
@@ -31,6 +37,8 @@ PROTECTED_PATTERNS = (
     re.compile(r"/[A-Za-z][A-Za-z0-9_-]*"),
     re.compile(r"#[A-Za-z0-9_-]+"),
     re.compile(r"%\{[A-Za-z0-9_]+\}"),
+    MODE_RE,
+    ALIAS_VARIABLE_RE,
 )
 
 SENTINEL_TEMPLATE = "XPH{index}X"
@@ -103,6 +111,9 @@ def should_machine_translate(text: str) -> bool:
 
     stripped = text.strip()
 
+    # A one-line string that opens with a command is a syntax line or an
+    # example ("/join #channel [key]", "/bot set GreeterBot greeting Hi."),
+    # whose words are what the reader types. Prose does not open with one.
     if stripped.startswith("/") and "\n" not in stripped:
         return False
 

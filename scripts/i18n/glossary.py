@@ -78,6 +78,20 @@ _ROWS = {
     "Controls":     ("Controles", "Controlos", "Controles", "Commandes", "Steuerung", "Comandi", "Besturing", "Sterowanie", "Управление", "Kontrol", "操作", "控制", "控制"),
     "Modes":        ("Modos", "Modos", "Modos", "Modes", "Moden", "Modalità", "Modi", "Tryby", "Режимы", "Mode", "モード", "模式", "模式"),
 
+    # The mIRC commands page: whether a command typed from mIRC habit works
+    # the same here. Verdicts, not adjectives — "Not here" means the command
+    # does not exist, never that someone is away.
+    "Same":         ("Igual", "Igual", "Igual", "Identique", "Gleich", "Uguale", "Hetzelfde", "Tak samo", "Так же", "Sama", "同じ", "相同", "相同"),
+    "Different":    ("Diferente", "Diferente", "Diferente", "Différent", "Anders", "Diverso", "Anders", "Inaczej", "Иначе", "Berbeda", "異なる", "不同", "不同"),
+    "Not here":     ("Não existe", "Não existe", "No existe", "Absent", "Fehlt", "Assente", "Ontbreekt", "Brak", "Нет", "Tidak ada", "ここにはない", "没有", "沒有"),
+    "Here":         ("Aqui", "Aqui", "Aquí", "Ici", "Hier", "Qui", "Hier", "Tutaj", "Здесь", "Di sini", "ここでは", "这里", "這裡"),
+    "In mIRC":      ("No mIRC", "No mIRC", "En mIRC", "Dans mIRC", "In mIRC", "In mIRC", "In mIRC", "W mIRC", "В mIRC", "Di mIRC", "mIRC では", "在 mIRC 中", "在 mIRC 中"),
+    "What to know": ("O que saber", "O que saber", "Qué saber", "À savoir", "Gut zu wissen", "Da sapere", "Goed om te weten", "Warto wiedzieć", "Что нужно знать", "Yang perlu diketahui", "知っておくこと", "须知", "須知"),
+    "Questions":    ("Perguntas", "Perguntas", "Preguntas", "Questions", "Fragen", "Domande", "Vragen", "Pytania", "Вопросы", "Pertanyaan", "質問", "问题", "問題"),
+    "Read next":    ("Leia também", "Leia também", "Lee también", "À lire aussi", "Weiterlesen", "Leggi anche", "Lees ook", "Czytaj dalej", "Читайте также", "Baca juga", "次に読む", "延伸阅读", "延伸閱讀"),
+    "Talking":      ("Conversa", "Conversa", "Conversación", "Conversation", "Unterhalten", "Conversazione", "Praten", "Rozmowa", "Общение", "Mengobrol", "会話", "聊天", "聊天"),
+    "Channel operators": ("Operadores de canal", "Operadores de canal", "Operadores de canal", "Opérateurs de canal", "Kanal-Operatoren", "Operatori del canale", "Kanaaloperators", "Operatorzy kanału", "Операторы канала", "Operator kanal", "チャンネルオペレーター", "频道管理员", "頻道管理員"),
+
     # The pager between the pages of one archive day: earlier and later lines,
     # not a previous and next step in a flow.
     "← Earlier":    ("← Antes", "← Antes", "← Antes", "← Plus tôt", "← Früher", "← Prima", "← Eerder", "← Wcześniej", "← Раньше", "← Sebelumnya", "← 前へ", "← 更早", "← 更早"),
