@@ -1225,7 +1225,7 @@ msgstr "Canal Autocompletar"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "Canal Central"
@@ -3121,7 +3121,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
@@ -6661,7 +6661,7 @@ msgstr ""
 "dela. Pode guardar até 500; cada uma pode levar uma nota curta sobre o "
 "porquê."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "A secret channel cannot have a public archive"
 msgstr "Um canal secreto não pode ter arquivo público"
@@ -6695,7 +6695,7 @@ msgstr ""
 "escreveu para uma sala, não para a internet. Toda a gente presente é avisada"
 " quando o interruptor muda, para que ninguém descubra por um motor de busca."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Registering a channel"
 msgstr "Registar um canal"
@@ -6705,7 +6705,7 @@ msgstr "Registar um canal"
 msgid "Rules & Limits"
 msgstr "Regras e limites"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Switching it off takes every page down straight away"
 msgstr "Desligar tira todas as páginas do ar de imediato"
@@ -6956,11 +6956,7 @@ msgstr "Desligar"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "View ▸ Character Portraits, in the menu bar or the Start menu, switches them off and back on. The plain text line is the other half of what this chat looks like, and somebody reading a busy channel may want nothing but the words."
-msgstr ""
-"Ver □ Retratos de Caracteres, na barra de menus ou no menu Iniciar, desliga-"
-"os e volta a ligar. A linha de texto simples é a outra metade do que este "
-"chat parece, e alguém lendo um canal ocupado pode não querer nada além das "
-"palavras."
+msgstr "Ver ▸ Retratos de personagem, na barra de menus ou no menu Iniciar, desliga e liga de novo. A linha de texto puro é a outra metade da cara deste chat, e quem lê um canal movimentado pode querer só as palavras."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:21
 #, elixir-autogen, elixir-format
@@ -7073,12 +7069,12 @@ msgstr ""
 msgid "Where It Is Offered"
 msgstr "Onde ela aparece"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "/cs"
 msgstr "/cs"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "A busy day is split into pages of 200 lines, with Earlier and Later links between them"
 msgstr "Um dia movimentado é dividido em páginas de 200 linhas, com as ligações Antes e Depois entre elas"
@@ -7092,3 +7088,8 @@ msgstr "Os anexos nunca são publicados — a página só indica que havia um al
 #, elixir-autogen, elixir-format
 msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, or typed as /cs archive on and /cs archive off; only a registered channel has one."
 msgstr "Quem fundou o canal, e mais ninguém. Um operador modera a sala; decidir que o que se diz nela passa a ser legível de fora é outro tipo de decisão, e cabe a quem responde pelo canal. O interruptor está no Channel Central, no separador de registo, ou pode ser escrito como /cs archive on e /cs archive off; só um canal registado tem um."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "The founder must be identified with NickServ to switch it, not merely using the founder's nickname"
+msgstr "O fundador tem de estar identificado no NickServ para o mudar; usar só a alcunha dele não chega"

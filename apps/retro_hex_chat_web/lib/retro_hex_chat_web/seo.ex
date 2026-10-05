@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.SEO do
 
   alias RetroHexChatWeb.I18n
   alias RetroHexChatWeb.I18n.Locales
+  alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.ShowcaseCatalog
 
   @default_origin "https://retrohexchat.app"
@@ -12,16 +13,6 @@ defmodule RetroHexChatWeb.SEO do
   @social_image_width 1200
   @social_image_height 630
   @social_image_type "image/png"
-
-  @landing_paths [
-    "/",
-    "/how-it-works",
-    "/features",
-    "/privacy",
-    "/install",
-    "/community",
-    "/faq"
-  ]
 
   @spec origin() :: String.t()
   def origin do
@@ -45,6 +36,27 @@ defmodule RetroHexChatWeb.SEO do
 
   @spec site_url(String.t()) :: String.t()
   def site_url(path), do: origin() <> normalize_path(path)
+
+  @typedoc "The picture a page is shared with."
+  @type social_image :: %{
+          url: String.t(),
+          width: pos_integer(),
+          height: pos_integer(),
+          type: String.t(),
+          alt: String.t()
+        }
+
+  @doc "The site's own sharing card, for every page without a picture of its own."
+  @spec social_image() :: social_image()
+  def social_image do
+    %{
+      url: social_image_url(),
+      width: @social_image_width,
+      height: @social_image_height,
+      type: @social_image_type,
+      alt: "Retro Hex Chat peer-to-peer chat preview"
+    }
+  end
 
   @spec social_image_url() :: String.t()
   def social_image_url, do: site_url(@social_image_path)
@@ -87,7 +99,7 @@ defmodule RetroHexChatWeb.SEO do
   end
 
   @spec landing_paths() :: [String.t()]
-  def landing_paths, do: @landing_paths
+  def landing_paths, do: PublicPages.paths()
 
   @spec localized_locale_segments() :: [String.t()]
   def localized_locale_segments do
@@ -266,6 +278,57 @@ defmodule RetroHexChatWeb.SEO do
       }
     }
     |> Jason.encode!()
+  end
+
+  @doc """
+  A game's page as `VideoGame` structured data. Its `url` and `inLanguage` are
+  the page's own: on `/pt-BR/games/x` they name that page, not the English one.
+  There is no rating to offer, so the markup describes rather than competes for
+  a rich result.
+  """
+  @spec video_game_json_ld(map(), String.t()) :: String.t()
+  def video_game_json_ld(game, path) do
+    %{
+      "@context" => "https://schema.org",
+      "@type" => "VideoGame",
+      "name" => game.name,
+      "description" => game.description,
+      "url" => canonical_url(path),
+      "inLanguage" => I18n.html_lang(),
+      "gamePlatform" => "Web browser",
+      "operatingSystem" => "Web browser",
+      "applicationCategory" => "GameApplication",
+      "playMode" => if(game.kind == :arcade, do: "SinglePlayer", else: "MultiPlayer"),
+      "isAccessibleForFree" => true,
+      "offers" => %{"@type" => "Offer", "price" => "0", "priceCurrency" => "USD"}
+    }
+    |> put_image(game)
+    |> Jason.encode!(escape: :html_safe)
+  end
+
+  defp put_image(data, %{screenshot: %{path: path}}), do: Map.put(data, "image", site_url(path))
+  defp put_image(data, _game), do: data
+
+  @doc """
+  `text` cut to what a search result shows — about 155 characters — at a word,
+  with an ellipsis when anything was cut. A description that ends mid-word
+  ("…started it al") reads as broken in the one place a page is judged.
+  """
+  @spec meta_description(String.t(), pos_integer()) :: String.t()
+  def meta_description(text, limit \\ 155) do
+    if String.length(text) <= limit do
+      text
+    else
+      cut = String.slice(text, 0, limit - 1)
+
+      head =
+        case Regex.run(~r/^(.*)\s\S*$/su, cut) do
+          [_, head] -> head
+          nil -> cut
+        end
+
+      String.trim_trailing(head, " ,;:—-") <> "…"
+    end
   end
 
   @spec breadcrumb_json_ld([{String.t(), String.t()}]) :: String.t()

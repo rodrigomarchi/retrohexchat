@@ -1205,7 +1205,7 @@ msgstr "Lengkapi Otomatis Saluran"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "Pusat Saluran"
@@ -3089,7 +3089,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
@@ -6627,7 +6627,7 @@ msgstr ""
 " menyimpan hingga 500; masing-masing bisa membawa catatan singkat tentang "
 "alasannya."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "A secret channel cannot have a public archive"
 msgstr "Kanal rahasia tidak boleh punya arsip publik"
@@ -6662,7 +6662,7 @@ msgstr ""
 " yang hadir diberi tahu saat sakelar berubah, sehingga tak seorang pun "
 "mengetahuinya dari mesin pencari."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Registering a channel"
 msgstr "Mendaftarkan kanal"
@@ -6672,7 +6672,7 @@ msgstr "Mendaftarkan kanal"
 msgid "Rules & Limits"
 msgstr "Aturan & Batas"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Switching it off takes every page down straight away"
 msgstr "Mematikannya langsung menurunkan semua halaman"
@@ -6847,11 +6847,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Tools ▸ Events, or /event with nothing after it, lists what this channel has coming up, soonest first. Whoever scheduled something can call it off with /event cancel followed by its number; the record that it was going to happen stays."
-msgstr ""
-"Mulai Pirtools Events, atau /event dengan apa-apa setelah itu, daftar apa "
-"saluran ini telah datang, cepat pertama. Siapa pun yang menjadwalkan sesuatu"
-" dapat menyebutnya off dengan /event membatalkan diikuti oleh nomornya; "
-"catatan bahwa itu akan terjadi tetap."
+msgstr "Start ▸ Alat ▸ Acara, atau /event tanpa apa pun setelahnya, menampilkan apa yang akan datang di kanal ini, yang paling dekat dulu. Siapa pun yang menjadwalkan sesuatu bisa membatalkannya dengan /event cancel diikuti nomornya; catatan bahwa itu akan terjadi tetap ada."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:38
 #, elixir-autogen, elixir-format
@@ -6924,10 +6920,7 @@ msgstr "Mematikannya"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "View ▸ Character Portraits, in the menu bar or the Start menu, switches them off and back on. The plain text line is the other half of what this chat looks like, and somebody reading a busy channel may want nothing but the words."
-msgstr ""
-"Lihat Porthings Karakter, dalam bilah menu atau menu Start, matikan dan "
-"kembali. Garis teks polos adalah bagian lain dari seperti apa obrolan ini, "
-"dan seseorang membaca saluran sibuk mungkin ingin apa-apa kecuali kata-kata."
+msgstr "Tampilan ▸ Potret karakter, di bilah menu atau menu Start, mematikannya dan menyalakannya lagi. Baris teks polos adalah separuh lain dari tampilan obrolan ini, dan orang yang membaca kanal ramai mungkin hanya ingin kata-katanya."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:21
 #, elixir-autogen, elixir-format
@@ -7041,12 +7034,12 @@ msgstr ""
 msgid "Where It Is Offered"
 msgstr "Di mana ini tersedia"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "/cs"
 msgstr "/cs"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "A busy day is split into pages of 200 lines, with Earlier and Later links between them"
 msgstr "Hari yang ramai dibagi menjadi halaman berisi 200 baris, dengan tautan Sebelumnya dan Berikutnya di antaranya"
@@ -7060,3 +7053,8 @@ msgstr "Lampiran tidak pernah diterbitkan — halaman hanya mencatat bahwa ada l
 #, elixir-autogen, elixir-format
 msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, or typed as /cs archive on and /cs archive off; only a registered channel has one."
 msgstr "Pendirinya, dan tidak ada orang lain. Seorang operator memoderasi ruangan; memutuskan bahwa apa yang dikatakan di dalamnya menjadi terbaca dari luar adalah keputusan jenis lain, jadi itu milik siapa pun yang bertanggung jawab atas kanal. Sakelarnya ada di Channel Central, pada tab Pendaftaran, atau diketik sebagai /cs archive on dan /cs archive off; hanya saluran terdaftar yang memilikinya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "The founder must be identified with NickServ to switch it, not merely using the founder's nickname"
+msgstr "Pendiri harus teridentifikasi di NickServ untuk mengubahnya; sekadar memakai nama panggilannya tidak cukup"

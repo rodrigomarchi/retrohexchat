@@ -115,6 +115,25 @@ defmodule RetroHexChat.Games.CatalogTest do
              ] = Catalog.list_solo_games()
     end
 
+    # A description is one msgid, translated when the game is read: anything
+    # assembled at compile time matches nothing in a catalog and reaches every
+    # reader in English.
+    test "localizes every description, whole" do
+      english = Map.new(Catalog.list_games(), &{&1.id, &1.description})
+      previous_locale = Gettext.get_locale(RetroHexChat.Gettext)
+
+      try do
+        Gettext.put_locale(RetroHexChat.Gettext, "pt_BR")
+
+        for game <- Catalog.list_games() do
+          assert game.description != english[game.id],
+                 "#{game.id} reaches pt_BR readers untranslated"
+        end
+      after
+        Gettext.put_locale(RetroHexChat.Gettext, previous_locale)
+      end
+    end
+
     test "localizes controls using the current domain locale" do
       previous_locale = Gettext.get_locale(RetroHexChat.Gettext)
 
@@ -358,6 +377,39 @@ defmodule RetroHexChat.Games.CatalogTest do
       ids = Catalog.game_ids()
       assert length(ids) == 34
       assert Enum.all?(ids, &is_binary/1)
+    end
+  end
+
+  describe "games and their modes" do
+    test "a base game is never a mode, and every mode names a base game" do
+      base_ids = Enum.map(Catalog.base_games(), & &1.id)
+
+      assert "hex_tennis" in base_ids
+      refute "hex_tennis_quick" in base_ids
+
+      for game <- Catalog.list_games(), mode_of = Map.get(game, :mode_of) do
+        assert mode_of in base_ids, "#{game.id} is a mode of #{mode_of}, which is not a game"
+      end
+    end
+
+    test "a game lists its modes in catalogue order" do
+      assert Enum.map(Catalog.modes_of("hex_tennis"), & &1.id) ==
+               ["hex_tennis_quick", "hex_tennis_sudden"]
+
+      assert Catalog.modes_of("hex_pong") == []
+    end
+
+    test "every game is a base game or exactly one game's mode" do
+      ids = Catalog.game_ids()
+
+      covered =
+        Enum.map(Catalog.base_games(), & &1.id) ++
+          Enum.flat_map(
+            Catalog.base_games(),
+            &Enum.map(Catalog.modes_of(&1.id), fn mode -> mode.id end)
+          )
+
+      assert Enum.sort(covered) == Enum.sort(ids)
     end
   end
 end

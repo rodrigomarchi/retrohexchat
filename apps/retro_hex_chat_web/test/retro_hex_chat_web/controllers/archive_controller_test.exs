@@ -120,11 +120,19 @@ defmodule RetroHexChatWeb.ArchiveControllerTest do
     # URL under every locale and there are no hreflang alternates at all.
     test "the canonical is unprefixed, and there are no alternates", ctx do
       body = build_conn() |> get(~p"/pt-BR/archive/#{ctx.slug}") |> html_response(200)
+      [head | _] = String.split(body, "</head>")
 
-      assert body =~ ~s(rel="canonical")
-      assert body =~ "/archive/#{ctx.slug}\""
-      refute body =~ "/pt-BR/archive/#{ctx.slug}\""
-      refute body =~ ~s(rel="alternate")
+      # The language links in the page lead to the same conversation in another
+      # language; the head must never claim a translated version exists.
+      assert head =~
+               ~s(<link rel="canonical" href="https://retrohexchat.app/archive/#{ctx.slug}">)
+
+      refute head =~ "/pt-BR/archive/#{ctx.slug}\""
+      refute head =~ ~s(rel="alternate")
+
+      # A reader switching language stays on this conversation.
+      hrefs = body |> Floki.parse_document!() |> Floki.find("a") |> Floki.attribute("href")
+      assert "/de/archive/#{ctx.slug}" in hrefs
     end
 
     test "the prefixed path answers rather than raising", ctx do
@@ -183,6 +191,42 @@ defmodule RetroHexChatWeb.ArchiveControllerTest do
 
   # A news room passes two thousand lines a day; a day is read in pages of two
   # hundred, each one addressed by the line it follows.
+  describe "the address of a day" do
+    setup ctx do
+      {:ok, _} = Archive.publish(ctx.channel)
+      said = message(ctx.channel, "said once")
+      %{said: said, date: day_of(said)}
+    end
+
+    # Only one spelling of a day is a page: "+2026-10-05" parses as the same
+    # date and would be a second address for it.
+    test "a date spelled any other way answers 404", ctx do
+      assert build_conn() |> get("/archive/#{ctx.slug}/+#{ctx.date}") |> response(404)
+    end
+
+    # The canonical is the unprefixed URL, so a reader who prefers another
+    # language is not redirected off it.
+    test "a reader with another language preference stays on the canonical address", ctx do
+      conn =
+        build_conn()
+        |> put_req_header("accept-language", "pt-BR,pt;q=0.9")
+        |> get("/archive/#{ctx.slug}/#{ctx.date}")
+
+      assert conn.status == 200
+    end
+
+    test "editing a line again still changes its etag", ctx do
+      [first] = get_resp_header(fetch("/archive/#{ctx.slug}/#{ctx.date}"), "etag")
+      {:ok, edited} = Queries.update_content(ctx.said, "said twice", DateTime.utc_now())
+      [second] = get_resp_header(fetch("/archive/#{ctx.slug}/#{ctx.date}"), "etag")
+      {:ok, _} = Queries.update_content(edited, "said thrice", DateTime.utc_now())
+      [third] = get_resp_header(fetch("/archive/#{ctx.slug}/#{ctx.date}"), "etag")
+
+      assert first != second
+      assert second != third
+    end
+  end
+
   describe "a day longer than a page" do
     setup ctx do
       {:ok, _} = Archive.publish(ctx.channel)

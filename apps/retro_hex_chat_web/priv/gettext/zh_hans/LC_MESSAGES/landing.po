@@ -55,7 +55,7 @@ msgstr "XQPH0X; 贡献代码"
 msgid "📢 Share with friends"
 msgstr "QQPH0X; 与朋友分享"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:475
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:439
 #, elixir-autogen, elixir-format
 msgid "“Your data. Your rules. Nobody in between.”"
 msgstr "“ 您的数据 。 你的规矩 没有人在中间。 (rdquo;) (D) :"
@@ -80,7 +80,7 @@ msgstr "— 版本 20+"
 msgid "— helping users find each other. Once connected, all data flows directly between browsers via WebRTC."
 msgstr "— 帮助用户找到彼此. 一旦连接,所有数据都会通过WebRTC在浏览器之间直接流动."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:560
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:562
 #, elixir-autogen, elixir-format
 msgid "/help"
 msgstr "/help"
@@ -90,7 +90,7 @@ msgstr "/help"
 msgid "0 object(s)"
 msgstr "0 对象"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:354
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:355
 #, elixir-autogen, elixir-format
 msgid "18 classic games via WebAssembly."
 msgstr "18部经典游戏通过WebAssembly."
@@ -100,13 +100,13 @@ msgstr "18部经典游戏通过WebAssembly."
 msgid "18 classic games. Running in your browser."
 msgstr "18场经典游戏. 运行在您的浏览器。"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:423
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:425
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:408
 #, elixir-autogen, elixir-format
 msgid "18 games"
 msgstr "18场比赛"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:481
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:445
 #, elixir-autogen, elixir-format
 msgid "2025–2026"
 msgstr "2025 – 2026 (英语)."
@@ -126,9 +126,10 @@ msgstr "6个问题"
 msgid "A corporation"
 msgstr "一个公司"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:133
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:158
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:359
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:158
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:134
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:159
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:323
 #, elixir-autogen, elixir-format
 msgid "About"
 msgstr "关于"
@@ -138,18 +139,18 @@ msgstr "关于"
 msgid "Absolutely. Run a private server, create invite-only channels, and keep all your team’s communication on your own infrastructure. No per-seat pricing, no message limits."
 msgstr "当然 运行一个私人服务器, 创建只邀请频道, 并保持您所有的团队和rsquo;s的通信 。 无每座定价,无信件限制."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:518
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:520
 #, elixir-autogen, elixir-format
 msgid "Accounts, roles, bans, and registration control."
 msgstr "账户、角色、禁令和登记控制。"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:504
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:506
 #, elixir-autogen, elixir-format
 msgid "Admin Panel"
 msgstr "行政小组"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:49
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:495
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:52
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:497
 #, elixir-autogen, elixir-format
 msgid "Administration"
 msgstr "行政部门"
@@ -159,7 +160,7 @@ msgstr "行政部门"
 msgid "Anyone can run a server. Install it on a $5/month VPS, a Raspberry Pi, or your own hardware. You control everything."
 msgstr "任何人都可以运行一个服务器。 安装在5/month VPS,一个Raspberry Pi,或你自己的硬件上. 你控制着一切"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:376
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:377
 #, elixir-autogen, elixir-format
 msgid "BASS"
 msgstr "贝斯"
@@ -185,8 +186,8 @@ msgstr "大技术平台"
 msgid "Big Tech vs. Retro Hex Chat."
 msgstr "Big Tech vs. Retro Hex Chat. (原始内容存档于2018-09-21)."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:46
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:429
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:49
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:431
 #, elixir-autogen, elixir-format
 msgid "Bots"
 msgstr "机器人"
@@ -196,7 +197,7 @@ msgstr "机器人"
 msgid "Boxing"
 msgstr "拳击"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:367
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:331
 #, elixir-autogen, elixir-format
 msgid "Built with Elixir, Phoenix, and LiveView."
 msgstr "与埃利西尔,凤凰,和LiveView一起建成."
@@ -206,8 +207,8 @@ msgstr "与埃利西尔,凤凰,和LiveView一起建成."
 msgid "Built with today’s technology."
 msgstr "以今天 ’s 技术建造 。"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:54
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:547
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:57
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:549
 #, elixir-autogen, elixir-format
 msgid "Built-in Help"
 msgstr "内建帮助"
@@ -228,7 +229,7 @@ msgstr "C:\\SETUP\\install 服务器.exe"
 msgid "C:\\TRUTH\\"
 msgstr "C: 事实"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:550
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:552
 #, elixir-autogen, elixir-format
 msgid "CHM-style help system built in."
 msgstr "CHM风格的帮助系统构建在其中."
@@ -263,7 +264,7 @@ msgstr "他们能读你的留言吗?"
 msgid "Challenge anyone with"
 msgstr "挑战任何人"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:24
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:27
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Channels"
@@ -305,22 +306,21 @@ msgstr "关闭。 盲目相信他们"
 msgid "Code"
 msgstr "代码"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:192
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:409
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:722
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:373
 #: lib/retro_hex_chat_web/live/landing_live/community.ex:20
 #: lib/retro_hex_chat_web/live/landing_live/community.ex:33
+#: lib/retro_hex_chat_web/public_pages.ex:65
 #, elixir-autogen, elixir-format
 msgid "Community"
 msgstr "社区"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:118
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:156
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:119
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:157
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "连接"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:392
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:356
 #, elixir-autogen, elixir-format
 msgid "Contribute"
 msgstr "贡献"
@@ -340,12 +340,12 @@ msgstr "欢迎捐款! 见"
 msgid "Control"
 msgstr "控件"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:569
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:571
 #, elixir-autogen, elixir-format
 msgid "Cross-referenced “See Also” links"
 msgstr "交叉引用的 “ 见 Also” 链接"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:360
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:361
 #, elixir-autogen, elixir-format
 msgid "DOOM"
 msgstr "多米尼克"
@@ -365,7 +365,7 @@ msgstr "人工智能培训所用的数据?"
 msgid "Database"
 msgstr "数据库"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:450
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:452
 #, elixir-autogen, elixir-format
 msgid "Dice:"
 msgstr "虱子 :"
@@ -385,9 +385,9 @@ msgstr "Discord明天可以禁止您的服务器."
 msgid "Do I need to run my own server?"
 msgstr "我需要运行自己的服务器吗?"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:293
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:404
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:530
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:260
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:368
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:531
 #, elixir-autogen, elixir-format
 msgid "Documentation"
 msgstr "文档"
@@ -397,7 +397,7 @@ msgstr "文档"
 msgid "Does it work on mobile?"
 msgstr "手机有用吗?"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:380
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:381
 #, elixir-autogen, elixir-format
 msgid "Drascula"
 msgstr "德拉斯库拉"
@@ -433,15 +433,14 @@ msgstr "已加密"
 msgid "Enduro"
 msgstr "恩杜罗"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:486
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:488
 #, elixir-autogen, elixir-format
 msgid "Extensible"
 msgstr "可扩展"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:195
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:725
 #: lib/retro_hex_chat_web/live/landing_live/faq.ex:198
 #: lib/retro_hex_chat_web/live/landing_live/faq.ex:220
+#: lib/retro_hex_chat_web/public_pages.ex:66
 #, elixir-autogen, elixir-format
 msgid "FAQ"
 msgstr "财务问题"
@@ -451,20 +450,19 @@ msgstr "财务问题"
 msgid "FAQ — Retro Hex Chat"
 msgstr "FAQ — 逆向十六进制聊天"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:384
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:385
 #, elixir-autogen, elixir-format
 msgid "FOTAQ"
 msgstr "总部"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:174
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:704
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:22
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:63
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:25
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:66
+#: lib/retro_hex_chat_web/public_pages.ex:61
 #, elixir-autogen, elixir-format
 msgid "Features"
 msgstr "特征"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:66
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:69
 #, elixir-autogen, elixir-format
 msgid "Features — Retro Hex Chat"
 msgstr "特性——逆Hex聊天"
@@ -489,12 +487,12 @@ msgstr "自由软件. 你的永远。"
 msgid "Frontend"
 msgstr "前端"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:541
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:543
 #, elixir-autogen, elixir-format
 msgid "Full control"
 msgstr "全控"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:509
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:511
 #, elixir-autogen, elixir-format
 msgid "Full dashboard with real-time logs and metrics."
 msgstr "带有实时日志和度量衡的完整仪表板."
@@ -505,12 +503,12 @@ msgstr "带有实时日志和度量衡的完整仪表板."
 msgid "Getting Started"
 msgstr "开始"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:383
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:347
 #, elixir-autogen, elixir-format
 msgid "GitHub"
 msgstr "GitHub 图像"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:452
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:416
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "GitHub Sponsors"
@@ -526,7 +524,7 @@ msgstr "明白了,我们走了"
 msgid "HTTPS and WSS with TLS encryption."
 msgstr "HTTPS和WSS采用TLS加密."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:372
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:373
 #, elixir-autogen, elixir-format
 msgid "Half-Life"
 msgstr "半条命"
@@ -541,10 +539,9 @@ msgstr "帮助恢复Hex Chat的生命。"
 msgid "Hockey"
 msgstr "冰球"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:168
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:698
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.ex:21
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.ex:58
+#: lib/retro_hex_chat_web/public_pages.ex:60
 #, elixir-autogen, elixir-format
 msgid "How It Works"
 msgstr "如何运作"
@@ -569,8 +566,8 @@ msgstr "课程如何运作?"
 msgid "How is it different from Discord?"
 msgstr "这跟迪斯科德有什么不同?"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:57
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:584
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:60
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:586
 #, elixir-autogen, elixir-format
 msgid "IRC Commands"
 msgstr "IRC 命令"
@@ -580,15 +577,14 @@ msgstr "IRC 命令"
 msgid "If a direct connection isn’t possible (strict firewalls), a"
 msgstr "如果无法建立直接连接（严格的防火墙），"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:368
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:332
 #, elixir-autogen, elixir-format
 msgid "Inspired by the IRC of the 2000s and the freedom it represented."
 msgstr "受到2000年代的IRC及其所代表的自由的启发."
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:186
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:716
 #: lib/retro_hex_chat_web/live/landing_live/install.ex:20
 #: lib/retro_hex_chat_web/live/landing_live/install.ex:36
+#: lib/retro_hex_chat_web/public_pages.ex:64
 #, elixir-autogen, elixir-format
 msgid "Install"
 msgstr "安装"
@@ -628,15 +624,15 @@ msgstr "安全吗?"
 msgid "Just clean code. ✨"
 msgstr "只是干净的代码。 ✨"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:422
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:386
 #, elixir-autogen, elixir-format
 msgid "Legal"
 msgstr "法律"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:315
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:401
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:282
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:365
 #: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:646
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:630
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:631
 #, elixir-autogen, elixir-format
 msgid "License (MIT)"
 msgstr "许可证(麻省理工学院)"
@@ -666,14 +662,14 @@ msgstr "第1栏,第1栏"
 msgid "MIT"
 msgstr "麻省理工学院"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:431
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:487
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:395
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:451
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "MIT License"
 msgstr "MIT 许可证"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:480
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:444
 #, elixir-autogen, elixir-format
 msgid "Made by humans"
 msgstr "人类制造的"
@@ -694,18 +690,20 @@ msgstr "存储在"
 msgid "Messages, users, channels — all stored on your machine."
 msgstr "信件、 用户、 频道和mdash; 都存储在您的机器上 。"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:522
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:524
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "调和"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:459
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:461
 #, elixir-autogen, elixir-format
 msgid "Moderation:"
 msgstr "调和 :"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:42
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:45
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:279
+#: lib/retro_hex_chat_web/live/landing_live/games.ex:34
+#: lib/retro_hex_chat_web/live/landing_live/games.html.heex:35
 #: lib/retro_hex_chat_web/live/landing_live/index.ex:48
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:350
 #, elixir-autogen, elixir-format
@@ -742,7 +740,7 @@ msgstr "没有公司可以关闭你。"
 msgid "No corporation. No algorithms. No permission needed."
 msgstr "没有公司。 无算法. 无需许可。"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:417
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:418
 #, elixir-autogen, elixir-format
 msgid "No downloads, no plugins — opens in a new window"
 msgstr "没有下载, 没有插件 — 在新窗口打开"
@@ -792,7 +790,7 @@ msgstr "一个法院命令,你的社区就消失了。"
 msgid "One server. Fully yours."
 msgstr "一个服务器。 满你的"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:559
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:561
 #, elixir-autogen, elixir-format
 msgid "Open Help Topics or type"
 msgstr "打开帮助主题或类型"
@@ -885,16 +883,15 @@ msgstr "庞"
 msgid "PostgreSQL"
 msgstr "邮递SQL"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:587
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:589
 #, elixir-autogen, elixir-format
 msgid "Powerful IRC-style commands."
 msgstr "强大的IRC风格的命令."
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:180
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:710
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:79
 #: lib/retro_hex_chat_web/live/landing_live/privacy.ex:20
 #: lib/retro_hex_chat_web/live/landing_live/privacy.ex:41
+#: lib/retro_hex_chat_web/public_pages.ex:63
 #, elixir-autogen, elixir-format
 msgid "Privacy"
 msgstr "隐私"
@@ -917,12 +914,12 @@ msgstr "隐私比较 — retro Hex Chat vs Discord, Slack & Telegram"
 msgid "Private:"
 msgstr "私人 :"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:432
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:434
 #, elixir-autogen, elixir-format
 msgid "Programmable bots with pluggable capabilities."
 msgstr "具有可插件能力的可编程波茨."
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:374
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:338
 #, elixir-autogen, elixir-format
 msgid "Project"
 msgstr "项目"
@@ -938,12 +935,12 @@ msgstr "保护 :"
 msgid "Public:"
 msgstr "公开 :"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:364
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:365
 #, elixir-autogen, elixir-format
 msgid "Quake"
 msgstr "弹出"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:388
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:389
 #, elixir-autogen, elixir-format
 msgid "Quake II"
 msgstr "第 二 类"
@@ -958,17 +955,17 @@ msgstr "读取ME.txt"
 msgid "README.txt — Notepad"
 msgstr "README.txt — 注纸"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:450
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:452
 #, elixir-autogen, elixir-format
 msgid "RPG-style rolling (!roll 2d6+3)"
 msgstr "RPG 式滚动 (! Roll 2d6+3)"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:468
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:470
 #, elixir-autogen, elixir-format
 msgid "RSS:"
 msgstr "(原始内容存档于2018-09-29). RSS:"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:524
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:526
 #, elixir-autogen, elixir-format
 msgid "Rate limiting, flood protection, and word filters."
 msgstr "限速,防洪,以及文字过滤."
@@ -989,7 +986,7 @@ msgstr "准备安装"
 msgid "Real-time"
 msgstr "实时"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:23
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:26
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Real-time Chat"
@@ -1033,7 +1030,7 @@ msgstr "逆Hex Chat100%由志愿者驱动. 没有投资者,没有广告,也没�
 msgid "Retro Hex Chat is MIT-licensed open source software. Contribute, star, share, or sponsor the project on GitHub."
 msgstr "Retro Hex Chat是麻省理工学院许可的开源软件. 贡献、明星、分享或赞助GitHub项目。"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:366
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:330
 #, elixir-autogen, elixir-format
 msgid "Retro Hex Chat is free software, licensed under MIT."
 msgstr "Retro Hex Chat是自由软件,在麻省理工学院下获得许可."
@@ -1058,22 +1055,22 @@ msgstr "通过他们的服务器"
 msgid "Run your own server. Your data stays with you."
 msgstr "运行自己的服务器 。 数据留在你身边"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:412
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:413
 #, elixir-autogen, elixir-format
 msgid "Runs entirely in the browser via WebAssembly"
 msgstr "通过WebAssembly在浏览器中运行"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:477
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:479
 #, elixir-autogen, elixir-format
 msgid "Scheduler:"
 msgstr "调度器 :"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:565
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:567
 #, elixir-autogen, elixir-format
 msgid "Searchable topics with keyword matching"
 msgstr "关键字匹配的可搜索主题"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:440
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:404
 #, elixir-autogen, elixir-format
 msgid "Security"
 msgstr "警卫"
@@ -1094,7 +1091,7 @@ msgstr "每层都有保安"
 msgid "Security layers diagram"
 msgstr "安全层图"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:574
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:576
 #, elixir-autogen, elixir-format
 msgid "Self-documented"
 msgstr "自行记录"
@@ -1125,8 +1122,10 @@ msgstr "侧面隐私比较:数据所有权,呼叫路由,消息访问,AI培训,�
 msgid "Slack charges for messages you already sent."
 msgstr "你已经发了短信的黑钱"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:45
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:351
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:48
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:352
+#: lib/retro_hex_chat_web/live/landing_live/games.ex:31
+#: lib/retro_hex_chat_web/live/landing_live/games.html.heex:21
 #: lib/retro_hex_chat_web/live/landing_live/index.ex:51
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:380
 #, elixir-autogen, elixir-format
@@ -1178,7 +1177,7 @@ msgstr "存储在您的服务器上,绝不离开"
 msgid "Stored on their servers, mined for ads"
 msgstr "储存在他们的服务器上,为广告开采"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:447
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:411
 #, elixir-autogen, elixir-format
 msgid "Support"
 msgstr "支助"
@@ -1299,7 +1298,7 @@ msgstr "训练他们的人工智能,卖给广告商"
 msgid "Trash"
 msgstr "废物"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:441
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:443
 #, elixir-autogen, elixir-format
 msgid "Trivia:"
 msgstr "特里维亚:"
@@ -1309,7 +1308,7 @@ msgstr "特里维亚:"
 msgid "Type"
 msgstr "类型"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:513
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:515
 #, elixir-autogen, elixir-format
 msgid "User Management"
 msgstr "用户管理"
@@ -1379,7 +1378,7 @@ msgstr "信件存放在哪里?"
 msgid "Who owns the server?"
 msgstr "服务器是谁的?"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:368
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:369
 #, elixir-autogen, elixir-format
 msgid "Wolf3D"
 msgstr "沃尔夫3D"
@@ -1507,7 +1506,7 @@ msgstr "你的规矩"
 msgid "Your server, your database"
 msgstr "您的服务器, 您的数据库"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:499
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:501
 #, elixir-autogen, elixir-format
 msgid "Your server, your rules."
 msgstr "你的服务器,你的规矩"
@@ -1539,7 +1538,7 @@ msgstr "介于 — 之间加密、 私有和快捷 。"
 msgid "contributing guide"
 msgstr "贡献指南"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:468
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:470
 #, elixir-autogen, elixir-format
 msgid "feed monitoring with announcements"
 msgstr "带通知的种子监视器"
@@ -1589,7 +1588,7 @@ msgstr "向任何想加入的人开放。"
 msgid "password-gated access"
 msgstr "密码访问"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:441
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:443
 #, elixir-autogen, elixir-format
 msgid "quiz games with leaderboards"
 msgstr "带主板的问答游戏"
@@ -1609,7 +1608,7 @@ msgstr "服务器,永远不要离开"
 msgid "servers, mined for ads"
 msgstr "用于广告的服务器"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:477
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:479
 #, elixir-autogen, elixir-format
 msgid "timed messages and reminders"
 msgstr "定时信件和提醒"
@@ -1619,14 +1618,14 @@ msgstr "定时信件和提醒"
 msgid "to challenge anyone. Games run on HTML5 Canvas with state synced via WebRTC DataChannel —"
 msgstr "挑战任何人。 通过WebRTC DataChannel & mdash同步运行在HTML5 Canvas上的游戏;"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:479
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:489
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:443
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:453
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "v0.1.0"
 msgstr "v0.1.0"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:459
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:461
 #, elixir-autogen, elixir-format
 msgid "word filters and spam detection"
 msgstr "文字过滤和垃圾邮件检测"
@@ -1681,7 +1680,7 @@ msgstr "安装逆向十六进制聊天"
 msgid "Installation guide"
 msgstr "安装指南"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:461
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:425
 #, elixir-autogen, elixir-format
 msgid "Languages"
 msgstr "语言"
@@ -1722,7 +1721,7 @@ msgstr "从源头设置您自己的 Retro Hex Chat 服务器 。 克隆寄存器
 msgid "/p2p @nick"
 msgstr "/p2p @nick"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:345
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:346
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:374
 #, elixir-autogen, elixir-format
 msgid "34 games"
@@ -1738,54 +1737,59 @@ msgstr "34次多人游戏通过WebRTC."
 msgid "34 multiplayer games. Right from the chat."
 msgstr "34个多人游戏. 从聊天开始"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:398
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:399
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:397
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "街机"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:396
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:397
+#: lib/retro_hex_chat_web/live/landing_live/game.ex:60
+#: lib/retro_hex_chat_web/live/landing_live/games.ex:30
+#: lib/retro_hex_chat_web/live/landing_live/games.ex:42
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:393
+#: lib/retro_hex_chat_web/public_pages.ex:62
 #, elixir-autogen, elixir-format
 msgid "Games"
 msgstr "游戏"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:251
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:270
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:215
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:234
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "帮助"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:164
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:694
 #: lib/retro_hex_chat_web/live/landing_live/community.ex:32
 #: lib/retro_hex_chat_web/live/landing_live/faq.ex:219
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:62
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:65
+#: lib/retro_hex_chat_web/live/landing_live/game.ex:59
+#: lib/retro_hex_chat_web/live/landing_live/games.ex:41
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.ex:57
 #: lib/retro_hex_chat_web/live/landing_live/install.ex:35
 #: lib/retro_hex_chat_web/live/landing_live/privacy.ex:40
+#: lib/retro_hex_chat_web/public_pages.ex:59
 #, elixir-autogen, elixir-format
 msgid "Home"
 msgstr "页 次"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:246
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:268
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:210
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:232
 #, elixir-autogen, elixir-format
 msgid "Navigate"
 msgstr "导航"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:396
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:397
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:392
 #, elixir-autogen, elixir-format
 msgid "Open the"
 msgstr "Open the"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:550
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:551
 #, elixir-autogen, elixir-format
 msgid "Open the app"
 msgstr "打开应用程序"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:397
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:398
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:393
 #, elixir-autogen, elixir-format
 msgid "menu and choose"
@@ -1796,7 +1800,7 @@ msgstr "菜单和选择"
 msgid ", just like private P2P calls."
 msgstr "就像私人P2P电话"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:595
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:597
 #, elixir-autogen, elixir-format
 msgid "50+ commands"
 msgstr "50+ 命令"
@@ -1826,7 +1830,7 @@ msgstr "频道会议是P2P吗?"
 msgid "Canvas map runtime"
 msgstr "Canvas 地图运行时间"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:32
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:35
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:178
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.ex:35
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:183
@@ -1834,7 +1838,7 @@ msgstr "Canvas 地图运行时间"
 msgid "Channel Conferences"
 msgstr "频道会议"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:528
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:530
 #, elixir-autogen, elixir-format
 msgid "Channel Services"
 msgstr "频道服务"
@@ -1941,7 +1945,7 @@ msgstr ""
 msgid "Every channel can become a shared 8-bit room."
 msgstr "每个频道都可以成为共享的8位房间."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:68
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:71
 #, elixir-autogen, elixir-format
 msgid "Explore real-time channels, Spaces, private P2P calls, channel conferences, 34 multiplayer games, 18 arcade games, bots, commands, and help."
 msgstr "探索实时频道,Spaces,私人P2P通话,频道会议,34个多人游戏,18个街机游戏,bots,命令,以及帮助."
@@ -2011,7 +2015,7 @@ msgstr "调制控制"
 msgid "Moderator controls: lock room, mute all, camera off all, and remove participants"
 msgstr "主持人控制:锁室、哑声、摄像头全部关闭,并清除参与者"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:533
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:535
 #, elixir-autogen, elixir-format
 msgid "NickServ and ChanServ-style registration and access control."
 msgstr "NickServ和ChanServ风格的注册和访问控制."
@@ -2040,7 +2044,7 @@ msgstr ""
 msgid "Operators can lock the room, mute participants, disable cameras, manage screen sharing, or end the conference."
 msgstr "操作员可以锁定房间,哑巴参与者,禁用相机,管理屏幕共享,或者结束会议."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:592
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:594
 #, elixir-autogen, elixir-format
 msgid "Over 50 commands with smart autocomplete."
 msgstr "超过50个有智能自动完成的指令."
@@ -2068,7 +2072,7 @@ msgid "Pre-join device picker with microphone, camera, speaker, and layout setti
 msgstr "带麦克风、相机、扬声器和布局设置的预接设备"
 
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:149
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:37
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:40
 #: lib/retro_hex_chat_web/live/landing_live/index.ex:38
 #, elixir-autogen, elixir-format
 msgid "Private P2P"
@@ -2238,7 +2242,7 @@ msgstr "三个方式在一起"
 msgid "Turn any channel or DM into a shared 8-bit room."
 msgstr "将任何频道或DM变成一个共享的8位房间."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:27
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:30
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:116
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.ex:30
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:128
@@ -2358,12 +2362,12 @@ msgstr "三种方式"
 msgid "Welcome"
 msgstr "欢迎"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:66
+#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:72
 #, elixir-autogen, elixir-format
 msgid "Sign-in could not load. Check your connection and reload the page."
 msgstr "无法加载登录。请检查网络连接并重新加载页面。"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:404
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:405
 #, elixir-autogen, elixir-format
 msgid "Pick a game, review details, then start it in a new browser window"
 msgstr "选择游戏，查看详情，然后在新的浏览器窗口中启动"
@@ -2419,7 +2423,7 @@ msgid "Your browser is given a random name so the server can tell your phone fro
 msgstr ""
 "你的浏览器会拿到一个随机名字，好让服务器分清手机和电脑。它标识的是一个浏览器，而不是一个人：除了那个屏幕打开过哪些频道、读到了哪里之外，不会存别的；同一台机器上的另一个浏览器会拿到另一个名字。它不会跟着你去任何地方，因为它只存在于这台服务器上。"
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:226
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:235
 #: lib/retro_hex_chat_web/controllers/archive_html/index.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "%{channel} archive"
@@ -2430,7 +2434,7 @@ msgstr "%{channel} 的存档"
 msgid "%{channel} on %{date}"
 msgstr "%{date} 的 %{channel}"
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:240
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:249
 #, elixir-autogen, elixir-format
 msgid "%{channel} on %{date}: %{opening}"
 msgstr "%{date} 的 %{channel}：%{opening}"
@@ -2450,7 +2454,7 @@ msgstr "全部日期"
 msgid "Everything said here since the channel opened its archive, one page per day. Nothing from before it was opened is published."
 msgstr "自从频道开启存档以来这里说过的一切，每天一页。开启之前的内容一概不公开。"
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:60
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:63
 #, elixir-autogen, elixir-format
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
 msgstr "自从 %{channel} 开启存档以来说过的一切，每天一页。"
@@ -2466,7 +2470,7 @@ msgstr "加入 %{channel}"
 msgid "(attachment)"
 msgstr "(附件)"
 
-#: lib/retro_hex_chat_web/controllers/archive_controller.ex:127
+#: lib/retro_hex_chat_web/controllers/archive_controller.ex:136
 #, elixir-autogen, elixir-format
 msgid "%{title} — from %{time}"
 msgstr "%{title} — 从 %{time} 起"
@@ -2485,3 +2489,97 @@ msgstr "这一天的页面"
 #, elixir-autogen, elixir-format
 msgid "← Earlier"
 msgstr "← 更早"
+
+#: lib/retro_hex_chat_web/live/landing_live/games.html.heex:27
+#: lib/retro_hex_chat_web/live/landing_live/games.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "%{count} game"
+msgid_plural "%{count} games"
+msgstr[0] "%{count} 个游戏"
+
+#: lib/retro_hex_chat_web/live/landing_live/game.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "All games"
+msgstr "全部游戏"
+
+#: lib/retro_hex_chat_web/live/landing_live/games.ex:48
+#, elixir-autogen, elixir-format
+msgid "DOOM, Quake, Wolfenstein 3D, Half-Life and classic adventures in the browser, plus multiplayer arcade games to play with friends — free, nothing to install."
+msgstr "在浏览器中玩 DOOM、Quake、Wolfenstein 3D、Half-Life 和经典冒险游戏，还有可与朋友对战的多人街机游戏 — 免费，无需安装。"
+
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:176
+#, elixir-autogen, elixir-format
+msgid "Free, in the browser"
+msgstr "免费，在浏览器中"
+
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:154
+#, elixir-autogen, elixir-format
+msgid "How to play"
+msgstr "玩法"
+
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:165
+#, elixir-autogen, elixir-format
+msgid "Modes"
+msgstr "模式"
+
+#: lib/retro_hex_chat_web/live/landing_live/game.ex:53
+#: lib/retro_hex_chat_web/live/landing_live/game.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "More games"
+msgstr "更多游戏"
+
+#: lib/retro_hex_chat_web/live/landing_live/game.ex:76
+#, elixir-autogen, elixir-format
+msgid "Multiplayer — or against the AI"
+msgstr "多人 — 或与 AI 对战"
+
+#: lib/retro_hex_chat_web/live/landing_live/game.ex:81
+#, elixir-autogen, elixir-format
+msgid "Play %{name} in your browser"
+msgstr "在浏览器中玩 %{name}"
+
+#: lib/retro_hex_chat_web/live/landing_live/game.ex:80
+#, elixir-autogen, elixir-format
+msgid "Play %{name} in your browser — Retro Hex Chat"
+msgstr "在浏览器中玩 %{name} — Retro Hex Chat"
+
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:150
+#, elixir-autogen, elixir-format
+msgid "Play now — pick a nickname"
+msgstr "立即开玩 — 选个昵称"
+
+#: lib/retro_hex_chat_web/live/landing_live/games.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Retro games in your browser"
+msgstr "浏览器里的复古游戏"
+
+#: lib/retro_hex_chat_web/live/landing_live/games.ex:46
+#, elixir-autogen, elixir-format
+msgid "Retro games you can play in your browser — Retro Hex Chat"
+msgstr "可在浏览器中玩的复古游戏 — Retro Hex Chat"
+
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:49
+#: lib/retro_hex_chat_web/live/landing_live/game.ex:95
+#, elixir-autogen, elixir-format
+msgid "Screenshot of %{name}"
+msgstr "%{name} 的截图"
+
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:192
+#, elixir-autogen, elixir-format
+msgid "See every game in the catalogue"
+msgstr "在目录中查看全部游戏"
+
+#: lib/retro_hex_chat_web/live/landing_live/games.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Shareware classics and freeware adventures running on their original engines, and arcade games to play against a friend or the AI. Free, and nothing to install: pick a nickname and play."
+msgstr "共享软件经典和免费冒险游戏，运行在原版引擎上；还有可与朋友或 AI 对战的街机游戏。免费、无需安装：选个昵称就能玩。"
+
+#: lib/retro_hex_chat_web/live/landing_live/game.ex:73
+#, elixir-autogen, elixir-format
+msgid "Solo arcade"
+msgstr "单人街机"
+
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:161
+#, elixir-autogen, elixir-format
+msgid "Controls"
+msgstr "控制"

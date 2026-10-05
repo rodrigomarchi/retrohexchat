@@ -1216,7 +1216,7 @@ msgstr "Автоматический канал"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "Центральный канал"
@@ -3117,7 +3117,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
@@ -6660,7 +6660,7 @@ msgstr ""
 "собственном разговоре. Хранить можно до 500; к каждому можно добавить "
 "короткую заметку о причине."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "A secret channel cannot have a public archive"
 msgstr "У секретного канала не может быть публичного архива"
@@ -6693,7 +6693,7 @@ msgstr ""
 "написал в комнату, а не в интернет. Всем присутствующим сообщают, когда "
 "переключатель меняется, чтобы никто не узнал об этом из поисковой системы."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Registering a channel"
 msgstr "Регистрация канала"
@@ -6703,7 +6703,7 @@ msgstr "Регистрация канала"
 msgid "Rules & Limits"
 msgstr "Правила и ограничения"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Switching it off takes every page down straight away"
 msgstr "Выключение сразу убирает все страницы"
@@ -6875,11 +6875,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Tools ▸ Events, or /event with nothing after it, lists what this channel has coming up, soonest first. Whoever scheduled something can call it off with /event cancel followed by its number; the record that it was going to happen stays."
-msgstr ""
-"Начните с Инструментов, или /event, не имея ничего после этого, перечислите,"
-" что этот канал скоро появится. Тот, кто запланировал что-то, может отменить"
-" его с помощью /event, за которым следует его номер; запись о том, что это "
-"произойдет, остается."
+msgstr "Пуск ▸ Инструменты ▸ События или просто /event без всего показывают, что у этого канала впереди, ближайшее первым. Тот, кто что-то запланировал, может отменить это через /event cancel и номер; запись о том, что событие должно было состояться, остаётся."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:38
 #, elixir-autogen, elixir-format
@@ -6952,10 +6948,7 @@ msgstr "Как отключить"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "View ▸ Character Portraits, in the menu bar or the Start menu, switches them off and back on. The plain text line is the other half of what this chat looks like, and somebody reading a busy channel may want nothing but the words."
-msgstr ""
-"В меню «Портреты персонажей» или меню «Пуск» их выключают и включают. "
-"Простая текстовая строка - это другая половина того, как выглядит этот чат, "
-"и кто-то, читающий оживленный канал, может не хотеть ничего, кроме слов."
+msgstr "«Вид ▸ Портреты персонажей» в строке меню или в меню «Пуск» выключает их и включает обратно. Простая текстовая строка — вторая половина облика этого чата, и тот, кто читает оживлённый канал, может хотеть одних лишь слов."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:21
 #, elixir-autogen, elixir-format
@@ -7069,12 +7062,12 @@ msgstr ""
 msgid "Where It Is Offered"
 msgstr "Где это доступно"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "/cs"
 msgstr "/cs"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "A busy day is split into pages of 200 lines, with Earlier and Later links between them"
 msgstr "Насыщенный день разбивается на страницы по 200 строк со ссылками «Раньше» и «Позже» между ними"
@@ -7088,3 +7081,8 @@ msgstr "Вложения никогда не публикуются — стра
 #, elixir-autogen, elixir-format
 msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, or typed as /cs archive on and /cs archive off; only a registered channel has one."
 msgstr "Основатель, и никто больше. Оператор модерирует комнату; решение о том, что сказанное в ней становится читаемым снаружи, — решение другого рода, и оно принадлежит тому, кто отвечает за канал. Переключатель находится в Channel Central, на вкладке регистрации, или вводится как /cs archive on и /cs archive off; он есть только у зарегистрированного канала."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "The founder must be identified with NickServ to switch it, not merely using the founder's nickname"
+msgstr "Чтобы переключить его, основатель должен пройти идентификацию в NickServ; просто использовать его ник недостаточно"

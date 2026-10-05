@@ -67,6 +67,51 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
     end
   end
 
+  # The public game page signs a reader in and lands them here: the address
+  # names the game, and the chat opens the arcade on it as the menu would.
+  describe "/chat?arcade=<game>" do
+    test "opens the arcade already previewing the named game", %{conn: conn} do
+      nick = "arcl#{uid()}"
+      register(nick)
+
+      {:ok, view, _} =
+        live(chat_conn(conn, nick, pre_identified: true), "/chat?arcade=doom_shareware")
+
+      # The open is sent to itself after mount; a render processes it.
+      _ = render(view)
+
+      assert %{status: "lobby", previewed_game: %{id: "doom_shareware"}} = arcade_session(view)
+      assert "arcade-games" in open_windows(view)
+    end
+
+    # A reconnect mounts on the address in the bar; were `?arcade=` still
+    # there, each one would open a new arcade session.
+    test "drops the game from the address once it is open", %{conn: conn} do
+      nick = "arcp#{uid()}"
+      register(nick)
+
+      {:ok, view, _} =
+        live(chat_conn(conn, nick, pre_identified: true), "/chat?arcade=doom_shareware")
+
+      _ = render(view)
+
+      assert_patch(view, "/chat")
+    end
+
+    test "a game the arcade does not have opens nothing", %{conn: conn} do
+      nick = "arcx#{uid()}"
+      register(nick)
+
+      {:ok, view, _} =
+        live(chat_conn(conn, nick, pre_identified: true), "/chat?arcade=no_such_game")
+
+      _ = render(view)
+
+      assert arcade_session(view) == nil
+      refute "arcade-games" in open_windows(view)
+    end
+  end
+
   # Launching the arcade is the Start menu's job — it opens a program of its
   # own, not something the chat window acts on.
   describe "Start menu ▸ Games" do

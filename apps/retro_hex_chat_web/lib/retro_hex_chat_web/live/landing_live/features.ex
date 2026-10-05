@@ -7,9 +7,11 @@ defmodule RetroHexChatWeb.LandingLive.Features do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.Components.Diagrams
+  import RetroHexChatWeb.Components.UI.Landing.GameCards, only: [catalogue_link: 1]
 
   alias RetroHexChatWeb.Endpoint
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.SEO
 
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) ::
@@ -18,6 +20,7 @@ defmodule RetroHexChatWeb.LandingLive.Features do
     {:ok,
      assign(socket,
        active_page: :features,
+       catalogue_path: PublicPages.localized_path("/games"),
        windows: [
          %{id: "intro", label: dgettext("landing", "Features"), icon: :icon_chat},
          %{id: "real-time-chat", label: dgettext("landing", "Real-time Chat"), icon: :icon_chat},

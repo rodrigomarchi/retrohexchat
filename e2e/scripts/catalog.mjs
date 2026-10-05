@@ -71,7 +71,9 @@ export function parseSpec(name) {
 
   if (!header) return { name, sections: [], flows: [], testCount };
 
-  const lines = header[1].split("\n").map((line) => line.replace(/^\s*\*\s?/, ""));
+  const lines = header[1]
+    .split("\n")
+    .map((line) => line.replace(/^\s*\*\s?/, ""));
   const flows = [];
   const sections = [];
   let section = "Uncategorised";
@@ -156,10 +158,15 @@ function buildIndex(specs) {
   }
 
   const known = SECTION_ORDER.filter((s) => bySection.has(s));
-  const extra = [...bySection.keys()].filter((s) => !SECTION_ORDER.includes(s)).sort();
+  const extra = [...bySection.keys()]
+    .filter((s) => !SECTION_ORDER.includes(s))
+    .sort();
   const ordered = [...known, ...extra];
 
-  const totalFlows = [...bySection.values()].reduce((sum, rows) => sum + rows.length, 0);
+  const totalFlows = [...bySection.values()].reduce(
+    (sum, rows) => sum + rows.length,
+    0,
+  );
   const totalTests = specs.reduce((sum, s) => sum + s.testCount, 0);
   const blocked = [...bySection.values()]
     .flat()
@@ -172,28 +179,36 @@ function buildIndex(specs) {
   out.push("");
   out.push(`- **${specs.length} spec files** under \`e2e/tests/\`.`);
   out.push(`- **${totalTests} Playwright \`test()\` cases**.`);
-  out.push(`- **${totalFlows} documented flows**, ${totalFlows - blocked} done, ${blocked} not done.`);
+  out.push(
+    `- **${totalFlows} documented flows**, ${totalFlows - blocked} done, ${blocked} not done.`,
+  );
   out.push(
     undocumented.length === 0
       ? "- **Every spec documents its own flows.**"
       : `- **${undocumented.length} spec files carry no \`@flow\` header** ` +
-        "(listed at the end — each one is a gap, not a decision).",
+          "(listed at the end — each one is a gap, not a decision).",
   );
   out.push("");
   out.push("## Flow index");
   out.push("");
-  out.push("Grouped by section. Every row comes from an `@flow` line in the spec itself.");
+  out.push(
+    "Grouped by section. Every row comes from an `@flow` line in the spec itself.",
+  );
   out.push("");
 
   for (const section of ordered) {
-    const rows = bySection.get(section).sort((a, b) => compareFlowIds(a.id, b.id));
+    const rows = bySection
+      .get(section)
+      .sort((a, b) => compareFlowIds(a.id, b.id));
     out.push(`### ${section}`);
     out.push("");
     out.push("| # | Flow | Spec file | Status |");
     out.push("| --- | --- | --- | --- |");
     for (const row of rows) {
       const files = row.specs.map((spec) => `\`tests/${spec}\``).join(", ");
-      out.push(`| ${row.id} | ${escapeCell(row.text)} | ${files} | ${row.status} |`);
+      out.push(
+        `| ${row.id} | ${escapeCell(row.text)} | ${files} | ${row.status} |`,
+      );
     }
     out.push("");
   }
@@ -210,7 +225,9 @@ function buildIndex(specs) {
     out.push("");
     for (const spec of undocumented) {
       const plural = spec.testCount === 1 ? "case" : "cases";
-      out.push(`- \`tests/${spec.name}\` (${spec.testCount} \`test()\` ${plural})`);
+      out.push(
+        `- \`tests/${spec.name}\` (${spec.testCount} \`test()\` ${plural})`,
+      );
     }
   }
   out.push("");
@@ -225,10 +242,12 @@ function buildIndex(specs) {
  * entries came to describe journeys that had already shipped.
  */
 function checkBacklogDisjoint(specs) {
-  const covered = new Set(specs.flatMap((spec) => spec.flows.map((flow) => flow.id)));
-  const listed = [...readFileSync(BACKLOG, "utf8").matchAll(/^\|\s*([A-Z]+\d+[a-z]?)\s*\|/gm)].map(
-    (match) => match[1],
+  const covered = new Set(
+    specs.flatMap((spec) => spec.flows.map((flow) => flow.id)),
   );
+  const listed = [
+    ...readFileSync(BACKLOG, "utf8").matchAll(/^\|\s*([A-Z]+\d+[a-z]?)\s*\|/gm),
+  ].map((match) => match[1]);
   const both = [...new Set(listed.filter((id) => covered.has(id)))];
   if (both.length) {
     process.stderr.write(
@@ -255,7 +274,8 @@ function main() {
     process.exit(1);
   }
 
-  const next = current.slice(0, start) + generated + current.slice(finish + END.length);
+  const next =
+    current.slice(0, start) + generated + current.slice(finish + END.length);
 
   if (process.argv.includes("--check")) {
     if (next !== current) {
@@ -270,12 +290,17 @@ function main() {
   }
 
   writeFileSync(CATALOG, next);
-  process.stdout.write(`TEST_CATALOG.md regenerated from ${specs.length} spec files.\n`);
+  process.stdout.write(
+    `TEST_CATALOG.md regenerated from ${specs.length} spec files.\n`,
+  );
 }
 
 // Importable as a module (scripts/batches.mjs reuses the header parser above),
 // runnable as a script. Without this guard, importing it would regenerate the
 // catalog as a side effect of asking which section a spec belongs to.
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (
+  process.argv[1] &&
+  resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+) {
   main();
 }

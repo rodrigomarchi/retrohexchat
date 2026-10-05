@@ -59,6 +59,8 @@ defmodule RetroHexChatWeb.Router do
       live "/install", LandingLive.Install
       live "/community", LandingLive.Community
       live "/faq", LandingLive.Faq
+      live "/games", LandingLive.Games
+      live "/games/:slug", LandingLive.Game
     end
   end
 
@@ -89,6 +91,8 @@ defmodule RetroHexChatWeb.Router do
         live "/install", LandingLive.Install
         live "/community", LandingLive.Community
         live "/faq", LandingLive.Faq
+        live "/games", LandingLive.Games
+        live "/games/:slug", LandingLive.Game
       end
     end
   end

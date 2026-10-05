@@ -1216,7 +1216,7 @@ msgstr "Kanal Autocomplete"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "Kanal Central"
@@ -3128,7 +3128,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
@@ -6698,7 +6698,7 @@ msgstr ""
 "ihrem eigenen Gespräch. Du kannst bis zu 500 aufbewahren; jede kann eine "
 "kurze Notiz zum Warum tragen."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "A secret channel cannot have a public archive"
 msgstr "Ein geheimer Kanal kann kein öffentliches Archiv haben"
@@ -6712,11 +6712,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Everything a group knows usually dies inside the room it was said in. A channel can choose otherwise: its founder can open a public archive, and from that moment the channel gets a page per day that anybody can read and a search engine can index."
-msgstr ""
-"Alles, was eine Gruppe weiß, stirbt üblicherweise in dem Raum, in dem es "
-"gesagt wurde. Ein Kanal kann sich anders entscheiden: seine Gründung kann "
-"ein öffentliches Archiv öffnen, und von da an bekommt der Kanal eine Seite "
-"pro Tag, die jeder lesen und eine Suchmaschine indexieren kann."
+msgstr "Alles, was eine Gruppe weiß, stirbt üblicherweise in dem Raum, in dem es gesagt wurde. Ein Kanal kann sich anders entscheiden: wer ihn gegründet hat, kann ein öffentliches Archiv öffnen, und von da an bekommt der Kanal eine Seite pro Tag, die jeder lesen und eine Suchmaschine indexieren kann."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:26
 #, elixir-autogen, elixir-format
@@ -6734,7 +6730,7 @@ msgstr ""
 "werden benachrichtigt, wenn der Schalter sich ändert, damit es niemand von "
 "einer Suchmaschine erfährt."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Registering a channel"
 msgstr "Einen Kanal registrieren"
@@ -6744,7 +6740,7 @@ msgstr "Einen Kanal registrieren"
 msgid "Rules & Limits"
 msgstr "Regeln & Grenzen"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Switching it off takes every page down straight away"
 msgstr "Das Ausschalten nimmt sofort jede Seite offline"
@@ -6902,7 +6898,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Saying You Will Be There"
-msgstr "Du wirst da sein"
+msgstr "Zusagen"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:7
 #, elixir-autogen, elixir-format
@@ -6922,11 +6918,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Tools ▸ Events, or /event with nothing after it, lists what this channel has coming up, soonest first. Whoever scheduled something can call it off with /event cancel followed by its number; the record that it was going to happen stays."
-msgstr ""
-"Starten Sie ▸ Tools ▸ Events oder /event mit nichts danach, listet auf, was "
-"dieser Kanal kommt, frühestens. Wer etwas geplant hat, kann es mit /event "
-"absagen, gefolgt von seiner Nummer; der Rekord, dass es passieren würde, "
-"bleibt."
+msgstr "Start ▸ Extras ▸ Ereignisse, oder /event ohne alles dahinter, listet auf, was dieser Kanal vorhat, das Nächste zuerst. Wer etwas angesetzt hat, kann es mit /event cancel und der Nummer absagen; der Eintrag, dass es stattfinden sollte, bleibt."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_events.html.heex:38
 #, elixir-autogen, elixir-format
@@ -7119,12 +7111,12 @@ msgstr ""
 msgid "Where It Is Offered"
 msgstr "Wo es angeboten wird"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "/cs"
 msgstr "/cs"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "A busy day is split into pages of 200 lines, with Earlier and Later links between them"
 msgstr "Ein voller Tag wird in Seiten zu 200 Zeilen aufgeteilt, verbunden durch die Links Früher und Später"
@@ -7137,4 +7129,9 @@ msgstr "Anhänge werden nie veröffentlicht — die Seite vermerkt nur, dass ein
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, or typed as /cs archive on and /cs archive off; only a registered channel has one."
-msgstr "Die Gründung, und sonst niemand. Ein Operator moderiert den Raum; zu entscheiden, dass das dort Gesagte von außen lesbar wird, ist eine andere Art von Entscheidung und gehört daher zu der Person, die für den Kanal einsteht. Der Schalter sitzt in Channel Central auf dem Reiter Registrierung oder wird als /cs archive on und /cs archive off eingegeben; nur ein registrierter Kanal hat einen."
+msgstr "Wer den Kanal gegründet hat, und sonst niemand. Ein Operator moderiert den Raum; zu entscheiden, dass das dort Gesagte von außen lesbar wird, ist eine andere Art von Entscheidung und gehört daher zu der Person, die für den Kanal einsteht. Der Schalter sitzt in Channel Central auf dem Reiter Registrierung oder wird als /cs archive on und /cs archive off eingegeben; nur ein registrierter Kanal hat einen."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "The founder must be identified with NickServ to switch it, not merely using the founder's nickname"
+msgstr "Wer den Kanal gegründet hat, muss bei NickServ identifiziert sein, um ihn umzuschalten — den Spitznamen nur zu tragen genügt nicht"

@@ -16,7 +16,7 @@ msgstr ""
 msgid "+s and +p are mutually exclusive"
 msgstr "+s et +p sont mutuellement exclusifs"
 
-#: lib/retro_hex_chat/channels/server.ex:1406
+#: lib/retro_hex_chat/channels/server.ex:1419
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "Déjà en chaîne"
@@ -26,8 +26,8 @@ msgstr "Déjà en chaîne"
 msgid "Bad channel key (+k)"
 msgstr "Mauvaise clé de canal (+k)"
 
-#: lib/retro_hex_chat/channels/server.ex:576
-#: lib/retro_hex_chat/channels/server.ex:1133
+#: lib/retro_hex_chat/channels/server.ex:588
+#: lib/retro_hex_chat/channels/server.ex:1146
 #, elixir-autogen, elixir-format
 msgid "Banned"
 msgstr "Interdit"
@@ -62,22 +62,22 @@ msgstr "Channel est uniquement sur invitation (+i)"
 msgid "Channel is moderated (+m). You need voice (+v) to speak."
 msgstr "Le canal est modéré (+m). Vous avez besoin de voix (+v) pour parler."
 
-#: lib/retro_hex_chat/channels/server.ex:851
+#: lib/retro_hex_chat/channels/server.ex:864
 #, elixir-autogen, elixir-format
 msgid "Channel is not invite-only"
 msgstr "Channel n'est pas seulement invité"
 
-#: lib/retro_hex_chat/channels/server.ex:1431
+#: lib/retro_hex_chat/channels/server.ex:1444
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "Channel rejoindre l'accélérateur actif, veuillez réessayer rapidement"
 
-#: lib/retro_hex_chat/channels/server.ex:96
-#: lib/retro_hex_chat/channels/server.ex:99
-#: lib/retro_hex_chat/channels/server.ex:242
-#: lib/retro_hex_chat/channels/server.ex:247
-#: lib/retro_hex_chat/channels/server.ex:375
-#: lib/retro_hex_chat/channels/server.ex:378
+#: lib/retro_hex_chat/channels/server.ex:97
+#: lib/retro_hex_chat/channels/server.ex:100
+#: lib/retro_hex_chat/channels/server.ex:243
+#: lib/retro_hex_chat/channels/server.ex:250
+#: lib/retro_hex_chat/channels/server.ex:387
+#: lib/retro_hex_chat/channels/server.ex:390
 #, elixir-autogen, elixir-format
 msgid "Channel not found"
 msgstr "Canal non trouvé"
@@ -86,9 +86,9 @@ msgstr "Canal non trouvé"
 #: lib/retro_hex_chat/channels/policy.ex:143
 #: lib/retro_hex_chat/channels/policy.ex:168
 #: lib/retro_hex_chat/channels/policy.ex:169
-#: lib/retro_hex_chat/channels/server.ex:895
-#: lib/retro_hex_chat/channels/server.ex:914
-#: lib/retro_hex_chat/channels/server.ex:917
+#: lib/retro_hex_chat/channels/server.ex:908
+#: lib/retro_hex_chat/channels/server.ex:927
+#: lib/retro_hex_chat/channels/server.ex:930
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges"
 msgstr "Privilèges insuffisants"
@@ -104,43 +104,43 @@ msgstr "Privilèges insuffisants pour définir les modes de canaux"
 msgid "Invalid mode string: must start with + or -"
 msgstr "Chaîne de mode invalide : doit commencer par + ou -"
 
-#: lib/retro_hex_chat/channels/server.ex:854
+#: lib/retro_hex_chat/channels/server.ex:867
 #, elixir-autogen, elixir-format
 msgid "Knocking is disabled for this channel"
 msgstr "Knocking est désactivé pour cette chaîne"
 
-#: lib/retro_hex_chat/channels/server.ex:477
+#: lib/retro_hex_chat/channels/server.ex:489
 #, elixir-autogen, elixir-format
 msgid "Not in channel"
 msgstr "Pas dans le canal"
 
-#: lib/retro_hex_chat/channels/server.ex:972
+#: lib/retro_hex_chat/channels/server.ex:985
 #, elixir-autogen, elixir-format
 msgid "Only the channel owner can transfer ownership"
 msgstr "Seul le propriétaire du canal peut transférer la propriété"
 
-#: lib/retro_hex_chat/channels/server.ex:1219
+#: lib/retro_hex_chat/channels/server.ex:1232
 #, elixir-autogen, elixir-format
 msgid "User %{target} is not in channel"
 msgstr "L'utilisateur %{target} n'est pas dans le canal"
 
-#: lib/retro_hex_chat/channels/server.ex:892
-#: lib/retro_hex_chat/channels/server.ex:977
+#: lib/retro_hex_chat/channels/server.ex:905
+#: lib/retro_hex_chat/channels/server.ex:990
 #, elixir-autogen, elixir-format
 msgid "User is not in channel"
 msgstr "L'utilisateur n'est pas dans le canal"
 
-#: lib/retro_hex_chat/channels/server.ex:861
+#: lib/retro_hex_chat/channels/server.ex:874
 #, elixir-autogen, elixir-format
 msgid "You are already in that channel"
 msgstr "Vous êtes déjà dans cette chaîne"
 
-#: lib/retro_hex_chat/channels/server.ex:858
+#: lib/retro_hex_chat/channels/server.ex:871
 #, elixir-autogen, elixir-format
 msgid "You are banned from that channel"
 msgstr "Vous êtes interdit de cette chaîne"
 
-#: lib/retro_hex_chat/channels/server.ex:1262
+#: lib/retro_hex_chat/channels/server.ex:1275
 #, elixir-autogen, elixir-format
 msgid "You are muted in this channel"
 msgstr "Vous êtes muet dans cette chaîne"
@@ -157,10 +157,10 @@ msgstr "Vous n'êtes pas dans cette chaîne"
 msgid "You cannot ban yourself"
 msgstr "Vous ne pouvez pas vous interdire"
 
-#: lib/retro_hex_chat/channels/server.ex:700
-#: lib/retro_hex_chat/channels/server.ex:726
-#: lib/retro_hex_chat/channels/server.ex:752
-#: lib/retro_hex_chat/channels/server.ex:778
+#: lib/retro_hex_chat/channels/server.ex:713
+#: lib/retro_hex_chat/channels/server.ex:739
+#: lib/retro_hex_chat/channels/server.ex:765
+#: lib/retro_hex_chat/channels/server.ex:791
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator"
 msgstr "Vous devez être un opérateur de canal"
@@ -170,8 +170,8 @@ msgstr "Vous devez être un opérateur de canal"
 msgid "You must be a channel operator to change the topic"
 msgstr "Vous devez être un opérateur de canal pour changer le sujet"
 
-#: lib/retro_hex_chat/channels/server.ex:797
-#: lib/retro_hex_chat/channels/server.ex:1149
+#: lib/retro_hex_chat/channels/server.ex:810
+#: lib/retro_hex_chat/channels/server.ex:1162
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to unban users"
 msgstr ""
@@ -182,12 +182,12 @@ msgstr ""
 msgid "You must be registered to join this channel"
 msgstr "Vous devez être inscrit pour rejoindre cette chaîne"
 
-#: lib/retro_hex_chat/channels/server.ex:899
+#: lib/retro_hex_chat/channels/server.ex:912
 #, elixir-autogen, elixir-format
 msgid "Could not persist channel mute"
 msgstr "Impossible d'enregistrer la mise en sourdine du canal"
 
-#: lib/retro_hex_chat/channels/server.ex:921
+#: lib/retro_hex_chat/channels/server.ex:934
 #, elixir-autogen, elixir-format
 msgid "Could not persist channel unmute"
 msgstr "Impossible d'enregistrer la réactivation du son du canal"
@@ -218,24 +218,24 @@ msgstr "Ce salon garde déjà %{count} messages. Détachez-en un d'abord."
 msgid "You must be a channel operator to pin messages"
 msgstr "Il faut être opérateur du salon pour épingler des messages"
 
-#: lib/retro_hex_chat/channels/server.ex:1649
+#: lib/retro_hex_chat/channels/server.ex:1673
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "Seul le fondateur du salon peut changer l'archive publique"
 
-#: lib/retro_hex_chat/channels/server.ex:1592
+#: lib/retro_hex_chat/channels/server.ex:1605
 #, elixir-autogen, elixir-format
 msgid "%{nickname} scheduled: %{title}"
 msgstr "%{nickname} a programmé : %{title}"
 
-#: lib/retro_hex_chat/channels/server.ex:1624
+#: lib/retro_hex_chat/channels/server.ex:1637
 #, elixir-autogen, elixir-format
 msgid "That event belongs to another channel."
 msgstr "Cet événement appartient à un autre salon."
 
 #: lib/retro_hex_chat/channels/scheduled_events.ex:105
 #: lib/retro_hex_chat/channels/scheduled_events.ex:131
-#: lib/retro_hex_chat/channels/server.ex:1621
+#: lib/retro_hex_chat/channels/server.ex:1634
 #, elixir-autogen, elixir-format
 msgid "That event could not be found."
 msgstr "Cet événement est introuvable."
@@ -274,3 +274,13 @@ msgstr "Ce salon a déjà %{count} événements à venir."
 #, elixir-autogen, elixir-format
 msgid "When does it start?"
 msgstr "Quand est-ce que ça commence ?"
+
+#: lib/retro_hex_chat/channels/server.ex:1665
+#, elixir-autogen, elixir-format
+msgid "Identify with NickServ before changing the public archive"
+msgstr "Identifiez-vous auprès de NickServ avant de modifier l'archive publique"
+
+#: lib/retro_hex_chat/channels/server.ex:259
+#, elixir-autogen, elixir-format
+msgid "The archive switch did not answer. Check its state and try again."
+msgstr "L'interrupteur de l'archive n'a pas répondu. Vérifiez son état et réessayez."

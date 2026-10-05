@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
   import RetroHexChatWeb.Components.UI.StartMenuApp
 
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.PublicPages
 
   @doc """
   The landing desktop: a workspace of real windows, one page per desktop.
@@ -34,6 +35,12 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
   windows leave the absolute layer and stack in flow (see `window-manager.css`).
   """
   attr :active_page, :atom, required: true
+
+  attr :current_path, :string,
+    default: nil,
+    doc:
+      "this page's own canonical path, for a page that is not one of the menu's " <>
+        "(a game, an archive day): its language links must lead to its translations"
 
   attr :windows, :list,
     required: true,
@@ -53,11 +60,8 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
         class="flex-1"
       >
         {render_slot(@inner_block)}
-        <.landing_about_window active_page={@active_page} />
-        <.desktop_launcher_windows
-          screen={:landing}
-          current_path={active_page_path(@active_page)}
-        />
+        <.landing_about_window current_path={current_path(assigns)} />
+        <.desktop_launcher_windows screen={:landing} current_path={current_path(assigns)} />
 
         <:shortcuts>
           <.desktop_launcher_icons screen={:landing} />
@@ -66,7 +70,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
         <.desktop_connect_required_dialog />
 
         <:taskbar>
-          <.landing_taskbar active_page={@active_page} windows={@windows} />
+          <.landing_taskbar current_path={current_path(assigns)} windows={@windows} />
         </:taskbar>
       </.desktop>
     </div>
@@ -78,14 +82,11 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
   # button and Start-menu entry is a real `<a href>`, so a page that never runs
   # JavaScript still navigates — and still indexes. The manager recognises that
   # these point at other documents and leaves the clicks to the browser.
-  attr :active_page, :atom, required: true
+  attr :current_path, :string, required: true
   attr :windows, :list, required: true
 
   defp landing_taskbar(assigns) do
-    assigns =
-      assigns
-      |> assign(:start_windows, start_windows(assigns.windows))
-      |> assign(:current_path, active_page_path(assigns.active_page))
+    assigns = assign(assigns, :start_windows, start_windows(assigns.windows))
 
     ~H"""
     <.taskbar
@@ -158,44 +159,6 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
       [%{id: "about", label: dgettext("landing", "About"), icon_fn: :icon_lightbulb}]
   end
 
-  # The 7 landing pages, shared by the taskbar buttons, Start menu and menu bar.
-  defp nav_pages do
-    [
-      %{page: :home, path: "/", label: dgettext("landing", "Home"), icon: :icon_hex_stone},
-      %{
-        page: :how_it_works,
-        path: "/how-it-works",
-        label: dgettext("landing", "How It Works"),
-        icon: :icon_server
-      },
-      %{
-        page: :features,
-        path: "/features",
-        label: dgettext("landing", "Features"),
-        icon: :icon_chat
-      },
-      %{
-        page: :privacy,
-        path: "/privacy",
-        label: dgettext("landing", "Privacy"),
-        icon: :icon_lock
-      },
-      %{
-        page: :install,
-        path: "/install",
-        label: dgettext("landing", "Install"),
-        icon: :icon_terminal
-      },
-      %{
-        page: :community,
-        path: "/community",
-        label: dgettext("landing", "Community"),
-        icon: :icon_code
-      },
-      %{page: :faq, path: "/faq", label: dgettext("landing", "FAQ"), icon: :icon_question}
-    ]
-  end
-
   @doc """
   Real dropdown menu bar (Navigate / Help / Language) for the public pages.
 
@@ -210,13 +173,14 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
   both back — the same bargain every window on this desk makes.
   """
   attr :active_page, :atom, required: true
+  attr :current_path, :string, default: nil, doc: "see `landing_layout/1`"
   attr :class, :any, default: nil
 
   @spec landing_menu_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def landing_menu_bar(assigns) do
     assigns =
       assigns
-      |> assign(:current_path, active_page_path(assigns.active_page))
+      |> assign(:current_path, current_path(assigns))
       |> assign(:sections, mobile_sections())
 
     ~H"""
@@ -274,12 +238,15 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
   attr :active_page, :atom, required: true
 
   defp navigate_menu_items(assigns) do
-    assigns = assign(assigns, :pages, nav_pages())
+    assigns = assign(assigns, :pages, PublicPages.all())
 
     ~H"""
     <.context_menu_item :for={p <- @pages} data-testid={"landing-menu-nav-#{p.page}"}>
       <:icon>{apply(Icons, p.icon, [%{class: "h-[14px] w-[14px]"}])}</:icon>
-      <a href={p.path} class={["block flex-1", p.page == @active_page && "font-bold"]}>
+      <a
+        href={PublicPages.localized_path(p.path)}
+        class={["block flex-1", p.page == @active_page && "font-bold"]}
+      >
         {p.label}
       </a>
     </.context_menu_item>
@@ -345,13 +312,10 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
     """
   end
 
-  attr :active_page, :atom, required: true
+  attr :current_path, :string, required: true
 
   defp landing_about_window(assigns) do
-    assigns =
-      assigns
-      |> assign(:current_path, active_page_path(assigns.active_page))
-      |> assign(:supported_locales, RetroHexChatWeb.I18n.supported_locales())
+    assigns = assign(assigns, :supported_locales, RetroHexChatWeb.I18n.supported_locales())
 
     ~H"""
     <.desktop_window
@@ -492,12 +456,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
     """
   end
 
-  defp active_page_path(:home), do: "/"
-  defp active_page_path(:how_it_works), do: "/how-it-works"
-  defp active_page_path(:features), do: "/features"
-  defp active_page_path(:privacy), do: "/privacy"
-  defp active_page_path(:install), do: "/install"
-  defp active_page_path(:community), do: "/community"
-  defp active_page_path(:faq), do: "/faq"
-  defp active_page_path(_active_page), do: "/"
+  # The page's own path when it named one, else its menu entry's.
+  defp current_path(%{current_path: path}) when is_binary(path), do: path
+  defp current_path(%{active_page: page}), do: PublicPages.path(page)
 end

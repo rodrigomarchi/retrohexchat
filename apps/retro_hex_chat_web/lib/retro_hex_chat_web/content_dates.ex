@@ -22,9 +22,19 @@ defmodule RetroHexChatWeb.ContentDates do
 
   @help_content_dir "apps/retro_hex_chat_web/lib/retro_hex_chat_web/controllers/help_content"
   @landing_dir "apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/landing_live"
+  @game_shots_dir "apps/retro_hex_chat_web/priv/static/images/games"
 
-  # One pass over the log of the two directories, newest commit first, so the
-  # first date a path appears under is the last time it changed.
+  # What a game's page is drawn from besides its template: the two catalogues
+  # its text comes from, the web catalogue and the cards that shape it.
+  @game_sources [
+    "apps/retro_hex_chat/lib/retro_hex_chat/arcade/catalog.ex",
+    "apps/retro_hex_chat/lib/retro_hex_chat/games/catalog.ex",
+    "apps/retro_hex_chat_web/lib/retro_hex_chat_web/game_catalog.ex",
+    "apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/landing/game_cards.ex"
+  ]
+
+  # One pass over the log of every public page's sources, newest commit first,
+  # so the first date a path appears under is the last time it changed.
   @dates (fn ->
             case System.cmd(
                    "git",
@@ -37,8 +47,9 @@ defmodule RetroHexChatWeb.ContentDates do
                      # root rather than to `cd:`, which is a directory deep
                      # inside it.
                      ":(top)" <> @help_content_dir,
-                     ":(top)" <> @landing_dir
-                   ],
+                     ":(top)" <> @landing_dir,
+                     ":(top)" <> @game_shots_dir
+                   ] ++ Enum.map(@game_sources, &(":(top)" <> &1)),
                    cd: __DIR__,
                    stderr_to_stdout: true
                  ) do
@@ -69,8 +80,23 @@ defmodule RetroHexChatWeb.ContentDates do
   def landing(path) do
     case landing_basename(path) do
       nil -> nil
-      base -> first_date(["#{@landing_dir}/#{base}.html.heex", "#{@landing_dir}/#{base}.ex"])
+      base -> newest_date(["#{@landing_dir}/#{base}.html.heex", "#{@landing_dir}/#{base}.ex"])
     end
+  end
+
+  @doc """
+  The day a game's page last changed, or `nil`: the newest of its template,
+  the catalogues and cards it is drawn from, and its own screenshot.
+  """
+  @spec game_page(String.t()) :: String.t() | nil
+  def game_page(slug) do
+    newest_date(
+      [
+        "#{@landing_dir}/game.html.heex",
+        "#{@landing_dir}/game.ex",
+        "#{@game_shots_dir}/#{slug}.webp"
+      ] ++ @game_sources
+    )
   end
 
   @doc """
@@ -85,7 +111,7 @@ defmodule RetroHexChatWeb.ContentDates do
   def help_topic(topic_id) do
     file = String.replace(topic_id, "-", "_")
 
-    first_date(["#{@help_content_dir}/#{file}.html.heex"])
+    newest_date(["#{@help_content_dir}/#{file}.html.heex"])
   end
 
   @doc """
@@ -96,7 +122,14 @@ defmodule RetroHexChatWeb.ContentDates do
   @spec known?() :: boolean()
   def known?, do: @dates != %{}
 
-  defp first_date(candidates), do: Enum.find_value(candidates, &Map.get(@dates, &1))
+  # The newest of the days any of `candidates` changed: a page changes when any
+  # of what it is drawn from does. ISO dates compare correctly as strings.
+  defp newest_date(candidates) do
+    candidates
+    |> Enum.map(&Map.get(@dates, &1))
+    |> Enum.reject(&is_nil/1)
+    |> Enum.max(fn -> nil end)
+  end
 
   defp newest_help_date do
     @dates

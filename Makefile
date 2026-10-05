@@ -6,7 +6,7 @@
        test.js test.js.changed test.js.related test.js.watch \
        ci ci.quick ci.changed ci.serial ci.quick.serial ci.partition-profile ci.partition-profile.plan \
        umbrella.boundary-audit \
-       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
+       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.venv i18n.translate i18n.repair.plurals games.shots seo.snapshot seo.compare i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
        lint format format.check credo dialyzer lint.js lint.js.changed lint.js.fix lint.css lint.bundle precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
@@ -22,7 +22,7 @@ WEB_APP    = apps/retro_hex_chat_web
 CSS_BUILD_CHECK_OUT = $(shell mktemp -t retrohex-css-check)
 E2E_DIR    = e2e
 PRETTIER   = $(WEB_APP)/assets/node_modules/.bin/prettier
-E2E_FORMAT_SOURCES = $(E2E_DIR)/*.json $(E2E_DIR)/*.ts $(E2E_DIR)/helpers $(E2E_DIR)/pages $(E2E_DIR)/tests $(E2E_DIR)/load
+E2E_FORMAT_SOURCES = $(E2E_DIR)/*.json $(E2E_DIR)/*.ts $(E2E_DIR)/helpers $(E2E_DIR)/pages $(E2E_DIR)/tests $(E2E_DIR)/load $(E2E_DIR)/scripts
 E2E_SMOKE_CONNECT_ARGS = tests/connect-flow.spec.ts
 E2E_SMOKE_CHAT_ARGS = tests/chat-welcome.spec.ts
 E2E_SMOKE_DIALOGS_ARGS = tests/chat-dialog-close.spec.ts
@@ -31,6 +31,15 @@ E2E_SMOKE_CALLS_ARGS = tests/chat-p2p.spec.ts tests/chat-group-call.spec.ts --gr
 E2E_SMOKE_MOBILE_ARGS = tests/chat-mobile-desktop.spec.ts --grep "shows one fullscreen window"
 E2E_SMOKE_PERF_ARGS = tests/perf-payload.spec.ts tests/perf-critical-path.spec.ts
 I18N_REQUIRED_LOCALES = pt_BR,es,fr,de,ja,zh_hans,id,ru,zh_hant,pt_PT,it,pl,nl
+# The writers need polib (and the translator Argos), which only the throwaway
+# venv carries; the read-only gates run on stdlib python3.
+comma := ,
+I18N_VENV ?= /tmp/retro_hex_chat_i18n_venv
+# The catalogs `i18n.translate` may touch. Empty means DOMAINS matched nothing,
+# and the target refuses: the script given no paths would translate every
+# catalog of every locale.
+I18N_TRANSLATE_PATHS = $(foreach d,$(subst $(comma), ,$(DOMAINS)),$(wildcard apps/$(if $(filter domain,$(APP)),retro_hex_chat,retro_hex_chat_web)/priv/gettext/*/LC_MESSAGES/$(d).po))
+I18N_PYTHON = $(if $(wildcard $(I18N_VENV)/bin/python),$(I18N_VENV)/bin/python,python3)
 
 ifneq (,$(wildcard .env))
 include .env
@@ -277,6 +286,17 @@ e2e.changed: ## Run Playwright specs changed since SINCE (default: uncommitted c
 	$(E2E_MIX) assets.build
 	cd e2e && $(E2E_ENV) npx playwright test --only-changed $(SINCE)
 
+seo.snapshot: ## Save the public pages that matter for search (BASE=http://localhost:4003 OUT=tmp/seo/before)
+	python3 scripts/seo_compare.py snapshot --base $(or $(BASE),http://localhost:4003) --out $(or $(OUT),tmp/seo/before)
+
+seo.compare: ## Fail if a public page lost text or changed any SEO tag (BEFORE=tmp/seo/before AFTER=tmp/seo/after)
+	python3 scripts/seo_compare.py compare $(or $(BEFORE),tmp/seo/before) $(or $(AFTER),tmp/seo/after)
+
+games.shots: ## Capture a real screenshot of every catalogue game (ONLY=slug,slug; multiplayer needs the e2e server up)
+	mkdir -p tmp
+	mix run --no-start -e 'File.write!("tmp/game-capture-targets.json", Jason.encode!(RetroHexChatWeb.GameCatalog.capture_targets()))'
+	cd e2e && ONLY=$(ONLY) node scripts/capture-game-shots.mjs ../tmp/game-capture-targets.json
+
 e2e.catalog: ## Regenerate e2e/TEST_CATALOG.md from the @flow headers in the specs
 	cd e2e && node scripts/catalog.mjs
 
@@ -457,10 +477,27 @@ i18n.quality.check: ## Fail on collapsed, degenerate, or sentinel-leaking transl
 	python3 scripts/i18n_quality_check.py --locales $(I18N_REQUIRED_LOCALES) --fail-on-findings
 
 i18n.glossary: ## Apply the curated UI label glossary to the catalogs
-	python3 scripts/i18n_apply_glossary.py --locales $(I18N_REQUIRED_LOCALES) --write
+	$(I18N_PYTHON) scripts/i18n_apply_glossary.py --locales $(I18N_REQUIRED_LOCALES) --write
 
 i18n.repair: ## Repair unusable catalog entries (needs the translation venv)
-	python3 scripts/i18n_repair_catalogs.py --locales $(I18N_REQUIRED_LOCALES) --write
+	$(I18N_PYTHON) scripts/i18n_repair_catalogs.py --locales $(I18N_REQUIRED_LOCALES) --write
+
+i18n.venv: ## Create the translation venv: polib, Argos and a model for every enabled locale
+	test -x $(I18N_VENV)/bin/python || python3 -m venv $(I18N_VENV)
+	$(I18N_VENV)/bin/python -m pip install --quiet argostranslate polib opencc-python-reimplemented
+	$(I18N_VENV)/bin/python scripts/i18n_install_models.py
+
+i18n.repair.plurals: ## Retranslate short count plurals whose forms are mechanically wrong, keeping only real fixes
+	test -x $(I18N_VENV)/bin/python || (echo "run make i18n.venv first" && exit 2)
+	$(I18N_PYTHON) scripts/i18n_machine_translate_po.py --locales $(I18N_REQUIRED_LOCALES) --repair-plurals 'apps/*/priv/gettext/*/LC_MESSAGES/*.po'
+
+i18n.translate: ## Fill new/fuzzy entries of DOMAINS (APP=web|domain) in every locale, then the glossary
+	test -n "$(DOMAINS)" || (echo "usage: make i18n.translate DOMAINS=landing APP=web" && exit 2)
+	test "$(APP)" = web -o "$(APP)" = domain || (echo "APP must be web or domain" && exit 2)
+	test -x $(I18N_VENV)/bin/python || (echo "run make i18n.venv first" && exit 2)
+	test -n "$(I18N_TRANSLATE_PATHS)" || (echo "no catalog matches DOMAINS=$(DOMAINS) APP=$(APP)" && exit 2)
+	$(I18N_PYTHON) scripts/i18n_machine_translate_po.py --locales en,$(I18N_REQUIRED_LOCALES) $(I18N_TRANSLATE_PATHS)
+	$(MAKE) i18n.glossary
 
 i18n.tooling.test: ## Run the i18n Python tooling test suite
 	python3 -m unittest discover -s scripts -t scripts -p 'test_*.py'

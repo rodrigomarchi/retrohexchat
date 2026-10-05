@@ -1,0 +1,32 @@
+<.landing_layout active_page={@active_page} current_path={@path} windows={@windows}>
+  <.landing_connect_window
+    trusted_device_id={@trusted_device_id}
+    active_page={@active_page}
+    current_path={@path}
+    return_to={@play_path}
+  />
+
+  <section class="m-4" aria-labelledby="game-heading">
+    <div class="grid lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-4 items-start">
+      <.game_detail game={@game} kind_label={@kind_label} how_to_play_path={@how_to_play_path} />
+
+      <.game_card_window
+        id="more-games"
+        heading_id="more-games-heading"
+        title={dgettext("landing", "More games")}
+        cards={@related}
+        width={360}
+        columns="grid-cols-2"
+      >
+        <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
+        <:footer>
+          <p class="text-sm mt-3">
+            <.link navigate={@catalogue_path} class="underline">
+              {dgettext("landing", "All games")}
+            </.link>
+          </p>
+        </:footer>
+      </.game_card_window>
+    </div>
+  </section>
+</.landing_layout>

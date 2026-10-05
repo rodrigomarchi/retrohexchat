@@ -167,6 +167,12 @@ defmodule RetroHexChatWeb.App.ChatLive do
     reconnecting? = backend_reconnect_state != nil
     join_channel = params["join"]
 
+    # Opened after mount, from the same handler the arcade menu uses: the
+    # arcade window is managed and mounts its own state, which a mount-time
+    # open would race.
+    if connected?(socket) and is_binary(params["arcade"]),
+      do: send(self(), {:open_arcade_link, params["arcade"]})
+
     ChatLive.Helpers.safe_track_user(Topics.presence(), nickname, client_info)
 
     # The chat is one of this person's surfaces, and a live one owns the
@@ -237,6 +243,12 @@ defmodule RetroHexChatWeb.App.ChatLive do
       last_device_session_touch_at: nil
     )
   end
+
+  # The address carries nothing the chat keeps in sync with it; what a link
+  # asks for (`?arcade=`) is acted on once in mount and then dropped from the
+  # address by a patch, which needs this callback to exist.
+  @impl true
+  def handle_params(_params, _uri, socket), do: {:noreply, socket}
 
   # ── Terminate ─────────────────────────────────────────────────
 

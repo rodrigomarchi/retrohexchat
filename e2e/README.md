@@ -89,6 +89,10 @@ For regression sweeps, this suite is run manually.
 e2e/
 ├── TEST_CATALOG.md        Generated index of covered journeys (+ hand-written rules)
 ├── scripts/catalog.mjs    Builds that index from the spec @flow headers
+├── scripts/batches.mjs    Derives the feature batches from the @section headers
+├── scripts/capture-game-shots.mjs
+│                          Screenshots for the public game pages (`make games.shots`):
+│                          a tool that writes into priv/static, not a test
 ├── package.json
 ├── playwright.config.ts
 ├── tsconfig.json

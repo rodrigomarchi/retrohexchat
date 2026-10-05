@@ -279,6 +279,10 @@
         title={dgettext("landing", "Multiplayer Games")}
       >
         <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
+        <%!-- 34 counts every playable mode; the catalogue linked below lists the
+              games with their modes under each one, so it shows fewer cards.
+              The sentence is indexed copy and is changed deliberately or not
+              at all. --%>
         <h2 class="text-sm font-bold mb-2">
           {dgettext("landing", "34 multiplayer games via WebRTC.")}
         </h2>
@@ -340,6 +344,7 @@
             </span>
           </div>
         </div>
+        <.catalogue_link path={@catalogue_path} data-testid="features-multiplayer-catalogue-link" />
         <:status>
           <.window_status_bar_field grow>
             <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "34 games")}
@@ -418,6 +423,7 @@
             </span>
           </div>
         </div>
+        <.catalogue_link path={@catalogue_path} data-testid="features-arcade-catalogue-link" />
         <:status>
           <.window_status_bar_field grow>
             <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "18 games")}

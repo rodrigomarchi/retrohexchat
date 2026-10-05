@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **236 spec files** under `e2e/tests/`.
-- **543 Playwright `test()` cases**.
-- **491 documented flows**, 490 done, 1 not done.
+- **237 spec files** under `e2e/tests/`.
+- **544 Playwright `test()` cases**.
+- **492 documented flows**, 491 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -755,7 +755,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW18 | The landing connect window opens fully on screen at every desktop size | `tests/landing-connect-window.spec.ts` | done |
 | PW19 | The public pages declare an installable web app: a linked manifest whose icons and service worker are actually served | `tests/landing-public.spec.ts` | done |
 | PW20 | A channel's public archive is reachable, indexable, and disappears when the founder switches it off (features P1) | `tests/archive-public.spec.ts` | done |
-| PW21 | The founder switches the archive with /cs archive on\|off, and the room is told (features P1) | `tests/archive-public.spec.ts` | done |
+| PW21 | The founder switches the archive with /cs archive on\|off, and another member of the room sees the notice (features P1) | `tests/archive-public.spec.ts` | done |
+| PW22 | The public games catalogue leads from a game's page, through the page's own Connect window, into the game | `tests/games-catalog.spec.ts` | done |
 
 ### Dialog Gallery
 

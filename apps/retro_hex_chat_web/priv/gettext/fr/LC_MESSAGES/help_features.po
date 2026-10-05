@@ -1240,7 +1240,7 @@ msgstr "Chaîne Autocomplete"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "Canal Central"
@@ -3158,7 +3158,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
@@ -6768,7 +6768,7 @@ msgstr ""
 "propre conversation. Vous pouvez en garder jusqu'à 500 ; chacun peut porter "
 "une courte note expliquant pourquoi."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "A secret channel cannot have a public archive"
 msgstr "Un salon secret ne peut pas avoir d'archive publique"
@@ -6803,7 +6803,7 @@ msgstr ""
 "présentes sont prévenues quand l'interrupteur change, pour que personne ne "
 "l'apprenne par un moteur de recherche."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Registering a channel"
 msgstr "Enregistrer un salon"
@@ -6813,7 +6813,7 @@ msgstr "Enregistrer un salon"
 msgid "Rules & Limits"
 msgstr "Règles et limites"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Switching it off takes every page down straight away"
 msgstr "L'éteindre retire toutes les pages aussitôt"
@@ -7186,12 +7186,12 @@ msgstr ""
 msgid "Where It Is Offered"
 msgstr "Où c'est proposé"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "/cs"
 msgstr "/cs"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "A busy day is split into pages of 200 lines, with Earlier and Later links between them"
 msgstr "Une journée chargée est découpée en pages de 200 lignes, reliées par les liens Plus tôt et Plus tard"
@@ -7205,3 +7205,8 @@ msgstr "Les pièces jointes ne sont jamais publiées — la page signale seuleme
 #, elixir-autogen, elixir-format
 msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, or typed as /cs archive on and /cs archive off; only a registered channel has one."
 msgstr "Le fondateur, et personne d'autre. Un opérateur modère la pièce ; décider que ce qui s'y dit devienne lisible de l'extérieur est une décision d'un autre ordre, et elle revient à qui répond du salon. L'interrupteur est dans Channel Central, onglet Enregistrement, ou se tape sous la forme /cs archive on et /cs archive off ; seul un salon enregistré en a un."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "The founder must be identified with NickServ to switch it, not merely using the founder's nickname"
+msgstr "Le fondateur doit être identifié auprès de NickServ pour le basculer ; porter son pseudo ne suffit pas"

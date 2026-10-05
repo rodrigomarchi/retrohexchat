@@ -1,0 +1,46 @@
+<.landing_layout active_page={@active_page} windows={@windows}>
+  <.landing_connect_window trusted_device_id={@trusted_device_id} active_page={@active_page} />
+
+  <section class="m-4" aria-labelledby="games-heading">
+    <.landing_page_intro
+      heading_id="games-heading"
+      title={dgettext("landing", "Retro games in your browser")}
+      description={
+        dgettext(
+          "landing",
+          "Shareware classics and freeware adventures running on their original engines, and arcade games to play against a friend or the AI. Free, and nothing to install: pick a nickname and play."
+        )
+      }
+    >
+      <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
+    </.landing_page_intro>
+
+    <.game_card_window
+      id="arcade"
+      heading_id="arcade-heading"
+      title={dgettext("landing", "Solo Arcade")}
+      cards={@arcade}
+    >
+      <:icon><Icons.icon_game_arcade class="w-4 h-4" /></:icon>
+      <:status>
+        <.window_status_bar_field grow>
+          {dngettext("landing", "%{count} game", "%{count} games", length(@arcade))}
+        </.window_status_bar_field>
+      </:status>
+    </.game_card_window>
+
+    <.game_card_window
+      id="multiplayer"
+      heading_id="multiplayer-heading"
+      title={dgettext("landing", "Multiplayer Games")}
+      cards={@multiplayer}
+    >
+      <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
+      <:status>
+        <.window_status_bar_field grow>
+          {dngettext("landing", "%{count} game", "%{count} games", length(@multiplayer))}
+        </.window_status_bar_field>
+      </:status>
+    </.game_card_window>
+  </section>
+</.landing_layout>

@@ -1126,7 +1126,7 @@ msgstr "頻道自動完成"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "中央頻道"
@@ -2877,7 +2877,7 @@ msgstr "在當前頻道或PM中以實時突出顯示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
@@ -5904,7 +5904,7 @@ msgstr ""
 "開始 ▸ 工具 ▸ 已儲存的訊息會按從新到舊列出你儲存的一切，每一行都能回到它所在對話中的那則訊息。最多可以儲存 500 "
 "則，每則都可以附一句簡短的理由。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "A secret channel cannot have a public archive"
 msgstr "秘密頻道不能有公開封存"
@@ -5931,7 +5931,7 @@ msgid "Only what is said from the moment the switch goes on. Nothing already in 
 msgstr ""
 "只有開關打開之後說的話才會公開。頻道裡已有的內容，無論放了多久，都永遠不會被發布——寫下它的人是寫進一個房間，而不是寫到網際網路上。開關變化時在場的每個人都會被告知，這樣就沒有人是從搜尋引擎得知的。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Registering a channel"
 msgstr "註冊一個頻道"
@@ -5941,7 +5941,7 @@ msgstr "註冊一個頻道"
 msgid "Rules & Limits"
 msgstr "規則與限制"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Switching it off takes every page down straight away"
 msgstr "關掉它會立刻撤下所有頁面"
@@ -6144,7 +6144,7 @@ msgstr "如何關掉"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "View ▸ Character Portraits, in the menu bar or the Start menu, switches them off and back on. The plain text line is the other half of what this chat looks like, and somebody reading a busy channel may want nothing but the words."
-msgstr "在菜單欄或“開始”菜單中查看 QQ 字符縮寫, 把它們關閉並重新打開 。 純文本線是聊天的另一半, 有人讀到一個忙碌的頻道可能只想要字。"
+msgstr "選單列或開始選單中的「檢視 ▸ 角色頭像」可以把它們關掉再打開。純文字的一行是這個聊天外觀的另一半，而閱讀繁忙頻道的人可能只想要文字。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:21
 #, elixir-autogen, elixir-format
@@ -6235,12 +6235,12 @@ msgstr "有些事說出來比打字更快。在手機上，輸入欄會出現一
 msgid "Where It Is Offered"
 msgstr "在哪裡可用"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "/cs"
 msgstr "/cs"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "A busy day is split into pages of 200 lines, with Earlier and Later links between them"
 msgstr "訊息多的日子會分成每頁 200 行，頁面之間有「更早」和「更晚」連結"
@@ -6254,3 +6254,8 @@ msgstr "附件永遠不會公開——頁面只註明那裡有過一個附件"
 #, elixir-autogen, elixir-format
 msgid "The founder, and nobody else. An operator moderates the room; deciding that what is said in it becomes readable from outside is a different kind of decision, so it belongs to whoever answers for the channel. The switch is in Channel Central, on the Registration tab, or typed as /cs archive on and /cs archive off; only a registered channel has one."
 msgstr "只有創建者，別人都不行。管理員管理房間；而決定房間裡說的話能不能被外面讀到，是另一種性質的決定，屬於為這個頻道負責的人。開關在 Channel Central 的註冊分頁裡，也可以輸入 /cs archive on 和 /cs archive off；只有已註冊的頻道才有。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "The founder must be identified with NickServ to switch it, not merely using the founder's nickname"
+msgstr "創建者必須向 NickServ 驗證身分才能切換，僅僅使用其暱稱不行"

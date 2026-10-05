@@ -23,12 +23,12 @@ msgstr ""
 msgid "  %{name} [%{status}] — %{description}"
 msgstr "%{name} [%{status}] — %{description}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:225
+#: lib/retro_hex_chat/commands/handlers/cs.ex:238
 #, elixir-autogen, elixir-format
 msgid "  %{nickname} [%{level}] (added by %{added_by})"
 msgstr "  %{nickname} [%{level}] (добавлено %{added_by})"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:221
+#: lib/retro_hex_chat/commands/handlers/cs.ex:234
 #, elixir-autogen, elixir-format
 msgid "  (empty)"
 msgstr "(пустая)"
@@ -354,44 +354,44 @@ msgstr "/bot list"
 msgid "/bot set GreeterBot greeting Welcome, {nickname}!"
 msgstr "/bot set GreeterBot greeting Welcome, {nickname}!"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:88
-#: lib/retro_hex_chat/commands/handlers/cs.ex:244
+#: lib/retro_hex_chat/commands/handlers/cs.ex:93
+#: lib/retro_hex_chat/commands/handlers/cs.ex:257
 #, elixir-autogen, elixir-format
 msgid "/cs <subcommand> [args]"
 msgstr "/cs <subcommand> [args]"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:100
-#: lib/retro_hex_chat/commands/handlers/cs.ex:271
+#: lib/retro_hex_chat/commands/handlers/cs.ex:105
+#: lib/retro_hex_chat/commands/handlers/cs.ex:284
 #, elixir-autogen, elixir-format
 msgid "/cs aop del nick"
 msgstr "/cs aop del nick"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:96
-#: lib/retro_hex_chat/commands/handlers/cs.ex:267
+#: lib/retro_hex_chat/commands/handlers/cs.ex:101
+#: lib/retro_hex_chat/commands/handlers/cs.ex:280
 #, elixir-autogen, elixir-format
 msgid "/cs drop"
 msgstr "/cs drop"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:97
-#: lib/retro_hex_chat/commands/handlers/cs.ex:268
+#: lib/retro_hex_chat/commands/handlers/cs.ex:102
+#: lib/retro_hex_chat/commands/handlers/cs.ex:281
 #, elixir-autogen, elixir-format
 msgid "/cs info"
 msgstr "/cs info"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:95
-#: lib/retro_hex_chat/commands/handlers/cs.ex:266
+#: lib/retro_hex_chat/commands/handlers/cs.ex:100
+#: lib/retro_hex_chat/commands/handlers/cs.ex:279
 #, elixir-autogen, elixir-format
 msgid "/cs register"
 msgstr "/cs register"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:99
-#: lib/retro_hex_chat/commands/handlers/cs.ex:270
+#: lib/retro_hex_chat/commands/handlers/cs.ex:104
+#: lib/retro_hex_chat/commands/handlers/cs.ex:283
 #, elixir-autogen, elixir-format
 msgid "/cs sop add nick"
 msgstr "/cs sop add nick"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:101
-#: lib/retro_hex_chat/commands/handlers/cs.ex:272
+#: lib/retro_hex_chat/commands/handlers/cs.ex:106
+#: lib/retro_hex_chat/commands/handlers/cs.ex:285
 #, elixir-autogen, elixir-format
 msgid "/cs vop list"
 msgstr "/cs vop list"
@@ -1318,7 +1318,7 @@ msgstr ""
 "Отключитесь от сервера и вернитесь на экран подключения. Другие пользователи"
 " видят ваше необязательное сообщение об отказе."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:276
+#: lib/retro_hex_chat/commands/handlers/cs.ex:289
 #, elixir-autogen, elixir-format
 msgid "Drop channel registration"
 msgstr "Регистрация канала Drop"
@@ -1530,22 +1530,22 @@ msgstr "MOTD был очищен."
 msgid "MOTD has been updated."
 msgstr "MOTD был обновлен."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:283
+#: lib/retro_hex_chat/commands/handlers/cs.ex:296
 #, elixir-autogen, elixir-format
 msgid "Manage auto-operator access list"
 msgstr "Управление списком доступа автооператора"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:284
+#: lib/retro_hex_chat/commands/handlers/cs.ex:297
 #, elixir-autogen, elixir-format
 msgid "Manage auto-voice access list"
 msgstr "Управление списком доступа к автоголосу"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:246
+#: lib/retro_hex_chat/commands/handlers/cs.ex:259
 #, elixir-autogen, elixir-format
 msgid "Manage channel registration and access lists through ChanServ."
 msgstr "Управление регистрацией каналов и списками доступа через ChanServ."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:282
+#: lib/retro_hex_chat/commands/handlers/cs.ex:295
 #, elixir-autogen, elixir-format
 msgid "Manage super-operator access list"
 msgstr "Управление списком доступа супероператоров"
@@ -1825,7 +1825,7 @@ msgstr ""
 "Зарегистрируйте и защитите свое прозвище с помощью пароля через бот службы "
 "никсерв."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:275
+#: lib/retro_hex_chat/commands/handlers/cs.ex:288
 #, elixir-autogen, elixir-format
 msgid "Register the current channel"
 msgstr "Зарегистрируйте текущий канал"
@@ -2148,7 +2148,7 @@ msgstr ""
 "Общее использование: /perform добавлять /ns идентифицировать mypassword\n"
 "Позиции - это индексные номера на основе 0. Пароли маскируются на дисплее списка."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:285
+#: lib/retro_hex_chat/commands/handlers/cs.ex:298
 #, elixir-autogen, elixir-format
 msgid "Show ChanServ help"
 msgstr "Показать ChanServ помочь"
@@ -2211,7 +2211,7 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/alias.ex:110
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:179
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:132
-#: lib/retro_hex_chat/commands/handlers/cs.ex:262
+#: lib/retro_hex_chat/commands/handlers/cs.ex:275
 #: lib/retro_hex_chat/commands/handlers/notify.ex:122
 #: lib/retro_hex_chat/commands/handlers/ns.ex:356
 #: lib/retro_hex_chat/commands/handlers/perform.ex:155
@@ -2724,7 +2724,7 @@ msgstr "Пользователь Unmute"
 msgid "View audit log"
 msgstr "Посмотреть журнал аудита"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:277
+#: lib/retro_hex_chat/commands/handlers/cs.ex:290
 #, elixir-autogen, elixir-format
 msgid "View channel registration info"
 msgstr "Посмотреть информацию о регистрации канала"
@@ -2969,26 +2969,26 @@ msgstr "[Бот-Сервис] Не удалось создать бота: %{mes
 msgid "[BotService] No bots configured."
 msgstr "[Бот-Сервис] Никаких ботов."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:114
-#: lib/retro_hex_chat/commands/handlers/cs.ex:117
-#: lib/retro_hex_chat/commands/handlers/cs.ex:124
-#: lib/retro_hex_chat/commands/handlers/cs.ex:127
-#: lib/retro_hex_chat/commands/handlers/cs.ex:146
-#: lib/retro_hex_chat/commands/handlers/cs.ex:156
-#: lib/retro_hex_chat/commands/handlers/cs.ex:188
-#: lib/retro_hex_chat/commands/handlers/cs.ex:191
+#: lib/retro_hex_chat/commands/handlers/cs.ex:119
+#: lib/retro_hex_chat/commands/handlers/cs.ex:122
+#: lib/retro_hex_chat/commands/handlers/cs.ex:129
+#: lib/retro_hex_chat/commands/handlers/cs.ex:132
+#: lib/retro_hex_chat/commands/handlers/cs.ex:151
+#: lib/retro_hex_chat/commands/handlers/cs.ex:161
 #: lib/retro_hex_chat/commands/handlers/cs.ex:201
+#: lib/retro_hex_chat/commands/handlers/cs.ex:204
+#: lib/retro_hex_chat/commands/handlers/cs.ex:214
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{message}"
 msgstr "[ЧанСерв] %{message}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:135
+#: lib/retro_hex_chat/commands/handlers/cs.ex:140
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{name}: founder=%{founder}, registered=%{registered_at}"
 msgstr ""
 "[ЧанСерв] %{name}Основатель =%{founder}зарегистрированный =%{registered_at}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:212
+#: lib/retro_hex_chat/commands/handlers/cs.ex:225
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] Access list for %{channel} (%{level})"
 msgstr "[ЧанСерв] Список доступа для %{channel} (%{level})"
@@ -3378,13 +3378,13 @@ msgstr "Когда? Укажите как промежуток от текуще
 msgid "Which one? Use /event cancel <id>."
 msgstr "Какое? Используйте /event cancel <id>."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:98
-#: lib/retro_hex_chat/commands/handlers/cs.ex:269
+#: lib/retro_hex_chat/commands/handlers/cs.ex:103
+#: lib/retro_hex_chat/commands/handlers/cs.ex:282
 #, elixir-autogen, elixir-format
 msgid "/cs archive on"
 msgstr "/cs archive on"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:90
+#: lib/retro_hex_chat/commands/handlers/cs.ex:95
 #, elixir-autogen, elixir-format
 msgid "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, archive on|off, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop and archive require being the channel founder."
 msgstr ""
@@ -3393,32 +3393,37 @@ msgstr ""
 "Иерархия доступа: SOP (супероператор) > AOP (автооператор) > VOP (автоголос).\n"
 "Для register нужны права оператора канала. Для drop и archive нужно быть основателем канала."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:280
+#: lib/retro_hex_chat/commands/handlers/cs.ex:293
 #, elixir-autogen, elixir-format
 msgid "Publish the channel's public archive (on|off)"
 msgstr "Публиковать публичный архив канала (on|off)"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:255
+#: lib/retro_hex_chat/commands/handlers/cs.ex:268
 #, elixir-autogen, elixir-format
 msgid "Subcommand: register, drop, info, archive, sop, aop, vop"
 msgstr "Подкоманда: register, drop, info, archive, sop, aop, vop"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:21
+#: lib/retro_hex_chat/commands/handlers/cs.ex:22
 #, elixir-autogen, elixir-format
 msgid "Usage: /cs <register|drop|info|archive|sop|aop|vop|help> [args]"
 msgstr "Использование: /cs <register|drop|info|archive|sop|aop|vop|help> [задыхается]"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:165
+#: lib/retro_hex_chat/commands/handlers/cs.ex:170
 #, elixir-autogen, elixir-format
 msgid "Usage: /cs archive <on|off>"
 msgstr "Использование: /cs archive <on|off>"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:182
+#: lib/retro_hex_chat/commands/handlers/cs.ex:195
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] The public archive of %{channel} is off."
 msgstr "[ChanServ] Публичный архив %{channel} выключен."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:174
+#: lib/retro_hex_chat/commands/handlers/cs.ex:181
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] The public archive of %{channel} is on: what is said from now on is published."
 msgstr "[ChanServ] Публичный архив %{channel} включён: всё, что будет сказано с этого момента, публикуется."
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:191
+#, elixir-autogen, elixir-format
+msgid "[ChanServ] The public archive of %{channel} is on."
+msgstr "[ChanServ] Публичный архив %{channel} включён."

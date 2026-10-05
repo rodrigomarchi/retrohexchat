@@ -48,6 +48,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Components.UI.LanguageMenu
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.ShowcaseCatalog
 
   @screens [:chat, :connect, :landing, :help, :showcase]
@@ -687,43 +688,18 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         do: {window.opener, window.title, window.icon}
   end
 
-  # The seven public pages, named the way the landing shell names them — these
-  # are the landing vocabulary, and its catalogs already carry them translated.
+  # The public pages, from the one list every menu reads, linked in the
+  # reader's language — the same entries on every screen, like the rest of
+  # this menu.
   defp nav_pages do
-    [
-      %{id: "home", path: "/", label: dgettext("landing", "Home"), icon_fn: :icon_hex_stone},
+    Enum.map(PublicPages.all(), fn page ->
       %{
-        id: "how-it-works",
-        path: "/how-it-works",
-        label: dgettext("landing", "How It Works"),
-        icon_fn: :icon_server
-      },
-      %{
-        id: "features",
-        path: "/features",
-        label: dgettext("landing", "Features"),
-        icon_fn: :icon_chat
-      },
-      %{
-        id: "privacy",
-        path: "/privacy",
-        label: dgettext("landing", "Privacy"),
-        icon_fn: :icon_lock
-      },
-      %{
-        id: "install",
-        path: "/install",
-        label: dgettext("landing", "Install"),
-        icon_fn: :icon_terminal
-      },
-      %{
-        id: "community",
-        path: "/community",
-        label: dgettext("landing", "Community"),
-        icon_fn: :icon_code
-      },
-      %{id: "faq", path: "/faq", label: dgettext("landing", "FAQ"), icon_fn: :icon_question}
-    ]
+        id: page.page |> Atom.to_string() |> String.replace("_", "-"),
+        path: PublicPages.localized_path(page.path),
+        label: page.label,
+        icon_fn: page.icon
+      }
+    end)
   end
 
   # Help Topics is the same entry everywhere and reaches its topics three ways:

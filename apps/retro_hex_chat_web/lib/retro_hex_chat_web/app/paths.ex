@@ -51,6 +51,10 @@ defmodule RetroHexChatWeb.App.Paths do
   def chat_path(channel) when is_binary(channel) and channel != "", do: ~p"/chat?join=#{channel}"
   def chat_path(_channel), do: chat_path()
 
+  @doc "The chat with the solo arcade open on one game, by its catalogue id."
+  @spec chat_arcade_path(String.t()) :: String.t()
+  def chat_arcade_path(game_id), do: ~p"/chat?arcade=#{game_id}"
+
   @doc "The games catalogue, at an address of its own."
   @spec play_path() :: String.t()
   def play_path, do: ~p"/play"

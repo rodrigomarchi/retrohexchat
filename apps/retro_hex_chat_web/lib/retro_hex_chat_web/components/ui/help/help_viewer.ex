@@ -20,7 +20,10 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   import RetroHexChatWeb.Components.UI.TreeView
 
   alias RetroHexChat.Chat.HelpTopics
+  alias RetroHexChatWeb.Components.UI.Landing.GameCards
+  alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.PublicPages
 
   attr :topics_by_category, :list, required: true
   attr :all_topics, :list, default: []
@@ -120,6 +123,8 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
         {render_slot(@inner_block)}
       </article>
 
+      <.help_catalogue_link topic_id={@topic.id} />
+
       <.see_also_section see_also={Map.get(@topic, :see_also, [])} />
     </div>
     """
@@ -140,6 +145,36 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
     </div>
     """
   end
+
+  attr :topic_id, :string, required: true
+
+  # A game's help page teaches how to play it; its catalogue page is where it
+  # is shown off, and this is the way from one to the other.
+  defp help_catalogue_link(assigns) do
+    assigns = assign(assigns, :path, catalogue_path(assigns.topic_id))
+
+    ~H"""
+    <GameCards.catalogue_link
+      :if={@path}
+      path={@path}
+      class="mt-4 text-xs"
+      data-testid="help-catalogue-link"
+    >
+      {dgettext("help", "Screenshots and more games in the games catalogue")}
+    </GameCards.catalogue_link>
+    """
+  end
+
+  defp catalogue_path("feature-retro-games"), do: PublicPages.localized_path("/games")
+
+  defp catalogue_path("feature-arcade-" <> slug) do
+    case GameCatalog.get(slug) do
+      {:ok, game} -> PublicPages.localized_path(GameCatalog.page_path(game))
+      :error -> nil
+    end
+  end
+
+  defp catalogue_path(_topic_id), do: nil
 
   attr :see_also, :list, default: []
 

@@ -623,6 +623,21 @@ a move that renames one is caught before commit.
   localized pages are self-referencing clean paths.
 - **Public pages avoid the full app bundle.** Prefer server-rendered / CSS-first behavior on
   landing and help pages; only actual app pages load `app.js`.
+- **A change to a public page proves it took nothing away from what is indexed.** Snapshot the
+  pages with the old code running, again with the new, and compare:
+  `make seo.snapshot BASE=<old> OUT=tmp/seo/before`, the same into `tmp/seo/after`, then
+  `make seo.compare`. It fails when a title, description, canonical, hreflang, Open Graph,
+  Twitter tag, JSON-LD or h1 changed, or when visible text was lost; added text is reported, not
+  failed. Prefer adding to rewriting: text a search engine already ranks is removed only as a
+  deliberate, measured decision.
+- **Two public pages never carry the same prose.** The public game pages (`/games`,
+  `/games/:slug` — the pages a search lands on, distinct from the in-app Games folder of §19) say
+  what a game is with the catalogue's short description; the long arcade prose belongs to the
+  game's help topic. Duplicated paragraphs leave a search engine to pick one URL, quite possibly
+  the wrong one.
+- **The public pages are one list**, `RetroHexChatWeb.PublicPages`: the menus, the sitemap and each
+  page's own path read it. A page that is not on it — a game, an archive day — passes its own
+  `current_path` to `landing_layout/1`, or its language links lead to the wrong page.
 
 ---
 

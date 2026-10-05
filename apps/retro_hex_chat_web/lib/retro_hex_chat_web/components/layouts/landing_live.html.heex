@@ -12,6 +12,9 @@
     <% canonical_url =
       assigns[:canonical_url] || RetroHexChatWeb.SEO.canonical_url(canonical_path) %>
     <% hreflang_alternates? = assigns[:hreflang_alternates] != false %>
+    <%!-- A page with a picture of its own — a game's screenshot — shares that
+          rather than the site's card. --%>
+    <% og_image = assigns[:og_image] || RetroHexChatWeb.SEO.social_image() %>
     <% page_title = assigns[:page_title] || "Retro Hex Chat — Self-hosted chat with P2P calls" %>
     <% page_description =
       assigns[:page_description] ||
@@ -80,11 +83,11 @@
     <meta property="og:description" content={page_description} />
     <meta property="og:url" content={canonical_url} />
     <meta property="og:site_name" content="Retro Hex Chat" />
-    <meta property="og:image" content={RetroHexChatWeb.SEO.social_image_url()} />
-    <meta property="og:image:width" content={RetroHexChatWeb.SEO.social_image_width()} />
-    <meta property="og:image:height" content={RetroHexChatWeb.SEO.social_image_height()} />
-    <meta property="og:image:type" content={RetroHexChatWeb.SEO.social_image_type()} />
-    <meta property="og:image:alt" content="Retro Hex Chat peer-to-peer chat preview" />
+    <meta property="og:image" content={og_image.url} />
+    <meta property="og:image:width" content={og_image.width} />
+    <meta property="og:image:height" content={og_image.height} />
+    <meta property="og:image:type" content={og_image.type} />
+    <meta property="og:image:alt" content={og_image.alt} />
     <meta
       property="og:locale"
       content={RetroHexChatWeb.I18n.open_graph_locale()}
@@ -105,8 +108,8 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={page_title} />
     <meta name="twitter:description" content={page_description} />
-    <meta name="twitter:image" content={RetroHexChatWeb.SEO.social_image_url()} />
-    <meta name="twitter:image:alt" content="Retro Hex Chat peer-to-peer chat preview" />
+    <meta name="twitter:image" content={og_image.url} />
+    <meta name="twitter:image:alt" content={og_image.alt} />
 
     <%!-- JSON-LD Structured Data. A page names what it is; only the home page
           describes the application, because the application is one entity and

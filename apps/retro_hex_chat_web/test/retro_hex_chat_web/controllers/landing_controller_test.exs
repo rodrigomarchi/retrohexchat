@@ -9,6 +9,8 @@ defmodule RetroHexChatWeb.LandingLiveTest do
     {"/", "hero-heading"},
     {"/how-it-works", "how-it-works-heading"},
     {"/features", "features-heading"},
+    {"/games", "games-heading"},
+    {"/games/doom-shareware", "game-heading"},
     {"/privacy", "privacy-heading"},
     {"/install", "install-heading"},
     {"/community", "community-heading"},

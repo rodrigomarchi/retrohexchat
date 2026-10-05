@@ -24,7 +24,9 @@ defmodule RetroHexChatWeb.ArchiveController do
   which switching off actually switches off.
 
   The `etag` is therefore computed from the **data**, not from the rendered
-  bytes: the lines the page will show and the state that changes how they read.
+  bytes: the text of the lines the page will show — so a second edit of an
+  already edited line still changes it — and the release, so a fix to how a
+  page is drawn reaches a robot that already holds the old one.
   Hashing the document was the first attempt and it never matched twice — the
   layout carries a fresh CSRF token on every request, so every render differed
   and no robot could ever have revalidated anything. Deriving it from the
@@ -39,6 +41,7 @@ defmodule RetroHexChatWeb.ArchiveController do
 
   alias RetroHexChat.Chat.Archive
   alias RetroHexChatWeb.ArchiveHTML
+  alias RetroHexChatWeb.BuildInfo
   alias RetroHexChatWeb.SEO
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -51,7 +54,7 @@ defmodule RetroHexChatWeb.ArchiveController do
 
       days ->
         conn
-        |> maybe_not_modified(etag_for([channel, days]))
+        |> maybe_not_modified(etag_for([channel, days, BuildInfo.version()]))
         |> assign_page(channel, slug, path: "/archive/#{slug}")
         |> assign(:days, days)
         |> assign(:page_title, page_title(channel))
@@ -78,14 +81,20 @@ defmodule RetroHexChatWeb.ArchiveController do
 
       conn
       |> maybe_not_modified(
-        etag_for([channel, date, cursor, page.has_more, Enum.map(entries, &{&1.id, &1.edited?})])
+        etag_for([
+          channel,
+          date,
+          cursor,
+          page.has_more,
+          BuildInfo.version(),
+          Enum.map(entries, &{&1.id, &1.text})
+        ])
       )
       |> assign_page(channel, slug, path: page_path(day_path, cursor))
       |> assign(:entries, entries)
       |> assign(:date, date)
-      |> assign(:days, Archive.days_for(channel))
       |> assign(:prev_path, previous_path(day_path, previous))
-      |> assign(:next_path, page.has_more && page_path(day_path, page.next_cursor))
+      |> assign(:next_path, if(page.has_more, do: page_path(day_path, page.next_cursor)))
       |> assign_neighbour_urls()
       |> assign(:page_title, day_title(channel, date, cursor, first))
       |> assign(:page_description, description(channel, date, entries))

@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.SitemapController do
   alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Chat.HelpTopics
   alias RetroHexChatWeb.ContentDates
+  alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.SEO
   alias RetroHexChatWeb.ShowcaseCatalog
 
@@ -127,8 +128,10 @@ defmodule RetroHexChatWeb.SitemapController do
       |> Enum.map(&{"/chat/help/#{&1.id}", ContentDates.help_topic(&1.id)})
 
     landing_paths = Enum.map(SEO.landing_paths(), &{&1, ContentDates.landing(&1)})
+    game_paths = Enum.map(GameCatalog.slugs(), &{"/games/#{&1}", ContentDates.game_page(&1)})
 
-    (landing_paths ++ [{"/chat/help", ContentDates.help_topic("welcome")}] ++ help_topic_paths)
+    (landing_paths ++
+       game_paths ++ [{"/chat/help", ContentDates.help_topic("welcome")}] ++ help_topic_paths)
     |> Enum.uniq_by(&elem(&1, 0))
   end
 

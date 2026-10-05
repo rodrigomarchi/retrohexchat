@@ -34,6 +34,12 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
   attr :trusted_device_id, :any, default: nil
   attr :active_page, :atom, required: true, doc: "marks the current page in Navigate"
 
+  attr :current_path, :string, default: nil, doc: "see `LandingShell.landing_layout/1`"
+
+  attr :return_to, :string,
+    default: nil,
+    doc: "where a reader who signs in here lands — a game's page sends them to the game"
+
   @spec landing_connect_window(map()) :: Phoenix.LiveView.Rendered.t()
   def landing_connect_window(assigns) do
     ~H"""
@@ -50,7 +56,7 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
       <:icon><Icons.icon_connect class="w-4 h-4" /></:icon>
 
       <:menu>
-        <.landing_menu_bar active_page={@active_page} />
+        <.landing_menu_bar active_page={@active_page} current_path={@current_path} />
       </:menu>
       <%!-- The sign-in socket loads on first touch. If that chunk never
             arrives the form is inert, which reads as a dead page unless it
@@ -76,6 +82,7 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
         auto_login={true}
         csrf_token={Plug.CSRFProtection.get_csrf_token()}
         chat_session_path={~p"/chat/session"}
+        return_to={@return_to}
       />
     </.desktop_window>
     """

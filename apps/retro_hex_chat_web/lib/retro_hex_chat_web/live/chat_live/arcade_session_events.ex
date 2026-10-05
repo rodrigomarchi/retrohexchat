@@ -26,12 +26,14 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
+  import Phoenix.LiveView, only: [push_patch: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.Arcade
   alias RetroHexChat.Arcade.Schema.SoloSession
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Windows
@@ -115,6 +117,22 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   # ── PubSub events (topic "arcade:#{token}") ───────────────────
 
   @spec handle_info(term(), Socket.t()) :: {:cont | :halt, Socket.t()}
+  # A link that named an arcade game — the public game page's way in — opens
+  # the arcade on that game once the chat is up, as the menu would. The
+  # parameter is then dropped from the address: left there, every reconnect
+  # would mount on it again and open a new arcade session.
+  def handle_info({:open_arcade_link, game_id}, socket) do
+    socket = push_patch(socket, to: Paths.chat_path(), replace: true)
+
+    case Arcade.get_game(game_id) do
+      {:ok, _game} ->
+        {:halt, socket |> open_arcade() |> maybe_preview_game(%{"game-id" => game_id})}
+
+      {:error, :not_found} ->
+        {:halt, socket}
+    end
+  end
+
   def handle_info(
         %{payload: %{token: token}},
         %{assigns: %{arcade_session: %{token: current_token}}} = socket
