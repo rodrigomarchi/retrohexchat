@@ -1,144 +1,14 @@
 # P2P e conferencia - mapa de handshake e resiliencia
 
-Data: 2026-07-28, revisado em 2026-08-31 (superficies com endereco proprio)
-
 Este documento mapeia como chamadas P2P e chamadas de conferencia estao
-implementadas hoje, quais mecanismos de resiliencia ja existem e onde ainda ha
-risco de usuario ficar preso em fluxo quebrado. Ele complementa
-`docs/reference/media-session-p2p-conference-current.md`, que continua sendo a
-fonte curta de produto sobre superficies e janelas.
+implementadas, quais mecanismos de resiliencia existem e onde ainda ha risco de
+usuario ficar preso em fluxo quebrado. O contrato de produto das superficies e
+janelas esta em [`guide/surfaces.md`](../guide/surfaces.md).
 
 As regras duraveis que sairam deste mapa — `disconnected` nao e `failed`, epoch
 de sinalizacao, renegociar versus rejoin, `PeerServer` monitorando o channel —
 vivem em `docs/AGENT-GUIDE.md` secao 8.5. Aqui fica o inventario tecnico: quais
 arquivos participam de cada caminho e o que os testes ja cobrem.
-
-## Sumario executivo
-
-- P2P e uma sessao WebRTC browser-browser. O convite, a autorizacao e o estado
-  de sessao sao do backend Phoenix/LiveView; **a sinalizacao nao passa mais pelo
-  socket do LiveView** — ela e um Phoenix Channel cru, `p2p:<session_token>`,
-  autenticado por `Lobby.JoinToken`. A midia, arquivos e jogos trafegam no mesmo
-  `RTCPeerConnection` do browser.
-- Conferencia e uma sala SFU embutida no servidor. O browser negocia via
-  Phoenix Channel com um `PeerServer` ExWebRTC por participante; o `RoomServer`
-  coordena participantes, tracks, renegociacao e fanout RTP.
-- O P2P tem uma estrategia correta de "single-offerer": so o iniciador cria
-  offers, e o outro peer pede renegociacao via `lobby_renegotiate`. Isso evita
-  glare na maior parte dos fluxos.
-- A conferencia tambem tem um unico offerer efetivo: o servidor/SFU envia
-  `group_call_offer` e o browser responde com `group_call_answer`.
-- As camadas principais de resiliencia agora cobrem readiness antes de
-  sinalizar, buffers de ICE/SDP, timeouts, backoff, retries, grace window de
-  rejoin, TURN opcional, stats, validacao de payloads, epoch/offer_id para
-  descartar sinalizacao obsoleta, feedback imediato em `disconnected` e UI de
-  erro com saida manual funcional.
-- Nesta rodada foram fechados os riscos mais graves mapeados: retry automatico
-  do answerer P2P, erro SDP/ICE sem feedback, rejoin de conferencia quando o
-  `PeerServer` nao esta pronto, answer obsoleta por offer antigo e rehydrate
-  P2P bloqueado por janela stale apos reconnect/deploy.
-- A suite E2E destrutiva agora cobre queda curta de rede/LiveView, botoes
-  `End/Leave` em erro, reload durante a offer inicial P2P/SFU e `PeerServer`
-  encerrado antes de `request_offer` da conferencia, alem de retries manuais
-  simultaneos P2P.
-- Conferencia agora trata fechamento inesperado do raw channel como
-  `disconnected`, nao como saida voluntaria, e reidrata o participante
-  nao-terminal apos mount/rejoin de canal.
-- O endpoint `GET /api/calls/healthz` agora expoe readiness operacional de
-  backend para P2P signaling, TURN e conferencia/SFU, sem depender da UI e sem
-  expor segredos ou payloads WebRTC.
-- Riscos remanescentes sao principalmente de robustez operacional: replay
-  duravel de sinalizacao apos perda de mensagem server-client, alertas/dashboards
-  externos sobre as metricas e o healthcheck, helper visual unico em todos os
-  pontos de midia e cenarios E2E destrutivos mais agressivos de rede
-  `disconnected` em laboratorio de rede real.
-
-## O que mudou com as superficies com endereco proprio
-
-Revisao de 2026-08-31, depois das ondas 0 a 6. As regras duraveis disso vivem em
-[`guide/surfaces.md`](../guide/surfaces.md) (secao 19) e em
-[`guide/webrtc-p2p.md`](../guide/webrtc-p2p.md) 8.1 e 8.5; aqui fica so o que
-muda a leitura deste inventario:
-
-- **A sinalizacao P2P virou channel cru** (`p2p:<session_token>`), como a
-  conferencia e o space ja eram. Nenhuma das tres passa pelo socket do LiveView.
-  O que ficou no LiveView e o que carrega politica de transporte — `ice_servers`,
-  `role`, `turn_only` — e o ciclo de vida da sessao.
-- **A sessao tem endereco proprio** (`/p2p/:token`) e o chat renderiza o mesmo
-  modulo numa janela. Fechar a aba do chat nao encerra a chamada, e a filiacao a
-  canal em que a conferencia se apoia so e liberada quando a **ultima**
-  superficie da pessoa cai (`RetroHexChat.Surfaces`).
-- **Uma sessao so fica viva numa janela por vez.** Abrir a mesma sessao em outra
-  aba a **move** para la, com o mesmo reset que uma queda de socket provoca; a
-  janela deslocada avisa e oferece traze-la de volta. Isso apagou o caminho de
-  `reattach_pending` inteiro, que era o mais fragil do produto.
-- **A maquina de estados ganhou `open`**: uma sessao pode nascer sem par, como
-  link de partida, e a cadeira e tomada por uma escrita condicional.
-- **O epoch de sinalizacao e por pagina**, e uma aba nova comeca do um. Um
-  `offer` com `connection_reset: true` atravessa a guarda de staleness — sem
-  isso, toda oferta de uma pagina recem-aberta lia como obsoleta para sempre.
-
-## Referencias externas usadas
-
-- MDN `RTCPeerConnection.restartIce()`:
-  https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/restartIce
-- MDN perfect negotiation:
-  https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Perfect_negotiation
-- MDN `iceConnectionState`:
-  https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/iceConnectionState
-- MDN WebRTC protocols, ICE/STUN/TURN/SFU:
-  https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols
-- WebRTC.org TURN server:
-  https://webrtc.org/getting-started/turn-server
-- WebRTC samples Trickle ICE:
-  https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/
-- Phoenix Channels reliability:
-  https://phoenix.hexdocs.pm/channels.html
-- Phoenix JavaScript client:
-  https://phoenix.hexdocs.pm/js/
-- ExWebRTC PeerConnection:
-  https://ex-webrtc.hexdocs.pm/ExWebRTC.PeerConnection.html
-- ExWebRTC negotiation guide:
-  https://ex-webrtc.hexdocs.pm/negotiation.html
-- Telemetry.Metrics:
-  https://hexdocs.pm/telemetry_metrics/Telemetry.Metrics.html
-- Phoenix Telemetry:
-  https://hexdocs.pm/phoenix/telemetry.html
-- Phoenix LiveDashboard metrics:
-  https://hexdocs.pm/phoenix_live_dashboard/metrics.html
-- Playwright offline em `BrowserContext`:
-  https://playwright.dev/docs/api/class-browsercontext#browser-context-set-offline
-- Playwright actionability:
-  https://playwright.dev/docs/actionability
-- Playwright WebSocket/WebSocketRoute:
-  https://playwright.dev/docs/api/class-websocketroute
-- Phoenix LiveView mount/reconnect params:
-  https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html
-
-Principios retirados dessas referencias:
-
-- `disconnected` pode ser transitorio e voltar para `connected`; nao deve
-  derrubar a chamada imediatamente.
-- `getStats()` fornece contadores cumulativos de transporte, RTP e data channel;
-  comparar snapshots permite diferenciar `disconnected` com trafego real de
-  perda efetiva antes de escalar recovery.
-- `failed` indica que ICE nao encontrou pares compativeis suficientes; o app
-  precisa disparar ICE restart ou reconstruir a conexao.
-- `restartIce()` so se completa via novo ciclo offer/answer; a aplicacao ainda
-  precisa entregar a sinalizacao de forma robusta.
-- WebRTC nao define transporte de sinalizacao. Phoenix entrega reconexao de
-  socket/channel, mas mensagens servidor-cliente sao at-most-once; mensagens
-  criticas de sinalizacao precisam ser idempotentes e reemitidas por estado
-  proprio da aplicacao quando necessario.
-- Em conferencia multiparty, SFU e o desenho esperado para evitar fanout N:N
-  direto entre browsers.
-- Teste E2E de fault injection deve usar offline/reconnect real do contexto e
-  validar botoes visiveis/habilitados conforme as regras de actionability, para
-  evitar falsos positivos em wrappers invisiveis ou DOM instavel.
-- Healthcheck backend de TURN nao prova conectividade relay fim-a-fim sozinho:
-  candidate `relay` exige ICE gathering de um cliente WebRTC. O endpoint atual
-  cobre pre-condicoes server-side: configuracao, supervisao, listeners, ranges
-  e SFU/registries.
 
 ## Inventario principal
 
@@ -164,8 +34,8 @@ Backend, channel e LiveView:
   o que o chat sabe de uma sessao em que o leitor nao esta
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex` —
   o que sobrou no chat: convite, janela e troca de sessao
-- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex`
-- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/components/p2p_session_console.ex`
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/p2p_live/components/p2p_media_island.ex`
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex`
 - `apps/retro_hex_chat/lib/retro_hex_chat/lobby.ex`
 - `apps/retro_hex_chat/lib/retro_hex_chat/lobby/service.ex`
 - `apps/retro_hex_chat/lib/retro_hex_chat/lobby/session_server.ex`
@@ -410,29 +280,6 @@ iniciador para que ele gere nova oferta.
 - Alternar privacy relay em sessao viva dispara restart coordenado imediato; a
   conexao nao fica usando policy antiga ate o proximo erro/retry.
 
-### Riscos P2P tratados nesta rodada
-
-- Retry automatico do answerer inerte: resolvido com renegociacao recover
-  enviada ao iniciador e metadados de epoch/attempt.
-- SDP/ICE antigo aplicado em PC novo: resolvido com descarte por
-  `signalingEpoch`/`offer_id`.
-- Payload SDP/ICE sem limite: resolvido em `P2P.validate_signal/1` e no relay
-  LiveView.
-- Falhas repetidas lotando o transcript: resolvido com `_notifyFailed/2`
-  idempotente no hook e deduplicacao de `lobby_failed` no LiveView.
-- Reconnect/deploy caindo em "already active in another window": resolvido com
-  takeover — a janela mais recente assume o assento e a anterior mostra o
-  caminho de volta. O caminho antigo (`reattach_pending` + backoff) deixou de
-  existir junto com o motivo dele.
-- Recovery desmontando a propria midia: resolvido mantendo o hook montado
-  enquanto a sessao base segue conectada.
-- Falha repetida de ICE candidate ficando invisivel no console: resolvido com
-  agregacao no hook e entrada no mesmo ciclo de retry/falha.
-- Perda transitoria de `offer`/`answer`/ICE/`lobby_renegotiate` no transporte:
-  resolvida com snapshot/replay em memoria no `SessionServer` e dedupe no hook.
-  O fio deixou de ser o socket do LiveView (canal `p2p:<session_token>`), entao
-  um reload da pagina nao leva mais a negociacao junto.
-
 ### Riscos P2P remanescentes
 
 - Replay de sinalizacao P2P e propositalmente em memoria. Se o BEAM/processo de
@@ -602,23 +449,6 @@ Rate limit:
 - O rate limit de reacoes fica no contexto `GroupCall.send_reaction/4`; o
   channel preserva esse contrato sem duplicar bloqueio.
 
-### Riscos conferencia tratados nesta rodada
-
-- Browser repetindo `request_offer` contra `PeerServer` morto: resolvido com
-  `rejoin_required` e rejoin completo no hook.
-- Link entre `PeerServer` e channel derrubando a sinalizacao: resolvido trocando
-  link por monitor do channel pid.
-- Answer obsoleta aplicada em oferta nova: resolvido com `offer_id`.
-- Falha de answer/candidate invisivel ao browser: resolvido com
-  `group_call_error`.
-- Falha repetida de ICE candidate no browser ficando apenas em `console.warn`:
-  resolvido com agregacao local e recovery por `ice_candidate_failed`.
-- SDP/ICE sem limite no channel: resolvido com validacao de shape/tamanho.
-- Usuario receive-only por falha inicial sem caminho para publicar depois:
-  resolvido com captura on-demand e republish de tracks.
-- Offer inicial server-client perdida: resolvido com watchdog no hook que pede
-  fresh offer e falha com retry manual se a offer nao chegar.
-
 ### Riscos conferencia remanescentes
 
 - Sinalizacao server-client segue at-most-once. `offer_id` torna answers
@@ -642,7 +472,7 @@ Unitarios JS:
 - `media.js`: constraints, erros de permissao/dispositivo, screen capture,
   stream helpers, stats, MOS, perfis, devices, replace track, attach video
   stall e codec preferences.
-- `lobby_webrtc_hook.test.js`: data channels, roteamento inbound de canais,
+- `lobby_connection.test.js`: data channels, roteamento inbound de canais,
   stats completas, feedback imediato em `ice_disconnected`, deferral por
   `getStats()` e cleanup de poller.
 - `lobby_media_hook.test.js`: receive-only, fallback de captura, devices do

@@ -42,7 +42,6 @@ Living catalogs and runbooks kept current with the code:
 | [reference/ci-pipeline.md](reference/ci-pipeline.md) | A CI check fails, tuning partitions, adding a check, browser E2E, deploy mechanics |
 | [reference/i18n-catalogs.md](reference/i18n-catalogs.md) | Gettext catalog conventions, the locale roster, and rollout waves (`config/i18n_locales.exs`) |
 | [reference/conferencia-canal-permissoes.md](reference/conferencia-canal-permissoes.md) | The authority matrix for channel conferences: the call inherits the channel hierarchy, there is no separate host/moderator role |
-| [reference/media-session-p2p-conference-current.md](reference/media-session-p2p-conference-current.md) | The current surfaces and sections of the unified P2P/conference media session |
 | [reference/call-handshake-resilience-map.md](reference/call-handshake-resilience-map.md) | Which files take part in each handshake/recovery path, and what the tests already cover. The rules themselves are [`guide/webrtc-p2p.md` §8.5](guide/webrtc-p2p.md) |
 | [operations/group-call-sfu.md](operations/group-call-sfu.md) | Runtime env vars and operational notes for the embedded group-call SFU |
 

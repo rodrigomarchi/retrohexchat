@@ -17,7 +17,7 @@ becomes a thin orchestrator; each island owns its own state, events, and streams
 - **The parent owns coordination state** — specifically any assign read *synchronously* by a
   *different* subsystem:
   - `*_visible` / `show_*` flags read by the Escape-dismissal stack in `keyboard_events.ex`
-    (`topmost_dismissals`/`secondary_dismissals`). Moving these into an island breaks Escape
+    (`topmost_dismissal/1`/`secondary_dismissals/0`). Moving these into an island breaks Escape
     ordering — pass them in as `visible` (passthrough) and let the island own only the draft.
   - Any list/map read mid-flow by tab-complete, pagination, context-menu predicates, the
     connect flow, or a sibling handler.

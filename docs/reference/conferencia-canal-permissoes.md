@@ -12,7 +12,11 @@
 | `half_operator` | 2 | Half-op. Pode moderar voiced e membros comuns. |
 | `voiced` | 1 | Usuario com voz. Nao modera a conferencia. |
 | `regular` | 0 | Membro comum do canal. Nao modera a conferencia. |
-| `guest` | - | Usuario nao registrado/nao identificado. Nao usa conferencia. |
+| `bot` | 0 | Bot no canal. Mesmo rank de `regular`; nao modera a conferencia. |
+
+Os ranks sao `Channels.Membership.rank/1`, a mesma escala que o canal usa para
+kick e ban. A coluna `guest` da matriz nao e um papel: e quem nao tem nick
+registrado, recusado por `check_registered` antes de qualquer papel contar.
 
 ## Regra base
 
@@ -31,7 +35,10 @@
 - Moderar outro participante exige `half_operator` ou superior e rank maior que
   o alvo.
 - A UI deve esconder acoes que o servidor recusaria por policy.
-- A policy do servidor continua sendo a autoridade final.
+- A policy do servidor continua sendo a autoridade final:
+  `RetroHexChat.GroupCall.Policy` (`can_create_channel_call?`, `can_join?`,
+  `can_close?`, `can_kick_participant?`, `can_moderate_media?`). Kick e
+  moderacao de midia delegam para `Channels.Policy.can_kick?/3`.
 
 ## Matriz de acoes
 

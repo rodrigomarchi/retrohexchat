@@ -11,9 +11,9 @@ stable — `§19` still means this file.
 
 ## 19.1 What a surface is
 
-Everything used to fit in one tab: `/chat` mounted one LiveView, a Win98 desktop
-and N windows. These have an address of their own instead, and **none of
-them has a mount inside the chat**:
+`/chat` mounts one LiveView: a Win98 desktop and its windows. The screens below
+have an address of their own instead, and **none of them has a mount inside the
+chat**:
 
 | Surface | Own address | Module |
 |---|---|---|
@@ -25,13 +25,11 @@ them has a mount inside the chat**:
 | arcade | `/play/arcade/:game` | a redirect, not a LiveView |
 
 One module, one mount, one route each. There is no `"embedded" => true` and no
-`embedded?` branch left anywhere: what used to be "one module, two hosts" is
-now one module and one host, and everything that existed only to tell the two
-apart is deleted.
+`embedded?` branch: a surface has one host, its own page.
 
 **A nested `live_render` never passes through the `live_session`'s `on_mount`.**
-That is why the chat's windows were never surfaces — they were part of the chat
-and died with it — and it is one of the reasons none of them survived.
+That is why a window inside the chat can never be a surface — it is part of the
+chat and dies with it.
 
 ### One door, and the chat writes it
 
@@ -48,8 +46,8 @@ enters the story.
 
 The P2P session takes the same shape and needed nothing new to carry it: its
 invite already **is** a persisted private message with the session's own address
-in it, so wave 3 only had to stop putting the creator inside the session and let
-the card be the door for both of them. What it did have to answer is where the
+in it, so the creator is not put inside the session either: the card is the
+door for both of them. What it did have to answer is where the
 chat hears about a session it is not in — see below.
 
 **A space is the one that is not a room, and the difference matters.** Its
@@ -76,18 +74,28 @@ Three things this needs and would fail silently without:
 - The chat cannot reach a call it does not host, so a membership the call stood
   on going away (`/part`, a kick, a ban) is published on
   `Topics.channel_calls/1` as `{:channel_membership_lost, …}` and the surface
-  ends itself. Before that, being banned from a channel left the person sitting
-  in a conference they were no longer in.
+  ends itself — a ban never leaves a person sitting in a conference they are no
+  longer in.
 - **A session tells the people in it, never the room's own topic.** The badge in
-  a conversation used to be fed by `{:surface_state, :p2p, …}` — a message that
-  only exists while the chat is hosting the surface — so removing the window
-  would have frozen it in silence. The obvious replacement is wrong in a way
+  a conversation cannot come from the surface, which the chat does not host.
+  The obvious source is wrong in a way
   that does not show up in a test: `lobby:<token>` is where the **WebRTC
   negotiation** crosses, every ICE candidate and every SDP, so a chat subscribed
   there to learn that a dot changed colour would carry a whole call's traffic
   per badge. `Lobby.SessionServer` therefore speaks on each participant's own
   `user:` topic — `lobby_invite`, `lobby_session_progress`,
   `lobby_session_ended` — and the chat re-reads the row.
+
+**Pressing the control again brings the card back down.** A press on a room
+that is already open writes the same room's one card again at the bottom of the
+conversation — answering "its card is in this conversation" would refuse the one
+person who cannot find it. The only press that writes nothing is the press where
+the card is already the last line. One rule, in `ChatLive.Helpers.CardDoor.deliver/4`
+over `Chat.Queries.newest_line_carries?/2`, and it looks for the address
+(`/join/<slug>`, `/p2p/<token>`), not the sentence around it, which is free to
+change. "May this pair have a session" (`Lobby.can_ask_for_session?/2`) and "may a
+session be inserted" (`Lobby.can_create_session?/2`) are separate so `/p2p`
+reaches the card instead of dying in the command handler.
 
 ### The ruler that decides what stays in the chat
 
@@ -148,35 +156,12 @@ module says what kind of screen it is, the path says which one.
 notice (`error/2`, `system/2` — a sentence on the page's own status bar), and
 `close/1`, which marks the surface finished.
 
-This module used to be `SurfaceHost`, and every one of those functions chose
-between sending to a parent process and doing something here. The plumbing went
-out one wave at a time, and the order is worth knowing because each removal was
-a fix rather than a tidy-up:
-
-- **Geometry, wave 3.** It was a no-op standalone, which is how mini mode came
-  to be a checkbox that changed nothing at the session's own address — the
-  page is a Win98 desktop with a window manager of its own, so the command goes
-  straight to it.
-- **The space's two messages, wave 4.** `{:space_surface_avatar, …}` and
-  `{:space_surface_event, …}`. The character you picked last is now
-  `localStorage` on the browser that picked it, pushed up as
-  `space_remember_avatar`: nothing on the server outlives a visit any more, so
-  the chat could not be the memory even if it wanted to be.
-- **`focus`, `publish` and `remember`, wave 5**, along with `surface_tag` and
-  both `host_snapshot/1` functions. Every one of them had been dead since its
-  own wave: nothing in the chat has handled `:surface_notice`, `:surface_focus`,
-  `:surface_closed`, `:surface_state` or `:surface_preferences` for some time,
-  and `host_snapshot` was being computed on every event so it could be compared
-  against itself and dropped.
-
-**`remember` needed no new home, which is the answer to the question the plan
-asked.** The pre-join choice already had two: `localStorage` in the browser
-that made it — a camera id only means anything on the machine that enumerated
-it — and `TrustedDevices.put_device_preference/4` for a terminal that is
-trusted. `SurfaceHost.remember/2` was a third copy handed to a process that
-stopped existing in wave 1. Checking the table proves nothing either way, by
-the way: an empty `trusted_device_preferences` is what a database nobody has
-used the antechamber on looks like.
+There is no parent to report to. Geometry commands go straight to the page's
+own window manager; the space's last-picked character is `localStorage` on the
+browser that picked it, pushed up as `space_remember_avatar`; a pre-join device
+choice lives in `localStorage` and, on a trusted terminal, in
+`TrustedDevices.put_device_preference/4`. Nothing about a surface is remembered
+by the chat.
 
 ---
 
@@ -319,42 +304,34 @@ is not, so changing one means arguing with the reason rather than the line.
   creates the room; **Share** creates the address. If every game window minted a
   `share_link`, the table would be landfill in a week.
 
-  **Reversed for the conference and the P2P session, 2026-09-01, and the premise
-  is what changed.**
-  A conference has no window in the chat any more, so its address is not an
-  extra — it is the only door. Opening one now mints the link *and* writes it
-  into the channel as a system message, because a room created without its card
-  would be a conference nobody has a way into. The landfill argument still
-  holds and is still the reason this is safe: the ratio is **one link per room**,
-  not one per click. `ShareLinks.create/1` is idempotent per
-  `{kind, target, creator}`, rooms are already rows, and a second click on a
-  channel that has a live room mints nothing and posts nothing. The P2P session
-  needs no link at all: the invite carries the session's own token, so the card
-  is drawn by `ShareLinks.Card.for_session/1` with no slug and nothing to revoke
-  apart from the session.
+  **The conference is the exception, because its address is its only door.**
+  It has no window in the chat, so opening one mints the link *and* writes it
+  into the channel as a system message — a room without its card would be a
+  conference nobody has a way into. The landfill argument still holds and is
+  why this is safe: the ratio is **one link per room**, not one per click.
+  `ShareLinks.create/1` is idempotent per `{kind, target, creator}`, and a
+  second click on a channel with a live room mints nothing and posts nothing.
+  The P2P session needs no link at all: the invite carries the session's own
+  token, so the card is drawn by `ShareLinks.Card.for_session/1` with no slug
+  and nothing to revoke apart from the session.
 
-  **The space, 2026-09-02, and it lands in the middle.** The address of a place
-  needs no minting to work, so `Share` at the picker is untouched and still the
-  only way to get a link *to the place*. What walking into an empty one mints is
-  a link to that **gathering**, once per gathering, and that ratio is the same
-  one-per-room the landfill argument allows.
+  **The space lands in the middle.** The address of a place needs no minting
+  to work, so `Share` at the picker is still the only way to get a link *to
+  the place*. What walking into an empty one mints is a link to that
+  **gathering**, once per gathering — the same one-per-room ratio.
 
-  **The solo games keep the original rule, and are the reason it is still
-  written down.** `/play` is a catalogue, not a room: there is nothing to
-  create, nothing to announce and no card. It is the one screen with an address
-  that posts nothing, and it is what the rule looks like when the premise has
-  not changed.
+  **The solo games keep the rule as written.** `/play` is a catalogue, not a
+  room: there is nothing to create, nothing to announce and no card. It is the
+  one screen with an address that posts nothing.
 
-  **Where the catalogue is read is not where it is played, 2026-09-30.** A
-  catalogue with an address of its own put a second tab between the reader and
-  the list, which is the one thing a list must not cost: you opened a tab to
-  find out what there was. So the Games desktop folder holds the catalogue —
-  one icon per game, from `Games.Catalog` — and each icon is the address of
-  that game. The tab is offered on the game the reader chose, never on the list
-  they are still reading, and Start ▸ Games ▸ Retro Games opens that folder
-  rather than carrying a second copy of it. None of this is a mount: the folder
-  is links, `PlayLive` still lives only at its own address, and the rule above
-  is untouched.
+  **Where the catalogue is read is not where it is played.** A catalogue at an
+  address of its own would put a second tab between the reader and the list.
+  So the Games desktop folder holds the catalogue — one icon per game, from
+  `Games.Catalog` — and each icon is the address of that game. The tab is
+  offered on the game the reader chose, never on the list they are still
+  reading, and Start ▸ Games ▸ Retro Games opens that folder rather than
+  carrying a second copy of it. The folder is links; `PlayLive` still lives
+  only at its own address.
 
 - **After it starts, the link still works.** A link spends most of its life
   after minute zero. Call and space let a late click in; a full match says
@@ -485,8 +462,8 @@ is not, so changing one means arguing with the reason rather than the line.
   `:DOWN` — which arrives exactly when a node, or a test's sandbox owner, is
   going away with the database pool. That closing `UPDATE` **exits** rather than
   raising, a `rescue` lets it through, and one dying space then takes every
-  other space's monitor with it. This is the same shape as the crash wave 3 hit
-  with a `Repo.one` inside `Lobby.SessionServer`.
+  other space's monitor with it. A `Repo.one` inside `Lobby.SessionServer` has the
+  same shape.
 - **Nothing here notices that a screen is ugly.** Every one of the ten defects
   worth remembering from this work — a window laid out at zero height, a
   duplicated card, a camera preview stretched over 440 px of black, a footer

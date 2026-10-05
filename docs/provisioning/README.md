@@ -69,8 +69,7 @@ which lints all fourteen files against the handlers that have to run them.
   `/cs register`, so each room gets its public page per day
   (`/archive/<room>/<day>`) from the moment the script runs. The archive is
   founder-only and the founder is whoever pasted the script, so it must be
-  pasted by an identified admin. Rooms provisioned before this line existed
-  are switched on by [`archive-migration.txt`](archive-migration.txt).
+  pasted by an identified admin.
 - **No farewells.** They become noise on reconnect churn.
 - **A bot only advertises triggers it answers.** `!fontes` in a greeting from a
   bot with no `fontes` command promises silence, and the promise reads as a bug
@@ -116,9 +115,7 @@ trigger them, keyed by **nickname** — a bot with five feeds on one interval
 polls them together, and five polite feeds still add up to one impolite bot.
 
 Scripts therefore do not set `rss_max_items`; the default tracks the flood
-budget. [`cadence-migration.txt`](cadence-migration.txt) carries the one-time
-`/bot set` block for bots provisioned before this existed, which still hold the
-old ceiling of 10,000.
+budget.
 
 ## Applying a change to a server that is already running
 
@@ -143,10 +140,6 @@ are adjacent in its script, so the output comes out grouped by bot already.
 
 **Deploy first.** A key that the running release does not know comes back as an
 unknown setting, and the paste is silently half-applied.
-
-[`cadence-migration.txt`](cadence-migration.txt) is the one block kept as a file:
-it lowers a ceiling that no script sets any more, so there is nothing left to
-derive it from.
 
 ## Adding a language
 
