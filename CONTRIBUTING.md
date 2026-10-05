@@ -1,24 +1,24 @@
 # Contributing to Retro Hex Chat
 
-Obrigado por considerar contribuir com o Retro Hex Chat! Este guia vai te ajudar a começar.
+Thanks for considering a contribution to Retro Hex Chat! This guide will help you get started.
 
-## Como reportar bugs
+## Reporting bugs
 
-1. Verifique se o bug já não foi reportado em [Issues](https://github.com/rodrigomarchi/retro_hex_chat/issues)
-2. Se não encontrar, abra uma nova Issue com:
-   - Descrição clara do problema
-   - Passos para reproduzir
-   - Comportamento esperado vs. observado
-   - Versão do Elixir/OTP e sistema operacional
+1. Check whether the bug has already been reported in [Issues](https://github.com/rodrigomarchi/retro_hex_chat/issues)
+2. If you can't find it, open a new Issue with:
+   - A clear description of the problem
+   - Steps to reproduce
+   - Expected vs. observed behaviour
+   - Elixir/OTP version and operating system
 
-## Como sugerir features
+## Suggesting features
 
-Abra uma Issue com a label `enhancement` descrevendo:
-- O problema que a feature resolve
-- Como você imagina a solução
-- Exemplos de uso
+Open an Issue with the `enhancement` label describing:
+- The problem the feature solves
+- How you picture the solution
+- Usage examples
 
-## Desenvolvimento local
+## Local development
 
 ### Setup
 
@@ -29,17 +29,17 @@ make setup
 make server  # http://localhost:4000
 ```
 
-### Requisitos
+### Requirements
 
 - Elixir 1.17+
 - OTP 27+
 - PostgreSQL 16+
 - Node.js 20+
 
-### Workflow de PR
+### PR workflow
 
-1. Fork o repositório
-2. Atualize sua base antes de criar a branch:
+1. Fork the repository
+2. Update your base before creating the branch:
 
 ```bash
 git fetch origin
@@ -48,9 +48,9 @@ git pull --ff-only origin main
 git status --short --branch
 ```
 
-3. Crie uma branch a partir de `main`: `git checkout -b minha-feature`
-4. Faça suas mudanças
-5. Rode os testes e linters:
+3. Create a branch from `main`: `git checkout -b my-feature`
+4. Make your changes
+5. Run the tests and linters:
 
 ```bash
 mix compile --warnings-as-errors
@@ -63,13 +63,13 @@ make lint.css
 npm test --prefix apps/retro_hex_chat_web/assets
 ```
 
-6. Commit com mensagem descritiva
-7. Abra um Pull Request
+6. Commit with a descriptive message
+7. Open a Pull Request
 
-### Push direto na `main`
+### Pushing directly to `main`
 
-Antes de qualquer commit ou push direto para `main`, confira o remoto e faça pull
-com fast-forward:
+Before any commit or direct push to `main`, check the remote and pull with
+fast-forward:
 
 ```bash
 git fetch origin
@@ -77,26 +77,26 @@ git status --short --branch
 git pull --ff-only origin main
 ```
 
-Se houver mudanças locais ainda não commitadas, use `git pull --ff-only --autostash origin main`.
-Só faça `git push origin main` depois de confirmar que a branch local está atualizada.
+If you have uncommitted local changes, use `git pull --ff-only --autostash origin main`.
+Only run `git push origin main` after confirming your local branch is up to date.
 
 ### Code style
 
-- **Elixir**: `mix format` (enforced). Toda função pública precisa de `@spec`.
-- **JavaScript**: ESLint + Prettier (`make lint.js`). Auto-fix com `make lint.js.fix`.
-- **CSS**: Sem inline styles nos templates (`make lint.css`).
-- **Testes**: TDD. Tags: `@tag :unit`, `@tag :integration`, `@tag :liveview`, `@tag :e2e`.
+- **Elixir**: `mix format` (enforced). Every public function needs a `@spec`.
+- **JavaScript**: ESLint + Prettier (`make lint.js`). Auto-fix with `make lint.js.fix`.
+- **CSS**: No inline styles in templates (`make lint.css`).
+- **Tests**: TDD. Tags: `@tag :unit`, `@tag :integration`, `@tag :liveview`, `@tag :e2e`.
 
-### Estrutura do projeto
+### Project structure
 
 ```
 apps/
-├── retro_hex_chat/           # Domain (Elixir puro)
+├── retro_hex_chat/           # Domain (pure Elixir)
 └── retro_hex_chat_web/       # Web (Phoenix + LiveView)
 ```
 
-O domínio (`retro_hex_chat`) não depende de Phoenix. A camada web (`retro_hex_chat_web`) é thin — delega para os contextos de domínio.
+The domain (`retro_hex_chat`) has no web layer — no LiveView, controller, route or endpoint — though it uses Phoenix as a library (PubSub, Token, Presence). The web layer (`retro_hex_chat_web`) is thin and delegates to the domain contexts.
 
-## Código de conduta
+## Code of conduct
 
-Seja respeitoso. Contribuições construtivas são bem-vindas independente de experiência, gênero, orientação, etnia, ou qualquer outra característica pessoal.
+Be respectful. Constructive contributions are welcome regardless of experience, gender, orientation, ethnicity, or any other personal characteristic.

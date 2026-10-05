@@ -1,16 +1,16 @@
-# P2P e conferencia - mapa de handshake e resiliencia
+# P2P and conference — handshake and resilience map
 
-Este documento mapeia como chamadas P2P e chamadas de conferencia estao
-implementadas, quais mecanismos de resiliencia existem e onde ainda ha risco de
-usuario ficar preso em fluxo quebrado. O contrato de produto das superficies e
-janelas esta em [`guide/surfaces.md`](../guide/surfaces.md).
+This document maps how P2P calls and conference calls are implemented, which
+resilience mechanisms exist, and where a user can still get stuck in a broken
+flow. The product contract for surfaces and windows is in
+[`guide/surfaces.md`](../guide/surfaces.md).
 
-As regras duraveis que sairam deste mapa — `disconnected` nao e `failed`, epoch
-de sinalizacao, renegociar versus rejoin, `PeerServer` monitorando o channel —
-vivem em `docs/AGENT-GUIDE.md` secao 8.5. Aqui fica o inventario tecnico: quais
-arquivos participam de cada caminho e o que os testes ja cobrem.
+The durable rules that came out of this map — `disconnected` is not `failed`,
+signaling epoch, renegotiate versus rejoin, `PeerServer` monitoring the channel —
+live in `docs/AGENT-GUIDE.md` section 8.5. This document holds the technical
+inventory: which files take part in each path and what the tests already cover.
 
-## Inventario principal
+## Main inventory
 
 ### P2P
 
@@ -23,17 +23,17 @@ Frontend:
 - `apps/retro_hex_chat_web/assets/js/hooks/lobby/lobby_webrtc_hook.js`
 - `apps/retro_hex_chat_web/assets/js/hooks/lobby/lobby_media_hook.js`
 
-Backend, channel e LiveView:
+Backend, channel and LiveView:
 
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/channels/p2p_channel.ex`
-- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/p2p_live.ex` — a sessao,
-  montada em `/p2p/:token`, em `/play/:game/:token` e dentro da janela do chat
-- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/p2p_live/events.ex` — o
-  adaptador de eventos da sessao (era `chat_live/p2p_session_events.ex`)
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/p2p_live.ex` — the session,
+  mounted at `/p2p/:token`, at `/play/:game/:token` and inside the chat window
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/p2p_live/events.ex` — the
+  session's event adapter (was `chat_live/p2p_session_events.ex`)
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/p2p_read_model.ex` —
-  o que o chat sabe de uma sessao em que o leitor nao esta
+  what the chat knows about a session the reader is not in
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/p2p_session_events.ex` —
-  o que sobrou no chat: convite, janela e troca de sessao
+  what remains in the chat: invite, window and session switch
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/p2p_live/components/p2p_media_island.ex`
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex`
 - `apps/retro_hex_chat/lib/retro_hex_chat/lobby.ex`
@@ -48,14 +48,14 @@ Backend, channel e LiveView:
 - `apps/retro_hex_chat/lib/retro_hex_chat/p2p/signaling_rate_limit/ets.ex`
 - `apps/retro_hex_chat/lib/retro_hex_chat/p2p/turn/*`
 
-### Conferencia
+### Conference
 
 Frontend:
 
 - `apps/retro_hex_chat_web/assets/js/hooks/group_call/group_call_prejoin_hook.js`
 - `apps/retro_hex_chat_web/assets/js/hooks/group_call/group_call_webrtc_hook.js`
 
-Backend e LiveView:
+Backend and LiveView:
 
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/channels/group_call_channel.ex`
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/group_call_events.ex`
@@ -72,29 +72,29 @@ Backend e LiveView:
 - `apps/retro_hex_chat/lib/retro_hex_chat/group_call/schema/participant.ex`
 - `apps/retro_hex_chat/lib/retro_hex_chat/group_call/schema/track.ex`
 
-## P2P - arquitetura atual
+## P2P — current architecture
 
-### Modelo
+### Model
 
-P2P usa um unico `RTCPeerConnection` persistente por sessao. Esse PC carrega:
+P2P uses a single persistent `RTCPeerConnection` per session. That PC carries:
 
 - audio/video;
 - `RTCDataChannel` `filetransfer`;
 - `RTCDataChannel` `gamedata`;
-- stats por faceta, derivadas do mesmo PC.
+- per-facet stats, derived from the same PC.
 
-O backend nao ve midia nem dados de arquivo/jogo. Ele ve:
+The backend sees no media and no file/game data. It sees:
 
-- criacao e encerramento da sessao;
-- politicas de quem pode convidar/aceitar;
-- presenca dos dois LiveViews;
-- readiness dos hooks WebRTC;
-- relay de mensagens SDP/ICE via PubSub;
-- estado visual e mensagens de sistema persistidas.
+- session creation and teardown;
+- policies on who can invite/accept;
+- presence of the two LiveViews;
+- readiness of the WebRTC hooks;
+- relay of SDP/ICE messages over PubSub;
+- visual state and persisted system messages.
 
-### Estados duraveis e estados de UI
+### Durable states and UI states
 
-Persistencia em `Lobby.Schema.Session`:
+Persistence in `Lobby.Schema.Session`:
 
 - `pending`
 - `lobby`
@@ -103,7 +103,7 @@ Persistencia em `Lobby.Schema.Session`:
 - `expired`
 - `failed`
 
-Estado LiveView aproximado:
+Approximate LiveView state:
 
 - `nil`
 - `:invite_sent`
@@ -112,203 +112,206 @@ Estado LiveView aproximado:
 - `:connected`
 - `nil`
 
-Observacao: `:connecting` e estado de UI/assign; nao existe como status
-persistido. O status persistido `lobby` cobre o intervalo entre aceite e
-conexao WebRTC.
+Note: `:connecting` is a UI/assign state; it does not exist as a persisted
+status. The persisted status `lobby` covers the interval between acceptance and
+the WebRTC connection.
 
-### Handshake P2P feliz
+### Happy P2P handshake
 
-1. Criador inicia P2P pelo PM ou comando.
-2. `Lobby.Service` cria sessao `pending` e o convite (a PM) sai na hora — criar
-   a sessao E convidar. O criador cai na sala de partida do `App.P2PLive`, em
-   `:invite_sent`; o anchor WebRTC ainda nao monta.
-3. Peer aceita o convite pelo PM/header; isso e o consentimento, e abre a mesma
-   sala de partida — o `P2PLive` toma o assento no mount.
-4. `Lobby.SessionServer` marca os dois lados como joined e transiciona para
+1. The creator starts P2P from the PM or a command.
+2. `Lobby.Service` creates a `pending` session and the invite (the PM) goes out
+   immediately — creating the session IS inviting. The creator lands in the
+   `App.P2PLive` starting room, in `:invite_sent`; the WebRTC anchor does not
+   mount yet.
+3. The peer accepts the invite from the PM/header; that is the consent, and it
+   opens the same starting room — `P2PLive` takes the seat on mount.
+4. `Lobby.SessionServer` marks both sides as joined and transitions to
    `lobby`.
-5. Cada lado escolhe dispositivos e aperta `[Pronto]`. So entao o anchor
-   `#lobby-webrtc` monta, carregando o `session_token` e o `Lobby.JoinToken`
-   que o hook usa para entrar no canal `p2p:<session_token>`. A resposta do
-   join ja traz o replay: entrar no canal e, por si so, dizer "estou ouvindo e
-   posso ter perdido alguma coisa".
-6. Cada hook envia `lobby_webrtc_ready` — este continua indo para o LiveView,
-   porque e a metade "o hook montou" do que `[Pronto]` promete.
-7. `Lobby.SessionServer.maybe_start_signaling/1` so inicia sinalizacao quando:
-   status e `lobby` ou `connected`, a sinalizacao ainda nao iniciou e os dois
-   lados estao `webrtc_ready`.
-8. `lobby_start_signaling` chega nos dois. O peer ja recebe `lobby_start_answer`
-   e monta o PC (o primeiro offer e descartado se ele nao estiver escutando),
-   mas continua na sala. O criador ganha `[Iniciar]` habilitado.
-9. O criador aperta `[Iniciar]`: sai `lobby_start_offer` para ele e o broadcast
-   `lobby_session_start` tira os dois da sala.
-10. O iniciador cria PC, data channels e offer.
-11. Offer viaja pelo evento `lobby_signal` **no canal** `p2p:<session_token>`;
-    o `P2PChannel` valida (`Calls.SignalValidation`), aplica rate limit,
-    registra para replay e retransmite via PubSub `lobby:<token>` — o canal do
-    outro lado empurra para o browser dele.
-12. Answerer aplica remote offer, drena ICE pendente, cria answer e envia
-    `lobby_signal` pelo mesmo canal.
-13. Initiator aplica answer, drena ICE pendente e termina negociacao.
-14. ICE candidates sao trocados; candidates que chegam cedo ficam em
-    `pendingIceCandidates` ate haver `remoteDescription`.
-15. Quando `connectionState` vira `connected`, cada hook envia
-    `lobby_connected` (para o LiveView: e ciclo de vida de sessao, nao fio);
-    LiveView transiciona sessao para `connected`, abre
-    console e dispara `lobby_media_pc_ready`.
-16. `LobbyMediaHook` drena comandos pendentes e auto-inicia midia conforme
-    `media_mode` escolhido no setup.
+5. Each side picks devices and presses `[Ready]`. Only then does the
+   `#lobby-webrtc` anchor mount, carrying the `session_token` and the
+   `Lobby.JoinToken` that the hook uses to join the `p2p:<session_token>`
+   channel. The join reply already carries the replay: joining the channel is,
+   by itself, saying "I am listening and may have missed something".
+6. Each hook sends `lobby_webrtc_ready` — this one still goes to the LiveView,
+   because it is the "the hook mounted" half of what `[Ready]` promises.
+7. `Lobby.SessionServer.maybe_start_signaling/1` only starts signaling when:
+   the status is `lobby` or `connected`, signaling has not started yet and both
+   sides are `webrtc_ready`.
+8. `lobby_start_signaling` reaches both. The peer already receives
+   `lobby_start_answer` and builds the PC (the first offer is dropped if it is
+   not listening), but stays in the room. The creator gets `[Start]` enabled.
+9. The creator presses `[Start]`: `lobby_start_offer` goes out to them and the
+   `lobby_session_start` broadcast takes both out of the room.
+10. The initiator creates the PC, data channels and offer.
+11. The offer travels via the `lobby_signal` event **on the** `p2p:<session_token>`
+    **channel**; `P2PChannel` validates it (`Calls.SignalValidation`), applies
+    the rate limit, records it for replay and relays it via PubSub
+    `lobby:<token>` — the channel on the other side pushes it to that browser.
+12. The answerer applies the remote offer, drains pending ICE, creates the
+    answer and sends `lobby_signal` over the same channel.
+13. The initiator applies the answer, drains pending ICE and finishes
+    negotiation.
+14. ICE candidates are exchanged; candidates that arrive early stay in
+    `pendingIceCandidates` until there is a `remoteDescription`.
+15. When `connectionState` becomes `connected`, each hook sends
+    `lobby_connected` (to the LiveView: it is session lifecycle, not wire);
+    the LiveView transitions the session to `connected`, opens the
+    console and fires `lobby_media_pc_ready`.
+16. `LobbyMediaHook` drains pending commands and auto-starts media according to
+    the `media_mode` chosen in setup.
 
-### Negociacao P2P
+### P2P negotiation
 
-O hook `LobbyWebRTCHook` usa modelo single-offerer:
+The `LobbyWebRTCHook` hook uses a single-offerer model:
 
-- criador/iniciador e o unico peer que envia offers;
-- answerer nunca cria offer diretamente;
-- answerer que adiciona tracks chama `lobby_renegotiate`;
-- iniciador recebe `lobby_renegotiate`, cria transceivers recvonly se necessario
-  e envia novo offer;
-- data channels sao criados cedo pelo iniciador para evitar uma renegociacao
-  extra posterior.
+- the creator/initiator is the only peer that sends offers;
+- the answerer never creates an offer directly;
+- an answerer that adds tracks calls `lobby_renegotiate`;
+- the initiator receives `lobby_renegotiate`, creates recvonly transceivers if
+  needed and sends a new offer;
+- data channels are created early by the initiator to avoid an extra
+  renegotiation later.
 
-Essa escolha e coerente com a recomendacao de evitar glare, mas implica uma
-obrigacao: qualquer recuperacao iniciada pelo answerer precisa notificar o
-iniciador para que ele gere nova oferta.
+This choice is consistent with the recommendation to avoid glare, but it implies
+an obligation: any recovery started by the answerer must notify the initiator
+so that it generates a new offer.
 
-### Midia P2P
+### P2P media
 
-`LobbyMediaHook` e criado por `createRtcMediaHook`. Ele e responsavel por:
+`LobbyMediaHook` is created by `createRtcMediaHook`. It is responsible for:
 
-- capturar camera/microfone;
-- entrar receive-only sem capturar midia;
-- anexar stream local/remoto aos elementos;
-- aplicar mute/camera off;
-- trocar device;
-- screen share por `replaceTrack`/restauracao;
-- publicar `lobby_media_call_started`, `lobby_media_call_ended`,
+- capturing camera/microphone;
+- joining receive-only without capturing media;
+- attaching the local/remote stream to the elements;
+- applying mute/camera off;
+- switching device;
+- screen share via `replaceTrack`/restore;
+- publishing `lobby_media_call_started`, `lobby_media_call_ended`,
   `lobby_media_devices`, `lobby_media_quality`, `lobby_media_fallback`;
-- republish de tracks locais quando o PC e substituido;
-- watchdog de video remoto travado.
+- republishing local tracks when the PC is replaced;
+- the stalled remote video watchdog.
 
-`P2PMediaIsland` e o ponto LiveView stateful que:
+`P2PMediaIsland` is the stateful LiveView point that:
 
-- mantem estado local de chamada;
-- chama `Lobby.set_media`;
-- recebe e propaga estado de peer;
-- surfaceia peer media automaticamente quando o outro lado inicia;
-- encerra receive-only quando o peer para toda midia;
-- sincroniza console, status bar e resumo.
+- keeps local call state;
+- calls `Lobby.set_media`;
+- receives and propagates peer state;
+- surfaces peer media automatically when the other side starts;
+- ends receive-only when the peer stops all media;
+- syncs console, status bar and summary.
 
-`media.js` centraliza:
+`media.js` centralizes:
 
-- constraints estaveis de audio/video/screen;
-- classificacao de erro de permissao/dispositivo;
-- perfis de bitrate/framerate;
-- codec preference H264 > VP8 e Opus;
-- stats derivadas por faceta;
-- helper defensivo `attachMediaStream`.
+- stable audio/video/screen constraints;
+- permission/device error classification;
+- bitrate/framerate profiles;
+- codec preference H264 > VP8 and Opus;
+- per-facet derived stats;
+- the defensive `attachMediaStream` helper.
 
-### Resiliencia P2P ja implementada
+### P2P resilience already implemented
 
-- Setup antes de montar WebRTC evita sinalizacao antes de consentimento.
-- Gate de readiness nos dois hooks evita perda do primeiro offer.
-- PubSub por `lobby:<token>` com filtro de token obsoleto no LiveView evita
-  aplicar evento de sessao antiga.
-- P2P signaling tem rate limiter por usuario.
-- Offer recebido antes do PC e bufferizado no answerer.
-- ICE candidate recebido antes de remote description e bufferizado.
-- `connectionState` e `iceConnectionState` sao observados; `disconnected`
-  entra em grace period e `failed` inicia recovery imediato.
-- Ao entrar em `connection_disconnected` ou `ice_disconnected`, o hook publica
-  `lobby_recovery_pending`; a UI mostra feedback de reconnecting durante o
-  grace period, sem disparar restart antes da decisao por stats.
-- Durante `disconnected`, o hook compara snapshots de `getStats()` antes/depois
-  da grace period. Se bytes/pacotes/mensagens ainda avancam, adia o retry por
-  limite pequeno; quando param de avancar, o recovery normal dispara.
-- Retry automatico limitado a 3 tentativas com backoff 2s, 4s, 8s.
-- Retry automatico iniciado pelo answerer envia `lobby_renegotiate` com
-  `recover`, `epoch`, `attempt` e `connection_reset`; o iniciador gera nova
-  oferta em vez de deixar o answerer esperando.
-- `lobby_signal` carrega `epoch`, `offer_id` e `connection_reset`; SDP/ICE de
-  epoch ou offer antigos sao descartados.
-- `SessionServer` guarda snapshot em memoria do ultimo SDP, dos ultimos ICE
-  candidates por papel e do ultimo `lobby_renegotiate`; o hook pode pedir
-  `lobby_signal_replay` no canal quando startup/reconnect nao recebeu uma
-  mensagem critica — e o proprio join do canal ja devolve o replay, entao um
-  rejoin automatico do Phoenix depois de queda de socket recupera sozinho.
-- Replay P2P e idempotente no browser: offers/answers/candidates ja aplicados
-  sao ignorados por `offer_id`, SDP ou chave de ICE candidate.
-- Painel de stats P2P mostra diagnostico de recovery e handshake:
-  state, reason, trigger, attempt, signaling epoch e offer id corrente.
-- O answerer reenvia `lobby_renegotiate` com backoff curto ate receber nova
-  offer; se nenhuma offer chega apos o limite, entra no recovery coordenado em
-  vez de esperar indefinidamente.
-- Retry manual (`p2p_retry_connection`) broadcasta restart para ambos os peers.
-- Todo `lobby_restart` carrega ICE servers frescos, role e `turn_only`, para o
-  hook reconstruir o PC com a policy atual.
-- Watchdog de video remoto travado tenta primeiro renegociacao/ICE restart e
-  depois escala para restart coordenado.
-- Watchdog tambem cobre o caso "video remoto esperado e nenhuma track chegou",
-  usando o evento `lobby_media_peer_media`.
-- `SessionServer` tem grace de rejoin de LiveView por 30s, para refresh ou
-  reconnect curto.
-- Uma segunda janela da mesma pessoa **assume** a sessao:
-  `Lobby.join_session/3` com `takeover: true`, que o `SessionServer` trata como
-  desconexao seguida de join — assento liberado, prontidao daquele lado zerada,
-  replay apagado e par avisado. E o mesmo portao que reconstroi a midia depois
-  de uma queda de socket que reconstroi aqui. A janela deslocada recebe
-  `{:lobby_slot_taken, token}`, para de renderizar o anchor (o hook e destruido)
-  e oferece trazer a sessao de volta.
-- `SessionServer` fecha/falha por timeout de lobby/connecting, evitando sessao
-  pendurada indefinidamente antes da conexao.
-- Rehydrate ao montar LiveView reconecta usuario a sessao ativa.
-- TURN embutido pode gerar credenciais efemeras; quando `turn_only` esta ativo
-  o frontend usa `iceTransportPolicy: "relay"`.
-- Validacao de SDP/ICE tem limite de tamanho, shape minimo e preserva apenas
-  metadados de recovery aceitos.
-- Erros de criacao/aplicacao de SDP e ICE no hook entram no mesmo ciclo de
-  recovery/falha, sem depender apenas de `console.warn`.
-- Falhas repetidas de `addIceCandidate` no browser sao agregadas por ciclo de
-  conexao; erro isolado/stale e tolerado, mas tres falhas seguidas disparam
-  recovery coordenado.
-- Falha terminal e idempotente: eventos repetidos com a mesma reason nao
-  empilham mensagens infinitas nem desmontam a superficie de midia.
-- `P2PSessionConsole` mantem o `LobbyMediaHook` montado quando a sessao base
-  esta `:connected`, mesmo durante recovery `:reconnecting`/`:failed`.
-- O banner de recovery sempre oferece Retry quando manualmente recuperavel e
-  End pelo mesmo fluxo de confirmacao usado pelo restante da sessao.
-- Fallback de camera no `devicechange` agora espelha o fallback de microfone.
-- Alternar privacy relay em sessao viva dispara restart coordenado imediato; a
-  conexao nao fica usando policy antiga ate o proximo erro/retry.
+- Setup before mounting WebRTC avoids signaling before consent.
+- The readiness gate on both hooks avoids losing the first offer.
+- PubSub on `lobby:<token>` with a stale-token filter in the LiveView avoids
+  applying an event from an old session.
+- P2P signaling has a per-user rate limiter.
+- An offer received before the PC is buffered on the answerer.
+- An ICE candidate received before the remote description is buffered.
+- `connectionState` and `iceConnectionState` are observed; `disconnected`
+  enters a grace period and `failed` starts recovery immediately.
+- On entering `connection_disconnected` or `ice_disconnected`, the hook publishes
+  `lobby_recovery_pending`; the UI shows reconnecting feedback during the
+  grace period, without firing a restart before the stats-based decision.
+- During `disconnected`, the hook compares `getStats()` snapshots before/after
+  the grace period. If bytes/packets/messages still advance, it defers the retry
+  up to a small limit; once they stop advancing, normal recovery fires.
+- Automatic retry is limited to 3 attempts with 2s, 4s, 8s backoff.
+- An automatic retry started by the answerer sends `lobby_renegotiate` with
+  `recover`, `epoch`, `attempt` and `connection_reset`; the initiator generates a
+  new offer instead of leaving the answerer waiting.
+- `lobby_signal` carries `epoch`, `offer_id` and `connection_reset`; SDP/ICE from
+  an old epoch or offer are dropped.
+- `SessionServer` keeps an in-memory snapshot of the last SDP, the last ICE
+  candidates per role and the last `lobby_renegotiate`; the hook can request
+  `lobby_signal_replay` on the channel when startup/reconnect did not receive a
+  critical message — and the channel join itself already returns the replay, so
+  an automatic Phoenix rejoin after a socket drop recovers on its own.
+- P2P replay is idempotent in the browser: offers/answers/candidates already
+  applied are ignored by `offer_id`, SDP or ICE candidate key.
+- The P2P stats panel shows recovery and handshake diagnostics:
+  state, reason, trigger, attempt, signaling epoch and current offer id.
+- The answerer resends `lobby_renegotiate` with a short backoff until it receives
+  a new offer; if no offer arrives after the limit, it enters coordinated
+  recovery instead of waiting indefinitely.
+- Manual retry (`p2p_retry_connection`) broadcasts a restart to both peers.
+- Every `lobby_restart` carries fresh ICE servers, role and `turn_only`, so the
+  hook rebuilds the PC with the current policy.
+- The stalled remote video watchdog first tries renegotiation/ICE restart and
+  then escalates to a coordinated restart.
+- The watchdog also covers the "remote video expected and no track arrived"
+  case, using the `lobby_media_peer_media` event.
+- `SessionServer` has a 30s LiveView rejoin grace, for a refresh or a short
+  reconnect.
+- A second window of the same person **takes over** the session:
+  `Lobby.join_session/3` with `takeover: true`, which `SessionServer` treats as a
+  disconnect followed by a join — seat released, readiness on that side reset,
+  replay cleared and peer notified. The same gate that rebuilds media after a
+  socket drop rebuilds it here. The displaced window receives
+  `{:lobby_slot_taken, token}`, stops rendering the anchor (the hook is destroyed)
+  and offers to bring the session back.
+- `SessionServer` closes/fails on lobby/connecting timeout, avoiding a session
+  hanging indefinitely before the connection.
+- Rehydrate on LiveView mount reconnects the user to the active session.
+- Embedded TURN can generate ephemeral credentials; when `turn_only` is active
+  the frontend uses `iceTransportPolicy: "relay"`.
+- SDP/ICE validation has a size limit, a minimal shape and preserves only
+  accepted recovery metadata.
+- SDP and ICE creation/application errors in the hook enter the same
+  recovery/failure cycle, without relying only on `console.warn`.
+- Repeated `addIceCandidate` failures in the browser are aggregated per
+  connection cycle; an isolated/stale error is tolerated, but three failures in
+  a row trigger coordinated recovery.
+- Terminal failure is idempotent: repeated events with the same reason do not
+  pile up endless messages nor unmount the media surface.
+- `P2PSessionConsole` keeps `LobbyMediaHook` mounted when the base session
+  is `:connected`, even during `:reconnecting`/`:failed` recovery.
+- The recovery banner always offers Retry when manually recoverable and
+  End through the same confirmation flow used by the rest of the session.
+- The camera fallback on `devicechange` now mirrors the microphone fallback.
+- Toggling privacy relay in a live session fires an immediate coordinated
+  restart; the connection does not keep using the old policy until the next
+  error/retry.
 
-### Riscos P2P remanescentes
+### Remaining P2P risks
 
-- Replay de sinalizacao P2P e propositalmente em memoria. Se o BEAM/processo de
-  sessao reinicia, o sistema nao tenta reaplicar SDP/ICE antigo; uma sessao
-  `connected` sem snapshot dispara restart limpo de WebRTC com
-  `reason: "signaling_snapshot_lost"`. Ainda falta historico duravel apenas
-  para auditoria pos-incidente.
-- Modo relay-only depende da disponibilidade operacional do TURN. A UI nao fica
-  presa em connecting infinito; recovery/falha agora entra em telemetria
-  agregada, mas ainda falta alerta especifico de outage TURN.
-- O watchdog visual P2P foi ampliado, mas ainda nao ha helper unico compartilhado
-  por P2P, prejoin e conferencia.
+- P2P signaling replay is in memory on purpose. If the BEAM/session process
+  restarts, the system does not try to reapply old SDP/ICE; a `connected`
+  session without a snapshot fires a clean WebRTC restart with
+  `reason: "signaling_snapshot_lost"`. Durable history is still missing, only
+  for post-incident audit.
+- Relay-only mode depends on the operational availability of TURN. The UI does
+  not get stuck in endless connecting; recovery/failure now enters aggregated
+  telemetry, but a specific TURN outage alert is still missing.
+- The P2P visual watchdog was extended, but there is still no single helper
+  shared by P2P, prejoin and conference.
 
-## Conferencia - arquitetura atual
+## Conference — current architecture
 
-### Modelo
+### Model
 
-Conferencia e uma chamada por canal com SFU no servidor:
+A conference is a per-channel call with an SFU on the server:
 
-- LiveView abre prejoin e cria/entra em uma room.
-- Browser abre Phoenix Socket proprio para `/socket`.
-- Browser entra no topic `group_call:<room_token>` usando join token assinado.
-- `GroupCallChannel` autoriza, aplica rate limit e delega para
+- The LiveView opens prejoin and creates/joins a room.
+- The browser opens its own Phoenix Socket to `/socket`.
+- The browser joins the `group_call:<room_token>` topic using a signed join token.
+- `GroupCallChannel` authorizes, applies the rate limit and delegates to
   `RetroHexChat.GroupCall`.
-- `RoomServer` e o processo de autoridade da sala.
-- `PeerServer` e o endpoint WebRTC ExWebRTC de cada participante.
-- `RTPForwarder` reescreve e encaminha RTP de publishers para subscribers.
+- `RoomServer` is the room's authority process.
+- `PeerServer` is each participant's ExWebRTC WebRTC endpoint.
+- `RTPForwarder` rewrites and forwards RTP from publishers to subscribers.
 
-### Estados duraveis
+### Durable states
 
 Room (`GroupCall.Schema.Room`):
 
@@ -339,49 +342,50 @@ Track (`GroupCall.Schema.Track`):
 - `ended`
 - `failed`
 
-### Handshake conferencia feliz
+### Happy conference handshake
 
-1. Usuario identificado abre chamada no canal.
-2. LiveView abre prejoin (`GroupCallPreJoinHook`) e carrega preferencias.
-3. Usuario confirma join.
-4. LiveView chama `GroupCall.create_channel_call` ou pega room ativa.
-5. LiveView assina join token e monta `GroupCallWebRTCHook`.
-6. Hook cria `Phoenix.Socket("/socket")` e entra em
+1. An identified user opens a call in the channel.
+2. The LiveView opens prejoin (`GroupCallPreJoinHook`) and loads preferences.
+3. The user confirms the join.
+4. The LiveView calls `GroupCall.create_channel_call` or takes the active room.
+5. The LiveView signs the join token and mounts `GroupCallWebRTCHook`.
+6. The hook creates `Phoenix.Socket("/socket")` and joins
    `group_call:<room_token>`.
-7. `GroupCallChannel.join/3` verifica join token, room e canal.
-8. Hook envia `group_call_join` com `client_info` e `media_constraints`.
-9. `RoomServer.join_call` valida politica/capacidade e cria ou reconecta
-   participante.
-10. `RoomServer` cria `PeerServer` pendente, monitora pid e agenda
+7. `GroupCallChannel.join/3` verifies the join token, room and channel.
+8. The hook sends `group_call_join` with `client_info` and `media_constraints`.
+9. `RoomServer.join_call` validates policy/capacity and creates or reconnects
+   the participant.
+10. `RoomServer` creates a pending `PeerServer`, monitors the pid and schedules
     `ready_timeout`.
-11. `PeerServer` inicia ExWebRTC `PeerConnection`, cria transceivers recvonly
-    para receber audio/video do browser e sendonly para peers existentes.
-12. `PeerServer` envia `group_call_offer` para o channel pid.
-13. Browser processa offer em fila serializada:
-    - garante PC browser;
-    - aplica remote offer;
-    - captura midia local se audio/video estao habilitados;
-    - adiciona tracks locais;
-    - drena candidates pendentes;
-    - cria answer;
-    - envia `group_call_answer`.
-14. `PeerServer` aplica answer, drena candidates remotos e assina tracks
-    pendentes.
-15. ICE conecta; `PeerServer` recebe estado `:connected` e chama
+11. `PeerServer` starts the ExWebRTC `PeerConnection`, creates recvonly
+    transceivers to receive audio/video from the browser and sendonly ones for
+    existing peers.
+12. `PeerServer` sends `group_call_offer` to the channel pid.
+13. The browser processes the offer in a serialized queue:
+    - ensures the browser PC;
+    - applies the remote offer;
+    - captures local media if audio/video are enabled;
+    - adds local tracks;
+    - drains pending candidates;
+    - creates the answer;
+    - sends `group_call_answer`.
+14. `PeerServer` applies the answer, drains remote candidates and subscribes
+    pending tracks.
+15. ICE connects; `PeerServer` receives the `:connected` state and calls
     `RoomServer.mark_ready`.
-16. `RoomServer` move participante de pending para participants, marca status
-    `connected`, cancela ready timeout e broadcasta join.
-17. Quando um participante publica track, `RoomServer.track_added` persiste ou
-    atualiza track e avisa os demais.
-18. Para participantes ja conectados, `RoomServer` envia `peer_added` ao
-    `PeerServer`; ele adiciona transceivers de saida e manda novo offer com ICE
-    restart quando necessario.
-19. RTP inbound no `PeerServer` e encaminhado a subscribers por
+16. `RoomServer` moves the participant from pending to participants, marks the
+    status `connected`, cancels the ready timeout and broadcasts the join.
+17. When a participant publishes a track, `RoomServer.track_added` persists or
+    updates the track and notifies the others.
+18. For participants already connected, `RoomServer` sends `peer_added` to the
+    `PeerServer`; it adds outbound transceivers and sends a new offer with ICE
+    restart when needed.
+19. Inbound RTP on the `PeerServer` is forwarded to subscribers by
     `RTPForwarder`.
 
-### Sinalizacao conferencia
+### Conference signaling
 
-Eventos channel principais:
+Main channel events:
 
 - `group_call_join`
 - `group_call_answer`
@@ -394,171 +398,172 @@ Eventos channel principais:
 
 Rate limit:
 
-- join tem rate limit proprio;
-- answer, ICE, request_offer, media_state e screen_share_state usam
+- join has its own rate limit;
+- answer, ICE, request_offer, media_state and screen_share_state use
   `check_signal_rate`;
-- reaction nao aparece no mesmo rate limiter de sinalizacao.
+- reaction does not appear in the same signaling rate limiter.
 
-### Resiliencia conferencia ja implementada
+### Conference resilience already implemented
 
-- Join token assinado amarra browser a sala/canal.
-- Phoenix Channel tem reconnect/backoff automatico.
-- Channel join valida room ativa e token.
-- Browser enfileira offers, evitando processar dois offers concorrentes.
-- Browser ignora offer identico ja respondido.
-- Browser bufferiza ICE candidate ate remote description.
-- `PeerServer` bufferiza candidate remoto enquanto esta em
+- A signed join token binds the browser to the room/channel.
+- Phoenix Channel has automatic reconnect/backoff.
+- Channel join validates the active room and the token.
+- The browser queues offers, avoiding processing two concurrent offers.
+- The browser ignores an identical offer already answered.
+- The browser buffers ICE candidates until the remote description.
+- `PeerServer` buffers remote candidates while in
   `:have_local_offer`.
-- Hook observa `iceConnectionState`; `checking` publica recovery conectando,
-  `disconnected` agenda recovery e `failed` aciona retry imediato.
-- Antes do pedido automatico de fresh offer em `disconnected`, o hook compara
-  snapshots de `getStats()` e adia o retry se ainda houver atividade de
-  transporte, RTP ou data channel, com limite pequeno.
-- `PeerServer.request_offer` reenvia offer pendente ou cria offer com
+- The hook observes `iceConnectionState`; `checking` publishes connecting
+  recovery, `disconnected` schedules recovery and `failed` triggers an
+  immediate retry.
+- Before the automatic fresh offer request on `disconnected`, the hook compares
+  `getStats()` snapshots and defers the retry if there is still transport, RTP
+  or data channel activity, up to a small limit.
+- `PeerServer.request_offer` resends the pending offer or creates an offer with
   `ice_restart?: true`.
-- Hook agenda watchdog apos `group_call_joined`; se a offer inicial nao chega,
-  publica recovery `offer_not_received` e pede `group_call_request_offer` em vez
-  de deixar a UI presa aguardando SDP.
-- `group_call_request_offer` retorna erro estruturado `rejoin_required` quando
-  o `PeerServer` nao esta pronto; o browser fecha PC local, limpa streams
-  antigos e executa `group_call_join` novamente no mesmo channel.
-- `PeerServer` usa `offer_id` por oferta; browser ecoa na answer e answers
-  obsoletas sao ignoradas.
-- Falha ao aplicar answer ou ICE candidate no `PeerServer` envia
-  `group_call_error` ao browser em vez de ficar apenas em log.
-- Falhas repetidas de `addIceCandidate` no browser sao agregadas por ciclo; erro
-  isolado/stale e tolerado, mas tres falhas seguidas acionam recovery da
-  conferencia.
-- `RoomServer` tem `ready_timeout_ms` para participante que nao conectou.
-- `RoomServer` tem `reconnect_timeout_ms` para participante desconectado.
-- `RoomServer` tem `peerless_timeout_ms` para fechar sala vazia.
-- `RoomServer` aceita reconexao por nickname normalizado quando participante
-  esta `disconnected`.
-- Peer add/remove durante offer pendente vai para `pending_peers` ate answer.
-- `RTPForwarder` tem munger/cache para reorder, gaps e duplicatas.
-- Testes BEAM exercitam fanout RTP, late join, leave/rejoin, audio-only,
-  screen share e ICE restart.
-- Hook reporta stats browser e qualidade por participante.
-- Painel de stats da conferencia mostra diagnostico de recovery e handshake:
-  state, reason, trigger, attempt, proximo retry, offer id e rejoin epoch.
-- UI tem estado recoverable para warning de midia e estado actionable para
-  falha de conexao.
-- `GroupCallChannel` valida tamanho/shape de SDP, candidate e `offer_id`.
-- Audio/video podem ser capturados on-demand quando o usuario liga midia depois
-  de entrar receive-only ou depois de falha inicial.
-- O rate limit de reacoes fica no contexto `GroupCall.send_reaction/4`; o
-  channel preserva esse contrato sem duplicar bloqueio.
+- The hook schedules a watchdog after `group_call_joined`; if the initial offer
+  does not arrive, it publishes `offer_not_received` recovery and requests
+  `group_call_request_offer` instead of leaving the UI stuck waiting for SDP.
+- `group_call_request_offer` returns the structured error `rejoin_required` when
+  the `PeerServer` is not ready; the browser closes the local PC, clears old
+  streams and runs `group_call_join` again on the same channel.
+- `PeerServer` uses an `offer_id` per offer; the browser echoes it in the answer
+  and stale answers are ignored.
+- A failure to apply an answer or ICE candidate in the `PeerServer` sends
+  `group_call_error` to the browser instead of staying only in the log.
+- Repeated `addIceCandidate` failures in the browser are aggregated per cycle;
+  an isolated/stale error is tolerated, but three failures in a row trigger
+  conference recovery.
+- `RoomServer` has `ready_timeout_ms` for a participant that did not connect.
+- `RoomServer` has `reconnect_timeout_ms` for a disconnected participant.
+- `RoomServer` has `peerless_timeout_ms` to close an empty room.
+- `RoomServer` accepts reconnection by normalized nickname when the participant
+  is `disconnected`.
+- Peer add/remove during a pending offer goes to `pending_peers` until the answer.
+- `RTPForwarder` has a munger/cache for reorder, gaps and duplicates.
+- BEAM tests exercise RTP fanout, late join, leave/rejoin, audio-only,
+  screen share and ICE restart.
+- The hook reports browser stats and per-participant quality.
+- The conference stats panel shows recovery and handshake diagnostics:
+  state, reason, trigger, attempt, next retry, offer id and rejoin epoch.
+- The UI has a recoverable state for media warnings and an actionable state for
+  connection failure.
+- `GroupCallChannel` validates the size/shape of SDP, candidate and `offer_id`.
+- Audio/video can be captured on demand when the user turns media on after
+  joining receive-only or after an initial failure.
+- The reaction rate limit lives in the `GroupCall.send_reaction/4` context; the
+  channel preserves that contract without duplicating the block.
 
-### Riscos conferencia remanescentes
+### Remaining conference risks
 
-- Sinalizacao server-client segue at-most-once. `offer_id` torna answers
-  idempotentes e `group_call_request_offer` recupera offers perdidas enquanto o
-  `PeerServer` esta vivo, mas ainda falta snapshot duravel de sala para
-  auditoria apos restart completo.
-- Tile remoto agora usa `attachMediaStream` e dispara recovery quando a track
-  esta live mas o elemento de video nao apresenta frames. Esse evento agora
-  entra em telemetria agregada por `reason: "remote_video_stalled"`.
-- Falta transformar os novos counters de recovery/erro em alertas operacionais
-  e dashboards focados em incidentes.
+- Server-client signaling remains at-most-once. `offer_id` makes answers
+  idempotent and `group_call_request_offer` recovers lost offers while the
+  `PeerServer` is alive, but a durable room snapshot for audit after a full
+  restart is still missing.
+- The remote tile now uses `attachMediaStream` and fires recovery when the track
+  is live but the video element presents no frames. That event now enters
+  aggregated telemetry under `reason: "remote_video_stalled"`.
+- The new recovery/error counters still need to become operational alerts
+  and incident-focused dashboards.
 
-## Testes existentes
+## Existing tests
 
 ### P2P
 
-Unitarios JS:
+JS unit tests:
 
-- `webrtc.js`: criacao de PC, TURN relay policy, offer/answer, ICE, close,
-  callbacks e `RETRY_CONFIG`.
-- `media.js`: constraints, erros de permissao/dispositivo, screen capture,
-  stream helpers, stats, MOS, perfis, devices, replace track, attach video
-  stall e codec preferences.
-- `lobby_connection.test.js`: data channels, roteamento inbound de canais,
-  stats completas, feedback imediato em `ice_disconnected`, deferral por
-  `getStats()` e cleanup de poller.
-- `lobby_media_hook.test.js`: receive-only, fallback de captura, devices do
-  setup, fila ate PC ready, republish apos PC replacement, watchdog de video
-  remoto, screen share e atalhos.
+- `webrtc.js`: PC creation, TURN relay policy, offer/answer, ICE, close,
+  callbacks and `RETRY_CONFIG`.
+- `media.js`: constraints, permission/device errors, screen capture,
+  stream helpers, stats, MOS, profiles, devices, replace track, attach video
+  stall and codec preferences.
+- `lobby_connection.test.js`: data channels, inbound channel routing,
+  full stats, immediate feedback on `ice_disconnected`, deferral via
+  `getStats()` and poller cleanup.
+- `lobby_media_hook.test.js`: receive-only, capture fallback, setup devices,
+  queue until PC ready, republish after PC replacement, remote video
+  watchdog, screen share and shortcuts.
 
 Backend:
 
-- `calls/health_test.exs`: healthcheck operacional cobre P2P signaling, TURN
-  desabilitado/degradado, drift de listeners TURN, conferencia desabilitada e
-  range ICE inutilizavel sem expor segredos.
+- `calls/health_test.exs`: the operational healthcheck covers P2P signaling,
+  TURN disabled/degraded, TURN listener drift, conference disabled and an
+  unusable ICE range without exposing secrets.
 
 LiveView:
 
 - `p2p_session_flow_test.exs`: setup, invite, accept/decline/cancel, console,
   files/games/stats, media state, receive-only, audio-only, recovery UI,
-  window manager, mensagens persistidas, ignore/block, concorrencia de invites,
-  rehydrate com slot stale, feedback de `ice_disconnected` e botao End dentro do
-  banner de recovery.
+  window manager, persisted messages, ignore/block, invite concurrency,
+  rehydrate with a stale slot, `ice_disconnected` feedback and the End button
+  inside the recovery banner.
 
 E2E:
 
-- `e2e/tests/chat-p2p.spec.ts`: aceita pelo PM, video real bidirecional,
-  file/game no mesmo PC, TURN relay, receive-only, audio-only, screen share,
-  falha com retry manual, mini/stats/maximize, decline/cancel.
-- `e2e/tests/chat-call-fault-injection.spec.ts`: queda curta de LiveView/rede
-  durante sessao P2P, reconexao e encerramento; recovery `failed` com botao
-  `End` abrindo confirmacao e terminando a sessao; reload do answerer durante
-  offer inicial; retries manuais simultaneos dos dois peers com midia remota
-  recuperada.
+- `e2e/tests/chat-p2p.spec.ts`: accept from the PM, real bidirectional video,
+  file/game on the same PC, TURN relay, receive-only, audio-only, screen share,
+  failure with manual retry, mini/stats/maximize, decline/cancel.
+- `e2e/tests/chat-call-fault-injection.spec.ts`: short LiveView/network drop
+  during a P2P session, reconnection and teardown; `failed` recovery with the
+  `End` button opening confirmation and ending the session; answerer reload
+  during the initial offer; simultaneous manual retries from both peers with
+  remote media recovered.
 
-Lacunas P2P de teste:
+P2P test gaps:
 
-- perda de mensagem server-client durante handshake ja com offer em voo;
-- TURN indisponivel com `turn_only` habilitado;
-- E2E destrutivo de laboratorio com perda de rede fisica/packet loss enquanto
-  ICE entra em `disconnected`.
+- server-client message loss during the handshake with an offer already in
+  flight;
+- TURN unavailable with `turn_only` enabled;
+- destructive lab E2E with physical network loss/packet loss while
+  ICE enters `disconnected`.
 
-### Conferencia
+### Conference
 
-Unitarios JS:
+JS unit tests:
 
-- `group_call_prejoin_hook.test.js`: preferencias persistidas, device preview,
-  refresh de markup, prompt pendente, permissao negada com retry e config P2P.
+- `group_call_prejoin_hook.test.js`: persisted preferences, device preview,
+  markup refresh, pending prompt, denied permission with retry and P2P config.
 - `group_call_webrtc_hook.test.js`: capture denied warning, constraints,
-  audio/video off sem getUserMedia, moderacao, push-to-talk, duplicate offer,
-  offer queue, recovery com request_offer, `rejoin_required`, ICE state,
-  captura on-demand, watchdog de tile remoto, manual retry, layout, reactions,
-  stats, active speaker, screen share e screen moderation.
+  audio/video off without getUserMedia, moderation, push-to-talk, duplicate offer,
+  offer queue, recovery with request_offer, `rejoin_required`, ICE state,
+  on-demand capture, remote tile watchdog, manual retry, layout, reactions,
+  stats, active speaker, screen share and screen moderation.
 
 Channel/LiveView:
 
-- `group_call_channel_test.exs`: token ausente, token de outra room, join com
-  server SDP offer, validacao SDP/ICE/offer_id, rejoin_required e rate limit de
-  sinalizacao.
-- `group_call_flow_test.exs`: criacao/join/prejoin, preferencias, indicadores,
-  participantes, leave, layout, atalhos, a11y, empty/failure states, mini mode,
-  stats, renegociacao nao degrada status, screen share, qualidade, reacoes,
-  server stats e moderacao.
-- `calls_health_controller_test.exs`: endpoint `GET /api/calls/healthz` retorna
-  200 para `degraded` e 503 para `down`.
+- `group_call_channel_test.exs`: missing token, token from another room, join
+  with server SDP offer, SDP/ICE/offer_id validation, rejoin_required and
+  signaling rate limit.
+- `group_call_flow_test.exs`: creation/join/prejoin, preferences, indicators,
+  participants, leave, layout, shortcuts, a11y, empty/failure states, mini mode,
+  stats, renegotiation does not degrade status, screen share, quality, reactions,
+  server stats and moderation.
+- `calls_health_controller_test.exs`: the `GET /api/calls/healthz` endpoint
+  returns 200 for `degraded` and 503 for `down`.
 
 SFU BEAM:
 
-- `sfu_media_path_test.exs`: video bidirecional sintetico, gaps/duplicatas/
-  reorder, RTP stats monotonic, PLI, late join, quatro participantes, sem
-  camera, audio-only, screen share, leave/rejoin churn, remaining routes e ICE
-  restart explicito. O teste de stats aquece a rota antes da contagem exata
-  para evitar descartar sequencias antigas como se fossem falha de encaminhamento.
+- `sfu_media_path_test.exs`: synthetic bidirectional video, gaps/duplicates/
+  reorder, monotonic RTP stats, PLI, late join, four participants, no
+  camera, audio-only, screen share, leave/rejoin churn, remaining routes and
+  explicit ICE restart. The stats test warms up the route before the exact
+  count to avoid discarding old sequences as if they were a forwarding failure.
 
 E2E:
 
-- `e2e/tests/chat-group-call.spec.ts`: prejoin, polish, dois usuarios trocando
-  video real, atalhos, entrada com mic/camera off, permissao negada com
-  receive-only, moderacao, request-to-speak, locked conference, screen share,
-  layout, mini mode, stats, qualidade, reacoes, failed media recovery com retry
-  manual, tres usuarios renegociando join/leave e screen moderation.
-- `e2e/tests/chat-call-fault-injection.spec.ts`: queda curta de LiveView/rede
-  durante conferencia, reconexao e saida; reload durante `group_call_offer`;
-  `PeerServer` encerrado antes de `request_offer` com rejoin por
-  `previous_participant_id`; erro de recovery/media com botao `Leave` abrindo
-  confirmacao e limpando status/window.
+- `e2e/tests/chat-group-call.spec.ts`: prejoin, polish, two users exchanging
+  real video, shortcuts, joining with mic/camera off, denied permission with
+  receive-only, moderation, request-to-speak, locked conference, screen share,
+  layout, mini mode, stats, quality, reactions, failed media recovery with
+  manual retry, three users renegotiating join/leave and screen moderation.
+- `e2e/tests/chat-call-fault-injection.spec.ts`: short LiveView/network drop
+  during a conference, reconnection and leave; reload during `group_call_offer`;
+  `PeerServer` terminated before `request_offer` with rejoin via
+  `previous_participant_id`; recovery/media error with the `Leave` button opening
+  confirmation and clearing status/window.
 
-Lacunas conferencia de teste:
+Conference test gaps:
 
-- reentrada de browser apos Phoenix channel reconnect durante offer pendente e
-  perda real de mensagem server-client;
-- candidate invalido repetido agregado por epoch.
-
+- browser re-entry after a Phoenix channel reconnect during a pending offer and
+  real server-client message loss;
+- repeated invalid candidate aggregated per epoch.
