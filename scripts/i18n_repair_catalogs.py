@@ -103,7 +103,7 @@ def repair_locale(locale, args: argparse.Namespace) -> None:
             if catalogs.entry_pairs(po) == original_pairs[path]:
                 continue
 
-            po.save(str(path))
+            catalogs.save_po(po, Path(path))
             saved += 1
 
     if args.write:

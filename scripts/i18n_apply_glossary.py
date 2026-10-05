@@ -74,7 +74,7 @@ def apply_locale(code: str, args: argparse.Namespace) -> int:
             changed += 1
 
         if touched and args.write:
-            po.save(str(path))
+            catalogs.save_po(po, Path(path))
 
     if changed:
         print(f"{code}: {changed} changed")

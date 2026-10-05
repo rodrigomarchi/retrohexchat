@@ -158,6 +158,159 @@ def entry_pairs(po) -> list[tuple[str, str]]:
     return pairs
 
 
+def save_po(po, path: Path) -> int:
+    """Write `po`'s translations back into `path`, rewriting only what changed.
+
+    Never `po.save()`. polib re-wraps every long string at 78 columns while the
+    catalogs are written by Gettext's own writer, which keeps a string on one
+    line unless it holds a newline. One save to fill twenty entries rewrapped
+    thousands of untouched msgstrs, and `mix gettext.merge` does not undo it:
+    the merge restores msgids, never msgstrs. With `wrapwidth=0` polib instead
+    rewrites the `#:` reference blocks.
+
+    So the file text is the source of truth. Each entry block is matched to its
+    polib entry by context and msgid, and a block is rewritten only when its
+    msgstr, its flags or its previous-msgid lines differ — and then only those
+    lines, in the writer's own style. Everything else stays byte for byte.
+
+    Stdlib only: the entries are read by attribute, so tests drive it with
+    plain objects and the CI gate needs no polib. Returns the number of blocks
+    rewritten.
+    """
+    entries = {(entry.msgctxt or None, entry.msgid): entry for entry in po if not entry.obsolete}
+    text = path.read_text(encoding="utf-8")
+    trailing = text[len(text.rstrip("\n")) :]
+    blocks = text.rstrip("\n").split("\n\n")
+    rewritten = 0
+    out = []
+
+    for block in blocks:
+        new_block = _rewrite_block(block, entries)
+
+        if new_block != block:
+            rewritten += 1
+
+        out.append(new_block)
+
+    if rewritten:
+        path.write_text("\n\n".join(out) + trailing, encoding="utf-8")
+
+    return rewritten
+
+
+def _rewrite_block(block: str, entries: dict) -> str:
+    lines = block.split("\n")
+
+    if any(line.startswith("#~") for line in lines):
+        return block
+
+    fields = _block_fields(lines)
+    msgid = "".join(fields.get("msgid", ([], 0))[0])
+
+    if not msgid:
+        return block
+
+    msgctxt = fields.get("msgctxt")
+    key = ("".join(msgctxt[0]) if msgctxt else None, msgid)
+    entry = entries.get(key)
+
+    if entry is None:
+        return block
+
+    current_strs = {
+        name: "".join(parts) for name, (parts, _start) in fields.items() if name.startswith("msgstr")
+    }
+
+    if getattr(entry, "msgid_plural", None):
+        new_strs = {f"msgstr[{index}]": value for index, value in sorted(entry.msgstr_plural.items())}
+    else:
+        new_strs = {"msgstr": entry.msgstr}
+
+    flag_lines = [line for line in lines if line.startswith("#,")]
+    current_flags = [
+        flag.strip() for line in flag_lines for flag in line[2:].split(",") if flag.strip()
+    ]
+    new_flags = list(entry.flags)
+    drop_previous = getattr(entry, "previous_msgid", None) is None and any(
+        line.startswith("#|") for line in lines
+    )
+
+    if new_strs == current_strs and new_flags == current_flags and not drop_previous:
+        return block
+
+    first_msgstr = min(start for name, (_parts, start) in fields.items() if name.startswith("msgstr"))
+    head = []
+
+    for line in lines[:first_msgstr]:
+        if line.startswith("#,"):
+            continue
+
+        if line.startswith("#|") and drop_previous:
+            continue
+
+        head.append(line)
+
+    if new_flags:
+        # Flags sit after the translator, extracted and reference comments,
+        # and before previous-msgid lines and the fields themselves.
+        at = next(
+            (i for i, line in enumerate(head) if not line.startswith(("# ", "#.", "#:")) and line != "#"),
+            len(head),
+        )
+        head.insert(at, "#, " + ", ".join(new_flags))
+
+    body = []
+
+    for name, value in new_strs.items():
+        body.extend(_field_lines(name, value))
+
+    return "\n".join(head + body)
+
+
+def _block_fields(lines: list[str]) -> dict[str, tuple[list[str], int]]:
+    """Field name -> (unescaped parts, index of its first line)."""
+    fields: dict[str, tuple[list[str], int]] = {}
+    current: str | None = None
+
+    for index, line in enumerate(lines):
+        stripped = line.strip()
+
+        if stripped.startswith("#"):
+            continue
+
+        match = _PO_FIELD_RE.match(stripped)
+
+        if match:
+            current = match.group(1)
+            fields[current] = ([unescape_po(match.group(2))], index)
+            continue
+
+        continuation = _PO_CONTINUATION_RE.match(stripped)
+
+        if continuation and current:
+            fields[current][0].append(unescape_po(continuation.group(1)))
+
+    return fields
+
+
+def escape_po(text: str) -> str:
+    return (
+        text.replace("\\", "\\\\")
+        .replace('"', '\\"')
+        .replace("\n", "\\n")
+        .replace("\t", "\\t")
+        .replace("\r", "\\r")
+    )
+
+
+def _field_lines(name: str, value: str) -> list[str]:
+    """One field in Gettext's own style: one line unless it holds a newline."""
+    if "\n" not in value:
+        return [f'{name} "{escape_po(value)}"']
+
+    return [f'{name} ""'] + [f'"{escape_po(part)}"' for part in value.splitlines(True)]
+
+
 def plural_sources(entry, one_form: bool) -> dict[int, str]:
     """Which source string fills each plural slot."""
     if one_form:

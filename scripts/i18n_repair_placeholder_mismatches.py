@@ -5,9 +5,14 @@ from __future__ import annotations
 
 import argparse
 import re
+import sys
 from pathlib import Path
 
 import polib
+
+sys.path.insert(0, str(Path(__file__).parent))
+
+from i18n import catalogs  # noqa: E402
 
 
 PLACEHOLDER_RE = re.compile(r"%\{[A-Za-z0-9_]+\}")
@@ -42,7 +47,7 @@ def main() -> int:
             repaired += int(changed_entry)
 
         if changed:
-            po.save(str(path))
+            catalogs.save_po(po, Path(path))
             rewritten += 1
 
     print(f"files={len(files)} rewritten={rewritten} repaired_entries={repaired}")

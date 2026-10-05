@@ -143,7 +143,7 @@ def translate_file(
             clear_fuzzy(entry)
 
     if changed:
-        po.save(str(path))
+        catalogs.save_po(po, Path(path))
 
     return changed
 

@@ -143,7 +143,7 @@ def repair_locale(code: str, write: bool) -> tuple[int, int]:
             files_touched += 1
 
             if write:
-                po.save(str(path))
+                catalogs.save_po(po, Path(path))
 
     return entries_fixed, files_touched
 
