@@ -91,8 +91,9 @@ msgstr "エンドグループコール"
 msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
 msgstr "全員の%{channel}でグループコールを終了しますか? 参加者全員が切断されます。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:52
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:329
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:339
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:368
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:371
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1068
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1069
 #: lib/retro_hex_chat_web/live/app/call_live.ex:60
@@ -137,7 +138,7 @@ msgstr "グループコールメディアが劣化します。"
 msgid "Group calls are available in channels only."
 msgstr "チャネルのみでグループ通話が可能です。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:330
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:340
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ to use group calls"
 msgstr "グループコールを使用するNickServで識別する"
@@ -219,7 +220,7 @@ msgstr "グループコールを開始する前にチャンネルを開きます
 msgid "Participant is no longer in the group call."
 msgstr "グループコールでは参加できません。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:98
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:108
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:656
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:111
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:337
@@ -359,7 +360,7 @@ msgstr "%{connected}/%{total} 接続"
 msgid "%{connection} / ICE %{ice}"
 msgstr "%{connection} / アイス%{ice}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:285
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:295
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m"
 msgstr "%{hours}h %{minutes}m"
@@ -376,7 +377,7 @@ msgstr ""
 "%{level} 質: RTT %{rtt} ms、損失 %{loss}%、%{bitrate} kbps、%{fps} fps、凍結 "
 "%{freezes}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:287
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:297
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m"
 msgstr "%{minutes}m"
@@ -444,7 +445,7 @@ msgstr "%{packets} pkt/%{bytes}"
 msgid "%{sent} up / %{received} down"
 msgstr "%{sent} アップ/%{received} ダウン"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:333
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:343
 #, elixir-autogen, elixir-format
 msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr "%{channel}の%{state}会議: %{count}/%{max}人、%{duration}"
@@ -490,9 +491,9 @@ msgstr "0 アクティブ"
 msgid "0 connected"
 msgstr "接続される 0"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:273
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:294
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:298
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:283
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:304
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:308
 #, elixir-autogen, elixir-format
 msgid "0m"
 msgstr "0m"
@@ -691,7 +692,7 @@ msgstr "会議の反応"
 msgid "Conference started in %{channel}."
 msgstr "%{channel} で始まる会議。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:67
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:70
 #, elixir-autogen, elixir-format
 msgid "Conference summary"
 msgstr "会議概要"
@@ -741,7 +742,7 @@ msgstr "持ち手の更新は出来ません。"
 msgid "Default device"
 msgstr "デフォルトデバイス"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:347
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:357
 #, elixir-autogen, elixir-format
 msgid "Degraded"
 msgstr "分解された"
@@ -752,7 +753,7 @@ msgstr "分解された"
 msgid "Download"
 msgstr "ダウンロード"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:348
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:358
 #, elixir-autogen, elixir-format
 msgid "Ending"
 msgstr "エンドウイング"
@@ -817,7 +818,7 @@ msgstr "フレーム率"
 msgid "Freezes"
 msgstr "フリーズ"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:345
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:355
 #, elixir-autogen, elixir-format
 msgid "Full"
 msgstr "スタッフ"
@@ -886,7 +887,7 @@ msgstr "アイスペア"
 msgid "ICE traffic"
 msgstr "ICEトラフィック"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:110
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:120
 #, elixir-autogen, elixir-format
 msgid "In conference"
 msgstr "カンファレンス"
@@ -948,7 +949,7 @@ msgstr "会議を残す"
 msgid "Limited by"
 msgstr "限定販売"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:344
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:354
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr "ライブ"
@@ -958,7 +959,7 @@ msgstr "ライブ"
 msgid "Lock conference"
 msgstr "ロック会議"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:346
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:356
 #, elixir-autogen, elixir-format
 msgid "Locked"
 msgstr "ロック"
@@ -1349,7 +1350,7 @@ msgstr "グリッドでセルフビューを表示する"
 msgid "Signaling"
 msgstr "シグナル伝達"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:102
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:112
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1170
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:146
 #, elixir-autogen, elixir-format
@@ -1482,7 +1483,7 @@ msgstr "ビデオ"
 msgid "Video tracks"
 msgstr "ビデオトラック"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:126
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:136
 #: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:58
 #, elixir-autogen, elixir-format
 msgid "Waiting for participants"

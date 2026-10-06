@@ -22,6 +22,8 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ToolButton
+
   alias RetroHexChat.Chat.UnreadTracker
   alias RetroHexChatWeb.Icons
 
@@ -92,10 +94,8 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
           <Icons.icon_toolbar_toggle_nicklist class="h-4 w-4" />
         </.action_button>
       </div>
-      <span
+      <.tool_separator
         :if={@show_sidebar_toggles && (@show_channel_context || @show_pm_context)}
-        class="conversation-toolbar-separator"
-        aria-hidden="true"
         data-testid="conversation-toolbar-context-separator"
       />
 
@@ -164,16 +164,15 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
 
   defp action_button(assigns) do
     ~H"""
-    <button
-      type="button"
-      class={[
-        "conversation-toolbar-button relative bg-surface inline-flex shrink-0 items-center justify-center",
-        "active:shadow-retro-sunken",
-        if(@active, do: "shadow-retro-sunken bg-hover-bg", else: "shadow-retro-raised")
-      ]}
+    <.tool_button
+      label={describe(@label, @badge)}
+      named_by_content
+      variant="flat"
+      size="xs"
+      active={@active}
+      pressed={@active}
+      class="conversation-toolbar-button"
       phx-click={@event}
-      title={describe(@label, @badge)}
-      aria-pressed={to_string(@active)}
       data-testid={@testid}
       {@rest}
     >
@@ -187,7 +186,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
       >
         {UnreadTracker.display_count(@badge)}
       </span>
-    </button>
+    </.tool_button>
     """
   end
 

@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Popover
+  import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChatWeb.Icons
 
@@ -25,20 +26,24 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
     assigns = assign_summary(assigns)
 
     ~H"""
-    <div class={classes(["conversation-toolbar-entry flex items-center gap-px", @class])}>
+    <%!-- Keyed: the strip gains and loses buttons as messages arrive, and an
+          unkeyed entry would be rebuilt — closing its open summary. --%>
+    <div
+      id={"group-call-entry-#{@channel}"}
+      class={classes(["conversation-toolbar-entry flex items-center gap-px", @class])}
+    >
       <%!-- One shape and no second: the entry never goes anywhere. It opens
             the room if there is none and writes the room's card into the
             channel, and that card is the door. An anchor beside it was a
             second door that skipped the conversation — people walked into a
             conference the channel was never told about. --%>
-      <button
-        type="button"
+      <.tool_button
+        label={open_title(@identified)}
+        named_by_content
+        variant="flat"
+        size="xs"
+        class={["conversation-toolbar-button text-xs", active_text_class(@active, @state)]}
         phx-click={@on_open}
-        class={[
-          "conversation-toolbar-button flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs",
-          active_state_class(@active, @state)
-        ]}
-        title={open_title(@identified)}
         disabled={!@identified}
         data-testid="group-call-open"
         data-channel={@channel}
@@ -48,9 +53,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
         data-started-at={active_value(@active, started_at_value(@started_at))}
       >
         <Icons.icon_toolbar_conference class="h-3.5 w-3.5 shrink-0" />
-        <span class="conversation-toolbar-button__text">
-          {dgettext("group_call", "Group Call")}
-        </span>
+        <span class="conversation-toolbar-button__text">{entry_text(@active, @state)}</span>
         <span
           :if={@active}
           class={[
@@ -60,17 +63,24 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
           ]}
           aria-hidden="true"
         />
-      </button>
+      </.tool_button>
 
       <.popover
         :if={@active}
         label={dgettext("group_call", "Conference summary")}
         placement="above-end"
-        trigger_class="conversation-toolbar-button flex cursor-pointer items-center justify-center shadow-retro-raised bg-surface text-primary"
+        trigger_class={
+          tool_button_class(
+            variant: "flat",
+            size: "xs",
+            class: "conversation-toolbar-button text-primary"
+          )
+        }
         trigger_testid="group-call-channel-popover-toggle"
         panel_testid="group-call-channel-popover"
         panel_attrs={["data-channel": @channel]}
         panel_class="w-72 border border-border bg-surface p-2 text-xs shadow-retro-raised"
+        id={"group-call-popover-#{@channel}"}
         class="conversation-toolbar-entry"
       >
         <:trigger><Icons.icon_btn_info class="h-3.5 w-3.5" /></:trigger>
@@ -353,8 +363,21 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   defp state_class(:degraded), do: "border-destructive text-destructive"
   defp state_class(:ending), do: "border-muted text-muted-foreground"
 
-  defp active_state_class(false, _state), do: nil
-  defp active_state_class(true, state), do: ["relative border", state_class(state)]
+  # The words carry the state — "Group Call · Locked" — so it reads without
+  # telling colours apart; the colour only repeats it.
+  defp entry_text(false, _state), do: dgettext("group_call", "Group Call")
+
+  defp entry_text(true, state),
+    do: dgettext("group_call", "Group Call") <> " · " <> state_label(state)
+
+  defp active_text_class(false, _state), do: nil
+  defp active_text_class(true, state), do: state_text_class(state)
+
+  defp state_text_class(:active), do: "text-success"
+  defp state_text_class(:full), do: "text-warning"
+  defp state_text_class(:locked), do: "text-warning"
+  defp state_text_class(:degraded), do: "text-destructive"
+  defp state_text_class(:ending), do: "text-muted-foreground"
 
   defp active_value(false, _value), do: nil
   defp active_value(true, value), do: value

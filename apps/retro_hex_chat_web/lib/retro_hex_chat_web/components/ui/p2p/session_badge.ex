@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Popover
+  import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChatWeb.Icons
 
@@ -36,6 +37,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
     ~H"""
     <div
       :if={@active}
+      id={"p2p-peer-entry-#{@peer}"}
       class={classes(["conversation-toolbar-entry flex items-center gap-px", @class])}
       data-testid="p2p-peer-entry-wrap"
     >
@@ -43,54 +45,65 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
             is none and writes its card into the PM, and that card is the door.
             An anchor beside it was a second door that skipped the
             conversation. --%>
-      <button
-        type="button"
+      <%!-- The words carry the state — "P2P Session · Live" — so it reads
+            without telling colours apart; the colour only repeats it. --%>
+      <.tool_button
+        label={@title}
+        named_by_content
+        variant="flat"
+        size="xs"
+        active={@current}
+        pressed={@current}
+        class={[
+          "conversation-toolbar-button text-xs",
+          @current && "font-bold",
+          state_text_class(@status)
+        ]}
         phx-click={@on_start}
         phx-value-peer={@peer}
-        class={[
-          "conversation-toolbar-button relative flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs",
-          @current && "bg-canvas font-bold shadow-retro-sunken",
-          status_class(@status)
-        ]}
-        title={@title}
-        aria-pressed={to_string(@current)}
         data-testid="p2p-peer-entry"
         data-peer={@peer}
         data-p2p-state={@visual_state}
         data-p2p-status={Atom.to_string(@status)}
       >
         <Icons.icon_toolbar_p2p class="h-3.5 w-3.5 shrink-0" />
-        <span class="conversation-toolbar-button__text">
-          {dgettext("p2p", "P2P Session")}
-        </span>
-      </button>
+        <span class="conversation-toolbar-button__text">{entry_text(@status)}</span>
+      </.tool_button>
 
       <%!-- Refusing is not a door, which is why it survived the removal of the
             ones that were: it ends the invitation from the conversation,
             without anybody entering anything. --%>
-      <button
+      <.tool_button
         :if={@pending_received?}
-        type="button"
+        label={dgettext("p2p", "Decline P2P request")}
+        variant="flat"
+        size="xs"
+        class="conversation-toolbar-button text-xs text-destructive"
         phx-click="p2p_decline_invite"
         phx-value-token={@token}
         disabled={is_nil(@token)}
-        class="conversation-toolbar-button flex items-center justify-center shadow-retro-raised bg-surface text-destructive"
-        title={dgettext("p2p", "Decline P2P request")}
-        aria-label={dgettext("p2p", "Decline P2P request")}
         data-testid="p2p-peer-decline"
         data-peer={@peer}
       >
         <Icons.icon_reject class="h-3.5 w-3.5 shrink-0" />
-      </button>
+        <span class="conversation-toolbar-button__text">{dgettext("p2p", "Decline")}</span>
+      </.tool_button>
 
       <.popover
         label={dgettext("p2p", "P2P session summary")}
         placement="above-end"
-        trigger_class="conversation-toolbar-button flex cursor-pointer items-center justify-center shadow-retro-raised bg-surface text-primary"
+        trigger_class={
+          tool_button_class(
+            variant: "flat",
+            size: "xs",
+            class: "conversation-toolbar-button text-primary"
+          )
+        }
         trigger_testid="p2p-peer-popover-toggle"
         panel_testid="p2p-peer-popover"
         panel_attrs={["data-peer": @peer]}
         panel_class="w-72 border border-border bg-surface p-2 text-xs shadow-retro-raised"
+        id={"p2p-peer-popover-#{@peer}"}
         class="conversation-toolbar-entry"
       >
         <:trigger><Icons.icon_btn_info class="h-3.5 w-3.5" /></:trigger>
@@ -239,6 +252,15 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
 
   defp title(peer, _status),
     do: dgettext("p2p", "Open the P2P session with %{peer} in a tab of its own", peer: peer)
+
+  defp entry_text(:idle), do: dgettext("p2p", "P2P Session")
+
+  defp entry_text(status), do: dgettext("p2p", "P2P Session") <> " · " <> status_label(status)
+
+  defp state_text_class(:idle), do: nil
+  defp state_text_class(:invite), do: "text-warning"
+  defp state_text_class(:link), do: "text-warning"
+  defp state_text_class(:live), do: "text-success"
 
   defp status_class(:idle), do: "border border-primary text-primary"
   defp status_class(:invite), do: "border border-warning text-warning"

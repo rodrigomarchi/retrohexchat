@@ -349,12 +349,26 @@ test.describe("In-chat P2P session", () => {
         toggleBox!.y + 1,
       );
 
+      // Visible is not enough: a scrolling strip clips a panel that still has a
+      // box. What is on screen at the panel's centre has to be the panel.
+      const onTop = () =>
+        popover.evaluate((panel) => {
+          const box = panel.getBoundingClientRect();
+          const hit = document.elementFromPoint(
+            box.left + box.width / 2,
+            box.top + box.height / 2,
+          );
+          return panel.contains(hit);
+        });
+      expect(await onTop()).toBe(true);
+
       // A message re-renders the conversation; an open popover must survive it.
       await bob.chat.sendMessage(
         `/msg ${alice.nick} while the summary is open`,
       );
       await alice.chat.expectMessageVisible("while the summary is open");
       await expect(popover).toBeVisible();
+      expect(await onTop()).toBe(true);
 
       // Escape closes the popover and goes no further: the chat window it
       // sits in stays open.

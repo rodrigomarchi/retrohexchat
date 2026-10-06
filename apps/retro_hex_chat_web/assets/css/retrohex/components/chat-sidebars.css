@@ -33,15 +33,6 @@
   margin-right: auto;
 }
 
-.chat-sidebar-collapse-button {
-  @apply h-6 w-6 min-w-6 shrink-0 gap-0 border-l-2 border-primary bg-white p-0 text-primary shadow-retro-raised ring-1 ring-black;
-  @apply hover:bg-hover-bg active:shadow-retro-sunken;
-}
-
-.chat-sidebar-collapse-button > span:first-child {
-  @apply h-4 w-4;
-}
-
 .chat-sidebar-rail {
   @apply flex h-full w-[36px] shrink-0 flex-col items-center gap-[3px] bg-surface px-[3px] py-[4px] shadow-retro-raised;
 }
@@ -54,22 +45,10 @@
   @apply border-l border-border;
 }
 
+/* The rail's buttons are flat ToolButtons; this only sizes them to the rail
+   and lets their counts and badges ride on the glyph. */
 .chat-sidebar-rail__button {
-  @apply relative inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center bg-surface p-0 text-foreground shadow-retro-raised;
-  @apply active:shadow-retro-sunken;
-}
-
-.chat-sidebar-rail__button:focus-visible {
-  outline-offset: -4px;
-}
-
-.chat-sidebar-rail__button:hover {
-  @apply bg-hover-bg;
-}
-
-.chat-sidebar-rail__button--active,
-.chat-sidebar-rail__button--toggle[aria-expanded="true"] {
-  @apply bg-white shadow-retro-sunken;
+  @apply relative h-[30px] min-h-[30px] w-[30px] min-w-[30px] text-foreground;
 }
 
 .chat-sidebar-rail__count {

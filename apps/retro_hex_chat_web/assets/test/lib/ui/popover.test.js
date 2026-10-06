@@ -2,8 +2,9 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import {
   POPOVER_CLOSE_EVENT,
   installPopoverBehaviour,
-  keepDisclosureOpenAcrossPatch,
+  keepDisclosureStateAcrossPatch,
   nextMenuRow,
+  panelPosition,
   popoversOutside,
 } from "../../../js/lib/ui/popover";
 
@@ -27,19 +28,30 @@ describe("ui/popover", () => {
     const to = document.createElement("details");
 
     from.open = true;
-    keepDisclosureOpenAcrossPatch(from, to);
+    keepDisclosureStateAcrossPatch(from, to);
     expect(to.open).toBe(true);
 
     from.open = false;
     to.open = true;
-    keepDisclosureOpenAcrossPatch(from, to);
+    keepDisclosureStateAcrossPatch(from, to);
     expect(to.open).toBe(false);
+  });
+
+  it("keeps the position the browser gave an open panel", () => {
+    const from = document.createElement("div");
+    const to = document.createElement("div");
+    from.setAttribute("data-popover-panel", "");
+    from.setAttribute("style", "position: fixed; top: 10px;");
+
+    keepDisclosureStateAcrossPatch(from, to);
+
+    expect(to.getAttribute("style")).toBe("position: fixed; top: 10px;");
   });
 
   it("leaves elements that are not disclosures alone", () => {
     const from = document.createElement("div");
     const to = document.createElement("div");
-    expect(() => keepDisclosureOpenAcrossPatch(from, to)).not.toThrow();
+    expect(() => keepDisclosureStateAcrossPatch(from, to)).not.toThrow();
   });
 
   it("a click outside closes an open popover, a click inside does not", () => {
@@ -166,5 +178,34 @@ describe("ui/popover", () => {
     installPopoverBehaviour(document);
     expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
+  });
+
+  describe("panelPosition", () => {
+    const trigger = { top: 700, bottom: 722, left: 900, right: 922, width: 22 };
+    const panel = { width: 288, height: 120 };
+    const viewport = { width: 1366, height: 820 };
+
+    it("hangs an above-end panel over the trigger, right edges aligned", () => {
+      expect(panelPosition(trigger, panel, "above-end", viewport)).toEqual({
+        top: 700 - 4 - 120,
+        left: 922 - 288,
+      });
+    });
+
+    it("centres an above panel on the trigger", () => {
+      expect(panelPosition(trigger, panel, "above", viewport).left).toBe(911 - 144);
+    });
+
+    it("drops a below-start panel under the trigger", () => {
+      expect(panelPosition(trigger, panel, "below-start", { width: 1366, height: 2000 })).toEqual({
+        top: 726,
+        left: 900,
+      });
+    });
+
+    it("keeps the panel on screen at the edges", () => {
+      const corner = { top: 10, bottom: 32, left: 2, right: 24, width: 22 };
+      expect(panelPosition(corner, panel, "above-end", viewport)).toEqual({ top: 4, left: 4 });
+    });
   });
 });

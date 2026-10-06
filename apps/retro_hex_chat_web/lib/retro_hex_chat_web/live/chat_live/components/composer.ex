@@ -54,6 +54,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog
   alias RetroHexChatWeb.Components.UI.Format
+  import RetroHexChatWeb.Components.UI.ToolButton
+
   alias RetroHexChatWeb.Icons
 
   @id "composer"
@@ -444,7 +446,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
             <:toolbar_buttons :if={is_nil(@edit_mode_message_id)}>
               <label
                 for={@uploads.attachments.ref}
-                class="inline-flex h-8 w-8 cursor-pointer items-center justify-center border border-border bg-surface text-foreground shadow-retro-button hover:bg-muted"
+                class={tool_button_class(variant: "flat", size: "sm")}
                 title={dgettext("chat", "Attach file")}
                 aria-label={dgettext("chat", "Attach file")}
                 data-testid="chat-attachment-button"

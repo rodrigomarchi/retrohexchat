@@ -17,6 +17,8 @@ defmodule RetroHexChatWeb.Components.UI.Popover do
     * **It opens where there is room.** `placement` says which edge of the
       trigger the panel hangs from; a control at the bottom of a window opens
       upwards (`above-end`), one over a video opens centred above (`above`).
+      Once open, the panel is pinned to the viewport from the trigger's
+      position, so a scrolling strip around the trigger cannot clip it.
 
   The trigger is drawn by the caller through `trigger_class` — usually
   `ToolButton.tool_button_class/1` — so it looks like every other control.
@@ -60,6 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.Popover do
     <details
       class={classes(["relative shrink-0", @class])}
       data-popover
+      data-placement={@placement}
       {@rest}
     >
       <summary
@@ -75,6 +78,7 @@ defmodule RetroHexChatWeb.Components.UI.Popover do
         class={classes([placement_class(@placement), @panel_class])}
         role={@panel_role}
         aria-label={@label}
+        data-popover-panel
         data-testid={@panel_testid}
         {@panel_attrs}
       >

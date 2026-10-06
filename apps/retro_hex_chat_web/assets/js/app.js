@@ -17,7 +17,7 @@ import { loadCurrentLocaleCatalog } from "./lib/i18n";
 import { S3DirectUploader } from "./lib/uploads/s3_direct";
 import { registerServiceWorker } from "./lib/system/service_worker.js";
 import { loadRetroChrome } from "./lib/ui/retro_chrome_loader";
-import { installPopoverBehaviour, keepDisclosureOpenAcrossPatch } from "./lib/ui/popover";
+import { installPopoverBehaviour, keepDisclosureStateAcrossPatch } from "./lib/ui/popover";
 
 const Hooks = buildHooks();
 
@@ -43,7 +43,7 @@ const liveSocket = new LiveSocket("/live", Socket, {
     onPatchStart: preserveScrollPatchStart,
     onBeforeElUpdated(fromEl, toEl) {
       preserveScrollBeforeElUpdated(fromEl, toEl);
-      keepDisclosureOpenAcrossPatch(fromEl, toEl);
+      keepDisclosureStateAcrossPatch(fromEl, toEl);
     },
     onPatchEnd: preserveScrollPatchEnd,
   },

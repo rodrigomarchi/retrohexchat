@@ -2,9 +2,10 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
   @moduledoc false
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
   import RetroHexChatWeb.Components.UI.P2P.SessionBadge
+
+  import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChatWeb.Icons
 
@@ -141,23 +142,20 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
           class="h-3"
         />
       </span>
-      <.button
+      <%!-- Flat until the pointer is on it, then it says what it does: closing
+            the tab is the one destructive thing in the strip. --%>
+      <.tool_button
         :if={@closeable}
-        type="button"
-        variant="ghost"
-        size="icon"
-        aria-label={dgettext("chat", "Close tab")}
+        label={dgettext("chat", "Close tab")}
+        variant="flat"
+        size="xs"
+        class="ml-[2px] h-[14px] min-h-[14px] w-[14px] min-w-[14px] hover:bg-destructive hover:text-white"
         phx-click={@on_close}
         phx-value-type={@type}
         phx-value-label={@label}
-        class={[
-          "w-[14px] min-w-[14px] h-[14px] min-h-[14px]",
-          "p-0 text-[10px] leading-none border border-gray-400 bg-gray-300",
-          "ml-[2px] hover:bg-destructive hover:text-white hover:border-destructive"
-        ]}
       >
-        <:icon><Icons.icon_close class="w-3 h-3" /></:icon>
-      </.button>
+        <Icons.icon_close class="w-3 h-3" />
+      </.tool_button>
     </div>
     """
   end

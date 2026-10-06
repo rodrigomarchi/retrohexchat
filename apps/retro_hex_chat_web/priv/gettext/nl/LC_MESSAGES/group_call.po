@@ -91,8 +91,9 @@ msgstr "Aanroep eindgroep"
 msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
 msgstr "De groepsoproep beëindigen in %{channel} voor iedereen? Alle deelnemers worden afgesloten."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:52
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:329
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:339
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:368
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:371
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1068
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1069
 #: lib/retro_hex_chat_web/live/app/call_live.ex:60
@@ -137,7 +138,7 @@ msgstr "Groepsgespreksmedia zijn gedegradeerd."
 msgid "Group calls are available in channels only."
 msgstr "Groep oproepen zijn alleen beschikbaar in kanalen."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:330
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:340
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ to use group calls"
 msgstr "Identificeer met NickServ om groepsgesprekken te gebruiken"
@@ -219,7 +220,7 @@ msgstr "Open een kanaal voordat u een groepsoproep start."
 msgid "Participant is no longer in the group call."
 msgstr "Deelnemer is niet langer in de groepsoproep."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:98
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:108
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:656
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:111
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:337
@@ -363,7 +364,7 @@ msgstr "%{connected}/%{total} verbonden"
 msgid "%{connection} / ICE %{ice}"
 msgstr "%{connection} / ICE %{ice}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:285
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:295
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m"
 msgstr "%{hours}h %{minutes}m"
@@ -378,7 +379,7 @@ msgstr "%{inbound} in / %{fanout} fanout"
 msgid "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps, freezes %{freezes}"
 msgstr "%{level} kwaliteit: RTT %{rtt} ms, verlies %{loss}%, %{bitrate} kbps, %{fps} fps, bevriest %{freezes}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:287
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:297
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m"
 msgstr "%{minutes}m"
@@ -446,7 +447,7 @@ msgstr "%{packets} pkt / %{bytes}"
 msgid "%{sent} up / %{received} down"
 msgstr "%{sent} omhoog / %{received} omlaag"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:333
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:343
 #, elixir-autogen, elixir-format
 msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr "%{state} conferentie in %{channel}: %{count}/%{max} deelnemers, %{duration}"
@@ -492,9 +493,9 @@ msgstr "0 actief"
 msgid "0 connected"
 msgstr "0 verbonden"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:273
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:294
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:298
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:283
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:304
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:308
 #, elixir-autogen, elixir-format
 msgid "0m"
 msgstr "0m"
@@ -693,7 +694,7 @@ msgstr "Reacties van de conferentie"
 msgid "Conference started in %{channel}."
 msgstr "Conferentie gestart in %{channel}."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:67
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:70
 #, elixir-autogen, elixir-format
 msgid "Conference summary"
 msgstr "Samenvatting van de conferenties"
@@ -743,7 +744,7 @@ msgstr "Kon de verhoogde hand niet bijwerken."
 msgid "Default device"
 msgstr "Standaard apparaat"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:347
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:357
 #, elixir-autogen, elixir-format
 msgid "Degraded"
 msgstr "Gedegradeerd"
@@ -754,7 +755,7 @@ msgstr "Gedegradeerd"
 msgid "Download"
 msgstr "Downloaden"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:348
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:358
 #, elixir-autogen, elixir-format
 msgid "Ending"
 msgstr "Einde"
@@ -819,7 +820,7 @@ msgstr "Framesnelheid"
 msgid "Freezes"
 msgstr "Halt"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:345
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:355
 #, elixir-autogen, elixir-format
 msgid "Full"
 msgstr "Vol"
@@ -888,7 +889,7 @@ msgstr "ICE-paren"
 msgid "ICE traffic"
 msgstr "ICE-verkeer"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:110
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:120
 #, elixir-autogen, elixir-format
 msgid "In conference"
 msgstr "In conferentie"
@@ -950,7 +951,7 @@ msgstr "Conferentie verlaten"
 msgid "Limited by"
 msgstr "Beperkt door"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:344
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:354
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr "Levend"
@@ -960,7 +961,7 @@ msgstr "Levend"
 msgid "Lock conference"
 msgstr "Conferentie vergrendelen"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:346
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:356
 #, elixir-autogen, elixir-format
 msgid "Locked"
 msgstr "Vergrendeld"
@@ -1349,7 +1350,7 @@ msgstr "Zelfweergave in raster tonen"
 msgid "Signaling"
 msgstr "Signalering"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:102
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:112
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1170
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:146
 #, elixir-autogen, elixir-format
@@ -1482,7 +1483,7 @@ msgstr "Video"
 msgid "Video tracks"
 msgstr "Videotracks"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:126
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:136
 #: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:58
 #, elixir-autogen, elixir-format
 msgid "Waiting for participants"

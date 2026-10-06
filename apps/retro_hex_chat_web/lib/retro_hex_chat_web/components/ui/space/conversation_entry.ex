@@ -14,6 +14,8 @@ defmodule RetroHexChatWeb.Components.UI.Space.ConversationEntry do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ToolButton
+
   alias RetroHexChatWeb.Icons
 
   attr :space_id, :string, required: true
@@ -23,21 +25,24 @@ defmodule RetroHexChatWeb.Components.UI.Space.ConversationEntry do
   @spec space_conversation_entry(map()) :: Phoenix.LiveView.Rendered.t()
   def space_conversation_entry(assigns) do
     ~H"""
-    <div class={classes(["conversation-toolbar-entry flex items-center gap-px", @class])}>
-      <button
-        type="button"
+    <div
+      id={"space-entry-#{@space_id}"}
+      class={classes(["conversation-toolbar-entry flex items-center gap-px", @class])}
+    >
+      <.tool_button
+        label={title(@identified)}
+        named_by_content
+        variant="flat"
+        size="xs"
+        class="conversation-toolbar-button text-xs"
         phx-click="space_open"
         disabled={!@identified}
-        class={[
-          "conversation-toolbar-button flex shrink-0 items-center justify-center shadow-retro-raised bg-surface text-xs"
-        ]}
-        title={title(@identified)}
         data-testid="space-open"
         data-space={@space_id}
       >
         <Icons.icon_toolbar_community class="h-3.5 w-3.5 shrink-0" />
         <span class="conversation-toolbar-button__text">{dgettext("chat", "Space")}</span>
-      </button>
+      </.tool_button>
     </div>
     """
   end

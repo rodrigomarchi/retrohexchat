@@ -6,7 +6,7 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import { buildHelpHooks } from "./hooks/help_hooks";
 import { createPlausibleTracker } from "./lib/analytics/plausible";
-import { installPopoverBehaviour, keepDisclosureOpenAcrossPatch } from "./lib/ui/popover";
+import { installPopoverBehaviour, keepDisclosureStateAcrossPatch } from "./lib/ui/popover";
 import { installRetroTooltips } from "./lib/ui/tooltip";
 
 const csrfToken = document.querySelector("meta[name='csrf-token']")?.getAttribute("content") || "";
@@ -16,7 +16,7 @@ const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken },
   hooks: Hooks,
-  dom: { onBeforeElUpdated: keepDisclosureOpenAcrossPatch },
+  dom: { onBeforeElUpdated: keepDisclosureStateAcrossPatch },
 });
 
 liveSocket.connect();

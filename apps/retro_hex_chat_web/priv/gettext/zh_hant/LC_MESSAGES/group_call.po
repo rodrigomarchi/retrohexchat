@@ -91,8 +91,9 @@ msgstr "結束組呼叫"
 msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
 msgstr "結束小組呼叫 %{channel} 給大家看? 所有參與者都將被切斷。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:52
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:329
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:339
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:368
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:371
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1068
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1069
 #: lib/retro_hex_chat_web/live/app/call_live.ex:60
@@ -137,7 +138,7 @@ msgstr "集團呼叫媒體退化."
 msgid "Group calls are available in channels only."
 msgstr "團體電話只能通過渠道提供。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:330
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:340
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ to use group calls"
 msgstr "與 NickServe 識別使用組調用"
@@ -219,7 +220,7 @@ msgstr "在啓動分組呼叫前打開頻道 。"
 msgid "Participant is no longer in the group call."
 msgstr "參賽者不再參加集體電話."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:98
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:108
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:656
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:111
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:337
@@ -359,7 +360,7 @@ msgstr "%{connected}/%{total} 連接"
 msgid "%{connection} / ICE %{ice}"
 msgstr "%{connection}/ ICE %{ice}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:285
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:295
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m"
 msgstr "%{hours}h %{minutes}m"
@@ -375,7 +376,7 @@ msgid "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} f
 msgstr ""
 "%{level} 質量:RTT %{rtt}/ms,損失%{loss}%,%{bitrate}kbps,%{fps}fps,凍結%{freezes}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:287
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:297
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m"
 msgstr "%{minutes}米"
@@ -443,7 +444,7 @@ msgstr "%{packets}pkt / %{bytes}"
 msgid "%{sent} up / %{received} down"
 msgstr "%{sent} 上 / %{received} 下"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:333
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:343
 #, elixir-autogen, elixir-format
 msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr "%{state}會議,%{channel}:%{count}/%{max}與會者,%{duration}"
@@ -489,9 +490,9 @@ msgstr "0 活動"
 msgid "0 connected"
 msgstr "0 已連接"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:273
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:294
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:298
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:283
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:304
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:308
 #, elixir-autogen, elixir-format
 msgid "0m"
 msgstr "0m"
@@ -690,7 +691,7 @@ msgstr "會議反應"
 msgid "Conference started in %{channel}."
 msgstr "會議開始於%{channel}。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:67
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:70
 #, elixir-autogen, elixir-format
 msgid "Conference summary"
 msgstr "會議摘要"
@@ -740,7 +741,7 @@ msgstr "無法更新升起的手 。"
 msgid "Default device"
 msgstr "默認設備"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:347
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:357
 #, elixir-autogen, elixir-format
 msgid "Degraded"
 msgstr "有辱人格"
@@ -751,7 +752,7 @@ msgstr "有辱人格"
 msgid "Download"
 msgstr "下載"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:348
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:358
 #, elixir-autogen, elixir-format
 msgid "Ending"
 msgstr "結束"
@@ -816,7 +817,7 @@ msgstr "幀率"
 msgid "Freezes"
 msgstr "凍結"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:345
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:355
 #, elixir-autogen, elixir-format
 msgid "Full"
 msgstr "滿"
@@ -885,7 +886,7 @@ msgstr "ICE對"
 msgid "ICE traffic"
 msgstr "ICE 流量"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:110
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:120
 #, elixir-autogen, elixir-format
 msgid "In conference"
 msgstr "開會"
@@ -947,7 +948,7 @@ msgstr "休假會議"
 msgid "Limited by"
 msgstr "受限制"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:344
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:354
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr "現場直播"
@@ -957,7 +958,7 @@ msgstr "現場直播"
 msgid "Lock conference"
 msgstr "鎖定會議"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:346
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:356
 #, elixir-autogen, elixir-format
 msgid "Locked"
 msgstr "已鎖定"
@@ -1346,7 +1347,7 @@ msgstr "在網格中顯示自定義視圖"
 msgid "Signaling"
 msgstr "信號"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:102
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:112
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1170
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:146
 #, elixir-autogen, elixir-format
@@ -1479,7 +1480,7 @@ msgstr "視訊"
 msgid "Video tracks"
 msgstr "視頻軌道"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:126
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:136
 #: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:58
 #, elixir-autogen, elixir-format
 msgid "Waiting for participants"

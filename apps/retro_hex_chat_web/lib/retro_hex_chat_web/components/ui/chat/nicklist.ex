@@ -4,10 +4,10 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
 
   import RetroHexChatWeb.Components.UI.NickPortrait
 
-  import RetroHexChatWeb.Components.UI.Button
-
   alias RetroHexChat.Channels.Modes
   alias RetroHexChatWeb.Components.UI.Chat.Role
+  import RetroHexChatWeb.Components.UI.ToolButton
+
   alias RetroHexChatWeb.Icons
 
   @doc """
@@ -84,26 +84,23 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
       aria-label={dgettext("chat", "User list rail")}
       data-testid="nicklist-rail"
     >
-      <button
-        type="button"
-        class="chat-sidebar-rail__button chat-sidebar-rail__button--toggle"
+      <.tool_button
+        label={
+          if @expanded,
+            do: dgettext("chat", "Collapse user list"),
+            else: dgettext("chat", "Expand user list")
+        }
+        variant="flat"
+        size="xs"
+        active={@expanded}
+        class="chat-sidebar-rail__button"
         phx-click={@on_toggle}
-        title={
-          if @expanded,
-            do: dgettext("chat", "Collapse user list"),
-            else: dgettext("chat", "Expand user list")
-        }
-        aria-label={
-          if @expanded,
-            do: dgettext("chat", "Collapse user list"),
-            else: dgettext("chat", "Expand user list")
-        }
         aria-expanded={to_string(@expanded)}
         data-testid="nicklist-rail-toggle"
       >
         <Icons.icon_chevron_right :if={@expanded} class="h-4 w-4" />
         <Icons.icon_chevron_left :if={!@expanded} class="h-4 w-4" />
-      </button>
+      </.tool_button>
 
       <.nicklist_rail_item
         icon={@conversation_icon}
@@ -157,19 +154,17 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
     assigns = assign(assigns, :title, rail_item_title(assigns.label, assigns.count))
 
     ~H"""
-    <button
-      type="button"
-      class={[
-        "chat-sidebar-rail__button",
-        @active && "chat-sidebar-rail__button--active"
-      ]}
+    <.tool_button
+      label={@title}
+      variant="flat"
+      size="xs"
+      active={@active}
+      class="chat-sidebar-rail__button"
       phx-click={if @expanded, do: nil, else: @on_toggle}
-      title={@title}
-      aria-label={@title}
     >
       <.nicklist_rail_icon icon={@icon} />
       <span :if={is_integer(@count)} class="chat-sidebar-rail__count">{@count}</span>
-    </button>
+    </.tool_button>
     """
   end
 
@@ -182,21 +177,21 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
       assign(assigns, :title, rail_item_title(assigns.section.label, assigns.section.count))
 
     ~H"""
-    <button
-      type="button"
+    <.tool_button
+      label={@title}
+      variant="flat"
+      size="xs"
       class={[
         "chat-sidebar-rail__button",
         "chat-sidebar-rail__button--role-#{Role.slug(@section.key)}"
       ]}
       phx-click={if @expanded, do: nil, else: @on_toggle}
-      title={@title}
-      aria-label={@title}
     >
       <span class="chat-sidebar-rail__role-icon">
         {role_icon(%{role: @section.key})}
       </span>
       <span class="chat-sidebar-rail__count">{@section.count}</span>
-    </button>
+    </.tool_button>
     """
   end
 
@@ -281,20 +276,16 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
         </span>
         <span class="chat-nicklist-header__channel">{@display_label}</span>
         <span class="chat-nicklist-header__count">{@total}</span>
-        <.button
+        <.tool_button
           :if={@on_close}
-          type="button"
-          variant="outline"
-          size="icon"
-          class="chat-sidebar-collapse-button"
+          label={dgettext("chat", "Collapse user list")}
+          variant="flat"
+          size="sm"
           phx-click={@on_close}
-          title={dgettext("chat", "Collapse user list")}
-          aria-label={dgettext("chat", "Collapse user list")}
           data-testid="nicklist-collapse-toggle"
         >
-          <:icon><Icons.icon_chevron_right class="h-4 w-4" /></:icon>
-          <span class="sr-only">{dgettext("chat", "Collapse user list")}</span>
-        </.button>
+          <Icons.icon_chevron_right class="h-4 w-4" />
+        </.tool_button>
       </div>
       <div :if={@mode_badges != []} class="chat-nicklist-header__modes">
         <span :for={mode <- @mode_badges} class="chat-nicklist-mode">{mode}</span>

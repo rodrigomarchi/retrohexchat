@@ -83,6 +83,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolButton do
   @doc "A thin vertical divider between groups of tool buttons."
   attr :size, :string, values: ~w(sm md), default: "sm"
   attr :class, :any, default: nil
+  attr :rest, :global
 
   @spec tool_separator(map()) :: Phoenix.LiveView.Rendered.t()
   def tool_separator(assigns) do
@@ -90,6 +91,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolButton do
     <span
       class={classes(["mx-[2px] w-[1px] shrink-0 bg-gray-500", separator_height(@size), @class])}
       aria-hidden="true"
+      {@rest}
     >
     </span>
     """

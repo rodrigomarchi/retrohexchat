@@ -118,26 +118,23 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       aria-label={dgettext("chat", "Conversations rail")}
       data-testid="conversations-rail"
     >
-      <button
-        type="button"
-        class="chat-sidebar-rail__button chat-sidebar-rail__button--toggle"
+      <.tool_button
+        label={
+          if @expanded,
+            do: dgettext("chat", "Collapse conversations"),
+            else: dgettext("chat", "Expand conversations")
+        }
+        variant="flat"
+        size="xs"
+        active={@expanded}
+        class="chat-sidebar-rail__button"
         phx-click={@on_toggle}
-        title={
-          if @expanded,
-            do: dgettext("chat", "Collapse conversations"),
-            else: dgettext("chat", "Expand conversations")
-        }
-        aria-label={
-          if @expanded,
-            do: dgettext("chat", "Collapse conversations"),
-            else: dgettext("chat", "Expand conversations")
-        }
         aria-expanded={to_string(@expanded)}
         data-testid="conversations-rail-toggle"
       >
         <Icons.icon_chevron_left :if={@expanded} class="h-4 w-4" />
         <Icons.icon_chevron_right :if={!@expanded} class="h-4 w-4" />
-      </button>
+      </.tool_button>
 
       <.conversations_rail_item
         icon={@active_icon}
@@ -185,22 +182,20 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       assign(assigns, :title, rail_item_title(assigns.label, assigns.count))
 
     ~H"""
-    <button
-      type="button"
-      class={[
-        "chat-sidebar-rail__button",
-        @active && "chat-sidebar-rail__button--active"
-      ]}
+    <.tool_button
+      label={@title}
+      variant="flat"
+      size="xs"
+      active={@active}
+      class="chat-sidebar-rail__button"
       phx-click={if @expanded, do: nil, else: @on_toggle}
-      title={@title}
-      aria-label={@title}
     >
       <.conversations_rail_icon icon={@icon} />
       <span :if={is_integer(@count)} class="chat-sidebar-rail__count">{@count}</span>
       <span :if={@badge > 0} class="chat-sidebar-rail__badge">
         {format_unread_count(@badge)}
       </span>
-    </button>
+    </.tool_button>
     """
   end
 
@@ -315,20 +310,16 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       {@rest}
     >
       <div class="chat-conversations-titlebar">
-        <.button
+        <.tool_button
           :if={@on_close}
-          type="button"
-          variant="outline"
-          size="icon"
-          class="chat-sidebar-collapse-button"
+          label={dgettext("chat", "Collapse conversations")}
+          variant="flat"
+          size="sm"
           phx-click={@on_close}
-          title={dgettext("chat", "Collapse conversations")}
-          aria-label={dgettext("chat", "Collapse conversations")}
           data-testid="conversations-collapse-toggle"
         >
-          <:icon><Icons.icon_chevron_left class="h-4 w-4" /></:icon>
-          <span class="sr-only">{dgettext("chat", "Collapse conversations")}</span>
-        </.button>
+          <Icons.icon_chevron_left class="h-4 w-4" />
+        </.tool_button>
         <Icons.icon_tab_conversations class="w-4 h-4 shrink-0" />
         <span class="min-w-0 flex-1 truncate text-xs font-bold">
           {dgettext("chat", "Conversations")}

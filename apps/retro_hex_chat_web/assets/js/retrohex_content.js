@@ -6,7 +6,7 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import { buildShowcaseHooks } from "./hooks/showcase_hooks";
 import { createPlausibleTracker } from "./lib/analytics/plausible";
-import { installPopoverBehaviour, keepDisclosureOpenAcrossPatch } from "./lib/ui/popover";
+import { installPopoverBehaviour, keepDisclosureStateAcrossPatch } from "./lib/ui/popover";
 
 const Hooks = buildShowcaseHooks();
 
@@ -16,7 +16,7 @@ const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken },
   hooks: Hooks,
-  dom: { onBeforeElUpdated: keepDisclosureOpenAcrossPatch },
+  dom: { onBeforeElUpdated: keepDisclosureStateAcrossPatch },
 });
 
 liveSocket.connect();

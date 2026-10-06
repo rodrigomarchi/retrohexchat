@@ -108,15 +108,12 @@
   filter: brightness(0) invert(1);
 }
 
-/* Conversation controls ride at the end of the tab strip, so they are sized to
-   sit beside a tab rather than to fill a toolbar row of their own. The HEEx
-   components only describe semantics. */
+/* Conversation controls ride at the end of the tab strip: flat ToolButtons at
+   the size that sits beside a tab, with their label beside the glyph. */
 .conversation-toolbar-button {
-  min-width: 22px;
-  height: 22px;
-  min-height: 22px;
+  position: relative;
+  width: auto;
   padding-inline: 4px;
-  gap: 3px;
   line-height: 1;
 }
 
@@ -144,13 +141,6 @@
   height: 22px;
 }
 
-.conversation-toolbar-separator {
-  width: 1px;
-  height: 18px;
-  flex-shrink: 0;
-  margin-inline: 2px;
-  background: #808080;
-}
 /* Win98 diagonal resize grip in the bottom-right corner. */
 .desktop-window__resize--grip {
   background-image: linear-gradient(
