@@ -1,7 +1,10 @@
 defmodule RetroHexChatWeb.HelpLive.HelpContentCoverageTest do
   use ExUnit.Case, async: true
 
+  import Phoenix.LiveViewTest, only: [rendered_to_string: 1]
+
   alias RetroHexChat.Chat.HelpTopics
+  alias RetroHexChatWeb.HelpLive.HelpHelpers
 
   @moduletag :unit
 
@@ -32,5 +35,27 @@ defmodule RetroHexChatWeb.HelpLive.HelpContentCoverageTest do
           do: topic.id
 
     assert missing == []
+  end
+
+  # Icons and other components inside a page are called by name at render
+  # time, so a misspelt one compiles and only fails when somebody opens the
+  # topic. Rendering every page here turns that 500 into a red test.
+  test "every topic's content renders" do
+    failures =
+      for topic <- HelpTopics.all_topics(),
+          reason = render_failure(topic.id),
+          do: {topic.id, reason}
+
+    assert failures == []
+  end
+
+  defp render_failure(id) do
+    %{id: id}
+    |> HelpHelpers.render_topic_content()
+    |> rendered_to_string()
+
+    nil
+  rescue
+    error -> Exception.message(error)
   end
 end
