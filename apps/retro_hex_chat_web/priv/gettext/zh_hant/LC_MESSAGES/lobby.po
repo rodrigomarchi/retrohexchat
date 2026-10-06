@@ -62,8 +62,8 @@ msgstr "無法訪問您的麥克風或相機 。"
 msgid "Decline"
 msgstr "拒絕"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:676
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:687
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:672
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:683
 #, elixir-autogen, elixir-format
 msgid "Devices"
 msgstr "設備"
@@ -89,7 +89,7 @@ msgstr "文件傳輸完成: %{name}"
 msgid "Final Score"
 msgstr "最後得分數"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:559
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:555
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "焦點"
@@ -109,7 +109,7 @@ msgstr "遊戲過-%{game}:%{p1}×%{p2}"
 msgid "P1 %{score}"
 msgstr "P1 %{score} (中文(簡體) )."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:504
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:500
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
 msgstr "圖片"
@@ -305,3 +305,8 @@ msgstr "端點"
 #, elixir-autogen, elixir-format
 msgid "Queued for after the current transfer: %{name}"
 msgstr "排在目前傳輸之後：%{name}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:697
+#, elixir-autogen, elixir-format
+msgid "No devices to choose from. Check the browser's camera and microphone permissions."
+msgstr "沒有可選擇的裝置。請檢查瀏覽器的攝影機和麥克風權限。"

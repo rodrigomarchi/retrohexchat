@@ -272,12 +272,19 @@ _ROWS = {
     "Disconnect":   ("Desconectar", "Desligar", "Desconectar", "Se déconnecter", "Trennen", "Disconnetti", "Verbinding verbreken", "Rozłącz", "Отключиться", "Putuskan", "切断", "断开", "斷線"),
     "Connected":    ("Conectado", "Ligado", "Conectado", "Connecté", "Verbunden", "Connesso", "Verbonden", "Połączono", "Подключено", "Terhubung", "接続済み", "已连接", "已連線"),
     "Disconnected": ("Desconectado", "Desligado", "Desconectado", "Déconnecté", "Getrennt", "Disconnesso", "Verbinding verbroken", "Rozłączono", "Отключено", "Terputus", "切断済み", "已断开", "已斷線"),
-    # Call and session states, shown after the button's name ("Group Call · Live").
+    # Call and session states, shown after the button's name ("Group Call · In
+    # progress"). Adjectives agree with that name: feminine where the call is
+    # (Chamada, Llamada, Chiamata, Rozmowa), masculine in French and Russian.
     "In progress":  ("Em andamento", "Em curso", "En curso", "En cours", "Läuft", "In corso", "Bezig", "W toku", "Идёт", "Berlangsung", "進行中", "进行中", "進行中"),
-    "Invited":      ("Convidado", "Convidado", "Invitado", "Invité", "Eingeladen", "Invitato", "Uitgenodigd", "Zaproszony", "Приглашён", "Diundang", "招待済み", "已邀请", "已邀請"),
-    "Full":         ("Lotada", "Lotada", "Llena", "Complet", "Voll", "Piena", "Vol", "Pełna", "Заполнена", "Penuh", "満員", "已满", "已滿"),
-    "Locked":       ("Trancada", "Trancada", "Bloqueada", "Verrouillée", "Gesperrt", "Bloccata", "Vergrendeld", "Zablokowana", "Заперта", "Terkunci", "ロック中", "已锁定", "已鎖定"),
-    "Degraded":     ("Instável", "Instável", "Inestable", "Instable", "Instabil", "Instabile", "Instabiel", "Niestabilna", "Нестабильна", "Tidak stabil", "不安定", "不稳定", "不穩定"),
+    # The people in a call, and the emoji category of the same name — one
+    # word that reads for both ("スタッフ", staff, had come back for every one).
+    "People":       ("Pessoas", "Pessoas", "Personas", "Personnes", "Personen", "Persone", "Personen", "Osoby", "Люди", "Orang", "人物", "人员", "人員"),
+    # The call layout that puts one person large ("Objectif", "Schwerpunkt").
+    "Focus":        ("Foco", "Foco", "Enfoque", "Focus", "Fokus", "Focus", "Focus", "Fokus", "Фокус", "Fokus", "フォーカス", "焦点", "焦點"),
+    "Pending":      ("Pendente", "Pendente", "Pendiente", "En attente", "Ausstehend", "In attesa", "In afwachting", "Oczekuje", "Ожидает", "Tertunda", "保留中", "待处理", "待處理"),
+    "Full":         ("Lotada", "Lotada", "Llena", "Complet", "Voll", "Piena", "Vol", "Pełna", "Заполнен", "Penuh", "満員", "已满", "已滿"),
+    "Locked":       ("Trancada", "Trancada", "Bloqueada", "Verrouillé", "Gesperrt", "Bloccata", "Vergrendeld", "Zablokowana", "Заперт", "Terkunci", "ロック中", "已锁定", "已鎖定"),
+    "Degraded":     ("Instável", "Instável", "Inestable", "Instable", "Instabil", "Instabile", "Instabiel", "Niestabilna", "Нестабилен", "Tidak stabil", "不安定", "不稳定", "不穩定"),
     "Ending":       ("Encerrando", "A terminar", "Finalizando", "Se termine", "Wird beendet", "In chiusura", "Wordt beëindigd", "Kończy się", "Завершается", "Berakhir", "終了中", "正在结束", "正在結束"),
     "Connecting":   ("Conectando", "A ligar", "Conectando", "Connexion", "Verbindung wird hergestellt", "Connessione", "Verbinden", "Łączenie", "Подключение", "Menghubungkan", "接続中", "连接中", "連線中"),
     "Reconnecting": ("Reconectando", "A reconectar", "Reconectando", "Reconnexion", "Erneut verbinden", "Riconnessione", "Opnieuw verbinden", "Ponowne łączenie", "Переподключение", "Menghubungkan ulang", "再接続中", "重新连接中", "重新連線中"),
@@ -342,6 +349,10 @@ _ROWS = {
     "Unmute":       ("Reativar som", "Reativar som", "Activar sonido", "Réactiver le son", "Stummschaltung aufheben", "Riattiva audio", "Dempen opheffen", "Wyłącz wyciszenie", "Включить звук", "Suarakan", "ミュート解除", "取消静音", "取消靜音"),
     "Join":         ("Entrar", "Entrar", "Unirse", "Rejoindre", "Beitreten", "Entra", "Deelnemen", "Dołącz", "Присоединиться", "Gabung", "参加", "加入", "加入"),
     "Leave":        ("Sair", "Sair", "Salir", "Quitter", "Verlassen", "Esci", "Verlaten", "Opuść", "Покинуть", "Keluar", "退出", "离开", "離開"),
+    # A toggle is named by the thing it switches; "Toggle" itself came back
+    # untranslated ("Toggle Mikrofon", "Микрофон Toggle", "トグルカメラ").
+    "Toggle microphone": ("Ligar/desligar microfone", "Ligar/desligar microfone", "Activar/desactivar micrófono", "Activer/désactiver le micro", "Mikrofon ein/aus", "Attiva/disattiva microfono", "Microfoon aan/uit", "Włącz/wyłącz mikrofon", "Вкл./выкл. микрофон", "Nyalakan/matikan mikrofon", "マイクのオン/オフ", "开关麦克风", "開關麥克風"),
+    "Toggle camera":     ("Ligar/desligar câmera", "Ligar/desligar câmara", "Activar/desactivar cámara", "Activer/désactiver la caméra", "Kamera ein/aus", "Attiva/disattiva fotocamera", "Camera aan/uit", "Włącz/wyłącz kamerę", "Вкл./выкл. камеру", "Nyalakan/matikan kamera", "カメラのオン/オフ", "开关摄像头", "開關攝影機"),
     "Leave call":   ("Sair da chamada", "Sair da chamada", "Salir de la llamada", "Quitter l'appel", "Anruf verlassen", "Esci dalla chiamata", "Gesprek verlaten", "Opuść rozmowę", "Покинуть звонок", "Keluar dari panggilan", "通話から退出", "离开通话", "離開通話"),
     "Moderation":   ("Moderação", "Moderação", "Moderación", "Modération", "Moderation", "Moderazione", "Moderatie", "Moderacja", "Модерация", "Moderasi", "モデレーション", "管理", "管理"),
     "Start":        ("Iniciar", "Iniciar", "Iniciar", "Démarrer", "Starten", "Avvia", "Starten", "Rozpocznij", "Начать", "Mulai", "開始", "开始", "開始"),

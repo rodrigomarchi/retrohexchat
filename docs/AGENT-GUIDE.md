@@ -305,7 +305,9 @@ get fresh timers with the *remaining* duration.
 - **One button, two families.** A square icon or tool control — toolbar, rail, call dock, popover
   `<summary>`, a toolbar `<.link>` — is `ToolButton` (`tool_button/1`, or `tool_button_class/1`
   for an element that cannot be a `<button>`), in `raised`, `flat` or `dock`. A labelled action
-  is `Button`. Both read their bevel from `Components.UI.Chrome`, so a `*_button` wrapper that
+  is `Button`. A segmented choice — one of several options, the chosen one sunken — is a row of
+  `ToolButton`s with `pressed` even when each segment carries a word: it is a toggle, not an
+  action. Both read their bevel from `Components.UI.Chrome`, so a `*_button` wrapper that
   only passes attrs through, or a hand-written `shadow-retro-raised hover:…` string, is a third
   button and does not survive review. `active` is the sunken look and `pressed` is
   `aria-pressed`; keep them apart where the state and the drawing disagree (a microphone is drawn

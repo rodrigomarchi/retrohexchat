@@ -412,8 +412,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
       />
       <div class="flex justify-end">
         <%!-- The section is headed "Destructive actions"; inside it, a form
-              turns red only once its channel name is typed — the one action
-              actually about to happen, not all three at rest. --%>
+              turns red only once someone starts typing its confirmation — the
+              one action about to happen, not all three at rest. The server
+              still checks that the confirmation names the channel. --%>
         <.button
           type="submit"
           size="sm"

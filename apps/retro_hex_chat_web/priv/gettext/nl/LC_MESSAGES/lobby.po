@@ -62,8 +62,8 @@ msgstr "Kon geen toegang krijgen tot uw microfoon of camera."
 msgid "Decline"
 msgstr "Weigeren"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:676
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:687
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:672
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:683
 #, elixir-autogen, elixir-format
 msgid "Devices"
 msgstr "Apparaten"
@@ -89,7 +89,7 @@ msgstr "Bestandsoverdracht voltooid: %{name}"
 msgid "Final Score"
 msgstr "Laatste score"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:559
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:555
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "Focus"
@@ -109,7 +109,7 @@ msgstr "Spel afgelopen — %{game}: %{p1} × %{p2}"
 msgid "P1 %{score}"
 msgstr "P1 %{score}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:504
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:500
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
 msgstr "Foto-in-beeld"
@@ -306,3 +306,8 @@ msgstr "peer"
 #, elixir-autogen, elixir-format
 msgid "Queued for after the current transfer: %{name}"
 msgstr "In de wachtrij na de huidige overdracht: %{name}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:697
+#, elixir-autogen, elixir-format
+msgid "No devices to choose from. Check the browser's camera and microphone permissions."
+msgstr "Geen apparaten om uit te kiezen. Controleer de camera- en microfoonrechten van de browser."

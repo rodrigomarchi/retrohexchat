@@ -10,7 +10,8 @@ import { installUpDown } from "./updown";
 
 /**
  * @param {Document} doc
- * @returns {() => void} removes both
+ * @returns {() => void} removes the tooltips and the up-down arrows; the
+ *   popover behaviour stays, installed once per document
  */
 export function installRetroChrome(doc = document) {
   installPopoverBehaviour(doc);

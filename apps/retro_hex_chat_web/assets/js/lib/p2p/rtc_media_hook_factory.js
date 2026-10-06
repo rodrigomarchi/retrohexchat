@@ -1251,6 +1251,13 @@ export function createRtcMediaHook(configInput) {
         this._push(config.clientEvents.deviceFallback, {
           message: t("Could not list media devices. Check your browser permissions."),
         });
+        // The panel waits for a list; an empty one ends its wait.
+        this._push(config.clientEvents.devicesListed, {
+          audioinput: [],
+          audiooutput: [],
+          videoinput: [],
+          supports_sink_id: supportsSetSinkId(),
+        });
       }
     },
 

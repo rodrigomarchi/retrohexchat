@@ -6,6 +6,11 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
 
   @moduletag :unit
 
+  defp button_tag(html, testid) do
+    [tag] = Regex.run(~r/<button(?:(?!>)[\s\S])*data-testid="#{testid}"(?:(?!>)[\s\S])*>/, html)
+    tag
+  end
+
   defp render_panel(assigns) do
     render_component(
       &call_panel/1,
@@ -144,6 +149,43 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     assert html =~ "media-dock-button--captioned"
   end
 
+  test "mic and camera are pressed while on; expand and leave are not toggles" do
+    on =
+      render_panel(
+        mini: true,
+        local_muted: false,
+        local_camera_off: false,
+        call: %{type: "video", audio_on: true, video_on: true}
+      )
+
+    off =
+      render_panel(
+        local_muted: true,
+        local_camera_off: true,
+        call: %{type: "video", audio_on: true, video_on: true}
+      )
+
+    assert button_tag(on, "p2p-call-toggle-mute") =~ ~s(aria-pressed="true")
+    assert button_tag(on, "p2p-call-toggle-camera") =~ ~s(aria-pressed="true")
+    assert button_tag(off, "p2p-call-toggle-mute") =~ ~s(aria-pressed="false")
+    assert button_tag(off, "p2p-call-toggle-camera") =~ ~s(aria-pressed="false")
+    refute button_tag(on, "p2p-call-mini-toggle") =~ "aria-pressed"
+    refute button_tag(on, "p2p-call-end") =~ "aria-pressed"
+  end
+
+  test "mini mode sets your own camera aside whatever the self-view mode" do
+    for self_view <- ["pip", "tile"] do
+      html =
+        render_panel(
+          mini: true,
+          self_view: self_view,
+          call: %{type: "video", audio_on: true, video_on: true}
+        )
+
+      assert html =~ ~r/class="hidden"\s+data-testid="p2p-call-local-tile"/
+    end
+  end
+
   test "tile self-view renders local video as a layout tile" do
     html =
       render_panel(
@@ -171,7 +213,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     assert html =~ ~s(data-testid="p2p-call-screen-share")
     assert html =~ ~s(data-screen-share="true")
     assert html =~ "Your screen"
-    assert html =~ "Stop sharing screen"
+
+    assert html =~
+             ~r/aria-pressed="true"[^>]*data-testid="p2p-call-screen-share"|data-testid="p2p-call-screen-share"[^>]*aria-pressed="true"/
   end
 
   test "renders local and peer reaction overlays" do

@@ -17,7 +17,7 @@ msgid "Call"
 msgstr "調用"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1412
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:273
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:258
 #, elixir-autogen, elixir-format
 msgid "Camera off"
 msgstr "關閉相機"
@@ -231,13 +231,13 @@ msgstr "參與者"
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:439
 #, elixir-autogen, elixir-format
 msgid "Toggle camera"
-msgstr "切換相機"
+msgstr "開關攝影機"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:345
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:428
 #, elixir-autogen, elixir-format
 msgid "Toggle microphone"
-msgstr "切換麥克風"
+msgstr "開關麥克風"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1341
 #, elixir-autogen, elixir-format
@@ -590,7 +590,7 @@ msgstr "由主持人禁用相機"
 msgid "Camera preview is off"
 msgstr "相機預覽關閉"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:276
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:261
 #, elixir-autogen, elixir-format
 msgid "Camera preview starting"
 msgstr "開始相機預覽"
@@ -660,7 +660,7 @@ msgstr "會議以%{channel}結束。"
 msgid "Conference layout controls"
 msgstr "會議佈局控制"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:38
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:40
 #, elixir-autogen, elixir-format
 msgid "Conference media"
 msgstr "會議媒體"
@@ -695,7 +695,7 @@ msgstr "會議開始於%{channel}。"
 msgid "Conference summary"
 msgstr "會議摘要"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:44
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:46
 #, elixir-autogen, elixir-format
 msgid "Conference video tiles"
 msgstr "會議錄像瓦"
@@ -795,8 +795,8 @@ msgstr "焦點佈局"
 msgid "Focus participant"
 msgstr "焦點參與者"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:83
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:84
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:85
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:86
 #, elixir-autogen, elixir-format
 msgid "Focus your video"
 msgstr "專注視頻"
@@ -1055,8 +1055,8 @@ msgstr "無"
 msgid "Not sharing screen"
 msgstr "不共享屏幕"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:183
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:184
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:185
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:186
 #, elixir-autogen, elixir-format
 msgid "Not speaking"
 msgstr "不說話"
@@ -1103,7 +1103,7 @@ msgstr "同伴連接"
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:131
 #, elixir-autogen, elixir-format
 msgid "Pending"
-msgstr "待決"
+msgstr "待處理"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1126
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:193
@@ -1129,8 +1129,8 @@ msgid "Preview"
 msgstr "預覽"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:64
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:193
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:194
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:195
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:196
 #, elixir-autogen, elixir-format
 msgid "Quality unknown"
 msgstr "質量未知"
@@ -1146,7 +1146,7 @@ msgstr "區域和技術合作方案反饋"
 msgid "Raise hand"
 msgstr "舉手"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:270
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:255
 #, elixir-autogen, elixir-format
 msgid "Receive-only mode"
 msgstr "僅接收模式"
@@ -1162,30 +1162,30 @@ msgstr "重新連線中"
 msgid "Reconnecting media"
 msgstr "重新連接媒體"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:150
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:152
 #, elixir-autogen, elixir-format
 msgid "Remote"
 msgstr "遠程"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:166
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:167
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:168
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:169
 #, elixir-autogen, elixir-format
 msgid "Remote camera"
 msgstr "遠程相機"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:61
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:63
 #, elixir-autogen, elixir-format
 msgid "Remote cameras and shared screens appear here as people join."
 msgstr "遠程攝像頭和共享屏幕出現在這裏 當人們加入。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:157
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:158
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:159
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:160
 #, elixir-autogen, elixir-format
 msgid "Remote microphone"
 msgstr "遠程麥克風"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:175
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:176
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:177
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:178
 #, elixir-autogen, elixir-format
 msgid "Remote screen share"
 msgstr "遠程屏幕共享"
@@ -1255,7 +1255,7 @@ msgid "Room"
 msgstr "會議室"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1419
-#: lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:41
+#: lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:42
 #, elixir-autogen, elixir-format
 msgid "Screen sharing disabled by moderator"
 msgstr "由主持人禁用屏幕共享"
@@ -1316,13 +1316,13 @@ msgstr "服務器運行時間"
 msgid "Server tracks"
 msgstr "服務器音軌"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:46
+#: lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:44
 #, elixir-autogen, elixir-format
 msgid "Share screen"
 msgstr "共享屏幕"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1422
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:267
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:252
 #, elixir-autogen, elixir-format
 msgid "Sharing screen"
 msgstr "共享屏幕"
@@ -1370,11 +1370,6 @@ msgstr "狀態"
 #, elixir-autogen, elixir-format
 msgid "Stop participant screen sharing"
 msgstr "停止共享參與者屏幕"
-
-#: lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:44
-#, elixir-autogen, elixir-format
-msgid "Stop sharing screen"
-msgstr "停止共享屏幕"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:480
 #, elixir-autogen, elixir-format
@@ -1466,12 +1461,12 @@ msgid "Video tracks"
 msgstr "視頻軌道"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:138
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:58
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:60
 #, elixir-autogen, elixir-format
 msgid "Waiting for participants"
 msgstr "等候與會者"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:289
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:274
 #, elixir-autogen, elixir-format
 msgid "Your camera is not being sent."
 msgstr "您的相機沒有被髮送。"
@@ -1481,12 +1476,12 @@ msgstr "您的相機沒有被髮送。"
 msgid "Your camera was disabled by a moderator."
 msgstr "你的相機被一個主持人關閉了"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:292
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:277
 #, elixir-autogen, elixir-format
 msgid "Your local preview appears here when the camera is ready."
 msgstr "您的本地預覽在相機準備好時出現 。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:286
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:271
 #, elixir-autogen, elixir-format
 msgid "Your microphone and camera are off."
 msgstr "你的麥克風和攝像機都關了"
@@ -1496,7 +1491,7 @@ msgstr "你的麥克風和攝像機都關了"
 msgid "Your microphone was muted by a moderator."
 msgstr "你的麥克風被主持人監聽了"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:283
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:268
 #, elixir-autogen, elixir-format
 msgid "Your screen is replacing the camera feed."
 msgstr "你的屏幕正在更換攝像頭"

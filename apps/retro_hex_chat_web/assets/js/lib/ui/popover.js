@@ -127,12 +127,18 @@ function handleMenuKeys(event) {
   if (summary) {
     const popover = summary.parentElement;
     if (menuRows(popover).length === 0) return;
+    // Only a key that opens the menu marks it: a press that closes it, or one
+    // on a menu already open, fires no opening toggle to consume the mark,
+    // and a stale one would pull a later mouse click's focus into the menu.
     if (event.key === "ArrowDown") {
       event.preventDefault();
-      popover.dataset.openedByKey = "true";
-      if (popover.open) menuRows(popover)[0]?.focus();
-      else popover.open = true;
-    } else if (event.key === "Enter" || event.key === " ") {
+      if (popover.open) {
+        menuRows(popover)[0]?.focus();
+      } else {
+        popover.dataset.openedByKey = "true";
+        popover.open = true;
+      }
+    } else if ((event.key === "Enter" || event.key === " ") && !popover.open) {
       popover.dataset.openedByKey = "true";
     }
     return;

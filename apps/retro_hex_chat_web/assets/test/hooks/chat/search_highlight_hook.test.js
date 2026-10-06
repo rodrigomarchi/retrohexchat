@@ -17,6 +17,7 @@ describe("SearchHighlightHook", () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     hook.destroyed?.();
     cleanupDOM();
   });
@@ -72,7 +73,6 @@ describe("SearchHighlightHook", () => {
       );
       await Promise.resolve();
       vi.runAllTimers();
-      vi.useRealTimers();
 
       const marks = document.querySelectorAll("mark.search-highlight");
       expect(marks).toHaveLength(1);

@@ -1355,7 +1355,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             " " <>
             dgettext(
               "help",
-              "In the channel, the Group Call button says when a room is in progress, full or locked, and the ⓘ beside it shows who is inside. In People, each participant's ⋯ menu can focus or pin them; moderators can also mute them, turn off their camera, stop their screen share or remove them from there."
+              "In the channel, the Group Call button says when a room is in progress, full or locked, and the ⓘ beside it shows who is inside. In People, each participant's ⋯ menu can focus or pin them; moderators can also mute them, turn off their camera, stop their screen share, or remove them from the conference and ban them from the channel."
             ),
         see_also: [
           "feature-conference-tab",
@@ -1501,7 +1501,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "people that hosts a call, file transfers and games all at the same time. " <>
               "It lives at an address of its own, and the console on that page operates " <>
               "every part of it: Call, Files, Games and Stats, all over the one " <>
-              "connection. Ending any one activity never drops the others — End Call " <>
+              "connection. Ending any one activity never drops the others — Leave call " <>
               "stops the media and leaves the session standing, End P2P session ends " <>
               "the whole thing and asks first, and closing the tab gives you about " <>
               "half a minute to come back before the session closes itself. " <>
@@ -1554,7 +1554,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             " " <>
             dgettext(
               "help",
-              "The button says where the session stands — P2P Session · Invited, · Connecting or · Connected — and the ⓘ beside it opens a summary of the session, with Start, or Decline for an invitation you received."
+              "The button says where the session stands — P2P Session · Pending, · Connecting or · Connected — and the ⓘ beside it opens a summary of the session, with Start, or Decline for an invitation you received."
             )
       },
       %{

@@ -15,12 +15,6 @@
   transition: bottom 240ms ease-out var(--media-dock-fade-delay, 0s);
 }
 
-/* A mini window is a few hundred pixels across: it shows the person you are
-   talking to, and your own camera steps aside until the window grows again. */
-[data-call-mini="true"] .p2p-call-pip {
-  display: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .p2p-call-pip {
     transition: none;

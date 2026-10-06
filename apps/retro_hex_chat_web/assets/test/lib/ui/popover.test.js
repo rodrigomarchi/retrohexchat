@@ -180,6 +180,46 @@ describe("ui/popover", () => {
     expect(document.activeElement).toBe(details.querySelector("button"));
   });
 
+  it("a key that closes a menu leaves no mark for the next mouse open", () => {
+    const details = document.createElement("details");
+    details.dataset.popover = "";
+    details.innerHTML = `<summary>m</summary><div role="menu">
+      <button role="menuitem">one</button></div>`;
+    document.body.appendChild(details);
+    const summary = details.querySelector("summary");
+    details.open = true;
+    summary.focus();
+
+    // ArrowDown on an open menu focuses a row and Enter on its trigger closes
+    // it: neither opens anything, so neither marks the menu.
+    summary.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }));
+    summary.focus();
+    summary.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+    details.open = false;
+    details.dispatchEvent(new Event("toggle"));
+    expect(details.dataset.openedByKey).toBeUndefined();
+
+    summary.focus();
+    details.open = true;
+    details.dispatchEvent(new Event("toggle"));
+    expect(document.activeElement).toBe(summary);
+  });
+
+  it("a popover inside the modal dialog still closes on Escape", () => {
+    const modal = document.createElement("div");
+    modal.setAttribute("aria-modal", "true");
+    document.body.appendChild(modal);
+    const a = popover("a");
+    modal.appendChild(a);
+    a.open = true;
+
+    a.querySelector("button").dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
+    );
+
+    expect(a.open).toBe(false);
+  });
+
   it("tabbing out of an open popover closes it", () => {
     const a = popover("a");
     a.open = true;

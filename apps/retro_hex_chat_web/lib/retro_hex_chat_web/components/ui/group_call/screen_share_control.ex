@@ -3,7 +3,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ScreenShareControl do
   Browser-backed screen share control for the channel conference.
 
   The button is picked up by `GroupCallWebRTCHook` through click delegation;
-  capture must start in the browser from a direct user gesture.
+  capture must start in the browser from a direct user gesture. Like the
+  microphone and camera it keeps one name and is pressed while sharing.
   """
   use RetroHexChatWeb.Component
 
@@ -39,9 +40,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ScreenShareControl do
 
   defp screen_share_title(%{media: %{server_screen_blocked: true}}),
     do: dgettext("group_call", "Screen sharing disabled by moderator")
-
-  defp screen_share_title(%{media: %{screen: true}}),
-    do: dgettext("group_call", "Stop sharing screen")
 
   defp screen_share_title(_call), do: dgettext("group_call", "Share screen")
 end

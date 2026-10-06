@@ -80,7 +80,7 @@ msgstr "Terhubung"
 msgid "Connecting..."
 msgstr "Menyambung..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:832
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:846
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:400
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
@@ -111,7 +111,7 @@ msgstr "Dalam Panggilan"
 msgid "Pending..."
 msgstr "Menunggu..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:836
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:850
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:156
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:403
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:245
@@ -121,8 +121,8 @@ msgstr "Menunggu..."
 msgid "Ready"
 msgstr "Siap"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:836
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:843
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:850
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:857
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:142
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:413
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:416
@@ -185,7 +185,7 @@ msgstr "Panggilan Video"
 msgid "Waiting..."
 msgstr "Menunggu..."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:865
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:879
 #, elixir-autogen, elixir-format
 msgid "%{count} tracks"
 msgstr "%{count} trek"
@@ -255,12 +255,12 @@ msgstr "Audio"
 msgid "Audio and data channels can keep running."
 msgstr "Saluran audio dan data dapat terus berjalan."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:842
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:856
 #, elixir-autogen, elixir-format
 msgid "Audio call active"
 msgstr "Panggilan audio aktif"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:548
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:544
 #, elixir-autogen, elixir-format
 msgid "Auto layout"
 msgstr "Tata letak otomatis"
@@ -287,7 +287,7 @@ msgid "Call %{duration}"
 msgstr "Panggilan %{duration}"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:695
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:886
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:900
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:162
 #, elixir-autogen, elixir-format
 msgid "Camera"
@@ -303,7 +303,7 @@ msgstr "Pratilik kamera mati"
 msgid "Capacity"
 msgstr "Kapasitas"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:807
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:821
 #, elixir-autogen, elixir-format
 msgid "Change self view"
 msgstr "Ubah tilikan diri"
@@ -318,7 +318,7 @@ msgstr "Memeriksa perangkat"
 msgid "Closed"
 msgstr "Tutup"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:592
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:588
 #, elixir-autogen, elixir-format
 msgid "Compact"
 msgstr "Kompak"
@@ -367,7 +367,7 @@ msgstr ""
 msgid "Excellent"
 msgstr "Bagus"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:457
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:453
 #, elixir-autogen, elixir-format
 msgid "Expand call window"
 msgstr "Perluas jendela panggilan"
@@ -383,7 +383,7 @@ msgstr "Adil"
 msgid "Files"
 msgstr "Berkas"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:801
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:815
 #, elixir-autogen, elixir-format
 msgid "Focus peer video"
 msgstr "Video peer fokus"
@@ -428,7 +428,7 @@ msgstr "Permainan"
 msgid "Good"
 msgstr "Baik"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:805
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:819
 #, elixir-autogen, elixir-format
 msgid "Hide self view"
 msgstr "Sembunyikan tilikan diri"
@@ -495,7 +495,7 @@ msgstr "Mengukur"
 msgid "Messages"
 msgstr "Pesan"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:885
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:899
 #, elixir-autogen, elixir-format
 msgid "Mic"
 msgstr "Mic"
@@ -505,13 +505,13 @@ msgstr "Mic"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:523
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:519
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:63
 #, elixir-autogen, elixir-format
 msgid "Mini call window"
 msgstr "Mini call window"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:804
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:818
 #, elixir-autogen, elixir-format
 msgid "Move self view to picture-in-picture"
 msgstr "Pindahkan tilikan mandiri ke gambar-in- gambar"
@@ -536,7 +536,7 @@ msgstr "Buka"
 msgid "Other"
 msgstr "Lainnya"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:887
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:901
 #, elixir-autogen, elixir-format
 msgid "Output"
 msgstr "Keluaran"
@@ -581,9 +581,10 @@ msgid "Peer online"
 msgstr "Peer online"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:658
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:246
 #, elixir-autogen, elixir-format
 msgid "Pending"
-msgstr "Menunggu"
+msgstr "Tertunda"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:823
 #, elixir-autogen, elixir-format
@@ -643,7 +644,7 @@ msgstr "Resolusi video yang diterima, dalam piksel."
 msgid "Retry"
 msgstr "Coba lagi"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:800
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:814
 #, elixir-autogen, elixir-format
 msgid "Return to split layout"
 msgstr "Kembali ke tata letak split"
@@ -666,27 +667,27 @@ msgstr "Layar"
 msgid "Screen %{duration}"
 msgstr "Layar %{duration}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:634
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:630
 #, elixir-autogen, elixir-format
 msgid "Send clap"
 msgstr "Kirim tepuk tangan"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:632
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:628
 #, elixir-autogen, elixir-format
 msgid "Send heart reaction"
 msgstr "Kirim reaksi jantung"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:635
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:631
 #, elixir-autogen, elixir-format
 msgid "Send laugh"
 msgstr "Kirim tertawa"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:633
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:629
 #, elixir-autogen, elixir-format
 msgid "Send thumbs up"
 msgstr "Kirim jempol ke atas"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:636
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:632
 #, elixir-autogen, elixir-format
 msgid "Send wow"
 msgstr "Kirim wow"
@@ -701,12 +702,12 @@ msgstr "Dikirim"
 msgid "Session"
 msgstr "Sesi"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:430
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:427
 #, elixir-autogen, elixir-format
 msgid "Share screen"
 msgstr "Berbagi layar"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:806
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:820
 #, elixir-autogen, elixir-format
 msgid "Show self view as tile"
 msgstr "Tampilkan tampilan diri sebagai tile"
@@ -716,13 +717,13 @@ msgstr "Tampilkan tampilan diri sebagai tile"
 msgid "Source"
 msgstr "Sumber"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:581
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:577
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:171
 #, elixir-autogen, elixir-format
 msgid "Speaker"
 msgstr "Speaker"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:570
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:566
 #, elixir-autogen, elixir-format
 msgid "Split"
 msgstr "Pecah"
@@ -748,11 +749,6 @@ msgstr "Mulai dengan mikrofon"
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Status"
-
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:429
-#, elixir-autogen, elixir-format
-msgid "Stop sharing screen"
-msgstr "Berhenti berbagi layar"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:872
 #, elixir-autogen, elixir-format
@@ -787,7 +783,7 @@ msgstr ""
 msgid "Video"
 msgstr "Video"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:841
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:855
 #, elixir-autogen, elixir-format
 msgid "Video call active"
 msgstr "Panggilan video aktif"
@@ -819,7 +815,7 @@ msgstr "Anda"
 msgid "Your screen"
 msgstr "Layar Anda"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:829
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:843
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:460
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:497
 #, elixir-autogen, elixir-format
@@ -847,7 +843,7 @@ msgstr "Akhiri"
 msgid "P2P Session"
 msgstr "Sesi P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:543
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:539
 #, elixir-autogen, elixir-format
 msgid "P2P layout"
 msgstr "Tata letak P2P"
@@ -857,18 +853,18 @@ msgstr "Tata letak P2P"
 msgid "P2P session summary"
 msgstr "Ringkasan sesi P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:489
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:485
 #, elixir-autogen, elixir-format
 msgid "P2P view and window controls"
 msgstr "P2P tampilan dan kontrol jendela"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:499
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:495
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:44
 #, elixir-autogen, elixir-format
 msgid "P2P window controls"
 msgstr "P2P kontrol jendela"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:618
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:614
 #, elixir-autogen, elixir-format
 msgid "Reactions"
 msgstr "Reaksi"
@@ -1015,8 +1011,8 @@ msgstr "Baku media"
 msgid "No video"
 msgstr "Tidak ada video"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:447
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:513
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:443
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:509
 #, elixir-autogen, elixir-format
 msgid "Open stats"
 msgstr "Buka statistik"
@@ -1379,12 +1375,12 @@ msgstr "Buka sesi P2P dengan %{peer} di tab tersendiri"
 msgid "Decline P2P request"
 msgstr "Tolak permintaan P2P"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:467
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:463
 #, elixir-autogen, elixir-format
 msgid "Leave"
 msgstr "Keluar"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:465
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:461
 #, elixir-autogen, elixir-format
 msgid "Leave call"
 msgstr "Keluar dari panggilan"
@@ -1397,14 +1393,9 @@ msgstr "Sesi P2P · %{state}"
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:416
 #, elixir-autogen, elixir-format
 msgid "Toggle camera"
-msgstr "Jungkitkan kamera"
+msgstr "Nyalakan/matikan kamera"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:394
 #, elixir-autogen, elixir-format
 msgid "Toggle microphone"
-msgstr "Jungkit mikrofon"
-
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:246
-#, elixir-autogen, elixir-format
-msgid "Invited"
-msgstr "Diundang"
+msgstr "Nyalakan/matikan mikrofon"

@@ -186,6 +186,29 @@ describe("createRtcMediaHook (black-box)", () => {
     document.body.innerHTML = "";
   });
 
+  it("ends the devices panel's wait with empty lists when the browser will not list them", async () => {
+    stubMediaDevices({
+      enumerateDevices: vi.fn(async () => {
+        throw new DOMException("denied", "NotAllowedError");
+      }),
+    });
+    ctx = setup();
+    ctx.hook.el.insertAdjacentHTML(
+      "beforeend",
+      '<button data-media-action="device-settings">devices</button>',
+    );
+
+    ctx.click("device-settings");
+    await vi.waitFor(() => expect(getPushEvents(ctx.hook, "devices_listed")).toHaveLength(1));
+
+    expect(getPushEvents(ctx.hook, "device_fallback")).toHaveLength(1);
+    expect(getPushEvents(ctx.hook, "devices_listed")[0]).toMatchObject({
+      audioinput: [],
+      audiooutput: [],
+      videoinput: [],
+    });
+  });
+
   it("registers the configured server-event handlers and signals readiness on mount", () => {
     ctx = setup();
 

@@ -185,7 +185,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
               <div
                 :if={@in_call}
-                class={local_tile_class(@self_view_mode)}
+                class={local_tile_class(if(@mini, do: "hidden", else: @self_view_mode))}
                 data-testid="p2p-call-local-tile"
                 data-self-view={@self_view_mode}
                 data-screen-share={to_string(@screen_sharing)}
@@ -424,11 +424,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         <CallControls.icon_call_camera :if={!@local_camera_off} class="h-4 w-4" />
       </.tool_button>
       <.tool_button
-        label={
-          if @screen_sharing,
-            do: dgettext("p2p", "Stop sharing screen"),
-            else: dgettext("p2p", "Share screen")
-        }
+        label={dgettext("p2p", "Share screen")}
         variant="dock"
         active={@screen_sharing}
         pressed={@screen_sharing}
@@ -686,10 +682,24 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         <CallControls.icon_call_devices class="h-4 w-4" />
         {dgettext("lobby", "Devices")}
       </span>
-      <%!-- Opening asks the browser for its devices; until the list is back
-            the panel says so instead of showing an empty frame. --%>
-      <span :if={is_nil(@devices)} class="text-[10px] text-muted-foreground">
-        {dgettext("ui", "Loading...")}
+      <%!-- Opening asks the browser for its devices; until the list is back,
+            or when it comes back empty, the panel says so instead of showing
+            an empty frame. --%>
+      <span
+        role="status"
+        class="text-[10px] text-muted-foreground"
+        data-testid="lobby-devices-status"
+      >
+        <%= cond do %>
+          <% is_nil(@devices) -> %>
+            {dgettext("ui", "Loading...")}
+          <% no_devices?(@devices) -> %>
+            {dgettext(
+              "lobby",
+              "No devices to choose from. Check the browser's camera and microphone permissions."
+            )}
+          <% true -> %>
+        <% end %>
       </span>
       <label
         :for={kind <- ~w(audioinput videoinput audiooutput)}
@@ -706,6 +716,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
       </label>
     </.popover>
     """
+  end
+
+  defp no_devices?(devices) do
+    Enum.all?(~w(audioinput videoinput audiooutput), &(devices[&1] in [nil, []]))
   end
 
   attr :kind, :string, required: true

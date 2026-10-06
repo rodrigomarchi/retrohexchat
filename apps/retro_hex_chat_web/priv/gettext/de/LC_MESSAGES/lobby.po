@@ -62,8 +62,8 @@ msgstr "Kann nicht auf Ihr Mikrofon oder Kamera zugreifen."
 msgid "Decline"
 msgstr "Ablehnen"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:676
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:687
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:672
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:683
 #, elixir-autogen, elixir-format
 msgid "Devices"
 msgstr "Geräte"
@@ -89,10 +89,10 @@ msgstr "Dateiübertragung abgeschlossen: %{name}"
 msgid "Final Score"
 msgstr "Schlusspunkt"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:559
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:555
 #, elixir-autogen, elixir-format
 msgid "Focus"
-msgstr "Schwerpunkt"
+msgstr "Fokus"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:91
 #, elixir-autogen, elixir-format
@@ -109,7 +109,7 @@ msgstr "Spiel over — %{game}: %{p1} × %{p2}"
 msgid "P1 %{score}"
 msgstr "P1 %{score}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:504
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:500
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
 msgstr "Bild-in-Bild"
@@ -307,3 +307,8 @@ msgstr "Pestizid"
 #, elixir-autogen, elixir-format
 msgid "Queued for after the current transfer: %{name}"
 msgstr "Wartet auf das Ende der laufenden Übertragung: %{name}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:697
+#, elixir-autogen, elixir-format
+msgid "No devices to choose from. Check the browser's camera and microphone permissions."
+msgstr "Keine Geräte zur Auswahl. Prüfe die Kamera- und Mikrofonberechtigungen des Browsers."

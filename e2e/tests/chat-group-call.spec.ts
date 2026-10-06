@@ -1,7 +1,7 @@
 /**
  * @section N - P2P, File, Call, Game
  * @flow N1 [done] Channel group call opens for two registered users, shows the rich live channel badge/popover before the second user joins, exchanges live remote video both ways, names each remote tile after its participant, toggles mic/camera by asserting local `MediaStreamTrack.enabled` and remote participant media state, then removes a leaver (features P0)
- * @flow N2 [done] Channel group call renegotiates with three registered media users: third participant joins, all clients receive two live remote videos, audio/video off-on state propagates to both observers, the third participant leaves, and remaining users keep media (features P0)
+ * @flow N2 [done] Channel group call renegotiates with three registered media users: third participant joins, all clients receive two live remote videos each named after its participant, audio/video off-on state propagates to both observers, the third participant leaves, and remaining users keep media (features P0)
  * @flow N3 [done] Channel group call pre-join persists muted media preferences after cancel/reopen, enters with microphone and camera disabled, mounts WebRTC with disabled media state, avoids local media tracks, and propagates disabled media to another participant (features P0)
  * @flow N4 [done] Channel group call screen share uses browser display capture, replaces the published video, marks the remote tile as `source=screen`, and returns to camera when stopped (features P0)
  * @flow N5 [done] Channel group call participant quality and active speaker indicators update the ignored video tile and LiveView participant row from a browser stats summary (features P0)
@@ -2273,6 +2273,27 @@ test.describe("Channel group calls", () => {
         await expect
           .poll(() => remoteLiveVideoCount(call), { timeout: 30_000 })
           .toBeGreaterThanOrEqual(2);
+      }
+
+      // With two remote tiles the client cannot guess whose is whose: every
+      // name comes from the offer saying which stream belongs to whom.
+      for (const [call, others] of [
+        [aliceCall, [bob.nick, carol.nick]],
+        [bobCall, [alice.nick, carol.nick]],
+        [carolCall, [alice.nick, bob.nick]],
+      ] as const) {
+        await expect
+          .poll(
+            () =>
+              call
+                .locator(
+                  ".group-call-video-tile--remote [data-group-call-tile-name]",
+                )
+                .allTextContents()
+                .then((names) => names.map((n) => n.trim()).sort()),
+            { timeout: 20_000 },
+          )
+          .toEqual([...others].sort());
       }
 
       await expect(

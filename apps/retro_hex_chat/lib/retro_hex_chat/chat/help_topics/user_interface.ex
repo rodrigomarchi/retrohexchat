@@ -440,6 +440,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "notify",
           "bots",
           "timers",
+          "keyboard",
           dgettext("help", "toolbar options")
         ],
         icon: :icon_group_tools,
@@ -447,7 +448,12 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           dgettext(
             "help",
             "Access common features through the menu bar and toolbar options."
-          )
+          ) <>
+            " " <>
+            dgettext(
+              "help",
+              "A menu that drops down from a button opens on its first item with the Down arrow; the arrow keys, Home and End move between items, and Escape or tabbing away closes it."
+            )
       },
       %{
         id: "ui-edit-menu",

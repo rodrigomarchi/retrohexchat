@@ -8,6 +8,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.MediaSession.ReactionPicker, only: [reaction_icon: 1]
+
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Icons.CallControls
 
@@ -208,29 +210,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
           </div>
         </template>
 
-        <template data-group-call-reaction-icon-template="heart">
+        <template
+          :for={reaction <- ~w(heart thumbs_up clap laugh wow)}
+          data-group-call-reaction-icon-template={reaction}
+        >
           <span class="inline-flex items-center justify-center" aria-hidden="true">
-            <CallControls.icon_call_reaction_heart class="h-4 w-4" />
-          </span>
-        </template>
-        <template data-group-call-reaction-icon-template="thumbs_up">
-          <span class="inline-flex items-center justify-center" aria-hidden="true">
-            <CallControls.icon_call_reaction_thumbs_up class="h-4 w-4" />
-          </span>
-        </template>
-        <template data-group-call-reaction-icon-template="clap">
-          <span class="inline-flex items-center justify-center" aria-hidden="true">
-            <CallControls.icon_call_reaction_clap class="h-4 w-4" />
-          </span>
-        </template>
-        <template data-group-call-reaction-icon-template="laugh">
-          <span class="inline-flex items-center justify-center" aria-hidden="true">
-            <CallControls.icon_call_reaction_laugh class="h-4 w-4" />
-          </span>
-        </template>
-        <template data-group-call-reaction-icon-template="wow">
-          <span class="inline-flex items-center justify-center" aria-hidden="true">
-            <CallControls.icon_call_reaction_sparkle class="h-4 w-4" />
+            <.reaction_icon reaction={reaction} class="h-4 w-4" />
           </span>
         </template>
       </div>

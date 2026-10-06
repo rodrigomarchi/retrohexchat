@@ -42,6 +42,7 @@ defmodule RetroHexChatWeb.Components.UI.Button do
   slot :icon, required: true, doc: "16×16 icon SVG — mandatory for all buttons"
   slot :inner_block, required: true
 
+  @spec button(map()) :: Phoenix.LiveView.Rendered.t()
   def button(assigns) do
     assigns = assign(assigns, :variant_class, button_variant(assigns))
 

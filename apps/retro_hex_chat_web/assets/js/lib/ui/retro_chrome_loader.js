@@ -16,6 +16,6 @@ export function loadRetroChrome(doc = document) {
       installRetroChrome(doc);
     })
     .catch((error) => {
-      log.error("[retro_chrome] tooltips and up-down arrows failed to load", error);
+      log.error("[retro_chrome] tooltips, up-down arrows and popovers failed to load", error);
     });
 }

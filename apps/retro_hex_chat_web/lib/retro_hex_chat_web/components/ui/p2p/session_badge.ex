@@ -46,7 +46,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
             is none and writes its card into the PM, and that card is the door.
             An anchor beside it was a second door that skipped the
             conversation. --%>
-      <%!-- The words carry the state — "P2P Session · Live" — so it reads
+      <%!-- The words carry the state — "P2P Session · Connected" — so it reads
             without telling colours apart; the colour only repeats it. --%>
       <.tool_button
         label={@title}
@@ -243,7 +243,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   defp visual_state(_state), do: "connecting"
 
   defp status_label(:idle), do: dgettext("p2p", "Ready")
-  defp status_label(:invite), do: dgettext("p2p", "Invited")
+  defp status_label(:invite), do: dgettext("p2p", "Pending")
   defp status_label(:link), do: dgettext("p2p", "Connecting")
   defp status_label(:live), do: dgettext("p2p", "Connected")
 

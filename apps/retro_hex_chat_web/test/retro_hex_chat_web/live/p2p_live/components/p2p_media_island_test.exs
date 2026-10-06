@@ -71,6 +71,8 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIslandTest do
 
     assert html =~ ~s(data-call-layout="focus")
     assert html =~ ~s(data-screen-share="true")
-    assert html =~ "Stop sharing screen"
+
+    assert html =~
+             ~r/aria-pressed="true"[^>]*data-testid="p2p-call-screen-share"|data-testid="p2p-call-screen-share"[^>]*aria-pressed="true"/
   end
 end

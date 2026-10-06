@@ -17,7 +17,7 @@ msgid "Call"
 msgstr "Call"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1412
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:273
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:258
 #, elixir-autogen, elixir-format
 msgid "Camera off"
 msgstr "Kamera wyłączona"
@@ -234,13 +234,13 @@ msgstr "Uczestnicy"
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:439
 #, elixir-autogen, elixir-format
 msgid "Toggle camera"
-msgstr "Przełączanie kamery"
+msgstr "Włącz/wyłącz kamerę"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:345
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:428
 #, elixir-autogen, elixir-format
 msgid "Toggle microphone"
-msgstr "Przełączanie mikrofonu"
+msgstr "Włącz/wyłącz mikrofon"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1341
 #, elixir-autogen, elixir-format
@@ -604,7 +604,7 @@ msgstr "Kamera wyłączona przez moderatora"
 msgid "Camera preview is off"
 msgstr "Podgląd kamery wyłączony"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:276
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:261
 #, elixir-autogen, elixir-format
 msgid "Camera preview starting"
 msgstr "Rozpoczęcie podglądu kamery"
@@ -674,7 +674,7 @@ msgstr "Konferencja zakończyła się w %{channel}."
 msgid "Conference layout controls"
 msgstr "Kontrole układu konferencji"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:38
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:40
 #, elixir-autogen, elixir-format
 msgid "Conference media"
 msgstr "Media konferencyjne"
@@ -709,7 +709,7 @@ msgstr "Konferencja rozpoczęła się w %{channel}."
 msgid "Conference summary"
 msgstr "Streszczenie konferencji"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:44
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:46
 #, elixir-autogen, elixir-format
 msgid "Conference video tiles"
 msgstr "Konferencyjne płytki wideo"
@@ -797,7 +797,7 @@ msgstr "Fanout"
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:361
 #, elixir-autogen, elixir-format
 msgid "Focus"
-msgstr "Skup się"
+msgstr "Fokus"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/layout_controls.ex:59
 #, elixir-autogen, elixir-format
@@ -809,8 +809,8 @@ msgstr "Układ ostrości"
 msgid "Focus participant"
 msgstr "Uczestnik ostrości"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:83
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:84
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:85
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:86
 #, elixir-autogen, elixir-format
 msgid "Focus your video"
 msgstr "Skup swój film"
@@ -1071,8 +1071,8 @@ msgstr "Brak"
 msgid "Not sharing screen"
 msgstr "Nie udostępnianie ekranu"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:183
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:184
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:185
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:186
 #, elixir-autogen, elixir-format
 msgid "Not speaking"
 msgstr "Nie odzywaj się."
@@ -1119,7 +1119,7 @@ msgstr "Połączenia międzysystemowe"
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:131
 #, elixir-autogen, elixir-format
 msgid "Pending"
-msgstr "Oczekiwanie"
+msgstr "Oczekuje"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1126
 #: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:193
@@ -1145,8 +1145,8 @@ msgid "Preview"
 msgstr "Podgląd"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:64
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:193
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:194
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:195
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:196
 #, elixir-autogen, elixir-format
 msgid "Quality unknown"
 msgstr "Nieznana jakość"
@@ -1162,7 +1162,7 @@ msgstr "RTochrona danych osobowych"
 msgid "Raise hand"
 msgstr "Podnieść rękę"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:270
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:255
 #, elixir-autogen, elixir-format
 msgid "Receive-only mode"
 msgstr "Tryb tylko odbiorczy"
@@ -1178,31 +1178,31 @@ msgstr "Ponowne łączenie"
 msgid "Reconnecting media"
 msgstr "Odtwarzanie nośników"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:150
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:152
 #, elixir-autogen, elixir-format
 msgid "Remote"
 msgstr "Zdalne"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:166
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:167
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:168
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:169
 #, elixir-autogen, elixir-format
 msgid "Remote camera"
 msgstr "Zdalna kamera"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:61
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:63
 #, elixir-autogen, elixir-format
 msgid "Remote cameras and shared screens appear here as people join."
 msgstr ""
 "Zdalne kamery i wspólne ekrany pojawiają się tutaj, gdy ludzie dołączają."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:157
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:158
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:159
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:160
 #, elixir-autogen, elixir-format
 msgid "Remote microphone"
 msgstr "Mikrofon zdalny"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:175
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:176
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:177
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:178
 #, elixir-autogen, elixir-format
 msgid "Remote screen share"
 msgstr "Zdalny udział ekranu"
@@ -1275,7 +1275,7 @@ msgid "Room"
 msgstr "Pokój"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1419
-#: lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:41
+#: lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:42
 #, elixir-autogen, elixir-format
 msgid "Screen sharing disabled by moderator"
 msgstr "Udostępnianie ekranu wyłączone przez moderatora"
@@ -1336,13 +1336,13 @@ msgstr "Czas uruchomienia serwera"
 msgid "Server tracks"
 msgstr "Ślady serwera"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:46
+#: lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:44
 #, elixir-autogen, elixir-format
 msgid "Share screen"
 msgstr "Ekran udostępniania"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1422
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:267
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:252
 #, elixir-autogen, elixir-format
 msgid "Sharing screen"
 msgstr "Ekran współdzielenia"
@@ -1390,11 +1390,6 @@ msgstr "Status"
 #, elixir-autogen, elixir-format
 msgid "Stop participant screen sharing"
 msgstr "Zatrzymaj udostępnianie ekranu uczestnika"
-
-#: lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:44
-#, elixir-autogen, elixir-format
-msgid "Stop sharing screen"
-msgstr "Zatrzymaj udostępnianie ekranu"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:480
 #, elixir-autogen, elixir-format
@@ -1488,12 +1483,12 @@ msgid "Video tracks"
 msgstr "Ścieżki wideo"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:138
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:58
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:60
 #, elixir-autogen, elixir-format
 msgid "Waiting for participants"
 msgstr "Czekanie na uczestników"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:289
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:274
 #, elixir-autogen, elixir-format
 msgid "Your camera is not being sent."
 msgstr "Twoja kamera nie jest wysyłana."
@@ -1503,12 +1498,12 @@ msgstr "Twoja kamera nie jest wysyłana."
 msgid "Your camera was disabled by a moderator."
 msgstr "Twój aparat był wyłączony przez moderatora."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:292
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:277
 #, elixir-autogen, elixir-format
 msgid "Your local preview appears here when the camera is ready."
 msgstr "Twój lokalny podgląd pojawia się tutaj, kiedy kamera jest gotowa."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:286
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:271
 #, elixir-autogen, elixir-format
 msgid "Your microphone and camera are off."
 msgstr "Mikrofon i kamera są wyłączone."
@@ -1518,7 +1513,7 @@ msgstr "Mikrofon i kamera są wyłączone."
 msgid "Your microphone was muted by a moderator."
 msgstr "Twój mikrofon został stłumiony przez moderatora."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:283
+#: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:268
 #, elixir-autogen, elixir-format
 msgid "Your screen is replacing the camera feed."
 msgstr "Twój ekran zastępuje obraz z kamery."
@@ -1687,7 +1682,7 @@ msgstr "Połączenia międzysystemowe %{peers} / %{tracks}"
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:550
 #, elixir-autogen, elixir-format
 msgid "People"
-msgstr "Ludzie"
+msgstr "Osoby"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:189
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:503

@@ -1050,8 +1050,12 @@ describe("GroupCallWebRTCHook media fallback", () => {
     expect(tile.querySelector("[data-group-call-video-badge]")?.textContent.trim()).toBe("");
   });
 
-  it("names a remote tile from the offer's stream owners", () => {
+  it("names a remote tile from the offer's stream owners", async () => {
     const hook = setupLayoutHook();
+    const pc = new MockPeerConnection();
+    vi.stubGlobal("RTCPeerConnection", function RTCPeerConnectionMock() {
+      return pc;
+    });
 
     fireServer(hook, "group_call_layout_state", {
       participants: [{ id: 789, nickname: "Grace", media_state: { audio: true, video: true } }],
@@ -1060,7 +1064,11 @@ describe("GroupCallWebRTCHook media fallback", () => {
     const tile = hook.el.querySelector('[data-stream-id="sub-stream-1"]');
     expect(tile.querySelector("[data-group-call-tile-name]").textContent).toBe("Remote");
 
-    hook._applyStreamOwners({ "sub-stream-1": 789 });
+    await hook._handleOffer({
+      sdp: "offer-sdp",
+      ice_servers: [],
+      stream_participants: { "sub-stream-1": 789 },
+    });
 
     expect(tile.querySelector("[data-group-call-tile-name]").textContent).toBe("Grace");
     expect(tile.dataset.participantId).toBe("789");
