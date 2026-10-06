@@ -1050,6 +1050,22 @@ describe("GroupCallWebRTCHook media fallback", () => {
     expect(tile.querySelector("[data-group-call-video-badge]")?.textContent.trim()).toBe("");
   });
 
+  it("names a remote tile from the offer's stream owners", () => {
+    const hook = setupLayoutHook();
+
+    fireServer(hook, "group_call_layout_state", {
+      participants: [{ id: 789, nickname: "Grace", media_state: { audio: true, video: true } }],
+    });
+    hook._attachRemoteStream({ id: "sub-stream-1" });
+    const tile = hook.el.querySelector('[data-stream-id="sub-stream-1"]');
+    expect(tile.querySelector("[data-group-call-tile-name]").textContent).toBe("Remote");
+
+    hook._applyStreamOwners({ "sub-stream-1": 789 });
+
+    expect(tile.querySelector("[data-group-call-tile-name]").textContent).toBe("Grace");
+    expect(tile.dataset.participantId).toBe("789");
+  });
+
   it("emits focus and clear-focus events from video tiles", () => {
     const hook = setupLayoutHook();
     const stream = { id: "stream-789" };

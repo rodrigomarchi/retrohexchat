@@ -348,6 +348,37 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
       end)
     end
 
+    test "the first offer already says whose each of the subscriber's streams is" do
+      ctx = create_call_with_member("owners", "owner")
+      first = join_call(ctx)
+      mark_ready(ctx, first)
+      first_id = first.participant.id
+      second_nick = create_registered_nick(unique_nick("second"))
+      {:ok, _state} = Server.join(ctx.channel, second_nick.nickname, nil, identified: true)
+
+      {:ok, second} =
+        GroupCall.join_call(
+          ctx.token,
+          %{user_id: second_nick.id, nickname: second_nick.nickname},
+          self(),
+          %{"browser" => "test"},
+          %{}
+        )
+
+      second_id = second.participant.id
+
+      # A later subscriber is set up with a stream for everyone already in the
+      # room, and its very first offer has to name them.
+      assert_receive {:"$gen_cast",
+                      {:group_call_push, "group_call_offer",
+                       %{participant_id: ^second_id, stream_participants: owners}}},
+                     2_000
+
+      {:ok, peer_pid} = Registry.lookup_peer({:peer, ctx.room.id, second_id})
+      %{stream: first_stream} = :sys.get_state(peer_pid).outbound_tracks[first_id]
+      assert owners[first_stream] == first_id
+    end
+
     test "request_offer sends a fresh ICE restart offer for retry" do
       ctx = create_call_with_member("retry", "member")
       payload = join_call(ctx)

@@ -14,8 +14,29 @@ export function createTrackRegistry() {
   const byId = new Map();
   const byStreamId = new Map();
   const byWebrtcTrackId = new Map();
+  const streamOwners = new Map();
 
   return {
+    /**
+     * Who each of this subscriber's media streams belongs to, as the server's
+     * offer states it. The server re-streams every participant under a stream
+     * id minted per subscriber, so this — not the publisher's own ids — is what
+     * a remote tile can be matched against.
+     * @param {Record<string, string|number>} owners stream id → participant id
+     */
+    setStreamOwners(owners) {
+      streamOwners.clear();
+      for (const [streamId, participantId] of Object.entries(owners || {})) {
+        const owner = stringOrNull(participantId);
+        if (owner) streamOwners.set(streamId, owner);
+      }
+    },
+
+    /** The stream ids the offer named. */
+    ownedStreamIds() {
+      return Array.from(streamOwners.keys());
+    },
+
     /**
      * Normalize a server track and index it under every id it carries.
      * @param {object} track raw server track
@@ -68,7 +89,12 @@ export function createTrackRegistry() {
      * @returns {object|null}
      */
     forTile(streamId, browserTrackId) {
-      return byStreamId.get(streamId) || byWebrtcTrackId.get(browserTrackId) || null;
+      const owner = streamOwners.get(streamId);
+      return (
+        byStreamId.get(streamId) ||
+        byWebrtcTrackId.get(browserTrackId) ||
+        (owner ? { participantId: owner, source: null } : null)
+      );
     },
 
     byWebrtcTrackId(webrtcTrackId) {
@@ -83,6 +109,7 @@ export function createTrackRegistry() {
       byId.clear();
       byStreamId.clear();
       byWebrtcTrackId.clear();
+      streamOwners.clear();
     },
   };
 }

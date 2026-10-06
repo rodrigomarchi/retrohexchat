@@ -1,6 +1,6 @@
 /**
  * @section N - P2P, File, Call, Game
- * @flow N1 [done] Channel group call opens for two registered users, shows the rich live channel badge/popover before the second user joins, exchanges live remote video both ways, toggles mic/camera by asserting local `MediaStreamTrack.enabled` and remote participant media state, then removes a leaver (features P0)
+ * @flow N1 [done] Channel group call opens for two registered users, shows the rich live channel badge/popover before the second user joins, exchanges live remote video both ways, names each remote tile after its participant, toggles mic/camera by asserting local `MediaStreamTrack.enabled` and remote participant media state, then removes a leaver (features P0)
  * @flow N2 [done] Channel group call renegotiates with three registered media users: third participant joins, all clients receive two live remote videos, audio/video off-on state propagates to both observers, the third participant leaves, and remaining users keep media (features P0)
  * @flow N3 [done] Channel group call pre-join persists muted media preferences after cancel/reopen, enters with microphone and camera disabled, mounts WebRTC with disabled media state, avoids local media tracks, and propagates disabled media to another participant (features P0)
  * @flow N4 [done] Channel group call screen share uses browser display capture, replaces the published video, marks the remote tile as `source=screen`, and returns to camera when stopped (features P0)
@@ -1034,6 +1034,20 @@ test.describe("Channel group calls", () => {
         .toBe(true);
       await expectRemoteVideoFramesToAdvance(aliceCall, "Alice");
       await expectRemoteVideoFramesToAdvance(bobCall, "Bob");
+      // Each side names the other's tile after them, including the one who
+      // joined second (whose streams were all minted before its first offer).
+      for (const [call, other] of [
+        [aliceCall, bob.nick],
+        [bobCall, alice.nick],
+      ] as const) {
+        await expect(
+          call
+            .locator(
+              ".group-call-video-tile--remote [data-group-call-tile-name]",
+            )
+            .first(),
+        ).toHaveText(other, { timeout: 20_000 });
+      }
       await expect(groupCallStatusAnnouncer(aliceCall)).toContainText(
         "Connected",
         { timeout: 20_000 },

@@ -1229,6 +1229,11 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
       assert [connected_msg] = p2p_system_messages(ctx.a.nickname, ctx.b.nickname)
       assert connected_msg.content =~ "connected"
 
+      # The status bar leaves "connecting" behind once the link is up.
+      notice = p2p_view(ctx.view_a) |> element(~s([data-testid="p2p-notice"])) |> render()
+      assert notice =~ "P2P session connected"
+      refute notice =~ "connecting"
+
       # Ending persists exactly one more line, written by the ender.
       render_click(p2p_view(ctx.view_a), "p2p_end_session", %{})
       render_click(p2p_view(ctx.view_a), "p2p_confirm_end", %{})

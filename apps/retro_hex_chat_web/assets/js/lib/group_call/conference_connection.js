@@ -351,6 +351,7 @@ export function createConferenceConnection(el, ports) {
     },
 
     _handleOffer(payload) {
+      this._applyStreamOwners(payload?.stream_participants);
       this.offerQueue = this.offerQueue
         .catch(() => {})
         .then(() => this._processOffer(payload || {}));
@@ -786,6 +787,15 @@ export function createConferenceConnection(el, ports) {
       this.trackRegistry.remove(trackId);
     },
 
+    _applyStreamOwners(owners) {
+      if (!owners) return;
+      this.trackRegistry.setStreamOwners(owners);
+      for (const streamId of this.trackRegistry.ownedStreamIds()) {
+        const tile = this.tileView.get(streamId);
+        if (tile) this._applyTrackToTile(tile, streamId);
+      }
+    },
+
     _applyTrackToTile(tile, streamId, browserTrack = null) {
       const track = this.trackRegistry.forTile(streamId, browserTrack?.id);
 
@@ -794,7 +804,9 @@ export function createConferenceConnection(el, ports) {
         this._applyParticipantToTile(tile, track.participantId);
       }
 
-      const source = track?.source || "camera";
+      // A stream known only by its owner says nothing about what it carries;
+      // the screen-share state events keep the tile's source current.
+      const source = track?.source || tile.dataset.trackSource || "camera";
       tile.dataset.trackSource = source;
       tile.dataset.mediaScreen = String(source === "screen");
 

@@ -142,8 +142,10 @@ defmodule RetroHexChat.GroupCall.PeerServer do
 
   @impl true
   def handle_continue({:initial_offer, peer_ids}, state) do
+    # The tracks go into the state before the offer is built: the offer says
+    # whose each stream is, and it can only say so for streams it knows.
     outbound_tracks = setup_transceivers(state.pc, peer_ids)
-    {:noreply, %{send_offer(state) | outbound_tracks: outbound_tracks}}
+    {:noreply, send_offer(%{state | outbound_tracks: outbound_tracks})}
   end
 
   @impl true
@@ -482,8 +484,19 @@ defmodule RetroHexChat.GroupCall.PeerServer do
       sdp: offer.sdp,
       participant_id: state.participant.id,
       offer_id: state.current_offer_id,
-      ice_servers: P2P.ice_servers(to_string(state.participant.id))
+      ice_servers: P2P.ice_servers(to_string(state.participant.id)),
+      stream_participants: stream_participants(state.outbound_tracks)
     })
+  end
+
+  # Each subscriber receives every other participant on a stream id minted for
+  # it (`add_outbound_track_pair/1`), so the ids the publishers reported mean
+  # nothing on this side. The offer says whose each of this subscriber's
+  # streams is, which is how a tile is named after the person in it.
+  defp stream_participants(outbound_tracks) do
+    Map.new(outbound_tracks, fn {participant_id, %{stream: stream_id}} ->
+      {stream_id, participant_id}
+    end)
   end
 
   defp flush_pending_remote_candidates(state) do

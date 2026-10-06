@@ -74,6 +74,30 @@ describe("createTrackRegistry", () => {
     });
   });
 
+  describe("stream owners from the offer", () => {
+    it("names a stream the server minted for this subscriber", () => {
+      const registry = createTrackRegistry();
+      registry.setStreamOwners({ "sub-stream-1": 789 });
+
+      expect(registry.forTile("sub-stream-1")).toEqual({ participantId: "789", source: null });
+      expect(registry.ownedStreamIds()).toEqual(["sub-stream-1"]);
+    });
+
+    it("prefers an announced track and forgets owners on clear or a new offer", () => {
+      const registry = createTrackRegistry();
+      registry.upsert({ id: "t", participant_id: "p", stream_id: "s", source: "screen" });
+      registry.setStreamOwners({ s: "other", x: "q" });
+
+      expect(registry.forTile("s").id).toBe("t");
+
+      registry.setStreamOwners({ y: "r" });
+      expect(registry.forTile("x")).toBe(null);
+
+      registry.clear();
+      expect(registry.forTile("y")).toBe(null);
+    });
+  });
+
   describe("remove", () => {
     it("drops a track from every index and returns it", () => {
       const registry = createTrackRegistry();

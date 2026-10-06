@@ -1227,6 +1227,11 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
     socket
     |> maybe_persist_connected(p2p)
+    # The status bar said "connecting" from the moment the peer accepted;
+    # now that the link is up it says so, rather than lingering on the wait.
+    |> Surface.system(
+      dgettext("chat", "P2P session connected - call, files, games and stats are available.")
+    )
     |> put_p2p(%{
       p2p
       | state: :connected,

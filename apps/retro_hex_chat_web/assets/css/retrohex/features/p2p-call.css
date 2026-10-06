@@ -15,11 +15,10 @@
   transition: bottom 240ms ease-out var(--media-dock-fade-delay, 0s);
 }
 
-/* In a mini window the corner camera shrinks to fit beside the compact dock. */
+/* A mini window is a few hundred pixels across: it shows the person you are
+   talking to, and your own camera steps aside until the window grows again. */
 [data-call-mini="true"] .p2p-call-pip {
-  width: min(5.5rem, 32%);
-  height: min(3.5rem, 30%);
-  min-height: 0;
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

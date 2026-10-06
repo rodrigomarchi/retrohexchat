@@ -28,8 +28,12 @@ export function createGroupCallPreJoin(el, { pushEvent }) {
         this._startPreview();
       };
 
+      // Submitting hands the camera over to the call, so the preview stops.
+      // A room that stays on screen while it waits (P2P's "Ready") says the
+      // preview is off instead of showing the black frame it left behind.
       this._onSubmit = () => {
         this._cancelPreview();
+        this._showEmpty(true, t("Camera preview is off"));
       };
 
       this._onRetry = () => this._startPreview({ force: true });

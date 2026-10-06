@@ -2928,12 +2928,12 @@ msgstr "%{nick}拒絕了P2P邀請."
 msgid "%{nick} ended the P2P session."
 msgstr "%{nick}結束P2P會話."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1575
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1580
 #, elixir-autogen, elixir-format
 msgid "%{peer} declined the P2P invite."
 msgstr "%{peer}拒絕了P2P邀請."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1584
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1589
 #, elixir-autogen, elixir-format
 msgid "%{peer} left the P2P session."
 msgstr "%{peer}離開P2P會話."
@@ -2988,7 +2988,7 @@ msgstr "循環自動、 聚焦、 分割、 揚聲器和壓縮佈局"
 msgid "Cycle P2P Self View"
 msgstr "循環 P2P 自視圖"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1680
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1685
 #, elixir-autogen, elixir-format
 msgid "Default device"
 msgstr "默認設備"
@@ -3049,8 +3049,8 @@ msgstr "P2P 邀請待決"
 msgid "P2P session connecting"
 msgstr "P2P 會話連接"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1581
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1590
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1586
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1595
 #, elixir-autogen, elixir-format
 msgid "P2P session with %{peer} ended."
 msgstr "P2P會話的%{peer}結束."
@@ -3076,12 +3076,12 @@ msgstr "啓動、 暫停或恢復您的 P2P 相機"
 msgid "Stop only the call media; the P2P session stays open"
 msgstr "只停止調用媒體; P2P 會話保持開放"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1578
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1583
 #, elixir-autogen, elixir-format
 msgid "The P2P invite was cancelled."
 msgstr "P2P邀請被取消."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1587
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1592
 #, elixir-autogen, elixir-format
 msgid "The P2P session expired."
 msgstr "P2P會話結束."
@@ -3096,7 +3096,7 @@ msgstr "由於不開展活動,P2P會議將很快結束。"
 msgid "The other user"
 msgstr "另一個用戶"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1541
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1546
 #, elixir-autogen, elixir-format
 msgid "This P2P invite is no longer active."
 msgstr "此P2P邀請已不活動 。"
@@ -3121,7 +3121,7 @@ msgstr "切換 P2P 屏幕共享"
 msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
 msgstr "您必須註冊和識別 玩。 使用/ns登記和/ns先識別。"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1571
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1576
 #, elixir-autogen, elixir-format
 msgid "the other user"
 msgstr "另一個用戶"
@@ -3184,6 +3184,7 @@ msgid "P2P Session Console"
 msgstr "P2P 工作階段主控台"
 
 #: lib/retro_hex_chat_web/live/p2p_live/events.ex:1202
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1233
 #, elixir-autogen, elixir-format
 msgid "P2P session connected - call, files, games and stats are available."
 msgstr "P2P會話連接——電話,文件和遊戲均可使用."
@@ -3741,8 +3742,8 @@ msgstr "計量"
 msgid "OS Data"
 msgstr "OS 數據"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1550
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1554
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1555
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1559
 #, elixir-autogen, elixir-format
 msgid "P2P action failed: %{reason}"
 msgstr "P2P 動作失敗: %{reason}"
@@ -3762,7 +3763,7 @@ msgstr "進程"
 msgid "Sockets"
 msgstr "襪子"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1545
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1550
 #, elixir-autogen, elixir-format
 msgid "This P2P session is already active in another window."
 msgstr "P2P 會話已經在另一個窗口中活動 。"

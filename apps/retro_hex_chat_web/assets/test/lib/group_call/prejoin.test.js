@@ -131,6 +131,32 @@ describe("createGroupCallPreJoin (direct)", () => {
     prejoin.destroy();
   });
 
+  it("submitting hands the camera over and says the preview is off", async () => {
+    const stream = streamFixture();
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: { enumerateDevices: vi.fn(async () => []), getUserMedia: vi.fn(async () => stream) },
+    });
+
+    const el = formFixture();
+    const prejoin = createGroupCallPreJoin(el, { pushEvent });
+    prejoin.mount();
+    await flushPromises();
+
+    document
+      .getElementById("group-call-prejoin-form")
+      .dispatchEvent(new Event("submit", { cancelable: true }));
+
+    stream.getTracks().forEach((track) => expect(track.stop).toHaveBeenCalled());
+    const empty = document.querySelector("[data-group-call-prejoin-empty]");
+    expect(empty.classList.contains("hidden") || empty.hidden).toBe(false);
+    expect(document.querySelector("[data-group-call-prejoin-empty-text]").textContent).toBe(
+      "Camera preview is off",
+    );
+
+    prejoin.destroy();
+  });
+
   it("stops preview tracks on destroy", async () => {
     const stream = streamFixture();
     const stops = stream.getTracks().map((t) => t.stop);
