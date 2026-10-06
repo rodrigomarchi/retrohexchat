@@ -1832,15 +1832,6 @@ msgstr ""
 "L'onglet Enregistrement n'autorise que le canal d'enregistrement pour les "
 "opérateurs de canaux."
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:31
-#, elixir-autogen, elixir-format
-msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access can type a nickname to add it, select an existing row, and remove it inline."
-msgstr ""
-"L'onglet Inscription affiche les listes SOP, AOP et VOP comme sous-onglets "
-"sélectionnables. Les utilisateurs disposant d'un accès suffisant peuvent "
-"taper un surnom pour l'ajouter, sélectionner une ligne existante et la "
-"supprimer en ligne."
-
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "The dialog disables or hides write controls when you are not identified with NickServ or your ChanServ role cannot manage the selected list."
@@ -1916,3 +1907,8 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "%{window} of inactivity"
 msgstr "%{window} d'inactivité"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access choose Add to type a nickname into the list, and remove an entry with the button on its row."
+msgstr "L'onglet Enregistrement présente les listes SOP, AOP et VOP sous forme de sous-onglets. Les utilisateurs disposant d'un accès suffisant choisissent Ajouter pour saisir un pseudo dans la liste, et retirent une entrée avec le bouton de sa ligne."

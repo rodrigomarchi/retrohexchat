@@ -1690,12 +1690,6 @@ msgstr "在中央频道设置欢迎信息并加入油门"
 msgid "The Registration tab only enables Register Channel for channel operators."
 msgstr "注册标签只允许频道操作员使用注册频道。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:31
-#, elixir-autogen, elixir-format
-msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access can type a nickname to add it, select an existing row, and remove it inline."
-msgstr ""
-"注册标签显示 SOP, AOP, VOP 列表为可选择的子目录 。 拥有足够访问权限的用户可以输入一个昵称来添加,选择一个已有的行,并删除其内含."
-
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "The dialog disables or hides write controls when you are not identified with NickServ or your ChanServ role cannot manage the selected list."
@@ -1757,3 +1751,8 @@ msgstr "为您加入的频道打开频道中心,然后在访问列表后选择�
 #, elixir-autogen, elixir-format
 msgid "%{window} of inactivity"
 msgstr "%{window}无活动"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access choose Add to type a nickname into the list, and remove an entry with the button on its row."
+msgstr "「注册」标签页以可选的子标签显示 SOP、AOP 和 VOP 列表。拥有足够权限的用户选择「添加」以输入昵称加入列表，并通过所在行的按钮移除条目。"

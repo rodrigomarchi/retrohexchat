@@ -45,6 +45,10 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     bot_remove_command
     open_add_command_dialog
     close_add_command_dialog
+    open_add_channel_dialog
+    close_add_channel_dialog
+    open_add_feed_dialog
+    close_add_feed_dialog
     bot_toggle_capability
     bot_rss_add_feed
     bot_rss_remove_feed
@@ -314,6 +318,22 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     put_bot(socket, show_add_command: false)
   end
 
+  defp authorized("open_add_channel_dialog", _params, socket) do
+    put_bot(socket, show_add_channel: true)
+  end
+
+  defp authorized("close_add_channel_dialog", _params, socket) do
+    put_bot(socket, show_add_channel: false)
+  end
+
+  defp authorized("open_add_feed_dialog", _params, socket) do
+    put_bot(socket, show_add_feed: true)
+  end
+
+  defp authorized("close_add_feed_dialog", _params, socket) do
+    put_bot(socket, show_add_feed: false)
+  end
+
   # ── Capability Toggle ──
 
   defp authorized(
@@ -371,7 +391,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
         channels = Queries.list_channel_configs(bot.id)
 
         socket
-        |> put_bot(channels: channels)
+        |> put_bot(channels: channels, show_add_channel: false)
         |> system_event(
           dgettext("chat", "[BotService] Bot '%{name}' joined %{channel}.",
             name: bot_name,
@@ -439,7 +459,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     case Feeds.add(bot, url, channel) do
       {:ok, updated} ->
         socket
-        |> put_bot(selected: updated)
+        |> put_bot(selected: updated, show_add_feed: false)
         |> system_event(
           dgettext("chat", "[BotService] Feed added: %{url} → %{channel}",
             url: url,

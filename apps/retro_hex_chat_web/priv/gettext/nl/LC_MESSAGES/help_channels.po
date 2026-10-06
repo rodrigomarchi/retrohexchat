@@ -1808,14 +1808,6 @@ msgstr ""
 "Het tabblad Registratie maakt alleen Register Channel voor kanaaloperators "
 "mogelijk."
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:31
-#, elixir-autogen, elixir-format
-msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access can type a nickname to add it, select an existing row, and remove it inline."
-msgstr ""
-"Het tabblad Registratie toont SOP, AOP en VOP lijsten als selecteerbare sub-"
-"tabs. Gebruikers met voldoende toegang kunnen een bijnaam typen om het toe "
-"te voegen, een bestaande rij selecteren en deze inline verwijderen."
-
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "The dialog disables or hides write controls when you are not identified with NickServ or your ChanServ role cannot manage the selected list."
@@ -1893,3 +1885,8 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "%{window} of inactivity"
 msgstr "%{window} inactiviteit"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access choose Add to type a nickname into the list, and remove an entry with the button on its row."
+msgstr "Het tabblad Registratie toont de lijsten SOP, AOP en VOP als selecteerbare subtabbladen. Wie genoeg toegang heeft, kiest Toevoegen om een bijnaam in de lijst te zetten en verwijdert een vermelding met de knop op de eigen rij."

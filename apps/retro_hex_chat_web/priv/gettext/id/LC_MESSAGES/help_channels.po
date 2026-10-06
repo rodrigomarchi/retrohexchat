@@ -1812,15 +1812,6 @@ msgid "The Registration tab only enables Register Channel for channel operators.
 msgstr ""
 "Tab Pendaftaran hanya memungkinkan Saluran Register untuk operator saluran."
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:31
-#, elixir-autogen, elixir-format
-msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access can type a nickname to add it, select an existing row, and remove it inline."
-msgstr ""
-"Tab Pendaftaran menunjukkan SOP, AOP, dan daftar VOP sebagai subtab yang "
-"dapat dipilih. Pengguna dengan akses yang cukup dapat mengetik nama "
-"panggilan untuk menambahkannya, pilih baris yang ada, dan hapus secara "
-"inline."
-
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "The dialog disables or hides write controls when you are not identified with NickServ or your ChanServ role cannot manage the selected list."
@@ -1895,3 +1886,8 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "%{window} of inactivity"
 msgstr "%{window} tidak aktif"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access choose Add to type a nickname into the list, and remove an entry with the button on its row."
+msgstr "Tab Pendaftaran menampilkan daftar SOP, AOP, dan VOP sebagai sub-tab yang bisa dipilih. Pengguna dengan akses cukup memilih Tambah untuk mengetik nama panggilan ke daftar, dan menghapus entri dengan tombol di barisnya."

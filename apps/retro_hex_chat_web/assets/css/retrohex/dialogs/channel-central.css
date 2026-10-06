@@ -23,7 +23,6 @@
 }
 
 .cc-action-row,
-.cc-action-form,
 .cc-inline-control {
   flex-wrap: wrap;
 }
@@ -31,15 +30,6 @@
 .cc-action-row,
 .cc-inline-control {
   justify-content: flex-end;
-}
-
-.cc-action-form {
-  width: 100%;
-  justify-content: flex-end;
-}
-
-.cc-action-input {
-  margin-right: auto;
 }
 
 .cc-action-button,
@@ -139,7 +129,6 @@
 }
 
 .desktop--stacked .cc-topic-input,
-.desktop--stacked .cc-action-input-control,
 .desktop--stacked .cc-mode-input,
 .desktop--stacked .cc-short-input {
   min-height: 40px;
@@ -249,21 +238,6 @@
   width: 100%;
 }
 
-.desktop--stacked .cc-action-form {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
-  gap: 6px;
-  align-items: end;
-}
-
-.desktop--stacked .cc-action-input {
-  min-width: 0;
-}
-
-.desktop--stacked .cc-action-input-control {
-  width: 100%;
-}
-
 .desktop--stacked .cc-mode-list {
   display: grid;
   gap: 6px;
@@ -286,18 +260,6 @@
 }
 
 @media (max-width: 430px) {
-  .desktop--stacked .cc-action-form {
-    grid-template-columns: minmax(0, 1fr) auto auto;
-  }
-
-  .desktop--stacked .cc-action-input {
-    grid-column: 1 / -1;
-  }
-
-  .desktop--stacked .cc-action-form > .cc-action-button:first-of-type {
-    grid-column: 2;
-  }
-
   .desktop--stacked .cc-mode-pair {
     grid-template-columns: 1fr;
   }

@@ -63,6 +63,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :access_tab, :string, default: "sop"
   attr :access_nick, :string, default: ""
   attr :cs_error, :string, default: nil
+  attr :access_adding, :boolean, default: false, doc: "the add-to-access-list dialog is open"
   attr :cs_confirm_drop, :boolean, default: false
   attr :identified, :boolean, default: false
   attr :modes, :map, default: %{}
@@ -93,6 +94,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :on_cs_access_tab, :any, default: nil
   attr :on_cs_access_change, :any, default: nil
   attr :on_cs_access_add, :any, default: nil
+  attr :on_cs_access_open, :any, default: nil
+  attr :on_cs_access_cancel, :any, default: nil
   attr :on_cs_access_remove, :any, default: nil
   attr :show_add_list_entry_dialog, :boolean, default: false
   attr :show_transfer_dialog, :boolean, default: false
@@ -209,8 +212,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             identified={@identified}
             registration={@registration}
             access_tab={@access_tab}
-            access_nick={@access_nick}
             error_message={@cs_error}
+            access_adding={@access_adding}
             confirm_drop={@cs_confirm_drop}
             on_register={@on_cs_register}
             on_archive_toggle={@on_cs_archive_toggle}
@@ -218,13 +221,23 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             on_drop={@on_cs_drop}
             on_drop_cancel={@on_cs_drop_cancel}
             on_access_tab={@on_cs_access_tab}
-            on_access_change={@on_cs_access_change}
-            on_access_add={@on_cs_access_add}
+            on_access_open={@on_cs_access_open}
             on_access_remove={@on_cs_access_remove}
           />
         </.tabs_content>
       </.tabs>
 
+      <%!-- ChanServ access entry Add Sub-Dialog --%>
+      <.access_add_sub_form
+        :if={@access_adding}
+        target={@target}
+        level={normalize_access_level(@access_tab)}
+        nickname={@access_nick}
+        error_message={@cs_error}
+        on_change={@on_cs_access_change}
+        on_submit={@on_cs_access_add}
+        on_cancel={@on_cs_access_cancel}
+      />
       <%!-- Access List Entry Add Sub-Dialog --%>
       <.list_entry_add_sub_form
         :if={@show_add_list_entry_dialog}
@@ -251,7 +264,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :identified, :boolean, default: false
   attr :registration, :map, default: nil
   attr :access_tab, :string, default: "sop"
-  attr :access_nick, :string, default: ""
   attr :error_message, :string, default: nil
   attr :confirm_drop, :boolean, default: false
   attr :on_register, :any, default: nil
@@ -260,8 +272,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :on_drop, :any, default: nil
   attr :on_drop_cancel, :any, default: nil
   attr :on_access_tab, :any, default: nil
-  attr :on_access_change, :any, default: nil
-  attr :on_access_add, :any, default: nil
+  attr :access_adding, :boolean, default: false
+  attr :on_access_open, :any, default: nil
   attr :on_access_remove, :any, default: nil
 
   attr :target, :any, default: nil
@@ -444,7 +456,10 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         </div>
       </div>
 
-      <p :if={@error_message} class="text-xs text-destructive shadow-retro-field bg-white p-2">
+      <p
+        :if={@error_message && !@access_adding}
+        class="text-xs text-destructive shadow-retro-field bg-white p-2"
+      >
         {@error_message}
       </p>
 
@@ -527,39 +542,18 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
           </.table>
         </div>
 
-        <form
-          :if={@can_manage_active?}
-          phx-submit={@on_access_add}
-          phx-target={@target}
-          phx-change={@on_access_change}
-          data-testid="cc-cs-access-form"
-          class="cc-action-form flex flex-wrap items-end gap-1"
-        >
-          <input type="hidden" name="level" value={@active_level} />
-          <div class="cc-action-input flex flex-col gap-1">
-            <label class="text-xs font-bold" for="cc-cs-access-nick">
-              {dgettext("dialogs", "Nick")}:
-            </label>
-            <.input
-              type="text"
-              id="cc-cs-access-nick"
-              name="nickname"
-              value={@access_nick}
-              class="cc-action-input-control text-xs h-7 w-32"
-              data-testid="cc-cs-access-nick"
-            />
-          </div>
+        <div :if={@can_manage_active?} class="cc-action-row flex justify-end">
           <.button
-            type="submit"
             size="sm"
+            phx-click={@on_access_open}
+            phx-target={@target}
             class="cc-action-button"
-            phx-disable-with={dgettext("dialogs", "Adding...")}
-            data-testid="cc-cs-access-add"
+            data-testid="cc-cs-access-open"
           >
             <:icon><Icons.icon_btn_add /></:icon>
             {dgettext("dialogs", "Add")}
           </.button>
-        </form>
+        </div>
 
         <p :if={!@can_manage_active?} class="text-[10px] text-muted-foreground italic">
           <%= if @identified do %>
@@ -574,6 +568,90 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   end
 
   # ── Sub-Forms ─────────────────────────────────────────
+
+  attr :level, :string, required: true
+  attr :nickname, :string, default: ""
+  attr :error_message, :string, default: nil
+  attr :on_change, :any, default: nil
+  attr :on_submit, :any, default: nil
+  attr :on_cancel, :any, default: nil
+
+  attr :target, :any, default: nil
+
+  defp access_add_sub_form(assigns) do
+    ~H"""
+    <.dialog
+      id="cc-cs-access-modal"
+      show
+      scope={:window}
+      on_cancel={JS.push(@on_cancel, target: @target)}
+      class="md:max-w-sm"
+    >
+      <.dialog_header
+        id="cc-cs-access-modal"
+        title={dgettext("dialogs", "Add to %{level}", level: String.upcase(@level))}
+        on_close={JS.push(@on_cancel, target: @target)}
+      >
+        <:icon><Icons.icon_shield class="w-4 h-4" /></:icon>
+      </.dialog_header>
+      <.dialog_body>
+        <form
+          phx-submit={@on_submit}
+          phx-change={@on_change}
+          phx-target={@target}
+          data-testid="cc-cs-access-form"
+        >
+          <input type="hidden" name="level" value={@level} />
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs font-bold" for="cc-cs-access-nick">
+              {dgettext("dialogs", "Nick")}:
+            </label>
+            <.input
+              type="text"
+              id="cc-cs-access-nick"
+              name="nickname"
+              value={@nickname}
+              autofocus
+              autocomplete="off"
+              class="w-full"
+              data-testid="cc-cs-access-nick"
+            />
+          </div>
+          <p
+            :if={@error_message}
+            class="text-xs text-destructive mt-2"
+            data-testid="cc-cs-access-error"
+          >
+            {@error_message}
+          </p>
+          <div class="cc-action-row flex justify-end gap-1 mt-2">
+            <.button
+              type="submit"
+              size="sm"
+              class="cc-action-button"
+              phx-disable-with={dgettext("dialogs", "Adding...")}
+              data-testid="cc-cs-access-add"
+            >
+              <:icon><Icons.icon_btn_add /></:icon>
+              {dgettext("dialogs", "Add")}
+            </.button>
+            <.button
+              type="button"
+              size="sm"
+              variant="outline"
+              class="cc-action-button"
+              phx-click={@on_cancel}
+              phx-target={@target}
+            >
+              <:icon><Icons.icon_close /></:icon>
+              {dgettext("dialogs", "Cancel")}
+            </.button>
+          </div>
+        </form>
+      </.dialog_body>
+    </.dialog>
+    """
+  end
 
   attr :list_type, :string, required: true
 

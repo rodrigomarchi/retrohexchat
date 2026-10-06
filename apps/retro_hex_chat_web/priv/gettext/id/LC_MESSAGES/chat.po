@@ -191,7 +191,7 @@ msgid "%{count} user"
 msgid_plural "%{count} users"
 msgstr[0] "Pengguna %{count}"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:612
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:632
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
@@ -763,13 +763,13 @@ msgstr "Tidak di tempat"
 msgid "Ban"
 msgstr "Ban"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:630
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:656
 #, elixir-autogen, elixir-format
 msgid "Ban error: %{message}"
 msgstr "Kesalahan ban: %{message}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:633
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:642
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:659
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:668
 #, elixir-autogen, elixir-format
 msgid "Ban exception error: %{message}"
 msgstr "Galat eksepsi Ban: %{message}"
@@ -796,12 +796,12 @@ msgstr "Tebal (Ctrl + Shift + B)"
 msgid "Bot"
 msgstr "Bot"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:383
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:403
 #, elixir-autogen, elixir-format
 msgid "Bot already in %{channel}."
 msgstr "Bot sudah di %{channel}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:68
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:72
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/bots.ex:39
 #, elixir-autogen, elixir-format
 msgid "Bot management is restricted to server administrators."
@@ -891,7 +891,7 @@ msgstr "Saluran %{channel} sejarah dari %{from} dibersihkan oleh %{admin}."
 msgid "Channel %{channel} history was purged by %{admin}."
 msgstr "Sejarah saluran %{channel} dibersihkan oleh %{admin}."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:545
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:571
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel} not found"
 msgstr "Saluran %{channel} tidak ditemukan"
@@ -912,7 +912,7 @@ msgstr "Pengaturan Kanal"
 msgid "Channel filter must start with #"
 msgstr "Penyaring saluran harus dimulai dengan #"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:383
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:406
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:236
 #, elixir-autogen, elixir-format
 msgid "Channel ownership transferred to %{target}."
@@ -955,7 +955,7 @@ msgstr "Warna (Ctrl + Shift + D)"
 msgid "Colors"
 msgstr "Warna"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:283
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:287
 #, elixir-autogen, elixir-format
 msgid "Command '%{trigger}' already exists."
 msgstr "Perintah '%{trigger}' sudah ada."
@@ -1175,7 +1175,7 @@ msgstr "Gagal menambahkan perintah perform: %{reason}"
 msgid "Failed to send. Click to retry"
 msgstr "Gagal mengirim. Klik untuk mencoba lagi"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:500
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:520
 #, elixir-autogen, elixir-format
 msgid "Failed to update capability."
 msgstr "Gagal memperbarui kemampuan."
@@ -1353,8 +1353,8 @@ msgstr "Regex tidak valid"
 msgid "Invalid trigger event"
 msgstr "Acara pemicu tak valid"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:636
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:645
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:662
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:671
 #, elixir-autogen, elixir-format
 msgid "Invite exception error: %{message}"
 msgstr "Undang galat eksepsi: %{message}"
@@ -1476,7 +1476,7 @@ msgstr "Menu penuh (maksimal 10 butir per tipe)"
 msgid "Message to %{target} — / for commands"
 msgstr "Pesan ke %{target} - / untuk perintah"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:734
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:761
 #, elixir-autogen, elixir-format
 msgid "Mode error: %{message}"
 msgstr "Kesalahan mode: %{message}"
@@ -1975,7 +1975,7 @@ msgstr "Timer '%{name}' tidak ditemukan"
 msgid "Tip: Go to Help > Help Topics for the full documentation."
 msgstr "Tip: Pergi ke Bantuan > Bantuan Topics untuk dokumentasi penuh."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:297
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:320
 #, elixir-autogen, elixir-format
 msgid "Topic error: %{message}"
 msgstr "Kesalahan topik: %{message}"
@@ -2021,7 +2021,7 @@ msgstr "Ketik pesan..."
 msgid "URL saved to URL Catcher"
 msgstr "URL disimpan ke URL Catcher"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:639
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:665
 #, elixir-autogen, elixir-format
 msgid "Unban error: %{message}"
 msgstr "Kesalahan unban: %{message}"
@@ -2200,7 +2200,7 @@ msgstr "Anda telah digumamkan oleh administrator: %{reason}"
 msgid "You have been unmuted by an administrator."
 msgstr "Anda telah unmuted oleh administrator."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:538
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:564
 #, elixir-autogen, elixir-format
 msgid "You must be a member of %{channel} to open Channel Central"
 msgstr "Anda harus menjadi anggota %{channel} untuk membuka Channel Central"
@@ -2251,47 +2251,47 @@ msgstr "Peran server Anda telah diubah menjadi: %{role}"
 msgid "[Auto-Whois] %{nickname}:"
 msgstr "[Auto- Whois] %{nickname}:"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:559
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:579
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' %{action}."
 msgstr "Font color = \"# 404040\" BotService: Bot '%{name}' %{action}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:206
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:210
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' created."
 msgstr "Font color = \"# 404040\" BotService: Bot '%{name}' dibuat."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:150
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:154
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' destroyed."
 msgstr "Font color = \"# 404040\" BotService: Bot '%{name}' hancur."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:376
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:396
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' joined %{channel}."
 msgstr "Bot '%{name}' bergabung dengan %{channel}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:244
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:248
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' left %{channel}."
 msgstr "Bot '%{name}' meninggalkan %{channel}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:493
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:513
 #, elixir-autogen, elixir-format
 msgid "[BotService] Capability '%{capability}' %{action}."
 msgstr "[BotService] Kapabilitas '%{capability}' %{action}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:277
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:281
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' added."
 msgstr "Perintah '%{trigger}' ditambahkan."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:302
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:306
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed."
 msgstr "Perintah '%{trigger}' dihapus."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:213
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:217
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to create bot '%{name}': %{message}"
 msgstr "[BotService] Gagal membuat bot '%{name}': %{message}"
@@ -2345,15 +2345,15 @@ msgstr "semua"
 msgid "click to insert"
 msgstr "klik untuk menyisipkan"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:487
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:554
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:507
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:574
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:34
 #, elixir-autogen, elixir-format
 msgid "disabled"
 msgstr "dinonaktifkan"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:488
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:554
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:508
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:574
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:33
 #, elixir-autogen, elixir-format
 msgid "enabled"
@@ -2590,7 +2590,7 @@ msgstr "Masukkan nick baru."
 msgid "Error"
 msgstr "Kesalahan"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:566
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:586
 #, elixir-autogen, elixir-format
 msgid "Failed to update bot status."
 msgstr "Gagal memperbarui status robot."
@@ -2615,17 +2615,17 @@ msgstr "Diam"
 msgid "Invite to Channel..."
 msgstr "Undang ke Saluran..."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:327
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:350
 #, elixir-autogen, elixir-format
 msgid "Join throttle disabled."
 msgstr "Gabungan throttle dinonaktifkan."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:829
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:856
 #, elixir-autogen, elixir-format
 msgid "Join throttle must be a non-negative integer."
 msgstr "Gabungan throttle harus berupa integer non-negatif."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:335
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:358
 #, elixir-autogen, elixir-format
 msgid "Join throttle set to %{seconds} seconds."
 msgstr "Pembatasan bergabung diatur ke %{seconds} detik."
@@ -2689,8 +2689,8 @@ msgstr "Nama panggilan"
 msgid "Nickname is required"
 msgstr "Nama panggilan diperlukan"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:234
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:369
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:256
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:392
 #: lib/retro_hex_chat_web/live/chat_live/user_lookup_events.ex:91
 #, elixir-autogen, elixir-format
 msgid "Nickname is required."
@@ -2734,12 +2734,12 @@ msgstr "Luring"
 msgid "Online for"
 msgstr "Online untuk"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:927
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:954
 #, elixir-autogen, elixir-format
 msgid "Only channel operators can register this channel."
 msgstr "Hanya operator saluran yang dapat mendaftarkan kanal ini."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:180
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:182
 #, elixir-autogen, elixir-format
 msgid "Only the founder can drop a channel."
 msgstr "Hanya pendiri dapat drop saluran."
@@ -2825,8 +2825,8 @@ msgstr "Kanal bersama"
 msgid "Sound Settings"
 msgstr "Pengaturan Suara"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:846
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:848
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:873
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:875
 #, elixir-autogen, elixir-format
 msgid "Throttle error: %{message}"
 msgstr "Kesalahan pembatasan: %{message}"
@@ -2878,20 +2878,20 @@ msgstr "Pencarian Pengguna"
 msgid "Wallops"
 msgstr "Wallops"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:801
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:803
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:820
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:822
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:828
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:830
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:847
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:849
 #, elixir-autogen, elixir-format
 msgid "Welcome error: %{message}"
 msgstr "Kesalahan sambutan: %{message}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:814
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:841
 #, elixir-autogen, elixir-format
 msgid "Welcome message cleared."
 msgstr "Selamat datang pesan dibersihkan."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:795
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:822
 #, elixir-autogen, elixir-format
 msgid "Welcome message saved."
 msgstr "Selamat datang pesan disimpan."
@@ -2911,12 +2911,12 @@ msgstr "Anda sudah menggunakan nama panggilan itu"
 msgid "You are not in any channel"
 msgstr "Anda tidak dalam saluran apapun"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:933
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:960
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to manage this list."
 msgstr "Anda tidak memiliki izin untuk mengelola daftar ini."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:924
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:951
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to change this setting."
 msgstr "Anda harus menjadi operator saluran untuk mengubah pengaturan ini."
@@ -2926,7 +2926,7 @@ msgstr "Anda harus menjadi operator saluran untuk mengubah pengaturan ini."
 msgid "You must be a channel operator to use this command"
 msgstr "Anda harus menjadi operator saluran untuk menggunakan perintah ini"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:930
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:957
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use ChanServ."
 msgstr "Anda harus diidentifikasi dengan NickServ untuk menggunakan ChanServ."
@@ -3441,24 +3441,24 @@ msgstr "Memformat teks"
 msgid "User lookup"
 msgstr "Pencarian pengguna"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:451
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:467
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:471
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:487
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{reason}"
 msgstr "Font color = \"# 404040\" BotService: %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:435
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:456
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:455
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:476
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot not found."
 msgstr "[BotService] Bot tidak ditemukan."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:444
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:464
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feed added: %{url} → %{channel}"
 msgstr "Font color = \"# 404040\" BotService: Feed ditambahkan: %{url} %{channel}"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:464
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:484
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feed removed."
 msgstr "[BotService] Feed dihapus."
@@ -4287,12 +4287,12 @@ msgstr "Bergabung saat terhubung"
 msgid "Joined on connect, with a key"
 msgstr "Bergabung saat terhubung, dengan kunci"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:693
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:719
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is not on this list."
 msgstr "%{nickname} tidak ada dalam daftar ini."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:687
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:713
 #, elixir-autogen, elixir-format
 msgid "That row carries no nickname to remove."
 msgstr "Baris itu tidak membawa nama panggilan untuk dihapus."

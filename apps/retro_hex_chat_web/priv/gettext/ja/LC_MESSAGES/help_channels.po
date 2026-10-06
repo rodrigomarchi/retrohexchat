@@ -1729,13 +1729,6 @@ msgstr "ウェルカムメッセージを設定し、チャンネルセントラ
 msgid "The Registration tab only enables Register Channel for channel operators."
 msgstr "登録タブは、チャンネル事業者の登録チャネルのみを有効にします。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:31
-#, elixir-autogen, elixir-format
-msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access can type a nickname to add it, select an existing row, and remove it inline."
-msgstr ""
-"登録タブは、SOP、AOP、VOP リストを選択可能なサブタブとして表示します。 "
-"十分なアクセスを持つユーザーは、ニックネームを入力して追加したり、既存の行を選択し、インラインに削除することができます。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "The dialog disables or hides write controls when you are not identified with NickServ or your ChanServ role cannot manage the selected list."
@@ -1803,3 +1796,8 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "%{window} of inactivity"
 msgstr "活動の%{window}"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access choose Add to type a nickname into the list, and remove an entry with the button on its row."
+msgstr "「登録」タブには SOP・AOP・VOP の各リストが選択できるサブタブとして表示されます。十分な権限を持つユーザーは「追加」を選んでニックネームを入力してリストに加え、各行のボタンで項目を削除します。"

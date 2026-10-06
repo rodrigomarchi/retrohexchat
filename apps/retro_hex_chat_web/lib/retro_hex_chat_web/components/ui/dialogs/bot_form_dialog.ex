@@ -228,6 +228,132 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
     """
   end
 
+  # ── Add Channel Dialog ─────────────────────────────────────
+
+  attr :id, :string, required: true
+  attr :show, :boolean, default: false
+  attr :bot_name, :string, default: ""
+  attr :on_close, :any, default: nil
+
+  @spec add_channel_dialog(map()) :: Phoenix.LiveView.Rendered.t()
+  def add_channel_dialog(assigns) do
+    ~H"""
+    <.dialog
+      id={@id}
+      show={@show}
+      scope={:window}
+      on_cancel={@on_close}
+      class="bm-form-dialog md:max-w-sm"
+    >
+      <.dialog_header
+        id={@id}
+        title={dgettext("dialogs", "Add Channel — %{bot}", bot: @bot_name)}
+        on_close={@on_close}
+      >
+        <:icon><Icons.icon_btn_bot_management class="w-[16px] h-[16px]" /></:icon>
+      </.dialog_header>
+      <form phx-submit="bot_add_channel" class="bm-form flex min-h-0 flex-1 flex-col">
+        <input type="hidden" name="bot_name" value={@bot_name} />
+        <.dialog_body class="bm-form-body">
+          <.label for="bot-add-channel">{dgettext("dialogs", "Channel")}</.label>
+          <.input
+            id="bot-add-channel"
+            name="channel"
+            type="text"
+            placeholder="#channel"
+            autocomplete="off"
+            required
+            data-testid="bot-add-channel-input"
+          />
+        </.dialog_body>
+        <.dialog_footer class="bm-form-footer">
+          <.button type="submit" class="bm-action-button" data-testid="bot-add-channel-submit">
+            <:icon><Icons.icon_checkmark class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Add")}
+          </.button>
+          <.button type="button" variant="outline" phx-click={@on_close} class="bm-action-button">
+            <:icon><Icons.icon_close class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Cancel")}
+          </.button>
+        </.dialog_footer>
+      </form>
+    </.dialog>
+    """
+  end
+
+  # ── Add RSS Feed Dialog ────────────────────────────────────
+
+  attr :id, :string, required: true
+  attr :show, :boolean, default: false
+  attr :bot_name, :string, default: ""
+  attr :on_close, :any, default: nil
+
+  @spec add_feed_dialog(map()) :: Phoenix.LiveView.Rendered.t()
+  def add_feed_dialog(assigns) do
+    ~H"""
+    <.dialog
+      id={@id}
+      show={@show}
+      scope={:window}
+      on_cancel={@on_close}
+      class="bm-form-dialog md:max-w-sm"
+    >
+      <.dialog_header
+        id={@id}
+        title={dgettext("dialogs", "Add Feed — %{bot}", bot: @bot_name)}
+        on_close={@on_close}
+      >
+        <:icon><Icons.icon_btn_bot_management class="w-[16px] h-[16px]" /></:icon>
+      </.dialog_header>
+      <form
+        id="rss-add-feed-form"
+        phx-submit="bot_rss_add_feed"
+        class="bm-form flex min-h-0 flex-1 flex-col"
+      >
+        <input type="hidden" name="bot_name" value={@bot_name} />
+        <.dialog_body class="bm-form-body">
+          <div class="space-y-retro-8">
+            <div>
+              <.label for="rss-feed-url">{dgettext("dialogs", "Feed URL")}</.label>
+              <.input
+                id="rss-feed-url"
+                name="url"
+                type="url"
+                placeholder="https://example.com/feed.xml"
+                autocomplete="off"
+                required
+                data-testid="rss-feed-url"
+              />
+            </div>
+            <div>
+              <.label for="rss-feed-channel">{dgettext("dialogs", "Channel")}</.label>
+              <.input
+                id="rss-feed-channel"
+                name="channel"
+                type="text"
+                placeholder="#news"
+                autocomplete="off"
+                required
+                data-testid="rss-feed-channel"
+              />
+            </div>
+          </div>
+        </.dialog_body>
+        <.dialog_footer class="bm-form-footer">
+          <.button type="submit" class="bm-action-button" data-testid="rss-add-feed">
+            <:icon><Icons.icon_checkmark class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Add")}
+          </.button>
+          <.button type="button" variant="outline" phx-click={@on_close} class="bm-action-button">
+            <:icon><Icons.icon_close class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Cancel")}
+          </.button>
+        </.dialog_footer>
+      </form>
+    </.dialog>
+    """
+  end
+
   # ── Private: the capability list ────────────────────────────
 
   # The nine capabilities, in the order the form has always shown them. One

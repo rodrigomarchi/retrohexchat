@@ -281,6 +281,9 @@ _ROWS = {
     "People":       ("Pessoas", "Pessoas", "Personas", "Personnes", "Personen", "Persone", "Personen", "Osoby", "Люди", "Orang", "人物", "人员", "人員"),
     # The call layout that puts one person large ("Objectif", "Schwerpunkt").
     "Focus":        ("Foco", "Foco", "Enfoque", "Focus", "Fokus", "Focus", "Focus", "Fokus", "Фокус", "Fokus", "フォーカス", "焦点", "焦點"),
+    # Registering a nickname or a channel — not signing up as a member
+    # ("会員登録") nor logging in ("Anmeldung").
+    "Registration": ("Registro", "Registo", "Registro", "Enregistrement", "Registrierung", "Registrazione", "Registratie", "Rejestracja", "Регистрация", "Pendaftaran", "登録", "注册", "註冊"),
     "Pending":      ("Pendente", "Pendente", "Pendiente", "En attente", "Ausstehend", "In attesa", "In afwachting", "Oczekuje", "Ожидает", "Tertunda", "保留中", "待处理", "待處理"),
     "Full":         ("Lotada", "Lotada", "Llena", "Complet", "Voll", "Piena", "Vol", "Pełna", "Заполнен", "Penuh", "満員", "已满", "已滿"),
     "Locked":       ("Trancada", "Trancada", "Bloqueada", "Verrouillé", "Gesperrt", "Bloccata", "Vergrendeld", "Zablokowana", "Заперт", "Terkunci", "ロック中", "已锁定", "已鎖定"),

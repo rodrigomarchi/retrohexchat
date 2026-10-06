@@ -217,7 +217,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialogTest do
 
       assert html =~ ~s(data-testid="rss-feeds")
       assert html =~ "No feeds yet"
-      assert html =~ ~s(data-testid="rss-add-feed")
+      assert html =~ ~s(data-testid="rss-add-feed-open")
+    end
+
+    test "Add opens the feed form over the window, not under the list" do
+      html =
+        dialog(%{
+          show_bot: true,
+          selected: bot_with_feeds([]),
+          is_admin: true,
+          show_add_feed: true
+        })
+
+      assert html =~ ~s(id="add-feed-dialog-show-trigger")
+      assert html =~ ~s(id="rss-add-feed-form")
+      assert html =~ ~s(data-testid="rss-feed-url")
     end
 
     test "shows where each feed posts and when it was last checked" do
@@ -266,7 +280,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialogTest do
 
       assert html =~ ~s(data-testid="rss-feed-f4")
       refute html =~ ~s(data-testid="rss-remove-f4")
-      refute html =~ ~s(data-testid="rss-add-feed")
+      refute html =~ ~s(data-testid="rss-add-feed-open")
     end
   end
 end

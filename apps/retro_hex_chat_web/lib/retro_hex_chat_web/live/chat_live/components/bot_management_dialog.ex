@@ -43,7 +43,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
     stats: nil,
     tab: :general,
     show_new_bot: false,
-    show_add_command: false
+    show_add_command: false,
+    show_add_channel: false,
+    show_add_feed: false
   }
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
@@ -135,6 +137,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
         prefix={(@selected && Map.get(@selected, :command_prefix)) || "!"}
         commands={@commands}
         on_close="close_add_command_dialog"
+      />
+
+      <.add_channel_dialog
+        id="add-channel-dialog"
+        show={@show_add_channel}
+        bot_name={if @selected, do: @selected.name, else: ""}
+        on_close="close_add_channel_dialog"
+      />
+
+      <.add_feed_dialog
+        id="add-feed-dialog"
+        show={@show_add_feed}
+        bot_name={if @selected, do: @selected.name, else: ""}
+        on_close="close_add_feed_dialog"
       />
     </div>
     """

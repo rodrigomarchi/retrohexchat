@@ -1820,14 +1820,6 @@ msgstr ""
 "Регистрационная вкладка позволяет использовать только Регистрационный канал "
 "для операторов каналов."
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:31
-#, elixir-autogen, elixir-format
-msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access can type a nickname to add it, select an existing row, and remove it inline."
-msgstr ""
-"Регистрационная вкладка показывает списки SOP, AOP и VOP как выбираемые "
-"подзадачи. Пользователи с достаточным доступом могут ввести псевдоним, чтобы"
-" добавить его, выбрать существующую строку и удалить его в строке."
-
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "The dialog disables or hides write controls when you are not identified with NickServ or your ChanServ role cannot manage the selected list."
@@ -1903,3 +1895,8 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "%{window} of inactivity"
 msgstr "%{window} бездействия"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access choose Add to type a nickname into the list, and remove an entry with the button on its row."
+msgstr "Вкладка «Регистрация» показывает списки SOP, AOP и VOP как подвкладки. Пользователи с достаточным доступом нажимают «Добавить», чтобы вписать ник в список, и удаляют запись кнопкой в её строке."

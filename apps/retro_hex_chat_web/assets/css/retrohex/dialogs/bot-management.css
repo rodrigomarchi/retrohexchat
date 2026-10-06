@@ -498,8 +498,7 @@
   padding: 2px 4px;
 }
 
-.bm-action-row,
-.bm-action-form {
+.bm-action-row {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
@@ -696,18 +695,6 @@
   justify-self: end;
   min-height: 34px;
   padding-inline: 8px;
-}
-
-.desktop--stacked .bm-action-form {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 6px;
-  align-items: end;
-}
-
-.desktop--stacked .bm-action-input {
-  width: 100%;
-  min-width: 0;
 }
 
 .desktop--stacked .bm-action-button,

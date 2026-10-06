@@ -626,36 +626,18 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
         </article>
       </div>
 
-      <form
-        :if={@is_admin}
-        id="rss-add-feed-form"
-        phx-submit="bot_rss_add_feed"
-        class="bm-action-form"
-      >
-        <input type="hidden" name="bot_name" value={@bot_name} />
-        <input
-          type="url"
-          name="url"
-          required
-          placeholder="https://example.com/feed.xml"
-          class="bm-action-input flex-1 shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
-          autocomplete="off"
-          data-testid="rss-feed-url"
-        />
-        <input
-          type="text"
-          name="channel"
-          required
-          placeholder="#news"
-          class="bm-action-input w-[120px] shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
-          autocomplete="off"
-          data-testid="rss-feed-channel"
-        />
-        <.button type="submit" size="sm" class="bm-action-button" data-testid="rss-add-feed">
+      <div :if={@is_admin} class="bm-action-row">
+        <.button
+          type="button"
+          size="sm"
+          phx-click="open_add_feed_dialog"
+          class="bm-action-button"
+          data-testid="rss-add-feed-open"
+        >
           <:icon><Icons.icon_btn_add class="w-[14px] h-[14px]" /></:icon>
           {dgettext("dialogs", "Add")}
         </.button>
-      </form>
+      </div>
     </div>
     """
   end
@@ -699,20 +681,18 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
         </article>
       </div>
 
-      <form :if={@is_admin} phx-submit="bot_add_channel" class="bm-action-form">
-        <input type="hidden" name="bot_name" value={bot_name(@selected)} />
-        <input
-          type="text"
-          name="channel"
-          placeholder="#channel"
-          class="bm-action-input flex-1 shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
-          autocomplete="off"
-        />
-        <.button type="submit" size="sm" class="bm-action-button">
+      <div :if={@is_admin} class="bm-action-row">
+        <.button
+          type="button"
+          size="sm"
+          phx-click="open_add_channel_dialog"
+          class="bm-action-button"
+          data-testid="bot-add-channel-open"
+        >
           <:icon><Icons.icon_btn_add class="w-[14px] h-[14px]" /></:icon>
           {dgettext("dialogs", "Add")}
         </.button>
-      </form>
+      </div>
     </div>
     """
   end

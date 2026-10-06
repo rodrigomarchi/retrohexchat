@@ -60,6 +60,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     channel_central_registration: nil,
     channel_central_access_tab: "sop",
     channel_central_access_nick: "",
+    channel_central_access_adding: false,
     channel_central_cs_error: nil,
     channel_central_cs_confirm_drop: false,
     show_cc_add_list_entry_dialog: false,
@@ -151,7 +152,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
                channel_central_cs_error: nil,
                channel_central_cs_confirm_drop: false,
                channel_central_access_tab: "sop",
-               channel_central_access_nick: ""
+               channel_central_access_nick: "",
+               channel_central_access_adding: false
              )
              |> refresh_channel_central()}
 
@@ -191,7 +193,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
                channel_central_cs_error: nil,
                channel_central_cs_confirm_drop: false,
                channel_central_access_tab: "sop",
-               channel_central_access_nick: ""
+               channel_central_access_nick: "",
+               channel_central_access_adding: false
              )
              |> refresh_channel_central()}
 
@@ -207,9 +210,28 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
      |> assign(
        channel_central_access_tab: normalize_access_level(level),
        channel_central_access_nick: "",
+       channel_central_access_adding: false,
        channel_central_cs_error: nil
      )
      |> refresh_channel_central_registration()}
+  end
+
+  def handle_event("cc_cs_access_open", _params, socket) do
+    {:noreply,
+     assign(socket,
+       channel_central_access_adding: true,
+       channel_central_access_nick: "",
+       channel_central_cs_error: nil
+     )}
+  end
+
+  def handle_event("cc_cs_access_cancel", _params, socket) do
+    {:noreply,
+     assign(socket,
+       channel_central_access_adding: false,
+       channel_central_access_nick: "",
+       channel_central_cs_error: nil
+     )}
   end
 
   def handle_event("cc_cs_access_change", params, socket) do
@@ -247,6 +269,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
              |> assign(
                channel_central_access_tab: level,
                channel_central_access_nick: "",
+               channel_central_access_adding: false,
                channel_central_cs_error: nil
              )
              |> refresh_channel_central_registration()}
@@ -500,6 +523,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         on_cs_access_tab="cc_cs_access_tab"
         on_cs_access_change="cc_cs_access_change"
         on_cs_access_add="cc_cs_access_add"
+        on_cs_access_open="cc_cs_access_open"
+        on_cs_access_cancel="cc_cs_access_cancel"
+        access_adding={@channel_central_access_adding}
         on_cs_access_remove="cc_cs_access_remove"
       />
     </div>
@@ -707,6 +733,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         |> assign(
           channel_central_access_tab: level,
           channel_central_access_nick: "",
+          channel_central_access_adding: false,
           channel_central_cs_error: nil
         )
         |> refresh_channel_central_registration()

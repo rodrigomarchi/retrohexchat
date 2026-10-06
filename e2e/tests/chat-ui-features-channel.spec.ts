@@ -231,8 +231,12 @@ test.describe.serial("UI feature channel journeys", () => {
       );
 
       await founder.page.getByTestId("cc-cs-access-tab-aop").click();
+      await founder.page.getByTestId("cc-cs-access-open").click();
       await founder.page.getByTestId("cc-cs-access-nick").fill(target.nick);
       await founder.page.getByTestId("cc-cs-access-add").click();
+      await expect(founder.page.getByTestId("cc-cs-access-form")).toHaveCount(
+        0,
+      );
       await expect(
         founder.page.getByTestId(`cc-cs-access-row-${target.nick}`),
       ).toBeVisible();

@@ -1825,15 +1825,6 @@ msgstr ""
 "La scheda Registrazione consente solo di registrare Canale per gli operatori"
 " dei canali."
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:31
-#, elixir-autogen, elixir-format
-msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access can type a nickname to add it, select an existing row, and remove it inline."
-msgstr ""
-"La scheda Registrazione mostra le liste SOP, AOP e VOP come sotto-tab "
-"selezionabili. Gli utenti con abbastanza accesso possono digitare un "
-"soprannome per aggiungerlo, selezionare una riga esistente e rimuoverla in "
-"linea."
-
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "The dialog disables or hides write controls when you are not identified with NickServ or your ChanServ role cannot manage the selected list."
@@ -1909,3 +1900,8 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "%{window} of inactivity"
 msgstr "%{window} di inattività"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access choose Add to type a nickname into the list, and remove an entry with the button on its row."
+msgstr "La scheda Registrazione mostra gli elenchi SOP, AOP e VOP come sottoschede selezionabili. Chi ha accesso sufficiente sceglie Aggiungi per inserire un nickname nell'elenco e rimuove una voce con il pulsante sulla sua riga."

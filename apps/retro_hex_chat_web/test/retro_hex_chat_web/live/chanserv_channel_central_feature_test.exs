@@ -91,6 +91,19 @@ defmodule RetroHexChatWeb.ChanServChannelCentralFeatureTest do
       html = cc(view, "cc_cs_access_tab", %{"level" => "aop"})
       assert html =~ "AOP"
       assert html =~ "No AOP entries"
+      refute html =~ ~s(data-testid="cc-cs-access-form")
+
+      html = cc(view, "cc_cs_access_open", %{})
+      assert html =~ ~s(data-testid="cc-cs-access-form")
+
+      # A refused entry keeps the dialog open and says why inside it.
+      html =
+        view
+        |> element(~s(form[data-testid="cc-cs-access-form"]))
+        |> render_submit(%{"level" => "aop", "nickname" => ""})
+
+      assert html =~ ~s(data-testid="cc-cs-access-error")
+      assert html =~ "Nickname is required."
 
       html =
         view
@@ -100,6 +113,7 @@ defmodule RetroHexChatWeb.ChanServChannelCentralFeatureTest do
       assert html =~ target
       assert html =~ founder
       assert Queries.find_access(channel, target).level == "aop"
+      refute html =~ ~s(data-testid="cc-cs-access-form")
 
       html = cc(view, "cc_cs_access_remove", %{"level" => "aop", "nickname" => target})
 
@@ -131,6 +145,9 @@ defmodule RetroHexChatWeb.ChanServChannelCentralFeatureTest do
       assert html =~ "You do not have permission to manage this list."
 
       html = cc(view, "cc_cs_access_tab", %{"level" => "aop"})
+      assert html =~ ~s(data-testid="cc-cs-access-open")
+
+      html = cc(view, "cc_cs_access_open", %{})
       assert html =~ ~s(data-testid="cc-cs-access-form")
 
       html =
