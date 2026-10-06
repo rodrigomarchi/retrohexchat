@@ -235,7 +235,7 @@ msgid "Accordion"
 msgstr "Accordeon"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/tabs.ex:34
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:44
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:45
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "Account"
@@ -683,7 +683,8 @@ msgstr "Botgebruiker"
 msgid "Both Directions"
 msgstr "Beide richtingen"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:70
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:66
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:73
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:97
 #, elixir-autogen, elixir-format
 msgid "Bottom"
@@ -1233,7 +1234,7 @@ msgstr "Gesprekken Ctx-menu"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:114
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:22
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:112
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:109
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr "Kopiëren"
@@ -1249,7 +1250,7 @@ msgid "Ctrl+A"
 msgstr "Druk op Ctrl+A"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:115
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:113
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:110
 #, elixir-autogen, elixir-format
 msgid "Ctrl+C"
 msgstr "Ctrl+C"
@@ -1265,7 +1266,7 @@ msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:120
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:118
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:115
 #, elixir-autogen, elixir-format
 msgid "Ctrl+V"
 msgstr "Ctrl+V"
@@ -1276,17 +1277,17 @@ msgid "Ctrl+W"
 msgstr "Druk op Ctrl+W"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:110
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:108
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:105
 #, elixir-autogen, elixir-format
 msgid "Ctrl+X"
 msgstr "Ctrl+X"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:102
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:99
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:97
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:94
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Z"
 msgstr "Ctrl+Z"
@@ -1330,7 +1331,7 @@ msgstr "Eigen tekst"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:109
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:19
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:107
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:104
 #, elixir-autogen, elixir-format
 msgid "Cut"
 msgstr "Knippen"
@@ -1510,7 +1511,7 @@ msgstr "Dialogen"
 msgid "Did you know you can use /help to see all commands?"
 msgstr "Wist u dat u /help kunt gebruiken om alle commando's te zien?"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:41
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:43
 #, elixir-autogen, elixir-format
 msgid "Dimensions"
 msgstr "Afmetingen"
@@ -1604,6 +1605,7 @@ msgstr "Pijl omlaag"
 msgid "Dropdown Menu"
 msgstr "Menu Dropdown"
 
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:83
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:89
 #, elixir-autogen, elixir-format
 msgid "Edit"
@@ -2261,7 +2263,7 @@ msgstr "Sluit je aan bij een kanaal, optioneel met een wachtwoordsleutel."
 msgid "Jump to the chat input field"
 msgstr "Spring naar het invoerveld voor chat"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:57
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:58
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts"
 msgstr "Sneltoetsen"
@@ -2332,7 +2334,8 @@ msgstr "Verlaten"
 msgid "Leave Channel"
 msgstr "Kanaal verlaten"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:82
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:79
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:86
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:65
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle_group.ex:32
 #, elixir-autogen, elixir-format
@@ -2413,7 +2416,7 @@ msgstr "Berichten worden geladen..."
 msgid "Locks, shields, bans"
 msgstr "Sloten, schilden, verboden"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:63
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:64
 #, elixir-autogen, elixir-format
 msgid "Log Out"
 msgstr "Afmelden"
@@ -2840,7 +2843,8 @@ msgstr "Dialoogvenster openen"
 msgid "Open Group"
 msgstr "Groep openen"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:39
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:36
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:43
 #, elixir-autogen, elixir-format
 msgid "Open Menu"
 msgstr "Menu Openen"
@@ -2850,7 +2854,8 @@ msgstr "Menu Openen"
 msgid "Open Perform"
 msgstr "Uitvoeren"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:36
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:33
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:40
 #, elixir-autogen, elixir-format
 msgid "Open Popover"
 msgstr "Popover openen"
@@ -3001,7 +3006,7 @@ msgstr "Wachtwoordmaskeren"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:119
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:25
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:117
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:114
 #, elixir-autogen, elixir-format
 msgid "Paste"
 msgstr "Plakken"
@@ -3148,7 +3153,7 @@ msgid "Private Messages"
 msgstr "Privéberichten"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:41
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:49
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:50
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "Profiel"
@@ -3214,7 +3219,7 @@ msgstr "Ontvangen"
 msgid "Reconnecting"
 msgstr "Opnieuw verbinden"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:101
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:98
 #, elixir-autogen, elixir-format
 msgid "Redo"
 msgstr "Opnieuw"
@@ -3277,7 +3282,8 @@ msgstr "RetroHexChat component showcase"
 msgid "Retry"
 msgstr "Opnieuw proberen"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:94
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:92
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:99
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle_group.ex:38
 #, elixir-autogen, elixir-format
 msgid "Right"
@@ -3493,7 +3499,7 @@ msgstr "Servers, databases, platforms"
 msgid "Set Nick Color"
 msgstr "Nick-kleur instellen"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:43
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:45
 #, elixir-autogen, elixir-format
 msgid "Set the dimensions for the layer."
 msgstr "Stel de afmetingen van de laag in."
@@ -3503,7 +3509,7 @@ msgstr "Stel de afmetingen van de laag in."
 #: lib/retro_hex_chat_web/live/showcase_live/layout/tabs.ex:42
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:110
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:37
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:53
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:54
 #, elixir-autogen, elixir-format
 msgid "Settings"
 msgstr "Instellingen"
@@ -3610,7 +3616,7 @@ msgstr "Succes tonen"
 msgid "Show this keyboard shortcut reference"
 msgstr "Deze sneltoetsverwijzing tonen"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:62
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:61
 #, elixir-autogen, elixir-format
 msgid "Sides"
 msgstr "Zijdelen"
@@ -3969,17 +3975,17 @@ msgstr "Dit is de inhoud van de kaart. U kunt hier elke inhoud plaatsen."
 msgid "This is your public display name."
 msgstr "Dit is je publieke naam."
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:74
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:75
 #, elixir-autogen, elixir-format
 msgid "This popover opens below."
 msgstr "Deze popover opent beneden."
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:86
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:88
 #, elixir-autogen, elixir-format
 msgid "This popover opens to the left."
 msgstr "Deze popover opent naar links."
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:98
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:101
 #, elixir-autogen, elixir-format
 msgid "This popover opens to the right."
 msgstr "Deze popover gaat naar rechts."
@@ -4211,7 +4217,7 @@ msgstr "UTF-8"
 msgid "Underline"
 msgstr "Onderstrepen"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:96
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:93
 #, elixir-autogen, elixir-format
 msgid "Undo"
 msgstr "Ongedaan maken"
@@ -4512,7 +4518,7 @@ msgstr "Met separatoren"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:78
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:102
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:82
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:79
 #, elixir-autogen, elixir-format
 msgid "With Shortcuts"
 msgstr "Met sneltoetsen"

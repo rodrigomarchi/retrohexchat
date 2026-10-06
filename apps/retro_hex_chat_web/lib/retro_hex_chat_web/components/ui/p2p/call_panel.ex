@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
   import RetroHexChatWeb.Components.UI.MediaSession.CommandBar
   import RetroHexChatWeb.Components.UI.MediaSession.Dock
+  import RetroHexChatWeb.Components.UI.Popover
   import RetroHexChatWeb.Components.UI.MediaSession.Header
   import RetroHexChatWeb.Components.UI.ToolButton
 
@@ -618,29 +619,21 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
   defp p2p_reaction_drawer(assigns) do
     ~H"""
-    <details class="relative shrink-0" phx-mounted={JS.ignore_attributes("open")}>
-      <summary
-        class={[
-          tool_button_class(variant: "dock"),
-          "list-none [&::-webkit-details-marker]:hidden"
-        ]}
-        title={dgettext("p2p", "Reactions")}
-        aria-label={dgettext("p2p", "Reactions")}
-      >
-        <CallControls.icon_call_reactions class="h-4 w-4" />
-      </summary>
-      <.media_session_command_bar
-        class="media-dock__popover flex gap-1 border border-border bg-surface p-1 shadow-retro-raised"
-        aria_label={dgettext("p2p", "P2P reactions")}
-        testid="p2p-call-reactions"
-      >
-        <.reaction_button reaction="heart" label={dgettext("p2p", "Send heart reaction")} />
-        <.reaction_button reaction="thumbs_up" label={dgettext("p2p", "Send thumbs up")} />
-        <.reaction_button reaction="clap" label={dgettext("p2p", "Send clap")} />
-        <.reaction_button reaction="laugh" label={dgettext("p2p", "Send laugh")} />
-        <.reaction_button reaction="sparkle" label={dgettext("p2p", "Send wow")} />
-      </.media_session_command_bar>
-    </details>
+    <.popover
+      label={dgettext("p2p", "Reactions")}
+      placement="above"
+      trigger_class={tool_button_class(variant: "dock")}
+      panel_role="toolbar"
+      panel_testid="p2p-call-reactions"
+      panel_class="flex gap-1 border border-border bg-surface p-1 shadow-retro-raised"
+    >
+      <:trigger><CallControls.icon_call_reactions class="h-4 w-4" /></:trigger>
+      <.reaction_button reaction="heart" label={dgettext("p2p", "Send heart reaction")} />
+      <.reaction_button reaction="thumbs_up" label={dgettext("p2p", "Send thumbs up")} />
+      <.reaction_button reaction="clap" label={dgettext("p2p", "Send clap")} />
+      <.reaction_button reaction="laugh" label={dgettext("p2p", "Send laugh")} />
+      <.reaction_button reaction="sparkle" label={dgettext("p2p", "Send wow")} />
+    </.popover>
     """
   end
 
@@ -709,43 +702,34 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   # the summary); the pickers appear once the list comes back.
   defp device_popover(assigns) do
     ~H"""
-    <details
-      class="relative shrink-0"
-      phx-mounted={JS.ignore_attributes("open")}
+    <.popover
+      label={dgettext("lobby", "Devices")}
+      placement="above"
+      trigger_class={tool_button_class(variant: "dock")}
+      trigger_testid="p2p-call-devices"
+      trigger_attrs={["data-lobby-media-action": "device-settings"]}
+      panel_class="grid w-[min(20rem,80vw)] gap-1 border border-border bg-surface p-2 text-foreground shadow-retro-raised"
       data-testid="lobby-devices"
     >
-      <summary
-        class={[
-          tool_button_class(variant: "dock"),
-          "list-none [&::-webkit-details-marker]:hidden"
-        ]}
-        title={dgettext("lobby", "Devices")}
-        aria-label={dgettext("lobby", "Devices")}
-        data-lobby-media-action="device-settings"
-        data-testid="p2p-call-devices"
-      >
+      <:trigger><CallControls.icon_call_devices class="h-4 w-4" /></:trigger>
+      <span class="flex items-center gap-1 font-bold">
         <CallControls.icon_call_devices class="h-4 w-4" />
-      </summary>
-      <div class="media-dock__popover grid w-[min(20rem,80vw)] gap-1 border border-border bg-surface p-2 text-foreground shadow-retro-raised">
-        <span class="flex items-center gap-1 font-bold">
-          <CallControls.icon_call_devices class="h-4 w-4" />
-          {dgettext("lobby", "Devices")}
+        {dgettext("lobby", "Devices")}
+      </span>
+      <label
+        :for={kind <- ~w(audioinput videoinput audiooutput)}
+        :if={@devices && @devices[kind] not in [nil, []]}
+        class="grid min-w-0 gap-0.5"
+      >
+        <span class="flex items-center gap-1 text-[10px] font-bold text-muted-foreground">
+          <.device_icon kind={kind} />
+          {device_label(kind)}
         </span>
-        <label
-          :for={kind <- ~w(audioinput videoinput audiooutput)}
-          :if={@devices && @devices[kind] not in [nil, []]}
-          class="grid min-w-0 gap-0.5"
-        >
-          <span class="flex items-center gap-1 text-[10px] font-bold text-muted-foreground">
-            <.device_icon kind={kind} />
-            {device_label(kind)}
-          </span>
-          <select data-device-kind={kind} class="min-w-0 bg-input text-xs shadow-retro-sunken">
-            <option :for={d <- @devices[kind]} value={d["id"]}>{d["label"]}</option>
-          </select>
-        </label>
-      </div>
-    </details>
+        <select data-device-kind={kind} class="min-w-0 bg-input text-xs shadow-retro-sunken">
+          <option :for={d <- @devices[kind]} value={d["id"]}>{d["label"]}</option>
+        </select>
+      </label>
+    </.popover>
     """
   end
 

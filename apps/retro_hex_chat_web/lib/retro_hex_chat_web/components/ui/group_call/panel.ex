@@ -8,6 +8,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.MediaSession.ActionButton
+  import RetroHexChatWeb.Components.UI.DropdownMenu
+  import RetroHexChatWeb.Components.UI.Popover
   import RetroHexChatWeb.Components.UI.MediaSession.CommandBar
   import RetroHexChatWeb.Components.UI.MediaSession.Dock
   import RetroHexChatWeb.Components.UI.MediaSession.Header
@@ -285,80 +287,52 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   # ending the call for everyone is not leaving it.
   defp moderation_menu(assigns) do
     ~H"""
-    <details
-      class="relative shrink-0"
-      phx-mounted={JS.ignore_attributes("open")}
-      phx-click-away={JS.remove_attribute("open")}
-      phx-window-keydown={JS.remove_attribute("open")}
-      phx-key="Escape"
+    <.dropdown_menu
+      label={dgettext("group_call", "Moderation")}
+      trigger_class={tool_button_class(variant: "flat", active: locked?(@call), captioned: true)}
+      trigger_testid="group-call-moderation-toggle"
       data-testid="group-call-moderation"
     >
-      <summary
-        class={[
-          tool_button_class(variant: "flat", active: locked?(@call), captioned: true),
-          "list-none [&::-webkit-details-marker]:hidden"
-        ]}
-        title={dgettext("group_call", "Moderation")}
-        aria-label={dgettext("group_call", "Moderation")}
-        data-testid="group-call-moderation-toggle"
-      >
+      <:trigger>
         <CallControls.icon_call_lock class="h-4 w-4" />
         <span class="tool-button__caption">{dgettext("group_call", "Moderation")}</span>
-      </summary>
-      <div
-        class="absolute right-0 top-full z-40 mt-1 flex w-max min-w-[14rem] flex-col gap-1 border border-border bg-surface p-1 shadow-retro-raised"
-        role="group"
-        aria-label={dgettext("group_call", "Moderation")}
+      </:trigger>
+      <%!-- Locking is a state, so it is a checkable row: ticked while the room
+            is locked, and the same words either way. --%>
+      <.dropdown_menu_item
+        checked={locked?(@call)}
+        phx-click={close_after(@on_toggle_lock)}
+        data-testid="group-call-lock-toggle"
       >
-        <.media_session_action_button
-          label={lock_title(@call)}
-          class={["justify-start", locked?(@call) && "bg-muted shadow-retro-sunken"]}
-          aria-pressed={to_string(locked?(@call))}
-          phx-click={close_menu_then(@on_toggle_lock)}
-          data-testid="group-call-lock-toggle"
-        >
-          <CallControls.icon_call_lock class="h-4 w-4" />
-          {lock_title(@call)}
-        </.media_session_action_button>
-        <.media_session_action_button
-          label={dgettext("group_call", "Mute all lower-ranked participants")}
-          class="justify-start"
-          phx-click={close_menu_then(@on_mute_all)}
-          data-testid="group-call-mute-all"
-        >
-          <CallControls.icon_call_mute class="h-4 w-4" />
-          {dgettext("group_call", "Mute all lower-ranked participants")}
-        </.media_session_action_button>
-        <.media_session_action_button
-          label={dgettext("group_call", "Turn off all lower-ranked cameras")}
-          class="justify-start"
-          phx-click={close_menu_then(@on_camera_off_all)}
-          data-testid="group-call-camera-off-all"
-        >
-          <CallControls.icon_call_camera_off class="h-4 w-4" />
-          {dgettext("group_call", "Turn off all lower-ranked cameras")}
-        </.media_session_action_button>
-        <.media_session_action_button
-          label={dgettext("group_call", "End group call")}
-          tone="danger"
-          class="justify-start"
-          phx-click={close_menu_then(@on_close_room)}
-          data-testid="group-call-close-room"
-        >
-          <CallControls.icon_call_phone_end class="h-4 w-4" />
-          {dgettext("group_call", "End group call")}
-        </.media_session_action_button>
-      </div>
-    </details>
+        <:icon><CallControls.icon_call_lock class="h-4 w-4" /></:icon>
+        {dgettext("group_call", "Lock conference")}
+      </.dropdown_menu_item>
+      <.dropdown_menu_item
+        phx-click={close_after(@on_mute_all)}
+        data-testid="group-call-mute-all"
+      >
+        <:icon><CallControls.icon_call_mute class="h-4 w-4" /></:icon>
+        {dgettext("group_call", "Mute all lower-ranked participants")}
+      </.dropdown_menu_item>
+      <.dropdown_menu_item
+        phx-click={close_after(@on_camera_off_all)}
+        data-testid="group-call-camera-off-all"
+      >
+        <:icon><CallControls.icon_call_camera_off class="h-4 w-4" /></:icon>
+        {dgettext("group_call", "Turn off all lower-ranked cameras")}
+      </.dropdown_menu_item>
+      <.dropdown_menu_separator />
+      <.dropdown_menu_item
+        tone="danger"
+        phx-click={close_after(@on_close_room)}
+        data-testid="group-call-close-room"
+      >
+        <:icon><CallControls.icon_call_phone_end class="h-4 w-4" /></:icon>
+        {dgettext("group_call", "End group call")}
+      </.dropdown_menu_item>
+    </.dropdown_menu>
     """
   end
-
-  # Choosing an action from a menu closes the menu: left open it would cover
-  # what the action changes, such as the raised-hand queue after muting all.
-  defp close_menu_then(%JS{} = js), do: JS.remove_attribute(js, "open", to: {:closest, "details"})
-
-  defp close_menu_then(event) when is_binary(event),
-    do: event |> JS.push() |> close_menu_then()
 
   defp conference_dock(assigns) do
     ~H"""
@@ -495,65 +469,52 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
 
   defp reaction_controls(assigns) do
     ~H"""
-    <details
-      class="relative shrink-0"
-      phx-mounted={JS.ignore_attributes("open")}
-      role="toolbar"
-      aria-label={dgettext("group_call", "Conference reactions")}
+    <.popover
+      label={dgettext("group_call", "Conference reactions")}
+      placement="above"
+      trigger_class={tool_button_class(variant: "dock")}
+      trigger_testid="group-call-reactions-toggle"
+      panel_role="toolbar"
+      panel_class="flex gap-1 border border-border bg-surface p-1 shadow-retro-raised"
       data-testid="group-call-reactions"
     >
-      <summary
-        class={[
-          tool_button_class(variant: "dock"),
-          "list-none [&::-webkit-details-marker]:hidden"
-        ]}
-        title={dgettext("group_call", "Conference reactions")}
-        aria-label={dgettext("group_call", "Conference reactions")}
-        data-testid="group-call-reactions-toggle"
+      <:trigger><CallControls.icon_call_reactions class="h-4 w-4" /></:trigger>
+      <.reaction_button
+        call={@call}
+        reaction="heart"
+        label={dgettext("group_call", "Send heart reaction")}
       >
-        <CallControls.icon_call_reactions class="h-4 w-4" />
-      </summary>
-      <.media_session_command_bar
-        class="media-dock__popover flex gap-1 border border-border bg-surface p-1 shadow-retro-raised"
-        aria_label={dgettext("group_call", "Conference reactions")}
+        <CallControls.icon_call_reaction_heart class="h-4 w-4" />
+      </.reaction_button>
+      <.reaction_button
+        call={@call}
+        reaction="thumbs_up"
+        label={dgettext("group_call", "Send thumbs up reaction")}
       >
-        <.reaction_button
-          call={@call}
-          reaction="heart"
-          label={dgettext("group_call", "Send heart reaction")}
-        >
-          <CallControls.icon_call_reaction_heart class="h-4 w-4" />
-        </.reaction_button>
-        <.reaction_button
-          call={@call}
-          reaction="thumbs_up"
-          label={dgettext("group_call", "Send thumbs up reaction")}
-        >
-          <CallControls.icon_call_reaction_thumbs_up class="h-4 w-4" />
-        </.reaction_button>
-        <.reaction_button
-          call={@call}
-          reaction="clap"
-          label={dgettext("group_call", "Send clap reaction")}
-        >
-          <CallControls.icon_call_reaction_clap class="h-4 w-4" />
-        </.reaction_button>
-        <.reaction_button
-          call={@call}
-          reaction="laugh"
-          label={dgettext("group_call", "Send laugh reaction")}
-        >
-          <CallControls.icon_call_reaction_laugh class="h-4 w-4" />
-        </.reaction_button>
-        <.reaction_button
-          call={@call}
-          reaction="wow"
-          label={dgettext("group_call", "Send sparkle reaction")}
-        >
-          <CallControls.icon_call_reaction_sparkle class="h-4 w-4" />
-        </.reaction_button>
-      </.media_session_command_bar>
-    </details>
+        <CallControls.icon_call_reaction_thumbs_up class="h-4 w-4" />
+      </.reaction_button>
+      <.reaction_button
+        call={@call}
+        reaction="clap"
+        label={dgettext("group_call", "Send clap reaction")}
+      >
+        <CallControls.icon_call_reaction_clap class="h-4 w-4" />
+      </.reaction_button>
+      <.reaction_button
+        call={@call}
+        reaction="laugh"
+        label={dgettext("group_call", "Send laugh reaction")}
+      >
+        <CallControls.icon_call_reaction_laugh class="h-4 w-4" />
+      </.reaction_button>
+      <.reaction_button
+        call={@call}
+        reaction="wow"
+        label={dgettext("group_call", "Send sparkle reaction")}
+      >
+        <CallControls.icon_call_reaction_sparkle class="h-4 w-4" />
+      </.reaction_button>
+    </.popover>
     """
   end
 
@@ -762,6 +723,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     ~H"""
     <div
       :if={@raised_participants != []}
+      id="group-call-raised-hand-queue"
       class="mb-1 border border-warning bg-warning-light p-2 shadow-retro-sunken"
       role="status"
       aria-live="polite"
@@ -815,6 +777,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         "mb-1 grid min-w-0 gap-2 border border-border bg-canvas p-2",
         @active_speaker && "border-primary bg-primary/10 shadow-retro-raised"
       ]}
+      id={"group-call-participant-row-#{@participant.id}"}
       data-testid={"group-call-participant-#{@participant.id}"}
       data-group-call-participant
       data-group-call-participant-nickname={@participant.nickname}
@@ -906,105 +869,92 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
 
   defp participant_controls_menu(assigns) do
     ~H"""
-    <details class="relative shrink-0">
-      <summary
-        class={[
-          tool_button_class(),
-          "list-none [&::-webkit-details-marker]:hidden"
-        ]}
-        title={dgettext("group_call", "Participant actions")}
-        aria-label={dgettext("group_call", "Participant actions")}
-        data-testid={"group-call-participant-actions-#{@participant.id}"}
+    <.popover
+      label={dgettext("group_call", "Participant actions")}
+      trigger_class={tool_button_class()}
+      trigger_testid={"group-call-participant-actions-#{@participant.id}"}
+      panel_class="grid w-[8.75rem] grid-cols-3 gap-1 border border-border bg-surface p-1 shadow-retro-raised"
+    >
+      <:trigger><CallControls.icon_call_more class="h-4 w-4" /></:trigger>
+      <.tool_button
+        label={focus_participant_title(@call, @participant)}
+        active={focused_participant?(@call, @participant)}
+        pressed={focused_participant?(@call, @participant)}
+        phx-click={close_after(@on_focus_participant)}
+        phx-value-participant-id={@participant.id}
+        data-testid={"group-call-participant-focus-#{@participant.id}"}
       >
-        <CallControls.icon_call_more class="h-4 w-4" />
-      </summary>
-
-      <.media_session_command_bar
-        class="absolute right-0 top-full z-40 mt-1 grid w-[8.75rem] grid-cols-3 gap-1 border border-border bg-surface p-1 shadow-retro-raised"
-        aria_label={dgettext("group_call", "Participant actions")}
+        <CallControls.icon_call_layout_focus class="h-4 w-4" />
+      </.tool_button>
+      <.tool_button
+        label={pin_participant_title(@call, @participant)}
+        pressed={pinned_participant?(@call, @participant)}
+        class={pinned_participant?(@call, @participant) && "bg-warning-light shadow-retro-sunken"}
+        phx-click={close_after(@on_toggle_pin_participant)}
+        phx-value-participant-id={@participant.id}
+        data-testid={"group-call-participant-pin-#{@participant.id}"}
       >
-        <.tool_button
-          label={focus_participant_title(@call, @participant)}
-          active={focused_participant?(@call, @participant)}
-          pressed={focused_participant?(@call, @participant)}
-          phx-click={@on_focus_participant}
-          phx-value-participant-id={@participant.id}
-          data-testid={"group-call-participant-focus-#{@participant.id}"}
-        >
-          <CallControls.icon_call_layout_focus class="h-4 w-4" />
-        </.tool_button>
-        <.tool_button
-          label={pin_participant_title(@call, @participant)}
-          pressed={pinned_participant?(@call, @participant)}
-          class={pinned_participant?(@call, @participant) && "bg-warning-light shadow-retro-sunken"}
-          phx-click={@on_toggle_pin_participant}
-          phx-value-participant-id={@participant.id}
-          data-testid={"group-call-participant-pin-#{@participant.id}"}
-        >
-          <Icons.icon_pin class="h-4 w-4" />
-        </.tool_button>
-        <.tool_button
-          :if={
-            participant_hand_raised?(@participant) && can_moderate_participant?(@call, @participant)
-          }
-          label={allow_speak_title(@participant)}
-          class="bg-warning-light"
-          phx-click={@on_allow_speak}
-          phx-value-participant-id={@participant.id}
-          data-testid={"group-call-participant-allow-speak-#{@participant.id}"}
-        >
-          <CallControls.icon_call_raise_hand class="h-4 w-4" />
-        </.tool_button>
-        <.tool_button
-          :if={can_moderate_participant?(@call, @participant)}
-          label={moderate_audio_title(@participant)}
-          phx-click={@on_moderate_audio}
-          phx-value-participant-id={@participant.id}
-          data-testid={"group-call-participant-audio-moderate-#{@participant.id}"}
-        >
-          <CallControls.icon_call_mute :if={participant_media?(@participant, :audio)} class="h-4 w-4" />
-          <CallControls.icon_call_microphone
-            :if={!participant_media?(@participant, :audio)}
-            class="h-4 w-4"
-          />
-        </.tool_button>
-        <.tool_button
-          :if={can_moderate_video_participant?(@call, @participant)}
-          label={moderate_video_title(@participant)}
-          phx-click={@on_moderate_video}
-          phx-value-participant-id={@participant.id}
-          data-testid={"group-call-participant-video-moderate-#{@participant.id}"}
-        >
-          <CallControls.icon_call_camera_off
-            :if={participant_media?(@participant, :video)}
-            class="h-4 w-4"
-          />
-          <CallControls.icon_call_camera
-            :if={!participant_media?(@participant, :video)}
-            class="h-4 w-4"
-          />
-        </.tool_button>
-        <.tool_button
-          :if={can_moderate_screen_participant?(@call, @participant)}
-          label={moderate_screen_title(@participant)}
-          phx-click={@on_moderate_screen}
-          phx-value-participant-id={@participant.id}
-          data-testid={"group-call-participant-screen-moderate-#{@participant.id}"}
-        >
-          <CallControls.icon_call_screen_share class="h-4 w-4" />
-        </.tool_button>
-        <.tool_button
-          :if={can_remove_participant?(@call, @participant)}
-          label={dgettext("group_call", "Remove from conference and ban from channel")}
-          tone="danger"
-          phx-click={@on_kick_participant}
-          phx-value-participant-id={@participant.id}
-          data-testid={"group-call-participant-kick-#{@participant.id}"}
-        >
-          <Icons.icon_ban class="h-4 w-4" />
-        </.tool_button>
-      </.media_session_command_bar>
-    </details>
+        <Icons.icon_pin class="h-4 w-4" />
+      </.tool_button>
+      <.tool_button
+        :if={participant_hand_raised?(@participant) && can_moderate_participant?(@call, @participant)}
+        label={allow_speak_title(@participant)}
+        class="bg-warning-light"
+        phx-click={close_after(@on_allow_speak)}
+        phx-value-participant-id={@participant.id}
+        data-testid={"group-call-participant-allow-speak-#{@participant.id}"}
+      >
+        <CallControls.icon_call_raise_hand class="h-4 w-4" />
+      </.tool_button>
+      <.tool_button
+        :if={can_moderate_participant?(@call, @participant)}
+        label={moderate_audio_title(@participant)}
+        phx-click={close_after(@on_moderate_audio)}
+        phx-value-participant-id={@participant.id}
+        data-testid={"group-call-participant-audio-moderate-#{@participant.id}"}
+      >
+        <CallControls.icon_call_mute :if={participant_media?(@participant, :audio)} class="h-4 w-4" />
+        <CallControls.icon_call_microphone
+          :if={!participant_media?(@participant, :audio)}
+          class="h-4 w-4"
+        />
+      </.tool_button>
+      <.tool_button
+        :if={can_moderate_video_participant?(@call, @participant)}
+        label={moderate_video_title(@participant)}
+        phx-click={close_after(@on_moderate_video)}
+        phx-value-participant-id={@participant.id}
+        data-testid={"group-call-participant-video-moderate-#{@participant.id}"}
+      >
+        <CallControls.icon_call_camera_off
+          :if={participant_media?(@participant, :video)}
+          class="h-4 w-4"
+        />
+        <CallControls.icon_call_camera
+          :if={!participant_media?(@participant, :video)}
+          class="h-4 w-4"
+        />
+      </.tool_button>
+      <.tool_button
+        :if={can_moderate_screen_participant?(@call, @participant)}
+        label={moderate_screen_title(@participant)}
+        phx-click={close_after(@on_moderate_screen)}
+        phx-value-participant-id={@participant.id}
+        data-testid={"group-call-participant-screen-moderate-#{@participant.id}"}
+      >
+        <CallControls.icon_call_screen_share class="h-4 w-4" />
+      </.tool_button>
+      <.tool_button
+        :if={can_remove_participant?(@call, @participant)}
+        label={dgettext("group_call", "Remove from conference and ban from channel")}
+        tone="danger"
+        phx-click={close_after(@on_kick_participant)}
+        phx-value-participant-id={@participant.id}
+        data-testid={"group-call-participant-kick-#{@participant.id}"}
+      >
+        <Icons.icon_ban class="h-4 w-4" />
+      </.tool_button>
+    </.popover>
     """
   end
 
@@ -1278,12 +1228,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   end
 
   defp locked?(_call), do: false
-
-  defp lock_title(call) do
-    if locked?(call),
-      do: dgettext("group_call", "Unlock conference"),
-      else: dgettext("group_call", "Lock conference")
-  end
 
   defp hand_raised?(call) do
     case self_participant(call) do

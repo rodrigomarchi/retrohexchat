@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **238 spec files** under `e2e/tests/`.
-- **545 Playwright `test()` cases**.
-- **493 documented flows**, 492 done, 1 not done.
+- **546 Playwright `test()` cases**.
+- **494 documented flows**, 493 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -441,6 +441,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N44 | Closing the P2P tab does not end the session for the other side | `tests/p2p-surface.spec.ts` | done |
 | N45 | A match link minted inside a game is followed from another browser, the seat is taken and the game runs over the P2P session | `tests/game-open-lobby.spec.ts` | done |
 | N46 | A third person following the same match link is told the seat is taken, and it stays taken after the match ends | `tests/game-open-lobby.spec.ts` | done |
+| N47 | The P2P summary popover in the PM toolbar opens above the strip, stays open while messages arrive, and closes on Escape | `tests/chat-p2p.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

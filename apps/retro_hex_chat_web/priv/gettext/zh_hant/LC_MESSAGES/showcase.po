@@ -230,7 +230,7 @@ msgid "Accordion"
 msgstr "手風琴"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/tabs.ex:34
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:44
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:45
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "賬戶"
@@ -674,7 +674,8 @@ msgstr "Bot 用戶"
 msgid "Both Directions"
 msgstr "兩個方向"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:70
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:66
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:73
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:97
 #, elixir-autogen, elixir-format
 msgid "Bottom"
@@ -1219,7 +1220,7 @@ msgstr "Ctx 菜單"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:114
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:22
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:112
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:109
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr "複製"
@@ -1235,7 +1236,7 @@ msgid "Ctrl+A"
 msgstr "縮寫+A"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:115
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:113
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:110
 #, elixir-autogen, elixir-format
 msgid "Ctrl+C"
 msgstr "Ctrl+C 常規"
@@ -1251,7 +1252,7 @@ msgid "Ctrl+Q"
 msgstr "Ctrl+Q +Q"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:120
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:118
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:115
 #, elixir-autogen, elixir-format
 msgid "Ctrl+V"
 msgstr "縮寫+V"
@@ -1262,17 +1263,17 @@ msgid "Ctrl+W"
 msgstr "縮寫+W"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:110
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:108
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:105
 #, elixir-autogen, elixir-format
 msgid "Ctrl+X"
 msgstr "Ctrl+X +X"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:102
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:99
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Y"
 msgstr "縮寫+Y"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:97
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:94
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Z"
 msgstr "Ctrl+Z 數據"
@@ -1316,7 +1317,7 @@ msgstr "自定義文本"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:109
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:19
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:107
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:104
 #, elixir-autogen, elixir-format
 msgid "Cut"
 msgstr "剪下"
@@ -1496,7 +1497,7 @@ msgstr "對話框"
 msgid "Did you know you can use /help to see all commands?"
 msgstr "您是否知道您可以使用 /help 來查看所有命令 ?"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:41
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:43
 #, elixir-autogen, elixir-format
 msgid "Dimensions"
 msgstr "尺寸"
@@ -1590,6 +1591,7 @@ msgstr "向下箭頭"
 msgid "Dropdown Menu"
 msgstr "下調菜單"
 
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:83
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:89
 #, elixir-autogen, elixir-format
 msgid "Edit"
@@ -2245,7 +2247,7 @@ msgstr "加入頻道,可選擇使用密碼鍵."
 msgid "Jump to the chat input field"
 msgstr "跳轉到聊天輸入字段"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:57
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:58
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts"
 msgstr "鍵盤快捷鍵"
@@ -2315,7 +2317,8 @@ msgstr "離開"
 msgid "Leave Channel"
 msgstr "離開頻道"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:82
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:79
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:86
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:65
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle_group.ex:32
 #, elixir-autogen, elixir-format
@@ -2396,7 +2399,7 @@ msgstr "正在裝入信件..."
 msgid "Locks, shields, bans"
 msgstr "鎖、盾、禁令"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:63
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:64
 #, elixir-autogen, elixir-format
 msgid "Log Out"
 msgstr "註銷"
@@ -2823,7 +2826,8 @@ msgstr "打開對話框"
 msgid "Open Group"
 msgstr "打開組"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:39
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:36
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:43
 #, elixir-autogen, elixir-format
 msgid "Open Menu"
 msgstr "打開菜單"
@@ -2833,7 +2837,8 @@ msgstr "打開菜單"
 msgid "Open Perform"
 msgstr "打開表演"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:36
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:33
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:40
 #, elixir-autogen, elixir-format
 msgid "Open Popover"
 msgstr "打開彈出式"
@@ -2984,7 +2989,7 @@ msgstr "密碼遮掩"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:119
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:25
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:117
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:114
 #, elixir-autogen, elixir-format
 msgid "Paste"
 msgstr "貼上"
@@ -3131,7 +3136,7 @@ msgid "Private Messages"
 msgstr "私人信件"
 
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:41
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:49
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:50
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "簡介"
@@ -3197,7 +3202,7 @@ msgstr "接收"
 msgid "Reconnecting"
 msgstr "重新連線中"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:101
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:98
 #, elixir-autogen, elixir-format
 msgid "Redo"
 msgstr "重裝"
@@ -3260,7 +3265,8 @@ msgstr "RetroHexChat 組件顯示大小寫"
 msgid "Retry"
 msgstr "重試"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:94
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:92
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:99
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle_group.ex:38
 #, elixir-autogen, elixir-format
 msgid "Right"
@@ -3474,7 +3480,7 @@ msgstr "服務器、數據庫、平臺"
 msgid "Set Nick Color"
 msgstr "設置暱稱顏色"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:43
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:45
 #, elixir-autogen, elixir-format
 msgid "Set the dimensions for the layer."
 msgstr "設定層的尺寸 。"
@@ -3484,7 +3490,7 @@ msgstr "設定層的尺寸 。"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/tabs.ex:42
 #: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:110
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:37
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:53
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:54
 #, elixir-autogen, elixir-format
 msgid "Settings"
 msgstr "設定"
@@ -3591,7 +3597,7 @@ msgstr "顯示成功"
 msgid "Show this keyboard shortcut reference"
 msgstr "顯示此鍵盤快捷鍵"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:62
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:61
 #, elixir-autogen, elixir-format
 msgid "Sides"
 msgstr "邊"
@@ -3941,17 +3947,17 @@ msgstr "這是卡片內容區域 。 你可以把任何內容在這裏。"
 msgid "This is your public display name."
 msgstr "這是你的公開展示名稱。"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:74
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:75
 #, elixir-autogen, elixir-format
 msgid "This popover opens below."
 msgstr "下方開着這個波波"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:86
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:88
 #, elixir-autogen, elixir-format
 msgid "This popover opens to the left."
 msgstr "彈珠打開左邊"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:98
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:101
 #, elixir-autogen, elixir-format
 msgid "This popover opens to the right."
 msgstr "彈珠打開右邊"
@@ -4179,7 +4185,7 @@ msgstr "UTF-8 數據"
 msgid "Underline"
 msgstr "下劃線"
 
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:96
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:93
 #, elixir-autogen, elixir-format
 msgid "Undo"
 msgstr "撤銷"
@@ -4478,7 +4484,7 @@ msgstr "帶分離器"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:78
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:102
-#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:82
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:79
 #, elixir-autogen, elixir-format
 msgid "With Shortcuts"
 msgstr "有快捷鍵"

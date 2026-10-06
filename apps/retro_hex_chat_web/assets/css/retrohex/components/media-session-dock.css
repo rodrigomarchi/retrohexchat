@@ -187,16 +187,6 @@
     inset -1px -1px #ff8080;
 }
 
-
-/* A popover that opens out of the dock sits above it, in the light chrome. */
-.media-dock__popover {
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 50%;
-  z-index: 30;
-  transform: translateX(-50%);
-}
-
 /* A mini call window is a few hundred pixels wide: one row of small buttons. */
 .media-dock--compact {
   flex-wrap: nowrap;

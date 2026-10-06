@@ -15,6 +15,7 @@
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import { buildConnectHooks } from "./hooks/connect_hooks";
+import { installPopoverBehaviour, keepDisclosureOpenAcrossPatch } from "./lib/ui/popover";
 
 let liveSocket = null;
 
@@ -28,9 +29,11 @@ export function bootConnectLiveSocket() {
     longPollFallbackMs: 2500,
     params: { _csrf_token: csrfToken },
     hooks: buildConnectHooks(),
+    dom: { onBeforeElUpdated: keepDisclosureOpenAcrossPatch },
   });
 
   liveSocket.connect();
+  installPopoverBehaviour(document);
   window.liveSocket = liveSocket;
 
   return liveSocket;

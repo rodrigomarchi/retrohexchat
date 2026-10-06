@@ -51,7 +51,7 @@ async function reconnectRegisteredUser(
 }
 
 async function submitDialogForm(form: Locator) {
-  await form.getByRole("button", { name: "OK" }).click();
+  await form.getByRole("button", { name: "OK", exact: true }).click();
 }
 
 async function becomeGuest(page: Page, chat: ChatPage, guestNick: string) {

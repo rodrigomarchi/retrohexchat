@@ -94,7 +94,9 @@ test.describe("Dialog keyboard behavior", () => {
     await expect(highlightAddForm).toBeHidden();
     await expect(chat.highlightWordRow(cancelledWord)).toHaveCount(0);
 
-    await chat.highlightDialog.getByRole("button", { name: "OK" }).click();
+    await chat.highlightDialog
+      .getByRole("button", { name: "OK", exact: true })
+      .click();
     await expect(chat.highlightDialog).toBeHidden();
   });
 

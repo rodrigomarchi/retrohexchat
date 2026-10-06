@@ -17,6 +17,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Popover
+
   alias RetroHexChatWeb.Icons
 
   attr :peer, :string, required: true
@@ -81,66 +83,58 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         <Icons.icon_reject class="h-3.5 w-3.5 shrink-0" />
       </button>
 
-      <details class="conversation-toolbar-entry relative">
-        <summary
-          class={[
-            "conversation-toolbar-button flex cursor-pointer list-none items-center justify-center shadow-retro-raised bg-surface text-primary"
-          ]}
-          aria-label={dgettext("p2p", "P2P session summary")}
-          title={dgettext("p2p", "P2P session summary")}
-          data-testid="p2p-peer-popover-toggle"
-        >
-          <Icons.icon_btn_info class="h-3.5 w-3.5" />
-        </summary>
-
-        <div
-          class="absolute right-0 top-full z-50 mt-1 w-72 border border-border bg-surface p-2 text-xs shadow-retro-raised"
-          role="group"
-          data-testid="p2p-peer-popover"
-          data-peer={@peer}
-        >
-          <div class="flex items-start justify-between gap-2 border-b border-border pb-1">
-            <div class="min-w-0">
-              <div class="flex items-center gap-1 font-bold">
-                <Icons.icon_protocol_p2p_compact class="h-3.5 w-3.5 shrink-0" />
-                <span class="truncate">{@peer}</span>
-              </div>
+      <.popover
+        label={dgettext("p2p", "P2P session summary")}
+        placement="above-end"
+        trigger_class="conversation-toolbar-button flex cursor-pointer items-center justify-center shadow-retro-raised bg-surface text-primary"
+        trigger_testid="p2p-peer-popover-toggle"
+        panel_testid="p2p-peer-popover"
+        panel_attrs={["data-peer": @peer]}
+        panel_class="w-72 border border-border bg-surface p-2 text-xs shadow-retro-raised"
+        class="conversation-toolbar-entry"
+      >
+        <:trigger><Icons.icon_btn_info class="h-3.5 w-3.5" /></:trigger>
+        <div class="flex items-start justify-between gap-2 border-b border-border pb-1">
+          <div class="min-w-0">
+            <div class="flex items-center gap-1 font-bold">
+              <Icons.icon_protocol_p2p_compact class="h-3.5 w-3.5 shrink-0" />
+              <span class="truncate">{@peer}</span>
             </div>
-            <span class={[
-              "shadow-retro-sunken bg-white px-1 py-px text-[10px] font-bold",
-              status_class(@status)
-            ]}>
-              {status_label(@status)}
-            </span>
           </div>
-
-          <div class="mt-2 grid grid-cols-2 gap-1">
-            <button
-              :if={@idle?}
-              type="button"
-              phx-click={@on_start}
-              phx-value-peer={@peer}
-              class="col-span-2 flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold"
-              data-testid="p2p-peer-start"
-            >
-              <Icons.icon_btn_join class="h-3.5 w-3.5" />
-              <span>{dgettext("p2p", "Start")}</span>
-            </button>
-            <button
-              :if={@pending_received?}
-              type="button"
-              phx-click="p2p_decline_invite"
-              phx-value-token={@token}
-              disabled={is_nil(@token)}
-              class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold text-destructive"
-              data-testid="p2p-peer-popover-decline"
-            >
-              <Icons.icon_reject class="h-3.5 w-3.5" />
-              <span>{dgettext("p2p", "Decline")}</span>
-            </button>
-          </div>
+          <span class={[
+            "shadow-retro-sunken bg-white px-1 py-px text-[10px] font-bold",
+            status_class(@status)
+          ]}>
+            {status_label(@status)}
+          </span>
         </div>
-      </details>
+
+        <div class="mt-2 grid grid-cols-2 gap-1">
+          <button
+            :if={@idle?}
+            type="button"
+            phx-click={close_after(@on_start)}
+            phx-value-peer={@peer}
+            class="col-span-2 flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold"
+            data-testid="p2p-peer-start"
+          >
+            <Icons.icon_btn_join class="h-3.5 w-3.5" />
+            <span>{dgettext("p2p", "Start")}</span>
+          </button>
+          <button
+            :if={@pending_received?}
+            type="button"
+            phx-click={close_after("p2p_decline_invite")}
+            phx-value-token={@token}
+            disabled={is_nil(@token)}
+            class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold text-destructive"
+            data-testid="p2p-peer-popover-decline"
+          >
+            <Icons.icon_reject class="h-3.5 w-3.5" />
+            <span>{dgettext("p2p", "Decline")}</span>
+          </button>
+        </div>
+      </.popover>
     </div>
     """
   end

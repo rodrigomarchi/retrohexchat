@@ -1632,9 +1632,13 @@ test.describe("Channel group calls", () => {
       await openModerationMenu(aliceCall);
       await groupCallLockToggle(aliceCall).click();
       await expect(groupCallLockToggle(aliceCall)).toHaveAttribute(
-        "aria-pressed",
+        "aria-checked",
         "true",
       );
+      // Choosing an action closes the menu it was chosen from.
+      await expect(
+        aliceCall.getByTestId("group-call-moderation"),
+      ).not.toHaveAttribute("open");
 
       await expect(groupCallChannelIndicator(bob.page)).toHaveAttribute(
         "data-state",

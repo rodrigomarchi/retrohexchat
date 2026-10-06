@@ -24,7 +24,7 @@ async function signedInUser(page: Page, prefix = "addr") {
 }
 
 async function submitDialogForm(form: Locator) {
-  await form.getByRole("button", { name: "OK" }).click();
+  await form.getByRole("button", { name: "OK", exact: true }).click();
 }
 
 test.describe("Address Book", () => {

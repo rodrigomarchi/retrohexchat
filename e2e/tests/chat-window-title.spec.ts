@@ -94,7 +94,7 @@ test.describe("Window, taskbar and tab titles", () => {
       await bob.chat.openSoundSettingsFromMenu();
       await bob.chat.setSoundFlash("pm", true);
       await bob.chat.soundSettingsDialog
-        .getByRole("button", { name: "OK" })
+        .getByRole("button", { name: "OK", exact: true })
         .click();
       await expect(bob.chat.soundSettingsDialog).toBeHidden();
 

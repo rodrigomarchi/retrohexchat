@@ -10,6 +10,7 @@
  * @flow N25 [done] Mini mode, the stats section, and maximize keep the P2P video alive
  * @flow N26 [done] Declining the invite tells the inviter and clears the pending state
  * @flow N27 [done] The inviter cancels a pending invite from the room the card led to
+ * @flow N47 [done] The P2P summary popover in the PM toolbar opens above the strip, stays open while messages arrive, and closes on Escape
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -323,6 +324,48 @@ async function remoteVideoIdentity(page: Page) {
 }
 
 test.describe("In-chat P2P session", () => {
+  test("the P2P summary stays open while messages arrive and closes on Escape", async ({
+    browser,
+  }) => {
+    const alice = await newP2PUser(browser, "pop", { media: false });
+    const bob = await newP2PUser(browser, "poq", { media: false });
+
+    try {
+      await alice.chat.sendMessage(`/query ${bob.nick}`);
+      await alice.chat.expectTabVisible(bob.nick);
+      await alice.chat.switchToTab(bob.nick);
+
+      const popover = alice.page.getByTestId("p2p-peer-popover");
+      await alice.page.getByTestId("p2p-peer-popover-toggle").click();
+      await expect(popover).toBeVisible();
+
+      // The strip sits at the bottom of the window, so the panel has to open
+      // upwards to be seen at all.
+      const toggleBox = await alice.page
+        .getByTestId("p2p-peer-popover-toggle")
+        .boundingBox();
+      const panelBox = await popover.boundingBox();
+      expect(panelBox!.y + panelBox!.height).toBeLessThanOrEqual(
+        toggleBox!.y + 1,
+      );
+
+      // A message re-renders the conversation; an open popover must survive it.
+      await bob.chat.sendMessage(
+        `/msg ${alice.nick} while the summary is open`,
+      );
+      await alice.chat.expectMessageVisible("while the summary is open");
+      await expect(popover).toBeVisible();
+
+      // Escape closes the popover and goes no further: the chat window it
+      // sits in stays open.
+      await alice.page.keyboard.press("Escape");
+      await expect(popover).toBeHidden();
+      await expect(alice.page.getByTestId("chat-window")).toBeVisible();
+    } finally {
+      await closeP2PUsers([alice, bob]);
+    }
+  });
+
   test("both peers enter the session by the card the invite wrote", async ({
     browser,
   }) => {

@@ -89,7 +89,9 @@ test.describe("Sound settings dialog", () => {
     await expect(chat.soundFlashToggle("message")).toBeChecked();
 
     await chat.selectSound("message", "Chime Long");
-    await chat.soundSettingsDialog.getByRole("button", { name: "OK" }).click();
+    await chat.soundSettingsDialog
+      .getByRole("button", { name: "OK", exact: true })
+      .click();
     await expect(chat.soundSettingsDialog).toBeHidden();
 
     await chat.openSoundSettingsFromMenu();
@@ -190,7 +192,9 @@ test.describe("Sound settings dialog", () => {
     await shot(chat.soundSettingsDialog, `sound-settings-notify-${permission}`);
 
     await page.getByTestId("notify-toggle-message").click();
-    await chat.soundSettingsDialog.getByRole("button", { name: "OK" }).click();
+    await chat.soundSettingsDialog
+      .getByRole("button", { name: "OK", exact: true })
+      .click();
     await expect(chat.soundSettingsDialog).toBeHidden();
 
     await chat.openSoundSettingsFromMenu();

@@ -315,36 +315,6 @@ defmodule RetroHexChatWeb.ComponentHelpers do
     dynamic_tag(assigns)
   end
 
-  @doc """
-  This component mimic behavior of `asChild` attribute from shadcn/ui.
-  It works by passing all attribute from `as_child` tag to `tag` function component, add pass `child` attribute to the `as_tag` attribute of the `tag` function component.
-
-  The `tag` function component should accept `as_tag` attribute to render the child component.
-
-  ## Examples
-
-  ```heex
-  <.as_child tag={&dropdown_menu_trigger/1} child={&sidebar_menu_button/1} class="bg-primary text-primary-foreground">
-     Hello World
-  </.as_child>
-  ```
-
-  Normally this can be archieved by using `dropdown_menu_trigger` component directly but this will fire copile warning.
-
-  ```heex
-  <.dropdown_menu_trigger as_tag={&sidebar_menu_button/1} class="bg-primary text-primary-foreground">
-     Hello World
-  </.dropdown_menu_trigger>
-  """
-  def as_child(%{tag: tag, child: child_tag} = assigns) when is_function(tag, 1) do
-    assigns
-    |> Map.drop([:tag, :child])
-    |> assign(:as_tag, child_tag)
-    |> tag.()
-  end
-
-  # Translate error message
-  # borrowed from https://github.com/petalframework/petal_components/blob/main/lib/petal_components/field.ex#L414
   defp translate_error({msg, opts}) do
     config_translator = get_translator_from_config() || (&fallback_translate_error/1)
 

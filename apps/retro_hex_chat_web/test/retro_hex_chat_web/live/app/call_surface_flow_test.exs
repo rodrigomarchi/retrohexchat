@@ -844,7 +844,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
 
       assert has_element?(
                call_view(view),
-               ~s([data-testid="group-call-reactions"][role="toolbar"][aria-label="Conference reactions"])
+               ~s([data-testid="group-call-reactions"] [role="toolbar"][aria-label="Conference reactions"])
              )
 
       assert has_element?(
@@ -1899,7 +1899,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
 
       assert call_view(moderator.view)
              |> element(~s([data-testid="group-call-mute-all"]))
-             |> render() =~ "remove_attr"
+             |> render() =~ "rhc:popover-close"
 
       assert has_element?(
                call_view(moderator.view),

@@ -1,105 +1,76 @@
 defmodule RetroHexChatWeb.Components.UI.DropdownMenu do
-  @moduledoc false
-  use RetroHexChatWeb.Component
+  @moduledoc """
+  A Win98 menu that drops from a trigger: a `Popover` whose panel is a list of
+  menu rows.
 
-  alias Phoenix.LiveView.JS
+  The rows are buttons (`dropdown_menu_item/1`) — so they must not contain
+  another control — and a keyboard reaches them (the arrow keys move between
+  them) and `phx-click` works on them; give an action `Popover.close_after/1` so the menu
+  closes once it has been chosen. A destructive row says so with
+  `tone="danger"` — in a menu the danger is in the word and its colour, never
+  in a second red button beside the others.
 
-  @doc """
-  Render dropdown menu
+  ## Example
 
-
-  ## Examples:
-
-      <.dropdown_menu>
-        <.dropdown_menu_trigger>
-          <.button variant="outline">Open</.button>
-        </.dropdown_menu_trigger>
-
-        <.dropdown_menu_content>
-          <.dropdown_menu_label>Account</.dropdown_menu_label>
-          <.dropdown_menu_separator />
-
-          <.dropdown_menu_group>
-            <.dropdown_menu_item>
-              Profile
-              <.dropdown_menu_shortcut>⌘P</.dropdown_menu_shortcut>
-            </.dropdown_menu_item>
-            <.dropdown_menu_item>
-              Billing
-              <.dropdown_menu_shortcut>⌘B</.dropdown_menu_shortcut>
-            </.dropdown_menu_item>
-            <.dropdown_menu_item>
-              Settings
-              <.dropdown_menu_shortcut>⌘S</.dropdown_menu_shortcut>
-            </.dropdown_menu_item>
-          </.dropdown_menu_group>
-        </.dropdown_menu_content>
+      <.dropdown_menu label="Moderation" trigger_class={tool_button_class(variant: "flat")}>
+        <:trigger>Moderation</:trigger>
+        <.dropdown_menu_item phx-click={close_after("lock")}>
+          <:icon><Icons.icon_lock /></:icon>
+          Lock conference
+        </.dropdown_menu_item>
       </.dropdown_menu>
   """
+  use RetroHexChatWeb.Component
 
-  attr :class, :string, default: nil
+  import RetroHexChatWeb.Components.UI.Popover
+
+  alias RetroHexChatWeb.Icons
+
+  attr :label, :string, required: true
+  attr :trigger_class, :any, default: nil
+  attr :trigger_testid, :string, default: nil
+  attr :placement, :string, default: "below-end"
+  attr :panel_class, :any, default: nil
+  attr :class, :any, default: nil
+  attr :rest, :global, include: ~w(open)
+
+  slot :trigger, required: true
   slot :inner_block, required: true
-  attr :rest, :global
 
+  @spec dropdown_menu(map()) :: Phoenix.LiveView.Rendered.t()
   def dropdown_menu(assigns) do
     ~H"""
-    <div class={classes(["relative group inline-block", @class])} {@rest}>
-      {render_slot(@inner_block)}
-    </div>
-    """
-  end
-
-  attr :class, :string, default: nil
-  attr :as_tag, :any, default: "div"
-  slot :inner_block, required: true
-
-  attr :rest, :global
-
-  def dropdown_menu_trigger(assigns) do
-    ~H"""
-    <.dynamic
-      tag={@as_tag}
-      class={classes(["dropdown-menu-trigger peer", @class])}
-      data-state="closed"
-      {@rest}
-      phx-click={toggle()}
-      phx-click-away={hide()}
-    >
-      {render_slot(@inner_block)}
-    </.dynamic>
-    """
-  end
-
-  attr :class, :string, default: nil
-  attr :side, :string, values: ["top", "right", "bottom", "left"], default: "bottom"
-  attr :align, :string, values: ["start", "center", "end"], default: "start"
-  slot :inner_block, required: true
-  attr :rest, :global
-
-  def dropdown_menu_content(assigns) do
-    assigns =
-      assign(assigns, :variant_class, side_variant(assigns.side, assigns.align))
-
-    ~H"""
-    <div
-      class={[
-        "z-50 animate-in peer-data-[state=closed]:fade-out-0 peer-data-[state=open]:fade-in-0 peer-data-[state=closed]:zoom-out-95 peer-data-[state=open]:zoom-in-95 peer-data-[side=bottom]:slide-in-from-top-2 peer-data-[side=left]:slide-in-from-right-2 peer-data-[side=right]:slide-in-from-left-2 peer-data-[side=top]:slide-in-from-bottom-2",
-        "absolute peer-data-[state=closed]:hidden",
-        @variant_class,
-        @class
-      ]}
+    <.popover
+      label={@label}
+      trigger_class={@trigger_class}
+      trigger_testid={@trigger_testid}
+      trigger_attrs={["aria-haspopup": "menu"]}
+      placement={@placement}
+      panel_role="menu"
+      panel_class={
+        classes([
+          "flex min-w-[12rem] flex-col border border-border bg-surface p-[2px] shadow-retro-raised",
+          @panel_class
+        ])
+      }
+      class={@class}
       {@rest}
     >
-      <div class="">
-        {render_slot(@inner_block)}
-      </div>
-    </div>
+      <:trigger>{render_slot(@trigger)}</:trigger>
+      {render_slot(@inner_block)}
+    </.popover>
     """
   end
 
   @doc "Renders a dropdown menu item with mandatory icon and optional shortcut."
   attr :disabled, :boolean, default: false
-  attr :class, :string, default: nil
+  attr :tone, :string, values: ~w(default danger), default: "default"
+
+  attr :checked, :boolean,
+    default: nil,
+    doc: "makes the row a checkable item: ticked while true, the same words either way"
+
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :icon, required: true, doc: "16×16 icon SVG — mandatory for visual consistency"
   slot :inner_block, required: true
@@ -108,12 +79,16 @@ defmodule RetroHexChatWeb.Components.UI.DropdownMenu do
   @spec dropdown_menu_item(map()) :: Phoenix.LiveView.Rendered.t()
   def dropdown_menu_item(assigns) do
     ~H"""
-    <div
-      role="menuitem"
+    <button
+      type="button"
+      role={if is_nil(@checked), do: "menuitem", else: "menuitemcheckbox"}
+      aria-checked={!is_nil(@checked) && to_string(@checked)}
+      disabled={@disabled}
       class={
         classes([
-          "flex items-center gap-1.5 px-3 py-1 text-sm whitespace-nowrap cursor-pointer select-none",
+          "flex w-full items-center gap-1.5 px-3 py-1 text-left text-xs whitespace-nowrap cursor-pointer select-none",
           if(@disabled, do: "text-disabled cursor-default", else: "menu-row"),
+          @tone == "danger" && "font-bold text-destructive",
           @class
         ])
       }
@@ -126,7 +101,8 @@ defmodule RetroHexChatWeb.Components.UI.DropdownMenu do
       <span :if={@shortcut != []} class="ml-4 text-xs opacity-60">
         {render_slot(@shortcut)}
       </span>
-    </div>
+      <Icons.icon_checkmark :if={@checked} class="ml-4 h-3 w-3 shrink-0" />
+    </button>
     """
   end
 
@@ -191,13 +167,5 @@ defmodule RetroHexChatWeb.Components.UI.DropdownMenu do
       {render_slot(@inner_block)}
     </span>
     """
-  end
-
-  defp toggle(js \\ %JS{}) do
-    JS.toggle_attribute(js, {"data-state", "open", "closed"})
-  end
-
-  defp hide(js \\ %JS{}) do
-    JS.set_attribute(js, {"data-state", "closed"})
   end
 end

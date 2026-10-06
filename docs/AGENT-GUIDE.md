@@ -310,6 +310,14 @@ get fresh timers with the *remaining* duration.
   button and does not survive review. `active` is the sunken look and `pressed` is
   `aria-pressed`; keep them apart where the state and the drawing disagree (a microphone is drawn
   sunken while off and announced as pressed while on).
+- **A popover or menu is `Popover` / `DropdownMenu`, never a hand-rolled `<details>`.** The
+  open state belongs to the browser: the LiveSocket entrypoints carry it across every patch
+  (`lib/ui/popover.js`), and closing — click outside, Escape, `Popover.close_after/1` — happens
+  in the browser too. Never reach for `JS.remove_attribute("open")` (LiveView replays it on every
+  later patch, so the popover closes again each time it is reopened) or
+  `JS.ignore_attributes("open")` (its private state was measured lost across patches in the
+  chat). A popover inside a list needs an `id` on its row, or morphdom moves an open panel to the
+  neighbouring row.
 - **Enhance an existing component; never fork a parallel dialog/menu.** New channel-config and
   ChanServ tabs extend the existing Channel Central dialog; wiring specs just add a menu entry to
   an already-built dialog. **Reuse a whole stateful component across contexts via

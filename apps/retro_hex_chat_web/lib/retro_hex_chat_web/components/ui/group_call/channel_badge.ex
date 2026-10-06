@@ -8,6 +8,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Popover
+
   alias RetroHexChatWeb.Icons
 
   attr :channel, :string, required: true
@@ -60,79 +62,72 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
         />
       </button>
 
-      <details :if={@active} class="conversation-toolbar-entry relative">
-        <summary
-          class={[
-            "conversation-toolbar-button flex cursor-pointer list-none items-center justify-center shadow-retro-raised bg-surface text-primary"
-          ]}
-          aria-label={dgettext("group_call", "Conference summary")}
-          title={dgettext("group_call", "Conference summary")}
-          data-testid="group-call-channel-popover-toggle"
-        >
-          <Icons.icon_btn_info class="h-3.5 w-3.5" />
-        </summary>
-
-        <div
-          class="absolute right-0 top-full z-50 mt-1 w-72 border border-border bg-surface p-2 text-xs shadow-retro-raised"
-          role="group"
-          data-testid="group-call-channel-popover"
-          data-channel={@channel}
-        >
-          <div class="flex items-start justify-between gap-2 border-b border-border pb-1">
-            <div class="min-w-0">
-              <div class="flex items-center gap-1 font-bold">
-                <Icons.icon_protocol_conference_compact class="h-3.5 w-3.5 shrink-0" />
-                <span class="truncate">{@channel}</span>
-              </div>
-              <div class="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
-                <Icons.icon_clock class="h-3 w-3 shrink-0" />
-                <span>{@duration}</span>
-              </div>
+      <.popover
+        :if={@active}
+        label={dgettext("group_call", "Conference summary")}
+        placement="above-end"
+        trigger_class="conversation-toolbar-button flex cursor-pointer items-center justify-center shadow-retro-raised bg-surface text-primary"
+        trigger_testid="group-call-channel-popover-toggle"
+        panel_testid="group-call-channel-popover"
+        panel_attrs={["data-channel": @channel]}
+        panel_class="w-72 border border-border bg-surface p-2 text-xs shadow-retro-raised"
+        class="conversation-toolbar-entry"
+      >
+        <:trigger><Icons.icon_btn_info class="h-3.5 w-3.5" /></:trigger>
+        <div class="flex items-start justify-between gap-2 border-b border-border pb-1">
+          <div class="min-w-0">
+            <div class="flex items-center gap-1 font-bold">
+              <Icons.icon_protocol_conference_compact class="h-3.5 w-3.5 shrink-0" />
+              <span class="truncate">{@channel}</span>
             </div>
-            <span class={[
-              "shadow-retro-sunken bg-white px-1 py-px text-[10px] font-bold",
-              state_class(@state)
-            ]}>
-              {state_label(@state)}
-            </span>
-          </div>
-
-          <div class="mt-2 grid grid-cols-2 gap-1 text-[11px]">
-            <div class="shadow-retro-status bg-white px-1 py-px">
-              <span class="font-bold">{dgettext("group_call", "Participants")}</span>
-              <span class="float-right">{@participant_count}/{@max_participants || "?"}</span>
-            </div>
-            <div class="shadow-retro-status bg-white px-1 py-px">
-              <span class="font-bold">{dgettext("group_call", "Speaker")}</span>
-              <span class="float-right truncate max-w-[9ch]">{@speaker_name || "-"}</span>
+            <div class="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
+              <Icons.icon_clock class="h-3 w-3 shrink-0" />
+              <span>{@duration}</span>
             </div>
           </div>
+          <span class={[
+            "shadow-retro-sunken bg-white px-1 py-px text-[10px] font-bold",
+            state_class(@state)
+          ]}>
+            {state_label(@state)}
+          </span>
+        </div>
 
-          <div class="mt-2 shadow-retro-sunken bg-white p-1">
-            <div class="mb-1 flex items-center gap-1 text-[10px] font-bold">
-              <Icons.icon_status_user class="h-3 w-3" />
-              <span>{dgettext("group_call", "In conference")}</span>
+        <div class="mt-2 grid grid-cols-2 gap-1 text-[11px]">
+          <div class="shadow-retro-status bg-white px-1 py-px">
+            <span class="font-bold">{dgettext("group_call", "Participants")}</span>
+            <span class="float-right">{@participant_count}/{@max_participants || "?"}</span>
+          </div>
+          <div class="shadow-retro-status bg-white px-1 py-px">
+            <span class="font-bold">{dgettext("group_call", "Speaker")}</span>
+            <span class="float-right truncate max-w-[9ch]">{@speaker_name || "-"}</span>
+          </div>
+        </div>
+
+        <div class="mt-2 shadow-retro-sunken bg-white p-1">
+          <div class="mb-1 flex items-center gap-1 text-[10px] font-bold">
+            <Icons.icon_status_user class="h-3 w-3" />
+            <span>{dgettext("group_call", "In conference")}</span>
+          </div>
+          <div class="space-y-1">
+            <div
+              :for={participant <- @participants}
+              class="flex min-w-0 items-center justify-between gap-1"
+            >
+              <span class="truncate">{participant.nickname}</span>
+              <span class="flex shrink-0 items-center gap-px text-muted-foreground">
+                <Icons.icon_raise_hand :if={hand_raised?(participant)} class="h-3 w-3 text-warning" />
+                <Icons.icon_microphone :if={media_enabled?(participant, :audio)} class="h-3 w-3" />
+                <Icons.icon_camera :if={media_enabled?(participant, :video)} class="h-3 w-3" />
+                <Icons.icon_screen_share :if={media_enabled?(participant, :screen)} class="h-3 w-3" />
+              </span>
             </div>
-            <div class="space-y-1">
-              <div
-                :for={participant <- @participants}
-                class="flex min-w-0 items-center justify-between gap-1"
-              >
-                <span class="truncate">{participant.nickname}</span>
-                <span class="flex shrink-0 items-center gap-px text-muted-foreground">
-                  <Icons.icon_raise_hand :if={hand_raised?(participant)} class="h-3 w-3 text-warning" />
-                  <Icons.icon_microphone :if={media_enabled?(participant, :audio)} class="h-3 w-3" />
-                  <Icons.icon_camera :if={media_enabled?(participant, :video)} class="h-3 w-3" />
-                  <Icons.icon_screen_share :if={media_enabled?(participant, :screen)} class="h-3 w-3" />
-                </span>
-              </div>
-              <div :if={@participants == []} class="text-muted-foreground">
-                {dgettext("group_call", "Waiting for participants")}
-              </div>
+            <div :if={@participants == []} class="text-muted-foreground">
+              {dgettext("group_call", "Waiting for participants")}
             </div>
           </div>
         </div>
-      </details>
+      </.popover>
     </div>
     """
   end

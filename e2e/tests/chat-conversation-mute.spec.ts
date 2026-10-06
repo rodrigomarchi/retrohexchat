@@ -130,7 +130,9 @@ async function enableSoundAndFlash(chat: ChatPage, event: "message" | "pm") {
   await chat.openSoundSettingsFromMenu();
   await chat.selectSound(event, "Beep");
   await chat.setSoundFlash(event, true);
-  await chat.soundSettingsDialog.getByRole("button", { name: "OK" }).click();
+  await chat.soundSettingsDialog
+    .getByRole("button", { name: "OK", exact: true })
+    .click();
   await expect(chat.soundSettingsDialog).toBeHidden();
 }
 

@@ -622,7 +622,10 @@ export class ChatPage {
     );
     this.deleteCancelButton = page.getByTestId("delete-confirm-dialog-cancel");
     this.aboutDialog = page.locator('#about-dialog [role="dialog"]');
-    this.aboutOkButton = this.aboutDialog.getByRole("button", { name: "OK" });
+    this.aboutOkButton = this.aboutDialog.getByRole("button", {
+      name: "OK",
+      exact: true,
+    });
     this.cheatsheetDialog = page.getByTestId("cheatsheet-window");
     this.cheatsheetCloseButton = page
       .getByTestId("cheatsheet-window")
@@ -1903,7 +1906,7 @@ export class ChatPage {
     const dialog = this.page.getByTestId("cc-add-list-entry-dialog");
     await expect(dialog).toHaveAttribute("data-access-list", list);
     await dialog.getByTestId("cc-list-entry-input").fill(nick);
-    await dialog.getByRole("button", { name: "OK" }).click();
+    await dialog.getByRole("button", { name: "OK", exact: true }).click();
     await expect(dialog).toHaveCount(0);
     await expect(this.channelCentralEntry(nick)).toBeVisible();
   }
@@ -2034,7 +2037,7 @@ export class ChatPage {
     await expect(form).toBeVisible();
     await form.locator("#contact-add-nick").fill(nick);
     await form.locator("#contact-add-note").fill(note);
-    await form.getByRole("button", { name: "OK" }).click();
+    await form.getByRole("button", { name: "OK", exact: true }).click();
     await expect(this.addressBookContactRow(nick)).toContainText(note);
   }
 
@@ -2057,7 +2060,7 @@ export class ChatPage {
     await expect(form).toBeVisible();
     await form.locator("#nick-color-add-nick").fill(nick);
     await this.pickColor(form, colorIndex);
-    await form.getByRole("button", { name: "OK" }).click();
+    await form.getByRole("button", { name: "OK", exact: true }).click();
     await expect(this.addressBookNickColorRow(nick)).toHaveAttribute(
       "data-color-index",
       String(colorIndex),
@@ -2070,7 +2073,7 @@ export class ChatPage {
     const form = this.page.getByTestId("nick-color-edit-form");
     await expect(form).toBeVisible();
     await this.pickColor(form, colorIndex);
-    await form.getByRole("button", { name: "OK" }).click();
+    await form.getByRole("button", { name: "OK", exact: true }).click();
     await expect(this.addressBookNickColorRow(nick)).toHaveAttribute(
       "data-color-index",
       String(colorIndex),
@@ -2095,7 +2098,7 @@ export class ChatPage {
     await form.locator("#control-add-nick").fill(nick);
     await form.locator("#control-add-type").selectOption(type);
     await form.locator("#control-add-duration").fill(duration);
-    await form.getByRole("button", { name: "OK" }).click();
+    await form.getByRole("button", { name: "OK", exact: true }).click();
     await expect(this.addressBookControlRow(nick)).toContainText(type);
     await this.closeIgnoreList();
   }
@@ -2245,7 +2248,9 @@ export class ChatPage {
     await this.rowPress(this.highlightWordRow(word)).click();
     await expect(this.highlightEditForm).toBeVisible();
     await this.pickColor(this.highlightEditForm, colorIndex);
-    await this.highlightEditForm.getByRole("button", { name: "OK" }).click();
+    await this.highlightEditForm
+      .getByRole("button", { name: "OK", exact: true })
+      .click();
     await expect(this.highlightEditForm).toBeHidden();
   }
 
@@ -2336,7 +2341,9 @@ export class ChatPage {
       .click();
     await expect(this.performAddDialog).toBeVisible();
     await this.performAddDialog.locator("#perform-command-input").fill(command);
-    await this.performAddDialog.getByRole("button", { name: "OK" }).click();
+    await this.performAddDialog
+      .getByRole("button", { name: "OK", exact: true })
+      .click();
     await expect(this.performAddDialog).toBeHidden();
     await expect(this.performCommandRow(command)).toBeVisible();
   }
@@ -2347,7 +2354,9 @@ export class ChatPage {
     await this.performEditDialog
       .locator("#perform-edit-input")
       .fill(replacement);
-    await this.performEditDialog.getByRole("button", { name: "OK" }).click();
+    await this.performEditDialog
+      .getByRole("button", { name: "OK", exact: true })
+      .click();
     await expect(this.performEditDialog).toBeHidden();
     await expect(this.performCommandRow(replacement)).toBeVisible();
   }
@@ -2388,7 +2397,9 @@ export class ChatPage {
       .locator("#autojoin-channel-input")
       .fill(channel);
     await this.autojoinAddDialog.locator("#autojoin-key-input").fill(key);
-    await this.autojoinAddDialog.getByRole("button", { name: "OK" }).click();
+    await this.autojoinAddDialog
+      .getByRole("button", { name: "OK", exact: true })
+      .click();
     await expect(this.autojoinAddDialog).toBeHidden();
     await expect(this.autojoinRow(channel)).toBeVisible();
   }
@@ -2397,7 +2408,9 @@ export class ChatPage {
     await this.rowPress(this.autojoinRow(channel)).click();
     await expect(this.autojoinEditDialog).toBeVisible();
     await this.autojoinEditDialog.locator("#autojoin-edit-key").fill(key);
-    await this.autojoinEditDialog.getByRole("button", { name: "OK" }).click();
+    await this.autojoinEditDialog
+      .getByRole("button", { name: "OK", exact: true })
+      .click();
     await expect(this.autojoinEditDialog).toBeHidden();
   }
 
@@ -2513,7 +2526,9 @@ export class ChatPage {
   }
 
   async closeCustomMenusDialog() {
-    await this.customMenusDialog.getByRole("button", { name: "OK" }).click();
+    await this.customMenusDialog
+      .getByRole("button", { name: "OK", exact: true })
+      .click();
     await expect(this.customMenusDialog).toBeHidden();
   }
 

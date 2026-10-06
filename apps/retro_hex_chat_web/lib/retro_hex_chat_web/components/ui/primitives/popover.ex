@@ -1,125 +1,100 @@
 defmodule RetroHexChatWeb.Components.UI.Popover do
   @moduledoc """
-  Implement Popover component
+  A panel that opens from a trigger and floats over what is below it: a menu,
+  a summary card, a row of reactions, a device picker.
 
-  ## Usage
-      <.popover>
-        <.popover_trigger target="my-id">
-          <.button variant="link">
-            @salad_ui
-          </.button>
-        </.popover_trigger>
-        <.popover_content id="my-id" side="left">
-           Hover card content
-        </.popover_content>
-      </.popover>
+  It is a `<details data-popover>` element, so it opens and closes without a
+  round trip and keeps working with scripting off. Three behaviours come with
+  it, and they are the reason every popover in the interface goes through here:
+
+    * **It survives re-renders.** LiveView would hand `open` back closed on
+      every patch — in a chat, with every message — so the entrypoints carry
+      the browser's state into each patch (`lib/ui/popover.js`).
+    * **It closes the way a menu does:** a click outside, Escape, or choosing
+      an action inside it (`close_after/1`). Closing is done in the browser,
+      never with `JS.remove_attribute`, which LiveView would replay on every
+      later patch and so close the popover each time it was reopened.
+    * **It opens where there is room.** `placement` says which edge of the
+      trigger the panel hangs from; a control at the bottom of a window opens
+      upwards (`above-end`), one over a video opens centred above (`above`).
+
+  The trigger is drawn by the caller through `trigger_class` — usually
+  `ToolButton.tool_button_class/1` — so it looks like every other control.
+
+  Two things follow from the open state belonging to the browser. An `open`
+  passed in only sets the initial state; later server values are not applied.
+  And a popover rendered in a list needs a keyed ancestor (an `id` on its row):
+  morphdom matches unkeyed siblings by position, so an open panel would move to
+  the neighbouring row when one is added above it.
   """
   use RetroHexChatWeb.Component
 
-  @doc """
-  Render popover wrapper
-  """
-  attr :class, :string, default: nil
-  attr :rest, :global
+  @placements ~w(below-end below-start above-end above-start above)
+
+  attr :label, :string, required: true, doc: "the trigger's tooltip and accessible name"
+  attr :trigger_class, :any, default: nil
+  attr :trigger_testid, :string, default: nil
+
+  attr :trigger_attrs, :list,
+    default: [],
+    doc: "extra attributes for the trigger, such as a hook's data-* contract"
+
+  attr :placement, :string,
+    values: @placements,
+    default: "below-end",
+    doc: "which edge of the trigger the panel hangs from"
+
+  attr :panel_class, :any, default: nil
+  attr :panel_role, :string, default: "group"
+  attr :panel_testid, :string, default: nil
+  attr :panel_attrs, :list, default: [], doc: "extra attributes for the panel"
+  attr :class, :any, default: nil
+  attr :rest, :global, include: ~w(open)
+
+  slot :trigger, required: true
   slot :inner_block, required: true
 
+  @spec popover(map()) :: Phoenix.LiveView.Rendered.t()
   def popover(assigns) do
     ~H"""
-    <div
-      class={
-        classes([
-          "inline-block relative",
-          @class
-        ])
-      }
+    <details
+      class={classes(["relative shrink-0", @class])}
+      data-popover
       {@rest}
     >
-      {render_slot(@inner_block)}
-    </div>
+      <summary
+        class={classes([@trigger_class, "list-none [&::-webkit-details-marker]:hidden"])}
+        title={@label}
+        aria-label={@label}
+        data-testid={@trigger_testid}
+        {@trigger_attrs}
+      >
+        {render_slot(@trigger)}
+      </summary>
+      <div
+        class={classes([placement_class(@placement), @panel_class])}
+        role={@panel_role}
+        aria-label={@label}
+        data-testid={@panel_testid}
+        {@panel_attrs}
+      >
+        {render_slot(@inner_block)}
+      </div>
+    </details>
     """
   end
 
   @doc """
-  Render popover trigger
+  The click of an action inside a popover: run it, then close the popover it
+  sits in. Takes an event name or a `%JS{}` chain.
   """
-  attr :class, :string, default: nil
+  @spec close_after(String.t() | JS.t()) :: JS.t()
+  def close_after(%JS{} = js), do: JS.dispatch(js, "rhc:popover-close")
+  def close_after(event) when is_binary(event), do: event |> JS.push() |> close_after()
 
-  attr :target, :string,
-    required: true,
-    doc: "The id of target element to show popover"
-
-  attr :rest, :global
-  slot :inner_block, required: true
-
-  def popover_trigger(assigns) do
-    ~H"""
-    <div
-      class={
-        classes([
-          "",
-          @class
-        ])
-      }
-      phx-click={toggle_target(@target)}
-      {@rest}
-    >
-      {render_slot(@inner_block)}
-    </div>
-    """
-  end
-
-  @doc """
-  Render popover content
-  """
-  attr :id, :string,
-    required: true,
-    doc: "The id of target element to show popover"
-
-  attr :class, :string, default: nil
-  attr :side, :string, values: ~w(bottom left right top), default: "top"
-  attr :align, :string, values: ["start", "center", "end"], default: "center"
-  attr :open, :boolean, default: false
-  attr :rest, :global
-  slot :inner_block, required: true
-
-  def popover_content(assigns) do
-    assigns =
-      assigns
-      |> assign(:variant_class, side_variant(assigns.side, assigns.align))
-      |> assign_new(:state, fn ->
-        if assigns[:open] in ["true", true] do
-          "open"
-        else
-          "closed"
-        end
-      end)
-
-    ~H"""
-    <div
-      data-side={@side}
-      data-state={@state}
-      phx-click-away={hide()}
-      id={@id}
-      class={
-        classes([
-          "absolute block",
-          "z-50 w-[calc(100vw-2rem)] md:w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none animate-in fade-in-0 zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:hidden",
-          @variant_class,
-          @class
-        ])
-      }
-      {@rest}
-    >
-      {render_slot(@inner_block)}
-    </div>
-    """
-  end
-
-  defp toggle_target(id) do
-    JS.toggle_attribute({"data-state", "open", "closed"}, to: "##{id}")
-  end
-
-  defp hide do
-    JS.set_attribute({"data-state", "closed"})
-  end
+  defp placement_class("below-end"), do: "absolute right-0 top-full z-50 mt-1"
+  defp placement_class("below-start"), do: "absolute left-0 top-full z-50 mt-1"
+  defp placement_class("above-end"), do: "absolute bottom-full right-0 z-50 mb-1"
+  defp placement_class("above-start"), do: "absolute bottom-full left-0 z-50 mb-1"
+  defp placement_class("above"), do: "absolute bottom-full left-1/2 z-50 mb-1.5 -translate-x-1/2"
 end

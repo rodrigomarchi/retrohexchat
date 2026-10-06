@@ -17,6 +17,7 @@ import { loadCurrentLocaleCatalog } from "./lib/i18n";
 import { S3DirectUploader } from "./lib/uploads/s3_direct";
 import { registerServiceWorker } from "./lib/system/service_worker.js";
 import { loadRetroChrome } from "./lib/ui/retro_chrome_loader";
+import { installPopoverBehaviour, keepDisclosureOpenAcrossPatch } from "./lib/ui/popover";
 
 const Hooks = buildHooks();
 
@@ -40,7 +41,10 @@ const liveSocket = new LiveSocket("/live", Socket, {
   },
   dom: {
     onPatchStart: preserveScrollPatchStart,
-    onBeforeElUpdated: preserveScrollBeforeElUpdated,
+    onBeforeElUpdated(fromEl, toEl) {
+      preserveScrollBeforeElUpdated(fromEl, toEl);
+      keepDisclosureOpenAcrossPatch(fromEl, toEl);
+    },
     onPatchEnd: preserveScrollPatchEnd,
   },
 });
@@ -65,6 +69,7 @@ liveSocket.connect();
 
 // Win98 tooltips over every `title`, and the arrows of every up-down field.
 loadRetroChrome(document);
+installPopoverBehaviour(document);
 
 // expose liveSocket on window for web console debug logs and latency simulation:
 // >> liveSocket.enableDebug()

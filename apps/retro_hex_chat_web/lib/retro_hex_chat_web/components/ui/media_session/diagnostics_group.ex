@@ -31,7 +31,6 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.DiagnosticsGroup do
         ])
       }
       open={@open}
-      phx-mounted={JS.ignore_attributes("open")}
       data-testid={@testid}
       {@rest}
     >

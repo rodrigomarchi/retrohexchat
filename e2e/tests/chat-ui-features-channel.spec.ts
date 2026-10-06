@@ -54,7 +54,7 @@ test.describe.serial("UI feature channel journeys", () => {
         .getByTestId("mute-duration-input")
         .fill("30s");
       await owner.chat.muteDurationDialog
-        .getByRole("button", { name: "OK" })
+        .getByRole("button", { name: "OK", exact: true })
         .click();
       await expect(owner.chat.muteDurationDialog).toBeHidden();
 
