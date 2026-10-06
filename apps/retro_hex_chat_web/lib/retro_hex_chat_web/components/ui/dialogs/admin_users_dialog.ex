@@ -201,6 +201,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
               <.nick_action_form
                 target={@target}
                 id="admin-users-ban-form"
+                destructive
                 event={@on_ban}
                 title={dgettext("dialogs", "Ban user")}
                 button_label={dgettext("dialogs", "Confirm ban")}
@@ -221,6 +222,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
               <.nick_action_form
                 target={@target}
                 id="admin-users-kick-form"
+                destructive
                 event={@on_kick}
                 title={dgettext("dialogs", "Kick user")}
                 button_label={dgettext("dialogs", "Confirm kick")}
@@ -231,6 +233,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
               <.nick_action_form
                 target={@target}
                 id="admin-users-mute-form"
+                destructive
                 event={@on_mute}
                 title={dgettext("dialogs", "Mute user")}
                 button_label={dgettext("dialogs", "Confirm mute")}
@@ -389,6 +392,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
   attr :show_duration, :boolean, default: false
   attr :include_password, :boolean, default: false
   attr :disabled, :boolean, default: false
+  attr :destructive, :boolean, default: false, doc: "an action against the user: drawn in red"
   attr :target, :any, default: nil
 
   defp nick_action_form(assigns) do
@@ -436,7 +440,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
         disabled={@disabled}
       />
       <div class="flex justify-end">
-        <.button type="submit" size="sm" disabled={@disabled}>
+        <.button
+          type="submit"
+          size="sm"
+          variant={if @destructive, do: "destructive", else: "default"}
+          disabled={@disabled}
+        >
           <:icon>{apply(Icons, @icon_fn, [%{class: "w-[14px] h-[14px]"}])}</:icon>
           {@button_label}
         </.button>

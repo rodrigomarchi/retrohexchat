@@ -115,7 +115,7 @@ msgstr "Pending..."
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:403
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:242
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:517
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:260
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:261
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "Bereit"
@@ -125,14 +125,14 @@ msgstr "Bereit"
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:142
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:413
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:416
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:258
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:259
 #, elixir-autogen, elixir-format
 msgid "Receiving"
 msgstr "Empfang"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:740
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:384
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:339
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:340
 #, elixir-autogen, elixir-format
 msgid "Reconnecting"
 msgstr "Erneut verbinden"
@@ -244,7 +244,7 @@ msgstr "Aktiv"
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:257
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:674
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:704
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:257
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:258
 #, elixir-autogen, elixir-format
 msgid "Audio"
 msgstr "Audio"
@@ -640,7 +640,7 @@ msgid "Resolution of the received video, in pixels."
 msgstr "Auflösung des empfangenen Videos in Pixeln."
 
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:417
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:302
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:303
 #, elixir-autogen, elixir-format
 msgid "Retry"
 msgstr "Wiederholen"
@@ -785,7 +785,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:303
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:673
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:705
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:256
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:257
 #, elixir-autogen, elixir-format
 msgid "Video"
 msgstr "Video"
@@ -839,7 +839,7 @@ msgstr "du"
 msgid "Direct P2P topology"
 msgstr "Direkte P2P-Topologie"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:311
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:312
 #, elixir-autogen, elixir-format
 msgid "End"
 msgstr "Beenden"
@@ -951,7 +951,7 @@ msgstr "Akzeptieren eingehende Datei"
 msgid "Audio + Video"
 msgstr "Audio und Video"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:342
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:343
 #, elixir-autogen, elixir-format
 msgid "Automatic recovery did not reconnect. Retry or end the session."
 msgstr ""
@@ -968,7 +968,7 @@ msgstr "Beide leben"
 msgid "Cancel file transfer"
 msgstr "Dateiübertragung abbrechen"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:338
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:339
 #, elixir-autogen, elixir-format
 msgid "Connection needs attention"
 msgstr "Verbindung braucht Aufmerksamkeit"
@@ -984,7 +984,8 @@ msgid "Direct preferred"
 msgstr "Direkt bevorzugt"
 
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:84
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:305
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:85
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:306
 #, elixir-autogen, elixir-format
 msgid "End P2P session"
 msgstr "Ende P2P-Sitzung"
@@ -1070,12 +1071,12 @@ msgstr "Nicht verfügbar"
 msgid "Resuming transfer"
 msgstr "Wiederaufnahme des Transfers"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:297
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:298
 #, elixir-autogen, elixir-format
 msgid "Retry P2P connection"
 msgstr "Retry P2P-Verbindung"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:371
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:372
 #, elixir-autogen, elixir-format
 msgid "Retrying the peer connection, attempt %{attempt} of 3."
 msgstr "Peer-Verbindung wird erneut versucht, Versuch %{attempt} von 3."
@@ -1085,7 +1086,7 @@ msgstr "Peer-Verbindung wird erneut versucht, Versuch %{attempt} von 3."
 msgid "Route and privacy"
 msgstr "Route und Privatsphäre"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:357
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:358
 #, elixir-autogen, elixir-format
 msgid "The P2P media connection failed. Retry or end the session."
 msgstr ""
@@ -1122,7 +1123,7 @@ msgstr "Über uns"
 msgid "Transfer rejected"
 msgstr "Rücküberweisung"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:375
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:376
 #, elixir-autogen, elixir-format
 msgid "Trying to restore the peer connection."
 msgstr "Versuchen, die Peer-Verbindung wiederherzustellen."
@@ -1145,7 +1146,7 @@ msgstr ""
 msgid "Decline"
 msgstr "Ablehnen"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:259
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:260
 #, elixir-autogen, elixir-format
 msgid "Invite pending"
 msgstr "Einladung anhängig"
@@ -1176,7 +1177,7 @@ msgstr "%{state} / %{reason}"
 msgid "Attempt"
 msgstr "Versuch"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:353
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:354
 #, elixir-autogen, elixir-format
 msgid "Could not restore this P2P session. Retry or end the session."
 msgstr "Diese P2P-Sitzung konnte nicht wiederhergestellt werden. Erneut versuchen oder beenden."
@@ -1227,7 +1228,7 @@ msgstr "Nicht gestartet"
 msgid "Offer"
 msgstr "Angebot"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:366
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:367
 #, elixir-autogen, elixir-format
 msgid "Peer media connection was interrupted. Recovery is monitoring the link."
 msgstr "Die Medienverbindung zur Gegenstelle wurde unterbrochen. Die Wiederherstellung überwacht die Verbindung."
@@ -1242,7 +1243,7 @@ msgstr "Grund"
 msgid "Recovery"
 msgstr "Wiederherstellung"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:361
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:362
 #, elixir-autogen, elixir-format
 msgid "Restoring this P2P session after reconnect."
 msgstr "Diese P2P-Sitzung wird nach der Neuverbindung wiederhergestellt."
@@ -1262,7 +1263,7 @@ msgstr "Auslöser der Wiederherstellung: Browser, Gegenstelle oder Server."
 msgid "State"
 msgstr "Status"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:346
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:347
 #, elixir-autogen, elixir-format
 msgid "This session is still active in another window. Close that window, retry, or end this session."
 msgstr "Diese Sitzung ist noch in einem anderen Fenster aktiv. Schließen Sie es, versuchen Sie es erneut oder beenden Sie diese Sitzung."

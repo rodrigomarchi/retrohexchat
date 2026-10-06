@@ -87,6 +87,7 @@ defmodule RetroHexChatWeb.Components.UI.ActionList do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.ToolButton
 
   @doc """
   The list that holds `action_row/1` children.
@@ -252,25 +253,26 @@ defmodule RetroHexChatWeb.Components.UI.ActionList do
 
   slot :inner_block, required: true, doc: "the 16×16 icon"
 
+  # A list of twenty rows is twenty of these. A destructive one is drawn like
+  # the rest and only turns red under the pointer: twenty red buttons would
+  # say nothing about any one of them.
   @spec row_action(map()) :: Phoenix.LiveView.Rendered.t()
   def row_action(assigns) do
     ~H"""
-    <.button
-      type="button"
-      size="icon"
-      variant={@variant}
-      class="action-list__action"
+    <.tool_button
+      label={@label}
+      class={[
+        "action-list__action",
+        @variant == "destructive" && "hover:bg-destructive hover:text-destructive-foreground"
+      ]}
       phx-click={@event}
       phx-target={@target}
       disabled={@disabled}
-      aria-label={@label}
-      title={@label}
       data-testid={@testid}
       {phx_values(@value)}
     >
-      <:icon>{render_slot(@inner_block)}</:icon>
-      <span class="sr-only">{@label}</span>
-    </.button>
+      {render_slot(@inner_block)}
+    </.tool_button>
     """
   end
 

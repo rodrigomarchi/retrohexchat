@@ -160,6 +160,11 @@ defmodule RetroHexChatWeb.ChatLive.EventsTest do
        ]}
     )
 
+    # The message makes the view queue a send_update to the dialog, which is a
+    # second message to itself. Two synchronous round trips drain both before
+    # rendering, so the render cannot overtake the update.
+    _ = :sys.get_state(view.pid)
+    _ = :sys.get_state(view.pid)
     render(view)
   end
 

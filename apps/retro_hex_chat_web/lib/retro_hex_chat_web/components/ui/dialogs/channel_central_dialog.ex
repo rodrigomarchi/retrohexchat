@@ -961,10 +961,12 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         <:icon><Icons.icon_role_owner class="h-4 w-4" /></:icon>
 
         <div class="cc-action-row flex gap-1">
+          <%!-- Handing the channel over is not the destructive step; confirming
+                it is. Only the confirmation is drawn in red. --%>
           <.button
             type="button"
             size="sm"
-            variant="destructive"
+            variant="outline"
             class="cc-danger-action"
             phx-click={@on_transfer_open}
             phx-target={@target}

@@ -639,7 +639,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
 
       assert has_element?(
                call_view(view),
-               ~s([data-testid="group-call-participant-focus-456"][aria-pressed="true"])
+               ~s([data-testid="group-call-participant-focus-456"][aria-checked="true"])
              )
 
       call_click(view, "group_call_cycle_self_view", %{})
@@ -727,7 +727,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
 
       assert has_element?(
                call_view(view),
-               ~s([data-testid="group-call-participant-pin-456"][aria-pressed="true"])
+               ~s([data-testid="group-call-participant-pin-456"][aria-checked="true"])
              )
 
       assert_push_event(call_view(view), "group_call_layout_state", %{
@@ -740,7 +740,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
 
       assert has_element?(
                call_view(view),
-               ~s([data-testid="group-call-participant-pin-456"][aria-pressed="false"])
+               ~s([data-testid="group-call-participant-pin-456"][aria-checked="false"])
              )
     end
 

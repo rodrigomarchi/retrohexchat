@@ -867,94 +867,99 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     """
   end
 
+  # Every action named in words, like the Moderation menu: an icon grid made
+  # "turn the camera off" and "ban from the channel" look alike.
   defp participant_controls_menu(assigns) do
     ~H"""
-    <.popover
+    <.dropdown_menu
       label={dgettext("group_call", "Participant actions")}
       trigger_class={tool_button_class()}
       trigger_testid={"group-call-participant-actions-#{@participant.id}"}
-      panel_class="grid w-[8.75rem] grid-cols-3 gap-1 border border-border bg-surface p-1 shadow-retro-raised"
     >
       <:trigger><CallControls.icon_call_more class="h-4 w-4" /></:trigger>
-      <.tool_button
-        label={focus_participant_title(@call, @participant)}
-        active={focused_participant?(@call, @participant)}
-        pressed={focused_participant?(@call, @participant)}
+      <.dropdown_menu_item
+        checked={focused_participant?(@call, @participant)}
         phx-click={close_after(@on_focus_participant)}
         phx-value-participant-id={@participant.id}
         data-testid={"group-call-participant-focus-#{@participant.id}"}
       >
-        <CallControls.icon_call_layout_focus class="h-4 w-4" />
-      </.tool_button>
-      <.tool_button
-        label={pin_participant_title(@call, @participant)}
-        pressed={pinned_participant?(@call, @participant)}
-        class={pinned_participant?(@call, @participant) && "bg-warning-light shadow-retro-sunken"}
+        <:icon><CallControls.icon_call_layout_focus class="h-4 w-4" /></:icon>
+        {dgettext("group_call", "Focus participant")}
+      </.dropdown_menu_item>
+      <.dropdown_menu_item
+        checked={pinned_participant?(@call, @participant)}
         phx-click={close_after(@on_toggle_pin_participant)}
         phx-value-participant-id={@participant.id}
         data-testid={"group-call-participant-pin-#{@participant.id}"}
       >
-        <Icons.icon_pin class="h-4 w-4" />
-      </.tool_button>
-      <.tool_button
+        <:icon><Icons.icon_pin class="h-4 w-4" /></:icon>
+        {dgettext("group_call", "Pin participant")}
+      </.dropdown_menu_item>
+      <.dropdown_menu_separator :if={can_moderate_participant?(@call, @participant)} />
+      <.dropdown_menu_item
         :if={participant_hand_raised?(@participant) && can_moderate_participant?(@call, @participant)}
-        label={allow_speak_title(@participant)}
-        class="bg-warning-light"
+        class="font-bold"
         phx-click={close_after(@on_allow_speak)}
         phx-value-participant-id={@participant.id}
         data-testid={"group-call-participant-allow-speak-#{@participant.id}"}
       >
-        <CallControls.icon_call_raise_hand class="h-4 w-4" />
-      </.tool_button>
-      <.tool_button
+        <:icon><CallControls.icon_call_raise_hand class="h-4 w-4" /></:icon>
+        {allow_speak_title(@participant)}
+      </.dropdown_menu_item>
+      <.dropdown_menu_item
         :if={can_moderate_participant?(@call, @participant)}
-        label={moderate_audio_title(@participant)}
         phx-click={close_after(@on_moderate_audio)}
         phx-value-participant-id={@participant.id}
         data-testid={"group-call-participant-audio-moderate-#{@participant.id}"}
       >
-        <CallControls.icon_call_mute :if={participant_media?(@participant, :audio)} class="h-4 w-4" />
-        <CallControls.icon_call_microphone
-          :if={!participant_media?(@participant, :audio)}
-          class="h-4 w-4"
-        />
-      </.tool_button>
-      <.tool_button
+        <:icon>
+          <CallControls.icon_call_mute :if={participant_media?(@participant, :audio)} class="h-4 w-4" />
+          <CallControls.icon_call_microphone
+            :if={!participant_media?(@participant, :audio)}
+            class="h-4 w-4"
+          />
+        </:icon>
+        {moderate_audio_title(@participant)}
+      </.dropdown_menu_item>
+      <.dropdown_menu_item
         :if={can_moderate_video_participant?(@call, @participant)}
-        label={moderate_video_title(@participant)}
         phx-click={close_after(@on_moderate_video)}
         phx-value-participant-id={@participant.id}
         data-testid={"group-call-participant-video-moderate-#{@participant.id}"}
       >
-        <CallControls.icon_call_camera_off
-          :if={participant_media?(@participant, :video)}
-          class="h-4 w-4"
-        />
-        <CallControls.icon_call_camera
-          :if={!participant_media?(@participant, :video)}
-          class="h-4 w-4"
-        />
-      </.tool_button>
-      <.tool_button
+        <:icon>
+          <CallControls.icon_call_camera_off
+            :if={participant_media?(@participant, :video)}
+            class="h-4 w-4"
+          />
+          <CallControls.icon_call_camera
+            :if={!participant_media?(@participant, :video)}
+            class="h-4 w-4"
+          />
+        </:icon>
+        {moderate_video_title(@participant)}
+      </.dropdown_menu_item>
+      <.dropdown_menu_item
         :if={can_moderate_screen_participant?(@call, @participant)}
-        label={moderate_screen_title(@participant)}
         phx-click={close_after(@on_moderate_screen)}
         phx-value-participant-id={@participant.id}
         data-testid={"group-call-participant-screen-moderate-#{@participant.id}"}
       >
-        <CallControls.icon_call_screen_share class="h-4 w-4" />
-      </.tool_button>
-      <.tool_button
+        <:icon><CallControls.icon_call_screen_share class="h-4 w-4" /></:icon>
+        {moderate_screen_title(@participant)}
+      </.dropdown_menu_item>
+      <.dropdown_menu_separator :if={can_remove_participant?(@call, @participant)} />
+      <.dropdown_menu_item
         :if={can_remove_participant?(@call, @participant)}
-        label={dgettext("group_call", "Remove from conference and ban from channel")}
         tone="danger"
         phx-click={close_after(@on_kick_participant)}
         phx-value-participant-id={@participant.id}
         data-testid={"group-call-participant-kick-#{@participant.id}"}
       >
-        <Icons.icon_ban class="h-4 w-4" />
-      </.tool_button>
-    </.popover>
+        <:icon><Icons.icon_ban class="h-4 w-4" /></:icon>
+        {dgettext("group_call", "Remove from conference and ban from channel")}
+      </.dropdown_menu_item>
+    </.dropdown_menu>
     """
   end
 
@@ -1426,18 +1431,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
        do: true
 
   defp focused_participant?(_call, _participant), do: false
-
-  defp focus_participant_title(call, participant) do
-    if focused_participant?(call, participant),
-      do: dgettext("group_call", "Focused participant"),
-      else: dgettext("group_call", "Focus participant")
-  end
-
-  defp pin_participant_title(call, participant) do
-    if pinned_participant?(call, participant),
-      do: dgettext("group_call", "Unpin participant"),
-      else: dgettext("group_call", "Pin participant")
-  end
 
   defp participant_reaction_title(%{nickname: nickname, reaction: reaction}) do
     dgettext("group_call", "%{nickname} reacted with %{reaction}",

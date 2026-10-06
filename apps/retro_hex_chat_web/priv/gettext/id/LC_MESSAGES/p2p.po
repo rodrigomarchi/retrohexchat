@@ -115,7 +115,7 @@ msgstr "Menunggu..."
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:403
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:242
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:517
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:260
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:261
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "Siap"
@@ -125,14 +125,14 @@ msgstr "Siap"
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:142
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:413
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:416
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:258
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:259
 #, elixir-autogen, elixir-format
 msgid "Receiving"
 msgstr "Menerima"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:740
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:384
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:339
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:340
 #, elixir-autogen, elixir-format
 msgid "Reconnecting"
 msgstr "Menghubungkan ulang"
@@ -244,7 +244,7 @@ msgstr "Aktif"
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:257
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:674
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:704
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:257
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:258
 #, elixir-autogen, elixir-format
 msgid "Audio"
 msgstr "Audio"
@@ -637,7 +637,7 @@ msgid "Resolution of the received video, in pixels."
 msgstr "Resolusi video yang diterima, dalam piksel."
 
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:417
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:302
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:303
 #, elixir-autogen, elixir-format
 msgid "Retry"
 msgstr "Coba lagi"
@@ -781,7 +781,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:303
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:673
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:705
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:256
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:257
 #, elixir-autogen, elixir-format
 msgid "Video"
 msgstr "Video"
@@ -835,7 +835,7 @@ msgstr "Anda"
 msgid "Direct P2P topology"
 msgstr "Topologi P2P langsung"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:311
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:312
 #, elixir-autogen, elixir-format
 msgid "End"
 msgstr "Akhiri"
@@ -947,7 +947,7 @@ msgstr "Terima berkas masuk"
 msgid "Audio + Video"
 msgstr "Video + Audio"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:342
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:343
 #, elixir-autogen, elixir-format
 msgid "Automatic recovery did not reconnect. Retry or end the session."
 msgstr ""
@@ -963,7 +963,7 @@ msgstr "Keduanya hidup"
 msgid "Cancel file transfer"
 msgstr "Batalkan transfer berkas"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:338
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:339
 #, elixir-autogen, elixir-format
 msgid "Connection needs attention"
 msgstr "Koneksi membutuhkan perhatian"
@@ -979,7 +979,8 @@ msgid "Direct preferred"
 msgstr "Disukai langsung"
 
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:84
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:305
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:85
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:306
 #, elixir-autogen, elixir-format
 msgid "End P2P session"
 msgstr "Akhiri sesi P2P"
@@ -1065,12 +1066,12 @@ msgstr "Relay tidak tersedia"
 msgid "Resuming transfer"
 msgstr "Melanjutkan transfer"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:297
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:298
 #, elixir-autogen, elixir-format
 msgid "Retry P2P connection"
 msgstr "Coba kembali koneksi P2P"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:371
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:372
 #, elixir-autogen, elixir-format
 msgid "Retrying the peer connection, attempt %{attempt} of 3."
 msgstr "Mencoba ulang koneksi peer, percobaan %{attempt} dari 3."
@@ -1080,7 +1081,7 @@ msgstr "Mencoba ulang koneksi peer, percobaan %{attempt} dari 3."
 msgid "Route and privacy"
 msgstr "Rute dan privasi"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:357
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:358
 #, elixir-autogen, elixir-format
 msgid "The P2P media connection failed. Retry or end the session."
 msgstr "Koneksi media P2P gagal. Coba lagi atau akhiri sesi."
@@ -1115,7 +1116,7 @@ msgstr "Transfer jeda"
 msgid "Transfer rejected"
 msgstr "Transfer ditolak"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:375
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:376
 #, elixir-autogen, elixir-format
 msgid "Trying to restore the peer connection."
 msgstr "Mencoba untuk mengembalikan koneksi rekan."
@@ -1136,7 +1137,7 @@ msgstr "Kendali panggilan tersedia setelah peer bergabung dengan sesi P2P."
 msgid "Decline"
 msgstr "Tolak"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:259
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:260
 #, elixir-autogen, elixir-format
 msgid "Invite pending"
 msgstr "Undang tertunda"
@@ -1167,7 +1168,7 @@ msgstr "%{state} / %{reason}"
 msgid "Attempt"
 msgstr "Percobaan"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:353
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:354
 #, elixir-autogen, elixir-format
 msgid "Could not restore this P2P session. Retry or end the session."
 msgstr "Tidak dapat memulihkan sesi P2P ini. Coba lagi atau akhiri sesi."
@@ -1218,7 +1219,7 @@ msgstr "Belum dimulai"
 msgid "Offer"
 msgstr "Penawaran"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:366
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:367
 #, elixir-autogen, elixir-format
 msgid "Peer media connection was interrupted. Recovery is monitoring the link."
 msgstr "Koneksi media dengan peer terputus. Pemulihan sedang memantau tautan."
@@ -1233,7 +1234,7 @@ msgstr "Alasan"
 msgid "Recovery"
 msgstr "Pemulihan"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:361
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:362
 #, elixir-autogen, elixir-format
 msgid "Restoring this P2P session after reconnect."
 msgstr "Memulihkan sesi P2P ini setelah tersambung kembali."
@@ -1253,7 +1254,7 @@ msgstr "Sumber yang memicu pemulihan: peramban, peer, atau server."
 msgid "State"
 msgstr "Status"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:346
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:347
 #, elixir-autogen, elixir-format
 msgid "This session is still active in another window. Close that window, retry, or end this session."
 msgstr "Sesi ini masih aktif di jendela lain. Tutup jendela itu, coba lagi, atau akhiri sesi ini."

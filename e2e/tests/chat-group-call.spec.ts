@@ -563,8 +563,8 @@ async function openParticipantActions(page: Page, nickname: string) {
 }
 
 function participantPinButton(page: Page, nickname: string) {
-  return participantRow(page, nickname).getByRole("button", {
-    name: /Pin participant|Unpin participant/,
+  return participantRow(page, nickname).getByRole("menuitemcheckbox", {
+    name: /Pin participant/,
   });
 }
 
@@ -583,13 +583,13 @@ async function participantIdForNickname(page: Page, nickname: string) {
 }
 
 function participantCameraModerationButton(page: Page, nickname: string) {
-  return participantRow(page, nickname).getByRole("button", {
+  return participantRow(page, nickname).getByRole("menuitem", {
     name: /Turn participant camera off|Allow participant camera/,
   });
 }
 
 function participantScreenModerationButton(page: Page, nickname: string) {
-  return participantRow(page, nickname).getByRole("button", {
+  return participantRow(page, nickname).getByRole("menuitem", {
     name: /Stop participant screen sharing|Allow participant screen sharing/,
   });
 }
@@ -1837,7 +1837,7 @@ test.describe("Channel group calls", () => {
       await participantPinButton(aliceCall, bob.nick).click();
       await openParticipantActions(aliceCall, bob.nick);
       await expect(participantPinButton(aliceCall, bob.nick)).toHaveAttribute(
-        "aria-pressed",
+        "aria-checked",
         "true",
       );
       await expect(remoteVideoTile(aliceCall)).toHaveAttribute(

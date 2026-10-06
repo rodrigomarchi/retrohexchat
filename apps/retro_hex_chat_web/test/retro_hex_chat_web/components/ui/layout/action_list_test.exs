@@ -86,7 +86,7 @@ defmodule RetroHexChatWeb.Components.UI.ActionListTest do
       html = row(%{action: [action([])]})
 
       assert html =~ ~s(aria-label="Remove #tech")
-      assert html =~ "sr-only"
+      assert html =~ ~s(title="Remove #tech")
     end
 
     test "an action sends its own params and can be disabled in place" do
@@ -141,7 +141,7 @@ defmodule RetroHexChatWeb.Components.UI.ActionListTest do
       assert Floki.attribute(button, "phx-click") == ["remove"]
       assert Floki.attribute(button, "phx-value-nickname") == ["alice"]
       assert Floki.attribute(button, "aria-label") == ["Remove alice"]
-      assert html =~ "sr-only"
+      assert Floki.attribute(button, "title") == ["Remove alice"]
     end
   end
 
