@@ -115,7 +115,7 @@ msgstr "ペンディング..."
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:403
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:242
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:517
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:261
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:257
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "準備完了"
@@ -125,14 +125,14 @@ msgstr "準備完了"
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:142
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:413
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:416
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:259
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:255
 #, elixir-autogen, elixir-format
 msgid "Receiving"
 msgstr "Receiving"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:740
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:384
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:340
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:336
 #, elixir-autogen, elixir-format
 msgid "Reconnecting"
 msgstr "再接続中"
@@ -244,7 +244,7 @@ msgstr "アクティブ"
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:257
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:674
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:704
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:258
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:254
 #, elixir-autogen, elixir-format
 msgid "Audio"
 msgstr "オーディオ"
@@ -259,7 +259,7 @@ msgstr "音声およびデータ チャネルは動き続けることができ�
 msgid "Audio call active"
 msgstr "アクティブ音声通話"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:552
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:547
 #, elixir-autogen, elixir-format
 msgid "Auto layout"
 msgstr "自動レイアウト"
@@ -317,7 +317,7 @@ msgstr "デバイスのチェック"
 msgid "Closed"
 msgstr "休館日"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:596
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:591
 #, elixir-autogen, elixir-format
 msgid "Compact"
 msgstr "コンパクト"
@@ -363,8 +363,7 @@ msgstr "1秒あたりのキロビットで、ピアに送信できる推定帯�
 msgid "Excellent"
 msgstr "よくある質問"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:460
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:65
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:456
 #, elixir-autogen, elixir-format
 msgid "Expand call window"
 msgstr "コールウィンドウの拡大"
@@ -498,8 +497,8 @@ msgstr "ミッキー"
 msgid "Microphone"
 msgstr "マイクロホン"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:527
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:66
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:522
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:63
 #, elixir-autogen, elixir-format
 msgid "Mini call window"
 msgstr "ミニコールウィンドウ"
@@ -627,7 +626,7 @@ msgid "Resolution of the received video, in pixels."
 msgstr "ピクセルで受信したビデオの解像度。"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:417
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:303
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:299
 #, elixir-autogen, elixir-format
 msgid "Retry"
 msgstr "再試行"
@@ -653,27 +652,27 @@ msgstr "スクリーン"
 msgid "Screen %{duration}"
 msgstr "スクリーン %{duration}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:633
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:628
 #, elixir-autogen, elixir-format
 msgid "Send clap"
 msgstr "clap を送る"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:631
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:626
 #, elixir-autogen, elixir-format
 msgid "Send heart reaction"
 msgstr "心臓反応を送信"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:634
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:629
 #, elixir-autogen, elixir-format
 msgid "Send laugh"
 msgstr "笑いを送る"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:632
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:627
 #, elixir-autogen, elixir-format
 msgid "Send thumbs up"
 msgstr "親指を送信します"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:635
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:630
 #, elixir-autogen, elixir-format
 msgid "Send wow"
 msgstr "wow を送信する"
@@ -688,7 +687,7 @@ msgstr "サインイン"
 msgid "Session"
 msgstr "セッション"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:433
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:429
 #, elixir-autogen, elixir-format
 msgid "Share screen"
 msgstr "共有画面"
@@ -703,13 +702,13 @@ msgstr "タイルとしての自己表示"
 msgid "Source"
 msgstr "ソース"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:585
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:580
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:170
 #, elixir-autogen, elixir-format
 msgid "Speaker"
 msgstr "スピーカー"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:574
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:569
 #, elixir-autogen, elixir-format
 msgid "Split"
 msgstr "スプリート"
@@ -736,7 +735,7 @@ msgstr "マイクで始める"
 msgid "Status"
 msgstr "ステータス"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:432
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:428
 #, elixir-autogen, elixir-format
 msgid "Stop sharing screen"
 msgstr "共有画面の停止"
@@ -766,7 +765,7 @@ msgstr "パケット到着タイミングの変化。 ハイジッタは、雑�
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:303
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:673
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:705
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:257
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:253
 #, elixir-autogen, elixir-format
 msgid "Video"
 msgstr "ビデオ"
@@ -818,7 +817,7 @@ msgstr "you"
 msgid "Direct P2P topology"
 msgstr "ダイレクトP2Pトポロジー"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:312
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:308
 #, elixir-autogen, elixir-format
 msgid "End"
 msgstr "終了"
@@ -839,13 +838,12 @@ msgid "Live"
 msgstr "ライブ"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:256
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:258
 #: lib/retro_hex_chat_web/live/app/p2p_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2Pセッション"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:547
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:542
 #, elixir-autogen, elixir-format
 msgid "P2P layout"
 msgstr "P2Pレイアウト"
@@ -855,18 +853,18 @@ msgstr "P2Pレイアウト"
 msgid "P2P session summary"
 msgstr "P2Pセッションの概要"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:493
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:488
 #, elixir-autogen, elixir-format
 msgid "P2P view and window controls"
 msgstr "P2Pビューとウィンドウコントロール"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:503
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:498
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:44
 #, elixir-autogen, elixir-format
 msgid "P2P window controls"
 msgstr "P2Pウィンドウコントロール"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:623
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:618
 #, elixir-autogen, elixir-format
 msgid "Reactions"
 msgstr "リアクション"
@@ -926,7 +924,7 @@ msgstr "受信ファイルを受け入れる"
 msgid "Audio + Video"
 msgstr "音声+ビデオ"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:343
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:339
 #, elixir-autogen, elixir-format
 msgid "Automatic recovery did not reconnect. Retry or end the session."
 msgstr "自動回復は再接続しませんでした。 セッションを再試行または終了します。"
@@ -941,7 +939,7 @@ msgstr "両方のライブ"
 msgid "Cancel file transfer"
 msgstr "ファイルの転送をキャンセル"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:339
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:335
 #, elixir-autogen, elixir-format
 msgid "Connection needs attention"
 msgstr "関係は注意を必要とします"
@@ -956,9 +954,9 @@ msgstr "データデータ"
 msgid "Direct preferred"
 msgstr "直接好まれる"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:84
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:85
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:306
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:80
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:81
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:302
 #, elixir-autogen, elixir-format
 msgid "End P2P session"
 msgstr "P2Pセッションを終了"
@@ -1008,8 +1006,8 @@ msgstr "メディアのデフォルト"
 msgid "No video"
 msgstr "ビデオなし"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:450
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:517
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:446
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:512
 #, elixir-autogen, elixir-format
 msgid "Open stats"
 msgstr "ステータスを開く"
@@ -1044,12 +1042,12 @@ msgstr "リレー使用不可"
 msgid "Resuming transfer"
 msgstr "移転再開"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:298
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:294
 #, elixir-autogen, elixir-format
 msgid "Retry P2P connection"
 msgstr "Retry P2P接続"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:372
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:368
 #, elixir-autogen, elixir-format
 msgid "Retrying the peer connection, attempt %{attempt} of 3."
 msgstr "ピア接続を再試行中、3 回中 %{attempt} 回目です。"
@@ -1059,7 +1057,7 @@ msgstr "ピア接続を再試行中、3 回中 %{attempt} 回目です。"
 msgid "Route and privacy"
 msgstr "ルートとプライバシー"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:358
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:354
 #, elixir-autogen, elixir-format
 msgid "The P2P media connection failed. Retry or end the session."
 msgstr "P2Pメディア接続が失敗しました。 セッションを再試行または終了します。"
@@ -1094,7 +1092,7 @@ msgstr "トランスファー"
 msgid "Transfer rejected"
 msgstr "譲渡拒否"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:376
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:372
 #, elixir-autogen, elixir-format
 msgid "Trying to restore the peer connection."
 msgstr "相手の接続を復元しようとします。"
@@ -1115,7 +1113,7 @@ msgstr "ピアがP2Pセッションに参加した後、コールコントロー
 msgid "Decline"
 msgstr "拒否"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:260
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:256
 #, elixir-autogen, elixir-format
 msgid "Invite pending"
 msgstr "招待状"
@@ -1146,7 +1144,7 @@ msgstr "%{state} / %{reason}"
 msgid "Attempt"
 msgstr "試行"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:354
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:350
 #, elixir-autogen, elixir-format
 msgid "Could not restore this P2P session. Retry or end the session."
 msgstr "この P2P セッションを復旧できませんでした。再試行するか、セッションを終了してください。"
@@ -1197,7 +1195,7 @@ msgstr "未開始"
 msgid "Offer"
 msgstr "オファー"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:367
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:363
 #, elixir-autogen, elixir-format
 msgid "Peer media connection was interrupted. Recovery is monitoring the link."
 msgstr "相手とのメディア接続が切断されました。復旧が接続を監視しています。"
@@ -1212,7 +1210,7 @@ msgstr "理由"
 msgid "Recovery"
 msgstr "復旧"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:362
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:358
 #, elixir-autogen, elixir-format
 msgid "Restoring this P2P session after reconnect."
 msgstr "再接続後にこの P2P セッションを復旧しています。"
@@ -1232,7 +1230,7 @@ msgstr "復旧のきっかけとなった発生源（ブラウザー、相手、
 msgid "State"
 msgstr "状態"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:347
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:343
 #, elixir-autogen, elixir-format
 msgid "This session is still active in another window. Close that window, retry, or end this session."
 msgstr "このセッションは別のウィンドウでまだ有効です。そのウィンドウを閉じるか、再試行するか、このセッションを終了してください。"
@@ -1372,7 +1370,27 @@ msgstr "%{peer} との P2P セッションを専用のタブで開く"
 msgid "Decline P2P request"
 msgstr "P2Pリクエストを断る"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:471
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:466
 #, elixir-autogen, elixir-format
 msgid "Leave"
 msgstr "退出"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:464
+#, elixir-autogen, elixir-format
+msgid "Leave call"
+msgstr "通話から退出"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:259
+#, elixir-autogen, elixir-format
+msgid "P2P Session · %{state}"
+msgstr "P2Pセッション · %{state}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:415
+#, elixir-autogen, elixir-format
+msgid "Toggle camera"
+msgstr "トグルカメラ"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:393
+#, elixir-autogen, elixir-format
+msgid "Toggle microphone"
+msgstr "マイクを切り替える"

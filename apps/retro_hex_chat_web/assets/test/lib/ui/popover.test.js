@@ -2,11 +2,11 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import {
   POPOVER_CLOSE_EVENT,
   installPopoverBehaviour,
-  keepDisclosureStateAcrossPatch,
   nextMenuRow,
   panelPosition,
   popoversOutside,
 } from "../../../js/lib/ui/popover";
+import { keepDisclosureStateAcrossPatch } from "../../../js/lib/ui/disclosure_state";
 
 function popover(id) {
   const details = document.createElement("details");
@@ -164,6 +164,35 @@ describe("ui/popover", () => {
     expect(document.activeElement).toBe(one);
   });
 
+  it("ArrowDown on a menu's trigger opens it on the first row", () => {
+    const details = document.createElement("details");
+    details.dataset.popover = "";
+    details.innerHTML = `<summary>m</summary><div role="menu">
+      <button role="menuitem">one</button><button role="menuitem">two</button></div>`;
+    document.body.appendChild(details);
+    const summary = details.querySelector("summary");
+    summary.focus();
+
+    summary.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }));
+    details.dispatchEvent(new Event("toggle"));
+
+    expect(details.open).toBe(true);
+    expect(document.activeElement).toBe(details.querySelector("button"));
+  });
+
+  it("tabbing out of an open popover closes it", () => {
+    const a = popover("a");
+    a.open = true;
+    const outside = document.createElement("button");
+    document.body.appendChild(outside);
+
+    a.querySelector("button").dispatchEvent(
+      new FocusEvent("focusout", { bubbles: true, relatedTarget: outside }),
+    );
+
+    expect(a.open).toBe(false);
+  });
+
   it("nextMenuRow covers Home, End and an empty menu", () => {
     const rows = ["a", "b", "c"];
     expect(nextMenuRow(rows, "b", "Home")).toBe("a");
@@ -171,6 +200,19 @@ describe("ui/popover", () => {
     expect(nextMenuRow(rows, "a", "ArrowUp")).toBe("c");
     expect(nextMenuRow([], null, "ArrowDown")).toBe(null);
     expect(nextMenuRow(rows, "a", "x")).toBe(null);
+  });
+
+  it("a popover behind a modal dialog leaves Escape to the dialog", () => {
+    const a = popover("a");
+    a.open = true;
+    const modal = document.createElement("div");
+    modal.setAttribute("aria-modal", "true");
+    document.body.appendChild(modal);
+
+    document.body.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+
+    expect(a.open).toBe(true);
+    modal.remove();
   });
 
   it("installs its listeners once per document", () => {

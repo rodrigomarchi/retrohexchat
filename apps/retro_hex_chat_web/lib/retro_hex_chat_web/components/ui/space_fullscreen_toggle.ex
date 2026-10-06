@@ -13,6 +13,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceFullscreenToggle do
   """
   use RetroHexChatWeb, :html
 
+  import RetroHexChatWeb.Components.UI.ToolButton
+
   alias RetroHexChatWeb.Icons
 
   @spec space_fullscreen_toggle(map()) :: Phoenix.LiveView.Rendered.t()
@@ -24,7 +26,12 @@ defmodule RetroHexChatWeb.Components.UI.SpaceFullscreenToggle do
       data-space-fullscreen-toggle
       data-testid="space-fullscreen-toggle"
       aria-label={dgettext("chat", "Toggle fullscreen")}
-      class="media-dock-button icon-on-dark group absolute top-3 right-3 z-10 select-none border-white/20 bg-black/60"
+      class={
+        tool_button_class(
+          variant: "dock",
+          class: "media-dock-button--floating group absolute top-3 right-3 z-10 select-none"
+        )
+      }
     >
       <Icons.icon_fullscreen_enter class="h-4 w-4 group-data-[fullscreen]:hidden" />
       <Icons.icon_fullscreen_exit class="hidden h-4 w-4 group-data-[fullscreen]:block" />

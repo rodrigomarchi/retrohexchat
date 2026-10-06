@@ -411,7 +411,7 @@
  * One: it takes the stage and your camera sits in a corner, clear of the dock
  * (`--media-dock-clearance`, published by the dock's host).
  */
-.group-call-room[data-layout-mode="auto"]
+.group-call-room[data-layout-mode="auto"][data-self-view="tile"]
   .group-call-video-surface[data-remote-count="0"]
   .group-call-empty-tile {
   position: absolute;
@@ -425,11 +425,11 @@
   color: #dfdfdf;
 }
 
-.group-call-room[data-layout-mode="auto"]
+.group-call-room[data-layout-mode="auto"][data-self-view="tile"]
   .group-call-video-surface[data-remote-count="0"]
   .group-call-empty-tile
   .text-foreground,
-.group-call-room[data-layout-mode="auto"]
+.group-call-room[data-layout-mode="auto"][data-self-view="tile"]
   .group-call-video-surface[data-remote-count="0"]
   .group-call-empty-tile
   .text-muted-foreground {

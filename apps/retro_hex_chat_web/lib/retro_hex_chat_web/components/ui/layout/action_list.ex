@@ -261,6 +261,7 @@ defmodule RetroHexChatWeb.Components.UI.ActionList do
     ~H"""
     <.tool_button
       label={@label}
+      size="md"
       class={[
         "action-list__action",
         @variant == "destructive" && "hover:bg-destructive hover:text-destructive-foreground"

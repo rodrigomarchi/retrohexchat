@@ -1,10 +1,11 @@
 import { log } from "../logger";
 
 /**
- * Loads the Win98 tooltips and up-down arrows off the app's critical path.
- * Neither is needed to draw the first screen — a tooltip waits half a second
- * for a resting pointer, an arrow waits for a click — so they arrive as their
- * own chunk right after boot instead of weighing on `app.js`.
+ * Loads the Win98 tooltips, up-down arrows and popover behaviour off the
+ * app's critical path. None is needed to draw the first screen — a tooltip
+ * waits half a second for a resting pointer, an arrow or a popover waits for a
+ * click — so they arrive as their own chunk right after boot instead of
+ * weighing on `app.js`.
  *
  * @param {Document} doc
  * @returns {Promise<void>}

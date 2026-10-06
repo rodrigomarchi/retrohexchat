@@ -255,7 +255,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
 
   defp entry_text(:idle), do: dgettext("p2p", "P2P Session")
 
-  defp entry_text(status), do: dgettext("p2p", "P2P Session") <> " · " <> status_label(status)
+  defp entry_text(status),
+    do: dgettext("p2p", "P2P Session · %{state}", state: status_label(status))
 
   defp state_text_class(:idle), do: nil
   defp state_text_class(:invite), do: "text-warning"

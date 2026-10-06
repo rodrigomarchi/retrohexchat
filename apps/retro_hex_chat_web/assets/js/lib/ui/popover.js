@@ -3,9 +3,10 @@
  *
  * A disclosure keeps its own state in the `open` attribute, which the server
  * never renders: every patch would hand it back closed, and in a chat a patch
- * arrives with every message. `keepDisclosureStateAcrossPatch` is a morphdom
- * `onBeforeElUpdated` step that carries the browser's state into the incoming
- * element, so a patch never opens or closes one.
+ * arrives with every message. `keepDisclosureStateAcrossPatch`
+ * (`disclosure_state.js`, kept apart so the entrypoints' critical path stays
+ * small) is a morphdom `onBeforeElUpdated` step that carries the browser's
+ * state into the incoming element, so a patch never opens or closes one.
  *
  * Popovers (`details[data-popover]`) also close the way a menu does: a click
  * outside, Escape, or a `rhc:popover-close` event dispatched from inside one
@@ -70,20 +71,6 @@ export function placePanel(popover) {
   });
 }
 
-/**
- * Carry what the browser owns into a patch: a disclosure's open state, and the
- * viewport position `placePanel` gave an open popover's panel (the server
- * renders neither, so a patch would otherwise drop both).
- */
-export function keepDisclosureStateAcrossPatch(fromEl, toEl) {
-  if (fromEl?.tagName === "DETAILS" && toEl?.tagName === "DETAILS") {
-    toEl.open = fromEl.open;
-  }
-  if (fromEl?.hasAttribute?.("data-popover-panel") && fromEl.hasAttribute("style")) {
-    toEl.setAttribute("style", fromEl.getAttribute("style"));
-  }
-}
-
 /** The open popovers a click on `target` leaves behind. */
 export function popoversOutside(root, target) {
   return Array.from(root.querySelectorAll(OPEN_POPOVERS)).filter(
@@ -92,13 +79,19 @@ export function popoversOutside(root, target) {
 }
 
 /**
- * The open popovers someone can actually see. One left open in a hidden
- * window must not take the Escape meant for the dialog in front of it.
+ * The open popovers someone can actually see and reach. One left open in a
+ * hidden window, or behind a modal dialog, must not take the Escape meant for
+ * the dialog in front of it.
  */
 export function visibleOpenPopovers(root) {
-  return Array.from(root.querySelectorAll(OPEN_POPOVERS)).filter((popover) =>
-    typeof popover.checkVisibility === "function" ? popover.checkVisibility() : true,
+  const modal = Array.from(root.querySelectorAll('[aria-modal="true"]')).find(isShown);
+  return Array.from(root.querySelectorAll(OPEN_POPOVERS)).filter(
+    (popover) => isShown(popover) && (!modal || modal.contains(popover)),
   );
+}
+
+function isShown(el) {
+  return typeof el.checkVisibility === "function" ? el.checkVisibility() : true;
 }
 
 /** The row an arrow key moves to, wrapping at both ends. */
@@ -118,14 +111,46 @@ function close(popover) {
   if (hadFocus) popover.querySelector("summary")?.focus();
 }
 
-function moveWithinMenu(event) {
-  const menu = event.target.closest?.('details[data-popover][open] [role="menu"]');
-  if (!menu) return;
-  const rows = Array.from(menu.querySelectorAll(MENU_ROWS));
-  const next = nextMenuRow(rows, event.target, event.key);
+function menuRows(popover) {
+  const menu = popover.querySelector(':scope > [role="menu"]');
+  return menu ? Array.from(menu.querySelectorAll(MENU_ROWS)) : [];
+}
+
+/**
+ * The menu keyboard: on the trigger, ArrowDown opens the menu on its first
+ * row and Enter or Space marks the opening as a keyboard one (the `toggle`
+ * that follows moves focus into the menu); inside, the arrows move between
+ * rows.
+ */
+function handleMenuKeys(event) {
+  const summary = event.target.closest?.("details[data-popover] > summary");
+  if (summary) {
+    const popover = summary.parentElement;
+    if (menuRows(popover).length === 0) return;
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      popover.dataset.openedByKey = "true";
+      if (popover.open) menuRows(popover)[0]?.focus();
+      else popover.open = true;
+    } else if (event.key === "Enter" || event.key === " ") {
+      popover.dataset.openedByKey = "true";
+    }
+    return;
+  }
+
+  const popover = event.target.closest?.("details[data-popover][open]");
+  if (!popover) return;
+  const next = nextMenuRow(menuRows(popover), event.target, event.key);
   if (!next) return;
   event.preventDefault();
   next.focus();
+}
+
+/** A menu opened from the keyboard puts the focus on its first row. */
+function focusFirstRowIfKeyboard(popover) {
+  if (popover.dataset.openedByKey !== "true") return;
+  delete popover.dataset.openedByKey;
+  menuRows(popover)[0]?.focus();
 }
 
 /**
@@ -143,7 +168,7 @@ export function installPopoverBehaviour(doc) {
     "keydown",
     (event) => {
       if (event.isComposing) return;
-      if (event.key !== "Escape") return moveWithinMenu(event);
+      if (event.key !== "Escape") return handleMenuKeys(event);
       const open = visibleOpenPopovers(doc);
       if (open.length === 0) return;
       open.forEach(close);
@@ -156,10 +181,20 @@ export function installPopoverBehaviour(doc) {
   doc.addEventListener(
     "toggle",
     (event) => {
-      if (event.target.matches?.("details[data-popover][open]")) placePanel(event.target);
+      if (!event.target.matches?.("details[data-popover][open]")) return;
+      placePanel(event.target);
+      focusFirstRowIfKeyboard(event.target);
     },
     true,
   );
+
+  // Tabbing out of an open popover closes it, as leaving a menu does.
+  doc.addEventListener("focusout", (event) => {
+    const popover = event.target.closest?.("details[data-popover][open]");
+    if (popover && event.relatedTarget && !popover.contains(event.relatedTarget)) {
+      popover.open = false;
+    }
+  });
 
   const reposition = () => visibleOpenPopovers(doc).forEach(placePanel);
   doc.defaultView.addEventListener("resize", reposition);

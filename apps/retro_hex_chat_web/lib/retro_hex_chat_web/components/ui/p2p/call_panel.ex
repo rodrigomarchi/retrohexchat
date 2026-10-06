@@ -390,10 +390,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
       </.tool_button>
       <.tool_button
         :if={media_on?(@call, :audio)}
-        label={dgettext("lobby", "Mute")}
+        label={dgettext("p2p", "Toggle microphone")}
         variant="dock"
         active={@local_muted}
-        pressed={@local_muted}
+        pressed={!@local_muted}
         data-lobby-media-action="mute"
         data-testid="p2p-call-toggle-mute"
       >
@@ -412,14 +412,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
       </.tool_button>
       <.tool_button
         :if={media_on?(@call, :video)}
-        label={
-          if @local_camera_off,
-            do: dgettext("lobby", "Camera On"),
-            else: dgettext("lobby", "Camera Off")
-        }
+        label={dgettext("p2p", "Toggle camera")}
         variant="dock"
         active={@local_camera_off}
-        pressed={@local_camera_off}
+        pressed={!@local_camera_off}
         data-lobby-media-action="camera"
         data-testid="p2p-call-toggle-camera"
       >
@@ -459,14 +455,13 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         :if={@mini}
         label={dgettext("p2p", "Expand call window")}
         variant="dock"
-        pressed
         phx-click="p2p_toggle_call_mini"
         data-testid="p2p-call-mini-toggle"
       >
         <CallControls.icon_call_expand class="h-4 w-4" />
       </.tool_button>
       <.tool_button
-        label={dgettext("lobby", "End call")}
+        label={dgettext("p2p", "Leave call")}
         variant="dock"
         caption={if !@mini, do: dgettext("p2p", "Leave")}
         tone="danger"
@@ -715,6 +710,11 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
       <span class="flex items-center gap-1 font-bold">
         <CallControls.icon_call_devices class="h-4 w-4" />
         {dgettext("lobby", "Devices")}
+      </span>
+      <%!-- Opening asks the browser for its devices; until the list is back
+            the panel says so instead of showing an empty frame. --%>
+      <span :if={is_nil(@devices)} class="text-[10px] text-muted-foreground">
+        {dgettext("ui", "Loading...")}
       </span>
       <label
         :for={kind <- ~w(audioinput videoinput audiooutput)}

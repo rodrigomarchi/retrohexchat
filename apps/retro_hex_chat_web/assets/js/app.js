@@ -17,7 +17,7 @@ import { loadCurrentLocaleCatalog } from "./lib/i18n";
 import { S3DirectUploader } from "./lib/uploads/s3_direct";
 import { registerServiceWorker } from "./lib/system/service_worker.js";
 import { loadRetroChrome } from "./lib/ui/retro_chrome_loader";
-import { installPopoverBehaviour, keepDisclosureStateAcrossPatch } from "./lib/ui/popover";
+import { keepDisclosureStateAcrossPatch } from "./lib/ui/disclosure_state";
 
 const Hooks = buildHooks();
 
@@ -67,9 +67,9 @@ await loadCurrentLocaleCatalog();
 // connect if there are any LiveViews on the page
 liveSocket.connect();
 
-// Win98 tooltips over every `title`, and the arrows of every up-down field.
+// Win98 tooltips over every `title`, the arrows of every up-down field, and how
+// popovers close and place themselves.
 loadRetroChrome(document);
-installPopoverBehaviour(document);
 
 // expose liveSocket on window for web console debug logs and latency simulation:
 // >> liveSocket.enableDebug()

@@ -6,7 +6,8 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import { buildShowcaseHooks } from "./hooks/showcase_hooks";
 import { createPlausibleTracker } from "./lib/analytics/plausible";
-import { installPopoverBehaviour, keepDisclosureStateAcrossPatch } from "./lib/ui/popover";
+import { keepDisclosureStateAcrossPatch } from "./lib/ui/disclosure_state";
+import { installPopoverBehaviour } from "./lib/ui/popover";
 
 const Hooks = buildShowcaseHooks();
 

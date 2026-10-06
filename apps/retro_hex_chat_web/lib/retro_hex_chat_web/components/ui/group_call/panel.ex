@@ -448,7 +448,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         <.tool_button
           label={dgettext("group_call", "Expand conference")}
           variant="flat"
-          pressed={mini_mode?(@call)}
           phx-click={@on_toggle_mini}
           data-testid="group-call-mini-expand"
         >

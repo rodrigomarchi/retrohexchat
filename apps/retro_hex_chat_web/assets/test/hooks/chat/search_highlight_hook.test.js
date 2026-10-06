@@ -50,6 +50,10 @@ describe("SearchHighlightHook", () => {
     });
 
     it("reapplies the last search when paginated messages enter the DOM", async () => {
+      // The re-highlight is a MutationObserver callback (a microtask) that
+      // schedules a zero-delay timer. Fake timers make that order exact instead
+      // of racing real 10ms waits on a loaded machine.
+      vi.useFakeTimers();
       const container = setupChatMessages(
         '<div data-message-id="1"><span class="chat-content">no match</span></div>',
       );
@@ -60,13 +64,15 @@ describe("SearchHighlightHook", () => {
         regex: false,
       });
       expect(document.querySelectorAll("mark.search-highlight")).toHaveLength(0);
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      vi.runAllTimers();
 
       container.insertAdjacentHTML(
         "afterbegin",
         '<div data-message-id="2"><span class="chat-content">older-match</span></div>',
       );
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await Promise.resolve();
+      vi.runAllTimers();
+      vi.useRealTimers();
 
       const marks = document.querySelectorAll("mark.search-highlight");
       expect(marks).toHaveLength(1);

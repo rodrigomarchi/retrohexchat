@@ -76,6 +76,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
               thing left that can say another conversation is waiting. --%>
         <.action_button
           event="toggle_conversations"
+          toggle
           active={@conversations_open}
           badge={@conversations_unread}
           text={dgettext("chat", "Conversations")}
@@ -86,6 +87,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
         </.action_button>
         <.action_button
           event="toggle_nicklist"
+          toggle
           active={@nicklist_open}
           text={dgettext("chat", "Users")}
           label={dgettext("chat", "Show nicklist")}
@@ -158,6 +160,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
   attr :text, :string, required: true, doc: "Visible label — also the accessible name"
   attr :label, :string, required: true, doc: "Longer description for the tooltip"
   attr :badge, :integer, default: 0, doc: "Count to ride on the glyph; 0 draws nothing"
+  attr :toggle, :boolean, default: false, doc: "a show/hide toggle, announced as pressed"
   attr :testid, :string, required: true
   attr :rest, :global
   slot :inner_block, required: true
@@ -170,7 +173,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationToolbarActions do
       variant="flat"
       size="xs"
       active={@active}
-      pressed={@active}
+      pressed={if @toggle, do: @active}
       class="conversation-toolbar-button"
       phx-click={@event}
       data-testid={@testid}

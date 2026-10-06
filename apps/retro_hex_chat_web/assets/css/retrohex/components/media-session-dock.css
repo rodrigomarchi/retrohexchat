@@ -2,21 +2,27 @@
  * The dock: a translucent toolbar laid over the bottom of a call's video.
  *
  * Its host is the stage that holds the video (`.media-dock-host`). The dock
- * shows while the pointer is over the stage or anything inside it has focus,
- * and fades out a moment after the pointer leaves. It fades by opacity only —
+ * shows while the pointer is over the stage or the keyboard is inside it, and
+ * fades out a moment after the pointer leaves. It fades by opacity only —
  * the buttons stay in the layout and in the accessibility tree, and a click
  * on the stage always lands on a real control. Touch screens have no hover to
  * bring it back, so there it never fades.
  */
 
 /*
- * The host publishes how much of its bottom edge the dock is covering, and how
- * long the dock waits before fading, so anything laid in the corner of the
- * picture (a call's own camera) can ride above the dock and settle with it.
+ * The host publishes three things the dock and anything laid in the corner of
+ * the picture (a call's own camera) read: how much of the bottom edge the dock
+ * covers, how long it waits before fading, and whether it is showing.
+ *
+ * "Idle" is one rule: no pointer on the stage, no keyboard focus inside it
+ * (`:focus-visible` — a mouse click leaves focus on the button it pressed,
+ * which must not hold the dock up) and no popover open. It only exists where
+ * there is a hover to bring the dock back; a touch screen never goes idle.
  */
 .media-dock-host {
   --media-dock-clearance: 60px;
   --media-dock-fade-delay: 0s;
+  --media-dock-opacity: 1;
   position: relative;
 }
 
@@ -24,9 +30,12 @@
   --media-dock-clearance: 40px;
 }
 
-.media-dock-host:not(:hover):not(:focus-within):not(:has(details[open])) {
-  --media-dock-clearance: 12px;
-  --media-dock-fade-delay: 1.6s;
+@media (hover: hover) {
+  .media-dock-host:not(:hover):not(:has(:focus-visible)):not(:has(details[open])) {
+    --media-dock-clearance: 12px;
+    --media-dock-fade-delay: 1.6s;
+    --media-dock-opacity: 0;
+  }
 }
 
 .media-dock {
@@ -43,41 +52,28 @@
   padding: 6px 8px;
   background: rgba(0, 0, 0, 0.6);
   border-top: 1px solid rgba(255, 255, 255, 0.18);
-  opacity: 1;
-  transition: opacity 240ms ease-out;
-  animation: media-dock-intro 4s;
+  opacity: var(--media-dock-opacity);
+  transition: opacity 240ms ease-out var(--media-dock-fade-delay);
+  animation: media-dock-intro 4s ease-out;
 }
 
-/* An open popover (reactions, devices) holds the dock up while it is open. */
-.media-dock-host:not(:hover):not(:focus-within):not(:has(details[open])) .media-dock {
-  opacity: 0;
-  transition-delay: var(--media-dock-fade-delay);
-}
-
+/* On arrival the dock shows itself for a moment, then fades into whatever
+   state the stage is in — so people learn it is there. */
 @keyframes media-dock-intro {
   0%,
+  85% {
+    opacity: 1;
+  }
+
   100% {
-    opacity: 1;
-  }
-}
-
-@media (hover: none) {
-  .media-dock-host:not(:hover):not(:focus-within):not(:has(details[open])) {
-    --media-dock-clearance: 60px;
-  }
-
-  .media-dock-host:not(:hover):not(:focus-within):not(:has(details[open])) .media-dock {
-    opacity: 1;
-  }
-
-  .media-dock-host:has(.media-dock--compact):not(:hover):not(:focus-within) {
-    --media-dock-clearance: 40px;
+    opacity: var(--media-dock-opacity);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .media-dock {
     transition: none;
+    animation: none;
   }
 }
 
@@ -220,6 +216,12 @@
   .media-dock-button--captioned {
     padding: 0 8px;
   }
+}
+
+/* A dock button with no dock behind it carries the glass itself. */
+.media-dock-button--floating {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.6);
 }
 
 /* ── Controls floating over a scene ──────────────────────────────────────────

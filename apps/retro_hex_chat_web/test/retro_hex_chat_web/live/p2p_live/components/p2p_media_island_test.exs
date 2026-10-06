@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIslandTest do
     assert html =~ ~s(phx-hook="LobbyMediaHook")
     assert html =~ ~s(data-testid="lobby-call-start-audio")
     assert html =~ ~s(data-testid="lobby-call-start-video")
-    refute html =~ "End call"
+    refute html =~ "Leave call"
   end
 
   test "auto-joins and surfaces the call when the peer turns media on (surface_peer_media)" do
@@ -41,7 +41,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIslandTest do
     # This is the synchronous interim state before the hook echoes the real call
     # state, so we render as sending nothing (enable-on-demand controls).
     assert html =~ ~s(id="lobby-remote-video")
-    assert html =~ "End call"
+    assert html =~ "Leave call"
     assert html =~ ~s(data-lobby-media-action="enable-audio")
     assert html =~ ~s(data-lobby-media-action="enable-video")
     # Interim state has no live track yet → no mute/camera toggles.

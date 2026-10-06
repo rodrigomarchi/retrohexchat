@@ -15,7 +15,8 @@
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import { buildConnectHooks } from "./hooks/connect_hooks";
-import { installPopoverBehaviour, keepDisclosureStateAcrossPatch } from "./lib/ui/popover";
+import { keepDisclosureStateAcrossPatch } from "./lib/ui/disclosure_state";
+import { installPopoverBehaviour } from "./lib/ui/popover";
 
 let liveSocket = null;
 

@@ -60,11 +60,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PSessionConsole do
 
         <:actions>
           <.tool_button
-            label={
-              if Map.get(@p2p_session, :call_mini, false),
-                do: dgettext("p2p", "Expand call window"),
-                else: dgettext("p2p", "Mini call window")
-            }
+            label={dgettext("p2p", "Mini call window")}
             variant="flat"
             active={Map.get(@p2p_session, :call_mini, false)}
             pressed={Map.get(@p2p_session, :call_mini, false)}

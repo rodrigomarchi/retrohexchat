@@ -37,8 +37,10 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
             channel, and that card is the door. An anchor beside it was a
             second door that skipped the conversation — people walked into a
             conference the channel was never told about. --%>
+      <%!-- The label is also where the state reaches a phone, which hides the
+            words beside the glyph, and a screen reader there. --%>
       <.tool_button
-        label={open_title(@identified)}
+        label={if @active, do: entry_text(true, @state), else: open_title(@identified)}
         named_by_content
         variant="flat"
         size="xs"
@@ -368,7 +370,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   defp entry_text(false, _state), do: dgettext("group_call", "Group Call")
 
   defp entry_text(true, state),
-    do: dgettext("group_call", "Group Call") <> " · " <> state_label(state)
+    do: dgettext("group_call", "Group Call · %{state}", state: state_label(state))
 
   defp active_text_class(false, _state), do: nil
   defp active_text_class(true, state), do: state_text_class(state)
