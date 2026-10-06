@@ -837,7 +837,7 @@ msgid "Browser"
 msgstr "Navigateur"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:79
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:520
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:523
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Annuler"
@@ -1536,7 +1536,7 @@ msgstr "Marine"
 msgid "Next"
 msgstr "Suivant"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1148
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1151
 #, elixir-autogen, elixir-format
 msgid "Next: %{parameter}"
 msgstr "Suivant: %{parameter}"
@@ -2194,7 +2194,7 @@ msgstr "Vous êtes maintenant identifié comme %{nickname}"
 msgid "You are now known as %{nickname}"
 msgstr "Vous êtes maintenant connu sous le nom de %{nickname}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1161
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1164
 #, elixir-autogen, elixir-format
 msgid "You are setting: %{flag} (%{label})"
 msgstr "Vous définissez : %{flag} (%{label})"
@@ -2725,7 +2725,7 @@ msgstr "Aucun paramètre serveur n'a été modifié."
 msgid "Notice message"
 msgstr "Message de notification"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:681
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:684
 #, elixir-autogen, elixir-format
 msgid "Notice message cannot be empty"
 msgstr "Message de notification ne peut pas être vide"
@@ -3546,32 +3546,32 @@ msgstr "Barre de la liste des utilisateurs"
 msgid "Archive"
 msgstr "Archive"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:472
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:473
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:475
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:476
 #, elixir-autogen, elixir-format
 msgid "Attach file"
 msgstr "Joindre un fichier"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:724
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:727
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "Pièce jointe supérieure à la limite %{mb} MB"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:730
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:733
 #, elixir-autogen, elixir-format
 msgid "Attachment type not accepted"
 msgstr "Type de pièce jointe non accepté"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:659
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:783
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:662
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:786
 #, elixir-autogen, elixir-format
 msgid "Attachment upload could not be confirmed"
 msgstr "Le téléchargement des pièces jointes n'a pas pu être confirmé"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:731
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:744
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:802
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:813
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:734
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:747
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:805
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:816
 #, elixir-autogen, elixir-format
 msgid "Attachment upload failed"
 msgstr "Le téléchargement de la pièce jointe a échoué"
@@ -3611,7 +3611,7 @@ msgstr "Bloc de code"
 msgid "Copy Source"
 msgstr "Copier la source"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:720
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:723
 #, elixir-autogen, elixir-format
 msgid "Could not store attachment: %{reason}"
 msgstr "Impossible de stocker la pièce jointe : %{reason}"
@@ -3703,7 +3703,7 @@ msgstr "Aperçu"
 msgid "Quote"
 msgstr "Citation"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:570
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:573
 #, elixir-autogen, elixir-format
 msgid "Remove attachment"
 msgstr "Retirer la pièce jointe"
@@ -3726,8 +3726,8 @@ msgstr "Supprimer la mise en forme"
 msgid "Text"
 msgstr "Texte"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:729
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:805
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:732
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:808
 #, elixir-autogen, elixir-format
 msgid "Too many attachments"
 msgstr "Trop de pièces jointes"
@@ -3742,7 +3742,7 @@ msgstr "Vidéo"
 msgid "Write"
 msgstr "Écrire"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:887
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:890
 #, elixir-autogen, elixir-format
 msgid "You"
 msgstr "Vous"
@@ -4212,18 +4212,18 @@ msgstr "Ce serveur"
 msgid "Discard the recording"
 msgstr "Supprimer l'enregistrement"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:845
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:848
 #, elixir-autogen, elixir-format
 msgid "This browser cannot record. Attach an audio file instead."
 msgstr ""
 "Ce navigateur ne peut pas enregistrer. Joignez plutôt un fichier audio."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:839
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:842
 #, elixir-autogen, elixir-format
 msgid "This browser did not give access to the microphone."
 msgstr "Ce navigateur n'a pas donné accès au microphone."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:824
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:827
 #, elixir-autogen, elixir-format
 msgid "This browser recorded in a format this chat cannot send"
 msgstr ""
@@ -4231,7 +4231,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:150
 #: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:339
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:514
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:517
 #, elixir-autogen, elixir-format
 msgid "Voice message"
 msgstr "Message vocal"
@@ -4331,7 +4331,7 @@ msgstr "Enregistrement"
 msgid "Record a voice message"
 msgstr "Enregistrer un message vocal"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:842
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:845
 #, elixir-autogen, elixir-format
 msgid "No microphone is available."
 msgstr "Aucun microphone n'est disponible."

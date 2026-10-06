@@ -411,7 +411,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
       />
       <.syntax_tooltip tooltip={@syntax_tooltip} detail_level={@command_help_level} />
 
-      <div class="shrink-0">
+      <%!-- The left rule carries the message pane's outer edge down past the
+            input, so the line between the sidebar and the conversation does
+            not stop where the composer begins. --%>
+      <div class="shrink-0 border-l border-border">
         <.live_component
           :if={@capabilities.emoji}
           module={EmojiPickerDialog}
