@@ -380,23 +380,48 @@
 }
 
 /* ── Voice messages ─────────────────────────────────────────────────────────
-   The recording strip under the input: its own row rather than another icon in
-   the toolbar, because while a take is running the clock and the two ways out
-   of it are the only controls that matter, and a phone has no room to show them
-   beside everything else. The dot is the recording indicator every recorder has
-   had since tape, and it breathes so that a strip left open reads as running
-   rather than merely present. */
-.chat-voice-strip {
-  @apply flex flex-wrap items-center gap-1 border-x border-b border-border bg-surface px-1 py-1 text-xs;
+   The microphone sits in the composer toolbar beside the attachment and
+   formatting buttons. While a take runs it takes over the row: the input and
+   its Send button step aside, and the dot, the clock, Discard and Send stand
+   where the input was — on a phone there is no room for both, and while a take
+   runs nothing else in the row matters. "Recording" is read from the take's
+   own group being shown: the recorder is `phx-update="ignore"`, so the server
+   never patches its children — though it does rewrite the recorder's own
+   `data-*` attributes, which is why no flag lives there. The dot is the recording indicator every recorder has had since tape, and it
+   breathes so that a take left running reads as running rather than present. */
+.chat-voice {
+  @apply flex min-w-0 items-center;
+}
+
+.chat-voice-idle {
+  @apply flex items-center;
+}
+
+.chat-voice-take {
+  @apply flex min-w-0 flex-1 items-center gap-1 text-xs;
 }
 
 .chat-voice-dot {
-  @apply inline-block h-3 w-3 shrink-0 rounded-full bg-destructive;
+  @apply ml-1 inline-block h-3 w-3 shrink-0 rounded-full bg-destructive;
   animation: chat-voice-pulse 1.2s ease-in-out infinite;
 }
 
-.chat-voice-error {
-  @apply min-w-0 basis-full truncate text-destructive;
+.chat-voice-clock {
+  @apply w-9 shrink-0 font-bold tabular-nums;
+}
+
+.chat-voice-caption {
+  @apply min-w-0 flex-1 truncate text-muted-foreground;
+}
+
+.chat-input-form:has(.chat-voice-take:not([hidden])) .chat-input-field,
+.chat-input-form:has(.chat-voice-take:not([hidden])) .chat-input-send {
+  display: none;
+}
+
+.chat-input-form:has(.chat-voice-take:not([hidden])) .chat-input-toolbar,
+.chat-input-form:has(.chat-voice-take:not([hidden])) .chat-voice {
+  @apply flex-1;
 }
 
 @keyframes chat-voice-pulse {

@@ -428,6 +428,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
      )}
   end
 
+  def handle_info({:composer_voice, target, file_id}, socket) do
+    {:noreply, ChatLive.CoreEvents.dispatch_composer_voice(socket, target, file_id)}
+  end
+
   def handle_info({:composer_submit_edit, content}, socket) do
     {:noreply, ChatLive.CoreEvents.submit_composer_edit(socket, content)}
   end

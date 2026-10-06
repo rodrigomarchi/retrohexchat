@@ -5,13 +5,17 @@
  * everything here is about giving them back. A stream left open is a lit
  * recording indicator on somebody's phone, so the stream is released on every
  * exit: the take that finished, the take that was discarded, the take that ran
- * into the ceiling, and the window that closed in the middle of one.
+ * into the ceiling, and the window that closed in the middle of one — or while
+ * the browser was still asking for permission, which is when a second tap or a
+ * discard lands before there is anything recording to stop.
  *
  * The ceiling is the same minute the server enforces. The recorder stops
  * itself there rather than letting a take run until the upload is refused,
  * because the person holding the phone should hear the end from the interface,
  * not from an error afterwards.
  */
+
+import { log } from "../logger.js";
 
 export const MAX_DURATION_MS = 60_000;
 
@@ -53,6 +57,15 @@ function pad(value, size = 2) {
   return String(value).padStart(size, "0");
 }
 
+// The browser names why it gave no microphone. Only a refusal is the person's
+// answer; everything else — no device, a device another program holds — is
+// the machine's, and saying "you refused" there sends them to the wrong fix.
+const REFUSALS = new Set(["NotAllowedError", "SecurityError"]);
+
+function refusal(error) {
+  return REFUSALS.has(error?.name) ? "denied" : "unavailable";
+}
+
 function recordingName(date, contentType) {
   const stamp =
     `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}` +
@@ -78,6 +91,8 @@ export function createVoiceRecorder(deps = {}) {
   let startedAt = 0;
   let stoppedAt = 0;
   let discarding = false;
+  let asking = false;
+  let abandoned = false;
 
   function supported() {
     return Boolean(mediaDevices?.getUserMedia && Recorder);
@@ -139,6 +154,9 @@ export function createVoiceRecorder(deps = {}) {
   }
 
   function endTake(discard) {
+    // Still waiting on the permission prompt: there is nothing to stop yet, so
+    // the microphone is handed back the moment it arrives.
+    if (asking) abandoned = true;
     if (!recorder) return;
 
     discarding = discard;
@@ -156,19 +174,30 @@ export function createVoiceRecorder(deps = {}) {
   }
 
   async function start() {
-    if (recorder) return { ok: false, reason: "busy" };
+    if (recorder || asking) return { ok: false, reason: "busy" };
 
     if (!supported()) {
       onError("unsupported");
       return { ok: false, reason: "unsupported" };
     }
 
+    asking = true;
+    abandoned = false;
+
     try {
       stream = await mediaDevices.getUserMedia({ audio: true });
-    } catch {
+    } catch (error) {
       stream = null;
-      onError("denied");
-      return { ok: false, reason: "denied" };
+      const reason = refusal(error);
+      onError(reason);
+      return { ok: false, reason };
+    } finally {
+      asking = false;
+    }
+
+    if (abandoned) {
+      releaseStream();
+      return { ok: false, reason: "cancelled" };
     }
 
     const mimeType = preferredType();
@@ -177,12 +206,23 @@ export function createVoiceRecorder(deps = {}) {
     discarding = false;
     startedAt = now();
     stoppedAt = 0;
-    recorder = new Recorder(stream, mimeType ? { mimeType } : {});
-    recorder.ondataavailable = (event) => {
-      if (event?.data?.size !== 0) chunks.push(event.data);
-    };
-    recorder.onstop = () => finish();
-    recorder.start();
+
+    // A recorder that refuses to be built or started has the microphone in
+    // hand already; it is given back and the failure said, never swallowed.
+    try {
+      recorder = new Recorder(stream, mimeType ? { mimeType } : {});
+      recorder.ondataavailable = (event) => {
+        if (event?.data?.size !== 0) chunks.push(event.data);
+      };
+      recorder.onstop = () => finish();
+      recorder.start();
+    } catch (error) {
+      log.error("voice recorder could not start", error);
+      recorder = null;
+      releaseStream();
+      onError("unsupported");
+      return { ok: false, reason: "unsupported" };
+    }
 
     ticker = setInterval(tick, TICK_MS);
     onState({ recording: true, elapsedMs: 0 });

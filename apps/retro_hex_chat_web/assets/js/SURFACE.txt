@@ -165,6 +165,7 @@ title_flash_stop
 toggle_emoji_picker
 update_bindings
 viewport_info
+voice_error
 voice_recorded
 window_closed
 window_command
@@ -238,6 +239,7 @@ phx:page-loading-stop
 pointercancel
 pointerdown
 pointermove
+pointerout
 pointerover
 pointerup
 progress
@@ -260,6 +262,7 @@ dataset.audioOutputId
 dataset.author
 dataset.avatar
 dataset.blockedExtensions
+dataset.canSendEmpty
 dataset.cascadeOnMount
 dataset.channel
 dataset.colorCode
@@ -336,11 +339,14 @@ dataset.msgStatus
 dataset.muted
 dataset.nick
 dataset.offlineDisabled
+dataset.openedByKey
 dataset.participantId
 dataset.persist
 dataset.persistKey
 dataset.pinned
 dataset.pinnedParticipantIds
+dataset.placement
+dataset.popoverBehaviour
 dataset.preferencesEvent
 dataset.prejoinPrefix
 dataset.prejoinRemembered
@@ -353,12 +359,14 @@ dataset.reactionId
 dataset.realId
 dataset.recentCommands
 dataset.rememberKey
+dataset.remoteCount
 dataset.resizing
 dataset.retroTableColumn
 dataset.rhcKeyboardOpen
 dataset.rowId
 dataset.selfView
 dataset.sessionToken
+dataset.sheet
 dataset.showTarget
 dataset.spaceChannel
 dataset.spacePadAction
@@ -382,6 +390,7 @@ dataset.tipsState
 dataset.title
 dataset.toggleTarget
 dataset.trackSource
+dataset.updownStep
 dataset.url
 dataset.video
 dataset.videoInputId

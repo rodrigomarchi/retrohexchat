@@ -192,6 +192,40 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     end
   end
 
+  @typedoc "The conversation a recording was made in."
+  @type voice_target :: {:channel, String.t()} | {:pm, String.t()}
+
+  @doc """
+  Sends a recorded voice message — no text, one attachment — to the
+  conversation it was recorded in.
+
+  The target is explicit rather than read from the session, because the upload
+  lands a moment after Send was pressed and the reader may have moved on to
+  another conversation, or to the Status window, by then. No optimistic row is
+  drawn: the conversation may not be on screen, and the echo draws the row with
+  its player in either case.
+  """
+  @spec send_voice_message(Phoenix.LiveView.Socket.t(), String.t(), voice_target(), integer()) ::
+          Phoenix.LiveView.Socket.t()
+  def send_voice_message(socket, nickname, target, file_id) do
+    if GlobalMutes.muted?(nickname) do
+      error_event(socket, dgettext("chat", "You are muted by an administrator"))
+    else
+      opts = [content_format: "irc", attachment_ids: [file_id]]
+
+      case deliver_voice(nickname, target, opts) do
+        {:ok, _sent} -> socket
+        {:error, reason} -> error_event(socket, reason)
+      end
+    end
+  end
+
+  defp deliver_voice(nickname, {:channel, channel}, opts),
+    do: Server.send_message(channel, nickname, "", opts)
+
+  defp deliver_voice(nickname, {:pm, peer}, opts),
+    do: Service.send_private_message(nickname, peer, "", "message", opts)
+
   # ── Private: message sending ─────────────────────────────
 
   defp send_pm_message(socket, session, text, reply_to, content_format, attachment_ids) do

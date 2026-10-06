@@ -3164,7 +3164,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:39
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -7080,56 +7080,22 @@ msgstr ""
 msgid "Writing One"
 msgstr "Scriverne uno"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "A Minute, and Then It Stops"
 msgstr "Un minuto, e si ferma"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "A take ends itself at sixty seconds and is attached as it stands. Past a minute it stops being something the other person can take in the middle of a conversation — which is what writing is for."
-msgstr ""
-"Una registrazione si ferma da sola a sessanta secondi e viene allegata così "
-"com'è. Oltre il minuto non è più qualcosa che l'altra persona possa seguire "
-"nel mezzo di una conversazione — a quello serve scrivere."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Message Attachments"
 msgstr "Allegati dei messaggi"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:25
-#, elixir-autogen, elixir-format
-msgid "On a phone, and only in a browser that can record. On a desktop the file picker beside the input already attaches an audio file, so nothing is missing there."
-msgstr ""
-"Sul telefono, e solo in un browser che sappia registrare. Sul computer il "
-"selettore di file accanto al campo allega già un file audio, quindi lì non "
-"manca niente."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Press Record and allow the microphone when the browser asks. The clock beside it counts up while you speak. Attach ends the take and adds it to the message, where it waits with any other attachment until you press Send; Discard throws it away and the microphone is released either way."
-msgstr ""
-"Premi Registra e consenti il microfono quando il browser lo chiede. "
-"L'orologio accanto avanza mentre parli. Allega chiude la registrazione e la "
-"aggiunge al messaggio, dove aspetta con gli altri allegati finché non premi "
-"Invia; Scarta la butta, e in entrambi i casi il microfono viene rilasciato."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Recording One"
 msgstr "Registrarne uno"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Some things are faster said than typed. On a phone the composer offers a Record strip: speak for up to a minute, and the recording is attached to your message like any other file."
-msgstr ""
-"Certe cose si dicono più in fretta di quanto si scrivano. Sul telefono il "
-"campo di scrittura offre una striscia di registrazione: parla fino a un "
-"minuto e la registrazione viene allegata al messaggio come qualsiasi altro "
-"file."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Where It Is Offered"
 msgstr "Dove è disponibile"
@@ -7158,3 +7124,38 @@ msgstr "Chi ha fondato il canale, e nessun altro. Un operatore modera la stanza;
 #, elixir-autogen, elixir-format
 msgid "The founder must be identified with NickServ to switch it, not merely using the founder's nickname"
 msgstr "Il fondatore deve essere identificato con NickServ per cambiarlo; usare solo il suo soprannome non basta"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "A recording stops by itself after one minute and is sent as it is. After a minute it stops being something the other person can take in during a conversation, which is what writing is for."
+msgstr "Una registrazione si ferma di per sé dopo un minuto e viene inviata come è. Dopo un minuto smette di essere qualcosa che l'altra persona può prendere durante una conversazione, che è quello che la scrittura è per."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "On a desktop and on a phone, in any browser that can record. If the browser cannot record, the microphone does not appear, and the attachment button can still send an audio file."
+msgstr "Su un desktop e su un telefono, in qualsiasi browser che può registrare. Se il browser non riesce a registrare, il microfono non appare, e il pulsante di fissaggio può ancora inviare un file audio."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Only the Recording Is Sent"
+msgstr "Solo la registrazione è entrata"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Press the microphone and allow access when the browser asks. While you speak, the recording replaces the input: a red dot, a clock that counts up, a button to discard it and a button to send it."
+msgstr "Premere il microfono e consentire l'accesso quando il browser chiede. Mentre si parla, la registrazione sostituisce l'ingresso: un punto rosso, un orologio che conta, un pulsante per scartarlo e un pulsante per inviarlo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Some things are faster said than typed. The microphone button sits in the toolbar beside the message input, next to the attachment and formatting buttons. It records up to a minute of audio and sends it as a separate message."
+msgstr "Alcune cose sono più veloci che digitate. Il pulsante del microfono si trova nella barra degli strumenti accanto all'ingresso del messaggio, accanto ai pulsanti di fissaggio e di formattazione. Registra fino a un minuto di audio e lo invia come messaggio separato."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "The send button ends the recording and sends it. The discard button deletes it. In both cases the microphone turns off."
+msgstr "Il pulsante di invio termina la registrazione e lo invia. Il pulsante di scarto lo cancella. In entrambi i casi il microfono si spegne."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Only the recording is sent. Text you typed stays in the input. Files waiting to be attached stay too."
+msgstr "Solo la registrazione viene inviata. Testo che hai digitato soggiorni nell'ingresso. Anche i file che aspettano di essere attaccati rimangono."

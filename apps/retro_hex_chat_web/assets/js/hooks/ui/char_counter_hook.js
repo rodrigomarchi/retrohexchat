@@ -53,9 +53,12 @@ const CharCounterHook = {
     if (!this.sendButton) return;
     // The textarea reflects the user's actual typed content; mirror that
     // into the disabled attribute so the button is clickable as soon as
-    // there is something to send. LiveView re-renders that reset @input
-    // back to "" will call updated() and we'll re-disable correctly.
-    this.sendButton.disabled = this.input.value.length === 0;
+    // there is something to send. A pending attachment is something to send
+    // on its own, which only the server knows — it says so on the button.
+    // LiveView re-renders that reset @input back to "" will call updated()
+    // and we'll re-disable correctly.
+    const canSendEmpty = this.sendButton.dataset.canSendEmpty === "true";
+    this.sendButton.disabled = this.input.value.length === 0 && !canSendEmpty;
   },
 };
 

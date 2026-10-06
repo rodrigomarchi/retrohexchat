@@ -1,6 +1,6 @@
 /**
  * @section MB - Mobile & Touch
- * @flow MB11 [done] A voice message is recorded from the phone composer, attached, sent, and plays in the row
+ * @flow MB11 [done] A voice message is recorded from the microphone in the phone composer's single toolbar row and sent on its own, keeping the typed draft
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -42,21 +42,29 @@ async function signIn(page: Page, prefix: string) {
 }
 
 test.describe("Voice messages on a phone", () => {
-  test("records from the composer, attaches, sends, and plays in the row", async ({
+  test("records from the toolbar and sends the recording on its own", async ({
     page,
   }) => {
     const chat = await signIn(page, "voi");
-    const message = `heard this one ${Date.now()}`;
+    const draft = `still typing ${Date.now()}`;
 
-    const strip = page.getByTestId("voice-recorder");
+    const form = page.getByTestId("chat-input-form");
     const record = page.getByTestId("voice-record");
 
-    // The strip is rendered hidden and the client shows it only where recording
-    // is possible, so "visible" is the assertion that the controller ran and
-    // found a microphone.
-    await expect(strip).toBeVisible();
+    // The microphone is a toolbar button in the input's own row: the composer
+    // is one line on a phone, not a second strip under it.
     await expect(record).toBeVisible();
-    await shot(strip, "voice-strip-idle");
+    const formBox = await form.boundingBox();
+    const recordBox = await record.boundingBox();
+    const inputBox = await chat.chatInput.boundingBox();
+    expect(recordBox!.y).toBeGreaterThanOrEqual(formBox!.y);
+    expect(recordBox!.y + recordBox!.height).toBeLessThanOrEqual(
+      formBox!.y + formBox!.height,
+    );
+    expect(Math.abs(recordBox!.y - inputBox!.y)).toBeLessThan(inputBox!.height);
+    await shot(form, "voice-phone-idle");
+
+    await chat.chatInput.fill(draft);
 
     const uploadResponse = page.waitForResponse(
       (response) =>
@@ -67,45 +75,42 @@ test.describe("Voice messages on a phone", () => {
 
     await record.click();
 
+    // While the take runs it stands where the input was.
     const elapsed = page.getByTestId("voice-elapsed");
     await expect(elapsed).toBeVisible();
+    await expect(chat.chatInput).toBeHidden();
+    await expect(chat.chatSendButton).toBeHidden();
     await expect(elapsed).toHaveText(/0:0[1-9]/, { timeout: 5_000 });
-    await shot(strip, "voice-strip-recording");
+    await shot(form, "voice-phone-recording");
 
     await page.getByTestId("voice-stop").click();
 
     expect((await uploadResponse).ok()).toBeTruthy();
 
-    const pending = page.getByTestId("chat-attachment-pending");
-    await expect(pending).toContainText(/voice-\d{8}-\d{6}\./);
-    await expect(pending).toContainText("100%");
-
-    // The strip comes back to the microphone: the take is over and the
-    // recording is waiting with any other attachment.
-    await expect(record).toBeVisible();
-    await shot(page, "voice-recording-pending-on-the-phone");
-
-    await chat.chatInput.fill(message);
-    await chat.chatSendButton.click();
-    await chat.expectMessageVisible(message);
-
-    const row = chat.messageRowByText(message);
-    const voice = row.getByTestId("message-voice");
-    await expect(voice).toBeVisible();
+    // Nothing waits to be attached: the recording became a message by itself.
+    const voice = page.getByTestId("message-voice").last();
+    await expect(voice).toBeVisible({ timeout: 15_000 });
     await expect(voice).toHaveAttribute("data-preview-kind", "voice");
+    await expect(page.getByTestId("chat-attachment-pending")).toHaveCount(0);
+    await expect(page.getByTestId("chat-voice-pending")).toHaveCount(0);
+
+    // The draft is still in the input, and it was not sent with the recording.
+    await expect(record).toBeVisible();
+    await expect(chat.chatInput).toBeVisible();
+    await expect(chat.chatInput).toHaveValue(draft);
+    await expect(chat.messageRows.filter({ hasText: draft })).toHaveCount(0);
+
+    const row = chat.messageRows.filter({ has: voice }).last();
     await expect(row.getByTestId("message-voice-duration")).toHaveText(
       /0:0[0-9]/,
     );
-
-    const player = voice.getByTestId("message-attachment-audio-preview");
-    await expect(player).toHaveAttribute(
-      "src",
-      /\/chat\/attachments\/\d+\/preview$/,
-    );
+    await expect(
+      voice.getByTestId("message-attachment-audio-preview"),
+    ).toHaveAttribute("src", /\/chat\/attachments\/\d+\/preview$/);
 
     // A recording says it is a recording, never the timestamp the browser named
     // the file with.
     await expect(voice).not.toContainText("voice-2");
-    await shot(row, "voice-message-row");
+    await shot(page, "voice-phone-sent");
   });
 });

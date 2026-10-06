@@ -2894,7 +2894,7 @@ msgstr "在当前频道或PM中以实时突出显示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:39
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -6193,43 +6193,22 @@ msgstr ""
 msgid "Writing One"
 msgstr "如何書寫"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "A Minute, and Then It Stops"
 msgstr "一分钟，然后自动停止"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "A take ends itself at sixty seconds and is attached as it stands. Past a minute it stops being something the other person can take in the middle of a conversation — which is what writing is for."
-msgstr "录音在六十秒时自动结束，并按原样附加。超过一分钟，它就不再是对方能在对话中顺手听完的东西了——那正是文字的用处。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Message Attachments"
 msgstr "消息附件"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:25
-#, elixir-autogen, elixir-format
-msgid "On a phone, and only in a browser that can record. On a desktop the file picker beside the input already attaches an audio file, so nothing is missing there."
-msgstr "在手机上，而且只在能录音的浏览器里。在电脑上，输入框旁的文件选择本来就能附加音频文件，所以那里什么都不缺。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Press Record and allow the microphone when the browser asks. The clock beside it counts up while you speak. Attach ends the take and adds it to the message, where it waits with any other attachment until you press Send; Discard throws it away and the microphone is released either way."
-msgstr ""
-"点击「录音」，浏览器询问时允许使用麦克风。旁边的计时器会在你说话时计数。「附加」结束录音并加入消息，与其他附件一起等到你点击发送；「丢弃」把它扔掉，两种情况下麦克风都会释放。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Recording One"
 msgstr "录制一条"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Some things are faster said than typed. On a phone the composer offers a Record strip: speak for up to a minute, and the recording is attached to your message like any other file."
-msgstr "有些事说出来比打字更快。在手机上，输入框会出现一条录音栏：最多说一分钟，录音就像其他文件一样附加到你的消息里。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Where It Is Offered"
 msgstr "在哪里可用"
@@ -6258,3 +6237,38 @@ msgstr "只有创建者，别人都不行。管理员管理房间；而决定房
 #, elixir-autogen, elixir-format
 msgid "The founder must be identified with NickServ to switch it, not merely using the founder's nickname"
 msgstr "创建者必须向 NickServ 验证身份才能切换，仅仅使用其昵称不行"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "A recording stops by itself after one minute and is sent as it is. After a minute it stops being something the other person can take in during a conversation, which is what writing is for."
+msgstr "一分钟后,录音会自行结束,并按原样发送。 一分钟后,它不再是别人在谈话中可以接受的东西,这就是写作的目的。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "On a desktop and on a phone, in any browser that can record. If the browser cannot record, the microphone does not appear, and the attachment button can still send an audio file."
+msgstr "在桌面和手机上,在任何可以录制的浏览器中. 如果浏览器无法录制,麦克风就不会出现,附件按钮仍然可以发送音频文件."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Only the Recording Is Sent"
+msgstr "只发送了录音"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Press the microphone and allow access when the browser asks. While you speak, the recording replaces the input: a red dot, a clock that counts up, a button to discard it and a button to send it."
+msgstr "按下麦克风并允许浏览器询问时访问. 当你说话时,录音会取代输入:一个红点,一个计数的时钟,一个丢弃它的按钮和一个发送它的按钮."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Some things are faster said than typed. The microphone button sits in the toolbar beside the message input, next to the attachment and formatting buttons. It records up to a minute of audio and sends it as a separate message."
+msgstr "有些话比打字快 麦克风按钮坐在信息输入旁的工具栏中,在附件和格式化按钮旁. 它记录最多一分钟的音频,并作为单独的信息发送."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "The send button ends the recording and sends it. The discard button deletes it. In both cases the microphone turns off."
+msgstr "发送按钮结束录音并发送. 丢弃按钮删除它 。 在这两种情况下,麦克风都关了。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Only the recording is sent. Text you typed stays in the input. Files waiting to be attached stay too."
+msgstr "只有录音被发送。 您输入的文本留在输入中 。 等待附加的文件也留下。"

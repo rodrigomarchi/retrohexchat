@@ -3135,7 +3135,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:39
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -7001,56 +7001,22 @@ msgstr ""
 msgid "Writing One"
 msgstr "Er een schrijven"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "A Minute, and Then It Stops"
 msgstr "Een minuut, en dan stopt het"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "A take ends itself at sixty seconds and is attached as it stands. Past a minute it stops being something the other person can take in the middle of a conversation — which is what writing is for."
-msgstr ""
-"Een opname stopt zelf na zestig seconden en gaat mee zoals hij is. Voorbij "
-"een minuut is het niets meer wat de ander middenin een gesprek kan volgen — "
-"daar is schrijven voor."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Message Attachments"
 msgstr "Berichtbijlagen"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:25
-#, elixir-autogen, elixir-format
-msgid "On a phone, and only in a browser that can record. On a desktop the file picker beside the input already attaches an audio file, so nothing is missing there."
-msgstr ""
-"Op een telefoon, en alleen in een browser die kan opnemen. Op een computer "
-"voegt de bestandskiezer naast het tekstvak al een audiobestand bij, dus daar"
-" mist niets."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Press Record and allow the microphone when the browser asks. The clock beside it counts up while you speak. Attach ends the take and adds it to the message, where it waits with any other attachment until you press Send; Discard throws it away and the microphone is released either way."
-msgstr ""
-"Druk op Opnemen en geef toegang tot de microfoon als de browser het vraagt. "
-"De klok ernaast loopt terwijl je spreekt. Bijvoegen beëindigt de opname en "
-"zet die bij het bericht, waar die met elke andere bijlage wacht tot je op "
-"Verzenden drukt; Weggooien gooit hem weg, en de microfoon komt in beide "
-"gevallen vrij."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Recording One"
 msgstr "Er een opnemen"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Some things are faster said than typed. On a phone the composer offers a Record strip: speak for up to a minute, and the recording is attached to your message like any other file."
-msgstr ""
-"Sommige dingen zijn sneller gezegd dan getypt. Op een telefoon biedt het "
-"tekstvak een opnamebalk: spreek tot een minuut, en de opname gaat als elk "
-"ander bestand met je bericht mee."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Where It Is Offered"
 msgstr "Waar het wordt aangeboden"
@@ -7079,3 +7045,38 @@ msgstr "De oprichter, en niemand anders. Een operator modereert de ruimte; besli
 #, elixir-autogen, elixir-format
 msgid "The founder must be identified with NickServ to switch it, not merely using the founder's nickname"
 msgstr "De oprichter moet bij NickServ geïdentificeerd zijn om het om te zetten; alleen de bijnaam gebruiken is niet genoeg"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "A recording stops by itself after one minute and is sent as it is. After a minute it stops being something the other person can take in during a conversation, which is what writing is for."
+msgstr "Een opname stopt na één minuut en wordt verzonden zoals het is. Na een minuut is het niet meer iets wat de andere persoon kan opnemen tijdens een gesprek, waar schrijven voor is."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "On a desktop and on a phone, in any browser that can record. If the browser cannot record, the microphone does not appear, and the attachment button can still send an audio file."
+msgstr "Op een bureaublad en op een telefoon, in elke browser die kan opnemen. Als de browser niet kan opnemen, verschijnt de microfoon niet en kan de bijlageknop nog steeds een audiobestand versturen."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Only the Recording Is Sent"
+msgstr "Alleen de opname wordt verzonden"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Press the microphone and allow access when the browser asks. While you speak, the recording replaces the input: a red dot, a clock that counts up, a button to discard it and a button to send it."
+msgstr "Druk op de microfoon en laat toegang wanneer de browser vraagt. Terwijl u spreekt, vervangt de opname de invoer: een rode stip, een klok die telt, een knop om het weg te gooien en een knop om het te versturen."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Some things are faster said than typed. The microphone button sits in the toolbar beside the message input, next to the attachment and formatting buttons. It records up to a minute of audio and sends it as a separate message."
+msgstr "Sommige dingen zijn sneller gezegd dan getypt. De microfoonknop zit in de werkbalk naast de berichtinvoer, naast de bijlage- en opmaakknoppen. Het registreert tot een minuut audio en stuurt het als een afzonderlijk bericht."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "The send button ends the recording and sends it. The discard button deletes it. In both cases the microphone turns off."
+msgstr "De verzendknop sluit de opname af en stuurt het. De verwijderknop verwijdert het. In beide gevallen schakelt de microfoon uit."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Only the recording is sent. Text you typed stays in the input. Files waiting to be attached stay too."
+msgstr "Alleen de opname wordt verstuurd. Tekst die je typte blijft in de invoer. Bestanden wachten om te worden bevestigd blijven ook."

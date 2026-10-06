@@ -3107,7 +3107,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:39
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/feature_where_you_left_off.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -6980,56 +6980,22 @@ msgstr ""
 msgid "Writing One"
 msgstr "Menulis satu"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "A Minute, and Then It Stops"
 msgstr "Satu menit, lalu berhenti"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "A take ends itself at sixty seconds and is attached as it stands. Past a minute it stops being something the other person can take in the middle of a conversation — which is what writing is for."
-msgstr ""
-"Rekaman berhenti sendiri pada enam puluh detik dan dilampirkan apa adanya. "
-"Lewat satu menit, ia berhenti jadi sesuatu yang bisa dicerna orang lain di "
-"tengah percakapan — untuk itulah tulisan ada."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Message Attachments"
 msgstr "Lampiran pesan"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:25
-#, elixir-autogen, elixir-format
-msgid "On a phone, and only in a browser that can record. On a desktop the file picker beside the input already attaches an audio file, so nothing is missing there."
-msgstr ""
-"Di ponsel, dan hanya di peramban yang bisa merekam. Di desktop, pemilih "
-"berkas di samping kolom tulis sudah melampirkan berkas audio, jadi tidak ada"
-" yang hilang di sana."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Press Record and allow the microphone when the browser asks. The clock beside it counts up while you speak. Attach ends the take and adds it to the message, where it waits with any other attachment until you press Send; Discard throws it away and the microphone is released either way."
-msgstr ""
-"Tekan Rekam dan izinkan mikrofon saat peramban meminta. Penghitung di "
-"sebelahnya berjalan selama Anda berbicara. Lampirkan mengakhiri rekaman dan "
-"menambahkannya ke pesan, tempat ia menunggu bersama lampiran lain sampai "
-"Anda menekan Kirim; Buang membuangnya, dan mikrofon dilepas dalam kedua "
-"kasus."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Recording One"
 msgstr "Merekam satu"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Some things are faster said than typed. On a phone the composer offers a Record strip: speak for up to a minute, and the recording is attached to your message like any other file."
-msgstr ""
-"Ada hal yang lebih cepat diucapkan daripada ditulis. Di ponsel, kolom tulis "
-"menyediakan bilah Rekam: bicaralah hingga satu menit, dan rekaman itu "
-"dilampirkan ke pesan Anda seperti berkas lain."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Where It Is Offered"
 msgstr "Di mana ini tersedia"
@@ -7058,3 +7024,38 @@ msgstr "Pendirinya, dan tidak ada orang lain. Seorang operator memoderasi ruanga
 #, elixir-autogen, elixir-format
 msgid "The founder must be identified with NickServ to switch it, not merely using the founder's nickname"
 msgstr "Pendiri harus teridentifikasi di NickServ untuk mengubahnya; sekadar memakai nama panggilannya tidak cukup"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "A recording stops by itself after one minute and is sent as it is. After a minute it stops being something the other person can take in during a conversation, which is what writing is for."
+msgstr "Sebuah rekaman berhenti dengan sendirinya setelah satu menit dan dikirim seperti itu. Setelah satu menit berhenti menjadi sesuatu yang orang lain bisa ambil selama percakapan, itulah gunanya menulis."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "On a desktop and on a phone, in any browser that can record. If the browser cannot record, the microphone does not appear, and the attachment button can still send an audio file."
+msgstr "Pada desktop dan telepon, dalam peramban yang dapat merekam. Jika peramban tidak dapat merekam, mikrofon tidak muncul, dan tombol lampiran masih dapat mengirim berkas audio."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Only the Recording Is Sent"
+msgstr "Hanya rekaman yang dikirim"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Press the microphone and allow access when the browser asks. While you speak, the recording replaces the input: a red dot, a clock that counts up, a button to discard it and a button to send it."
+msgstr "Tekan mikrofon dan memungkinkan akses ketika browser bertanya. Sementara Anda berbicara, rekaman menggantikan masukan: titik merah, jam yang menghitung, tombol untuk membuangnya dan tombol untuk mengirimkannya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Some things are faster said than typed. The microphone button sits in the toolbar beside the message input, next to the attachment and formatting buttons. It records up to a minute of audio and sends it as a separate message."
+msgstr "Beberapa hal lebih cepat diucapkan daripada diketik. Tombol mikrofon duduk di bilah alat di samping masukan pesan, di samping lampiran dan memformat tombol. Ini mencatat sampai satu menit audio dan mengirimkannya sebagai pesan terpisah."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "The send button ends the recording and sends it. The discard button deletes it. In both cases the microphone turns off."
+msgstr "Tombol kirim mengakhiri rekaman dan mengirimkannya. Tombol pembuangan menghapusnya. Dalam kedua kasus mikrofon dimatikan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_voice_messages.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Only the recording is sent. Text you typed stays in the input. Files waiting to be attached stay too."
+msgstr "Hanya rekaman yang dikirim. Teks yang Anda mengetik tetap dalam masukan. File menunggu untuk terpasang tinggal juga."

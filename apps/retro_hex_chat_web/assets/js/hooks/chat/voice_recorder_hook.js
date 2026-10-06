@@ -1,12 +1,13 @@
 /**
- * LiveView hook binding the composer's recording strip to the upload it already
- * has.
+ * LiveView hook binding the composer's microphone to the upload that carries a
+ * recording.
  *
- * A recording is an attachment: the moment one exists it goes up the same
- * presigned path a chosen file does, and lands in the same pending row waiting
- * for Send. The only thing this side has to say first is how long it runs — the
- * server stores that beside the file so a message can read "0:07" without
- * anybody downloading a byte.
+ * A recording is a message of its own: the moment one exists it goes up the
+ * same presigned path a chosen file does, on an upload of its own, and the
+ * server sends it the moment it lands. The only thing this side has to say
+ * first is how long it runs — the server stores that beside the file so a
+ * message can read "0:07" without anybody downloading a byte. A take that
+ * fails is reported by name; the composer words it.
  *
  * Everything else is in `lib/uploads/voice_recorder_panel.js` and the recorder
  * it drives; `navigator.mediaDevices` may not appear inside a hook, and this is
@@ -33,6 +34,9 @@ export function createVoiceRecorderHook(deps = {}) {
           });
 
           this.uploadTo(target, upload, [file]);
+        },
+        onError: (reason) => {
+          this.pushEventTo(target, "voice_error", { reason });
         },
       });
 

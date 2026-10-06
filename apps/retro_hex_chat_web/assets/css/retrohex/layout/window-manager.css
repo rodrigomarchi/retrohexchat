@@ -477,11 +477,16 @@
 }
 
 .desktop--stacked [data-testid="formatting-toolbar-toggle"],
+.desktop--stacked [data-testid="voice-record"],
+.desktop--stacked [data-testid="voice-cancel"],
+.desktop--stacked [data-testid="voice-stop"],
 .desktop--stacked [data-testid="chat-input-send"] {
   min-height: 40px;
 }
 
-.desktop--stacked [data-testid="formatting-toolbar-toggle"] {
+.desktop--stacked [data-testid="formatting-toolbar-toggle"],
+.desktop--stacked [data-testid="voice-record"],
+.desktop--stacked [data-testid="voice-cancel"] {
   min-width: 40px;
 }
 
@@ -517,7 +522,8 @@
   max-height: 180px;
 }
 
-.desktop--stacked [data-testid="chat-input-send"] {
+.desktop--stacked [data-testid="chat-input-send"],
+.desktop--stacked [data-testid="voice-stop"] {
   min-width: 44px;
   padding-inline: 10px;
 }

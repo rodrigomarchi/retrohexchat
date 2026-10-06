@@ -230,7 +230,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Record up to a minute of audio from the composer on a phone and send it as an attachment; the message plays inline and shows how long it runs."
+            "Record up to a minute of audio with the microphone button beside the message input. It is sent at once as a separate message, plays inline and shows its length."
           ),
         see_also: ["feature-message-attachments"]
       },

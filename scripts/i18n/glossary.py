@@ -417,6 +417,8 @@ _ROWS = {
     "Setup":        ("Configuração", "Configuração", "Configuración", "Installation", "Einrichtung", "Configurazione", "Installatie", "Konfiguracja", "Установка", "Penyiapan", "セットアップ", "安装", "安裝"),
     "Requirements": ("Requisitos", "Requisitos", "Requisitos", "Prérequis", "Voraussetzungen", "Requisiti", "Vereisten", "Wymagania", "Требования", "Persyaratan", "要件", "要求", "需求"),
     "Sending":      ("Enviando", "A enviar", "Enviando", "Envoi", "Senden", "Invio", "Verzenden", "Wysyłanie", "Отправка", "Mengirim", "送信", "发送", "傳送"),
+    # Beside the pulsing dot while a voice message is being recorded.
+    "Recording":    ("Gravando", "A gravar", "Grabando", "Enregistrement", "Aufnahme", "Registrazione", "Opnemen", "Nagrywanie", "Запись", "Merekam", "録音中", "录音中", "錄音中"),
     # The pronoun on your own messages, not a form of address.
     "You":          ("Você", "Você", "Tú", "Vous", "Du", "Tu", "Jij", "Ty", "Вы", "Anda", "あなた", "你", "你"),
     # The user-list heading over the two people in a private conversation, where

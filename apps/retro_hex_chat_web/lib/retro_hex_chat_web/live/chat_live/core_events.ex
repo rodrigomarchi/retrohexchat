@@ -402,6 +402,28 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     )
   end
 
+  # Bubbled from the Composer when a recording has landed: it goes to the
+  # conversation it was recorded in, which need not be the one on screen now.
+  @spec dispatch_composer_voice(
+          Phoenix.LiveView.Socket.t(),
+          ChatLive.CommandDispatch.voice_target(),
+          integer()
+        ) :: Phoenix.LiveView.Socket.t()
+  def dispatch_composer_voice(socket, target, file_id) do
+    session = Session.set_last_message_at(socket.assigns.session, DateTime.utc_now())
+
+    Observability.span(
+      [:retro_hex_chat, :chat, :composer, :dispatch],
+      %{input_kind: "voice", message_size_bytes: 0, has_reply: false, has_attachments: true},
+      fn ->
+        socket
+        |> assign(session: session)
+        |> ChatLive.CommandDispatch.send_voice_message(session.nickname, target, file_id)
+        |> reset_activity()
+      end
+    )
+  end
+
   defp dispatch_parsed_input(
          socket,
          session,

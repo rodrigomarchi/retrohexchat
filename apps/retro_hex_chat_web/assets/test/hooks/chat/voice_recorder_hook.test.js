@@ -1,6 +1,5 @@
 /**
- * The wiring between a finished recording and the upload the composer already
- * has.
+ * The wiring between a finished recording and the upload that carries it.
  *
  * Two things happen and their order is the point: the length is pushed first,
  * then the file goes up. The presigned reservation is made while the upload
@@ -29,7 +28,7 @@ function mount(double) {
   return mountHook(
     createVoiceRecorderHook({ createVoiceRecorderPanel: double.create.bind(double) }),
     {
-      attrs: { "phx-target": "7", "data-voice-upload": "attachments" },
+      attrs: { "phx-target": "7", "data-voice-upload": "voice" },
     },
   );
 }
@@ -50,11 +49,22 @@ describe("a finished recording", () => {
       content_type: "audio/webm;codecs=opus",
     });
 
-    expect(hook.__uploads).toEqual([{ target: "7", name: "attachments", files: [file] }]);
+    expect(hook.__uploads).toEqual([{ target: "7", name: "voice", files: [file] }]);
 
     expect(hook.pushEventTo.mock.invocationCallOrder[0]).toBeLessThan(
       hook.uploadTo.mock.invocationCallOrder[0],
     );
+  });
+});
+
+describe("a take that fails", () => {
+  it("names the failure to the composer, which words it", () => {
+    const double = panelDouble();
+    const hook = mount(double);
+
+    double.ports.onError("denied");
+
+    expect(hook.pushEventTo).toHaveBeenCalledWith("7", "voice_error", { reason: "denied" });
   });
 });
 

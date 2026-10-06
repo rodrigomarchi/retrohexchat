@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **238 spec files** under `e2e/tests/`.
-- **546 Playwright `test()` cases**.
-- **494 documented flows**, 493 done, 1 not done.
+- **239 spec files** under `e2e/tests/`.
+- **548 Playwright `test()` cases**.
+- **495 documented flows**, 494 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -478,6 +478,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | O29 | A link posted in a channel asks before opening a tab, naming the host and the whole address | `tests/chat-open-tab-confirm.spec.ts` | done |
 | O30 | Cancelling the question opens nothing and leaves the conversation where it was | `tests/chat-open-tab-confirm.spec.ts` | done |
 | O31 | Ctrl-clicking a link skips the question, because it already asked for a tab | `tests/chat-open-tab-confirm.spec.ts` | done |
+| O32 | On a desktop the composer toolbar offers the microphone; a discarded take sends nothing, a finished one is sent alone — even with a file attached mid-take, which stays pending — and a file attached alone sends without text | `tests/chat-voice-messages.spec.ts` | done |
 
 ### P - Persistence, Reconnect, History, No-Focus-Steal
 
@@ -705,7 +706,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | MB8 | PM reply, edit, and delete work from touch message actions | `tests/chat-mobile-message-flow.spec.ts` | done |
 | MB9 | Nicklist and conversation actions open by long press | `tests/chat-mobile-message-flow.spec.ts` | done |
 | MB10 | Every tab and control fits the phone's tab strip without clipping | `tests/chat-mobile-desktop.spec.ts` | done |
-| MB11 | A voice message is recorded from the phone composer, attached, sent, and plays in the row | `tests/chat-mobile-voice.spec.ts` | done |
+| MB11 | A voice message is recorded from the microphone in the phone composer's single toolbar row and sent on its own, keeping the typed draft | `tests/chat-mobile-voice.spec.ts` | done |
 
 ### SP - Virtual Spaces
 

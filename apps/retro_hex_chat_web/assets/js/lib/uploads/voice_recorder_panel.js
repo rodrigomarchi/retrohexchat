@@ -1,17 +1,19 @@
 /**
- * The composer's recording strip: the microphone button, the running clock, and
- * the two ways out of a take.
+ * The composer's microphone: the toolbar button at rest, and the take it starts
+ * — the running clock and the two ways out of it, Discard and Send.
  *
- * The server renders every element and every word of this — the strip is marked
- * `phx-update="ignore"` so a keystroke's patch of the composer cannot restore
- * the template over a take in progress. What this controller does is decide
- * which of those elements is showing and write the clock into one of them,
- * which is why none of the text below is in this file.
+ * The server renders every element and every word of this — the recorder is
+ * marked `phx-update="ignore"` so a keystroke's patch of the composer cannot
+ * restore the template over a take in progress. What this controller does is
+ * decide which group is showing and write the clock into one element; the
+ * composer row's CSS reads the take's group being shown to put the take where
+ * the input was. Nothing is written to the recorder's own `data-*` attributes,
+ * because the server rewrites those even on an ignored element. None of the
+ * text is in this file; a failure is reported by name and worded on the
+ * server.
  *
- * A browser that cannot record hides the strip outright. The alternative is a
- * button that asks for a microphone and then apologises, and the decision is
- * already made by then: on a desktop the file picker was always the better
- * answer.
+ * A browser that cannot record hides the microphone outright. The alternative
+ * is a button that asks for a microphone and then apologises.
  */
 import { createVoiceRecorder } from "./voice_recorder.js";
 
@@ -32,11 +34,13 @@ export function clock(ms) {
 export function createVoiceRecorderPanel(el, ports = {}) {
   const build = ports.createRecorder ?? createVoiceRecorder;
   const onRecorded = ports.onRecorded ?? (() => {});
+  const onError = ports.onError ?? (() => {});
   const listeners = [];
+  let wasRecording = false;
 
   const recorder = build({
     onState: render,
-    onError: showError,
+    onError,
     onRecorded,
   });
 
@@ -49,28 +53,28 @@ export function createVoiceRecorderPanel(el, ports = {}) {
   }
 
   function render({ recording, elapsedMs }) {
+    // Read before hiding: the button that was pressed is about to disappear,
+    // and focus inside the recorder is what says the keyboard is here at all.
+    const focused = el.contains(document.activeElement);
+
     toggle(group("idle"), !recording);
     toggle(group("recording"), recording);
 
     const elapsed = find("[data-voice-elapsed]");
     if (elapsed) elapsed.textContent = clock(elapsedMs);
 
-    if (recording) clearError();
+    // The keyboard goes to the control that ends the take, and back to the
+    // microphone after it — but only if it was here; a take that ends itself
+    // at the ceiling does not pull focus from wherever the reader went.
+    if (recording !== wasRecording && focused) {
+      find(`[data-voice-action="${recording ? "stop" : "start"}"]`)?.focus?.();
+    }
+
+    wasRecording = recording;
   }
 
   function toggle(node, shown) {
     if (node) node.hidden = !shown;
-  }
-
-  function clearError() {
-    el.querySelectorAll("[data-voice-error]").forEach((node) => {
-      node.hidden = true;
-    });
-  }
-
-  function showError(code) {
-    clearError();
-    toggle(find(`[data-voice-error="${code}"]`), true);
   }
 
   function run(action) {
@@ -80,17 +84,19 @@ export function createVoiceRecorderPanel(el, ports = {}) {
     return recorder.cancel();
   }
 
+  function listen(node, type, listener) {
+    node.addEventListener(type, listener);
+    listeners.push([node, type, listener]);
+  }
+
   function bind(action) {
     const node = find(`[data-voice-action="${action}"]`);
     if (!node) return;
 
-    const listener = (event) => {
+    listen(node, "click", (event) => {
       event.preventDefault();
       run(action);
-    };
-
-    node.addEventListener("click", listener);
-    listeners.push([node, listener]);
+    });
   }
 
   return {
@@ -102,6 +108,17 @@ export function createVoiceRecorderPanel(el, ports = {}) {
 
       el.hidden = false;
       ACTIONS.forEach(bind);
+
+      // A take owns Escape while it runs: the press is consumed so neither the
+      // window manager nor the server's window-level Escape ladder acts on it.
+      listen(el, "keydown", (event) => {
+        if (event.key === "Escape" && recorder.recording()) {
+          event.preventDefault();
+          event.stopPropagation();
+          recorder.cancel();
+        }
+      });
+
       render({ recording: false, elapsedMs: 0 });
     },
 
@@ -109,8 +126,8 @@ export function createVoiceRecorderPanel(el, ports = {}) {
       recorder.destroy();
 
       while (listeners.length > 0) {
-        const [node, listener] = listeners.pop();
-        node.removeEventListener("click", listener);
+        const [node, type, listener] = listeners.pop();
+        node.removeEventListener(type, listener);
       }
     },
   };

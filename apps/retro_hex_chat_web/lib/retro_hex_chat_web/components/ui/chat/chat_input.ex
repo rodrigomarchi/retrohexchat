@@ -115,18 +115,18 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
         phx-submit={@on_submit}
         phx-change={@on_change}
         phx-target={@target}
-        class="flex items-center gap-1 p-[2px] bg-surface"
+        class="chat-input-form flex items-center gap-1 p-[2px] bg-surface"
         data-testid="chat-input-form"
       >
         <input type="hidden" name="content_format" value={@content_format} />
         <div
           :if={@show_toolbar && @toolbar_buttons != []}
-          class="flex shrink-0 items-center gap-0"
+          class="chat-input-toolbar flex shrink-0 items-center gap-0"
           data-testid="chat-input-toolbar"
         >
           {render_slot(@toolbar_buttons)}
         </div>
-        <div class="relative flex flex-1 min-w-0">
+        <div class="chat-input-field relative flex flex-1 min-w-0">
           <textarea
             id={@input_id}
             name={@name}
@@ -158,8 +158,9 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
           aria-label={@send_label}
           title={@send_label}
           data-testid="chat-input-send"
+          data-can-send-empty={to_string(@can_send_empty)}
           size="sm"
-          class="h-8 px-2"
+          class="chat-input-send h-8 px-2"
         >
           <:icon><Icons.icon_btn_send class="w-4 h-4" /></:icon>
           <span class="chat-input-send-label">{@send_label}</span>

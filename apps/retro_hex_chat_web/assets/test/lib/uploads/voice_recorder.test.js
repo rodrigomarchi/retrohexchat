@@ -127,14 +127,49 @@ describe("start", () => {
     expect(onState).toHaveBeenLastCalledWith({ recording: true, elapsedMs: 1_000 });
   });
 
+  function refused(name) {
+    return () => Promise.reject(Object.assign(new Error(name), { name }));
+  }
+
   it("says so when the person refuses the microphone", async () => {
     const { recorder, onError, onRecorded } = setup({
-      mediaDevices: { getUserMedia: () => Promise.reject(new Error("NotAllowedError")) },
+      mediaDevices: { getUserMedia: refused("NotAllowedError") },
     });
 
     expect(await recorder.start()).toEqual({ ok: false, reason: "denied" });
     expect(onError).toHaveBeenCalledWith("denied");
     expect(onRecorded).not.toHaveBeenCalled();
+  });
+
+  // No device, or one another program holds, is not the person's refusal and
+  // must not send them to their permission settings.
+  it.each(["NotFoundError", "NotReadableError", "AbortError"])(
+    "says the microphone is unavailable on %s",
+    async (name) => {
+      const { recorder, onError } = setup({ mediaDevices: { getUserMedia: refused(name) } });
+
+      expect(await recorder.start()).toEqual({ ok: false, reason: "unavailable" });
+      expect(onError).toHaveBeenCalledWith("unavailable");
+    },
+  );
+
+  it("gives the microphone back when the recorder refuses to start", async () => {
+    class Refusing {
+      static isTypeSupported() {
+        return false;
+      }
+
+      constructor() {
+        throw Object.assign(new Error("no"), { name: "NotSupportedError" });
+      }
+    }
+    const { recorder, tracks, onError } = setup({ Recorder: Refusing });
+
+    expect(await recorder.start()).toEqual({ ok: false, reason: "unsupported" });
+    expect(tracks[0].stop).toHaveBeenCalledTimes(1);
+    expect(onError).toHaveBeenCalledWith("unsupported");
+    expect(recorder.recording()).toBe(false);
+    expect(await recorder.start()).toEqual({ ok: false, reason: "unsupported" });
   });
 
   it("says so when the browser cannot record at all", async () => {
@@ -150,6 +185,48 @@ describe("start", () => {
     await recorder.start();
     expect(await recorder.start()).toEqual({ ok: false, reason: "busy" });
     expect(getUserMedia).toHaveBeenCalledTimes(1);
+  });
+
+  // The permission prompt is where a second tap lands: nothing is recording
+  // yet, and a second request would open a second microphone nobody closes.
+  it("does not ask twice while the browser is still asking", async () => {
+    const { recorder, getUserMedia } = setup();
+
+    const first = recorder.start();
+    expect(await recorder.start()).toEqual({ ok: false, reason: "busy" });
+    await first;
+
+    expect(getUserMedia).toHaveBeenCalledTimes(1);
+    expect(recorder.recording()).toBe(true);
+  });
+
+  it("can be asked again after the browser refused", async () => {
+    const getUserMedia = vi
+      .fn()
+      .mockRejectedValueOnce(Object.assign(new Error("no"), { name: "NotAllowedError" }))
+      .mockResolvedValueOnce(streamDouble([trackDouble()]));
+    const { recorder } = setup({ mediaDevices: { getUserMedia } });
+
+    await recorder.start();
+
+    expect(await recorder.start()).toEqual({ ok: true });
+  });
+});
+
+describe("a take abandoned while the browser is still asking", () => {
+  // Discarded or torn down before the microphone arrived: when it does
+  // arrive, it is handed straight back and nothing starts recording.
+  it.each(["cancel", "destroy"])("releases the microphone that arrives after %s", async (end) => {
+    const { recorder, tracks, instances, onState } = setup();
+
+    const pending = recorder.start();
+    recorder[end]();
+
+    expect(await pending).toEqual({ ok: false, reason: "cancelled" });
+    expect(tracks[0].stop).toHaveBeenCalledTimes(1);
+    expect(instances).toHaveLength(0);
+    expect(recorder.recording()).toBe(false);
+    expect(onState).not.toHaveBeenCalledWith({ recording: true, elapsedMs: 0 });
   });
 });
 

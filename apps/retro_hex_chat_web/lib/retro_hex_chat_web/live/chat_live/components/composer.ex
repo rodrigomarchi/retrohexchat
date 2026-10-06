@@ -60,6 +60,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
 
   @id "composer"
 
+  # Recordings that may be uploading at once; an announcement past this many is
+  # refused, so the announcements a client can make are bounded too.
+  @voice_in_flight 3
+
+  # The only names a recording made here can carry (see `voice_recorder.js`).
+  @voice_filename ~r/\Avoice-\d{8}-\d{6}\.(weba|ogg|m4a|mp3|wav)\z/
+
   @spec id() :: String.t()
   def id, do: @id
 
@@ -127,6 +134,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
        max_entries: 5,
        max_file_size: Attachments.max_size_bytes()
      )
+     |> allow_upload(:voice,
+       accept: :any,
+       auto_upload: true,
+       external: &presign_voice_upload/2,
+       progress: &handle_voice_progress/3,
+       max_entries: @voice_in_flight,
+       max_file_size: Attachments.max_size_bytes()
+     )
      |> assign(
        nickname: "",
        conversation_members: [],
@@ -139,7 +154,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
        show_emoji_picker: false,
        pm_typing_from: nil,
        edit_mode_message_id: nil,
-       mobile_viewport: false,
        timestamp_format: :dd_mm_hh_mm,
        timezone: "Etc/UTC"
      )}
@@ -335,23 +349,31 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     {:noreply, cancel_upload(socket, :attachments, ref)}
   end
 
+  def handle_event("cancel_voice_upload", %{"ref" => ref}, socket) do
+    recordings =
+      case Enum.find(socket.assigns.uploads.voice.entries, &(&1.ref == ref)) do
+        nil -> socket.assigns.voice_recordings
+        entry -> Map.delete(socket.assigns.voice_recordings, entry.client_name)
+      end
+
+    {:noreply,
+     socket
+     |> cancel_upload(:voice, ref)
+     |> assign(voice_recordings: recordings)}
+  end
+
+  # The browser is where a take fails, but every word the composer says is
+  # written here, so the recorder only names what went wrong.
+  def handle_event("voice_error", params, socket) do
+    {:noreply, assign(socket, input_error: voice_error_message(params["reason"]))}
+  end
+
   # A recording announces itself just before its upload starts, because the
   # reservation is the only moment the length can be written beside the file.
+  # It is also the moment Send was pressed, so the conversation on screen then
+  # is the one the recording goes to, wherever the reader is when it lands.
   def handle_event("voice_recorded", params, socket) do
-    %{"filename" => filename, "content_type" => content_type} = params
-
-    case VoiceMessages.metadata(content_type, params["duration_ms"]) do
-      {:ok, metadata} ->
-        recordings = Map.put(socket.assigns.voice_recordings, filename, metadata)
-        {:noreply, assign(socket, voice_recordings: recordings, input_error: nil)}
-
-      {:error, :unsupported_content_type} ->
-        {:noreply,
-         assign(socket,
-           input_error:
-             dgettext("chat", "This browser recorded in a format this chat cannot send")
-         )}
-    end
+    {:noreply, announce_recording(socket, params)}
   end
 
   def handle_event("send_input", %{"input" => ""} = params, socket) do
@@ -468,12 +490,61 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
                 target={@myself}
               />
             </:toolbar_buttons>
+            <%!-- The upload's input outlives the microphone: a recording still
+                  uploading when the Status tab opens has to report its progress
+                  through an input that is still there. --%>
+            <:toolbar_buttons>
+              <.voice_recorder :if={@capabilities.voice} target={@myself} />
+              <.live_file_input upload={@uploads.voice} class="sr-only" />
+            </:toolbar_buttons>
           </.chat_input>
 
-          <.voice_recorder
-            :if={@capabilities.voice and @mobile_viewport and is_nil(@edit_mode_message_id)}
-            target={@myself}
-          />
+          <div
+            :if={@uploads.voice.entries != [] or upload_errors(@uploads.voice) != []}
+            class="border-x border-b border-border bg-surface px-1 py-1 text-xs"
+            data-testid="chat-voice-pending"
+          >
+            <div
+              :for={entry <- @uploads.voice.entries}
+              class="flex min-h-7 items-center gap-1"
+              data-testid="chat-voice-entry"
+            >
+              <Icons.icon_microphone class="h-4 w-4 shrink-0" />
+              <span class="min-w-0 flex-1 truncate">
+                {dgettext("chat", "Voice message")}
+              </span>
+              <span class="w-10 shrink-0 text-right text-muted-foreground">
+                {entry.progress}%
+              </span>
+              <.tool_button
+                label={dgettext("chat", "Cancel")}
+                size="sm"
+                tone="danger-on-hover"
+                phx-click="cancel_voice_upload"
+                phx-value-ref={entry.ref}
+                phx-target={@myself}
+              >
+                <Icons.icon_close class="h-4 w-4" />
+              </.tool_button>
+            </div>
+            <p
+              :for={err <- upload_errors(@uploads.voice)}
+              class="px-1 text-destructive"
+              data-testid="chat-voice-error"
+            >
+              {upload_error_to_string(err)}
+            </p>
+            <p
+              :for={entry <- @uploads.voice.entries}
+              :if={upload_errors(@uploads.voice, entry) != []}
+              class="px-1 text-destructive"
+              data-testid="chat-voice-error"
+            >
+              {@uploads.voice
+              |> upload_errors(entry)
+              |> Enum.map_join(", ", &upload_error_to_string/1)}
+            </p>
+          </div>
 
           <div
             :if={attachment_selected?(@uploads.attachments)}
@@ -569,8 +640,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
         autocomplete_results: [],
         autocomplete_selected: 0,
         syntax_tooltip: nil,
-        composer_view: :write,
-        voice_recordings: %{}
+        composer_view: :write
       )
       |> push_event("clear_input", %{})
     else
@@ -661,12 +731,27 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   defp upload_error_to_string(_error), do: dgettext("chat", "Attachment upload failed")
 
   defp presign_attachment_upload(entry, socket) do
+    prepare_direct_upload(entry, socket, %{})
+  end
+
+  # A recording is announced before its upload starts, so anything arriving on
+  # this upload without that announcement was not recorded here. A file that
+  # arrives as something other than audio is refused by `Attachments`, which
+  # will not store voice metadata beside it.
+  defp presign_voice_upload(entry, socket) do
+    case Map.fetch(socket.assigns.voice_recordings, entry.client_name) do
+      {:ok, %{metadata: metadata}} -> prepare_direct_upload(entry, socket, metadata)
+      :error -> {:error, %{reason: dgettext("chat", "Attachment upload failed")}, socket}
+    end
+  end
+
+  defp prepare_direct_upload(entry, socket, preview_metadata) do
     metadata = %{
       filename: entry.client_name,
       content_type: entry.client_type,
       byte_size: entry.client_size,
       directory_path: upload_directory_path(socket),
-      preview_metadata: Map.get(socket.assigns.voice_recordings, entry.client_name, %{})
+      preview_metadata: preview_metadata
     }
 
     case Attachments.prepare_direct_upload(socket.assigns.nickname, metadata) do
@@ -674,6 +759,90 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
       {:error, reason} -> {:error, %{reason: upload_store_error(reason)}, socket}
     end
   end
+
+  # A recording is a message of its own: the moment its upload lands it is sent,
+  # alone, whatever is typed in the input, and whatever files wait beside it —
+  # to the conversation it was recorded in.
+  defp handle_voice_progress(:voice, %{done?: false}, socket), do: {:noreply, socket}
+
+  defp handle_voice_progress(:voice, entry, socket) do
+    {recording, recordings} = Map.pop(socket.assigns.voice_recordings, entry.client_name)
+
+    file_id =
+      consume_uploaded_entry(socket, entry, fn meta -> {:ok, Map.get(meta, :file_id)} end)
+
+    socket = assign(socket, voice_recordings: recordings)
+
+    case Attachments.confirm_uploaded_files([file_id], socket.assigns.nickname) do
+      {:ok, _uploaded_files} ->
+        send_recording(recording, file_id)
+        {:noreply, socket}
+
+      {:error, _reason} ->
+        {:noreply,
+         assign(socket, input_error: dgettext("chat", "Attachment upload could not be confirmed"))}
+    end
+  end
+
+  defp send_recording(%{target: target}, file_id) when not is_nil(target),
+    do: send(self(), {:composer_voice, target, file_id})
+
+  defp send_recording(_recording, file_id),
+    do: send(self(), {:composer_dispatch, "", nil, "irc", [file_id]})
+
+  defp announce_recording(
+         socket,
+         %{"filename" => filename, "content_type" => content_type} = params
+       )
+       when is_binary(filename) do
+    recordings = socket.assigns.voice_recordings
+
+    cond do
+      not Regex.match?(@voice_filename, filename) ->
+        assign(socket, input_error: dgettext("chat", "Attachment upload failed"))
+
+      map_size(recordings) >= @voice_in_flight ->
+        assign(socket, input_error: dgettext("chat", "Too many attachments"))
+
+      true ->
+        put_recording(socket, filename, content_type, params["duration_ms"])
+    end
+  end
+
+  defp announce_recording(socket, _params),
+    do: assign(socket, input_error: dgettext("chat", "Attachment upload failed"))
+
+  defp put_recording(socket, filename, content_type, duration_ms) do
+    case VoiceMessages.metadata(content_type, duration_ms) do
+      {:ok, metadata} ->
+        recording = %{metadata: metadata, target: voice_target(socket.assigns.session)}
+        recordings = Map.put(socket.assigns.voice_recordings, filename, recording)
+        assign(socket, voice_recordings: recordings, input_error: nil)
+
+      {:error, :unsupported_content_type} ->
+        assign(socket,
+          input_error: dgettext("chat", "This browser recorded in a format this chat cannot send")
+        )
+    end
+  end
+
+  # The same precedence the send path reads: a private conversation in focus
+  # wins over the channel behind it.
+  defp voice_target(%{active_pm: peer}) when is_binary(peer) and peer != "", do: {:pm, peer}
+
+  defp voice_target(%{active_channel: channel}) when is_binary(channel) and channel != "",
+    do: {:channel, channel}
+
+  defp voice_target(_session), do: nil
+
+  defp voice_error_message("denied"),
+    do: dgettext("chat", "This browser did not give access to the microphone.")
+
+  defp voice_error_message("unavailable"),
+    do: dgettext("chat", "No microphone is available.")
+
+  defp voice_error_message(_reason),
+    do: dgettext("chat", "This browser cannot record. Attach an audio file instead.")
 
   defp input_for_mode(socket, input) do
     if notice_mode?(socket), do: "/notice #{socket.assigns.notice_target} #{input}", else: input

@@ -72,6 +72,28 @@ describe("CharCounterHook", () => {
     expect(button.disabled).toBe(true);
   });
 
+  // A pending attachment is a message on its own; the server says so on the
+  // button, and a patch that runs updated() must not take that back.
+  it("keeps Send enabled with an empty textarea when an attachment is pending", () => {
+    const button = hook.el.querySelector("[data-testid='chat-input-send']");
+    button.dataset.canSendEmpty = "true";
+    button.disabled = false;
+
+    hook.updated();
+
+    expect(button.disabled).toBe(false);
+  });
+
+  it("disables Send again once the attachment is gone", () => {
+    const button = hook.el.querySelector("[data-testid='chat-input-send']");
+    button.dataset.canSendEmpty = "true";
+    hook.updated();
+    button.dataset.canSendEmpty = "false";
+    hook.updated();
+
+    expect(button.disabled).toBe(true);
+  });
+
   it("removes classes when back to normal", () => {
     const input = hook.el.querySelector("#chat-input");
     const counter = hook.el.querySelector("[data-testid='char-counter']");
