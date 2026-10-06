@@ -46,7 +46,6 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   attr :show_highlight_add_dialog, :boolean, default: false, doc: "Show inline add sub-form"
   attr :show_highlight_edit_dialog, :boolean, default: false, doc: "Show inline edit sub-form"
   attr :on_color_select, :any, default: nil, doc: "Color select callback"
-  attr :on_ok, :any, default: nil, doc: "OK button callback"
   attr :on_cancel, :any, default: nil, doc: "Cancel button callback"
 
   @spec highlight_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -79,17 +78,6 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
           sub_scope={:viewport}
         />
       </.dialog_body>
-
-      <.dialog_footer>
-        <.button variant="default" phx-click={@on_ok || hide_modal(@id)}>
-          <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "OK")}
-        </.button>
-        <.button variant="outline" phx-click={@on_cancel || hide_modal(@id)}>
-          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Cancel")}
-        </.button>
-      </.dialog_footer>
     </.dialog>
     """
   end
@@ -112,7 +100,6 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   attr :show_highlight_add_dialog, :boolean, default: false
   attr :show_highlight_edit_dialog, :boolean, default: false
   attr :on_color_select, :any, default: nil
-  attr :on_close, :any, default: nil
   attr :sub_scope, :atom, default: :window, values: [:viewport, :window]
 
   @spec highlight_panel(map()) :: Phoenix.LiveView.Rendered.t()
@@ -232,19 +219,6 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
                 class="hl-color-picker"
               />
             </div>
-          </div>
-
-          <div :if={@on_close} class="hl-dialog-footer flex justify-end">
-            <.button
-              type="button"
-              size="sm"
-              phx-click={@on_close}
-              phx-target={@target}
-              class="hl-action-button"
-            >
-              <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "OK")}
-            </.button>
           </div>
 
           <%!-- Highlight Add Sub-Dialog (modal, scoped by @sub_scope) --%>

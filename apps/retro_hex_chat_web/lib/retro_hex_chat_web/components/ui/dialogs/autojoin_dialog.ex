@@ -39,7 +39,6 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
   attr :on_remove, :any, default: nil
-  attr :on_ok, :any, default: nil
   attr :on_cancel, :any, default: nil
 
   @spec autojoin_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -68,16 +67,6 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
           sub_scope={:viewport}
         />
       </.dialog_body>
-      <.dialog_footer>
-        <.button phx-click={@on_ok}>
-          <:icon><Icons.icon_checkmark /></:icon>
-          {dgettext("dialogs", "OK")}
-        </.button>
-        <.button variant="outline" phx-click={@on_cancel || hide_modal(@id)}>
-          <:icon><Icons.icon_close /></:icon>
-          {dgettext("dialogs", "Cancel")}
-        </.button>
-      </.dialog_footer>
     </.dialog>
     """
   end
@@ -96,7 +85,6 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
   attr :on_remove, :any, default: nil
-  attr :on_close, :any, default: nil
   attr :sub_scope, :atom, default: :window, values: [:viewport, :window]
 
   @spec autojoin_panel(map()) :: Phoenix.LiveView.Rendered.t()
@@ -173,19 +161,6 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
             <.button size="sm" phx-click={@on_add} phx-target={@target} class="aj-action-button">
               <:icon><Icons.icon_btn_add /></:icon>
               {dgettext("dialogs", "Add")}
-            </.button>
-          </div>
-
-          <div :if={@on_close} class="aj-dialog-footer flex justify-end">
-            <.button
-              type="button"
-              size="sm"
-              phx-click={@on_close}
-              phx-target={@target}
-              class="aj-action-button"
-            >
-              <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "OK")}
             </.button>
           </div>
         </div>

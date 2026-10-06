@@ -84,7 +84,6 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
           on_delete={@on_delete}
           on_save={@on_save}
           on_cancel_edit={@on_cancel_edit}
-          on_close={@on_close}
         />
       </.dialog_body>
     </.dialog>
@@ -109,7 +108,6 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
   attr :on_delete, :any, default: nil
   attr :on_save, :any, default: nil
   attr :on_cancel_edit, :any, default: nil
-  attr :on_close, :any, default: nil
 
   @spec custom_menus_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def custom_menus_panel(assigns) do
@@ -234,13 +232,6 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
               />
             </.tabs_content>
           </.tabs>
-
-          <div class="cm-dialog-footer flex justify-end">
-            <.button type="button" size="sm" phx-click={@on_close} class="cm-action-button">
-              <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "OK")}
-            </.button>
-          </div>
         </div>
       </.focus_wrap>
     </div>

@@ -70,11 +70,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
     {:noreply, assign(socket, show_edit_dialog: false)}
   end
 
-  def handle_event("autojoin_close", _params, socket) do
-    send(self(), {:close_window, "autojoin"})
-    {:noreply, socket}
-  end
-
   # ── List mutations ───────────────────────────────────────────────
 
   def handle_event("autojoin_add_confirm", %{"channel" => channel} = params, socket) do
@@ -149,7 +144,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
         on_add="autojoin_add"
         on_edit="autojoin_edit"
         on_remove="autojoin_remove"
-        on_close="autojoin_close"
       />
     </div>
     """

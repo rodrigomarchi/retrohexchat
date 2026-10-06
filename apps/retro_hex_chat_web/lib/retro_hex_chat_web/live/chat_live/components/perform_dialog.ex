@@ -70,11 +70,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
     {:noreply, assign(socket, show_edit_dialog: false)}
   end
 
-  def handle_event("perform_close", _params, socket) do
-    send(self(), {:close_window, "perform"})
-    {:noreply, socket}
-  end
-
   # ── List mutations ───────────────────────────────────────────────
 
   def handle_event("perform_add_confirm", %{"command" => command}, socket) do
@@ -172,7 +167,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
         on_move_up="perform_move_up"
         on_move_down="perform_move_down"
         on_toggle_enabled="perform_toggle_enabled"
-        on_close="perform_close"
       />
     </div>
     """

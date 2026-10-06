@@ -36,7 +36,6 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
   attr :on_change, :any, default: nil, doc: "Form change event"
   attr :on_save, :any, default: nil, doc: "Form submit event"
   attr :on_cancel_edit, :any, default: nil, doc: "Cancel edit event"
-  attr :on_close, :any, default: nil, doc: "Close/OK event"
 
   @spec timers_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def timers_panel(assigns) do
@@ -256,19 +255,6 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
                 </.button>
               </div>
             </form>
-          </div>
-
-          <div :if={@on_close} class="tm-dialog-footer flex justify-end">
-            <.button
-              type="button"
-              size="sm"
-              phx-click={@on_close}
-              phx-target={@target}
-              class="tm-action-button"
-            >
-              <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "OK")}
-            </.button>
           </div>
         </div>
       </.focus_wrap>

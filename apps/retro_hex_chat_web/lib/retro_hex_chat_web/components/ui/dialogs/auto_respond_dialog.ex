@@ -80,7 +80,6 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
           on_delete={@on_delete}
           on_save={@on_save}
           on_cancel_edit={@on_cancel_edit}
-          on_close={@on_close}
         />
       </.dialog_body>
     </.dialog>
@@ -105,7 +104,6 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   attr :on_delete, :any, default: nil
   attr :on_save, :any, default: nil
   attr :on_cancel_edit, :any, default: nil
-  attr :on_close, :any, default: nil
 
   @spec auto_respond_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def auto_respond_panel(assigns) do
@@ -308,13 +306,6 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
                 </.button>
               </div>
             </form>
-          </div>
-
-          <div :if={@on_close} class="ar-dialog-footer flex justify-end">
-            <.button type="button" size="sm" phx-click={@on_close} class="ar-action-button">
-              <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "OK")}
-            </.button>
           </div>
         </div>
       </.focus_wrap>

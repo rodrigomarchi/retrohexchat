@@ -44,7 +44,6 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   attr :on_move_up, :any, default: nil
   attr :on_move_down, :any, default: nil
   attr :on_toggle_enabled, :any, default: nil
-  attr :on_ok, :any, default: nil
   attr :on_cancel, :any, default: nil
 
   @spec perform_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -77,16 +76,6 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
           sub_scope={:viewport}
         />
       </.dialog_body>
-      <.dialog_footer>
-        <.button phx-click={@on_ok}>
-          <:icon><Icons.icon_checkmark /></:icon>
-          {dgettext("dialogs", "OK")}
-        </.button>
-        <.button variant="outline" phx-click={@on_cancel || hide_modal(@id)}>
-          <:icon><Icons.icon_close /></:icon>
-          {dgettext("dialogs", "Cancel")}
-        </.button>
-      </.dialog_footer>
     </.dialog>
     """
   end
@@ -109,7 +98,6 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   attr :on_move_up, :any, default: nil
   attr :on_move_down, :any, default: nil
   attr :on_toggle_enabled, :any, default: nil
-  attr :on_close, :any, default: nil
   attr :sub_scope, :atom, default: :window, values: [:viewport, :window]
 
   @spec perform_panel(map()) :: Phoenix.LiveView.Rendered.t()
@@ -222,19 +210,6 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               phx-target={@target}
             /> {dgettext("dialogs", "Enable perform on connect")}
           </label>
-
-          <div :if={@on_close} class="pf-dialog-footer flex justify-end">
-            <.button
-              type="button"
-              size="sm"
-              phx-click={@on_close}
-              phx-target={@target}
-              class="pf-action-button"
-            >
-              <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "OK")}
-            </.button>
-          </div>
         </div>
 
         <%!-- Add Sub-Dialog --%>

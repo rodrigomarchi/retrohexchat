@@ -94,8 +94,11 @@ test.describe("Dialog keyboard behavior", () => {
     await expect(highlightAddForm).toBeHidden();
     await expect(chat.highlightWordRow(cancelledWord)).toHaveCount(0);
 
+    // Changes here apply as they are made, so the window has no OK — its
+    // title bar closes it.
     await chat.highlightDialog
-      .getByRole("button", { name: "OK", exact: true })
+      .getByRole("button", { name: "Close" })
+      .first()
       .click();
     await expect(chat.highlightDialog).toBeHidden();
   });
