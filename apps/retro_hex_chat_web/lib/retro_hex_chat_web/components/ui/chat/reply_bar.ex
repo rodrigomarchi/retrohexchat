@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.Components.UI.ReplyBar do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChatWeb.Icons
 
@@ -43,15 +43,15 @@ defmodule RetroHexChatWeb.Components.UI.ReplyBar do
       <span :if={@message} class="flex-1 truncate text-muted-foreground">
         {@message}
       </span>
-      <.button
-        size="icon"
-        variant="ghost"
-        class="w-5 h-5 shrink-0"
+      <.tool_button
+        label={dgettext("chat", "Dismiss")}
+        variant="flat"
+        size="xs"
         phx-click={@on_dismiss}
         data-testid="reply-bar-dismiss"
       >
-        <:icon><Icons.icon_close class="w-3 h-3" /></:icon>
-      </.button>
+        <Icons.icon_close class="w-3 h-3" />
+      </.tool_button>
     </div>
     """
   end

@@ -127,16 +127,23 @@ defmodule RetroHexChatWeb.ChatLive.EventsTest do
   # has to say a different clock time to each of them.
   describe "the reader's own clock" do
     test "two zones read the same instant differently", ctx do
+      # 18:00 UTC a week from now: always in the future, and late enough that
+      # Tokyo (UTC+9) has already turned the page while São Paulo (UTC-3) has not.
+      date = Date.add(Date.utc_today(), 7)
+      starts_at = DateTime.new!(date, ~T[18:00:00.000000], "Etc/UTC")
+
       {:ok, _card} =
         Server.schedule_event(ctx.channel, ctx.host, %{
           title: "Tuesday tournament",
-          starts_at: ~U[2026-10-06 18:00:00.000000Z]
+          starts_at: starts_at
         })
 
       submit_command_sync(ctx.view, "/event")
 
-      assert send_update_events(ctx.view, "America/Sao_Paulo") =~ "06/10/2026 15:00"
-      assert send_update_events(ctx.view, "Asia/Tokyo") =~ "07/10/2026 03:00"
+      assert send_update_events(ctx.view, "America/Sao_Paulo") =~ day_month_year(date) <> " 15:00"
+
+      assert send_update_events(ctx.view, "Asia/Tokyo") =~
+               day_month_year(Date.add(date, 1)) <> " 03:00"
     end
   end
 
@@ -176,4 +183,6 @@ defmodule RetroHexChatWeb.ChatLive.EventsTest do
   defp events_rows(view) do
     view |> events_state() |> Map.fetch!(:paginated) |> Map.fetch!(:events) |> Map.fetch!(:count)
   end
+
+  defp day_month_year(date), do: Calendar.strftime(date, "%d/%m/%Y")
 end

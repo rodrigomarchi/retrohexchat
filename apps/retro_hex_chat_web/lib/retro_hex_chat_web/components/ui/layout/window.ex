@@ -2,6 +2,8 @@ defmodule RetroHexChatWeb.Components.UI.Window do
   @moduledoc false
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ToolButton
+
   alias RetroHexChatWeb.Icons
 
   @doc "Renders a Win98-style window frame."
@@ -81,23 +83,18 @@ defmodule RetroHexChatWeb.Components.UI.Window do
         </span>
       </div>
       <div class="flex flex-shrink-0">
-        <button
+        <.tool_button
           :for={control <- @controls}
-          type="button"
+          label={control_label(control)}
+          size="title"
           disabled={@inactive && is_nil(@on_close)}
-          aria-label={control_label(control)}
           data-window-control={control}
-          class={[
-            "inline-flex items-center justify-center w-[16px] h-[14px] p-0 shadow-retro-raised bg-surface",
-            "active:shadow-retro-sunken",
-            control == :close && "ml-[2px]",
-            control == :restore && "u-hidden"
-          ]}
+          class={[control == :close && "ml-[2px]", control == :restore && "u-hidden"]}
           phx-click={control == :close && @on_close}
           data-hide-target={control == :close && @close_target}
         >
           <.control_icon control={control} />
-        </button>
+        </.tool_button>
       </div>
     </div>
     """

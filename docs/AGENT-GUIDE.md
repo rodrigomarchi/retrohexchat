@@ -302,6 +302,14 @@ get fresh timers with the *remaining* duration.
   is a second button, free to drift from the first. Reach for the existing primitive even when a
   constraint (a button cannot nest) makes it awkward; the constraint has an answer, and the
   hand-drawn copy is not it.
+- **One button, two families.** A square icon or tool control — toolbar, rail, call dock, popover
+  `<summary>`, a toolbar `<.link>` — is `ToolButton` (`tool_button/1`, or `tool_button_class/1`
+  for an element that cannot be a `<button>`), in `raised`, `flat` or `dock`. A labelled action
+  is `Button`. Both read their bevel from `Components.UI.Chrome`, so a `*_button` wrapper that
+  only passes attrs through, or a hand-written `shadow-retro-raised hover:…` string, is a third
+  button and does not survive review. `active` is the sunken look and `pressed` is
+  `aria-pressed`; keep them apart where the state and the drawing disagree (a microphone is drawn
+  sunken while off and announced as pressed while on).
 - **Enhance an existing component; never fork a parallel dialog/menu.** New channel-config and
   ChanServ tabs extend the existing Channel Central dialog; wiring specs just add a menu entry to
   an already-built dialog. **Reuse a whole stateful component across contexts via

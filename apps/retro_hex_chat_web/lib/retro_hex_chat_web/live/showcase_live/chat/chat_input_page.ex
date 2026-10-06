@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatInputPage do
     statics: RetroHexChatWeb.static_paths()
 
   import RetroHexChatWeb.Components.UI.ChatInput
-  import RetroHexChatWeb.Components.UI.Toolbar
+  import RetroHexChatWeb.Components.UI.ToolButton
   import RetroHexChatWeb.ShowcaseHelpers
 
   @impl true
@@ -43,30 +43,30 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatInputPage do
       >
         <.chat_input placeholder={dgettext("showcase", "Message to #lobby — / for commands")}>
           <:toolbar_buttons>
-            <.toolbar_button variant="compact" label={dgettext("showcase", "Bold")}>
+            <.tool_button variant="flat" size="sm" label={dgettext("showcase", "Bold")}>
               <span class="text-xs font-bold">B</span>
-            </.toolbar_button>
-            <.toolbar_button variant="compact" label={dgettext("showcase", "Italic")}>
+            </.tool_button>
+            <.tool_button variant="flat" size="sm" label={dgettext("showcase", "Italic")}>
               <span class="text-xs italic">I</span>
-            </.toolbar_button>
-            <.toolbar_button variant="compact" label={dgettext("showcase", "Underline")}>
+            </.tool_button>
+            <.tool_button variant="flat" size="sm" label={dgettext("showcase", "Underline")}>
               <span class="text-xs underline">U</span>
-            </.toolbar_button>
-            <.toolbar_separator variant="compact" />
-            <.toolbar_button variant="compact" label={dgettext("showcase", "Text Color")}>
+            </.tool_button>
+            <.tool_separator size="sm" />
+            <.tool_button variant="flat" size="sm" label={dgettext("showcase", "Text Color")}>
               <span class="text-xs font-bold text-error">A</span>
-            </.toolbar_button>
-            <.toolbar_button variant="compact" label={dgettext("showcase", "Background Color")}>
+            </.tool_button>
+            <.tool_button variant="flat" size="sm" label={dgettext("showcase", "Background Color")}>
               <span class="text-xs font-bold bg-highlight-bg px-0.5">A</span>
-            </.toolbar_button>
+            </.tool_button>
           </:toolbar_buttons>
         </.chat_input>
         <.code_example>
           &lt;.chat_input placeholder="Message to #lobby"&gt;
           &lt;:toolbar_buttons&gt;
-          &lt;.toolbar_button variant="compact" label="Bold"&gt;
+          &lt;.tool_button variant="flat" size="sm" label="Bold"&gt;
           &lt;span class="font-bold"&gt;B&lt;/span&gt;
-          &lt;/.toolbar_button&gt;
+          &lt;/.tool_button&gt;
           &lt;/:toolbar_buttons&gt;
           &lt;/.chat_input&gt;
         </.code_example>

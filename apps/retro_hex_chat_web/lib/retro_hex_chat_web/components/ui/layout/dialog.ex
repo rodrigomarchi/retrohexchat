@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ToolButton
+
   alias RetroHexChatWeb.Icons
 
   @doc """
@@ -202,21 +204,14 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
 
   def dialog_close(assigns) do
     ~H"""
-    <button
-      type="button"
-      class={
-        classes([
-          "bg-surface shadow-retro-raised active:shadow-retro-sunken",
-          "flex items-center justify-center shrink-0 ml-auto",
-          "w-[16px] h-[14px]",
-          @class
-        ])
-      }
+    <.tool_button
+      label={dgettext("ui", "Close")}
+      size="title"
+      class={classes(["ml-auto", @class])}
       phx-click={close_modal(@on_close, @id)}
-      aria-label={dgettext("ui", "Close")}
     >
       <Icons.icon_close_pixel class="w-[8px] h-[7px]" />
-    </button>
+    </.tool_button>
     """
   end
 

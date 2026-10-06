@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
 
   import RetroHexChatWeb.Components.UI.ContextMenu
   import RetroHexChatWeb.Components.UI.Toolbar
+  import RetroHexChatWeb.Components.UI.ToolButton
 
   @doc """
   Renders a full application toolbar with connection, options dropdown, and help groups.
@@ -34,34 +35,40 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
       {@rest}
     >
       <%!-- Group 1: Connection --%>
-      <.toolbar_button
+      <.tool_button
         :if={!@connected}
+        variant="flat"
+        size="md"
         label={dgettext("ui", "Connect")}
         phx-click={@on_action}
         phx-value-action="restore_session"
       >
         <Icons.icon_btn_connect_lightning class="w-[16px] h-[16px]" />
-      </.toolbar_button>
-      <.toolbar_button
+      </.tool_button>
+      <.tool_button
         :if={@connected}
+        variant="flat"
+        size="md"
         label={dgettext("ui", "Disconnect")}
         phx-click={@on_action}
         phx-value-action="disconnect"
       >
         <Icons.icon_btn_disconnect class="w-[16px] h-[16px]" />
-      </.toolbar_button>
+      </.tool_button>
 
-      <.toolbar_separator />
+      <.tool_separator size="md" />
 
       <%!-- Group 2: Options (dropdown) --%>
       <div class="toolbar-group relative">
-        <.toolbar_button
+        <.tool_button
+          variant="flat"
+          size="md"
           label={dgettext("ui", "Options")}
           data-toolbar-group-toggle="true"
           data-toolbar-group="options"
         >
           <Icons.icon_group_tools class="w-[32px] h-[32px]" />
-        </.toolbar_button>
+        </.tool_button>
         <div class="toolbar-group-dropdown u-hidden absolute left-0 top-full z-50 shadow-retro-raised bg-surface p-1 min-w-[200px]">
           <%!-- View items --%>
           <.dropdown_item
@@ -281,16 +288,18 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
         </div>
       </div>
 
-      <.toolbar_separator />
+      <.tool_separator size="md" />
 
       <%!-- Group 3: Help --%>
-      <.toolbar_button
+      <.tool_button
+        variant="flat"
+        size="md"
         label={dgettext("ui", "Help Topics")}
         phx-click={@on_action}
         phx-value-action="help_topics"
       >
         <Icons.icon_group_help class="w-[32px] h-[32px]" />
-      </.toolbar_button>
+      </.tool_button>
     </.toolbar>
     """
   end

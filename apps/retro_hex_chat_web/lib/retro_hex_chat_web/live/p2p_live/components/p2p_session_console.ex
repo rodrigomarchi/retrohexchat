@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PSessionConsole do
 
   import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
   import RetroHexChatWeb.Components.UI.MediaSession.ActionButton
-  import RetroHexChatWeb.Components.UI.MediaSession.IconButton
+  import RetroHexChatWeb.Components.UI.ToolButton
   import RetroHexChatWeb.Components.UI.MediaSession.SectionNav
 
   alias RetroHexChatWeb.Icons
@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PSessionConsole do
         </:item>
 
         <:actions>
-          <.media_session_icon_button
+          <.tool_button
             label={
               if Map.get(@p2p_session, :call_mini, false),
                 do: dgettext("p2p", "Expand call window"),
@@ -79,15 +79,15 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PSessionConsole do
               :if={!Map.get(@p2p_session, :call_mini, false)}
               class="h-4 w-4"
             />
-          </.media_session_icon_button>
-          <.media_session_icon_button
+          </.tool_button>
+          <.tool_button
             label={dgettext("p2p", "End P2P session")}
             variant="flat"
             phx-click="p2p_end_session"
             data-testid="p2p-console-end-session"
           >
             <Icons.icon_btn_disconnect class="h-4 w-4" />
-          </.media_session_icon_button>
+          </.tool_button>
         </:actions>
       </.section_nav>
 

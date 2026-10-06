@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.MediaSession.CommandBar
-  import RetroHexChatWeb.Components.UI.MediaSession.IconButton
+  import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChatWeb.Icons.CallControls
 
@@ -73,7 +73,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         <CallControls.icon_call_layout_speaker class="h-4 w-4" />
       </.layout_button>
 
-      <.media_session_icon_button
+      <.tool_button
         label={self_view_title(@call)}
         variant={@variant}
         active={self_view(@call) != :hidden}
@@ -83,9 +83,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         data-testid="group-call-self-view-toggle"
       >
         <CallControls.icon_call_self_view class="h-4 w-4" />
-      </.media_session_icon_button>
+      </.tool_button>
 
-      <.media_session_icon_button
+      <.tool_button
         :if={focused_participant_id(@call)}
         label={dgettext("group_call", "Clear focused participant")}
         variant={@variant}
@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         data-testid="group-call-clear-focus"
       >
         <CallControls.icon_call_close class="h-4 w-4" />
-      </.media_session_icon_button>
+      </.tool_button>
     </.media_session_command_bar>
     """
   end
@@ -110,7 +110,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
     assigns = assign(assigns, :selected, assigns.mode == assigns.current)
 
     ~H"""
-    <.media_session_icon_button
+    <.tool_button
       label={@label}
       active={@selected}
       pressed={@selected}
@@ -121,7 +121,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
       data-testid={@testid}
     >
       {render_slot(@inner_block)}
-    </.media_session_icon_button>
+    </.tool_button>
     """
   end
 

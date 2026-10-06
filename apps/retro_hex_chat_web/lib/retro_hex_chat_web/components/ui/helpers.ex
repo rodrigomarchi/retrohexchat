@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.ComponentHelpers do
 
   import Phoenix.Component
 
+  alias RetroHexChatWeb.Components.UI.Chrome
+
   @doc """
   Prepare input assigns for use in a form. Extract required attribute from the Form.Field struct and update current assigns.
   """
@@ -139,14 +141,11 @@ defmodule RetroHexChatWeb.ComponentHelpers do
 
   @variants %{
     variant: %{
-      "default" =>
-        "bg-surface text-foreground shadow-retro-raised active:shadow-retro-sunken ring-1 ring-black",
-      "destructive" =>
-        "bg-surface text-destructive shadow-retro-raised active:shadow-retro-sunken",
-      "outline" => "bg-surface text-foreground shadow-retro-raised active:shadow-retro-sunken",
-      "secondary" => "bg-surface text-foreground shadow-retro-raised active:shadow-retro-sunken",
-      "ghost" =>
-        "bg-transparent text-foreground shadow-none hover:shadow-retro-raised hover:bg-surface active:shadow-retro-sunken",
+      "default" => Chrome.raised() <> " text-foreground ring-1 ring-black",
+      "destructive" => Chrome.raised() <> " text-destructive",
+      "outline" => Chrome.raised() <> " text-foreground",
+      "secondary" => Chrome.raised() <> " text-foreground",
+      "ghost" => Chrome.flat() <> " text-foreground hover:bg-surface",
       "link" => "text-primary underline-offset-4 hover:underline"
     },
     size: %{

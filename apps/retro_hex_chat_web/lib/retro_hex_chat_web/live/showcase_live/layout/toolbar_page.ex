@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ToolbarPage do
   alias RetroHexChatWeb.Icons
 
   import RetroHexChatWeb.Components.UI.Toolbar
+  import RetroHexChatWeb.Components.UI.ToolButton
   import RetroHexChatWeb.ShowcaseHelpers
 
   @impl true

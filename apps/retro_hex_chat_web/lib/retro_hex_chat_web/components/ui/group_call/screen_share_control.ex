@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ScreenShareControl do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.MediaSession.IconButton
+  import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChatWeb.Icons.CallControls
 
@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ScreenShareControl do
   @spec screen_share_control(map()) :: Phoenix.LiveView.Rendered.t()
   def screen_share_control(assigns) do
     ~H"""
-    <.media_session_icon_button
+    <.tool_button
       label={screen_share_title(@call)}
       active={screen_share_active?(@call) || screen_share_blocked?(@call)}
       pressed={screen_share_active?(@call)}
@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ScreenShareControl do
       data-testid="group-call-screen-share-toggle"
     >
       <CallControls.icon_call_screen_share class="h-4 w-4" />
-    </.media_session_icon_button>
+    </.tool_button>
     """
   end
 

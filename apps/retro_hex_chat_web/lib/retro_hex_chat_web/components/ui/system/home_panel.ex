@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.System.HomePanel do
 
   import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
   import RetroHexChatWeb.Components.UI.System.{MemoryBar, UsageMeter}
+  import RetroHexChatWeb.Components.UI.System.SectionHeading
 
   alias RetroHexChatWeb.Components.UI.Format
   alias RetroHexChatWeb.Icons
@@ -40,9 +41,13 @@ defmodule RetroHexChatWeb.Components.UI.System.HomePanel do
       data-testid={@testid}
     >
       <section class="shrink-0">
-        <.section_heading icon={:icon_server} label={dgettext("dialogs", "System information")}>
-          <.refresh_button target={@target} on_refresh={@on_refresh} />
-        </.section_heading>
+        <.system_section_heading icon={:icon_server} label={dgettext("dialogs", "System information")}>
+          <.system_refresh_button
+            target={@target}
+            on_refresh={@on_refresh}
+            testid="system-home-refresh"
+          />
+        </.system_section_heading>
 
         <p class="bg-white p-2 font-mono text-[11px] leading-4 shadow-retro-sunken">
           {String.trim(@info.banner)}
@@ -90,7 +95,7 @@ defmodule RetroHexChatWeb.Components.UI.System.HomePanel do
       </section>
 
       <section class="shrink-0">
-        <.section_heading icon={:icon_cpu} label={dgettext("dialogs", "Run queues")} />
+        <.system_section_heading icon={:icon_cpu} label={dgettext("dialogs", "Run queues")} />
 
         <div class="grid grid-cols-3 gap-retro-6">
           <.summary_card
@@ -119,7 +124,7 @@ defmodule RetroHexChatWeb.Components.UI.System.HomePanel do
       </section>
 
       <section class="shrink-0">
-        <.section_heading icon={:icon_warning} label={dgettext("dialogs", "System limits")} />
+        <.system_section_heading icon={:icon_warning} label={dgettext("dialogs", "System limits")} />
 
         <div class="flex flex-col gap-retro-6">
           <.usage_meter
@@ -149,38 +154,6 @@ defmodule RetroHexChatWeb.Components.UI.System.HomePanel do
         <.memory_bar memory={@usage.memory} testid="system-home-memory" />
       </section>
     </div>
-    """
-  end
-
-  attr :icon, :atom, required: true
-  attr :label, :string, required: true
-  slot :inner_block
-
-  defp section_heading(assigns) do
-    ~H"""
-    <h3 class="mb-retro-4 flex min-w-0 items-center gap-1 text-xs font-bold">
-      {apply(Icons, @icon, [%{class: "h-4 w-4 shrink-0"}])}
-      <span class="min-w-0 flex-1 truncate">{@label}</span>
-      {render_slot(@inner_block)}
-    </h3>
-    """
-  end
-
-  attr :target, :any, default: nil
-  attr :on_refresh, :string, required: true
-
-  defp refresh_button(assigns) do
-    ~H"""
-    <button
-      type="button"
-      class="shrink-0 p-retro-2 hover:bg-hover-bg"
-      phx-click={@on_refresh}
-      phx-target={@target}
-      aria-label={dgettext("dialogs", "Refresh")}
-      data-testid="system-home-refresh"
-    >
-      <Icons.icon_btn_refresh class="h-[14px] w-[14px]" />
-    </button>
     """
   end
 end

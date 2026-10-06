@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   import RetroHexChatWeb.Components.UI.Help.HelpMenuBar
   import RetroHexChatWeb.Components.UI.Help.HelpStatusBar
   import RetroHexChatWeb.Components.UI.StartMenuApp
+  import RetroHexChatWeb.Components.UI.ToolButton
   import RetroHexChatWeb.Components.UI.TreeView
 
   alias RetroHexChat.Chat.HelpTopics
@@ -237,23 +238,18 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
       phx-hook="HelpNavHook"
       class="flex items-center gap-1 p-1 shrink-0 border-b border-separator"
     >
-      <button
-        type="button"
-        data-help-nav="back"
-        class={toolbar_btn_class()}
-        title={dgettext("help", "Back")}
-      >
+      <.tool_button label={dgettext("help", "Back")} size="sm" data-help-nav="back">
         <Icons.icon_btn_prev class="w-4 h-4" />
-      </button>
-      <button
-        type="button"
-        data-help-nav="forward"
-        class={toolbar_btn_class()}
-        title={dgettext("help", "Forward")}
-      >
+      </.tool_button>
+      <.tool_button label={dgettext("help", "Forward")} size="sm" data-help-nav="forward">
         <Icons.icon_btn_next class="w-4 h-4" />
-      </button>
-      <.link navigate="/chat/help" class={toolbar_btn_class()} title={dgettext("help", "Home")}>
+      </.tool_button>
+      <.link
+        navigate="/chat/help"
+        class={tool_button_class(size: "sm")}
+        title={dgettext("help", "Home")}
+        aria-label={dgettext("help", "Home")}
+      >
         <Icons.icon_hex_stone class="w-4 h-4" />
       </.link>
 
@@ -450,11 +446,6 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   end
 
   defp resolve_related(_ids), do: []
-
-  defp toolbar_btn_class do
-    "inline-flex items-center justify-center w-6 h-6 shadow-retro-raised bg-surface " <>
-      "active:shadow-retro-sunken hover:bg-hover-bg cursor-pointer"
-  end
 
   defp topic_article_class do
     [

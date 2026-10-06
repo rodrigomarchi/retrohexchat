@@ -190,7 +190,7 @@ msgid "Alias Editor"
 msgstr "Alias Editor"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:207
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:664
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:656
 #, elixir-autogen, elixir-format
 msgid "All"
 msgstr "All"
@@ -279,7 +279,7 @@ msgstr "Bot Management"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:126
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:143
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:269
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:563
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:555
 #, elixir-autogen, elixir-format
 msgid "Bots"
 msgstr "Bots"
@@ -1077,7 +1077,7 @@ msgstr "Notify List"
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:372
 #: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:285
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:270
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:317
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:319
 #, elixir-autogen, elixir-format
 msgid "OK"
 msgstr "OK"
@@ -1287,7 +1287,7 @@ msgstr "Sound Settings"
 #: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:140
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:68
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_modes_dialog.ex:45
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:51
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:59
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Status"
@@ -1358,7 +1358,7 @@ msgid "Unknown"
 msgstr "Unknown"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:396
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:72
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:77
 #, elixir-autogen, elixir-format
 msgid "Uptime"
 msgstr "Uptime"
@@ -2015,9 +2015,8 @@ msgstr "Receive wallops (+w)"
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:155
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:132
 #: lib/retro_hex_chat_web/components/ui/system/app_info_panel.ex:44
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:179
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:551
 #: lib/retro_hex_chat_web/components/ui/system/os_panel.ex:48
+#: lib/retro_hex_chat_web/components/ui/system/section_heading.ex:36
 #: lib/retro_hex_chat_web/components/ui/system/source_browser.ex:106
 #, elixir-autogen, elixir-format
 msgid "Refresh"
@@ -2856,7 +2855,7 @@ msgid "Browser"
 msgstr "Browser"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:396
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:107
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:112
 #, elixir-autogen, elixir-format
 msgid "CPU"
 msgstr "CPU"
@@ -3090,7 +3089,7 @@ msgstr "Application"
 msgid "Applications"
 msgstr "Applications"
 
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:127
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:132
 #: lib/retro_hex_chat_web/components/ui/system/memory_bar.ex:90
 #, elixir-autogen, elixir-format
 msgid "Atoms"
@@ -3146,7 +3145,7 @@ msgstr "ETS"
 msgid "ETS tables"
 msgstr "ETS tables"
 
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:136
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:141
 #, elixir-autogen, elixir-format
 msgid "Files, sockets and external programs"
 msgstr "Files, sockets and external programs"
@@ -3166,7 +3165,7 @@ msgstr "Host"
 msgid "Host memory"
 msgstr "Host memory"
 
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:114
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:119
 #, elixir-autogen, elixir-format
 msgid "IO"
 msgstr "IO"
@@ -3221,7 +3220,7 @@ msgstr "Memory allocators"
 msgid "Metric groups"
 msgstr "Metric groups"
 
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:129
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:134
 #, elixir-autogen, elixir-format
 msgid "Never reclaimed — exhausting the table ends the node"
 msgstr "Never reclaimed — exhausting the table ends the node"
@@ -3276,7 +3275,7 @@ msgstr "Other"
 msgid "People"
 msgstr "People"
 
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:134
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:139
 #: lib/retro_hex_chat_web/live/chat_live/components/system_source_dialog.ex:151
 #, elixir-autogen, elixir-format
 msgid "Ports"
@@ -3287,7 +3286,7 @@ msgstr "Ports"
 msgid "Press Stream to tail the server log."
 msgstr "Press Stream to tail the server log."
 
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:141
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:146
 #: lib/retro_hex_chat_web/components/ui/system/memory_bar.ex:89
 #: lib/retro_hex_chat_web/live/chat_live/components/system_source_dialog.ex:143
 #, elixir-autogen, elixir-format
@@ -3309,7 +3308,7 @@ msgstr "Report"
 msgid "Rows"
 msgstr "Rows"
 
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:93
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:98
 #, elixir-autogen, elixir-format
 msgid "Run queues"
 msgstr "Run queues"
@@ -3324,12 +3323,12 @@ msgstr "Sockets"
 msgid "Stream"
 msgstr "Stream"
 
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:43
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:44
 #, elixir-autogen, elixir-format
 msgid "System information"
 msgstr "System information"
 
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:122
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:127
 #, elixir-autogen, elixir-format
 msgid "System limits"
 msgstr "System limits"
@@ -3370,17 +3369,17 @@ msgstr ""
 "This node logs at %{primary} and drops anything below it before a window can"
 " see it, so nothing at %{selected} will ever appear here."
 
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:99
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:104
 #, elixir-autogen, elixir-format
 msgid "Total"
 msgstr "Total"
 
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:79
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:84
 #, elixir-autogen, elixir-format
 msgid "Total input"
 msgstr "Total input"
 
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:86
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:91
 #, elixir-autogen, elixir-format
 msgid "Total output"
 msgstr "Total output"
@@ -3415,12 +3414,12 @@ msgstr "distinct nicknames present"
 msgid "live channel processes"
 msgstr "live channel processes"
 
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:63
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:68
 #, elixir-autogen, elixir-format
 msgid "not loaded"
 msgstr "not loaded"
 
-#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:101
+#: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:106
 #, elixir-autogen, elixir-format
 msgid "work waiting on a scheduler"
 msgstr "work waiting on a scheduler"
@@ -3548,59 +3547,59 @@ msgid_plural "%{count} commands"
 msgstr[0] "%{count} command"
 msgstr[1] "%{count} commands"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:63
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:71
 #, elixir-autogen, elixir-format
 msgid "%{count} executing"
 msgstr "%{count} executing"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:116
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:124
 #, elixir-autogen, elixir-format
 msgid "%{count} failures"
 msgstr "%{count} failures"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:90
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:103
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:98
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:111
 #, elixir-autogen, elixir-format
 msgid "%{count} missing jobs"
 msgstr "%{count} missing jobs"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:129
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:155
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:137
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:163
 #, elixir-autogen, elixir-format
 msgid "%{count} pending"
 msgstr "%{count} pending"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:77
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:85
 #, elixir-autogen, elixir-format
 msgid "%{count} retryable"
 msgstr "%{count} retryable"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:661
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:653
 #, elixir-autogen, elixir-format
 msgid "Active"
 msgstr "Active"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:60
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:68
 #, elixir-autogen, elixir-format
 msgid "Active jobs"
 msgstr "Active jobs"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:349
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:357
 #, elixir-autogen, elixir-format
 msgid "Bot event log jobs"
 msgstr "Bot event log jobs"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:113
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:121
 #, elixir-autogen, elixir-format
 msgid "Bot event logs"
 msgstr "Bot event logs"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:332
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:340
 #, elixir-autogen, elixir-format
 msgid "Bot schedule coverage"
 msgstr "Bot schedule coverage"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:100
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:108
 #, elixir-autogen, elixir-format
 msgid "Bot schedules"
 msgstr "Bot schedules"
@@ -3611,151 +3610,151 @@ msgstr "Bot schedules"
 msgid "Columns"
 msgstr "Columns"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:576
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:568
 #, elixir-autogen, elixir-format
 msgid "Critical"
 msgstr "Critical"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:663
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:655
 #, elixir-autogen, elixir-format
 msgid "Discarded"
 msgstr "Discarded"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:199
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:207
 #, elixir-autogen, elixir-format
 msgid "Engine"
 msgstr "Engine"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:72
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:662
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:80
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:654
 #, elixir-autogen, elixir-format
 msgid "Failures"
 msgstr "Failures"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:574
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:566
 #, elixir-autogen, elixir-format
 msgid "Healthy"
 msgstr "Healthy"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:254
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:262
 #, elixir-autogen, elixir-format
 msgid "Job filter"
 msgstr "Job filter"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:394
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:407
 #, elixir-autogen, elixir-format
 msgid "Link preview cache"
 msgstr "Link preview cache"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:139
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:147
 #, elixir-autogen, elixir-format
 msgid "Link previews"
 msgstr "Link previews"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:126
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:564
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:134
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:556
 #, elixir-autogen, elixir-format
 msgid "Maintenance"
 msgstr "Maintenance"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:239
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:247
 #, elixir-autogen, elixir-format
 msgid "No Oban queues or jobs were found"
 msgstr "No Oban queues or jobs were found"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:324
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:332
 #, elixir-autogen, elixir-format
 msgid "No RSS feeds are configured"
 msgstr "No RSS feeds are configured"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:358
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:366
 #, elixir-autogen, elixir-format
 msgid "No bot event log jobs are pending"
 msgstr "No bot event log jobs are pending"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:341
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:349
 #, elixir-autogen, elixir-format
 msgid "No bot schedules are configured"
 msgstr "No bot schedules are configured"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:299
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:307
 #, elixir-autogen, elixir-format
 msgid "No jobs matched this filter"
 msgstr "No jobs matched this filter"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:402
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:416
 #, elixir-autogen, elixir-format
 msgid "No link previews were cached"
 msgstr "No link previews were cached"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:458
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:475
 #, elixir-autogen, elixir-format
 msgid "No preference saves are pending"
 msgstr "No preference saves are pending"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:198
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:206
 #, elixir-autogen, elixir-format
 msgid "Node"
 msgstr "Node"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:43
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:466
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:46
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:485
 #, elixir-autogen, elixir-format
 msgid "Oban health"
 msgstr "Oban health"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:205
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:213
 #, elixir-autogen, elixir-format
 msgid "Plugins"
 msgstr "Plugins"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:449
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:466
 #, elixir-autogen, elixir-format
 msgid "Preference persistence"
 msgstr "Preference persistence"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:152
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:160
 #, elixir-autogen, elixir-format
 msgid "Preference saves"
 msgstr "Preference saves"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:276
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:284
 #, elixir-autogen, elixir-format
 msgid "Queue"
 msgstr "Queue"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:270
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:278
 #, elixir-autogen, elixir-format
 msgid "Queue filter"
 msgstr "Queue filter"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:202
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:562
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:210
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:554
 #, elixir-autogen, elixir-format
 msgid "Queues"
 msgstr "Queues"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:230
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:238
 #, elixir-autogen, elixir-format
 msgid "Queues by state"
 msgstr "Queues by state"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:315
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:323
 #, elixir-autogen, elixir-format
 msgid "RSS feed coverage"
 msgstr "RSS feed coverage"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:87
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:95
 #, elixir-autogen, elixir-format
 msgid "RSS feeds"
 msgstr "RSS feeds"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:245
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:253
 #, elixir-autogen, elixir-format
 msgid "Recent jobs"
 msgstr "Recent jobs"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:200
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:208
 #, elixir-autogen, elixir-format
 msgid "Repo"
 msgstr "Repo"
@@ -3765,109 +3764,109 @@ msgstr "Repo"
 msgid "Show all columns"
 msgstr "Show all columns"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:197
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:205
 #, elixir-autogen, elixir-format
 msgid "Supervisor"
 msgstr "Supervisor"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:575
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:567
 #, elixir-autogen, elixir-format
 msgid "Warning"
 msgstr "Warning"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:286
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:294
 #, elixir-autogen, elixir-format
 msgid "Worker"
 msgstr "Worker"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:280
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:288
 #, elixir-autogen, elixir-format
 msgid "Worker filter"
 msgstr "Worker filter"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:586
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:578
 #, elixir-autogen, elixir-format
 msgid "supervisor running"
 msgstr "supervisor running"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:587
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:579
 #, elixir-autogen, elixir-format
 msgid "supervisor unavailable"
 msgstr "supervisor unavailable"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:142
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:150
 #, elixir-autogen, elixir-format
 msgid "%{count} retrying"
 msgstr "%{count} retrying"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:433
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:450
 #, elixir-autogen, elixir-format
 msgid "No page has failed to be read"
 msgstr "No page has failed to be read"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:419
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:433
 #, elixir-autogen, elixir-format
 msgid "No pages have been read yet"
 msgstr "No pages have been read yet"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:175
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:183
 #, elixir-autogen, elixir-format
 msgid "Oban health sections"
 msgstr "Oban health sections"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:561
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:553
 #, elixir-autogen, elixir-format
 msgid "Overview"
 msgstr "Overview"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:566
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:558
 #, elixir-autogen, elixir-format
 msgid "Persistence"
 msgstr "Persistence"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:565
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:557
 #, elixir-autogen, elixir-format
 msgid "Previews"
 msgstr "Previews"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:410
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:424
 #, elixir-autogen, elixir-format
 msgid "Where each field came from"
 msgstr "Where each field came from"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:425
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:441
 #, elixir-autogen, elixir-format
 msgid "Why pages failed"
 msgstr "Why pages failed"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:278
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:280
 #, elixir-autogen, elixir-format
 msgid "Connect required"
 msgstr "Connect required"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:295
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:297
 #, elixir-autogen, elixir-format
 msgid "This app group needs a chat session."
 msgstr "This app group needs a chat session."
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:298
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:300
 #, elixir-autogen, elixir-format
 msgid "Connect first to use this desktop app folder. Help and Language remain available without a chat session."
 msgstr ""
 "Connect first to use this desktop app folder. Help and Language remain "
 "available without a chat session."
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:472
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:496
 #, elixir-autogen, elixir-format
 msgid "Loading Oban health..."
 msgstr "Loading Oban health..."
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:372
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:382
 #, elixir-autogen, elixir-format
 msgid "Maintenance jobs"
 msgstr "Maintenance jobs"
 
-#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:380
+#: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:391
 #, elixir-autogen, elixir-format
 msgid "No maintenance jobs are configured"
 msgstr "No maintenance jobs are configured"

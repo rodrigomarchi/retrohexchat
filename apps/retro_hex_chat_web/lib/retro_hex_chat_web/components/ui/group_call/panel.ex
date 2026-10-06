@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   import RetroHexChatWeb.Components.UI.MediaSession.CommandBar
   import RetroHexChatWeb.Components.UI.MediaSession.Dock
   import RetroHexChatWeb.Components.UI.MediaSession.Header
-  import RetroHexChatWeb.Components.UI.MediaSession.IconButton
+  import RetroHexChatWeb.Components.UI.ToolButton
   import RetroHexChatWeb.Components.UI.MediaSession.InspectorPanel
   import RetroHexChatWeb.Components.UI.MediaSession.SectionNav
 
@@ -194,7 +194,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         <span :for={extra <- @toolbar_extra} class="mr-1">
           {render_slot(extra)}
         </span>
-        <.group_call_button
+        <.tool_button
           label={dgettext("group_call", "Switch to compact conference mode")}
           variant="flat"
           pressed={mini_mode?(@call)}
@@ -202,7 +202,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           data-testid="group-call-mini-toggle"
         >
           <CallControls.icon_call_mini class="h-4 w-4" />
-        </.group_call_button>
+        </.tool_button>
         <.moderation_menu
           :if={can_moderate_call?(@call)}
           call={@call}
@@ -295,7 +295,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     >
       <summary
         class={[
-          media_session_icon_button_class(locked?(@call), "default", nil, "flat", true),
+          tool_button_class(variant: "flat", active: locked?(@call), captioned: true),
           "list-none [&::-webkit-details-marker]:hidden"
         ]}
         title={dgettext("group_call", "Moderation")}
@@ -303,7 +303,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         data-testid="group-call-moderation-toggle"
       >
         <CallControls.icon_call_lock class="h-4 w-4" />
-        <span class="media-session-icon-button__caption">{dgettext("group_call", "Moderation")}</span>
+        <span class="tool-button__caption">{dgettext("group_call", "Moderation")}</span>
       </summary>
       <div
         class="absolute right-0 top-full z-40 mt-1 flex w-max min-w-[14rem] flex-col gap-1 border border-border bg-surface p-1 shadow-retro-raised"
@@ -366,7 +366,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       aria_label={dgettext("group_call", "Conference media controls")}
       testid="group-call-media-controls"
     >
-      <.group_call_button
+      <.tool_button
         label={dgettext("group_call", "Toggle microphone")}
         variant="dock"
         active={!media_enabled?(@call, :audio)}
@@ -376,9 +376,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       >
         <CallControls.icon_call_microphone :if={media_enabled?(@call, :audio)} class="h-4 w-4" />
         <CallControls.icon_call_mute :if={!media_enabled?(@call, :audio)} class="h-4 w-4" />
-      </.group_call_button>
+      </.tool_button>
 
-      <.group_call_button
+      <.tool_button
         label={dgettext("group_call", "Toggle camera")}
         variant="dock"
         active={!media_enabled?(@call, :video)}
@@ -388,13 +388,13 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       >
         <CallControls.icon_call_camera :if={media_enabled?(@call, :video)} class="h-4 w-4" />
         <CallControls.icon_call_camera_off :if={!media_enabled?(@call, :video)} class="h-4 w-4" />
-      </.group_call_button>
+      </.tool_button>
 
       <ScreenShareControl.screen_share_control call={@call} variant="dock" />
 
       <.media_session_dock_separator />
 
-      <.group_call_button
+      <.tool_button
         label={hand_toggle_title(@call)}
         variant="dock"
         active={hand_raised?(@call)}
@@ -403,11 +403,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         data-testid="group-call-hand-toggle"
       >
         <CallControls.icon_call_raise_hand class="h-4 w-4" />
-      </.group_call_button>
+      </.tool_button>
 
       <.reaction_controls call={@call} />
 
-      <.group_call_button
+      <.tool_button
         label={dgettext("group_call", "Leave group call")}
         variant="dock"
         caption={dgettext("group_call", "Leave")}
@@ -416,7 +416,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         data-testid="group-call-leave"
       >
         <CallControls.icon_call_phone_end class="h-4 w-4" />
-      </.group_call_button>
+      </.tool_button>
     </.media_session_dock>
     """
   end
@@ -449,7 +449,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         </span>
       </:meta>
       <:actions>
-        <.group_call_button
+        <.tool_button
           label={dgettext("group_call", "Toggle microphone")}
           variant="flat"
           active={!media_enabled?(@call, :audio)}
@@ -459,8 +459,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         >
           <CallControls.icon_call_microphone :if={media_enabled?(@call, :audio)} class="h-4 w-4" />
           <CallControls.icon_call_mute :if={!media_enabled?(@call, :audio)} class="h-4 w-4" />
-        </.group_call_button>
-        <.group_call_button
+        </.tool_button>
+        <.tool_button
           label={dgettext("group_call", "Toggle camera")}
           variant="flat"
           active={!media_enabled?(@call, :video)}
@@ -470,8 +470,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         >
           <CallControls.icon_call_camera :if={media_enabled?(@call, :video)} class="h-4 w-4" />
           <CallControls.icon_call_camera_off :if={!media_enabled?(@call, :video)} class="h-4 w-4" />
-        </.group_call_button>
-        <.group_call_button
+        </.tool_button>
+        <.tool_button
           label={dgettext("group_call", "Expand conference")}
           variant="flat"
           pressed={mini_mode?(@call)}
@@ -479,49 +479,18 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           data-testid="group-call-mini-expand"
         >
           <CallControls.icon_call_expand class="h-4 w-4" />
-        </.group_call_button>
-        <.group_call_button
+        </.tool_button>
+        <.tool_button
           label={dgettext("group_call", "Leave group call")}
           tone="danger"
           phx-click={@on_leave}
           data-testid="group-call-mini-leave"
         >
           <CallControls.icon_call_phone_end class="h-4 w-4" />
-        </.group_call_button>
+        </.tool_button>
       </:actions>
     </.media_session_header>
     """
-  end
-
-  attr :label, :string, required: true
-  attr :active, :boolean, default: false
-  attr :pressed, :any, default: nil
-  attr :tone, :string, values: ~w(default danger), default: "default"
-  attr :variant, :string, values: ~w(raised flat dock), default: "raised"
-  attr :caption, :string, default: nil
-  attr :class, :any, default: nil
-  attr :rest, :global
-  slot :inner_block, required: true
-
-  defp group_call_button(assigns) do
-    ~H"""
-    <.media_session_icon_button
-      label={@label}
-      active={@active}
-      pressed={@pressed}
-      tone={@tone}
-      variant={@variant}
-      caption={@caption}
-      class={@class}
-      {@rest}
-    >
-      {render_slot(@inner_block)}
-    </.media_session_icon_button>
-    """
-  end
-
-  defp group_call_button_class(active?, tone, extra) do
-    media_session_icon_button_class(active?, tone, extra)
   end
 
   defp reaction_controls(assigns) do
@@ -535,7 +504,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     >
       <summary
         class={[
-          media_session_icon_button_class(false, "default", nil, "dock"),
+          tool_button_class(variant: "dock"),
           "list-none [&::-webkit-details-marker]:hidden"
         ]}
         title={dgettext("group_call", "Conference reactions")}
@@ -595,7 +564,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
 
   defp reaction_button(assigns) do
     ~H"""
-    <.media_session_icon_button
+    <.tool_button
       label={@label}
       class="text-[13px] leading-none"
       data-group-call-reaction={@reaction}
@@ -613,7 +582,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           <Icons.icon_star class="h-4 w-4" />
         <% end %>
       </span>
-    </.media_session_icon_button>
+    </.tool_button>
     """
   end
 
@@ -818,7 +787,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
             </span>
             <span class="min-w-0 truncate font-bold">{participant.nickname}</span>
           </span>
-          <.media_session_icon_button
+          <.tool_button
             :if={can_moderate_participant?(@call, participant)}
             label={allow_speak_title(participant)}
             phx-click={@on_allow_speak}
@@ -826,7 +795,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
             data-testid={"group-call-queue-allow-speak-#{participant.id}"}
           >
             <CallControls.icon_call_raise_hand class="h-4 w-4" />
-          </.media_session_icon_button>
+          </.tool_button>
         </div>
       </div>
     </div>
@@ -940,7 +909,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     <details class="relative shrink-0">
       <summary
         class={[
-          group_call_button_class(false, "default", nil),
+          tool_button_class(),
           "list-none [&::-webkit-details-marker]:hidden"
         ]}
         title={dgettext("group_call", "Participant actions")}
@@ -954,7 +923,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         class="absolute right-0 top-full z-40 mt-1 grid w-[8.75rem] grid-cols-3 gap-1 border border-border bg-surface p-1 shadow-retro-raised"
         aria_label={dgettext("group_call", "Participant actions")}
       >
-        <.media_session_icon_button
+        <.tool_button
           label={focus_participant_title(@call, @participant)}
           active={focused_participant?(@call, @participant)}
           pressed={focused_participant?(@call, @participant)}
@@ -963,8 +932,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           data-testid={"group-call-participant-focus-#{@participant.id}"}
         >
           <CallControls.icon_call_layout_focus class="h-4 w-4" />
-        </.media_session_icon_button>
-        <.media_session_icon_button
+        </.tool_button>
+        <.tool_button
           label={pin_participant_title(@call, @participant)}
           pressed={pinned_participant?(@call, @participant)}
           class={pinned_participant?(@call, @participant) && "bg-warning-light shadow-retro-sunken"}
@@ -973,8 +942,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           data-testid={"group-call-participant-pin-#{@participant.id}"}
         >
           <Icons.icon_pin class="h-4 w-4" />
-        </.media_session_icon_button>
-        <.media_session_icon_button
+        </.tool_button>
+        <.tool_button
           :if={
             participant_hand_raised?(@participant) && can_moderate_participant?(@call, @participant)
           }
@@ -985,8 +954,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           data-testid={"group-call-participant-allow-speak-#{@participant.id}"}
         >
           <CallControls.icon_call_raise_hand class="h-4 w-4" />
-        </.media_session_icon_button>
-        <.media_session_icon_button
+        </.tool_button>
+        <.tool_button
           :if={can_moderate_participant?(@call, @participant)}
           label={moderate_audio_title(@participant)}
           phx-click={@on_moderate_audio}
@@ -998,8 +967,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
             :if={!participant_media?(@participant, :audio)}
             class="h-4 w-4"
           />
-        </.media_session_icon_button>
-        <.media_session_icon_button
+        </.tool_button>
+        <.tool_button
           :if={can_moderate_video_participant?(@call, @participant)}
           label={moderate_video_title(@participant)}
           phx-click={@on_moderate_video}
@@ -1014,8 +983,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
             :if={!participant_media?(@participant, :video)}
             class="h-4 w-4"
           />
-        </.media_session_icon_button>
-        <.media_session_icon_button
+        </.tool_button>
+        <.tool_button
           :if={can_moderate_screen_participant?(@call, @participant)}
           label={moderate_screen_title(@participant)}
           phx-click={@on_moderate_screen}
@@ -1023,8 +992,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           data-testid={"group-call-participant-screen-moderate-#{@participant.id}"}
         >
           <CallControls.icon_call_screen_share class="h-4 w-4" />
-        </.media_session_icon_button>
-        <.media_session_icon_button
+        </.tool_button>
+        <.tool_button
           :if={can_remove_participant?(@call, @participant)}
           label={dgettext("group_call", "Remove from conference and ban from channel")}
           tone="danger"
@@ -1033,7 +1002,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           data-testid={"group-call-participant-kick-#{@participant.id}"}
         >
           <Icons.icon_ban class="h-4 w-4" />
-        </.media_session_icon_button>
+        </.tool_button>
       </.media_session_command_bar>
     </details>
     """

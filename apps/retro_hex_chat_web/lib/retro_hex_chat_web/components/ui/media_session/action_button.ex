@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.ActionButton do
   @moduledoc """
   Shared text action button for media-session alerts and compact command areas.
 
-  This is the labelled counterpart to `MediaSession.IconButton`: visual chrome,
+  This is the labelled counterpart to `ToolButton`: visual chrome,
   title, and aria-label only. Callers own events and button contents.
   """
   use RetroHexChatWeb.Component

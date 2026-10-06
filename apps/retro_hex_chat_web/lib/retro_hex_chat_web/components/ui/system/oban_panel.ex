@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
   import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
   import RetroHexChatWeb.Components.UI.LoadingSpinner
   import RetroHexChatWeb.Components.UI.Tabs
+  import RetroHexChatWeb.Components.UI.System.SectionHeading
 
   alias RetroHexChatWeb.Components.UI.Format
   alias RetroHexChatWeb.Icons
@@ -40,9 +41,16 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
     >
       <%= if @snapshot do %>
         <section class="shrink-0">
-          <.section_heading icon={:icon_status_signal} label={dgettext("dialogs", "Oban health")}>
-            <.refresh_button target={@target} on_refresh={@on_refresh} />
-          </.section_heading>
+          <.system_section_heading
+            icon={:icon_status_signal}
+            label={dgettext("dialogs", "Oban health")}
+          >
+            <.system_refresh_button
+              target={@target}
+              on_refresh={@on_refresh}
+              testid="system-oban-refresh"
+            />
+          </.system_section_heading>
 
           <div class="grid grid-cols-2 gap-retro-6 lg:grid-cols-3 xl:grid-cols-5">
             <.summary_card
@@ -225,7 +233,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             data-testid={"#{@testid}-tabpanel-queues"}
           >
             <section class="min-h-[220px]">
-              <.section_heading
+              <.system_section_heading
                 icon={:icon_table_grid}
                 label={dgettext("dialogs", "Queues by state")}
               />
@@ -242,7 +250,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             </section>
 
             <section class="min-h-[220px]">
-              <.section_heading icon={:icon_clock} label={dgettext("dialogs", "Recent jobs")}>
+              <.system_section_heading icon={:icon_clock} label={dgettext("dialogs", "Recent jobs")}>
                 <form
                   id={"#{@id}-filter"}
                   phx-change={@on_filter}
@@ -287,7 +295,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
                     class="w-32 bg-white px-retro-4 py-retro-2 text-xs shadow-retro-sunken"
                   />
                 </form>
-              </.section_heading>
+              </.system_section_heading>
 
               <.table_shell>
                 <.retro_table
@@ -310,7 +318,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             data-testid={"#{@testid}-tabpanel-bots"}
           >
             <section class="min-h-[220px]">
-              <.section_heading
+              <.system_section_heading
                 icon={:icon_btn_bot_management}
                 label={dgettext("dialogs", "RSS feed coverage")}
               />
@@ -327,7 +335,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             </section>
 
             <section class="min-h-[220px]">
-              <.section_heading
+              <.system_section_heading
                 icon={:icon_clock}
                 label={dgettext("dialogs", "Bot schedule coverage")}
               />
@@ -344,7 +352,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             </section>
 
             <section class="min-h-[220px]">
-              <.section_heading
+              <.system_section_heading
                 icon={:icon_notepad}
                 label={dgettext("dialogs", "Bot event log jobs")}
               />
@@ -369,7 +377,10 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             data-testid={"#{@testid}-tabpanel-maintenance"}
           >
             <section class="min-h-[220px]">
-              <.section_heading icon={:icon_clock} label={dgettext("dialogs", "Maintenance jobs")} />
+              <.system_section_heading
+                icon={:icon_clock}
+                label={dgettext("dialogs", "Maintenance jobs")}
+              />
               <.table_shell>
                 <.retro_table
                   id={"#{@testid}-maintenance-table"}
@@ -391,7 +402,10 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             data-testid={"#{@testid}-tabpanel-previews"}
           >
             <section class="min-h-[220px]">
-              <.section_heading icon={:icon_link} label={dgettext("dialogs", "Link preview cache")} />
+              <.system_section_heading
+                icon={:icon_link}
+                label={dgettext("dialogs", "Link preview cache")}
+              />
               <.table_shell>
                 <.retro_table
                   id={"#{@testid}-link-preview-table"}
@@ -405,7 +419,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             </section>
 
             <section>
-              <.section_heading
+              <.system_section_heading
                 icon={:icon_link}
                 label={dgettext("dialogs", "Where each field came from")}
               />
@@ -422,7 +436,10 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             </section>
 
             <section>
-              <.section_heading icon={:icon_shield} label={dgettext("dialogs", "Why pages failed")} />
+              <.system_section_heading
+                icon={:icon_shield}
+                label={dgettext("dialogs", "Why pages failed")}
+              />
               <.table_shell>
                 <.retro_table
                   id={"#{@testid}-scraper-failure-table"}
@@ -444,7 +461,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             data-testid={"#{@testid}-tabpanel-persistence"}
           >
             <section class="min-h-[220px]">
-              <.section_heading
+              <.system_section_heading
                 icon={:icon_notepad}
                 label={dgettext("dialogs", "Preference persistence")}
               />
@@ -463,9 +480,16 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
         </.tabs>
       <% else %>
         <section class="shrink-0">
-          <.section_heading icon={:icon_status_signal} label={dgettext("dialogs", "Oban health")}>
-            <.refresh_button target={@target} on_refresh={@on_refresh} />
-          </.section_heading>
+          <.system_section_heading
+            icon={:icon_status_signal}
+            label={dgettext("dialogs", "Oban health")}
+          >
+            <.system_refresh_button
+              target={@target}
+              on_refresh={@on_refresh}
+              testid="system-oban-refresh"
+            />
+          </.system_section_heading>
         </section>
 
         <div class="flex min-h-[260px] flex-1 items-center justify-center bg-white shadow-retro-sunken">
@@ -512,20 +536,6 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
     """
   end
 
-  attr :icon, :atom, required: true
-  attr :label, :string, required: true
-  slot :inner_block
-
-  defp section_heading(assigns) do
-    ~H"""
-    <h3 class="mb-retro-4 flex min-w-0 items-center gap-1 text-xs font-bold">
-      {apply(Icons, @icon, [%{class: "h-4 w-4 shrink-0"}])}
-      <span class="min-w-0 flex-1 truncate">{@label}</span>
-      {render_slot(@inner_block)}
-    </h3>
-    """
-  end
-
   attr :label, :string, required: true
   attr :value, :string, default: nil
 
@@ -535,24 +545,6 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
       <span class="block truncate font-bold text-muted-foreground">{@label}</span>
       <span class="block truncate font-mono" title={@value || ""}>{@value || "—"}</span>
     </div>
-    """
-  end
-
-  attr :target, :any, default: nil
-  attr :on_refresh, :string, required: true
-
-  defp refresh_button(assigns) do
-    ~H"""
-    <button
-      type="button"
-      class="shrink-0 p-retro-2 hover:bg-hover-bg"
-      phx-click={@on_refresh}
-      phx-target={@target}
-      aria-label={dgettext("dialogs", "Refresh")}
-      data-testid="system-oban-refresh"
-    >
-      <Icons.icon_btn_refresh class="h-[14px] w-[14px]" />
-    </button>
     """
   end
 

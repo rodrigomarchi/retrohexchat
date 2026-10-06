@@ -16,6 +16,8 @@ defmodule RetroHexChatWeb.Components.UI.Toast do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ToolButton
+
   alias RetroHexChatWeb.Icons
 
   # ── Container ──────────────────────────────────────────
@@ -90,13 +92,11 @@ defmodule RetroHexChatWeb.Components.UI.Toast do
         <div class="flex-1 min-w-0">
           {render_slot(@inner_block)}
         </div>
-        <button
+        <.tool_button
           :if={@dismissible}
-          type="button"
-          class={[
-            "shrink-0 self-start bg-surface shadow-retro-raised active:shadow-retro-sunken",
-            "flex items-center justify-center w-[16px] h-[14px]"
-          ]}
+          label={dgettext("ui", "Dismiss")}
+          size="title"
+          class="self-start"
           phx-click={
             @on_dismiss ||
               JS.hide(
@@ -104,10 +104,9 @@ defmodule RetroHexChatWeb.Components.UI.Toast do
                 transition: {"transition-opacity duration-150", "opacity-100", "opacity-0"}
               )
           }
-          aria-label={dgettext("ui", "Dismiss")}
         >
           <Icons.icon_close_pixel class="w-[8px] h-[7px]" />
-        </button>
+        </.tool_button>
       </div>
     </div>
     """

@@ -436,6 +436,7 @@ input[type="range"]::-moz-range-thumb {
   outline-offset: -1px;
 }
 :where(
+    .tool-button,
     .shadow-retro-raised,
     .shadow-retro-default-raised,
     .shadow-retro-tab,
@@ -560,4 +561,11 @@ details:not([open]) .tree-view-marker-closed {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 8px;
   line-height: 1;
+}
+
+/* The short visible word a ToolButton may carry beside its icon. */
+.tool-button__caption {
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
 }

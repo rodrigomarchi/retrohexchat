@@ -6,35 +6,35 @@
     description="Standard toolbar with 34x34 icon buttons."
   >
     <.toolbar>
-      <.toolbar_button label={dgettext("showcase", "New")}>
+      <.tool_button variant="flat" size="md" label={dgettext("showcase", "New")}>
         <Icons.icon_notepad class="w-[32px] h-[32px]" />
-      </.toolbar_button>
-      <.toolbar_button label={dgettext("showcase", "Open")}>
+      </.tool_button>
+      <.tool_button variant="flat" size="md" label={dgettext("showcase", "Open")}>
         <Icons.icon_folder class="w-[32px] h-[32px]" />
-      </.toolbar_button>
-      <.toolbar_button label={dgettext("showcase", "Save")}>
+      </.tool_button>
+      <.tool_button variant="flat" size="md" label={dgettext("showcase", "Save")}>
         <Icons.icon_btn_save class="w-[16px] h-[16px]" />
-      </.toolbar_button>
-      <.toolbar_separator />
-      <.toolbar_button label={dgettext("showcase", "Cut")}>
+      </.tool_button>
+      <.tool_separator size="md" />
+      <.tool_button variant="flat" size="md" label={dgettext("showcase", "Cut")}>
         <Icons.icon_btn_edit class="w-[16px] h-[16px]" />
-      </.toolbar_button>
-      <.toolbar_button label={dgettext("showcase", "Copy")}>
+      </.tool_button>
+      <.tool_button variant="flat" size="md" label={dgettext("showcase", "Copy")}>
         <Icons.icon_copy class="w-[32px] h-[32px]" />
-      </.toolbar_button>
-      <.toolbar_button label={dgettext("showcase", "Paste")}>
+      </.tool_button>
+      <.tool_button variant="flat" size="md" label={dgettext("showcase", "Paste")}>
         <Icons.icon_dialog_paste class="w-[16px] h-[16px]" />
-      </.toolbar_button>
+      </.tool_button>
     </.toolbar>
     <.code_example>
       &lt;.toolbar&gt;
-      &lt;.toolbar_button label="New"&gt;
+      &lt;.tool_button variant="flat" size="md" label="New"&gt;
       &lt;Icons.icon_notepad class="w-[32px] h-[32px]" /&gt;
-      &lt;/.toolbar_button&gt;
-      &lt;.toolbar_separator /&gt;
-      &lt;.toolbar_button label="Cut"&gt;
+      &lt;/.tool_button&gt;
+      &lt;.tool_separator size="md" /&gt;
+      &lt;.tool_button variant="flat" size="md" label="Cut"&gt;
       &lt;Icons.icon_btn_edit class="w-[16px] h-[16px]" /&gt;
-      &lt;/.toolbar_button&gt;
+      &lt;/.tool_button&gt;
       &lt;/.toolbar&gt;
     </.code_example>
   </.showcase_card>
@@ -44,29 +44,29 @@
     description="Smaller 24x24 buttons for formatting toolbars."
   >
     <.toolbar variant="compact">
-      <.toolbar_button variant="compact" label={dgettext("showcase", "Bold")}>
+      <.tool_button variant="flat" size="sm" label={dgettext("showcase", "Bold")}>
         <Icons.icon_fmt_bold class="w-[14px] h-[14px]" />
-      </.toolbar_button>
-      <.toolbar_button variant="compact" label={dgettext("showcase", "Italic")}>
+      </.tool_button>
+      <.tool_button variant="flat" size="sm" label={dgettext("showcase", "Italic")}>
         <Icons.icon_fmt_italic class="w-[14px] h-[14px]" />
-      </.toolbar_button>
-      <.toolbar_button variant="compact" label={dgettext("showcase", "Underline")}>
+      </.tool_button>
+      <.tool_button variant="flat" size="sm" label={dgettext("showcase", "Underline")}>
         <Icons.icon_fmt_underline class="w-[14px] h-[14px]" />
-      </.toolbar_button>
-      <.toolbar_separator variant="compact" />
-      <.toolbar_button variant="compact" label={dgettext("showcase", "Text Color")}>
+      </.tool_button>
+      <.tool_separator size="sm" />
+      <.tool_button variant="flat" size="sm" label={dgettext("showcase", "Text Color")}>
         <Icons.icon_fmt_color class="w-[14px] h-[14px]" />
-      </.toolbar_button>
-      <.toolbar_button variant="compact" label={dgettext("showcase", "Background Color")}>
+      </.tool_button>
+      <.tool_button variant="flat" size="sm" label={dgettext("showcase", "Background Color")}>
         <Icons.icon_fmt_reverse class="w-[14px] h-[14px]" />
-      </.toolbar_button>
+      </.tool_button>
     </.toolbar>
     <.code_example>
       &lt;.toolbar variant="compact"&gt;
-      &lt;.toolbar_button variant="compact" label="Bold"&gt;
+      &lt;.tool_button variant="flat" size="sm" label="Bold"&gt;
       &lt;Icons.icon_fmt_bold class="w-[14px] h-[14px]" /&gt;
-      &lt;/.toolbar_button&gt;
-      &lt;.toolbar_separator variant="compact" /&gt;
+      &lt;/.tool_button&gt;
+      &lt;.tool_separator size="sm" /&gt;
       &lt;/.toolbar&gt;
     </.code_example>
   </.showcase_card>
@@ -76,26 +76,26 @@
     description="Buttons can be active (pressed) or disabled."
   >
     <.toolbar>
-      <.toolbar_button label={dgettext("showcase", "Connect")}>
+      <.tool_button variant="flat" size="md" label={dgettext("showcase", "Connect")}>
         <Icons.icon_btn_connect_lightning class="w-[16px] h-[16px]" />
-      </.toolbar_button>
-      <.toolbar_button label={dgettext("showcase", "Disconnect")} active>
+      </.tool_button>
+      <.tool_button variant="flat" size="md" label={dgettext("showcase", "Disconnect")} active>
         <Icons.icon_btn_disconnect class="w-[16px] h-[16px]" />
-      </.toolbar_button>
-      <.toolbar_button label={dgettext("showcase", "Disabled")} disabled>
+      </.tool_button>
+      <.tool_button variant="flat" size="md" label={dgettext("showcase", "Disabled")} disabled>
         <Icons.icon_btn_connect_disabled class="w-[16px] h-[16px]" />
-      </.toolbar_button>
+      </.tool_button>
     </.toolbar>
     <.code_example>
-      &lt;.toolbar_button label="Connect"&gt;
+      &lt;.tool_button variant="flat" size="md" label="Connect"&gt;
       &lt;Icons.icon_btn_connect_lightning class="w-[16px] h-[16px]" /&gt;
-      &lt;/.toolbar_button&gt;
-      &lt;.toolbar_button label="Disconnect" active&gt;
+      &lt;/.tool_button&gt;
+      &lt;.tool_button variant="flat" size="md" label="Disconnect" active&gt;
       &lt;Icons.icon_btn_disconnect class="w-[16px] h-[16px]" /&gt;
-      &lt;/.toolbar_button&gt;
-      &lt;.toolbar_button label="Disabled" disabled&gt;
+      &lt;/.tool_button&gt;
+      &lt;.tool_button variant="flat" size="md" label="Disabled" disabled&gt;
       &lt;Icons.icon_btn_connect_disabled class="w-[16px] h-[16px]" /&gt;
-      &lt;/.toolbar_button&gt;
+      &lt;/.tool_button&gt;
     </.code_example>
   </.showcase_card>
 
@@ -104,26 +104,26 @@
     description="Replicating the platform's main toolbar with icon groups."
   >
     <.toolbar>
-      <.toolbar_button label={dgettext("showcase", "Home")}>
+      <.tool_button variant="flat" size="md" label={dgettext("showcase", "Home")}>
         <Icons.icon_community class="w-[32px] h-[32px]" />
-      </.toolbar_button>
-      <.toolbar_button label={dgettext("showcase", "Settings")}>
+      </.tool_button>
+      <.tool_button variant="flat" size="md" label={dgettext("showcase", "Settings")}>
         <Icons.icon_btn_settings class="w-[16px] h-[16px]" />
-      </.toolbar_button>
-      <.toolbar_button label={dgettext("showcase", "Channels")}>
+      </.tool_button>
+      <.tool_button variant="flat" size="md" label={dgettext("showcase", "Channels")}>
         <Icons.icon_btn_channel_list class="w-[16px] h-[16px]" />
-      </.toolbar_button>
-      <.toolbar_separator />
-      <.toolbar_button label={dgettext("showcase", "Sounds")}>
+      </.tool_button>
+      <.tool_separator size="md" />
+      <.tool_button variant="flat" size="md" label={dgettext("showcase", "Sounds")}>
         <Icons.icon_btn_sounds class="w-[16px] h-[16px]" />
-      </.toolbar_button>
-      <.toolbar_button label={dgettext("showcase", "DND")}>
+      </.tool_button>
+      <.tool_button variant="flat" size="md" label={dgettext("showcase", "DND")}>
         <Icons.icon_btn_dnd class="w-[16px] h-[16px]" />
-      </.toolbar_button>
-      <.toolbar_separator />
-      <.toolbar_button label={dgettext("showcase", "Help")}>
+      </.tool_button>
+      <.tool_separator size="md" />
+      <.tool_button variant="flat" size="md" label={dgettext("showcase", "Help")}>
         <Icons.icon_btn_help_topics class="w-[16px] h-[16px]" />
-      </.toolbar_button>
+      </.tool_button>
     </.toolbar>
   </.showcase_card>
 </.showcase_layout>

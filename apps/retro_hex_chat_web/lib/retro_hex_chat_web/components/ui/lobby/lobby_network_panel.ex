@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Toolbar
+  import RetroHexChatWeb.Components.UI.ToolButton
   import RetroHexChatWeb.Components.UI.MediaSession.DiagnosticsGroup
   import RetroHexChatWeb.Components.UI.MediaSession.StatusHeader
   import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
@@ -113,15 +114,16 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
           <div class="ml-auto flex items-center gap-2 self-center pl-2">
             <Icons.icon_privacy :if={@turn_only} class="text-muted-foreground h-3.5 w-3.5" />
             <.toolbar variant="compact" class="gap-[1px]">
-              <.toolbar_button
+              <.tool_button
                 label={dgettext("p2p", "What do these mean?")}
                 active={@info_open}
-                variant="compact"
+                variant="flat"
+                size="sm"
                 phx-click="toggle_network_info"
                 data-testid="lobby-network-info"
               >
                 <Icons.icon_question class="h-4 w-4" />
-              </.toolbar_button>
+              </.tool_button>
             </.toolbar>
           </div>
         </.tabs_list>

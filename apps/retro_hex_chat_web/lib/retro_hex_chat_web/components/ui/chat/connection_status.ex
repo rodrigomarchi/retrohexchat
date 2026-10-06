@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
 
   import RetroHexChatWeb.Components.UI.Alert
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.ToolButton
   import RetroHexChatWeb.Components.UI.ActivityIndicator
 
   alias RetroHexChatWeb.Icons
@@ -96,17 +97,15 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
       <:icon><Icons.icon_status_signal class="w-4 h-4 text-success" /></:icon>
       <div class="flex items-center gap-retro-4">
         <.alert_title class="flex-1">{dgettext("chat", "Connected")}</.alert_title>
-        <.button
+        <.tool_button
           :if={@on_dismiss}
-          type="button"
-          variant="ghost"
-          size="icon"
-          class="w-5 h-5 min-h-0 text-xs"
+          label={dgettext("chat", "Dismiss")}
+          variant="flat"
+          size="xs"
           phx-click={@on_dismiss}
-          aria-label={dgettext("chat", "Dismiss")}
         >
-          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-        </.button>
+          <Icons.icon_close class="w-4 h-4" />
+        </.tool_button>
       </div>
       <.alert_description :if={@server}>
         {dgettext("chat", "Connected to %{server}", server: @server)}

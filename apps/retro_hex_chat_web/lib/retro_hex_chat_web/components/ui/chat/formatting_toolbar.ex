@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Toolbar
+  import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChatWeb.Icons
 
@@ -74,8 +75,9 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
       {@rest}
     >
       <.toolbar variant="compact" class="formatting-toolbar__trigger-row">
-        <.toolbar_button
-          variant="compact"
+        <.tool_button
+          variant="flat"
+          size="sm"
           label={dgettext("chat", "Formatting Toolbar")}
           class="formatting-toolbar__toggle"
           data-format-toolbar-toggle
@@ -86,7 +88,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
           aria-haspopup="true"
         >
           <Icons.icon_fmt_toolbar class="w-3.5 h-3.5" />
-        </.toolbar_button>
+        </.tool_button>
       </.toolbar>
 
       <div
@@ -160,99 +162,110 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
         >
           <%= case @content_format do %>
             <% "markdown" -> %>
-              <.toolbar_button
-                variant="compact"
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Heading")}
                 class="format-btn"
                 data-format-code="md-heading"
                 data-testid="format-btn-md-heading"
               >
                 <Icons.icon_fmt_heading class="w-3.5 h-3.5" />
-              </.toolbar_button>
-              <.toolbar_button
-                variant="compact"
+              </.tool_button>
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Bold")}
                 class="format-btn"
                 data-format-code="md-bold"
                 data-testid="format-btn-md-bold"
               >
                 <Icons.icon_fmt_bold class="w-3.5 h-3.5" />
-              </.toolbar_button>
-              <.toolbar_button
-                variant="compact"
+              </.tool_button>
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Italic")}
                 class="format-btn"
                 data-format-code="md-italic"
                 data-testid="format-btn-md-italic"
               >
                 <Icons.icon_fmt_italic class="w-3.5 h-3.5" />
-              </.toolbar_button>
-              <.toolbar_button
-                variant="compact"
+              </.tool_button>
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Strikethrough")}
                 class="format-btn"
                 data-format-code="md-strike"
                 data-testid="format-btn-md-strike"
               >
                 <Icons.icon_fmt_strike class="w-3.5 h-3.5" />
-              </.toolbar_button>
-              <.toolbar_button
-                variant="compact"
+              </.tool_button>
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Inline code")}
                 class="format-btn"
                 data-format-code="md-code"
                 data-testid="format-btn-md-code"
               >
                 <Icons.icon_fmt_inline_code class="w-3.5 h-3.5" />
-              </.toolbar_button>
-              <.toolbar_button
-                variant="compact"
+              </.tool_button>
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Code block")}
                 class="format-btn"
                 data-format-code="md-code-block"
                 data-testid="format-btn-md-code-block"
               >
                 <Icons.icon_fmt_code_block class="w-3.5 h-3.5" />
-              </.toolbar_button>
-              <.toolbar_button
-                variant="compact"
+              </.tool_button>
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Quote")}
                 class="format-btn"
                 data-format-code="md-quote"
                 data-testid="format-btn-md-quote"
               >
                 <Icons.icon_fmt_quote class="w-3.5 h-3.5" />
-              </.toolbar_button>
-              <.toolbar_button
-                variant="compact"
+              </.tool_button>
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Bulleted list")}
                 class="format-btn"
                 data-format-code="md-list"
                 data-testid="format-btn-md-list"
               >
                 <Icons.icon_fmt_bulleted_list class="w-3.5 h-3.5" />
-              </.toolbar_button>
-              <.toolbar_button
-                variant="compact"
+              </.tool_button>
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Numbered list")}
                 class="format-btn"
                 data-format-code="md-ordered-list"
                 data-testid="format-btn-md-ordered-list"
               >
                 <Icons.icon_fmt_ordered_list class="w-3.5 h-3.5" />
-              </.toolbar_button>
-              <.toolbar_button
-                variant="compact"
+              </.tool_button>
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Link")}
                 class="format-btn"
                 data-format-code="md-link"
                 data-testid="format-btn-md-link"
               >
                 <Icons.icon_link class="w-3.5 h-3.5" />
-              </.toolbar_button>
+              </.tool_button>
             <% "irc" -> %>
-              <.toolbar_button
-                variant="compact"
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Bold (Ctrl+Shift+B)")}
                 active={@bold_active}
                 class="format-btn"
@@ -260,9 +273,10 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
                 data-testid="format-btn-bold"
               >
                 <Icons.icon_fmt_bold class="w-3.5 h-3.5" />
-              </.toolbar_button>
-              <.toolbar_button
-                variant="compact"
+              </.tool_button>
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Italic (Ctrl+Shift+Y)")}
                 active={@italic_active}
                 class="format-btn"
@@ -270,9 +284,10 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
                 data-testid="format-btn-italic"
               >
                 <Icons.icon_fmt_italic class="w-3.5 h-3.5" />
-              </.toolbar_button>
-              <.toolbar_button
-                variant="compact"
+              </.tool_button>
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Underline (Ctrl+Shift+U)")}
                 active={@underline_active}
                 class="format-btn"
@@ -280,10 +295,11 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
                 data-testid="format-btn-underline"
               >
                 <Icons.icon_fmt_underline class="w-3.5 h-3.5" />
-              </.toolbar_button>
+              </.tool_button>
 
-              <.toolbar_button
-                variant="compact"
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Color (Ctrl+Shift+D)")}
                 class="format-btn"
                 data-format-code="color"
@@ -293,33 +309,36 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
                 aria-haspopup="true"
               >
                 <Icons.icon_fmt_color class="w-3.5 h-3.5" />
-              </.toolbar_button>
+              </.tool_button>
 
-              <.toolbar_button
-                variant="compact"
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Reverse (Ctrl+Shift+V)")}
                 class="format-btn"
                 data-format-code="reverse"
                 data-testid="format-btn-reverse"
               >
                 <Icons.icon_fmt_reverse class="w-3.5 h-3.5" />
-              </.toolbar_button>
-              <.toolbar_button
-                variant="compact"
+              </.tool_button>
+              <.tool_button
+                variant="flat"
+                size="sm"
                 label={dgettext("chat", "Reset (Ctrl+Shift+X)")}
                 class="format-btn"
                 data-format-code="reset"
                 data-testid="format-btn-reset"
               >
                 <Icons.icon_fmt_reset class="w-3.5 h-3.5" />
-              </.toolbar_button>
+              </.tool_button>
             <% _plain -> %>
           <% end %>
 
-          <.toolbar_separator :if={@content_format != "plain"} variant="compact" />
+          <.tool_separator :if={@content_format != "plain"} size="sm" />
 
-          <.toolbar_button
-            variant="compact"
+          <.tool_button
+            variant="flat"
+            size="sm"
             label={dgettext("chat", "Strip Formatting")}
             active={@strip_active}
             phx-click={@on_format}
@@ -327,11 +346,12 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
             data-testid="strip-formatting-toggle"
           >
             <Icons.icon_fmt_strip class="w-3.5 h-3.5" />
-          </.toolbar_button>
+          </.tool_button>
 
-          <.toolbar_button
+          <.tool_button
             :if={@show_emoji}
-            variant="compact"
+            variant="flat"
+            size="sm"
             label={dgettext("chat", "Emoji Picker")}
             phx-click={@on_toggle_emoji}
             data-emoji-toggle="true"
@@ -339,7 +359,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
             data-testid="emoji-picker-toggle"
           >
             <Icons.icon_fmt_emoji class="w-3.5 h-3.5" />
-          </.toolbar_button>
+          </.tool_button>
         </.toolbar>
 
         <div

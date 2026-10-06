@@ -9,6 +9,8 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ToolButton
+
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Window
@@ -277,14 +279,14 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
             <span id={"#{@id}-title"} class="text-xs font-bold text-white truncate select-none">
               {dgettext("dialogs", "Connect required")}
             </span>
-            <button
-              type="button"
-              class="bg-surface shadow-retro-raised active:shadow-retro-sunken flex items-center justify-center shrink-0 ml-auto w-[16px] h-[14px]"
+            <.tool_button
+              label={dgettext("ui", "Close")}
+              size="title"
+              class="ml-auto"
               data-desktop-connect-dialog-close
-              aria-label={dgettext("ui", "Close")}
             >
               <Icons.icon_close_pixel class="w-[8px] h-[7px]" />
-            </button>
+            </.tool_button>
           </div>
 
           <div class="flex-1 min-h-0 p-retro-12 overflow-y-auto">

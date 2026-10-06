@@ -41,6 +41,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
   import RetroHexChatWeb.Components.UI.MentionBadge
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.ToolButton
   import RetroHexChatWeb.Components.UI.EmptyState
   import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
   import RetroHexChatWeb.Components.UI.ListStates
@@ -746,19 +747,18 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       </span>
       <span class="chat-conversations-row__label">{@channel_name}</span>
       <span class="chat-conversations-row__count">({@user_count})</span>
-      <.button
+      <.tool_button
         :if={@on_join && !@mobile}
-        type="button"
-        variant="ghost"
-        size="icon"
+        label={dgettext("chat", "Join %{channel}", channel: @channel_name)}
+        variant="flat"
+        size="xs"
         class="chat-conversations-row__shortcut"
         phx-click={@on_join}
         phx-value-channel={@channel_name}
-        title={dgettext("chat", "Join %{channel}", channel: @channel_name)}
         data-testid={"join-#{@channel_name}"}
       >
-        <:icon><Icons.icon_btn_add class="w-3 h-3" /></:icon>
-      </.button>
+        <Icons.icon_btn_add class="w-3 h-3" />
+      </.tool_button>
     </li>
     """
   end
