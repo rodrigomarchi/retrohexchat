@@ -11,12 +11,6 @@
   gap: 8px;
 }
 
-.ar-editor--editing {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
-  align-items: start;
-}
-
 .ar-list-pane {
   display: flex;
   min-width: 0;
@@ -106,8 +100,7 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.desktop--stacked .ar-editor,
-.desktop--stacked .ar-editor--editing {
+.desktop--stacked .ar-editor {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -146,7 +139,7 @@
   min-height: 112px;
 }
 
-/* The row a side editor is open on paints white; a label with a colour of
+/* The row being edited paints white; a label with a colour of
    its own has to follow it. */
 .action-list__row--current .ar-rule-command {
   color: inherit;

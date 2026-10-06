@@ -80,6 +80,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
           on_delete={@on_delete}
           on_save={@on_save}
           on_cancel_edit={@on_cancel_edit}
+          sub_scope={:viewport}
         />
       </.dialog_body>
     </.dialog>
@@ -104,6 +105,11 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   attr :on_delete, :any, default: nil
   attr :on_save, :any, default: nil
   attr :on_cancel_edit, :any, default: nil
+
+  attr :sub_scope, :atom,
+    default: :window,
+    values: [:viewport, :window],
+    doc: "where the add/edit form opens: over this window, or over the screen"
 
   @spec auto_respond_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def auto_respond_panel(assigns) do
@@ -139,8 +145,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
 
           <div class={
             classes([
-              "ar-editor min-h-0 flex-1",
-              @editing && "ar-editor--editing"
+              "ar-editor min-h-0 flex-1"
             ])
           }>
             <div class="ar-list-pane min-h-0">
@@ -214,99 +219,115 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
                 </.button>
               </div>
             </div>
-
-            <form
-              :if={@editing}
-              phx-submit={@on_save}
-              data-testid="autorespond-edit-form"
-              class="ar-edit-form shadow-retro-field bg-white p-retro-8"
-            >
-              <h3 class="font-bold text-xs">
-                {if @selected_position == nil,
-                  do: dgettext("dialogs", "Add Rule"),
-                  else: dgettext("dialogs", "Edit Rule")}
-              </h3>
-
-              <div class="ar-form-fields">
-                <div class="ar-field">
-                  <.label class="ar-form-label">
-                    {dgettext("dialogs", "Trigger")}
-                  </.label>
-                  <.select
-                    :let={builder}
-                    id="draft-trigger-select"
-                    name="trigger"
-                    value={@draft_trigger}
-                    label={trigger_label(@draft_trigger)}
-                    class="ar-input w-full"
-                  >
-                    <.select_trigger builder={builder} class="h-8 text-xs" />
-                    <.select_content builder={builder}>
-                      <.select_group>
-                        <.select_item
-                          :for={{key, lbl} <- trigger_options()}
-                          builder={builder}
-                          value={key}
-                          label={lbl}
-                        >
-                          {lbl}
-                        </.select_item>
-                      </.select_group>
-                    </.select_content>
-                  </.select>
-                </div>
-
-                <div class="ar-field">
-                  <.label class="ar-form-label">
-                    {dgettext("dialogs", "Channel (optional)")}
-                  </.label>
-                  <.input
-                    type="text"
-                    name="channel"
-                    value={@draft_channel}
-                    placeholder="#channel"
-                    class="ar-input w-full"
-                    maxlength="50"
-                  />
-                </div>
-
-                <div class="ar-field">
-                  <.label class="ar-form-label">
-                    {dgettext("dialogs", "Command")}
-                  </.label>
-                  <.textarea
-                    name="command"
-                    value={@draft_command}
-                    placeholder={dgettext("dialogs", "/say Hello!")}
-                    class="ar-command-input ar-input w-full resize-none text-xs"
-                    maxlength="500"
-                    rows="3"
-                  />
-                </div>
-
-                <p :if={@error_message} class="ar-error text-xs text-destructive">
-                  {@error_message}
-                </p>
-              </div>
-
-              <div class="ar-form-actions flex gap-retro-4 pt-retro-4">
-                <.button type="submit" size="sm" variant="default" class="ar-action-button">
-                  <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-                  {dgettext("dialogs", "Save")}
-                </.button>
-                <.button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  phx-click={@on_cancel_edit}
-                  class="ar-action-button"
-                >
-                  <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-                  {dgettext("dialogs", "Cancel")}
-                </.button>
-              </div>
-            </form>
           </div>
+
+          <%!-- Add/Edit opens over the window, as every list editor here does --%>
+          <.dialog
+            :if={@editing}
+            id="autorespond-edit-modal"
+            show
+            scope={@sub_scope}
+            on_cancel={@on_cancel_edit}
+            class="md:max-w-sm"
+          >
+            <.dialog_header
+              id="autorespond-edit-modal"
+              title={
+                if @selected_position == nil,
+                  do: dgettext("dialogs", "Add Rule"),
+                  else: dgettext("dialogs", "Edit Rule")
+              }
+              on_close={@on_cancel_edit}
+            >
+              <:icon><Icons.icon_dialog_auto_respond class="w-4 h-4" /></:icon>
+            </.dialog_header>
+            <.dialog_body>
+              <form
+                phx-submit={@on_save}
+                data-testid="autorespond-edit-form"
+                class="ar-edit-form"
+              >
+                <div class="ar-form-fields">
+                  <div class="ar-field">
+                    <.label class="ar-form-label">
+                      {dgettext("dialogs", "Trigger")}
+                    </.label>
+                    <.select
+                      :let={builder}
+                      id="draft-trigger-select"
+                      name="trigger"
+                      value={@draft_trigger}
+                      label={trigger_label(@draft_trigger)}
+                      class="ar-input w-full"
+                    >
+                      <.select_trigger builder={builder} class="h-8 text-xs" />
+                      <.select_content builder={builder}>
+                        <.select_group>
+                          <.select_item
+                            :for={{key, lbl} <- trigger_options()}
+                            builder={builder}
+                            value={key}
+                            label={lbl}
+                          >
+                            {lbl}
+                          </.select_item>
+                        </.select_group>
+                      </.select_content>
+                    </.select>
+                  </div>
+
+                  <div class="ar-field">
+                    <.label class="ar-form-label">
+                      {dgettext("dialogs", "Channel (optional)")}
+                    </.label>
+                    <.input
+                      type="text"
+                      name="channel"
+                      value={@draft_channel}
+                      placeholder="#channel"
+                      class="ar-input w-full"
+                      maxlength="50"
+                    />
+                  </div>
+
+                  <div class="ar-field">
+                    <.label class="ar-form-label">
+                      {dgettext("dialogs", "Command")}
+                    </.label>
+                    <.textarea
+                      name="command"
+                      value={@draft_command}
+                      placeholder={dgettext("dialogs", "/say Hello!")}
+                      class="ar-command-input ar-input w-full resize-none text-xs"
+                      maxlength="500"
+                      rows="3"
+                    />
+                  </div>
+
+                  <p :if={@error_message} class="ar-error text-xs text-destructive">
+                    {@error_message}
+                  </p>
+                </div>
+
+                <div class="ar-form-actions flex gap-retro-4 pt-retro-4">
+                  <.button type="submit" size="sm" variant="default" class="ar-action-button">
+                    <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+                    {dgettext("dialogs", "Save")}
+                  </.button>
+                  <.button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    phx-click={@on_cancel_edit}
+                    class="ar-action-button"
+                  >
+                    <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+                    {dgettext("dialogs", "Cancel")}
+                  </.button>
+                </div>
+              </form>
+            </.dialog_body>
+          </.dialog>
         </div>
       </.focus_wrap>
     </div>

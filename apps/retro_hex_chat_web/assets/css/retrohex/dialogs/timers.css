@@ -11,12 +11,6 @@
   gap: 8px;
 }
 
-.tm-editor--editing {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.86fr);
-  align-items: start;
-}
-
 .tm-list-pane {
   display: flex;
   min-width: 0;
@@ -116,8 +110,7 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.desktop--stacked .tm-editor,
-.desktop--stacked .tm-editor--editing {
+.desktop--stacked .tm-editor {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -161,7 +154,7 @@
   min-height: 112px;
 }
 
-/* The row a side editor is open on paints white; a label with a colour of
+/* The row being edited paints white; a label with a colour of
    its own has to follow it. */
 .action-list__row--current .tm-timer-command {
   color: inherit;

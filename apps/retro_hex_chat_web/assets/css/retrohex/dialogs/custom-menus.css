@@ -75,12 +75,6 @@
   white-space: nowrap;
 }
 
-.cm-edit-form {
-  width: 240px;
-  min-width: 220px;
-  max-width: 100%;
-}
-
 .cm-input {
   min-width: 0;
 }
@@ -165,8 +159,7 @@
   gap: 8px;
 }
 
-.desktop--stacked .cm-list-pane,
-.desktop--stacked .cm-edit-form {
+.desktop--stacked .cm-list-pane {
   width: 100%;
 }
 
@@ -184,17 +177,13 @@
   padding-inline: 12px;
 }
 
-.desktop--stacked .cm-edit-form {
-  min-width: 0;
-}
-
 .desktop--stacked .cm-dialog input:not([type="checkbox"]):not([type="radio"]) {
   min-height: 40px;
   min-width: 0;
   font-size: 16px;
 }
 
-/* The row a side editor is open on paints white; a label with a colour of
+/* The row being edited paints white; a label with a colour of
    its own has to follow it. */
 .action-list__row--current .cm-entry-command-label,
 .action-list__row--current .cm-entry-command-label + code {

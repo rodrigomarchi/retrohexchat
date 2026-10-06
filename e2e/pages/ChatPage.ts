@@ -2507,6 +2507,14 @@ export class ChatPage {
     await this.customMenuEditForm.getByRole("button", { name: "Save" }).click();
   }
 
+  /** The add/edit form opens over the window; Cancel puts it away unsaved. */
+  async cancelCustomMenuDraft() {
+    await this.customMenuEditForm
+      .getByRole("button", { name: "Cancel" })
+      .click();
+    await expect(this.customMenuEditForm).toBeHidden();
+  }
+
   async expectCustomMenuError(text: string) {
     await expect(
       this.customMenuEditForm.getByTestId("custom-menu-error"),
@@ -2526,8 +2534,11 @@ export class ChatPage {
   }
 
   async closeCustomMenusDialog() {
+    // Entries save as they are made, so the window has no OK: its title bar
+    // closes it.
     await this.customMenusDialog
-      .getByRole("button", { name: "OK", exact: true })
+      .getByRole("button", { name: "Close" })
+      .first()
       .click();
     await expect(this.customMenusDialog).toBeHidden();
   }

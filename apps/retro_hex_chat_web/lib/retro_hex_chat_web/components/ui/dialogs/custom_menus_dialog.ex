@@ -84,6 +84,7 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
           on_delete={@on_delete}
           on_save={@on_save}
           on_cancel_edit={@on_cancel_edit}
+          sub_scope={:viewport}
         />
       </.dialog_body>
     </.dialog>
@@ -108,6 +109,11 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
   attr :on_delete, :any, default: nil
   attr :on_save, :any, default: nil
   attr :on_cancel_edit, :any, default: nil
+
+  attr :sub_scope, :atom,
+    default: :window,
+    values: [:viewport, :window],
+    doc: "where the add/edit form opens: over this window, or over the screen"
 
   @spec custom_menus_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def custom_menus_panel(assigns) do
@@ -184,15 +190,9 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
                 id={@id}
                 entries={filter_entries(@entries, :nicklist)}
                 selected_item={if(@active_tab == :nicklist, do: @selected_item)}
-                editing={@editing && @active_tab == :nicklist}
-                draft_label={@draft_label}
-                draft_command={@draft_command}
-                error_message={@error_message}
                 on_add={@on_add}
                 on_edit={@on_edit}
                 on_delete={@on_delete}
-                on_save={@on_save}
-                on_cancel_edit={@on_cancel_edit}
               />
             </.tabs_content>
 
@@ -202,15 +202,9 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
                 id={@id}
                 entries={filter_entries(@entries, :channel)}
                 selected_item={if(@active_tab == :channel, do: @selected_item)}
-                editing={@editing && @active_tab == :channel}
-                draft_label={@draft_label}
-                draft_command={@draft_command}
-                error_message={@error_message}
                 on_add={@on_add}
                 on_edit={@on_edit}
                 on_delete={@on_delete}
-                on_save={@on_save}
-                on_cancel_edit={@on_cancel_edit}
               />
             </.tabs_content>
 
@@ -220,18 +214,98 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
                 id={@id}
                 entries={filter_entries(@entries, :chat)}
                 selected_item={if(@active_tab == :chat, do: @selected_item)}
-                editing={@editing && @active_tab == :chat}
-                draft_label={@draft_label}
-                draft_command={@draft_command}
-                error_message={@error_message}
                 on_add={@on_add}
                 on_edit={@on_edit}
                 on_delete={@on_delete}
-                on_save={@on_save}
-                on_cancel_edit={@on_cancel_edit}
               />
             </.tabs_content>
           </.tabs>
+
+          <%!-- Add/Edit opens over the window, as every list editor here does --%>
+          <.dialog
+            :if={@editing}
+            id="custom-menus-edit-modal"
+            show
+            scope={@sub_scope}
+            on_cancel={@on_cancel_edit}
+            class="md:max-w-sm"
+          >
+            <.dialog_header
+              id="custom-menus-edit-modal"
+              title={
+                if @selected_item == nil,
+                  do: dgettext("dialogs", "Add Entry"),
+                  else: dgettext("dialogs", "Edit Entry")
+              }
+              on_close={@on_cancel_edit}
+            >
+              <:icon><Icons.icon_dialog_custom_menus class="w-4 h-4" /></:icon>
+            </.dialog_header>
+            <.dialog_body>
+              <form
+                phx-submit={@on_save}
+                data-testid="custom-menu-edit-form"
+                class="cm-edit-form space-y-retro-8"
+              >
+                <div class="space-y-retro-4">
+                  <div>
+                    <label class="cm-form-label text-xs font-bold block mb-retro-2">
+                      {dgettext("dialogs", "Label")}
+                    </label>
+                    <.input
+                      type="text"
+                      name="label"
+                      value={@draft_label}
+                      placeholder={dgettext("dialogs", "Menu item text")}
+                      data-testid="custom-menu-label-input"
+                      class="cm-input w-full"
+                      maxlength="50"
+                    />
+                  </div>
+
+                  <div>
+                    <label class="cm-form-label text-xs font-bold block mb-retro-2">
+                      {dgettext("dialogs", "Command")}
+                    </label>
+                    <.input
+                      type="text"
+                      name="command"
+                      value={@draft_command}
+                      placeholder={dgettext("dialogs", "/command $1")}
+                      data-testid="custom-menu-command-input"
+                      class="cm-input w-full"
+                      maxlength="500"
+                    />
+                  </div>
+
+                  <p
+                    :if={@error_message}
+                    data-testid="custom-menu-error"
+                    class="text-xs text-destructive"
+                  >
+                    {@error_message}
+                  </p>
+
+                  <div class="cm-form-actions flex gap-retro-4 pt-retro-4">
+                    <.button type="submit" size="sm" variant="default" class="cm-action-button">
+                      <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+                      {dgettext("dialogs", "Save")}
+                    </.button>
+                    <.button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      phx-click={@on_cancel_edit}
+                      class="cm-action-button"
+                    >
+                      <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+                      {dgettext("dialogs", "Cancel")}
+                    </.button>
+                  </div>
+                </div>
+              </form>
+            </.dialog_body>
+          </.dialog>
         </div>
       </.focus_wrap>
     </div>
@@ -243,15 +317,9 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
   attr :id, :string, required: true
   attr :entries, :list, required: true
   attr :selected_item, :string, default: nil
-  attr :editing, :boolean, default: false
-  attr :draft_label, :string, default: ""
-  attr :draft_command, :string, default: ""
-  attr :error_message, :string, default: nil
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
   attr :on_delete, :any, default: nil
-  attr :on_save, :any, default: nil
-  attr :on_cancel_edit, :any, default: nil
 
   defp menu_entries_section(assigns) do
     ~H"""
@@ -305,73 +373,6 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
           </.button>
         </div>
       </div>
-
-      <%!-- Edit form --%>
-      <form
-        :if={@editing}
-        phx-submit={@on_save}
-        data-testid="custom-menu-edit-form"
-        class="cm-edit-form shrink-0 shadow-retro-field bg-white p-retro-8 space-y-retro-8"
-      >
-        <h3 class="font-bold text-xs mb-retro-4">
-          {if @selected_item == nil,
-            do: dgettext("dialogs", "Add Entry"),
-            else: dgettext("dialogs", "Edit Entry")}
-        </h3>
-
-        <div class="space-y-retro-4">
-          <div>
-            <label class="cm-form-label text-xs font-bold block mb-retro-2">
-              {dgettext("dialogs", "Label")}
-            </label>
-            <.input
-              type="text"
-              name="label"
-              value={@draft_label}
-              placeholder={dgettext("dialogs", "Menu item text")}
-              data-testid="custom-menu-label-input"
-              class="cm-input w-full"
-              maxlength="50"
-            />
-          </div>
-
-          <div>
-            <label class="cm-form-label text-xs font-bold block mb-retro-2">
-              {dgettext("dialogs", "Command")}
-            </label>
-            <.input
-              type="text"
-              name="command"
-              value={@draft_command}
-              placeholder={dgettext("dialogs", "/command $1")}
-              data-testid="custom-menu-command-input"
-              class="cm-input w-full"
-              maxlength="500"
-            />
-          </div>
-
-          <p :if={@error_message} data-testid="custom-menu-error" class="text-xs text-destructive">
-            {@error_message}
-          </p>
-
-          <div class="cm-form-actions flex gap-retro-4 pt-retro-4">
-            <.button type="submit" size="sm" variant="default" class="cm-action-button">
-              <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Save")}
-            </.button>
-            <.button
-              type="button"
-              size="sm"
-              variant="outline"
-              phx-click={@on_cancel_edit}
-              class="cm-action-button"
-            >
-              <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Cancel")}
-            </.button>
-          </div>
-        </div>
-      </form>
     </div>
     """
   end

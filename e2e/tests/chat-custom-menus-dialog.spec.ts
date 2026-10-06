@@ -96,6 +96,7 @@ test.describe("Custom Menus dialog", () => {
       await owner.chat.expectCustomMenuError(
         "Command must not contain chaining",
       );
+      await owner.chat.cancelCustomMenuDraft();
 
       await owner.chat.addCustomMenuItem(
         "Channel",

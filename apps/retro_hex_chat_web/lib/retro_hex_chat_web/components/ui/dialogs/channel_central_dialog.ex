@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   import RetroHexChatWeb.Components.UI.ToolButton
 
   import RetroHexChatWeb.Components.UI.ActionList
+  import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Fieldset
   import RetroHexChatWeb.Components.UI.ListStates
@@ -582,25 +583,22 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
     assigns = assign(assigns, :title, add_entry_title(assigns.list_type))
 
     ~H"""
-    <div
-      class="cc-subdialog-overlay absolute inset-0 z-modal-above bg-black/50 flex items-center justify-center"
-      data-escape-guard
-      data-access-list={@list_type}
-      data-testid="cc-add-list-entry-dialog"
+    <.dialog
+      id="cc-add-list-entry-modal"
+      show
+      scope={:window}
+      on_cancel={JS.push("cc_close_add_list_entry", target: @target)}
+      class="md:max-w-sm"
     >
-      <div class="cc-subdialog bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
-        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <span class="text-xs font-bold text-white truncate select-none">{@title}</span>
-          <div class="ml-auto">
-            <button
-              type="button"
-              aria-label={dgettext("dialogs", "Close")}
-              phx-click="cc_close_add_list_entry"
-              phx-target={@target}
-            />
-          </div>
-        </div>
-        <div class="p-2">
+      <.dialog_header
+        id="cc-add-list-entry-modal"
+        title={@title}
+        on_close={JS.push("cc_close_add_list_entry", target: @target)}
+      >
+        <:icon><Icons.icon_dialog_channel_central class="w-4 h-4" /></:icon>
+      </.dialog_header>
+      <.dialog_body>
+        <div data-access-list={@list_type} data-testid="cc-add-list-entry-dialog">
           <form phx-submit="cc_add_list_entry" phx-target={@target}>
             <input type="hidden" name="list" value={@list_type} />
             <div class="flex flex-col gap-1.5">
@@ -635,8 +633,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             </div>
           </form>
         </div>
-      </div>
-    </div>
+      </.dialog_body>
+    </.dialog>
     """
   end
 
@@ -649,27 +647,22 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
   defp transfer_confirm_sub_form(assigns) do
     ~H"""
-    <div
-      class="cc-subdialog-overlay absolute inset-0 z-modal-above bg-black/50 flex items-center justify-center"
-      data-escape-guard
-      data-testid="cc-transfer-dialog"
+    <.dialog
+      id="cc-transfer-modal"
+      show
+      scope={:window}
+      on_cancel={JS.push(@on_close, target: @target)}
+      class="md:max-w-sm"
     >
-      <div class="cc-subdialog bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
-        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <Icons.icon_role_owner class="w-4 h-4 text-white" />
-          <span class="text-xs font-bold text-white truncate select-none">
-            {dgettext("dialogs", "Transfer Ownership")}
-          </span>
-          <div class="ml-auto">
-            <button
-              type="button"
-              aria-label={dgettext("dialogs", "Close")}
-              phx-click={@on_close}
-              phx-target={@target}
-            />
-          </div>
-        </div>
-        <div class="p-2">
+      <.dialog_header
+        id="cc-transfer-modal"
+        title={dgettext("dialogs", "Transfer Ownership")}
+        on_close={JS.push(@on_close, target: @target)}
+      >
+        <:icon><Icons.icon_role_owner class="w-4 h-4" /></:icon>
+      </.dialog_header>
+      <.dialog_body>
+        <div data-testid="cc-transfer-dialog">
           <form phx-submit={@on_submit} phx-target={@target}>
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-bold" for="cc-transfer-nick">
@@ -711,8 +704,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             </div>
           </form>
         </div>
-      </div>
-    </div>
+      </.dialog_body>
+    </.dialog>
     """
   end
 

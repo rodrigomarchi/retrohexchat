@@ -11,12 +11,6 @@
   gap: 8px;
 }
 
-.al-editor--editing {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.82fr);
-  align-items: start;
-}
-
 .al-list-pane {
   display: flex;
   min-width: 0;
@@ -132,8 +126,7 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.desktop--stacked .al-editor,
-.desktop--stacked .al-editor--editing {
+.desktop--stacked .al-editor {
   display: flex;
   flex-direction: column;
   gap: 8px;

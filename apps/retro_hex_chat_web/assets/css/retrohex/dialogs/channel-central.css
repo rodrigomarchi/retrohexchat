@@ -285,18 +285,6 @@
   width: 100%;
 }
 
-.desktop--stacked .cc-subdialog-overlay {
-  align-items: flex-start;
-  padding: 12px;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.desktop--stacked .cc-subdialog {
-  max-width: min(100%, 24rem);
-  margin: auto;
-}
-
 @media (max-width: 430px) {
   .desktop--stacked .cc-action-form {
     grid-template-columns: minmax(0, 1fr) auto auto;
