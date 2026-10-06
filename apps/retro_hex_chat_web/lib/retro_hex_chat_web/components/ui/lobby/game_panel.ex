@@ -9,10 +9,11 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.MediaSession.ActionButton
   import RetroHexChatWeb.Components.UI.MediaSession.StatusHeader
+
+  import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChatWeb.Icons
 
@@ -82,7 +83,9 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
       </.media_session_status_header>
 
       <div :if={@game.status == "playing"} class="flex min-h-0 flex-1 flex-col gap-2">
-        <div class="flex shrink-0 flex-wrap items-center justify-between gap-2 border border-border bg-muted px-2 py-1 shadow-retro-sunken">
+        <%!-- Above the canvas, never over it: a game is played with the
+              pointer on the picture, where a hovering dock would sit. --%>
+        <div class="flex shrink-0 flex-wrap items-center justify-between gap-2 px-1">
           <p class="flex min-w-0 items-center gap-1 text-xs font-bold">
             <Icons.icon_joystick class="h-4 w-4 shrink-0" />
             <span class="truncate">{dgettext("lobby", "Game in progress")}</span>
@@ -90,10 +93,15 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
               {game_name(@games, @game.game_id)}
             </span>
           </p>
-          <.button size="sm" variant="outline" phx-click="end_game">
-            <:icon><Icons.icon_close class="h-4 w-4" /></:icon>
-            {dgettext("lobby", "End game")}
-          </.button>
+          <.tool_button
+            label={dgettext("lobby", "End game")}
+            caption={dgettext("lobby", "End game")}
+            variant="flat"
+            size="md"
+            phx-click="end_game"
+          >
+            <Icons.icon_close class="h-4 w-4" />
+          </.tool_button>
         </div>
         <div
           id="lobby-game-canvas"

@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceFullscreenToggle do
       data-space-fullscreen-toggle
       data-testid="space-fullscreen-toggle"
       aria-label={dgettext("chat", "Toggle fullscreen")}
-      class="group absolute top-3 right-3 z-10 flex h-9 w-9 items-center justify-center rounded-sm border border-black/50 bg-neutral-900/50 text-neutral-200 opacity-60 select-none hover:opacity-100 data-[fullscreen]:opacity-80"
+      class="media-dock-button icon-on-dark group absolute top-3 right-3 z-10 select-none border-white/20 bg-black/60"
     >
       <Icons.icon_fullscreen_enter class="h-4 w-4 group-data-[fullscreen]:hidden" />
       <Icons.icon_fullscreen_exit class="hidden h-4 w-4 group-data-[fullscreen]:block" />

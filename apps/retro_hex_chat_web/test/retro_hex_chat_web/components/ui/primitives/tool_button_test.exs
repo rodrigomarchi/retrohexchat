@@ -100,7 +100,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolButtonTest do
 
   test "the class function dresses elements that cannot be a button" do
     assert tool_button_class(variant: "flat", size: "sm") =~ "hover:shadow-retro-raised"
-    assert tool_button_class(variant: "dock") == "media-dock-button"
+    assert tool_button_class(variant: "dock") == "media-dock-button icon-on-dark"
     assert tool_button_class(class: "extra") =~ "extra"
   end
 end

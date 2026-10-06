@@ -31,7 +31,7 @@ export function createTileView(el, { onToggleFocus } = {}) {
     if (tile.querySelector("[data-group-call-tile-name]")) return;
 
     const nameplate = document.createElement("div");
-    nameplate.className = "group-call-video-tile__nameplate";
+    nameplate.className = "group-call-video-tile__nameplate icon-on-dark";
 
     const name = document.createElement("span");
     name.className = "truncate font-bold";

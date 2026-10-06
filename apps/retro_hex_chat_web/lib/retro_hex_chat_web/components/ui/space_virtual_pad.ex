@@ -30,19 +30,19 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
     >
       <div class="grid grid-cols-3 grid-rows-3">
         <div></div>
-        <.pad_dir_button dir="up" label={dgettext("chat", "Walk up")} class="rounded-t-sm">
+        <.pad_dir_button dir="up" label={dgettext("chat", "Walk up")}>
           <Icons.icon_pad_up class="h-5 w-5" />
         </.pad_dir_button>
         <div></div>
-        <.pad_dir_button dir="left" label={dgettext("chat", "Walk left")} class="rounded-l-sm">
+        <.pad_dir_button dir="left" label={dgettext("chat", "Walk left")}>
           <Icons.icon_pad_left class="h-5 w-5" />
         </.pad_dir_button>
-        <div class="h-11 w-11 bg-neutral-900/80"></div>
-        <.pad_dir_button dir="right" label={dgettext("chat", "Walk right")} class="rounded-r-sm">
+        <div class="h-11 w-11 bg-black/60"></div>
+        <.pad_dir_button dir="right" label={dgettext("chat", "Walk right")}>
           <Icons.icon_pad_right class="h-5 w-5" />
         </.pad_dir_button>
         <div></div>
-        <.pad_dir_button dir="down" label={dgettext("chat", "Walk down")} class="rounded-b-sm">
+        <.pad_dir_button dir="down" label={dgettext("chat", "Walk down")}>
           <Icons.icon_pad_down class="h-5 w-5" />
         </.pad_dir_button>
         <div></div>
@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
         tabindex="-1"
         data-space-pad-action="attack"
         aria-label={dgettext("chat", "Attack")}
-        class="flex h-12 w-12 items-center justify-center rounded-full border border-black/70 bg-red-950/80 text-red-100 shadow-md data-[pressed]:bg-red-800/90 data-[pressed]:text-white data-[pressed]:shadow-none"
+        class="space-pad-button space-pad-button--attack icon-on-dark h-12 w-12"
       >
         <Icons.icon_sword class="h-6 w-6" />
       </button>
@@ -72,12 +72,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
       tabindex="-1"
       data-space-pad-dir={@dir}
       aria-label={@label}
-      class={[
-        "flex h-11 w-11 items-center justify-center border border-black/70",
-        "bg-neutral-900/80 text-neutral-200 shadow-md",
-        "data-[pressed]:bg-neutral-600/90 data-[pressed]:text-white data-[pressed]:shadow-none",
-        @class
-      ]}
+      class={["space-pad-button icon-on-dark h-11 w-11", @class]}
     >
       {render_slot(@inner_block)}
     </button>

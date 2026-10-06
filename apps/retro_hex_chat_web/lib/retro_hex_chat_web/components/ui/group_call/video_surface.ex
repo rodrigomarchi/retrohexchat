@@ -95,7 +95,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
           </video>
 
           <div
-            class="group-call-video-tile__empty"
+            class="group-call-video-tile__empty icon-on-dark"
             role="status"
             aria-live="polite"
             data-group-call-local-empty
@@ -110,14 +110,16 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
             </span>
           </div>
 
-          <div class="group-call-video-tile__nameplate">
+          <div class="group-call-video-tile__nameplate icon-on-dark">
             <span class="truncate font-bold" data-group-call-local-name>{@call.nickname}</span>
             <span class="group-call-video-tile__badges">
               <span class="group-call-video-badge" data-group-call-local-audio-badge>
-                <CallControls.icon_call_microphone class="h-4 w-4" />
+                <CallControls.icon_call_microphone class="group-call-video-badge__on h-4 w-4" />
+                <CallControls.icon_call_mute class="group-call-video-badge__off h-4 w-4" />
               </span>
               <span class="group-call-video-badge" data-group-call-local-video-badge>
-                <CallControls.icon_call_camera class="h-4 w-4" />
+                <CallControls.icon_call_camera class="group-call-video-badge__on h-4 w-4" />
+                <CallControls.icon_call_camera_off class="group-call-video-badge__off h-4 w-4" />
               </span>
               <span class="group-call-video-badge" data-group-call-local-screen-badge>
                 <CallControls.icon_call_screen_share class="h-4 w-4" />
@@ -141,7 +143,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
             role="button"
             tabindex="0"
           >
-            <div class="group-call-video-tile__nameplate">
+            <div class="group-call-video-tile__nameplate icon-on-dark">
               <span class="inline-flex min-w-0 items-center gap-1 truncate font-bold">
                 <Icons.icon_status_user class="h-4 w-4 shrink-0" />
                 <span class="truncate" data-group-call-tile-name>
@@ -155,7 +157,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
                   title={dgettext("group_call", "Remote microphone")}
                   aria-label={dgettext("group_call", "Remote microphone")}
                 >
-                  <CallControls.icon_call_microphone class="h-4 w-4" />
+                  <CallControls.icon_call_microphone class="group-call-video-badge__on h-4 w-4" />
+                  <CallControls.icon_call_mute class="group-call-video-badge__off h-4 w-4" />
                 </span>
                 <span
                   class="group-call-video-badge"
@@ -163,7 +166,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
                   title={dgettext("group_call", "Remote camera")}
                   aria-label={dgettext("group_call", "Remote camera")}
                 >
-                  <CallControls.icon_call_camera class="h-4 w-4" />
+                  <CallControls.icon_call_camera class="group-call-video-badge__on h-4 w-4" />
+                  <CallControls.icon_call_camera_off class="group-call-video-badge__off h-4 w-4" />
                 </span>
                 <span
                   class="group-call-video-badge"

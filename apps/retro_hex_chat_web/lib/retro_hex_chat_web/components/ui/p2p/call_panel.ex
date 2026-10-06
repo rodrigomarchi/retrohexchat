@@ -126,7 +126,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                 <div
                   :if={quality_label(@call)}
                   class={[
-                    "absolute right-2 top-2 z-10 flex items-center gap-1 bg-black/70 px-1.5 py-0.5 font-bold shadow-retro-sunken",
+                    "icon-on-dark absolute right-2 top-2 z-10 flex items-center gap-1 bg-black/70 px-1.5 py-0.5 font-bold shadow-retro-sunken",
                     quality_class(quality_level(@call))
                   ]}
                   data-testid="lobby-call-quality"
@@ -160,7 +160,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                   </p>
                 </div>
 
-                <div class="absolute left-2 top-2 z-10 flex max-w-[60%] items-center gap-1 border border-white/25 bg-black/60 px-1.5 py-0.5 font-bold text-white">
+                <div class="icon-on-dark absolute left-2 top-2 z-10 flex max-w-[60%] items-center gap-1 border border-white/25 bg-black/60 px-1.5 py-0.5 font-bold text-white">
                   <CallControls.icon_call_screen_share
                     :if={@peer_screen_sharing}
                     class="h-4 w-4 shrink-0 text-warning"
@@ -198,7 +198,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                   data-testid="p2p-local-self-view"
                 >
                 </video>
-                <div class="absolute bottom-1 left-1 right-1 flex items-center gap-1 bg-black/70 px-1 py-0.5 font-bold text-white">
+                <div class="icon-on-dark absolute bottom-1 left-1 right-1 flex items-center gap-1 bg-black/70 px-1 py-0.5 font-bold text-white">
                   <CallControls.icon_call_screen_share
                     :if={@screen_sharing}
                     class="h-4 w-4 shrink-0 text-warning"

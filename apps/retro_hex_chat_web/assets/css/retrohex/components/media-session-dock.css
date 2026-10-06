@@ -106,21 +106,14 @@
   font-weight: 700;
 }
 
-/*
- * The call icons are drawn for grey chrome, with black outlines that vanish on
- * the dark dock. A one-pixel light rim — four hard drop shadows, no blur — cuts
- * them out like a sticker and keeps the pixels crisp.
- */
+/* The dock is dark, so its buttons carry `icon-on-dark` (retro-controls.css). */
 .media-dock-button > svg {
   width: 26px;
   height: 26px;
   flex-shrink: 0;
-  filter: drop-shadow(1px 0 0 rgba(255, 255, 255, 0.75))
-    drop-shadow(-1px 0 0 rgba(255, 255, 255, 0.75)) drop-shadow(0 1px 0 rgba(255, 255, 255, 0.75))
-    drop-shadow(0 -1px 0 rgba(255, 255, 255, 0.75));
 }
 
-.media-dock-button--danger > svg {
+.media-dock-button.media-dock-button--danger > svg {
   filter: none;
 }
 
@@ -227,4 +220,33 @@
   .media-dock-button--captioned {
     padding: 0 8px;
   }
+}
+
+/* ── Controls floating over a scene ──────────────────────────────────────────
+   The Space's touch pad has no dock bar behind it, so each key carries the
+   dock's dark glass itself: square, translucent, a light rim on the glyph
+   (`icon-on-dark`),
+   sunk while held (`data-pressed`, set by the pad's hook). */
+.space-pad-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+}
+
+.space-pad-button[data-pressed] {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 1px 1px rgba(0, 0, 0, 0.9),
+    inset -1px -1px rgba(255, 255, 255, 0.4);
+}
+
+.space-pad-button--attack {
+  background: rgba(150, 0, 0, 0.75);
+}
+
+.space-pad-button--attack[data-pressed] {
+  background: rgba(204, 0, 0, 0.9);
 }

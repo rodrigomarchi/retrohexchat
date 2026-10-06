@@ -304,6 +304,26 @@
   color: #ffffff;
 }
 
+/* Off is said by the drawing, not only the colour: the struck-through icon
+   replaces the plain one. */
+.group-call-video-badge__off {
+  display: none;
+}
+
+.group-call-video-tile[data-media-audio="false"] [data-group-call-audio-badge] .group-call-video-badge__on,
+.group-call-video-tile[data-media-audio="false"] [data-group-call-local-audio-badge] .group-call-video-badge__on,
+.group-call-video-tile[data-media-video="false"] [data-group-call-video-badge] .group-call-video-badge__on,
+.group-call-video-tile[data-media-video="false"] [data-group-call-local-video-badge] .group-call-video-badge__on {
+  display: none;
+}
+
+.group-call-video-tile[data-media-audio="false"] [data-group-call-audio-badge] .group-call-video-badge__off,
+.group-call-video-tile[data-media-audio="false"] [data-group-call-local-audio-badge] .group-call-video-badge__off,
+.group-call-video-tile[data-media-video="false"] [data-group-call-video-badge] .group-call-video-badge__off,
+.group-call-video-tile[data-media-video="false"] [data-group-call-local-video-badge] .group-call-video-badge__off {
+  display: inline-block;
+}
+
 [data-group-call-screen-badge],
 [data-group-call-local-screen-badge] {
   display: none;

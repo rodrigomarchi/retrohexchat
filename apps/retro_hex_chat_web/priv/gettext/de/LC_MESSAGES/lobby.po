@@ -21,18 +21,18 @@ msgstr "%{peer} wird mutiert"
 msgid "%{peer}'s camera is off"
 msgstr "%{peer}'s Kamera ist aus"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:140
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:148
 #, elixir-autogen, elixir-format
 msgid "%{score} P2"
 msgstr "%{score} P2"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:186
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:194
 #, elixir-autogen, elixir-format
 msgid "Accept"
 msgstr "Annehmen"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:146
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:150
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:154
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:158
 #, elixir-autogen, elixir-format
 msgid "Back to games"
 msgstr "Zurück zu den Spielen"
@@ -52,7 +52,7 @@ msgstr "Kamera ab"
 msgid "Camera On"
 msgstr "Kamera auf"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:55
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:56
 #, elixir-autogen, elixir-format
 msgid "Connect to play a game."
 msgstr "Verbinden Sie ein Spiel zu spielen."
@@ -67,7 +67,7 @@ msgstr "Verbinden Sie eine Datei zu senden."
 msgid "Could not access your microphone or camera."
 msgstr "Kann nicht auf Ihr Mikrofon oder Kamera zugreifen."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:194
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:202
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr "Ablehnen"
@@ -78,7 +78,7 @@ msgstr "Ablehnen"
 msgid "Devices"
 msgstr "Geräte"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:324
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:332
 #, elixir-autogen, elixir-format
 msgid "Draw."
 msgstr "Zeichnen."
@@ -88,7 +88,8 @@ msgstr "Zeichnen."
 msgid "End call"
 msgstr "Endanruf"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:95
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:97
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:98
 #, elixir-autogen, elixir-format
 msgid "End game"
 msgstr "Ende Spiel"
@@ -98,7 +99,7 @@ msgstr "Ende Spiel"
 msgid "File transfer completed: %{name}"
 msgstr "Dateiübertragung abgeschlossen: %{name}"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:127
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:135
 #, elixir-autogen, elixir-format
 msgid "Final Score"
 msgstr "Schlusspunkt"
@@ -108,7 +109,7 @@ msgstr "Schlusspunkt"
 msgid "Focus"
 msgstr "Schwerpunkt"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:88
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:91
 #, elixir-autogen, elixir-format
 msgid "Game in progress"
 msgstr "Spiel im Fortschritt"
@@ -123,7 +124,7 @@ msgstr "Spiel over — %{game}: %{p1} × %{p2}"
 msgid "Mute"
 msgstr "Stummschalten"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:136
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:144
 #, elixir-autogen, elixir-format
 msgid "P1 %{score}"
 msgstr "P1 %{score}"
@@ -160,37 +161,37 @@ msgstr "Kamera drehen"
 msgid "Turn on microphone"
 msgstr "Mikrofon einschalten"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:212
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:220
 #, elixir-autogen, elixir-format
 msgid "Waiting for %{peer} to accept..."
 msgstr "Warten auf %{peer} zu akzeptieren..."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:323
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:331
 #, elixir-autogen, elixir-format
 msgid "You lose."
 msgstr "Du verlierst."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:322
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:330
 #, elixir-autogen, elixir-format
 msgid "You win!"
 msgstr "Sie gewinnen!"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:138
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:146
 #, elixir-autogen, elixir-format
 msgid "×"
 msgstr "und Zeiten;"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:268
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:276
 #, elixir-autogen, elixir-format
 msgid "%{count} games"
 msgstr "%{count} Spiele"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:169
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:177
 #, elixir-autogen, elixir-format
 msgid "%{peer} wants to play"
 msgstr "%{peer} moechte spielen"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:181
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:189
 #, elixir-autogen, elixir-format
 msgid "Accept game invite"
 msgstr "Akzeptieren Spiel laden"
@@ -206,12 +207,12 @@ msgstr "Aktiv"
 msgid "Call and game stay active with %{peer}."
 msgstr "Anruf und Spiel bleiben mit %{peer} aktiv."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:228
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:236
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:224
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:232
 #, elixir-autogen, elixir-format
 msgid "Cancel game invite"
 msgstr "Spiel einladen"
@@ -221,7 +222,7 @@ msgstr "Spiel einladen"
 msgid "Check file"
 msgstr "Check-Datei"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:189
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:197
 #, elixir-autogen, elixir-format
 msgid "Decline game invite"
 msgstr "Decline Spiel laden"
@@ -237,13 +238,13 @@ msgstr "Fallen Sie eine Datei hier oder durchsuchen."
 msgid "Files"
 msgstr "Dateien"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:276
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:284
 #, elixir-autogen, elixir-format
 msgid "Finished"
 msgstr "Beendet"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:35
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:66
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:36
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:67
 #, elixir-autogen, elixir-format
 msgid "Games"
 msgstr "Spiele"
@@ -253,7 +254,7 @@ msgstr "Spiele"
 msgid "Incoming"
 msgstr "Einkommen"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:282
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:290
 #, elixir-autogen, elixir-format
 msgid "Invite"
 msgstr "Einladung"
@@ -274,12 +275,12 @@ msgid "Paused"
 msgstr "Ausgewählt"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:80
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:74
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:75
 #, elixir-autogen, elixir-format
 msgid "Peer %{peer}"
 msgstr "Gegenstelle %{peer}"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:273
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:281
 #, elixir-autogen, elixir-format
 msgid "Playing"
 msgstr "Läuft"
@@ -290,34 +291,34 @@ msgid "Preparing file transfer."
 msgstr "Dateiübertragung vorbereiten."
 
 #: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:174
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:284
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:292
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "Bereit"
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:218
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:226
 #, elixir-autogen, elixir-format
 msgid "The call remains live while the invite is pending."
 msgstr "Der Anruf bleibt live, während die Einladung anhängig ist."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:175
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:183
 #, elixir-autogen, elixir-format
 msgid "The call stays active while the game runs."
 msgstr "Der Anruf bleibt aktiv, während das Spiel läuft."
 
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:279
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:287
 #, elixir-autogen, elixir-format
 msgid "Waiting"
 msgstr "Warten"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:42
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:43
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:44
 #, elixir-autogen, elixir-format
 msgid "Waiting for P2P connection"
 msgstr "Warten auf P2P-Verbindung"
 
 #: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:162
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:264
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:272
 #, elixir-autogen, elixir-format
 msgid "peer"
 msgstr "Pestizid"

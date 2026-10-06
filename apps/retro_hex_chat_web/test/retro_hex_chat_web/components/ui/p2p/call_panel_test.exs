@@ -110,7 +110,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     assert html =~ ~s(data-testid="p2p-call-dock")
 
     assert html =~
-             ~s(class="media-dock-button media-dock-button--captioned media-dock-button--danger")
+             ~s(class="media-dock-button icon-on-dark media-dock-button--captioned media-dock-button--danger")
   end
 
   test "mini mode keeps essential call controls and hides wide controls" do

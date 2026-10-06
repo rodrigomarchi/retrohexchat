@@ -135,7 +135,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolButton do
 
   defp dock_button_class(active?, tone, captioned?, extra) do
     classes([
-      "media-dock-button",
+      "media-dock-button icon-on-dark",
       captioned? && "media-dock-button--captioned",
       active? && "media-dock-button--active",
       tone == "danger" && "media-dock-button--danger",

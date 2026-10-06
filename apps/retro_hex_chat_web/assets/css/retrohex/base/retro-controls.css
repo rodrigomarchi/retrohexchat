@@ -569,3 +569,15 @@ details:not([open]) .tree-view-marker-closed {
   line-height: 1;
   white-space: nowrap;
 }
+
+/* The Win98 icons are drawn for grey chrome: black outlines and navy bodies
+   that vanish on a dark surface — a video, a dock, a navy selected tab. A
+   one-pixel light rim (four hard drop shadows, no blur) cuts them out like a
+   sticker and keeps the pixels crisp. Put the class on the icon or on the
+   dark container that holds it. */
+.icon-on-dark svg,
+svg.icon-on-dark {
+  filter: drop-shadow(1px 0 0 rgba(255, 255, 255, 0.75))
+    drop-shadow(-1px 0 0 rgba(255, 255, 255, 0.75)) drop-shadow(0 1px 0 rgba(255, 255, 255, 0.75))
+    drop-shadow(0 -1px 0 rgba(255, 255, 255, 0.75));
+}
