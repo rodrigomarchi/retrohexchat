@@ -818,7 +818,7 @@ msgid "Browser"
 msgstr "浏览器"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:79
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:523
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:520
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "取消"
@@ -1510,7 +1510,7 @@ msgstr "海军"
 msgid "Next"
 msgstr "下一步"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1151
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1148
 #, elixir-autogen, elixir-format
 msgid "Next: %{parameter}"
 msgstr "下一个:%{parameter}"
@@ -2161,7 +2161,7 @@ msgstr "您现在被确认为 %{nickname}"
 msgid "You are now known as %{nickname}"
 msgstr "你现在被称为%{nickname}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1164
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1161
 #, elixir-autogen, elixir-format
 msgid "You are setting: %{flag} (%{label})"
 msgstr "您正在设置: %{flag}( %{label})"
@@ -2688,7 +2688,7 @@ msgstr "没有更改服务器设置 。"
 msgid "Notice message"
 msgstr "通知信息"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:684
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:681
 #, elixir-autogen, elixir-format
 msgid "Notice message cannot be empty"
 msgstr "通知信息不能为空"
@@ -3506,32 +3506,32 @@ msgstr "用户列表侧栏"
 msgid "Archive"
 msgstr "压缩包"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:475
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:476
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:472
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:473
 #, elixir-autogen, elixir-format
 msgid "Attach file"
 msgstr "附加文件"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:727
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:724
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "附件超过 %{mb} MB 限制"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:733
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:730
 #, elixir-autogen, elixir-format
 msgid "Attachment type not accepted"
 msgstr "附件类型未被接受"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:662
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:786
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:659
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:783
 #, elixir-autogen, elixir-format
 msgid "Attachment upload could not be confirmed"
 msgstr "附件上传无法确认"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:734
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:747
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:805
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:816
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:731
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:744
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:802
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:813
 #, elixir-autogen, elixir-format
 msgid "Attachment upload failed"
 msgstr "附件上传失败"
@@ -3571,7 +3571,7 @@ msgstr "代码块"
 msgid "Copy Source"
 msgstr "复制源码"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:723
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:720
 #, elixir-autogen, elixir-format
 msgid "Could not store attachment: %{reason}"
 msgstr "无法存储附件 : %{reason}"
@@ -3663,7 +3663,7 @@ msgstr "预览"
 msgid "Quote"
 msgstr "引用"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:573
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:570
 #, elixir-autogen, elixir-format
 msgid "Remove attachment"
 msgstr "移除附件"
@@ -3686,8 +3686,8 @@ msgstr "清除格式"
 msgid "Text"
 msgstr "文本"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:732
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:808
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:729
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:805
 #, elixir-autogen, elixir-format
 msgid "Too many attachments"
 msgstr "附件过多"
@@ -3702,7 +3702,7 @@ msgstr "视频"
 msgid "Write"
 msgstr "编写"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:890
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:887
 #, elixir-autogen, elixir-format
 msgid "You"
 msgstr "你"
@@ -4160,24 +4160,24 @@ msgstr "这台服务器"
 msgid "Discard the recording"
 msgstr "丢弃录音"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:848
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:845
 #, elixir-autogen, elixir-format
 msgid "This browser cannot record. Attach an audio file instead."
 msgstr "此浏览器无法录音。请改为附加音频文件。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:842
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:839
 #, elixir-autogen, elixir-format
 msgid "This browser did not give access to the microphone."
 msgstr "此浏览器没有授予麦克风权限。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:827
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:824
 #, elixir-autogen, elixir-format
 msgid "This browser recorded in a format this chat cannot send"
 msgstr "此浏览器录制的格式无法在本聊天中发送"
 
 #: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:150
 #: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:339
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:517
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:514
 #, elixir-autogen, elixir-format
 msgid "Voice message"
 msgstr "语音消息"
@@ -4272,7 +4272,7 @@ msgstr "录音中"
 msgid "Record a voice message"
 msgstr "录制语音消息"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:845
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:842
 #, elixir-autogen, elixir-format
 msgid "No microphone is available."
 msgstr "没有麦克风可用。"

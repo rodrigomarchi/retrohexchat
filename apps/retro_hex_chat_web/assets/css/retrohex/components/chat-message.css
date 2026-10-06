@@ -379,6 +379,18 @@
   @apply not-italic text-foreground;
 }
 
+/* ── Composer edge ──────────────────────────────────────────────────────────
+   The message pane is set apart from the sidebar by the two dark lines of its
+   sunken bevel. The composer below it carries the same two lines down to the
+   tab strip: without them its grey runs straight into the grey of the
+   sidebar's footer, and the input reads as reaching into the sidebar. */
+.chat-composer {
+  box-shadow:
+    inset 1px 0 #808080,
+    inset 2px 0 #0a0a0a;
+  padding-left: 2px;
+}
+
 /* ── Voice messages ─────────────────────────────────────────────────────────
    The microphone sits in the composer toolbar beside the attachment and
    formatting buttons. While a take runs it takes over the row: the input and
