@@ -737,7 +737,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:128
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:123
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:316
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:496
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:507
 #: lib/retro_hex_chat_web/live/chat_live/away_events.ex:32
 #: lib/retro_hex_chat_web/live/chat_live/components/hover_card.ex:118
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:153
@@ -1509,7 +1509,7 @@ msgstr "海军"
 msgid "Next"
 msgstr "下一步"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:980
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:979
 #, elixir-autogen, elixir-format
 msgid "Next: %{parameter}"
 msgstr "下一个:%{parameter}"
@@ -1838,7 +1838,7 @@ msgstr "搜索历史"
 msgid "Search history..."
 msgstr "搜索历史..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:185
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:186
 #, elixir-autogen, elixir-format
 msgid "Send"
 msgstr "发送"
@@ -1992,7 +1992,7 @@ msgstr "/help Nickserv 类型,以获取全部细节."
 msgid "Type a command — / for list"
 msgstr "输入命令 - / 用于列表"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:78
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:80
 #, elixir-autogen, elixir-format
 msgid "Type a message..."
 msgstr "键入信件..."
@@ -2156,7 +2156,7 @@ msgstr "您现在被确认为 %{nickname}"
 msgid "You are now known as %{nickname}"
 msgstr "你现在被称为%{nickname}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:993
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:992
 #, elixir-autogen, elixir-format
 msgid "You are setting: %{flag} (%{label})"
 msgstr "您正在设置: %{flag}( %{label})"
@@ -2465,7 +2465,7 @@ msgstr "Bio限定为200个字符;额外文本没有保存."
 msgid "Bot Management"
 msgstr "机器人管理"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:110
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:103
 #, elixir-autogen, elixir-format
 msgid "Cancel notice"
 msgstr "取消通知"
@@ -2678,17 +2678,17 @@ msgstr "需要昵称 。"
 msgid "No server settings changed."
 msgstr "没有更改服务器设置 。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:178
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:179
 #, elixir-autogen, elixir-format
 msgid "Notice message"
 msgstr "通知信息"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:612
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:611
 #, elixir-autogen, elixir-format
 msgid "Notice message cannot be empty"
 msgstr "通知信息不能为空"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:98
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:100
 #, elixir-autogen, elixir-format
 msgid "Notice to %{target}:"
 msgstr "通知 %{target}："
@@ -2698,6 +2698,7 @@ msgstr "通知 %{target}："
 msgid "Notify List"
 msgstr "通知名单"
 
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:498
 #: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:46
 #: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:48
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:109
@@ -2780,7 +2781,7 @@ msgstr "搜索历史"
 msgid "Seconds must be a number."
 msgstr "秒必须是一个数字。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:184
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:185
 #, elixir-autogen, elixir-format
 msgid "Send Notice"
 msgstr "发送通知"
@@ -3039,12 +3040,12 @@ msgstr "P2P"
 msgid "P2P connection failed."
 msgstr "P2P 连接失败 。"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:250
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:253
 #, elixir-autogen, elixir-format
 msgid "P2P invite pending"
 msgstr "P2P 邀请待决"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:251
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:254
 #, elixir-autogen, elixir-format
 msgid "P2P session connecting"
 msgstr "P2P 会话连接"
@@ -3173,7 +3174,7 @@ msgstr "正在加入..."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:142
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:143
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:642
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:645
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2P 会话"
@@ -3340,7 +3341,7 @@ msgstr "会话 ID 无效。"
 msgid "Invalid terminal id."
 msgstr "终端 ID 无效。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:268
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:269
 #: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Session ended."
@@ -3399,7 +3400,7 @@ msgstr "IRC 颜色"
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:812
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:131
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:323
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:504
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:515
 #, elixir-autogen, elixir-format
 msgid "Muted"
 msgstr "静音"
@@ -3506,22 +3507,22 @@ msgstr "压缩包"
 msgid "Attach file"
 msgstr "附加文件"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:655
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:654
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "附件超过 %{mb} MB 限制"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:661
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:660
 #, elixir-autogen, elixir-format
 msgid "Attachment type not accepted"
 msgstr "附件类型未被接受"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:590
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:589
 #, elixir-autogen, elixir-format
 msgid "Attachment upload could not be confirmed"
 msgstr "附件上传无法确认"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:662
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:661
 #, elixir-autogen, elixir-format
 msgid "Attachment upload failed"
 msgstr "附件上传失败"
@@ -3561,7 +3562,7 @@ msgstr "代码块"
 msgid "Copy Source"
 msgstr "复制源码"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:651
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:650
 #, elixir-autogen, elixir-format
 msgid "Could not store attachment: %{reason}"
 msgstr "无法存储附件 : %{reason}"
@@ -3653,8 +3654,7 @@ msgstr "预览"
 msgid "Quote"
 msgstr "引用"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:501
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:502
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:499
 #, elixir-autogen, elixir-format
 msgid "Remove attachment"
 msgstr "移除附件"
@@ -3677,7 +3677,7 @@ msgstr "清除格式"
 msgid "Text"
 msgstr "文本"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:660
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:659
 #, elixir-autogen, elixir-format
 msgid "Too many attachments"
 msgstr "附件过多"
@@ -3692,7 +3692,7 @@ msgstr "视频"
 msgid "Write"
 msgstr "编写"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:719
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:718
 #, elixir-autogen, elixir-format
 msgid "You"
 msgstr "你"
@@ -3846,7 +3846,7 @@ msgstr "你需要先加入 %{channel} 才能进入它的空间。"
 msgid "The P2P signaling channel refused this session."
 msgstr "P2P 信令通道拒绝了此会话。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:640
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:643
 #, elixir-autogen, elixir-format
 msgid "P2P · %{peer}"
 msgstr "P2P · %{peer}"
@@ -3856,12 +3856,12 @@ msgstr "P2P · %{peer}"
 msgid "This P2P session moved to another window of yours."
 msgstr "此 P2P 会话已移到你的另一个窗口。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:634
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:637
 #, elixir-autogen, elixir-format
 msgid "%{game} · %{peer}"
 msgstr "%{game} · %{peer}"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:637
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:640
 #, elixir-autogen, elixir-format
 msgid "%{game} · match"
 msgstr "%{game} · 对局"
@@ -4144,38 +4144,37 @@ msgstr "服务器表情由管理员管理。"
 msgid "This server"
 msgstr "这台服务器"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:85
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:89
 #, elixir-autogen, elixir-format
 msgid "Attach"
 msgstr "附加"
 
 #: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:92
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:93
 #, elixir-autogen, elixir-format
 msgid "Discard the recording"
 msgstr "丢弃录音"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:82
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:86
 #, elixir-autogen, elixir-format
 msgid "Finish the recording and attach it"
 msgstr "结束录音并附加"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:61
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:65
 #, elixir-autogen, elixir-format
 msgid "Record"
 msgstr "录音"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:58
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:62
 #, elixir-autogen, elixir-format
 msgid "Record a voice message"
 msgstr "录制语音消息"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:103
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:105
 #, elixir-autogen, elixir-format
 msgid "This browser cannot record. Attach an audio file instead."
 msgstr "此浏览器无法录音。请改为附加音频文件。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:100
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:102
 #, elixir-autogen, elixir-format
 msgid "This browser did not give access to the microphone."
 msgstr "此浏览器没有授予麦克风权限。"
@@ -4185,7 +4184,7 @@ msgstr "此浏览器没有授予麦克风权限。"
 msgid "This browser recorded in a format this chat cannot send"
 msgstr "此浏览器录制的格式无法在本聊天中发送"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:64
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:68
 #, elixir-autogen, elixir-format
 msgid "Up to %{seconds} seconds"
 msgstr "最长 %{seconds} 秒"
@@ -4228,8 +4227,7 @@ msgstr[0] "%{count} 条未读"
 msgid "%{nick} — not open. Opens when you click it."
 msgstr "%{nick}——不开放. 点击时打开。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:773
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:774
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:769
 #, elixir-autogen, elixir-format
 msgid "Actions for %{name}"
 msgstr "用于%{name}的行动"

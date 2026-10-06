@@ -27,7 +27,10 @@ defmodule RetroHexChatWeb.Components.UI.Button do
     default: "default",
     doc: "the button variant style"
 
-  attr :size, :string, values: ~w(default sm lg icon), default: "default"
+  attr :size, :string,
+    values: ~w(default sm lg),
+    default: "default",
+    doc: "a square icon-only control is a ToolButton, not a Button"
 
   attr :navigate, :string,
     default: nil,

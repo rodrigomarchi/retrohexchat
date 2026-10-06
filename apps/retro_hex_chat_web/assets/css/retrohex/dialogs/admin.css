@@ -106,3 +106,10 @@
 .desktop--stacked .adm-dialog .shadow-retro-sunken.bg-white {
   min-width: 0;
 }
+
+/* A destructive admin form is drawn like the others until it is armed: its
+   button turns red once the confirmation has been typed. */
+.admin-destructive-form:has(input[name="confirm"]:not(:placeholder-shown))
+  .admin-destructive-form__submit {
+  color: #990000;
+}

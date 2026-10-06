@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   import RetroHexChatWeb.Components.UI.MediaSession.CommandBar
   import RetroHexChatWeb.Components.UI.MediaSession.Dock
   import RetroHexChatWeb.Components.UI.MediaSession.Header
+  import RetroHexChatWeb.Components.UI.MediaSession.ReactionPicker
   import RetroHexChatWeb.Components.UI.ToolButton
   import RetroHexChatWeb.Components.UI.MediaSession.InspectorPanel
   import RetroHexChatWeb.Components.UI.MediaSession.SectionNav
@@ -455,6 +456,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         </.tool_button>
         <.tool_button
           label={dgettext("group_call", "Leave group call")}
+          caption={dgettext("group_call", "Leave")}
           tone="danger"
           phx-click={@on_leave}
           data-testid="group-call-mini-leave"
@@ -468,82 +470,31 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
 
   defp reaction_controls(assigns) do
     ~H"""
-    <.popover
+    <.reaction_picker
       label={dgettext("group_call", "Conference reactions")}
-      placement="above"
-      trigger_class={tool_button_class(variant: "dock")}
+      testid="group-call-reactions"
       trigger_testid="group-call-reactions-toggle"
-      panel_role="toolbar"
-      panel_class="flex gap-1 border border-border bg-surface p-1 shadow-retro-raised"
-      data-testid="group-call-reactions"
     >
-      <:trigger><CallControls.icon_call_reactions class="h-4 w-4" /></:trigger>
-      <.reaction_button
-        call={@call}
-        reaction="heart"
-        label={dgettext("group_call", "Send heart reaction")}
-      >
-        <CallControls.icon_call_reaction_heart class="h-4 w-4" />
-      </.reaction_button>
-      <.reaction_button
-        call={@call}
-        reaction="thumbs_up"
-        label={dgettext("group_call", "Send thumbs up reaction")}
-      >
-        <CallControls.icon_call_reaction_thumbs_up class="h-4 w-4" />
-      </.reaction_button>
-      <.reaction_button
-        call={@call}
-        reaction="clap"
-        label={dgettext("group_call", "Send clap reaction")}
-      >
-        <CallControls.icon_call_reaction_clap class="h-4 w-4" />
-      </.reaction_button>
-      <.reaction_button
-        call={@call}
-        reaction="laugh"
-        label={dgettext("group_call", "Send laugh reaction")}
-      >
-        <CallControls.icon_call_reaction_laugh class="h-4 w-4" />
-      </.reaction_button>
-      <.reaction_button
-        call={@call}
-        reaction="wow"
-        label={dgettext("group_call", "Send sparkle reaction")}
-      >
-        <CallControls.icon_call_reaction_sparkle class="h-4 w-4" />
-      </.reaction_button>
-    </.popover>
+      <:reaction
+        :for={{key, label} <- conference_reactions()}
+        key={key}
+        label={label}
+        testid={"group-call-reaction-#{key}"}
+        icon_testid={"group-call-reaction-icon-#{key}"}
+        attrs={[{"data-group-call-reaction", key}, {"data-group-call-reaction-for", @call.token}]}
+      />
+    </.reaction_picker>
     """
   end
 
-  attr :call, :map, required: true
-  attr :reaction, :string, required: true
-  attr :label, :string, required: true
-  slot :inner_block
-
-  defp reaction_button(assigns) do
-    ~H"""
-    <.tool_button
-      label={@label}
-      class="text-[13px] leading-none"
-      data-group-call-reaction={@reaction}
-      data-group-call-reaction-for={@call.token}
-      data-testid={"group-call-reaction-#{@reaction}"}
-    >
-      <span
-        class="flex items-center justify-center"
-        aria-hidden="true"
-        data-testid={"group-call-reaction-icon-#{@reaction}"}
-      >
-        <%= if @inner_block != [] do %>
-          {render_slot(@inner_block)}
-        <% else %>
-          <Icons.icon_star class="h-4 w-4" />
-        <% end %>
-      </span>
-    </.tool_button>
-    """
+  defp conference_reactions do
+    [
+      {"heart", dgettext("group_call", "Send heart reaction")},
+      {"thumbs_up", dgettext("group_call", "Send thumbs up reaction")},
+      {"clap", dgettext("group_call", "Send clap reaction")},
+      {"laugh", dgettext("group_call", "Send laugh reaction")},
+      {"wow", dgettext("group_call", "Send sparkle reaction")}
+    ]
   end
 
   defp conference_settings_panel(assigns) do
@@ -822,9 +773,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
                   aria-hidden="true"
                   data-testid={"group-call-participant-reaction-icon-#{@participant.id}"}
                 >
-                  {apply(Icons, reaction_icon(@latest_reaction.reaction), [
-                    %{class: "h-3.5 w-3.5"}
-                  ])}
+                  <.reaction_icon reaction={@latest_reaction.reaction} class="h-3.5 w-3.5" />
                 </span>
               </span>
             </span>
@@ -1437,13 +1386,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       reaction: reaction
     )
   end
-
-  defp reaction_icon("heart"), do: :icon_call_reaction_heart
-  defp reaction_icon("thumbs_up"), do: :icon_call_reaction_thumbs_up
-  defp reaction_icon("clap"), do: :icon_call_reaction_clap
-  defp reaction_icon("laugh"), do: :icon_call_reaction_laugh
-  defp reaction_icon("wow"), do: :icon_call_reaction_sparkle
-  defp reaction_icon(_reaction), do: :icon_call_reaction_sparkle
 
   defp participant_media_title(participant, :audio) do
     cond do

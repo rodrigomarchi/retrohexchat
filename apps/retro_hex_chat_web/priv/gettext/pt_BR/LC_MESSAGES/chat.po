@@ -756,7 +756,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:128
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:123
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:316
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:496
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:507
 #: lib/retro_hex_chat_web/live/chat_live/away_events.ex:32
 #: lib/retro_hex_chat_web/live/chat_live/components/hover_card.ex:118
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:153
@@ -1530,7 +1530,7 @@ msgstr "Azul-marinho"
 msgid "Next"
 msgstr "Próximo"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:980
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:979
 #, elixir-autogen, elixir-format
 msgid "Next: %{parameter}"
 msgstr "Próximo: %{parameter}"
@@ -1864,7 +1864,7 @@ msgstr "Buscar histórico"
 msgid "Search history..."
 msgstr "Buscar histórico..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:185
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:186
 #, elixir-autogen, elixir-format
 msgid "Send"
 msgstr "Enviar"
@@ -2021,7 +2021,7 @@ msgstr "Digite /help nickserv para ver todos os detalhes."
 msgid "Type a command — / for list"
 msgstr "Digite um comando — / para lista"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:78
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:80
 #, elixir-autogen, elixir-format
 msgid "Type a message..."
 msgstr "Digite uma mensagem..."
@@ -2185,7 +2185,7 @@ msgstr "Agora você está identificado como %{nickname}"
 msgid "You are now known as %{nickname}"
 msgstr "Agora você é conhecido como %{nickname}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:993
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:992
 #, elixir-autogen, elixir-format
 msgid "You are setting: %{flag} (%{label})"
 msgstr "Você está configurando: %{flag} (%{label})"
@@ -2496,7 +2496,7 @@ msgstr "Bio é limitado a 200 caracteres; texto extra não foi mantido."
 msgid "Bot Management"
 msgstr "Gerenciamento de bots"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:110
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:103
 #, elixir-autogen, elixir-format
 msgid "Cancel notice"
 msgstr "Cancelar notificação"
@@ -2709,17 +2709,17 @@ msgstr "A alcunha é necessária."
 msgid "No server settings changed."
 msgstr "Nenhuma configuração do servidor foi alterada."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:178
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:179
 #, elixir-autogen, elixir-format
 msgid "Notice message"
 msgstr "Mensagem de aviso"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:612
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:611
 #, elixir-autogen, elixir-format
 msgid "Notice message cannot be empty"
 msgstr "A mensagem de aviso não pode estar vazia"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:98
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:100
 #, elixir-autogen, elixir-format
 msgid "Notice to %{target}:"
 msgstr "Aviso para %{target}:"
@@ -2729,6 +2729,7 @@ msgstr "Aviso para %{target}:"
 msgid "Notify List"
 msgstr "Lista de notificação"
 
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:498
 #: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:46
 #: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:48
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:109
@@ -2811,7 +2812,7 @@ msgstr "Histórico de pesquisa"
 msgid "Seconds must be a number."
 msgstr "Segundos devem ser um número."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:184
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:185
 #, elixir-autogen, elixir-format
 msgid "Send Notice"
 msgstr "Enviar o Aviso"
@@ -3070,12 +3071,12 @@ msgstr "P2P"
 msgid "P2P connection failed."
 msgstr "Falha na ligação P2P."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:250
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:253
 #, elixir-autogen, elixir-format
 msgid "P2P invite pending"
 msgstr "P2P convite pendente"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:251
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:254
 #, elixir-autogen, elixir-format
 msgid "P2P session connecting"
 msgstr "Ligação da sessão P2P"
@@ -3206,7 +3207,7 @@ msgstr "Juntando-se..."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:142
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:143
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:642
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:645
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "Sessão P2P"
@@ -3376,7 +3377,7 @@ msgstr "ID de sessão inválido."
 msgid "Invalid terminal id."
 msgstr "ID de terminal inválido."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:268
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:269
 #: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Session ended."
@@ -3435,7 +3436,7 @@ msgstr "Cores IRC"
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:812
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:131
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:323
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:504
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:515
 #, elixir-autogen, elixir-format
 msgid "Muted"
 msgstr "Silenciado"
@@ -3542,22 +3543,22 @@ msgstr "Compactado"
 msgid "Attach file"
 msgstr "Anexar arquivo"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:655
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:654
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "O anexo excede o limite de MB %{mb}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:661
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:660
 #, elixir-autogen, elixir-format
 msgid "Attachment type not accepted"
 msgstr "Tipo de anexo não aceito"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:590
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:589
 #, elixir-autogen, elixir-format
 msgid "Attachment upload could not be confirmed"
 msgstr "O envio do anexo não pôde ser confirmado"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:662
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:661
 #, elixir-autogen, elixir-format
 msgid "Attachment upload failed"
 msgstr "Falha no envio do anexo"
@@ -3597,7 +3598,7 @@ msgstr "Bloco de código"
 msgid "Copy Source"
 msgstr "Copiar fonte"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:651
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:650
 #, elixir-autogen, elixir-format
 msgid "Could not store attachment: %{reason}"
 msgstr "Não foi possível armazenar o anexo: %{reason}"
@@ -3689,8 +3690,7 @@ msgstr "Visualizar"
 msgid "Quote"
 msgstr "Citação"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:501
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:502
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:499
 #, elixir-autogen, elixir-format
 msgid "Remove attachment"
 msgstr "Remover anexo"
@@ -3713,7 +3713,7 @@ msgstr "Remover formatação"
 msgid "Text"
 msgstr "Texto"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:660
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:659
 #, elixir-autogen, elixir-format
 msgid "Too many attachments"
 msgstr "Anexos em excesso"
@@ -3728,7 +3728,7 @@ msgstr "Vídeo"
 msgid "Write"
 msgstr "Escrever"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:719
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:718
 #, elixir-autogen, elixir-format
 msgid "You"
 msgstr "Você"
@@ -3883,7 +3883,7 @@ msgstr "Você precisa estar em %{channel} para entrar no espaço dele."
 msgid "The P2P signaling channel refused this session."
 msgstr "O canal de sinalização P2P recusou esta sessão."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:640
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:643
 #, elixir-autogen, elixir-format
 msgid "P2P · %{peer}"
 msgstr "P2P · %{peer}"
@@ -3893,12 +3893,12 @@ msgstr "P2P · %{peer}"
 msgid "This P2P session moved to another window of yours."
 msgstr "Esta sessão P2P foi para outra janela sua."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:634
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:637
 #, elixir-autogen, elixir-format
 msgid "%{game} · %{peer}"
 msgstr "%{game} · %{peer}"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:637
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:640
 #, elixir-autogen, elixir-format
 msgid "%{game} · match"
 msgstr "%{game} · partida"
@@ -4189,38 +4189,37 @@ msgstr "Os emoji do servidor são gerenciados por administradores."
 msgid "This server"
 msgstr "Este servidor"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:85
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:89
 #, elixir-autogen, elixir-format
 msgid "Attach"
 msgstr "Anexar"
 
 #: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:92
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:93
 #, elixir-autogen, elixir-format
 msgid "Discard the recording"
 msgstr "Descartar a gravação"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:82
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:86
 #, elixir-autogen, elixir-format
 msgid "Finish the recording and attach it"
 msgstr "Encerrar a gravação e anexá-la"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:61
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:65
 #, elixir-autogen, elixir-format
 msgid "Record"
 msgstr "Gravar"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:58
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:62
 #, elixir-autogen, elixir-format
 msgid "Record a voice message"
 msgstr "Gravar uma mensagem de voz"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:103
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:105
 #, elixir-autogen, elixir-format
 msgid "This browser cannot record. Attach an audio file instead."
 msgstr "Este navegador não consegue gravar. Anexe um arquivo de áudio."
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:100
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:102
 #, elixir-autogen, elixir-format
 msgid "This browser did not give access to the microphone."
 msgstr "Este navegador não deu acesso ao microfone."
@@ -4230,7 +4229,7 @@ msgstr "Este navegador não deu acesso ao microfone."
 msgid "This browser recorded in a format this chat cannot send"
 msgstr "Este navegador gravou num formato que este chat não sabe enviar"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:64
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:68
 #, elixir-autogen, elixir-format
 msgid "Up to %{seconds} seconds"
 msgstr "Até %{seconds} segundos"
@@ -4276,8 +4275,7 @@ msgstr[1] "%{count} não lidas"
 msgid "%{nick} — not open. Opens when you click it."
 msgstr "%{nick} — não está aberto. Abre quando você clica nele."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:773
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:774
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:769
 #, elixir-autogen, elixir-format
 msgid "Actions for %{name}"
 msgstr "Ações para o %{name}"

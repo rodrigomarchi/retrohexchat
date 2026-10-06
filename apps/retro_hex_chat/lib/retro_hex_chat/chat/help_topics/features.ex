@@ -1316,6 +1316,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext(
               "help",
               "The call controls — microphone, camera, screen share, reactions, Devices and the Leave button — are in a dark bar at the bottom of the video. The bar fades shortly after the pointer leaves the video and comes back when you point at it. Devices chooses the microphone, camera and speaker. The End P2P session button at the top right closes the whole session, not only the call."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "In a mini window the bar keeps the microphone, camera, screen share, statistics, expand and Leave, and your own camera steps aside to leave the picture to the other person."
             )
       },
       %{
@@ -1346,6 +1351,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext(
               "help",
               "Moderators find the room-wide actions in the Moderation menu at the top right of the conference: lock the room, mute everyone ranked below you, turn off their cameras, and end the call for everyone."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "In the channel, the Group Call button says when a room is in progress, full or locked, and the ⓘ beside it shows who is inside. In People, each participant's ⋯ menu can focus or pin them; moderators can also mute them, turn off their camera, stop their screen share or remove them from there."
             ),
         see_also: [
           "feature-conference-tab",
@@ -1540,7 +1550,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "opening a second one. " <>
               "See also: P2P Starting Room, P2P Session in Its Own Tab, Video Call, File " <>
               "Transfer, Private Messages."
-          )
+          ) <>
+            " " <>
+            dgettext(
+              "help",
+              "The button says where the session stands — P2P Session · Invited, · Connecting or · Connected — and the ⓘ beside it opens a summary of the session, with Start, or Decline for an invitation you received."
+            )
       },
       %{
         id: "feature-p2p-starting-room",

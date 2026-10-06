@@ -765,18 +765,18 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   # this element rather than wherever the pointer happened to be.
   defp row_menu_button(assigns) do
     ~H"""
-    <button
-      type="button"
+    <.tool_button
+      label={dgettext("chat", "Actions for %{name}", name: @name)}
+      variant="flat"
+      size="xs"
       class="chat-conversations-row__menu"
       data-conversations-menu
       data-testid={"conversations-row-menu-#{@name}"}
-      title={dgettext("chat", "Actions for %{name}", name: @name)}
-      aria-label={dgettext("chat", "Actions for %{name}", name: @name)}
       aria-haspopup="menu"
       tabindex="-1"
     >
       <Icons.icon_ellipsis class="w-3.5 h-3.5" />
-    </button>
+    </.tool_button>
     """
   end
 

@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   use RetroHexChatWeb, :live_view
 
   import RetroHexChatWeb.Components.UI.ActivityIndicator
+  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.P2P.StartingRoom
   import RetroHexChatWeb.Components.UI.SurfaceTabLink
@@ -295,14 +296,16 @@ defmodule RetroHexChatWeb.App.P2PLive do
       </span>
       <div class="min-w-0">
         <p>{dgettext("p2p", "This session is open in another window of yours.")}</p>
-        <button
+        <.button
           type="button"
+          size="sm"
+          class="mt-2"
           phx-click="p2p_room_reclaim"
-          class="shadow-retro-raised bg-surface mt-2 h-[26px] px-3"
           data-testid="p2p-reclaim"
         >
+          <:icon><Icons.icon_btn_join class="h-4 w-4" /></:icon>
           {dgettext("p2p", "Bring it back here")}
-        </button>
+        </.button>
       </div>
     </div>
     """

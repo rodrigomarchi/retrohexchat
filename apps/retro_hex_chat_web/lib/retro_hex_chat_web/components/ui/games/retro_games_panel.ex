@@ -2,6 +2,8 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   @moduledoc false
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ToolButton
+
   alias RetroHexChatWeb.Icons
 
   import RetroHexChatWeb.Components.UI.Badge
@@ -229,25 +231,22 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
               role="group"
               aria-label={dgettext("games", "Difficulty")}
             >
-              <button
+              <.tool_button
                 :for={difficulty <- @difficulties}
-                type="button"
+                label={difficulty_label(difficulty)}
+                size="md"
+                active={@difficulty == difficulty}
+                pressed={@difficulty == difficulty}
+                class="h-8 min-h-0 w-auto min-w-0 gap-retro-3 px-retro-4 text-[11px] font-bold leading-none"
                 phx-click="retro_games_set_difficulty"
                 phx-target={@target}
                 phx-value-difficulty={difficulty}
-                aria-pressed={to_string(@difficulty == difficulty)}
-                class={[
-                  "flex h-8 min-w-0 items-center justify-center gap-retro-3 px-retro-4 text-[11px] font-bold leading-none",
-                  "bg-surface shadow-retro-raised hover:bg-hover-bg active:shadow-retro-sunken",
-                  "disabled:pointer-events-none",
-                  @difficulty == difficulty && "bg-white shadow-retro-sunken"
-                ]}
                 disabled={@status == "playing"}
                 data-testid={"retro-game-difficulty-#{difficulty}"}
               >
                 <.difficulty_icon difficulty={difficulty} class="h-4 w-4 shrink-0" />
                 <span class="min-w-0 truncate">{difficulty_label(difficulty)}</span>
-              </button>
+              </.tool_button>
             </div>
           </section>
 

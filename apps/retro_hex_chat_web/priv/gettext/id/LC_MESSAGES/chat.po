@@ -747,7 +747,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:128
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:123
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:316
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:496
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:507
 #: lib/retro_hex_chat_web/live/chat_live/away_events.ex:32
 #: lib/retro_hex_chat_web/live/chat_live/components/hover_card.ex:118
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:153
@@ -1522,7 +1522,7 @@ msgstr "Angkatan Laut"
 msgid "Next"
 msgstr "Berikutnya"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:980
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:979
 #, elixir-autogen, elixir-format
 msgid "Next: %{parameter}"
 msgstr "Selanjutnya: %{parameter}"
@@ -1857,7 +1857,7 @@ msgstr "Cari riwayat"
 msgid "Search history..."
 msgstr "Cari sejarah..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:185
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:186
 #, elixir-autogen, elixir-format
 msgid "Send"
 msgstr "Kirim"
@@ -2011,7 +2011,7 @@ msgstr "Ketik /help nickserv untuk rincian penuh."
 msgid "Type a command — / for list"
 msgstr "Ketik perintah - / untuk daftar"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:78
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:80
 #, elixir-autogen, elixir-format
 msgid "Type a message..."
 msgstr "Ketik pesan..."
@@ -2175,7 +2175,7 @@ msgstr "Anda sekarang diidentifikasi sebagai %{nickname}"
 msgid "You are now known as %{nickname}"
 msgstr "Anda sekarang dikenal sebagai %{nickname}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:993
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:992
 #, elixir-autogen, elixir-format
 msgid "You are setting: %{flag} (%{label})"
 msgstr "Anda menetapkan: %{flag} (%{label})"
@@ -2488,7 +2488,7 @@ msgstr "Bio dibatasi sampai 200 karakter; teks tambahan tidak disimpan."
 msgid "Bot Management"
 msgstr "Manajemen Bot"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:110
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:103
 #, elixir-autogen, elixir-format
 msgid "Cancel notice"
 msgstr "Batalkan pemberitahuan"
@@ -2701,17 +2701,17 @@ msgstr "Nama panggilan diperlukan."
 msgid "No server settings changed."
 msgstr "Tak ada pengaturan server yang berubah."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:178
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:179
 #, elixir-autogen, elixir-format
 msgid "Notice message"
 msgstr "Pemberitahuan pesan"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:612
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:611
 #, elixir-autogen, elixir-format
 msgid "Notice message cannot be empty"
 msgstr "Pemberitahuan pesan tidak dapat kosong"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:98
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:100
 #, elixir-autogen, elixir-format
 msgid "Notice to %{target}:"
 msgstr "Pemberitahuan untuk %{target}:"
@@ -2721,6 +2721,7 @@ msgstr "Pemberitahuan untuk %{target}:"
 msgid "Notify List"
 msgstr "Daftar Pemberitahuan"
 
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:498
 #: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:46
 #: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:48
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:109
@@ -2803,7 +2804,7 @@ msgstr "Mencari riwayat"
 msgid "Seconds must be a number."
 msgstr "Detik harus nomor."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:184
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:185
 #, elixir-autogen, elixir-format
 msgid "Send Notice"
 msgstr "Kirim Pemberitahuan"
@@ -3063,12 +3064,12 @@ msgstr "P2P"
 msgid "P2P connection failed."
 msgstr "Koneksi P2P gagal."
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:250
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:253
 #, elixir-autogen, elixir-format
 msgid "P2P invite pending"
 msgstr "P2P mengundang tertunda"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:251
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:254
 #, elixir-autogen, elixir-format
 msgid "P2P session connecting"
 msgstr "Sambungan sesi P2P"
@@ -3199,7 +3200,7 @@ msgstr "Bergabung..."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:142
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:143
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:642
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:645
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "Sesi P2P"
@@ -3366,7 +3367,7 @@ msgstr "ID sesi tidak valid."
 msgid "Invalid terminal id."
 msgstr "ID terminal tidak valid."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:268
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:269
 #: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Session ended."
@@ -3425,7 +3426,7 @@ msgstr "Warna IRC"
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:812
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:131
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:323
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:504
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:515
 #, elixir-autogen, elixir-format
 msgid "Muted"
 msgstr "Dibuang"
@@ -3532,22 +3533,22 @@ msgstr "Arsip"
 msgid "Attach file"
 msgstr "Lampirkan berkas"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:655
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:654
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "Lampiran melebihi batas %{mb} MB"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:661
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:660
 #, elixir-autogen, elixir-format
 msgid "Attachment type not accepted"
 msgstr "Tipe lampiran tidak diterima"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:590
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:589
 #, elixir-autogen, elixir-format
 msgid "Attachment upload could not be confirmed"
 msgstr "Pengunggah lampiran tidak dapat dikonfirmasi"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:662
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:661
 #, elixir-autogen, elixir-format
 msgid "Attachment upload failed"
 msgstr "Pengunggah Lampiran gagal"
@@ -3587,7 +3588,7 @@ msgstr "Blok kode"
 msgid "Copy Source"
 msgstr "Salin sumber"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:651
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:650
 #, elixir-autogen, elixir-format
 msgid "Could not store attachment: %{reason}"
 msgstr "Tidak dapat menyimpan lampiran: %{reason}"
@@ -3679,8 +3680,7 @@ msgstr "Pratinjau"
 msgid "Quote"
 msgstr "Kutipan"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:501
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:502
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:499
 #, elixir-autogen, elixir-format
 msgid "Remove attachment"
 msgstr "Hapus lampiran"
@@ -3703,7 +3703,7 @@ msgstr "Hapus format"
 msgid "Text"
 msgstr "Teks"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:660
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:659
 #, elixir-autogen, elixir-format
 msgid "Too many attachments"
 msgstr "Terlalu banyak lampiran"
@@ -3718,7 +3718,7 @@ msgstr "Video"
 msgid "Write"
 msgstr "Tulis"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:719
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:718
 #, elixir-autogen, elixir-format
 msgid "You"
 msgstr "Anda"
@@ -3872,7 +3872,7 @@ msgstr "Kamu harus berada di %{channel} untuk masuk ke ruangnya."
 msgid "The P2P signaling channel refused this session."
 msgstr "Kanal sinyal P2P menolak sesi ini."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:640
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:643
 #, elixir-autogen, elixir-format
 msgid "P2P · %{peer}"
 msgstr "P2P · %{peer}"
@@ -3882,12 +3882,12 @@ msgstr "P2P · %{peer}"
 msgid "This P2P session moved to another window of yours."
 msgstr "Sesi P2P ini pindah ke jendela Anda yang lain."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:634
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:637
 #, elixir-autogen, elixir-format
 msgid "%{game} · %{peer}"
 msgstr "%{game} · %{peer}"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:637
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:640
 #, elixir-autogen, elixir-format
 msgid "%{game} · match"
 msgstr "%{game} · pertandingan"
@@ -4175,38 +4175,37 @@ msgstr "Emoji server dikelola oleh administrator."
 msgid "This server"
 msgstr "Server ini"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:85
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:89
 #, elixir-autogen, elixir-format
 msgid "Attach"
 msgstr "Lampirkan"
 
 #: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:92
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:93
 #, elixir-autogen, elixir-format
 msgid "Discard the recording"
 msgstr "Buang rekaman"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:82
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:86
 #, elixir-autogen, elixir-format
 msgid "Finish the recording and attach it"
 msgstr "Selesaikan rekaman dan lampirkan"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:61
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:65
 #, elixir-autogen, elixir-format
 msgid "Record"
 msgstr "Rekam"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:58
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:62
 #, elixir-autogen, elixir-format
 msgid "Record a voice message"
 msgstr "Rekam pesan suara"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:103
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:105
 #, elixir-autogen, elixir-format
 msgid "This browser cannot record. Attach an audio file instead."
 msgstr "Peramban ini tidak bisa merekam. Lampirkan berkas audio saja."
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:100
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:102
 #, elixir-autogen, elixir-format
 msgid "This browser did not give access to the microphone."
 msgstr "Peramban ini tidak memberikan akses ke mikrofon."
@@ -4216,7 +4215,7 @@ msgstr "Peramban ini tidak memberikan akses ke mikrofon."
 msgid "This browser recorded in a format this chat cannot send"
 msgstr "Peramban ini merekam dalam format yang tidak bisa dikirim obrolan ini"
 
-#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:64
+#: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:68
 #, elixir-autogen, elixir-format
 msgid "Up to %{seconds} seconds"
 msgstr "Hingga %{seconds} detik"
@@ -4261,8 +4260,7 @@ msgstr[0] "%{count} belum dibaca"
 msgid "%{nick} — not open. Opens when you click it."
 msgstr "%{nick} - tidak terbuka. Buka ketika Anda mengklik."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:773
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:774
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:769
 #, elixir-autogen, elixir-format
 msgid "Actions for %{name}"
 msgstr "Aksi untuk %{name}"

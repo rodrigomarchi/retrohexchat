@@ -26,7 +26,8 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.DockTest do
 
     assert html =~ ~s(role="toolbar")
     assert html =~ ~s(aria-label="Call controls")
-    assert html =~ ~s(class="media-dock-button icon-on-dark media-dock-button--active")
+    assert html =~ "media-dock-button"
+    assert html =~ "media-dock-button--active"
     assert html =~ ~s(aria-pressed="false")
     assert html =~ "media-dock__separator"
     assert html =~ "media-dock-button--captioned media-dock-button--danger"

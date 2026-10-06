@@ -130,6 +130,10 @@
   @apply bg-warning-bg text-warning;
 }
 
+.chat-nicklist-row__badge--offline {
+  @apply bg-surface text-muted-foreground;
+}
+
 .chat-nicklist-row__badge--muted {
   @apply bg-error-bg text-error;
 }

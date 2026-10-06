@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
   """
   use RetroHexChatWeb.Component
 
-  alias RetroHexChatWeb.Components.UI.GroupCall.PermissionNotice
+  alias RetroHexChatWeb.Components.UI.MediaSession.PermissionNotice
   alias RetroHexChatWeb.Icons
 
   attr :media, :map, required: true

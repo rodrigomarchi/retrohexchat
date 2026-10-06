@@ -490,6 +490,17 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
       >
         <Icons.icon_protocol_conference_compact class="h-3 w-3" />
       </span>
+      <%!-- Offline is drawn, not only greyed: the nick dims for both away and
+            offline, so each one also carries its own badge. --%>
+      <span
+        :if={@status == "offline"}
+        class="chat-nicklist-row__badge chat-nicklist-row__badge--offline"
+        title={dgettext("chat", "Offline")}
+        aria-hidden="true"
+        data-testid={"nicklist-offline-#{@nick}"}
+      >
+        <Icons.icon_btn_disconnect class="h-3 w-3" />
+      </span>
       <span
         :if={@status == "away"}
         class="chat-nicklist-row__badge chat-nicklist-row__badge--away"

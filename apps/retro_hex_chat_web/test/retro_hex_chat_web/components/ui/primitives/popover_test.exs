@@ -73,6 +73,6 @@ defmodule RetroHexChatWeb.Components.UI.PopoverTest do
     assert html =~ "icon_checkmark"
     assert html =~ ~s(<button type="button" role="menuitemcheckbox")
     assert html =~ ~s(aria-checked="true")
-    assert html =~ "text-destructive"
+    assert html =~ "text-error-dark"
   end
 end

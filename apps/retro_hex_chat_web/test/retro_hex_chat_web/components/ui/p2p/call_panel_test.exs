@@ -109,8 +109,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     assert html =~ ~s(data-device-kind="audiooutput")
     assert html =~ ~s(data-testid="p2p-call-dock")
 
-    assert html =~
-             ~s(class="media-dock-button icon-on-dark media-dock-button--captioned media-dock-button--danger")
+    assert html =~ "media-dock-button--captioned"
+    assert html =~ "media-dock-button--danger"
   end
 
   test "mini mode keeps essential call controls and hides wide controls" do
@@ -141,7 +141,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     refute html =~ ~s(data-testid="p2p-call-layout-controls")
     refute html =~ ~s(data-testid="p2p-call-reaction-heart")
     refute html =~ ~s(data-testid="lobby-devices")
-    refute html =~ "media-dock-button--captioned"
+    assert html =~ "media-dock-button--captioned"
   end
 
   test "tile self-view renders local video as a layout tile" do

@@ -38,14 +38,6 @@
   @apply flex justify-center py-retro-8;
 }
 
-.list-load-more__button {
-  @apply shadow-retro-raised bg-surface px-retro-12 py-retro-4 text-xs;
-}
-
-.list-load-more__button:active:not(:disabled) {
-  @apply shadow-retro-sunken;
-}
-
 /* ── Truncation disclosure ── */
 
 .list-count-strip {
@@ -60,14 +52,6 @@
 
 .list-error-retry__icon {
   @apply text-destructive shrink-0;
-}
-
-.list-error-retry__button {
-  @apply shadow-retro-raised bg-surface px-retro-8 py-retro-2 text-xs;
-}
-
-.list-error-retry__button:active {
-  @apply shadow-retro-sunken;
 }
 
 /* ── First-load skeleton ── */

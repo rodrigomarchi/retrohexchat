@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.Components.UI.ListStates do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.EmptyState
   import RetroHexChatWeb.Components.UI.Skeleton
 
@@ -132,17 +133,18 @@ defmodule RetroHexChatWeb.Components.UI.ListStates do
 
     ~H"""
     <div class={classes(["list-load-more", @class])} {@rest}>
-      <button
+      <.button
         type="button"
-        class="list-load-more__button"
+        size="sm"
         data-testid={@testid}
         phx-click={@event}
         phx-target={@target}
         disabled={@loading}
         aria-busy={to_string(@loading)}
       >
+        <:icon><Icons.icon_btn_down class="h-4 w-4" /></:icon>
         {if @loading, do: @busy_label, else: @resolved_label}
-      </button>
+      </.button>
     </div>
     """
   end
@@ -200,15 +202,16 @@ defmodule RetroHexChatWeb.Components.UI.ListStates do
         <Icons.icon_warning class="h-4 w-4" />
       </span>
       <span class="list-error-retry__text">{@message}</span>
-      <button
+      <.button
         type="button"
-        class="list-error-retry__button"
+        size="sm"
         data-testid="list-error-retry-button"
         phx-click={@on_retry}
         phx-target={@target}
       >
+        <:icon><Icons.icon_btn_refresh class="h-4 w-4" /></:icon>
         {@retry_label}
-      </button>
+      </.button>
     </div>
     """
   end

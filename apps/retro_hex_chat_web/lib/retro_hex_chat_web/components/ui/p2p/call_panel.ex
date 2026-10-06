@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
   import RetroHexChatWeb.Components.UI.MediaSession.CommandBar
   import RetroHexChatWeb.Components.UI.MediaSession.Dock
+  import RetroHexChatWeb.Components.UI.MediaSession.ReactionPicker
   import RetroHexChatWeb.Components.UI.Popover
   import RetroHexChatWeb.Components.UI.MediaSession.Header
   import RetroHexChatWeb.Components.UI.ToolButton
@@ -463,7 +464,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
       <.tool_button
         label={dgettext("p2p", "Leave call")}
         variant="dock"
-        caption={if !@mini, do: dgettext("p2p", "Leave")}
+        caption={dgettext("p2p", "Leave")}
         tone="danger"
         data-lobby-media-action="end-call"
         data-testid="p2p-call-end"
@@ -614,39 +615,26 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
   defp p2p_reaction_drawer(assigns) do
     ~H"""
-    <.popover
-      label={dgettext("p2p", "Reactions")}
-      placement="above"
-      trigger_class={tool_button_class(variant: "dock")}
-      panel_role="toolbar"
-      panel_testid="p2p-call-reactions"
-      panel_class="flex gap-1 border border-border bg-surface p-1 shadow-retro-raised"
-    >
-      <:trigger><CallControls.icon_call_reactions class="h-4 w-4" /></:trigger>
-      <.reaction_button reaction="heart" label={dgettext("p2p", "Send heart reaction")} />
-      <.reaction_button reaction="thumbs_up" label={dgettext("p2p", "Send thumbs up")} />
-      <.reaction_button reaction="clap" label={dgettext("p2p", "Send clap")} />
-      <.reaction_button reaction="laugh" label={dgettext("p2p", "Send laugh")} />
-      <.reaction_button reaction="sparkle" label={dgettext("p2p", "Send wow")} />
-    </.popover>
+    <.reaction_picker label={dgettext("p2p", "Reactions")} panel_testid="p2p-call-reactions">
+      <:reaction
+        :for={{key, label} <- p2p_reactions()}
+        key={key}
+        label={label}
+        testid={"p2p-call-reaction-#{key}"}
+        attrs={[{"phx-click", "send_call_reaction"}, {"phx-value-reaction", key}]}
+      />
+    </.reaction_picker>
     """
   end
 
-  attr :reaction, :string, required: true
-  attr :label, :string, required: true
-
-  defp reaction_button(assigns) do
-    ~H"""
-    <.tool_button
-      label={@label}
-      variant="raised"
-      phx-click="send_call_reaction"
-      phx-value-reaction={@reaction}
-      data-testid={"p2p-call-reaction-#{@reaction}"}
-    >
-      <.reaction_icon reaction={@reaction} class="h-4 w-4" />
-    </.tool_button>
-    """
+  defp p2p_reactions do
+    [
+      {"heart", dgettext("p2p", "Send heart reaction")},
+      {"thumbs_up", dgettext("p2p", "Send thumbs up")},
+      {"clap", dgettext("p2p", "Send clap")},
+      {"laugh", dgettext("p2p", "Send laugh")},
+      {"sparkle", dgettext("p2p", "Send wow")}
+    ]
   end
 
   attr :reactions, :list, default: []
@@ -675,19 +663,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         <.reaction_icon reaction={item.reaction} class="h-4 w-4" />
       </span>
     </div>
-    """
-  end
-
-  attr :reaction, :string, required: true
-  attr :class, :string, default: nil
-
-  defp reaction_icon(assigns) do
-    ~H"""
-    <CallControls.icon_call_reaction_heart :if={@reaction == "heart"} class={@class} />
-    <CallControls.icon_call_reaction_thumbs_up :if={@reaction == "thumbs_up"} class={@class} />
-    <CallControls.icon_call_reaction_clap :if={@reaction == "clap"} class={@class} />
-    <CallControls.icon_call_reaction_laugh :if={@reaction == "laugh"} class={@class} />
-    <CallControls.icon_call_reaction_sparkle :if={@reaction == "sparkle"} class={@class} />
     """
   end
 

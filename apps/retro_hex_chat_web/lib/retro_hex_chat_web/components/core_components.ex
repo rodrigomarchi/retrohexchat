@@ -8,7 +8,10 @@ defmodule RetroHexChatWeb.CoreComponents do
   use Phoenix.Component
   use Gettext, backend: RetroHexChatWeb.Gettext
 
+  import RetroHexChatWeb.Components.UI.ToolButton
+
   alias Phoenix.LiveView.JS
+  alias RetroHexChatWeb.Icons
 
   @doc """
   Renders flash notices.
@@ -37,13 +40,13 @@ defmodule RetroHexChatWeb.CoreComponents do
       <p :if={@title}><strong>{@title}</strong></p>
       <p>{msg}</p>
       {render_slot(@inner_block)}
-      <button
-        type="button"
-        aria-label={gettext("close")}
+      <.tool_button
+        label={gettext("close")}
+        size="title"
         phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> JS.hide(to: "##{@id}")}
       >
-        x
-      </button>
+        <Icons.icon_close_pixel class="h-[7px] w-[8px]" />
+      </.tool_button>
     </div>
     """
   end
@@ -78,26 +81,6 @@ defmodule RetroHexChatWeb.CoreComponents do
         {render_slot(action, f)}
       </div>
     </.form>
-    """
-  end
-
-  @doc """
-  Renders a button.
-
-  ## Examples
-
-      <.button>Send!</.button>
-      <.button phx-click="go">Send!</.button>
-  """
-  attr :type, :string, default: nil
-  attr :rest, :global, include: ~w(disabled form name value)
-  slot :inner_block, required: true
-
-  def button(assigns) do
-    ~H"""
-    <button type={@type} {@rest}>
-      {render_slot(@inner_block)}
-    </button>
     """
   end
 

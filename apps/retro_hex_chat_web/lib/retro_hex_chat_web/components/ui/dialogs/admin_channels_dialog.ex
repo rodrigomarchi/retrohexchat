@@ -358,11 +358,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
       id={@id}
       phx-submit={@event}
       phx-target={@target}
-      class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4"
+      class={[
+        "shadow-retro-sunken bg-white p-retro-6 space-y-retro-4",
+        @destructive && "admin-destructive-form"
+      ]}
     >
-      <div class={["text-xs font-bold", if(@destructive, do: "text-destructive")]}>
-        {@title}
-      </div>
+      <div class="text-xs font-bold">{@title}</div>
       <input
         name="channel"
         type="text"
@@ -410,10 +411,13 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
         disabled={@disabled}
       />
       <div class="flex justify-end">
+        <%!-- The section is headed "Destructive actions"; inside it, a form
+              turns red only once its channel name is typed — the one action
+              actually about to happen, not all three at rest. --%>
         <.button
           type="submit"
           size="sm"
-          variant={if(@destructive, do: "destructive", else: "default")}
+          class={@destructive && "admin-destructive-form__submit"}
           disabled={@disabled}
         >
           <:icon>{apply(Icons, @icon_fn, [%{class: "w-[14px] h-[14px]"}])}</:icon>

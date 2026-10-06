@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Popover
   import RetroHexChatWeb.Components.UI.ToolButton
 
@@ -123,29 +124,31 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         </div>
 
         <div class="mt-2 grid grid-cols-2 gap-1">
-          <button
+          <.button
             :if={@idle?}
             type="button"
+            size="sm"
+            class="col-span-2"
             phx-click={close_after(@on_start)}
             phx-value-peer={@peer}
-            class="col-span-2 flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold"
             data-testid="p2p-peer-start"
           >
-            <Icons.icon_btn_join class="h-3.5 w-3.5" />
-            <span>{dgettext("p2p", "Start")}</span>
-          </button>
-          <button
+            <:icon><Icons.icon_btn_join class="h-3.5 w-3.5" /></:icon>
+            {dgettext("p2p", "Start")}
+          </.button>
+          <.button
             :if={@pending_received?}
             type="button"
+            size="sm"
+            variant="destructive"
             phx-click={close_after("p2p_decline_invite")}
             phx-value-token={@token}
             disabled={is_nil(@token)}
-            class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold text-destructive"
             data-testid="p2p-peer-popover-decline"
           >
-            <Icons.icon_reject class="h-3.5 w-3.5" />
-            <span>{dgettext("p2p", "Decline")}</span>
-          </button>
+            <:icon><Icons.icon_reject class="h-3.5 w-3.5" /></:icon>
+            {dgettext("p2p", "Decline")}
+          </.button>
         </div>
       </.popover>
     </div>
@@ -240,9 +243,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   defp visual_state(_state), do: "connecting"
 
   defp status_label(:idle), do: dgettext("p2p", "Ready")
-  defp status_label(:invite), do: dgettext("p2p", "Invite")
-  defp status_label(:link), do: dgettext("p2p", "Link")
-  defp status_label(:live), do: dgettext("p2p", "Live")
+  defp status_label(:invite), do: dgettext("p2p", "Invited")
+  defp status_label(:link), do: dgettext("p2p", "Connecting")
+  defp status_label(:live), do: dgettext("p2p", "Connected")
 
   defp title(peer, :idle),
     do: dgettext("p2p", "Start P2P session with %{peer}", peer: peer)

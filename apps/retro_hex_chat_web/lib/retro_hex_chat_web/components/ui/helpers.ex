@@ -151,8 +151,7 @@ defmodule RetroHexChatWeb.ComponentHelpers do
     size: %{
       "default" => "h-9 px-4 py-2",
       "sm" => "h-8 px-3 text-xs",
-      "lg" => "h-10 px-8",
-      "icon" => "h-9 w-9"
+      "lg" => "h-10 px-8"
     }
   }
 
@@ -163,7 +162,7 @@ defmodule RetroHexChatWeb.ComponentHelpers do
 
   @doc """
   Reuseable button variant helper. Support 2 variant
-  - size: `default|sm|lg|icon`
+  - size: `default|sm|lg`
   - variant: `default|destructive|outline|secondary|ghost|link`
   """
   def button_variant(props \\ %{}) do

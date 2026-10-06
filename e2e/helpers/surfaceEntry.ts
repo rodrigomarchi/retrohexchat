@@ -71,9 +71,12 @@ export async function followCard(
   address: string,
   timeout = 20_000,
 ): Promise<Page> {
-  const card = page.locator(
-    `[data-testid="share-message-enter"][href="${address}"]`,
-  );
+  // Asking for a room that already has a card writes that card again at the
+  // bottom of the conversation, so one address can be on screen twice; the
+  // newest is the one the reader is looking at.
+  const card = page
+    .locator(`[data-testid="share-message-enter"][href="${address}"]`)
+    .last();
 
   await expect(card).toBeVisible({ timeout });
 

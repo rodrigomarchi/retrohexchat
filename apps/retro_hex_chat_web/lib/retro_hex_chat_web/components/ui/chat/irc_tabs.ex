@@ -148,8 +148,9 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
         :if={@closeable}
         label={dgettext("chat", "Close tab")}
         variant="flat"
-        size="xs"
-        class="ml-[2px] h-[14px] min-h-[14px] w-[14px] min-w-[14px] hover:bg-destructive hover:text-white"
+        size="title"
+        tone="danger-on-hover"
+        class="ml-[2px]"
         phx-click={@on_close}
         phx-value-type={@type}
         phx-value-label={@label}

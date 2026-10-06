@@ -31,6 +31,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
 
   import RetroHexChatWeb.Components.UI.Button
 
+  import RetroHexChatWeb.Components.UI.ToolButton
+
   alias RetroHexChatWeb.Icons
 
   @doc "Renders a combined chat input area with textarea, send button, and counter."
@@ -97,18 +99,17 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
         <span class="font-bold">
           {dgettext("chat", "Notice to %{target}:", target: @notice_target)}
         </span>
-        <.button
-          type="button"
-          size="icon"
-          variant="outline"
+        <.tool_button
+          label={dgettext("chat", "Cancel notice")}
+          variant="flat"
+          size="sm"
+          class="ml-auto"
           phx-click={@on_notice_cancel}
           phx-target={@target}
           data-testid="chat-notice-cancel"
-          class="ml-auto h-6 w-6"
         >
-          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          <span class="sr-only">{dgettext("chat", "Cancel notice")}</span>
-        </.button>
+          <Icons.icon_close class="w-4 h-4" />
+        </.tool_button>
       </div>
       <form
         phx-submit={@on_submit}
@@ -142,7 +143,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
             data-input-history={Jason.encode!(@input_history)}
             data-recent-commands={Jason.encode!(@recent_commands)}
             data-testid="chat-input-field"
-            class="h-8 w-full py-[5px] pl-1 pr-12 font-mono text-sm leading-5 bg-white border border-border shadow-retro-field resize-none outline-none"
+            class="h-8 w-full py-[5px] pl-1 pr-12 font-mono text-sm leading-5 bg-white border border-border shadow-retro-field resize-none outline-none placeholder:overflow-hidden placeholder:text-ellipsis placeholder:whitespace-nowrap"
           >{@value}</textarea>
           <span
             class="pointer-events-none absolute bottom-[2px] right-1 hidden bg-white px-0.5 text-[9px] leading-none text-muted-foreground md:block"
@@ -157,11 +158,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
           aria-label={@send_label}
           title={@send_label}
           data-testid="chat-input-send"
-          size="icon"
-          class="h-8 w-9 min-w-9 px-0"
+          size="sm"
+          class="h-8 px-2"
         >
           <:icon><Icons.icon_btn_send class="w-4 h-4" /></:icon>
-          <span class="chat-input-send-label sr-only">{@send_label}</span>
+          <span class="chat-input-send-label">{@send_label}</span>
         </.button>
       </form>
       <p

@@ -34,6 +34,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
   import RetroHexChatWeb.Components.UI.Button
 
   alias RetroHexChatWeb.Components.UI.GroupCall.DeviceSelect
+  alias RetroHexChatWeb.Components.UI.MediaSession.PermissionNotice
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.MediaDevices
 
@@ -398,25 +399,13 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
         </div>
       </div>
 
-      <div
+      <PermissionNotice.permission_notice
+        prefix="p2p-setup"
         id="p2p-setup-warning-notice"
-        phx-update="ignore"
-        class="mt-1 hidden items-start gap-1 border border-warning bg-surface px-1 py-1 text-[10px] text-warning"
-        data-p2p-setup-warning
-        data-testid="p2p-setup-warning"
-      >
-        <Icons.icon_warning class="mt-[1px] h-3 w-3 shrink-0" />
-        <span data-p2p-setup-warning-text></span>
-        <button
-          type="button"
-          class="ml-auto inline-flex h-5 shrink-0 items-center gap-1 border border-border bg-surface px-1 text-[10px] font-bold shadow-retro-raised"
-          data-p2p-setup-retry
-          data-testid="p2p-setup-retry"
-        >
-          <Icons.icon_btn_refresh class="h-3 w-3" />
-          {dgettext("p2p", "Retry")}
-        </button>
-      </div>
+        testid="p2p-setup-warning"
+        retry_testid="p2p-setup-retry"
+        retry_label={dgettext("p2p", "Retry")}
+      />
     </section>
     """
   end

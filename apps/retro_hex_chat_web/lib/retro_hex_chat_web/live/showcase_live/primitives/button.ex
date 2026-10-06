@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Button do
     statics: RetroHexChatWeb.static_paths()
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.ToolButton
   import RetroHexChatWeb.ShowcaseHelpers
   alias RetroHexChatWeb.Icons
 
@@ -75,13 +76,13 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Button do
             <:icon><Icons.icon_btn_star /></:icon>
             {dgettext("showcase", "Large")}
           </.button>
-          <.button size="icon">
-            <:icon><Icons.icon_btn_add /></:icon>
-          </.button>
+          <.tool_button label={dgettext("showcase", "Add")}>
+            <Icons.icon_btn_add class="h-4 w-4" />
+          </.tool_button>
         </div>
         <.code_example>
           &lt;.button size="sm"&gt;&lt;:icon&gt;...&lt;/:icon&gt;Small&lt;/.button&gt;
-          &lt;.button size="icon"&gt;&lt;:icon&gt;...&lt;/:icon&gt;&lt;/.button&gt;
+          &lt;.tool_button label="Add"&gt;&lt;Icons.icon_btn_add /&gt;&lt;/.tool_button&gt;
         </.code_example>
       </.showcase_card>
 

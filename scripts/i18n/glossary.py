@@ -272,6 +272,13 @@ _ROWS = {
     "Disconnect":   ("Desconectar", "Desligar", "Desconectar", "Se déconnecter", "Trennen", "Disconnetti", "Verbinding verbreken", "Rozłącz", "Отключиться", "Putuskan", "切断", "断开", "斷線"),
     "Connected":    ("Conectado", "Ligado", "Conectado", "Connecté", "Verbunden", "Connesso", "Verbonden", "Połączono", "Подключено", "Terhubung", "接続済み", "已连接", "已連線"),
     "Disconnected": ("Desconectado", "Desligado", "Desconectado", "Déconnecté", "Getrennt", "Disconnesso", "Verbinding verbroken", "Rozłączono", "Отключено", "Terputus", "切断済み", "已断开", "已斷線"),
+    # Call and session states, shown after the button's name ("Group Call · Live").
+    "In progress":  ("Em andamento", "Em curso", "En curso", "En cours", "Läuft", "In corso", "Bezig", "W toku", "Идёт", "Berlangsung", "進行中", "进行中", "進行中"),
+    "Invited":      ("Convidado", "Convidado", "Invitado", "Invité", "Eingeladen", "Invitato", "Uitgenodigd", "Zaproszony", "Приглашён", "Diundang", "招待済み", "已邀请", "已邀請"),
+    "Full":         ("Lotada", "Lotada", "Llena", "Complet", "Voll", "Piena", "Vol", "Pełna", "Заполнена", "Penuh", "満員", "已满", "已滿"),
+    "Locked":       ("Trancada", "Trancada", "Bloqueada", "Verrouillée", "Gesperrt", "Bloccata", "Vergrendeld", "Zablokowana", "Заперта", "Terkunci", "ロック中", "已锁定", "已鎖定"),
+    "Degraded":     ("Instável", "Instável", "Inestable", "Instable", "Instabil", "Instabile", "Instabiel", "Niestabilna", "Нестабильна", "Tidak stabil", "不安定", "不稳定", "不穩定"),
+    "Ending":       ("Encerrando", "A terminar", "Finalizando", "Se termine", "Wird beendet", "In chiusura", "Wordt beëindigd", "Kończy się", "Завершается", "Berakhir", "終了中", "正在结束", "正在結束"),
     "Connecting":   ("Conectando", "A ligar", "Conectando", "Connexion", "Verbindung wird hergestellt", "Connessione", "Verbinden", "Łączenie", "Подключение", "Menghubungkan", "接続中", "连接中", "連線中"),
     "Reconnecting": ("Reconectando", "A reconectar", "Reconectando", "Reconnexion", "Erneut verbinden", "Riconnessione", "Opnieuw verbinden", "Ponowne łączenie", "Переподключение", "Menghubungkan ulang", "再接続中", "重新连接中", "重新連線中"),
 

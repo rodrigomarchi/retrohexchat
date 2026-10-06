@@ -17,6 +17,10 @@ defmodule RetroHexChatWeb.Components.UI.ToolButton do
   hears (`aria-pressed`). They are separate on purpose: a microphone toggle is
   drawn sunken while it is *off* and announced as pressed while it is *on*.
 
+  `tone` is `danger` for the one destructive action of a screen, drawn red at
+  rest, or `danger-on-hover` for a destructive action repeated down a list
+  (remove a row, close a tab), which looks like its neighbours until pointed at.
+
   `label` is the tooltip and, unless the button names itself with visible
   text (`named_by_content`), the accessible name. `caption` adds a short
   visible word beside the icon.
@@ -29,7 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolButton do
   alias RetroHexChatWeb.Components.UI.Chrome
 
   @variants ~w(raised flat dock)
-  @tones ~w(default danger)
+  @tones ~w(default danger danger-on-hover)
   @sizes ~w(title xs sm md lg)
 
   attr :label, :string, required: true, doc: "tooltip; also the accessible name"
@@ -129,6 +133,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolButton do
       active? && Chrome.active(),
       tone == "danger" && "bg-destructive text-destructive-foreground",
       tone == "danger" && variant == "flat" && !active? && "shadow-retro-raised",
+      tone == "danger-on-hover" && "hover:bg-destructive hover:text-destructive-foreground",
       extra
     ])
   end

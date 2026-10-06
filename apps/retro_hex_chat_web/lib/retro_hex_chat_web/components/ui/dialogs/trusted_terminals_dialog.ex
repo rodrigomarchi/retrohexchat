@@ -243,7 +243,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                         <.button
                           type="button"
                           size="sm"
-                          variant={if terminal.current, do: "destructive", else: "outline"}
+                          variant="outline"
                           phx-click={
                             if terminal.current,
                               do: "trusted_terminals_forget_current",

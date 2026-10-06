@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.LandingLive.Community do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.LandingLive.LandingHelpers
+  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.Window
 

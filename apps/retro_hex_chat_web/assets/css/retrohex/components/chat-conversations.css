@@ -107,6 +107,14 @@
   @apply text-muted-foreground;
 }
 
+/* …and said by shape too, not only by the grey it shares with muted: the
+   glyph of a place you have not walked into is drawn in a dashed frame. */
+.chat-conversations-row--saved:not(.chat-conversations-row--active)
+  .chat-conversations-row__icon {
+  outline: 1px dashed #808080;
+  outline-offset: -1px;
+}
+
 /* Somebody said your name. It wins over the grey of a place you have not
    opened, because an unopened conversation can be exactly the loud one. */
 .chat-conversations-row--highlight,
@@ -127,17 +135,11 @@
 /* The visible way into the row's menu. It is a real target on a phone and a
    quieter one beside a pointer, but it is present on both — a control that
    appears only on hover is a control a touch screen does not have. */
+/* A flat ToolButton; this only sizes it — a finger-sized target on a phone,
+   a small one beside a pointer. */
 .chat-conversations-row__menu {
-  @apply inline-flex h-11 w-11 shrink-0 items-center justify-center bg-transparent text-muted-foreground;
+  @apply h-11 min-h-0 w-11 min-w-0 text-muted-foreground;
   @apply md:h-5 md:w-5;
-}
-
-.chat-conversations-row__menu:hover {
-  @apply bg-hover-bg text-foreground shadow-retro-raised;
-}
-
-.chat-conversations-row__menu:active {
-  @apply shadow-retro-sunken;
 }
 
 /* Desktop accelerators. Not rendered at all below the breakpoint — the

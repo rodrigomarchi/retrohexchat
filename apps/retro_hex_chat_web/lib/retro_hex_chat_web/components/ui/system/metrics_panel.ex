@@ -14,6 +14,8 @@ defmodule RetroHexChatWeb.Components.UI.System.MetricsPanel do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ToolButton
+
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
@@ -44,21 +46,20 @@ defmodule RetroHexChatWeb.Components.UI.System.MetricsPanel do
         class="flex shrink-0 flex-wrap gap-retro-4"
         aria-label={dgettext("dialogs", "Metric groups")}
       >
-        <button
+        <.tool_button
           :for={group <- @groups}
-          type="button"
-          class={[
-            "px-retro-8 py-retro-2 text-xs shadow-retro-raised active:shadow-retro-sunken",
-            group == @group && "font-bold shadow-retro-sunken"
-          ]}
+          label={group}
+          size="sm"
+          active={group == @group}
+          pressed={group == @group}
+          class={["w-auto px-retro-8 text-xs", group == @group && "font-bold"]}
           phx-click={@on_select_group}
           phx-target={@target}
           phx-value-group={group}
-          aria-pressed={to_string(group == @group)}
           data-testid={"system-metrics-group-#{group}"}
         >
           {group}
-        </button>
+        </.tool_button>
       </nav>
 
       <div class="min-h-0 flex-1 overflow-y-auto">

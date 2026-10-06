@@ -13,6 +13,10 @@ defmodule RetroHexChatWeb.Components.UI.VoiceRecorder do
   use RetroHexChatWeb.Component
 
   alias RetroHexChat.Chat.VoiceMessages
+  import RetroHexChatWeb.Components.UI.Button
+
+  import RetroHexChatWeb.Components.UI.ToolButton
+
   alias RetroHexChatWeb.Icons
 
   @id "voice-recorder"
@@ -50,16 +54,16 @@ defmodule RetroHexChatWeb.Components.UI.VoiceRecorder do
       hidden
     >
       <div data-voice-state="idle" class="flex min-w-0 items-center gap-1">
-        <button
+        <.button
           type="button"
+          size="sm"
           data-voice-action="start"
           data-testid="voice-record"
-          class="inline-flex h-8 items-center gap-1 border border-border bg-surface px-2 text-foreground shadow-retro-button hover:bg-muted"
           title={dgettext("chat", "Record a voice message")}
         >
-          <Icons.icon_microphone class="h-4 w-4 shrink-0" />
-          <span>{dgettext("chat", "Record")}</span>
-        </button>
+          <:icon><Icons.icon_microphone class="h-4 w-4 shrink-0" /></:icon>
+          {dgettext("chat", "Record")}
+        </.button>
         <span class="min-w-0 truncate text-muted-foreground">
           {dgettext("chat", "Up to %{seconds} seconds", seconds: VoiceMessages.max_duration_seconds())}
         </span>
@@ -74,26 +78,24 @@ defmodule RetroHexChatWeb.Components.UI.VoiceRecorder do
         >
           0:00
         </span>
-        <button
+        <.button
           type="button"
+          size="sm"
           data-voice-action="stop"
           data-testid="voice-stop"
-          class="inline-flex h-8 items-center gap-1 border border-border bg-surface px-2 text-foreground shadow-retro-button hover:bg-muted"
           title={dgettext("chat", "Finish the recording and attach it")}
         >
-          <Icons.icon_checkmark class="h-4 w-4 shrink-0" />
-          <span>{dgettext("chat", "Attach")}</span>
-        </button>
-        <button
-          type="button"
+          <:icon><Icons.icon_checkmark class="h-4 w-4 shrink-0" /></:icon>
+          {dgettext("chat", "Attach")}
+        </.button>
+        <.tool_button
+          label={dgettext("chat", "Discard the recording")}
+          size="md"
           data-voice-action="cancel"
           data-testid="voice-cancel"
-          class="inline-flex h-8 w-8 items-center justify-center border border-border bg-surface text-foreground shadow-retro-button hover:bg-muted"
-          title={dgettext("chat", "Discard the recording")}
-          aria-label={dgettext("chat", "Discard the recording")}
         >
           <Icons.icon_close class="h-4 w-4" />
-        </button>
+        </.tool_button>
       </div>
 
       <p data-voice-error="denied" class="chat-voice-error" hidden>

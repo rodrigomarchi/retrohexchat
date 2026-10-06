@@ -353,7 +353,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
     )
   end
 
-  defp state_label(:active), do: dgettext("group_call", "Live")
+  defp state_label(:active), do: dgettext("group_call", "In progress")
   defp state_label(:full), do: dgettext("group_call", "Full")
   defp state_label(:locked), do: dgettext("group_call", "Locked")
   defp state_label(:degraded), do: dgettext("group_call", "Degraded")

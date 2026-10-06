@@ -82,19 +82,17 @@
                 "Support directly on GitHub with monthly or one-time sponsorship."
               )}
             </p>
-            <a
+            <%!-- A link that looks like a button, not a button inside a link. --%>
+            <.button
               href="https://github.com/sponsors/rodrigomarchi"
               target="_blank"
               rel="noopener"
+              size="sm"
               class="no-underline"
             >
-              <button
-                type="button"
-                class="inline-flex items-center gap-1 h-8 px-3 text-xs shadow-retro-raised bg-surface active:shadow-retro-sunken"
-              >
-                {dgettext("landing", "♥ Sponsor on GitHub")}
-              </button>
-            </a>
+              <:icon><Icons.icon_heart class="h-4 w-4" /></:icon>
+              {dgettext("landing", "♥ Sponsor on GitHub")}
+            </.button>
           </div>
 
           <div class="shadow-retro-field bg-white p-3">

@@ -495,17 +495,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
               <span class="w-10 shrink-0 text-right text-muted-foreground">
                 {entry.progress}%
               </span>
-              <button
-                type="button"
-                class="inline-flex h-6 w-6 shrink-0 items-center justify-center border border-border bg-surface shadow-retro-button hover:bg-muted"
-                title={dgettext("chat", "Remove attachment")}
-                aria-label={dgettext("chat", "Remove attachment")}
+              <.tool_button
+                label={dgettext("chat", "Remove attachment")}
+                size="sm"
+                tone="danger-on-hover"
                 phx-click="cancel_attachment_upload"
                 phx-value-ref={entry.ref}
                 phx-target={@myself}
               >
                 <Icons.icon_close class="h-4 w-4" />
-              </button>
+              </.tool_button>
             </div>
             <p
               :for={err <- upload_errors(@uploads.attachments)}

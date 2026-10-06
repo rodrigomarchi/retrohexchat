@@ -13,6 +13,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ToolButton
+
   import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Fieldset
@@ -447,11 +449,14 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
       <div :if={@registered?} class="space-y-2" data-testid="cc-cs-access-section">
         <div class="cc-segmented-tabs inline-flex shadow-retro-field bg-surface p-[2px] gap-[2px]">
-          <button
+          <.tool_button
             :for={level <- access_levels()}
-            type="button"
+            label={String.upcase(level)}
+            size="sm"
+            active={@active_level == level}
+            pressed={@active_level == level}
             class={[
-              "cc-segmented-tab px-2 py-1 text-xs shadow-retro-raised active:shadow-retro-sunken",
+              "cc-segmented-tab w-auto px-2 text-xs",
               @active_level == level && "bg-selection-bg text-selection-fg"
             ]}
             phx-click={@on_access_tab}
@@ -460,7 +465,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             data-testid={"cc-cs-access-tab-#{level}"}
           >
             {String.upcase(level)}
-          </button>
+          </.tool_button>
         </div>
 
         <div class="cc-list-table-wrap overflow-y-auto max-h-[160px] shadow-retro-field bg-white">
@@ -1179,11 +1184,14 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       </.dialog_banner>
 
       <div class="cc-segmented-tabs inline-flex shadow-retro-field bg-surface p-[2px] gap-[2px]">
-        <button
+        <.tool_button
           :for={list_type <- list_types()}
-          type="button"
+          label={list_type_label(list_type)}
+          size="sm"
+          active={@active_list == list_type}
+          pressed={@active_list == list_type}
           class={[
-            "cc-segmented-tab px-2 py-1 text-xs shadow-retro-raised active:shadow-retro-sunken",
+            "cc-segmented-tab w-auto px-2 text-xs",
             @active_list == list_type && "bg-selection-bg text-selection-fg"
           ]}
           phx-click={@on_list_type}
@@ -1192,7 +1200,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
           data-testid={"cc-list-type-#{list_type}"}
         >
           {list_type_label(list_type)}
-        </button>
+        </.tool_button>
       </div>
 
       <div class="cc-list-table-wrap overflow-y-auto max-h-[180px] shadow-retro-field bg-white">
