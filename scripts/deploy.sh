@@ -26,6 +26,24 @@ echo "==> Deploy starting for ${APP_NAME} @ ${GIT_REF}"
 echo "==> Source dir: ${SOURCE_DIR}"
 
 # ------------------------------------------------------------------
+# 0. Refuse to build on a disk that cannot take the release
+#
+# DeployEx unpacks the new release next to the running one. On a full disk
+# that fails with enospc *after* this script has reported success, and the
+# old release keeps serving while every attempt fails. Stopping here names
+# the cause instead.
+# ------------------------------------------------------------------
+MIN_FREE_GB="${DEPLOY_MIN_FREE_GB:-3}"
+FREE_KB=$(df -Pk "${HOME}" | awk 'NR==2 {print $4}')
+if [ "${FREE_KB}" -lt $((MIN_FREE_GB * 1024 * 1024)) ]; then
+  echo "ERROR: only $((FREE_KB / 1024)) MB free on $(df -P "${HOME}" | awk 'NR==2 {print $6}'); a deploy needs ${MIN_FREE_GB} GB." >&2
+  echo "       Largest directories under ${HOME}:" >&2
+  du -xh --max-depth=2 "${HOME}" 2>/dev/null | sort -h | tail -5 >&2 || true
+  exit 1
+fi
+echo "==> Disk: $((FREE_KB / 1024 / 1024)) GB free"
+
+# ------------------------------------------------------------------
 # 1. Update source and checkout ref
 # ------------------------------------------------------------------
 cd "${SOURCE_DIR}"
@@ -171,6 +189,14 @@ else
   echo "    Nothing to clean"
 fi
 
+# The assembled release tree is only the input to the tarball, and DeployEx
+# runs from its own unpacked copy. `mix release --overwrite` replaces only the
+# version it builds, so every deploy used to leave its app directories and
+# release directory behind: 80 copies of retro_hex_chat_web (~113 MB each)
+# filled the disk. The next build assembles the tree again from _build/prod/lib.
+echo "==> Removing the assembled release tree (the tarball holds it)..."
+rm -rf "${SOURCE_DIR}/_build/prod/rel/${APP_NAME}"
+
 echo "==> Cleaning old _build/prod tarballs (keeping current)..."
 # shellcheck disable=SC2012
 STALE_BUILD=$(ls -t "${SOURCE_DIR}/_build/prod/"*.tar.gz 2>/dev/null | tail -n +2)
@@ -184,6 +210,8 @@ rm -rf "${SOURCE_DIR}/.git/lfs/tmp/"*
 
 echo "==> Pruning unreferenced Git LFS objects..."
 cd "${SOURCE_DIR}" && git lfs prune 2>/dev/null || true
+
+echo "==> Disk after cleanup: $(df -Ph "${HOME}" | awk 'NR==2 {print $4}') free"
 
 echo "==> Deploy complete!"
 echo "    App:     ${APP_NAME}"
