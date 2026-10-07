@@ -324,6 +324,51 @@ defmodule RetroHexChat.Channels.PolicyTest do
     end
   end
 
+  describe "can_change_role?/4" do
+    setup do
+      m =
+        Membership.new()
+        |> Membership.add("owner", :owner)
+        |> Membership.add("op", :operator)
+        |> Membership.add("op2", :operator)
+        |> Membership.add("halfop", :half_operator)
+        |> Membership.add("voiced", :voiced)
+        |> Membership.add("user", :regular)
+
+      %{m: m}
+    end
+
+    test "a higher rank changes a lower one", %{m: m} do
+      assert :ok = Policy.can_change_role?(m, "owner", "op", :regular)
+      assert :ok = Policy.can_change_role?(m, "op", "user", :operator)
+      assert :ok = Policy.can_change_role?(m, "halfop", "voiced", :regular)
+    end
+
+    test "an operator cannot demote the owner", %{m: m} do
+      assert {:error, msg} = Policy.can_change_role?(m, "op", "owner", :regular)
+      assert msg =~ "equal or higher rank"
+    end
+
+    test "a half-operator cannot strip an operator", %{m: m} do
+      assert {:error, _} = Policy.can_change_role?(m, "halfop", "op", :voiced)
+      assert {:error, _} = Policy.can_change_role?(m, "halfop", "op", :regular)
+    end
+
+    test "peers cannot change each other", %{m: m} do
+      assert {:error, _} = Policy.can_change_role?(m, "op", "op2", :regular)
+    end
+
+    test "anyone may step down, nobody may step up alone", %{m: m} do
+      assert :ok = Policy.can_change_role?(m, "op", "op", :regular)
+      assert {:error, _} = Policy.can_change_role?(m, "halfop", "halfop", :operator)
+    end
+
+    test "a target outside the channel is named", %{m: m} do
+      assert {:error, msg} = Policy.can_change_role?(m, "op", "ghost", :voiced)
+      assert msg =~ "ghost"
+    end
+  end
+
   describe "can_speak? with +n mode" do
     test "non-member cannot speak with +n" do
       modes = Modes.new()

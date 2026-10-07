@@ -16,7 +16,7 @@ msgstr ""
 msgid "+s and +p are mutually exclusive"
 msgstr "+s und +p schließen sich gegenseitig aus"
 
-#: lib/retro_hex_chat/channels/server.ex:1419
+#: lib/retro_hex_chat/channels/server.ex:1418
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "Schon im Kanal"
@@ -67,7 +67,7 @@ msgstr "Kanal ist moderiert (+m). Sie brauchen Stimme (+v) zu sprechen."
 msgid "Channel is not invite-only"
 msgstr "Kanal ist nicht einladend"
 
-#: lib/retro_hex_chat/channels/server.ex:1444
+#: lib/retro_hex_chat/channels/server.ex:1443
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "Kanal verbinden drossel aktiv, bitte versuchen Sie es bald"
@@ -93,8 +93,8 @@ msgstr "Kanal nicht gefunden"
 msgid "Insufficient privileges"
 msgstr "Unzureichende Privilegien"
 
-#: lib/retro_hex_chat/channels/policy.ex:195
-#: lib/retro_hex_chat/channels/policy.ex:199
+#: lib/retro_hex_chat/channels/policy.ex:226
+#: lib/retro_hex_chat/channels/policy.ex:230
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges to set channel modes"
 msgstr "Unzureichende Privilegien zur Einstellung von Kanalmodi"
@@ -119,7 +119,7 @@ msgstr "Nicht im Kanal"
 msgid "Only the channel owner can transfer ownership"
 msgstr "Nur der Kanalbesitzer kann Eigentum übertragen"
 
-#: lib/retro_hex_chat/channels/server.ex:1232
+#: lib/retro_hex_chat/channels/policy.ex:207
 #, elixir-autogen, elixir-format
 msgid "User %{target} is not in channel"
 msgstr "Benutzer %{target} ist nicht im Kanal"
@@ -140,7 +140,7 @@ msgstr "Sie sind bereits in diesem Kanal"
 msgid "You are banned from that channel"
 msgstr "Sie sind von diesem Kanal verboten"
 
-#: lib/retro_hex_chat/channels/server.ex:1275
+#: lib/retro_hex_chat/channels/server.ex:1274
 #, elixir-autogen, elixir-format
 msgid "You are muted in this channel"
 msgstr "Sie sind in diesem Kanal mutiert"
@@ -217,24 +217,24 @@ msgstr "Dieser Kanal behält bereits %{count} Nachrichten. Löse zuerst eine."
 msgid "You must be a channel operator to pin messages"
 msgstr "Zum Anheften musst du Kanaloperator sein"
 
-#: lib/retro_hex_chat/channels/server.ex:1673
+#: lib/retro_hex_chat/channels/server.ex:1672
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "Nur die Gründerin oder der Gründer des Kanals kann das öffentliche Archiv ändern"
 
-#: lib/retro_hex_chat/channels/server.ex:1605
+#: lib/retro_hex_chat/channels/server.ex:1604
 #, elixir-autogen, elixir-format
 msgid "%{nickname} scheduled: %{title}"
 msgstr "%{nickname} hat angesetzt: %{title}"
 
-#: lib/retro_hex_chat/channels/server.ex:1637
+#: lib/retro_hex_chat/channels/server.ex:1636
 #, elixir-autogen, elixir-format
 msgid "That event belongs to another channel."
 msgstr "Dieses Ereignis gehört zu einem anderen Kanal."
 
 #: lib/retro_hex_chat/channels/scheduled_events.ex:105
 #: lib/retro_hex_chat/channels/scheduled_events.ex:131
-#: lib/retro_hex_chat/channels/server.ex:1634
+#: lib/retro_hex_chat/channels/server.ex:1633
 #, elixir-autogen, elixir-format
 msgid "That event could not be found."
 msgstr "Dieses Ereignis wurde nicht gefunden."
@@ -274,7 +274,7 @@ msgstr "Dieser Kanal hat bereits %{count} bevorstehende Ereignisse."
 msgid "When does it start?"
 msgstr "Wann fängt es an?"
 
-#: lib/retro_hex_chat/channels/server.ex:1665
+#: lib/retro_hex_chat/channels/server.ex:1664
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the public archive"
 msgstr "Identifiziere dich bei NickServ, bevor du das öffentliche Archiv änderst"
@@ -283,3 +283,8 @@ msgstr "Identifiziere dich bei NickServ, bevor du das öffentliche Archiv änder
 #, elixir-autogen, elixir-format
 msgid "The archive switch did not answer. Check its state and try again."
 msgstr "Der Archivschalter hat nicht geantwortet. Prüfe seinen Zustand und versuche es erneut."
+
+#: lib/retro_hex_chat/channels/policy.ex:204
+#, elixir-autogen, elixir-format
+msgid "Cannot change the role of a user with equal or higher rank"
+msgstr "Kann die Rolle eines Benutzers mit gleichem oder höherem Rang nicht ändern"

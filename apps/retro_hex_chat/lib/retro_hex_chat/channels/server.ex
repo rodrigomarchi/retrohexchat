@@ -439,7 +439,7 @@ defmodule RetroHexChat.Channels.Server do
                 identified
               )
             end),
-         :ok <- if(bot, do: :ok, else: check_join_throttle(state, nickname)) do
+         :ok <- if(bot, do: :ok, else: check_join_throttle(state)) do
       role = if bot, do: :bot, else: determine_join_role(state, nickname)
       new_membership = Membership.add(state.membership, nickname, role)
       new_timestamps = [DateTime.utc_now() | state.join_timestamps]
@@ -514,7 +514,7 @@ defmodule RetroHexChat.Channels.Server do
     with :ok <- check_mode_permissions(state.membership, nickname, mode_string, params),
          {:ok, new_state} <- apply_ban_operations(ban_ops, nickname, state),
          {:ok, new_membership} <-
-           apply_user_modes(new_state.membership, clean_mode_string, clean_params),
+           apply_user_modes(new_state.membership, nickname, clean_mode_string, clean_params),
          {:ok, new_modes} <-
            Modes.apply_changes(new_state.modes, clean_mode_string, clean_params) do
       new_state = %{new_state | modes: new_modes, membership: new_membership}
@@ -1219,18 +1219,17 @@ defmodule RetroHexChat.Channels.Server do
     flags
   end
 
-  defp apply_user_modes(membership, mode_string, params) do
+  # Every change is checked against the membership as it was before the
+  # command: "+o-o Alice Alice" cannot launder a rank through itself.
+  defp apply_user_modes(membership, actor, mode_string, params) do
     mode_string
     |> extract_user_modes(params)
-    |> Enum.reduce_while({:ok, membership}, &apply_single_user_mode/2)
-  end
-
-  defp apply_single_user_mode({target, role}, {:ok, mem}) do
-    if Membership.member?(mem, target) do
-      {:cont, {:ok, Membership.set_role(mem, target, role)}}
-    else
-      {:halt, {:error, dgettext("channels", "User %{target} is not in channel", target: target)}}
-    end
+    |> Enum.reduce_while({:ok, membership}, fn {target, role}, {:ok, mem} ->
+      case Policy.can_change_role?(membership, actor, target, role) do
+        :ok -> {:cont, {:ok, Membership.set_role(mem, target, role)}}
+        {:error, _} = error -> {:halt, error}
+      end
+    end)
   end
 
   defp extract_user_modes(mode_string, params) do
@@ -1422,12 +1421,10 @@ defmodule RetroHexChat.Channels.Server do
     end
   end
 
-  defp check_join_throttle(state, nickname) do
-    cond do
-      not Modes.has_join_throttle?(state.modes) -> :ok
-      Policy.operator?(state.membership, nickname) -> :ok
-      true -> enforce_throttle(state)
-    end
+  # Everyone who joins counts against +j, operators included: someone joining
+  # is not a member yet, so there is no role to exempt. Bots skip the call.
+  defp check_join_throttle(state) do
+    if Modes.has_join_throttle?(state.modes), do: enforce_throttle(state), else: :ok
   end
 
   defp enforce_throttle(state) do

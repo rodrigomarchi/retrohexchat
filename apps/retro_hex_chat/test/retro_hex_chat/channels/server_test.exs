@@ -387,6 +387,44 @@ defmodule RetroHexChat.Channels.ServerTest do
                Server.set_mode(channel, "regular", "+t")
     end
 
+    test "an operator cannot demote the owner, a half-operator cannot strip an operator" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      # The first to join an unregistered channel owns it.
+      {:ok, _} = Server.join(channel, "boss")
+      {:ok, _} = Server.join(channel, "alice")
+      {:ok, _} = Server.join(channel, "carol")
+      :ok = Server.set_mode(channel, "boss", "+o", ["alice"])
+      :ok = Server.set_mode(channel, "boss", "+h", ["carol"])
+
+      assert {:error, "Cannot change the role of a user with equal or higher rank"} =
+               Server.set_mode(channel, "alice", "-o", ["boss"])
+
+      assert {:error, _} = Server.set_mode(channel, "carol", "-v", ["alice"])
+
+      {:ok, state} = Server.get_state(channel)
+      assert "boss" in state.owners
+      assert "alice" in state.operators
+    end
+
+    test "an operator still promotes and demotes those below, and can step down" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "boss")
+      {:ok, _} = Server.join(channel, "alice")
+      {:ok, _} = Server.join(channel, "dave")
+      :ok = Server.set_mode(channel, "boss", "+o", ["alice"])
+
+      assert :ok = Server.set_mode(channel, "alice", "+v", ["dave"])
+      assert :ok = Server.set_mode(channel, "alice", "-v", ["dave"])
+      assert :ok = Server.set_mode(channel, "alice", "-o", ["alice"])
+
+      {:ok, state} = Server.get_state(channel)
+      refute "alice" in state.operators
+    end
+
     test "broadcasts mode_changed via PubSub" do
       channel = unique_channel()
       {:ok, _pid} = start_channel(channel)

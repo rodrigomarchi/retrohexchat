@@ -16,7 +16,7 @@ msgstr ""
 msgid "+s and +p are mutually exclusive"
 msgstr "+s en +p sluiten elkaar uit"
 
-#: lib/retro_hex_chat/channels/server.ex:1419
+#: lib/retro_hex_chat/channels/server.ex:1418
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "Al in kanaal"
@@ -67,7 +67,7 @@ msgstr "Kanaal wordt gemodereerd (+m). Je hebt stem (+v) nodig om te spreken."
 msgid "Channel is not invite-only"
 msgstr "Kanaal is niet alleen uitnodigen"
 
-#: lib/retro_hex_chat/channels/server.ex:1444
+#: lib/retro_hex_chat/channels/server.ex:1443
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "Kanaal join gaspedaal actief, probeer het binnenkort opnieuw"
@@ -93,8 +93,8 @@ msgstr "Kanaal niet gevonden"
 msgid "Insufficient privileges"
 msgstr "Onvoldoende voorrechten"
 
-#: lib/retro_hex_chat/channels/policy.ex:195
-#: lib/retro_hex_chat/channels/policy.ex:199
+#: lib/retro_hex_chat/channels/policy.ex:226
+#: lib/retro_hex_chat/channels/policy.ex:230
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges to set channel modes"
 msgstr "Onvoldoende privileges om kanaalmodi in te stellen"
@@ -119,7 +119,7 @@ msgstr "Niet in kanaal"
 msgid "Only the channel owner can transfer ownership"
 msgstr "Alleen de eigenaar van het kanaal kan eigendom overdragen"
 
-#: lib/retro_hex_chat/channels/server.ex:1232
+#: lib/retro_hex_chat/channels/policy.ex:207
 #, elixir-autogen, elixir-format
 msgid "User %{target} is not in channel"
 msgstr "Gebruiker %{target} is niet in kanaal"
@@ -140,7 +140,7 @@ msgstr "Je bent al in dat kanaal"
 msgid "You are banned from that channel"
 msgstr "Je bent verbannen uit dat kanaal."
 
-#: lib/retro_hex_chat/channels/server.ex:1275
+#: lib/retro_hex_chat/channels/server.ex:1274
 #, elixir-autogen, elixir-format
 msgid "You are muted in this channel"
 msgstr "Je bent gedempt in dit kanaal."
@@ -217,24 +217,24 @@ msgstr "Dit kanaal bewaart al %{count} berichten. Maak er eerst een los."
 msgid "You must be a channel operator to pin messages"
 msgstr "Je moet kanaaloperator zijn om berichten vast te zetten"
 
-#: lib/retro_hex_chat/channels/server.ex:1673
+#: lib/retro_hex_chat/channels/server.ex:1672
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "Alleen de oprichter van het kanaal kan het openbare archief wijzigen"
 
-#: lib/retro_hex_chat/channels/server.ex:1605
+#: lib/retro_hex_chat/channels/server.ex:1604
 #, elixir-autogen, elixir-format
 msgid "%{nickname} scheduled: %{title}"
 msgstr "%{nickname} heeft gepland: %{title}"
 
-#: lib/retro_hex_chat/channels/server.ex:1637
+#: lib/retro_hex_chat/channels/server.ex:1636
 #, elixir-autogen, elixir-format
 msgid "That event belongs to another channel."
 msgstr "Die gebeurtenis hoort bij een ander kanaal."
 
 #: lib/retro_hex_chat/channels/scheduled_events.ex:105
 #: lib/retro_hex_chat/channels/scheduled_events.ex:131
-#: lib/retro_hex_chat/channels/server.ex:1634
+#: lib/retro_hex_chat/channels/server.ex:1633
 #, elixir-autogen, elixir-format
 msgid "That event could not be found."
 msgstr "Die gebeurtenis kon niet worden gevonden."
@@ -274,7 +274,7 @@ msgstr "Dit kanaal heeft al %{count} komende gebeurtenissen."
 msgid "When does it start?"
 msgstr "Wanneer begint het?"
 
-#: lib/retro_hex_chat/channels/server.ex:1665
+#: lib/retro_hex_chat/channels/server.ex:1664
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the public archive"
 msgstr "Identificeer je bij NickServ voordat je het openbare archief wijzigt"
@@ -283,3 +283,8 @@ msgstr "Identificeer je bij NickServ voordat je het openbare archief wijzigt"
 #, elixir-autogen, elixir-format
 msgid "The archive switch did not answer. Check its state and try again."
 msgstr "De archiefschakelaar reageerde niet. Controleer de status en probeer het opnieuw."
+
+#: lib/retro_hex_chat/channels/policy.ex:204
+#, elixir-autogen, elixir-format
+msgid "Cannot change the role of a user with equal or higher rank"
+msgstr "Kan de rol van een gebruiker met gelijke of hogere rang niet veranderen"

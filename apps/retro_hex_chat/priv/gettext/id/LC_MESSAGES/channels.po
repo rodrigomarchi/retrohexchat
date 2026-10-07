@@ -16,7 +16,7 @@ msgstr ""
 msgid "+s and +p are mutually exclusive"
 msgstr "+ s dan + p adalah mutually exclusive"
 
-#: lib/retro_hex_chat/channels/server.ex:1419
+#: lib/retro_hex_chat/channels/server.ex:1418
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "Sudah dalam saluran"
@@ -68,7 +68,7 @@ msgstr "Saluran dimoderasi (+ m). Anda perlu suara (+ v) untuk berbicara."
 msgid "Channel is not invite-only"
 msgstr "Kanal tidak hanya invite-"
 
-#: lib/retro_hex_chat/channels/server.ex:1444
+#: lib/retro_hex_chat/channels/server.ex:1443
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "Kanal bergabung throttle aktif, silakan coba lagi segera"
@@ -94,8 +94,8 @@ msgstr "Kanal tak ditemukan"
 msgid "Insufficient privileges"
 msgstr "Hak akses tak mencukupi"
 
-#: lib/retro_hex_chat/channels/policy.ex:195
-#: lib/retro_hex_chat/channels/policy.ex:199
+#: lib/retro_hex_chat/channels/policy.ex:226
+#: lib/retro_hex_chat/channels/policy.ex:230
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges to set channel modes"
 msgstr "Tak cukup hak untuk menata mode kanal"
@@ -120,7 +120,7 @@ msgstr "Tidak dalam saluran"
 msgid "Only the channel owner can transfer ownership"
 msgstr "Hanya pemilik saluran yang dapat mentransfer kepemilikan"
 
-#: lib/retro_hex_chat/channels/server.ex:1232
+#: lib/retro_hex_chat/channels/policy.ex:207
 #, elixir-autogen, elixir-format
 msgid "User %{target} is not in channel"
 msgstr "%{target} pengguna tidak dalam saluran"
@@ -141,7 +141,7 @@ msgstr "Anda sudah berada di saluran itu"
 msgid "You are banned from that channel"
 msgstr "Anda dilarang dari saluran tersebut"
 
-#: lib/retro_hex_chat/channels/server.ex:1275
+#: lib/retro_hex_chat/channels/server.ex:1274
 #, elixir-autogen, elixir-format
 msgid "You are muted in this channel"
 msgstr "You are muted in this channel"
@@ -218,24 +218,24 @@ msgstr "Kanal ini sudah menyimpan %{count} pesan. Lepas satu dulu."
 msgid "You must be a channel operator to pin messages"
 msgstr "Harus jadi operator kanal untuk menyematkan pesan"
 
-#: lib/retro_hex_chat/channels/server.ex:1673
+#: lib/retro_hex_chat/channels/server.ex:1672
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "Hanya pendiri kanal yang dapat mengubah arsip publik"
 
-#: lib/retro_hex_chat/channels/server.ex:1605
+#: lib/retro_hex_chat/channels/server.ex:1604
 #, elixir-autogen, elixir-format
 msgid "%{nickname} scheduled: %{title}"
 msgstr "%{nickname} menjadwalkan: %{title}"
 
-#: lib/retro_hex_chat/channels/server.ex:1637
+#: lib/retro_hex_chat/channels/server.ex:1636
 #, elixir-autogen, elixir-format
 msgid "That event belongs to another channel."
 msgstr "Acara itu milik kanal lain."
 
 #: lib/retro_hex_chat/channels/scheduled_events.ex:105
 #: lib/retro_hex_chat/channels/scheduled_events.ex:131
-#: lib/retro_hex_chat/channels/server.ex:1634
+#: lib/retro_hex_chat/channels/server.ex:1633
 #, elixir-autogen, elixir-format
 msgid "That event could not be found."
 msgstr "Acara itu tidak ditemukan."
@@ -275,7 +275,7 @@ msgstr "Kanal ini sudah punya %{count} acara mendatang."
 msgid "When does it start?"
 msgstr "Kapan mulainya?"
 
-#: lib/retro_hex_chat/channels/server.ex:1665
+#: lib/retro_hex_chat/channels/server.ex:1664
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the public archive"
 msgstr "Identifikasi diri dengan NickServ sebelum mengubah arsip publik"
@@ -284,3 +284,8 @@ msgstr "Identifikasi diri dengan NickServ sebelum mengubah arsip publik"
 #, elixir-autogen, elixir-format
 msgid "The archive switch did not answer. Check its state and try again."
 msgstr "Sakelar arsip tidak menjawab. Periksa statusnya lalu coba lagi."
+
+#: lib/retro_hex_chat/channels/policy.ex:204
+#, elixir-autogen, elixir-format
+msgid "Cannot change the role of a user with equal or higher rank"
+msgstr "Tidak dapat mengubah peran dari pengguna dengan peringkat yang sama atau lebih tinggi"

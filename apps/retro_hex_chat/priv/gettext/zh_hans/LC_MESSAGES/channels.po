@@ -16,7 +16,7 @@ msgstr ""
 msgid "+s and +p are mutually exclusive"
 msgstr "+s 和 +p 相互排斥"
 
-#: lib/retro_hex_chat/channels/server.ex:1419
+#: lib/retro_hex_chat/channels/server.ex:1418
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "已经在频道中"
@@ -67,7 +67,7 @@ msgstr "频道由主持人主持(+m). 您需要语音( +v) 才能发言 。"
 msgid "Channel is not invite-only"
 msgstr "频道不只邀请"
 
-#: lib/retro_hex_chat/channels/server.ex:1444
+#: lib/retro_hex_chat/channels/server.ex:1443
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "频道加入节流阀活动, 请再试一次"
@@ -93,8 +93,8 @@ msgstr "找不到频道"
 msgid "Insufficient privileges"
 msgstr "权限不足"
 
-#: lib/retro_hex_chat/channels/policy.ex:195
-#: lib/retro_hex_chat/channels/policy.ex:199
+#: lib/retro_hex_chat/channels/policy.ex:226
+#: lib/retro_hex_chat/channels/policy.ex:230
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges to set channel modes"
 msgstr "设置频道模式的权限不足"
@@ -119,7 +119,7 @@ msgstr "不在频道中"
 msgid "Only the channel owner can transfer ownership"
 msgstr "只有频道所有者才能转让所有权"
 
-#: lib/retro_hex_chat/channels/server.ex:1232
+#: lib/retro_hex_chat/channels/policy.ex:207
 #, elixir-autogen, elixir-format
 msgid "User %{target} is not in channel"
 msgstr "用户 %{target} 不在频道"
@@ -140,7 +140,7 @@ msgstr "你已经在频道里了"
 msgid "You are banned from that channel"
 msgstr "禁止您进入频道"
 
-#: lib/retro_hex_chat/channels/server.ex:1275
+#: lib/retro_hex_chat/channels/server.ex:1274
 #, elixir-autogen, elixir-format
 msgid "You are muted in this channel"
 msgstr "你在这个频道里哑了"
@@ -217,24 +217,24 @@ msgstr "这个频道已经保留了 %{count} 条消息。请先取消一条。"
 msgid "You must be a channel operator to pin messages"
 msgstr "只有频道管理员可以置顶消息"
 
-#: lib/retro_hex_chat/channels/server.ex:1673
+#: lib/retro_hex_chat/channels/server.ex:1672
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "只有频道创建者才能更改公开存档"
 
-#: lib/retro_hex_chat/channels/server.ex:1605
+#: lib/retro_hex_chat/channels/server.ex:1604
 #, elixir-autogen, elixir-format
 msgid "%{nickname} scheduled: %{title}"
 msgstr "%{nickname} 安排了：%{title}"
 
-#: lib/retro_hex_chat/channels/server.ex:1637
+#: lib/retro_hex_chat/channels/server.ex:1636
 #, elixir-autogen, elixir-format
 msgid "That event belongs to another channel."
 msgstr "该活动属于另一个频道。"
 
 #: lib/retro_hex_chat/channels/scheduled_events.ex:105
 #: lib/retro_hex_chat/channels/scheduled_events.ex:131
-#: lib/retro_hex_chat/channels/server.ex:1634
+#: lib/retro_hex_chat/channels/server.ex:1633
 #, elixir-autogen, elixir-format
 msgid "That event could not be found."
 msgstr "找不到该活动。"
@@ -274,7 +274,7 @@ msgstr "该频道已经有 %{count} 个即将到来的活动。"
 msgid "When does it start?"
 msgstr "什么时候开始？"
 
-#: lib/retro_hex_chat/channels/server.ex:1665
+#: lib/retro_hex_chat/channels/server.ex:1664
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the public archive"
 msgstr "更改公开存档前请先向 NickServ 验证身份"
@@ -283,3 +283,8 @@ msgstr "更改公开存档前请先向 NickServ 验证身份"
 #, elixir-autogen, elixir-format
 msgid "The archive switch did not answer. Check its state and try again."
 msgstr "存档开关没有响应。请检查其状态后重试。"
+
+#: lib/retro_hex_chat/channels/policy.ex:204
+#, elixir-autogen, elixir-format
+msgid "Cannot change the role of a user with equal or higher rank"
+msgstr "无法更改相同或更高级别用户的角色"

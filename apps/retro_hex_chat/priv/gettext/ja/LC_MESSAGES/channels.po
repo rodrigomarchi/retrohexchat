@@ -16,7 +16,7 @@ msgstr ""
 msgid "+s and +p are mutually exclusive"
 msgstr "+s と +p は相互に排他的です"
 
-#: lib/retro_hex_chat/channels/server.ex:1419
+#: lib/retro_hex_chat/channels/server.ex:1418
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "チャンネルで既に"
@@ -67,7 +67,7 @@ msgstr "チャネルは適当な(+m)です。 音声(+v)が必要です。"
 msgid "Channel is not invite-only"
 msgstr "チャネルは招待状ではありません"
 
-#: lib/retro_hex_chat/channels/server.ex:1444
+#: lib/retro_hex_chat/channels/server.ex:1443
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "チャネルは活動的なスロットルに参加します、すぐに試みて下さい"
@@ -93,8 +93,8 @@ msgstr "チャンネルが見つかりません"
 msgid "Insufficient privileges"
 msgstr "十分な権限"
 
-#: lib/retro_hex_chat/channels/policy.ex:195
-#: lib/retro_hex_chat/channels/policy.ex:199
+#: lib/retro_hex_chat/channels/policy.ex:226
+#: lib/retro_hex_chat/channels/policy.ex:230
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges to set channel modes"
 msgstr "チャンネルモードを設定するための十分な権限"
@@ -119,7 +119,7 @@ msgstr "チャネルではなく"
 msgid "Only the channel owner can transfer ownership"
 msgstr "チャネル所有者だけが所有権を譲渡することができます"
 
-#: lib/retro_hex_chat/channels/server.ex:1232
+#: lib/retro_hex_chat/channels/policy.ex:207
 #, elixir-autogen, elixir-format
 msgid "User %{target} is not in channel"
 msgstr "ユーザ %{target} はチャンネルではありません"
@@ -140,7 +140,7 @@ msgstr "あなたは既にそのチャンネルで"
 msgid "You are banned from that channel"
 msgstr "そのチャンネルから禁止されています"
 
-#: lib/retro_hex_chat/channels/server.ex:1275
+#: lib/retro_hex_chat/channels/server.ex:1274
 #, elixir-autogen, elixir-format
 msgid "You are muted in this channel"
 msgstr "このチャンネルでミュートされます"
@@ -217,24 +217,24 @@ msgstr "このチャンネルはすでに %{count} 件を保持しています�
 msgid "You must be a channel operator to pin messages"
 msgstr "メッセージを固定できるのはチャンネル運営者だけです"
 
-#: lib/retro_hex_chat/channels/server.ex:1673
+#: lib/retro_hex_chat/channels/server.ex:1672
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "公開アーカイブを変更できるのはチャンネルの創設者だけです"
 
-#: lib/retro_hex_chat/channels/server.ex:1605
+#: lib/retro_hex_chat/channels/server.ex:1604
 #, elixir-autogen, elixir-format
 msgid "%{nickname} scheduled: %{title}"
 msgstr "%{nickname} が予定しました: %{title}"
 
-#: lib/retro_hex_chat/channels/server.ex:1637
+#: lib/retro_hex_chat/channels/server.ex:1636
 #, elixir-autogen, elixir-format
 msgid "That event belongs to another channel."
 msgstr "そのイベントは別のチャンネルのものです。"
 
 #: lib/retro_hex_chat/channels/scheduled_events.ex:105
 #: lib/retro_hex_chat/channels/scheduled_events.ex:131
-#: lib/retro_hex_chat/channels/server.ex:1634
+#: lib/retro_hex_chat/channels/server.ex:1633
 #, elixir-autogen, elixir-format
 msgid "That event could not be found."
 msgstr "そのイベントが見つかりませんでした。"
@@ -274,7 +274,7 @@ msgstr "このチャンネルにはすでに %{count} 件の予定がありま�
 msgid "When does it start?"
 msgstr "いつ始まりますか？"
 
-#: lib/retro_hex_chat/channels/server.ex:1665
+#: lib/retro_hex_chat/channels/server.ex:1664
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the public archive"
 msgstr "公開アーカイブを変更する前に NickServ で認証してください"
@@ -283,3 +283,8 @@ msgstr "公開アーカイブを変更する前に NickServ で認証してく�
 #, elixir-autogen, elixir-format
 msgid "The archive switch did not answer. Check its state and try again."
 msgstr "アーカイブのスイッチが応答しませんでした。状態を確認してもう一度お試しください。"
+
+#: lib/retro_hex_chat/channels/policy.ex:204
+#, elixir-autogen, elixir-format
+msgid "Cannot change the role of a user with equal or higher rank"
+msgstr "同一または上位のランクを持つユーザーのロールを変更することはできません"

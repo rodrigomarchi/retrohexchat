@@ -16,7 +16,7 @@ msgstr ""
 msgid "+s and +p are mutually exclusive"
 msgstr "+s e +p sono reciprocamente esclusivi"
 
-#: lib/retro_hex_chat/channels/server.ex:1419
+#: lib/retro_hex_chat/channels/server.ex:1418
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "Già in canale"
@@ -67,7 +67,7 @@ msgstr "Il canale è moderato (+m). Hai bisogno di voce (+v) per parlare."
 msgid "Channel is not invite-only"
 msgstr "Canale non è solo invito"
 
-#: lib/retro_hex_chat/channels/server.ex:1444
+#: lib/retro_hex_chat/channels/server.ex:1443
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "Canale unire throttle attivo, si prega di riprovare a breve"
@@ -93,8 +93,8 @@ msgstr "Canale non trovato"
 msgid "Insufficient privileges"
 msgstr "privilegi insufficienti"
 
-#: lib/retro_hex_chat/channels/policy.ex:195
-#: lib/retro_hex_chat/channels/policy.ex:199
+#: lib/retro_hex_chat/channels/policy.ex:226
+#: lib/retro_hex_chat/channels/policy.ex:230
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges to set channel modes"
 msgstr "privilegi insufficienti per impostare le modalità di canale"
@@ -119,7 +119,7 @@ msgstr "Non nel canale"
 msgid "Only the channel owner can transfer ownership"
 msgstr "Solo il proprietario del canale può trasferire la proprietà"
 
-#: lib/retro_hex_chat/channels/server.ex:1232
+#: lib/retro_hex_chat/channels/policy.ex:207
 #, elixir-autogen, elixir-format
 msgid "User %{target} is not in channel"
 msgstr "Utente %{target} non è in canale"
@@ -140,7 +140,7 @@ msgstr "Sei già in quel canale"
 msgid "You are banned from that channel"
 msgstr "Sei vietato da quel canale"
 
-#: lib/retro_hex_chat/channels/server.ex:1275
+#: lib/retro_hex_chat/channels/server.ex:1274
 #, elixir-autogen, elixir-format
 msgid "You are muted in this channel"
 msgstr "Sei muto in questo canale"
@@ -217,24 +217,24 @@ msgstr "Questo canale tiene già %{count} messaggi. Liberane uno prima."
 msgid "You must be a channel operator to pin messages"
 msgstr "Bisogna essere operatori del canale per fissare messaggi"
 
-#: lib/retro_hex_chat/channels/server.ex:1673
+#: lib/retro_hex_chat/channels/server.ex:1672
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "Solo chi ha fondato il canale può cambiare l'archivio pubblico"
 
-#: lib/retro_hex_chat/channels/server.ex:1605
+#: lib/retro_hex_chat/channels/server.ex:1604
 #, elixir-autogen, elixir-format
 msgid "%{nickname} scheduled: %{title}"
 msgstr "%{nickname} ha programmato: %{title}"
 
-#: lib/retro_hex_chat/channels/server.ex:1637
+#: lib/retro_hex_chat/channels/server.ex:1636
 #, elixir-autogen, elixir-format
 msgid "That event belongs to another channel."
 msgstr "Quell'evento appartiene a un altro canale."
 
 #: lib/retro_hex_chat/channels/scheduled_events.ex:105
 #: lib/retro_hex_chat/channels/scheduled_events.ex:131
-#: lib/retro_hex_chat/channels/server.ex:1634
+#: lib/retro_hex_chat/channels/server.ex:1633
 #, elixir-autogen, elixir-format
 msgid "That event could not be found."
 msgstr "Quell'evento non è stato trovato."
@@ -274,7 +274,7 @@ msgstr "Questo canale ha già %{count} eventi in programma."
 msgid "When does it start?"
 msgstr "Quando comincia?"
 
-#: lib/retro_hex_chat/channels/server.ex:1665
+#: lib/retro_hex_chat/channels/server.ex:1664
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the public archive"
 msgstr "Identificati con NickServ prima di modificare l'archivio pubblico"
@@ -283,3 +283,8 @@ msgstr "Identificati con NickServ prima di modificare l'archivio pubblico"
 #, elixir-autogen, elixir-format
 msgid "The archive switch did not answer. Check its state and try again."
 msgstr "L'interruttore dell'archivio non ha risposto. Controllane lo stato e riprova."
+
+#: lib/retro_hex_chat/channels/policy.ex:204
+#, elixir-autogen, elixir-format
+msgid "Cannot change the role of a user with equal or higher rank"
+msgstr "Non può cambiare il ruolo di un utente con grado uguale o superiore"

@@ -183,6 +183,37 @@ defmodule RetroHexChat.Channels.Policy do
     end
   end
 
+  @doc """
+  Whether `actor` may give `target` the role `new_role` (`+q/+o/+h/+v` and their
+  removal, which is what `/op`, `/deop`, `/voice` and `/devoice` send).
+
+  The same rule as a kick or a ban: only a member of strictly higher rank may
+  change someone's role, so an operator cannot demote an owner and a
+  half-operator cannot strip an operator. A member may always step down
+  themselves, never up.
+  """
+  @spec can_change_role?(Membership.t(), String.t(), String.t(), atom()) ::
+          :ok | {:error, String.t()}
+  def can_change_role?(membership, actor, target, new_role) do
+    with {:ok, actor_role} <- Membership.role(membership, actor),
+         {:ok, target_role} <- Membership.role(membership, target) do
+      if role_change_allowed?(actor == target, actor_role, target_role, new_role),
+        do: :ok,
+        else:
+          {:error,
+           dgettext("channels", "Cannot change the role of a user with equal or higher rank")}
+    else
+      {:error, :not_member} ->
+        {:error, dgettext("channels", "User %{target} is not in channel", target: target)}
+    end
+  end
+
+  defp role_change_allowed?(true, actor_role, _target_role, new_role),
+    do: Membership.rank(new_role) <= Membership.rank(actor_role)
+
+  defp role_change_allowed?(false, actor_role, target_role, _new_role),
+    do: Membership.rank(actor_role) > Membership.rank(target_role)
+
   @spec can_set_mode?(Membership.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
   def can_set_mode?(membership, actor, mode_flag) do
     case Membership.role(membership, actor) do
