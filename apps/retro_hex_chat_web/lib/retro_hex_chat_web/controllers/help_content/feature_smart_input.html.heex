@@ -10,11 +10,15 @@
     "help_features",
     "In a channel:"
   )}
-  <em>{dgettext("help_features", "Mensagem para #channel — / para comandos")}</em>
+  <em>
+    {dgettext("help_features", "Message to %{target} — / for commands", target: "#channel")}
+  </em>
   <br />{dgettext("help_features", "In a PM:")}
-  <em>{dgettext("help_features", "Mensagem para NickName — / para comandos")}</em>
+  <em>
+    {dgettext("help_features", "Message to %{target} — / for commands", target: "NickName")}
+  </em>
   <br />{dgettext("help_features", "In Status:")}
-  <em>{dgettext("help_features", "Digite um comando — / para lista")}</em>
+  <em>{dgettext("help_features", "Type a command — / for list")}</em>
 </p>
 <.help_h4 icon={:icon_notepad}>{dgettext("help_features", "Multi-Line Expansion")}</.help_h4>
 <p>
@@ -34,6 +38,80 @@
   </strong>
   {dgettext("help_features", "— Insert a new line.")}
 </p>
+<p>
+  {dgettext(
+    "help_features",
+    "The placeholder always names the conversation your message will go to. In the Status window it reminds you that only commands work there."
+  )}
+</p>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_features", "More Keys in the Input")}</.help_h4>
+<table>
+  <thead>
+    <tr>
+      <th>{dgettext("help_features", "Keys")}</th>
+      <th>{dgettext("help_features", "Action")}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><kbd>↑</kbd> / <kbd>↓</kbd></td>
+      <td>{dgettext("help_features", "Browse the messages and commands you sent before.")}</td>
+    </tr>
+    <tr>
+      <td><kbd>↑</kbd></td>
+      <td>
+        {dgettext(
+          "help_features",
+          "In an empty input, edit your last message in this conversation."
+        )}
+      </td>
+    </tr>
+    <tr>
+      <td><kbd>Ctrl+R</kbd></td>
+      <td>{dgettext("help_features", "Search your input history.")}</td>
+    </tr>
+    <tr>
+      <td><kbd>Tab</kbd></td>
+      <td>
+        {dgettext(
+          "help_features",
+          "Complete a nickname. Press it again to cycle through the matches."
+        )}
+      </td>
+    </tr>
+    <tr>
+      <td><kbd>Escape</kbd></td>
+      <td>
+        {dgettext(
+          "help_features",
+          "Close the suggestion list or the history search, or cancel an edit."
+        )}
+      </td>
+    </tr>
+  </tbody>
+</table>
+<.help_h4 icon={:icon_fmt_bold}>{dgettext("help_features", "Formatting Keys")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "These keys insert an IRC formatting code at the cursor. Type your text after the code."
+  )}
+</p>
+<ul>
+  <li><kbd>Ctrl+Shift+B</kbd> {dgettext("help_features", "Bold")}</li>
+  <li><kbd>Ctrl+Shift+Y</kbd> {dgettext("help_features", "Italic")}</li>
+  <li><kbd>Ctrl+Shift+U</kbd> {dgettext("help_features", "Underline")}</li>
+  <li><kbd>Ctrl+Shift+D</kbd> {dgettext("help_features", "Color")}</li>
+  <li><kbd>Ctrl+Shift+V</kbd> {dgettext("help_features", "Reverse")}</li>
+  <li><kbd>Ctrl+Shift+X</kbd> {dgettext("help_features", "Reset formatting")}</li>
+</ul>
+<.help_h4 icon={:icon_document_alert}>{dgettext("help_features", "Notes")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "On a narrow screen such as a phone, the input grows up to 3 lines instead of 5. A message can be edited only within 5 minutes after you send it."
+  )}
+</p>
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
   <.help_link topic="feature-enhanced-history">
@@ -46,5 +124,13 @@
   ·
   <.help_link topic="feature-char-counter">
     {dgettext("help_features", "Character Counter")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-autocomplete">
+    {dgettext("help_features", "Autocomplete")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-message-edit">
+    {dgettext("help_features", "Message Edit")}
   </.help_link>
 </p>

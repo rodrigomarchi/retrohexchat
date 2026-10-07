@@ -15,9 +15,104 @@
     "to open the Shortcut Cheatsheet at any time for a complete list of all available shortcuts."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_features",
+    "You can also open it from the Help menu. Choose Shortcut Cheatsheet."
+  )}
+</p>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_features", "Default Shortcuts")}</.help_h4>
+<table>
+  <thead>
+    <tr>
+      <th>{dgettext("help_features", "Keys")}</th>
+      <th>{dgettext("help_features", "Action")}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><kbd>Ctrl+Shift+F</kbd></td>
+      <td>{dgettext("help_features", "Open the search bar.")}</td>
+    </tr>
+    <tr>
+      <td><kbd>Ctrl+Shift+A</kbd></td>
+      <td>{dgettext("help_features", "Open or close the address book.")}</td>
+    </tr>
+    <tr>
+      <td><kbd>Ctrl+Shift+G</kbd></td>
+      <td>{dgettext("help_features", "Open the ignore list.")}</td>
+    </tr>
+    <tr>
+      <td><kbd>Ctrl+Shift+H</kbd></td>
+      <td>{dgettext("help_features", "Open the highlight word settings.")}</td>
+    </tr>
+    <tr>
+      <td><kbd>Ctrl+Shift+S</kbd></td>
+      <td>{dgettext("help_features", "Open the URL catcher.")}</td>
+    </tr>
+    <tr>
+      <td><kbd>Ctrl+Shift+E</kbd></td>
+      <td>{dgettext("help_features", "Open the auto-perform settings.")}</td>
+    </tr>
+    <tr>
+      <td><kbd>Ctrl+Shift+]</kbd> / <kbd>Ctrl+Shift+[</kbd></td>
+      <td>{dgettext("help_features", "Switch to the next or previous channel or PM.")}</td>
+    </tr>
+    <tr>
+      <td><kbd>Ctrl+Shift+1</kbd> … <kbd>Ctrl+Shift+9</kbd></td>
+      <td>{dgettext("help_features", "Switch to the channel or PM at that position.")}</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  {dgettext(
+    "help_features",
+    "During a conference, the arrow keys with %{keys} control your microphone, camera, layout and focus. The cheatsheet lists each one.",
+    keys: "Ctrl+Shift"
+  )}
+</p>
+<.help_h4 icon={:icon_dialog_options}>
+  {dgettext("help_features", "Keys Without %{keys}", keys: "Ctrl+Shift")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Press %{key} to close the topmost dialog or menu. In the chat input, the arrow keys, %{tab} and %{enter} have their own jobs. The Smart Input topic explains them.",
+    key: "Escape",
+    tab: "Tab",
+    enter: "Enter"
+  )}
+</p>
+<.help_h4 icon={:icon_document_alert}>{dgettext("help_features", "Rules and Limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_features",
+      "The shortcuts cannot be changed. Every user has the same set."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "The global shortcuts avoid combinations that the browser needs, such as copy, paste and new tab."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "No function key is bound. The browser keeps them, including the key that opens the browser help."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
   <.help_link topic="keyboard-shortcuts">
     {dgettext("help_features", "Keyboard Shortcuts")}
   </.help_link>
+  ·
+  <.help_link topic="feature-cheatsheet">
+    {dgettext("help_features", "Shortcut Cheatsheet")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-smart-input">{dgettext("help_features", "Smart Input")}</.help_link>
 </p>

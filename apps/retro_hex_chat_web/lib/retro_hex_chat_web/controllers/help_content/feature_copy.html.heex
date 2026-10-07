@@ -1,15 +1,17 @@
 <p>
   {dgettext(
     "help_features",
-    "Select text in the chat area by clicking and dragging. Right-click to see a context menu with"
-  )} <strong>{dgettext("help_features", "Copy")}</strong>{dgettext("help_features", ", or use")} <kbd>{dgettext("help_features", "Ctrl+C")}</kbd>.
+    "Select text in the chat area by clicking and dragging. Then choose Copy in the Edit menu, or use your browser's copy shortcut, such as %{keys}.",
+    keys: "Ctrl+C"
+  )}
 </p>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_features", "Usage")}</.help_h4>
 <p>
   {dgettext("help_features", "1. Click and drag to select text in the chat area.")}<br />{dgettext(
     "help_features",
-    "2. Right-click and choose"
-  )} <strong>{dgettext("help_features", "Copy")}</strong>{dgettext("help_features", ", or press")} <kbd>{dgettext("help_features", "Ctrl+C")}</kbd>.<br />{dgettext(
+    "2. Open the Edit menu and choose Copy, or press %{keys}.",
+    keys: "Ctrl+C"
+  )}<br />{dgettext(
     "help_features",
     "3. The selected text is copied to your clipboard as plain text."
   )}
@@ -21,9 +23,64 @@
     "If no text is selected, the Copy option appears disabled. Rich formatting is stripped — only plain text is copied."
   )}
 </p>
+<.help_h4 icon={:icon_copy}>{dgettext("help_features", "Copy From the Menus")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "The Edit menu of the chat window has a Copy item. The View group of the Start menu has the same item. Both copy the text you selected in the message area."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_features",
+    "This Copy item is enabled only while you have a selection inside the message area. Text selected elsewhere on the page, such as in a menu or a dialog, does not count."
+  )}
+</p>
+<.help_h4 icon={:icon_dialog_options}>
+  {dgettext("help_features", "Copy a Whole Message or Name")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Right-click a message, or press and hold it on a touch screen, to open its context menu. You do not need to select anything first."
+  )}
+</p>
+<ul>
+  <li>
+    <strong>{dgettext("help_features", "Copy Message")}</strong>
+    {dgettext(
+      "help_features",
+      "copies the line with its time and the author's nickname."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_features", "Copy Source")}</strong>
+    {dgettext(
+      "help_features",
+      "copies the original text with its formatting codes. It appears only when the source differs from what you see."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Right-click a nickname, a link or a channel name to get Copy Nick, Copy URL or Copy Channel Name."
+    )}
+  </li>
+</ul>
+<p>
+  {dgettext(
+    "help_features",
+    "These menu items show a short Copied! confirmation when they finish."
+  )}
+</p>
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
   <.help_link topic="feature-context-menus">
     {dgettext("help_features", "Context Menus")}
   </.help_link>
+  ·
+  <.help_link topic="feature-copy-feedback">
+    {dgettext("help_features", "Copy Feedback")}
+  </.help_link>
+  · <.help_link topic="ui-edit-menu">{dgettext("help_features", "Edit Menu")}</.help_link>
 </p>

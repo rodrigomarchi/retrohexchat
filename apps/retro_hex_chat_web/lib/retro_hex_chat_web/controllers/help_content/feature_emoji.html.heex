@@ -34,3 +34,60 @@
     ", or click the close button."
   )}
 </p>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_features", "Step by Step")}</.help_h4>
+<ol>
+  <li>
+    {dgettext(
+      "help_features",
+      "Click the Emoji Picker button in the formatting toolbar, next to the chat input."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Pick a category tab, or type at least two letters in the Search emoji box."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Point at an emoji to preview it in the bar at the bottom of the picker."
+    )}
+  </li>
+  <li>{dgettext("help_features", "Click the emoji. It is added where your cursor is.")}</li>
+  <li>
+    {dgettext("help_features", "Press %{key} to send the message as usual.", key: "Enter")}
+  </li>
+</ol>
+<.help_h4 icon={:icon_btn_search}>{dgettext("help_features", "Search Tips")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Search looks at each emoji's name and keywords, in English and in your chosen language. While a search is active, the results replace the category grid. Clear the box or pick a category tab to go back."
+  )}
+</p>
+<.help_h4 icon={:icon_fmt_emoji}>{dgettext("help_features", "This Server's Emoji")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "If the server has its own emoji, they appear first, under the heading This server. Clicking one inserts its name between colons, for example %{example}. The chat shows the picture when the message is displayed.",
+    example: ":party:"
+  )}
+</p>
+<.help_h4 icon={:icon_heart}>{dgettext("help_features", "Reacting With an Emoji")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "The same picker opens when you choose React... in a message's context menu. In that case the emoji you pick is added as a reaction to the message, not to your input."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-reactions">
+    {dgettext("help_features", "Reacting to a Message")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-server-emoji">
+    {dgettext("help_features", "Server Emoji")}
+  </.help_link>
+</p>

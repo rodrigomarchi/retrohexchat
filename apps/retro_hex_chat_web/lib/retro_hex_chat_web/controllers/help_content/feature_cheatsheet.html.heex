@@ -16,17 +16,20 @@
 <p>
   {dgettext(
     "help_features",
-    "Shortcuts are grouped into categories such as Navigation, Conference, Formatting and System. Each category shows a table with Action and Binding columns."
+    "Every entry has the action name, its key combination and a short description of what it does. The groups you will see are Navigation, Conference, System and P2P Session Console."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_cheatsheet}>{dgettext("help_features", "Custom Bindings")}</.help_h4>
+<.help_h4 icon={:icon_dialog_cheatsheet}>{dgettext("help_features", "Fixed Bindings")}</.help_h4>
 <p>
   {dgettext(
     "help_features",
-    "The cheatsheet reflects your current key bindings. If you have customized shortcuts in"
-  )} <strong>{dgettext("help_features", "Options > Key Bindings")}</strong>{dgettext(
+    "The shortcuts listed are the same for every user. The cheatsheet only shows them. It does not let you change them."
+  )}
+</p>
+<p>
+  {dgettext(
     "help_features",
-    ", the cheatsheet shows your custom bindings. Unbound actions show an em dash (—)."
+    "An action that has no key combination shows a dash instead of keys."
   )}
 </p>
 <.help_h4 icon={:icon_close}>{dgettext("help_features", "Closing")}</.help_h4>
@@ -36,6 +39,45 @@
     ", or click the close button."
   )}
 </p>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_features", "Other Ways to Open It")}</.help_h4>
+<ul>
+  <li>{dgettext("help_features", "Open the Help menu and choose Shortcut Cheatsheet.")}</li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Open the Start menu, then Help, then Shortcut Cheatsheet."
+    )}
+  </li>
+</ul>
+<p>
+  {dgettext(
+    "help_features",
+    "The item is grayed out until you are connected to the chat. The cheatsheet opens as a window titled Keyboard Shortcuts. You can move it, resize it, or minimize it to the taskbar while you practice."
+  )}
+</p>
+<.help_h4 icon={:icon_document_alert}>
+  {dgettext("help_features", "What It Does Not List")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Keys that work only inside the chat input are not in the cheatsheet. For example:"
+  )}
+</p>
+<ul>
+  <li><kbd>Enter</kbd> {dgettext("help_features", "sends the message.")}</li>
+  <li><kbd>Shift+Enter</kbd> {dgettext("help_features", "starts a new line.")}</li>
+  <li>
+    <kbd>Tab</kbd>
+    {dgettext("help_features", "completes a nickname, or picks the selected suggestion.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "The arrow keys browse what you sent before. The Smart Input topic covers them."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
   <.help_link topic="keyboard-shortcuts">
@@ -45,4 +87,6 @@
   <.help_link topic="feature-key-bindings">
     {dgettext("help_features", "Key Bindings")}
   </.help_link>
+  ·
+  <.help_link topic="feature-smart-input">{dgettext("help_features", "Smart Input")}</.help_link>
 </p>

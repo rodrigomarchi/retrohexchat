@@ -1,15 +1,15 @@
 <p>
   {dgettext(
     "help_features",
-    "The lag indicator in the status bar shows the round-trip latency between your browser and the server, measured every 30 seconds."
+    "The lag indicator in the taskbar tray shows the round-trip latency between your browser and the server, measured every 30 seconds."
   )}
 </p>
 <.help_h4 icon={:icon_palette}>{dgettext("help_features", "Color Thresholds")}</.help_h4>
 <p>
-  <strong>{dgettext("help_features", "Normal (green):")}</strong>
+  <strong>{dgettext("help_features", "Normal:")}</strong>
   {dgettext("help_features", "Under 200ms — connection is good.")}<br />
   <strong>
-    {dgettext("help_features", "Warning (yellow):")}
+    {dgettext("help_features", "Warning (orange):")}
   </strong>
   {dgettext("help_features", "200–499ms — noticeable delay.")}<br />
   <strong>
@@ -21,11 +21,59 @@
   </strong>
   {dgettext("help_features", "No response received — connection may be lost.")}
 </p>
+<p>
+  {dgettext(
+    "help_features",
+    "A normal reading uses the usual text color. Only the warning, critical and timeout states change color."
+  )}
+</p>
 <.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "How It Works")}</.help_h4>
 <p>
   {dgettext(
     "help_features",
     "The client sends a ping to the server every 30 seconds. The server echoes the timestamp back, and the client calculates the round-trip time. If no response arrives within 10 seconds, a timeout is shown."
+  )}
+</p>
+<.help_h4 icon={:icon_status_signal}>{dgettext("help_features", "Where to Find It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "In the chat, the reading sits in the taskbar tray, next to a signal icon. Point at it to see the tooltip Round-trip to the server. The value is shown in milliseconds, for example %{example}.",
+    example: "84ms"
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_features",
+    "Right after you connect it shows a dash, because the first measurement is taken after the first 30 seconds. A question mark means the last ping got no answer."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_features", "How to Use the Reading")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_features",
+      "If messages feel slow, look at the number first. A high value means the delay is in the network path, not in the chat."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "A question mark that stays for a while usually means the connection dropped. The chat tries to reconnect by itself."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "The value measures your link to the server only. It does not measure a call between two people."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_document_alert}>{dgettext("help_features", "Notes")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "On narrow screens such as phones, the reading is hidden to keep the taskbar short. Measuring continues while the page is open, and stops while the connection is down."
   )}
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
@@ -34,5 +82,13 @@
   ·
   <.help_link topic="feature-connection-states">
     {dgettext("help_features", "Connection States")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-auto-reconnect">
+    {dgettext("help_features", "Auto-Reconnect")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-call-quality">
+    {dgettext("help_features", "Call Quality")}
   </.help_link>
 </p>

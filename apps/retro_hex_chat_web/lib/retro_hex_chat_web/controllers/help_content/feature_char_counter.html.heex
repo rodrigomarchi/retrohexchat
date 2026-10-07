@@ -3,19 +3,57 @@
   <code>{dgettext("help_features", "current/maximum")}</code>
   {dgettext("help_features", "(e.g.,")} <code>127/1000</code>).
 </p>
-<.help_h4 icon={:icon_palette}>{dgettext("help_features", "Color Indicators")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_features", "When It Helps")}</.help_h4>
 <p>
-  {dgettext("help_features", "The counter changes color as you approach the limit:")}<br />
-  <strong>
-    {dgettext("help_features", "Green")}
-  </strong>
-  {dgettext("help_features", "— under 80% used")}<br />
-  <strong>
-    {dgettext("help_features", "Orange")}
-  </strong>
-  {dgettext("help_features", "— 80-95% used")}<br />
-  <strong>
-    {dgettext("help_features", "Red")}
-  </strong>
-  {dgettext("help_features", "— over 95% used")}
+  {dgettext(
+    "help_features",
+    "The counter tells you how much room is left before you write a long message. You can shorten your text in time, or split it into two messages, instead of finding out at the end."
+  )}
+</p>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_features", "How It Works")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_features", "The limit is %{max} characters per message.", max: "1000")}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "The number updates on every key press, paste or deletion. It counts every character in the input, including spaces and formatting codes."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "The number turns orange after %{warning} characters and red after %{danger}, so you can see the limit coming.",
+      warning: "450",
+      danger: "900"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "When you reach the limit, the input stops accepting more text. The server also rejects any message that is longer than the limit."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "The Send button stays disabled while the input is empty, unless a file is attached."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_document_alert}>{dgettext("help_features", "Notes")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "The counter is shown on wider screens only. On a phone it is hidden to save space, but the same limit still applies. A message that contains only spaces or formatting codes is treated as empty and is not sent."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-smart-input">{dgettext("help_features", "Smart Input")}</.help_link>
+  ·
+  <.help_link topic="feature-paste-dialog">
+    {dgettext("help_features", "Multi-Line Paste Dialog")}
+  </.help_link>
 </p>

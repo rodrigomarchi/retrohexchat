@@ -1,19 +1,69 @@
 <p>{dgettext("help_features", "The global mute toggle silences all sounds with one click.")}</p>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_features", "Usage")}</.help_h4>
 <p>
-  {dgettext("help_features", "Click")} <strong>{dgettext("help_features", "[SND]")}</strong>
-  {dgettext("help_features", "in the status bar to mute. The indicator changes to")}
-  <strong>{dgettext("help_features", "[MUTE]")}</strong>
-  {dgettext("help_features", "when muted. Click again to unmute.")}
+  {dgettext(
+    "help_features",
+    "Click the speaker icon in the taskbar tray to mute. Click it again to unmute."
+  )}
 </p>
 <.help_h4 icon={:icon_tab_general}>{dgettext("help_features", "Key Behaviors")}</.help_h4>
 <p>
-  {dgettext("help_features", "- Mute state persists across page reloads (stored in browser)")}<br />{dgettext(
+  {dgettext(
     "help_features",
     "- Muting does not affect visual notifications (conversations sidebar flash, title flash)"
   )}<br />{dgettext("help_features", "- Muting does not affect the typing indicator")}
 </p>
+<.help_h4 icon={:icon_dialog_sound}>{dgettext("help_features", "Where to Find It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "The mute button is the speaker icon in the taskbar tray, next to the clock. Point at it to see its tooltip. It reads Mute while sounds are on and Unmute while they are off. When sounds are off, the icon changes to a muted speaker."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_features", "When It Helps")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Use it in a meeting, at night, or in any place where chat sounds would disturb people. You keep reading and writing as usual, and you can still see new activity on screen."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "How It Works")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_features",
+      "Mute silences every sound the chat plays, such as the sounds for new messages, private messages, joins and kicks."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "It does not change your choices in the Sounds window. When you unmute, each event plays the same sound as before."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "If you are identified with a registered nickname, the mute state is saved with your other sound settings."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_document_alert}>
+  {dgettext("help_features", "Not the Same as /mute")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "This button only affects your own speakers. The command below is a different feature. Channel operators use it to stop a user from talking in a channel."
+  )}
+</p>
+<pre>/mute &lt;nickname&gt; [duration]</pre>
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
   <.help_link topic="feature-sounds">{dgettext("help_features", "Sounds")}</.help_link>
+  ·
+  <.help_link topic="feature-desktop-notifications">
+    {dgettext("help_features", "Desktop Notifications")}
+  </.help_link>
+  · <.help_link topic="cmd-mute">/mute</.help_link>
 </p>

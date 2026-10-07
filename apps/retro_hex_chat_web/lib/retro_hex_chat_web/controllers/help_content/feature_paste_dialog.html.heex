@@ -20,3 +20,77 @@
     "Pasting more than 50 lines shows an additional flood warning. This prevents accidentally flooding a channel."
   )}
 </p>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_features", "How to Use It")}</.help_h4>
+<ol>
+  <li>{dgettext("help_features", "Copy several lines of text from anywhere.")}</li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Click the chat input and paste with your usual keyboard shortcut or menu."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "The Paste Confirmation dialog shows how many lines will be sent."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Click Send All to send them, or Cancel to drop the paste and return to the input."
+    )}
+  </li>
+</ol>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "How It Works")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_features",
+      "The dialog appears only when the pasted text has two or more lines with text. A single line is pasted into the input as usual."
+    )}
+  </li>
+  <li>{dgettext("help_features", "Empty lines are removed before sending.")}</li>
+  <li>
+    {dgettext(
+      "help_features",
+      "The lines go to the active channel or PM in their original order, with a short pause between them."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Each line is sent as plain text. A line that starts with a slash is not run as a command."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_document_alert}>{dgettext("help_features", "Rules and Limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_features",
+      "If you paste more than %{count} lines, the Send All button is disabled. Split the text into smaller parts.",
+      count: "100"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "When the input is in Markdown mode, a multi-line paste goes into the input without the dialog, so you can send it as one message."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "The Status window does not accept text. Pasted lines sent there are rejected."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-flood-protection">
+    {dgettext("help_features", "Flood Protection")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-smart-input">{dgettext("help_features", "Smart Input")}</.help_link>
+</p>

@@ -1,21 +1,69 @@
 <p>
   {dgettext(
     "help_features",
-    "Brief toast notifications confirm copy and settings save operations."
+    "A brief toast notification confirms that the chat copied something to your clipboard."
   )}
 </p>
 <.help_h4 icon={:icon_copy}>{dgettext("help_features", "Copy Confirmation")}</.help_h4>
 <p>
   {dgettext(
     "help_features",
-    "When you copy text from the chat (via context menu or keyboard shortcut), a \"Copied!\" toast appears briefly at the bottom-right and fades after 2 seconds."
+    "When you copy something with a Copy item in a chat context menu, a short Copied! message appears and then closes by itself."
   )}
 </p>
-<.help_h4 icon={:icon_btn_ok}>{dgettext("help_features", "Settings Confirmation")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_features", "When It Helps")}</.help_h4>
 <p>
   {dgettext(
     "help_features",
-    "When you save settings (OK or Apply in Options), a \"Settings saved\" toast confirms the save."
+    "Copying to the clipboard happens out of sight. The toast tells you that the text is ready to paste, so you do not need to test it first."
+  )}
+</p>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_features", "Which Actions Show It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "The toast appears after these items in the chat context menu:"
+  )}
+</p>
+<ul>
+  <li>{dgettext("help_features", "Copy Message, on a message")}</li>
+  <li>{dgettext("help_features", "Copy Source, on a message that has formatting")}</li>
+  <li>{dgettext("help_features", "Copy Nick, on a nickname")}</li>
+  <li>{dgettext("help_features", "Copy URL, on a link")}</li>
+  <li>{dgettext("help_features", "Copy Channel Name, on a channel name")}</li>
+</ul>
+<p>
+  {dgettext(
+    "help_features",
+    "Copy actions in the conversations list show the same toast. Share windows that offer a copy button show it as well."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "How It Works")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_features",
+      "The toast is a small window titled Info with an OK button. Click OK to close it at once."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "If you do nothing, it closes by itself after about two seconds."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "It appears only after the copy succeeds. If the browser blocks clipboard access, no toast appears."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_document_alert}>{dgettext("help_features", "Notes")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "A copy made with the browser's own keyboard shortcut, or with Copy in the Edit menu, does not show this toast. The text is still copied."
   )}
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>

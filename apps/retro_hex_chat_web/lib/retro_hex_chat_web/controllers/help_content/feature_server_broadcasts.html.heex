@@ -1,15 +1,7 @@
 <p>
   {dgettext(
     "help_features",
-    "Server Broadcasts covers operator wallops and administrator announcements sent from the Admin Console Broadcast tab or slash commands."
-  )}
-</p>
-
-<.help_h4 icon={:icon_megaphone}>{dgettext("help_features", "Broadcast Tab")}</.help_h4>
-<p>
-  {dgettext(
-    "help_features",
-    "In Admin Console > Broadcast, choose Wallops or Announce, enter a message, and send it through the same command handlers as /wallops and /announce."
+    "Server Broadcasts covers operator wallops and administrator announcements. They are sent from the Broadcast window or with slash commands."
   )}
 </p>
 
@@ -29,6 +21,64 @@
   )}
 </p>
 
+<.help_h4 icon={:icon_terminal}>{dgettext("help_features", "Sending a Broadcast")}</.help_h4>
+<ol>
+  <li>
+    {dgettext(
+      "help_features",
+      "Open the Start menu, then Admin, then Broadcast. The Admin group appears only for server operators and administrators."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Choose Wallops or Announce. Announce is disabled unless you are a server administrator."
+    )}
+  </li>
+  <li>{dgettext("help_features", "Type the text in the Message box.")}</li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Click Send broadcast. The window shows whether it was sent."
+    )}
+  </li>
+</ol>
+<p>{dgettext("help_features", "From the chat input, the same messages are sent like this:")}</p>
+<pre>/wallops Server maintenance in 10 minutes
+/announce Server will restart at midnight</pre>
+
+<.help_h4 icon={:icon_tab_control}>
+  {dgettext("help_features", "How People Receive Them")}
+</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_features",
+      "A wallops arrives in the Status window, marked Wallops, with the sender's nickname."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "An announcement appears in the conversation that each person has on screen, sent by Server."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "To receive wallops, open the File menu, choose User Modes..., check Receive wallops (+w) and click Apply."
+    )}
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_document_alert}>{dgettext("help_features", "Rules and Limits")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "A broadcast cannot be edited or taken back after it is sent. It reaches only the people who are connected at that moment. Nobody who connects later receives it."
+  )}
+</p>
+
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
   <.help_link topic="feature-admin-console">
@@ -37,4 +87,8 @@
   · <.help_link topic="cmd-wallops">{dgettext("help_features", "/wallops")}</.help_link>
   · <.help_link topic="cmd-announce">{dgettext("help_features", "/announce")}</.help_link>
   · <.help_link topic="cmd-umode">{dgettext("help_features", "/umode +w")}</.help_link>
+  ·
+  <.help_link topic="feature-admin-broadcast">
+    {dgettext("help_features", "Admin Broadcast")}
+  </.help_link>
 </p>
