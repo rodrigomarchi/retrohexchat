@@ -37,6 +37,24 @@ def fetch(url: str) -> bytes:
         raise FetchError(error.code, error.read().decode("utf-8", "replace")) from None
 
 
+Post = Callable[[str, dict], tuple[int, str]]
+
+
+def post_json(url: str, payload: dict) -> tuple[int, str]:
+    """``(status, body)`` for any answer, error statuses included: the caller decides what they mean."""
+    request = urllib.request.Request(
+        url,
+        data=json.dumps(payload).encode(),
+        method="POST",
+        headers={"User-Agent": USER_AGENT, "Content-Type": "application/json; charset=utf-8"},
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=TIMEOUT_SECONDS) as response:
+            return response.status, response.read().decode("utf-8", "replace")
+    except urllib.error.HTTPError as error:
+        return error.code, error.read().decode("utf-8", "replace")
+
+
 def fetch_json(fetcher: Fetch, url: str):
     return json.loads(fetcher(url))
 

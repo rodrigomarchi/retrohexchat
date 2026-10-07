@@ -62,6 +62,8 @@ config :retro_hex_chat, Oban,
        {"@reboot", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker},
        {"@reboot", RetroHexChat.Jobs.ScrapedPagePruneWorker},
        {"@reboot", RetroHexChat.Jobs.BotGreetingPruneWorker},
+       # Every boot is a deploy or a restart: announce what the release changed.
+       {"@reboot", RetroHexChat.Jobs.IndexNowWorker, args: %{"scope" => "deploy"}},
        {"@hourly", RetroHexChat.Jobs.ServerBanExpiryWorker},
        {"0 */6 * * *", RetroHexChat.Jobs.RegisteredChannelExpiryWorker},
        {"15 */6 * * *", RetroHexChat.Jobs.RegisteredNickExpiryWorker},
@@ -75,12 +77,22 @@ config :retro_hex_chat, Oban,
        {"*/5 * * * *", RetroHexChat.Jobs.OpenLobbyExpiryWorker},
        {"50 * * * *", RetroHexChat.Jobs.ScrapedPagePruneWorker},
        {"55 * * * *", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker},
-       {"5 4 * * *", RetroHexChat.Jobs.BotGreetingPruneWorker}
+       {"5 4 * * *", RetroHexChat.Jobs.BotGreetingPruneWorker},
+       # Shortly after midnight UTC, once yesterday's archive pages are complete.
+       {"20 0 * * *", RetroHexChat.Jobs.IndexNowWorker, args: %{"scope" => "archive"}}
      ]},
     {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(6)},
     Oban.Plugins.Pruner
   ],
   queues: [rss: 2, maintenance: 1, bots: 2, scrape: 2, persistence: 1, push: 3]
+
+# IndexNow announces changed public pages to Bing and Yandex. The key is public
+# by design: the engines read it back from /indexnow.txt to prove the host sent
+# the list. Switched on in production only.
+config :retro_hex_chat, :index_now,
+  enabled: false,
+  key: "da55d5dc4cbc878cc649e71681d80991",
+  url_source: RetroHexChatWeb.SEO.PublicUrls
 
 config :retro_hex_chat_web,
   ecto_repos: [RetroHexChat.Repo],

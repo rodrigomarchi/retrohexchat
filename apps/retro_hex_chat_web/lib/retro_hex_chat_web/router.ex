@@ -138,6 +138,13 @@ defmodule RetroHexChatWeb.Router do
     get "/sitemaps/:name", SitemapController, :show
   end
 
+  # The IndexNow key, read back by the engines to verify a list of changed URLs
+  # came from this host. Like the sitemap, it is for crawlers: no session, no
+  # layout, no locale.
+  scope "/", RetroHexChatWeb do
+    get "/indexnow.txt", IndexNowController, :key
+  end
+
   # The archive is the only part of a conversation readable from outside, and
   # it is a controller rather than a LiveView because nothing on it moves and
   # a robot needs an `etag`. `archive` joins the reserved first segments; it

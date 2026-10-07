@@ -28,6 +28,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
     ChatDeviceSessionCleanupWorker,
     GlobalMuteExpiryWorker,
     IgnoreExpiredCleanupWorker,
+    IndexNowWorker,
     RegisteredChannelExpiryWorker,
     RegisteredNickExpiryWorker,
     RSSPollWorker,
@@ -120,6 +121,12 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       label: "Scraped page prune",
       queue: "maintenance",
       worker: ScrapedPagePruneWorker
+    },
+    %{
+      id: "index_now",
+      label: "IndexNow announcement",
+      queue: "maintenance",
+      worker: IndexNowWorker
     }
   ]
 

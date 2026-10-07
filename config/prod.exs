@@ -15,6 +15,8 @@ config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
 config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
   force_ssl: [rewrite_on: [:x_forwarded_proto], host: nil]
 
+config :retro_hex_chat, :index_now, enabled: true
+
 # Do not print debug messages in production
 config :logger, level: :info
 

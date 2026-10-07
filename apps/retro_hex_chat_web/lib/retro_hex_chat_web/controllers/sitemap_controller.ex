@@ -4,12 +4,9 @@ defmodule RetroHexChatWeb.SitemapController do
   """
   use RetroHexChatWeb, :controller
 
-  alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Chat.HelpTopics
-  alias RetroHexChatWeb.ContentDates
-  alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.SEO
-  alias RetroHexChatWeb.ShowcaseCatalog
+  alias RetroHexChatWeb.SEO.PublicUrls
 
   @cache_key {__MODULE__, :sitemaps}
   # Paths, not URLs: each one expands to fourteen localized URLs carrying
@@ -99,9 +96,9 @@ defmodule RetroHexChatWeb.SitemapController do
   @spec build_sitemaps([map()]) :: %{index: map(), chunks: %{String.t() => map()}}
   defp build_sitemaps(topics) do
     chunk_entries =
-      chunks(sitemap_paths(topics), "public", @chunk_size, &build_urlset/1) ++
+      chunks(PublicUrls.localized_paths(topics), "public", @chunk_size, &build_urlset/1) ++
         chunks(
-          ShowcaseCatalog.paths(),
+          PublicUrls.showcase_paths(),
           "showcase",
           @showcase_chunk_size,
           &build_canonical_urlset/1
@@ -116,23 +113,6 @@ defmodule RetroHexChatWeb.SitemapController do
       index: names |> build_sitemap_index() |> xml_resource(),
       chunks: Map.new(chunk_entries)
     }
-  end
-
-  # Each entry is `{path, lastmod}`, and `lastmod` is `nil` whenever the day a
-  # page last changed is not knowable — a build with no git to ask. The sitemap
-  # may be silent about a page; it may not guess.
-  defp sitemap_paths(topics) do
-    help_topic_paths =
-      topics
-      |> Enum.reject(&(&1.id == "welcome"))
-      |> Enum.map(&{"/chat/help/#{&1.id}", ContentDates.help_topic(&1.id)})
-
-    landing_paths = Enum.map(SEO.landing_paths(), &{&1, ContentDates.landing(&1)})
-    game_paths = Enum.map(GameCatalog.slugs(), &{"/games/#{&1}", ContentDates.game_page(&1)})
-
-    (landing_paths ++
-       game_paths ++ [{"/chat/help", ContentDates.help_topic("welcome")}] ++ help_topic_paths)
-    |> Enum.uniq_by(&elem(&1, 0))
   end
 
   defp chunks(paths, prefix, size, builder) do
@@ -177,22 +157,7 @@ defmodule RetroHexChatWeb.SitemapController do
   # One canonical URL per archived day, and no hreflang at all: a conversation
   # has no translated version, so the archive's pages are the same URL for
   # every reader.
-  defp build_archive_urlset do
-    entries =
-      for channel <- Archive.published_channels(),
-          slug = String.trim_leading(channel, "#"),
-          days = Archive.days_for(channel),
-          entry <- [
-            # The channel's index last changed on its most recent published day,
-            # and a day's page is dated by the day it is.
-            {"/archive/#{slug}", List.first(days)}
-            | Enum.map(days, &{"/archive/#{slug}/#{&1}", &1})
-          ] do
-        entry
-      end
-
-    build_canonical_urlset(entries)
-  end
+  defp build_archive_urlset, do: build_canonical_urlset(PublicUrls.archive_paths())
 
   # One canonical URL per path, no hreflang: the showcase ships in English only.
   defp build_canonical_urlset(entries) do

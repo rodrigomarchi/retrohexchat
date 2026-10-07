@@ -654,6 +654,12 @@ a move that renames one is caught before commit.
   topics while the topic tree linked all 300 of them in English. Only the language menu (with
   `hreflang`) and the single-address surfaces — the app, the showcase, the archive — link
   unprefixed; `landing_controller_test` and `help_live_test` fail on any other.
+- **Changed pages are announced, not waited for.** `RetroHexChatWeb.SEO.PublicUrls` is the one
+  list of public pages: the sitemap renders it and IndexNow (`RetroHexChat.SEO.IndexNow`, key at
+  `/indexnow.txt`) announces it to Bing and Yandex. `Jobs.IndexNowWorker` runs at every boot for
+  the pages whose day is recent and every night for yesterday's archive pages. A page's day comes
+  from its own content files, so a change to a shared component or a translation moves none: after
+  one, run `make seo.indexnow` to announce the whole sitemap.
 - **What the engines themselves see is read, not guessed.** `make seo.console SOURCE=bing` reads
   the webmaster console's API into `reports/seo/<UTC stamp>-<source>.{md,json}` (gitignored): sitemaps,
   crawl issues, a spread sample of sitemap URLs inspected one by one, search performance, and
