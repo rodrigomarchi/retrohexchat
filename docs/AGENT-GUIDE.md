@@ -648,6 +648,11 @@ a move that renames one is caught before commit.
   Twitter tag, JSON-LD or h1 changed, or when visible text was lost; added text is reported, not
   failed. Prefer adding to rewriting: text a search engine already ranks is removed only as a
   deliberate, measured decision.
+- **What the engines themselves see is read, not guessed.** `make seo.console SOURCE=bing` reads
+  the webmaster console's API into `reports/seo/<UTC stamp>-<source>.{md,json}` (gitignored): sitemaps,
+  crawl issues, a spread sample of sitemap URLs inspected one by one, search performance, and
+  the problems derived from them. Every source fills the one shape in `scripts/seo/report.py`, so
+  a report reads the same whichever engine it came from; the key lives in `.env`.
 - **Two public pages never carry the same prose.** The public game pages (`/games`,
   `/games/:slug` — the pages a search lands on, distinct from the in-app Games folder of §19) say
   what a game is with the catalogue's short description; the long arcade prose belongs to the

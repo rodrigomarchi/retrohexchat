@@ -23,6 +23,9 @@ erl_crash.dump
 # Temporary files, for example, from tests.
 /tmp/
 
+# Generated reports (SEO console reads, …): local output, regenerated on demand.
+/reports/
+
 # Node.js dependencies
 apps/retro_hex_chat_web/assets/node_modules/
 apps/retro_hex_chat_web/assets/css/.generated/
