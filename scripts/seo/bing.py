@@ -220,8 +220,8 @@ def url_state(info: dict) -> tuple[str, str | None]:
     if status >= 400:
         return "error", f"HTTP {status} on last fetch"
     if crawled:
-        if not info.get("DocumentSize"):
-            return "crawled_empty", "Fetched, but Bing stored no content for it"
+        # DocumentSize is 0 for most fetched pages, full ones included: it says
+        # nothing about the page, so it is not read.
         return "crawled", None
     if discovered:
         return "discovered", "Known to Bing, never fetched"

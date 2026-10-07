@@ -43,7 +43,7 @@ URL_CRAWLED = {
     "LastCrawledDate": "/Date(1780663302000)/",
     "Url": SITE,
 }
-URL_CRAWLED_EMPTY = {**URL_CRAWLED, "DocumentSize": 0, "Url": "https://retrohexchat.app/faq"}
+URL_CRAWLED_NO_SIZE = {**URL_CRAWLED, "DocumentSize": 0, "Url": "https://retrohexchat.app/faq"}
 URL_UNKNOWN = {**URL_CRAWLED, "DiscoveryDate": NEVER, "LastCrawledDate": NEVER, "DocumentSize": 0}
 THROTTLED = json.dumps({"ErrorCode": 5, "Message": "ERROR!!! ThrottleHost"})
 
@@ -115,7 +115,7 @@ class IssueNamesTest(unittest.TestCase):
 class UrlStateTest(unittest.TestCase):
     def test_states(self):
         self.assertEqual(bing.url_state(URL_CRAWLED), ("crawled", None))
-        self.assertEqual(bing.url_state(URL_CRAWLED_EMPTY)[0], "crawled_empty")
+        self.assertEqual(bing.url_state(URL_CRAWLED_NO_SIZE), ("crawled", None))
         self.assertEqual(bing.url_state(URL_UNKNOWN)[0], "unknown")
         self.assertEqual(bing.url_state({**URL_UNKNOWN, "DiscoveryDate": "/Date(1770883200000)/"})[0], "discovered")
         self.assertEqual(bing.url_state({**URL_CRAWLED, "HttpStatus": 404}), ("error", "HTTP 404 on last fetch"))

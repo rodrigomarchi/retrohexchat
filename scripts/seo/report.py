@@ -26,7 +26,6 @@ Inspection states, ordered from healthy to absent:
 
     indexed        the engine says the URL is in its index
     crawled        fetched, no index verdict available
-    crawled_empty  fetched, but the engine stored no content for it
     not_indexed    fetched and deliberately left out of the index
     error          the fetch failed
     discovered     known to the engine, never fetched
@@ -42,7 +41,7 @@ from pathlib import Path
 
 SCHEMA_VERSION = 1
 
-STATES = ["indexed", "crawled", "crawled_empty", "not_indexed", "error", "discovered", "unknown"]
+STATES = ["indexed", "crawled", "not_indexed", "error", "discovered", "unknown"]
 HEALTHY_STATES = {"indexed", "crawled"}
 
 STALE_CRAWL_DAYS = 60
@@ -123,7 +122,6 @@ def derive_problems(report: dict) -> list[dict]:
         severities = {
             "error": "error",
             "not_indexed": "warning",
-            "crawled_empty": "warning",
             "discovered": "warning",
             "unknown": "warning",
         }
