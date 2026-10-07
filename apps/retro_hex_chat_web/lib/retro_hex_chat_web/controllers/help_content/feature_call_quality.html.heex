@@ -1,17 +1,75 @@
 <p>{dgettext("help_p2p", "Monitor connection quality during calls.")}</p>
 <.help_h4 icon={:icon_quality_high}>{dgettext("help_p2p", "Quality Indicator")}</.help_h4>
-<p>{dgettext("help_p2p", "The 4 bars indicate connection quality:")}</p>
+<p>
+  {dgettext(
+    "help_p2p",
+    "During a call, the quality appears as a word in the top right corner of the other person's video: Excellent, Good, Fair or Poor. Excellent and Good are green, Fair is yellow, and Poor is red. The connection diagram shows the same word."
+  )}
+</p>
+<.help_h4 icon={:icon_status_signal}>{dgettext("help_p2p", "How it is measured")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "Every 3 seconds, your browser reads the connection statistics of the call. It looks at three numbers:"
+  )}
+</p>
 <ul>
-  <li>{dgettext("help_p2p", "4 green bars — Excellent")}</li>
-  <li>{dgettext("help_p2p", "3 green bars — Good")}</li>
-  <li>{dgettext("help_p2p", "2 yellow bars — Fair")}</li>
-  <li>{dgettext("help_p2p", "1 red bar — Poor")}</li>
+  <li>
+    {dgettext(
+      "help_p2p",
+      "Round-trip time: how long data takes to reach the other person and come back."
+    )}
+  </li>
+  <li>
+    {dgettext("help_p2p", "Jitter: how much that delay changes from one packet to the next.")}
+  </li>
+  <li>{dgettext("help_p2p", "Packet loss: the share of data that never arrives.")}</li>
 </ul>
+<p>
+  {dgettext(
+    "help_p2p",
+    "These numbers become a single call score, and the score sets the word. High delay, unstable delay or lost packets lower the score. The word appears after the first measurement."
+  )}
+</p>
 <.help_h4 icon={:icon_quality_high}>{dgettext("help_p2p", "Stable Defaults")}</.help_h4>
 <p>
   {dgettext(
     "help_p2p",
     "Calls use conservative audio and video limits by default to favor stability over maximum image quality."
+  )}
+</p>
+<ul>
+  <li>
+    {dgettext("help_p2p", "Camera video asks for %{size} at up to %{fps} frames per second.",
+      size: "640×360",
+      fps: "15"
+    )}
+  </li>
+  <li>
+    {dgettext("help_p2p", "Video is sent at up to %{video}, and audio at up to %{audio}.",
+      video: "400 kbps",
+      audio: "40 kbps"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_p2p",
+      "Echo cancellation, noise suppression and automatic gain control are on for the microphone."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_p2p",
+      "Screen sharing is limited to %{size} at up to %{fps} frames per second, which keeps text sharp.",
+      size: "1280×720",
+      fps: "10"
+    )}
+  </li>
+</ul>
+<p>
+  {dgettext(
+    "help_p2p",
+    "There is no manual quality setting. Every call starts with these limits."
   )}
 </p>
 <.help_h4 icon={:icon_tab_control}>{dgettext("help_p2p", "Automatic Adaptation")}</.help_h4>
@@ -21,8 +79,33 @@
     "WebRTC automatically adjusts the resolution and framerate based on network conditions."
   )}
 </p>
+<.help_h4 icon={:icon_lightbulb}>
+  {dgettext("help_p2p", "When the quality is Fair or Poor")}
+</.help_h4>
+<ul>
+  <li>{dgettext("help_p2p", "Move closer to your Wi-Fi router, or use a wired connection.")}</li>
+  <li>
+    {dgettext("help_p2p", "Close downloads, uploads and video streams on the same network.")}
+  </li>
+  <li>
+    {dgettext("help_p2p", "Turn off your camera. An audio-only call needs much less bandwidth.")}
+  </li>
+  <li>{dgettext("help_p2p", "Stop sharing your screen if you no longer need it.")}</li>
+</ul>
+<p>
+  {dgettext(
+    "help_p2p",
+    "The quality word describes the connection between you and the other person. It does not measure your camera or microphone."
+  )}
+</p>
 <.help_h4 icon={:icon_link}>{dgettext("help_p2p", "See Also")}</.help_h4>
 <p>
   <.help_link topic="feature-audio-call">{dgettext("help_p2p", "Audio Call")}</.help_link>
   · <.help_link topic="feature-video-call">{dgettext("help_p2p", "Video Call")}</.help_link>
+  ·
+  <.help_link topic="feature-connection-diagram">
+    {dgettext("help_p2p", "Connection Diagram")}
+  </.help_link>
+  · <.help_link topic="feature-network-stats">{dgettext("help_p2p", "Network Stats")}</.help_link>
+  · <.help_link topic="feature-media-devices">{dgettext("help_p2p", "Media Devices")}</.help_link>
 </p>

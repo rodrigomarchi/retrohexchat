@@ -16,26 +16,6 @@ msgstr ""
 msgid "/sendfile <nickname>"
 msgstr "/sendfile <nickname>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "1 red bar — Poor"
-msgstr "1 bar rosso — Poveri"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "2 yellow bars — Fair"
-msgstr "2 barre gialle — Fiera"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:6
-#, elixir-autogen, elixir-format
-msgid "3 green bars — Good"
-msgstr "3 barre verdi — Buono"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:5
-#, elixir-autogen, elixir-format
-msgid "4 green bars — Excellent"
-msgstr "4 barre verdi — Eccellente"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Accept"
@@ -49,14 +29,14 @@ msgstr ""
 "fallisce, puoi riprovare."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:6
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:103
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "Audio Call"
 msgstr "Chiamata audio"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Automatic Adaptation"
 msgstr "Adattamento automatico"
@@ -153,6 +133,7 @@ msgid "Live Switching"
 msgstr "Live Switching"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:110
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:98
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:67
 #, elixir-autogen, elixir-format
@@ -221,7 +202,7 @@ msgid "Restrictions"
 msgstr "Restrizioni"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:46
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:101
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:63
@@ -270,11 +251,6 @@ msgstr "Avviare una chiamata"
 msgid "Starting a Video Call"
 msgstr "Avviare una chiamata video"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:3
-#, elixir-autogen, elixir-format
-msgid "The 4 bars indicate connection quality:"
-msgstr "Le 4 barre indicano la qualità della connessione:"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "The progress bar shows: percentage, speed, and estimated time. You can cancel at any time."
@@ -293,7 +269,7 @@ msgid "Turn Camera Off/On"
 msgstr "Disattivare la fotocamera"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:49
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:104
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:44
@@ -302,7 +278,7 @@ msgstr "Disattivare la fotocamera"
 msgid "Video Call"
 msgstr "Videochiamata"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "WebRTC automatically adjusts the resolution and framerate based on network conditions."
 msgstr ""
@@ -345,6 +321,7 @@ msgstr ""
 msgid "/p2p"
 msgstr "/p2p"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
@@ -682,7 +659,7 @@ msgstr ""
 msgid "— resolution and frame rate of the received video or screen stream."
 msgstr "— risoluzione e frame rate del flusso video o dello schermo ricevuto."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Calls use conservative audio and video limits by default to favor stability over maximum image quality."
 msgstr ""
@@ -695,7 +672,7 @@ msgid "Monitor connection quality during calls."
 msgstr ""
 "Monitorare e regolare la qualità della connessione durante le chiamate."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Stable Defaults"
 msgstr "Predefiniti stabili"
@@ -1194,3 +1171,98 @@ msgstr ""
 "sulla voce della sessione nella barra degli strumenti della conversazione — "
 "l'unico comando qui che è un pulsante e non una porta — e chiude l'invito "
 "senza entrare da nessuna parte."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Camera video asks for %{size} at up to %{fps} frames per second."
+msgstr "Videocamera chiede %{size} fino a %{fps} frames al secondo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:88
+#, elixir-autogen, elixir-format
+msgid "Close downloads, uploads and video streams on the same network."
+msgstr "Chiudi download, upload e flussi video sulla stessa rete."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "During a call, the quality appears as a word in the top right corner of the other person's video: Excellent, Good, Fair or Poor. Excellent and Good are green, Fair is yellow, and Poor is red. The connection diagram shows the same word."
+msgstr "Durante una chiamata, la qualità appare come una parola nell'angolo in alto a destra del video dell'altra persona: Eccellente, buono, giusto o povero. Eccellente e Buono sono verdi, Fair è giallo, e Poor è rosso. Il diagramma di connessione mostra la stessa parola."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "Echo cancellation, noise suppression and automatic gain control are on for the microphone."
+msgstr "Cancellazione eco, soppressione del rumore e controllo automatico di guadagno sono a disposizione per il microfono."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Every 3 seconds, your browser reads the connection statistics of the call. It looks at three numbers:"
+msgstr "Ogni 3 secondi, il tuo browser legge le statistiche di connessione della chiamata. Guarda tre numeri:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "How it is measured"
+msgstr "Come si misura"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Jitter: how much that delay changes from one packet to the next."
+msgstr "Jitter: quanto tale ritardo cambia da un pacchetto all'altro."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:86
+#, elixir-autogen, elixir-format
+msgid "Move closer to your Wi-Fi router, or use a wired connection."
+msgstr "Spostarsi più vicino al router Wi-Fi, o utilizzare una connessione cablata."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:109
+#, elixir-autogen, elixir-format
+msgid "Network Stats"
+msgstr "Stat di rete"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Packet loss: the share of data that never arrives."
+msgstr "Perdita del pacchetto: la quota di dati che non arriva mai."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Round-trip time: how long data takes to reach the other person and come back."
+msgstr "Tempo di percorrenza: quanto tempo ci vogliono per raggiungere l'altra persona e tornare."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Screen sharing is limited to %{size} at up to %{fps} frames per second, which keeps text sharp."
+msgstr "La condivisione dello schermo è limitata a %{size} fino a frame %{fps} al secondo, che mantiene il testo acuto."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:93
+#, elixir-autogen, elixir-format
+msgid "Stop sharing your screen if you no longer need it."
+msgstr "Smettere di condividere lo schermo se non ne hai più bisogno."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:96
+#, elixir-autogen, elixir-format
+msgid "The quality word describes the connection between you and the other person. It does not measure your camera or microphone."
+msgstr "La parola di qualità descrive la connessione tra voi e l'altra persona. Non misura la fotocamera o il microfono."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "There is no manual quality setting. Every call starts with these limits."
+msgstr "Non c'è impostazione di qualità manuale. Ogni chiamata inizia con questi limiti."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "These numbers become a single call score, and the score sets the word. High delay, unstable delay or lost packets lower the score. The word appears after the first measurement."
+msgstr "Questi numeri diventano un singolo punteggio di chiamata, e il punteggio imposta la parola. Alto ritardo, ritardo instabile o pacchetti persi abbassare il punteggio. La parola appare dopo la prima misura."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:91
+#, elixir-autogen, elixir-format
+msgid "Turn off your camera. An audio-only call needs much less bandwidth."
+msgstr "Spegni la telecamera. Una chiamata audio richiede molto meno larghezza di banda."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Video is sent at up to %{video}, and audio at up to %{audio}."
+msgstr "Il video viene inviato fino a %{video} e audio fino a %{audio}."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:83
+#, elixir-autogen, elixir-format
+msgid "When the quality is Fair or Poor"
+msgstr "Quando la qualità è giusta o povera"

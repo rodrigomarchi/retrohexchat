@@ -49,6 +49,32 @@ defmodule RetroHexChatWeb.HelpLive.HelpContentCoverageTest do
     assert failures == []
   end
 
+  # A topic is a public page a search engine judges on its own text. Below
+  # this many words of its own it reads as thin, and every language inherits
+  # the English length.
+  @min_words 100
+
+  test "every topic says enough to stand as a page" do
+    thin =
+      for topic <- HelpTopics.all_topics(),
+          words = topic_words(topic.id),
+          words < @min_words,
+          do: {topic.id, words}
+
+    assert thin == [],
+           "topics under #{@min_words} words: #{inspect(Enum.sort_by(thin, &elem(&1, 1)))}"
+  end
+
+  defp topic_words(id) do
+    %{id: id}
+    |> HelpHelpers.render_topic_content()
+    |> rendered_to_string()
+    |> Floki.parse_fragment!()
+    |> Floki.text(sep: " ")
+    |> then(&Regex.scan(~r/[[:alpha:]]+/u, &1))
+    |> length()
+  end
+
   defp render_failure(id) do
     %{id: id}
     |> HelpHelpers.render_topic_content()

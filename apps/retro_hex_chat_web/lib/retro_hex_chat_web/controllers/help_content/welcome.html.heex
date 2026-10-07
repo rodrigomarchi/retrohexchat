@@ -4,6 +4,12 @@
     "RetroHexChat is a web-based IRC client with an authentic retro look and feel. It supports channels, private messages, text formatting, nick services, and much more."
   )}
 </p>
+<p>
+  {dgettext(
+    "help",
+    "It runs in your web browser, so there is nothing to install. The screen looks like a classic desktop with windows, a taskbar and a Start menu, and the chat works like mIRC."
+  )}
+</p>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help", "Quick Start")}</.help_h4>
 <p>
   {dgettext("help", "1. Enter a nickname on the connect screen and click")} <strong>{dgettext("help", "Connect")}</strong>.
@@ -18,9 +24,106 @@
   <code>{dgettext("help", "/commands")}</code> {dgettext("help", "for advanced features — type")}
   <code>{dgettext("help", "/help")}</code> {dgettext("help", "to see them all.")}
 </p>
+<.help_h4 icon={:icon_rules}>{dgettext("help", "Your nickname")}</.help_h4>
+<p>
+  {dgettext(
+    "help",
+    "Every nickname is registered with a password. The first time you use a new nickname, the connect screen asks you to choose a password."
+  )}
+  {dgettext("help", "Then click %{button}.", button: dgettext("connect", "Register & Connect"))}
+  {dgettext("help", "On later visits, enter the same password to log in.")}
+</p>
+<.help_h4 icon={:icon_channels}>{dgettext("help", "Finding your way around")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help",
+      "Conversations lists the channels you are in and your private conversations. Click one to open it."
+    )}
+  </li>
+  <li>{dgettext("help", "The nicklist shows who is in the current channel.")}</li>
+  <li>
+    {dgettext(
+      "help",
+      "The topic bar above the messages shows the channel topic and its modes."
+    )}
+  </li>
+  <li>
+    {dgettext("help", "The Status tab collects server messages, such as the Message of the Day.")}
+  </li>
+  <li>
+    {dgettext(
+      "help",
+      "The menu bar and the Start menu open every window and tool, from the Channel List to your account settings."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_terminal}>{dgettext("help", "First things to try")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help", "Join another channel: type %{command}.", command: "/join #channel")}
+  </li>
+  <li>
+    {dgettext(
+      "help",
+      "See which channels exist: choose View > Channel List, or type %{command}.",
+      command: "/list"
+    )}
+  </li>
+  <li>
+    {dgettext("help", "Talk to one person in private:")}
+    <code>/msg &lt;nickname&gt; &lt;message&gt;</code>
+  </li>
+  <li>
+    {dgettext(
+      "help",
+      "Learn the keyboard shortcuts: press %{keys} or choose Help > Shortcut Cheatsheet.",
+      keys: "Ctrl+Shift+/"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help",
+      "Read about one command: type %{command}, for example %{example}.",
+      command: "/help <command>",
+      example: "/help join"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_btn_help_topics}>{dgettext("help", "Where to look next")}</.help_h4>
+<p>
+  {dgettext(
+    "help",
+    "These help pages are always one click away. Choose Help > Help Topics in the chat to open them. Good places to start:"
+  )}
+</p>
+<ul>
+  <li>
+    <.help_link topic="ui-overview">{dgettext("help", "UI Overview")}</.help_link>
+    {dgettext("help", "explains each part of the screen.")}
+  </li>
+  <li>
+    <.help_link topic="commands-overview">{dgettext("help", "Commands")}</.help_link>
+    {dgettext("help", "lists everything you can type.")}
+  </li>
+  <li>
+    <.help_link topic="private-messages">{dgettext("help", "Private Messages")}</.help_link>
+    {dgettext("help", "shows how to talk to one person.")}
+  </li>
+  <li>
+    <.help_link topic="formatting-overview">{dgettext("help", "Text Formatting")}</.help_link>
+    {dgettext("help", "covers bold text, colors and Markdown.")}
+  </li>
+  <li>
+    <.help_link topic="nickserv">{dgettext("help", "NickServ")}</.help_link>
+    {dgettext("help", "explains how your nickname is protected.")}
+  </li>
+</ul>
 <.help_h4 icon={:icon_link}>{dgettext("help", "See Also")}</.help_h4>
 <p>
   <.help_link topic="connecting">{dgettext("help", "Connecting")}</.help_link>
   · <.help_link topic="channels">{dgettext("help", "Channels")}</.help_link>
   · <.help_link topic="keyboard-shortcuts">{dgettext("help", "Keyboard Shortcuts")}</.help_link>
+  · <.help_link topic="ui-start-menu">{dgettext("help", "Start Menu")}</.help_link>
+  · <.help_link topic="feature-cheatsheet">{dgettext("help", "Shortcut Cheatsheet")}</.help_link>
 </p>
