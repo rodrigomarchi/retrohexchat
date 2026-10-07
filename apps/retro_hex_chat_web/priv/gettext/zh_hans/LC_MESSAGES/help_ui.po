@@ -11,12 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "/join"
 msgstr "/join"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "/topic Command"
 msgstr "/topic Command"
@@ -27,13 +27,6 @@ msgid "/whois, /alias, /ignore, /perform, /autojoin, /invite, /kick, /ban, /mode
 msgstr ""
 "/whois, /alias, /ignore, /perform, /autojoin, /invite, /kick, /ban, /mode, "
 "/timer output."
-
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "0 White 8 Yellow 1 Black 9 Light Green 2 Navy 10 Teal 3 Green 11 Cyan 4 Red 12 Blue 5 Maroon 13 Magenta 6 Purple 14 Grey 7 Orange 15 Light Grey"
-msgstr ""
-"0 白色 8 黄色 1 黑色 9 浅绿色 2 海军 10 Teal 3 绿色 11 青色 4 红色 12 蓝色 5 玛隆 13 紫色 6 紫色 14 "
-"灰色 7 橙色 15 浅灰色"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:16
 #, elixir-autogen, elixir-format
@@ -50,11 +43,6 @@ msgstr "地址簿"
 #, elixir-autogen, elixir-format
 msgid "Alias Editor"
 msgstr "别名编辑器"
-
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "An empty channel shows a welcome message and tips for getting started."
-msgstr "一个空频道显示一个欢迎消息和启动提示 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:41
 #, elixir-autogen, elixir-format
@@ -107,6 +95,7 @@ msgid "Button Groups"
 msgstr "按钮组"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:120
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "中央频道"
@@ -116,17 +105,12 @@ msgstr "中央频道"
 msgid "Channel List"
 msgstr "频道列表"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "Channel Messages"
-msgstr "频道消息"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Chat Area:"
 msgstr "聊天区域 :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Click the"
@@ -137,18 +121,13 @@ msgstr "单击"
 msgid "Clipboard"
 msgstr "剪贴板"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Color"
-msgstr "颜色"
-
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Color Palette"
 msgstr "颜色调色板"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:59
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:123
 #, elixir-autogen, elixir-format
 msgid "Colors"
 msgstr "颜色"
@@ -174,6 +153,7 @@ msgid "Connection"
 msgstr "连接"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Context Menu"
 msgstr "上下文菜单"
@@ -184,7 +164,8 @@ msgstr "上下文菜单"
 msgid "Context Menus"
 msgstr "背景菜单"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:88
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:51
 #, elixir-autogen, elixir-format
@@ -201,24 +182,12 @@ msgstr "对话:"
 msgid "Ctrl+C — Copy selected text"
 msgstr "Ctrl+C — 复制选中的文本"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color (opens color picker) Ctrl+Shift+V — Reverse Ctrl+Shift+X — Reset all formatting"
-msgstr ""
-"Ctrl+Shift+B – 粗体 Ctrl+Shift+Y – 斜体 Ctrl+Shift+U – 下划线 Ctrl+Shift+D – "
-"彩色(打开采色器) Ctrl+Shift+V – 反转 Ctrl+Shift++X – 重置所有格式"
-
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color Ctrl+Shift+V — Reverse (also in formatting toolbar) Ctrl+Shift+X — Reset formatting (also in formatting toolbar)"
 msgstr ""
 "Ctrl+Shift+B – 粗体 Ctrl+Shift+Y – 斜体 Ctrl+Shift+U – 下划线 Ctrl+Shift+D – 彩色 "
 "Ctrl+Shift+V – 反转(也出现在格式化工具栏) Ctrl+Shift+Y – 重置格式化(也出现在格式化工具栏)"
-
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Ctrl+Shift+D"
-msgstr "Ctrl+Shift+D 软件"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:150
 #, elixir-autogen, elixir-format
@@ -245,7 +214,7 @@ msgstr "表情符号"
 msgid "Emoji Picker — Click smiley button in formatting toolbar"
 msgstr "Emoji Picker — 在格式化工具栏中点击微笑按钮"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Empty state messages disappear automatically when content arrives. The text is not selectable."
 msgstr "当内容到达时,空的状态信息会自动消失. 文本无法选择 。"
@@ -274,7 +243,7 @@ msgstr "错误 :"
 msgid "Every"
 msgstr "每"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Find"
@@ -284,11 +253,6 @@ msgstr "查找"
 #, elixir-autogen, elixir-format
 msgid "Flood Protection"
 msgstr "防洪"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "For PMs, it shows \"Private conversation with <nickname>\". For the Status tab, it shows \"RetroHexChat Status\"."
-msgstr "对于首相来说,它展示了\"私人与<nickname>的对话\". 对于状态标签,它显示\"RetroHexChat Status\"."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:35
 #, elixir-autogen, elixir-format
@@ -341,7 +305,7 @@ msgstr "忽略列表"
 msgid "Input & Autocomplete"
 msgstr "输入自动完成( A)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:123
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:54
@@ -350,7 +314,7 @@ msgstr "输入自动完成( A)"
 msgid "Keyboard Shortcuts"
 msgstr "键盘快捷键"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts:"
 msgstr "键盘快捷键 :"
@@ -375,7 +339,7 @@ msgstr "查找用户信息 。"
 msgid "Message display with formatting and clickable URLs."
 msgstr "以格式和可点击的 URL 显示信件 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Methods"
 msgstr "方法"
@@ -395,12 +359,12 @@ msgstr "导航"
 msgid "NickServ, ChanServ responses."
 msgstr "NickServ, ChanServ回应."
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Nicklist"
 msgstr "昵称列表"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Notes"
 msgstr "页:1"
@@ -460,11 +424,6 @@ msgstr "P2P会话 :"
 msgid "Perform"
 msgstr "执行"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Press"
-msgstr "新闻"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Purple, bold. Channel founders."
@@ -511,7 +470,7 @@ msgid "Save to your address book."
 msgstr "保存到您的地址簿。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:78
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "搜索"
@@ -526,28 +485,29 @@ msgstr "搜索导航"
 msgid "Sections"
 msgstr "节"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:53
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:117
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:93
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/ui_install_app.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:78
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:98
 #: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
-#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:113
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:203
-#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "另请参阅"
@@ -576,16 +536,6 @@ msgstr "设置昵称颜色 :"
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
 msgstr "快捷键计费表"
-
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:25
-#, elixir-autogen, elixir-format
-msgid "Shows \"No URLs captured\" until URLs appear in chat."
-msgstr "在聊天中显示“ 不捕获 URL ” 。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "Shows \"Nobody here\" when you are the only user (or the channel is truly empty)."
-msgstr "当您是唯一的用户时( 或者频道是真正的空的) , 显示“ 这里没有人 ” 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:22
 #, elixir-autogen, elixir-format
@@ -628,7 +578,7 @@ msgstr "状态栏"
 msgid "Status Bar:"
 msgstr "状态栏 :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "清除格式"
@@ -688,7 +638,7 @@ msgstr "切换对话"
 msgid "Toggle Nicklist"
 msgstr "切换昵称列表"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Toolbar:"
@@ -705,12 +655,13 @@ msgstr "工具"
 msgid "Topic Bar:"
 msgstr "主题栏:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "UI Overview"
 msgstr "UI 概览"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:114
 #, elixir-autogen, elixir-format
@@ -761,7 +712,7 @@ msgstr "状态中是什么"
 msgid "When a UI container has no content, a friendly placeholder message appears with guidance:"
 msgstr "当一个UI容器没有内容时,一个友好的占位符消息会随指导出现:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "When no channels are joined, shows a hint to use"
 msgstr "没有加入频道时, 显示要使用的提示"
@@ -781,20 +732,15 @@ msgstr "谁:"
 msgid "Windows & Dialogs"
 msgstr "窗口对话框( D)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "and an \"Browse channels\" button."
 msgstr "还有\"浏览频道\"按钮"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:90
 #, elixir-autogen, elixir-format
 msgid "button in the formatting toolbar to strip all formatting from incoming messages."
 msgstr "按钮在格式化工具栏中将所有格式从收到的信件中剥离。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "button in the formatting toolbar, then select a color from the 4×4 picker grid."
-msgstr "按钮,然后从 4×4 采样网格中选择颜色。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:12
 #, elixir-autogen, elixir-format
@@ -805,11 +751,6 @@ msgstr "加入, 部件, 踢, 禁止, 模式更改, 话题更改, 昵称更改, �
 #, elixir-autogen, elixir-format
 msgid "notify list online/offline, wallops."
 msgstr "通知列表在线/offline,wallops。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "or click the"
-msgstr "或单击"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:26
 #, elixir-autogen, elixir-format
@@ -926,12 +867,12 @@ msgstr "/bio"
 msgid "/bot Command Reference"
 msgstr "/bot Command Reference"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "/clear"
 msgstr "/clear"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:102
 #, elixir-autogen, elixir-format
 msgid "/clearmotd"
 msgstr "/clearmotd"
@@ -946,8 +887,8 @@ msgstr "/deop"
 msgid "/devoice"
 msgstr "/devoice"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:20
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:100
 #, elixir-autogen, elixir-format
 msgid "/motd"
 msgstr "/motd"
@@ -972,7 +913,7 @@ msgstr "/ns"
 msgid "/op"
 msgstr "/op"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:101
 #, elixir-autogen, elixir-format
 msgid "/setmotd"
 msgstr "/setmotd"
@@ -1018,7 +959,7 @@ msgstr "添加创建一发或重复计时器 。 编辑保持定时器名称的�
 msgid "Adding and Editing"
 msgstr "添加和编辑"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:103
 #, elixir-autogen, elixir-format
 msgid "Admin Console"
 msgstr "管理控制台"
@@ -1083,7 +1024,7 @@ msgstr "频道标签"
 msgid "Choose"
 msgstr "选择"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Clear Window"
@@ -1094,12 +1035,12 @@ msgstr "清除窗口"
 msgid "Clear the active window, copy selected chat text, and open Find."
 msgstr "清除活动窗口, 复制选中的聊天文本, 并打开“ 查找” 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Clears all messages from the active channel or private conversation window. This runs the same action as /clear and cannot be undone."
 msgstr "从活动频道或私人对话窗口清除所有消息。 此操作与 /clear 并且无法解除。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Command Equivalent"
 msgstr "命令等效"
@@ -1114,12 +1055,13 @@ msgstr "命令绘图"
 msgid "Commands Tab"
 msgstr "图标标签"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Copies the current text selection from the chat log to the clipboard. The item is enabled only when selected text is inside the message log."
 msgstr "将当前文本选择从聊天日志复制到剪贴板。 只有当选中的文本在信件日志内时,才启用此项 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Copy"
@@ -1175,7 +1117,7 @@ msgstr "编辑菜单 :"
 msgid "Events Tab"
 msgstr "事件标签"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Every connected user can view the MOTD. Server administrators can set or clear it from the Admin Console MOTD tab."
 msgstr "每个连接的用户都可以查看MOTD. 服务器管理员可以从Admin Console MOTD标签中设置或清除它."
@@ -1274,17 +1216,19 @@ msgstr "一发定时器:1至86 400秒"
 msgid "Opening"
 msgstr "开幕"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Opens or closes the in-window Find bar for searching messages. You can also press Ctrl+Shift+F."
 msgstr "打开或关闭用于搜索消息的窗口查找栏。 也可以按下Ctrl+Shift+F."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Permissions"
 msgstr "权限"
 
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Pinned"
@@ -1317,12 +1261,13 @@ msgstr ""
 "右键单击任务栏按钮,用于窗口命令(Restore, 最小化, 最大化, 关闭), 或者右键单击任务栏上的空位, 以一次安排每个打开的窗口: "
 "Cascade, Tile 水平或垂直, 最小化全部 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:106
 #, elixir-autogen, elixir-format
 msgid "Special Messages"
 msgstr "特殊信件"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "Start Menu"
 msgstr "启动菜单"
@@ -1364,7 +1309,7 @@ msgstr ""
 msgid "The chat lives in one pinned window on a Windows-style desktop with a taskbar, Start menu, and tray clock."
 msgstr "聊天居住在一个被固定的窗口上,一个Windows风格的桌面上,上面有任务栏,开始菜单和托盘钟."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "The menu item runs"
 msgstr "菜单项运行"
@@ -1413,7 +1358,7 @@ msgstr "断开或重新装入页面时丢失计时器"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:102
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Toolbar"
@@ -1434,7 +1379,7 @@ msgstr "用户模式"
 msgid "and"
 msgstr "和"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "and uses the same Status-tab output."
 msgstr ",并使用相同的状态标签输出。"
@@ -1769,7 +1714,8 @@ msgstr "Markdown模式支持粗体,斜体,内置代码,代码块,块引号,列�
 msgid "Message Format"
 msgstr "消息格式"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:128
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:120
 #, elixir-autogen, elixir-format
 msgid "Message Formats"
 msgstr "消息格式"
@@ -1799,7 +1745,7 @@ msgstr "文本格式概览"
 msgid "The composer can send messages in three content formats: IRC, MD, and TXT."
 msgstr "消息输入框可以使用三种内容格式发送消息：IRC、MD 和 TXT。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "The formatting toolbar changes with the selected message format."
 msgstr "格式化工具栏随所选信件格式而改变。"
@@ -2578,12 +2524,12 @@ msgstr "有什么变化"
 msgid "iPhone or iPad Safari: Share, then Add to Home Screen"
 msgstr "iPhone 或 iPad 的 Safari：分享，然后「添加到主屏幕」"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "/pin"
 msgstr "/pin"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "/unpin"
 msgstr "/unpin"
@@ -2785,3 +2731,613 @@ msgid "Shows active public channels you have not joined yet when the server has 
 msgstr ""
 "显示服务器有房间建议时尚未加入的活跃公共频道 。 点击一个加入,然后去那里。 "
 "片段自己打开,而你几乎没有频道,一旦关闭就保持关闭——其标题随时随地重新打开."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:83
+#, elixir-autogen, elixir-format
+msgid "A color number has one or two digits. A two-digit number above 15 is read as one digit, and the second digit stays in your text."
+msgstr "一个颜色数字有一个或两个数字。 15以上二位数读作1位数,第二位数留在文本中."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "A pin belongs to the channel. Everyone in the channel sees the same list."
+msgstr "一个针属于频道。 频道里的每个人都看到同样的名单."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:90
+#, elixir-autogen, elixir-format
+msgid "Administrators can also type %{set} followed by the new text, or %{clear} to remove it. Other users who try these commands get a permission error."
+msgstr "管理员也可以键入%{set},然后是新文本,或者%{clear}将其删除. 其他尝试这些命令的用户会遇到许可错误."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "An icon for the kind of window: a channel, a private conversation, or the Status tab."
+msgstr "窗口类型的图标:频道、私人对话或状态标签。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "At the top of the panel, choose IRC formatting, Markdown formatting or Plain text."
+msgstr "在面板的顶部,选择IRC格式化,Markdown格式化或Plain文本."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Black"
+msgstr "黑色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Blue"
+msgstr "蓝色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "Bold"
+msgstr "粗体"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Brown"
+msgstr "褐色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:81
+#, elixir-autogen, elixir-format
+msgid "Channel Modes"
+msgstr "频道模式"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Choose Help > Message of the Day, or type the command."
+msgstr "选择帮助 > 当天的消息, 或者输入命令 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Choose Pin. The Pinned button appears or its count goes up."
+msgstr "Choose Pin. The Pinned button appears or its count goes up."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:109
+#, elixir-autogen, elixir-format
+msgid "Choose View > Strip Formatting to read every message without colors. This changes only your own view."
+msgstr "选择视图 > 剥离格式来读取没有颜色的每封信。 这只改变你自己的视野。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Click Browse channels to open the Channel List, where you can pick a room to join."
+msgstr "点击浏览频道打开频道列表, 您可以选择一个房间加入 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Click and drag over the messages you want to copy."
+msgstr "单击并拖曳要复制的信件。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Click the Color button in the formatting toolbar, then choose a color from the grid."
+msgstr "单击格式工具栏中的颜色按钮,然后从网格中选择颜色。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Click the Formatting Toolbar button beside the message box. A small panel opens."
+msgstr "单击信息框旁的“格式工具栏”按钮。 一个小面板打开。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "Color. Type a color number right after it."
+msgstr "Color. Type a color number right after it."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Each color has a number from 0 to 15. The names below are the ones the color grid shows."
+msgstr "每种颜色都有从0到15的编号. 下面的名字是颜色网格显示的。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "Each row shows who wrote the message, when, a short preview, and who pinned it. More rows load as you scroll down."
+msgstr "每行显示谁写了消息,何时,一个简短的预览,以及谁将它固定下来. 卷下时加载更多行."
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Events"
+msgstr "活动"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "Formatting Overview"
+msgstr "格式化概览"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Green"
+msgstr "绿色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "Grey"
+msgstr "灰色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "How to change the topic"
+msgstr "如何改变主题"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "How to format a message"
+msgstr "如何格式化信件"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "How to pin a message"
+msgstr "如何贴上信息"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "IRC: classic mIRC styles. Bold, italic, underline, reverse and the 16 colors."
+msgstr "IRC:经典的mIRC风格. 粗体、斜体、下划线、反面和16种颜色。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "If no MOTD is set, you see the message %{text} instead."
+msgstr "如果没有设定 MOTD, 您可以看到 %{text} 信件 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "If you are not on the Status tab, it is marked as unread. Open the Status tab to read the message."
+msgstr "如果您不在状态标签上, 它会被标记为未读 。 打开状态标签以读取信件 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:89
+#, elixir-autogen, elixir-format
+msgid "If your text starts with a digit, that digit can join the color number. Write the color with two digits, such as %{example}, to avoid this."
+msgstr "如果文本以数字开头,该数字可以加入颜色数字。 将颜色写成两个数字,如%{example},以避免出现这种情况."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "In a channel with mode %{mode}, the server removes all formatting from new messages and saves them as plain text."
+msgstr "在具有%{mode}模式的频道中,服务器从新消息中删除所有格式化,并保存为纯文本."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:102
+#, elixir-autogen, elixir-format
+msgid "In a channel with mode %{mode}, the server removes all formatting, colors included, from new messages."
+msgstr "在具有%{mode}模式的频道中,服务器从新消息中删除所有格式化,包括颜色."
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "It also explains that shared links will appear there. It collects the links people post while you are connected."
+msgstr "它还解释说,共享链接将在那里出现。 它收集了连接时的链接。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "Italic"
+msgstr "斜体"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "Key Bindings"
+msgstr "密钥绑定"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "Light Cyan"
+msgstr "浅青"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Light Green"
+msgstr "浅绿色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Light Grey"
+msgstr "浅灰色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Markdown: headings, bold, italic, strikethrough, code, quotes, lists and links. A preview button shows the result before you send."
+msgstr "标记下:标题,粗体,斜体,切换,代码,引用,列表和链接. 预览按钮在发送前显示结果 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:93
+#, elixir-autogen, elixir-format
+msgid "Mentions"
+msgstr "提及"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Mentions stays empty until someone writes your nickname in a channel you were in."
+msgstr "直到有人在您所在的频道里写下您的昵称为止,"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Navy"
+msgstr "海军"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "New messages appear as usual after you clear the window."
+msgstr "清除窗口后, 新的消息会照常出现 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "Nothing is shown when you connect while no MOTD is set."
+msgstr "连接时没有显示任何内容, 没有设置 MOTD 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "Only the channel owner and operators can pin or unpin. Other members do not see these menu items."
+msgstr "Only the channel owner and operators can pin or unpin. Other members do not see these menu items."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:111
+#, elixir-autogen, elixir-format
+msgid "Only the first 128 IRC formatting codes in a message are shown."
+msgstr "只显示消息中前128个IRC格式化代码."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:115
+#, elixir-autogen, elixir-format
+msgid "Only the first 128 formatting codes in a message are shown. The rest are removed from the display."
+msgstr "仅显示信件中头128个格式化代码. 其余部分从展示中移除."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Only your own view is cleared. The messages are not deleted, and other people still see them."
+msgstr "只有你自己的视野被清除。 消息没有删除,其他人仍然看到."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Open it from the menu bar at the top of the chat window. The menu is available once you are connected. The same three actions are also in the Start menu, under View."
+msgstr "从聊天窗口顶端的菜单栏打开. 菜单一旦连接即可使用。 同样的三个动作也在\"开始菜单\"中,在View下."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Open the Edit menu and choose Copy."
+msgstr "打开编辑菜单并选择副本。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Open the channel whose topic you want to change."
+msgstr "打开您想要更改主题的频道 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Operators can also edit the topic in Channel Central, on the General tab, and press Save Topic."
+msgstr "Operators can also edit the topic in Channel Central, on the General tab, and press Save Topic."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Orange"
+msgstr "橙色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Paste the text anywhere you like."
+msgstr "粘贴您喜欢的文本 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Pink"
+msgstr "粉红色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:69
+#, elixir-autogen, elixir-format
+msgid "Pins exist only in channels, not in private conversations."
+msgstr "皮恩斯只存在于频道,而不是私人对话中."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Place the cursor in the message box, then click a style button or press its shortcut."
+msgstr "将光标放在消息框中,然后单击样式按钮或按其快捷键。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Plain text: the message is sent exactly as typed, with no styles."
+msgstr "纯文本:消息的发送方式与打字方式完全相同,没有样式."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "Press %{keys} in the message box."
+msgstr "按%{keys}在信息框中键."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "Press %{key} to close the Find bar. You can change the Find shortcut in your key bindings."
+msgstr "按 %{key} 关闭查找栏 。 您可以更改密钥绑定中的“ 查找” 快捷键 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Press %{key} to close the panel and return to the message box. The formatting toolbar is not shown on the Status tab."
+msgstr "按 %{key} 关闭面板并返回信息框. 格式化工具栏不显示在状态标签上 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Purple"
+msgstr "紫色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Red"
+msgstr "红色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:79
+#, elixir-autogen, elixir-format
+msgid "Reset all formatting"
+msgstr "重置所有格式"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:77
+#, elixir-autogen, elixir-format
+msgid "Reverse. Swaps the text and background colors."
+msgstr "转身 交换文本和背景颜色。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Right-click the message in the channel."
+msgstr "右键单击频道中的消息。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:101
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Rules and limits"
+msgstr "规则和限制"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:92
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "Saved Messages"
+msgstr "已保存的信件"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Saved Messages says you have not kept anything yet. Right-click any message and choose Save for Later to add it. Only you can see your saved messages."
+msgstr "保存的消息说您还没有保存任何信息 。 右键单击任何信件并选择“保存”以添加它。 只有你能看到你保存的消息。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:130
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "Strip Colors"
+msgstr "条纹颜色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Teal"
+msgstr "蓝绿"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Text and background colors"
+msgstr "文本和背景颜色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Text selected outside the message log, such as in the message box or a menu, is not copied. Copy stays grey in that case."
+msgstr "信件日志外选中的文本, 如信件框或菜单中选中的文本, 不被复制 。 复制件在那个情况下是灰色的。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:96
+#, elixir-autogen, elixir-format
+msgid "The Color button and the color grid appear only when the message format is IRC."
+msgstr "颜色按钮和颜色网格仅在消息格式为IRC时才会出现."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "The Color button is inside the formatting toolbar. Click the Formatting Toolbar button beside the message box to open it."
+msgstr "颜色按钮位于格式化工具栏内。 单击消息框旁的“格式工具栏”按钮打开它。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "The MOTD is a short note from the people who run the server. It often holds the house rules, news, or planned maintenance. Everyone on the server sees the same text."
+msgstr "MOTD是运行服务器的人的简短注释. 它经常持有房屋规则,新闻,或计划维护. 服务器上的每个人都看到相同的文本."
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "The Pinned window explains that the channel is not keeping anything yet. Only an operator can pin a message. Right-click the message and choose Pin."
+msgstr "The Pinned window explains that the channel is not keeping anything yet. Only an operator can pin a message. Right-click the message and choose Pin."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:96
+#, elixir-autogen, elixir-format
+msgid "The button is called Strip Formatting. The same switch is in the View menu. It changes only how messages look on your screen. Other people still see the formatting."
+msgstr "按钮叫做脱衣格式。 同一开关在视图菜单中. 它只会改变您屏幕上的信息的外观 。 其他人仍然看到格式化."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "The channel name in bold, when a channel is open."
+msgstr "频道名称以粗体表示, 当一个频道打开时."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "The color grid shows the 16 colors in two rows of eight. Point at a swatch to see its name. Clicking a swatch inserts the color code and its number at the cursor."
+msgstr "颜色网格显示16种颜色为2排8. 指着一个表看它的名字 单击鼠标在光标处插入颜色代码及其编号。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "The first number sets the text color. Add a comma and a second number to set the background color too."
+msgstr "第一个数字设置文字颜色。 添加逗号和第二个数字来设置背景颜色 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "The keyboard shortcut %{keys} inserts the color code without a number. Type the color number right after it."
+msgstr "键盘快捷键 %{keys}插入无数字的颜色代码. 之后输入颜色号 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:76
+#, elixir-autogen, elixir-format
+msgid "The menu item is greyed out until you are connected to the chat."
+msgstr "菜单项在连接到聊天之前会灰化 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "The modes code updates by itself when an operator changes a channel mode."
+msgstr "当操作员改变频道模式时,模式代码会自行更新."
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The nicklist groups people by role. A group with nobody in it is hidden until someone joins it."
+msgstr "The nicklist groups people by role. A group with nobody in it is hidden until someone joins it."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "The same item is also in the Start menu, under Help > Message of the Day."
+msgstr "相同的项目也在“启动”菜单中,在“帮助>当天的信息”下。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "The text is added to the Status tab. The window you are reading stays open."
+msgstr "文本添加到状态标签中 。 你正在读的窗口保持开放。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "The thread window says nobody has answered yet when a message has no replies. Your reply starts the thread and also stays in the room."
+msgstr "线性窗口说,当一个消息没有回复时,还没有人回答. 你的回答开始线条, 也留在房间里。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:75
+#, elixir-autogen, elixir-format
+msgid "The topic bar is for reading only. Clicking it does nothing."
+msgstr "话题栏仅供阅读. 点击它什么也没有。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "The topic bar updates at once for everyone in the channel, and a line in the chat says who changed it."
+msgstr "话题栏立即为频道中的每个人更新,聊天中的一行表示是谁更改的."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "The topic text. A long topic is cut at the end of the bar. When a channel has no topic, the bar shows %{text}."
+msgstr "主题文本。 一个长的话题在酒吧的尽头被剪断. 当一个频道没有话题时,栏杆会显示%{text}."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "The window stays clear when you switch to another conversation and come back."
+msgstr "The window stays clear when you switch to another conversation and come back."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "These shortcuts insert IRC control codes at the cursor, so use them with the IRC format. Bold, italic, underline and reverse are switches: press the same shortcut again to turn the style off."
+msgstr "这些快捷键在光标处插入IRC控制码,因此使用IRC格式. 粗体,斜体,下划线和反向是开关:再次按同样的快捷键关闭样式."
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:94
+#, elixir-autogen, elixir-format
+msgid "Threads"
+msgstr "线索"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "To end the color in the middle of a message, press %{keys} again and do not type a number. To end every format at once, press %{reset}."
+msgstr "要结束消息中间的颜色,请再次按下%{keys},不要输入数字. 要同时结束每一种格式,请按 %{reset}."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "To remove it, right-click the message and choose Unpin, or press Unpin beside its row in this window."
+msgstr "要删除它,请右键单击信件并选择 Unpin,或按 Unpin 在本窗口的行旁。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:80
+#, elixir-autogen, elixir-format
+msgid "Topic Lock"
+msgstr "主题锁定"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Type %{command} followed by the new text, then press Enter."
+msgstr "%{command}型,然后是新文本,然后按 Enter."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Type %{command} with no text to print the current topic in the chat."
+msgstr "键入 %{command}, 没有文本可以打印聊天中的当前话题 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "Type %{example} for red text on a yellow background."
+msgstr "%{example}型,用于黄色背景上的红色文字."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "Type the text you want in the Find bar, then use Prev and Next to move between matches. Options let you match case, use a regular expression, show only your mentions, or search older history."
+msgstr "在“查找”栏中键入您想要的文本,然后使用“前导”和“下导”在匹配之间移动。 选项允许您匹配大小写, 使用正则表达式, 只显示您的引用, 或者搜索旧历史 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Type your text and press Enter to send it."
+msgstr "键入文本并按 Enter 键发送。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:72
+#, elixir-autogen, elixir-format
+msgid "Underline"
+msgstr "下划线"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Until someone posts a link, the URL Catcher shows %{text}"
+msgstr "在有人发布链接之前, URL Catcher 显示 %{text}"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Use it for things people keep asking about: the channel rules, an important link, or a decision the room made. Newcomers can find them without scrolling back."
+msgstr "把它用在人们不断问到的东西上:频道规则,重要链接,或者房间所做的决定. 新来者可以在不向后滚动的情况下找到它们."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "What it is for"
+msgstr "它是为了什么"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What it shows"
+msgstr "显示什么"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "When a channel already keeps 50 messages, you must unpin one before you can pin another."
+msgstr "当一个频道已经保存了50条消息时, 您必须先解开一个, 然后再给另一个连接 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "When an administrator changes or clears the MOTD, every connected user gets a short notice in the Status tab. Run the command again to read the new text."
+msgstr "当一个管理员更改或清除 MOTD 时,每个连接的用户都会在状态标签中获得一个简短的通知. 再次运行命令读取新文本 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "When it helps"
+msgstr "当它帮助"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:63
+#, elixir-autogen, elixir-format
+msgid "When the channel has mode %{mode}, only operators and the owner can change the topic. Without it, any member can."
+msgstr "当频道有模式%{mode}时,只有操作员和所有者可以改变话题. 没有它,任何成员都可以。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Where it appears"
+msgstr "出现的地方"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "White"
+msgstr "白色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Yellow"
+msgstr "黄色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "You can also type %{pin} or %{unpin} followed by the message id."
+msgstr "也可以键入%{pin}或%{unpin},然后是消息ID."
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:63
+#, elixir-autogen, elixir-format
+msgid "Events says nothing is planned yet. If you may schedule events, it shows how to add one:"
+msgstr "事情说还没有计划 如果您可以安排事件, 它显示如何添加 :"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "Otherwise it says that events from operators will show up there."
+msgstr "否则,它说 操作员的事件会在那里出现。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Private conversations and the Status tab never show modes."
+msgstr "私人对话与状态标签从不显示模式 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "The active channel modes as one short code, for example:"
+msgstr "活动频道模式作为一个短码,例如:"

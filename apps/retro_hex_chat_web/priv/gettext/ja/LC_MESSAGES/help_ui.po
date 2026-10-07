@@ -11,12 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "/join"
 msgstr "/join"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "/topic Command"
 msgstr "/topic Command"
@@ -27,13 +27,6 @@ msgid "/whois, /alias, /ignore, /perform, /autojoin, /invite, /kick, /ban, /mode
 msgstr ""
 "/whois, /alias, /ignore, /perform, /autojoin, /invite, /kick, /ban, /mode, "
 "/timer output."
-
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "0 White 8 Yellow 1 Black 9 Light Green 2 Navy 10 Teal 3 Green 11 Cyan 4 Red 12 Blue 5 Maroon 13 Magenta 6 Purple 14 Grey 7 Orange 15 Light Grey"
-msgstr ""
-"0 白い 8 の黄色 1 の黒 9 ライト緑 2 の海軍 10 の Teal 3 の緑 11 のシアン 4 赤い 12 の青 5 のマゼンタ 13 "
-"のマゼンタ 6 紫色 14 灰色 7 オレンジ 15 ライト 灰色"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:16
 #, elixir-autogen, elixir-format
@@ -50,11 +43,6 @@ msgstr "アドレス帳"
 #, elixir-autogen, elixir-format
 msgid "Alias Editor"
 msgstr "エイリアスエディタ"
-
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "An empty channel shows a welcome message and tips for getting started."
-msgstr "空のチャンネルでは、歓迎されたメッセージとヒントが始まります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:41
 #, elixir-autogen, elixir-format
@@ -108,6 +96,7 @@ msgid "Button Groups"
 msgstr "ボタングループ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:120
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "チャネルの中央"
@@ -117,17 +106,12 @@ msgstr "チャネルの中央"
 msgid "Channel List"
 msgstr "チャンネルリスト"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "Channel Messages"
-msgstr "チャンネルメッセージ"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Chat Area:"
 msgstr "チャットエリア:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Click the"
@@ -138,18 +122,13 @@ msgstr "クリックします。"
 msgid "Clipboard"
 msgstr "クリップボード"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Color"
-msgstr "カラー"
-
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Color Palette"
 msgstr "カラーパレット"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:59
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:123
 #, elixir-autogen, elixir-format
 msgid "Colors"
 msgstr "カラー"
@@ -175,6 +154,7 @@ msgid "Connection"
 msgstr "コネクション"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Context Menu"
 msgstr "コンテキストメニュー"
@@ -185,7 +165,8 @@ msgstr "コンテキストメニュー"
 msgid "Context Menus"
 msgstr "コンテキストメニュー"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:88
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:51
 #, elixir-autogen, elixir-format
@@ -202,14 +183,6 @@ msgstr "会話:"
 msgid "Ctrl+C — Copy selected text"
 msgstr "Ctrl+C — 選択したテキストをコピーする"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color (opens color picker) Ctrl+Shift+V — Reverse Ctrl+Shift+X — Reset all formatting"
-msgstr ""
-"Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline "
-"Ctrl+Shift+D — カラー (カラーピッカーを開く) Ctrl+Shift+V — Ctrl+Shift+X を反転 — "
-"すべてのフォーマットをリセット"
-
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color Ctrl+Shift+V — Reverse (also in formatting toolbar) Ctrl+Shift+X — Reset formatting (also in formatting toolbar)"
@@ -217,11 +190,6 @@ msgstr ""
 "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline "
 "Ctrl+Shift+D — Color Ctrl+Shift+V — 逆(ツールバーのフォーマットも) Ctrl+Shift+X — "
 "リセットフォーマット(ツールバーのフォーマットも)"
-
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Ctrl+Shift+D"
-msgstr "Ctrl + シフト + D"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:150
 #, elixir-autogen, elixir-format
@@ -248,7 +216,7 @@ msgstr "絵文字"
 msgid "Emoji Picker — Click smiley button in formatting toolbar"
 msgstr "Emoji Picker - ツールバーのフォーマットでスマイリーボタンをクリック"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Empty state messages disappear automatically when content arrives. The text is not selectable."
 msgstr "コンテンツが到着したときに自動的に状態メッセージが消えます。 テキストは選択できません。"
@@ -277,7 +245,7 @@ msgstr "エラー:"
 msgid "Every"
 msgstr "毎"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Find"
@@ -287,12 +255,6 @@ msgstr "検索"
 #, elixir-autogen, elixir-format
 msgid "Flood Protection"
 msgstr "洪水の保護"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "For PMs, it shows \"Private conversation with <nickname>\". For the Status tab, it shows \"RetroHexChat Status\"."
-msgstr ""
-"PMでは「<nickname>でプライベートな会話」が表示されます。 ステータスタブでは、「RetroHexChat Status」が表示されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:35
 #, elixir-autogen, elixir-format
@@ -345,7 +307,7 @@ msgstr "無視リスト"
 msgid "Input & Autocomplete"
 msgstr "入力とオートコンプリート"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:123
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:54
@@ -354,7 +316,7 @@ msgstr "入力とオートコンプリート"
 msgid "Keyboard Shortcuts"
 msgstr "キーボードショートカット"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts:"
 msgstr "キーボードショートカット:"
@@ -379,7 +341,7 @@ msgstr "ユーザー情報を見る"
 msgid "Message display with formatting and clickable URLs."
 msgstr "フォーマットとクリック可能なURLでメッセージ表示。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Methods"
 msgstr "メソッド"
@@ -399,12 +361,12 @@ msgstr "ナビゲーション"
 msgid "NickServ, ChanServ responses."
 msgstr "NickServ、ChanServの応答。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Nicklist"
 msgstr "ニックリスト"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Notes"
 msgstr "インフォメーション"
@@ -464,11 +426,6 @@ msgstr "P2Pセッション:"
 msgid "Perform"
 msgstr "パフォーマンス"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Press"
-msgstr "ニュース"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Purple, bold. Channel founders."
@@ -515,7 +472,7 @@ msgid "Save to your address book."
 msgstr "アドレス帳に保存します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:78
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "検索"
@@ -530,28 +487,29 @@ msgstr "検索ナビゲーション"
 msgid "Sections"
 msgstr "セクション"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:53
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:117
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:93
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/ui_install_app.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:78
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:98
 #: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
-#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:113
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:203
-#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "関連項目"
@@ -580,16 +538,6 @@ msgstr "セット ニック色:"
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
 msgstr "ショートカットシート"
-
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:25
-#, elixir-autogen, elixir-format
-msgid "Shows \"No URLs captured\" until URLs appear in chat."
-msgstr "チャット中に URL が表示されるまで \"No URL がキャプチャされていない\" を表示します。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "Shows \"Nobody here\" when you are the only user (or the channel is truly empty)."
-msgstr "ほかに誰もいないとき（またはチャンネルが本当に空のとき）、\"Nobody here\" と表示されます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:22
 #, elixir-autogen, elixir-format
@@ -632,7 +580,7 @@ msgstr "ステータスバー"
 msgid "Status Bar:"
 msgstr "ステータスバー:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "書式を解除"
@@ -693,7 +641,7 @@ msgstr "会話を切り替える"
 msgid "Toggle Nicklist"
 msgstr "Toggle Nicklist"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Toolbar:"
@@ -710,12 +658,13 @@ msgstr "ツール"
 msgid "Topic Bar:"
 msgstr "トピック バー:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "UI Overview"
 msgstr "UIの概要"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/ui_open_tab_confirm.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:114
 #, elixir-autogen, elixir-format
@@ -766,7 +715,7 @@ msgstr "ステータスの出現"
 msgid "When a UI container has no content, a friendly placeholder message appears with guidance:"
 msgstr "UI コンテナにコンテンツがない場合、フレンドリーなプレースホルダーメッセージがガイダンスに表示されます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "When no channels are joined, shows a hint to use"
 msgstr "チャンネルがない場合、使用するヒントが表示されます。"
@@ -786,20 +735,15 @@ msgstr "ウィス:"
 msgid "Windows & Dialogs"
 msgstr "Windowsとダイアログ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "and an \"Browse channels\" button."
 msgstr "「ブラウザチャンネル」ボタン。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:90
 #, elixir-autogen, elixir-format
 msgid "button in the formatting toolbar to strip all formatting from incoming messages."
 msgstr "フォーマットツールバーのボタンで、着信メッセージからすべてのフォーマットをストライプします。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "button in the formatting toolbar, then select a color from the 4×4 picker grid."
-msgstr "フォーマットツールバーのボタンで、4×4ピッカーグリッドから色を選択します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:12
 #, elixir-autogen, elixir-format
@@ -810,11 +754,6 @@ msgstr "参加、部品、キック、禁止、モード変更、トピック変
 #, elixir-autogen, elixir-format
 msgid "notify list online/offline, wallops."
 msgstr "オンライン/offline、wallopsを通知します。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "or click the"
-msgstr "またはクリック"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:26
 #, elixir-autogen, elixir-format
@@ -931,12 +870,12 @@ msgstr "/bio"
 msgid "/bot Command Reference"
 msgstr "/bot Command Reference"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "/clear"
 msgstr "/clear"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:102
 #, elixir-autogen, elixir-format
 msgid "/clearmotd"
 msgstr "/clearmotd"
@@ -951,8 +890,8 @@ msgstr "/deop"
 msgid "/devoice"
 msgstr "/devoice"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:20
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:100
 #, elixir-autogen, elixir-format
 msgid "/motd"
 msgstr "/motd"
@@ -977,7 +916,7 @@ msgstr "/ns"
 msgid "/op"
 msgstr "/op"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:101
 #, elixir-autogen, elixir-format
 msgid "/setmotd"
 msgstr "/setmotd"
@@ -1025,7 +964,7 @@ msgstr ""
 msgid "Adding and Editing"
 msgstr "追加と編集"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:103
 #, elixir-autogen, elixir-format
 msgid "Admin Console"
 msgstr "管理者コンソール"
@@ -1093,7 +1032,7 @@ msgstr "チャンネルタブ"
 msgid "Choose"
 msgstr "選択"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Clear Window"
@@ -1104,14 +1043,14 @@ msgstr "明確な窓"
 msgid "Clear the active window, copy selected chat text, and open Find."
 msgstr "アクティブなウィンドウをクリアし、選択したチャットテキストをコピーし、検索を開きます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Clears all messages from the active channel or private conversation window. This runs the same action as /clear and cannot be undone."
 msgstr ""
 "アクティブなチャンネルまたはプライベートな会話ウィンドウからすべてのメッセージをクリアします。 これは /clear "
 "と同じ動作を実行し、元に戻すことはできません。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Command Equivalent"
 msgstr "コマンド 等価"
@@ -1126,12 +1065,13 @@ msgstr "コマンドマッピング"
 msgid "Commands Tab"
 msgstr "コマンドタブ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Copies the current text selection from the chat log to the clipboard. The item is enabled only when selected text is inside the message log."
 msgstr "チャットログからクリップボードに現在のテキスト選択をコピーします。 選択したテキストがメッセージログ内にある場合にのみ有効です。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Copy"
@@ -1188,7 +1128,7 @@ msgstr "メニューの編集:"
 msgid "Events Tab"
 msgstr "イベントタブ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Every connected user can view the MOTD. Server administrators can set or clear it from the Admin Console MOTD tab."
 msgstr "すべてのコネクティッドユーザーがMOTDを見ることができます。 サーバー管理者は、管理者コンソールMOTDタブから設定または消去できます。"
@@ -1289,17 +1229,19 @@ msgstr "ワンショットタイマー:1〜86,400秒"
 msgid "Opening"
 msgstr "オープニング"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Opens or closes the in-window Find bar for searching messages. You can also press Ctrl+Shift+F."
 msgstr "ウィンドウ内検索バーを開き、メッセージを検索します。 Ctrl+Shift+Fを押すこともできます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Permissions"
 msgstr "パーミッション"
 
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Pinned"
@@ -1331,12 +1273,13 @@ msgid "Right-click a taskbar button for window commands (Restore, Minimize, Maxi
 msgstr ""
 "ウィンドウコマンド(復元、最小化、最大化、閉じる)のタスクバーボタンを右クリックし、タスクバーの空のスポットを右クリックして、すべてのオープンウィンドウを一度に整理します。カスケード、タイル水平または垂直に、そしてすべて最小化します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:106
 #, elixir-autogen, elixir-format
 msgid "Special Messages"
 msgstr "特別メッセージ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "Start Menu"
 msgstr "スタートメニュー"
@@ -1384,7 +1327,7 @@ msgid "The chat lives in one pinned window on a Windows-style desktop with a tas
 msgstr ""
 "チャットは、タスクバー、スタートメニュー、トレイクロックを備えたWindowsスタイルのデスクトップ上の1つのピン留めウィンドウに住んでいます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "The menu item runs"
 msgstr "メニュー項目が実行されます"
@@ -1436,7 +1379,7 @@ msgstr "タイマーは接続解除やページのリロード時に失われま
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:102
-#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Toolbar"
@@ -1457,7 +1400,7 @@ msgstr "ユーザーモード"
 msgid "and"
 msgstr "と"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "and uses the same Status-tab output."
 msgstr "同じ Status-tab 出力を使用します。"
@@ -1807,7 +1750,8 @@ msgstr ""
 msgid "Message Format"
 msgstr "メッセージ形式"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:128
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:120
 #, elixir-autogen, elixir-format
 msgid "Message Formats"
 msgstr "メッセージ形式"
@@ -1839,7 +1783,7 @@ msgstr "テキスト書式の概要"
 msgid "The composer can send messages in three content formats: IRC, MD, and TXT."
 msgstr "メッセージ入力欄は IRC、MD、TXT の 3 つのコンテンツ形式でメッセージを送信できます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "The formatting toolbar changes with the selected message format."
 msgstr "ツールバーのフォーマットは、選択したメッセージ形式に変更されます。"
@@ -2664,12 +2608,12 @@ msgstr "何が変わるか"
 msgid "iPhone or iPad Safari: Share, then Add to Home Screen"
 msgstr "iPhone・iPad の Safari：共有から「ホーム画面に追加」"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "/pin"
 msgstr "/pin"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "/unpin"
 msgstr "/unpin"
@@ -2886,3 +2830,613 @@ msgid "Shows active public channels you have not joined yet when the server has 
 msgstr ""
 "サーバが提案する部屋を持っているときにまだ参加していないアクティブなパブリックチャネルを表示します。 クリックして参加して、そこに行きます。 "
 "セクションはチャンネルがほとんどなく、一度にシャットしたままで開きます。その見出しは、いつでも再オープンします。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:83
+#, elixir-autogen, elixir-format
+msgid "A color number has one or two digits. A two-digit number above 15 is read as one digit, and the second digit stays in your text."
+msgstr "色番号は1つまたは2つの数字を持っています。 15 を超える 2 桁の数字は 1 つの数字で読み、 2 番目の数字はテキストにとどまります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "A pin belongs to the channel. Everyone in the channel sees the same list."
+msgstr "ピンはチャンネルに属しています。 チャンネル内の誰もが同じリストを見る."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:90
+#, elixir-autogen, elixir-format
+msgid "Administrators can also type %{set} followed by the new text, or %{clear} to remove it. Other users who try these commands get a permission error."
+msgstr "管理者は、%{set} を新しいテキスト、または %{clear} を入力して削除することもできます。 これらのコマンドを試す他のユーザーは、権限エラーを取得します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "An icon for the kind of window: a channel, a private conversation, or the Status tab."
+msgstr "ウィンドウの種類のためのアイコン:チャネル、プライベートな会話、またはステータスタブ。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "At the top of the panel, choose IRC formatting, Markdown formatting or Plain text."
+msgstr "パネルの上部に、IRCの書式、Markdownの書式か明白なテキストを選んで下さい。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Black"
+msgstr "ブラック"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Blue"
+msgstr "ブルージュ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "Bold"
+msgstr "太字"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Brown"
+msgstr "ブラウン"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:81
+#, elixir-autogen, elixir-format
+msgid "Channel Modes"
+msgstr "チャネルモード"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Choose Help > Message of the Day, or type the command."
+msgstr "ヘルプ > 日のメッセージ、またはコマンドを入力します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Choose Pin. The Pinned button appears or its count goes up."
+msgstr "ピンを選択します。 ピン留めボタンが現れたり、そのカウントが上がります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:109
+#, elixir-autogen, elixir-format
+msgid "Choose View > Strip Formatting to read every message without colors. This changes only your own view."
+msgstr "選択する > 色なしですべてのメッセージを読むためにフォーマットするストリップ. 自分の視点だけを変えます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Click Browse channels to open the Channel List, where you can pick a room to join."
+msgstr "チャンネルリストを開くには、[ブラウザ] をクリックして、参加する部屋を選ぶことができます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Click and drag over the messages you want to copy."
+msgstr "コピーしたいメッセージをクリックしてドラッグします。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Click the Color button in the formatting toolbar, then choose a color from the grid."
+msgstr "整形ツールバーの [カラー] ボタンをクリックし、グリッドから色を選択します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Click the Formatting Toolbar button beside the message box. A small panel opens."
+msgstr "メッセージボックスの横にあるツールバーのフォーマットボタンをクリックします。 小さなパネルが開きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "Color. Type a color number right after it."
+msgstr "色。 直後に色番号を入力します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Each color has a number from 0 to 15. The names below are the ones the color grid shows."
+msgstr "各色は0から15までです。 下の名前は、色のグリッド表示です。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "Each row shows who wrote the message, when, a short preview, and who pinned it. More rows load as you scroll down."
+msgstr "各行は、メッセージ、時、短いプレビュー、およびそれをピン留めした人を表示します。 スクロールダウンすると、より多くの行がロードされます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Events"
+msgstr "イベント"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "Formatting Overview"
+msgstr "フォーマットの概要"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Green"
+msgstr "グリーングリーン"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "Grey"
+msgstr "グレー"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "How to change the topic"
+msgstr "トピックを変更する方法"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "How to format a message"
+msgstr "メッセージのフォーマット方法"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "How to pin a message"
+msgstr "メッセージをピン留めする方法"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "IRC: classic mIRC styles. Bold, italic, underline, reverse and the 16 colors."
+msgstr "IRC:古典的なmIRCスタイル。 ボルド、イタリック、アンダーライン、リバース、16色。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "If no MOTD is set, you see the message %{text} instead."
+msgstr "MOTDが設定されていない場合は、代わりにメッセージ%{text}が表示されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "If you are not on the Status tab, it is marked as unread. Open the Status tab to read the message."
+msgstr "ステータスタブにないと、未読とマークされます。 ステータスタブを開き、メッセージを読みます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:89
+#, elixir-autogen, elixir-format
+msgid "If your text starts with a digit, that digit can join the color number. Write the color with two digits, such as %{example}, to avoid this."
+msgstr "テキストが数字で始まると、数字が色番号に結合できます。 %{example}などの2つの数字で色を書きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "In a channel with mode %{mode}, the server removes all formatting from new messages and saves them as plain text."
+msgstr "モード%{mode}のチャンネルでは、サーバーは新しいメッセージからすべてのフォーマットを削除し、それらをプレーンテキストとして保存します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:102
+#, elixir-autogen, elixir-format
+msgid "In a channel with mode %{mode}, the server removes all formatting, colors included, from new messages."
+msgstr "モード%{mode}のチャンネルでは、サーバーは、新しいメッセージから、含まれているすべてのフォーマット、色を削除します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "It also explains that shared links will appear there. It collects the links people post while you are connected."
+msgstr "また、共有リンクが表示されることを説明しています。 あなたが接続している間、それは人々を投稿するリンクを収集します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "Italic"
+msgstr "斜体"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "Key Bindings"
+msgstr "キーの結合"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "Light Cyan"
+msgstr "ライトシアン"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Light Green"
+msgstr "ライトグリーン"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Light Grey"
+msgstr "ライトグレー"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Markdown: headings, bold, italic, strikethrough, code, quotes, lists and links. A preview button shows the result before you send."
+msgstr "Markdown:見出し、太字、斜面、ストライクスルー、コード、引用符、リスト、リンク。 プレビューボタンは送信前に結果を表示します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:93
+#, elixir-autogen, elixir-format
+msgid "Mentions"
+msgstr "メンション"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Mentions stays empty until someone writes your nickname in a channel you were in."
+msgstr "誰かがあなたがいたチャネルであなたのニックネームを書くまで、Mentionsは空にとどまります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Navy"
+msgstr "ネイビー"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "New messages appear as usual after you clear the window."
+msgstr "ウィンドウをクリアすると、新しいメッセージが通常通り表示されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "Nothing is shown when you connect while no MOTD is set."
+msgstr "MOTD がセットされていないときに接続しても表示されません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "Only the channel owner and operators can pin or unpin. Other members do not see these menu items."
+msgstr "チャネルの所有者およびオペレータだけピンかアンピンできます。 他の会員は、これらのメニュー項目は表示されません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:111
+#, elixir-autogen, elixir-format
+msgid "Only the first 128 IRC formatting codes in a message are shown."
+msgstr "メッセージの最初の128 IRCフォーマットコードのみが表示されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:115
+#, elixir-autogen, elixir-format
+msgid "Only the first 128 formatting codes in a message are shown. The rest are removed from the display."
+msgstr "メッセージの最初の128フォーマットコードのみが表示されます。 残りは表示から取り除かれます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Only your own view is cleared. The messages are not deleted, and other people still see them."
+msgstr "自分の視点だけをクリアします。 メッセージは削除されず、他の人はまだそれらを参照してください。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Open it from the menu bar at the top of the chat window. The menu is available once you are connected. The same three actions are also in the Start menu, under View."
+msgstr "チャットウィンドウの上部にあるメニューバーから開きます。 接続したらメニューが利用できます。 同じ3つのアクションは、[表示] の [スタート] メニューでもあります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Open the Edit menu and choose Copy."
+msgstr "[編集]メニューを開き、[コピー]を選択します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Open the channel whose topic you want to change."
+msgstr "変更したいトピックのチャンネルを開きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Operators can also edit the topic in Channel Central, on the General tab, and press Save Topic."
+msgstr "オペレータはチャンネルセントラルでトピックを編集することもできます。, 一般的なタブで, プレス保存トピック."
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Orange"
+msgstr "オレンジ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Paste the text anywhere you like."
+msgstr "好きな場所にテキストを貼り付けます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Pink"
+msgstr "ピンク"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:69
+#, elixir-autogen, elixir-format
+msgid "Pins exist only in channels, not in private conversations."
+msgstr "ピンは、プライベートな会話ではなく、チャネルにのみ存在します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Place the cursor in the message box, then click a style button or press its shortcut."
+msgstr "メッセージボックスにカーソルを置き、スタイルボタンをクリックするか、ショートカットを押します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Plain text: the message is sent exactly as typed, with no styles."
+msgstr "プレーンテキスト:メッセージは、スタイルなしの型付けで正確に送信されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "Press %{keys} in the message box."
+msgstr "メッセージボックスに%{keys}を押します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "Press %{key} to close the Find bar. You can change the Find shortcut in your key bindings."
+msgstr "Findバーを閉じるために%{key}を押します。 重要なバインディングで Find ショートカットを変更できます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Press %{key} to close the panel and return to the message box. The formatting toolbar is not shown on the Status tab."
+msgstr "%{key}を押してパネルを閉じ、メッセージボックスに戻ります。 フォーマットツールバーはステータスタブに表示されません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Purple"
+msgstr "パープル"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Red"
+msgstr "レッド"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:79
+#, elixir-autogen, elixir-format
+msgid "Reset all formatting"
+msgstr "すべてのフォーマットをリセットする"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:77
+#, elixir-autogen, elixir-format
+msgid "Reverse. Swaps the text and background colors."
+msgstr "逆転。 テキストと背景色をスワッピングします。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Right-click the message in the channel."
+msgstr "チャンネル内のメッセージを右クリックします。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:101
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Rules and limits"
+msgstr "ルールと制限"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:92
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "Saved Messages"
+msgstr "保存されたメッセージ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Saved Messages says you have not kept anything yet. Right-click any message and choose Save for Later to add it. Only you can see your saved messages."
+msgstr "保存されたメッセージは、まだ何も保存されていないと言います。 任意のメッセージを右クリックし、後で保存を選択して追加します。 保存したメッセージのみが表示されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:130
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "Strip Colors"
+msgstr "ストリップの色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Teal"
+msgstr "青緑"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Text and background colors"
+msgstr "テキストと背景色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Text selected outside the message log, such as in the message box or a menu, is not copied. Copy stays grey in that case."
+msgstr "メッセージボックスやメニューなど、メッセージログ以外で選択したテキストはコピーされません。 コピーは、その場合にグレーを維持します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:96
+#, elixir-autogen, elixir-format
+msgid "The Color button and the color grid appear only when the message format is IRC."
+msgstr "カラーボタンとカラーグリッドは、メッセージ形式がIRCの場合のみ表示されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "The Color button is inside the formatting toolbar. Click the Formatting Toolbar button beside the message box to open it."
+msgstr "カラーボタンは整形ツールバー内にあります。 メッセージボックスの横にある書式ツールバーボタンをクリックすると、開きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "The MOTD is a short note from the people who run the server. It often holds the house rules, news, or planned maintenance. Everyone on the server sees the same text."
+msgstr "MOTDは、サーバーを運営する人からの短いメモです。 家のルール、ニュース、または計画されたメンテナンスを保持することが多いです。 サーバ上のすべての人が同じテキストを閲覧します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "The Pinned window explains that the channel is not keeping anything yet. Only an operator can pin a message. Right-click the message and choose Pin."
+msgstr "Pinned ウィンドウは、チャンネルがまだ何も保存されていないことを説明しています。 オペレータだけがメッセージを送ることができます。 メッセージを右クリックし、ピンを選択します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:96
+#, elixir-autogen, elixir-format
+msgid "The button is called Strip Formatting. The same switch is in the View menu. It changes only how messages look on your screen. Other people still see the formatting."
+msgstr "ボタンはストリップのフォーマットと呼ばれます。 同じスイッチはビューメニューにあります。 メッセージが画面にどのように表示されるかだけを変更します。 他の人々はまだフォーマットを見る。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "The channel name in bold, when a channel is open."
+msgstr "チャンネルが開いているとき、太字のチャンネル名。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "The color grid shows the 16 colors in two rows of eight. Point at a swatch to see its name. Clicking a swatch inserts the color code and its number at the cursor."
+msgstr "カラーグリッドは、8列の16色を示しています。 swatchでポイントして、その名前を確認します。 swatch をクリックすると、カーソルの色コードと番号が入力されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "The first number sets the text color. Add a comma and a second number to set the background color too."
+msgstr "最初の数字はテキストカラーを設定します。 背景色を設定するためにコンマと2番目の番号を追加します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "The keyboard shortcut %{keys} inserts the color code without a number. Type the color number right after it."
+msgstr "キーボードショートカット %{keys} は、番号なしでカラーコードをインサートします。 直後に色番号を入力します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:76
+#, elixir-autogen, elixir-format
+msgid "The menu item is greyed out until you are connected to the chat."
+msgstr "メニュー項目は、チャットに接続されるまでグレーアウトされます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "The modes code updates by itself when an operator changes a channel mode."
+msgstr "オペレータがチャンネルモードを変更するとき、モードはそれ自体によって更新されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The nicklist groups people by role. A group with nobody in it is hidden until someone joins it."
+msgstr "ニックネームリストはロールによって人々をグループ化します。 誰かが参加するまで、誰も隠されていないグループ。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "The same item is also in the Start menu, under Help > Message of the Day."
+msgstr "同じ項目は、[スタート]メニューの [ヘルプ] > [日のメッセージ] にあります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "The text is added to the Status tab. The window you are reading stays open."
+msgstr "テキストはステータスタブに追加されます。 読書しているウィンドウが開きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "The thread window says nobody has answered yet when a message has no replies. Your reply starts the thread and also stays in the room."
+msgstr "スレッドウィンドウは、メッセージが返信がない場合、誰も答えていないと言います。 返信が始まり、部屋に滞在します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:75
+#, elixir-autogen, elixir-format
+msgid "The topic bar is for reading only. Clicking it does nothing."
+msgstr "トピックバーのみを読み込みます。 クリックすると何もしません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "The topic bar updates at once for everyone in the channel, and a line in the chat says who changed it."
+msgstr "トピックバーは、チャンネル内のすべての人に一度に更新され、チャットの行は誰が変更したかを言います。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "The topic text. A long topic is cut at the end of the bar. When a channel has no topic, the bar shows %{text}."
+msgstr "トピックテキスト。 長いトピックはバーの最後にカットされます。 チャンネルが見つからない場合、バーは%{text}を示します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "The window stays clear when you switch to another conversation and come back."
+msgstr "別の会話に切り替えて戻って来ると、ウィンドウはクリアにとどまります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "These shortcuts insert IRC control codes at the cursor, so use them with the IRC format. Bold, italic, underline and reverse are switches: press the same shortcut again to turn the style off."
+msgstr "これらのショートカットは、カーソルの IRC 制御コードを入力しますので、IRC フォーマットで使用します。 折り曲げ、斜面、アンダーライン、リバースがスイッチです。同じショートカットをもう一度押してスタイルをオフにします。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:94
+#, elixir-autogen, elixir-format
+msgid "Threads"
+msgstr "スレッド"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "To end the color in the middle of a message, press %{keys} again and do not type a number. To end every format at once, press %{reset}."
+msgstr "メッセージの途中で色を終わらせるには、%{keys}をもう一度押して番号を入力しないでください。 一度にすべてのフォーマットを終了するには、%{reset} を押します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "To remove it, right-click the message and choose Unpin, or press Unpin beside its row in this window."
+msgstr "削除するには、メッセージを右クリックしてUnpinを選択し、このウィンドウの行の横にあるUnpinを押します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:80
+#, elixir-autogen, elixir-format
+msgid "Topic Lock"
+msgstr "トピックロック"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Type %{command} followed by the new text, then press Enter."
+msgstr "%{command} は新しいテキストに従って、Enter を押します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Type %{command} with no text to print the current topic in the chat."
+msgstr "チャットで現在のトピックを印刷するテキストなしで%{command}を入力します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "Type %{example} for red text on a yellow background."
+msgstr "黄色の背景に赤色テキスト用の%{example}を入力します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "Type the text you want in the Find bar, then use Prev and Next to move between matches. Options let you match case, use a regular expression, show only your mentions, or search older history."
+msgstr "Findバーにしたいテキストを入力すると、PrevとNextを使ってマッチ間で移動します。 オプションは、ケースにマッチしたり、正規表現を使用して、あなたの言及だけを表示したり、古い歴史を検索したりすることができます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Type your text and press Enter to send it."
+msgstr "テキストを入力して Enterを押して送信します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:72
+#, elixir-autogen, elixir-format
+msgid "Underline"
+msgstr "サイトマップ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Until someone posts a link, the URL Catcher shows %{text}"
+msgstr "誰かがリンクを投稿するまで、URLキャッチャーは%{text}を示しています"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Use it for things people keep asking about: the channel rules, an important link, or a decision the room made. Newcomers can find them without scrolling back."
+msgstr "チャンネルルール、重要なリンク、または部屋の決定など、人々について尋ね続けるためにそれを使用してください。 スクロールバックなしでそれらを見つけることができます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "What it is for"
+msgstr "お問い合わせ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What it shows"
+msgstr "展示内容"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "When a channel already keeps 50 messages, you must unpin one before you can pin another."
+msgstr "チャンネルがすでに50個のメッセージを保持している場合、別のメッセージを送る前に1つをアンピンする必要があります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "When an administrator changes or clears the MOTD, every connected user gets a short notice in the Status tab. Run the command again to read the new text."
+msgstr "管理者がMOTDを変更または消去すると、すべてのコネクティッドユーザーがステータスタブの短い通知を取得します。 コマンドを再度実行して新しいテキストを読み込みます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "When it helps"
+msgstr "助けるとき"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:63
+#, elixir-autogen, elixir-format
+msgid "When the channel has mode %{mode}, only operators and the owner can change the topic. Without it, any member can."
+msgstr "チャネルに%{mode}モードがある場合、オペレータと所有者だけがトピックを変更することができます。 それなしでは、メンバーはできます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Where it appears"
+msgstr "どこが現れているか"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "White"
+msgstr "ホワイト"
+
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Yellow"
+msgstr "イエロー"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "You can also type %{pin} or %{unpin} followed by the message id."
+msgstr "%{pin} または %{unpin} とメッセージ ID を入力することもできます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:63
+#, elixir-autogen, elixir-format
+msgid "Events says nothing is planned yet. If you may schedule events, it shows how to add one:"
+msgstr "Events says nothing is planned yet. If you may schedule events, it shows how to add one:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "Otherwise it says that events from operators will show up there."
+msgstr "それ以外の場合、オペレータからのイベントがそこに表示されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Private conversations and the Status tab never show modes."
+msgstr "プライベートな会話とステータスタブはモードを表示しません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "The active channel modes as one short code, for example:"
+msgstr "アクティブなチャンネルモードは、1つのショートコードとして、例えば:"

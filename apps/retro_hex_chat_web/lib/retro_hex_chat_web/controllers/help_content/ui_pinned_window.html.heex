@@ -18,8 +18,67 @@
     "Pressing a row scrolls the conversation to the line it kept, where the message sits in its original place with everything around it. Operators also get an Unpin beside each row."
   )}
 </p>
+<.help_h4 icon={:icon_pin}>{dgettext("help_ui", "When it helps")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Use it for things people keep asking about: the channel rules, an important link, or a decision the room made. Newcomers can find them without scrolling back."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_set_topic}>{dgettext("help_ui", "How to pin a message")}</.help_h4>
+<ol>
+  <li>{dgettext("help_ui", "Right-click the message in the channel.")}</li>
+  <li>{dgettext("help_ui", "Choose Pin. The Pinned button appears or its count goes up.")}</li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "To remove it, right-click the message and choose Unpin, or press Unpin beside its row in this window."
+    )}
+  </li>
+</ol>
+<p>
+  {dgettext(
+    "help_ui",
+    "You can also type %{pin} or %{unpin} followed by the message id.",
+    pin: "/pin",
+    unpin: "/unpin"
+  )}
+</p>
+<pre>/pin 1284
+/unpin 1284</pre>
+<.help_h4 icon={:icon_rules}>{dgettext("help_ui", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Only the channel owner and operators can pin or unpin. Other members do not see these menu items."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "A pin belongs to the channel. Everyone in the channel sees the same list."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "When a channel already keeps 50 messages, you must unpin one before you can pin another."
+    )}
+  </li>
+  <li>{dgettext("help_ui", "Pins exist only in channels, not in private conversations.")}</li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Each row shows who wrote the message, when, a short preview, and who pinned it. More rows load as you scroll down."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-pin">{dgettext("help_ui", "/pin")}</.help_link>
   | <.help_link topic="cmd-unpin">{dgettext("help_ui", "/unpin")}</.help_link>
+  |
+  <.help_link topic="feature-saved-messages">{dgettext("help_ui", "Saved Messages")}</.help_link>
+  | <.help_link topic="ui-context-menu">{dgettext("help_ui", "Context Menu")}</.help_link>
 </p>

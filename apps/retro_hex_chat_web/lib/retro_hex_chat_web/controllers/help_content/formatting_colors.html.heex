@@ -6,12 +6,126 @@
 </p>
 <.help_h4 icon={:icon_palette}>{dgettext("help_ui", "Using Colors")}</.help_h4>
 <p>
-  {dgettext("help_ui", "Press")} <strong>{dgettext("help_ui", "Ctrl+Shift+D")}</strong>
-  {dgettext("help_ui", "or click the")} <strong>{dgettext("help_ui", "Color")}</strong>
   {dgettext(
     "help_ui",
-    "button in the formatting toolbar, then select a color from the 4×4 picker grid."
+    "Click the Color button in the formatting toolbar, then choose a color from the grid."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "The Color button is inside the formatting toolbar. Click the Formatting Toolbar button beside the message box to open it."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "The color grid shows the 16 colors in two rows of eight. Point at a swatch to see its name. Clicking a swatch inserts the color code and its number at the cursor."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "The keyboard shortcut %{keys} inserts the color code without a number. Type the color number right after it.",
+    keys: "Ctrl+Shift+D"
   )}
 </p>
 <.help_h4 icon={:icon_palette}>{dgettext("help_ui", "Color Palette")}</.help_h4>
-<pre>{dgettext("help_ui", "0 White 8 Yellow 1 Black 9 Light Green 2 Navy 10 Teal 3 Green 11 Cyan 4 Red 12 Blue 5 Maroon 13 Magenta 6 Purple 14 Grey 7 Orange 15 Light Grey")}</pre>
+<p>
+  {dgettext(
+    "help_ui",
+    "Each color has a number from 0 to 15. The names below are the ones the color grid shows."
+  )}
+</p>
+<ul>
+  <li><code>0</code> {dgettext("help_ui", "White")}</li>
+  <li><code>1</code> {dgettext("help_ui", "Black")}</li>
+  <li><code>2</code> {dgettext("help_ui", "Navy")}</li>
+  <li><code>3</code> {dgettext("help_ui", "Green")}</li>
+  <li><code>4</code> {dgettext("help_ui", "Red")}</li>
+  <li><code>5</code> {dgettext("help_ui", "Brown")}</li>
+  <li><code>6</code> {dgettext("help_ui", "Purple")}</li>
+  <li><code>7</code> {dgettext("help_ui", "Orange")}</li>
+  <li><code>8</code> {dgettext("help_ui", "Yellow")}</li>
+  <li><code>9</code> {dgettext("help_ui", "Light Green")}</li>
+  <li><code>10</code> {dgettext("help_ui", "Teal")}</li>
+  <li><code>11</code> {dgettext("help_ui", "Light Cyan")}</li>
+  <li><code>12</code> {dgettext("help_ui", "Blue")}</li>
+  <li><code>13</code> {dgettext("help_ui", "Pink")}</li>
+  <li><code>14</code> {dgettext("help_ui", "Grey")}</li>
+  <li><code>15</code> {dgettext("help_ui", "Light Grey")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_ui", "Text and background colors")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "The first number sets the text color. Add a comma and a second number to set the background color too."
+  )}
+</p>
+<ol>
+  <li>{dgettext("help_ui", "Press %{keys} in the message box.", keys: "Ctrl+Shift+D")}</li>
+  <li>
+    {dgettext("help_ui", "Type %{example} for red text on a yellow background.", example: "4,8")}
+  </li>
+  <li>{dgettext("help_ui", "Type your text and press Enter to send it.")}</li>
+</ol>
+<p>
+  {dgettext(
+    "help_ui",
+    "To end the color in the middle of a message, press %{keys} again and do not type a number. To end every format at once, press %{reset}.",
+    keys: "Ctrl+Shift+D",
+    reset: "Ctrl+Shift+X"
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_ui", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_ui",
+      "A color number has one or two digits. A two-digit number above 15 is read as one digit, and the second digit stays in your text."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "If your text starts with a digit, that digit can join the color number. Write the color with two digits, such as %{example}, to avoid this.",
+      example: "04"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "The Color button and the color grid appear only when the message format is IRC."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "In a channel with mode %{mode}, the server removes all formatting, colors included, from new messages.",
+      mode: "+c"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Choose View > Strip Formatting to read every message without colors. This changes only your own view."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Only the first 128 formatting codes in a message are shown. The rest are removed from the display."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="formatting-overview">
+    {dgettext("help_ui", "Formatting Overview")}
+  </.help_link>
+  ·
+  <.help_link topic="formatting-message-formats">
+    {dgettext("help_ui", "Message Formats")}
+  </.help_link>
+  · <.help_link topic="mode-c">{dgettext("help_ui", "Strip Colors")} (+c)</.help_link>
+</p>

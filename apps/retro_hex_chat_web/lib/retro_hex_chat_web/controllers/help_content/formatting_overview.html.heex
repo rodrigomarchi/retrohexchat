@@ -11,6 +11,52 @@
     "Use the IRC, MD, and TXT selector beside the composer to choose how the next message is saved and rendered."
   )}
 </p>
+<ul>
+  <li>
+    {dgettext(
+      "help_ui",
+      "IRC: classic mIRC styles. Bold, italic, underline, reverse and the 16 colors."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Markdown: headings, bold, italic, strikethrough, code, quotes, lists and links. A preview button shows the result before you send."
+    )}
+  </li>
+  <li>
+    {dgettext("help_ui", "Plain text: the message is sent exactly as typed, with no styles.")}
+  </li>
+</ul>
+<.help_h4 icon={:icon_fmt_toolbar}>{dgettext("help_ui", "How to format a message")}</.help_h4>
+<ol>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Click the Formatting Toolbar button beside the message box. A small panel opens."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "At the top of the panel, choose IRC formatting, Markdown formatting or Plain text."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Place the cursor in the message box, then click a style button or press its shortcut."
+    )}
+  </li>
+  <li>{dgettext("help_ui", "Type your text and press Enter to send it.")}</li>
+</ol>
+<p>
+  {dgettext(
+    "help_ui",
+    "Press %{key} to close the panel and return to the message box. The formatting toolbar is not shown on the Status tab.",
+    key: "Escape"
+  )}
+</p>
 <.help_h4 icon={:icon_code}>{dgettext("help_ui", "Methods")}</.help_h4>
 <p>
   <strong>{dgettext("help_ui", "Toolbar:")}</strong>
@@ -20,7 +66,24 @@
   )}
 </p>
 <p><strong>{dgettext("help_ui", "Keyboard Shortcuts:")}</strong></p>
-<pre>{dgettext("help_ui", "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color (opens color picker) Ctrl+Shift+V — Reverse Ctrl+Shift+X — Reset all formatting")}</pre>
+<ul>
+  <li><kbd>Ctrl+Shift+B</kbd> {dgettext("help_ui", "Bold")}</li>
+  <li><kbd>Ctrl+Shift+Y</kbd> {dgettext("help_ui", "Italic")}</li>
+  <li><kbd>Ctrl+Shift+U</kbd> {dgettext("help_ui", "Underline")}</li>
+  <li>
+    <kbd>Ctrl+Shift+D</kbd> {dgettext("help_ui", "Color. Type a color number right after it.")}
+  </li>
+  <li>
+    <kbd>Ctrl+Shift+V</kbd> {dgettext("help_ui", "Reverse. Swaps the text and background colors.")}
+  </li>
+  <li><kbd>Ctrl+Shift+X</kbd> {dgettext("help_ui", "Reset all formatting")}</li>
+</ul>
+<p>
+  {dgettext(
+    "help_ui",
+    "These shortcuts insert IRC control codes at the cursor, so use them with the IRC format. Bold, italic, underline and reverse are switches: press the same shortcut again to turn the style off."
+  )}
+</p>
 <.help_h4 icon={:icon_close}>{dgettext("help_ui", "Strip Formatting")}</.help_h4>
 <p>
   {dgettext("help_ui", "Click the")} <strong>S</strong>
@@ -29,6 +92,28 @@
     "button in the formatting toolbar to strip all formatting from incoming messages."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_ui",
+    "The button is called Strip Formatting. The same switch is in the View menu. It changes only how messages look on your screen. Other people still see the formatting."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_ui", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_ui",
+      "In a channel with mode %{mode}, the server removes all formatting from new messages and saves them as plain text.",
+      mode: "+c"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Only the first 128 IRC formatting codes in a message are shown."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
 <p>
   <.help_link topic="formatting-message-formats">
@@ -36,3 +121,4 @@
   </.help_link>
 </p>
 <p><.help_link topic="formatting-colors">{dgettext("help_ui", "Colors")}</.help_link></p>
+<p><.help_link topic="mode-c">{dgettext("help_ui", "Strip Colors")} (+c)</.help_link></p>

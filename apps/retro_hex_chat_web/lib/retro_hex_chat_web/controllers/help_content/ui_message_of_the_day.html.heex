@@ -15,17 +15,83 @@
   )}
 </p>
 
+<p>
+  {dgettext(
+    "help_ui",
+    "The same item is also in the Start menu, under Help > Message of the Day."
+  )}
+</p>
+<.help_h4 icon={:icon_notepad}>{dgettext("help_ui", "What it is for")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "The MOTD is a short note from the people who run the server. It often holds the house rules, news, or planned maintenance. Everyone on the server sees the same text."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_status}>{dgettext("help_ui", "Where it appears")}</.help_h4>
+<ol>
+  <li>{dgettext("help_ui", "Choose Help > Message of the Day, or type the command.")}</li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "The text is added to the Status tab. The window you are reading stays open."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "If you are not on the Status tab, it is marked as unread. Open the Status tab to read the message."
+    )}
+  </li>
+</ol>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_ui", "Command Equivalent")}</.help_h4>
 <p>
   {dgettext("help_ui", "The menu item runs")} <code>{dgettext("help_ui", "/motd")}</code>
   {dgettext("help_ui", "and uses the same Status-tab output.")}
 </p>
 
+<pre>/motd</pre>
+<.help_h4 icon={:icon_document_alert}>{dgettext("help_ui", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_ui",
+      "If no MOTD is set, you see the message %{text} instead.",
+      text: "No MOTD has been set."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Nothing is shown when you connect while no MOTD is set."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "When an administrator changes or clears the MOTD, every connected user gets a short notice in the Status tab. Run the command again to read the new text."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "The menu item is greyed out until you are connected to the chat."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_rules}>{dgettext("help_ui", "Permissions")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
     "Every connected user can view the MOTD. Server administrators can set or clear it from the Admin Console MOTD tab."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "Administrators can also type %{set} followed by the new text, or %{clear} to remove it. Other users who try these commands get a permission error.",
+    set: "/setmotd",
+    clear: "/clearmotd"
   )}
 </p>
 

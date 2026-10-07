@@ -4,6 +4,12 @@
     "The Edit menu groups message-window actions that work on the current chat view."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_ui",
+    "Open it from the menu bar at the top of the chat window. The menu is available once you are connected. The same three actions are also in the Start menu, under View."
+  )}
+</p>
 
 <.help_h4 icon={:icon_btn_remove}>{dgettext("help_ui", "Clear Window")}</.help_h4>
 <p>
@@ -12,12 +18,38 @@
     "Clears all messages from the active channel or private conversation window. This runs the same action as /clear and cannot be undone."
   )}
 </p>
+<ul>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Only your own view is cleared. The messages are not deleted, and other people still see them."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "The window stays clear when you switch to another conversation and come back."
+    )}
+  </li>
+  <li>{dgettext("help_ui", "New messages appear as usual after you clear the window.")}</li>
+</ul>
 
 <.help_h4 icon={:icon_copy}>{dgettext("help_ui", "Copy")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
     "Copies the current text selection from the chat log to the clipboard. The item is enabled only when selected text is inside the message log."
+  )}
+</p>
+<ol>
+  <li>{dgettext("help_ui", "Click and drag over the messages you want to copy.")}</li>
+  <li>{dgettext("help_ui", "Open the Edit menu and choose Copy.")}</li>
+  <li>{dgettext("help_ui", "Paste the text anywhere you like.")}</li>
+</ol>
+<p>
+  {dgettext(
+    "help_ui",
+    "Text selected outside the message log, such as in the message box or a menu, is not copied. Copy stays grey in that case."
   )}
 </p>
 
@@ -28,6 +60,19 @@
     "Opens or closes the in-window Find bar for searching messages. You can also press Ctrl+Shift+F."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_ui",
+    "Type the text you want in the Find bar, then use Prev and Next to move between matches. Options let you match case, use a regular expression, show only your mentions, or search older history."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "Press %{key} to close the Find bar. You can change the Find shortcut in your key bindings.",
+    key: "Escape"
+  )}
+</p>
 
 <.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
 <p>
@@ -36,4 +81,7 @@
   ·
   <.help_link topic="keyboard-shortcuts">{dgettext("help_ui", "Keyboard Shortcuts")}</.help_link>
   · <.help_link topic="ui-toolbar">{dgettext("help_ui", "Toolbar")}</.help_link>
+  · <.help_link topic="feature-copy">{dgettext("help_ui", "Copy")}</.help_link>
+  · <.help_link topic="feature-key-bindings">{dgettext("help_ui", "Key Bindings")}</.help_link>
+  · <.help_link topic="ui-start-menu">{dgettext("help_ui", "Start Menu")}</.help_link>
 </p>

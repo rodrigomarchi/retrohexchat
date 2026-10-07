@@ -4,11 +4,83 @@
     "The topic bar appears below the tab bar and shows the current channel name, active modes, and topic text."
   )}
 </p>
+<.help_h4 icon={:icon_tab_channel}>{dgettext("help_ui", "What it shows")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_ui",
+      "An icon for the kind of window: a channel, a private conversation, or the Status tab."
+    )}
+  </li>
+  <li>{dgettext("help_ui", "The channel name in bold, when a channel is open.")}</li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "The topic text. A long topic is cut at the end of the bar. When a channel has no topic, the bar shows %{text}.",
+      text: dgettext("chat", "No topic set")
+    )}
+  </li>
+  <li>
+    {dgettext("help_ui", "The active channel modes as one short code, for example:")}
+    <code>+nt</code>. {dgettext(
+      "help_ui",
+      "Private conversations and the Status tab never show modes."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_btn_set_topic}>{dgettext("help_ui", "How to change the topic")}</.help_h4>
+<ol>
+  <li>{dgettext("help_ui", "Open the channel whose topic you want to change.")}</li>
+  <li>
+    {dgettext("help_ui", "Type %{command} followed by the new text, then press Enter.",
+      command: "/topic"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "The topic bar updates at once for everyone in the channel, and a line in the chat says who changed it."
+    )}
+  </li>
+</ol>
 <p>
   {dgettext(
     "help_ui",
-    "For PMs, it shows \"Private conversation with <nickname>\". For the Status tab, it shows \"RetroHexChat Status\"."
+    "Operators can also edit the topic in Channel Central, on the General tab, and press Save Topic."
   )}
 </p>
+<pre>/topic Welcome to #elixir!</pre>
+<.help_h4 icon={:icon_rules}>{dgettext("help_ui", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Type %{command} with no text to print the current topic in the chat.",
+      command: "/topic"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "When the channel has mode %{mode}, only operators and the owner can change the topic. Without it, any member can.",
+      mode: "+t"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "The modes code updates by itself when an operator changes a channel mode."
+    )}
+  </li>
+  <li>{dgettext("help_ui", "The topic bar is for reading only. Clicking it does nothing.")}</li>
+</ul>
 <.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
-<p><.help_link topic="cmd-topic">{dgettext("help_ui", "/topic Command")}</.help_link></p>
+<p>
+  <.help_link topic="cmd-topic">{dgettext("help_ui", "/topic Command")}</.help_link>
+  · <.help_link topic="mode-t">{dgettext("help_ui", "Topic Lock")} (+t)</.help_link>
+  · <.help_link topic="channel-modes-overview">{dgettext("help_ui", "Channel Modes")}</.help_link>
+  ·
+  <.help_link topic="feature-channel-central">
+    {dgettext("help_ui", "Channel Central")}
+  </.help_link>
+</p>

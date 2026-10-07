@@ -4,15 +4,11 @@
     "When a UI container has no content, a friendly placeholder message appears with guidance:"
   )}
 </p>
-<.help_h4 icon={:icon_chat}>{dgettext("help_ui", "Channel Messages")}</.help_h4>
-<p>
-  {dgettext("help_ui", "An empty channel shows a welcome message and tips for getting started.")}
-</p>
 <.help_h4 icon={:icon_tab_nicklist}>{dgettext("help_ui", "Nicklist")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
-    "Shows \"Nobody here\" when you are the only user (or the channel is truly empty)."
+    "The nicklist groups people by role. A group with nobody in it is hidden until someone joins it."
   )}
 </p>
 <.help_h4 icon={:icon_tab_conversations}>{dgettext("help_ui", "Conversations")}</.help_h4>
@@ -22,7 +18,63 @@
   {dgettext("help_ui", "and an \"Browse channels\" button.")}
 </p>
 <.help_h4 icon={:icon_dialog_url}>{dgettext("help_ui", "URL Catcher")}</.help_h4>
-<p>{dgettext("help_ui", "Shows \"No URLs captured\" until URLs appear in chat.")}</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "Until someone posts a link, the URL Catcher shows %{text}",
+    text: "No URLs captured yet."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "Click Browse channels to open the Channel List, where you can pick a room to join."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "It also explains that shared links will appear there. It collects the links people post while you are connected."
+  )}
+</p>
+<.help_h4 icon={:icon_pin}>{dgettext("help_ui", "Pinned")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "The Pinned window explains that the channel is not keeping anything yet. Only an operator can pin a message. Right-click the message and choose Pin."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_star}>{dgettext("help_ui", "Saved Messages")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Saved Messages says you have not kept anything yet. Right-click any message and choose Save for Later to add it. Only you can see your saved messages."
+  )}
+</p>
+<.help_h4 icon={:icon_megaphone}>{dgettext("help_ui", "Mentions")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Mentions stays empty until someone writes your nickname in a channel you were in."
+  )}
+</p>
+<.help_h4 icon={:icon_clock}>{dgettext("help_ui", "Events")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Events says nothing is planned yet. If you may schedule events, it shows how to add one:"
+  )} <code>/event</code>. {dgettext(
+    "help_ui",
+    "Otherwise it says that events from operators will show up there."
+  )}
+</p>
+<.help_h4 icon={:icon_chat}>{dgettext("help_ui", "Threads")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "The thread window says nobody has answered yet when a message has no replies. Your reply starts the thread and also stays in the room."
+  )}
+</p>
 <.help_h4 icon={:icon_document_alert}>{dgettext("help_ui", "Notes")}</.help_h4>
 <p>
   {dgettext(
@@ -31,4 +83,13 @@
   )}
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
-<p><.help_link topic="ui-overview">{dgettext("help_ui", "UI Overview")}</.help_link></p>
+<p>
+  <.help_link topic="ui-overview">{dgettext("help_ui", "UI Overview")}</.help_link>
+  · <.help_link topic="ui-conversations">{dgettext("help_ui", "Conversations")}</.help_link>
+  · <.help_link topic="feature-url-catcher">{dgettext("help_ui", "URL Catcher")}</.help_link>
+  · <.help_link topic="ui-pinned-window">{dgettext("help_ui", "Pinned")}</.help_link>
+  ·
+  <.help_link topic="feature-saved-messages">{dgettext("help_ui", "Saved Messages")}</.help_link>
+  · <.help_link topic="feature-mentions">{dgettext("help_ui", "Mentions")}</.help_link>
+  · <.help_link topic="feature-threads">{dgettext("help_ui", "Threads")}</.help_link>
+</p>
