@@ -17,7 +17,9 @@ defmodule RetroHexChat.Jobs.IndexNowWorker do
 
   Refusals (400, 403, 422 — a bad key, a URL off the host) are cancelled, since
   resending the same list gets the same answer; throttling and server errors
-  retry.
+  retry. A key the engines have not verified yet — every key, in the first
+  minutes after it is published — snoozes the job an hour at a time, and gives
+  up after six tries with that reason on the job.
   """
 
   use Oban.Worker,
@@ -37,28 +39,31 @@ defmodule RetroHexChat.Jobs.IndexNowWorker do
   alias RetroHexChat.SEO.IndexNow
 
   @deploy_window_days 2
+  @verification_wait_seconds 60 * 60
+  @verification_tries 6
 
   @type outcome ::
           {:ok, IndexNow.summary() | :disabled}
           | {:error, IndexNow.reason()}
+          | {:snooze, pos_integer()}
           | {:cancel, String.t()}
 
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: outcome()
-  def perform(%Oban.Job{args: args}) do
+  def perform(%Oban.Job{args: args, attempt: attempt}) do
     Observability.span(
       [:retro_hex_chat, :seo, :index_now, :submit],
       %{scope: Map.get(args, "scope", "unknown")},
-      fn -> announce(args) end,
+      fn -> announce(args, attempt) end,
       &result_metadata/1
     )
   end
 
-  @spec announce(map()) :: outcome()
-  defp announce(args) do
+  @spec announce(map(), pos_integer()) :: outcome()
+  defp announce(args, attempt) do
     if IndexNow.enabled?() do
       case urls(args) do
-        {:ok, urls} -> urls |> IndexNow.submit() |> settle()
+        {:ok, urls} -> urls |> IndexNow.submit() |> settle(attempt)
         {:cancel, reason} -> {:cancel, reason}
       end
     else
@@ -95,10 +100,15 @@ defmodule RetroHexChat.Jobs.IndexNowWorker do
     end
   end
 
-  @spec settle({:ok, IndexNow.summary()} | {:error, IndexNow.reason()}) :: outcome()
-  defp settle({:ok, summary}), do: {:ok, summary}
+  # Oban counts a snooze as an attempt, so the attempt number bounds the wait.
+  @spec settle({:ok, IndexNow.summary()} | {:error, IndexNow.reason()}, pos_integer()) ::
+          outcome()
+  defp settle({:ok, summary}, _attempt), do: {:ok, summary}
 
-  defp settle({:error, reason}) do
+  defp settle({:error, :verification_pending}, attempt) when attempt < @verification_tries,
+    do: {:snooze, @verification_wait_seconds}
+
+  defp settle({:error, reason}, _attempt) do
     if HTTPRetry.retryable?(reason), do: {:error, reason}, else: {:cancel, reason_label(reason)}
   end
 
@@ -115,6 +125,9 @@ defmodule RetroHexChat.Jobs.IndexNowWorker do
     do: %{result: "ok", url_count: count, batch_count: batches}
 
   defp result_metadata({:cancel, reason}), do: %{result: "cancel", reason: reason}
+
+  defp result_metadata({:snooze, _seconds}),
+    do: %{result: "snooze", reason: "verification_pending"}
 
   defp result_metadata({:error, reason}),
     do: %{result: "error", reason: reason_label(reason)}

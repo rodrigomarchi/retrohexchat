@@ -51,6 +51,8 @@ def main(argv: list[str] | None = None) -> int:
         ok = status in indexnow.ACCEPTED
         failed |= not ok
         print(f"  {count:>6} URL(s): HTTP {status}" + ("" if ok else f" — {body}"))
+        if "SiteVerificationNotCompleted" in body:
+            print("  The engine has not fetched the key yet (it was published recently); run this again later.")
     return 1 if failed else 0
 
 

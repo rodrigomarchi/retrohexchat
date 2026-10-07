@@ -42,8 +42,8 @@ defmodule RetroHexChat.Jobs.IndexNowWorkerTest do
     end)
   end
 
-  defp perform(args) do
-    IndexNowWorker.perform(%Oban.Job{args: args, attempt: 1, max_attempts: 3})
+  defp perform(args, attempt \\ 1) do
+    IndexNowWorker.perform(%Oban.Job{args: args, attempt: attempt, max_attempts: 3})
   end
 
   defp accept_and_capture do
@@ -113,6 +113,18 @@ defmodule RetroHexChat.Jobs.IndexNowWorkerTest do
 
         assert {:error, {:http_status, ^status}} = perform(%{"scope" => "deploy"})
       end
+    end
+
+    test "an unverified key waits an hour, then gives up with that reason" do
+      Req.Test.stub(__MODULE__, fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.send_resp(403, ~s({"errorCode":"SiteVerificationNotCompleted"}))
+      end)
+
+      assert {:snooze, 3600} = perform(%{"scope" => "deploy"}, 1)
+      assert {:snooze, 3600} = perform(%{"scope" => "deploy"}, 5)
+      assert {:cancel, "verification_pending"} = perform(%{"scope" => "deploy"}, 6)
     end
 
     test "an unknown scope is cancelled" do

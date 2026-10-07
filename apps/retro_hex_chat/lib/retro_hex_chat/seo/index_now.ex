@@ -16,7 +16,12 @@ defmodule RetroHexChat.SEO.IndexNow do
   @key_path "/indexnow.txt"
   @batch_size 10_000
 
-  @type reason :: {:http_status, pos_integer()} | :timeout | :fetch_failed | :mixed_hosts
+  @type reason ::
+          {:http_status, pos_integer()}
+          | :verification_pending
+          | :timeout
+          | :fetch_failed
+          | :mixed_hosts
   @type summary :: %{submitted: non_neg_integer(), batches: non_neg_integer()}
 
   @doc "Whether announcing is switched on; off everywhere but production."
@@ -97,7 +102,9 @@ defmodule RetroHexChat.SEO.IndexNow do
   end
 
   # 200 is "received", 202 is "received, key not yet verified": both mean the
-  # engine has the list. Everything else is a refusal or a failure.
+  # engine has the list. A key published minutes ago answers 403 with
+  # SiteVerificationNotCompleted until the engine has fetched it — a wait, not
+  # a refusal. Everything else is a refusal or a failure.
   @spec post(map()) :: :ok | {:error, reason()}
   defp post(payload) do
     [url: @endpoint, json: payload, receive_timeout: 10_000, retry: false]
@@ -105,11 +112,25 @@ defmodule RetroHexChat.SEO.IndexNow do
     |> Req.post()
     |> case do
       {:ok, %Req.Response{status: status}} when status in [200, 202] -> :ok
+      {:ok, %Req.Response{status: 403} = response} -> forbidden(response.body)
       {:ok, %Req.Response{status: status}} -> {:error, {:http_status, status}}
       {:error, %Req.TransportError{reason: :timeout}} -> {:error, :timeout}
       {:error, _exception} -> {:error, :fetch_failed}
     end
   end
+
+  @spec forbidden(term()) :: {:error, reason()}
+  defp forbidden(%{"errorCode" => "SiteVerificationNotCompleted"}),
+    do: {:error, :verification_pending}
+
+  defp forbidden(body) when is_binary(body) do
+    case Jason.decode(body) do
+      {:ok, %{} = decoded} -> forbidden(decoded)
+      _other -> {:error, {:http_status, 403}}
+    end
+  end
+
+  defp forbidden(_body), do: {:error, {:http_status, 403}}
 
   @spec config(atom(), term()) :: term()
   defp config(name, default) do

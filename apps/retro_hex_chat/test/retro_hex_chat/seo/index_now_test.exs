@@ -86,6 +86,28 @@ defmodule RetroHexChat.SEO.IndexNowTest do
       assert {:error, {:http_status, 422}} = IndexNow.submit(urls)
     end
 
+    test "a key the engine has not verified yet is a wait, not a refusal" do
+      Req.Test.stub(__MODULE__, fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.send_resp(
+          403,
+          ~s({"errorCode":"SiteVerificationNotCompleted","message":"Please wait","details":null})
+        )
+      end)
+
+      assert {:error, :verification_pending} = IndexNow.submit(["https://example.app/"])
+    end
+
+    test "any other 403 is a refusal" do
+      Req.Test.stub(
+        __MODULE__,
+        &Plug.Conn.send_resp(&1, 403, ~s({"errorCode":"UserForbiddedToAccessSite"}))
+      )
+
+      assert {:error, {:http_status, 403}} = IndexNow.submit(["https://example.app/"])
+    end
+
     test "a transport failure is named, not raised" do
       Req.Test.stub(__MODULE__, &Req.Test.transport_error(&1, :econnrefused))
 
