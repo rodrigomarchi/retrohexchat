@@ -8,7 +8,7 @@
  * Uses bubble-up pattern: checks `e.defaultPrevented` to let per-element
  * hooks (formatting shortcuts in AutocompleteHook) handle events first.
  */
-import { findShortcutAction } from "../../lib/input/shortcuts.js";
+import { shortcutActionFor } from "../../lib/input/shortcuts.js";
 import { isEditableTarget } from "../../lib/ui/dom.js";
 
 function isConferenceAction(action) {
@@ -29,8 +29,7 @@ const ShortcutDispatcherHook = {
       if (!e.ctrlKey || !e.shiftKey) return;
       if (e.altKey) return;
 
-      const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-      const action = findShortcutAction(this.bindings, key);
+      const action = shortcutActionFor(this.bindings, e);
 
       if (action) {
         if (isConferenceAction(action) && isEditableTarget(e.target)) return;

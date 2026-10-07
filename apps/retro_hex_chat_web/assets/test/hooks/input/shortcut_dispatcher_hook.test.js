@@ -8,6 +8,7 @@ describe("ShortcutDispatcherHook", () => {
     toggle_search: { key: "f", modifiers: ["ctrl", "shift"] },
     group_call_toggle_audio: { key: "ArrowUp", modifiers: ["ctrl", "shift"] },
     next_channel: { key: "ArrowRight", modifiers: ["ctrl", "shift"] },
+    toggle_cheatsheet: { key: "/", modifiers: ["ctrl", "shift"] },
   };
 
   beforeEach(() => {
@@ -28,6 +29,21 @@ describe("ShortcutDispatcherHook", () => {
         new KeyboardEvent("keydown", { key: "f", ctrlKey: true, shiftKey: true, bubbles: true }),
       );
       expect(hook.pushEvent).toHaveBeenCalledWith("shortcut_action", { action: "toggle_search" });
+    });
+
+    it("matches a binding whose key Shift turns into another character", () => {
+      document.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "?",
+          code: "Slash",
+          ctrlKey: true,
+          shiftKey: true,
+          bubbles: true,
+        }),
+      );
+      expect(hook.pushEvent).toHaveBeenCalledWith("shortcut_action", {
+        action: "toggle_cheatsheet",
+      });
     });
 
     it("does not push for non-matching key", () => {

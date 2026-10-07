@@ -1,4 +1,8 @@
-import { findShortcutAction, isModifierKey } from "../../../js/lib/input/shortcuts.js";
+import {
+  findShortcutAction,
+  isModifierKey,
+  shortcutActionFor,
+} from "../../../js/lib/input/shortcuts.js";
 
 describe("lib/shortcuts", () => {
   // ── findShortcutAction ─────────────────────────────────
@@ -31,6 +35,35 @@ describe("lib/shortcuts", () => {
         action: { key: "f", modifiers: ["ctrl"] },
       };
       expect(findShortcutAction(badBindings, "f")).toBeNull();
+    });
+  });
+
+  // ── shortcutActionFor ──────────────────────────────────
+
+  describe("shortcutActionFor", () => {
+    const bindings = {
+      toggle_search: { key: "f", modifiers: ["ctrl", "shift"] },
+      toggle_cheatsheet: { key: "/", modifiers: ["ctrl", "shift"] },
+      window_prev: { key: "[", modifiers: ["ctrl", "shift"] },
+      window_1: { key: "1", modifiers: ["ctrl", "shift"] },
+      toggle_address_book: { key: "a", modifiers: ["ctrl", "shift"] },
+    };
+
+    it("reads the unshifted character Shift hides", () => {
+      expect(shortcutActionFor(bindings, { key: "?", code: "Slash" })).toBe("toggle_cheatsheet");
+      expect(shortcutActionFor(bindings, { key: "{", code: "BracketLeft" })).toBe("window_prev");
+      expect(shortcutActionFor(bindings, { key: "!", code: "Digit1" })).toBe("window_1");
+    });
+
+    it("letters follow the layout, not the key's position", () => {
+      // AZERTY: the key labelled A sits where QWERTY has Q.
+      expect(shortcutActionFor(bindings, { key: "A", code: "KeyQ" })).toBe("toggle_address_book");
+      expect(shortcutActionFor(bindings, { key: "F", code: "KeyF" })).toBe("toggle_search");
+    });
+
+    it("nothing bound is nothing triggered", () => {
+      expect(shortcutActionFor(bindings, { key: "Z", code: "KeyZ" })).toBeNull();
+      expect(shortcutActionFor(bindings, { key: "@", code: "Digit2" })).toBeNull();
     });
   });
 

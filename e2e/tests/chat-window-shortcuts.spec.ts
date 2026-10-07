@@ -8,6 +8,7 @@
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { pressCtrlShift } from "../helpers/keyboard";
 
 type TestUser = {
   chat: ChatPage;
@@ -47,14 +48,6 @@ async function newSignedInUser(
 
 async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx?.close()));
-}
-
-async function pressCtrlShift(page: Page, key: string) {
-  await page.keyboard.down("Control");
-  await page.keyboard.down("Shift");
-  await page.keyboard.press(key);
-  await page.keyboard.up("Shift");
-  await page.keyboard.up("Control");
 }
 
 test.describe("Window switch shortcuts", () => {
