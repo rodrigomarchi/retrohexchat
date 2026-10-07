@@ -660,11 +660,13 @@ a move that renames one is caught before commit.
   the pages whose day is recent and every night for yesterday's archive pages. A page's day comes
   from its own content files, so a change to a shared component or a translation moves none: after
   one, run `make seo.indexnow` to announce the whole sitemap.
-- **What the engines themselves see is read, not guessed.** `make seo.console SOURCE=bing` reads
+- **What the engines themselves see is read, not guessed.** `make seo.console SOURCE=bing|google` reads
   the webmaster console's API into `reports/seo/<UTC stamp>-<source>.{md,json}` (gitignored): sitemaps,
   crawl issues, a spread sample of sitemap URLs inspected one by one, search performance, and
   the problems derived from them. Every source fills the one shape in `scripts/seo/report.py`, so
-  a report reads the same whichever engine it came from; the key lives in `.env`.
+  a report reads the same whichever engine it came from. Credentials live in `.env`: Bing's API key, and for
+  Google the path to a service account's JSON key kept outside the repository, plus an optional CrUX
+  API key for Web Vitals from real visitors.
 - **Two public pages never carry the same prose.** The public game pages (`/games`,
   `/games/:slug` — the pages a search lands on, distinct from the in-app Games folder of §19) say
   what a game is with the catalogue's short description; the long arcade prose belongs to the

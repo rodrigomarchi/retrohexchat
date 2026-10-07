@@ -12,9 +12,15 @@ A report is a plain dict, so it serialises to JSON as is:
     crawl_stats   [{date, crawled, errors, in_index, blocked_by_robots,
                     http_2xx, http_3xx, http_4xx, http_5xx}]
     inspection    {"sitemap_urls": int, "urls": [{url, state, discovered,
-                    last_crawled, detail}]}
+                    last_crawled, detail}]}; a source that knows more adds
+                    canonical_declared, canonical_chosen (the page's own
+                    canonical and the one the engine picked) and blocked
+                    ("robots_txt" | "noindex" | None)
     performance   {"totals": row, "queries": [row], "pages": [row]} where a row
                   is {key, clicks, impressions, ctr, position}
+    web_vitals    [{target, scope: "origin" | "page", form_factor, period,
+                    metrics: {name: {p75, rating}}}] from real visitors; [] when
+                  the engine has too little traffic to say
     notes         [str]: source-specific facts worth reading (quotas, caveats)
     problems      derived by ``derive_problems`` — never filled by a source
 
@@ -39,7 +45,7 @@ from collections import Counter
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 STATES = ["indexed", "crawled", "not_indexed", "error", "discovered", "unknown"]
 HEALTHY_STATES = {"indexed", "crawled"}
@@ -47,6 +53,19 @@ HEALTHY_STATES = {"indexed", "crawled"}
 STALE_CRAWL_DAYS = 60
 LOW_CTR = 0.01
 LOW_CTR_MIN_IMPRESSIONS = 100
+# Ranking 8th to 20th is the end of page one or the top of page two: the
+# queries where a better title or more content moves the most clicks.
+STRIKING_DISTANCE = (8.0, 20.0)
+STRIKING_MIN_IMPRESSIONS = 20
+
+# Core Web Vitals thresholds at the 75th percentile: (good up to, poor above).
+VITALS = {
+    "largest_contentful_paint": ("LCP", 2500, 4000, "ms"),
+    "interaction_to_next_paint": ("INP", 200, 500, "ms"),
+    "cumulative_layout_shift": ("CLS", 0.1, 0.25, ""),
+    "first_contentful_paint": ("FCP", 1800, 3000, "ms"),
+    "experimental_time_to_first_byte": ("TTFB", 800, 1800, "ms"),
+}
 URLS_PER_PROBLEM = 10
 TOP_ROWS = 15
 
@@ -66,6 +85,7 @@ def new_report(source: str, site: str, now: datetime) -> dict:
         "crawl_stats": None,
         "inspection": None,
         "performance": None,
+        "web_vitals": None,
         "notes": [],
         "problems": [],
     }
@@ -80,6 +100,13 @@ def perf_row(key: str, clicks: int, impressions: int, position: float | None) ->
         "ctr": round(ctr, 4),
         "position": None if position is None else round(position, 1),
     }
+
+
+def vital_rating(metric: str, p75: float) -> str:
+    _label, good, poor, _unit = VITALS[metric]
+    if p75 <= good:
+        return "good"
+    return "poor" if p75 > poor else "needs_improvement"
 
 
 def _problem(severity: str, kind: str, message: str, urls: list[str] | None = None) -> dict:
@@ -136,6 +163,27 @@ def derive_problems(report: dict) -> list[dict]:
                         hit,
                     )
                 )
+        mismatched = [
+            row["url"]
+            for row in urls
+            if row.get("canonical_chosen")
+            and row.get("canonical_declared")
+            and row["canonical_chosen"] != row["canonical_declared"]
+        ]
+        if mismatched:
+            problems.append(
+                _problem(
+                    "warning",
+                    "canonical_mismatch",
+                    f"{len(mismatched)} inspected URL(s) where the engine chose another canonical than the page declares.",
+                    mismatched,
+                )
+            )
+        blocked = [row["url"] for row in urls if row.get("blocked")]
+        if blocked:
+            problems.append(
+                _problem("error", "blocked_in_sitemap", f"{len(blocked)} sitemap URL(s) are blocked by robots.txt or noindex.", blocked)
+            )
         cutoff = today - timedelta(days=STALE_CRAWL_DAYS)
         stale = [
             row["url"]
@@ -168,6 +216,38 @@ def derive_problems(report: dict) -> list[dict]:
                     "low_ctr_query",
                     f"{len(low)} query(ies) with at least {LOW_CTR_MIN_IMPRESSIONS} impressions and CTR under {LOW_CTR:.0%}.",
                     low,
+                )
+            )
+
+        low_lo, low_hi = STRIKING_DISTANCE
+        striking = [
+            row["key"]
+            for row in perf["queries"]
+            if row["position"] is not None
+            and low_lo <= row["position"] <= low_hi
+            and row["impressions"] >= STRIKING_MIN_IMPRESSIONS
+        ]
+        if striking:
+            problems.append(
+                _problem(
+                    "info",
+                    "striking_distance",
+                    f"{len(striking)} query(ies) ranking {low_lo:.0f}–{low_hi:.0f} with at least {STRIKING_MIN_IMPRESSIONS} impressions: the cheapest clicks to win.",
+                    striking,
+                )
+            )
+
+    for vital in report.get("web_vitals") or []:
+        for metric, value in vital["metrics"].items():
+            if value["rating"] == "good":
+                continue
+            label = VITALS[metric][0]
+            severity = "warning" if value["rating"] == "poor" else "info"
+            problems.append(
+                _problem(
+                    severity,
+                    f"web_vitals_{label.lower()}",
+                    f"{label} is {value['rating'].replace('_', ' ')} at p75 ({value['p75']}{VITALS[metric][3]}) for {vital['form_factor'].lower()} visitors of {vital['target']}.",
                 )
             )
 
@@ -272,8 +352,11 @@ def render_markdown(report: dict) -> str:
         lines += _table(["State", "URLs"], [[s, states[s]] for s in STATES if states[s]])
         lines.append("")
         lines += _table(
-            ["URL", "State", "Discovered", "Last crawled", "Detail"],
-            [[r["url"], r["state"], r["discovered"], r["last_crawled"], r["detail"]] for r in urls],
+            ["URL", "State", "Discovered", "Last crawled", "Detail", "Engine's canonical"],
+            [
+                [r["url"], r["state"], r["discovered"], r["last_crawled"], r["detail"], _chosen_canonical(r)]
+                for r in urls
+            ],
         )
     lines.append("")
 
@@ -295,12 +378,42 @@ def render_markdown(report: dict) -> str:
             )
     lines.append("")
 
+    lines += ["## Web Vitals", ""]
+    vitals = report.get("web_vitals")
+    absent = _absent(report, "field data (too little real traffic)", vitals)
+    if absent:
+        lines.append(absent)
+    else:
+        names = list(VITALS)
+        lines += _table(
+            ["Target", "Device", "Period"] + [VITALS[n][0] for n in names],
+            [
+                [v["target"], v["form_factor"], v["period"]]
+                + [_vital_cell(n, v["metrics"].get(n)) for n in names]
+                for v in vitals
+            ],
+        )
+    lines.append("")
+
     if report["notes"]:
         lines += ["## Source notes", ""]
         lines += [f"- {note}" for note in report["notes"]]
         lines.append("")
 
     return "\n".join(lines)
+
+
+def _chosen_canonical(row: dict) -> str | None:
+    chosen = row.get("canonical_chosen")
+    if chosen and chosen != row.get("canonical_declared"):
+        return chosen
+    return None
+
+
+def _vital_cell(metric: str, value: dict | None) -> str | None:
+    if not value:
+        return None
+    return f"{value['p75']}{VITALS[metric][3]} ({value['rating'].replace('_', ' ')})"
 
 
 def file_stem(report: dict) -> str:

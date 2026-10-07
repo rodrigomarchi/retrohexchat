@@ -38,21 +38,24 @@ def fetch(url: str) -> bytes:
 
 
 Post = Callable[[str, dict], tuple[int, str]]
+Request = Callable[[str, str, "bytes | None", dict], tuple[int, bytes]]
+
+
+def request(method: str, url: str, body: bytes | None = None, headers: dict | None = None) -> tuple[int, bytes]:
+    """``(status, body)`` for any answer, error statuses included: the caller decides what they mean."""
+    req = urllib.request.Request(url, data=body, method=method, headers={"User-Agent": USER_AGENT, **(headers or {})})
+    try:
+        with urllib.request.urlopen(req, timeout=TIMEOUT_SECONDS) as response:
+            return response.status, response.read()
+    except urllib.error.HTTPError as error:
+        return error.code, error.read()
 
 
 def post_json(url: str, payload: dict) -> tuple[int, str]:
-    """``(status, body)`` for any answer, error statuses included: the caller decides what they mean."""
-    request = urllib.request.Request(
-        url,
-        data=json.dumps(payload).encode(),
-        method="POST",
-        headers={"User-Agent": USER_AGENT, "Content-Type": "application/json; charset=utf-8"},
+    status, body = request(
+        "POST", url, json.dumps(payload).encode(), {"Content-Type": "application/json; charset=utf-8"}
     )
-    try:
-        with urllib.request.urlopen(request, timeout=TIMEOUT_SECONDS) as response:
-            return response.status, response.read().decode("utf-8", "replace")
-    except urllib.error.HTTPError as error:
-        return error.code, error.read().decode("utf-8", "replace")
+    return status, body.decode("utf-8", "replace")
 
 
 def fetch_json(fetcher: Fetch, url: str):

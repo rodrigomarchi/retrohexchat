@@ -95,7 +95,7 @@ class DeriveProblemsTest(unittest.TestCase):
         self.assertEqual(kinds(self.report), ["no_traffic"])
         self.report["performance"] = {
             "totals": rpt.perf_row("total", 1, 300, 4.0),
-            "queries": [rpt.perf_row("irc online", 0, 200, 9.0), rpt.perf_row("mirc", 1, 50, 2.0)],
+            "queries": [rpt.perf_row("irc online", 0, 200, 25.0), rpt.perf_row("mirc", 1, 50, 2.0)],
             "pages": [],
         }
         problems = {p["kind"]: p for p in rpt.derive_problems(self.report)}
@@ -108,6 +108,71 @@ class DeriveProblemsTest(unittest.TestCase):
         self.report["inspection"] = {"sitemap_urls": 1, "urls": [inspected("/a", "unknown")]}
         severities = [p["severity"] for p in rpt.derive_problems(self.report)]
         self.assertEqual(severities, ["error", "warning", "info"])
+
+
+class RicherSourcesTest(unittest.TestCase):
+    """Problems only a source that knows canonicals, blocks and real visitors can raise."""
+
+    def setUp(self):
+        self.report = rpt.new_report("google", "https://example.app/", NOW)
+
+    def test_the_engine_choosing_another_canonical(self):
+        row = inspected("/pt-BR/faq", "not_indexed")
+        row.update(canonical_declared="https://example.app/pt-BR/faq", canonical_chosen="https://example.app/faq")
+        same = inspected("/faq", "indexed")
+        same.update(canonical_declared="https://example.app/faq", canonical_chosen="https://example.app/faq")
+        self.report["inspection"] = {"sitemap_urls": 2, "urls": [row, same]}
+
+        problems = {p["kind"]: p for p in rpt.derive_problems(self.report)}
+        self.assertEqual(problems["canonical_mismatch"]["urls"], ["/pt-BR/faq"])
+        self.assertIn("Engine's canonical", rpt.render_markdown(rpt.finalize(self.report)))
+
+    def test_a_sitemap_url_that_is_blocked(self):
+        row = inspected("/faq", "not_indexed")
+        row["blocked"] = "noindex"
+        self.report["inspection"] = {"sitemap_urls": 1, "urls": [row]}
+
+        problems = {p["kind"]: p for p in rpt.derive_problems(self.report)}
+        self.assertEqual(problems["blocked_in_sitemap"]["severity"], "error")
+
+    def test_queries_in_striking_distance(self):
+        self.report["performance"] = {
+            "totals": rpt.perf_row("total", 5, 500, 12.0),
+            "queries": [
+                rpt.perf_row("mirc online", 2, 120, 11.4),
+                rpt.perf_row("irc", 3, 300, 3.0),
+                rpt.perf_row("rare", 0, 5, 12.0),
+            ],
+            "pages": [],
+        }
+        problems = {p["kind"]: p for p in rpt.derive_problems(self.report)}
+        self.assertEqual(problems["striking_distance"]["urls"], ["mirc online"])
+
+    def test_web_vitals_rated_by_the_shared_thresholds(self):
+        self.assertEqual(rpt.vital_rating("largest_contentful_paint", 2500), "good")
+        self.assertEqual(rpt.vital_rating("largest_contentful_paint", 3000), "needs_improvement")
+        self.assertEqual(rpt.vital_rating("cumulative_layout_shift", 0.3), "poor")
+
+        self.report["web_vitals"] = [
+            {
+                "target": "https://example.app",
+                "scope": "origin",
+                "form_factor": "PHONE",
+                "period": "2026-09-08 → 2026-10-05",
+                "metrics": {
+                    "largest_contentful_paint": {"p75": 4200, "rating": "poor"},
+                    "cumulative_layout_shift": {"p75": 0.02, "rating": "good"},
+                },
+            }
+        ]
+        problems = rpt.derive_problems(self.report)
+        self.assertEqual([p["kind"] for p in problems], ["web_vitals_lcp"])
+        self.assertEqual(problems[0]["severity"], "warning")
+        self.assertIn("4200ms (poor)", rpt.render_markdown(rpt.finalize(self.report)))
+
+    def test_no_field_data_reads_as_too_little_traffic(self):
+        self.report["web_vitals"] = []
+        self.assertIn("_No field data (too little real traffic) reported._", rpt.render_markdown(self.report))
 
 
 class PerfRowTest(unittest.TestCase):

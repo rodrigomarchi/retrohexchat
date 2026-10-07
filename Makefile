@@ -292,7 +292,7 @@ seo.snapshot: ## Save the public pages that matter for search (BASE=http://local
 seo.compare: ## Fail if a public page lost text or changed any SEO tag (BEFORE=tmp/seo/before AFTER=tmp/seo/after)
 	python3 scripts/seo_compare.py compare $(or $(BEFORE),tmp/seo/before) $(or $(AFTER),tmp/seo/after)
 
-seo.console: ## Read a webmaster console into reports/seo/<UTC stamp>-<source>.{md,json} (SOURCE=bing INSPECT=40)
+seo.console: ## Read a webmaster console into reports/seo/<UTC stamp>-<source>.{md,json} (SOURCE=bing|google INSPECT=40)
 	python3 scripts/seo_console.py $(or $(SOURCE),bing) --inspect $(or $(INSPECT),40)
 
 seo.indexnow: ## Announce every sitemap URL to IndexNow, after a change that moves no page's date (ARGS=--dry-run)
