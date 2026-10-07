@@ -1,6 +1,13 @@
 <p>
   {dgettext("help_commands", "Remove a ban from a user, allowing them to rejoin the channel.")}
 </p>
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it when a ban has served its purpose, or when someone was banned by mistake."
+  )}
+</p>
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
 <pre>{dgettext("help_commands", "/unban <nickname>")}</pre>
 <.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
@@ -12,9 +19,33 @@
     "Removes the ban entry for the specified user. Once unbanned, the user can rejoin the channel normally. For registered channels, the unban is persisted. You can also unban using"
   )} <code>{dgettext("help_commands", "/mode -b nickname")}</code>.
 </p>
+<p>
+  {dgettext(
+    "help_commands",
+    "The command acts on the channel you are viewing. Everyone in the channel sees a line that names the user and who lifted the ban. Unbanning does not invite the user or bring them back. They must join again themselves."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "The name must match the ban entry exactly, with the same upper and lower case. A ban set as a wildcard mask, such as %{mask}, is removed only by typing that same mask. If no ban entry matches, the command still reports the unban and nothing changes.",
+    mask: "Troll*"
+  )}
+</p>
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>{dgettext("help_commands", "Requires channel operator or owner status")}</li>
+  <li>{dgettext("help_commands", "Half-operators cannot use this command")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "You must type it in a channel window, not in a private conversation"
+    )}
+  </li>
+  <li>{dgettext("help_commands", "Without a nickname, you see the usage line")}</li>
+  <li>
+    {dgettext("help_commands", "Only the first nickname is used. Extra words are ignored.")}
+  </li>
 </ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
 <pre>{dgettext("help_commands", "/unban user123")}</pre>
@@ -23,6 +54,10 @@
   <.help_link topic="cmd-ban">{dgettext("help_commands", "/ban")}</.help_link>
   · <.help_link topic="cmd-kick">{dgettext("help_commands", "/kick")}</.help_link>
   · <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
+  ·
+  <.help_link topic="feature-ban-exceptions">
+    {dgettext("help_commands", "Ban Exceptions (+e)")}
+  </.help_link>
   ·
   <.help_link topic="channel-permissions">
     {dgettext("help_commands", "Channel Permissions")}

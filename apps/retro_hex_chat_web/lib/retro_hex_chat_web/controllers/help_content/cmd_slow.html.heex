@@ -6,13 +6,22 @@
   or <code>{dgettext("help_commands", "/mode -j")}</code>.
 </p>
 
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it when many users or bots join in a short time, for example during a join flood. It slows down new arrivals without closing the channel."
+  )}
+</p>
+
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
-<pre>{dgettext("help_commands", "/slow [seconds] /slow 0")}</pre>
+<pre>/slow &lt;seconds&gt;
+/slow 0</pre>
 
 <.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
   <code>seconds</code>
-  {dgettext("help_commands", "— Join throttle window in seconds (default: 5). Use")}
+  {dgettext("help_commands", "— Length of the join throttle window in seconds. Use")}
   <code>0</code>
   {dgettext("help_commands", "to disable.")}
 </p>
@@ -29,14 +38,48 @@
   )}
 </p>
 
+<p>
+  {dgettext(
+    "help_commands",
+    "The channel allows at most 5 joins in any period of the length you give. For example, %{example} allows 5 joins every 10 seconds. It sets mode %{mode}. Anyone who tries to join after the limit is reached is refused and asked to try again shortly. Bots are not limited.",
+    example: "/slow 10",
+    mode: "+j 5:10"
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "Everyone in the channel sees a mode change line. In a registered channel, the setting is saved and stays after a restart."
+  )}
+</p>
+
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>{dgettext("help_commands", "Requires operator (@) or owner (~) status")}</li>
-  <li>{dgettext("help_commands", "Default window is 5 seconds if no value is specified")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "The number of seconds is required. Without it, you see the usage line."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "The value must be a whole number. Text or a negative number gets the usage line."
+    )}
+  </li>
+  <li>{dgettext("help_commands", "Half-operators cannot use this command")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "You must type it in a channel window, not in a private conversation"
+    )}
+  </li>
 </ul>
 
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
-<pre>{dgettext("help_commands", "/slow /slow 10 /slow 0")}</pre>
+<pre>/slow 10
+/slow 0</pre>
 
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>

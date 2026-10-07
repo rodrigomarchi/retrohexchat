@@ -5,21 +5,31 @@
   )}
 </p>
 
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it to check a running server: how many channels are live right now, which ones they are, and how the server uses memory. Nothing is changed, so it is safe to run at any time."
+  )}
+</p>
+
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
-<pre>{dgettext("help_commands", "/admin debug connections /admin debug processes /admin debug memory")}</pre>
+<pre>/admin debug connections
+/admin debug processes
+/admin debug memory</pre>
 
 <.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Subcommands")}</.help_h4>
 <ul>
   <li>
     <code>connections</code> {dgettext(
       "help_commands",
-      "— Show the number of active client connections"
+      "— Show the number of running channel processes"
     )}
   </li>
   <li>
     <code>processes</code> {dgettext(
       "help_commands",
-      "— List active channel GenServer processes with member counts"
+      "— List running channel processes by name, with their process ids"
     )}
   </li>
   <li>
@@ -31,8 +41,50 @@
   </li>
 </ul>
 
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Each reply appears as system lines in the window you are viewing."
+  )}
+</p>
+<p>
+  <code>connections</code> {dgettext(
+    "help_commands",
+    "reports how many channel processes are running. It does not count client connections."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "The %{sub} subcommand lists each running channel by name, with its process id. An unregistered channel stops its process when its last member leaves, so it drops off this list.",
+    sub: "processes"
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "The %{sub} subcommand shows sizes in megabytes for total memory, processes, ETS, atoms, binaries and loaded code.",
+    sub: "memory"
+  )}
+</p>
+
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_commands", "You must be a server administrator and identified with NickServ")}
+  </li>
+  <li>{dgettext("help_commands", "Other users get an error and nothing is shown")}</li>
+  <li>{dgettext("help_commands", "Without a subcommand, you see the usage line")}</li>
+  <li>
+    {dgettext("help_commands", "An unknown subcommand gets an error that lists the valid ones")}
+  </li>
+</ul>
+
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
-<pre>{dgettext("help_commands", "/admin debug connections /admin debug memory /admin debug processes")}</pre>
+<pre>/admin debug connections
+/admin debug memory
+/admin debug processes</pre>
 
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>

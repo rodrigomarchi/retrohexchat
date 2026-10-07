@@ -195,7 +195,7 @@ msgstr ""
 msgid ") is not allowed in expansions"
 msgstr ") non è consentito nelle espansioni"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:30
 #, elixir-autogen, elixir-format
 msgid ") shows detailed help for that specific command. Use Help Topics from the menu bar to browse and search all help topics."
 msgstr ""
@@ -369,7 +369,7 @@ msgstr "--durata 1h"
 msgid "--from @nick"
 msgstr "- Da @nick"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "--last N"
 msgstr "- Ultimo N"
@@ -379,7 +379,7 @@ msgstr "- Ultimo N"
 msgid "--reason text"
 msgstr "--reason text"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "--user nick"
 msgstr "-- nick utente"
@@ -422,12 +422,12 @@ msgstr ". Gli utenti vocali possono parlare in canali moderati (+m)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:73
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:39
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:91
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:104
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:123
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:85
 #, elixir-autogen, elixir-format
 msgid "/admin"
@@ -483,20 +483,10 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:129
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "/admin debug"
 msgstr "/admin debug"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "/admin debug connections /admin debug memory /admin debug processes"
-msgstr "/admin debug connections /admin debug memory /admin debug processes"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "/admin debug connections /admin debug processes /admin debug memory"
-msgstr "/admin debug connections /admin debug processes /admin debug memory"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:59
@@ -505,12 +495,7 @@ msgstr "/admin debug connections /admin debug processes /admin debug memory"
 msgid "/admin log"
 msgstr "/admin log"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:56
-#, elixir-autogen, elixir-format
-msgid "/admin log /admin log --last 50 /admin log --user Admin --last 10"
-msgstr "/admin log /admin log --last 50 /admin log --user Admin --last 10"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "/admin log [--last N] [--user nick]"
 msgstr "/admin log [--last N] [--user nick]"
@@ -557,8 +542,8 @@ msgstr ""
 "system wipe"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:14
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:40
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:92
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:109
 #, elixir-autogen, elixir-format
 msgid "/admin server"
 msgstr "/admin server"
@@ -585,12 +570,6 @@ msgstr ""
 " /admin user list --online /admin channel delete #old-channel /admin ns drop"
 " @OldNick /admin cs transfer #channel @NewOwner /admin debug memory /admin "
 "log --last 20 --user Admin"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "/admin turn stats /admin turn allocations"
-msgstr "/admin turn stats /admin turn allocations"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:18
 #, elixir-autogen, elixir-format
@@ -731,7 +710,7 @@ msgstr "/away [message]"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "/ban"
@@ -763,23 +742,23 @@ msgstr "/bio <text> /bio /bio clear"
 msgid "/bio Elixir enthusiast from Brazil /bio /bio clear"
 msgstr "/bio Elixir enthusiast from Brazil /bio /bio clear"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:128
 #, elixir-autogen, elixir-format
 msgid "/clear"
 msgstr "/clear"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:21
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:21
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "/clearmotd"
 msgstr "/clearmotd"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "/clearwelcome"
@@ -798,55 +777,50 @@ msgstr "/cs"
 msgid "/cs <subcommand> [arguments]"
 msgstr "/cs <subcommand> [arguments]"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "/deop"
 msgstr "/deop"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "/deop <nickname>"
 msgstr "/deop <nickname>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "/deop Alice"
 msgstr "/deop Alice"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "/devoice"
 msgstr "/devoice"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "/devoice <nickname>"
 msgstr "/devoice <nickname>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "/devoice Bob"
 msgstr "/devoice Bob"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:131
 #, elixir-autogen, elixir-format
 msgid "/help"
 msgstr "/help"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:29
-#, elixir-autogen, elixir-format
-msgid "/help /help join /help mode /help ns"
-msgstr "/help /help join /help mode /help ns"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "/help [command]"
 msgstr "/help [command]"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "/help join"
 msgstr "/help join"
@@ -858,9 +832,10 @@ msgid "/hi"
 msgstr "/hi"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:2
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "/ignore"
@@ -933,8 +908,8 @@ msgstr "/join <#channel> [key]"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:106
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:49
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:24
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "/kick"
@@ -996,19 +971,19 @@ msgstr "/me waves hello /me is thinking... /me grabs some coffee"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:65
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:33
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:33
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:86
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "/mode"
@@ -1043,7 +1018,7 @@ msgstr "/mode +v nickname"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:40
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "/mode -b nickname"
 msgstr "/mode -b nickname"
@@ -1068,10 +1043,10 @@ msgstr "/mode -v nickname"
 msgid "/mode <+/-flag> [parameter]"
 msgstr "/mode <+/-flag> [parameter]"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:24
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:17
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "/motd"
 msgstr "/motd"
@@ -1099,7 +1074,7 @@ msgstr "/msg Alice Hey, how are you? /msg Bob Check out #project"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:92
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "/mute"
 msgstr "/mute"
@@ -1129,8 +1104,8 @@ msgstr "/nick CoolUser42 /nick Alice"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:14
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "/notice"
@@ -1151,9 +1126,9 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:15
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "/notice_routing"
 msgstr "/notice_routing"
@@ -1206,19 +1181,19 @@ msgid "/ns register"
 msgstr "/ns register"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:62
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "/op"
 msgstr "/op"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "/op <nickname>"
 msgstr "/op <nickname>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "/op Alice"
 msgstr "/op Alice"
@@ -1236,7 +1211,7 @@ msgstr "/p2p <nickname>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "/part"
@@ -1303,42 +1278,37 @@ msgstr "/query <nickname>"
 msgid "/query Alice /query Bob"
 msgstr "/query Alice /query Bob"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "/quit"
 msgstr "/quit"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:24
-#, elixir-autogen, elixir-format
-msgid "/quit /quit Goodnight everyone!"
-msgstr "/quit /quit Goodnight everyone!"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "/quit [message]"
 msgstr "/quit [message]"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:14
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "/setmotd"
 msgstr "/setmotd"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "/setmotd <text>"
 msgstr "/setmotd <text>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "/setmotd Welcome to RetroHexChat! Please read the rules in #rules."
 msgstr "/setmotd Welcome to RetroHexChat! Please read the rules in #rules."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:14
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "/setwelcome"
 msgstr "/setwelcome"
@@ -1353,20 +1323,10 @@ msgstr "/setwelcome <message>"
 msgid "/setwelcome Welcome to #elixir! Please be respectful and use English."
 msgstr "/setwelcome Welcome to #elixir! Please be respectful and use English."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "/slow /slow 10 /slow 0"
-msgstr "/slow /slow 10 /slow 0"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "/slow 0"
 msgstr "/slow 0"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "/slow [seconds] /slow 0"
-msgstr "/slow [seconds] /slow 0"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:79
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:51
@@ -1451,7 +1411,7 @@ msgstr "/umode <+/-mode>"
 msgid "/unban"
 msgstr "/unban"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:5
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "/unban <nickname>"
 msgstr "/unban <nickname>"
@@ -1462,7 +1422,7 @@ msgstr "/unban <nickname>"
 msgid "/unban nickname"
 msgstr "/unban nickname"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "/unban user123"
 msgstr "/unban user123"
@@ -1474,43 +1434,38 @@ msgstr "/unban user123"
 msgid "/unignore"
 msgstr "/unignore"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "/unignore <nickname>"
 msgstr "/unignore <nickname>"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "/unignore SpamBot /unignore Alice"
-msgstr "/unignore SpamBot /unignore Alice"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "/unmute"
 msgstr "/unmute"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "/unmute <nickname>"
 msgstr "/unmute <nickname>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "/unmute Alice"
 msgstr "/unmute Alice"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "/voice"
 msgstr "/voice"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "/voice <nickname>"
 msgstr "/voice <nickname>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "/voice Bob"
 msgstr "/voice Bob"
@@ -1814,8 +1769,8 @@ msgstr ""
 "momento che cambiare il tuo soprannome inizia una nuova sessione."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:60
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:47
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:90
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "Canale centrale"
@@ -1827,17 +1782,17 @@ msgstr "Modalità del canale"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:73
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:113
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:53
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:48
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:28
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "Channel Permissions"
 msgstr "Permissioni del canale"
@@ -1865,7 +1820,7 @@ msgstr ""
 "Cancella tutti i messaggi dalla finestra di chat corrente, dando una "
 "schermata fresca. Questo non può essere annullato."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Clears the server MOTD that is normally displayed to users when they connect. After clearing, the MOTD section is simply skipped during connection. You can set a new MOTD at any time with"
 msgstr ""
@@ -1874,7 +1829,7 @@ msgstr ""
 "saltata durante la connessione. È possibile impostare un nuovo MOTD in "
 "qualsiasi momento con"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Clears the welcome message that is shown to users when they join the current channel. After clearing, no welcome message is displayed until a new one is set with"
 msgstr ""
@@ -1887,12 +1842,12 @@ msgstr ""
 msgid "Command chaining ("
 msgstr "Catena di comando ("
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Commands Reference"
 msgstr "Comandi di riferimento"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Common action types include:"
 msgstr "I tipi di azione comuni includono:"
@@ -1935,12 +1890,6 @@ msgstr ""
 "I dati vengono memorizzati in cache fino al periodo di conservazione "
 "configurato dopo la disconnessione (default: 1 ora)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "Default window is 5 seconds if no value is specified"
-msgstr ""
-"La finestra predefinita è di 5 secondi se non viene specificato alcun valore"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Disabled if the channel has +K (no knock) mode set"
@@ -1979,7 +1928,7 @@ msgstr "Formato di durata:"
 msgid "Duration must be a positive number"
 msgstr "La durata deve essere un numero positivo"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Each entry shows:"
 msgstr "Ogni voce mostra:"
@@ -2006,12 +1955,12 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:68
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:84
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:97
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:118
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:33
@@ -2020,14 +1969,14 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:20
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:60
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:22
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:37
@@ -2036,34 +1985,34 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:102
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:47
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:65
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:23
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:29
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:49
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:19
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:20
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:21
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:28
@@ -2122,6 +2071,9 @@ msgstr ""
 "Nascondi messaggi da un utente specifico. L'utente ignorato non è notificato"
 " — i loro messaggi sono silenziosamente nascosti dalla tua vista."
 
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:15
@@ -2129,12 +2081,14 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:15
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:15
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:21
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:15
@@ -2142,31 +2096,34 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:15
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:13
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:14
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:19
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:28
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:11
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:11
@@ -2197,7 +2154,7 @@ msgid "If the nickname is registered, you need its password"
 msgstr "Se il soprannome è registrato, è necessario la sua password"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:45
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Ignore List"
 msgstr "Elenco Ignore"
@@ -2224,7 +2181,7 @@ msgstr ""
 "Lasciare il canale corrente o un canale specificato, con un messaggio di "
 "separazione facoltativo che altri membri vedranno."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Log Entry Format"
 msgstr "Formato di ingresso"
@@ -2279,13 +2236,13 @@ msgstr "Massimo 5 timer concurrent per sessione"
 msgid "Maximum 50 aliases per user"
 msgstr "Massimo 50 alias per utente"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Message text is required"
 msgstr "Il testo del messaggio è richiesto"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "Mode +j (Join Throttle)"
 msgstr "Modo +j (giù del ginocchio)"
@@ -2300,7 +2257,7 @@ msgstr "Modalità"
 msgid "Must be in a channel to use this command"
 msgstr "Deve essere in un canale per usare questo comando"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Must be used inside a channel"
@@ -2353,7 +2310,7 @@ msgid "No spaces allowed"
 msgstr "Nessun spazio consentito"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "Notices"
 msgstr "Avviso"
@@ -2435,7 +2392,7 @@ msgstr ""
 "qualsiasi comando quando cliccato — per esempio, aggiungendo una voce "
 "\"Whois\" all'elenco nick che viene eseguito"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Options"
 msgstr "Opzioni"
@@ -2447,10 +2404,10 @@ msgstr "Opzioni"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:11
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:19
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:9
@@ -2463,25 +2420,25 @@ msgstr "Opzioni"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:19
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:12
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:6
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:11
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:6
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:9
@@ -2521,7 +2478,7 @@ msgstr ""
 "viene immediatamente rimosso e non può rientrare finché il divieto non viene"
 " revocato."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "Privacy Mode"
 msgstr "Modalità privacy"
@@ -2641,7 +2598,7 @@ msgstr ""
 "Rimuovere lo stato della voce da un utente nel canale corrente. Questo è un "
 "cortometraggio"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Removes all visible messages from whichever window you're currently viewing — a channel, a PM conversation, or the Status tab. This only affects your screen; other users' windows are not changed. The messages are gone permanently and cannot be recovered by scrolling up."
 msgstr ""
@@ -2651,7 +2608,7 @@ msgstr ""
 "sono cambiate. I messaggi sono andati in modo permanente e non possono "
 "essere recuperati scorrendo su."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Removes the ban entry for the specified user. Once unbanned, the user can rejoin the channel normally. For registered channels, the unban is persisted. You can also unban using"
 msgstr ""
@@ -2659,7 +2616,7 @@ msgstr ""
 "annunciato, l'utente può riunire il canale normalmente. Per i canali "
 "registrati, l'unban è persistito. Puoi anche usare unban"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Removes the user from your ignore list. Their messages, PMs, actions, and invites (whichever were being blocked) will be visible again immediately. To see who you're currently ignoring, run"
 msgstr ""
@@ -2688,26 +2645,26 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:17
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Requires channel operator or owner status"
 msgstr "Richiede l'operatore del canale o lo stato del proprietario"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Requires half-operator (%) status or higher"
 msgstr "Richiede lo stato di metà operante (%) o superiore"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Requires operator (@) or owner (~) status"
 msgstr "Richiede lo stato dell'operatore (@) o del proprietario (~)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Requires operator (@) or owner (~) status in the channel"
 msgstr ""
@@ -2735,7 +2692,10 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:23
@@ -2743,38 +2703,45 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:28
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:51
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:90
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:21
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:23
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:15
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:18
@@ -2782,7 +2749,7 @@ msgstr ""
 msgid "Rules & Limits"
 msgstr "Regole e limiti"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:15
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:18
@@ -2801,12 +2768,12 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:71
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:37
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:102
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:121
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:35
@@ -2815,14 +2782,14 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:22
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:62
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:55
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:39
@@ -2831,34 +2798,34 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:104
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:49
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:51
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:21
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:22
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:24
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:30
@@ -2915,8 +2882,8 @@ msgstr ""
 "servizi e impostazioni. Disponibile solo per amministratori e operatori del "
 "server."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Server administrator only"
 msgstr "Amministratore server solo"
@@ -2977,20 +2944,11 @@ msgstr ""
 "Impostare i comandi che vengono eseguiti automaticamente ogni volta che si "
 "collega, come l'identificazione con NickServ o i canali di adesione."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "Sets or replaces the server MOTD. After setting it, all newly connecting users will see this message in the Status tab when they join. Existing connected users are not notified — only new connections see the MOTD. Any previous MOTD is replaced."
-msgstr ""
-"Imposta o sostituisce il server MOTD. Dopo averlo impostato, tutti gli "
-"utenti di nuova connessione vedranno questo messaggio nella scheda Stato "
-"quando si uniscono. Gli utenti connessi esistenti non sono notificati — solo"
-" nuove connessioni vedono il MOTD. Ogni MOTD precedente viene sostituito."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:28
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:28
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:45
 #, elixir-autogen, elixir-format
@@ -3004,10 +2962,10 @@ msgstr "Smettere di ignorare un utente che hai precedentemente bloccato con"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:11
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:11
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:16
@@ -3018,12 +2976,12 @@ msgstr "Sottocomandi"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:7
@@ -3032,14 +2990,14 @@ msgstr "Sottocomandi"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:15
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:7
@@ -3048,34 +3006,34 @@ msgstr "Sottocomandi"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:12
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:10
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:4
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:4
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:19
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:7
@@ -3131,13 +3089,13 @@ msgstr ""
 msgid "The recipient must be online"
 msgstr "Il destinatario deve essere online"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:19
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "The target must be in the channel"
 msgstr "L'obiettivo deve essere nel canale"
@@ -3274,7 +3232,7 @@ msgstr ""
 msgid "What is Preserved"
 msgstr "Che cosa è conservato"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "When enabled, new joins are throttled to prevent flooding. The mode allows a limited number of joins per time window. Use"
 msgstr ""
@@ -3335,7 +3293,7 @@ msgstr ""
 msgid "Without +t, any channel member can change the topic"
 msgstr "Senza +t, qualsiasi membro del canale può cambiare l'argomento"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "You are disconnected from the server and returned to the connect screen. All your channel memberships end, and other users see a quit notification with your optional message. Your session is fully ended — to rejoin, you'll need to connect again from the connect screen."
 msgstr ""
@@ -3354,7 +3312,7 @@ msgstr ""
 "di accesso automatico, quindi non sarà ricongiungibile sulla tua prossima "
 "connessione."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator or owner"
 msgstr "Devi essere un operatore di canale o un proprietario"
@@ -3394,7 +3352,7 @@ msgstr ""
 "notifiche. Se si desidera solo aprire una scheda PM senza inviare un "
 "messaggio, utilizzare"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "[timestamp] actor action → target_type:target_id"
 msgstr "[timestamp] attore azione → target type:target id"
@@ -3554,12 +3512,12 @@ msgstr "set <key> <value>"
 msgid "to automatically say hello to everyone."
 msgstr "per salutare automaticamente tutti."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "to disable slow mode."
 msgstr "disabilitare la modalità lenta."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "to disable."
 msgstr "per disabilitare."
@@ -3628,13 +3586,6 @@ msgstr ""
 msgid "with expansion"
 msgstr "con espansione"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "with no arguments displays a categorized list of all available commands with brief descriptions. Adding a command name (like"
-msgstr ""
-"senza argomenti visualizza un elenco classificato di tutti i comandi "
-"disponibili con brevi descrizioni. Aggiungere un nome di comando (come"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "with no arguments displays the current channel topic and who set it. Providing text sets a new topic that appears in the topic bar at the top of the channel for all members to see. The topic bar is always visible, making it a good place for channel rules, links, or the current discussion subject."
@@ -3645,7 +3596,7 @@ msgstr ""
 "dell'argomento è sempre visibile, rendendolo un buon posto per le regole del"
 " canale, i collegamenti, o il soggetto di discussione corrente."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "with no arguments first."
 msgstr "senza argomenti prima."
@@ -3859,7 +3810,7 @@ msgid "— Execute mode: deletes all data in a single transaction."
 msgstr ""
 "— Modalità di esecuzione: cancella tutti i dati in una singola transazione."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "— Filter to actions by a specific admin"
 msgstr "— Filtra le azioni di un amministratore specifico"
@@ -3906,17 +3857,6 @@ msgstr ""
 msgid "— How long to ignore: e.g."
 msgstr "— Quanto tempo ignorare: ad es."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:15
-#, elixir-autogen, elixir-format
-msgid "— Join throttle window in seconds (default: 5). Use"
-msgstr "— Unire la finestra dell'acceleratore in secondi (default: 5). Uso"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "— List active channel GenServer processes with member counts"
-msgstr ""
-"— Elenca i processi attivi del canale GenServer con i conti dei membri"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "— List active channels with member counts and registration status"
@@ -3928,7 +3868,7 @@ msgstr ""
 msgid "— List active server bans"
 msgstr "— Elenca i bandi di server attivi"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "— List all active TURN allocations with client addresses and relay ports"
 msgstr ""
@@ -3971,7 +3911,7 @@ msgstr "— Amministrazione di NickServ ("
 msgid "— Optional channel filter. Omit to match all channels."
 msgstr "— Filtro canale opzionale. Omettere di abbinare tutti i canali."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "— Optional command name (without the / prefix). If omitted, shows a list of all commands."
 msgstr ""
@@ -3983,7 +3923,7 @@ msgstr ""
 msgid "— Optional goodbye message shown to other members."
 msgstr "— Messaggio di addio facoltativo mostrato ad altri membri."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "— Optional goodbye message shown to other users."
 msgstr "— Messaggio di addio opzionale mostrato ad altri utenti."
@@ -4116,14 +4056,14 @@ msgstr "— Impostare il ruolo del server:"
 msgid "— Short name for the alias (letters, numbers, hyphens, underscores)."
 msgstr "— Breve nome per l'alias (lettere, numeri, iphens, underscore)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "— Show BEAM VM memory usage breakdown (total, processes, atoms, binary, ETS)"
 msgstr ""
 "— Mostra il guasto di utilizzo della memoria di BEAM VM (totale, processi, "
 "atomi, binario, ETS)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "— Show TURN server overview: relay IP, listeners, active allocations, port usage"
 msgstr ""
@@ -4150,15 +4090,10 @@ msgstr ""
 "— Mostra statistiche del server: utenti online, canali attivi, nick "
 "registrati, uptime"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "— Show the last N entries (default: 20)"
 msgstr "— Mostrare le ultime entrate N (default: 20)"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "— Show the number of active client connections"
-msgstr "— Mostra il numero di connessioni client attive"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:26
 #, elixir-autogen, elixir-format
@@ -4170,7 +4105,7 @@ msgstr "— Smettere di ricevere messaggi wallops."
 msgid "— Target channel (defaults to your current channel)."
 msgstr "— Canale target (defaults al vostro canale corrente)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "— The MOTD content to display."
 msgstr "— Il contenuto MOTD da visualizzare."
@@ -4243,12 +4178,12 @@ msgstr "— Il testo da inviare."
 msgid "— The user to ban from the channel."
 msgstr "— L'utente di vietare dal canale."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "— The user to demote from operator."
 msgstr "— L'utente da demolire dall'operatore."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "— The user to give voice to."
 msgstr "— L'utente a cui dare voce."
@@ -4289,17 +4224,17 @@ msgstr "— L'utente a mute."
 msgid "— The user to open a PM tab with."
 msgstr "— L'utente con cui aprire una scheda PM."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "— The user to promote to operator."
 msgstr "— L'utente a promuovere all'operatore."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "— The user to remove voice from."
 msgstr "— L'utente per rimuovere la voce da."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "— The user to stop ignoring."
 msgstr "— L'utente di smettere di ignorare."
@@ -4314,12 +4249,12 @@ msgstr "— L'utente da rintracciare."
 msgid "— The user to transfer ownership to. Must be in the channel."
 msgstr "— L'utente a cui trasferire la proprietà. Dev'essere nel canale."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "— The user to unban."
 msgstr "— L'utente a unban."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "— The user to unmute."
 msgstr "— L'utente a non incidere."
@@ -4619,13 +4554,6 @@ msgstr "— Mostra aiuto"
 msgid "— View/set channel topic"
 msgstr "— Visualizzare l'argomento del canale"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "). Routing is fixed to the active window. Channel notices always go to the channel window. Running"
-msgstr ""
-"). Il routing è fissato alla finestra attiva. Le note del canale vanno "
-"sempre alla finestra del canale. Correre"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "- Manage Auto Operators (get operator on join)."
@@ -4681,10 +4609,10 @@ msgstr "Dialogo account"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:76
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:126
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "Admin Console"
@@ -4731,20 +4659,20 @@ msgstr "Scheda di registrazione centrale del canale"
 msgid "Channel Invites"
 msgstr "Invito del canale"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Channel Welcome Message"
 msgstr "Messaggio di benvenuto del canale"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:47
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:29
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Context Menu"
 msgstr "Menu di testo"
@@ -4760,7 +4688,7 @@ msgstr ""
 " dettagli del cliente (browser, OS, risoluzione dello schermo, lingua e fuso"
 " orario) quando disponibili. Puoi anche attivare"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Displays the current server MOTD in the Status tab. The MOTD is shown automatically when you connect, and you can re-view it at any time with /motd or Help > Message of the Day. If no MOTD has been set by the administrators, you'll see a \"No MOTD has been set\" message."
 msgstr ""
@@ -4770,7 +4698,7 @@ msgstr ""
 " stato impostato dagli amministratori, vedrai un messaggio \"Nessun MOTD è "
 "stato impostato\"."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Edit Menu"
 msgstr "Modifica menu"
@@ -4804,7 +4732,7 @@ msgstr ""
 " comando, la ricerca, la lista di divieto, Info, moderazione, account, ruolo"
 " e controlli NickServ. Richiede un ruolo di amministratore del server."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Message of the Day Menu"
 msgstr "Messaggio del menu del giorno"
@@ -4869,7 +4797,7 @@ msgstr ""
 msgid "Run"
 msgstr "Corri!"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "Cerca"
@@ -4922,7 +4850,7 @@ msgstr ""
 msgid "The target must be online."
 msgstr "L'obiettivo deve essere online."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "This displays the delivery policy for user-targeted notices (sent via"
 msgstr ""
@@ -5020,7 +4948,7 @@ msgstr "politica. Gli avvisi utente sono indirizzati alla finestra attiva."
 msgid "register"
 msgstr "registro"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "shows the current policy."
 msgstr "mostra la politica attuale."
@@ -5218,7 +5146,7 @@ msgid "Rooms With Nobody In Them"
 msgstr "Stanze senza nessuno dentro"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:60
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "/pin"
 msgstr "/pin"
@@ -5238,24 +5166,19 @@ msgstr "Un canale ha un argomento e un benvenuto che nessuno legge due volte. Tu
 msgid "Channel operators and owners — the same bar as the topic, and for the same reason: both are the channel speaking about itself to everybody who walks in. Half-operators moderate the conversation instead."
 msgstr "Operatori e proprietari del canale — la stessa soglia dell'argomento, e per lo stesso motivo: entrambi sono il canale che parla di sé a chiunque entri. I mezzi operatori moderano invece la conversazione."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "Channel operators and owners, the same as pinning. Unpinning a message nothing was keeping is not an error — it says so and changes nothing."
-msgstr "Operatori e proprietari del canale, come per fissare. Liberare un messaggio che non era tenuto non è un errore: lo dice e non cambia nulla."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Stops keeping a message in view."
 msgstr "Smette di tenere un messaggio in vista."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "The message itself stays exactly where it is in the conversation — only the pin goes. The Pinned window unpins from the entry too, which is usually where you are when you decide to."
 msgstr "Il messaggio resta esattamente dov'è nella conversazione: se ne va solo il fissaggio. Anche la finestra Fissati libera dalla voce stessa, che è dove di solito sei quando lo decidi."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:21
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Who can"
 msgstr "Chi può"
@@ -5270,12 +5193,12 @@ msgstr "/pin 1284"
 msgid "/pin <message id>"
 msgstr "/pin <id del messaggio>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "/unpin 1284"
 msgstr "/unpin 1284"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:5
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "/unpin <message id>"
 msgstr "/unpin <id del messaggio>"
@@ -5301,7 +5224,7 @@ msgid "Easier than the id: right-click the message and choose Pin. The command e
 msgstr "Più semplice dell'id: fai clic destro sul messaggio e scegli Fissa. Il comando esiste per quando hai già l'id davanti. In ogni caso il canale ricontrolla quando il pin arriva, e un pulsante Fissati compare nella barra della conversazione non appena c'è qualcosa da mostrare."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_pin.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Pinned Window"
 msgstr "Finestra Fissati"
@@ -5316,7 +5239,7 @@ msgstr "Fissare due volte lo stesso messaggio è lo stesso pin"
 msgid "— The number of a message said in this channel."
 msgstr "— Il numero di un messaggio detto in questo canale."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "— The number of a message this channel is keeping."
 msgstr "— Il numero di un messaggio che questo canale sta conservando."
@@ -5430,3 +5353,619 @@ msgstr "Archivio pubblico del canale"
 #, elixir-autogen, elixir-format
 msgid "archive on/off"
 msgstr "archive on/off"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "). Routing is fixed to the active window. Running"
+msgstr "). Il routing è fissato alla finestra attiva. Correre"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "+m Moderated"
+msgstr "+m Moderato"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "+o Operator"
+msgstr "Operatore +o"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:69
+#, elixir-autogen, elixir-format
+msgid "+v Voice"
+msgstr "Voce +v"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "A member holds one channel role at a time."
+msgstr "Un membro detiene un ruolo di canale alla volta."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "A member holds one channel role at a time. Removing voice makes the user a regular member."
+msgstr "Un membro detiene un ruolo di canale alla volta. La rimozione della voce rende l'utente un membro regolare."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "A message longer than 200 characters is cut to 200"
+msgstr "Un messaggio più lungo di 200 caratteri è tagliato a 200"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "A name that is not a command gets an error"
+msgstr "Un nome che non è un comando ottiene un errore"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "A notice sent to your nickname appears in the conversation you are viewing at the moment it arrives. No new window opens for it. A notice sent to a channel appears only while that channel is the window you are viewing."
+msgstr "Un avviso inviato al tuo soprannome appare nella conversazione che stai visualizzando al momento in cui arriva. Nessuna nuova finestra si apre per esso. Un avviso inviato a un canale appare solo mentre quel canale è la finestra che state visualizzando."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:112
+#, elixir-autogen, elixir-format
+msgid "Admin Audit Log"
+msgstr "Admin Audit Log"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "Admin MOTD"
+msgstr "Amministrazioni MOTD"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:83
+#, elixir-autogen, elixir-format
+msgid "Admin TURN"
+msgstr "Admin TURN"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "An unknown subcommand gets an error that lists the valid ones"
+msgstr "Un sottocomand sconosciuto ottiene un errore che elenca quelli validi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Anyone can use it. No channel or server status is needed."
+msgstr "Chiunque può usarlo. Non è necessario alcun canale o stato server."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "Auto-Reconnect"
+msgstr "Ricollegamento automatico"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Ban Exceptions (+e)"
+msgstr "Eccezioni di ban (+e)"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:69
+#, elixir-autogen, elixir-format
+msgid "ChanServ Access Lists"
+msgstr "Elenchi di accesso ChanServ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Channel operators and owners, the same as pinning. Unpinning a message nothing was keeping is not an error, and it changes nothing."
+msgstr "Operatori di canali e proprietari, lo stesso come pinning. Sconfittando un messaggio niente era mantenere non è un errore, e non cambia nulla."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Clearing a channel that has no welcome message is not an error"
+msgstr "Cancellare un canale che non ha un messaggio di benvenuto non è un errore"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Each reply appears as system lines in the window you are viewing."
+msgstr "Ogni risposta appare come linee di sistema nella finestra che si sta visualizzando."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Easier than the id: right-click a pinned message and choose Unpin. That menu item appears only for channel operators and owners. After an unpin, the pinned count of the channel updates for everyone in it."
+msgstr "Più facile dell'id: fare clic con il pulsante destro del mouse su un messaggio pinned e scegliere Unpin. Quella voce di menu appare solo per gli operatori di canale e proprietari. Dopo una pinna, il conteggio pinned degli aggiornamenti del canale per tutti in esso."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "Entries are listed newest first. The reply starts with a header that gives the number of entries shown. When an action has extra details, they appear in brackets at the end of its line. If nothing matches, you get a line that says no entries were found."
+msgstr "Le voci sono elencate prima. La risposta inizia con un intestazione che dà il numero di voci visualizzate. Quando un'azione ha ulteriori dettagli, appaiono tra parentesi alla fine della sua linea. Se niente corrisponde, si ottiene una linea che dice che non sono state trovate voci."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Everyone in the channel sees a mode change line. In a registered channel, the setting is saved and stays after a restart."
+msgstr "Tutti nel canale vede una linea di cambiamento di modalità. In un canale registrato, l'impostazione viene salvata e rimane dopo un riavvio."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Everything you type after the command becomes the MOTD, with your spacing kept. The text is saved in the server settings, so it stays after a server restart. You get a confirmation line when it is saved. Administrators can also edit the MOTD in the Admin MOTD window of the Admin Console."
+msgstr "Tutto quello che digiti dopo il comando diventa MOTD, con la tua spaziatura mantenuta. Il testo viene salvato nelle impostazioni del server, quindi rimane dopo un riavvio del server. Si ottiene una linea di conferma quando viene salvato. Gli amministratori possono anche modificare il MOTD nella finestra Admin MOTD della console Admin."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Give operator status to someone you trust to help run the channel. Operators can kick and ban users, change the topic when it is locked, pin messages and set channel modes."
+msgstr "Dare lo stato dell'operatore a qualcuno di cui ti fidi per aiutare a eseguire il canale. Gli operatori possono calciare e vietare gli utenti, cambiare l'argomento quando è bloccato, perno messaggi e impostare modalità canale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Half-operators cannot give operator status"
+msgstr "I semioperatori non possono dare lo stato dell'operatore"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Half-operators cannot remove operator status"
+msgstr "I semioperatori non possono rimuovere lo stato dell'operatore"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Half-operators cannot unpin messages"
+msgstr "I mezzooperatori non possono annullare i messaggi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Half-operators cannot use this command"
+msgstr "I semioperatori non possono usare questo comando"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:83
+#, elixir-autogen, elixir-format
+msgid "If the %{option} value is not a number, the default of 20 is used"
+msgstr "Se il valore %{option} non è un numero, viene utilizzato il valore predefinito di 20"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "If the TURN server is not configured on this server, both subcommands reply only that it is not configured."
+msgstr "Se il server TURN non è configurato su questo server, entrambi i sottocomandi rispondono solo che non è configurato."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "If the channel is registered and the user is on its ChanServ access list, they get the status from that list back the next time they join."
+msgstr "Se il canale è registrato e l'utente è nella sua lista di accesso ChanServ, ottengono lo stato da quella lista la prossima volta che si uniscono."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "If the nickname is not on your ignore list, you get an error that says so"
+msgstr "Se il soprannome non è nella vostra lista ignorare, si ottiene un errore che dice così"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "If you are identified with NickServ, your ignore list is saved with your account, so the change lasts into your next session. If the user was ignored automatically for flooding, they are not ignored automatically again for one minute."
+msgstr "Se sei identificato con NickServ, la tua lista di ignorare viene salvata con il tuo account, quindi la modifica dura nella tua prossima sessione. Se l'utente è stato ignorato automaticamente per inondazione, non vengono ignorati automaticamente di nuovo per un minuto."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "In each channel you were in, the other members see a line that you left, with your message in brackets after it. If you give no message, a default reason is used. The app does not reconnect you or rejoin your channels by itself after you quit."
+msgstr "In ogni canale c'era, gli altri membri vedono una linea che hai lasciato, con il tuo messaggio tra parentesi dopo. Se non si dà un messaggio, viene utilizzato un motivo predefinito. L'applicazione non si riconnette o si unisce i canali da solo dopo aver smesso."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Only server administrators can change the MOTD, with %{set} or %{clear}."
+msgstr "Solo gli amministratori del server possono cambiare il MOTD, con %{set} o %{clear}."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Only the conversation on screen is cleared. Your other channels and private conversations keep their messages. If you switch to another window and come back, the cleared messages stay hidden. New messages appear as they arrive."
+msgstr "Solo la conversazione sullo schermo è sgomberata. I tuoi altri canali e conversazioni private mantengono i loro messaggi. Se si passa a un'altra finestra e tornare, i messaggi cancellati rimangono nascosti. Nuovi messaggi appaiono quando arrivano."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Only the first nickname is used. Extra words are ignored."
+msgstr "Solo il primo soprannome viene usato. Le parole extra sono ignorate."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Only the first word after the command is used"
+msgstr "Solo la prima parola dopo il comando viene utilizzata"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Other users get a permission denied error"
+msgstr "Altri utenti ottengono un errore negato"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:77
+#, elixir-autogen, elixir-format
+msgid "Other users get an error and nothing is shown"
+msgstr "Altri utenti ottengono un errore e nulla viene mostrato"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Quit Messages"
+msgstr "Smettere messaggi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Remove operator status when someone no longer helps run the channel. You can also use it on your own nickname to step down."
+msgstr "Rimuovere lo stato dell'operatore quando qualcuno non aiuta più a eseguire il canale. Puoi anche usarlo sul tuo soprannome per scendere."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Sets or replaces the server MOTD. After setting it, all newly connecting users will see this message in the Status tab when they join. Any previous MOTD is replaced."
+msgstr "Imposta o sostituisce il server MOTD. Dopo averlo impostato, tutti gli utenti di nuova connessione vedranno questo messaggio nella scheda Stato quando si uniscono. Ogni MOTD precedente viene sostituito."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Status given with this command lasts until the user leaves the channel. When they join again in a registered channel, their status comes from the ChanServ access list. In an unregistered channel, they come back as a regular member."
+msgstr "Stato dato con questo comando dura fino a quando l'utente lascia il canale. Quando si uniscono di nuovo in un canale registrato, il loro stato viene dalla lista di accesso ChanServ. In un canale non registrato, ritornano come membro normale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "The %{sub} subcommand lists each running channel by name, with its process id. An unregistered channel stops its process when its last member leaves, so it drops off this list."
+msgstr "Il sottocomando %{sub} elenca ogni canale in esecuzione per nome, con il suo id di processo. Un canale non registrato interrompe il suo processo quando il suo ultimo membro parte, quindi scende da questa lista."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "The %{sub} subcommand prints one line per allocation: the client address and port, and the relay port it holds. The list contains client IP addresses, so treat it as private data."
+msgstr "Il sottocomando %{sub} stampa una linea per allocazione: l'indirizzo del cliente e la porta del relè che detiene. L'elenco contiene indirizzi IP client, quindi trattalo come dati privati."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "The %{sub} subcommand shows sizes in megabytes for total memory, processes, ETS, atoms, binaries and loaded code."
+msgstr "Il sottocomando %{sub} mostra dimensioni in megabyte per memoria totale, processi, ETS, atomi, binari e codice caricato."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "The %{sub} subcommand shows the status, the relay IP, the listen port, the number of listeners, the active allocations, how many relay ports are in use out of the total, and the relay port range."
+msgstr "Il sottocomando %{sub} mostra lo stato, l'IP relè, la porta di ascolto, il numero di ascoltatori, le allocazioni attive, quante porte relè sono in uso fuori del totale, e l'intervallo di porte relè."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "The Clear Window item in the Edit menu runs the same command."
+msgstr "La voce Clear Window nel menu Modifica esegue lo stesso comando."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "The MOTD is deleted from the server settings. Connected users get a short note in their Status window that the MOTD changed. After that, %{command} answers that no MOTD has been set."
+msgstr "Il MOTD viene eliminato dalle impostazioni del server. Gli utenti collegati ottengono una breve nota nella finestra Stato che il MOTD ha cambiato. Dopo di che, %{command} risponde che nessun MOTD è stato impostato."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The TURN server relays call traffic for users whose networks block a direct peer-to-peer connection. Use this command when calls fail for some users, to see whether the relay is running and how busy it is."
+msgstr "I relè del server TURN chiamano il traffico per gli utenti le cui reti bloccano una connessione peer-to-peer diretta. Utilizzare questo comando quando le chiamate falliscono per alcuni utenti, per vedere se il relè è in esecuzione e quanto è occupato."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "The channel allows at most 5 joins in any period of the length you give. For example, %{example} allows 5 joins every 10 seconds. It sets mode %{mode}. Anyone who tries to join after the limit is reached is refused and asked to try again shortly. Bots are not limited."
+msgstr "Il canale permette al massimo 5 si unisce in qualsiasi periodo della lunghezza che date. Ad esempio, %{example} consente 5 unioni ogni 10 secondi. Imposta la modalità %{mode}. Chiunque cerchi di unirsi dopo il limite è raggiunto è rifiutato e ha chiesto di riprovare a breve. I botti non sono limitati."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "The command acts on the channel you are viewing. A member holds one channel role at a time, so the new operator role replaces any voice or half-operator status the user had. Everyone in the channel sees a mode change line, and the user moves to the Operator group in the nick list."
+msgstr "Il comando agisce sul canale che stai visualizzando. Un membro detiene un ruolo di canale alla volta, quindi il nuovo ruolo dell'operatore sostituisce qualsiasi stato di voce o metà operatore che l'utente aveva. Tutti nel canale vede una linea di cambiamento di modalità, e l'utente si sposta al gruppo Operator nella lista nick."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "The command acts on the channel you are viewing. Everyone in the channel sees a line that names the user and who lifted the ban. Unbanning does not invite the user or bring them back. They must join again themselves."
+msgstr "Il comando agisce sul canale che stai visualizzando. Tutti nel canale vede una linea che nomina l'utente e che ha sollevato il divieto. Unbanning non invita l'utente o li riporta indietro. Devono unirsi di nuovo a loro."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "The command acts on the channel you are viewing. Everyone in the channel sees a mode change line, and the user moves to the Voiced group in the nick list."
+msgstr "Il comando agisce sul canale che stai visualizzando. Tutti nel canale vede una linea di cambiamento di modalità, e l'utente si sposta al gruppo Voiced nella lista nick."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "The command acts on the channel you are viewing. It lifts every active mute for that nickname in this channel. A timed mute also stops its countdown. You see a confirmation line, and the user can talk in the channel again at once."
+msgstr "Il comando agisce sul canale che stai visualizzando. Solleva ogni muto attivo per quel soprannome in questo canale. Un muto a tempo ferma anche il conto alla rovescia. Si vede una linea di conferma, e l'utente può parlare nuovamente nel canale contemporaneamente."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "The command acts on the channel you are viewing. The user becomes a regular member and moves to the Users group in the nick list. Everyone in the channel sees a mode change line. In a channel that is not moderated, the user can still talk as before."
+msgstr "Il comando agisce sul canale che stai visualizzando. L'utente diventa un membro regolare e si sposta al gruppo Utenti nella lista nick. Tutti nel canale vede una linea di cambiamento di modalità. In un canale che non è moderato, l'utente può ancora parlare come prima."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "The command acts on the channel you are viewing. The user becomes a regular member. Any voice they had before is not restored, so in a moderated (+m) channel they cannot speak until they get voice again. Everyone in the channel sees a mode change line, and the user moves to the Users group in the nick list."
+msgstr "Il comando agisce sul canale che stai visualizzando. L'utente diventa un membro regolare. Qualsiasi voce che avevano prima non è ripristinata, quindi in un canale moderato (+m) non possono parlare finché non ottengono di nuovo voce. Tutti nel canale vede una linea di modifica modalità, e l'utente si sposta al gruppo Utenti nella lista nick."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "The command acts on the channel you are viewing. The welcome is also deleted from storage, so it does not come back later. You see a confirmation line that names the channel. Other members get no message about the change."
+msgstr "Il comando agisce sul canale che si sta visualizzando. L'accoglienza viene anche cancellata dall'archiviazione, quindi non ritorna più tardi. Vedi una linea di conferma che nomina il canale. Altri membri non hanno alcun messaggio sul cambiamento."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "The command replies with one line in the current window that names the policy. Notices from users you ignore for notices, or for all message types, are not shown at all."
+msgstr "Il comando risponde con una riga nella finestra corrente che nomina la politica. Le comunicazioni da parte degli utenti che si ignorano per gli avvisi, o per tutti i tipi di messaggi, non sono mostrate affatto."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "The command takes no parameters. Anything you type after it is ignored."
+msgstr "Il comando non richiede parametri. Tutto quello che digiti dopo che è ignorato."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "The id must be a whole number greater than zero. Anything else gets an error that it is not a message id."
+msgstr "L'id deve essere un numero intero superiore a zero. Qualsiasi altra cosa ottiene un errore che non è un messaggio id."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:90
+#, elixir-autogen, elixir-format
+msgid "The log is read-only. This command does not change or delete entries."
+msgstr "Il registro è di sola lettura. Questo comando non cambia o cancella le voci."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "The message is shown in your channels, not in private conversations"
+msgstr "Il messaggio è mostrato nei vostri canali, non nelle conversazioni private"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "The messages are not deleted from the server. Other people still see them."
+msgstr "I messaggi non vengono cancellati dal server. Altre persone ancora li vedono."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "The name must match the ban entry exactly, with the same upper and lower case. A ban set as a wildcard mask, such as %{mask}, is removed only by typing that same mask. If no ban entry matches, the command still reports the unban and nothing changes."
+msgstr "Il nome deve corrispondere esattamente alla voce di divieto, con lo stesso caso superiore e inferiore. Un set di ban come una maschera jolly, come %{mask}, viene rimosso solo digitando quella stessa maschera. Se non ci sono partite di bando, il comando segnala ancora l'unban e nulla cambia."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "The nickname is matched without regard to upper or lower case. Every ignore entry for that nickname is removed, and a timed ignore stops its countdown. You see a confirmation line."
+msgstr "Il soprannome è abbinato senza riguardo al caso superiore o inferiore. Ogni voce ignorata per quel soprannome viene rimossa, e un ignorare tempo interrompe il suo conto alla rovescia. Vedi una linea di conferma."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "The number of seconds is required. Without it, you see the usage line."
+msgstr "Il numero di secondi è richiesto. Senza di esso, si vede la linea di utilizzo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "The routing policy is fixed. There is no option to send notices to another window."
+msgstr "La politica di routing è fissa. Non c'è possibilità di inviare avvisi ad un'altra finestra."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "The user does not need to be in the channel, so you can lift a mute after they leave. If the user was not muted, the command still reports success and nothing changes."
+msgstr "L'utente non ha bisogno di essere nel canale, in modo da poter sollevare un muto dopo che se ne vanno. Se l'utente non è stato disattivato, il comando segnala ancora il successo e nulla cambia."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "The value must be a whole number. Text or a negative number gets the usage line."
+msgstr "Il valore deve essere un numero intero. Testo o un numero negativo ottiene la linea di utilizzo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "Type the command name in lowercase and without the slash"
+msgstr "Digitare il nome di comando in minuscolo e senza lo slash"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Typing %{command} with no text does the same thing as this command."
+msgstr "Digitare %{command} senza testo fa la stessa cosa di questo comando."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Use it in a moderated (+m) channel to stop someone from speaking without removing them from the channel. They can still read the conversation."
+msgstr "Utilizzare in un canale moderato (+m) per impedire a qualcuno di parlare senza rimuoverli dal canale. Possono ancora leggere la conversazione."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Use it to check a running server: how many channels are live right now, which ones they are, and how the server uses memory. Nothing is changed, so it is safe to run at any time."
+msgstr "Usalo per controllare un server in esecuzione: quanti canali sono in diretta in questo momento, quali sono e come il server utilizza la memoria. Niente è cambiato, quindi è sicuro correre in qualsiasi momento."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Use it to find out who changed what on the server. For example, check who banned a user, dropped a nickname or changed a server setting."
+msgstr "Usalo per scoprire chi ha cambiato cosa sul server. Per esempio, controllare chi ha vietato un utente, ha lasciato un soprannome o ha cambiato un'impostazione del server."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it to greet people, point them to the server rules, or share news that everyone should see when they connect."
+msgstr "Usalo per salutare le persone, indicarle alle regole del server, o condividere notizie che tutti dovrebbero vedere quando si collegano."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it to read the server news or rules again after they scrolled out of the Status window. It is also the way to read a new MOTD that was posted while you were connected."
+msgstr "Usalo per leggere le notizie o le regole del server di nuovo dopo che hanno scorretto fuori dalla finestra Stato. È anche il modo di leggere un nuovo MOTD che è stato pubblicato mentre eri connesso."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Use it when a ban has served its purpose, or when someone was banned by mistake."
+msgstr "Usalo quando un divieto ha servito il suo scopo, o quando qualcuno è stato vietato per errore."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it when a busy window is hard to read, or when you want an empty screen before a new discussion starts."
+msgstr "Usalo quando una finestra impegnata è difficile da leggere, o quando si desidera uno schermo vuoto prima di iniziare una nuova discussione."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Use it when a mute has done its job early, or when you muted the wrong person. A timed mute ends by itself. A permanent mute stays until someone removes it with this command."
+msgstr "Usalo quando un muto ha fatto il suo lavoro presto, o quando hai muto la persona sbagliata. Un muto a tempo finisce da solo. Un muto permanente rimane fino a quando qualcuno lo rimuove con questo comando."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it when a notice shows up in a window you did not expect and you want to know why. The command only reports the policy. It does not change anything."
+msgstr "Usalo quando un avviso si presenta in una finestra che non ti aspettavi e vuoi sapere perché. Il comando riporta solo la politica. Non cambia niente."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Use it when a pinned message is out of date, such as old rules or an event that is over. It also frees a place, because a channel keeps at most 50 pinned messages."
+msgstr "Utilizzare quando un messaggio pinned è fuori data, come le vecchie regole o un evento che è finito. Inoltre libera un posto, perché un canale mantiene al massimo 50 messaggi pinned."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Use it when many users or bots join in a short time, for example during a join flood. It slows down new arrivals without closing the channel."
+msgstr "Utilizzare quando molti utenti o bot si uniscono in breve tempo, per esempio durante un'alluvione di unione. Rallenta nuovi arrivi senza chiudere il canale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it when the MOTD is out of date and you have nothing to put in its place. If you only want to change the text, use %{command} instead. It replaces the old message in one step."
+msgstr "Usalo quando il MOTD è fuori appuntamento e non hai nulla da mettere al suo posto. Se si desidera solo cambiare il testo, utilizzare %{command} invece. Sostituisce il vecchio messaggio in un passo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it when the welcome text is out of date and you have nothing to put in its place yet. If you only want new text, use %{command} with the new message. It replaces the old one in one step."
+msgstr "Usalo quando il testo di benvenuto è fuori data e non hai ancora nulla da mettere al suo posto. Se si desidera solo nuovo testo, utilizzare %{command} con il nuovo messaggio. Sostituisce il vecchio in un passo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it when you are done chatting and want to leave every channel at once. To leave only one channel and stay connected, use %{command} instead."
+msgstr "Utilizzare quando si è fatto chat e vogliono lasciare ogni canale contemporaneamente. Per lasciare un solo canale e rimanere connesso, utilizzare %{command} invece."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it when you forget how a command works, or when you want to see which commands exist without leaving the chat."
+msgstr "Utilizzare quando si dimentica come funziona un comando, o quando si desidera vedere quali comandi esistono senza lasciare la chat."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it when you want to hear from someone again, for example after an argument is over or when you ignored the wrong person."
+msgstr "Usalo quando vuoi sentire di nuovo da qualcuno, per esempio dopo che un argomento è finito o quando hai ignorato la persona sbagliata."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Use voice in a moderated (+m) channel to choose who may speak. Regular members cannot send messages there, and voiced members can. Outside a moderated channel, voice gives no extra rights."
+msgstr "Usa la voce in un canale moderato (+m) per scegliere chi può parlare. I membri regolari non possono inviare messaggi lì, e i membri vocali possono. Fuori da un canale moderato, la voce non dà diritti extra."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Users who are already connected get a short note in their Status window that the MOTD changed. They can read the new text with %{command}."
+msgstr "Gli utenti che sono già connessi ottengono una breve nota nella loro finestra Stato che il MOTD ha cambiato. Possono leggere il nuovo testo con %{command}."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Voice given with this command lasts until the user leaves the channel. In a registered channel, users on the ChanServ access list with voice level get voice again each time they join."
+msgstr "La voce data con questo comando dura fino a quando l'utente lascia il canale. In un canale registrato, gli utenti sull'elenco di accesso ChanServ con livello vocale ottengono voce di nuovo ogni volta che si uniscono."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "When an administrator changes or clears the MOTD while you are connected, a short note in the Status window tells you so. The new text is not shown by itself. Type %{command} to read it."
+msgstr "Quando un amministratore cambia o cancella il MOTD mentre sei connesso, una breve nota nella finestra Stato lo dice. Il nuovo testo non è mostrato da solo. Digitare %{command} per leggerlo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "When the message was not pinned, the reply is the same confirmation as a real unpin."
+msgstr "Quando il messaggio non è stato bloccato, la risposta è la stessa conferma di una vera e propria pin."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:4
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:4
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "When to Use It"
+msgstr "Quando usarlo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "With a command name, a help card for that command appears in the window you are viewing, and the Status window notes which topic was opened. The card shows the same help text you find in Help Topics, with a link that opens the full help page."
+msgstr "Con un nome di comando, una carta di aiuto per quel comando appare nella finestra che stai visualizzando, e la finestra di stato nota quale argomento è stato aperto. La scheda mostra lo stesso testo di aiuto che si trova in Help Topics, con un link che apre la pagina di aiuto completo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "With no arguments, the reply is a short message in the current window. It names every command, separated by commas, and ends with a hint about Help Topics. It does not include descriptions."
+msgstr "Senza argomenti, la risposta è un breve messaggio nella finestra corrente. Nomina ogni comando, separato da virgole, e termina con un accenno su Help Topics. Non include descrizioni."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Without a nickname, you see the usage line"
+msgstr "Senza un soprannome, si vede la linea di utilizzo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "Without a subcommand, you see the usage line"
+msgstr "Senza un subcomand, si vede la linea di utilizzo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "Without an id, you get a hint to use the Pinned window instead"
+msgstr "Senza un id, si ottiene un suggerimento per utilizzare la finestra Pinned invece"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Without text, you see the usage line and the current MOTD is kept"
+msgstr "Senza testo, si vede la linea di utilizzo e l'attuale MOTD viene mantenuto"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "You get a confirmation line when it is done. Clearing when no MOTD is set is not an error. Administrators can also edit or clear the MOTD in the Admin MOTD window of the Admin Console."
+msgstr "Si ottiene una linea di conferma quando è fatto. Cancellare quando nessun MOTD è impostato non è un errore. Gli amministratori possono anche modificare o cancellare il MOTD nella finestra Admin MOTD della console Admin."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:63
+#, elixir-autogen, elixir-format
+msgid "You must be a server administrator and identified with NickServ"
+msgstr "Devi essere un amministratore del server e identificato con NickServ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "You must be identified with NickServ for your administrator role to count"
+msgstr "Devi essere identificato con NickServ per il tuo ruolo di amministratore"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_unpin.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "You must type it in a channel window, not in a private conversation"
+msgstr "È necessario digitare in una finestra di canale, non in una conversazione privata"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "with no arguments lists the names of all available commands. Adding a command name (like"
+msgstr "senza argomenti elenca i nomi di tutti i comandi disponibili. Aggiungere un nome di comando (come"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "— Length of the join throttle window in seconds. Use"
+msgstr "— Lunghezza della finestra di collegamento in pochi secondi. Uso"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "— List running channel processes by name, with their process ids"
+msgstr "— Elenca i processi di canale in esecuzione per nome, con i loro id di processo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "— Show the number of running channel processes"
+msgstr "— Mostra il numero di processi di canale in esecuzione"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:77
+#, elixir-autogen, elixir-format
+msgid "matches the nickname exactly, with the same upper and lower case. A leading @ is removed."
+msgstr "corrisponde esattamente al soprannome, con lo stesso caso superiore e inferiore. Un leader @ è rimosso."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "reports how many channel processes are running. It does not count client connections."
+msgstr "segnala quanti processi di canale sono in esecuzione. Non conta connessioni client."

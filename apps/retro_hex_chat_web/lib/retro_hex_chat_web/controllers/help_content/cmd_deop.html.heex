@@ -5,6 +5,14 @@
   )} <code>{dgettext("help_commands", "/mode -o nickname")}</code>.
 </p>
 
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Remove operator status when someone no longer helps run the channel. You can also use it on your own nickname to step down."
+  )}
+</p>
+
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
 <pre>{dgettext("help_commands", "/deop <nickname>")}</pre>
 
@@ -13,10 +21,34 @@
   <code>nickname</code> {dgettext("help_commands", "— The user to demote from operator.")}
 </p>
 
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "The command acts on the channel you are viewing. The user becomes a regular member. Any voice they had before is not restored, so in a moderated (+m) channel they cannot speak until they get voice again. Everyone in the channel sees a mode change line, and the user moves to the Users group in the nick list."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "If the channel is registered and the user is on its ChanServ access list, they get the status from that list back the next time they join."
+  )}
+</p>
+
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>{dgettext("help_commands", "Requires operator (@) or owner (~) status in the channel")}</li>
   <li>{dgettext("help_commands", "The target must be in the channel")}</li>
+  <li>{dgettext("help_commands", "Half-operators cannot remove operator status")}</li>
+  <li>
+    {dgettext("help_commands", "Only the first nickname is used. Extra words are ignored.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "You must type it in a channel window, not in a private conversation"
+    )}
+  </li>
 </ul>
 
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
@@ -31,6 +63,11 @@
   </.help_link>
   · <.help_link topic="cmd-devoice">{dgettext("help_commands", "/devoice")}</.help_link>
   · <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
+  · <.help_link topic="mode-o">{dgettext("help_commands", "+o Operator")}</.help_link>
+  ·
+  <.help_link topic="chanserv-access">
+    {dgettext("help_commands", "ChanServ Access Lists")}
+  </.help_link>
   ·
   <.help_link topic="channel-permissions">
     {dgettext("help_commands", "Channel Permissions")}

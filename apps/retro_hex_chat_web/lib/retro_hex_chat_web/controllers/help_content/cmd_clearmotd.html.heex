@@ -4,6 +4,14 @@
     "Remove the server's Message of the Day so that new users connecting won't see any MOTD."
   )}
 </p>
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it when the MOTD is out of date and you have nothing to put in its place. If you only want to change the text, use %{command} instead. It replaces the old message in one step.",
+    command: "/setmotd"
+  )}
+</p>
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
 <pre>{dgettext("help_commands", "/clearmotd")}</pre>
 <.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
@@ -13,9 +21,35 @@
     "Clears the server MOTD that is normally displayed to users when they connect. After clearing, the MOTD section is simply skipped during connection. You can set a new MOTD at any time with"
   )} <code>{dgettext("help_commands", "/setmotd")}</code>.
 </p>
+<p>
+  {dgettext(
+    "help_commands",
+    "The MOTD is deleted from the server settings. Connected users get a short note in their Status window that the MOTD changed. After that, %{command} answers that no MOTD has been set.",
+    command: "/motd"
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "You get a confirmation line when it is done. Clearing when no MOTD is set is not an error. Administrators can also edit or clear the MOTD in the Admin MOTD window of the Admin Console."
+  )}
+</p>
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>{dgettext("help_commands", "Server administrator only")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "You must be identified with NickServ for your administrator role to count"
+    )}
+  </li>
+  <li>{dgettext("help_commands", "Other users get a permission denied error")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "The command takes no parameters. Anything you type after it is ignored."
+    )}
+  </li>
 </ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
 <pre>{dgettext("help_commands", "/clearmotd")}</pre>
@@ -23,6 +57,7 @@
 <p>
   <.help_link topic="cmd-motd">{dgettext("help_commands", "/motd")}</.help_link>
   · <.help_link topic="cmd-setmotd">{dgettext("help_commands", "/setmotd")}</.help_link>
+  · <.help_link topic="feature-admin-motd">{dgettext("help_commands", "Admin MOTD")}</.help_link>
   ·
   <.help_link topic="feature-special-messages">
     {dgettext("help_commands", "Special Messages")}

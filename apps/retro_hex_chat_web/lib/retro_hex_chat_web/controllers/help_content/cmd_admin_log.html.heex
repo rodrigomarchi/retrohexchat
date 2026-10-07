@@ -5,6 +5,14 @@
   )}
 </p>
 
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it to find out who changed what on the server. For example, check who banned a user, dropped a nickname or changed a server setting."
+  )}
+</p>
+
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
 <pre>{dgettext("help_commands", "/admin log [--last N] [--user nick]")}</pre>
 
@@ -52,8 +60,44 @@
   </li>
 </ul>
 
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Entries are listed newest first. The reply starts with a header that gives the number of entries shown. When an action has extra details, they appear in brackets at the end of its line. If nothing matches, you get a line that says no entries were found."
+  )}
+</p>
+
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_commands", "You must be a server administrator and identified with NickServ")}
+  </li>
+  <li>
+    <code>--user</code> {dgettext(
+      "help_commands",
+      "matches the nickname exactly, with the same upper and lower case. A leading @ is removed."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "If the %{option} value is not a number, the default of 20 is used",
+      option: "--last"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "The log is read-only. This command does not change or delete entries."
+    )}
+  </li>
+</ul>
+
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
-<pre>{dgettext("help_commands", "/admin log /admin log --last 50 /admin log --user Admin --last 10")}</pre>
+<pre>/admin log
+/admin log --last 50
+/admin log --user Admin --last 10</pre>
 
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
@@ -63,4 +107,8 @@
     {dgettext("help_commands", "Admin Console")}
   </.help_link>
   · <.help_link topic="cmd-admin-server">{dgettext("help_commands", "/admin server")}</.help_link>
+  ·
+  <.help_link topic="feature-admin-audit-log">
+    {dgettext("help_commands", "Admin Audit Log")}
+  </.help_link>
 </p>

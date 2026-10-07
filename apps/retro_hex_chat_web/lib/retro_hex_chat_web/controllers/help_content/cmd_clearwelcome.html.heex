@@ -4,6 +4,14 @@
     "Remove the welcome message from the current channel so that new users joining won't see one."
   )}
 </p>
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it when the welcome text is out of date and you have nothing to put in its place yet. If you only want new text, use %{command} with the new message. It replaces the old one in one step.",
+    command: "/setwelcome"
+  )}
+</p>
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
 <pre>{dgettext("help_commands", "/clearwelcome")}</pre>
 <.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
@@ -13,10 +21,33 @@
     "Clears the welcome message that is shown to users when they join the current channel. After clearing, no welcome message is displayed until a new one is set with"
   )} <code>{dgettext("help_commands", "/setwelcome")}</code>.
 </p>
+<p>
+  {dgettext(
+    "help_commands",
+    "The command acts on the channel you are viewing. The welcome is also deleted from storage, so it does not come back later. You see a confirmation line that names the channel. Other members get no message about the change."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "Typing %{command} with no text does the same thing as this command.",
+    command: "/setwelcome"
+  )}
+</p>
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>{dgettext("help_commands", "You must be a channel operator or owner")}</li>
   <li>{dgettext("help_commands", "Must be used inside a channel")}</li>
+  <li>{dgettext("help_commands", "Half-operators cannot use this command")}</li>
+  <li>
+    {dgettext("help_commands", "Clearing a channel that has no welcome message is not an error")}
+  </li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "The command takes no parameters. Anything you type after it is ignored."
+    )}
+  </li>
 </ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
 <pre>{dgettext("help_commands", "/clearwelcome")}</pre>

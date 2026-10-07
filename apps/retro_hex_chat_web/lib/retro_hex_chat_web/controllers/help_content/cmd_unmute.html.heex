@@ -5,6 +5,14 @@
   )}
 </p>
 
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it when a mute has done its job early, or when you muted the wrong person. A timed mute ends by itself. A permanent mute stays until someone removes it with this command."
+  )}
+</p>
+
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
 <pre>{dgettext("help_commands", "/unmute <nickname>")}</pre>
 
@@ -13,9 +21,33 @@
   <code>nickname</code> {dgettext("help_commands", "— The user to unmute.")}
 </p>
 
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "The command acts on the channel you are viewing. It lifts every active mute for that nickname in this channel. A timed mute also stops its countdown. You see a confirmation line, and the user can talk in the channel again at once."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "The user does not need to be in the channel, so you can lift a mute after they leave. If the user was not muted, the command still reports success and nothing changes."
+  )}
+</p>
+
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>{dgettext("help_commands", "Requires channel operator or owner status")}</li>
+  <li>{dgettext("help_commands", "Half-operators cannot use this command")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "You must type it in a channel window, not in a private conversation"
+    )}
+  </li>
+  <li>
+    {dgettext("help_commands", "Only the first nickname is used. Extra words are ignored.")}
+  </li>
 </ul>
 
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>

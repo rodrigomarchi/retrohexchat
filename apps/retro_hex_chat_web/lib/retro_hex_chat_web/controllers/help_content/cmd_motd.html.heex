@@ -4,6 +4,13 @@
     "View the server's Message of the Day — a welcome message from the server administrators that is also shown automatically when you first connect."
   )}
 </p>
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it to read the server news or rules again after they scrolled out of the Status window. It is also the way to read a new MOTD that was posted while you were connected."
+  )}
+</p>
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
 <pre>{dgettext("help_commands", "/motd")}</pre>
 <.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
@@ -13,6 +20,33 @@
     "Displays the current server MOTD in the Status tab. The MOTD is shown automatically when you connect, and you can re-view it at any time with /motd or Help > Message of the Day. If no MOTD has been set by the administrators, you'll see a \"No MOTD has been set\" message."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_commands",
+    "When an administrator changes or clears the MOTD while you are connected, a short note in the Status window tells you so. The new text is not shown by itself. Type %{command} to read it.",
+    command: "/motd"
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_commands", "Anyone can use it. No channel or server status is needed.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "The command takes no parameters. Anything you type after it is ignored."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "Only server administrators can change the MOTD, with %{set} or %{clear}.",
+      set: "/setmotd",
+      clear: "/clearmotd"
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
 <pre>{dgettext("help_commands", "/motd")}</pre>
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>

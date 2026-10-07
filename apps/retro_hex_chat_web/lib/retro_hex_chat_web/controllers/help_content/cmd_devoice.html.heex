@@ -5,6 +5,14 @@
   )} <code>{dgettext("help_commands", "/mode -v nickname")}</code>.
 </p>
 
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it in a moderated (+m) channel to stop someone from speaking without removing them from the channel. They can still read the conversation."
+  )}
+</p>
+
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
 <pre>{dgettext("help_commands", "/devoice <nickname>")}</pre>
 
@@ -13,10 +21,33 @@
   <code>nickname</code> {dgettext("help_commands", "— The user to remove voice from.")}
 </p>
 
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "The command acts on the channel you are viewing. The user becomes a regular member and moves to the Users group in the nick list. Everyone in the channel sees a mode change line. In a channel that is not moderated, the user can still talk as before."
+  )}
+</p>
+
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>{dgettext("help_commands", "Requires half-operator (%) status or higher")}</li>
   <li>{dgettext("help_commands", "The target must be in the channel")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "A member holds one channel role at a time. Removing voice makes the user a regular member."
+    )}
+  </li>
+  <li>
+    {dgettext("help_commands", "Only the first nickname is used. Extra words are ignored.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "You must type it in a channel window, not in a private conversation"
+    )}
+  </li>
 </ul>
 
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
@@ -31,6 +62,8 @@
   </.help_link>
   · <.help_link topic="cmd-deop">{dgettext("help_commands", "/deop")}</.help_link>
   · <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
+  · <.help_link topic="mode-v">{dgettext("help_commands", "+v Voice")}</.help_link>
+  · <.help_link topic="mode-m">{dgettext("help_commands", "+m Moderated")}</.help_link>
   ·
   <.help_link topic="channel-permissions">
     {dgettext("help_commands", "Channel Permissions")}

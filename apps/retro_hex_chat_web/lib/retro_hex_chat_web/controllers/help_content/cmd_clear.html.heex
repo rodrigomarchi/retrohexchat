@@ -4,6 +4,13 @@
     "Clear all messages from the current chat window, giving you a fresh screen. This cannot be undone."
   )}
 </p>
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it when a busy window is hard to read, or when you want an empty screen before a new discussion starts."
+  )}
+</p>
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
 <pre>{dgettext("help_commands", "/clear")}</pre>
 <.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
@@ -13,6 +20,36 @@
     "Removes all visible messages from whichever window you're currently viewing — a channel, a PM conversation, or the Status tab. This only affects your screen; other users' windows are not changed. The messages are gone permanently and cannot be recovered by scrolling up."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_commands",
+    "Only the conversation on screen is cleared. Your other channels and private conversations keep their messages. If you switch to another window and come back, the cleared messages stay hidden. New messages appear as they arrive."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "The Clear Window item in the Edit menu runs the same command."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_commands", "Anyone can use it. No channel or server status is needed.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "The messages are not deleted from the server. Other people still see them."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "The command takes no parameters. Anything you type after it is ignored."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
 <pre>{dgettext("help_commands", "/clear")}</pre>
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>

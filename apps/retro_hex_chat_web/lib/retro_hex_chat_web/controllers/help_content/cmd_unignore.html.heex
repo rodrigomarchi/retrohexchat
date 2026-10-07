@@ -4,6 +4,13 @@
     ", making their messages visible to you again."
   )}
 </p>
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it when you want to hear from someone again, for example after an argument is over or when you ignored the wrong person."
+  )}
+</p>
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
 <pre>{dgettext("help_commands", "/unignore <nickname>")}</pre>
 <.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
@@ -17,8 +24,37 @@
   <code>{dgettext("help_commands", "/ignore")}</code>
   {dgettext("help_commands", "with no arguments first.")}
 </p>
+<p>
+  {dgettext(
+    "help_commands",
+    "The nickname is matched without regard to upper or lower case. Every ignore entry for that nickname is removed, and a timed ignore stops its countdown. You see a confirmation line."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "If you are identified with NickServ, your ignore list is saved with your account, so the change lasts into your next session. If the user was ignored automatically for flooding, they are not ignored automatically again for one minute."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_commands", "Anyone can use it. No channel or server status is needed.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "If the nickname is not on your ignore list, you get an error that says so"
+    )}
+  </li>
+  <li>{dgettext("help_commands", "Without a nickname, you see the usage line")}</li>
+  <li>
+    {dgettext("help_commands", "Only the first nickname is used. Extra words are ignored.")}
+  </li>
+</ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
-<pre>{dgettext("help_commands", "/unignore SpamBot /unignore Alice")}</pre>
+<pre>/unignore SpamBot
+/unignore Alice</pre>
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-ignore">{dgettext("help_commands", "/ignore")}</.help_link>

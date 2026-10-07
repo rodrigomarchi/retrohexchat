@@ -4,6 +4,13 @@
     "View help for any command, or browse all available commands. Your gateway to learning how RetroHexChat works."
   )}
 </p>
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it when you forget how a command works, or when you want to see which commands exist without leaving the chat."
+  )}
+</p>
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
 <pre>{dgettext("help_commands", "/help [command]")}</pre>
 <.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
@@ -19,14 +26,38 @@
   {dgettext("help_commands", "Running")} <code>{dgettext("help_commands", "/help")}</code>
   {dgettext(
     "help_commands",
-    "with no arguments displays a categorized list of all available commands with brief descriptions. Adding a command name (like"
+    "with no arguments lists the names of all available commands. Adding a command name (like"
   )} <code>{dgettext("help_commands", "/help join")}</code>{dgettext(
     "help_commands",
     ") shows detailed help for that specific command. Use Help Topics from the menu bar to browse and search all help topics."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_commands",
+    "With no arguments, the reply is a short message in the current window. It names every command, separated by commas, and ends with a hint about Help Topics. It does not include descriptions."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "With a command name, a help card for that command appears in the window you are viewing, and the Status window notes which topic was opened. The card shows the same help text you find in Help Topics, with a link that opens the full help page."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_commands", "Anyone can use it. No channel or server status is needed.")}
+  </li>
+  <li>{dgettext("help_commands", "Type the command name in lowercase and without the slash")}</li>
+  <li>{dgettext("help_commands", "A name that is not a command gets an error")}</li>
+  <li>{dgettext("help_commands", "Only the first word after the command is used")}</li>
+</ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
-<pre>{dgettext("help_commands", "/help /help join /help mode /help ns")}</pre>
+<pre>/help
+/help join
+/help mode
+/help ns</pre>
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
   <.help_link topic="commands-overview">

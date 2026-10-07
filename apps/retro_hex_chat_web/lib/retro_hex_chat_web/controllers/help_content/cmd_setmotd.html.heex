@@ -4,6 +4,13 @@
     "Set the server's Message of the Day — a welcome message shown to all users when they connect."
   )}
 </p>
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it to greet people, point them to the server rules, or share news that everyone should see when they connect."
+  )}
+</p>
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
 <pre>{dgettext("help_commands", "/setmotd <text>")}</pre>
 <.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
@@ -12,13 +19,39 @@
 <p>
   {dgettext(
     "help_commands",
-    "Sets or replaces the server MOTD. After setting it, all newly connecting users will see this message in the Status tab when they join. Existing connected users are not notified — only new connections see the MOTD. Any previous MOTD is replaced."
+    "Sets or replaces the server MOTD. After setting it, all newly connecting users will see this message in the Status tab when they join. Any previous MOTD is replaced."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "Users who are already connected get a short note in their Status window that the MOTD changed. They can read the new text with %{command}.",
+    command: "/motd"
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "Everything you type after the command becomes the MOTD, with your spacing kept. The text is saved in the server settings, so it stays after a server restart. You get a confirmation line when it is saved. Administrators can also edit the MOTD in the Admin MOTD window of the Admin Console."
   )}
 </p>
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>{dgettext("help_commands", "Server administrator only")}</li>
   <li>{dgettext("help_commands", "Message text is required")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "You must be identified with NickServ for your administrator role to count"
+    )}
+  </li>
+  <li>{dgettext("help_commands", "Other users get a permission denied error")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "Without text, you see the usage line and the current MOTD is kept"
+    )}
+  </li>
 </ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
 <pre>{dgettext("help_commands", "/setmotd Welcome to RetroHexChat! Please read the rules in #rules.")}</pre>
@@ -26,6 +59,7 @@
 <p>
   <.help_link topic="cmd-motd">{dgettext("help_commands", "/motd")}</.help_link>
   · <.help_link topic="cmd-clearmotd">{dgettext("help_commands", "/clearmotd")}</.help_link>
+  · <.help_link topic="feature-admin-motd">{dgettext("help_commands", "Admin MOTD")}</.help_link>
   ·
   <.help_link topic="feature-special-messages">
     {dgettext("help_commands", "Special Messages")}

@@ -4,6 +4,14 @@
     "Disconnect from the server and return to the connect screen. Other users see your optional quit message in all channels you were in."
   )}
 </p>
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it when you are done chatting and want to leave every channel at once. To leave only one channel and stay connected, use %{command} instead.",
+    command: "/part"
+  )}
+</p>
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
 <pre>{dgettext("help_commands", "/quit [message]")}</pre>
 <.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
@@ -20,7 +28,37 @@
     "You are disconnected from the server and returned to the connect screen. All your channel memberships end, and other users see a quit notification with your optional message. Your session is fully ended — to rejoin, you'll need to connect again from the connect screen."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_commands",
+    "In each channel you were in, the other members see a line that you left, with your message in brackets after it. If you give no message, a default reason is used. The app does not reconnect you or rejoin your channels by itself after you quit."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_commands", "Anyone can use it. No channel or server status is needed.")}
+  </li>
+  <li>{dgettext("help_commands", "A message longer than 200 characters is cut to 200")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "The message is shown in your channels, not in private conversations"
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
-<pre>{dgettext("help_commands", "/quit /quit Goodnight everyone!")}</pre>
+<pre>/quit
+/quit Goodnight everyone!</pre>
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
-<p><.help_link topic="cmd-part">{dgettext("help_commands", "/part")}</.help_link></p>
+<p>
+  <.help_link topic="cmd-part">{dgettext("help_commands", "/part")}</.help_link>
+  ·
+  <.help_link topic="feature-quit-message">
+    {dgettext("help_commands", "Quit Messages")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-auto-reconnect">
+    {dgettext("help_commands", "Auto-Reconnect")}
+  </.help_link>
+</p>

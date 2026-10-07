@@ -4,6 +4,13 @@
     "Show where incoming notices from other users appear on your screen."
   )}
 </p>
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it when a notice shows up in a window you did not expect and you want to know why. The command only reports the policy. It does not change anything."
+  )}
+</p>
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
 <pre>{dgettext("help_commands", "/notice_routing")}</pre>
 <.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
@@ -13,7 +20,7 @@
     "This displays the delivery policy for user-targeted notices (sent via"
   )} <code>{dgettext("help_commands", "/notice")}</code>{dgettext(
     "help_commands",
-    "). Routing is fixed to the active window. Channel notices always go to the channel window. Running"
+    "). Routing is fixed to the active window. Running"
   )}
   <code>{dgettext("help_commands", "/notice_routing")}</code>
   {dgettext(
@@ -21,10 +28,41 @@
     "shows the current policy."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_commands",
+    "A notice sent to your nickname appears in the conversation you are viewing at the moment it arrives. No new window opens for it. A notice sent to a channel appears only while that channel is the window you are viewing."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "The command replies with one line in the current window that names the policy. Notices from users you ignore for notices, or for all message types, are not shown at all."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_commands", "Anyone can use it. No channel or server status is needed.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "The routing policy is fixed. There is no option to send notices to another window."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "The command takes no parameters. Anything you type after it is ignored."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
 <pre>{dgettext("help_commands", "/notice_routing")}</pre>
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-notice">{dgettext("help_commands", "/notice")}</.help_link>
   · <.help_link topic="feature-notices">{dgettext("help_commands", "Notices")}</.help_link>
+  · <.help_link topic="cmd-ignore">{dgettext("help_commands", "/ignore")}</.help_link>
 </p>

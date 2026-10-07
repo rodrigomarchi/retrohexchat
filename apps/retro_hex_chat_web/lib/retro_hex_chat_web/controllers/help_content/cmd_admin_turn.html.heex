@@ -5,8 +5,17 @@
   )}
 </p>
 
+<.help_h4 icon={:icon_question}>{dgettext("help_commands", "When to Use It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "The TURN server relays call traffic for users whose networks block a direct peer-to-peer connection. Use this command when calls fail for some users, to see whether the relay is running and how busy it is."
+  )}
+</p>
+
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
-<pre>{dgettext("help_commands", "/admin turn stats /admin turn allocations")}</pre>
+<pre>/admin turn stats
+/admin turn allocations</pre>
 
 <.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Subcommands")}</.help_h4>
 <ul>
@@ -26,8 +35,42 @@
   </li>
 </ul>
 
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "If the TURN server is not configured on this server, both subcommands reply only that it is not configured."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "The %{sub} subcommand shows the status, the relay IP, the listen port, the number of listeners, the active allocations, how many relay ports are in use out of the total, and the relay port range.",
+    sub: "stats"
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "The %{sub} subcommand prints one line per allocation: the client address and port, and the relay port it holds. The list contains client IP addresses, so treat it as private data.",
+    sub: "allocations"
+  )}
+</p>
+
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_commands", "You must be a server administrator and identified with NickServ")}
+  </li>
+  <li>{dgettext("help_commands", "Without a subcommand, you see the usage line")}</li>
+  <li>
+    {dgettext("help_commands", "An unknown subcommand gets an error that lists the valid ones")}
+  </li>
+</ul>
+
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
-<pre>{dgettext("help_commands", "/admin turn stats /admin turn allocations")}</pre>
+<pre>/admin turn stats
+/admin turn allocations</pre>
 
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
@@ -37,6 +80,7 @@
     {dgettext("help_commands", "Admin Console")}
   </.help_link>
   · <.help_link topic="cmd-admin-debug">{dgettext("help_commands", "/admin debug")}</.help_link>
+  · <.help_link topic="feature-admin-turn">{dgettext("help_commands", "Admin TURN")}</.help_link>
   ·
   <.help_link topic="feature-privacy-mode">
     {dgettext("help_commands", "Privacy Mode")}
