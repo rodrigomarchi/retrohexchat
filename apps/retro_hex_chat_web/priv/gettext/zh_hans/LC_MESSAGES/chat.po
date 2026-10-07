@@ -764,12 +764,13 @@ msgstr "封禁错误: %{message}"
 msgid "Ban exception error: %{message}"
 msgstr "禁止例外错误: %{message}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:129
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:131
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:390
 #, elixir-autogen, elixir-format
 msgid "Black"
 msgstr "黑色"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:142
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:401
 #, elixir-autogen, elixir-format
 msgid "Blue"
@@ -797,6 +798,7 @@ msgstr "机器人已在 %{channel} 中。"
 msgid "Bot management is restricted to server administrators."
 msgstr "机器人管理仅限服务器管理员。"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:135
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:394
 #, elixir-autogen, elixir-format
 msgid "Brown"
@@ -1067,11 +1069,6 @@ msgstr "无法在联系人中添加 %{nickname}"
 msgid "Could not set color for %{nickname}"
 msgstr "无法设置 %{nickname} 的颜色"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:139
-#, elixir-autogen, elixir-format
-msgid "Cyan"
-msgstr "青色"
-
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:387
 #, elixir-autogen, elixir-format
 msgid "Delete"
@@ -1207,17 +1204,13 @@ msgstr "给 Op (+o)"
 msgid "Give Voice (+v)"
 msgstr "给声 (+v)"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:142
-#, elixir-autogen, elixir-format
-msgid "Gray"
-msgstr "灰色"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:131
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:392
 #, elixir-autogen, elixir-format
 msgid "Green"
 msgstr "绿色"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:144
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:403
 #, elixir-autogen, elixir-format
 msgid "Grey"
@@ -1407,45 +1400,33 @@ msgstr "离开频道"
 msgid "Leaving"
 msgstr "离开"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:141
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:400
 #, elixir-autogen, elixir-format
 msgid "Light Cyan"
 msgstr "浅青"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:139
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:398
 #, elixir-autogen, elixir-format
 msgid "Light Green"
 msgstr "浅绿色"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:145
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:404
 #, elixir-autogen, elixir-format
 msgid "Light Grey"
 msgstr "浅灰色"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:137
-#, elixir-autogen, elixir-format
-msgid "Lime"
-msgstr "莱姆"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:102
 #, elixir-autogen, elixir-format
 msgid "Looking up %{nick}..."
 msgstr "寻找%{nick}..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:141
-#, elixir-autogen, elixir-format
-msgid "Magenta"
-msgstr "洋红"
-
 #: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:79
 #, elixir-autogen, elixir-format
 msgid "Mark as Read"
 msgstr "标记为已读"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
-#, elixir-autogen, elixir-format
-msgid "Maroon"
-msgstr "栗色"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:109
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:222
@@ -1499,7 +1480,7 @@ msgstr "名称"
 msgid "Nature"
 msgstr "性质"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:130
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:132
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:391
 #, elixir-autogen, elixir-format
 msgid "Navy"
@@ -1573,6 +1554,8 @@ msgstr "会话中没有昵称"
 msgid "No results"
 msgstr "无结果"
 
+#: lib/retro_hex_chat_web/components/ui/chat/topic_bar.ex:57
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:20
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:109
 #, elixir-autogen, elixir-format
 msgid "No topic set"
@@ -1633,7 +1616,7 @@ msgstr "在帮助主题中打开"
 msgid "Operator"
 msgstr "运算符"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:135
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:137
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:396
 #, elixir-autogen, elixir-format
 msgid "Orange"
@@ -1665,6 +1648,7 @@ msgstr "执行列表已满( 最多 50 个命令)"
 msgid "Perform: invalid command format: %{command}"
 msgstr "执行: 命令格式无效: %{command}"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:143
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:402
 #, elixir-autogen, elixir-format
 msgid "Pink"
@@ -1685,7 +1669,7 @@ msgstr "前一頁"
 msgid "Private Message"
 msgstr "私人信件"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:134
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:136
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:395
 #, elixir-autogen, elixir-format
 msgid "Purple"
@@ -1713,7 +1697,7 @@ msgstr "重新连接"
 msgid "Reconnecting..."
 msgstr "正在重新连接..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:132
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:134
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:393
 #, elixir-autogen, elixir-format
 msgid "Red"
@@ -1786,11 +1770,6 @@ msgstr "反转HexChat"
 #, elixir-autogen, elixir-format
 msgid "Reverse (Ctrl+Shift+V)"
 msgstr "反转( Ctrl+Shift+V)"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:140
-#, elixir-autogen, elixir-format
-msgid "Royal Blue"
-msgstr "皇家蓝"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:123
 #, elixir-autogen, elixir-format
@@ -1876,11 +1855,6 @@ msgstr "将 %{nickname} 的颜色设定为 %{color}"
 msgid "Set Nick Color"
 msgstr "设置昵称颜色"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:143
-#, elixir-autogen, elixir-format
-msgid "Silver"
-msgstr "银"
-
 #: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:195
 #, elixir-autogen, elixir-format
 msgid "Smileys"
@@ -1929,7 +1903,7 @@ msgstr "系统重置由管理员启动 。"
 msgid "TZ"
 msgstr "特兹"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:138
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:140
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:399
 #, elixir-autogen, elixir-format
 msgid "Teal"
@@ -2105,7 +2079,7 @@ msgstr "欢迎电文更新 。"
 msgid "Welcome to %{server_name}!"
 msgstr "欢迎来到%{server_name}!"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:128
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:130
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:389
 #, elixir-autogen, elixir-format
 msgid "White"
@@ -2122,7 +2096,7 @@ msgstr "谁是"
 msgid "Word not in highlight list"
 msgstr "突出显示列表中的单词"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:136
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:138
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:397
 #, elixir-autogen, elixir-format
 msgid "Yellow"
@@ -3674,7 +3648,7 @@ msgid "Strikethrough"
 msgstr "删除线"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:342
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:458
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:459
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:131
 #, elixir-autogen, elixir-format

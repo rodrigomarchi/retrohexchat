@@ -772,12 +772,13 @@ msgstr "バンエラー: %{message}"
 msgid "Ban exception error: %{message}"
 msgstr "禁止例外エラー:%{message}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:129
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:131
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:390
 #, elixir-autogen, elixir-format
 msgid "Black"
 msgstr "ブラック"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:142
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:401
 #, elixir-autogen, elixir-format
 msgid "Blue"
@@ -805,6 +806,7 @@ msgstr "%{channel} で既にボット。"
 msgid "Bot management is restricted to server administrators."
 msgstr "ボット管理はサーバー管理者に制限されます。"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:135
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:394
 #, elixir-autogen, elixir-format
 msgid "Brown"
@@ -1075,11 +1077,6 @@ msgstr "%{nickname} を連絡先に追加できません。"
 msgid "Could not set color for %{nickname}"
 msgstr "%{nickname}のカラーを設定できません"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:139
-#, elixir-autogen, elixir-format
-msgid "Cyan"
-msgstr "シアン"
-
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:387
 #, elixir-autogen, elixir-format
 msgid "Delete"
@@ -1215,17 +1212,13 @@ msgstr "Op を贈る (+o)"
 msgid "Give Voice (+v)"
 msgstr "声をあげて下さい(+v)"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:142
-#, elixir-autogen, elixir-format
-msgid "Gray"
-msgstr "グレー"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:131
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:392
 #, elixir-autogen, elixir-format
 msgid "Green"
 msgstr "グリーングリーン"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:144
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:403
 #, elixir-autogen, elixir-format
 msgid "Grey"
@@ -1415,45 +1408,33 @@ msgstr "チャネルを残す"
 msgid "Leaving"
 msgstr "リベット"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:141
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:400
 #, elixir-autogen, elixir-format
 msgid "Light Cyan"
 msgstr "ライトシアン"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:139
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:398
 #, elixir-autogen, elixir-format
 msgid "Light Green"
 msgstr "ライトグリーン"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:145
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:404
 #, elixir-autogen, elixir-format
 msgid "Light Grey"
 msgstr "ライトグレー"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:137
-#, elixir-autogen, elixir-format
-msgid "Lime"
-msgstr "Lime"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:102
 #, elixir-autogen, elixir-format
 msgid "Looking up %{nick}..."
 msgstr "%{nick} を見る..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:141
-#, elixir-autogen, elixir-format
-msgid "Magenta"
-msgstr "マゼンタ"
-
 #: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:79
 #, elixir-autogen, elixir-format
 msgid "Mark as Read"
 msgstr "読まれた印"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
-#, elixir-autogen, elixir-format
-msgid "Maroon"
-msgstr "栗色"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:109
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:222
@@ -1507,7 +1488,7 @@ msgstr "名前"
 msgid "Nature"
 msgstr "ネイチャー"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:130
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:132
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:391
 #, elixir-autogen, elixir-format
 msgid "Navy"
@@ -1581,6 +1562,8 @@ msgstr "セッションのニックネームなし"
 msgid "No results"
 msgstr "結果はありません"
 
+#: lib/retro_hex_chat_web/components/ui/chat/topic_bar.ex:57
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:20
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:109
 #, elixir-autogen, elixir-format
 msgid "No topic set"
@@ -1641,7 +1624,7 @@ msgstr "ヘルプトピックを開く"
 msgid "Operator"
 msgstr "オペレータ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:135
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:137
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:396
 #, elixir-autogen, elixir-format
 msgid "Orange"
@@ -1673,6 +1656,7 @@ msgstr "実行リストはフルです(最大50コマンド)"
 msgid "Perform: invalid command format: %{command}"
 msgstr "実行: 無効なコマンド形式: %{command}"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:143
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:402
 #, elixir-autogen, elixir-format
 msgid "Pink"
@@ -1693,7 +1677,7 @@ msgstr "前のページ"
 msgid "Private Message"
 msgstr "プライベートメッセージ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:134
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:136
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:395
 #, elixir-autogen, elixir-format
 msgid "Purple"
@@ -1721,7 +1705,7 @@ msgstr "再接続"
 msgid "Reconnecting..."
 msgstr "再接続..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:132
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:134
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:393
 #, elixir-autogen, elixir-format
 msgid "Red"
@@ -1794,11 +1778,6 @@ msgstr "レトロヘックスチャット"
 #, elixir-autogen, elixir-format
 msgid "Reverse (Ctrl+Shift+V)"
 msgstr "逆(Ctrl+Shift+V)"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:140
-#, elixir-autogen, elixir-format
-msgid "Royal Blue"
-msgstr "ロイヤルブルー"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:123
 #, elixir-autogen, elixir-format
@@ -1884,11 +1863,6 @@ msgstr "%{nickname}の色を%{color}に設定する"
 msgid "Set Nick Color"
 msgstr "セット ニック色"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:143
-#, elixir-autogen, elixir-format
-msgid "Silver"
-msgstr "シルバー"
-
 #: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:195
 #, elixir-autogen, elixir-format
 msgid "Smileys"
@@ -1937,7 +1911,7 @@ msgstr "管理者が起動したシステムリセット"
 msgid "TZ"
 msgstr "TZ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:138
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:140
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:399
 #, elixir-autogen, elixir-format
 msgid "Teal"
@@ -2113,7 +2087,7 @@ msgstr "ウェルカムメッセージを更新しました。"
 msgid "Welcome to %{server_name}!"
 msgstr "%{server_name}へようこそ!"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:128
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:130
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:389
 #, elixir-autogen, elixir-format
 msgid "White"
@@ -2130,7 +2104,7 @@ msgstr "Whois"
 msgid "Word not in highlight list"
 msgstr "ハイライトリストではない単語"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:136
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:138
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:397
 #, elixir-autogen, elixir-format
 msgid "Yellow"
@@ -3682,7 +3656,7 @@ msgid "Strikethrough"
 msgstr "取り消し線"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:342
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:458
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:459
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:131
 #, elixir-autogen, elixir-format

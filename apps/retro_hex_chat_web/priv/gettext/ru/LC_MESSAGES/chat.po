@@ -784,12 +784,13 @@ msgstr "Ошибка запрета: %{message}"
 msgid "Ban exception error: %{message}"
 msgstr "Ошибка исключения запрета: %{message}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:129
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:131
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:390
 #, elixir-autogen, elixir-format
 msgid "Black"
 msgstr "черный"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:142
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:401
 #, elixir-autogen, elixir-format
 msgid "Blue"
@@ -817,6 +818,7 @@ msgstr "Бот уже в %{channel}."
 msgid "Bot management is restricted to server administrators."
 msgstr "Управление ботами ограничено администраторами серверов."
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:135
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:394
 #, elixir-autogen, elixir-format
 msgid "Brown"
@@ -1087,11 +1089,6 @@ msgstr "Не могу добавить %{nickname} Контакты"
 msgid "Could not set color for %{nickname}"
 msgstr "Невозможно установить цвет для %{nickname}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:139
-#, elixir-autogen, elixir-format
-msgid "Cyan"
-msgstr "Голубой"
-
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:387
 #, elixir-autogen, elixir-format
 msgid "Delete"
@@ -1228,17 +1225,13 @@ msgstr "Дайте Op (+o)"
 msgid "Give Voice (+v)"
 msgstr "Дайте голос (+v)"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:142
-#, elixir-autogen, elixir-format
-msgid "Gray"
-msgstr "серый"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:131
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:392
 #, elixir-autogen, elixir-format
 msgid "Green"
 msgstr "зеленый"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:144
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:403
 #, elixir-autogen, elixir-format
 msgid "Grey"
@@ -1431,45 +1424,33 @@ msgstr "Оставить канал"
 msgid "Leaving"
 msgstr "уходить"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:141
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:400
 #, elixir-autogen, elixir-format
 msgid "Light Cyan"
 msgstr "Светлый циан"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:139
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:398
 #, elixir-autogen, elixir-format
 msgid "Light Green"
 msgstr "Светло-зеленый"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:145
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:404
 #, elixir-autogen, elixir-format
 msgid "Light Grey"
 msgstr "Светлый серый"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:137
-#, elixir-autogen, elixir-format
-msgid "Lime"
-msgstr "Лайм"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:102
 #, elixir-autogen, elixir-format
 msgid "Looking up %{nick}..."
 msgstr "Взгляд вверх %{nick}..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:141
-#, elixir-autogen, elixir-format
-msgid "Magenta"
-msgstr "Пурпурный"
-
 #: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:79
 #, elixir-autogen, elixir-format
 msgid "Mark as Read"
 msgstr "Марк как читать"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
-#, elixir-autogen, elixir-format
-msgid "Maroon"
-msgstr "Бордовый"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:109
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:222
@@ -1523,7 +1504,7 @@ msgstr "Имя"
 msgid "Nature"
 msgstr "Природа"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:130
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:132
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:391
 #, elixir-autogen, elixir-format
 msgid "Navy"
@@ -1599,6 +1580,8 @@ msgstr "Без никнейма на сессии"
 msgid "No results"
 msgstr "Нет результатов"
 
+#: lib/retro_hex_chat_web/components/ui/chat/topic_bar.ex:57
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:20
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:109
 #, elixir-autogen, elixir-format
 msgid "No topic set"
@@ -1659,7 +1642,7 @@ msgstr "Открыть в темах помощи"
 msgid "Operator"
 msgstr "оператор"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:135
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:137
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:396
 #, elixir-autogen, elixir-format
 msgid "Orange"
@@ -1691,6 +1674,7 @@ msgstr "Полный список выполнения (максимум 50 ко
 msgid "Perform: invalid command format: %{command}"
 msgstr "Выполнение: Недействительный формат команды: %{command}"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:143
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:402
 #, elixir-autogen, elixir-format
 msgid "Pink"
@@ -1711,7 +1695,7 @@ msgstr "Прежний"
 msgid "Private Message"
 msgstr "Частное сообщение"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:134
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:136
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:395
 #, elixir-autogen, elixir-format
 msgid "Purple"
@@ -1739,7 +1723,7 @@ msgstr "Воссоединиться"
 msgid "Reconnecting..."
 msgstr "Воссоединение..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:132
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:134
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:393
 #, elixir-autogen, elixir-format
 msgid "Red"
@@ -1815,11 +1799,6 @@ msgstr "RetroHexChat"
 #, elixir-autogen, elixir-format
 msgid "Reverse (Ctrl+Shift+V)"
 msgstr "Обратный (Ctrl+Shift+V)"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:140
-#, elixir-autogen, elixir-format
-msgid "Royal Blue"
-msgstr "Королевский синий"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:123
 #, elixir-autogen, elixir-format
@@ -1905,11 +1884,6 @@ msgstr "Настройка %{nickname}Цвет для %{color}"
 msgid "Set Nick Color"
 msgstr "Установить Nick Color"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:143
-#, elixir-autogen, elixir-format
-msgid "Silver"
-msgstr "Серебро"
-
 #: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:195
 #, elixir-autogen, elixir-format
 msgid "Smileys"
@@ -1958,7 +1932,7 @@ msgstr "Сброс системы, инициированный админист
 msgid "TZ"
 msgstr "TZ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:138
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:140
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:399
 #, elixir-autogen, elixir-format
 msgid "Teal"
@@ -2136,7 +2110,7 @@ msgstr "Приветственное сообщение обновлено."
 msgid "Welcome to %{server_name}!"
 msgstr "Добро пожаловать %{server_name}!"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:128
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:130
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:389
 #, elixir-autogen, elixir-format
 msgid "White"
@@ -2153,7 +2127,7 @@ msgstr "Кто это?"
 msgid "Word not in highlight list"
 msgstr "Слово не в списке выделений"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:136
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:138
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:397
 #, elixir-autogen, elixir-format
 msgid "Yellow"
@@ -3714,7 +3688,7 @@ msgid "Strikethrough"
 msgstr "Зачёркнутый"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:342
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:458
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:459
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:131
 #, elixir-autogen, elixir-format

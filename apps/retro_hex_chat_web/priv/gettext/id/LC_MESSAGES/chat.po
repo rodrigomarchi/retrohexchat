@@ -774,12 +774,13 @@ msgstr "Kesalahan ban: %{message}"
 msgid "Ban exception error: %{message}"
 msgstr "Galat eksepsi Ban: %{message}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:129
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:131
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:390
 #, elixir-autogen, elixir-format
 msgid "Black"
 msgstr "Hitam"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:142
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:401
 #, elixir-autogen, elixir-format
 msgid "Blue"
@@ -807,6 +808,7 @@ msgstr "Bot sudah di %{channel}."
 msgid "Bot management is restricted to server administrators."
 msgstr "Manajemen Bot dibatasi untuk administrator server."
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:135
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:394
 #, elixir-autogen, elixir-format
 msgid "Brown"
@@ -1077,11 +1079,6 @@ msgstr "Tidak dapat menambahkan %{nickname} ke kontak"
 msgid "Could not set color for %{nickname}"
 msgstr "Tidak dapat menset warna untuk %{nickname}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:139
-#, elixir-autogen, elixir-format
-msgid "Cyan"
-msgstr "Sian"
-
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:387
 #, elixir-autogen, elixir-format
 msgid "Delete"
@@ -1218,17 +1215,13 @@ msgstr "Berikan Op (+ o)"
 msgid "Give Voice (+v)"
 msgstr "Berikan Suara (+ v)"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:142
-#, elixir-autogen, elixir-format
-msgid "Gray"
-msgstr "Abu-abu"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:131
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:392
 #, elixir-autogen, elixir-format
 msgid "Green"
 msgstr "Hijau"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:144
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:403
 #, elixir-autogen, elixir-format
 msgid "Grey"
@@ -1420,45 +1413,33 @@ msgstr "Tinggalkan Kanal"
 msgid "Leaving"
 msgstr "Meninggalkan"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:141
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:400
 #, elixir-autogen, elixir-format
 msgid "Light Cyan"
 msgstr "Cyan Light"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:139
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:398
 #, elixir-autogen, elixir-format
 msgid "Light Green"
 msgstr "Hijau Ringanweather condition"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:145
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:404
 #, elixir-autogen, elixir-format
 msgid "Light Grey"
 msgstr "Light Grey"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:137
-#, elixir-autogen, elixir-format
-msgid "Lime"
-msgstr "Lime"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:102
 #, elixir-autogen, elixir-format
 msgid "Looking up %{nick}..."
 msgstr "Mencari %{nick}..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:141
-#, elixir-autogen, elixir-format
-msgid "Magenta"
-msgstr "Magenta"
-
 #: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:79
 #, elixir-autogen, elixir-format
 msgid "Mark as Read"
 msgstr "Tandai Sebagai Baca"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
-#, elixir-autogen, elixir-format
-msgid "Maroon"
-msgstr "Merah marun"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:109
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:222
@@ -1512,7 +1493,7 @@ msgstr "Nama"
 msgid "Nature"
 msgstr "Alam"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:130
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:132
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:391
 #, elixir-autogen, elixir-format
 msgid "Navy"
@@ -1588,6 +1569,8 @@ msgstr "Tidak ada nama panggilan dalam sesi"
 msgid "No results"
 msgstr "Tidak ada hasil"
 
+#: lib/retro_hex_chat_web/components/ui/chat/topic_bar.ex:57
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:20
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:109
 #, elixir-autogen, elixir-format
 msgid "No topic set"
@@ -1648,7 +1631,7 @@ msgstr "Buka dalam Topics Bantuan"
 msgid "Operator"
 msgstr "Operator"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:135
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:137
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:396
 #, elixir-autogen, elixir-format
 msgid "Orange"
@@ -1680,6 +1663,7 @@ msgstr "Lakukan daftar penuh (maksimal 50 perintah)"
 msgid "Perform: invalid command format: %{command}"
 msgstr "Lakukan: format perintah tidak valid: %{command}"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:143
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:402
 #, elixir-autogen, elixir-format
 msgid "Pink"
@@ -1700,7 +1684,7 @@ msgstr "Prev"
 msgid "Private Message"
 msgstr "Pesan Pribadi"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:134
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:136
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:395
 #, elixir-autogen, elixir-format
 msgid "Purple"
@@ -1728,7 +1712,7 @@ msgstr "Rekonnect"
 msgid "Reconnecting..."
 msgstr "Menyambung kembali..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:132
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:134
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:393
 #, elixir-autogen, elixir-format
 msgid "Red"
@@ -1805,11 +1789,6 @@ msgstr "RetroHexChat"
 #, elixir-autogen, elixir-format
 msgid "Reverse (Ctrl+Shift+V)"
 msgstr "Reverse (Ctrl + Shift + V)"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:140
-#, elixir-autogen, elixir-format
-msgid "Royal Blue"
-msgstr "Royal Blue"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:123
 #, elixir-autogen, elixir-format
@@ -1895,11 +1874,6 @@ msgstr "Atur warna %{nickname} ke %{color}"
 msgid "Set Nick Color"
 msgstr "Atur Warna Nick"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:143
-#, elixir-autogen, elixir-format
-msgid "Silver"
-msgstr "Perak"
-
 #: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:195
 #, elixir-autogen, elixir-format
 msgid "Smileys"
@@ -1948,7 +1922,7 @@ msgstr "Sistem direset dimulai oleh administrator."
 msgid "TZ"
 msgstr "TZ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:138
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:140
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:399
 #, elixir-autogen, elixir-format
 msgid "Teal"
@@ -2124,7 +2098,7 @@ msgstr "Selamat datang pesan diperbarui."
 msgid "Welcome to %{server_name}!"
 msgstr "Selamat datang di %{server_name}!"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:128
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:130
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:389
 #, elixir-autogen, elixir-format
 msgid "White"
@@ -2141,7 +2115,7 @@ msgstr "Whois"
 msgid "Word not in highlight list"
 msgstr "Kata tidak dalam daftar penyorotan"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:136
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:138
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:397
 #, elixir-autogen, elixir-format
 msgid "Yellow"
@@ -3700,7 +3674,7 @@ msgid "Strikethrough"
 msgstr "Coret"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:342
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:458
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:459
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:131
 #, elixir-autogen, elixir-format

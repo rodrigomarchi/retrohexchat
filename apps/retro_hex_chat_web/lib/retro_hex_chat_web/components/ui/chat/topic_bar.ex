@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.TopicBar do
       <span :if={@channel_name} class="font-bold shrink-0">{@channel_name}</span>
 
       <span class="flex-1 truncate text-muted-foreground">
-        {if @topic == "", do: "No topic set", else: @topic}
+        {if @topic == "", do: dgettext("chat", "No topic set"), else: @topic}
       </span>
 
       <.badge :for={mode <- @mode_badges} variant="outline" class="text-[10px] px-1 py-0 shrink-0">

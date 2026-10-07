@@ -783,12 +783,13 @@ msgstr "Błąd zakazu: %{message}"
 msgid "Ban exception error: %{message}"
 msgstr "Błąd polegający na zakazaniu wyjątków: %{message}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:129
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:131
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:390
 #, elixir-autogen, elixir-format
 msgid "Black"
 msgstr "Czarny"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:142
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:401
 #, elixir-autogen, elixir-format
 msgid "Blue"
@@ -816,6 +817,7 @@ msgstr "Bot już w %{channel}."
 msgid "Bot management is restricted to server administrators."
 msgstr "Zarządzanie botem jest ograniczone do administratorów serwerów."
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:135
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:394
 #, elixir-autogen, elixir-format
 msgid "Brown"
@@ -1087,11 +1089,6 @@ msgstr "Nie można dodać %{nickname} do kontaktów"
 msgid "Could not set color for %{nickname}"
 msgstr "Nie można ustawić koloru dla %{nickname}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:139
-#, elixir-autogen, elixir-format
-msgid "Cyan"
-msgstr "Cyjan"
-
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:387
 #, elixir-autogen, elixir-format
 msgid "Delete"
@@ -1229,17 +1226,13 @@ msgstr "Daj Opowi (+ o)"
 msgid "Give Voice (+v)"
 msgstr "Podaj głos (+ v)"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:142
-#, elixir-autogen, elixir-format
-msgid "Gray"
-msgstr "Szary"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:131
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:392
 #, elixir-autogen, elixir-format
 msgid "Green"
 msgstr "Zielony"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:144
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:403
 #, elixir-autogen, elixir-format
 msgid "Grey"
@@ -1430,45 +1423,33 @@ msgstr "Opuść kanał"
 msgid "Leaving"
 msgstr "Odejście"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:141
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:400
 #, elixir-autogen, elixir-format
 msgid "Light Cyan"
 msgstr "Lekki Cyan"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:139
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:398
 #, elixir-autogen, elixir-format
 msgid "Light Green"
 msgstr "Lekki zielony"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:145
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:404
 #, elixir-autogen, elixir-format
 msgid "Light Grey"
 msgstr "Jasnoszary"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:137
-#, elixir-autogen, elixir-format
-msgid "Lime"
-msgstr "Lipa"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:102
 #, elixir-autogen, elixir-format
 msgid "Looking up %{nick}..."
 msgstr "Spojrzenie w górę %{nick}..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:141
-#, elixir-autogen, elixir-format
-msgid "Magenta"
-msgstr "Magenta"
-
 #: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:79
 #, elixir-autogen, elixir-format
 msgid "Mark as Read"
 msgstr "Zaznacz jako przeczytany"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:133
-#, elixir-autogen, elixir-format
-msgid "Maroon"
-msgstr "Bordowy"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:109
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:222
@@ -1522,7 +1503,7 @@ msgstr "Nazwa"
 msgid "Nature"
 msgstr "Przyroda"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:130
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:132
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:391
 #, elixir-autogen, elixir-format
 msgid "Navy"
@@ -1597,6 +1578,8 @@ msgstr "Brak pseudonimu w sesji"
 msgid "No results"
 msgstr "Brak wyników"
 
+#: lib/retro_hex_chat_web/components/ui/chat/topic_bar.ex:57
+#: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:20
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:109
 #, elixir-autogen, elixir-format
 msgid "No topic set"
@@ -1657,7 +1640,7 @@ msgstr "Otwórz w tematyce pomocy"
 msgid "Operator"
 msgstr "Operator"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:135
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:137
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:396
 #, elixir-autogen, elixir-format
 msgid "Orange"
@@ -1689,6 +1672,7 @@ msgstr "Lista wykonań jest pełna (maksymalnie 50 poleceń)"
 msgid "Perform: invalid command format: %{command}"
 msgstr "Wykonaj: nieprawidłowy format polecenia: %{command}"
 
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:143
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:402
 #, elixir-autogen, elixir-format
 msgid "Pink"
@@ -1709,7 +1693,7 @@ msgstr "Poprzedni"
 msgid "Private Message"
 msgstr "Prywatna wiadomość"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:134
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:136
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:395
 #, elixir-autogen, elixir-format
 msgid "Purple"
@@ -1737,7 +1721,7 @@ msgstr "Rozpuszczenie"
 msgid "Reconnecting..."
 msgstr "Rozpoczynam..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:132
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:134
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:393
 #, elixir-autogen, elixir-format
 msgid "Red"
@@ -1813,11 +1797,6 @@ msgstr "RetroHexChat"
 #, elixir-autogen, elixir-format
 msgid "Reverse (Ctrl+Shift+V)"
 msgstr "Cofnij (Ctrl + Shift + V)"
-
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:140
-#, elixir-autogen, elixir-format
-msgid "Royal Blue"
-msgstr "Royal Blue"
 
 #: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:123
 #, elixir-autogen, elixir-format
@@ -1903,11 +1882,6 @@ msgstr "Ustaw %{nickname}Kolor do %{color}"
 msgid "Set Nick Color"
 msgstr "Ustaw kolor Nicka"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:143
-#, elixir-autogen, elixir-format
-msgid "Silver"
-msgstr "Srebro"
-
 #: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:195
 #, elixir-autogen, elixir-format
 msgid "Smileys"
@@ -1956,7 +1930,7 @@ msgstr "Reset systemu zainicjowany przez administratora."
 msgid "TZ"
 msgstr "TZ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:138
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:140
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:399
 #, elixir-autogen, elixir-format
 msgid "Teal"
@@ -2134,7 +2108,7 @@ msgstr "Wiadomość powitalna zaktualizowana."
 msgid "Welcome to %{server_name}!"
 msgstr "Witamy w %{server_name}!"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:128
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:130
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:389
 #, elixir-autogen, elixir-format
 msgid "White"
@@ -2151,7 +2125,7 @@ msgstr "Whois"
 msgid "Word not in highlight list"
 msgstr "Słowo nie na liście podświetleń"
 
-#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:136
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:138
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:397
 #, elixir-autogen, elixir-format
 msgid "Yellow"
@@ -3709,7 +3683,7 @@ msgid "Strikethrough"
 msgstr "Przekreślenie"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:342
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:458
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:459
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:131
 #, elixir-autogen, elixir-format

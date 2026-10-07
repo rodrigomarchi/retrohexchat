@@ -10,11 +10,6 @@
  */
 import { getCounterState } from "../../lib/ui/counter.js";
 
-const SEVERITY_CLASSES = {
-  warning: "char-counter--warning",
-  danger: "char-counter--danger",
-};
-
 const CharCounterHook = {
   mounted() {
     this.input = this.el.querySelector("#chat-input");
@@ -43,10 +38,8 @@ const CharCounterHook = {
     const { text, severity } = getCounterState(this.input.value.length, this.maxLength);
 
     this.counter.textContent = text;
-    this.counter.classList.remove(SEVERITY_CLASSES.warning, SEVERITY_CLASSES.danger);
-    if (severity !== "normal") {
-      this.counter.classList.add(SEVERITY_CLASSES[severity]);
-    }
+    this.counter.classList.toggle("char-counter--warning", severity === "warning");
+    this.counter.classList.toggle("char-counter--danger", severity === "danger");
   },
 
   updateSendButton() {

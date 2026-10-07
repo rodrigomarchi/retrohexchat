@@ -303,3 +303,14 @@
 .input-masked {
   -webkit-text-security: disc;
 }
+
+/* ── Composer character counter ───────────────────────────── */
+/* char_counter_hook.js adds these as a message nears the limit (over 450
+   and over 900 of 1,000 characters, lib/ui/counter.js). Unlayered, so they win
+   over the counter's text-muted-foreground utility. */
+.char-counter--warning {
+  @apply text-warning-alt;
+}
+.char-counter--danger {
+  @apply text-error font-bold;
+}

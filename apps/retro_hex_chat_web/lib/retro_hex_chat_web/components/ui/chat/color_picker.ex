@@ -125,20 +125,22 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
     Enum.map(@irc_colors, fn {color, hex} -> {color_name(color), hex} end)
   end
 
+  # The same names the formatting toolbar shows for the same 16 colours, so a
+  # colour is called one thing everywhere.
   defp color_name(:white), do: dgettext("chat", "White")
   defp color_name(:black), do: dgettext("chat", "Black")
   defp color_name(:navy), do: dgettext("chat", "Navy")
   defp color_name(:green), do: dgettext("chat", "Green")
   defp color_name(:red), do: dgettext("chat", "Red")
-  defp color_name(:maroon), do: dgettext("chat", "Maroon")
+  defp color_name(:maroon), do: dgettext("chat", "Brown")
   defp color_name(:purple), do: dgettext("chat", "Purple")
   defp color_name(:orange), do: dgettext("chat", "Orange")
   defp color_name(:yellow), do: dgettext("chat", "Yellow")
-  defp color_name(:lime), do: dgettext("chat", "Lime")
+  defp color_name(:lime), do: dgettext("chat", "Light Green")
   defp color_name(:teal), do: dgettext("chat", "Teal")
-  defp color_name(:cyan), do: dgettext("chat", "Cyan")
-  defp color_name(:royal_blue), do: dgettext("chat", "Royal Blue")
-  defp color_name(:magenta), do: dgettext("chat", "Magenta")
-  defp color_name(:gray), do: dgettext("chat", "Gray")
-  defp color_name(:silver), do: dgettext("chat", "Silver")
+  defp color_name(:cyan), do: dgettext("chat", "Light Cyan")
+  defp color_name(:royal_blue), do: dgettext("chat", "Blue")
+  defp color_name(:magenta), do: dgettext("chat", "Pink")
+  defp color_name(:gray), do: dgettext("chat", "Grey")
+  defp color_name(:silver), do: dgettext("chat", "Light Grey")
 end
