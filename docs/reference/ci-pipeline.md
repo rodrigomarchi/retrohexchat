@@ -249,7 +249,22 @@ Phase 1: CI Validation (make ci — partitioned, ~3m)
     ↓ (only if all checks pass)
 Phase 2: Deploy
     └─ Sun (production) — scp + ssh deploy.sh
+    ↓ (only if every target succeeded)
+Phase 3: Rollout
+    └─ wait until /version answers the new release 10 times in a row
+    ↓ (only once confirmed)
+Announce
+    └─ ask Google to read the sitemap again (only where GOOGLE_SERVICE_ACCOUNT_FILE is set)
 ```
+
+`deploy.sh` ends when the release is written; DeployEx swaps it in seconds and the
+new nodes take traffic about a minute later, while haproxy still sends some
+requests to the old one. So "deployed" means production answers
+`https://retrohexchat.app/version` with the version `deploy.sh` printed
+(`<mix-vsn>-<short-sha>`), ten times in a row — any other answer restarts the
+count. Not confirmed within 5 minutes (`--rollout-timeout` seconds) is a failed
+deploy: exit 1, nothing announced. The sitemap submission runs on the deploying
+machine, never on the server, and a failure there is only a warning.
 
 **Options:**
 - `make deploy` — CI + deploy Sun (standard)

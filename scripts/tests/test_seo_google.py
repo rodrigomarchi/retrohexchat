@@ -98,7 +98,7 @@ class FakeRequest:
         for match, answer in self.routes:
             if match(method, url, decoded):
                 status, payload = answer(decoded) if callable(answer) else answer
-                return status, json.dumps(payload).encode()
+                return status, b"" if payload == "" else json.dumps(payload).encode()
         raise AssertionError(f"unexpected call {method} {url} {decoded}")
 
 
@@ -191,6 +191,11 @@ class ClientTest(unittest.TestCase):
         method, _url, body, headers = fake.calls[0]
         self.assertEqual((method, json.loads(body), headers["Authorization"]), ("POST", {"a": 1}, "Bearer ACCESS-TOKEN"))
 
+    def test_a_success_with_no_body_is_an_empty_answer(self):
+        fake = FakeRequest([(lambda m, u, b: True, (204, ""))])
+        c, _ = client(fake)
+        self.assertEqual(c.put("https://api.example/x"), {})
+
     def test_throttling_and_server_errors_retry(self):
         answers = iter([(429, {"error": {"status": "RESOURCE_EXHAUSTED"}}), (503, {}), (200, {"ok": 1})])
         c, slept = client(FakeRequest([(lambda m, u, b: True, lambda _b: next(answers))]))
@@ -261,6 +266,28 @@ class NormaliseTest(unittest.TestCase):
         self.assertEqual([r["key"] for r in rows], ["irc chat", "mirc online"])
         self.assertEqual(rows[1]["position"], 11.2)
         self.assertEqual(google.performance_window(date(2026, 10, 7)), (date(2026, 9, 7), date(2026, 10, 4)))
+
+
+class SubmitSitemapTest(unittest.TestCase):
+    def test_puts_the_sitemap_under_the_property(self):
+        fake = FakeRequest([(lambda m, u, b: m == "PUT", (204, ""))])
+        c, _ = client(fake)
+
+        google.submit_sitemap(c, PROP, "https://retrohexchat.app/sitemap.xml")
+
+        method, url, body, _headers = fake.calls[0]
+        self.assertEqual(method, "PUT")
+        self.assertEqual(
+            url,
+            f"{google.WEBMASTERS}/sites/sc-domain%3Aretrohexchat.app/sitemaps/https%3A%2F%2Fretrohexchat.app%2Fsitemap.xml",
+        )
+        self.assertIsNone(body)
+
+    def test_the_write_scope_goes_into_the_token(self):
+        assertion = google.jwt_assertion(ACCOUNT, 1_000, lambda k, d: b"s", google.WRITE_SCOPE)
+        claims = assertion.split(".")[1]
+        decoded = json.loads(base64.urlsafe_b64decode(claims + "=" * (-len(claims) % 4)))
+        self.assertEqual(decoded["scope"], "https://www.googleapis.com/auth/webmasters")
 
 
 class BuildReportTest(unittest.TestCase):

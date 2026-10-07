@@ -6,7 +6,7 @@
        test.js test.js.changed test.js.related test.js.watch \
        ci ci.quick ci.changed ci.serial ci.quick.serial ci.partition-profile ci.partition-profile.plan \
        umbrella.boundary-audit \
-       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.venv i18n.translate i18n.repair.plurals games.shots seo.snapshot seo.compare seo.console seo.indexnow seo.test i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
+       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.venv i18n.translate i18n.repair.plurals games.shots seo.snapshot seo.compare seo.console seo.indexnow seo.sitemap.submit seo.test i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
        lint format format.check credo dialyzer lint.js lint.js.changed lint.js.fix lint.css lint.bundle precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
@@ -297,6 +297,9 @@ seo.console: ## Read a webmaster console into reports/seo/<UTC stamp>-<source>.{
 
 seo.indexnow: ## Announce every sitemap URL to IndexNow, after a change that moves no page's date (ARGS=--dry-run)
 	python3 scripts/seo_indexnow.py $(ARGS)
+
+seo.sitemap.submit: ## Ask Google to read the sitemap again (needs GOOGLE_SERVICE_ACCOUNT_FILE; make deploy runs it after the rollout)
+	python3 scripts/seo_sitemap_submit.py
 
 seo.test: ## Run the SEO tooling tests (no network)
 	python3 -m unittest discover -s scripts -t scripts -p 'test_seo*.py'
@@ -602,10 +605,10 @@ REF ?= main
 #   SUN_IP       — Production server IP address
 #   SSH_PORT     — SSH port (default: 2222)
 
-deploy: ## CI + deploy to production (Sun) — usage: make deploy REF=main
+deploy: ## CI + deploy to production (Sun), wait for the rollout, resubmit the sitemap — usage: make deploy REF=main
 	elixir scripts/deploy_all.exs --ref $(REF)
 
-deploy.skip-ci: ## Deploy Sun without CI (already validated) — usage: make deploy.skip-ci REF=main
+deploy.skip-ci: ## Deploy Sun without CI (already validated), then the same rollout wait — usage: make deploy.skip-ci REF=main
 	elixir scripts/deploy_all.exs --ref $(REF) --skip-ci
 
 deploy-sun: ## Deploy to production (no CI) — usage: make deploy-sun REF=main

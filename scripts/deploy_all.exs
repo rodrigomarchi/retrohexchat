@@ -8,6 +8,13 @@
 #   elixir scripts/deploy_all.exs                  # CI + deploy Sun (REF=main)
 #   elixir scripts/deploy_all.exs --ref release-tag # deploy specific ref
 #   elixir scripts/deploy_all.exs --skip-ci         # skip CI (already validated)
+#   elixir scripts/deploy_all.exs --rollout-timeout 600
+#
+# After the deploy it waits until production answers /version with the new
+# release on every backend (DeployRollout), then asks Google to read the
+# sitemap again when GOOGLE_SERVICE_ACCOUNT_FILE is configured on this machine.
+
+Code.require_file("deploy_rollout.exs", __DIR__)
 
 defmodule DeployAll do
   @ssh_port String.to_integer(System.get_env("SSH_PORT", "2222"))
@@ -16,9 +23,11 @@ defmodule DeployAll do
   @targets %{
     "sun" => %{
       label: "Production",
-      ip: System.get_env("SUN_IP") || raise("SUN_IP env var is required")
+      ip: System.get_env("SUN_IP") || raise("SUN_IP env var is required"),
+      version_url: System.get_env("SUN_VERSION_URL", "https://retrohexchat.app/version")
     }
   }
+  @default_rollout_timeout_s 300
 
   def main(args) do
     {opts, _rest} = parse_args(args)
@@ -61,11 +70,22 @@ defmodule DeployAll do
     elapsed = System.monotonic_time(:millisecond) - start_time
     deploy_summary(results, elapsed)
 
-    if Enum.all?(Map.values(results), &(&1 == :ok)) do
-      System.halt(0)
-    else
+    unless Enum.all?(Map.values(results), &match?({:ok, _output}, &1)) do
       System.halt(1)
     end
+
+    # Phase 3: only a release confirmed live may be announced.
+    timeout_s = opts[:rollout_timeout] || @default_rollout_timeout_s
+
+    unless Enum.all?(results, fn {target, result} ->
+             confirm_rollout(target, result, timeout_s)
+           end) do
+      IO.puts("\n  #{c(:red)}Rollout not confirmed — nothing announced.#{c(:reset)}\n")
+      System.halt(1)
+    end
+
+    submit_sitemap(project_root)
+    System.halt(0)
   end
 
   # --- CI ---
@@ -145,7 +165,7 @@ defmodule DeployAll do
       if ssh_exit == 0 do
         IO.puts("    #{c(:green)}✓#{c(:reset)} #{label} #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}")
 
-        :ok
+        {:ok, ssh_output}
       else
         IO.puts("    #{c(:red)}✗#{c(:reset)} #{label} #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}")
 
@@ -157,6 +177,67 @@ defmodule DeployAll do
     e ->
       IO.puts("    #{c(:red)}✗#{c(:reset)} #{target}: #{Exception.message(e)}")
       :fail
+  end
+
+  # --- Rollout ---
+
+  defp confirm_rollout(target, {:ok, deploy_output}, timeout_s) do
+    %{label: label, version_url: url} = @targets[target]
+
+    case DeployRollout.expected_version(deploy_output) do
+      :error ->
+        IO.puts("    #{c(:red)}✗#{c(:reset)} #{label}: deploy.sh printed no version to wait for")
+        false
+
+      {:ok, expected} ->
+        IO.write("  #{c(:cyan)}Rollout#{c(:reset)} #{label} → #{expected} ")
+
+        result =
+          DeployRollout.wait(DeployRollout.curl_fetch(url), expected,
+            timeout_ms: timeout_s * 1000,
+            on_poll: &IO.write(poll_mark(&1, expected))
+          )
+
+        report_rollout(label, result)
+    end
+  end
+
+  defp poll_mark({:ok, expected}, expected), do: "#{c(:green)}●#{c(:reset)}"
+  defp poll_mark(_answer, _expected), do: "#{c(:dim)}·#{c(:reset)}"
+
+  defp report_rollout(label, {:ok, %{version: version, elapsed_ms: ms}}) do
+    IO.puts(
+      "\n    #{c(:green)}✓#{c(:reset)} #{label} serves #{version} #{c(:dim)}(#{fmt(ms)})#{c(:reset)}\n"
+    )
+
+    true
+  end
+
+  defp report_rollout(label, {:error, %{last_seen: last_seen, elapsed_ms: ms}}) do
+    IO.puts(
+      "\n    #{c(:red)}✗#{c(:reset)} #{label} still serves #{last_seen || "no answer"} after #{fmt(ms)}"
+    )
+
+    false
+  end
+
+  # --- Announce ---
+
+  # Runs here, on the machine that deploys, and only when this machine holds
+  # the Google service account: the server never carries that credential. A
+  # failure is a warning — the release is live either way.
+  defp submit_sitemap(project_root) do
+    {output, _exit} = run_cmd("python3", ["scripts/seo_sitemap_submit.py"], project_root)
+    line = output |> String.trim() |> String.split("\n") |> List.last()
+
+    icon =
+      cond do
+        String.starts_with?(line, "sitemap: submitted") -> "#{c(:green)}✓"
+        String.starts_with?(line, "sitemap: skipped") -> "#{c(:dim)}○"
+        true -> "#{c(:yellow)}⚠"
+      end
+
+    IO.puts("  #{c(:cyan)}Google#{c(:reset)}\n    #{icon}#{c(:reset)} #{line}\n")
   end
 
   defp run_cmd(cmd, args, project_root) do
@@ -194,7 +275,7 @@ defmodule DeployAll do
   defp parse_args(args) do
     {opts, rest, _} =
       OptionParser.parse(args,
-        strict: [ref: :string, skip_ci: :boolean],
+        strict: [ref: :string, skip_ci: :boolean, rollout_timeout: :integer],
         aliases: [r: :ref, s: :skip_ci]
       )
 
@@ -219,7 +300,7 @@ defmodule DeployAll do
   end
 
   defp deploy_summary(results, elapsed_ms) do
-    passed = Enum.count(results, fn {_, v} -> v == :ok end)
+    passed = Enum.count(results, fn {_, v} -> match?({:ok, _output}, v) end)
     failed = Enum.count(results, fn {_, v} -> v == :fail end)
     total = map_size(results)
 
@@ -229,7 +310,7 @@ defmodule DeployAll do
 
     Enum.each(results, fn {target, status} ->
       config = @targets[target]
-      icon = if status == :ok, do: "#{c(:green)}✓", else: "#{c(:red)}✗"
+      icon = if match?({:ok, _output}, status), do: "#{c(:green)}✓", else: "#{c(:red)}✗"
       IO.puts("    #{icon}#{c(:reset)} #{config.label}")
     end)
 

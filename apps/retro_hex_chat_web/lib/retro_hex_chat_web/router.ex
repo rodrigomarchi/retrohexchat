@@ -145,6 +145,12 @@ defmodule RetroHexChatWeb.Router do
     get "/indexnow.txt", IndexNowController, :key
   end
 
+  # The build serving this request, which the deploy polls to confirm the new
+  # release is live on every backend.
+  scope "/", RetroHexChatWeb do
+    get "/version", VersionController, :show
+  end
+
   # The archive is the only part of a conversation readable from outside, and
   # it is a controller rather than a LiveView because nothing on it moves and
   # a robot needs an `etag`. `archive` joins the reserved first segments; it

@@ -31,6 +31,8 @@ from seo.transport import Request
 
 SOURCE = "google"
 SCOPE = "https://www.googleapis.com/auth/webmasters.readonly"
+# Submitting a sitemap is a write; the API refuses it under the read-only scope.
+WRITE_SCOPE = "https://www.googleapis.com/auth/webmasters"
 WEBMASTERS = "https://www.googleapis.com/webmasters/v3"
 INSPECT = "https://searchconsole.googleapis.com/v1/urlInspection/index:inspect"
 RETRY_BACKOFF_SECONDS = (5, 15, 30)
@@ -73,12 +75,12 @@ def _b64url(data: bytes) -> str:
     return base64.urlsafe_b64encode(data).rstrip(b"=").decode()
 
 
-def jwt_assertion(account: dict, now: int, sign: Sign) -> str:
+def jwt_assertion(account: dict, now: int, sign: Sign, scope: str = SCOPE) -> str:
     """The signed JWT a service account trades for an access token."""
     header = {"alg": "RS256", "typ": "JWT"}
     claims = {
         "iss": account["client_email"],
-        "scope": SCOPE,
+        "scope": scope,
         "aud": account["token_uri"],
         "iat": now,
         "exp": now + TOKEN_LIFETIME_SECONDS,
@@ -108,7 +110,14 @@ def openssl_sign(private_key_pem: str, data: bytes) -> bytes:
 class ServiceAccountToken:
     """An access token for the account, fetched once and reused until it is about to expire."""
 
-    def __init__(self, account: dict, request: Request, sign: Sign = openssl_sign, clock: Callable[[], float] = time.time):
+    def __init__(
+        self,
+        account: dict,
+        request: Request,
+        sign: Sign = openssl_sign,
+        clock: Callable[[], float] = time.time,
+        scope: str = SCOPE,
+    ):
         for field in ("client_email", "private_key", "token_uri"):
             if not account.get(field):
                 raise GoogleError(f"the service account file has no {field}")
@@ -116,6 +125,7 @@ class ServiceAccountToken:
         self._request = request
         self._sign = sign
         self._clock = clock
+        self._scope = scope
         self._token: str | None = None
         self._expires_at = 0.0
 
@@ -126,7 +136,7 @@ class ServiceAccountToken:
         body = urllib.parse.urlencode(
             {
                 "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
-                "assertion": jwt_assertion(self._account, int(now), self._sign),
+                "assertion": jwt_assertion(self._account, int(now), self._sign, self._scope),
             }
         ).encode()
         status, raw = self._request(
@@ -164,6 +174,9 @@ class Client:
     def post(self, url: str, payload: dict) -> dict:
         return self._call("POST", url, payload)
 
+    def put(self, url: str) -> dict:
+        return self._call("PUT", url, None)
+
     def _call(self, method: str, url: str, payload: dict | None) -> dict:
         for delay in (*self._backoff, None):
             try:
@@ -182,7 +195,8 @@ class Client:
             headers["Content-Type"] = "application/json; charset=utf-8"
         status, raw = self._request(method, url, body, headers)
         parsed = _json(raw)
-        if status == 200:
+        # Reads answer 200 with a body; a sitemap submission answers 204 with none.
+        if 200 <= status < 300:
             return parsed
         endpoint = urllib.parse.urlsplit(url).path.rsplit("/", 1)[-1]
         raise GoogleError(
@@ -309,11 +323,28 @@ def performance_window(today: date) -> tuple[date, date]:
     return end - timedelta(days=PERFORMANCE_DAYS - 1), end
 
 
-# --- The report ---------------------------------------------------------------
+# --- Sitemap submission -------------------------------------------------------
 
 
 def _site_path(prop: str) -> str:
     return urllib.parse.quote(prop, safe="")
+
+
+def resolve_property(client: Client, site: str) -> str:
+    sites = client.get(f"{WEBMASTERS}/sites").get("siteEntry", [])
+    prop = property_for(sites, site)
+    if prop is None:
+        known = ", ".join(s.get("siteUrl", "?") for s in sites) or "none"
+        raise GoogleError(f"{site} is not a property this service account can read (properties: {known})")
+    return prop
+
+
+def submit_sitemap(client: Client, prop: str, sitemap_url: str) -> None:
+    """Asks Google to fetch ``sitemap_url`` again; it does so on its own schedule, usually within hours."""
+    client.put(f"{WEBMASTERS}/sites/{_site_path(prop)}/sitemaps/{urllib.parse.quote(sitemap_url, safe='')}")
+
+
+# --- The report ---------------------------------------------------------------
 
 
 def build_report(
@@ -327,11 +358,7 @@ def build_report(
 ) -> dict:
     report = rpt.new_report(SOURCE, site, now)
 
-    sites = client.get(f"{WEBMASTERS}/sites").get("siteEntry", [])
-    prop = property_for(sites, site)
-    if prop is None:
-        known = ", ".join(s.get("siteUrl", "?") for s in sites) or "none"
-        raise GoogleError(f"{site} is not a property this service account can read (properties: {known})")
+    prop = resolve_property(client, site)
     report["notes"].append(f"Search Console property: {prop}.")
     base = f"{WEBMASTERS}/sites/{_site_path(prop)}"
 

@@ -74,10 +74,12 @@ defmodule CI do
       cmd: "npm",
       args: ["test", "--prefix", "apps/retro_hex_chat_web/assets"]
     },
+    # Every `scripts/*_test.exs`: the CI impact planner and the deploy's
+    # rollout check are both scripts no Mix project compiles.
     "ci_impact_tests" => %{
-      label: "CI Impact Tests",
-      cmd: "elixir",
-      args: ["scripts/ci_impact_test.exs"]
+      label: "Script Tests",
+      cmd: "sh",
+      args: ["-c", "for t in scripts/*_test.exs; do elixir \"$t\" || exit 1; done"]
     },
     "ci_partition_profile_plan" => %{
       label: "CI Partition Profile Plan",
