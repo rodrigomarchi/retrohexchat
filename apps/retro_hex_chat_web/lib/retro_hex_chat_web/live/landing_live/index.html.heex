@@ -65,14 +65,14 @@
         <:icon><Icons.icon_folder class="w-4 h-4" /></:icon>
         <div class="grid grid-cols-2 gap-4 justify-items-center py-2">
           <a
-            href="/features"
+            href={PublicPages.localized_path(PublicPages.path(:features))}
             class="flex flex-col items-center gap-1 text-xs no-underline text-text hover:underline"
           >
             <Icons.icon_folder class="w-8 h-8" />
             <span>{dgettext("landing", "My Chats")}</span>
           </a>
           <a
-            href="/privacy"
+            href={PublicPages.localized_path(PublicPages.path(:privacy))}
             class="flex flex-col items-center gap-1 text-xs no-underline text-text hover:underline"
           >
             <Icons.icon_lock class="w-8 h-8" />

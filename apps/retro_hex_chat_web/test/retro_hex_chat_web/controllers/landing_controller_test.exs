@@ -527,6 +527,25 @@ defmodule RetroHexChatWeb.LandingLiveTest do
         assert html =~ ~s(href="/pt-BR), "#{path} missing clean localized footer links"
       end
     end
+
+    test "a localized page links the public pages in its own language", %{conn: conn} do
+      # The app, the showcase and the archive have one address in every
+      # language; the language menu names English on purpose, with hreflang.
+      single_address = ~r{^/(chat|showcase|archive)(/|$)}
+
+      for {path, _} <- @landing_pages do
+        localized = if path == "/", do: "/pt-BR", else: "/pt-BR" <> path
+        document = conn |> get(localized) |> html_response(200) |> Floki.parse_document!()
+
+        english =
+          document
+          |> Floki.find(~s{a[href^="/"]:not([hreflang])})
+          |> Floki.attribute("href")
+          |> Enum.reject(&(String.starts_with?(&1, "/pt-BR") or &1 =~ single_address))
+
+        assert english == [], "#{localized} links English pages: #{inspect(Enum.uniq(english))}"
+      end
+    end
   end
 
   describe "crawl controls" do

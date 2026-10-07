@@ -245,7 +245,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
         <Icons.icon_btn_next class="w-4 h-4" />
       </.tool_button>
       <.link
-        navigate="/chat/help"
+        navigate={PublicPages.localized_path("/chat/help")}
         class={tool_button_class(size: "sm")}
         title={dgettext("help", "Home")}
         aria-label={dgettext("help", "Home")}
@@ -399,7 +399,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
       <div>
         <h1 class="text-base font-bold text-text">{@topic.title}</h1>
         <nav aria-label={dgettext("help", "Breadcrumb")} class="text-xs text-muted-foreground">
-          <.link navigate="/chat/help" class="hover:underline text-link">
+          <.link navigate={PublicPages.localized_path("/chat/help")} class="hover:underline text-link">
             {dgettext("help", "Help")}
           </.link>
           {" > "}{@topic.category}{" > "}{@topic.title}
@@ -462,5 +462,5 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
     ]
   end
 
-  defp help_topic_path(topic_id), do: "/chat/help/#{topic_id}"
+  defp help_topic_path(topic_id), do: PublicPages.localized_path("/chat/help/#{topic_id}")
 end

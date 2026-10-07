@@ -257,7 +257,9 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
     ~H"""
     <.context_menu_item data-testid="landing-menu-docs">
       <:icon><Icons.icon_notepad class="h-[14px] w-[14px]" /></:icon>
-      <a href="/chat/help" class="block flex-1">{dgettext("landing", "Documentation")}</a>
+      <a href={PublicPages.localized_path("/chat/help")} class="block flex-1">
+        {dgettext("landing", "Documentation")}
+      </a>
     </.context_menu_item>
     <.context_menu_separator />
     <.context_menu_item data-testid="landing-menu-github">
@@ -365,7 +367,11 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
                   {dgettext("landing", "License (MIT)")}
                 </a>
               </li>
-              <li><a href="/chat/help">{dgettext("landing", "Documentation")}</a></li>
+              <li>
+                <a href={PublicPages.localized_path("/chat/help")}>
+                  {dgettext("landing", "Documentation")}
+                </a>
+              </li>
             </ul>
           </div>
           <div>

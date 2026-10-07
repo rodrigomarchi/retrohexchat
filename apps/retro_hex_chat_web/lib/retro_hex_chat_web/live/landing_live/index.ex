@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.LandingLive.Index do
 
   alias RetroHexChatWeb.Endpoint
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.SEO
 
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) ::

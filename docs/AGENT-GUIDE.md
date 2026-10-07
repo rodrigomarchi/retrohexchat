@@ -648,6 +648,12 @@ a move that renames one is caught before commit.
   Twitter tag, JSON-LD or h1 changed, or when visible text was lost; added text is reported, not
   failed. Prefer adding to rewriting: text a search engine already ranks is removed only as a
   deliberate, measured decision.
+- **Every internal link on a public page goes through `PublicPages.localized_path/1`.** A
+  literal `/chat/help/…` on a localized page sends the crawler to the English version, and the
+  localized one is then reachable only from the sitemap: Bing had never seen most localized help
+  topics while the topic tree linked all 300 of them in English. Only the language menu (with
+  `hreflang`) and the single-address surfaces — the app, the showcase, the archive — link
+  unprefixed; `landing_controller_test` and `help_live_test` fail on any other.
 - **What the engines themselves see is read, not guessed.** `make seo.console SOURCE=bing` reads
   the webmaster console's API into `reports/seo/<UTC stamp>-<source>.{md,json}` (gitignored): sitemaps,
   crawl issues, a spread sample of sitemap URLs inspected one by one, search performance, and

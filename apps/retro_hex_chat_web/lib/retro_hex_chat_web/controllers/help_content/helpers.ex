@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.HelpContent.Helpers do
   use Phoenix.Component
 
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.PublicPages
 
   @doc "Section heading with icon, used inside help content templates."
   attr :icon, :atom, required: true
@@ -25,7 +26,10 @@ defmodule RetroHexChatWeb.HelpContent.Helpers do
   @spec help_link(map()) :: Phoenix.LiveView.Rendered.t()
   def help_link(assigns) do
     ~H"""
-    <.link navigate={"/chat/help/#{@topic}"} class="text-link hover:underline">
+    <.link
+      navigate={PublicPages.localized_path("/chat/help/#{@topic}")}
+      class="text-link hover:underline"
+    >
       {render_slot(@inner_block)}
     </.link>
     """

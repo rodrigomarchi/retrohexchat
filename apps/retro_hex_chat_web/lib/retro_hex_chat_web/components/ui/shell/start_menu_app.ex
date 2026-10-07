@@ -527,7 +527,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           />
           <.start_menu_separator />
           <.link_item
-            href="/chat/help"
+            href={PublicPages.localized_path("/chat/help")}
             label={dgettext("landing", "Documentation")}
             icon_fn={:icon_notepad}
             disabled={@help?}
@@ -547,7 +547,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
                 It stays for help and the showcase, the two public screens
                 without that window, and goes inert wherever it is redundant. --%>
           <.link_item
-            href="/"
+            href={PublicPages.localized_path("/")}
             label={dgettext("landing", "Open the app")}
             icon_fn={:icon_connect}
             disabled={@screen in [:chat, :connect, :landing]}
@@ -734,7 +734,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   defp help_topics_item(assigns) do
     ~H"""
     <.link_item
-      href="/chat/help"
+      href={PublicPages.localized_path("/chat/help")}
       label={dgettext("ui", "Help Topics")}
       icon_fn={:icon_btn_help_topics}
       testid="start-menu-item-help_topics"

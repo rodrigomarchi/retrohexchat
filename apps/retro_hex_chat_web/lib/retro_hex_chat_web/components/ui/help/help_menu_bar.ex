@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
   use RetroHexChatWeb.Component
 
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.PublicPages
 
   import RetroHexChatWeb.Components.UI.MenuBar
   import RetroHexChatWeb.Components.UI.ContextMenu
@@ -87,7 +88,9 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
     ~H"""
     <.context_menu_item data-testid="help-menu-home">
       <:icon><Icons.icon_hex_stone class="h-[14px] w-[14px]" /></:icon>
-      <.link navigate="/chat/help" class="block flex-1">{dgettext("help", "Home")}</.link>
+      <.link navigate={PublicPages.localized_path("/chat/help")} class="block flex-1">
+        {dgettext("help", "Home")}
+      </.link>
     </.context_menu_item>
     <.context_menu_separator />
     <.context_menu_item data-help-nav="back" data-testid="help-menu-back">

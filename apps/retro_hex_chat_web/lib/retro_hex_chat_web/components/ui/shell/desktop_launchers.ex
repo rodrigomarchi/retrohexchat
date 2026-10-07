@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   alias RetroHexChatWeb.Components.UI.LanguageMenu
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Icons.Registry
+  alias RetroHexChatWeb.PublicPages
 
   @screens [:chat, :connect, :landing, :help, :showcase]
   @app_screens [:chat, :connect]
@@ -413,7 +414,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   defp desktop_icon_action(:connect, %{id: :help}), do: "help_topics"
   defp desktop_icon_action(_screen, _group), do: nil
 
-  defp desktop_icon_href(:connect, %{id: :help}), do: "/chat/help"
+  defp desktop_icon_href(:connect, %{id: :help}), do: PublicPages.localized_path("/chat/help")
   defp desktop_icon_href(_screen, _group), do: nil
 
   defp capabilities(assigns) do
@@ -670,7 +671,10 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   end
 
   defp help_topics_item(_cap) do
-    link("/chat/help", dgettext("ui", "Help Topics"), :icon_btn_help_topics,
+    link(
+      PublicPages.localized_path("/chat/help"),
+      dgettext("ui", "Help Topics"),
+      :icon_btn_help_topics,
       testid: "desktop-launcher-item-help_topics"
     )
   end

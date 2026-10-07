@@ -185,6 +185,24 @@ defmodule RetroHexChatWeb.HelpLiveTest do
 
       assert html =~ ~s(href="/chat/help/cmd-kick")
     end
+
+    test "a localized topic links every other topic in its own language", %{conn: conn} do
+      # A crawler reaches a language's topics only through these links: one
+      # that points at the English path leaves the localized page undiscovered.
+      # The language menu names the English version on purpose, with hreflang.
+      document =
+        conn |> get("/pt-BR/chat/help/cmd-ban") |> html_response(200) |> Floki.parse_document!()
+
+      assert Floki.find(document, ~s(a[href="/pt-BR/chat/help/cmd-kick"])) != []
+      assert Floki.find(document, ~s(a[href="/pt-BR/chat/help"])) != []
+
+      english =
+        document
+        |> Floki.find(~s{a[href^="/chat/help"]:not([hreflang])})
+        |> Floki.attribute("href")
+
+      assert english == []
+    end
   end
 
   describe "SEO" do
