@@ -71,6 +71,7 @@ defmodule RetroHexChatWeb.HelpLive.Index do
          |> assign(:page_title, page_title(selected_topic))
          |> assign(:page_description, page_description(selected_topic))
          |> assign(:canonical_path, canonical_path)
+         |> assign(:full_tree, connected?(socket) or selected_topic.id == @default_topic)
          |> assign(:breadcrumb_items, breadcrumb_items(selected_topic, canonical_path))
          |> assign(:json_ld, [
            SEO.tech_article_json_ld(
@@ -98,6 +99,7 @@ defmodule RetroHexChatWeb.HelpLive.Index do
       search_query={@search_query}
       search_results={@search_results}
       canonical_path={@canonical_path}
+      full_tree={@full_tree}
     >
       <.help_topic :if={@selected_topic} topic={@selected_topic}>
         <.render_topic_content id={@selected_topic.id} />

@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   alias RetroHexChat.Chat.HelpTopics
   alias RetroHexChatWeb.Components.UI.Landing.GameCards
   alias RetroHexChatWeb.GameCatalog
+  alias RetroHexChatWeb.HelpLive.ContentIndex
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PublicPages
 
@@ -34,6 +35,11 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   attr :search_query, :string, default: ""
   attr :search_results, :list, default: []
   attr :canonical_path, :string, default: "/chat/help"
+
+  attr :full_tree, :boolean,
+    default: true,
+    doc: "every category's topics in the contents tree, or only the open category's"
+
   slot :inner_block, required: true
 
   @spec help_layout(map()) :: Phoenix.LiveView.Rendered.t()
@@ -82,6 +88,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
                 topics_by_category={@topics_by_category}
                 all_topics={@all_topics}
                 selected_topic={@selected_topic}
+                full_tree={@full_tree}
               />
 
               <main
@@ -120,6 +127,16 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
     <div>
       <.help_topic_header topic={@topic} />
 
+      <%!-- The description is the topic in one sentence, shown first unless
+            the topic's own text already opens by saying it. --%>
+      <p
+        :if={!ContentIndex.description_repeats_opening?(@topic.id)}
+        class="text-sm text-text mb-3"
+        data-testid="help-topic-description"
+      >
+        {@topic.description}
+      </p>
+
       <article class={topic_article_class()}>
         {render_slot(@inner_block)}
       </article>
@@ -127,7 +144,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
       <.help_catalogue_link topic_id={@topic.id} />
       <.help_mirc_link :if={@topic.id == "commands-overview"} />
 
-      <.see_also_section see_also={Map.get(@topic, :see_also, [])} />
+      <.see_also_section topic_id={@topic.id} see_also={Map.get(@topic, :see_also, [])} />
     </div>
     """
   end
@@ -199,19 +216,29 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
 
   defp catalogue_path(_topic_id), do: nil
 
+  attr :topic_id, :string, default: nil
   attr :see_also, :list, default: []
 
+  # One "See Also" per page. The topics the body already links are left out;
+  # when the body ends with its own See Also, the rest continue it without a
+  # second heading.
   @spec see_also_section(map()) :: Phoenix.LiveView.Rendered.t()
   def see_also_section(assigns) do
-    assigns = assign(assigns, :related, resolve_related(assigns.see_also))
+    linked =
+      if assigns.topic_id, do: ContentIndex.body_links(assigns.topic_id), else: MapSet.new()
+
+    assigns =
+      assigns
+      |> assign(:related, assigns.see_also |> Enum.reject(&(&1 in linked)) |> resolve_related())
+      |> assign(:continues?, assigns.topic_id != nil and ContentIndex.see_also?(assigns.topic_id))
 
     ~H"""
     <section
       :if={@related != []}
-      class="mt-6 pt-3 border-t border-gray-300"
+      class={if @continues?, do: "mt-1", else: "mt-6 pt-3 border-t border-gray-300"}
       data-testid="help-see-also"
     >
-      <h2 class="text-xs font-bold text-text mb-2">
+      <h2 :if={!@continues?} class="text-xs font-bold text-text mb-2">
         {dgettext("help", "See Also")}
       </h2>
       <ul class="list-none m-0 p-0 flex flex-wrap gap-x-4 gap-y-1">
@@ -278,7 +305,12 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   attr :topics_by_category, :list, required: true
   attr :all_topics, :list, required: true
   attr :selected_topic, :map, default: nil
+  attr :full_tree, :boolean, default: true
 
+  # Before the socket connects only the open category lists its topics: the
+  # first HTML is what a search engine reads, and 297 titles repeated on every
+  # topic page outweigh the topic itself. The help home keeps the whole tree,
+  # one step from every topic; once connected every page has it.
   defp help_navigator(assigns) do
     ~H"""
     <nav
@@ -300,7 +332,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
           >
             <:icon>{apply(Icons, cat_icon, [%{class: "w-4 h-4"}])}</:icon>
             <.link
-              :for={topic <- topics}
+              :for={topic <- tree_topics(@full_tree, @selected_topic, category, topics)}
               navigate={help_topic_path(topic.id)}
               class="block no-underline"
             >
@@ -343,6 +375,10 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
     </nav>
     """
   end
+
+  defp tree_topics(true, _selected, _category, topics), do: topics
+  defp tree_topics(false, %{category: category}, category, topics), do: topics
+  defp tree_topics(false, _selected, _category, _topics), do: []
 
   attr :tab, :atom, required: true
   attr :active, :atom, required: true
@@ -439,13 +475,11 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   end
 
   @spec resolve_related([String.t()]) :: [HelpTopics.topic()]
-  defp resolve_related(ids) when is_list(ids) do
+  defp resolve_related(ids) do
     ids
     |> Enum.map(&HelpTopics.get_topic/1)
     |> Enum.reject(&is_nil/1)
   end
-
-  defp resolve_related(_ids), do: []
 
   defp topic_article_class do
     [

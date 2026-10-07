@@ -3,6 +3,9 @@ defmodule RetroHexChatWeb.HelpLiveTest do
 
   import Phoenix.LiveViewTest
 
+  alias RetroHexChat.Chat.HelpTopics
+  alias RetroHexChatWeb.HelpLive.ContentIndex
+
   @moduletag :liveview
 
   describe "GET /chat/help (static render)" do
@@ -234,6 +237,79 @@ defmodule RetroHexChatWeb.HelpLiveTest do
 
       assert html =~ "<h1"
       assert html =~ "IRC Commands Reference"
+    end
+  end
+
+  describe "what a search engine reads first" do
+    # `get/2`, not `live/2`: the dead render is the page an engine indexes.
+    # The welcome topic lives at the help home.
+    defp topic_path("welcome"), do: "/chat/help"
+    defp topic_path(id), do: "/chat/help/#{id}"
+
+    defp tree_hrefs(html) do
+      html
+      |> Floki.parse_document!()
+      |> Floki.find(~s(nav[aria-label="Help navigation"] a))
+      |> Floki.attribute("href")
+    end
+
+    test "a topic lists only its own category's topics in the tree", %{conn: conn} do
+      hrefs = conn |> get("/chat/help/cmd-ban") |> html_response(200) |> tree_hrefs()
+
+      assert "/chat/help/cmd-kick" in hrefs
+      refute "/chat/help/feature-retro-games" in hrefs
+      assert length(hrefs) < 40
+    end
+
+    test "the help home keeps every topic one step away", %{conn: conn} do
+      hrefs = conn |> get("/chat/help") |> html_response(200) |> tree_hrefs()
+
+      assert length(hrefs) == length(HelpTopics.all_topics())
+    end
+
+    test "once connected, every page has the whole tree", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat/help/cmd-ban")
+
+      assert view |> render() |> tree_hrefs() |> length() == length(HelpTopics.all_topics())
+    end
+
+    test "the description opens the topic", %{conn: conn} do
+      topic = HelpTopics.get_topic("cmd-autojoin")
+
+      document =
+        conn |> get("/chat/help/cmd-autojoin") |> html_response(200) |> Floki.parse_document!()
+
+      assert document
+             |> Floki.find(~s([data-testid="help-topic-description"]))
+             |> Floki.text()
+             |> String.trim() == topic.description
+    end
+
+    test "a description that repeats the opening sentence is not shown twice", %{conn: conn} do
+      assert ContentIndex.description_repeats_opening?("mode-l")
+
+      html = conn |> get("/chat/help/mode-l") |> html_response(200)
+
+      refute html =~ ~s(data-testid="help-topic-description")
+    end
+
+    test "every topic has one See Also, and it reaches every related topic", %{conn: conn} do
+      for topic <- HelpTopics.all_topics() do
+        document =
+          conn |> get(topic_path(topic.id)) |> html_response(200) |> Floki.parse_document!()
+
+        content = Floki.find(document, ~s([data-testid="help-content-pane"]))
+        headings = content |> Floki.find("h2, h4") |> Enum.count(&(Floki.text(&1) =~ "See Also"))
+        linked = content |> Floki.find("a") |> Floki.attribute("href")
+
+        assert headings <= 1, "#{topic.id} shows #{headings} See Also headings"
+
+        for related <- Map.get(topic, :see_also, []),
+            HelpTopics.get_topic(related) do
+          assert topic_path(related) in linked,
+                 "#{topic.id} lists #{related} as related but never links it"
+        end
+      end
     end
   end
 

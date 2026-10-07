@@ -654,6 +654,12 @@ a move that renames one is caught before commit.
   topics while the topic tree linked all 300 of them in English. Only the language menu (with
   `hreflang`) and the single-address surfaces — the app, the showcase, the archive — link
   unprefixed; `landing_controller_test` and `help_live_test` fail on any other.
+- **A help topic's first HTML carries the topic, not the whole help.** Before the socket
+  connects, the contents tree lists only the open category's topics (the help home keeps all of
+  them, one step from every topic), the topic's description opens the page unless the template's
+  first sentence already says it, and "See Also" appears once — `HelpLive.ContentIndex` reads the
+  templates at compile time to know what the body already links. The full tree arrives on connect.
+  The 297 repeated titles were most of every topic page's text.
 - **Changed pages are announced, not waited for.** `RetroHexChatWeb.SEO.PublicUrls` is the one
   list of public pages: the sitemap renders it and IndexNow (`RetroHexChat.SEO.IndexNow`, key at
   `/indexnow.txt`) announces it to Bing and Yandex. `Jobs.IndexNowWorker` runs at every boot for
