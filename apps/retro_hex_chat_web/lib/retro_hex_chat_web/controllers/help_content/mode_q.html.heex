@@ -8,11 +8,60 @@
 <p>
   {dgettext("help_channels", "Owner (~) > Operator (@) > Half-Operator (%) > Voice (+) > Regular")}
 </p>
+<p>
+  {dgettext(
+    "help_channels",
+    "Each member holds one rank at a time. Half-operators and above can kick, and operators and above can ban. Both only work on members of a lower rank."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "When to use it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Add a second owner when you run a channel together with someone, so both of you have full control. A channel can have more than one owner at the same time. To hand the channel over and step down yourself, use a transfer instead."
+  )}
+</p>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
-<pre>{dgettext("help_channels", "/mode +q Alice — Make Alice an owner /mode -q Alice — Remove owner from Alice")}</pre>
+<pre>/mode +q Alice  {dgettext("help_channels", "Make Alice an owner")}
+/mode -q Alice  {dgettext("help_channels", "Remove owner from Alice")}
+/transfer Alice  {dgettext("help_channels", "Make Alice the owner and become an operator")}</pre>
 <p>{dgettext("help_channels", "Only other owners can grant or revoke +q.")}</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "The person must be in the channel. The command changes the channel you are looking at."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Owner status given with this command is not kept when the person leaves the channel."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "In a registered channel, the founder and the people on the ChanServ %{level} list become owners each time they join.",
+      level: "SOP"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "In an unregistered channel, the owner rank goes to whoever joins the empty channel first. Register the channel with ChanServ to keep it."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
   <.help_link topic="mode-o">{dgettext("help_channels", "Operator (+o)")}</.help_link>
   · <.help_link topic="mode-h">{dgettext("help_channels", "Half-Operator (+h)")}</.help_link>
+  · <.help_link topic="cmd-transfer">{dgettext("help_channels", "/transfer")}</.help_link>
+  ·
+  <.help_link topic="chanserv-register">
+    {dgettext("help_channels", "Registering a Channel")}
+  </.help_link>
+  · <.help_link topic="chanserv-access">{dgettext("help_channels", "Access Lists")}</.help_link>
 </p>

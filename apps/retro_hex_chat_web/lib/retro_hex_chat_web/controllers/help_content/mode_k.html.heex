@@ -1,5 +1,88 @@
 <p>
   {dgettext("help_channels", "Sets a password (key) that users must provide to join the channel.")}
 </p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "When to use it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Use a key when you want to share access with a word instead of inviting each person. Anyone who knows the key can join. Anyone who does not know it is turned away."
+  )}
+</p>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
-<pre>{dgettext("help_channels", "/mode +k secretpass — Set channel key /mode -k — Remove channel key /join #channel secretpass — Join with key")}</pre>
+<pre>/mode +k secretpass        {dgettext("help_channels", "Set channel key")}
+/mode -k                   {dgettext("help_channels", "Remove channel key")}
+/join #channel secretpass  {dgettext("help_channels", "Join with key")}</pre>
+<p>
+  {dgettext(
+    "help_channels",
+    "The mode command changes the channel you are looking at. You do not type the channel name."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "How it works")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "The key is one word. It must match exactly, so upper and lower case letters matter."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "A person who joins without the key, or with the wrong key, is refused with a bad key error."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "People already in the channel stay there when you set or change the key."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "To remove the key, you do not need to type it again."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_tab_general}>{dgettext("help_channels", "Channel Central")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Operators can also open Channel Central, go to the Modes tab, tick Key, type the key and choose Apply Modes."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_channels", "Only channel operators and owners can set or remove the key.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "An invitation does not replace the key. An invited person still needs it to join."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "To join a keyed channel each time you connect, add it to your auto-join list with its key:"
+    )} <code>/autojoin add #channel secretpass</code>
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "In a registered channel the key is saved and comes back after a restart."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-join">{dgettext("help_channels", "Join Command")}</.help_link>
+  · <.help_link topic="mode-i">{dgettext("help_channels", "Invite Only")}</.help_link>
+  · <.help_link topic="cmd-autojoin">/autojoin</.help_link>
+  ·
+  <.help_link topic="channel-modes-overview">
+    {dgettext("help_channels", "Channel Modes Overview")}
+  </.help_link>
+</p>

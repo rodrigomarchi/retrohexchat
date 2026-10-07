@@ -4,10 +4,87 @@
     "Grants channel operator status to a user (prefix @). Operators can change channel modes, kick/ban users, and set the topic. They cannot kick owners."
   )}
 </p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "When to use it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Make trusted people operators so the channel is looked after when you are away. Operators keep order, welcome newcomers and handle trouble. Give the rank only to people you trust, because operators can also make other operators."
+  )}
+</p>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
-<pre>{dgettext("help_channels", "/mode +o Alice — Give operator to Alice /mode -o Alice — Remove operator from Alice")}</pre>
+<pre>/mode +o Alice  {dgettext("help_channels", "Give operator to Alice")}
+/mode -o Alice  {dgettext("help_channels", "Remove operator from Alice")}
+/op Alice       {dgettext("help_channels", "Give operator to Alice")}
+/deop Alice     {dgettext("help_channels", "Remove operator from Alice")}</pre>
+<p>
+  {dgettext(
+    "help_channels",
+    "The command changes the channel you are looking at. You do not type the channel name."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_channels", "What operators can do")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Set and remove channel modes, and give or take operator, half-operator and voice."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Kick and ban members of lower rank: half-operators, voiced users and regular members."
+    )}
+  </li>
+  <li>
+    {dgettext("help_channels", "Change the topic when the topic is locked.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Invite people to an invite-only channel and see knock requests."
+    )}
+  </li>
+  <li>
+    {dgettext("help_channels", "Set the welcome message and pin messages.")}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Only operators and owners can give or remove operator status. The person must be in the channel."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Operators cannot give or remove owner status. Only owners can do that."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Each member holds one rank at a time. Operator status given with this command is not kept when the person leaves."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "In a registered channel, people on the ChanServ operator list become operators each time they join."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
   <.help_link topic="mode-q">{dgettext("help_channels", "Owner (+q)")}</.help_link>
   · <.help_link topic="mode-h">{dgettext("help_channels", "Half-Operator (+h)")}</.help_link>
+  · <.help_link topic="cmd-op">/op</.help_link>
+  · <.help_link topic="cmd-deop">/deop</.help_link>
+  · <.help_link topic="chanserv-access">{dgettext("help_channels", "Access Lists")}</.help_link>
+  ·
+  <.help_link topic="channel-permissions">
+    {dgettext("help_channels", "Channel Permissions")}
+  </.help_link>
 </p>

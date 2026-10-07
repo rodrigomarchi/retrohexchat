@@ -4,7 +4,62 @@
     "When set, only users who have identified with NickServ can join the channel. Users already in the channel when +R is set are not affected."
   )}
 </p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "When to use it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Use it to keep out guests and throwaway nicknames. A registered nickname is protected by a password, so the same name always belongs to the same person. This makes bans and access lists more reliable, and it slows down spam from new names."
+  )}
+</p>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
-<pre>{dgettext("help_channels", "/mode +R — Enable registered-only mode /mode -R — Disable registered-only mode")}</pre>
+<pre>/mode +R  {dgettext("help_channels", "Enable registered-only mode")}
+/mode -R  {dgettext("help_channels", "Disable registered-only mode")}</pre>
+<p>
+  {dgettext(
+    "help_channels",
+    "The letter is an upper case R. The command changes the channel you are looking at. You do not type the channel name."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "How it works")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "When someone tries to join, the server checks whether they are identified with NickServ right now."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "A guest, or a person using a registered nickname without identifying, is refused with a message that the channel needs a registered nickname."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "To get in, register your nickname with NickServ, identify, and then join again."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_channels", "Only channel operators and owners can set or remove this mode.")}
+  </li>
+  <li>{dgettext("help_channels", "The check runs only when someone joins.")}</li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "In a registered channel the mode is saved and comes back after a restart."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
-<p><.help_link topic="feature-nickserv">{dgettext("help_channels", "NickServ")}</.help_link></p>
+<p>
+  <.help_link topic="nickserv">{dgettext("help_channels", "NickServ")}</.help_link>
+  · <.help_link topic="cmd-ns">{dgettext("help_channels", "/ns Command")}</.help_link>
+  ·
+  <.help_link topic="channel-modes-overview">
+    {dgettext("help_channels", "Channel Modes Overview")}
+  </.help_link>
+</p>

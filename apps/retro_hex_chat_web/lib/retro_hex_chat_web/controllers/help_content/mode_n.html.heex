@@ -4,5 +4,61 @@
     "When set, only channel members can send messages to the channel. Non-members attempting to send will receive an error. Service messages (NickServ, ChanServ) are not affected."
   )}
 </p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "When to use it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "The mode comes from classic IRC, where people outside a channel could send text into it. Set it when you want the channel modes to state clearly that only members may speak."
+  )}
+</p>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
-<pre>{dgettext("help_channels", "/mode +n — Enable no external messages /mode -n — Disable no external messages")}</pre>
+<pre>/mode +n  {dgettext("help_channels", "Enable no external messages")}
+/mode -n  {dgettext("help_channels", "Disable no external messages")}</pre>
+<p>
+  {dgettext(
+    "help_channels",
+    "The command changes the channel you are looking at. You do not type the channel name."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "How it works")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Even without this mode, a person must be in the channel to send messages to it. Someone who is not a member is always refused."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "With the mode set, the refusal says that the channel does not accept external messages."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Members are not affected. To limit what members can say, use moderated mode instead."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_channels", "Only channel operators and owners can set or remove this mode.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "A new channel starts without this mode. In a registered channel the mode is saved and comes back after a restart."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="mode-m">{dgettext("help_channels", "Moderated (+m)")}</.help_link>
+  · <.help_link topic="cmd-mode">{dgettext("help_channels", "/mode")}</.help_link>
+  ·
+  <.help_link topic="channel-modes-overview">
+    {dgettext("help_channels", "Channel Modes Overview")}
+  </.help_link>
+</p>

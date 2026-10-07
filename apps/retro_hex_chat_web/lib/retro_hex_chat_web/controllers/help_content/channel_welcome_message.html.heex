@@ -5,6 +5,14 @@
   )}
 </p>
 
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "When to use it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Use it to greet newcomers with what they need to know: what the channel is about, its rules, or where to start. The topic stays visible to everyone all the time. The welcome message is a private note that each person reads once, as they arrive."
+  )}
+</p>
+
 <.help_h4 icon={:icon_tab_general}>{dgettext("help_channels", "Channel Central")}</.help_h4>
 <p>
   {dgettext(
@@ -12,15 +20,65 @@
     "Open Channel Central for the channel, stay on the General tab, edit the Welcome Message field, then choose Save Welcome. Use Clear Welcome to remove it."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_channels",
+    "Saving an empty field also removes the message."
+  )}
+</p>
 
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Commands")}</.help_h4>
-<pre>{dgettext("help_channels", "/setwelcome <message> /clearwelcome")}</pre>
+<pre>/setwelcome &lt;message&gt;  {dgettext("help_channels", "Set the welcome message")}
+/clearwelcome          {dgettext("help_channels", "Remove the welcome message")}</pre>
+<p>
+  {dgettext("help_channels", "The command with no text also removes the message:")}
+  <code>/setwelcome</code>
+</p>
+
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "How it works")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "A person who joins sees the message as a line that starts with Welcome, visible only to them."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Each person sees it once per session. Leaving and joining again in the same session does not show it again."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "A new message replaces the old one. Members who are looking at the channel when a new message is set get a short notice."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "The message is saved, so it stays after a restart."
+    )}
+  </li>
+</ul>
 
 <.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules")}</.help_h4>
 <ul>
   <li>{dgettext("help_channels", "Requires channel operator (@) or owner (~) status")}</li>
   <li>{dgettext("help_channels", "Applies only to the current channel")}</li>
-  <li>{dgettext("help_channels", "The user who set the message does not see it immediately")}</li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Half-operators cannot set or clear the welcome message."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "The person who set the message is not shown it when they join."
+    )}
+  </li>
 </ul>
 
 <.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
@@ -35,4 +93,5 @@
   <.help_link topic="channel-permissions">
     {dgettext("help_channels", "Channel Permissions")}
   </.help_link>
+  · <.help_link topic="cmd-topic">{dgettext("help_channels", "/topic Command")}</.help_link>
 </p>

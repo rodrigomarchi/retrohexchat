@@ -1,11 +1,53 @@
 <p>
   {dgettext(
     "help_channels",
-    "Limits how many users can join the channel within a time window. Format is count:seconds. For example, +j 5:10 allows 5 joins per 10 seconds. Operators bypass the throttle."
+    "Limits how many users can join the channel within a time window. Format is count:seconds. For example, %{example} allows 5 joins per 10 seconds.",
+    example: "+j 5:10"
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "When to use it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Use it against join floods, when many nicknames enter at once to spam or disrupt a channel. Normal visitors rarely notice it, because people usually arrive a few at a time."
   )}
 </p>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
-<pre>{dgettext("help_channels", "/mode +j 5:10 — Allow 5 joins per 10 seconds /mode +j 3:60 — Allow 3 joins per minute /mode -j — Remove join throttle")}</pre>
+<pre>/mode +j 5:10  {dgettext("help_channels", "Allow 5 joins per 10 seconds")}
+/mode +j 3:60  {dgettext("help_channels", "Allow 3 joins per minute")}
+/mode -j       {dgettext("help_channels", "Remove join throttle")}
+/slow 30       {dgettext("help_channels", "Allow 5 joins per 30 seconds")}
+/slow 0        {dgettext("help_channels", "Remove join throttle")}</pre>
+<p>
+  {dgettext(
+    "help_channels",
+    "The command changes the channel you are looking at. You do not type the channel name."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "How it works")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "The server counts the joins made within the chosen number of seconds. When the count reaches the limit, the next person is refused and asked to try again shortly."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "The throttle applies to every person who joins, operators and owners included. Only bots are exempt."
+    )}
+  </li>
+  <li>
+    {dgettext("help_channels", "Bots are never throttled, but their joins are counted.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Both numbers must be whole numbers greater than zero. If the value is not valid, the throttle does not change."
+    )}
+  </li>
+</ul>
 
 <.help_h4 icon={:icon_tab_general}>{dgettext("help_channels", "Channel Central")}</.help_h4>
 <p>
@@ -14,11 +56,34 @@
     "Operators can also set the join throttle from Channel Central's General tab. Enter 0 seconds to remove the throttle."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_channels",
+    "Channel Central and the slow command always allow 5 joins in the number of seconds you choose. Use the mode command to pick a different count."
+  )}
+</p>
+
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Only channel operators and owners can set or remove the throttle."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "In a registered channel the throttle is saved and comes back after a restart."
+    )}
+  </li>
+</ul>
 
 <.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-slow">{dgettext("help_channels", "/slow")}</.help_link>
   · <.help_link topic="cmd-mode">{dgettext("help_channels", "/mode")}</.help_link>
+  · <.help_link topic="mode-l">{dgettext("help_channels", "User Limit")}</.help_link>
   ·
   <.help_link topic="feature-channel-central">
     {dgettext("help_channels", "Channel Central")}

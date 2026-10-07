@@ -5,6 +5,14 @@
   )}
 </p>
 
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "When to use it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Transfer ownership when you hand a channel over to someone else, for example when you step back from running it. You keep operator status, so you can still help. If you only want to share control, give the other person owner status instead and stay an owner yourself."
+  )}
+</p>
+
 <.help_h4 icon={:icon_tab_general}>{dgettext("help_channels", "Channel Central")}</.help_h4>
 <p>
   {dgettext(
@@ -15,6 +23,14 @@
 
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Command")}</.help_h4>
 <pre>{dgettext("help_channels", "/transfer <nickname>")}</pre>
+<pre>/transfer Alice  {dgettext("help_channels", "Make Alice the owner and become an operator")}
+/mode +q Alice   {dgettext("help_channels", "Make Alice an owner")}</pre>
+<p>
+  {dgettext(
+    "help_channels",
+    "The command works on the channel you are looking at. Everyone in the channel sees the mode changes."
+  )}
+</p>
 
 <.help_h4 icon={:icon_warning}>{dgettext("help_channels", "Rules")}</.help_h4>
 <ul>
@@ -24,6 +40,24 @@
   <li>{dgettext("help_channels", "The target nickname must be present in the channel")}</li>
   <li>
     {dgettext("help_channels", "This cannot be undone without the new owner's cooperation")}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "If the person is not in the channel, the transfer fails and nothing changes."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Ranks last while people stay in the channel. In an unregistered channel, if you leave after the transfer while others are still inside, you come back as a regular member."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "In a registered channel, a transfer does not change the ChanServ founder or access list. Ranks given on joining still come from that list."
+    )}
   </li>
 </ul>
 
@@ -39,4 +73,5 @@
   <.help_link topic="feature-channel-central">
     {dgettext("help_channels", "Channel Central")}
   </.help_link>
+  · <.help_link topic="chanserv-access">{dgettext("help_channels", "Access Lists")}</.help_link>
 </p>

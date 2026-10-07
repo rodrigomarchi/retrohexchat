@@ -4,10 +4,62 @@
     "Grants voice to a user (prefix +), allowing them to speak in moderated (+m) channels. Half-operators and above can grant voice."
   )}
 </p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "When to use it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Give voice to the guests of a talk, the people asking questions, or trusted regulars. In a moderated channel they can speak while everyone else listens. Voice gives no other power. A voiced user cannot kick, ban or change modes."
+  )}
+</p>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
-<pre>{dgettext("help_channels", "/mode +v Alice — Give voice to Alice /mode -v Alice — Remove voice from Alice")}</pre>
+<pre>/mode +v Alice  {dgettext("help_channels", "Give voice to Alice")}
+/mode -v Alice  {dgettext("help_channels", "Remove voice from Alice")}
+/voice Alice    {dgettext("help_channels", "Give voice to Alice")}
+/devoice Alice  {dgettext("help_channels", "Remove voice from Alice")}</pre>
+<p>
+  {dgettext(
+    "help_channels",
+    "The command changes the channel you are looking at. You do not type the channel name."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "How it works")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "The person must be in the channel. Otherwise the command fails with an error."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Voiced users are marked with a voice icon in the user list."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Each member holds one rank at a time. Voice sits above regular members and below half-operators."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Voice given with this command lasts while the person stays in the channel. It is not kept when they leave."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "In a registered channel, add people to the ChanServ voice list to give them voice each time they join."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
   <.help_link topic="mode-m">{dgettext("help_channels", "Moderated (+m)")}</.help_link>
   · <.help_link topic="mode-h">{dgettext("help_channels", "Half-Operator (+h)")}</.help_link>
+  · <.help_link topic="cmd-voice">/voice</.help_link>
+  · <.help_link topic="cmd-devoice">/devoice</.help_link>
+  · <.help_link topic="chanserv-access">{dgettext("help_channels", "Access Lists")}</.help_link>
 </p>

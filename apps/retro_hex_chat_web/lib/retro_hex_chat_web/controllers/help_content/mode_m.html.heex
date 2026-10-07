@@ -1,8 +1,80 @@
 <p>
   {dgettext(
     "help_channels",
-    "When a channel is moderated, only operators (+o) and voiced (+v) users can send messages. Regular users can still read but not write."
+    "When a channel is moderated, only owners, operators, half-operators and voiced users can send messages. Regular members can still read but not write."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "When to use it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Use it for talks, interviews, question sessions and announcements. A few people speak and everyone else listens. It is also a quick way to calm a channel during a flood or a heated argument."
   )}
 </p>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
-<pre>{dgettext("help_channels", "/mode +m — Enable moderated mode /mode -m — Disable moderated mode /mode +v Nick — Give voice to a user")}</pre>
+<pre>/mode +m       {dgettext("help_channels", "Enable moderated mode")}
+/mode -m       {dgettext("help_channels", "Disable moderated mode")}
+/mode +v Nick  {dgettext("help_channels", "Give voice to a user")}
+/voice Nick    {dgettext("help_channels", "Give voice to a user")}</pre>
+<p>
+  {dgettext(
+    "help_channels",
+    "The command changes the channel you are looking at. You do not type the channel name."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "How it works")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "A regular member who tries to speak gets an error that says they need voice."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Members keep reading everything, and they can still join and leave."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Half-operators, operators and owners can give voice to members who should speak."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "In a registered channel, people on the ChanServ voice list receive voice when they join."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_tab_general}>{dgettext("help_channels", "Channel Central")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Operators can also open Channel Central, go to the Modes tab, tick Moderated and choose Apply Modes."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_channels", "Only channel operators and owners can set or remove this mode.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "In a registered channel the mode is saved and comes back after a restart."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="mode-v">{dgettext("help_channels", "Voice")}</.help_link>
+  · <.help_link topic="cmd-voice">/voice</.help_link>
+  · <.help_link topic="chanserv-access">{dgettext("help_channels", "Access Lists")}</.help_link>
+  ·
+  <.help_link topic="channel-modes-overview">
+    {dgettext("help_channels", "Channel Modes Overview")}
+  </.help_link>
+</p>

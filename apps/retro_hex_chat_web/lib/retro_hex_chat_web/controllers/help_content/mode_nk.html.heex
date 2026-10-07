@@ -4,19 +4,63 @@
   {dgettext("help_channels", "requests to the channel.")}
 </p>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
-<pre>{dgettext("help_channels", "/mode +K — Enable no-knock mode /mode -K — Disable no-knock mode")}</pre>
-<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "Details")}</.help_h4>
+<pre>/mode +K  {dgettext("help_channels", "Enable no-knock mode")}
+/mode -K  {dgettext("help_channels", "Disable no-knock mode")}</pre>
 <p>
-  {dgettext("help_channels", "When")}
-  <code>{dgettext("help_channels", "+K")}</code> {dgettext("help_channels", "is set, any")}
-  <code>{dgettext("help_channels", "/knock")}</code> {dgettext(
+  {dgettext(
     "help_channels",
-    "attempt will be silently rejected. This is useful for invite-only channels that do not want to receive join requests."
+    "The letter is an upper case K. The command changes the channel you are looking at. You do not type the channel name."
   )}
 </p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "Details")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "When %{mode} is set, every %{command} attempt is refused. This is useful for invite-only channels that do not want to receive join requests.",
+    mode: "+K",
+    command: "/knock"
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_channels",
+    "The operators see nothing. The person who knocks gets an error that says knocking is disabled for the channel."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "When to use it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "A knock is a short request to join, sent to the operators of an invite-only channel. Turn knocks off when the channel is closed to new members, or when knock requests become noise or spam. Operators can still invite people directly."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_channels", "Only channel operators and owners can set or remove this mode.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Knocking only works on invite-only channels. Without invite-only mode, this mode has no visible effect."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Even with knocks allowed, each person can knock on the same channel only once per minute."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "In a registered channel the mode is saved and comes back after a restart."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-knock">{dgettext("help_channels", "/knock")}</.help_link>, <.help_link topic="mode-i">{dgettext("help_channels", "+i Invite Only")}</.help_link>,
+  <.help_link topic="cmd-knock">{dgettext("help_channels", "/knock")}</.help_link>, <.help_link topic="mode-i">{dgettext("help_channels", "+i Invite Only")}</.help_link>, <.help_link topic="cmd-invite">{dgettext("help_channels", "/invite Command")}</.help_link>,
   <.help_link topic="channel-modes-overview">
     {dgettext("help_channels", "Channel Modes Overview")}
   </.help_link>

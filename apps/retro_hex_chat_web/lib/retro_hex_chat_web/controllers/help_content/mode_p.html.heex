@@ -4,7 +4,76 @@
     "Makes the channel private. Private channels appear in the channel list but with the name shown as \"Prv\" to non-members, hiding the actual channel name. Mutually exclusive with +s (secret)."
   )}
 </p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "When to use it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Use it when it is fine for people to know that a room exists, but its name and topic should not be advertised. If the channel should not appear in the list at all, use secret mode instead."
+  )}
+</p>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
-<pre>{dgettext("help_channels", "/mode +p — Make channel private /mode -p — Remove private mode")}</pre>
+<pre>/mode +p  {dgettext("help_channels", "Make channel private")}
+/mode -p  {dgettext("help_channels", "Remove private mode")}</pre>
+<p>
+  {dgettext(
+    "help_channels",
+    "The command changes the channel you are looking at. You do not type the channel name."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "What others see")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "In the Channel List, people who are not in the channel see a placeholder row with the number of users. The name and the topic are not shown."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Members of the channel see the real name and topic as usual."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Share links and link previews do not show the channel name."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Private mode does not hide the channel from whois or the hover card. Use secret mode if the name must not appear there."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_channels", "Only channel operators and owners can set or remove this mode.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Private mode does not stop anyone from joining. A person who types the name can still enter."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "A channel cannot be private and secret at the same time. To switch, remove secret mode first, then set private mode:"
+    )} <code>/mode -s</code> <code>/mode +p</code>
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "In a registered channel the mode is saved and comes back after a restart."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
-<p><.help_link topic="mode-s">{dgettext("help_channels", "Secret (+s)")}</.help_link></p>
+<p>
+  <.help_link topic="mode-s">{dgettext("help_channels", "Secret (+s)")}</.help_link>
+  · <.help_link topic="mode-i">{dgettext("help_channels", "Invite Only")}</.help_link>
+  · <.help_link topic="cmd-list">{dgettext("help_channels", "Channel List")}</.help_link>
+</p>

@@ -4,11 +4,32 @@
     "Channels are chat rooms where multiple users can talk. Channel names begin with"
   )} <strong>#</strong>.
 </p>
+<p>
+  {dgettext(
+    "help_channels",
+    "Everyone in a channel sees the same conversation. A channel usually has a theme, a topic shown at the top, and a few people who look after it."
+  )}
+</p>
 <.help_h4 icon={:icon_btn_join}>{dgettext("help_channels", "Joining a Channel")}</.help_h4>
 <pre>{dgettext("help_channels", "/join #channel-name")}</pre>
+<pre>/join #elixir         {dgettext("help_channels", "Join a public channel")}
+/join #secret mykey  {dgettext("help_channels", "Join a channel that has a key")}</pre>
+<p>
+  {dgettext(
+    "help_channels",
+    "If the channel does not exist yet, joining creates it. The first person in a new channel becomes its owner and can set its modes."
+  )}
+</p>
 <.help_h4 icon={:icon_btn_remove}>{dgettext("help_channels", "Leaving a Channel")}</.help_h4>
 <pre>{dgettext("help_channels", "/part [#channel-name]")}</pre>
 <p>{dgettext("help_channels", "If no channel is specified, you leave the current channel.")}</p>
+<p>
+  {dgettext(
+    "help_channels",
+    "You can add a short goodbye after the channel name. Everyone in the channel sees it."
+  )}
+</p>
+<pre>/part #elixir Goodbye!</pre>
 <.help_h4 icon={:icon_dialog_channel_list}>
   {dgettext("help_channels", "Listing Channels")}
 </.help_h4>
@@ -20,6 +41,39 @@
     "button in the toolbar. Invite-only (+i) channels are marked with a +i badge; select one and choose Request Access... to send a knock request to its operators."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_channels",
+    "Secret channels are not listed for people outside them. Private channels are listed without their name."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "A channel name starts with # and has no spaces. It can be up to 50 characters long."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "You can be in a limited number of channels at once. The default is 10, and the server administrator can change it."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "A channel can refuse you because of a ban, a key, a user limit, invite-only mode or registered-only mode."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "An unregistered channel closes when the last person leaves, and its topic and modes are lost. Register it with ChanServ to keep it, its settings and its access list."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-join">{dgettext("help_channels", "Join Command")}</.help_link>
@@ -29,5 +83,13 @@
   ·
   <.help_link topic="channel-modes-overview">
     {dgettext("help_channels", "Channel Modes")}
+  </.help_link>
+  ·
+  <.help_link topic="chanserv-register">
+    {dgettext("help_channels", "Registering a Channel")}
+  </.help_link>
+  ·
+  <.help_link topic="channel-permissions">
+    {dgettext("help_channels", "Channel Permissions")}
   </.help_link>
 </p>

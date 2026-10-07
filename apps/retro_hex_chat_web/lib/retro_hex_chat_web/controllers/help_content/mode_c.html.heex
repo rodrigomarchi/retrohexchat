@@ -4,5 +4,69 @@
     "Strips all formatting codes from messages, including bold, italic, underline, color codes, and reverse. Messages and /me actions are processed server-side before delivery."
   )}
 </p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "When to use it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Use it when colored or bold text makes a channel hard to read. It is also useful against people who abuse colors to draw attention. Every message then looks the same, as plain text."
+  )}
+</p>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
-<pre>{dgettext("help_channels", "/mode +c — Enable color stripping /mode -c — Disable color stripping")}</pre>
+<pre>/mode +c  {dgettext("help_channels", "Enable color stripping")}
+/mode -c  {dgettext("help_channels", "Disable color stripping")}</pre>
+<p>
+  {dgettext(
+    "help_channels",
+    "The command changes the channel you are looking at. You do not type the channel name."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "How it works")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "People can still type formatting. The server removes it before anyone sees the message."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Messages written in Markdown are also turned into plain text."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "The message is saved without its formatting. Turning the mode off later does not bring the colors back."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Messages sent before the mode was set keep their formatting. The channel topic is not changed."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_channels", "Only channel operators and owners can set or remove this mode.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "In a registered channel the mode is saved and comes back after a restart."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="formatting-overview">
+    {dgettext("help_channels", "Text Formatting")}
+  </.help_link>
+  · <.help_link topic="cmd-mode">{dgettext("help_channels", "/mode")}</.help_link>
+  ·
+  <.help_link topic="channel-modes-overview">
+    {dgettext("help_channels", "Channel Modes Overview")}
+  </.help_link>
+</p>

@@ -4,6 +4,13 @@
     "Grants half-operator status to a user (prefix %). Half-operators can kick users of lower rank and grant/revoke voice (+v), but cannot set channel modes or ban users."
   )}
 </p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "When to use it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Half-operator is a helper rank. Give it to people who should keep a conversation in order but should not control the channel itself. They can remove a troublemaker and manage who speaks, while the settings stay with operators and owners."
+  )}
+</p>
 <.help_h4 icon={:icon_tab_modes}>{dgettext("help_channels", "Permissions")}</.help_h4>
 <p>
   {dgettext("help_channels", "Can: kick regular/voiced users, set +v/-v")}<br />{dgettext(
@@ -11,10 +18,54 @@
     "Cannot: set channel modes, ban users, kick operators or owners"
   )}
 </p>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Half-operators can speak in a moderated channel without voice."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "They cannot change a locked topic, invite people, set the welcome message or pin messages."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
-<pre>{dgettext("help_channels", "/mode +h Alice — Make Alice a half-operator /mode -h Alice — Remove half-operator from Alice")}</pre>
+<pre>/mode +h Alice  {dgettext("help_channels", "Make Alice a half-operator")}
+/mode -h Alice  {dgettext("help_channels", "Remove half-operator from Alice")}</pre>
+<p>
+  {dgettext(
+    "help_channels",
+    "The command changes the channel you are looking at. You do not type the channel name."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Only operators and owners can give or remove half-operator status. The person must be in the channel."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Each member holds one rank at a time. Half-operator sits above voice and below operator."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "The rank is not kept when the person leaves the channel. ChanServ access lists have no half-operator level, so give it again with the command when needed."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
   <.help_link topic="mode-q">{dgettext("help_channels", "Owner (+q)")}</.help_link>
   · <.help_link topic="mode-o">{dgettext("help_channels", "Operator (+o)")}</.help_link>
+  · <.help_link topic="mode-v">{dgettext("help_channels", "Voice")}</.help_link>
+  · <.help_link topic="cmd-kick">{dgettext("help_channels", "/kick")}</.help_link>
 </p>

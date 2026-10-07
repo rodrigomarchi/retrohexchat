@@ -13,154 +13,62 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:46
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "+K"
 msgstr "+K"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "+i Invite Only"
 msgstr "+ i Undang Saja"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "/invite Command"
 msgstr "/invite Command"
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:3
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:12
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "/knock"
 msgstr "/knock"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "/mode +K — Enable no-knock mode /mode -K — Disable no-knock mode"
-msgstr "/mode +K — Enable no-knock mode /mode -K — Disable no-knock mode"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +R — Enable registered-only mode /mode -R — Disable registered-only mode"
-msgstr ""
-"/mode +R — Enable registered-only mode /mode -R — Disable registered-only "
-"mode"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +c — Enable color stripping /mode -c — Disable color stripping"
-msgstr "/mode +c — Enable color stripping /mode -c — Disable color stripping"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:15
-#, elixir-autogen, elixir-format
-msgid "/mode +h Alice — Make Alice a half-operator /mode -h Alice — Remove half-operator from Alice"
-msgstr ""
-"/mode +h Alice — Make Alice a half-operator /mode -h Alice — Remove half-"
-"operator from Alice"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +i — Enable invite only /mode -i — Disable invite only"
-msgstr "/mode +i — Enable invite only /mode -i — Disable invite only"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +j 5:10 — Allow 5 joins per 10 seconds /mode +j 3:60 — Allow 3 joins per minute /mode -j — Remove join throttle"
-msgstr ""
-"/mode +j 5:10 — Allow 5 joins per 10 seconds /mode +j 3:60 — Allow 3 joins "
-"per minute /mode -j — Remove join throttle"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:5
-#, elixir-autogen, elixir-format
-msgid "/mode +k secretpass — Set channel key /mode -k — Remove channel key /join #channel secretpass — Join with key"
-msgstr ""
-"/mode +k secretpass — Set channel key /mode -k — Remove channel key /join "
-"#channel secretpass — Join with key"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:5
-#, elixir-autogen, elixir-format
-msgid "/mode +l 25 — Set limit to 25 users /mode -l — Remove user limit"
-msgstr "/mode +l 25 — Set limit to 25 users /mode -l — Remove user limit"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +m — Enable moderated mode /mode -m — Disable moderated mode /mode +v Nick — Give voice to a user"
-msgstr ""
-"/mode +m — Enable moderated mode /mode -m — Disable moderated mode /mode +v "
-"Nick — Give voice to a user"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +n — Enable no external messages /mode -n — Disable no external messages"
-msgstr ""
-"/mode +n — Enable no external messages /mode -n — Disable no external "
-"messages"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +o Alice — Give operator to Alice /mode -o Alice — Remove operator from Alice"
-msgstr ""
-"/mode +o Alice — Give operator to Alice /mode -o Alice — Remove operator "
-"from Alice"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +p — Make channel private /mode -p — Remove private mode"
-msgstr "/mode +p — Make channel private /mode -p — Remove private mode"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "/mode +q Alice — Make Alice an owner /mode -q Alice — Remove owner from Alice"
-msgstr ""
-"/mode +q Alice — Make Alice an owner /mode -q Alice — Remove owner from "
-"Alice"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +s — Make channel secret /mode -s — Remove secret mode"
-msgstr "/mode +s — Make channel secret /mode -s — Remove secret mode"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +t — Enable topic lock /mode -t — Disable topic lock"
-msgstr "/mode +t — Enable topic lock /mode -t — Disable topic lock"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +v Alice — Give voice to Alice /mode -v Alice — Remove voice from Alice"
-msgstr ""
-"/mode +v Alice — Give voice to Alice /mode -v Alice — Remove voice from "
-"Alice"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:96
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "/topic Command"
 msgstr "/topic Command"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Can: kick regular/voiced users, set +v/-v"
 msgstr "Bisa: kick regular/voiced pengguna, set + v / -v"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Cannot: set channel modes, ban users, kick operators or owners"
 msgstr ""
 "Tidak dapat: mengatur mode saluran, melarang pengguna, kick operator atau "
 "pemilik"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "Channel Invites"
 msgstr "Undangan Saluran"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Channel Modes Overview"
 msgstr "Tampilan Mode Saluran"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Rincian"
@@ -198,9 +106,9 @@ msgstr ""
 "dalam saluran termoderat (+ m). Setengah operator dan di atas dapat "
 "memberikan suara."
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:12
-#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:17
-#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Half-Operator (+h)"
 msgstr "Setengah Operator (+ h)"
@@ -210,18 +118,10 @@ msgstr "Setengah Operator (+ h)"
 msgid "Hierarchy"
 msgstr "Hierarki"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Invite Exceptions"
 msgstr "Undang Eksepsi"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Limits how many users can join the channel within a time window. Format is count:seconds. For example, +j 5:10 allows 5 joins per 10 seconds. Operators bypass the throttle."
-msgstr ""
-"Batas berapa banyak pengguna yang dapat bergabung dengan saluran dalam "
-"jendela waktu. Format adalah jumlah: detik. Misalnya, + j 5: 10 memungkinkan"
-" 5 bergabung per 10 detik. Operator memotong throttle."
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:2
 #, elixir-autogen, elixir-format
@@ -245,29 +145,30 @@ msgstr ""
 "(/list) untuk anggota-tidak dan tersembunyi dari keluaran /whois. Selalu "
 "eksklusif dengan + p (private)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Moderated (+m)"
 msgstr "Sedang (+ m)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "NickServ"
 msgstr "NickServ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Only other owners can grant or revoke +q."
 msgstr "Hanya pemilik lain yang dapat memberikan atau membatalkan + q."
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:19
-#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Operator (+o)"
 msgstr "Operator (+ o)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "Owner (+q)"
 msgstr "Pemilik (+ q)"
@@ -278,7 +179,7 @@ msgid "Owner (~) > Operator (@) > Half-Operator (%) > Voice (+) > Regular"
 msgstr "Pemilik (~) > Operator (@) > Half-Operator (%) > Suara (+) > Reguler"
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:37
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Permissions"
 msgstr "Hak"
@@ -288,36 +189,41 @@ msgstr "Hak"
 msgid "Prevents users from sending"
 msgstr "Mencegah pengguna untuk mengirim"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "Private (+p)"
 msgstr "Pribadi (+ p)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "Secret (+s)"
 msgstr "Rahasia (+ s)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:201
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:26
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:84
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:133
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:49
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:17
-#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:14
-#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -337,38 +243,25 @@ msgstr ""
 "kode warna, dan sebaliknya. Pesan dan aksi /me diolah server-side sebelum "
 "pengiriman."
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:14
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:4
-#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:4
-#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:6
-#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:11
-#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Usage"
 msgstr "Penggunaan"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "When"
-msgstr "Kapan"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "When a channel is moderated, only operators (+o) and voiced (+v) users can send messages. Regular users can still read but not write."
-msgstr ""
-"Ketika suatu saluran dimoderat, hanya operator (+ o) dan pengisi suara (+ v)"
-" pengguna dapat mengirim pesan. Pengguna biasa masih dapat membaca tetapi "
-"tidak menulis."
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:2
 #, elixir-autogen, elixir-format
@@ -391,18 +284,6 @@ msgstr ""
 msgid "When topic lock is set, only channel operators can change the topic."
 msgstr ""
 "Ketika kunci topik diatur, hanya operator saluran yang dapat mengubah topik."
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "attempt will be silently rejected. This is useful for invite-only channels that do not want to receive join requests."
-msgstr ""
-"percobaan akan ditolak diam-diam. Ini berguna untuk undangan - hanya saluran"
-" yang tidak ingin menerima permintaan gabungan."
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "is set, any"
-msgstr "siap, apapun"
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:4
 #, elixir-autogen, elixir-format
@@ -615,30 +496,34 @@ msgstr "/cs Command"
 msgid "/join #channel password"
 msgstr "/join #channel password"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "/join #channel-name"
 msgstr "/join #channel-name"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:214
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "/kick"
 msgstr "/kick"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:128
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "/knock Command"
 msgstr "/knock Command"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "/list"
 msgstr "/list"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:5
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:212
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "/mode"
 msgstr "/mode"
@@ -689,6 +574,7 @@ msgid "/ns"
 msgstr "/ns"
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:155
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "/ns Command"
@@ -715,7 +601,7 @@ msgstr ""
 "Disconnect a ghost session /ns drop <password> — Permanently unregister your"
 " nickname"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "/part [#channel-name]"
 msgstr "/part [#channel-name]"
@@ -922,25 +808,29 @@ msgstr "Ubah topik ketika saluran + t (topik terkunci)"
 msgid "Channel Expiration"
 msgstr "Ekspirasi Saluran"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:81
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Channel List"
 msgstr "Daftar Saluran"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:206
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:153
 #, elixir-autogen, elixir-format
 msgid "Channel Modes"
 msgstr "Mode Saluran"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:126
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:35
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:94
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:149
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "Channel Permissions"
 msgstr "Hak Akses Saluran"
@@ -970,7 +860,7 @@ msgid "Channels with no remaining access list entries are deregistered immediate
 msgstr ""
 "Kanal dengan tidak ada entri daftar akses yang tersisa dideregistered segera"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:21
@@ -1068,7 +958,7 @@ msgstr "- Tugas moderasi terbatas."
 msgid "How Registration Works"
 msgstr "Cara kerja Pendaftaran"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "If no channel is specified, you leave the current channel."
 msgstr "Bila tak ada kanal yang dinyatakan, Anda tinggalkan kanal saat ini."
@@ -1087,11 +977,15 @@ msgid "Important Notes"
 msgstr "Catatan Penting"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Invite Only"
 msgstr "Hanya Undang"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "Join Command"
 msgstr "Gabung Perintah"
@@ -1111,7 +1005,7 @@ msgstr "Gabung Throttle"
 msgid "Join channel (subject to +i, +k, +l, +R, +b restrictions)"
 msgstr "Gabung saluran (subyek ke + i, + k, + l, + R, + b pembatasan)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Joining a Channel"
 msgstr "Bergabung dengan Kanal"
@@ -1131,12 +1025,12 @@ msgstr "Aturan Kunci"
 msgid "Kick users of lower rank"
 msgstr "Tendangan pengguna dari peringkat lebih rendah"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Leaving a Channel"
 msgstr "Meninggalkan Kanal"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Listing Channels"
 msgstr "channels-action"
@@ -1180,6 +1074,7 @@ msgid "No External"
 msgstr "Tanpa Eksternal"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:109
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:85
 #, elixir-autogen, elixir-format
 msgid "No Knock"
 msgstr "Tidak ada Knock"
@@ -1204,7 +1099,7 @@ msgstr "Operator (@)"
 msgid "Operator (rank 3) — Day-to-day channel management."
 msgstr "Operator (pangkat 3) - manajemen saluran hari-hari."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Or use the"
 msgstr "Atau menggunakan"
@@ -1224,7 +1119,7 @@ msgstr "(Yang mempunyai kekuatan) yang sangat kuat (di antara manusia."
 msgid "Owner (~)"
 msgstr "Pemilik (~)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Part Command"
 msgstr "Perintah Bagian"
@@ -1344,6 +1239,7 @@ msgid "Topic Lock"
 msgstr "Kunci Topik"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "User Limit"
 msgstr "Batas Pengguna"
@@ -1365,6 +1261,8 @@ msgid "VOP (Auto Voice)"
 msgstr "VOP (Suara Otomatis)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "Voice"
 msgstr "Suara"
@@ -1502,7 +1400,7 @@ msgstr ""
 "- Gets + v (voice) otomatis pada bergabung. Dapat berbicara dalam saluran "
 "termoderat (+ m)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "+q Owner"
 msgstr "+ q Pemilik"
@@ -1522,7 +1420,7 @@ msgstr "- Auto Voice. Menerima status suara saat bergabung."
 msgid "- Super Operator. Can manage AOP and VOP entries."
 msgstr "- Operator Super. Dapat mengelola masukan AOP dan VOP."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "/clearwelcome"
 msgstr "/clearwelcome"
@@ -1550,27 +1448,23 @@ msgstr ""
 "aop del <nick> /cs aop list /cs vop add <nick> /cs vop del <nick> /cs vop "
 "list"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "/setwelcome"
 msgstr "/setwelcome"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "/setwelcome <message> /clearwelcome"
-msgstr "/setwelcome <message> /clearwelcome"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "/slow"
 msgstr "/slow"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "/transfer"
 msgstr "/transfer"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "/transfer <nickname>"
 msgstr "/transfer <nickname>"
@@ -1580,8 +1474,13 @@ msgstr "/transfer <nickname>"
 msgid "AOP users can manage VOP lists."
 msgstr "Pengguna AOP dapat mengelola daftar VOP."
 
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:140
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Access Lists"
 msgstr "Daftar Akses"
@@ -1603,7 +1502,7 @@ msgstr ""
 msgid "All write actions require NickServ identification."
 msgstr "Semua tindakan menulis memerlukan identifikasi NickServ."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Applies only to the current channel"
 msgstr "Aplikasi hanya ke kanal kini"
@@ -1628,15 +1527,20 @@ msgstr ""
 "menjaga kepemilikan saluran, daftar akses, bans, dan pengaturan yang "
 "tersedia setelah kosong saluran atau memulai ulang."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:40
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:10
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "Pusat Saluran"
@@ -1677,7 +1581,7 @@ msgstr ""
 "mereka bergabung dengan kanal. Operator dapat menata atau menghapus pesan "
 "dari tab Umum Channel Central atau dengan perintah."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Command"
 msgstr "Perintah"
@@ -1709,12 +1613,12 @@ msgstr "Pendiri dapat mengelola SOP, AOP, dan daftar VOP."
 msgid "Identity & Presence"
 msgstr "Identitas & Kehadiran"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Knock Command"
 msgstr "Perintah Knock"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Only the current channel owner (~) can transfer ownership"
 msgstr "Hanya pemilik saluran saat ini (~) dapat mentransfer kepemilikan"
@@ -1741,7 +1645,7 @@ msgstr ""
 "mendaftarkan saluran yang tidak terdaftar, drop saluran sebagai pendiri, dan"
 " mengelola SOP, AOP, dan daftar akses VOP."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Open Channel Central for the channel, stay on the General tab, edit the Welcome Message field, then choose Save Welcome. Use Clear Welcome to remove it."
 msgstr ""
@@ -1754,14 +1658,14 @@ msgstr ""
 msgid "Opening the Tab"
 msgstr "Membuka Tab"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Operators can also set the join throttle from Channel Central's General tab. Enter 0 seconds to remove the throttle."
 msgstr ""
 "Operator juga dapat mengatur throttle gabungan dari tab Umum Channel "
 "Central. Masukkan 0 detik untuk menghapus throttle."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Owners can open Channel Central's General tab, choose Transfer Ownership, enter the target nickname, and confirm the transfer."
 msgstr ""
@@ -1778,13 +1682,13 @@ msgstr "Saluran Register menjalankan aksi yang sama seperti /cs register."
 msgid "Registration Tab"
 msgstr "Tab Pendaftaran"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Requires channel operator (@) or owner (~) status"
 msgstr "Membutuhkan operator saluran (@) atau pemilik (~) status"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:19
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "Rules"
 msgstr "Aturan"
@@ -1820,17 +1724,12 @@ msgstr ""
 "diidentifikasi dengan NickServ atau peran ChanServ Anda tidak dapat "
 "mengelola daftar yang dipilih."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "The target nickname must be present in the channel"
 msgstr "Nama panggilan target harus hadir dalam kanal"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "The user who set the message does not see it immediately"
-msgstr "Pengguna yang mengatur pesan tidak melihatnya segera"
-
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "This cannot be undone without the new owner's cooperation"
 msgstr "Ini tidak dapat dibatalkan tanpa kerjasama pemilik baru"
@@ -1866,7 +1765,7 @@ msgstr ""
 "Anda harus diidentifikasi dengan NickServ sebelum ChanServ menerima "
 "perubahan."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "button in the toolbar. Invite-only (+i) channels are marked with a +i badge; select one and choose Request Access... to send a knock request to its operators."
 msgstr ""
@@ -1891,3 +1790,1036 @@ msgstr "%{window} tidak aktif"
 #, elixir-autogen, elixir-format
 msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access choose Add to type a nickname into the list, and remove an entry with the button on its row."
 msgstr "Tab Pendaftaran menampilkan daftar SOP, AOP, dan VOP sebagai sub-tab yang bisa dipilih. Pengguna dengan akses cukup memilih Tambah untuk mengetik nama panggilan ke daftar, dan menghapus entri dengan tombol di barisnya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "A channel can refuse you because of a ban, a key, a user limit, invite-only mode or registered-only mode."
+msgstr "Sebuah saluran dapat menolak Anda karena larangan, kunci, batas pengguna, invite- hanya mode atau mode registered- saja."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "A channel name starts with # and has no spaces. It can be up to 50 characters long."
+msgstr "Sebuah nama saluran dimulai dengan # dan tidak memiliki ruang. Bisa sampai 50 karakter panjang."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "A guest, or a person using a registered nickname without identifying, is refused with a message that the channel needs a registered nickname."
+msgstr "Seorang tamu, atau seseorang menggunakan nama panggilan terdaftar tanpa identifikasi, ditolak dengan pesan bahwa saluran membutuhkan julukan terdaftar."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "A knock is a short request to join, sent to the operators of an invite-only channel. Turn knocks off when the channel is closed to new members, or when knock requests become noise or spam. Operators can still invite people directly."
+msgstr "Sebuah ketukan adalah permintaan singkat untuk bergabung, dikirim ke operator dari satu-satunya saluran undangan. Matikan ketukan ketika saluran ditutup untuk anggota baru, atau ketika permintaan ketukan menjadi kebisingan atau spam. Operator masih bisa mengundang orang secara langsung."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "A knock is shown only to operators and owners who are in the channel. You can knock on the same channel once per minute."
+msgstr "Sebuah ketukan hanya ditunjukkan kepada operator dan pemilik yang berada di saluran. Anda dapat mengetuk pada saluran yang sama sekali per menit."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "A new channel starts without the lock. In a registered channel the lock and the topic are saved and come back after a restart."
+msgstr "Saluran baru dimulai tanpa kunci. Dalam saluran terdaftar kunci dan topik disimpan dan kembali setelah restart."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "A new channel starts without this mode. In a registered channel the mode is saved and comes back after a restart."
+msgstr "Saluran baru dimulai tanpa mode ini. Dalam saluran yang terdaftar Modus disimpan dan kembali setelah restart."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "A new message replaces the old one. Members who are looking at the channel when a new message is set get a short notice."
+msgstr "Sebuah pesan baru menggantikan yang lama. Anggota yang sedang melihat kanal ketika pesan baru diset mendapatkan pemberitahuan singkat."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "A person who joins sees the message as a line that starts with Welcome, visible only to them."
+msgstr "Seseorang yang bergabung melihat pesan sebagai baris yang dimulai dengan Selamat Datang, hanya terlihat kepada mereka."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "A person who joins without the key, or with the wrong key, is refused with a bad key error."
+msgstr "Seseorang yang bergabung tanpa kunci, atau dengan kunci yang salah, ditolak dengan kesalahan kunci yang buruk."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "A regular member who tries to speak gets an error that says they need voice."
+msgstr "Seorang anggota biasa yang mencoba untuk berbicara mendapat kesalahan yang mengatakan mereka membutuhkan suara."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "A secret channel cannot have a public archive. A published archive stops being public when the channel becomes secret."
+msgstr "Saluran rahasia tidak boleh memiliki arsip publik. Sebuah arsip yang diterbitkan berhenti menjadi publik ketika saluran menjadi rahasia."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Add a second owner when you run a channel together with someone, so both of you have full control. A channel can have more than one owner at the same time. To hand the channel over and step down yourself, use a transfer instead."
+msgstr "Tambahkan pemilik kedua ketika Anda menjalankan saluran bersama-sama dengan seseorang, sehingga Anda berdua memiliki kontrol penuh. Sebuah saluran dapat memiliki lebih dari satu pemilik pada saat yang sama. Untuk menyerahkan saluran dan turun sendiri, menggunakan transfer sebagai gantinya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Allow 3 joins per minute"
+msgstr "Ijinkan 3 bergabung per menit"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Allow 5 joins per 10 seconds"
+msgstr "Ijinkan 5 bergabung per 10 detik"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Allow 5 joins per 30 seconds"
+msgstr "Ijinkan 5 bergabung setiap 30 detik"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "An invitation adds the nickname to the channel's invite exceptions. That nickname can then join for as long as the exception exists. An operator can remove it at any time."
+msgstr "An invitation adds the nickname to the channel's invite exceptions. That nickname can then join for as long as the exception exists. An operator can remove it at any time."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "An invitation does not get around the limit. Bots in the channel count as members."
+msgstr "Sebuah undangan tidak mendapatkan sekitar batas. Bots dalam saluran menghitung sebagai anggota."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "An invitation does not replace a key or get around a user limit."
+msgstr "Undangan tidak menggantikan kunci atau melewati batas pengguna."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "An invitation does not replace the key. An invited person still needs it to join."
+msgstr "Undangan tidak menggantikan kunci. Orang yang diundang masih membutuhkannya untuk bergabung."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "An unregistered channel closes when the last person leaves, and its topic and modes are lost. Register it with ChanServ to keep it, its settings and its access list."
+msgstr "Sebuah saluran tidak terdaftar tertutup ketika orang terakhir meninggalkan, dan topik dan mode yang hilang. Daftarkan dengan ChanServ untuk menyimpannya, pengaturan dan daftar aksesnya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Anyone else who tries to join is refused with a message that the channel is invite-only."
+msgstr "Orang lain yang mencoba untuk bergabung ditolak dengan pesan bahwa saluran adalah invite- saja."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Ask the operators to let you in"
+msgstr "Meminta operator untuk membiarkan Anda masuk"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Both numbers must be whole numbers greater than zero. If the value is not valid, the throttle does not change."
+msgstr "Kedua angka harus seluruh angka lebih besar dari nol. Jika nilainya tidak valid, throttle tidak berubah."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Bots are never throttled, but their joins are counted."
+msgstr "Bot tidak pernah berdenyut, tapi mereka bergabung dihitung."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Change the topic when the topic is locked."
+msgstr "Ubah topik ketika topik terkunci."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "Channel Central and the slow command always allow 5 joins in the number of seconds you choose. Use the mode command to pick a different count."
+msgstr "Channel Central and the slow command always allow 5 joins in the number of seconds you choose. Use the mode command to pick a different count."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Disable color stripping"
+msgstr "Nonaktifkan penanggalan warna"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Disable invite only"
+msgstr "Matikan hanya undangan"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Disable moderated mode"
+msgstr "Nonaktifkan mode termoderasi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Disable no external messages"
+msgstr "Matikan tidak ada pesan eksternal"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Disable no-knock mode"
+msgstr "Nonaktifkan mode no- knock"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Disable registered-only mode"
+msgstr "Nonaktifkan mode hanya-registerd"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Disable topic lock"
+msgstr "Matikan kunci topik"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Each member holds one rank at a time. Half-operator sits above voice and below operator."
+msgstr "Setiap anggota memegang satu peringkat pada satu waktu. Setengah operator duduk di atas suara dan di bawah operator."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Each member holds one rank at a time. Half-operators and above can kick, and operators and above can ban. Both only work on members of a lower rank."
+msgstr "Setiap anggota memegang satu peringkat pada satu waktu. Setengah operator dan di atas dapat menendang, dan operator dan di atas dapat melarang. Keduanya hanya bekerja pada anggota pangkat lebih rendah."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Each member holds one rank at a time. Operator status given with this command is not kept when the person leaves."
+msgstr "Setiap anggota memegang satu peringkat pada satu waktu. Status Operator yang diberikan dengan perintah ini tidak disimpan ketika orang pergi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Each member holds one rank at a time. Voice sits above regular members and below half-operators."
+msgstr "Setiap anggota memegang satu peringkat pada satu waktu. Suara duduk di atas anggota reguler dan di bawah half- operator."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Each person sees it once per session. Leaving and joining again in the same session does not show it again."
+msgstr "Setiap orang melihatnya sekali dalam sesi. Meninggalkan dan bergabung lagi dalam sesi yang sama tidak menunjukkan lagi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Enable color stripping"
+msgstr "Aktifkan penanggalan warna"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Enable invite only"
+msgstr "Aktifkan hanya undangan"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Enable moderated mode"
+msgstr "Aktifkan mode termoderasi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Enable no external messages"
+msgstr "Aktifkan tidak ada pesan eksternal"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Enable no-knock mode"
+msgstr "Aktifkan mode no- knock"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Enable registered-only mode"
+msgstr "Aktifkan mode registered- saja"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Enable topic lock"
+msgstr "Aktifkan kunci topik"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Even with knocks allowed, each person can knock on the same channel only once per minute."
+msgstr "Bahkan dengan mengetuk diperbolehkan, setiap orang dapat mengetuk pada saluran yang sama hanya sekali per menit."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Even without this mode, a person must be in the channel to send messages to it. Someone who is not a member is always refused."
+msgstr "Bahkan tanpa mode ini, seseorang harus berada di saluran untuk mengirim pesan kepadanya. Seseorang yang bukan anggota selalu ditolak."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Everyone in a channel sees the same conversation. A channel usually has a theme, a topic shown at the top, and a few people who look after it."
+msgstr "Semua orang di saluran melihat percakapan yang sama. Sebuah saluran biasanya memiliki tema, topik yang ditampilkan di bagian atas, dan beberapa orang yang merawatnya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Give operator to Alice"
+msgstr "Berikan operator ke Alice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Give voice to Alice"
+msgstr "Berikan suara kepada Alice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Give voice to a user"
+msgstr "Berikan suara kepada pengguna"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Give voice to the guests of a talk, the people asking questions, or trusted regulars. In a moderated channel they can speak while everyone else listens. Voice gives no other power. A voiced user cannot kick, ban or change modes."
+msgstr "Berikan suara kepada tamu dari pembicaraan, orang-orang bertanya, atau pelanggan tetap terpercaya. Dalam saluran modern mereka dapat berbicara sementara orang lain mendengarkan. Suara tidak memberikan kekuatan lain. Seorang pengguna voced tidak dapat menendang, ban atau mengganti mode."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Half-operator is a helper rank. Give it to people who should keep a conversation in order but should not control the channel itself. They can remove a troublemaker and manage who speaks, while the settings stay with operators and owners."
+msgstr "Setengah operator adalah peringkat pembantu. Berikan kepada orang-orang yang harus menjaga percakapan dalam rangka tetapi tidak harus mengontrol saluran itu sendiri. Mereka dapat menghapus pengacau dan mengelola siapa yang berbicara, sementara pengaturan tetap dengan operator dan pemilik."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Half-operators can speak in a moderated channel without voice."
+msgstr "Half- operator dapat berbicara dalam saluran modern tanpa suara."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "Half-operators cannot set or clear the welcome message."
+msgstr "Half- operator tidak dapat menset atau menghapus pesan selamat datang."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Half-operators, operators and owners can give voice to members who should speak."
+msgstr "Half- operator, operator dan pemilik dapat memberikan suara kepada anggota yang harus berbicara."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "How it works"
+msgstr "Bagaimana cara kerjanya"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "If the channel does not exist yet, joining creates it. The first person in a new channel becomes its owner and can set its modes."
+msgstr "Jika saluran tidak ada belum, bergabung menciptakannya. Orang pertama dalam saluran baru menjadi pemiliknya dan dapat mengatur mode."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "If the person is not in the channel, the transfer fails and nothing changes."
+msgstr "Jika orang tidak dalam saluran, transfer gagal dan tidak ada perubahan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "In a registered channel the key is saved and comes back after a restart."
+msgstr "Dalam saluran yang terdaftar kunci disimpan dan kembali setelah restart."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "In a registered channel the limit is saved and comes back after a restart."
+msgstr "Dalam saluran yang terdaftar batas disimpan dan kembali setelah restart."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "In a registered channel the mode and the invite exceptions are saved and come back after a restart."
+msgstr "Dalam saluran yang terdaftar mode dan pengecualian mengundang disimpan dan kembali setelah restart."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "In a registered channel the mode is saved and comes back after a restart."
+msgstr "Dalam saluran yang terdaftar Modus disimpan dan kembali setelah restart."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:75
+#, elixir-autogen, elixir-format
+msgid "In a registered channel the throttle is saved and comes back after a restart."
+msgstr "Dalam saluran terdaftar throttle disimpan dan kembali setelah restart."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "In a registered channel, a transfer does not change the ChanServ founder or access list. Ranks given on joining still come from that list."
+msgstr "Dalam saluran yang terdaftar, transfer tidak mengubah pendiri ChanServ atau daftar akses. Ranks diberikan pada bergabung masih datang dari daftar itu."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "In a registered channel, add people to the ChanServ voice list to give them voice each time they join."
+msgstr "Dalam saluran yang terdaftar, tambahkan orang ke dalam daftar suara ChanServ untuk memberi mereka suara setiap kali mereka bergabung."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "In a registered channel, people on the ChanServ operator list become operators each time they join."
+msgstr "Dalam saluran yang terdaftar, orang-orang pada daftar operator ChanServ menjadi operator setiap kali mereka bergabung."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "In a registered channel, people on the ChanServ voice list receive voice when they join."
+msgstr "Dalam saluran yang terdaftar, orang-orang dalam daftar suara ChanServ menerima suara ketika mereka bergabung."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "In a registered channel, the founder and the people on the ChanServ %{level} list become owners each time they join."
+msgstr "Dalam saluran yang terdaftar, pendiri dan orang-orang pada ChanServ %{level} daftar menjadi pemilik setiap kali mereka bergabung."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "In an unregistered channel, the owner rank goes to whoever joins the empty channel first. Register the channel with ChanServ to keep it."
+msgstr "Dalam saluran yang tidak terdaftar, peringkat pemilik pergi ke siapa pun bergabung saluran kosong pertama. Daftar saluran dengan ChanServ untuk menyimpannya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "In the Channel List, people who are not in the channel see a placeholder row with the number of users. The name and the topic are not shown."
+msgstr "Dalam Daftar Saluran, orang-orang yang tidak berada di saluran melihat baris placeholder dengan jumlah pengguna. Nama dan topik tidak ditampilkan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Invite Alice to the current channel"
+msgstr "Undang Alice ke kanal saat ini"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Invite people to an invite-only channel and see knock requests."
+msgstr "Undang orang ke undangan - hanya saluran dan lihat permintaan ketukan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "Join Throttle (+j)"
+msgstr "Gabung Throttle (+j)"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Join a channel that has a key"
+msgstr "Gabung kanal yang memiliki kunci"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Join with key"
+msgstr "Gabung dengan kunci"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Kick and ban members of lower rank: half-operators, voiced users and regular members."
+msgstr "Kick and ban members of lower rank: half-operators, voiced users and regular members."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Knocking only works on invite-only channels. Without invite-only mode, this mode has no visible effect."
+msgstr "Mengetuk hanya bekerja pada invite- hanya saluran. Tanpa mode invite- saja, mode ini tidak memiliki efek yang terlihat."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Limits how many users can join the channel within a time window. Format is count:seconds. For example, %{example} allows 5 joins per 10 seconds."
+msgstr "Batas berapa banyak pengguna yang dapat bergabung dengan saluran dalam jendela waktu. Format adalah jumlah: detik. Misalnya, %{example} mengijinkan 5 bergabung per 10 detik."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Lowering the limit never removes anyone. People already inside stay in the channel."
+msgstr "Menurunkan batas tidak pernah menghapus siapa pun. Orang-orang sudah di dalam tinggal di saluran."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Make Alice a half-operator"
+msgstr "Membuat Alice operator half-"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Make Alice an owner"
+msgstr "Membuat Alice pemilik"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Make Alice the owner and become an operator"
+msgstr "Membuat Alice pemilik dan menjadi operator"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Make channel private"
+msgstr "Buat kanal privat"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Make channel secret"
+msgstr "Membuat rahasia saluran"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Make trusted people operators so the channel is looked after when you are away. Operators keep order, welcome newcomers and handle trouble. Give the rank only to people you trust, because operators can also make other operators."
+msgstr "Membuat operator terpercaya sehingga saluran dijaga ketika Anda pergi. Operator menjaga ketertiban, menyambut pendatang baru dan menangani masalah. Berikan peringkat hanya untuk orang yang Anda percaya, karena operator juga dapat membuat operator lain."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Members are not affected. To limit what members can say, use moderated mode instead."
+msgstr "Anggota tidak terpengaruh. Untuk membatasi apa yang dapat dikatakan anggota, lebih baik gunakan moda moderasi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Members keep reading everything, and they can still join and leave."
+msgstr "Anggota tetap membaca semuanya, dan mereka masih bisa bergabung dan pergi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Members of the channel see the real name and topic as usual."
+msgstr "Anggota saluran melihat nama asli dan topik seperti biasa."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Messages sent before the mode was set keep their formatting. The channel topic is not changed."
+msgstr "Pesan yang dikirim sebelum mode ditata tetap format mereka. Topik saluran tidak berubah."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Messages written in Markdown are also turned into plain text."
+msgstr "Pesan yang ditulis dalam Markdown juga diubah menjadi teks biasa."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Only channel operators and owners can set or remove the key."
+msgstr "Hanya operator saluran dan pemilik yang dapat menset atau menghapus kunci."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Only channel operators and owners can set or remove the limit."
+msgstr "Hanya operator saluran dan pemilik yang dapat mengatur atau menghapus limit."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:69
+#, elixir-autogen, elixir-format
+msgid "Only channel operators and owners can set or remove the throttle."
+msgstr "Hanya operator saluran dan pemilik yang dapat mengatur atau menghapus throttle."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Only channel operators and owners can set or remove this mode."
+msgstr "Hanya operator saluran dan pemilik yang dapat menset atau menghapus mode ini."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "Only channel operators and owners can turn the lock on or off."
+msgstr "Hanya operator saluran dan pemilik dapat mengaktifkan atau mematikan kunci."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Only operators and owners can give or remove half-operator status. The person must be in the channel."
+msgstr "Hanya operator dan pemilik yang dapat memberikan atau menghapus status operator-campuran. Orang itu pasti ada di saluran."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "Only operators and owners can give or remove operator status. The person must be in the channel."
+msgstr "Hanya operator dan pemilik yang dapat memberikan atau menghapus status operator. Orang itu pasti ada di saluran."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Operators and owners can invite people. Half-operators cannot. The invited person must be online and not already in the channel."
+msgstr "Operator dan pemilik dapat mengundang orang. Setengah operator tidak bisa. Orang yang diundang harus online dan belum ada di saluran."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Operators can also open Channel Central, go to the Modes tab, tick Invite Only and choose Apply Modes."
+msgstr "Operator juga dapat membuka Kanal Pusat, menuju tab Modes, centang Hanya Undang dan pilih Opsi Terapkan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Operators can also open Channel Central, go to the Modes tab, tick Key, type the key and choose Apply Modes."
+msgstr "Operators can also open Channel Central, go to the Modes tab, tick Key, type the key and choose Apply Modes."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Operators can also open Channel Central, go to the Modes tab, tick Limit, type the number and choose Apply Modes."
+msgstr "Operators can also open Channel Central, go to the Modes tab, tick Limit, type the number and choose Apply Modes."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Operators can also open Channel Central, go to the Modes tab, tick Moderated and choose Apply Modes."
+msgstr "Operators can also open Channel Central, go to the Modes tab, tick Moderated and choose Apply Modes."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Operators can also open Channel Central, go to the Modes tab, tick Topic Lock and choose Apply Modes."
+msgstr "Operators can also open Channel Central, go to the Modes tab, tick Topic Lock and choose Apply Modes."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Operators cannot give or remove owner status. Only owners can do that."
+msgstr "Operator tidak dapat memberikan atau menghapus status pemilik. Hanya pemilik yang bisa melakukan itu."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Owner status given with this command is not kept when the person leaves the channel."
+msgstr "Status pemilik yang diberikan dengan perintah ini tidak disimpan ketika orang meninggalkan saluran."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "People already in the channel are not removed."
+msgstr "Orang-orang sudah di saluran tidak dihapus."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "People already in the channel stay there when you set or change the key."
+msgstr "Orang-orang sudah di saluran tinggal di sana ketika Anda mengatur atau mengubah kunci."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "People can still type formatting. The server removes it before anyone sees the message."
+msgstr "Orang masih bisa mengetik format. Server menghapusnya sebelum ada yang melihat pesan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Private mode does not hide the channel from whois or the hover card. Use secret mode if the name must not appear there."
+msgstr "Mode pribadi tidak menyembunyikan saluran dari whois atau kartu hover. Gunakan mode rahasia jika nama tidak boleh muncul di sana."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Private mode does not stop anyone from joining. A person who types the name can still enter."
+msgstr "Modus pribadi tidak menghentikan siapa pun untuk bergabung. Orang yang mengetik nama masih bisa masuk."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:81
+#, elixir-autogen, elixir-format
+msgid "Public Archive"
+msgstr "Arsip Publik"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Ranks last while people stay in the channel. In an unregistered channel, if you leave after the transfer while others are still inside, you come back as a regular member."
+msgstr "Ranks terakhir sementara orang tinggal di saluran. Dalam saluran tidak terdaftar, jika Anda meninggalkan setelah transfer sementara yang lain masih di dalam, Anda kembali sebagai anggota biasa."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "Registering a Channel"
+msgstr "Mendaftar Kanal"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Remove channel key"
+msgstr "Hapus kunci kanal"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Remove half-operator from Alice"
+msgstr "Hapus setengah-operator dari Alice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Remove join throttle"
+msgstr "Hapus throttle join"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Remove operator from Alice"
+msgstr "Hapus operator dari Alice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Remove owner from Alice"
+msgstr "Hapus pemilik dari Alice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Remove private mode"
+msgstr "Hapus mode privat"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Remove secret mode"
+msgstr "Hapus mode rahasia"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Remove the welcome message"
+msgstr "Hapus pesan selamat datang"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Remove user limit"
+msgstr "Hapus batas pengguna"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Remove voice from Alice"
+msgstr "Hapus suara dari Alice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "Rules and limits"
+msgstr "Aturan dan batas"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Saving an empty field also removes the message."
+msgstr "Menyimpan ruas kosong juga menghapus pesan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Secret channels are not listed for people outside them. Private channels are listed without their name."
+msgstr "Saluran rahasia tidak terdaftar untuk orang-orang di luar mereka. Saluran pribadi terdaftar tanpa nama mereka."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Secret mode does not stop anyone from joining. A person who types the name can still enter."
+msgstr "Mode rahasia tidak menghentikan siapa pun untuk bergabung. Orang yang mengetik nama masih bisa masuk."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Set and remove channel modes, and give or take operator, half-operator and voice."
+msgstr "Atur dan hapus mode saluran, dan berikan atau ambil operator, setengah operator dan suara."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Set channel key"
+msgstr "Atur kunci kanal"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Set limit to 25 users"
+msgstr "Atur batas ke 25 pengguna"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Set the welcome message"
+msgstr "Atur pesan selamat datang"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Set the welcome message and pin messages."
+msgstr "Atur pesan selamat datang dan pesan pin."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Share links and link previews do not show the channel name."
+msgstr "Berbagi taut dan pratilik link tidak menampilkan nama kanal."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "Text Formatting"
+msgstr "Memformat Teks"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "The Channel List shows no row at all for the channel to people who are not in it."
+msgstr "Daftar Saluran tidak menunjukkan baris sama sekali untuk saluran kepada orang-orang yang tidak di dalamnya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "The check runs only when someone joins."
+msgstr "Cek berjalan hanya ketika seseorang bergabung."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "The command changes the channel you are looking at. You do not type the channel name."
+msgstr "Perintah mengubah saluran yang Anda lihat. Anda tidak mengetik nama kanal."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "The command works on the channel you are looking at. Everyone in the channel sees the mode changes."
+msgstr "Perintah bekerja di saluran yang Anda lihat. Semua orang di saluran melihat perubahan mode."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "The key is one word. It must match exactly, so upper and lower case letters matter."
+msgstr "Kuncinya adalah satu kata. Ini harus sesuai persis, sehingga huruf kasus atas dan bawah penting."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The letter is an upper case K. The command changes the channel you are looking at. You do not type the channel name."
+msgstr "Surat itu adalah kasus atas K. Perintah mengubah saluran yang Anda lihat. Anda tidak mengetik nama kanal."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "The letter is an upper case R. The command changes the channel you are looking at. You do not type the channel name."
+msgstr "Surat itu adalah kasus atas R. Perintah mengubah saluran yang Anda lihat. Anda tidak mengetik nama kanal."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "The limit must be a whole number greater than zero. If the number is not valid, the limit does not change."
+msgstr "Batas harus seluruh angka lebih besar dari nol. Jika nomor tidak valid, batas tidak berubah."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "The message is saved without its formatting. Turning the mode off later does not bring the colors back."
+msgstr "Pesan disimpan tanpa memformat. Matikan mode nanti tidak membawa warna kembali."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "The message is saved, so it stays after a restart."
+msgstr "Pesan disimpan, sehingga tetap setelah restart."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The mode comes from classic IRC, where people outside a channel could send text into it. Set it when you want the channel modes to state clearly that only members may speak."
+msgstr "Mode ini berasal dari IRC klasik, di mana orang-orang di luar saluran dapat mengirim teks ke dalamnya. Tata ketika Anda ingin mode saluran ke keadaan jelas bahwa hanya anggota dapat berbicara."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The mode command changes the channel you are looking at. You do not type the channel name."
+msgstr "Mode perintah mengubah saluran yang Anda lihat. Anda tidak mengetik nama kanal."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "The operators see nothing. The person who knocks gets an error that says knocking is disabled for the channel."
+msgstr "Operator tidak melihat apa-apa. Orang yang mengetuk mendapat kesalahan yang mengatakan mengetuk dinonaktifkan untuk saluran."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "The person must be in the channel. Otherwise the command fails with an error."
+msgstr "The person must be in the channel. Otherwise the command fails with an error."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "The person must be in the channel. The command changes the channel you are looking at."
+msgstr "Orang itu pasti ada di saluran. Perintah mengubah saluran yang Anda lihat."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:77
+#, elixir-autogen, elixir-format
+msgid "The person who set the message is not shown it when they join."
+msgstr "Orang yang mengatur pesan tidak ditampilkan ketika mereka bergabung."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "The rank is not kept when the person leaves the channel. ChanServ access lists have no half-operator level, so give it again with the command when needed."
+msgstr "Peringkat tidak disimpan ketika orang meninggalkan saluran. Daftar akses ChanServ tidak memiliki tingkat operator setengah, jadi berikan lagi dengan perintah ketika diperlukan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "The server counts the joins made within the chosen number of seconds. When the count reaches the limit, the next person is refused and asked to try again shortly."
+msgstr "Server menghitung gabungan yang dibuat dalam jumlah detik yang dipilih. Ketika hitungan mencapai batas, orang berikutnya ditolak dan diminta untuk mencoba lagi segera."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "The throttle applies to every person who joins, operators and owners included. Only bots are exempt."
+msgstr "The throttle berlaku untuk setiap orang yang bergabung, operator dan pemilik termasuk. Hanya robot yang dibebaskan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The topic is the line shown above the messages of a channel. Everyone who joins reads it first. Lock it when the topic carries rules, links or an announcement that should not be edited by any member."
+msgstr "Topik adalah baris yang ditampilkan di atas pesan dari saluran. Semua orang yang bergabung membacanya terlebih dahulu. Kunci ketika topik membawa aturan, tautan, atau pengumuman yang tidak boleh disunting oleh anggota manapun."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "They cannot change a locked topic, invite people, set the welcome message or pin messages."
+msgstr "Mereka tidak dapat mengubah topik terkunci, mengundang orang, mengatur pesan selamat datang atau pesan pin."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "To get in, register your nickname with NickServ, identify, and then join again."
+msgstr "Untuk masuk, mendaftarkan nama panggilan Anda dengan NickServ, mengidentifikasi, dan kemudian bergabung lagi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "To remove the key, you do not need to type it again."
+msgstr "Untuk menghapus kunci, Anda tidak perlu mengetiknya lagi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Transfer ownership when you hand a channel over to someone else, for example when you step back from running it. You keep operator status, so you can still help. If you only want to share control, give the other person owner status instead and stay an owner yourself."
+msgstr "Kepemilikan transfer ketika Anda menyerahkan saluran ke orang lain, misalnya ketika Anda melangkah mundur dari menjalankannya. Anda tetap status operator, sehingga Anda masih dapat membantu. Jika Anda hanya ingin berbagi kontrol, berikan orang lain status pemilik dan tetap pemilik sendiri."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Use a key when you want to share access with a word instead of inviting each person. Anyone who knows the key can join. Anyone who does not know it is turned away."
+msgstr "Gunakan kunci ketika Anda ingin berbagi akses dengan kata bukannya mengundang setiap orang. Siapapun yang tahu kuncinya bisa bergabung. (Dan barang siapa yang tidak mengetahui) hal tersebut, lafal ayat ini merupakan jumlah Isti 'naf atau kalimat baru (maka sesungguhnya dia telah tersesat.)"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Use a user limit to keep a room small. It helps when a channel is meant for a team, a class or a game group. It also slows down a crowd that arrives all at once."
+msgstr "Gunakan batas pengguna untuk menjaga ruangan kecil. Ini membantu ketika saluran dimaksudkan untuk tim, kelas atau kelompok permainan. Ini juga memperlambat kerumunan yang tiba sekaligus."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Use it against join floods, when many nicknames enter at once to spam or disrupt a channel. Normal visitors rarely notice it, because people usually arrive a few at a time."
+msgstr "Use it against join floods, when many nicknames enter at once to spam or disrupt a channel. Normal visitors rarely notice it, because people usually arrive a few at a time."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it for a closed group, such as a team, a staff room or a private game table. Every new member needs an operator to say yes first."
+msgstr "Gunakan untuk kelompok tertutup, seperti tim, ruang staf atau meja permainan pribadi. Setiap anggota baru membutuhkan operator untuk mengatakan ya pertama."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it for talks, interviews, question sessions and announcements. A few people speak and everyone else listens. It is also a quick way to calm a channel during a flood or a heated argument."
+msgstr "Gunakan untuk pembicaraan, wawancara, sesi pertanyaan dan pengumuman. Beberapa orang berbicara dan orang lain mendengarkan. Hal ini juga cara cepat untuk menenangkan saluran selama banjir atau argumen panas."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Use it to greet newcomers with what they need to know: what the channel is about, its rules, or where to start. The topic stays visible to everyone all the time. The welcome message is a private note that each person reads once, as they arrive."
+msgstr "Gunakan itu untuk menyambut pendatang baru dengan apa yang mereka perlu tahu: apa saluran adalah tentang, aturan, atau di mana untuk memulai. Topik tetap terlihat untuk semua orang sepanjang waktu. Pesan selamat datang adalah catatan pribadi yang setiap orang baca sekali, saat mereka tiba."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it to keep out guests and throwaway nicknames. A registered nickname is protected by a password, so the same name always belongs to the same person. This makes bans and access lists more reliable, and it slows down spam from new names."
+msgstr "Gunakan itu untuk menjaga para tamu dan nama panggilan untuk membuang. Nama panggilan terdaftar dilindungi oleh password, sehingga nama yang sama selalu milik orang yang sama. Hal ini membuat bans dan daftar akses lebih dapat diandalkan, dan memperlambat spam dari nama baru."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it when colored or bold text makes a channel hard to read. It is also useful against people who abuse colors to draw attention. Every message then looks the same, as plain text."
+msgstr "Gunakan ketika teks berwarna atau tebal membuat saluran sulit dibaca. Hal ini juga berguna terhadap orang-orang yang menyalahgunakan warna untuk menarik perhatian. Setiap pesan kemudian terlihat sama, sebagai teks polos."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it when it is fine for people to know that a room exists, but its name and topic should not be advertised. If the channel should not appear in the list at all, use secret mode instead."
+msgstr "Menggunakannya ketika baik-baik saja bagi orang-orang untuk mengetahui bahwa ruang ada, tapi nama dan topik tidak boleh diiklankan. Jika saluran seharusnya tidak muncul dalam daftar sama sekali, gunakan mode rahasia sebagai gantinya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it when the existence of the channel itself should stay hidden. Only people who already know the exact name can find it. Combine it with invite-only mode or a key to also control who may enter."
+msgstr "Menggunakannya ketika keberadaan saluran itu sendiri harus tetap tersembunyi. Hanya orang yang sudah tahu nama yang tepat dapat menemukannya. Gabungkan dengan mode invite- saja atau kunci untuk juga mengontrol siapa yang boleh masuk."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Voice given with this command lasts while the person stays in the channel. It is not kept when they leave."
+msgstr "Suara yang diberikan dengan perintah ini berlangsung sementara orang tetap di saluran. Hal ini tidak disimpan ketika mereka pergi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Voiced users are marked with a voice icon in the user list."
+msgstr "Suara pengguna ditandai dengan ikon suara dalam daftar pengguna."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "What operators can do"
+msgstr "Apa yang operator bisa lakukan"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "What others see"
+msgstr "Apa yang orang lain lihat"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "What stays hidden"
+msgstr "Apa yang tetap tersembunyi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "When %{mode} is set, every %{command} attempt is refused. This is useful for invite-only channels that do not want to receive join requests."
+msgstr "Ketika %{mode} diatur, setiap usaha %{command} ditolak. Ini berguna untuk undangan - hanya saluran yang tidak ingin menerima permintaan gabungan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "When a channel is moderated, only owners, operators, half-operators and voiced users can send messages. Regular members can still read but not write."
+msgstr "Ketika sebuah saluran dimoderat, hanya pemilik, operator, setengah-operator dan pengisi suara pengguna dapat mengirim pesan. Anggota biasa masih bisa membaca tapi tidak menulis."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "When someone looks up a member with whois or the hover card, the channel is left out unless the viewer is in it too."
+msgstr "Ketika seseorang mendongak anggota dengan whois atau kartu hover, saluran ditinggalkan kecuali penampil di dalamnya juga."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "When someone tries to join, the server checks whether they are identified with NickServ right now."
+msgstr "Ketika seseorang mencoba untuk bergabung, pemeriksaan server apakah mereka diidentifikasi dengan NickServ sekarang."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "When the channel has as many members as the limit, the next person who tries to join is refused with a message that the channel is full."
+msgstr "Ketika saluran memiliki sebanyak anggota sebagai batas, orang berikutnya yang mencoba untuk bergabung ditolak dengan pesan bahwa saluran penuh."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:4
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:4
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "When to use it"
+msgstr "Kapan menggunakannya"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "With the lock, only owners and operators can change it. Half-operators, voiced users and regular members get an error."
+msgstr "With the lock, only owners and operators can change it. Half-operators, voiced users and regular members get an error."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "With the mode set, the refusal says that the channel does not accept external messages."
+msgstr "Dengan set mode, penolakan mengatakan bahwa saluran tidak menerima pesan eksternal."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Without the lock, any member of the channel can set a new topic with %{command}."
+msgstr "Tanpa kunci, setiap anggota saluran dapat menetapkan topik baru dengan %{command}."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "You can add a short goodbye after the channel name. Everyone in the channel sees it."
+msgstr "Anda dapat menambahkan singkat selamat tinggal setelah nama saluran. Semua orang di saluran melihatnya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "You can be in a limited number of channels at once. The default is 10, and the server administrator can change it."
+msgstr "Anda dapat berada dalam jumlah terbatas saluran sekaligus. Baku adalah 10, dan administrator server dapat mengubahnya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "A channel cannot be private and secret at the same time. To switch, remove secret mode first, then set private mode:"
+msgstr "Sebuah saluran tidak dapat menjadi pribadi dan rahasia pada saat yang sama. Untuk beralih, hapus mode rahasia pertama, kemudian set mode privat:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "A channel cannot be secret and private at the same time. To switch, remove private mode first, then set secret mode:"
+msgstr "Sebuah saluran tidak dapat rahasia dan pribadi pada saat yang sama. Untuk mengganti, menghapus mode pribadi pertama, kemudian mengatur mode rahasia:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Anyone in the channel can still read the topic. The command with no text shows it:"
+msgstr "Siapapun di saluran masih bisa membaca topik. Perintah tanpa teks menunjukkan:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Join a public channel"
+msgstr "Gabung kanal publik"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "The command with no text also removes the message:"
+msgstr "Perintah tanpa teks juga menghapus pesan:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "To join a keyed channel each time you connect, add it to your auto-join list with its key:"
+msgstr "Untuk bergabung dengan kanal dengan warna setiap kali Anda menyambung, tambahkan ke daftar auto- bergabung dengan kuncinya:"

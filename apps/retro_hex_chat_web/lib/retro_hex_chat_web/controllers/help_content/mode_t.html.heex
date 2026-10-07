@@ -4,7 +4,62 @@
     "When topic lock is set, only channel operators can change the topic."
   )}
 </p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "When to use it")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "The topic is the line shown above the messages of a channel. Everyone who joins reads it first. Lock it when the topic carries rules, links or an announcement that should not be edited by any member."
+  )}
+</p>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
-<pre>{dgettext("help_channels", "/mode +t — Enable topic lock /mode -t — Disable topic lock")}</pre>
+<pre>/mode +t  {dgettext("help_channels", "Enable topic lock")}
+/mode -t  {dgettext("help_channels", "Disable topic lock")}</pre>
+<p>
+  {dgettext(
+    "help_channels",
+    "The command changes the channel you are looking at. You do not type the channel name."
+  )}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "How it works")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Without the lock, any member of the channel can set a new topic with %{command}.",
+      command: "/topic"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "With the lock, only owners and operators can change it. Half-operators, voiced users and regular members get an error."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Anyone in the channel can still read the topic. The command with no text shows it:"
+    )} <code>/topic</code>
+  </li>
+</ul>
+<.help_h4 icon={:icon_tab_general}>{dgettext("help_channels", "Channel Central")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Operators can also open Channel Central, go to the Modes tab, tick Topic Lock and choose Apply Modes."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules and limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_channels", "Only channel operators and owners can turn the lock on or off.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "A new channel starts without the lock. In a registered channel the lock and the topic are saved and come back after a restart."
+    )}
+  </li>
+</ul>
 <.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p><.help_link topic="cmd-topic">{dgettext("help_channels", "/topic Command")}</.help_link></p>

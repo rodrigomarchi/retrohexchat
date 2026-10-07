@@ -13,152 +13,60 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:46
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "+K"
 msgstr "+K"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "+i Invite Only"
 msgstr "+i Invita solo"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "/invite Command"
 msgstr "/invite Command"
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:3
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:12
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "/knock"
 msgstr "/knock"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "/mode +K — Enable no-knock mode /mode -K — Disable no-knock mode"
-msgstr "/mode +K — Enable no-knock mode /mode -K — Disable no-knock mode"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +R — Enable registered-only mode /mode -R — Disable registered-only mode"
-msgstr ""
-"/mode +R — Enable registered-only mode /mode -R — Disable registered-only "
-"mode"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +c — Enable color stripping /mode -c — Disable color stripping"
-msgstr "/mode +c — Enable color stripping /mode -c — Disable color stripping"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:15
-#, elixir-autogen, elixir-format
-msgid "/mode +h Alice — Make Alice a half-operator /mode -h Alice — Remove half-operator from Alice"
-msgstr ""
-"/mode +h Alice — Make Alice a half-operator /mode -h Alice — Remove half-"
-"operator from Alice"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +i — Enable invite only /mode -i — Disable invite only"
-msgstr "/mode +i — Enable invite only /mode -i — Disable invite only"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +j 5:10 — Allow 5 joins per 10 seconds /mode +j 3:60 — Allow 3 joins per minute /mode -j — Remove join throttle"
-msgstr ""
-"/mode +j 5:10 — Allow 5 joins per 10 seconds /mode +j 3:60 — Allow 3 joins "
-"per minute /mode -j — Remove join throttle"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:5
-#, elixir-autogen, elixir-format
-msgid "/mode +k secretpass — Set channel key /mode -k — Remove channel key /join #channel secretpass — Join with key"
-msgstr ""
-"/mode +k secretpass — Set channel key /mode -k — Remove channel key /join "
-"#channel secretpass — Join with key"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:5
-#, elixir-autogen, elixir-format
-msgid "/mode +l 25 — Set limit to 25 users /mode -l — Remove user limit"
-msgstr "/mode +l 25 — Set limit to 25 users /mode -l — Remove user limit"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +m — Enable moderated mode /mode -m — Disable moderated mode /mode +v Nick — Give voice to a user"
-msgstr ""
-"/mode +m — Enable moderated mode /mode -m — Disable moderated mode /mode +v "
-"Nick — Give voice to a user"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +n — Enable no external messages /mode -n — Disable no external messages"
-msgstr ""
-"/mode +n — Enable no external messages /mode -n — Disable no external "
-"messages"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +o Alice — Give operator to Alice /mode -o Alice — Remove operator from Alice"
-msgstr ""
-"/mode +o Alice — Give operator to Alice /mode -o Alice — Remove operator "
-"from Alice"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +p — Make channel private /mode -p — Remove private mode"
-msgstr "/mode +p — Make channel private /mode -p — Remove private mode"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "/mode +q Alice — Make Alice an owner /mode -q Alice — Remove owner from Alice"
-msgstr ""
-"/mode +q Alice — Make Alice an owner /mode -q Alice — Remove owner from "
-"Alice"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +s — Make channel secret /mode -s — Remove secret mode"
-msgstr "/mode +s — Make channel secret /mode -s — Remove secret mode"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +t — Enable topic lock /mode -t — Disable topic lock"
-msgstr "/mode +t — Enable topic lock /mode -t — Disable topic lock"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/mode +v Alice — Give voice to Alice /mode -v Alice — Remove voice from Alice"
-msgstr ""
-"/mode +v Alice — Give voice to Alice /mode -v Alice — Remove voice from "
-"Alice"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:96
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "/topic Command"
 msgstr "/topic Command"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Can: kick regular/voiced users, set +v/-v"
 msgstr "Can: kick regolari/voiced utenti, set +v/-v"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Cannot: set channel modes, ban users, kick operators or owners"
 msgstr "Non è possibile: impostare le modalità del canale, bandire utenti, espellere operatori o proprietari"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "Channel Invites"
 msgstr "Invito del canale"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Channel Modes Overview"
 msgstr "Panoramica delle modalità del canale"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Dettagli"
@@ -196,9 +104,9 @@ msgstr ""
 "Concede voce a un utente (prefisso +), permettendo loro di parlare in canali"
 " moderati (+m). Mezzi operatori e sopra possono dare voce."
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:12
-#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:17
-#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Half-Operator (+h)"
 msgstr "Mezzo operatore (+h)"
@@ -208,18 +116,10 @@ msgstr "Mezzo operatore (+h)"
 msgid "Hierarchy"
 msgstr "Gerarchia"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Invite Exceptions"
 msgstr "Eccezioni invitate"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Limits how many users can join the channel within a time window. Format is count:seconds. For example, +j 5:10 allows 5 joins per 10 seconds. Operators bypass the throttle."
-msgstr ""
-"Limita quanti utenti possono aderire al canale all'interno di una finestra "
-"temporale. Il formato è conteggio:secondi. Ad esempio, +j 5:10 consente 5 "
-"unioni per 10 secondi. Gli operatori bypassano l'acceleratore."
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:2
 #, elixir-autogen, elixir-format
@@ -242,29 +142,30 @@ msgstr ""
 "canali (/list) per i non membri e sono nascosti dall'uscita /whois. "
 "Mutualmente esclusivo con +p (privato)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Moderated (+m)"
 msgstr "Moderato (+m)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "NickServ"
 msgstr "NickServ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Only other owners can grant or revoke +q."
 msgstr "Solo altri proprietari possono concedere o revocare +q."
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:19
-#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Operator (+o)"
 msgstr "Operatore (+o)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "Owner (+q)"
 msgstr "Titolare (+q)"
@@ -276,7 +177,7 @@ msgstr ""
 "Proprietario (~) > Operatore (@) > Mezzo Operatore (%) > Voce (+) > Regolare"
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:37
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Permissions"
 msgstr "Permissioni"
@@ -286,36 +187,41 @@ msgstr "Permissioni"
 msgid "Prevents users from sending"
 msgstr "Impedisce agli utenti di inviare"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "Private (+p)"
 msgstr "Privato (+p)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "Secret (+s)"
 msgstr "Segreto (+s)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:201
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:26
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:84
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:133
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:49
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:17
-#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:14
-#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -336,38 +242,25 @@ msgstr ""
 "italico, sottolinea, codici a colori, e inverso. I messaggi e le azioni /me "
 "vengono elaborati lato server prima della consegna."
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:14
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:4
-#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:4
-#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:6
-#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:11
-#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Usage"
 msgstr "Utilizzo"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "When"
-msgstr "Quando"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "When a channel is moderated, only operators (+o) and voiced (+v) users can send messages. Regular users can still read but not write."
-msgstr ""
-"Quando un canale è moderato, solo gli operatori (+o) e gli utenti (+v) "
-"vocali possono inviare messaggi. Gli utenti regolari possono ancora leggere "
-"ma non scrivere."
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:2
 #, elixir-autogen, elixir-format
@@ -391,18 +284,6 @@ msgid "When topic lock is set, only channel operators can change the topic."
 msgstr ""
 "Quando l'argomento è impostato, solo gli operatori del canale possono "
 "cambiare l'argomento."
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "attempt will be silently rejected. This is useful for invite-only channels that do not want to receive join requests."
-msgstr ""
-"il tentativo sarà respinto silenziosamente. Questo è utile per i canali di "
-"invito che non vogliono ricevere richieste di unisciti."
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "is set, any"
-msgstr "è impostato, qualsiasi"
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:4
 #, elixir-autogen, elixir-format
@@ -616,30 +497,34 @@ msgstr "/cs Command"
 msgid "/join #channel password"
 msgstr "/join #channel password"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "/join #channel-name"
 msgstr "/join #channel-name"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:214
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "/kick"
 msgstr "/kick"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:128
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "/knock Command"
 msgstr "/knock Command"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "/list"
 msgstr "/list"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:5
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:212
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "/mode"
 msgstr "/mode"
@@ -690,6 +575,7 @@ msgid "/ns"
 msgstr "/ns"
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:155
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "/ns Command"
@@ -716,7 +602,7 @@ msgstr ""
 "Disconnect a ghost session /ns drop <password> — Permanently unregister your"
 " nickname"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "/part [#channel-name]"
 msgstr "/part [#channel-name]"
@@ -923,25 +809,29 @@ msgstr "Cambia argomento quando il canale è +t (topic bloccato)"
 msgid "Channel Expiration"
 msgstr "Esplorazione del canale"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:81
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Channel List"
 msgstr "Elenco dei canali"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:206
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:153
 #, elixir-autogen, elixir-format
 msgid "Channel Modes"
 msgstr "Modalità del canale"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:126
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:35
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:94
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:149
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "Channel Permissions"
 msgstr "Permissioni del canale"
@@ -973,7 +863,7 @@ msgstr ""
 "I canali con nessuna voce di elenco di accesso rimanenti sono immediatamente"
 " registrati"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:21
@@ -1070,7 +960,7 @@ msgstr "Mezzo Operatore (rank 2) — Limitati dazi di moderazione."
 msgid "How Registration Works"
 msgstr "Come funziona la registrazione"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "If no channel is specified, you leave the current channel."
 msgstr "Se non è specificato alcun canale, si lascia il canale corrente."
@@ -1088,11 +978,15 @@ msgid "Important Notes"
 msgstr "Note importanti"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Invite Only"
 msgstr "Invita solo"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "Join Command"
 msgstr "Iscriviti al comando"
@@ -1112,7 +1006,7 @@ msgstr "Unisciti a Throttle"
 msgid "Join channel (subject to +i, +k, +l, +R, +b restrictions)"
 msgstr "Iscriviti canale (soggetto a +i, +k, +l, +R, +b restrizioni)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Joining a Channel"
 msgstr "Unisciti a un canale"
@@ -1132,12 +1026,12 @@ msgstr "Regole chiave"
 msgid "Kick users of lower rank"
 msgstr "Kick utenti di rango inferiore"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Leaving a Channel"
 msgstr "Lasciare un canale"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Listing Channels"
 msgstr "Canali di raccolta"
@@ -1181,6 +1075,7 @@ msgid "No External"
 msgstr "No Esterno"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:109
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:85
 #, elixir-autogen, elixir-format
 msgid "No Knock"
 msgstr "No."
@@ -1205,7 +1100,7 @@ msgstr "Operatore (@)"
 msgid "Operator (rank 3) — Day-to-day channel management."
 msgstr "Operatore (rank 3) — Gestione del canale di giorno per giorno."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Or use the"
 msgstr "O usare il"
@@ -1225,7 +1120,7 @@ msgstr "Proprietario (rank 4) — Controllo completo sul canale."
 msgid "Owner (~)"
 msgstr "Proprietario (~)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Part Command"
 msgstr "Comando"
@@ -1344,6 +1239,7 @@ msgid "Topic Lock"
 msgstr "Blocco dell'argomento"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "User Limit"
 msgstr "Limite utente"
@@ -1365,6 +1261,8 @@ msgid "VOP (Auto Voice)"
 msgstr "VOP (Voce automatica)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "Voice"
 msgstr "Voce"
@@ -1506,7 +1404,7 @@ msgstr ""
 "— Ottiene +v (voce) automaticamente su unirsi. Può parlare in canali "
 "moderati (+m)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "+q Owner"
 msgstr "+q proprietario"
@@ -1526,7 +1424,7 @@ msgstr "- Auto Voce. Riceve lo stato della voce su unirsi."
 msgid "- Super Operator. Can manage AOP and VOP entries."
 msgstr "- Super Operator. Può gestire le voci AOP e VOP."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "/clearwelcome"
 msgstr "/clearwelcome"
@@ -1554,27 +1452,23 @@ msgstr ""
 "aop del <nick> /cs aop list /cs vop add <nick> /cs vop del <nick> /cs vop "
 "list"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "/setwelcome"
 msgstr "/setwelcome"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "/setwelcome <message> /clearwelcome"
-msgstr "/setwelcome <message> /clearwelcome"
-
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "/slow"
 msgstr "/slow"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "/transfer"
 msgstr "/transfer"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "/transfer <nickname>"
 msgstr "/transfer <nickname>"
@@ -1584,8 +1478,13 @@ msgstr "/transfer <nickname>"
 msgid "AOP users can manage VOP lists."
 msgstr "Gli utenti AOP possono gestire le liste VOP."
 
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:140
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Access Lists"
 msgstr "Liste di accesso"
@@ -1608,7 +1507,7 @@ msgid "All write actions require NickServ identification."
 msgstr ""
 "Tutte le azioni di scrittura richiedono l'identificazione di NickServ."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Applies only to the current channel"
 msgstr "Si applica solo al canale corrente"
@@ -1633,15 +1532,20 @@ msgstr ""
 "mantiene la proprietà dei canali, le liste di accesso, i divieti e le "
 "impostazioni disponibili dopo i vuoti del canale o riavvia."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:40
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:10
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "Canale centrale"
@@ -1685,7 +1589,7 @@ msgstr ""
 "cancellare il messaggio dalla scheda Generale di Channel Central o con i "
 "comandi."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Command"
 msgstr "Comando"
@@ -1716,12 +1620,12 @@ msgstr "I fondatori possono gestire le liste SOP, AOP e VOP."
 msgid "Identity & Presence"
 msgstr "Identità e Presenza"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Knock Command"
 msgstr "Toc."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Only the current channel owner (~) can transfer ownership"
 msgstr ""
@@ -1749,7 +1653,7 @@ msgstr ""
 " stato di registrazione, registrare un canale non registrato, rilasciare un "
 "canale come fondatore e gestire le liste di accesso SOP, AOP e VOP."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Open Channel Central for the channel, stay on the General tab, edit the Welcome Message field, then choose Save Welcome. Use Clear Welcome to remove it."
 msgstr ""
@@ -1762,7 +1666,7 @@ msgstr ""
 msgid "Opening the Tab"
 msgstr "Apertura della scheda"
 
-#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Operators can also set the join throttle from Channel Central's General tab. Enter 0 seconds to remove the throttle."
 msgstr ""
@@ -1770,7 +1674,7 @@ msgstr ""
 "Generale di Channel Central. Inserire 0 secondi per rimuovere "
 "l'acceleratore."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Owners can open Channel Central's General tab, choose Transfer Ownership, enter the target nickname, and confirm the transfer."
 msgstr ""
@@ -1788,14 +1692,14 @@ msgstr "Register Channel svolge la stessa azione del registro /cs."
 msgid "Registration Tab"
 msgstr "Scheda di registrazione"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Requires channel operator (@) or owner (~) status"
 msgstr ""
 "Richiede lo stato dell'operatore del canale (@) o del proprietario (~)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:19
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "Rules"
 msgstr "Regole"
@@ -1833,17 +1737,12 @@ msgstr ""
 " non sei identificato con NickServ o il tuo ruolo ChanServ non può gestire "
 "l'elenco selezionato."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "The target nickname must be present in the channel"
 msgstr "Il soprannome di destinazione deve essere presente nel canale"
 
-#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "The user who set the message does not see it immediately"
-msgstr "L'utente che imposta il messaggio non lo vede immediatamente"
-
-#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "This cannot be undone without the new owner's cooperation"
 msgstr ""
@@ -1880,7 +1779,7 @@ msgstr ""
 "Devi essere identificato con NickServ prima che ChanServ accetti i "
 "cambiamenti."
 
-#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "button in the toolbar. Invite-only (+i) channels are marked with a +i badge; select one and choose Request Access... to send a knock request to its operators."
 msgstr ""
@@ -1905,3 +1804,1036 @@ msgstr "%{window} di inattività"
 #, elixir-autogen, elixir-format
 msgid "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access choose Add to type a nickname into the list, and remove an entry with the button on its row."
 msgstr "La scheda Registrazione mostra gli elenchi SOP, AOP e VOP come sottoschede selezionabili. Chi ha accesso sufficiente sceglie Aggiungi per inserire un nickname nell'elenco e rimuove una voce con il pulsante sulla sua riga."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "A channel can refuse you because of a ban, a key, a user limit, invite-only mode or registered-only mode."
+msgstr "Un canale può rifiutarti a causa di un divieto, di una chiave, di un limite dell'utente, di una modalità di sola invito o di una modalità di sola registrazione."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "A channel name starts with # and has no spaces. It can be up to 50 characters long."
+msgstr "Un nome canale inizia con # e non ha spazi. Può essere lungo fino a 50 caratteri."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "A guest, or a person using a registered nickname without identifying, is refused with a message that the channel needs a registered nickname."
+msgstr "Un ospite, o una persona che utilizza un soprannome registrato senza identificare, viene rifiutato con un messaggio che il canale ha bisogno di un soprannome registrato."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "A knock is a short request to join, sent to the operators of an invite-only channel. Turn knocks off when the channel is closed to new members, or when knock requests become noise or spam. Operators can still invite people directly."
+msgstr "Un colpo è una breve richiesta di unirsi, inviato agli operatori di un canale solo invito. Spegni quando il canale è chiuso a nuovi membri, o quando le richieste di bussare diventano rumore o spam. Gli operatori possono ancora invitare le persone direttamente."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "A knock is shown only to operators and owners who are in the channel. You can knock on the same channel once per minute."
+msgstr "Un colpo viene mostrato solo a operatori e proprietari che sono nel canale. Puoi bussare allo stesso canale una volta al minuto."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "A new channel starts without the lock. In a registered channel the lock and the topic are saved and come back after a restart."
+msgstr "Un nuovo canale inizia senza la serratura. In un canale registrato la serratura e l'argomento sono salvati e tornare dopo un riavvio."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "A new channel starts without this mode. In a registered channel the mode is saved and comes back after a restart."
+msgstr "Un nuovo canale inizia senza questa modalità. In un canale registrato la modalità viene salvata e ritorna dopo un riavvio."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "A new message replaces the old one. Members who are looking at the channel when a new message is set get a short notice."
+msgstr "Un nuovo messaggio sostituisce quello vecchio. I membri che stanno guardando il canale quando viene impostato un nuovo messaggio ottengono un breve avviso."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "A person who joins sees the message as a line that starts with Welcome, visible only to them."
+msgstr "Una persona che si unisce vede il messaggio come una linea che inizia con Welcome, visibile solo a loro."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "A person who joins without the key, or with the wrong key, is refused with a bad key error."
+msgstr "Una persona che si unisce senza la chiave, o con la chiave sbagliata, viene rifiutata con un errore chiave difettoso."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "A regular member who tries to speak gets an error that says they need voice."
+msgstr "Un membro normale che cerca di parlare ottiene un errore che dice che hanno bisogno di voce."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "A secret channel cannot have a public archive. A published archive stops being public when the channel becomes secret."
+msgstr "Un canale segreto non può avere un archivio pubblico. Un archivio pubblicato smette di essere pubblico quando il canale diventa segreto."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Add a second owner when you run a channel together with someone, so both of you have full control. A channel can have more than one owner at the same time. To hand the channel over and step down yourself, use a transfer instead."
+msgstr "Aggiungere un secondo proprietario quando si esegue un canale insieme a qualcuno, così entrambi hanno il pieno controllo. Un canale può avere più di un proprietario allo stesso tempo. Per consegnare il canale e scendere da soli, utilizzare un trasferimento invece."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Allow 3 joins per minute"
+msgstr "Consentire 3 unioni al minuto"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Allow 5 joins per 10 seconds"
+msgstr "Consentire 5 unioni per 10 secondi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Allow 5 joins per 30 seconds"
+msgstr "Consentire 5 unioni per 30 secondi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "An invitation adds the nickname to the channel's invite exceptions. That nickname can then join for as long as the exception exists. An operator can remove it at any time."
+msgstr "Un invito aggiunge il soprannome alle eccezioni di invito del canale. Quel soprannome può allora unirsi per tutto il tempo che l'eccezione esiste. Un operatore può rimuoverlo in qualsiasi momento."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "An invitation does not get around the limit. Bots in the channel count as members."
+msgstr "Un invito non si aggira sul limite. I bot nel canale contano come membri."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "An invitation does not replace a key or get around a user limit."
+msgstr "Un invito non sostituisce una chiave o aggira un limite dell'utente."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "An invitation does not replace the key. An invited person still needs it to join."
+msgstr "Un invito non sostituisce la chiave. Una persona invitata deve ancora unirsi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "An unregistered channel closes when the last person leaves, and its topic and modes are lost. Register it with ChanServ to keep it, its settings and its access list."
+msgstr "Un canale non registrato si chiude quando l'ultima persona parte, e il suo argomento e modalità sono persi. Registralo con ChanServ per tenerlo, le sue impostazioni e la sua lista di accesso."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Anyone else who tries to join is refused with a message that the channel is invite-only."
+msgstr "Chiunque altro che cerca di unirsi è rifiutato con un messaggio che il canale è solo invitato."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Ask the operators to let you in"
+msgstr "Chiedi agli operatori di farti entrare"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Both numbers must be whole numbers greater than zero. If the value is not valid, the throttle does not change."
+msgstr "Entrambi i numeri devono essere numeri interi superiori a zero. Se il valore non è valido, l'acceleratore non cambia."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Bots are never throttled, but their joins are counted."
+msgstr "Bots are never throttled, but their joins are counted."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Change the topic when the topic is locked."
+msgstr "Cambia l'argomento quando l'argomento è bloccato."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "Channel Central and the slow command always allow 5 joins in the number of seconds you choose. Use the mode command to pick a different count."
+msgstr "Canale centrale e il comando lento permettono sempre 5 unioni nel numero di secondi che si sceglie. Utilizzare il comando modalità per selezionare un conteggio diverso."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Disable color stripping"
+msgstr "Disattivare il colore stripping"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Disable invite only"
+msgstr "Invitare solo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Disable moderated mode"
+msgstr "Disattiva modalità moderata"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Disable no external messages"
+msgstr "Non disabilitare messaggi esterni"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Disable no-knock mode"
+msgstr "Disattivare la modalità no-knock"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Disable registered-only mode"
+msgstr "Disattivare la modalità di sola registrazione"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Disable topic lock"
+msgstr "Disattivare l'argomento"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Each member holds one rank at a time. Half-operator sits above voice and below operator."
+msgstr "Ogni membro detiene un rango alla volta. Mezzo operatore siede sopra voce e sotto operatore."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Each member holds one rank at a time. Half-operators and above can kick, and operators and above can ban. Both only work on members of a lower rank."
+msgstr "Ogni membro detiene un rango alla volta. Mezzi operatori e sopra possono calciare, e gli operatori e sopra possono vietare. Entrambi lavorano solo su membri di rango inferiore."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Each member holds one rank at a time. Operator status given with this command is not kept when the person leaves."
+msgstr "Ogni membro detiene un rango alla volta. Lo stato dell'operatore fornito con questo comando non viene mantenuto quando la persona lascia."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Each member holds one rank at a time. Voice sits above regular members and below half-operators."
+msgstr "Ogni membro detiene un rango alla volta. La voce siede al di sopra dei membri regolari e al di sotto degli operatori."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Each person sees it once per session. Leaving and joining again in the same session does not show it again."
+msgstr "Ogni persona lo vede una volta per sessione. Lasciare e unirsi di nuovo nella stessa sessione non lo mostra di nuovo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Enable color stripping"
+msgstr "Abilitare colore stripping"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Enable invite only"
+msgstr "Attiva invito solo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Enable moderated mode"
+msgstr "Attiva la modalità moderata"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Enable no external messages"
+msgstr "Non attivare messaggi esterni"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Enable no-knock mode"
+msgstr "Abilitare la modalità no-knock"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Enable registered-only mode"
+msgstr "Attivare la modalità di sola registrazione"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Enable topic lock"
+msgstr "Abilita l'argomento"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Even with knocks allowed, each person can knock on the same channel only once per minute."
+msgstr "Anche con buss consentiti, ogni persona può bussare allo stesso canale solo una volta al minuto."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Even without this mode, a person must be in the channel to send messages to it. Someone who is not a member is always refused."
+msgstr "Anche senza questa modalità, una persona deve essere nel canale per inviare messaggi ad esso. Qualcuno che non è un membro è sempre rifiutato."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Everyone in a channel sees the same conversation. A channel usually has a theme, a topic shown at the top, and a few people who look after it."
+msgstr "Tutti in un canale vedono la stessa conversazione. Un canale di solito ha un tema, un argomento mostrato in cima, e alcune persone che si prendono cura di esso."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Give operator to Alice"
+msgstr "Dare operatore a Alice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Give voice to Alice"
+msgstr "Dare voce a Alice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Give voice to a user"
+msgstr "Dare voce a un utente"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Give voice to the guests of a talk, the people asking questions, or trusted regulars. In a moderated channel they can speak while everyone else listens. Voice gives no other power. A voiced user cannot kick, ban or change modes."
+msgstr "Dare voce agli ospiti di una conversazione, le persone che fanno domande, o regolari fidati. In un canale moderato possono parlare mentre tutti gli altri ascoltano. La voce non dà altro potere. Un utente vocale non può dare calci, vietare o modificare le modalità."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Half-operator is a helper rank. Give it to people who should keep a conversation in order but should not control the channel itself. They can remove a troublemaker and manage who speaks, while the settings stay with operators and owners."
+msgstr "La meta' dell'operaio e' un aiutante. Darlo a persone che dovrebbero mantenere una conversazione in ordine, ma non deve controllare il canale stesso. Possono rimuovere un disturbatore e gestire chi parla, mentre le impostazioni rimangono con gli operatori e i proprietari."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Half-operators can speak in a moderated channel without voice."
+msgstr "I mezzooperatori possono parlare in un canale moderato senza voce."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "Half-operators cannot set or clear the welcome message."
+msgstr "Gli operatori non possono impostare o cancellare il messaggio di benvenuto."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Half-operators, operators and owners can give voice to members who should speak."
+msgstr "Metà operatori, operatori e proprietari possono dare voce ai membri che dovrebbero parlare."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "How it works"
+msgstr "Come funziona"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "If the channel does not exist yet, joining creates it. The first person in a new channel becomes its owner and can set its modes."
+msgstr "Se il canale non esiste ancora, l'unione lo crea. La prima persona in un nuovo canale diventa il suo proprietario e può impostare le sue modalità."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "If the person is not in the channel, the transfer fails and nothing changes."
+msgstr "Se la persona non è nel canale, il trasferimento fallisce e nulla cambia."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "In a registered channel the key is saved and comes back after a restart."
+msgstr "In un canale registrato la chiave viene salvata e ritorna dopo un riavvio."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "In a registered channel the limit is saved and comes back after a restart."
+msgstr "In un canale registrato il limite viene salvato e ritorna dopo un riavvio."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "In a registered channel the mode and the invite exceptions are saved and come back after a restart."
+msgstr "In un canale registrato la modalità e le eccezioni di invito vengono salvate e tornare dopo un riavvio."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "In a registered channel the mode is saved and comes back after a restart."
+msgstr "In un canale registrato la modalità viene salvata e ritorna dopo un riavvio."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:75
+#, elixir-autogen, elixir-format
+msgid "In a registered channel the throttle is saved and comes back after a restart."
+msgstr "In un canale registrato l'acceleratore viene salvato e ritorna dopo un riavvio."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "In a registered channel, a transfer does not change the ChanServ founder or access list. Ranks given on joining still come from that list."
+msgstr "In un canale registrato, un trasferimento non cambia il fondatore o l'elenco di accesso ChanServ. I ranci dati sull'unione provengono ancora da quella lista."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "In a registered channel, add people to the ChanServ voice list to give them voice each time they join."
+msgstr "In un canale registrato, aggiungere le persone alla lista vocale ChanServ per dare loro voce ogni volta che si uniscono."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "In a registered channel, people on the ChanServ operator list become operators each time they join."
+msgstr "In un canale registrato, le persone nella lista operatore ChanServ diventano operatori ogni volta che si uniscono."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "In a registered channel, people on the ChanServ voice list receive voice when they join."
+msgstr "In un canale registrato, le persone nell'elenco vocale ChanServ ricevono voce quando si uniscono."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "In a registered channel, the founder and the people on the ChanServ %{level} list become owners each time they join."
+msgstr "In un canale registrato, il fondatore e le persone nella lista ChanServ %{level} diventano proprietari ogni volta che si uniscono."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "In an unregistered channel, the owner rank goes to whoever joins the empty channel first. Register the channel with ChanServ to keep it."
+msgstr "In an unregistered channel, the owner rank goes to whoever joins the empty channel first. Register the channel with ChanServ to keep it."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "In the Channel List, people who are not in the channel see a placeholder row with the number of users. The name and the topic are not shown."
+msgstr "Nella Lista Canale, le persone che non sono nel canale vedono una riga segnaposto con il numero di utenti. Il nome e l'argomento non sono visualizzati."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Invite Alice to the current channel"
+msgstr "Invita Alice al canale corrente"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Invite people to an invite-only channel and see knock requests."
+msgstr "Invitare le persone a un canale solo invito e vedere le richieste di bussare."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "Join Throttle (+j)"
+msgstr "Unire Throttle (+j)"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Join a channel that has a key"
+msgstr "Unisciti a un canale che ha una chiave"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Join with key"
+msgstr "Iscriviti con la chiave"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Kick and ban members of lower rank: half-operators, voiced users and regular members."
+msgstr "Kick and ban members of lower rank: half-operators, voiced users and regular members."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Knocking only works on invite-only channels. Without invite-only mode, this mode has no visible effect."
+msgstr "Knocking funziona solo su canali di invito. Senza modalità di invito, questa modalità non ha effetto visibile."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Limits how many users can join the channel within a time window. Format is count:seconds. For example, %{example} allows 5 joins per 10 seconds."
+msgstr "Limita quanti utenti possono aderire al canale all'interno di una finestra temporale. Il formato è conteggio:secondi. Ad esempio, %{example} consente 5 unioni per 10 secondi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Lowering the limit never removes anyone. People already inside stay in the channel."
+msgstr "Abbassare il limite non rimuove mai nessuno. Le persone gia' dentro rimangono nel canale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Make Alice a half-operator"
+msgstr "Fai di Alice un mezzo operatore"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Make Alice an owner"
+msgstr "Fai di Alice un proprietario"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Make Alice the owner and become an operator"
+msgstr "Rendere Alice il proprietario e diventare un operatore"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Make channel private"
+msgstr "Rendere il canale privato"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Make channel secret"
+msgstr "Fare segreto canale"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Make trusted people operators so the channel is looked after when you are away. Operators keep order, welcome newcomers and handle trouble. Give the rank only to people you trust, because operators can also make other operators."
+msgstr "Fai operatori di persone fidate in modo che il canale sia curato quando sei via. Gli operatori mantengono ordine, accolgono i nuovi arrivati e si occupano di problemi. Dare il grado solo a persone di cui ti fidi, perché gli operatori possono anche fare altri operatori."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Members are not affected. To limit what members can say, use moderated mode instead."
+msgstr "I membri non sono interessati. Per limitare ciò che i membri possono dire, utilizzare la modalità moderata."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Members keep reading everything, and they can still join and leave."
+msgstr "I membri continuano a leggere tutto, e possono ancora unirsi e partire."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Members of the channel see the real name and topic as usual."
+msgstr "I membri del canale vedono il vero nome e l'argomento come al solito."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Messages sent before the mode was set keep their formatting. The channel topic is not changed."
+msgstr "I messaggi inviati prima che la modalità fosse impostata mantengono la loro formattazione. L'argomento del canale non è cambiato."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Messages written in Markdown are also turned into plain text."
+msgstr "I messaggi scritti in Markdown sono anche trasformati in testo semplice."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Only channel operators and owners can set or remove the key."
+msgstr "Solo gli operatori del canale e i proprietari possono impostare o rimuovere la chiave."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Only channel operators and owners can set or remove the limit."
+msgstr "Solo gli operatori del canale e i proprietari possono impostare o rimuovere il limite."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:69
+#, elixir-autogen, elixir-format
+msgid "Only channel operators and owners can set or remove the throttle."
+msgstr "Solo gli operatori del canale e i proprietari possono impostare o rimuovere l'acceleratore."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Only channel operators and owners can set or remove this mode."
+msgstr "Solo gli operatori del canale e i proprietari possono impostare o rimuovere questa modalità."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "Only channel operators and owners can turn the lock on or off."
+msgstr "Solo gli operatori del canale e i proprietari possono attivare o disattivare la serratura."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Only operators and owners can give or remove half-operator status. The person must be in the channel."
+msgstr "Solo gli operatori e i proprietari possono dare o rimuovere lo stato dell'operatore. La persona deve essere nel canale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "Only operators and owners can give or remove operator status. The person must be in the channel."
+msgstr "Solo gli operatori e i proprietari possono dare o rimuovere lo stato dell'operatore. La persona deve essere nel canale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Operators and owners can invite people. Half-operators cannot. The invited person must be online and not already in the channel."
+msgstr "Operatori e proprietari possono invitare le persone. I meta-operatori non possono. La persona invitata deve essere online e non già nel canale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Operators can also open Channel Central, go to the Modes tab, tick Invite Only and choose Apply Modes."
+msgstr "Gli operatori possono anche aprire Canale centrale, andare alla scheda Modalità, selezionare Invita solo e scegliere Applicare modalità."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Operators can also open Channel Central, go to the Modes tab, tick Key, type the key and choose Apply Modes."
+msgstr "Gli operatori possono anche aprire Canale centrale, andare alla scheda Modalità, spunta Key, digitare la chiave e scegliere Applica modalità."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Operators can also open Channel Central, go to the Modes tab, tick Limit, type the number and choose Apply Modes."
+msgstr "Gli operatori possono anche aprire Canale centrale, andare alla scheda Modalità, tick Limit, digitare il numero e scegliere Applica modalità."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Operators can also open Channel Central, go to the Modes tab, tick Moderated and choose Apply Modes."
+msgstr "Gli operatori possono anche aprire Canale centrale, andare alla scheda Modalità, spuntare Moderato e scegliere Applica modalità."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Operators can also open Channel Central, go to the Modes tab, tick Topic Lock and choose Apply Modes."
+msgstr "Gli operatori possono anche aprire Canale centrale, andare alla scheda Modalità, spuntare blocco Argomento e scegliere Applicare modalità."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Operators cannot give or remove owner status. Only owners can do that."
+msgstr "Gli operatori non possono dare o rimuovere lo stato del proprietario. Solo i proprietari possono farlo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Owner status given with this command is not kept when the person leaves the channel."
+msgstr "Lo stato del proprietario dato con questo comando non viene mantenuto quando la persona lascia il canale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "People already in the channel are not removed."
+msgstr "Le persone già nel canale non vengono rimosse."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "People already in the channel stay there when you set or change the key."
+msgstr "Le persone già nel canale rimangono lì quando si imposta o modificare la chiave."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "People can still type formatting. The server removes it before anyone sees the message."
+msgstr "Le persone possono ancora digitare la formattazione. Il server lo rimuove prima che qualcuno veda il messaggio."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Private mode does not hide the channel from whois or the hover card. Use secret mode if the name must not appear there."
+msgstr "Modalità privata non nasconde il canale da whois o la carta hover. Utilizzare la modalità segreta se il nome non deve apparire lì."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Private mode does not stop anyone from joining. A person who types the name can still enter."
+msgstr "La modalità privata non impedisce a nessuno di unirsi. Una persona che digita il nome può ancora entrare."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:81
+#, elixir-autogen, elixir-format
+msgid "Public Archive"
+msgstr "Archivio pubblico"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Ranks last while people stay in the channel. In an unregistered channel, if you leave after the transfer while others are still inside, you come back as a regular member."
+msgstr "I rank durano mentre le persone rimangono nel canale. In un canale non registrato, se si lascia dopo il trasferimento mentre altri sono ancora all'interno, si torna come membro regolare."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "Registering a Channel"
+msgstr "Registrazione di un canale"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Remove channel key"
+msgstr "Rimuovere la chiave del canale"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Remove half-operator from Alice"
+msgstr "Rimuovere la metà dell'operatore da Alice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Remove join throttle"
+msgstr "Rimuovi un po'"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Remove operator from Alice"
+msgstr "Rimuovi l'operatore da Alice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Remove owner from Alice"
+msgstr "Rimuovi il proprietario da Alice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Remove private mode"
+msgstr "Rimuovere la modalità privata"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Remove secret mode"
+msgstr "Rimuovi la modalità segreta"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Remove the welcome message"
+msgstr "Rimuovi il messaggio di benvenuto"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Remove user limit"
+msgstr "Rimuovi il limite utente"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Remove voice from Alice"
+msgstr "Rimuovi la voce da Alice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "Rules and limits"
+msgstr "Regole e limiti"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Saving an empty field also removes the message."
+msgstr "Salvare un campo vuoto rimuove anche il messaggio."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Secret channels are not listed for people outside them. Private channels are listed without their name."
+msgstr "I canali segreti non sono elencati per le persone al di fuori di loro. I canali privati sono elencati senza il loro nome."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Secret mode does not stop anyone from joining. A person who types the name can still enter."
+msgstr "La modalità segreta non impedisce a nessuno di unirsi. Una persona che digita il nome può ancora entrare."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Set and remove channel modes, and give or take operator, half-operator and voice."
+msgstr "Impostare e rimuovere le modalità di canale, e dare o prendere operatore, metà operatore e voce."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Set channel key"
+msgstr "Impostare la chiave del canale"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Set limit to 25 users"
+msgstr "Impostare il limite a 25 utenti"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Set the welcome message"
+msgstr "Impostare il messaggio di benvenuto"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Set the welcome message and pin messages."
+msgstr "Impostare il messaggio di benvenuto e perno messaggi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Share links and link previews do not show the channel name."
+msgstr "Condividere i link e le anteprime dei link non mostrano il nome del canale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "Text Formatting"
+msgstr "Formattazione del testo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "The Channel List shows no row at all for the channel to people who are not in it."
+msgstr "La Lista Canale non mostra nessuna riga per il canale a persone che non sono in esso."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "The check runs only when someone joins."
+msgstr "L'assegno funziona solo quando qualcuno si unisce."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "The command changes the channel you are looking at. You do not type the channel name."
+msgstr "Il comando cambia il canale che stai guardando. Non si digita il nome del canale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "The command works on the channel you are looking at. Everyone in the channel sees the mode changes."
+msgstr "Il comando funziona sul canale che stai guardando. Tutti nel canale vede le modifiche della modalità."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "The key is one word. It must match exactly, so upper and lower case letters matter."
+msgstr "La chiave è una parola. Deve corrispondere esattamente, quindi la materia di lettere maiuscole e minuscole."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The letter is an upper case K. The command changes the channel you are looking at. You do not type the channel name."
+msgstr "La lettera è un caso superiore K. Il comando cambia il canale che stai guardando. Non si digita il nome del canale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "The letter is an upper case R. The command changes the channel you are looking at. You do not type the channel name."
+msgstr "La lettera è un caso superiore R. Il comando cambia il canale che stai guardando. Non si digita il nome del canale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "The limit must be a whole number greater than zero. If the number is not valid, the limit does not change."
+msgstr "Il limite deve essere un numero intero superiore a zero. Se il numero non è valido, il limite non cambia."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "The message is saved without its formatting. Turning the mode off later does not bring the colors back."
+msgstr "Il messaggio viene salvato senza la sua formattazione. Spegnere la modalità in seguito non riporta i colori indietro."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "The message is saved, so it stays after a restart."
+msgstr "Il messaggio viene salvato, quindi rimane dopo un riavvio."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The mode comes from classic IRC, where people outside a channel could send text into it. Set it when you want the channel modes to state clearly that only members may speak."
+msgstr "La modalità viene dal classico IRC, dove le persone al di fuori di un canale potrebbero inviare testo in esso. Impostare quando si desidera che le modalità del canale di dichiarare chiaramente che solo i membri possono parlare."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The mode command changes the channel you are looking at. You do not type the channel name."
+msgstr "Il comando modalità cambia il canale che stai guardando. Non si digita il nome del canale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "The operators see nothing. The person who knocks gets an error that says knocking is disabled for the channel."
+msgstr "Gli operatori non vedono niente. La persona che bussa ottiene un errore che dice bussare è disabilitato per il canale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "The person must be in the channel. Otherwise the command fails with an error."
+msgstr "La persona deve essere nel canale. Altrimenti il comando fallisce con un errore."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "The person must be in the channel. The command changes the channel you are looking at."
+msgstr "La persona deve essere nel canale. Il comando cambia il canale che stai guardando."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:77
+#, elixir-autogen, elixir-format
+msgid "The person who set the message is not shown it when they join."
+msgstr "La persona che ha impostato il messaggio non viene mostrata quando si uniscono."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "The rank is not kept when the person leaves the channel. ChanServ access lists have no half-operator level, so give it again with the command when needed."
+msgstr "Il rango non viene mantenuto quando la persona lascia il canale. Gli elenchi di accesso ChanServ non hanno un livello di semioperatore, quindi ridammeli con il comando quando necessario."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "The server counts the joins made within the chosen number of seconds. When the count reaches the limit, the next person is refused and asked to try again shortly."
+msgstr "Il server conta le unioni effettuate nel numero selezionato di secondi. Quando il conteggio raggiunge il limite, la persona successiva viene rifiutata e ha chiesto di riprovare a breve."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "The throttle applies to every person who joins, operators and owners included. Only bots are exempt."
+msgstr "L'acceleratore si applica a tutte le persone che si uniscono, operatori e proprietari inclusi. Solo i bot sono esenti."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The topic is the line shown above the messages of a channel. Everyone who joins reads it first. Lock it when the topic carries rules, links or an announcement that should not be edited by any member."
+msgstr "L'argomento è la linea mostrata sopra i messaggi di un canale. Chiunque si unisca lo legge prima. Bloccarlo quando l'argomento porta regole, link o un annuncio che non dovrebbe essere modificato da alcun membro."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "They cannot change a locked topic, invite people, set the welcome message or pin messages."
+msgstr "Non possono cambiare un argomento bloccato, invitare le persone, impostare il messaggio di benvenuto o perno messaggi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "To get in, register your nickname with NickServ, identify, and then join again."
+msgstr "Per entrare, registrare il vostro soprannome con NickServ, identificare, e poi unirsi di nuovo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "To remove the key, you do not need to type it again."
+msgstr "Per rimuovere la chiave, non è necessario digitare di nuovo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Transfer ownership when you hand a channel over to someone else, for example when you step back from running it. You keep operator status, so you can still help. If you only want to share control, give the other person owner status instead and stay an owner yourself."
+msgstr "Trasferire la proprietà quando si consegna un canale a qualcun altro, per esempio quando si fa un passo indietro dalla corsa. Si mantiene lo stato dell'operatore, in modo da poter ancora aiutare. Se si desidera solo condividere il controllo, dare l'altra persona proprietario stato invece e rimanere un proprietario te stesso."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Use a key when you want to share access with a word instead of inviting each person. Anyone who knows the key can join. Anyone who does not know it is turned away."
+msgstr "Utilizzare una chiave quando si desidera condividere l'accesso con una parola invece di invitare ogni persona. Chiunque conosca la chiave puo' unirsi. Chiunque non lo sappia, e' spento."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Use a user limit to keep a room small. It helps when a channel is meant for a team, a class or a game group. It also slows down a crowd that arrives all at once."
+msgstr "Utilizzare un limite utente per mantenere una stanza piccola. Aiuta quando un canale è destinato per una squadra, una classe o un gruppo di gioco. Rallenta anche una folla che arriva subito."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Use it against join floods, when many nicknames enter at once to spam or disrupt a channel. Normal visitors rarely notice it, because people usually arrive a few at a time."
+msgstr "Usarlo contro unire inondazioni, quando molti soprannomi entrano subito per spam o interrompere un canale. I visitatori normali lo notano raramente, perché le persone di solito arrivano alcuni alla volta."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it for a closed group, such as a team, a staff room or a private game table. Every new member needs an operator to say yes first."
+msgstr "Usalo per un gruppo chiuso, come una squadra, una stanza del personale o un tavolo da gioco privato. Ogni nuovo membro ha bisogno di un operatore per dire sì prima."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it for talks, interviews, question sessions and announcements. A few people speak and everyone else listens. It is also a quick way to calm a channel during a flood or a heated argument."
+msgstr "Usalo per colloqui, interviste, sessioni di domande e annunci. Alcune persone parlano e tutti ascoltano. È anche un modo rapido per calmare un canale durante un'alluvione o un argomento riscaldato."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Use it to greet newcomers with what they need to know: what the channel is about, its rules, or where to start. The topic stays visible to everyone all the time. The welcome message is a private note that each person reads once, as they arrive."
+msgstr "Usalo per salutare i nuovi arrivati con quello che hanno bisogno di sapere: che cosa il canale è circa, le sue regole, o dove cominciare. L'argomento rimane sempre visibile a tutti. Il messaggio di benvenuto è una nota privata che ogni persona legge una volta, come arrivano."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it to keep out guests and throwaway nicknames. A registered nickname is protected by a password, so the same name always belongs to the same person. This makes bans and access lists more reliable, and it slows down spam from new names."
+msgstr "Usalo per tenere fuori gli ospiti e soprannomi di lancio. Un soprannome registrato è protetto da una password, quindi lo stesso nome appartiene sempre alla stessa persona. Questo rende ban e liste di accesso più affidabili, e rallenta lo spam da nuovi nomi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it when colored or bold text makes a channel hard to read. It is also useful against people who abuse colors to draw attention. Every message then looks the same, as plain text."
+msgstr "Usalo quando il testo colorato o audace rende un canale difficile da leggere. È anche utile contro le persone che abusano di colori per attirare l'attenzione. Ogni messaggio poi sembra lo stesso, come testo normale."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it when it is fine for people to know that a room exists, but its name and topic should not be advertised. If the channel should not appear in the list at all, use secret mode instead."
+msgstr "Usarlo quando è bene per le persone sapere che esiste una stanza, ma il suo nome e il suo argomento non dovrebbero essere pubblicizzati. Se il canale non dovrebbe apparire nella lista affatto, utilizzare la modalità segreta invece."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Use it when the existence of the channel itself should stay hidden. Only people who already know the exact name can find it. Combine it with invite-only mode or a key to also control who may enter."
+msgstr "Usalo quando l'esistenza del canale stesso dovrebbe rimanere nascosta. Solo le persone che già conoscono il nome esatto possono trovarlo. Combinalo con modalità di invito o chiave per controllare anche chi può entrare."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Voice given with this command lasts while the person stays in the channel. It is not kept when they leave."
+msgstr "La voce data con questo comando dura mentre la persona rimane nel canale. Non è tenuto quando se ne vanno."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Voiced users are marked with a voice icon in the user list."
+msgstr "Voiced users are marked with a voice icon in the user list."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "What operators can do"
+msgstr "Quali operatori possono fare"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "What others see"
+msgstr "Che altri vedono"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "What stays hidden"
+msgstr "Cosa rimane nascosto"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "When %{mode} is set, every %{command} attempt is refused. This is useful for invite-only channels that do not want to receive join requests."
+msgstr "Quando %{mode} è impostato, ogni tentativo %{command} viene rifiutato. Questo è utile per i canali di invito che non vogliono ricevere richieste di unisciti."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "When a channel is moderated, only owners, operators, half-operators and voiced users can send messages. Regular members can still read but not write."
+msgstr "When a channel is moderated, only owners, operators, half-operators and voiced users can send messages. Regular members can still read but not write."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "When someone looks up a member with whois or the hover card, the channel is left out unless the viewer is in it too."
+msgstr "Quando qualcuno cerca un membro con whois o la carta hover, il canale viene lasciato fuori a meno che lo spettatore non sia in esso troppo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "When someone tries to join, the server checks whether they are identified with NickServ right now."
+msgstr "Quando qualcuno cerca di unirsi, il server controlla se sono identificati con NickServ in questo momento."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "When the channel has as many members as the limit, the next person who tries to join is refused with a message that the channel is full."
+msgstr "Quando il canale ha più membri come limite, la persona successiva che cerca di unirsi è rifiutata con un messaggio che il canale è pieno."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:4
+#: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:4
+#: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "When to use it"
+msgstr "Quando usarlo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "With the lock, only owners and operators can change it. Half-operators, voiced users and regular members get an error."
+msgstr "With the lock, only owners and operators can change it. Half-operators, voiced users and regular members get an error."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "With the mode set, the refusal says that the channel does not accept external messages."
+msgstr "Con la modalità impostata, il rifiuto dice che il canale non accetta messaggi esterni."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Without the lock, any member of the channel can set a new topic with %{command}."
+msgstr "Senza la serratura, qualsiasi membro del canale può impostare un nuovo argomento con %{command}."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "You can add a short goodbye after the channel name. Everyone in the channel sees it."
+msgstr "Puoi aggiungere un breve addio dopo il nome del canale. Tutti nel canale lo vedono."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "You can be in a limited number of channels at once. The default is 10, and the server administrator can change it."
+msgstr "Si può essere in un numero limitato di canali contemporaneamente. Il default è 10, e l'amministratore del server può cambiarlo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_p.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "A channel cannot be private and secret at the same time. To switch, remove secret mode first, then set private mode:"
+msgstr "Un canale non può essere privato e segreto allo stesso tempo. Per cambiare, rimuovere prima la modalità segreta, quindi impostare la modalità privata:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "A channel cannot be secret and private at the same time. To switch, remove private mode first, then set secret mode:"
+msgstr "Un canale non può essere segreto e privato allo stesso tempo. Per cambiare, rimuovere prima la modalità privata, quindi impostare la modalità segreta:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Anyone in the channel can still read the topic. The command with no text shows it:"
+msgstr "Chiunque nel canale può ancora leggere l'argomento. Il comando senza testo lo mostra:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channels.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Join a public channel"
+msgstr "Unisciti a un canale pubblico"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "The command with no text also removes the message:"
+msgstr "Il comando senza testo rimuove anche il messaggio:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "To join a keyed channel each time you connect, add it to your auto-join list with its key:"
+msgstr "Per unire un canale keyed ogni volta che si collega, aggiungerlo alla tua lista di auto-join con la sua chiave:"
