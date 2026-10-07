@@ -129,14 +129,19 @@ defmodule RetroHexChatWeb.HelpLive.Index do
 
   defp help_root_path, do: SEO.localized_path("/chat/help", I18n.current_locale())
 
+  # The trail names and links each step in the reader's language, like every
+  # other public page's.
   @spec breadcrumb_items(map(), String.t()) :: [{String.t(), String.t()}]
   defp breadcrumb_items(%{id: @default_topic}, _canonical_path) do
-    [{"Home", "/"}, {"Help", "/chat/help"}]
+    [{dgettext("help", "Home"), localized("/")}, {dgettext("help", "Help"), help_root_path()}]
   end
 
   defp breadcrumb_items(topic, canonical_path) do
-    [{"Home", "/"}, {"Help", "/chat/help"}, {topic.title, canonical_path}]
+    breadcrumb_items(%{id: @default_topic}, canonical_path) ++
+      [{topic.title, localized(canonical_path)}]
   end
+
+  defp localized(path), do: SEO.localized_path(path, I18n.current_locale())
 
   @spec page_title(map()) :: String.t()
   defp page_title(topic), do: dgettext("help", "%{topic} — RetroHexChat Help", topic: topic.title)

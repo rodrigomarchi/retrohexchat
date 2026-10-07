@@ -171,6 +171,29 @@ defmodule RetroHexChatWeb.HelpLiveTest do
              }
     end
 
+    test "a localized topic's breadcrumb walks the localized pages", %{conn: conn} do
+      document =
+        conn
+        |> get("/pt-BR/chat/help/commands-overview")
+        |> html_response(200)
+        |> Floki.parse_document!()
+
+      trail =
+        document
+        |> Floki.find(~s(script[type="application/ld+json"]))
+        |> Enum.map(&(&1 |> elem(2) |> hd() |> String.trim() |> Jason.decode!()))
+        |> Enum.find(&(&1["@type"] == "BreadcrumbList"))
+        |> Map.fetch!("itemListElement")
+
+      assert Enum.map(trail, & &1["item"]) == [
+               "https://retrohexchat.app/pt-BR",
+               "https://retrohexchat.app/pt-BR/chat/help",
+               "https://retrohexchat.app/pt-BR/chat/help/commands-overview"
+             ]
+
+      assert Enum.map(Enum.take(trail, 2), & &1["name"]) == ["Principal", "Ajuda"]
+    end
+
     test "shows content header with icon and title", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/chat/help/cmd-join")
 
