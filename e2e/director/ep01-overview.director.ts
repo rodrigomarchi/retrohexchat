@@ -6,14 +6,21 @@
  * and timing live in `retro_hex_chat_videos/episodes/01-overview/script.md`;
  * each `film` call below plays one scene's SCREEN directions.
  *
- *   make e2e.director SHOTS=/abs/shots.json OUT=/abs/capture
+ * The scenes share one viewer — one browser, one nickname — the way the
+ * episode reads: whoever connects in scene 1 is who joins #retro in scene 2.
+ * Asked for a later scene alone, the viewer signs in off camera first.
+ *
+ *   make e2e.director SHOTS=/abs/shots.json OUT=/abs/capture FRESH=1
  */
-import { expect, test } from "@playwright/test";
+import { BrowserContext, expect, Page, test } from "@playwright/test";
+import { pressCtrlShift } from "../helpers/keyboard";
 import { ChatPage } from "../pages/ChatPage";
+import { ConnectPage } from "../pages/ConnectPage";
 import { Cast, Line } from "./cast";
 import {
   cameraContext,
   film,
+  pointAt,
   restCursor,
   shotFor,
   typeOnCamera,
@@ -22,7 +29,7 @@ import {
 const CONNECT_WINDOW = '[data-testid="landing-connect-window"]';
 
 // The viewer's nickname for the whole episode. A registered nick takes the
-// sign-in path instead, so a retake needs a fresh database or another nick.
+// sign-in path instead, so scene 1 needs a fresh database or another nick.
 const NICK = process.env.DIRECTOR_NICK || "Pixel";
 const PASSWORD = "retro1998";
 
@@ -45,10 +52,22 @@ const EARLIER: Line[] = [
   { by: "nova", says: "trivia starts at 9, bring your best 90s facts" },
 ];
 
+// #retro, founded by kestrel before scene 2, for the viewer to /join.
+const RETRO = "#retro";
+const RETRO_CAST = ["kestrel", "lumen", "bytebard", "m0dem"];
+const RETRO_TOPIC = "Old machines, old games, old friends";
+const RETRO_EARLIER: Line[] = [
+  { by: "m0dem", says: "found my old Sound Blaster manual today" },
+  { by: "lumen", says: "the one with the IRQ jumper chart? classic" },
+  { by: "bytebard", says: "IRQ 5, DMA 1. some things you never forget" },
+];
+
 test.describe.configure({ mode: "serial" });
 
 test.describe("EP01 overview", () => {
   let cast: Cast;
+  let viewerCtx: BrowserContext;
+  let viewer: Page;
 
   test.beforeAll(async ({ browser }) => {
     test.setTimeout(3 * 60_000);
@@ -61,26 +80,42 @@ test.describe("EP01 overview", () => {
       cast.member("nova").page.getByText(TOPIC).first(),
     ).toBeVisible();
     await cast.play(EARLIER);
+
+    viewerCtx = await cameraContext(browser);
+    viewer = await viewerCtx.newPage();
   });
 
   test.afterAll(async () => {
+    await viewerCtx?.close();
     await cast?.dismiss();
   });
 
-  test("01 connect in five seconds", async ({ browser }) => {
+  /** The viewer's chat, signing in off camera when scene 1 did not run. */
+  async function viewerChat(): Promise<ChatPage> {
+    const chat = new ChatPage(viewer);
+    if (!/\/chat/.test(viewer.url())) {
+      const connect = new ConnectPage(viewer);
+      await connect.open();
+      await connect.signIn(NICK, PASSWORD);
+    }
+    await chat.waitUntilConnected();
+    return chat;
+  }
+
+  test("01 connect in five seconds", async () => {
     const shot = shotFor(1);
-    const ctx = await cameraContext(browser);
-    const page = await ctx.newPage();
+    const page = viewer;
 
     // Off camera: the landing has painted and its fonts are in.
     await page.goto("/");
     await expect(page.locator(CONNECT_WINDOW)).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
 
-    await film(page, shot, async (pace) => {
+    await film(page, shot, async ({ pace }) => {
       await pace(1500);
-      await page.locator(`${CONNECT_WINDOW} #nickname`).click();
-      await typeOnCamera(page, `${CONNECT_WINDOW} #nickname`, NICK);
+      const nickname = page.locator(`${CONNECT_WINDOW} #nickname`);
+      await nickname.click();
+      await typeOnCamera(nickname, NICK);
       await pace(500);
       await page
         .locator(`${CONNECT_WINDOW} [data-testid="connect-btn"]`)
@@ -89,13 +124,12 @@ test.describe("EP01 overview", () => {
       const password = page.locator(`${CONNECT_WINDOW} #reg-password`);
       await expect(
         password,
-        `"${NICK}" is already registered — run \`make e2e.prepare\` or set DIRECTOR_NICK`,
+        `"${NICK}" is already registered — film with FRESH=1 or set DIRECTOR_NICK`,
       ).toBeVisible({ timeout: 15_000 });
       await pace(600);
-      await typeOnCamera(page, `${CONNECT_WINDOW} #reg-password`, PASSWORD);
+      await typeOnCamera(password, PASSWORD);
       await typeOnCamera(
-        page,
-        `${CONNECT_WINDOW} #reg-password-confirm`,
+        page.locator(`${CONNECT_WINDOW} #reg-password-confirm`),
         PASSWORD,
       );
       await pace(400);
@@ -113,7 +147,71 @@ test.describe("EP01 overview", () => {
       await cast.say("dialup_dan", "welcome! grab a seat");
       await pace(1500);
     });
+  });
 
-    await ctx.close();
+  test("02 it's actually IRC", async () => {
+    const shot = shotFor(2);
+    const chat = await viewerChat();
+    const page = viewer;
+
+    // Off camera: #retro exists, has a topic and a conversation.
+    for (const nick of RETRO_CAST) await cast.command(nick, `/join ${RETRO}`);
+    await cast.command("kestrel", `/topic ${RETRO_TOPIC}`);
+    await cast.play(RETRO_EARLIER);
+    await restCursor(page);
+
+    await film(page, shot, async ({ pace, cue }) => {
+      // The channel as it stands; the pointer follows the tour of it.
+      await cue("Channels on the left");
+      await pointAt(page, chat.conversationsSidebar);
+      await pace(1200);
+      await pointAt(page, chat.topicBar);
+      await pace(1200);
+      await pointAt(page, chat.nicklist);
+
+      await cue("slash commands you remember");
+      await chat.chatInput.click();
+      await typeOnCamera(chat.chatInput, `/join ${RETRO}`);
+      await pace(300);
+      await chat.chatInput.press("Enter");
+      await chat.expectTabVisible(RETRO);
+      await chat.expectMessageVisible(RETRO_EARLIER.at(-1)!.says);
+      await pace(600);
+      await typeOnCamera(chat.chatInput, "/me waves");
+      await chat.chatInput.press("Enter");
+      await pace(500);
+      await cast.say("lumen", `o/ ${NICK}`);
+
+      // mIRC colours, from the formatting toolbar.
+      await cue("mIRC color codes");
+      await chat.openFormattingToolbar();
+      await pace(400);
+      await chat.formatColorButton.click();
+      await pace(500);
+      await chat.formatColorSwatch(4).click();
+      await typeOnCamera(chat.chatInput, "colors work like it's 1999");
+      await chat.chatInput.press("Enter");
+      await chat.expectMessageVisible("colors work like it's 1999");
+      // Closed again: left open, it would sit over the autocomplete.
+      await chat.formattingToolbarToggle.click();
+      await expect(chat.formattingToolbarPanel).toBeHidden();
+
+      // Every command, one slash away.
+      await cue("just type a slash");
+      await typeOnCamera(chat.chatInput, "/");
+      await expect(chat.autocompleteDropdown).toBeVisible();
+      await pace(2200);
+      await typeOnCamera(chat.chatInput, "jo");
+      await chat.expectAutocompleteContains("/join");
+      await pace(1800);
+      await chat.chatInput.fill("");
+      await expect(chat.autocompleteDropdown).toBeHidden();
+
+      // And the keyboard has a cheatsheet of its own.
+      await cue("cheatsheet of their own");
+      await pressCtrlShift(page, "/");
+      await expect(chat.cheatsheetDialog).toBeVisible();
+      await restCursor(page);
+    });
   });
 });

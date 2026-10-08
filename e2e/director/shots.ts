@@ -1,7 +1,8 @@
-import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { Browser, BrowserContext, Locator, Page, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { CAMERA } from "./camera";
+import { drawCursor } from "./cursor";
 import { Recorder, Take } from "./recorder";
 
 /**
@@ -12,16 +13,28 @@ import { Recorder, Take } from "./recorder";
  * as the voice over it:
  *
  *   DIRECTOR_SHOTS=/abs/shots.json   { "episode": "01-overview",
- *                                      "shots": [{ "number": 1, "title": "...", "seconds": 24.6 }] }
+ *                                      "shots": [{ "number": 1, "title": "...", "seconds": 24.6,
+ *                                                  "cues": [{ "at": 0, "text": "..." }] }] }
  *   DIRECTOR_OUT=/abs/out/dir        each take lands in <out>/<NN>/
  */
 
-export type Shot = { number: number; title: string; seconds: number };
+/** A sentence of the narration and the second it starts at. */
+export type Cue = { at: number; text: string };
+
+export type Shot = {
+  number: number;
+  title: string;
+  seconds: number;
+  cues: Cue[];
+};
 
 type ShotList = { episode: string; shots: Shot[] };
 
 /** Seconds a take may run past its narration before it fails. */
 const OVERRUN_TOLERANCE = 0.25;
+
+/** Seconds an action may reach its sentence late before the take fails. */
+const LATE_CUE_TOLERANCE = 1.0;
 
 function shotList(): ShotList {
   const file = process.env.DIRECTOR_SHOTS;
@@ -44,18 +57,38 @@ export function shotFor(number: number): Shot {
   return shot!;
 }
 
-/** A browser context that looks like a person's: camera size, no tips toast. */
+/**
+ * A browser context that looks like a person's: camera size, a drawn pointer
+ * (headless has none to film), no tips toast, and
+ * a locale and time zone of its own rather than the filming machine's — the
+ * viewer's clock and profile are on screen.
+ */
 export async function cameraContext(browser: Browser): Promise<BrowserContext> {
   // viewport: null — the page takes the window, so the launch flags' scale holds.
-  const ctx = await browser.newContext({ viewport: null, locale: "en-US" });
+  const ctx = await browser.newContext({
+    viewport: null,
+    locale: "en-US",
+    timezoneId: "Europe/London",
+  });
   await ctx.addInitScript(() => {
     window.localStorage.setItem("retro_hex_chat_tips_suppressed", "true");
   });
+  await ctx.addInitScript(drawCursor);
   return ctx;
 }
 
 /** Waits on camera: the pause a person takes between two actions. */
 export type Pace = (ms: number) => Promise<void>;
+
+/**
+ * Waits until the narration reaches the sentence containing `words`, so what
+ * happens on screen lands with what is said about it. Arriving there more than
+ * LATE_CUE_TOLERANCE after the sentence began fails the take: the action before
+ * it is too slow for the words.
+ */
+export type CueWait = (words: string) => Promise<void>;
+
+export type Direction = { pace: Pace; cue: CueWait };
 
 /**
  * Films one scene. `action` plays it; the camera then holds the last frame
@@ -65,14 +98,29 @@ export type Pace = (ms: number) => Promise<void>;
 export async function film(
   page: Page,
   shot: Shot,
-  action: (pace: Pace) => Promise<void>,
+  action: (direction: Direction) => Promise<void>,
 ): Promise<Take> {
   const dir = path.join(outDir(), String(shot.number).padStart(2, "0"));
   const startedAt = Date.now();
   const recorder = await Recorder.start(page, dir, CAMERA.frame);
   const pace: Pace = (ms) => page.waitForTimeout(ms);
+  const cue: CueWait = async (words) => {
+    const sentence = shot.cues.find((c) => c.text.includes(words));
+    if (!sentence) {
+      throw new Error(
+        `scene ${shot.number} has no sentence containing "${words}"`,
+      );
+    }
+    const late = (Date.now() - startedAt) / 1000 - sentence.at;
+    if (late > LATE_CUE_TOLERANCE) {
+      throw new Error(
+        `scene ${shot.number} reached "${words}" ${late.toFixed(1)}s after it was said`,
+      );
+    }
+    await pace(Math.max(0, -late * 1000));
+  };
 
-  await action(pace);
+  await action({ pace, cue });
 
   const acted = (Date.now() - startedAt) / 1000;
   if (acted > shot.seconds + OVERRUN_TOLERANCE) {
@@ -86,8 +134,25 @@ export async function film(
 }
 
 /** Types like a person, one key at a time. */
-export async function typeOnCamera(page: Page, selector: string, text: string) {
-  await page.locator(selector).pressSequentially(text, { delay: 85 });
+export async function typeOnCamera(field: Locator, text: string) {
+  await field.pressSequentially(text, { delay: 85 });
+}
+
+/**
+ * Glides the pointer onto an element's header strip, the way a presenter
+ * points at a panel. It aims at the top edge on purpose: resting over a row
+ * inside — a user in the list — opens that row's hover card.
+ */
+export async function pointAt(page: Page, target: Locator) {
+  const box = await target.boundingBox();
+  if (!box) throw new Error(`cannot point at ${target}: it is not on screen`);
+  await page.mouse.move(
+    box.x + box.width / 2,
+    box.y + Math.min(12, box.height / 2),
+    {
+      steps: 25,
+    },
+  );
 }
 
 /**

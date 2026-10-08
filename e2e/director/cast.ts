@@ -1,5 +1,7 @@
 import { Browser } from "@playwright/test";
-import { closeUsers, knownSignedInUser, TestUser } from "../helpers/chatUsers";
+import { closeUsers, TestUser } from "../helpers/chatUsers";
+import { ChatPage } from "../pages/ChatPage";
+import { ConnectPage } from "../pages/ConnectPage";
 
 /**
  * The people already in the room when the camera arrives.
@@ -9,6 +11,23 @@ import { closeUsers, knownSignedInUser, TestUser } from "../helpers/chatUsers";
  * populated channel: a full user list, a conversation to scroll back through,
  * and people who answer.
  */
+
+/**
+ * Where each member says they are. A user's profile card shows the time zone
+ * their browser reports; a context left on defaults would report the machine
+ * filming — so every member gets one of their own, and the room reads as
+ * people from around the world.
+ */
+const TIME_ZONES = [
+  "Europe/Lisbon",
+  "America/New_York",
+  "Europe/Berlin",
+  "Asia/Tokyo",
+  "America/Chicago",
+  "Australia/Sydney",
+  "America/Vancouver",
+  "Europe/Stockholm",
+];
 
 /** One line of dialogue: who says it and how long they wait afterwards (ms). */
 export type Line = { by: string; says: string; then?: number };
@@ -29,8 +48,18 @@ export class Cast {
     password: string,
   ): Promise<Cast> {
     const members = new Map<string, TestUser>();
-    for (const nick of nicks) {
-      members.set(nick, await knownSignedInUser(browser, nick, password));
+    for (const [i, nick] of nicks.entries()) {
+      const ctx = await browser.newContext({
+        locale: "en-US",
+        timezoneId: TIME_ZONES[i % TIME_ZONES.length],
+      });
+      const page = await ctx.newPage();
+      const connect = new ConnectPage(page);
+      const chat = new ChatPage(page);
+      await connect.open();
+      await connect.signIn(nick, password);
+      await chat.waitUntilConnected();
+      members.set(nick, { chat, connect, ctx, page, nick, password });
     }
     return new Cast(members);
   }

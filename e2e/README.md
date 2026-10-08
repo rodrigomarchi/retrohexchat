@@ -127,7 +127,44 @@ long as the voice over it, and a scene whose actions outrun its narration fails.
 - `epNN-*.director.ts` — one file per episode, one `test` per scene.
 
 A scene registers its nickname on camera, so a retake needs a fresh database
-(`make e2e.db.reset`) or another `DIRECTOR_NICK`.
+(`FRESH=1`, or `make e2e.db.reset`) or another `DIRECTOR_NICK`.
+
+- `cast.ts` — the people already in the room, each in a browser context of
+  its own, never filmed.
+- `cursor.ts` — a drawn Windows-98 pointer: headless Chrome has no system
+  cursor, so without it clicks and pointing are invisible on film.
+
+### Pitfalls the director already hit
+
+- **The screencast ignores emulated scale.** A context with
+  `deviceScaleFactor: 1.5` still paints 1280x720 frames. The scale comes from
+  `CAMERA_LAUNCH_ARGS` with `viewport: null`, and the director project must not
+  spread `devices[...]`: a device preset injects `deviceScaleFactor` into every
+  context, which Playwright refuses alongside a null viewport. `Recorder.stop`
+  fails a take whose frames are not the size asked for.
+- **`playwright.config.ts` must not import a module that imports `test`.** The
+  camera constants live in `camera.ts`, which imports nothing from Playwright.
+- **A pointer left where it clicked keeps that spot's hover state on screen** —
+  a message's reaction bar, a highlighted button. `restCursor()` after clicks
+  that end a beat; `pointAt()` to direct the eye on purpose.
+- **Hover cards leak the filming machine.** Pointing at a user in the list
+  opened their profile card, showing the OS, browser and the machine's time
+  zone. Every context the director creates sets its own `locale` and
+  `timezoneId` (the cast gets zones from around the world), and `pointAt()`
+  aims at a panel's header, never at a row inside it.
+- **Headless has no cursor.** The screencast showed clicks with nothing to
+  follow; `cameraContext` installs `drawCursor`.
+- **Close what a scene opens.** The formatting toolbar left open sat over the
+  command autocomplete in the next beat.
+- **Act on cues, not on guessed waits.** `cue("words")` waits for the sentence
+  of narration that contains them and fails the take if the action before it
+  ran late; hand-tuned `pace()` alone left scene 2 frozen for its last 9 s.
+- **An empty channel reads as a dead product.** Assemble the cast first. On a
+  fresh database the first member to join founds the channel and owns it —
+  the order of `CAST` is casting. Every line is checked on its speaker's screen,
+  so one refused by flood control fails the take instead of leaving a hole.
+- **A green take is not a good take.** Pull stills from the encoded video and
+  look at them before calling a scene done.
 
 ## Load testing (`load/`)
 
