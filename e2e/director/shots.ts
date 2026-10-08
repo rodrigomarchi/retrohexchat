@@ -89,3 +89,14 @@ export async function film(
 export async function typeOnCamera(page: Page, selector: string, text: string) {
   await page.locator(selector).pressSequentially(text, { delay: 85 });
 }
+
+/**
+ * Parks the pointer where it hovers nothing. A pointer left where the last
+ * click landed keeps that spot's hover state on screen — a message's reaction
+ * bar, a button's highlight.
+ */
+export async function restCursor(page: Page) {
+  await page.mouse.move(CAMERA.css.width - 4, CAMERA.css.height / 2, {
+    steps: 12,
+  });
+}

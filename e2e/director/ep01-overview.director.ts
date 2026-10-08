@@ -10,7 +10,14 @@
  */
 import { expect, test } from "@playwright/test";
 import { ChatPage } from "../pages/ChatPage";
-import { cameraContext, film, shotFor, typeOnCamera } from "./shots";
+import { Cast, Line } from "./cast";
+import {
+  cameraContext,
+  film,
+  restCursor,
+  shotFor,
+  typeOnCamera,
+} from "./shots";
 
 const CONNECT_WINDOW = '[data-testid="landing-connect-window"]';
 
@@ -19,7 +26,47 @@ const CONNECT_WINDOW = '[data-testid="landing-connect-window"]';
 const NICK = process.env.DIRECTOR_NICK || "Pixel";
 const PASSWORD = "retro1998";
 
+// Already in #lobby when the viewer arrives. The first founds the channel and
+// owns it; the order is casting.
+const CAST = ["nova", "kestrel", "lumen", "bytebard", "dialup_dan", "m0dem"];
+const TOPIC = "Welcome to #lobby — be excellent to each other";
+
+// The conversation the viewer scrolls into: it happened before they joined.
+const EARLIER: Line[] = [
+  {
+    by: "bytebard",
+    says: "anyone else still have a 56k modem in a drawer somewhere?",
+  },
+  { by: "dialup_dan", says: "mine is on the shelf next to the zip drive 😄" },
+  { by: "kestrel", says: "just beat E1M3 in the arcade without saving" },
+  { by: "lumen", says: "no way, the secret exit too?" },
+  { by: "kestrel", says: "of course. took me an hour to find it in 1994" },
+  { by: "m0dem", says: "half the channel is hanging out in the Space tonight" },
+  { by: "nova", says: "trivia starts at 9, bring your best 90s facts" },
+];
+
+test.describe.configure({ mode: "serial" });
+
 test.describe("EP01 overview", () => {
+  let cast: Cast;
+
+  test.beforeAll(async ({ browser }) => {
+    test.setTimeout(3 * 60_000);
+    cast = await Cast.assemble(browser, CAST, PASSWORD);
+    await cast.command("nova", `/topic ${TOPIC}`);
+    await cast.command("nova", "/op kestrel");
+    await cast.command("nova", "/voice lumen");
+    await cast.command("nova", "/voice bytebard");
+    await expect(
+      cast.member("nova").page.getByText(TOPIC).first(),
+    ).toBeVisible();
+    await cast.play(EARLIER);
+  });
+
+  test.afterAll(async () => {
+    await cast?.dismiss();
+  });
+
   test("01 connect in five seconds", async ({ browser }) => {
     const shot = shotFor(1);
     const ctx = await cameraContext(browser);
@@ -56,8 +103,15 @@ test.describe("EP01 overview", () => {
         .locator(`${CONNECT_WINDOW} [data-testid="register-btn"]`)
         .click();
 
-      await new ChatPage(page).waitUntilConnected();
-      await pace(2500);
+      const chat = new ChatPage(page);
+      await chat.waitUntilConnected();
+      await restCursor(page);
+      await chat.expectMessageVisible(EARLIER.at(-1)!.says);
+      await pace(900);
+      await cast.say("nova", `hey ${NICK}, welcome to #lobby 👋`);
+      await pace(700);
+      await cast.say("dialup_dan", "welcome! grab a seat");
+      await pace(1500);
     });
 
     await ctx.close();

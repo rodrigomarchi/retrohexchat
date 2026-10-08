@@ -282,8 +282,10 @@ e2e.sweep: ## Run every batch in order, one log each, a verdict per batch
 	if [ -n "$$fails" ]; then echo; echo "Red batches:$$fails"; exit 1; fi; \
 	echo; echo "Every batch green."
 
-e2e.director: ## Film video scenes for the YouTube channel — not a test (SHOTS=/abs/shots.json OUT=/abs/dir)
-	@test -n "$(SHOTS)" -a -n "$(OUT)" || { echo "usage: make e2e.director SHOTS=/abs/shots.json OUT=/abs/dir  (driven by retro_hex_chat_videos: make capture)"; exit 2; }
+e2e.director: ## Film video scenes for the YouTube channel — not a test (SHOTS=/abs/shots.json OUT=/abs/dir [FRESH=1])
+	@test -n "$(SHOTS)" -a -n "$(OUT)" || { echo "usage: make e2e.director SHOTS=/abs/shots.json OUT=/abs/dir [FRESH=1]  (driven by retro_hex_chat_videos: make capture)"; exit 2; }
+	@# FRESH=1 starts from an empty database: the cast founds #lobby and the viewer registers on camera.
+	$(if $(FRESH),$(MAKE) e2e.db.reset)
 	$(E2E_MIX) assets.build
 	@pids=$$(lsof -ti:$(E2E_PORT) 2>/dev/null); [ -z "$$pids" ] || kill -9 $$pids
 	cd e2e && E2E_DIRECTOR=1 DIRECTOR_SHOTS=$(abspath $(SHOTS)) DIRECTOR_OUT=$(abspath $(OUT)) $(E2E_ENV) npx playwright test --project=director
