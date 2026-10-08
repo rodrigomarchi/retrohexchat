@@ -9,9 +9,11 @@ defmodule RetroHexChat.Scraper.VixImageThumbnailer do
   alias Vix.Vips.Image, as: VipsImage
   alias Vix.Vips.Operation
 
-  @default_width 640
-  @default_height 360
-  @jpeg_quality 82
+  @default_width 480
+  @default_height 270
+  # WebP at this quality is roughly half the bytes of the JPEG it replaces with no
+  # difference visible at card size; every browser the app supports decodes it.
+  @webp_quality 75
 
   @impl true
   @spec thumbnail(binary(), keyword()) :: {:ok, ImageThumbnailer.thumbnail()} | {:error, term()}
@@ -27,12 +29,12 @@ defmodule RetroHexChat.Scraper.VixImageThumbnailer do
            ),
          {:ok, flattened} <- flatten_alpha(thumb),
          {:ok, encoded} <-
-           VipsImage.write_to_buffer(flattened, ".jpg", Q: @jpeg_quality, strip: true) do
+           VipsImage.write_to_buffer(flattened, ".webp", Q: @webp_quality, strip: true) do
       {:ok,
        %{
          body: encoded,
-         content_type: "image/jpeg",
-         extension: "jpg",
+         content_type: "image/webp",
+         extension: "webp",
          width: VipsImage.width(flattened),
          height: VipsImage.height(flattened),
          byte_size: byte_size(encoded)

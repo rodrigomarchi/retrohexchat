@@ -16,8 +16,11 @@ defmodule RetroHexChat.Scraper.ImageCache do
 
   require Logger
 
-  @thumb_width 640
-  @thumb_height 360
+  # The feed card draws the image at most 640px wide and a conversation card at
+  # 320px. Every distinct link the feeds publish keeps one of these for as long
+  # as it is read, so the size is a storage budget as much as a display choice.
+  @thumb_width 480
+  @thumb_height 270
   @signed_url_ttl_seconds 300
 
   @type delete_summary :: %{

@@ -232,8 +232,12 @@ get fresh timers with the *remaining* duration.
   keyboard-reachable fallback. A list with no domain ceiling paginates; one with a ceiling
   documents the ceiling.
 - **Long-list streams carry a negative `limit:`** (about 3× the page) so the DOM stays bounded.
-- **Text search uses pg_trgm GIN + ILIKE/`similarity()`**, not tsvector full-text (trigram
-  wins for the substring matching Ctrl+F expects) and not an external engine.
+- **Text search uses ILIKE/`similarity()` with pg_trgm**, not tsvector full-text (trigram
+  wins for the substring matching Ctrl+F expects) and not an external engine. A trigram GIN
+  index only helps when it is built on the **exact expression** the query filters: channel
+  search matches `coalesce(plain_content, content)`, so an index on `content` is never
+  chosen. Message search scans by channel instead; check `pg_stat_user_indexes.idx_scan`
+  before adding one.
 - **Fuzzy matching runs server-side** (subsequence + weighted scoring, ~30 LOC Elixir); only
   Tab-cycling and recent-commands (localStorage, capped 5) are client-local for latency.
   Levenshtein and external fuzzy libs rejected as overkill for small datasets.
