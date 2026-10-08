@@ -28,6 +28,22 @@ Found 2026-10-08, while scripting the YouTube channel's first episode.
       — "Type / to open the command palette". Check it reads consistently with the README fix
       above (one name for one thing).
 
+## UI defects
+
+- [ ] **ChanServ shows a raw timestamp.** Channel Central → Registration, "Since:" reads
+      `2026-10-08 16:19:14.379859Z` — ISO with microseconds and a `Z`, where every other date in
+      the UI is formatted. Found 2026-10-08 filming EP01 scene 3.
+
+## Test helpers
+
+- [ ] **`enterThroughNewCard` can follow a stale card.**
+      `e2e/helpers/surfaceEntry.ts` — its poll falls back to `addresses.at(-1)` on the very first
+      try, so when the new card has not rendered yet it returns the conversation's previous bottom
+      card. Found 2026-10-08 filming EP01: a Space press in a channel full of conference cards
+      opened the conference. Fix: wait for an address not seen before the press, and fall back to
+      the bottom card only when none appears (as `e2e/director/space.ts` →
+      `enterThroughFreshCard` does).
+
 ## To verify
 
 - [ ] **README "Virtual Spaces — switch any channel or DM from Chat to Space".**

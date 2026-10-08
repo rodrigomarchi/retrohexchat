@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { CAMERA } from "./camera";
 import { drawCursor } from "./cursor";
+import { installTestCard } from "./media";
 import { Recorder, Take } from "./recorder";
 
 /**
@@ -63,7 +64,10 @@ export function shotFor(number: number): Shot {
  * a locale and time zone of its own rather than the filming machine's — the
  * viewer's clock and profile are on screen.
  */
-export async function cameraContext(browser: Browser): Promise<BrowserContext> {
+export async function cameraContext(
+  browser: Browser,
+  nick: string,
+): Promise<BrowserContext> {
   // viewport: null — the page takes the window, so the launch flags' scale holds.
   const ctx = await browser.newContext({
     viewport: null,
@@ -74,6 +78,7 @@ export async function cameraContext(browser: Browser): Promise<BrowserContext> {
     window.localStorage.setItem("retro_hex_chat_tips_suppressed", "true");
   });
   await ctx.addInitScript(drawCursor);
+  await installTestCard(ctx, nick);
   return ctx;
 }
 
@@ -88,7 +93,10 @@ export type Pace = (ms: number) => Promise<void>;
  */
 export type CueWait = (words: string) => Promise<void>;
 
-export type Direction = { pace: Pace; cue: CueWait };
+/** Moves the camera to another page — a tab the scene just opened. */
+export type Follow = (page: Page) => Promise<void>;
+
+export type Direction = { pace: Pace; cue: CueWait; follow: Follow };
 
 /**
  * Films one scene. `action` plays it; the camera then holds the last frame
@@ -120,7 +128,9 @@ export async function film(
     await pace(Math.max(0, -late * 1000));
   };
 
-  await action({ pace, cue });
+  const follow: Follow = (next) => recorder.follow(next);
+
+  await action({ pace, cue, follow });
 
   const acted = (Date.now() - startedAt) / 1000;
   if (acted > shot.seconds + OVERRUN_TOLERANCE) {

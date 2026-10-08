@@ -96,75 +96,12 @@ e2e/
 ├── package.json
 ├── playwright.config.ts
 ├── tsconfig.json
-├── director/              Films YouTube scenes (`make e2e.director`): not a test
 ├── pages/                 Page Object Model (selectors + high-level actions)
 │   ├── ChatPage.ts
 │   └── ConnectPage.ts
 └── tests/                 Specs (one file per user journey)
     └── connect-flow.spec.ts
 ```
-
-## Video director (`director/`)
-
-Films scenes for the YouTube channel. **Not a test category**: nothing in
-`director/` guards a behaviour. It lives outside `tests/`, so the catalog, the
-batches and the sweep never see it, and its Playwright project exists only when
-`E2E_DIRECTOR=1` — a plain `playwright test` cannot pick it up.
-
-```bash
-make e2e.director SHOTS=/abs/shots.json OUT=/abs/takes
-```
-
-It is driven by the video project (`../retro_hex_chat_videos`, `make capture`),
-which writes the shot list from the measured narration: each scene lasts as
-long as the voice over it, and a scene whose actions outrun its narration fails.
-
-- `camera.ts` — 1280x720 CSS at 1.5x → 1920x1080 frames. The scale comes from
-  launch flags; the screencast ignores an emulated `deviceScaleFactor`.
-- `recorder.ts` — CDP screencast to JPEG frames + `take.json` (when each
-  frame was painted). Playwright's own video is VP8 at 1 Mbit/s.
-- `shots.ts` — the shot list, `film()` and the on-camera helpers.
-- `epNN-*.director.ts` — one file per episode, one `test` per scene.
-
-A scene registers its nickname on camera, so a retake needs a fresh database
-(`FRESH=1`, or `make e2e.db.reset`) or another `DIRECTOR_NICK`.
-
-- `cast.ts` — the people already in the room, each in a browser context of
-  its own, never filmed.
-- `cursor.ts` — a drawn Windows-98 pointer: headless Chrome has no system
-  cursor, so without it clicks and pointing are invisible on film.
-
-### Pitfalls the director already hit
-
-- **The screencast ignores emulated scale.** A context with
-  `deviceScaleFactor: 1.5` still paints 1280x720 frames. The scale comes from
-  `CAMERA_LAUNCH_ARGS` with `viewport: null`, and the director project must not
-  spread `devices[...]`: a device preset injects `deviceScaleFactor` into every
-  context, which Playwright refuses alongside a null viewport. `Recorder.stop`
-  fails a take whose frames are not the size asked for.
-- **`playwright.config.ts` must not import a module that imports `test`.** The
-  camera constants live in `camera.ts`, which imports nothing from Playwright.
-- **A pointer left where it clicked keeps that spot's hover state on screen** —
-  a message's reaction bar, a highlighted button. `restCursor()` after clicks
-  that end a beat; `pointAt()` to direct the eye on purpose.
-- **Hover cards leak the filming machine.** Pointing at a user in the list
-  opened their profile card, showing the OS, browser and the machine's time
-  zone. Every context the director creates sets its own `locale` and
-  `timezoneId` (the cast gets zones from around the world), and `pointAt()`
-  aims at a panel's header, never at a row inside it.
-- **Headless has no cursor.** The screencast showed clicks with nothing to
-  follow; `cameraContext` installs `drawCursor`.
-- **Close what a scene opens.** The formatting toolbar left open sat over the
-  command autocomplete in the next beat.
-- **Act on cues, not on guessed waits.** `cue("words")` waits for the sentence
-  of narration that contains them and fails the take if the action before it
-  ran late; hand-tuned `pace()` alone left scene 2 frozen for its last 9 s.
-- **An empty channel reads as a dead product.** Assemble the cast first. On a
-  fresh database the first member to join founds the channel and owns it —
-  the order of `CAST` is casting. Every line is checked on its speaker's screen,
-  so one refused by flood control fails the take instead of leaving a hole.
-- **A green take is not a good take.** Pull stills from the encoded video and
-  look at them before calling a scene done.
 
 ## Load testing (`load/`)
 
