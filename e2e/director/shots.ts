@@ -96,7 +96,19 @@ export type CueWait = (words: string) => Promise<void>;
 /** Moves the camera to another page — a tab the scene just opened. */
 export type Follow = (page: Page) => Promise<void>;
 
-export type Direction = { pace: Pace; cue: CueWait; follow: Follow };
+/**
+ * Tells the edit what the scene is about from now on: an element on the page
+ * the camera is filming, or `null` for the whole frame. The edit zooms
+ * towards it; nothing changes on screen while filming.
+ */
+export type Focus = (target: Locator | null) => Promise<void>;
+
+export type Direction = {
+  pace: Pace;
+  cue: CueWait;
+  follow: Follow;
+  focus: Focus;
+};
 
 /**
  * Films one scene. `action` plays it; the camera then holds the last frame
@@ -128,9 +140,26 @@ export async function film(
     await pace(Math.max(0, -late * 1000));
   };
 
-  const follow: Follow = (next) => recorder.follow(next);
+  const follow: Follow = async (next) => {
+    // A region marked on one page means nothing on the next.
+    recorder.mark(null);
+    await recorder.follow(next);
+  };
+  const focus: Focus = async (target) => {
+    if (!target) return recorder.mark(null);
+    const box = await target.boundingBox();
+    if (!box) throw new Error(`cannot focus on ${target}: it is not on screen`);
+    // Boxes are CSS pixels; frames are CAMERA.scale times larger.
+    const k = CAMERA.scale;
+    recorder.mark({
+      x: box.x * k,
+      y: box.y * k,
+      width: box.width * k,
+      height: box.height * k,
+    });
+  };
 
-  await action({ pace, cue, follow });
+  await action({ pace, cue, follow, focus });
 
   const acted = (Date.now() - startedAt) / 1000;
   if (acted > shot.seconds + OVERRUN_TOLERANCE) {

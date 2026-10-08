@@ -22,11 +22,21 @@ import path from "node:path";
 
 export type Frame = { file: string; at: number };
 
+/** A region of the frame, in frame pixels. */
+export type Box = { x: number; y: number; width: number; height: number };
+
+/**
+ * From `at` on, the scene is about `box` — or about the whole frame when it is
+ * null. The edit zooms towards it.
+ */
+export type Mark = { at: number; box: Box | null };
+
 export type Take = {
   seconds: number;
   width: number;
   height: number;
   frames: Frame[];
+  marks: Mark[];
 };
 
 type ScreencastFrame = {
@@ -37,6 +47,7 @@ type ScreencastFrame = {
 
 export class Recorder {
   private readonly frames: Frame[] = [];
+  private readonly marks: Mark[] = [];
   private readonly startedAt = Date.now();
   private width = 0;
   private height = 0;
@@ -86,6 +97,11 @@ export class Recorder {
     });
   }
 
+  /** Records what the scene is about from now on (see `Mark`). */
+  mark(box: Box | null): void {
+    this.marks.push({ at: this.elapsed(), box });
+  }
+
   private async release(): Promise<void> {
     const cdp = this.cdp;
     await cdp.send("Page.stopScreencast").catch(ignoreClosed);
@@ -121,6 +137,7 @@ export class Recorder {
       width: this.width,
       height: this.height,
       frames: this.frames,
+      marks: this.marks,
     };
     writeFileSync(
       path.join(this.dir, "take.json"),

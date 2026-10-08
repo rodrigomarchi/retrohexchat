@@ -3,6 +3,16 @@
 Things found that need fixing or checking later. Each item says where it was found,
 what the docs claim and what the code does. Delete an item when it is fixed.
 
+## Broken in production
+
+- [ ] **Every GitHub link points at a repository that does not exist.** The app links to
+      `github.com/rodrigomarchi/retro_hex_chat` (404, no redirect) — the repository is
+      `github.com/rodrigomarchi/retrohexchat`. 75 occurrences: Start ▸ Help ▸ GitHub and
+      License (MIT) (`start_menu_app.ex`), the landing (`landing_shell.ex`, `landing_mockups.ex`,
+      `community.html.heex`), desktop launchers, `seo.ex` (structured data), `priv/static/llms.txt`,
+      `CONTRIBUTING.md`, docs. Found 2026-10-08 checking EP01's description links. SEO-visible:
+      follow the public-page snapshot/diff rule when fixing.
+
 ## Docs that contradict the code
 
 Found 2026-10-08, while scripting the YouTube channel's first episode.

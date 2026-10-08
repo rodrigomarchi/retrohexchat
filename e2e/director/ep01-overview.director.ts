@@ -231,10 +231,11 @@ test.describe("EP01 overview", () => {
     await expect(page.locator(CONNECT_WINDOW)).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
 
-    await film(page, shot, async ({ pace }) => {
+    await film(page, shot, async ({ pace, focus }) => {
       await pace(1500);
       const nickname = page.locator(`${CONNECT_WINDOW} #nickname`);
       await nickname.click();
+      await focus(page.locator(CONNECT_WINDOW));
       await typeOnCamera(nickname, NICK);
       await pace(500);
       await page
@@ -259,6 +260,7 @@ test.describe("EP01 overview", () => {
 
       const chat = new ChatPage(page);
       await chat.waitUntilConnected();
+      await focus(null);
       await restCursor(page);
       await chat.expectMessageVisible(EARLIER.at(-1)!.says);
       await pace(900);
@@ -276,7 +278,7 @@ test.describe("EP01 overview", () => {
 
     await restCursor(page);
 
-    await film(page, shot, async ({ pace, cue }) => {
+    await film(page, shot, async ({ pace, cue, focus }) => {
       // The channel as it stands; the pointer follows the tour of it.
       await cue("Channels on the left");
       await pointAt(page, chat.conversationsSidebar);
@@ -316,17 +318,20 @@ test.describe("EP01 overview", () => {
       await cue("just type a slash");
       await typeOnCamera(chat.chatInput, "/");
       await expect(chat.autocompleteDropdown).toBeVisible();
+      await focus(chat.autocompleteDropdown);
       await pace(2200);
       await typeOnCamera(chat.chatInput, "jo");
       await chat.expectAutocompleteContains("/join");
       await pace(1800);
       await chat.chatInput.fill("");
       await expect(chat.autocompleteDropdown).toBeHidden();
+      await focus(null);
 
       // And the keyboard has a cheatsheet of its own.
       await cue("cheatsheet of their own");
       await pressCtrlShift(page, "/");
       await expect(chat.cheatsheetDialog).toBeVisible();
+      await focus(chat.cheatsheetDialog);
       await restCursor(page);
     });
 
@@ -341,7 +346,7 @@ test.describe("EP01 overview", () => {
     const page = viewer;
     await restCursor(page);
 
-    await film(page, shot, async ({ pace, cue }) => {
+    await film(page, shot, async ({ pace, cue, focus }) => {
       // A channel nobody has opened yet: whoever joins first owns it.
       await chat.chatInput.click();
       await typeOnCamera(chat.chatInput, `/join ${HAVEN}`);
@@ -350,6 +355,7 @@ test.describe("EP01 overview", () => {
 
       await cue("Channel Central puts it all");
       await chat.openChannelCentralFromMenu();
+      await focus(chat.channelCentralDialog);
       await pace(900);
       await chat.switchChannelCentralToTab("modes");
       const modes = chat.channelCentralPanel("modes");
@@ -374,6 +380,7 @@ test.describe("EP01 overview", () => {
 
       await cue("This is the kind of depth");
       await chat.closeChannelCentral();
+      await focus(null);
       await restCursor(page);
     });
   });
@@ -385,13 +392,14 @@ test.describe("EP01 overview", () => {
     await chat.switchToTab("#lobby");
     await restCursor(page);
 
-    await film(page, shot, async ({ pace, cue }) => {
+    await film(page, shot, async ({ pace, cue, focus }) => {
       // The newcomer is on the way in while the bot is introduced.
       const arriving = cast.enter(NEWCOMER);
       await pace(600);
       await pointAt(page, chat.nicklist);
 
       await cue("greets everyone who walks in");
+      await focus(chat.messageList);
       await arriving;
       await chat.expectMessageVisible(`Welcome to #lobby, ${NEWCOMER}!`);
       await restCursor(page);
@@ -439,7 +447,7 @@ test.describe("EP01 overview", () => {
     let session: Session | undefined;
     let mine: Page | undefined;
     try {
-      await film(page, shot, async ({ pace, cue, follow }) => {
+      await film(page, shot, async ({ pace, cue, follow, focus }) => {
         await chat.chatInput.click();
         await typeOnCamera(chat.chatInput, `/p2p ${CALLEE}`);
         // openSession sends it; the camera follows the viewer's session tab.
@@ -447,6 +455,7 @@ test.describe("EP01 overview", () => {
 
         await cue("Send a file the same way");
         await sendFile(session, file);
+        await focus(session.inviter.getByTestId("lobby-file-panel"));
 
         await cue("whole channel wants to talk");
         await follow(page);
@@ -491,7 +500,7 @@ test.describe("EP01 overview", () => {
 
     let space: Page | undefined;
     try {
-      await film(page, shot, async ({ pace, cue, follow }) => {
+      await film(page, shot, async ({ pace, cue, follow, focus }) => {
         await cue("has a Space");
         space = await openSpace(page, viewerCtx);
         await follow(space);
@@ -545,8 +554,9 @@ test.describe("EP01 overview", () => {
 
     let doom: Page | undefined;
     try {
-      await film(page, shot, async ({ pace, cue, follow }) => {
+      await film(page, shot, async ({ pace, cue, follow, focus }) => {
         await openArcade(page, chat);
+        await focus(page.getByTestId("arcade-games-window"));
         await restCursor(page);
 
         await cue("you'll find DOOM");
@@ -607,9 +617,10 @@ test.describe("EP01 overview", () => {
     arriving = cast.enter(FRIEND);
     await page.waitForTimeout(4000);
 
-    await film(page, shot, async ({ pace, cue }) => {
+    await film(page, shot, async ({ pace, cue, focus }) => {
       await cue("A URL catcher");
       await chat.openUrlCatcherFromMenu();
+      await focus(chat.urlCatcherDialog);
       await expect(chat.urlCatcherRowByUrl(LINKS[0])).toBeVisible();
       await restCursor(page);
 
@@ -618,21 +629,25 @@ test.describe("EP01 overview", () => {
         .locator('[data-window-control="close"]')
         .click();
       await pointAt(page, card);
+      await focus(card);
 
       await cue("buddy list");
       await chat.openNotifyListFromMenu();
+      await focus(chat.notifyListDialog);
       await restCursor(page);
 
       await cue("Full-text search");
       await chat.closeNotifyList();
       await pressCtrlShift(page, "F");
       await expect(chat.searchBar).toBeVisible();
+      await focus(chat.messageList);
       await typeOnCamera(chat.searchBarInput, "IRQ");
       await expect(page.locator("mark.search-highlight").first()).toBeVisible();
 
       await cue("help system");
       await page.keyboard.press("Escape");
       await chat.openHelpTopicsFromMenu();
+      await focus(null);
       await pace(1200);
       await page.getByRole("tab", { name: "Index" }).click();
       await pace(1200);
@@ -654,9 +669,10 @@ test.describe("EP01 overview", () => {
     const page = viewer;
     await restCursor(page);
 
-    await film(page, shot, async ({ pace, cue }) => {
+    await film(page, shot, async ({ pace, cue, focus }) => {
       // Start ▸ Help holds the licence, the source and About together.
       await chat.openStartGroup(chat.helpSubmenuTrigger, chat.startAboutItem);
+      await focus(page.locator("[data-window-start-menu]"));
       await pointAt(page, page.getByTestId("start-menu-item-license"));
       await pace(1500);
       await pointAt(page, page.getByTestId("start-menu-item-github"));
@@ -664,11 +680,13 @@ test.describe("EP01 overview", () => {
       await cue("Under the hood");
       await chat.startAboutItem.click();
       await expect(chat.aboutDialog).toBeVisible();
+      await focus(chat.aboutDialog);
       await restCursor(page);
 
       await cue("use it right now");
       await page.keyboard.press("Escape");
       await expect(chat.aboutDialog).toBeHidden();
+      await focus(null);
     });
   });
 
@@ -684,13 +702,14 @@ test.describe("EP01 overview", () => {
 
     let doom: Page | undefined;
     try {
-      await film(page, shot, async ({ pace, cue, follow }) => {
+      await film(page, shot, async ({ pace, cue, follow, focus }) => {
         // #lobby keeps talking while the camera watches.
         const talking = cast.play(LIVELY);
 
         // The Arcade opens early: DOOM needs a few seconds to be playable.
         await cue("It runs in your browser");
         await openArcade(page, chat);
+        await focus(page.getByTestId("arcade-games-window"));
         await pace(800);
         await previewDoom(page);
         await pace(800);
