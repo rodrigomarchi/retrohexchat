@@ -15,10 +15,14 @@ long as the voice over it, each action waits for its sentence (`cue`), and a
 take that falls behind its narration fails. Defects found while filming go in
 the repository's `TODO.md`, not here.
 
+`focus(locator | null)` records in the take what the scene is about from that
+moment — nothing changes on screen; the edit (`retro_hex_chat_videos/compose`)
+zooms towards it. Following a new tab resets it to the whole frame.
+
 ## Files
 
 - `epNN-*.director.ts` — one file per episode, one `test` per scene.
-- `shots.ts` — the shot list, `film()` (pace, cue, follow) and the on-camera
+- `shots.ts` — the shot list, `film()` (pace, cue, follow, focus) and the on-camera
   helpers (`typeOnCamera`, `pointAt`, `restCursor`).
 - `camera.ts` — 1280x720 CSS at 1.5x → 1920x1080 frames. The scale comes from
   launch flags; the screencast ignores an emulated `deviceScaleFactor`.
