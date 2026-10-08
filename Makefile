@@ -1,7 +1,7 @@
 .PHONY: help setup deps db.setup db.create db.migrate db.rollback db.reset db.seed \
        db.gen.migration server iex routes \
        test test.stale test.unit test.integration test.liveview test.feature test.all test.cover \
-       e2e e2e.headless e2e.sweep e2e.batch e2e.batches e2e.prepare e2e.db.reset e2e.changed e2e.shard e2e.smoke e2e.smoke.connect e2e.smoke.chat e2e.smoke.dialogs e2e.smoke.i18n e2e.smoke.calls e2e.smoke.mobile e2e.smoke.perf e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
+       e2e e2e.headless e2e.sweep e2e.batch e2e.director e2e.batches e2e.prepare e2e.db.reset e2e.changed e2e.shard e2e.smoke e2e.smoke.connect e2e.smoke.chat e2e.smoke.dialogs e2e.smoke.i18n e2e.smoke.calls e2e.smoke.mobile e2e.smoke.perf e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
        test.cover.all test.domain test.domain.stale test.web test.web.stale test.failed test.seed test.file test.line \
        test.js test.js.changed test.js.related test.js.watch \
        ci ci.quick ci.changed ci.serial ci.quick.serial ci.partition-profile ci.partition-profile.plan \
@@ -22,7 +22,7 @@ WEB_APP    = apps/retro_hex_chat_web
 CSS_BUILD_CHECK_OUT = $(shell mktemp -t retrohex-css-check)
 E2E_DIR    = e2e
 PRETTIER   = $(WEB_APP)/assets/node_modules/.bin/prettier
-E2E_FORMAT_SOURCES = $(E2E_DIR)/*.json $(E2E_DIR)/*.ts $(E2E_DIR)/helpers $(E2E_DIR)/pages $(E2E_DIR)/tests $(E2E_DIR)/load $(E2E_DIR)/scripts
+E2E_FORMAT_SOURCES = $(E2E_DIR)/*.json $(E2E_DIR)/*.ts $(E2E_DIR)/helpers $(E2E_DIR)/pages $(E2E_DIR)/tests $(E2E_DIR)/load $(E2E_DIR)/scripts $(E2E_DIR)/director
 E2E_SMOKE_CONNECT_ARGS = tests/connect-flow.spec.ts
 E2E_SMOKE_CHAT_ARGS = tests/chat-welcome.spec.ts
 E2E_SMOKE_DIALOGS_ARGS = tests/chat-dialog-close.spec.ts
@@ -281,6 +281,12 @@ e2e.sweep: ## Run every batch in order, one log each, a verdict per batch
 	done; \
 	if [ -n "$$fails" ]; then echo; echo "Red batches:$$fails"; exit 1; fi; \
 	echo; echo "Every batch green."
+
+e2e.director: ## Film video scenes for the YouTube channel — not a test (SHOTS=/abs/shots.json OUT=/abs/dir)
+	@test -n "$(SHOTS)" -a -n "$(OUT)" || { echo "usage: make e2e.director SHOTS=/abs/shots.json OUT=/abs/dir  (driven by retro_hex_chat_videos: make capture)"; exit 2; }
+	$(E2E_MIX) assets.build
+	@pids=$$(lsof -ti:$(E2E_PORT) 2>/dev/null); [ -z "$$pids" ] || kill -9 $$pids
+	cd e2e && E2E_DIRECTOR=1 DIRECTOR_SHOTS=$(abspath $(SHOTS)) DIRECTOR_OUT=$(abspath $(OUT)) $(E2E_ENV) npx playwright test --project=director
 
 e2e.changed: ## Run Playwright specs changed since SINCE (default: uncommitted changes)
 	$(E2E_MIX) assets.build

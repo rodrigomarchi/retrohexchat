@@ -96,12 +96,38 @@ e2e/
 ├── package.json
 ├── playwright.config.ts
 ├── tsconfig.json
+├── director/              Films YouTube scenes (`make e2e.director`): not a test
 ├── pages/                 Page Object Model (selectors + high-level actions)
 │   ├── ChatPage.ts
 │   └── ConnectPage.ts
 └── tests/                 Specs (one file per user journey)
     └── connect-flow.spec.ts
 ```
+
+## Video director (`director/`)
+
+Films scenes for the YouTube channel. **Not a test category**: nothing in
+`director/` guards a behaviour. It lives outside `tests/`, so the catalog, the
+batches and the sweep never see it, and its Playwright project exists only when
+`E2E_DIRECTOR=1` — a plain `playwright test` cannot pick it up.
+
+```bash
+make e2e.director SHOTS=/abs/shots.json OUT=/abs/takes
+```
+
+It is driven by the video project (`../retro_hex_chat_videos`, `make capture`),
+which writes the shot list from the measured narration: each scene lasts as
+long as the voice over it, and a scene whose actions outrun its narration fails.
+
+- `camera.ts` — 1280x720 CSS at 1.5x → 1920x1080 frames. The scale comes from
+  launch flags; the screencast ignores an emulated `deviceScaleFactor`.
+- `recorder.ts` — CDP screencast to JPEG frames + `take.json` (when each
+  frame was painted). Playwright's own video is VP8 at 1 Mbit/s.
+- `shots.ts` — the shot list, `film()` and the on-camera helpers.
+- `epNN-*.director.ts` — one file per episode, one `test` per scene.
+
+A scene registers its nickname on camera, so a retake needs a fresh database
+(`make e2e.db.reset`) or another `DIRECTOR_NICK`.
 
 ## Load testing (`load/`)
 

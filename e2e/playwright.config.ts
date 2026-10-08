@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import { CAMERA_LAUNCH_ARGS } from "./director/camera";
 
 const e2ePort = process.env.E2E_PORT || "4003";
 const pgPort = process.env.PGPORT || process.env.TEST_DB_PORT || "5433";
@@ -52,6 +53,30 @@ export default defineConfig({
         },
       },
     },
+    // Films scenes for the YouTube channel (e2e/director/). Not a test
+    // category: it exists only under `make e2e.director`, so no plain
+    // `playwright test`, batch or sweep can pick it up.
+    ...(process.env.E2E_DIRECTOR
+      ? [
+          {
+            name: "director",
+            testDir: "./director",
+            testMatch: /.*\.director\.ts/,
+            retries: 0,
+            timeout: 5 * 60_000,
+            use: {
+              // No device emulation: the window's native size and scale
+              // (CAMERA_LAUNCH_ARGS) are what the screencast paints.
+              browserName: "chromium" as const,
+              viewport: null,
+              launchOptions: { args: CAMERA_LAUNCH_ARGS },
+              trace: "off" as const,
+              screenshot: "off" as const,
+              video: "off" as const,
+            },
+          },
+        ]
+      : []),
   ],
   // Boots `MIX_ENV=e2e mix phx.server` from the repo root if not already up.
   // First compile can be slow; subsequent runs reuse the running server.
