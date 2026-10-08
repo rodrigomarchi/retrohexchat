@@ -20,6 +20,19 @@ defmodule RetroHexChat.Chat.Attachments.S3Storage do
   end
 
   @impl true
+  def get_file(bucket, key, _opts) do
+    bucket
+    |> ExAws.S3.get_object(key)
+    |> ExAws.request()
+    |> case do
+      {:ok, %{body: body}} -> {:ok, body}
+      {:error, {:http_error, 404, _body}} -> {:error, :not_found}
+      {:error, %{status_code: 404}} -> {:error, :not_found}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  @impl true
   def delete_file(bucket, key, _opts) do
     bucket
     |> ExAws.S3.delete_object(key)

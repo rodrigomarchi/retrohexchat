@@ -22,6 +22,7 @@ defmodule RetroHexChat.Scraper.ImageCache do
   @thumb_width 480
   @thumb_height 270
   @signed_url_ttl_seconds 300
+  @empty_delete_summary %{attempted: 0, deleted: 0, failed: 0}
 
   @type delete_summary :: %{
           attempted: non_neg_integer(),
@@ -144,9 +145,111 @@ defmodule RetroHexChat.Scraper.ImageCache do
   @doc "Deletes Garage objects that belonged to pruned scraped pages."
   @spec delete_objects([Store.image_thumbnail_object()]) :: delete_summary()
   def delete_objects(objects) when is_list(objects) do
-    Enum.reduce(objects, %{attempted: 0, deleted: 0, failed: 0}, fn object, summary ->
+    Enum.reduce(objects, @empty_delete_summary, fn object, summary ->
       delete_object(object, summary)
     end)
+  end
+
+  @doc """
+  Re-encodes one batch of stored thumbnails that are larger than the current frame.
+
+  The source is the thumbnail already in Garage, not the publisher's image: it is
+  the same picture at the same aspect ratio, and fetching hundreds of thousands
+  of originals again would hammer publishers for bytes this only shrinks. Each
+  page is claimed like a generation is, the row moves to the new object only if
+  it still names the old one, and the old object is deleted only after that.
+
+  `after_id` is a cursor: a page that cannot be converted — its object gone, its
+  bytes unreadable — is counted as skipped and left behind, never retried in a
+  loop. `last_id` is where the next batch starts; `nil` means nothing was left.
+  """
+  @spec reencode_oversized(keyword()) :: %{
+          candidates: non_neg_integer(),
+          reencoded: non_neg_integer(),
+          skipped: non_neg_integer(),
+          bytes_deleted: non_neg_integer(),
+          last_id: pos_integer() | nil
+        }
+  def reencode_oversized(opts \\ []) do
+    after_id = Keyword.get(opts, :after_id, 0)
+    limit = Keyword.get(opts, :limit, 200)
+    pages = Store.oversized_thumbnails(after_id, @thumb_width, @thumb_height, limit)
+    summary = %{candidates: length(pages), reencoded: 0, skipped: 0, bytes_deleted: 0}
+
+    pages
+    |> Enum.reduce(summary, fn page, summary ->
+      case reencode_claimed(page) do
+        {:ok, bytes_saved} ->
+          %{
+            summary
+            | reencoded: summary.reencoded + 1,
+              bytes_deleted: summary.bytes_deleted + max(bytes_saved, 0)
+          }
+
+        {:skipped, _reason} ->
+          %{summary | skipped: summary.skipped + 1}
+      end
+    end)
+    |> Map.put(:last_id, pages |> List.last() |> then(&(&1 && &1.id)))
+  end
+
+  @spec reencode_claimed(ScrapedPage.t()) :: {:ok, integer()} | {:skipped, term()}
+  defp reencode_claimed(%ScrapedPage{} = page) do
+    claim = "image:#{page.url_hash}"
+
+    case Cache.claim(claim) do
+      :ok ->
+        try do
+          reencode(page)
+        after
+          Cache.release(claim)
+        end
+
+      :taken ->
+        {:skipped, :claimed}
+    end
+  end
+
+  @spec reencode(ScrapedPage.t()) :: {:ok, integer()} | {:skipped, term()}
+  defp reencode(%ScrapedPage{} = page) do
+    bucket = page.image_thumbnail_storage_bucket
+    previous_key = page.image_thumbnail_storage_key
+
+    with {:ok, body} <- storage().get_file(bucket, previous_key, []),
+         {:ok, thumbnail} <-
+           thumbnailer().thumbnail(body, width: @thumb_width, height: @thumb_height),
+         {:ok, stored} <- put_thumbnail(page, page.image_thumbnail_source_url, thumbnail),
+         {:ok, updated} <- swap_thumbnail(page, previous_key, stored) do
+      delete_object(%{bucket: bucket, key: previous_key}, @empty_delete_summary)
+      Cache.put(updated)
+      {:ok, (page.image_thumbnail_byte_size || 0) - stored.byte_size}
+    else
+      {:error, reason} ->
+        Logger.warning(
+          "scrape_image_reencode_skip url_hash=#{page.url_hash} reason=#{Store.error_reason(reason)}"
+        )
+
+        {:skipped, reason}
+    end
+  end
+
+  # A stale row means another write already moved the page on; the object this
+  # conversion stored belongs to nobody, so it goes rather than leak.
+  @spec swap_thumbnail(ScrapedPage.t(), String.t(), map()) ::
+          {:ok, ScrapedPage.t()} | {:error, :stale}
+  defp swap_thumbnail(page, previous_key, stored) do
+    case Store.replace_image_thumbnail(page, previous_key, stored) do
+      {:ok, updated} ->
+        {:ok, updated}
+
+      {:error, :stale} ->
+        delete_object(
+          %{bucket: stored.storage_bucket, key: stored.storage_key},
+          @empty_delete_summary
+        )
+
+        {:error, :stale}
+    end
   end
 
   @spec with_claim(ScrapedPage.t(), keyword()) ::

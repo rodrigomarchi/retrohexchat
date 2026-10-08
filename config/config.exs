@@ -62,6 +62,7 @@ config :retro_hex_chat, Oban,
        {"@reboot", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker},
        {"@reboot", RetroHexChat.Jobs.ScrapedPagePruneWorker},
        {"@reboot", RetroHexChat.Jobs.BotGreetingPruneWorker},
+       {"@reboot", RetroHexChat.Jobs.ScrapedThumbnailReencodeWorker},
        # Every boot is a deploy or a restart: announce what the release changed.
        {"@reboot", RetroHexChat.Jobs.IndexNowWorker, args: %{"scope" => "deploy"}},
        {"@hourly", RetroHexChat.Jobs.ServerBanExpiryWorker},
