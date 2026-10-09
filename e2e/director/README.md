@@ -13,7 +13,8 @@ It is driven by the video project (`../retro_hex_chat_videos`, `make capture`),
 which writes the shot list from the measured narration: each scene lasts as
 long as the voice over it, each action waits for its sentence (`cue`), and a
 take that falls behind its narration fails. Defects found while filming go in
-the repository's `TODO.md`, not here.
+a `TODO.md` at the repository root, not here: create it when the first one is
+found, and delete it once every item is fixed.
 
 `focus(locator | null)` records in the take what the scene is about from that
 moment — nothing changes on screen; the edit (`retro_hex_chat_videos/compose`)
@@ -74,9 +75,6 @@ database (`FRESH=1`) or another `DIRECTOR_NICK`.
 - **Offer a call in the private chat.** `/p2p` from a channel follows the
   newest card on screen — in a channel with a conference running, that is the
   conference's.
-- **`enterThroughNewCard` can follow a stale card** when the new one has not
-  rendered yet (logged in `TODO.md`); `space.ts` → `enterThroughFreshCard`
-  waits for an address that was not there before the press.
 - **The Arcade cannot see the game's tab.** Closing it leaves the session
   "in progress", and the next visit opens on that state with no Play button.
   End it (`solo-session-end`, which also closes the window); `resetArcade()`

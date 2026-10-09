@@ -22,6 +22,27 @@ async function cardAddresses(page: Page): Promise<string[]> {
 }
 
 /**
+ * How long a press gets to write a card with an address not on screen before.
+ * Past it, the room was already open and its existing card is the one to take.
+ */
+const NEW_CARD_WAIT_MS = 5_000;
+
+/** The first card address not in `before`, waiting up to `waitMs` for one. */
+async function newCardAddress(
+  page: Page,
+  before: Set<string>,
+  waitMs: number,
+): Promise<string | undefined> {
+  const deadline = Date.now() + waitMs;
+
+  for (;;) {
+    const fresh = (await cardAddresses(page)).find((href) => !before.has(href));
+    if (fresh || Date.now() >= deadline) return fresh;
+    await page.waitForTimeout(100);
+  }
+}
+
+/**
  * Press an entry beside the tabs and follow the card it writes.
  *
  * The card is picked by the address that was not there a moment ago, never by
@@ -45,23 +66,18 @@ export async function enterThroughNewCard(
   await entry.click();
 
   // A press into a room that is already open writes that room's one card again
-  // at the bottom, unless it is already the bottom line — so the card to follow
-  // is either the one that just appeared or the one that was already there.
-  let address: string | undefined;
+  // at the bottom, unless it is already the bottom line. So the bottom card is
+  // the one to follow only once no new address has appeared: taking it sooner
+  // follows the previous room's card while the new one is still rendering.
+  // With no card on screen at all, the press is simply slow: keep waiting.
+  const address =
+    (await newCardAddress(page, before, Math.min(NEW_CARD_WAIT_MS, timeout))) ??
+    (await cardAddresses(page)).at(-1) ??
+    (await newCardAddress(page, before, timeout));
 
-  await expect
-    .poll(
-      async () => {
-        const addresses = await cardAddresses(page);
-        address =
-          addresses.find((href) => !before.has(href)) ?? addresses.at(-1);
-        return address ?? null;
-      },
-      { timeout },
-    )
-    .not.toBeNull();
+  if (!address) throw new Error(`pressing ${testid} wrote no card`);
 
-  return followCard(page, ctx, address as string, timeout);
+  return followCard(page, ctx, address, timeout);
 }
 
 /** Follow a card already on screen, named by the address it carries. */
