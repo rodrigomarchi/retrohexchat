@@ -466,6 +466,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         cc_topic_set_by: channel_central_topic_set_by(state),
         cc_topic_set_at: channel_central_topic_set_at(state, assigns.timezone),
         cc_created_at: channel_central_created_at(state, assigns.timezone),
+        cc_registered_since:
+          channel_central_registered_since(
+            assigns.channel_central_registration,
+            assigns.timezone
+          ),
         cc_member_count: channel_central_member_count(state),
         cc_welcome_message: channel_central_welcome_message(state),
         cc_throttle_seconds: channel_central_throttle_seconds(state),
@@ -492,6 +497,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         notice={@channel_central_notice}
         transfer_error={@channel_central_transfer_error}
         registration={@channel_central_registration}
+        registered_since={@cc_registered_since}
         access_tab={@channel_central_access_tab}
         access_nick={@channel_central_access_nick}
         cs_error={@channel_central_cs_error}
@@ -940,6 +946,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
       nil -> nil
       dt -> ChatHelpers.format_datetime(dt, timezone)
     end
+  end
+
+  defp channel_central_registered_since(nil, _tz), do: nil
+
+  defp channel_central_registered_since(registration, timezone) do
+    ChatHelpers.format_datetime(Map.get(registration, :registered_at), timezone)
   end
 
   defp channel_central_member_count(nil), do: 0

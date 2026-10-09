@@ -772,13 +772,13 @@ msgstr "Ausente"
 msgid "Ban"
 msgstr "Banir"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:656
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:662
 #, elixir-autogen, elixir-format
 msgid "Ban error: %{message}"
 msgstr "Erro ao banir: %{message}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:659
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:668
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:665
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:674
 #, elixir-autogen, elixir-format
 msgid "Ban exception error: %{message}"
 msgstr "Erro na exceção de ban: %{message}"
@@ -903,7 +903,7 @@ msgstr "O histórico de %{channel} a partir de %{from} foi limpo por %{admin}."
 msgid "Channel %{channel} history was purged by %{admin}."
 msgstr "O histórico de %{channel} foi limpo por %{admin}."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:571
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:577
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel} not found"
 msgstr "Canal %{channel} não encontrado"
@@ -1355,8 +1355,8 @@ msgstr "Regex inválida"
 msgid "Invalid trigger event"
 msgstr "Evento de gatilho inválido"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:662
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:671
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:668
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:677
 #, elixir-autogen, elixir-format
 msgid "Invite exception error: %{message}"
 msgstr "Erro na exceção de convite: %{message}"
@@ -1466,7 +1466,7 @@ msgstr "O menu está cheio (máx. 10 itens por tipo)"
 msgid "Message to %{target} — / for commands"
 msgstr "Mensagem para %{target} — / para comandos"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:761
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:767
 #, elixir-autogen, elixir-format
 msgid "Mode error: %{message}"
 msgstr "Erro de modo: %{message}"
@@ -2009,7 +2009,7 @@ msgstr "Digite uma mensagem..."
 msgid "URL saved to URL Catcher"
 msgstr "URL salva no URL Catcher"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:665
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:671
 #, elixir-autogen, elixir-format
 msgid "Unban error: %{message}"
 msgstr "Erro ao remover ban: %{message}"
@@ -2189,7 +2189,7 @@ msgstr "Você foi silenciado por um administrador: %{reason}"
 msgid "You have been unmuted by an administrator."
 msgstr "Seu silêncio foi removido por um administrador."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:564
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:570
 #, elixir-autogen, elixir-format
 msgid "You must be a member of %{channel} to open Channel Central"
 msgstr "Você precisa ser membro de %{channel} para abrir o Channel Central"
@@ -2607,7 +2607,7 @@ msgstr "Convidar para o Canal..."
 msgid "Join throttle disabled."
 msgstr "Ligar ao acelerador desactivado."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:856
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:862
 #, elixir-autogen, elixir-format
 msgid "Join throttle must be a non-negative integer."
 msgstr "Juntar o acelerador deve ser um inteiro não-negativo."
@@ -2721,7 +2721,7 @@ msgstr "Offline"
 msgid "Online for"
 msgstr "Online para"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:954
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:966
 #, elixir-autogen, elixir-format
 msgid "Only channel operators can register this channel."
 msgstr "Só os operadores de canal podem registar este canal."
@@ -2812,8 +2812,8 @@ msgstr "Canais compartilhados"
 msgid "Sound Settings"
 msgstr "Configurações de som"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:873
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:875
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:879
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:881
 #, elixir-autogen, elixir-format
 msgid "Throttle error: %{message}"
 msgstr "Erro de limitação: %{message}"
@@ -2865,20 +2865,20 @@ msgstr "Procurar pelo Usuário"
 msgid "Wallops"
 msgstr "Wallops"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:828
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:830
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:847
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:849
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:834
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:836
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:853
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:855
 #, elixir-autogen, elixir-format
 msgid "Welcome error: %{message}"
 msgstr "Erro de boas-vindas: %{message}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:841
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:847
 #, elixir-autogen, elixir-format
 msgid "Welcome message cleared."
 msgstr "Mensagem de boas-vindas limpa."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:822
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:828
 #, elixir-autogen, elixir-format
 msgid "Welcome message saved."
 msgstr "Mensagem de boas-vindas salva."
@@ -2898,12 +2898,12 @@ msgstr "Você já está usando esse apelido"
 msgid "You are not in any channel"
 msgstr "Você não está em nenhum canal"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:960
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:972
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to manage this list."
 msgstr "Você não tem permissão para gerenciar esta lista."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:951
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:963
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to change this setting."
 msgstr "Você deve ser um operador de canal para alterar esta configuração."
@@ -2913,7 +2913,7 @@ msgstr "Você deve ser um operador de canal para alterar esta configuração."
 msgid "You must be a channel operator to use this command"
 msgstr "Você deve ser um operador de canal para usar este comando"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:957
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:969
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use ChanServ."
 msgstr "Você deve ser identificado com NickServ para usar ChanServ."
@@ -4264,12 +4264,12 @@ msgstr "Entra ao conectar"
 msgid "Joined on connect, with a key"
 msgstr "Entra ao conectar, com senha"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:719
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:725
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is not on this list."
 msgstr "O %{nickname} não está nesta lista."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:713
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:719
 #, elixir-autogen, elixir-format
 msgid "That row carries no nickname to remove."
 msgstr "Essa linha não tem apelido para remover."

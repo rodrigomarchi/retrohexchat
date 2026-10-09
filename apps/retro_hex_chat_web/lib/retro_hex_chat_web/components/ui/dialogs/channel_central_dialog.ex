@@ -60,6 +60,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :notice, :string, default: nil
   attr :transfer_error, :string, default: nil
   attr :registration, :map, default: nil
+  attr :registered_since, :string, default: nil, doc: "When the channel was registered, formatted"
   attr :access_tab, :string, default: "sop"
   attr :access_nick, :string, default: ""
   attr :cs_error, :string, default: nil
@@ -211,6 +212,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             operator={@operator}
             identified={@identified}
             registration={@registration}
+            registered_since={@registered_since}
             access_tab={@access_tab}
             error_message={@cs_error}
             access_adding={@access_adding}
@@ -263,6 +265,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :operator, :boolean, default: false
   attr :identified, :boolean, default: false
   attr :registration, :map, default: nil
+  attr :registered_since, :string, default: nil, doc: "When the channel was registered, formatted"
   attr :access_tab, :string, default: "sop"
   attr :error_message, :string, default: nil
   attr :confirm_drop, :boolean, default: false
@@ -336,7 +339,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               {dgettext("dialogs", "Since")}:
             </span>
             <span class="cc-status-value">
-              {format_registered_at(Map.get(@registration, :registered_at))}
+              {@registered_since || dgettext("dialogs", "Unknown")}
             </span>
           <% end %>
         </div>
@@ -1420,11 +1423,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   defp can_manage_access?("sop", level, true), do: level in ~w(aop vop)
   defp can_manage_access?("aop", "vop", true), do: true
   defp can_manage_access?(_role, _level, _identified), do: false
-
-  @spec format_registered_at(DateTime.t() | String.t() | nil) :: String.t()
-  defp format_registered_at(nil), do: dgettext("dialogs", "Unknown")
-  defp format_registered_at(%DateTime{} = date_time), do: DateTime.to_string(date_time)
-  defp format_registered_at(value), do: to_string(value)
 
   @spec display_channel(String.t() | nil) :: String.t()
   defp display_channel(nil), do: "#unknown"

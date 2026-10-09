@@ -5,6 +5,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.NickServ do
   alias RetroHexChat.Admin
   alias RetroHexChat.Admin.AuditLogs
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Timestamp
   alias RetroHexChat.Services.NickServ
 
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -26,9 +27,11 @@ defmodule RetroHexChat.Commands.Handlers.Admin.NickServ do
         text =
           dgettext("admin", "*** [NickServ] %{nick}\n", nick: nick) <>
             dgettext("admin", "  Registered: %{registered_at}\n",
-              registered_at: info.registered_at
+              registered_at: Timestamp.format(info.registered_at)
             ) <>
-            dgettext("admin", "  Last seen: %{last_seen_at}\n", last_seen_at: info.last_seen_at) <>
+            dgettext("admin", "  Last seen: %{last_seen_at}\n",
+              last_seen_at: Timestamp.format(info.last_seen_at)
+            ) <>
             dgettext("admin", "  Identified: %{identified}", identified: info.identified)
 
         {:ok, :system, %{content: text}}

@@ -147,6 +147,7 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
       assert {:ok, :system, %{content: content}} = Cs.execute(["info"], ctx.context)
       assert content =~ "#testchan"
       assert content =~ "CsTestUser"
+      assert content =~ ~r/registered=\d{4}-\d{2}-\d{2} \d{2}:\d{2} UTC$/
     end
 
     test "returns error for unregistered channel", ctx do

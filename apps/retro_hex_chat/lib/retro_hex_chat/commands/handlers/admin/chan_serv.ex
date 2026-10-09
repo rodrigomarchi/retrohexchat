@@ -5,6 +5,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
   alias RetroHexChat.Admin
   alias RetroHexChat.Admin.AuditLogs
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Timestamp
   alias RetroHexChat.Services.{ChanServ, Queries}
 
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -34,7 +35,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
           dgettext("admin", "*** [ChanServ] %{name}\n", name: info.name) <>
             dgettext("admin", "  Founder: %{founder}\n", founder: info.founder) <>
             dgettext("admin", "  Registered: %{registered_at}\n",
-              registered_at: info.registered_at
+              registered_at: Timestamp.format(info.registered_at)
             ) <>
             dgettext("admin", "  Topic: %{topic}\n", topic: info.topic) <>
             dgettext("admin", "  Modes: %{modes}\n", modes: info.modes) <>

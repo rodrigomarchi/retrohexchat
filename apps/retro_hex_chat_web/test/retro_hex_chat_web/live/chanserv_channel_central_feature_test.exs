@@ -46,6 +46,10 @@ defmodule RetroHexChatWeb.ChanServChannelCentralFeatureTest do
       assert html =~ "Registered"
       assert html =~ "Founder"
       assert html =~ nick
+
+      assert html =~
+               ~r"Since:\s*</span>\s*<span class=\"cc-status-value\">\s*\d{2}/\d{2}/\d{4} \d{2}:\d{2}\s*<"
+
       assert html =~ "Drop Registration"
       assert {:ok, info} = ChanServ.info(channel)
       assert info.founder == nick

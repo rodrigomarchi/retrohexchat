@@ -7,6 +7,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Commands.Policy
+  alias RetroHexChat.Commands.Timestamp
   alias RetroHexChat.Services.{ChanServ, Queries}
 
   @access_levels ~w(sop aop vop)
@@ -142,7 +143,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
             "[ChanServ] %{name}: founder=%{founder}, registered=%{registered_at}",
             name: info.name,
             founder: info.founder,
-            registered_at: info.registered_at
+            registered_at: Timestamp.format(info.registered_at)
           )
 
         {:ok, :system, %{content: text}}

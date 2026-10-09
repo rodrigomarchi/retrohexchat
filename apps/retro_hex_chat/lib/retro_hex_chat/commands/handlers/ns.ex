@@ -5,6 +5,7 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
 
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Timestamp
   alias RetroHexChat.Services.NickServ
 
   @impl true
@@ -161,7 +162,7 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
             "commands",
             "[NickServ] %{nickname}: registered %{registered_at}, identified: %{identified}",
             nickname: nickname,
-            registered_at: info.registered_at,
+            registered_at: Timestamp.format(info.registered_at),
             identified: info.identified
           )
 
@@ -312,11 +313,7 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
 
   defp format_datetime(nil), do: dgettext("commands", "never")
 
-  defp format_datetime(%DateTime{} = datetime) do
-    Calendar.strftime(datetime, "%Y-%m-%d %H:%M UTC")
-  end
-
-  defp format_datetime(_datetime), do: dgettext("commands", "unknown")
+  defp format_datetime(datetime), do: Timestamp.format(datetime)
 
   @impl true
   def category, do: :advanced

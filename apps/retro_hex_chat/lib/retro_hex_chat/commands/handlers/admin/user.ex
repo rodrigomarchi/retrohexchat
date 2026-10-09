@@ -5,7 +5,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Admin
   alias RetroHexChat.Admin.{AuditLogs, ServerBans}
-  alias RetroHexChat.Commands.{Duration, Handler}
+  alias RetroHexChat.Commands.{Duration, Handler, Timestamp}
   alias RetroHexChat.Page
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.{NickServ, Queries}
@@ -63,9 +63,11 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
         text =
           dgettext("admin", "*** User: %{nick}\n", nick: nick) <>
             dgettext("admin", "  Registered: %{registered_at}\n",
-              registered_at: reg.registered_at
+              registered_at: Timestamp.format(reg.registered_at)
             ) <>
-            dgettext("admin", "  Last seen: %{last_seen_at}\n", last_seen_at: reg.last_seen_at) <>
+            dgettext("admin", "  Last seen: %{last_seen_at}\n",
+              last_seen_at: Timestamp.format(reg.last_seen_at)
+            ) <>
             dgettext("admin", "  Online: %{online}\n", online: online) <>
             dgettext("admin", "  Identified: %{identified}\n", identified: identified) <>
             dgettext("admin", "  Admin: %{is_admin}\n", is_admin: is_admin) <>

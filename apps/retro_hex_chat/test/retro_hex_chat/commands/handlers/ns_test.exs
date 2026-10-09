@@ -91,7 +91,7 @@ defmodule RetroHexChat.Commands.Handlers.NsTest do
                Ns.execute(["info", "NsInfoNick"], context)
 
       assert content =~ "NsInfoNick"
-      assert content =~ "registered"
+      assert content =~ ~r/registered \d{4}-\d{2}-\d{2} \d{2}:\d{2} UTC,/
     end
 
     test "defaults to own nickname when no target given" do
