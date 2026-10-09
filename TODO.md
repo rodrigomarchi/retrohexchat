@@ -24,3 +24,7 @@ item is fixed.
 - [ ] **`mode-p` help says +p hides the channel from /whois; only +s does.**
       `Channels.Visibility.channels_of/2` drops secret channels only; +p changes the Channel List
       row to "Prv" (proven by e2e H8c/H8d).
+- [ ] **`/me` is refused in a private chat ("You are not in any channel").** The `/mirc-commands`
+      table tells mIRC users to replace `/describe` with `/me` in the private conversation, and
+      `Helpers.PM.handle_action_message/3` exists for it, but `Commands.Handlers.Me` rejects any
+      context without an active channel first.

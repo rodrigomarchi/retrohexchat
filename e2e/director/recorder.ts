@@ -1,5 +1,5 @@
 import { CDPSession, Page } from "@playwright/test";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 /**
@@ -63,6 +63,10 @@ export class Recorder {
     dir: string,
     size: { width: number; height: number },
   ): Promise<Recorder> {
+    // A retake replaces its own scene and nothing else: frames left from an
+    // earlier take would be read as part of this one, and the other scenes'
+    // takes are still wanted by the edit.
+    rmSync(dir, { recursive: true, force: true });
     mkdirSync(path.join(dir, "frames"), { recursive: true });
     const recorder = new Recorder(dir, size);
     // A tab behind another one paints nothing to film.
