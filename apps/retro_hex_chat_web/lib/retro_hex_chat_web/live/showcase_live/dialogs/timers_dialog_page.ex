@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.TimersDialogPage do
             draft_name="remind"
             draft_repeat={true}
             draft_seconds="60"
-            draft_command="/say stand up"
+            draft_command="/me stands up"
           />
         </div>
       </.showcase_card>
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.TimersDialogPage do
 
   defp sample_timers do
     %{
-      "remind" => %{type: :repeat, interval: 60, command: "/say stand up", ref: nil},
+      "remind" => %{type: :repeat, interval: 60, command: "/me stands up", ref: nil},
       "afk" => %{type: :once, interval: 300, command: "/away back later", ref: nil}
     }
   end

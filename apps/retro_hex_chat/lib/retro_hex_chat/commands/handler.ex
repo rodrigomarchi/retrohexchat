@@ -13,7 +13,9 @@ defmodule RetroHexChat.Commands.Handler do
           required(:half_operator_in) => [String.t()],
           required(:is_admin) => boolean(),
           required(:is_server_operator) => boolean(),
-          optional(:show_status_tab) => boolean()
+          optional(:show_status_tab) => boolean(),
+          optional(:session_id) => String.t() | nil,
+          optional(:active_pm) => String.t() | nil
         }
 
   @type result ::

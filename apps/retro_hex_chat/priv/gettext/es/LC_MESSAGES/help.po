@@ -1401,13 +1401,6 @@ msgstr "Hex Warlords"
 msgid "Hide the channel from the channel list and whois results."
 msgstr "Ocultar el canal de la lista de canales y los resultados de whois."
 
-#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:230
-#, elixir-autogen, elixir-format
-msgid "Hide the channel name from whois while still appearing in the channel list."
-msgstr ""
-"Ocultar el nombre del canal de whois mientras todavía aparece en la lista de"
-" canales."
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:152
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
@@ -2082,11 +2075,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Restrict the channel to users who have identified with NickServ."
 msgstr "Restrict the channel to users who have identified with NickServ."
-
-#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:137
-#, elixir-autogen, elixir-format
-msgid "Restrict topic changes to half-operators and above."
-msgstr "Restrict topic changes to half-operators and above."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:788
 #, elixir-autogen, elixir-format
@@ -6330,3 +6318,13 @@ msgstr "Grabar hasta un minuto de audio con el botón del micrófono al lado de 
 #, elixir-autogen, elixir-format
 msgid "Quick reference overlay showing all keyboard shortcuts, opened with Ctrl+Shift+/."
 msgstr "Superposición de referencia rápida que muestra todos los atajos del teclado, abierto con Ctrl+Shift+/."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:230
+#, elixir-autogen, elixir-format
+msgid "List the channel as \"Prv\", without its name or topic, to anyone not in it."
+msgstr "Listar el canal como \"Prv\", sin su nombre o tema, a cualquiera que no esté en él."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:137
+#, elixir-autogen, elixir-format
+msgid "Restrict topic changes to channel operators."
+msgstr "Restrict topic changes to channel operators."

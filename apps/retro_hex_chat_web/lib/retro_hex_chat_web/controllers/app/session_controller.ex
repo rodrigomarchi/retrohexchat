@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.App.SessionController do
 
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Accounts.TrustedDevices
+  alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.App.ReturnTo
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.App.TrustedDeviceCookie
@@ -14,6 +15,7 @@ defmodule RetroHexChatWeb.App.SessionController do
   def create(conn, %{"nickname" => nickname} = params) do
     with :ok <- NicknameValidator.validate(nickname),
          {:ok, auth} <- verify_identity_proof(conn, params, nickname),
+         :ok <- require_proof_for_registered(nickname, auth),
          {:ok, conn, trusted_device_id} <- maybe_remember_device(conn, params, nickname, auth) do
       previous_nickname = get_session(conn, :chat_nickname)
       existing_trusted_device_id = get_session(conn, :trusted_device_id)
@@ -23,6 +25,7 @@ defmodule RetroHexChatWeb.App.SessionController do
       |> maybe_put_nick_change_flash(previous_nickname, nickname)
       |> put_session(:chat_nickname, nickname)
       |> put_session(:chat_pre_identified, auth.pre_identified)
+      |> put_session(:chat_session_id, new_session_id())
       |> put_session(:chat_timezone, params["timezone"] || "Etc/UTC")
       |> maybe_put_trusted_device_session(
         trusted_device_id || auth[:trusted_device_id] || existing_trusted_device_id
@@ -52,6 +55,19 @@ defmodule RetroHexChatWeb.App.SessionController do
     |> maybe_delete_trusted_cookie(params)
     |> redirect(to: ~p"/connect?reason=#{reason}")
   end
+
+  # A registered nickname is somebody's: the only ways in are its password (the short token
+  # the connect window signs after checking it) and a device its owner trusted. A bare
+  # nickname is for names nobody has registered.
+  defp require_proof_for_registered(_nickname, %{pre_identified: true}), do: :ok
+
+  defp require_proof_for_registered(nickname, _auth) do
+    if NickServ.registered?(nickname), do: {:error, :registered_needs_proof}, else: :ok
+  end
+
+  # Names this browser sign-in, so an identification made inside the chat (`/ns identify`)
+  # survives a reload of this session and of no other.
+  defp new_session_id, do: Base.url_encode64(:crypto.strong_rand_bytes(18), padding: false)
 
   @spec verify_identity_proof(Plug.Conn.t(), map(), String.t()) ::
           {:ok, map()} | {:error, atom()}

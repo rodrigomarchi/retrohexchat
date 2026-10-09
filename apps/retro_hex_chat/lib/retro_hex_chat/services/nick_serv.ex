@@ -252,6 +252,25 @@ defmodule RetroHexChat.Services.NickServ do
     GenServer.call(server, {:identified?, nickname})
   end
 
+  @doc """
+  Records that the browser session `session_id` proved it is `nickname` — a `/ns identify` or
+  `/ns register` typed inside the chat. A reload of that session is identified again; a
+  session that never proved it is not, even while the nickname is identified elsewhere.
+  """
+  @spec bind_session(String.t(), String.t(), GenServer.server()) :: :ok
+  def bind_session(nickname, session_id, server \\ __MODULE__) when is_binary(session_id) do
+    GenServer.call(server, {:bind_session, nickname, session_id})
+  end
+
+  @spec identified_in_session?(String.t(), String.t() | nil, GenServer.server()) :: boolean()
+  def identified_in_session?(nickname, session_id, server \\ __MODULE__)
+
+  def identified_in_session?(_nickname, nil, _server), do: false
+
+  def identified_in_session?(nickname, session_id, server) do
+    GenServer.call(server, {:identified_in_session?, nickname, session_id})
+  end
+
   @spec start_identify_timer(String.t(), GenServer.server()) :: :ok
   def start_identify_timer(nickname, server \\ __MODULE__) do
     GenServer.cast(server, {:start_identify_timer, nickname})
@@ -300,6 +319,7 @@ defmodule RetroHexChat.Services.NickServ do
      %{
        identify_timeout_ms: timeout_ms,
        identified: MapSet.new(),
+       sessions: %{},
        timers: %{}
      }}
   end
@@ -315,6 +335,18 @@ defmodule RetroHexChat.Services.NickServ do
     {:reply, :ok, mark_identified(state, nickname)}
   end
 
+  def handle_call({:bind_session, nickname, session_id}, _from, state) do
+    bound =
+      Map.update(state.sessions, nickname, MapSet.new([session_id]), &MapSet.put(&1, session_id))
+
+    {:reply, :ok, %{state | sessions: bound}}
+  end
+
+  def handle_call({:identified_in_session?, nickname, session_id}, _from, state) do
+    bound = state.sessions |> Map.get(nickname, MapSet.new()) |> MapSet.member?(session_id)
+    {:reply, bound and MapSet.member?(state.identified, nickname), state}
+  end
+
   def handle_call({:identified?, nickname}, _from, state) do
     {:reply, MapSet.member?(state.identified, nickname), state}
   end
@@ -326,7 +358,7 @@ defmodule RetroHexChat.Services.NickServ do
   def handle_call(:clear_runtime_state, _from, state) do
     Enum.each(state.timers, fn {_nickname, ref} -> Process.cancel_timer(ref) end)
 
-    {:reply, :ok, %{state | identified: MapSet.new(), timers: %{}}}
+    {:reply, :ok, %{state | identified: MapSet.new(), sessions: %{}, timers: %{}}}
   end
 
   @impl true
@@ -339,7 +371,12 @@ defmodule RetroHexChat.Services.NickServ do
   end
 
   def handle_cast({:remove_identified, nickname}, state) do
-    {:noreply, %{state | identified: MapSet.delete(state.identified, nickname)}}
+    {:noreply,
+     %{
+       state
+       | identified: MapSet.delete(state.identified, nickname),
+         sessions: Map.delete(state.sessions, nickname)
+     }}
   end
 
   def handle_cast({:restore_identified, nickname}, state) do

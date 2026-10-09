@@ -684,7 +684,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             <input type="hidden" name="list" value={@list_type} />
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-bold" for="cc-list-entry-mask">
-                {dgettext("dialogs", "Hostmask")}:
+                {dgettext("dialogs", "Nickname mask")}:
               </label>
               <.input
                 type="text"

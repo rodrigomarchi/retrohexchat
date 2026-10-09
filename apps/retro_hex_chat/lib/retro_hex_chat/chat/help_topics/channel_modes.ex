@@ -134,7 +134,7 @@ defmodule RetroHexChat.Chat.HelpTopics.ChannelModes do
         category: dgettext("help", "Channel Modes"),
         keywords: [dgettext("help", "topic lock"), "topic", dgettext("help", "restrict topic")],
         icon: :icon_btn_set_topic,
-        description: dgettext("help", "Restrict topic changes to half-operators and above.")
+        description: dgettext("help", "Restrict topic changes to channel operators.")
       },
       %{
         id: "mode-k",
@@ -229,7 +229,7 @@ defmodule RetroHexChat.Chat.HelpTopics.ChannelModes do
         description:
           dgettext(
             "help",
-            "Hide the channel name from whois while still appearing in the channel list."
+            "List the channel as \"Prv\", without its name or topic, to anyone not in it."
           )
       },
       %{

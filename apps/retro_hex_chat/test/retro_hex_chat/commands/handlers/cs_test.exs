@@ -24,7 +24,7 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
       active_channel: "#testchan",
       channels: ["#testchan"],
       identified: true,
-      operator_in: [],
+      operator_in: ["#testchan"],
       chan_serv: cs_server
     }
 
@@ -38,6 +38,16 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
 
       assert content =~ "ChanServ"
       assert content =~ "registered"
+    end
+
+    test "only an operator of the channel can register it", ctx do
+      member = %{ctx.context | operator_in: []}
+
+      assert {:error, msg} = Cs.execute(["register"], member)
+      assert msg =~ "operator"
+
+      assert {:ok, %{registered: false}} =
+               ChanServ.info("#testchan", ctx.cs_server) |> registered?()
     end
 
     test "returns error for duplicate registration", ctx do
@@ -64,7 +74,14 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
     setup ctx do
       channel = "#csarch#{rem(System.unique_integer([:positive]), 100_000)}"
       {:ok, _pid} = Channels.Supervisor.start_child(channel)
-      context = %{ctx.context | active_channel: channel, channels: [channel]}
+
+      context = %{
+        ctx.context
+        | active_channel: channel,
+          channels: [channel],
+          operator_in: [channel]
+      }
+
       {:ok, :system, _} = Cs.execute(["register"], context)
       # The channel reads identification from the server's own NickServ.
       identify(context.nickname)
@@ -366,4 +383,7 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
     _ = NickServ.register(nickname, "pass123")
     {:ok, _} = NickServ.identify(nickname, "pass123")
   end
+
+  defp registered?({:ok, _info}), do: {:ok, %{registered: true}}
+  defp registered?({:error, _msg}), do: {:ok, %{registered: false}}
 end

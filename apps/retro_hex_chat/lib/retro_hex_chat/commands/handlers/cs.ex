@@ -3,6 +3,8 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
+  import RetroHexChat.Commands.Handler.Guards, only: [require_operator: 3]
+
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Commands.Handler
@@ -23,8 +25,21 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
      dgettext("commands", "Usage: /cs <register|drop|info|archive|sop|aop|vop|help> [args]")}
   end
 
+  # Registering makes the channel yours for good, so it is for whoever already runs it — the
+  # same bar as the Registration tab in Channel Central, which offers it to operators only.
   def execute(["register" | _], context) do
-    call_register(context.active_channel, context.nickname, server(context))
+    with :ok <- Policy.require_channel(context),
+         :ok <-
+           require_operator(
+             context,
+             context.active_channel,
+             dgettext("commands", "[ChanServ] %{message}",
+               message:
+                 dgettext("commands", "You must be a channel operator to register the channel")
+             )
+           ) do
+      call_register(context.active_channel, context.nickname, server(context))
+    end
   end
 
   def execute(["drop" | _], context) do

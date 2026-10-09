@@ -1456,7 +1456,7 @@ defmodule RetroHexChat.Channels.ServerTest do
       {:ok, _} = Server.join(channel, "owner")
       :ok = Server.set_mode(channel, "owner", "+R", [])
 
-      assert {:error, "You must be registered" <> _} =
+      assert {:error, "You must identify with NickServ" <> _} =
                Server.join(channel, "unregistered", nil, identified: false)
     end
 

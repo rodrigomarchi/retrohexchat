@@ -440,7 +440,7 @@ defmodule RetroHexChat.Channels.Server do
               )
             end),
          :ok <- if(bot, do: :ok, else: check_join_throttle(state)) do
-      role = if bot, do: :bot, else: determine_join_role(state, nickname)
+      role = if bot, do: :bot, else: determine_join_role(state, nickname, identified)
       new_membership = Membership.add(state.membership, nickname, role)
       new_timestamps = [DateTime.utc_now() | state.join_timestamps]
       new_state = %{state | membership: new_membership, join_timestamps: new_timestamps}
@@ -1812,13 +1812,18 @@ defmodule RetroHexChat.Channels.Server do
       state
   end
 
-  defp determine_join_role(state, nickname) do
+  # A registered channel's access list names nicknames, and a nickname is only the person
+  # it names once they have proved it: without identification the list grants nothing.
+  defp determine_join_role(state, nickname, identified) do
     cond do
       Membership.count(state.membership) == 0 and not state.registered ->
         :owner
 
-      state.registered ->
+      state.registered and identified ->
         access_level_to_role(state.name, nickname)
+
+      state.registered ->
+        :regular
 
       true ->
         :regular

@@ -25,6 +25,21 @@ defmodule RetroHexChat.Commands.Handlers.NsTest do
     end
   end
 
+  describe "execute/2 - the browser session that proved the nickname" do
+    test "register and identify bind the session they were typed in" do
+      nick = "NsBound#{System.unique_integer([:positive])}"
+      context = Map.merge(@base_context, %{nickname: nick, session_id: "sess-typed-here"})
+
+      assert {:ok, :system, _} = Ns.execute(["register", "secret123"], context)
+      assert NickServ.identified_in_session?(nick, "sess-typed-here")
+      refute NickServ.identified_in_session?(nick, "sess-elsewhere")
+
+      NickServ.remove_identified(nick)
+      assert {:ok, :system, _} = Ns.execute(["identify", "secret123"], context)
+      assert NickServ.identified_in_session?(nick, "sess-typed-here")
+    end
+  end
+
   describe "execute/2 - register" do
     test "registers a nickname" do
       context = %{@base_context | nickname: "NsRegUser"}

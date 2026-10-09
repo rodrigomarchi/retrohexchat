@@ -67,7 +67,7 @@ msgstr "Le canal est modéré (+m). Vous avez besoin de voix (+v) pour parler."
 msgid "Channel is not invite-only"
 msgstr "Channel n'est pas seulement invité"
 
-#: lib/retro_hex_chat/channels/server.ex:1443
+#: lib/retro_hex_chat/channels/server.ex:1441
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "Channel rejoindre l'accélérateur actif, veuillez réessayer rapidement"
@@ -177,11 +177,6 @@ msgid "You must be a channel operator to unban users"
 msgstr ""
 "Vous devez être un opérateur de canal pour les utilisateurs non interdits"
 
-#: lib/retro_hex_chat/channels/policy.ex:53
-#, elixir-autogen, elixir-format
-msgid "You must be registered to join this channel"
-msgstr "Vous devez être inscrit pour rejoindre cette chaîne"
-
 #: lib/retro_hex_chat/channels/server.ex:912
 #, elixir-autogen, elixir-format
 msgid "Could not persist channel mute"
@@ -218,24 +213,24 @@ msgstr "Ce salon garde déjà %{count} messages. Détachez-en un d'abord."
 msgid "You must be a channel operator to pin messages"
 msgstr "Il faut être opérateur du salon pour épingler des messages"
 
-#: lib/retro_hex_chat/channels/server.ex:1672
+#: lib/retro_hex_chat/channels/server.ex:1670
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "Seul le fondateur du salon peut changer l'archive publique"
 
-#: lib/retro_hex_chat/channels/server.ex:1604
+#: lib/retro_hex_chat/channels/server.ex:1602
 #, elixir-autogen, elixir-format
 msgid "%{nickname} scheduled: %{title}"
 msgstr "%{nickname} a programmé : %{title}"
 
-#: lib/retro_hex_chat/channels/server.ex:1636
+#: lib/retro_hex_chat/channels/server.ex:1634
 #, elixir-autogen, elixir-format
 msgid "That event belongs to another channel."
 msgstr "Cet événement appartient à un autre salon."
 
 #: lib/retro_hex_chat/channels/scheduled_events.ex:105
 #: lib/retro_hex_chat/channels/scheduled_events.ex:131
-#: lib/retro_hex_chat/channels/server.ex:1633
+#: lib/retro_hex_chat/channels/server.ex:1631
 #, elixir-autogen, elixir-format
 msgid "That event could not be found."
 msgstr "Cet événement est introuvable."
@@ -275,7 +270,7 @@ msgstr "Ce salon a déjà %{count} événements à venir."
 msgid "When does it start?"
 msgstr "Quand est-ce que ça commence ?"
 
-#: lib/retro_hex_chat/channels/server.ex:1664
+#: lib/retro_hex_chat/channels/server.ex:1662
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the public archive"
 msgstr "Identifiez-vous auprès de NickServ avant de modifier l'archive publique"
@@ -289,3 +284,8 @@ msgstr "L'interrupteur de l'archive n'a pas répondu. Vérifiez son état et ré
 #, elixir-autogen, elixir-format
 msgid "Cannot change the role of a user with equal or higher rank"
 msgstr "Impossible de changer le rôle d'un utilisateur de rang égal ou supérieur"
+
+#: lib/retro_hex_chat/channels/policy.ex:53
+#, elixir-autogen, elixir-format
+msgid "You must identify with NickServ to join this channel"
+msgstr "Vous devez vous identifier avec NickServ pour rejoindre ce canal"

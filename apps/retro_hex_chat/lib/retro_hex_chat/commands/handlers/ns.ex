@@ -28,7 +28,7 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
     if password == "" do
       {:error, dgettext("commands", "Usage: /ns register <password>")}
     else
-      call_register(context.nickname, password)
+      call_register(context.nickname, password, context[:session_id])
     end
   end
 
@@ -38,7 +38,7 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
     if password == "" do
       {:error, dgettext("commands", "Usage: /ns identify <password>")}
     else
-      call_identify(context.nickname, password)
+      call_identify(context.nickname, password, context[:session_id])
     end
   end
 
@@ -124,9 +124,10 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
 
   # -- Private helpers --
 
-  defp call_register(nickname, password) do
+  defp call_register(nickname, password, session_id) do
     case NickServ.register(nickname, password) do
       {:ok, msg} ->
+        bind_session(nickname, session_id)
         {:ok, :system, %{content: dgettext("commands", "[NickServ] %{message}", message: msg)}}
 
       {:error, msg} ->
@@ -134,15 +135,20 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
     end
   end
 
-  defp call_identify(nickname, password) do
+  defp call_identify(nickname, password, session_id) do
     case NickServ.identify(nickname, password) do
       {:ok, msg} ->
+        bind_session(nickname, session_id)
         {:ok, :system, %{content: dgettext("commands", "[NickServ] %{message}", message: msg)}}
 
       {:error, msg} ->
         {:error, dgettext("commands", "[NickServ] %{message}", message: msg)}
     end
   end
+
+  # The proof is this browser session's, so a reload of it stays identified.
+  defp bind_session(_nickname, nil), do: :ok
+  defp bind_session(nickname, session_id), do: NickServ.bind_session(nickname, session_id)
 
   defp call_ghost(target, password, requester) do
     case NickServ.ghost(target, password, requester) do

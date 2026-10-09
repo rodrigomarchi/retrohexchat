@@ -20,6 +20,43 @@ defmodule RetroHexChat.Services.ChanServAutoPrivilegeTest do
     {:ok, pid}
   end
 
+  describe "auto-privilege goes to whoever proved the nickname" do
+    test "a listed nickname that has not identified joins as a regular member" do
+      channel = unique_channel()
+      founder = "Founder#{System.unique_integer([:positive])}"
+      user = "AopUnproven#{System.unique_integer([:positive])}"
+
+      start_registered_channel(channel, founder)
+
+      insert(:access_list_entry,
+        channel_name: channel,
+        nickname: user,
+        level: "aop",
+        added_by: founder
+      )
+
+      {:ok, state} = Server.join(channel, user, nil, identified: false)
+      assert {user, :regular} in state.members
+    end
+
+    test "the founder's nickname without identification is not given the channel" do
+      channel = unique_channel()
+      founder = "Founder#{System.unique_integer([:positive])}"
+
+      start_registered_channel(channel, founder)
+
+      insert(:access_list_entry,
+        channel_name: channel,
+        nickname: founder,
+        level: "founder",
+        added_by: founder
+      )
+
+      {:ok, state} = Server.join(channel, founder, nil, identified: false)
+      assert {founder, :regular} in state.members
+    end
+  end
+
   describe "auto-privilege on join for registered channels" do
     test "user with 'aop' access level gets :operator role" do
       channel = unique_channel()
@@ -35,7 +72,7 @@ defmodule RetroHexChat.Services.ChanServAutoPrivilegeTest do
         added_by: founder
       )
 
-      {:ok, state} = Server.join(channel, user)
+      {:ok, state} = Server.join(channel, user, nil, identified: true)
       assert {user, :operator} in state.members
     end
 
@@ -53,7 +90,7 @@ defmodule RetroHexChat.Services.ChanServAutoPrivilegeTest do
         added_by: founder
       )
 
-      {:ok, state} = Server.join(channel, user)
+      {:ok, state} = Server.join(channel, user, nil, identified: true)
       assert {user, :voiced} in state.members
     end
 
@@ -64,7 +101,7 @@ defmodule RetroHexChat.Services.ChanServAutoPrivilegeTest do
 
       start_registered_channel(channel, founder)
 
-      {:ok, state} = Server.join(channel, user)
+      {:ok, state} = Server.join(channel, user, nil, identified: true)
       assert {user, :regular} in state.members
     end
 
@@ -81,7 +118,7 @@ defmodule RetroHexChat.Services.ChanServAutoPrivilegeTest do
         added_by: founder
       )
 
-      {:ok, state} = Server.join(channel, founder)
+      {:ok, state} = Server.join(channel, founder, nil, identified: true)
       assert {founder, :owner} in state.members
     end
 
@@ -99,7 +136,7 @@ defmodule RetroHexChat.Services.ChanServAutoPrivilegeTest do
         added_by: founder
       )
 
-      {:ok, state} = Server.join(channel, sop_user)
+      {:ok, state} = Server.join(channel, sop_user, nil, identified: true)
       assert {sop_user, :owner} in state.members
     end
 
@@ -111,7 +148,7 @@ defmodule RetroHexChat.Services.ChanServAutoPrivilegeTest do
       start_registered_channel(channel, founder)
 
       # First user in a registered channel without access gets :regular
-      {:ok, state} = Server.join(channel, user)
+      {:ok, state} = Server.join(channel, user, nil, identified: true)
       assert {user, :regular} in state.members
     end
   end

@@ -138,6 +138,8 @@ _FOREIGN_FORMS: dict[str, tuple[str, ...]] = {
         "utilizadores",
         "registar",
         "registe",
+        "registo",
+        "registos",
         "ecrã",
         "telemóvel",
         "tua",

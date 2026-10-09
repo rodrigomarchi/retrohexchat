@@ -60,6 +60,36 @@ defmodule RetroHexChat.Services.NickServTest do
     end
   end
 
+  describe "bind_session/3 and identified_in_session?/3" do
+    test "an identification counts only for the session that made it", %{server: server} do
+      {:ok, _} = NickServ.register("BoundNick", "secret123", server)
+      :ok = NickServ.bind_session("BoundNick", "session-a", server)
+
+      assert NickServ.identified_in_session?("BoundNick", "session-a", server)
+      refute NickServ.identified_in_session?("BoundNick", "session-b", server)
+      refute NickServ.identified_in_session?("BoundNick", nil, server)
+    end
+
+    test "a nickname identified somewhere is not identified in a session that never did", %{
+      server: server
+    } do
+      {:ok, _} = NickServ.register("SeenNick", "secret123", server)
+      {:ok, _} = NickServ.identify("SeenNick", "secret123", server)
+
+      assert NickServ.identified?("SeenNick", server)
+      refute NickServ.identified_in_session?("SeenNick", "a-forged-session", server)
+    end
+
+    test "losing the identification forgets its sessions", %{server: server} do
+      {:ok, _} = NickServ.register("GoneNick", "secret123", server)
+      :ok = NickServ.bind_session("GoneNick", "session-a", server)
+
+      NickServ.remove_identified("GoneNick", server)
+
+      refute NickServ.identified_in_session?("GoneNick", "session-a", server)
+    end
+  end
+
   describe "registered?/1" do
     test "returns true for registered nick", %{server: server} do
       {:ok, _} = NickServ.register("CheckReg", "secret123", server)

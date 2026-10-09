@@ -129,6 +129,26 @@ defmodule RetroHexChatWeb.SessionControllerTest do
       assert redirected_to(conn) == "/connect"
     end
 
+    test "a registered nickname without a password token or trusted device is refused", %{
+      conn: conn
+    } do
+      nick = "Owned#{System.unique_integer([:positive])}"
+      {:ok, _} = NickServ.register(nick, "pass123")
+
+      conn = post(conn, ~p"/chat/session", %{"nickname" => nick})
+
+      assert redirected_to(conn) == "/connect"
+      refute get_session(conn, :chat_nickname)
+    end
+
+    test "every sign-in gets a session id of its own", %{conn: conn} do
+      first = post(conn, ~p"/chat/session", %{"nickname" => "FreshNick"})
+      second = post(build_conn(), ~p"/chat/session", %{"nickname" => "FreshNick"})
+
+      assert is_binary(get_session(first, :chat_session_id))
+      refute get_session(first, :chat_session_id) == get_session(second, :chat_session_id)
+    end
+
     test "without auth_token but valid nick stores session without pre_identified", %{conn: conn} do
       conn = post(conn, ~p"/chat/session", %{"nickname" => "PlainNick"})
       assert redirected_to(conn) == "/chat"

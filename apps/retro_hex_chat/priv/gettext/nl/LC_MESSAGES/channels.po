@@ -67,7 +67,7 @@ msgstr "Kanaal wordt gemodereerd (+m). Je hebt stem (+v) nodig om te spreken."
 msgid "Channel is not invite-only"
 msgstr "Kanaal is niet alleen uitnodigen"
 
-#: lib/retro_hex_chat/channels/server.ex:1443
+#: lib/retro_hex_chat/channels/server.ex:1441
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "Kanaal join gaspedaal actief, probeer het binnenkort opnieuw"
@@ -176,11 +176,6 @@ msgstr "U moet een kanaaloperator zijn om het onderwerp te veranderen"
 msgid "You must be a channel operator to unban users"
 msgstr "U moet een kanaal operator zijn om gebruikers te ontbannen"
 
-#: lib/retro_hex_chat/channels/policy.ex:53
-#, elixir-autogen, elixir-format
-msgid "You must be registered to join this channel"
-msgstr "U moet geregistreerd zijn om zich bij dit kanaal aan te sluiten"
-
 #: lib/retro_hex_chat/channels/server.ex:912
 #, elixir-autogen, elixir-format
 msgid "Could not persist channel mute"
@@ -217,24 +212,24 @@ msgstr "Dit kanaal bewaart al %{count} berichten. Maak er eerst een los."
 msgid "You must be a channel operator to pin messages"
 msgstr "Je moet kanaaloperator zijn om berichten vast te zetten"
 
-#: lib/retro_hex_chat/channels/server.ex:1672
+#: lib/retro_hex_chat/channels/server.ex:1670
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "Alleen de oprichter van het kanaal kan het openbare archief wijzigen"
 
-#: lib/retro_hex_chat/channels/server.ex:1604
+#: lib/retro_hex_chat/channels/server.ex:1602
 #, elixir-autogen, elixir-format
 msgid "%{nickname} scheduled: %{title}"
 msgstr "%{nickname} heeft gepland: %{title}"
 
-#: lib/retro_hex_chat/channels/server.ex:1636
+#: lib/retro_hex_chat/channels/server.ex:1634
 #, elixir-autogen, elixir-format
 msgid "That event belongs to another channel."
 msgstr "Die gebeurtenis hoort bij een ander kanaal."
 
 #: lib/retro_hex_chat/channels/scheduled_events.ex:105
 #: lib/retro_hex_chat/channels/scheduled_events.ex:131
-#: lib/retro_hex_chat/channels/server.ex:1633
+#: lib/retro_hex_chat/channels/server.ex:1631
 #, elixir-autogen, elixir-format
 msgid "That event could not be found."
 msgstr "Die gebeurtenis kon niet worden gevonden."
@@ -274,7 +269,7 @@ msgstr "Dit kanaal heeft al %{count} komende gebeurtenissen."
 msgid "When does it start?"
 msgstr "Wanneer begint het?"
 
-#: lib/retro_hex_chat/channels/server.ex:1664
+#: lib/retro_hex_chat/channels/server.ex:1662
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the public archive"
 msgstr "Identificeer je bij NickServ voordat je het openbare archief wijzigt"
@@ -288,3 +283,8 @@ msgstr "De archiefschakelaar reageerde niet. Controleer de status en probeer het
 #, elixir-autogen, elixir-format
 msgid "Cannot change the role of a user with equal or higher rank"
 msgstr "Kan de rol van een gebruiker met gelijke of hogere rang niet veranderen"
+
+#: lib/retro_hex_chat/channels/policy.ex:53
+#, elixir-autogen, elixir-format
+msgid "You must identify with NickServ to join this channel"
+msgstr "U moet zich identificeren met NickServ om dit kanaal aan te sluiten"

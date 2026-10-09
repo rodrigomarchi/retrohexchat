@@ -594,11 +594,6 @@ msgstr ""
 msgid "/autorespond /autorespond list /autorespond add <trigger> [#channel] <command> /autorespond remove <position>"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add on_part /say $nick left the channel /autorespond list /autorespond remove 0"
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "/autorespond list"
@@ -2914,11 +2909,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "When you connect to the server, your auto-join channels are joined automatically after all perform commands finish. This ensures things like NickServ identification happen before joining channels. When you use"
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "When you join a channel, a new tab opens and you can see messages and participate in the conversation. If the channel doesn't exist, it is created automatically and you become its first operator (giving you control over channel settings). For registered users, joining a channel automatically adds it to your auto-join list so it's rejoined on your next connection."
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:13
@@ -5373,4 +5363,14 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "reports how many channel processes are running. It does not count client connections."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add on_part /me waves goodbye to $nick /autorespond list /autorespond remove 0"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "When you join a channel, a new tab opens and you can see messages and participate in the conversation. If the channel doesn't exist, it is created automatically and you become its owner (giving you control over channel settings). For registered users, joining a channel automatically adds it to your auto-join list so it's rejoined on your next connection."
 msgstr ""

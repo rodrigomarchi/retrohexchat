@@ -1396,12 +1396,6 @@ msgstr "Hex Warlords"
 msgid "Hide the channel from the channel list and whois results."
 msgstr "Sembunyikan kanal dari daftar kanal dan hasil whois."
 
-#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:230
-#, elixir-autogen, elixir-format
-msgid "Hide the channel name from whois while still appearing in the channel list."
-msgstr ""
-"Sembunyikan nama saluran dari whois saat masih muncul dalam daftar kanal."
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:152
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
@@ -2075,11 +2069,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Restrict the channel to users who have identified with NickServ."
 msgstr "Batasi saluran ke pengguna yang telah diidentifikasi dengan NickServ."
-
-#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:137
-#, elixir-autogen, elixir-format
-msgid "Restrict topic changes to half-operators and above."
-msgstr "Topik Batasi berubah ke half- operator dan di atas."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:788
 #, elixir-autogen, elixir-format
@@ -6305,3 +6294,13 @@ msgstr "Rekam sampai satu menit audio dengan tombol mikrofon di samping masukan 
 #, elixir-autogen, elixir-format
 msgid "Quick reference overlay showing all keyboard shortcuts, opened with Ctrl+Shift+/."
 msgstr "Overlay referensi cepat menunjukkan semua shortcut keyboard, dibuka dengan Ctrl + Shift + /."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:230
+#, elixir-autogen, elixir-format
+msgid "List the channel as \"Prv\", without its name or topic, to anyone not in it."
+msgstr "Daftar saluran sebagai \"Prv\", tanpa nama atau topik, kepada siapa pun tidak di dalamnya."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:137
+#, elixir-autogen, elixir-format
+msgid "Restrict topic changes to channel operators."
+msgstr "Topik Batasi berubah ke operator saluran."

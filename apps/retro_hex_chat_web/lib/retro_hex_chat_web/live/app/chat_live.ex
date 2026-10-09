@@ -159,10 +159,12 @@ defmodule RetroHexChatWeb.App.ChatLive do
     # login; somebody who registered, or typed `/ns identify` inside the chat,
     # never gets it — so every reload replayed their whole login sequence, sound
     # and MOTD and greeting included. NickServ knows who is identified right
-    # now, which is the same predicate `maybe_start_nickserv_timer/4` trusts a
-    # few lines below. It is still a guard: a guest who has not identified
-    # cannot pick up the snapshot a registered owner left behind.
-    identified? = pre_identified or NickServ.identified?(nickname)
+    # now — but only for the browser session that did it: an identification
+    # is bound to `chat_session_id`, so a sign-in that never proved the
+    # nickname cannot borrow one made elsewhere. `maybe_start_nickserv_timer/4`
+    # below trusts exactly this answer.
+    chat_session_id = http_session["chat_session_id"]
+    identified? = pre_identified or NickServ.identified_in_session?(nickname, chat_session_id)
     backend_reconnect_state = load_reconnect_state(nickname, browser_id, identified?)
     reconnecting? = backend_reconnect_state != nil
     join_channel = params["join"]
@@ -184,6 +186,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
     Surfaces.address(nickname, Paths.chat_path())
     Surfaces.cancel_deferred(nickname)
 
+    # Identity before the first join: a registered channel's access list only
+    # seats someone who has proved the nickname, and the default channel is
+    # joined a few lines below, before `maybe_start_nickserv_timer/4` runs.
+    session = if identified?, do: Session.set_identified(session, true), else: session
+
     socket =
       socket
       |> attach_all_hooks()
@@ -193,6 +200,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
         timezone: timezone,
         client_info: client_info,
         trusted_device_id: trusted_device_id,
+        chat_session_id: chat_session_id,
         browser_id: browser_id,
         chat_device_session_ref: chat_device_session_ref,
         last_device_session_touch_at: DateTime.utc_now()
@@ -200,7 +208,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       |> ChatLive.Helpers.join_channel(default_channel, session)
       |> ChatLive.Helpers.maybe_join_channel(join_channel)
       |> maybe_broadcast_nick_changed(previous_nickname, nickname)
-      |> ChatLive.Helpers.maybe_start_nickserv_timer(nickname, pre_identified, reconnecting?)
+      |> ChatLive.Helpers.maybe_start_nickserv_timer(nickname, identified?, reconnecting?)
       |> maybe_restore_reconnect_state(backend_reconnect_state)
       # After the restore, never before it. The snapshot is what tells the
       # *next* mount this session already happened, and until here there was
@@ -1042,6 +1050,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
     end
   end
 
+  # The command is typed, never translated: only its description goes through Gettext, and
+  # every ChanServ command acts on the channel you are in, so none of them takes one.
+  defp chanserv_line(command, description),
+    do: "  " <> String.pad_trailing(command, 21) <> " — " <> description
+
   defp show_chanserv_announcement(socket) do
     lines = [
       "",
@@ -1050,11 +1063,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
       dgettext("chat", "Register your channel to protect it when no operators are online."),
       "",
       dgettext("chat", "Quick start:"),
-      dgettext("chat", "  /cs register #channel          — Register a channel you operate"),
-      dgettext("chat", "  /cs sop #channel add <nick>    — Add a Super Operator"),
-      dgettext("chat", "  /cs aop #channel add <nick>    — Add an Auto Operator"),
-      dgettext("chat", "  /cs vop #channel add <nick>    — Add an Auto Voice user"),
-      dgettext("chat", "  /cs info #channel              — View channel registration info"),
+      chanserv_line("/cs register", dgettext("chat", "Register the channel you are in")),
+      chanserv_line("/cs sop add <nick>", dgettext("chat", "Add a Super Operator")),
+      chanserv_line("/cs aop add <nick>", dgettext("chat", "Add an Auto Operator")),
+      chanserv_line("/cs vop add <nick>", dgettext("chat", "Add an Auto Voice user")),
+      chanserv_line("/cs info", dgettext("chat", "See who founded the channel")),
       "",
       dgettext("chat", "Access hierarchy: Owner > SOP > AOP > VOP"),
       "",

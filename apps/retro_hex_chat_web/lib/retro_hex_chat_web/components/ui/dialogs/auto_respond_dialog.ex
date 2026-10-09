@@ -297,7 +297,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
                     <.textarea
                       name="command"
                       value={@draft_command}
-                      placeholder={dgettext("dialogs", "/say Hello!")}
+                      placeholder={dgettext("dialogs", "/notice $nick Welcome!")}
                       class="ar-command-input ar-input w-full resize-none text-xs"
                       maxlength="500"
                       rows="3"

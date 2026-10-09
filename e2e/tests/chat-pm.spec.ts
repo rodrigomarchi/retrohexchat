@@ -5,6 +5,7 @@
  * @flow D3 [done] PM reply updates other user's PM tab
  * @flow D5 [done] Close Conversation puts a private message away without marking it read (features P2)
  * @flow D4 [done] Closing PM tab removes it from tablist
+ * @flow D6 [done] `/me` in a private chat sends an action both people see
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -152,6 +153,29 @@ test.describe("Private messages", () => {
 
       await chatA.closeTab(nickB);
       await chatA.expectPmTabClosed(nickB);
+    } finally {
+      await ctxA.close();
+      await ctxB.close();
+    }
+  });
+
+  test("/me in a private chat is an action both people see (D6)", async ({
+    browser,
+  }) => {
+    const { ctxA, ctxB, chatA, chatB, nickA, nickB } =
+      await setupTwoUsers(browser);
+    try {
+      const action = `waves-in-private-${Date.now()}`;
+      await chatA.sendMessage(`/query ${nickB}`);
+      await chatA.expectTabSelected(nickB);
+
+      await chatA.sendMessage(`/me ${action}`);
+      await chatA.expectMessageVisible(action);
+      await chatA.expectMessageHidden("You are not in any channel");
+
+      await chatB.expectTabVisible(nickA);
+      await chatB.switchToTab(nickA);
+      await chatB.expectMessageVisible(action);
     } finally {
       await ctxA.close();
       await ctxB.close();

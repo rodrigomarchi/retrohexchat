@@ -88,7 +88,10 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   end
 
   defp do_dispatch_command_with_result(socket, session, name, args, alias_depth) do
-    context = build_context(session, socket.assigns.show_status_tab)
+    context =
+      session
+      |> build_context(socket.assigns.show_status_tab)
+      |> Map.put(:session_id, socket.assigns[:chat_session_id])
 
     case try_alias_expansion(session, name, args, context, alias_depth) do
       {:expanded, expanded_input} ->
@@ -171,6 +174,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     %{
       nickname: session.nickname,
       active_channel: session.active_channel,
+      active_pm: session.active_pm,
       show_status_tab: show_status_tab,
       channels: session.channels,
       identified: session.identified,

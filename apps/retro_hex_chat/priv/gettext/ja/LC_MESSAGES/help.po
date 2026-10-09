@@ -1257,11 +1257,6 @@ msgstr "ヘックス・ウォーロードズ"
 msgid "Hide the channel from the channel list and whois results."
 msgstr "チャンネルリストと whois の結果からチャンネルを非表示にします。"
 
-#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:230
-#, elixir-autogen, elixir-format
-msgid "Hide the channel name from whois while still appearing in the channel list."
-msgstr "チャンネルリストにまだ表示されている間、 whois からチャンネル名を非表示にします。"
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:152
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
@@ -1841,11 +1836,6 @@ msgstr "音声ユーザーと上記を適度なチャネルで話して制限し
 #, elixir-autogen, elixir-format
 msgid "Restrict the channel to users who have identified with NickServ."
 msgstr "チャンネルをNickServで識別したユーザーに制限します。"
-
-#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:137
-#, elixir-autogen, elixir-format
-msgid "Restrict topic changes to half-operators and above."
-msgstr "トピックを半分の操作者に制限します。"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:788
 #, elixir-autogen, elixir-format
@@ -5677,3 +5667,13 @@ msgstr "メッセージの入力の横にあるマイクボタンでオーディ
 #, elixir-autogen, elixir-format
 msgid "Quick reference overlay showing all keyboard shortcuts, opened with Ctrl+Shift+/."
 msgstr "すべてのキーボードショートカットを表示するクイックリファレンスオーバーレイ、Ctrl + Shift + /で開きます。"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:230
+#, elixir-autogen, elixir-format
+msgid "List the channel as \"Prv\", without its name or topic, to anyone not in it."
+msgstr "チャンネルを \"Prv\" としてリストします。, その名前やトピックなし, 誰にもそれではありません."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:137
+#, elixir-autogen, elixir-format
+msgid "Restrict topic changes to channel operators."
+msgstr "Restrict topic changes to channel operators."

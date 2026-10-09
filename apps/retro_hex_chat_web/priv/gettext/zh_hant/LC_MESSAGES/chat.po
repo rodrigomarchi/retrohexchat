@@ -41,77 +41,52 @@ msgstr "%{position}:%{status} %{trigger} %{channel} > > > %{command}"
 msgid "  /%{name} → %{expansion}"
 msgstr "  /%{name} → %{expansion}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1055
-#, elixir-autogen
-msgid "  /cs aop #channel add <nick>    — Add an Auto Operator"
-msgstr "  /cs aop #channel add <nick>    — Add an Auto Operator"
-
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1057
-#, elixir-autogen
-msgid "  /cs info #channel              — View channel registration info"
-msgstr "  /cs info #channel              — View channel registration info"
-
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1053
-#, elixir-autogen
-msgid "  /cs register #channel          — Register a channel you operate"
-msgstr "  /cs register #channel          — Register a channel you operate"
-
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1054
-#, elixir-autogen
-msgid "  /cs sop #channel add <nick>    — Add a Super Operator"
-msgstr "  /cs sop #channel add <nick>    — Add a Super Operator"
-
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1056
-#, elixir-autogen
-msgid "  /cs vop #channel add <nick>    — Add an Auto Voice user"
-msgstr "  /cs vop #channel add <nick>    — Add an Auto Voice user"
-
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1027
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1035
 #, elixir-autogen
 msgid "  /help            — View full help"
 msgstr "  /help            — View full help"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1028
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1036
 #, elixir-autogen
 msgid "  /help commands   — List all commands"
 msgstr "  /help commands   — List all commands"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1024
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1032
 #, elixir-autogen
 msgid "  /join #channel   — Join a channel"
 msgstr "  /join #channel   — Join a channel"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1025
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1033
 #, elixir-autogen
 msgid "  /msg nick text   — Send a private message"
 msgstr "  /msg nick text   — Send a private message"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1026
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1034
 #, elixir-autogen
 msgid "  /nick new_nick   — Change your nickname"
 msgstr "  /nick new_nick   — Change your nickname"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1089
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1102
 #, elixir-autogen
 msgid "  /ns drop <password>       — Permanently unregister your nickname"
 msgstr "  /ns drop <password>       — Permanently unregister your nickname"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1088
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1101
 #, elixir-autogen
 msgid "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 msgstr "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1086
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1099
 #, elixir-autogen
 msgid "  /ns identify <password>   — Identify (log in) for this session"
 msgstr "  /ns identify <password>   — Identify (log in) for this session"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1087
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1100
 #, elixir-autogen
 msgid "  /ns info [nickname]       — Look up registration info"
 msgstr "  /ns info [nickname]       — Look up registration info"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1085
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1098
 #, elixir-autogen
 msgid "  /ns register <password>   — Register your current nickname"
 msgstr "  /ns register <password>   — Register your current nickname"
@@ -126,17 +101,17 @@ msgstr "已登記:無"
 msgid "  Registered: yes (%{status})"
 msgstr "登記:是(%{status})"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1065
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1078
 #, elixir-autogen
 msgid "  • If a founder's nick expires, the next ranked user is promoted"
 msgstr "• 如果創建者的暱稱過期, 將提升下一個排名的用戶"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1092
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1105
 #, elixir-autogen
 msgid "  • Nicks are case sensitive — \"Alice\" and \"alice\" are different"
 msgstr "• 尼克斯對案件敏感——\"愛麗絲\"和\"愛麗絲\"不同"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1096
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1109
 #, elixir-autogen
 msgid "  • Switching to a registered nick gives you 60s to identify"
 msgstr "• 切換到註冊的暱稱,可以識別60多個人"
@@ -621,12 +596,12 @@ msgstr "* 您的通知列表好友 %{old_nick} 現在稱爲 %{new_nick}"
 msgid "/join #channel to get started"
 msgstr "/join #channel to get started"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1021
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1029
 #, elixir-autogen
 msgid "A real-time chat platform with a retro look and feel."
 msgstr "一個實時聊天平臺,具有回顧的外觀和感覺."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1059
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1072
 #, elixir-autogen
 msgid "Access hierarchy: Owner > SOP > AOP > VOP"
 msgstr "訪問等級: 所有者 > SOP > AOP > VOP"
@@ -682,7 +657,7 @@ msgstr "別名列表已滿( 最多 50)"
 msgid "Alias not found"
 msgstr "未找到別名"
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:349
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:353
 #, elixir-autogen, elixir-format
 msgid "Alias recursion limit reached (max 5 levels)"
 msgstr "已達到的復發限(最多5級)"
@@ -702,7 +677,7 @@ msgstr "動物和自然"
 msgid "Attempt %{attempt} of %{max_attempts}"
 msgstr "嘗試 %{attempt} 的 %{max_attempts}"
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:538
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:542
 #, elixir-autogen, elixir-format
 msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr "Auto-join列表爲完整(20個頻道). %{channel}沒有加入Auto-join."
@@ -842,7 +817,7 @@ msgstr "無法添加到聯繫人中"
 msgid "Cannot add yourself to the notify list"
 msgstr "無法將自己添加到通知列表"
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:153
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:156
 #: lib/retro_hex_chat_web/live/chat_live/helpers/pm.ex:154
 #, elixir-autogen, elixir-format
 msgid "Cannot send text to status window. Use /commands."
@@ -858,7 +833,7 @@ msgstr "無法更新突出顯示 : %{reason}"
 msgid "Case sensitive"
 msgstr "區分大小寫"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1049
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1062
 #, elixir-autogen
 msgid "ChanServ manages channel registration and access control."
 msgstr "ChanServ管理頻道註冊和訪問控制."
@@ -1392,8 +1367,8 @@ msgstr "蘭"
 msgid "Leave Channel"
 msgstr "離開頻道"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:260
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:473
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:268
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:477
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:588
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
 #, elixir-autogen, elixir-format
@@ -1507,12 +1482,12 @@ msgstr "找不到暱稱顏色條目"
 msgid "Nick color list is full (max 50)"
 msgstr "暱稱顏色列表是滿的( 最大 50)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1079
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1092
 #, elixir-autogen
 msgid "NickServ protects your nickname with a password so nobody else can use it."
 msgstr "NickServ用密碼保護你的暱稱 這樣別人就不用了"
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:397
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:401
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:658
 #, elixir-autogen, elixir-format
 msgid "Nickname %{nickname} is already in use"
@@ -1543,7 +1518,7 @@ msgstr "位置沒有命令 %{position}"
 msgid "No contact selected"
 msgstr "未選擇聯繫人"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:670
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:678
 #, elixir-autogen, elixir-format
 msgid "No nickname in session"
 msgstr "會話中沒有暱稱"
@@ -1595,7 +1570,7 @@ msgstr "對象"
 msgid "Online"
 msgstr "線上"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1031
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1039
 #, elixir-autogen
 msgid "Open /chat/help in a new tab."
 msgstr "在新標籤中打開 /chat/help."
@@ -1680,8 +1655,8 @@ msgstr "紫色"
 msgid "Query (PM)"
 msgstr "查詢( PM)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1052
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1084
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1065
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1097
 #, elixir-autogen
 msgid "Quick start:"
 msgstr "快速開始 :"
@@ -1708,7 +1683,7 @@ msgstr "紅色"
 msgid "Regex"
 msgstr "縮寫"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1050
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1063
 #, elixir-autogen
 msgid "Register your channel to protect it when no operators are online."
 msgstr "在沒有操作員在線時註冊您的頻道以保護它 。"
@@ -1760,7 +1735,7 @@ msgstr "對%{author}的答覆"
 msgid "Reset (Ctrl+Shift+X)"
 msgstr "重置( Ctrl+Shift) 。"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1017
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1025
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1105
 #, elixir-autogen
 msgid "RetroHexChat"
@@ -1776,8 +1751,8 @@ msgstr "反轉( Ctrl+Shift+V)"
 msgid "Rule not found"
 msgstr "未找到規則"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1061
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1091
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1074
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1104
 #, elixir-autogen
 msgid "Rules:"
 msgstr "規則:"
@@ -1839,7 +1814,7 @@ msgid "Server setting '%{key}' changed to '%{value}'."
 msgstr "服務器設置爲%{key}, 改爲%{value} 。"
 
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:121
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:504
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:508
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:106
 #, elixir-autogen, elixir-format
 msgid "Service"
@@ -1929,7 +1904,7 @@ msgstr "此邀請已過期"
 msgid "Timer '%{name}' not found"
 msgstr "計時器 '%{name}' 找不到"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1030
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1038
 #, elixir-autogen
 msgid "Tip: Go to Help > Help Topics for the full documentation."
 msgstr "提示: 去幫助 > 幫助主題用於完整文檔 。"
@@ -1954,12 +1929,12 @@ msgstr "專題集: %{topic}"
 msgid "Travel & Places"
 msgstr "旅行地點( P)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1067
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1080
 #, elixir-autogen
 msgid "Type /help chanserv or /help channel-permissions for full details."
 msgstr "/helpchanserv或/help頻道-許可,以獲取完整細節."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1098
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1111
 #, elixir-autogen
 msgid "Type /help nickserv for full details."
 msgstr "詳細信息請輸入 /help nickserv."
@@ -2028,7 +2003,7 @@ msgstr "解密的首相"
 msgid "Updated note for %{nickname}"
 msgstr "%{nickname}的更新說明"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1023
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1031
 #, elixir-autogen
 msgid "Useful commands:"
 msgstr "有用的命令 :"
@@ -2074,7 +2049,7 @@ msgstr "歡迎留言 %{channel} 已設定。"
 msgid "Welcome message updated."
 msgstr "歡迎電文更新 。"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1020
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1028
 #, elixir-autogen
 msgid "Welcome to %{server_name}!"
 msgstr "歡迎光臨 %{server_name}!"
@@ -2107,9 +2082,9 @@ msgstr "黃色"
 msgid "Yes"
 msgstr "是"
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:212
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:233
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:258
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:216
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:237
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:262
 #, elixir-autogen, elixir-format
 msgid "You are muted by an administrator"
 msgstr "你被管理員啞了"
@@ -2124,7 +2099,7 @@ msgstr "你不再離開"
 msgid "You are now away: %{message}"
 msgstr "您現在不在: %{message}"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:637
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:640
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:273
 #, elixir-autogen, elixir-format
 msgid "You are now identified as %{nickname}"
@@ -2255,7 +2230,7 @@ msgstr "[BotService] 命令'%{trigger}'刪除."
 msgid "[BotService] Failed to create bot '%{name}': %{message}"
 msgstr "[BotService] 創建 bot '%{name} 失敗 :%{message}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1048
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1061
 #, elixir-autogen
 msgid "[ChanServ] Channel Services Online"
 msgstr "[ChanServ]頻道服務在線"
@@ -2265,12 +2240,12 @@ msgstr "[ChanServ]頻道服務在線"
 msgid "[NickServ] %{reason}. You are now %{nickname}"
 msgstr "[NickServ] %{reason}. 您現在爲 %{nickname}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1078
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1091
 #, elixir-autogen
 msgid "[NickServ] Nickname Services Online"
 msgstr "[NickServ] 暱稱服務在線"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:645
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:648
 #, elixir-autogen, elixir-format
 msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
 msgstr "[NickServ] 此暱稱已註冊 。 您有60秒的時間通過/ns識別 <password> 否則您會被重新命名."
@@ -3041,6 +3016,7 @@ msgid "Private Space"
 msgstr "私人空間"
 
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
 #: lib/retro_hex_chat_web/live/app/space_live.ex:456
 #, elixir-autogen, elixir-format
 msgid "Space"
@@ -3926,12 +3902,12 @@ msgstr "這個 P2P 工作階段在你的另一個分頁裡開著"
 msgid "Registration dropped — you are no longer identified as %{nickname}."
 msgstr "註冊已刪除 — 您不再被確認爲 %{nickname}。"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1062
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1075
 #, elixir-autogen, elixir-format
 msgid "  • Channels expire after %{window} of inactivity"
 msgstr "• 頻道在%{window}后失效"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1093
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1106
 #, elixir-autogen, elixir-format
 msgid "  • Nicks expire after %{window} of inactivity"
 msgstr "• 尼克在%{window}無活動後過期"
@@ -4250,3 +4226,28 @@ msgstr "錄製語音訊息"
 #, elixir-autogen, elixir-format
 msgid "No microphone is available."
 msgstr "沒有麥克風可用。"
+
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1067
+#, elixir-autogen, elixir-format
+msgid "Add a Super Operator"
+msgstr "Add a Super Operator"
+
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1068
+#, elixir-autogen, elixir-format
+msgid "Add an Auto Operator"
+msgstr "Add an Auto Operator"
+
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1069
+#, elixir-autogen, elixir-format
+msgid "Add an Auto Voice user"
+msgstr "添加自動語音用戶"
+
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1066
+#, elixir-autogen, elixir-format
+msgid "Register the channel you are in"
+msgstr "註冊您所在的頻道"
+
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1070
+#, elixir-autogen, elixir-format
+msgid "See who founded the channel"
+msgstr "看看是誰建立了頻道"

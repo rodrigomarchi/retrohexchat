@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **240 spec files** under `e2e/tests/`.
-- **556 Playwright `test()` cases**.
-- **503 documented flows**, 502 done, 1 not done.
+- **560 Playwright `test()` cases**.
+- **507 documented flows**, 506 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -200,6 +200,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | D3 | PM reply updates other user's PM tab | `tests/chat-pm.spec.ts` | done |
 | D4 | Closing PM tab removes it from tablist | `tests/chat-pm.spec.ts` | done |
 | D5 | Close Conversation puts a private message away without marking it read (features P2) | `tests/chat-pm.spec.ts` | done |
+| D6 | `/me` in a private chat sends an action both people see | `tests/chat-pm.spec.ts` | done |
 | E1 | `/nick newname` confirms dialog and updates own nicklist entry | `tests/chat-identity.spec.ts` | done |
 | E2 | `/away At lunch` and `/away` emit set/clear status messages | `tests/chat-identity.spec.ts` | done |
 | F1 | `/help` lists available commands in active message list | `tests/chat-help.spec.ts` | done |
@@ -330,6 +331,9 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | K10 | Non-founder cannot `/cs drop`; founder can drop (features P1) | `tests/chat-chanserv.spec.ts` | done |
 | K11 | `/admin ns info/resetpass/drop` changes NickServ state (features P1) | `tests/chat-admin-services.spec.ts` | done |
 | K12 | `/admin cs info/access/transfer/drop` changes ChanServ state (features P1) | `tests/chat-admin-services.spec.ts` | done |
+| K13 | The session form refuses a registered nickname sent without its password | `tests/chat-nickserv.spec.ts` | done |
+| K14 | A nickname registered inside the chat stays identified across a reload of that session | `tests/chat-nickserv.spec.ts` | done |
+| K15 | A member who is not an operator cannot `/cs register` the channel | `tests/chat-chanserv.spec.ts` | done |
 
 ### L - Config, Scripting, Timers, Custom Menus
 

@@ -608,9 +608,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
           boolean(),
           boolean()
         ) :: Phoenix.LiveView.Socket.t()
-  def maybe_start_nickserv_timer(socket, nickname, pre_identified \\ false, quiet \\ false) do
+  def maybe_start_nickserv_timer(socket, nickname, proven \\ false, quiet \\ false) do
+    # `proven` is the caller's whole answer — a signed sign-in or this session's own
+    # identification. NickServ knowing the nickname is identified somewhere else is not
+    # proof for this session.
     cond do
-      pre_identified or NickServ.identified?(nickname) ->
+      proven ->
         # A reconnect trusts the signed `pre_identified` session, so re-seed
         # NickServ's in-memory set (wiped by a restart/deploy) too — otherwise it
         # disagrees with the client and downstream checks (virtual spaces, P2P)

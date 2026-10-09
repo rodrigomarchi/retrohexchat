@@ -44,11 +44,6 @@ msgstr "/command $1"
 msgid "/join #channel"
 msgstr "/join #channel"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:300
-#, elixir-autogen, elixir-format
-msgid "/say Hello!"
-msgstr "/say Hello!"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:347
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:348
 #, elixir-autogen, elixir-format
@@ -714,11 +709,6 @@ msgstr "高い単語"
 #, elixir-autogen, elixir-format
 msgid "Highlight/Mention"
 msgstr "ハイライト/Mention"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:687
-#, elixir-autogen, elixir-format
-msgid "Hostmask"
-msgstr "ホストマスク"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:109
 #, elixir-autogen, elixir-format
@@ -5251,3 +5241,13 @@ msgstr "%{level} に追加"
 #, elixir-autogen, elixir-format
 msgid "Feed URL"
 msgstr "フィードのURL"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:300
+#, elixir-autogen, elixir-format
+msgid "/notice $nick Welcome!"
+msgstr "/notice $nick Welcome!"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:687
+#, elixir-autogen, elixir-format
+msgid "Nickname mask"
+msgstr "ニックネームマスク"

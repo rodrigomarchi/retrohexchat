@@ -673,13 +673,6 @@ msgstr ""
 "/autorespond /autorespond list /autorespond add <trigger> [#channel] "
 "<command> /autorespond remove <position>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add on_part /say $nick left the channel /autorespond list /autorespond remove 0"
-msgstr ""
-"/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add "
-"on_part /say $nick left the channel /autorespond list /autorespond remove 0"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "/autorespond list"
@@ -3229,17 +3222,6 @@ msgstr ""
 "Po połączeniu z serwerem, kanały autołączenia są automatycznie połączone po "
 "zakończeniu wszystkich poleceń. Zapewnia to takie rzeczy jak identyfikacja "
 "NickServ przed połączeniem kanałów. Podczas stosowania leku"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "When you join a channel, a new tab opens and you can see messages and participate in the conversation. If the channel doesn't exist, it is created automatically and you become its first operator (giving you control over channel settings). For registered users, joining a channel automatically adds it to your auto-join list so it's rejoined on your next connection."
-msgstr ""
-"Kiedy dołączysz do kanału, otwiera się nowa karta i możesz zobaczyć "
-"wiadomości i uczestniczyć w rozmowie. Jeśli kanał nie istnieje, jest on "
-"tworzony automatycznie i staje się jego pierwszym operatorem (dając Ci "
-"kontrolę nad ustawieniami kanału). Dla zarejestrowanych użytkowników, "
-"połączenie z kanałem automatycznie dodaje go do listy auto- joint, dzięki "
-"czemu jest ponownie podłączony do następnego połączenia."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:13
 #, elixir-autogen, elixir-format
@@ -5902,3 +5884,13 @@ msgstr "matches the nickname exactly, with the same upper and lower case. A lead
 #, elixir-autogen, elixir-format
 msgid "reports how many channel processes are running. It does not count client connections."
 msgstr "raportuje, ile procesów kanału jest uruchomionych. Nie liczy połączeń z klientami."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add on_part /me waves goodbye to $nick /autorespond list /autorespond remove 0"
+msgstr "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add on_part /me waves goodbye to $nick /autorespond list /autorespond remove 0"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "When you join a channel, a new tab opens and you can see messages and participate in the conversation. If the channel doesn't exist, it is created automatically and you become its owner (giving you control over channel settings). For registered users, joining a channel automatically adds it to your auto-join list so it's rejoined on your next connection."
+msgstr "Kiedy dołączysz do kanału, otwiera się nowa karta i możesz zobaczyć wiadomości i uczestniczyć w rozmowie. Jeśli kanał nie istnieje, jest on tworzony automatycznie i staje się jego właścicielem (dając Ci kontrolę nad ustawieniami kanału). Dla zarejestrowanych użytkowników, połączenie z kanałem automatycznie dodaje go do listy auto- joint, dzięki czemu jest ponownie podłączony do następnego połączenia."

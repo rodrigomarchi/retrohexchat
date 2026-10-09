@@ -14,8 +14,9 @@ defmodule RetroHexChat.Commands.Handlers.Me do
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context), do: {:error, dgettext("commands", "Usage: /me <action>")}
 
+  # An action belongs wherever the person is talking: a channel or the private chat open now.
   def execute(args, context) do
-    if context.active_channel == nil do
+    if context.active_channel == nil and context[:active_pm] == nil do
       {:error, dgettext("commands", "You are not in any channel")}
     else
       content = Enum.join(args, " ")
@@ -37,7 +38,7 @@ defmodule RetroHexChat.Commands.Handlers.Me do
       description:
         dgettext(
           "commands",
-          "Send an action message that appears as '* YourNick does something' to everyone in the channel.\nMust be in a channel. Action text is required."
+          "Describe what you are doing, shown as '* YourNick does something'. It works in channels and in private chats.\nAction text is required."
         ),
       examples: [dgettext("commands", "/me waves hello"), dgettext("commands", "/me is away")]
     }
@@ -58,7 +59,7 @@ defmodule RetroHexChat.Commands.Handlers.Me do
       description:
         dgettext(
           "commands",
-          "Send an action message that appears as '* YourNick does something' to everyone in the channel.\nMust be in a channel. Action text is required."
+          "Describe what you are doing, shown as '* YourNick does something'. It works in channels and in private chats.\nAction text is required."
         ),
       category: :basics,
       parameters: [

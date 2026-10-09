@@ -5,6 +5,8 @@
  * @flow K3 [done] `/ns drop wrong` fails; correct password deletes registration (features P1)
  * @flow K4 [done] `/ns ghost` rejects wrong password and disconnects stale session with correct password (features P1)
  * @flow K5 [done] `/nick registeredNick` opens password dialog and confirms only with correct password (features P0)
+ * @flow K13 [done] The session form refuses a registered nickname sent without its password
+ * @flow K14 [done] A nickname registered inside the chat stays identified across a reload of that session
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -185,6 +187,74 @@ test.describe("NickServ commands", () => {
       });
     } finally {
       await closeUsers([target, requester]);
+    }
+  });
+
+  test("a registered nickname cannot be signed in without its password (K13)", async ({
+    browser,
+  }) => {
+    const owner = await newSignedInUser(browser, "nsown");
+    await owner.chat.disconnect();
+    await owner.ctx.close();
+
+    const ctx = await browser.newContext();
+    const page = await ctx.newPage();
+    try {
+      // The connect window's own hidden session form, sent the way a script
+      // would send it: the owner's nickname and no password token.
+      await page.goto("/connect");
+      await page.waitForSelector("#connect-session-form", {
+        state: "attached",
+      });
+      await page.evaluate((nick) => {
+        const form = document.getElementById(
+          "connect-session-form",
+        ) as HTMLFormElement;
+        form.querySelector('input[name="auth_token"]')?.remove();
+        (
+          form.querySelector('input[name="nickname"]') as HTMLInputElement
+        ).value = nick;
+        form.submit();
+      }, owner.nick);
+
+      await page.waitForURL(/\/connect/);
+      expect(new URL(page.url()).pathname).not.toBe("/chat");
+    } finally {
+      await ctx.close();
+    }
+  });
+
+  test("a nickname registered inside the chat stays identified after a reload (K14)", async ({
+    browser,
+  }) => {
+    const alice = await newSignedInUser(browser, "nsrel");
+    const fresh = uniqueNickname("nsfresh");
+    const password = `pw-${Date.now().toString(36)}`;
+    const title = alice.chat.page.locator(
+      '[data-testid="chat-window"] .window-title-meta',
+    );
+
+    try {
+      await alice.chat.sendMessage(`/nick ${fresh}`);
+      await alice.chat.confirmNickChange();
+      await alice.chat.expectNickInList(fresh);
+
+      await alice.chat.sendMessage(`/ns register ${password}`);
+      await expectStatusResponse(
+        alice.chat,
+        `[NickServ] Nickname ${fresh} registered successfully`,
+      );
+
+      await alice.chat.page.reload();
+      await alice.chat.waitUntilConnected();
+
+      await expect(title).toContainText("Identified");
+      await alice.chat.switchToStatusTab();
+      await expect(
+        alice.chat.page.getByText("You have 60 seconds to identify"),
+      ).toHaveCount(0);
+    } finally {
+      await closeUsers([alice]);
     }
   });
 });

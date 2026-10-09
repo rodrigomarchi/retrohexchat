@@ -5,6 +5,7 @@
  * @flow K8 [done] `/cs vop add bob` auto-voices bob on rejoin (features P1)
  * @flow K9 [done] `/cs sop/aop/vop list` displays access and `del` removes entry (features P1)
  * @flow K10 [done] Non-founder cannot `/cs drop`; founder can drop (features P1)
+ * @flow K15 [done] A member who is not an operator cannot `/cs register` the channel
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -158,6 +159,32 @@ test.describe("ChanServ commands", () => {
       await expect(updatedAopList).not.toContainText(`${aop.nick} [aop]`);
     } finally {
       await closeUsers([founder, aop, vop]);
+    }
+  });
+
+  test("a member who is not an operator cannot register the channel (K15)", async ({
+    browser,
+  }) => {
+    const owner = await newSignedInUser(browser, "csk15o");
+    const member = await newSignedInUser(browser, "csk15m");
+    const channel = uniqueChannel("k15");
+
+    try {
+      await owner.chat.sendMessage(`/join ${channel}`);
+      await owner.chat.expectTabVisible(channel);
+      await member.chat.sendMessage(`/join ${channel}`);
+      await member.chat.expectTabVisible(channel);
+      await member.chat.switchToTab(channel);
+
+      await member.chat.sendMessage("/cs register");
+      await member.chat.expectMessageVisible(
+        "[ChanServ] You must be a channel operator to register the channel",
+      );
+
+      await owner.chat.sendMessage("/cs info");
+      await owner.chat.expectMessageVisible("is not registered");
+    } finally {
+      await closeUsers([owner, member]);
     }
   });
 });

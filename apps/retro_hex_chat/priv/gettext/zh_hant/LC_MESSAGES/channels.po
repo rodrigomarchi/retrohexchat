@@ -67,7 +67,7 @@ msgstr "頻道由主持人主持(+m). 您需要語音( +v) 才能發言 。"
 msgid "Channel is not invite-only"
 msgstr "頻道不只邀請"
 
-#: lib/retro_hex_chat/channels/server.ex:1443
+#: lib/retro_hex_chat/channels/server.ex:1441
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "頻道加入節流閥活動, 請再試一次"
@@ -176,11 +176,6 @@ msgstr "您必須是頻道操作員才能更改話題"
 msgid "You must be a channel operator to unban users"
 msgstr "您必須是取消禁用用戶的頻道操作員"
 
-#: lib/retro_hex_chat/channels/policy.ex:53
-#, elixir-autogen, elixir-format
-msgid "You must be registered to join this channel"
-msgstr "您必須註冊加入此頻道"
-
 #: lib/retro_hex_chat/channels/server.ex:912
 #, elixir-autogen, elixir-format
 msgid "Could not persist channel mute"
@@ -217,24 +212,24 @@ msgstr "這個頻道已經保留了 %{count} 則訊息。請先取消一則。"
 msgid "You must be a channel operator to pin messages"
 msgstr "只有頻道管理員可以置頂訊息"
 
-#: lib/retro_hex_chat/channels/server.ex:1672
+#: lib/retro_hex_chat/channels/server.ex:1670
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "只有頻道創建者才能更改公開封存"
 
-#: lib/retro_hex_chat/channels/server.ex:1604
+#: lib/retro_hex_chat/channels/server.ex:1602
 #, elixir-autogen, elixir-format
 msgid "%{nickname} scheduled: %{title}"
 msgstr "%{nickname} 安排了：%{title}"
 
-#: lib/retro_hex_chat/channels/server.ex:1636
+#: lib/retro_hex_chat/channels/server.ex:1634
 #, elixir-autogen, elixir-format
 msgid "That event belongs to another channel."
 msgstr "該活動屬於另一個頻道。"
 
 #: lib/retro_hex_chat/channels/scheduled_events.ex:105
 #: lib/retro_hex_chat/channels/scheduled_events.ex:131
-#: lib/retro_hex_chat/channels/server.ex:1633
+#: lib/retro_hex_chat/channels/server.ex:1631
 #, elixir-autogen, elixir-format
 msgid "That event could not be found."
 msgstr "找不到該活動。"
@@ -274,7 +269,7 @@ msgstr "該頻道已經有 %{count} 個即將到來的活動。"
 msgid "When does it start?"
 msgstr "什麼時候開始？"
 
-#: lib/retro_hex_chat/channels/server.ex:1664
+#: lib/retro_hex_chat/channels/server.ex:1662
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the public archive"
 msgstr "變更公開存檔前請先向 NickServ 驗證身分"
@@ -288,3 +283,8 @@ msgstr "存檔開關沒有回應。請檢查其狀態後重試。"
 #, elixir-autogen, elixir-format
 msgid "Cannot change the role of a user with equal or higher rank"
 msgstr "無法更改相同或更高級別用戶的角色"
+
+#: lib/retro_hex_chat/channels/policy.ex:53
+#, elixir-autogen, elixir-format
+msgid "You must identify with NickServ to join this channel"
+msgstr "您必須識別 NickServ 才能加入此頻道"

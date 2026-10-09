@@ -639,13 +639,6 @@ msgstr ""
 "/autorespond /autorespond list /autorespond add <trigger> [#channel] "
 "<command> /autorespond remove <position>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add on_part /say $nick left the channel /autorespond list /autorespond remove 0"
-msgstr ""
-"/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add "
-"on_part /say $nick left the channel /autorespond list /autorespond remove 0"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "/autorespond list"
@@ -3004,13 +2997,6 @@ msgstr "當指定事件發生(並在指定頻道中可選擇)時,命令會自動
 msgid "When you connect to the server, your auto-join channels are joined automatically after all perform commands finish. This ensures things like NickServ identification happen before joining channels. When you use"
 msgstr ""
 "當您連接到服務器時, 您的自動連接通道會在所有執行命令完成後自動加入 。 這保證了NickServ身份識別等事情在加入頻道之前發生. 使用時"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "When you join a channel, a new tab opens and you can see messages and participate in the conversation. If the channel doesn't exist, it is created automatically and you become its first operator (giving you control over channel settings). For registered users, joining a channel automatically adds it to your auto-join list so it's rejoined on your next connection."
-msgstr ""
-"當您加入一個頻道時,會打開一個新的標籤,可以看到消息並參與對話. 如果頻道不存在,則會自動創建,併成爲其第一個操作員(給予您對頻道設置的控制). "
-"對於註冊用戶,加入一個頻道會自動添加到您的自動連接列表中,這樣它就可以重新加入您的下一個連接."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:13
 #, elixir-autogen, elixir-format
@@ -5515,3 +5501,13 @@ msgstr "與暱稱完全吻合, 上下大小寫相同 。 一個領先的 @ 被�
 #, elixir-autogen, elixir-format
 msgid "reports how many channel processes are running. It does not count client connections."
 msgstr "報告正在運行的頻道進程。 它不計算客戶端連接 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add on_part /me waves goodbye to $nick /autorespond list /autorespond remove 0"
+msgstr "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add on_part /me waves goodbye to $nick /autorespond list /autorespond remove 0"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "When you join a channel, a new tab opens and you can see messages and participate in the conversation. If the channel doesn't exist, it is created automatically and you become its owner (giving you control over channel settings). For registered users, joining a channel automatically adds it to your auto-join list so it's rejoined on your next connection."
+msgstr "當您加入一個頻道時,會打開一個新的標籤,可以看到消息並參與對話. 如果頻道不存在,則自動創建,併成爲其所有者(給予您對頻道設置的控制). 對於註冊用戶,加入一個頻道會自動添加到您的自動連接列表中,這樣它就可以重新加入您的下一個連接."

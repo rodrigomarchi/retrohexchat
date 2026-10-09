@@ -671,13 +671,6 @@ msgstr ""
 "/autorespond /autorespond list /autorespond add <trigger> [#channel] "
 "<command> /autorespond remove <position>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add on_part /say $nick left the channel /autorespond list /autorespond remove 0"
-msgstr ""
-"/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add "
-"on_part /say $nick left the channel /autorespond list /autorespond remove 0"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "/autorespond list"
@@ -3232,17 +3225,6 @@ msgstr ""
 " otomatis setelah semua melakukan perintah selesai. Ini menjamin hal-hal "
 "seperti identifikasi NickServ terjadi sebelum bergabung saluran. Ketika Anda"
 " menggunakan"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "When you join a channel, a new tab opens and you can see messages and participate in the conversation. If the channel doesn't exist, it is created automatically and you become its first operator (giving you control over channel settings). For registered users, joining a channel automatically adds it to your auto-join list so it's rejoined on your next connection."
-msgstr ""
-"Ketika Anda bergabung dengan saluran, tab baru terbuka dan Anda dapat "
-"melihat pesan dan berpartisipasi dalam percakapan. Jika saluran tidak ada, "
-"itu dibuat secara otomatis dan Anda menjadi operator pertama (memberi Anda "
-"kontrol atas pengaturan saluran). Untuk pengguna yang terdaftar, bergabung "
-"dengan saluran secara otomatis menambahkan ke daftar auto- bergabung "
-"sehingga bergabung kembali pada koneksi berikutnya."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:13
 #, elixir-autogen, elixir-format
@@ -5934,3 +5916,13 @@ msgstr "cocok dengan nama panggilan tepatnya, dengan kasus atas dan bawah yang s
 #, elixir-autogen, elixir-format
 msgid "reports how many channel processes are running. It does not count client connections."
 msgstr "melaporkan berapa banyak proses saluran yang berjalan. Ini tidak menghitung koneksi klien."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add on_part /me waves goodbye to $nick /autorespond list /autorespond remove 0"
+msgstr "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add on_part /me waves goodbye to $nick /autorespond list /autorespond remove 0"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "When you join a channel, a new tab opens and you can see messages and participate in the conversation. If the channel doesn't exist, it is created automatically and you become its owner (giving you control over channel settings). For registered users, joining a channel automatically adds it to your auto-join list so it's rejoined on your next connection."
+msgstr "Ketika Anda bergabung dengan saluran, tab baru terbuka dan Anda dapat melihat pesan dan berpartisipasi dalam percakapan. Jika saluran tidak ada, itu dibuat secara otomatis dan Anda menjadi pemiliknya (memberi Anda kendali atas pengaturan saluran). Untuk pengguna yang terdaftar, bergabung dengan saluran secara otomatis menambahkan ke daftar auto- bergabung sehingga bergabung kembali pada koneksi berikutnya."

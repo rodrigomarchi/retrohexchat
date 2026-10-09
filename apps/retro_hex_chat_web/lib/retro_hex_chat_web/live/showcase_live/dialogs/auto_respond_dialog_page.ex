@@ -25,14 +25,14 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AutoRespondDialogPage do
            position: 1,
            trigger: "on_join",
            channel: "#lobby",
-           command: "/say Hello!",
+           command: "/notice $nick Hello!",
            enabled: true
          },
          %{
            position: 2,
            trigger: "on_part",
            channel: "",
-           command: "/say Farewell!",
+           command: "/me waves goodbye",
            enabled: true
          },
          %{
@@ -96,7 +96,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AutoRespondDialogPage do
           editing={true}
           draft_trigger="on_join"
           draft_channel="#lobby"
-          draft_command="/say Hello!"
+          draft_command="/notice $nick Hello!"
         />
       </.showcase_card>
 

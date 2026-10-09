@@ -46,11 +46,6 @@ msgstr "/command $1"
 msgid "/join #channel"
 msgstr "/join #channel"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:300
-#, elixir-autogen, elixir-format
-msgid "/say Hello!"
-msgstr "/say Hello!"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:347
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:348
 #, elixir-autogen, elixir-format
@@ -719,11 +714,6 @@ msgstr "Palabras de alto nivel"
 #, elixir-autogen, elixir-format
 msgid "Highlight/Mention"
 msgstr "Highlight identificadoph0]"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:687
-#, elixir-autogen, elixir-format
-msgid "Hostmask"
-msgstr "Hostmask"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:109
 #, elixir-autogen, elixir-format
@@ -5423,3 +5413,13 @@ msgstr "Añadir a %{level}"
 #, elixir-autogen, elixir-format
 msgid "Feed URL"
 msgstr "URL del feed"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:300
+#, elixir-autogen, elixir-format
+msgid "/notice $nick Welcome!"
+msgstr "/notice $nick Welcome!"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:687
+#, elixir-autogen, elixir-format
+msgid "Nickname mask"
+msgstr "Máscara de apodo"

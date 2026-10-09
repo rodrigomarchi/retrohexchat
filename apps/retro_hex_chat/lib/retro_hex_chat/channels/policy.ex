@@ -50,7 +50,7 @@ defmodule RetroHexChat.Channels.Policy do
 
   defp check_registered(modes, identified) do
     if Modes.registered_only?(modes) and not identified,
-      do: {:error, dgettext("channels", "You must be registered to join this channel")},
+      do: {:error, dgettext("channels", "You must identify with NickServ to join this channel")},
       else: :ok
   end
 

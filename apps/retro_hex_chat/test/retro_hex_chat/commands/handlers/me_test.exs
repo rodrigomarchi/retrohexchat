@@ -38,9 +38,14 @@ defmodule RetroHexChat.Commands.Handlers.MeTest do
       assert {:error, _} = Me.execute([], @base_context)
     end
 
-    test "errors when no active channel" do
+    test "errors when neither a channel nor a private chat is open" do
       ctx = %{@base_context | active_channel: nil}
       assert {:error, _} = Me.execute(["waves"], ctx)
+    end
+
+    test "acts in the private chat that is open" do
+      ctx = Map.merge(@base_context, %{active_channel: nil, active_pm: "Bob"})
+      assert {:ok, :action, %{content: "waves"}} = Me.execute(["waves"], ctx)
     end
   end
 

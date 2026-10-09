@@ -1254,11 +1254,6 @@ msgstr "赫克斯军阀"
 msgid "Hide the channel from the channel list and whois results."
 msgstr "隐藏频道列表中的频道和结果 。"
 
-#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:230
-#, elixir-autogen, elixir-format
-msgid "Hide the channel name from whois while still appearing in the channel list."
-msgstr "在频道列表中仍然出现时隐藏频道名称 。"
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:152
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
@@ -1837,11 +1832,6 @@ msgstr "限制在节奏频道中向用户及以上表示。"
 #, elixir-autogen, elixir-format
 msgid "Restrict the channel to users who have identified with NickServ."
 msgstr "将频道限制在已与NickServ识别的用户."
-
-#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:137
-#, elixir-autogen, elixir-format
-msgid "Restrict topic changes to half-operators and above."
-msgstr "限制主题更改为半操作器及以上."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:788
 #, elixir-autogen, elixir-format
@@ -5639,3 +5629,13 @@ msgstr "在信件输入旁用麦克风按钮录制最多一分钟的音频. 它�
 #, elixir-autogen, elixir-format
 msgid "Quick reference overlay showing all keyboard shortcuts, opened with Ctrl+Shift+/."
 msgstr "快速引用覆盖显示所有键盘快捷键,以 Ctrl+Shift+/打开."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:230
+#, elixir-autogen, elixir-format
+msgid "List the channel as \"Prv\", without its name or topic, to anyone not in it."
+msgstr "将频道列表为\"Prv\",不包含其名称或话题,以列表给其中没有的任何人."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:137
+#, elixir-autogen, elixir-format
+msgid "Restrict topic changes to channel operators."
+msgstr "限制频道操作员的话题更改 。"

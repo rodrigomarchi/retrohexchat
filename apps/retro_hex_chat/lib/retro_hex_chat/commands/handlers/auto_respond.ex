@@ -110,7 +110,7 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
         "/autorespond",
         dgettext("commands", "/autorespond list"),
         dgettext("commands", "/autorespond add on_join #welcome /notice $nick Welcome!"),
-        dgettext("commands", "/autorespond add on_part /say $nick left"),
+        dgettext("commands", "/autorespond add on_part /me waves goodbye to $nick"),
         dgettext("commands", "/autorespond remove 0")
       ]
     }
@@ -183,7 +183,7 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
         "/autorespond",
         dgettext("commands", "/autorespond list"),
         dgettext("commands", "/autorespond add on_join #welcome /notice $nick Welcome!"),
-        dgettext("commands", "/autorespond add on_part /say $nick left"),
+        dgettext("commands", "/autorespond add on_part /me waves goodbye to $nick"),
         dgettext("commands", "/autorespond remove 0")
       ],
       subcommands: [
