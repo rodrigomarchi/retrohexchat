@@ -265,7 +265,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
     <.context_menu_item data-testid="landing-menu-github">
       <:icon><Icons.icon_code class="h-[14px] w-[14px]" /></:icon>
       <a
-        href="https://github.com/rodrigomarchi/retro_hex_chat"
+        href="https://github.com/rodrigomarchi/retrohexchat"
         target="_blank"
         rel="noopener"
         class="block flex-1"
@@ -276,7 +276,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
     <.context_menu_item data-testid="landing-menu-license">
       <:icon><Icons.icon_legal class="h-[14px] w-[14px]" /></:icon>
       <a
-        href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/LICENSE"
+        href="https://github.com/rodrigomarchi/retrohexchat/blob/main/LICENSE"
         target="_blank"
         rel="noopener"
         class="block flex-1"
@@ -342,7 +342,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
             <ul class="space-y-1">
               <li>
                 <a
-                  href="https://github.com/rodrigomarchi/retro_hex_chat"
+                  href="https://github.com/rodrigomarchi/retrohexchat"
                   target="_blank"
                   rel="noopener"
                 >
@@ -351,7 +351,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
               </li>
               <li>
                 <a
-                  href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/CONTRIBUTING.md"
+                  href="https://github.com/rodrigomarchi/retrohexchat/blob/main/CONTRIBUTING.md"
                   target="_blank"
                   rel="noopener"
                 >
@@ -360,7 +360,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
               </li>
               <li>
                 <a
-                  href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/LICENSE"
+                  href="https://github.com/rodrigomarchi/retrohexchat/blob/main/LICENSE"
                   target="_blank"
                   rel="noopener"
                 >
@@ -394,7 +394,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
             <ul class="space-y-1">
               <li>
                 <a
-                  href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/LICENSE"
+                  href="https://github.com/rodrigomarchi/retrohexchat/blob/main/LICENSE"
                   target="_blank"
                   rel="noopener"
                 >
@@ -403,7 +403,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
               </li>
               <li>
                 <a
-                  href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/SECURITY.md"
+                  href="https://github.com/rodrigomarchi/retrohexchat/blob/main/SECURITY.md"
                   target="_blank"
                   rel="noopener"
                 >

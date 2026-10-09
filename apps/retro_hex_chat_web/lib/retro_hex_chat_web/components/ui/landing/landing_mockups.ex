@@ -134,10 +134,8 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingMockups do
     """
   end
 
-  @clone_text dgettext_noop(
-                "landing",
-                "$ git clone https://github.com/rodrigomarchi/retro_hex_chat.git\n$ cd retro_hex_chat"
-              )
+  # The repository address is an identifier: never a msgid.
+  @clone_text "$ git clone https://github.com/rodrigomarchi/retrohexchat.git\n$ cd retrohexchat"
   @setup_text dgettext_noop("landing", "$ make setup")
   @run_text dgettext_noop(
               "landing",
@@ -146,8 +144,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingMockups do
 
   @spec step_clone(map()) :: Phoenix.LiveView.Rendered.t()
   def step_clone(assigns) do
-    assigns =
-      assign(assigns, :text, Gettext.dgettext(RetroHexChatWeb.Gettext, "landing", @clone_text))
+    assigns = assign(assigns, :text, @clone_text)
 
     ~H"""
     <pre class="bg-canvas-bg text-canvas-fg p-3 text-xs font-mono overflow-x-auto">{@text}</pre>

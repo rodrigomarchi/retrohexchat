@@ -11,21 +11,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_mockups.ex:137
-#, elixir-autogen, elixir-format
-msgid "$ git clone https://github.com/rodrigomarchi/retro_hex_chat.git\n$ cd retro_hex_chat"
-msgstr ""
-"$ gitクローンhttps://github.com/rodrigomarchi/retro_hex_chat.git\n"
-"$ cdレトロ hex chat"
-
-#: lib/retro_hex_chat_web/components/ui/landing/landing_mockups.ex:142
+#: lib/retro_hex_chat_web/components/ui/landing/landing_mockups.ex:140
 #, elixir-autogen, elixir-format
 msgid "$ make server\n[info] Running RetroHexChatWeb.Endpoint at http://localhost:4000"
 msgstr ""
 "$ サーバーを作る\n"
 "[info] RetroHexChatWebを実行します。 http://localhost:4000のエンドポイント"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_mockups.ex:141
+#: lib/retro_hex_chat_web/components/ui/landing/landing_mockups.ex:139
 #, elixir-autogen, elixir-format
 msgid "$ make setup"
 msgstr "$ セットアップ"
@@ -55,7 +48,7 @@ msgstr "💻 コードを貢献して下さい"
 msgid "📢 Share with friends"
 msgstr "📢 友人と共有"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:439
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:445
 #, elixir-autogen, elixir-format
 msgid "“Your data. Your rules. Nobody in between.”"
 msgstr "あなたのデータ。 あなたのルール。 誰が間もない。 ”"
@@ -106,7 +99,7 @@ msgstr "18古典的なゲーム。 お使いのブラウザで動作します。
 msgid "18 games"
 msgstr "18 ゲーム"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:445
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:451
 #, elixir-autogen, elixir-format
 msgid "2025–2026"
 msgstr "2025–2026"
@@ -129,7 +122,7 @@ msgstr "会社案内"
 #: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:158
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:134
 #: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:159
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:323
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:325
 #, elixir-autogen, elixir-format
 msgid "About"
 msgstr "バージョン情報"
@@ -200,7 +193,7 @@ msgstr "ボット"
 msgid "Boxing"
 msgstr "ボクシング"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:331
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:333
 #, elixir-autogen, elixir-format
 msgid "Built with Elixir, Phoenix, and LiveView."
 msgstr "Elixir、Phoenix、LiveViewで構築されました。"
@@ -216,7 +209,7 @@ msgstr "今日&rsquoで構築された技術。"
 msgid "Built-in Help"
 msgstr "組み込みヘルプ"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.ex:33
+#: lib/retro_hex_chat_web/live/landing_live/index.ex:34
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "C:\\Desktop"
@@ -310,7 +303,7 @@ msgstr "休館日 それらを盲目に信頼してください。"
 msgid "Code"
 msgstr "コード"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:373
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:379
 #: lib/retro_hex_chat_web/live/landing_live/community.ex:21
 #: lib/retro_hex_chat_web/live/landing_live/community.ex:34
 #: lib/retro_hex_chat_web/public_pages.ex:83
@@ -324,7 +317,7 @@ msgstr "コミュニティ"
 msgid "Connect"
 msgstr "接続"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:356
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:358
 #, elixir-autogen, elixir-format
 msgid "Contribute"
 msgstr "貢献する"
@@ -389,8 +382,8 @@ msgstr "Discordはサーバーを明日禁止できます。"
 msgid "Do I need to run my own server?"
 msgstr "自分のサーバーを実行する必要がありますか?"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:260
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:368
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:261
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:372
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:531
 #, elixir-autogen, elixir-format
 msgid "Documentation"
@@ -507,12 +500,12 @@ msgstr "リアルタイムログとメトリックを備えたフルダッシュ
 msgid "Getting Started"
 msgstr "始める"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:347
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:349
 #, elixir-autogen, elixir-format
 msgid "GitHub"
 msgstr "GitHubで"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:416
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:422
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "GitHub Sponsors"
@@ -581,7 +574,7 @@ msgstr "IRC コマンド"
 msgid "If a direct connection isn’t possible (strict firewalls), a"
 msgstr "直接接続ができない場合（厳しいファイアウォール）、"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:332
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:334
 #, elixir-autogen, elixir-format
 msgid "Inspired by the IRC of the 2000s and the freedom it represented."
 msgstr "2000年代のIRCに触発され、それが表現する自由。"
@@ -629,14 +622,14 @@ msgstr "安全ですか?"
 msgid "Just clean code. ✨"
 msgstr "きれいなコードだけ。 ✨"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:386
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:392
 #, elixir-autogen, elixir-format
 msgid "Legal"
 msgstr "法律相談"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:282
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:365
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:648
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:284
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:367
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:649
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:631
 #, elixir-autogen, elixir-format
 msgid "License (MIT)"
@@ -667,14 +660,14 @@ msgstr "Ln 1、Col 1"
 msgid "MIT"
 msgstr "MIT"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:395
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:451
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:401
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:457
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "MIT License"
 msgstr "MITライセンス"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:444
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:450
 #, elixir-autogen, elixir-format
 msgid "Made by humans"
 msgstr "人間によって作られる"
@@ -709,7 +702,7 @@ msgstr "モデレーション:"
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:279
 #: lib/retro_hex_chat_web/live/landing_live/games.ex:34
 #: lib/retro_hex_chat_web/live/landing_live/games.html.heex:35
-#: lib/retro_hex_chat_web/live/landing_live/index.ex:48
+#: lib/retro_hex_chat_web/live/landing_live/index.ex:49
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:350
 #, elixir-autogen, elixir-format
 msgid "Multiplayer Games"
@@ -925,7 +918,7 @@ msgstr "プライベート:"
 msgid "Programmable bots with pluggable capabilities."
 msgstr "プラグイン可能な機能を備えたプログラム可能なボット。"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:338
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:340
 #, elixir-autogen, elixir-format
 msgid "Project"
 msgstr "プロジェクト"
@@ -1037,7 +1030,7 @@ msgstr ""
 msgid "Retro Hex Chat is MIT-licensed open source software. Contribute, star, share, or sponsor the project on GitHub."
 msgstr "レトロヘックスチャットはMITライセンスオープンソースソフトウェアです。 GitHubでプロジェクトを立ち上げ、スター、シェア、スポンサー"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:330
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:332
 #, elixir-autogen, elixir-format
 msgid "Retro Hex Chat is free software, licensed under MIT."
 msgstr "レトロヘックスチャットは、MITの下でライセンスフリーソフトウェアです。"
@@ -1077,7 +1070,7 @@ msgstr "スケジュール:"
 msgid "Searchable topics with keyword matching"
 msgstr "キーワードマッチングで検索可能なトピック"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:404
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:410
 #, elixir-autogen, elixir-format
 msgid "Security"
 msgstr "セキュリティ"
@@ -1133,7 +1126,7 @@ msgstr "既に送信したメッセージのSlack料金。"
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:356
 #: lib/retro_hex_chat_web/live/landing_live/games.ex:31
 #: lib/retro_hex_chat_web/live/landing_live/games.html.heex:21
-#: lib/retro_hex_chat_web/live/landing_live/index.ex:51
+#: lib/retro_hex_chat_web/live/landing_live/index.ex:52
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:380
 #, elixir-autogen, elixir-format
 msgid "Solo Arcade"
@@ -1184,7 +1177,7 @@ msgstr "あなたのサーバーに貯えられて、決して残しません"
 msgid "Stored on their servers, mined for ads"
 msgstr "自分のサーバーに保存され、広告のために mined"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:411
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:417
 #, elixir-autogen, elixir-format
 msgid "Support"
 msgstr "サポート"
@@ -1242,13 +1235,13 @@ msgstr "テレグラムは国全体でブロックできます。"
 msgid "Thank you!"
 msgstr "Thank you!"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.ex:34
+#: lib/retro_hex_chat_web/live/landing_live/index.ex:35
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "The Problem"
 msgstr "問題点"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.ex:35
+#: lib/retro_hex_chat_web/live/landing_live/index.ex:36
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:161
 #, elixir-autogen, elixir-format
 msgid "The Solution"
@@ -1555,11 +1548,6 @@ msgstr "参加ガイド"
 msgid "feed monitoring with announcements"
 msgstr "通知によるフィード監視"
 
-#: lib/retro_hex_chat_web/live/landing_live/community.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "github.com/rodrigomarchi/retro_hex_chat"
-msgstr "github.com/rodrigomarchi/retro_hex_chat"
-
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:401
 #, elixir-autogen, elixir-format
 msgid "in your browser. No downloads."
@@ -1631,8 +1619,8 @@ msgid "to challenge anyone. Games run on HTML5 Canvas with state synced via WebR
 msgstr ""
 "誰にでもチャレンジする ゲームは、WebRTC DataChannel &mdash経由で同期された状態でHTML5キャンバス上で実行します。"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:443
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:453
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:449
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:459
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "v0.1.0"
@@ -1696,7 +1684,7 @@ msgstr "レトロな六角チャットをインストールする"
 msgid "Installation guide"
 msgstr "インストールガイド"
 
-#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:425
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:431
 #, elixir-autogen, elixir-format
 msgid "Languages"
 msgstr "語学学校"
@@ -2101,7 +2089,7 @@ msgstr "マイク、カメラ、スピーカー、レイアウト設定付きプ
 
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:147
 #: lib/retro_hex_chat_web/live/landing_live/features.ex:41
-#: lib/retro_hex_chat_web/live/landing_live/index.ex:38
+#: lib/retro_hex_chat_web/live/landing_live/index.ex:39
 #, elixir-autogen, elixir-format
 msgid "Private P2P"
 msgstr "プライベート P2P"
@@ -2168,13 +2156,13 @@ msgid "Retro Hex Chat combines a self-hosted Phoenix server with real-time chat,
 msgstr ""
 "レトロヘックスチャットは、リアルタイムチャット、チャンネルスペース、プライベートWebRTCピアツーピアセッション、セルフホストチャンネル会議と組み合わせています。"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.ex:55
+#: lib/retro_hex_chat_web/live/landing_live/index.ex:56
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Retro Hex Chat — Self-hosted chat, spaces, calls and games"
 msgstr "レトロヘックスチャット — セルフホストチャット、スペース、通話、ゲーム"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.ex:19
+#: lib/retro_hex_chat_web/live/landing_live/index.ex:20
 #, elixir-autogen, elixir-format
 msgid "Run your own chat server with channels, virtual spaces, private P2P calls, channel conferences, bots, and retro games. Open source, self-hosted, and MIT licensed."
 msgstr ""
@@ -2386,12 +2374,12 @@ msgstr "要件"
 msgid "Setup"
 msgstr "セットアップ"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.ex:43
+#: lib/retro_hex_chat_web/live/landing_live/index.ex:44
 #, elixir-autogen, elixir-format
 msgid "Three ways"
 msgstr "3 つの方法"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.ex:30
+#: lib/retro_hex_chat_web/live/landing_live/index.ex:31
 #, elixir-autogen, elixir-format
 msgid "Welcome"
 msgstr "ようこそ"

@@ -4,7 +4,7 @@ Thanks for considering a contribution to Retro Hex Chat! This guide will help yo
 
 ## Reporting bugs
 
-1. Check whether the bug has already been reported in [Issues](https://github.com/rodrigomarchi/retro_hex_chat/issues)
+1. Check whether the bug has already been reported in [Issues](https://github.com/rodrigomarchi/retrohexchat/issues)
 2. If you can't find it, open a new Issue with:
    - A clear description of the problem
    - Steps to reproduce
@@ -23,8 +23,8 @@ Open an Issue with the `enhancement` label describing:
 ### Setup
 
 ```bash
-git clone https://github.com/rodrigomarchi/retro_hex_chat.git
-cd retro_hex_chat
+git clone https://github.com/rodrigomarchi/retrohexchat.git
+cd retrohexchat
 make setup
 make server  # http://localhost:4000
 ```

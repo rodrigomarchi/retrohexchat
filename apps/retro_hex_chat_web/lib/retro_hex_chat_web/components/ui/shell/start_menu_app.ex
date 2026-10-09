@@ -619,7 +619,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
                 they stay together and behind the separator. --%>
           <.start_menu_separator />
           <.link_item
-            href="https://github.com/rodrigomarchi/retro_hex_chat"
+            href="https://github.com/rodrigomarchi/retrohexchat"
             label="GitHub"
             icon_fn={:icon_code}
             target="_blank"
@@ -627,7 +627,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
             testid="start-menu-item-github"
           />
           <.link_item
-            href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/LICENSE"
+            href="https://github.com/rodrigomarchi/retrohexchat/blob/main/LICENSE"
             label={dgettext("landing", "License (MIT)")}
             icon_fn={:icon_legal}
             target="_blank"

@@ -639,13 +639,13 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
         disabled: !cap.chat?
       ),
       separator(),
-      link("https://github.com/rodrigomarchi/retro_hex_chat", "GitHub", :icon_code,
+      link("https://github.com/rodrigomarchi/retrohexchat", "GitHub", :icon_code,
         target: "_blank",
         rel: "noopener",
         testid: "desktop-launcher-item-github"
       ),
       link(
-        "https://github.com/rodrigomarchi/retro_hex_chat/blob/main/LICENSE",
+        "https://github.com/rodrigomarchi/retrohexchat/blob/main/LICENSE",
         dgettext("landing", "License (MIT)"),
         :icon_legal,
         target: "_blank",

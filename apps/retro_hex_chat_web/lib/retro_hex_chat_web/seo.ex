@@ -191,7 +191,7 @@ defmodule RetroHexChatWeb.SEO do
       "name" => "Retro Hex Chat",
       "url" => site_url("/"),
       "logo" => social_image_url(),
-      "sameAs" => ["https://github.com/rodrigomarchi/retro_hex_chat"]
+      "sameAs" => ["https://github.com/rodrigomarchi/retrohexchat"]
     }
     |> Jason.encode!()
   end
