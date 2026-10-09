@@ -87,3 +87,22 @@ database (`FRESH=1`) or another `DIRECTOR_NICK`.
   before the scene ends.
 - **A green take is not a good take.** Pull stills from the encoded video and
   look at them before calling a scene done.
+- **A cast member's command acts on the channel they have open.** `/voice`,
+  `/invite` or `/mode` sent while their screen shows #lobby lands on #lobby.
+  `castIn(nick, channel)` before each one, and wait for the `sets mode` line
+  before the next step: a mode sent while the join is still landing acts on
+  the previous channel.
+- **A window under the chat cannot take a click.** After typing in the chat,
+  the chat window is on top; raise a window from its taskbar button
+  (`[data-window-taskbar="…"]`) before using it, and close it by its close
+  control — Escape or emptying it leaves it on the taskbar of every later
+  scene.
+- **A landing page opens its Connect window on top.** Bring the window the
+  scene is about to the front from the taskbar, off camera.
+- **The Status tab has its own pane** (`statusMessageList`), not the
+  conversation's message list — focus and assertions aim there.
+- **Set up off camera what an earlier scene does on camera.** A scene that
+  shows a topic coming back must set that topic itself: filmed alone, the
+  scene that set it never ran.
+- **Write a director from the specs the script cites.** Each beat names an
+  e2e spec; copy its steps and its assertions, then add the camera.
