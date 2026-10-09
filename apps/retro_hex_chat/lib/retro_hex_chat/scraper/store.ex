@@ -709,12 +709,17 @@ defmodule RetroHexChat.Scraper.Store do
   @spec image_thumbnail_objects([map()]) :: [image_thumbnail_object()]
   defp image_thumbnail_objects(pages) do
     pages
-    |> Enum.flat_map(fn page ->
-      case {page.image_thumbnail_storage_bucket, page.image_thumbnail_storage_key} do
-        {bucket, key} when is_binary(bucket) and is_binary(key) -> [%{bucket: bucket, key: key}]
-        _other -> []
-      end
-    end)
+    |> Enum.map(&image_thumbnail_object/1)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  @doc "The storage object a page's thumbnail lives in, or `nil` when it names none."
+  @spec image_thumbnail_object(map()) :: image_thumbnail_object() | nil
+  def image_thumbnail_object(page) do
+    case {page.image_thumbnail_storage_bucket, page.image_thumbnail_storage_key} do
+      {bucket, key} when is_binary(bucket) and is_binary(key) -> %{bucket: bucket, key: key}
+      _other -> nil
+    end
   end
 
   @spec idle_before(DateTime.t()) :: DateTime.t()

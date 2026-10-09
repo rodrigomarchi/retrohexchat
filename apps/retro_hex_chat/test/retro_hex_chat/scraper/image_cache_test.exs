@@ -47,6 +47,27 @@ defmodule RetroHexChat.Scraper.ImageCacheTest do
     def presigned_get_url(_bucket, _key, _opts), do: {:error, :storage_unavailable}
   end
 
+  # Generation runs on the caller, so the test process hears each delete.
+  defmodule RecordingStorage do
+    @moduledoc false
+    @behaviour RetroHexChat.Chat.Attachments.Storage
+
+    @impl true
+    def put_file(_path, key, opts), do: {:ok, %{bucket: Keyword.fetch!(opts, :bucket), key: key}}
+
+    @impl true
+    def delete_file(bucket, key, _opts) do
+      send(self(), {:deleted, bucket, key})
+      :ok
+    end
+
+    @impl true
+    def presigned_put_url(_bucket, _key, _opts), do: {:error, :unsupported}
+
+    @impl true
+    def presigned_get_url(_bucket, _key, _opts), do: {:error, :unsupported}
+  end
+
   defmodule StaticThumbnailer do
     @moduledoc false
     @behaviour RetroHexChat.Scraper.ImageThumbnailer
@@ -187,6 +208,64 @@ defmodule RetroHexChat.Scraper.ImageCacheTest do
 
       assert {:ok, {:placeholder, "failed"}} = ImageCache.thumbnail_response(page.url_hash)
     end
+  end
+
+  describe "replacing a stored thumbnail" do
+    setup do
+      put_cache_env(storage: RecordingStorage, fetcher: StaticFetcher)
+
+      {:ok, page} = Store.record_success(@url, %{title: "Story", image_url: @image_url})
+
+      {:ok, page} =
+        Store.record_image_thumbnail_success(page, %{
+          source_url: "https://cdn.example.com/previous.jpg",
+          storage_bucket: "retrohexchat-uploads",
+          storage_key: "scraper/images/previous.jpg",
+          content_type: "image/jpeg",
+          byte_size: 42,
+          width: 640,
+          height: 360
+        })
+
+      %{page: page}
+    end
+
+    test "deletes the previous object once the new image is stored", %{page: page} do
+      assert {:ok, updated} = ImageCache.ensure_thumbnail(page)
+
+      assert updated.image_thumbnail_storage_key != "scraper/images/previous.jpg"
+      assert_received {:deleted, "retrohexchat-uploads", "scraper/images/previous.jpg"}
+      refute_received {:deleted, _bucket, _key}
+    end
+
+    test "deletes the previous object when the new image fails", %{page: page} do
+      put_cache_env(storage: RecordingStorage, fetcher: FailingFetcher)
+
+      assert {:error, :unsupported_image_type, updated} = ImageCache.ensure_thumbnail(page)
+
+      assert updated.image_thumbnail_storage_key == nil
+      assert_received {:deleted, "retrohexchat-uploads", "scraper/images/previous.jpg"}
+    end
+
+    test "deletes nothing for a page that had no object" do
+      {:ok, fresh} =
+        Store.record_success("https://example.com/fresh", %{title: "Fresh", image_url: @image_url})
+
+      assert {:ok, _updated} = ImageCache.ensure_thumbnail(fresh)
+
+      refute_received {:deleted, _bucket, _key}
+    end
+  end
+
+  defp put_cache_env(opts) do
+    Application.put_env(
+      :retro_hex_chat,
+      :scraped_image_cache,
+      Keyword.merge(
+        [thumbnailer: StaticThumbnailer, bucket: "retrohexchat-uploads"],
+        opts
+      )
+    )
   end
 
   defp restore_env(key, nil), do: Application.delete_env(:retro_hex_chat, key)

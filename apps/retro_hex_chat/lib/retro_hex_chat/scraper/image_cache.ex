@@ -168,19 +168,45 @@ defmodule RetroHexChat.Scraper.ImageCache do
     end
   end
 
+  # Regenerating clears the row's object before fetching, so the object it named
+  # is no longer reachable from any row once the attempt is recorded — whether it
+  # succeeded under a new key or failed. It is deleted then, or it would stay in
+  # the bucket for good: the prune only sees objects that rows still name.
   @spec generate(ScrapedPage.t(), keyword()) ::
           {:ok, ScrapedPage.t()} | {:error, term(), ScrapedPage.t()}
   defp generate(%ScrapedPage{} = page, opts) do
     source_url = page.image_url
+    previous = Store.image_thumbnail_object(page)
 
-    case do_generate(page, source_url, opts) do
-      {:ok, updated} ->
-        Cache.put(updated)
-        {:ok, updated}
+    result =
+      case do_generate(page, source_url, opts) do
+        {:ok, updated} ->
+          Cache.put(updated)
+          {:ok, updated}
 
-      {:error, reason} ->
-        record_failure(page, source_url, reason, opts)
-    end
+        {:error, reason} ->
+          record_failure(page, source_url, reason, opts)
+      end
+
+    delete_replaced(previous, result)
+    result
+  end
+
+  @spec delete_replaced(
+          Store.image_thumbnail_object() | nil,
+          {:ok, ScrapedPage.t()} | {:error, term(), ScrapedPage.t()}
+        ) :: :ok
+  defp delete_replaced(nil, _result), do: :ok
+
+  defp delete_replaced(previous, result) do
+    current =
+      case result do
+        {:ok, page} -> Store.image_thumbnail_object(page)
+        {:error, _reason, page} -> Store.image_thumbnail_object(page)
+      end
+
+    if current != previous, do: delete_objects([previous])
+    :ok
   end
 
   @spec do_generate(ScrapedPage.t(), String.t(), keyword()) ::
