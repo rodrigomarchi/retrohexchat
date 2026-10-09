@@ -17,6 +17,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.HoverCard do
   (`handleEvent`), so the `dismiss_hover_card` push this component emits on dismiss
   reaches the client regardless of where it originates.
   """
+
+  alias RetroHexChat.Nickname
   use RetroHexChatWeb, :live_component
 
   import RetroHexChatWeb.Components.UI.HoverCard
@@ -109,7 +111,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.HoverCard do
   defp update_away(socket, nick, away, message) do
     case socket.assigns.card do
       %{visible: true, nick: hover_nick} = card when is_binary(hover_nick) ->
-        if String.downcase(hover_nick) == String.downcase(nick) do
+        if Nickname.equal?(hover_nick, nick) do
           data = Map.get(card, :data) || %{}
 
           assign(socket,

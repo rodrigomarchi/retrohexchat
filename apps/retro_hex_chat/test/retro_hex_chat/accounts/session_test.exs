@@ -566,4 +566,26 @@ defmodule RetroHexChat.Accounts.SessionTest do
       assert updated.nickname == "Alice"
     end
   end
+
+  describe "owner/1 — the account records are filed under" do
+    test "an identified person is filed under the registered spelling" do
+      session = "alice" |> Session.new() |> Session.identified_as("Alice")
+
+      assert Session.owner(session) == "Alice"
+      assert session.nickname == "alice"
+    end
+
+    test "a change of case keeps the account; another nickname loses it" do
+      session = "alice" |> Session.new() |> Session.identified_as("Alice")
+
+      assert session |> Session.update_nickname("ALICE") |> Session.owner() == "Alice"
+      assert session |> Session.update_nickname("bob") |> Map.fetch!(:account) == nil
+    end
+
+    test "losing identification forgets the account" do
+      session = "alice" |> Session.new() |> Session.identified_as("Alice")
+
+      assert session |> Session.set_identified(false) |> Map.fetch!(:account) == nil
+    end
+  end
 end

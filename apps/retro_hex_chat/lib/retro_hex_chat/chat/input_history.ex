@@ -8,6 +8,7 @@ defmodule RetroHexChat.Chat.InputHistory do
   """
 
   alias RetroHexChat.Chat.Schemas.InputHistory, as: InputHistorySchema
+  alias RetroHexChat.OwnedList
   alias RetroHexChat.Repo
 
   @type t :: %{
@@ -92,7 +93,7 @@ defmodule RetroHexChat.Chat.InputHistory do
       recent_commands: normalized.recent_commands
     }
 
-    case Repo.get(InputHistorySchema, owner) do
+    case OwnedList.get_owned(InputHistorySchema, owner) do
       nil ->
         %InputHistorySchema{}
         |> InputHistorySchema.changeset(attrs)
@@ -111,7 +112,7 @@ defmodule RetroHexChat.Chat.InputHistory do
 
   @spec load(String.t()) :: {:ok, t()} | {:error, :not_found}
   def load(owner) do
-    case Repo.get(InputHistorySchema, owner) do
+    case OwnedList.get_owned(InputHistorySchema, owner) do
       nil ->
         {:error, :not_found}
 

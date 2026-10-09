@@ -22,6 +22,7 @@ defmodule RetroHexChat.Services.NickServ do
 
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.ChangesetErrors
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Observability
   alias RetroHexChat.Services.Queries
   alias RetroHexChat.Services.RegisteredNick
@@ -247,6 +248,19 @@ defmodule RetroHexChat.Services.NickServ do
     end
   end
 
+  @doc """
+  The account behind `nickname`: the spelling it was registered under, which every
+  per-user record is filed under. `alice` and `ALICE` both answer `"Alice"`; a
+  nickname nobody registered has none.
+  """
+  @spec account_for(String.t()) :: String.t() | nil
+  def account_for(nickname) when is_binary(nickname) do
+    case Queries.find_by_nickname(nickname) do
+      %{nickname: account} -> account
+      nil -> nil
+    end
+  end
+
   @spec identified?(String.t(), GenServer.server()) :: boolean()
   def identified?(nickname, server \\ __MODULE__) do
     GenServer.call(server, {:identified?, nickname})
@@ -318,7 +332,9 @@ defmodule RetroHexChat.Services.NickServ do
     {:ok,
      %{
        identify_timeout_ms: timeout_ms,
-       identified: MapSet.new(),
+       # Keyed by `Nickname.key/1`: one entry per person, whatever case they
+       # identified under; `identified` keeps the spelling they used.
+       identified: %{},
        sessions: %{},
        timers: %{}
      }}
@@ -328,7 +344,7 @@ defmodule RetroHexChat.Services.NickServ do
   def handle_call({:add_identified, nickname}, _from, state) do
     # Registration auto-identifies (no timer to cancel, no broadcast — matches
     # historical behavior; register callers don't expect :nickserv_identified).
-    {:reply, :ok, %{state | identified: MapSet.put(state.identified, nickname)}}
+    {:reply, :ok, put_identified(state, nickname)}
   end
 
   def handle_call({:mark_identified, nickname}, _from, state) do
@@ -337,28 +353,34 @@ defmodule RetroHexChat.Services.NickServ do
 
   def handle_call({:bind_session, nickname, session_id}, _from, state) do
     bound =
-      Map.update(state.sessions, nickname, MapSet.new([session_id]), &MapSet.put(&1, session_id))
+      Map.update(
+        state.sessions,
+        Nickname.key(nickname),
+        MapSet.new([session_id]),
+        &MapSet.put(&1, session_id)
+      )
 
     {:reply, :ok, %{state | sessions: bound}}
   end
 
   def handle_call({:identified_in_session?, nickname, session_id}, _from, state) do
-    bound = state.sessions |> Map.get(nickname, MapSet.new()) |> MapSet.member?(session_id)
-    {:reply, bound and MapSet.member?(state.identified, nickname), state}
+    key = Nickname.key(nickname)
+    bound = state.sessions |> Map.get(key, MapSet.new()) |> MapSet.member?(session_id)
+    {:reply, bound and Map.has_key?(state.identified, key), state}
   end
 
   def handle_call({:identified?, nickname}, _from, state) do
-    {:reply, MapSet.member?(state.identified, nickname), state}
+    {:reply, Map.has_key?(state.identified, Nickname.key(nickname)), state}
   end
 
   def handle_call(:list_identified, _from, state) do
-    {:reply, MapSet.to_list(state.identified), state}
+    {:reply, Map.values(state.identified), state}
   end
 
   def handle_call(:clear_runtime_state, _from, state) do
     Enum.each(state.timers, fn {_nickname, ref} -> Process.cancel_timer(ref) end)
 
-    {:reply, :ok, %{state | identified: MapSet.new(), sessions: %{}, timers: %{}}}
+    {:reply, :ok, %{state | identified: %{}, sessions: %{}, timers: %{}}}
   end
 
   @impl true
@@ -366,7 +388,7 @@ defmodule RetroHexChat.Services.NickServ do
     timer_ref =
       Process.send_after(self(), {:identify_timeout, nickname}, state.identify_timeout_ms)
 
-    new_timers = Map.put(state.timers, nickname, timer_ref)
+    new_timers = Map.put(state.timers, Nickname.key(nickname), timer_ref)
     {:noreply, %{state | timers: new_timers}}
   end
 
@@ -374,21 +396,21 @@ defmodule RetroHexChat.Services.NickServ do
     {:noreply,
      %{
        state
-       | identified: MapSet.delete(state.identified, nickname),
-         sessions: Map.delete(state.sessions, nickname)
+       | identified: Map.delete(state.identified, Nickname.key(nickname)),
+         sessions: Map.delete(state.sessions, Nickname.key(nickname))
      }}
   end
 
   def handle_cast({:restore_identified, nickname}, state) do
     if Queries.find_by_nickname(nickname) != nil do
-      {:noreply, %{state | identified: MapSet.put(state.identified, nickname)}}
+      {:noreply, put_identified(state, nickname)}
     else
       {:noreply, state}
     end
   end
 
   def handle_cast({:cancel_identify_timer, nickname}, state) do
-    case Map.pop(state.timers, nickname) do
+    case Map.pop(state.timers, Nickname.key(nickname)) do
       {nil, _} ->
         {:noreply, state}
 
@@ -400,7 +422,7 @@ defmodule RetroHexChat.Services.NickServ do
 
   @impl true
   def handle_info({:identify_timeout, nickname}, state) do
-    case Map.pop(state.timers, nickname) do
+    case Map.pop(state.timers, Nickname.key(nickname)) do
       {nil, _timers} ->
         {:noreply, state}
 
@@ -425,20 +447,18 @@ defmodule RetroHexChat.Services.NickServ do
 
   # -- Private helpers --
 
+  defp put_identified(state, nickname),
+    do: %{state | identified: Map.put(state.identified, Nickname.key(nickname), nickname)}
+
   defp mark_identified(state, nickname) do
     new_state =
-      case Map.pop(state.timers, nickname) do
+      case Map.pop(state.timers, Nickname.key(nickname)) do
         {nil, _} ->
-          %{state | identified: MapSet.put(state.identified, nickname)}
+          put_identified(state, nickname)
 
         {ref, new_timers} ->
           Process.cancel_timer(ref)
-
-          %{
-            state
-            | identified: MapSet.put(state.identified, nickname),
-              timers: new_timers
-          }
+          put_identified(%{state | timers: new_timers}, nickname)
       end
 
     broadcast_identified(nickname)

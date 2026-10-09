@@ -15,10 +15,12 @@ defmodule RetroHexChat.Accounts.Session do
   alias RetroHexChat.Chat.PerformList
   alias RetroHexChat.Chat.SoundSettings
 
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Presence.NotifyList
 
   @type t :: %__MODULE__{
           nickname: String.t(),
+          account: String.t() | nil,
           channels: [String.t()],
           active_channel: String.t() | nil,
           pm_conversations: [String.t()],
@@ -55,6 +57,10 @@ defmodule RetroHexChat.Accounts.Session do
   @enforce_keys [:nickname]
   defstruct [
     :nickname,
+    # The registration this person proved, in its registered spelling — what
+    # every per-user record is filed under. `nickname` is how they chose to be
+    # shown, and may differ from it by case. Nil until identified.
+    account: nil,
     channels: [],
     active_channel: nil,
     pm_conversations: [],
@@ -115,7 +121,10 @@ defmodule RetroHexChat.Accounts.Session do
 
   @spec update_nickname(t(), String.t()) :: t()
   def update_nickname(%__MODULE__{} = session, new_nickname) do
-    %{session | nickname: new_nickname}
+    # A change of case is the same person: the account stays. Any other change
+    # is somebody who has not proved anything yet.
+    account = if Nickname.equal?(session.nickname, new_nickname), do: session.account
+    %{session | nickname: new_nickname, account: account}
   end
 
   @spec add_channel(t(), String.t()) :: t()
@@ -138,9 +147,41 @@ defmodule RetroHexChat.Accounts.Session do
   end
 
   @spec set_identified(t(), boolean()) :: t()
-  def set_identified(%__MODULE__{} = session, identified) do
-    %{session | identified: identified}
+  def set_identified(%__MODULE__{} = session, true), do: %{session | identified: true}
+
+  def set_identified(%__MODULE__{} = session, false) do
+    %{session | identified: false, account: nil}
   end
+
+  @doc """
+  Whether `nickname` is this identified person's own nickname in another case —
+  a change that needs no password: they have already proved who they are, and a
+  different case is not a different person.
+  """
+  @spec case_change?(t(), String.t()) :: boolean()
+  def case_change?(%__MODULE__{identified: true, nickname: current}, nickname),
+    do: Nickname.equal?(current, nickname)
+
+  def case_change?(%__MODULE__{}, _nickname), do: false
+
+  @doc """
+  Identified, as the registration `account` — its registered spelling, which may
+  differ by case from the nickname shown.
+  """
+  @spec identified_as(t(), String.t() | nil) :: t()
+  def identified_as(%__MODULE__{} = session, account),
+    do: %{session | identified: true, account: account}
+
+  @doc """
+  The name this person's records are filed under: their account — the spelling
+  it was registered under — once they have identified. Every read and write of
+  per-user data asks this rather than `nickname`, which may differ by case. A
+  guest has no account, so their own nickname stands in; nothing of theirs is
+  filed anyway, since every per-user table belongs to a registration.
+  """
+  @spec owner(t()) :: String.t()
+  def owner(%__MODULE__{account: account}) when is_binary(account), do: account
+  def owner(%__MODULE__{nickname: nickname}), do: nickname
 
   @spec identity_state(t()) :: :away | :identified | :guest
   def identity_state(%__MODULE__{away: true}), do: :away
@@ -154,13 +195,13 @@ defmodule RetroHexChat.Accounts.Session do
 
   @spec add_pm_conversation(t(), String.t()) :: t()
   def add_pm_conversation(%__MODULE__{pm_conversations: pms} = session, nickname) do
-    %{session | pm_conversations: [nickname | List.delete(pms, nickname)]}
+    %{session | pm_conversations: [nickname | Nickname.without(pms, nickname)]}
   end
 
   @spec move_pm_to_front(t(), String.t()) :: t()
   def move_pm_to_front(%__MODULE__{pm_conversations: pms} = session, nickname) do
-    if nickname in pms do
-      %{session | pm_conversations: [nickname | List.delete(pms, nickname)]}
+    if Nickname.member?(pms, nickname) do
+      %{session | pm_conversations: [nickname | Nickname.without(pms, nickname)]}
     else
       session
     end
@@ -181,8 +222,8 @@ defmodule RetroHexChat.Accounts.Session do
       ) do
     %{
       session
-      | pm_conversations: List.delete(pms, nick),
-        active_pm: if(active == nick, do: nil, else: active)
+      | pm_conversations: Nickname.without(pms, nick),
+        active_pm: if(Nickname.equal?(active, nick), do: nil, else: active)
     }
   end
 
@@ -194,13 +235,10 @@ defmodule RetroHexChat.Accounts.Session do
       ) do
     new_pms =
       pms
-      |> Enum.map(fn
-        ^old_nickname -> new_nickname
-        nickname -> nickname
-      end)
-      |> Enum.uniq()
+      |> Enum.map(&if(Nickname.equal?(&1, old_nickname), do: new_nickname, else: &1))
+      |> Enum.uniq_by(&Nickname.key/1)
 
-    new_active = if active == old_nickname, do: new_nickname, else: active
+    new_active = if Nickname.equal?(active, old_nickname), do: new_nickname, else: active
 
     %{session | pm_conversations: new_pms, active_pm: new_active}
   end

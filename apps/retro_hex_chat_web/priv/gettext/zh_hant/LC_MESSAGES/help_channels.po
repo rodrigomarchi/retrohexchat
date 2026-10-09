@@ -203,7 +203,7 @@ msgstr "密語( +s)"
 #: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:58
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "另請參閱"
@@ -538,7 +538,7 @@ msgstr "/ns"
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:155
 #: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:60
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "/ns Command"
 msgstr "/ns Command"
@@ -820,12 +820,12 @@ msgstr "指令"
 msgid "Common Commands"
 msgstr "常見命令"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
 msgstr "連接認證"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Connecting"
 msgstr "連線中"
@@ -905,7 +905,7 @@ msgstr "登記工作如何"
 msgid "If no channel is specified, you leave the current channel."
 msgstr "如果沒有指定頻道,請離開當前頻道。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "If you change your nick in chat to a registered name you don't own, you have 60 seconds to identify before being force-renamed"
 msgstr "如果在聊天時將暱稱更改爲不擁有的註冊名稱,則在強制重命名前,有60秒的時間進行識別."
@@ -984,8 +984,8 @@ msgstr "模式設置"
 msgid "Moderated"
 msgstr "調製"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:48
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Nick Expiration"
 msgstr "暱稱過期"
@@ -995,12 +995,7 @@ msgstr "暱稱過期"
 msgid "NickServ is the nickname registration service. It protects your nickname with a password so nobody else can use it."
 msgstr "NickServ是暱稱註冊服務. 用密碼保護你的綽號 這樣別人就不用了"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "Nicknames are"
-msgstr "暱稱是"
-
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Nicknames expire after"
 msgstr "暱稱在"
@@ -1253,11 +1248,6 @@ msgstr "您必須識別與 NickServ ("
 msgid "Your channel settings (modes, topic) are preserved even when empty"
 msgstr "您的頻道設置( 模式, 主題) 即使在空時也會保留"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "case sensitive"
-msgstr "區分大小寫"
-
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "channel operator"
@@ -1268,7 +1258,7 @@ msgstr "頻道操作員"
 msgid "command."
 msgstr "命令。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "of inactivity — connect regularly to keep yours (see"
 msgstr "——定期連接以保持您的功能(參見:"
@@ -1292,11 +1282,6 @@ msgstr "嚴格降低"
 #, elixir-autogen, elixir-format
 msgid "to register a channel"
 msgstr "以註冊頻道"
-
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "— \"Alice\" and \"alice\" are different"
-msgstr "——\"愛麗絲\"和\"愛麗絲\"不同"
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:46
 #, elixir-autogen, elixir-format
@@ -1403,7 +1388,7 @@ msgstr "AOP用戶可以管理VOP列表."
 msgid "Access Lists"
 msgstr "訪問列表"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Account Dialog"
 msgstr "賬戶對話框"
@@ -1511,7 +1496,7 @@ msgstr "丟棄註冊確認後, 運行與 /cs 下來。"
 msgid "Founders can manage SOP, AOP, and VOP lists."
 msgstr "創始人可以管理SOP,AOP,和VOP列表."
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Identity & Presence"
 msgstr "身份和存在"
@@ -2696,3 +2681,18 @@ msgstr "無文本的命令也會刪除信件 :"
 #, elixir-autogen, elixir-format
 msgid "To join a keyed channel each time you connect, add it to your auto-join list with its key:"
 msgstr "要加入每次連接的按鍵頻道, 請用其鍵添加到自動連接列表中 :"
+
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "\"Alice\" and \"alice\" are the same nickname."
+msgstr "\"愛麗絲\"和\"愛麗絲\"是同一個暱稱."
+
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Capital letters do not matter"
+msgstr "大寫字母不重要"
+
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "It is shown as you type it."
+msgstr "它顯示爲您輸入它。"

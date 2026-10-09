@@ -2,7 +2,14 @@ defmodule RetroHexChat.Presence.Tracker do
   @moduledoc """
   Phoenix Presence-based user tracking.
   Tracks online users per channel with metadata (away status, etc.).
+
+  Everyone is tracked under `Nickname.key/1`, so `alice` finds whoever is online
+  as `AlIcE`; the spelling they chose rides in the meta as `:nickname` and is
+  what every reader gets back.
   """
+
+  alias RetroHexChat.Nickname
+
   use Phoenix.Presence,
     otp_app: :retro_hex_chat,
     pubsub_server: RetroHexChat.PubSub
@@ -19,21 +26,19 @@ defmodule RetroHexChat.Presence.Tracker do
       last_activity_at: DateTime.utc_now()
     }
 
-    track(self(), topic, nickname, Map.merge(default_meta, meta))
+    track(self(), topic, Nickname.key(nickname), Map.merge(default_meta, meta))
   end
 
   @spec untrack_user(String.t(), String.t()) :: :ok
   def untrack_user(topic, nickname) do
-    untrack(self(), topic, nickname)
+    untrack(self(), topic, Nickname.key(nickname))
   end
 
   @spec list_users(String.t()) :: [map()]
   def list_users(topic) do
     topic
     |> list()
-    |> Enum.map(fn {nickname, %{metas: [meta | _]}} ->
-      Map.put(meta, :nickname, nickname)
-    end)
+    |> Enum.map(fn {_key, %{metas: [meta | _]}} -> meta end)
   end
 
   @doc """
@@ -66,32 +71,42 @@ defmodule RetroHexChat.Presence.Tracker do
   on the topic, which is the wrong shape for a question about one nickname —
   `presence:global` holds the whole server.
 
-  A nickname is tracked under the case it connected with, so a lookup that
-  misses falls back to a case-insensitive scan: a nick read back from a stored
-  conversation or typed into a command does not have to match that case.
+  Entries are keyed by `Nickname.key/1`, so any case of a nickname finds its
+  owner, and the entry says how they spell it.
   """
   @spec meta(String.t(), String.t()) :: map() | nil
   def meta(topic, nickname) do
-    case get_by_key(topic, nickname) do
-      %{metas: [meta | _rest]} -> Map.put(meta, :nickname, nickname)
-      _missing -> scan_for_meta(topic, nickname)
+    case get_by_key(topic, Nickname.key(nickname)) do
+      %{metas: [meta | _rest]} -> meta
+      _missing -> nil
     end
   end
 
   @spec online?(String.t(), String.t()) :: boolean()
   def online?(topic, nickname), do: meta(topic, nickname) != nil
 
+  @doc """
+  Whether `nickname` belongs to somebody else who is online now — the question
+  a sign-in or a `/nick` asks before taking a name. A change of case of your own
+  nickname is not taking anybody's.
+  """
+  @spec nick_taken?(String.t(), String.t() | nil) :: boolean()
+  def nick_taken?(nickname, current_nickname) do
+    not Nickname.equal?(nickname, current_nickname) and
+      online?(RetroHexChat.Topics.presence(), nickname)
+  end
+
   @spec update_away(String.t(), String.t(), boolean(), String.t() | nil) ::
           {:ok, binary()} | {:error, any()}
   def update_away(topic, nickname, away, message \\ nil) do
-    update(self(), topic, nickname, fn meta ->
+    update(self(), topic, Nickname.key(nickname), fn meta ->
       %{meta | away: away, away_message: message}
     end)
   end
 
   @spec update_activity(String.t(), String.t()) :: {:ok, binary()} | {:error, any()}
   def update_activity(topic, nickname) do
-    update(self(), topic, nickname, fn meta ->
+    update(self(), topic, Nickname.key(nickname), fn meta ->
       Map.put(meta, :last_activity_at, DateTime.utc_now())
     end)
   end
@@ -99,17 +114,8 @@ defmodule RetroHexChat.Presence.Tracker do
   @spec update_bio(String.t(), String.t(), String.t() | nil) ::
           {:ok, binary()} | {:error, any()}
   def update_bio(topic, nickname, bio) do
-    update(self(), topic, nickname, fn meta ->
+    update(self(), topic, Nickname.key(nickname), fn meta ->
       Map.put(meta, :bio, bio)
     end)
-  end
-
-  @spec scan_for_meta(String.t(), String.t()) :: map() | nil
-  defp scan_for_meta(topic, nickname) do
-    target = String.downcase(nickname)
-
-    topic
-    |> list_users()
-    |> Enum.find(&(String.downcase(&1.nickname) == target))
   end
 end

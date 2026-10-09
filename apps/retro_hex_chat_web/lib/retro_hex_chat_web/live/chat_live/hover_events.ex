@@ -9,6 +9,8 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
   Attached as `attach_hook(:hover_events, :handle_event, ...)` in ChatLive.mount/3.
   """
 
+  alias RetroHexChat.Nickname
+
   import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
@@ -197,9 +199,9 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
 
   defp get_role_in_active_channel(nick, channel) do
     with {:ok, state} <- Server.get_state(channel),
-         nick_lower = String.downcase(nick),
+         nick_lower = Nickname.key(nick),
          {_nick, role} <-
-           Enum.find(state.members, fn {m, _} -> String.downcase(m) == nick_lower end) do
+           Enum.find(state.members, fn {m, _} -> Nickname.key(m) == nick_lower end) do
       role
     else
       _ -> nil
@@ -222,8 +224,8 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
   end
 
   defp find_contact(nick, contacts) do
-    nick_lower = String.downcase(nick)
+    nick_lower = Nickname.key(nick)
 
-    Enum.find(contacts.entries, &(String.downcase(&1.contact_nickname) == nick_lower))
+    Enum.find(contacts.entries, &(Nickname.key(&1.contact_nickname) == nick_lower))
   end
 end

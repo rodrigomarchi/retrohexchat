@@ -150,11 +150,6 @@ msgstr "Parcourir par catégorie ou ouvrez Aide Sujets du menu chat."
 msgid "Cannot contain spaces"
 msgstr "Impossible de contenir des espaces"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Case sensitive"
-msgstr "Sensible au cas par cas"
-
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Changing Nickname"
@@ -452,11 +447,6 @@ msgstr "pour les voir tous."
 #, elixir-autogen, elixir-format
 msgid "to send."
 msgstr "à envoyer."
-
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "— \"Alice\" and \"alice\" are different nicknames"
-msgstr "— \"Alice\" et \"alice\" sont différents surnoms"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:42
 #, elixir-autogen, elixir-format
@@ -850,3 +840,18 @@ msgstr "Lors de visites ultérieures, saisissez le même mot de passe pour vous 
 #, elixir-autogen, elixir-format
 msgid "Then click %{button}."
 msgstr "Puis cliquez sur %{button}."
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "\"Alice\" and \"alice\" are the same nickname."
+msgstr "\"Alice\" et \"Alice\" sont le même surnom."
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Capital letters do not matter"
+msgstr "Les lettres majuscules n'ont aucune importance"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "It is shown as you type it."
+msgstr "Il est montré comme vous le tapez."

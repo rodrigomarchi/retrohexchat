@@ -11,6 +11,8 @@ defmodule RetroHexChatWeb.ChatLive.NotifyOps do
   the caller can bubble the new session + status line and run the socket-level
   side effects it owns (timer cancel, PM open, persistence).
   """
+
+  alias RetroHexChat.Nickname
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Accounts.Session
@@ -23,7 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.NotifyOps do
   def add(session, nick, note) do
     note = blank_to_nil(note)
 
-    case NotifyList.add_entry(session.notify_list, session.nickname, nick, note) do
+    case NotifyList.add_entry(session.notify_list, Session.owner(session), nick, note) do
       {:ok, list} ->
         list = sync_entry_online(list, nick)
 
@@ -82,10 +84,10 @@ defmodule RetroHexChatWeb.ChatLive.NotifyOps do
   @doc "The note text for a tracked nick (case-insensitive), or `\"\"`."
   @spec note_for(map(), String.t() | nil) :: String.t()
   def note_for(notify_list, nick) when is_binary(nick) do
-    downcased = String.downcase(nick)
+    downcased = Nickname.key(nick)
 
     notify_list.entries
-    |> Enum.find(&(String.downcase(&1.tracked_nickname) == downcased))
+    |> Enum.find(&(Nickname.key(&1.tracked_nickname) == downcased))
     |> case do
       nil -> ""
       entry -> Map.get(entry, :note) || ""
@@ -98,7 +100,7 @@ defmodule RetroHexChatWeb.ChatLive.NotifyOps do
   defp sync_entry_online(notify_list, nickname) do
     online_nicks = Tracker.list_users(Topics.presence()) |> Enum.map(& &1.nickname)
 
-    if Enum.any?(online_nicks, &(String.downcase(&1) == String.downcase(nickname))) do
+    if Enum.any?(online_nicks, &Nickname.equal?(&1, nickname)) do
       NotifyList.set_online(notify_list, nickname, true)
     else
       notify_list

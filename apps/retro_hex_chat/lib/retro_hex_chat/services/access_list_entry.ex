@@ -27,6 +27,8 @@ defmodule RetroHexChat.Services.AccessListEntry do
     |> validate_length(:nickname, max: 16)
     |> validate_length(:added_by, max: 16)
     |> validate_inclusion(:level, @level_values)
-    |> unique_constraint([:channel_name, :nickname], name: :idx_access_list_channel_nickname)
+    |> unique_constraint([:channel_name, :nickname],
+      name: :idx_access_list_channel_nickname_lower
+    )
   end
 end

@@ -9,23 +9,25 @@ defmodule RetroHexChat.Accounts.ServerRoles do
   """
 
   alias RetroHexChat.Admin.RoleCache
+  alias RetroHexChat.Nickname
 
   @spec admin?(String.t(), boolean()) :: boolean()
   def admin?(nickname, identified) do
     identified and
       (root_admin?(nickname) or RoleCache.admin?(nickname) or
-         nickname in config_admin_list())
+         Nickname.member?(config_admin_list(), nickname))
   end
 
   @spec server_operator?(String.t(), boolean()) :: boolean()
   def server_operator?(nickname, identified) do
     identified and
-      (RoleCache.server_operator?(nickname) or nickname in config_server_operator_list())
+      (RoleCache.server_operator?(nickname) or
+         Nickname.member?(config_server_operator_list(), nickname))
   end
 
   @spec root_admin?(String.t()) :: boolean()
   def root_admin?(nickname) do
-    nickname in root_admin_list()
+    Nickname.member?(root_admin_list(), nickname)
   end
 
   @spec root_admin_list() :: [String.t()]

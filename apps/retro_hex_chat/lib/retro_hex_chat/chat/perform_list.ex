@@ -191,7 +191,7 @@ defmodule RetroHexChat.Chat.PerformList do
   # ---------------------------------------------------------------------------
 
   defp save_settings(owner, settings) do
-    case Repo.get(PerformSettings, owner) do
+    case OwnedList.get_owned(PerformSettings, owner) do
       nil ->
         %PerformSettings{}
         |> PerformSettings.changeset(%{
@@ -208,7 +208,7 @@ defmodule RetroHexChat.Chat.PerformList do
   end
 
   defp load_settings(owner) do
-    Repo.get(PerformSettings, owner)
+    OwnedList.get_owned(PerformSettings, owner)
   end
 
   defp extract_command_name(command) do

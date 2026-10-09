@@ -40,7 +40,9 @@ defmodule RetroHexChatWeb.ChatLive.TipEvents do
     assign(socket, session: session)
   end
 
-  defp persist_contextual_tips(%Session{identified: true, nickname: nickname} = session) do
+  defp persist_contextual_tips(%Session{identified: true} = session) do
+    nickname = Session.owner(session)
+
     case ContextualTips.save(nickname, session.contextual_tips) do
       :ok ->
         :ok
@@ -52,7 +54,7 @@ defmodule RetroHexChatWeb.ChatLive.TipEvents do
   rescue
     error ->
       Logger.warning(
-        "Failed to persist contextual tips for #{nickname}: #{Exception.message(error)}"
+        "Failed to persist contextual tips for #{Session.owner(session)}: #{Exception.message(error)}"
       )
 
       :ok

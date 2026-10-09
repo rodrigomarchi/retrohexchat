@@ -26,6 +26,8 @@ defmodule RetroHexChat.Bots.Capabilities.Greeter do
   `onboarding_delivery` at the channel is spending real budget, four lines of it.
   """
 
+  alias RetroHexChat.Nickname
+
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Bots.Capability
 
@@ -301,7 +303,7 @@ defmodule RetroHexChat.Bots.Capabilities.Greeter do
   end
 
   defp delivery_key(event, channel, nickname, content) do
-    {event, String.downcase(channel), String.downcase(nickname), content}
+    {event, String.downcase(channel), Nickname.key(nickname), content}
   end
 
   defp prune_recent(recent, cutoff) do

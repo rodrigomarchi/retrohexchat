@@ -7,6 +7,7 @@ defmodule RetroHexChat.Services.ChanServ do
 
   alias RetroHexChat.ChangesetErrors
   alias RetroHexChat.Chat.Archive
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Observability
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.Queries
@@ -56,17 +57,23 @@ defmodule RetroHexChat.Services.ChanServ do
   @spec viewer_role(String.t(), String.t(), GenServer.server()) :: String.t() | nil
   def viewer_role(channel_name, nickname, server \\ __MODULE__) do
     case info(channel_name, server) do
-      {:ok, %{founder: ^nickname}} ->
-        "founder"
+      {:ok, %{founder: founder}} when is_binary(founder) and founder != "" ->
+        if Nickname.equal?(founder, nickname),
+          do: "founder",
+          else: access_level(channel_name, nickname)
 
       {:ok, _info} ->
-        case Queries.find_access(channel_name, nickname) do
-          nil -> nil
-          entry -> entry.level
-        end
+        access_level(channel_name, nickname)
 
       {:error, _msg} ->
         nil
+    end
+  end
+
+  defp access_level(channel_name, nickname) do
+    case Queries.find_access(channel_name, nickname) do
+      nil -> nil
+      entry -> entry.level
     end
   end
 
@@ -329,7 +336,7 @@ defmodule RetroHexChat.Services.ChanServ do
   end
 
   defp verify_founder(channel, nickname) do
-    if channel.founder_nickname == nickname do
+    if Nickname.equal?(channel.founder_nickname, nickname) do
       :ok
     else
       {:error, dgettext("services", "Only the founder can drop a channel")}

@@ -9,6 +9,8 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   Attached as `attach_hook(:timer_handlers, :handle_info, ...)` in ChatLive.mount/3.
   """
 
+  alias RetroHexChat.Nickname
+
   import Phoenix.Component, only: [assign: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
@@ -90,7 +92,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
       {:ok, updated_list} ->
         new_session = Session.set_ignore_list(session, updated_list)
 
-        timers = Map.delete(socket.assigns.ignore_timers, String.downcase(nickname))
+        timers = Map.delete(socket.assigns.ignore_timers, Nickname.key(nickname))
 
         {:halt,
          socket
@@ -111,7 +113,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
 
   def handle_info({:auto_ignore_expired, nickname}, socket) do
     session = socket.assigns.session
-    sender_key = String.downcase(nickname)
+    sender_key = Nickname.key(nickname)
     auto_state = socket.assigns.auto_ignore_state
 
     case IgnoreList.remove_entry(session.ignore_list, nickname) do

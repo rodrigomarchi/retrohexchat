@@ -18,6 +18,7 @@ defmodule RetroHexChat.Notifications.Candidates do
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Chat.Content
   alias RetroHexChat.Chat.Highlight
+  alias RetroHexChat.Nickname
 
   # Everything a nickname may contain. Splitting on its complement is what turns
   # "hey @Bob," into "hey" and "Bob" without inventing a second nickname grammar
@@ -53,7 +54,7 @@ defmodule RetroHexChat.Notifications.Candidates do
 
     (addressed(plain) ++ String.split(plain, @separators, trim: true))
     |> Enum.filter(&candidate?/1)
-    |> Enum.uniq_by(&String.downcase/1)
+    |> Enum.uniq_by(&Nickname.key/1)
     |> Enum.take(@max_tokens)
   end
 

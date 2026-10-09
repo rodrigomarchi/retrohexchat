@@ -25,6 +25,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   down and rebuilt on toggle. The right-click/double-click `NicklistHook` pushes to
   the parent, which owns the context menu and reads `conversation_members` there.
   """
+
+  alias RetroHexChat.Nickname
   use RetroHexChatWeb, :live_component
 
   import RetroHexChatWeb.Components.UI.ListStates
@@ -54,7 +56,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
 
   @doc "Stable DOM id for a user's stream row, keyed by the normalized nick."
   @spec dom_id(String.t()) :: String.t()
-  def dom_id(nick), do: "nick-" <> String.downcase(nick)
+  def dom_id(nick), do: "nick-" <> Nickname.key(nick)
 
   @doc "Replaces the whole list (channel switch or bulk change). Returns the socket."
   @spec reset(Phoenix.LiveView.Socket.t(), [map()]) :: Phoenix.LiveView.Socket.t()
@@ -144,7 +146,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   end
 
   def update(%{action: {:remove, nick}} = assigns, socket) do
-    users = Enum.reject(socket.assigns.users, &same_nick?(&1.nickname, nick))
+    users = Enum.reject(socket.assigns.users, &Nickname.equal?(&1.nickname, nick))
 
     {:ok,
      socket
@@ -158,7 +160,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   # render: these are stream items, and a stream item is drawn when it is
   # inserted, not when an assign around it changes.
   def update(%{action: {:in_call, nicks}} = assigns, socket) do
-    wanted = MapSet.new(nicks, &String.downcase/1)
+    wanted = MapSet.new(nicks, &Nickname.key/1)
 
     if wanted == socket.assigns.call_nicks do
       {:ok, assign_context(socket, assigns)}
@@ -245,8 +247,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
                 role={Map.get(user, :role, :normal)}
                 status={row_status(user)}
                 muted={Map.get(user, :muted, false)}
-                current={same_nick?(user.nickname, @current_nick)}
-                in_call={MapSet.member?(@call_nicks, String.downcase(user.nickname))}
+                current={Nickname.equal?(user.nickname, @current_nick)}
+                in_call={MapSet.member?(@call_nicks, Nickname.key(user.nickname))}
                 nick_color={@nick_color_fn.(user.nickname)}
                 avatar={@show_avatars && Map.get(user, :avatar)}
                 data-nick={user.nickname}
@@ -286,7 +288,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   defp normalize_call_nicks(assigns, socket) do
     case Map.get(assigns, :call_nicks) do
       nil -> socket.assigns.call_nicks
-      nicks -> MapSet.new(nicks, &String.downcase/1)
+      nicks -> MapSet.new(nicks, &Nickname.key/1)
     end
   end
 
@@ -352,7 +354,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
 
   defp upsert_user(users, user) do
     users
-    |> Enum.reject(&same_nick?(&1.nickname, user.nickname))
+    |> Enum.reject(&Nickname.equal?(&1.nickname, user.nickname))
     |> then(&[user | &1])
   end
 
@@ -362,7 +364,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   defp sort_users(users) do
     Enum.sort_by(users, fn user ->
       {Map.get(user, :rank) || role_rank(Map.get(user, :role, :regular)),
-       String.downcase(user.nickname)}
+       Nickname.key(user.nickname)}
     end)
   end
 
@@ -385,11 +387,4 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   defp section_label(:voiced), do: dgettext("chat", "Voiced")
   defp section_label(:bot), do: dgettext("chat", "Bot")
   defp section_label(:regular), do: dgettext("chat", "Users")
-
-  defp same_nick?(_nick, nil), do: false
-  defp same_nick?(nil, _nick), do: false
-
-  defp same_nick?(left, right) do
-    String.downcase(left) == String.downcase(right)
-  end
 end

@@ -8,9 +8,11 @@ defmodule RetroHexChat.Accounts.ContactList do
   use Gettext, backend: RetroHexChat.Gettext
 
   import Ecto.Query
+  import RetroHexChat.Nickname, only: [matches: 2]
 
   alias RetroHexChat.Accounts.Contact
   alias RetroHexChat.Accounts.ContactEntry
+  alias RetroHexChat.Nickname
   alias RetroHexChat.NicknameList
   alias RetroHexChat.OwnedList
   alias RetroHexChat.Repo
@@ -34,7 +36,7 @@ defmodule RetroHexChat.Accounts.ContactList do
       not valid_nickname?(contact_nickname) ->
         {:error, :invalid_nickname}
 
-      String.downcase(owner_nickname) == String.downcase(contact_nickname) ->
+      Nickname.equal?(owner_nickname, contact_nickname) ->
         {:error, :self_add}
 
       NicknameList.member?(@list, contact_list, contact_nickname) ->
@@ -108,14 +110,10 @@ defmodule RetroHexChat.Accounts.ContactList do
 
   @spec save_entry(String.t(), Contact.t()) :: :ok | {:error, term()}
   def save_entry(owner, entry) do
-    owner_lower = String.downcase(owner)
-    contact_lower = String.downcase(entry.contact_nickname)
-
     existing =
       from(e in ContactEntry,
         where:
-          fragment("lower(?)", e.owner_nickname) == ^owner_lower and
-            fragment("lower(?)", e.contact_nickname) == ^contact_lower
+          matches(e.owner_nickname, owner) and matches(e.contact_nickname, entry.contact_nickname)
       )
       |> Repo.one()
 
@@ -145,13 +143,8 @@ defmodule RetroHexChat.Accounts.ContactList do
 
   @spec delete_entry(String.t(), String.t()) :: :ok
   def delete_entry(owner, contact_nickname) do
-    owner_lower = String.downcase(owner)
-    contact_lower = String.downcase(contact_nickname)
-
     from(e in ContactEntry,
-      where:
-        fragment("lower(?)", e.owner_nickname) == ^owner_lower and
-          fragment("lower(?)", e.contact_nickname) == ^contact_lower
+      where: matches(e.owner_nickname, owner) and matches(e.contact_nickname, contact_nickname)
     )
     |> Repo.delete_all()
 

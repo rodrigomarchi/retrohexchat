@@ -28,11 +28,6 @@ msgstr "Authentifizierung"
 msgid "Back"
 msgstr "Zurück"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:335
-#, elixir-autogen, elixir-format
-msgid "Case sensitive"
-msgstr "Rechtssache"
-
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:488
 #, elixir-autogen, elixir-format
 msgid "Choose a password (min. 5 characters)..."
@@ -140,6 +135,7 @@ msgid "Passwords do not match"
 msgstr "Passwörter passen nicht"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:539
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Register & Connect"
 msgstr "Registrieren und verbinden"
@@ -340,3 +336,8 @@ msgstr "Mehr als ein Bildschirm"
 #, elixir-autogen, elixir-format
 msgid "You can be signed in on up to %{count} screens at once. Opening a %{next}th ends the one you have not used for longest."
 msgstr "Du kannst auf bis zu %{count} Bildschirmen gleichzeitig angemeldet sein. Ein %{next}. beendet den, den du am längsten nicht benutzt hast."
+
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:335
+#, elixir-autogen, elixir-format
+msgid "Capital letters do not matter"
+msgstr "Großbuchstaben spielt keine Rolle"

@@ -20,7 +20,9 @@ defmodule RetroHexChat.Accounts.Avatars do
   """
 
   import Ecto.Query
+  import RetroHexChat.Nickname, only: [key_of: 1, matches: 2]
 
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChat.Topics
@@ -79,13 +81,13 @@ defmodule RetroHexChat.Accounts.Avatars do
     by_downcase =
       nicknames
       |> Enum.filter(&is_binary/1)
-      |> Map.new(&{String.downcase(&1), &1})
+      |> Map.new(&{Nickname.key(&1), &1})
 
     stored =
       RegisteredNick
-      |> where([n], fragment("lower(?)", n.nickname) in ^Map.keys(by_downcase))
+      |> where([n], key_of(n.nickname) in ^Map.keys(by_downcase))
       |> where([n], not is_nil(n.avatar))
-      |> select([n], {fragment("lower(?)", n.nickname), n.avatar})
+      |> select([n], {key_of(n.nickname), n.avatar})
       |> Repo.all()
 
     Map.new(stored, fn {downcased, avatar} ->
@@ -97,7 +99,7 @@ defmodule RetroHexChat.Accounts.Avatars do
   defp write(nickname, avatar) do
     {count, _} =
       RegisteredNick
-      |> where([n], fragment("lower(?)", n.nickname) == ^String.downcase(nickname))
+      |> where([n], matches(n.nickname, nickname))
       |> Repo.update_all(set: [avatar: avatar])
 
     if count > 0, do: :ok, else: {:error, :not_found}

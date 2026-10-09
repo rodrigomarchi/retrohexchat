@@ -3,6 +3,8 @@ defmodule RetroHexChat.Admin.GlobalMuteTable do
   ETS cache for durable global mute state.
   """
 
+  alias RetroHexChat.Nickname
+
   use GenServer
 
   alias RetroHexChat.Admin.GlobalMutes
@@ -93,5 +95,5 @@ defmodule RetroHexChat.Admin.GlobalMuteTable do
     {:ok, %{}}
   end
 
-  defp normalize(nickname) when is_binary(nickname), do: String.downcase(nickname)
+  defp normalize(nickname) when is_binary(nickname), do: Nickname.key(nickname)
 end

@@ -10,6 +10,8 @@ defmodule RetroHexChat.Chat.Highlight do
   - Text inside URLs (masked before matching)
   """
 
+  alias RetroHexChat.Nickname
+
   alias RetroHexChat.Chat.Content
   alias RetroHexChat.Chat.HighlightWord
 
@@ -47,7 +49,7 @@ defmodule RetroHexChat.Chat.Highlight do
     do: :no_highlight
 
   def check(content, content_format, own_nick, highlight_words, sender_nick) do
-    if String.downcase(sender_nick) == String.downcase(own_nick) do
+    if Nickname.equal?(sender_nick, own_nick) do
       :no_highlight
     else
       plain = content |> visible_text(content_format) |> mask_urls()

@@ -9,6 +9,8 @@ defmodule RetroHexChat.VirtualSpace.Queries do
   caller may already be gone.
   """
 
+  alias RetroHexChat.Nickname
+
   import Ecto.Query
 
   alias RetroHexChat.Repo
@@ -66,7 +68,7 @@ defmodule RetroHexChat.VirtualSpace.Queries do
     |> Participant.changeset(%{
       session_id: session_id,
       nickname: nickname,
-      normalized_nickname: String.downcase(nickname),
+      normalized_nickname: Nickname.key(nickname),
       joined_at: DateTime.utc_now()
     })
     |> Repo.insert(

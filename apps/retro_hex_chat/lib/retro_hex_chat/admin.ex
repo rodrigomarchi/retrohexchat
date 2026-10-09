@@ -703,7 +703,9 @@ defmodule RetroHexChat.Admin do
     alias RetroHexChat.Admin.AdminRole
     alias RetroHexChat.Repo
 
-    from(r in AdminRole, where: r.nickname == ^nickname) |> Repo.delete_all()
+    import RetroHexChat.Nickname, only: [matches: 2]
+
+    from(r in AdminRole, where: matches(r.nickname, nickname)) |> Repo.delete_all()
     RoleCache.remove_all(nickname)
     AuditLogs.log(admin, "user.role", {"user", nickname}, %{role: "user"})
     broadcast_user(nickname, {:role_changed, %{nickname: nickname, role: "user"}})

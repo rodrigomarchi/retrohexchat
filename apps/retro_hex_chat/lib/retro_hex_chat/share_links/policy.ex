@@ -20,7 +20,10 @@ defmodule RetroHexChat.ShareLinks.Policy do
   belongs to the surface: the link carries which room it is, never permission to
   be in it.
   """
+
+  alias RetroHexChat.Nickname
   import Ecto.Query
+  import RetroHexChat.Nickname, only: [matches: 2]
 
   alias RetroHexChat.Channels.Membership
   alias RetroHexChat.Channels.Server
@@ -71,10 +74,10 @@ defmodule RetroHexChat.ShareLinks.Policy do
   end
 
   defp member_may_share?(state, nickname) do
-    target = String.downcase(nickname)
+    target = Nickname.key(nickname)
 
     entry =
-      Enum.find(state.members, fn {member, _role} -> String.downcase(member) == target end)
+      Enum.find(state.members, fn {member, _role} -> Nickname.key(member) == target end)
 
     case {entry, get_in(state, [:modes_detail, :invite_only])} do
       {nil, _invite_only} -> unauthorized()
@@ -117,8 +120,7 @@ defmodule RetroHexChat.ShareLinks.Policy do
 
   defp creator?(%Link{creator_id: creator_id}, nickname) do
     from(r in "registered_nicks",
-      where:
-        r.id == ^creator_id and fragment("lower(?)", r.nickname) == ^String.downcase(nickname),
+      where: r.id == ^creator_id and matches(r.nickname, nickname),
       select: true
     )
     |> Repo.exists?()
@@ -149,12 +151,12 @@ defmodule RetroHexChat.ShareLinks.Policy do
   defp channel_of(%Link{}), do: nil
 
   defp operator?(channel_name, nickname) do
-    target = String.downcase(nickname)
+    target = Nickname.key(nickname)
 
     case Server.get_state(channel_name) do
       {:ok, %{members: members}} ->
         Enum.any?(members, fn {member, role} ->
-          String.downcase(member) == target and
+          Nickname.key(member) == target and
             Membership.rank(role) >= Membership.rank(:operator)
         end)
 

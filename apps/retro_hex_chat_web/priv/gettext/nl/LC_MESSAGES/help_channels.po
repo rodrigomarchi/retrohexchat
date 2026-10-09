@@ -223,7 +223,7 @@ msgstr "Geheim (+s)"
 #: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:58
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "Zie ook"
@@ -573,7 +573,7 @@ msgstr "/ns"
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:155
 #: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:60
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "/ns Command"
 msgstr "/ns Command"
@@ -872,12 +872,12 @@ msgstr "Opdrachten"
 msgid "Common Commands"
 msgstr "Gemeenschappelijke commando's"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
 msgstr "Aanmeldingscontrole verbinden"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Connecting"
 msgstr "Verbinden"
@@ -961,7 +961,7 @@ msgstr "Hoe de registratie werkt"
 msgid "If no channel is specified, you leave the current channel."
 msgstr "Als er geen kanaal is opgegeven, verlaat u het huidige kanaal."
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "If you change your nick in chat to a registered name you don't own, you have 60 seconds to identify before being force-renamed"
 msgstr ""
@@ -1043,8 +1043,8 @@ msgstr "Modusinstelling"
 msgid "Moderated"
 msgstr "Matig"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:48
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Nick Expiration"
 msgstr "Geldigheidsduur van Nick"
@@ -1056,12 +1056,7 @@ msgstr ""
 "NickServ is de bijnaam registratie service. Het beschermt je bijnaam met een"
 " wachtwoord zodat niemand anders het kan gebruiken."
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "Nicknames are"
-msgstr "Bijnamen zijn"
-
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Nicknames expire after"
 msgstr "Bijnamen verlopen na"
@@ -1323,11 +1318,6 @@ msgid "Your channel settings (modes, topic) are preserved even when empty"
 msgstr ""
 "Uw kanaalinstellingen (modi, onderwerp) blijven behouden, zelfs wanneer leeg"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "case sensitive"
-msgstr "hoofdlettergevoelig"
-
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "channel operator"
@@ -1338,7 +1328,7 @@ msgstr "kanaaloperator"
 msgid "command."
 msgstr "Commando."
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "of inactivity — connect regularly to keep yours (see"
 msgstr "of inactivity — connect regularly to keep yours (see"
@@ -1362,11 +1352,6 @@ msgstr "strikt lager"
 #, elixir-autogen, elixir-format
 msgid "to register a channel"
 msgstr "om een kanaal te registreren"
-
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "— \"Alice\" and \"alice\" are different"
-msgstr "\"Alice\" en \"alice\" zijn anders"
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:46
 #, elixir-autogen, elixir-format
@@ -1481,7 +1466,7 @@ msgstr "AOP gebruikers kunnen VOP lijsten beheren."
 msgid "Access Lists"
 msgstr "Toegangslijsten"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Account Dialog"
 msgstr "Accountdialoog"
@@ -1603,7 +1588,7 @@ msgstr ""
 msgid "Founders can manage SOP, AOP, and VOP lists."
 msgstr "Oprichters kunnen SOP, AOP en VOP lijsten beheren."
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Identity & Presence"
 msgstr "Identiteit & Aanwezigheid"
@@ -2822,3 +2807,18 @@ msgstr "Het commando zonder tekst verwijdert ook het bericht:"
 #, elixir-autogen, elixir-format
 msgid "To join a keyed channel each time you connect, add it to your auto-join list with its key:"
 msgstr "Om elke keer dat u verbinding maakt met een getoetst kanaal aan te sluiten, voeg het toe aan uw lijst met auto-join met de sleutel:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "\"Alice\" and \"alice\" are the same nickname."
+msgstr "Alice en Alice zijn dezelfde bijnaam."
+
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Capital letters do not matter"
+msgstr "Capital letters do not matter"
+
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "It is shown as you type it."
+msgstr "Het wordt getoond zoals je het typt."

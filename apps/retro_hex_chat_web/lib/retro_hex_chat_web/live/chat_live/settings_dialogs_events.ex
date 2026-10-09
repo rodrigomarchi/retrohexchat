@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   end
 
   def handle_event("push_subscription_created", params, socket) do
-    nickname = socket.assigns.session.nickname
+    nickname = Session.owner(socket.assigns.session)
 
     case Notifications.subscribe(nickname, subscription_params(params)) do
       {:ok, _subscription} ->
@@ -103,7 +103,7 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
 
   def handle_event("push_subscription_removed", %{"endpoint" => endpoint}, socket)
       when is_binary(endpoint) do
-    :ok = Notifications.unsubscribe(socket.assigns.session.nickname, endpoint)
+    :ok = Notifications.unsubscribe(Session.owner(socket.assigns.session), endpoint)
     {:halt, assign_push(socket, false)}
   end
 
@@ -116,7 +116,7 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   # still not subscribed as far as anything here is concerned.
   def handle_event("push_subscription_state", %{"subscribed" => subscribed}, socket)
       when is_boolean(subscribed) do
-    stored = Notifications.list_for(socket.assigns.session.nickname) != []
+    stored = Notifications.list_for(Session.owner(socket.assigns.session)) != []
     {:halt, assign_push(socket, subscribed and stored)}
   end
 
@@ -259,7 +259,9 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   end
 
   @spec persist_preference(Session.t(), PreferencePersistence.preference_type(), map()) :: :ok
-  defp persist_preference(%Session{identified: true, nickname: nickname}, type, snapshot) do
+  defp persist_preference(%Session{identified: true} = session, type, snapshot) do
+    nickname = Session.owner(session)
+
     case PreferencePersistence.enqueue(nickname, type, snapshot) do
       :ok ->
         :ok
@@ -274,7 +276,7 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   rescue
     error ->
       Logger.warning(
-        "Failed to enqueue preference persistence for #{nickname} type=#{type}: #{Exception.message(error)}"
+        "Failed to enqueue preference persistence for #{Session.owner(session)} type=#{type}: #{Exception.message(error)}"
       )
 
       :ok

@@ -30,6 +30,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
   the status bar has: you end a session from the page that is holding it.
   """
 
+  alias RetroHexChat.Nickname
+
   import Phoenix.Component, only: [assign: 2]
 
   alias Phoenix.LiveView.Socket
@@ -55,7 +57,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
           |> Lobby.active_sessions_for_user()
           |> Enum.map(&pm_session(&1, user_id))
           |> Enum.filter(&is_binary(&1.peer_nick))
-          |> Map.new(&{String.downcase(&1.peer_nick), &1})
+          |> Map.new(&{Nickname.key(&1.peer_nick), &1})
 
         assign(socket, p2p_pm_sessions: sessions)
 
@@ -89,7 +91,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
   @doc "Forget the badge for one private conversation."
   @spec drop_pm(Socket.t(), String.t() | nil) :: Socket.t()
   def drop_pm(socket, peer_nick) when is_binary(peer_nick) do
-    assign(socket, p2p_pm_sessions: Map.delete(pm_sessions(socket), String.downcase(peer_nick)))
+    assign(socket, p2p_pm_sessions: Map.delete(pm_sessions(socket), Nickname.key(peer_nick)))
   end
 
   def drop_pm(socket, _peer_nick), do: socket
@@ -147,7 +149,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
 
   defp put_pm_session(socket, %{peer_nick: peer_nick} = read_model) when is_binary(peer_nick) do
     assign(socket,
-      p2p_pm_sessions: Map.put(pm_sessions(socket), String.downcase(peer_nick), read_model)
+      p2p_pm_sessions: Map.put(pm_sessions(socket), Nickname.key(peer_nick), read_model)
     )
   end
 

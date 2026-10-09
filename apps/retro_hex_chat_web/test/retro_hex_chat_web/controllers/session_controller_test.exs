@@ -141,6 +141,25 @@ defmodule RetroHexChatWeb.SessionControllerTest do
       refute get_session(conn, :chat_nickname)
     end
 
+    test "a case variant of a registered nickname is the same registration", %{conn: conn} do
+      nick = "Case#{rem(System.unique_integer([:positive]), 100_000)}"
+      {:ok, _} = NickServ.register(nick, "pass123")
+      variant = String.upcase(nick)
+
+      refused = post(conn, ~p"/chat/session", %{"nickname" => variant})
+      assert redirected_to(refused) == "/connect"
+      refute get_session(refused, :chat_nickname)
+
+      # With the registration's password the variant signs in, shown as typed.
+      token = Phoenix.Token.sign(RetroHexChatWeb.Endpoint, "nickserv_identify", variant)
+
+      signed =
+        post(build_conn(), ~p"/chat/session", %{"nickname" => variant, "auth_token" => token})
+
+      assert redirected_to(signed) == "/chat"
+      assert get_session(signed, :chat_nickname) == variant
+    end
+
     test "every sign-in gets a session id of its own", %{conn: conn} do
       first = post(conn, ~p"/chat/session", %{"nickname" => "FreshNick"})
       second = post(build_conn(), ~p"/chat/session", %{"nickname" => "FreshNick"})

@@ -25,6 +25,13 @@ class MissingTermsTest(unittest.TestCase):
         self.assertTrue(missing_terms("How a room works", "Cómo funciona una habitación", "es"))
         self.assertEqual(missing_terms("How a room works", "Cómo funciona una sala", "es"), [])
 
+    def test_capital_letters_are_letters_not_money(self):
+        source = "Capital letters do not matter"
+        self.assertTrue(missing_terms(source, "Las letras de capital no importan", "es"))
+        self.assertTrue(missing_terms(source, "資本の手紙は重要ではありません", "ja"))
+        self.assertEqual(missing_terms(source, "Las mayúsculas no importan", "es"), [])
+        self.assertEqual(missing_terms(source, "大文字は関係ありません", "ja"), [])
+
     def test_portuguese_locales_share_their_forms(self):
         self.assertEqual(missing_terms("Your nickname", "A sua alcunha", "pt_PT"), [])
         self.assertTrue(missing_terms("Your nickname", "Seu nome", "pt_BR"))

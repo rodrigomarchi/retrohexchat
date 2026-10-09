@@ -50,7 +50,6 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   alias RetroHexChat.Commands.{Dispatcher, Parser, Registry}
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
-  alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.NickChangeDialog
@@ -395,13 +394,16 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     do: handle_action_message(socket, session, content)
 
   defp handle_dispatch_result(socket, _session, {:ok, :nick_change, new_nick}) do
-    if nick_in_use?(new_nick, socket.assigns.session.nickname) do
+    if Tracker.nick_taken?(new_nick, socket.assigns.session.nickname) do
       error_event(
         socket,
         dgettext("chat", "Nickname %{nickname} is already in use", nickname: new_nick)
       )
     else
-      registered = NickServ.registered?(new_nick)
+      # Your own nickname in another case needs no password: you already proved it.
+      registered =
+        NickServ.registered?(new_nick) and
+          not Session.case_change?(socket.assigns.session, new_nick)
 
       send_update(NickChangeDialog,
         id: NickChangeDialog.id(),
@@ -506,11 +508,6 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   defp detect_service_author("[ChanServ]" <> _), do: "ChanServ"
   defp detect_service_author("[NickServ]" <> _), do: "NickServ"
   defp detect_service_author(_), do: dgettext("chat", "Service")
-
-  defp nick_in_use?(nickname, current_nickname) do
-    String.downcase(nickname) != String.downcase(current_nickname) and
-      Tracker.online?(Topics.presence(), nickname)
-  end
 
   # handle_set_topic, handle_view_topic, show_help_message,
   # show_command_help_message, validate_operator, validate_invite_only,

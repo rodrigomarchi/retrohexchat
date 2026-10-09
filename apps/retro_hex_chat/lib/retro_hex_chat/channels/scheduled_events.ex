@@ -133,7 +133,10 @@ defmodule RetroHexChat.Channels.ScheduledEvents do
       %ChannelEvent{cancelled_at: nil} = event ->
         %ChannelEventAttendee{}
         |> ChannelEventAttendee.changeset(%{event_id: event.id, nickname: nickname})
-        |> Repo.insert(on_conflict: :nothing, conflict_target: [:event_id, :nickname])
+        |> Repo.insert(
+          on_conflict: :nothing,
+          conflict_target: {:unsafe_fragment, "(event_id, lower(nickname))"}
+        )
         |> case do
           {:ok, _row} -> :ok
           {:error, changeset} -> {:error, first_error(changeset)}

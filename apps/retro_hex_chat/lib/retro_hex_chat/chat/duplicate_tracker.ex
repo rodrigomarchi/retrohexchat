@@ -8,6 +8,8 @@ defmodule RetroHexChat.Chat.DuplicateTracker do
   Lives in LiveView socket assigns. Resets on disconnect.
   """
 
+  alias RetroHexChat.Nickname
+
   @default_max_senders 50
 
   # ---------------------------------------------------------------------------
@@ -25,11 +27,11 @@ defmodule RetroHexChat.Chat.DuplicateTracker do
 
   @spec record_message(map(), String.t(), tuple(), String.t()) :: map()
   def record_message(tracker, sender, target_key, content) do
-    key = {String.downcase(sender), target_key}
+    key = {Nickname.key(sender), target_key}
     now = System.monotonic_time(:millisecond)
     entry = %{content: content, timestamp: now}
 
-    tracker = maybe_evict_sender(tracker, String.downcase(sender))
+    tracker = maybe_evict_sender(tracker, Nickname.key(sender))
 
     existing = Map.get(tracker.entries, key, [])
     %{tracker | entries: Map.put(tracker.entries, key, existing ++ [entry])}
@@ -48,7 +50,7 @@ defmodule RetroHexChat.Chat.DuplicateTracker do
   @spec duplicate_count(map(), String.t(), tuple(), String.t(), pos_integer()) ::
           non_neg_integer()
   def duplicate_count(tracker, sender, target_key, content, window_seconds) do
-    key = {String.downcase(sender), target_key}
+    key = {Nickname.key(sender), target_key}
     cutoff = System.monotonic_time(:millisecond) - window_seconds * 1_000
 
     case Map.get(tracker.entries, key) do

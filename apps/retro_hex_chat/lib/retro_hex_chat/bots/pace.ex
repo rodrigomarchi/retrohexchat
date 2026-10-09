@@ -16,6 +16,8 @@ defmodule RetroHexChat.Bots.Pace do
   The pace is derived from the flood settings rather than written down, at half
   the rate that would trigger them. If the defaults move, this moves with them.
   """
+
+  alias RetroHexChat.Nickname
   use GenServer
 
   alias RetroHexChat.Chat.FloodProtection
@@ -34,7 +36,7 @@ defmodule RetroHexChat.Bots.Pace do
   """
   @spec reserve(String.t()) :: non_neg_integer()
   def reserve(nickname) when is_binary(nickname) do
-    GenServer.call(__MODULE__, {:reserve, String.downcase(nickname)})
+    GenServer.call(__MODULE__, {:reserve, Nickname.key(nickname)})
   catch
     :exit, _reason -> 0
   end

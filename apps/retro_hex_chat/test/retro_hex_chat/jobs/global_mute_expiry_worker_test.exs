@@ -21,7 +21,7 @@ defmodule RetroHexChat.Jobs.GlobalMuteExpiryWorkerTest do
     from(stored in GlobalMute, where: stored.id == ^mute.id)
     |> Repo.update_all(set: [expires_at: past])
 
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:WorkerMute")
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox("WorkerMute"))
     attach_telemetry([:retro_hex_chat, :admin, :global_mutes, :expire, :stop])
 
     assert {:ok, :expired} =

@@ -3,6 +3,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   Session, reconnect, nick color, and miscellaneous action helpers.
   """
 
+  alias RetroHexChat.Nickname
+
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2]
 
@@ -139,14 +141,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
   def maybe_start_ignore_timer(socket, nick, duration_seconds) do
     ref = Process.send_after(self(), {:ignore_expired, nick}, duration_seconds * 1000)
-    timers = Map.put(socket.assigns.ignore_timers, String.downcase(nick), ref)
+    timers = Map.put(socket.assigns.ignore_timers, Nickname.key(nick), ref)
     assign(socket, ignore_timers: timers)
   end
 
   @spec cancel_ignore_timer(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
   def cancel_ignore_timer(socket, nick) do
-    key = String.downcase(nick)
+    key = Nickname.key(nick)
 
     case Map.get(socket.assigns.ignore_timers, key) do
       nil ->
@@ -180,7 +182,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   @spec start_notify_debounce(Phoenix.LiveView.Socket.t(), String.t(), atom()) ::
           Phoenix.LiveView.Socket.t()
   def start_notify_debounce(socket, nickname, status) do
-    key = String.downcase(nickname)
+    key = Nickname.key(nickname)
     timers = socket.assigns.notify_debounce_timers
 
     timers =
@@ -201,7 +203,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   @spec cancel_notify_timer(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
   def cancel_notify_timer(socket, nickname) do
-    key = String.downcase(nickname)
+    key = Nickname.key(nickname)
     timers = socket.assigns.notify_debounce_timers
 
     case Map.pop(timers, key) do
@@ -354,7 +356,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     session = socket.assigns.session
 
     if session.identified do
-      case ReconnectState.save(session.nickname, reconnect_snapshot(socket), browser_id(socket)) do
+      case ReconnectState.save(
+             Session.owner(session),
+             reconnect_snapshot(socket),
+             browser_id(socket)
+           ) do
         :ok ->
           :ok
 
@@ -380,7 +386,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     session = socket.assigns.session
 
     if session.identified do
-      case ReconnectState.delete(session.nickname, browser_id(socket)) do
+      case ReconnectState.delete(Session.owner(session), browser_id(socket)) do
         :ok ->
           :ok
 
@@ -602,6 +608,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
   # ── Mount helpers ─────────────────────────────────────────
 
+  @doc """
+  Marks the session identified under its account — the registered spelling of
+  its nickname, which every per-user record is filed under.
+  """
+  @spec mark_identified(Session.t()) :: Session.t()
+  def mark_identified(%Session{} = session),
+    do: Session.identified_as(session, NickServ.account_for(session.nickname))
+
   @spec maybe_start_nickserv_timer(
           Phoenix.LiveView.Socket.t(),
           String.t(),
@@ -622,8 +636,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
         session =
           socket.assigns.session
-          |> Session.set_identified(true)
-          |> Persistence.load_persisted_data(nickname)
+          |> mark_identified()
+          |> Persistence.load_persisted_data()
 
         socket =
           socket

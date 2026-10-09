@@ -16,6 +16,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
   `address_book_panel/1` so their typed inputs survive background re-renders
   (§0a-anti).
   """
+
+  alias RetroHexChat.Nickname
   use RetroHexChatWeb, :live_component
 
   import RetroHexChatWeb.Components.UI.AddressBook
@@ -64,7 +66,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
     session = socket.assigns.session
     note = blank_to_nil(params["note"])
 
-    case ContactList.add_entry(session.contacts, session.nickname, nickname, note) do
+    case ContactList.add_entry(session.contacts, Session.owner(session), nickname, note) do
       {:ok, contacts} ->
         {:noreply,
          socket
@@ -201,10 +203,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
   defp blank_to_nil(value), do: value
 
   defp contact_note(contact_list, nick) when is_binary(nick) do
-    downcased = String.downcase(nick)
+    downcased = Nickname.key(nick)
 
     contact_list.entries
-    |> Enum.find(&(String.downcase(&1.contact_nickname) == downcased))
+    |> Enum.find(&(Nickname.key(&1.contact_nickname) == downcased))
     |> case do
       nil -> ""
       entry -> Map.get(entry, :note) || ""

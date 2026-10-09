@@ -20,6 +20,8 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   Attached as `attach_hook(:context_menu_events, :handle_event, ...)` in ChatLive.mount/3.
   """
 
+  alias RetroHexChat.Nickname
+
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
@@ -234,7 +236,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   def handle_event("context_add_contact", %{"nick" => nick}, socket) do
     session = socket.assigns.session
 
-    case ContactList.add_entry(session.contacts, session.nickname, nick, nil) do
+    case ContactList.add_entry(session.contacts, Session.owner(session), nick, nil) do
       {:ok, updated_contacts} ->
         new_session = Session.set_contacts(session, updated_contacts)
 
@@ -486,7 +488,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   def handle_event("ctx_chat_add_contact", %{"nick" => nick}, socket) do
     session = socket.assigns.session
 
-    case ContactList.add_entry(session.contacts, session.nickname, nick, nil) do
+    case ContactList.add_entry(session.contacts, Session.owner(session), nick, nil) do
       {:ok, updated_contacts} ->
         new_session = Session.set_contacts(session, updated_contacts)
 
@@ -967,7 +969,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
 
   defp cancel_auto_ignore_with_cooldown(socket, nick) do
     auto_state = socket.assigns.auto_ignore_state
-    key = String.downcase(nick)
+    key = Nickname.key(nick)
 
     case Map.get(auto_state.active, key) do
       nil ->

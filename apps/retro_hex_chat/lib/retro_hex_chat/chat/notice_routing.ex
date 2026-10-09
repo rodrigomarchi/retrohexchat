@@ -7,6 +7,7 @@ defmodule RetroHexChat.Chat.NoticeRouting do
   """
 
   alias RetroHexChat.Chat.Schemas.NoticeRoutingSetting
+  alias RetroHexChat.OwnedList
   alias RetroHexChat.Repo
 
   @valid_routings [:active, :status, :sender]
@@ -38,7 +39,7 @@ defmodule RetroHexChat.Chat.NoticeRouting do
   def save(owner, settings) do
     routing_string = Atom.to_string(settings.routing)
 
-    case Repo.get(NoticeRoutingSetting, owner) do
+    case OwnedList.get_owned(NoticeRoutingSetting, owner) do
       nil ->
         %NoticeRoutingSetting{}
         |> NoticeRoutingSetting.changeset(%{
@@ -60,7 +61,7 @@ defmodule RetroHexChat.Chat.NoticeRouting do
 
   @spec load(String.t()) :: {:ok, map()} | {:error, :not_found}
   def load(owner) do
-    case Repo.get(NoticeRoutingSetting, owner) do
+    case OwnedList.get_owned(NoticeRoutingSetting, owner) do
       nil ->
         {:error, :not_found}
 

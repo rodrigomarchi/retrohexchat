@@ -20,6 +20,7 @@ defmodule RetroHexChat.OwnedList do
   """
 
   import Ecto.Query
+  import RetroHexChat.Nickname, only: [matches: 2]
 
   alias RetroHexChat.Repo
 
@@ -35,7 +36,7 @@ defmodule RetroHexChat.OwnedList do
   def replace(schema, owner, entries, to_attrs, opts \\ []) do
     Repo.transaction(fn ->
       schema
-      |> where([row], row.owner_nickname == ^owner)
+      |> where([row], matches(row.owner_nickname, owner))
       |> Repo.delete_all()
 
       Enum.each(entries, fn entry ->
@@ -57,6 +58,16 @@ defmodule RetroHexChat.OwnedList do
   end
 
   @doc """
+  The one row `owner` keeps in a single-row settings table, or nil. The owner is
+  matched whatever its case (`RetroHexChat.Nickname`): a person's settings are
+  theirs under any spelling of their nickname.
+  """
+  @spec get_owned(module(), String.t()) :: Ecto.Schema.t() | nil
+  def get_owned(schema, owner) do
+    Repo.one(from(row in schema, where: matches(row.owner_nickname, owner)))
+  end
+
+  @doc """
   The entries `owner` has in `schema`, as the domain sees them.
 
   `:order_by` names the column that carries the order the person chose;
@@ -66,7 +77,7 @@ defmodule RetroHexChat.OwnedList do
   @spec rows(module(), String.t(), (struct() -> struct()), keyword()) :: [struct()]
   def rows(schema, owner, to_entry, opts \\ []) do
     schema
-    |> where([row], row.owner_nickname == ^owner)
+    |> where([row], matches(row.owner_nickname, owner))
     |> ordered(Keyword.get(opts, :order_by))
     |> Repo.all()
     |> kept(Keyword.get(opts, :keep))

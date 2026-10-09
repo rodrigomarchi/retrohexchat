@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.SaveEvents do
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
+  alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.Queries
   alias RetroHexChat.Chat.SavedMessages
   alias RetroHexChatWeb.ChatLive.Components.SavedDialog
@@ -69,7 +70,7 @@ defmodule RetroHexChatWeb.ChatLive.SaveEvents do
   def handle_info({:open_saved, _target}, socket), do: {:halt, socket}
 
   def handle_info({:remove_saved, saved_id}, socket) do
-    nickname = socket.assigns.session.nickname
+    nickname = Session.owner(socket.assigns.session)
 
     socket =
       case SavedMessages.unsave_id(nickname, saved_id) do
@@ -81,7 +82,7 @@ defmodule RetroHexChatWeb.ChatLive.SaveEvents do
   end
 
   def handle_info({:set_saved_note, saved_id, note}, socket) do
-    nickname = socket.assigns.session.nickname
+    nickname = Session.owner(socket.assigns.session)
 
     socket =
       case SavedMessages.set_note(nickname, saved_id, note) do
@@ -104,7 +105,7 @@ defmodule RetroHexChatWeb.ChatLive.SaveEvents do
   def saved?(socket, message_id) do
     case message(socket, message_id) do
       nil -> false
-      message -> SavedMessages.saved?(socket.assigns.session.nickname, message)
+      message -> SavedMessages.saved?(Session.owner(socket.assigns.session), message)
     end
   end
 
@@ -124,7 +125,7 @@ defmodule RetroHexChatWeb.ChatLive.SaveEvents do
   @spec change_saved(Phoenix.LiveView.Socket.t(), term(), :save | :unsave) ::
           Phoenix.LiveView.Socket.t()
   defp change_saved(socket, raw_id, action) do
-    nickname = socket.assigns.session.nickname
+    nickname = Session.owner(socket.assigns.session)
 
     case message(socket, raw_id) do
       nil ->

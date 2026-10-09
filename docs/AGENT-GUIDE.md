@@ -168,7 +168,7 @@ get fresh timers with the *remaining* duration.
 ## 4. PubSub & permissions
 
 - **Topic conventions are load-bearing and fixed:** `"channel:#{name}"`,
-  `"user:#{nickname}"`, `"service:nickserv"`, `"service:chanserv"`,
+  `"user:#{nickname key}"` (`Topics.inbox/1` folds case, so every spelling is one inbox), `"service:nickserv"`, `"service:chanserv"`,
   `"p2p:#{token}"` (per-session, token-based), `"game:#{token}"`, plus server topics
   `"server:announcements"`, `"server:wallops"`, `"server:settings"`. The two that name a
   conversation are built by `RetroHexChat.Topics`, never interpolated. State transitions and
@@ -203,6 +203,16 @@ get fresh timers with the *remaining* duration.
 ---
 
 ## 5. Persistence conventions
+
+- **A nickname is one person whatever its case** — `Alice`, `alice`, `AlIcE` (IRC rule).
+  Identity compares through `RetroHexChat.Nickname` only: `key/1`, `equal?/2`, `member?/2`,
+  `put/2`, `delete/2`, `without/2`, and in queries `matches/2` / `key_of/1`. Display keeps the
+  string the person typed. Never `==` two nicknames, never `String.downcase` one — a test
+  (`NicknameCasemapGuardTest`) fails the build on a private copy of the rule. A unique index
+  on a nickname is a `lower(...)` index, listed in `RetroHexChat.Nickname.Uniqueness`.
+- **Per-user records are filed under the account** (`Session.owner/1`): the registered
+  spelling, which may differ by case from `session.nickname`. Every `owner_nickname` is an FK
+  to `registered_nicks.nickname`, so a write must use the account, never the display nick.
 
 - **Single-row-per-user settings tables** keyed by `owner_nickname` FK → `registered_nicks`,
   one column per setting (`flood_protection_settings`, `ctcp_settings`, …). Chosen over JSON

@@ -6,6 +6,7 @@ defmodule RetroHexChat.Admin.BanCache do
   use GenServer
 
   alias RetroHexChat.Admin.ServerBans
+  alias RetroHexChat.Nickname
 
   @table :server_ban_cache
 
@@ -17,8 +18,8 @@ defmodule RetroHexChat.Admin.BanCache do
 
   @spec banned?(String.t()) :: boolean()
   def banned?(nickname) do
-    case :ets.lookup(@table, nickname) do
-      [{^nickname, _}] -> true
+    case :ets.lookup(@table, Nickname.key(nickname)) do
+      [_entry] -> true
       [] -> false
     end
   rescue
@@ -27,17 +28,20 @@ defmodule RetroHexChat.Admin.BanCache do
 
   @spec add(String.t(), DateTime.t() | nil) :: true
   def add(nickname, expires_at \\ nil) do
-    :ets.insert(@table, {nickname, expires_at})
+    # Keyed by `Nickname.key/1`: a ban on alice refuses ALICE too.
+    :ets.insert(@table, {Nickname.key(nickname), expires_at, nickname})
   end
 
   @spec remove(String.t()) :: true
   def remove(nickname) do
-    :ets.delete(@table, nickname)
+    :ets.delete(@table, Nickname.key(nickname))
   end
 
   @spec list() :: [{String.t(), DateTime.t() | nil}]
   def list do
-    :ets.tab2list(@table)
+    @table
+    |> :ets.tab2list()
+    |> Enum.map(fn {_key, expires_at, nickname} -> {nickname, expires_at} end)
   end
 
   @impl true
@@ -51,7 +55,7 @@ defmodule RetroHexChat.Admin.BanCache do
     # Every ban, not a page — this table is what refuses a connection.
     ServerBans.all_active_bans()
     |> Enum.each(fn ban ->
-      :ets.insert(@table, {ban.nickname, ban.expires_at})
+      add(ban.nickname, ban.expires_at)
     end)
   rescue
     _ -> :ok

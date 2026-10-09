@@ -6,6 +6,7 @@ defmodule RetroHexChat.Chat.ConversationTest do
   alias RetroHexChat.Chat.Conversation
   alias RetroHexChat.Chat.Message
   alias RetroHexChat.Chat.PrivateMessage
+  alias RetroHexChat.Topics
 
   describe "topics/1" do
     test "a channel message goes to the channel everybody joined" do
@@ -17,13 +18,13 @@ defmodule RetroHexChat.Chat.ConversationTest do
     test "a private message goes to both people" do
       pm = %PrivateMessage{sender_nickname: "Ada", recipient_nickname: "Grace"}
 
-      assert Conversation.topics(pm) == ["user:Ada", "user:Grace"]
+      assert Conversation.topics(pm) == [Topics.inbox("Ada"), Topics.inbox("Grace")]
     end
 
     test "the writer hears about their own message too" do
       pm = %PrivateMessage{sender_nickname: "Ada", recipient_nickname: "Grace"}
 
-      assert "user:Ada" in Conversation.topics(pm)
+      assert Topics.inbox("Ada") in Conversation.topics(pm)
     end
   end
 

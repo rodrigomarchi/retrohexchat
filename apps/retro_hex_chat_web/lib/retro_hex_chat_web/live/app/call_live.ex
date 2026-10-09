@@ -16,6 +16,8 @@ defmodule RetroHexChatWeb.App.CallLive do
   Both states are decided in `mount/3`. Initial data delivered after the first
   render is invisible to ExUnit and only ever caught in a browser.
   """
+
+  alias RetroHexChat.Nickname
   use RetroHexChatWeb, :live_view
 
   import RetroHexChatWeb.Components.UI.Desktop
@@ -369,7 +371,7 @@ defmodule RetroHexChatWeb.App.CallLive do
         %{assigns: %{nickname: nickname}} = socket
       )
       when is_binary(target) and is_binary(nickname) do
-    if String.downcase(target) == String.downcase(nickname) do
+    if Nickname.equal?(target, nickname) do
       {:noreply, Events.leave(socket, "kicked")}
     else
       {:noreply, socket}
@@ -389,7 +391,7 @@ defmodule RetroHexChatWeb.App.CallLive do
         %{assigns: %{nickname: nickname}} = socket
       )
       when is_binary(target) and is_binary(nickname) do
-    if String.downcase(target) == String.downcase(nickname) do
+    if Nickname.equal?(target, nickname) do
       {:noreply, Events.leave(socket, reason)}
     else
       {:noreply, socket}

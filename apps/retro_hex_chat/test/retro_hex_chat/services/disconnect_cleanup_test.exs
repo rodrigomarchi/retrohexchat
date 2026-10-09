@@ -71,7 +71,7 @@ defmodule RetroHexChat.Services.DisconnectCleanupTest do
       :ok = Server.part(ch2, nickname)
 
       # Step 4: Verify timer is cancelled (no force_rename received)
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{nickname}")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox(nickname))
       refute_receive {:force_rename, _}, 200
 
       # Step 5: Verify channels with no remaining users stopped

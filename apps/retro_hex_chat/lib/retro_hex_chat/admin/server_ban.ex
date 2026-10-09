@@ -22,6 +22,6 @@ defmodule RetroHexChat.Admin.ServerBan do
     |> validate_required([:nickname, :banned_by])
     |> validate_length(:nickname, max: 16)
     |> validate_length(:banned_by, max: 16)
-    |> unique_constraint(:nickname, name: :idx_server_bans_active_nickname)
+    |> unique_constraint(:nickname, name: :idx_server_bans_active_nickname_lower)
   end
 end

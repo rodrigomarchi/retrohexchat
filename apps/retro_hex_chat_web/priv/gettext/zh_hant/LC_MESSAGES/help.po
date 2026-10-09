@@ -146,11 +146,6 @@ msgstr "從聊天菜單中按類別瀏覽或打開幫助主題 。"
 msgid "Cannot contain spaces"
 msgstr "無法包含空格"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Case sensitive"
-msgstr "區分大小寫"
-
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Changing Nickname"
@@ -432,11 +427,6 @@ msgstr "來見他們所有人"
 #, elixir-autogen, elixir-format
 msgid "to send."
 msgstr "發送。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "— \"Alice\" and \"alice\" are different nicknames"
-msgstr "——\"愛麗絲\"和\"愛麗絲\"是不同的暱稱."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:42
 #, elixir-autogen, elixir-format
@@ -804,3 +794,18 @@ msgstr "以後訪問時,請輸入相同的密碼進行登錄."
 #, elixir-autogen, elixir-format
 msgid "Then click %{button}."
 msgstr "然後點擊%{button}."
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "\"Alice\" and \"alice\" are the same nickname."
+msgstr "\"愛麗絲\"和\"愛麗絲\"是同一個暱稱."
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Capital letters do not matter"
+msgstr "大寫字母不重要"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "It is shown as you type it."
+msgstr "它顯示爲您輸入它。"

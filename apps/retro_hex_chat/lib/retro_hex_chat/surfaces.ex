@@ -38,6 +38,8 @@ defmodule RetroHexChat.Surfaces do
   call at all, and closing it means owning the channel list here, continuously,
   for a case that ends in a restart anyway.
   """
+
+  alias RetroHexChat.Nickname
   use GenServer
 
   require Logger
@@ -388,5 +390,5 @@ defmodule RetroHexChat.Surfaces do
     :ok
   end
 
-  defp key(nickname), do: String.downcase(nickname)
+  defp key(nickname), do: Nickname.key(nickname)
 end

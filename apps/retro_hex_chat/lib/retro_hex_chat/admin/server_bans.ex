@@ -3,6 +3,7 @@ defmodule RetroHexChat.Admin.ServerBans do
   use Gettext, backend: RetroHexChat.Gettext
 
   import Ecto.Query
+  import RetroHexChat.Nickname, only: [matches: 2]
 
   alias RetroHexChat.Admin.{BanCache, ServerBan}
   alias RetroHexChat.Page
@@ -38,7 +39,7 @@ defmodule RetroHexChat.Admin.ServerBans do
   def unban(nickname) do
     query =
       from(b in ServerBan,
-        where: b.nickname == ^nickname and b.active == true
+        where: matches(b.nickname, nickname) and b.active == true
       )
 
     case Repo.one(query) do

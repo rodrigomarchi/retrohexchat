@@ -120,10 +120,27 @@ defmodule RetroHexChat.Channels.MembershipTest do
       refute Membership.member?(m, "alice")
     end
 
-    test "nickname matching is case-sensitive" do
-      m = Membership.new() |> Membership.add("Alice")
-      refute Membership.member?(m, "alice")
-      assert Membership.member?(m, "Alice")
+    test "any case of a member's nickname finds them, shown as they spell it" do
+      m = Membership.new() |> Membership.add("AlIcE", :operator)
+
+      assert Membership.member?(m, "alice")
+      assert {:ok, :operator} = Membership.role(m, "ALICE")
+      assert {:ok, "AlIcE"} = Membership.display(m, "alice")
+      assert Membership.to_list(m) == [{"AlIcE", :operator}]
+    end
+
+    test "a case variant is the same member, not a second one" do
+      m = Membership.new() |> Membership.add("Alice") |> Membership.add("alice")
+      assert Membership.count(m) == 1
+    end
+
+    test "a change of case keeps the member and shows the new spelling" do
+      m =
+        Membership.new()
+        |> Membership.add("Alice", :voiced)
+        |> Membership.rename("alice", "ALICE")
+
+      assert Membership.to_list(m) == [{"ALICE", :voiced}]
     end
   end
 

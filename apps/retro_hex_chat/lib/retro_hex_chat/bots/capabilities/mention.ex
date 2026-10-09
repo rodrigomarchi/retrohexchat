@@ -3,6 +3,8 @@ defmodule RetroHexChat.Bots.Capabilities.Mention do
   Capability that responds when the bot is mentioned by name in a message.
   """
 
+  alias RetroHexChat.Nickname
+
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Bots.Capability
 
@@ -72,6 +74,6 @@ defmodule RetroHexChat.Bots.Capabilities.Mention do
   @spec mentions_bot?(String.t(), String.t()) :: boolean()
   defp mentions_bot?(content, bot_nickname) do
     downcased = String.downcase(content)
-    String.contains?(downcased, String.downcase(bot_nickname))
+    String.contains?(downcased, Nickname.key(bot_nickname))
   end
 end

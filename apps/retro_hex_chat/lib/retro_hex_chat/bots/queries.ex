@@ -3,6 +3,8 @@ defmodule RetroHexChat.Bots.Queries do
   CRUD operations for bot persistence.
   """
 
+  alias RetroHexChat.Nickname
+
   import Ecto.Query
 
   alias RetroHexChat.Bots.{Bot, BotChannelConfig, BotCustomCommand, BotEventLog, BotGreeting}
@@ -215,7 +217,7 @@ defmodule RetroHexChat.Bots.Queries do
   def record_greeting(bot_id, channel, nickname, window_sec) do
     now = DateTime.utc_now()
     channel_name = String.downcase(channel)
-    normalized_nickname = String.downcase(nickname)
+    normalized_nickname = Nickname.key(nickname)
 
     inserted =
       Repo.insert_all(

@@ -1,6 +1,8 @@
 defmodule RetroHexChat.Channels.ChannelMute do
   @moduledoc "Durable channel-level mute record."
 
+  alias RetroHexChat.Nickname
+
   use Ecto.Schema
 
   import Ecto.Changeset
@@ -57,7 +59,7 @@ defmodule RetroHexChat.Channels.ChannelMute do
   defp normalize_target(changeset) do
     case get_field(changeset, :target_nickname) do
       target when is_binary(target) ->
-        put_change(changeset, :normalized_target, String.downcase(target))
+        put_change(changeset, :normalized_target, Nickname.key(target))
 
       _target ->
         changeset

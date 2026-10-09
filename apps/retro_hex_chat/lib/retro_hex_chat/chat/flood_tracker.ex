@@ -7,6 +7,8 @@ defmodule RetroHexChat.Chat.FloodTracker do
   Lives in LiveView socket assigns. Resets on disconnect.
   """
 
+  alias RetroHexChat.Nickname
+
   @default_max_senders 50
 
   # ---------------------------------------------------------------------------
@@ -24,7 +26,7 @@ defmodule RetroHexChat.Chat.FloodTracker do
 
   @spec record_message(map(), String.t()) :: map()
   def record_message(tracker, sender_nickname) do
-    key = String.downcase(sender_nickname)
+    key = Nickname.key(sender_nickname)
     now = System.monotonic_time(:millisecond)
 
     case Map.get(tracker.senders, key) do
@@ -48,7 +50,7 @@ defmodule RetroHexChat.Chat.FloodTracker do
 
   @spec flooded?(map(), String.t(), pos_integer(), pos_integer()) :: boolean()
   def flooded?(tracker, sender_nickname, threshold, window_seconds) do
-    key = String.downcase(sender_nickname)
+    key = Nickname.key(sender_nickname)
     cutoff = System.monotonic_time(:millisecond) - window_seconds * 1_000
 
     case Map.get(tracker.senders, key) do
@@ -86,7 +88,7 @@ defmodule RetroHexChat.Chat.FloodTracker do
 
   @spec reset_sender(map(), String.t()) :: map()
   def reset_sender(tracker, sender_nickname) do
-    key = String.downcase(sender_nickname)
+    key = Nickname.key(sender_nickname)
     %{tracker | senders: Map.delete(tracker.senders, key)}
   end
 

@@ -2,6 +2,8 @@ defmodule RetroHexChat.GroupCall.Schema.Participant do
   @moduledoc """
   Ecto schema for a registered user joining a group call room.
   """
+
+  alias RetroHexChat.Nickname
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -108,7 +110,7 @@ defmodule RetroHexChat.GroupCall.Schema.Participant do
   defp put_normalized_nickname(changeset) do
     case get_field(changeset, :normalized_nickname) || get_field(changeset, :nickname) do
       nil -> changeset
-      nickname -> put_change(changeset, :normalized_nickname, String.downcase(nickname))
+      nickname -> put_change(changeset, :normalized_nickname, Nickname.key(nickname))
     end
   end
 

@@ -4,6 +4,8 @@ defmodule RetroHexChat.Presence.WhowasCache do
   Entries expire after 1 hour. Maximum 1000 entries with oldest eviction.
   Periodic cleanup runs every 10 minutes.
   """
+
+  alias RetroHexChat.Nickname
   use GenServer
 
   alias RetroHexChat.Services.Queries
@@ -31,7 +33,7 @@ defmodule RetroHexChat.Presence.WhowasCache do
       disconnected_at: DateTime.utc_now()
     }
 
-    key = String.downcase(nickname)
+    key = Nickname.key(nickname)
     :ets.insert(@table, {key, entry})
     enforce_capacity()
     :ok
@@ -39,7 +41,7 @@ defmodule RetroHexChat.Presence.WhowasCache do
 
   @spec lookup(String.t()) :: {:ok, map()} | {:error, :not_found}
   def lookup(nickname) do
-    key = String.downcase(nickname)
+    key = Nickname.key(nickname)
 
     case :ets.lookup(@table, key) do
       [{^key, entry}] ->

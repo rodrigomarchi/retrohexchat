@@ -28,6 +28,7 @@ defmodule RetroHexChat.Services.RegisteredNick do
     |> validate_length(:nickname, max: 16)
     |> validate_length(:password, min: 5, max: 100)
     |> unique_constraint(:nickname, name: :idx_registered_nicks_nickname)
+    |> unique_constraint(:nickname, name: :idx_registered_nicks_nickname_lower)
     |> hash_password()
     |> put_registered_at()
     |> put_last_seen_at()

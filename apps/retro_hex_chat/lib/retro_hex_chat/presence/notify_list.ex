@@ -8,7 +8,9 @@ defmodule RetroHexChat.Presence.NotifyList do
   use Gettext, backend: RetroHexChat.Gettext
 
   import Ecto.Query
+  import RetroHexChat.Nickname, only: [matches: 2]
 
+  alias RetroHexChat.Nickname
   alias RetroHexChat.NicknameList
   alias RetroHexChat.OwnedList
   alias RetroHexChat.Presence.NotifyEntry
@@ -32,7 +34,7 @@ defmodule RetroHexChat.Presence.NotifyList do
           {:ok, map()} | {:error, :self_add | :duplicate | :list_full}
   def add_entry(notify_list, owner_nickname, tracked_nickname, note \\ nil) do
     cond do
-      String.downcase(owner_nickname) == String.downcase(tracked_nickname) ->
+      Nickname.equal?(owner_nickname, tracked_nickname) ->
         {:error, :self_add}
 
       tracking?(notify_list, tracked_nickname) ->
@@ -50,7 +52,7 @@ defmodule RetroHexChat.Presence.NotifyList do
           {:ok, map()} | {:error, :self_add} | :noop
   def add_entry_with_rotation(notify_list, owner_nickname, tracked_nickname, note \\ nil) do
     cond do
-      String.downcase(owner_nickname) == String.downcase(tracked_nickname) ->
+      Nickname.equal?(owner_nickname, tracked_nickname) ->
         {:error, :self_add}
 
       tracking?(notify_list, tracked_nickname) ->
@@ -77,11 +79,11 @@ defmodule RetroHexChat.Presence.NotifyList do
 
   @spec update_nickname(map(), String.t(), String.t()) :: map()
   def update_nickname(notify_list, old_nick, new_nick) do
-    downcased = String.downcase(old_nick)
+    downcased = Nickname.key(old_nick)
 
     updated_entries =
       Enum.map(notify_list.entries, fn entry ->
-        if String.downcase(entry.tracked_nickname) == downcased do
+        if Nickname.key(entry.tracked_nickname) == downcased do
           %{entry | tracked_nickname: new_nick}
         else
           entry
@@ -93,11 +95,11 @@ defmodule RetroHexChat.Presence.NotifyList do
 
   @spec sync_online_status(map(), [String.t()]) :: map()
   def sync_online_status(notify_list, online_nicknames) do
-    online_set = MapSet.new(online_nicknames, &String.downcase/1)
+    online_set = MapSet.new(online_nicknames, &Nickname.key/1)
 
     updated_entries =
       Enum.map(notify_list.entries, fn entry ->
-        online? = MapSet.member?(online_set, String.downcase(entry.tracked_nickname))
+        online? = MapSet.member?(online_set, Nickname.key(entry.tracked_nickname))
 
         if online? do
           %{entry | online: true}
@@ -111,11 +113,11 @@ defmodule RetroHexChat.Presence.NotifyList do
 
   @spec set_online(map(), String.t(), boolean()) :: map()
   def set_online(notify_list, tracked_nickname, online?) do
-    downcased = String.downcase(tracked_nickname)
+    downcased = Nickname.key(tracked_nickname)
 
     updated_entries =
       Enum.map(notify_list.entries, fn entry ->
-        if String.downcase(entry.tracked_nickname) == downcased do
+        if Nickname.key(entry.tracked_nickname) == downcased do
           apply_online_status(entry, online?)
         else
           entry
@@ -232,7 +234,7 @@ defmodule RetroHexChat.Presence.NotifyList do
         )
       )
 
-    settings = Repo.get(NotifyListSettings, owner)
+    settings = OwnedList.get_owned(NotifyListSettings, owner)
 
     # Settings alone are a saved list: somebody who turned auto-whois on
     # without tracking anyone has still saved something.
@@ -248,14 +250,10 @@ defmodule RetroHexChat.Presence.NotifyList do
 
   @spec save_entry(String.t(), NotifyEntry.t()) :: :ok | {:error, term()}
   def save_entry(owner, entry) do
-    owner_lower = String.downcase(owner)
-    tracked_lower = String.downcase(entry.tracked_nickname)
-
     existing =
       from(e in NotifyListEntry,
         where:
-          fragment("lower(?)", e.owner_nickname) == ^owner_lower and
-            fragment("lower(?)", e.tracked_nickname) == ^tracked_lower
+          matches(e.owner_nickname, owner) and matches(e.tracked_nickname, entry.tracked_nickname)
       )
       |> Repo.one()
 
@@ -285,13 +283,8 @@ defmodule RetroHexChat.Presence.NotifyList do
 
   @spec delete_entry(String.t(), String.t()) :: :ok
   def delete_entry(owner, tracked_nickname) do
-    owner_lower = String.downcase(owner)
-    tracked_lower = String.downcase(tracked_nickname)
-
     from(e in NotifyListEntry,
-      where:
-        fragment("lower(?)", e.owner_nickname) == ^owner_lower and
-          fragment("lower(?)", e.tracked_nickname) == ^tracked_lower
+      where: matches(e.owner_nickname, owner) and matches(e.tracked_nickname, tracked_nickname)
     )
     |> Repo.delete_all()
 
@@ -331,7 +324,7 @@ defmodule RetroHexChat.Presence.NotifyList do
       auto_add_pm: Map.get(settings, :auto_add_pm, true)
     }
 
-    case Repo.get(NotifyListSettings, owner) do
+    case OwnedList.get_owned(NotifyListSettings, owner) do
       nil ->
         %NotifyListSettings{}
         |> NotifyListSettings.changeset(Map.put(attrs, :owner_nickname, owner))

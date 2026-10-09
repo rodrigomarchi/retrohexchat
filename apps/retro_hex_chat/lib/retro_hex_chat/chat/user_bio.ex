@@ -5,13 +5,14 @@ defmodule RetroHexChat.Chat.UserBio do
   """
 
   alias RetroHexChat.Chat.Schemas.UserBio, as: UserBioSchema
+  alias RetroHexChat.OwnedList
   alias RetroHexChat.Repo
 
   @spec save(String.t(), String.t()) :: :ok | {:error, term()}
   def save(owner, bio_text) do
     attrs = %{owner_nickname: owner, bio_text: bio_text}
 
-    case Repo.get(UserBioSchema, owner) do
+    case OwnedList.get_owned(UserBioSchema, owner) do
       nil ->
         %UserBioSchema{}
         |> UserBioSchema.changeset(attrs)
@@ -30,7 +31,7 @@ defmodule RetroHexChat.Chat.UserBio do
 
   @spec load(String.t()) :: {:ok, String.t()} | {:error, :not_found}
   def load(owner) do
-    case Repo.get(UserBioSchema, owner) do
+    case OwnedList.get_owned(UserBioSchema, owner) do
       nil -> {:error, :not_found}
       db_entry -> {:ok, db_entry.bio_text}
     end
@@ -38,7 +39,7 @@ defmodule RetroHexChat.Chat.UserBio do
 
   @spec delete(String.t()) :: :ok
   def delete(owner) do
-    case Repo.get(UserBioSchema, owner) do
+    case OwnedList.get_owned(UserBioSchema, owner) do
       nil -> :ok
       existing -> Repo.delete(existing)
     end

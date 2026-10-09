@@ -3,6 +3,8 @@ defmodule RetroHexChat.Lobby.Policy do
   Authorization rules for P2P lobby operations, checked against the
   `lobby_sessions` table.
   """
+
+  alias RetroHexChat.Nickname
   use Gettext, backend: RetroHexChat.Gettext
 
   import Ecto.Query
@@ -182,7 +184,7 @@ defmodule RetroHexChat.Lobby.Policy do
 
   defp payload_blocks_lobby?(payload, ignored_nick) when is_map(payload) do
     now = DateTime.utc_now()
-    ignored_downcased = String.downcase(ignored_nick)
+    ignored_downcased = Nickname.key(ignored_nick)
 
     payload
     |> payload_entries()
@@ -206,7 +208,7 @@ defmodule RetroHexChat.Lobby.Policy do
     entry
     |> entry_value(:nickname)
     |> case do
-      nickname when is_binary(nickname) -> String.downcase(nickname) == ignored_downcased
+      nickname when is_binary(nickname) -> Nickname.key(nickname) == ignored_downcased
       _ -> false
     end
   end

@@ -37,6 +37,8 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         on_close="toggle_conversations"
       />
   """
+
+  alias RetroHexChat.Nickname
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.MentionBadge
@@ -1040,7 +1042,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
   defp p2p_session_for_pm(%{p2p_pm_sessions: sessions}, nick)
        when is_map(sessions) and is_binary(nick),
-       do: Map.get(sessions, String.downcase(nick))
+       do: Map.get(sessions, Nickname.key(nick))
 
   defp p2p_session_for_pm(_assigns, _nick), do: nil
 

@@ -18,6 +18,8 @@ defmodule RetroHexChatWeb.SpaceSessionAnnouncement do
   not a card.
   """
 
+  alias RetroHexChat.Nickname
+
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   require Logger
@@ -126,7 +128,7 @@ defmodule RetroHexChatWeb.SpaceSessionAnnouncement do
   end
 
   defp peer(%{nickname: nickname, participants: participants}) when is_list(participants) do
-    normalized = String.downcase(nickname)
+    normalized = Nickname.key(nickname)
     Enum.find(participants, &(String.downcase(&1) != normalized))
   end
 

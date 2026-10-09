@@ -4,8 +4,10 @@ defmodule RetroHexChat.Chat.Queries do
   """
 
   import Ecto.Query
+  import RetroHexChat.Nickname, only: [matches: 2]
 
   alias RetroHexChat.Chat.{Attachment, Message, PrivateMessage, UploadedFile}
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Page
   alias RetroHexChat.Repo
 
@@ -219,8 +221,8 @@ defmodule RetroHexChat.Chat.Queries do
     sent_query =
       from pm in PrivateMessage,
         where:
-          pm.sender_nickname == ^nickname and
-            pm.recipient_nickname != ^nickname and
+          matches(pm.sender_nickname, nickname) and
+            not matches(pm.recipient_nickname, nickname) and
             is_nil(pm.deleted_at),
         group_by: pm.recipient_nickname,
         select: %{
@@ -231,8 +233,8 @@ defmodule RetroHexChat.Chat.Queries do
     received_query =
       from pm in PrivateMessage,
         where:
-          pm.recipient_nickname == ^nickname and
-            pm.sender_nickname != ^nickname and
+          matches(pm.recipient_nickname, nickname) and
+            not matches(pm.sender_nickname, nickname) and
             is_nil(pm.deleted_at),
         group_by: pm.sender_nickname,
         select: %{
@@ -246,12 +248,18 @@ defmodule RetroHexChat.Chat.Queries do
         select: %{
           nickname: s.nickname,
           last_message_at: max(s.last_message_at)
-        },
-        order_by: [desc: max(s.last_message_at)],
-        limit: ^Page.limit_with_lookahead(limit)
+        }
 
+    # One partner per person: spellings of one nickname are folded together,
+    # and the partner is shown as they spelled it most recently.
     union_query
     |> Repo.all()
+    |> Enum.group_by(&Nickname.key(&1.nickname))
+    |> Enum.map(fn {_key, spellings} ->
+      Enum.max_by(spellings, & &1.last_message_at, DateTime)
+    end)
+    |> Enum.sort_by(& &1.last_message_at, {:desc, DateTime})
+    |> Enum.take(Page.limit_with_lookahead(limit))
     |> Page.new(limit, fn _partner -> nil end)
   end
 
@@ -359,7 +367,7 @@ defmodule RetroHexChat.Chat.Queries do
   def last_own_pm(nickname, other_nick) do
     PrivateMessage
     |> between(nickname, other_nick)
-    |> where([pm], pm.sender_nickname == ^nickname)
+    |> where([pm], matches(pm.sender_nickname, nickname))
     |> where([pm], is_nil(pm.deleted_at))
     |> where([pm], pm.type == "message")
     |> order_by([pm], desc: pm.id)
@@ -620,8 +628,8 @@ defmodule RetroHexChat.Chat.Queries do
     where(
       query,
       [pm],
-      (pm.sender_nickname == ^nick_a and pm.recipient_nickname == ^nick_b) or
-        (pm.sender_nickname == ^nick_b and pm.recipient_nickname == ^nick_a)
+      (matches(pm.sender_nickname, nick_a) and matches(pm.recipient_nickname, nick_b)) or
+        (matches(pm.sender_nickname, nick_b) and matches(pm.recipient_nickname, nick_a))
     )
   end
 

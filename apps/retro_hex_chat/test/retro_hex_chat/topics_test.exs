@@ -8,23 +8,23 @@ defmodule RetroHexChat.TopicsTest do
 
   # These strings are a wire format: a publisher and a subscriber in different
   # applications have to agree on them, and nothing else checks that they do.
-  test "an inbox is the person's nickname" do
-    assert Topics.inbox("Alice") == "user:Alice"
+  test "an inbox is named by the person's nickname key" do
+    assert Topics.inbox("Alice") == "user:alice"
   end
 
   test "a channel keeps the leading hash the name carries" do
     assert Topics.channel("#lobby") == "channel:#lobby"
   end
 
-  test "case is preserved, because a nickname is addressed as it was written" do
-    assert Topics.inbox("aLiCe") == "user:aLiCe"
+  test "every case of a nickname is one inbox, because it is one person" do
+    assert Topics.inbox("aLiCe") == Topics.inbox("ALICE")
   end
 
   # A surface that is not the chat subscribes here and nowhere else. If this
   # ever became a prefix of the inbox, a satellite would start receiving private
   # messages it has no handler for.
   test "surfaces is a topic of its own, not a prefix of the inbox" do
-    assert Topics.surfaces("Alice") == "user:Alice:surfaces"
+    assert Topics.surfaces("Alice") == "user:alice:surfaces"
     refute Topics.surfaces("Alice") == Topics.inbox("Alice")
   end
 

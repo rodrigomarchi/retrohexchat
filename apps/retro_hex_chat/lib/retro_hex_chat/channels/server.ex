@@ -28,6 +28,7 @@ defmodule RetroHexChat.Channels.Server do
 
   alias RetroHexChat.Chat
   alias RetroHexChat.Chat.{Archive, Attachments, Content}
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Notifications
   alias RetroHexChat.Observability
   alias RetroHexChat.Repo
@@ -508,6 +509,8 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   def handle_call({:set_mode, nickname, mode_string, params}, _from, state) do
+    params = show_user_mode_targets(state, mode_string, params)
+
     {ban_ops, clean_mode_string, clean_params} =
       extract_ban_operations(mode_string, params)
 
@@ -538,6 +541,7 @@ defmodule RetroHexChat.Channels.Server do
   def handle_call({:kick, actor_nick, target_nick, reason}, _from, state) do
     case Policy.can_kick?(state.membership, actor_nick, target_nick) do
       :ok ->
+        target_nick = as_shown(state, target_nick)
         new_membership = Membership.remove(state.membership, target_nick)
         new_state = %{state | membership: new_membership}
 
@@ -568,7 +572,8 @@ defmodule RetroHexChat.Channels.Server do
   def handle_call({:ban, actor_nick, target_nick, reason}, _from, state) do
     case Policy.can_ban?(state.membership, actor_nick, target_nick) do
       :ok ->
-        new_bans = MapSet.put(state.bans, target_nick)
+        target_nick = as_shown(state, target_nick)
+        new_bans = Nickname.put(state.bans, target_nick)
         new_state = %{state | bans: new_bans}
 
         maybe_persist_ban(:add, state.name, target_nick, actor_nick, reason, state)
@@ -697,7 +702,7 @@ defmodule RetroHexChat.Channels.Server do
 
   def handle_call({:add_ban_exception, operator_nick, target_nick}, _from, state) do
     if Policy.operator?(state.membership, operator_nick) do
-      new_exceptions = MapSet.put(state.ban_exceptions, target_nick)
+      new_exceptions = Nickname.put(state.ban_exceptions, target_nick)
       new_state = %{state | ban_exceptions: new_exceptions}
 
       maybe_persist_exception(:ban_exception, :add, state.name, target_nick, operator_nick, state)
@@ -716,7 +721,7 @@ defmodule RetroHexChat.Channels.Server do
 
   def handle_call({:remove_ban_exception, operator_nick, target_nick}, _from, state) do
     if Policy.operator?(state.membership, operator_nick) do
-      new_exceptions = MapSet.delete(state.ban_exceptions, target_nick)
+      new_exceptions = Nickname.delete(state.ban_exceptions, target_nick)
       new_state = %{state | ban_exceptions: new_exceptions}
 
       maybe_persist_exception(
@@ -742,7 +747,7 @@ defmodule RetroHexChat.Channels.Server do
 
   def handle_call({:add_invite_exception, operator_nick, target_nick}, _from, state) do
     if Policy.operator?(state.membership, operator_nick) do
-      new_exceptions = MapSet.put(state.invite_exceptions, target_nick)
+      new_exceptions = Nickname.put(state.invite_exceptions, target_nick)
       new_state = %{state | invite_exceptions: new_exceptions}
 
       maybe_persist_exception(
@@ -768,7 +773,7 @@ defmodule RetroHexChat.Channels.Server do
 
   def handle_call({:remove_invite_exception, operator_nick, target_nick}, _from, state) do
     if Policy.operator?(state.membership, operator_nick) do
-      new_exceptions = MapSet.delete(state.invite_exceptions, target_nick)
+      new_exceptions = Nickname.delete(state.invite_exceptions, target_nick)
       new_state = %{state | invite_exceptions: new_exceptions}
 
       maybe_persist_exception(
@@ -794,7 +799,7 @@ defmodule RetroHexChat.Channels.Server do
 
   def handle_call({:unban, operator_nick, target_nick}, _from, state) do
     if Policy.operator?(state.membership, operator_nick) do
-      new_bans = MapSet.delete(state.bans, target_nick)
+      new_bans = Nickname.delete(state.bans, target_nick)
       new_state = %{state | bans: new_bans}
 
       maybe_persist_ban(:remove, state.name, target_nick, operator_nick, nil, state)
@@ -891,7 +896,7 @@ defmodule RetroHexChat.Channels.Server do
            Membership.rank(op_role) >
              Membership.rank(elem(Membership.role(state.membership, target_nick), 1)),
          {:ok, mute} <- Mutes.mute(state.name, operator_nick, target_nick, duration) do
-      new_mutes = MapSet.put(state.channel_mutes, mute.target_nickname)
+      new_mutes = Nickname.put(state.channel_mutes, mute.target_nickname)
       new_state = %{state | channel_mutes: new_mutes}
 
       broadcast(
@@ -917,7 +922,7 @@ defmodule RetroHexChat.Channels.Server do
     with {:ok, op_role} <- Membership.role(state.membership, operator_nick),
          true <- Membership.rank(op_role) >= Membership.rank(:half_operator),
          {:ok, _summary} <- Mutes.revoke_active(state.name, target_nick, operator_nick) do
-      new_mutes = MapSet.delete(state.channel_mutes, target_nick)
+      new_mutes = Nickname.delete(state.channel_mutes, target_nick)
       new_state = %{state | channel_mutes: new_mutes}
 
       broadcast(state.name, {:user_channel_unmuted, %{target: target_nick, channel: state.name}})
@@ -992,8 +997,8 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   def handle_call({:channel_mute_expired, _mute_id, target_nick}, _from, state) do
-    if MapSet.member?(state.channel_mutes, target_nick) do
-      new_state = %{state | channel_mutes: MapSet.delete(state.channel_mutes, target_nick)}
+    if Nickname.member?(state.channel_mutes, target_nick) do
+      new_state = %{state | channel_mutes: Nickname.delete(state.channel_mutes, target_nick)}
       broadcast(state.name, {:user_channel_unmuted, %{target: target_nick, channel: state.name}})
       reply(:ok, new_state)
     else
@@ -1004,6 +1009,24 @@ defmodule RetroHexChat.Channels.Server do
   # ──────────────────────────────────────────────────────────────
   # Private Helpers
   # ──────────────────────────────────────────────────────────────
+
+  # `/op alice` aimed at AlIcE: every parameter of a mode made only of user
+  # flags is a member, and is announced as they spell it. Any other mode keeps
+  # its parameters untouched — a key or a limit is not a nickname.
+  defp show_user_mode_targets(state, mode_string, params) do
+    if Regex.match?(~r/^[+-][qohv]+$/, mode_string),
+      do: Enum.map(params, &as_shown(state, &1)),
+      else: params
+  end
+
+  # The spelling a member chose, for a nickname typed in any case; a nickname
+  # nobody here has is shown as it was typed.
+  defp as_shown(state, nickname) do
+    case Membership.display(state.membership, nickname) do
+      {:ok, shown} -> shown
+      {:error, :not_member} -> nickname
+    end
+  end
 
   defp do_handle_send_message(nickname, content, type, opts, state) do
     requested_format = content_format_from_opts(opts)
@@ -1135,7 +1158,7 @@ defmodule RetroHexChat.Channels.Server do
 
   defp do_mode_ban(state, nickname, target) do
     with :ok <- Policy.can_ban?(state.membership, nickname, target) do
-      new_state = %{state | bans: MapSet.put(state.bans, target)}
+      new_state = %{state | bans: Nickname.put(state.bans, target)}
       maybe_persist_ban(:add, state.name, target, nickname, nil, state)
 
       broadcast(
@@ -1149,7 +1172,7 @@ defmodule RetroHexChat.Channels.Server do
 
   defp do_mode_unban(state, nickname, target) do
     if Policy.operator?(state.membership, nickname) do
-      new_state = %{state | bans: MapSet.delete(state.bans, target)}
+      new_state = %{state | bans: Nickname.delete(state.bans, target)}
       maybe_persist_ban(:remove, state.name, target, nickname, nil, state)
 
       broadcast(
@@ -1168,7 +1191,7 @@ defmodule RetroHexChat.Channels.Server do
     |> Membership.to_list()
     |> Enum.map(fn {nick, _role} -> nick end)
     |> Enum.filter(&Masks.matches?(mask, &1))
-    |> Enum.reject(&(&1 == operator))
+    |> Enum.reject(&Nickname.equal?(&1, operator))
     |> Enum.filter(&(Policy.can_ban?(state.membership, operator, &1) == :ok))
     |> Enum.reduce(state, fn target, acc ->
       broadcast(
@@ -1270,7 +1293,7 @@ defmodule RetroHexChat.Channels.Server do
   defp process_user_flag(_, _, acc, remaining), do: {acc, remaining}
 
   defp check_channel_mute(state, nickname) do
-    if MapSet.member?(state.channel_mutes, nickname) do
+    if Nickname.member?(state.channel_mutes, nickname) do
       {:error, dgettext("channels", "You are muted in this channel")}
     else
       :ok

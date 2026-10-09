@@ -10,6 +10,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
   server-wide presence topic and nowhere else.
   """
 
+  alias RetroHexChat.Nickname
+
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [send_update: 2]
 
@@ -101,7 +103,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
 
   def handle_info({:notify_debounce, nickname, status}, socket) do
     session = socket.assigns.session
-    timers = Map.delete(socket.assigns.notify_debounce_timers, String.downcase(nickname))
+    timers = Map.delete(socket.assigns.notify_debounce_timers, Nickname.key(nickname))
 
     online? = status == :online
     updated_list = NotifyList.set_online(session.notify_list, nickname, online?)

@@ -23,6 +23,6 @@ defmodule RetroHexChat.Admin.AdminRole do
     |> validate_length(:nickname, max: 16)
     |> validate_length(:granted_by, max: 16)
     |> validate_inclusion(:role, @valid_roles)
-    |> unique_constraint([:nickname, :role])
+    |> unique_constraint([:nickname, :role], name: :idx_admin_roles_nickname_role_lower)
   end
 end

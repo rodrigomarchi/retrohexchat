@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **240 spec files** under `e2e/tests/`.
-- **560 Playwright `test()` cases**.
-- **507 documented flows**, 506 done, 1 not done.
+- **241 spec files** under `e2e/tests/`.
+- **564 Playwright `test()` cases**.
+- **511 documented flows**, 510 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -654,6 +654,10 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | W11 | Passive tab switching, dialog open/close, and nicklist hover do not reset the observed idle timer (features P2) | `tests/chat-idle-passive.spec.ts` | done |
 | W12 | A private conversation shows the same user list as a channel, listing both participants with the peer first (features P1) | `tests/chat-pm-user-list.spec.ts` | done |
 | W13 | The peer's away state reaches a private conversation's user list with no channel in common (features P1) | `tests/chat-pm-user-list.spec.ts` | done |
+| W14 | Another case of a registered nickname asks for its password and signs in shown as typed | `tests/nickname-casemap.spec.ts` | done |
+| W15 | `/msg alice` reaches whoever is online as AlIcE, live | `tests/nickname-casemap.spec.ts` | done |
+| W16 | `/op alice` finds the member AlIcE and the nick list keeps her spelling | `tests/nickname-casemap.spec.ts` | done |
+| W17 | An identified user changes only the case of their nickname without a password | `tests/nickname-casemap.spec.ts` | done |
 
 ### X - Channel Modes, Services, Permissions, Persistence Edges
 

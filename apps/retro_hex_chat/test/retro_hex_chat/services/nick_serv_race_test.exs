@@ -21,7 +21,7 @@ defmodule RetroHexChat.Services.NickServRaceTest do
       {:ok, _pid} = NickServ.start_link(name: race_server, identify_timeout_ms: 300)
 
       # Subscribe to user PubSub to watch for force_rename
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{nickname}")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox(nickname))
 
       # Start the identify timer
       NickServ.start_identify_timer(nickname, race_server)
@@ -58,7 +58,7 @@ defmodule RetroHexChat.Services.NickServRaceTest do
       {:ok, _} = NickServ.register(nickname, password, reg_server)
 
       # Subscribe to PubSub before starting timer
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{nickname}")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox(nickname))
 
       # Start the identify timer on the short-timeout server
       NickServ.start_identify_timer(nickname, server_name)
@@ -85,7 +85,7 @@ defmodule RetroHexChat.Services.NickServRaceTest do
       serial_server = :"test_nickserv_serial2_#{System.unique_integer([:positive])}"
       {:ok, _pid} = NickServ.start_link(name: serial_server, identify_timeout_ms: 100)
 
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{nickname}")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox(nickname))
 
       # Start timer
       NickServ.start_identify_timer(nickname, serial_server)

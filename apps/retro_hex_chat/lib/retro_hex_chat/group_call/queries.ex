@@ -3,6 +3,8 @@ defmodule RetroHexChat.GroupCall.Queries do
   Database queries for persisted group call lifecycle records.
   """
 
+  alias RetroHexChat.Nickname
+
   import Ecto.Query
 
   alias RetroHexChat.GroupCall.Schema.{Participant, Room, Track}
@@ -80,7 +82,7 @@ defmodule RetroHexChat.GroupCall.Queries do
 
   @spec get_active_participant(integer(), String.t()) :: Participant.t() | nil
   def get_active_participant(room_id, nickname) do
-    normalized_nickname = String.downcase(nickname)
+    normalized_nickname = Nickname.key(nickname)
 
     Participant
     |> where([p], p.room_id == ^room_id)

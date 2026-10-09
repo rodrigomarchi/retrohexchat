@@ -18,6 +18,7 @@ defmodule RetroHexChat.Chat.Service do
 
   alias RetroHexChat.Notifications
   alias RetroHexChat.Observability
+  alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Repo
   alias RetroHexChat.Topics
 
@@ -231,6 +232,8 @@ defmodule RetroHexChat.Chat.Service do
   end
 
   defp do_send_private_message(sender, recipient, content, type, opts) do
+    # Filed under the spelling the recipient chose, whatever case was typed.
+    recipient = as_shown(recipient)
     reply_to_id = Keyword.get(opts, :reply_to_id)
     content_format = content_format_from_opts(opts)
     attachment_ids = attachment_ids_from_opts(opts)
@@ -296,6 +299,13 @@ defmodule RetroHexChat.Chat.Service do
       |> attach_attachments(nickname, attachment_ids)
     end)
     |> normalize_insert_result()
+  end
+
+  defp as_shown(nickname) do
+    case Tracker.meta(Topics.presence(), nickname) do
+      %{nickname: shown} when is_binary(shown) -> shown
+      _offline -> nickname
+    end
   end
 
   defp do_insert_pm(sender, recipient, content, content_format, type, reply_attrs, attachment_ids) do

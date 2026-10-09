@@ -24,7 +24,7 @@ defmodule RetroHexChat.Services.ChanServAutoPrivilegeTest do
     test "a listed nickname that has not identified joins as a regular member" do
       channel = unique_channel()
       founder = "Founder#{System.unique_integer([:positive])}"
-      user = "AopUnproven#{System.unique_integer([:positive])}"
+      user = "AopUn#{rem(System.unique_integer([:positive]), 1_000_000)}"
 
       start_registered_channel(channel, founder)
 

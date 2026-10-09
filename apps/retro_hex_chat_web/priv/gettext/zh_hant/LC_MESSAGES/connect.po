@@ -28,11 +28,6 @@ msgstr "認證"
 msgid "Back"
 msgstr "返回"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:335
-#, elixir-autogen, elixir-format
-msgid "Case sensitive"
-msgstr "區分大小寫"
-
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:488
 #, elixir-autogen, elixir-format
 msgid "Choose a password (min. 5 characters)..."
@@ -139,6 +134,7 @@ msgid "Passwords do not match"
 msgstr "密碼不匹配"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:539
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Register & Connect"
 msgstr "註冊和連接"
@@ -331,3 +327,8 @@ msgstr "不只一個螢幕"
 #, elixir-autogen, elixir-format
 msgid "You can be signed in on up to %{count} screens at once. Opening a %{next}th ends the one you have not used for longest."
 msgstr "你最多可以同時在 %{count} 個螢幕上登入。開啟第 %{next} 個時，最久沒用的那個就會結束。"
+
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:335
+#, elixir-autogen, elixir-format
+msgid "Capital letters do not matter"
+msgstr "大寫字母不重要"

@@ -11,8 +11,10 @@ defmodule RetroHexChat.Notifications.Queries do
   """
 
   import Ecto.Query
+  import RetroHexChat.Nickname, only: [key_of: 1]
 
   alias RetroHexChat.Chat.Schemas.ReconnectState
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Notifications.Schema.PushSubscription
   alias RetroHexChat.Repo
 
@@ -79,22 +81,22 @@ defmodule RetroHexChat.Notifications.Queries do
   def candidates_for_channel_message(_channel_name, tokens: [], except: _except), do: []
 
   def candidates_for_channel_message(channel_name, opts) do
-    tokens = opts |> Keyword.get(:tokens, []) |> Enum.map(&String.downcase/1) |> Enum.uniq()
+    tokens = opts |> Keyword.get(:tokens, []) |> Enum.map(&Nickname.key/1) |> Enum.uniq()
 
     case tokens do
       [] ->
         []
 
       tokens ->
-        except = opts |> Keyword.get(:except, "") |> String.downcase()
+        except = opts |> Keyword.get(:except, "") |> Nickname.key()
 
         # `exists` rather than a join: the question is whether the person had
         # this channel open on *some* browser, and they have one reconnect row
         # per browser. A join answers it once per row, which would hand the same
         # browser back twice and wake the same phone twice for one line.
         from(s in PushSubscription, as: :subscription)
-        |> where([s], fragment("lower(?)", s.owner_nickname) in ^tokens)
-        |> where([s], fragment("lower(?)", s.owner_nickname) != ^except)
+        |> where([s], key_of(s.owner_nickname) in ^tokens)
+        |> where([s], key_of(s.owner_nickname) != ^except)
         |> where(
           [s],
           exists(

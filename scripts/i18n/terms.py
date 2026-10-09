@@ -94,6 +94,22 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "zh_hans": ("管理员", "操作员"),
         "zh_hant": ("管理員", "操作員"),
     },
+    # Letters, not money: "capital letters" came back as "letras de capital"
+    # and as "資本の手紙" — capital as in finance.
+    r"\bcapital letters?\b": {
+        "pt": ("maiúscula",),
+        "es": ("mayúscula",),
+        "fr": ("majuscule",),
+        "de": ("großbuchstabe", "großschreibung"),
+        "it": ("maiuscol",),
+        "nl": ("hoofdletter",),
+        "pl": ("wielk", "duże litery"),
+        "ru": ("заглавн", "прописн", "регистр"),
+        "id": ("huruf besar", "huruf kapital"),
+        "ja": ("大文字",),
+        "zh_hans": ("大写",),
+        "zh_hant": ("大寫",),
+    },
 }
 
 TERMS: tuple[tuple[re.Pattern[str], dict[str, tuple[str, ...]]], ...] = tuple(

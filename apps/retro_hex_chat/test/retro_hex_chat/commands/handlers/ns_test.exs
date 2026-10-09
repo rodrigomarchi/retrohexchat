@@ -83,7 +83,7 @@ defmodule RetroHexChat.Commands.Handlers.NsTest do
 
       context = %{@base_context | nickname: "NsGhoster"}
 
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:NsGhostTgt")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox("NsGhostTgt"))
 
       assert {:ok, :system, %{content: content}} =
                Ns.execute(["ghost", "NsGhostTgt", "secret123"], context)

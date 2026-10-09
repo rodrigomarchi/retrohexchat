@@ -12,6 +12,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
     * `{:ab_status, level, msg}` — chat-surface status / error lines.
     * `{:ab_ignore_timer, op, ...}` — the parent owns the ignore debounce timers.
   """
+
+  alias RetroHexChat.Nickname
   use RetroHexChatWeb, :live_component
 
   import RetroHexChatWeb.Components.UI.IgnoreListDialog
@@ -52,7 +54,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
     session = socket.assigns.session
 
     cond do
-      String.downcase(String.trim(nick)) == String.downcase(session.nickname) ->
+      Nickname.equal?(String.trim(nick), session.nickname) ->
         {:noreply,
          bubble_status(socket, :error_event, dgettext("chat", "You cannot ignore yourself"))}
 

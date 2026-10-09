@@ -9,14 +9,17 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   use Gettext, backend: RetroHexChat.Gettext
 
   import Ecto.Query
+  import RetroHexChat.Nickname, only: [matches: 2]
 
   alias RetroHexChat.Accounts.ChatDeviceSession
   alias RetroHexChat.Accounts.TrustedDevice
   alias RetroHexChat.Accounts.TrustedDeviceEvent
   alias RetroHexChat.Accounts.TrustedDeviceNick
   alias RetroHexChat.Accounts.TrustedDevicePreference
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Page
   alias RetroHexChat.Repo
+  alias RetroHexChat.Services.Queries
   alias RetroHexChat.Services.RegisteredNick
 
   @pubsub RetroHexChat.PubSub
@@ -149,14 +152,14 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   def nick_remembered?(nil, _nickname), do: false
 
   def nick_remembered?(device_id, nickname) do
-    Enum.any?(remembered_nicks(device_id), &(&1.nickname == nickname))
+    Enum.any?(remembered_nicks(device_id), &Nickname.equal?(&1.nickname, nickname))
   end
 
   @spec authorize_cookie(String.t() | nil, String.t()) ::
           {:ok, %{device: TrustedDevice.t(), nick: RegisteredNick.t()}} | {:error, atom()}
   def authorize_cookie(cookie_value, nickname) do
     with {:ok, %TrustedDevice{} = device} <- verify_cookie(cookie_value),
-         %RegisteredNick{} = nick <- Repo.get_by(RegisteredNick, nickname: nickname),
+         %RegisteredNick{} = nick <- Queries.find_by_nickname(nickname),
          %TrustedDeviceNick{} = grant <- active_grant(device.id, nick.id) do
       now = DateTime.utc_now()
 
@@ -176,7 +179,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   @spec remember_nick(String.t() | nil, String.t(), keyword()) ::
           {:ok, remember_result()} | {:error, atom()}
   def remember_nick(cookie_value, nickname, opts \\ []) do
-    case Repo.get_by(RegisteredNick, nickname: nickname) do
+    case Queries.find_by_nickname(nickname) do
       %RegisteredNick{} = nick ->
         Repo.transaction(fn ->
           {device, cookie} = resolve_or_create_device(cookie_value, opts)
@@ -207,7 +210,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
     do: {:error, dgettext("accounts", "This terminal is not remembered.")}
 
   def set_auto_login(device_id, nickname, enabled, actor) when is_boolean(enabled) do
-    with %RegisteredNick{} = nick <- Repo.get_by(RegisteredNick, nickname: nickname),
+    with %RegisteredNick{} = nick <- Queries.find_by_nickname(nickname),
          %TrustedDevice{} = device <- Repo.get(TrustedDevice, device_id),
          :ok <- ensure_device_usable(device),
          %TrustedDeviceNick{} = grant <- active_grant(device.id, nick.id) do
@@ -490,7 +493,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
         on: n.id == g.registered_nick_id,
         join: d in TrustedDevice,
         on: d.id == g.trusted_device_id,
-        where: n.nickname == ^nickname,
+        where: matches(n.nickname, nickname),
         where: is_nil(g.revoked_at),
         where: is_nil(d.revoked_at),
         where: d.expires_at > ^now,
@@ -545,7 +548,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
     from(s in ChatDeviceSession,
       left_join: d in TrustedDevice,
       on: d.id == s.trusted_device_id,
-      where: s.nickname == ^nickname,
+      where: matches(s.nickname, nickname),
       where: is_nil(s.disconnected_at),
       order_by: [desc: s.id],
       limit: ^Page.limit_with_lookahead(limit),
@@ -568,7 +571,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   @spec open_sessions_for_nick(String.t(), keyword()) :: [ChatDeviceSession.t()]
   def open_sessions_for_nick(nickname, opts \\ []) do
     from(s in ChatDeviceSession,
-      where: s.nickname == ^nickname,
+      where: matches(s.nickname, nickname),
       where: is_nil(s.disconnected_at),
       order_by: [asc: s.id]
     )
@@ -609,7 +612,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
       left_join: d in TrustedDevice,
       on: d.id == s.trusted_device_id,
       where: s.session_ref == ^session_ref,
-      where: s.nickname == ^nickname,
+      where: matches(s.nickname, nickname),
       where: s.connected_at >= ^cutoff,
       select: {s, d}
     )
@@ -679,7 +682,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
       on: n.id == e.registered_nick_id,
       left_join: d in TrustedDevice,
       on: d.id == e.trusted_device_id,
-      where: n.nickname == ^nickname,
+      where: matches(n.nickname, nickname),
       order_by: [desc: e.id],
       limit: ^Page.limit_with_lookahead(limit),
       select: {e, d}
@@ -753,7 +756,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
 
   @spec revoke_all_for_nick(String.t(), String.t()) :: :ok
   def revoke_all_for_nick(nickname, actor) do
-    case Repo.get_by(RegisteredNick, nickname: nickname) do
+    case Queries.find_by_nickname(nickname) do
       %RegisteredNick{} = nick ->
         now = DateTime.utc_now()
 
@@ -816,7 +819,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   def kill_all_sessions(nickname, actor, except_session_ref \\ nil) do
     sessions =
       from(s in ChatDeviceSession,
-        where: s.nickname == ^nickname,
+        where: matches(s.nickname, nickname),
         where: is_nil(s.disconnected_at)
       )
       |> maybe_exclude_session(except_session_ref)
@@ -830,7 +833,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
       record_session_stop(session.session_ref, "killed_by_#{actor}")
     end)
 
-    case Repo.get_by(RegisteredNick, nickname: nickname) do
+    case Queries.find_by_nickname(nickname) do
       nil ->
         :ok
 
@@ -993,7 +996,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
       join: d in TrustedDevice,
       on: d.id == g.trusted_device_id,
       where: d.id == ^device_id,
-      where: n.nickname == ^nickname,
+      where: matches(n.nickname, nickname),
       where: is_nil(g.revoked_at),
       where: is_nil(d.revoked_at),
       where: d.expires_at > ^now,
@@ -1161,7 +1164,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   end
 
   defp registered_nick_id(nickname) do
-    case Repo.get_by(RegisteredNick, nickname: nickname) do
+    case Queries.find_by_nickname(nickname) do
       nil -> nil
       nick -> nick.id
     end
@@ -1171,7 +1174,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
 
   defp active_session_counts(device_ids, nickname) do
     from(s in ChatDeviceSession,
-      where: s.nickname == ^nickname,
+      where: matches(s.nickname, nickname),
       where: s.trusted_device_id in ^device_ids,
       where: is_nil(s.disconnected_at),
       group_by: s.trusted_device_id,
@@ -1188,7 +1191,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
         on: n.id == g.registered_nick_id,
         join: d in TrustedDevice,
         on: d.id == g.trusted_device_id,
-        where: n.nickname == ^nickname,
+        where: matches(n.nickname, nickname),
         where: d.id == ^device_id,
         where: is_nil(g.revoked_at),
         where: is_nil(d.revoked_at),
@@ -1231,7 +1234,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   defp kill_sessions_for_device(nickname, device_id, actor, except_session_ref \\ nil) do
     sessions =
       from(s in ChatDeviceSession,
-        where: s.nickname == ^nickname,
+        where: matches(s.nickname, nickname),
         where: s.trusted_device_id == ^device_id,
         where: is_nil(s.disconnected_at)
       )
@@ -1252,7 +1255,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   defp active_session_for_nick(nickname, session_id) do
     Repo.one(
       from(s in ChatDeviceSession,
-        where: s.nickname == ^nickname,
+        where: matches(s.nickname, nickname),
         where: s.id == ^session_id,
         where: is_nil(s.disconnected_at)
       )

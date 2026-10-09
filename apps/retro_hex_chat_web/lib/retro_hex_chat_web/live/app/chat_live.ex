@@ -165,7 +165,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
     # below trusts exactly this answer.
     chat_session_id = http_session["chat_session_id"]
     identified? = pre_identified or NickServ.identified_in_session?(nickname, chat_session_id)
-    backend_reconnect_state = load_reconnect_state(nickname, browser_id, identified?)
+    # The snapshot is filed under the account; a nickname typed in another case
+    # is the same person, so it is looked up by the registered spelling.
+    owner = if identified?, do: NickServ.account_for(nickname)
+    backend_reconnect_state = load_reconnect_state(owner, browser_id)
     reconnecting? = backend_reconnect_state != nil
     join_channel = params["join"]
 
@@ -189,7 +192,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     # Identity before the first join: a registered channel's access list only
     # seats someone who has proved the nickname, and the default channel is
     # joined a few lines below, before `maybe_start_nickserv_timer/4` runs.
-    session = if identified?, do: Session.set_identified(session, true), else: session
+    session = if identified?, do: ChatLive.Helpers.mark_identified(session), else: session
 
     socket =
       socket
@@ -721,14 +724,14 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   defp normalize_trusted_device_id(_id), do: nil
 
-  defp load_reconnect_state(nickname, browser_id, true) do
-    case ReconnectState.load(nickname, browser_id) do
+  defp load_reconnect_state(nil, _browser_id), do: nil
+
+  defp load_reconnect_state(owner, browser_id) do
+    case ReconnectState.load(owner, browser_id) do
       {:ok, snapshot} -> snapshot
       {:error, :not_found} -> nil
     end
   end
-
-  defp load_reconnect_state(_nickname, _browser_id, _pre_identified), do: nil
 
   defp normalize_browser_id(browser_id) when is_binary(browser_id), do: browser_id
   defp normalize_browser_id(_browser_id), do: ""
@@ -1102,7 +1105,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
       dgettext("chat", "  /ns drop <password>       — Permanently unregister your nickname"),
       "",
       dgettext("chat", "Rules:"),
-      dgettext("chat", "  • Nicks are case sensitive — \"Alice\" and \"alice\" are different"),
+      dgettext(
+        "chat",
+        "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
+      ),
       dgettext("chat", "  • Nicks expire after %{window} of inactivity",
         window: TimeFormatter.days(NickExpiry.configured_expiration_days())
       ),

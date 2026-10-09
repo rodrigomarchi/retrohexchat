@@ -14,6 +14,7 @@ defmodule RetroHexChat.Chat.Search do
   """
 
   import Ecto.Query
+  import RetroHexChat.Nickname, only: [matches: 2]
 
   alias RetroHexChat.Chat.Message
   alias RetroHexChat.Page
@@ -56,7 +57,7 @@ defmodule RetroHexChat.Chat.Search do
     |> where([m], m.channel_name in ^channels)
     |> where([m], m.type in @mentionable_types)
     |> where([m], is_nil(m.deleted_at))
-    |> where([m], fragment("lower(?)", m.author_nickname) != ^String.downcase(nick))
+    |> where([m], not matches(m.author_nickname, nick))
     |> where([m], ilike(fragment("coalesce(?, ?)", m.plain_content, m.content), ^pattern))
     |> maybe_before(Keyword.get(opts, :cursor))
     |> order_by(desc: :id)

@@ -7,6 +7,8 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   the database hot path.
   """
 
+  alias RetroHexChat.Nickname
+
   use GenServer, restart: :transient
 
   require Logger
@@ -1222,7 +1224,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   end
 
   defp check_not_already_joined(state, nickname) do
-    normalized = String.downcase(nickname)
+    normalized = Nickname.key(nickname)
 
     exists? =
       state.participants
@@ -1238,7 +1240,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   end
 
   defp disconnected_participant(state, nickname) do
-    normalized = String.downcase(nickname)
+    normalized = Nickname.key(nickname)
 
     state.participants
     |> Enum.find(fn {_id, data} ->
@@ -1256,7 +1258,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     case participant_data(state, participant_id) do
       {:ok, %{participant: participant} = data, _bucket}
       when participant.registered_nick_id == actor.user_id ->
-        normalized = String.downcase(actor.nickname)
+        normalized = Nickname.key(actor.nickname)
 
         if participant.normalized_nickname == normalized do
           {:ok, participant_id, data}

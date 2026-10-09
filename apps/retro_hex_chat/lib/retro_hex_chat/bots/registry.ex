@@ -3,6 +3,8 @@ defmodule RetroHexChat.Bots.Registry do
   Registry helpers for bot process lookup via via_tuple.
   """
 
+  alias RetroHexChat.Nickname
+
   alias RetroHexChat.ProcessRegistry
 
   @registry RetroHexChat.Bots.BotRegistry
@@ -34,8 +36,8 @@ defmodule RetroHexChat.Bots.Registry do
         true
 
       {:error, :not_found} ->
-        target = String.downcase(nickname)
-        Enum.any?(registered_bots(), &(String.downcase(&1) == target))
+        target = Nickname.key(nickname)
+        Enum.any?(registered_bots(), &(Nickname.key(&1) == target))
     end
   end
 

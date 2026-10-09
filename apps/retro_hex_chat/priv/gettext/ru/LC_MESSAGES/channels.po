@@ -16,7 +16,7 @@ msgstr ""
 msgid "+s and +p are mutually exclusive"
 msgstr "+s и +p являются взаимоисключающими"
 
-#: lib/retro_hex_chat/channels/server.ex:1418
+#: lib/retro_hex_chat/channels/server.ex:1441
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "Уже в канале"
@@ -26,8 +26,8 @@ msgstr "Уже в канале"
 msgid "Bad channel key (+k)"
 msgstr "Плохой ключ канала (+k)"
 
-#: lib/retro_hex_chat/channels/server.ex:588
-#: lib/retro_hex_chat/channels/server.ex:1146
+#: lib/retro_hex_chat/channels/server.ex:593
+#: lib/retro_hex_chat/channels/server.ex:1169
 #, elixir-autogen, elixir-format
 msgid "Banned"
 msgstr "запрещенный"
@@ -62,22 +62,22 @@ msgstr "Канал только для приглашенных (+i)"
 msgid "Channel is moderated (+m). You need voice (+v) to speak."
 msgstr "Канал модерируется (+м). Чтобы говорить, нужен голос (+v)."
 
-#: lib/retro_hex_chat/channels/server.ex:864
+#: lib/retro_hex_chat/channels/server.ex:869
 #, elixir-autogen, elixir-format
 msgid "Channel is not invite-only"
 msgstr "Канал не только приглашенный"
 
-#: lib/retro_hex_chat/channels/server.ex:1441
+#: lib/retro_hex_chat/channels/server.ex:1464
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "Канал активен, пожалуйста, попробуйте снова в ближайшее время"
 
-#: lib/retro_hex_chat/channels/server.ex:97
-#: lib/retro_hex_chat/channels/server.ex:100
-#: lib/retro_hex_chat/channels/server.ex:243
-#: lib/retro_hex_chat/channels/server.ex:250
-#: lib/retro_hex_chat/channels/server.ex:387
-#: lib/retro_hex_chat/channels/server.ex:390
+#: lib/retro_hex_chat/channels/server.ex:98
+#: lib/retro_hex_chat/channels/server.ex:101
+#: lib/retro_hex_chat/channels/server.ex:244
+#: lib/retro_hex_chat/channels/server.ex:251
+#: lib/retro_hex_chat/channels/server.ex:388
+#: lib/retro_hex_chat/channels/server.ex:391
 #, elixir-autogen, elixir-format
 msgid "Channel not found"
 msgstr "Канал не найден"
@@ -86,9 +86,9 @@ msgstr "Канал не найден"
 #: lib/retro_hex_chat/channels/policy.ex:143
 #: lib/retro_hex_chat/channels/policy.ex:168
 #: lib/retro_hex_chat/channels/policy.ex:169
-#: lib/retro_hex_chat/channels/server.ex:908
-#: lib/retro_hex_chat/channels/server.ex:927
-#: lib/retro_hex_chat/channels/server.ex:930
+#: lib/retro_hex_chat/channels/server.ex:913
+#: lib/retro_hex_chat/channels/server.ex:932
+#: lib/retro_hex_chat/channels/server.ex:935
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges"
 msgstr "Недостаточные привилегии"
@@ -104,17 +104,17 @@ msgstr "Недостаточные привилегии для настройк�
 msgid "Invalid mode string: must start with + or -"
 msgstr "Недействительная строка режима: должна начинаться с + или -"
 
-#: lib/retro_hex_chat/channels/server.ex:867
+#: lib/retro_hex_chat/channels/server.ex:872
 #, elixir-autogen, elixir-format
 msgid "Knocking is disabled for this channel"
 msgstr "Knocking отключен для этого канала"
 
-#: lib/retro_hex_chat/channels/server.ex:489
+#: lib/retro_hex_chat/channels/server.ex:490
 #, elixir-autogen, elixir-format
 msgid "Not in channel"
 msgstr "Не в канале"
 
-#: lib/retro_hex_chat/channels/server.ex:985
+#: lib/retro_hex_chat/channels/server.ex:990
 #, elixir-autogen, elixir-format
 msgid "Only the channel owner can transfer ownership"
 msgstr "Только владелец канала может передать право собственности"
@@ -124,23 +124,23 @@ msgstr "Только владелец канала может передать �
 msgid "User %{target} is not in channel"
 msgstr "Пользователь %{target} Не в канале"
 
-#: lib/retro_hex_chat/channels/server.ex:905
-#: lib/retro_hex_chat/channels/server.ex:990
+#: lib/retro_hex_chat/channels/server.ex:910
+#: lib/retro_hex_chat/channels/server.ex:995
 #, elixir-autogen, elixir-format
 msgid "User is not in channel"
 msgstr "Пользователь не в канале"
 
-#: lib/retro_hex_chat/channels/server.ex:874
+#: lib/retro_hex_chat/channels/server.ex:879
 #, elixir-autogen, elixir-format
 msgid "You are already in that channel"
 msgstr "Вы уже находитесь на этом канале."
 
-#: lib/retro_hex_chat/channels/server.ex:871
+#: lib/retro_hex_chat/channels/server.ex:876
 #, elixir-autogen, elixir-format
 msgid "You are banned from that channel"
 msgstr "Вам запрещено выходить на этот канал."
 
-#: lib/retro_hex_chat/channels/server.ex:1274
+#: lib/retro_hex_chat/channels/server.ex:1297
 #, elixir-autogen, elixir-format
 msgid "You are muted in this channel"
 msgstr "Ты приглушен в этом канале"
@@ -157,10 +157,10 @@ msgstr "Вас нет в этом канале."
 msgid "You cannot ban yourself"
 msgstr "Вы не можете запретить себя"
 
-#: lib/retro_hex_chat/channels/server.ex:713
-#: lib/retro_hex_chat/channels/server.ex:739
-#: lib/retro_hex_chat/channels/server.ex:765
-#: lib/retro_hex_chat/channels/server.ex:791
+#: lib/retro_hex_chat/channels/server.ex:718
+#: lib/retro_hex_chat/channels/server.ex:744
+#: lib/retro_hex_chat/channels/server.ex:770
+#: lib/retro_hex_chat/channels/server.ex:796
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator"
 msgstr "Вы должны быть оператором канала."
@@ -170,18 +170,18 @@ msgstr "Вы должны быть оператором канала."
 msgid "You must be a channel operator to change the topic"
 msgstr "Вы должны быть оператором канала, чтобы изменить тему."
 
-#: lib/retro_hex_chat/channels/server.ex:810
-#: lib/retro_hex_chat/channels/server.ex:1162
+#: lib/retro_hex_chat/channels/server.ex:815
+#: lib/retro_hex_chat/channels/server.ex:1185
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to unban users"
 msgstr "Вы должны быть оператором канала для запрета пользователей."
 
-#: lib/retro_hex_chat/channels/server.ex:912
+#: lib/retro_hex_chat/channels/server.ex:917
 #, elixir-autogen, elixir-format
 msgid "Could not persist channel mute"
 msgstr "Не удалось сохранить заглушение канала"
 
-#: lib/retro_hex_chat/channels/server.ex:934
+#: lib/retro_hex_chat/channels/server.ex:939
 #, elixir-autogen, elixir-format
 msgid "Could not persist channel unmute"
 msgstr "Не удалось сохранить снятие заглушения канала"
@@ -212,24 +212,24 @@ msgstr "В этом канале уже %{count} закреплённых соо
 msgid "You must be a channel operator to pin messages"
 msgstr "Закреплять сообщения может только оператор канала"
 
-#: lib/retro_hex_chat/channels/server.ex:1670
+#: lib/retro_hex_chat/channels/server.ex:1693
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "Менять публичный архив может только основатель канала"
 
-#: lib/retro_hex_chat/channels/server.ex:1602
+#: lib/retro_hex_chat/channels/server.ex:1625
 #, elixir-autogen, elixir-format
 msgid "%{nickname} scheduled: %{title}"
 msgstr "%{nickname} запланировал(а): %{title}"
 
-#: lib/retro_hex_chat/channels/server.ex:1634
+#: lib/retro_hex_chat/channels/server.ex:1657
 #, elixir-autogen, elixir-format
 msgid "That event belongs to another channel."
 msgstr "Это событие принадлежит другому каналу."
 
 #: lib/retro_hex_chat/channels/scheduled_events.ex:105
 #: lib/retro_hex_chat/channels/scheduled_events.ex:131
-#: lib/retro_hex_chat/channels/server.ex:1631
+#: lib/retro_hex_chat/channels/server.ex:1654
 #, elixir-autogen, elixir-format
 msgid "That event could not be found."
 msgstr "Это событие не найдено."
@@ -244,37 +244,37 @@ msgstr "Чтобы планировать события, нужно быть о
 msgid "Only whoever scheduled it can call it off."
 msgstr "Отменить может только тот, кто это запланировал."
 
-#: lib/retro_hex_chat/channels/scheduled_events.ex:327
+#: lib/retro_hex_chat/channels/scheduled_events.ex:330
 #, elixir-autogen, elixir-format
 msgid "That event could not be saved."
 msgstr "Не удалось сохранить это событие."
 
-#: lib/retro_hex_chat/channels/scheduled_events.ex:143
+#: lib/retro_hex_chat/channels/scheduled_events.ex:146
 #, elixir-autogen, elixir-format
 msgid "That event was called off."
 msgstr "Это событие отменено."
 
-#: lib/retro_hex_chat/channels/scheduled_events.ex:288
+#: lib/retro_hex_chat/channels/scheduled_events.ex:291
 #, elixir-autogen, elixir-format
 msgid "That time is already in the past."
 msgstr "Это время уже прошло."
 
-#: lib/retro_hex_chat/channels/scheduled_events.ex:307
+#: lib/retro_hex_chat/channels/scheduled_events.ex:310
 #, elixir-autogen, elixir-format
 msgid "This channel already has %{count} events coming up."
 msgstr "У этого канала уже %{count} предстоящих событий."
 
-#: lib/retro_hex_chat/channels/scheduled_events.ex:292
+#: lib/retro_hex_chat/channels/scheduled_events.ex:295
 #, elixir-autogen, elixir-format
 msgid "When does it start?"
 msgstr "Когда начинается?"
 
-#: lib/retro_hex_chat/channels/server.ex:1662
+#: lib/retro_hex_chat/channels/server.ex:1685
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the public archive"
 msgstr "Идентифицируйтесь в NickServ, прежде чем менять публичный архив"
 
-#: lib/retro_hex_chat/channels/server.ex:259
+#: lib/retro_hex_chat/channels/server.ex:260
 #, elixir-autogen, elixir-format
 msgid "The archive switch did not answer. Check its state and try again."
 msgstr "Переключатель архива не ответил. Проверьте его состояние и попробуйте снова."

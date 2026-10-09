@@ -128,8 +128,8 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
 
     session =
       session
-      |> Session.set_identified(identified)
-      |> maybe_load_persisted_data(session.nickname, identified, was_identified)
+      |> set_identity(identified)
+      |> maybe_load_persisted_data(identified, was_identified)
 
     socket
     |> assign(
@@ -185,10 +185,13 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
     if registered, do: "identify", else: "register"
   end
 
-  defp maybe_load_persisted_data(session, nickname, true, false),
-    do: Helpers.load_persisted_data(session, nickname)
+  defp set_identity(session, true), do: Helpers.mark_identified(session)
+  defp set_identity(session, false), do: Session.set_identified(session, false)
 
-  defp maybe_load_persisted_data(session, _nickname, _identified, _was_identified), do: session
+  defp maybe_load_persisted_data(session, true, false),
+    do: Helpers.load_persisted_data(session)
+
+  defp maybe_load_persisted_data(session, _identified, _was_identified), do: session
 
   defp maybe_rebuild_nick_color_fn(socket, session, true, false),
     do: Helpers.rebuild_nick_color_fn(socket, session)

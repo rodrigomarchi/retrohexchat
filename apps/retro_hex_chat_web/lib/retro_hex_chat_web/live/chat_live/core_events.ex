@@ -33,7 +33,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   alias RetroHexChat.Page
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
-  alias RetroHexChat.Topics
   alias RetroHexChatWeb.ChatLive
 
   alias RetroHexChatWeb.ChatLive.Components.{
@@ -650,12 +649,19 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     password = params["password"] || ""
 
     cond do
-      nick_in_use?(target, socket.assigns.session.nickname) ->
+      Tracker.nick_taken?(target, socket.assigns.session.nickname) ->
         close_nick_change_dialog()
 
         error_event(
           socket,
           dgettext("chat", "Nickname %{nickname} is already in use", nickname: target)
+        )
+
+      # Decided here, not by the dialog's `registered` flag: an identified person
+      # changing only the case of their nickname has proved it already.
+      Session.case_change?(socket.assigns.session, target) ->
+        nick_change_redirect(socket, target,
+          token: Phoenix.Token.sign(Endpoint, "nickserv_identify", target)
         )
 
       registered ->
@@ -696,11 +702,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   defp close_nick_change_dialog do
     send_update(NickChangeDialog, id: NickChangeDialog.id(), action: :close)
-  end
-
-  defp nick_in_use?(nickname, current_nickname) do
-    String.downcase(nickname) != String.downcase(current_nickname) and
-      Tracker.online?(Topics.presence(), nickname)
   end
 
   defp open_delete_confirm(socket, message_id) do

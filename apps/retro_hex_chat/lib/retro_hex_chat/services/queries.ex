@@ -3,7 +3,9 @@ defmodule RetroHexChat.Services.Queries do
   use Gettext, backend: RetroHexChat.Gettext
 
   import Ecto.Query
+  import RetroHexChat.Nickname, only: [key_of: 1, matches: 2]
 
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Page
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.AccessListEntry
@@ -31,7 +33,7 @@ defmodule RetroHexChat.Services.Queries do
 
   @spec find_by_nickname(String.t()) :: RegisteredNick.t() | nil
   def find_by_nickname(nickname) do
-    Repo.get_by(RegisteredNick, nickname: nickname)
+    Repo.one(from n in RegisteredNick, where: matches(n.nickname, nickname))
   end
 
   @spec get_nickname_by_id(integer() | nil) :: String.t() | nil
@@ -133,7 +135,8 @@ defmodule RetroHexChat.Services.Queries do
   defp exclude_protected_nicks(query, []), do: query
 
   defp exclude_protected_nicks(query, protected_nicks) do
-    where(query, [n], n.nickname not in ^protected_nicks)
+    keys = Enum.map(protected_nicks, &Nickname.key/1)
+    where(query, [n], key_of(n.nickname) not in ^keys)
   end
 
   # ── Channel registration ────────────────────────────────────
@@ -330,7 +333,7 @@ defmodule RetroHexChat.Services.Queries do
   @spec list_channels_for_founder(String.t()) :: [String.t()]
   def list_channels_for_founder(nickname) do
     from(c in RegisteredChannel,
-      where: c.founder_nickname == ^nickname,
+      where: matches(c.founder_nickname, nickname),
       select: c.name
     )
     |> Repo.all()
@@ -361,7 +364,7 @@ defmodule RetroHexChat.Services.Queries do
   @spec remove_access_for_nick(String.t()) :: non_neg_integer()
   def remove_access_for_nick(nickname) do
     {count, _} =
-      from(a in AccessListEntry, where: a.nickname == ^nickname)
+      from(a in AccessListEntry, where: matches(a.nickname, nickname))
       |> Repo.delete_all()
 
     count
@@ -385,7 +388,7 @@ defmodule RetroHexChat.Services.Queries do
   @spec remove_access(String.t(), String.t()) :: :ok | {:error, :not_found}
   def remove_access(channel_name, nickname) do
     from(a in AccessListEntry,
-      where: a.channel_name == ^channel_name and a.nickname == ^nickname
+      where: a.channel_name == ^channel_name and matches(a.nickname, nickname)
     )
     |> Repo.delete_all()
     |> case do
@@ -415,7 +418,7 @@ defmodule RetroHexChat.Services.Queries do
   @spec find_access(String.t(), String.t()) :: AccessListEntry.t() | nil
   def find_access(channel_name, nickname) do
     from(a in AccessListEntry,
-      where: a.channel_name == ^channel_name and a.nickname == ^nickname
+      where: a.channel_name == ^channel_name and matches(a.nickname, nickname)
     )
     |> Repo.one()
   end
@@ -434,14 +437,14 @@ defmodule RetroHexChat.Services.Queries do
     })
     |> Repo.insert(
       on_conflict: :nothing,
-      conflict_target: [:channel_name, :banned_nickname]
+      conflict_target: {:unsafe_fragment, "(channel_name, lower(banned_nickname))"}
     )
   end
 
   @spec remove_ban(String.t(), String.t()) :: :ok | {:error, :not_found}
   def remove_ban(channel_name, nickname) do
     from(b in Ban,
-      where: b.channel_name == ^channel_name and b.banned_nickname == ^nickname
+      where: b.channel_name == ^channel_name and matches(b.banned_nickname, nickname)
     )
     |> Repo.delete_all()
     |> case do
@@ -509,7 +512,7 @@ defmodule RetroHexChat.Services.Queries do
   @spec remove_ban_exception(String.t(), String.t()) :: :ok | {:error, :not_found}
   def remove_ban_exception(channel_name, nickname) do
     from(e in BanException,
-      where: e.channel_name == ^channel_name and e.nickname == ^nickname
+      where: e.channel_name == ^channel_name and matches(e.nickname, nickname)
     )
     |> Repo.delete_all()
     |> case do
@@ -546,7 +549,7 @@ defmodule RetroHexChat.Services.Queries do
   @spec remove_invite_exception(String.t(), String.t()) :: :ok | {:error, :not_found}
   def remove_invite_exception(channel_name, nickname) do
     from(e in InviteException,
-      where: e.channel_name == ^channel_name and e.nickname == ^nickname
+      where: e.channel_name == ^channel_name and matches(e.nickname, nickname)
     )
     |> Repo.delete_all()
     |> case do

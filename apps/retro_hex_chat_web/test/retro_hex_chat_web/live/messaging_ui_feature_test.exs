@@ -67,7 +67,7 @@ defmodule RetroHexChatWeb.MessagingUIFeatureTest do
       # (ephemeral, never persisted). Subscribe the test process so we can assert
       # the actual cross-user delivery deterministically instead of re-rendering
       # the recipient's async message stream.
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{target}")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox(target))
 
       sender_view
       |> render_click("nick_right_click", %{"nick" => target, "x" => 100, "y" => 200})

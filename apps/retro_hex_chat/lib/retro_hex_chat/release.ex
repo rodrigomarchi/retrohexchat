@@ -7,6 +7,8 @@ defmodule RetroHexChat.Release do
       bin/retro_hex_chat eval "RetroHexChat.Release.migrate()"
   """
 
+  alias RetroHexChat.Nickname.Uniqueness
+
   @app :retro_hex_chat
 
   @spec migrate :: :ok
@@ -18,6 +20,22 @@ defmodule RetroHexChat.Release do
     end
 
     :ok
+  end
+
+  @doc """
+  Lists rows whose nicknames differ only by case — run it before a deploy that
+  builds case-insensitive unique indexes. Read-only; `[]` means clear.
+  """
+  @spec check_nickname_duplicates() :: [{String.t(), list()}]
+  def check_nickname_duplicates do
+    load_app()
+
+    Enum.flat_map(repos(), fn repo ->
+      {:ok, found, _} =
+        Ecto.Migrator.with_repo(repo, &Uniqueness.duplicates/1)
+
+      found
+    end)
   end
 
   @spec rollback(module(), integer()) :: :ok

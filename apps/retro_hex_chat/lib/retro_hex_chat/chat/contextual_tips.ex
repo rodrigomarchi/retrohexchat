@@ -8,6 +8,7 @@ defmodule RetroHexChat.Chat.ContextualTips do
   """
 
   alias RetroHexChat.Chat.Schemas.ContextualTipSetting
+  alias RetroHexChat.OwnedList
   alias RetroHexChat.Repo
 
   @type t :: %{
@@ -72,7 +73,7 @@ defmodule RetroHexChat.Chat.ContextualTips do
       suppressed: normalized.suppressed
     }
 
-    case Repo.get(ContextualTipSetting, owner) do
+    case OwnedList.get_owned(ContextualTipSetting, owner) do
       nil ->
         %ContextualTipSetting{}
         |> ContextualTipSetting.changeset(attrs)
@@ -91,7 +92,7 @@ defmodule RetroHexChat.Chat.ContextualTips do
 
   @spec load(String.t()) :: {:ok, t()} | {:error, :not_found}
   def load(owner) do
-    case Repo.get(ContextualTipSetting, owner) do
+    case OwnedList.get_owned(ContextualTipSetting, owner) do
       nil ->
         {:error, :not_found}
 

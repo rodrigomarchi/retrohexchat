@@ -29,6 +29,8 @@ defmodule RetroHexChat.Chat.Roster do
   user list is a survivable screen — a crashed render is not.
   """
 
+  alias RetroHexChat.Nickname
+
   require Logger
 
   alias RetroHexChat.Accounts.Avatars
@@ -151,7 +153,7 @@ defmodule RetroHexChat.Chat.Roster do
       state.members |> Enum.map(fn {nickname, _role} -> nickname end) |> Avatars.for_nicks()
 
     Enum.map(state.members, fn {nickname, role} ->
-      meta = Map.get(presence, String.downcase(nickname), %{})
+      meta = Map.get(presence, Nickname.key(nickname), %{})
 
       %{
         nickname: nickname,
@@ -171,7 +173,7 @@ defmodule RetroHexChat.Chat.Roster do
     name
     |> Topics.channel()
     |> Tracker.list_users()
-    |> Map.new(fn user -> {String.downcase(user.nickname), user} end)
+    |> Map.new(fn user -> {Nickname.key(user.nickname), user} end)
   end
 
   # One keyed presence read per person, not a scan of the server-wide topic:

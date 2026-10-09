@@ -105,8 +105,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     socket
   end
 
-  @spec load_persisted_data(Session.t(), String.t()) :: Session.t()
-  def load_persisted_data(session, nick) do
+  # Everything is filed under the account (`Session.owner/1`), the registered
+  # spelling — not the nickname shown, which may differ from it by case.
+  @spec load_persisted_data(Session.t()) :: Session.t()
+  def load_persisted_data(session) do
+    nick = Session.owner(session)
+
     session
     |> load_if_found(NotifyList.load(nick), &Session.set_notify_list/2)
     |> sync_notify_online_status()
@@ -124,7 +128,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     |> load_if_found(AliasList.load(nick), &Session.set_aliases/2)
     |> load_if_found(CustomMenus.load(nick), &Session.set_custom_menus/2)
     |> load_if_found(AutoRespondRules.load(nick), &Session.set_autorespond_rules/2)
-    |> restore_pm_conversations(nick)
+    |> restore_pm_conversations(session.nickname)
   end
 
   @spec restore_pm_conversations(Session.t(), String.t()) :: Session.t()
@@ -152,7 +156,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
   defp load_if_found(session, {:ok, data}, setter), do: setter.(session, data)
   defp load_if_found(session, {:error, _}, _setter), do: session
 
-  defp persist(%Session{identified: true, nickname: nickname}, type, snapshot) do
+  defp persist(%Session{identified: true} = session, type, snapshot) do
+    nickname = Session.owner(session)
+
     case PreferencePersistence.enqueue(nickname, type, snapshot) do
       :ok ->
         :ok

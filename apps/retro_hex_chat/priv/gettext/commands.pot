@@ -424,26 +424,26 @@ msgstr ""
 msgid "/help join"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ignore.ex:46
-#: lib/retro_hex_chat/commands/handlers/ignore.ex:151
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:48
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:153
 #, elixir-autogen, elixir-format
 msgid "/ignore AnnoyingGuy pms"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:49
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:154
+#, elixir-autogen, elixir-format
+msgid "/ignore LoudPerson all 5m"
 msgstr ""
 
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:47
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:152
 #, elixir-autogen, elixir-format
-msgid "/ignore LoudPerson all 5m"
-msgstr ""
-
-#: lib/retro_hex_chat/commands/handlers/ignore.ex:45
-#: lib/retro_hex_chat/commands/handlers/ignore.ex:150
-#, elixir-autogen, elixir-format
 msgid "/ignore SpamBot"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ignore.ex:38
-#: lib/retro_hex_chat/commands/handlers/ignore.ex:119
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:40
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:121
 #, elixir-autogen, elixir-format
 msgid "/ignore [nickname] [type] [duration]"
 msgstr ""
@@ -724,14 +724,14 @@ msgstr ""
 msgid "/op alice"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:42
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:63
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:44
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:65
 #, elixir-autogen, elixir-format
 msgid "/p2p <nickname>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:48
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:79
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:50
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:81
 #, elixir-autogen, elixir-format
 msgid "/p2p mario"
 msgstr ""
@@ -1291,12 +1291,12 @@ msgstr ""
 msgid "Duration (e.g. 30s, 5m, 1h)"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ignore.ex:93
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:95
 #, elixir-autogen, elixir-format
 msgid "Duration must be positive"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ignore.ex:146
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:148
 #, elixir-autogen, elixir-format
 msgid "Duration: 5m, 1h, 2d"
 msgstr ""
@@ -1377,8 +1377,8 @@ msgstr ""
 msgid "Greeting set to '%{greeting}'."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ignore.ex:40
-#: lib/retro_hex_chat/commands/handlers/ignore.ex:121
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:42
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:123
 #, elixir-autogen, elixir-format
 msgid "Hide messages from a specific user.\nTypes: all (default), messages, pms, actions, notices, invites.\nDuration: Nm (minutes), Nh (hours), Nd (days). No duration = permanent until /unignore.\nNo args: show your ignore list. You cannot ignore yourself."
 msgstr ""
@@ -1724,7 +1724,7 @@ msgstr ""
 msgid "Reason for the kick"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/autocomplete.ex:138
+#: lib/retro_hex_chat/commands/autocomplete.ex:140
 #, elixir-autogen, elixir-format
 msgid "Recent"
 msgstr ""
@@ -2102,7 +2102,7 @@ msgstr ""
 msgid "Target nickname (for +o, +v, +b)"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:76
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:78
 #, elixir-autogen, elixir-format
 msgid "Target user"
 msgstr ""
@@ -2157,7 +2157,7 @@ msgstr ""
 msgid "Type /admin <subcommand> for usage details."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ignore.ex:139
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:141
 #, elixir-autogen, elixir-format
 msgid "Type: all, messages, pms, actions, notices, invites"
 msgstr ""
@@ -2254,7 +2254,7 @@ msgstr ""
 msgid "Usage: /devoice <nickname>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ignore.ex:83
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:85
 #, elixir-autogen, elixir-format
 msgid "Usage: /ignore <nickname> [type] [duration]"
 msgstr ""
@@ -2356,8 +2356,8 @@ msgstr ""
 msgid "Usage: /op <nickname>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:13
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:18
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:15
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:20
 #, elixir-autogen, elixir-format
 msgid "Usage: /p2p <nickname>"
 msgstr ""
@@ -2454,7 +2454,7 @@ msgstr ""
 msgid "User"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:108
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:110
 #, elixir-autogen, elixir-format
 msgid "User '%{nickname}' is not registered."
 msgstr ""
@@ -2484,7 +2484,7 @@ msgstr ""
 msgid "User to give voice"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ignore.ex:132
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:134
 #, elixir-autogen, elixir-format
 msgid "User to ignore"
 msgstr ""
@@ -2599,7 +2599,7 @@ msgstr ""
 msgid "You are not in any channel"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ignore.ex:22
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:24
 #, elixir-autogen, elixir-format
 msgid "You cannot ignore yourself"
 msgstr ""
@@ -2641,7 +2641,7 @@ msgstr ""
 msgid "You must be at least a half-operator to use this command"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:86
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:88
 #, elixir-autogen, elixir-format
 msgid "You must be identified to use /p2p."
 msgstr ""
@@ -2817,22 +2817,22 @@ msgstr ""
 msgid "set, commands, addcmd, delcmd, help.\n"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:100
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:102
 #, elixir-autogen, elixir-format
 msgid "User '%{nickname}' is offline."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:65
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:67
 #, elixir-autogen, elixir-format
 msgid "Open a P2P session that hosts calls, file transfers, and games together over one connection.\nRequires: both users must be registered and identified (/ns identify)."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:44
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:46
 #, elixir-autogen, elixir-format
 msgid "Open a P2P session with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\nRequires: both users must be registered and identified (/ns identify)."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:90
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:92
 #, elixir-autogen, elixir-format
 msgid "You cannot start a P2P session with yourself."
 msgstr ""

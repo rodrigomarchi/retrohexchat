@@ -18,9 +18,16 @@ defmodule RetroHexChat.Topics do
   surfaces. Widening the nickname charset means revisiting this file.
   """
 
-  @doc "Everything addressed to one person, whichever conversation it belongs to."
+  alias RetroHexChat.Nickname
+
+  @doc """
+  Everything addressed to one person, whichever conversation it belongs to.
+
+  Named by `Nickname.key/1`, so a message to `alice` reaches whoever is online
+  as `AlIcE`, and a change of case keeps the same inbox.
+  """
   @spec inbox(String.t()) :: String.t()
-  def inbox(nickname) when is_binary(nickname), do: "user:" <> nickname
+  def inbox(nickname) when is_binary(nickname), do: "user:" <> Nickname.key(nickname)
 
   @doc "Everything addressed to a channel."
   @spec channel(String.t()) :: String.t()

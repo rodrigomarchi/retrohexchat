@@ -612,7 +612,7 @@ defmodule RetroHexChat.Bots.ServerTest do
     setup do
       {:ok, pid} = RetroHexChat.Channels.Supervisor.start_child("#privategreet")
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#privategreet")
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:newcomer")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox("newcomer"))
 
       on_exit(fn ->
         Supervisor.stop_bot("PrivateGreetBot")

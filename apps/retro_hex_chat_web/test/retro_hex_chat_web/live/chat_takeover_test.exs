@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.ChatTakeoverTest do
   alias RetroHexChat.Channels.Registry
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Channels.Supervisor
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChatWeb.PerfBudgets
 
@@ -62,7 +63,8 @@ defmodule RetroHexChatWeb.ChatTakeoverTest do
       # arrive.
       ghost = spawn(fn -> Process.sleep(:timer.seconds(60)) end)
       on_exit(fn -> Process.exit(ghost, :kill) end)
-      Tracker.track(ghost, "presence:global", nick, %{})
+      # Keyed the way Tracker.track_user/3 keys everyone.
+      Tracker.track(ghost, "presence:global", Nickname.key(nick), %{nickname: nick})
       wait_until(fn -> Tracker.online?("presence:global", nick) end)
 
       assert Tracker.online?("presence:global", nick),

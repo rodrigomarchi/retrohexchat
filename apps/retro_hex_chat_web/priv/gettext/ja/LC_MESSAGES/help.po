@@ -146,11 +146,6 @@ msgstr "カテゴリでブラウズするか、チャットメニューからヘ
 msgid "Cannot contain spaces"
 msgstr "スペースを含まない"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Case sensitive"
-msgstr "場合の敏感"
-
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Changing Nickname"
@@ -435,11 +430,6 @@ msgstr "全てを見る"
 #, elixir-autogen, elixir-format
 msgid "to send."
 msgstr "送信する。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "— \"Alice\" and \"alice\" are different nicknames"
-msgstr "— 「アリス」と「アリス」は異なるニックネームです。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:42
 #, elixir-autogen, elixir-format
@@ -814,3 +804,18 @@ msgstr "後でログインするために同じパスワードを入力してく
 #, elixir-autogen, elixir-format
 msgid "Then click %{button}."
 msgstr "その後、%{button}をクリックします。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "\"Alice\" and \"alice\" are the same nickname."
+msgstr "「アリス」と「アルス」は同じニックネームです。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Capital letters do not matter"
+msgstr "Capital letters do not matter"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "It is shown as you type it."
+msgstr "型として表示されます。"

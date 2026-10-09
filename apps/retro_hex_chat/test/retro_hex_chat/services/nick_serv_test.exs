@@ -90,6 +90,39 @@ defmodule RetroHexChat.Services.NickServTest do
     end
   end
 
+  describe "one nickname whatever its case" do
+    test "a case variant of a registered nickname cannot be registered", %{server: server} do
+      {:ok, _} = NickServ.register("Casefold", "secret123", server)
+
+      assert {:error, _msg} = NickServ.register("CASEFOLD", "other123", server)
+      assert NickServ.registered?("casefold", server)
+    end
+
+    test "any case identifies with the registration's password", %{server: server} do
+      {:ok, _} = NickServ.register("Twin", "secret123", server)
+      NickServ.remove_identified("Twin", server)
+
+      assert {:error, _} = NickServ.identify("TWIN", "wrong-pass", server)
+      assert {:ok, _} = NickServ.identify("tWiN", "secret123", server)
+      assert NickServ.identified?("twin", server)
+      assert NickServ.identified?("Twin", server)
+    end
+
+    test "the account is the registered spelling", %{server: server} do
+      {:ok, _} = NickServ.register("Spelled", "secret123", server)
+
+      assert NickServ.account_for("sPeLlEd") == "Spelled"
+      assert NickServ.account_for("Nobody") == nil
+    end
+
+    test "a session bound under one case is the same person under another", %{server: server} do
+      {:ok, _} = NickServ.register("Bound2", "secret123", server)
+      :ok = NickServ.bind_session("bound2", "sess-1", server)
+
+      assert NickServ.identified_in_session?("BOUND2", "sess-1", server)
+    end
+  end
+
   describe "registered?/1" do
     test "returns true for registered nick", %{server: server} do
       {:ok, _} = NickServ.register("CheckReg", "secret123", server)
@@ -120,7 +153,7 @@ defmodule RetroHexChat.Services.NickServTest do
     test "sends force_disconnect with target password", %{server: server} do
       {:ok, _} = NickServ.register("GhostTarget", "secret123", server)
 
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:GhostTarget")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox("GhostTarget"))
 
       assert {:ok, msg} = NickServ.ghost("GhostTarget", "secret123", "GhostReq", server)
       assert msg =~ "Ghost command sent"
@@ -162,7 +195,7 @@ defmodule RetroHexChat.Services.NickServTest do
 
   describe "start_identify_timer/1 and cancel_identify_timer/1" do
     test "starts and cancels a timer", %{server: server} do
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:TimerNick")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox("TimerNick"))
 
       NickServ.start_identify_timer("TimerNick", server)
       NickServ.cancel_identify_timer("TimerNick", server)
@@ -180,7 +213,7 @@ defmodule RetroHexChat.Services.NickServTest do
       {:ok, _} = NickServ.register("ClearNick", "secret123", server)
       assert NickServ.identified?("ClearNick", server)
 
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:ClearNick")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox("ClearNick"))
       NickServ.start_identify_timer("ClearNick", server)
 
       assert :ok = NickServ.clear_runtime_state(server)
@@ -197,7 +230,7 @@ defmodule RetroHexChat.Services.NickServTest do
       new_server = :"nickserv_bcast_#{rem(System.unique_integer([:positive]), 100_000)}"
       {:ok, _} = NickServ.start_link(name: new_server)
 
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:BcastNick")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox("BcastNick"))
 
       {:ok, _} = NickServ.identify("BcastNick", "secret123", new_server)
 
@@ -205,7 +238,7 @@ defmodule RetroHexChat.Services.NickServTest do
     end
 
     test "register does not broadcast :nickserv_identified", %{server: server} do
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:RegBcast")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox("RegBcast"))
 
       {:ok, _} = NickServ.register("RegBcast", "secret123", server)
 
@@ -220,7 +253,7 @@ defmodule RetroHexChat.Services.NickServTest do
   describe "drop broadcasts :nickserv_dropped" do
     test "a person dropping their own registration is told", %{server: server} do
       {:ok, _} = NickServ.register("DropBcast", "secret123", server)
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:DropBcast")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox("DropBcast"))
 
       {:ok, _} = NickServ.drop("DropBcast", "secret123", server)
 
@@ -230,7 +263,7 @@ defmodule RetroHexChat.Services.NickServTest do
     # This session did nothing; without the broadcast nothing would tell it.
     test "an admin dropping somebody else's registration reaches them", %{server: server} do
       {:ok, _} = NickServ.register("AdminDropped", "secret123", server)
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:AdminDropped")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox("AdminDropped"))
 
       {:ok, _} = NickServ.admin_drop("AdminDropped", server)
 
@@ -239,7 +272,7 @@ defmodule RetroHexChat.Services.NickServTest do
 
     test "a refused drop says nothing", %{server: server} do
       {:ok, _} = NickServ.register("KeptNick", "secret123", server)
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:KeptNick")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox("KeptNick"))
 
       {:error, _} = NickServ.drop("KeptNick", "wrong-password", server)
 
@@ -259,7 +292,7 @@ defmodule RetroHexChat.Services.NickServTest do
       timeout_server = :"nickserv_timeout_#{rem(System.unique_integer([:positive]), 100_000)}"
       {:ok, _} = NickServ.start_link(name: timeout_server, identify_timeout_ms: 100)
 
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:TimeoutNick")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox("TimeoutNick"))
 
       NickServ.start_identify_timer("TimeoutNick", timeout_server)
 

@@ -9,6 +9,8 @@ defmodule RetroHexChat.Commands.Autocomplete do
 
   All matching is done server-side using subsequence-based fuzzy matching.
   """
+
+  alias RetroHexChat.Nickname
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Channels.Directory
@@ -342,7 +344,7 @@ defmodule RetroHexChat.Commands.Autocomplete do
     matches =
       members
       |> Enum.filter(fn user ->
-        String.downcase(user.nickname) |> String.starts_with?(downcased)
+        Nickname.key(user.nickname) |> String.starts_with?(downcased)
       end)
       |> Enum.map(& &1.nickname)
       |> Enum.sort()

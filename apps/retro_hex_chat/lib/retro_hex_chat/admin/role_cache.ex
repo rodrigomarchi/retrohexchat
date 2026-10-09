@@ -8,6 +8,7 @@ defmodule RetroHexChat.Admin.RoleCache do
   import Ecto.Query
 
   alias RetroHexChat.Admin.AdminRole
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Repo
 
   @table :admin_role_cache
@@ -20,7 +21,7 @@ defmodule RetroHexChat.Admin.RoleCache do
 
   @spec admin?(String.t()) :: boolean()
   def admin?(nickname) do
-    case :ets.lookup(@table, {nickname, "admin"}) do
+    case :ets.lookup(@table, {Nickname.key(nickname), "admin"}) do
       [_] -> true
       [] -> false
     end
@@ -30,7 +31,7 @@ defmodule RetroHexChat.Admin.RoleCache do
 
   @spec server_operator?(String.t()) :: boolean()
   def server_operator?(nickname) do
-    case :ets.lookup(@table, {nickname, "server_operator"}) do
+    case :ets.lookup(@table, {Nickname.key(nickname), "server_operator"}) do
       [_] -> true
       [] -> false
     end
@@ -40,24 +41,25 @@ defmodule RetroHexChat.Admin.RoleCache do
 
   @spec add(String.t(), String.t()) :: true
   def add(nickname, role) do
-    :ets.insert(@table, {{nickname, role}, true})
+    # Keyed by `Nickname.key/1`; the value keeps the spelling, for listings.
+    :ets.insert(@table, {{Nickname.key(nickname), role}, nickname})
   end
 
   @spec remove(String.t(), String.t()) :: true
   def remove(nickname, role) do
-    :ets.delete(@table, {nickname, role})
+    :ets.delete(@table, {Nickname.key(nickname), role})
   end
 
   @spec remove_all(String.t()) :: :ok
   def remove_all(nickname) do
-    :ets.delete(@table, {nickname, "admin"})
-    :ets.delete(@table, {nickname, "server_operator"})
+    :ets.delete(@table, {Nickname.key(nickname), "admin"})
+    :ets.delete(@table, {Nickname.key(nickname), "server_operator"})
     :ok
   end
 
   @spec list_admin_nicks() :: [String.t()]
   def list_admin_nicks do
-    :ets.match(@table, {{:"$1", "admin"}, :_})
+    :ets.match(@table, {{:_, "admin"}, :"$1"})
     |> Enum.map(fn [nick] -> nick end)
   rescue
     ArgumentError -> []
@@ -74,7 +76,7 @@ defmodule RetroHexChat.Admin.RoleCache do
     from(r in AdminRole, select: {r.nickname, r.role})
     |> Repo.all()
     |> Enum.each(fn {nickname, role} ->
-      :ets.insert(@table, {{nickname, role}, true})
+      add(nickname, role)
     end)
   rescue
     _ -> :ok

@@ -214,7 +214,7 @@ msgstr "シークレット (+s)"
 #: lib/retro_hex_chat_web/controllers/help_content/mode_s.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/mode_v.html.heex:58
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "関連項目"
@@ -555,7 +555,7 @@ msgstr "/ns"
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:155
 #: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:60
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "/ns Command"
 msgstr "/ns Command"
@@ -840,12 +840,12 @@ msgstr "コマンド"
 msgid "Common Commands"
 msgstr "一般的なコマンド"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
 msgstr "認証の接続"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Connecting"
 msgstr "接続中"
@@ -925,7 +925,7 @@ msgstr "応募方法"
 msgid "If no channel is specified, you leave the current channel."
 msgstr "チャンネルが指定されていない場合は、現在のチャンネルを離れます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "If you change your nick in chat to a registered name you don't own, you have 60 seconds to identify before being force-renamed"
 msgstr "チャットでニックネームを登録した名前に変更すると、名前が変更される前に60秒を識別できます。"
@@ -1004,8 +1004,8 @@ msgstr "モード設定"
 msgid "Moderated"
 msgstr "モデレート"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:48
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Nick Expiration"
 msgstr "ニックエクスカーション"
@@ -1016,12 +1016,7 @@ msgid "NickServ is the nickname registration service. It protects your nickname 
 msgstr ""
 "NickServはニックネーム登録サービスです。 それはパスワードであなたのニックネームを保護しますので、誰もそれを使用することはできません。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "Nicknames are"
-msgstr "ニックネームは"
-
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Nicknames expire after"
 msgstr "ニックネームが期限切れ"
@@ -1276,11 +1271,6 @@ msgstr "あなたはNickServで識別する必要があります()"
 msgid "Your channel settings (modes, topic) are preserved even when empty"
 msgstr "チャンネルの設定(モード、トピック)は、空の場合でも保存されます"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "case sensitive"
-msgstr "場合の敏感"
-
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "channel operator"
@@ -1291,7 +1281,7 @@ msgstr "チャネルオペレータ"
 msgid "command."
 msgstr "コマンド。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "of inactivity — connect regularly to keep yours (see"
 msgstr "活動中 — 定期的に接続して、あなたの状態を維持します(参照)"
@@ -1315,11 +1305,6 @@ msgstr "厳しく下げて下さい"
 #, elixir-autogen, elixir-format
 msgid "to register a channel"
 msgstr "to register a channel"
-
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "— \"Alice\" and \"alice\" are different"
-msgstr "— 「アリス」と「アリス」は異なる"
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:46
 #, elixir-autogen, elixir-format
@@ -1430,7 +1415,7 @@ msgstr "AOP ユーザーは VOP リストを管理できます。"
 msgid "Access Lists"
 msgstr "アクセス一覧"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Account Dialog"
 msgstr "アカウントダイアログ"
@@ -1541,7 +1526,7 @@ msgstr "ドロップ登録は /cs と同じアクションを実行する前に�
 msgid "Founders can manage SOP, AOP, and VOP lists."
 msgstr "創設者はSOP、AOP、VOPリストを管理できます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Identity & Presence"
 msgstr "アイデンティティとプレゼンス"
@@ -2738,3 +2723,18 @@ msgstr "テキストなしのコマンドもメッセージを削除します。
 #, elixir-autogen, elixir-format
 msgid "To join a keyed channel each time you connect, add it to your auto-join list with its key:"
 msgstr "接続するたびにキーされたチャンネルに参加するには、そのキーで自動結合リストに追加します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "\"Alice\" and \"alice\" are the same nickname."
+msgstr "「アリス」と「アルス」は同じニックネームです。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Capital letters do not matter"
+msgstr "Capital letters do not matter"
+
+#: lib/retro_hex_chat_web/controllers/help_content/nickserv.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "It is shown as you type it."
+msgstr "型として表示されます。"

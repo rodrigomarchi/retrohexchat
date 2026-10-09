@@ -3,6 +3,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   Private message conversation management and plain message/notice sending.
   """
 
+  alias RetroHexChat.Nickname
+
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
@@ -16,6 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   alias RetroHexChat.Chat.{Queries, Service}
   alias RetroHexChat.Page
   alias RetroHexChat.Presence.NotifyList
+  alias RetroHexChat.Topics
   alias RetroHexChatWeb.ChatLive.Components.Composer
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
@@ -136,7 +139,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   # A PM to the P2P peer counts as session activity: it resets the
   # pre-connection inactivity timers (no-op once connected).
   defp touch_p2p_session(socket, target) do
-    case Map.get(P2PReadModel.pm_sessions(socket), String.downcase(target)) do
+    case Map.get(P2PReadModel.pm_sessions(socket), Nickname.key(target)) do
       %{token: token} when is_binary(token) -> RetroHexChat.Lobby.record_activity(token)
       _none -> :ok
     end
@@ -197,7 +200,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       :ok ->
         Phoenix.PubSub.broadcast(
           RetroHexChat.PubSub,
-          "user:#{target}",
+          Topics.inbox(target),
           {:new_notice,
            %{sender: session.nickname, content: content, timestamp: DateTime.utc_now()}}
         )
@@ -308,7 +311,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     active = socket.assigns.session.active_pm
 
     with true <- is_binary(active),
-         true <- String.downcase(active) == String.downcase(peer_nick),
+         true <- Nickname.equal?(active, peer_nick),
          %{} = pm <-
            Queries.get_p2p_invite_between(socket.assigns.session.nickname, peer_nick, token) do
       MessageViewport.insert(socket, StreamItem.from_private_message(pm))

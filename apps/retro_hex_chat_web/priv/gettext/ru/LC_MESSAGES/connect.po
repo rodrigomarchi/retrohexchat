@@ -28,11 +28,6 @@ msgstr "аутентификация"
 msgid "Back"
 msgstr "Назад"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:335
-#, elixir-autogen, elixir-format
-msgid "Case sensitive"
-msgstr "Дело деликатное"
-
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:488
 #, elixir-autogen, elixir-format
 msgid "Choose a password (min. 5 characters)..."
@@ -139,6 +134,7 @@ msgid "Passwords do not match"
 msgstr "Пароли не совпадают"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:539
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Register & Connect"
 msgstr "Регистрация и подключение"
@@ -334,3 +330,8 @@ msgstr "Больше одного экрана"
 #, elixir-autogen, elixir-format
 msgid "You can be signed in on up to %{count} screens at once. Opening a %{next}th ends the one you have not used for longest."
 msgstr "Вы можете быть подключены не более чем на %{count} экранах одновременно. Открытие %{next}-го завершает тот, которым вы не пользовались дольше всего."
+
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:335
+#, elixir-autogen, elixir-format
+msgid "Capital letters do not matter"
+msgstr "Заглавные буквы не имеют значения"

@@ -5,9 +5,12 @@ defmodule RetroHexChat.Accounts.NickColors do
   Provides in-memory CRUD operations on the nick colors map structure,
   plus persistence functions that delegate to Ecto/Repo for database storage.
   """
+
+  alias RetroHexChat.Nickname
   use Gettext, backend: RetroHexChat.Gettext
 
   import Ecto.Query
+  import RetroHexChat.Nickname, only: [matches: 2]
 
   alias RetroHexChat.Accounts.{NickColor, NickColorEntry}
   alias RetroHexChat.OwnedList
@@ -76,10 +79,10 @@ defmodule RetroHexChat.Accounts.NickColors do
 
   @spec remove_entry(map(), String.t()) :: {:ok, map()} | {:error, :not_found}
   def remove_entry(nick_colors, target_nickname) do
-    downcased = String.downcase(target_nickname)
+    downcased = Nickname.key(target_nickname)
 
     case Enum.split_with(nick_colors.entries, fn e ->
-           String.downcase(e.target_nickname) == downcased
+           Nickname.key(e.target_nickname) == downcased
          end) do
       {[], _rest} ->
         {:error, :not_found}
@@ -99,7 +102,7 @@ defmodule RetroHexChat.Accounts.NickColors do
       do: {:error, :invalid_color}
 
   def update_color(nick_colors, target_nickname, color_index) do
-    downcased = String.downcase(target_nickname)
+    downcased = Nickname.key(target_nickname)
 
     case find_and_update(nick_colors.entries, downcased, fn entry ->
            %{entry | color_index: color_index}
@@ -124,10 +127,10 @@ defmodule RetroHexChat.Accounts.NickColors do
 
   @spec color_index_for(map(), String.t()) :: non_neg_integer() | nil
   def color_index_for(nick_colors, nickname) do
-    downcased = String.downcase(nickname)
+    downcased = Nickname.key(nickname)
 
     case Enum.find(nick_colors.entries, fn e ->
-           String.downcase(e.target_nickname) == downcased
+           Nickname.key(e.target_nickname) == downcased
          end) do
       nil -> nil
       entry -> entry.color_index
@@ -136,7 +139,7 @@ defmodule RetroHexChat.Accounts.NickColors do
 
   @spec sorted_entries(map()) :: [NickColor.t()]
   def sorted_entries(nick_colors) do
-    Enum.sort_by(nick_colors.entries, &String.downcase(&1.target_nickname))
+    Enum.sort_by(nick_colors.entries, &Nickname.key(&1.target_nickname))
   end
 
   @spec count(map()) :: non_neg_integer()
@@ -171,14 +174,10 @@ defmodule RetroHexChat.Accounts.NickColors do
 
   @spec save_entry(String.t(), NickColor.t()) :: :ok | {:error, term()}
   def save_entry(owner, entry) do
-    owner_lower = String.downcase(owner)
-    target_lower = String.downcase(entry.target_nickname)
-
     existing =
       from(e in NickColorEntry,
         where:
-          fragment("lower(?)", e.owner_nickname) == ^owner_lower and
-            fragment("lower(?)", e.target_nickname) == ^target_lower
+          matches(e.owner_nickname, owner) and matches(e.target_nickname, entry.target_nickname)
       )
       |> Repo.one()
 
@@ -207,13 +206,8 @@ defmodule RetroHexChat.Accounts.NickColors do
 
   @spec delete_entry(String.t(), String.t()) :: :ok
   def delete_entry(owner, target_nickname) do
-    owner_lower = String.downcase(owner)
-    target_lower = String.downcase(target_nickname)
-
     from(e in NickColorEntry,
-      where:
-        fragment("lower(?)", e.owner_nickname) == ^owner_lower and
-          fragment("lower(?)", e.target_nickname) == ^target_lower
+      where: matches(e.owner_nickname, owner) and matches(e.target_nickname, target_nickname)
     )
     |> Repo.delete_all()
 
@@ -226,10 +220,10 @@ defmodule RetroHexChat.Accounts.NickColors do
 
   @spec has_entry?(map(), String.t()) :: boolean()
   defp has_entry?(nick_colors, target_nickname) do
-    downcased = String.downcase(target_nickname)
+    downcased = Nickname.key(target_nickname)
 
     Enum.any?(nick_colors.entries, fn e ->
-      String.downcase(e.target_nickname) == downcased
+      Nickname.key(e.target_nickname) == downcased
     end)
   end
 
@@ -248,7 +242,7 @@ defmodule RetroHexChat.Accounts.NickColors do
   defp find_and_update(entries, downcased_nick, update_fn) do
     {found, updated} =
       Enum.reduce(entries, {false, []}, fn entry, {found?, acc} ->
-        if String.downcase(entry.target_nickname) == downcased_nick do
+        if Nickname.key(entry.target_nickname) == downcased_nick do
           {true, [update_fn.(entry) | acc]}
         else
           {found?, [entry | acc]}

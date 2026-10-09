@@ -26,7 +26,7 @@ defmodule RetroHexChat.Services.BanException do
     |> validate_length(:nickname, max: 16)
     |> validate_length(:added_by, max: 16)
     |> unique_constraint([:channel_name, :nickname],
-      name: :idx_ban_exceptions_channel_nickname
+      name: :idx_ban_exceptions_channel_nickname_lower
     )
   end
 end

@@ -7,6 +7,7 @@ defmodule RetroHexChat.Chat.FloodProtection do
   """
 
   alias RetroHexChat.Chat.Schemas.FloodProtectionSetting
+  alias RetroHexChat.OwnedList
   alias RetroHexChat.Repo
 
   @default_flood_threshold 10
@@ -103,7 +104,7 @@ defmodule RetroHexChat.Chat.FloodProtection do
       spam_window_seconds: settings.spam_window_seconds
     }
 
-    case Repo.get(FloodProtectionSetting, owner) do
+    case OwnedList.get_owned(FloodProtectionSetting, owner) do
       nil ->
         %FloodProtectionSetting{}
         |> FloodProtectionSetting.changeset(attrs)
@@ -122,7 +123,7 @@ defmodule RetroHexChat.Chat.FloodProtection do
 
   @spec load(String.t()) :: {:ok, map()} | {:error, :not_found}
   def load(owner) do
-    case Repo.get(FloodProtectionSetting, owner) do
+    case OwnedList.get_owned(FloodProtectionSetting, owner) do
       nil ->
         {:error, :not_found}
 

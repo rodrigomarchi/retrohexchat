@@ -20,6 +20,8 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEvents do
   rule every room's control follows.
   """
 
+  alias RetroHexChat.Nickname
+
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   require Logger
@@ -90,7 +92,7 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEvents do
   # The line the card is drawn from. A channel hears it as the channel; the two
   # people in a private space hear it in the conversation they already have.
   defp write_card(socket, %{mode: "direct_message", participants: [_, _] = pair}, link, nickname) do
-    peer = Enum.find(pair, &(String.downcase(&1) != String.downcase(nickname)))
+    peer = Enum.find(pair, &(not Nickname.equal?(&1, nickname)))
 
     {:pm, nickname, peer}
     |> CardDoor.deliver(reference(link), content(nickname, link))

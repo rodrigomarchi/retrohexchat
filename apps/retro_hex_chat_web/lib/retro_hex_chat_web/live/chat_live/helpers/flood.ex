@@ -15,6 +15,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Flood do
   working.
   """
 
+  alias RetroHexChat.Nickname
+
   import Phoenix.Component, only: [assign: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
@@ -44,7 +46,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Flood do
   def check_flood_and_auto_ignore(socket, _sender, :system, _source, _session), do: socket
 
   def check_flood_and_auto_ignore(socket, sender, _msg_type, source, session) do
-    if String.downcase(sender) == String.downcase(session.nickname) do
+    if Nickname.equal?(sender, session.nickname) do
       socket
     else
       flood_settings = session.flood_protection
@@ -71,7 +73,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Flood do
           Session.t()
         ) :: Phoenix.LiveView.Socket.t()
   def maybe_trigger_auto_ignore(socket, sender, source, session) do
-    sender_key = String.downcase(sender)
+    sender_key = Nickname.key(sender)
     auto_state = socket.assigns.auto_ignore_state
 
     already_active = Map.has_key?(auto_state.active, sender_key)
@@ -121,7 +123,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Flood do
   @spec cancel_auto_ignore_with_cooldown(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
   def cancel_auto_ignore_with_cooldown(socket, nick) do
-    sender_key = String.downcase(nick)
+    sender_key = Nickname.key(nick)
     auto_state = socket.assigns.auto_ignore_state
 
     case Map.get(auto_state.active, sender_key) do

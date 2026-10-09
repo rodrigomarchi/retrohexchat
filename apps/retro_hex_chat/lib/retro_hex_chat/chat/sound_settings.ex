@@ -9,6 +9,7 @@ defmodule RetroHexChat.Chat.SoundSettings do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Chat.Schemas.SoundSetting
+  alias RetroHexChat.OwnedList
   alias RetroHexChat.Repo
 
   @event_types [
@@ -178,7 +179,7 @@ defmodule RetroHexChat.Chat.SoundSettings do
       muted: muted?(settings)
     }
 
-    case Repo.get(SoundSetting, owner) do
+    case OwnedList.get_owned(SoundSetting, owner) do
       nil ->
         %SoundSetting{}
         |> SoundSetting.changeset(attrs)
@@ -197,7 +198,7 @@ defmodule RetroHexChat.Chat.SoundSettings do
 
   @spec load(String.t()) :: {:ok, map()} | {:error, :not_found}
   def load(owner) do
-    case Repo.get(SoundSetting, owner) do
+    case OwnedList.get_owned(SoundSetting, owner) do
       nil ->
         {:error, :not_found}
 

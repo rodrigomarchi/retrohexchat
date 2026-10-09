@@ -1,11 +1,13 @@
 defmodule RetroHexChat.Commands.Handlers.Lobby do
   @moduledoc "Handler for /p2p <nickname> — open a P2P session (all features at once)."
+
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Presence.Tracker
-  alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChat.Services.Queries
   alias RetroHexChat.Topics
 
   @impl true
@@ -86,7 +88,7 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
     do: {:error, dgettext("commands", "You must be identified to use /p2p.")}
 
   defp validate_not_self(target, %{nickname: nick}) do
-    if String.downcase(target) == String.downcase(nick) do
+    if Nickname.equal?(target, nick) do
       {:error, dgettext("commands", "You cannot start a P2P session with yourself.")}
     else
       :ok
@@ -102,7 +104,7 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
   end
 
   defp resolve_registered_nick(nickname) do
-    case RetroHexChat.Repo.get_by(RegisteredNick, nickname: nickname) do
+    case Queries.find_by_nickname(nickname) do
       nil ->
         {:error,
          dgettext("commands", "User '%{nickname}' is not registered.", nickname: nickname)}

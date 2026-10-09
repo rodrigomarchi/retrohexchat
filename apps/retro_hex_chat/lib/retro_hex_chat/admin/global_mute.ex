@@ -1,6 +1,8 @@
 defmodule RetroHexChat.Admin.GlobalMute do
   @moduledoc "Durable server-wide mute record."
 
+  alias RetroHexChat.Nickname
+
   use Ecto.Schema
 
   import Ecto.Changeset
@@ -47,7 +49,7 @@ defmodule RetroHexChat.Admin.GlobalMute do
   defp normalize_nickname(changeset) do
     case get_field(changeset, :nickname) do
       nickname when is_binary(nickname) ->
-        put_change(changeset, :normalized_nickname, String.downcase(nickname))
+        put_change(changeset, :normalized_nickname, Nickname.key(nickname))
 
       _nickname ->
         changeset

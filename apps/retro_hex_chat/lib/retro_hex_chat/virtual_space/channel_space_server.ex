@@ -15,6 +15,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   require Logger
 
   alias RetroHexChat.Channels.Server, as: ChannelServer
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Topics
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChat.VirtualSpace.Events
@@ -714,7 +715,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   defp channel_role(_), do: :participant
 
   defp channel_participant_key(nickname) do
-    normalized = nickname |> to_string() |> String.downcase()
+    normalized = nickname |> to_string() |> Nickname.key()
     "nick:#{normalized}"
   end
 

@@ -17,6 +17,8 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   Both states are decided in `mount/3`. Initial data delivered after the first
   render is invisible to ExUnit and only ever caught in a browser.
   """
+
+  alias RetroHexChat.Nickname
   use RetroHexChatWeb, :live_view
 
   import RetroHexChatWeb.Components.UI.ActivityIndicator
@@ -416,11 +418,11 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   # keys its participants by the downcased nickname — so the comparison is the
   # one the space itself will make when the canvas joins.
   defp channel_member?(channel_name, nickname) when is_binary(nickname) do
-    target = String.downcase(nickname)
+    target = Nickname.key(nickname)
 
     case Server.get_state(channel_name) do
       {:ok, %{members: members}} ->
-        Enum.any?(members, fn {member, _role} -> String.downcase(member) == target end)
+        Enum.any?(members, fn {member, _role} -> Nickname.key(member) == target end)
 
       _absent ->
         false

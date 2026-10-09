@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Invite do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Topics
   alias RetroHexChatWeb.ChatLive.Helpers.Channel
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
@@ -53,7 +54,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Invite do
          :ok <- Server.add_invite_exception(channel, nickname, target) do
       Phoenix.PubSub.broadcast(
         RetroHexChat.PubSub,
-        "user:#{target}",
+        Topics.inbox(target),
         {:channel_invite, %{channel: channel, inviter: nickname}}
       )
 

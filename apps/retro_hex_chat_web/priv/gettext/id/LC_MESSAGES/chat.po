@@ -21,7 +21,7 @@ msgstr "%{channel}%{key}"
 msgid "  %{index}: %{command}"
 msgstr "%{index}: %{command}"
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:132
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:134
 #, elixir-autogen, elixir-format
 msgid "  %{nickname} [%{status}]%{note}"
 msgstr "%{nickname} [%{status}] %{note}"
@@ -41,78 +41,73 @@ msgstr "%{position}: %{status} %{trigger} %{channel} %{command}"
 msgid "  /%{name} → %{expansion}"
 msgstr "  /%{name} → %{expansion}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1035
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1038
 #, elixir-autogen
 msgid "  /help            — View full help"
 msgstr "  /help            — View full help"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1036
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1039
 #, elixir-autogen
 msgid "  /help commands   — List all commands"
 msgstr "  /help commands   — List all commands"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1032
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1035
 #, elixir-autogen
 msgid "  /join #channel   — Join a channel"
 msgstr "  /join #channel   — Join a channel"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1033
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1036
 #, elixir-autogen
 msgid "  /msg nick text   — Send a private message"
 msgstr "  /msg nick text   — Send a private message"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1034
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1037
 #, elixir-autogen
 msgid "  /nick new_nick   — Change your nickname"
 msgstr "  /nick new_nick   — Change your nickname"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1102
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1105
 #, elixir-autogen
 msgid "  /ns drop <password>       — Permanently unregister your nickname"
 msgstr "  /ns drop <password>       — Permanently unregister your nickname"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1101
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1104
 #, elixir-autogen
 msgid "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 msgstr "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1099
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1102
 #, elixir-autogen
 msgid "  /ns identify <password>   — Identify (log in) for this session"
 msgstr "  /ns identify <password>   — Identify (log in) for this session"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1100
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1103
 #, elixir-autogen
 msgid "  /ns info [nickname]       — Look up registration info"
 msgstr "  /ns info [nickname]       — Look up registration info"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1098
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1101
 #, elixir-autogen
 msgid "  /ns register <password>   — Register your current nickname"
 msgstr "  /ns register <password>   — Register your current nickname"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:234
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:236
 #, elixir-autogen, elixir-format
 msgid "  Registered: no"
 msgstr "Terdaftar: tidak"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:232
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:234
 #, elixir-autogen, elixir-format
 msgid "  Registered: yes (%{status})"
 msgstr "Terdaftar: ya (%{status})"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1078
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1081
 #, elixir-autogen
 msgid "  • If a founder's nick expires, the next ranked user is promoted"
 msgstr ""
 "Jika nick pendiri 's berakhir, pengguna peringkat berikutnya dipromosikan"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1105
-#, elixir-autogen
-msgid "  • Nicks are case sensitive — \"Alice\" and \"alice\" are different"
-msgstr "Nicks adalah kasus sensitif - \"Alice\" dan \"AIice\" berbeda"
-
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1109
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1115
 #, elixir-autogen
 msgid "  • Switching to a registered nick gives you 60s to identify"
 msgstr "Switching ke nick terdaftar memberi Anda 60-an untuk mengidentifikasi"
@@ -127,12 +122,12 @@ msgstr "(kunci: * * * *)"
 msgid " (warning: %{warnings})"
 msgstr "(peringatan: %{warnings})"
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:130
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:132
 #, elixir-autogen, elixir-format
 msgid " - %{note}"
 msgstr "- %{note}"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:254
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:256
 #, elixir-autogen, elixir-format
 msgid "%{browser} — %{os}"
 msgstr "%{browser} - %{os}"
@@ -142,19 +137,19 @@ msgstr "%{browser} - %{os}"
 msgid "%{channel} is not in your auto-join list"
 msgstr "%{channel} tidak ada dalam daftar auto- join Anda"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/flood.ex:152
+#: lib/retro_hex_chat_web/live/chat_live/helpers/flood.ex:154
 #, elixir-autogen, elixir-format
 msgid "%{count} hour"
 msgid_plural "%{count} hours"
 msgstr[0] "%{count} jam"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/flood.ex:157
+#: lib/retro_hex_chat_web/live/chat_live/helpers/flood.ex:159
 #, elixir-autogen, elixir-format
 msgid "%{count} minute"
 msgid_plural "%{count} minutes"
 msgstr[0] "%{count} menit"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/flood.ex:161
+#: lib/retro_hex_chat_web/live/chat_live/helpers/flood.ex:163
 #, elixir-autogen, elixir-format
 msgid "%{count} second"
 msgid_plural "%{count} seconds"
@@ -186,17 +181,17 @@ msgstr "%{nickname} sudah memiliki warna gubahan"
 msgid "%{nickname} changed the topic to: %{topic}"
 msgstr "%{nickname} mengubah topik ke: %{topic}"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:43
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:45
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has joined the channel"
 msgstr "%{nickname} telah bergabung dengan saluran"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:78
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:80
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has left"
 msgstr "%{nickname} telah meninggalkan"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:76
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:78
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has left (%{reason})"
 msgstr "%{nickname} telah meninggalkan (%{reason})"
@@ -206,14 +201,14 @@ msgstr "%{nickname} telah meninggalkan (%{reason})"
 msgid "%{nickname} has no custom color"
 msgstr "%{nickname} tidak memiliki warna gubahan"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:220
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:256
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:222
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:258
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is already in your contacts"
 msgstr "%{nickname} sudah ada dalam kontakmu"
 
-#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:37
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:54
+#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:39
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:56
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is already in your notify list"
 msgstr "%{nickname} sudah ada dalam daftar pemberitahuan Anda"
@@ -223,8 +218,8 @@ msgstr "%{nickname} sudah ada dalam daftar pemberitahuan Anda"
 msgid "%{nickname} is away: %{message}"
 msgstr "%{nickname} sedang pergi: %{message}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:120
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:146
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:122
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:148
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is not in your contacts"
 msgstr "%{nickname} tidak dalam kontak Anda"
@@ -234,10 +229,10 @@ msgstr "%{nickname} tidak dalam kontak Anda"
 msgid "%{nickname} is not in your ignore list"
 msgstr "%{nickname} tidak dalam daftar abaikan Anda"
 
-#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:52
-#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:66
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:85
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:109
+#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:54
+#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:68
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:87
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:111
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is not in your notify list"
 msgstr "%{nickname} tidak dalam daftar pemberitahuan Anda"
@@ -248,7 +243,7 @@ msgstr "%{nickname} tidak dalam daftar pemberitahuan Anda"
 msgid "%{nickname} sets mode %{mode}"
 msgstr "%{nickname} set mode %{mode}"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:121
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:124
 #, elixir-autogen, elixir-format
 msgid "%{old_nick} is now known as %{new_nick}"
 msgstr "%{old_nick} sekarang dikenal sebagai %{new_nick}"
@@ -320,17 +315,17 @@ msgstr "(semua)"
 msgid "(edited)"
 msgstr "(diedit)"
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:99
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:100
 #, elixir-autogen, elixir-format
 msgid "* %{channel} is not invite-only — anyone can join"
 msgstr "* %{channel} tidak invite- saja - siapa pun dapat bergabung"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:212
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:214
 #, elixir-autogen, elixir-format
 msgid "* %{inviter} has invited you to %{channel}"
 msgstr "* %{inviter} telah mengundang Anda ke %{channel}"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:113
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:115
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} has gone offline"
 msgstr "* %{nickname} sudah offline"
@@ -350,38 +345,38 @@ msgstr "* %{nickname} telah mengetuk %{channel} (%{message})"
 msgid "* %{nickname} ignore updated to: %{type}"
 msgstr "* %{nickname} mengabaikan dimutakhirkan ke: %{type}"
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:134
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:136
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is no longer auto-ignored"
 msgstr "* %{nickname} tidak lagi auto- diabaikan"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:109
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:320
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:801
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:111
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:322
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:803
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:91
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is no longer ignored"
 msgstr "* %{nickname} tidak lagi diabaikan"
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:100
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:102
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is no longer ignored (timer expired)"
 msgstr "* %{nickname} tidak lagi diabaikan (waktu habis)"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:293
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:478
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:670
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:295
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:480
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:672
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now ignored"
 msgstr "* %{nickname} sekarang diabaikan"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:80
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:82
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:57
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now ignored (%{type})"
 msgstr "* %{nickname} sekarang diabaikan (%{type})"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:112
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:114
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now online"
 msgstr "* %{nickname} sekarang online"
@@ -391,22 +386,22 @@ msgstr "* %{nickname} sekarang online"
 msgid "* %{notice}"
 msgstr "♪ %{notice}"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/flood.ex:108
+#: lib/retro_hex_chat_web/live/chat_live/helpers/flood.ex:110
 #, elixir-autogen, elixir-format
 msgid "* %{sender} has been auto-ignored for flooding (%{duration})"
 msgstr "* %{sender} telah otomatis diabaikan karena banjir (%{duration})"
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:107
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:108
 #, elixir-autogen, elixir-format
 msgid "* %{target} is already in the channel"
 msgstr "* %{target} sudah dalam saluran"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:96
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:98
 #, elixir-autogen, elixir-format
 msgid "* %{target} is not online."
 msgstr "* %{target} tidak online."
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:76
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:78
 #, elixir-autogen, elixir-format
 msgid "* %{target} is online. Use /whois %{target} for current info."
 msgstr "* %{target} online. Gunakan /whois %{target} untuk info saat ini."
@@ -441,12 +436,12 @@ msgstr "* Alias /%{name} dihapus"
 msgid "* Auto-join list cleared"
 msgstr "* Daftar auto- join dihapus"
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:38
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:39
 #, elixir-autogen, elixir-format
 msgid "* Auto-join on invite: %{status}"
 msgstr "* Auto- bergabung pada undangan: %{status}"
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:186
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:188
 #, elixir-autogen, elixir-format
 msgid "* Auto-joining %{channel}..."
 msgstr "* Auto- bergabung dengan %{channel}..."
@@ -466,7 +461,7 @@ msgstr "♪ Bio set: %{text}"
 msgid "* Bio truncated to 200 characters and set."
 msgstr "Bio dipotong menjadi 200 karakter dan diatur."
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:235
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:237
 #, elixir-autogen, elixir-format
 msgid "* Channel invite to %{channel} expired"
 msgstr "* Kanal mengundang ke %{channel} kadaluarsa"
@@ -486,7 +481,7 @@ msgstr "* Pengaturan perlindungan Banjir disimpan"
 msgid "* Ignored invite to %{channel}"
 msgstr "* Diabaikan mengundang ke %{channel}"
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:63
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:64
 #, elixir-autogen, elixir-format
 msgid "* Inviting %{target} to %{channel}"
 msgstr "* Mengundang %{target} ke %{channel}"
@@ -496,7 +491,7 @@ msgstr "* Mengundang %{target} ke %{channel}"
 msgid "* Moved command from position %{from} to %{to}"
 msgstr "♪ Moved command from position %{from} to %{to}"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:319
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:321
 #, elixir-autogen, elixir-format
 msgid "* New activity"
 msgstr "* Aktivitas baru"
@@ -506,7 +501,7 @@ msgstr "* Aktivitas baru"
 msgid "* No bio set. Use /bio <text> to set one."
 msgstr "* Tidak ada bio set. Gunakan /bio <text> untuk mengatur satu."
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:81
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:83
 #, elixir-autogen, elixir-format
 msgid "* No whowas information available for %{target}."
 msgstr "* Tidak ada informasi untuk %{target}."
@@ -521,12 +516,12 @@ msgstr "* Pemberitahuan routing adalah hardcode ke: aktif"
 msgid "* Perform list cleared"
 msgstr "* Lakukan daftar dibersihkan"
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:159
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:161
 #, elixir-autogen, elixir-format
 msgid "* Performing: %{command}"
 msgstr "* Menjalankan: %{command}"
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:210
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:212
 #, elixir-autogen, elixir-format
 msgid "* Rejoining %{channel}..."
 msgstr "* Bergabung kembali %{channel}..."
@@ -566,7 +561,7 @@ msgstr "* Timer '%{name}' diatur: %{type}, %{interval}s → %{command}"
 msgid "* Timer '%{name}' stopped"
 msgstr "* Timer '%{name}' berhenti"
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:71
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:73
 #, elixir-autogen, elixir-format
 msgid "* Timer '%{name}' target window is no longer available"
 msgstr "* Waktu '%{name}' jendela target tidak lagi tersedia"
@@ -577,12 +572,12 @@ msgstr "* Waktu '%{name}' jendela target tidak lagi tersedia"
 msgid "* User '%{target}' not found"
 msgstr "* Pengguna '%{target}' tidak ditemukan"
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:90
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:91
 #, elixir-autogen, elixir-format
 msgid "* You are not a channel operator"
 msgstr "* Anda bukan operator saluran"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:189
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:191
 #, elixir-autogen, elixir-format
 msgid "* You have been invited to %{channel} by %{inviter} (auto-joined)"
 msgstr "* Anda telah diundang ke %{channel} oleh %{inviter} (auto- bergabung)"
@@ -592,24 +587,24 @@ msgstr "* Anda telah diundang ke %{channel} oleh %{inviter} (auto- bergabung)"
 msgid "* Your bio: %{bio}"
 msgstr "♪ Your bio: %{bio}"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:136
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:139
 #, elixir-autogen, elixir-format
 msgid "* Your notify list buddy %{old_nick} is now known as %{new_nick}"
 msgstr ""
 "* Daftar pemberitahuan Anda teman %{old_nick} sekarang dikenal sebagai "
 "%{new_nick}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:358
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:360
 #, elixir-autogen, elixir-format
 msgid "/join #channel to get started"
 msgstr "/join #channel to get started"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1029
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1032
 #, elixir-autogen
 msgid "A real-time chat platform with a retro look and feel."
 msgstr "Sebuah platform obrolan real time dengan tampilan retro dan rasakan."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1072
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1075
 #, elixir-autogen
 msgid "Access hierarchy: Owner > SOP > AOP > VOP"
 msgstr "Hirarki akses: Pemilik > SOP > AOP > VOP"
@@ -624,15 +619,15 @@ msgstr "Aktivitas"
 msgid "Add to Contacts"
 msgstr "Tambahkan ke Kontak"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:75
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:247
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:499
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:77
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:249
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:501
 #, elixir-autogen, elixir-format
 msgid "Added %{nickname} to contacts"
 msgstr "Ditambahkan %{nickname} ke kontak"
 
-#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:31
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:40
+#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:33
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:42
 #, elixir-autogen, elixir-format
 msgid "Added %{nickname} to notify list"
 msgstr "Ditambahkan %{nickname} untuk memberitahu daftar"
@@ -665,7 +660,7 @@ msgstr "Daftar alias penuh (maksimal 50)"
 msgid "Alias not found"
 msgstr "Alias tidak ditemukan"
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:353
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:352
 #, elixir-autogen, elixir-format
 msgid "Alias recursion limit reached (max 5 levels)"
 msgstr "Batas rekursi Alias dicapai (tingkat maksimal 5)"
@@ -685,7 +680,7 @@ msgstr "Hewan & Alam"
 msgid "Attempt %{attempt} of %{max_attempts}"
 msgstr "Mencoba %{attempt} dari %{max_attempts}"
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:542
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:539
 #, elixir-autogen, elixir-format
 msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr ""
@@ -724,9 +719,9 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:316
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:507
 #: lib/retro_hex_chat_web/live/chat_live/away_events.ex:32
-#: lib/retro_hex_chat_web/live/chat_live/components/hover_card.ex:118
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:153
-#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:132
+#: lib/retro_hex_chat_web/live/chat_live/components/hover_card.ex:120
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:155
+#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:134
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:306
 #, elixir-autogen, elixir-format
 msgid "Away"
@@ -767,7 +762,7 @@ msgid "Bold (Ctrl+Shift+B)"
 msgstr "Tebal (Ctrl + Shift + B)"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:243
-#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:386
+#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:388
 #, elixir-autogen, elixir-format
 msgid "Bot"
 msgstr "Bot"
@@ -789,12 +784,12 @@ msgstr "Manajemen Bot dibatasi untuk administrator server."
 msgid "Brown"
 msgstr "Brown"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:477
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:479
 #, elixir-autogen, elixir-format
 msgid "Browse All Channels..."
 msgstr "Ramban Semua Kanal..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:368
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:370
 #, elixir-autogen, elixir-format
 msgid "Browse channels"
 msgstr "Ramban kanal"
@@ -815,20 +810,20 @@ msgstr "Batal"
 msgid "Cannot add highlight: %{reason}"
 msgstr "Tidak dapat menambahkan penyorotan: %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:217
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:264
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:219
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:266
 #, elixir-autogen, elixir-format
 msgid "Cannot add yourself to contacts"
 msgstr "Tidak dapat menambahkan diri ke kontak"
 
-#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:34
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:47
+#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:36
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:49
 #, elixir-autogen, elixir-format
 msgid "Cannot add yourself to the notify list"
 msgstr "Tidak dapat menambahkan diri ke daftar pemberitahuan"
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:156
-#: lib/retro_hex_chat_web/live/chat_live/helpers/pm.ex:154
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:155
+#: lib/retro_hex_chat_web/live/chat_live/helpers/pm.ex:157
 #, elixir-autogen, elixir-format
 msgid "Cannot send text to status window. Use /commands."
 msgstr "Tidak dapat mengirim teks ke jendela status. Gunakan /commands."
@@ -843,12 +838,12 @@ msgstr "Tidak dapat memperbarui penyorotan: %{reason}"
 msgid "Case sensitive"
 msgstr "Huruf sensitif"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1062
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1065
 #, elixir-autogen
 msgid "ChanServ manages channel registration and access control."
 msgstr "ChanServ mengelola pendaftaran saluran dan kontrol akses."
 
-#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:689
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:695
 #, elixir-autogen, elixir-format
 msgid "Changing nickname"
 msgstr "Mengubah nama panggilan"
@@ -896,18 +891,18 @@ msgstr "Penyaring saluran harus dimulai dengan #"
 msgid "Channel ownership transferred to %{target}."
 msgstr "Kepemilikan saluran dipindahkan ke %{target}."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:332
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:381
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:334
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:383
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:185
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:131
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:192
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:133
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:194
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:334
 #, elixir-autogen, elixir-format
 msgid "Channels"
 msgstr "Kanal"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:146
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:164
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:166
 #, elixir-autogen, elixir-format
 msgid "Client"
 msgstr "Klien"
@@ -991,7 +986,7 @@ msgid "Connection failed"
 msgstr "Koneksi gagal"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:334
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:435
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:434
 #, elixir-autogen, elixir-format
 msgid "Connection lost"
 msgstr "Koneksi hilang"
@@ -1006,13 +1001,13 @@ msgstr "Koneksi hilang."
 msgid "Contact"
 msgstr "Kontak"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:223
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:225
 #, elixir-autogen, elixir-format
 msgid "Contact list is full (max 100 entries)"
 msgstr "Daftar kontak penuh (maksimal 100 entri)"
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversation_toolbar_actions.ex:82
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:325
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:327
 #, elixir-autogen, elixir-format
 msgid "Conversations"
 msgstr "Percakapan"
@@ -1043,13 +1038,13 @@ msgstr "Salin Nama Panggilan"
 msgid "Copy URL"
 msgstr "Salin URL"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:271
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:508
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:273
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:510
 #, elixir-autogen, elixir-format
 msgid "Could not add %{nickname} to contacts"
 msgstr "Tidak dapat menambahkan %{nickname} ke kontak"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:363
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:365
 #, elixir-autogen, elixir-format
 msgid "Could not set color for %{nickname}"
 msgstr "Tidak dapat menset warna untuk %{nickname}"
@@ -1060,7 +1055,7 @@ msgid "Delete"
 msgstr "Hapus"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:153
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:585
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:587
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
 msgstr "Terputus"
@@ -1133,7 +1128,7 @@ msgstr "Ekspansi terlalu panjang (maksimal 500 karakter)"
 msgid "Failed to add auto-join channel: %{reason}"
 msgstr "Gagal menambahkan kanal auto-join: %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:91
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:93
 #, elixir-autogen, elixir-format
 msgid "Failed to add ignore: %{reason}"
 msgstr "Gagal menambahkan ignore: %{reason}"
@@ -1203,7 +1198,7 @@ msgid "Grey"
 msgstr "Grey"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:235
-#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:384
+#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:386
 #, elixir-autogen, elixir-format
 msgid "Half-Op"
 msgstr "Setengah Op"
@@ -1241,7 +1236,7 @@ msgstr "Abaikan"
 msgid "Ignore Sender"
 msgstr "Abaikan Pengirim"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:299
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:301
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:72
 #, elixir-autogen, elixir-format
 msgid "Ignore list is full (max 100 entries)"
@@ -1252,7 +1247,7 @@ msgstr "Abaikan daftar penuh (maksimal 100 entri)"
 msgid "Ignored"
 msgstr "Diabaikan"
 
-#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:671
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:677
 #, elixir-autogen, elixir-format
 msgid "Incorrect password"
 msgstr "Sandi salah"
@@ -1275,7 +1270,7 @@ msgstr "Warna tidak valid"
 msgid "Invalid command. Commands must start with /"
 msgstr "Perintah tidak valid. Perintah harus dimulai dengan /"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:64
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:66
 #, elixir-autogen, elixir-format
 msgid "Invalid duration format. Use: 5m, 2h, or 1d"
 msgstr "Format durasi tidak valid. Gunakan: 5m, 2h, atau 1d"
@@ -1300,7 +1295,7 @@ msgstr "Mode string tidak valid."
 msgid "Invalid name. Use letters, numbers, hyphens, underscores."
 msgstr "Nama tidak valid. Gunakan huruf, angka, tanda hubung, garis bawah."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:225
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:227
 #: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:183
 #, elixir-autogen, elixir-format
 msgid "Invalid nickname"
@@ -1338,7 +1333,7 @@ msgstr "Miring (Ctrl + Shift + Y)"
 msgid "Item not found"
 msgstr "Butir tidak ditemukan"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:743
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:745
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
 msgstr "Gabung %{channel}"
@@ -1360,7 +1355,7 @@ msgstr "%{channel} Bergabung"
 msgid "Kick"
 msgstr "Keluarkan"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:867
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:869
 #, elixir-autogen, elixir-format
 msgid "Kicked"
 msgstr "Ditendang"
@@ -1380,9 +1375,9 @@ msgstr "Lang"
 msgid "Leave Channel"
 msgstr "Tinggalkan Kanal"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:268
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:477
-#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:588
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:271
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:479
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:594
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
 #, elixir-autogen, elixir-format
 msgid "Leaving"
@@ -1490,25 +1485,25 @@ msgid "Nick color entry not found"
 msgstr "Entri warna Nick tidak ditemukan"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:181
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:356
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:358
 #, elixir-autogen, elixir-format
 msgid "Nick color list is full (max 50)"
 msgstr "Daftar warna Nick penuh (maksimal 50)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1092
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1095
 #, elixir-autogen
 msgid "NickServ protects your nickname with a password so nobody else can use it."
 msgstr ""
 "NickServ melindungi nama panggilan Anda dengan sandi sehingga tidak ada "
 "orang lain dapat menggunakannya."
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:401
-#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:658
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:400
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:657
 #, elixir-autogen, elixir-format
 msgid "Nickname %{nickname} is already in use"
 msgstr "Nama panggilan %{nickname} sudah digunakan"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:149
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "No"
 msgstr "Tidak"
@@ -1518,7 +1513,7 @@ msgstr "Tidak"
 msgid "No auto-respond rules configured."
 msgstr "Tidak ada aturan auto- respon yang dikonfigurasi."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:357
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:359
 #, elixir-autogen, elixir-format
 msgid "No channels"
 msgstr "Tidak ada saluran"
@@ -1528,12 +1523,12 @@ msgstr "Tidak ada saluran"
 msgid "No command at position %{position}"
 msgstr "Tidak ada perintah di posisi %{position}"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:102
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:104
 #, elixir-autogen, elixir-format
 msgid "No contact selected"
 msgstr "Tak ada kontak yang dipilih"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:678
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "No nickname in session"
 msgstr "Tidak ada nama panggilan dalam sesi"
@@ -1561,8 +1556,8 @@ msgstr "Bukan perintah (harus dimulai dengan /)"
 msgid "Note"
 msgstr "Catatan"
 
-#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:40
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:61
+#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:42
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:63
 #, elixir-autogen, elixir-format
 msgid "Notify list is full (max 50 entries)"
 msgstr "Daftar pemberitahuan penuh (maksimal 50 entri)"
@@ -1585,7 +1580,7 @@ msgstr "Obyek"
 msgid "Online"
 msgstr "Daring"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1039
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1042
 #, elixir-autogen
 msgid "Open /chat/help in a new tab."
 msgstr "Buka /chat/help di tab baru."
@@ -1601,7 +1596,7 @@ msgid "Open in Help Topics"
 msgstr "Buka dalam Topics Bantuan"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:231
-#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:383
+#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:385
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "Operator"
@@ -1613,7 +1608,7 @@ msgid "Orange"
 msgstr "Oranye"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:227
-#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:382
+#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:384
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "Pemilik"
@@ -1633,7 +1628,7 @@ msgstr "Orang & Tubuh"
 msgid "Perform list is full (max 50 commands)"
 msgstr "Lakukan daftar penuh (maksimal 50 perintah)"
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:317
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:319
 #, elixir-autogen, elixir-format
 msgid "Perform: invalid command format: %{command}"
 msgstr "Lakukan: format perintah tidak valid: %{command}"
@@ -1670,8 +1665,8 @@ msgstr "Ungu"
 msgid "Query (PM)"
 msgstr "Query (PM)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1065
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1097
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1068
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1100
 #, elixir-autogen
 msgid "Quick start:"
 msgstr "Awal cepat:"
@@ -1698,7 +1693,7 @@ msgstr "Merah"
 msgid "Regex"
 msgstr "Regex"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1063
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1066
 #, elixir-autogen
 msgid "Register your channel to protect it when no operators are online."
 msgstr ""
@@ -1706,18 +1701,18 @@ msgstr ""
 "online."
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:178
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:148
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:150
 #, elixir-autogen, elixir-format
 msgid "Registered"
 msgstr "Terdaftar"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:138
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:140
 #, elixir-autogen, elixir-format
 msgid "Removed %{nickname} from contacts"
 msgstr "Menghapus %{nickname} dari kontak"
 
-#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:49
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:78
+#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:51
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:80
 #, elixir-autogen, elixir-format
 msgid "Removed %{nickname} from notify list"
 msgstr "Menghapus %{nickname} dari daftar pemberitahuan"
@@ -1732,7 +1727,7 @@ msgstr "Menghilangkan warna custom untuk %{nickname}"
 msgid "Reply"
 msgstr "Balas"
 
-#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:261
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:260
 #, elixir-autogen, elixir-format
 msgid "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
 msgstr ""
@@ -1754,7 +1749,7 @@ msgstr "Menjawab ke %{author}"
 msgid "Reset (Ctrl+Shift+X)"
 msgstr "Reset (Ctrl + Shift + X)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1025
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1028
 #: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1105
 #, elixir-autogen
 msgid "RetroHexChat"
@@ -1770,8 +1765,8 @@ msgstr "Reverse (Ctrl + Shift + V)"
 msgid "Rule not found"
 msgstr "Aturan tidak ditemukan"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1074
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1104
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1077
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1107
 #, elixir-autogen
 msgid "Rules:"
 msgstr "Aturan:"
@@ -1782,7 +1777,7 @@ msgid "Save to URL List"
 msgstr "Simpan ke Daftar URL"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:157
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:167
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:169
 #, elixir-autogen, elixir-format
 msgid "Screen"
 msgstr "Layar"
@@ -1833,13 +1828,13 @@ msgid "Server setting '%{key}' changed to '%{value}'."
 msgstr "Pengaturan server '%{key}' berubah menjadi '%{value}'."
 
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:121
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:508
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:510
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:106
 #, elixir-autogen, elixir-format
 msgid "Service"
 msgstr "Layanan"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:345
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:347
 #, elixir-autogen, elixir-format
 msgid "Set %{nickname}'s color to %{color}"
 msgstr "Atur warna %{nickname} ke %{color}"
@@ -1865,7 +1860,7 @@ msgid "Source and destination are the same"
 msgstr "Sumber dan tujuan sama"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_layout.ex:38
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:111
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:113
 #: lib/retro_hex_chat_web/live/chat_live/chat_title.ex:110
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_tabs.ex:89
 #, elixir-autogen, elixir-format
@@ -1923,7 +1918,7 @@ msgstr "Undangan ini telah berakhir"
 msgid "Timer '%{name}' not found"
 msgstr "Timer '%{name}' tidak ditemukan"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1038
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1041
 #, elixir-autogen
 msgid "Tip: Go to Help > Help Topics for the full documentation."
 msgstr "Tip: Pergi ke Bantuan > Bantuan Topics untuk dokumentasi penuh."
@@ -1948,12 +1943,12 @@ msgstr "Topik set: %{topic}"
 msgid "Travel & Places"
 msgstr "Perjalanan & Tempat"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1080
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1083
 #, elixir-autogen
 msgid "Type /help chanserv or /help channel-permissions for full details."
 msgstr "Ketik chanserv /help atau saluran /help untuk rincian penuh."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1111
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1117
 #, elixir-autogen
 msgid "Type /help nickserv for full details."
 msgstr "Ketik /help nickserv untuk rincian penuh."
@@ -1969,7 +1964,7 @@ msgstr "Ketik perintah - / untuk daftar"
 msgid "Type a message..."
 msgstr "Ketik pesan..."
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:620
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:622
 #, elixir-autogen, elixir-format
 msgid "URL saved to URL Catcher"
 msgstr "URL disimpan ke URL Catcher"
@@ -1990,11 +1985,11 @@ msgstr "Garis bawah (Ctrl + Shift + U)"
 msgid "Unignore"
 msgstr "Unignore"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:602
-#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:168
-#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:177
-#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:182
-#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:187
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:604
+#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:170
+#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:179
+#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:184
+#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:189
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Tak dikenal"
@@ -2015,14 +2010,14 @@ msgstr "Kanal Unmute"
 msgid "Unmute PM"
 msgstr "Unmute PM"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:112
-#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:63
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:102
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:114
+#: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:65
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:104
 #, elixir-autogen, elixir-format
 msgid "Updated note for %{nickname}"
 msgstr "Catatan terupdate untuk %{nickname}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1031
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1034
 #, elixir-autogen
 msgid "Useful commands:"
 msgstr "Perintah yang bermanfaat:"
@@ -2043,7 +2038,7 @@ msgid "User not registered"
 msgstr "Pengguna tidak terdaftar"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:239
-#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:385
+#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:387
 #, elixir-autogen, elixir-format
 msgid "Voiced"
 msgstr "Voed"
@@ -2068,7 +2063,7 @@ msgstr "Pesan selamat datang untuk %{channel} telah ditetapkan."
 msgid "Welcome message updated."
 msgstr "Selamat datang pesan diperbarui."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1028
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1031
 #, elixir-autogen
 msgid "Welcome to %{server_name}!"
 msgstr "Selamat datang di %{server_name}!"
@@ -2096,14 +2091,14 @@ msgstr "Kata tidak dalam daftar penyorotan"
 msgid "Yellow"
 msgstr "Kuning"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:149
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "Yes"
 msgstr "Ya"
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:216
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:237
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:262
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:215
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:236
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:261
 #, elixir-autogen, elixir-format
 msgid "You are muted by an administrator"
 msgstr "Anda digumamkan oleh administrator"
@@ -2118,13 +2113,13 @@ msgstr "Anda tidak lagi pergi"
 msgid "You are now away: %{message}"
 msgstr "Anda sekarang pergi: %{message}"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:640
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:273
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:654
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:276
 #, elixir-autogen, elixir-format
 msgid "You are now identified as %{nickname}"
 msgstr "Anda sekarang diidentifikasi sebagai %{nickname}"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:578
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:584
 #, elixir-autogen, elixir-format
 msgid "You are now known as %{nickname}"
 msgstr "Anda sekarang dikenal sebagai %{nickname}"
@@ -2134,7 +2129,7 @@ msgstr "Anda sekarang dikenal sebagai %{nickname}"
 msgid "You are setting: %{flag} (%{label})"
 msgstr "Anda menetapkan: %{flag} (%{label})"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:57
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:59
 #, elixir-autogen, elixir-format
 msgid "You cannot ignore yourself"
 msgstr "Anda tidak dapat mengabaikan diri sendiri"
@@ -2159,7 +2154,7 @@ msgstr "Anda telah unmuted oleh administrator."
 msgid "You must be a member of %{channel} to open Channel Central"
 msgstr "Anda harus menjadi anggota %{channel} untuk membuka Channel Central"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/pm.ex:186
+#: lib/retro_hex_chat_web/live/chat_live/helpers/pm.ex:189
 #, elixir-autogen, elixir-format
 msgid "You must be a member of %{channel} to send notices there"
 msgstr ""
@@ -2185,7 +2180,7 @@ msgstr "Daftar abaikan anda kosong"
 msgid "Your nickname was changed to %{nickname} by an administrator."
 msgstr "Nama panggilan Anda diubah menjadi %{nickname} oleh administrator."
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:120
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:122
 #, elixir-autogen, elixir-format
 msgid "Your notify list is empty"
 msgstr "Daftar pemberitahuan Anda kosong"
@@ -2200,7 +2195,7 @@ msgstr "Daftar kinerja Anda kosong"
 msgid "Your server role has been changed to: %{role}"
 msgstr "Peran server Anda telah diubah menjadi: %{role}"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:222
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:224
 #, elixir-autogen, elixir-format
 msgid "[Auto-Whois] %{nickname}:"
 msgstr "[Auto- Whois] %{nickname}:"
@@ -2250,22 +2245,22 @@ msgstr "Perintah '%{trigger}' dihapus."
 msgid "[BotService] Failed to create bot '%{name}': %{message}"
 msgstr "[BotService] Gagal membuat bot '%{name}': %{message}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1061
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1064
 #, elixir-autogen
 msgid "[ChanServ] Channel Services Online"
 msgstr "[ChanServ] Layanan Saluran Online"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:246
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:249
 #, elixir-autogen, elixir-format
 msgid "[NickServ] %{reason}. You are now %{nickname}"
 msgstr "%{reason}. Anda sekarang %{nickname}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1091
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1094
 #, elixir-autogen
 msgid "[NickServ] Nickname Services Online"
 msgstr "[NickServ] Layanan Nickname Online"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:648
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:662
 #, elixir-autogen, elixir-format
 msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
 msgstr ""
@@ -2289,7 +2284,7 @@ msgstr "%{message}"
 msgid "[message deleted]"
 msgstr "[pesan dihapus]"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:148
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:150
 #, elixir-autogen, elixir-format
 msgid "all"
 msgstr "semua"
@@ -2301,14 +2296,14 @@ msgstr "klik untuk menyisipkan"
 
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:507
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:574
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:34
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:35
 #, elixir-autogen, elixir-format
 msgid "disabled"
 msgstr "dinonaktifkan"
 
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:508
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:574
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:33
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:34
 #, elixir-autogen, elixir-format
 msgid "enabled"
 msgstr "diaktifkan"
@@ -2324,12 +2319,12 @@ msgstr "mengembang ke dirinya sendiri dan akan menekan batas rekursi"
 msgid "hover to preview"
 msgstr "hover untuk preview"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:228
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:230
 #, elixir-autogen, elixir-format
 msgid "identified"
 msgstr "teridentifikasi"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:151
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:153
 #, elixir-autogen, elixir-format
 msgid "invites"
 msgstr "mengundang"
@@ -2339,23 +2334,23 @@ msgstr "mengundang"
 msgid "is typing..."
 msgstr "mengetik..."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:149
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:151
 #: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:331
 #, elixir-autogen, elixir-format
 msgid "messages"
 msgstr "pesan"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:229
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:231
 #, elixir-autogen, elixir-format
 msgid "not identified"
 msgstr "tidak teridentifikasi"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:150
+#: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:152
 #, elixir-autogen, elixir-format
 msgid "notices"
 msgstr "pemberitahuan"
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:129
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:131
 #, elixir-autogen, elixir-format
 msgid "offline"
 msgstr "luring"
@@ -2365,7 +2360,7 @@ msgstr "luring"
 msgid "one-shot"
 msgstr "satu-tembakan"
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:129
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:131
 #, elixir-autogen, elixir-format
 msgid "online"
 msgstr "daring"
@@ -2391,17 +2386,17 @@ msgstr "menimpa perintah bawaan /%{name}"
 msgid "timed"
 msgstr "waktu"
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:82
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:83
 #, elixir-autogen, elixir-format
 msgid "* Channel not found"
 msgstr "Kanal tak ditemukan"
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:47
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:48
 #, elixir-autogen, elixir-format
 msgid "* Missing invite channel"
 msgstr "* Saluran undangan hilang"
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:46
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:47
 #, elixir-autogen, elixir-format
 msgid "* Missing invite target"
 msgstr "* Hilang target undangan"
@@ -2427,7 +2422,7 @@ msgstr "Arcade"
 msgid "Auto Respond"
 msgstr "Jawab Otomatis"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:156
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:158
 #, elixir-autogen, elixir-format
 msgid "Bio"
 msgstr "Bio"
@@ -2479,7 +2474,7 @@ msgstr "Pilih peran."
 msgid "Choose an access level."
 msgstr "Pilih tingkat akses."
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:159
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:161
 #, elixir-autogen, elixir-format
 msgid "Contact note"
 msgstr "Catatan kontak"
@@ -2559,7 +2554,7 @@ msgstr "Perlindungan Banjir"
 msgid "Highlight Words"
 msgstr "Sorot Kata"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:144
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:146
 #, elixir-autogen, elixir-format
 msgid "Idle for"
 msgstr "Diam"
@@ -2589,7 +2584,7 @@ msgstr "Pembatasan bergabung diatur ke %{seconds} detik."
 msgid "Keyboard Shortcuts"
 msgstr "Pintas Papan Ketik"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:168
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:170
 #, elixir-autogen, elixir-format
 msgid "Language"
 msgstr "Bahasa"
@@ -2600,12 +2595,12 @@ msgstr "Bahasa"
 msgid "Last Seen (Whowas)"
 msgstr "Terakhir Terlihat (Whowas)"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:202
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:204
 #, elixir-autogen, elixir-format
 msgid "Last Seen: %{target}"
 msgstr "Terakhir terlihat: %{target}"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:189
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:191
 #, elixir-autogen, elixir-format
 msgid "Last seen"
 msgstr "Terakhir terlihat"
@@ -2632,8 +2627,8 @@ msgstr "Pesan harus 200 karakter atau kurang"
 msgid "Mute (channel)"
 msgstr "Mute (channel)"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:128
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:187
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:130
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:189
 #, elixir-autogen, elixir-format
 msgid "Nickname"
 msgstr "Nama panggilan"
@@ -2683,7 +2678,7 @@ msgstr "Daftar Pemberitahuan"
 msgid "Offline"
 msgstr "Luring"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:140
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:142
 #, elixir-autogen, elixir-format
 msgid "Online for"
 msgstr "Online untuk"
@@ -2721,7 +2716,7 @@ msgstr "Sandi tidak cocok"
 msgid "Perform"
 msgstr "Lakukan"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:195
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:197
 #, elixir-autogen, elixir-format
 msgid "Quit message"
 msgstr "Keluar dari pesan"
@@ -2769,7 +2764,7 @@ msgstr "Kirim Pemberitahuan"
 msgid "Send Notice..."
 msgstr "Kirim Pemberitahuan..."
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:136
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:138
 #, elixir-autogen, elixir-format
 msgid "Shared channels"
 msgstr "Kanal bersama"
@@ -2795,7 +2790,7 @@ msgstr "Penwaktu tak ditemukan"
 msgid "Timers"
 msgstr "Pengatur waktu"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:171
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:173
 #, elixir-autogen, elixir-format
 msgid "Timezone"
 msgstr "Zona Waktu"
@@ -2850,7 +2845,7 @@ msgstr "Selamat datang pesan dibersihkan."
 msgid "Welcome message saved."
 msgstr "Selamat datang pesan disimpan."
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:178
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:180
 #, elixir-autogen, elixir-format
 msgid "Whois: %{target}"
 msgstr "Whois untuk %{target}"
@@ -2860,7 +2855,7 @@ msgstr "Whois untuk %{target}"
 msgid "You are already using that nickname"
 msgstr "Anda sudah menggunakan nama panggilan itu"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:932
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:934
 #, elixir-autogen, elixir-format
 msgid "You are not in any channel"
 msgstr "Anda tidak dalam saluran apapun"
@@ -2875,7 +2870,7 @@ msgstr "Anda tidak memiliki izin untuk mengelola daftar ini."
 msgid "You must be a channel operator to change this setting."
 msgstr "Anda harus menjadi operator saluran untuk mengubah pengaturan ini."
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:928
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:930
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to use this command"
 msgstr "Anda harus menjadi operator saluran untuk menggunakan perintah ini"
@@ -2926,7 +2921,7 @@ msgstr "%{peer} kehilangan koneksi P2P - menunggu mereka kembali..."
 msgid "Arcade session ended."
 msgstr "Sesi arkade berakhir."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:459
+#: lib/retro_hex_chat_web/live/app/space_live.ex:461
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "Ruang Saluran"
@@ -2976,7 +2971,7 @@ msgstr "Perangkat bawaan"
 msgid "End P2P Call Media"
 msgstr "Akhir Media Panggilan P2P"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:462
+#: lib/retro_hex_chat_web/live/app/space_live.ex:464
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "Memasuki ruang kanal..."
@@ -3002,7 +2997,7 @@ msgstr "Mute, unmute, or enable your P2P mikrofon"
 msgid "Next P2P Layout"
 msgstr "Tata Letak P2P Berikutnya"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:461
+#: lib/retro_hex_chat_web/live/app/space_live.ex:463
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "Membuka ruang pribadi..."
@@ -3034,14 +3029,14 @@ msgstr "Menghubungkan sesi P2P"
 msgid "P2P session with %{peer} ended."
 msgstr "Sesi P2P dengan %{peer} berakhir."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:458
+#: lib/retro_hex_chat_web/live/app/space_live.ex:460
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "Ruang Pribadi"
 
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:456
+#: lib/retro_hex_chat_web/live/app/space_live.ex:458
 #, elixir-autogen, elixir-format
 msgid "Space"
 msgstr "Ruang"
@@ -3234,7 +3229,7 @@ msgstr "TURN"
 #: lib/retro_hex_chat_web/components/ui/chat/conversation_toolbar_actions.ex:92
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:77
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:267
-#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:387
+#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:389
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:329
 #, elixir-autogen, elixir-format
 msgid "Users"
@@ -3378,7 +3373,7 @@ msgstr "Memformat Batang Alat"
 msgid "IRC colors"
 msgstr "Warna IRC"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:812
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:814
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:131
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:323
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:515
@@ -3418,18 +3413,18 @@ msgstr "Font color = \"# 404040\" BotService: Feed ditambahkan: %{url} %{channel
 msgid "[BotService] Feed removed."
 msgstr "[BotService] Feed dihapus."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:346
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:348
 #, elixir-autogen, elixir-format
 msgid "Auto"
 msgstr "Otomatis"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:339
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:341
 #, elixir-autogen, elixir-format
 msgid "PM"
 msgstr "PM"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:124
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:315
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:126
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:317
 #, elixir-autogen, elixir-format
 msgid "Collapse conversations"
 msgstr "Ciutkan percakapan"
@@ -3440,12 +3435,12 @@ msgstr "Ciutkan percakapan"
 msgid "Collapse user list"
 msgstr "Ciutkan daftar pengguna"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:118
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:120
 #, elixir-autogen, elixir-format
 msgid "Conversations rail"
 msgstr "Bilah percakapan"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:125
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:127
 #, elixir-autogen, elixir-format
 msgid "Expand conversations"
 msgstr "Bentangkan percakapan"
@@ -3455,19 +3450,19 @@ msgstr "Bentangkan percakapan"
 msgid "Expand user list"
 msgstr "Bentangkan daftar pengguna"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:148
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:331
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:150
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:333
 #, elixir-autogen, elixir-format
 msgid "Open channels"
 msgstr "Kanal terbuka"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:163
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:444
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:165
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:446
 #, elixir-autogen, elixir-format
 msgid "Popular channels"
 msgstr "Kanal populer"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:155
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:157
 #, elixir-autogen, elixir-format
 msgid "Private messages"
 msgstr "Pesan pribadi"
@@ -3512,7 +3507,7 @@ msgstr "Pengunggah lampiran tidak dapat dikonfirmasi"
 msgid "Attachment upload failed"
 msgstr "Pengunggah Lampiran gagal"
 
-#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:461
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:460
 #, elixir-autogen, elixir-format
 msgid "Attachments can only be sent with messages"
 msgstr "Lampiran hanya dapat dikirim dengan pesan"
@@ -3779,12 +3774,12 @@ msgstr "Waktu pulang pergi ke server"
 msgid "Conversation actions"
 msgstr "Tindakan percakapan"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:379
+#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:381
 #, elixir-autogen, elixir-format
 msgid "Participants"
 msgstr "Peserta"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:120
+#: lib/retro_hex_chat_web/live/app/space_live.ex:122
 #, elixir-autogen, elixir-format
 msgid "%{count} in the space"
 msgid_plural "%{count} in the space"
@@ -3800,29 +3795,29 @@ msgstr "Sedang di dalam"
 msgid "Nobody is in here yet."
 msgstr "Belum ada siapa-siapa di sini."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:452
 #: lib/retro_hex_chat_web/live/app/space_live.ex:454
+#: lib/retro_hex_chat_web/live/app/space_live.ex:456
 #, elixir-autogen, elixir-format
 msgid "Space · %{name}"
 msgstr "Ruang · %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:367
-#: lib/retro_hex_chat_web/live/app/space_live.ex:379
+#: lib/retro_hex_chat_web/live/app/space_live.ex:369
+#: lib/retro_hex_chat_web/live/app/space_live.ex:381
 #, elixir-autogen, elixir-format
 msgid "That address does not name a space."
 msgstr "Alamat itu tidak menunjuk ke ruang mana pun."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:390
+#: lib/retro_hex_chat_web/live/app/space_live.ex:392
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
 msgstr "Ruang privat ini milik dua orang lain."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:362
+#: lib/retro_hex_chat_web/live/app/space_live.ex:364
 #, elixir-autogen, elixir-format
 msgid "This space is no longer available."
 msgstr "Ruang ini sudah tidak tersedia."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:406
+#: lib/retro_hex_chat_web/live/app/space_live.ex:408
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "Kamu harus berada di %{channel} untuk masuk ke ruangnya."
@@ -3857,7 +3852,7 @@ msgstr "%{game} · pertandingan"
 msgid "%{peer} is back."
 msgstr "%{peer} sudah kembali."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:411
+#: lib/retro_hex_chat_web/live/app/space_live.ex:413
 #, elixir-autogen, elixir-format
 msgid "This space belongs to a channel you are not in."
 msgstr "Ruang ini milik kanal yang tidak Anda ikuti."
@@ -3882,8 +3877,8 @@ msgstr "Permintaan P2P dikirim ke %{target}. Buka dari kartu di bawah ini."
 msgid "P2P session request. Open it from the card below. /p2p/%{token}"
 msgstr "Permintaan sesi P2P. Buka dari kartu di bawah ini. /p2p/%{token}"
 
-#: lib/retro_hex_chat_web/channels/space_session_announcement.ex:122
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:121
+#: lib/retro_hex_chat_web/channels/space_session_announcement.ex:124
+#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:123
 #, elixir-autogen, elixir-format
 msgid "%{nickname} opened the space — %{url}"
 msgstr "%{nickname} membuka ruang — %{url}"
@@ -3898,17 +3893,17 @@ msgstr "Tutup percakapan"
 msgid "Put the space card in this conversation"
 msgstr "Taruh kartu space di percakapan ini"
 
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:85
+#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:87
 #, elixir-autogen, elixir-format
 msgid "The space could not be opened. Try again."
 msgstr "Space tidak bisa dibuka. Coba lagi."
 
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:109
+#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:111
 #, elixir-autogen, elixir-format
 msgid "The space is open. Its card is in this conversation."
 msgstr "Space terbuka. Kartunya ada di percakapan ini."
 
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:55
+#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:57
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to open a space."
 msgstr "Kamu harus terdaftar di NickServ untuk membuka space."
@@ -3923,18 +3918,18 @@ msgstr "Daftarkan nama panggilanmu untuk menaruh kartu space di sini"
 msgid "This P2P session is open in another tab of yours"
 msgstr "Sesi P2P ini terbuka di tab lain milikmu"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:296
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:299
 #, elixir-autogen, elixir-format
 msgid "Registration dropped — you are no longer identified as %{nickname}."
 msgstr ""
 "Registrasi dihapus — Anda tidak lagi diidentifikasi sebagai %{nickname}."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1075
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1078
 #, elixir-autogen, elixir-format
 msgid "  • Channels expire after %{window} of inactivity"
 msgstr "Channels berakhir setelah %{window} tidak aktif"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1106
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1112
 #, elixir-autogen, elixir-format
 msgid "  • Nicks expire after %{window} of inactivity"
 msgstr "Nicks berakhir setelah %{window} tidak aktif"
@@ -4036,7 +4031,7 @@ msgstr "Simpan untuk nanti"
 msgid "Saved Messages"
 msgstr "Pesan Tersimpan"
 
-#: lib/retro_hex_chat_web/live/chat_live/save_events.ex:131
+#: lib/retro_hex_chat_web/live/chat_live/save_events.ex:132
 #: lib/retro_hex_chat_web/live/chat_live/thread_events.ex:48
 #, elixir-autogen, elixir-format
 msgid "That message could not be found."
@@ -4163,7 +4158,7 @@ msgstr "Peramban ini merekam dalam format yang tidak bisa dikirim obrolan ini"
 msgid "Voice message"
 msgstr "Pesan suara"
 
-#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:116
+#: lib/retro_hex_chat_web/live/chat_live/space_events.ex:118
 #, elixir-autogen, elixir-format
 msgid "The space is open. Its card is the line below."
 msgstr "Space terbuka. Kartunya adalah baris di bawah ini."
@@ -4175,13 +4170,13 @@ msgstr ""
 "Anda sudah punya sesi P2P dengan %{target}. Kartunya adalah baris di bawah "
 "ini."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1005
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1007
 #, elixir-autogen, elixir-format
 msgid "%{channel} — %{count} person here"
 msgid_plural "%{channel} — %{count} people here"
 msgstr[0] "%{channel} — %{count} orang di sini"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1001
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1003
 #, elixir-autogen, elixir-format
 msgid "%{channel} — saved, not open. Opens when you click it."
 msgstr "%{channel} - disimpan, tidak terbuka. Buka ketika Anda mengklik."
@@ -4192,17 +4187,17 @@ msgid "%{count} unread"
 msgid_plural "%{count} unread"
 msgstr[0] "%{count} belum dibaca"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1020
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1022
 #, elixir-autogen, elixir-format
 msgid "%{nick} — not open. Opens when you click it."
 msgstr "%{nick} - tidak terbuka. Buka ketika Anda mengklik."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:769
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:771
 #, elixir-autogen, elixir-format
 msgid "Actions for %{name}"
 msgstr "Aksi untuk %{name}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:725
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:727
 #, elixir-autogen, elixir-format
 msgid "Join %{channel} — %{count} person here"
 msgid_plural "Join %{channel} — %{count} people here"
@@ -4213,13 +4208,13 @@ msgstr[0] "Gabung ke %{channel} — %{count} orang di sini"
 msgid "Join on connect"
 msgstr "Gabung saat terhubung"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:345
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1027
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:347
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1029
 #, elixir-autogen, elixir-format
 msgid "Joined on connect"
 msgstr "Bergabung saat terhubung"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1024
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1026
 #, elixir-autogen, elixir-format
 msgid "Joined on connect, with a key"
 msgstr "Bergabung saat terhubung, dengan kunci"
@@ -4234,8 +4229,8 @@ msgstr "%{nickname} tidak ada dalam daftar ini."
 msgid "That row carries no nickname to remove."
 msgstr "Baris itu tidak membawa nama panggilan untuk dihapus."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:338
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:411
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:340
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:413
 #, elixir-autogen, elixir-format
 msgid "Recent private messages"
 msgstr "Pesan pribadi terbaru"
@@ -4260,27 +4255,32 @@ msgstr "Rekam pesan suara"
 msgid "No microphone is available."
 msgstr "Tidak ada mikrofon yang tersedia."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1067
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1070
 #, elixir-autogen, elixir-format
 msgid "Add a Super Operator"
 msgstr "Tambah Operator Super"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1068
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1071
 #, elixir-autogen, elixir-format
 msgid "Add an Auto Operator"
 msgstr "Tambah Operator Otomatis"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1069
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1072
 #, elixir-autogen, elixir-format
 msgid "Add an Auto Voice user"
 msgstr "Tambah pengguna Auto Voice"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1066
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1069
 #, elixir-autogen, elixir-format
 msgid "Register the channel you are in"
 msgstr "Register saluran Anda berada di"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1070
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1073
 #, elixir-autogen, elixir-format
 msgid "See who founded the channel"
 msgstr "Lihat siapa yang mendirikan saluran"
+
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1108
+#, elixir-autogen, elixir-format
+msgid "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
+msgstr "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"

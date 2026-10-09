@@ -1,5 +1,7 @@
 defmodule RetroHexChat.Commands.Handlers.Ignore do
   @moduledoc "Handler for /ignore [nickname] [type] [duration]"
+
+  alias RetroHexChat.Nickname
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
@@ -18,7 +20,7 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
   end
 
   def execute([nick | rest], %{nickname: own_nick}) do
-    if String.downcase(nick) == String.downcase(own_nick) do
+    if Nickname.equal?(nick, own_nick) do
       {:error, dgettext("commands", "You cannot ignore yourself")}
     else
       parse_type_and_duration(nick, rest)

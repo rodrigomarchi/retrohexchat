@@ -16,6 +16,8 @@ defmodule RetroHexChat.Channels.Visibility do
   is a channel nobody is being told about.
   """
 
+  alias RetroHexChat.Nickname
+
   alias RetroHexChat.Channels.Directory
   alias RetroHexChat.Channels.Modes
   alias RetroHexChat.Channels.Server
@@ -28,7 +30,7 @@ defmodule RetroHexChat.Channels.Visibility do
   @spec channels_of(String.t(), [String.t()]) :: [String.t()]
   def channels_of(target, viewer_channels)
       when is_binary(target) and is_list(viewer_channels) do
-    wanted = String.downcase(target)
+    wanted = Nickname.key(target)
 
     Directory.all()
     |> Enum.filter(&tellable?(&1, viewer_channels))
@@ -89,7 +91,7 @@ defmodule RetroHexChat.Channels.Visibility do
   defp member?(channel_name, wanted) do
     case Server.get_state(channel_name) do
       {:ok, state} ->
-        Enum.any?(state.members, fn {nick, _role} -> String.downcase(nick) == wanted end)
+        Enum.any?(state.members, fn {nick, _role} -> Nickname.key(nick) == wanted end)
 
       {:error, _unreachable} ->
         false

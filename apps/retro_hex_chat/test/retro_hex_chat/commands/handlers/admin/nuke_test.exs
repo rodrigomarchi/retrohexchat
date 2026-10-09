@@ -277,8 +277,8 @@ defmodule RetroHexChat.Commands.Handlers.Admin.NukeTest do
       seed_data()
       victim = "NukeOnline#{rem(System.unique_integer([:positive]), 100_000)}"
 
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:NukeAdmin")
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{victim}")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox("NukeAdmin"))
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox(victim))
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "chat_device_session:nuke-session-ref")
 
       {:ok, _ref} = Tracker.track_user("presence:global", victim)

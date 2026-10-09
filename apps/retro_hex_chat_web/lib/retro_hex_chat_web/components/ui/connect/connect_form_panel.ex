@@ -334,7 +334,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
         <li>
           <Icons.icon_checkmark class="w-3 h-3 inline-block" /> {dgettext(
             "connect",
-            "Case sensitive"
+            "Capital letters do not matter"
           )}
         </li>
       </ul>

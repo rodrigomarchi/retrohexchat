@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
     new_session = Session.set_bio(session, text)
 
     if session.identified do
-      UserBio.save(session.nickname, text)
+      UserBio.save(Session.owner(session), text)
     end
 
     PresenceHelpers.publish_bio(new_session, text)
@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
     new_session = Session.set_bio(session, nil)
 
     if session.identified do
-      UserBio.delete(session.nickname)
+      UserBio.delete(Session.owner(session))
     end
 
     PresenceHelpers.publish_bio(new_session, nil)

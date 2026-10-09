@@ -19,6 +19,8 @@ defmodule RetroHexChat.NicknameList do
   first-contact date on one, an online flag on the other.
   """
 
+  alias RetroHexChat.Nickname
+
   @typedoc "How a particular list is shaped: where the nickname is, and its limits."
   @type t :: %__MODULE__{
           field: atom(),
@@ -45,7 +47,7 @@ defmodule RetroHexChat.NicknameList do
   @doc "Whether `nickname` is already on the list, however it was typed."
   @spec member?(t(), kept(), String.t()) :: boolean()
   def member?(spec, list, nickname) do
-    wanted = String.downcase(nickname)
+    wanted = Nickname.key(nickname)
 
     Enum.any?(list.entries, &(nickname_of(spec, &1) == wanted))
   end
@@ -71,7 +73,7 @@ defmodule RetroHexChat.NicknameList do
   """
   @spec remove(t(), kept(), String.t()) :: {:ok, kept()} | {:error, :not_found}
   def remove(spec, list, nickname) do
-    wanted = String.downcase(nickname)
+    wanted = Nickname.key(nickname)
 
     case Enum.split_with(list.entries, &(nickname_of(spec, &1) == wanted)) do
       {[], _remaining} -> {:error, :not_found}
@@ -101,7 +103,7 @@ defmodule RetroHexChat.NicknameList do
   @spec update(t(), kept(), String.t(), (struct() -> struct())) ::
           {:ok, kept()} | {:error, :not_found}
   def update(spec, list, nickname, fun) when is_function(fun, 1) do
-    wanted = String.downcase(nickname)
+    wanted = Nickname.key(nickname)
 
     {found?, reversed} =
       Enum.reduce(list.entries, {false, []}, fn entry, {found?, acc} ->
@@ -125,5 +127,5 @@ defmodule RetroHexChat.NicknameList do
     do: String.slice(note, 0, max)
 
   defp nickname_of(%__MODULE__{field: field}, entry),
-    do: entry |> Map.fetch!(field) |> String.downcase()
+    do: entry |> Map.fetch!(field) |> Nickname.key()
 end

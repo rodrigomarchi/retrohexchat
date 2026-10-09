@@ -23,12 +23,14 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
       maybe_persist_notify_list: 2,
       rebuild_nick_color_fn: 2,
       clear_reconnect_state: 1,
-      load_persisted_data: 2
+      load_persisted_data: 1,
+      mark_identified: 1
     ]
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{IgnoreList, Roster, SoundSettings}
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Presence.{NotifyList, Tracker}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Topics
@@ -86,7 +88,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
       |> maybe_refresh_cc(channel)
 
     if active_channel?(socket, channel) do
-      users = Enum.reject(socket.assigns.conversation_members, &same_nick?(&1.nickname, nick))
+      users =
+        Enum.reject(socket.assigns.conversation_members, &Nickname.equal?(&1.nickname, nick))
 
       socket =
         socket
@@ -262,8 +265,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     if nick == session.nickname do
       new_session =
         session
-        |> Session.set_identified(true)
-        |> load_persisted_data(nick)
+        |> mark_identified()
+        |> load_persisted_data()
 
       {:halt,
        socket
@@ -340,20 +343,16 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
 
   defp upsert_channel_user(users, user) do
     users
-    |> Enum.reject(&same_nick?(&1.nickname, user.nickname))
+    |> Enum.reject(&Nickname.equal?(&1.nickname, user.nickname))
     |> then(&[user | &1])
   end
 
-  defp same_nick?(left, right) do
-    String.downcase(left) == String.downcase(right)
-  end
-
   defp rename_channel_user(user, old_nick, new_nick) do
-    if same_nick?(user.nickname, old_nick), do: %{user | nickname: new_nick}, else: user
+    if Nickname.equal?(user.nickname, old_nick), do: %{user | nickname: new_nick}, else: user
   end
 
   defp update_channel_user_away(user, nick, away, message) do
-    if same_nick?(user.nickname, nick) do
+    if Nickname.equal?(user.nickname, nick) do
       Map.merge(user, %{away: away, away_message: message})
     else
       user

@@ -44,7 +44,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
   defdelegate maybe_persist_aliases(socket, session), to: __MODULE__.Persistence
   defdelegate maybe_persist_custom_menus(socket, session), to: __MODULE__.Persistence
   defdelegate maybe_persist_autorespond_rules(socket, session), to: __MODULE__.Persistence
-  defdelegate load_persisted_data(session, nick), to: __MODULE__.Persistence
+  defdelegate load_persisted_data(session), to: __MODULE__.Persistence
+  defdelegate mark_identified(session), to: __MODULE__.Session
 
   # ── Channel ──────────────────────────────────────────────────
 

@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
   alias RetroHexChat.Channels.Pins
   alias RetroHexChat.Chat.Roster
   alias RetroHexChat.Chat.UnreadTracker
+  alias RetroHexChat.Nickname
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.Components.Composer
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
@@ -104,7 +105,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
   @spec active_private_participant?(Session.t(), String.t()) :: boolean()
   def active_private_participant?(%Session{active_pm: peer, nickname: viewer}, nick)
       when is_binary(peer) and is_binary(nick) do
-    same_nick?(nick, peer) or same_nick?(nick, viewer)
+    Nickname.equal?(nick, peer) or Nickname.equal?(nick, viewer)
   end
 
   def active_private_participant?(_session, _nick), do: false
@@ -201,11 +202,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
     send_update(Composer, id: Composer.id(), reset_modes: true)
     socket
   end
-
-  defp same_nick?(left, right) when is_binary(left) and is_binary(right),
-    do: String.downcase(left) == String.downcase(right)
-
-  defp same_nick?(_left, _right), do: false
 
   defp close_search(socket) do
     if socket.assigns[:search_visible] do
