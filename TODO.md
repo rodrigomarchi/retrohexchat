@@ -21,9 +21,10 @@ item is fixed.
 - [ ] **+R error says "registered"; the check is "identified".**
 - [ ] **`cmd-join` help says the first joiner becomes "its first operator"; they become owner.**
       The `channels` topic and `Channels.Server.determine_join_role/2` agree on owner.
-- [ ] **`mode-p` help says +p hides the channel from /whois; only +s does.**
-      `Channels.Visibility.channels_of/2` drops secret channels only; +p changes the Channel List
-      row to "Prv" (proven by e2e H8c/H8d).
+- [ ] **`mode-p` topic description says +p hides the channel from /whois; only +s does.**
+      The topic body (`mode_p.html.heex`) already says so correctly; the one-line description in
+      `HelpTopics.ChannelModes` ("Hide the channel name from whois…") still contradicts it and
+      `Channels.Visibility.channels_of/2`, which drops secret channels only (e2e H8c/H8d).
 - [ ] **`/me` is refused in a private chat ("You are not in any channel").** The `/mirc-commands`
       table tells mIRC users to replace `/describe` with `/me` in the private conversation, and
       `Helpers.PM.handle_action_message/3` exists for it, but `Commands.Handlers.Me` rejects any
