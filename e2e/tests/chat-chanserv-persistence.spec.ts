@@ -1,11 +1,12 @@
 /**
  * @section X - Channel Modes, Services, Permissions, Persistence Edges
  * @flow X6 [done] ChanServ registered channel access survives an empty channel and later founder/member rejoins (features P1)
+ * @flow X16 [done] a registered channel keeps its topic and modes while empty; an unregistered one forgets them
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
  */
-import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 
@@ -89,6 +90,54 @@ test.describe("ChanServ persistence", () => {
       );
     } finally {
       await closeUsers([founder, aop]);
+    }
+  });
+
+  test("a registered channel keeps its topic and modes while empty, an unregistered one does not (X16)", async ({
+    browser,
+  }) => {
+    const founder = await newSignedInUser(browser, "x16found");
+    const visitor = await newSignedInUser(browser, "x16visit");
+    const registered = uniqueChannel("x16reg");
+    const unregistered = uniqueChannel("x16tmp");
+    const topic = `kept-${Date.now()}`;
+    const lostTopic = `lost-${Date.now()}`;
+
+    try {
+      await founder.chat.sendMessage(`/join ${registered}`);
+      await founder.chat.expectTabVisible(registered);
+      await founder.chat.sendMessage("/cs register");
+      await founder.chat.expectMessageVisible(
+        `[ChanServ] Channel ${registered} registered by ${founder.nick}`,
+      );
+      await founder.chat.sendMessage(`/topic ${topic}`);
+      await expect(founder.chat.topicBar).toContainText(topic);
+      await founder.chat.sendMessage("/mode +m");
+      await founder.chat.expectMessageVisible(`${founder.nick} sets mode +m`);
+      await founder.chat.sendMessage(`/part ${registered}`);
+      await founder.chat.expectTabHidden(registered);
+
+      // Nobody is inside now. The next person in finds the room as it was left.
+      await visitor.chat.sendMessage(`/join ${registered}`);
+      await visitor.chat.expectTabVisible(registered);
+      await expect(visitor.chat.topicBar).toContainText(topic);
+      await expect(visitor.chat.topicBar).toContainText("+m");
+
+      await founder.chat.sendMessage(`/join ${unregistered}`);
+      await founder.chat.expectTabVisible(unregistered);
+      await founder.chat.sendMessage(`/topic ${lostTopic}`);
+      await expect(founder.chat.topicBar).toContainText(lostTopic);
+      await founder.chat.sendMessage(`/part ${unregistered}`);
+      await founder.chat.expectTabHidden(unregistered);
+
+      // The unregistered room closed with its last member: this join founds a
+      // new one, and the visitor owns it.
+      await visitor.chat.sendMessage(`/join ${unregistered}`);
+      await visitor.chat.expectTabVisible(unregistered);
+      await expect(visitor.chat.topicBar).toContainText("No topic set");
+      await visitor.chat.expectNickRole(visitor.nick, "owner");
+    } finally {
+      await closeUsers([founder, visitor]);
     }
   });
 });

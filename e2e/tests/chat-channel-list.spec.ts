@@ -2,6 +2,8 @@
  * @section H - Channels, Server Messages, Local Window State
  * @flow H8 [done] `/list` opens channel list; search and the row press join (features P1)
  * @flow H8b [done] a registered channel everybody left stays listed, says when it was last used, and still joins
+ * @flow H8c [done] a `+s` channel is missing from a non-member's list and from their /whois of a member
+ * @flow H8d [done] a `+p` channel shows a non-member only a "Prv" row with its user count
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -44,6 +46,8 @@ async function setupListedChannel(browser: Browser, channel: string) {
   return {
     ownerContext,
     joinerContext,
+    ownerChat: owner.chat,
+    ownerNick: owner.nick,
     joinerChat: joiner.chat,
   };
 }
@@ -123,6 +127,64 @@ test.describe("Channel list dialog", () => {
       await shot(joinerPage, "cold-channel-joined");
     } finally {
       await ownerContext.close().catch(() => {});
+      await joinerContext.close();
+    }
+  });
+
+  test("a secret (+s) channel is left out of a non-member's list and whois (H8c)", async ({
+    browser,
+  }) => {
+    const channel = uniqueChannel("secret");
+    const { ownerContext, joinerContext, ownerChat, ownerNick, joinerChat } =
+      await setupListedChannel(browser, channel);
+
+    try {
+      await ownerChat.sendMessage("/mode +s");
+      await ownerChat.expectMessageVisible(`${ownerNick} sets mode +s`);
+
+      await joinerChat.sendMessage("/list");
+      await expect(joinerChat.channelListSearch).toBeVisible();
+      await joinerChat.channelListSearch.fill(channel.slice(1));
+      // The search is debounced; #lobby leaving the list is what proves the
+      // filtered answer has landed, so the missing row is a real absence.
+      await expect(joinerChat.channelListRow("#lobby")).toBeHidden();
+      await expect(joinerChat.channelListRow(channel)).toBeHidden();
+      await expect(joinerChat.channelListRow("Prv")).toBeHidden();
+      await joinerChat.closeChannelList();
+
+      await joinerChat.sendMessage(`/whois ${ownerNick}`);
+      await joinerChat.expectWhoisCard(ownerNick);
+      await joinerChat.expectLookupCardField("Channels", "#lobby");
+      await expect(joinerChat.lookupResultCard).not.toContainText(channel);
+    } finally {
+      await ownerContext.close();
+      await joinerContext.close();
+    }
+  });
+
+  test("a private (+p) channel shows a non-member only a Prv row (H8d)", async ({
+    browser,
+  }) => {
+    const channel = uniqueChannel("private");
+    const { ownerContext, joinerContext, ownerChat, ownerNick, joinerChat } =
+      await setupListedChannel(browser, channel);
+
+    try {
+      await ownerChat.sendMessage("/mode +p");
+      await ownerChat.expectMessageVisible(`${ownerNick} sets mode +p`);
+
+      await joinerChat.sendMessage("/list");
+      await expect(joinerChat.channelListSearch).toBeVisible();
+      await joinerChat.channelListSearch.fill(channel.slice(1));
+      await expect(joinerChat.channelListRow("#lobby")).toBeHidden();
+
+      // The channel is counted but not named: the row stands in for it.
+      const placeholder = joinerChat.channelListRow("Prv");
+      await expect(placeholder).toBeVisible();
+      await expect(placeholder).toContainText("1");
+      await expect(joinerChat.channelListRow(channel)).toBeHidden();
+    } finally {
+      await ownerContext.close();
       await joinerContext.close();
     }
   });

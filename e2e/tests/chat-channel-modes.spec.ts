@@ -7,11 +7,12 @@
  * @flow I9 [done] Channel limit is enforced and removing it allows join (features P1)
  * @flow I10 [done] Protected topic blocks non-op topic changes; `-t` restores (features P1)
  * @flow I14 [done] `/slow 60` throttles rapid joins; `/slow 0` disables (features P2)
+ * @flow I20 [done] `+c` strips colour and bold from every line sent to the channel; `-c` lets them through again
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
  */
-import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 
@@ -288,6 +289,45 @@ test.describe("Channel modes", () => {
       await owner.chat.expectNickInList(throttledGuest.nick);
     } finally {
       await closeUsers([owner, ...guests]);
+    }
+  });
+
+  test("strip colours (+c) removes formatting from lines sent to the channel (I20)", async ({
+    browser,
+  }) => {
+    const channel = uniqueChannel("strip");
+    const users = await setupUsersInChannel(browser, channel, ["own", "reg"]);
+    const [owner, regular] = users;
+    const stripped = `stripped-${Date.now()}`;
+    const coloured = `coloured-${Date.now()}`;
+
+    try {
+      await owner.chat.sendMessage("/mode +c");
+      await owner.chat.expectMessageVisible(`${owner.nick} sets mode +c`);
+
+      // The channel strips the line before storing it, so the sender's own
+      // screen shows the plain text too, not only everybody else's.
+      await regular.chat.sendMessage(
+        `\x02bold-${stripped}\x02 \x034red-${stripped}`,
+      );
+      for (const chat of [owner.chat, regular.chat]) {
+        const row = chat.messageRowByText(`red-${stripped}`);
+        await expect(row).toContainText(`bold-${stripped} red-${stripped}`);
+        await expect(row.locator(".irc-bold")).toHaveCount(0);
+        await expect(row.locator(".irc-fg-4")).toHaveCount(0);
+      }
+
+      await owner.chat.sendMessage("/mode -c");
+      await owner.chat.expectMessageVisible(`${owner.nick} sets mode -c`);
+
+      await regular.chat.sendMessage(
+        `\x02bold-${coloured}\x02 \x034red-${coloured}`,
+      );
+      const row = owner.chat.messageRowByText(`red-${coloured}`);
+      await expect(row.locator(".irc-bold")).toContainText(`bold-${coloured}`);
+      await expect(row.locator(".irc-fg-4")).toContainText(`red-${coloured}`);
+    } finally {
+      await closeUsers(users);
     }
   });
 });

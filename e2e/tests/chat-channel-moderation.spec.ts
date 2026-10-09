@@ -3,6 +3,7 @@
  * @flow I11 [done] `/ban bob` removes/blocks; `/unban bob` allows rejoin (features P0)
  * @flow I12 [done] `/kick bob reason` removes tab and broadcasts reason (features P0)
  * @flow I13 [done] `/mute bob` blocks channel messages; `/unmute bob` restores (features P0)
+ * @flow I19 [done] `/mute bob 5s` blocks channel messages and lifts itself when the time is up
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -143,6 +144,40 @@ test.describe("Channel moderation", () => {
       await owner.chat.sendMessage(`/unmute ${regular.nick}`);
       await owner.chat.expectMessageVisible(
         `${regular.nick} has been unmuted in ${channel}.`,
+      );
+
+      await regular.chat.sendMessage(restoredMessage);
+      await owner.chat.expectMessageVisible(restoredMessage);
+    } finally {
+      await closeUsers([owner, regular]);
+    }
+  });
+
+  test("/mute with a duration lifts itself when the time is up (I19)", async ({
+    browser,
+  }) => {
+    test.setTimeout(90_000);
+
+    const channel = uniqueChannel("tmute");
+    const { owner, regular } = await setupTwoUsersInChannel(browser, channel);
+    const mutedMessage = `tmuted-${Date.now()}`;
+    const restoredMessage = `tunmuted-${Date.now()}`;
+
+    try {
+      await owner.chat.sendMessage(`/mute ${regular.nick} 5s`);
+      await owner.chat.expectMessageVisible(
+        `${regular.nick} has been muted in ${channel}.`,
+      );
+
+      await regular.chat.sendMessage(mutedMessage);
+      await regular.chat.expectMessageVisible("You are muted in this channel");
+      await owner.chat.expectMessageHidden(mutedMessage);
+
+      // Nobody types /unmute: the expiry is a scheduled job, and the channel
+      // announces it the same way as an operator lifting it by hand.
+      await regular.chat.expectMessageVisible(
+        `${regular.nick} has been unmuted in ${channel}.`,
+        45_000,
       );
 
       await regular.chat.sendMessage(restoredMessage);

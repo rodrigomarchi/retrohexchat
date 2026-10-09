@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **239 spec files** under `e2e/tests/`.
-- **548 Playwright `test()` cases**.
-- **495 documented flows**, 494 done, 1 not done.
+- **240 spec files** under `e2e/tests/`.
+- **556 Playwright `test()` cases**.
+- **503 documented flows**, 502 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -256,6 +256,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | H7 | Topic changes are visible in realtime to another user (features P1) | `tests/chat-topic-advanced.spec.ts` | done |
 | H8 | `/list` opens channel list; search and the row press join (features P1) | `tests/chat-channel-list.spec.ts` | done |
 | H8b | a registered channel everybody left stays listed, says when it was last used, and still joins | `tests/chat-channel-list.spec.ts` | done |
+| H8c | a `+s` channel is missing from a non-member's list and from their /whois of a member | `tests/chat-channel-list.spec.ts` | done |
+| H8d | a `+p` channel shows a non-member only a "Prv" row with its user count | `tests/chat-channel-list.spec.ts` | done |
 | H9 | `/setwelcome` shows welcome once for a later joiner (features P1) | `tests/chat-channel-welcome.spec.ts` | done |
 | H10 | `/clearwelcome` stops welcome for later joiners (features P1) | `tests/chat-channel-welcome.spec.ts` | done |
 | H11 | `/setmotd`, `/motd`, new connect, and `/clearmotd` work (features P1) | `tests/chat-server-messages.spec.ts` | done |
@@ -284,6 +286,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | I16 | `/mode +K` disables knock; `-K` allows it again (features P2) | `tests/chat-channel-knock.spec.ts` | done |
 | I17 | `/transfer bob` changes ownership and privileges (features P1) | `tests/chat-channel-transfer.spec.ts` | done |
 | I18 | Channel Central edits modes/key/limit consistently with slash output (features P2) | `tests/chat-channel-central.spec.ts` | done |
+| I19 | `/mute bob 5s` blocks channel messages and lifts itself when the time is up | `tests/chat-channel-moderation.spec.ts` | done |
+| I20 | `+c` strips colour and bold from every line sent to the channel; `-c` lets them through again | `tests/chat-channel-modes.spec.ts` | done |
 
 ### J - User Commands, Privacy, Presence
 
@@ -308,6 +312,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | J17 | `/umode +w` opts in to wallops; `-w` opts out (features P1) | `tests/chat-wallops.spec.ts` | done |
 | J18 | `/wallops msg` reaches opted-in users and enforces privileges (features P1) | `tests/chat-wallops.spec.ts` | done |
 | J19 | Notify List opens from the View menu and status-bar online buddy badge (features P0) | `tests/chat-notify.spec.ts` | done |
+| J20 | `/ignore bob actions` hides only actions; `notices` hides only notices | `tests/chat-ignore.spec.ts` | done |
 
 ### K - NickServ And ChanServ
 
@@ -558,6 +563,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | S12 | Message timestamps use detected browser timezone with the current default `dd/mm HH:MM` format (features P2) | `tests/chat-timestamps.spec.ts` | done |
 | S13 | Saving a message from its menu keeps it in the Saved Messages window, privately, with a note (features P1) | `tests/chat-saved-messages.spec.ts` | done |
 | S14 | A message that was answered counts its replies and opens them together, while every reply stays in the room (features P1) | `tests/chat-threads.spec.ts` | done |
+| S15 | An operator pins a line from its right-click menu; every member gets the Pinned button and the window lists it; Unpin there removes it | `tests/chat-pins.spec.ts` | done |
+| S16 | `/pin <id>` and `/unpin <id>` do the same by number; a regular member is refused and has no Pin menu item | `tests/chat-pins.spec.ts` | done |
 
 ### T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
 
@@ -663,6 +670,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | X13 | Server mutes survive disconnect/reconnect and block sends until admin unmute restores sending (features P1) | `tests/chat-admin-user-mute-persistence.spec.ts` | done |
 | X14 | Server operator role appears after reconnect and grants operator-only command/menu access (features P2) | `tests/chat-admin-role-persistence.spec.ts` | done |
 | X15 | Admin audit log shows actor, target, action, and persisted reason for user ban entries (features P1) | `tests/chat-admin-audit-log.spec.ts` | done |
+| X16 | a registered channel keeps its topic and modes while empty; an unregistered one forgets them | `tests/chat-chanserv-persistence.spec.ts` | done |
 
 ### Y - Bot And Automation Edges
 

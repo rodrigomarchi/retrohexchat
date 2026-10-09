@@ -5,6 +5,7 @@
  * @flow J7 [done] `/ignore` lists entries and `/unignore bob` restores visibility (features P0)
  * @flow J8 [done] `/ignore <ownnick>` shows self-ignore error (features P1)
  * @flow J9 [done] Timed ignore expiry emits status (features P2)
+ * @flow J20 [done] `/ignore bob actions` hides only actions; `notices` hides only notices
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -145,6 +146,44 @@ test.describe("Ignore commands", () => {
       await bob.chat.sendMessage(`/msg ${alice.nick} ${hiddenPmText}`);
       await alice.chat.switchToTab(bob.nick);
       await alice.chat.expectMessageHidden(hiddenPmText);
+    } finally {
+      await closeUsers([alice, bob]);
+    }
+  });
+
+  test("actions and notices ignore types hide only their own kind of line (J20)", async ({
+    browser,
+  }) => {
+    const channel = uniqueChannel("kinds");
+    const { alice, bob } = await setupTwoUsersInChannel(browser, channel);
+    const stamp = Date.now();
+    const hiddenAction = `ignore-actions-action-${stamp}`;
+    const visibleMessage = `ignore-actions-message-${stamp}`;
+    const hiddenNotice = `ignore-notices-notice-${stamp}`;
+    const visibleAction = `ignore-notices-action-${stamp}`;
+
+    try {
+      await alice.chat.sendMessage(`/ignore ${bob.nick} actions`);
+      await alice.chat.expectMessageVisible(
+        `* ${bob.nick} is now ignored (actions)`,
+      );
+
+      // The plain line is sent after the action, so seeing it proves the
+      // action had its chance to arrive first and was dropped.
+      await bob.chat.sendMessage(`/me ${hiddenAction}`);
+      await bob.chat.sendMessage(visibleMessage);
+      await alice.chat.expectMessageVisible(visibleMessage);
+      await alice.chat.expectMessageHidden(hiddenAction);
+
+      await alice.chat.sendMessage(`/ignore ${bob.nick} notices`);
+      await alice.chat.expectMessageVisible(
+        `* ${bob.nick} ignore updated to: notices`,
+      );
+
+      await bob.chat.sendMessage(`/notice ${alice.nick} ${hiddenNotice}`);
+      await bob.chat.sendMessage(`/me ${visibleAction}`);
+      await alice.chat.expectMessageVisible(visibleAction);
+      await alice.chat.expectMessageHidden(hiddenNotice);
     } finally {
       await closeUsers([alice, bob]);
     }
