@@ -418,59 +418,6 @@ defmodule RetroHexChat.Scraper.Store do
     |> Repo.update()
   end
 
-  @doc """
-  Ready thumbnails larger than `width`x`height`, in id order after `after_id`.
-
-  Keyed on the stored frame rather than the format, so whatever the thumbnailer
-  writes today never matches. The id cursor is what lets a caller walk past a row
-  it could not convert instead of being handed it again.
-  """
-  @spec oversized_thumbnails(non_neg_integer(), pos_integer(), pos_integer(), pos_integer()) ::
-          [ScrapedPage.t()]
-  def oversized_thumbnails(after_id, width, height, limit) do
-    ScrapedPage
-    |> where([page], page.id > ^after_id and page.image_thumbnail_status == "ready")
-    |> where([page], not is_nil(page.image_thumbnail_storage_key))
-    |> where(
-      [page],
-      page.image_thumbnail_width > ^width or page.image_thumbnail_height > ^height
-    )
-    |> order_by([page], asc: page.id)
-    |> limit(^limit)
-    |> Repo.all()
-  end
-
-  @doc """
-  Points `page` at a new stored thumbnail, but only if it still points at
-  `previous_key`.
-
-  A conversion races the generator: a page whose image changed may have been
-  given a fresh thumbnail between reading the old one and writing this. The
-  predicate lets the newer write win and tells the caller its object is orphaned.
-  """
-  @spec replace_image_thumbnail(ScrapedPage.t(), String.t(), map()) ::
-          {:ok, ScrapedPage.t()} | {:error, :stale}
-  def replace_image_thumbnail(%ScrapedPage{id: id}, previous_key, attrs) do
-    ScrapedPage
-    |> where([page], page.id == ^id and page.image_thumbnail_storage_key == ^previous_key)
-    |> select([page], page)
-    |> Repo.update_all(
-      set: [
-        image_thumbnail_storage_bucket: Map.fetch!(attrs, :storage_bucket),
-        image_thumbnail_storage_key: Map.fetch!(attrs, :storage_key),
-        image_thumbnail_content_type: Map.fetch!(attrs, :content_type),
-        image_thumbnail_byte_size: Map.fetch!(attrs, :byte_size),
-        image_thumbnail_width: Map.fetch!(attrs, :width),
-        image_thumbnail_height: Map.fetch!(attrs, :height),
-        updated_at: DateTime.utc_now()
-      ]
-    )
-    |> case do
-      {1, [updated]} -> {:ok, updated}
-      {0, _rows} -> {:error, :stale}
-    end
-  end
-
   @spec record_image_thumbnail_failure(ScrapedPage.t(), String.t(), fetch_error(), keyword()) ::
           {:ok, ScrapedPage.t()} | {:error, Ecto.Changeset.t()}
   def record_image_thumbnail_failure(%ScrapedPage{} = page, source_url, reason, opts \\ []) do

@@ -9,9 +9,6 @@ defmodule RetroHexChat.Chat.Attachments.TestStorage do
   end
 
   @impl true
-  def get_file(_bucket, _key, _opts), do: {:error, :not_found}
-
-  @impl true
   def delete_file(_bucket, _key, _opts), do: :ok
 
   @impl true
