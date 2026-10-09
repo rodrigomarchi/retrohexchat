@@ -72,7 +72,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.CheatsheetDialogPage do
         },
         %{
           action: dgettext("showcase", "Cheatsheet"),
-          keys: "Ctrl+/",
+          keys: "Ctrl+Shift+/",
           description: dgettext("showcase", "Show this keyboard shortcut reference")
         }
       ]

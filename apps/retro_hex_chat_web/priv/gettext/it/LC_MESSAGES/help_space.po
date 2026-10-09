@@ -11,12 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Joining and Moving"
 msgstr "Entrare e Muoversi"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Lifecycle"
 msgstr "Ciclo di Vita"
@@ -179,22 +179,13 @@ msgstr ""
 "ogni canale, e ce l'ha ogni conversazione privata. Cammina per il mondo "
 "condiviso a 8 bit mentre la conversazione prosegue accanto."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Choose a character and you are in. Move with the arrow keys, WASD or the on-screen pad; the server validates every step, so walls and furniture block movement for everyone equally."
 msgstr ""
 "Scegli un personaggio e sei dentro. Muoviti con le frecce, WASD o il pad a "
 "schermo; il server convalida ogni passo, così muri e mobili bloccano il "
 "movimento allo stesso modo per tutti."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Space, beside the conversation's tabs, opens it in a browser tab of its own. The conversation stays exactly where it was, and Back to Chat along the space's bottom edge returns to it. There is no command for the map: the entry is the door."
-msgstr ""
-"Space, accanto alle schede della conversazione, lo apre in una scheda del "
-"browser tutta sua. La conversazione resta esattamente dov'era, e Torna alla "
-"chat, sul bordo inferiore dello spazio, ci riporta. Non c'è un comando per "
-"la mappa: la voce è la porta."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:10
 #, elixir-autogen, elixir-format
@@ -205,7 +196,7 @@ msgstr ""
 "non lo fa, che è la differenza che senti quando diverse persone stanno "
 "camminando in una volta."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "The world itself is runtime state: it wakes when the first person walks in and stops when the last one leaves. What outlives it is the card that walking into an empty one posts in the conversation, which becomes the record of how long the gathering ran and how many people came. The address is a place and never expires."
 msgstr ""
@@ -303,3 +294,23 @@ msgstr ""
 "non scade — uno spazio è un luogo —, quindi la voce accanto alle schede "
 "continua ad aprirlo, e la persona successiva comincia un nuovo ritrovo con "
 "un card tutto suo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "%{join} on the card asks first, then opens the map in a browser tab of its own."
+msgstr "%{join} sulla carta chiede prima, quindi apre la mappa in una scheda del browser propria."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "The conversation stays exactly where it was, and %{chat} at the bottom of the space returns to it."
+msgstr "La conversazione rimane esattamente dove era, e %{chat} in fondo allo spazio torna ad esso."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "There is no command for the map: the card is the door."
+msgstr "Non c'è nessun comando per la mappa: la carta è la porta."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The %{space} button next to the tabs puts the space's card in the conversation."
+msgstr "Il pulsante %{space} accanto alle schede mette la scheda dello spazio nella conversazione."

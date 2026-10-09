@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Live](https://img.shields.io/badge/live-retrohexchat.app-008080)](https://retrohexchat.app)
 
-**[▶ Open it in your browser — retrohexchat.app](https://retrohexchat.app)** · no install, no sign-up, pick a nick and join.
+**[▶ Open it in your browser — retrohexchat.app](https://retrohexchat.app)** · no install, no email — pick a nick and join.
 
 [![RetroHexChat in production: a channel conversation in the chat window, with the Arcade and the Retro Games folder open on the Windows 98 desktop](docs/images/readme-hero.webp)](https://retrohexchat.app)
 
@@ -106,7 +106,8 @@ Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are u
 
 ### UI & Keyboard
 
-- **Command palette** — `Ctrl+/` to browse every slash command with descriptions
+- **Command palette** — type `/` to browse every slash command with descriptions, grouped by category, with fuzzy search
+- **Shortcut cheatsheet** — `Ctrl+Shift+/` lists every keyboard shortcut
 - **Nick completion** — `Tab` autocomplete in message input
 - **Message history** — `↑`/`↓` to navigate previous messages
 - **Context menu** — Right-click users: Query, Whois, Kick, Ban, Op, Voice, Ignore, Nick Color, Contacts
@@ -123,7 +124,7 @@ Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are u
 
 ### Spaces & Channel Conferences
 
-- **Virtual Spaces** — Switch any channel or DM from Chat to Space and walk the same conversation as an avatar on a shared 8-bit map
+- **Virtual Spaces** — Every channel and DM has a shared 8-bit map: Space beside the tabs posts its card in the conversation, and Join on the card opens the map in a tab of its own, where you pick a character and walk around as an avatar
 - **Server-validated movement** — The browser sends inputs; the server validates movement, collision, seating, and interactions before broadcasting deltas
 - **Channel conferences** — Group audio/video calls live inside channels with pre-join devices, screen sharing, reactions, hand raise, layouts, and moderator controls
 - **Self-hosted SFU** — Private calls are P2P, while channel conferences route media through your own server so group calls remain practical

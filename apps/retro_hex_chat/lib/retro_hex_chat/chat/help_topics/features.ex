@@ -996,7 +996,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Quick reference overlay showing all keyboard shortcuts, opened with Ctrl+/."
+            "Quick reference overlay showing all keyboard shortcuts, opened with Ctrl+Shift+/."
           )
       },
       %{

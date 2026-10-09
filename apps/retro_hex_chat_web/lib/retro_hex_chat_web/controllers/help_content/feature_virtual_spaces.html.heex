@@ -8,8 +8,20 @@
 <p>
   {dgettext(
     "help_space",
-    "Space, beside the conversation's tabs, opens it in a browser tab of its own. The conversation stays exactly where it was, and Back to Chat along the space's bottom edge returns to it. There is no command for the map: the entry is the door."
+    "The %{space} button next to the tabs puts the space's card in the conversation.",
+    space: dgettext("chat", "Space")
   )}
+  {dgettext(
+    "help_space",
+    "%{join} on the card asks first, then opens the map in a browser tab of its own.",
+    join: dgettext("share", "Join")
+  )}
+  {dgettext(
+    "help_space",
+    "The conversation stays exactly where it was, and %{chat} at the bottom of the space returns to it.",
+    chat: "← " <> dgettext("share", "Chat")
+  )}
+  {dgettext("help_space", "There is no command for the map: the card is the door.")}
 </p>
 <.help_h4 icon={:icon_community}>{dgettext("help_space", "Joining and Moving")}</.help_h4>
 <p>
