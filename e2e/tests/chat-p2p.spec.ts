@@ -942,15 +942,18 @@ test.describe("In-chat P2P session", () => {
         .poll(() => remoteVideoLive(aliceSession), { timeout: 10_000 })
         .toBe(true);
 
-      await callWindow.locator('[data-window-control="maximize"]').click();
+      // Leaving mini put the window back where it was: maximized.
       await expect(callWindow).toHaveClass(/desktop-window--maximized/);
+
+      await callWindow.locator('[data-window-control="restore"]').click();
+      await expect(callWindow).not.toHaveClass(/desktop-window--maximized/);
       await expect(statsSection).toBeVisible();
       await expect
         .poll(() => remoteVideoIdentity(aliceSession))
         .toEqual(initialRemote);
 
-      await callWindow.locator('[data-window-control="restore"]').click();
-      await expect(callWindow).not.toHaveClass(/desktop-window--maximized/);
+      await callWindow.locator('[data-window-control="maximize"]').click();
+      await expect(callWindow).toHaveClass(/desktop-window--maximized/);
       await expect
         .poll(() => remoteVideoIdentity(aliceSession))
         .toEqual(initialRemote);

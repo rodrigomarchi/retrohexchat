@@ -6,7 +6,7 @@
 </p>
 <.help_h4 icon={:icon_camera}>{dgettext("help_p2p", "Starting a Video Call")}</.help_h4>
 <p>
-  {dgettext("help_p2p", "In the P2P session, click")} <strong>{dgettext("help_p2p", "Video Call")}</strong>{dgettext(
+  {dgettext("help_p2p", "In the P2P session, click")} <strong>{dgettext("lobby", "Start video")}</strong>{dgettext(
     "help_p2p",
     ". P2P media is self-controlled: either peer can start camera or microphone independently, and the other side joins the media surface automatically."
   )}
@@ -15,13 +15,20 @@
 <p>
   {dgettext(
     "help_p2p",
-    "Use the layout controls for Auto, Focus, Split, Speaker and Compact views. Click the remote tile to focus it. The self-view button cycles your own video between tile, picture-in-picture and hidden."
+    "Two layouts: Focus puts your peer's picture in front with yours in a corner, and Split puts the two of you side by side. Click the remote tile to switch between them. The self-view button moves your own video between tile, picture-in-picture and hidden; side by side, it shows or hides it."
   )}
 </p>
 <p>
   {dgettext(
     "help_p2p",
-    "With the P2P Session Console focused, Ctrl+Shift+ArrowRight cycles layouts and Ctrl+Shift+ArrowDown cycles self-view."
+    "With the P2P Session Console focused, Ctrl+Shift+ArrowRight switches layout and Ctrl+Shift+ArrowDown cycles self-view."
+  )}
+</p>
+<.help_h4 icon={:icon_call_phone_end}>{dgettext("help_p2p", "Leaving the Call")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "Leave ends the call for you only. Your peer stays in it and is told you left; start audio or video again to rejoin. End P2P session closes everything for both of you."
   )}
 </p>
 <.help_h4 icon={:icon_screen_share}>{dgettext("help_p2p", "Screen Share")}</.help_h4>

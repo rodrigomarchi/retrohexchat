@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   attr :peer_camera_off, :boolean, default: false
   attr :peer_muted, :boolean, default: false
   attr :peer_screen_sharing, :boolean, default: false
+  attr :peer_left, :boolean, default: false
   attr :reactions, :list, default: []
   attr :devices, :map, default: nil
   attr :media_mode, :string, default: "video"
@@ -45,7 +46,16 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
       |> assign(:normalized_layout, normalize_layout(assigns.call_layout))
       |> assign(:self_view_mode, normalize_self_view(Map.get(assigns, :self_view, "pip")))
 
-    assigns = assign(assigns, :show_surface, assigns.in_call or assigns.peer_sharing)
+    assigns =
+      assign(
+        assigns,
+        :self_view_place,
+        self_view_place(assigns.normalized_layout, assigns.self_view_mode)
+      )
+
+    # Out of the call there is nothing to watch: the peer's media only plays
+    # once you join, so a peer still in the call is an invitation, not a picture.
+    assigns = assign(assigns, :show_surface, assigns.in_call)
 
     ~H"""
     <div
@@ -96,7 +106,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           data-testid="p2p-call-surface"
           data-media-mode={@media_mode}
           data-call-layout={@normalized_layout}
-          data-self-view={@self_view_mode}
+          data-self-view={@self_view_place}
           data-call-mini={to_string(@mini)}
         >
           <div class={p2p_stage_class(@mini)} data-testid="p2p-call-stage">
@@ -110,22 +120,22 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
             />
 
             <div
-              class={video_grid_class(@normalized_layout, @self_view_mode, @mini)}
+              class={video_grid_class(@normalized_layout, @self_view_place, @mini)}
               data-testid="p2p-call-video-grid"
             >
               <div
-                class={remote_tile_class(@normalized_layout, @self_view_mode)}
+                class={remote_tile_class(@normalized_layout, @self_view_place)}
                 role="button"
                 tabindex="0"
                 title={focus_title(@normalized_layout)}
                 phx-click="set_call_layout"
                 phx-value-layout={focus_toggle_layout(@normalized_layout)}
                 data-testid="p2p-call-remote-tile"
-                data-focused={to_string(@normalized_layout in ~w(focus speaker compact))}
+                data-focused={to_string(@normalized_layout == "focus")}
                 data-peer-screen-share={to_string(@peer_screen_sharing)}
               >
                 <div
-                  :if={quality_label(@call)}
+                  :if={quality_label(@call) && !@peer_left}
                   class={[
                     "icon-on-dark absolute right-2 top-2 z-10 flex items-center gap-1 bg-black/70 px-1.5 py-0.5 font-bold shadow-retro-sunken",
                     quality_class(quality_level(@call))
@@ -138,17 +148,39 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
                 <video
                   id="lobby-remote-video"
-                  class={[
-                    "block h-full min-h-0 w-full bg-black object-contain",
-                    @peer_camera_off && "u-hidden"
-                  ]}
+                  class={
+                    [
+                      "block h-full min-h-0 w-full bg-black object-contain",
+                      @peer_camera_off && !@peer_left && "u-hidden",
+                      # Gone, the peer's last frame is hidden but keeps its room,
+                      # so the tile keeps its size beside yours.
+                      @peer_left && "invisible"
+                    ]
+                  }
                   autoplay
                   playsinline
                 >
                 </video>
 
                 <div
-                  :if={@peer_camera_off}
+                  :if={@peer_left}
+                  data-testid="p2p-call-peer-left"
+                  class="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-canvas p-4 text-center shadow-retro-sunken"
+                >
+                  <CallControls.icon_call_phone_end class="h-16 w-16" />
+                  <div class="font-bold">
+                    {dgettext("p2p", "%{peer} left the call", peer: peer_label(@peer_nick))}
+                  </div>
+                  <p class="text-muted-foreground">
+                    {dgettext(
+                      "p2p",
+                      "You are still in it. They can join again, or you can leave too."
+                    )}
+                  </p>
+                </div>
+
+                <div
+                  :if={@peer_camera_off and not @peer_left}
                   data-testid="lobby-peer-camera-off"
                   class="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-canvas p-4 text-center shadow-retro-sunken"
                 >
@@ -185,21 +217,24 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
               <div
                 :if={@in_call}
-                class={local_tile_class(if(@mini, do: "hidden", else: @self_view_mode))}
+                class={local_tile_class(if(@mini, do: "hidden", else: @self_view_place))}
                 data-testid="p2p-call-local-tile"
-                data-self-view={@self_view_mode}
+                data-self-view={@self_view_place}
                 data-screen-share={to_string(@screen_sharing)}
               >
                 <video
                   id="lobby-local-video"
-                  class="block h-full min-h-[72px] w-full bg-black object-cover"
+                  class={[
+                    "block h-full min-h-[72px] w-full bg-black",
+                    local_video_fit(@self_view_place)
+                  ]}
                   autoplay
                   playsinline
                   muted
                   data-testid="p2p-local-self-view"
                 >
                 </video>
-                <div class="icon-on-dark absolute bottom-1 left-1 right-1 flex items-center gap-1 bg-black/70 px-1 py-0.5 font-bold text-white">
+                <div class={local_label_class(@self_view_place)}>
                   <CallControls.icon_call_screen_share
                     :if={@screen_sharing}
                     class="h-4 w-4 shrink-0 text-warning"
@@ -238,7 +273,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           </div>
         </div>
 
-        <.idle_call_state :if={!@show_surface} peer_nick={@peer_nick} />
+        <.idle_call_state :if={!@show_surface} peer_nick={@peer_nick} peer_in_call={@peer_sharing} />
       </section>
     </div>
     """
@@ -314,6 +349,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   end
 
   attr :peer_nick, :string, default: nil
+  attr :peer_in_call, :boolean, default: false
 
   defp idle_call_state(assigns) do
     ~H"""
@@ -325,8 +361,14 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         <span class="flex h-11 w-11 items-center justify-center bg-canvas shadow-retro-sunken">
           <CallControls.icon_call_webrtc class="h-6 w-6" />
         </span>
-        <div class="font-bold">{dgettext("p2p", "Ready for private media")}</div>
-        <p class="max-w-[30rem] text-muted-foreground">
+        <div :if={@peer_in_call} class="font-bold" data-testid="p2p-call-peer-in-call">
+          {dgettext("p2p", "%{peer} is still in the call", peer: peer_label(@peer_nick))}
+        </div>
+        <p :if={@peer_in_call} class="max-w-[30rem] text-muted-foreground">
+          {dgettext("p2p", "Start audio or video to join them again.")}
+        </p>
+        <div :if={!@peer_in_call} class="font-bold">{dgettext("p2p", "Ready for private media")}</div>
+        <p :if={!@peer_in_call} class="max-w-[30rem] text-muted-foreground">
           {dgettext(
             "lobby",
             "Start audio or video — or the peer can, independently. You'll join automatically."
@@ -541,17 +583,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
     >
       <.tool_button
         variant="flat"
-        label={dgettext("p2p", "Auto layout")}
-        active={@normalized_layout == "auto"}
-        pressed={@normalized_layout == "auto"}
-        phx-click="set_call_layout"
-        phx-value-layout="auto"
-        data-testid="p2p-call-layout-auto"
-      >
-        <CallControls.icon_call_layout_auto class="h-4 w-4" />
-      </.tool_button>
-      <.tool_button
-        variant="flat"
         label={dgettext("lobby", "Focus")}
         active={@normalized_layout == "focus"}
         pressed={@normalized_layout == "focus"}
@@ -571,28 +602,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         data-testid="p2p-call-layout-split"
       >
         <CallControls.icon_call_layout_split class="h-4 w-4" />
-      </.tool_button>
-      <.tool_button
-        variant="flat"
-        label={dgettext("p2p", "Speaker")}
-        active={@normalized_layout == "speaker"}
-        pressed={@normalized_layout == "speaker"}
-        phx-click="set_call_layout"
-        phx-value-layout="speaker"
-        data-testid="p2p-call-layout-speaker"
-      >
-        <CallControls.icon_call_layout_speaker class="h-4 w-4" />
-      </.tool_button>
-      <.tool_button
-        variant="flat"
-        label={dgettext("p2p", "Compact")}
-        active={@normalized_layout == "compact"}
-        pressed={@normalized_layout == "compact"}
-        phx-click="set_call_layout"
-        phx-value-layout="compact"
-        data-testid="p2p-call-layout-compact"
-      >
-        <CallControls.icon_call_layout_compact class="h-4 w-4" />
       </.tool_button>
       <.tool_button
         variant="flat"
@@ -751,15 +760,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   defp video_grid_class("split", "tile", false) do
     [
       "media-dock-host relative grid h-full min-h-0 gap-1 overflow-hidden border border-border bg-black p-1 shadow-retro-sunken",
-      "sm:grid-cols-2"
-    ]
-  end
-
-  defp video_grid_class("auto", "tile", false), do: video_grid_class("split", "tile", false)
-
-  defp video_grid_class("compact", _self_view, false) do
-    [
-      "media-dock-host relative grid h-full min-h-0 gap-1 overflow-hidden border border-border bg-black p-1 shadow-retro-sunken"
+      "auto-rows-[minmax(0,1fr)] sm:grid-cols-2"
     ]
   end
 
@@ -771,7 +772,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
   @spec remote_tile_class(String.t(), String.t()) :: list()
   defp remote_tile_class("split", "tile"), do: base_tile_class()
-  defp remote_tile_class("auto", "tile"), do: base_tile_class()
 
   defp remote_tile_class(_layout, _self_view) do
     base_tile_class() ++ ["min-h-[160px]"]
@@ -797,14 +797,54 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   end
 
   @spec normalize_layout(String.t()) :: String.t()
-  defp normalize_layout("side_by_side"), do: "split"
-  defp normalize_layout("maximized"), do: "compact"
-  defp normalize_layout(layout) when layout in ~w(auto focus split speaker compact), do: layout
+  # A call between two has two layouts: the peer's picture in focus, or the two
+  # side by side.
+  defp normalize_layout(layout) when layout in ~w(split side_by_side), do: "split"
   defp normalize_layout(_layout), do: "focus"
 
   @spec normalize_self_view(String.t()) :: String.t()
   defp normalize_self_view(mode) when mode in ~w(tile pip hidden), do: mode
   defp normalize_self_view(_mode), do: "pip"
+
+  @doc """
+  The self view the self-view button moves to next. Side by side, your camera
+  is either beside the peer's or hidden, so the button only shows and hides it.
+  """
+  @spec next_self_view(String.t(), String.t()) :: String.t()
+  def next_self_view(layout, self_view) do
+    case {normalize_layout(layout), self_view} do
+      {"split", "hidden"} -> "tile"
+      {"split", _shown} -> "hidden"
+      {_layout, "tile"} -> "pip"
+      {_layout, "pip"} -> "hidden"
+      {_layout, _hidden_or_unknown} -> "tile"
+    end
+  end
+
+  # As a tile, your name sits where the peer's does, top left, clear of the
+  # dock; in the corner window it runs along the bottom.
+  @spec local_label_class(String.t()) :: list()
+  defp local_label_class("tile") do
+    [
+      "icon-on-dark absolute left-2 top-2 z-10 flex max-w-[60%] items-center gap-1 border border-white/25 bg-black/60 px-1.5 py-0.5 font-bold text-white"
+    ]
+  end
+
+  defp local_label_class(_place) do
+    [
+      "icon-on-dark absolute bottom-1 left-1 right-1 flex items-center gap-1 bg-black/70 px-1 py-0.5 font-bold text-white"
+    ]
+  end
+
+  # Side by side puts your own camera beside the peer's, unless you hid it.
+  @spec self_view_place(String.t(), String.t()) :: String.t()
+  defp self_view_place("split", "pip"), do: "tile"
+  defp self_view_place(_layout, self_view), do: self_view
+
+  # As a tile your picture is shown whole, like the peer's; the corner window is filled.
+  @spec local_video_fit(String.t()) :: String.t()
+  defp local_video_fit("tile"), do: "object-contain"
+  defp local_video_fit(_place), do: "object-cover"
 
   @spec focus_toggle_layout(String.t()) :: String.t()
   defp focus_toggle_layout("focus"), do: "split"

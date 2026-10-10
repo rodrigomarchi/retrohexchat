@@ -94,7 +94,11 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PFileIsland do
     |> summarize()
   end
 
+  # A file that waited in the queue is now on offer: the line saying it waits
+  # is no longer true, so it goes.
   defp handle_ft(socket, "ft_offer_sent", params) do
+    send(self(), {:p2p_clear_notice, queued_notice(params["file_name"])})
+
     socket
     |> assign(file_transfer: ft_meta(params, "offering", socket.assigns.nickname))
     |> summarize()
@@ -197,13 +201,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PFileIsland do
   # Nothing about the transfer on screen changes, so without a line of its own
   # the pick reads as a click that did nothing.
   defp handle_ft(socket, "ft_queued", params) do
-    send(
-      self(),
-      {:p2p_feature_notice, :file,
-       dgettext("lobby", "Queued for after the current transfer: %{name}",
-         name: params["file_name"]
-       ), scope: :local}
-    )
+    send(self(), {:p2p_feature_notice, :file, queued_notice(params["file_name"]), scope: :local})
 
     socket
   end
@@ -217,6 +215,11 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PFileIsland do
   end
 
   defp handle_ft(socket, _name, _params), do: socket
+
+  @spec queued_notice(String.t() | nil) :: String.t()
+  defp queued_notice(name) do
+    dgettext("lobby", "Queued for after the current transfer: %{name}", name: name)
+  end
 
   @spec ensure_file_transfer(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
   defp ensure_file_transfer(%{assigns: %{file_transfer: nil}} = socket) do

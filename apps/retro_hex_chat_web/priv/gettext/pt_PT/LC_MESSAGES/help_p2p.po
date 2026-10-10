@@ -29,7 +29,7 @@ msgstr "Após a transferência, o hash SHA-256 é verificado automaticamente. Se
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:6
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:103
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:28
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "Audio Call"
 msgstr "Chamada de Áudio"
@@ -47,14 +47,14 @@ msgstr "Extensões bloqueadas: .exe, .bat, .cmd, .com, .msi, .scr, .pif, .vbs, .
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:99
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:65
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Call Quality"
 msgstr "Qualidade da Chamada"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:49
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Click"
 msgstr "Clique"
@@ -125,7 +125,7 @@ msgstr "Mudança ao Vivo"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:110
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:98
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Media Devices"
 msgstr "Dispositivos de mídia"
@@ -150,18 +150,18 @@ msgstr "Ou na sessão P2P, clique"
 msgid "Pause and Resume"
 msgstr "Pausa e continuação"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "PiP"
 msgstr "PiP"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
 msgstr "Imagem em Imagens"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Privacy Settings"
 msgstr "Configurações de Privacidade"
@@ -198,7 +198,7 @@ msgstr "Restrições"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "Ver também"
@@ -243,12 +243,12 @@ msgstr "Iniciando uma Chamada de Vídeo"
 msgid "The progress bar shows: percentage, speed, and estimated time. You can cancel at any time."
 msgstr "A barra de progresso mostra: porcentagem, velocidade e tempo estimado. Você pode cancelar a qualquer momento."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Turn Camera Off"
 msgstr "Desligar a Câmara"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Turn Camera Off/On"
 msgstr "Desligar a Câmara/On"
@@ -258,7 +258,6 @@ msgstr "Desligar a Câmara/On"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Video Call"
 msgstr "Chamada de Vídeo"
@@ -283,12 +282,12 @@ msgstr "e selecione o arquivo."
 msgid "button to mute your microphone. The other user will see an indication that you are muted."
 msgstr "botão para silenciar o microfone. O outro usuário verá uma indicação de que você está silenciado."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "to pause the video. The peer will see a placeholder."
 msgstr "para pausar o vídeo. O par verá um substituto."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "to pop the remote video into a floating window that stays visible while navigating other tabs."
 msgstr "para colocar o vídeo remoto em uma janela flutuante que permanece visível enquanto navega por outras abas."
@@ -400,7 +399,7 @@ msgstr "Indicador de canais"
 msgid "Channel moderators can end the conference, lock or unlock new admission, mute microphones, turn participant cameras off, stop and temporarily block screen sharing, use bulk mute/camera-off for lower-ranked participants, allow raised-hand participants to speak, and remove users from both the conference and the channel when channel policy allows it. Participants can raise a hand when they need to speak; moderators see the request queue and allowing speech unmutes the participant. A locked conference keeps users in the channel but blocks non-moderators from joining the call. Camera or screen sharing disabled by moderation is shown differently from a participant turning it off voluntarily. Destructive and bulk actions ask for confirmation first. Administrative events are recorded with the conference and relevant events appear as system messages in the channel without turning media/presence updates into chat spam."
 msgstr "Os moderadores de canais podem terminar a conferência, bloquear ou desbloquear novas entradas, silenciar microfones, desligar câmeras participantes, parar e bloquear temporariamente o compartilhamento de tela, usar mute em massa/camera-off para os participantes de classificação inferior, permitir que os participantes de mão levantada falem e remover usuários da conferência e do canal quando a política de canal permitir. Os participantes podem levantar a mão quando precisam falar; os moderadores veem a fila de solicitação e permitem que a fala desmute o participante. Uma conferência bloqueada mantém os usuários no canal, mas impede que não-moderadores entrem na chamada. Câmera ou compartilhamento de tela desabilitado por moderação é mostrado de forma diferente de um participante desligá-lo voluntariamente. As ações destrutivas e a granel pedem confirmação primeiro. Eventos administrativos são gravados com a conferência e eventos relevantes aparecem como mensagens de sistema no canal sem transformar mídia/presence atualizações em spam de chat."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Click Share Screen to replace your camera feed with a browser display-capture track. Stopping from the browser or from the button restores the previous camera when possible; the peer sees a screen badge."
 msgstr "Clique em Compartilhar tela para substituir o feed da câmera por uma faixa de exibição-captura do navegador. Parar do navegador ou do botão restaura a câmera anterior quando possível; o par vê um crachá de tela."
@@ -457,13 +456,13 @@ msgstr "Chamadas de vídeo com layouts 1:1 ricos, controle de auto-visão, compa
 msgid "Pre-join and Devices"
 msgstr "Pré-adesão e Dispositivos"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Reaction buttons send short visual effects over the active P2P session. They appear on the call tiles and do not create private-message rows."
 msgstr "Os botões de reação enviam efeitos visuais curtos sobre a sessão ativa P2P. Eles aparecem nas peças de chamada e não criam linhas de mensagens privadas."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Reactions"
 msgstr "Reações"
@@ -473,7 +472,7 @@ msgstr "Reações"
 msgid "Recovery"
 msgstr "Recuperação"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Screen Share"
 msgstr "Compartilhamento de tela"
@@ -517,11 +516,6 @@ msgstr "A barra de cabeçalho e status mostram duração da chamada, qualidade, 
 #, elixir-autogen, elixir-format
 msgid "The header shows the peer, session state, browser/WebRTC state, peer online state, active call/file/game facets and whether the privacy relay is active."
 msgstr "The header shows the peer, session state, browser/WebRTC state, peer online state, active call/file/game facets and whether the privacy relay is active."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Use the layout controls for Auto, Focus, Split, Speaker and Compact views. Click the remote tile to focus it. The self-view button cycles your own video between tile, picture-in-picture and hidden."
-msgstr "Use os controles de layout para Auto, Foco, Split, Speaker e visões compactas. Clique no bloco remoto para focá-lo. O botão de auto-visão cicla o seu próprio vídeo entre azulejo, imagem na imagem e oculto."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_conference.html.heex:58
 #, elixir-autogen, elixir-format
@@ -576,7 +570,7 @@ msgstr ". Tanto peer pode iniciar ou parar seu próprio microfone independenteme
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_in_chat.html.heex:65
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "Sessão P2P"
@@ -834,7 +828,7 @@ msgstr "Pode manter uma sessão com várias pessoas ao mesmo tempo, cada uma no 
 msgid "A session can only be live in one of your windows. Opening it somewhere else moves it there, and the window that lost it says so and offers Bring it back here — which is why the conversation offers a way to the tab you already have instead of a second one. Closing the tab is not the same as ending the session: you have about half a minute to come back to the address before it closes itself. Only End session, which asks first, is final straight away."
 msgstr "Uma sessão só pode estar viva numa das suas janelas. Abri-la noutro lado move-a para lá, e a janela que a perdeu di-lo e oferece Trazer de volta para aqui — e é por isso que a conversa oferece um caminho para o separador que já tem em vez de um segundo. Fechar o separador não é o mesmo que terminar a sessão: tem cerca de meio minuto para voltar ao endereço antes de ela se fechar sozinha. Só Terminar sessão, que pergunta antes, é definitivo de imediato."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+. toggles screen sharing when the P2P Session Console is focused. A shared screen automatically favors the focus layout."
 msgstr "Ctrl+Shift+. comuta o compartilhamento de tela quando a Consola de Sessão P2P está focada. Uma tela compartilhada favorece automaticamente o layout de foco."
@@ -848,11 +842,6 @@ msgstr "Ctrl+Shift+Q na Consola de Sessão P2P em foco termina apenas os média 
 #, elixir-autogen, elixir-format
 msgid "End Call stops the media and leaves the session standing for files, games and statistics. End P2P session, at the top of the console, ends the whole thing and asks first. Closing the browser tab is neither: the other side is told you dropped, and you have about half a minute to come back to the address before the session closes itself."
 msgstr "Terminar Chamada para os média e deixa a sessão de pé para ficheiros, jogos e estatísticas. Terminar sessão P2P, no topo da consola, termina tudo e pergunta antes. Fechar o separador do navegador não é nenhum dos dois: o outro lado é avisado de que caiu, e tem cerca de meio minuto para voltar ao endereço antes de a sessão se fechar sozinha."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowRight cycles layouts and Ctrl+Shift+ArrowDown cycles self-view."
-msgstr "Com o console de sessão P2P focado, Ctrl+Shift+ArrowRight ciclos layouts e Ctrl+Shift+ArrowDown ciclos auto-visão."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:20
 #, elixir-autogen, elixir-format
@@ -978,3 +967,23 @@ msgstr "O vídeo é enviado até %{video} e áudio até %{audio}."
 #, elixir-autogen, elixir-format
 msgid "When the quality is Fair or Poor"
 msgstr "Quando a qualidade é justa ou pobre"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Leave ends the call for you only. Your peer stays in it and is told you left; start audio or video again to rejoin. End P2P session closes everything for both of you."
+msgstr "Deixe termina a chamada apenas para você. Seu par fica nele e é dito que você esquerda; iniciar áudio ou vídeo novamente para se reunir. Terminar sessão P2P fecha tudo para vocês dois."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Leaving the Call"
+msgstr "Deixar a Chamada"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Two layouts: Focus puts your peer's picture in front with yours in a corner, and Split puts the two of you side by side. Click the remote tile to switch between them. The self-view button moves your own video between tile, picture-in-picture and hidden; side by side, it shows or hides it."
+msgstr "Duas disposições: O foco coloca a foto de seus pares na frente com a sua em um canto, e Split coloca os dois lado a lado. Clique no bloco remoto para alternar entre eles. O botão de auto-visão move o seu próprio vídeo entre azulejo, imagem na imagem e oculto; lado a lado, ele mostra ou esconde-o."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "With the P2P Session Console focused, Ctrl+Shift+ArrowRight switches layout and Ctrl+Shift+ArrowDown cycles self-view."
+msgstr "Com o console de sessão P2P focado, Ctrl+Shift+ArrowRight alterna layout e Ctrl+Shift+ArrowDown ciclos de auto-visão."

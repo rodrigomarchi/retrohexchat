@@ -583,6 +583,15 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     end
   end
 
+  # A notice that stopped being true leaves the status bar — only that one, so
+  # a newer line said since is left alone.
+  def handle_info({:p2p_clear_notice, text}, socket) do
+    case socket.assigns[:notice] do
+      %{message: ^text} -> {:halt, assign(socket, notice: nil)}
+      _other -> {:halt, socket}
+    end
+  end
+
   def handle_info(_msg, socket), do: {:cont, socket}
 
   defp summary_key(:file), do: :file_summary
@@ -1307,17 +1316,20 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   # so the command goes straight to it. Handing it to the chat instead is what
   # makes mini mode a checkbox that changes nothing: the chat's window manager
   # does not hold this call.
+  # The mini window remembers where the console was, maximized included, and
+  # leaving it puts the console back there; the default size is the fallback.
   defp push_p2p_call_geometry(socket, true) do
-    push_window_geometry(socket, %{
+    push_window_geometry(socket, "set_geometry", %{
       width: 300,
       height: 236,
       anchor: "bottom_right",
-      margin: 16
+      margin: 16,
+      remember: true
     })
   end
 
   defp push_p2p_call_geometry(socket, false) do
-    push_window_geometry(socket, %{
+    push_window_geometry(socket, "restore_geometry", %{
       width: @p2p_console_width,
       height: @p2p_console_height,
       x: @p2p_console_x,
@@ -1325,11 +1337,11 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     })
   end
 
-  defp push_window_geometry(socket, geometry) do
+  defp push_window_geometry(socket, action, geometry) do
     Phoenix.LiveView.push_event(
       socket,
       "window_command",
-      geometry |> Map.put(:action, "set_geometry") |> Map.put(:id, @call_window_id)
+      geometry |> Map.put(:action, action) |> Map.put(:id, @call_window_id)
     )
   end
 
@@ -1362,25 +1374,16 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     put_p2p(socket, nil)
   end
 
-  # Reasons with a single writer already persisted a p2p_system line into the
-  # PM (end/decline/cancel actors) — an ephemeral copy here would duplicate
-  # it. Domain-driven ends (timeout, peer_left, failure) have no writer, so
-  # both sides render the ephemeral line.
-  @persisted_by_actor ~w(user_closed declined invite_cancelled user_blocked)
-
+  # Whatever ended it, this page's status bar says so: it is this page's own
+  # line, never written into the private chat, so it duplicates nothing — and
+  # without it the bar kept saying the session was connected.
   defp finish_session(socket, reason) do
     p2p = socket.assigns.p2p_session
 
-    socket =
-      if reason in @persisted_by_actor do
-        detach_session(socket, p2p)
-      else
-        socket
-        |> detach_session(p2p)
-        |> Surface.system(ended_message(p2p.peer_nick, reason))
-      end
-
-    Surface.close(socket)
+    socket
+    |> detach_session(p2p)
+    |> Surface.system(ended_message(p2p.peer_nick, reason))
+    |> Surface.close()
   end
 
   # ICE config + the role-specific start event, exactly once per

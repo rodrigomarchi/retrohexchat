@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.E2EController do
   alias RetroHexChat.Channels.Server, as: ChannelServer
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat.Content
+  alias RetroHexChat.Chat.ContextualTips
 
   @message_types %{
     "message" => :message,
@@ -53,6 +54,30 @@ defmodule RetroHexChatWeb.E2EController do
   end
 
   defp do_create_channel_message(conn, _params), do: error(conn, :bad_request, "invalid params")
+
+  @doc """
+  Turns contextual tips off for a nickname, as "Don't show tips again" would.
+  Saved before that person signs in, their session loads it and no tip opens.
+  """
+  @spec suppress_contextual_tips(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def suppress_contextual_tips(conn, params) do
+    if Application.get_env(:retro_hex_chat, :e2e_fault_injection?, false) do
+      do_suppress_contextual_tips(conn, params)
+    else
+      not_found(conn)
+    end
+  end
+
+  defp do_suppress_contextual_tips(conn, %{"nickname" => nickname}) when is_binary(nickname) do
+    with :ok <- validate_author(nickname),
+         :ok <- ContextualTips.save(nickname, %{seen_tips: [], suppressed: true}) do
+      json(conn, %{status: "suppressed"})
+    else
+      {:error, reason} -> error(conn, :unprocessable_entity, inspect(reason))
+    end
+  end
+
+  defp do_suppress_contextual_tips(conn, _params), do: error(conn, :bad_request, "invalid params")
 
   defp validate_channel(channel) do
     if Regex.match?(@channel_pattern, channel) do

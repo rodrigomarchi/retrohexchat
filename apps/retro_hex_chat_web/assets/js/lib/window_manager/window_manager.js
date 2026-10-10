@@ -40,7 +40,8 @@
  * prefers reduced motion).
  *
  * The server can drive it via `push_event("window_command", {action, id})` where
- * action is one of open | focus | flash | close | minimize | maximize | dock_pair.
+ * action is one of open | focus | flash | close | minimize | maximize |
+ * set_geometry | restore_geometry | dock_pair.
  *
  * Escape first closes any open WM menu. On desktops opting in via
  * `data-escape-closes-windows`, it then closes the topmost unpinned window —
@@ -910,6 +911,9 @@ const WindowManagerCore = {
       case "set_geometry":
         this.setWindowGeometry(id, payload);
         break;
+      case "restore_geometry":
+        this.restoreWindowGeometry(id, payload);
+        break;
       case "dock_pair":
         this.dockPair(id, payload);
         break;
@@ -921,6 +925,17 @@ const WindowManagerCore = {
     if (!win || this.stacked) return;
 
     const st = win.state;
+    // `remember` keeps where the window was, so `restore_geometry` can put it back.
+    if (payload.remember) {
+      win.saved = {
+        x: st.x,
+        y: st.y,
+        w: st.w,
+        h: st.h,
+        maximized: st.maximized,
+        centered: st.centered,
+      };
+    }
     const { w: wsW, h: wsH } = this.workspaceSize();
     const margin = Math.max(8, int(payload.margin, 16));
     const nextW = clamp(int(payload.width, st.w), win.minW, Math.max(win.minW, wsW - margin * 2));
@@ -950,6 +965,24 @@ const WindowManagerCore = {
     }
 
     st.z = this.zCounter += 1;
+    this.focusedId = id;
+    this.applyAll();
+    this.persist();
+  },
+
+  // Put a window back where a remembering `set_geometry` found it — maximized
+  // included. With nothing remembered, the payload is the geometry to use.
+  restoreWindowGeometry(id, payload = {}) {
+    const win = this.windows[id];
+    if (!win || this.stacked) return;
+    if (!win.saved) {
+      this.setWindowGeometry(id, payload);
+      return;
+    }
+
+    Object.assign(win.state, win.saved, { open: true, minimized: false });
+    win.saved = null;
+    win.state.z = this.zCounter += 1;
     this.focusedId = id;
     this.applyAll();
     this.persist();

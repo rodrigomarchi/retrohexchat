@@ -54,6 +54,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
        peer_camera_off: false,
        peer_screen_sharing: false,
        peer_media: %{audio: false, video: false},
+       peer_left: false,
        reactions: [],
        devices: nil,
        connected: false,
@@ -110,7 +111,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
 
   def update(%{action: {:peer_media_changed, payload}} = assigns, socket) do
     socket = assign_context(socket, assigns)
-    socket = assign(socket, peer_media: %{audio: payload.audio, video: payload.video})
+    socket = assign_peer_media(socket, %{audio: payload.audio, video: payload.video})
 
     socket =
       push_event(socket, "lobby_media_peer_media", %{
@@ -122,6 +123,23 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
   end
 
   def update(assigns, socket), do: {:ok, assign_context(socket, assigns)}
+
+  # The peer was sending and stopped everything while we are in the call: they
+  # left it. Anything they send again means they are back.
+  @spec assign_peer_media(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
+  defp assign_peer_media(socket, media) do
+    was_sending? = socket.assigns.peer_media.audio or socket.assigns.peer_media.video
+    sending? = media.audio or media.video
+
+    peer_left =
+      cond do
+        sending? -> false
+        was_sending? and socket.assigns.call != nil -> true
+        true -> socket.assigns.peer_left
+      end
+
+    assign(socket, peer_media: media, peer_left: peer_left)
+  end
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
@@ -142,6 +160,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
         peer_camera_off={@peer_camera_off}
         peer_muted={@peer_muted}
         peer_screen_sharing={@peer_screen_sharing}
+        peer_left={@peer_left}
         reactions={@reactions}
         devices={@devices}
         media_mode={@media_mode}
@@ -228,6 +247,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
     socket
     |> assign(
       call: nil,
+      peer_left: false,
       call_layout: "focus",
       local_muted: false,
       local_camera_off: false,
@@ -291,14 +311,15 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
   end
 
   defp media_event(socket, "set_call_layout", %{"layout" => layout})
-       when layout in ~w(auto focus split speaker compact side_by_side maximized) do
+       when layout in ~w(focus split side_by_side) do
     assign(socket, call_layout: layout)
   end
 
   defp media_event(socket, "set_call_layout", _params), do: socket
 
   defp media_event(socket, "cycle_call_self_view", _params) do
-    assign(socket, self_view: next_self_view(socket.assigns.self_view))
+    self_view = CallPanel.next_self_view(socket.assigns.call_layout, socket.assigns.self_view)
+    assign(socket, self_view: self_view)
   end
 
   defp media_event(socket, "cycle_call_layout", _params) do
@@ -465,17 +486,9 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
     Enum.reject(reactions, &(&1.id == reaction_id))
   end
 
-  @spec next_self_view(String.t()) :: String.t()
-  defp next_self_view("tile"), do: "pip"
-  defp next_self_view("pip"), do: "hidden"
-  defp next_self_view(_hidden_or_unknown), do: "tile"
-
   @spec next_layout(String.t()) :: String.t()
-  defp next_layout("auto"), do: "focus"
   defp next_layout("focus"), do: "split"
-  defp next_layout("split"), do: "speaker"
-  defp next_layout("speaker"), do: "compact"
-  defp next_layout(_compact_or_unknown), do: "auto"
+  defp next_layout(_split_or_unknown), do: "focus"
 
   @spec maybe_focus_shared_screen(Phoenix.LiveView.Socket.t(), boolean()) ::
           Phoenix.LiveView.Socket.t()

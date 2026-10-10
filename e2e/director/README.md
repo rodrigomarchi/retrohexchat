@@ -20,6 +20,19 @@ found, and delete it once every item is fixed.
 moment — nothing changes on screen; the edit (`retro_hex_chat_videos/compose`)
 zooms towards it. Following a new tab resets it to the whole frame.
 
+A scene about two people films both at once: `filmCrew({ Pixel: page, lumen:
+page }, shot, action, { kind, cameras })` puts a camera on each person's own
+browser, all on one clock, and writes `cams/<name>/frames/` plus a `take.json`
+with `cameras` and `layouts`. `layout("full" | "split" | "pip", ...names)`
+tells the edit which screens to show from that moment; `follow` and `focus`
+act on the camera whose browser the page belongs to; `talk("words")` waits
+for a line one of them says (a cue with `who` and `seconds`) and makes their
+character talk for as long as it is on screen; `wave(name)` waves.
+
+`DIRECTOR_REHEARSAL=1` reports late cues and overruns instead of failing, and
+prints how long each scene acted: one run measures how much narration every
+beat needs.
+
 ## Files
 
 - `epNN-*.director.ts` — one file per episode, one `test` per scene.
@@ -34,9 +47,13 @@ zooms towards it. Following a new tab resets it to the whole frame.
   own, never filmed.
 - `cursor.ts` — a drawn Windows-98 pointer: headless Chrome has no system
   cursor, so without it clicks and pointing are invisible on film.
-- `media.ts` — a camera for people on film: a broadcast test card captioned
-  with the nickname, devices named like a laptop's. The suite's synthetic
-  media ("p2p media", "Mock Camera") reads as a test on screen.
+- `media.ts` — cameras for people on film, devices named like a laptop's.
+  `installTestCard`: a broadcast test card captioned with the nickname.
+  `installCharacterCamera`: an animated pixel-art character in a room of its
+  own, talking and waving on the director's word (`window.__directorCamera`,
+  passed to every tab of the context by a BroadcastChannel); sharing the
+  screen shows a music tracker. The suite's synthetic media ("p2p media",
+  "Mock Camera") reads as a test on screen.
 - `calls.ts`, `space.ts`, `arcade.ts` — sessions and conferences, Spaces, and
   the Arcade with DOOM, the way a scene needs them.
 
@@ -104,5 +121,15 @@ database (`FRESH=1`) or another `DIRECTOR_NICK`.
 - **Set up off camera what an earlier scene does on camera.** A scene that
   shows a topic coming back must set that topic itself: filmed alone, the
   scene that set it never ran.
+- **The cold open is filmed last.** Run first, its session is already
+  history in the next scene's private chat; ep01 and ep03 put scene 0 at the
+  end of the file.
+- **A queued file needs the first one still travelling.** On loopback a
+  transfer runs at about 45 MB/s; the song in ep03 is near the 500 MB limit
+  so it is still going when the second file is picked.
+- **The e2e server allows two new sessions every ten seconds.** A director
+  that opens one per scene waits between them (`sessionAllowed`).
+- **An ended session is a grey page.** Hold on it for a beat, then cut back to
+  the chat, where the private conversation keeps what happened.
 - **Write a director from the specs the script cites.** Each beat names an
   e2e spec; copy its steps and its assertions, then add the camera.

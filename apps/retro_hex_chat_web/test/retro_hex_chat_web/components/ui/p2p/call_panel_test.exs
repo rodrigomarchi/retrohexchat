@@ -94,11 +94,12 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     assert html =~ ~s(data-testid="p2p-call-open-stats")
     assert html =~ ~s(data-testid="p2p-call-mini-toggle")
     assert html =~ ~s(data-testid="p2p-call-layout-controls")
-    assert html =~ ~s(phx-value-layout="auto")
+    # A call between two has two layouts, and offers no button that changes nothing.
     assert html =~ ~s(phx-value-layout="focus")
     assert html =~ ~s(phx-value-layout="split")
-    assert html =~ ~s(phx-value-layout="speaker")
-    assert html =~ ~s(phx-value-layout="compact")
+    refute html =~ ~s(phx-value-layout="auto")
+    refute html =~ ~s(phx-value-layout="speaker")
+    refute html =~ ~s(phx-value-layout="compact")
     assert html =~ ~s(data-testid="p2p-call-self-view-toggle")
     assert html =~ ~s(data-testid="p2p-call-reaction-heart")
     assert html =~ ~s(data-testid="p2p-call-reaction-thumbs_up")
@@ -199,6 +200,63 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     assert html =~ ~s(data-self-view="tile")
     assert html =~ ~s(data-testid="p2p-call-local-tile")
     assert html =~ ~s(id="lobby-local-video")
+  end
+
+  test "the split layout puts your camera beside the peer's unless you hid it" do
+    in_call = [
+      call: %{type: "video", audio_on: true, video_on: true},
+      peer_media: %{audio: true, video: true}
+    ]
+
+    split = render_panel(in_call ++ [call_layout: "split", self_view: "pip"])
+    assert split =~ "sm:grid-cols-2"
+    assert split =~ ~r/data-testid="p2p-call-local-tile"\s+data-self-view="tile"/
+    refute split =~ ~s(class="p2p-call-pip)
+    # Beside the peer's picture, yours is shown whole too, not cropped to fill.
+    assert split =~ ~r/id="lobby-local-video" class="[^"]*object-contain/
+
+    focus = render_panel(in_call ++ [call_layout: "focus", self_view: "pip"])
+    refute focus =~ "sm:grid-cols-2"
+    assert focus =~ ~s(class="p2p-call-pip)
+    assert focus =~ ~r/id="lobby-local-video" class="[^"]*object-cover/
+
+    hidden = render_panel(in_call ++ [call_layout: "split", self_view: "hidden"])
+    assert hidden =~ ~r/class="hidden"\s+data-testid="p2p-call-local-tile"/
+  end
+
+  test "side by side, the self-view button shows and hides your camera with no dead step" do
+    assert next_self_view("split", "tile") == "hidden"
+    assert next_self_view("split", "pip") == "hidden"
+    assert next_self_view("split", "hidden") == "tile"
+    assert next_self_view("side_by_side", "hidden") == "tile"
+
+    assert next_self_view("focus", "tile") == "pip"
+    assert next_self_view("focus", "pip") == "hidden"
+    assert next_self_view("focus", "hidden") == "tile"
+  end
+
+  test "a peer who left the call is said so, not shown as a frozen picture" do
+    html =
+      render_panel(
+        call: %{type: "video", audio_on: true, video_on: true, quality_label: "Excellent"},
+        peer_media: %{audio: false, video: false},
+        peer_left: true
+      )
+
+    assert html =~ ~s(data-testid="p2p-call-peer-left")
+    assert html =~ "trinity left the call"
+    # Nothing is measured from a peer who is gone.
+    refute html =~ ~s(data-testid="lobby-call-quality")
+    assert html =~ ~r/id="lobby-remote-video"\s+class="[^"]*invisible/
+  end
+
+  test "out of the call while the peer is still in it, you are invited back" do
+    html = render_panel(call: nil, peer_media: %{audio: true, video: true})
+
+    refute html =~ ~s(data-testid="p2p-call-surface")
+    assert html =~ ~s(data-testid="p2p-call-peer-in-call")
+    assert html =~ "trinity is still in the call"
+    assert html =~ ~s(data-testid="lobby-call-start-video")
   end
 
   test "screen sharing state renders local and peer badges" do

@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **241 spec files** under `e2e/tests/`.
-- **564 Playwright `test()` cases**.
-- **511 documented flows**, 510 done, 1 not done.
+- **242 spec files** under `e2e/tests/`.
+- **568 Playwright `test()` cases**.
+- **515 documented flows**, 514 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -451,6 +451,10 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N45 | A match link minted inside a game is followed from another browser, the seat is taken and the game runs over the P2P session | `tests/game-open-lobby.spec.ts` | done |
 | N46 | A third person following the same match link is told the seat is taken, and it stays taken after the match ends | `tests/game-open-lobby.spec.ts` | done |
 | N47 | The P2P summary popover in the PM toolbar opens above the strip, stays open while messages arrive, and closes on Escape | `tests/chat-p2p.spec.ts` | done |
+| N48 | Choosing a call layout rearranges the call: side by side puts your camera beside the peer's, focus puts it in a corner of theirs | `tests/chat-p2p-call-moments.spec.ts` | done |
+| N49 | A reaction sent from one side of the call appears on the other side's peer tile | `tests/chat-p2p-call-moments.spec.ts` | done |
+| N50 | A second file picked while one is transferring waits in the queue, then is offered and completes by itself | `tests/chat-p2p-call-moments.spec.ts` | done |
+| N51 | Leaving the call leaves only you: the peer is told you left instead of a frozen picture, and you can join again | `tests/chat-p2p-call-moments.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

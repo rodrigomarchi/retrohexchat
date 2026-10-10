@@ -577,6 +577,11 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
       flush(ctx.view_a)
       assert p2p_assigns(ctx.view_a) == nil
       refute p2p_html(ctx.view_a) =~ ~s(data-testid="p2p-session-console")
+
+      # The status bar says it ended, not that it is still connected.
+      html = p2p_html(ctx.view_a)
+      assert html =~ "ended."
+      refute html =~ "P2P session connected"
     end
   end
 
@@ -1153,7 +1158,8 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
         id: "p2p-call",
         width: 300,
         height: 236,
-        anchor: "bottom_right"
+        anchor: "bottom_right",
+        remember: true
       })
 
       assert p2p_html(ctx.view_a) =~ ~s(data-call-mini="true")
@@ -1162,8 +1168,9 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
       refute p2p_assigns(ctx.view_a).call_mini
       assert p2p_assigns(ctx.view_a).console_section == "stats"
 
+      # Leaving the mini window puts the console back where it was.
       assert_push_event(p2p_view(ctx.view_a), "window_command", %{
-        action: "set_geometry",
+        action: "restore_geometry",
         id: "p2p-call",
         width: 640,
         height: 430,

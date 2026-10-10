@@ -2891,7 +2891,7 @@ msgstr "Devi essere identificato con NickServ per usare ChanServ."
 msgid "min 10s for repeating timers"
 msgstr "min 10s per ripetitori"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1145
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1154
 #, elixir-autogen, elixir-format
 msgid "%{nick} cancelled the P2P invite."
 msgstr "%{nick} ha annullato l'invito P2P."
@@ -2906,17 +2906,17 @@ msgstr "%{nick} ha rifiutato l'invito P2P."
 msgid "%{nick} ended the P2P session."
 msgstr "%{nick} ha concluso la sessione P2P."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1580
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1583
 #, elixir-autogen, elixir-format
 msgid "%{peer} declined the P2P invite."
 msgstr "%{peer} ha rifiutato l'invito P2P."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1589
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1592
 #, elixir-autogen, elixir-format
 msgid "%{peer} left the P2P session."
 msgstr "%{peer} ha lasciato la sessione P2P."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:753
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:762
 #, elixir-autogen, elixir-format
 msgid "%{peer} lost the P2P connection — waiting for them to return..."
 msgstr "%{peer} ha perso la connessione P2P - in attesa di loro di tornare..."
@@ -2966,7 +2966,7 @@ msgstr "Ciclo Auto, Focus, Split, Speaker e layout compatti"
 msgid "Cycle P2P Self View"
 msgstr "Ciclo P2P Self View"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1685
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1688
 #, elixir-autogen, elixir-format
 msgid "Default device"
 msgstr "Dispositivo predefinito"
@@ -2981,7 +2981,7 @@ msgstr "Fine P2P Call Media"
 msgid "Entering channel space..."
 msgstr "Entrando nello spazio del canale..."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:880
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:889
 #, elixir-autogen, elixir-format
 msgid "Game request declined."
 msgstr "La richiesta di gioco è diminuita."
@@ -3028,8 +3028,8 @@ msgstr "P2P invita in attesa"
 msgid "P2P session connecting"
 msgstr "Connessione della sessione P2P in corso"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1586
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1595
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1589
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1598
 #, elixir-autogen, elixir-format
 msgid "P2P session with %{peer} ended."
 msgstr "sessione P2P con %{peer} Finito."
@@ -3056,27 +3056,27 @@ msgstr "Avviare, interrompere o riprendere la fotocamera P2P"
 msgid "Stop only the call media; the P2P session stays open"
 msgstr "Stop solo ai supporti di chiamata; la sessione P2P rimane aperta"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1583
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1586
 #, elixir-autogen, elixir-format
 msgid "The P2P invite was cancelled."
 msgstr "L'invito P2P è stato annullato."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1592
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1595
 #, elixir-autogen, elixir-format
 msgid "The P2P session expired."
 msgstr "La sessione P2P è scaduta."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:953
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:962
 #, elixir-autogen, elixir-format
 msgid "The P2P session will expire soon due to inactivity."
 msgstr "La sessione P2P scadrà presto a causa dell'inattività."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:975
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:984
 #, elixir-autogen, elixir-format
 msgid "The other user"
 msgstr "L'altro utente"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1546
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1549
 #, elixir-autogen, elixir-format
 msgid "This P2P invite is no longer active."
 msgstr "Questo invito P2P non è più attivo."
@@ -3103,7 +3103,7 @@ msgstr ""
 "Devi essere registrato e identificato per giocare. Utilizzare /ns registro e"
 " /ns identificare prima."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1576
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1579
 #, elixir-autogen, elixir-format
 msgid "the other user"
 msgstr "l'altro utente"
@@ -3165,8 +3165,8 @@ msgstr "Sessione P2P"
 msgid "P2P Session Console"
 msgstr "Console di sessione P2P"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1202
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1233
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1211
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1242
 #, elixir-autogen, elixir-format
 msgid "P2P session connected - call, files, games and stats are available."
 msgstr "sessione P2P collegata — chiamate, file e giochi sono disponibili."
@@ -3244,7 +3244,7 @@ msgstr "TURN"
 msgid "Users"
 msgstr "Utenti"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:974
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:983
 #, elixir-autogen, elixir-format
 msgid "%{peer} accepted the P2P request - connecting..."
 msgstr "%{peer} ha accettato la richiesta P2P - connessione in corso..."
@@ -3732,8 +3732,8 @@ msgstr "Metrica"
 msgid "OS Data"
 msgstr "Dati OS"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1555
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1559
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1558
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1562
 #, elixir-autogen, elixir-format
 msgid "P2P action failed: %{reason}"
 msgstr "Azione P2P fallita: %{reason}"
@@ -3753,7 +3753,7 @@ msgstr "Processi"
 msgid "Sockets"
 msgstr "Prese"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1550
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1553
 #, elixir-autogen, elixir-format
 msgid "This P2P session is already active in another window."
 msgstr "Questa sessione P2P è già attiva in un'altra finestra."
@@ -3857,7 +3857,7 @@ msgstr "%{game} · %{peer}"
 msgid "%{game} · match"
 msgstr "%{game} · partita"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1003
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1012
 #, elixir-autogen, elixir-format
 msgid "%{peer} is back."
 msgstr "%{peer} è tornato."

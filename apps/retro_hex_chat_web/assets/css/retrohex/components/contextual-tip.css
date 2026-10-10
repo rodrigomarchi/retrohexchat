@@ -1,0 +1,71 @@
+/*
+ * Contextual tips: a small Win98 message window in the bottom-right corner,
+ * built by `lib/notifications/toast.js` (and the feedback toast) inside the
+ * `.toast-container` the page renders. It fades and slides in on
+ * `.toast-visible` and out on `.toast-hiding`.
+ */
+.toast-container {
+  @apply pointer-events-none fixed bottom-12 right-4 flex flex-col items-end gap-2;
+  z-index: 9000;
+}
+
+.toast-notification {
+  @apply pointer-events-auto opacity-0;
+  width: min(calc(100vw - 32px), 320px);
+  transform: translateY(8px);
+  transition:
+    opacity 160ms ease-out,
+    transform 160ms ease-out;
+}
+
+.toast-notification.toast-visible {
+  @apply opacity-100;
+  transform: translateY(0);
+}
+
+.toast-notification.toast-hiding {
+  @apply opacity-0;
+  transform: translateY(8px);
+}
+
+.toast-notification .window {
+  @apply bg-surface shadow-retro-window flex flex-col p-[3px] text-foreground;
+}
+
+.toast-notification .title-bar {
+  @apply flex items-center gap-1 bg-title-bar px-[3px] py-[3px] text-xs font-bold text-white;
+}
+
+.toast-notification .title-bar-text {
+  @apply min-w-0 truncate px-1;
+}
+
+.toast-notification .window-body {
+  @apply flex flex-col gap-retro-8 p-retro-8 text-xs;
+}
+
+.toast-notification .toast-text {
+  @apply leading-4;
+}
+
+.toast-notification .toast-actions {
+  @apply flex items-center justify-between gap-2;
+}
+
+.toast-notification .toast-checkbox {
+  @apply flex min-w-0 items-center gap-1 text-muted-foreground;
+}
+
+.toast-notification button {
+  @apply bg-surface shadow-retro-raised ml-auto min-w-[72px] cursor-pointer px-3 py-1 text-xs text-foreground;
+}
+
+.toast-notification button:active {
+  @apply shadow-retro-sunken;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast-notification {
+    transition: none;
+  }
+}

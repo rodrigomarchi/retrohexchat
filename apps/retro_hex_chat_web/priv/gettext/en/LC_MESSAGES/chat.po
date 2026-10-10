@@ -2873,7 +2873,7 @@ msgstr "You must be identified with NickServ to use ChanServ."
 msgid "min 10s for repeating timers"
 msgstr "min 10s for repeating timers"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1145
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1154
 #, elixir-autogen, elixir-format
 msgid "%{nick} cancelled the P2P invite."
 msgstr "%{nick} cancelled the P2P invite."
@@ -2888,17 +2888,17 @@ msgstr "%{nick} declined the P2P invite."
 msgid "%{nick} ended the P2P session."
 msgstr "%{nick} ended the P2P session."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1580
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1583
 #, elixir-autogen, elixir-format
 msgid "%{peer} declined the P2P invite."
 msgstr "%{peer} declined the P2P invite."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1589
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1592
 #, elixir-autogen, elixir-format
 msgid "%{peer} left the P2P session."
 msgstr "%{peer} left the P2P session."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:753
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:762
 #, elixir-autogen, elixir-format
 msgid "%{peer} lost the P2P connection — waiting for them to return..."
 msgstr "%{peer} lost the P2P connection — waiting for them to return..."
@@ -2948,7 +2948,7 @@ msgstr "Cycle Auto, Focus, Split, Speaker and Compact layouts"
 msgid "Cycle P2P Self View"
 msgstr "Cycle P2P Self View"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1685
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1688
 #, elixir-autogen, elixir-format
 msgid "Default device"
 msgstr "Default device"
@@ -2963,7 +2963,7 @@ msgstr "End P2P Call Media"
 msgid "Entering channel space..."
 msgstr "Entering channel space..."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:880
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:889
 #, elixir-autogen, elixir-format
 msgid "Game request declined."
 msgstr "Game request declined."
@@ -3009,8 +3009,8 @@ msgstr "P2P invite pending"
 msgid "P2P session connecting"
 msgstr "P2P session connecting"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1586
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1595
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1589
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1598
 #, elixir-autogen, elixir-format
 msgid "P2P session with %{peer} ended."
 msgstr "P2P session with %{peer} ended."
@@ -3037,27 +3037,27 @@ msgstr "Start, pause, or resume your P2P camera"
 msgid "Stop only the call media; the P2P session stays open"
 msgstr "Stop only the call media; the P2P session stays open"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1583
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1586
 #, elixir-autogen, elixir-format
 msgid "The P2P invite was cancelled."
 msgstr "The P2P invite was cancelled."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1592
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1595
 #, elixir-autogen, elixir-format
 msgid "The P2P session expired."
 msgstr "The P2P session expired."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:953
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:962
 #, elixir-autogen, elixir-format
 msgid "The P2P session will expire soon due to inactivity."
 msgstr "The P2P session will expire soon due to inactivity."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:975
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:984
 #, elixir-autogen, elixir-format
 msgid "The other user"
 msgstr "The other user"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1546
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1549
 #, elixir-autogen, elixir-format
 msgid "This P2P invite is no longer active."
 msgstr "This P2P invite is no longer active."
@@ -3084,7 +3084,7 @@ msgstr ""
 "You must be registered and identified to play. Use /ns register and /ns "
 "identify first."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1576
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1579
 #, elixir-autogen, elixir-format
 msgid "the other user"
 msgstr "the other user"
@@ -3146,8 +3146,8 @@ msgstr "P2P Session"
 msgid "P2P Session Console"
 msgstr "P2P Session Console"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1202
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1233
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1211
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1242
 #, elixir-autogen, elixir-format
 msgid "P2P session connected - call, files, games and stats are available."
 msgstr "P2P session connected - call, files, games and stats are available."
@@ -3221,7 +3221,7 @@ msgstr "TURN"
 msgid "Users"
 msgstr "Users"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:974
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:983
 #, elixir-autogen, elixir-format
 msgid "%{peer} accepted the P2P request - connecting..."
 msgstr "%{peer} accepted the P2P request - connecting..."
@@ -3709,8 +3709,8 @@ msgstr "Metrics"
 msgid "OS Data"
 msgstr "OS Data"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1555
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1559
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1558
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1562
 #, elixir-autogen, elixir-format
 msgid "P2P action failed: %{reason}"
 msgstr "P2P action failed: %{reason}"
@@ -3730,7 +3730,7 @@ msgstr "Processes"
 msgid "Sockets"
 msgstr "Sockets"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1550
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1553
 #, elixir-autogen, elixir-format
 msgid "This P2P session is already active in another window."
 msgstr "This P2P session is already active in another window."
@@ -3834,7 +3834,7 @@ msgstr "%{game} · %{peer}"
 msgid "%{game} · match"
 msgstr "%{game} · match"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1003
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1012
 #, elixir-autogen, elixir-format
 msgid "%{peer} is back."
 msgstr "%{peer} is back."

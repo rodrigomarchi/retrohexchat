@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.Router do
 
     if Application.compile_env(:retro_hex_chat, :e2e_fault_injection?, false) do
       post "/e2e/channel-messages", E2EController, :create_channel_message
+      post "/e2e/contextual-tips/suppress", E2EController, :suppress_contextual_tips
 
       post "/e2e/group-call-peer/terminate",
            E2EFaultController,

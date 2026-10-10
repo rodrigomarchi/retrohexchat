@@ -11,12 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:237
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:272
 #, elixir-autogen, elixir-format
 msgid "%{peer} is muted"
 msgstr "%{peer} はミュートされます"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:157
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:189
 #, elixir-autogen, elixir-format
 msgid "%{peer}'s camera is off"
 msgstr "%{peer}のカメラは消えます"
@@ -52,7 +52,7 @@ msgstr "ゲームを再生するために接続します。"
 msgid "Connect to send a file."
 msgstr "ファイルを送信するために接続します。"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_media_island.ex:321
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_media_island.ex:342
 #, elixir-autogen, elixir-format
 msgid "Could not access your microphone or camera."
 msgstr "マイクやカメラにアクセスできません。"
@@ -62,8 +62,8 @@ msgstr "マイクやカメラにアクセスできません。"
 msgid "Decline"
 msgstr "拒否"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:672
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:683
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:681
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:692
 #, elixir-autogen, elixir-format
 msgid "Devices"
 msgstr "デバイス"
@@ -79,7 +79,7 @@ msgstr "ドロー。"
 msgid "End game"
 msgstr "エンドゲーム"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_file_island.ex:148
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_file_island.ex:152
 #, elixir-autogen, elixir-format
 msgid "File transfer completed: %{name}"
 msgstr "ファイル転送完了: %{name}"
@@ -89,7 +89,7 @@ msgstr "ファイル転送完了: %{name}"
 msgid "Final Score"
 msgstr "最終スコア"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:555
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:586
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "フォーカス"
@@ -109,32 +109,33 @@ msgstr "%{game}:%{p1}×%{p2}"
 msgid "P1 %{score}"
 msgstr "P1 %{score}の特長"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:500
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:542
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
 msgstr "ピクチャー・イン・ピクチャー"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:343
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:385
 #, elixir-autogen, elixir-format
 msgid "Start audio"
 msgstr "オーディオの開始"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:330
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:372
 #, elixir-autogen, elixir-format
 msgid "Start audio or video — or the peer can, independently. You'll join automatically."
 msgstr "オーディオまたはビデオの開始 — またはピアは独立してできます。 自動的に参加します。"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:352
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:394
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Start video"
 msgstr "ビデオを始める"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:406
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:448
 #, elixir-autogen, elixir-format
 msgid "Turn on camera"
 msgstr "カメラをオンにする"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:384
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:426
 #, elixir-autogen, elixir-format
 msgid "Turn on microphone"
 msgstr "マイクをオンにする"
@@ -301,12 +302,12 @@ msgstr "P2P接続待ち"
 msgid "peer"
 msgstr "パートナー"
 
-#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_file_island.ex:203
+#: lib/retro_hex_chat_web/live/p2p_live/components/p2p_file_island.ex:221
 #, elixir-autogen, elixir-format
 msgid "Queued for after the current transfer: %{name}"
 msgstr "現在の転送のあとに送ります: %{name}"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:697
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:706
 #, elixir-autogen, elixir-format
 msgid "No devices to choose from. Check the browser's camera and microphone permissions."
 msgstr "選べるデバイスがありません。ブラウザーのカメラとマイクの許可を確認してください。"

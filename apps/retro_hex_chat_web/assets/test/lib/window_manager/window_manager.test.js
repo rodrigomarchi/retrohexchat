@@ -195,6 +195,28 @@ describe("WindowManager", () => {
     expect(hook.focusedId).toBe("call");
   });
 
+  it("puts a window back where a remembering set_geometry found it, maximized included", () => {
+    command({ action: "open", id: "call" });
+    hook.toggleMaximize("call");
+    command({ action: "set_geometry", id: "call", width: 280, height: 180, remember: true });
+    expect(hook.windows.call.state.maximized).toBe(false);
+
+    command({ action: "restore_geometry", id: "call", width: 640, height: 420, x: 10, y: 10 });
+
+    expect(hook.windows.call.state.maximized).toBe(true);
+    expect(hook.windows.call.state.open).toBe(true);
+  });
+
+  it("restores to the given geometry when nothing was remembered", () => {
+    command({ action: "restore_geometry", id: "call", width: 320, height: 200, x: 30, y: 40 });
+
+    const call = hook.windows.call.state;
+    expect(call.maximized).toBe(false);
+    expect(call.w).toBe(320);
+    expect(call.x).toBe(30);
+    expect(call.y).toBe(40);
+  });
+
   it("minimizing hides the window but keeps it open", () => {
     command({ action: "open", id: "call" });
     hook.minimizeWindow("call");

@@ -84,6 +84,14 @@ export class Cast {
     return member;
   }
 
+  /**
+   * Counts someone signed in elsewhere — a person on film, in a browser of
+   * their own — as one of the cast, so `say` and `play` can speak for them.
+   */
+  adopt(member: TestUser): void {
+    this.members.set(member.nick, member);
+  }
+
   get nicks(): string[] {
     return [...this.members.keys()];
   }
