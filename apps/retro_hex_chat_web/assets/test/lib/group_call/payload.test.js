@@ -66,9 +66,11 @@ describe("payloadValue", () => {
 
 describe("normalizeLayoutMode", () => {
   it("keeps valid modes and defaults the rest to auto", () => {
-    for (const mode of ["auto", "grid", "focus", "sidebar", "speaker"]) {
+    for (const mode of ["auto", "grid", "focus", "speaker"]) {
       expect(normalizeLayoutMode(mode)).toBe(mode);
     }
+    // A mode with no control to choose it is not a mode.
+    expect(normalizeLayoutMode("sidebar")).toBe("auto");
     expect(normalizeLayoutMode("bogus")).toBe("auto");
     expect(normalizeLayoutMode(undefined)).toBe("auto");
   });

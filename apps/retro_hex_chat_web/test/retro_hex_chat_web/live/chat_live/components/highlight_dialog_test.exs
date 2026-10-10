@@ -49,7 +49,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialogTest do
 
     assert html =~ ~s(data-testid="highlight-add-form")
     # Scoped to the enclosing desktop window, not the viewport.
-    assert html =~ ~s(id="highlight-add-dialog-bg" class="absolute inset-0)
+    assert html =~ ~s(id="highlight-add-dialog-bg" class="absolute z-modal inset-0)
     # The form and its swatches submit to the island that owns their DOM (§0a-anti).
     assert html =~ ~s(phx-target=)
     assert html =~ ~s(id="highlight-add-color")
@@ -67,6 +67,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialogTest do
       })
 
     assert html =~ ~s(data-testid="highlight-edit-form")
-    assert html =~ ~s(id="highlight-edit-dialog-bg" class="absolute inset-0)
+    assert html =~ ~s(id="highlight-edit-dialog-bg" class="absolute z-modal inset-0)
   end
 end

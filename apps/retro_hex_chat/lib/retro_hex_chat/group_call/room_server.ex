@@ -292,7 +292,9 @@ defmodule RetroHexChat.GroupCall.RoomServer do
          {:ok, channel_state} <- Channels.Server.get_state(state.room.channel_name),
          membership = membership_from_channel_state(channel_state),
          :ok <-
-           Policy.can_join?(actor.user_id, actor.nickname, state.room, membership) do
+           Policy.can_join?(actor.user_id, actor.nickname, state.room, membership,
+             seat_held: seat_held?(state, actor, nil)
+           ) do
       join_authorized_participant(state, actor, signal_pid, client_info, membership)
     else
       {:error, reason} = error ->
@@ -315,7 +317,9 @@ defmodule RetroHexChat.GroupCall.RoomServer do
          {:ok, channel_state} <- Channels.Server.get_state(state.room.channel_name),
          membership = membership_from_channel_state(channel_state),
          :ok <-
-           Policy.can_join?(actor.user_id, actor.nickname, state.room, membership) do
+           Policy.can_join?(actor.user_id, actor.nickname, state.room, membership,
+             seat_held: seat_held?(state, actor, previous_participant_id)
+           ) do
       rejoin_authorized_participant(
         state,
         actor,
@@ -1239,6 +1243,13 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     end
   end
 
+  # A seat the room is still holding for this person: the one they had, or one
+  # left disconnected under their nickname inside the reconnect window.
+  defp seat_held?(state, actor, previous_participant_id) do
+    authorized_rejoin_participant(state, actor, previous_participant_id) != :not_found or
+      disconnected_participant(state, actor.nickname) != :not_found
+  end
+
   defp disconnected_participant(state, nickname) do
     normalized = Nickname.key(nickname)
 
@@ -1549,6 +1560,10 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     map_size(state.participants) == 0 and map_size(state.pending_participants) == 0
   end
 
+  # Who ended it, for the people it ended for; nil when nobody did (it emptied).
+  defp closed_by(nickname) when is_binary(nickname), do: nickname
+  defp closed_by(_actor), do: nil
+
   defp close_room(state, opts) do
     reason = Map.fetch!(opts, :reason)
     participant_status = Map.fetch!(opts, :participant_status)
@@ -1567,7 +1582,8 @@ defmodule RetroHexChat.GroupCall.RoomServer do
 
     broadcast(state, "group_call_closed", %{
       room: room_payload(state.room),
-      reason: reason
+      reason: reason,
+      ended_by: closed_by(actor)
     })
 
     state =

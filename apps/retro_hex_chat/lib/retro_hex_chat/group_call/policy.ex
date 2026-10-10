@@ -28,16 +28,28 @@ defmodule RetroHexChat.GroupCall.Policy do
     end
   end
 
-  @spec can_join?(integer() | nil, String.t(), Room.t(), Membership.t()) ::
+  @doc """
+  Whether this person may take a seat in the room.
+
+  The lock keeps newcomers out, so it does not apply to `seat_held: true` —
+  someone whose seat the room is still holding for them (a tab closed by
+  accident, inside the reconnect window): they are coming back, not arriving.
+  """
+  @spec can_join?(integer() | nil, String.t(), Room.t(), Membership.t(), keyword()) ::
           :ok | {:error, String.t()}
-  def can_join?(registered_nick_id, nickname, room, membership) do
+  def can_join?(registered_nick_id, nickname, room, membership, opts \\ []) do
     with :ok <- check_registered(registered_nick_id),
          :ok <- check_member(membership, nickname),
          :ok <- check_not_terminal(room),
-         :ok <- check_not_locked(room, membership, nickname) do
+         :ok <- check_admission(room, membership, nickname, Keyword.get(opts, :seat_held, false)) do
       :ok
     end
   end
+
+  defp check_admission(_room, _membership, _nickname, true), do: :ok
+
+  defp check_admission(room, membership, nickname, false),
+    do: check_not_locked(room, membership, nickname)
 
   @spec can_close?(String.t(), Room.t(), Membership.t()) :: :ok | {:error, String.t()}
   def can_close?(nickname, room, membership) do

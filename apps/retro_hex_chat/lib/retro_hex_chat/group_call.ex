@@ -479,6 +479,15 @@ defmodule RetroHexChat.GroupCall do
     end
   end
 
+  @doc """
+  Whether the room is holding a seat for this nickname: they are in it, or
+  their tab went and the reconnect window is still open. A locked room lets
+  them back in; the lock is for newcomers.
+  """
+  @spec seat_held?(Room.t(), String.t()) :: boolean()
+  def seat_held?(%Room{id: room_id}, nickname) when is_binary(nickname),
+    do: Queries.get_active_participant(room_id, nickname) != nil
+
   @spec active_room_for_channel(String.t()) :: Room.t() | nil
   defdelegate active_room_for_channel(channel_name), to: Queries, as: :get_active_room_for_channel
 

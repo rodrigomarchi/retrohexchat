@@ -48,7 +48,6 @@
 }
 
 .group-call-room[data-layout-mode="focus"] .group-call-video-surface,
-.group-call-room[data-layout-mode="sidebar"] .group-call-video-surface,
 .group-call-room[data-layout-mode="speaker"] .group-call-video-surface {
   grid-template-columns: minmax(0, 1fr) minmax(7rem, 9rem);
   grid-template-rows: repeat(6, minmax(0, 1fr));
@@ -131,8 +130,6 @@
 
 .group-call-room[data-layout-mode="focus"] .group-call-video-tile[data-focused="true"],
 .group-call-room[data-layout-mode="focus"] .group-call-video-tile--focused,
-.group-call-room[data-layout-mode="sidebar"] .group-call-video-tile[data-focused="true"],
-.group-call-room[data-layout-mode="sidebar"] .group-call-video-tile--focused,
 .group-call-room[data-layout-mode="speaker"] .group-call-video-tile[data-focused="true"],
 .group-call-room[data-layout-mode="speaker"] .group-call-video-tile--focused {
   grid-column: 1;
@@ -141,7 +138,6 @@
 }
 
 .group-call-room[data-layout-mode="focus"] .group-call-video-tile:not([data-focused="true"]),
-.group-call-room[data-layout-mode="sidebar"] .group-call-video-tile:not([data-focused="true"]),
 .group-call-room[data-layout-mode="speaker"] .group-call-video-tile:not([data-focused="true"]) {
   grid-column: 2;
   min-height: 4.75rem;
@@ -468,17 +464,14 @@
   }
 
   .group-call-room[data-layout-mode="focus"] .group-call-video-surface,
-  .group-call-room[data-layout-mode="sidebar"] .group-call-video-surface,
   .group-call-room[data-layout-mode="speaker"] .group-call-video-surface {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr);
   }
 
   .group-call-room[data-layout-mode="focus"] .group-call-video-tile[data-focused="true"],
-  .group-call-room[data-layout-mode="sidebar"] .group-call-video-tile[data-focused="true"],
   .group-call-room[data-layout-mode="speaker"] .group-call-video-tile[data-focused="true"],
   .group-call-room[data-layout-mode="focus"] .group-call-video-tile:not([data-focused="true"]),
-  .group-call-room[data-layout-mode="sidebar"] .group-call-video-tile:not([data-focused="true"]),
   .group-call-room[data-layout-mode="speaker"] .group-call-video-tile:not([data-focused="true"]) {
     grid-column: auto;
     grid-row: auto;
@@ -490,4 +483,24 @@
   .group-call-room[data-layout-mode="grid"] .group-call-video-surface[data-tile-density="compact"] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+/* While the call tab has lost the server, its status says so and the dock
+   reads as unavailable: LiveView drops `phx-connected` from the page root
+   until it is connected again. */
+.group-call-status-offline {
+  display: none;
+}
+
+[data-phx-main]:not(.phx-connected) .group-call-status-live {
+  display: none;
+}
+
+[data-phx-main]:not(.phx-connected) .group-call-status-offline {
+  display: inline;
+}
+
+[data-phx-main]:not(.phx-connected) .group-call-dock {
+  opacity: 0.5;
+  pointer-events: none;
 }

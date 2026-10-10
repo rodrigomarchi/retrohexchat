@@ -1339,7 +1339,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "reactions",
           "screen share",
           "moderation",
-          "statistics"
+          "statistics",
+          "raise hand",
+          "requests to speak",
+          "compact"
         ],
         icon: :icon_conference,
         description:
@@ -1356,6 +1359,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext(
               "help",
               "In the channel, the Group Call button says when a room is in progress, full or locked, and the ⓘ beside it shows who is inside. In People, each participant's ⋯ menu can focus or pin them; moderators can also mute them, turn off their camera, stop their screen share, or remove them from the conference and ban them from the channel."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "Opening a conference or joining one takes a registered nickname, identified with NickServ, that is a member of the channel."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "Muted and want to say something? Raise your hand: moderators see it under Requests to speak in People, and allowing you to speak turns your microphone back on."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "The compact button shrinks the conference to a small window that keeps the microphone, camera, expand and Leave, so the call stays with you while you look at something else."
             ),
         see_also: [
           "feature-conference-tab",
@@ -1376,7 +1394,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "browser",
           "close",
           "reconnect",
-          "rejoin"
+          "rejoin",
+          "push to talk",
+          "shortcuts"
         ],
         icon: :icon_conference,
         description:
@@ -1388,6 +1408,16 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext(
               "help",
               "The call controls — microphone, camera, screen share, raised hand, reactions and the Leave button — are in a dark bar at the bottom of the video. The bar fades shortly after the pointer leaves the video, and it comes back when you point at the video or press Tab. On a touch screen it is always visible. In the automatic layout, when there is exactly one other video in the call, it fills the stage and your own camera moves to a corner. When you are alone, your camera fills the stage until someone joins."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "Push-to-talk: while your microphone is off, hold Ctrl+Shift+Z to talk, and it goes quiet again as soon as you let go."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "If the tab loses the server, the status at the top says Reconnecting to the server… and the call controls wait until it is back."
             ),
         see_also: ["feature-channel-conference", "feature-conference-share"]
       },

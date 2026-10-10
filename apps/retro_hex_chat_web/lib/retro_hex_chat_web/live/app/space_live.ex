@@ -98,7 +98,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
       <div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
       <%!-- Where "Copied!" lands: a page of its own has no chat to borrow a
             toast container from. --%>
-      <RetroHexChatWeb.Components.Toast.toast_container />
+      <RetroHexChatWeb.Components.Toast.toast_container tips={false} />
       <.desktop id="space-desktop" persist_key="space" class="flex-1" data-testid="space-desktop">
         <.desktop_window
           id="virtual-space"

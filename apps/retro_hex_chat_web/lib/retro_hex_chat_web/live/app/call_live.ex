@@ -74,7 +74,9 @@ defmodule RetroHexChatWeb.App.CallLive do
         share_url: nil,
         share_slug: nil,
         denied: nil,
-        surface_left: false
+        surface_left: false,
+        left_reason: nil,
+        left_by: nil
       )
 
     socket = OpenSurfaces.attach(socket, socket.assigns.nickname)
@@ -114,7 +116,7 @@ defmodule RetroHexChatWeb.App.CallLive do
       <div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
       <%!-- Where "Copied!" lands: a page of its own has no chat to borrow a
             toast container from. --%>
-      <RetroHexChatWeb.Components.Toast.toast_container />
+      <RetroHexChatWeb.Components.Toast.toast_container tips={false} />
       <.desktop id="call-desktop" persist_key="call" class="flex-1" data-testid="call-desktop">
         <.desktop_window
           id="group-call"
@@ -155,7 +157,7 @@ defmodule RetroHexChatWeb.App.CallLive do
     ~H"""
     <div class="flex h-full min-h-0 flex-col">
       <.call_denied :if={@denied} message={@denied} />
-      <.call_left :if={@surface_left} channel={@channel_name} />
+      <.call_left :if={@surface_left} channel={@channel_name} reason={@left_reason} by={@left_by} />
 
       <.group_call_pre_join_panel
         :if={@group_call_prejoin && !@surface_left}
@@ -210,37 +212,94 @@ defmodule RetroHexChatWeb.App.CallLive do
     """
   end
 
-  attr :channel, :string, default: nil
-
   # Leaving a conference leaves its page and stops there. Navigating to the chat
   # from here would mount a second chat session, and a second chat session ends
   # the first — so somebody who backed out of the antechamber lost the chat they
   # had open in another tab and never asked to leave.
+  #
+  # Being put out — removed by a moderator, or kicked or banned from the channel
+  # the call belongs to — is not leaving: it says who did it, and it does not
+  # point back at a room this person can no longer enter.
+  attr :channel, :string, default: nil
+  attr :reason, :string, default: nil
+  attr :by, :string, default: nil
+
   defp call_left(assigns) do
     ~H"""
     <div
       class="m-2 flex items-start gap-2 border border-border bg-canvas p-2 text-xs shadow-retro-sunken"
       data-testid="call-left"
+      data-left-reason={@reason}
     >
       <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
         <Icons.icon_protocol_conference_compact class="h-4 w-4" />
       </span>
       <div class="min-w-0 space-y-1">
-        <p>
-          {if @channel,
-            do: dgettext("group_call", "You left the conference in %{channel}.", channel: @channel),
-            else: dgettext("group_call", "You left the conference.")}
-        </p>
+        <p>{left_headline(@reason, @channel, @by)}</p>
         <%!-- No second way back: `← Chat` is already along the bottom of this
               window, in both states, and it is the one that knows how to reach
               a chat tab that is already open instead of opening another. --%>
-        <p class="text-muted-foreground">
-          {dgettext("group_call", "This tab is finished. The room is still at this address.")}
-        </p>
+        <p class="text-muted-foreground">{left_detail(@reason)}</p>
       </div>
     </div>
     """
   end
+
+  defp left_headline("closed", channel, by) when is_binary(channel) and is_binary(by),
+    do:
+      dgettext("group_call", "%{nickname} ended the conference in %{channel} for everyone.",
+        nickname: by,
+        channel: channel
+      )
+
+  defp left_headline("closed", channel, _by) when is_binary(channel),
+    do: dgettext("group_call", "The conference in %{channel} has ended.", channel: channel)
+
+  defp left_headline("closed", _channel, _by),
+    do: dgettext("group_call", "The conference has ended.")
+
+  defp left_headline("channel_ban", channel, _by) when is_binary(channel),
+    do:
+      dgettext("group_call", "You were banned from %{channel}, and that ended your call.",
+        channel: channel
+      )
+
+  defp left_headline("channel_kick", channel, _by) when is_binary(channel),
+    do:
+      dgettext("group_call", "You were kicked from %{channel}, and that ended your call.",
+        channel: channel
+      )
+
+  defp left_headline("kicked", channel, _by) when is_binary(channel),
+    do:
+      dgettext("group_call", "A moderator removed you from the conference in %{channel}.",
+        channel: channel
+      )
+
+  defp left_headline("ended", channel, _by) when is_binary(channel),
+    do:
+      dgettext("group_call", "You ended the conference in %{channel} for everyone.",
+        channel: channel
+      )
+
+  defp left_headline("ended", _channel, _by),
+    do: dgettext("group_call", "You ended the conference for everyone.")
+
+  defp left_headline("kicked", _channel, _by),
+    do: dgettext("group_call", "A moderator removed you from the conference.")
+
+  defp left_headline(_reason, channel, _by) when is_binary(channel),
+    do: dgettext("group_call", "You left the conference in %{channel}.", channel: channel)
+
+  defp left_headline(_reason, _channel, _by),
+    do: dgettext("group_call", "You left the conference.")
+
+  defp left_detail(reason)
+       when reason in ["channel_ban", "channel_kick", "kicked", "ended", "closed"],
+       do: dgettext("group_call", "This tab is finished.")
+
+  defp left_detail(_reason),
+    do: dgettext("group_call", "This tab is finished. The room is still at this address.")
 
   attr :message, :string, required: true
 
@@ -424,7 +483,10 @@ defmodule RetroHexChatWeb.App.CallLive do
          {:ok, user_id} <- require_registered(nickname),
          :ok <- require_identified(nickname),
          membership <- channel_membership(room.channel_name),
-         :ok <- GroupCall.Policy.can_join?(user_id, nickname, room, membership) do
+         :ok <-
+           GroupCall.Policy.can_join?(user_id, nickname, room, membership,
+             seat_held: GroupCall.seat_held?(room, nickname)
+           ) do
       {:ok, room.channel_name, user_id}
     end
   end

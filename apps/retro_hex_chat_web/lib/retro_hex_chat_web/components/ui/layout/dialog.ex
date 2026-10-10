@@ -102,7 +102,10 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
   # window-scoped sub-form fills its host window (itself fullscreen in the
   # stacked mobile layout). Both revert to a centered card at `md`.
   defp scope_position(:viewport), do: "fixed"
-  defp scope_position(:window), do: "absolute"
+  # The wrapper's `z-modal` stacks nothing in the window scope — it is not
+  # positioned there — so the layers carry it themselves; without it a video
+  # tile's nameplate painted over the dialog and took its clicks.
+  defp scope_position(:window), do: "absolute z-modal"
 
   # The frame's own `max-h-full` is a percentage, and a percentage height only
   # binds when the ancestor it is a percentage *of* has a height. The viewport

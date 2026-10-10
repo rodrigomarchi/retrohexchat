@@ -35,8 +35,8 @@ defmodule RetroHexChatWeb.Components.UI.DialogTest do
 
       # Overlay and centering container anchor to the nearest positioned
       # ancestor (the desktop window root), not the viewport.
-      assert html =~ ~s(id="test-dialog-bg" class="absolute inset-0)
-      assert html =~ ~s(class="absolute inset-0 flex items-center justify-center)
+      assert html =~ ~s(id="test-dialog-bg" class="absolute z-modal inset-0)
+      assert html =~ ~s(class="absolute z-modal inset-0 flex items-center justify-center)
       refute html =~ "fixed inset-0"
       # The frame fits the window instead of claiming the viewport height.
       refute html =~ "min-h-[100dvh]"

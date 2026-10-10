@@ -9,7 +9,7 @@
  * @module group_call/payload
  */
 
-export const LAYOUT_MODES = new Set(["auto", "grid", "focus", "sidebar", "speaker"]);
+export const LAYOUT_MODES = new Set(["auto", "grid", "focus", "speaker"]);
 export const SELF_VIEW_MODES = new Set(["tile", "pip", "hidden"]);
 
 /** True when `object` has `key` as an own property, null-safe. */

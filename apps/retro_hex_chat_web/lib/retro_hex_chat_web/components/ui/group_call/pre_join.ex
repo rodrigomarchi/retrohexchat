@@ -179,7 +179,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
                           options={[
                             {"auto", dgettext("group_call", "Auto")},
                             {"grid", dgettext("group_call", "Grid")},
-                            {"focus", dgettext("group_call", "Focus")}
+                            {"focus", dgettext("group_call", "Focus")},
+                            {"speaker", dgettext("group_call", "Speaker")}
                           ]}
                           testid="group-call-prejoin-layout"
                         />

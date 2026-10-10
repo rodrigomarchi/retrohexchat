@@ -11,12 +11,24 @@
  * @flow N9 [done] Channel group call lock lets a moderator prevent lower-ranked users from joining, shows the locked state in the channel badge, and returns a locked-call error when a blocked user attempts to enter (features P0)
  * @flow N10 [done] Channel group call request-to-speak lets a muted participant raise a hand, shows the moderator queue, lets the moderator allow speech, and verifies the target browser audio track is re-enabled (features P0)
  * @flow N11 [done] Channel group call screen-share moderation lets a moderator stop a participant screen share, blocks immediate re-share on the target browser, and re-allows sharing afterward (features P0)
- * @flow N12 [done] Channel group call mini mode keeps the WebRTC surface mounted, preserves the same remote video element, exposes compact mic/camera/leave/expand controls, and verifies compact mute affects the real local track and remote participant state (features P0)
+ * @flow N12 [done] Channel group call mini mode shrinks the call to a small window and expanding restores its size, keeps the WebRTC surface mounted, preserves the same remote video element, exposes compact mic/camera/leave/expand controls, and verifies compact mute affects the real local track and remote participant state (features P0)
  * @flow N13 [done] Channel group call can dock the statistics window beside the conference without stealing the call workflow, then maximize and restore the conference window while stats remains visible (features P1)
  * @flow N14 [done] Channel group call advanced layouts switch to speaker view from active-speaker state, pin a participant, preserve the same remote video element across layout transitions, and expose compact grid density through the WebRTC surface (features P1)
  * @flow N15 [done] Channel group call reactions send through the conference signaling channel, appear on the remote video tile and participant row, then expire from the tile overlay (features P1)
  * @flow N16 [done] Channel group call pre-join handles denied microphone/camera permission with a visible warning, retry action, and a receive-only join path that mounts without local tracks (features P0)
  * @flow N17 [done] Channel group call visual polish renders SVG reaction controls, captures desktop/mobile windows, and asserts the conference panel has no horizontal layout overflow (features P1)
+ * @flow N52 [done] Channel group call per-participant moderation mutes one participant's microphone from their row's menu: their own browser's audio track goes off, their row is marked as muted by the moderator, their own toggle cannot turn it back on, and the moderator's "Allow participant microphone" restores it (features P0)
+ * @flow N53 [done] Removing a participant from the conference bans them from its channel: after the confirm, their row leaves the moderator's call, their own tab says they were removed and banned, and the channel's tab leaves their chat (features P0)
+ * @flow N54 [done] Focusing a participant from their row's menu puts their tile on the stage, the Settings section names the layout in use, and Auto layout lets the call arrange itself again (features P1)
+ * @flow N55 [done] The speaker picked before joining is the one the call plays through: the remote participant's audio is routed to that output device (features P1)
+ * @flow N56 [done] Six people in one channel conference each receive live video from the other five, and the Leave confirmation stays on top of the full grid: its button is what a click on it reaches, never a tile's nameplate (features P1)
+ * @flow N57 [done] A participant whose microphone carries sound lights up as the active speaker on another participant's screen, from the audio level measured in the call, with no simulated stats (features P0)
+ * @flow N59 [done] The layout picked before joining offers every layout the call has, Speaker included, and the call opens in the one picked (features P1)
+ * @flow N60 [done] A call tab that loses the server says so: its status reads "Reconnecting to the server…" instead of the last state it heard, and its controls read as unavailable until the page is connected again, when the status and the controls come back by themselves (features P0)
+ * @flow N61 [done] Closing the call tab by accident is not leaving: reopening the call's address within the reconnection window puts you straight back in your seat — even after a moderator locked the room — with no antechamber, live video both ways, and one row for you on the other side (features P0)
+ * @flow N62 [done] While your conference runs in its own tab, the chat keeps up: coming back to it shows the newest lines of the channel, the call's card included, and a line you send scrolls into view (features P0)
+ * @flow N63 [done] Ending the conference for everyone ends it on every page and says so: the moderator's tab says they ended it, each other participant's tab names who did, and neither points back at a room that no longer exists (features P0)
+ * @flow N58 [done] Push-to-talk: holding Ctrl+Shift+Z while muted turns the microphone on for as long as it is held, and letting go turns it off again (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -609,6 +621,96 @@ function participantScreenModeratedIndicator(page: Page, nickname: string) {
 function participantAllowSpeakButton(page: Page, nickname: string) {
   return page.getByRole("button", {
     name: new RegExp(`Allow ${nickname} to speak`),
+  });
+}
+
+function participantAudioModerationButton(page: Page, nickname: string) {
+  return participantRow(page, nickname).getByRole("menuitem", {
+    name: /Mute participant|Unmute participant|Allow participant microphone/,
+  });
+}
+
+function participantAudioModeratedIndicator(page: Page, nickname: string) {
+  return participantRow(page, nickname).locator(
+    '[data-group-call-participant-audio][data-media-moderated="true"]',
+  );
+}
+
+function participantFocusButton(page: Page, nickname: string) {
+  return participantRow(page, nickname).getByRole("menuitemcheckbox", {
+    name: /Focus participant/,
+  });
+}
+
+function participantRemoveButton(page: Page, nickname: string) {
+  return participantRow(page, nickname).getByRole("menuitem", {
+    name: /Remove from conference and ban from channel/,
+  });
+}
+
+// Auto is in the view rail and again in Settings; the spec presses the one in
+// the section it has open.
+function groupCallLayoutAuto(page: Page) {
+  return groupCallSettingsPanel(page).getByTestId("group-call-layout-auto");
+}
+
+// A second speaker on the machine, and a record of where the page routes
+// sound: `setSinkId` is the one place an output device is chosen.
+async function installSecondSpeaker(user: GroupCallUser) {
+  await user.ctx.addInitScript(() => {
+    const devices = navigator.mediaDevices as MediaDevices & {
+      enumerateDevices: () => Promise<MediaDeviceInfo[]>;
+    };
+    const original = devices.enumerateDevices.bind(devices);
+    const speaker = (deviceId: string, label: string) =>
+      ({
+        deviceId,
+        groupId: deviceId,
+        kind: "audiooutput",
+        label,
+        toJSON() {
+          return this;
+        },
+      }) as MediaDeviceInfo;
+    devices.enumerateDevices = async () => [
+      ...(await original()).filter((d) => d.kind !== "audiooutput"),
+      speaker("laptop-speakers", "Laptop Speakers"),
+      speaker("desk-speakers", "Desk Speakers"),
+    ];
+    const sinks: string[] = [];
+    (window as typeof window & { __sinkIds?: string[] }).__sinkIds = sinks;
+    Object.defineProperty(HTMLMediaElement.prototype, "setSinkId", {
+      configurable: true,
+      value: async function (id: string) {
+        sinks.push(id);
+      },
+    });
+  });
+}
+
+// A microphone that carries sound: the suite's synthetic tone is quiet on
+// purpose, under the level the call counts as speaking.
+async function installAudibleMicrophone(user: GroupCallUser) {
+  await user.ctx.addInitScript(() => {
+    const devices = navigator.mediaDevices;
+    const original = devices.getUserMedia.bind(devices);
+    devices.getUserMedia = async (constraints?: MediaStreamConstraints) => {
+      const stream = await original(constraints);
+      if (!constraints?.audio) return stream;
+      for (const track of stream.getAudioTracks()) stream.removeTrack(track);
+      const audio = new AudioContext();
+      void audio.resume();
+      const tone = audio.createOscillator();
+      tone.type = "sawtooth";
+      tone.frequency.value = 160;
+      const loud = audio.createGain();
+      loud.gain.value = 0.6;
+      const out = audio.createMediaStreamDestination();
+      tone.connect(loud).connect(out);
+      tone.start();
+      stream.addTrack(out.stream.getAudioTracks()[0]);
+      return stream;
+    };
   });
 }
 
@@ -1956,6 +2058,10 @@ test.describe("Channel group calls", () => {
       await expect
         .poll(() => remoteVideoIdentity(aliceCall))
         .toEqual(initialRemote);
+      // Compact is a small window, not the whole page with its tiles squeezed.
+      const windowWidth = async () =>
+        (await groupCallWindow(aliceCall).boundingBox())?.width ?? 0;
+      await expect.poll(windowWidth).toBeLessThan(400);
 
       await groupCallMiniAudioToggle(aliceCall).click();
       await expect(groupCallMiniAudioToggle(aliceCall)).toHaveAttribute(
@@ -1976,6 +2082,7 @@ test.describe("Channel group calls", () => {
         "data-mini-mode",
         "false",
       );
+      await expect.poll(windowWidth).toBeGreaterThan(800);
       await expect(groupCallAudioToggle(aliceCall)).toHaveAttribute(
         "aria-pressed",
         "false",
@@ -2471,6 +2578,541 @@ test.describe("Channel group calls", () => {
       await expect(
         participantScreenModeratedIndicator(aliceCall, bob.nick),
       ).toBeHidden();
+    } finally {
+      await closeGroupCallUsers([alice, bob]);
+    }
+  });
+
+  test("moderator mutes one participant and their microphone stays off until allowed", async ({
+    browser,
+  }) => {
+    const alice = await newGroupCallUser(browser, "gcmaa");
+    const bob = await newGroupCallUser(browser, "gcmab");
+    const channel = uniqueChannel("gcallmicmod");
+
+    try {
+      for (const user of [alice, bob]) {
+        await joinChannel(user, channel);
+      }
+
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+      await openPeopleSection(aliceCall);
+
+      await expect
+        .poll(() => remoteVideoLive(aliceCall), { timeout: 30_000 })
+        .toBe(true);
+      await expect.poll(() => localTrackEnabled(bobCall, "audio")).toBe(true);
+      await expect
+        .poll(() => participantMediaEnabled(aliceCall, bob.nick, "audio"), {
+          timeout: 10_000,
+        })
+        .toBe("true");
+
+      await openParticipantActions(aliceCall, bob.nick);
+      await expect(
+        participantAudioModerationButton(aliceCall, bob.nick),
+      ).toHaveText(/Mute participant/);
+      await participantAudioModerationButton(aliceCall, bob.nick).click();
+
+      await expect
+        .poll(() => localTrackEnabled(bobCall, "audio"), { timeout: 10_000 })
+        .toBe(false);
+      await expect
+        .poll(() => participantMediaEnabled(aliceCall, bob.nick, "audio"), {
+          timeout: 10_000,
+        })
+        .toBe("false");
+      await expect(
+        participantAudioModeratedIndicator(aliceCall, bob.nick),
+      ).toBeVisible();
+
+      // Bob's own switch cannot undo the moderator.
+      await groupCallAudioToggle(bobCall).click();
+      await expect
+        .poll(() => localTrackEnabled(bobCall, "audio"), { timeout: 5_000 })
+        .toBe(false);
+
+      await openParticipantActions(aliceCall, bob.nick);
+      await expect(
+        participantAudioModerationButton(aliceCall, bob.nick),
+      ).toHaveText(/Allow participant microphone/);
+      await participantAudioModerationButton(aliceCall, bob.nick).click();
+      await expect(
+        participantAudioModeratedIndicator(aliceCall, bob.nick),
+      ).toBeHidden();
+      // Allowed again, the microphone comes back as it was before the mute.
+      await expect
+        .poll(() => localTrackEnabled(bobCall, "audio"), { timeout: 10_000 })
+        .toBe(true);
+    } finally {
+      await closeGroupCallUsers([alice, bob]);
+    }
+  });
+
+  test("removing a participant bans them from the channel and ends their call", async ({
+    browser,
+  }) => {
+    const alice = await newGroupCallUser(browser, "gcrma");
+    const bob = await newGroupCallUser(browser, "gcrmb");
+    const channel = uniqueChannel("gcallremove");
+
+    try {
+      for (const user of [alice, bob]) {
+        await joinChannel(user, channel);
+      }
+
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+      await expect
+        .poll(() => remoteVideoLive(aliceCall), { timeout: 30_000 })
+        .toBe(true);
+
+      await openParticipantActions(aliceCall, bob.nick);
+      await participantRemoveButton(aliceCall, bob.nick).click();
+      await groupCallConfirmLeave(aliceCall).click();
+
+      await expect(participantRow(aliceCall, bob.nick)).toHaveCount(0, {
+        timeout: 10_000,
+      });
+      await expect(aliceCall.getByTestId("call-notice")).toContainText(
+        `${bob.nick} was removed from the conference and banned from ${channel}`,
+      );
+
+      const left = bobCall.getByTestId("call-left");
+      await expect(left).toBeVisible({ timeout: 10_000 });
+      await expect(left).toContainText(`You were banned from ${channel}`);
+      await expect(left).not.toContainText("The room is still at this address");
+
+      await bob.chat.expectTabHidden(channel);
+    } finally {
+      await closeGroupCallUsers([alice, bob]);
+    }
+  });
+
+  test("focus from a participant's menu, the layout named in Settings, then Auto", async ({
+    browser,
+  }) => {
+    const alice = await newGroupCallUser(browser, "gcfoa");
+    const bob = await newGroupCallUser(browser, "gcfob");
+    const channel = uniqueChannel("gcallfocus");
+
+    try {
+      for (const user of [alice, bob]) {
+        await joinChannel(user, channel);
+      }
+
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+      await expect
+        .poll(() => remoteVideoLive(aliceCall), { timeout: 30_000 })
+        .toBe(true);
+
+      await openParticipantActions(aliceCall, bob.nick);
+      await participantFocusButton(aliceCall, bob.nick).click();
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
+        "data-layout-mode",
+        "focus",
+      );
+      await expect(remoteVideoTile(aliceCall)).toHaveAttribute(
+        "data-focused",
+        "true",
+      );
+
+      await groupCallSection(aliceCall, "settings").click();
+      await expect(groupCallSettingsPanel(aliceCall)).toBeVisible();
+      await expect(groupCallSettingsPanel(aliceCall)).toContainText("Focus");
+
+      await groupCallLayoutAuto(aliceCall).click();
+      await expect(groupCallLayoutAuto(aliceCall)).toHaveAttribute(
+        "aria-pressed",
+        "true",
+      );
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
+        "data-layout-mode",
+        "auto",
+      );
+      await expect(groupCallSettingsPanel(aliceCall)).toContainText("Auto");
+    } finally {
+      await closeGroupCallUsers([alice, bob]);
+    }
+  });
+
+  test("the speaker picked before joining is the one the call plays through", async ({
+    browser,
+  }) => {
+    const alice = await newGroupCallUser(browser, "gcspa");
+    const bob = await newGroupCallUser(browser, "gcspb");
+    const channel = uniqueChannel("gcallspeaker");
+
+    try {
+      for (const user of [alice, bob]) {
+        await joinChannel(user, channel);
+      }
+      await installSecondSpeaker(alice);
+
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+
+      const aliceCall = await openPrejoin(alice);
+      const output = aliceCall.getByTestId("group-call-prejoin-audio-output");
+      await expect(output).toContainText("Desk Speakers", {
+        timeout: 10_000,
+      });
+      await output.selectOption("desk-speakers");
+      await groupCallPrejoinJoin(aliceCall).click();
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+
+      await expect
+        .poll(() => remoteVideoLive(aliceCall), { timeout: 30_000 })
+        .toBe(true);
+      await expect
+        .poll(
+          () =>
+            aliceCall.evaluate(
+              () =>
+                (window as typeof window & { __sinkIds?: string[] }).__sinkIds,
+            ),
+          { timeout: 10_000 },
+        )
+        .toContain("desk-speakers");
+    } finally {
+      await closeGroupCallUsers([alice, bob]);
+    }
+  });
+
+  test("six people in one call each receive the other five", async ({
+    browser,
+  }) => {
+    test.setTimeout(240_000);
+    const users: GroupCallUser[] = [];
+    const channel = uniqueChannel("gcallsix");
+
+    try {
+      for (let i = 0; i < 6; i++) {
+        users.push(await newGroupCallUser(browser, `gcsix${i}`));
+      }
+      for (const user of users) {
+        await joinChannel(user, channel);
+      }
+
+      const calls: Page[] = [];
+      for (const user of users) {
+        const call = await joinGroupCall(user);
+        await expect(groupCallWindow(call)).toBeVisible();
+        calls.push(call);
+      }
+
+      for (const call of calls) {
+        await expect
+          .poll(() => remoteLiveVideoCount(call), { timeout: 60_000 })
+          .toBe(5);
+      }
+
+      const leaving = calls[0];
+      await groupCallLeave(leaving).click();
+      const confirm = groupCallConfirmLeave(leaving);
+      await expect(confirm).toBeVisible();
+      // Every point of the dialog is the dialog's: nothing from the grid
+      // underneath — a tile's nameplate — paints over it or takes a click.
+      const covered = await confirm.evaluate((button) => {
+        let frame: Element = button;
+        while (
+          frame.parentElement &&
+          frame.parentElement.getBoundingClientRect().width <
+            window.innerWidth * 0.9
+        ) {
+          frame = frame.parentElement;
+        }
+        const box = frame.getBoundingClientRect();
+        const misses: string[] = [];
+        for (let i = 1; i < 8; i++) {
+          for (let j = 1; j < 8; j++) {
+            const x = box.left + (box.width * i) / 8;
+            const y = box.top + (box.height * j) / 8;
+            const hit = document.elementFromPoint(x, y);
+            if (!hit || !frame.contains(hit)) {
+              misses.push(hit?.outerHTML.slice(0, 80) ?? "nothing");
+            }
+          }
+        }
+        return misses;
+      });
+      expect(covered).toEqual([]);
+      await confirm.click();
+      await expect(leaving.getByTestId("call-left")).toBeVisible({
+        timeout: 15_000,
+      });
+    } finally {
+      await closeGroupCallUsers(users);
+    }
+  });
+
+  test("whoever speaks lights up on the others' screens from the call's own audio", async ({
+    browser,
+  }) => {
+    const alice = await newGroupCallUser(browser, "gctka");
+    const bob = await newGroupCallUser(browser, "gctkb");
+    const channel = uniqueChannel("gcalltalk");
+
+    try {
+      for (const user of [alice, bob]) {
+        await joinChannel(user, channel);
+      }
+      await installAudibleMicrophone(alice);
+
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+      await openPeopleSection(bobCall);
+
+      await expect
+        .poll(() => remoteVideoLive(bobCall), { timeout: 30_000 })
+        .toBe(true);
+
+      await expect(remoteVideoTile(bobCall)).toHaveAttribute(
+        "data-active-speaker",
+        "true",
+        { timeout: 20_000 },
+      );
+      await expect(participantRow(bobCall, alice.nick)).toHaveAttribute(
+        "data-active-speaker",
+        "true",
+      );
+    } finally {
+      await closeGroupCallUsers([alice, bob]);
+    }
+  });
+
+  test("speaker view can be picked before joining and the call opens in it", async ({
+    browser,
+  }) => {
+    const alice = await newGroupCallUser(browser, "gcpsa");
+    const channel = uniqueChannel("gcallpjspeaker");
+
+    try {
+      await joinChannel(alice, channel);
+      const aliceCall = await openPrejoin(alice);
+      await aliceCall
+        .getByTestId("group-call-prejoin-advanced")
+        .locator("summary")
+        .click();
+      await aliceCall
+        .getByTestId("group-call-prejoin-layout")
+        .selectOption("speaker");
+      await groupCallPrejoinJoin(aliceCall).click();
+
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      await expect(groupCallWebRTC(aliceCall)).toHaveAttribute(
+        "data-layout-mode",
+        "speaker",
+        { timeout: 10_000 },
+      );
+      await expect(groupCallLayoutSpeaker(aliceCall).first()).toHaveAttribute(
+        "aria-pressed",
+        "true",
+      );
+    } finally {
+      await closeGroupCallUsers([alice]);
+    }
+  });
+
+  test("a call tab that loses the server says so until it is back", async ({
+    browser,
+  }) => {
+    test.setTimeout(120_000);
+    const alice = await newGroupCallUser(browser, "gcdra");
+    const bob = await newGroupCallUser(browser, "gcdrb");
+    const channel = uniqueChannel("gcalldrop");
+
+    try {
+      for (const user of [alice, bob]) {
+        await joinChannel(user, channel);
+      }
+
+      await joinGroupCall(alice);
+      const bobCall = await joinGroupCall(bob);
+      await expect(groupCallWindow(bobCall)).toBeVisible();
+      await expect(groupCallStatusAnnouncer(bobCall)).toContainText(
+        "Connected",
+        { timeout: 20_000 },
+      );
+      await expect(
+        bobCall.getByTestId("group-call-status-offline"),
+      ).toBeHidden();
+
+      // The page's own link to the server goes: what a dropped network does
+      // to it once the socket notices. Emulating "offline" leaves an open
+      // socket standing, so the socket itself is closed.
+      await bobCall.evaluate(() =>
+        (
+          window as typeof window & { liveSocket: { disconnect: () => void } }
+        ).liveSocket.disconnect(),
+      );
+      await expect(
+        bobCall.getByTestId("group-call-status-offline"),
+      ).toBeVisible({ timeout: 20_000 });
+      await expect(groupCallStatusAnnouncer(bobCall)).toHaveText(
+        /Reconnecting to the server/,
+      );
+      await expect(groupCallMediaControls(bobCall)).toHaveCSS(
+        "pointer-events",
+        "none",
+      );
+
+      await bobCall.evaluate(() =>
+        (
+          window as typeof window & { liveSocket: { connect: () => void } }
+        ).liveSocket.connect(),
+      );
+      await expect(bobCall.getByTestId("group-call-status-offline")).toBeHidden(
+        { timeout: 30_000 },
+      );
+      await expect(groupCallStatusAnnouncer(bobCall)).toContainText(
+        "Connected",
+      );
+      await expect(groupCallMediaControls(bobCall)).toHaveCSS(
+        "pointer-events",
+        "auto",
+      );
+    } finally {
+      await closeGroupCallUsers([alice, bob]);
+    }
+  });
+
+  test("closing the call tab by accident and reopening it puts you back in your seat", async ({
+    browser,
+  }) => {
+    test.setTimeout(120_000);
+    const alice = await newGroupCallUser(browser, "gcrea");
+    const bob = await newGroupCallUser(browser, "gcreb");
+    const channel = uniqueChannel("gcallreopen");
+
+    try {
+      for (const user of [alice, bob]) {
+        await joinChannel(user, channel);
+      }
+
+      const aliceCall = await joinGroupCall(alice);
+      const bobCall = await joinGroupCall(bob);
+      await expect
+        .poll(() => remoteVideoLive(aliceCall), { timeout: 30_000 })
+        .toBe(true);
+      const address = conferenceAddress(bobCall);
+
+      // The lock keeps newcomers out; bob is not one.
+      await openModerationMenu(aliceCall);
+      await groupCallLockToggle(aliceCall).click();
+      await expect(groupCallLockToggle(aliceCall)).toHaveAttribute(
+        "aria-checked",
+        "true",
+      );
+
+      await bobCall.close();
+      await aliceCall.waitForTimeout(3_000);
+
+      const reopened = await bob.ctx.newPage();
+      await reopened.goto(address);
+      await expect(groupCallWindow(reopened)).toBeVisible({ timeout: 20_000 });
+      await expect(reopened.getByTestId("group-call-prejoin")).toHaveCount(0);
+      await expect(groupCallWebRTC(reopened)).toBeVisible({ timeout: 20_000 });
+      for (const call of [aliceCall, reopened]) {
+        await expect
+          .poll(() => remoteVideoLive(call), { timeout: 45_000 })
+          .toBe(true);
+      }
+      await openPeopleSection(aliceCall);
+      await expect(participantRow(aliceCall, bob.nick)).toHaveCount(1);
+    } finally {
+      await closeGroupCallUsers([alice, bob]);
+    }
+  });
+
+  test("the chat keeps up with the channel while the call is in its own tab", async ({
+    browser,
+  }) => {
+    test.setTimeout(120_000);
+    const alice = await newGroupCallUser(browser, "gcsca");
+    const bob = await newGroupCallUser(browser, "gcscb");
+    const channel = uniqueChannel("gcallscroll");
+
+    try {
+      for (const user of [alice, bob]) {
+        await joinChannel(user, channel);
+      }
+      // Enough of a conversation that the list scrolls.
+      for (let i = 0; i < 4; i++) {
+        await alice.chat.sendMessage(`earlier from alice ${i}`);
+        await bob.chat.sendMessage(`earlier from bob ${i}`);
+        await bob.page.waitForTimeout(2_500);
+      }
+
+      const aliceCall = await joinGroupCall(alice);
+      await expect(groupCallWindow(aliceCall)).toBeVisible();
+      await bob.chat.sendMessage("said while alice was on the call");
+      await bob.page.waitForTimeout(2_500);
+
+      await alice.page.bringToFront();
+      await expect(
+        alice.chat.messageList.getByText("said while alice was on the call"),
+      ).toBeInViewport({ timeout: 10_000 });
+
+      await bob.page.waitForTimeout(2_500);
+      await bob.chat.sendMessage("and one more after she came back");
+      await expect(
+        alice.chat.messageList.getByText("and one more after she came back"),
+      ).toBeInViewport({ timeout: 10_000 });
+
+      await alice.chat.sendMessage("back from the call");
+      await expect(
+        alice.chat.messageList.getByText("back from the call"),
+      ).toBeInViewport({ timeout: 10_000 });
+    } finally {
+      await closeGroupCallUsers([alice, bob]);
+    }
+  });
+
+  test("ending the call for everyone says who ended it on every page", async ({
+    browser,
+  }) => {
+    const alice = await newGroupCallUser(browser, "gcena");
+    const bob = await newGroupCallUser(browser, "gcenb");
+    const channel = uniqueChannel("gcallend");
+
+    try {
+      for (const user of [alice, bob]) {
+        await joinChannel(user, channel);
+      }
+      const aliceCall = await joinGroupCall(alice);
+      const bobCall = await joinGroupCall(bob);
+      await expect
+        .poll(() => remoteVideoLive(aliceCall), { timeout: 30_000 })
+        .toBe(true);
+
+      await openModerationMenu(aliceCall);
+      await aliceCall.getByTestId("group-call-close-room").click();
+      await groupCallConfirmLeave(aliceCall).click();
+
+      const mine = aliceCall.getByTestId("call-left");
+      await expect(mine).toContainText(
+        `You ended the conference in ${channel} for everyone.`,
+        { timeout: 15_000 },
+      );
+      const theirs = bobCall.getByTestId("call-left");
+      await expect(theirs).toContainText(
+        `${alice.nick} ended the conference in ${channel} for everyone.`,
+        { timeout: 15_000 },
+      );
+      for (const page of [mine, theirs]) {
+        await expect(page).not.toContainText("still at this address");
+      }
     } finally {
       await closeGroupCallUsers([alice, bob]);
     }

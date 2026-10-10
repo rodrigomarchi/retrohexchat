@@ -673,6 +673,40 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
       refute participant.reason
     end
 
+    test "a locked room still takes back the person whose seat it is holding" do
+      # The lock keeps newcomers out. Someone whose tab closed by accident is
+      # not a newcomer: the room is holding their seat for the reconnect
+      # window, and reopening the address has to put them back in it.
+      Application.put_env(:retro_hex_chat, :group_call_reconnect_timeout_ms, 5_000)
+
+      ctx = create_call_with_member("lockseat", "owner")
+      _owner = join_call(ctx)
+
+      regular = create_registered_nick(unique_nick("regular"))
+      payload = join_channel_member(ctx, regular)
+
+      assert {:ok, _room} =
+               GroupCall.lock_call(ctx.token, %{user_id: ctx.nick.id, nickname: ctx.nick.nickname})
+
+      assert :ok = PeerSupervisor.terminate_peer(ctx.room.id, payload.participant.id)
+      wait_for_participant_status(payload.participant.id, "disconnected")
+
+      rejoined = join_call(ctx, regular)
+      assert rejoined.participant.id == payload.participant.id
+
+      newcomer = create_registered_nick(unique_nick("late"))
+      {:ok, _state} = Server.join(ctx.channel, newcomer.nickname, nil, identified: true)
+
+      assert {:error, "Group call is locked"} =
+               GroupCall.join_call(
+                 ctx.token,
+                 %{user_id: newcomer.id, nickname: newcomer.nickname},
+                 self(),
+                 %{"browser" => "test"},
+                 %{}
+               )
+    end
+
     test "marks a briefly disconnected participant as failed after reconnect timeout" do
       # Both states have to be observable, and the suite's 30 ms timeout closes
       # the first one before a loaded CI box can look. The room captures its

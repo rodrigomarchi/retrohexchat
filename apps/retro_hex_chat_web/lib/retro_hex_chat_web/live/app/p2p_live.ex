@@ -117,7 +117,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
       <div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
       <%!-- Where "Copied!" lands: a page of its own has no chat to borrow a
             toast container from. --%>
-      <RetroHexChatWeb.Components.Toast.toast_container />
+      <RetroHexChatWeb.Components.Toast.toast_container tips={false} />
       <.desktop id="p2p-desktop" persist_key="p2p" class="flex-1" data-testid="p2p-desktop">
         <.desktop_window
           id="p2p-call"

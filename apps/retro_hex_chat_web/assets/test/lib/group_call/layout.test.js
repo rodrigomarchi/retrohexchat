@@ -53,7 +53,7 @@ describe("focusedTileIndex", () => {
   });
 
   it("falls back to the first remote tile", () => {
-    expect(focusedTileIndex({ mode: "sidebar" }, tiles)).toBe(1);
+    expect(focusedTileIndex({ mode: "speaker" }, tiles)).toBe(1);
   });
 
   it("falls back to the first tile when all are local", () => {

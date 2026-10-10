@@ -42,7 +42,9 @@ defmodule RetroHexChatWeb.CallLive.Events do
   alias RetroHexChatWeb.MediaDevices
 
   @prejoin_preference_namespace "group_call_prejoin"
-  @layout_modes ~w(auto grid focus sidebar speaker)
+  @layout_modes ~w(auto grid focus speaker)
+  # The conference's window on its own page (`CallLive`'s desktop).
+  @call_window_id "group-call"
   @self_view_cycle [:tile, :pip, :hidden]
 
   @type event_result :: {:cont | :halt, Socket.t()}
@@ -516,19 +518,18 @@ defmodule RetroHexChatWeb.CallLive.Events do
     {:halt, socket |> update_call(&remove_track(&1, track_id)) |> push_group_call_layout()}
   end
 
+  # The room ended under this person: the page says so, and who did it, in
+  # place of a "you left" they never chose.
   def handle_event("group_call_closed", payload, %{assigns: %{group_call: %{}}} = socket) do
-    message =
-      case GroupCallShape.value(payload, :reason) do
-        nil -> dgettext("group_call", "Group call ended.")
-        reason -> dgettext("group_call", "Group call ended: %{reason}", reason: reason)
-      end
-
-    socket =
-      socket
-      |> assign(group_call: nil, group_call_pending: nil)
-      |> Surface.close()
-
-    {:halt, Surface.system(socket, message)}
+    {:halt,
+     socket
+     |> assign(
+       group_call: nil,
+       group_call_pending: nil,
+       left_reason: "closed",
+       left_by: GroupCallShape.value(payload, :ended_by)
+     )
+     |> Surface.close()}
   end
 
   def handle_event(
@@ -650,9 +651,9 @@ defmodule RetroHexChatWeb.CallLive.Events do
     end_current_call(socket, reason)
   end
 
-  def leave(socket, _reason) do
+  def leave(socket, reason) do
     socket
-    |> assign(group_call_prejoin: nil)
+    |> assign(group_call_prejoin: nil, left_reason: reason)
     |> Surface.close()
   end
 
@@ -873,7 +874,12 @@ defmodule RetroHexChatWeb.CallLive.Events do
     end
 
     socket
-    |> assign(group_call: nil, group_call_pending: nil, group_call_prejoin: nil)
+    |> assign(
+      group_call: nil,
+      group_call_pending: nil,
+      group_call_prejoin: nil,
+      left_reason: reason
+    )
     |> Surface.close()
   end
 
@@ -1088,11 +1094,37 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   defp toggle_mini(socket) do
-    update_call(socket, fn call ->
-      layout = layout(call)
-      %{call | layout: Map.put(layout, :mini, !Map.get(layout, :mini, false))}
-    end)
+    mini? = !Map.get(layout(socket.assigns.group_call), :mini, false)
+
+    socket
+    |> update_call(fn call -> %{call | layout: Map.put(layout(call), :mini, mini?)} end)
     |> push_group_call_layout()
+    |> push_call_window_geometry(mini?)
+  end
+
+  # Compact is a size, and a size is the window manager's: without this the
+  # call kept its whole window and squeezed six tiles into strips. The compact
+  # window remembers where the call was, maximized included, and expanding
+  # puts it back there; the default size is the fallback.
+  defp push_call_window_geometry(socket, true) do
+    push_event(socket, "window_command", %{
+      action: "set_geometry",
+      id: @call_window_id,
+      width: 320,
+      height: 250,
+      anchor: "bottom_right",
+      margin: 16,
+      remember: true
+    })
+  end
+
+  defp push_call_window_geometry(socket, false) do
+    push_event(socket, "window_command", %{
+      action: "restore_geometry",
+      id: @call_window_id,
+      width: 960,
+      height: 640
+    })
   end
 
   defp focus_participant(socket, participant_id) do
@@ -1479,7 +1511,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
     with {:ok, actor} <- actor(socket),
          :ok <- GroupCall.close_call(socket.assigns.group_call.token, actor, "moderation") do
       socket
-      |> assign(group_call: nil, group_call_pending: nil)
+      |> assign(group_call: nil, group_call_pending: nil, left_reason: "ended")
       |> Surface.close()
     else
       {:error, message} when is_binary(message) -> Surface.error(socket, message)
@@ -1964,7 +1996,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
 
   defp boolean_preference(_value, default), do: default
 
-  defp layout_mode(mode) when mode in [:auto, :grid, :focus, :sidebar, :speaker], do: mode
+  defp layout_mode(mode) when mode in [:auto, :grid, :focus, :speaker], do: mode
 
   defp layout_mode(mode) when is_binary(mode) and mode in @layout_modes,
     do: String.to_existing_atom(mode)
@@ -2007,7 +2039,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   defp maybe_focus_for_mode(%{mode: mode, focused_participant_id: nil} = layout, call)
-       when mode in [:focus, :sidebar] do
+       when mode == :focus do
     %{layout | focused_participant_id: default_focus_participant_id(call)}
   end
 

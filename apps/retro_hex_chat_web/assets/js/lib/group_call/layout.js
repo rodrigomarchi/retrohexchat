@@ -9,7 +9,7 @@
  * @module group_call/layout
  */
 
-const FOCUS_MODES = ["focus", "sidebar", "speaker"];
+const FOCUS_MODES = ["focus", "speaker"];
 
 /**
  * Whether a tile is shown. Remote tiles always are; the local tile follows the

@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **242 spec files** under `e2e/tests/`.
-- **568 Playwright `test()` cases**.
-- **515 documented flows**, 514 done, 1 not done.
+- **579 Playwright `test()` cases**.
+- **527 documented flows**, 526 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -415,7 +415,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N9 | Channel group call lock lets a moderator prevent lower-ranked users from joining, shows the locked state in the channel badge, and returns a locked-call error when a blocked user attempts to enter (features P0) | `tests/chat-group-call.spec.ts` | done |
 | N10 | Channel group call request-to-speak lets a muted participant raise a hand, shows the moderator queue, lets the moderator allow speech, and verifies the target browser audio track is re-enabled (features P0) | `tests/chat-group-call.spec.ts` | done |
 | N11 | Channel group call screen-share moderation lets a moderator stop a participant screen share, blocks immediate re-share on the target browser, and re-allows sharing afterward (features P0) | `tests/chat-group-call.spec.ts` | done |
-| N12 | Channel group call mini mode keeps the WebRTC surface mounted, preserves the same remote video element, exposes compact mic/camera/leave/expand controls, and verifies compact mute affects the real local track and remote participant state (features P0) | `tests/chat-group-call.spec.ts` | done |
+| N12 | Channel group call mini mode shrinks the call to a small window and expanding restores its size, keeps the WebRTC surface mounted, preserves the same remote video element, exposes compact mic/camera/leave/expand controls, and verifies compact mute affects the real local track and remote participant state (features P0) | `tests/chat-group-call.spec.ts` | done |
 | N13 | Channel group call can dock the statistics window beside the conference without stealing the call workflow, then maximize and restore the conference window while stats remains visible (features P1) | `tests/chat-group-call.spec.ts` | done |
 | N14 | Channel group call advanced layouts switch to speaker view from active-speaker state, pin a participant, preserve the same remote video element across layout transitions, and expose compact grid density through the WebRTC surface (features P1) | `tests/chat-group-call.spec.ts` | done |
 | N15 | Channel group call reactions send through the conference signaling channel, appear on the remote video tile and participant row, then expire from the tile overlay (features P1) | `tests/chat-group-call.spec.ts` | done |
@@ -455,6 +455,18 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N49 | A reaction sent from one side of the call appears on the other side's peer tile | `tests/chat-p2p-call-moments.spec.ts` | done |
 | N50 | A second file picked while one is transferring waits in the queue, then is offered and completes by itself | `tests/chat-p2p-call-moments.spec.ts` | done |
 | N51 | Leaving the call leaves only you: the peer is told you left instead of a frozen picture, and you can join again | `tests/chat-p2p-call-moments.spec.ts` | done |
+| N52 | Channel group call per-participant moderation mutes one participant's microphone from their row's menu: their own browser's audio track goes off, their row is marked as muted by the moderator, their own toggle cannot turn it back on, and the moderator's "Allow participant microphone" restores it (features P0) | `tests/chat-group-call.spec.ts` | done |
+| N53 | Removing a participant from the conference bans them from its channel: after the confirm, their row leaves the moderator's call, their own tab says they were removed and banned, and the channel's tab leaves their chat (features P0) | `tests/chat-group-call.spec.ts` | done |
+| N54 | Focusing a participant from their row's menu puts their tile on the stage, the Settings section names the layout in use, and Auto layout lets the call arrange itself again (features P1) | `tests/chat-group-call.spec.ts` | done |
+| N55 | The speaker picked before joining is the one the call plays through: the remote participant's audio is routed to that output device (features P1) | `tests/chat-group-call.spec.ts` | done |
+| N56 | Six people in one channel conference each receive live video from the other five, and the Leave confirmation stays on top of the full grid: its button is what a click on it reaches, never a tile's nameplate (features P1) | `tests/chat-group-call.spec.ts` | done |
+| N57 | A participant whose microphone carries sound lights up as the active speaker on another participant's screen, from the audio level measured in the call, with no simulated stats (features P0) | `tests/chat-group-call.spec.ts` | done |
+| N58 | Push-to-talk: holding Ctrl+Shift+Z while muted turns the microphone on for as long as it is held, and letting go turns it off again (features P1) | `tests/chat-group-call.spec.ts` | done |
+| N59 | The layout picked before joining offers every layout the call has, Speaker included, and the call opens in the one picked (features P1) | `tests/chat-group-call.spec.ts` | done |
+| N60 | A call tab that loses the server says so: its status reads "Reconnecting to the server…" instead of the last state it heard, and its controls read as unavailable until the page is connected again, when the status and the controls come back by themselves (features P0) | `tests/chat-group-call.spec.ts` | done |
+| N61 | Closing the call tab by accident is not leaving: reopening the call's address within the reconnection window puts you straight back in your seat — even after a moderator locked the room — with no antechamber, live video both ways, and one row for you on the other side (features P0) | `tests/chat-group-call.spec.ts` | done |
+| N62 | While your conference runs in its own tab, the chat keeps up: coming back to it shows the newest lines of the channel, the call's card included, and a line you send scrolls into view (features P0) | `tests/chat-group-call.spec.ts` | done |
+| N63 | Ending the conference for everyone ends it on every page and says so: the moderator's tab says they ended it, each other participant's tab names who did, and neither points back at a room that no longer exists (features P0) | `tests/chat-group-call.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

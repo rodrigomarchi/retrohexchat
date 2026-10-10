@@ -224,7 +224,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
   end
 
   defp layout_mode(%{layout: %{mode: mode}})
-       when mode in [:auto, :grid, :focus, :sidebar, :speaker],
+       when mode in [:auto, :grid, :focus, :speaker],
        do: mode
 
   defp layout_mode(_call), do: :auto

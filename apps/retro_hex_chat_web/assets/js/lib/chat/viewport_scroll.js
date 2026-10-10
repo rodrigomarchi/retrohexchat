@@ -53,7 +53,12 @@ export function createViewportScroller(scroller, deps = {}) {
   // land after the restore and used to shove the reader down with them,
   // measured at 344px on a page of seeded history. So the target survives the
   // restore for a moment, and only the resize path may re-apply it.
-  const settle = () => {
+  const settle = (records) => {
+    // Your own line always shows: you just wrote it, wherever you were reading.
+    if (records && records.some(sentByReader)) {
+      releasePrepend();
+      pinned = true;
+    }
     if (pendingPrepend !== null) {
       scroller.scrollTop = scroller.scrollHeight - pendingPrepend;
       settlingPrepend = pendingPrepend;
@@ -81,6 +86,11 @@ export function createViewportScroller(scroller, deps = {}) {
     settlingPrepend = null;
   };
 
+  // The optimistic row the composer inserts carries a temporary id until the
+  // server confirms it; nobody else's line has one.
+  const sentByReader = (record) =>
+    Array.from(record.addedNodes || []).some((node) => node?.dataset?.tempId !== undefined);
+
   const controller = {
     mount() {
       scrollToBottom();
@@ -99,12 +109,16 @@ export function createViewportScroller(scroller, deps = {}) {
 
       const target = stream || scroller;
       if (typeof MO === "function") {
-        contentObserver = new MO(() => settle());
+        contentObserver = new MO((records) => settle(records));
         contentObserver.observe(target, { childList: true });
       }
       if (typeof RO === "function") {
         sizeObserver = new RO(() => resettle());
         sizeObserver.observe(target);
+        // The list itself can shrink under a reader at the bottom — a status
+        // line joins the window when a call opens in another tab — and with
+        // nothing written the newest lines slid out of view and stayed out.
+        if (target !== scroller) sizeObserver.observe(scroller);
       }
     },
 

@@ -50,7 +50,7 @@ function harness({ scrollHeight = 1000, clientHeight = 200 } = {}) {
     setPinned: (v) => ioCb([{ isIntersecting: v }]),
     // No records: the shape the ResizeObserver has, and the one a caller uses
     // when it is not saying where the content landed.
-    fireContentChange: () => moCb(),
+    fireContentChange: (records) => moCb(records),
     // The prepended rows finishing their layout, which is a resize and never a
     // mutation: no new content, the same rows growing.
     fireResize: () => roCb(),
@@ -175,5 +175,61 @@ describe("createViewportScroller", () => {
     c.mount();
     c.destroy();
     expect(disconnect).toHaveBeenCalledTimes(3);
+  });
+
+  it("a line the reader sent scrolls to it even when they were reading back", () => {
+    const { scroller, setPinned, fireContentChange } = harness();
+    setPinned(false);
+    scroller.scrollTop = 120;
+    scroller.scrollHeight = 1300;
+
+    fireContentChange([{ addedNodes: [{ dataset: { tempId: "t-1" } }] }]);
+
+    expect(scroller.scrollTop).toBe(1300);
+  });
+
+  it("someone else's line does not move a reader who is reading back", () => {
+    const { scroller, setPinned, fireContentChange } = harness();
+    setPinned(false);
+    scroller.scrollTop = 120;
+    scroller.scrollHeight = 1300;
+
+    fireContentChange([{ addedNodes: [{ dataset: {} }] }]);
+
+    expect(scroller.scrollTop).toBe(120);
+  });
+
+  it("watches the list's own size, so a shrinking window keeps a reader at the bottom", () => {
+    const observed = [];
+    const scroller = { scrollTop: 0, scrollHeight: 1000, clientHeight: 200 };
+    const stream = { replaceChildren: vi.fn() };
+    let roCb;
+    const Noop = class {
+      observe() {}
+      disconnect() {}
+    };
+    const controller = createViewportScroller(scroller, {
+      stream,
+      anchor: {},
+      IntersectionObserver: Noop,
+      MutationObserver: Noop,
+      ResizeObserver: class {
+        constructor(cb) {
+          roCb = cb;
+        }
+        observe(el) {
+          observed.push(el);
+        }
+        disconnect() {}
+      },
+    });
+    controller.mount();
+    expect(observed).toContain(scroller);
+
+    // The list loses a line of height; the reader was at the bottom.
+    scroller.scrollTop = 700;
+    scroller.scrollHeight = 1022;
+    roCb();
+    expect(scroller.scrollTop).toBe(1022);
   });
 });

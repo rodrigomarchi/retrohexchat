@@ -13,7 +13,20 @@ defmodule RetroHexChatWeb.Components.Toast do
 
   attr :tips_state, :map, default: %{seen_tips: [], suppressed: false}
 
+  attr :tips, :boolean,
+    default: true,
+    doc: """
+    Whether the chat's tips run here. A page of its own — a call, a session, a
+    Space — mounts the container only for toasts like "Copied!": the tips are
+    about the chat's input and lists, and that page has neither, nor the
+    person's own tips setting to honour.
+    """
+
   @spec toast_container(map()) :: Phoenix.LiveView.Rendered.t()
+  def toast_container(%{tips: false} = assigns) do
+    toast_container(%{assigns | tips: true, tips_state: %{seen_tips: [], suppressed: true}})
+  end
+
   def toast_container(assigns) do
     ~H"""
     <div

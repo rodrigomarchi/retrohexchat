@@ -237,7 +237,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       data-testid="group-call-status-announcer"
     >
       <Icons.icon_status_signal class="h-3.5 w-3.5 shrink-0" />
-      <span class="truncate">{status_label(@call)}</span>
+      <.status_words call={@call} />
     </span>
     <span
       :if={@call}
@@ -339,6 +339,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     ~H"""
     <.media_session_dock
       aria_label={dgettext("group_call", "Conference media controls")}
+      class="group-call-dock"
       testid="group-call-media-controls"
     >
       <.tool_button
@@ -416,7 +417,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           data-testid="group-call-mini-status-announcer"
         >
           <Icons.icon_status_signal class={["h-4 w-4 shrink-0", status_icon_class(@call)]} />
-          <span class="truncate">{status_label(@call)}</span>
+          <.status_words call={@call} />
         </span>
         <span class="inline-flex items-center gap-1">
           <Icons.icon_status_user class="h-4 w-4 shrink-0" />
@@ -1018,6 +1019,21 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     """
   end
 
+  # The call's state as the server last said it — and, while this tab has lost
+  # the server, the truth instead: nothing said here can be current, and no
+  # control can reach the room until the page is connected again. The page's
+  # own connection is LiveView's class on its root, so CSS swaps the two.
+  attr :call, :map, required: true
+
+  defp status_words(assigns) do
+    ~H"""
+    <span class="group-call-status-live truncate">{status_label(@call)}</span>
+    <span class="group-call-status-offline truncate" data-testid="group-call-status-offline">
+      {dgettext("group_call", "Reconnecting to the server…")}
+    </span>
+    """
+  end
+
   defp channel_name(nil), do: dgettext("group_call", "Group Call")
   defp channel_name(call), do: call.channel_name || dgettext("group_call", "Group Call")
 
@@ -1119,7 +1135,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
 
   defp layout_mode_label(%{layout: %{mode: :grid}}), do: dgettext("group_call", "Grid")
   defp layout_mode_label(%{layout: %{mode: :focus}}), do: dgettext("group_call", "Focus")
-  defp layout_mode_label(%{layout: %{mode: :sidebar}}), do: dgettext("group_call", "Sidebar")
   defp layout_mode_label(%{layout: %{mode: :speaker}}), do: dgettext("group_call", "Speaker")
   defp layout_mode_label(_call), do: dgettext("group_call", "Auto")
 
