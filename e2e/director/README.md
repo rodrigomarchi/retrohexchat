@@ -44,16 +44,22 @@ beat needs.
   was painted); `follow()` moves the camera to another tab on one timeline.
   Playwright's own video is VP8 at 1 Mbit/s.
 - `cast.ts` — the people already in the room, each in a browser context of its
-  own, never filmed.
+  own, never filmed. Their cameras are characters too: on a call, people are
+  people, never a test card.
 - `cursor.ts` — a drawn Windows-98 pointer: headless Chrome has no system
   cursor, so without it clicks and pointing are invisible on film.
 - `media.ts` — cameras for people on film, devices named like a laptop's.
   `installTestCard`: a broadcast test card captioned with the nickname.
-  `installCharacterCamera`: an animated pixel-art character in a room of its
-  own, talking and waving on the director's word (`window.__directorCamera`,
-  passed to every tab of the context by a BroadcastChannel); sharing the
-  screen shows a music tracker. The suite's synthetic media ("p2p media",
-  "Mock Camera") reads as a test on screen.
+  `installCharacterCamera`: a pixel-art webcam portrait, from `portraits/<nick>/`
+  (PixelLab art — see that folder's README) or, for a nick with no folder, a
+  character drawn in code. It talks, waves and flashes on the director's word
+  (`window.__directorCamera`, passed to every tab of the context by a
+  BroadcastChannel), and while it talks its microphone carries a voice-like
+  tone, so the call lights the speaker up; sharing the screen shows that
+  person's own screen (a music tracker, or honk's honks). The suite's synthetic
+  media ("p2p media", "Mock Camera") reads as a test on screen.
+- `filmCrew(…, voices)` — people on a call who are not filmed but are seen on
+  someone's screen: their lines make their own portrait talk.
 - `calls.ts`, `space.ts`, `arcade.ts` — sessions and conferences, Spaces, and
   the Arcade with DOOM, the way a scene needs them.
 

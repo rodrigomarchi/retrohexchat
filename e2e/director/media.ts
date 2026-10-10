@@ -1,4 +1,6 @@
 import { BrowserContext } from "@playwright/test";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
+import path from "node:path";
 
 /**
  * A camera and microphone for people on film.
@@ -110,26 +112,75 @@ export async function installTestCard(ctx: BrowserContext, nick: string) {
  * A camera for the people a scene is about: an animated pixel-art character
  * in a room of their own, instead of a test card.
  *
- * Each nick gets a look (Pixel and lumen are designed; anyone else gets one
- * derived from the nick). The character idles — a slow bob, a blink — and
- * the director makes it talk and wave through `window.__directorCamera`,
- * which every page of the context has. The camera canvas lives in whichever
- * page asked for it (the session tab), so the control is passed on through a
- * BroadcastChannel: same origin, same context, every page hears it — and no
- * other person's context does.
+ * A nick with a portrait in `director/portraits/<nick>/` is drawn from it —
+ * PixelLab art, see that folder's README. Anyone else gets a look drawn in
+ * code (Pixel and lumen designed, the rest derived from the nick). The
+ * character idles and blinks, and the director makes it talk, wave and flash
+ * through `window.__directorCamera`, which every page of the context has. The
+ * camera canvas lives in whichever page asked for it (the session tab), so the
+ * control is passed on through a BroadcastChannel: same origin, same context,
+ * every page hears it — and no other person's context does.
  *
- * Sharing the screen shows a music tracker playing "night drive".
+ * While the character talks, the microphone carries a voice-like tone, so the
+ * call hears someone speaking (the film records no browser sound).
+ *
+ * Sharing the screen shows that person's own screen: a music tracker playing
+ * their song, or, for honk, a wall of honks.
  */
 export async function installCharacterCamera(
   ctx: BrowserContext,
   nick: string,
 ) {
   await ctx.grantPermissions(["camera", "microphone"]);
-  await ctx.addInitScript(characterCamera, nick);
+  await ctx.addInitScript(characterCamera, {
+    nick,
+    portrait: loadPortrait(nick),
+  });
+}
+
+/** A portrait's frames as data URLs: the page loads nothing from disk. */
+type Portrait = {
+  room: string;
+  /** The still at 0, then the mouth moving. */
+  talk: string[];
+  blink: string[];
+  /** Full-frame, room-sized: the raised hand needs the room's width. */
+  wave: string[];
+};
+
+const PORTRAITS = path.join(__dirname, "portraits");
+
+function loadPortrait(nick: string): Portrait | null {
+  const dir = path.join(PORTRAITS, nick.toLowerCase());
+  if (!existsSync(dir)) return null;
+  const url = (file: string) =>
+    `data:image/png;base64,${readFileSync(path.join(dir, file)).toString("base64")}`;
+  const frames = (name: string) =>
+    readdirSync(dir)
+      .filter((f) => new RegExp(`^${name}-\\d+\\.png$`).test(f))
+      .sort((a, b) => parseInt(a.split("-")[1]) - parseInt(b.split("-")[1]))
+      .map(url);
+  return {
+    room: url("room.png"),
+    talk: frames("talk"),
+    blink: frames("blink"),
+    wave: frames("wave"),
+  };
 }
 
 /** Runs in the page: everything it needs is inside it. */
-function characterCamera(nick: string) {
+function characterCamera({
+  nick,
+  portrait,
+}: {
+  nick: string;
+  portrait: {
+    room: string;
+    talk: string[];
+    blink: string[];
+    wave: string[];
+  } | null;
+}) {
   type Look = {
     skin: string;
     skinShade: string;
@@ -228,12 +279,16 @@ function characterCamera(nick: string) {
   const look = lookFor(nick);
 
   // What the director asked for, in this page's clock.
-  const state = { talkUntil: 0, waveUntil: 0 };
+  const state = { talkUntil: 0, waveUntil: 0, waveFrom: 0, flashUntil: 0 };
   const channel = new BroadcastChannel("director-camera");
   const apply = (msg: { kind: string; seconds: number }) => {
     const until = Date.now() + msg.seconds * 1000;
     if (msg.kind === "talk") state.talkUntil = until;
-    if (msg.kind === "wave") state.waveUntil = until;
+    if (msg.kind === "wave") {
+      if (Date.now() >= state.waveUntil) state.waveFrom = Date.now();
+      state.waveUntil = until;
+    }
+    if (msg.kind === "flash") state.flashUntil = until;
   };
   channel.onmessage = (event) => apply(event.data);
   const send = (kind: string, seconds: number) => {
@@ -245,6 +300,7 @@ function characterCamera(nick: string) {
     value: {
       talk: (seconds = 2) => send("talk", seconds),
       wave: (seconds = 2) => send("wave", seconds),
+      flash: (seconds = 3) => send("flash", seconds),
     },
   });
 
@@ -360,6 +416,77 @@ function characterCamera(nick: string) {
       px(31 + swing, 9 + y0, 1, 1, look.skin);
     }
 
+    overlays(g, now);
+  }
+
+  // The portrait: PixelLab frames, 160x120, drawn four times over with no
+  // smoothing so every art pixel stays a crisp 4x4 block.
+  const SCALE = 4;
+  const BUST_AT = { x: 32, y: 24 };
+  const image = (src: string) => {
+    const img = new Image();
+    img.src = src;
+    return img;
+  };
+  const art = portrait && {
+    room: image(portrait.room),
+    talk: portrait.talk.map(image),
+    blink: portrait.blink.map(image),
+    wave: portrait.wave.map(image),
+  };
+  // Each person blinks on a beat of their own, not in unison with the call.
+  let phase = 0;
+  for (const ch of nick) phase = (phase * 31 + ch.charCodeAt(0)) % 4200;
+
+  function portraitFrame(now: number): {
+    img: HTMLImageElement;
+    full: boolean;
+  } {
+    const a = art!;
+    if (now < state.waveUntil && a.wave.length > 2) {
+      // Raise the hand once, then keep swinging it.
+      const step = Math.floor((now - state.waveFrom) / 110);
+      const last = a.wave.length - 1;
+      const i = step <= last ? step : 3 + ((step - last) % (last - 2));
+      return { img: a.wave[Math.min(i, last)], full: true };
+    }
+    if (now < state.talkUntil && a.talk.length > 1) {
+      const i = 1 + (Math.floor(now / 120) % (a.talk.length - 1));
+      return { img: a.talk[i], full: false };
+    }
+    const t = (now + phase) % 4200;
+    if (t < a.blink.length * 80 && a.blink.length > 1) {
+      return { img: a.blink[Math.floor(t / 80)], full: false };
+    }
+    return { img: a.talk[0], full: false };
+  }
+
+  function paintPortrait(g: CanvasRenderingContext2D, now: number) {
+    const a = art!;
+    if (a.room.complete) g.drawImage(a.room, 0, 0, 160 * SCALE, 120 * SCALE);
+    const { img, full } = portraitFrame(now);
+    if (img.complete) {
+      const x = full ? 0 : BUST_AT.x;
+      const y = full ? 0 : BUST_AT.y;
+      g.drawImage(
+        img,
+        x * SCALE,
+        y * SCALE,
+        img.width * SCALE,
+        img.height * SCALE,
+      );
+    }
+    overlays(g, now);
+  }
+
+  function overlays(g: CanvasRenderingContext2D, now: number) {
+    // A strobing party light, for the guest who brought one.
+    if (now < state.flashUntil) {
+      const hue = Math.floor(now / 90) * 67;
+      g.fillStyle = `hsla(${hue % 360}, 100%, 55%, ${Math.floor(now / 90) % 2 ? 0.5 : 0.15})`;
+      g.fillRect(0, 0, 640, 480);
+    }
+
     // A name tag, the way a webcam overlay would put it.
     g.fillStyle = "rgba(0,0,0,0.55)";
     g.fillRect(16, 480 - 52, 16 + nick.length * 17, 36);
@@ -370,7 +497,8 @@ function characterCamera(nick: string) {
     g.fillText(nick, 24, 480 - 34);
   }
 
-  // The shared screen: a tracker playing "night drive".
+  // The shared screen: a tracker playing that person's song.
+  const SONGS: Record<string, string> = { bytebard: "friday opener" };
   const NOTES = ["C-4", "D#4", "G-4", "A#4", "C-5", "F-4", "G#3", "---"];
   function paintTracker(g: CanvasRenderingContext2D, now: number) {
     const W = 1280;
@@ -389,7 +517,11 @@ function characterCamera(nick: string) {
     g.font = "bold 20px monospace";
     g.textBaseline = "middle";
     g.textAlign = "left";
-    g.fillText("HexTracker — night drive.xm", 56, 49);
+    g.fillText(
+      `HexTracker — ${SONGS[nick.toLowerCase()] ?? "night drive"}.xm`,
+      56,
+      49,
+    );
 
     // Pattern view.
     g.fillStyle = "#000000";
@@ -452,6 +584,23 @@ function characterCamera(nick: string) {
     g.stroke();
   }
 
+  // honk's shared screen: the word, over and over, in every colour.
+  function paintHonks(g: CanvasRenderingContext2D, now: number) {
+    const tick = Math.floor(now / 150);
+    g.fillStyle = tick % 2 ? "#ff00aa" : "#ffee00";
+    g.fillRect(0, 0, 1280, 720);
+    g.font = "bold 88px monospace";
+    g.textAlign = "center";
+    g.textBaseline = "middle";
+    for (let row = 0; row < 7; row++) {
+      for (let col = 0; col < 4; col++) {
+        g.fillStyle = `hsl(${(tick * 40 + row * 50 + col * 90) % 360}, 100%, 45%)`;
+        const x = 170 + col * 315 + (row % 2) * 80 - ((tick * 12) % 80);
+        g.fillText("HONK", x, 60 + row * 100);
+      }
+    }
+  }
+
   function track(
     width: number,
     height: number,
@@ -470,16 +619,28 @@ function characterCamera(nick: string) {
     return video;
   }
 
+  // Silent, except while the character talks: then a buzzing tone rises and
+  // falls in syllables, loud enough for the call to light the speaker up.
   function audioTrack(): MediaStreamTrack {
     const audio = new AudioContext();
-    const silence = audio.createGain();
-    silence.gain.value = 0;
+    const voice = audio.createGain();
+    voice.gain.value = 0;
     const tone = audio.createOscillator();
-    tone.connect(silence);
+    tone.type = "sawtooth";
+    tone.frequency.value = 150;
+    tone.connect(voice);
     const out = audio.createMediaStreamDestination();
-    silence.connect(out);
+    voice.connect(out);
     tone.start();
-    return out.stream.getAudioTracks()[0];
+    const timer = window.setInterval(() => {
+      const now = Date.now();
+      const syllable = 0.55 + 0.45 * Math.abs(Math.sin(now / 95));
+      voice.gain.value = now < state.talkUntil ? 0.35 * syllable : 0;
+      tone.frequency.value = 130 + 40 * Math.abs(Math.sin(now / 410));
+    }, 40);
+    const track = out.stream.getAudioTracks()[0];
+    track.addEventListener("ended", () => window.clearInterval(timer));
+    return track;
   }
 
   const device = (kind: MediaDeviceKind, label: string) => ({
@@ -498,11 +659,20 @@ function characterCamera(nick: string) {
       getUserMedia: async (constraints: MediaStreamConstraints = {}) => {
         const stream = new MediaStream();
         if (constraints.audio) stream.addTrack(audioTrack());
-        if (constraints.video) stream.addTrack(track(640, 480, paintCharacter));
+        if (constraints.video)
+          stream.addTrack(
+            track(640, 480, art ? paintPortrait : paintCharacter),
+          );
         return stream;
       },
       getDisplayMedia: async () =>
-        new MediaStream([track(1280, 720, paintTracker)]),
+        new MediaStream([
+          track(
+            1280,
+            720,
+            nick.toLowerCase() === "honk" ? paintHonks : paintTracker,
+          ),
+        ]),
       enumerateDevices: async () => [
         device("audioinput", "Built-in Microphone"),
         device("videoinput", "HD Webcam"),

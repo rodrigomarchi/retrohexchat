@@ -2,7 +2,7 @@ import { Browser } from "@playwright/test";
 import { closeUsers, TestUser } from "../helpers/chatUsers";
 import { ChatPage } from "../pages/ChatPage";
 import { ConnectPage } from "../pages/ConnectPage";
-import { installTestCard } from "./media";
+import { installCharacterCamera } from "./media";
 
 /**
  * The people already in the room when the camera arrives.
@@ -71,8 +71,9 @@ export class Cast {
       locale: "en-US",
       timezoneId: TIME_ZONES[this.members.size % TIME_ZONES.length],
     });
-    // Anyone may be pulled into a call on camera.
-    await installTestCard(ctx, nick);
+    // Anyone may be pulled into a call on camera, and on a call they are
+    // people: a character, never a test card.
+    await installCharacterCamera(ctx, nick);
     const page = await ctx.newPage();
     const connect = new ConnectPage(page);
     const chat = new ChatPage(page);

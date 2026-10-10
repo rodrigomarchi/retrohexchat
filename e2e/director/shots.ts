@@ -269,6 +269,11 @@ export async function filmCrew(
   shot: Shot,
   action: (direction: CrewDirection) => Promise<void>,
   initial: { kind: LayoutKind; cameras: string[] },
+  /**
+   * People on the call who are not filmed but are seen on someone's screen:
+   * their page, so their lines make their own portrait talk.
+   */
+  voices: Record<string, Page> = {},
 ): Promise<CrewTake> {
   const dir = path.join(outDir(), String(shot.number).padStart(2, "0"));
   rmSync(dir, { recursive: true, force: true });
@@ -346,8 +351,13 @@ export async function filmCrew(
     kind: "talk" | "wave",
     seconds: number,
   ) => {
-    known(who);
-    await current.get(who)!.evaluate(
+    const page = current.get(who) ?? voices[who];
+    if (!page) {
+      throw new Error(
+        `${who} is neither filmed nor a voice (${[...names, ...Object.keys(voices)].join(", ")})`,
+      );
+    }
+    await page.evaluate(
       ([k, s]) =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).__directorCamera[k as string](s as number),
