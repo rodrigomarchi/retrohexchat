@@ -694,6 +694,28 @@ defmodule RetroHexChatWeb.Icons.Symbols do
 
   attr :class, :string, default: nil
 
+  @doc "An open hand reaching out: use what is in front of you."
+  @spec icon_hand(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_hand(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Fingers -->
+      <rect x="4" y="3" width="2" height="6" fill="currentColor" />
+      <rect x="6" y="1" width="2" height="8" fill="currentColor" />
+      <rect x="8" y="2" width="2" height="7" fill="currentColor" />
+      <rect x="10" y="4" width="2" height="5" fill="currentColor" />
+      <!-- Thumb -->
+      <rect x="1" y="7" width="2" height="2" fill="currentColor" />
+      <rect x="2" y="9" width="2" height="2" fill="currentColor" />
+      <!-- Palm -->
+      <rect x="4" y="9" width="8" height="4" fill="currentColor" />
+      <rect x="5" y="13" width="6" height="2" fill="currentColor" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @doc "A bar chart — a measurement watched over time."
   @spec icon_chart_bars(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_chart_bars(assigns) do

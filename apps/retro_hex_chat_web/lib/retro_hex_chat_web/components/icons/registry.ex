@@ -385,6 +385,7 @@ defmodule RetroHexChatWeb.Icons.Registry do
     {:icon_btn_trash, RetroHexChatWeb.Icons.Files},
     {:icon_btn_star, RetroHexChatWeb.Icons.Symbols},
     {:icon_sword, RetroHexChatWeb.Icons.Symbols},
+    {:icon_hand, RetroHexChatWeb.Icons.Symbols},
     {:icon_btn_play, RetroHexChatWeb.Icons.Media},
     {:icon_btn_info, RetroHexChatWeb.Icons.Alerts},
     {:icon_btn_link, RetroHexChatWeb.Icons.Communication},

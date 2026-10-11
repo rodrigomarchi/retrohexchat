@@ -19,8 +19,7 @@ import { FullscreenToggleController } from "../../lib/space/fullscreen.js";
 import { InputController } from "../../lib/space/input.js";
 import { VirtualPadController } from "../../lib/space/virtual_pad.js";
 import { ModalController } from "../../lib/space/modal.js";
-import { interactTarget } from "../../lib/space/interactions.js";
-import { seatTarget } from "../../lib/space/seating.js";
+import { actionRequest } from "../../lib/space/action_request.js";
 import { createSpriteAtlas } from "../../lib/space/sprite_atlas.js";
 import {
   normalizeLayout,
@@ -284,23 +283,8 @@ export function createSpaceCanvasHook(deps = {}) {
       const map = this._engine?.map;
       if (!self || !map) return;
 
-      if (action === "interact") {
-        const target = interactTarget(map, self);
-        if (target) {
-          this._channel?.push(CLIENT_EVENTS.INTERACT, { kind: "use", target_id: target.id });
-        }
-        return;
-      }
-
-      if (action === "sit") {
-        const target = seatTarget(map, self);
-        if (target) {
-          this._channel?.push(CLIENT_EVENTS.INTERACT, {
-            kind: target.action,
-            target_id: target.id,
-          });
-        }
-      }
+      const request = actionRequest(action, map, self);
+      if (request) this._channel?.push(CLIENT_EVENTS.INTERACT, request);
     },
 
     _wireChannelEvents(channel) {

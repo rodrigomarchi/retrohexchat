@@ -498,6 +498,7 @@ _ROWS = {
     "Chair":        ("Cadeira", "Cadeira", "Silla", "Chaise", "Stuhl", "Sedia", "Stoel", "Krzesło", "Стул", "Kursi", "椅子", "椅子", "椅子"),
     "Tree":         ("Árvore", "Árvore", "Árbol", "Arbre", "Baum", "Albero", "Boom", "Drzewo", "Дерево", "Pohon", "木", "树", "樹"),
     "Lamp":         ("Luminária", "Candeeiro", "Lámpara", "Lampe", "Lampe", "Lampada", "Lamp", "Lampa", "Лампа", "Lampu", "ランプ", "灯", "燈"),
+    "Use":          ("Usar", "Usar", "Usar", "Utiliser", "Benutzen", "Usa", "Gebruiken", "Użyj", "Использовать", "Gunakan", "使う", "使用", "使用"),
     "Turn":         ("Girar", "Rodar", "Girar", "Tourner", "Drehen", "Ruota", "Draaien", "Obróć", "Повернуть", "Putar", "回転", "旋转", "旋轉"),
 
     "nicklist menu": ("menu da lista de nicks", "menu da lista de nicks", "menú de la lista de nicks", "menu de la liste des pseudos", "Nicklisten-Menü", "menu della lista nick", "nicklijst-menu", "menu listy nicków", "меню списка ников", "menu daftar nick", "ニックリストメニュー", "昵称列表菜单", "暱稱列表菜單"),

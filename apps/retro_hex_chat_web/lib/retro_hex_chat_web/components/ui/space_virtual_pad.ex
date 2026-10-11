@@ -1,7 +1,8 @@
 defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
   @moduledoc """
-  On-screen 8-bit control pad for the virtual space: a 4-direction D-pad plus
-  the sword (attack) button, anchored to the bottom-right corner of the space
+  On-screen 8-bit control pad for the virtual space: a 4-direction D-pad, the
+  use button (what E and F do on a keyboard: go through a gate, sit down, get
+  up) and the sword (attack) button, anchored to the bottom-right corner of the space
   canvas so mobile and mouse users can play without a keyboard.
 
   Pure static markup inside the `phx-update="ignore"` space shell — all
@@ -47,6 +48,16 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
         </.pad_dir_button>
         <div></div>
       </div>
+      <button
+        type="button"
+        tabindex="-1"
+        data-space-pad-action="use"
+        data-testid="space-pad-use"
+        aria-label={dgettext("chat", "Use")}
+        class="space-pad-button icon-on-dark h-12 w-12"
+      >
+        <Icons.icon_hand class="h-6 w-6" />
+      </button>
       <button
         type="button"
         tabindex="-1"

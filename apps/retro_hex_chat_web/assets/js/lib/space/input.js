@@ -36,7 +36,9 @@ const ACTION_MAP = {
   f: "sit",
 };
 
-const VALID_ACTIONS = new Set(Object.values(ACTION_MAP));
+// "use" has no key of its own: it is the touch pad's one button for what E and
+// F do on a keyboard (see `useRequest` in interactions.js).
+const VALID_ACTIONS = new Set([...Object.values(ACTION_MAP), "use"]);
 
 export class InputController {
   /**
@@ -89,7 +91,7 @@ export class InputController {
   /**
    * Fire an action from a non-keyboard source. Actions are one-shot (no held
    * state), matching a fresh action-key press.
-   * @param {"attack"|"interact"|"sit"} action
+   * @param {"attack"|"interact"|"sit"|"use"} action
    */
   triggerAction(action) {
     if (!VALID_ACTIONS.has(action)) return;

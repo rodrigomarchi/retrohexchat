@@ -3,6 +3,7 @@
  * @flow SP17 [done] E at the End of Time's gate asks before going: No stays on the island, Yes opens the channel's Construct with the same character, and its white gate leads back
  * @flow SP18 [done] A piece placed from the Construct's palette is seen by everyone inside, can be dragged elsewhere and removed with a right-click, and the room is still built the next time it opens
  * @flow SP19 [done] A chair placed in the Construct can be sat in with F
+ * @flow SP20 [done] On the touch pad, the hand button goes through the gate and sits down on a chair, as E and F do
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -316,6 +317,45 @@ test.describe("The Construct", () => {
       await space.keyboard.press("f");
       await expect.poll(async () => (await walker.here()).pose).toBe("sitting");
       await shot(space, "construct-seated");
+    } finally {
+      await closeUsers([host]);
+    }
+  });
+
+  test("the pad's hand button goes through the gate and sits down (SP20)", async ({
+    browser,
+  }) => {
+    const host = await newSignedInUser(browser, "cp");
+    try {
+      const channel = uniqueChannel("cp");
+      await host.chat.sendMessage(`/join ${channel}`);
+      const space = await host.chat.openSpace();
+      const walker = Walker.follow(space);
+      const room = RoomWatch.follow(space);
+      await walkIn(space, "rogue");
+
+      await walker.goTo(BEFORE_GATE);
+      await space.getByTestId("space-pad-use").click();
+      await expect(space.getByTestId("space-modal-yes")).toBeVisible();
+      await shot(space, "construct-pad-use-gate");
+      await space.getByTestId("space-modal-yes").click();
+      await expect(space).toHaveURL(/\?avatar=rogue/, { timeout: 15_000 });
+      await mapDrawn(space);
+
+      const self = await walker.here();
+      await space.getByTestId("construct-kind-chair").click();
+      const at = await tilePoint(space, self, { x: self.x + 2, y: self.y });
+      await space.mouse.click(at.x, at.y);
+      await space.keyboard.press("Escape");
+      await expect.poll(() => room.items.length).toBe(1);
+
+      await walker.goTo({ x: self.x + 1, y: self.y });
+      await space.getByTestId("space-pad-use").click();
+      await expect.poll(async () => (await walker.here()).pose).toBe("sitting");
+      await space.getByTestId("space-pad-use").click();
+      await expect
+        .poll(async () => (await walker.here()).pose)
+        .toBe("standing");
     } finally {
       await closeUsers([host]);
     }
