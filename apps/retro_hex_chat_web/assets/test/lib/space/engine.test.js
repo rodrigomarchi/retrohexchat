@@ -447,6 +447,34 @@ describe("SpaceEngine held-key movement", () => {
     expect(engine.participant("registered:1").x).toBe(7);
   });
 
+  // A quick tap is held for a frame or two, shorter than the step cadence.
+  // The frames that see it still held are inside the cooldown of the step the
+  // tap already made; they must not queue it again, or every tap walks two
+  // tiles.
+  it("moves one tile for a tap shorter than the step cadence", () => {
+    const onStep = vi.fn();
+    let held = null;
+    const { engine, scheduler } = buildEngine({ getHeldIntent: () => held, onStep });
+    let clock = 0;
+    engine.setClock(() => clock);
+    engine.start(tavernInit());
+
+    // Key down: the step is made at once.
+    held = { dx: 1, dy: 0, dir: "right" };
+    expect(engine.predict(held).moved).toBe(true);
+
+    // A frame while the key is still down, inside the cooldown.
+    clock = 16;
+    scheduler.flush();
+
+    // Key up, then a frame every 16 ms until well past the cooldown.
+    held = null;
+    for (clock = 32; clock <= 320; clock += 16) scheduler.flush();
+
+    expect(onStep).not.toHaveBeenCalled();
+    expect(engine.participant("registered:1").x).toBe(6);
+  });
+
   it("expires a stale buffered tap instead of replaying it much later", () => {
     const onStep = vi.fn();
     const { engine, scheduler } = buildEngine({ onStep });

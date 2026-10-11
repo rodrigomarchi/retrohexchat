@@ -173,6 +173,8 @@ _ROWS = {
     "%{nick} posted": ("%{nick} publicou", "%{nick} publicou", "%{nick} publicó", "%{nick} a publié", "%{nick} hat gepostet", "%{nick} ha pubblicato", "%{nick} plaatste", "%{nick} opublikował", "%{nick} опубликовал", "%{nick} membagikan", "%{nick} が投稿", "%{nick} 发布了", "%{nick} 發佈了"),
 
     # ── Transfer ──────────────────────────────────────────────
+    "Say":          ("Falar", "Dizer", "Decir", "Dire", "Sagen", "Di'", "Zeggen", "Powiedz", "Сказать", "Ucapkan", "話す", "说", "說"),
+    "Change character": ("Trocar personagem", "Mudar de personagem", "Cambiar de personaje", "Changer de personnage", "Figur wechseln", "Cambia personaggio", "Personage wisselen", "Zmień postać", "Сменить персонажа", "Ganti karakter", "キャラクターを変更", "更换角色", "更換角色"),
     "Send":         ("Enviar", "Enviar", "Enviar", "Envoyer", "Senden", "Invia", "Verzenden", "Wyślij", "Отправить", "Kirim", "送信", "发送", "傳送"),
     "Upload":       ("Enviar", "Carregar", "Subir", "Téléverser", "Hochladen", "Carica", "Uploaden", "Prześlij", "Загрузить", "Unggah", "アップロード", "上传", "上傳"),
     "Download":     ("Baixar", "Transferir", "Descargar", "Télécharger", "Herunterladen", "Scarica", "Downloaden", "Pobierz", "Скачать", "Unduh", "ダウンロード", "下载", "下載"),

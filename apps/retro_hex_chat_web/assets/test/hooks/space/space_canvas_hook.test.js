@@ -43,7 +43,11 @@ function mountContext() {
   el.dataset.avatar = "monk";
   const canvas = document.createElement("canvas");
   el.appendChild(canvas);
-  return { el, canvas };
+  const serverEvents = {};
+  const handleEvent = vi.fn((event, cb) => {
+    serverEvents[event] = cb;
+  });
+  return { el, canvas, handleEvent, serverEvents };
 }
 
 function mountContextWithCanvasBox() {
@@ -120,6 +124,29 @@ describe("SpaceCanvasHook implementation", () => {
       avatar: "monk",
     });
     expect(channel.join).toHaveBeenCalled();
+  });
+
+  // The LiveView draws the picker over the running map; the hook only carries
+  // the choice to the space's channel, which swaps the character for everyone.
+  it("sends a character chosen from inside over the space channel", () => {
+    const engine = { start: vi.fn(), destroy: vi.fn() };
+    const channel = fakeChannel();
+    const hook = Object.assign(
+      Object.create(
+        createSpaceCanvasHook({
+          socketFactory: () => fakeSocket(channel),
+          engineFactory: () => engine,
+        }),
+      ),
+      mountContext(),
+    );
+
+    hook.mounted();
+    hook.serverEvents.space_change_avatar({ avatar: "knight" });
+    hook.serverEvents.space_change_avatar({ avatar: 42 });
+
+    expect(channel.push).toHaveBeenCalledWith("space_select_avatar", { avatar: "knight" });
+    expect(channel.push).toHaveBeenCalledTimes(1);
   });
 
   it("starts the engine from the normalized space_init join reply", () => {

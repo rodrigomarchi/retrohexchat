@@ -7,6 +7,14 @@ defmodule RetroHexChat.VirtualSpace.DirectMessageSpace do
   process state so the room can render the same casing the chat UI uses.
   """
 
+  import Ecto.Query
+  import RetroHexChat.Nickname, only: [matches: 2]
+
+  alias RetroHexChat.Presence.Tracker
+  alias RetroHexChat.Repo
+  alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChat.Topics
+
   @prefix "dm:"
 
   @spec space_id(String.t(), String.t()) :: String.t()
@@ -50,5 +58,31 @@ defmodule RetroHexChat.VirtualSpace.DirectMessageSpace do
     nickname
     |> to_string()
     |> String.downcase()
+  end
+
+  @doc """
+  The two participants as they spell themselves.
+
+  The id is folded to lowercase so the pair has one address whatever case was
+  typed, which leaves the address unable to say how anybody writes their name.
+  Whoever is online says it through presence; a registered nickname says it
+  through its record; anyone else keeps the spelling they arrived with.
+  """
+  @spec as_shown([String.t()]) :: [String.t()]
+  def as_shown(participants) when is_list(participants), do: Enum.map(participants, &shown/1)
+
+  defp shown(nickname) do
+    case Tracker.meta(Topics.presence(), nickname) do
+      %{nickname: spelled} when is_binary(spelled) -> spelled
+      _offline -> registered_spelling(nickname) || nickname
+    end
+  end
+
+  defp registered_spelling(nickname) do
+    RegisteredNick
+    |> where([n], matches(n.nickname, nickname))
+    |> select([n], n.nickname)
+    |> limit(1)
+    |> Repo.one()
   end
 end

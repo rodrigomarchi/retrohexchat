@@ -16,7 +16,7 @@ msgstr ""
 msgid "Joining and Moving"
 msgstr "Entrer et Se Déplacer"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Lifecycle"
 msgstr "Cycle de Vie"
@@ -30,15 +30,6 @@ msgstr "Espace ouvert"
 #, elixir-autogen, elixir-format
 msgid "Choosing"
 msgstr "Choix"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Click a card to enter the map wearing that character. Everyone else in the Space sees your choice immediately. The picker appears each time you enter, starting on your last pick, so you can switch characters whenever you like."
-msgstr ""
-"Cliquez sur une carte pour saisir la carte portant ce caractère. Tout le "
-"monde dans l'Espace voit votre choix immédiatement. Le sélecteur apparaît à "
-"chaque fois que vous entrez, à partir de votre dernier choix, de sorte que "
-"vous pouvez changer de caractères quand vous le souhaitez."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:9
 #, elixir-autogen, elixir-format
@@ -54,14 +45,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "The Roster"
 msgstr "La liste"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "When you open a channel's Space, a character picker appears before the map loads. Pick who you want to be — the classic Hero or one of six adventuring classes."
-msgstr ""
-"Lorsque vous ouvrez l'espace d'un canal, un sélecteur de caractères apparaît"
-" avant le chargement de la carte. Choisissez qui vous voulez être — le héros"
-" classique ou l'un des six cours d'aventure."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_combat.html.heex:16
 #, elixir-autogen, elixir-format
@@ -84,14 +67,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Attacking"
 msgstr "Attaque"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_combat.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Characters in a Space can spar with each other. Combat is friendly by design: a knockout never has any lasting effect, and anyone sitting down is out of the fight entirely."
-msgstr ""
-"Les personnages d'un espace peuvent s'entraider. La lutte est amicale par le"
-" design : une frappe n'a jamais d'effet durable, et quiconque assis est "
-"complètement hors du combat."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_combat.html.heex:21
 #, elixir-autogen, elixir-format
@@ -169,17 +144,12 @@ msgstr "Un espace ne commence ni ne finit : c'est un lieu, donc mettre son adres
 msgid "A virtual space is the map that belongs to a conversation: every channel has one, and so does every private conversation. Walk around the shared 8-bit world while the conversation carries on beside it."
 msgstr "Un espace virtuel est la carte qui appartient à une conversation : chaque canal en a une, et chaque conversation privée aussi. Promenez-vous dans le monde 8 bits partagé pendant que la conversation continue à côté."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:28
-#, elixir-autogen, elixir-format
-msgid "Choose a character and you are in. Move with the arrow keys, WASD or the on-screen pad; the server validates every step, so walls and furniture block movement for everyone equally."
-msgstr "Choisissez un personnage et vous y êtes. Déplacez-vous avec les flèches, WASD ou le pad à l'écran ; le serveur valide chaque pas, donc les murs et les meubles bloquent le mouvement de la même façon pour tout le monde."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "The map is drawn continuously, and inside the chat it shared the browser with everything the chat was doing. In a tab of its own it does not, which is the difference you feel when several people are walking around at once."
 msgstr "La carte est dessinée en continu et, dans le chat, elle partageait le navigateur avec tout ce que le chat faisait. Dans un onglet à elle, non — c'est la différence que vous sentez quand plusieurs personnes marchent en même temps."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "The world itself is runtime state: it wakes when the first person walks in and stops when the last one leaves. What outlives it is the card that walking into an empty one posts in the conversation, which becomes the record of how long the gathering ran and how many people came. The address is a place and never expires."
 msgstr "Le monde lui-même est un état d'exécution : il s'éveille quand la première personne entre et s'arrête quand la dernière s'en va. Ce qui lui survit, c'est la carte qu'entrer dans un espace vide publie dans la conversation, et qui devient le compte rendu de la durée du rassemblement et du nombre de personnes venues. L'adresse est un lieu et n'expire jamais."
@@ -263,3 +233,93 @@ msgstr "Il n'y a aucune commande pour la carte : la carte est la porte."
 #, elixir-autogen, elixir-format
 msgid "The %{space} button next to the tabs puts the space's card in the conversation."
 msgstr "Le bouton %{space} à côté des onglets place la carte de l'espace dans la conversation."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "%{change}, in the status bar at the bottom of the space, brings the picker back over the map. Pick another card and you change on the spot, where you stand — everybody sees it, and the chat shows the new character beside your nickname. Cancel keeps the one you have."
+msgstr "%{change}, dans la barre d'état en bas de l'espace, ramène le piqueur sur la carte. Choisissez une autre carte et vous changez sur place, où vous vous tenez — tout le monde la voit, et le chat montre le nouveau personnage à côté de votre surnom. Annuler garde celui que vous avez."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "/me works there too. Every other command is typed in the chat, where its answer has somewhere to appear."
+msgstr "/me works there too. Every other command is typed in the chat, where its answer has somewhere to appear."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A Space has a line along its bottom edge for talking. What you type there is said in the conversation the space belongs to, and pops up as a speech bubble over your character for everyone standing in the space."
+msgstr "Un espace a une ligne le long de son bord inférieur pour parler. Ce que vous tapez là est dit dans la conversation l'espace appartient à, et apparaît comme une bulle de discours sur votre personnage pour tout le monde debout dans l'espace."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "A channel's space has room for everybody in the channel: members who have not opened it stand in it too, wearing the Hero, and count among the people inside. In a private space only the people who walked in are there."
+msgstr "A channel's space has room for everybody in the channel: members who have not opened it stand in it too, wearing the Hero, and count among the people inside. In a private space only the people who walked in are there."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Changing inside"
+msgstr "Changement à l'intérieur"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_combat.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Characters in a Space can spar with each other. Combat is friendly by design: a knockout never has any lasting effect."
+msgstr "Les personnages dans un espace peuvent s'écarter. Le combat est amical par le design : un coup de poing n'a jamais d'effet durable."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Choose a character and you are in. Move with the arrow keys, WASD or the on-screen pad; the server validates every step, so the edges of the islands and the things standing on them block movement for everyone equally."
+msgstr "Choisissez un personnage et vous êtes dedans. Déplacez-vous avec les touches fléchées, WASD ou le pad à l'écran; le serveur valide chaque étape, de sorte que les bords des îles et les choses debout sur eux bloquent le mouvement pour tous également."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Click a card to enter the map wearing that character. Everyone else in the Space sees your choice immediately. The picker appears each time you enter, starting on the character your registered nickname chose — the one the chat shows beside it — or, without one, on the one this browser picked last."
+msgstr "Cliquez sur une carte pour saisir la carte portant ce caractère. Tout le monde dans l'Espace voit votre choix immédiatement. Le sélecteur apparaît chaque fois que vous entrez, en commençant par le personnage que votre surnom inscrit a choisi — celui que le chat affiche à côté — ou, sans un, sur celui que ce navigateur a choisi en dernier."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Saying something"
+msgstr "Dire quelque chose"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Talking"
+msgstr "Conversation"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Talking in a Space"
+msgstr "Parler dans un espace"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "The channel's own rules still apply: in a moderated channel only voiced people and operators are heard, and a line that is refused stays in the field with the reason under it."
+msgstr "The channel's own rules still apply: in a moderated channel only voiced people and operators are heard, and a line that is refused stays in the field with the reason under it."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "The line along the bottom of the space is where you talk: what you type there is said in the conversation and pops up over your character."
+msgstr "La ligne en bas de l'espace est là où vous parlez : ce que vous tapez là est dit dans la conversation et apparaît sur votre personnage."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Type a line and press Enter, or click %{say}. In a channel's space the line goes to the channel; in a private space it goes to the other person. Either way it is in the conversation afterwards, like anything typed in the chat — and a line typed in the chat pops up over its author in the space the same way."
+msgstr "Saisissez une ligne et appuyez sur Entrée, ou cliquez sur %{say}. Dans l'espace d'un canal la ligne va au canal; dans un espace privé elle va à l'autre personne. De toute façon, c'est dans la conversation après, comme tout ce qui est tapé dans le chat — et une ligne tapée dans le chat apparaît sur son auteur dans l'espace de la même manière."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Typing and walking"
+msgstr "Dactylographie et marche"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "When you open a Space, a character picker appears before the map loads. Pick who you want to be — the classic Hero or one of seven adventuring classes."
+msgstr "Lorsque vous ouvrez un Espace, un sélecteur de caractères apparaît avant que la carte ne charge. Choisissez qui vous voulez être — le héros classique ou l'un des sept cours d'aventure."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "While the cursor is in the line, the arrow keys and WASD type instead of walking. Enter anywhere in the space puts the cursor in the line; Esc gives the keyboard back to the map."
+msgstr "Alors que le curseur est dans la ligne, les touches fléchées et le type WASD au lieu de marcher. Saisissez n'importe où dans l'espace place le curseur dans la ligne; Esc remet le clavier à la carte."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Who is there"
+msgstr "Qui est là ?"

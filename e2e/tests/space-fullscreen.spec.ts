@@ -1,10 +1,11 @@
 /**
  * @section SP - Virtual Spaces
- * @flow SP3 [done] The toggle enters and exits fullscreen on the space shell
+ * @flow SP3 [done] The toggle enters and exits fullscreen on the space stage
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
  */
+import { shot } from "../helpers/screenshots";
 import { test, expect, Locator } from "@playwright/test";
 import {
   newSignedInUser,
@@ -26,10 +27,10 @@ function canvasSignature(canvas: Locator): Promise<number> {
   });
 }
 
-// The translucent top-right button presents the space shell fullscreen; the
+// The translucent top-right button presents the space stage (map and say bar) fullscreen; the
 // same button (in exit state) returns to the normal layout.
 test.describe("Space fullscreen toggle", () => {
-  test("the toggle enters and exits fullscreen on the space shell", async ({
+  test("the toggle enters and exits fullscreen on the space stage", async ({
     browser,
   }) => {
     const user: TestUser = await newSignedInUser(browser, "fsc");
@@ -54,9 +55,13 @@ test.describe("Space fullscreen toggle", () => {
           () => document.fullscreenElement?.getAttribute("data-testid") ?? null,
         );
 
+      // Fullscreen takes the whole stage: the map and the line you talk in,
+      // or a fullscreen space would leave you with nothing to say anything in.
       await toggle.click();
-      await expect.poll(fullscreenShell).toBe("channel-space-shell");
+      await expect.poll(fullscreenShell).toBe("space-stage");
       await expect(toggle).toHaveAttribute("data-fullscreen", "");
+      await expect(page.getByTestId("space-say-input")).toBeVisible();
+      await shot(page, "fullscreen-stage-with-say-line");
 
       // The same button returns to the normal layout.
       await toggle.click();

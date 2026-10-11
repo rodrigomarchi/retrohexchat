@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_space",
-    "When you open a channel's Space, a character picker appears before the map loads. Pick who you want to be — the classic Hero or one of six adventuring classes."
+    "When you open a Space, a character picker appears before the map loads. Pick who you want to be — the classic Hero or one of seven adventuring classes."
   )}
 </p>
 <.help_h4 icon={:icon_community}>{dgettext("help_space", "The Roster")}</.help_h4>
@@ -15,6 +15,14 @@
 <p>
   {dgettext(
     "help_space",
-    "Click a card to enter the map wearing that character. Everyone else in the Space sees your choice immediately. The picker appears each time you enter, starting on your last pick, so you can switch characters whenever you like."
+    "Click a card to enter the map wearing that character. Everyone else in the Space sees your choice immediately. The picker appears each time you enter, starting on the character your registered nickname chose — the one the chat shows beside it — or, without one, on the one this browser picked last."
+  )}
+</p>
+<.help_h4 icon={:icon_community}>{dgettext("help_space", "Changing inside")}</.help_h4>
+<p>
+  {dgettext(
+    "help_space",
+    "%{change}, in the status bar at the bottom of the space, brings the picker back over the map. Pick another card and you change on the spot, where you stand — everybody sees it, and the chat shows the new character beside your nickname. Cancel keeps the one you have.",
+    change: dgettext("chat", "Change character")
   )}
 </p>

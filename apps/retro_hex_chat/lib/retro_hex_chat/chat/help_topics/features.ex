@@ -3975,22 +3975,20 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         keywords: [
           "space",
           "virtual",
-          "office",
           "map",
           "avatar",
           "multiplayer",
           "walk",
-          "sit",
-          dgettext("help", "virtual office"),
           dgettext("help", "tile map")
         ],
         icon: :icon_community,
         description:
           dgettext(
             "help",
-            "A multiplayer 8-bit virtual space built into every channel and every private conversation. Space, beside the tabs, opens it in a browser tab of its own — the conversation stays where it is, and the map gets a whole window instead of competing with the chat for the browser. Move with the Arrow keys, WASD or the on-screen pad in the bottom-right corner — tap for a single step or hold to walk continuously; Space or the pad's sword button swings your weapon. The translucent button in the top-right corner switches to fullscreen and back. Back to Chat, along the bottom edge, returns to the conversation."
+            "A multiplayer 8-bit virtual space built into every channel and every private conversation. Space, beside the tabs, opens it in a browser tab of its own — the conversation stays where it is, and the map gets a whole window instead of competing with the chat for the browser. Move with the Arrow keys, WASD or the on-screen pad in the bottom-right corner — tap for a single step or hold to walk continuously; Space or the pad's sword button swings your weapon. The line along the bottom is where you talk: what you type there is said in the conversation and pops up over your character. The translucent button in the top-right corner switches to fullscreen and back. Back to Chat, along the bottom edge, returns to the conversation."
           ),
         see_also: [
+          "feature-space-talk",
           "feature-choose-character",
           "feature-space-combat",
           "feature-space-tab",
@@ -4020,7 +4018,28 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "When you enter a Space, a character picker appears first: choose from the classic Hero or one of seven classes — Sorceress, Knight, Archer, Barbarian, Rogue, Cleric or Monk. Each shows an animated preview and has its own walking and attack animations; click one to enter the map wearing it, and everyone in the space sees your choice. It also says who is inside right now, before you commit to walking in. The picker shows again each time you enter, defaulting to whoever you chose last time on this browser."
+            "When you enter a Space, a character picker appears first: choose from the classic Hero or one of seven classes — Sorceress, Knight, Archer, Barbarian, Rogue, Cleric or Monk. Each shows an animated preview and has its own walking and attack animations; click one to enter the map wearing it, and everyone in the space sees your choice. It also says who is inside right now, before you commit to walking in. The picker shows again each time you enter, starting on the character your registered nickname chose — or, without one, the one this browser picked last time. Change character, in the status bar, brings the picker back over the map without leaving it."
+          ),
+        see_also: ["feature-virtual-spaces", "feature-space-combat"]
+      },
+      %{
+        id: "feature-space-talk",
+        title: dgettext("help", "Talking in a Space"),
+        category: dgettext("help", "Virtual Spaces"),
+        keywords: [
+          "say",
+          "talk",
+          "bubble",
+          "speech",
+          "message",
+          dgettext("help", "speech bubble"),
+          dgettext("help", "talk in space")
+        ],
+        icon: :icon_community,
+        description:
+          dgettext(
+            "help",
+            "Type in the line along the bottom of a Space and press Enter or Say: the line is said in the conversation the space belongs to — the channel, or the private chat with the other person — and pops up as a bubble over your character for everyone in the space. Lines typed in the chat pop up the same way. Enter anywhere in the space puts the cursor in the line; Esc gives the keyboard back to the map, so the arrow keys walk again. /me works there too; every other command is typed in the chat."
           ),
         see_also: ["feature-virtual-spaces", "feature-space-combat"]
       },
@@ -4044,7 +4063,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Characters in a Space can spar with each other: press Space (or the pad's sword button) next to another standing character to land a hit. Each hit deals damage and shows a small health bar under their name; at zero HP the character is knocked down for a few seconds, then gets back up on their own with full health. Sitting characters are out of combat, and a knockout never has any lasting effect — it is all in good fun."
+            "Characters in a Space can spar with each other: press Space (or the pad's sword button) next to another standing character to land a hit. Each hit deals damage and shows a small health bar under their name; at zero HP the character is knocked down for a few seconds, then gets back up on their own with full health. A knockout never has any lasting effect — it is all in good fun."
           ),
         see_also: ["feature-virtual-spaces", "feature-choose-character"]
       },

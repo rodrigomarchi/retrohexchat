@@ -4,14 +4,16 @@
  * history remains owned by the LiveView chat log.
  * @module space/chat
  */
+import { bubbleDurationMs } from "./bubble_layout.js";
 
-const DEFAULT_BUBBLE_MS = 5000;
 const DEFAULT_LOG_LIMIT = 30;
 
 export class ChatState {
   /** @param {{bubbleMs?: number, logLimit?: number}} [opts] */
   constructor({ bubbleMs, logLimit } = {}) {
-    this._bubbleMs = bubbleMs ?? DEFAULT_BUBBLE_MS;
+    // A fixed duration when one is given; otherwise each bubble stays up for as
+    // long as its line takes to read.
+    this._bubbleMs = bubbleMs ?? null;
     this._logLimit = logLimit ?? DEFAULT_LOG_LIMIT;
     this._bubbles = new Map();
     this._log = [];
@@ -27,7 +29,7 @@ export class ChatState {
     this._bubbles.set(message.key, {
       text: message.text,
       nickname: message.nickname,
-      until: now + this._bubbleMs,
+      until: now + (this._bubbleMs ?? bubbleDurationMs(message.text)),
     });
 
     this._log.push({ key: message.key, nickname: message.nickname, text: message.text });

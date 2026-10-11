@@ -150,6 +150,19 @@ defmodule RetroHexChat.VirtualSpace.SessionTest do
       assert VirtualSpace.open_session(channel) == nil
     end
 
+    # Whoever shows the card follows the roster topic, and the world's own last
+    # word came before the row was closed. The closing has to be said after.
+    test "a closed gathering is announced on the roster topic, after the row is closed" do
+      channel = start_channel(["ana"])
+      {:ok, joined} = VirtualSpace.join_channel_space(channel, %{user_id: nil, nickname: "ana"})
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.space_roster(channel))
+
+      stop_space(channel)
+
+      assert_receive {:space_roster, %{space_id: ^channel, participants: []}}, 2_000
+      assert {:ok, %{status: "closed"}} = VirtualSpace.get_session(joined.session.token)
+    end
+
     # A monitor and not `terminate/2`, which is the whole point: a world that
     # crashes has to count out exactly like one that emptied, or the row stays
     # open for good and the card says the party is still going.

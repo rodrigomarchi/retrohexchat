@@ -800,6 +800,7 @@ msgid "Browser"
 msgstr "Peramban"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:79
+#: lib/retro_hex_chat_web/live/app/space_live.ex:216
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:520
 #, elixir-autogen, elixir-format
 msgid "Cancel"
@@ -2921,7 +2922,7 @@ msgstr "%{peer} kehilangan koneksi P2P - menunggu mereka kembali..."
 msgid "Arcade session ended."
 msgstr "Sesi arkade berakhir."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:461
+#: lib/retro_hex_chat_web/live/app/space_live.ex:611
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "Ruang Saluran"
@@ -2971,7 +2972,7 @@ msgstr "Perangkat bawaan"
 msgid "End P2P Call Media"
 msgstr "Akhir Media Panggilan P2P"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:464
+#: lib/retro_hex_chat_web/live/app/space_live.ex:614
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "Memasuki ruang kanal..."
@@ -2997,7 +2998,7 @@ msgstr "Mute, unmute, or enable your P2P mikrofon"
 msgid "Next P2P Layout"
 msgstr "Tata Letak P2P Berikutnya"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:463
+#: lib/retro_hex_chat_web/live/app/space_live.ex:613
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "Membuka ruang pribadi..."
@@ -3029,14 +3030,14 @@ msgstr "Menghubungkan sesi P2P"
 msgid "P2P session with %{peer} ended."
 msgstr "Sesi P2P dengan %{peer} berakhir."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:460
+#: lib/retro_hex_chat_web/live/app/space_live.ex:610
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "Ruang Pribadi"
 
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:458
+#: lib/retro_hex_chat_web/live/app/space_live.ex:588
 #, elixir-autogen, elixir-format
 msgid "Space"
 msgstr "Ruang"
@@ -3779,7 +3780,7 @@ msgstr "Tindakan percakapan"
 msgid "Participants"
 msgstr "Peserta"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:122
+#: lib/retro_hex_chat_web/live/app/space_live.ex:142
 #, elixir-autogen, elixir-format
 msgid "%{count} in the space"
 msgid_plural "%{count} in the space"
@@ -3795,29 +3796,29 @@ msgstr "Sedang di dalam"
 msgid "Nobody is in here yet."
 msgstr "Belum ada siapa-siapa di sini."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:454
-#: lib/retro_hex_chat_web/live/app/space_live.ex:456
+#: lib/retro_hex_chat_web/live/app/space_live.ex:584
+#: lib/retro_hex_chat_web/live/app/space_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Space · %{name}"
 msgstr "Ruang · %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:369
-#: lib/retro_hex_chat_web/live/app/space_live.ex:381
+#: lib/retro_hex_chat_web/live/app/space_live.ex:496
+#: lib/retro_hex_chat_web/live/app/space_live.ex:511
 #, elixir-autogen, elixir-format
 msgid "That address does not name a space."
 msgstr "Alamat itu tidak menunjuk ke ruang mana pun."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:392
+#: lib/retro_hex_chat_web/live/app/space_live.ex:522
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
 msgstr "Ruang privat ini milik dua orang lain."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:364
+#: lib/retro_hex_chat_web/live/app/space_live.ex:491
 #, elixir-autogen, elixir-format
 msgid "This space is no longer available."
 msgstr "Ruang ini sudah tidak tersedia."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:408
+#: lib/retro_hex_chat_web/live/app/space_live.ex:538
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "Kamu harus berada di %{channel} untuk masuk ke ruangnya."
@@ -3852,7 +3853,7 @@ msgstr "%{game} · pertandingan"
 msgid "%{peer} is back."
 msgstr "%{peer} sudah kembali."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:413
+#: lib/retro_hex_chat_web/live/app/space_live.ex:543
 #, elixir-autogen, elixir-format
 msgid "This space belongs to a channel you are not in."
 msgstr "Ruang ini milik kanal yang tidak Anda ikuti."
@@ -4284,3 +4285,43 @@ msgstr "Lihat siapa yang mendirikan saluran"
 #, elixir-autogen, elixir-format
 msgid "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
 msgstr "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:26
+#: lib/retro_hex_chat_web/live/app/space_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Change character"
+msgstr "Ganti karakter"
+
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:62
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:63
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:68
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Say"
+msgstr "Ucapkan"
+
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:52
+#, elixir-autogen, elixir-format
+msgid "Say something"
+msgstr "Katakan sesuatu"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:602
+#: lib/retro_hex_chat_web/live/app/space_live.ex:608
+#, elixir-autogen, elixir-format
+msgid "Say something to %{name}..."
+msgstr "Katakan sesuatu pada %{name}..."
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:603
+#, elixir-autogen, elixir-format
+msgid "Say something..."
+msgstr "Katakan sesuatu..."
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "%{name} is back on their feet."
+msgstr "%{name} kembali berdiri."
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:263
+#, elixir-autogen, elixir-format
+msgid "%{name} is knocked out!"
+msgstr "%{name} rusak!"

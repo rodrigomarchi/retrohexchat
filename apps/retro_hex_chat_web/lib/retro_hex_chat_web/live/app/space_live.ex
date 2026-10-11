@@ -22,9 +22,11 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   use RetroHexChatWeb, :live_view
 
   import RetroHexChatWeb.Components.UI.ActivityIndicator
+  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.SpaceCharacterSelect
   import RetroHexChatWeb.Components.UI.SpaceFullscreenToggle
+  import RetroHexChatWeb.Components.UI.SpaceSayBar
   import RetroHexChatWeb.Components.UI.SpaceVirtualPad
   import RetroHexChatWeb.Components.UI.SurfaceTabLink
   import RetroHexChatWeb.Components.UI.Window
@@ -50,22 +52,30 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   @impl true
   @spec mount(map(), map(), Socket.t()) :: {:ok, Socket.t()}
   def mount(params, session, socket) do
+    nickname = socket.assigns.surface_nickname
+    saved_avatar = saved_avatar(nickname)
+
     socket =
       assign(socket,
-        nickname: socket.assigns.surface_nickname,
+        nickname: nickname,
         page_title: loading_title(nil),
         avatars: VirtualSpace.avatars(),
         avatar: nil,
-        # The character you picked last time, until the browser that picked it
-        # says otherwise. This LiveView is mounted fresh for every visit, so the
-        # memory cannot live in here — it lives where the person does.
-        last_avatar: hd(VirtualSpace.avatars()),
+        # The character a registered nickname chose is its identity — the one
+        # the chat draws beside it — and the picker starts on it in any
+        # browser. Without one, the browser that picked last time says which,
+        # because nothing else outlives a visit.
+        saved_avatar: saved_avatar,
+        last_avatar: saved_avatar || hd(VirtualSpace.avatars()),
         join_token: nil,
         roster: [],
         share_url: nil,
         share_slug: nil,
         space: nil,
-        denied: nil
+        denied: nil,
+        say_draft: "",
+        say_error: nil,
+        changing_avatar: false
       )
 
     # Resolved once, at the door: the join token carries it into the space's
@@ -116,6 +126,16 @@ defmodule RetroHexChatWeb.App.SpaceLive do
                 open?={OpenSurfaces.open?(@open_surface_paths, Paths.chat_path())}
                 testid="space-back-to-chat"
               />
+            </.window_status_bar_field>
+            <.window_status_bar_field :if={@avatar}>
+              <button
+                type="button"
+                phx-click="space_change_character"
+                class="hover:underline"
+                data-testid="space-change-character"
+              >
+                {dgettext("chat", "Change character")}
+              </button>
             </.window_status_bar_field>
             <.window_status_bar_field>
               <span data-testid="space-status-count">
@@ -168,46 +188,99 @@ defmodule RetroHexChatWeb.App.SpaceLive do
       </:footer>
     </.space_character_select>
 
+    <%!-- The stage is what fullscreen presents: the map and the line you type
+          in go together, or a fullscreen map would leave you mute. --%>
     <div
       :if={@space && @avatar}
-      id={@space.dom_id}
-      phx-hook="SpaceCanvasHook"
-      phx-update="ignore"
-      data-testid="channel-space-shell"
-      data-space-channel={@space.id}
-      data-join-token={@join_token}
-      data-nickname={@nickname}
-      data-space-mode={@space.mode}
-      data-avatar={@avatar}
-      data-sprite-sheets={SpaceAssets.sheet_urls_json()}
-      class="relative flex-1 min-h-0 w-full bg-canvas"
+      data-space-stage
+      data-testid="space-stage"
+      class="relative flex min-h-0 w-full flex-1 flex-col bg-surface"
     >
-      <canvas id={"#{@space.dom_id}-canvas"} class="absolute inset-0 block h-full w-full"></canvas>
-      <.space_virtual_pad />
-      <%!-- A maximized window is still a window inside browser chrome. This is
+      <%!-- The same picker as at the door, over the running map: the map keeps
+            running underneath, so changing who you are is not leaving. --%>
+      <.space_character_select
+        :if={@changing_avatar}
+        avatars={@avatars}
+        selected={@avatar}
+        roster={@roster}
+        remember_key="space:last-avatar"
+      >
+        <:footer>
+          <.button
+            type="button"
+            size="sm"
+            phx-click="space_change_cancel"
+            data-testid="space-change-cancel"
+          >
+            <:icon><Icons.icon_btn_cancel class="h-4 w-4" /></:icon>
+            {dgettext("chat", "Cancel")}
+          </.button>
+        </:footer>
+      </.space_character_select>
+      <div
+        id={@space.dom_id}
+        phx-hook="SpaceCanvasHook"
+        phx-update="ignore"
+        data-testid="channel-space-shell"
+        data-space-channel={@space.id}
+        data-join-token={@join_token}
+        data-nickname={@nickname}
+        data-space-mode={@space.mode}
+        data-avatar={@avatar}
+        data-sprite-sheets={SpaceAssets.sheet_urls_json()}
+        class="relative flex-1 min-h-0 w-full bg-canvas"
+      >
+        <%!-- Focusable so Esc in the line below can hand the keyboard back to
+            the map. --%>
+        <canvas
+          id={"#{@space.dom_id}-canvas"}
+          tabindex="-1"
+          class="absolute inset-0 block h-full w-full outline-none"
+        >
+        </canvas>
+        <.space_virtual_pad />
+        <%!-- A maximized window is still a window inside browser chrome. This is
             the only control that gets the tab bar and the address bar off an
             isometric map, so it stays on the one screen a space now has. --%>
-      <.space_fullscreen_toggle />
-      <div
-        data-space-loading
-        class="absolute inset-0 z-20 flex items-center justify-center bg-background/95"
-        data-testid="space-loading"
-      >
-        <.boot_activity_panel
-          title={loading_title(@space)}
-          text={loading_text(@space)}
-          icon={if @space.mode == "direct_message", do: :p2p, else: :channels}
-          class="w-full max-w-sm"
-          data-space-loading-panel
-          text_attrs={%{"data-space-loading-text" => ""}}
-        />
+        <.space_fullscreen_toggle />
+        <div
+          data-space-loading
+          class="absolute inset-0 z-20 flex items-center justify-center bg-background/95"
+          data-testid="space-loading"
+        >
+          <.boot_activity_panel
+            title={loading_title(@space)}
+            text={loading_text(@space)}
+            icon={if @space.mode == "direct_message", do: :p2p, else: :channels}
+            class="w-full max-w-sm"
+            data-space-loading-panel
+            text_attrs={%{"data-space-loading-text" => ""}}
+          />
+        </div>
+        <%!-- What the bubbles say, in words, for whoever cannot see the canvas. --%>
+        <div
+          data-space-said
+          data-ko-text={dgettext("chat", "%{name} is knocked out!", name: "%{name}")}
+          data-getup-text={dgettext("chat", "%{name} is back on their feet.", name: "%{name}")}
+          aria-live="polite"
+          class="sr-only"
+          data-testid="space-said"
+        >
+        </div>
+        <div
+          data-space-modal
+          hidden
+          class="absolute inset-0 m-auto h-fit w-fit bg-canvas shadow-retro-field p-3 text-center"
+        >
+        </div>
       </div>
-      <div
-        data-space-modal
-        hidden
-        class="absolute inset-0 m-auto h-fit w-fit bg-canvas shadow-retro-field p-3 text-center"
-      >
-      </div>
+      <.space_say_bar
+        id="space-say-input"
+        canvas_id={"#{@space.dom_id}-canvas"}
+        value={@say_draft}
+        error={@say_error}
+        placeholder={say_placeholder(@space, @nickname)}
+      />
     </div>
     """
   end
@@ -232,6 +305,25 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   @impl true
   @spec handle_event(String.t(), map(), Socket.t()) :: {:noreply, Socket.t()}
+  # Inside, choosing again changes clothes rather than rooms: the canvas stays,
+  # and the choice travels over the space's own channel, which swaps the
+  # character for everyone standing there and remembers it for the nickname.
+  def handle_event(
+        "space_select_avatar",
+        %{"avatar" => avatar},
+        %{assigns: %{avatar: current}} = socket
+      )
+      when is_binary(current) do
+    if avatar in socket.assigns.avatars do
+      {:noreply,
+       socket
+       |> assign(avatar: avatar, last_avatar: avatar, changing_avatar: false)
+       |> push_event("space_change_avatar", %{avatar: avatar})}
+    else
+      {:noreply, socket}
+    end
+  end
+
   # Choosing is entering: the token is minted here rather than at mount, so a
   # picker somebody left open for an hour does not hand the canvas an expired
   # one.
@@ -254,15 +346,43 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   end
 
   # What the browser remembered from a previous visit, offered before anything
-  # is chosen. Only a character this build still has: a saved name that has
-  # since been removed would highlight nothing and select nothing.
+  # is chosen — unless the nickname has a character of its own, which wins over
+  # whatever this particular browser last clicked. Only a character this build
+  # still has: a saved name that has since been removed would highlight nothing
+  # and select nothing.
   def handle_event("space_remember_avatar", %{"avatar" => avatar}, socket) do
-    if avatar in socket.assigns.avatars and is_nil(socket.assigns.avatar) do
+    if avatar in socket.assigns.avatars and is_nil(socket.assigns.avatar) and
+         is_nil(socket.assigns.saved_avatar) do
       {:noreply, assign(socket, last_avatar: avatar)}
     else
       {:noreply, socket}
     end
   end
+
+  def handle_event("space_change_character", _params, %{assigns: %{avatar: avatar}} = socket)
+      when is_binary(avatar) do
+    {:noreply, assign(socket, changing_avatar: true)}
+  end
+
+  def handle_event("space_change_character", _params, socket), do: {:noreply, socket}
+
+  def handle_event("space_change_cancel", _params, socket),
+    do: {:noreply, assign(socket, changing_avatar: false)}
+
+  # The draft is held here so a refused line stays in the field to be fixed,
+  # and a sent one leaves it empty.
+  def handle_event("space_say_change", %{"text" => text}, socket) do
+    {:noreply, assign(socket, say_draft: text, say_error: nil)}
+  end
+
+  def handle_event("space_say", %{"text" => text}, %{assigns: %{space: %{} = space}} = socket) do
+    case VirtualSpace.say(conversation(space), socket.assigns.nickname || "", text) do
+      :ok -> {:noreply, assign(socket, say_draft: "", say_error: nil)}
+      {:error, reason} -> {:noreply, assign(socket, say_draft: text, say_error: reason)}
+    end
+  end
+
+  def handle_event("space_say", _params, socket), do: {:noreply, socket}
 
   # Minting is a deliberate act, not a side effect of opening a space: a link
   # per visit would fill the table with addresses nobody ever sent.
@@ -341,6 +461,13 @@ defmodule RetroHexChatWeb.App.SpaceLive do
     ChannelJoinToken.sign(space.id, socket.assigns.user_id, socket.assigns.nickname)
   end
 
+  defp saved_avatar(nickname) when is_binary(nickname) and nickname != "" do
+    avatar = Avatars.for_nick(nickname)
+    if avatar in VirtualSpace.avatars(), do: avatar
+  end
+
+  defp saved_avatar(_nickname), do: nil
+
   defp user_id(nickname) when is_binary(nickname) and nickname != "" do
     case SessionHelpers.resolve_user_id(nickname) do
       {:ok, user_id} -> user_id
@@ -377,8 +504,11 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
       :direct_message ->
         case SpaceRef.participants(space_id) do
-          {:ok, participants} -> {:ok, space(space_id, "direct_message", participants)}
-          :error -> {:error, dgettext("chat", "That address does not name a space.")}
+          {:ok, participants} ->
+            {:ok, space(space_id, "direct_message", DirectMessageSpace.as_shown(participants))}
+
+          :error ->
+            {:error, dgettext("chat", "That address does not name a space.")}
         end
     end
   end
@@ -456,6 +586,26 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   defp window_title(%{id: space_id}), do: dgettext("chat", "Space · %{name}", name: space_id)
 
   defp window_title(_absent), do: dgettext("chat", "Space")
+
+  defp conversation(%{mode: "direct_message", participants: participants}),
+    do: {:direct_message, participants || []}
+
+  defp conversation(%{id: channel_name}), do: {:channel, channel_name}
+
+  # Who will read the line: the channel, or the one other person in a private
+  # space.
+  defp say_placeholder(%{mode: "direct_message", participants: participants}, nickname)
+       when is_list(participants) do
+    me = Nickname.key(nickname || "")
+
+    case Enum.reject(participants, &(Nickname.key(&1) == me)) do
+      [peer] -> dgettext("chat", "Say something to %{name}...", name: peer)
+      _absent -> dgettext("chat", "Say something...")
+    end
+  end
+
+  defp say_placeholder(%{id: channel_name}, _nickname),
+    do: dgettext("chat", "Say something to %{name}...", name: channel_name)
 
   defp loading_title(%{mode: "direct_message"}), do: dgettext("chat", "Private Space")
   defp loading_title(_space), do: dgettext("chat", "Channel Space")

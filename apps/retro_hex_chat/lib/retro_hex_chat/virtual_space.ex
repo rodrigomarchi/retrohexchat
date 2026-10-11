@@ -13,6 +13,7 @@ defmodule RetroHexChat.VirtualSpace do
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
   alias RetroHexChat.VirtualSpace.Schema.Session
   alias RetroHexChat.VirtualSpace.SessionRecorder
+  alias RetroHexChat.VirtualSpace.Speech
   alias RetroHexChat.VirtualSpace.Supervisor
 
   @typedoc """
@@ -216,10 +217,11 @@ defmodule RetroHexChat.VirtualSpace do
 
   The one question the screens outside a space ask of it: the antechamber
   someone is waiting in, and the card the chat draws for a space its reader is
-  not in. A space nobody has opened has no process, and **nobody is inside** is
-  the answer for it — the members of the channel a space hangs off are not
-  people in the space, and a card that counted them would announce a crowd
-  standing in an empty room.
+  not in. A channel's space is standing room for the whole channel, so once it
+  is running every member is in it, whether or not they opened the map. A
+  space nobody has opened has no process, and **nobody is inside** is the
+  answer for it — the channel's members are only standing in a space that is
+  actually there.
   """
   @spec roster(String.t()) :: [String.t()]
   def roster(space_id) do
@@ -278,6 +280,13 @@ defmodule RetroHexChat.VirtualSpace do
 
   @spec map_ids() :: [String.t()]
   defdelegate map_ids(), to: SpaceMap, as: :ids
+
+  @doc """
+  Say a line inside a space: it goes to the conversation the space belongs to,
+  and the space draws it as a bubble over the speaker. See `Speech`.
+  """
+  @spec say(Speech.conversation(), String.t(), String.t()) :: :ok | {:error, String.t()}
+  defdelegate say(conversation, nickname, text), to: Speech
 
   @spec direct_message_space_id(String.t(), String.t()) :: String.t()
   defdelegate direct_message_space_id(nick_a, nick_b), to: DirectMessageSpace, as: :space_id

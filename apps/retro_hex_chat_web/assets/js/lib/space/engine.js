@@ -225,10 +225,16 @@ export class SpaceEngine {
    * the wire payload for the caller to push. A locally-blocked step is dropped;
    * a step inside the server cooldown window is buffered and replayed by the
    * render loop once the cooldown expires.
+   *
+   * Only a new press is buffered. The render loop re-firing a key that is
+   * still held passes `buffer: false`: that key already made its step, and
+   * queueing it again would replay it after release — every quick tap would
+   * walk two tiles.
    * @param {{dx:number,dy:number,dir:string}} intent
+   * @param {{buffer?: boolean}} [opts]
    * @returns {{moved:boolean, seq?:number, dx?:number, dy?:number, dir?:string}}
    */
-  predict(intent) {
+  predict(intent, { buffer = true } = {}) {
     const self = this.selfKey ? this.participants.get(this.selfKey) : null;
     if (!self) return { moved: false };
     // Knocked down: the server rejects every step, so don't predict any.
@@ -236,7 +242,7 @@ export class SpaceEngine {
 
     const now = this._clock();
     if (this._lastStepAt !== null && now - this._lastStepAt < this._stepMs) {
-      this._bufferedIntent = { intent, at: now };
+      if (buffer) this._bufferedIntent = { intent, at: now };
       return { moved: false };
     }
 
@@ -519,9 +525,10 @@ export class SpaceEngine {
   // `predict` paces the actual steps to the server cadence, so holding a key
   // walks continuously at exactly the rate the server accepts.
   _autoStep() {
-    const intent = this._getHeldIntent?.() ?? this._takeBufferedIntent();
+    const held = this._getHeldIntent?.() ?? null;
+    const intent = held ?? this._takeBufferedIntent();
     if (!intent) return;
-    const result = this.predict(intent);
+    const result = this.predict(intent, { buffer: held === null });
     if (result.moved) {
       this._onStep?.({ seq: result.seq, dx: result.dx, dy: result.dy });
     }

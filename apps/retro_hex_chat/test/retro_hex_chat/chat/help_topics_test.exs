@@ -38,7 +38,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.category == "Virtual Spaces"
       assert is_atom(topic.icon)
       assert topic.description != ""
-      assert "office" in topic.keywords
+      assert "walk" in topic.keywords
     end
 
     test "the Virtual Spaces category is listed with an icon" do

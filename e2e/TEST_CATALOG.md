@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **242 spec files** under `e2e/tests/`.
-- **579 Playwright `test()` cases**.
-- **527 documented flows**, 526 done, 1 not done.
+- **244 spec files** under `e2e/tests/`.
+- **585 Playwright `test()` cases**.
+- **533 documented flows**, 532 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -746,7 +746,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | --- | --- | --- | --- |
 | SP1 | Choosing a class enters the channel space with that avatar rendered | `tests/space-character-select.spec.ts` | done |
 | SP2 | A PM space mounts the End of Time scene with the chosen avatar | `tests/space-end-of-time.spec.ts` | done |
-| SP3 | The toggle enters and exits fullscreen on the space shell | `tests/space-fullscreen.spec.ts` | done |
+| SP3 | The toggle enters and exits fullscreen on the space stage | `tests/space-fullscreen.spec.ts` | done |
 | SP4 | Holding the virtual pad walks continuously and the sword button attacks | `tests/space-virtual-pad.spec.ts` | done |
 | SP5 | The space sheets are served as WebP the browser can actually decode | `tests/space-character-select.spec.ts` | done |
 | SP6 | A space is entered from the conversation and runs in a tab of its own | `tests/space-surface.spec.ts` | done |
@@ -754,6 +754,12 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP8 | Two people in the same space see each other | `tests/space-surface.spec.ts` | done |
 | SP9 | Walking into an empty space writes its card into the conversation | `tests/space-surface.spec.ts` | done |
 | SP10 | The picker remembers the character this browser chose last | `tests/space-surface.spec.ts` | done |
+| SP11 | A line typed in a channel's space is said in the channel and pops up over the speaker for everyone in the space | `tests/space-talk.spec.ts` | done |
+| SP12 | Enter puts the cursor in the space's say line, Esc gives the keyboard back to the map, and typing never walks | `tests/space-talk.spec.ts` | done |
+| SP13 | A line typed in a private space goes to the other person's private chat | `tests/space-talk.spec.ts` | done |
+| SP14 | Change character swaps the character inside a running space, for everyone, without leaving it | `tests/space-talk.spec.ts` | done |
+| SP15 | Four sword hits knock a character out for everyone in the space, and a few seconds later they get back up on their own | `tests/space-gathering.spec.ts` | done |
+| SP16 | A space's card in the channel shows the gathering live, counts the people in it, and becomes its record once everybody has left | `tests/space-gathering.spec.ts` | done |
 
 ### LC - Localization
 

@@ -35,6 +35,7 @@ defmodule RetroHexChat.VirtualSpace.SessionRecorder do
 
   require Logger
 
+  alias RetroHexChat.Topics
   alias RetroHexChat.VirtualSpace.Queries
   alias RetroHexChat.VirtualSpace.Registry, as: SpaceRegistry
   alias RetroHexChat.VirtualSpace.Schema.Session
@@ -207,9 +208,20 @@ defmodule RetroHexChat.VirtualSpace.SessionRecorder do
     end
   end
 
+  # The card in the conversation re-reads its gathering whenever the space's
+  # roster speaks, and the last time the world itself spoke was before it went
+  # down — before this row was closed. So the closing is announced here, on the
+  # same topic, as the empty roster it now is: without it the card would keep
+  # saying the party is on until somebody reloaded.
   defp close_session(state, %Session{} = session, reason) do
     case Queries.close_session(session, reason) do
       {:ok, _closed} ->
+        Phoenix.PubSub.broadcast(
+          RetroHexChat.PubSub,
+          Topics.space_roster(session.space_id),
+          {:space_roster, %{space_id: session.space_id, participants: []}}
+        )
+
         state
 
       {:error, changeset} ->

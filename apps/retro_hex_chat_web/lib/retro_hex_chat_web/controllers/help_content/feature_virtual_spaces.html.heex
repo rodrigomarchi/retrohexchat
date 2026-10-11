@@ -27,7 +27,24 @@
 <p>
   {dgettext(
     "help_space",
-    "Choose a character and you are in. Move with the arrow keys, WASD or the on-screen pad; the server validates every step, so walls and furniture block movement for everyone equally."
+    "Choose a character and you are in. Move with the arrow keys, WASD or the on-screen pad; the server validates every step, so the edges of the islands and the things standing on them block movement for everyone equally."
+  )}
+</p>
+<.help_h4 icon={:icon_community}>{dgettext("help_space", "Talking")}</.help_h4>
+<p>
+  {dgettext(
+    "help_space",
+    "The line along the bottom of the space is where you talk: what you type there is said in the conversation and pops up over your character."
+  )}
+  <.help_link topic="feature-space-talk">
+    {dgettext("help_space", "Talking in a Space")}
+  </.help_link>
+</p>
+<.help_h4 icon={:icon_community}>{dgettext("help_space", "Who is there")}</.help_h4>
+<p>
+  {dgettext(
+    "help_space",
+    "A channel's space has room for everybody in the channel: members who have not opened it stand in it too, wearing the Hero, and count among the people inside. In a private space only the people who walked in are there."
   )}
 </p>
 <.help_h4 icon={:icon_community}>{dgettext("help_space", "Lifecycle")}</.help_h4>

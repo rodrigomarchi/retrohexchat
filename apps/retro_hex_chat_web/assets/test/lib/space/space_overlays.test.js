@@ -81,4 +81,53 @@ describe("createSpaceOverlays", () => {
       expect(host.querySelector("canvas")).toBe(null);
     });
   });
+
+  describe("spoken lines", () => {
+    it("puts the last line said into the live region, in words", () => {
+      const el = document.createElement("div");
+      el.innerHTML = `<div data-space-said aria-live="polite"></div>`;
+      const overlays = createSpaceOverlays(el);
+
+      overlays.announceLine({ nickname: "lumen", text: "party at the lamp" });
+      expect(el.querySelector("[data-space-said]").textContent).toBe("lumen: party at the lamp");
+
+      overlays.announceLine({ nickname: "kestrel", text: "" });
+      expect(el.querySelector("[data-space-said]").textContent).toBe("lumen: party at the lamp");
+    });
+
+    it("is inert when the shell has no live region", () => {
+      expect(() =>
+        createSpaceOverlays(document.createElement("div")).announceLine({ text: "hi" }),
+      ).not.toThrow();
+    });
+  });
+
+  describe("knockouts", () => {
+    function region() {
+      const el = document.createElement("div");
+      el.innerHTML = `<div data-space-said data-ko-text="%{name} is down!" data-getup-text="%{name} is back up"></div>`;
+      return el;
+    }
+
+    it("says who went down and who got back up, from the server's sentences", () => {
+      const el = region();
+      const overlays = createSpaceOverlays(el);
+
+      overlays.announceAction({ kind: "ko", nickname: "kestrel" });
+      expect(el.querySelector("[data-space-said]").textContent).toBe("kestrel is down!");
+
+      overlays.announceAction({ kind: "getup", nickname: "kestrel" });
+      expect(el.querySelector("[data-space-said]").textContent).toBe("kestrel is back up");
+    });
+
+    it("stays quiet about every other action", () => {
+      const el = region();
+      const overlays = createSpaceOverlays(el);
+
+      overlays.announceAction({ kind: "hit", nickname: "kestrel" });
+      overlays.announceAction({ kind: "sword", nickname: "kestrel" });
+      overlays.announceAction({ kind: "ko" });
+      expect(el.querySelector("[data-space-said]").textContent).toBe("");
+    });
+  });
 });

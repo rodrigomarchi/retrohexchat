@@ -1,6 +1,7 @@
 /**
- * DOM overlays for the virtual-space canvas: the connecting/loading indicator
- * and the board modal drawn from the sprite atlas.
+ * DOM overlays for the virtual-space canvas: the connecting/loading indicator,
+ * the board modal drawn from the sprite atlas, and the spoken-line region that
+ * says in text what the canvas draws as a bubble.
  *
  * Owns the overlay DOM and the one-way "loading hidden" latch — once the first
  * frame after asset load hides the panel it stays hidden, so a late status
@@ -35,6 +36,25 @@ export function createSpaceOverlays(el, { board } = {}) {
       loadingHidden = true;
       host.hidden = true;
       host.setAttribute("aria-hidden", "true");
+    },
+
+    // A bubble is pixels on a canvas, which a screen reader cannot read. The
+    // last line said is kept in a polite live region as well, in words.
+    announceLine({ nickname, text } = {}) {
+      const host = el.querySelector("[data-space-said]");
+      if (!host || typeof text !== "string" || !text) return;
+      host.textContent = nickname ? `${nickname}: ${text}` : text;
+    },
+
+    // A knockout and the getting up are canvas animations too. The sentences
+    // come from the server, already translated, as templates on the region.
+    announceAction({ kind, nickname } = {}) {
+      const host = el.querySelector("[data-space-said]");
+      if (!host || !nickname) return;
+      const template =
+        kind === "ko" ? host.dataset.koText : kind === "getup" ? host.dataset.getupText : null;
+      if (!template) return;
+      host.textContent = template.replace("%{name}", nickname);
     },
 
     renderModal(modal) {

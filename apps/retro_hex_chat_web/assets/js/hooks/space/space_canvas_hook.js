@@ -133,11 +133,13 @@ export function createSpaceCanvasHook(deps = {}) {
       this._pad = padRoot ? padFactory({ root: padRoot, input: this._input }) : null;
       this._pad?.attach();
 
-      // Fullscreen presents the whole shell (canvas + overlays); the resizer's
+      // Fullscreen presents the whole stage (canvas, overlays and the line you
+      // type in, which sits outside this element); the resizer's
       // ResizeObserver re-fits the canvas when the shell size jumps.
       const fullscreenButton = this.el.querySelector("[data-space-fullscreen-toggle]");
+      const stage = this.el.closest("[data-space-stage]") ?? this.el;
       this._fullscreen = fullscreenButton
-        ? fullscreenFactory({ button: fullscreenButton, target: this.el })
+        ? fullscreenFactory({ button: fullscreenButton, target: stage })
         : null;
       this._fullscreen?.attach();
 
@@ -159,6 +161,15 @@ export function createSpaceCanvasHook(deps = {}) {
       });
 
       this._wireChannelEvents(this._channel);
+
+      // A character chosen again from inside, on the picker the LiveView draws
+      // over the map. The space's own channel makes the swap for everyone; the
+      // atlas starts on the new sheet before the delta that needs it arrives.
+      this.handleEvent("space_change_avatar", ({ avatar }) => {
+        if (typeof avatar !== "string" || !avatar) return;
+        this._atlas?.ensureAvatars([avatar]);
+        this._channel?.push(CLIENT_EVENTS.SELECT_AVATAR, { avatar });
+      });
 
       this._channel
         .join()
@@ -217,8 +228,9 @@ export function createSpaceCanvasHook(deps = {}) {
     },
 
     // Action keys resolve a target from the avatar's facing and ask the server;
-    // the server is authoritative on whether sit/use succeeds. Attack is
-    // visual-only: play locally for responsiveness, then broadcast to peers.
+    // the server is authoritative on whether sit/use succeeds. Attack plays
+    // locally for responsiveness; the server decides who it hits and for how
+    // much, and broadcasts the result to everyone.
     _onAction(action) {
       if (action === "attack") {
         const result = this._engine?.performAction?.("sword");
@@ -254,9 +266,16 @@ export function createSpaceCanvasHook(deps = {}) {
     _wireChannelEvents(channel) {
       channel.on(SERVER_EVENTS.SNAPSHOT, (payload) => this._engine?.applySnapshot?.(payload));
       channel.on(SERVER_EVENTS.DELTA, (payload) => this._engine?.applyDelta?.(payload));
-      channel.on(SERVER_EVENTS.MESSAGE, (payload) => this._engine?.receiveMessage?.(payload));
+      channel.on(SERVER_EVENTS.MESSAGE, (payload) => {
+        this._engine?.receiveMessage?.(payload);
+        this._overlays?.announceLine(payload);
+      });
       channel.on(SERVER_EVENTS.MODAL, (payload) => this._modal?.open(payload));
-      channel.on(SERVER_EVENTS.ACTION, (payload) => this._engine?.receiveAction?.(payload));
+      channel.on(SERVER_EVENTS.ACTION, (payload) => {
+        this._engine?.receiveAction?.(payload);
+        const nickname = this._engine?.participants?.get(payload?.key)?.nickname;
+        this._overlays?.announceAction({ kind: payload?.kind, nickname });
+      });
     },
 
     _attachPointerEvents() {

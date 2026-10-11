@@ -4,6 +4,7 @@
  * Integer scaling with `imageSmoothingEnabled = false` keeps the 8-bit look.
  * @module space/renderer
  */
+import { wrapBubbleText } from "./bubble_layout.js";
 
 const LABEL_FONT = "10px monospace";
 const HASH = String.fromCharCode(35);
@@ -38,6 +39,7 @@ const DMG_FG = "ffd23e";
 const DMG_KO_FG = "ff6a4d";
 const BUBBLE_BG = "e8dcc0";
 const BUBBLE_FG = "20232b";
+const BUBBLE_LINE_PX = 11;
 const SIGN_BG = "5a442e";
 const SIGN_BORDER = "2f241a";
 const SIGN_FG = "f7e6b6";
@@ -986,18 +988,25 @@ export class Renderer {
     ctx.fillRect(left + 1, top + 1, Math.round((HP_BAR_W - 2) * (hp / HP_MAX)), 1);
   }
 
-  // Speech bubble above the nickname label. The text is drawn with fillText —
-  // canvas never interprets markup, so a message can never inject HTML.
+  // Speech bubble above the nickname label, wrapped to a few lines and growing
+  // upwards so its bottom edge stays where a one-line bubble sits. The text is
+  // drawn with fillText — canvas never interprets markup, so a message can
+  // never inject HTML.
   _drawBubble(ctx, participant, text) {
     const { x: cx, headY } = this._avatarAnchor(participant);
     ctx.font = LABEL_FONT;
     ctx.textAlign = "center";
-    const width = Math.min(ctx.measureText(text).width + 8, this.canvas.width - 4);
-    const top = headY - 30;
+    const lines = wrapBubbleText(text, (s) => ctx.measureText(s).width);
+    const widest = Math.max(...lines.map((line) => ctx.measureText(line).width));
+    const width = Math.min(widest + 8, this.canvas.width - 4);
+    const height = lines.length * BUBBLE_LINE_PX + 3;
+    const top = headY - 17 - height;
 
     ctx.fillStyle = HASH + BUBBLE_BG;
-    ctx.fillRect(Math.round(cx - width / 2), Math.round(top), Math.round(width), 13);
+    ctx.fillRect(Math.round(cx - width / 2), Math.round(top), Math.round(width), height);
     ctx.fillStyle = HASH + BUBBLE_FG;
-    ctx.fillText(text, Math.round(cx), Math.round(top + 10));
+    lines.forEach((line, i) => {
+      ctx.fillText(line, Math.round(cx), Math.round(top + 10 + i * BUBBLE_LINE_PX));
+    });
   }
 }
