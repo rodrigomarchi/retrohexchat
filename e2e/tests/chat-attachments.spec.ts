@@ -59,7 +59,11 @@ async function uploadComposerFile(
   page: Page,
   file: { name: string; mimeType: string; buffer: Buffer },
 ) {
-  const fileInput = page.locator('#composer-region input[type="file"]');
+  // The composer holds two uploads — attachments and voice messages; this is
+  // the attachments one.
+  const fileInput = page.locator(
+    '#composer-region input[type="file"][name="attachments"]',
+  );
   await expect(fileInput).toHaveCount(1);
   const pending = page.getByTestId("chat-attachment-pending");
 
