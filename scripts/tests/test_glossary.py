@@ -63,6 +63,20 @@ class DecisionsTest(unittest.TestCase):
         self.assertEqual(glossary.GLOSSARY["Yes"]["zh_hans"], "是")
         self.assertEqual(glossary.GLOSSARY["No"]["zh_hans"], "否")
 
+    def test_a_two_sense_word_is_curated_only_under_its_context(self):
+        # A bare "Table" row turned the showcase's data table into "Tisch".
+        self.assertNotIn("Table", glossary.GLOSSARY)
+        self.assertEqual(glossary.GLOSSARY[glossary.key("Table", "furniture")]["de"], "Tisch")
+        self.assertEqual(glossary.source_of(glossary.key("Table", "furniture")), "Table")
+
+    def test_the_construct_is_a_name(self):
+        from i18n.protection import protect
+
+        self.assertEqual(set(glossary.GLOSSARY["Construct"].values()), {"Construct"})
+        masked, replacements = protect("Enter the Construct?")
+        self.assertIn("Construct", replacements.values())
+        self.assertNotIn("Construct", masked)
+
     def test_mute_is_the_audio_sense(self):
         # fr had "Mignon" (cute), de had "Mut" (courage).
         self.assertEqual(glossary.GLOSSARY["Mute"]["fr"], "Couper le son")

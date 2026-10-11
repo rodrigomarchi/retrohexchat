@@ -116,6 +116,22 @@ def introduced_degeneration(source: str, translated: str) -> bool:
     return is_degenerate(translated) and not is_degenerate(source)
 
 
+# Whole answers an engine gives when it has read a short UI line as the label
+# of a web page. The Japanese model answered "Say something", "Something is
+# already there." and "Could not load the game. Please try again." alike with
+# お問い合わせ ("contact us"). Each maps to the English words that source would
+# need to contain for the answer to be a translation at all.
+BOILERPLATE_ANSWERS = {
+    "お問い合わせ": ("contact",),
+}
+
+
+def is_boilerplate_answer(source: str, translated: str) -> bool:
+    """True when the output is page boilerplate the source does not mean."""
+    needs = BOILERPLATE_ANSWERS.get(translated.strip().rstrip("。．."))
+    return needs is not None and not any(word in source.lower() for word in needs)
+
+
 def is_usable_translation(source: str, translated: str, replacements: dict[str, str]) -> bool:
     """Reject output we would rather not ship at all.
 
@@ -130,6 +146,9 @@ def is_usable_translation(source: str, translated: str, replacements: dict[str, 
         return False
 
     if introduced_degeneration(source, translated):
+        return False
+
+    if is_boilerplate_answer(source, translated):
         return False
 
     return all(value in translated for value in replacements.values())

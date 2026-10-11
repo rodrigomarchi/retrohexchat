@@ -52,7 +52,10 @@ def apply_locale(code: str, args: argparse.Namespace) -> int:
         touched = False
 
         for entry in catalogs.translatable_entries(po):
-            wanted = curated.get(entry.msgid.strip())
+            # A curated context wins; a context with no row of its own falls
+            # back to the bare label, as it always has.
+            msgid = entry.msgid.strip()
+            wanted = curated.get(glossary.key(msgid, entry.msgctxt)) or curated.get(msgid)
 
             if wanted is None:
                 continue
@@ -62,7 +65,9 @@ def apply_locale(code: str, args: argparse.Namespace) -> int:
             if entry.msgid_plural:
                 continue
 
-            if entry.msgstr == wanted:
+            # A fuzzy guess that already reads as the curated label is right,
+            # and the curated value is what clears the mark.
+            if entry.msgstr == wanted and "fuzzy" not in entry.flags:
                 continue
 
             if len(examples) < args.show:

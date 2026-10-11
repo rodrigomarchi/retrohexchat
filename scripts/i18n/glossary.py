@@ -16,6 +16,11 @@ Rules encoded here:
 - A term identical to English is fine when the language genuinely borrows it
   ("Menu" in Portuguese, "Server" in German). Those are listed explicitly so
   the intent is visible rather than looking like a missing translation.
+- A word that names two things in the product is curated under a gettext
+  context, never bare. "Table" is a data table in the component showcase and a
+  piece of furniture in the Construct; one bare row turned every showcase
+  table into "Tisch". The furniture carries `msgctxt "furniture"`, its row is
+  in `_CONTEXT_ROWS`, and a bare msgid never matches it.
 """
 
 from __future__ import annotations
@@ -484,9 +489,42 @@ _ROWS = {
     "Preserved":    ("Preservado", "Preservado", "Conservado", "Conserv\u00e9", "Erhalten", "Conservato", "Behouden", "Zachowane", "\u0421\u043e\u0445\u0440\u0430\u043d\u044f\u0435\u0442\u0441\u044f", "Dipertahankan", "\u4fdd\u6301", "\u4fdd\u7559", "\u4fdd\u7559"),
     "Sign-up":      ("Cadastro", "Registo", "Registro", "Inscription", "Registrierung", "Registrazione", "Registratie", "Rejestracja", "\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044f", "Pendaftaran", "\u767b\u9332", "\u6ce8\u518c", "\u8a3b\u518a"),
 
+    # The Construct's build palette: pieces of furniture and the tools that act
+    # on a placed one. Single nouns and verbs with nothing around them; "Turn"
+    # is the rotation, never a turn in a game. "Table" is in _CONTEXT_ROWS.
+    "Build":        ("Construir", "Construir", "Construir", "Construire", "Bauen", "Costruisci", "Bouwen", "Buduj", "Строить", "Bangun", "建てる", "建造", "建造"),
+    # A name, kept as it is everywhere (see protection.BRAND_RE).
+    "Construct":    ("Construct", "Construct", "Construct", "Construct", "Construct", "Construct", "Construct", "Construct", "Construct", "Construct", "Construct", "Construct", "Construct"),
+    "Chair":        ("Cadeira", "Cadeira", "Silla", "Chaise", "Stuhl", "Sedia", "Stoel", "Krzesło", "Стул", "Kursi", "椅子", "椅子", "椅子"),
+    "Tree":         ("Árvore", "Árvore", "Árbol", "Arbre", "Baum", "Albero", "Boom", "Drzewo", "Дерево", "Pohon", "木", "树", "樹"),
+    "Lamp":         ("Luminária", "Candeeiro", "Lámpara", "Lampe", "Lampe", "Lampada", "Lamp", "Lampa", "Лампа", "Lampu", "ランプ", "灯", "燈"),
+    "Turn":         ("Girar", "Rodar", "Girar", "Tourner", "Drehen", "Ruota", "Draaien", "Obróć", "Повернуть", "Putar", "回転", "旋转", "旋轉"),
+
     "nicklist menu": ("menu da lista de nicks", "menu da lista de nicks", "menú de la lista de nicks", "menu de la liste des pseudos", "Nicklisten-Menü", "menu della lista nick", "nicklijst-menu", "menu listy nicków", "меню списка ников", "menu daftar nick", "ニックリストメニュー", "昵称列表菜单", "暱稱列表菜單"),
 }
+
+# Rows for a msgid that means something else elsewhere in the product, keyed by
+# (msgctxt, msgid). Only an entry carrying that context is curated by them.
+_CONTEXT_ROWS = {
+    ("furniture", "Table"): ("Mesa", "Mesa", "Mesa", "Table", "Tisch", "Tavolo", "Tafel", "Stół", "Стол", "Meja", "テーブル", "桌子", "桌子"),
+}
 # fmt: on
+
+# How gettext itself joins a context to its msgid in a compiled catalog.
+CONTEXT_SEPARATOR = "\x04"
+
+
+def key(msgid: str, msgctxt: str | None = None) -> str:
+    """The glossary key of a catalog entry: its msgid, behind its context if any."""
+    return f"{msgctxt}{CONTEXT_SEPARATOR}{msgid}" if msgctxt else msgid
+
+
+def source_of(term: str) -> str:
+    """The English label a glossary key curates, without its context."""
+    return term.rsplit(CONTEXT_SEPARATOR, 1)[-1]
+
+
+_ROWS.update({key(msgid, msgctxt): row for (msgctxt, msgid), row in _CONTEXT_ROWS.items()})
 
 
 def _validate() -> None:
@@ -502,7 +540,7 @@ def _validate() -> None:
             if not value.strip():
                 raise ValueError(f"glossary {term!r} has an empty value for {locale_code}")
 
-            if has_trailing_stop(term, value):
+            if has_trailing_stop(source_of(term), value):
                 raise ValueError(f"glossary {term!r} for {locale_code} ends in a full stop: {value!r}")
 
             if looks_like_mojibake(value):

@@ -12,9 +12,11 @@ from __future__ import annotations
 import re
 
 # Brand and service names must survive byte-identical: the UI and the help
-# pages refer to them literally.
+# pages refer to them literally. The Construct, the room behind a Space's gate,
+# is a name from The Matrix: translated, it became the act of building
+# ("Construção", "Construcción") or a drawing ("Teken").
 BRAND_RE = re.compile(
-    r"\b(Retro Hex Chat|RetroHexChat|RetroHex|ChanServ|NickServ|MemoServ|OperServ|HostServ|"
+    r"\b(Retro Hex Chat|RetroHexChat|RetroHex|ChanServ|NickServ|MemoServ|OperServ|HostServ|Construct|"
     r"mIRC|IRC|CTCP|DCC|"
     r"LibreQuake|QuakeSpasm|WebRTC|LiveView|PostgreSQL|Elixir|Phoenix)\b"
 )

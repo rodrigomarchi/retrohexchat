@@ -491,3 +491,16 @@ class JapaneseFreeIsNotNegationTest(unittest.TestCase):
 
         self.assertTrue(lost_negation("Free of charge, nothing to install", "無料でインストールする", "ja"))
         self.assertFalse(lost_negation("Free of charge, nothing to install", "無料、インストール不要", "ja"))
+
+
+class BoilerplateAnswerTest(unittest.TestCase):
+    def test_contact_us_is_not_a_translation_of_anything_else(self):
+        from i18n.quality import is_boilerplate_answer, is_usable_translation
+
+        for source in ("Say something", "Something is already there.", "Could not load the game."):
+            self.assertTrue(is_boilerplate_answer(source, "お問い合わせ"), source)
+            self.assertFalse(is_usable_translation(source, "お問い合わせ", {}), source)
+
+        self.assertFalse(is_boilerplate_answer("Contact us", "お問い合わせ"))
+        self.assertFalse(is_boilerplate_answer("Say something", "何か言う"))
+
