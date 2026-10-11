@@ -25,6 +25,8 @@ Rules encoded here:
 
 from __future__ import annotations
 
+from . import names
+
 # Column order for every row below. Keep in sync with the tuples.
 LOCALE_ORDER = (
     "pt_BR",
@@ -493,8 +495,6 @@ _ROWS = {
     # on a placed one. Single nouns and verbs with nothing around them; "Turn"
     # is the rotation, never a turn in a game. "Table" is in _CONTEXT_ROWS.
     "Build":        ("Construir", "Construir", "Construir", "Construire", "Bauen", "Costruisci", "Bouwen", "Buduj", "Строить", "Bangun", "建てる", "建造", "建造"),
-    # A name, kept as it is everywhere (see protection.BRAND_RE).
-    "Construct":    ("Construct", "Construct", "Construct", "Construct", "Construct", "Construct", "Construct", "Construct", "Construct", "Construct", "Construct", "Construct", "Construct"),
     "Chair":        ("Cadeira", "Cadeira", "Silla", "Chaise", "Stuhl", "Sedia", "Stoel", "Krzesło", "Стул", "Kursi", "椅子", "椅子", "椅子"),
     "Tree":         ("Árvore", "Árvore", "Árbol", "Arbre", "Baum", "Albero", "Boom", "Drzewo", "Дерево", "Pohon", "木", "树", "樹"),
     "Lamp":         ("Luminária", "Candeeiro", "Lámpara", "Lampe", "Lampe", "Lampada", "Lamp", "Lampa", "Лампа", "Lampu", "ランプ", "灯", "燈"),
@@ -525,6 +525,12 @@ def source_of(term: str) -> str:
 
 
 _ROWS.update({key(msgid, msgctxt): row for (msgctxt, msgid), row in _CONTEXT_ROWS.items()})
+
+# The product's own names, as each language writes them (`names.py`), are
+# labels too wherever they stand alone.
+_ROWS.update(
+    {name: tuple(names.form(name, code) for code in LOCALE_ORDER) for name in names.NAMES}
+)
 
 
 def _validate() -> None:

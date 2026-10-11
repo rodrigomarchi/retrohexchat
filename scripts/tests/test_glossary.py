@@ -69,13 +69,25 @@ class DecisionsTest(unittest.TestCase):
         self.assertEqual(glossary.GLOSSARY[glossary.key("Table", "furniture")]["de"], "Tisch")
         self.assertEqual(glossary.source_of(glossary.key("Table", "furniture")), "Table")
 
-    def test_the_construct_is_a_name(self):
+    def test_the_construct_is_a_name_each_language_writes_its_way(self):
+        from i18n import names
+        from i18n.pipeline import Pipeline
         from i18n.protection import protect
 
-        self.assertEqual(set(glossary.GLOSSARY["Construct"].values()), {"Construct"})
-        masked, replacements = protect("Enter the Construct?")
+        self.assertEqual(glossary.GLOSSARY["Construct"]["pt_BR"], "Constructo")
+        self.assertEqual(glossary.GLOSSARY["Construct"]["fr"], "Construct")
+        masked, replacements = protect("Go into the Construct?")
         self.assertIn("Construct", replacements.values())
         self.assertNotIn("Construct", masked)
+
+        class Echo:
+            def translate(self, text):
+                return text.replace("Go into the", "Ir para o")
+
+        pipeline = Pipeline(Echo(), locale_code="pt_BR")
+        self.assertEqual(pipeline.translate_one("Go into the Construct?"), "Ir para o Constructo?")
+        self.assertEqual(names.localize("The Construct", "zh_hant"), "The 構造空間")
+        self.assertEqual(names.localize("The Construct", "en"), "The Construct")
 
     def test_mute_is_the_audio_sense(self):
         # fr had "Mignon" (cute), de had "Mut" (courage).

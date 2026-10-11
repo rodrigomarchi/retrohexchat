@@ -7,6 +7,8 @@ driven by a scripted fake in tests.
 
 from __future__ import annotations
 
+from . import names
+
 import re
 from dataclasses import dataclass, field
 
@@ -131,7 +133,9 @@ class Pipeline:
             if body in self._fell_back or (prefix and translated[body] == body):
                 results[source] = source
             else:
-                results[source] = prefix + translated[body]
+                # The product's own names were masked through the engine and come
+                # back in English; each is written the way this language says it.
+                results[source] = prefix + names.localize(translated[body], self.locale_code)
 
         return results
 

@@ -53,6 +53,13 @@ class ForeignFormsTest(unittest.TestCase):
             foreign_forms("Escolhe uma alcunha e entras.", "pt_BR"), ["alcunha", "entras"]
         )
 
+    def test_the_constructs_european_forms_are_foreign_to_pt_br(self):
+        self.assertEqual(
+            foreign_forms("Senta-te numa cadeira ou levanta-te.", "pt_BR"), ["Senta-te", "levanta-te"]
+        )
+        self.assertEqual(foreign_forms("No Constructo, rode a peça", "pt_BR"), ["rode a peça"])
+        self.assertEqual(foreign_forms("Sente-se numa cadeira", "pt_BR"), [])
+
     def test_the_european_noun_for_registration_is_foreign_to_pt_br(self):
         # What the engine gave "View channel registration info" for Brazil.
         self.assertEqual(foreign_forms("Ver informações de registo do canal", "pt_BR"), ["registo"])

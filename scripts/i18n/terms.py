@@ -170,6 +170,14 @@ _FOREIGN_FORMS: dict[str, tuple[str, ...]] = {
         "conheces",
         "entras",
         "escreves",
+        # Measured on the Construct's strings: the reflexive imperative, the
+        # European spelling of "selected", and the European verb for turning.
+        "senta-te",
+        "levanta-te",
+        "tenta outra vez",
+        "seleccionada",
+        "seleccionado",
+        "rode a peça",
     ),
 }
 
