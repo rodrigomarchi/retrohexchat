@@ -326,6 +326,9 @@ End of Time's green gate (`eot_portal`, north platform, interactable
 author is `virtual.space/tools/author_construct.py`, which writes
 `construct.webp` and `priv/maps/construct.json`.
 
+- **It floats in the End of Time's sky**: a 48×48 floor inside an 8-cell
+  margin of void, under the same sea, stars and vignette (values copied from
+  `author_scene.py`) and one slab; no ambient wash, so the floor stays white.
 - **The floor is drawn, not generated**: the End of Time floor's own 48×20
   alpha, filled white with a grey seam, so it is exactly the diamond the
   projection tessellates — and the seam is the grid builders place on.

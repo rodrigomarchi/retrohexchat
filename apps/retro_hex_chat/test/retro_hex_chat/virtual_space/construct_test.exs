@@ -160,7 +160,7 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
       ctx = channel_with(["alice"])
       enter(ctx.construct_id, "alice")
 
-      # Spawned at (4,4); the gate stands at (2,2). Walk up to it.
+      # Spawned at (12,12); the gate stands at (10,10). Walk up to it.
       for {dx, dy} <- [{-1, 0}, {0, -1}] do
         :ok =
           ChannelSpaceServer.input(ctx.construct_id, key("alice"), %{
@@ -184,11 +184,11 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
       enter(ctx.construct_id, "alice")
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "space:" <> ctx.construct_id)
 
-      assert {:ok, 1} = place(ctx.construct_id, "alice", "table", 10, 10)
+      assert {:ok, 1} = place(ctx.construct_id, "alice", "table", 18, 18)
 
       assert_receive %{
         event: "construct_layout",
-        payload: %{revision: 1, items: [%{kind: "table", x: 10, y: 10} = table]}
+        payload: %{revision: 1, items: [%{kind: "table", x: 18, y: 18} = table]}
       }
 
       assert %{revision: 1, items: [%{"id" => id}]} = Store.load(ctx.construct_id)
@@ -199,7 +199,7 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
                  ctx.construct_id,
                  key("alice"),
                  "alice",
-                 {:move, table.id, 11, 10}
+                 {:move, table.id, 19, 18}
                )
 
       assert {:ok, 3} =
@@ -216,7 +216,7 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
     test "a placed piece blocks the way" do
       ctx = channel_with(["alice"])
       enter(ctx.construct_id, "alice")
-      {:ok, _} = place(ctx.construct_id, "alice", "tree", 5, 4)
+      {:ok, _} = place(ctx.construct_id, "alice", "tree", 13, 12)
 
       assert {:error, :blocked} =
                ChannelSpaceServer.input(ctx.construct_id, key("alice"), %{seq: 1, dx: 1, dy: 0})
@@ -225,23 +225,23 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
     test "what was built is there the next time the room opens" do
       ctx = channel_with(["alice"])
       enter(ctx.construct_id, "alice")
-      {:ok, _} = place(ctx.construct_id, "alice", "lamp", 12, 12)
+      {:ok, _} = place(ctx.construct_id, "alice", "lamp", 20, 20)
       stop_construct(ctx.construct_id)
 
       joined = enter(ctx.construct_id, "alice")
-      assert [%{kind: "lamp", x: 12, y: 12}] = joined.map.items
-      assert {:ok, 2} = place(ctx.construct_id, "alice", "tree", 13, 13)
+      assert [%{kind: "lamp", x: 20, y: 20}] = joined.map.items
+      assert {:ok, 2} = place(ctx.construct_id, "alice", "tree", 21, 21)
     end
 
     test "a placed chair can be sat in, and is left alone while it is" do
       ctx = channel_with(["alice"])
       enter(ctx.construct_id, "alice")
-      {:ok, _} = place(ctx.construct_id, "alice", "chair", 6, 4)
+      {:ok, _} = place(ctx.construct_id, "alice", "chair", 14, 12)
       {:ok, state} = ChannelSpaceServer.get_state(ctx.construct_id)
       [seat] = state.map.seats
       [chair] = state.items
 
-      # Spawned at (4,4); one step east is next to the chair.
+      # Spawned at (12,12); one step east is next to the chair.
       :ok = ChannelSpaceServer.input(ctx.construct_id, key("alice"), %{seq: 1, dx: 1, dy: 0})
 
       assert :ok =
@@ -263,8 +263,8 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
       ctx = channel_with(["alice", "bob"])
       enter(ctx.construct_id, "alice")
 
-      assert {:error, :not_participant} = place(ctx.construct_id, "bob", "tree", 10, 10)
-      assert {:error, :not_found} = place("construct:#nowhere", "bob", "tree", 10, 10)
+      assert {:error, :not_participant} = place(ctx.construct_id, "bob", "tree", 18, 18)
+      assert {:error, :not_found} = place("construct:#nowhere", "bob", "tree", 18, 18)
     end
 
     test "edits are paced per person" do
@@ -272,8 +272,8 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
       ctx = channel_with(["alice"])
       enter(ctx.construct_id, "alice")
 
-      assert {:ok, 1} = place(ctx.construct_id, "alice", "tree", 10, 10)
-      assert {:error, :cooldown} = place(ctx.construct_id, "alice", "tree", 11, 11)
+      assert {:ok, 1} = place(ctx.construct_id, "alice", "tree", 18, 18)
+      assert {:error, :cooldown} = place(ctx.construct_id, "alice", "tree", 19, 19)
     end
   end
 

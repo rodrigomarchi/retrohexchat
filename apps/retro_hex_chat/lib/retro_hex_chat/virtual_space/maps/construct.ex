@@ -1,7 +1,7 @@
 defmodule RetroHexChat.VirtualSpace.Maps.Construct do
   @moduledoc """
-  The Construct: an empty white floor at the edge of a pale void, with one gate
-  back to the End of Time. Everything else in it is placed by the people inside
+  The Construct: an empty white floor floating in the End of Time's own sky —
+  its sea, its stars, a slab under the island — with one gate back. Everything else in it is placed by the people inside
   (`VirtualSpace.Construct.Layout`).
 
   Authored by `virtual.space/tools/author_construct.py`, which packs the art
@@ -28,8 +28,12 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
       iso: iso(data["iso"]),
       backdrop: data["backdrop"],
       vignette: vignette(data["vignette"]),
-      slabs: [],
-      sea: nil,
+      slabs:
+        Enum.map(
+          data["slabs"] || [],
+          &%{thickness: &1["thickness"], taper: &1["taper"], hull: &1["hull"]}
+        ),
+      sea: sea(data["sea"]),
       railings: [],
       railing_posts: [],
       tilesets: [
@@ -124,6 +128,11 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
     do: %{tile_w: i["tile_w"], tile_h: i["tile_h"], z_step: i["z_step"], headroom: i["headroom"]}
 
   defp iso(_), do: nil
+
+  defp sea(%{} = s),
+    do: %{top: s["top"], bottom: s["bottom"], band: s["band"], bands: s["bands"], amp: s["amp"]}
+
+  defp sea(_), do: nil
 
   defp vignette(%{} = v), do: %{color: v["color"], alpha: v["alpha"], inner: v["inner"]}
   defp vignette(_), do: nil

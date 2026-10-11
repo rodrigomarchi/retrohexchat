@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Author the ISOMETRIC "Construct" scene: the empty room a channel builds.
 
-A white loading-program floor that stretches to the edge of a pale void, with
-one way out: a white-marble gate whose arch holds the starry End of Time sky.
+A white loading-program floor floating in the End of Time's own sky — the same
+deep-blue sea, twinkling stars and vignette, under a dark slab like the
+islands' — with one way out: a white-marble gate whose arch holds that sky.
 Everything else on it is placed by the people inside. The scene therefore
 carries no furniture of its own, only the **catalog** of what can be placed:
 each kind's tile per facing, whether it can be sat on, and the light it casts.
@@ -18,7 +19,7 @@ on. Deterministic.
 import json
 import os
 
-from PIL import Image
+from PIL import Image, ImageDraw
 
 from sheet_io import save_sheet
 
@@ -32,23 +33,32 @@ SHEET_OUT = os.path.join(
 MAP_OUT = os.path.join(REPO, "apps", "retro_hex_chat", "priv", "maps", "construct.json")
 
 T = 32
-W, H = 20, 20
+# A 48×48 floor with a margin of sky on every side, so the stars and the sea
+# show around the island however far the camera follows a builder to an edge.
+MARGIN = 8
+FLOOR = 48
+W = H = FLOOR + 2 * MARGIN
 SHEET_COLS = 10
 SHEET_ROWS = 5
 Z_STEP = 16
-MAX_ITEMS = 150
+MAX_ITEMS = 400
 
 FLOOR_FILL = (247, 248, 251, 255)
 FLOOR_SEAM = (214, 219, 228, 255)
 
-# The way back sits in the far corner of the room, so the floor opens out in
+# The way back sits in the far corner of the floor, so the room opens out in
 # front of whoever arrives.
-EXIT = (2, 2)
+X0 = Y0 = MARGIN
+X1 = Y1 = MARGIN + FLOOR - 1
+EXIT = (X0 + 2, Y0 + 2)
 SPAWN = [
-    {"x": 4, "y": 4, "dir": "down"},
-    {"x": 5, "y": 3, "dir": "down"},
-    {"x": 3, "y": 5, "dir": "right"},
+    {"x": EXIT[0] + 2, "y": EXIT[1] + 2, "dir": "down"},
+    {"x": EXIT[0] + 3, "y": EXIT[1] + 1, "dir": "down"},
+    {"x": EXIT[0] + 1, "y": EXIT[1] + 3, "dir": "right"},
 ]
+# The End of Time's sky, value for value (`author_scene.py`).
+SEA = {"top": "0c1e42", "bottom": "05060f", "band": "1a3d7a", "bands": 9, "amp": 5}
+VIGNETTE = {"color": "04050c", "alpha": 0.78, "inner": 0.36}
 
 # Placeable kinds: art file and how the kind behaves once placed. The art faces
 # screen down-left, which is tile "down"; its mirror is tile "right".
@@ -141,6 +151,39 @@ def build():
             entry["lights"] = spec["lights"]
         catalog[kind] = entry
 
+    # The End of Time's twinkling star, drawn the same way into this sheet.
+    srow = SHEET_ROWS - 1
+    for i, r in enumerate((1, 2, 3, 2)):
+        star = Image.new("RGBA", (T, T), (0, 0, 0, 0))
+        c = T // 2
+        ImageDraw.Draw(star).ellipse([c - r, c - r, c + r, c + r], fill=(232, 238, 255, 255))
+        sheet.alpha_composite(star, ((SHEET_COLS - 5 + i) * T, srow * T))
+    vocab["iso_star"] = {"col": SHEET_COLS - 5, "row": srow, "w": 1, "h": 1,
+                         "frames": 4, "period_ms": 1100}
+
+    def on_floor(x, y):
+        return X0 <= x <= X1 and Y0 <= y <= Y1
+
+    def _h(x, y):
+        return (x * 928371 + y * 1237) & 0xFFFF
+
+    stars = [{"x": x, "y": y, "tile": "iso_star", "sort": "flat"}
+             for y in range(H) for x in range(W)
+             if not on_floor(x, y) and _h(x, y) % 13 == 0]
+
+    # The sky is the void around the floor: blocked, as merged row runs.
+    void = []
+    for y in range(H):
+        x = 0
+        while x < W:
+            if on_floor(x, y):
+                x += 1
+                continue
+            start = x
+            while x < W and not on_floor(x, y):
+                x += 1
+            void.append({"x": start, "y": y, "w": x - start, "h": 1, "kind": "void"})
+
     reserved = sorted(
         {(EXIT[0] + dx, EXIT[1] + dy) for dx in (-1, 0, 1) for dy in (-1, 0, 1)}
         | {(s["x"], s["y"]) for s in SPAWN}
@@ -155,18 +198,19 @@ def build():
         "columns": SHEET_COLS,
         "projection": "isometric",
         "iso": {"tile_w": fw, "tile_h": fh, "z_step": Z_STEP, "headroom": 8},
-        "backdrop": "eef0f4",
-        "vignette": {"color": "c3c9d4", "alpha": 0.45, "inner": 0.5},
+        "sea": SEA,
+        "vignette": VIGNETTE,
+        "slabs": [{"thickness": 10, "taper": 0.78, "hull": [X0, X1, Y0, Y1]}],
         "vocab": vocab,
-        "floor": [["cst_floor"] * W for _ in range(H)],
-        "decor": [{"x": EXIT[0], "y": EXIT[1], "tile": "cst_exit", "sort": "stand"}],
-        "collision": [{"x": EXIT[0], "y": EXIT[1], "w": 1, "h": 1, "kind": "prop"}],
+        "floor": [["cst_floor" if on_floor(x, y) else "g" for x in range(W)] for y in range(H)],
+        "decor": stars + [{"x": EXIT[0], "y": EXIT[1], "tile": "cst_exit", "sort": "stand"}],
+        "collision": void + [{"x": EXIT[0], "y": EXIT[1], "w": 1, "h": 1, "kind": "prop"}],
         "spawn": SPAWN,
         "lights": [
             {"x": EXIT[0], "y": EXIT[1], "radius": 2.2, "color": "8fb6ff", "blend": "add"},
             {"x": EXIT[0], "y": EXIT[1], "lift": 50, "radius": 1.2, "color": "c9dcff", "blend": "add"},
         ],
-        "zones": [{"id": "construct", "kind": "platform", "x": 0, "y": 0, "w": W, "h": H}],
+        "zones": [{"id": "construct", "kind": "platform", "x": X0, "y": Y0, "w": FLOOR, "h": FLOOR}],
         "interactables": [
             {
                 "id": "construct_exit",

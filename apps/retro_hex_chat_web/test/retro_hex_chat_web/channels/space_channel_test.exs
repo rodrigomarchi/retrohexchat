@@ -572,13 +572,13 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       {:ok, _init, socket} = join_construct(ctx.construct_id, "alice")
 
       ref =
-        push(socket, "construct_build", %{"op" => "place", "kind" => "tree", "x" => 10, "y" => 10})
+        push(socket, "construct_build", %{"op" => "place", "kind" => "tree", "x" => 18, "y" => 18})
 
       assert_reply ref, :ok, %{revision: 1}
       assert_push "construct_layout", %{revision: 1, items: [%{kind: "tree", id: id}]}
 
       ref =
-        push(socket, "construct_build", %{"op" => "place", "kind" => "lamp", "x" => 10, "y" => 10})
+        push(socket, "construct_build", %{"op" => "place", "kind" => "lamp", "x" => 18, "y" => 18})
 
       assert_reply ref, :error, %{reason: "occupied"}
 
