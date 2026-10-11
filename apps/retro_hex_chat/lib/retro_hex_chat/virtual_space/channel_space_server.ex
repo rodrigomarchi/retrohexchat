@@ -1494,7 +1494,21 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
       Topics.space_roster(state.channel_name),
       {:space_roster, %{space_id: state.channel_name, participants: online_nicknames(state)}}
     )
+
+    broadcast_parent_roster(state)
   end
+
+  # A Construct is a room of its space, so who is in it changes who is in the
+  # space: the space's card and antechamber are told to read it again.
+  defp broadcast_parent_roster(%{realm: :construct, membership_id: parent_id}) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      Topics.space_roster(parent_id),
+      {:space_roster, %{space_id: parent_id, changed: :construct}}
+    )
+  end
+
+  defp broadcast_parent_roster(_state), do: :ok
 
   # Wire-protocol snapshot (see `js/lib/space/protocol.js`): a server timestamp
   # plus participants keyed by participant key, each in the public view shape.

@@ -19,6 +19,14 @@ defmodule RetroHexChat.VirtualSpace.SessionRecorder do
   attached to it, and a `left_at` written from anything else would be invented.
   Neither of the two numbers the card shows — how long, how many — needs one.
 
+  **A gathering spans a space and its Construct.** Walking through the gate
+  empties the End of Time and fills the Construct, and the party has not ended.
+  So a gathering watches every world it is going on in — the space's and its
+  Construct's — and ends only when all of them are empty and stay empty for a
+  moment (`gathering_grace_ms`): a hop through the gate stops one world before
+  the other starts, and the gathering waits it out instead of closing and
+  opening a second card.
+
   Nothing in here is allowed to take the process down. It holds the monitors for
   every space in the system, so a write that fails for one gathering must not
   lose the record of all the others: the failure is logged, that gathering goes
@@ -36,6 +44,7 @@ defmodule RetroHexChat.VirtualSpace.SessionRecorder do
   require Logger
 
   alias RetroHexChat.Topics
+  alias RetroHexChat.VirtualSpace.Construct
   alias RetroHexChat.VirtualSpace.Queries
   alias RetroHexChat.VirtualSpace.Registry, as: SpaceRegistry
   alias RetroHexChat.VirtualSpace.Schema.Session
@@ -65,6 +74,18 @@ defmodule RetroHexChat.VirtualSpace.SessionRecorder do
     :exit, reason ->
       Logger.warning("Space session recorder unavailable: #{inspect(reason)}")
       nil
+  end
+
+  @doc """
+  A space's Construct started: if its space has a gathering going (or one that
+  just emptied, waiting out a hop through the gate), the Construct is part of
+  it now, and whoever walked in is one of its visitors.
+  """
+  @spec construct_started(String.t(), pid(), String.t(), GenServer.server()) :: :ok
+  def construct_started(space_id, pid, nickname, server \\ __MODULE__) do
+    GenServer.cast(server, {:construct_started, space_id, pid, nickname})
+  catch
+    :exit, _reason -> :ok
   end
 
   @doc """
@@ -99,6 +120,12 @@ defmodule RetroHexChat.VirtualSpace.SessionRecorder do
     {:ok, %{monitors: %{}, spaces: %{}}, {:continue, :reconcile}}
   end
 
+  @doc "How long an emptied gathering waits for somebody to come back through a gate."
+  @spec gathering_grace_ms() :: non_neg_integer()
+  def gathering_grace_ms do
+    Application.get_env(:retro_hex_chat, :virtual_space_gathering_grace_ms, 5_000)
+  end
+
   # A restart of this process is a restart of every monitor it held. The worlds
   # that survived it are picked back up; the ones that did not are closed here
   # rather than left for the daily sweep to find.
@@ -113,9 +140,18 @@ defmodule RetroHexChat.VirtualSpace.SessionRecorder do
   @spec handle_call({:opened, String.t(), atom(), pid(), map()}, GenServer.from(), map()) ::
           {:reply, opened() | nil, map()}
   def handle_call({:opened, space_id, kind, pid, actor}, _from, state) do
-    case open(state, space_id, kind, pid, actor) do
-      {:ok, session, state} -> {:reply, %{token: session.token, id: session.id}, state}
-      {:error, state} -> {:reply, nil, state}
+    case Map.get(state.spaces, space_id) do
+      # The world restarted inside a gathering that is still going — somebody
+      # came back through the gate. Same gathering, and no second card.
+      %{} ->
+        nickname = Map.get(actor, :nickname) || "?"
+        {:reply, nil, guard(state, fn -> join_world(state, space_id, pid, nickname) end)}
+
+      nil ->
+        case open(state, space_id, kind, pid, actor) do
+          {:ok, session, state} -> {:reply, %{token: session.token, id: session.id}, state}
+          {:error, state} -> {:reply, nil, state}
+        end
     end
   end
 
@@ -125,10 +161,22 @@ defmodule RetroHexChat.VirtualSpace.SessionRecorder do
     {:noreply, guard(state, fn -> record(state, space_id, nickname) end)}
   end
 
+  def handle_cast({:construct_started, space_id, pid, nickname}, state) do
+    if Map.has_key?(state.spaces, space_id) do
+      {:noreply, guard(state, fn -> join_world(state, space_id, pid, nickname) end)}
+    else
+      {:noreply, state}
+    end
+  end
+
   @impl true
   @spec handle_info(term(), map()) :: {:noreply, map()}
   def handle_info({:DOWN, ref, :process, _pid, reason}, state) do
-    {:noreply, guard(state, fn -> close(state, ref, down_reason(reason)) end)}
+    {:noreply, world_down(state, ref, down_reason(reason))}
+  end
+
+  def handle_info({:close_if_empty, space_id, session_id}, state) do
+    {:noreply, guard(state, fn -> close_if_empty(state, space_id, session_id) end)}
   end
 
   def handle_info(message, state) do
@@ -166,45 +214,112 @@ defmodule RetroHexChat.VirtualSpace.SessionRecorder do
       {:error, state}
   end
 
+  # `spaces` holds one entry per gathering going on: its session, the worlds it
+  # is watching, and the close it has scheduled once they all emptied.
   defp watch(state, %Session{} = session, pid) do
+    entry = %{session: session, refs: MapSet.new(), closing: nil, reason: "emptied"}
+    state = %{state | spaces: Map.put(state.spaces, session.space_id, entry)}
+    add_world(state, session.space_id, pid)
+  end
+
+  defp add_world(state, space_id, pid) do
     ref = Process.monitor(pid)
+    entry = Map.fetch!(state.spaces, space_id)
+    if entry.closing, do: Process.cancel_timer(entry.closing)
+    entry = %{entry | refs: MapSet.put(entry.refs, ref), closing: nil}
 
     %{
       state
-      | monitors: Map.put(state.monitors, ref, session),
-        spaces: Map.put(state.spaces, session.space_id, ref)
+      | monitors: Map.put(state.monitors, ref, space_id),
+        spaces: Map.put(state.spaces, space_id, entry)
     }
   end
 
+  defp join_world(state, space_id, pid, nickname) do
+    state = add_world(state, space_id, pid)
+    record(state, space_id, nickname)
+  end
+
   defp readopt(%Session{} = session, state) do
-    case SpaceRegistry.lookup(registry_key(session)) do
-      {:ok, pid} -> watch(state, session, pid)
-      {:error, :not_found} -> close_session(state, session, "runtime_gone")
+    worlds =
+      session
+      |> registry_keys()
+      |> Enum.flat_map(fn key ->
+        case SpaceRegistry.lookup(key) do
+          {:ok, pid} -> [pid]
+          {:error, :not_found} -> []
+        end
+      end)
+
+    case worlds do
+      [] ->
+        close_session(state, session, "runtime_gone")
+
+      [first | rest] ->
+        state = watch(state, session, first)
+        Enum.reduce(rest, state, &add_world(&2, session.space_id, &1))
     end
   end
 
-  defp registry_key(%Session{kind: "direct_message", space_id: space_id}),
-    do: {:direct_message_space, space_id}
+  defp registry_keys(%Session{kind: "direct_message", space_id: space_id}),
+    do: [{:direct_message_space, space_id}, {:construct_space, Construct.space_id(space_id)}]
 
-  defp registry_key(%Session{space_id: space_id}), do: {:channel_space, space_id}
+  defp registry_keys(%Session{space_id: space_id}),
+    do: [{:channel_space, space_id}, {:construct_space, Construct.space_id(space_id)}]
 
   defp record(state, space_id, nickname) do
-    with ref when is_reference(ref) <- Map.get(state.spaces, space_id),
-         %Session{id: id} <- Map.get(state.monitors, ref) do
-      Queries.record_arrival(id, nickname)
+    case Map.get(state.spaces, space_id) do
+      %{session: %Session{id: id}} -> Queries.record_arrival(id, nickname)
+      nil -> :ok
     end
 
     state
   end
 
-  defp close(state, ref, reason) do
+  # One world of a gathering went down. While another is still up the party
+  # goes on; when it was the last, the gathering waits out the grace before it
+  # ends — a hop through a gate is exactly this moment.
+  defp world_down(state, ref, reason) do
     case Map.pop(state.monitors, ref) do
       {nil, _monitors} ->
         state
 
-      {%Session{} = session, monitors} ->
-        state = %{state | monitors: monitors, spaces: Map.delete(state.spaces, session.space_id)}
-        close_session(state, session, reason)
+      {space_id, monitors} ->
+        state = %{state | monitors: monitors}
+        entry = Map.fetch!(state.spaces, space_id)
+        # The reason the last world went down is the reason the gathering ends.
+        entry = %{entry | refs: MapSet.delete(entry.refs, ref), reason: reason}
+        state = %{state | spaces: Map.put(state.spaces, space_id, entry)}
+        schedule_close(state, space_id, entry, gathering_grace_ms())
+    end
+  end
+
+  defp schedule_close(state, space_id, entry, grace) do
+    cond do
+      MapSet.size(entry.refs) > 0 ->
+        state
+
+      grace == 0 ->
+        guard(state, fn -> close_if_empty(state, space_id, entry.session.id) end)
+
+      true ->
+        timer = Process.send_after(self(), {:close_if_empty, space_id, entry.session.id}, grace)
+        %{state | spaces: Map.put(state.spaces, space_id, %{entry | closing: timer})}
+    end
+  end
+
+  defp close_if_empty(state, space_id, session_id) do
+    case Map.get(state.spaces, space_id) do
+      %{session: %Session{id: ^session_id} = session, refs: refs, reason: reason} ->
+        if MapSet.size(refs) == 0 do
+          state = %{state | spaces: Map.delete(state.spaces, space_id)}
+          close_session(state, session, reason)
+        else
+          state
+        end
+
+      _gone_or_reopened ->
+        state
     end
   end
 

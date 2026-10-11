@@ -2932,7 +2932,7 @@ msgstr "%{peer} verloren die P2P-Verbindung – warten auf sie zurück..."
 msgid "Arcade session ended."
 msgstr "Arcade-Session endete."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:731
+#: lib/retro_hex_chat_web/live/app/space_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "Kanal Raum"
@@ -2983,7 +2983,7 @@ msgstr "Default Gerät"
 msgid "End P2P Call Media"
 msgstr "Ende P2P Call Media"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:735
+#: lib/retro_hex_chat_web/live/app/space_live.ex:743
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "Kanalraum eingeben..."
@@ -3009,7 +3009,7 @@ msgstr "Mute, unmute oder aktivieren Sie Ihr P2P-Mikrofon"
 msgid "Next P2P Layout"
 msgstr "Nächster P2P Layout"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:734
+#: lib/retro_hex_chat_web/live/app/space_live.ex:742
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "Privatzimmer öffnen..."
@@ -3041,14 +3041,14 @@ msgstr "P2P-Sitzung wird verbunden"
 msgid "P2P session with %{peer} ended."
 msgstr "P2P-Sitzung mit %{peer} Ende."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:730
+#: lib/retro_hex_chat_web/live/app/space_live.ex:738
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "Privater Raum"
 
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:696
+#: lib/retro_hex_chat_web/live/app/space_live.ex:704
 #, elixir-autogen, elixir-format
 msgid "Space"
 msgstr "Raum"
@@ -3810,30 +3810,30 @@ msgstr "Gerade drinnen"
 msgid "Nobody is in here yet."
 msgstr "Hier ist noch niemand."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:692
-#: lib/retro_hex_chat_web/live/app/space_live.ex:694
+#: lib/retro_hex_chat_web/live/app/space_live.ex:700
+#: lib/retro_hex_chat_web/live/app/space_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "Space · %{name}"
 msgstr "Raum · %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:579
-#: lib/retro_hex_chat_web/live/app/space_live.ex:594
-#: lib/retro_hex_chat_web/live/app/space_live.ex:613
+#: lib/retro_hex_chat_web/live/app/space_live.ex:587
+#: lib/retro_hex_chat_web/live/app/space_live.ex:602
+#: lib/retro_hex_chat_web/live/app/space_live.ex:621
 #, elixir-autogen, elixir-format
 msgid "That address does not name a space."
 msgstr "Diese Adresse bezeichnet keinen Raum."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:625
+#: lib/retro_hex_chat_web/live/app/space_live.ex:633
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
 msgstr "Dieser private Raum gehört zwei anderen Personen."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:574
+#: lib/retro_hex_chat_web/live/app/space_live.ex:582
 #, elixir-autogen, elixir-format
 msgid "This space is no longer available."
 msgstr "Dieser Raum ist nicht mehr verfügbar."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:641
+#: lib/retro_hex_chat_web/live/app/space_live.ex:649
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "Du musst in %{channel} sein, um dessen Raum zu betreten."
@@ -3868,7 +3868,7 @@ msgstr "%{game} · Match"
 msgid "%{peer} is back."
 msgstr "%{peer} ist zurück."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:646
+#: lib/retro_hex_chat_web/live/app/space_live.ex:654
 #, elixir-autogen, elixir-format
 msgid "This space belongs to a channel you are not in."
 msgstr "Dieser Space gehört zu einem Kanal, in dem du nicht bist."
@@ -4333,13 +4333,13 @@ msgstr "Sagen"
 msgid "Say something"
 msgstr "Sag etwas."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:721
-#: lib/retro_hex_chat_web/live/app/space_live.ex:727
+#: lib/retro_hex_chat_web/live/app/space_live.ex:729
+#: lib/retro_hex_chat_web/live/app/space_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Say something to %{name}..."
 msgstr "Sagen Sie etwas zu %{name}..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:722
+#: lib/retro_hex_chat_web/live/app/space_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Say something..."
 msgstr "Sag etwas..."
@@ -4365,11 +4365,11 @@ msgstr "Bauen"
 msgid "Chair"
 msgstr "Stuhl"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:688
-#: lib/retro_hex_chat_web/live/app/space_live.ex:729
+#: lib/retro_hex_chat_web/live/app/space_live.ex:696
+#: lib/retro_hex_chat_web/live/app/space_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Construct"
-msgstr "Construct"
+msgstr "Konstrukt"
 
 #: lib/retro_hex_chat_web/live/app/space_live.ex:294
 #, elixir-autogen, elixir-format
@@ -4387,10 +4387,10 @@ msgstr "Halten Sie den Weg zum Tor klar."
 msgid "Lamp"
 msgstr "Lampe"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:733
+#: lib/retro_hex_chat_web/live/app/space_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Loading the Construct..."
-msgstr "Die Construct..."
+msgstr "Die Konstrukt..."
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:65
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:72
@@ -4424,7 +4424,7 @@ msgstr "Das Stück kann nicht dorthin gehen."
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:112
 #, elixir-autogen, elixir-format
 msgid "The Construct is full."
-msgstr "Der Construct ist voll."
+msgstr "Der Konstrukt ist voll."
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:31
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:22
@@ -4450,7 +4450,7 @@ msgstr "Tisch"
 #: lib/retro_hex_chat_web/live/app/space_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "Go into the Construct?"
-msgstr "Gehen Sie in die Construct?"
+msgstr "Gehen Sie in die Konstrukt?"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:107
 #, elixir-autogen, elixir-format
@@ -4469,5 +4469,5 @@ msgstr "Da ist schon ein Stück."
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:114
 #, elixir-autogen, elixir-format
-msgid "One piece at a time. Try again."
-msgstr "Ein Stück zu einer Zeit. Versuchen Sie es noch mal."
+msgid "Only one piece at a time, please wait."
+msgstr "Nur ein Stück zu einer Zeit, bitte warten."

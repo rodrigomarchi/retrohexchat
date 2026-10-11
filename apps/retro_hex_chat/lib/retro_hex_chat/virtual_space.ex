@@ -119,7 +119,9 @@ defmodule RetroHexChat.VirtualSpace do
   # moment: somebody walking in through the gate in that moment finds a room
   # that is already gone. Asking again finds it gone for good, and starts it.
   defp join_construct(construct_id, actor, participants, attempts) do
-    with {:ok, _started} <- ensure_construct_process(construct_id, participants) do
+    with {:ok, started} <- ensure_construct_process(construct_id, participants) do
+      count_in_gathering(started, construct_id, actor.nickname)
+
       construct_id
       |> ChannelSpaceServer.join(%{
         user_id: actor.user_id,
@@ -188,6 +190,18 @@ defmodule RetroHexChat.VirtualSpace do
   @doc "The space a Construct belongs to."
   @spec construct_parent(String.t()) :: {:ok, String.t()} | :error
   defdelegate construct_parent(construct_id), to: Construct, as: :parent_id
+
+  # The Construct is a room of its space's gathering: walking into it is
+  # arriving at that gathering, and starting it adds a world the gathering is
+  # going on in.
+  defp count_in_gathering(started, construct_id, nickname) do
+    {:ok, parent_id} = Construct.parent_id(construct_id)
+
+    case started do
+      {:started, pid} -> SessionRecorder.construct_started(parent_id, pid, nickname)
+      :running -> SessionRecorder.arrived(parent_id, nickname)
+    end
+  end
 
   # A gathering begins when somebody walks into an empty world, which is the
   # same moment the world itself begins. Exactly one caller sees the process
@@ -331,10 +345,16 @@ defmodule RetroHexChat.VirtualSpace do
   @spec roster(String.t()) :: [String.t()]
   def roster(space_id) do
     case space_kind(space_id) do
-      :direct_message -> nicknames(direct_message_snapshot(space_id))
-      :channel -> nicknames(snapshot(space_id))
+      :direct_message -> with_construct(space_id, nicknames(direct_message_snapshot(space_id)))
+      :channel -> with_construct(space_id, nicknames(snapshot(space_id)))
       :construct -> nicknames(snapshot(space_id))
     end
+  end
+
+  # Somebody in a space's Construct is in the space: it is a room of it.
+  defp with_construct(space_id, nicknames) do
+    inside = space_id |> Construct.space_id() |> snapshot() |> nicknames()
+    Enum.sort(Enum.uniq(nicknames ++ inside))
   end
 
   @doc """

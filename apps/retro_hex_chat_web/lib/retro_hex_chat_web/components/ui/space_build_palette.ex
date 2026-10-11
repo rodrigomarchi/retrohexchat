@@ -111,7 +111,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
       "data-refused-seat_taken" => dgettext("chat", "Somebody is sitting in it."),
       "data-refused-full" => dgettext("chat", "The Construct is full."),
       "data-refused-out_of_bounds" => dgettext("chat", "That is off the floor."),
-      "data-refused-cooldown" => dgettext("chat", "One piece at a time. Try again."),
+      "data-refused-cooldown" => dgettext("chat", "Only one piece at a time, please wait."),
       "data-refused-default" => dgettext("chat", "That piece cannot go there.")
     }
   end

@@ -495,8 +495,16 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   @spec handle_info(term(), Socket.t()) :: {:noreply, Socket.t()}
   # The roster topic and only it: who is inside is the reason this surface
   # subscribes to anything at all.
-  def handle_info({:space_roster, %{participants: participants}}, socket) do
+  # The space's own list, or its Construct's saying it changed: a space counts
+  # whoever is in its Construct too, so the list is read again rather than taken
+  # from a message that only knows one of the two rooms.
+  def handle_info({:space_roster, %{participants: participants}}, socket)
+      when socket.assigns.space.mode == "construct" do
     {:noreply, assign(socket, roster: participants)}
+  end
+
+  def handle_info({:space_roster, _changed}, %{assigns: %{space: %{} = space}} = socket) do
+    {:noreply, assign(socket, roster: VirtualSpace.roster(space.id))}
   end
 
   defp subscribe_to_roster(socket, space) do

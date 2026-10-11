@@ -2902,7 +2902,7 @@ msgstr "%{peer}失去了P2P连接——等待他们返回......"
 msgid "Arcade session ended."
 msgstr "场景结束"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:731
+#: lib/retro_hex_chat_web/live/app/space_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "频道空间"
@@ -2952,7 +2952,7 @@ msgstr "默认设备"
 msgid "End P2P Call Media"
 msgstr "结束 P2P 调用媒体"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:735
+#: lib/retro_hex_chat_web/live/app/space_live.ex:743
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "正在进入频道空间..."
@@ -2977,7 +2977,7 @@ msgstr "静音、 解密或启用您的 P2P 麦克风"
 msgid "Next P2P Layout"
 msgstr "下一个 P2P 版式"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:734
+#: lib/retro_hex_chat_web/live/app/space_live.ex:742
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "打开私人房间..."
@@ -3009,14 +3009,14 @@ msgstr "正在连接 P2P 会话"
 msgid "P2P session with %{peer} ended."
 msgstr "P2P会话的%{peer}结束."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:730
+#: lib/retro_hex_chat_web/live/app/space_live.ex:738
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "私人空间"
 
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:696
+#: lib/retro_hex_chat_web/live/app/space_live.ex:704
 #, elixir-autogen, elixir-format
 msgid "Space"
 msgstr "空间"
@@ -3773,30 +3773,30 @@ msgstr "此刻在里面"
 msgid "Nobody is in here yet."
 msgstr "这里还没有人。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:692
-#: lib/retro_hex_chat_web/live/app/space_live.ex:694
+#: lib/retro_hex_chat_web/live/app/space_live.ex:700
+#: lib/retro_hex_chat_web/live/app/space_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "Space · %{name}"
 msgstr "空间 · %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:579
-#: lib/retro_hex_chat_web/live/app/space_live.ex:594
-#: lib/retro_hex_chat_web/live/app/space_live.ex:613
+#: lib/retro_hex_chat_web/live/app/space_live.ex:587
+#: lib/retro_hex_chat_web/live/app/space_live.ex:602
+#: lib/retro_hex_chat_web/live/app/space_live.ex:621
 #, elixir-autogen, elixir-format
 msgid "That address does not name a space."
 msgstr "该地址不指向任何空间。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:625
+#: lib/retro_hex_chat_web/live/app/space_live.ex:633
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
 msgstr "这个私人空间属于另外两个人。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:574
+#: lib/retro_hex_chat_web/live/app/space_live.ex:582
 #, elixir-autogen, elixir-format
 msgid "This space is no longer available."
 msgstr "该空间已不可用。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:641
+#: lib/retro_hex_chat_web/live/app/space_live.ex:649
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "你需要先加入 %{channel} 才能进入它的空间。"
@@ -3831,7 +3831,7 @@ msgstr "%{game} · 对局"
 msgid "%{peer} is back."
 msgstr "%{peer} 回来了。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:646
+#: lib/retro_hex_chat_web/live/app/space_live.ex:654
 #, elixir-autogen, elixir-format
 msgid "This space belongs to a channel you are not in."
 msgstr "这个空间属于一个你未加入的频道。"
@@ -4276,13 +4276,13 @@ msgstr "说"
 msgid "Say something"
 msgstr "说话呀"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:721
-#: lib/retro_hex_chat_web/live/app/space_live.ex:727
+#: lib/retro_hex_chat_web/live/app/space_live.ex:729
+#: lib/retro_hex_chat_web/live/app/space_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Say something to %{name}..."
 msgstr "跟%{name}说点什么..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:722
+#: lib/retro_hex_chat_web/live/app/space_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Say something..."
 msgstr "说点什么..."
@@ -4308,11 +4308,11 @@ msgstr "建造"
 msgid "Chair"
 msgstr "椅子"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:688
-#: lib/retro_hex_chat_web/live/app/space_live.ex:729
+#: lib/retro_hex_chat_web/live/app/space_live.ex:696
+#: lib/retro_hex_chat_web/live/app/space_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Construct"
-msgstr "Construct"
+msgstr "构造空间"
 
 #: lib/retro_hex_chat_web/live/app/space_live.ex:294
 #, elixir-autogen, elixir-format
@@ -4330,10 +4330,10 @@ msgstr "守住通往大门的路"
 msgid "Lamp"
 msgstr "灯"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:733
+#: lib/retro_hex_chat_web/live/app/space_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Loading the Construct..."
-msgstr "正在装入 Construct..."
+msgstr "正在装入 构造空间..."
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:65
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:72
@@ -4412,5 +4412,5 @@ msgstr "现场已经有一块了"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:114
 #, elixir-autogen, elixir-format
-msgid "One piece at a time. Try again."
-msgstr "One piece at a time. Try again."
+msgid "Only one piece at a time, please wait."
+msgstr "一次只有一块,请等待。"

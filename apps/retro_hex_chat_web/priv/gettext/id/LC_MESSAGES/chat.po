@@ -2925,7 +2925,7 @@ msgstr "%{peer} kehilangan koneksi P2P - menunggu mereka kembali..."
 msgid "Arcade session ended."
 msgstr "Sesi arkade berakhir."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:731
+#: lib/retro_hex_chat_web/live/app/space_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "Ruang Saluran"
@@ -2975,7 +2975,7 @@ msgstr "Perangkat bawaan"
 msgid "End P2P Call Media"
 msgstr "Akhir Media Panggilan P2P"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:735
+#: lib/retro_hex_chat_web/live/app/space_live.ex:743
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "Memasuki ruang kanal..."
@@ -3001,7 +3001,7 @@ msgstr "Mute, unmute, or enable your P2P mikrofon"
 msgid "Next P2P Layout"
 msgstr "Tata Letak P2P Berikutnya"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:734
+#: lib/retro_hex_chat_web/live/app/space_live.ex:742
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "Membuka ruang pribadi..."
@@ -3033,14 +3033,14 @@ msgstr "Menghubungkan sesi P2P"
 msgid "P2P session with %{peer} ended."
 msgstr "Sesi P2P dengan %{peer} berakhir."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:730
+#: lib/retro_hex_chat_web/live/app/space_live.ex:738
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "Ruang Pribadi"
 
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:696
+#: lib/retro_hex_chat_web/live/app/space_live.ex:704
 #, elixir-autogen, elixir-format
 msgid "Space"
 msgstr "Ruang"
@@ -3799,30 +3799,30 @@ msgstr "Sedang di dalam"
 msgid "Nobody is in here yet."
 msgstr "Belum ada siapa-siapa di sini."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:692
-#: lib/retro_hex_chat_web/live/app/space_live.ex:694
+#: lib/retro_hex_chat_web/live/app/space_live.ex:700
+#: lib/retro_hex_chat_web/live/app/space_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "Space · %{name}"
 msgstr "Ruang · %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:579
-#: lib/retro_hex_chat_web/live/app/space_live.ex:594
-#: lib/retro_hex_chat_web/live/app/space_live.ex:613
+#: lib/retro_hex_chat_web/live/app/space_live.ex:587
+#: lib/retro_hex_chat_web/live/app/space_live.ex:602
+#: lib/retro_hex_chat_web/live/app/space_live.ex:621
 #, elixir-autogen, elixir-format
 msgid "That address does not name a space."
 msgstr "Alamat itu tidak menunjuk ke ruang mana pun."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:625
+#: lib/retro_hex_chat_web/live/app/space_live.ex:633
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
 msgstr "Ruang privat ini milik dua orang lain."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:574
+#: lib/retro_hex_chat_web/live/app/space_live.ex:582
 #, elixir-autogen, elixir-format
 msgid "This space is no longer available."
 msgstr "Ruang ini sudah tidak tersedia."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:641
+#: lib/retro_hex_chat_web/live/app/space_live.ex:649
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "Kamu harus berada di %{channel} untuk masuk ke ruangnya."
@@ -3857,7 +3857,7 @@ msgstr "%{game} · pertandingan"
 msgid "%{peer} is back."
 msgstr "%{peer} sudah kembali."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:646
+#: lib/retro_hex_chat_web/live/app/space_live.ex:654
 #, elixir-autogen, elixir-format
 msgid "This space belongs to a channel you are not in."
 msgstr "Ruang ini milik kanal yang tidak Anda ikuti."
@@ -4309,13 +4309,13 @@ msgstr "Ucapkan"
 msgid "Say something"
 msgstr "Katakan sesuatu"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:721
-#: lib/retro_hex_chat_web/live/app/space_live.ex:727
+#: lib/retro_hex_chat_web/live/app/space_live.ex:729
+#: lib/retro_hex_chat_web/live/app/space_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Say something to %{name}..."
 msgstr "Katakan sesuatu pada %{name}..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:722
+#: lib/retro_hex_chat_web/live/app/space_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Say something..."
 msgstr "Katakan sesuatu..."
@@ -4341,11 +4341,11 @@ msgstr "Bangun"
 msgid "Chair"
 msgstr "Kursi"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:688
-#: lib/retro_hex_chat_web/live/app/space_live.ex:729
+#: lib/retro_hex_chat_web/live/app/space_live.ex:696
+#: lib/retro_hex_chat_web/live/app/space_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Construct"
-msgstr "Construct"
+msgstr "Konstruk"
 
 #: lib/retro_hex_chat_web/live/app/space_live.ex:294
 #, elixir-autogen, elixir-format
@@ -4363,10 +4363,10 @@ msgstr "Jaga jalan ke gerbang aman."
 msgid "Lamp"
 msgstr "Lampu"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:733
+#: lib/retro_hex_chat_web/live/app/space_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Loading the Construct..."
-msgstr "Memuat Construct..."
+msgstr "Memuat Konstruk..."
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:65
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:72
@@ -4400,7 +4400,7 @@ msgstr "Bagian itu tidak bisa pergi ke sana."
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:112
 #, elixir-autogen, elixir-format
 msgid "The Construct is full."
-msgstr "Construct sudah penuh."
+msgstr "Konstruk sudah penuh."
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:31
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:22
@@ -4426,7 +4426,7 @@ msgstr "Meja"
 #: lib/retro_hex_chat_web/live/app/space_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "Go into the Construct?"
-msgstr "Pergi ke Construct?"
+msgstr "Pergi ke Konstruk?"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:107
 #, elixir-autogen, elixir-format
@@ -4445,5 +4445,5 @@ msgstr "Sudah ada bagian di tempat itu."
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:114
 #, elixir-autogen, elixir-format
-msgid "One piece at a time. Try again."
-msgstr "Satu per satu. Coba lagi."
+msgid "Only one piece at a time, please wait."
+msgstr "Hanya satu per satu, silakan tunggu."

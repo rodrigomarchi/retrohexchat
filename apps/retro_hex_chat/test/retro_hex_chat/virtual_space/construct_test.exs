@@ -277,6 +277,59 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
     end
   end
 
+  describe "a gathering through the gate" do
+    setup do
+      Application.put_env(:retro_hex_chat, :virtual_space_gathering_grace_ms, 150)
+
+      on_exit(fn ->
+        Application.put_env(:retro_hex_chat, :virtual_space_gathering_grace_ms, 0)
+      end)
+
+      :ok
+    end
+
+    defp stop_world(key) do
+      {:ok, pid} = Registry.lookup(key)
+      ref = Process.monitor(pid)
+      GenServer.stop(pid, :normal)
+      assert_receive {:DOWN, ^ref, :process, ^pid, _reason}
+      _drained = :sys.get_state(VirtualSpace.SessionRecorder)
+    end
+
+    test "goes on while anybody is in the Construct, and keeps one card through a hop back" do
+      ctx = channel_with(["alice"])
+
+      {:ok, opened} =
+        VirtualSpace.join_channel_space(ctx.channel, %{user_id: nil, nickname: "alice"})
+
+      token = opened.session.token
+
+      # Through the gate: the island empties, the Construct fills.
+      enter(ctx.construct_id, "alice")
+      _ = :sys.get_state(VirtualSpace.SessionRecorder)
+      stop_world({:channel_space, ctx.channel})
+      Process.sleep(250)
+      assert {:ok, %{status: "open"}} = VirtualSpace.get_session(token)
+      assert "alice" in VirtualSpace.roster(ctx.channel)
+
+      # And back: the island restarts inside the same gathering, with no card.
+      stop_construct(ctx.construct_id)
+
+      {:ok, back} =
+        VirtualSpace.join_channel_space(ctx.channel, %{user_id: nil, nickname: "alice"})
+
+      assert back.session == nil
+      assert VirtualSpace.open_session(ctx.channel).token == token
+
+      # Everybody gone, for longer than a hop: the gathering is over.
+      stop_world({:channel_space, ctx.channel})
+      Process.sleep(250)
+
+      assert {:ok, %{status: "closed", closed_reason: "emptied"}} =
+               VirtualSpace.get_session(token)
+    end
+  end
+
   describe "Store.save/4" do
     test "only ever moves a room forward in revision" do
       id = "construct:#store-#{System.unique_integer([:positive])}"

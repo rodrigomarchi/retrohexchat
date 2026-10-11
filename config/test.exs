@@ -97,3 +97,7 @@ config :retro_hex_chat,
 
 # Basic auth for LiveDashboard
 config :retro_hex_chat_web, :basic_auth, username: "admin", password: "test"
+
+# A gathering ends the moment its last world empties: the grace that waits out a
+# hop through a gate is a wait no test should pay for.
+config :retro_hex_chat, :virtual_space_gathering_grace_ms, 0
