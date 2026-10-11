@@ -22,10 +22,16 @@ import { ModalController } from "../../lib/space/modal.js";
 import { interactTarget } from "../../lib/space/interactions.js";
 import { seatTarget } from "../../lib/space/seating.js";
 import { createSpriteAtlas } from "../../lib/space/sprite_atlas.js";
-import { normalizeSpaceInit, CLIENT_EVENTS, SERVER_EVENTS } from "../../lib/space/protocol.js";
+import {
+  normalizeLayout,
+  normalizeSpaceInit,
+  CLIENT_EVENTS,
+  SERVER_EVENTS,
+} from "../../lib/space/protocol.js";
 import { canvasPointFromEvent } from "../../lib/space/canvas_point.js";
 import { createSpaceOverlays } from "../../lib/space/space_overlays.js";
 import { createCanvasResizer } from "../../lib/space/canvas_resizer.js";
+import { loadConstructController } from "../../lib/space/construct/construct_loader.js";
 import {
   cancelNickHoverTimer,
   isContextMenuOpen,
@@ -66,6 +72,7 @@ export function createSpaceCanvasHook(deps = {}) {
   const inputFactory = deps.inputFactory ?? defaultInputFactory;
   const padFactory = deps.padFactory ?? defaultPadFactory;
   const fullscreenFactory = deps.fullscreenFactory ?? defaultFullscreenFactory;
+  const constructFactory = deps.constructFactory ?? defaultConstructFactory;
 
   return {
     mounted() {
@@ -79,6 +86,8 @@ export function createSpaceCanvasHook(deps = {}) {
       this._hoveredNick = null;
       this._overlays = createSpaceOverlays(this.el, {
         board: (asset) => this._atlas?.board?.(asset),
+        confirm: () => this._modal?.confirm(),
+        cancel: () => this._modal?.close(),
       });
       this._overlays.setLoadingText(t("Connecting to space..."));
 
@@ -91,6 +100,7 @@ export function createSpaceCanvasHook(deps = {}) {
         onReady: () => {
           this._assetsReady = true;
           this._overlays?.setLoadingText(t("Drawing room..."));
+          this._construct?.ready();
         },
       });
       // The player's own class is the one sheet the room cannot open without, so
@@ -145,8 +155,36 @@ export function createSpaceCanvasHook(deps = {}) {
 
       this._attachPointerEvents();
 
-      this._modal = new ModalController({ onChange: (m) => this._overlays?.renderModal(m) });
+      // A gate's Yes is a navigation, and the LiveView owns where to: it reads
+      // the destination off the space it already resolved.
+      this._modal = new ModalController({
+        onChange: (m) => this._overlays?.renderModal(m),
+        onConfirm: () => this.pushEvent("space_portal", {}),
+      });
       this._modal.attach();
+
+      // Only a Construct carries a build palette, and only it builds; its
+      // build mode is fetched on the way in.
+      const palette = this.el.querySelector("[data-construct-palette]");
+      this._construct = null;
+      if (palette) {
+        Promise.resolve(
+          constructFactory({
+            canvas,
+            palette,
+            engine: () => this._engine,
+            atlas: this._atlas,
+            send: (payload, handlers) => this._sendBuild(payload, handlers),
+          }),
+        )
+          .then((construct) => {
+            if (!this._canvas) return;
+            this._construct = construct;
+            construct.attach();
+            if (this._assetsReady) construct.ready();
+          })
+          .catch((error) => log.error("[space] could not load the build mode", error));
+      }
 
       this._socket = socketFactory();
       this._socket.connect();
@@ -192,6 +230,8 @@ export function createSpaceCanvasHook(deps = {}) {
 
     destroyed() {
       this._detachPointerEvents();
+      this._construct?.detach();
+      this._construct = null;
       this._fullscreen?.detach();
       this._pad?.detach();
       this._input?.detach();
@@ -271,11 +311,30 @@ export function createSpaceCanvasHook(deps = {}) {
         this._overlays?.announceLine(payload);
       });
       channel.on(SERVER_EVENTS.MODAL, (payload) => this._modal?.open(payload));
+      // A layout that lands before the build mode has loaded still redraws.
+      channel.on(SERVER_EVENTS.LAYOUT, (payload) =>
+        this._construct
+          ? this._construct.applyLayout(payload)
+          : this._engine?.applyConstructLayout?.(normalizeLayout(payload)),
+      );
       channel.on(SERVER_EVENTS.ACTION, (payload) => {
         this._engine?.receiveAction?.(payload);
         const nickname = this._engine?.participants?.get(payload?.key)?.nickname;
         this._overlays?.announceAction({ kind: payload?.kind, nickname });
       });
+    },
+
+    // One Construct edit; the room redraws from the layout broadcast, so only a
+    // refusal (or no answer at all) is the builder's to hear about here.
+    _sendBuild(payload, { ok, error }) {
+      this._channel
+        ?.push(CLIENT_EVENTS.BUILD, payload)
+        .receive("ok", ok)
+        .receive("error", (reply) => error(reply?.reason ?? "default"))
+        .receive("timeout", () => {
+          log.warn("[space] construct edit timed out", payload);
+          error("default");
+        });
     },
 
     _attachPointerEvents() {
@@ -399,6 +458,10 @@ function defaultPadFactory(options) {
 
 function defaultFullscreenFactory(options) {
   return new FullscreenToggleController(options);
+}
+
+function defaultConstructFactory(options) {
+  return loadConstructController(options);
 }
 
 function csrfToken() {

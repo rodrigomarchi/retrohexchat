@@ -9,9 +9,11 @@ defmodule RetroHexChat.VirtualSpace.Map do
   arbitrary ids from clients never reach map code.
   """
 
+  alias RetroHexChat.VirtualSpace.Maps.Construct
   alias RetroHexChat.VirtualSpace.Maps.EndOfTime
 
   @maps %{
+    "construct" => Construct,
     "end_of_time" => EndOfTime
   }
 

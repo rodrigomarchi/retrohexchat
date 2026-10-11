@@ -670,3 +670,42 @@ describe("Renderer combat feedback effects", () => {
     expect(renderer._shakeAt).toBe(null);
   });
 });
+
+describe("Renderer in a Construct", () => {
+  function seatRenderer() {
+    const atlas = {
+      tile: () => null,
+      avatar: () => ({ canvas: {} }),
+      avatarMeta: () => ({ hasIdle: true, hasSleep: true }),
+      avatarFrameCount: () => 4,
+    };
+    return build({ atlas }).renderer;
+  }
+
+  it("seats a sitting avatar facing the way its chair does", () => {
+    const renderer = seatRenderer();
+    const facing = (dir) =>
+      renderer._avatarPose(
+        { key: `s-${dir}`, avatar: "knight", x: 3, y: 3, pose: "sitting", dir },
+        5000,
+      );
+
+    expect(facing("down")).toMatchObject({ actionKind: "sleep", dir: "south-west" });
+    expect(facing("right")).toMatchObject({ actionKind: "sleep", dir: "south-east" });
+  });
+
+  it("marks the ghost's tile and the picked piece on the floor", () => {
+    const { ctx, renderer } = build();
+    renderer.draw({
+      participants: new Map(),
+      selfKey: null,
+      construct: {
+        ghost: { x: 2, y: 2, tile: "cst_tree", valid: false },
+        selected: { x: 4, y: 4 },
+      },
+    });
+
+    expect(ctx.stroke).toHaveBeenCalled();
+    expect(ctx.closePath).toHaveBeenCalled();
+  });
+});

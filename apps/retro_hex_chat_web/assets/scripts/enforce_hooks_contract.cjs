@@ -23,6 +23,9 @@ const ALLOWED_DYNAMIC_IMPORT_FILES = new Set([
   // Tooltips and up-down arrows: chrome nobody needs for the first paint, kept
   // out of app.js so the critical bundle pays nothing for them.
   "js/lib/ui/retro_chrome_loader.js",
+  // The Construct's build mode: only a page standing in a Construct fetches it,
+  // so the Space chunk every End of Time visitor loads does not carry it.
+  "js/lib/space/construct/construct_loader.js",
 ]);
 
 const ALLOWED_LAZY_FACADE_FILES = new Set([

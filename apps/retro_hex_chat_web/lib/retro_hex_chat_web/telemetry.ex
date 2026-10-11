@@ -266,6 +266,11 @@ defmodule RetroHexChatWeb.Telemetry do
         description: dgettext("system", "Number of virtual space movement steps"),
         reporter_options: [nav: dgettext("system", "Domain")]
       ),
+      sum("retro_hex_chat.virtual_space.construct.edit.count",
+        tags: [:op, :result],
+        description: dgettext("system", "Number of Construct edits, by operation and result"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
       summary("retro_hex_chat.virtual_space.step.duration",
         tags: [:channel, :result, :reason],
         unit: {:native, :millisecond},

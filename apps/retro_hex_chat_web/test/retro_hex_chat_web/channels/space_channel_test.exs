@@ -516,6 +516,100 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
     end
   end
 
+  describe "a Construct" do
+    setup do
+      Application.put_env(:retro_hex_chat, :virtual_space_build_ms, 0)
+      on_exit(fn -> Application.delete_env(:retro_hex_chat, :virtual_space_build_ms) end)
+
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+      {:ok, _} = Server.join(channel, "alice")
+      {:ok, _} = Server.join(channel, "bob")
+      construct_id = "construct:" <> channel
+
+      on_exit(fn ->
+        case Registry.lookup({:construct_space, construct_id}) do
+          {:ok, pid} -> GenServer.stop(pid, :normal)
+          {:error, :not_found} -> :ok
+        end
+      end)
+
+      %{channel: channel, construct_id: construct_id}
+    end
+
+    defp join_construct(construct_id, nickname, token \\ nil) do
+      {:ok, socket} = connect(UserSocket, %{})
+      token = token || ChannelJoinToken.sign_construct(construct_id, nil, nickname, nil)
+      subscribe_and_join(socket, "space:" <> construct_id, %{"join_token" => token})
+    end
+
+    test "joins its own room, buildable, showing only who walked in", ctx do
+      assert {:ok, init, _socket} = join_construct(ctx.construct_id, "alice")
+
+      assert init.channel_name == ctx.construct_id
+      assert init.map.id == "construct"
+      assert init.config.buildable
+      assert init.map.catalog |> Map.keys() |> Enum.sort() == ~w(chair lamp table tree)
+      assert Map.keys(init.snapshot.participants) == ["nick:alice"]
+    end
+
+    test "a token for the space itself, or for another Construct, is refused", ctx do
+      space_token = ChannelJoinToken.sign(ctx.channel, nil, "alice")
+      other = ChannelJoinToken.sign_construct("construct:#elsewhere", nil, "alice", nil)
+
+      assert {:error, %{reason: "invalid_token"}} =
+               join_construct(ctx.construct_id, "alice", space_token)
+
+      assert {:error, %{reason: "invalid_token"}} =
+               join_construct(ctx.construct_id, "alice", other)
+    end
+
+    test "somebody outside the channel is refused", ctx do
+      assert {:error, %{reason: "not_in_channel"}} = join_construct(ctx.construct_id, "mallory")
+    end
+
+    test "an edit is answered, and redrawn for everyone from the layout broadcast", ctx do
+      {:ok, _init, socket} = join_construct(ctx.construct_id, "alice")
+
+      ref =
+        push(socket, "construct_build", %{"op" => "place", "kind" => "tree", "x" => 10, "y" => 10})
+
+      assert_reply ref, :ok, %{revision: 1}
+      assert_push "construct_layout", %{revision: 1, items: [%{kind: "tree", id: id}]}
+
+      ref =
+        push(socket, "construct_build", %{"op" => "place", "kind" => "lamp", "x" => 10, "y" => 10})
+
+      assert_reply ref, :error, %{reason: "occupied"}
+
+      ref = push(socket, "construct_build", %{"op" => "rotate", "item_id" => id})
+      assert_reply ref, :ok, %{revision: 2}
+
+      ref = push(socket, "construct_build", %{"op" => "move", "item_id" => id, "x" => "far"})
+      assert_reply ref, :error, %{reason: "invalid"}
+    end
+
+    test "the End of Time is not buildable over the channel", ctx do
+      {:ok, _init, socket} = join_channel_space(ctx.channel, "alice")
+
+      push(socket, "construct_build", %{"op" => "remove", "item_id" => "x"})
+      refute_reply_within(socket)
+    end
+
+    test "the last one out closes the room", ctx do
+      {:ok, _init, socket} = join_construct(ctx.construct_id, "alice")
+      Process.unlink(socket.channel_pid)
+      :ok = close(socket)
+
+      wait_until(fn ->
+        Registry.lookup({:construct_space, ctx.construct_id}) == {:error, :not_found}
+      end)
+    end
+  end
+
+  # A push to an event the socket does not answer gets no reply at all.
+  defp refute_reply_within(_socket), do: refute_receive(%Phoenix.Socket.Reply{}, 100)
+
   defp wait_until(fun, retries \\ 50) do
     cond do
       fun.() ->

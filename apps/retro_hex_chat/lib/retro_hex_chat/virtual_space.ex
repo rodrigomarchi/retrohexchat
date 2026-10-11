@@ -7,8 +7,13 @@ defmodule RetroHexChat.VirtualSpace do
   `RetroHexChat.VirtualSpace.*`.
   """
 
+  require Logger
+
   alias RetroHexChat.Observability
   alias RetroHexChat.VirtualSpace.ChannelSpaceServer
+  alias RetroHexChat.VirtualSpace.Construct
+  alias RetroHexChat.VirtualSpace.Construct.Layout
+  alias RetroHexChat.VirtualSpace.Construct.Store
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
   alias RetroHexChat.VirtualSpace.Schema.Session
@@ -83,6 +88,106 @@ defmodule RetroHexChat.VirtualSpace do
       end
     )
   end
+
+  @doc """
+  Walk into a space's Construct.
+
+  The room is started on the first arrival with whatever was built in it last
+  time. No gathering is recorded and no card is written: the Construct is a room
+  of the space, and the space's own gathering already stands for the visit.
+  `participants` are the pair of a private space, as its join token names them;
+  a channel's Construct reads its members from the channel.
+  """
+  @spec join_construct_space(
+          String.t(),
+          %{
+            :user_id => integer() | nil,
+            :nickname => String.t(),
+            optional(:avatar) => String.t() | nil
+          },
+          [String.t()] | nil
+        ) :: {:ok, join_result()} | {:error, atom()}
+  def join_construct_space(construct_id, actor, participants) do
+    Observability.span(
+      [:retro_hex_chat, :virtual_space, :join],
+      %{space_kind: "construct"},
+      fn -> join_construct(construct_id, actor, participants, 3) end
+    )
+  end
+
+  # The last one out stops the room, and its registry entry outlives it for a
+  # moment: somebody walking in through the gate in that moment finds a room
+  # that is already gone. Asking again finds it gone for good, and starts it.
+  defp join_construct(construct_id, actor, participants, attempts) do
+    with {:ok, _started} <- ensure_construct_process(construct_id, participants) do
+      construct_id
+      |> ChannelSpaceServer.join(%{
+        user_id: actor.user_id,
+        nickname: actor.nickname,
+        avatar: Map.get(actor, :avatar)
+      })
+      |> case do
+        {:error, :not_found} when attempts > 1 ->
+          Process.sleep(10)
+          join_construct(construct_id, actor, participants, attempts - 1)
+
+        joined ->
+          with_session(joined, nil)
+      end
+    end
+  end
+
+  @doc """
+  One edit to a Construct: place, move, remove or turn a piece.
+
+  The runtime decides; this stores what it decided, so the room is there the
+  next time anybody comes back. A failed write is logged and the edit stands —
+  the next one rewrites the whole room anyway.
+  """
+  @spec build_construct(String.t(), String.t(), String.t(), Layout.op()) ::
+          {:ok, non_neg_integer()} | {:error, ChannelSpaceServer.build_error()}
+  def build_construct(construct_id, participant_key, nickname, op) do
+    Observability.span(
+      [:retro_hex_chat, :virtual_space, :construct, :build],
+      %{space_kind: "construct", op: elem(op, 0)},
+      fn ->
+        case ChannelSpaceServer.build(construct_id, participant_key, op) do
+          {:ok, %{revision: revision, items: items}} ->
+            persist_construct(construct_id, items, revision, nickname)
+            {:ok, revision}
+
+          {:error, reason} ->
+            {:error, reason}
+        end
+      end
+    )
+  end
+
+  defp persist_construct(construct_id, items, revision, nickname) do
+    case Store.save(construct_id, items, revision, nickname) do
+      :ok ->
+        :ok
+
+      {:error, changeset} ->
+        Logger.error(
+          "Construct layout not stored: construct_id=#{construct_id} " <>
+            "revision=#{revision} errors=#{inspect(changeset.errors)}"
+        )
+    end
+  end
+
+  @spec leave_construct_space_viewer(String.t(), String.t()) :: :ok
+  defdelegate leave_construct_space_viewer(construct_id, participant_key),
+    to: ChannelSpaceServer,
+    as: :leave_construct_viewer
+
+  @doc "The Construct behind a space's gate."
+  @spec construct_id(String.t()) :: String.t()
+  defdelegate construct_id(parent_id), to: Construct, as: :space_id
+
+  @doc "The space a Construct belongs to."
+  @spec construct_parent(String.t()) :: {:ok, String.t()} | :error
+  defdelegate construct_parent(construct_id), to: Construct, as: :parent_id
 
   # A gathering begins when somebody walks into an empty world, which is the
   # same moment the world itself begins. Exactly one caller sees the process
@@ -228,6 +333,7 @@ defmodule RetroHexChat.VirtualSpace do
     case space_kind(space_id) do
       :direct_message -> nicknames(direct_message_snapshot(space_id))
       :channel -> nicknames(snapshot(space_id))
+      :construct -> nicknames(snapshot(space_id))
     end
   end
 
@@ -239,7 +345,8 @@ defmodule RetroHexChat.VirtualSpace do
   the id is what lets an address resolve to a space without a lookup, and it is
   written once here so the prefix is not spelled out at each caller.
   """
-  @spec space_kind(String.t()) :: :channel | :direct_message
+  @spec space_kind(String.t()) :: :channel | :direct_message | :construct
+  def space_kind("construct:" <> _rest), do: :construct
   def space_kind("dm:" <> _rest), do: :direct_message
   def space_kind(_space_id), do: :channel
 
@@ -316,6 +423,35 @@ defmodule RetroHexChat.VirtualSpace do
       {:ok, participants}
     else
       _ -> {:error, :invalid_participants}
+    end
+  end
+
+  defp ensure_construct_process(construct_id, participants) do
+    with {:ok, parent} <- construct_parent_spec(construct_id, participants) do
+      case RetroHexChat.VirtualSpace.Registry.lookup({:construct_space, construct_id}) do
+        {:ok, _pid} ->
+          {:ok, :running}
+
+        {:error, :not_found} ->
+          construct_id
+          |> Supervisor.start_construct_child(parent, Store.load(construct_id))
+          |> started()
+      end
+    end
+  end
+
+  defp construct_parent_spec(construct_id, participants) do
+    case Construct.parent_id(construct_id) do
+      {:ok, "dm:" <> _pair = parent_id} ->
+        with {:ok, participants} <- validate_direct_message_space(parent_id, participants) do
+          {:ok, {:direct_message, parent_id, participants}}
+        end
+
+      {:ok, channel_name} ->
+        {:ok, {:channel, channel_name}}
+
+      :error ->
+        {:error, :not_found}
     end
   end
 

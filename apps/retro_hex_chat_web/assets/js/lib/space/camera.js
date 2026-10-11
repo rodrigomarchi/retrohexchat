@@ -39,6 +39,11 @@ export class Camera {
     this.y = clamp(py - this.viewportHeight / 2, this.worldHeight - this.viewportHeight);
   }
 
+  /** @returns {{x:number,y:number}} world coordinate of a screen-space point. */
+  screenToWorld(screenX, screenY) {
+    return { x: screenX + this.x, y: screenY + this.y };
+  }
+
   /** @returns {{x:number,y:number}} screen-space coordinate of a world point. */
   worldToScreen(worldX, worldY) {
     return { x: worldX - this.x, y: worldY - this.y };

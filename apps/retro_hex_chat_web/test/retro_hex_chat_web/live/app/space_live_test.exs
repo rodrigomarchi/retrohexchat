@@ -498,6 +498,113 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
     end
   end
 
+  describe "the gate to the Construct" do
+    setup %{conn: conn} do
+      nickname = "Gate#{uid()}" |> String.slice(0, 16)
+      channel = start_channel(nickname)
+      stop_space(channel)
+      %{nickname: nickname, channel: channel, conn: chat_conn(conn, nickname)}
+    end
+
+    test "walking through it carries the character to the Construct's own address", %{
+      conn: conn,
+      channel: channel
+    } do
+      {:ok, view, _html} = live(conn, path(channel))
+      view |> element(~s([data-testid="space-avatar-knight"])) |> render_click()
+
+      assert {:error, {:live_redirect, %{to: to}}} = render_hook(view, "space_portal", %{})
+      assert to == path(VirtualSpace.construct_id(channel)) <> "?avatar=knight"
+    end
+
+    test "is not a door before a character is chosen", %{conn: conn, channel: channel} do
+      {:ok, view, _html} = live(conn, path(channel))
+
+      render_hook(view, "space_portal", %{})
+      assert has_element?(view, ~s([data-testid="space-character-select"]))
+    end
+
+    test "the Construct opens straight inside with the character from the address", %{
+      conn: conn,
+      channel: channel,
+      nickname: nickname
+    } do
+      construct_id = VirtualSpace.construct_id(channel)
+
+      {:ok, view, html} = live(conn, path(construct_id) <> "?avatar=monk")
+
+      assert html =~ ~s(data-space-mode="construct")
+      assert html =~ ~s(data-avatar="monk")
+      assert html =~ ~s(data-testid="construct-palette")
+      assert html =~ "Construct · #{channel}"
+      refute html =~ ~s(data-testid="space-character-select")
+
+      token = :sys.get_state(view.pid).socket.assigns.join_token
+      assert {:ok, data} = ChannelJoinToken.verify(token)
+      assert data.space_kind == "construct"
+      assert data.space_id == construct_id
+      assert data.nickname == nickname
+
+      assert {:error, {:live_redirect, %{to: to}}} = render_hook(view, "space_portal", %{})
+      assert to == path(channel) <> "?avatar=monk"
+    end
+
+    test "an address without a character, or with one this build lacks, is the picker", %{
+      conn: conn,
+      channel: channel
+    } do
+      construct_id = VirtualSpace.construct_id(channel)
+
+      for suffix <- ["", "?avatar=dragon_lord"] do
+        {:ok, _view, html} = live(conn, path(construct_id) <> suffix)
+        assert html =~ ~s(data-testid="space-character-select")
+        refute html =~ ~s(data-testid="share-bar")
+      end
+    end
+
+    test "the End of Time has no build palette", %{conn: conn, channel: channel} do
+      {:ok, _view, html} = live(conn, path(channel) <> "?avatar=hero")
+
+      assert html =~ ~s(data-testid="channel-space-shell")
+      refute html =~ ~s(data-testid="construct-palette")
+    end
+
+    test "the Construct keeps the door its space keeps", %{conn: conn, channel: channel} do
+      outsider = "Out#{uid()}" |> String.slice(0, 16)
+
+      {:ok, _view, html} =
+        conn
+        |> chat_conn(outsider)
+        |> live(path(VirtualSpace.construct_id(channel)) <> "?avatar=hero")
+
+      assert html =~ ~s(data-testid="space-denied")
+      refute html =~ ~s(data-testid="channel-space-shell")
+    end
+
+    test "a private space's Construct opens for its two and mints their pair", %{conn: _conn} do
+      [me, peer] = ["Cm#{uid()}", "Cp#{uid()}"] |> Enum.map(&String.slice(&1, 0, 16))
+      construct_id = VirtualSpace.construct_id(DirectMessageSpace.space_id(me, peer))
+
+      {:ok, view, html} =
+        build_conn() |> chat_conn(me) |> live(path(construct_id) <> "?avatar=hero")
+
+      assert html =~ ~s(data-space-mode="construct")
+      token = :sys.get_state(view.pid).socket.assigns.join_token
+
+      assert {:ok, %{space_kind: "construct", participants: pair}} =
+               ChannelJoinToken.verify(token)
+
+      assert Enum.sort(pair) == Enum.sort(Enum.map([me, peer], &String.downcase/1))
+
+      {:ok, _view, html} =
+        build_conn()
+        |> chat_conn("Third#{uid()}" |> String.slice(0, 16))
+        |> live(path(construct_id) <> "?avatar=hero")
+
+      assert html =~ ~s(data-testid="space-denied")
+    end
+  end
+
   defp register_nick(prefix) do
     nickname = "#{prefix}#{uid()}" |> String.slice(0, 16)
 

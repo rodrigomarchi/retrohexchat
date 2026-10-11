@@ -153,6 +153,47 @@ describe("SpaceEngine", () => {
     expect(engine.participant("registered:2").dir).toBe("right");
   });
 
+  it("shows the player their own sitting down and getting up", () => {
+    const { engine } = buildEngine();
+    engine.start(tavernInit());
+
+    engine.applyDelta({
+      seqAck: { "registered:1": 0 },
+      updates: {
+        "registered:1": { x: 6, y: 5, dir: "right", pose: "sitting", seat_id: "seat:c1" },
+      },
+    });
+    expect(engine.self()).toMatchObject({ x: 6, pose: "sitting", seatId: "seat:c1" });
+
+    engine.applyDelta({
+      seqAck: { "registered:1": 0 },
+      updates: { "registered:1": { x: 6, y: 5, dir: "right", pose: "standing", seat_id: null } },
+    });
+    expect(engine.self()).toMatchObject({ pose: "standing", seatId: null });
+  });
+
+  it("redraws a Construct from a layout patch", () => {
+    const { engine, renderer, scheduler } = buildEngine();
+    engine.start(tavernInit());
+
+    expect(
+      engine.applyConstructLayout({
+        revision: 1,
+        items: [],
+        decor: [],
+        collision: [{ x: 3, y: 3 }],
+      }),
+    ).toBe(true);
+    expect(engine.map.isBlocked(3, 3)).toBe(true);
+
+    engine.setConstructOverlay({ ghost: { x: 1, y: 1 }, selected: null });
+    scheduler.flush();
+    expect(renderer.draw.mock.calls.at(-1)[0].construct).toEqual({
+      ghost: { x: 1, y: 1 },
+      selected: null,
+    });
+  });
+
   it("applies a delta: joins and leaves", () => {
     const { engine } = buildEngine();
     engine.start(tavernInit());

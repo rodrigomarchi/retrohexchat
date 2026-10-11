@@ -98,6 +98,8 @@ export class SpaceEngine {
     this._chat = new ChatState();
     // Ephemeral visual-only actions such as sword swings.
     this._actions = new Map();
+    // What a Construct's build mode draws over the room: a ghost and a pick.
+    this._constructOverlay = null;
     this._clock = () => (typeof performance !== "undefined" ? performance.now() : Date.now());
 
     this.running = false;
@@ -391,6 +393,20 @@ export class SpaceEngine {
     return null;
   }
 
+  /**
+   * Redraw a Construct from a normalized `construct_layout` patch. The map
+   * holds the room, so this is the map's to apply; it says whether it did.
+   * @returns {boolean}
+   */
+  applyConstructLayout(patch) {
+    return this.map?.applyPatch?.(patch) === true;
+  }
+
+  /** @param {{ghost: object|null, selected: object|null}|null} overlay */
+  setConstructOverlay(overlay) {
+    this._constructOverlay = overlay;
+  }
+
   /** @returns {number} live participant count. */
   participantCount() {
     return this.participants.size;
@@ -451,6 +467,11 @@ export class SpaceEngine {
       // A self delta can also carry an avatar swap (the player picked a
       // character); keep it rather than dropping every non-position field.
       avatar: serverPos.avatar ?? self.avatar,
+      // Sitting down and being knocked out arrive the same way, and the
+      // player's own screen has to show them too.
+      pose: serverPos.pose ?? self.pose,
+      hp: serverPos.hp ?? self.hp,
+      seatId: serverPos.seat_id !== undefined ? serverPos.seat_id : self.seatId,
     });
 
     // A rejected move lands the self avatar on a different tile than predicted;
@@ -560,7 +581,13 @@ export class SpaceEngine {
       const bubble = this._chat.bubble(key, now);
       if (bubble) bubbles.set(key, bubble.text);
     }
-    this.renderer?.draw?.({ participants: rendered, selfKey: this.selfKey, bubbles, now });
+    this.renderer?.draw?.({
+      participants: rendered,
+      selfKey: this.selfKey,
+      bubbles,
+      now,
+      construct: this._constructOverlay,
+    });
     this._onFrameRendered?.();
   }
 

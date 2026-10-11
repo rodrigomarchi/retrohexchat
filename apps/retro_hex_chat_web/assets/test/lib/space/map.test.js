@@ -102,3 +102,54 @@ describe("SpaceMap.from", () => {
     expect(map.floorTile(1, 1)).toBe(null);
   });
 });
+
+describe("SpaceMap as a Construct", () => {
+  const construct = () =>
+    SpaceMap.from({
+      width: 10,
+      height: 10,
+      backdrop: "eef0f4",
+      reserved: [{ x: 1, y: 1 }],
+      catalog: { tree: { tiles: { down: "cst_tree", right: "cst_tree_r" } } },
+      max_items: 150,
+      revision: 2,
+      items: [{ id: "a", kind: "tree", x: 4, y: 4, dir: "right" }],
+      collision: [{ x: 4, y: 4, w: 1, h: 1, kind: "item" }],
+      layers: { floor: [], decor: [{ x: 4, y: 4, tile: "cst_tree_r", sort: "stand" }], above: [] },
+    });
+
+  it("knows its building rules and what is placed", () => {
+    const map = construct();
+    expect(map.buildable()).toBe(true);
+    expect(map.backdrop).toBe("eef0f4");
+    expect(map.isReserved(1, 1)).toBe(true);
+    expect(map.isReserved(2, 2)).toBe(false);
+    expect(map.itemAt(4, 4).id).toBe("a");
+    expect(map.item("a").dir).toBe("right");
+    expect(map.kindTile("tree", "right")).toBe("cst_tree_r");
+    expect(map.kindTile("tree", "sideways")).toBe("cst_tree");
+    expect(SpaceMap.from({}).buildable()).toBe(false);
+  });
+
+  it("applies a newer layout patch and drops one it already has", () => {
+    const map = construct();
+    const patch = {
+      revision: 3,
+      items: [{ id: "b", kind: "tree", x: 6, y: 6, dir: "down" }],
+      decor: [{ x: 6, y: 6, tile: "cst_tree", sort: "stand" }],
+      collision: [{ x: 6, y: 6, w: 1, h: 1, kind: "item" }],
+      seats: [{ id: "seat:b", x: 6, y: 6, dir: "down" }],
+      lights: [],
+    };
+
+    expect(map.applyPatch(patch)).toBe(true);
+    expect(map.isBlocked(4, 4)).toBe(false);
+    expect(map.isBlocked(6, 6)).toBe(true);
+    expect(map.decor).toEqual(patch.decor);
+    expect(map.seat("seat:b")).not.toBe(null);
+
+    expect(map.applyPatch({ ...patch, revision: 3, items: [] })).toBe(false);
+    expect(map.applyPatch({ ...patch, revision: 1, items: [] })).toBe(false);
+    expect(map.items).toHaveLength(1);
+  });
+});

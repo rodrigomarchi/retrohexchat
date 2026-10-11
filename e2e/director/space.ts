@@ -73,17 +73,20 @@ type Ground = { width: number; height: number; blocked: Set<string> };
 
 const tileKey = (x: number, y: number) => `${x},${y}`;
 
-let groundCache: Ground | null = null;
+const groundCache = new Map<string, Ground>();
 
 /**
  * The map's walkable tiles, read from the same file the server loads: void
- * between the islands and the props standing on them block a step.
+ * between the islands and the props standing on them block a step. A
+ * Construct's base room is read the same way; what was built in it is not in
+ * the file, so a route there goes around nothing but the gate.
  */
-function ground(): Ground {
-  if (groundCache) return groundCache;
+function ground(mapId = "end_of_time"): Ground {
+  const cached = groundCache.get(mapId);
+  if (cached) return cached;
   const file = path.resolve(
     __dirname,
-    "../../apps/retro_hex_chat/priv/maps/end_of_time.json",
+    `../../apps/retro_hex_chat/priv/maps/${mapId}.json`,
   );
   const map = JSON.parse(readFileSync(file, "utf8")) as {
     width: number;
@@ -95,8 +98,9 @@ function ground(): Ground {
     for (let y = r.y; y < r.y + r.h; y++)
       for (let x = r.x; x < r.x + r.w; x++) blocked.add(tileKey(x, y));
   }
-  groundCache = { width: map.width, height: map.height, blocked };
-  return groundCache;
+  const built = { width: map.width, height: map.height, blocked };
+  groundCache.set(mapId, built);
+  return built;
 }
 
 const STEPS: [string, number, number][] = [
@@ -163,8 +167,12 @@ class Heap<T> {
  * fewest turns, so a walk reads as a person heading somewhere rather than a
  * staircase — and each straight stretch can be one held key.
  */
-function route(from: Spot, to: { x: number; y: number }): string[] {
-  const { width, height, blocked } = ground();
+function route(
+  from: Spot,
+  to: { x: number; y: number },
+  mapId?: string,
+): string[] {
+  const { width, height, blocked } = ground(mapId);
   const TURN = 1;
   const STEP = 100;
   type State = { x: number; y: number; d: number; cost: number };
@@ -222,6 +230,8 @@ function route(from: Spot, to: { x: number; y: number }): string[] {
 export class Walker {
   private spots = new Map<string, Spot>();
   private selfKey: string | null = null;
+  // The map the last join landed on: a gate can take this page to another.
+  private mapId = "end_of_time";
 
   /**
    * `onCamera`: this page is the one being filmed, in front. A tab behind it
@@ -264,6 +274,8 @@ export class Walker {
     if (typeof topic !== "string" || !topic.startsWith("space:")) return;
     if (event === "phx_reply" && payload?.response?.snapshot) {
       this.selfKey = payload.response.self_key;
+      this.mapId = payload.response.map?.id ?? this.mapId;
+      this.spots.clear();
       this.take(payload.response.snapshot.participants);
     } else if (event === "space_snapshot") {
       this.spots.clear();
@@ -315,7 +327,7 @@ export class Walker {
     for (let attempt = 0; attempt < 4; attempt++) {
       const from = await this.here();
       if (from.x === target.x && from.y === target.y) return;
-      const keys = route(from, target);
+      const keys = route(from, target, this.mapId);
       if (attempt === 0 && this.onCamera) {
         for (const [key, steps] of stretches(keys)) {
           await this.page.keyboard.down(key);
@@ -352,7 +364,7 @@ export class Walker {
   async nextTo(nickname: string, pace = 180) {
     const other = this.where(nickname);
     if (!other) throw new Error(`${nickname} is not in this space`);
-    const { blocked } = ground();
+    const { blocked } = ground(this.mapId);
     const me = await this.here();
     const sides = STEPS.map(([, dx, dy]) => ({
       x: other.x + dx,

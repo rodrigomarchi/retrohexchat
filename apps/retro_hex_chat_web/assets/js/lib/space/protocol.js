@@ -18,6 +18,9 @@ export const CLIENT_EVENTS = Object.freeze({
   // the first snapshot already wears it. This event changes class without
   // rejoining: Change character, inside a running space, sends it.
   SELECT_AVATAR: "space_select_avatar",
+  // One edit to a Construct: `{op: "place"|"move"|"remove"|"rotate", ...}`.
+  // Answered with `{revision}` or `{reason}`.
+  BUILD: "construct_build",
 });
 
 /** Server → client event names (channel events). */
@@ -27,6 +30,8 @@ export const SERVER_EVENTS = Object.freeze({
   MESSAGE: "space_message",
   MODAL: "space_modal",
   ACTION: "space_action",
+  // A Construct's whole layout after an edit, for everyone inside.
+  LAYOUT: "construct_layout",
 });
 
 const DIRECTIONS = new Set(["up", "down", "left", "right"]);
@@ -118,6 +123,24 @@ export function normalizeAction(raw = {}) {
     kind: ACTIONS.has(raw.kind) ? raw.kind : "sword",
     dir: DIRECTIONS.has(raw.dir) ? raw.dir : "down",
     damage: toInt(raw.damage, 0),
+  };
+}
+
+/**
+ * Normalize a `construct_layout` patch. Lists default to empty and the
+ * revision to 0, which no applied patch can be older than.
+ * @param {object} raw
+ * @returns {{revision:number, items:object[], decor:object[], collision:object[], seats:object[], lights:object[]}}
+ */
+export function normalizeLayout(raw = {}) {
+  const list = (value) => (Array.isArray(value) ? value : []);
+  return {
+    revision: toInt(raw.revision, 0),
+    items: list(raw.items),
+    decor: list(raw.decor),
+    collision: list(raw.collision),
+    seats: list(raw.seats),
+    lights: list(raw.lights),
   };
 }
 

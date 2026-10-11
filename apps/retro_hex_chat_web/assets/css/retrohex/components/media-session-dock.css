@@ -252,3 +252,37 @@
 .space-pad-button--attack[data-pressed] {
   background: rgba(204, 0, 0, 0.9);
 }
+
+/* The Construct's build palette floats over the scene like the pad: one key
+   per placeable kind (its sprite drawn into a small canvas), plus turn and
+   remove. The armed kind, or the tool that applies to the picked piece, is
+   sunk (`data-selected="true"`, set by the palette controller). */
+.space-build-tool {
+  display: flex;
+  min-width: 3.25rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 4px;
+  color: #ffffff;
+  font-size: 10px;
+  line-height: 1.1;
+}
+
+.space-build-tool[data-selected="true"] {
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow:
+    inset 1px 1px rgba(0, 0, 0, 0.9),
+    inset -1px -1px rgba(255, 255, 255, 0.4);
+}
+
+.space-build-tool:disabled {
+  opacity: 0.4;
+}
+
+.space-build-thumb {
+  image-rendering: pixelated;
+}

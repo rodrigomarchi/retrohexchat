@@ -3989,6 +3989,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           ),
         see_also: [
           "feature-space-talk",
+          "feature-space-construct",
           "feature-choose-character",
           "feature-space-combat",
           "feature-space-tab",
@@ -4042,6 +4043,30 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Type in the line along the bottom of a Space and press Enter or Say: the line is said in the conversation the space belongs to — the channel, or the private chat with the other person — and pops up as a bubble over your character for everyone in the space. Lines typed in the chat pop up the same way. Enter anywhere in the space puts the cursor in the line; Esc gives the keyboard back to the map, so the arrow keys walk again. /me works there too; every other command is typed in the chat."
           ),
         see_also: ["feature-virtual-spaces", "feature-space-combat"]
+      },
+      %{
+        id: "feature-space-construct",
+        title: dgettext("help", "The Construct"),
+        category: dgettext("help", "Virtual Spaces"),
+        keywords: [
+          "construct",
+          "build",
+          "portal",
+          "gate",
+          "chair",
+          "table",
+          "tree",
+          "lamp",
+          dgettext("help", "build"),
+          dgettext("help", "furniture")
+        ],
+        icon: :icon_community,
+        description:
+          dgettext(
+            "help",
+            "Every space has a Construct: an empty white room behind the green gate on the End of Time's north island, that the people of the channel, or the two of a private conversation, decorate together. Press E beside the gate and answer Yes to go in with your character; the white gate inside brings you back. Pick a chair, table, tree or lamp on the palette and click the floor to place it; drag a piece to move it, right-click it or pick it and press Delete to remove it, and R turns it. Everyone inside sees each change as it happens, a chair can be sat in with F, and the room stays as you left it for the next visit. The gate's ground and the spawn points stay clear, and a piece that would leave somebody with no way back to the gate is refused."
+          ),
+        see_also: ["feature-virtual-spaces", "feature-space-talk", "keyboard-shortcuts"]
       },
       %{
         id: "feature-space-combat",

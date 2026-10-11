@@ -18,6 +18,22 @@
 </p>
 <.help_h4 icon={:icon_p2p}>{dgettext("help_ui", "P2P Session Console")}</.help_h4>
 <pre>{dgettext("help_ui", "When the P2P Session Console is focused: Ctrl+Shift+ArrowUp — Toggle microphone Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next layout Ctrl+Shift+ArrowDown — Cycle self-view Ctrl+Shift+. — Toggle screen share Ctrl+Shift+Q — End call media")}</pre>
+<.help_h4 icon={:icon_community}>{dgettext("help_ui", "Virtual Space")}</.help_h4>
+<pre>{Enum.map_join(
+  [
+    {"Arrow keys / WASD", dgettext("help_ui", "Walk around")},
+    {"Space", dgettext("help_ui", "Swing your sword")},
+    {"E", dgettext("help_ui", "Use what you are facing")},
+    {"Enter, Y / Esc, N", dgettext("help_ui", "Answer a gate's question")},
+    {"F", dgettext("help_ui", "Sit on a chair, or get up")},
+    {"Enter", dgettext("help_ui", "Start typing what you want to say")},
+    {"R", dgettext("help_ui", "In the Construct, turn the piece")},
+    {"Delete / Backspace", dgettext("help_ui", "In the Construct, remove the selected piece")},
+    {"Esc", dgettext("help_ui", "In the Construct, put the piece away")}
+  ],
+  "\n",
+  fn {keys, action} -> keys <> " — " <> action end
+)}</pre>
 <.help_h4 icon={:icon_copy}>{dgettext("help_ui", "Clipboard")}</.help_h4>
 <pre>{dgettext("help_ui", "Ctrl+C — Copy selected text")}</pre>
 <.help_h4 icon={:icon_notepad}>{dgettext("help_ui", "Text Formatting")}</.help_h4>

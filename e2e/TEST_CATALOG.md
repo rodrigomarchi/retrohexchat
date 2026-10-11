@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **244 spec files** under `e2e/tests/`.
-- **585 Playwright `test()` cases**.
-- **533 documented flows**, 532 done, 1 not done.
+- **245 spec files** under `e2e/tests/`.
+- **588 Playwright `test()` cases**.
+- **536 documented flows**, 535 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -760,6 +760,9 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP14 | Change character swaps the character inside a running space, for everyone, without leaving it | `tests/space-talk.spec.ts` | done |
 | SP15 | Four sword hits knock a character out for everyone in the space, and a few seconds later they get back up on their own | `tests/space-gathering.spec.ts` | done |
 | SP16 | A space's card in the channel shows the gathering live, counts the people in it, and becomes its record once everybody has left | `tests/space-gathering.spec.ts` | done |
+| SP17 | E at the End of Time's gate asks before going: No stays on the island, Yes opens the channel's Construct with the same character, and its white gate leads back | `tests/space-construct.spec.ts` | done |
+| SP18 | A piece placed from the Construct's palette is seen by everyone inside, can be dragged elsewhere and removed with a right-click, and the room is still built the next time it opens | `tests/space-construct.spec.ts` | done |
+| SP19 | A chair placed in the Construct can be sat in with F | `tests/space-construct.spec.ts` | done |
 
 ### LC - Localization
 

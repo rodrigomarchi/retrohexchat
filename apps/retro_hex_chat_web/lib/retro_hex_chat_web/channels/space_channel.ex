@@ -1,7 +1,7 @@
 defmodule RetroHexChatWeb.SpaceChannel do
   @moduledoc """
-  Realtime channel for conversation-backed virtual spaces (`space:#channel` or
-  `space:dm:<key>`).
+  Realtime channel for conversation-backed virtual spaces (`space:#channel`,
+  `space:dm:<key>`, or either one's Construct, `space:construct:<space>`).
 
   Join is authorized by the signed `channel_join_token` issued by the LiveView
   shell. Channel spaces validate channel presence before joining. The reply is
@@ -62,6 +62,31 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
       announce(result, space_id, "direct_message", data, data.participants)
       {:ok, space_init(space_id, result), socket}
+    else
+      {:error, reason} ->
+        {:error, %{reason: join_error(reason)}}
+    end
+  end
+
+  def join("space:construct:" <> parent_tail, params, socket) do
+    construct_id = "construct:" <> parent_tail
+
+    with {:ok, data} <- verify_construct_join_token(params, construct_id),
+         {:ok, result} <-
+           VirtualSpace.join_construct_space(
+             construct_id,
+             build_channel_actor(data, params),
+             data.participants
+           ) do
+      socket =
+        socket
+        |> assign(:space_kind, :construct)
+        |> assign(:space_id, construct_id)
+        |> assign(:participant_key, result.participant.key)
+        |> assign(:user_id, data.user_id)
+        |> assign(:nickname, data.nickname)
+
+      {:ok, space_init(construct_id, result), socket}
     else
       {:error, reason} ->
         {:error, %{reason: join_error(reason)}}
@@ -129,6 +154,24 @@ defmodule RetroHexChatWeb.SpaceChannel do
     {:noreply, socket}
   end
 
+  # Building answers the client: a refused edit has a reason the builder is
+  # shown, and an accepted one is redrawn from the layout broadcast that every
+  # client in the room receives alike.
+  def handle_in("construct_build", payload, %{assigns: %{space_kind: :construct}} = socket) do
+    %{space_id: space_id, participant_key: key, nickname: nickname} = socket.assigns
+
+    case parse_build(payload) do
+      {:ok, op} ->
+        case VirtualSpace.build_construct(space_id, key, nickname, op) do
+          {:ok, revision} -> {:reply, {:ok, %{revision: revision}}, socket}
+          {:error, reason} -> {:reply, {:error, %{reason: Atom.to_string(reason)}}, socket}
+        end
+
+      :error ->
+        {:reply, {:error, %{reason: "invalid"}}, socket}
+    end
+  end
+
   def handle_in(_event, _payload, socket) do
     {:noreply, socket}
   end
@@ -159,6 +202,9 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
       %{space_kind: :direct_message, space_id: space_id, participant_key: participant_key} ->
         VirtualSpace.leave_direct_message_space_viewer(space_id, participant_key)
+
+      %{space_kind: :construct, space_id: space_id, participant_key: participant_key} ->
+        VirtualSpace.leave_construct_space_viewer(space_id, participant_key)
 
       _ ->
         :ok
@@ -208,6 +254,35 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   defp verify_direct_message_join_token(_params, _space_id), do: {:error, :invalid_token}
 
+  # A Construct admits whoever its space admits. A private space's carries the
+  # pair, checked the same way the private space's own token is; a channel's
+  # is checked against the channel when the runtime seats the joiner.
+  defp verify_construct_join_token(%{"join_token" => join_token}, construct_id) do
+    with {:ok, %{space_kind: "construct", space_id: ^construct_id} = data} <-
+           ChannelJoinToken.verify(join_token),
+         {:ok, parent_id} <- VirtualSpace.construct_parent(construct_id),
+         {:ok, participants} <- construct_participants(parent_id, data) do
+      {:ok, Map.put(data, :participants, participants)}
+    else
+      _ -> {:error, :invalid_token}
+    end
+  end
+
+  defp verify_construct_join_token(_params, _construct_id), do: {:error, :invalid_token}
+
+  defp construct_participants("dm:" <> _pair = parent_id, data) do
+    with {:ok, [nick_a, nick_b] = participants} <-
+           DirectMessageSpace.normalize_participants(Map.get(data, :participants)),
+         true <- DirectMessageSpace.member?(participants, data.nickname),
+         ^parent_id <- DirectMessageSpace.space_id(nick_a, nick_b) do
+      {:ok, participants}
+    else
+      _ -> :error
+    end
+  end
+
+  defp construct_participants(_channel_name, _data), do: {:ok, nil}
+
   # Only the closed step payload is accepted; anything else is dropped so the
   # channel never forwards malformed client input to the domain.
   defp parse_input(%{"seq" => seq, "dx" => dx, "dy" => dy})
@@ -239,6 +314,22 @@ defmodule RetroHexChatWeb.SpaceChannel do
     do: {:ok, avatar}
 
   defp parse_select_avatar(_), do: :error
+
+  defp parse_build(%{"op" => "place", "kind" => kind, "x" => x, "y" => y} = payload)
+       when is_binary(kind) and is_integer(x) and is_integer(y),
+       do: {:ok, {:place, kind, x, y, Map.get(payload, "dir")}}
+
+  defp parse_build(%{"op" => "move", "item_id" => id, "x" => x, "y" => y})
+       when is_binary(id) and is_integer(x) and is_integer(y),
+       do: {:ok, {:move, id, x, y}}
+
+  defp parse_build(%{"op" => "remove", "item_id" => id}) when is_binary(id),
+    do: {:ok, {:remove, id}}
+
+  defp parse_build(%{"op" => "rotate", "item_id" => id}) when is_binary(id),
+    do: {:ok, {:rotate, id}}
+
+  defp parse_build(_payload), do: :error
 
   # The viewer picked their class on the entry screen; naming it at join means
   # the snapshot already wears it, so the client downloads one class sheet
@@ -273,7 +364,9 @@ defmodule RetroHexChatWeb.SpaceChannel do
         avatar_scale: 1,
         # Movement cooldown; the client paces held-key repeat steps to this.
         step_ms: VirtualSpace.step_ms(),
-        text_chat: "global"
+        text_chat: "global",
+        # The Construct is the one world its visitors can build in.
+        buildable: VirtualSpace.space_kind(channel_name) == :construct
       },
       snapshot: result.snapshot
     }
@@ -290,25 +383,27 @@ defmodule RetroHexChatWeb.SpaceChannel do
     "access_denied"
   end
 
-  defp dispatch_input(:channel, space_id, key, payload),
+  defp dispatch_input(kind, space_id, key, payload) when kind in [:channel, :construct],
     do: VirtualSpace.input(space_id, key, payload)
 
   defp dispatch_input(:direct_message, space_id, key, payload),
     do: VirtualSpace.input_direct_message(space_id, key, payload)
 
-  defp dispatch_interact(:channel, space_id, key, payload),
+  defp dispatch_interact(kind, space_id, key, payload) when kind in [:channel, :construct],
     do: VirtualSpace.interact(space_id, key, payload)
 
   defp dispatch_interact(:direct_message, space_id, key, payload),
     do: VirtualSpace.interact_direct_message(space_id, key, payload)
 
-  defp dispatch_action(:channel, space_id, key, payload),
+  defp dispatch_action(kind, space_id, key, payload) when kind in [:channel, :construct],
     do: VirtualSpace.action(space_id, key, payload)
 
   defp dispatch_action(:direct_message, space_id, key, payload),
     do: VirtualSpace.action_direct_message(space_id, key, payload)
 
-  defp dispatch_select_avatar(:channel, space_id, key, avatar),
+  # A Construct is reached through the same calls as a channel space: the
+  # runtime picks the process by the shape of the id.
+  defp dispatch_select_avatar(kind, space_id, key, avatar) when kind in [:channel, :construct],
     do: VirtualSpace.select_avatar(space_id, key, avatar)
 
   defp dispatch_select_avatar(:direct_message, space_id, key, avatar),

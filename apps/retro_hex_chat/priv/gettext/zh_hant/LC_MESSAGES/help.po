@@ -4026,12 +4026,13 @@ msgstr "用戶查詢"
 #: lib/retro_hex_chat/chat/help_topics.ex:90
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3973
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3974
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4002
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4028
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4049
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4073
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4094
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4114
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4003
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4029
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4050
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4074
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4098
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4119
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4139
 #, elixir-autogen, elixir-format
 msgid "Virtual Spaces"
 msgstr "虛擬空間"
@@ -4178,7 +4179,7 @@ msgstr "歡迎信"
 msgid "Channel Conference"
 msgstr "頻道會議"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4001
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4002
 #, elixir-autogen, elixir-format
 msgid "Choosing a Character"
 msgstr "選擇字符"
@@ -4200,7 +4201,7 @@ msgstr ""
 msgid "The game library opens as a draggable, maximizable window right on the chat desktop — no separate page. Launching a game opens it in a new browser window so it gets full keyboard focus."
 msgstr "遊戲庫在聊天桌面上作爲可拖動,可最大化的窗口打開——沒有單獨的頁面. 推出遊戲在新瀏覽器窗口中打開,從而獲得全鍵盤焦點."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4015
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4016
 #, elixir-autogen, elixir-format
 msgid "pick character"
 msgstr "選擇字符"
@@ -4290,7 +4291,7 @@ msgstr "向 +w 用戶發送 wallops 或向連接的每個人發佈公告 。"
 msgid "Set, replace or clear the server's message of the day."
 msgstr "設定、 替換或清除服務器當天的消息 。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4048
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4073
 #, elixir-autogen, elixir-format
 msgid "Space Combat"
 msgstr "太空戰鬥"
@@ -4310,7 +4311,7 @@ msgstr "頻道清理"
 msgid "chanserv admin"
 msgstr "機械服務管理員"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4060
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4085
 #, elixir-autogen, elixir-format
 msgid "health bar"
 msgstr "衛生欄"
@@ -4325,7 +4326,7 @@ msgstr "暱稱服務管理員"
 msgid "server name"
 msgstr "服務器名稱"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4059
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4084
 #, elixir-autogen, elixir-format
 msgid "sword fight"
 msgstr "擊劍"
@@ -4759,17 +4760,17 @@ msgstr "在獨立分頁中的會議"
 msgid "Sharing a Conference Link"
 msgstr "分享會議連結"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4072
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4097
 #, elixir-autogen, elixir-format
 msgid "A Space in Its Own Tab"
 msgstr "在獨立分頁中開啟空間"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4113
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4138
 #, elixir-autogen, elixir-format
 msgid "Inviting Someone to a Space"
 msgstr "邀請別人來空間"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4081
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4106
 #, elixir-autogen, elixir-format
 msgid "open in a tab"
 msgstr "在新分頁中開啟"
@@ -4870,19 +4871,19 @@ msgstr ""
 " —— "
 "在別處開啟它會把它帶走，失去它的視窗會這樣說，並提供「帶回這裡」；這正是聊天為什麼給你一條通往已有分頁的路，而不是再開一個。關閉分頁並不會結束工作階段；只有會先詢問的「結束工作階段」才是最終操作。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4105
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4130
 #, elixir-autogen, elixir-format
 msgid "Walking into an empty space posts a card in the conversation it belongs to, so everybody reading can see that something is happening and follow it in. The card counts who is inside while it lasts, and once the last person leaves it becomes the record of what happened: how long the gathering ran, and how many people came. Walking into a space somebody is already in posts nothing — one gathering, one card. Only a registered nickname posts one; a guest still walks in as usual."
 msgstr ""
 "走進一個空空間會在它所屬的對話裡發布一張卡片，讓每一個在讀的人都看到那裡正在發生什麼，並且可以跟進去。在聚會持續期間，卡片會數著誰在裡面；最後一個人離開後，它就成了這件事的紀錄：聚會持續了多久，來過多少不同的人。走進已經有人的空間不會發布任何東西"
 " —— 一次聚會，一張卡片。只有註冊過的暱稱會發布；訪客照樣可以正常走進去。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4093
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4118
 #, elixir-autogen, elixir-format
 msgid "Who Is in the Space Right Now"
 msgstr "現在誰在空間裡"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4101
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4126
 #, elixir-autogen, elixir-format
 msgid "someone is in the space"
 msgstr "有人在空間裡"
@@ -4920,7 +4921,7 @@ msgid "Revoke, beside the address in the Share link window, stops the link worki
 msgstr ""
 "「分享連結」視窗裡位址旁邊的「撤銷」會讓連結停止運作。房間本身不受影響：已經在裡面的人繼續在裡面，能透過其他方式進入的人依然可以。消失的只是位址。再次分享同一個房間會給你一個新位址，所以貼錯地方的連結是可以補救的，而不是永久的。分享為每個房間提供一個位址，而不是每次點擊都新建一個——這正是撤銷能成為完整答案、而不是關掉其中之一的原因。你自己的連結由你撤銷，頻道管理員也可以撤銷通往自己頻道的連結。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4125
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4150
 #, elixir-autogen, elixir-format
 msgid "Share, on the character picker, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
 msgstr ""
@@ -5438,7 +5439,7 @@ msgstr ""
 "圖示。一旦你已經在某處開啟了工作階段，聊天的狀態列會這樣說，並把你帶回那個分頁，而不是再開一個。另見：P2P 起始房間、獨立分頁中的 P2P "
 "工作階段、視訊通話、檔案傳輸、私訊。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4085
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4110
 #, elixir-autogen, elixir-format
 msgid "A space always runs in a browser tab of its own. Space, beside the conversation's tabs, puts the space's card in the conversation rather than opening it; Join on that card is the door, for you and for everybody reading. Pressing it again does not make a second space or a second address — it writes that one card again at the bottom, so you never have to go looking for it. Press it twice in a row and you get one card, because the second press has nothing to bring down. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back."
 msgstr ""
@@ -5644,32 +5645,52 @@ msgstr "如果分頁與伺服器斷線，頂部狀態會顯示「正在重新連
 msgid "A multiplayer 8-bit virtual space built into every channel and every private conversation. Space, beside the tabs, opens it in a browser tab of its own — the conversation stays where it is, and the map gets a whole window instead of competing with the chat for the browser. Move with the Arrow keys, WASD or the on-screen pad in the bottom-right corner — tap for a single step or hold to walk continuously; Space or the pad's sword button swings your weapon. The line along the bottom is where you talk: what you type there is said in the conversation and pops up over your character. The translucent button in the top-right corner switches to fullscreen and back. Back to Chat, along the bottom edge, returns to the conversation."
 msgstr "每個頻道和每個私人對話中都包含一個多人8位虛擬空間. 在標籤旁的空間,用自己的瀏覽器標籤打開它——對話停留在原處,地圖得到一個完整的窗口,而不是與瀏覽器的聊天競爭. 與箭頭鍵、WASD或右下角的屏幕墊一起移動——按住一個步驟或按住連續走動; 空間或墊的劍扣 揮動你的武器。 沿着底部的臺詞是您說話的地方:您在對話中輸入的字句會浮出水面。 右上角的半透明按鈕切換爲全屏和回屏. 回到查特,沿着底層邊緣,回到對話."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4064
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4089
 #, elixir-autogen, elixir-format
 msgid "Characters in a Space can spar with each other: press Space (or the pad's sword button) next to another standing character to land a hit. Each hit deals damage and shows a small health bar under their name; at zero HP the character is knocked down for a few seconds, then gets back up on their own with full health. A knockout never has any lasting effect — it is all in good fun."
 msgstr "空格中的字符可以相互切換:按空格(或墊的劍按鈕)在另一個站立字符旁邊,以降落一個命中. 每一次命中都會造成破壞,並用他們的名字顯示一個小健康酒吧;在0HP時,角色被打倒幾秒鐘,然後自己恢復健康。 擊倒決決決決不會產生任何持久的效果——這一切都是很好玩的。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4027
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4028
 #, elixir-autogen, elixir-format
 msgid "Talking in a Space"
 msgstr "在空間中說話"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4040
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4041
 #, elixir-autogen, elixir-format
 msgid "Type in the line along the bottom of a Space and press Enter or Say: the line is said in the conversation the space belongs to — the channel, or the private chat with the other person — and pops up as a bubble over your character for everyone in the space. Lines typed in the chat pop up the same way. Enter anywhere in the space puts the cursor in the line; Esc gives the keyboard back to the map, so the arrow keys walk again. /me works there too; every other command is typed in the chat."
 msgstr "沿着一個空間底部的線條鍵入,按 Enter 或 Say 鍵:該線條在對話中表示該空間屬於——頻道,或與他人的私人聊天——並且爲空間中的每一個人彈出一個泡泡來代替你的角色. 聊天中輸入的線條彈出的方式相同. 在空間的任意位置輸入將光標放入行中;Esc將鍵盤放回地圖,因此箭頭鍵再次行走. /me也在那裏工作;所有其他命令都在聊天中輸入."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4019
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4020
 #, elixir-autogen, elixir-format
 msgid "When you enter a Space, a character picker appears first: choose from the classic Hero or one of seven classes — Sorceress, Knight, Archer, Barbarian, Rogue, Cleric or Monk. Each shows an animated preview and has its own walking and attack animations; click one to enter the map wearing it, and everyone in the space sees your choice. It also says who is inside right now, before you commit to walking in. The picker shows again each time you enter, starting on the character your registered nickname chose — or, without one, the one this browser picked last time. Change character, in the status bar, brings the picker back over the map without leaving it."
 msgstr "進入太空時,首先會出現一個挑角色者:從經典的英雄或七個班級中選擇一個——巫師,騎士,阿徹,野蠻人,羅格,教士或僧侶. 每個都顯示一個動畫預覽,並擁有自己的行走和攻擊動畫;點擊一鍵輸入所戴的地圖,空間中的每個人都看到你的選擇. 上面還寫着現在誰在裏面 在你承諾走進來之前 拾取器在每次您輸入時都會再次顯示,從您所選擇的註冊暱稱的字符開始——或者說,如果沒有一個,這個瀏覽器上次選擇的那個字符. 改變字符,在狀態欄中,將拾取者帶回地圖上而不留下."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4035
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4036
 #, elixir-autogen, elixir-format
 msgid "speech bubble"
 msgstr "語音泡泡"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4036
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4037
 #, elixir-autogen, elixir-format
 msgid "talk in space"
 msgstr "空間交談"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4049
+#, elixir-autogen, elixir-format
+msgid "The Construct"
+msgstr "Construct號"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4060
+#, elixir-autogen, elixir-format
+msgid "build"
+msgstr "構建"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4061
+#, elixir-autogen, elixir-format
+msgid "furniture"
+msgstr "傢俱"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4065
+#, elixir-autogen, elixir-format
+msgid "Every space has a Construct: an empty white room behind the green gate on the End of Time's north island, that the people of the channel, or the two of a private conversation, decorate together. Press E beside the gate and answer Yes to go in with your character; the white gate inside brings you back. Pick a chair, table, tree or lamp on the palette and click the floor to place it; drag a piece to move it, right-click it or pick it and press Delete to remove it, and R turns it. Everyone inside sees each change as it happens, a chair can be sat in with F, and the room stays as you left it for the next visit. The gate's ground and the spawn points stay clear, and a piece that would leave somebody with no way back to the gate is refused."
+msgstr "每個空間都有Construct:在時空盡頭的北島綠門後面一個空的白色房間,即頻道的人,或私談的兩人,一起裝飾. 按E在大門旁邊,回答是的,用你的性格進去;裏面的白色大門帶你回來. 在調色板上選擇一張椅子,桌子,樹或燈,並點擊地板放置;拖動一塊來移動,右鍵單擊或選擇,按\"刪除\"刪除,R轉動. 裏面的每個人都看到每個變化,隨着它發生,一個椅子可以和F坐在一起,而房間會留在你離開的時候,以便下次訪問. 大門的地面和產卵點 保持清晰, 和一塊會留下一個人 無法返回大門。"

@@ -4035,12 +4035,13 @@ msgstr "ユーザー検索"
 #: lib/retro_hex_chat/chat/help_topics.ex:90
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3973
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3974
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4002
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4028
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4049
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4073
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4094
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4114
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4003
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4029
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4050
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4074
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4098
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4119
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4139
 #, elixir-autogen, elixir-format
 msgid "Virtual Spaces"
 msgstr "バーチャルスペース"
@@ -4187,7 +4188,7 @@ msgstr "歓迎メッセージ"
 msgid "Channel Conference"
 msgstr "チャンネル会議"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4001
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4002
 #, elixir-autogen, elixir-format
 msgid "Choosing a Character"
 msgstr "キャラクターを選ぶ"
@@ -4212,7 +4213,7 @@ msgstr ""
 "ゲームライブラリは、チャットデスクトップ上でドラッグ可能な最大ウィンドウとして開きます。別のページはありません。 "
 "ゲームを起動すると、新しいブラウザウィンドウで開きますので、フルキーボードのフォーカスを取得します。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4015
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4016
 #, elixir-autogen, elixir-format
 msgid "pick character"
 msgstr "キャラクターを選ぶ"
@@ -4302,7 +4303,7 @@ msgstr "+wユーザーまたは接続されたすべての人に通知するwall
 msgid "Set, replace or clear the server's message of the day."
 msgstr "サーバのメッセージを設定、置き換え、または消去します。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4048
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4073
 #, elixir-autogen, elixir-format
 msgid "Space Combat"
 msgstr "スペースコンバット"
@@ -4322,7 +4323,7 @@ msgstr "チャンネルパージ"
 msgid "chanserv admin"
 msgstr "チャンザーの管理"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4060
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4085
 #, elixir-autogen, elixir-format
 msgid "health bar"
 msgstr "ヘルスバー"
@@ -4337,7 +4338,7 @@ msgstr "nickserv管理者"
 msgid "server name"
 msgstr "サーバー名"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4059
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4084
 #, elixir-autogen, elixir-format
 msgid "sword fight"
 msgstr "剣の戦い"
@@ -4785,17 +4786,17 @@ msgstr "専用タブでの会議"
 msgid "Sharing a Conference Link"
 msgstr "会議リンクの共有"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4072
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4097
 #, elixir-autogen, elixir-format
 msgid "A Space in Its Own Tab"
 msgstr "スペースを専用タブで開く"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4113
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4138
 #, elixir-autogen, elixir-format
 msgid "Inviting Someone to a Space"
 msgstr "スペースに誰かを招く"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4081
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4106
 #, elixir-autogen, elixir-format
 msgid "open in a tab"
 msgstr "タブで開く"
@@ -4898,18 +4899,18 @@ msgstr ""
 " 1 つのウィンドウでしか生きられません。別の場所で開くとそちらへ移り、失ったウィンドウはそう伝えて「ここへ戻す」を出します。だからこそチャットは、2 "
 "つ目を開くのではなく、すでにあるタブへの道を示します。タブを閉じてもセッションは終わりません。終わらせるのは、先に確認する「セッションを終了」だけです。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4105
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4130
 #, elixir-autogen, elixir-format
 msgid "Walking into an empty space posts a card in the conversation it belongs to, so everybody reading can see that something is happening and follow it in. The card counts who is inside while it lasts, and once the last person leaves it becomes the record of what happened: how long the gathering ran, and how many people came. Walking into a space somebody is already in posts nothing — one gathering, one card. Only a registered nickname posts one; a guest still walks in as usual."
 msgstr ""
 "空のスペースに入ると、そのスペースが属する会話にカードが投稿されます。読んでいる全員が何かが起きていることに気づき、あとから入ってこられるようにするためです。続いている間、カードは中にいる人数を数えます。最後の一人が去ると、何があったかの記録になります。集まりがどれだけ続き、何人が来たか。すでに誰かがいるスペースに入っても何も投稿されません。集まり一つにカード一つです。投稿するのは登録済みのニックネームだけで、ゲストもこれまでどおり普通に入れます。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4093
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4118
 #, elixir-autogen, elixir-format
 msgid "Who Is in the Space Right Now"
 msgstr "いま誰がスペースにいるか"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4101
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4126
 #, elixir-autogen, elixir-format
 msgid "someone is in the space"
 msgstr "スペースに誰かがいる"
@@ -4949,7 +4950,7 @@ msgid "Revoke, beside the address in the Share link window, stops the link worki
 msgstr ""
 "「共有リンク」ウィンドウのアドレスの隣にある「失効」は、リンクを止めます。ルーム自体はそのままです。すでに中にいる人はそのまま残り、別の経路で入れる人も引き続き入れます。消えるのはアドレスだけです。同じルームをもう一度共有すると新しいアドレスが発行されるので、貼る場所を間違えたリンクは取り返しがつきます。共有は押すたびに新しいアドレスを作るのではなく、ルームごとに一つを返します。だからこそ失効が「いくつかのうち一つを閉じる」ではなく完全な答えになります。自分のリンクは自分で失効させられ、チャンネルのオペレーターも自分のチャンネルに通じるリンクを失効させられます。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4125
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4150
 #, elixir-autogen, elixir-format
 msgid "Share, on the character picker, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
 msgstr ""
@@ -5467,7 +5468,7 @@ msgstr ""
 "アイコンが表示されます。どこかでセッションを開いていると、チャットのステータスバーがそれを伝え、2 つ目を開くのではなくそのタブへ戻します。関連項目: "
 "P2P 開始ルーム、専用タブの P2P セッション、ビデオ通話、ファイル転送、プライベートメッセージ。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4085
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4110
 #, elixir-autogen, elixir-format
 msgid "A space always runs in a browser tab of its own. Space, beside the conversation's tabs, puts the space's card in the conversation rather than opening it; Join on that card is the door, for you and for everybody reading. Pressing it again does not make a second space or a second address — it writes that one card again at the bottom, so you never have to go looking for it. Press it twice in a row and you get one card, because the second press has nothing to bring down. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back."
 msgstr ""
@@ -5680,32 +5681,52 @@ msgstr "タブがサーバーとの接続を失うと、上部の状態が「サ
 msgid "A multiplayer 8-bit virtual space built into every channel and every private conversation. Space, beside the tabs, opens it in a browser tab of its own — the conversation stays where it is, and the map gets a whole window instead of competing with the chat for the browser. Move with the Arrow keys, WASD or the on-screen pad in the bottom-right corner — tap for a single step or hold to walk continuously; Space or the pad's sword button swings your weapon. The line along the bottom is where you talk: what you type there is said in the conversation and pops up over your character. The translucent button in the top-right corner switches to fullscreen and back. Back to Chat, along the bottom edge, returns to the conversation."
 msgstr "すべてのチャネルとすべてのプライベートな会話に組み込まれたマルチプレイヤー8ビット仮想空間。 スペース, タブの横にある, 自分のブラウザタブで開きます — 会話は、それがどこにあるかにとどまります, そしてマップは、ブラウザのチャットと競合するのではなく、全体のウィンドウを取得します. 右下隅にある矢印キー、WASD、または画面上のパッドで移動します。単一のステップをタップするか、連続して歩くように保持します。 スペースまたはパッドの剣ボタンは、武器をスイングします。 一番下の線は、あなたが話しているところです。会話中に何かをタイプし、あなたのキャラクターの上にポップアップ表示されます。 右上の角のスイッチの半透明ボタンをフルスクリーンとバックにします。 チャットに戻り、下端に沿って、会話に戻ります。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4064
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4089
 #, elixir-autogen, elixir-format
 msgid "Characters in a Space can spar with each other: press Space (or the pad's sword button) next to another standing character to land a hit. Each hit deals damage and shows a small health bar under their name; at zero HP the character is knocked down for a few seconds, then gets back up on their own with full health. A knockout never has any lasting effect — it is all in good fun."
 msgstr "スペース内のキャラクターは、それぞれとスペアリングできます。別のスタンディングキャラの横にあるスペース(またはパッドの剣ボタン)を押します。 各ヒットはダメージを与え、名前の下に小さな健康バーが表示されます。 ゼロHPでは、文字が数秒間ノックダウンされ、完全な健康で自分の上に戻ってきます。 ノックアウトは、永続的な効果を決して持っていません。それは良い楽しみです。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4027
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4028
 #, elixir-autogen, elixir-format
 msgid "Talking in a Space"
 msgstr "空間で話す"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4040
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4041
 #, elixir-autogen, elixir-format
 msgid "Type in the line along the bottom of a Space and press Enter or Say: the line is said in the conversation the space belongs to — the channel, or the private chat with the other person — and pops up as a bubble over your character for everyone in the space. Lines typed in the chat pop up the same way. Enter anywhere in the space puts the cursor in the line; Esc gives the keyboard back to the map, so the arrow keys walk again. /me works there too; every other command is typed in the chat."
 msgstr "スペースの下部に沿ってラインを入力し、 Enter または Say を押します: ラインは、スペースが属する会話で言われています — チャネル、または他の人とプライベートチャット — スペース内のすべての人のためのあなたの文字の上に泡としてポップアップ. チャットで入力された行は同じようにポップアップします。 スペースにカーソルを置きます。Escはキーボードをマップに戻すので、矢印キーが再び歩きます。 /me も機能します。他のコマンドはチャットで入力されます。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4019
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4020
 #, elixir-autogen, elixir-format
 msgid "When you enter a Space, a character picker appears first: choose from the classic Hero or one of seven classes — Sorceress, Knight, Archer, Barbarian, Rogue, Cleric or Monk. Each shows an animated preview and has its own walking and attack animations; click one to enter the map wearing it, and everyone in the space sees your choice. It also says who is inside right now, before you commit to walking in. The picker shows again each time you enter, starting on the character your registered nickname chose — or, without one, the one this browser picked last time. Change character, in the status bar, brings the picker back over the map without leaving it."
 msgstr "スペースに入ると、キャラクターピッカーが最初に現れます:古典的なヒーローまたは7つのクラスのいずれかから選択します。 ソルサース、ナイト、アーチャー、バーリアン、ローグ、クライスまたはモンク。 それぞれがアニメーションプレビューを表示し、独自のウォーキングと攻撃アニメーションを持っています。 クリックしてマップを着用し、スペース内の誰もがあなたの選択を見ることができます。 歩いて行く前に、今は誰が中にあるか、と言う。 ピッカーは、登録されたニックネームが選択した文字から始まる、または、このブラウザが最後に選択した文字をそれぞれ表示します。 ステータスバーに文字を変更し、残さずに地図を後ろにピッカーを乗せます。"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4035
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4036
 #, elixir-autogen, elixir-format
 msgid "speech bubble"
 msgstr "スピーチバブル"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4036
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4037
 #, elixir-autogen, elixir-format
 msgid "talk in space"
 msgstr "空間でのトーク"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4049
+#, elixir-autogen, elixir-format
+msgid "The Construct"
+msgstr "Constructの特長"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4060
+#, elixir-autogen, elixir-format
+msgid "build"
+msgstr "ビルド"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4061
+#, elixir-autogen, elixir-format
+msgid "furniture"
+msgstr "家具"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4065
+#, elixir-autogen, elixir-format
+msgid "Every space has a Construct: an empty white room behind the green gate on the End of Time's north island, that the people of the channel, or the two of a private conversation, decorate together. Press E beside the gate and answer Yes to go in with your character; the white gate inside brings you back. Pick a chair, table, tree or lamp on the palette and click the floor to place it; drag a piece to move it, right-click it or pick it and press Delete to remove it, and R turns it. Everyone inside sees each change as it happens, a chair can be sat in with F, and the room stays as you left it for the next visit. The gate's ground and the spawn points stay clear, and a piece that would leave somebody with no way back to the gate is refused."
+msgstr "毎の空間は、時間北島端の緑の門の背後にあるConstruct:空の白い部屋、チャンネルの人々、またはプライベートな会話の2つ、一緒に飾る。 ゲートの横にあるEを押して、あなたのキャラクターで行くためにはいに答えます。内側の白いゲートはあなたに戻ってきます。 パレットの椅子、テーブル、ツリー、またはランプを選択し、フロアをクリックして配置します。 ピースをドラッグして移動し、右クリックするか、それを選択して削除を押して削除し、Rターンします。 それぞれの変化が起きる中で、椅子はFに座ることができ、次の訪問のために残っているように部屋は滞在します。 ゲートの地面とスプーンポイントはクリアにとどまり、ゲートに戻る方法のない片は拒否されます。"

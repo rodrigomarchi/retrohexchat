@@ -7,14 +7,15 @@
  * frame after asset load hides the panel it stays hidden, so a late status
  * update cannot flash it back. Knows nothing about the channel, the engine or
  * LiveView; the board is drawn through the injected `board` port so the atlas
- * stays the hook's to own.
+ * stays the hook's to own, and a confirm's buttons answer through the
+ * `confirm`/`cancel` ports.
  */
 
 /**
  * @param {HTMLElement} el - the space shell element
- * @param {{board?: (asset: string) => {canvas?: HTMLCanvasElement}|null|undefined}} [ports]
+ * @param {{board?: (asset: string) => {canvas?: HTMLCanvasElement}|null|undefined, confirm?: () => void, cancel?: () => void}} [ports]
  */
-export function createSpaceOverlays(el, { board } = {}) {
+export function createSpaceOverlays(el, { board, confirm, cancel } = {}) {
   let loadingHidden = false;
 
   return {
@@ -68,6 +69,12 @@ export function createSpaceOverlays(el, { board } = {}) {
       }
 
       host.hidden = false;
+      if (modal.kind === "confirm") {
+        host.replaceChildren(...confirmContent(el, host, modal, { confirm, cancel }));
+        host.querySelector("[data-space-modal-yes]")?.focus();
+        return;
+      }
+
       const title = document.createElement("div");
       title.className = "font-bold";
       title.textContent = modal.title ?? "";
@@ -76,4 +83,22 @@ export function createSpaceOverlays(el, { board } = {}) {
       if (drawn?.canvas) host.appendChild(drawn.canvas);
     },
   };
+}
+
+// A gate's question and its two answers, cloned from the server-rendered
+// template so the buttons are the app's own. The sentence is the server's too,
+// keyed by the confirm's action on the modal host (`data-confirm-<action>`); a
+// gate with no sentence for its action falls back to its own title.
+function confirmContent(el, host, modal, { confirm, cancel }) {
+  const template = el.querySelector("template[data-space-confirm-template]");
+  if (!template) return [];
+  const content = template.content.cloneNode(true);
+
+  const question = content.querySelector("[data-space-modal-question]");
+  if (question) {
+    question.textContent = host.getAttribute(`data-confirm-${modal.action}`) ?? modal.title ?? "";
+  }
+  content.querySelector("[data-space-modal-yes]")?.addEventListener("click", () => confirm?.());
+  content.querySelector("[data-space-modal-no]")?.addEventListener("click", () => cancel?.());
+  return [...content.childNodes];
 }

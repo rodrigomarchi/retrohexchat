@@ -16,7 +16,7 @@ msgstr ""
 msgid "Joining and Moving"
 msgstr "Dołączanie i Poruszanie się"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Lifecycle"
 msgstr "Cykl Życia"
@@ -146,7 +146,7 @@ msgstr "Przestrzeń wirtualna to mapa należąca do rozmowy: ma ją każdy kana�
 msgid "The map is drawn continuously, and inside the chat it shared the browser with everything the chat was doing. In a tab of its own it does not, which is the difference you feel when several people are walking around at once."
 msgstr "Mapa jest rysowana bez przerwy, a wewnątrz rozmowy dzieliła przeglądarkę ze wszystkim, co rozmowa robiła. We własnej karcie nie dzieli — i to jest różnica, którą czuć, gdy kilka osób chodzi naraz."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "The world itself is runtime state: it wakes when the first person walks in and stops when the last one leaves. What outlives it is the card that walking into an empty one posts in the conversation, which becomes the record of how long the gathering ran and how many people came. The address is a place and never expires."
 msgstr "Sam świat jest stanem czasu wykonania: budzi się, gdy wejdzie pierwsza osoba, i zatrzymuje, gdy wyjdzie ostatnia. Przeżywa go karta, którą wejście do pustej przestrzeni publikuje w rozmowie i która staje się zapisem tego, jak długo trwało spotkanie i ile osób przyszło. Adres jest miejscem i nigdy nie wygasa."
@@ -246,7 +246,7 @@ msgstr "/me works there too. Every other command is typed in the chat, where its
 msgid "A Space has a line along its bottom edge for talking. What you type there is said in the conversation the space belongs to, and pops up as a speech bubble over your character for everyone standing in the space."
 msgstr "Przestrzeń ma linię wzdłuż dolnej krawędzi do mówienia. To, co tam piszesz, jest powiedziane w rozmowie, do której należy przestrzeń, i pojawia się jako bańka mowy nad swoją postacią dla wszystkich stojących w przestrzeni."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "A channel's space has room for everybody in the channel: members who have not opened it stand in it too, wearing the Hero, and count among the people inside. In a private space only the people who walked in are there."
 msgstr "A channel's space has room for everybody in the channel: members who have not opened it stand in it too, wearing the Hero, and count among the people inside. In a private space only the people who walked in are there."
@@ -316,7 +316,63 @@ msgstr "Kiedy otwierasz przestrzeń, przed załadowaniem mapy pojawia się zbier
 msgid "While the cursor is in the line, the arrow keys and WASD type instead of walking. Enter anywhere in the space puts the cursor in the line; Esc gives the keyboard back to the map."
 msgstr "Podczas gdy kursor jest w linii, klawisze strzałek i typ WASD zamiast chodzenia. Wpisz gdziekolwiek w przestrzeni umieszcza kursor w linii; ESC oddaje klawiaturę z powrotem do mapy."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Who is there"
 msgstr "Kto tam jest?"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Going in and out"
+msgstr "Wchodzisz i wychodzisz."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "The Construct"
+msgstr "Construct"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The gate full of falling green code stands on the north island of the End of Time, beside the old television. Walk up to it and press E: it asks whether to enter, and %{yes} takes you in wearing the same character. Inside, the white gate in the far corner asks the same way and brings you back."
+msgstr "Brama pełna spadającego zielonego kodu stoi na północnej wyspie końca czasu, obok starej telewizji. Przejdź do niego i naciśnij E: pyta czy wejść, a %{yes} zabiera cię w tym samym charakterze. Wewnątrz, biała brama w odległym rogu prosi o to samo i sprowadza cię z powrotem."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Together"
+msgstr "Razem"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "A green gate on the north island leads to the space's Construct, an empty room that the people of the conversation decorate together."
+msgstr "Zielona brama na północnej wyspie prowadzi do przestrzeni Construct, pustego pokoju, który ludzie rozmowy udekorować razem."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Drag a placed piece to move it. Click a piece to select it: %{turn} or R turns it, and %{remove} or Delete removes it. A right-click removes a piece at once. On a touch screen, a tap places or selects a piece, and dragging moves it."
+msgstr "Przeciągnij umieszczony kawałek, aby go przenieść. Kliknij kawałek, aby go wybrać: %{turn} lub R obraca go, a %{remove} lub Usuń usuwa go. Prawe kliknięcie usuwa kawałek naraz. Na ekranie dotykowym, miejsce stepowania lub wybiera element, i przeciąganie porusza go."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Every space has a Construct: an empty white room that the people of the conversation decorate together. A channel's Construct belongs to the channel, and a private conversation's belongs to its two people. Nobody else can go in."
+msgstr "Każda przestrzeń ma Construct: pusty biały pokój, który ludzie rozmowy udekorować razem. Construct kanału należy do kanału, a prywatna rozmowa należy do dwóch osób. Nikt inny nie może wejść."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Everyone inside sees each change at once. The room stays as you left it until the next visit. You can sit on a chair with F, and a lamp lights the floor around it."
+msgstr "Każdy w środku widzi każdą zmianę naraz. Pokój zostaje tak, jak go zostawiłeś do następnej wizyty. Możesz usiąść na krześle z F, a lampa oświetla podłogę wokół niego."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Placing pieces"
+msgstr "Elementy składowe"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Some places stay clear: the gate and the ground in front of it, the spots where people arrive, and the spot where somebody is standing. A chair with somebody sitting on it cannot be moved. A piece that would leave somebody with no way back to the gate is refused. The line under the palette says why a piece was refused."
+msgstr "Niektóre miejsca pozostają czyste: brama i ziemia przed nią, miejsca, gdzie ludzie przybywają, i miejsce, gdzie ktoś stoi. Krzesło z kimś siedzącym na nim nie może być ruszane. Odmawia się kawałka, który zostawi kogoś bez drogi powrotnej do bramy. Linia pod paletą mówi, dlaczego kawałek został odrzucony."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "The palette in the top-left corner holds the pieces: %{chair}, %{table}, %{tree} and %{lamp}. Pick one and click the floor to place it. The piece stays in your hand, so a row of chairs is a row of clicks. A see-through piece shows where it would go: green where it fits, red where it does not. Esc, or picking the same piece again, puts it away."
+msgstr "Paleta w lewym górnym rogu trzyma kawałki: %{chair}, %{table}, %{tree} i %{lamp}. Wybierz jeden i kliknij na podłogę, aby umieścić go. Kawałek zostaje w dłoni, więc rząd krzeseł to rząd kliknięć. Prześwit pokazuje, gdzie by się udał: zielony, gdzie pasuje, czerwony, gdzie nie. Esc, lub wybierając ten sam kawałek ponownie, odkłada go."

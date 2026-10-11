@@ -16,6 +16,11 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   Both states are decided in `mount/3`. Initial data delivered after the first
   render is invisible to ExUnit and only ever caught in a browser.
+
+  A space's gate leads to its Construct, at an address of its own, and the
+  Construct's gate leads back. Walking through either one carries the character
+  in the address (`?avatar=`), so the door is not a second antechamber: the
+  same `mount/3` that would draw the picker goes straight inside instead.
   """
 
   alias RetroHexChat.Nickname
@@ -23,6 +28,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.SpaceBuildPalette
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.SpaceCharacterSelect
   import RetroHexChatWeb.Components.UI.SpaceFullscreenToggle
@@ -90,7 +96,8 @@ defmodule RetroHexChatWeb.App.SpaceLive do
          socket
          |> assign(space: space)
          |> subscribe_to_roster(space)
-         |> assign(roster: VirtualSpace.roster(space.id))}
+         |> assign(roster: VirtualSpace.roster(space.id))
+         |> walk_through(params["avatar"])}
 
       {:error, message} ->
         {:ok, assign(socket, denied: message)}
@@ -176,7 +183,9 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         <%!-- The invitation is made at the door: a bar over the map would take
               pixels from the thing the person came for, and the picker is the
               one screen every visit goes through. --%>
+        <%!-- A Construct is shared through its space: its gate is right there. --%>
         <.live_component
+          :if={@space.mode != "construct"}
           module={ShareControl}
           id="share-space"
           url={@share_url}
@@ -235,10 +244,17 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         <canvas
           id={"#{@space.dom_id}-canvas"}
           tabindex="-1"
-          class="absolute inset-0 block h-full w-full outline-none"
+          class={
+            [
+              "absolute inset-0 block h-full w-full outline-none",
+              # Dragging a piece is a touch on the canvas, not a page scroll.
+              @space.mode == "construct" && "touch-none"
+            ]
+          }
         >
         </canvas>
         <.space_virtual_pad />
+        <.space_build_palette :if={@space.mode == "construct"} />
         <%!-- A maximized window is still a window inside browser chrome. This is
             the only control that gets the tab bar and the address bar off an
             isometric map, so it stays on the one screen a space now has. --%>
@@ -267,12 +283,37 @@ defmodule RetroHexChatWeb.App.SpaceLive do
           data-testid="space-said"
         >
         </div>
+        <%!-- A gate asks before it takes anyone anywhere; the question is
+              carried here, translated, and drawn by the canvas when the
+              server answers a use of the gate with a confirm modal. --%>
         <div
           data-space-modal
           hidden
-          class="absolute inset-0 m-auto h-fit w-fit bg-canvas shadow-retro-field p-3 text-center"
+          data-testid="space-modal"
+          data-confirm-enter_construct={dgettext("chat", "Go into the Construct?")}
+          data-confirm-exit_construct={dgettext("chat", "Go back to the End of Time?")}
+          class="absolute inset-0 z-30 m-auto h-fit w-fit bg-surface text-text shadow-retro-raised p-3 text-center"
         >
         </div>
+        <template data-space-confirm-template>
+          <p data-space-modal-question class="mb-2 font-bold"></p>
+          <div class="flex justify-center gap-2">
+            <.button type="button" size="sm" data-space-modal-yes data-testid="space-modal-yes">
+              <:icon><Icons.icon_btn_ok class="h-4 w-4" /></:icon>
+              {dgettext("chat", "Yes")}
+            </.button>
+            <.button
+              type="button"
+              size="sm"
+              variant="secondary"
+              data-space-modal-no
+              data-testid="space-modal-no"
+            >
+              <:icon><Icons.icon_btn_cancel class="h-4 w-4" /></:icon>
+              {dgettext("chat", "No")}
+            </.button>
+          </div>
+        </template>
       </div>
       <.space_say_bar
         id="space-say-input"
@@ -418,6 +459,27 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   def handle_event("revoke_space", _params, socket), do: {:noreply, socket}
 
+  # Through a gate: the destination is this space's Construct, or from a
+  # Construct the space it belongs to — read off the space this screen already
+  # resolved, never off anything the client said.
+  def handle_event(
+        "space_portal",
+        _params,
+        %{assigns: %{space: %{} = space, avatar: avatar}} = socket
+      )
+      when is_binary(avatar) do
+    destination =
+      case space do
+        %{mode: "construct", parent: parent} -> parent.id
+        %{id: space_id} -> VirtualSpace.construct_id(space_id)
+      end
+
+    path = Paths.space_path(destination) <> "?" <> URI.encode_query(%{avatar: avatar})
+    {:noreply, push_navigate(socket, to: path)}
+  end
+
+  def handle_event("space_portal", _params, socket), do: {:noreply, socket}
+
   # The canvas reports a hovered or right-clicked character to the LiveView that
   # owns its element, which is this one. What it means is a hover card and a
   # nick menu, and both of those read a chat session and draw over a
@@ -457,9 +519,30 @@ defmodule RetroHexChatWeb.App.SpaceLive do
     )
   end
 
+  defp join_token(%{assigns: %{space: %{mode: "construct"} = space}} = socket, _avatar) do
+    ChannelJoinToken.sign_construct(
+      space.id,
+      socket.assigns.user_id,
+      socket.assigns.nickname,
+      space.participants
+    )
+  end
+
   defp join_token(%{assigns: %{space: space}} = socket, _avatar) do
     ChannelJoinToken.sign(space.id, socket.assigns.user_id, socket.assigns.nickname)
   end
+
+  # Arriving through a gate, the character is already chosen: the address
+  # names it, and an id this build does not have leaves the picker up.
+  defp walk_through(socket, avatar) when is_binary(avatar) do
+    if avatar in socket.assigns.avatars do
+      assign(socket, avatar: avatar, last_avatar: avatar, join_token: join_token(socket, avatar))
+    else
+      socket
+    end
+  end
+
+  defp walk_through(socket, _avatar), do: socket
 
   defp saved_avatar(nickname) when is_binary(nickname) and nickname != "" do
     avatar = Avatars.for_nick(nickname)
@@ -510,11 +593,31 @@ defmodule RetroHexChatWeb.App.SpaceLive do
           :error ->
             {:error, dgettext("chat", "That address does not name a space.")}
         end
+
+      # A Construct is everything its space is — who may enter, where a line
+      # said inside goes — at an address of its own.
+      :construct ->
+        with {:ok, parent_id} <- construct_parent(space_id),
+             {:ok, parent} <- build_space(parent_id) do
+          {:ok,
+           space_id
+           |> space("construct", parent.participants)
+           |> Map.put(:parent, parent)}
+        end
+    end
+  end
+
+  defp construct_parent(space_id) do
+    case VirtualSpace.construct_parent(space_id) do
+      {:ok, parent_id} -> {:ok, parent_id}
+      :error -> {:error, dgettext("chat", "That address does not name a space.")}
     end
   end
 
   # The same two doors the space's own channel checks at join, asked one screen
   # earlier so the refusal is a sentence rather than a canvas that never boots.
+  defp allowed?(%{mode: "construct", parent: parent}, nickname), do: allowed?(parent, nickname)
+
   defp allowed?(%{mode: "direct_message", participants: participants}, nickname) do
     if DirectMessageSpace.member?(participants, nickname || "") do
       :ok
@@ -579,6 +682,11 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   defp normalize_participants(_participants), do: nil
 
+  # The Construct's name is the glossary's label, joined to the space's name
+  # the way the tab title joins it, rather than a sentence for the engine.
+  defp window_title(%{mode: "construct", parent: parent}),
+    do: dgettext("chat", "Construct") <> " · " <> space_name(parent)
+
   defp window_title(%{mode: "direct_message", participants: participants})
        when is_list(participants),
        do: dgettext("chat", "Space · %{name}", name: Enum.join(participants, " + "))
@@ -587,6 +695,14 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   defp window_title(_absent), do: dgettext("chat", "Space")
 
+  defp space_name(%{mode: "direct_message", participants: participants})
+       when is_list(participants),
+       do: Enum.join(participants, " + ")
+
+  defp space_name(%{id: space_id}), do: space_id
+
+  defp conversation(%{mode: "construct", parent: parent}), do: conversation(parent)
+
   defp conversation(%{mode: "direct_message", participants: participants}),
     do: {:direct_message, participants || []}
 
@@ -594,6 +710,9 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   # Who will read the line: the channel, or the one other person in a private
   # space.
+  defp say_placeholder(%{mode: "construct", parent: parent}, nickname),
+    do: say_placeholder(parent, nickname)
+
   defp say_placeholder(%{mode: "direct_message", participants: participants}, nickname)
        when is_list(participants) do
     me = Nickname.key(nickname || "")
@@ -607,9 +726,11 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   defp say_placeholder(%{id: channel_name}, _nickname),
     do: dgettext("chat", "Say something to %{name}...", name: channel_name)
 
+  defp loading_title(%{mode: "construct"}), do: dgettext("chat", "Construct")
   defp loading_title(%{mode: "direct_message"}), do: dgettext("chat", "Private Space")
   defp loading_title(_space), do: dgettext("chat", "Channel Space")
 
+  defp loading_text(%{mode: "construct"}), do: dgettext("chat", "Loading the Construct...")
   defp loading_text(%{mode: "direct_message"}), do: dgettext("chat", "Opening private room...")
   defp loading_text(_space), do: dgettext("chat", "Entering channel space...")
 

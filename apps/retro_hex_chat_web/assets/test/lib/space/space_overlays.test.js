@@ -1,3 +1,4 @@
+import { describe, it, expect, vi } from "vitest";
 import { createSpaceOverlays } from "../../../js/lib/space/space_overlays.js";
 
 function shellWithLoading() {
@@ -79,6 +80,45 @@ describe("createSpaceOverlays", () => {
       overlays.renderModal({ title: "Empty" });
       expect(host.querySelector(".font-bold").textContent).toBe("Empty");
       expect(host.querySelector("canvas")).toBe(null);
+    });
+  });
+
+  describe("a gate's confirm", () => {
+    function gateShell() {
+      const el = document.createElement("div");
+      el.innerHTML = `
+        <div data-space-modal hidden data-confirm-enter_construct="Enter the Construct?"></div>
+        <template data-space-confirm-template>
+          <p data-space-modal-question></p>
+          <div><button data-space-modal-yes>Yes</button><button data-space-modal-no>No</button></div>
+        </template>`;
+      return el;
+    }
+
+    it("asks the server's question with the app's own buttons, and answers through the ports", () => {
+      const el = gateShell();
+      const confirm = vi.fn();
+      const cancel = vi.fn();
+      const overlays = createSpaceOverlays(el, { confirm, cancel });
+
+      overlays.renderModal({ kind: "confirm", action: "enter_construct", title: "Construct" });
+
+      const host = el.querySelector("[data-space-modal]");
+      expect(host.hidden).toBe(false);
+      expect(host.querySelector("[data-space-modal-question]").textContent).toBe(
+        "Enter the Construct?",
+      );
+      host.querySelector("[data-space-modal-yes]").click();
+      host.querySelector("[data-space-modal-no]").click();
+      expect(confirm).toHaveBeenCalledOnce();
+      expect(cancel).toHaveBeenCalledOnce();
+    });
+
+    it("falls back to the gate's title for an action with no sentence", () => {
+      const el = gateShell();
+      const overlays = createSpaceOverlays(el);
+      overlays.renderModal({ kind: "confirm", action: "somewhere_else", title: "Somewhere" });
+      expect(el.querySelector("[data-space-modal-question]").textContent).toBe("Somewhere");
     });
   });
 

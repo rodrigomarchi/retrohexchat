@@ -805,7 +805,7 @@ msgid "Browser"
 msgstr "Browser"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:79
-#: lib/retro_hex_chat_web/live/app/space_live.ex:216
+#: lib/retro_hex_chat_web/live/app/space_live.ex:225
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:520
 #, elixir-autogen, elixir-format
 msgid "Cancel"
@@ -1510,6 +1510,7 @@ msgstr ""
 msgid "Nickname %{nickname} is already in use"
 msgstr "Bijnaam %{nickname} is al in gebruik"
 
+#: lib/retro_hex_chat_web/live/app/space_live.ex:313
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "No"
@@ -2099,6 +2100,8 @@ msgstr "Woord niet in de lijst met hoogtepunten"
 msgid "Yellow"
 msgstr "Geel"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:12
+#: lib/retro_hex_chat_web/live/app/space_live.ex:303
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "Yes"
@@ -2927,7 +2930,7 @@ msgstr "%{peer} verloor de P2P-verbinding, wachtend op hun terugkeer..."
 msgid "Arcade session ended."
 msgstr "Arcade sessie beëindigd."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:611
+#: lib/retro_hex_chat_web/live/app/space_live.ex:731
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "Kanaalruimte"
@@ -2977,7 +2980,7 @@ msgstr "Standaard apparaat"
 msgid "End P2P Call Media"
 msgstr "P2P-oproepmedia beëindigen"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:614
+#: lib/retro_hex_chat_web/live/app/space_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "Kanaalruimte binnengaan..."
@@ -3002,7 +3005,7 @@ msgstr "Dempen, unmuteren of uw P2P microfoon inschakelen"
 msgid "Next P2P Layout"
 msgstr "Volgende P2P-indeling"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:613
+#: lib/retro_hex_chat_web/live/app/space_live.ex:734
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "Privékamer openen..."
@@ -3034,14 +3037,14 @@ msgstr "P2P-sessie wordt verbonden"
 msgid "P2P session with %{peer} ended."
 msgstr "P2P-sessie met %{peer} is beëindigd."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:610
+#: lib/retro_hex_chat_web/live/app/space_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "Privéruimte"
 
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:588
+#: lib/retro_hex_chat_web/live/app/space_live.ex:696
 #, elixir-autogen, elixir-format
 msgid "Space"
 msgstr "Ruimte"
@@ -3786,7 +3789,7 @@ msgstr "Gespreksacties"
 msgid "Participants"
 msgstr "Deelnemers"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:142
+#: lib/retro_hex_chat_web/live/app/space_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "%{count} in the space"
 msgid_plural "%{count} in the space"
@@ -3803,29 +3806,30 @@ msgstr "Nu binnen"
 msgid "Nobody is in here yet."
 msgstr "Hier is nog niemand."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:584
-#: lib/retro_hex_chat_web/live/app/space_live.ex:586
+#: lib/retro_hex_chat_web/live/app/space_live.ex:692
+#: lib/retro_hex_chat_web/live/app/space_live.ex:694
 #, elixir-autogen, elixir-format
 msgid "Space · %{name}"
 msgstr "Ruimte · %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:496
-#: lib/retro_hex_chat_web/live/app/space_live.ex:511
+#: lib/retro_hex_chat_web/live/app/space_live.ex:579
+#: lib/retro_hex_chat_web/live/app/space_live.ex:594
+#: lib/retro_hex_chat_web/live/app/space_live.ex:613
 #, elixir-autogen, elixir-format
 msgid "That address does not name a space."
 msgstr "Dit adres verwijst niet naar een ruimte."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:522
+#: lib/retro_hex_chat_web/live/app/space_live.ex:625
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
 msgstr "Deze privéruimte is van twee andere mensen."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:491
+#: lib/retro_hex_chat_web/live/app/space_live.ex:574
 #, elixir-autogen, elixir-format
 msgid "This space is no longer available."
 msgstr "Deze ruimte is niet meer beschikbaar."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:538
+#: lib/retro_hex_chat_web/live/app/space_live.ex:641
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "Je moet in %{channel} zijn om de ruimte te betreden."
@@ -3860,7 +3864,7 @@ msgstr "%{game} · wedstrijd"
 msgid "%{peer} is back."
 msgstr "%{peer} is terug."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:543
+#: lib/retro_hex_chat_web/live/app/space_live.ex:646
 #, elixir-autogen, elixir-format
 msgid "This space belongs to a channel you are not in."
 msgstr "Deze space hoort bij een kanaal waar je niet in zit."
@@ -4145,7 +4149,7 @@ msgid "This server"
 msgstr "Deze server"
 
 #: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:76
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Discard the recording"
 msgstr "De opname weggooien"
@@ -4304,7 +4308,7 @@ msgid "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same
 msgstr "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:26
-#: lib/retro_hex_chat_web/live/app/space_live.ex:137
+#: lib/retro_hex_chat_web/live/app/space_live.ex:144
 #, elixir-autogen, elixir-format
 msgid "Change character"
 msgstr "Personage wisselen"
@@ -4322,23 +4326,141 @@ msgstr "Zeggen"
 msgid "Say something"
 msgstr "Zeg iets."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:602
-#: lib/retro_hex_chat_web/live/app/space_live.ex:608
+#: lib/retro_hex_chat_web/live/app/space_live.ex:721
+#: lib/retro_hex_chat_web/live/app/space_live.ex:727
 #, elixir-autogen, elixir-format
 msgid "Say something to %{name}..."
 msgstr "Zeg iets tegen %{name}..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:603
+#: lib/retro_hex_chat_web/live/app/space_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Say something..."
 msgstr "Zeg iets..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:264
+#: lib/retro_hex_chat_web/live/app/space_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "%{name} is back on their feet."
 msgstr "%{name} is weer op de been."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:263
+#: lib/retro_hex_chat_web/live/app/space_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "%{name} is knocked out!"
 msgstr "%{name} is bewusteloos."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:24
+#, elixir-autogen, elixir-format
+msgid "Build"
+msgstr "Bouwen"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Chair"
+msgstr "Stoel"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:688
+#: lib/retro_hex_chat_web/live/app/space_live.ex:729
+#, elixir-autogen, elixir-format
+msgid "Construct"
+msgstr "Construct"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:294
+#, elixir-autogen, elixir-format
+msgid "Go back to the End of Time?"
+msgstr "Teruggaan naar het einde van de tijd?"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:108
+#, elixir-autogen, elixir-format
+msgid "Keep the way to the gate clear."
+msgstr "Hou de weg vrij naar de poort."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Lamp"
+msgstr "Lamp"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:733
+#, elixir-autogen, elixir-format
+msgid "Loading the Construct..."
+msgstr "Het laden van Construct..."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:65
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:72
+#, elixir-autogen, elixir-format
+msgid "Pick a piece, then click the floor. Drag a piece to move it, right-click to remove it."
+msgstr "Kies een stuk en klik op de vloer. Sleep een stuk om het te verplaatsen, met de rechtermuisknop om het te verwijderen."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:52
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:53
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "Verwijderen"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:111
+#, elixir-autogen, elixir-format
+msgid "Somebody is sitting in it."
+msgstr "Er zit iemand in."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:113
+#, elixir-autogen, elixir-format
+msgid "That is off the floor."
+msgstr "Dat is van de vloer."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:115
+#, elixir-autogen, elixir-format
+msgid "That piece cannot go there."
+msgstr "Dat stuk kan daar niet heen."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:112
+#, elixir-autogen, elixir-format
+msgid "The Construct is full."
+msgstr "De Construct is vol."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Tree"
+msgstr "Boom"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:39
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:40
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Turn"
+msgstr "Draaien"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:21
+#, elixir-autogen, elixir-format
+msgctxt "furniture"
+msgid "Table"
+msgstr "Tafel"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:293
+#, elixir-autogen, elixir-format
+msgid "Go into the Construct?"
+msgstr "Naar de Construct gaan?"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:107
+#, elixir-autogen, elixir-format
+msgid "Somebody is standing on that spot."
+msgstr "Er staat iemand op die plek."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:110
+#, elixir-autogen, elixir-format
+msgid "That would leave somebody with no way back to the gate."
+msgstr "Dan blijft er iemand over die niet terug kan naar de poort."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:106
+#, elixir-autogen, elixir-format
+msgid "There is already a piece on that spot."
+msgstr "Er is al een stuk op die plek."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:114
+#, elixir-autogen, elixir-format
+msgid "One piece at a time. Try again."
+msgstr "Een stukje tegelijk. Probeer het nog eens."

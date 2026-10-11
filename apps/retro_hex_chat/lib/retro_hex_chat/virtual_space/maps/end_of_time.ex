@@ -77,9 +77,24 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
           data["zones"],
           &%{id: &1["id"], kind: &1["kind"], x: &1["x"], y: &1["y"], w: &1["w"], h: &1["h"]}
         ),
-      interactables: [],
+      interactables: interactables(data),
       seats: []
     }
+  end
+
+  # Things a participant can use (E): the gate to the space's Construct. A
+  # `confirm` modal asks before acting, and its `action` names what Yes does.
+  defp interactables(data) do
+    Enum.map(data["interactables"] || [], fn i ->
+      %{
+        id: i["id"],
+        kind: i["kind"],
+        x: i["x"],
+        y: i["y"],
+        title: i["title"],
+        modal: %{kind: i["modal"]["kind"], action: i["modal"]["action"]}
+      }
+    end)
   end
 
   # Optional per-tile keys the client atlas understands: `flip_x` (mirror) and

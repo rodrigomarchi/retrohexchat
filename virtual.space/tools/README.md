@@ -1,9 +1,11 @@
 # Space sprite tooling
 
-The single virtual-space map (`end_of_time`, isometric) ships one composed
-sprite sheet (`endoftime.webp`, written by `author_scene.py` straight into
-`apps/retro_hex_chat_web/priv/static/images/space/`) plus a thin Elixir map
-module that declares its tile vocabulary. Both channels and DMs render it. The
+Each virtual-space map ships one composed sprite sheet, written straight into
+`apps/retro_hex_chat_web/priv/static/images/space/`, plus a thin Elixir map
+module that declares its tile vocabulary: `end_of_time` (`endoftime.webp`, by
+`author_scene.py`), the scene every channel and DM renders, and `construct`
+(`construct.webp`, by `author_construct.py`), the buildable room behind its
+gate (`SCENES.md` §10). The
 client sprite atlas slices the sheet with `drawImage`; no pixel data is traced
 into JS or into the map payload.
 

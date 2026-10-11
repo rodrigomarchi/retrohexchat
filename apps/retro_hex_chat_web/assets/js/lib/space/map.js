@@ -49,6 +49,18 @@ export class SpaceMap {
     this.railingPosts = Array.isArray(definition.railing_posts) ? definition.railing_posts : [];
     this.spawns = Array.isArray(definition.spawn) ? definition.spawn : [];
     this.labels = Array.isArray(definition.labels) ? definition.labels : [];
+    // The colour painted behind everything; absent → the renderer's dark void.
+    this.backdrop = typeof definition.backdrop === "string" ? definition.backdrop : null;
+    // A Construct's building rules: what can be placed (kind → tiles per
+    // facing), the tiles nobody may build on, and how many pieces it holds.
+    this.catalog = isObject(definition.catalog) ? definition.catalog : null;
+    this.maxItems = Number.isInteger(definition.max_items) ? definition.max_items : 0;
+    this._reserved = new Set(
+      (Array.isArray(definition.reserved) ? definition.reserved : []).map((r) => tileKey(r.x, r.y)),
+    );
+    this.items = Array.isArray(definition.items) ? definition.items : [];
+    // The edit the definition already includes; only a newer patch applies.
+    this.revision = Number.isInteger(definition.revision) ? definition.revision : 0;
 
     this._blocked = buildCollisionSet(definition.collision);
     this._zones = Array.isArray(definition.zones) ? definition.zones : [];
@@ -108,6 +120,51 @@ export class SpaceMap {
     return typeof id === "string" ? id : this.ground;
   }
 
+  /** @returns {boolean} whether the map is a Construct people can build in. */
+  buildable() {
+    return this.catalog !== null;
+  }
+
+  /** @returns {boolean} whether the tile is kept clear (the gate, the spawns). */
+  isReserved(x, y) {
+    return this._reserved.has(tileKey(x, y));
+  }
+
+  /** @returns {object|null} the placed piece standing on a tile. */
+  itemAt(x, y) {
+    return this.items.find((item) => item.x === x && item.y === y) ?? null;
+  }
+
+  /** @returns {object|null} a placed piece by id. */
+  item(id) {
+    return this.items.find((item) => item.id === id) ?? null;
+  }
+
+  /** @returns {string|null} the tile a kind is drawn with in a facing. */
+  kindTile(kind, dir = "down") {
+    const tiles = this.catalog?.[kind]?.tiles;
+    return tiles?.[dir] ?? tiles?.down ?? null;
+  }
+
+  /**
+   * Redraw a Construct from a `construct_layout` patch: the pieces and every
+   * part of the map they change. A patch no newer than the one already shown
+   * is dropped, so a late broadcast can never roll the room back.
+   * @param {{revision:number, items:object[], decor:object[], collision:object[], seats:object[], lights:object[]}} patch
+   * @returns {boolean} whether the patch was applied
+   */
+  applyPatch(patch) {
+    if (!patch || !(patch.revision > this.revision)) return false;
+    this.revision = patch.revision;
+    this.items = patch.items;
+    this.layers = { ...this.layers, decor: patch.decor };
+    this.decor = patch.decor;
+    this.lights = patch.lights;
+    this._blocked = buildCollisionSet(patch.collision);
+    this._seats = indexById(patch.seats);
+    return true;
+  }
+
   /** @returns {{x:number,y:number,dir:string}} first spawn, or origin. */
   defaultSpawn() {
     const spawn = this.spawns[0];
@@ -145,6 +202,10 @@ function indexById(items) {
     }
   }
   return map;
+}
+
+function isObject(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
 function tileKey(x, y) {

@@ -64,6 +64,10 @@ defmodule RetroHexChatWeb.SpaceRef do
 
   defp known_shape?("#" <> rest), do: rest != ""
 
+  # A space's Construct is addressed like the space itself, behind a prefix.
+  defp known_shape?("construct:" <> parent),
+    do: not String.starts_with?(parent, "construct:") and known_shape?(parent)
+
   defp known_shape?(space_id) do
     VirtualSpace.space_kind(space_id) == :direct_message and
       match?({:ok, [_a, _b]}, participants(space_id))
@@ -77,6 +81,8 @@ defmodule RetroHexChatWeb.SpaceRef do
   opened cold say whether the person holding it is one of the two.
   """
   @spec participants(String.t()) :: {:ok, [String.t()]} | :error
+  def participants("construct:dm:" <> pair), do: participants("dm:" <> pair)
+
   def participants("dm:" <> pair) do
     case String.split(pair, ":") do
       [left, right] when left != "" and right != "" -> {:ok, [left, right]}

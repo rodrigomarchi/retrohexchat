@@ -40,6 +40,25 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinToken do
     SignedToken.sign(secret_key_base(), @salt, data)
   end
 
+  @doc """
+  The token for a space's Construct. It names the Construct and, for a private
+  space's, the pair it belongs to — the same two names the private space's own
+  token carries, because the Construct admits exactly the same two people.
+  """
+  @spec sign_construct(String.t(), integer() | nil, String.t(), [String.t()] | nil) ::
+          String.t()
+  def sign_construct(construct_id, user_id, nickname, participants) do
+    data = %{
+      space_kind: "construct",
+      space_id: construct_id,
+      user_id: user_id,
+      nickname: nickname,
+      participants: participants
+    }
+
+    SignedToken.sign(secret_key_base(), @salt, data)
+  end
+
   @spec verify(String.t(), keyword()) ::
           {:ok, map()}
           | {:error, :expired | :invalid}

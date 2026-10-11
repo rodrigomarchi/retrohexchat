@@ -9,6 +9,21 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   Participants are keyed by a stable `participant_key`
   (`"nick:<nickname>"`) so channel events and socket joins address the same
   avatar.
+
+  Three things vary between the spaces this one module runs, and each is its
+  own field rather than a reading of the others:
+
+    * `kind` — where membership comes from: a channel's member list, or the two
+      people of a private conversation.
+    * `presence` — who is drawn: `:members` draws the whole channel (its space
+      is standing room for everyone in it), `:viewers` draws only the people
+      actually looking through a socket.
+    * `realm` — which world it is: the End of Time, or a Construct, the room the
+      people inside build (`VirtualSpace.Construct`).
+
+  `channel_name` is the id everything is broadcast under; `membership_id` is the
+  conversation membership is read from. They differ only for a Construct, whose
+  members are the members of the space it belongs to.
   """
   use GenServer, restart: :transient
 
@@ -17,6 +32,8 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   alias RetroHexChat.Channels.Server, as: ChannelServer
   alias RetroHexChat.Nickname
   alias RetroHexChat.Topics
+  alias RetroHexChat.VirtualSpace.Construct
+  alias RetroHexChat.VirtualSpace.Construct.Layout
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChat.VirtualSpace.Events
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
@@ -42,6 +59,10 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   @hit_damage 25
   @ko_down_ms 5000
 
+  # A Construct edit per participant at most this often: dragging a chair across
+  # the room is one edit, and nobody needs ten a second.
+  @build_cooldown_ms 120
+
   @type participant :: %{
           key: String.t(),
           user_id: integer() | nil,
@@ -62,10 +83,16 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
           last_seen_at: DateTime.t()
         }
 
+  @type construct_parent :: {:channel, String.t()} | {:direct_message, String.t(), [String.t()]}
+  @type construct_layout :: %{items: [Layout.item()], revision: non_neg_integer()}
+
   # --- Public API ---
 
-  @spec start_link({:channel, String.t()} | {:direct_message, String.t(), [String.t()]}) ::
-          GenServer.on_start()
+  @spec start_link(
+          {:channel, String.t()}
+          | {:direct_message, String.t(), [String.t()]}
+          | {:construct, String.t(), construct_parent(), construct_layout()}
+        ) :: GenServer.on_start()
   def start_link({:channel, channel_name} = arg) do
     GenServer.start_link(__MODULE__, arg,
       name: Registry.via_tuple({:channel_space, channel_name})
@@ -75,6 +102,12 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   def start_link({:direct_message, space_id, _participants} = arg) do
     GenServer.start_link(__MODULE__, arg,
       name: Registry.via_tuple({:direct_message_space, space_id})
+    )
+  end
+
+  def start_link({:construct, construct_id, _parent, _layout} = arg) do
+    GenServer.start_link(__MODULE__, arg,
+      name: Registry.via_tuple({:construct_space, construct_id})
     )
   end
 
@@ -222,9 +255,32 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   @spec leave_direct_message_viewer(String.t(), String.t()) :: :ok
   def leave_direct_message_viewer(space_id, participant_key) do
     case Registry.lookup({:direct_message_space, space_id}) do
-      {:ok, pid} -> GenServer.cast(pid, {:direct_message_viewer_left, participant_key})
+      {:ok, pid} -> GenServer.cast(pid, {:viewer_left, participant_key})
       {:error, :not_found} -> :ok
     end
+  end
+
+  @spec leave_construct_viewer(String.t(), String.t()) :: :ok
+  def leave_construct_viewer(construct_id, participant_key) do
+    case Registry.lookup({:construct_space, construct_id}) do
+      {:ok, pid} -> GenServer.cast(pid, {:viewer_left, participant_key})
+      {:error, :not_found} -> :ok
+    end
+  end
+
+  @type build_error ::
+          :not_found | :not_participant | :down | :not_buildable | :cooldown | Layout.error()
+
+  @doc """
+  One edit to a Construct, by the participant who made it. On success the
+  reply carries the whole layout and its revision, which is what the caller
+  stores; the runtime itself never writes it.
+  """
+  @spec build(String.t(), String.t(), Layout.op()) ::
+          {:ok, %{revision: non_neg_integer(), items: [Layout.item()]}}
+          | {:error, build_error()}
+  def build(construct_id, participant_key, op) do
+    call(construct_id, {:build, participant_key, op})
   end
 
   @spec snapshot(String.t()) :: {:ok, map()} | {:error, :not_found}
@@ -239,8 +295,16 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   # The Registry entry outlives the process for a moment (monitor-based
   # cleanup), so a call can still hit a dead pid — treat it as not_found.
-  defp call(channel_name, message) do
-    call_by_key({:channel_space, channel_name}, message)
+  # A Construct is addressed through the same calls as a channel space: its id
+  # says which registry key it lives under.
+  defp call(space_id, message) do
+    call_by_key(registry_key(space_id), message)
+  end
+
+  defp registry_key(space_id) do
+    if Construct.construct?(space_id),
+      do: {:construct_space, space_id},
+      else: {:channel_space, space_id}
   end
 
   defp call_by_key(registry_key, message) do
@@ -264,6 +328,10 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     init_direct_message_state(space_id, participants)
   end
 
+  def init({:construct, construct_id, parent, layout}) do
+    init_construct_state(construct_id, parent, layout)
+  end
+
   defp init_channel_state(channel_name) do
     case channel_map() do
       {:error, :unknown_map} ->
@@ -274,7 +342,10 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
         state = %{
           kind: :channel,
+          presence: :members,
+          realm: :end_of_time,
           channel_name: channel_name,
+          membership_id: channel_name,
           map: map_definition,
           blocked: SpaceMap.collision_set(map_definition),
           participants: %{},
@@ -310,7 +381,10 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
       state = %{
         kind: :direct_message,
+        presence: :viewers,
+        realm: :end_of_time,
         channel_name: space_id,
+        membership_id: space_id,
         participants_allowed: participants,
         viewer_keys: %{},
         map: map_definition,
@@ -333,6 +407,70 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
       {:error, :unknown_map} -> {:stop, :unknown_map}
       _ -> {:stop, :invalid_participants}
     end
+  end
+
+  # A Construct borrows its members from the space it belongs to, and draws only
+  # the people inside. Its map is the empty room plus whatever was built in it.
+  defp init_construct_state(construct_id, parent, layout) do
+    with {:ok, base} <- construct_map(),
+         {:ok, membership} <- construct_membership(parent) do
+      items = Layout.normalize(base, layout.items)
+      map_definition = base |> Layout.apply(items) |> Map.put(:revision, layout.revision)
+
+      state =
+        Map.merge(membership, %{
+          presence: :viewers,
+          realm: :construct,
+          channel_name: construct_id,
+          viewer_keys: %{},
+          base_map: base,
+          items: items,
+          revision: layout.revision,
+          build_times: %{},
+          map: map_definition,
+          blocked: SpaceMap.collision_set(map_definition),
+          participants: %{},
+          seats: %{},
+          viewer_count: 0,
+          participant_counts: %{current: 0, peak: 0}
+        })
+
+      state = seed_construct_members(state)
+      Logger.debug("VirtualSpace construct runtime started: construct_id=#{construct_id}")
+      {:ok, state}
+    else
+      {:error, reason} -> {:stop, reason}
+    end
+  end
+
+  defp construct_map do
+    case Application.get_env(:retro_hex_chat, :construct_map_override) do
+      nil -> SpaceMap.get("construct")
+      %{} = definition -> {:ok, definition}
+    end
+  end
+
+  defp construct_membership({:channel, channel_name}) do
+    Phoenix.PubSub.subscribe(@pubsub, Topics.channel(channel_name))
+    {:ok, %{kind: :channel, membership_id: channel_name}}
+  end
+
+  defp construct_membership({:direct_message, space_id, participants}) do
+    with {:ok, [nick_a, nick_b] = participants} <-
+           DirectMessageSpace.normalize_participants(participants),
+         ^space_id <- DirectMessageSpace.space_id(nick_a, nick_b) do
+      Enum.each(participants, &Phoenix.PubSub.subscribe(@pubsub, Topics.inbox(&1)))
+
+      {:ok, %{kind: :direct_message, membership_id: space_id, participants_allowed: participants}}
+    else
+      _ -> {:error, :invalid_participants}
+    end
+  end
+
+  defp seed_construct_members(%{kind: :channel} = state), do: sync_channel_members(state)
+
+  defp seed_construct_members(%{kind: :direct_message} = state) do
+    Enum.reduce(state.participants_allowed, state, &seed_direct_message_member(&2, &1))
   end
 
   @impl true
@@ -395,6 +533,19 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
+  def handle_call({:build, key, op}, _from, state) do
+    case apply_build(state, key, op) do
+      {:ok, state} ->
+        Events.emit_construct_edit(state.channel_name, op, :ok)
+        reply = %{revision: state.revision, items: Enum.map(state.items, &Layout.view/1)}
+        {:reply, {:ok, reply}, state}
+
+      {:error, reason} ->
+        Events.emit_construct_edit(state.channel_name, op, reason)
+        {:reply, {:error, reason}, state}
+    end
+  end
+
   @impl true
   def handle_cast(:viewer_left, state) do
     viewer_count = max(state.viewer_count - 1, 0)
@@ -407,13 +558,13 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
-  def handle_cast({:direct_message_viewer_left, participant_key}, state) do
+  def handle_cast({:viewer_left, participant_key}, state) do
     viewer_count = max(state.viewer_count - 1, 0)
 
     state =
       %{state | viewer_count: viewer_count}
       |> decrement_viewer_key(participant_key)
-      |> maybe_mark_direct_message_participant_offline(participant_key)
+      |> maybe_mark_viewer_offline(participant_key)
 
     if viewer_count == 0 do
       {:stop, :normal, state}
@@ -515,7 +666,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   # --- Private helpers ---
 
-  defp sync_channel_members(%{kind: :channel, channel_name: channel_name} = state) do
+  defp sync_channel_members(%{kind: :channel, membership_id: channel_name} = state) do
     case ChannelServer.get_state(channel_name) do
       {:ok, %{members: members}} ->
         current_keys =
@@ -547,8 +698,11 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
+  # A member of the channel stands in a space that draws its members; in one
+  # that draws its viewers they are seated but invisible until they look in.
   defp add_channel_member(state, nickname, role, previous \\ nil) do
-    add_participant(state, nickname, channel_role(role), previous, true, true)
+    online? = state.presence == :members
+    add_participant(state, nickname, channel_role(role), previous, online?, online?)
   end
 
   defp seed_direct_message_member(state, nickname) do
@@ -563,6 +717,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
     if Map.has_key?(state.participants, key) do
       update_in(state.participants[key], fn participant ->
+        online? = still_online?(state, participant, online?)
         %{participant | nickname: nickname, role: role, online?: online?}
       end)
     else
@@ -602,6 +757,10 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
+  # Being a member again says nothing about whether a viewer is looking.
+  defp still_online?(%{presence: :viewers}, participant, _online?), do: participant.online?
+  defp still_online?(_state, _participant, online?), do: online?
+
   defp put_direct_message_label(map_definition, participants) do
     label = Enum.join(participants, " + ")
 
@@ -614,13 +773,13 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     Map.put(map_definition, :labels, labels)
   end
 
-  defp increment_viewer_key(%{kind: :direct_message} = state, key) do
+  defp increment_viewer_key(%{presence: :viewers} = state, key) do
     update_in(state.viewer_keys, &Map.update(&1, key, 1, fn count -> count + 1 end))
   end
 
   defp increment_viewer_key(state, _key), do: state
 
-  defp decrement_viewer_key(%{kind: :direct_message} = state, key) do
+  defp decrement_viewer_key(%{presence: :viewers} = state, key) do
     update_in(state.viewer_keys, fn viewer_keys ->
       case Map.get(viewer_keys, key, 0) do
         count when count <= 1 -> Map.delete(viewer_keys, key)
@@ -629,19 +788,19 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end)
   end
 
-  defp direct_message_viewer_online?(%{viewer_keys: viewer_keys}, key) do
+  defp viewer_online?(%{viewer_keys: viewer_keys}, key) do
     Map.get(viewer_keys, key, 0) > 0
   end
 
-  # A DM member leaves the scene as soon as they stop viewing the space. There
-  # is no "globally online" fallback: presence in the space is what shows them.
-  defp maybe_mark_direct_message_participant_offline(%{kind: :direct_message} = state, key) do
+  # A viewer leaves the scene as soon as they stop viewing the space. There is
+  # no "globally online" fallback: presence in the space is what shows them.
+  defp maybe_mark_viewer_offline(%{presence: :viewers} = state, key) do
     case Map.get(state.participants, key) do
       nil ->
         state
 
       _participant ->
-        if direct_message_viewer_online?(state, key) do
+        if viewer_online?(state, key) do
           state
         else
           mark_participant_offline(state, key)
@@ -923,6 +1082,72 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   defp apply_action(state, _key, _payload), do: {:error, :invalid_action, state}
 
+  # --- Construct building ---
+
+  defp apply_build(%{realm: :construct} = state, key, op) do
+    participant = Map.get(state.participants, key)
+
+    cond do
+      not active_participant?(participant) ->
+        {:error, :not_participant}
+
+      participant.pose == "down" ->
+        {:error, :down}
+
+      not build_cooldown_elapsed?(state, key) ->
+        {:error, :cooldown}
+
+      true ->
+        state.base_map
+        |> Layout.edit(state.items, op, build_context(state), participant.nickname)
+        |> case do
+          {:ok, items} -> {:ok, commit_layout(state, key, items)}
+          {:error, reason} -> {:error, reason}
+        end
+    end
+  end
+
+  defp apply_build(_state, _key, _op), do: {:error, :not_buildable}
+
+  defp build_context(state) do
+    avatars =
+      state.participants
+      |> Map.values()
+      |> Enum.filter(& &1.online?)
+      |> Enum.map(&{&1.x, &1.y})
+
+    %{avatars: avatars, seated: state.seats |> Map.keys() |> MapSet.new()}
+  end
+
+  # Every client redraws from the whole patch, so an edit can never be half
+  # seen: the revision orders them, and a stale one is simply dropped.
+  defp commit_layout(state, key, items) do
+    revision = state.revision + 1
+    map = state.base_map |> Layout.apply(items) |> Map.put(:revision, revision)
+
+    state = %{
+      state
+      | items: items,
+        revision: revision,
+        map: map,
+        blocked: SpaceMap.collision_set(map),
+        build_times: Map.put(state.build_times, key, mono_ms())
+    }
+
+    broadcast(state.channel_name, "construct_layout", Layout.patch(map, revision))
+    state
+  end
+
+  defp build_cooldown_elapsed?(state, key) do
+    case Map.get(state.build_times, key) do
+      nil -> true
+      last -> mono_ms() - last >= build_cooldown_ms()
+    end
+  end
+
+  defp build_cooldown_ms,
+    do: Application.get_env(:retro_hex_chat, :virtual_space_build_ms, @build_cooldown_ms)
+
   # --- Avatar selection ---
 
   defp apply_select_avatar(state, key, avatar) do
@@ -1065,7 +1290,12 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   defp active_participant?(%{online?: online?}), do: online?
 
   defp modal_of(%{title: title, modal: modal}) do
-    %{title: title, kind: Map.get(modal, :kind, "image"), asset: Map.get(modal, :asset)}
+    %{
+      title: title,
+      kind: Map.get(modal, :kind, "image"),
+      asset: Map.get(modal, :asset),
+      action: Map.get(modal, :action)
+    }
   end
 
   defp normalize_text(text) when is_binary(text) do

@@ -20,4 +20,18 @@ defmodule RetroHexChat.VirtualSpace.Events do
       %{channel: channel_name, result: result, reason: reason}
     )
   end
+
+  @doc """
+  One edit to a Construct, whether it was made or why it was refused. The op's
+  name is the measurement; its coordinates are not, because a tile is not a
+  dimension anyone graphs.
+  """
+  @spec emit_construct_edit(String.t(), tuple(), :ok | atom()) :: :ok
+  def emit_construct_edit(construct_id, op, result) do
+    :telemetry.execute(
+      [:retro_hex_chat, :virtual_space, :construct, :edit],
+      %{count: 1},
+      %{channel: construct_id, op: elem(op, 0), result: result}
+    )
+  end
 end

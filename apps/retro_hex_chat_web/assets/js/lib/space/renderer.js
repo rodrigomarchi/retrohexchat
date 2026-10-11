@@ -53,6 +53,23 @@ const TABLE_SIGN_FONT = "10px monospace";
 const HOLO_GLOW = "1f6f7d";
 const HOLO_FG = "9ff6ff";
 const HOLO_FONT = "10px monospace";
+// Construct build markers: the ghost's diamond is green where the piece fits
+// and red where it does not; a picked piece gets a gold outline.
+const BUILD_OK = "4dd27a";
+const BUILD_BAD = "e0533d";
+const BUILD_PICK = "ffd23e";
+const GHOST_ALPHA = 0.55;
+// A seated avatar rests on the seat, not on the floor beneath it: the sitting
+// pose is drawn this many native pixels up, so the chair's legs show below.
+const SEAT_LIFT_PX = 16;
+// A seated avatar faces the way its chair does: a seat's cardinal facing →
+// the 8-direction iso rotation it reads as on screen (see ISO_STEP_FACING).
+const SEAT_FACING = Object.freeze({
+  down: "south-west",
+  right: "south-east",
+  up: "north-east",
+  left: "north-west",
+});
 
 // Deterministic per-tile phase seed so repeated animated tiles (stars, water)
 // don't cycle in lockstep — the atlas offsets an animated tile's clock by it.
@@ -142,7 +159,7 @@ export class Renderer {
     }
 
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    ctx.fillStyle = HASH + VOID_BG;
+    ctx.fillStyle = HASH + (this.map.backdrop ?? VOID_BG);
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     // The cosmic sea abyss (deep-blue gradient + drifting horizontal ripple
     // bands) fills the void behind a floating platform.
@@ -156,10 +173,12 @@ export class Renderer {
     this._drawFloor(ctx, now);
     // Soft contact shadows ground props and avatars before they are drawn over.
     this._drawShadows(ctx, state.participants, now);
+    // A Construct's build markers lie on the floor, under every piece.
+    this._drawBuildMarkers(ctx, state.construct);
     // Depth pass: standing props and avatars share one Y-sorted order so an
     // avatar passes behind a taller prop (walk-behind) and in front once past
     // its base.
-    this._drawDepthSorted(ctx, state.participants, now);
+    this._drawDepthSorted(ctx, state.participants, now, state.construct?.ghost ?? null);
     // Strictly-overhead decor (canopies, lamp tops) draws over everyone.
     this._drawDecorList(ctx, this._aboveDecor(), now);
     // Color-math atmosphere: a cozy ambient wash dims the lit world, then
@@ -368,7 +387,7 @@ export class Renderer {
   // renders behind a prop while above its base, and in front once past it. A
   // prop's base row is its top row plus its sprite height in tiles; an avatar's
   // is its tile row plus one (feet at the bottom of the tile it stands on).
-  _drawDepthSorted(ctx, participants, now = 0) {
+  _drawDepthSorted(ctx, participants, now = 0, ghost = null) {
     const items = [];
     for (const prop of this._standDecor()) {
       const sprite = this.atlas?.tile(prop.tile, now, seedAt(prop.x, prop.y));
@@ -403,8 +422,57 @@ export class Renderer {
         draw: () => this._drawRailingPost(ctx, p),
       });
     }
+    // The piece about to be placed, translucent, in its true depth slot so it
+    // already passes in front of and behind people the way it will.
+    const ghostSprite = ghost?.tile ? this.atlas?.tile(ghost.tile) : null;
+    if (ghostSprite) {
+      items.push({
+        baseline: this.projection.depthKey(ghost.x, ghost.y),
+        draw: () => {
+          ctx.save();
+          ctx.globalAlpha = GHOST_ALPHA;
+          this._blitBillboard(ctx, ghost, ghostSprite);
+          ctx.restore();
+        },
+      });
+    }
     items.sort((a, b) => a.baseline - b.baseline);
     for (const item of items) item.draw();
+  }
+
+  _drawBuildMarkers(ctx, construct) {
+    if (!construct) return;
+    if (construct.selected) {
+      this._traceDiamond(ctx, construct.selected);
+      ctx.save();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = HASH + BUILD_PICK;
+      ctx.stroke();
+      ctx.restore();
+    }
+    const ghost = construct.ghost;
+    if (ghost) {
+      this._traceDiamond(ctx, ghost);
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.fillStyle = HASH + (ghost.valid ? BUILD_OK : BUILD_BAD);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  // The floor diamond of one tile, as the current path.
+  _traceDiamond(ctx, { x, y }) {
+    const f = this.projection.footAnchor(x, y);
+    const c = this.camera.worldToScreen(f.x, f.y);
+    const hw = this.projection.hw;
+    const hh = this.projection.hh;
+    ctx.beginPath();
+    ctx.moveTo(Math.round(c.x), Math.round(c.y - hh));
+    ctx.lineTo(Math.round(c.x + hw), Math.round(c.y));
+    ctx.lineTo(Math.round(c.x), Math.round(c.y + hh));
+    ctx.lineTo(Math.round(c.x - hw), Math.round(c.y));
+    ctx.closePath();
   }
 
   // Blit a cell's sheared iso wall tile onto its shared diamond edge. The tile's
@@ -680,7 +748,8 @@ export class Renderer {
     const s = this.camera.worldToScreen(f.x, f.y);
     const aw = sprite.sw * scale;
     const dx = Math.round(s.x - aw / 2);
-    const dy = Math.round(s.y - foot * scale);
+    const lift = participant.pose === "sitting" ? SEAT_LIFT_PX * this.camera.scale : 0;
+    const dy = Math.round(s.y - foot * scale - lift);
     this._blit(ctx, sprite, dx, dy, scale);
 
     // Flash of pain: the frame's silhouette blinks white for a beat on a hit.
@@ -770,6 +839,14 @@ export class Renderer {
     if (participant.pose === "down") {
       const frames = this.atlas?.avatarFrameCount?.(participant.avatar, "ko") ?? 1;
       return { actionKind: "ko", dir: m.dir8, frame: frames - 1 };
+    }
+    // Seated: the sheet's sitting doze, turned the way the chair faces.
+    if (participant.pose === "sitting") {
+      const dir = SEAT_FACING[participant.dir] ?? m.dir8;
+      if (meta.hasSleep) {
+        return { actionKind: "sleep", dir, frame: Math.floor(now / 300) % 4 };
+      }
+      return { actionKind: meta.hasIdle ? "idle" : "walk", dir, frame: 0 };
     }
     const still = now - m.t;
     if (still < 180) {
