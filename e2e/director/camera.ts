@@ -19,4 +19,10 @@ export const CAMERA_LAUNCH_ARGS = [
   // A character's voice is an AudioContext started with no click: without
   // this it stays suspended, the call hears silence and nobody lights up.
   "--autoplay-policy=no-user-gesture-required",
+  // Draw on the machine's GPU. Headless otherwise rasterises every canvas in
+  // software (SwiftShader), and a scene with several Spaces open starves the
+  // camera's page: keystrokes took a third of a second each.
+  "--enable-gpu",
+  "--ignore-gpu-blocklist",
+  "--use-angle=metal",
 ];

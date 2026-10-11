@@ -247,6 +247,11 @@ export type CrewDirection = Direction & {
   talk: (words: string) => Promise<void>;
   /** Makes a person's character wave. */
   wave: (who: string, seconds?: number) => Promise<void>;
+  /**
+   * Like `focus`, for something with no element of its own — a spot on a
+   * canvas: a box in CSS pixels on the page the camera of `page` films.
+   */
+  focusBox: (page: Page, box: Box) => void;
 };
 
 type CrewTake = {
@@ -380,7 +385,17 @@ export async function filmCrew(
     return takes;
   };
 
-  await action({ pace, cue, follow, focus, layout, talk, wave });
+  const focusBox = (page: Page, box: Box) => {
+    const k = CAMERA.scale;
+    recorders.get(cameraOf(page))!.mark({
+      x: box.x * k,
+      y: box.y * k,
+      width: box.width * k,
+      height: box.height * k,
+    });
+  };
+
+  await action({ pace, cue, follow, focus, layout, talk, wave, focusBox });
 
   const acted = elapsed();
   if (REHEARSAL) {

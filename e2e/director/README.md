@@ -139,3 +139,15 @@ database (`FRESH=1`) or another `DIRECTOR_NICK`.
   the chat, where the private conversation keeps what happened.
 - **Write a director from the specs the script cites.** Each beat names an
   e2e spec; copy its steps and its assertions, then add the camera.
+- **Headless draws canvases in software.** With several Spaces open, the
+  camera's page took a third of a second per keystroke. `CAMERA_LAUNCH_ARGS`
+  turns the GPU on (`--enable-gpu --use-angle=metal`), and a tab nobody films
+  is shrunk and drawn twice a second (ep05 `offCamera`).
+- **A Space is a canvas: read positions from the socket.** `Walker` (space.ts)
+  follows a page's own `space:` frames for where everyone stands, walks a
+  route worked out on the map file, and corrects from where the server says.
+  A held key only walks on a page that draws frames; off camera, one press per
+  tile, and a line is submitted straight to the form.
+- **Waiting for the loading veil to hide passes before the map exists.** Wait
+  for `channel-space-shell` first, then the veil; otherwise the next step can
+  close a tab that never joined.
