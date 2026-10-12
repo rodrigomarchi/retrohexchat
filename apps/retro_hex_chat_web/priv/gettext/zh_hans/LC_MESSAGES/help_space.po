@@ -221,11 +221,6 @@ msgstr "地图没有命令:卡是门."
 msgid "The %{space} button next to the tabs puts the space's card in the conversation."
 msgstr "标签旁边的%{space}按钮将空间卡放入对话中."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "%{change}, in the status bar at the bottom of the space, brings the picker back over the map. Pick another card and you change on the spot, where you stand — everybody sees it, and the chat shows the new character beside your nickname. Cancel keeps the one you have."
-msgstr "%{change}在空间底部的状态栏中,将拾取者带回地图之上. 选择另一张牌,然后当场换牌,站在那里——大家都看见了,聊天会显示你昵称之外的新角色. 取消保留你拥有的"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "/me works there too. Every other command is typed in the chat, where its answer has somewhere to appear."
@@ -496,3 +491,38 @@ msgstr "当一块无法去某处时,屏幕顶端的一张纸条会说出原因."
 #, elixir-autogen, elixir-format
 msgid "Some places stay clear: the gate and the ground in front of it, the spots where people arrive, and the spot where somebody is standing. A chair stays where it is while somebody sits in it. A piece that would leave somebody with no way back to the gate is refused."
 msgstr "有些地方保持清晰:大门和前面的地面,人们到达的地方,以及有人站在的地方。 有人坐在椅子上的时候 椅子就留在原地 一块会让一个人无路回城门的石头被拒绝了"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "%{change} is next to the box you type in, under the map."
+msgstr "%{change}位于您输入的盒子旁边,在地图下."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Cancel keeps the character you have."
+msgstr "取消保留您拥有的字符 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Choose another character and you change where you stand."
+msgstr "选择另一个字符并改变你的立场。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Everybody sees the change at once."
+msgstr "每个人都看到 变化一次。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "In the chat, the new character appears beside your nickname."
+msgstr "在聊天中,新角色出现在你的昵称旁边."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "On a small screen, it shows only the face of your character."
+msgstr "在小屏幕上,它只显示你的角色的面孔."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Press it to see the characters again, over the map."
+msgstr "按它来再次看到角色,在地图上。"

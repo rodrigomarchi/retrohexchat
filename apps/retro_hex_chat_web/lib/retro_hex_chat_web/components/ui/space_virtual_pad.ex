@@ -2,8 +2,10 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
   @moduledoc """
   On-screen pixel-art control pad for the virtual space: a 4-direction D-pad, the
   use button (what E and F do on a keyboard: go through a gate, sit down, get
-  up) and the sword (attack) button, anchored to the bottom-right corner of the space
-  canvas so mobile and mouse users can play without a keyboard.
+  up) and the sword (attack) button, laid out the way a handheld is held: the
+  action keys under the left thumb, the D-pad under the right, so mobile and
+  mouse users can play without a keyboard. The floor between the two halves is
+  the map's: the strip lets presses through and only its keys take them.
 
   Pure static markup inside the `phx-update="ignore"` space shell — all
   behavior (pointer capture, sliding between directions, press visuals) is
@@ -27,9 +29,32 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
       data-testid="space-virtual-pad"
       role="group"
       aria-label={dgettext("chat", "Virtual control pad")}
-      class="absolute bottom-3 right-3 z-10 flex items-end gap-3 select-none touch-none"
+      class="pointer-events-none absolute inset-x-3 bottom-3 z-10 flex items-end justify-between gap-3 select-none touch-none"
     >
-      <div class="space-pad-dpad grid grid-cols-3 grid-rows-3">
+      <%!-- Staggered like a handheld's A and B: the thumb rolls from one to the
+            other instead of reaching across. --%>
+      <div class="pointer-events-auto flex items-end gap-2" data-space-pad-actions>
+        <button
+          type="button"
+          tabindex="-1"
+          data-space-pad-action="use"
+          data-testid="space-pad-use"
+          aria-label={dgettext("chat", "Use")}
+          class="space-pad-button h-14 w-14"
+        >
+          <.pixel_icon name={:use} />
+        </button>
+        <button
+          type="button"
+          tabindex="-1"
+          data-space-pad-action="attack"
+          aria-label={dgettext("chat", "Attack")}
+          class="space-pad-button space-pad-button--attack mb-8 h-14 w-14"
+        >
+          <.pixel_icon name={:attack} />
+        </button>
+      </div>
+      <div class="space-pad-dpad pointer-events-auto grid grid-cols-3 grid-rows-3">
         <div></div>
         <.pad_dir_button dir="up" label={dgettext("chat", "Walk up")}>
           <.pixel_icon name={:pad_up} />
@@ -48,25 +73,6 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
         </.pad_dir_button>
         <div></div>
       </div>
-      <button
-        type="button"
-        tabindex="-1"
-        data-space-pad-action="use"
-        data-testid="space-pad-use"
-        aria-label={dgettext("chat", "Use")}
-        class="space-pad-button h-12 w-12"
-      >
-        <.pixel_icon name={:use} />
-      </button>
-      <button
-        type="button"
-        tabindex="-1"
-        data-space-pad-action="attack"
-        aria-label={dgettext("chat", "Attack")}
-        class="space-pad-button space-pad-button--attack h-12 w-12"
-      >
-        <.pixel_icon name={:attack} />
-      </button>
     </div>
     """
   end

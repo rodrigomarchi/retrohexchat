@@ -1,6 +1,6 @@
 /**
  * @section SP - Virtual Spaces
- * @flow SP4 [done] Holding the virtual pad walks continuously and the sword button attacks
+ * @flow SP4 [done] Holding the virtual pad walks continuously, sliding off it onto the floor and lifting stops the walk, and the sword button attacks
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -87,6 +87,33 @@ test.describe("Space virtual pad", () => {
       await page.waitForTimeout(600);
       expect(sentFrames.filter((f) => f.includes("space_input")).length).toBe(
         walked,
+      );
+
+      // A finger that slides off the D-pad onto the open floor between the
+      // pad's halves and lifts there lets go: the pad holds the pointer, the
+      // floor under it does not.
+      // Down, back the way it came: up may be a wall by now.
+      const down = pad.locator('[data-space-pad-dir="down"]');
+      const downBox = (await down.boundingBox())!;
+      await page.mouse.move(
+        downBox.x + downBox.width / 2,
+        downBox.y + downBox.height / 2,
+      );
+      await page.mouse.down();
+      await page.waitForTimeout(600);
+      const padBox = (await pad.boundingBox())!;
+      await page.mouse.move(padBox.x + padBox.width / 2, downBox.y, {
+        steps: 8,
+      });
+      await page.mouse.up();
+      await page.waitForTimeout(400);
+      const afterSlide = sentFrames.filter((f) =>
+        f.includes("space_input"),
+      ).length;
+      expect(afterSlide).toBeGreaterThan(walked);
+      await page.waitForTimeout(600);
+      expect(sentFrames.filter((f) => f.includes("space_input")).length).toBe(
+        afterSlide,
       );
 
       // The sword button broadcasts one visual attack.

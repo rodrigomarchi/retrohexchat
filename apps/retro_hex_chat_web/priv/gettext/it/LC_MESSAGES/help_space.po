@@ -282,11 +282,6 @@ msgstr "Non c'è nessun comando per la mappa: la carta è la porta."
 msgid "The %{space} button next to the tabs puts the space's card in the conversation."
 msgstr "Il pulsante %{space} accanto alle schede mette la scheda dello spazio nella conversazione."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "%{change}, in the status bar at the bottom of the space, brings the picker back over the map. Pick another card and you change on the spot, where you stand — everybody sees it, and the chat shows the new character beside your nickname. Cancel keeps the one you have."
-msgstr "%{change}, nella barra di stato in fondo allo spazio, riporta il raccoglitore sulla mappa. Scegli un'altra carta e cambi sul posto, dove ti trovi — tutti lo vedono, e la chat mostra il nuovo personaggio accanto al tuo soprannome. L'annullamento mantiene quello che hai."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "/me works there too. Every other command is typed in the chat, where its answer has somewhere to appear."
@@ -557,3 +552,38 @@ msgstr "Quando un pezzo non può andare da qualche parte, una nota in cima allo 
 #, elixir-autogen, elixir-format
 msgid "Some places stay clear: the gate and the ground in front of it, the spots where people arrive, and the spot where somebody is standing. A chair stays where it is while somebody sits in it. A piece that would leave somebody with no way back to the gate is refused."
 msgstr "Alcuni luoghi rimangono chiari: il cancello e il terreno di fronte a esso, i posti dove la gente arriva, e il posto dove qualcuno è in piedi. Una sedia rimane dove si trova mentre qualcuno ci siede. Un pezzo che lascerebbe qualcuno senza tornare al cancello è rifiutato."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "%{change} is next to the box you type in, under the map."
+msgstr "%{change} è accanto alla casella in cui digiti, sotto la mappa."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Cancel keeps the character you have."
+msgstr "Annulla mantiene il carattere che hai."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Choose another character and you change where you stand."
+msgstr "Scegli un altro personaggio e cambi dove ti trovi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Everybody sees the change at once."
+msgstr "Tutti vedono il cambiamento subito."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "In the chat, the new character appears beside your nickname."
+msgstr "Nella chat, il nuovo personaggio appare accanto al tuo soprannome."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "On a small screen, it shows only the face of your character."
+msgstr "Su un piccolo schermo, mostra solo il volto del tuo personaggio."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Press it to see the characters again, over the map."
+msgstr "Premilo per rivedere i personaggi, sulla mappa."

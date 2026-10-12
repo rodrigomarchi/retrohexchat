@@ -10,6 +10,12 @@ defmodule RetroHexChatWeb.Components.UI.SpaceSayBar do
   field). Enter anywhere on the page puts the cursor in the field, and Esc hands
   the keyboard back to the map by focusing the canvas. Both are client-side
   `JS.focus` commands, so neither costs a round trip.
+
+  The bar is also the space's status line — the way back to the chat before the
+  field, who you are and who else is here after it — one line under the map.
+  Those are the `:lead` and `:trail` slots, each item
+  a parchment chip (`space-ui-chip`). On a phone the chips step aside while
+  the field is being typed in, and the line is the field's.
   """
   use RetroHexChatWeb.Component
 
@@ -24,6 +30,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceSayBar do
   attr :placeholder, :string, required: true
   attr :error, :string, default: nil
   attr :max_length, :integer, default: 1000
+  slot :lead, doc: "chips before the field: the way back"
+  slot :trail, doc: "chips after the send key: the status"
 
   @spec space_say_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def space_say_bar(assigns) do
@@ -37,9 +45,10 @@ defmodule RetroHexChatWeb.Components.UI.SpaceSayBar do
       <form
         phx-submit="space_say"
         phx-change="space_say_change"
-        class="flex items-center gap-1"
+        class="space-say-form flex items-center gap-1"
         data-testid="space-say-form"
       >
+        {render_slot(@lead)}
         <input
           id={@id}
           type="text"
@@ -66,8 +75,9 @@ defmodule RetroHexChatWeb.Components.UI.SpaceSayBar do
           class="h-8 px-2"
         >
           <:icon><.pixel_icon name={:send} /></:icon>
-          <span>{dgettext("chat", "Say")}</span>
+          <span class="space-say-bar__label">{dgettext("chat", "Say")}</span>
         </.button>
+        {render_slot(@trail)}
       </form>
       <p :if={@error} class="space-ui-note space-ui-note--error mt-1" data-testid="space-say-error">
         {@error}

@@ -51,7 +51,8 @@ That is a decision, not an omission:
   are 177 rows that do nothing, on every satellite there is.
 - What a satellite owes instead is the way **back**: `← Chat` in the status bar,
   always visible, which focuses the chat tab when there is one
-  (`Components.UI.SurfaceTabLink.back_to_chat/1`).
+  (`Components.UI.SurfaceTabLink.back_to_chat/1`). A space on its map carries it
+  on the say bar instead, the one line under the map.
 
 `payload_budget_test.exs` holds every satellite to it, so a Start menu added by
 reflex fails a test rather than costing nodes nobody looks at.

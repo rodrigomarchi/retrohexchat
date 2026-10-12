@@ -800,7 +800,7 @@ msgid "Browser"
 msgstr "Peramban"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:79
-#: lib/retro_hex_chat_web/live/app/space_live.ex:234
+#: lib/retro_hex_chat_web/live/app/space_live.ex:220
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:520
 #, elixir-autogen, elixir-format
 msgid "Cancel"
@@ -1504,7 +1504,7 @@ msgstr ""
 msgid "Nickname %{nickname} is already in use"
 msgstr "Nama panggilan %{nickname} sudah digunakan"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:331
+#: lib/retro_hex_chat_web/live/app/space_live.ex:317
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "No"
@@ -2094,7 +2094,7 @@ msgid "Yellow"
 msgstr "Kuning"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:321
+#: lib/retro_hex_chat_web/live/app/space_live.ex:307
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "Yes"
@@ -2926,7 +2926,7 @@ msgstr "%{peer} kehilangan koneksi P2P - menunggu mereka kembali..."
 msgid "Arcade session ended."
 msgstr "Sesi arkade berakhir."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:758
+#: lib/retro_hex_chat_web/live/app/space_live.ex:788
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "Ruang Saluran"
@@ -2976,7 +2976,7 @@ msgstr "Perangkat bawaan"
 msgid "End P2P Call Media"
 msgstr "Akhir Media Panggilan P2P"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:762
+#: lib/retro_hex_chat_web/live/app/space_live.ex:792
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "Memasuki ruang kanal..."
@@ -3002,7 +3002,7 @@ msgstr "Mute, unmute, or enable your P2P mikrofon"
 msgid "Next P2P Layout"
 msgstr "Tata Letak P2P Berikutnya"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:761
+#: lib/retro_hex_chat_web/live/app/space_live.ex:791
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "Membuka ruang pribadi..."
@@ -3034,14 +3034,14 @@ msgstr "Menghubungkan sesi P2P"
 msgid "P2P session with %{peer} ended."
 msgstr "Sesi P2P dengan %{peer} berakhir."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:757
+#: lib/retro_hex_chat_web/live/app/space_live.ex:787
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "Ruang Pribadi"
 
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:723
+#: lib/retro_hex_chat_web/live/app/space_live.ex:753
 #, elixir-autogen, elixir-format
 msgid "Space"
 msgstr "Ruang"
@@ -3108,32 +3108,32 @@ msgstr ""
 msgid "the other user"
 msgstr "pengguna lain"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:65
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:51
 #, elixir-autogen, elixir-format
 msgid "Attack"
 msgstr "Serang"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:29
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:31
 #, elixir-autogen, elixir-format
 msgid "Virtual control pad"
 msgstr "Pad kontrol virtual"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:46
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:71
 #, elixir-autogen, elixir-format
 msgid "Walk down"
 msgstr "Jalan ke bawah"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:38
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:63
 #, elixir-autogen, elixir-format
 msgid "Walk left"
 msgstr "Jalan ke kiri"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:42
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:67
 #, elixir-autogen, elixir-format
 msgid "Walk right"
 msgstr "Jalan ke kanan"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:34
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:59
 #, elixir-autogen, elixir-format
 msgid "Walk up"
 msgstr "Jalan ke atas"
@@ -3784,7 +3784,7 @@ msgstr "Tindakan percakapan"
 msgid "Participants"
 msgstr "Peserta"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:156
+#: lib/retro_hex_chat_web/live/app/space_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "%{count} in the space"
 msgid_plural "%{count} in the space"
@@ -3800,30 +3800,30 @@ msgstr "Sedang di dalam"
 msgid "Nobody is in here yet."
 msgstr "Belum ada siapa-siapa di sini."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:719
-#: lib/retro_hex_chat_web/live/app/space_live.ex:721
+#: lib/retro_hex_chat_web/live/app/space_live.ex:749
+#: lib/retro_hex_chat_web/live/app/space_live.ex:751
 #, elixir-autogen, elixir-format
 msgid "Space · %{name}"
 msgstr "Ruang · %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:606
-#: lib/retro_hex_chat_web/live/app/space_live.ex:621
-#: lib/retro_hex_chat_web/live/app/space_live.ex:640
+#: lib/retro_hex_chat_web/live/app/space_live.ex:636
+#: lib/retro_hex_chat_web/live/app/space_live.ex:651
+#: lib/retro_hex_chat_web/live/app/space_live.ex:670
 #, elixir-autogen, elixir-format
 msgid "That address does not name a space."
 msgstr "Alamat itu tidak menunjuk ke ruang mana pun."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:652
+#: lib/retro_hex_chat_web/live/app/space_live.ex:682
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
 msgstr "Ruang privat ini milik dua orang lain."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:601
+#: lib/retro_hex_chat_web/live/app/space_live.ex:631
 #, elixir-autogen, elixir-format
 msgid "This space is no longer available."
 msgstr "Ruang ini sudah tidak tersedia."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:668
+#: lib/retro_hex_chat_web/live/app/space_live.ex:698
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "Kamu harus berada di %{channel} untuk masuk ke ruangnya."
@@ -3858,7 +3858,7 @@ msgstr "%{game} · pertandingan"
 msgid "%{peer} is back."
 msgstr "%{peer} sudah kembali."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:673
+#: lib/retro_hex_chat_web/live/app/space_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "This space belongs to a channel you are not in."
 msgstr "Ruang ini milik kanal yang tidak Anda ikuti."
@@ -4293,42 +4293,44 @@ msgstr "Lihat siapa yang mendirikan saluran"
 msgid "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
 msgstr "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:26
-#: lib/retro_hex_chat_web/live/app/space_live.ex:151
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:24
+#: lib/retro_hex_chat_web/live/app/space_live.ex:347
+#: lib/retro_hex_chat_web/live/app/space_live.ex:348
+#: lib/retro_hex_chat_web/live/app/space_live.ex:352
 #, elixir-autogen, elixir-format
 msgid "Change character"
 msgstr "Ganti karakter"
 
-#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:63
-#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:64
-#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:69
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:72
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:73
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Say"
 msgstr "Ucapkan"
 
-#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:52
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:61
 #, elixir-autogen, elixir-format
 msgid "Say something"
 msgstr "Katakan sesuatu"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:748
-#: lib/retro_hex_chat_web/live/app/space_live.ex:754
+#: lib/retro_hex_chat_web/live/app/space_live.ex:778
+#: lib/retro_hex_chat_web/live/app/space_live.ex:784
 #, elixir-autogen, elixir-format
 msgid "Say something to %{name}..."
 msgstr "Katakan sesuatu pada %{name}..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:749
+#: lib/retro_hex_chat_web/live/app/space_live.ex:779
 #, elixir-autogen, elixir-format
 msgid "Say something..."
 msgstr "Katakan sesuatu..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:292
+#: lib/retro_hex_chat_web/live/app/space_live.ex:278
 #, elixir-autogen, elixir-format
 msgid "%{name} is back on their feet."
 msgstr "%{name} kembali berdiri."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:291
+#: lib/retro_hex_chat_web/live/app/space_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "%{name} is knocked out!"
 msgstr "%{name} rusak!"
@@ -4346,13 +4348,13 @@ msgstr "Bangun"
 msgid "Chair"
 msgstr "Kursi"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:715
-#: lib/retro_hex_chat_web/live/app/space_live.ex:756
+#: lib/retro_hex_chat_web/live/app/space_live.ex:745
+#: lib/retro_hex_chat_web/live/app/space_live.ex:786
 #, elixir-autogen, elixir-format
 msgid "Construct"
 msgstr "Konstruk"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:306
+#: lib/retro_hex_chat_web/live/app/space_live.ex:292
 #, elixir-autogen, elixir-format
 msgid "Go back to the End of Time?"
 msgstr "Kembali ke akhir waktu?"
@@ -4368,7 +4370,7 @@ msgstr "Jaga jalan ke gerbang aman."
 msgid "Lamp"
 msgstr "Lampu"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:760
+#: lib/retro_hex_chat_web/live/app/space_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "Loading the Construct..."
 msgstr "Memuat Konstruk..."
@@ -4425,7 +4427,7 @@ msgctxt "furniture"
 msgid "Table"
 msgstr "Meja"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:305
+#: lib/retro_hex_chat_web/live/app/space_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Go into the Construct?"
 msgstr "Pergi ke Konstruk?"
@@ -4450,7 +4452,7 @@ msgstr "Sudah ada bagian di tempat itu."
 msgid "Only one piece at a time, please wait."
 msgstr "Hanya satu per satu, silakan tunggu."
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:56
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:42
 #, elixir-autogen, elixir-format
 msgid "Use"
 msgstr "Gunakan"

@@ -271,6 +271,14 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
 
       html = view |> element(~s([data-testid="space-avatar-knight"])) |> render_click()
 
+      # On the map the status is on the say bar, the one line under the map.
+      bar = view |> element(~s([data-testid="space-say-form"])) |> render()
+      assert bar =~ ~s(data-testid="space-back-to-chat")
+      assert bar =~ ~s(data-testid="space-change-character")
+      assert bar =~ ~s(data-testid="space-status-count")
+      assert bar =~ "rh-portrait--knight"
+      refute html =~ "window-status-field--pixel"
+
       # Every overlay on the stage, from the loading card to the gate's question.
       for class <-
             ~w(space-ui-panel space-ui-veil space-ui-plank space-pixel-button space-icon--loading) do

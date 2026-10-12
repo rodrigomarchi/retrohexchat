@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **248 spec files** under `e2e/tests/`.
-- **603 Playwright `test()` cases**.
-- **551 documented flows**, 550 done, 1 not done.
+- **605 Playwright `test()` cases**.
+- **552 documented flows**, 551 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -747,7 +747,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP1 | Choosing a class enters the channel space with that avatar rendered | `tests/space-character-select.spec.ts` | done |
 | SP2 | A PM space mounts the End of Time scene with the chosen avatar | `tests/space-end-of-time.spec.ts` | done |
 | SP3 | The toggle enters and exits fullscreen on the space stage | `tests/space-fullscreen.spec.ts` | done |
-| SP4 | Holding the virtual pad walks continuously and the sword button attacks | `tests/space-virtual-pad.spec.ts` | done |
+| SP4 | Holding the virtual pad walks continuously, sliding off it onto the floor and lifting stops the walk, and the sword button attacks | `tests/space-virtual-pad.spec.ts` | done |
 | SP5 | The space sheets are served as WebP the browser can actually decode | `tests/space-character-select.spec.ts` | done |
 | SP6 | A space is entered from the conversation and runs in a tab of its own | `tests/space-surface.spec.ts` | done |
 | SP7 | A shared space link resolves to a card and then to the space itself | `tests/space-surface.spec.ts` | done |
@@ -778,6 +778,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP32 | A character who takes a hit shows the kit's HP bar under its nameplate until it is whole again | `tests/space-pixel-ui.spec.ts` | done |
 | SP33 | The Construct's pieces live in a Build menu; what is in hand shows on a card that turns, removes or drops it, so a touch screen can let go of a piece | `tests/space-pixel-ui.spec.ts` | done |
 | SP34 | An arcade cabinet shelves its games as cartridges, each with its cover, under the cabinet's own icon | `tests/space-pixel-ui.spec.ts` | done |
+| SP35 | The pad is held like a handheld (actions under the left thumb, the D-pad under the right) and the say bar carries the status on one line, on a desktop, a phone and a small phone in Russian | `tests/space-pixel-ui.spec.ts` | done |
 
 ### LC - Localization
 

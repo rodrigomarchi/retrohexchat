@@ -5,6 +5,7 @@
  * @flow SP32 [done] A character who takes a hit shows the kit's HP bar under its nameplate until it is whole again
  * @flow SP33 [done] The Construct's pieces live in a Build menu; what is in hand shows on a card that turns, removes or drops it, so a touch screen can let go of a piece
  * @flow SP34 [done] An arcade cabinet shelves its games as cartridges, each with its cover, under the cabinet's own icon
+ * @flow SP35 [done] The pad is held like a handheld (actions under the left thumb, the D-pad under the right) and the say bar carries the status on one line, on a desktop, a phone and a small phone in Russian
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -32,6 +33,7 @@ import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { Walker } from "../director/space";
 
 const PHONE = { width: 390, height: 844 };
+const SMALL_PHONE = { width: 320, height: 640 };
 
 /** A registered user whose browser has its own screen size and language. */
 async function userWith(
@@ -42,7 +44,7 @@ async function userWith(
   const ctx = await browser.newContext({
     viewport,
     locale: locale?.replace("_", "-"),
-    hasTouch: viewport === PHONE,
+    hasTouch: viewport !== undefined,
   });
   const page = await ctx.newPage();
   const connect = new ConnectPage(page);
@@ -66,6 +68,34 @@ async function say(space: Page, text: string) {
   await line.fill(text);
   await line.press("Enter");
   await expect(line).toHaveValue("");
+}
+
+/**
+ * The pad's halves sit in opposite bottom corners, and the say bar is one row:
+ * the way back, the field, the count and the character key on one line, with
+ * no second bar under it.
+ */
+async function handheldAndOneLine(space: Page) {
+  const box = async (testid: string) =>
+    (await space.getByTestId(testid).boundingBox())!;
+  const stage = await box("channel-space-shell");
+  const use = await box("space-pad-use");
+  const up = (await space.locator('[data-space-pad-dir="up"]').boundingBox())!;
+  expect(use.x + use.width).toBeLessThan(stage.x + stage.width / 2);
+  expect(up.x).toBeGreaterThan(stage.x + stage.width / 2);
+
+  const field = await box("space-say-input");
+  const middle = field.y + field.height / 2;
+  for (const id of [
+    "space-back-to-chat",
+    "space-say-send",
+    "space-change-character",
+    "space-status-count",
+  ]) {
+    const b = await box(id);
+    expect(Math.abs(b.y + b.height / 2 - middle)).toBeLessThanOrEqual(4);
+  }
+  await expect(space.locator(".window-status-field--pixel")).toHaveCount(0);
 }
 
 /** The page is the screen: nothing scrolls it, either way. */
@@ -108,12 +138,21 @@ test.describe("The space's pixel-art interface", () => {
         const box = (await key.boundingBox())!;
         expect(Math.min(box.width, box.height)).toBeGreaterThanOrEqual(44);
       }
+      await handheldAndOneLine(space);
       await fitsTheScreen(space);
       await shot(space, "phone-map-pad-say");
-      // Typing a line keeps the page still.
+      // Typing a line keeps the page still, and the status steps aside so
+      // the line is the field's.
       await space.getByTestId("space-say-input").focus();
+      await expect(space.getByTestId("space-status-count")).toBeHidden();
+      const typing = (await space
+        .getByTestId("space-say-input")
+        .boundingBox())!;
+      expect(typing.width).toBeGreaterThanOrEqual(250);
+      await shot(space, "phone-say-typing");
       await fitsTheScreen(space);
       await space.getByTestId("space-say-input").press("Escape");
+      await expect(space.getByTestId("space-status-count")).toBeVisible();
 
       // Through the gate: the question is the kit's panel too.
       await walker.goTo({ x: 56, y: 11 });
@@ -332,6 +371,49 @@ test.describe("The space's pixel-art interface", () => {
         );
       await shot(space, "construct-arcade-covers");
       await space.getByTestId("space-panel-close").click();
+    } finally {
+      await closeUsers([host]);
+    }
+  });
+
+  test("a handheld pad and a one-line say bar on a desktop (SP35)", async ({
+    browser,
+  }) => {
+    const host = await newSignedInUser(browser, "hh");
+    try {
+      await inChannel([host], "hh");
+      const space = await host.chat.openSpace();
+      await walkIn(space, "knight");
+      await mapDrawn(space);
+      await handheldAndOneLine(space);
+      await fitsTheScreen(space);
+      await shot(space, "desktop-pad-say-one-line");
+    } finally {
+      await closeUsers([host]);
+    }
+  });
+
+  test("the one-line say bar fits a small phone in Russian (SP35)", async ({
+    browser,
+  }) => {
+    const host = await userWith(browser, "sm", {
+      locale: "ru",
+      viewport: SMALL_PHONE,
+    });
+    try {
+      await inChannel([host], "sm");
+      const space = await host.chat.openSpace();
+      await walkIn(space, "knight");
+      await handheldAndOneLine(space);
+      const field = (await space.getByTestId("space-say-input").boundingBox())!;
+      expect(field.width).toBeGreaterThanOrEqual(90);
+      // The count is the tower and a number here; its sentence stays for a
+      // screen reader.
+      await expect(
+        space.getByTestId("space-status-count").locator(".space-icon--space"),
+      ).toBeVisible();
+      await fitsTheScreen(space);
+      await shot(space, "small-phone-ru-one-line");
     } finally {
       await closeUsers([host]);
     }

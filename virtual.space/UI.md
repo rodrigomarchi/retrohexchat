@@ -99,8 +99,17 @@ accepted, and it is the same for the world's own sprites.
 **What stays the platform's.** A dialog or toast raised over the space — sharing
 the address, "Copied!" — is the platform's own window and keeps its Win98 chrome
 and type (`space-ui.css` resets them under `[role=dialog]` and `.toast-container`).
-The status bar's "Change character" stays a text control inside its parchment
-field: a framed button does not fit the bar's height.
+On the map the window has no status bar: `← Chat`, "Change character" and the
+count sit on the say bar as parchment chips (`space-ui-chip`), one line under
+the map. Before walking in (the picker, a refusal) there is no say bar, and the
+window's own status line carries the way back. On a phone the send key, "Change
+character" and the count show a glyph, your face and the tower with a number,
+their words kept for a screen reader, and the chips step aside while the field
+is typed in.
+
+**The pad is held like a handheld:** the use and sword keys under the left thumb,
+staggered like A and B; the D-pad under the right. The strip between them lets
+presses through to the map.
 
 **The Construct's build controls** stay off the room until wanted. A Build key
 opens a drawer, a side panel on a desktop and a sheet from the bottom on a phone.

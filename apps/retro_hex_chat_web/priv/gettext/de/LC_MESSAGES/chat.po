@@ -804,7 +804,7 @@ msgid "Browser"
 msgstr "Browser"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:79
-#: lib/retro_hex_chat_web/live/app/space_live.ex:234
+#: lib/retro_hex_chat_web/live/app/space_live.ex:220
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:520
 #, elixir-autogen, elixir-format
 msgid "Cancel"
@@ -1510,7 +1510,7 @@ msgstr ""
 msgid "Nickname %{nickname} is already in use"
 msgstr "Nickname %{nickname} ist bereits im Einsatz"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:331
+#: lib/retro_hex_chat_web/live/app/space_live.ex:317
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "No"
@@ -2101,7 +2101,7 @@ msgid "Yellow"
 msgstr "Gelb"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:321
+#: lib/retro_hex_chat_web/live/app/space_live.ex:307
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "Yes"
@@ -2933,7 +2933,7 @@ msgstr "%{peer} verloren die P2P-Verbindung – warten auf sie zurück..."
 msgid "Arcade session ended."
 msgstr "Arcade-Session endete."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:758
+#: lib/retro_hex_chat_web/live/app/space_live.ex:788
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "Kanal Raum"
@@ -2984,7 +2984,7 @@ msgstr "Default Gerät"
 msgid "End P2P Call Media"
 msgstr "Ende P2P Call Media"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:762
+#: lib/retro_hex_chat_web/live/app/space_live.ex:792
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "Kanalraum eingeben..."
@@ -3010,7 +3010,7 @@ msgstr "Mute, unmute oder aktivieren Sie Ihr P2P-Mikrofon"
 msgid "Next P2P Layout"
 msgstr "Nächster P2P Layout"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:761
+#: lib/retro_hex_chat_web/live/app/space_live.ex:791
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "Privatzimmer öffnen..."
@@ -3042,14 +3042,14 @@ msgstr "P2P-Sitzung wird verbunden"
 msgid "P2P session with %{peer} ended."
 msgstr "P2P-Sitzung mit %{peer} Ende."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:757
+#: lib/retro_hex_chat_web/live/app/space_live.ex:787
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "Privater Raum"
 
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:723
+#: lib/retro_hex_chat_web/live/app/space_live.ex:753
 #, elixir-autogen, elixir-format
 msgid "Space"
 msgstr "Raum"
@@ -3116,32 +3116,32 @@ msgstr ""
 msgid "the other user"
 msgstr "der andere Benutzer"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:65
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:51
 #, elixir-autogen, elixir-format
 msgid "Attack"
 msgstr "Angreifen"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:29
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:31
 #, elixir-autogen, elixir-format
 msgid "Virtual control pad"
 msgstr "Virtuelles Steuerkreuz"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:46
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:71
 #, elixir-autogen, elixir-format
 msgid "Walk down"
 msgstr "Nach unten gehen"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:38
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:63
 #, elixir-autogen, elixir-format
 msgid "Walk left"
 msgstr "Nach links gehen"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:42
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:67
 #, elixir-autogen, elixir-format
 msgid "Walk right"
 msgstr "Nach rechts gehen"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:34
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:59
 #, elixir-autogen, elixir-format
 msgid "Walk up"
 msgstr "Nach oben gehen"
@@ -3794,7 +3794,7 @@ msgstr "Konversationsaktionen"
 msgid "Participants"
 msgstr "Teilnehmer"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:156
+#: lib/retro_hex_chat_web/live/app/space_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "%{count} in the space"
 msgid_plural "%{count} in the space"
@@ -3811,30 +3811,30 @@ msgstr "Gerade drinnen"
 msgid "Nobody is in here yet."
 msgstr "Hier ist noch niemand."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:719
-#: lib/retro_hex_chat_web/live/app/space_live.ex:721
+#: lib/retro_hex_chat_web/live/app/space_live.ex:749
+#: lib/retro_hex_chat_web/live/app/space_live.ex:751
 #, elixir-autogen, elixir-format
 msgid "Space · %{name}"
 msgstr "Raum · %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:606
-#: lib/retro_hex_chat_web/live/app/space_live.ex:621
-#: lib/retro_hex_chat_web/live/app/space_live.ex:640
+#: lib/retro_hex_chat_web/live/app/space_live.ex:636
+#: lib/retro_hex_chat_web/live/app/space_live.ex:651
+#: lib/retro_hex_chat_web/live/app/space_live.ex:670
 #, elixir-autogen, elixir-format
 msgid "That address does not name a space."
 msgstr "Diese Adresse bezeichnet keinen Raum."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:652
+#: lib/retro_hex_chat_web/live/app/space_live.ex:682
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
 msgstr "Dieser private Raum gehört zwei anderen Personen."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:601
+#: lib/retro_hex_chat_web/live/app/space_live.ex:631
 #, elixir-autogen, elixir-format
 msgid "This space is no longer available."
 msgstr "Dieser Raum ist nicht mehr verfügbar."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:668
+#: lib/retro_hex_chat_web/live/app/space_live.ex:698
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "Du musst in %{channel} sein, um dessen Raum zu betreten."
@@ -3869,7 +3869,7 @@ msgstr "%{game} · Match"
 msgid "%{peer} is back."
 msgstr "%{peer} ist zurück."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:673
+#: lib/retro_hex_chat_web/live/app/space_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "This space belongs to a channel you are not in."
 msgstr "Dieser Space gehört zu einem Kanal, in dem du nicht bist."
@@ -4317,42 +4317,44 @@ msgstr "Wer den Kanal gegründet hat"
 msgid "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
 msgstr "• Großbuchstaben spielen keine Rolle: \"Alice\" und \"Alice\" sind der gleiche Spitz"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:26
-#: lib/retro_hex_chat_web/live/app/space_live.ex:151
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:24
+#: lib/retro_hex_chat_web/live/app/space_live.ex:347
+#: lib/retro_hex_chat_web/live/app/space_live.ex:348
+#: lib/retro_hex_chat_web/live/app/space_live.ex:352
 #, elixir-autogen, elixir-format
 msgid "Change character"
 msgstr "Figur wechseln"
 
-#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:63
-#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:64
-#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:69
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:72
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:73
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Say"
 msgstr "Sagen"
 
-#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:52
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:61
 #, elixir-autogen, elixir-format
 msgid "Say something"
 msgstr "Sag etwas."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:748
-#: lib/retro_hex_chat_web/live/app/space_live.ex:754
+#: lib/retro_hex_chat_web/live/app/space_live.ex:778
+#: lib/retro_hex_chat_web/live/app/space_live.ex:784
 #, elixir-autogen, elixir-format
 msgid "Say something to %{name}..."
 msgstr "Sagen Sie etwas zu %{name}..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:749
+#: lib/retro_hex_chat_web/live/app/space_live.ex:779
 #, elixir-autogen, elixir-format
 msgid "Say something..."
 msgstr "Sag etwas..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:292
+#: lib/retro_hex_chat_web/live/app/space_live.ex:278
 #, elixir-autogen, elixir-format
 msgid "%{name} is back on their feet."
 msgstr "%{name} ist wieder auf den Beinen."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:291
+#: lib/retro_hex_chat_web/live/app/space_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "%{name} is knocked out!"
 msgstr "%{name} wird ausgeschlagen!"
@@ -4370,13 +4372,13 @@ msgstr "Bauen"
 msgid "Chair"
 msgstr "Stuhl"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:715
-#: lib/retro_hex_chat_web/live/app/space_live.ex:756
+#: lib/retro_hex_chat_web/live/app/space_live.ex:745
+#: lib/retro_hex_chat_web/live/app/space_live.ex:786
 #, elixir-autogen, elixir-format
 msgid "Construct"
 msgstr "Konstrukt"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:306
+#: lib/retro_hex_chat_web/live/app/space_live.ex:292
 #, elixir-autogen, elixir-format
 msgid "Go back to the End of Time?"
 msgstr "Zurück zum Ende der Zeit?"
@@ -4392,7 +4394,7 @@ msgstr "Halten Sie den Weg zum Tor klar."
 msgid "Lamp"
 msgstr "Lampe"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:760
+#: lib/retro_hex_chat_web/live/app/space_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "Loading the Construct..."
 msgstr "Die Konstrukt..."
@@ -4449,7 +4451,7 @@ msgctxt "furniture"
 msgid "Table"
 msgstr "Tisch"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:305
+#: lib/retro_hex_chat_web/live/app/space_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Go into the Construct?"
 msgstr "Gehen Sie in die Konstrukt?"
@@ -4474,7 +4476,7 @@ msgstr "Da ist schon ein Stück."
 msgid "Only one piece at a time, please wait."
 msgstr "Nur ein Stück zu einer Zeit, bitte warten."
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:56
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:42
 #, elixir-autogen, elixir-format
 msgid "Use"
 msgstr "Benutzen"

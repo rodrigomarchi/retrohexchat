@@ -29,6 +29,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.SpaceBuildPalette
   import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.Components.UI.NickPortrait
   import RetroHexChatWeb.Components.UI.SpaceCharacterSelect
   import RetroHexChatWeb.Components.UI.SpaceConstructPanel
   import RetroHexChatWeb.Components.UI.SpaceFullscreenToggle
@@ -133,33 +134,18 @@ defmodule RetroHexChatWeb.App.SpaceLive do
           data-testid="virtual-space-window"
         >
           <:icon><.pixel_icon name={:space} /></:icon>
-          <%!-- The way back is always on screen, in both states. --%>
-          <:status>
+          <%!-- The way back is always there. On the map it is on the say bar,
+                the one line under the map; before the map (the picker, a
+                refusal) it is the window's own status line. --%>
+          <:status :if={!(@space && @avatar)}>
             <.window_status_bar_field skin="pixel" grow>
               <.back_to_chat
                 open?={OpenSurfaces.open?(@open_surface_paths, Paths.chat_path())}
                 testid="space-back-to-chat"
               />
             </.window_status_bar_field>
-            <.window_status_bar_field :if={@avatar} skin="pixel">
-              <button
-                type="button"
-                phx-click="space_change_character"
-                class="hover:underline"
-                data-testid="space-change-character"
-              >
-                {dgettext("chat", "Change character")}
-              </button>
-            </.window_status_bar_field>
             <.window_status_bar_field skin="pixel">
-              <span data-testid="space-status-count">
-                {dngettext(
-                  "chat",
-                  "%{count} in the space",
-                  "%{count} in the space",
-                  length(@roster)
-                )}
-              </span>
+              <.space_count roster={@roster} />
             </.window_status_bar_field>
           </:status>
           <div class="relative flex h-full min-h-0 w-full">
@@ -340,10 +326,54 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         value={@say_draft}
         error={@say_error}
         placeholder={say_placeholder(@space, @nickname)}
-      />
+      >
+        <%!-- The way back comes along into fullscreen. On a phone it steps
+              aside while the field is typed in (space-ui.css). --%>
+        <:lead>
+          <div class="space-ui-chip">
+            <.back_to_chat
+              open?={OpenSurfaces.open?(@open_surface_paths, Paths.chat_path())}
+              testid="space-back-to-chat"
+            />
+          </div>
+        </:lead>
+        <:trail>
+          <%!-- On a phone the face alone is the key; its name stays its label. --%>
+          <button
+            :if={@avatar}
+            type="button"
+            phx-click="space_change_character"
+            class="space-ui-chip hover:underline"
+            aria-label={dgettext("chat", "Change character")}
+            title={dgettext("chat", "Change character")}
+            data-testid="space-change-character"
+          >
+            <.nick_portrait avatar={@avatar} />
+            <span class="space-say-bar__label">{dgettext("chat", "Change character")}</span>
+          </button>
+          <%!-- On a phone the count is the space's tower and a number; the
+                sentence stays, for a screen reader. --%>
+          <span class="space-ui-chip" data-testid="space-status-count">
+            <.pixel_icon name={:space} class="space-say-bar__glyph" />
+            <span class="space-say-bar__label">{count_text(@roster)}</span>
+            <span class="space-say-bar__glyph" aria-hidden="true">{length(@roster)}</span>
+          </span>
+        </:trail>
+      </.space_say_bar>
     </div>
     """
   end
+
+  attr :roster, :list, required: true
+
+  defp space_count(assigns) do
+    ~H"""
+    <span data-testid="space-status-count">{count_text(@roster)}</span>
+    """
+  end
+
+  defp count_text(roster),
+    do: dngettext("chat", "%{count} in the space", "%{count} in the space", length(roster))
 
   attr :message, :string, required: true
 
