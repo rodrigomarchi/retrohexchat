@@ -32,6 +32,59 @@ describe("BuildMode", () => {
     expect(mode.state().dir).toBe("down");
   });
 
+  it("paints the rectangle between the press and the release", () => {
+    const mode = new BuildMode();
+    mode.choosePaint("wood");
+    mode.pointerMove({ tile: tile(5, 5) });
+    expect(mode.paintArea()).toEqual({ x0: 5, y0: 5, x1: 5, y1: 5 });
+
+    mode.pointerDown({ tile: tile(7, 6), item: null, button: 0 });
+    mode.pointerMove({ tile: tile(4, 8) });
+    expect(mode.paintArea()).toEqual({ x0: 4, y0: 6, x1: 7, y1: 8 });
+
+    expect(mode.pointerUp({ tile: tile(4, 8) }).command).toEqual({
+      op: "paint",
+      x0: 4,
+      y0: 6,
+      x1: 7,
+      y1: 8,
+      material: "wood",
+    });
+    expect(mode.state()).toEqual({ mode: "painting", material: "wood", anchor: null });
+  });
+
+  it("lets go of a stroke that leaves the canvas, and disarms on a second press or a right-click", () => {
+    const mode = new BuildMode();
+    mode.choosePaint("none");
+    mode.pointerDown({ tile: tile(1, 1), item: null, button: 0 });
+    mode.pointerLeave();
+    expect(mode.pointerUp({ tile: tile(2, 2) }).command).toBe(null);
+
+    mode.choosePaint("none");
+    expect(mode.state().mode).toBe("idle");
+
+    mode.choosePaint("grass");
+    mode.pointerDown({ tile: tile(1, 1), item: null, button: 2 });
+    expect(mode.state().mode).toBe("idle");
+  });
+
+  it("turns a kind through its own facings", () => {
+    const four = ["down", "right", "up", "left"];
+    const mode = new BuildMode({ dirsOf: (kind) => (kind === "corner" ? four : undefined) });
+    mode.choose("corner");
+    const seen = [mode.state().dir];
+    for (let i = 0; i < 4; i += 1) {
+      mode.rotate();
+      seen.push(mode.state().dir);
+    }
+    expect(seen).toEqual([...four, "down"]);
+
+    mode.choose("chair");
+    mode.rotate();
+    mode.rotate();
+    expect(mode.state().dir).toBe("down");
+  });
+
   it("drags a piece to another tile, and a click without moving only picks it", () => {
     const mode = new BuildMode();
 

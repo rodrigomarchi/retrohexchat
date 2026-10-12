@@ -17,6 +17,7 @@ from .quality import (
     batch_is_contaminated,
     invented_break,
     is_usable_translation,
+    keep_lowercase_start,
     lost_negation,
     meaning_kept,
 )
@@ -139,10 +140,11 @@ class Pipeline:
 
         return results
 
-    @staticmethod
-    def _repair(source: str, translated: str) -> str:
-        """Drops a heading the model invented above a one-line source (シリーズ)."""
-        return invented_break(source, translated) or translated
+    def _repair(self, source: str, translated: str) -> str:
+        """Drops a heading the model invented above a one-line source (シリーズ),
+        and keeps a lowercase start lowercase."""
+        repaired = invented_break(source, translated) or translated
+        return keep_lowercase_start(source, repaired, self.locale_code)
 
     def _split_answer(self, source: str) -> tuple[str, str]:
         """The glossary's answer word, and the rest of the sentence for the engine."""

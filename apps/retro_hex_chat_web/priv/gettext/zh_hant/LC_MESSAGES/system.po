@@ -34,9 +34,9 @@ msgstr "數據庫"
 #: lib/retro_hex_chat_web/telemetry.ex:262
 #: lib/retro_hex_chat_web/telemetry.ex:267
 #: lib/retro_hex_chat_web/telemetry.ex:272
-#: lib/retro_hex_chat_web/telemetry.ex:278
-#: lib/retro_hex_chat_web/telemetry.ex:284
-#: lib/retro_hex_chat_web/telemetry.ex:288
+#: lib/retro_hex_chat_web/telemetry.ex:277
+#: lib/retro_hex_chat_web/telemetry.ex:283
+#: lib/retro_hex_chat_web/telemetry.ex:289
 #: lib/retro_hex_chat_web/telemetry.ex:293
 #: lib/retro_hex_chat_web/telemetry.ex:298
 #: lib/retro_hex_chat_web/telemetry.ex:303
@@ -44,21 +44,22 @@ msgstr "數據庫"
 #: lib/retro_hex_chat_web/telemetry.ex:313
 #: lib/retro_hex_chat_web/telemetry.ex:318
 #: lib/retro_hex_chat_web/telemetry.ex:323
-#: lib/retro_hex_chat_web/telemetry.ex:334
-#: lib/retro_hex_chat_web/telemetry.ex:340
+#: lib/retro_hex_chat_web/telemetry.ex:328
+#: lib/retro_hex_chat_web/telemetry.ex:339
 #: lib/retro_hex_chat_web/telemetry.ex:345
-#: lib/retro_hex_chat_web/telemetry.ex:357
+#: lib/retro_hex_chat_web/telemetry.ex:350
 #: lib/retro_hex_chat_web/telemetry.ex:362
 #: lib/retro_hex_chat_web/telemetry.ex:367
 #: lib/retro_hex_chat_web/telemetry.ex:372
-#: lib/retro_hex_chat_web/telemetry.ex:378
+#: lib/retro_hex_chat_web/telemetry.ex:377
 #: lib/retro_hex_chat_web/telemetry.ex:383
 #: lib/retro_hex_chat_web/telemetry.ex:388
 #: lib/retro_hex_chat_web/telemetry.ex:393
-#: lib/retro_hex_chat_web/telemetry.ex:399
+#: lib/retro_hex_chat_web/telemetry.ex:398
 #: lib/retro_hex_chat_web/telemetry.ex:404
-#: lib/retro_hex_chat_web/telemetry.ex:410
-#: lib/retro_hex_chat_web/telemetry.ex:416
+#: lib/retro_hex_chat_web/telemetry.ex:409
+#: lib/retro_hex_chat_web/telemetry.ex:415
+#: lib/retro_hex_chat_web/telemetry.ex:421
 #, elixir-autogen, elixir-format
 msgid "Domain"
 msgstr "域名"
@@ -143,82 +144,82 @@ msgstr "當前虛擬空間參與者按頻道計數"
 msgid "Number of virtual space movement steps"
 msgstr "虛擬空間移動步驟的數目"
 
-#: lib/retro_hex_chat_web/telemetry.ex:277
+#: lib/retro_hex_chat_web/telemetry.ex:282
 #, elixir-autogen, elixir-format
 msgid "Virtual space movement input handling duration"
 msgstr "虛擬空間移動輸入處理期限"
 
-#: lib/retro_hex_chat_web/telemetry.ex:287
+#: lib/retro_hex_chat_web/telemetry.ex:292
 #, elixir-autogen, elixir-format
 msgid "Number of active group-call peer processes"
 msgstr "活躍的小組召喚同行程序數目"
 
-#: lib/retro_hex_chat_web/telemetry.ex:283
+#: lib/retro_hex_chat_web/telemetry.ex:288
 #, elixir-autogen, elixir-format
 msgid "Number of active group-call room processes"
 msgstr "主動集體呼叫室程序的數目"
 
-#: lib/retro_hex_chat_web/telemetry.ex:292
+#: lib/retro_hex_chat_web/telemetry.ex:297
 #, elixir-autogen, elixir-format
 msgid "Number of group-call join attempts"
 msgstr "集體召集的嘗試次數"
 
-#: lib/retro_hex_chat_web/telemetry.ex:307
+#: lib/retro_hex_chat_web/telemetry.ex:312
 #, elixir-autogen, elixir-format
 msgid "Number of group-call media state updates"
 msgstr "羣調媒體狀態更新數"
 
-#: lib/retro_hex_chat_web/telemetry.ex:302
+#: lib/retro_hex_chat_web/telemetry.ex:307
 #, elixir-autogen, elixir-format
 msgid "Number of group-call media tracks announced"
 msgstr "宣佈的團體呼叫媒體音軌數"
 
-#: lib/retro_hex_chat_web/telemetry.ex:312
+#: lib/retro_hex_chat_web/telemetry.ex:317
 #, elixir-autogen, elixir-format
 msgid "Number of group-call moderator media actions"
 msgstr "集體召集的媒體行動次數"
 
-#: lib/retro_hex_chat_web/telemetry.ex:317
+#: lib/retro_hex_chat_web/telemetry.ex:322
 #, elixir-autogen, elixir-format
 msgid "Number of group-call participant kick actions"
 msgstr "集體呼叫參與者踢球行動次數"
 
-#: lib/retro_hex_chat_web/telemetry.ex:297
+#: lib/retro_hex_chat_web/telemetry.ex:302
 #, elixir-autogen, elixir-format
 msgid "Number of group-call participant leaves"
 msgstr "集體召集參與人離職人數"
 
-#: lib/retro_hex_chat_web/telemetry.ex:322
+#: lib/retro_hex_chat_web/telemetry.ex:327
 #, elixir-autogen, elixir-format
 msgid "Number of group-call rooms closed"
 msgstr "關閉的小組呼叫室數目"
 
-#: lib/retro_hex_chat_web/telemetry.ex:339
+#: lib/retro_hex_chat_web/telemetry.ex:344
 #, elixir-autogen, elixir-format
 msgid "Number of P2P and group-call client media/signaling errors"
 msgstr "P2P 和羣調客戶端媒體/signaling 錯誤數量"
 
-#: lib/retro_hex_chat_web/telemetry.ex:330
+#: lib/retro_hex_chat_web/telemetry.ex:335
 #, elixir-autogen, elixir-format
 msgid "Number of P2P and group-call recovery state transitions by reason"
 msgstr "按原因分列的P2P和集體召集的恢復狀態過渡數目"
 
-#: lib/retro_hex_chat_web/telemetry.ex:344
+#: lib/retro_hex_chat_web/telemetry.ex:349
 #, elixir-autogen, elixir-format
 msgid "Number of P2P signaling replay outcomes"
 msgstr "P2P信號重播結果數量"
 
-#: lib/retro_hex_chat_web/telemetry.ex:377
+#: lib/retro_hex_chat_web/telemetry.ex:382
 #, elixir-autogen, elixir-format
 msgid "95th percentile gap between game snapshots, in milliseconds"
 msgstr "遊戲快照之間的95個百分點差距,以毫秒計"
 
-#: lib/retro_hex_chat_web/telemetry.ex:366
+#: lib/retro_hex_chat_web/telemetry.ex:371
 #, elixir-autogen, elixir-format
 msgid "Authoritative game snapshots received per second"
 msgstr "每秒收到授權遊戲快照"
 
-#: lib/retro_hex_chat_web/telemetry.ex:371
+#: lib/retro_hex_chat_web/telemetry.ex:376
 #, elixir-autogen, elixir-format
 msgid "Authoritative game snapshots sent per second"
 msgstr "每秒發送授權遊戲快照"
@@ -243,17 +244,17 @@ msgstr "按狀態分列的當前 Oban 隊列長度"
 msgid "Failed background job processing duration"
 msgstr "背景工作處理時間失敗"
 
-#: lib/retro_hex_chat_web/telemetry.ex:356
+#: lib/retro_hex_chat_web/telemetry.ex:361
 #, elixir-autogen, elixir-format
 msgid "Frames per second drawn during a P2P game"
 msgstr "P2P 遊戲中繪製的幀每秒"
 
-#: lib/retro_hex_chat_web/telemetry.ex:409
+#: lib/retro_hex_chat_web/telemetry.ex:414
 #, elixir-autogen, elixir-format
 msgid "Frames whose simulation backlog exceeded the catch-up cap"
 msgstr "模擬積壓超過追趕上限的框架"
 
-#: lib/retro_hex_chat_web/telemetry.ex:398
+#: lib/retro_hex_chat_web/telemetry.ex:403
 #, elixir-autogen, elixir-format
 msgid "Game snapshots skipped because the data channel was backed up"
 msgstr "遊戲快照因數據通道被備份而跳過"
@@ -263,32 +264,32 @@ msgstr "遊戲快照因數據通道被備份而跳過"
 msgid "Latest business values emitted by instrumented domain operations"
 msgstr "儀器域操作發佈的最新業務值"
 
-#: lib/retro_hex_chat_web/telemetry.ex:382
+#: lib/retro_hex_chat_web/telemetry.ex:387
 #, elixir-autogen, elixir-format
 msgid "Longest gap between game snapshots, in milliseconds"
 msgstr "遊戲快照間最長的間隔, 以毫秒計"
 
-#: lib/retro_hex_chat_web/telemetry.ex:415
+#: lib/retro_hex_chat_web/telemetry.ex:420
 #, elixir-autogen, elixir-format
 msgid "Milliseconds of P2P gameplay observed, by health verdict"
 msgstr "P2P遊戲機的米秒觀察,通過健康判斷"
 
-#: lib/retro_hex_chat_web/telemetry.ex:392
+#: lib/retro_hex_chat_web/telemetry.ex:397
 #, elixir-autogen, elixir-format
 msgid "Peak queued bytes on the game data channel"
 msgstr "遊戲數據頻道上的峯值隊列字節"
 
-#: lib/retro_hex_chat_web/telemetry.ex:387
+#: lib/retro_hex_chat_web/telemetry.ex:392
 #, elixir-autogen, elixir-format
 msgid "Peer connection round-trip time during a P2P game"
 msgstr "P2P 遊戲期間的對等連接往返時間"
 
-#: lib/retro_hex_chat_web/telemetry.ex:403
+#: lib/retro_hex_chat_web/telemetry.ex:408
 #, elixir-autogen, elixir-format
 msgid "Simulation steps discarded after the loop fell behind"
 msgstr "循環落後後丟棄的模擬步驟"
 
-#: lib/retro_hex_chat_web/telemetry.ex:361
+#: lib/retro_hex_chat_web/telemetry.ex:366
 #, elixir-autogen, elixir-format
 msgid "Simulation steps per second run by the game host"
 msgstr "遊戲主機每秒運行模擬步驟"
@@ -307,3 +308,8 @@ msgstr "一個失敗的背景工作等待執行的時間"
 #, elixir-autogen, elixir-format
 msgid "Number of Construct edits, by operation and result"
 msgstr "按操作和結果分列的Construct編輯次數"
+
+#: lib/retro_hex_chat_web/telemetry.ex:276
+#, elixir-autogen, elixir-format
+msgid "Number of Construct pieces used, by kind and result"
+msgstr "Number of Construct pieces used, by kind and result"

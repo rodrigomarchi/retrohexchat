@@ -436,3 +436,23 @@ def meaning_kept(source: str, read_back: str) -> bool:
 
     found = content_words(protect(read_back)[0])
     return len(wanted & found) / len(wanted) >= MEANING_THRESHOLD
+
+
+# Languages that capitalise words mid-sentence (German nouns), where a capital
+# first letter is grammar rather than the engine starting a sentence.
+_CAPITALISING = frozenset({"de"})
+
+
+def keep_lowercase_start(source: str, translated: str, locale_code: str | None) -> str:
+    """A source that starts lowercase is the middle of a sentence — what an
+    `/me` action says after the nickname, the rest of a line — and its
+    translation starts lowercase too. The engine reads every input as a whole
+    sentence and capitalises it: "rodrigo Jogou a moeda"."""
+    if (locale_code or "").split("_")[0] in _CAPITALISING or not source[:1].islower():
+        return translated
+
+    if translated[:1].isupper() and translated[1:2].islower():
+        return translated[:1].lower() + translated[1:]
+
+    return translated
+

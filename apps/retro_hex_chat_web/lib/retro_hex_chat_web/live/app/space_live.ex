@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   import RetroHexChatWeb.Components.UI.SpaceBuildPalette
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.SpaceCharacterSelect
+  import RetroHexChatWeb.Components.UI.SpaceConstructPanel
   import RetroHexChatWeb.Components.UI.SpaceFullscreenToggle
   import RetroHexChatWeb.Components.UI.SpaceSayBar
   import RetroHexChatWeb.Components.UI.SpaceVirtualPad
@@ -254,7 +255,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         >
         </canvas>
         <.space_virtual_pad />
-        <.space_build_palette :if={@space.mode == "construct"} />
+        <.space_build_palette :if={@space.mode == "construct"} conversation={@space.parent.mode} />
         <%!-- A maximized window is still a window inside browser chrome. This is
             the only control that gets the tab bar and the address bar off an
             isometric map, so it stays on the one screen a space now has. --%>
@@ -314,6 +315,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
             </.button>
           </div>
         </template>
+        <.space_construct_panel :if={@space.mode == "construct"} />
       </div>
       <.space_say_bar
         id="space-say-input"

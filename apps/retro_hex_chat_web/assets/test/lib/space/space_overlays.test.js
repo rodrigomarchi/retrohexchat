@@ -73,6 +73,25 @@ describe("createSpaceOverlays", () => {
       expect(host.contains(drawnCanvas)).toBe(true);
     });
 
+    it("hands a modal another module draws to the panel port", () => {
+      const el = shellWithLoading();
+      const host = el.querySelector("[data-space-modal]");
+      const board = vi.fn();
+      const panel = vi.fn((target, modal) => {
+        target.textContent = modal.kind;
+        return modal.kind === "sign";
+      });
+      const overlays = createSpaceOverlays(el, { board, panel });
+
+      overlays.renderModal({ kind: "sign" });
+      expect(host.hidden).toBe(false);
+      expect(host.textContent).toBe("sign");
+      expect(board).not.toHaveBeenCalled();
+
+      overlays.renderModal({ kind: "image", title: "Chess" });
+      expect(board).toHaveBeenCalledOnce();
+    });
+
     it("renders the title alone when the board has no canvas", () => {
       const el = shellWithLoading();
       const host = el.querySelector("[data-space-modal]");

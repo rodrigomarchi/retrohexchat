@@ -332,16 +332,31 @@ author is `virtual.space/tools/author_construct.py`, which writes
 - **The floor is drawn, not generated**: the End of Time floor's own 48×20
   alpha, filled white with a grey seam, so it is exactly the diamond the
   projection tessellates — and the seam is the grid builders place on.
-- **Pieces are PixelLab map objects** (`virtual.space/scenes/construct/`:
-  chair, table, tree, lamp, and the white exit gate), generated native at
-  single-colour outline / basic shading / medium detail and judged next to an
-  avatar frame before the batch. Each art faces screen down-left (tile
-  `down`); its `flip_x` twin is tile `right`.
-- **The JSON carries three fields only this scene has**: `catalog` (kind →
-  tiles per facing, `seat`, `lights`), `reserved` (the gate, its apron and the
-  spawns — never buildable) and `max_items`. What was built is not in the file:
-  it is `virtual_space_constructs` in the database, merged onto the base by
-  `VirtualSpace.Construct.Layout.apply/2`.
+- **Pieces are PixelLab map objects** (`virtual.space/scenes/construct/`):
+  furniture (chair, armchair, table, bookshelf, lamp, tree, plant), structure
+  (wall, door and its `door_open` state from `create_object_state`) and the
+  pieces that do something (teleporter, die, coin, sign, arcade cabinet,
+  board, screen), plus the white exit gate. Generated native at single-colour
+  outline / basic shading / medium detail and judged next to an avatar frame
+  before the batch; ask for the object "standing alone", or PixelLab adds a
+  stool to the door and a chair to the bookshelf. Each art faces screen
+  down-left (tile `down`); its `flip_x` twin is tile `right`.
+- **Variants that are the same art are drawn, not generated**: the lamp
+  switched off (its bright shade dimmed), the coin's silver side (its gold
+  recoloured, mirrored), and the four wall corners, each two halves of the
+  wall meeting at the tile's centre.
+- **The floor is one character per tile** (`w` white, `g` the void, a digit
+  per paint material), so a row is a string; the painted diamonds reuse the
+  white floor's alpha and seam.
+- **The JSON carries four fields only this scene has**: `catalog` (kind →
+  tiles per facing, and optionally `seat`, `lights`, `blocks`, `dirs`, `use`,
+  `states`, `only`, `group`, `label`), `reserved` (the gate, its apron and the
+  spawns — never buildable), `materials` (the floor paints) and `max_items`.
+  What was built is not in the file: it is `virtual_space_constructs` in the
+  database (pieces and painted floor), merged onto the base by
+  `VirtualSpace.Construct.Layout.apply/3`.
 - **Adding a kind**: generate the art, add it to `KINDS` in the author, re-run
-  it, add its label to the palette component and the glossary.
+  it, add it to its tab in the palette component and its label to the
+  glossary. A kind that does something on E names its `use`, which
+  `Construct.Layout.use/5` has to know.
 

@@ -20,11 +20,10 @@
 <p>
   {dgettext(
     "help_space",
-    "The palette in the top-left corner holds the pieces: %{chair}, %{table}, %{tree} and %{lamp}. Pick one and click the floor to place it. The piece stays in your hand, so a row of chairs is a row of clicks. A see-through piece shows where it would go: green where it fits, red where it does not. Esc, or picking the same piece again, puts it away.",
-    chair: dgettext("chat", "Chair"),
-    table: dpgettext("chat", "furniture", "Table"),
-    tree: dgettext("chat", "Tree"),
-    lamp: dgettext("chat", "Lamp")
+    "The palette in the top-left corner keeps the pieces in tabs: %{furniture}, %{structure} and %{fun}. Choose one and click the floor to place it. It stays in your hand, so a row of chairs is a row of clicks. A see-through copy shows where it would go: green where it fits, red where it does not. Esc, or choosing it again, puts it away.",
+    furniture: dgettext("chat", "Furniture"),
+    structure: dgettext("chat", "Structure"),
+    fun: dpgettext("chat", "construct palette", "Fun")
   )}
 </p>
 <p>
@@ -34,13 +33,83 @@
     turn: dgettext("chat", "Turn"),
     remove: dgettext("chat", "Remove")
   )}
+  {dgettext(
+    "help_space",
+    "Walls and corners turn like any other piece. A door in a wall lets people through."
+  )}
+</p>
+<.help_h4 icon={:icon_community}>{dgettext("help_space", "Pieces that do something")}</.help_h4>
+<p>
+  {dgettext(
+    "help_space",
+    "Stand next to one of these pieces and press E, or the hand button on a touch screen."
+  )}
+</p>
+<ul>
+  <li>
+    <strong>{dgettext("chat", "Lamp")}</strong>: {dgettext(
+      "help_space",
+      "Switches its light on or off."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("chat", "Door")}</strong>: {dgettext(
+      "help_space",
+      "Press E to open the door, and again to close it. It stays open while someone is in the doorway."
+    )}
+  </li>
+  <li>
+    <strong>{dpgettext("chat", "game piece", "Die")}, {dgettext("chat", "Coin")}</strong>: {dgettext(
+      "help_space",
+      "Press E. The result appears on the piece and in the chat."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("chat", "Teleporter")}</strong>: {dgettext(
+      "help_space",
+      "Press E on one teleporter to arrive at the other one of its pair."
+    )}
+  </li>
+  <li>
+    <strong>{dpgettext("chat", "signpost", "Sign")}</strong>: {dgettext(
+      "help_space",
+      "Shows a short text above it. Whoever put it up can change it, and the moderators can too."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("chat", "Arcade cabinet")}</strong>: {dgettext(
+      "help_space",
+      "Lists the games, and each one opens in a new tab."
+    )}
+  </li>
+  <li>
+    <strong>{dpgettext("chat", "notice board", "Board")}</strong>: {dgettext(
+      "help_space",
+      "Shows the channel's topic and the messages of its %{pinned} list. Only a channel's Construct has one.",
+      pinned: dgettext("chat", "Pinned")
+    )}
+  </li>
+  <li>
+    <strong>{dpgettext("chat", "television", "Screen")}</strong>: {dgettext(
+      "help_space",
+      "Shows the last picture posted in the conversation."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_community}>{dgettext("help_space", "Painting the floor")}</.help_h4>
+<p>
+  {dgettext(
+    "help_space",
+    "In the %{floor} tab, pick a floor, then press and drag: the whole rectangle is painted. %{erase} makes it white again. You can walk on a painted floor and put pieces on it.",
+    floor: dgettext("chat", "Floor"),
+    erase: dgettext("chat", "Erase")
+  )}
 </p>
 <.help_h4 icon={:icon_community}>{dgettext("help_space", "Together")}</.help_h4>
 <p>
   {dgettext("help_space", "Everyone inside sees each change at once.")}
-  {dgettext("help_space", "The room is kept as it was left.")}
-  {dgettext("help_space", "The F key sits your character down on a chair.")}
-  {dgettext("help_space", "A lamp lights the floor around it.")}
+  {dgettext("help_space", "The Construct is kept just as it was left.")}
+  {dgettext("help_space", "Press F next to a chair or an armchair to sit down.")}
   {dgettext(
     "help_space",
     "The Construct is part of the space's gathering: its card stays open while anybody is in either room."

@@ -507,7 +507,10 @@ i18n.repair: ## Repair unusable catalog entries (needs the translation venv)
 	$(I18N_PYTHON) scripts/i18n_repair_catalogs.py --locales $(I18N_REQUIRED_LOCALES) --write
 
 i18n.venv: ## Create the translation venv: polib, Argos and a model for every enabled locale
-	test -x $(I18N_VENV)/bin/python || python3 -m venv $(I18N_VENV)
+	@# A venv under /tmp can be half swept away by the OS: the python link
+	@# survives while pyvenv.cfg and site-packages are gone, and pip then
+	@# refuses it as the system's own environment. Rebuild one that is not whole.
+	test -f $(I18N_VENV)/pyvenv.cfg || (rm -rf $(I18N_VENV) && python3 -m venv $(I18N_VENV))
 	$(I18N_VENV)/bin/python -m pip install --quiet argostranslate polib opencc-python-reimplemented
 	$(I18N_VENV)/bin/python scripts/i18n_install_models.py
 

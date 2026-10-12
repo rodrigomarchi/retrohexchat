@@ -128,9 +128,10 @@ export function normalizeAction(raw = {}) {
 
 /**
  * Normalize a `construct_layout` patch. Lists default to empty and the
- * revision to 0, which no applied patch can be older than.
+ * revision to 0, which no applied patch can be older than. `floor` (the rows
+ * of the painted floor) is sent only by an edit that painted it, else null.
  * @param {object} raw
- * @returns {{revision:number, items:object[], decor:object[], collision:object[], seats:object[], lights:object[]}}
+ * @returns {{revision:number, items:object[], decor:object[], collision:object[], seats:object[], lights:object[], labels:object[], interactables:object[]}}
  */
 export function normalizeLayout(raw = {}) {
   const list = (value) => (Array.isArray(value) ? value : []);
@@ -141,6 +142,9 @@ export function normalizeLayout(raw = {}) {
     collision: list(raw.collision),
     seats: list(raw.seats),
     lights: list(raw.lights),
+    labels: list(raw.labels),
+    interactables: list(raw.interactables),
+    floor: Array.isArray(raw.floor) ? raw.floor : null,
   };
 }
 

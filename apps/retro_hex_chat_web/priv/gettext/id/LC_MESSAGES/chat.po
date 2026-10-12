@@ -800,7 +800,7 @@ msgid "Browser"
 msgstr "Peramban"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:79
-#: lib/retro_hex_chat_web/live/app/space_live.ex:225
+#: lib/retro_hex_chat_web/live/app/space_live.ex:226
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:520
 #, elixir-autogen, elixir-format
 msgid "Cancel"
@@ -1504,7 +1504,7 @@ msgstr ""
 msgid "Nickname %{nickname} is already in use"
 msgstr "Nama panggilan %{nickname} sudah digunakan"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:313
+#: lib/retro_hex_chat_web/live/app/space_live.ex:314
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "No"
@@ -2094,12 +2094,13 @@ msgid "Yellow"
 msgstr "Kuning"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:303
+#: lib/retro_hex_chat_web/live/app/space_live.ex:304
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "Yes"
 msgstr "Ya"
 
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:253
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:215
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:236
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:261
@@ -2925,7 +2926,7 @@ msgstr "%{peer} kehilangan koneksi P2P - menunggu mereka kembali..."
 msgid "Arcade session ended."
 msgstr "Sesi arkade berakhir."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:739
+#: lib/retro_hex_chat_web/live/app/space_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "Ruang Saluran"
@@ -2975,7 +2976,7 @@ msgstr "Perangkat bawaan"
 msgid "End P2P Call Media"
 msgstr "Akhir Media Panggilan P2P"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:743
+#: lib/retro_hex_chat_web/live/app/space_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "Memasuki ruang kanal..."
@@ -3001,7 +3002,7 @@ msgstr "Mute, unmute, or enable your P2P mikrofon"
 msgid "Next P2P Layout"
 msgstr "Tata Letak P2P Berikutnya"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:742
+#: lib/retro_hex_chat_web/live/app/space_live.ex:744
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "Membuka ruang pribadi..."
@@ -3033,14 +3034,14 @@ msgstr "Menghubungkan sesi P2P"
 msgid "P2P session with %{peer} ended."
 msgstr "Sesi P2P dengan %{peer} berakhir."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:738
+#: lib/retro_hex_chat_web/live/app/space_live.ex:740
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "Ruang Pribadi"
 
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:704
+#: lib/retro_hex_chat_web/live/app/space_live.ex:706
 #, elixir-autogen, elixir-format
 msgid "Space"
 msgstr "Ruang"
@@ -3783,7 +3784,7 @@ msgstr "Tindakan percakapan"
 msgid "Participants"
 msgstr "Peserta"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:149
+#: lib/retro_hex_chat_web/live/app/space_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "%{count} in the space"
 msgid_plural "%{count} in the space"
@@ -3799,30 +3800,30 @@ msgstr "Sedang di dalam"
 msgid "Nobody is in here yet."
 msgstr "Belum ada siapa-siapa di sini."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:700
 #: lib/retro_hex_chat_web/live/app/space_live.ex:702
+#: lib/retro_hex_chat_web/live/app/space_live.ex:704
 #, elixir-autogen, elixir-format
 msgid "Space · %{name}"
 msgstr "Ruang · %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:587
-#: lib/retro_hex_chat_web/live/app/space_live.ex:602
-#: lib/retro_hex_chat_web/live/app/space_live.ex:621
+#: lib/retro_hex_chat_web/live/app/space_live.ex:589
+#: lib/retro_hex_chat_web/live/app/space_live.ex:604
+#: lib/retro_hex_chat_web/live/app/space_live.ex:623
 #, elixir-autogen, elixir-format
 msgid "That address does not name a space."
 msgstr "Alamat itu tidak menunjuk ke ruang mana pun."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:633
+#: lib/retro_hex_chat_web/live/app/space_live.ex:635
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
 msgstr "Ruang privat ini milik dua orang lain."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:582
+#: lib/retro_hex_chat_web/live/app/space_live.ex:584
 #, elixir-autogen, elixir-format
 msgid "This space is no longer available."
 msgstr "Ruang ini sudah tidak tersedia."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:649
+#: lib/retro_hex_chat_web/live/app/space_live.ex:651
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "Kamu harus berada di %{channel} untuk masuk ke ruangnya."
@@ -3857,7 +3858,7 @@ msgstr "%{game} · pertandingan"
 msgid "%{peer} is back."
 msgstr "%{peer} sudah kembali."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:654
+#: lib/retro_hex_chat_web/live/app/space_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "This space belongs to a channel you are not in."
 msgstr "Ruang ini milik kanal yang tidak Anda ikuti."
@@ -3996,6 +3997,8 @@ msgstr "Pesan disematkan."
 msgid "Message unpinned."
 msgstr "Sematan dilepas."
 
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:89
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:205
 #, elixir-autogen, elixir-format
 msgid "Pinned"
@@ -4291,7 +4294,7 @@ msgid "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same
 msgstr "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:26
-#: lib/retro_hex_chat_web/live/app/space_live.ex:144
+#: lib/retro_hex_chat_web/live/app/space_live.ex:145
 #, elixir-autogen, elixir-format
 msgid "Change character"
 msgstr "Ganti karakter"
@@ -4309,141 +4312,138 @@ msgstr "Ucapkan"
 msgid "Say something"
 msgstr "Katakan sesuatu"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:729
-#: lib/retro_hex_chat_web/live/app/space_live.ex:735
+#: lib/retro_hex_chat_web/live/app/space_live.ex:731
+#: lib/retro_hex_chat_web/live/app/space_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Say something to %{name}..."
 msgstr "Katakan sesuatu pada %{name}..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:730
+#: lib/retro_hex_chat_web/live/app/space_live.ex:732
 #, elixir-autogen, elixir-format
 msgid "Say something..."
 msgstr "Katakan sesuatu..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:280
+#: lib/retro_hex_chat_web/live/app/space_live.ex:281
 #, elixir-autogen, elixir-format
 msgid "%{name} is back on their feet."
 msgstr "%{name} kembali berdiri."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:279
+#: lib/retro_hex_chat_web/live/app/space_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "%{name} is knocked out!"
 msgstr "%{name} rusak!"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:24
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:32
 #, elixir-autogen, elixir-format
 msgid "Build"
 msgstr "Bangun"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:29
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:24
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:207
 #, elixir-autogen, elixir-format
 msgid "Chair"
 msgstr "Kursi"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:696
-#: lib/retro_hex_chat_web/live/app/space_live.ex:737
+#: lib/retro_hex_chat_web/live/app/space_live.ex:698
+#: lib/retro_hex_chat_web/live/app/space_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Construct"
 msgstr "Konstruk"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:294
+#: lib/retro_hex_chat_web/live/app/space_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Go back to the End of Time?"
 msgstr "Kembali ke akhir waktu?"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:108
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:243
 #, elixir-autogen, elixir-format
 msgid "Keep the way to the gate clear."
 msgstr "Jaga jalan ke gerbang aman."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:32
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:27
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:211
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Lamp"
 msgstr "Lampu"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:741
+#: lib/retro_hex_chat_web/live/app/space_live.ex:743
 #, elixir-autogen, elixir-format
 msgid "Loading the Construct..."
 msgstr "Memuat Konstruk..."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:65
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:72
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:112
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:122
 #, elixir-autogen, elixir-format
 msgid "Pick a piece, then click the floor. Drag a piece to move it, right-click to remove it."
 msgstr "Pilih sepotong, kemudian klik lantai. Tarik sepotong untuk memindahkannya, klik kanan untuk menghapusnya."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:52
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:53
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:57
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:35
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:99
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:100
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:104
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Hapus"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:111
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:246
 #, elixir-autogen, elixir-format
 msgid "Somebody is sitting in it."
 msgstr "Seseorang duduk di dalamnya."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:113
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:248
 #, elixir-autogen, elixir-format
 msgid "That is off the floor."
 msgstr "Itu dari lantai."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:115
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:256
 #, elixir-autogen, elixir-format
 msgid "That piece cannot go there."
 msgstr "Bagian itu tidak bisa pergi ke sana."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:112
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:247
 #, elixir-autogen, elixir-format
 msgid "The Construct is full."
 msgstr "Konstruk sudah penuh."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:31
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:26
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:212
 #, elixir-autogen, elixir-format
 msgid "Tree"
 msgstr "Pohon"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:39
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:40
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:44
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:34
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:86
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:87
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:91
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Turn"
 msgstr "Putar"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:25
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:209
 #, elixir-autogen, elixir-format
 msgctxt "furniture"
 msgid "Table"
 msgstr "Meja"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:293
+#: lib/retro_hex_chat_web/live/app/space_live.ex:294
 #, elixir-autogen, elixir-format
 msgid "Go into the Construct?"
 msgstr "Pergi ke Konstruk?"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:107
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:242
 #, elixir-autogen, elixir-format
 msgid "Somebody is standing on that spot."
 msgstr "Seseorang berdiri di tempat itu."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:110
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:245
 #, elixir-autogen, elixir-format
 msgid "That would leave somebody with no way back to the gate."
 msgstr "Itu akan meninggalkan seseorang tanpa jalan kembali ke gerbang."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:106
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:241
 #, elixir-autogen, elixir-format
 msgid "There is already a piece on that spot."
 msgstr "Sudah ada bagian di tempat itu."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:114
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:249
 #, elixir-autogen, elixir-format
 msgid "Only one piece at a time, please wait."
 msgstr "Hanya satu per satu, silakan tunggu."
@@ -4452,3 +4452,216 @@ msgstr "Hanya satu per satu, silakan tunggu."
 #, elixir-autogen, elixir-format
 msgid "Use"
 msgstr "Gunakan"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:228
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:80
+#, elixir-autogen, elixir-format
+msgid "Arcade cabinet"
+msgstr "Mesin arcade"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:208
+#, elixir-autogen, elixir-format
+msgid "Armchair"
+msgstr "Kursi berlengan"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:183
+#, elixir-autogen, elixir-format
+msgid "Blue carpet"
+msgstr "Karpet biru"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:210
+#, elixir-autogen, elixir-format
+msgid "Bookshelf"
+msgstr "Rak buku"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:184
+#, elixir-autogen, elixir-format
+msgid "Checkerboard"
+msgstr "Papan catur"
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:54
+#, elixir-autogen, elixir-format
+msgid "Close"
+msgstr "Tutup"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:226
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "Coin"
+msgstr "Koin"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:219
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Door"
+msgstr "Pintu"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:190
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:105
+#, elixir-autogen, elixir-format
+msgid "Erase"
+msgstr "Hapus"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "Floor"
+msgstr "Lantai"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:205
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Furniture"
+msgstr "Perabot"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:181
+#, elixir-autogen, elixir-format
+msgid "Grass"
+msgstr "Rumput"
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:70
+#, elixir-autogen, elixir-format
+msgid "Nobody has posted a picture here yet."
+msgstr "Belum ada yang memposting foto di sini."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:251
+#, elixir-autogen, elixir-format
+msgid "Only whoever put up this sign can change it."
+msgstr "Hanya siapa pun yang memasang tanda ini dapat mengubahnya."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:213
+#, elixir-autogen, elixir-format
+msgid "Plant"
+msgstr "Tanaman"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:182
+#, elixir-autogen, elixir-format
+msgid "Red carpet"
+msgstr "Karpet merah"
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:41
+#, elixir-autogen, elixir-format
+msgid "Save"
+msgstr "Simpan"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:180
+#, elixir-autogen, elixir-format
+msgid "Stone"
+msgstr "Batu"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:215
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Structure"
+msgstr "Struktur"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:224
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "Teleporter"
+msgstr "Teleporter"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:254
+#, elixir-autogen, elixir-format
+msgid "That floor cannot be painted."
+msgstr "Lantai itu tidak bisa dicat."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:255
+#, elixir-autogen, elixir-format
+msgid "That piece cannot be built here."
+msgstr "Benda itu tak bisa dibangun di sini."
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:69
+#, elixir-autogen, elixir-format
+msgid "This channel has no topic and nothing pinned yet."
+msgstr "Saluran ini tidak memiliki topik dan tidak disematkan belum."
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:71
+#, elixir-autogen, elixir-format
+msgid "Topic"
+msgstr "Topik"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:217
+#, elixir-autogen, elixir-format
+msgid "Wall"
+msgstr "Dinding"
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:36
+#, elixir-autogen, elixir-format
+msgid "What the sign says"
+msgstr "Apa tanda mengatakan"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:179
+#, elixir-autogen, elixir-format
+msgid "Wood"
+msgstr "Kayu"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:221
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:26
+#, elixir-autogen, elixir-format
+msgctxt "construct palette"
+msgid "Fun"
+msgstr "Hiburan"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:225
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:62
+#, elixir-autogen, elixir-format
+msgctxt "game piece"
+msgid "Die"
+msgstr "Dadu"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:229
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:65
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:86
+#, elixir-autogen, elixir-format
+msgctxt "notice board"
+msgid "Board"
+msgstr "Papan pengumuman"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:227
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:64
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:74
+#, elixir-autogen, elixir-format
+msgctxt "signpost"
+msgid "Sign"
+msgstr "Papan"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:230
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:66
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:93
+#, elixir-autogen, elixir-format
+msgctxt "television"
+msgid "Screen"
+msgstr "Layar"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:218
+#, elixir-autogen, elixir-format
+msgctxt "wall"
+msgid "Corner"
+msgstr "Sudut"
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:68
+#, elixir-autogen, elixir-format
+msgid "Nothing is written on this signboard yet."
+msgstr "Tidak ada yang tertulis di papan tanda ini belum."
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:74
+#, elixir-autogen, elixir-format
+msgid "Opens in another browser tab."
+msgstr "Buka dalam tab peramban lain."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:252
+#, elixir-autogen, elixir-format
+msgid "That line is too long for the signboard."
+msgstr "Jalur itu terlalu panjang untuk papan tanda."
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:73
+#, elixir-autogen, elixir-format
+msgid "Sent by %{name}"
+msgstr "Dikirim oleh %{name}"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:118
+#, elixir-autogen, elixir-format
+msgid "Press on the floor and drag: the whole rectangle is painted."
+msgstr "Tekan di lantai dan tarik: seluruh persegi panjang dicat."

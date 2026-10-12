@@ -110,6 +110,56 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "zh_hans": ("大写",),
         "zh_hant": ("大寫",),
     },
+    # The Construct's pieces, measured on their help and their panels: a
+    # sign came back as a signal ("sinal"), a piece as a scrap ("pedaço"), a
+    # pinned message as a stuck one ("presas"), a browser tab as a page. A
+    # sign is never the verb of signing in, up or out.
+    r"\bsigns?\b(?![\s-]*(?:in|up|out|on|off)\b)": {
+        "pt": ("placa", "letreiro", "tabuleta"),
+        "es": ("letrero", "cartel"),
+        "fr": ("panneau", "pancarte"),
+        "de": ("schild",),
+        "it": ("cartell", "insegna"),
+        "nl": ("bord",),
+        "ru": ("табличк", "вывеск"),
+        "ja": ("看板",),
+        "zh_hans": ("标牌", "牌子"),
+        "zh_hant": ("標牌", "牌子"),
+    },
+    # A die is the game's cube: "rolled the die" came back in Spanish as "la
+    # muerte", in French as "la matrice".
+    r"\b(?:dice|the die|a die)\b": {
+        "pt": ("dado",),
+        "es": ("dado",),
+        "fr": ("dé",),
+        "de": ("würfel",),
+        "it": ("dad",),
+        "nl": ("dobbelst",),
+        "pl": ("kostk",),
+        "ru": ("кубик", "кост"),
+        "id": ("dadu",),
+        "ja": ("サイコロ", "ダイス"),
+        "zh_hans": ("骰子",),
+        "zh_hant": ("骰子",),
+    },
+    r"\bpieces?\b": {
+        "pt": ("peça",),
+        "es": ("pieza",),
+        "fr": ("pièce", "élément", "objet"),
+        "de": ("stück", "teil", "objekt"),
+    },
+    r"\bpinned\b": {
+        "pt": ("fixad", "afixad", "fixou"),
+        "es": ("fijad", "anclad"),
+        "fr": ("épingl",),
+        "de": ("angeheftet", "pinn", "fixiert"),
+    },
+    r"\bnew tab\b": {
+        "pt": ("aba", "separador", "guia"),
+        "es": ("pestaña",),
+        "fr": ("onglet",),
+        "de": ("tab",),
+    },
 }
 
 TERMS: tuple[tuple[re.Pattern[str], dict[str, tuple[str, ...]]], ...] = tuple(
@@ -178,6 +228,9 @@ _FOREIGN_FORMS: dict[str, tuple[str, ...]] = {
         "seleccionada",
         "seleccionado",
         "rode a peça",
+        # "...como o deixaste": the European "tu" preterite of leaving, on the
+        # Construct's help.
+        "deixaste",
     ),
 }
 

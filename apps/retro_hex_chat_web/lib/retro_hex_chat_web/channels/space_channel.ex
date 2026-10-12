@@ -17,7 +17,11 @@ defmodule RetroHexChatWeb.SpaceChannel do
   alias RetroHexChat.VirtualSpace.ChannelJoinToken
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChatWeb.SpaceAssets
+  alias RetroHexChatWeb.SpacePanels
   alias RetroHexChatWeb.SpaceSessionAnnouncement
+
+  # A sign holds a short line; anything far past it is not a sign edit at all.
+  @label_bytes 400
 
   @impl true
   def join("space:#" <> channel_tail, params, socket) do
@@ -125,8 +129,9 @@ defmodule RetroHexChatWeb.SpaceChannel do
   def handle_in("space_interact", payload, socket) do
     with %{space_kind: kind, space_id: space_id, participant_key: key} <- socket.assigns,
          {:ok, interact} <- parse_interact(payload),
-         {:ok, %{modal: modal}} <- dispatch_interact(kind, space_id, key, interact) do
-      push(socket, "space_modal", modal)
+         {:ok, %{modal: modal}} <-
+           dispatch_interact(kind, space_id, key, interact, socket.assigns[:nickname]) do
+      push(socket, "space_modal", SpacePanels.fill(modal, space_id, socket.assigns[:nickname]))
     end
 
     {:noreply, socket}
@@ -329,6 +334,22 @@ defmodule RetroHexChatWeb.SpaceChannel do
   defp parse_build(%{"op" => "rotate", "item_id" => id}) when is_binary(id),
     do: {:ok, {:rotate, id}}
 
+  defp parse_build(%{"op" => "label", "item_id" => id, "text" => text})
+       when is_binary(id) and is_binary(text) and byte_size(text) <= @label_bytes,
+       do: {:ok, {:label, id, text}}
+
+  defp parse_build(%{
+         "op" => "paint",
+         "x0" => x0,
+         "y0" => y0,
+         "x1" => x1,
+         "y1" => y1,
+         "material" => material
+       })
+       when is_integer(x0) and is_integer(y0) and is_integer(x1) and is_integer(y1) and
+              is_binary(material),
+       do: {:ok, {:paint, x0, y0, x1, y1, material}}
+
   defp parse_build(_payload), do: :error
 
   # The viewer picked their class on the entry screen; naming it at join means
@@ -389,10 +410,11 @@ defmodule RetroHexChatWeb.SpaceChannel do
   defp dispatch_input(:direct_message, space_id, key, payload),
     do: VirtualSpace.input_direct_message(space_id, key, payload)
 
-  defp dispatch_interact(kind, space_id, key, payload) when kind in [:channel, :construct],
-    do: VirtualSpace.interact(space_id, key, payload)
+  defp dispatch_interact(kind, space_id, key, payload, nickname)
+       when kind in [:channel, :construct],
+       do: VirtualSpace.interact(space_id, key, payload, nickname)
 
-  defp dispatch_interact(:direct_message, space_id, key, payload),
+  defp dispatch_interact(:direct_message, space_id, key, payload, _nickname),
     do: VirtualSpace.interact_direct_message(space_id, key, payload)
 
   defp dispatch_action(kind, space_id, key, payload) when kind in [:channel, :construct],

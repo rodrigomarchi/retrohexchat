@@ -6,15 +6,22 @@ deep-blue sea, twinkling stars and vignette, under a dark slab like the
 islands' — with one way out: a white-marble gate whose arch holds that sky.
 Everything else on it is placed by the people inside. The scene therefore
 carries no furniture of its own, only the **catalog** of what can be placed:
-each kind's tile per facing, whether it can be sat on, and the light it casts.
+each kind's tile per facing, whether it can be sat on, the light it casts,
+what pressing E on it does, and the sprites it wears in each of its states —
+and the floor **materials** the floor can be painted with.
 
 Reads the PixelLab art in ``virtual.space/scenes/construct/`` and emits the
 packed ``construct.webp`` sheet and ``priv/maps/construct.json``.
 
-The floor diamond is drawn here, not generated. It reuses the End of Time
-floor's own alpha, so it is exactly the diamond the projection tessellates,
-filled flat white with a faint grey seam that gives builders a grid to place
-on. Deterministic.
+The floor diamonds are drawn here, not generated. They reuse the End of Time
+floor's own alpha, so each is exactly the diamond the projection tessellates:
+the white floor with a faint grey seam that gives builders a grid to place
+on, and one painted diamond per material. So are the variants a piece needs
+that are the same art seen differently — a lamp switched off, a silver coin,
+the four corners cut from the wall. Deterministic.
+
+Floor tile ids are one character each ("w" white, "g" the void, a digit per
+material), so a floor row is a string and the whole floor travels small.
 """
 import json
 import os
@@ -38,10 +45,12 @@ T = 32
 MARGIN = 8
 FLOOR = 48
 W = H = FLOOR + 2 * MARGIN
-SHEET_COLS = 10
-SHEET_ROWS = 5
+SHEET_COLS = 24
 Z_STEP = 16
 MAX_ITEMS = 400
+
+WHITE = "w"
+VOID = "g"
 
 FLOOR_FILL = (247, 248, 251, 255)
 FLOOR_SEAM = (214, 219, 228, 255)
@@ -61,18 +70,55 @@ SEA = {"top": "0c1e42", "bottom": "05060f", "band": "1a3d7a", "bands": 9, "amp":
 VIGNETTE = {"color": "04050c", "alpha": 0.78, "inner": 0.36}
 
 # Placeable kinds: art file and how the kind behaves once placed. The art faces
-# screen down-left, which is tile "down"; its mirror is tile "right".
+# screen down-left, which is tile "down"; its mirror is tile "right". `group`
+# is the palette tab; `use` is what E does (see `Construct.Layout.use/5`);
+# `states` names the variant art a state wears, made by `VARIANTS`.
+LAMP_LIGHTS = [
+    {"radius": 2.4, "color": "ffd591", "blend": "add"},
+    {"lift": 72, "radius": 1.0, "color": "ffe6a8", "blend": "add"},
+]
+# A line a piece shows floats over it white on a dark outline, readable over
+# the white floor and the night sky alike.
+SIGN_INK = {"color": "ffffff", "glow": "1b1f2a"}
+
 KINDS = {
-    "chair": {"file": "chair.png", "seat": True},
-    "table": {"file": "table.png"},
-    "tree": {"file": "tree.png"},
-    "lamp": {
-        "file": "lamp.png",
-        "lights": [
-            {"radius": 2.4, "color": "ffd591", "blend": "add"},
-            {"lift": 72, "radius": 1.0, "color": "ffe6a8", "blend": "add"},
-        ],
-    },
+    "chair": {"file": "chair.png", "seat": True, "group": "furniture"},
+    "armchair": {"file": "armchair.png", "seat": True, "group": "furniture"},
+    "table": {"file": "table.png", "group": "furniture"},
+    "bookshelf": {"file": "bookshelf.png", "group": "furniture"},
+    "lamp": {"file": "lamp.png", "lights": LAMP_LIGHTS, "group": "furniture",
+             "use": "toggle_light", "states": {"off": "lamp_off"}},
+    "tree": {"file": "tree.png", "group": "furniture"},
+    "plant": {"file": "plant.png", "group": "furniture"},
+    "wall": {"file": "wall.png", "group": "structure"},
+    "corner": {"group": "structure", "dirs": ["down", "right", "up", "left"],
+               "tiles": {"down": "corner_up", "right": "corner_right",
+                         "up": "corner_down", "left": "corner_left"}},
+    "door": {"file": "door.png", "group": "structure", "use": "door",
+             "states": {"open": "door_open"}},
+    "teleporter": {"file": "teleporter.png", "group": "fun", "use": "teleport",
+                   "blocks": False,
+                   "lights": [{"radius": 1.4, "color": "7fe8ff", "blend": "add"}]},
+    "die": {"file": "die.png", "group": "fun", "use": "roll_die",
+            "label": {"w": 1, "lift": 34, **SIGN_INK}},
+    "coin": {"file": "coin.png", "group": "fun", "use": "flip_coin",
+             "states": {"tails": "coin_tails"}},
+    "sign": {"file": "sign.png", "group": "fun", "use": "sign",
+             "label": {"w": 3, "lift": 66, **SIGN_INK}},
+    "arcade": {"file": "arcade.png", "group": "fun", "use": "arcade"},
+    "board": {"file": "board.png", "group": "fun", "use": "board", "only": ["channel"]},
+    "screen": {"file": "screen.png", "group": "fun", "use": "screen"},
+}
+
+# Floor paint: id → (tile char, fill colours). A painted diamond keeps the
+# white floor's seam so the grid still reads under it.
+MATERIALS = {
+    "wood": ("1", [(176, 122, 74), (160, 108, 62)]),
+    "stone": ("2", [(160, 164, 172), (140, 145, 154)]),
+    "grass": ("3", [(108, 170, 84), (92, 152, 72)]),
+    "carpet_red": ("4", [(170, 52, 58), (156, 44, 52)]),
+    "carpet_blue": ("5", [(60, 92, 170), (52, 80, 154)]),
+    "checker": ("6", [(240, 240, 236), (52, 54, 62)]),
 }
 
 
@@ -101,14 +147,16 @@ def _place(sheet, vocab, name, im, col, row, native=False):
     return col + w
 
 
-def _floor_tile():
-    """A flat white diamond on the End of Time floor's exact alpha: interior
-    pixels filled, pixels on the diamond's edge drawn as a light seam."""
+def _floor_tile(fill=None, seam=FLOOR_SEAM):
+    """A flat diamond on the End of Time floor's exact alpha: interior pixels
+    filled by `fill(x, y)` (white by default), pixels on the diamond's edge
+    drawn as a light seam."""
     shape = Image.open(EOT_FLOOR).convert("RGBA")
     w, h = shape.size
     src = shape.load()
     out = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     dst = out.load()
+    fill = fill or (lambda _x, _y: FLOOR_FILL)
 
     def solid(x, y):
         return 0 <= x < w and 0 <= y < h and src[x, y][3] >= 128
@@ -118,48 +166,175 @@ def _floor_tile():
             if not solid(x, y):
                 continue
             edge = not all(solid(x + dx, y + dy) for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))
-            dst[x, y] = FLOOR_SEAM if edge else FLOOR_FILL
+            dst[x, y] = seam if edge else fill(x, y)
     return out
+
+
+def _material_tile(material, colours):
+    """One painted diamond. Wood runs in planks along the iso axis, stone and
+    grass are mottled, carpets are plain, the checker is a 2×2 board."""
+    a, b = colours
+    w, h = Image.open(EOT_FLOOR).size
+
+    def mottled(x, y):
+        return b if ((x * 7 + y * 13) ^ (x * y)) % 5 == 0 else a
+
+    def planks(x, y):
+        return b if (x + 2 * y) % 12 in (0, 1) else a
+
+    def checker(x, y):
+        u, v = x / w + y / h, x / w - y / h + 1
+        return a if (int(u * 2) + int(v * 2)) % 2 == 0 else b
+
+    fill = {"wood": planks, "stone": mottled, "grass": mottled, "checker": checker}.get(
+        material, lambda _x, _y: a
+    )
+    return _floor_tile(lambda x, y: (*fill(x, y), 255),
+                       seam=tuple(max(0, c - 28) for c in a) + (255,))
+
+
+def _lamp_off(im):
+    """The lamp switched off: its glowing shade (the bright warm pixels) dimmed
+    to unlit fabric, the brass and the pole untouched."""
+    out = im.copy()
+    px = out.load()
+    for y in range(out.height):
+        for x in range(out.width):
+            r, g, b, a = px[x, y]
+            if a and r > 170 and g > 120 and r >= b:
+                px[x, y] = (int(r * 0.55), int(g * 0.5), int(b * 0.5), a)
+    return out
+
+
+def _coin_tails(im):
+    """The coin's other face: the same coin struck in silver, mirrored."""
+    out = im.transpose(Image.FLIP_LEFT_RIGHT)
+    px = out.load()
+    for y in range(out.height):
+        for x in range(out.width):
+            r, g, b, a = px[x, y]
+            if a and r > 150 and g > 100 and b < 120:
+                v = (r + g + b) // 3
+                px[x, y] = (v, v + 4, min(255, v + 18), a)
+    return out
+
+
+def _wall_halves(wall):
+    """The wall cut down its middle: the half rising from the near-left end to
+    the centre, and the half running on from the centre to the far-right end."""
+    mid = wall.width // 2
+    left = Image.new("RGBA", wall.size, (0, 0, 0, 0))
+    right = Image.new("RGBA", wall.size, (0, 0, 0, 0))
+    left.alpha_composite(wall.crop((0, 0, mid, wall.height)), (0, 0))
+    right.alpha_composite(wall.crop((mid, 0, wall.width, wall.height)), (mid, 0))
+    return left, right
+
+
+def _corners(wall):
+    """The four corners a run of wall turns through, each two half walls meeting
+    at the tile's centre: pointing away (up), toward the viewer (down), left and
+    right. The far half draws first so the near one covers the joint."""
+    left, right = _wall_halves(wall)
+    flip = Image.FLIP_LEFT_RIGHT
+
+    def join(far, near):
+        out = far.copy()
+        out.alpha_composite(near)
+        return out
+
+    return {
+        "corner_up": join(left.transpose(flip), left),
+        "corner_down": join(right, right.transpose(flip)),
+        "corner_left": join(right.transpose(flip), left),
+        "corner_right": join(right, left.transpose(flip)),
+    }
+
+
+class _Shelf:
+    """Packs blocks left to right in rows of the sheet, a new row starting when
+    one is full; each row is as tall as its tallest block."""
+
+    def __init__(self, sheet, vocab):
+        self.sheet, self.vocab = sheet, vocab
+        self.col = self.row = self.row_h = 0
+
+    def put(self, name, im, native=False):
+        w, h = _cells(im.width, im.height)
+        if self.col + w > SHEET_COLS:
+            self.col, self.row, self.row_h = 0, self.row + self.row_h, 0
+        if (self.row + h) * T > self.sheet.height:
+            raise AssertionError(f"{name}: the sheet is full at row {self.row}")
+        self.col = _place(self.sheet, self.vocab, name, im, self.col, self.row, native)
+        self.row_h = max(self.row_h, h)
+
+
+def _art(name):
+    return _crop(Image.open(os.path.join(SRC, name)).convert("RGBA"))
 
 
 def build():
     floor = _floor_tile()
     fw, fh = floor.size
-    sheet = Image.new("RGBA", (SHEET_COLS * T, SHEET_ROWS * T), (0, 0, 0, 0))
-    vocab = {"g": {"col": SHEET_COLS - 1, "row": 0, "w": 1, "h": 1}}
+    sheet = Image.new("RGBA", (SHEET_COLS * T, 16 * T), (0, 0, 0, 0))
+    vocab = {}
+    shelf = _Shelf(sheet, vocab)
 
-    _place(sheet, vocab, "cst_floor", floor, 0, 0, native=True)
-
-    col = 0
-    row = 1
-    col = _place(sheet, vocab, "cst_exit", _crop(Image.open(os.path.join(SRC, "exit.png")).convert("RGBA")), col, row)
-
-    catalog = {}
-    for kind, spec in KINDS.items():
-        im = _crop(Image.open(os.path.join(SRC, spec["file"])).convert("RGBA"))
-        name = f"cst_{kind}"
-        col = _place(sheet, vocab, name, im, col, row)
-        if col > SHEET_COLS - 1:
-            raise AssertionError(f"{name}: sheet is {SHEET_COLS} columns, packing reached {col}")
-        if im.height > (SHEET_ROWS - row) * T:
-            raise AssertionError(f"{name}: {im.height}px does not fit under row {row}")
-        vocab[f"{name}_r"] = dict(vocab[name], flip_x=True)
-        entry = {"tiles": {"down": name, "right": f"{name}_r"}}
-        if spec.get("seat"):
-            entry["seat"] = True
-        if spec.get("lights"):
-            entry["lights"] = spec["lights"]
-        catalog[kind] = entry
-
-    # The End of Time's twinkling star, drawn the same way into this sheet.
-    srow = SHEET_ROWS - 1
+    # Row 0: the void ground, the star, the floors.
+    shelf.put(VOID, Image.new("RGBA", (T, T), (0, 0, 0, 0)))
+    star_col = shelf.col
     for i, r in enumerate((1, 2, 3, 2)):
         star = Image.new("RGBA", (T, T), (0, 0, 0, 0))
         c = T // 2
         ImageDraw.Draw(star).ellipse([c - r, c - r, c + r, c + r], fill=(232, 238, 255, 255))
-        sheet.alpha_composite(star, ((SHEET_COLS - 5 + i) * T, srow * T))
-    vocab["iso_star"] = {"col": SHEET_COLS - 5, "row": srow, "w": 1, "h": 1,
+        shelf.put(f"_star{i}", star)
+    vocab["iso_star"] = {"col": star_col, "row": 0, "w": 1, "h": 1,
                          "frames": 4, "period_ms": 1100}
+    for i in range(4):
+        del vocab[f"_star{i}"]
+    shelf.put(WHITE, floor, native=True)
+    materials = []
+    for material, (char, colours) in MATERIALS.items():
+        shelf.put(char, _material_tile(material, colours), native=True)
+        materials.append({"id": material, "tile": char})
+
+    shelf.put("cst_exit", _art("exit.png"))
+
+    wall = _art("wall.png")
+    variants = {"lamp_off": _lamp_off(_art("lamp.png")),
+                "coin_tails": _coin_tails(_art("coin.png")),
+                **_corners(wall)}
+    door_open = os.path.join(SRC, "door_open.png")
+    variants["door_open"] = _art("door_open.png") if os.path.exists(door_open) else _art("door.png")
+
+    catalog = {}
+    for kind, spec in KINDS.items():
+        if "file" in spec:
+            name = f"cst_{kind}"
+            shelf.put(name, _art(spec["file"]))
+            vocab[f"{name}_r"] = dict(vocab[name], flip_x=True)
+            tiles = {"down": name, "right": f"{name}_r"}
+        else:
+            tiles = {}
+            for dir_, variant in spec["tiles"].items():
+                name = f"cst_{variant}"
+                if name not in vocab:
+                    shelf.put(name, variants[variant])
+                tiles[dir_] = name
+        entry = {"tiles": tiles, "group": spec["group"]}
+        for state, variant in spec.get("states", {}).items():
+            name = f"cst_{variant}"
+            shelf.put(name, variants[variant])
+            vocab[f"{name}_r"] = dict(vocab[name], flip_x=True)
+            entry.setdefault("states", {})[state] = {"down": name, "right": f"{name}_r"}
+        for key in ("seat", "lights", "use", "only", "dirs", "label"):
+            if key in spec:
+                entry[key] = spec[key]
+        if spec.get("blocks") is False:
+            entry["blocks"] = False
+        catalog[kind] = entry
+
+    rows_used = shelf.row + shelf.row_h
+    sheet = sheet.crop((0, 0, SHEET_COLS * T, rows_used * T))
 
     def on_floor(x, y):
         return X0 <= x <= X1 and Y0 <= y <= Y1
@@ -194,7 +369,7 @@ def build():
         "width": W,
         "height": H,
         "tile_size": T,
-        "ground": "g",
+        "ground": VOID,
         "columns": SHEET_COLS,
         "projection": "isometric",
         "iso": {"tile_w": fw, "tile_h": fh, "z_step": Z_STEP, "headroom": 8},
@@ -202,7 +377,7 @@ def build():
         "vignette": VIGNETTE,
         "slabs": [{"thickness": 10, "taper": 0.78, "hull": [X0, X1, Y0, Y1]}],
         "vocab": vocab,
-        "floor": [["cst_floor" if on_floor(x, y) else "g" for x in range(W)] for y in range(H)],
+        "floor": ["".join(WHITE if on_floor(x, y) else VOID for x in range(W)) for y in range(H)],
         "decor": stars + [{"x": EXIT[0], "y": EXIT[1], "tile": "cst_exit", "sort": "stand"}],
         "collision": void + [{"x": EXIT[0], "y": EXIT[1], "w": 1, "h": 1, "kind": "prop"}],
         "spawn": SPAWN,
@@ -223,6 +398,7 @@ def build():
         ],
         "reserved": reserved,
         "catalog": catalog,
+        "materials": materials,
         "max_items": MAX_ITEMS,
     }
 
@@ -234,7 +410,7 @@ def build():
     with open(MAP_OUT, "w") as out:
         json.dump(layout, out)
     print(f"OK construct: sheet={sheet.size} diamond={fw}x{fh} kinds={sorted(catalog)} "
-          f"reserved={len(reserved)}")
+          f"materials={len(materials)} reserved={len(reserved)}")
 
 
 if __name__ == "__main__":

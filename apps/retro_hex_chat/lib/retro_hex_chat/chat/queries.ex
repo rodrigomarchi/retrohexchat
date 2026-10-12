@@ -461,6 +461,63 @@ defmodule RetroHexChat.Chat.Queries do
     |> Repo.insert()
   end
 
+  @typedoc "The newest picture posted in a conversation, as a screen shows it."
+  @type latest_image :: %{
+          id: integer(),
+          filename: String.t(),
+          author: String.t(),
+          posted_at: DateTime.t()
+        }
+
+  @doc """
+  The newest image attached to a line still standing in a channel, or in the
+  private conversation between two people.
+  """
+  @spec latest_image({:channel, String.t()} | {:direct_message, [String.t()]}) ::
+          latest_image() | nil
+  def latest_image({:channel, channel_name}) do
+    from(a in Attachment,
+      join: f in UploadedFile,
+      on: f.id == a.file_id,
+      join: m in Message,
+      on: m.id == a.message_id,
+      where: m.channel_name == ^channel_name and is_nil(m.deleted_at),
+      where: f.preview_kind == "image" and f.preview_status == "ready",
+      order_by: [desc: a.id],
+      limit: 1,
+      select: %{
+        id: a.id,
+        filename: a.display_filename,
+        author: m.author_nickname,
+        posted_at: a.inserted_at
+      }
+    )
+    |> Repo.one()
+  end
+
+  def latest_image({:direct_message, [nick_a, nick_b]}) do
+    from(a in Attachment,
+      join: f in UploadedFile,
+      on: f.id == a.file_id,
+      join: pm in PrivateMessage,
+      on: pm.id == a.private_message_id,
+      where: is_nil(pm.deleted_at),
+      where:
+        (matches(pm.sender_nickname, nick_a) and matches(pm.recipient_nickname, nick_b)) or
+          (matches(pm.sender_nickname, nick_b) and matches(pm.recipient_nickname, nick_a)),
+      where: f.preview_kind == "image" and f.preview_status == "ready",
+      order_by: [desc: a.id],
+      limit: 1,
+      select: %{
+        id: a.id,
+        filename: a.display_filename,
+        author: pm.sender_nickname,
+        posted_at: a.inserted_at
+      }
+    )
+    |> Repo.one()
+  end
+
   @spec get_attachment(integer() | String.t()) :: Attachment.t() | nil
   def get_attachment(id) do
     id

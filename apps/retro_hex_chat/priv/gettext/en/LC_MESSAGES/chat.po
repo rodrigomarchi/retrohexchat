@@ -500,12 +500,12 @@ msgstr "Toggle Conference Microphone"
 msgid "Attachment could not be attached to the message"
 msgstr "Attachment could not be attached to the message"
 
-#: lib/retro_hex_chat/chat/attachments.ex:275
+#: lib/retro_hex_chat/chat/attachments.ex:280
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "Attachment exceeds the %{mb} MB limit"
 
-#: lib/retro_hex_chat/chat/attachments.ex:270
+#: lib/retro_hex_chat/chat/attachments.ex:275
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "Attachment is empty"
@@ -515,9 +515,9 @@ msgstr "Attachment is empty"
 msgid "Unsupported message format"
 msgstr "Unsupported message format"
 
-#: lib/retro_hex_chat/chat/attachments.ex:315
-#: lib/retro_hex_chat/chat/attachments.ex:397
+#: lib/retro_hex_chat/chat/attachments.ex:320
 #: lib/retro_hex_chat/chat/attachments.ex:402
+#: lib/retro_hex_chat/chat/attachments.ex:407
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "file"
@@ -646,7 +646,7 @@ msgstr "This server already answers to that name."
 msgid "This server already has %{count} emoji."
 msgstr "This server already has %{count} emoji."
 
-#: lib/retro_hex_chat/chat/attachments.ex:309
+#: lib/retro_hex_chat/chat/attachments.ex:314
 #, elixir-autogen, elixir-format
 msgid "A recording cannot be sent as %{type}"
 msgstr "A recording cannot be sent as %{type}"
@@ -671,3 +671,18 @@ msgstr "Type something to say first."
 #, elixir-autogen, elixir-format
 msgid "You are muted by an administrator"
 msgstr "You are muted by an administrator"
+
+#: lib/retro_hex_chat/virtual_space.ex:321
+#, elixir-autogen, elixir-format
+msgid "threw the coin, and it landed gold side up"
+msgstr "threw the coin, and it landed gold side up"
+
+#: lib/retro_hex_chat/virtual_space.ex:324
+#, elixir-autogen, elixir-format
+msgid "threw the coin, and it landed silver side up"
+msgstr "threw the coin, and it landed silver side up"
+
+#: lib/retro_hex_chat/virtual_space.ex:317
+#, elixir-autogen, elixir-format
+msgid "threw the dice and got %{face}"
+msgstr "threw the dice and got %{face}"

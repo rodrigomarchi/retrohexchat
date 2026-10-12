@@ -34,4 +34,17 @@ defmodule RetroHexChat.VirtualSpace.Events do
       %{channel: construct_id, op: elem(op, 0), result: result}
     )
   end
+
+  @doc """
+  Somebody pressed E on a piece in a Construct: which kind, and whether it
+  did something or why it did not.
+  """
+  @spec emit_construct_use(String.t(), String.t(), :ok | atom()) :: :ok
+  def emit_construct_use(construct_id, kind, result) do
+    :telemetry.execute(
+      [:retro_hex_chat, :virtual_space, :construct, :use],
+      %{count: 1},
+      %{channel: construct_id, kind: kind, result: result}
+    )
+  end
 end

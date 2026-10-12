@@ -7,12 +7,16 @@ defmodule RetroHexChat.VirtualSpace do
   `RetroHexChat.VirtualSpace.*`.
   """
 
+  use Gettext, backend: RetroHexChat.Gettext
+
   require Logger
 
+  alias RetroHexChat.Admin.GlobalMutes
   alias RetroHexChat.Observability
   alias RetroHexChat.VirtualSpace.ChannelSpaceServer
   alias RetroHexChat.VirtualSpace.Construct
   alias RetroHexChat.VirtualSpace.Construct.Layout
+  alias RetroHexChat.VirtualSpace.Construct.Panels
   alias RetroHexChat.VirtualSpace.Construct.Store
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
@@ -140,7 +144,8 @@ defmodule RetroHexChat.VirtualSpace do
   end
 
   @doc """
-  One edit to a Construct: place, move, remove or turn a piece.
+  One edit to a Construct: place, move, remove or turn a piece, write on a
+  sign, or paint the floor.
 
   The runtime decides; this stores what it decided, so the room is there the
   next time anybody comes back. A failed write is logged and the edit stands —
@@ -153,20 +158,50 @@ defmodule RetroHexChat.VirtualSpace do
       [:retro_hex_chat, :virtual_space, :construct, :build],
       %{space_kind: "construct", op: elem(op, 0)},
       fn ->
-        case ChannelSpaceServer.build(construct_id, participant_key, op) do
-          {:ok, %{revision: revision, items: items}} ->
-            persist_construct(construct_id, items, revision, nickname)
-            {:ok, revision}
-
-          {:error, reason} ->
-            {:error, reason}
+        with {:ok, op} <- authorize_edit(construct_id, nickname, op),
+             {:ok, %{revision: revision} = layout} <-
+               ChannelSpaceServer.build(construct_id, participant_key, op) do
+          persist_construct(construct_id, layout, revision, nickname)
+          {:ok, revision}
         end
       end
     )
   end
 
-  defp persist_construct(construct_id, items, revision, nickname) do
-    case Store.save(construct_id, items, revision, nickname) do
+  # Writing on a sign is saying something to everyone who walks in: the muted
+  # cannot, and the conversation's moderators may rewrite anybody's.
+  defp authorize_edit(construct_id, nickname, {:label, id, text}) do
+    if GlobalMutes.muted?(nickname),
+      do: {:error, :muted},
+      else: {:ok, {:label, id, text, moderator?(construct_id, nickname)}}
+  end
+
+  defp authorize_edit(_construct_id, _nickname, op), do: {:ok, op}
+
+  defp moderator?(construct_id, nickname) do
+    case Construct.parent_id(construct_id) do
+      # Either person of a private conversation speaks for it.
+      {:ok, "dm:" <> _pair} ->
+        true
+
+      {:ok, channel_name} ->
+        Panels.moderator?({:channel, channel_name}, nickname)
+
+      :error ->
+        false
+    end
+  end
+
+  @doc """
+  Fill in the panel a Construct piece opened — a board's topic and pins, a
+  screen's newest picture, whether a sign may be rewritten by `nickname`.
+  """
+  @spec fill_construct_panel(Panels.modal(), Speech.conversation(), String.t() | nil) ::
+          Panels.modal()
+  defdelegate fill_construct_panel(modal, conversation, nickname), to: Panels, as: :fill
+
+  defp persist_construct(construct_id, layout, revision, nickname) do
+    case Store.save(construct_id, layout, revision, nickname) do
       :ok ->
         :ok
 
@@ -242,15 +277,51 @@ defmodule RetroHexChat.VirtualSpace do
     )
   end
 
-  @spec interact(String.t(), String.t(), ChannelSpaceServer.interact_payload()) ::
+  @doc """
+  Sit, stand or press E on something. In a Construct, a piece that changed is
+  stored, and a die rolled or a coin flipped is said in the conversation by
+  whoever did it — `nickname`, which only a Construct needs.
+  """
+  @spec interact(String.t(), String.t(), ChannelSpaceServer.interact_payload(), String.t() | nil) ::
           :ok | {:ok, %{modal: map()}} | {:error, atom()}
-  def interact(channel_name, participant_key, payload) do
+  def interact(space_id, participant_key, payload, nickname \\ nil) do
     Observability.span(
       [:retro_hex_chat, :virtual_space, :interact],
-      %{"chat.channel" => channel_name, space_kind: "channel"},
-      fn -> ChannelSpaceServer.interact(channel_name, participant_key, payload) end
+      %{"chat.channel" => space_id, space_kind: Atom.to_string(space_kind(space_id))},
+      fn ->
+        space_id
+        |> ChannelSpaceServer.interact(participant_key, payload)
+        |> after_use(space_id, nickname)
+      end
     )
   end
+
+  defp after_use({:ok, %{changed: changed} = used}, construct_id, nickname) do
+    persist_construct(construct_id, changed, changed.revision, nickname)
+    announce_roll(used[:announce], nickname)
+    :ok
+  end
+
+  defp after_use(result, _space_id, _nickname), do: result
+
+  defp announce_roll(%{conversation: conversation, kind: kind, face: face}, nickname)
+       when is_binary(nickname) do
+    case Speech.say(conversation, nickname, "/me " <> roll_line(kind, face)) do
+      :ok -> :ok
+      {:error, reason} -> Logger.debug("Construct roll not said: #{inspect(reason)}")
+    end
+  end
+
+  defp announce_roll(_announce, _nickname), do: :ok
+
+  defp roll_line("die", face), do: dgettext("chat", "threw the dice and got %{face}", face: face)
+  # The coin's two faces are its gold and its silver side, which is what the
+  # piece shows; heads and tails are idioms no two languages share.
+  defp roll_line("coin", "heads"),
+    do: dgettext("chat", "threw the coin, and it landed gold side up")
+
+  defp roll_line("coin", _tails),
+    do: dgettext("chat", "threw the coin, and it landed silver side up")
 
   @spec interact_direct_message(String.t(), String.t(), ChannelSpaceServer.interact_payload()) ::
           :ok | {:ok, %{modal: map()}} | {:error, atom()}

@@ -549,7 +549,8 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert init.channel_name == ctx.construct_id
       assert init.map.id == "construct"
       assert init.config.buildable
-      assert init.map.catalog |> Map.keys() |> Enum.sort() == ~w(chair lamp table tree)
+      assert ~w(chair lamp sign arcade board screen) -- Map.keys(init.map.catalog) == []
+      assert [_ | _] = init.map.materials
       assert Map.keys(init.snapshot.participants) == ["nick:alice"]
     end
 
@@ -587,6 +588,56 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
 
       ref = push(socket, "construct_build", %{"op" => "move", "item_id" => id, "x" => "far"})
       assert_reply ref, :error, %{reason: "invalid"}
+    end
+
+    test "a sign is written on and the floor painted through the same edit", ctx do
+      {:ok, _init, socket} = join_construct(ctx.construct_id, "alice")
+
+      ref =
+        push(socket, "construct_build", %{"op" => "place", "kind" => "sign", "x" => 13, "y" => 13})
+
+      assert_reply ref, :ok, %{revision: 1}
+      assert_push "construct_layout", %{items: [%{id: id}]}
+
+      ref = push(socket, "construct_build", %{"op" => "label", "item_id" => id, "text" => "Hi"})
+      assert_reply ref, :ok, %{revision: 2}
+      assert_push "construct_layout", %{labels: [%{text: "Hi"}]}
+
+      paint = %{"op" => "paint", "x0" => 20, "y0" => 20, "x1" => 21, "y1" => 21}
+      ref = push(socket, "construct_build", Map.put(paint, "material", "wood"))
+      assert_reply ref, :ok, %{revision: 3}
+      assert_push "construct_layout", %{revision: 3, floor: [_ | _]}
+
+      ref = push(socket, "construct_build", Map.put(paint, "material", "lava"))
+      assert_reply ref, :error, %{reason: "unknown_material"}
+
+      too_long = String.duplicate("a", 401)
+
+      ref =
+        push(socket, "construct_build", %{"op" => "label", "item_id" => id, "text" => too_long})
+
+      assert_reply ref, :error, %{reason: "invalid"}
+    end
+
+    test "E on a piece opens its panel, filled in for whoever pressed it", ctx do
+      {:ok, _init, socket} = join_construct(ctx.construct_id, "alice")
+
+      for {kind, x} <- [{"arcade", 13}, {"sign", 12}] do
+        ref =
+          push(socket, "construct_build", %{"op" => "place", "kind" => kind, "x" => x, "y" => 13})
+
+        assert_reply ref, :ok, _revision
+      end
+
+      {:ok, state} = ChannelSpaceServer.get_state(ctx.construct_id)
+      arcade = Enum.find(state.items, &(&1.kind == "arcade"))
+      sign = Enum.find(state.items, &(&1.kind == "sign"))
+
+      push(socket, "space_interact", %{"kind" => "use", "target_id" => "item:" <> arcade.id})
+      assert_push "space_modal", %{kind: "arcade", games: [%{url: "/play/" <> _} | _]}
+
+      push(socket, "space_interact", %{"kind" => "use", "target_id" => "item:" <> sign.id})
+      assert_push "space_modal", %{kind: "sign", can_edit: true}
     end
 
     test "the End of Time is not buildable over the channel", ctx do

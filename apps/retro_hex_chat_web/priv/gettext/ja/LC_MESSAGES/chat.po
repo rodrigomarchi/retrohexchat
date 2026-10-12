@@ -798,7 +798,7 @@ msgid "Browser"
 msgstr "ブラウザー"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:79
-#: lib/retro_hex_chat_web/live/app/space_live.ex:225
+#: lib/retro_hex_chat_web/live/app/space_live.ex:226
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:520
 #, elixir-autogen, elixir-format
 msgid "Cancel"
@@ -1497,7 +1497,7 @@ msgstr "NickServはパスワードであなたのニックネームを保護し�
 msgid "Nickname %{nickname} is already in use"
 msgstr "Nickname %{nickname} は既に使用中です"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:313
+#: lib/retro_hex_chat_web/live/app/space_live.ex:314
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "No"
@@ -2083,12 +2083,13 @@ msgid "Yellow"
 msgstr "イエロー"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:303
+#: lib/retro_hex_chat_web/live/app/space_live.ex:304
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "Yes"
 msgstr "はい"
 
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:253
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:215
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:236
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:261
@@ -2910,7 +2911,7 @@ msgstr "%{peer} は P2P 接続を失いました。"
 msgid "Arcade session ended."
 msgstr "アーケードセッション終了"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:739
+#: lib/retro_hex_chat_web/live/app/space_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "チャネルスペース"
@@ -2960,7 +2961,7 @@ msgstr "デフォルトデバイス"
 msgid "End P2P Call Media"
 msgstr "エンドP2Pコールメディア"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:743
+#: lib/retro_hex_chat_web/live/app/space_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "チャンネルスペースを入力する..."
@@ -2985,7 +2986,7 @@ msgstr "ミュート、アンミュート、またはP2Pマイクを有効にす
 msgid "Next P2P Layout"
 msgstr "次 P2Pレイアウト"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:742
+#: lib/retro_hex_chat_web/live/app/space_live.ex:744
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "個室をオープン..."
@@ -3017,14 +3018,14 @@ msgstr "P2Pセッションに接続中"
 msgid "P2P session with %{peer} ended."
 msgstr "P2Pセッション%{peer}終了"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:738
+#: lib/retro_hex_chat_web/live/app/space_live.ex:740
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "プライベートスペース"
 
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:704
+#: lib/retro_hex_chat_web/live/app/space_live.ex:706
 #, elixir-autogen, elixir-format
 msgid "Space"
 msgstr "スペース"
@@ -3765,7 +3766,7 @@ msgstr "会話の操作"
 msgid "Participants"
 msgstr "参加者"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:149
+#: lib/retro_hex_chat_web/live/app/space_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "%{count} in the space"
 msgid_plural "%{count} in the space"
@@ -3781,30 +3782,30 @@ msgstr "いま中にいる人"
 msgid "Nobody is in here yet."
 msgstr "まだ誰もいません。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:700
 #: lib/retro_hex_chat_web/live/app/space_live.ex:702
+#: lib/retro_hex_chat_web/live/app/space_live.ex:704
 #, elixir-autogen, elixir-format
 msgid "Space · %{name}"
 msgstr "スペース · %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:587
-#: lib/retro_hex_chat_web/live/app/space_live.ex:602
-#: lib/retro_hex_chat_web/live/app/space_live.ex:621
+#: lib/retro_hex_chat_web/live/app/space_live.ex:589
+#: lib/retro_hex_chat_web/live/app/space_live.ex:604
+#: lib/retro_hex_chat_web/live/app/space_live.ex:623
 #, elixir-autogen, elixir-format
 msgid "That address does not name a space."
 msgstr "そのアドレスはスペースを指していません。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:633
+#: lib/retro_hex_chat_web/live/app/space_live.ex:635
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
 msgstr "このプライベートスペースは他の2人のものです。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:582
+#: lib/retro_hex_chat_web/live/app/space_live.ex:584
 #, elixir-autogen, elixir-format
 msgid "This space is no longer available."
 msgstr "このスペースは利用できません。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:649
+#: lib/retro_hex_chat_web/live/app/space_live.ex:651
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "%{channel} のスペースに入るには、そのチャンネルに参加している必要があります。"
@@ -3839,7 +3840,7 @@ msgstr "%{game} · 対戦"
 msgid "%{peer} is back."
 msgstr "%{peer} が戻りました。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:654
+#: lib/retro_hex_chat_web/live/app/space_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "This space belongs to a channel you are not in."
 msgstr "このスペースは、あなたが参加していないチャンネルのものです。"
@@ -3977,6 +3978,8 @@ msgstr "メッセージを固定しました。"
 msgid "Message unpinned."
 msgstr "固定を解除しました。"
 
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:89
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:205
 #, elixir-autogen, elixir-format
 msgid "Pinned"
@@ -4266,7 +4269,7 @@ msgid "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same
 msgstr "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:26
-#: lib/retro_hex_chat_web/live/app/space_live.ex:144
+#: lib/retro_hex_chat_web/live/app/space_live.ex:145
 #, elixir-autogen, elixir-format
 msgid "Change character"
 msgstr "キャラクターを変更"
@@ -4284,141 +4287,138 @@ msgstr "話す"
 msgid "Say something"
 msgstr "Say something"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:729
-#: lib/retro_hex_chat_web/live/app/space_live.ex:735
+#: lib/retro_hex_chat_web/live/app/space_live.ex:731
+#: lib/retro_hex_chat_web/live/app/space_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Say something to %{name}..."
 msgstr "%{name}に何かを言う..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:730
+#: lib/retro_hex_chat_web/live/app/space_live.ex:732
 #, elixir-autogen, elixir-format
 msgid "Say something..."
 msgstr "Say something..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:280
+#: lib/retro_hex_chat_web/live/app/space_live.ex:281
 #, elixir-autogen, elixir-format
 msgid "%{name} is back on their feet."
 msgstr "%{name}は足元に戻ります。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:279
+#: lib/retro_hex_chat_web/live/app/space_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "%{name} is knocked out!"
 msgstr "%{name}をノックアウト!"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:24
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:32
 #, elixir-autogen, elixir-format
 msgid "Build"
 msgstr "建てる"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:29
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:24
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:207
 #, elixir-autogen, elixir-format
 msgid "Chair"
 msgstr "椅子"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:696
-#: lib/retro_hex_chat_web/live/app/space_live.ex:737
+#: lib/retro_hex_chat_web/live/app/space_live.ex:698
+#: lib/retro_hex_chat_web/live/app/space_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Construct"
 msgstr "コンストラクト"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:294
+#: lib/retro_hex_chat_web/live/app/space_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Go back to the End of Time?"
 msgstr "時間終了まで戻りますか?"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:108
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:243
 #, elixir-autogen, elixir-format
 msgid "Keep the way to the gate clear."
 msgstr "ゲートをクリアする方法を保ちます。"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:32
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:27
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:211
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Lamp"
 msgstr "ランプ"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:741
+#: lib/retro_hex_chat_web/live/app/space_live.ex:743
 #, elixir-autogen, elixir-format
 msgid "Loading the Construct..."
 msgstr "Constructをロードする..."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:65
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:72
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:112
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:122
 #, elixir-autogen, elixir-format
 msgid "Pick a piece, then click the floor. Drag a piece to move it, right-click to remove it."
 msgstr "作品を選び、フロアをクリックします。 ピースをドラッグして移動し、右クリックして削除します。"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:52
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:53
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:57
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:35
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:99
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:100
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:104
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "削除"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:111
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:246
 #, elixir-autogen, elixir-format
 msgid "Somebody is sitting in it."
 msgstr "誰かに座っています。"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:113
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:248
 #, elixir-autogen, elixir-format
 msgid "That is off the floor."
 msgstr "床から離れる。"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:115
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:256
 #, elixir-autogen, elixir-format
 msgid "That piece cannot go there."
 msgstr "そこまで行くことができません。"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:112
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:247
 #, elixir-autogen, elixir-format
 msgid "The Construct is full."
 msgstr "コンストラクト がいっぱいです。"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:31
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:26
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:212
 #, elixir-autogen, elixir-format
 msgid "Tree"
 msgstr "木"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:39
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:40
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:44
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:34
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:86
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:87
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:91
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Turn"
 msgstr "回転"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:25
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:209
 #, elixir-autogen, elixir-format
 msgctxt "furniture"
 msgid "Table"
 msgstr "テーブル"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:293
+#: lib/retro_hex_chat_web/live/app/space_live.ex:294
 #, elixir-autogen, elixir-format
 msgid "Go into the Construct?"
 msgstr "Constructに行きますか?"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:107
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:242
 #, elixir-autogen, elixir-format
 msgid "Somebody is standing on that spot."
 msgstr "その場に立っている人もいます。"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:110
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:245
 #, elixir-autogen, elixir-format
 msgid "That would leave somebody with no way back to the gate."
 msgstr "ゲートに戻って道無しで誰かを去ります。"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:106
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:241
 #, elixir-autogen, elixir-format
 msgid "There is already a piece on that spot."
 msgstr "その場にはすでに作品があります。"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:114
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:249
 #, elixir-autogen, elixir-format
 msgid "Only one piece at a time, please wait."
 msgstr "一度に1枚だけ、お待ちください。"
@@ -4427,3 +4427,216 @@ msgstr "一度に1枚だけ、お待ちください。"
 #, elixir-autogen, elixir-format
 msgid "Use"
 msgstr "使う"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:228
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:80
+#, elixir-autogen, elixir-format
+msgid "Arcade cabinet"
+msgstr "アーケード筐体"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:208
+#, elixir-autogen, elixir-format
+msgid "Armchair"
+msgstr "アームチェア"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:183
+#, elixir-autogen, elixir-format
+msgid "Blue carpet"
+msgstr "青いカーペット"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:210
+#, elixir-autogen, elixir-format
+msgid "Bookshelf"
+msgstr "本棚"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:184
+#, elixir-autogen, elixir-format
+msgid "Checkerboard"
+msgstr "市松模様"
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:54
+#, elixir-autogen, elixir-format
+msgid "Close"
+msgstr "閉じる"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:226
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "Coin"
+msgstr "コイン"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:219
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Door"
+msgstr "ドア"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:190
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:105
+#, elixir-autogen, elixir-format
+msgid "Erase"
+msgstr "消す"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "Floor"
+msgstr "床"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:205
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Furniture"
+msgstr "家具"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:181
+#, elixir-autogen, elixir-format
+msgid "Grass"
+msgstr "芝生"
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:70
+#, elixir-autogen, elixir-format
+msgid "Nobody has posted a picture here yet."
+msgstr "Nobody has posted a picture here yet."
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:251
+#, elixir-autogen, elixir-format
+msgid "Only whoever put up this sign can change it."
+msgstr "このサインを入れるだけで変更できます。"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:213
+#, elixir-autogen, elixir-format
+msgid "Plant"
+msgstr "植物"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:182
+#, elixir-autogen, elixir-format
+msgid "Red carpet"
+msgstr "赤いカーペット"
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:41
+#, elixir-autogen, elixir-format
+msgid "Save"
+msgstr "保存"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:180
+#, elixir-autogen, elixir-format
+msgid "Stone"
+msgstr "石"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:215
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Structure"
+msgstr "構造"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:224
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "Teleporter"
+msgstr "テレポーター"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:254
+#, elixir-autogen, elixir-format
+msgid "That floor cannot be painted."
+msgstr "塗装はできません。"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:255
+#, elixir-autogen, elixir-format
+msgid "That piece cannot be built here."
+msgstr "その作品はここには構築できません。"
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:69
+#, elixir-autogen, elixir-format
+msgid "This channel has no topic and nothing pinned yet."
+msgstr "このチャンネルには、トピックがなく、ピン留めされたものはありません。"
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:71
+#, elixir-autogen, elixir-format
+msgid "Topic"
+msgstr "トピック"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:217
+#, elixir-autogen, elixir-format
+msgid "Wall"
+msgstr "壁"
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:36
+#, elixir-autogen, elixir-format
+msgid "What the sign says"
+msgstr "サインが言うこと"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:179
+#, elixir-autogen, elixir-format
+msgid "Wood"
+msgstr "木材"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:221
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:26
+#, elixir-autogen, elixir-format
+msgctxt "construct palette"
+msgid "Fun"
+msgstr "遊び"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:225
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:62
+#, elixir-autogen, elixir-format
+msgctxt "game piece"
+msgid "Die"
+msgstr "サイコロ"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:229
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:65
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:86
+#, elixir-autogen, elixir-format
+msgctxt "notice board"
+msgid "Board"
+msgstr "掲示板"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:227
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:64
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:74
+#, elixir-autogen, elixir-format
+msgctxt "signpost"
+msgid "Sign"
+msgstr "看板"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:230
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:66
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:93
+#, elixir-autogen, elixir-format
+msgctxt "television"
+msgid "Screen"
+msgstr "スクリーン"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:218
+#, elixir-autogen, elixir-format
+msgctxt "wall"
+msgid "Corner"
+msgstr "角"
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:68
+#, elixir-autogen, elixir-format
+msgid "Nothing is written on this signboard yet."
+msgstr "Nothing is written on this signboard yet."
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:74
+#, elixir-autogen, elixir-format
+msgid "Opens in another browser tab."
+msgstr "別のブラウザタブで開きます。"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:252
+#, elixir-autogen, elixir-format
+msgid "That line is too long for the signboard."
+msgstr "看板には、そのラインが長すぎます。"
+
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:73
+#, elixir-autogen, elixir-format
+msgid "Sent by %{name}"
+msgstr "%{name}で送信"
+
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:118
+#, elixir-autogen, elixir-format
+msgid "Press on the floor and drag: the whole rectangle is painted."
+msgstr "床を押し、ドラッグ:全矩形が塗装されます。"

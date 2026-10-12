@@ -9,7 +9,10 @@
  *     clicks;
  *   - `selected` — a placed piece is picked; Delete removes it, R turns it;
  *   - `dragging` — a picked piece is held down; releasing it elsewhere asks to
- *     move it there.
+ *     move it there;
+ *   - `painting` — a floor material is armed (`none` erases); pressing on the
+ *     floor anchors a corner, and releasing paints the rectangle between the
+ *     two.
  *
  * Every input returns `{command}` — the edit to send, or null — and the machine
  * keeps the rest. It never applies an edit itself: the room changes when the
@@ -20,9 +23,17 @@
 const DIRS = ["down", "right"];
 
 export class BuildMode {
-  constructor() {
+  /**
+   * @param {{dirsOf?: (kind: string) => string[]|undefined}} [opts] - the
+   *   facings a kind turns through (a corner has four); two by default
+   */
+  constructor({ dirsOf } = {}) {
     this._state = { mode: "idle" };
     this._hover = null;
+    this._dirsOf = (kind) => {
+      const dirs = dirsOf?.(kind);
+      return Array.isArray(dirs) && dirs.length > 0 ? dirs : DIRS;
+    };
   }
 
   /** @returns {object} the current state (read-only by convention). */
@@ -41,8 +52,35 @@ export class BuildMode {
     this._state =
       s.mode === "placing" && s.kind === kind
         ? { mode: "idle" }
-        : { mode: "placing", kind, dir: "down" };
+        : { mode: "placing", kind, dir: this._dirsOf(kind)[0] };
     return none();
+  }
+
+  /** Arm a floor material from the palette; pressing it again disarms it. */
+  choosePaint(material) {
+    const s = this._state;
+    this._state =
+      s.mode === "painting" && s.material === material
+        ? { mode: "idle" }
+        : { mode: "painting", material, anchor: null };
+    return none();
+  }
+
+  /**
+   * The tiles a paint stroke covers now: from its anchor to the pointer, or
+   * the one tile under the pointer before the press.
+   * @returns {{x0:number,y0:number,x1:number,y1:number}|null}
+   */
+  paintArea() {
+    const s = this._state;
+    if (s.mode !== "painting" || !this._hover) return null;
+    const from = s.anchor ?? this._hover;
+    return {
+      x0: Math.min(from.x, this._hover.x),
+      y0: Math.min(from.y, this._hover.y),
+      x1: Math.max(from.x, this._hover.x),
+      y1: Math.max(from.y, this._hover.y),
+    };
   }
 
   /**
@@ -51,6 +89,12 @@ export class BuildMode {
   pointerDown({ tile, item, button }) {
     const s = this._state;
     this._hover = tile;
+
+    if (s.mode === "painting") {
+      if (button === 2) return this._reset();
+      if (button === 0) this._state = { ...s, anchor: tile };
+      return none();
+    }
 
     if (button === 2) {
       if (s.mode === "placing") return this._reset();
@@ -79,6 +123,13 @@ export class BuildMode {
 
   pointerUp({ tile }) {
     const s = this._state;
+    if (s.mode === "painting") {
+      if (!s.anchor || !tile) return none();
+      this._hover = tile;
+      const area = this.paintArea();
+      this._state = { ...s, anchor: null };
+      return { command: { op: "paint", ...area, material: s.material } };
+    }
     if (s.mode !== "dragging") return none();
     this._state = { mode: "selected", itemId: s.itemId };
     if (!tile || (tile.x === s.from.x && tile.y === s.from.y)) return none();
@@ -88,6 +139,7 @@ export class BuildMode {
   /** The pointer left the canvas: no tile is hovered, and a drag lets go. */
   pointerLeave() {
     this._hover = null;
+    if (this._state.mode === "painting") this._state = { ...this._state, anchor: null };
     if (this._state.mode === "dragging") {
       this._state = { mode: "selected", itemId: this._state.itemId };
     }
@@ -123,7 +175,8 @@ export class BuildMode {
   rotate() {
     const s = this._state;
     if (s.mode === "placing") {
-      this._state = { ...s, dir: DIRS[(DIRS.indexOf(s.dir) + 1) % DIRS.length] };
+      const dirs = this._dirsOf(s.kind);
+      this._state = { ...s, dir: dirs[(dirs.indexOf(s.dir) + 1) % dirs.length] };
       return none();
     }
     if (s.mode === "selected") return { command: { op: "rotate", item_id: s.itemId } };

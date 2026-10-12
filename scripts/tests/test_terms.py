@@ -25,6 +25,30 @@ class MissingTermsTest(unittest.TestCase):
         self.assertTrue(missing_terms("How a room works", "Cómo funciona una habitación", "es"))
         self.assertEqual(missing_terms("How a room works", "Cómo funciona una sala", "es"), [])
 
+    def test_a_constructs_sign_is_a_board_not_a_signal(self):
+        self.assertEqual(
+            missing_terms("That line does not fit on a sign.", "Essa linha não cabe num sinal.", "pt_BR"),
+            [r"\bsigns?\b(?![\s-]*(?:in|up|out|on|off)\b)"],
+        )
+        self.assertEqual(
+            missing_terms("That line does not fit on a sign.", "Essa linha não cabe na placa.", "pt_BR"), []
+        )
+        # Signing in is no sign at all.
+        self.assertEqual(missing_terms("Sign in to continue.", "Entre para continuar.", "pt_BR"), [])
+        self.assertEqual(missing_terms("Sign-up is closed.", "O cadastro está fechado.", "pt_BR"), [])
+
+    def test_a_die_is_the_games_cube_not_death(self):
+        self.assertTrue(missing_terms("rolled the die: 5", "rodó la muerte: 5", "es"))
+        self.assertEqual(missing_terms("rolled the dice and got 5", "rodó los dados y sacó 5", "es"), [])
+        self.assertEqual(missing_terms("They will die.", "Van a morir.", "es"), [])
+
+    def test_a_piece_is_not_a_scrap_and_pinned_is_not_stuck(self):
+        self.assertTrue(missing_terms("Pick a piece.", "Escolha um pedaço.", "pt_BR"))
+        self.assertEqual(missing_terms("Pick a piece.", "Escolha uma peça.", "pt_BR"), [])
+        self.assertTrue(missing_terms("Its pinned messages.", "Suas mensagens presas.", "pt_BR"))
+        self.assertEqual(missing_terms("Its pinned messages.", "Suas mensagens fixadas.", "pt_BR"), [])
+        self.assertTrue(missing_terms("Opens in a new tab.", "Abre numa nova página.", "pt_BR"))
+
     def test_capital_letters_are_letters_not_money(self):
         source = "Capital letters do not matter"
         self.assertTrue(missing_terms(source, "Las letras de capital no importan", "es"))
@@ -59,6 +83,12 @@ class ForeignFormsTest(unittest.TestCase):
         )
         self.assertEqual(foreign_forms("No Constructo, rode a peça", "pt_BR"), ["rode a peça"])
         self.assertEqual(foreign_forms("Sente-se numa cadeira", "pt_BR"), [])
+
+    def test_the_european_tu_preterite_is_foreign_to_pt_br(self):
+        self.assertEqual(
+            foreign_forms("O Construct continua como o deixaste.", "pt_BR"), ["deixaste"]
+        )
+        self.assertEqual(foreign_forms("O Construct fica como você deixou.", "pt_BR"), [])
 
     def test_the_european_noun_for_registration_is_foreign_to_pt_br(self):
         # What the engine gave "View channel registration info" for Brazil.

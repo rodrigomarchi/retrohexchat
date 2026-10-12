@@ -87,6 +87,19 @@ class LocaleChecksTest(unittest.TestCase):
 
         self.assertEqual(pipeline.translate_one("Coming from mIRC?"), "mIRC から来ましたか")
 
+    def test_keeps_the_middle_of_a_sentence_lowercase(self):
+        # An /me action follows the nickname: "rodrigo threw the coin".
+        engine = ScriptedTranslator(default=lambda _: "Jogou a moeda")
+        self.assertEqual(Pipeline(engine, locale_code="pt_BR").translate_one("threw the coin"), "jogou a moeda")
+
+        # German nouns are capitalised wherever they stand.
+        engine = ScriptedTranslator(default=lambda _: "Münze geworfen")
+        self.assertEqual(Pipeline(engine, locale_code="de").translate_one("threw the coin"), "Münze geworfen")
+
+        # A sentence that starts capitalised is left as the engine wrote it.
+        engine = ScriptedTranslator(default=lambda _: "Jogou")
+        self.assertEqual(Pipeline(engine, locale_code="pt_BR").translate_one("Threw"), "Jogou")
+
     def test_rejects_a_translation_that_drops_the_negation(self):
         # Dutch cut the sentence before "with nothing to install".
         source = "In the browser, free, with nothing to install."

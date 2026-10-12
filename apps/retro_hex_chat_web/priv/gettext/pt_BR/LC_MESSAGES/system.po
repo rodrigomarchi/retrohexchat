@@ -34,9 +34,9 @@ msgstr "Base de dados"
 #: lib/retro_hex_chat_web/telemetry.ex:262
 #: lib/retro_hex_chat_web/telemetry.ex:267
 #: lib/retro_hex_chat_web/telemetry.ex:272
-#: lib/retro_hex_chat_web/telemetry.ex:278
-#: lib/retro_hex_chat_web/telemetry.ex:284
-#: lib/retro_hex_chat_web/telemetry.ex:288
+#: lib/retro_hex_chat_web/telemetry.ex:277
+#: lib/retro_hex_chat_web/telemetry.ex:283
+#: lib/retro_hex_chat_web/telemetry.ex:289
 #: lib/retro_hex_chat_web/telemetry.ex:293
 #: lib/retro_hex_chat_web/telemetry.ex:298
 #: lib/retro_hex_chat_web/telemetry.ex:303
@@ -44,21 +44,22 @@ msgstr "Base de dados"
 #: lib/retro_hex_chat_web/telemetry.ex:313
 #: lib/retro_hex_chat_web/telemetry.ex:318
 #: lib/retro_hex_chat_web/telemetry.ex:323
-#: lib/retro_hex_chat_web/telemetry.ex:334
-#: lib/retro_hex_chat_web/telemetry.ex:340
+#: lib/retro_hex_chat_web/telemetry.ex:328
+#: lib/retro_hex_chat_web/telemetry.ex:339
 #: lib/retro_hex_chat_web/telemetry.ex:345
-#: lib/retro_hex_chat_web/telemetry.ex:357
+#: lib/retro_hex_chat_web/telemetry.ex:350
 #: lib/retro_hex_chat_web/telemetry.ex:362
 #: lib/retro_hex_chat_web/telemetry.ex:367
 #: lib/retro_hex_chat_web/telemetry.ex:372
-#: lib/retro_hex_chat_web/telemetry.ex:378
+#: lib/retro_hex_chat_web/telemetry.ex:377
 #: lib/retro_hex_chat_web/telemetry.ex:383
 #: lib/retro_hex_chat_web/telemetry.ex:388
 #: lib/retro_hex_chat_web/telemetry.ex:393
-#: lib/retro_hex_chat_web/telemetry.ex:399
+#: lib/retro_hex_chat_web/telemetry.ex:398
 #: lib/retro_hex_chat_web/telemetry.ex:404
-#: lib/retro_hex_chat_web/telemetry.ex:410
-#: lib/retro_hex_chat_web/telemetry.ex:416
+#: lib/retro_hex_chat_web/telemetry.ex:409
+#: lib/retro_hex_chat_web/telemetry.ex:415
+#: lib/retro_hex_chat_web/telemetry.ex:421
 #, elixir-autogen, elixir-format
 msgid "Domain"
 msgstr "Domínio"
@@ -145,83 +146,83 @@ msgstr "Número atual de participantes de espaço virtual por canal"
 msgid "Number of virtual space movement steps"
 msgstr "Número de passos de movimento do espaço virtual"
 
-#: lib/retro_hex_chat_web/telemetry.ex:277
+#: lib/retro_hex_chat_web/telemetry.ex:282
 #, elixir-autogen, elixir-format
 msgid "Virtual space movement input handling duration"
 msgstr "Duração do tratamento de entrada de movimento de espaço virtual"
 
-#: lib/retro_hex_chat_web/telemetry.ex:287
+#: lib/retro_hex_chat_web/telemetry.ex:292
 #, elixir-autogen, elixir-format
 msgid "Number of active group-call peer processes"
 msgstr "Número de processos activos de chamada por grupos"
 
-#: lib/retro_hex_chat_web/telemetry.ex:283
+#: lib/retro_hex_chat_web/telemetry.ex:288
 #, elixir-autogen, elixir-format
 msgid "Number of active group-call room processes"
 msgstr "Número de processos ativos de sala de chamada em grupo"
 
-#: lib/retro_hex_chat_web/telemetry.ex:292
+#: lib/retro_hex_chat_web/telemetry.ex:297
 #, elixir-autogen, elixir-format
 msgid "Number of group-call join attempts"
 msgstr "Número de tentativas de adesão em grupo"
 
-#: lib/retro_hex_chat_web/telemetry.ex:307
+#: lib/retro_hex_chat_web/telemetry.ex:312
 #, elixir-autogen, elixir-format
 msgid "Number of group-call media state updates"
 msgstr "Número de atualizações de estado de mídia de chamada em grupo"
 
-#: lib/retro_hex_chat_web/telemetry.ex:302
+#: lib/retro_hex_chat_web/telemetry.ex:307
 #, elixir-autogen, elixir-format
 msgid "Number of group-call media tracks announced"
 msgstr "Número de faixas de mídia de chamadas de grupo anunciadas"
 
-#: lib/retro_hex_chat_web/telemetry.ex:312
+#: lib/retro_hex_chat_web/telemetry.ex:317
 #, elixir-autogen, elixir-format
 msgid "Number of group-call moderator media actions"
 msgstr "Número de ações de mídia do moderador de chamadas em grupo"
 
-#: lib/retro_hex_chat_web/telemetry.ex:317
+#: lib/retro_hex_chat_web/telemetry.ex:322
 #, elixir-autogen, elixir-format
 msgid "Number of group-call participant kick actions"
 msgstr "Número de ações de kick do participante de chamada em grupo"
 
-#: lib/retro_hex_chat_web/telemetry.ex:297
+#: lib/retro_hex_chat_web/telemetry.ex:302
 #, elixir-autogen, elixir-format
 msgid "Number of group-call participant leaves"
 msgstr "Número de licenças de participação em chamadas de grupo"
 
-#: lib/retro_hex_chat_web/telemetry.ex:322
+#: lib/retro_hex_chat_web/telemetry.ex:327
 #, elixir-autogen, elixir-format
 msgid "Number of group-call rooms closed"
 msgstr "Número de salas de chamada em grupo fechadas"
 
-#: lib/retro_hex_chat_web/telemetry.ex:339
+#: lib/retro_hex_chat_web/telemetry.ex:344
 #, elixir-autogen, elixir-format
 msgid "Number of P2P and group-call client media/signaling errors"
 msgstr "Number of P2P and group-call client media/signaling errors"
 
-#: lib/retro_hex_chat_web/telemetry.ex:330
+#: lib/retro_hex_chat_web/telemetry.ex:335
 #, elixir-autogen, elixir-format
 msgid "Number of P2P and group-call recovery state transitions by reason"
 msgstr ""
 "Número de transições de estado de recuperação de P2P e de chamadas em grupo"
 
-#: lib/retro_hex_chat_web/telemetry.ex:344
+#: lib/retro_hex_chat_web/telemetry.ex:349
 #, elixir-autogen, elixir-format
 msgid "Number of P2P signaling replay outcomes"
 msgstr "Número de resultados de repetição da sinalização P2P"
 
-#: lib/retro_hex_chat_web/telemetry.ex:377
+#: lib/retro_hex_chat_web/telemetry.ex:382
 #, elixir-autogen, elixir-format
 msgid "95th percentile gap between game snapshots, in milliseconds"
 msgstr "Intervalo percentil 95 entre instantâneos de jogo, em milissegundos"
 
-#: lib/retro_hex_chat_web/telemetry.ex:366
+#: lib/retro_hex_chat_web/telemetry.ex:371
 #, elixir-autogen, elixir-format
 msgid "Authoritative game snapshots received per second"
 msgstr "Snapshots de jogos autorizados recebidos por segundo"
 
-#: lib/retro_hex_chat_web/telemetry.ex:371
+#: lib/retro_hex_chat_web/telemetry.ex:376
 #, elixir-autogen, elixir-format
 msgid "Authoritative game snapshots sent per second"
 msgstr "Snapshots de jogos autorizados enviados por segundo"
@@ -246,17 +247,17 @@ msgstr "Comprimento atual da fila Oban por estado"
 msgid "Failed background job processing duration"
 msgstr "Duração do processamento da tarefa de fundo falhou"
 
-#: lib/retro_hex_chat_web/telemetry.ex:356
+#: lib/retro_hex_chat_web/telemetry.ex:361
 #, elixir-autogen, elixir-format
 msgid "Frames per second drawn during a P2P game"
 msgstr "Quadros por segundo desenhados durante um jogo P2P"
 
-#: lib/retro_hex_chat_web/telemetry.ex:409
+#: lib/retro_hex_chat_web/telemetry.ex:414
 #, elixir-autogen, elixir-format
 msgid "Frames whose simulation backlog exceeded the catch-up cap"
 msgstr "Quadros cujo backlog de simulação excedeu o limite de captura"
 
-#: lib/retro_hex_chat_web/telemetry.ex:398
+#: lib/retro_hex_chat_web/telemetry.ex:403
 #, elixir-autogen, elixir-format
 msgid "Game snapshots skipped because the data channel was backed up"
 msgstr ""
@@ -268,32 +269,32 @@ msgid "Latest business values emitted by instrumented domain operations"
 msgstr ""
 "Últimos valores de negócio emitidos por operações de domínio instrumentado"
 
-#: lib/retro_hex_chat_web/telemetry.ex:382
+#: lib/retro_hex_chat_web/telemetry.ex:387
 #, elixir-autogen, elixir-format
 msgid "Longest gap between game snapshots, in milliseconds"
 msgstr "Maior diferença entre instantâneos de jogo, em milissegundos"
 
-#: lib/retro_hex_chat_web/telemetry.ex:415
+#: lib/retro_hex_chat_web/telemetry.ex:420
 #, elixir-autogen, elixir-format
 msgid "Milliseconds of P2P gameplay observed, by health verdict"
 msgstr "Millisegundos de jogabilidade P2P observados, por veredicto de saúde"
 
-#: lib/retro_hex_chat_web/telemetry.ex:392
+#: lib/retro_hex_chat_web/telemetry.ex:397
 #, elixir-autogen, elixir-format
 msgid "Peak queued bytes on the game data channel"
 msgstr "Pico de bytes em fila no canal de dados do jogo"
 
-#: lib/retro_hex_chat_web/telemetry.ex:387
+#: lib/retro_hex_chat_web/telemetry.ex:392
 #, elixir-autogen, elixir-format
 msgid "Peer connection round-trip time during a P2P game"
 msgstr "Tempo de ida e volta de ligação durante um jogo P2P"
 
-#: lib/retro_hex_chat_web/telemetry.ex:403
+#: lib/retro_hex_chat_web/telemetry.ex:408
 #, elixir-autogen, elixir-format
 msgid "Simulation steps discarded after the loop fell behind"
 msgstr "Passos de simulação descartados após o ciclo ter caído para trás"
 
-#: lib/retro_hex_chat_web/telemetry.ex:361
+#: lib/retro_hex_chat_web/telemetry.ex:366
 #, elixir-autogen, elixir-format
 msgid "Simulation steps per second run by the game host"
 msgstr "Passos de simulação por segundo executados pela máquina do jogo"
@@ -312,3 +313,8 @@ msgstr "Tempo em que uma tarefa de fundo falhou antes da execução"
 #, elixir-autogen, elixir-format
 msgid "Number of Construct edits, by operation and result"
 msgstr "Número de edições Constructo, por operação e resultado"
+
+#: lib/retro_hex_chat_web/telemetry.ex:276
+#, elixir-autogen, elixir-format
+msgid "Number of Construct pieces used, by kind and result"
+msgstr "Número de peças Constructo usadas, por tipo e resultado"

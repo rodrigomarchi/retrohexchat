@@ -500,6 +500,27 @@ _ROWS = {
     "Lamp":         ("Luminária", "Candeeiro", "Lámpara", "Lampe", "Lampe", "Lampada", "Lamp", "Lampa", "Лампа", "Lampu", "ランプ", "灯", "燈"),
     "Use":          ("Usar", "Usar", "Usar", "Utiliser", "Benutzen", "Usa", "Gebruiken", "Użyj", "Использовать", "Gunakan", "使う", "使用", "使用"),
     "Turn":         ("Girar", "Rodar", "Girar", "Tourner", "Drehen", "Ruota", "Draaien", "Obróć", "Повернуть", "Putar", "回転", "旋转", "旋轉"),
+    # More pieces, the palette's tabs and the floor's paints. "Arcade cabinet"
+    # is the coin-op machine; "Floor" is what you stand on, never a storey.
+    "Armchair":     ("Poltrona", "Poltrona", "Sillón", "Fauteuil", "Sessel", "Poltrona", "Fauteuil", "Fotel", "Кресло", "Kursi berlengan", "アームチェア", "扶手椅", "扶手椅"),
+    "Bookshelf":    ("Estante", "Estante", "Estantería", "Bibliothèque", "Bücherregal", "Libreria", "Boekenkast", "Regał", "Книжная полка", "Rak buku", "本棚", "书架", "書架"),
+    "Plant":        ("Planta", "Planta", "Planta", "Plante", "Pflanze", "Pianta", "Plant", "Roślina", "Растение", "Tanaman", "植物", "植物", "植物"),
+    "Wall":         ("Parede", "Parede", "Pared", "Mur", "Wand", "Parete", "Muur", "Ściana", "Стена", "Dinding", "壁", "墙", "牆"),
+    "Door":         ("Porta", "Porta", "Puerta", "Porte", "Tür", "Porta", "Deur", "Drzwi", "Дверь", "Pintu", "ドア", "门", "門"),
+    "Teleporter":   ("Teletransporte", "Teletransportador", "Teletransportador", "Téléporteur", "Teleporter", "Teletrasporto", "Teleporter", "Teleporter", "Телепорт", "Teleporter", "テレポーター", "传送器", "傳送器"),
+    "Coin":         ("Moeda", "Moeda", "Moneda", "Pièce", "Münze", "Moneta", "Munt", "Moneta", "Монета", "Koin", "コイン", "硬币", "硬幣"),
+    "Arcade cabinet": ("Fliperama", "Máquina de arcade", "Máquina recreativa", "Borne d'arcade", "Spielautomat", "Cabinato arcade", "Arcadekast", "Automat do gier", "Игровой автомат", "Mesin arcade", "アーケード筐体", "街机", "街機"),
+    "Furniture":    ("Móveis", "Mobiliário", "Muebles", "Meubles", "Möbel", "Mobili", "Meubels", "Meble", "Мебель", "Perabot", "家具", "家具", "家具"),
+    "Structure":    ("Estrutura", "Estrutura", "Estructura", "Structure", "Bauteile", "Struttura", "Constructie", "Konstrukcja", "Конструкции", "Struktur", "構造", "结构", "結構"),
+    "Floor":        ("Piso", "Chão", "Suelo", "Sol", "Boden", "Pavimento", "Vloer", "Podłoga", "Пол", "Lantai", "床", "地板", "地板"),
+    "Wood":         ("Madeira", "Madeira", "Madera", "Bois", "Holz", "Legno", "Hout", "Drewno", "Дерево", "Kayu", "木材", "木材", "木材"),
+    "Stone":        ("Pedra", "Pedra", "Piedra", "Pierre", "Stein", "Pietra", "Steen", "Kamień", "Камень", "Batu", "石", "石材", "石材"),
+    "Grass":        ("Grama", "Relva", "Césped", "Herbe", "Gras", "Erba", "Gras", "Trawa", "Трава", "Rumput", "芝生", "草地", "草地"),
+    "Red carpet":   ("Carpete vermelho", "Alcatifa vermelha", "Alfombra roja", "Moquette rouge", "Roter Teppich", "Moquette rossa", "Rood tapijt", "Czerwony dywan", "Красный ковёр", "Karpet merah", "赤いカーペット", "红地毯", "紅地毯"),
+    "Blue carpet":  ("Carpete azul", "Alcatifa azul", "Alfombra azul", "Moquette bleue", "Blauer Teppich", "Moquette blu", "Blauw tapijt", "Niebieski dywan", "Синий ковёр", "Karpet biru", "青いカーペット", "蓝地毯", "藍地毯"),
+    "Checkerboard": ("Xadrez", "Xadrez", "Ajedrezado", "Damier", "Schachbrett", "Scacchiera", "Dambord", "Szachownica", "Шахматный узор", "Papan catur", "市松模様", "棋盘格", "棋盤格"),
+    "Erase":        ("Apagar", "Apagar", "Borrar", "Effacer", "Radieren", "Cancella", "Wissen", "Wymaż", "Стереть", "Hapus", "消す", "擦除", "擦除"),
+    "Topic":        ("Tópico", "Tópico", "Tema", "Sujet", "Thema", "Argomento", "Onderwerp", "Temat", "Тема", "Topik", "トピック", "主题", "主題"),
 
     "nicklist menu": ("menu da lista de nicks", "menu da lista de nicks", "menú de la lista de nicks", "menu de la liste des pseudos", "Nicklisten-Menü", "menu della lista nick", "nicklijst-menu", "menu listy nicków", "меню списка ников", "menu daftar nick", "ニックリストメニュー", "昵称列表菜单", "暱稱列表菜單"),
 }
@@ -508,6 +529,15 @@ _ROWS = {
 # (msgctxt, msgid). Only an entry carrying that context is curated by them.
 _CONTEXT_ROWS = {
     ("furniture", "Table"): ("Mesa", "Mesa", "Mesa", "Table", "Tisch", "Tavolo", "Tafel", "Stół", "Стол", "Meja", "テーブル", "桌子", "桌子"),
+    # The Construct's other pieces whose English names mean something else
+    # elsewhere: a die is never dying, a sign never a signature, a board never
+    # a committee, a screen never a filter, a corner never a nook of a room.
+    ("wall", "Corner"): ("Canto", "Canto", "Esquina", "Angle", "Ecke", "Angolo", "Hoek", "Narożnik", "Угол", "Sudut", "角", "墙角", "牆角"),
+    ("construct palette", "Fun"): ("Diversão", "Diversão", "Diversión", "Divertissement", "Spaß", "Divertimento", "Plezier", "Zabawa", "Развлечения", "Hiburan", "遊び", "娱乐", "娛樂"),
+    ("game piece", "Die"): ("Dado", "Dado", "Dado", "Dé", "Würfel", "Dado", "Dobbelsteen", "Kostka", "Кубик", "Dadu", "サイコロ", "骰子", "骰子"),
+    ("signpost", "Sign"): ("Placa", "Placa", "Letrero", "Panneau", "Schild", "Cartello", "Bord", "Tabliczka", "Табличка", "Papan", "看板", "标牌", "標牌"),
+    ("notice board", "Board"): ("Mural", "Quadro", "Tablón", "Panneau d'affichage", "Pinnwand", "Bacheca", "Prikbord", "Tablica", "Доска", "Papan pengumuman", "掲示板", "公告板", "公告板"),
+    ("television", "Screen"): ("Telão", "Ecrã", "Pantalla", "Écran", "Bildschirm", "Schermo", "Scherm", "Ekran", "Экран", "Layar", "スクリーン", "屏幕", "螢幕"),
 }
 # fmt: on
 

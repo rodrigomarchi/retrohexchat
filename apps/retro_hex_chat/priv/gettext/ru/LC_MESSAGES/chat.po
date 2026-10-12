@@ -505,12 +505,12 @@ msgstr "Микрофон конференции Toggle"
 msgid "Attachment could not be attached to the message"
 msgstr "Привязка не может быть прикреплена к сообщению"
 
-#: lib/retro_hex_chat/chat/attachments.ex:275
+#: lib/retro_hex_chat/chat/attachments.ex:280
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "Привязка превышает лимит %{mb} MB"
 
-#: lib/retro_hex_chat/chat/attachments.ex:270
+#: lib/retro_hex_chat/chat/attachments.ex:275
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "Привязанность пуста"
@@ -520,9 +520,9 @@ msgstr "Привязанность пуста"
 msgid "Unsupported message format"
 msgstr "Неподдерживаемый формат сообщений"
 
-#: lib/retro_hex_chat/chat/attachments.ex:315
-#: lib/retro_hex_chat/chat/attachments.ex:397
+#: lib/retro_hex_chat/chat/attachments.ex:320
 #: lib/retro_hex_chat/chat/attachments.ex:402
+#: lib/retro_hex_chat/chat/attachments.ex:407
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "файл"
@@ -654,7 +654,7 @@ msgstr "Этот сервер уже отвечает на это имя."
 msgid "This server already has %{count} emoji."
 msgstr "У этого сервера уже %{count} эмодзи."
 
-#: lib/retro_hex_chat/chat/attachments.ex:309
+#: lib/retro_hex_chat/chat/attachments.ex:314
 #, elixir-autogen, elixir-format
 msgid "A recording cannot be sent as %{type}"
 msgstr "Запись нельзя отправить как %{type}"
@@ -679,3 +679,18 @@ msgstr "Сначала наберите что-нибудь сказать."
 #, elixir-autogen, elixir-format
 msgid "You are muted by an administrator"
 msgstr "Вы приглушены администратором"
+
+#: lib/retro_hex_chat/virtual_space.ex:321
+#, elixir-autogen, elixir-format
+msgid "threw the coin, and it landed gold side up"
+msgstr "бросил монету, и она высадила золото"
+
+#: lib/retro_hex_chat/virtual_space.ex:324
+#, elixir-autogen, elixir-format
+msgid "threw the coin, and it landed silver side up"
+msgstr "бросил монету, и она высадила серебро"
+
+#: lib/retro_hex_chat/virtual_space.ex:317
+#, elixir-autogen, elixir-format
+msgid "threw the dice and got %{face}"
+msgstr "выкинул кости и получил %{face}"

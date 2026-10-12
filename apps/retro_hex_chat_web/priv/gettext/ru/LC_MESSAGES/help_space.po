@@ -338,12 +338,12 @@ msgstr "Конструкт"
 msgid "The gate full of falling green code stands on the north island of the End of Time, beside the old television. Walk up to it and press E: it asks whether to enter, and %{yes} takes you in wearing the same character. Inside, the white gate in the far corner asks the same way and brings you back."
 msgstr "Ворота, полные падающего зеленого кода, стоят на северном острове Конца Времени, рядом со старым телевидением. Подойдите к нему и нажмите E: он спрашивает, следует ли войти, и %{yes} берет вас в ношение того же персонажа. Внутри белые ворота в дальнем углу спрашивают так же и возвращают вас обратно."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:105
 #, elixir-autogen, elixir-format
 msgid "Together"
 msgstr "Вместе"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Drag a placed piece to move it. Click a piece to select it: %{turn} or R turns it, and %{remove} or Delete removes it. A right-click removes a piece at once. On a touch screen, a tap places or selects a piece, and dragging moves it."
 msgstr "Перетащите положенный кусок, чтобы переместить его. Нажмите на элемент, чтобы выбрать его: %{turn} или R поворачивает его, а %{remove} или Delete удаляет его. Правый клик удаляет кусок сразу. На сенсорном экране кран помещает или выбирает кусок, и перетаскивание перемещает его."
@@ -353,32 +353,22 @@ msgstr "Перетащите положенный кусок, чтобы пер�
 msgid "Placing pieces"
 msgstr "Размещать кусочки"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:114
 #, elixir-autogen, elixir-format
 msgid "Some places stay clear: the gate and the ground in front of it, the spots where people arrive, and the spot where somebody is standing. A chair with somebody sitting on it cannot be moved. A piece that would leave somebody with no way back to the gate is refused. The line under the palette says why a piece was refused."
 msgstr "Некоторые места остаются чистыми: ворота и земля перед ними, места, куда приходят люди, и место, где кто-то стоит. Стул с сидящим на нем человеком не может быть перемещен. Кусок, который оставил бы кого-то без пути назад к воротам, отказано. Линия под палитрой говорит, почему от части отказались."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "The palette in the top-left corner holds the pieces: %{chair}, %{table}, %{tree} and %{lamp}. Pick one and click the floor to place it. The piece stays in your hand, so a row of chairs is a row of clicks. A see-through piece shows where it would go: green where it fits, red where it does not. Esc, or picking the same piece again, puts it away."
-msgstr "Палитра в верхнем левом углу держит фигуры: %{chair}, %{table}, %{tree} и %{lamp}. Выберите один и щелкните по полу, чтобы разместить его. Кусок остается в руке, поэтому ряд стульев - это ряд щелчков. Прозрачная часть показывает, куда она пойдет: зеленую, где она подходит, красную, где ее нет. Esc, или выбирая один и тот же кусок, убирает его."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:43
-#, elixir-autogen, elixir-format
-msgid "A lamp lights the floor around it."
-msgstr "Лампа освещает пол вокруг него."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Every space has a Construct: an empty white room that the people of the conversation decorate together. A channel's Construct belongs to the channel, and a private conversation's Construct belongs to its two people. Nobody else can go in."
 msgstr "В каждом пространстве есть Конструкт: пустая белая комната, которую люди беседы украшают вместе. Конструкт канала принадлежит каналу, а Конструкт частного разговора принадлежит двум его людям. Никто другой не может войти."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:107
 #, elixir-autogen, elixir-format
 msgid "Everyone inside sees each change at once."
 msgstr "Внутри каждый видит изменения сразу."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "The Construct is part of the space's gathering: its card stays open while anybody is in either room."
 msgstr "Конструкт является частью пространства: его карта остается открытой, пока кто-то находится в любой комнате."
@@ -393,16 +383,6 @@ msgstr "Зеленые ворота на северном острове вед�
 msgid "The Construct is an empty room that the people of the conversation decorate together."
 msgstr "Конструкт — это пустая комната, которую украшают люди разговора."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:42
-#, elixir-autogen, elixir-format
-msgid "The F key sits your character down on a chair."
-msgstr "Ключ F усаживает персонажа на стул."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:41
-#, elixir-autogen, elixir-format
-msgid "The room is kept as it was left."
-msgstr "Комната сохранилась, как и осталась."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "On a touch screen, the hand button of the on-screen controls does the same as E."
@@ -412,3 +392,83 @@ msgstr "На сенсорном экране кнопка ручного упр�
 #, elixir-autogen, elixir-format
 msgid "On a touch screen, the hand button of the on-screen controls does what E and F do."
 msgstr "На сенсорном экране кнопка управления на экране делает то, что делают E и F."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:96
+#, elixir-autogen, elixir-format
+msgid "Painting the floor"
+msgstr "Покрасить пол"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Pieces that do something"
+msgstr "Кусочки, которые что-то делают"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:109
+#, elixir-autogen, elixir-format
+msgid "Press F next to a chair or an armchair to sit down."
+msgstr "Нажмите F рядом со стулом или креслом, чтобы сесть."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Stand next to one of these pieces and press E, or the hand button on a touch screen."
+msgstr "Встаньте рядом с одним из этих предметов и нажмите E или кнопку руки на сенсорном экране."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:108
+#, elixir-autogen, elixir-format
+msgid "The Construct is kept just as it was left."
+msgstr "Конструкт хранится в том виде, в каком он был оставлен."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Walls and corners turn like any other piece. A door in a wall lets people through."
+msgstr "Стены и углы поворачиваются, как и любой другой кусок. Дверь в стене пропускает людей."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:98
+#, elixir-autogen, elixir-format
+msgid "In the %{floor} tab, pick a floor, then press and drag: the whole rectangle is painted. %{erase} makes it white again. You can walk on a painted floor and put pieces on it."
+msgstr "На вкладке %{floor} выберите пол, затем нажмите и перетащите: весь прямоугольник окрашен. %{erase} снова стал белым Вы можете ходить по окрашенному полу и ставить на него кусочки."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:77
+#, elixir-autogen, elixir-format
+msgid "Lists the games, and each one opens in a new tab."
+msgstr "Список игр, и каждый открывается в новой вкладке."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "Press E on one teleporter to arrive at the other one of its pair."
+msgstr "Нажмите E на один телепортатор, чтобы добраться до другого."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Press E to open the door, and again to close it. It stays open while someone is in the doorway."
+msgstr "Нажмите E, чтобы открыть дверь и снова закрыть ее. Он остается открытым, пока кто-то находится в дверях."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Press E. The result appears on the piece and in the chat."
+msgstr "Нажмите E. Результат появляется на фигуре и в чате."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "Shows a short text above it. Whoever put it up can change it, and the moderators can too."
+msgstr "Над ним написан короткий текст. Тот, кто его выставил, может изменить его, и модераторы тоже могут."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:83
+#, elixir-autogen, elixir-format
+msgid "Shows the channel's topic and the messages of its %{pinned} list. Only a channel's Construct has one."
+msgstr "Показывает тему канала и сообщения его списка %{pinned}. Только канал Конструкт имеет один."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:90
+#, elixir-autogen, elixir-format
+msgid "Shows the last picture posted in the conversation."
+msgstr "Показывается последняя фотография, размещенная в разговоре."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Switches its light on or off."
+msgstr "Включает или выключает свет."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "The palette in the top-left corner keeps the pieces in tabs: %{furniture}, %{structure} and %{fun}. Choose one and click the floor to place it. It stays in your hand, so a row of chairs is a row of clicks. A see-through copy shows where it would go: green where it fits, red where it does not. Esc, or choosing it again, puts it away."
+msgstr "Палитра в верхнем левом углу держит фигуры на вкладках: %{furniture}, %{structure} и %{fun}. Выберите один и щелкните по полу, чтобы разместить его. Он остается в вашей руке, поэтому ряд стульев - это ряд щелчков. Прозрачная копия показывает, куда она пойдет: зеленую, где она подходит, красную, где ее нет. Esc, или выбирая его снова, убирает его."

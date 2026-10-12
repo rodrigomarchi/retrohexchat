@@ -87,6 +87,7 @@ export function createSpaceCanvasHook(deps = {}) {
         board: (asset) => this._atlas?.board?.(asset),
         confirm: () => this._modal?.confirm(),
         cancel: () => this._modal?.close(),
+        panel: (host, modal) => this._construct?.renderPanel(host, modal) ?? false,
       });
       this._overlays.setLoadingText(t("Connecting to space..."));
 
@@ -174,6 +175,8 @@ export function createSpaceCanvasHook(deps = {}) {
             engine: () => this._engine,
             atlas: this._atlas,
             send: (payload, handlers) => this._sendBuild(payload, handlers),
+            root: this.el,
+            closeModal: () => this._modal?.close(),
           }),
         )
           .then((construct) => {

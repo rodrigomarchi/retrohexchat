@@ -150,18 +150,20 @@ export class SpaceMap {
    * Redraw a Construct from a `construct_layout` patch: the pieces and every
    * part of the map they change. A patch no newer than the one already shown
    * is dropped, so a late broadcast can never roll the room back.
-   * @param {{revision:number, items:object[], decor:object[], collision:object[], seats:object[], lights:object[]}} patch
+   * @param {{revision:number, items:object[], decor:object[], collision:object[], seats:object[], lights:object[], labels:object[], interactables:object[]}} patch
    * @returns {boolean} whether the patch was applied
    */
   applyPatch(patch) {
     if (!patch || !(patch.revision > this.revision)) return false;
     this.revision = patch.revision;
     this.items = patch.items;
-    this.layers = { ...this.layers, decor: patch.decor };
+    this.layers = { ...this.layers, decor: patch.decor, floor: patch.floor ?? this.layers.floor };
     this.decor = patch.decor;
     this.lights = patch.lights;
     this._blocked = buildCollisionSet(patch.collision);
     this._seats = indexById(patch.seats);
+    this.labels = patch.labels;
+    this._interactables = indexById(patch.interactables);
     return true;
   }
 

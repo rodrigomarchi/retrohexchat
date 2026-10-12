@@ -8,7 +8,15 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
   into `/images/space/construct.webp` and writes `priv/maps/construct.json`.
   Beyond the shared map protocol the JSON carries three things only this scene
   has: the `catalog` of placeable kinds, the `reserved` tiles nobody may build
-  on, and `max_items`.
+  on, `max_items`, and the floor `materials` it can be painted with (each a
+  one-character floor tile).
+
+  A catalog entry names the kind's tile per facing, and optionally: `seat`,
+  `lights`, `blocks` (false for a piece you walk onto), `dirs` (the facings it
+  turns through), `use` (what E does to it), `states` (its other sprites, per
+  state, per facing), `only` (the conversations it may be built in) and
+  `group` (its palette tab) and `label` (how the line it shows is drawn: its
+  width in tiles, how high it floats, its colour and its outline).
   """
 
   @sheet "construct"
@@ -66,6 +74,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
       seats: [],
       reserved: Enum.map(data["reserved"], fn [x, y] -> %{x: x, y: y} end),
       catalog: catalog(data["catalog"]),
+      materials: Enum.map(data["materials"] || [], &%{id: &1["id"], tile: &1["tile"]}),
       max_items: data["max_items"]
     }
   end
@@ -108,10 +117,20 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
          lights:
            Enum.map(entry["lights"] || [], fn l ->
              %{radius: l["radius"], color: l["color"], blend: l["blend"], lift: l["lift"]}
-           end)
+           end),
+         blocks: entry["blocks"] != false,
+         dirs: entry["dirs"] || ["down", "right"],
+         use: entry["use"],
+         states: entry["states"] || %{},
+         only: entry["only"],
+         group: entry["group"] || "furniture",
+         label: label(entry["label"])
        }}
     end)
   end
+
+  defp label(%{} = l), do: %{w: l["w"], lift: l["lift"], color: l["color"], glow: l["glow"]}
+  defp label(_none), do: nil
 
   defp interactable(i) do
     %{

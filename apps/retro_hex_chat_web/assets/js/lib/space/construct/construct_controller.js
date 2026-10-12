@@ -18,6 +18,7 @@ import { normalizeLayout } from "../protocol.js";
 import { BuildMode } from "./build_mode.js";
 import { canPlaceAt, itemAtCanvasPoint, tileAtCanvasPoint } from "./picking.js";
 import { createBuildPalette } from "./palette.js";
+import { renderPanel } from "./panels.js";
 
 export class ConstructController {
   /**
@@ -27,17 +28,22 @@ export class ConstructController {
    * @param {() => object|null} opts.engine - the running engine, once started
    * @param {object} opts.atlas
    * @param {(payload: object, handlers: {ok: Function, error: (reason: string) => void}) => void} opts.send
+   * @param {HTMLElement} [opts.root] - the space shell, holding the panel template
+   * @param {() => void} [opts.closeModal] - close the panel a piece opened
    * @param {EventTarget} [opts.keyTarget]
    */
-  constructor({ canvas, palette, engine, atlas, send, keyTarget }) {
+  constructor({ canvas, palette, engine, atlas, send, root, closeModal, keyTarget }) {
     this._canvas = canvas;
+    this._root = root ?? palette;
+    this._closeModal = closeModal ?? (() => {});
     this._engine = engine;
     this._atlas = atlas;
     this._send = send;
     this._keyTarget = keyTarget ?? window;
-    this._mode = new BuildMode();
+    this._mode = new BuildMode({ dirsOf: (kind) => this._map()?.catalog?.[kind]?.dirs });
     this._palette = createBuildPalette(palette, {
       onChoose: (kind) => this._apply(this._mode.choose(kind)),
+      onPaint: (material) => this._apply(this._mode.choosePaint(material)),
       onRotate: () => this._apply(this._mode.rotate()),
       onRemove: () => this._apply(this._mode.remove()),
     });
@@ -75,6 +81,20 @@ export class ConstructController {
     const map = this._map();
     if (!map) return;
     this._palette.drawThumbnails((kind) => this._atlas?.tile?.(map.kindTile(kind, "down")));
+    this._palette.drawMaterials((tile) => this._atlas?.tile?.(tile));
+  }
+
+  /**
+   * Draw the panel a piece opened (a sign, a board, a screen, an arcade
+   * cabinet) into the modal host.
+   * @returns {boolean} whether the modal was such a panel
+   */
+  renderPanel(host, modal) {
+    return renderPanel(this._root, host, modal, {
+      save: (text, done) => this._send({ op: "label", item_id: modal.item_id, text }, done),
+      close: () => this._closeModal(),
+      refusal: (reason) => this._palette.sentence(reason),
+    });
   }
 
   /** A `construct_layout` broadcast: redraw the room, and drop a vanished pick. */
@@ -176,7 +196,14 @@ export class ConstructController {
     const picked = state.itemId ? map.item(state.itemId) : null;
     let ghost = null;
 
-    if (state.mode === "placing" && hover) {
+    const area = this._mode.paintArea();
+    if (area) {
+      const tiles = [];
+      for (let y = area.y0; y <= area.y1; y += 1) {
+        for (let x = area.x0; x <= area.x1; x += 1) tiles.push({ x, y });
+      }
+      ghost = { x: hover.x, y: hover.y, tile: null, tiles, valid: true };
+    } else if (state.mode === "placing" && hover) {
       ghost = {
         x: hover.x,
         y: hover.y,

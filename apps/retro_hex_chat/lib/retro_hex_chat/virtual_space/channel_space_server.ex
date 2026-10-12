@@ -84,7 +84,11 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
         }
 
   @type construct_parent :: {:channel, String.t()} | {:direct_message, String.t(), [String.t()]}
-  @type construct_layout :: %{items: [Layout.item()], revision: non_neg_integer()}
+  @type construct_layout :: %{
+          required(:items) => [Layout.item()],
+          required(:revision) => non_neg_integer(),
+          optional(:floor) => Layout.floor()
+        }
 
   # --- Public API ---
 
@@ -173,10 +177,17 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
           required(:target_id) => String.t()
         }
 
+  @typedoc """
+  What pressing E on a Construct piece did that the caller acts on: the room
+  to store, and the roll to say in the conversation.
+  """
+  @type used :: %{changed: map(), announce: map() | nil}
+
   @spec interact(String.t(), String.t(), interact_payload()) ::
           :ok
           | {:ok, %{modal: map()}}
-          | {:error, :not_found | :not_participant | :invalid_target | :too_far | :seat_taken}
+          | {:ok, used()}
+          | {:error, atom()}
   def interact(channel_name, participant_key, payload) do
     call(channel_name, {:interact, participant_key, payload})
   end
@@ -277,7 +288,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   stores; the runtime itself never writes it.
   """
   @spec build(String.t(), String.t(), Layout.op()) ::
-          {:ok, %{revision: non_neg_integer(), items: [Layout.item()]}}
+          {:ok, %{revision: non_neg_integer(), items: [map()], floor: Layout.floor()}}
           | {:error, build_error()}
   def build(construct_id, participant_key, op) do
     call(construct_id, {:build, participant_key, op})
@@ -415,7 +426,8 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     with {:ok, base} <- construct_map(),
          {:ok, membership} <- construct_membership(parent) do
       items = Layout.normalize(base, layout.items)
-      map_definition = base |> Layout.apply(items) |> Map.put(:revision, layout.revision)
+      floor = Layout.normalize_floor(base, Map.get(layout, :floor))
+      map_definition = base |> Layout.apply(items, floor) |> Map.put(:revision, layout.revision)
 
       state =
         Map.merge(membership, %{
@@ -425,6 +437,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
           viewer_keys: %{},
           base_map: base,
           items: items,
+          floor: floor,
           revision: layout.revision,
           build_times: %{},
           map: map_definition,
@@ -537,8 +550,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     case apply_build(state, key, op) do
       {:ok, state} ->
         Events.emit_construct_edit(state.channel_name, op, :ok)
-        reply = %{revision: state.revision, items: Enum.map(state.items, &Layout.view/1)}
-        {:reply, {:ok, reply}, state}
+        {:reply, {:ok, layout_snapshot(state)}, state}
 
       {:error, reason} ->
         Events.emit_construct_edit(state.channel_name, op, reason)
@@ -1042,6 +1054,19 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
+  defp do_interact(%{realm: :construct} = state, key, %{kind: "use", target_id: "item:" <> id}) do
+    participant = Map.get(state.participants, key)
+    item = Enum.find(state.items, &(&1.id == id))
+
+    cond do
+      not active_participant?(participant) -> {:reply, {:error, :not_participant}, state}
+      participant.pose == "down" -> {:reply, {:error, :down}, state}
+      item == nil -> {:reply, {:error, :invalid_target}, state}
+      not adjacent?(participant, item) -> {:reply, {:error, :too_far}, state}
+      true -> use_item(state, key, participant, item)
+    end
+  end
+
   defp do_interact(state, key, %{kind: "use", target_id: id}) do
     participant = Map.get(state.participants, key)
     target = Enum.find(state.map.interactables, &(&1.id == id))
@@ -1082,6 +1107,106 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   defp apply_action(state, _key, _payload), do: {:error, :invalid_action, state}
 
+  # --- Construct pieces in use ---
+
+  defp use_item(state, key, participant, item) do
+    result = Layout.use(state.base_map, state.items, item.id, build_context(state), &roll/1)
+    Events.emit_construct_use(state.channel_name, item.kind, outcome(result))
+
+    case result do
+      # Opening a panel changes nothing in the room, so it is no edit to pace:
+      # it opens even right after an edit, and the line written in a sign's
+      # panel is saved at once.
+      {:ok, _items, {:panel, panel}} ->
+        {:reply, {:ok, %{modal: panel_modal(panel, item)}}, state}
+
+      {:ok, _items, _effect} ->
+        paced_use(state, key, participant, result)
+
+      {:error, reason} ->
+        {:reply, {:error, reason}, state}
+    end
+  end
+
+  # A switch, a door, a roll or a jump is paced like an edit: one a person at
+  # a time, so a held E is not a strobe light.
+  defp paced_use(state, key, participant, result) do
+    if build_cooldown_elapsed?(state, key) do
+      apply_use(state, key, participant, result)
+    else
+      {:reply, {:error, :cooldown}, state}
+    end
+  end
+
+  defp apply_use(state, key, participant, result) do
+    case result do
+      {:ok, _items, {:teleport, {x, y}}} ->
+        teleport(state, key, participant, x, y)
+
+      {:ok, items, effect} ->
+        state = commit_layout(state, key, items)
+        {:reply, {:ok, used(state, effect)}, state}
+    end
+  end
+
+  defp roll(n), do: :rand.uniform(n)
+
+  defp outcome({:ok, _items, _effect}), do: :ok
+  defp outcome({:error, reason}), do: reason
+
+  # A panel is the caller's to fill in: the runtime knows the piece, the caller
+  # knows the conversation's topic, pins and pictures.
+  defp panel_modal(panel, item) do
+    %{
+      kind: panel,
+      title: nil,
+      asset: nil,
+      action: nil,
+      item_id: item.id,
+      text: item.state["text"],
+      placed_by: item.placed_by
+    }
+  end
+
+  # What the caller stores, and what it says in the conversation when a die
+  # was rolled or a coin flipped.
+  defp used(state, effect) do
+    %{
+      changed: layout_snapshot(state),
+      announce: announcement(state, effect)
+    }
+  end
+
+  defp announcement(state, {:rolled, kind, face}),
+    do: %{conversation: conversation(state), kind: kind, face: face}
+
+  defp announcement(_state, _effect), do: nil
+
+  defp conversation(%{kind: :direct_message} = state),
+    do: {:direct_message, state.participants_allowed}
+
+  defp conversation(state), do: {:channel, state.membership_id}
+
+  # Stepping onto a teleporter's twin: whoever was sitting stands up, and lands
+  # on the twin pad itself, which nothing blocks.
+  defp teleport(state, key, participant, x, y) do
+    state = free_seat(state, participant)
+
+    moved = %{
+      participant
+      | x: x,
+        y: y,
+        pose: "standing",
+        seat_id: nil,
+        zone_id: zone_at(state.map, x, y)
+    }
+
+    state = put_in(state.participants[key], moved)
+    state = put_in(state.build_times[key], mono_ms())
+    state = broadcast_delta(state, key, moved, moved.input_seq)
+    {:reply, :ok, state}
+  end
+
   # --- Construct building ---
 
   defp apply_build(%{realm: :construct} = state, key, op) do
@@ -1098,16 +1223,36 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
         {:error, :cooldown}
 
       true ->
-        state.base_map
-        |> Layout.edit(state.items, op, build_context(state), participant.nickname)
-        |> case do
-          {:ok, items} -> {:ok, commit_layout(state, key, items)}
-          {:error, reason} -> {:error, reason}
-        end
+        edit(state, key, participant, op)
     end
   end
 
   defp apply_build(_state, _key, _op), do: {:error, :not_buildable}
+
+  defp edit(state, key, _participant, {:paint, x0, y0, x1, y1, material}) do
+    case Layout.paint(state.base_map, state.floor, {x0, y0, x1, y1}, material) do
+      {:ok, floor} -> {:ok, commit_layout(state, key, state.items, floor)}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp edit(state, key, participant, op) do
+    state.base_map
+    |> Layout.edit(state.items, op, build_context(state), participant.nickname)
+    |> case do
+      {:ok, items} -> {:ok, commit_layout(state, key, items)}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  # What the caller stores: the whole room, at the revision it was made.
+  defp layout_snapshot(state) do
+    %{
+      revision: state.revision,
+      items: Enum.map(state.items, &Layout.view/1),
+      floor: state.floor
+    }
+  end
 
   defp build_context(state) do
     avatars =
@@ -1116,25 +1261,37 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
       |> Enum.filter(& &1.online?)
       |> Enum.map(&{&1.x, &1.y})
 
-    %{avatars: avatars, seated: state.seats |> Map.keys() |> MapSet.new()}
+    %{
+      avatars: avatars,
+      seated: state.seats |> Map.keys() |> MapSet.new(),
+      conversation: Atom.to_string(state.kind)
+    }
   end
 
   # Every client redraws from the whole patch, so an edit can never be half
   # seen: the revision orders them, and a stale one is simply dropped.
-  defp commit_layout(state, key, items) do
+  defp commit_layout(state, key, items, floor \\ nil) do
+    floor = floor || state.floor
     revision = state.revision + 1
-    map = state.base_map |> Layout.apply(items) |> Map.put(:revision, revision)
+    map = state.base_map |> Layout.apply(items, floor) |> Map.put(:revision, revision)
+    painted? = floor != state.floor
 
     state = %{
       state
       | items: items,
+        floor: floor,
         revision: revision,
         map: map,
         blocked: SpaceMap.collision_set(map),
         build_times: Map.put(state.build_times, key, mono_ms())
     }
 
-    broadcast(state.channel_name, "construct_layout", Layout.patch(map, revision))
+    broadcast(
+      state.channel_name,
+      "construct_layout",
+      Layout.patch(map, revision, floor?: painted?)
+    )
+
     state
   end
 

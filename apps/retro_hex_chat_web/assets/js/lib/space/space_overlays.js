@@ -13,9 +13,11 @@
 
 /**
  * @param {HTMLElement} el - the space shell element
- * @param {{board?: (asset: string) => {canvas?: HTMLCanvasElement}|null|undefined, confirm?: () => void, cancel?: () => void}} [ports]
+ * @param {{board?: (asset: string) => {canvas?: HTMLCanvasElement}|null|undefined, confirm?: () => void, cancel?: () => void, panel?: (host: HTMLElement, modal: object) => boolean}} [ports]
+ *   `panel` draws a modal some other module owns (a Construct piece's panel)
+ *   and says whether it did
  */
-export function createSpaceOverlays(el, { board, confirm, cancel } = {}) {
+export function createSpaceOverlays(el, { board, confirm, cancel, panel } = {}) {
   let loadingHidden = false;
 
   return {
@@ -74,6 +76,7 @@ export function createSpaceOverlays(el, { board, confirm, cancel } = {}) {
         host.querySelector("[data-space-modal-yes]")?.focus();
         return;
       }
+      if (panel?.(host, modal)) return;
 
       const title = document.createElement("div");
       title.className = "font-bold";

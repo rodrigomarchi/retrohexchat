@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **245 spec files** under `e2e/tests/`.
-- **589 Playwright `test()` cases**.
-- **537 documented flows**, 536 done, 1 not done.
+- **246 spec files** under `e2e/tests/`.
+- **595 Playwright `test()` cases**.
+- **543 documented flows**, 542 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -764,6 +764,12 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP18 | A piece placed from the Construct's palette is seen by everyone inside, can be dragged elsewhere and removed with a right-click, and the room is still built the next time it opens | `tests/space-construct.spec.ts` | done |
 | SP19 | A chair placed in the Construct can be sat in with F | `tests/space-construct.spec.ts` | done |
 | SP20 | On the touch pad, the hand button goes through the gate and sits down on a chair, as E and F do | `tests/space-construct.spec.ts` | done |
+| SP21 | E switches a Construct lamp off and on and opens a door to walk through, and a second person inside sees both | `tests/space-construct-objects.spec.ts` | done |
+| SP22 | E on a die rolls it: the face shows over the die and the roll is said in the channel's chat | `tests/space-construct-objects.spec.ts` | done |
+| SP23 | Two teleporters placed in a Construct pair up, and E on one sends you to the other | `tests/space-construct-objects.spec.ts` | done |
+| SP24 | Whoever put up a sign writes on it from its panel and the line floats over it; somebody else only reads it | `tests/space-construct-objects.spec.ts` | done |
+| SP25 | A board shows the channel's topic, a screen the last picture posted, an arcade cabinet its games | `tests/space-construct-objects.spec.ts` | done |
+| SP26 | Dragging across the floor from the Floor tab paints it, for everyone inside, and it is still painted the next time the room opens | `tests/space-construct-objects.spec.ts` | done |
 
 ### LC - Localization
 

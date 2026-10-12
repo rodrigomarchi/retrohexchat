@@ -100,6 +100,11 @@ defmodule RetroHexChat.Chat.Attachments do
   @spec get_attachment(integer() | String.t()) :: Attachment.t() | nil
   def get_attachment(id), do: Queries.get_attachment(id)
 
+  @doc "The newest picture posted in a channel or a private conversation."
+  @spec latest_image({:channel, String.t()} | {:direct_message, [String.t()]}) ::
+          Queries.latest_image() | nil
+  defdelegate latest_image(conversation), to: Queries
+
   @spec download_url(Attachment.t(), keyword()) :: {:ok, String.t()} | {:error, term()}
   def download_url(%Attachment{file: %UploadedFile{} = file}, opts \\ []) do
     storage().presigned_get_url(file.storage_bucket, file.storage_key, opts)

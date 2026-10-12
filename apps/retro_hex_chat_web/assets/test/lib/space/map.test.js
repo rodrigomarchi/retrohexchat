@@ -140,9 +140,13 @@ describe("SpaceMap as a Construct", () => {
       collision: [{ x: 6, y: 6, w: 1, h: 1, kind: "item" }],
       seats: [{ id: "seat:b", x: 6, y: 6, dir: "down" }],
       lights: [],
+      labels: [{ kind: "hologram", text: "Hi", x: 6, y: 6 }],
+      interactables: [{ id: "item:b", kind: "item", use: "sign", x: 6, y: 6 }],
     };
 
     expect(map.applyPatch(patch)).toBe(true);
+    expect(map.labels).toEqual(patch.labels);
+    expect(map.interactable("item:b").use).toBe("sign");
     expect(map.isBlocked(4, 4)).toBe(false);
     expect(map.isBlocked(6, 6)).toBe(true);
     expect(map.decor).toEqual(patch.decor);

@@ -450,13 +450,16 @@ export class Renderer {
       ctx.stroke();
       ctx.restore();
     }
+    // A ghost covers one tile, or every tile of a floor being painted.
     const ghost = construct.ghost;
     if (ghost) {
-      this._traceDiamond(ctx, ghost);
       ctx.save();
       ctx.globalAlpha = 0.45;
       ctx.fillStyle = HASH + (ghost.valid ? BUILD_OK : BUILD_BAD);
-      ctx.fill();
+      for (const tile of ghost.tiles ?? [ghost]) {
+        this._traceDiamond(ctx, tile);
+        ctx.fill();
+      }
       ctx.restore();
     }
   }
@@ -720,7 +723,9 @@ export class Renderer {
 
     ctx.font = HOLO_FONT;
     ctx.textAlign = "center";
-    ctx.fillStyle = HASH + HOLO_GLOW;
+    // A label can bring its own colours: a Construct sign is white on a dark
+    // outline, readable over the white floor and the night sky alike.
+    ctx.fillStyle = HASH + (label.glow ?? HOLO_GLOW);
     for (const [ox, oy] of [
       [-1, 0],
       [1, 0],
@@ -729,7 +734,7 @@ export class Renderer {
     ]) {
       ctx.fillText(String(label.text), cx + ox, ty + oy, maxWidth);
     }
-    ctx.fillStyle = HASH + HOLO_FG;
+    ctx.fillStyle = HASH + (label.color ?? HOLO_FG);
     ctx.fillText(String(label.text), cx, ty, maxWidth);
   }
 

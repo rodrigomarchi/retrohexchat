@@ -1,9 +1,11 @@
 defmodule RetroHexChat.VirtualSpace.ConstructTest do
   use RetroHexChat.DataCase, async: false
 
+  alias RetroHexChat.Admin.GlobalMutes
   alias RetroHexChat.Channels.Registry, as: ChannelRegistry
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
+  alias RetroHexChat.Topics
   alias RetroHexChat.VirtualSpace
   alias RetroHexChat.VirtualSpace.ChannelSpaceServer
   alias RetroHexChat.VirtualSpace.Construct.Store
@@ -277,6 +279,162 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
     end
   end
 
+  describe "pieces in use" do
+    defp use_piece(ctx, nickname, item) do
+      VirtualSpace.interact(
+        ctx.construct_id,
+        key(nickname),
+        %{kind: "use", target_id: "item:" <> item.id},
+        nickname
+      )
+    end
+
+    defp item_at(construct_id, x, y) do
+      {:ok, state} = ChannelSpaceServer.get_state(construct_id)
+      Enum.find(state.items, &(&1.x == x and &1.y == y))
+    end
+
+    test "a lamp switched off is seen by everyone inside and stays off" do
+      ctx = channel_with(["alice"])
+      enter(ctx.construct_id, "alice")
+      {:ok, _} = place(ctx.construct_id, "alice", "lamp", 13, 13)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "space:" <> ctx.construct_id)
+
+      assert :ok = use_piece(ctx, "alice", item_at(ctx.construct_id, 13, 13))
+
+      assert_receive %{
+        event: "construct_layout",
+        payload: %{revision: 2, items: [%{state: %{"on" => false}}], interactables: interactables}
+      }
+
+      assert Enum.any?(interactables, &(&1[:use] == "toggle_light"))
+
+      assert %{revision: 2, items: [%{"state" => %{"on" => false}}]} =
+               Store.load(ctx.construct_id)
+
+      stop_construct(ctx.construct_id)
+      joined = enter(ctx.construct_id, "alice")
+      assert [%{state: %{"on" => false}}] = joined.map.items
+    end
+
+    test "a die rolled is said in the channel by whoever rolled it" do
+      ctx = channel_with(["alice"])
+      enter(ctx.construct_id, "alice")
+      {:ok, _} = place(ctx.construct_id, "alice", "die", 13, 13)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.channel(ctx.channel))
+
+      assert :ok = use_piece(ctx, "alice", item_at(ctx.construct_id, 13, 13))
+
+      assert_receive %{
+        event: "new_message",
+        payload: %{author: "alice", type: "action", content: "threw the dice and got " <> face}
+      }
+
+      assert String.to_integer(face) in 1..6
+      assert %{state: %{"face" => rolled}} = item_at(ctx.construct_id, 13, 13)
+      assert "#{rolled}" == face
+    end
+
+    test "a teleporter sends you to its twin" do
+      ctx = channel_with(["alice"])
+      enter(ctx.construct_id, "alice")
+      {:ok, _} = place(ctx.construct_id, "alice", "teleporter", 13, 13)
+      {:ok, _} = place(ctx.construct_id, "alice", "teleporter", 30, 30)
+
+      assert :ok = use_piece(ctx, "alice", item_at(ctx.construct_id, 13, 13))
+      {:ok, state} = ChannelSpaceServer.get_state(ctx.construct_id)
+      assert %{x: 30, y: 30, pose: "standing"} = state.participants[key("alice")]
+    end
+
+    test "a sign opens its panel, and only somebody next to it can use it" do
+      ctx = channel_with(["alice"])
+      enter(ctx.construct_id, "alice")
+      {:ok, _} = place(ctx.construct_id, "alice", "sign", 13, 13)
+      {:ok, _} = place(ctx.construct_id, "alice", "sign", 30, 30)
+      sign = item_at(ctx.construct_id, 13, 13)
+
+      assert {:ok, %{modal: %{kind: "sign", item_id: id, placed_by: "alice"}}} =
+               use_piece(ctx, "alice", sign)
+
+      assert id == sign.id
+      assert {:error, :too_far} = use_piece(ctx, "alice", item_at(ctx.construct_id, 30, 30))
+    end
+
+    test "a panel opens right after an edit, and holds back no edit after it" do
+      Application.put_env(:retro_hex_chat, :virtual_space_build_ms, 60_000)
+      ctx = channel_with(["alice"])
+      enter(ctx.construct_id, "alice")
+      {:ok, _} = place(ctx.construct_id, "alice", "sign", 13, 13)
+      {:ok, before} = ChannelSpaceServer.get_state(ctx.construct_id)
+
+      assert {:ok, %{modal: %{kind: "sign"}}} =
+               use_piece(ctx, "alice", item_at(ctx.construct_id, 13, 13))
+
+      {:ok, after_panel} = ChannelSpaceServer.get_state(ctx.construct_id)
+      assert after_panel.build_times == before.build_times
+    end
+
+    test "the author writes on a sign; the muted cannot" do
+      ctx = channel_with(["alice"])
+      enter(ctx.construct_id, "alice")
+      {:ok, _} = place(ctx.construct_id, "alice", "sign", 13, 13)
+      sign = item_at(ctx.construct_id, 13, 13)
+      label = {:label, sign.id, "Welcome"}
+
+      assert {:ok, 2} =
+               VirtualSpace.build_construct(ctx.construct_id, key("alice"), "alice", label)
+
+      assert %{state: %{"text" => "Welcome"}} = item_at(ctx.construct_id, 13, 13)
+
+      GlobalMutes.mute("alice")
+      on_exit(fn -> GlobalMutes.unmute("alice") end)
+
+      assert {:error, :muted} =
+               VirtualSpace.build_construct(ctx.construct_id, key("alice"), "alice", label)
+    end
+
+    test "a board cannot be built in a private Construct" do
+      space_id = DirectMessageSpace.space_id("alice", "bob")
+      construct_id = VirtualSpace.construct_id(space_id)
+      on_exit(fn -> stop_construct(construct_id) end)
+      enter(construct_id, "alice", ["alice", "bob"])
+
+      assert {:error, :unknown_kind} = place(construct_id, "alice", "board", 13, 13)
+      assert {:ok, 1} = place(construct_id, "alice", "screen", 13, 13)
+    end
+  end
+
+  describe "painting the floor" do
+    test "reaches everyone inside, and is there the next time the room opens" do
+      ctx = channel_with(["alice"])
+      enter(ctx.construct_id, "alice")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "space:" <> ctx.construct_id)
+
+      assert {:ok, 1} =
+               VirtualSpace.build_construct(
+                 ctx.construct_id,
+                 key("alice"),
+                 "alice",
+                 {:paint, 20, 20, 22, 21, "carpet_red"}
+               )
+
+      assert_receive %{event: "construct_layout", payload: %{revision: 1, floor: rows}}
+      assert String.at(Enum.at(rows, 21), 22) == "4"
+      assert %{floor: floor} = Store.load(ctx.construct_id)
+      assert is_binary(floor)
+
+      # A later edit that paints nothing keeps the floor, and sends no rows.
+      {:ok, 2} = place(ctx.construct_id, "alice", "tree", 30, 30)
+      assert_receive %{event: "construct_layout", payload: %{revision: 2} = patch}
+      refute Map.has_key?(patch, :floor)
+      assert %{floor: ^floor} = Store.load(ctx.construct_id)
+
+      stop_construct(ctx.construct_id)
+      joined = enter(ctx.construct_id, "alice")
+      assert String.at(Enum.at(joined.map.layers.floor, 20), 20) == "4"
+    end
+  end
+
   describe "a gathering through the gate" do
     setup do
       Application.put_env(:retro_hex_chat, :virtual_space_gathering_grace_ms, 150)
@@ -336,12 +494,12 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
       tree = %{id: "t", kind: "tree", x: 9, y: 9, dir: "down", placed_by: "alice"}
 
       assert %{items: [], revision: 0} = Store.load(id)
-      assert :ok = Store.save(id, [tree], 2, "alice")
+      assert :ok = Store.save(id, %{items: [tree], floor: nil}, 2, "alice")
       # A write that left later but arrived first must not be undone by the older one.
-      assert :ok = Store.save(id, [], 1, "bob")
+      assert :ok = Store.save(id, %{items: [], floor: nil}, 1, "bob")
 
       assert %{revision: 2, items: [%{"id" => "t"}]} = Store.load(id)
-      assert :ok = Store.save(id, [], 3, "bob")
+      assert :ok = Store.save(id, %{items: [], floor: nil}, 3, "bob")
       assert %{revision: 3, items: []} = Store.load(id)
     end
   end

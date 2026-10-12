@@ -45,13 +45,13 @@ defmodule RetroHexChat.VirtualSpace.Supervisor do
   @spec start_construct_child(
           String.t(),
           {:channel, String.t()} | {:direct_message, String.t(), [String.t()]},
-          %{items: [map()], revision: non_neg_integer()}
+          RetroHexChat.VirtualSpace.ChannelSpaceServer.construct_layout()
         ) :: DynamicSupervisor.on_start_child()
   @spec start_construct_child(
           GenServer.server(),
           String.t(),
           {:channel, String.t()} | {:direct_message, String.t(), [String.t()]},
-          %{items: [map()], revision: non_neg_integer()}
+          RetroHexChat.VirtualSpace.ChannelSpaceServer.construct_layout()
         ) :: DynamicSupervisor.on_start_child()
   def start_construct_child(supervisor \\ __MODULE__, construct_id, parent, layout) do
     DynamicSupervisor.start_child(

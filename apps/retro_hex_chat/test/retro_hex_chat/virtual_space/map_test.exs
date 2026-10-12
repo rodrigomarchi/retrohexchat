@@ -109,7 +109,8 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
 
         assert length(floor) == ctx.definition.height
 
-        for row <- floor do
+        # A row is a list of ids, or a string of one-character ids.
+        for row <- floor, row = if(is_binary(row), do: String.graphemes(row), else: row) do
           assert length(row) == ctx.definition.width
           # Every floor cell names a tile from the map's own vocabulary.
           assert Enum.all?(row, &(&1 in known))

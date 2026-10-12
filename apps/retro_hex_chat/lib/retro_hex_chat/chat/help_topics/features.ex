@@ -4057,14 +4057,20 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "table",
           "tree",
           "lamp",
+          "door",
+          "teleporter",
+          "sign",
+          "arcade",
+          "floor",
           dgettext("help", "build"),
-          dgettext("help", "furniture")
+          dgettext("help", "furniture"),
+          dgettext("help", "paint the floor")
         ],
         icon: :icon_community,
         description:
           dgettext(
             "help",
-            "Every space has a Construct, an empty white room that the people of the conversation decorate together. Its green gate stands on the north island of the End of Time. Press E beside the gate and answer Yes to go in. Pick a piece on the palette and click the floor to place it. Drag a piece to move it, right-click it to remove it, and press R to turn it. Everyone inside sees each change at once, and the room stays as you left it."
+            "Every space has a Construct, an empty white room that the people of the conversation decorate together. Its green gate stands on the north island of the End of Time. Press E beside the gate and answer Yes to go in. Pick a piece on the palette and click the floor to place it. Drag a piece to move it, right-click it to remove it, and press R to turn it. Press E next to a lamp, a door, a die, a teleporter, a sign, an arcade cabinet, a board or a screen to use it, and paint the floor from the Floor tab. Everyone inside sees each change at once, and the room stays as you left it."
           ),
         see_also: ["feature-virtual-spaces", "feature-space-talk", "keyboard-shortcuts"]
       },

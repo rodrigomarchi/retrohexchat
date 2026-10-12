@@ -13,14 +13,17 @@ defmodule RetroHexChat.VirtualSpace.Construct.Store do
   alias RetroHexChat.Repo
   alias RetroHexChat.VirtualSpace.Schema.Construct
 
-  @type layout :: %{items: [map()], revision: non_neg_integer()}
+  @type layout :: %{items: [map()], floor: String.t() | nil, revision: non_neg_integer()}
 
   @doc "The stored layout of a Construct; an empty room when nothing was built."
   @spec load(String.t()) :: layout()
   def load(space_id) when is_binary(space_id) do
     case Repo.get_by(Construct, space_id: space_id) do
-      %Construct{items: items, revision: revision} -> %{items: items, revision: revision}
-      nil -> %{items: [], revision: 0}
+      %Construct{items: items, floor: floor, revision: revision} ->
+        %{items: items, floor: floor, revision: revision}
+
+      nil ->
+        %{items: [], floor: nil, revision: 0}
     end
   end
 
@@ -31,16 +34,31 @@ defmodule RetroHexChat.VirtualSpace.Construct.Store do
   of order — each is written by the process of the person who made it — so the
   row only ever moves forward in `revision`.
   """
-  @spec save(String.t(), [map()], non_neg_integer(), String.t() | nil) ::
+  @spec save(
+          String.t(),
+          %{
+            required(:items) => [map()],
+            required(:floor) => String.t() | nil,
+            optional(atom()) => term()
+          },
+          non_neg_integer(),
+          String.t() | nil
+        ) ::
           :ok | {:error, Ecto.Changeset.t()}
-  def save(space_id, items, revision, nickname) do
+  def save(space_id, %{items: items, floor: floor}, revision, nickname) do
     now = DateTime.utc_now()
 
     newer =
       from(c in Construct,
         where: c.revision < ^revision,
         update: [
-          set: [items: ^items, revision: ^revision, updated_by_nick: ^nickname, updated_at: ^now]
+          set: [
+            items: ^items,
+            floor: ^floor,
+            revision: ^revision,
+            updated_by_nick: ^nickname,
+            updated_at: ^now
+          ]
         ]
       )
 
@@ -48,6 +66,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.Store do
     |> Construct.changeset(%{
       space_id: space_id,
       items: items,
+      floor: floor,
       revision: revision,
       updated_by_nick: nickname
     })

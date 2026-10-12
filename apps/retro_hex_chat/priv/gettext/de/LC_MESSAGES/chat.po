@@ -507,12 +507,12 @@ msgstr "Toggle Conference Mikrofon"
 msgid "Attachment could not be attached to the message"
 msgstr "Anlage konnte nicht an der Nachricht angebracht werden"
 
-#: lib/retro_hex_chat/chat/attachments.ex:275
+#: lib/retro_hex_chat/chat/attachments.ex:280
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "Die Befestigung übersteigt das %{mb} MB Limit"
 
-#: lib/retro_hex_chat/chat/attachments.ex:270
+#: lib/retro_hex_chat/chat/attachments.ex:275
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "Befestigung ist leer"
@@ -522,9 +522,9 @@ msgstr "Befestigung ist leer"
 msgid "Unsupported message format"
 msgstr "Ununterstütztes Nachrichtenformat"
 
-#: lib/retro_hex_chat/chat/attachments.ex:315
-#: lib/retro_hex_chat/chat/attachments.ex:397
+#: lib/retro_hex_chat/chat/attachments.ex:320
 #: lib/retro_hex_chat/chat/attachments.ex:402
+#: lib/retro_hex_chat/chat/attachments.ex:407
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "Datei"
@@ -653,7 +653,7 @@ msgstr "Dieser Server antwortet bereits auf diesen Namen."
 msgid "This server already has %{count} emoji."
 msgstr "Dieser Server hat bereits %{count} Emoji."
 
-#: lib/retro_hex_chat/chat/attachments.ex:309
+#: lib/retro_hex_chat/chat/attachments.ex:314
 #, elixir-autogen, elixir-format
 msgid "A recording cannot be sent as %{type}"
 msgstr "Eine Aufnahme kann nicht als %{type} gesendet werden"
@@ -678,3 +678,18 @@ msgstr "Geben Sie zuerst etwas zu sagen."
 #, elixir-autogen, elixir-format
 msgid "You are muted by an administrator"
 msgstr "Sie werden von einem Administrator mutiert"
+
+#: lib/retro_hex_chat/virtual_space.ex:321
+#, elixir-autogen, elixir-format
+msgid "threw the coin, and it landed gold side up"
+msgstr "warf die Münze, und sie landete Goldseite nach oben"
+
+#: lib/retro_hex_chat/virtual_space.ex:324
+#, elixir-autogen, elixir-format
+msgid "threw the coin, and it landed silver side up"
+msgstr "warf die Münze, und es landete Silberseite nach oben"
+
+#: lib/retro_hex_chat/virtual_space.ex:317
+#, elixir-autogen, elixir-format
+msgid "threw the dice and got %{face}"
+msgstr "würfeln und erhalten %{face}"

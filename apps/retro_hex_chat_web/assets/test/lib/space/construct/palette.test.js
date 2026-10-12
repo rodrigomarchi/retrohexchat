@@ -11,7 +11,7 @@ function paletteDom() {
     <button data-construct-kind="tree" data-selected="false"><canvas data-construct-thumb width="40" height="40"></canvas></button>
     <button data-construct-rotate disabled></button>
     <button data-construct-remove disabled></button>
-    <p data-construct-status data-hint="Pick a piece.">Pick a piece.</p>
+    <p data-construct-status data-hint="Pick a piece." data-paint-hint="Drag to paint.">Pick a piece.</p>
   `;
   return root;
 }
@@ -77,5 +77,52 @@ describe("createBuildPalette", () => {
     expect([sw, sh]).toEqual([72, 104]);
     expect(h).toBeLessThanOrEqual(36);
     expect(w / h).toBeCloseTo(72 / 104, 1);
+  });
+
+  it("shows one group of kinds at a time", () => {
+    const root = document.createElement("div");
+    root.innerHTML = `
+      <button data-construct-tab="furniture" data-selected="true"></button>
+      <button data-construct-tab="fun" data-selected="false"></button>
+      <div data-construct-group="furniture"><button data-construct-kind="chair"></button></div>
+      <div data-construct-group="fun" hidden><button data-construct-kind="die"></button></div>
+    `;
+    const onChoose = vi.fn();
+    const palette = createBuildPalette(root, { onChoose, onRotate() {}, onRemove() {} });
+    palette.attach();
+
+    root.querySelector('[data-construct-tab="fun"]').click();
+    expect(root.querySelector('[data-construct-group="fun"]').hidden).toBe(false);
+    expect(root.querySelector('[data-construct-group="furniture"]').hidden).toBe(true);
+    expect(root.querySelector('[data-construct-tab="fun"]').dataset.selected).toBe("true");
+    expect(root.querySelector('[data-construct-tab="furniture"]').dataset.selected).toBe("false");
+    expect(onChoose).not.toHaveBeenCalled();
+    palette.detach();
+  });
+
+  it("names a refusal in the server's own words", () => {
+    const palette = createBuildPalette(paletteDom(), {
+      onChoose() {},
+      onRotate() {},
+      onRemove() {},
+    });
+    expect(palette.sentence("occupied")).toBe("Something is already there.");
+    expect(palette.sentence("whatever")).toBe("That piece cannot go there.");
+  });
+
+  it("says what a press does: paint while a floor is armed, build otherwise", () => {
+    const root = paletteDom();
+    const palette = createBuildPalette(root, { onChoose() {}, onRotate() {}, onRemove() {} });
+    const line = root.querySelector("[data-construct-status]");
+
+    palette.render({ mode: "painting", material: "wood" });
+    expect(line.textContent).toBe("Drag to paint.");
+    palette.render({ mode: "idle" });
+    expect(line.textContent).toBe("Pick a piece.");
+
+    // A refusal stays said until an edit goes through.
+    palette.refuse("occupied");
+    palette.render({ mode: "painting", material: "wood" });
+    expect(line.textContent).toBe("Something is already there.");
   });
 });
