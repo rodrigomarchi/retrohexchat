@@ -66,7 +66,13 @@ export async function wander(
   }
 }
 
-type Spot = { x: number; y: number; nickname: string; pose?: string };
+type Spot = {
+  x: number;
+  y: number;
+  nickname: string;
+  pose?: string;
+  hp?: number;
+};
 
 /** Where the islands are: every tile a character may stand on. */
 type Ground = { width: number; height: number; blocked: Set<string> };
@@ -296,6 +302,7 @@ export class Walker {
         y: p.y ?? known?.y,
         nickname: p.nickname ?? known?.nickname,
         pose: p.pose ?? known?.pose,
+        hp: p.hp ?? known?.hp,
       });
     }
   }

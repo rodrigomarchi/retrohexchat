@@ -790,7 +790,7 @@ msgid "Browser"
 msgstr "浏览器"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:79
-#: lib/retro_hex_chat_web/live/app/space_live.ex:226
+#: lib/retro_hex_chat_web/live/app/space_live.ex:230
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:520
 #, elixir-autogen, elixir-format
 msgid "Cancel"
@@ -1489,7 +1489,7 @@ msgstr "NickServ用密码保护你的昵称 这样别人就不用了"
 msgid "Nickname %{nickname} is already in use"
 msgstr "昵称 %{nickname} 已经使用"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:314
+#: lib/retro_hex_chat_web/live/app/space_live.ex:327
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "No"
@@ -2075,13 +2075,13 @@ msgid "Yellow"
 msgstr "黄色"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:304
+#: lib/retro_hex_chat_web/live/app/space_live.ex:317
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "Yes"
 msgstr "是"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:331
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:332
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:215
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:236
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:261
@@ -2903,7 +2903,7 @@ msgstr "%{peer}失去了P2P连接——等待他们返回......"
 msgid "Arcade session ended."
 msgstr "场景结束"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:741
+#: lib/retro_hex_chat_web/live/app/space_live.ex:749
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "频道空间"
@@ -2913,7 +2913,7 @@ msgstr "频道空间"
 msgid "Chat"
 msgstr "聊天"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:70
+#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:72
 #, elixir-autogen, elixir-format
 msgid "Choose your character"
 msgstr "选择您的字符"
@@ -2953,7 +2953,7 @@ msgstr "默认设备"
 msgid "End P2P Call Media"
 msgstr "结束 P2P 调用媒体"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:745
+#: lib/retro_hex_chat_web/live/app/space_live.ex:753
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "正在进入频道空间..."
@@ -2978,7 +2978,7 @@ msgstr "静音、 解密或启用您的 P2P 麦克风"
 msgid "Next P2P Layout"
 msgstr "下一个 P2P 版式"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:744
+#: lib/retro_hex_chat_web/live/app/space_live.ex:752
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "打开私人房间..."
@@ -3010,14 +3010,14 @@ msgstr "正在连接 P2P 会话"
 msgid "P2P session with %{peer} ended."
 msgstr "P2P会话的%{peer}结束."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:740
+#: lib/retro_hex_chat_web/live/app/space_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "私人空间"
 
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:706
+#: lib/retro_hex_chat_web/live/app/space_live.ex:714
 #, elixir-autogen, elixir-format
 msgid "Space"
 msgstr "空间"
@@ -3112,7 +3112,7 @@ msgstr "向右走"
 msgid "Walk up"
 msgstr "向上走"
 
-#: lib/retro_hex_chat_web/components/ui/space_fullscreen_toggle.ex:28
+#: lib/retro_hex_chat_web/components/ui/space_fullscreen_toggle.ex:27
 #, elixir-autogen, elixir-format
 msgid "Toggle fullscreen"
 msgstr "切换全屏"
@@ -3758,46 +3758,46 @@ msgstr "会话操作"
 msgid "Participants"
 msgstr "参与者"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:150
+#: lib/retro_hex_chat_web/live/app/space_live.ex:152
 #, elixir-autogen, elixir-format
 msgid "%{count} in the space"
 msgid_plural "%{count} in the space"
 msgstr[0] "空间中有 %{count} 人"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:96
+#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:92
 #, elixir-autogen, elixir-format
 msgid "Inside right now"
 msgstr "此刻在里面"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:98
+#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:94
 #, elixir-autogen, elixir-format
 msgid "Nobody is in here yet."
 msgstr "这里还没有人。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:702
-#: lib/retro_hex_chat_web/live/app/space_live.ex:704
+#: lib/retro_hex_chat_web/live/app/space_live.ex:710
+#: lib/retro_hex_chat_web/live/app/space_live.ex:712
 #, elixir-autogen, elixir-format
 msgid "Space · %{name}"
 msgstr "空间 · %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:589
-#: lib/retro_hex_chat_web/live/app/space_live.ex:604
-#: lib/retro_hex_chat_web/live/app/space_live.ex:623
+#: lib/retro_hex_chat_web/live/app/space_live.ex:597
+#: lib/retro_hex_chat_web/live/app/space_live.ex:612
+#: lib/retro_hex_chat_web/live/app/space_live.ex:631
 #, elixir-autogen, elixir-format
 msgid "That address does not name a space."
 msgstr "该地址不指向任何空间。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:635
+#: lib/retro_hex_chat_web/live/app/space_live.ex:643
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
 msgstr "这个私人空间属于另外两个人。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:584
+#: lib/retro_hex_chat_web/live/app/space_live.ex:592
 #, elixir-autogen, elixir-format
 msgid "This space is no longer available."
 msgstr "该空间已不可用。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:651
+#: lib/retro_hex_chat_web/live/app/space_live.ex:659
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "你需要先加入 %{channel} 才能进入它的空间。"
@@ -3832,7 +3832,7 @@ msgstr "%{game} · 对局"
 msgid "%{peer} is back."
 msgstr "%{peer} 回来了。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:656
+#: lib/retro_hex_chat_web/live/app/space_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "This space belongs to a channel you are not in."
 msgstr "这个空间属于一个你未加入的频道。"
@@ -3970,7 +3970,7 @@ msgstr "消息已置顶。"
 msgid "Message unpinned."
 msgstr "已取消置顶。"
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:72
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:90
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:205
 #, elixir-autogen, elixir-format
@@ -4261,14 +4261,14 @@ msgid "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same
 msgstr "• 大写字母无关紧要:\"爱丽丝\"和\"爱丽丝\"是同一种昵称"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:26
-#: lib/retro_hex_chat_web/live/app/space_live.ex:145
+#: lib/retro_hex_chat_web/live/app/space_live.ex:147
 #, elixir-autogen, elixir-format
 msgid "Change character"
 msgstr "更换角色"
 
-#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:62
 #: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:63
-#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:68
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:64
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Say"
@@ -4279,138 +4279,138 @@ msgstr "说"
 msgid "Say something"
 msgstr "说话呀"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:731
-#: lib/retro_hex_chat_web/live/app/space_live.ex:737
+#: lib/retro_hex_chat_web/live/app/space_live.ex:739
+#: lib/retro_hex_chat_web/live/app/space_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Say something to %{name}..."
 msgstr "跟%{name}说点什么..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:732
+#: lib/retro_hex_chat_web/live/app/space_live.ex:740
 #, elixir-autogen, elixir-format
 msgid "Say something..."
 msgstr "说点什么..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:281
+#: lib/retro_hex_chat_web/live/app/space_live.ex:288
 #, elixir-autogen, elixir-format
 msgid "%{name} is back on their feet."
 msgstr "%{name}恢复脚步."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:280
+#: lib/retro_hex_chat_web/live/app/space_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "%{name} is knocked out!"
 msgstr "%{name}被击倒!"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:32
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:33
 #, elixir-autogen, elixir-format
 msgid "Build"
 msgstr "建造"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:234
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:235
 #, elixir-autogen, elixir-format
 msgid "Chair"
 msgstr "椅子"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:698
-#: lib/retro_hex_chat_web/live/app/space_live.ex:739
+#: lib/retro_hex_chat_web/live/app/space_live.ex:706
+#: lib/retro_hex_chat_web/live/app/space_live.ex:747
 #, elixir-autogen, elixir-format
 msgid "Construct"
 msgstr "构造空间"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:295
+#: lib/retro_hex_chat_web/live/app/space_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "Go back to the End of Time?"
 msgstr "回到时间的尽头?"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:321
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:322
 #, elixir-autogen, elixir-format
 msgid "Keep the way to the gate clear."
 msgstr "守住通往大门的路"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:252
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:253
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Lamp"
 msgstr "灯"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:743
+#: lib/retro_hex_chat_web/live/app/space_live.ex:751
 #, elixir-autogen, elixir-format
 msgid "Loading the Construct..."
 msgstr "正在装入 构造空间..."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:112
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:122
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:113
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:123
 #, elixir-autogen, elixir-format
 msgid "Pick a piece, then click the floor. Drag a piece to move it, right-click to remove it."
 msgstr "挑一块,然后点击地板。 拖动一块来移动,右键单击以删除它."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:99
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:100
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:104
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:101
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:105
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "移除"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:324
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:325
 #, elixir-autogen, elixir-format
 msgid "Somebody is sitting in it."
 msgstr "有人坐在里面,我看见了"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:326
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:327
 #, elixir-autogen, elixir-format
 msgid "That is off the floor."
 msgstr "这是离地。"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:334
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:335
 #, elixir-autogen, elixir-format
 msgid "That piece cannot go there."
 msgstr "那块东西不能去那儿"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:325
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:326
 #, elixir-autogen, elixir-format
 msgid "The Construct is full."
 msgstr "Construct已经满载了."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:256
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:257
 #, elixir-autogen, elixir-format
 msgid "Tree"
 msgstr "树"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:86
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:87
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:91
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:88
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:92
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Turn"
 msgstr "旋转"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:237
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:238
 #, elixir-autogen, elixir-format
 msgctxt "furniture"
 msgid "Table"
 msgstr "桌子"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:294
+#: lib/retro_hex_chat_web/live/app/space_live.ex:301
 #, elixir-autogen, elixir-format
 msgid "Go into the Construct?"
 msgstr "进入Construct?"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:320
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:321
 #, elixir-autogen, elixir-format
 msgid "Somebody is standing on that spot."
 msgstr "有人站在那个地方"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:323
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:324
 #, elixir-autogen, elixir-format
 msgid "That would leave somebody with no way back to the gate."
 msgstr "那会让人无法回到大门"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:319
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:320
 #, elixir-autogen, elixir-format
 msgid "There is already a piece on that spot."
 msgstr "现场已经有一块了"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:327
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:328
 #, elixir-autogen, elixir-format
 msgid "Only one piece at a time, please wait."
 msgstr "一次只有一块,请等待。"
@@ -4420,134 +4420,134 @@ msgstr "一次只有一块,请等待。"
 msgid "Use"
 msgstr "使用"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:300
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:67
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:301
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "Arcade cabinet"
 msgstr "街机"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:235
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:236
 #, elixir-autogen, elixir-format
 msgid "Armchair"
 msgstr "扶手椅"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:183
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:184
 #, elixir-autogen, elixir-format
 msgid "Blue carpet"
 msgstr "蓝地毯"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:244
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:245
 #, elixir-autogen, elixir-format
 msgid "Bookshelf"
 msgstr "书架"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:184
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:185
 #, elixir-autogen, elixir-format
 msgid "Checkerboard"
 msgstr "棋盘格"
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:54
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:60
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr "关闭"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:298
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:299
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Coin"
 msgstr "硬币"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:295
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:296
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Door"
 msgstr "门"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:190
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:191
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:106
 #, elixir-autogen, elixir-format
 msgid "Erase"
 msgstr "擦除"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:60
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:61
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:105
 #, elixir-autogen, elixir-format
 msgid "Floor"
 msgstr "地板"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:220
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:221
 #, elixir-autogen, elixir-format
 msgid "Furniture"
 msgstr "家具"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:181
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:182
 #, elixir-autogen, elixir-format
 msgid "Grass"
 msgstr "草地"
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:70
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:76
 #, elixir-autogen, elixir-format
 msgid "Nobody has posted a picture here yet."
 msgstr "Nobody has posted a picture here yet."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:329
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:330
 #, elixir-autogen, elixir-format
 msgid "Only whoever put up this sign can change it."
 msgstr "只有贴上这个标志的人才能改变它."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:255
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:256
 #, elixir-autogen, elixir-format
 msgid "Plant"
 msgstr "植物"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:182
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:183
 #, elixir-autogen, elixir-format
 msgid "Red carpet"
 msgstr "红地毯"
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:41
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:47
 #, elixir-autogen, elixir-format
 msgid "Save"
 msgstr "保存"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:180
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:181
 #, elixir-autogen, elixir-format
 msgid "Stone"
 msgstr "石材"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:224
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:225
 #, elixir-autogen, elixir-format
 msgid "Structure"
 msgstr "结构"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:296
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:297
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Teleporter"
 msgstr "传送器"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:332
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:333
 #, elixir-autogen, elixir-format
 msgid "That floor cannot be painted."
 msgstr "那层楼不能画"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:333
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:334
 #, elixir-autogen, elixir-format
 msgid "That piece cannot be built here."
 msgstr "那块东西不能在这里建造"
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:69
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:75
 #, elixir-autogen, elixir-format
 msgid "This channel has no topic and nothing pinned yet."
 msgstr "这个频道还没有话题 还没有固定"
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:71
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:77
 #, elixir-autogen, elixir-format
 msgid "Topic"
 msgstr "主题"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:293
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:294
 #, elixir-autogen, elixir-format
 msgid "Wall"
 msgstr "墙"
@@ -4557,372 +4557,372 @@ msgstr "墙"
 msgid "What the sign says"
 msgstr "标志上写着什么"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:179
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:180
 #, elixir-autogen, elixir-format
 msgid "Wood"
 msgstr "木材"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:225
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:226
 #, elixir-autogen, elixir-format
 msgctxt "construct palette"
 msgid "Fun"
 msgstr "娱乐"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:297
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:298
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:63
 #, elixir-autogen, elixir-format
 msgctxt "game piece"
 msgid "Die"
 msgstr "骰子"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:301
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:65
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:302
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:71
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:87
 #, elixir-autogen, elixir-format
 msgctxt "notice board"
 msgid "Board"
 msgstr "公告板"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:299
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:64
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:300
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:75
 #, elixir-autogen, elixir-format
 msgctxt "signpost"
 msgid "Sign"
 msgstr "标牌"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:302
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:66
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:303
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:94
 #, elixir-autogen, elixir-format
 msgctxt "television"
 msgid "Screen"
 msgstr "屏幕"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:294
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:295
 #, elixir-autogen, elixir-format
 msgctxt "wall"
 msgid "Corner"
 msgstr "墙角"
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:68
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:74
 #, elixir-autogen, elixir-format
 msgid "Nothing is written on this signboard yet."
 msgstr "Nothing is written on this signboard yet."
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:74
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:80
 #, elixir-autogen, elixir-format
 msgid "Opens in another browser tab."
 msgstr "在另一个浏览器标签中打开 。"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:330
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:331
 #, elixir-autogen, elixir-format
 msgid "That line is too long for the signboard."
 msgstr "这条线太长了 招牌。"
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:73
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:79
 #, elixir-autogen, elixir-format
 msgid "Sent by %{name}"
 msgstr "%{name}发送"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:118
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:119
 #, elixir-autogen, elixir-format
 msgid "Press on the floor and drag: the whole rectangle is painted."
 msgstr "按下地板并拖动:整个矩形涂装."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:282
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:283
 #, elixir-autogen, elixir-format
 msgid "Beanbag"
 msgstr "懒人沙发"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:240
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:241
 #, elixir-autogen, elixir-format
 msgid "Bed"
 msgstr "床"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:270
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:271
 #, elixir-autogen, elixir-format
 msgid "Boulder"
 msgstr "巨石"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:268
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:269
 #, elixir-autogen, elixir-format
 msgid "Bush"
 msgstr "灌木"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:267
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:268
 #, elixir-autogen, elixir-format
 msgid "Cactus"
 msgstr "仙人掌"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:304
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:305
 #, elixir-autogen, elixir-format
 msgid "Campfire"
 msgstr "篝火"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:266
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:267
 #, elixir-autogen, elixir-format
 msgid "Coat rack"
 msgstr "衣帽架"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:264
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:265
 #, elixir-autogen, elixir-format
 msgid "Coffee machine"
 msgstr "咖啡机"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:239
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:240
 #, elixir-autogen, elixir-format
 msgid "Coffee table"
 msgstr "茶几"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:289
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:290
 #, elixir-autogen, elixir-format
 msgid "Cryo pod"
 msgstr "冷冻舱"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:243
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:244
 #, elixir-autogen, elixir-format
 msgid "Dresser"
 msgstr "五斗柜"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:226
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:227
 #, elixir-autogen, elixir-format
 msgid "End of Time"
 msgstr "End of Time"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:273
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:274
 #, elixir-autogen, elixir-format
 msgid "Fence"
 msgstr "栅栏"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:260
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:261
 #, elixir-autogen, elixir-format
 msgid "File cabinet"
 msgstr "文件柜"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:250
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:251
 #, elixir-autogen, elixir-format
 msgid "Fireplace"
 msgstr "壁炉"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:269
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:270
 #, elixir-autogen, elixir-format
 msgid "Flower bed"
 msgstr "花坛"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:272
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:273
 #, elixir-autogen, elixir-format
 msgid "Fountain"
 msgstr "喷泉"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:246
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:247
 #, elixir-autogen, elixir-format
 msgid "Fridge"
 msgstr "冰箱"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:223
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:224
 #, elixir-autogen, elixir-format
 msgid "Gamer"
 msgstr "游戏"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:283
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:284
 #, elixir-autogen, elixir-format
 msgid "Gaming chair"
 msgstr "电竞椅"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:222
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:223
 #, elixir-autogen, elixir-format
 msgid "Garden"
 msgstr "花园"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:278
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:279
 #, elixir-autogen, elixir-format
 msgid "Giant mushroom"
 msgstr "巨型蘑菇"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:251
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:252
 #, elixir-autogen, elixir-format
 msgid "Grandfather clock"
 msgstr "落地钟"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:290
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:291
 #, elixir-autogen, elixir-format
 msgid "Hologram"
 msgstr "全息投影"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:288
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:289
 #, elixir-autogen, elixir-format
 msgid "Jukebox"
 msgstr "点唱机"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:248
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:249
 #, elixir-autogen, elixir-format
 msgid "Kitchen counter"
 msgstr "厨房台面"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:238
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:239
 #, elixir-autogen, elixir-format
 msgid "Long table"
 msgstr "长桌"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:259
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:260
 #, elixir-autogen, elixir-format
 msgid "Meeting table"
 msgstr "会议桌"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:284
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:285
 #, elixir-autogen, elixir-format
 msgid "Neon sign"
 msgstr "霓虹灯牌"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:292
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:293
 #, elixir-autogen, elixir-format
 msgid "Neon totem"
 msgstr "霓虹灯柱"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:241
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:242
 #, elixir-autogen, elixir-format
 msgid "Nightstand"
 msgstr "床头柜"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:258
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:259
 #, elixir-autogen, elixir-format
 msgid "Office chair"
 msgstr "办公椅"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:257
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:258
 #, elixir-autogen, elixir-format
 msgid "Office desk"
 msgstr "办公桌"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:303
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:304
 #, elixir-autogen, elixir-format
 msgid "Old TV"
 msgstr "老电视"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:276
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:277
 #, elixir-autogen, elixir-format
 msgid "Palm tree"
 msgstr "棕榈树"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:271
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:272
 #, elixir-autogen, elixir-format
 msgid "Park bench"
 msgstr "公园长椅"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:249
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:250
 #, elixir-autogen, elixir-format
 msgid "Piano"
 msgstr "钢琴"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:277
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:278
 #, elixir-autogen, elixir-format
 msgid "Pine tree"
 msgstr "松树"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:281
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:282
 #, elixir-autogen, elixir-format
 msgid "Ping-pong table"
 msgstr "乒乓球桌"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:275
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:276
 #, elixir-autogen, elixir-format
 msgid "Pond"
 msgstr "池塘"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:280
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:281
 #, elixir-autogen, elixir-format
 msgid "Pool table"
 msgstr "台球桌"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:261
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:262
 #, elixir-autogen, elixir-format
 msgid "Printer"
 msgstr "打印机"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:291
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:292
 #, elixir-autogen, elixir-format
 msgid "Racing arcade"
 msgstr "赛车街机"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:287
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:288
 #, elixir-autogen, elixir-format
 msgid "Retro console"
 msgstr "复古游戏机"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:286
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:287
 #, elixir-autogen, elixir-format
 msgid "Robot"
 msgstr "机器人"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:285
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:286
 #, elixir-autogen, elixir-format
 msgid "Server rack"
 msgstr "服务器机架"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:236
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:237
 #, elixir-autogen, elixir-format
 msgid "Sofa"
 msgstr "沙发"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:305
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:306
 #, elixir-autogen, elixir-format
 msgid "Spirit Bomb"
 msgstr "元气弹"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:274
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:275
 #, elixir-autogen, elixir-format
 msgid "Street lamp"
 msgstr "路灯"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:245
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:246
 #, elixir-autogen, elixir-format
 msgid "TV stand"
 msgstr "电视柜"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:253
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:254
 #, elixir-autogen, elixir-format
 msgid "Table lamp"
 msgstr "台灯"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:254
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:255
 #, elixir-autogen, elixir-format
 msgid "Vase"
 msgstr "花瓶"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:265
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:266
 #, elixir-autogen, elixir-format
 msgid "Vending machine"
 msgstr "自动售货机"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:242
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:243
 #, elixir-autogen, elixir-format
 msgid "Wardrobe"
 msgstr "衣柜"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:263
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:264
 #, elixir-autogen, elixir-format
 msgid "Water cooler"
 msgstr "饮水机"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:262
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:263
 #, elixir-autogen, elixir-format
 msgid "Whiteboard"
 msgstr "白板"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:221
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:222
 #, elixir-autogen, elixir-format
 msgctxt "construct palette"
 msgid "Office"
 msgstr "办公室"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:279
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:280
 #, elixir-autogen, elixir-format
 msgctxt "garden"
 msgid "Mailbox"
 msgstr "信箱"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:247
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:248
 #, elixir-autogen, elixir-format
 msgctxt "kitchen"
 msgid "Stove"

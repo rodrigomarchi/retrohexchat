@@ -1,0 +1,639 @@
+{
+  "_doc": "The Virtual Space's pixel-art UI kit, read by tools/author_ui.py. Every piece is cut from a PixelLab generation under pixellab/ (rect = its exact opaque bounding box there), sliced at `slice` [top, right, bottom, left] native pixels, and given the derived `states` (recipes in author_ui.py). `targets`: css = one webp per state for border-image; canvas = packed into canvas.webp for the renderer. See ../UI.md.",
+  "palette": {
+    "outline": [
+      30,
+      15,
+      16
+    ],
+    "ink": [
+      66,
+      31,
+      34
+    ],
+    "wood": [
+      106,
+      58,
+      45
+    ],
+    "wood_dark": [
+      81,
+      41,
+      40
+    ],
+    "stone": [
+      133,
+      125,
+      123
+    ],
+    "parchment": [
+      240,
+      215,
+      185
+    ],
+    "parchment_shade": [
+      227,
+      196,
+      159
+    ],
+    "gold_dark": [
+      180,
+      116,
+      70
+    ],
+    "gold": [
+      219,
+      158,
+      88
+    ],
+    "gold_light": [
+      249,
+      212,
+      111
+    ],
+    "hp_ok": [
+      92,
+      168,
+      72
+    ],
+    "hp_ok_light": [
+      148,
+      214,
+      104
+    ],
+    "hp_low": [
+      200,
+      128,
+      40
+    ],
+    "hp_low_light": [
+      240,
+      196,
+      96
+    ]
+  },
+  "sources": {
+    "master": "pixellab/master/master_b.png",
+    "parch": "pixellab/controls/controls_a.png",
+    "wood": "pixellab/controls/controls_wood.png"
+  },
+  "pieces": {
+    "panel": {
+      "src": "master",
+      "rect": [
+        11,
+        11,
+        372,
+        372
+      ],
+      "slice": [
+        50,
+        50,
+        54,
+        50
+      ],
+      "states": [
+        "normal"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "button": {
+      "src": "wood",
+      "rect": [
+        16,
+        16,
+        113,
+        46
+      ],
+      "slice": [
+        12,
+        14,
+        12,
+        14
+      ],
+      "states": [
+        "normal",
+        "hover",
+        "pressed",
+        "disabled"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "button_parch": {
+      "src": "parch",
+      "rect": [
+        16,
+        16,
+        113,
+        45
+      ],
+      "slice": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "states": [
+        "normal",
+        "hover",
+        "pressed",
+        "disabled"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "tab": {
+      "src": "wood",
+      "rect": [
+        128,
+        16,
+        201,
+        39
+      ],
+      "slice": [
+        8,
+        9,
+        8,
+        9
+      ],
+      "states": [
+        "normal",
+        "hover"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "tab_parch": {
+      "src": "parch",
+      "rect": [
+        128,
+        16,
+        201,
+        39
+      ],
+      "slice": [
+        7,
+        8,
+        7,
+        8
+      ],
+      "states": [
+        "normal"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "slot": {
+      "src": "parch",
+      "rect": [
+        216,
+        16,
+        269,
+        69
+      ],
+      "slice": [
+        9,
+        9,
+        9,
+        9
+      ],
+      "states": [
+        "normal",
+        "hover",
+        "selected",
+        "disabled"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "tool": {
+      "src": "wood",
+      "rect": [
+        216,
+        16,
+        269,
+        69
+      ],
+      "slice": [
+        14,
+        14,
+        14,
+        14
+      ],
+      "states": [
+        "normal",
+        "hover",
+        "pressed",
+        "active",
+        "disabled",
+        "danger"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "input": {
+      "src": "parch",
+      "rect": [
+        16,
+        64,
+        209,
+        91
+      ],
+      "slice": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "states": [
+        "normal",
+        "focus"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "titlebar": {
+      "src": "wood",
+      "rect": [
+        16,
+        108,
+        273,
+        131
+      ],
+      "slice": [
+        9,
+        10,
+        9,
+        10
+      ],
+      "states": [
+        "normal",
+        "inactive"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "status": {
+      "src": "parch",
+      "rect": [
+        288,
+        108,
+        417,
+        129
+      ],
+      "slice": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "states": [
+        "normal"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "status_wood": {
+      "src": "wood",
+      "rect": [
+        288,
+        108,
+        417,
+        130
+      ],
+      "slice": [
+        7,
+        11,
+        7,
+        11
+      ],
+      "states": [
+        "normal"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "pad_key": {
+      "src": "wood",
+      "rect": [
+        160,
+        226,
+        205,
+        269
+      ],
+      "slice": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "states": [
+        "normal",
+        "pressed",
+        "danger",
+        "danger_pressed"
+      ],
+      "targets": [
+        "css"
+      ]
+    },
+    "bubble": {
+      "src": "parch",
+      "rect": [
+        160,
+        148,
+        257,
+        189
+      ],
+      "slice": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "states": [
+        "normal"
+      ],
+      "targets": [
+        "canvas"
+      ]
+    },
+    "nameplate": {
+      "src": "wood",
+      "rect": [
+        16,
+        152,
+        89,
+        169
+      ],
+      "slice": [
+        6,
+        10,
+        6,
+        10
+      ],
+      "states": [
+        "normal"
+      ],
+      "targets": [
+        "canvas"
+      ]
+    },
+    "sign": {
+      "src": "wood",
+      "rect": [
+        272,
+        148,
+        369,
+        181
+      ],
+      "slice": [
+        13,
+        15,
+        13,
+        15
+      ],
+      "states": [
+        "normal"
+      ],
+      "targets": [
+        "canvas"
+      ]
+    },
+    "plaque": {
+      "src": "wood",
+      "rect": [
+        384,
+        152,
+        465,
+        173
+      ],
+      "slice": [
+        7,
+        11,
+        7,
+        11
+      ],
+      "states": [
+        "normal"
+      ],
+      "targets": [
+        "canvas"
+      ]
+    },
+    "hp": {
+      "src": "parch",
+      "rect": [
+        104,
+        156,
+        139,
+        165
+      ],
+      "slice": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "states": [
+        "normal"
+      ],
+      "targets": [
+        "canvas"
+      ]
+    }
+  },
+  "images": {
+    "dpad": {
+      "src": "parch",
+      "rect": [
+        10,
+        371,
+        137,
+        498
+      ]
+    }
+  },
+  "drawn": {
+    "_doc": "Pieces too small to generate, drawn here pixel by pixel in the kit's palette. Each row is one pixel row; a character names a palette colour (see `keys`), '.' is transparent.",
+    "keys": {
+      "o": "outline",
+      "i": "ink",
+      "p": "parchment",
+      "s": "parchment_shade",
+      "g": "gold",
+      "G": "gold_light",
+      "d": "gold_dark",
+      "h": "hp_ok",
+      "H": "hp_ok_light",
+      "w": "wood",
+      "W": "wood_dark",
+      "t": "stone",
+      "L": "hp_low_light",
+      "l": "hp_low"
+    },
+    "tail": [
+      "ooooooooooo",
+      ".opppppppo.",
+      "..opppppo..",
+      "...opppo...",
+      "....opo....",
+      ".....o....."
+    ],
+    "hp_fill": [
+      "H",
+      "h",
+      "h"
+    ],
+    "win_minimize": [
+      "............",
+      "............",
+      "............",
+      "............",
+      "............",
+      "............",
+      "............",
+      "............",
+      ".oooooooooo.",
+      ".oGGGGGGGGo.",
+      ".oddddddddo.",
+      ".oooooooooo."
+    ],
+    "win_maximize": [
+      ".oooooooooo.",
+      ".oGGGGGGGGo.",
+      ".oddddddddo.",
+      ".oo......oo.",
+      ".oo......oo.",
+      ".oo......oo.",
+      ".oo......oo.",
+      ".oo......oo.",
+      ".oo......oo.",
+      ".oo......oo.",
+      ".oGGGGGGGGo.",
+      ".oooooooooo."
+    ],
+    "win_restore": [
+      "...ooooooooo",
+      "...oGGGGGGGo",
+      "...oddddddo.",
+      "ooooooooooo.",
+      "oGGGGGGGoo..",
+      "oddddddddo..",
+      "oo......oo..",
+      "oo......oo..",
+      "oo......oo..",
+      "oo......oo..",
+      "oGGGGGGGGo..",
+      "oooooooooo.."
+    ],
+    "win_close": [
+      "oo........oo",
+      "oGo......oGo",
+      ".oGo....oGo.",
+      "..oGo..oGo..",
+      "...oGooGo...",
+      "....oGGo....",
+      "....oGGo....",
+      "...oGooGo...",
+      "..oGo..oGo..",
+      ".oGo....oGo.",
+      "oGo......oGo",
+      "oo........oo"
+    ],
+    "hp_low_fill": [
+      "L",
+      "l",
+      "l"
+    ]
+  },
+  "icons": {
+    "_doc": "The chosen candidate of each PixelLab icon job (pixellab/icons/<name>/job.txt). `rotate` makes an icon from another by a lossless quarter turn (degrees counter-clockwise); `quadrants: flip` mirrors each quarter of it in place, turning outward corner marks inward.",
+    "ok": {
+      "src": "pixellab/icons/ok/cand_27.png"
+    },
+    "cancel": {
+      "src": "pixellab/icons/cancel/cand_17.png"
+    },
+    "send": {
+      "src": "pixellab/icons/send/cand_20.png"
+    },
+    "fullscreen_enter": {
+      "src": "pixellab/icons/fs_enter/cand_00.png"
+    },
+    "use": {
+      "src": "pixellab/icons/use/cand_44.png"
+    },
+    "win_minimize": {
+      "drawn": "win_minimize"
+    },
+    "win_maximize": {
+      "drawn": "win_maximize"
+    },
+    "win_restore": {
+      "drawn": "win_restore"
+    },
+    "win_close": {
+      "drawn": "win_close"
+    },
+    "turn": {
+      "src": "pixellab/icons/turn/cand_14.png"
+    },
+    "remove": {
+      "src": "pixellab/icons/remove/cand_19.png"
+    },
+    "space": {
+      "src": "pixellab/icons/space/cand_26.png"
+    },
+    "fullscreen_exit": {
+      "from": "fullscreen_enter",
+      "quadrants": "flip"
+    },
+    "attack": {
+      "src": "pixellab/icons/attack/cand_20.png"
+    },
+    "pad_up": {
+      "src": "pixellab/icons/pad_up/cand_00.png"
+    },
+    "pad_left": {
+      "from": "pad_up",
+      "rotate": 90
+    },
+    "pad_down": {
+      "from": "pad_up",
+      "rotate": 180
+    },
+    "pad_right": {
+      "from": "pad_up",
+      "rotate": 270
+    },
+    "loading": {
+      "src": "pixellab/icons/loading/cand_06.png"
+    }
+  },
+  "canvas_sprites": {
+    "_doc": "Fixed sprites the canvas draws whole, packed into canvas.webp beside the sliced pieces.",
+    "tail": {
+      "drawn": "tail"
+    },
+    "hp_fill": {
+      "drawn": "hp_fill"
+    },
+    "hp_low_fill": {
+      "drawn": "hp_low_fill"
+    }
+  }
+}

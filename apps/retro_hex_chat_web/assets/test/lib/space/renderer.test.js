@@ -93,7 +93,9 @@ describe("Renderer map labels", () => {
 
     const printed = ctx.fillText.mock.calls.map((c) => c[0]);
     expect(printed).toContain("Alice + Bob");
-    expect(ctx.font).toBe("10px monospace");
+    // No `.space-ui` page around a stand-in canvas: the pixel font's size, the
+    // generic family.
+    expect(ctx.font).toBe("12px monospace");
   });
 });
 
@@ -707,5 +709,69 @@ describe("Renderer in a Construct", () => {
 
     expect(ctx.stroke).toHaveBeenCalled();
     expect(ctx.closePath).toHaveBeenCalled();
+  });
+});
+
+describe("Renderer UI kit pieces", () => {
+  const KIT_IMG = { kit: true };
+  const kitAtlas = () => ({
+    tile: () => ({ canvas: {} }),
+    avatar: () => ({ canvas: {} }),
+    uiPiece: (name) =>
+      ({
+        nameplate: { img: KIT_IMG, x: 0, y: 0, w: 30, h: 17, t: 6, r: 10, b: 6, l: 10 },
+        bubble: { img: KIT_IMG, x: 40, y: 0, w: 30, h: 30, t: 8, r: 8, b: 8, l: 8 },
+        tail: { img: KIT_IMG, x: 80, y: 0, w: 11, h: 6 },
+        hp: { img: KIT_IMG, x: 100, y: 0, w: 35, h: 9, t: 3, r: 3, b: 3, l: 3 },
+        hp_fill: { img: KIT_IMG, x: 140, y: 0, w: 1, h: 3 },
+        hp_low_fill: { img: KIT_IMG, x: 142, y: 0, w: 1, h: 3 },
+      })[name] ?? null,
+  });
+  const alice = (extra = {}) =>
+    new Map([
+      [
+        "registered:1",
+        { key: "registered:1", nickname: "alice", x: 5, y: 5, dir: "down", ...extra },
+      ],
+    ]);
+  const fromKit = (ctx, sx) =>
+    ctx.drawImage.mock.calls.filter(([img, x]) => img === KIT_IMG && x >= sx && x < sx + 30);
+
+  it("frames the nameplate and the bubble with the kit's art", () => {
+    const { ctx, renderer } = build({ atlas: kitAtlas() });
+    renderer.draw({
+      participants: alice(),
+      selfKey: "registered:1",
+      bubbles: new Map([["registered:1", "hello"]]),
+    });
+
+    expect(fromKit(ctx, 0).length).toBeGreaterThan(0);
+    expect(fromKit(ctx, 40).length).toBeGreaterThan(0);
+    // Pixel text starts on a whole pixel, whatever its width.
+    ctx.measureText.mockReturnValue({ width: 41 });
+    renderer.draw({ participants: alice(), selfKey: "registered:1", bubbles: new Map() });
+    for (const [, x] of ctx.fillText.mock.calls) expect(Number.isInteger(x)).toBe(true);
+  });
+
+  it("draws the HP bar from the kit only while the character is hurt", () => {
+    const { ctx, renderer } = build({ atlas: kitAtlas() });
+    renderer.draw({ participants: alice(), selfKey: "registered:1" });
+    expect(fromKit(ctx, 100)).toEqual([]);
+
+    renderer.draw({ participants: alice({ hp: 40 }), selfKey: "registered:1" });
+    expect(fromKit(ctx, 100).length).toBeGreaterThan(0);
+    // Below half, the amber fill.
+    expect(ctx.drawImage.mock.calls.some(([img, x]) => img === KIT_IMG && x === 142)).toBe(true);
+  });
+
+  it("still writes every name and line when the kit's sheet is missing", () => {
+    const { ctx, renderer } = build();
+    renderer.draw({
+      participants: alice({ hp: 40 }),
+      selfKey: "registered:1",
+      bubbles: new Map([["registered:1", "hello"]]),
+    });
+    const printed = ctx.fillText.mock.calls.map((c) => c[0]);
+    expect(printed).toEqual(expect.arrayContaining(["alice", "hello"]));
   });
 });

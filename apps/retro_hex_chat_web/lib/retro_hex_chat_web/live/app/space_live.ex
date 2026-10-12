@@ -26,13 +26,13 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   alias RetroHexChat.Nickname
   use RetroHexChatWeb, :live_view
 
-  import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.SpaceBuildPalette
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.SpaceCharacterSelect
   import RetroHexChatWeb.Components.UI.SpaceConstructPanel
   import RetroHexChatWeb.Components.UI.SpaceFullscreenToggle
+  import RetroHexChatWeb.Components.UI.Space.PixelIcon
   import RetroHexChatWeb.Components.UI.SpaceSayBar
   import RetroHexChatWeb.Components.UI.SpaceVirtualPad
   import RetroHexChatWeb.Components.UI.SurfaceTabLink
@@ -49,7 +49,6 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
-  alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.Live.ShareControl
   alias RetroHexChatWeb.ShareLinkRef
@@ -111,7 +110,9 @@ defmodule RetroHexChatWeb.App.SpaceLive do
     ~H"""
     <%!-- The same shell every other desktop screen uses: the workspace only
           has a height because something above it does. --%>
-    <div class="bg-background text-text font-system flex h-screen flex-col">
+    <%!-- `space-ui` puts the whole page in the space's pixel-art kit
+          (features/space-ui.css): the window, the overlays, the say bar. --%>
+    <div class="space-ui bg-background text-text flex h-screen flex-col">
       <%!-- This tab answers when the chat asks for it by address. --%>
       <div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
       <%!-- Where "Copied!" lands: a page of its own has no chat to borrow a
@@ -121,21 +122,22 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         <.desktop_window
           id="virtual-space"
           title={window_title(@space)}
+          skin="pixel"
           pinned
           default_maximized
           body_class="h-full min-h-0 overflow-hidden p-1"
           data-testid="virtual-space-window"
         >
-          <:icon><Icons.icon_community class="h-4 w-4" /></:icon>
+          <:icon><.pixel_icon name={:space} /></:icon>
           <%!-- The way back is always on screen, in both states. --%>
           <:status>
-            <.window_status_bar_field grow>
+            <.window_status_bar_field skin="pixel" grow>
               <.back_to_chat
                 open?={OpenSurfaces.open?(@open_surface_paths, Paths.chat_path())}
                 testid="space-back-to-chat"
               />
             </.window_status_bar_field>
-            <.window_status_bar_field :if={@avatar}>
+            <.window_status_bar_field :if={@avatar} skin="pixel">
               <button
                 type="button"
                 phx-click="space_change_character"
@@ -145,7 +147,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
                 {dgettext("chat", "Change character")}
               </button>
             </.window_status_bar_field>
-            <.window_status_bar_field>
+            <.window_status_bar_field skin="pixel">
               <span data-testid="space-status-count">
                 {dngettext(
                   "chat",
@@ -193,6 +195,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
           available={sharable?(@user_id)}
           on_share="share_space"
           on_revoke="revoke_space"
+          variant="pixel"
           class="justify-start"
         />
       </:footer>
@@ -204,7 +207,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
       :if={@space && @avatar}
       data-space-stage
       data-testid="space-stage"
-      class="relative flex min-h-0 w-full flex-1 flex-col bg-surface"
+      class="relative flex min-h-0 w-full flex-1 flex-col"
     >
       <%!-- The same picker as at the door, over the running map: the map keeps
             running underneath, so changing who you are is not leaving. --%>
@@ -219,10 +222,11 @@ defmodule RetroHexChatWeb.App.SpaceLive do
           <.button
             type="button"
             size="sm"
+            variant="pixel-secondary"
             phx-click="space_change_cancel"
             data-testid="space-change-cancel"
           >
-            <:icon><Icons.icon_btn_cancel class="h-4 w-4" /></:icon>
+            <:icon><.pixel_icon name={:cancel} /></:icon>
             {dgettext("chat", "Cancel")}
           </.button>
         </:footer>
@@ -262,17 +266,20 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         <.space_fullscreen_toggle />
         <div
           data-space-loading
-          class="absolute inset-0 z-20 flex items-center justify-center bg-background/95"
+          class="space-ui-veil absolute inset-0 z-20 flex items-center justify-center p-2"
           data-testid="space-loading"
         >
-          <.boot_activity_panel
-            title={loading_title(@space)}
-            text={loading_text(@space)}
-            icon={if @space.mode == "direct_message", do: :p2p, else: :channels}
-            class="w-full max-w-sm"
+          <div
+            class="space-ui-panel flex w-full max-w-sm flex-col items-center gap-2 text-center"
+            role="status"
+            aria-live="polite"
+            aria-label={"#{loading_title(@space)}: #{loading_text(@space)}"}
             data-space-loading-panel
-            text_attrs={%{"data-space-loading-text" => ""}}
-          />
+          >
+            <.pixel_icon name={:loading} class="space-ui-hourglass" />
+            <p class="space-ui-heading">{loading_title(@space)}</p>
+            <p data-space-loading-text>{loading_text(@space)}</p>
+          </div>
         </div>
         <%!-- What the bubbles say, in words, for whoever cannot see the canvas. --%>
         <div
@@ -293,24 +300,30 @@ defmodule RetroHexChatWeb.App.SpaceLive do
           data-testid="space-modal"
           data-confirm-enter_construct={dgettext("chat", "Go into the Construct?")}
           data-confirm-exit_construct={dgettext("chat", "Go back to the End of Time?")}
-          class="absolute inset-0 z-30 m-auto h-fit w-fit bg-surface text-text shadow-retro-raised p-3 text-center"
+          class="space-ui-panel absolute inset-0 z-30 m-auto h-fit w-fit max-w-[calc(100%-1rem)] text-center"
         >
         </div>
         <template data-space-confirm-template>
-          <p data-space-modal-question class="mb-2 font-bold"></p>
+          <p data-space-modal-question class="space-ui-modal__title"></p>
           <div class="flex justify-center gap-2">
-            <.button type="button" size="sm" data-space-modal-yes data-testid="space-modal-yes">
-              <:icon><Icons.icon_btn_ok class="h-4 w-4" /></:icon>
+            <.button
+              type="button"
+              size="sm"
+              variant="pixel"
+              data-space-modal-yes
+              data-testid="space-modal-yes"
+            >
+              <:icon><.pixel_icon name={:ok} /></:icon>
               {dgettext("chat", "Yes")}
             </.button>
             <.button
               type="button"
               size="sm"
-              variant="secondary"
+              variant="pixel-secondary"
               data-space-modal-no
               data-testid="space-modal-no"
             >
-              <:icon><Icons.icon_btn_cancel class="h-4 w-4" /></:icon>
+              <:icon><.pixel_icon name={:cancel} /></:icon>
               {dgettext("chat", "No")}
             </.button>
           </div>
@@ -334,13 +347,8 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   # one thing the reader can act on the one thing the screen withholds.
   defp space_denied(assigns) do
     ~H"""
-    <div
-      class="m-2 flex h-fit items-start gap-2 border border-border bg-canvas p-2 text-xs shadow-retro-sunken"
-      data-testid="space-denied"
-    >
-      <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
-        <Icons.icon_community class="h-4 w-4" />
-      </span>
+    <div class="space-ui-note m-2 flex h-fit items-start gap-2" data-testid="space-denied">
+      <.pixel_icon name={:space} />
       <p class="min-w-0">{@message}</p>
     </div>
     """

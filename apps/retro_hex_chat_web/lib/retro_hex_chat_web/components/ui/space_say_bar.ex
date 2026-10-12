@@ -14,9 +14,9 @@ defmodule RetroHexChatWeb.Components.UI.SpaceSayBar do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.Space.PixelIcon
 
   alias Phoenix.LiveView.JS
-  alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true, doc: "id of the text field"
   attr :canvas_id, :string, required: true, doc: "the element Esc gives the keyboard back to"
@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceSayBar do
   def space_say_bar(assigns) do
     ~H"""
     <div
-      class="shrink-0 bg-surface"
+      class="space-ui-plank shrink-0 px-[8px] py-[5px]"
       data-testid="space-say-bar"
       phx-window-keydown={JS.focus(to: "##{@id}")}
       phx-key="Enter"
@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceSayBar do
       <form
         phx-submit="space_say"
         phx-change="space_say_change"
-        class="flex items-center gap-1 p-[2px]"
+        class="flex items-center gap-1"
         data-testid="space-say-form"
       >
         <input
@@ -53,22 +53,23 @@ defmodule RetroHexChatWeb.Components.UI.SpaceSayBar do
           phx-keydown={JS.focus(to: "##{@canvas_id}")}
           phx-key="Escape"
           data-testid="space-say-input"
-          class="h-8 min-w-0 flex-1 px-1 font-mono text-sm bg-white border border-border shadow-retro-field outline-none placeholder:text-ellipsis"
+          class="space-ui-field h-8 min-w-0 flex-1 placeholder:text-ellipsis"
         />
         <.button
           type="submit"
           size="sm"
+          variant="pixel"
           disabled={String.trim(@value) == ""}
           aria-label={dgettext("chat", "Say")}
           title={dgettext("chat", "Say")}
           data-testid="space-say-send"
           class="h-8 px-2"
         >
-          <:icon><Icons.icon_btn_send class="w-4 h-4" /></:icon>
+          <:icon><.pixel_icon name={:send} /></:icon>
           <span>{dgettext("chat", "Say")}</span>
         </.button>
       </form>
-      <p :if={@error} class="px-1 pb-[2px] text-xs text-destructive" data-testid="space-say-error">
+      <p :if={@error} class="space-ui-note space-ui-note--error mt-1" data-testid="space-say-error">
         {@error}
       </p>
     </div>

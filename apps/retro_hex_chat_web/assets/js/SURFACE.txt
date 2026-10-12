@@ -148,6 +148,8 @@ search_scroll_to
 set_input
 shortcut
 shortcut_action
+space_change_avatar
+space_portal
 space_remember_avatar
 submit_connect
 submit_nick_change
@@ -238,6 +240,7 @@ phx:page-loading-start
 phx:page-loading-stop
 pointercancel
 pointerdown
+pointerleave
 pointermove
 pointerout
 pointerover
@@ -271,6 +274,11 @@ dataset.confirmEvent
 dataset.confirmLabel
 dataset.confirmParams
 dataset.confirmTab
+dataset.constructGroup
+dataset.constructKind
+dataset.constructMaterial
+dataset.constructTab
+dataset.constructTile
 dataset.copiedLabel
 dataset.copyDisabled
 dataset.copyFrom
@@ -298,6 +306,7 @@ dataset.focusedParticipantId
 dataset.formName
 dataset.formatCode
 dataset.gameId
+dataset.getupText
 dataset.groupCallReaction
 dataset.groupCallReactionBubble
 dataset.groupCallReactionFor
@@ -311,10 +320,12 @@ dataset.hasMore
 dataset.hidden
 dataset.hideTarget
 dataset.highlighted
+dataset.hint
 dataset.imageState
 dataset.inputHistory
 dataset.isHost
 dataset.joinToken
+dataset.koText
 dataset.layout
 dataset.layoutMode
 dataset.loading
@@ -340,6 +351,7 @@ dataset.muted
 dataset.nick
 dataset.offlineDisabled
 dataset.openedByKey
+dataset.paintHint
 dataset.participantId
 dataset.persist
 dataset.persistKey
@@ -358,12 +370,15 @@ dataset.reaction
 dataset.reactionId
 dataset.realId
 dataset.recentCommands
+dataset.refused
+dataset.refusedDefault
 dataset.rememberKey
 dataset.remoteCount
 dataset.resizing
 dataset.retroTableColumn
 dataset.rhcKeyboardOpen
 dataset.rowId
+dataset.selected
 dataset.selfView
 dataset.sessionToken
 dataset.sheet

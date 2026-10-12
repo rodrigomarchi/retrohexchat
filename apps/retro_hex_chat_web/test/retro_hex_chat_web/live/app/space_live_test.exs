@@ -244,6 +244,31 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       assert data.nickname == nickname
     end
 
+    test "the whole page wears the space's pixel kit, not the Win98 chrome", %{
+      conn: conn,
+      channel: channel
+    } do
+      {:ok, view, html} = live(conn, path(channel))
+
+      assert html =~ ~r/class="space-ui[\s"]/
+      assert html =~ "window--pixel"
+      assert html =~ "window-title-bar--pixel"
+      assert html =~ "window-status-field--pixel"
+
+      html = view |> element(~s([data-testid="space-avatar-knight"])) |> render_click()
+
+      # Every overlay on the stage, from the loading card to the gate's question.
+      for class <-
+            ~w(space-ui-panel space-ui-veil space-ui-plank space-pixel-button space-icon--loading) do
+        assert html =~ class
+      end
+
+      # The stage draws no platform glyph and no bevel.
+      [_, stage] = Regex.run(~r/data-testid="space-stage"(.*)/s, html)
+      refute stage =~ "<svg"
+      refute stage =~ "shadow-retro"
+    end
+
     test "a private space mints the token its own channel checks", %{conn: _conn} do
       ana = "ana#{uid()}" |> String.slice(0, 16)
       bob = "bob#{uid()}" |> String.slice(0, 16)

@@ -272,6 +272,11 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       "server event for the close button; when set, closing is server-driven (e.g. ends an " <>
         "active feature) instead of a client-side hide"
 
+  attr :skin, :string,
+    values: ~w(retro pixel),
+    default: "retro",
+    doc: "`pixel` is the Virtual Space's wood-and-gold frame, for a `.space-ui` page only"
+
   attr :class, :any, default: nil
   attr :body_class, :any, default: nil
   attr :rest, :global, doc: "extra attrs on the window root, e.g. data-testid"
@@ -314,8 +319,9 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       class={classes(["desktop-window u-hidden absolute", @class])}
       {@rest}
     >
-      <.window class="h-full">
+      <.window class="h-full" skin={@skin}>
         <.window_title_bar
+          skin={@skin}
           title={@title}
           controls={@controls || window_controls(@pinned)}
           force_close={!@pinned}
@@ -334,7 +340,11 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
           {render_slot(@inner_block)}
         </.window_body>
 
-        <.window_status_bar :if={@status != []} data-window-status>
+        <.window_status_bar
+          :if={@status != []}
+          data-window-status
+          class={@skin == "pixel" && "window-status-bar--pixel"}
+        >
           {render_slot(@status)}
         </.window_status_bar>
 

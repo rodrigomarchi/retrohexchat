@@ -23,9 +23,9 @@ defmodule RetroHexChatWeb.Components.UI.Button do
   attr :class, :any, default: nil
 
   attr :variant, :string,
-    values: ~w(default secondary destructive outline ghost link),
+    values: ~w(default secondary destructive outline ghost link pixel pixel-secondary),
     default: "default",
-    doc: "the button variant style"
+    doc: "the button variant style; `pixel*` is the Virtual Space's, inside `.space-ui` only"
 
   attr :size, :string,
     values: ~w(default sm lg),
@@ -39,7 +39,10 @@ defmodule RetroHexChatWeb.Components.UI.Button do
   attr :href, :string, default: nil, doc: "same, for a plain browser navigation"
   attr :rest, :global, include: ~w(disabled form name value target rel)
 
-  slot :icon, required: true, doc: "16×16 icon SVG — mandatory for all buttons"
+  slot :icon,
+    required: true,
+    doc: "16×16 icon — mandatory for all buttons (an SVG icon, or a pixel icon in a space)"
+
   slot :inner_block, required: true
 
   @spec button(map()) :: Phoenix.LiveView.Rendered.t()

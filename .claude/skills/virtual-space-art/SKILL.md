@@ -16,6 +16,7 @@ the task **before** generating anything — a wrong generation costs credits and
 | Animate tiles, props or scene FX | [`virtual.space/ANIMATIONS.md`](../../../virtual.space/ANIMATIONS.md) |
 | Build a true isometric, 3D-reading scene | [`virtual.space/ISOMETRIC.md`](../../../virtual.space/ISOMETRIC.md) |
 | Chase a real game's look (reference material) | [`virtual.space/DISCOVERY.md`](../../../virtual.space/DISCOVERY.md) |
+| Restyle or add a control of the space's interface (frames, buttons, icons, font) | [`virtual.space/UI.md`](../../../virtual.space/UI.md) |
 
 ## Non-negotiables
 

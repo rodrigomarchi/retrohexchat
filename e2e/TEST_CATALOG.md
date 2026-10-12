@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **247 spec files** under `e2e/tests/`.
-- **598 Playwright `test()` cases**.
-- **546 documented flows**, 545 done, 1 not done.
+- **248 spec files** under `e2e/tests/`.
+- **601 Playwright `test()` cases**.
+- **549 documented flows**, 548 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -773,6 +773,9 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP27 | A long table covers two tiles and turns with its footprint; chairs set around it are sat in, and a room of each theme (home, office, garden, gamer) is built from the palette's tabs | `tests/space-construct-library.spec.ts` | done |
 | SP28 | The End of Time's own pieces — Morpheus, Neo, the old TV, the DeLorean, the Balrog — are placed in a Construct, animated and lit as on the island | `tests/space-construct-library.spec.ts` | done |
 | SP29 | A sofa seats two people at once, one on each of its tiles | `tests/space-construct-library.spec.ts` | done |
+| SP30 | On a phone, the space's screens — the picker, the build palette, the pad, a piece's panel — wear the space's pixel-art kit and fit the screen | `tests/space-pixel-ui.spec.ts` | done |
+| SP31 | A line said in Japanese or in Traditional Chinese is drawn over the speaker in the pixel font, that region's own glyphs fetched for it | `tests/space-pixel-ui.spec.ts` | done |
+| SP32 | A character who takes a hit shows the kit's HP bar under its nameplate until it is whole again | `tests/space-pixel-ui.spec.ts` | done |
 
 ### LC - Localization
 

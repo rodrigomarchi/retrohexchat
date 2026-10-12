@@ -1,0 +1,124 @@
+{
+  "_doc": "Where every piece of raw art under pixellab/ came from: the PixelLab job, its prompt and seed, and the sha1 of the file kept. Icons were made with create_image_pro (64 candidates at <=42px; the kept file is the chosen one); panels and control sheets with create_ui_asset.",
+  "panels": {
+    "master/master_b.png": {
+      "tool": "create_ui_asset",
+      "job": "abfd89db-4f86-48ef-be7b-678d4c253674",
+      "size": "384x384",
+      "seed": 777,
+      "palette": "dark oak brown, stone grey, antique gold, parchment cream",
+      "prompt": "medieval RPG inventory window: thick dark oak wooden border with grey stone inner rim and small gold corner caps, parchment interior, pixel art game UI, clean straight edges, front view, no text",
+      "note": "chosen over a walnut-and-parchment variant (job f8f1a2c2-29f5-426b-bfae-9d2136c5c363); also reference/master.png",
+      "sha1": "a4bfd04173a8e5242550542bee24cf12d41230d6"
+    },
+    "controls/controls_a.png": {
+      "tool": "create_ui_asset",
+      "job": "c4fc96f7-1da0-4748-813b-124f1045ddb4",
+      "size": "512x512",
+      "seed": 777,
+      "style": "the master panel's top-left 192x192",
+      "pieces": "buttons, tab, slots, scroll, input, title bar, status, nameplate, hp, bubble, sign, plaque, pad keys at exact sizes",
+      "prompt": "sprite sheet of separate matching fantasy RPG game UI elements on transparent background: each shape is its own small framed widget with a thin dark walnut wood border, tiny antique gold corner caps, and a cream parchment or dark wood inner face; crisp 1px pixel art outlines, straight edges, flat front view, no text, no icons",
+      "sha1": "a1166d898138fbbba01716dedaea091dd10051be"
+    },
+    "controls/controls_wood.png": {
+      "tool": "create_ui_asset",
+      "job": "68d724de-7a70-4413-83fc-130e17fb4ef9",
+      "size": "512x512",
+      "seed": 778,
+      "style": "the master panel's top-left 192x192",
+      "prompt": "sprite sheet of separate matching fantasy RPG game UI elements on transparent background: each shape is its own small framed widget with a thin grey stone rim, tiny antique gold corner caps, and a DARK polished walnut wood plank inner face with subtle horizontal wood grain; crisp 1px pixel art outlines, straight edges, flat front view, no text, no icons",
+      "sha1": "52f297e7e85ccb886644b825c8388d657708d2c8"
+    }
+  },
+  "icons": {
+    "icons/ok/cand_27.png": {
+      "tool": "create_image_pro",
+      "job": "d7857bcc-e9d3-44d0-84df-8dd690679821",
+      "seed": 11,
+      "style": "the master panel (reference/master.png), as style_image (palette, outline, shading)",
+      "prompt": "16x16 pixel art UI icon: a bold gold check mark with dark brown outline, fantasy RPG game interface icon, centered, readable at small size",
+      "sha1": "2c063d2668860d24436ca1670e65edc11cc10635"
+    },
+    "icons/cancel/cand_17.png": {
+      "tool": "create_image_pro",
+      "job": "1d808b8a-350e-4e67-9e3b-c5bcc6d3cbb1",
+      "seed": 12,
+      "style": "the master panel (reference/master.png), as style_image (palette, outline, shading)",
+      "prompt": "16x16 pixel art UI icon: a bold red X cross with dark brown outline, fantasy RPG game interface cancel icon, centered, readable at small size",
+      "sha1": "07a3da5618ca261dd38792c2dff4a408ba6d87be"
+    },
+    "icons/send/cand_20.png": {
+      "tool": "create_image_pro",
+      "job": "d0d981b9-70d5-44a7-ac8f-3e6cf24553b1",
+      "seed": 13,
+      "style": "the master panel (reference/master.png), as style_image (palette, outline, shading)",
+      "prompt": "16x16 pixel art UI icon: a feather quill pen pointing up-right like a send arrow, cream feather with gold nib and dark brown outline, fantasy RPG game interface icon, centered",
+      "sha1": "1f5202802192e4c62e8446dfb86292c490077316"
+    },
+    "icons/fs_enter/cand_00.png": {
+      "tool": "create_image_pro",
+      "job": "5fa7a561-5aa1-4ee7-a3d8-c5ae5acea95c",
+      "seed": 17,
+      "style": "the master panel (reference/master.png), as style_image (palette, outline, shading)",
+      "prompt": "16x16 pixel art UI icon: four small gold corner brackets pointing outward (expand to fullscreen symbol), dark brown outline, fantasy RPG game interface icon, centered",
+      "sha1": "26171247931c346d6ce389c5cdd8224b588bfa02"
+    },
+    "icons/use/cand_44.png": {
+      "tool": "create_image_pro",
+      "job": "f49ff1e8-a411-4a63-98d7-e905fc57bbf4",
+      "seed": 19,
+      "style": "the master panel (reference/master.png), as style_image (palette, outline, shading)",
+      "prompt": "24x24 pixel art UI icon: an open hand palm (use / interact gesture), skin tone with dark brown outline, fantasy RPG game interface action button icon, centered, bold readable",
+      "sha1": "dd3f7b15ce632face8100cdd4fb6780fc596f39d"
+    },
+    "icons/attack/cand_20.png": {
+      "tool": "create_image_pro",
+      "job": "571ea751-6902-402e-ad88-c6281bc824f4",
+      "seed": 20,
+      "style": "the master panel (reference/master.png), as style_image (palette, outline, shading)",
+      "prompt": "24x24 pixel art UI icon: a steel sword pointing up-right diagonally with gold hilt, dark brown outline, fantasy RPG game interface attack button icon, centered, bold readable",
+      "sha1": "c4378b8f2864f42e2c9211402e4446c380c987b3"
+    },
+    "icons/pad_up/cand_00.png": {
+      "tool": "create_image_pro",
+      "job": "41da066f-c2f0-409a-832b-f0d1f67116c0",
+      "seed": 21,
+      "style": "the master panel (reference/master.png), as style_image (palette, outline, shading)",
+      "prompt": "24x24 pixel art UI icon: a solid gold arrowhead pointing straight up (d-pad up arrow), symmetric, dark brown outline, fantasy RPG game interface icon, centered",
+      "sha1": "aec43b188c86ef9441fbe7677f9715fa51300909"
+    },
+    "icons/loading/cand_06.png": {
+      "tool": "create_image_pro",
+      "job": "f139d331-ecd5-4ee6-8ba0-61796af7e72f",
+      "seed": 22,
+      "style": "the master panel (reference/master.png), as style_image (palette, outline, shading)",
+      "prompt": "24x24 pixel art UI icon: a small golden hourglass with sand, dark brown outline, fantasy RPG game loading icon, centered",
+      "sha1": "0cb7e7dc85b2ee4ab2a919a424e7d11ed67e6d34"
+    },
+    "icons/turn/cand_14.png": {
+      "tool": "create_image_pro",
+      "job": "1523d846-f87c-4e08-95f6-90db5bd3f82c",
+      "seed": 24,
+      "style": "the master panel (reference/master.png), as style_image (palette, outline, shading)",
+      "prompt": "16x16 pixel art UI icon: a thick curved clockwise arrow forming three quarters of a circle with a big clear arrowhead, gold fill with a solid 1px dark brown outline all around, rotate symbol, fantasy RPG interface icon, centered",
+      "sha1": "7d2f472aa65d04905d2edcc60d5b4efc0717fb0f"
+    },
+    "icons/remove/cand_19.png": {
+      "tool": "create_image_pro",
+      "job": "a381b35d-aaa3-4741-aef7-a68273f88d70",
+      "seed": 25,
+      "style": "the master panel (reference/master.png), as style_image (palette, outline, shading)",
+      "prompt": "16x16 pixel art UI icon: a grey iron trash can with a lid and vertical ridges, solid 1px dark brown outline, delete symbol, fantasy RPG interface icon, centered",
+      "sha1": "4a77d7eeb29c9a3aa99210ef051f0c53897b2154"
+    },
+    "icons/space/cand_26.png": {
+      "tool": "create_image_pro",
+      "job": "2c3b7944-cbf0-4dda-b7a9-39b8d5db9eee",
+      "seed": 26,
+      "style": "the master panel (reference/master.png), as style_image (palette, outline, shading)",
+      "prompt": "16x16 pixel art UI icon: a tiny grey stone castle tower with battlements and a small gold flag on top, solid 1px dark brown outline, fantasy RPG interface icon, centered, readable",
+      "sha1": "996418da0a51768fabc5da3b8024058b73569728"
+    }
+  }
+}

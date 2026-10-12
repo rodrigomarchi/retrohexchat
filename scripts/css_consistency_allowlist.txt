@@ -6,6 +6,8 @@
 [unused]
 # False positive: the selector scanner sees ".webp" inside the picker sheet URL.
 webp
+# Same false positive: ".woff2" inside the space pixel font's @font-face URLs.
+woff2
 
 # IRC formatter classes are generated from numeric color codes at runtime.
 irc-fg-*

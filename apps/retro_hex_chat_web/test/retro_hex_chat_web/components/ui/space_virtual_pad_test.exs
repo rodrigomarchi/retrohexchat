@@ -28,4 +28,18 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPadTest do
     # touch-action: none so a drag on the pad never scrolls the page.
     assert html =~ "touch-none"
   end
+
+  test "is drawn in the space's pixel kit: wooden keys, pixel glyphs, the red attack" do
+    html = render_component(&space_virtual_pad/1, %{})
+
+    assert html =~ "space-pad-dpad"
+    assert html =~ "space-pad-button--attack"
+
+    for icon <- ~w(pad-up pad-down pad-left pad-right use attack) do
+      assert html =~ "space-icon--#{icon}"
+    end
+
+    refute html =~ "<svg"
+    refute html =~ "bg-black"
+  end
 end

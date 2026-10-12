@@ -386,6 +386,13 @@ get fresh timers with the *remaining* duration.
   something to read, and the card most likely to be read weeks later is exactly the
   finished one. Say the state in the badge's word and its colour, and draw the card's
   surface identically in both states.
+- **The Virtual Space is the one place that is not Win98.** Its page carries `.space-ui`, and
+  its controls wear a pixel-art kit (`features/space-ui.css`, playbook `virtual.space/UI.md`):
+  the shared primitives take a `pixel` variant (`Button`, `ToolButton`) or skin
+  (`desktop_window`), and its icons are raster pixel art drawn only through
+  `Components.UI.Space.PixelIcon` — never a bare `<img>`, never outside a space. Everything
+  else on this page still applies there: no hex in Elixir/JS, disabled is etched (the global
+  rule covers `.space-icon`), state through CSS-owned classes.
 
 ---
 

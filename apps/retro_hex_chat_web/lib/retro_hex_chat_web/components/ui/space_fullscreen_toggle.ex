@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.UI.SpaceFullscreenToggle do
   @moduledoc """
-  Translucent fullscreen toggle for the virtual space, anchored to the
+  Fullscreen toggle for the virtual space, a pixel-art wooden key anchored to the
   top-right corner of the space canvas. The same button exits back to the
   normal layout (and stays in sync when fullscreen ends via Esc).
 
@@ -13,9 +13,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceFullscreenToggle do
   """
   use RetroHexChatWeb, :html
 
+  import RetroHexChatWeb.Components.UI.Space.PixelIcon
   import RetroHexChatWeb.Components.UI.ToolButton
-
-  alias RetroHexChatWeb.Icons
 
   @spec space_fullscreen_toggle(map()) :: Phoenix.LiveView.Rendered.t()
   def space_fullscreen_toggle(assigns) do
@@ -28,13 +27,15 @@ defmodule RetroHexChatWeb.Components.UI.SpaceFullscreenToggle do
       aria-label={dgettext("chat", "Toggle fullscreen")}
       class={
         tool_button_class(
-          variant: "dock",
-          class: "media-dock-button--floating group absolute top-3 right-3 z-10 select-none"
+          variant: "pixel",
+          size: "md",
+          # 44px, the touch target the pad's keys have too.
+          class: "group absolute top-3 right-3 z-10 h-11 min-h-11 w-11 min-w-11 select-none"
         )
       }
     >
-      <Icons.icon_fullscreen_enter class="h-4 w-4 group-data-[fullscreen]:hidden" />
-      <Icons.icon_fullscreen_exit class="hidden h-4 w-4 group-data-[fullscreen]:block" />
+      <.pixel_icon name={:fullscreen_enter} class="group-data-[fullscreen]:hidden" />
+      <.pixel_icon name={:fullscreen_exit} class="hidden group-data-[fullscreen]:inline-block" />
     </button>
     """
   end

@@ -42,4 +42,19 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPaletteTest do
     refute html =~ ~s(data-construct-kind="board")
     assert html =~ ~s(data-construct-kind="screen")
   end
+
+  test "turn and remove are the kit's wooden keys, disabled until a piece is picked" do
+    html = render_component(&space_build_palette/1, %{conversation: "channel"})
+
+    for {attr, icon} <- [{"data-construct-rotate", "turn"}, {"data-construct-remove", "remove"}] do
+      [button] = Regex.run(~r/<button[^>]*#{attr}[^>]*>.*?<\/button>/s, html)
+      assert button =~ "disabled"
+      assert button =~ "space-build-tool--action"
+      assert button =~ "space-icon--#{icon}"
+    end
+
+    # Disabled is etched by the global rule, never faded.
+    refute html =~ "opacity"
+    refute html =~ "bg-black"
+  end
 end

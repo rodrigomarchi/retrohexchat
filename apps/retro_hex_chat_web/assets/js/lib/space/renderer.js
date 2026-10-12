@@ -5,8 +5,10 @@
  * @module space/renderer
  */
 import { wrapBubbleText } from "./bubble_layout.js";
+import { drawNineSlice, drawPiece } from "./nine_slice.js";
+import { readUiTheme } from "./ui_theme.js";
+import { createGlyphLoader } from "./ui_font.js";
 
-const LABEL_FONT = "10px monospace";
 const HASH = String.fromCharCode(35);
 // Solid backdrop painted before the floor so any tile without a sprite (map
 // edges / gaps) reads as a dark void instead of transparent canvas.
@@ -17,13 +19,21 @@ const SHADOW = "05060c";
 // is darker than the screen-right for a faked directional light.
 const SLAB_FACE_L = "191b26";
 const SLAB_FACE_R = "23262f";
+// The canvas's UI — nameplates, bubbles, signs, the HP bar — is drawn from the
+// space's pixel-art kit (`atlas.uiPiece`), in the kit's pixel font and colours
+// (`ui_theme.js`). These colours only stand in when the page defines none.
 const LABEL_BG = "1b1d24";
 const LABEL_FG = "e8dcc0";
+// Native heights of the kit's plates, tall enough for a 12px line inside the
+// frame, and where that line's baseline sits in them.
+const NAMEPLATE_H = 21;
+const NAMEPLATE_BASELINE = 15;
+const NAMEPLATE_PAD_X = 13;
+const PLAQUE_H = 21;
 // Combat HP bar under the nameplate: healthy green above half, amber below.
 const HP_MAX = 100;
-const HP_BAR_W = 26;
-const HP_FG_OK = "7ec850";
-const HP_FG_LOW = "d8a03a";
+const HP_BAR_W = 34;
+const HP_BAR_INSET = 3;
 // Combat impact feedback, layered per hit: a white flash on the sprite, a
 // PixelLab spark/burst at the point of impact, and a floating damage number.
 // A knockout also nudges the *victim's own* camera briefly (skipped entirely
@@ -35,24 +45,22 @@ const FX_NUMBER_MS = 700;
 const FX_NUMBER_RISE_PX = 26;
 const FX_SHAKE_MS = 150;
 const FX_SHAKE_AMP_PX = 3;
-const DMG_FG = "ffd23e";
-const DMG_KO_FG = "ff6a4d";
-const BUBBLE_BG = "e8dcc0";
-const BUBBLE_FG = "20232b";
-const BUBBLE_LINE_PX = 11;
-const SIGN_BG = "5a442e";
-const SIGN_BORDER = "2f241a";
-const SIGN_FG = "f7e6b6";
-const SIGN_FONT = "12px monospace";
-const TABLE_SIGN_BG = "6b4f2f";
-const TABLE_SIGN_BORDER = "3a2919";
-const TABLE_SIGN_FG = "f4e4b8";
-const TABLE_SIGN_FONT = "10px monospace";
+const DMG_FG = "ffeca0";
+const DMG_KO_FG = "ff6050";
+const BUBBLE_FG = "421f22";
+// A bubble's lines: 13px apart, the first baseline under the frame's top edge,
+// the text kept clear of the side edges.
+const BUBBLE_LINE_PX = 13;
+const BUBBLE_FIRST_BASELINE = 18;
+const BUBBLE_PAD_X = 11;
+const BUBBLE_PAD_Y = 11;
+const SIGN_FG = "f9d46f";
 // Holographic display (End of Time nameplate artifact): glowing cyan text with
 // no frame of its own — reads as surviving tech on the artifact's own screen.
 const HOLO_GLOW = "1f6f7d";
 const HOLO_FG = "9ff6ff";
-const HOLO_FONT = "10px monospace";
+// A line of the pixel font sits this far below its cap top (cap height 9px).
+const CAP_PX = 9;
 // Construct build markers: the ghost's diamond is green where the piece fits
 // and red where it does not; a picked piece gets a gold outline.
 const BUILD_OK = "4dd27a";
@@ -135,6 +143,44 @@ export class Renderer {
     this._reducedMotion =
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
+    this._theme = readUiTheme(canvas, {
+      bubbleInk: HASH + BUBBLE_FG,
+      labelInk: HASH + LABEL_FG,
+      signInk: HASH + SIGN_FG,
+      damage: HASH + DMG_FG,
+      damageKo: HASH + DMG_KO_FG,
+      damageOutline: HASH + LABEL_BG,
+      hologramInk: HASH + HOLO_FG,
+      family: "monospace",
+    });
+    this._glyphs = createGlyphLoader(
+      typeof document !== "undefined" ? document.fonts : null,
+      this._theme.font,
+    );
+  }
+
+  // A sliced kit piece over a box, when the kit has it.
+  _frame(ctx, name, x, y, w, h) {
+    const piece = this.atlas?.uiPiece?.(name);
+    if (piece) drawNineSlice(ctx, piece, x, y, w, h);
+  }
+
+  // Set the pixel font for `text`, asking for its glyphs if they are new.
+  _uiFont(ctx, text) {
+    ctx.font = this._theme.font;
+    ctx.textAlign = "left";
+    ctx.fontKerning = "none";
+    this._glyphs.ensure(text);
+  }
+
+  // Draw `text` centred on `cx`, starting on a whole pixel: a centred line of
+  // odd width would land on a half pixel and blur the pixel font.
+  _centredText(ctx, text, cx, y, maxWidth) {
+    const width = ctx.measureText(text).width;
+    const drawn = maxWidth ? Math.min(width, maxWidth) : width;
+    const x = Math.round(cx - drawn / 2);
+    if (maxWidth) ctx.fillText(text, x, Math.round(y), maxWidth);
+    else ctx.fillText(text, x, Math.round(y));
   }
 
   resize() {
@@ -658,23 +704,16 @@ export class Renderer {
       const dx = Math.round(x);
       const dy = Math.round(y);
 
-      ctx.fillStyle = HASH + SIGN_BORDER;
-      ctx.fillRect(dx, dy, Math.round(width), Math.round(height));
-      ctx.fillStyle = HASH + SIGN_BG;
-      ctx.fillRect(
-        dx + 3,
-        dy + 3,
-        Math.max(Math.round(width) - 6, 1),
-        Math.max(Math.round(height) - 6, 1),
-      );
-      ctx.font = SIGN_FONT;
-      ctx.textAlign = "center";
-      ctx.fillStyle = HASH + SIGN_FG;
-      ctx.fillText(
-        String(label.text),
-        Math.round(dx + width / 2),
-        Math.round(dy + height / 2 + 4),
-        Math.max(Math.round(width) - 12, 1),
+      const text = String(label.text);
+      this._frame(ctx, "sign", dx, dy, width, height);
+      this._uiFont(ctx, text);
+      ctx.fillStyle = this._theme.signInk;
+      this._centredText(
+        ctx,
+        text,
+        dx + width / 2,
+        dy + (height + CAP_PX) / 2,
+        Math.max(Math.round(width) - 24, 1),
       );
     }
   }
@@ -687,22 +726,19 @@ export class Renderer {
     const dx = Math.round(x);
     const dy = Math.round(y);
     const plaqueWidth = Math.max(Math.round(width) - 20, this.tilePx * 2);
-    const plaqueHeight = Math.min(18, Math.max(Math.round(height) - 8, 12));
     const px = Math.round(dx + (width - plaqueWidth) / 2);
-    const py = Math.round(dy + (height - plaqueHeight) / 2);
+    const py = Math.round(dy + (height - PLAQUE_H) / 2);
+    const text = String(label.text);
 
-    ctx.fillStyle = HASH + TABLE_SIGN_BORDER;
-    ctx.fillRect(px, py, plaqueWidth, plaqueHeight);
-    ctx.fillStyle = HASH + TABLE_SIGN_BG;
-    ctx.fillRect(px + 2, py + 2, Math.max(plaqueWidth - 4, 1), Math.max(plaqueHeight - 4, 1));
-    ctx.font = TABLE_SIGN_FONT;
-    ctx.textAlign = "center";
-    ctx.fillStyle = HASH + TABLE_SIGN_FG;
-    ctx.fillText(
-      String(label.text),
-      Math.round(px + plaqueWidth / 2),
-      Math.round(py + plaqueHeight / 2 + 4),
-      Math.max(plaqueWidth - 8, 1),
+    this._frame(ctx, "plaque", px, py, plaqueWidth, PLAQUE_H);
+    this._uiFont(ctx, text);
+    ctx.fillStyle = this._theme.signInk;
+    this._centredText(
+      ctx,
+      text,
+      px + plaqueWidth / 2,
+      py + NAMEPLATE_BASELINE,
+      Math.max(plaqueWidth - 22, 1),
     );
   }
 
@@ -721,8 +757,7 @@ export class Renderer {
     const cx = Math.round(sp.x);
     const ty = Math.round(sp.y);
 
-    ctx.font = HOLO_FONT;
-    ctx.textAlign = "center";
+    this._uiFont(ctx, String(label.text));
     // A label can bring its own colours: a Construct sign is white on a dark
     // outline, readable over the white floor and the night sky alike.
     ctx.fillStyle = HASH + (label.glow ?? HOLO_GLOW);
@@ -732,10 +767,10 @@ export class Renderer {
       [0, -1],
       [0, 1],
     ]) {
-      ctx.fillText(String(label.text), cx + ox, ty + oy, maxWidth);
+      this._centredText(ctx, String(label.text), cx + ox, ty + oy, maxWidth);
     }
-    ctx.fillStyle = HASH + (label.color ?? HOLO_FG);
-    ctx.fillText(String(label.text), cx, ty, maxWidth);
+    ctx.fillStyle = label.color ? HASH + label.color : this._theme.hologramInk;
+    this._centredText(ctx, String(label.text), cx, ty, maxWidth);
   }
 
   _drawAvatar(ctx, participant, now) {
@@ -951,13 +986,12 @@ export class Renderer {
       const rise = FX_NUMBER_RISE_PX * (1 - (1 - progress) * (1 - progress));
       const y = Math.round(anchor.headY - 18 - rise);
       ctx.save();
-      ctx.font = LABEL_FONT;
-      ctx.textAlign = "center";
+      this._uiFont(ctx, `-${fx.damage}`);
       ctx.globalAlpha = progress < 0.6 ? 1 : 1 - (progress - 0.6) / 0.4;
-      ctx.fillStyle = HASH + LABEL_BG;
-      ctx.fillText(`-${fx.damage}`, Math.round(anchor.x) + 1, y + 1);
-      ctx.fillStyle = HASH + (fx.kind === "ko" ? DMG_KO_FG : DMG_FG);
-      ctx.fillText(`-${fx.damage}`, Math.round(anchor.x), y);
+      ctx.fillStyle = this._theme.damageOutline;
+      this._centredText(ctx, `-${fx.damage}`, anchor.x + 1, y + 1);
+      ctx.fillStyle = fx.kind === "ko" ? this._theme.damageKo : this._theme.damage;
+      this._centredText(ctx, `-${fx.damage}`, anchor.x, y);
       ctx.restore();
     }
   }
@@ -1046,14 +1080,13 @@ export class Renderer {
   _drawLabel(ctx, participant) {
     if (!participant.nickname) return;
     const { x: cx, headY } = this._avatarAnchor(participant);
-    ctx.font = LABEL_FONT;
-    ctx.textAlign = "center";
-    const width = ctx.measureText(participant.nickname).width + 6;
+    this._uiFont(ctx, participant.nickname);
+    const width = Math.round(ctx.measureText(participant.nickname).width) + NAMEPLATE_PAD_X * 2;
+    const top = Math.round(headY - NAMEPLATE_H - 2);
 
-    ctx.fillStyle = HASH + LABEL_BG;
-    ctx.fillRect(Math.round(cx - width / 2), Math.round(headY - 14), Math.round(width), 11);
-    ctx.fillStyle = HASH + LABEL_FG;
-    ctx.fillText(participant.nickname, Math.round(cx), Math.round(headY - 5));
+    this._frame(ctx, "nameplate", Math.round(cx - width / 2), top, width, NAMEPLATE_H);
+    ctx.fillStyle = this._theme.labelInk;
+    this._centredText(ctx, participant.nickname, cx, top + NAMEPLATE_BASELINE);
     this._drawHpBar(ctx, participant, cx, headY);
   }
 
@@ -1062,12 +1095,22 @@ export class Renderer {
   _drawHpBar(ctx, participant, cx, headY) {
     const hp = participant.hp ?? HP_MAX;
     if (hp >= HP_MAX) return;
+    const frame = this.atlas?.uiPiece?.("hp");
+    const fill = this.atlas?.uiPiece?.(hp > HP_MAX / 2 ? "hp_fill" : "hp_low_fill");
+    if (!frame || !fill) return;
     const left = Math.round(cx - HP_BAR_W / 2);
-    const top = Math.round(headY - 2);
-    ctx.fillStyle = HASH + LABEL_BG;
-    ctx.fillRect(left, top, HP_BAR_W, 3);
-    ctx.fillStyle = HASH + (hp > HP_MAX / 2 ? HP_FG_OK : HP_FG_LOW);
-    ctx.fillRect(left + 1, top + 1, Math.round((HP_BAR_W - 2) * (hp / HP_MAX)), 1);
+    const top = Math.round(headY - 1);
+    drawNineSlice(ctx, frame, left, top, HP_BAR_W, frame.h);
+    const length = Math.round((HP_BAR_W - HP_BAR_INSET * 2) * (Math.max(hp, 0) / HP_MAX));
+    // The fill is one column of pixels, repeated along the bar.
+    drawNineSlice(
+      ctx,
+      { ...fill, t: 0, r: 0, b: 0, l: 0 },
+      left + HP_BAR_INSET,
+      top + HP_BAR_INSET,
+      length,
+      fill.h,
+    );
   }
 
   // Speech bubble above the nickname label, wrapped to a few lines and growing
@@ -1076,19 +1119,22 @@ export class Renderer {
   // never inject HTML.
   _drawBubble(ctx, participant, text) {
     const { x: cx, headY } = this._avatarAnchor(participant);
-    ctx.font = LABEL_FONT;
-    ctx.textAlign = "center";
+    this._uiFont(ctx, text);
     const lines = wrapBubbleText(text, (s) => ctx.measureText(s).width);
     const widest = Math.max(...lines.map((line) => ctx.measureText(line).width));
-    const width = Math.min(widest + 8, this.canvas.width - 4);
-    const height = lines.length * BUBBLE_LINE_PX + 3;
-    const top = headY - 17 - height;
+    const width = Math.round(Math.min(widest + BUBBLE_PAD_X * 2, this.canvas.width - 4));
+    const height = (lines.length - 1) * BUBBLE_LINE_PX + BUBBLE_FIRST_BASELINE + BUBBLE_PAD_Y;
+    const tail = this.atlas?.uiPiece?.("tail");
+    // The tail hangs from the frame's bottom outline, over the nameplate.
+    const bottom = Math.round(headY - NAMEPLATE_H - 3 - (tail?.h ?? 0));
+    const top = bottom - height;
+    const left = Math.round(cx - width / 2);
 
-    ctx.fillStyle = HASH + BUBBLE_BG;
-    ctx.fillRect(Math.round(cx - width / 2), Math.round(top), Math.round(width), height);
-    ctx.fillStyle = HASH + BUBBLE_FG;
+    this._frame(ctx, "bubble", left, top, width, height);
+    if (tail) drawPiece(ctx, tail, Math.round(cx - tail.w / 2), bottom - 1);
+    ctx.fillStyle = this._theme.bubbleInk;
     lines.forEach((line, i) => {
-      ctx.fillText(line, Math.round(cx), Math.round(top + 10 + i * BUBBLE_LINE_PX));
+      this._centredText(ctx, line, cx, top + BUBBLE_FIRST_BASELINE + i * BUBBLE_LINE_PX);
     });
   }
 }

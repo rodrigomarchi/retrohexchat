@@ -13,8 +13,9 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
   """
   use RetroHexChatWeb, :html
 
+  import RetroHexChatWeb.Components.UI.Space.PixelIcon
+
   alias RetroHexChat.VirtualSpace
-  alias RetroHexChatWeb.Icons
 
   attr :conversation, :string,
     default: "channel",
@@ -30,10 +31,10 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
       data-testid="construct-palette"
       role="toolbar"
       aria-label={dgettext("chat", "Build")}
-      class="absolute left-3 top-3 z-10 flex max-w-[calc(100%-1.5rem)] flex-col gap-1 select-none"
+      class="absolute left-3 top-3 z-10 flex max-w-[calc(100%-5rem)] flex-col gap-1 select-none"
       {refusal_templates()}
     >
-      <div role="tablist" class="flex gap-1">
+      <div role="tablist" class="flex flex-wrap gap-1">
         <button
           :for={{{group, label, _kinds}, index} <- Enum.with_index(@groups)}
           type="button"
@@ -85,9 +86,9 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
           data-testid="construct-rotate"
           aria-label={dgettext("chat", "Turn")}
           title={dgettext("chat", "Turn") <> " (R)"}
-          class="space-build-tool icon-on-dark"
+          class="space-build-tool space-build-tool--action"
         >
-          <Icons.icon_btn_refresh class="h-5 w-5" />
+          <.pixel_icon name={:turn} />
           <span>{dgettext("chat", "Turn")}</span>
         </button>
         <button
@@ -98,9 +99,9 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
           data-testid="construct-remove"
           aria-label={dgettext("chat", "Remove")}
           title={dgettext("chat", "Remove") <> " (Delete)"}
-          class="space-build-tool icon-on-dark"
+          class="space-build-tool space-build-tool--action"
         >
-          <Icons.icon_btn_trash class="h-5 w-5" />
+          <.pixel_icon name={:remove} />
           <span>{dgettext("chat", "Remove")}</span>
         </button>
       </div>
@@ -117,7 +118,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
         data-paint-hint={
           dgettext("chat", "Press on the floor and drag: the whole rectangle is painted.")
         }
-        class="w-fit max-w-full bg-black/60 px-1 text-[10px] text-white"
+        class="space-ui-plank space-build-status w-fit max-w-full"
       >
         {dgettext(
           "chat",

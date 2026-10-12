@@ -12,6 +12,8 @@ defmodule RetroHexChatWeb.Components.UI.ToolButton do
       under the pointer and sinks while pressed or active.
     * `dock` — the flat button drawn for the dark dock laid over a video or a
       canvas; its chrome lives in `media-session-dock.css`.
+    * `pixel` — the Virtual Space's pixel-art wooden key; its chrome lives in
+      `features/space-ui.css` and only draws inside a `.space-ui` page.
 
   `active` is the visual state (sunken) and `pressed` is what assistive tech
   hears (`aria-pressed`). They are separate on purpose: a microphone toggle is
@@ -32,7 +34,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolButton do
 
   alias RetroHexChatWeb.Components.UI.Chrome
 
-  @variants ~w(raised flat dock)
+  @variants ~w(raised flat dock pixel)
   @tones ~w(default danger danger-on-hover)
   @sizes ~w(title xs sm md lg)
 
@@ -116,10 +118,10 @@ defmodule RetroHexChatWeb.Components.UI.ToolButton do
     captioned? = Keyword.get(opts, :captioned, false)
     extra = Keyword.get(opts, :class)
 
-    if variant == "dock" do
-      dock_button_class(active?, tone, captioned?, extra)
-    else
-      chrome_button_class(variant, tone, size, active?, captioned?, extra)
+    case variant do
+      "dock" -> dock_button_class(active?, tone, captioned?, extra)
+      "pixel" -> pixel_button_class(size, active?, tone, captioned?, extra)
+      _ -> chrome_button_class(variant, tone, size, active?, captioned?, extra)
     end
   end
 
@@ -144,6 +146,16 @@ defmodule RetroHexChatWeb.Components.UI.ToolButton do
       captioned? && "media-dock-button--captioned",
       active? && "media-dock-button--active",
       tone == "danger" && "media-dock-button--danger",
+      extra
+    ])
+  end
+
+  defp pixel_button_class(size, active?, tone, captioned?, extra) do
+    classes([
+      "tool-button space-pixel-tool inline-flex shrink-0 cursor-pointer items-center justify-center",
+      size_class(size, captioned?),
+      active? && "space-pixel-tool--active",
+      tone == "danger" && "space-pixel-tool--danger",
       extra
     ])
   end

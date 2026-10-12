@@ -116,7 +116,10 @@ export async function followCard(
   // whether this reader may go in. Somebody who is already signed in sees a
   // Join that goes straight through; a stranger is sent to connect first, which
   // is a flow of its own and not this helper's business.
-  if (new URL(opened.url()).pathname.startsWith("/join/")) {
+  // In another language the invite sits under the locale's segment (/ja/join/…).
+  if (
+    /^(\/[a-z]{2}(-[A-Za-z]+)?)?\/join\//.test(new URL(opened.url()).pathname)
+  ) {
     const enter = opened.getByTestId("join-enter");
     await expect(enter).toBeVisible({ timeout });
     await enter.click();

@@ -13,9 +13,9 @@ defmodule RetroHexChatWeb.Components.UI.SpaceConstructPanel do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.Space.PixelIcon
 
   alias RetroHexChat.VirtualSpace.Construct.Layout
-  alias RetroHexChatWeb.Icons
 
   @spec space_construct_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def space_construct_panel(assigns) do
@@ -24,8 +24,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceConstructPanel do
     ~H"""
     <template data-space-panel-template {sentences()}>
       <div class="w-[min(22rem,80vw)] text-left" data-testid="space-panel">
-        <p data-space-panel-title class="mb-2 font-bold"></p>
-        <div data-space-panel-body class="max-h-[50vh] overflow-y-auto text-sm"></div>
+        <p data-space-panel-title class="space-ui-modal__title"></p>
+        <div data-space-panel-body class="space-panel-body max-h-[50vh] overflow-y-auto"></div>
         <form data-space-panel-sign hidden class="mt-2 flex gap-1">
           <input
             type="text"
@@ -34,23 +34,29 @@ defmodule RetroHexChatWeb.Components.UI.SpaceConstructPanel do
             data-space-panel-input
             data-testid="space-panel-input"
             aria-label={dgettext("chat", "What the sign says")}
-            class="h-8 min-w-0 flex-1 px-1 font-mono text-sm bg-white border border-border shadow-retro-field outline-none"
+            class="space-ui-field h-8 min-w-0 flex-1"
           />
-          <.button type="submit" size="sm" data-testid="space-panel-save" class="h-8 px-2">
-            <:icon><Icons.icon_btn_ok class="h-4 w-4" /></:icon>
+          <.button
+            type="submit"
+            size="sm"
+            variant="pixel"
+            data-testid="space-panel-save"
+            class="h-8 px-2"
+          >
+            <:icon><.pixel_icon name={:ok} /></:icon>
             {dgettext("chat", "Save")}
           </.button>
         </form>
-        <p data-space-panel-status aria-live="polite" class="mt-1 text-xs text-destructive"></p>
+        <p data-space-panel-status aria-live="polite" class="space-panel-status mt-1"></p>
         <div class="mt-2 flex justify-end">
           <.button
             type="button"
             size="sm"
-            variant="secondary"
+            variant="pixel-secondary"
             data-space-panel-close
             data-testid="space-panel-close"
           >
-            <:icon><Icons.icon_btn_cancel class="h-4 w-4" /></:icon>
+            <:icon><.pixel_icon name={:cancel} /></:icon>
             {dgettext("chat", "Close")}
           </.button>
         </div>

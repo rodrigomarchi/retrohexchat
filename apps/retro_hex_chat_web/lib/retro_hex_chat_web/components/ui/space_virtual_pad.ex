@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
   @moduledoc """
-  On-screen 8-bit control pad for the virtual space: a 4-direction D-pad, the
+  On-screen pixel-art control pad for the virtual space: a 4-direction D-pad, the
   use button (what E and F do on a keyboard: go through a gate, sit down, get
   up) and the sword (attack) button, anchored to the bottom-right corner of the space
   canvas so mobile and mouse users can play without a keyboard.
@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
   """
   use RetroHexChatWeb, :html
 
-  alias RetroHexChatWeb.Icons
+  import RetroHexChatWeb.Components.UI.Space.PixelIcon
 
   @spec space_virtual_pad(map()) :: Phoenix.LiveView.Rendered.t()
   def space_virtual_pad(assigns) do
@@ -29,22 +29,22 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
       aria-label={dgettext("chat", "Virtual control pad")}
       class="absolute bottom-3 right-3 z-10 flex items-end gap-3 select-none touch-none"
     >
-      <div class="grid grid-cols-3 grid-rows-3">
+      <div class="space-pad-dpad grid grid-cols-3 grid-rows-3">
         <div></div>
         <.pad_dir_button dir="up" label={dgettext("chat", "Walk up")}>
-          <Icons.icon_pad_up class="h-5 w-5" />
+          <.pixel_icon name={:pad_up} />
         </.pad_dir_button>
         <div></div>
         <.pad_dir_button dir="left" label={dgettext("chat", "Walk left")}>
-          <Icons.icon_pad_left class="h-5 w-5" />
+          <.pixel_icon name={:pad_left} />
         </.pad_dir_button>
-        <div class="h-11 w-11 bg-black/60"></div>
+        <div></div>
         <.pad_dir_button dir="right" label={dgettext("chat", "Walk right")}>
-          <Icons.icon_pad_right class="h-5 w-5" />
+          <.pixel_icon name={:pad_right} />
         </.pad_dir_button>
         <div></div>
         <.pad_dir_button dir="down" label={dgettext("chat", "Walk down")}>
-          <Icons.icon_pad_down class="h-5 w-5" />
+          <.pixel_icon name={:pad_down} />
         </.pad_dir_button>
         <div></div>
       </div>
@@ -54,18 +54,18 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
         data-space-pad-action="use"
         data-testid="space-pad-use"
         aria-label={dgettext("chat", "Use")}
-        class="space-pad-button icon-on-dark h-12 w-12"
+        class="space-pad-button h-12 w-12"
       >
-        <Icons.icon_hand class="h-6 w-6" />
+        <.pixel_icon name={:use} />
       </button>
       <button
         type="button"
         tabindex="-1"
         data-space-pad-action="attack"
         aria-label={dgettext("chat", "Attack")}
-        class="space-pad-button space-pad-button--attack icon-on-dark h-12 w-12"
+        class="space-pad-button space-pad-button--attack h-12 w-12"
       >
-        <Icons.icon_sword class="h-6 w-6" />
+        <.pixel_icon name={:attack} />
       </button>
     </div>
     """
@@ -83,7 +83,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
       tabindex="-1"
       data-space-pad-dir={@dir}
       aria-label={@label}
-      class={["space-pad-button icon-on-dark h-11 w-11", @class]}
+      class={["space-pad-button h-11 w-11", @class]}
     >
       {render_slot(@inner_block)}
     </button>

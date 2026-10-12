@@ -103,4 +103,18 @@ defmodule RetroHexChatWeb.Components.UI.ToolButtonTest do
     assert tool_button_class(variant: "dock") == "media-dock-button icon-on-dark"
     assert tool_button_class(class: "extra") =~ "extra"
   end
+
+  test "pixel is the space's wooden key, its look all in CSS" do
+    assigns = %{}
+
+    html =
+      rendered_to_string(~H"""
+      <.tool_button label="Turn" variant="pixel" active tone="danger">i</.tool_button>
+      """)
+
+    assert html =~ "space-pixel-tool"
+    assert html =~ "space-pixel-tool--active"
+    assert html =~ "space-pixel-tool--danger"
+    refute html =~ "shadow-retro"
+  end
 end

@@ -409,8 +409,8 @@ input[type="range"]::-moz-range-thumb {
   text-shadow: 1px 1px 0 #ffffff;
   cursor: default;
 }
-:is(:disabled, [aria-disabled="true"], [data-disabled="true"]) svg,
-:where(label:has(> input:disabled), input:disabled ~ label) svg {
+:is(:disabled, [aria-disabled="true"], [data-disabled="true"]) :is(svg, .space-icon),
+:where(label:has(> input:disabled), input:disabled ~ label) :is(svg, .space-icon) {
   filter: brightness(0) invert(50%) drop-shadow(1px 1px 0 #ffffff);
 }
 :is(

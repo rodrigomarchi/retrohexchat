@@ -79,7 +79,7 @@ export function createSpaceOverlays(el, { board, confirm, cancel, panel } = {}) 
       if (panel?.(host, modal)) return;
 
       const title = document.createElement("div");
-      title.className = "font-bold";
+      title.className = "space-ui-modal__title";
       title.textContent = modal.title ?? "";
       const drawn = board?.(modal.asset);
       host.replaceChildren(title);

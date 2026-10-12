@@ -13,8 +13,17 @@ defmodule RetroHexChatWeb.Components.UI.SpaceFullscreenToggleTest do
     assert html =~ ~s(data-testid="space-fullscreen-toggle")
     # Enter glyph shows by default; exit glyph swaps in via data-fullscreen.
     assert html =~ "group-data-[fullscreen]:hidden"
-    assert html =~ "group-data-[fullscreen]:block"
+    assert html =~ "group-data-[fullscreen]:inline-block"
     # Pointer-only, like the virtual pad.
     assert html =~ ~s(tabindex="-1")
+  end
+
+  test "is a wooden key of the space's pixel kit, with its pixel glyphs" do
+    html = render_component(&space_fullscreen_toggle/1, %{})
+
+    assert html =~ "space-pixel-tool"
+    assert html =~ "space-icon--fullscreen-enter"
+    assert html =~ "space-icon--fullscreen-exit"
+    refute html =~ "<svg"
   end
 end

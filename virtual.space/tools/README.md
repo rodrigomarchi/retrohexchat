@@ -68,8 +68,15 @@ that.
   [`../CHARACTERS.md`](../CHARACTERS.md)).
 - **`gen_iso_atlas.py`** — reads every `iso_<id>.geo.json` and prints the JS
   atlas data (the `ISO_GEO` literal) to paste into `sprite_atlas.js`, so adding a
-  character is a data change. It prints no sheet URLs: the atlas derives them
-  from its roster, and at runtime the server hands it digested ones.
+  character is a data change. The literal is compact — frame size and animation
+  names — because every sheet is packed the same way; the script asserts that
+  layout and fails on a sheet that breaks it. It prints no sheet URLs: the atlas
+  derives them from its roster, and at runtime the server hands it digested ones.
+- **`author_ui.py`** — the space's pixel-art UI kit: cuts the frames, icons and
+  canvas pieces out of the PixelLab generations under `../ui/pixellab/`, derives
+  their states, and writes the images, the CSS tokens and the canvas geometry
+  (`make space.ui`; `make space.ui.check` is part of `make lint.css`). See
+  [`../UI.md`](../UI.md).
 - **`gen_charsel_sheet.py`** — packs the south-facing walk loop of all eight
   classes into `charsel.webp` (80×95 cells, one row per class in roster order)
   for the character picker, and prints the offsets

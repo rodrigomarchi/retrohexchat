@@ -4,9 +4,17 @@ defmodule RetroHexChatWeb.Components.UI.Window do
 
   import RetroHexChatWeb.Components.UI.ToolButton
 
+  import RetroHexChatWeb.Components.UI.Space.PixelIcon
+
   alias RetroHexChatWeb.Icons
 
-  @doc "Renders a Win98-style window frame."
+  # `retro` is the Win98 chrome every window wears. `pixel` is the Virtual
+  # Space's wood-and-gold frame, drawn by `features/space-ui.css` inside a
+  # `.space-ui` page only.
+  @skins ~w(retro pixel)
+
+  @doc "Renders a window frame: Win98's, or the space's pixel-art one (`skin=\"pixel\"`)."
+  attr :skin, :string, values: @skins, default: "retro"
   attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
@@ -14,13 +22,26 @@ defmodule RetroHexChatWeb.Components.UI.Window do
   @spec window(map()) :: Phoenix.LiveView.Rendered.t()
   def window(assigns) do
     ~H"""
-    <div class={classes(["shadow-retro-window bg-surface p-[3px] flex flex-col", @class])} {@rest}>
+    <div
+      class={
+        classes([
+          if(@skin == "pixel",
+            do: "window--pixel",
+            else: "shadow-retro-window bg-surface p-[3px]"
+          ),
+          "flex flex-col",
+          @class
+        ])
+      }
+      {@rest}
+    >
       {render_slot(@inner_block)}
     </div>
     """
   end
 
-  @doc "Renders a Win98-style title bar with gradient and control buttons."
+  @doc "Renders a title bar with its control buttons, in the window's skin."
+  attr :skin, :string, values: @skins, default: "retro"
   attr :title, :string, required: true
   attr :inactive, :boolean, default: false
 
@@ -55,11 +76,8 @@ defmodule RetroHexChatWeb.Components.UI.Window do
     <div
       class={
         classes([
-          "flex justify-between items-center px-[3px] py-[3px]",
-          if(@inactive,
-            do: "bg-gradient-to-r from-gray-500 to-gray-350",
-            else: "bg-gradient-to-r from-primary to-highlight-light"
-          ),
+          "flex justify-between items-center",
+          title_bar_class(@skin, @inactive),
           @class
         ])
       }
@@ -70,7 +88,11 @@ defmodule RetroHexChatWeb.Components.UI.Window do
           {render_slot(@icon)}
         </span>
         <span class={[
-          "font-bold text-white text-xs truncate",
+          if(@skin == "pixel",
+            do: "window-title-bar__title--pixel",
+            else: "font-bold text-white text-xs"
+          ),
+          "truncate",
           @meta == [] && "mr-6"
         ]}>
           {@title}
@@ -86,6 +108,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
         <.tool_button
           :for={control <- @controls}
           label={control_label(control)}
+          variant={if @skin == "pixel", do: "pixel", else: "raised"}
           size="title"
           disabled={@inactive && is_nil(@on_close)}
           data-window-control={control}
@@ -93,7 +116,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
           phx-click={control == :close && @on_close}
           data-hide-target={control == :close && @close_target}
         >
-          <.control_icon control={control} />
+          <.control_icon control={control} skin={@skin} />
         </.tool_button>
       </div>
     </div>
@@ -129,6 +152,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
   end
 
   @doc "Renders a single field within a status bar."
+  attr :skin, :string, values: @skins, default: "retro"
   attr :class, :any, default: nil
   attr :grow, :boolean, default: false
   attr :rest, :global
@@ -140,7 +164,11 @@ defmodule RetroHexChatWeb.Components.UI.Window do
     <div
       class={
         classes([
-          "shadow-retro-status px-[3px] py-[2px] text-sm truncate",
+          if(@skin == "pixel",
+            do: "window-status-field--pixel",
+            else: "shadow-retro-status px-[3px] py-[2px] text-sm"
+          ),
+          "truncate",
           @grow && "flex-grow",
           @class
         ])
@@ -159,7 +187,28 @@ defmodule RetroHexChatWeb.Components.UI.Window do
   defp control_label(:help), do: dgettext("ui", "Help")
   defp control_label(other), do: to_string(other)
 
+  defp title_bar_class("pixel", _inactive), do: "window-title-bar--pixel"
+
+  defp title_bar_class(_retro, true),
+    do: "px-[3px] py-[3px] bg-gradient-to-r from-gray-500 to-gray-350"
+
+  defp title_bar_class(_retro, false),
+    do: "px-[3px] py-[3px] bg-gradient-to-r from-primary to-highlight-light"
+
   attr :control, :atom, required: true
+  attr :skin, :string, default: "retro"
+
+  defp control_icon(%{skin: "pixel", control: :minimize} = assigns),
+    do: ~H"<.pixel_icon name={:win_minimize} />"
+
+  defp control_icon(%{skin: "pixel", control: :maximize} = assigns),
+    do: ~H"<.pixel_icon name={:win_maximize} />"
+
+  defp control_icon(%{skin: "pixel", control: :restore} = assigns),
+    do: ~H"<.pixel_icon name={:win_restore} />"
+
+  defp control_icon(%{skin: "pixel", control: :close} = assigns),
+    do: ~H"<.pixel_icon name={:win_close} />"
 
   defp control_icon(%{control: :minimize} = assigns) do
     ~H"""

@@ -7,19 +7,22 @@ defmodule RetroHexChatWeb.SpaceAssetsTest do
   @moduletag :unit
 
   describe "sheet_urls/0" do
-    test "names one sheet per class, plus the shared fx strip" do
+    test "names one sheet per class, plus the shared fx strip and the UI kit" do
       urls = SpaceAssets.sheet_urls()
 
-      expected = Enum.map(VirtualSpace.avatars(), &"av_iso_#{&1}") ++ ["fx_combat"]
+      expected = Enum.map(VirtualSpace.avatars(), &"av_iso_#{&1}") ++ ["fx_combat", "ui_canvas"]
       assert Enum.sort(Map.keys(urls)) == Enum.sort(expected)
     end
 
     test "keys match the ids the client atlas asks sheets by" do
       # The atlas looks a sheet up by `av_iso_<class>` / `fx_combat`; a key that
       # drifts from that leaves the client silently on its built-in path.
-      assert %{"av_iso_hero" => hero, "fx_combat" => fx} = SpaceAssets.sheet_urls()
+      assert %{"av_iso_hero" => hero, "fx_combat" => fx, "ui_canvas" => ui} =
+               SpaceAssets.sheet_urls()
+
       assert hero =~ "/images/space/avatars/iso_hero"
       assert fx =~ "/images/space/fx"
+      assert ui =~ "/images/space/ui/canvas"
     end
 
     test "every url points at a webp" do

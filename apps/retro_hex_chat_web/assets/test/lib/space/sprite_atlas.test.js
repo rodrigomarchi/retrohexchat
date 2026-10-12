@@ -1,11 +1,34 @@
 import { describe, it, expect, vi } from "vitest";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import {
   createSpriteAtlas,
+  isoAvatar,
   AVATAR_IDS,
   AVATAR_ACTIONS,
   DIRECTIONS,
 } from "../../../js/lib/space/sprite_atlas.js";
+
+// The atlas creates its sheet images itself; recording them lets a test reach
+// the UI kit's sheet, which `uiPiece` only hands out once it has decoded.
+function recordImages() {
+  const made = [];
+  const Original = globalThis.Image;
+  globalThis.Image = class extends Original {
+    constructor(...args) {
+      super(...args);
+      made.push(this);
+    }
+  };
+  return {
+    sheet: (path) => made.find((img) => (img.getAttribute("src") ?? "").includes(path)),
+    restore: () => {
+      globalThis.Image = Original;
+    },
+  };
+}
 
 const TILESETS = [
   { id: "demo_sheet", src: "/images/space/demo_sheet.webp", tile: 16, columns: 40 },
@@ -199,6 +222,7 @@ describe("sprite atlas contract", () => {
   });
 
   it("holds the ready gate until the map and every blocking sheet have landed", () => {
+    const images = recordImages();
     const ready = vi.fn();
     const atlas = createSpriteAtlas({ onReady: ready });
     atlas.ensureAvatars(["hero"], { blocking: true });
@@ -209,6 +233,7 @@ describe("sprite atlas contract", () => {
 
     const land = (img) => img.dispatchEvent(new Event("load"));
     land(atlas.fx("hit_spark", 0).img);
+    land(images.sheet("ui/canvas"));
     land(atlas.avatar("hero", "south").img);
     expect(ready).not.toHaveBeenCalled();
 
@@ -218,12 +243,16 @@ describe("sprite atlas contract", () => {
     // Late arrivals do not re-open the gate.
     land(atlas.avatar("knight", "south").img);
     expect(ready).toHaveBeenCalledTimes(1);
+    images.restore();
   });
 
   it("keeps the gate shut while the map is still unknown", () => {
+    const images = recordImages();
     const ready = vi.fn();
     const atlas = createSpriteAtlas({ onReady: ready });
     atlas.fx("hit_spark", 0).img.dispatchEvent(new Event("load"));
+    images.sheet("ui/canvas").dispatchEvent(new Event("load"));
+    images.restore();
     expect(ready).not.toHaveBeenCalled();
     atlas.registerTiles(TILES);
     expect(ready).toHaveBeenCalledTimes(1);
@@ -246,5 +275,46 @@ describe("combat fx sheet", () => {
     expect(atlas.fx("ko_burst", 1)).toMatchObject({ sx: 96, sy: 64, sw: 96, sh: 96 });
     expect(atlas.fxFrameCount("hit_spark")).toBe(6);
     expect(atlas.fx("nope", 0)).toBe(null);
+  });
+});
+
+describe("ui kit pieces", () => {
+  // jsdom never decodes an image; a sheet that has is one with a size.
+  const decoded = (img) => {
+    Object.defineProperty(img, "complete", { value: true });
+    Object.defineProperty(img, "naturalWidth", { value: 400 });
+  };
+
+  it("resolves a canvas piece to the ui sheet, with its rect and slice", () => {
+    const images = recordImages();
+    const atlas = createSpriteAtlas({ sheetUrls: { ui_canvas: "/images/space/ui/canvas-1.webp" } });
+    // Not until it has decoded: a broken sheet would throw on every draw.
+    expect(atlas.uiPiece("bubble")).toBeNull();
+    decoded(images.sheet("ui/canvas-1"));
+    images.restore();
+    const bubble = atlas.uiPiece("bubble");
+    expect(bubble.img.getAttribute("src")).toBe("/images/space/ui/canvas-1.webp");
+    expect(bubble).toMatchObject({ x: 0, y: 0, t: 8, r: 8, b: 8, l: 8 });
+    expect(atlas.uiPiece("tail").t).toBeUndefined();
+  });
+
+  it("knows no piece the kit does not draw", () => {
+    expect(createSpriteAtlas().uiPiece("dragon")).toBeNull();
+  });
+});
+
+describe("iso avatar geometry", () => {
+  const avatars = path.resolve(
+    path.dirname(fileURLToPath(import.meta.url)),
+    "../../../../priv/static/images/space/avatars",
+  );
+
+  it.each(AVATAR_IDS)("derives %s's rectangles exactly as its geo.json spells them", (id) => {
+    const geo = JSON.parse(readFileSync(path.join(avatars, `iso_${id}.geo.json`), "utf8"));
+    const desc = isoAvatar(id);
+    for (const [anim, rows] of Object.entries(geo.anims)) {
+      const block = desc[anim === "attack" ? "sword" : anim];
+      expect(block).toEqual({ frameW: geo.frameW, frameH: geo.frameH, cols: geo.cols, rows });
+    }
   });
 });

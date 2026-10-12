@@ -795,7 +795,7 @@ msgid "Browser"
 msgstr "Browser"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:79
-#: lib/retro_hex_chat_web/live/app/space_live.ex:226
+#: lib/retro_hex_chat_web/live/app/space_live.ex:230
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:520
 #, elixir-autogen, elixir-format
 msgid "Cancel"
@@ -1495,7 +1495,7 @@ msgstr ""
 msgid "Nickname %{nickname} is already in use"
 msgstr "Nickname %{nickname} is already in use"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:314
+#: lib/retro_hex_chat_web/live/app/space_live.ex:327
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "No"
@@ -2083,13 +2083,13 @@ msgid "Yellow"
 msgstr "Yellow"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:304
+#: lib/retro_hex_chat_web/live/app/space_live.ex:317
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "Yes"
 msgstr "Yes"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:331
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:332
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:215
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:236
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:261
@@ -2913,7 +2913,7 @@ msgstr "%{peer} lost the P2P connection — waiting for them to return..."
 msgid "Arcade session ended."
 msgstr "Arcade session ended."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:741
+#: lib/retro_hex_chat_web/live/app/space_live.ex:749
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "Channel Space"
@@ -2923,7 +2923,7 @@ msgstr "Channel Space"
 msgid "Chat"
 msgstr "Chat"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:70
+#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:72
 #, elixir-autogen, elixir-format
 msgid "Choose your character"
 msgstr "Choose your character"
@@ -2963,7 +2963,7 @@ msgstr "Default device"
 msgid "End P2P Call Media"
 msgstr "End P2P Call Media"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:745
+#: lib/retro_hex_chat_web/live/app/space_live.ex:753
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "Entering channel space..."
@@ -2988,7 +2988,7 @@ msgstr "Mute, unmute, or enable your P2P microphone"
 msgid "Next P2P Layout"
 msgstr "Next P2P Layout"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:744
+#: lib/retro_hex_chat_web/live/app/space_live.ex:752
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "Opening private room..."
@@ -3020,14 +3020,14 @@ msgstr "P2P session connecting"
 msgid "P2P session with %{peer} ended."
 msgstr "P2P session with %{peer} ended."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:740
+#: lib/retro_hex_chat_web/live/app/space_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "Private Space"
 
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:706
+#: lib/retro_hex_chat_web/live/app/space_live.ex:714
 #, elixir-autogen, elixir-format
 msgid "Space"
 msgstr "Space"
@@ -3124,7 +3124,7 @@ msgstr "Walk right"
 msgid "Walk up"
 msgstr "Walk up"
 
-#: lib/retro_hex_chat_web/components/ui/space_fullscreen_toggle.ex:28
+#: lib/retro_hex_chat_web/components/ui/space_fullscreen_toggle.ex:27
 #, elixir-autogen, elixir-format
 msgid "Toggle fullscreen"
 msgstr "Toggle fullscreen"
@@ -3770,47 +3770,47 @@ msgstr "Conversation actions"
 msgid "Participants"
 msgstr "Participants"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:150
+#: lib/retro_hex_chat_web/live/app/space_live.ex:152
 #, elixir-autogen, elixir-format
 msgid "%{count} in the space"
 msgid_plural "%{count} in the space"
 msgstr[0] "%{count} in the space"
 msgstr[1] "%{count} in the space"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:96
+#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:92
 #, elixir-autogen, elixir-format
 msgid "Inside right now"
 msgstr "Inside right now"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:98
+#: lib/retro_hex_chat_web/components/ui/space_character_select.ex:94
 #, elixir-autogen, elixir-format
 msgid "Nobody is in here yet."
 msgstr "Nobody is in here yet."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:702
-#: lib/retro_hex_chat_web/live/app/space_live.ex:704
+#: lib/retro_hex_chat_web/live/app/space_live.ex:710
+#: lib/retro_hex_chat_web/live/app/space_live.ex:712
 #, elixir-autogen, elixir-format
 msgid "Space · %{name}"
 msgstr "Space · %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:589
-#: lib/retro_hex_chat_web/live/app/space_live.ex:604
-#: lib/retro_hex_chat_web/live/app/space_live.ex:623
+#: lib/retro_hex_chat_web/live/app/space_live.ex:597
+#: lib/retro_hex_chat_web/live/app/space_live.ex:612
+#: lib/retro_hex_chat_web/live/app/space_live.ex:631
 #, elixir-autogen, elixir-format
 msgid "That address does not name a space."
 msgstr "That address does not name a space."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:635
+#: lib/retro_hex_chat_web/live/app/space_live.ex:643
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
 msgstr "This private space belongs to two other people."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:584
+#: lib/retro_hex_chat_web/live/app/space_live.ex:592
 #, elixir-autogen, elixir-format
 msgid "This space is no longer available."
 msgstr "This space is no longer available."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:651
+#: lib/retro_hex_chat_web/live/app/space_live.ex:659
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "You have to be in %{channel} to enter its space."
@@ -3845,7 +3845,7 @@ msgstr "%{game} · match"
 msgid "%{peer} is back."
 msgstr "%{peer} is back."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:656
+#: lib/retro_hex_chat_web/live/app/space_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "This space belongs to a channel you are not in."
 msgstr "This space belongs to a channel you are not in."
@@ -3984,7 +3984,7 @@ msgstr "Message pinned."
 msgid "Message unpinned."
 msgstr "Message unpinned."
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:72
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:90
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:205
 #, elixir-autogen, elixir-format
@@ -4286,14 +4286,14 @@ msgid "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same
 msgstr "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:26
-#: lib/retro_hex_chat_web/live/app/space_live.ex:145
+#: lib/retro_hex_chat_web/live/app/space_live.ex:147
 #, elixir-autogen, elixir-format
 msgid "Change character"
 msgstr "Change character"
 
-#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:62
 #: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:63
-#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:68
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:64
+#: lib/retro_hex_chat_web/components/ui/space_say_bar.ex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Say"
@@ -4304,138 +4304,138 @@ msgstr "Say"
 msgid "Say something"
 msgstr "Say something"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:731
-#: lib/retro_hex_chat_web/live/app/space_live.ex:737
+#: lib/retro_hex_chat_web/live/app/space_live.ex:739
+#: lib/retro_hex_chat_web/live/app/space_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Say something to %{name}..."
 msgstr "Say something to %{name}..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:732
+#: lib/retro_hex_chat_web/live/app/space_live.ex:740
 #, elixir-autogen, elixir-format
 msgid "Say something..."
 msgstr "Say something..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:281
+#: lib/retro_hex_chat_web/live/app/space_live.ex:288
 #, elixir-autogen, elixir-format
 msgid "%{name} is back on their feet."
 msgstr "%{name} is back on their feet."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:280
+#: lib/retro_hex_chat_web/live/app/space_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "%{name} is knocked out!"
 msgstr "%{name} is knocked out!"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:32
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:33
 #, elixir-autogen, elixir-format
 msgid "Build"
 msgstr "Build"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:234
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:235
 #, elixir-autogen, elixir-format
 msgid "Chair"
 msgstr "Chair"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:698
-#: lib/retro_hex_chat_web/live/app/space_live.ex:739
+#: lib/retro_hex_chat_web/live/app/space_live.ex:706
+#: lib/retro_hex_chat_web/live/app/space_live.ex:747
 #, elixir-autogen, elixir-format
 msgid "Construct"
 msgstr "Construct"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:295
+#: lib/retro_hex_chat_web/live/app/space_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "Go back to the End of Time?"
 msgstr "Go back to the End of Time?"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:321
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:322
 #, elixir-autogen, elixir-format
 msgid "Keep the way to the gate clear."
 msgstr "Keep the way to the gate clear."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:252
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:253
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Lamp"
 msgstr "Lamp"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:743
+#: lib/retro_hex_chat_web/live/app/space_live.ex:751
 #, elixir-autogen, elixir-format
 msgid "Loading the Construct..."
 msgstr "Loading the Construct..."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:112
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:122
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:113
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:123
 #, elixir-autogen, elixir-format
 msgid "Pick a piece, then click the floor. Drag a piece to move it, right-click to remove it."
 msgstr "Pick a piece, then click the floor. Drag a piece to move it, right-click to remove it."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:99
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:100
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:104
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:101
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:105
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Remove"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:324
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:325
 #, elixir-autogen, elixir-format
 msgid "Somebody is sitting in it."
 msgstr "Somebody is sitting in it."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:326
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:327
 #, elixir-autogen, elixir-format
 msgid "That is off the floor."
 msgstr "That is off the floor."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:334
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:335
 #, elixir-autogen, elixir-format
 msgid "That piece cannot go there."
 msgstr "That piece cannot go there."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:325
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:326
 #, elixir-autogen, elixir-format
 msgid "The Construct is full."
 msgstr "The Construct is full."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:256
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:257
 #, elixir-autogen, elixir-format
 msgid "Tree"
 msgstr "Tree"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:86
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:87
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:91
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:88
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:92
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Turn"
 msgstr "Turn"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:237
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:238
 #, elixir-autogen, elixir-format
 msgctxt "furniture"
 msgid "Table"
 msgstr "Table"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:294
+#: lib/retro_hex_chat_web/live/app/space_live.ex:301
 #, elixir-autogen, elixir-format
 msgid "Go into the Construct?"
 msgstr "Go into the Construct?"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:320
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:321
 #, elixir-autogen, elixir-format
 msgid "Somebody is standing on that spot."
 msgstr "Somebody is standing on that spot."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:323
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:324
 #, elixir-autogen, elixir-format
 msgid "That would leave somebody with no way back to the gate."
 msgstr "That would leave somebody with no way back to the gate."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:319
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:320
 #, elixir-autogen, elixir-format
 msgid "There is already a piece on that spot."
 msgstr "There is already a piece on that spot."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:327
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:328
 #, elixir-autogen, elixir-format
 msgid "Only one piece at a time, please wait."
 msgstr "Only one piece at a time, please wait."
@@ -4445,134 +4445,134 @@ msgstr "Only one piece at a time, please wait."
 msgid "Use"
 msgstr "Use"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:300
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:67
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:301
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "Arcade cabinet"
 msgstr "Arcade cabinet"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:235
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:236
 #, elixir-autogen, elixir-format
 msgid "Armchair"
 msgstr "Armchair"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:183
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:184
 #, elixir-autogen, elixir-format
 msgid "Blue carpet"
 msgstr "Blue carpet"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:244
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:245
 #, elixir-autogen, elixir-format
 msgid "Bookshelf"
 msgstr "Bookshelf"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:184
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:185
 #, elixir-autogen, elixir-format
 msgid "Checkerboard"
 msgstr "Checkerboard"
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:54
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:60
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr "Close"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:298
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:299
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Coin"
 msgstr "Coin"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:295
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:296
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Door"
 msgstr "Door"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:190
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:191
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:106
 #, elixir-autogen, elixir-format
 msgid "Erase"
 msgstr "Erase"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:60
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:61
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:105
 #, elixir-autogen, elixir-format
 msgid "Floor"
 msgstr "Floor"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:220
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:221
 #, elixir-autogen, elixir-format
 msgid "Furniture"
 msgstr "Furniture"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:181
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:182
 #, elixir-autogen, elixir-format
 msgid "Grass"
 msgstr "Grass"
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:70
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:76
 #, elixir-autogen, elixir-format
 msgid "Nobody has posted a picture here yet."
 msgstr "Nobody has posted a picture here yet."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:329
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:330
 #, elixir-autogen, elixir-format
 msgid "Only whoever put up this sign can change it."
 msgstr "Only whoever put up this sign can change it."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:255
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:256
 #, elixir-autogen, elixir-format
 msgid "Plant"
 msgstr "Plant"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:182
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:183
 #, elixir-autogen, elixir-format
 msgid "Red carpet"
 msgstr "Red carpet"
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:41
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:47
 #, elixir-autogen, elixir-format
 msgid "Save"
 msgstr "Save"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:180
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:181
 #, elixir-autogen, elixir-format
 msgid "Stone"
 msgstr "Stone"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:224
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:225
 #, elixir-autogen, elixir-format
 msgid "Structure"
 msgstr "Structure"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:296
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:297
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Teleporter"
 msgstr "Teleporter"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:332
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:333
 #, elixir-autogen, elixir-format
 msgid "That floor cannot be painted."
 msgstr "That floor cannot be painted."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:333
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:334
 #, elixir-autogen, elixir-format
 msgid "That piece cannot be built here."
 msgstr "That piece cannot be built here."
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:69
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:75
 #, elixir-autogen, elixir-format
 msgid "This channel has no topic and nothing pinned yet."
 msgstr "This channel has no topic and nothing pinned yet."
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:71
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:77
 #, elixir-autogen, elixir-format
 msgid "Topic"
 msgstr "Topic"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:293
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:294
 #, elixir-autogen, elixir-format
 msgid "Wall"
 msgstr "Wall"
@@ -4582,372 +4582,372 @@ msgstr "Wall"
 msgid "What the sign says"
 msgstr "What the sign says"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:179
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:180
 #, elixir-autogen, elixir-format
 msgid "Wood"
 msgstr "Wood"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:225
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:226
 #, elixir-autogen, elixir-format
 msgctxt "construct palette"
 msgid "Fun"
 msgstr "Fun"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:297
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:298
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:63
 #, elixir-autogen, elixir-format
 msgctxt "game piece"
 msgid "Die"
 msgstr "Die"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:301
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:65
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:302
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:71
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:87
 #, elixir-autogen, elixir-format
 msgctxt "notice board"
 msgid "Board"
 msgstr "Board"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:299
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:64
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:300
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:75
 #, elixir-autogen, elixir-format
 msgctxt "signpost"
 msgid "Sign"
 msgstr "Sign"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:302
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:66
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:303
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:94
 #, elixir-autogen, elixir-format
 msgctxt "television"
 msgid "Screen"
 msgstr "Screen"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:294
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:295
 #, elixir-autogen, elixir-format
 msgctxt "wall"
 msgid "Corner"
 msgstr "Corner"
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:68
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:74
 #, elixir-autogen, elixir-format
 msgid "Nothing is written on this signboard yet."
 msgstr "Nothing is written on this signboard yet."
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:74
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:80
 #, elixir-autogen, elixir-format
 msgid "Opens in another browser tab."
 msgstr "Opens in another browser tab."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:330
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:331
 #, elixir-autogen, elixir-format
 msgid "That line is too long for the signboard."
 msgstr "That line is too long for the signboard."
 
-#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:73
+#: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:79
 #, elixir-autogen, elixir-format
 msgid "Sent by %{name}"
 msgstr "Sent by %{name}"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:118
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:119
 #, elixir-autogen, elixir-format
 msgid "Press on the floor and drag: the whole rectangle is painted."
 msgstr "Press on the floor and drag: the whole rectangle is painted."
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:282
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:283
 #, elixir-autogen, elixir-format
 msgid "Beanbag"
 msgstr "Beanbag"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:240
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:241
 #, elixir-autogen, elixir-format
 msgid "Bed"
 msgstr "Bed"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:270
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:271
 #, elixir-autogen, elixir-format
 msgid "Boulder"
 msgstr "Boulder"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:268
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:269
 #, elixir-autogen, elixir-format
 msgid "Bush"
 msgstr "Bush"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:267
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:268
 #, elixir-autogen, elixir-format
 msgid "Cactus"
 msgstr "Cactus"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:304
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:305
 #, elixir-autogen, elixir-format
 msgid "Campfire"
 msgstr "Campfire"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:266
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:267
 #, elixir-autogen, elixir-format
 msgid "Coat rack"
 msgstr "Coat rack"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:264
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:265
 #, elixir-autogen, elixir-format
 msgid "Coffee machine"
 msgstr "Coffee machine"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:239
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:240
 #, elixir-autogen, elixir-format
 msgid "Coffee table"
 msgstr "Coffee table"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:289
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:290
 #, elixir-autogen, elixir-format
 msgid "Cryo pod"
 msgstr "Cryo pod"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:243
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:244
 #, elixir-autogen, elixir-format
 msgid "Dresser"
 msgstr "Dresser"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:226
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:227
 #, elixir-autogen, elixir-format
 msgid "End of Time"
 msgstr "End of Time"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:273
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:274
 #, elixir-autogen, elixir-format
 msgid "Fence"
 msgstr "Fence"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:260
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:261
 #, elixir-autogen, elixir-format
 msgid "File cabinet"
 msgstr "File cabinet"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:250
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:251
 #, elixir-autogen, elixir-format
 msgid "Fireplace"
 msgstr "Fireplace"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:269
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:270
 #, elixir-autogen, elixir-format
 msgid "Flower bed"
 msgstr "Flower bed"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:272
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:273
 #, elixir-autogen, elixir-format
 msgid "Fountain"
 msgstr "Fountain"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:246
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:247
 #, elixir-autogen, elixir-format
 msgid "Fridge"
 msgstr "Fridge"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:223
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:224
 #, elixir-autogen, elixir-format
 msgid "Gamer"
 msgstr "Gamer"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:283
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:284
 #, elixir-autogen, elixir-format
 msgid "Gaming chair"
 msgstr "Gaming chair"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:222
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:223
 #, elixir-autogen, elixir-format
 msgid "Garden"
 msgstr "Garden"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:278
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:279
 #, elixir-autogen, elixir-format
 msgid "Giant mushroom"
 msgstr "Giant mushroom"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:251
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:252
 #, elixir-autogen, elixir-format
 msgid "Grandfather clock"
 msgstr "Grandfather clock"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:290
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:291
 #, elixir-autogen, elixir-format
 msgid "Hologram"
 msgstr "Hologram"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:288
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:289
 #, elixir-autogen, elixir-format
 msgid "Jukebox"
 msgstr "Jukebox"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:248
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:249
 #, elixir-autogen, elixir-format
 msgid "Kitchen counter"
 msgstr "Kitchen counter"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:238
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:239
 #, elixir-autogen, elixir-format
 msgid "Long table"
 msgstr "Long table"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:259
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:260
 #, elixir-autogen, elixir-format
 msgid "Meeting table"
 msgstr "Meeting table"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:284
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:285
 #, elixir-autogen, elixir-format
 msgid "Neon sign"
 msgstr "Neon sign"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:292
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:293
 #, elixir-autogen, elixir-format
 msgid "Neon totem"
 msgstr "Neon totem"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:241
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:242
 #, elixir-autogen, elixir-format
 msgid "Nightstand"
 msgstr "Nightstand"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:258
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:259
 #, elixir-autogen, elixir-format
 msgid "Office chair"
 msgstr "Office chair"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:257
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:258
 #, elixir-autogen, elixir-format
 msgid "Office desk"
 msgstr "Office desk"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:303
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:304
 #, elixir-autogen, elixir-format
 msgid "Old TV"
 msgstr "Old TV"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:276
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:277
 #, elixir-autogen, elixir-format
 msgid "Palm tree"
 msgstr "Palm tree"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:271
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:272
 #, elixir-autogen, elixir-format
 msgid "Park bench"
 msgstr "Park bench"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:249
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:250
 #, elixir-autogen, elixir-format
 msgid "Piano"
 msgstr "Piano"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:277
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:278
 #, elixir-autogen, elixir-format
 msgid "Pine tree"
 msgstr "Pine tree"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:281
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:282
 #, elixir-autogen, elixir-format
 msgid "Ping-pong table"
 msgstr "Ping-pong table"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:275
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:276
 #, elixir-autogen, elixir-format
 msgid "Pond"
 msgstr "Pond"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:280
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:281
 #, elixir-autogen, elixir-format
 msgid "Pool table"
 msgstr "Pool table"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:261
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:262
 #, elixir-autogen, elixir-format
 msgid "Printer"
 msgstr "Printer"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:291
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:292
 #, elixir-autogen, elixir-format
 msgid "Racing arcade"
 msgstr "Racing arcade"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:287
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:288
 #, elixir-autogen, elixir-format
 msgid "Retro console"
 msgstr "Retro console"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:286
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:287
 #, elixir-autogen, elixir-format
 msgid "Robot"
 msgstr "Robot"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:285
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:286
 #, elixir-autogen, elixir-format
 msgid "Server rack"
 msgstr "Server rack"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:236
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:237
 #, elixir-autogen, elixir-format
 msgid "Sofa"
 msgstr "Sofa"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:305
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:306
 #, elixir-autogen, elixir-format
 msgid "Spirit Bomb"
 msgstr "Spirit Bomb"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:274
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:275
 #, elixir-autogen, elixir-format
 msgid "Street lamp"
 msgstr "Street lamp"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:245
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:246
 #, elixir-autogen, elixir-format
 msgid "TV stand"
 msgstr "TV stand"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:253
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:254
 #, elixir-autogen, elixir-format
 msgid "Table lamp"
 msgstr "Table lamp"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:254
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:255
 #, elixir-autogen, elixir-format
 msgid "Vase"
 msgstr "Vase"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:265
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:266
 #, elixir-autogen, elixir-format
 msgid "Vending machine"
 msgstr "Vending machine"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:242
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:243
 #, elixir-autogen, elixir-format
 msgid "Wardrobe"
 msgstr "Wardrobe"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:263
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:264
 #, elixir-autogen, elixir-format
 msgid "Water cooler"
 msgstr "Water cooler"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:262
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:263
 #, elixir-autogen, elixir-format
 msgid "Whiteboard"
 msgstr "Whiteboard"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:221
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:222
 #, elixir-autogen, elixir-format
 msgctxt "construct palette"
 msgid "Office"
 msgstr "Office"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:279
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:280
 #, elixir-autogen, elixir-format
 msgctxt "garden"
 msgid "Mailbox"
 msgstr "Mailbox"
 
-#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:247
+#: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:248
 #, elixir-autogen, elixir-format
 msgctxt "kitchen"
 msgid "Stove"

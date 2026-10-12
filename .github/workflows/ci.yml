@@ -172,6 +172,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # The Virtual Space UI kit check (make lint.css) and its tests read the
+      # kit's art with Pillow, the one dependency of virtual.space/tools.
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r virtual.space/tools/requirements.txt
+
       - name: Setup Elixir/OTP
         uses: erlef/setup-beam@v1
         with:
@@ -232,6 +240,14 @@ jobs:
       lint_bundle: ${{ steps.lint_bundle.outcome }}
     steps:
       - uses: actions/checkout@v4
+
+      # The Virtual Space UI kit check (make lint.css) and its tests read the
+      # kit's art with Pillow, the one dependency of virtual.space/tools.
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r virtual.space/tools/requirements.txt
 
       - name: Setup Elixir/OTP
         id: beam

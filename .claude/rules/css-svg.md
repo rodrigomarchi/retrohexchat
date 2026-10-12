@@ -67,6 +67,19 @@ Same pattern: `attr :class` + `@spec` + `~H""" <svg> """`.
 
 **Exception:** `log_exporter.ex` embeds CSS/SVG for standalone HTML exports.
 
+## The Virtual Space's pixel kit
+
+The space page (`.space-ui` root) is drawn in pixel art, not Win98: wood and gold
+frames sliced from PixelLab art by `virtual.space/tools/author_ui.py`, and the
+RH Pixel font. Use the primitives' `pixel` variants (`Button variant="pixel"`,
+`ToolButton variant="pixel"`, `desktop_window skin="pixel"`) and the kit's
+classes in `features/space-ui.css`. Its icons are **raster** and go only through
+`<.pixel_icon name={...} />` (`Components.UI.Space.PixelIcon`) — the one
+exception to the SVG rule above, and only inside a space. The generated files
+(`space-ui-kit.generated.css`, `space-ui-font.generated.css`,
+`js/lib/space/ui_kit_geometry.js`) are never edited by hand. Playbook:
+`virtual.space/UI.md`.
+
 ## Catalog
 
 There is no hand-written inventory — a list of icons rots the week it is written.

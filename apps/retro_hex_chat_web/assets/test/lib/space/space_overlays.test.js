@@ -69,7 +69,7 @@ describe("createSpaceOverlays", () => {
       });
       overlays.renderModal({ title: "Chess", asset: "chess" });
       expect(host.hidden).toBe(false);
-      expect(host.querySelector(".font-bold").textContent).toBe("Chess");
+      expect(host.querySelector(".space-ui-modal__title").textContent).toBe("Chess");
       expect(host.contains(drawnCanvas)).toBe(true);
     });
 
@@ -97,7 +97,7 @@ describe("createSpaceOverlays", () => {
       const host = el.querySelector("[data-space-modal]");
       const overlays = createSpaceOverlays(el, { board: () => null });
       overlays.renderModal({ title: "Empty" });
-      expect(host.querySelector(".font-bold").textContent).toBe("Empty");
+      expect(host.querySelector(".space-ui-modal__title").textContent).toBe("Empty");
       expect(host.querySelector("canvas")).toBe(null);
     });
   });

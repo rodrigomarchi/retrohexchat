@@ -25,11 +25,16 @@ defmodule RetroHexChatWeb.SpaceAssets do
 
   @fx_sheet_id "fx_combat"
   @fx_path "/images/space/fx.webp"
+  # The pixel-art frames the canvas draws its own UI with (bubbles, nameplates,
+  # signs, the HP bar), packed by virtual.space/tools/author_ui.py.
+  @ui_sheet_id "ui_canvas"
+  @ui_path "/images/space/ui/canvas.webp"
 
   @doc """
   Sheet id to digested URL, for every sheet the atlas can be asked to load.
 
-  Keys match the atlas's own sheet ids (`av_iso_<class>`, `fx_combat`), so the
+  Keys match the atlas's own sheet ids (`av_iso_<class>`, `fx_combat`,
+  `ui_canvas`), so the
   client looks a sheet up by the name it already uses.
   """
   @spec sheet_urls() :: %{String.t() => String.t()}
@@ -39,7 +44,9 @@ defmodule RetroHexChatWeb.SpaceAssets do
         {"av_iso_#{id}", Endpoint.static_path("/images/space/avatars/iso_#{id}.webp")}
       end)
 
-    Map.put(avatars, @fx_sheet_id, Endpoint.static_path(@fx_path))
+    avatars
+    |> Map.put(@fx_sheet_id, Endpoint.static_path(@fx_path))
+    |> Map.put(@ui_sheet_id, Endpoint.static_path(@ui_path))
   end
 
   @doc """

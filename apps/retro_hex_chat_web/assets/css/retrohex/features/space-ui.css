@@ -1,0 +1,583 @@
+/* ── The Virtual Space's pixel-art interface ─────────────────────────────────
+   A space is a pixel-art world, so its controls are drawn the way the world is:
+   dark wood, gold corners, parchment faces and a pixel font, instead of the
+   Win98 bevels the rest of the platform wears. Everything here is scoped to
+   `.space-ui`, the root of the space page, and leaks nowhere else.
+
+   The frames are PixelLab art sliced by `virtual.space/tools/author_ui.py`
+   (`space-ui-kit.generated.css` holds each piece's image per state, slice,
+   width and face colour); the font is RH Pixel (`space-ui-font.generated.css`).
+   Art renders 1:1 — one art pixel per CSS pixel — and edges repeat, never
+   stretch. Playbook: virtual.space/UI.md. */
+
+.space-ui {
+  --space-ui-ink: rgb(66, 31, 34);
+  --space-ui-ink-muted: rgb(120, 82, 66);
+  --space-ui-on-wood: rgb(240, 215, 185);
+  --space-ui-gold: rgb(249, 212, 111);
+  --space-ui-danger: rgb(150, 28, 32);
+  --space-ui-backdrop: rgba(20, 10, 12, 0.72);
+  --space-ui-highlight: rgba(219, 158, 88, 0.3);
+  --space-ui-etched: rgb(84, 80, 82);
+  --space-ui-etched-light: rgb(214, 210, 206);
+  --space-ui-font: "RH Pixel", "RH Pixel SC", "RH Pixel SC Ext", "Source Code Pro", monospace;
+
+  /* What the canvas renderer reads for its own text (js/lib/space/ui_theme.js). */
+  --space-ui-bubble-ink: rgb(66, 31, 34);
+  --space-ui-label-ink: rgb(232, 220, 192);
+  --space-ui-sign-ink: rgb(249, 212, 111);
+  --space-ui-damage: rgb(255, 236, 160);
+  --space-ui-damage-ko: rgb(255, 96, 80);
+  --space-ui-damage-outline: rgb(27, 29, 36);
+  --space-ui-hologram-ink: rgb(159, 246, 255);
+
+  font-family: var(--space-ui-font);
+  font-size: 12px;
+  line-height: 1.25;
+  font-synthesis: none;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Han glyphs follow the reader's own region: Japanese and Traditional Chinese
+   readers get their forms; everyone else falls back to Simplified. */
+:lang(ja) .space-ui {
+  --space-ui-font: "RH Pixel", "RH Pixel JP", "RH Pixel JP Ext", "Source Code Pro", monospace;
+}
+
+:lang(zh-Hant) .space-ui {
+  --space-ui-font: "RH Pixel", "RH Pixel TC", "RH Pixel TC Ext", "Source Code Pro", monospace;
+}
+
+/* A platform dialog or toast raised over the space (sharing the address) is
+   the platform's own, Win98 chrome and all: it keeps the platform's type. */
+.space-ui :is([role="dialog"], [role="alertdialog"], .toast-container) {
+  font-family: "Source Code Pro", monospace;
+  font-size: revert;
+  -webkit-font-smoothing: auto;
+}
+
+/* The pixel font has one weight; a synthesized bold smears it. */
+.space-ui :is(b, strong, h1, h2, h3, .font-bold, .font-medium):not(:is([role="dialog"], [role="alertdialog"], .toast-container) *) {
+  font-weight: 400;
+}
+
+.space-ui :is(input, button, textarea, select) {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Keyboard focus: a gold ring outside the frame. The map takes the keyboard
+   too (Esc hands it back), and a ring around the whole world says nothing. */
+.space-ui :focus-visible:not(canvas, :is([role="dialog"], [role="alertdialog"]) *) {
+  outline: 2px solid var(--space-ui-gold);
+  outline-offset: 1px;
+}
+
+/* Disabled stays etched (retro-controls.css), in stone tones that read on
+   wood and parchment. */
+.space-ui :is(:disabled, [aria-disabled="true"], [data-disabled="true"]):not(input, textarea, select) {
+  color: var(--space-ui-etched);
+  text-shadow: 1px 1px 0 var(--space-ui-etched-light);
+}
+
+/* ── Frames ── */
+
+/* Parchment framed in wood and gold: dialogs, the picker, the loading card,
+   a piece's panel. */
+.space-ui-panel {
+  border: 0 solid transparent;
+  border-image-source: var(--space-ui-panel);
+  border-image-slice: var(--space-ui-panel-slice) fill;
+  border-image-width: var(--space-ui-panel-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  padding: 42px 46px 44px;
+  color: var(--space-ui-ink);
+}
+
+/* A thin wooden plank: the say bar, the palette's status line. */
+.space-ui-plank {
+  border: 0 solid transparent;
+  border-image-source: var(--space-ui-status-wood);
+  border-image-slice: var(--space-ui-status-wood-slice) fill;
+  border-image-width: var(--space-ui-status-wood-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  color: var(--space-ui-on-wood);
+}
+
+/* A parchment strip: a short notice. */
+.space-ui-note {
+  border: 0 solid transparent;
+  border-image-source: var(--space-ui-status);
+  border-image-slice: var(--space-ui-status-slice) fill;
+  border-image-width: var(--space-ui-status-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  padding: 7px 10px;
+  color: var(--space-ui-ink);
+}
+
+.space-ui-note--error {
+  color: var(--space-ui-danger);
+}
+
+/* A text field: parchment, gilded while it has the keyboard. */
+.space-ui-field {
+  border: 0 solid transparent;
+  border-image-source: var(--space-ui-input);
+  border-image-slice: var(--space-ui-input-slice) fill;
+  border-image-width: var(--space-ui-input-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  background: transparent;
+  padding: 0 10px;
+  color: var(--space-ui-ink);
+  outline: none;
+}
+
+.space-ui-field::placeholder {
+  color: var(--space-ui-ink-muted);
+}
+
+.space-ui-field:focus,
+.space-ui-field:focus-visible {
+  border-image-source: var(--space-ui-input--focus);
+  outline: none;
+}
+
+/* ── Buttons (Button variant="pixel" / "pixel-secondary") ── */
+
+.space-pixel-button {
+  border: 0 solid transparent;
+  border-image-source: var(--space-ui-button);
+  border-image-slice: var(--space-ui-button-slice) fill;
+  border-image-width: var(--space-ui-button-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  min-height: 30px;
+  padding-inline: 14px;
+  color: var(--space-ui-on-wood);
+  cursor: pointer;
+}
+
+.space-pixel-button:hover {
+  border-image-source: var(--space-ui-button--hover);
+}
+
+.space-pixel-button:active {
+  border-image-source: var(--space-ui-button--pressed);
+}
+
+.space-pixel-button:disabled {
+  border-image-source: var(--space-ui-button--disabled);
+}
+
+.space-pixel-button--secondary {
+  border-image-source: var(--space-ui-button-parch);
+  border-image-slice: var(--space-ui-button-parch-slice) fill;
+  border-image-width: var(--space-ui-button-parch-width);
+  color: var(--space-ui-ink);
+}
+
+.space-pixel-button--secondary:hover {
+  border-image-source: var(--space-ui-button-parch--hover);
+}
+
+.space-pixel-button--secondary:active {
+  border-image-source: var(--space-ui-button-parch--pressed);
+}
+
+.space-pixel-button--secondary:disabled {
+  border-image-source: var(--space-ui-button-parch--disabled);
+}
+
+/* ── Square keys (ToolButton variant="pixel") ── */
+
+.space-pixel-tool {
+  border: 0 solid transparent;
+  border-image-source: var(--space-ui-tool);
+  border-image-slice: var(--space-ui-tool-slice) fill;
+  border-image-width: var(--space-ui-tool-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  color: var(--space-ui-on-wood);
+}
+
+.space-pixel-tool:hover {
+  border-image-source: var(--space-ui-tool--hover);
+}
+
+.space-pixel-tool:active {
+  border-image-source: var(--space-ui-tool--pressed);
+}
+
+.space-pixel-tool--active,
+.space-pixel-tool--active:hover {
+  border-image-source: var(--space-ui-tool--active);
+}
+
+.space-pixel-tool:disabled {
+  border-image-source: var(--space-ui-tool--disabled);
+}
+
+/* The one destructive key of a screen: blood-red wood. */
+.space-pixel-tool--danger {
+  border-image-source: var(--space-ui-tool--danger);
+}
+
+/* ── The window (desktop_window skin="pixel") ── */
+
+.window--pixel {
+  border: 0 solid transparent;
+  border-image-source: var(--space-ui-status-wood);
+  border-image-slice: var(--space-ui-status-wood-slice) fill;
+  border-image-width: var(--space-ui-status-wood-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  padding: 6px 7px 7px;
+  color: var(--space-ui-on-wood);
+}
+
+.window-title-bar--pixel {
+  border: 0 solid transparent;
+  border-image-source: var(--space-ui-titlebar);
+  border-image-slice: var(--space-ui-titlebar-slice) fill;
+  border-image-width: var(--space-ui-titlebar-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  min-height: 26px;
+  padding: 4px 10px;
+}
+
+.desktop-window--blurred .window-title-bar--pixel {
+  border-image-source: var(--space-ui-titlebar--inactive);
+  background: none;
+}
+
+.window-title-bar__title--pixel {
+  color: var(--space-ui-gold);
+  text-shadow: 1px 1px 0 var(--space-ui-ink);
+}
+
+/* Title-bar controls are bare gold glyphs: a 16px key has no room for a frame. */
+.window-title-bar--pixel .space-pixel-tool {
+  border-image: none;
+  margin-left: 2px;
+}
+
+.window-title-bar--pixel .space-pixel-tool:hover .space-icon {
+  filter: brightness(1.25);
+}
+
+.window-status-bar--pixel {
+  gap: 2px;
+  margin-top: 3px;
+}
+
+.window-status-field--pixel {
+  border: 0 solid transparent;
+  border-image-source: var(--space-ui-status);
+  border-image-slice: var(--space-ui-status-slice) fill;
+  border-image-width: var(--space-ui-status-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  padding: 5px 9px;
+  color: var(--space-ui-ink);
+}
+
+.window-status-field--pixel a,
+.window-status-field--pixel button {
+  color: inherit;
+}
+
+/* ── Overlays on the stage ── */
+
+/* The dim behind a picker or the loading card: the world shows through. */
+.space-ui-veil {
+  background: var(--space-ui-backdrop);
+}
+
+.space-ui-heading {
+  font-size: 24px;
+  line-height: 1;
+  color: var(--space-ui-ink);
+}
+
+/* A hairline in ink between two parts of a panel. */
+.space-ui-rule {
+  border-top: 1px solid var(--space-ui-ink-muted);
+}
+
+/* A narrow screen has no room for the heavy frame: the panel takes the kit's
+   slim one (the same wood rim and stone line) and gives the width to the
+   content. */
+@media (max-width: 480px) {
+  .space-ui-panel {
+    border-image-source: var(--space-ui-button-parch);
+    border-image-slice: var(--space-ui-button-parch-slice) fill;
+    border-image-width: var(--space-ui-button-parch-width);
+    padding: 14px 12px 14px;
+  }
+}
+
+/* An SVG glyph from the platform set, inside a wooden button: cut out with a
+   light rim, as on any dark surface. */
+.space-pixel-button:not(.space-pixel-button--secondary) svg {
+  filter: drop-shadow(1px 0 0 var(--space-ui-on-wood)) drop-shadow(-1px 0 0 var(--space-ui-on-wood))
+    drop-shadow(0 1px 0 var(--space-ui-on-wood)) drop-shadow(0 -1px 0 var(--space-ui-on-wood));
+}
+
+.space-ui-modal__title {
+  margin-bottom: 8px;
+  color: var(--space-ui-ink);
+}
+
+/* The loading hourglass turns over, a quarter at a time. */
+.space-ui-hourglass {
+  animation: space-ui-hourglass 1.6s steps(4, end) infinite;
+}
+
+@keyframes space-ui-hourglass {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .space-ui-hourglass {
+    animation: none;
+  }
+}
+
+/* The character picker's cards: parchment slots, gilded when chosen. */
+.space-ui-slot {
+  border: 0 solid transparent;
+  border-image-source: var(--space-ui-slot);
+  border-image-slice: var(--space-ui-slot-slice) fill;
+  border-image-width: var(--space-ui-slot-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  color: var(--space-ui-ink);
+}
+
+.space-ui-slot:hover {
+  border-image-source: var(--space-ui-slot--hover);
+}
+
+.space-ui-slot[aria-pressed="true"],
+.space-ui-slot[data-selected="true"] {
+  border-image-source: var(--space-ui-slot--selected);
+}
+
+.space-ui-slot:disabled {
+  border-image-source: var(--space-ui-slot--disabled);
+}
+
+/* ── The virtual pad ── */
+
+/* The D-pad sits on a gilded compass rose. */
+.space-pad-dpad {
+  background-image: var(--space-ui-dpad);
+  background-size: var(--space-ui-dpad-size);
+  background-position: center;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+
+.space-pad-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0 solid transparent;
+  border-image-source: var(--space-ui-pad-key);
+  border-image-slice: var(--space-ui-pad-key-slice) fill;
+  border-image-width: var(--space-ui-pad-key-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+}
+
+.space-pad-button[data-pressed] {
+  border-image-source: var(--space-ui-pad-key--pressed);
+}
+
+.space-pad-button[data-pressed] .space-icon {
+  transform: translateY(1px);
+}
+
+.space-pad-button--attack {
+  border-image-source: var(--space-ui-pad-key--danger);
+}
+
+.space-pad-button--attack[data-pressed] {
+  border-image-source: var(--space-ui-pad-key--danger-pressed);
+}
+
+/* ── The Construct's build palette ── */
+
+/* One key per placeable kind (its sprite drawn into a small canvas): a
+   parchment slot, gilded while armed (`data-selected="true"`). */
+.space-build-tool {
+  display: flex;
+  min-width: 3.5rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1px;
+  border: 0 solid transparent;
+  border-image-source: var(--space-ui-slot);
+  border-image-slice: var(--space-ui-slot-slice) fill;
+  border-image-width: var(--space-ui-slot-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  padding: 6px 7px;
+  color: var(--space-ui-ink);
+  line-height: 1.1;
+}
+
+.space-build-tool:hover {
+  border-image-source: var(--space-ui-slot--hover);
+}
+
+.space-build-tool[data-selected="true"] {
+  border-image-source: var(--space-ui-slot--selected);
+}
+
+.space-build-tool:disabled {
+  border-image-source: var(--space-ui-slot--disabled);
+  cursor: default;
+}
+
+/* Turn and remove act on the picked piece: wooden keys beside the slots. */
+.space-build-tool--action {
+  border-image-source: var(--space-ui-tool);
+  border-image-slice: var(--space-ui-tool-slice) fill;
+  border-image-width: var(--space-ui-tool-width);
+  color: var(--space-ui-on-wood);
+}
+
+.space-build-tool--action:hover {
+  border-image-source: var(--space-ui-tool--hover);
+}
+
+.space-build-tool--action[data-selected="true"] {
+  border-image-source: var(--space-ui-tool--active);
+}
+
+.space-build-tool--action:disabled {
+  border-image-source: var(--space-ui-tool--disabled);
+}
+
+.space-build-tab {
+  border: 0 solid transparent;
+  border-image-source: var(--space-ui-tab);
+  border-image-slice: var(--space-ui-tab-slice) fill;
+  border-image-width: var(--space-ui-tab-width);
+  border-image-repeat: repeat;
+  image-rendering: pixelated;
+  padding: 4px 10px;
+  color: var(--space-ui-on-wood);
+}
+
+.space-build-tab:hover {
+  border-image-source: var(--space-ui-tab--hover);
+}
+
+.space-build-tab[data-selected="true"] {
+  border-image-source: var(--space-ui-tab-parch);
+  border-image-slice: var(--space-ui-tab-parch-slice) fill;
+  border-image-width: var(--space-ui-tab-parch-width);
+  color: var(--space-ui-ink);
+}
+
+/* A long tab wraps its keys into rows and scrolls past three of them, so the
+   palette never covers the room. */
+.space-build-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  max-width: min(46rem, calc(100vw - 8rem));
+  max-height: 14rem;
+  overflow-y: auto;
+  scrollbar-color: var(--space-ui-gold) var(--space-ui-ink);
+}
+
+@media (max-width: 480px) {
+  .space-build-group {
+    max-width: calc(100vw - 6rem);
+    max-height: 8.5rem;
+  }
+}
+
+.space-build-group[hidden] {
+  display: none;
+}
+
+.space-build-thumb {
+  image-rendering: pixelated;
+}
+
+.space-build-status {
+  padding: 4px 11px;
+}
+
+/* ── A Construct piece's panel (assets/js/lib/space/construct/panels.js) ── */
+
+.space-panel-label {
+  margin-top: 6px;
+  color: var(--space-ui-ink-muted);
+}
+
+.space-panel-item {
+  overflow-wrap: anywhere;
+}
+
+.space-panel-sign {
+  font-size: 24px;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.space-panel-note {
+  color: var(--space-ui-ink-muted);
+}
+
+.space-panel-image {
+  display: block;
+  max-width: 100%;
+  max-height: 40vh;
+  margin: 0 auto 4px;
+  image-rendering: auto;
+}
+
+.space-panel-games {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.space-panel-game {
+  display: block;
+  padding: 2px 4px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.space-panel-game:hover,
+.space-panel-game:focus-visible {
+  background: var(--space-ui-highlight);
+}
+
+.space-panel-status {
+  color: var(--space-ui-danger);
+}
+
+/* The panel's body scrolls inside the parchment. */
+.space-panel-body {
+  scrollbar-color: var(--space-ui-ink-muted) transparent;
+}
+
+.space-panel-game-name {
+  color: var(--space-ui-ink);
+}

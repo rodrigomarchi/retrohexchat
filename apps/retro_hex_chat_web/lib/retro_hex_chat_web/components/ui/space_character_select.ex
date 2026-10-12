@@ -1,6 +1,8 @@
 defmodule RetroHexChatWeb.Components.UI.SpaceCharacterSelect do
   @moduledoc """
-  Character picker shown when a player enters the virtual space.
+  Character picker shown when a player enters the virtual space, drawn in the
+  space's pixel-art kit (`features/space-ui.css`): a parchment panel framed in
+  wood, one parchment slot per character, gilded when chosen.
 
   This is the space's antechamber, and the only one in the app that was already
   there: a space is a place rather than an event, so it never starts and never
@@ -59,17 +61,17 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterSelect do
   def space_character_select(assigns) do
     ~H"""
     <div
-      class="absolute inset-0 z-20 flex items-center justify-center bg-background/95 p-4"
+      class="space-ui-veil absolute inset-0 z-20 flex items-center justify-center overflow-y-auto p-2"
       data-testid="space-character-select"
       id={@remember_key && "space-character-select"}
       phx-hook={@remember_key && "SpaceCharacterMemoryHook"}
       data-remember-key={@remember_key}
     >
-      <div class="bg-canvas shadow-retro-field p-4 w-full max-w-lg">
-        <h2 class="mb-3 text-center text-sm font-bold">
+      <div class="space-ui-panel m-auto w-full max-w-lg">
+        <h2 class="space-ui-heading mb-3 text-center">
           {dgettext("chat", "Choose your character")}
         </h2>
-        <div class="grid grid-cols-4 gap-2">
+        <div class="grid grid-cols-4 gap-1">
           <button
             :for={id <- @avatars}
             type="button"
@@ -77,24 +79,18 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterSelect do
             phx-value-avatar={id}
             data-testid={"space-avatar-#{id}"}
             aria-pressed={to_string(id == @selected)}
-            class={[
-              "flex flex-col items-center gap-1 p-2 bg-surface hover:bg-surface-hover",
-              if(id == @selected,
-                do: "shadow-retro-sunken bg-surface-hover",
-                else: "shadow-retro-raised"
-              )
-            ]}
+            class="space-ui-slot flex flex-col items-center gap-1 px-1 py-2"
           >
             <span class="rh-charsel-preview">
               <span class={["rh-charsel-sprite", "rh-charsel-sprite--#{id}"]} aria-hidden="true" />
             </span>
-            <span class="text-xs">{avatar_label(id)}</span>
+            <span>{avatar_label(id)}</span>
           </button>
         </div>
 
-        <div class="mt-3 border-t border-border pt-2 text-xs" data-testid="space-roster">
-          <p class="font-bold">{dgettext("chat", "Inside right now")}</p>
-          <p :if={@roster == []} class="text-muted-foreground">
+        <div class="space-ui-rule mt-3 pt-2" data-testid="space-roster">
+          <p class="space-panel-label mt-0">{dgettext("chat", "Inside right now")}</p>
+          <p :if={@roster == []} class="space-panel-note">
             {dgettext("chat", "Nobody is in here yet.")}
           </p>
           <p :if={@roster != []} class="truncate" data-testid="space-roster-names">
