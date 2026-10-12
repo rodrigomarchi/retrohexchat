@@ -57,4 +57,54 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPaletteTest do
     refute html =~ "opacity"
     refute html =~ "bg-black"
   end
+
+  test "the pieces wait behind a Build key, in a drawer that opens shut" do
+    html = render_component(&space_build_palette/1, %{conversation: "channel"})
+
+    assert html =~ ~s(data-open="false")
+    [toggle] = Regex.run(~r/<button[^>]*data-construct-toggle[^>]*>/s, html)
+    assert toggle =~ ~s(aria-expanded="false")
+    assert toggle =~ ~s(aria-controls="construct-drawer")
+    assert html =~ "space-icon--build"
+    assert html =~ ~s(id="construct-drawer")
+    assert html =~ ~s(data-testid="construct-close")
+  end
+
+  test "every tab says its group by an icon, and by name to a screen reader" do
+    html = render_component(&space_build_palette/1, %{conversation: "channel"})
+
+    for {group, icon} <- [
+          {"furniture", "tab-furniture"},
+          {"office", "tab-office"},
+          {"garden", "tab-garden"},
+          {"gamer", "tab-gamer"},
+          {"structure", "tab-structure"},
+          {"fun", "tab-fun"},
+          {"eot", "tab-eot"},
+          {"floor", "tab-floor"}
+        ] do
+      [tab] = Regex.run(~r/<button[^>]*data-construct-tab="#{group}"[^>]*>.*?<\/button>/s, html)
+      assert tab =~ "space-icon--#{icon}"
+      assert tab =~ ~r/aria-label="[^"]+"/
+    end
+  end
+
+  test "the card of what is in hand starts hidden, with turn, remove and drop" do
+    html = render_component(&space_build_palette/1, %{conversation: "channel"})
+
+    [card] = Regex.run(~r/<div[^>]*data-construct-holding.*?<\/div>/s, html)
+    assert card =~ "hidden"
+    assert card =~ ~s(data-testid="construct-rotate")
+    assert card =~ ~s(data-testid="construct-remove")
+    assert card =~ ~s(data-testid="construct-drop")
+    assert card =~ "space-icon--cancel"
+  end
+
+  test "a touch screen gets a hint without a right-click in it" do
+    html = render_component(&space_build_palette/1, %{conversation: "channel"})
+
+    [_, touch] = Regex.run(~r/data-touch-hint="([^"]+)"/, html)
+    refute touch =~ "right-click"
+    assert touch =~ "Turn"
+  end
 end

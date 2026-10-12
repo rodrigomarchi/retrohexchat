@@ -11,6 +11,9 @@ function shell() {
       data-empty-sign="Nothing written." data-empty-board="Nothing here." data-empty-screen="No pictures."
       data-topic="Topic" data-pinned="Pinned" data-posted-by="Posted by %{name}" data-opens-in-tab="New tab.">
       <div>
+        <span data-space-panel-icon="sign" hidden></span>
+        <span data-space-panel-icon="board" hidden></span>
+        <span data-space-panel-icon="arcade" hidden></span>
         <p data-space-panel-title></p>
         <div data-space-panel-body></div>
         <form data-space-panel-sign hidden><input data-space-panel-input /></form>
@@ -114,5 +117,86 @@ describe("renderPanel", () => {
     expect(host.querySelector("form").hidden).toBe(true);
     expect(host.textContent).toContain("Nothing written.");
     host.querySelector("[data-space-panel-close]").click();
+  });
+
+  it("shows the icon of the piece it is, and only that one", () => {
+    const { root, host } = shell();
+    renderPanel(root, host, { kind: "board", topic: "x", pins: [] }, ports());
+    expect(host.querySelector('[data-space-panel-icon="board"]').hidden).toBe(false);
+    expect(host.querySelector('[data-space-panel-icon="sign"]').hidden).toBe(true);
+    expect(host.dataset.kind).toBe("board");
+  });
+
+  it("puts each pinned author's portrait beside their line, when they chose one", () => {
+    const { root, host } = shell();
+    renderPanel(
+      root,
+      host,
+      {
+        kind: "board",
+        topic: null,
+        pins: [
+          { author: "ana", text: "Snacks", avatar: "knight" },
+          { author: "bo", text: "Drinks", avatar: null },
+          { author: "cy", text: "Odd", avatar: "x y" },
+        ],
+      },
+      ports(),
+    );
+    const rows = host.querySelectorAll(".space-panel-byline");
+    expect(rows).toHaveLength(3);
+    expect(rows[0].querySelector(".rh-portrait--knight")).not.toBeNull();
+    expect(rows[1].querySelector(".rh-portrait")).toBeNull();
+    // Only a roster id becomes a class.
+    expect(rows[2].querySelector(".rh-portrait")).toBeNull();
+    expect(rows[0].textContent).toBe("ana: Snacks");
+  });
+
+  it("shelves an arcade's games with their covers, lazily, and an initial for one without", () => {
+    const { root, host } = shell();
+    renderPanel(
+      root,
+      host,
+      {
+        kind: "arcade",
+        games: [
+          { id: "doom", name: "Doom", tagline: "Rip", url: "/a/doom", cover: "/img/doom.webp" },
+          { id: "pong", name: "Pong", tagline: "Pong", url: "/a/pong", cover: null },
+        ],
+      },
+      ports(),
+    );
+    const img = host.querySelector('[data-testid="space-panel-game-doom"] img');
+    expect(img.getAttribute("src")).toBe("/img/doom.webp");
+    expect(img.getAttribute("loading")).toBe("lazy");
+    expect(img.alt).toBe("");
+    const blank = host.querySelector(
+      '[data-testid="space-panel-game-pong"] .space-panel-cover--blank',
+    );
+    expect(blank.textContent).toBe("P");
+  });
+
+  it("gives a cartridge whose cover does not load its initial instead", () => {
+    const { root, host } = shell();
+    renderPanel(
+      root,
+      host,
+      { kind: "arcade", games: [{ id: "x", name: "Xenon", url: "/x", cover: "/missing.webp" }] },
+      ports(),
+    );
+    host.querySelector("img.space-panel-cover").dispatchEvent(new Event("error"));
+    expect(host.querySelector(".space-panel-cover--blank").textContent).toBe("X");
+  });
+
+  it("shows the portrait of whoever posted the picture on a screen", () => {
+    const { root, host } = shell();
+    renderPanel(
+      root,
+      host,
+      { kind: "screen", image: { url: "/p.png", name: "p.png", author: "ana", avatar: "monk" } },
+      ports(),
+    );
+    expect(host.querySelector(".space-panel-byline .rh-portrait--monk")).not.toBeNull();
+    expect(host.textContent).toContain("Posted by ana");
   });
 });

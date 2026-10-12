@@ -19,6 +19,7 @@ import { Walker } from "../director/space";
 import {
   BEFORE_GATE,
   RoomWatch,
+  chooseInMenu,
   mapDrawn,
   openConstruct,
   tilePoint,
@@ -97,7 +98,7 @@ test.describe("The Construct", () => {
       const self = await a.walker.here();
 
       // Place a tree three tiles down the room, with the ghost shown first.
-      await a.space.getByTestId("construct-kind-tree").click();
+      await chooseInMenu(a.space, "furniture", { kind: "tree" });
       await expect(a.space.getByTestId("construct-kind-tree")).toHaveAttribute(
         "data-selected",
         "true",
@@ -119,6 +120,8 @@ test.describe("The Construct", () => {
       // (After the per-person pause between edits, which has a sentence of its own.)
       await a.space.waitForTimeout(300);
       await a.space.mouse.click(at.x, at.y);
+      // Said over the room, even with the Build menu shut.
+      await expect(a.space.getByTestId("construct-status")).toBeVisible();
       await expect(a.space.getByTestId("construct-status")).toContainText(
         "already",
       );
@@ -163,7 +166,7 @@ test.describe("The Construct", () => {
       const self = await walker.here();
 
       const chairTile = { x: self.x + 2, y: self.y };
-      await space.getByTestId("construct-kind-chair").click();
+      await chooseInMenu(space, "furniture", { kind: "chair" });
       const at = await tilePoint(space, self, chairTile);
       await space.mouse.click(at.x, at.y);
       await space.keyboard.press("Escape");
@@ -199,7 +202,7 @@ test.describe("The Construct", () => {
       await mapDrawn(space);
 
       const self = await walker.here();
-      await space.getByTestId("construct-kind-chair").click();
+      await chooseInMenu(space, "furniture", { kind: "chair" });
       const at = await tilePoint(space, self, { x: self.x + 2, y: self.y });
       await space.mouse.click(at.x, at.y);
       await space.keyboard.press("Escape");

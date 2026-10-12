@@ -599,6 +599,9 @@ _CONTEXT_ROWS = {
     ("garden", "Mailbox"): ("Caixa de correio", "Caixa do correio", "Buzón", "Boîte aux lettres", "Briefkasten", "Cassetta postale", "Brievenbus", "Skrzynka pocztowa", "Почтовый ящик", "Kotak surat", "郵便受け", "信箱", "信箱"),
     ("kitchen", "Stove"): ("Fogão", "Fogão", "Cocina", "Cuisinière", "Herd", "Fornello", "Fornuis", "Kuchenka", "Плита", "Kompor", "コンロ", "炉灶", "爐灶"),
     ("television", "Screen"): ("Telão", "Ecrã", "Pantalla", "Écran", "Bildschirm", "Schermo", "Scherm", "Ekran", "Экран", "Layar", "スクリーン", "屏幕", "螢幕"),
+    # The Construct's key that lets go of the piece in hand: never a drop of
+    # water, never dropping a table from a database.
+    ("let go of a piece", "Drop"): ("Soltar", "Largar", "Soltar", "Lâcher", "Loslassen", "Lascia", "Loslaten", "Puść", "Отпустить", "Lepas", "手放す", "放下", "放下"),
 }
 # fmt: on
 

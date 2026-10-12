@@ -19,7 +19,10 @@ function setup({ items = [], person = null } = {}) {
     <button data-construct-kind="tree" data-selected="false"></button>
     <button data-construct-rotate disabled></button>
     <button data-construct-remove disabled></button>
-    <p data-construct-status data-hint="hint"></p>`;
+    <button data-construct-toggle aria-expanded="false"></button>
+    <p data-construct-hint data-hint="hint"></p>
+    <p data-construct-status data-refused="false" hidden></p>`;
+  palette.dataset.open = "false";
   palette.setAttribute("data-refused-occupied", "Something is already there.");
 
   const engine = {
@@ -140,5 +143,44 @@ describe("ConstructController", () => {
 
     expect(ctx.map.items).toEqual([]);
     expect(ctx.palette.querySelector("[data-construct-remove]").disabled).toBe(true);
+  });
+
+  describe("the B key and Esc", () => {
+    const press = (key, extra = {}) =>
+      window.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true, ...extra }));
+
+    it("B opens and shuts the Build menu", () => {
+      const ctx = setup();
+      press("b");
+      expect(ctx.palette.dataset.open).toBe("true");
+      press("B");
+      expect(ctx.palette.dataset.open).toBe("false");
+      ctx.controller.detach();
+    });
+
+    it("B held down, in a chord, or typed into a field does nothing", () => {
+      const ctx = setup();
+      press("b", { repeat: true });
+      press("b", { ctrlKey: true });
+      press("b", { altKey: true });
+      const field = document.createElement("input");
+      document.body.appendChild(field);
+      field.focus();
+      press("b");
+      field.remove();
+      expect(ctx.palette.dataset.open).toBe("false");
+      ctx.controller.detach();
+    });
+
+    it("Esc with nothing in hand puts the menu away; with a piece in hand, lets go of it", () => {
+      const ctx = setup();
+      press("b");
+      ctx.palette.querySelector('[data-construct-kind="tree"]').click();
+      press("Escape");
+      expect(ctx.palette.dataset.open).toBe("true");
+      press("Escape");
+      expect(ctx.palette.dataset.open).toBe("false");
+      ctx.controller.detach();
+    });
   });
 });

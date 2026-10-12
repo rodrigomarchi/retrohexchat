@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **248 spec files** under `e2e/tests/`.
-- **601 Playwright `test()` cases**.
-- **549 documented flows**, 548 done, 1 not done.
+- **603 Playwright `test()` cases**.
+- **551 documented flows**, 550 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -776,6 +776,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP30 | On a phone, the space's screens — the picker, the build palette, the pad, a piece's panel — wear the space's pixel-art kit and fit the screen | `tests/space-pixel-ui.spec.ts` | done |
 | SP31 | A line said in Japanese or in Traditional Chinese is drawn over the speaker in the pixel font, that region's own glyphs fetched for it | `tests/space-pixel-ui.spec.ts` | done |
 | SP32 | A character who takes a hit shows the kit's HP bar under its nameplate until it is whole again | `tests/space-pixel-ui.spec.ts` | done |
+| SP33 | The Construct's pieces live in a Build menu; what is in hand shows on a card that turns, removes or drops it, so a touch screen can let go of a piece | `tests/space-pixel-ui.spec.ts` | done |
+| SP34 | An arcade cabinet shelves its games as cartridges, each with its cover, under the cabinet's own icon | `tests/space-pixel-ui.spec.ts` | done |
 
 ### LC - Localization
 

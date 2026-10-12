@@ -4,10 +4,12 @@ defmodule RetroHexChatWeb.SpacePanels do
 
   The domain fills in what it reads from the conversation
   (`VirtualSpace.fill_construct_panel/3`); this adds what only the web layer
-  knows: the address a picture is served from, and the games an arcade cabinet
-  lists, each with the page it opens on.
+  knows: the address a picture is served from, the games an arcade cabinet
+  lists (each with its cover and the page it opens on), and the character
+  portrait of whoever posted the picture or pinned a line.
   """
 
+  alias RetroHexChat.Accounts.Avatars
   alias RetroHexChat.VirtualSpace
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.GameCatalog
@@ -38,22 +40,37 @@ defmodule RetroHexChatWeb.SpacePanels do
     image = %{
       url: "/chat/attachments/#{id}/preview",
       name: image.filename,
-      author: image.author
+      author: image.author,
+      avatar: portrait(image.author)
     }
 
     %{modal | image: image}
   end
 
+  defp for_the_page(%{kind: "board", pins: [_ | _] = pins} = modal) do
+    avatars = pins |> Enum.map(& &1.author) |> Avatars.for_nicks()
+    %{modal | pins: Enum.map(pins, &Map.put(&1, :avatar, Map.get(avatars, &1.author)))}
+  end
+
   defp for_the_page(%{kind: "arcade"} = modal) do
     games =
       Enum.map(GameCatalog.list(), fn game ->
-        %{id: game.id, name: game.name, tagline: game.tagline, url: game_url(game)}
+        %{
+          id: game.id,
+          name: game.name,
+          tagline: game.tagline,
+          url: game_url(game),
+          cover: game.screenshot && game.screenshot.path
+        }
       end)
 
     Map.put(modal, :games, games)
   end
 
   defp for_the_page(modal), do: modal
+
+  defp portrait(author) when is_binary(author), do: Map.get(Avatars.for_nicks([author]), author)
+  defp portrait(_nobody), do: nil
 
   # A cabinet opens the game itself, on its own page in a new tab, rather than
   # the chat's library: the Space stays where it is.

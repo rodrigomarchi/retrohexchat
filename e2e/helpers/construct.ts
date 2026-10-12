@@ -170,3 +170,55 @@ export async function openConstruct(user: TestUser, avatar: string) {
   await enterConstruct(walker);
   return { space, walker, room };
 }
+
+/** Open the Build menu, if it is shut. */
+export async function openBuildMenu(space: Page) {
+  const palette = space.getByTestId("construct-palette");
+  if ((await palette.getAttribute("data-open")) !== "true") {
+    await space.getByTestId("construct-toggle").click();
+  }
+  await drawerSettled(space);
+}
+
+/** The drawer has slid all the way in: its whole box is on the screen. */
+export async function drawerSettled(space: Page) {
+  const drawer = space.getByTestId("construct-drawer");
+  await expect(drawer).toBeVisible();
+  await expect
+    .poll(async () => {
+      const box = await drawer.boundingBox();
+      const size = space.viewportSize();
+      if (!box || !size) return false;
+      return box.x >= 0 && box.y >= 0 && box.y + box.height <= size.height + 1;
+    })
+    .toBe(true);
+}
+
+/** Shut the Build menu, if it is open (a phone shuts it on a choice). */
+export async function closeBuildMenu(space: Page) {
+  const palette = space.getByTestId("construct-palette");
+  if ((await palette.getAttribute("data-open")) === "true") {
+    await space.getByTestId("construct-close").click();
+  }
+  await expect(palette).toHaveAttribute("data-open", "false");
+}
+
+/**
+ * Take a kind (or a floor, with `material`) in hand from the Build menu's tab,
+ * and shut the menu so the floor is clear to click.
+ */
+export async function chooseInMenu(
+  space: Page,
+  tab: string,
+  { kind, material }: { kind?: string; material?: string },
+) {
+  await openBuildMenu(space);
+  await space.getByTestId(`construct-tab-${tab}`).click();
+  await space
+    .getByTestId(
+      kind ? `construct-kind-${kind}` : `construct-material-${material}`,
+    )
+    .click();
+  await closeBuildMenu(space);
+  await expect(space.getByTestId("construct-holding")).toBeVisible();
+}

@@ -1,19 +1,23 @@
 defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
   @moduledoc """
-  The Construct's build palette: a tab per group of kinds (furniture,
-  structure, the pieces that do something), one key per kind in the open tab,
-  plus turn and remove, floating at the top-left of the canvas.
+  The Construct's build palette, kept off the map until it is wanted: a Build
+  key at the top-left opens a drawer (a side panel on a desktop, a sheet from
+  the bottom on a phone) with a tab per group of kinds and one key per kind;
+  a card beside the Build key says what is in hand — the kind armed, the floor
+  armed, or the piece picked — with turn, remove and drop.
 
   Static markup inside the `phx-update="ignore"` space shell, like the virtual
-  pad. `assets/js/lib/space/construct/palette.js` draws each kind's sprite into
-  its key, marks the armed kind with `data-selected`, and enables turn and
-  remove while a placed piece is picked. Why an edit was refused is said in the
-  status line, from the translated sentences carried here as `data-` templates,
-  because the server answers with a reason and never with a sentence.
+  pad. `assets/js/lib/space/construct/palette.js` opens and closes the drawer
+  (`data-open` on the root), draws each kind's sprite into its key and into the
+  card, marks the armed kind with `data-selected`, and enables turn and remove
+  while they apply. Why an edit was refused is said in the status line, from
+  the translated sentences carried here as `data-` templates, because the
+  server answers with a reason and never with a sentence.
   """
   use RetroHexChatWeb, :html
 
   import RetroHexChatWeb.Components.UI.Space.PixelIcon
+  import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChat.VirtualSpace
 
@@ -26,42 +30,62 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
     assigns = assign(assigns, :groups, groups(assigns.conversation))
 
     ~H"""
+    <%!-- The palette is a layer over the map holding three things: the Build key,
+          the drawer it opens (every kind, in tabs) and the card that says what
+          is in hand. Only they take the pointer; the floor between them stays
+          the map's. --%>
     <div
       data-construct-palette
+      data-open="false"
       data-testid="construct-palette"
-      role="toolbar"
-      aria-label={dgettext("chat", "Build")}
-      class="absolute left-3 top-3 z-10 flex max-w-[calc(100%-5rem)] flex-col gap-1 select-none"
+      class="space-build pointer-events-none absolute inset-0 z-10 select-none"
       {refusal_templates()}
     >
-      <div role="tablist" class="flex flex-wrap gap-1">
-        <button
-          :for={{{group, label, _kinds}, index} <- Enum.with_index(@groups)}
-          type="button"
-          tabindex="-1"
-          role="tab"
-          data-construct-tab={group}
-          data-selected={if index == 0, do: "true", else: "false"}
-          aria-selected={if index == 0, do: "true", else: "false"}
-          data-testid={"construct-tab-#{group}"}
-          class="space-build-tab"
-        >
-          {label}
-        </button>
-        <button
-          type="button"
-          tabindex="-1"
-          role="tab"
-          data-construct-tab="floor"
-          data-selected="false"
-          aria-selected="false"
-          data-testid="construct-tab-floor"
-          class="space-build-tab"
-        >
-          {dgettext("chat", "Floor")}
-        </button>
-      </div>
-      <div class="flex max-w-full items-start gap-1">
+      <.tool_button
+        label={dgettext("chat", "Build") <> " (B)"}
+        variant="pixel"
+        size="md"
+        tabindex="-1"
+        data-construct-toggle
+        aria-expanded="false"
+        aria-keyshortcuts="B"
+        aria-controls="construct-drawer"
+        data-testid="construct-toggle"
+        class="pointer-events-auto absolute left-3 top-3 h-11 min-h-11 w-11 min-w-11"
+      >
+        <.pixel_icon name={:build} />
+      </.tool_button>
+
+      <section
+        id="construct-drawer"
+        data-construct-drawer
+        aria-label={dgettext("chat", "Build")}
+        data-testid="construct-drawer"
+        class="space-build-drawer pointer-events-auto"
+      >
+        <div class="flex items-start gap-1">
+          <div role="tablist" class="space-build-tabs flex min-w-0 flex-1 gap-1">
+            <.build_tab
+              :for={{{group, label, _kinds}, index} <- Enum.with_index(@groups)}
+              group={group}
+              label={label}
+              icon={tab_icon(group)}
+              selected={index == 0}
+            />
+            <.build_tab group="floor" label={dgettext("chat", "Floor")} icon={:tab_floor} />
+          </div>
+          <.tool_button
+            label={dgettext("chat", "Close")}
+            variant="pixel"
+            size="md"
+            tabindex="-1"
+            data-construct-close
+            data-testid="construct-close"
+            class="h-11 min-h-11 w-11 min-w-11 shrink-0"
+          >
+            <.pixel_icon name={:cancel} />
+          </.tool_button>
+        </div>
         <div
           :for={{{group, _label, kinds}, index} <- Enum.with_index(@groups)}
           data-construct-group={group}
@@ -78,6 +102,52 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
             label={label}
           />
         </div>
+        <p
+          data-construct-hint
+          data-hint={hint()}
+          data-touch-hint={touch_hint()}
+          data-paint-hint={
+            dgettext("chat", "Press on the floor and drag: the whole rectangle is painted.")
+          }
+          class="space-ui-plank space-build-status"
+        >
+          {hint()}
+        </p>
+      </section>
+
+      <%!-- Why an edit was refused, over the room whether the menu is open or
+            not: on a phone the menu shuts on every choice, and a refusal said
+            inside it would be said to nobody. It only says; a click through it
+            still reaches the floor. --%>
+      <p
+        data-construct-status
+        data-testid="construct-status"
+        data-refused="false"
+        role="status"
+        aria-live="polite"
+        hidden
+        class="space-ui-plank space-build-refusal"
+      >
+      </p>
+
+      <%!-- What is in hand: the kind armed to place, the floor armed to paint, or
+            the piece picked on the floor, with what can be done to it — and the
+            way to let go of it, which a touch screen has no Esc or right-click for. --%>
+      <div
+        data-construct-holding
+        hidden
+        role="group"
+        data-testid="construct-holding"
+        class="space-build-holding pointer-events-auto"
+      >
+        <canvas
+          data-construct-holding-thumb
+          width="40"
+          height="40"
+          class="space-build-thumb h-10 w-10"
+        >
+        </canvas>
+        <span data-construct-holding-name class="space-build-holding__name"></span>
         <button
           type="button"
           tabindex="-1"
@@ -89,7 +159,6 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
           class="space-build-tool space-build-tool--action"
         >
           <.pixel_icon name={:turn} />
-          <span>{dgettext("chat", "Turn")}</span>
         </button>
         <button
           type="button"
@@ -102,32 +171,73 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
           class="space-build-tool space-build-tool--action"
         >
           <.pixel_icon name={:remove} />
-          <span>{dgettext("chat", "Remove")}</span>
+        </button>
+        <button
+          type="button"
+          tabindex="-1"
+          data-construct-drop
+          data-testid="construct-drop"
+          aria-label={dpgettext("chat", "let go of a piece", "Drop")}
+          title={dpgettext("chat", "let go of a piece", "Drop") <> " (Esc)"}
+          class="space-build-tool space-build-tool--action"
+        >
+          <.pixel_icon name={:cancel} />
         </button>
       </div>
-      <p
-        data-construct-status
-        data-testid="construct-status"
-        aria-live="polite"
-        data-hint={
-          dgettext(
-            "chat",
-            "Pick a piece, then click the floor. Drag a piece to move it, right-click to remove it."
-          )
-        }
-        data-paint-hint={
-          dgettext("chat", "Press on the floor and drag: the whole rectangle is painted.")
-        }
-        class="space-ui-plank space-build-status w-fit max-w-full"
-      >
-        {dgettext(
-          "chat",
-          "Pick a piece, then click the floor. Drag a piece to move it, right-click to remove it."
-        )}
-      </p>
     </div>
     """
   end
+
+  attr :group, :string, required: true
+  attr :label, :string, required: true
+  attr :icon, :atom, required: true
+  attr :selected, :boolean, default: false
+
+  # A tab says its group by an icon; its name is beside it where there is
+  # room, and always its accessible name and tooltip.
+  defp build_tab(assigns) do
+    ~H"""
+    <button
+      type="button"
+      tabindex="-1"
+      role="tab"
+      data-construct-tab={@group}
+      data-selected={to_string(@selected)}
+      aria-selected={to_string(@selected)}
+      aria-label={@label}
+      title={@label}
+      data-testid={"construct-tab-#{@group}"}
+      class="space-build-tab"
+    >
+      <.pixel_icon name={@icon} />
+      <span class="space-build-tab__label">{@label}</span>
+    </button>
+    """
+  end
+
+  defp hint do
+    dgettext(
+      "chat",
+      "Pick a piece, then click the floor. Drag a piece to move it, right-click to remove it."
+    )
+  end
+
+  defp touch_hint do
+    dgettext(
+      "chat",
+      "Choose a piece, then tap the floor to place it. Tap a piece on the floor to use %{turn} or %{remove} at the top.",
+      turn: dgettext("chat", "Turn"),
+      remove: dgettext("chat", "Remove")
+    )
+  end
+
+  defp tab_icon("furniture"), do: :tab_furniture
+  defp tab_icon("office"), do: :tab_office
+  defp tab_icon("garden"), do: :tab_garden
+  defp tab_icon("gamer"), do: :tab_gamer
+  defp tab_icon("structure"), do: :tab_structure
+  defp tab_icon("fun"), do: :tab_fun
+  defp tab_icon("eot"), do: :tab_eot
 
   attr :kind, :string, required: true
   attr :label, :string, required: true

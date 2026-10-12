@@ -244,6 +244,20 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       assert data.nickname == nickname
     end
 
+    test "the page is the visible screen: the viewport hook is mounted and its report taken", %{
+      conn: conn,
+      channel: channel
+    } do
+      {:ok, view, html} = live(conn, path(channel))
+
+      assert html =~ ~s(id="viewport-detect")
+      assert html =~ "chat-app-root"
+      refute html =~ "h-screen"
+
+      render_hook(view, "viewport_info", %{"width" => 390, "height" => 844, "mobile" => true})
+      assert Process.alive?(view.pid)
+    end
+
     test "the whole page wears the space's pixel kit, not the Win98 chrome", %{
       conn: conn,
       channel: channel

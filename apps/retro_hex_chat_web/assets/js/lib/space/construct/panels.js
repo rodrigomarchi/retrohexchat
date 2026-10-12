@@ -32,6 +32,11 @@ export function renderPanel(root, host, modal, { save, close, refusal }) {
 
   const title = content.querySelector("[data-space-panel-title]");
   if (title) title.textContent = say(`title-${modal.kind}`);
+  // The title's icon is the one the template drew for this kind of piece.
+  for (const icon of content.querySelectorAll("[data-space-panel-icon]")) {
+    icon.hidden = icon.dataset.spacePanelIcon !== modal.kind;
+  }
+  host.dataset.kind = modal.kind;
   content.querySelector("[data-space-panel-close]")?.addEventListener("click", () => close());
 
   const parts = BODIES[modal.kind](modal, say);
@@ -55,7 +60,7 @@ const BODIES = {
     const pins = Array.isArray(modal.pins) ? modal.pins : [];
     if (pins.length > 0) {
       parts.push(line(say("pinned"), "label"));
-      for (const pin of pins) parts.push(line(`${pin.author}: ${pin.text}`, "item"));
+      for (const pin of pins) parts.push(byline(pin.author, pin.avatar, pin.text));
     }
     return parts;
   },
@@ -68,7 +73,7 @@ const BODIES = {
     img.alt = image.name ?? "";
     img.className = "space-panel-image";
     img.dataset.testid = "space-panel-image";
-    return [img, line(say("posted-by", image.author), "note")];
+    return [img, byline(say("posted-by", image.author), image.avatar)];
   },
 
   arcade: (modal, say) => {
@@ -83,7 +88,7 @@ const BODIES = {
       link.rel = "noopener";
       link.className = "space-panel-game";
       link.dataset.testid = `space-panel-game-${game.id}`;
-      link.append(line(game.name, "game-name"), line(game.tagline ?? "", "note"));
+      link.append(cover(game), line(game.name, "game-name"), line(game.tagline ?? "", "note"));
       const item = document.createElement("li");
       item.appendChild(link);
       list.appendChild(item);
@@ -114,6 +119,54 @@ function signForm(content, modal, { save, close, refusal }) {
       },
     });
   });
+}
+
+// A game's cartridge label: its screenshot, or — for a game with none — its
+// initial on parchment. The picture is decorative; the name is under it.
+function cover(game) {
+  if (!game.cover) return blankCover(game);
+  const img = document.createElement("img");
+  // A cover that does not load leaves the cartridge its initial, not a broken image.
+  img.addEventListener("error", () => img.replaceWith(blankCover(game)), { once: true });
+  img.src = game.cover;
+  img.alt = "";
+  img.setAttribute("loading", "lazy");
+  img.setAttribute("decoding", "async");
+  img.width = 160;
+  img.height = 120;
+  img.className = "space-panel-cover";
+  return img;
+}
+
+function blankCover(game) {
+  const blank = document.createElement("span");
+  blank.className = "space-panel-cover space-panel-cover--blank";
+  blank.textContent = (game.name ?? "?").trim().charAt(0);
+  blank.setAttribute("aria-hidden", "true");
+  return blank;
+}
+
+// A line by somebody, with their character's portrait when they chose one.
+// The portrait's modifier is one of the roster's ids, never free text.
+function byline(author, avatar, text) {
+  const row = document.createElement("p");
+  row.className = "space-panel-byline";
+  if (typeof avatar === "string" && /^[a-z]+$/.test(avatar)) {
+    const portrait = document.createElement("span");
+    portrait.classList.add("rh-portrait", `rh-portrait--${avatar}`);
+    portrait.setAttribute("aria-hidden", "true");
+    row.appendChild(portrait);
+  }
+  const words = document.createElement("span");
+  if (text === undefined) {
+    words.textContent = author;
+  } else {
+    const who = document.createElement("strong");
+    who.textContent = author;
+    words.append(who, `: ${text}`);
+  }
+  row.appendChild(words);
+  return row;
 }
 
 function line(text, kind) {

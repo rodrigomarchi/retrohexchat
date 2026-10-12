@@ -3,6 +3,8 @@
  * @flow SP30 [done] On a phone, the space's screens — the picker, the build palette, the pad, a piece's panel — wear the space's pixel-art kit and fit the screen
  * @flow SP31 [done] A line said in Japanese or in Traditional Chinese is drawn over the speaker in the pixel font, that region's own glyphs fetched for it
  * @flow SP32 [done] A character who takes a hit shows the kit's HP bar under its nameplate until it is whole again
+ * @flow SP33 [done] The Construct's pieces live in a Build menu; what is in hand shows on a card that turns, removes or drops it, so a touch screen can let go of a piece
+ * @flow SP34 [done] An arcade cabinet shelves its games as cartridges, each with its cover, under the cabinet's own icon
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -16,7 +18,11 @@ import {
 } from "../helpers/chatUsers";
 import { shot } from "../helpers/screenshots";
 import {
+  RoomWatch,
+  chooseInMenu,
+  drawerSettled,
   mapDrawn,
+  openBuildMenu,
   openConstruct,
   tilePoint,
   walkIn,
@@ -62,12 +68,16 @@ async function say(space: Page, text: string) {
   await expect(line).toHaveValue("");
 }
 
-/** Nothing of the space's UI reaches past the right edge of the screen. */
+/** The page is the screen: nothing scrolls it, either way. */
 async function fitsTheScreen(space: Page) {
-  const overflow = await space.evaluate(
-    () => document.documentElement.scrollWidth - window.innerWidth,
-  );
-  expect(overflow).toBeLessThanOrEqual(0);
+  const overflow = await space.evaluate(() => ({
+    x: document.documentElement.scrollWidth - window.innerWidth,
+    y: document.documentElement.scrollHeight - window.innerHeight,
+    scrolled: window.scrollY,
+  }));
+  expect(overflow.x).toBeLessThanOrEqual(0);
+  expect(overflow.y).toBeLessThanOrEqual(0);
+  expect(overflow.scrolled).toBe(0);
 }
 
 test.describe("The space's pixel-art interface", () => {
@@ -79,6 +89,7 @@ test.describe("The space's pixel-art interface", () => {
       await inChannel([host], "px");
       const space = await host.chat.openSpace();
       const walker = Walker.follow(space);
+      const room = RoomWatch.follow(space);
       await expect(space.getByTestId("space-character-select")).toBeVisible();
       await expect(space.locator(".space-ui-panel").first()).toBeVisible();
       await fitsTheScreen(space);
@@ -99,6 +110,10 @@ test.describe("The space's pixel-art interface", () => {
       }
       await fitsTheScreen(space);
       await shot(space, "phone-map-pad-say");
+      // Typing a line keeps the page still.
+      await space.getByTestId("space-say-input").focus();
+      await fitsTheScreen(space);
+      await space.getByTestId("space-say-input").press("Escape");
 
       // Through the gate: the question is the kit's panel too.
       await walker.goTo({ x: 56, y: 11 });
@@ -108,10 +123,18 @@ test.describe("The space's pixel-art interface", () => {
       await space.getByTestId("space-modal-yes").click();
       await mapDrawn(space);
       await expect(space.getByTestId("construct-palette")).toBeVisible();
+      // Shut, the menu is one key; open, it is a sheet over the floor.
+      await expect(space.getByTestId("construct-drawer")).toBeHidden();
+      await shot(space, "phone-construct-shut");
+      await openBuildMenu(space);
       await space.getByTestId("construct-tab-fun").click();
-      await space.getByTestId("construct-kind-sign").click();
       await fitsTheScreen(space);
       await shot(space, "phone-palette");
+      // Choosing shuts the sheet; the card says what the next tap builds.
+      await space.getByTestId("construct-kind-sign").click();
+      await expect(space.getByTestId("construct-drawer")).toBeHidden();
+      await expect(space.getByTestId("construct-holding")).toBeVisible();
+      await shot(space, "phone-holding-sign");
 
       // A piece's panel, on the phone: put a sign up and read it.
       const self = await walker.here();
@@ -126,6 +149,29 @@ test.describe("The space's pixel-art interface", () => {
       await expect(space.getByTestId("space-panel-input")).toBeVisible();
       await fitsTheScreen(space);
       await shot(space, "phone-sign-panel");
+      await space.getByTestId("space-panel-close").click();
+
+      // A finger lets go of a piece from the card, and the next tap on the
+      // floor builds nothing.
+      const before = room.items.length;
+      await chooseInMenu(space, "furniture", { kind: "chair" });
+      await space.getByTestId("construct-drop").tap();
+      await expect(space.getByTestId("construct-holding")).toBeHidden();
+      const here = await walker.here();
+      const floor = await tilePoint(space, here, {
+        x: here.x + 1,
+        y: here.y + 3,
+      });
+      await space.touchscreen.tap(floor.x, floor.y);
+      await space.waitForTimeout(400);
+      expect(room.items.length).toBe(before);
+
+      // Dragging a finger over the map never scrolls the page.
+      await space.mouse.move(floor.x, floor.y);
+      await space.mouse.down();
+      await space.mouse.move(floor.x, floor.y - 120, { steps: 6 });
+      await space.mouse.up();
+      await fitsTheScreen(space);
     } finally {
       await closeUsers([host]);
     }
@@ -196,6 +242,98 @@ test.describe("The space's pixel-art interface", () => {
       await shot(a.space, "hp-bar-after-a-hit");
     } finally {
       await closeUsers([host, guest]);
+    }
+  });
+
+  test("the Build menu and the card of what is in hand (SP33)", async ({
+    browser,
+  }) => {
+    const host = await newSignedInUser(browser, "bm");
+    try {
+      await inChannel([host], "bm");
+      const { space, walker, room } = await openConstruct(host, "knight");
+      const self = await walker.here();
+
+      // Shut, nothing but the Build key is over the room.
+      await expect(space.getByTestId("construct-drawer")).toBeHidden();
+      await expect(space.getByTestId("construct-holding")).toBeHidden();
+      await shot(space, "construct-menu-shut");
+      await space.keyboard.press("b");
+      await drawerSettled(space);
+      await shot(space, "construct-menu-open");
+      await space.keyboard.press("b");
+      await expect(space.getByTestId("construct-drawer")).toBeHidden();
+
+      // In hand: the card names the piece; Drop lets go, and the floor is the
+      // floor again.
+      await chooseInMenu(space, "furniture", { kind: "chair" });
+      await expect(space.getByTestId("construct-holding")).toContainText(
+        "Chair",
+      );
+      await shot(space, "construct-holding-chair");
+      await space.getByTestId("construct-drop").click();
+      await expect(space.getByTestId("construct-holding")).toBeHidden();
+      const empty = await tilePoint(space, self, {
+        x: self.x + 2,
+        y: self.y + 2,
+      });
+      await space.mouse.click(empty.x, empty.y);
+      await space.waitForTimeout(400);
+      expect(room.items).toHaveLength(0);
+
+      // A placed piece, picked: the card removes it.
+      await chooseInMenu(space, "furniture", { kind: "chair" });
+      await space.mouse.click(empty.x, empty.y);
+      await expect.poll(() => room.items.length).toBe(1);
+      await space.getByTestId("construct-drop").click();
+      await space.waitForTimeout(250);
+      await space.mouse.click(empty.x, empty.y);
+      await expect(space.getByTestId("construct-remove")).toBeEnabled();
+      await shot(space, "construct-holding-picked");
+      await space.getByTestId("construct-remove").click();
+      await expect.poll(() => room.items.length).toBe(0);
+      await expect(space.getByTestId("construct-holding")).toBeHidden();
+    } finally {
+      await closeUsers([host]);
+    }
+  });
+
+  test("an arcade cabinet shelves its games with their covers (SP34)", async ({
+    browser,
+  }) => {
+    const host = await newSignedInUser(browser, "cv");
+    try {
+      await inChannel([host], "cv");
+      const { space, walker } = await openConstruct(host, "sorceress");
+      const self = await walker.here();
+      const cabinet = { x: self.x + 3, y: self.y + 2 };
+
+      await chooseInMenu(space, "fun", { kind: "arcade" });
+      const at = await tilePoint(space, self, cabinet);
+      await space.mouse.click(at.x, at.y);
+      await space.keyboard.press("Escape");
+      await space.waitForTimeout(250);
+      await walker.goTo({ x: cabinet.x - 1, y: cabinet.y });
+      await space.keyboard.press("e");
+      const panel = space.getByTestId("space-panel");
+      await expect(panel).toBeVisible();
+      const covers = panel.locator("img.space-panel-cover");
+      await expect(covers.first()).toBeVisible();
+      expect(await covers.count()).toBeGreaterThan(3);
+      await expect(
+        panel.locator('[data-space-panel-icon="arcade"]'),
+      ).toBeVisible();
+      await covers
+        .first()
+        .evaluate(
+          (img: HTMLImageElement) =>
+            img.complete ||
+            new Promise((done) => img.addEventListener("load", done)),
+        );
+      await shot(space, "construct-arcade-covers");
+      await space.getByTestId("space-panel-close").click();
+    } finally {
+      await closeUsers([host]);
     }
   });
 });

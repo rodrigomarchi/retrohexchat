@@ -23,6 +23,7 @@ import {
   openConstruct,
   RoomWatch,
   tilePoint,
+  chooseInMenu,
 } from "../helpers/construct";
 import { Walker } from "../director/space";
 
@@ -37,8 +38,7 @@ async function place(
   tile: Spot,
 ) {
   const self = await walker.here();
-  await space.getByTestId(`construct-tab-${tab}`).click();
-  await space.getByTestId(`construct-kind-${kind}`).click();
+  await chooseInMenu(space, tab, { kind });
   const at = await tilePoint(space, self, tile);
   await space.mouse.click(at.x, at.y);
   await space.keyboard.press("Escape");
@@ -247,8 +247,7 @@ test.describe("The Construct's pieces", () => {
       const b = await openConstruct(guest, "knight");
       const self = await a.walker.here();
 
-      await a.space.getByTestId("construct-tab-floor").click();
-      await a.space.getByTestId("construct-material-wood").click();
+      await chooseInMenu(a.space, "floor", { material: "wood" });
       const from = { x: self.x + 2, y: self.y + 2 };
       const to = { x: self.x + 6, y: self.y + 5 };
       const start = await tilePoint(a.space, self, from);

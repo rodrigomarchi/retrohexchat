@@ -169,4 +169,30 @@ describe("BuildMode", () => {
     expect(mode.pointerDown({ tile: tile(8, 8), item: null, button: 0 }).command).toBe(null);
     expect(mode.state().mode).toBe("idle");
   });
+
+  it("lets go of whatever is in hand, and says what that is", () => {
+    const mode = new BuildMode();
+    expect(mode.holding()).toBeNull();
+
+    mode.choose("chair");
+    expect(mode.holding()).toEqual({ mode: "placing", kind: "chair", dir: "down" });
+    mode.rotate();
+    expect(mode.holding().dir).toBe("right");
+    expect(mode.cancel()).toEqual({ command: null });
+    expect(mode.state().mode).toBe("idle");
+
+    mode.choosePaint("wood");
+    expect(mode.holding()).toEqual({ mode: "painting", material: "wood" });
+    mode.cancel();
+
+    mode.pointerDown({ tile: tile(4, 4), item: chair, button: 0 });
+    mode.pointerUp({ tile: tile(4, 4) });
+    expect(mode.holding()).toEqual({ mode: "selected", itemId: "c1" });
+    mode.cancel();
+    expect(mode.holding()).toBeNull();
+    // After letting go, a tap on the floor builds nothing.
+    expect(mode.pointerDown({ tile: tile(1, 1), item: null, button: 0 })).toEqual({
+      command: null,
+    });
+  });
 });

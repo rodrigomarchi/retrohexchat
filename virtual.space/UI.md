@@ -102,6 +102,18 @@ and type (`space-ui.css` resets them under `[role=dialog]` and `.toast-container
 The status bar's "Change character" stays a text control inside its parchment
 field: a framed button does not fit the bar's height.
 
+**The Construct's build controls** stay off the room until wanted. A Build key
+opens a drawer, a side panel on a desktop and a sheet from the bottom on a phone.
+A card next to the Build key shows what is in hand, with turn, remove and drop:
+a touch screen has no Esc and no right-click, so letting go needs a button. A
+refusal is said over the room, outside the drawer, so it is seen even with the
+drawer shut.
+
+**A large face is plain parchment.** The slim frame (`button_parch`) is a
+button's: repeated across a panel, its own face shows stripes. So a drawer, and
+a panel on a phone, take the frame without `fill`, with a flat parchment
+background inset under it.
+
 ## The font
 
 RH Pixel is Fusion Pixel 12px proportional (TakWolf, SIL OFL 1.1, no Reserved

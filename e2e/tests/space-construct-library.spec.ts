@@ -15,7 +15,12 @@ import {
   TestUser,
 } from "../helpers/chatUsers";
 import { shot } from "../helpers/screenshots";
-import { openConstruct, RoomWatch, tilePoint } from "../helpers/construct";
+import {
+  openConstruct,
+  RoomWatch,
+  tilePoint,
+  chooseInMenu,
+} from "../helpers/construct";
 import { Walker } from "../director/space";
 
 type Spot = { x: number; y: number };
@@ -38,8 +43,7 @@ async function place(
 ) {
   const before = room.items.length;
   const self = await walker.here();
-  await space.getByTestId(`construct-tab-${tab}`).click();
-  await space.getByTestId(`construct-kind-${kind}`).click();
+  await chooseInMenu(space, tab, { kind });
   for (let i = 0; i < turns; i += 1) await space.keyboard.press("r");
   const at = await tilePoint(space, self, tile);
   await space.mouse.click(at.x, at.y);
@@ -75,6 +79,8 @@ test.describe("The Construct's library", () => {
   test("a long table, chairs around it, and a room of every theme (SP27)", async ({
     browser,
   }) => {
+    // Three dozen pieces, each taken from the Build menu: a long walk.
+    test.setTimeout(120_000);
     const host = await newSignedInUser(browser, "lt");
     try {
       await inChannel([host], "lt");

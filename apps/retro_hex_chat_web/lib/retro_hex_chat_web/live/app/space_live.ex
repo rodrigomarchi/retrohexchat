@@ -112,7 +112,11 @@ defmodule RetroHexChatWeb.App.SpaceLive do
           has a height because something above it does. --%>
     <%!-- `space-ui` puts the whole page in the space's pixel-art kit
           (features/space-ui.css): the window, the overlays, the say bar. --%>
-    <div class="space-ui bg-background text-text flex h-screen flex-col">
+    <%!-- The visible viewport, not 100vh: on a phone 100vh is the viewport with
+          the address bar hidden, and the page would scroll by the bar's height.
+          The chat's own root and hook, so both follow the keyboard the same way. --%>
+    <div class="space-ui chat-app-root fixed inset-0 flex flex-col overflow-hidden bg-background text-text">
+      <div id="viewport-detect" phx-hook="ViewportDetectHook" class="hidden"></div>
       <%!-- This tab answers when the chat asks for it by address. --%>
       <div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
       <%!-- Where "Copied!" lands: a page of its own has no chat to borrow a
@@ -419,6 +423,11 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   def handle_event("space_change_cancel", _params, socket),
     do: {:noreply, assign(socket, changing_avatar: false)}
+
+  # The viewport hook says the screen's size to whichever page mounts it. The
+  # space lays nothing out on the server: the hook's CSS variables size the
+  # page, so the report is acknowledged and nothing else.
+  def handle_event("viewport_info", _params, socket), do: {:noreply, socket}
 
   # The draft is held here so a refused line stays in the field to be fixed,
   # and a sent one leaves it empty.

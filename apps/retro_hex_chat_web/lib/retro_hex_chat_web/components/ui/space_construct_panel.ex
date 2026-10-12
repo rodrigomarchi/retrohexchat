@@ -19,13 +19,26 @@ defmodule RetroHexChatWeb.Components.UI.SpaceConstructPanel do
 
   @spec space_construct_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def space_construct_panel(assigns) do
-    assigns = assign(assigns, :sign_max, Layout.sign_max())
+    assigns =
+      assign(assigns,
+        sign_max: Layout.sign_max(),
+        icons: [
+          {"sign", :panel_sign},
+          {"board", :panel_board},
+          {"screen", :panel_screen},
+          {"arcade", :panel_arcade}
+        ]
+      )
 
     ~H"""
     <template data-space-panel-template {sentences()}>
-      <div class="w-[min(22rem,80vw)] text-left" data-testid="space-panel">
-        <p data-space-panel-title class="space-ui-modal__title"></p>
-        <div data-space-panel-body class="space-panel-body max-h-[50vh] overflow-y-auto"></div>
+      <div class="space-panel text-left" data-testid="space-panel">
+        <div class="space-ui-modal__title flex items-center gap-2">
+          <%!-- One icon per kind of piece; the panel shows the one it is. --%>
+          <.pixel_icon :for={{kind, icon} <- @icons} name={icon} data-space-panel-icon={kind} hidden />
+          <p data-space-panel-title></p>
+        </div>
+        <div data-space-panel-body class="space-panel-body max-h-[50dvh] overflow-y-auto"></div>
         <form data-space-panel-sign hidden class="mt-2 flex gap-1">
           <input
             type="text"

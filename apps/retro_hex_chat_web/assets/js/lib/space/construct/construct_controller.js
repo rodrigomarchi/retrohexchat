@@ -52,6 +52,10 @@ export class ConstructController {
       onPaint: (material) => this._apply(this._mode.choosePaint(material)),
       onRotate: () => this._apply(this._mode.rotate()),
       onRemove: () => this._apply(this._mode.remove()),
+      onDrop: () => {
+        this._palette.clear();
+        this._apply(this._mode.cancel());
+      },
     });
     this._onPointerDown = this._onPointerDown.bind(this);
     this._onPointerMove = this._onPointerMove.bind(this);
@@ -69,7 +73,7 @@ export class ConstructController {
     this._canvas.addEventListener("pointerleave", this._onPointerLeave);
     this._canvas.addEventListener("contextmenu", this._onContextMenu);
     this._keyTarget.addEventListener("keydown", this._onKeyDown);
-    this._palette.render(this._mode.state());
+    this._palette.render(this._mode.state(), null);
   }
 
   detach() {
@@ -86,8 +90,11 @@ export class ConstructController {
   ready() {
     const map = this._map();
     if (!map) return;
-    this._palette.drawThumbnails((kind) => this._atlas?.tile?.(map.kindTile(kind, "down")));
-    this._palette.drawMaterials((tile) => this._atlas?.tile?.(tile));
+    this._palette.drawSprites({
+      kind: (kind, dir) => this._atlas?.tile?.(map.kindTile(kind, dir)),
+      tile: (tile) => this._atlas?.tile?.(tile),
+    });
+    this._refresh();
   }
 
   /**
@@ -109,6 +116,11 @@ export class ConstructController {
     if (!engine?.applyConstructLayout?.(normalizeLayout(raw))) return;
     this._mode.forget((id) => this._map()?.item(id) !== null);
     this._refresh();
+  }
+
+  _modalOpen() {
+    const modal = this._root.querySelector?.("[data-space-modal]");
+    return Boolean(modal && !modal.hidden);
   }
 
   _map() {
@@ -146,6 +158,7 @@ export class ConstructController {
     const target = this._target(event);
     if (!target) return;
     if (event.button === 2 && this._personAt(target.point)) return;
+    this._palette.usePointer(event.pointerType);
     this._canvas.focus?.({ preventScroll: true });
     this._apply(this._mode.pointerDown({ ...target, button: event.button }));
     if (this._mode.state().mode === "dragging") {
@@ -172,6 +185,20 @@ export class ConstructController {
 
   _onKeyDown(event) {
     if (typingInField() || !this._map()) return;
+    if (event.key === "b" || event.key === "B") {
+      // B opens the Build menu — not as a shortcut chord, not held down, and
+      // not behind a piece's panel or a gate's question.
+      if (event.ctrlKey || event.metaKey || event.altKey || this._modalOpen()) return;
+      event.preventDefault();
+      if (!event.repeat) this._palette.toggle();
+      return;
+    }
+    // Esc with nothing in hand puts the menu away.
+    if (event.key === "Escape" && !this._mode.holding() && this._palette.isOpen()) {
+      event.preventDefault();
+      this._palette.toggle();
+      return;
+    }
     const result = this._mode.key(event.key);
     if (result.handled) event.preventDefault();
     this._apply(result);
@@ -192,9 +219,9 @@ export class ConstructController {
   // marker under the picked piece.
   _refresh() {
     const state = this._mode.state();
-    this._palette.render(state);
     const engine = this._engine();
     const map = this._map();
+    this._palette.render(state, map ? this._held(map) : null);
     if (!engine || !map) return;
 
     const hover = this._mode.hover();
@@ -235,6 +262,15 @@ export class ConstructController {
       ghost,
       selected: picked ? { x: picked.x, y: picked.y } : null,
     });
+  }
+
+  // What the card shows as in hand: an armed kind or floor as it is, a picked
+  // piece as the kind and facing it stands in.
+  _held(map) {
+    const held = this._mode.holding();
+    if (!held?.itemId) return held;
+    const item = map.item(held.itemId);
+    return item ? { kind: item.kind, dir: item.dir } : null;
   }
 
   // A piece about to land: its art on its foot point, a diamond on every tile

@@ -20,7 +20,27 @@
 <p>
   {dgettext(
     "help_space",
-    "The palette in the top-left corner keeps the pieces in tabs, one for each theme and one for the End of Time. Choose one and click the floor to place it. It stays in your hand, so a row of chairs is a row of clicks. A see-through copy shows where it would go: green where it fits, red where it does not. Esc, or choosing it again, puts it away."
+    "Press %{build} in the top-left corner, or B, to see the pieces.",
+    build: dgettext("chat", "Build")
+  )}
+  {dgettext(
+    "help_space",
+    "The pieces are in tabs, one for each theme and one for the End of Time."
+  )}
+  {dgettext("help_space", "Choose one and click the floor to place it.")}
+  {dgettext(
+    "help_space",
+    "It stays in your hand, so you can place a row of chairs with a row of clicks."
+  )}
+  {dgettext(
+    "help_space",
+    "A see-through copy shows where it would go: green where it fits, red where it does not."
+  )}
+  {dgettext(
+    "help_space",
+    "The piece in your hand is shown next to %{build}. %{drop} or Esc puts the piece away.",
+    build: dgettext("chat", "Build"),
+    drop: dpgettext("chat", "let go of a piece", "Drop")
   )}
   {dgettext(
     "help_space",
@@ -117,6 +137,10 @@
   )}
   {dgettext(
     "help_space",
-    "Some places stay clear: the gate and the ground in front of it, the spots where people arrive, and the spot where somebody is standing. A chair with somebody sitting on it cannot be moved. A piece that would leave somebody with no way back to the gate is refused. The line under the palette says why a piece was refused."
+    "Some places stay clear: the gate and the ground in front of it, the spots where people arrive, and the spot where somebody is standing. A chair stays where it is while somebody sits in it. A piece that would leave somebody with no way back to the gate is refused."
+  )}
+  {dgettext(
+    "help_space",
+    "When a piece cannot go somewhere, a note at the top of the screen says why."
   )}
 </p>

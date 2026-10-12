@@ -171,7 +171,7 @@ export class BuildMode {
    */
   key(key) {
     const s = this._state;
-    if (key === "Escape" && s.mode !== "idle") return { ...this._reset(), handled: true };
+    if (key === "Escape" && s.mode !== "idle") return { ...this.cancel(), handled: true };
     if ((key === "Delete" || key === "Backspace") && s.mode === "selected") {
       return { ...this.remove(), handled: true };
     }
@@ -200,6 +200,24 @@ export class BuildMode {
     }
     if (s.mode === "selected") return { command: { op: "rotate", item_id: s.itemId } };
     return none();
+  }
+
+  /** Let go of whatever is in hand: the armed kind, the floor, the picked piece. */
+  cancel() {
+    return this._reset();
+  }
+
+  /**
+   * What is in hand, for the card that shows it: the kind armed (and its
+   * facing), the floor material armed, or the piece picked; null when nothing.
+   * @returns {{mode: string, kind?: string, dir?: string, material?: string, itemId?: string}|null}
+   */
+  holding() {
+    const s = this._state;
+    if (s.mode === "placing") return { mode: s.mode, kind: s.kind, dir: s.dir };
+    if (s.mode === "painting") return { mode: s.mode, material: s.material };
+    if (s.mode === "selected" || s.mode === "dragging") return { mode: s.mode, itemId: s.itemId };
+    return null;
   }
 
   /** A picked piece that is gone from the room is no longer picked. */
