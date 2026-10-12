@@ -2,7 +2,10 @@ import { describe, it, expect } from "vitest";
 
 import {
   canPlaceAt,
+  footPointOf,
+  footprintOf,
   itemAtCanvasPoint,
+  itemCovering,
   tileAtCanvasPoint,
 } from "../../../../js/lib/space/construct/picking.js";
 import { constructCamera, constructMap } from "./fixtures.js";
@@ -87,5 +90,47 @@ describe("canPlaceAt", () => {
     expect(canPlaceAt(map, people, { x: -1, y: 0 })).toBe(false);
     // A piece being moved may be dropped back where it stands.
     expect(canPlaceAt(map, people, { x: 6, y: 6 }, "c")).toBe(true);
+  });
+});
+
+describe("pieces bigger than a tile", () => {
+  it("cover their footprint, and turning swaps the axes, as on the server", () => {
+    const map = constructMap();
+    expect(footprintOf(map, "sofa", 3, 3, "down")).toEqual([
+      { x: 3, y: 3 },
+      { x: 3, y: 4 },
+    ]);
+    expect(footprintOf(map, "sofa", 3, 3, "right")).toEqual([
+      { x: 3, y: 3 },
+      { x: 4, y: 3 },
+    ]);
+    expect(footprintOf(map, "chair", 3, 3)).toEqual([{ x: 3, y: 3 }]);
+  });
+
+  it("stand their art on the footprint's centre, or the kind's own foot", () => {
+    const map = constructMap();
+    expect(footPointOf(map, "sofa", 3, 3, "down")).toEqual({ x: 3, y: 3.5 });
+    expect(footPointOf(map, "sofa", 3, 3, "right")).toEqual({ x: 3.5, y: 3 });
+    expect(footPointOf(map, "statue", 3, 3, "down")).toEqual({ x: 4, y: 4 });
+  });
+
+  it("are found from any tile they cover", () => {
+    const sofa = { id: "s", kind: "sofa", x: 5, y: 5, dir: "down" };
+    const map = constructMap({ items: [sofa] });
+    expect(itemCovering(map, { x: 5, y: 6 })).toBe(sofa);
+    expect(itemCovering(map, { x: 6, y: 5 })).toBe(null);
+  });
+
+  it("fit only where every tile of the footprint is free", () => {
+    const tree = { id: "t", kind: "tree", x: 5, y: 6, dir: "down" };
+    const sofa = { id: "s", kind: "sofa", x: 7, y: 3, dir: "down" };
+    const map = constructMap({ items: [tree, sofa] });
+
+    expect(canPlaceAt(map, [], { x: 5, y: 5 }, null, "sofa", "down")).toBe(false);
+    expect(canPlaceAt(map, [], { x: 5, y: 5 }, null, "sofa", "right")).toBe(true);
+    expect(canPlaceAt(map, [], { x: 5, y: 9 }, null, "sofa", "down")).toBe(false);
+    expect(canPlaceAt(map, [{ x: 6, y: 5 }], { x: 5, y: 5 }, null, "sofa", "right")).toBe(false);
+    // Moving the sofa one tile down overlaps only itself.
+    expect(canPlaceAt(map, [], { x: 7, y: 4 }, "s", "sofa", "down")).toBe(true);
   });
 });

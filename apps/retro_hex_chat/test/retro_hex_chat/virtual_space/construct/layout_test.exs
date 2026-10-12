@@ -34,13 +34,20 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
       assert base.catalog["board"].only == ["channel"]
 
       for {_kind, entry} <- base.catalog do
-        assert entry.group in ~w(furniture structure fun)
+        assert entry.group in ~w(furniture office garden gamer structure fun eot)
+        layers = Enum.map(entry.layers, & &1.tiles)
 
-        for tiles <- [entry.tiles | Map.values(entry.states)], {dir, tile} <- tiles do
+        for tiles <- [entry.tiles | Map.values(entry.states) ++ layers], {dir, tile} <- tiles do
           assert dir in entry.dirs
           assert Map.has_key?(base.tiles, tile)
         end
       end
+
+      # The End of Time's pieces are drawn from the End of Time's own sheet.
+      assert ~w(construct endoftime) == Enum.map(base.tilesets, & &1.id)
+      assert %{ts: "endoftime", frames: 8} = base.tiles["eot_morpheus"]
+      assert base.catalog["sofa"].seats == [[0, 0], [0, 1]]
+      assert base.catalog["eot_balrog"].size == [5, 2]
     end
 
     test "reserves the gate, the ground in front of it and every spawn", %{base: base} do
@@ -480,6 +487,113 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
       map = Layout.apply(base, [])
       refute Map.has_key?(Layout.patch(map, 1), :floor)
       assert %{floor: [_ | _]} = Layout.patch(map, 1, floor?: true)
+    end
+  end
+
+  describe "pieces bigger than a tile" do
+    # A bench two tiles long down the y axis, a seat on each tile, and a
+    # 2×2 statue whose art stands on its front corner.
+    setup %{base: base} do
+      chair = base.catalog["chair"]
+
+      base =
+        base
+        |> put_in([:catalog, "bench"], %{
+          chair
+          | size: [1, 2],
+            seat: false,
+            seats: [[0, 0], [0, 1]]
+        })
+        |> put_in([:catalog, "statue"], %{base.catalog["tree"] | size: [2, 2], foot: [1, 1]})
+
+      %{base: base}
+    end
+
+    test "covers its whole footprint, and turning it swaps the axes", %{base: base} do
+      assert Layout.footprint(base, "bench", 30, 30, "down") == [{30, 30}, {30, 31}]
+      assert Layout.footprint(base, "bench", 30, 30, "right") == [{30, 30}, {31, 30}]
+
+      assert Layout.footprint(base, "statue", 30, 30, "down") ==
+               [{30, 30}, {31, 30}, {30, 31}, {31, 31}]
+    end
+
+    test "refuses a footprint that lands on a piece, a person or kept floor", ctx do
+      {:ok, items} = place(ctx.base, [], "tree", 30, 31, ctx.nobody)
+      assert {:error, :occupied} = place(ctx.base, items, "bench", 30, 30, ctx.nobody)
+      assert {:ok, _} = place(ctx.base, items, "bench", 31, 30, ctx.nobody)
+
+      someone = %{ctx.nobody | avatars: [{40, 41}]}
+      assert {:error, :someone_there} = place(ctx.base, [], "bench", 40, 40, someone)
+
+      # The far tile of the bench would be off the floor.
+      assert {:error, :reserved} = place(ctx.base, [], "bench", 30, 55, ctx.nobody)
+    end
+
+    test "blocks, seats and answers E on every tile it covers", %{base: base, nobody: nobody} do
+      {:ok, [bench] = items} = place(base, [], "bench", 30, 30, nobody)
+      map = Layout.apply(base, items)
+      blocked = SpaceMap.collision_set(map)
+
+      assert MapSet.member?(blocked, {30, 30}) and MapSet.member?(blocked, {30, 31})
+
+      assert [%{x: 30, y: 30}, %{x: 30, y: 31}] =
+               Enum.filter(map.seats, &(&1.item_id == bench.id))
+
+      # The art stands in the middle of the bench.
+      assert %{x: 30.0, y: 30.5} = Enum.find(map.layers.decor, &(&1[:item_id] == bench.id))
+
+      {:ok, [statue] = items} = place(base, [], "statue", 30, 30, nobody)
+      map = Layout.apply(base, items)
+      assert %{x: 31, y: 31} = Enum.find(map.layers.decor, &(&1[:item_id] == statue.id))
+    end
+
+    test "a sofa held by somebody on its second seat stays put", %{base: base, nobody: nobody} do
+      {:ok, [bench] = items} = place(base, [], "bench", 30, 30, nobody)
+      seated = %{nobody | seated: MapSet.new([Layout.seat_id(bench) <> ":1"])}
+
+      assert {:error, :seat_taken} =
+               Layout.edit(base, items, {:move, bench.id, 34, 34}, seated, "bob")
+    end
+
+    test "turns only where the turned footprint fits", %{base: base, nobody: nobody} do
+      {:ok, items} = place(base, [], "tree", 31, 30, nobody)
+      {:ok, [_tree, bench] = items} = place(base, items, "bench", 30, 30, nobody)
+
+      assert {:error, :occupied} = Layout.edit(base, items, {:rotate, bench.id}, nobody, "bob")
+
+      {:ok, [bench]} = place(base, [], "bench", 30, 30, nobody)
+
+      assert {:ok, [%{dir: "right"}]} =
+               Layout.edit(base, [bench], {:rotate, bench.id}, nobody, "bob")
+    end
+
+    test "is moved by its corner over its own old tiles", %{base: base, nobody: nobody} do
+      {:ok, [bench] = items} = place(base, [], "bench", 30, 30, nobody)
+
+      assert {:ok, [%{x: 30, y: 31}]} =
+               Layout.edit(base, items, {:move, bench.id, 30, 31}, nobody, "bob")
+    end
+
+    test "a stored piece that no longer fits beside its neighbour is dropped", %{base: base} do
+      raw = [
+        %{"id" => "a", "kind" => "tree", "x" => 30, "y" => 31},
+        %{"id" => "b", "kind" => "bench", "x" => 30, "y" => 30},
+        %{"id" => "c", "kind" => "bench", "x" => 32, "y" => 30}
+      ]
+
+      assert ~w(a c) == base |> Layout.normalize(raw) |> Enum.map(& &1.id)
+    end
+
+    test "walls somebody in with its whole footprint", %{base: base} do
+      # A ring around (35,35) whose last gap is closed by the bench's far tile.
+      ring =
+        for {x, y} <- [{34, 34}, {36, 34}, {34, 35}, {36, 35}, {34, 36}, {35, 36}, {36, 36}] do
+          %{id: "r#{x}-#{y}", kind: "tree", x: x, y: y, dir: "down", placed_by: nil, state: %{}}
+        end
+
+      inside = %{avatars: [{35, 35}], seated: MapSet.new()}
+      assert {:error, :would_trap} = place(base, ring, "bench", 35, 33, inside, "down")
+      assert {:ok, _items} = place(base, ring, "bench", 40, 40, inside, "down")
     end
   end
 end

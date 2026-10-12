@@ -16,7 +16,13 @@
 import { canvasPointFromEvent } from "../canvas_point.js";
 import { normalizeLayout } from "../protocol.js";
 import { BuildMode } from "./build_mode.js";
-import { canPlaceAt, itemAtCanvasPoint, tileAtCanvasPoint } from "./picking.js";
+import {
+  canPlaceAt,
+  footPointOf,
+  footprintOf,
+  itemAtCanvasPoint,
+  tileAtCanvasPoint,
+} from "./picking.js";
 import { createBuildPalette } from "./palette.js";
 import { renderPanel } from "./panels.js";
 
@@ -204,21 +210,24 @@ export class ConstructController {
       }
       ghost = { x: hover.x, y: hover.y, tile: null, tiles, valid: true };
     } else if (state.mode === "placing" && hover) {
-      ghost = {
-        x: hover.x,
-        y: hover.y,
-        tile: map.kindTile(state.kind, state.dir),
-        valid: canPlaceAt(map, people, hover),
-      };
+      ghost = this._ghost(
+        map,
+        state.kind,
+        state.dir,
+        hover,
+        canPlaceAt(map, people, hover, null, state.kind, state.dir),
+      );
     } else if (state.mode === "dragging" && picked && hover) {
-      const moved = hover.x !== picked.x || hover.y !== picked.y;
+      const to = this._mode.landing();
+      const moved = to.x !== picked.x || to.y !== picked.y;
       ghost = moved
-        ? {
-            x: hover.x,
-            y: hover.y,
-            tile: map.kindTile(picked.kind, picked.dir),
-            valid: canPlaceAt(map, people, hover, picked.id),
-          }
+        ? this._ghost(
+            map,
+            picked.kind,
+            picked.dir,
+            to,
+            canPlaceAt(map, people, to, picked.id, picked.kind, picked.dir),
+          )
         : null;
     }
 
@@ -226,6 +235,19 @@ export class ConstructController {
       ghost,
       selected: picked ? { x: picked.x, y: picked.y } : null,
     });
+  }
+
+  // A piece about to land: its art on its foot point, a diamond on every tile
+  // of its footprint.
+  _ghost(map, kind, dir, at, valid) {
+    const foot = footPointOf(map, kind, at.x, at.y, dir);
+    return {
+      x: foot.x,
+      y: foot.y,
+      tile: map.kindTile(kind, dir),
+      tiles: footprintOf(map, kind, at.x, at.y, dir),
+      valid,
+    };
   }
 }
 

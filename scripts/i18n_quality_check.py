@@ -125,7 +125,7 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
     accepted = read_baseline()
 
     for path in catalogs.po_files(code):
-        for source, translated in catalogs.read_po_pairs(path):
+        for context, source, translated in catalogs.read_po_context_pairs(path):
             pairs.append((source, translated))
 
             if introduced_degeneration(source, translated):
@@ -134,7 +134,10 @@ def check_locale(code: str, args: argparse.Namespace) -> int:
             if has_sentinel_residue(translated):
                 residue.append((source, translated))
 
-            wanted = curated.get(source.strip())
+            # A label with a context is curated by its context's row, never by
+            # the bare row of the same English word ("Office" the tab, "Office"
+            # the suite).
+            wanted = curated.get(glossary.key(source.strip(), context))
 
             if wanted is not None and translated.strip() != wanted:
                 drifted.append((source, f"{translated} (expected {wanted!r})"))

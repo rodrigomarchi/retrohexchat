@@ -77,6 +77,21 @@ class ReadPoPairsTest(unittest.TestCase):
     def test_skips_untranslated_entries(self):
         self.assertNotIn("Untranslated", self.pairs)
 
+    def test_keeps_each_entrys_context(self):
+        handle = tempfile.NamedTemporaryFile("w", suffix=".po", delete=False, encoding="utf-8")
+        handle.write(
+            'msgid "Office"\nmsgstr "Office"\n\n'
+            'msgctxt "construct palette"\nmsgid "Office"\nmsgstr "Escritório"\n'
+        )
+        handle.close()
+        path = Path(handle.name)
+        self.addCleanup(path.unlink)
+
+        self.assertEqual(
+            catalogs.read_po_context_pairs(path),
+            [(None, "Office", "Office"), ("construct palette", "Office", "Escritório")],
+        )
+
     def test_skips_the_header_entry(self):
         self.assertNotIn("", self.pairs)
 

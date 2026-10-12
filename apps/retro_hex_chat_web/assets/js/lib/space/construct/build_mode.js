@@ -46,6 +46,21 @@ export class BuildMode {
     return this._hover;
   }
 
+  /**
+   * Where the dragged piece's corner would land now, keeping the offset it was
+   * grabbed at; else the tile under the pointer.
+   * @returns {{x:number,y:number}|null}
+   */
+  landing() {
+    const s = this._state;
+    if (!this._hover) return null;
+    return s.mode === "dragging" ? this._corner(this._hover, s.grab) : this._hover;
+  }
+
+  _corner(tile, grab) {
+    return grab ? { x: tile.x - grab.dx, y: tile.y - grab.dy } : tile;
+  }
+
   /** Arm a kind from the palette; pressing the armed kind again disarms it. */
   choose(kind) {
     const s = this._state;
@@ -110,7 +125,10 @@ export class BuildMode {
       return { command: { op: "place", kind: s.kind, x: tile.x, y: tile.y, dir: s.dir } };
     }
     if (item) {
-      this._state = { mode: "dragging", itemId: item.id, from: { x: item.x, y: item.y } };
+      // A long piece is held where it was grabbed: its corner keeps the same
+      // offset from the pointer all the way to where it is let go.
+      const grab = { dx: tile.x - item.x, dy: tile.y - item.y };
+      this._state = { mode: "dragging", itemId: item.id, from: { x: item.x, y: item.y }, grab };
       return none();
     }
     return this._reset();
@@ -132,8 +150,9 @@ export class BuildMode {
     }
     if (s.mode !== "dragging") return none();
     this._state = { mode: "selected", itemId: s.itemId };
-    if (!tile || (tile.x === s.from.x && tile.y === s.from.y)) return none();
-    return { command: { op: "move", item_id: s.itemId, x: tile.x, y: tile.y } };
+    const to = tile && this._corner(tile, s.grab);
+    if (!to || (to.x === s.from.x && to.y === s.from.y)) return none();
+    return { command: { op: "move", item_id: s.itemId, x: to.x, y: to.y } };
   }
 
   /** The pointer left the canvas: no tile is hovered, and a drag lets go. */

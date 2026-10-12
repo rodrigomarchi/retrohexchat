@@ -15,8 +15,11 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
   `lights`, `blocks` (false for a piece you walk onto), `dirs` (the facings it
   turns through), `use` (what E does to it), `states` (its other sprites, per
   state, per facing), `only` (the conversations it may be built in) and
-  `group` (its palette tab) and `label` (how the line it shows is drawn: its
-  width in tiles, how high it floats, its colour and its outline).
+  `group` (its palette tab), `label` (how the line it shows is drawn: its
+  width in tiles, how high it floats, its colour and its outline), `size`
+  (its footprint, `[w, h]` tiles), `foot` (the point of the footprint its art
+  stands on), `seats` (the footprint tiles that are seats) and `layers` (more
+  art drawn with it, each on its own point).
   """
 
   @sheet "construct"
@@ -44,14 +47,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
       sea: sea(data["sea"]),
       railings: [],
       railing_posts: [],
-      tilesets: [
-        %{
-          id: @sheet,
-          src: "/images/space/#{@sheet}.webp",
-          tile: data["tile_size"],
-          columns: data["columns"]
-        }
-      ],
+      tilesets: tilesets(data),
       tiles: tiles(data["vocab"]),
       ground: data["ground"],
       spawn: Enum.map(data["spawn"], &%{x: &1["x"], y: &1["y"], dir: &1["dir"]}),
@@ -79,9 +75,24 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
     }
   end
 
+  # The Construct's own sheet, and the End of Time's, whose pieces it places
+  # with the End of Time's own art.
+  defp tilesets(data) do
+    sheets = data["tilesets"] || [%{"id" => @sheet, "columns" => data["columns"]}]
+
+    Enum.map(sheets, fn sheet ->
+      %{
+        id: sheet["id"],
+        src: "/images/space/#{sheet["id"]}.webp",
+        tile: data["tile_size"],
+        columns: sheet["columns"]
+      }
+    end)
+  end
+
   defp tiles(vocab) do
     Map.new(vocab, fn {name, v} ->
-      base = %{ts: @sheet, col: v["col"], row: v["row"], w: v["w"], h: v["h"]}
+      base = %{ts: v["ts"] || @sheet, col: v["col"], row: v["row"], w: v["w"], h: v["h"]}
 
       {name,
        Enum.reduce(@optional_tile_keys, base, fn key, rect ->
@@ -124,7 +135,11 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
          states: entry["states"] || %{},
          only: entry["only"],
          group: entry["group"] || "furniture",
-         label: label(entry["label"])
+         label: label(entry["label"]),
+         size: entry["size"] || [1, 1],
+         foot: entry["foot"],
+         seats: entry["seats"],
+         layers: Enum.map(entry["layers"] || [], &%{tiles: &1["tiles"], foot: &1["foot"]})
        }}
     end)
   end

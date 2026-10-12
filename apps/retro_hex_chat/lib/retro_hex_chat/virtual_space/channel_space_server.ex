@@ -1054,15 +1054,18 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
-  defp do_interact(%{realm: :construct} = state, key, %{kind: "use", target_id: "item:" <> id}) do
+  # A long piece answers on every tile of its footprint (`item:<id>#<n>`), so
+  # E works from whichever side of it somebody stands.
+  defp do_interact(%{realm: :construct} = state, key, %{kind: "use", target_id: "item:" <> ref}) do
     participant = Map.get(state.participants, key)
+    [id | _tile] = String.split(ref, "#", parts: 2)
     item = Enum.find(state.items, &(&1.id == id))
 
     cond do
       not active_participant?(participant) -> {:reply, {:error, :not_participant}, state}
       participant.pose == "down" -> {:reply, {:error, :down}, state}
       item == nil -> {:reply, {:error, :invalid_target}, state}
-      not adjacent?(participant, item) -> {:reply, {:error, :too_far}, state}
+      not next_to_piece?(state, participant, item) -> {:reply, {:error, :too_far}, state}
       true -> use_item(state, key, participant, item)
     end
   end
@@ -1437,6 +1440,12 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
       ^key -> false
       _other -> true
     end
+  end
+
+  defp next_to_piece?(state, participant, item) do
+    state.base_map
+    |> Layout.footprint(item)
+    |> Enum.any?(fn {x, y} -> adjacent?(participant, %{x: x, y: y}) end)
   end
 
   defp adjacent?(participant, %{x: x, y: y}) do

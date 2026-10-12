@@ -31,6 +31,11 @@ class ProtectTest(unittest.TestCase):
         self.assertIn("NickServ", replacements.values())
         self.assertIn("ChanServ", replacements.values())
 
+    def test_masks_the_end_of_time_as_a_name(self):
+        # pt: "Fim de Tempo", a translation of a place the game named.
+        _, replacements = protect("Go back to the End of Time?")
+        self.assertIn("End of Time", replacements.values())
+
     def test_masks_mirc_and_irc(self):
         _, replacements = protect("A chat in the style of mIRC, not an IRC network")
 

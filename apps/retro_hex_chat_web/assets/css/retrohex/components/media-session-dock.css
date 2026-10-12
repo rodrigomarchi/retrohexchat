@@ -295,9 +295,15 @@
   background: rgba(255, 255, 255, 0.22);
 }
 
+/* A long tab wraps its keys into rows and scrolls past three of them, so the
+   palette never covers the room. */
 .space-build-group {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.25rem;
+  max-width: min(46rem, calc(100vw - 8rem));
+  max-height: 13.5rem;
+  overflow-y: auto;
 }
 
 .space-build-group[hidden] {

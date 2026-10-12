@@ -341,6 +341,19 @@ author is `virtual.space/tools/author_construct.py`, which writes
   before the batch; ask for the object "standing alone", or PixelLab adds a
   stool to the door and a chair to the bookshelf. Each art faces screen
   down-left (tile `down`); its `flip_x` twin is tile `right`.
+- **The library** (`LIBRARY` in the author) adds a tab per theme — office,
+  garden, gamer, beside the home furniture — each kind one PixelLab object
+  named `<kind>.png`. A piece longer than a tile declares its `size`
+  (`[w, h]` tiles, the long side down the y axis, which is how PixelLab draws
+  "running from bottom-left to top-right"); its art stands on the centre of
+  that footprint unless `foot` says otherwise, and a sofa or a bench lists
+  its `seats`. Generate a long piece on a wide canvas (≈112 px for two tiles)
+  and say it "fills the canvas", or it comes back the size of a stool.
+- **The End of Time's pieces are the End of Time's own art**: their vocab
+  entries point at the `endoftime` sheet (`ts`), which the Construct lists as
+  its second tileset, so nothing is copied. Each `foot` is the anchor the
+  sprite was authored on in `author_scene.py`, and the Balrog's flames are a
+  `layers` entry drawn on the same point.
 - **Variants that are the same art are drawn, not generated**: the lamp
   switched off (its bright shade dimmed), the coin's silver side (its gold
   recoloured, mirrored), and the four wall corners, each two halves of the

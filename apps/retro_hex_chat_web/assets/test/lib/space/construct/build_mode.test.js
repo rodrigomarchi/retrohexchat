@@ -68,6 +68,21 @@ describe("BuildMode", () => {
     expect(mode.state().mode).toBe("idle");
   });
 
+  it("moves a long piece by the corner it keeps from where it was grabbed", () => {
+    const sofa = { id: "s1", x: 4, y: 4 };
+    const mode = new BuildMode();
+    // Grabbed by its second tile, let go one tile further down.
+    mode.pointerDown({ tile: tile(4, 5), item: sofa, button: 0 });
+    mode.pointerMove({ tile: tile(4, 6) });
+    expect(mode.landing()).toEqual({ x: 4, y: 5 });
+    expect(mode.pointerUp({ tile: tile(4, 6) }).command).toEqual({
+      op: "move",
+      item_id: "s1",
+      x: 4,
+      y: 5,
+    });
+  });
+
   it("turns a kind through its own facings", () => {
     const four = ["down", "right", "up", "left"];
     const mode = new BuildMode({ dirsOf: (kind) => (kind === "corner" ? four : undefined) });

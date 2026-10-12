@@ -18,6 +18,8 @@ export function constructMap(overrides = {}) {
     catalog: {
       chair: { tiles: { down: "cst_chair", right: "cst_chair_r" }, seat: true },
       tree: { tiles: { down: "cst_tree", right: "cst_tree_r" } },
+      sofa: { tiles: { down: "cst_sofa", right: "cst_sofa_r" }, size: [1, 2] },
+      statue: { tiles: { down: "cst_statue", right: "cst_statue_r" }, size: [2, 2], foot: [1, 1] },
     },
     max_items: 150,
     items: [],

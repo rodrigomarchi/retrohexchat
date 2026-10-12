@@ -65,7 +65,14 @@ def read_po_pairs(path: Path) -> list[tuple[str, str]]:
     entries and empty translations are skipped; plural forms are flattened
     against the source they render.
     """
-    pairs: list[tuple[str, str]] = []
+    return [(source, value) for _context, source, value in read_po_context_pairs(path)]
+
+
+def read_po_context_pairs(path: Path) -> list[tuple[str | None, str, str]]:
+    """(msgctxt, source, translation) triples from a PO file, without polib —
+    `read_po_pairs` with the context kept, for a check that must tell a
+    "furniture" Table from a spreadsheet one."""
+    pairs: list[tuple[str | None, str, str]] = []
     fields: dict[str, list[str]] = {}
     current: str | None = None
 
@@ -73,7 +80,8 @@ def read_po_pairs(path: Path) -> list[tuple[str, str]]:
         nonlocal fields, current
 
         if fields:
-            pairs.extend(_pairs_from_fields(fields))
+            context = "".join(fields["msgctxt"]) if "msgctxt" in fields else None
+            pairs.extend((context, source, value) for source, value in _pairs_from_fields(fields))
 
         fields = {}
         current = None

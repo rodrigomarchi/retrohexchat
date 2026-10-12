@@ -116,8 +116,8 @@ class CatalogsMatchTest(unittest.TestCase):
             curated = glossary.for_locale(locale.code)
 
             for path in catalogs.po_files(locale.code):
-                for source, translated in catalogs.read_po_pairs(path):
-                    wanted = curated.get(source.strip())
+                for context, source, translated in catalogs.read_po_context_pairs(path):
+                    wanted = curated.get(glossary.key(source.strip(), context))
 
                     if wanted is None:
                         continue

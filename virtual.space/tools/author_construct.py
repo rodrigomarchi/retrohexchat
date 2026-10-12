@@ -85,6 +85,8 @@ KINDS = {
     "chair": {"file": "chair.png", "seat": True, "group": "furniture"},
     "armchair": {"file": "armchair.png", "seat": True, "group": "furniture"},
     "table": {"file": "table.png", "group": "furniture"},
+    "long_table": {"file": "long_table.png", "group": "furniture", "size": [1, 2]},
+    "coffee_table": {"file": "coffee_table.png", "group": "furniture"},
     "bookshelf": {"file": "bookshelf.png", "group": "furniture"},
     "lamp": {"file": "lamp.png", "lights": LAMP_LIGHTS, "group": "furniture",
              "use": "toggle_light", "states": {"off": "lamp_off"}},
@@ -109,6 +111,116 @@ KINDS = {
     "board": {"file": "board.png", "group": "fun", "use": "board", "only": ["channel"]},
     "screen": {"file": "screen.png", "group": "fun", "use": "screen"},
 }
+
+# The library: one art file per kind (`<kind>.png`), a palette tab, and what
+# the kind brings beyond standing there. A piece longer than a tile names its
+# `size` ([w, h] tiles, long side down the y axis, the way its art runs from
+# the bottom-left up to the top-right); a sofa or a bench names its `seats`.
+WARM = {"radius": 2.2, "color": "ffd591", "blend": "add"}
+
+
+def _lit(color, radius=2.0, lift=None):
+    light = {"radius": radius, "color": color, "blend": "add"}
+    if lift is not None:
+        light["lift"] = lift
+    return [light]
+
+
+LIBRARY = {
+    "office": {
+        "office_desk": {"size": [1, 2]},
+        "meeting_table": {"size": [2, 3]},
+        "office_chair": {"seat": True},
+        "file_cabinet": {},
+        "printer": {},
+        "whiteboard": {},
+        "water_cooler": {},
+        "vending_machine": {"lights": _lit("bfe6ff", 1.4, 40)},
+        "coffee_machine": {},
+        "coat_rack": {},
+        "cactus": {},
+    },
+    "furniture": {
+        "sofa": {"size": [1, 2], "seats": [[0, 0], [0, 1]]},
+        "bed": {"size": [2, 2]},
+        "fridge": {},
+        "stove": {},
+        "kitchen_counter": {"size": [1, 2]},
+        "tv_stand": {"size": [1, 2], "lights": _lit("9fc4ff", 1.6, 30)},
+        "dresser": {},
+        "wardrobe": {"size": [1, 2]},
+        "piano": {"size": [1, 2]},
+        "fireplace": {"size": [1, 2], "lights": _lit("ff9a4d", 3.0, 12)},
+        "grandfather_clock": {},
+        "table_lamp": {"lights": [WARM], "use": "toggle_light", "states": {"off": "table_lamp_off"}},
+        "big_vase": {},
+        "nightstand": {},
+    },
+    "garden": {
+        "bush": {},
+        "flower_bed": {},
+        "boulder": {},
+        "park_bench": {"size": [1, 2], "seats": [[0, 0], [0, 1]]},
+        "fountain": {"size": [2, 2]},
+        "fence": {},
+        "street_lamp": {"lights": _lit("ffe6a8", 2.6, 80), "use": "toggle_light",
+                        "states": {"off": "street_lamp_off"}},
+        "pond": {"size": [2, 2]},
+        "palm_tree": {},
+        "pine_tree": {},
+        "giant_mushroom": {},
+        "mailbox": {},
+    },
+    "gamer": {
+        "pool_table": {"size": [1, 2]},
+        "ping_pong_table": {"size": [1, 2]},
+        "beanbag": {"seat": True},
+        "gaming_chair": {"seat": True},
+        "neon_sign": {"lights": _lit("ff5fd2", 1.8, 40)},
+        "server_rack": {"lights": _lit("6dffb0", 1.2, 40)},
+        "robot": {},
+        "retro_console": {"lights": _lit("9fc4ff", 1.4, 30)},
+        "jukebox": {"lights": _lit("ffb35f", 1.8, 40)},
+        "cryo_pod": {"lights": _lit("7fe8ff", 1.8, 50)},
+        "hologram": {"lights": _lit("7fe8ff", 2.0, 40)},
+        "racing_arcade": {"use": "arcade", "lights": _lit("ff6b6b", 1.4, 50)},
+        "neon_totem": {"lights": _lit("b07bff", 2.0, 60)},
+    },
+}
+
+for _group, _kinds in LIBRARY.items():
+    for _kind, _spec in _kinds.items():
+        KINDS[_kind] = {"file": f"{_kind}.png", "group": _group, **_spec}
+
+# The End of Time itself, piece by piece: its art is the End of Time's own
+# sheet, drawn from there rather than copied. `foot` is where each sprite was
+# authored to stand (its anchor in `author_scene.py`), `size` the ground it
+# covers there, and the lights are the scene's own.
+EOT = {
+    "eot_tv": {"size": [2, 2], "foot": [1, 1],
+               "lights": [{"radius": 2.6, "color": "7d9cc9", "blend": "add"},
+                          {"lift": 46, "radius": 1.1, "color": "a9c4e8", "blend": "add"}]},
+    "eot_morpheus": {"size": [2, 2], "foot": [1, 0]},
+    "eot_neo": {"size": [2, 2], "foot": [0, 0]},
+    "eot_delorean": {"size": [4, 2], "foot": [2, 1],
+                     "lights": [{"lift": 40, "radius": 1.1, "color": "a8c8ff", "blend": "add"}]},
+    "eot_fire": {"blocks": False,
+                 "lights": [{"radius": 2.2, "color": "ff9a4d", "blend": "add"}]},
+    "eot_balrog": {"size": [5, 2], "foot": [2, 1],
+                   "layers": [{"eot": "eot_balrogfire", "foot": [2, 1]}],
+                   "lights": [{"radius": 3.2, "color": "ff7a2d", "blend": "add"},
+                              {"lift": 24, "radius": 1.6, "color": "ffb060", "blend": "add"}]},
+    "eot_gandalf": {"lights": [{"lift": 75, "radius": 1.1, "color": "e8f4ff", "blend": "add"}]},
+    "eot_goku": {"size": [2, 1], "foot": [0, 0],
+                 "lights": [{"radius": 3.6, "color": "9fd4ff", "blend": "add"}]},
+    "eot_dama": {"blocks": False,
+                 "lights": [{"lift": 65, "radius": 2.2, "color": "d9f2ff", "blend": "add"}]},
+}
+for _kind, _spec in EOT.items():
+    KINDS[_kind] = {"eot": _kind, "group": "eot", **_spec}
+
+EOT_MAP = os.path.join(REPO, "apps", "retro_hex_chat", "priv", "maps", "end_of_time.json")
+EOT_SHEET = "endoftime"
 
 # Floor paint: id → (tile char, fill colours). A painted diamond keeps the
 # white floor's seam so the grid still reads under it.
@@ -275,7 +387,7 @@ def _art(name):
 def build():
     floor = _floor_tile()
     fw, fh = floor.size
-    sheet = Image.new("RGBA", (SHEET_COLS * T, 16 * T), (0, 0, 0, 0))
+    sheet = Image.new("RGBA", (SHEET_COLS * T, 96 * T), (0, 0, 0, 0))
     vocab = {}
     shelf = _Shelf(sheet, vocab)
 
@@ -301,14 +413,27 @@ def build():
 
     wall = _art("wall.png")
     variants = {"lamp_off": _lamp_off(_art("lamp.png")),
+                "table_lamp_off": _lamp_off(_art("table_lamp.png")),
+                "street_lamp_off": _lamp_off(_art("street_lamp.png")),
                 "coin_tails": _coin_tails(_art("coin.png")),
                 **_corners(wall)}
     door_open = os.path.join(SRC, "door_open.png")
     variants["door_open"] = _art("door_open.png") if os.path.exists(door_open) else _art("door.png")
 
     catalog = {}
+    eot = json.load(open(EOT_MAP))
+
+    def eot_tiles(name):
+        """The End of Time's own tile, from its sheet, and its mirror."""
+        if name not in vocab:
+            vocab[name] = dict(eot["vocab"][name], ts=EOT_SHEET)
+            vocab[f"{name}_r"] = dict(vocab[name], flip_x=True)
+        return {"down": name, "right": f"{name}_r"}
+
     for kind, spec in KINDS.items():
-        if "file" in spec:
+        if "eot" in spec:
+            tiles = eot_tiles(spec["eot"])
+        elif "file" in spec:
             name = f"cst_{kind}"
             shelf.put(name, _art(spec["file"]))
             vocab[f"{name}_r"] = dict(vocab[name], flip_x=True)
@@ -326,11 +451,14 @@ def build():
             shelf.put(name, variants[variant])
             vocab[f"{name}_r"] = dict(vocab[name], flip_x=True)
             entry.setdefault("states", {})[state] = {"down": name, "right": f"{name}_r"}
-        for key in ("seat", "lights", "use", "only", "dirs", "label"):
+        for key in ("seat", "lights", "use", "only", "dirs", "label", "size", "foot", "seats"):
             if key in spec:
                 entry[key] = spec[key]
         if spec.get("blocks") is False:
             entry["blocks"] = False
+        if spec.get("layers"):
+            entry["layers"] = [{"tiles": eot_tiles(layer["eot"]), "foot": layer["foot"]}
+                               for layer in spec["layers"]]
         catalog[kind] = entry
 
     rows_used = shelf.row + shelf.row_h
@@ -397,6 +525,8 @@ def build():
             }
         ],
         "reserved": reserved,
+        "tilesets": [{"id": "construct", "columns": SHEET_COLS},
+                     {"id": EOT_SHEET, "columns": eot["columns"]}],
         "catalog": catalog,
         "materials": materials,
         "max_items": MAX_ITEMS,

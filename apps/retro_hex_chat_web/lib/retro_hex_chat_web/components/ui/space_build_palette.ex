@@ -60,7 +60,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
           {dgettext("chat", "Floor")}
         </button>
       </div>
-      <div class="flex max-w-full gap-1 overflow-x-auto">
+      <div class="flex max-w-full items-start gap-1">
         <div
           :for={{{group, _label, kinds}, index} <- Enum.with_index(@groups)}
           data-construct-group={group}
@@ -197,40 +197,118 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
     |> String.at(div(map.width, 2))
   end
 
-  # Each tab and its kinds, in palette order. The kinds are the catalog's
-  # (`priv/maps/construct.json`); a kind built only in channels is left out of
-  # a private Construct's palette.
+  # The tabs, in palette order. Each kind sits in the tab its catalog entry
+  # names (`priv/maps/construct.json`), in the order `kinds/0` lists them; a
+  # kind built only in channels is left out of a private Construct's palette.
   defp groups(conversation) do
+    {:ok, map} = VirtualSpace.get_map("construct")
+
+    for {group, label} <- tabs() do
+      kinds =
+        for {kind, kind_label} <- kinds(),
+            entry = map.catalog[kind],
+            entry.group == group,
+            entry.only in [nil] or conversation in entry.only,
+            do: {kind, kind_label}
+
+      {group, label, kinds}
+    end
+  end
+
+  defp tabs do
     [
-      {"furniture", dgettext("chat", "Furniture"),
-       [
-         {"chair", dgettext("chat", "Chair")},
-         {"armchair", dgettext("chat", "Armchair")},
-         {"table", dpgettext("chat", "furniture", "Table")},
-         {"bookshelf", dgettext("chat", "Bookshelf")},
-         {"lamp", dgettext("chat", "Lamp")},
-         {"tree", dgettext("chat", "Tree")},
-         {"plant", dgettext("chat", "Plant")}
-       ]},
-      {"structure", dgettext("chat", "Structure"),
-       [
-         {"wall", dgettext("chat", "Wall")},
-         {"corner", dpgettext("chat", "wall", "Corner")},
-         {"door", dgettext("chat", "Door")}
-       ]},
-      {"fun", dpgettext("chat", "construct palette", "Fun"),
-       Enum.reject(
-         [
-           {"teleporter", dgettext("chat", "Teleporter")},
-           {"die", dpgettext("chat", "game piece", "Die")},
-           {"coin", dgettext("chat", "Coin")},
-           {"sign", dpgettext("chat", "signpost", "Sign")},
-           {"arcade", dgettext("chat", "Arcade cabinet")},
-           {"board", dpgettext("chat", "notice board", "Board")},
-           {"screen", dpgettext("chat", "television", "Screen")}
-         ],
-         fn {kind, _label} -> kind == "board" and conversation != "channel" end
-       )}
+      {"furniture", dgettext("chat", "Furniture")},
+      {"office", dpgettext("chat", "construct palette", "Office")},
+      {"garden", dgettext("chat", "Garden")},
+      {"gamer", dgettext("chat", "Gamer")},
+      {"structure", dgettext("chat", "Structure")},
+      {"fun", dpgettext("chat", "construct palette", "Fun")},
+      {"eot", dgettext("chat", "End of Time")}
+    ]
+  end
+
+  # Every placeable kind and its name on its key. The End of Time's people
+  # are called by their own names, which no language translates.
+  defp kinds do
+    [
+      {"chair", dgettext("chat", "Chair")},
+      {"armchair", dgettext("chat", "Armchair")},
+      {"sofa", dgettext("chat", "Sofa")},
+      {"table", dpgettext("chat", "furniture", "Table")},
+      {"long_table", dgettext("chat", "Long table")},
+      {"coffee_table", dgettext("chat", "Coffee table")},
+      {"bed", dgettext("chat", "Bed")},
+      {"nightstand", dgettext("chat", "Nightstand")},
+      {"wardrobe", dgettext("chat", "Wardrobe")},
+      {"dresser", dgettext("chat", "Dresser")},
+      {"bookshelf", dgettext("chat", "Bookshelf")},
+      {"tv_stand", dgettext("chat", "TV stand")},
+      {"fridge", dgettext("chat", "Fridge")},
+      {"stove", dpgettext("chat", "kitchen", "Stove")},
+      {"kitchen_counter", dgettext("chat", "Kitchen counter")},
+      {"piano", dgettext("chat", "Piano")},
+      {"fireplace", dgettext("chat", "Fireplace")},
+      {"grandfather_clock", dgettext("chat", "Grandfather clock")},
+      {"lamp", dgettext("chat", "Lamp")},
+      {"table_lamp", dgettext("chat", "Table lamp")},
+      {"big_vase", dgettext("chat", "Vase")},
+      {"plant", dgettext("chat", "Plant")},
+      {"tree", dgettext("chat", "Tree")},
+      {"office_desk", dgettext("chat", "Office desk")},
+      {"office_chair", dgettext("chat", "Office chair")},
+      {"meeting_table", dgettext("chat", "Meeting table")},
+      {"file_cabinet", dgettext("chat", "File cabinet")},
+      {"printer", dgettext("chat", "Printer")},
+      {"whiteboard", dgettext("chat", "Whiteboard")},
+      {"water_cooler", dgettext("chat", "Water cooler")},
+      {"coffee_machine", dgettext("chat", "Coffee machine")},
+      {"vending_machine", dgettext("chat", "Vending machine")},
+      {"coat_rack", dgettext("chat", "Coat rack")},
+      {"cactus", dgettext("chat", "Cactus")},
+      {"bush", dgettext("chat", "Bush")},
+      {"flower_bed", dgettext("chat", "Flower bed")},
+      {"boulder", dgettext("chat", "Boulder")},
+      {"park_bench", dgettext("chat", "Park bench")},
+      {"fountain", dgettext("chat", "Fountain")},
+      {"fence", dgettext("chat", "Fence")},
+      {"street_lamp", dgettext("chat", "Street lamp")},
+      {"pond", dgettext("chat", "Pond")},
+      {"palm_tree", dgettext("chat", "Palm tree")},
+      {"pine_tree", dgettext("chat", "Pine tree")},
+      {"giant_mushroom", dgettext("chat", "Giant mushroom")},
+      {"mailbox", dpgettext("chat", "garden", "Mailbox")},
+      {"pool_table", dgettext("chat", "Pool table")},
+      {"ping_pong_table", dgettext("chat", "Ping-pong table")},
+      {"beanbag", dgettext("chat", "Beanbag")},
+      {"gaming_chair", dgettext("chat", "Gaming chair")},
+      {"neon_sign", dgettext("chat", "Neon sign")},
+      {"server_rack", dgettext("chat", "Server rack")},
+      {"robot", dgettext("chat", "Robot")},
+      {"retro_console", dgettext("chat", "Retro console")},
+      {"jukebox", dgettext("chat", "Jukebox")},
+      {"cryo_pod", dgettext("chat", "Cryo pod")},
+      {"hologram", dgettext("chat", "Hologram")},
+      {"racing_arcade", dgettext("chat", "Racing arcade")},
+      {"neon_totem", dgettext("chat", "Neon totem")},
+      {"wall", dgettext("chat", "Wall")},
+      {"corner", dpgettext("chat", "wall", "Corner")},
+      {"door", dgettext("chat", "Door")},
+      {"teleporter", dgettext("chat", "Teleporter")},
+      {"die", dpgettext("chat", "game piece", "Die")},
+      {"coin", dgettext("chat", "Coin")},
+      {"sign", dpgettext("chat", "signpost", "Sign")},
+      {"arcade", dgettext("chat", "Arcade cabinet")},
+      {"board", dpgettext("chat", "notice board", "Board")},
+      {"screen", dpgettext("chat", "television", "Screen")},
+      {"eot_tv", dgettext("chat", "Old TV")},
+      {"eot_fire", dgettext("chat", "Campfire")},
+      {"eot_dama", dgettext("chat", "Spirit Bomb")},
+      {"eot_morpheus", "Morpheus"},
+      {"eot_neo", "Neo"},
+      {"eot_gandalf", "Gandalf"},
+      {"eot_balrog", "Balrog"},
+      {"eot_goku", "Goku"},
+      {"eot_delorean", "DeLorean"}
     ]
   end
 

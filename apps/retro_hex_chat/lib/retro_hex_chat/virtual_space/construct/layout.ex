@@ -3,9 +3,11 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   What people have placed in a Construct, and the rules for placing it.
 
   Pure: the runtime holds the items, this module answers whether an edit may
-  happen and what the map looks like with the items on it. An item is one tile
-  of floor, whatever its art overhangs — a tree's canopy rises into the void,
-  its trunk is what you bump into.
+  happen and what the map looks like with the items on it. An item covers its
+  kind's footprint of floor — one tile for a chair, two for a dining table —
+  whatever its art overhangs: a tree's canopy rises into the void, its trunk
+  is what you bump into. The item's `x, y` is the footprint's back corner (its
+  smallest x and y); the art stands on the kind's `foot` point inside it.
 
   The base map (`Maps.Construct`) carries the catalog of placeable kinds, the
   tiles nobody may build on (the gate, the ground in front of it, the spawns)
@@ -118,8 +120,8 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
     blocking = Enum.filter(placed, &blocks?(catalog, &1))
 
     base
-    |> update_in([:layers, :decor], &(&1 ++ Enum.map(placed, fn i -> decor(catalog, i) end)))
-    |> Map.update!(:collision, &(&1 ++ Enum.map(blocking, fn i -> blocked(i) end)))
+    |> update_in([:layers, :decor], &(&1 ++ Enum.flat_map(placed, fn i -> decor(catalog, i) end)))
+    |> Map.update!(:collision, &(&1 ++ Enum.map(blocking, fn i -> blocked(catalog, i) end)))
     |> Map.update(:seats, seats(catalog, placed), &(&1 ++ seats(catalog, placed)))
     |> Map.update(:lights, lights(catalog, placed), &(&1 ++ lights(catalog, placed)))
     |> Map.update(:labels, labels(catalog, placed), &(&1 ++ labels(catalog, placed)))
@@ -220,6 +222,37 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   def interactable_id(item), do: "item:" <> item.id
 
   @doc """
+  The tiles a piece of `kind` covers with its back corner on `x, y`, facing
+  `dir`. Turning a piece mirrors it across the screen, which swaps the floor's
+  axes: a table two tiles long down one axis runs down the other once turned.
+  """
+  @spec footprint(map(), String.t(), integer(), integer(), String.t()) :: [{integer(), integer()}]
+  def footprint(base, kind, x, y, dir) do
+    {w, h} = size(get_in(base, [:catalog, kind]), dir)
+    for dy <- 0..(h - 1)//1, dx <- 0..(w - 1)//1, do: {x + dx, y + dy}
+  end
+
+  @doc "The tiles a placed piece covers."
+  @spec footprint(map(), item()) :: [{integer(), integer()}]
+  def footprint(base, item), do: footprint(base, item.kind, item.x, item.y, item.dir)
+
+  defp size(entry, dir) do
+    [w, h] = (entry && entry[:size]) || [1, 1]
+    if mirrored?(dir), do: {h, w}, else: {w, h}
+  end
+
+  defp mirrored?(dir), do: dir in ["right", "left"]
+
+  # Where on the floor a piece's art (or one of its layers) stands: a point
+  # inside the footprint, by default its centre.
+  defp foot_point(entry, item, foot \\ nil) do
+    {w, h} = size(entry, "down")
+    [fx, fy] = foot || entry[:foot] || [(w - 1) / 2, (h - 1) / 2]
+    {fx, fy} = if mirrored?(item.dir), do: {fy, fx}, else: {fx, fy}
+    {item.x + fx, item.y + fy}
+  end
+
+  @doc """
   The part of the map an edit changes, for the clients already standing in it.
   The base never changes, so this is all a client needs to redraw the room;
   `floor?: true` adds the painted floor, for an edit that painted it.
@@ -269,7 +302,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
           state: %{}
         }
 
-        with :ok <- tile_free(base, items, context, x, y, nil) do
+        with :ok <- tile_free(base, items, context, kind, x, y, item.dir, nil) do
           checked(base, pair_teleporter(base, items, item), context)
         end
     end
@@ -278,7 +311,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   def edit(base, items, {:move, id, x, y}, context, _actor) do
     with {:ok, item} <- find(items, id),
          :ok <- not_sat_on(item, context),
-         :ok <- tile_free(base, items, context, x, y, id) do
+         :ok <- tile_free(base, items, context, item.kind, x, y, item.dir, id) do
       checked(base, replace(items, %{item | x: x, y: y}), context)
     end
   end
@@ -290,10 +323,13 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
     end
   end
 
+  # A turned piece must still fit: a long table turned may run into a wall.
   def edit(base, items, {:rotate, id}, context, _actor) do
     with {:ok, item} <- find(items, id),
-         :ok <- not_sat_on(item, context) do
-      {:ok, replace(items, %{item | dir: next_dir(dirs(base, item.kind), item.dir)})}
+         :ok <- not_sat_on(item, context),
+         dir = next_dir(dirs(base, item.kind), item.dir),
+         :ok <- turned_fits(base, items, context, item, dir) do
+      checked(base, replace(items, %{item | dir: dir}), context)
     end
   end
 
@@ -361,7 +397,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
 
   # A door does not close on somebody standing in it, nor shut anybody in.
   defp close_door(base, items, item, context) do
-    if {item.x, item.y} in context.avatars do
+    if Enum.any?(footprint(base, item), &(&1 in context.avatars)) do
       {:error, :someone_there}
     else
       closed = replace(items, put_state(item, "open", false))
@@ -382,9 +418,6 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
       raw_items
       |> Enum.flat_map(&normalize_item/1)
       |> Enum.filter(&Map.has_key?(catalog, &1.kind))
-      |> Enum.uniq_by(&{&1.x, &1.y})
-      |> Enum.filter(&buildable?(base, &1.x, &1.y))
-      |> Enum.take(Map.get(base, :max_items, 0))
       |> Enum.map(fn item ->
         %{
           item
@@ -392,6 +425,8 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
             state: clean_state(use_of(base, item), item.state)
         }
       end)
+      |> keep_fitting(base)
+      |> Enum.take(Map.get(base, :max_items, 0))
 
     drop_broken_links(items)
   end
@@ -468,6 +503,26 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
 
   defp clean_state(_use, _state), do: %{}
 
+  # Stored pieces are kept in order while their footprint lands on free,
+  # buildable floor: a piece whose kind grew since it was placed, and now
+  # overlaps its neighbour, is the one that goes.
+  defp keep_fitting(items, base) do
+    {kept, _taken} = Enum.reduce(items, {[], MapSet.new()}, &keep_if_fits(base, &1, &2))
+    Enum.reverse(kept)
+  end
+
+  defp keep_if_fits(base, item, {kept, taken}) do
+    tiles = footprint(base, item)
+
+    fits? =
+      Enum.all?(tiles, fn {x, y} -> buildable?(base, x, y) end) and
+        not Enum.any?(tiles, &MapSet.member?(taken, &1))
+
+    if fits?,
+      do: {[item | kept], MapSet.union(taken, MapSet.new(tiles))},
+      else: {kept, taken}
+  end
+
   # A teleporter whose twin is gone, or whose twin points elsewhere, is a pad
   # waiting for a new twin.
   defp drop_broken_links(items) do
@@ -484,14 +539,22 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
     end)
   end
 
+  # A piece is its art, and the layers its kind draws with it (the flames at
+  # the Balrog's feet), each on its own point of the footprint.
   defp decor(catalog, item) do
-    %{
-      x: item.x,
-      y: item.y,
-      tile: tile_of(Map.fetch!(catalog, item.kind), item),
-      sort: "stand",
-      item_id: item.id
-    }
+    entry = Map.fetch!(catalog, item.kind)
+    {x, y} = foot_point(entry, item)
+
+    main = %{x: x, y: y, tile: tile_of(entry, item), sort: "stand", item_id: item.id}
+
+    extra =
+      for layer <- Map.get(entry, :layers, []) do
+        {lx, ly} = foot_point(entry, item, layer.foot)
+        tile = Map.get(layer.tiles, item.dir) || Map.get(layer.tiles, "down")
+        %{x: lx, y: ly, tile: tile, sort: "stand", item_id: item.id}
+      end
+
+    [main | extra]
   end
 
   defp tile_of(entry, item) do
@@ -518,9 +581,14 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
       not (entry[:use] == "door" and Map.get(state_of(item), "open", false))
   end
 
+  # One interactable per tile of the footprint, so E works from any side of a
+  # long piece; the runtime reads the piece's id before the `#`.
   defp usable(catalog, items) do
-    for item <- items, use = get_in(catalog, [item.kind, :use]) do
-      %{id: interactable_id(item), kind: "item", use: use, x: item.x, y: item.y}
+    for item <- items,
+        use = get_in(catalog, [item.kind, :use]),
+        {{x, y}, n} <- Enum.with_index(footprint(%{catalog: catalog}, item)) do
+      id = if n == 0, do: interactable_id(item), else: "#{interactable_id(item)}##{n}"
+      %{id: id, kind: "item", use: use, x: x, y: y}
     end
   end
 
@@ -531,7 +599,8 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
         entry = Map.fetch!(catalog, item.kind),
         text = label_text(entry[:use], state_of(item)),
         drawn = entry[:label] do
-      Map.merge(drawn, %{kind: "hologram", text: text, x: item.x, y: item.y, h: 1})
+      {x, y} = foot_point(entry, item)
+      Map.merge(drawn, %{kind: "hologram", text: text, x: x, y: y, h: 1})
     end
   end
 
@@ -611,23 +680,47 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
 
   defp normalize_text(_text), do: ""
 
-  defp blocked(item), do: %{x: item.x, y: item.y, w: 1, h: 1, kind: "item"}
+  defp blocked(catalog, item) do
+    {w, h} = size(Map.fetch!(catalog, item.kind), item.dir)
+    %{x: item.x, y: item.y, w: w, h: h, kind: "item"}
+  end
 
   defp seats(catalog, items) do
-    for item <- items, get_in(catalog, [item.kind, :seat]) do
-      %{id: seat_id(item), x: item.x, y: item.y, dir: item.dir, item_id: item.id}
+    Enum.flat_map(items, &item_seats(Map.fetch!(catalog, &1.kind), &1))
+  end
+
+  # A chair is one seat; a sofa or a bench names the tiles of its footprint
+  # that are seats, each its own.
+  defp item_seats(%{seats: [_ | _] = spots}, item) do
+    for {[dx, dy], n} <- Enum.with_index(spots) do
+      {dx, dy} = if mirrored?(item.dir), do: {dy, dx}, else: {dx, dy}
+
+      %{
+        id: "#{seat_id(item)}:#{n}",
+        x: item.x + dx,
+        y: item.y + dy,
+        dir: item.dir,
+        item_id: item.id
+      }
     end
   end
+
+  defp item_seats(%{seat: true}, item),
+    do: [%{id: seat_id(item), x: item.x, y: item.y, dir: item.dir, item_id: item.id}]
+
+  defp item_seats(_entry, _item), do: []
 
   defp lights(catalog, items) do
     for item <- items,
         Map.get(state_of(item), "on", true),
-        light <- get_in(catalog, [item.kind, :lights]) || [] do
-      Map.merge(light, %{x: item.x, y: item.y})
+        entry = Map.fetch!(catalog, item.kind),
+        light <- entry[:lights] || [] do
+      {x, y} = foot_point(entry, item)
+      Map.merge(light, %{x: x, y: y})
     end
   end
 
-  @doc "The seat a placed chair offers."
+  @doc "The seat a placed chair offers; a piece with several seats numbers them after it."
   @spec seat_id(item()) :: String.t()
   def seat_id(item), do: "seat:" <> item.id
 
@@ -643,17 +736,40 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   end
 
   defp not_sat_on(item, %{seated: seated}) do
-    if MapSet.member?(seated, seat_id(item)), do: {:error, :seat_taken}, else: :ok
+    taken? =
+      Enum.any?(seated, &(&1 == seat_id(item) or String.starts_with?(&1, seat_id(item) <> ":")))
+
+    if taken?, do: {:error, :seat_taken}, else: :ok
   end
 
-  defp tile_free(base, items, context, x, y, moving_id) do
-    cond do
-      not in_bounds?(base, x, y) -> {:error, :out_of_bounds}
-      not buildable?(base, x, y) -> {:error, :reserved}
-      Enum.any?(items, &(&1.id != moving_id and &1.x == x and &1.y == y)) -> {:error, :occupied}
-      {x, y} in context.avatars -> {:error, :someone_there}
-      true -> :ok
-    end
+  # Every tile of the footprint must be floor nobody keeps clear, with no other
+  # piece on it and nobody standing there; the first tile that is not says why.
+  defp tile_free(base, items, context, kind, x, y, dir, moving_id) do
+    taken =
+      items
+      |> Enum.reject(&(&1.id == moving_id))
+      |> Enum.flat_map(&footprint(base, &1))
+      |> MapSet.new()
+
+    base
+    |> footprint(kind, x, y, dir)
+    |> Enum.find_value(:ok, fn {tx, ty} ->
+      cond do
+        not in_bounds?(base, tx, ty) -> {:error, :out_of_bounds}
+        not buildable?(base, tx, ty) -> {:error, :reserved}
+        MapSet.member?(taken, {tx, ty}) -> {:error, :occupied}
+        {tx, ty} in context.avatars -> {:error, :someone_there}
+        true -> nil
+      end
+    end)
+  end
+
+  # A one-tile piece turns on the spot; a longer one must find room for the
+  # footprint it turns into, people around it included.
+  defp turned_fits(base, items, context, item, dir) do
+    if footprint(base, item.kind, item.x, item.y, dir) == footprint(base, item),
+      do: :ok,
+      else: tile_free(base, items, context, item.kind, item.x, item.y, dir, item.id)
   end
 
   # An edit that closes the last way between somebody and the gate is refused:
@@ -675,7 +791,8 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
       |> MapSet.union(
         items
         |> Enum.filter(&(Map.has_key?(catalog, &1.kind) and blocks?(catalog, &1)))
-        |> MapSet.new(&{&1.x, &1.y})
+        |> Enum.flat_map(&footprint(base, &1))
+        |> MapSet.new()
       )
 
     gate = gate_apron(base, blocked)

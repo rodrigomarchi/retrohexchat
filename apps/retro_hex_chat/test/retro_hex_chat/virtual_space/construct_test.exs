@@ -404,6 +404,53 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
     end
   end
 
+  describe "pieces bigger than a tile" do
+    test "a sofa seats two, and either of them stops it being moved" do
+      ctx = channel_with(["alice"])
+      enter(ctx.construct_id, "alice")
+      # Alice arrives at (12,12); the sofa runs from (13,13) down to (13,14).
+      {:ok, _} = place(ctx.construct_id, "alice", "sofa", 13, 13)
+      {:ok, state} = ChannelSpaceServer.get_state(ctx.construct_id)
+      [sofa] = state.items
+      seats = Enum.filter(state.map.seats, &(&1.item_id == sofa.id))
+      assert [{13, 13}, {13, 14}] == Enum.map(seats, &{&1.x, &1.y})
+
+      second = Enum.find(seats, &(&1.y == 14))
+      :ok = ChannelSpaceServer.input(ctx.construct_id, key("alice"), %{seq: 1, dx: 0, dy: 1})
+      :ok = ChannelSpaceServer.input(ctx.construct_id, key("alice"), %{seq: 2, dx: 0, dy: 1})
+
+      assert :ok =
+               VirtualSpace.interact(ctx.construct_id, key("alice"), %{
+                 kind: "sit",
+                 target_id: second.id
+               })
+
+      assert {:error, :seat_taken} =
+               VirtualSpace.build_construct(
+                 ctx.construct_id,
+                 key("alice"),
+                 "alice",
+                 {:move, sofa.id, 30, 30}
+               )
+    end
+
+    test "a long table blocks its far tile as well as its corner" do
+      ctx = channel_with(["alice"])
+      enter(ctx.construct_id, "alice")
+      # Alice arrives at (12,12); the long table covers (14,12) and (14,13).
+      {:ok, _} = place(ctx.construct_id, "alice", "long_table", 14, 12)
+
+      move = fn seq, dx, dy ->
+        ChannelSpaceServer.input(ctx.construct_id, key("alice"), %{seq: seq, dx: dx, dy: dy})
+      end
+
+      assert :ok = move.(1, 1, 0)
+      assert {:error, :blocked} = move.(2, 1, 0)
+      assert :ok = move.(3, 0, 1)
+      assert {:error, :blocked} = move.(4, 1, 0)
+    end
+  end
+
   describe "painting the floor" do
     test "reaches everyone inside, and is there the next time the room opens" do
       ctx = channel_with(["alice"])

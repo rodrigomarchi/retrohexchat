@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **246 spec files** under `e2e/tests/`.
-- **595 Playwright `test()` cases**.
-- **543 documented flows**, 542 done, 1 not done.
+- **247 spec files** under `e2e/tests/`.
+- **598 Playwright `test()` cases**.
+- **546 documented flows**, 545 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -770,6 +770,9 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP24 | Whoever put up a sign writes on it from its panel and the line floats over it; somebody else only reads it | `tests/space-construct-objects.spec.ts` | done |
 | SP25 | A board shows the channel's topic, a screen the last picture posted, an arcade cabinet its games | `tests/space-construct-objects.spec.ts` | done |
 | SP26 | Dragging across the floor from the Floor tab paints it, for everyone inside, and it is still painted the next time the room opens | `tests/space-construct-objects.spec.ts` | done |
+| SP27 | A long table covers two tiles and turns with its footprint; chairs set around it are sat in, and a room of each theme (home, office, garden, gamer) is built from the palette's tabs | `tests/space-construct-library.spec.ts` | done |
+| SP28 | The End of Time's own pieces — Morpheus, Neo, the old TV, the DeLorean, the Balrog — are placed in a Construct, animated and lit as on the island | `tests/space-construct-library.spec.ts` | done |
+| SP29 | A sofa seats two people at once, one on each of its tiles | `tests/space-construct-library.spec.ts` | done |
 
 ### LC - Localization
 
